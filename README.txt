@@ -1,14 +1,21 @@
 = stories
 
-* FIX (url)
+* FIX http://rspec.info/stories
 
 == DESCRIPTION:
 
-FIX (describe your package)
+This code parses RSpec stories. It uses a Treetop grammar to do the job, and 
+this grammar is extended by users of the library. This design makes the code
+very compact, and it makes it easy to give precise line and column info on 
+parse errors. Further, when a step fails, the story file will appear in the
+stack trace, along with regular ruby files.
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+* TODO: Add a yaml file for different languages
+* TODO: Custom nodes for the syntax tree
+* TODO: Actually execute the stories
+* TODO: Make rake run specs by default
 
 == SYNOPSIS:
 
@@ -16,17 +23,17 @@ FIX (describe your package)
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* gem install treetop
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+* gem install stories
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2008 FIX
+Copyright (c) 2008 Aslak Hellesøy
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

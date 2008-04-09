@@ -28,8 +28,8 @@ module Stories
     end
     
     # Adds a +story+ to be run. +story+ can be either an opened File object or a String
-    def add(story) # TODO: Our extrenal API should be more like #execute and #register_story
-      if story.respond_to?(:path)
+    def add(story)
+      if story.respond_to?(:path) # It's a file
         path = story.path
         text = story.read
       else # It's just a String
@@ -37,7 +37,12 @@ module Stories
         text = story
       end
       tree = @parser.parse(text)
-      @parser.failure_reason_with_path(@err, @out, path) if tree.nil?
+      if tree.nil?
+        @parser.failure_reason_with_path(@err, @out, path)
+      else
+        # TODO: Store the tree, text and path so we can descend the tree later
+        # If a step fails, we'll add the story's location to the backtrace
+      end
     ensure
       story.close if story.respond_to?(:close)
     end
