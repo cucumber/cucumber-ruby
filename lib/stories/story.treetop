@@ -16,13 +16,16 @@ grammar Story
   end
 
   rule step
+    # The various step rules are generated dynamically
     'Given ' (step_1 / step_2)
   end
 
+  # Dynamically generated rule
   rule step_1
     'I am ' word ' and ' word
   end
 
+  # Dynamically generated rule
   rule step_2
     'I was ' word ' and ' word
   end

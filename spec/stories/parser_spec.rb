@@ -1,22 +1,28 @@
 require File.dirname(__FILE__) + '/../spec_helper.rb'
 
 module Stories
-  describe Parser do
+  describe Runner do
     describe "with two defined steps" do
       before do
-        @story_parser = StoryParser.new
+        @runner = Runner.new
+        @runner.step "I was $one and $two" do |one, two| # 'I was ' word ' and ' word
+          
+        end
+        @runner.step "I am $three and $four" do |three, four| # 'I am ' word ' and ' word
+          
+        end
       end
       
       it "should parse a story matching those steps" do
         story = "Story: hello world\nAs a bla\nScenario: Doit\nGiven I was 5here4 and there"
-        story_tree = @story_parser.should parse(story)
+        @runner.parse(story)
+      end
 
-        # TODO: Use a custom matcher
-        if story_tree
-          puts story_tree.inspect
-        else
-          puts @story_parser.failure_reason
-        end
+      it "should not parse a story not matching those steps" do
+        story = "WHATEVER: hello world\nAs a bla\nScenario: Doit\nGiven I was 5here4 and there"
+        lambda do
+          @runner.parse(story)
+        end.should raise_error(RuntimeError, /Expected Story:/)
       end
     end
   end
