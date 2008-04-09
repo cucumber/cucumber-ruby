@@ -11,6 +11,7 @@ module Stories
         @runner.step "I am $three and $four" do |three, four| # 'I am ' word ' and ' word
           
         end
+        @runner.compile
       end
       
       it "should parse a story matching those steps" do
@@ -19,7 +20,7 @@ module Stories
       end
 
       it "should not parse a story not matching those steps" do
-        story = "WHATEVER: hello world\nAs a bla\nScenario: Doit\nGiven I was 5here4 and there"
+        story = "WHATEVER"
         lambda do
           @runner.parse(story)
         end.should raise_error(RuntimeError, /Expected Story:/)
