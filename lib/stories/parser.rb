@@ -1,20 +1,25 @@
 require 'rubygems'
 require 'treetop'
+require 'erb'
 
 module Stories
   class Runner
-    def initialize
+    def initialize(rule_factory)
+      @rule_factory = rule_factory
       @steps = {} # TODO: Use a default pending block?
+      @additional_rules = []
     end
     
     # Registers a custom step
     def step(step_expression, &block)
+      @additional_rules << @rule_factory.rule_for(step_expression)
       @steps[step_expression] = block
     end
     
     # Compiles the story grammar - extended with custom steps
     def compile
-      grammar = IO.read(File.dirname(__FILE__) + '/story.treetop')
+      grammar_template = ERB.new(IO.read(File.dirname(__FILE__) + '/story.treetop.erb'))
+      grammar = grammar_template.result(binding)
       parser = Treetop::Compiler::MetagrammarParser.new
       result = parser.parse(grammar)
       ruby = result.compile

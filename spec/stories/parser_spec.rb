@@ -4,7 +4,11 @@ module Stories
   describe Runner do
     describe "with two defined steps" do
       before do
-        @runner = Runner.new
+        rule_factory = mock("RuleFactory")
+        rule_factory.should_receive(:rule_for).with("I was $one and $two").and_return("'I was ' word ' and ' word")
+        rule_factory.should_receive(:rule_for).with("I am $three and $four").and_return("'I am ' word ' and ' word")
+        
+        @runner = Runner.new(rule_factory)
         @runner.step "I was $one and $two" do |one, two| # 'I was ' word ' and ' word
           
         end

@@ -17,18 +17,15 @@ grammar Story
 
   rule step
     # The various step rules are generated dynamically
-    'Given ' (step_1 / step_2)
+    'Given ' (step_0 / step_1)
   end
 
+<% @additional_rules.each_with_index do |rule, i| %>
   # Dynamically generated rule
-  rule step_1
-    'I am ' word ' and ' word
+  rule step_<%= i %>
+    <%= rule %>
   end
-
-  # Dynamically generated rule
-  rule step_2
-    'I was ' word ' and ' word
-  end
+<% end %>
 
   rule word
     ([\w])*
