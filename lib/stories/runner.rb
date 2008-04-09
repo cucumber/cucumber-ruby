@@ -4,8 +4,8 @@ require 'erb'
 
 module Stories
   class Runner
-    def initialize(rule_factory)
-      @rule_factory = rule_factory
+    def initialize(rule_factory, err=STDERR, out=STDOUT)
+      @rule_factory, @err, @out = rule_factory, err, out
       @steps = {} # TODO: Use a default pending block?
       @additional_rules = []
     end
@@ -24,12 +24,38 @@ module Stories
       result = parser.parse(grammar)
       ruby = result.compile
       Object.class_eval(ruby)
+      @parser = StoryParser.new
     end
     
-    def parse(story) # TODO: Our extrenal API should be more like #execute and #register_story
-      @parser = StoryParser.new
-      tree = @parser.parse(story)
-      raise @parser.failure_reason if tree.nil?
+    # Adds a +story+ to be run. +story+ can be either an opened File object or a String
+    def add(story) # TODO: Our extrenal API should be more like #execute and #register_story
+      if story.respond_to?(:path)
+        path = story.path
+        text = story.read
+      else # It's just a String
+        path = nil
+        text = story
+      end
+      tree = @parser.parse(text)
+      @parser.failure_reason_with_path(@err, @out, path) if tree.nil?
+    ensure
+      story.close if story.respond_to?(:close)
+    end
+  end
+end
+
+module Treetop
+  module Runtime
+    class CompiledParser
+      def failure_reason_with_path(err, out, path)
+        return nil unless (tf = terminal_failures) && tf.size > 0
+	err.puts "Expected " +
+	  (tf.size == 1 ?
+	   tf[0].expected_string :
+           "one of #{tf.map{|f| f.expected_string}.uniq*', '}"
+	  ) + " after #{input[index...failure_index]}"
+        out.puts "#{path}:#{failure_line}:#{failure_column}"
+      end
     end
   end
 end
