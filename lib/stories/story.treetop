@@ -1,0 +1,45 @@
+grammar Story
+  rule story
+    header narrative scenario*
+  end
+
+  rule header
+    'Story: ' sentence_line
+  end
+
+  rule narrative
+    'As a' sentence_line
+  end
+
+  rule scenario
+    'Scenario: ' sentence_line step*
+  end
+
+  rule step
+    'Given ' (step_1 / step_2)
+  end
+
+  rule step_1
+    'I am ' word ' and ' word
+  end
+
+  rule step_2
+    'I was ' word ' and ' word
+  end
+
+  rule word
+    ([\w])*
+  end
+
+  rule sentence_line
+    (!eol .)* eol
+  end
+
+  rule eol
+    "\n" / eof
+  end
+  
+  rule eof
+    !.
+  end
+end
