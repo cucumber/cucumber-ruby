@@ -4,13 +4,14 @@ require 'erb'
 
 module Stories
   class Runner
+    # TODO: specify the language (to take from an embedded YAML file.
     def initialize(rule_factory, err=STDERR, out=STDOUT)
       @rule_factory, @err, @out = rule_factory, err, out
       @steps = {} # TODO: Use a default pending block?
       @additional_rules = []
     end
     
-    # Registers a custom step
+    # Registers a custom step, thereby extending the default grammar
     def step(step_expression, &block)
       @additional_rules << @rule_factory.rule_for(step_expression)
       @steps[step_expression] = block
