@@ -16,6 +16,7 @@ stack trace, along with regular ruby files.
 * TODO: Custom nodes for the syntax tree
 * TODO: Actually execute the stories
 * TODO: Make rake run specs by default
+* TODO: Make it work with pure ruby regexen
 
 == SYNOPSIS:
 
