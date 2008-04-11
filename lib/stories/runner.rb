@@ -5,15 +5,14 @@ require 'erb'
 module Stories
   class Runner
     # TODO: specify the language (to take from an embedded YAML file.
-    def initialize(rule_factory, err=STDERR, out=STDOUT)
-      @rule_factory, @err, @out = rule_factory, err, out
-      @steps = {} # TODO: Use a default pending block?
+    def initialize(err=STDERR, out=STDOUT)
+      @err, @out = err, out
+      @steps = {}
       @additional_rules = []
     end
     
     # Registers a custom step, thereby extending the default grammar
     def step(step_expression, &block)
-      @additional_rules << @rule_factory.rule_for(step_expression)
       @steps[step_expression] = block
     end
     
@@ -24,6 +23,7 @@ module Stories
       parser = Treetop::Compiler::MetagrammarParser.new
       result = parser.parse(grammar)
       ruby = result.compile
+#puts ruby
       Object.class_eval(ruby)
       @parser = StoryParser.new
     end
@@ -41,11 +41,21 @@ module Stories
       if tree.nil?
         @parser.failure_reason_with_path(@err, @out, path)
       else
+        verify_steps(tree)
         # TODO: Store the tree, text and path so we can descend the tree later
         # If a step fails, we'll add the story's location to the backtrace
       end
     ensure
       story.close if story.respond_to?(:close)
+    end
+    
+    def verify_steps(tree)
+      step_verifier = StepVerifier.new(self)
+      tree.accept(step_verifier)
+    end
+    
+    def verify_step(step)
+      
     end
   end
 end

@@ -12,6 +12,7 @@ stack trace, along with regular ruby files.
 
 == FEATURES/PROBLEMS:
 
+* TODO: Rename entire library "Cucumber" (Patty wrote it on the bus)
 * TODO: Add a yaml file for different languages
 * TODO: Custom nodes for the syntax tree
 * TODO: Actually execute the stories

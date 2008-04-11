@@ -1,10 +1,10 @@
 grammar Story
   rule story
-    header narrative scenario*
+    header narrative scenario_nodes:scenario* <Stories::Story>
   end
 
   rule header
-    'Story: ' sentence_line
+    'Story: ' sentence_line <Stories::Header>
   end
 
   rule narrative
@@ -12,23 +12,11 @@ grammar Story
   end
 
   rule scenario
-    'Scenario: ' sentence_line step*
+    'Scenario: ' sentence_line step_nodes:(step)* <Stories::Scenario>
   end
 
   rule step
-    # The various step rules are generated dynamically
-    'Given ' (step_0 / step_1)
-  end
-
-<% @additional_rules.each_with_index do |rule, i| %>
-  # Dynamically generated rule
-  rule step_<%= i %>
-    <%= rule %>
-  end
-<% end %>
-
-  rule word
-    ([\w])*
+    'Given ' sentence_line <Stories::Step>
   end
 
   rule sentence_line
