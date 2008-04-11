@@ -1,9 +1,9 @@
-Story: Sell stories
-  As a stories artist
-  I want to sell stories
+Story: Sell cucumber
+  As a cucumber artist
+  I want to sell cucumber
   So that I can make the world a better place
   
   Scenario: Sell a couple
-    Given there are 5 stories
-    When I sell 2 stories
-    Then there should be 3 stories left
+    Given there are 5 cucumber
+    When I sell 2 cucumber
+    Then there should be 3 cucumber left

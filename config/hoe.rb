@@ -1,10 +1,10 @@
-require 'stories/version'
+require 'cucumber/version'
 
 AUTHOR = 'FIXME full name'  # can also be an array of Authors
 EMAIL = "FIXME email"
 DESCRIPTION = "description of gem"
-GEM_NAME = 'stories' # what ppl will type to install your gem
-RUBYFORGE_PROJECT = 'stories' # The unix name for your project
+GEM_NAME = 'cucumber' # what ppl will type to install your gem
+RUBYFORGE_PROJECT = 'cucumber' # The unix name for your project
 HOMEPATH = "http://#{RUBYFORGE_PROJECT}.rubyforge.org"
 DOWNLOAD_PATH = "http://rubyforge.org/projects/#{RUBYFORGE_PROJECT}"
 
@@ -31,8 +31,8 @@ end
 REV = nil 
 # UNCOMMENT IF REQUIRED: 
 # REV = YAML.load(`svn info`)['Revision']
-VERS = Stories::VERSION::STRING + (REV ? ".#{REV}" : "")
-RDOC_OPTS = ['--quiet', '--title', 'stories documentation',
+VERS = Cucumber::VERSION::STRING + (REV ? ".#{REV}" : "")
+RDOC_OPTS = ['--quiet', '--title', 'cucumber documentation',
     "--opname", "index.html",
     "--line-numbers", 
     "--main", "README",

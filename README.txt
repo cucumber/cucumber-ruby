@@ -1,10 +1,10 @@
-= stories
+= cucumber
 
-* FIX http://rspec.info/stories
+* FIX http://rspec.info/cucumber
 
 == DESCRIPTION:
 
-This code parses RSpec stories. It uses a Treetop grammar to do the job, and 
+This code parses RSpec cucumber. It uses a Treetop grammar to do the job, and 
 this grammar is extended by users of the library. This design makes the code
 very compact, and it makes it easy to give precise line and column info on 
 parse errors. Further, when a step fails, the story file will appear in the
@@ -15,7 +15,7 @@ stack trace, along with regular ruby files.
 * TODO: Rename entire library "Cucumber" (Patty wrote it on the bus)
 * TODO: Add a yaml file for different languages
 * TODO: Custom nodes for the syntax tree
-* TODO: Actually execute the stories
+* TODO: Actually execute the cucumber
 * TODO: Make rake run specs by default
 * TODO: Make it work with pure ruby regexen
 
@@ -29,7 +29,7 @@ stack trace, along with regular ruby files.
 
 == INSTALL:
 
-* gem install stories
+* gem install cucumber
 
 == LICENSE:
 

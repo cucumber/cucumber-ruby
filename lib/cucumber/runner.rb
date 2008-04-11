@@ -2,7 +2,7 @@ require 'rubygems'
 require 'treetop'
 require 'erb'
 
-module Stories
+module Cucumber
   class Runner
     # TODO: specify the language (to take from an embedded YAML file.
     def initialize(err=STDERR, out=STDOUT)

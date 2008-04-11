@@ -1,4 +1,4 @@
-module Stories #:nodoc:
+module Cucumber #:nodoc:
   module VERSION #:nodoc:
     MAJOR = 0
     MINOR = 0

@@ -7,9 +7,9 @@ rescue LoadError
 end
 
 $:.unshift(File.dirname(__FILE__) + '/../lib')
-require 'stories'
+require 'cucumber'
 
-module Stories
+module Cucumber
   class Parse
     def initialize(text)
       @text = text
@@ -35,5 +35,5 @@ module Stories
 end
 
 Spec::Runner.configure do |config|
-  config.include Stories
+  config.include Cucumber
 end

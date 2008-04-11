@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper.rb'
 require 'stringio'
 
-module Stories
+module Cucumber
   describe Runner do
     describe "with two defined string steps" do
       before do
@@ -28,7 +28,7 @@ module Stories
         @err.rewind
         @out.rewind
         @err.read.should == "Expected one of I was , I am  after Given \n"
-        @out.read.should =~ /spec\/stories\/fixtures\/non_matching.story:4:7\n/
+        @out.read.should =~ /spec\/cucumber\/fixtures\/non_matching.story:4:7\n/
       end
     end
   end

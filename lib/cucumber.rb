@@ -1,10 +1,10 @@
 $:.unshift(File.dirname(__FILE__)) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
-require 'stories/version'
-require 'stories/runner'
-require 'stories/visitor'
-require 'stories/step_verifier'
+require 'cucumber/version'
+require 'cucumber/runner'
+require 'cucumber/visitor'
+require 'cucumber/step_verifier'
 
-module Stories
+module Cucumber
   
 end

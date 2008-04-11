@@ -1,6 +1,6 @@
-h1. stories
+h1. cucumber
 
-h1. &#x2192; 'stories'
+h1. &#x2192; 'cucumber'
 
 
 h2. What
@@ -8,7 +8,7 @@ h2. What
 
 h2. Installing
 
-<pre syntax="ruby">sudo gem install stories</pre>
+<pre syntax="ruby">sudo gem install cucumber</pre>
 
 h2. The basics
 
@@ -19,15 +19,15 @@ h2. Demonstration of usage
 
 h2. Forum
 
-"http://groups.google.com/group/stories":http://groups.google.com/group/stories
+"http://groups.google.com/group/cucumber":http://groups.google.com/group/cucumber
 
-TODO - create Google Group - stories
+TODO - create Google Group - cucumber
 
 h2. How to submit patches
 
 Read the "8 steps for fixing other people's code":http://drnicwilliams.com/2007/06/01/8-steps-for-fixing-other-peoples-code/ and for section "8b: Submit patch to Google Groups":http://drnicwilliams.com/2007/06/01/8-steps-for-fixing-other-peoples-code/#8b-google-groups, use the Google Group above.
 
-The trunk repository is <code>svn://rubyforge.org/var/svn/stories/trunk</code> for anonymous access.
+The trunk repository is <code>svn://rubyforge.org/var/svn/cucumber/trunk</code> for anonymous access.
 
 h2. License
 
@@ -35,5 +35,5 @@ This code is free to use under the terms of the MIT license.
 
 h2. Contact
 
-Comments are welcome. Send an email to "FIXME full name":mailto:FIXME email via the "forum":http://groups.google.com/group/stories
+Comments are welcome. Send an email to "FIXME full name":mailto:FIXME email via the "forum":http://groups.google.com/group/cucumber
 

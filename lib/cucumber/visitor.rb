@@ -1,14 +1,14 @@
-module Stories
+module Cucumber
   # Base class for Treetop nodes that know how to accept
   # a visitor.
   class AcceptingNode < Treetop::Runtime::SyntaxNode
     def self.visit_method
-      @visit_method ||= ("visit_" + name.gsub(/Stories::(.*)/, '\1').gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').downcase).to_sym
+      @visit_method ||= ("visit_" + name.gsub(/Cucumber::(.*)/, '\1').gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').downcase).to_sym
     end
     
     # Calls #accept_<underscored> on +visitor+, where <undersocored>
     # is the name of the class as underscore. For example, a
-    # Stories::FooBar class would call #visit_foo_bar on the +visitor+.
+    # Cucumber::FooBar class would call #visit_foo_bar on the +visitor+.
     def accept(visitor)
       visitor.send(self.class.visit_method, self)
     end

@@ -1,4 +1,4 @@
-module Stories
+module Cucumber
   # Verifies that steps can be matched without ambiguity.
   class StepVerifier < Visitor
     def initialize(steps)

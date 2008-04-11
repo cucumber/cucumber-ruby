@@ -1,10 +1,10 @@
 grammar Story
   rule story
-    header narrative scenario_nodes:scenario* <Stories::Story>
+    header narrative scenario_nodes:scenario* <Cucumber::Story>
   end
 
   rule header
-    'Story: ' sentence_line <Stories::Header>
+    'Story: ' sentence_line <Cucumber::Header>
   end
 
   rule narrative
@@ -12,11 +12,11 @@ grammar Story
   end
 
   rule scenario
-    'Scenario: ' sentence_line step_nodes:(step)* <Stories::Scenario>
+    'Scenario: ' sentence_line step_nodes:(step)* <Cucumber::Scenario>
   end
 
   rule step
-    'Given ' sentence_line <Stories::Step>
+    'Given ' sentence_line <Cucumber::Step>
   end
 
   rule sentence_line

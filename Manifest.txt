@@ -5,8 +5,8 @@ README.txt
 Rakefile
 config/hoe.rb
 config/requirements.rb
-lib/stories.rb
-lib/stories/version.rb
+lib/cucumber.rb
+lib/cucumber/version.rb
 log/debug.log
 script/console
 script/console.cmd
@@ -19,7 +19,7 @@ script/txt2html.cmd
 setup.rb
 spec/spec.opts
 spec/spec_helper.rb
-spec/stories_spec.rb
+spec/cucumber_spec.rb
 tasks/deployment.rake
 tasks/environment.rake
 tasks/rspec.rake
