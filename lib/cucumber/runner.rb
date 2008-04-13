@@ -7,17 +7,6 @@ module Cucumber
     # TODO: specify the language (to take from an embedded YAML file.
     def initialize(err=STDERR, out=STDOUT)
       @err, @out = err, out
-      compile
-    end
-    
-    # Compiles the story grammar - extended with custom steps
-    def compile
-      grammar_template = ERB.new(IO.read(File.dirname(__FILE__) + '/story.treetop.erb'))
-      grammar = grammar_template.result(binding)
-      parser = Treetop::Compiler::MetagrammarParser.new
-      result = parser.parse(grammar)
-      ruby = result.compile
-      Object.class_eval(ruby)
       @parser = StoryParser.new
     end
     

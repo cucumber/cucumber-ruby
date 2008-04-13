@@ -8,9 +8,6 @@ module Cucumber
         @err = StringIO.new
         @out = StringIO.new
         @runner = Runner.new(@err, @out)
-        @runner.step("I was $one and $two") {|one, two|}
-        @runner.step("I am $three and $four") {|three, four|}
-        @runner.compile
       end
       
       it "should parse without error messages when a story matches those steps" do
@@ -27,8 +24,8 @@ module Cucumber
         @runner.add(story)
         @err.rewind
         @out.rewind
-        @err.read.should == "Expected one of I was , I am  after Given \n"
-        @out.read.should =~ /spec\/cucumber\/fixtures\/non_matching.story:4:7\n/
+        @err.read.should == "Expected one of Given , When , Then , Scenario:  after \n"
+        @out.read.should =~ /spec\/stories\/fixtures\/non_matching.story:4:1\n/
       end
     end
   end

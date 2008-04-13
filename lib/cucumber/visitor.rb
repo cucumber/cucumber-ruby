@@ -23,6 +23,9 @@ module Cucumber
   class Header < AcceptingNode
   end
 
+  class Narrative < AcceptingNode
+  end
+
   class Scenario < AcceptingNode
     def steps
       step_nodes.elements
@@ -35,9 +38,17 @@ module Cucumber
   # Base visitor for Story trees
   class Visitor
     def visit_story(story)
+      story.header.accept(self)
+      story.narrative.accept(self)
       story.scenarios.each { |scenario| scenario.accept(self) }
     end
     
+    def visit_header(header)
+    end
+      
+    def visit_narrative(header)
+    end
+
     def visit_scenario(scenario)
       scenario.steps.each { |step| step.accept(self) }
     end

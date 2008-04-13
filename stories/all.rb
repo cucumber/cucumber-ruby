@@ -5,7 +5,7 @@ require File.dirname(__FILE__) + '/../spec/spec_helper'
 # TODO: Make this happen in stories/steps - can happen with require cucumber/standalone
 
 mother = Cucumber::StepMother.new
-runner = Cucumber::Runner.new(mother)
+runner = Cucumber::Runner.new
 
 mother.step('there are $n cucumbers') do |n|
   puts "there are"
@@ -18,3 +18,6 @@ mother.step('there should be $n cucumbers left') do |n|
 end
 
 runner.load 'stories/sell_cucumbers.story'
+
+print_visitor = Cucumber::Visitors::PrettyPrinter.new
+runner.accept(print_visitor)
