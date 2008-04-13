@@ -16,7 +16,7 @@ grammar Story
   end
 
   rule step
-    'Given ' sentence_line <Cucumber::Step>
+    ('Given ' / 'When ' / 'Then ') sentence_line <Cucumber::Step>
   end
 
   rule sentence_line

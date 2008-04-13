@@ -12,7 +12,10 @@ stack trace, along with regular ruby files.
 
 == FEATURES/PROBLEMS:
 
-* TODO: Rename entire library "Cucumber" (Patty wrote it on the bus)
+* TODO: Get rid of the compile method. Compile the parser in Rake.
+* TODO: Make grammar support \r\n, \r and \n (Add some fixture stories for that) 
+* TODO: Make grammar support indentation
+* TODO: Make grammar be totally relaxed about narrative
 * TODO: Add a yaml file for different languages
 * TODO: Custom nodes for the syntax tree
 * TODO: Actually execute the cucumber

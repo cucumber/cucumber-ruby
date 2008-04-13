@@ -1,10 +1,20 @@
 require 'rubygems'
 require 'spec'
 require File.dirname(__FILE__) + '/../spec/spec_helper'
-require 'cucumber/steps/cucumber_steps'
+#require 'stories/steps/cucumber_steps'
+# TODO: Make this happen in stories/steps - can happen with require cucumber/standalone
 
-runner = Cucumber::Runner.new
-runner
-with_steps_for :cucumber do
-  run 'cucumber/sell_cucumber.story'
+mother = Cucumber::StepMother.new
+runner = Cucumber::Runner.new(mother)
+
+mother.step('there are $n cucumbers') do |n|
+  puts "there are"
 end
+mother.step('I sell $n cucumbers') do |n|
+  puts "I sell"
+end
+mother.step('there should be $n cucumbers left') do |n|
+  puts "there should be"
+end
+
+runner.load 'stories/sell_cucumbers.story'

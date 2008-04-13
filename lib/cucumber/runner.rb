@@ -7,13 +7,7 @@ module Cucumber
     # TODO: specify the language (to take from an embedded YAML file.
     def initialize(err=STDERR, out=STDOUT)
       @err, @out = err, out
-      @steps = {}
-      @additional_rules = []
-    end
-    
-    # Registers a custom step, thereby extending the default grammar
-    def step(step_expression, &block)
-      @steps[step_expression] = block
+      compile
     end
     
     # Compiles the story grammar - extended with custom steps
@@ -23,9 +17,12 @@ module Cucumber
       parser = Treetop::Compiler::MetagrammarParser.new
       result = parser.parse(grammar)
       ruby = result.compile
-#puts ruby
       Object.class_eval(ruby)
       @parser = StoryParser.new
+    end
+    
+    def load(file)
+      add File.open(file)
     end
     
     # Adds a +story+ to be run. +story+ can be either an opened File object or a String
@@ -41,21 +38,20 @@ module Cucumber
       if tree.nil?
         @parser.failure_reason_with_path(@err, @out, path)
       else
-        verify_steps(tree)
-        # TODO: Store the tree, text and path so we can descend the tree later
-        # If a step fails, we'll add the story's location to the backtrace
+        stories << [tree, text, path]
       end
     ensure
       story.close if story.respond_to?(:close)
     end
-    
-    def verify_steps(tree)
-      step_verifier = StepVerifier.new(self)
-      tree.accept(step_verifier)
+
+    def stories
+      @stories ||= []
     end
     
-    def verify_step(step)
-      
+    def accept(visitor)
+      stories.each do |story|
+        story[0].accept(visitor)
+      end
     end
   end
 end
