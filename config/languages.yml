@@ -1,0 +1,35 @@
+# http://en.wikipedia.org/wiki/IETF_language_tag
+# http://www.iana.org/assignments/language-subtag-registry
+# http://ftp.ics.uci.edu/pub/ietf/http/related/iso639.txt (Use this I think)
+en:
+  story: Story
+  scenario: Scenario
+  given_scenario: GivenScenario
+  given: Given
+  when: When
+  then: Then
+  and: And
+no:
+  story: Historie
+  scenario: Scenario
+  given_scenario: GittScenario
+  given: Gitt
+  when: Når
+  then: Så
+  and: Og
+fr:
+  story: Histoire
+  scenario: Scenario
+  given_scenario: SoitScenario
+  given: Soit
+  when: Quand
+  then: Alors
+  and: Et
+pt:
+  story: Relato
+  scenario: Escenario
+  given_scenario: DadoElEscenario
+  given: Dado
+  when: Cuando
+  then: Entonces
+  and: Y
