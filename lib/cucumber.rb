@@ -4,9 +4,9 @@ require 'cucumber/version'
 require 'cucumber/runner'
 require 'cucumber/story_parser'
 require 'cucumber/step_mother'
-require 'cucumber/visitor'
-require 'cucumber/visitors'
-require 'cucumber/step_verifier'
+#require 'cucumber/visitor'
+#require 'cucumber/visitors'
+#require 'cucumber/step_verifier'
 
 module Cucumber
   

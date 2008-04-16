@@ -17,7 +17,26 @@ mother.step('there should be $n cucumbers left') do |n|
   puts "there should be"
 end
 
-runner.load 'stories/sell_cucumbers.story'
 
-print_visitor = Cucumber::Visitors::PrettyPrinter.new
-runner.accept(print_visitor)
+parser = Cucumber::StoryParser.new
+story = parser.parse(IO.read('stories/sell_cucumbers.story'))
+
+class Printer
+  def story(name)
+    puts "STORY: #{name}"
+  end
+
+  def narrative(name)
+    puts "NARRATIVE: #{name}"
+  end
+
+  def scenario(name)
+    puts "SCENARIO: #{name}"
+  end
+
+  def step(step_type, name, line)
+    puts "STEP: #{line}: #{step_type}: #{name}"
+  end
+end
+
+story.eval(Printer.new)

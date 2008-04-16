@@ -1,3 +1,4 @@
+module Cucumber
 module Story
   include Treetop::Runtime
 
@@ -16,6 +17,16 @@ module Story
 
     def scenario_nodes
       elements[2]
+    end
+  end
+
+  module Story1
+    def eval(story_handler)
+      header.eval(story_handler)
+      narrative.eval(story_handler)
+      scenario_nodes.elements.each do |scenario_node|
+        scenario_node.eval(story_handler)
+      end
     end
   end
 
@@ -48,8 +59,9 @@ module Story
       end
     end
     if s0.last
-      r0 = (Cucumber::Story).new(input, i0...index, s0)
+      r0 = (SyntaxNode).new(input, i0...index, s0)
       r0.extend(Story0)
+      r0.extend(Story1)
     else
       self.index = i0
       r0 = nil
@@ -63,6 +75,12 @@ module Story
   module Header0
     def sentence_line
       elements[1]
+    end
+  end
+
+  module Header1
+    def eval(story_handler)
+      story_handler.story(sentence_line.text_value)
     end
   end
 
@@ -88,8 +106,9 @@ module Story
       s0 << r2
     end
     if s0.last
-      r0 = (Cucumber::Header).new(input, i0...index, s0)
+      r0 = (SyntaxNode).new(input, i0...index, s0)
       r0.extend(Header0)
+      r0.extend(Header1)
     else
       self.index = i0
       r0 = nil
@@ -101,8 +120,11 @@ module Story
   end
 
   module Narrative0
-    def sentence_line
-      elements[1]
+  end
+
+  module Narrative1
+    def eval(story_handler)
+      story_handler.narrative(self.text_value)
     end
   end
 
@@ -114,26 +136,43 @@ module Story
       return cached
     end
 
-    i0, s0 = index, []
-    if input.index('As a', index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 4))
-      @index += 4
-    else
-      terminal_parse_failure('As a')
-      r1 = nil
+    s0, i0 = [], index
+    loop do
+      i1, s1 = index, []
+      i2 = index
+      r3 = _nt_scenario_start
+      if r3
+        r2 = nil
+      else
+        self.index = i2
+        r2 = SyntaxNode.new(input, index...index)
+      end
+      s1 << r2
+      if r2
+        if index < input_length
+          r4 = (SyntaxNode).new(input, index...(index + 1))
+          @index += 1
+        else
+          terminal_parse_failure("any character")
+          r4 = nil
+        end
+        s1 << r4
+      end
+      if s1.last
+        r1 = (SyntaxNode).new(input, i1...index, s1)
+        r1.extend(Narrative0)
+      else
+        self.index = i1
+        r1 = nil
+      end
+      if r1
+        s0 << r1
+      else
+        break
+      end
     end
-    s0 << r1
-    if r1
-      r2 = _nt_sentence_line
-      s0 << r2
-    end
-    if s0.last
-      r0 = (Cucumber::Narrative).new(input, i0...index, s0)
-      r0.extend(Narrative0)
-    else
-      self.index = i0
-      r0 = nil
-    end
+    r0 = SyntaxNode.new(input, i0...index, s0)
+    r0.extend(Narrative1)
 
     node_cache[:narrative][start_index] = r0
 
@@ -141,12 +180,25 @@ module Story
   end
 
   module Scenario0
-    def sentence_line
+    def scenario_start
+      elements[0]
+    end
+
+    def sentence
       elements[1]
     end
 
     def step_nodes
       elements[2]
+    end
+  end
+
+  module Scenario1
+    def eval(story_handler)
+      story_handler.scenario(sentence.text_value)
+      step_nodes.elements.each do |step_node|
+        step_node.eval(story_handler)
+      end
     end
   end
 
@@ -159,13 +211,7 @@ module Story
     end
 
     i0, s0 = index, []
-    if input.index('Scenario: ', index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 10))
-      @index += 10
-    else
-      terminal_parse_failure('Scenario: ')
-      r1 = nil
-    end
+    r1 = _nt_scenario_start
     s0 << r1
     if r1
       r2 = _nt_sentence_line
@@ -185,8 +231,9 @@ module Story
       end
     end
     if s0.last
-      r0 = (Cucumber::Scenario).new(input, i0...index, s0)
+      r0 = (SyntaxNode).new(input, i0...index, s0)
       r0.extend(Scenario0)
+      r0.extend(Scenario1)
     else
       self.index = i0
       r0 = nil
@@ -197,9 +244,68 @@ module Story
     return r0
   end
 
+  module ScenarioStart0
+    def space
+      elements[0]
+    end
+
+  end
+
+  def _nt_scenario_start
+    start_index = index
+    if node_cache[:scenario_start].has_key?(index)
+      cached = node_cache[:scenario_start][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    i0, s0 = index, []
+    r1 = _nt_space
+    s0 << r1
+    if r1
+      if input.index('Scenario: ', index) == index
+        r2 = (SyntaxNode).new(input, index...(index + 10))
+        @index += 10
+      else
+        terminal_parse_failure('Scenario: ')
+        r2 = nil
+      end
+      s0 << r2
+    end
+    if s0.last
+      r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0.extend(ScenarioStart0)
+    else
+      self.index = i0
+      r0 = nil
+    end
+
+    node_cache[:scenario_start][start_index] = r0
+
+    return r0
+  end
+
   module Step0
-    def sentence_line
+    def space
+      elements[0]
+    end
+
+    def step_type
       elements[1]
+    end
+
+    def space
+      elements[2]
+    end
+
+    def sentence
+      elements[3]
+    end
+  end
+
+  module Step1
+    def eval(story_handler)
+      story_handler.step(step_type.text_value, sentence.text_value, input.line_of(interval.first))
     end
   end
 
@@ -212,50 +318,59 @@ module Story
     end
 
     i0, s0 = index, []
-    i1 = index
-    if input.index('Given ', index) == index
-      r2 = (SyntaxNode).new(input, index...(index + 6))
-      @index += 6
-    else
-      terminal_parse_failure('Given ')
-      r2 = nil
-    end
-    if r2
-      r1 = r2
-    else
-      if input.index('When ', index) == index
+    r1 = _nt_space
+    s0 << r1
+    if r1
+      i2 = index
+      if input.index('Given', index) == index
         r3 = (SyntaxNode).new(input, index...(index + 5))
         @index += 5
       else
-        terminal_parse_failure('When ')
+        terminal_parse_failure('Given')
         r3 = nil
       end
       if r3
-        r1 = r3
+        r2 = r3
       else
-        if input.index('Then ', index) == index
-          r4 = (SyntaxNode).new(input, index...(index + 5))
-          @index += 5
+        if input.index('When', index) == index
+          r4 = (SyntaxNode).new(input, index...(index + 4))
+          @index += 4
         else
-          terminal_parse_failure('Then ')
+          terminal_parse_failure('When')
           r4 = nil
         end
         if r4
-          r1 = r4
+          r2 = r4
         else
-          self.index = i1
-          r1 = nil
+          if input.index('Then', index) == index
+            r5 = (SyntaxNode).new(input, index...(index + 4))
+            @index += 4
+          else
+            terminal_parse_failure('Then')
+            r5 = nil
+          end
+          if r5
+            r2 = r5
+          else
+            self.index = i2
+            r2 = nil
+          end
+        end
+      end
+      s0 << r2
+      if r2
+        r6 = _nt_space
+        s0 << r6
+        if r6
+          r7 = _nt_sentence_line
+          s0 << r7
         end
       end
     end
-    s0 << r1
-    if r1
-      r5 = _nt_sentence_line
-      s0 << r5
-    end
     if s0.last
-      r0 = (Cucumber::Step).new(input, i0...index, s0)
+      r0 = (SyntaxNode).new(input, i0...index, s0)
       r0.extend(Step0)
+      r0.extend(Step1)
     else
       self.index = i0
       r0 = nil
@@ -338,6 +453,35 @@ module Story
     return r0
   end
 
+  def _nt_space
+    start_index = index
+    if node_cache[:space].has_key?(index)
+      cached = node_cache[:space][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    s0, i0 = [], index
+    loop do
+      if input.index(Regexp.new('[ \\n]'), index) == index
+        r1 = (SyntaxNode).new(input, index...(index + 1))
+        @index += 1
+      else
+        r1 = nil
+      end
+      if r1
+        s0 << r1
+      else
+        break
+      end
+    end
+    r0 = SyntaxNode.new(input, i0...index, s0)
+
+    node_cache[:space][start_index] = r0
+
+    return r0
+  end
+
   def _nt_eol
     start_index = index
     if node_cache[:eol].has_key?(index)
@@ -405,3 +549,4 @@ class StoryParser < Treetop::Runtime::CompiledParser
   include Story
 end
 
+end

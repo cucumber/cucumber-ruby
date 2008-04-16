@@ -1,26 +1,61 @@
 grammar Story
   rule story
-    header narrative scenario_nodes:scenario* <Cucumber::Story>
+    header narrative scenario_nodes:scenario* {
+      def eval(story_handler)
+        header.eval(story_handler)
+        narrative.eval(story_handler)
+        scenario_nodes.elements.each do |scenario_node|
+          scenario_node.eval(story_handler)
+        end
+      end
+    }
   end
 
   rule header
-    'Story: ' sentence_line <Cucumber::Header>
+    'Story: ' sentence_line {
+      def eval(story_handler)
+        story_handler.story(sentence_line.text_value)
+      end
+    }
   end
 
   rule narrative
-    'As a' sentence_line <Cucumber::Narrative>
+    (!scenario_start .)* {
+      def eval(story_handler)
+        story_handler.narrative(self.text_value)
+      end
+    }
   end
 
   rule scenario
-    'Scenario: ' sentence_line step_nodes:(step)* <Cucumber::Scenario>
+    scenario_start sentence:sentence_line step_nodes:(step)* {
+      def eval(story_handler)
+        story_handler.scenario(sentence.text_value)
+        step_nodes.elements.each do |step_node|
+          step_node.eval(story_handler)
+        end
+      end
+    }
+  end
+  
+  rule scenario_start
+    space 'Scenario: '
   end
 
   rule step
-    ('Given ' / 'When ' / 'Then ') sentence_line <Cucumber::Step>
+    space step_type:('Given' / 'When' / 'Then') space sentence:sentence_line {
+      def eval(story_handler)
+        story_handler.step(step_type.text_value, sentence.text_value, input.line_of(interval.first))
+      end
+    }
   end
 
   rule sentence_line
     (!eol .)* eol
+  end
+
+  rule space
+    [ \n]*
   end
 
   rule eol

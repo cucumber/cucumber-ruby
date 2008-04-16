@@ -14,13 +14,14 @@ stack trace, along with regular ruby files.
 
 * TODO: Get rid of the compile method. Compile the parser in Rake.
 * TODO: Make grammar support \r\n, \r and \n (Add some fixture stories for that) 
-* TODO: Make grammar support indentation
-* TODO: Make grammar be totally relaxed about narrative
+* TODO: OK Make grammar support indentation
+* TODO: OK Make grammar be totally relaxed about narrative
 * TODO: Add a yaml file for different languages
 * TODO: Custom nodes for the syntax tree
 * TODO: Actually execute the cucumber
 * TODO: Make rake run specs by default
 * TODO: Make it work with pure ruby regexen
+* TODO: bin/story --load [dir|file|glob]* --lang no --format [file}*
 
 == SYNOPSIS:
 
