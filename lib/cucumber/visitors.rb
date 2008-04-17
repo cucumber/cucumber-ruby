@@ -1,1 +1,0 @@
-require 'cucumber/visitors/pretty_printer'

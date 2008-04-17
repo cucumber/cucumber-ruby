@@ -73,8 +73,12 @@ module Story
   end
 
   module Header0
-    def sentence_line
+    def space
       elements[1]
+    end
+
+    def sentence_line
+      elements[2]
     end
   end
 
@@ -93,17 +97,21 @@ module Story
     end
 
     i0, s0 = index, []
-    if input.index('Story: ', index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 7))
-      @index += 7
+    if input.index('Story:', index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 6))
+      @index += 6
     else
-      terminal_parse_failure('Story: ')
+      terminal_parse_failure('Story:')
       r1 = nil
     end
     s0 << r1
     if r1
-      r2 = _nt_sentence_line
+      r2 = _nt_space
       s0 << r2
+      if r2
+        r3 = _nt_sentence_line
+        s0 << r3
+      end
     end
     if s0.last
       r0 = (SyntaxNode).new(input, i0...index, s0)
@@ -352,18 +360,29 @@ module Story
           if r5
             r2 = r5
           else
-            self.index = i2
-            r2 = nil
+            if input.index('GivenScenario', index) == index
+              r6 = (SyntaxNode).new(input, index...(index + 13))
+              @index += 13
+            else
+              terminal_parse_failure('GivenScenario')
+              r6 = nil
+            end
+            if r6
+              r2 = r6
+            else
+              self.index = i2
+              r2 = nil
+            end
           end
         end
       end
       s0 << r2
       if r2
-        r6 = _nt_space
-        s0 << r6
-        if r6
-          r7 = _nt_sentence_line
-          s0 << r7
+        r7 = _nt_space
+        s0 << r7
+        if r7
+          r8 = _nt_sentence_line
+          s0 << r8
         end
       end
     end
@@ -548,5 +567,6 @@ end
 class StoryParser < Treetop::Runtime::CompiledParser
   include Story
 end
+
 
 end

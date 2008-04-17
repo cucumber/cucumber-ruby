@@ -12,7 +12,7 @@ grammar Story
   end
 
   rule header
-    'Story: ' sentence_line {
+    '<%= words['story'] %>:' space sentence_line {
       def eval(story_handler)
         story_handler.story(sentence_line.text_value)
       end
@@ -39,11 +39,11 @@ grammar Story
   end
   
   rule scenario_start
-    space 'Scenario: '
+    space '<%= words['scenario'] %>: '
   end
 
   rule step
-    space step_type:('Given' / 'When' / 'Then') space sentence:sentence_line {
+    space step_type:('<%= words['given'] %>' / '<%= words['when'] %>' / '<%= words['then'] %>' / '<%= words['given_scenario'] %>') space sentence:sentence_line {
       def eval(story_handler)
         story_handler.step(step_type.text_value, sentence.text_value, input.line_of(interval.first))
       end
