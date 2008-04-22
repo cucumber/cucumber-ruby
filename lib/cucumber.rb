@@ -4,7 +4,6 @@ require 'treetop'
 require 'cucumber/version'
 require 'cucumber/cli'
 require 'cucumber/story_runner'
-require 'cucumber/step_mother'
 
 module Cucumber
   

@@ -1,4 +1,5 @@
 module Cucumber
+module Parser
 module Story
   include Treetop::Runtime
 
@@ -569,4 +570,5 @@ class StoryParser < Treetop::Runtime::CompiledParser
 end
 
 
+end
 end

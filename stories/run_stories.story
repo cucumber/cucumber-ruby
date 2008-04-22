@@ -3,13 +3,12 @@ Story: Run Stories
   I want to execute stories 
   So that I can communicate better with stakeholders
 
-  Scenario: Run a failing English story
-    Given story file stories/fixtures/english
-    When I run it without arguments
-    Then there should be 2 passing scenarios
-    Then there should be 6 passing steps
+  Scenario: Run a passing English story
+    Given story file fixture_stories/sell_cucumbers.story
+    When I run it
+    Then the execution should succeed
 
-  Scenario: Sell a dozen
-    Given there are 5 cucumber
-    When I sell 12 cucumbers
-    Then I should owe 7 cucumbers
+  Scenario: Run a failing English story
+    Given story file fixture_stories/steal_cucumbers.story
+    When I run it
+    Then the execution should fail

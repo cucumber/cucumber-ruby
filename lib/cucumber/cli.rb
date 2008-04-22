@@ -31,7 +31,7 @@ module Cucumber
     end
     
     def execute!
-      require "cucumber/story_parser_#{@options[:lang]}"
+      require "cucumber/parser/story_parser_#{@options[:lang]}"
       StoryRunner.new.execute(@files, handler)
     end
     
