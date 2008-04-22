@@ -21,7 +21,7 @@ stack trace, along with regular ruby files.
 * TODO: Actually execute the cucumber
 * TODO: Make rake run specs by default
 * TODO: Make it work with pure ruby regexen
-* TODO: bin/story --load [dir|file|glob]* --lang no --format [file}*
+* TODO: bin/cucumber --load [dir|file|glob]* --language no --format [file]*
 
 == SYNOPSIS:
 

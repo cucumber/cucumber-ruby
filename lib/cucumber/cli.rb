@@ -17,10 +17,30 @@ module Cucumber
     end
     
     def parse_options!
+      @options = { :lang => 'en' }
+      OptionParser.new(@args) do |opts|
+        opts.banner = "Usage: cucumber [options] files"
+        opts.on("-l LANG", "--language LANG", "Specify language for stories (Default: #{@options[:lang]})") do |v|
+          @options[:lang] = v
+        end
+        opts.on("-f FORMAT", "--format FORMAT", "How to format stories") do |v|
+          @options[:format] = v
+        end
+      end.parse!
+      @files = @args
     end
     
     def execute!
-      puts "Running stories"
+      require "cucumber/story_parser_#{@options[:lang]}"
+      StoryRunner.new.execute(@files, handler)
     end
+    
+  private
+    
+    def handler
+      require 'cucumber/pretty_printer'
+      handler = PrettyPrinter.new
+    end
+    
   end
 end

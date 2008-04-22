@@ -84,7 +84,7 @@ module Story
 
   module Header1
     def eval(story_handler)
-      story_handler.story(sentence_line.text_value)
+      story_handler.story(sentence_line.text_value.strip)
     end
   end
 
@@ -203,7 +203,7 @@ module Story
 
   module Scenario1
     def eval(story_handler)
-      story_handler.scenario(sentence.text_value)
+      story_handler.scenario(sentence.text_value.strip)
       step_nodes.elements.each do |step_node|
         step_node.eval(story_handler)
       end
@@ -313,7 +313,7 @@ module Story
 
   module Step1
     def eval(story_handler)
-      story_handler.step(step_type.text_value, sentence.text_value, input.line_of(interval.first))
+      story_handler.step(step_type.text_value.strip, sentence.text_value.strip, input.line_of(interval.first))
     end
   end
 

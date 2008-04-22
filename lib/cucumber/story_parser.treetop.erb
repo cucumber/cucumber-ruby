@@ -14,7 +14,7 @@ grammar Story
   rule header
     '<%= words['story'] %>:' space sentence_line {
       def eval(story_handler)
-        story_handler.story(sentence_line.text_value)
+        story_handler.story(sentence_line.text_value.strip)
       end
     }
   end
@@ -30,7 +30,7 @@ grammar Story
   rule scenario
     scenario_start sentence:sentence_line step_nodes:(step)* {
       def eval(story_handler)
-        story_handler.scenario(sentence.text_value)
+        story_handler.scenario(sentence.text_value.strip)
         step_nodes.elements.each do |step_node|
           step_node.eval(story_handler)
         end
@@ -45,7 +45,7 @@ grammar Story
   rule step
     space step_type:('<%= words['given'] %>' / '<%= words['when'] %>' / '<%= words['then'] %>' / '<%= words['given_scenario'] %>') space sentence:sentence_line {
       def eval(story_handler)
-        story_handler.step(step_type.text_value, sentence.text_value, input.line_of(interval.first))
+        story_handler.step(step_type.text_value.strip, sentence.text_value.strip, input.line_of(interval.first))
       end
     }
   end
