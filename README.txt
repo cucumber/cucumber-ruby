@@ -12,13 +12,15 @@ stack trace, along with regular ruby files.
 
 == FEATURES/PROBLEMS:
 
-* TODO: Get rid of the compile method. Compile the parser in Rake.
+* Run stories with: ruby -Ilib bin\cucumber stories\run_stories.story -d
+
+* TODO: OK Get rid of the compile method. Compile the parser in Rake.
 * TODO: Make grammar support \r\n, \r and \n (Add some fixture stories for that) 
 * TODO: OK Make grammar support indentation
 * TODO: OK Make grammar be totally relaxed about narrative
-* TODO: Add a yaml file for different languages
-* TODO: Custom nodes for the syntax tree
-* TODO: Actually execute the cucumber
+* TODO: OK Add a yaml file for different languages
+* TODO: OK Custom nodes for the syntax tree
+* TODO: Actually execute the stories
 * TODO: Make rake run specs by default
 * TODO: Make it work with pure ruby regexen
 * TODO: bin/cucumber --load [dir|file|glob]* --language no --format [file]*

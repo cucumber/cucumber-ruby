@@ -22,11 +22,13 @@ module Story
   end
 
   module Story1
-    def eval(story_handler)
-      header.eval(story_handler)
-      narrative.eval(story_handler)
+    attr_accessor :file
+
+    def eval(listener, phase)
+      header.eval(listener, phase)
+      narrative.eval(listener, phase)
       scenario_nodes.elements.each do |scenario_node|
-        scenario_node.eval(story_handler)
+        scenario_node.eval(listener, phase)
       end
     end
   end
@@ -84,8 +86,9 @@ module Story
   end
 
   module Header1
-    def eval(story_handler)
-      story_handler.story(sentence_line.text_value.strip)
+    def eval(listener, phase)
+      method = "story_#{phase}".to_sym
+      listener.__send__(method, sentence_line.text_value.strip) if listener.respond_to?(method)
     end
   end
 
@@ -132,8 +135,9 @@ module Story
   end
 
   module Narrative1
-    def eval(story_handler)
-      story_handler.narrative(self.text_value)
+    def eval(listener, phase)
+      method = "narrative_#{phase}".to_sym
+      listener.__send__(method, self.text_value) if listener.respond_to?(method)
     end
   end
 
@@ -203,10 +207,11 @@ module Story
   end
 
   module Scenario1
-    def eval(story_handler)
-      story_handler.scenario(sentence.text_value.strip)
+    def eval(listener, phase)
+      method = "scenario_#{phase}".to_sym
+      listener.__send__(method, sentence.text_value.strip) if listener.respond_to?(method)
       step_nodes.elements.each do |step_node|
-        step_node.eval(story_handler)
+        step_node.eval(listener, phase)
       end
     end
   end
@@ -313,8 +318,9 @@ module Story
   end
 
   module Step1
-    def eval(story_handler)
-      story_handler.step(step_type.text_value.strip, sentence.text_value.strip, input.line_of(interval.first))
+    def eval(listener, phase)
+      method = "step_#{phase}".to_sym
+      listener.__send__(method, step_type.text_value.strip, sentence.text_value.strip, input.line_of(interval.first)) if listener.respond_to?(method)
     end
   end
 

@@ -19,21 +19,21 @@ module Cucumber
       end
     end
 
-    def story(name)
+    def story_executed(name)
       puts yellow("Story: ") + green(name)
     end
   
-    def narrative(name)
+    def narrative_executed(name)
       puts green(name)
     end
   
-    def scenario(name)
+    def scenario_executed(name)
       puts
       puts yellow("  Scenario: ") + green(name)
     end
   
-    def step(step_type, name, line)
-      puts yellow("    #{step_type} ") + green(name)
+    def step_executed(step_type, name, line, error=nil)
+      puts yellow("    #{step_type} ") + (error ? red(name) : green(name))
     end
   end
 end

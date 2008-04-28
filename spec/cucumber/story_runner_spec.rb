@@ -7,24 +7,35 @@ module Cucumber
     end
   
     before do
-      @r = StoryRunner.new
+      @f = mock('formatter')
+      @r = StoryRunner.new(@f)
+      @f.stub! :story_executed
+      @f.stub! :narrative_executed
+      @f.stub! :scenario_executed
+      @r.load(fixture('sell_cucumbers.story'))
     end
   
-    it "should create a nice backtrace" do
+    it "should report a nice backtrace to formatter" do
+      class Foo < StandardError
+      end
+
       @r.register_proc('there are 5 cucumber') do
-        raise "No way"
+        raise Foo
       end
       
-      begin
-        @r.execute(fixture('sell_cucumbers.story'))
-        violated
-      rescue => e
-        e.message.should == "No way"
-        e.backtrace.should == [
-          "./spec/cucumber/story_runner_spec.rb:15",
-          "./spec/cucumber/../../fixture_stories/sell_cucumbers.story:7: in `Given there are 5 cucumber'"
-        ]
+      first = true
+      @f.should_receive(:step_executed).exactly(9).times do |step, name, line, e|
+        if first
+          dir = File.dirname(__FILE__)
+          e.backtrace.should == [
+            "#{dir}/story_runner_spec.rb:23",
+            "#{dir}/../../fixture_stories/sell_cucumbers.story:7: in `Given there are 5 cucumber'"
+          ]
+          first = false
+        end
       end
+      
+      @r.run
     end
   end
 end
