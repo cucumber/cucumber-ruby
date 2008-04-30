@@ -1,11 +1,23 @@
-Given 'there are $n cucumbers' do |n|
-  Cucumber.initial = n.to_i
+Given 'I have some failing steps' do |n|
 end
 
-When 'I sell $n cucumbers' do |n|
-  Cucumber.sold = n.to_i
+When 'I run a story' do |n|
 end
 
-Then 'there should be $n cucumbers left' do |n|
-  Cucumber.left.should == n.to_i
+Then 'the execution should fail' do |n|
+  Foo.new.doit
+end
+
+class Foo
+  def doit
+    domore
+  end
+  
+  def domore
+    evenmore
+  end
+  
+  def evenmore
+    raise "I give up"
+  end
 end

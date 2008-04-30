@@ -1,4 +1,7 @@
 require 'optparse'
+require 'cucumber/step_methods'
+
+include Cucumber::StepMethods
 
 module Cucumber
   class CLI
@@ -18,9 +21,12 @@ module Cucumber
     end
     
     def parse_options!
-      @options = { :lang => 'en', :dry_run => false }
+      @options = { :require => [], :lang => 'en', :dry_run => false }
       @args.options do |opts|
         opts.banner = "Usage: cucumber [options] files"
+        opts.on("-r LIBRARY", "--require LIBRARY", "Require the library, before executing your stories") do |v|
+          @options[:require] << v
+        end
         opts.on("-l LANG", "--language LANG", "Specify language for stories (Default: #{@options[:lang]})") do |v|
           @options[:lang] = v
         end
@@ -37,6 +43,8 @@ module Cucumber
     def execute!
       require "cucumber/parser/story_parser_#{@options[:lang]}"
       r = StoryRunner.new(formatter)
+      $story_runner = r
+      @options[:require].each{|lib| require lib}
       r.load(*@files)
       r.run
     end
@@ -45,8 +53,6 @@ module Cucumber
     
     def formatter
       # TODO: use the -f flag
-      require 'cucumber/pretty_printer'
-      PrettyPrinter.new
       require 'cucumber/progress_formatter'
       ProgressFormatter.new(STDOUT)
     end

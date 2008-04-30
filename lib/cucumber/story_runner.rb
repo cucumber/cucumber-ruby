@@ -6,7 +6,9 @@ module Cucumber
     module Named
       attr_accessor :name
     end
+    
     PENDING = lambda{}
+    PENDING.extend(Named)
     
     def initialize(formatter=nil)
       @formatter = formatter
@@ -49,7 +51,7 @@ module Cucumber
       @formatter.scenario_executed(name) if @formatter.respond_to?(:scenario_executed)
     end
   
-    def step_executed(step_type, name, line)
+    def step_executed(step_type, name, line, step)
       proc, args = find_proc(name)
       method = proc == PENDING ? "__cucumber_pending" : "__cucumber_#{proc.object_id}".to_sym
       begin
@@ -58,7 +60,7 @@ module Cucumber
         end
         @context.extend(mod)
         @context.__send__(method, *args)
-        @formatter.step_executed(step_type, name, line)
+        @formatter.step_executed(step_type, name, line, step)
       rescue => e
         send_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-3}:in `__send__'")
         # Remove lines underneath the plain text step
@@ -67,7 +69,7 @@ module Cucumber
         # Replace the step line with something more readable
         e.backtrace.replace(e.backtrace.map{|l| l.gsub(/`#{method}'/, "`#{step_type} /#{proc.name}/'")})
         e.backtrace << "#{@file}:#{line}:in `#{step_type} #{name}'"
-        @formatter.step_executed(step_type, name, line, e)
+        @formatter.step_executed(step_type, name, line, step, e)
       end
     end
     

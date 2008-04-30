@@ -34,6 +34,11 @@ module Cucumber
 dang
 #{__FILE__}:28:in `Then /I should owe (\\d*) cucumbers/'
 #{@story_file}:9:in `Then I should owe 7 cucumbers'
+
+  Scenario: Sell a dozen
+    Given there are 5 cucumbers
+    When I sell 12 cucumbers
+    Then I should owe 7 cucumbers
 STDOUT
     end
   end

@@ -320,7 +320,7 @@ module Story
   module Step1
     def eval(listener, phase)
       method = "step_#{phase}".to_sym
-      listener.__send__(method, step_type.text_value.strip, sentence.text_value.strip, input.line_of(interval.first)) if listener.respond_to?(method)
+      listener.__send__(method, step_type.text_value.strip, sentence.text_value.strip, input.line_of(interval.first), self) if listener.respond_to?(method)
     end
   end
 
