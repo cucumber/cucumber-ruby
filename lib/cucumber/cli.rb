@@ -47,6 +47,8 @@ module Cucumber
       # TODO: use the -f flag
       require 'cucumber/pretty_printer'
       PrettyPrinter.new
+      require 'cucumber/progress_formatter'
+      ProgressFormatter.new(STDOUT)
     end
     
   end

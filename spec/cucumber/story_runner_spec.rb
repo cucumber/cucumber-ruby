@@ -1,41 +1,40 @@
 require File.dirname(__FILE__) + '/../spec_helper'
+require 'stringio'
+require 'cucumber/progress_formatter'
 
 module Cucumber
   describe StoryRunner do
-    def fixture(file)
-      File.dirname(__FILE__) + "/../../fixture_stories/#{file}"
-    end
-  
     before do
-      @f = mock('formatter')
-      @r = StoryRunner.new(@f)
-      @f.stub! :story_executed
-      @f.stub! :narrative_executed
-      @f.stub! :scenario_executed
-      @r.load(fixture('sell_cucumbers.story'))
+      @io = StringIO.new
+      f = ProgressFormatter.new(@io)
+      @r = StoryRunner.new(f)
+      @story_file = File.dirname(__FILE__) + '/sell_cucumbers.story'
+      @r.load(@story_file)
     end
-  
-    it "should report a nice backtrace to formatter" do
-      class Foo < StandardError
-      end
 
-      @r.register_proc('there are 5 cucumber') do
-        raise Foo
-      end
-      
-      first = true
-      @f.should_receive(:step_executed).exactly(9).times do |step, name, line, e|
-        if first
-          dir = File.dirname(__FILE__)
-          e.backtrace.should == [
-            "#{dir}/story_runner_spec.rb:23",
-            "#{dir}/../../fixture_stories/sell_cucumbers.story:7: in `Given there are 5 cucumber'"
-          ]
-          first = false
-        end
-      end
-      
+    it "should pass when blocks are ok" do
+      o = Object.new
+      @r.register_proc(/there are (\d*) cucumbers/)     { |n| @n = n }
+      @r.register_proc(/I sell (\d*) cucumbers/)        { |n| @n = n }
+      @r.register_proc(/I should owe (\d*) cucumbers/) { |n| @n = n }
       @r.run
+      @io.string.should == "...\n"
+    end
+
+    it "should print filtered backtrace with story line" do
+      o = Object.new
+      @r.register_proc(/there are (\d*) cucumbers/)     { |n| @n = n }
+      @r.register_proc(/I sell (\d*) cucumbers/)        { |n| @n = n }
+      @r.register_proc(/I should owe (\d*) cucumbers/) { |n| raise "dang" }
+      @r.run
+      @io.string.should == <<-STDOUT
+..F
+
+1)
+dang
+#{__FILE__}:28:in `Then /I should owe (\\d*) cucumbers/'
+#{@story_file}:9:in `Then I should owe 7 cucumbers'
+STDOUT
     end
   end
 end

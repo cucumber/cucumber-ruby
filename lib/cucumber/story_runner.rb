@@ -3,6 +3,11 @@ module Cucumber
   end
 
   class StoryRunner
+    module Named
+      attr_accessor :name
+    end
+    PENDING = lambda{}
+    
     def initialize(formatter=nil)
       @formatter = formatter
       @parser = Parser::StoryParser.new
@@ -21,6 +26,7 @@ module Cucumber
     def run
       eval(@formatter, :loaded)
       eval(self, :executed)
+      @formatter.dump
     end
     
     def eval(listener, phase)
@@ -31,38 +37,64 @@ module Cucumber
     end
     
     def story_executed(name)
-      @formatter.story_executed(name)
+      @formatter.story_executed(name) if @formatter.respond_to?(:story_executed)
     end
   
     def narrative_executed(name)
-      @formatter.narrative_executed(name)
+      @formatter.narrative_executed(name) if @formatter.respond_to?(:narrative_executed)
     end
   
-    def scenario_executed(name)
-      @context = Object.new
-      @formatter.scenario_executed(name)
+    def scenario_executed(name, context=Object.new)
+      @context = context
+      @formatter.scenario_executed(name) if @formatter.respond_to?(:scenario_executed)
     end
   
     def step_executed(step_type, name, line)
-      proc = find_proc(name)
+      proc, args = find_proc(name)
+      method = proc == PENDING ? "__cucumber_pending" : "__cucumber_#{proc.object_id}".to_sym
       begin
-        @context.instance_eval(&proc)
+        mod = Module.new do
+          define_method(method, &proc)
+        end
+        @context.extend(mod)
+        @context.__send__(method, *args)
         @formatter.step_executed(step_type, name, line)
       rescue => e
-        pos = e.backtrace.index("#{__FILE__}:#{__LINE__-3}:in `instance_eval'")
-        e.backtrace[pos..-1] = nil if pos
+        send_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-3}:in `__send__'")
+        # Remove lines underneath the plain text step
+        e.backtrace[send_pos..-1] = nil if send_pos
         e.backtrace.flatten
-        e.backtrace << "#{@file}:#{line}: in `#{step_type} #{name}'"
+        # Replace the step line with something more readable
+        e.backtrace.replace(e.backtrace.map{|l| l.gsub(/`#{method}'/, "`#{step_type} /#{proc.name}/'")})
+        e.backtrace << "#{@file}:#{line}:in `#{step_type} #{name}'"
         @formatter.step_executed(step_type, name, line, e)
       end
     end
     
     def find_proc(name)
-      @procs[name]
+      captures = nil
+      procs = @procs.select do |regexp, proc|
+        if name =~ regexp
+          $~.captures 
+        end
+      end
+      raise "Too many" if procs.length > 1
+      pair = procs[0]
+      pair.nil? ? [PENDING, []] : [pair[1], captures]
     end
     
-    def register_proc(name, &proc)
-      @procs[name] = proc
+    def register_proc(key, &proc)
+      regexp = case(key)
+      when String
+        Regexp.new(key)
+      when Regexp
+        key
+      else
+        raise "Step patterns must be Regexp or String, but was: #{key.inspect}"
+      end
+      proc.extend(Named)
+      proc.name = regexp.source
+      @procs[regexp] = proc
     end
   end
 end
