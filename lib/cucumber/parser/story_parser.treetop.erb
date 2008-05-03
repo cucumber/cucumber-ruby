@@ -1,7 +1,7 @@
 grammar Story
   rule story
     header narrative scenario_nodes:scenario* {
-      #attr_accessor :file
+      attr_accessor :file
 
       def eval(listener, phase)
         header.eval(listener, phase)

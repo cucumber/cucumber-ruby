@@ -20,10 +20,10 @@ stack trace, along with regular ruby files.
 * TODO: OK Make grammar be totally relaxed about narrative
 * TODO: OK Add a yaml file for different languages
 * TODO: OK Custom nodes for the syntax tree
-* TODO: Actually execute the stories
+* TODO: OK Actually execute the stories
 * TODO: Make rake run specs by default
-* TODO: Make it work with pure ruby regexen
-* TODO: bin/cucumber --load [dir|file|glob]* --language no --format [file]*
+* TODO: OK Make it work with pure ruby regexen
+* TODO: bin/cucumber --require [dir|file|glob]* --language no --format [file]*
 
 == SYNOPSIS:
 

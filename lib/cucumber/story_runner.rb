@@ -3,12 +3,29 @@ module Cucumber
   end
 
   class StoryRunner
-    module Named
+    module CallIn
       attr_accessor :name
-    end
-    
+      
+      def call_in(obj, *args)
+        obj.extend(mod)
+        obj.__send__(meth, *args)
+      end
+
+      def meth
+        @meth ||= "__cucumber_#{object_id}"
+      end
+
+      def mod
+        p = self
+        m = meth
+        @mod ||= Module.new do
+          define_method(m, &p)
+        end
+      end
+    end 
+
     PENDING = lambda{}
-    PENDING.extend(Named)
+    PENDING.extend(CallIn)
     
     def initialize(formatter=nil)
       @formatter = formatter
@@ -55,19 +72,15 @@ module Cucumber
       proc, args = find_proc(name)
       method = proc == PENDING ? "__cucumber_pending" : "__cucumber_#{proc.object_id}".to_sym
       begin
-        mod = Module.new do
-          define_method(method, &proc)
-        end
-        @context.extend(mod)
-        @context.__send__(method, *args)
+        proc.call_in(@context, *args)
         @formatter.step_executed(step_type, name, line, step)
       rescue => e
-        send_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-3}:in `__send__'")
+        strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-3}:in `step_executed'") - 2
         # Remove lines underneath the plain text step
-        e.backtrace[send_pos..-1] = nil if send_pos
+        e.backtrace[strip_pos..-1] = nil
         e.backtrace.flatten
         # Replace the step line with something more readable
-        e.backtrace.replace(e.backtrace.map{|l| l.gsub(/`#{method}'/, "`#{step_type} /#{proc.name}/'")})
+        e.backtrace.replace(e.backtrace.map{|l| l.gsub(/`#{proc.meth}'/, "`#{step_type} /#{proc.name}/'")})
         e.backtrace << "#{@file}:#{line}:in `#{step_type} #{name}'"
         @formatter.step_executed(step_type, name, line, step, e)
       end
@@ -94,7 +107,7 @@ module Cucumber
       else
         raise "Step patterns must be Regexp or String, but was: #{key.inspect}"
       end
-      proc.extend(Named)
+      proc.extend(CallIn)
       proc.name = regexp.source
       @procs[regexp] = proc
     end
