@@ -7,7 +7,7 @@ module Cucumber
       @errors = []
     end
     
-    def step_executed(step_type, name, line, step, error=nil)
+    def step_executed(step_type, name, step, error=nil)
       @io.write(error ? 'F' : '.')
       @errors << [error, step] if error
     end
@@ -21,7 +21,6 @@ module Cucumber
         @io.puts "#{n+1})"
         @io.puts e.message
         @io.puts e.backtrace.join("\n")
-        step.parent.parent.eval(PrettyPrinter.new(@io), :executed)
       end
     end
   end
