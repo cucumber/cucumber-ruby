@@ -81,29 +81,29 @@ module Cucumber
       @formatter.scenario_executed(name) if @formatter.respond_to?(:scenario_executed)
     end
   
-    def step_executed(step_type, name, step)
-      proc, args = find_proc(name)
+    def step_executed(step)
+      proc, args = find_proc(step.name)
       begin
         proc.call_in(@context, *args)
-        @formatter.step_executed(step_type, name, step)
+        @formatter.step_executed(step)
       rescue ArgCountError => e
         e.backtrace[0] = proc.backtrace_line
         strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-4}:in `step_executed'")
-        report_error(proc, strip_pos, step_type, name, step, e)
+        report_error(proc, strip_pos, step, e)
       rescue => e
         strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-7}:in `step_executed'") - 2
-        report_error(proc, strip_pos, step_type, name, step, e)
+        report_error(proc, strip_pos, step, e)
       end
     end
     
-    def report_error(proc, strip_pos, step_type, name, step, e)
+    def report_error(proc, strip_pos, step, e)
       # Remove lines underneath the plain text step
       e.backtrace[strip_pos..-1] = nil
       e.backtrace.flatten
       # Replace the step line with something more readable
-      e.backtrace.replace(e.backtrace.map{|l| l.gsub(/`#{proc.meth}'/, "`#{step_type} #{proc.name}'")})
-      e.backtrace << "#{@file}:#{step.line}:in `#{step_type} #{name}'"
-      @formatter.step_executed(step_type, name, step, e)
+      e.backtrace.replace(e.backtrace.map{|l| l.gsub(/`#{proc.meth}'/, "`#{step.keyword} #{proc.name}'")})
+      e.backtrace << "#{@file}:#{step.line}:in `#{step.keyword} #{step.name}'"
+      @formatter.step_executed(step, e)
     end
     
     def find_proc(name)

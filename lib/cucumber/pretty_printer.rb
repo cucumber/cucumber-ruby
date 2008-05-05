@@ -21,8 +21,8 @@ module Cucumber
       @io.puts yellow("  Scenario: ") + green(name)
     end
   
-    def step_executed(step_type, name, step, error=nil)
-      @io.puts yellow("    #{step_type} ") + (error ? red(name) : green(name))
+    def step_executed(step, error=nil)
+      @io.puts yellow("    #{step.keyword} ") + (error ? red(step.name) : green(step.name))
     end
   end
 end

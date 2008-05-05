@@ -7,7 +7,7 @@ module Cucumber
       @errors = []
     end
     
-    def step_executed(step_type, name, step, error=nil)
+    def step_executed(step, error=nil)
       @io.write(error ? 'F' : '.')
       @errors << [error, step] if error
     end
