@@ -2,15 +2,27 @@ module Cucumber
   class Pending < StandardError
   end
 
+  class ArgCountError < StandardError
+  end
+
   class StoryRunner
     module CallIn
       attr_accessor :name
       
       def call_in(obj, *args)
         obj.extend(mod)
+        raise ArgCountError.new("The #{name} block takes #{arity2} arguments, but there are #{args.length} matched variables") if args.length != arity2
         obj.__send__(meth, *args)
       end
 
+      def arity2
+        arity == -1 ? 0 : arity
+      end
+      
+      def backtrace_line
+        inspect.match(/\d+@(.*)>/)[1] + ":in `#{name}'"
+      end
+      
       def meth
         @meth ||= "__cucumber_#{object_id}"
       end
@@ -24,8 +36,9 @@ module Cucumber
       end
     end 
 
-    PENDING = lambda{}
+    PENDING = Proc.new{||}
     PENDING.extend(CallIn)
+    PENDING.name = "PENDING"
     
     def initialize(formatter=nil)
       @formatter = formatter
@@ -70,32 +83,39 @@ module Cucumber
   
     def step_executed(step_type, name, line, step)
       proc, args = find_proc(name)
-      method = proc == PENDING ? "__cucumber_pending" : "__cucumber_#{proc.object_id}".to_sym
       begin
         proc.call_in(@context, *args)
         @formatter.step_executed(step_type, name, line, step)
+      rescue ArgCountError => e
+        e.backtrace[0] = proc.backtrace_line
+        strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-4}:in `step_executed'")
+        report_error(proc, strip_pos, step_type, name, line, step, e)
       rescue => e
-        strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-3}:in `step_executed'") - 2
-        # Remove lines underneath the plain text step
-        e.backtrace[strip_pos..-1] = nil
-        e.backtrace.flatten
-        # Replace the step line with something more readable
-        e.backtrace.replace(e.backtrace.map{|l| l.gsub(/`#{proc.meth}'/, "`#{step_type} /#{proc.name}/'")})
-        e.backtrace << "#{@file}:#{line}:in `#{step_type} #{name}'"
-        @formatter.step_executed(step_type, name, line, step, e)
+        strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-7}:in `step_executed'") - 2
+        report_error(proc, strip_pos, step_type, name, line, step, e)
       end
     end
     
+    def report_error(proc, strip_pos, step_type, name, line, step, e)
+      # Remove lines underneath the plain text step
+      e.backtrace[strip_pos..-1] = nil
+      e.backtrace.flatten
+      # Replace the step line with something more readable
+      e.backtrace.replace(e.backtrace.map{|l| l.gsub(/`#{proc.meth}'/, "`#{step_type} #{proc.name}'")})
+      e.backtrace << "#{@file}:#{line}:in `#{step_type} #{name}'"
+      @formatter.step_executed(step_type, name, line, step, e)
+    end
+    
     def find_proc(name)
-      captures = nil
-      procs = @procs.select do |regexp, proc|
+      args = nil
+      regexp_proc_arr = @procs.select do |regexp, _| # TODO: Fix for Ruby 1.9
         if name =~ regexp
-          $~.captures 
+          args = $~.captures 
         end
       end
-      raise "Too many" if procs.length > 1
-      pair = procs[0]
-      pair.nil? ? [PENDING, []] : [pair[1], captures]
+      raise "Too many" if regexp_proc_arr.length > 1
+      regexp_proc = regexp_proc_arr[0]
+      regexp_proc.nil? ? [PENDING, []] : [regexp_proc[1], args]
     end
     
     def register_proc(key, &proc)
@@ -108,7 +128,7 @@ module Cucumber
         raise "Step patterns must be Regexp or String, but was: #{key.inspect}"
       end
       proc.extend(CallIn)
-      proc.name = regexp.source
+      proc.name = key.inspect
       @procs[regexp] = proc
     end
   end

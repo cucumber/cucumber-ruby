@@ -13,16 +13,14 @@ module Cucumber
     end
 
     it "should pass when blocks are ok" do
-      o = Object.new
-      @r.register_proc(/there are (\d*) cucumbers/)     { |n| @n = n }
-      @r.register_proc(/I sell (\d*) cucumbers/)        { |n| @n = n }
-      @r.register_proc(/I should owe (\d*) cucumbers/) { |n| @n = n }
+      @r.register_proc(/there are (\d*) cucumbers/)     { |n| @n = n.to_i }
+      @r.register_proc(/I sell (\d*) cucumbers/)        { |n| @n -= n.to_i }
+      @r.register_proc(/I should owe (\d*) cucumbers/)  { |n| @n.should == -n.to_i }
       @r.run
       @io.string.should == "...\n"
     end
 
     it "should print filtered backtrace with story line" do
-      o = Object.new
       @r.register_proc(/there are (\d*) cucumbers/)     { |n| @n = n }
       @r.register_proc(/I sell (\d*) cucumbers/)        { |n| @n = n }
       @r.register_proc(/I should owe (\d*) cucumbers/) { |n| raise "dang" }
@@ -32,7 +30,7 @@ module Cucumber
 
 1)
 dang
-#{__FILE__}:28:in `Then /I should owe (\\d*) cucumbers/'
+#{__FILE__}:26:in `Then /I should owe (\\d*) cucumbers/'
 #{@story_file}:9:in `Then I should owe 7 cucumbers'
 
   Scenario: Sell a dozen

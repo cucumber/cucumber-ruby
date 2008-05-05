@@ -1,10 +1,10 @@
-Given 'I have some failing steps' do |n|
+Given 'I have some failing steps' do
 end
 
 When 'I run a story' do |n|
 end
 
-Then 'the execution should fail' do |n|
+Then 'the execution should fail' do
   Foo.new.doit
 end
 
