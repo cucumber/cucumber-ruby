@@ -12,7 +12,8 @@ stack trace, along with regular ruby files.
 
 == FEATURES/PROBLEMS:
 
-* Run stories with: ruby -Ilib bin\cucumber --require stories/steps/stories_steps.rb stories/run_stories.story
+* Run examples with:
+** ruby -Ilib bin\cucumber examples/web --require examples/web/steps
 
 * TODO: OK Get rid of the compile method. Compile the parser in Rake.
 * TODO: Make grammar support \r\n, \r and \n (Add some fixture stories for that) 

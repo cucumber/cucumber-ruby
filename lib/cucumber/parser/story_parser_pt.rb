@@ -213,6 +213,8 @@ module Story
       step_nodes.elements.each do |step_node|
         step_node.eval(listener, phase)
       end
+      method = "scenario_#{phase}_done".to_sym
+      listener.__send__(method, sentence.text_value.strip) if listener.respond_to?(method)
     end
   end
 
@@ -379,29 +381,40 @@ module Story
           if r5
             r2 = r5
           else
-            if input.index('DadoElEscenario', index) == index
-              r6 = (SyntaxNode).new(input, index...(index + 15))
-              @index += 15
+            if input.index('Y', index) == index
+              r6 = (SyntaxNode).new(input, index...(index + 1))
+              @index += 1
             else
-              terminal_parse_failure('DadoElEscenario')
+              terminal_parse_failure('Y')
               r6 = nil
             end
             if r6
               r2 = r6
             else
-              self.index = i2
-              r2 = nil
+              if input.index('DadoElEscenario', index) == index
+                r7 = (SyntaxNode).new(input, index...(index + 15))
+                @index += 15
+              else
+                terminal_parse_failure('DadoElEscenario')
+                r7 = nil
+              end
+              if r7
+                r2 = r7
+              else
+                self.index = i2
+                r2 = nil
+              end
             end
           end
         end
       end
       s0 << r2
       if r2
-        r7 = _nt_space
-        s0 << r7
-        if r7
-          r8 = _nt_sentence_line
-          s0 << r8
+        r8 = _nt_space
+        s0 << r8
+        if r8
+          r9 = _nt_sentence_line
+          s0 << r9
         end
       end
     end

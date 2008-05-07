@@ -1,3 +1,5 @@
+require 'cucumber/parser/story_parser'
+
 module Cucumber
   class Pending < StandardError
   end
@@ -9,10 +11,10 @@ module Cucumber
     module CallIn
       attr_accessor :name
       
-      def call_in(obj, *args)
+      def call_in(obj, *args, &proc)
         obj.extend(mod)
         raise ArgCountError.new("The #{name} block takes #{arity2} arguments, but there are #{args.length} matched variables") if args.length != arity2
-        obj.__send__(meth, *args)
+        obj.__send__(meth, *args, &proc)
       end
 
       def arity2
@@ -36,7 +38,7 @@ module Cucumber
       end
     end 
 
-    PENDING = Proc.new{||}
+    PENDING = Proc.new{|| raise Pending}
     PENDING.extend(CallIn)
     PENDING.name = "PENDING"
     
@@ -44,12 +46,18 @@ module Cucumber
       @formatter = formatter
       @parser = Parser::StoryParser.new
       @procs = {}
+      @before_procs = []
+      @after_procs = []
       @stories = []
     end
 
     def load(*files)
       files.each do |file|
         story = @parser.parse(IO.read(file))
+        if story.nil?
+          STDERR.puts(@parser.compile_error(file))
+          exit(1)
+        end
         story.file = file
         @stories << story
       end
@@ -78,11 +86,18 @@ module Cucumber
   
     def scenario_executed(name, context=Object.new)
       @context = context
+      @error = nil
+      @before_procs.each{|p| p.call_in(@context, *[])}
       @formatter.scenario_executed(name) if @formatter.respond_to?(:scenario_executed)
     end
-  
+
+    def scenario_executed_done(name)
+      @after_procs.each{|p| p.call_in(@context, *[])}
+    end
+    
     def step_executed(step)
-      proc, args = find_proc(step.name)
+      return if @error
+      proc, args = find_step_proc(step.name)
       begin
         proc.call_in(@context, *args)
         @formatter.step_executed(step)
@@ -91,12 +106,13 @@ module Cucumber
         strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-4}:in `step_executed'")
         report_error(proc, strip_pos, step, e)
       rescue => e
-        strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-7}:in `step_executed'") - 2
+        strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-7}:in `step_executed'") - (Pending === e ? 3 : 2)
         report_error(proc, strip_pos, step, e)
       end
     end
     
     def report_error(proc, strip_pos, step, e)
+      @error = e
       # Remove lines underneath the plain text step
       e.backtrace[strip_pos..-1] = nil
       e.backtrace.flatten
@@ -106,7 +122,7 @@ module Cucumber
       @formatter.step_executed(step, e)
     end
     
-    def find_proc(name)
+    def find_step_proc(name)
       args = nil
       regexp_proc_arr = @procs.select do |regexp, _| # TODO: Fix for Ruby 1.9
         if name =~ regexp
@@ -130,6 +146,16 @@ module Cucumber
       proc.extend(CallIn)
       proc.name = key.inspect
       @procs[regexp] = proc
+    end
+
+    def register_before_proc(&proc)
+      proc.extend(CallIn)
+      @before_procs << proc
+    end
+
+    def register_after_proc(&proc)
+      proc.extend(CallIn)
+      @after_procs << proc
     end
   end
 end

@@ -39,6 +39,8 @@ grammar Story
         step_nodes.elements.each do |step_node|
           step_node.eval(listener, phase)
         end
+        method = "scenario_#{phase}_done".to_sym
+        listener.__send__(method, sentence.text_value.strip) if listener.respond_to?(method)
       end
     }
   end
@@ -48,7 +50,7 @@ grammar Story
   end
 
   rule step
-    space step_type:('<%= words['given'] %>' / '<%= words['when'] %>' / '<%= words['then'] %>' / '<%= words['given_scenario'] %>') space sentence:sentence_line {
+    space step_type:('<%= words['given'] %>' / '<%= words['when'] %>' / '<%= words['then'] %>'/ '<%= words['and'] %>' / '<%= words['given_scenario'] %>') space sentence:sentence_line {
       def eval(listener, phase)
         method = "step_#{phase}".to_sym
         listener.__send__(method, self) if listener.respond_to?(method)

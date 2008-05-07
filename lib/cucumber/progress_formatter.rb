@@ -8,19 +8,24 @@ module Cucumber
     end
     
     def step_executed(step, error=nil)
-      @io.write(error ? 'F' : '.')
-      @errors << [error, step] if error
+      case(error)
+      when Pending
+        @io.write('P')
+      when NilClass
+        @io.write('.')
+      else
+        @io.write('F')
+      end
+      @errors << error if error
     end
     
     def dump
       @io.puts
-      @errors.each_with_index do |error_step,n|
-        e = error_step[0]
-        step = error_step[1]
+      @errors.each_with_index do |error,n|
         @io.puts
         @io.puts "#{n+1})"
-        @io.puts e.message
-        @io.puts e.backtrace.join("\n")
+        @io.puts error.message
+        @io.puts error.backtrace.join("\n")
       end
     end
   end

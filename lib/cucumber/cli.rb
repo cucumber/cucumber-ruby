@@ -23,8 +23,8 @@ module Cucumber
     def parse_options!
       @options = { :require => [], :lang => 'en', :dry_run => false }
       @args.options do |opts|
-        opts.banner = "Usage: cucumber [options] files"
-        opts.on("-r LIBRARY", "--require LIBRARY", "Require the library, before executing your stories") do |v|
+        opts.banner = "Usage: cucumber [options] FILES|DIRS"
+        opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require the library, before executing your stories") do |v|
           @options[:require] << v
         end
         opts.on("-l LANG", "--language LANG", "Specify language for stories (Default: #{@options[:lang]})") do |v|
@@ -37,14 +37,16 @@ module Cucumber
           @options[:dry_run] = true
         end
       end.parse!
-      @files = @args # Whatever is left after option parsing
+      # Whatever is left after option parsing
+      @files = @args.map{|path| File.directory?(path) ? Dir["#{path}/**/*.story"] : path}.flatten
     end
     
     def execute!
       require "cucumber/parser/story_parser_#{@options[:lang]}"
       r = StoryRunner.new(formatter)
       $story_runner = r
-      @options[:require].each{|lib| require lib}
+      libs = @options[:require].map{|path| File.directory?(path) ? Dir["#{path}/**/*.rb"] : path}.flatten
+      libs.each{|lib| require lib}
       r.load(*@files)
       r.run
     end

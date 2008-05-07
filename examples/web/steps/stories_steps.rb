@@ -1,0 +1,26 @@
+#require 'watir'
+require 'spec'
+
+Before do
+  @b = 'Watir::IE.new'
+end
+
+After do
+  @b.close
+end
+
+Given 'I am on the search page' do
+  @b.goto 'http://www.google.com/'
+end
+
+Given /I have entered "(.*)"/ do |query|
+  @b.text_field(:name, 'q').set(query)
+end
+
+When 'I search' do
+  @b.button(:name, 'btnG').click
+end
+
+Then /I should see a link to "(.*)":(.*)/ do |text, url|
+  @b.link(:url, /#{url}/).text.should == text
+end
