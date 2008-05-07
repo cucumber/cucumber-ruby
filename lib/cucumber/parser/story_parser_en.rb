@@ -24,11 +24,11 @@ module Story
   module Story1
     attr_accessor :file
 
-    def eval(listener, phase)
-      header.eval(listener, phase)
-      narrative.eval(listener, phase)
+    def accept(visitor)
+      visitor.visit_header(header)
+      visitor.visit_narrative(narrative)
       scenario_nodes.elements.each do |scenario_node|
-        scenario_node.eval(listener, phase)
+        visitor.visit_scenario(scenario_node)
       end
     end
   end
@@ -86,9 +86,8 @@ module Story
   end
 
   module Header1
-    def eval(listener, phase)
-      method = "story_#{phase}".to_sym
-      listener.__send__(method, sentence_line.text_value.strip) if listener.respond_to?(method)
+    def name
+      sentence_line.text_value.strip
     end
   end
 
@@ -135,10 +134,7 @@ module Story
   end
 
   module Narrative1
-    def eval(listener, phase)
-      method = "narrative_#{phase}".to_sym
-      listener.__send__(method, self.text_value) if listener.respond_to?(method)
-    end
+    # text_value to get the string
   end
 
   def _nt_narrative
@@ -207,14 +203,18 @@ module Story
   end
 
   module Scenario1
-    def eval(listener, phase)
-      method = "scenario_#{phase}".to_sym
-      listener.__send__(method, sentence.text_value.strip) if listener.respond_to?(method)
+    def accept(visitor)
       step_nodes.elements.each do |step_node|
-        step_node.eval(listener, phase)
+        visitor.visit_step(step_node)
       end
-      method = "scenario_#{phase}_done".to_sym
-      listener.__send__(method, sentence.text_value.strip) if listener.respond_to?(method)
+    end
+
+    def name
+      sentence.text_value.strip
+    end
+
+    def file
+      parent.parent.file
     end
   end
 
@@ -320,11 +320,6 @@ module Story
   end
 
   module Step1
-    def eval(listener, phase)
-      method = "step_#{phase}".to_sym
-      listener.__send__(method, self) if listener.respond_to?(method)
-    end
-
     def line
       input.line_of(interval.first)
     end
@@ -335,6 +330,10 @@ module Story
 
     def keyword
       step_type.text_value.strip
+    end
+
+    def file
+      parent.parent.file
     end
   end
 

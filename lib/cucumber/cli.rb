@@ -43,15 +43,29 @@ module Cucumber
     
     def execute!
       require "cucumber/parser/story_parser_#{@options[:lang]}"
-      r = StoryRunner.new(formatter)
-      $story_runner = r
+      $executor = Executor.new(formatter)
       libs = @options[:require].map{|path| File.directory?(path) ? Dir["#{path}/**/*.rb"] : path}.flatten
       libs.each{|lib| require lib}
-      r.load(*@files)
-      r.run
+      
+      stories.each do |story|
+        story.accept($executor)
+      end
     end
     
   private
+    
+    def stories
+      parser = Parser::StoryParser.new
+      @files.map do |file|
+        story = parser.parse(IO.read(file))
+        if story.nil?
+          STDERR.puts(parser.compile_error(file))
+          exit(1)
+        end
+        story.file = file
+        story
+      end
+    end
     
     def formatter
       # TODO: use the -f flag

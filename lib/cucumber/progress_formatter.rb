@@ -7,7 +7,7 @@ module Cucumber
       @errors = []
     end
     
-    def step_executed(step, error=nil)
+    def visit_step(step, error=nil)
       case(error)
       when Pending
         @io.write('P')

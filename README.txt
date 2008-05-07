@@ -15,6 +15,7 @@ stack trace, along with regular ruby files.
 * Run examples with:
 ** ruby -Ilib bin\cucumber examples/web --require examples/web/steps
 
+* TODO: Extract explicit node classes with RDoc
 * TODO: OK Get rid of the compile method. Compile the parser in Rake.
 * TODO: Make grammar support \r\n, \r and \n (Add some fixture stories for that) 
 * TODO: OK Make grammar support indentation

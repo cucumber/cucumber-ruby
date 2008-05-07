@@ -8,6 +8,7 @@ class Calculator
   
   def add
     @args.inject(0){|n,sum| sum+=n}
+    raise "yo"
   end
 end
 
