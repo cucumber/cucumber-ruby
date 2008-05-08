@@ -13,7 +13,7 @@ stack trace, along with regular ruby files.
 == FEATURES/PROBLEMS:
 
 * Run examples with:
-** ruby -Ilib bin/simple examples/web --require examples/simple/steps
+** ruby -Ilib bin/cucumber examples/simple --require examples/simple/steps
 ** ruby -Ilib bin/cucumber examples/web --require examples/web/steps
 
 * TODO: Extract explicit node classes with RDoc
