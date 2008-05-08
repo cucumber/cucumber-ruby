@@ -49,6 +49,7 @@ module Cucumber
       
       stories.each do |story|
         story.accept($executor)
+#        story.accept(PrettyPrinter.new(STDOUT))
       end
     end
     

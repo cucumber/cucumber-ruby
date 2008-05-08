@@ -8,21 +8,22 @@ module Cucumber
       @io = io
     end
     
-    def story_executed(name)
-      @io.puts yellow("Story: ") + green(name)
+    def visit_header(header)
+      @io.puts yellow("Story: ") + green(header.name)
+    end
+    
+    def visit_narrative(narrative)
+      @io.puts green(narrative.text_value)
     end
   
-    def narrative_executed(name)
-      @io.puts green(name)
-    end
-  
-    def scenario_executed(name)
+    def visit_scenario(scenario)
       @io.puts
-      @io.puts yellow("  Scenario: ") + green(name)
+      @io.puts yellow("  Scenario: ") + green(scenario.name)
+      scenario.accept(self)
     end
   
-    def step_executed(step, error=nil)
-      @io.puts yellow("    #{step.keyword} ") + (error ? red(step.name) : green(step.name))
+    def visit_step(step)
+      @io.puts yellow("    #{step.keyword} ") + (step.error ? red(step.name) : green(step.name))
     end
   end
 end

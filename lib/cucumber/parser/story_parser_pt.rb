@@ -320,6 +320,8 @@ module Story
   end
 
   module Step1
+    attr_accessor :error
+
     def line
       input.line_of(interval.first)
     end

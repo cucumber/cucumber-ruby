@@ -7,16 +7,16 @@ module Cucumber
       @errors = []
     end
     
-    def visit_step(step, error=nil)
-      case(error)
+    def visit_step(step)
+      case(step.error)
       when Pending
         @io.write('P')
       when NilClass
         @io.write('.')
       else
+        @errors << step.error
         @io.write('F')
       end
-      @errors << error if error
     end
     
     def dump

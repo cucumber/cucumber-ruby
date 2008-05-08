@@ -90,15 +90,15 @@ module Cucumber
       proc, args = find_step_proc(step.name)
       begin
         proc.call_in(@context, *args)
-        @formatter.visit_step(step)
       rescue ArgCountError => e
         e.backtrace[0] = proc.backtrace_line
-        strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-4}:in `visit_step'")
-        report_error(proc, strip_pos, step, e)
+        strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-3}:in `visit_step'")
+        format_error(proc, strip_pos, step, e)
       rescue => e
-        strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-7}:in `visit_step'") - (Pending === e ? 3 : 2)
-        report_error(proc, strip_pos, step, e)
+        strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-6}:in `visit_step'") - (Pending === e ? 3 : 2)
+        format_error(proc, strip_pos, step, e)
       end
+      @formatter.visit_step(step)
     end
 
     def find_step_proc(name)
@@ -113,7 +113,7 @@ module Cucumber
       regexp_proc.nil? ? [PENDING, []] : [regexp_proc[1], args]
     end
 
-    def report_error(proc, strip_pos, step, e)
+    def format_error(proc, strip_pos, step, e)
       @error = e
       # Remove lines underneath the plain text step
       e.backtrace[strip_pos..-1] = nil
@@ -121,7 +121,7 @@ module Cucumber
       # Replace the step line with something more readable
       e.backtrace.replace(e.backtrace.map{|l| l.gsub(/`#{proc.meth}'/, "`#{step.keyword} #{proc.name}'")})
       e.backtrace << "#{step.file}:#{step.line}:in `#{step.keyword} #{step.name}'"
-      @formatter.visit_step(step, e)
+      step.error = e
     end
     
   end
