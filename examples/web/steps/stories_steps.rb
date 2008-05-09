@@ -1,8 +1,18 @@
-#require 'watir'
 require 'spec'
 
+case PLATFORM
+when /darwin/
+  require 'safariwatir'
+  Watir::Browser = Watir::Safari
+when /win32/
+  require 'watir'
+  Watir::Browser = Watir::IE
+else
+  raise "Can't use Watir on #{PLATFORM}"
+end
+
 Before do
-  @b = 'Watir::IE.new'
+  @b = Watir::Browser.new
 end
 
 After do
@@ -22,5 +32,5 @@ When 'I search' do
 end
 
 Then /I should see a link to "(.*)":(.*)/ do |text, url|
-  @b.link(:url, /#{url}/).text.should == text
+  @b.link(:url, url).text.should == text
 end
