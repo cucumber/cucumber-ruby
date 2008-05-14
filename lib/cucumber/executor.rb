@@ -71,6 +71,14 @@ module Cucumber
       @step_procs[regexp] = proc
     end
 
+    def visit_stories(stories)
+      stories.accept(self)
+    end
+
+    def visit_story(story)
+      story.accept(self)
+    end
+
     def visit_header(header)
     end
 
@@ -114,7 +122,7 @@ module Cucumber
     end
 
     def format_error(proc, strip_pos, step, e)
-      @error = e
+      @error = e unless Pending === e
       # Remove lines underneath the plain text step
       e.backtrace[strip_pos..-1] = nil
       e.backtrace.flatten

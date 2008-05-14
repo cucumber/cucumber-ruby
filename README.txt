@@ -4,7 +4,7 @@
 
 == DESCRIPTION:
 
-This code parses RSpec cucumber. It uses a Treetop grammar to do the job, and 
+This code parses RSpec stories. It uses a Treetop grammar to do the job, and 
 this grammar is extended by users of the library. This design makes the code
 very compact, and it makes it easy to give precise line and column info on 
 parse errors. Further, when a step fails, the story file will appear in the

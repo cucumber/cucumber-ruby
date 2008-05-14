@@ -17,7 +17,6 @@ Before do
 end
 
 After do
-  puts "DONE"
 end
 
 Given /I have entered (\d+)/ do |n|

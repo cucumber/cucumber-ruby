@@ -1,3 +1,5 @@
+require 'cucumber/parser/nodes'
+
 module Cucumber
   module Parser
     class StoryParser < Treetop::Runtime::CompiledParser

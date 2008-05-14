@@ -5,6 +5,10 @@ require 'treetop'
 require 'cucumber/version'
 require 'cucumber/cli'
 require 'cucumber/executor'
+require 'cucumber/stories'
+require 'cucumber/progress_formatter'
+require 'cucumber/visitors/html_formatter'
+require 'cucumber/parser/story_parser'
 
 module Cucumber
   

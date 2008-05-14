@@ -1,16 +1,6 @@
 grammar Story
   rule story
-    header narrative scenario_nodes:scenario* {
-      attr_accessor :file
-
-      def accept(visitor)
-        visitor.visit_header(header)
-        visitor.visit_narrative(narrative)
-        scenario_nodes.elements.each do |scenario_node|
-          visitor.visit_scenario(scenario_node)
-        end
-      end
-    }
+    header narrative scenario_nodes:scenario* <Cucumber::Parser::StoryNode>
   end
 
   rule header

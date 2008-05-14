@@ -21,7 +21,7 @@ module Cucumber
     end
     
     def parse_options!
-      @options = { :require => [], :lang => 'en', :dry_run => false }
+      @options = { :require => [], :lang => 'en', :format => 'progress', :dry_run => false }
       @args.options do |opts|
         opts.banner = "Usage: cucumber [options] FILES|DIRS"
         opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require the library, before executing your stories") do |v|
@@ -30,7 +30,7 @@ module Cucumber
         opts.on("-l LANG", "--language LANG", "Specify language for stories (Default: #{@options[:lang]})") do |v|
           @options[:lang] = v
         end
-        opts.on("-f FORMAT", "--format FORMAT", "How to format stories") do |v|
+        opts.on("-f FORMAT", "--format FORMAT", "How to format stories (Default: #{@options[:format]})") do |v|
           @options[:format] = v
         end
         opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.") do
@@ -47,31 +47,21 @@ module Cucumber
       libs = @options[:require].map{|path| File.directory?(path) ? Dir["#{path}/**/*.rb"] : path}.flatten
       libs.each{|lib| require lib}
       
-      stories.each do |story|
-        story.accept($executor)
-#        story.accept(PrettyPrinter.new(STDOUT))
-      end
+      $executor.visit_stories(stories)
     end
     
   private
     
     def stories
-      parser = Parser::StoryParser.new
-      @files.map do |file|
-        story = parser.parse(IO.read(file))
-        if story.nil?
-          STDERR.puts(parser.compile_error(file))
-          exit(1)
-        end
-        story.file = file
-        story
-      end
+      Stories.new(@files, Parser::StoryParser.new)
     end
     
     def formatter
-      # TODO: use the -f flag
-      require 'cucumber/progress_formatter'
-      ProgressFormatter.new(STDOUT)
+      klass = {
+        'progress' => ProgressFormatter,
+        'html' => Visitors::HtmlFormatter
+      }[@options[:format]]
+      klass.new(STDOUT)
     end
     
   end
