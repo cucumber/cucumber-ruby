@@ -19,6 +19,10 @@ module Cucumber
       end
     end
     
+    def step_skipped(step)
+      @io.write('~')
+    end
+
     def dump
       @io.puts
       @errors.each_with_index do |error,n|

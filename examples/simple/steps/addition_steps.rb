@@ -8,7 +8,10 @@ class Calculator
   
   def add
     @args.inject(0){|n,sum| sum+=n}
-    raise "yo"
+  end
+
+  def divide
+    @args[0].to_f / @args[1].to_f
   end
 end
 
@@ -23,8 +26,14 @@ Given /I have entered (\d+)/ do |n|
   @calc.push n.to_i
 end
 
-When 'I add' do
-  @result = @calc.add
+steps_for(:old_skool_works_too) do
+  When 'I add' do
+    @result = @calc.add
+  end
+end
+
+When 'I divide' do
+  @result = @calc.divide
 end
 
 Then /the result should be (\d*)/ do |result|

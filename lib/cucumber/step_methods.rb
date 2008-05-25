@@ -19,5 +19,10 @@ module Cucumber
     def Then(key, &proc)
       $executor.register_step_proc(key, &proc)
     end
+    
+    # Simple workaround for old skool steps
+    def steps_for(*_)
+      yield
+    end
   end
 end

@@ -1,6 +1,6 @@
 Story: Sell cucumbers
-  As a cucumber farmer 
-  I want to sell cucumbers 
+  As a cucumber farmer
+  I want to sell cucumbers
   So that I buy meat
 
   Scenario: Sell a dozen

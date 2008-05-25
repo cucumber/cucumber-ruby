@@ -74,6 +74,7 @@ module Cucumber
     def visit_stories(stories)
       @formatter.visit_stories(stories) if @formatter.respond_to?(:visit_stories)
       stories.accept(self)
+      @formatter.dump
     end
 
     def visit_story(story)
@@ -87,27 +88,30 @@ module Cucumber
     end
 
     def visit_scenario(scenario)
+      @error = nil
       @context = Object.new
       @before_procs.each{|p| p.call_in(@context, *[])}
       scenario.accept(self)
       @after_procs.each{|p| p.call_in(@context, *[])}
-      @formatter.dump
     end
 
     def visit_step(step)
-      return if @error
-      proc, args = find_step_proc(step.name)
-      begin
-        proc.call_in(@context, *args)
-      rescue ArgCountError => e
-        e.backtrace[0] = proc.backtrace_line
-        strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-3}:in `visit_step'")
-        format_error(proc, strip_pos, step, e)
-      rescue => e
-        strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-6}:in `visit_step'") - (Pending === e ? 3 : 2)
-        format_error(proc, strip_pos, step, e)
+      if @error.nil?
+        proc, args = find_step_proc(step.name)
+        begin
+          proc.call_in(@context, *args)
+        rescue ArgCountError => e
+          e.backtrace[0] = proc.backtrace_line
+          strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-3}:in `visit_step'")
+          format_error(proc, strip_pos, step, e)
+        rescue => e
+          strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-6}:in `visit_step'") - (Pending === e ? 3 : 2)
+          format_error(proc, strip_pos, step, e)
+        end
+        @formatter.step_executed(step)
+      else
+        @formatter.step_skipped(step)
       end
-      @formatter.step_executed(step)
     end
 
     def find_step_proc(name)
