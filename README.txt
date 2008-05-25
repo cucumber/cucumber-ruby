@@ -16,7 +16,7 @@ stack trace, along with regular ruby files.
 ** ruby -Ilib bin/cucumber examples/simple --require examples/simple/steps
 ** ruby -Ilib bin/cucumber examples/web --require examples/web/steps
 
-* TODO: Extract explicit node classes with RDoc
+* TODO: Refactor: Extract explicit node classes with RDoc (for better API doc)
 * TODO: OK Get rid of the compile method. Compile the parser in Rake.
 * TODO: Make grammar support \r\n, \r and \n (Add some fixture stories for that) 
 * TODO: OK Make grammar support indentation
@@ -26,7 +26,13 @@ stack trace, along with regular ruby files.
 * TODO: OK Actually execute the stories
 * TODO: Make rake run specs by default
 * TODO: OK Make it work with pure ruby regexen
+* TODO: Make it work with strings
 * TODO: bin/cucumber --require [dir|file|glob]* --language no --format [file]*
+
+* Pending steps shold print a block of code that can be pasted into code
+* cucumber --where "Some text from a step" that prints "__FILE__:__LINE__ (STEP PATTERN)" 
+* Customisable trace output (like javascriptlint)
+* Experiment: Make $variables become @variables
 
 == SYNOPSIS:
 

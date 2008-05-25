@@ -72,6 +72,7 @@ module Cucumber
     end
 
     def visit_stories(stories)
+      @formatter.visit_stories(stories) if @formatter.respond_to?(:visit_stories)
       stories.accept(self)
     end
 
@@ -106,7 +107,7 @@ module Cucumber
         strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-6}:in `visit_step'") - (Pending === e ? 3 : 2)
         format_error(proc, strip_pos, step, e)
       end
-      @formatter.visit_step(step)
+      @formatter.step_executed(step)
     end
 
     def find_step_proc(name)

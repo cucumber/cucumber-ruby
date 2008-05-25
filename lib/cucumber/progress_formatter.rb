@@ -7,25 +7,7 @@ module Cucumber
       @errors = []
     end
 
-    def visit_stories(stories)
-      stories.accept(self)
-    end
-    
-    def visit_story(story)
-      story.accept(self)
-    end
-
-    def visit_header(header)
-    end
-
-    def visit_narrative(narrative)
-    end
-
-    def visit_scenario(scenario)
-      scenario.accept(self)
-    end
-    
-    def visit_step(step)
+    def step_executed(step)
       case(step.error)
       when Pending
         @io.write('P')
