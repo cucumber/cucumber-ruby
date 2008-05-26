@@ -32,7 +32,6 @@ lib/cucumber/step_methods.rb
 lib/cucumber/stories.rb
 lib/cucumber/version.rb
 lib/cucumber/visitors/html_formatter.rb
-log/debug.log
 script/console
 script/console.cmd
 script/destroy
@@ -50,6 +49,7 @@ spec/spec.opts
 spec/spec_helper.rb
 tasks/deployment.rake
 tasks/environment.rake
+tasks/fix_cr_lf.rake
 tasks/rspec.rake
 tasks/treetop.rake
 tasks/website.rake
