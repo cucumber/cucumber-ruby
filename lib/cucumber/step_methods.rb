@@ -1,5 +1,9 @@
 module Cucumber
   module StepMethods
+    def World(&proc)
+      $executor.register_world_proc(&proc)
+    end
+
     def Before(&proc)
       $executor.register_before_proc(&proc)
     end

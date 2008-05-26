@@ -7,7 +7,10 @@ bin/cucumber
 config/hoe.rb
 config/requirements.rb
 examples/simple/addition.story
+examples/simple/division.story
 examples/simple/steps/addition_steps.rb
+examples/simple_norwegian/steg/matte_steg.rb.rb
+examples/simple_norwegian/summering.story
 examples/web/run_stories.story
 examples/web/steps/stories_steps.rb
 lib/cucumber.rb
@@ -15,6 +18,7 @@ lib/cucumber/ansi_colours.rb
 lib/cucumber/cli.rb
 lib/cucumber/executor.rb
 lib/cucumber/parser/languages.yml
+lib/cucumber/parser/nodes.rb
 lib/cucumber/parser/story_parser.rb
 lib/cucumber/parser/story_parser.treetop.erb
 lib/cucumber/parser/story_parser_en.rb
@@ -23,8 +27,12 @@ lib/cucumber/parser/story_parser_no.rb
 lib/cucumber/parser/story_parser_pt.rb
 lib/cucumber/pretty_printer.rb
 lib/cucumber/progress_formatter.rb
+lib/cucumber/rails/world.rb
 lib/cucumber/step_methods.rb
+lib/cucumber/stories.rb
 lib/cucumber/version.rb
+lib/cucumber/visitors/html_formatter.rb
+log/debug.log
 script/console
 script/console.cmd
 script/destroy
@@ -36,6 +44,8 @@ script/txt2html.cmd
 setup.rb
 spec/cucumber/executor_spec.rb
 spec/cucumber/sell_cucumbers.story
+spec/cucumber/visitors/html_formatter_spec.rb
+spec/cucumber/visitors/stories.html
 spec/spec.opts
 spec/spec_helper.rb
 tasks/deployment.rake

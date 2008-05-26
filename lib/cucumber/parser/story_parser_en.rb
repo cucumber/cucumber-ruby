@@ -21,18 +21,6 @@ module Story
     end
   end
 
-  module Story1
-    attr_accessor :file
-
-    def accept(visitor)
-      visitor.visit_header(header)
-      visitor.visit_narrative(narrative)
-      scenario_nodes.elements.each do |scenario_node|
-        visitor.visit_scenario(scenario_node)
-      end
-    end
-  end
-
   def _nt_story
     start_index = index
     if node_cache[:story].has_key?(index)
@@ -62,9 +50,8 @@ module Story
       end
     end
     if s0.last
-      r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0 = (Cucumber::Parser::StoryNode).new(input, i0...index, s0)
       r0.extend(Story0)
-      r0.extend(Story1)
     else
       self.index = i0
       r0 = nil
@@ -319,26 +306,6 @@ module Story
     end
   end
 
-  module Step1
-    attr_accessor :error
-
-    def line
-      input.line_of(interval.first)
-    end
-
-    def name
-      sentence.text_value.strip
-    end
-
-    def keyword
-      step_type.text_value.strip
-    end
-
-    def file
-      parent.parent.file
-    end
-  end
-
   def _nt_step
     start_index = index
     if node_cache[:step].has_key?(index)
@@ -420,9 +387,8 @@ module Story
       end
     end
     if s0.last
-      r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0 = (Cucumber::Parser::StepNode).new(input, i0...index, s0)
       r0.extend(Step0)
-      r0.extend(Step1)
     else
       self.index = i0
       r0 = nil

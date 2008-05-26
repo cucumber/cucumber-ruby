@@ -45,7 +45,14 @@ module Cucumber
       require "cucumber/parser/story_parser_#{@options[:lang]}"
       $executor = Executor.new(formatter)
       libs = @options[:require].map{|path| File.directory?(path) ? Dir["#{path}/**/*.rb"] : path}.flatten
-      libs.each{|lib| require lib}
+      libs.each do |lib|
+        begin
+          require lib
+        rescue LoadError => e
+          e.message << "\nFailed to load #{lib}"
+          raise e
+        end
+      end
       
       $executor.visit_stories(stories)
     end
@@ -59,7 +66,8 @@ module Cucumber
     def formatter
       klass = {
         'progress' => ProgressFormatter,
-        'html' => Visitors::HtmlFormatter
+        'html' => Visitors::HtmlFormatter,
+        'pretty' => PrettyPrinter,
       }[@options[:format]]
       klass.new(STDOUT)
     end

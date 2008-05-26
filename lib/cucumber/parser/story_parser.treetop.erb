@@ -40,25 +40,7 @@ grammar Story
   end
 
   rule step
-    space step_type:('<%= words['given'] %>' / '<%= words['when'] %>' / '<%= words['then'] %>'/ '<%= words['and'] %>' / '<%= words['given_scenario'] %>') space sentence:sentence_line {
-      attr_accessor :error
-
-      def line
-        input.line_of(interval.first)
-      end
-
-      def name
-        sentence.text_value.strip
-      end
-
-      def keyword
-        step_type.text_value.strip
-      end
-
-      def file
-        parent.parent.file
-      end
-    }
+    space step_type:('<%= words['given'] %>' / '<%= words['when'] %>' / '<%= words['then'] %>'/ '<%= words['and'] %>' / '<%= words['given_scenario'] %>') space sentence:sentence_line <Cucumber::Parser::StepNode>
   end
 
   rule sentence_line

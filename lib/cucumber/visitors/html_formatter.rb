@@ -201,21 +201,25 @@ HTML
       end
 
       def visit_step(step)
-        @io.puts "                <li class=\"new\" id=\"#{step.object_id}\">#{step.name}</li>"
+        @io.puts "                <li class=\"new\" id=\"#{step.id}\">#{step.name}</li>"
       end
       
       def step_executed(step)
         js = case(step.error)
         when Pending
-          "stepPending(#{step.object_id})"
+          "stepPending(#{step.id})"
         when NilClass
-          "stepPassed(#{step.object_id})"
+          "stepPassed(#{step.id})"
         else
           @errors << step.error
-          "stepFailed(#{step.object_id})"
+          "stepFailed(#{step.id})"
         end
 
         @io.puts "    <script type=\"text/javascript\">#{js}</script>"
+      end
+
+      def step_skipped(step)
+        # noop
       end
 
       def dump

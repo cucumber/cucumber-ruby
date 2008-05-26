@@ -18,7 +18,7 @@ module Cucumber
       it "should render HTML" do
         @executor.visit_stories(@stories)
         expected_stories = File.dirname(__FILE__) + '/stories.html'
-        File.open(expected_stories, 'w') {|io| io.write(@io.string)}
+        #File.open(expected_stories, 'w') {|io| io.write(@io.string)}
         @io.string.should == IO.read(expected_stories)
       end
     end

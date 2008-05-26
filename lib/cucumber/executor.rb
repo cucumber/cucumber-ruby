@@ -42,11 +42,16 @@ module Cucumber
 
     def initialize(formatter)
       @formatter = formatter
+      @world_proc = lambda{ Object.new }
       @step_procs = {}
       @before_procs = []
       @after_procs = []
     end
     
+    def register_world_proc(&proc)
+      @world_proc = proc
+    end
+
     def register_before_proc(&proc)
       proc.extend(CallIn)
       @before_procs << proc
@@ -60,7 +65,7 @@ module Cucumber
     def register_step_proc(key, &proc)
       regexp = case(key)
       when String
-        Regexp.new(key)
+        Regexp.new("^#{key}$")
       when Regexp
         key
       else
@@ -82,24 +87,27 @@ module Cucumber
     end
 
     def visit_header(header)
+      @formatter.header_executing(header) if @formatter.respond_to?(:header_executing)
     end
 
     def visit_narrative(narrative)
+      @formatter.narratrive_executing(narrative) if @formatter.respond_to?(:narratrive_executing)
     end
 
     def visit_scenario(scenario)
       @error = nil
-      @context = Object.new
-      @before_procs.each{|p| p.call_in(@context, *[])}
+      @world = @world_proc.call
+      @formatter.scenario_executing(scenario) if @formatter.respond_to?(:scenario_executing)
+      @before_procs.each{|p| p.call_in(@world, *[])}
       scenario.accept(self)
-      @after_procs.each{|p| p.call_in(@context, *[])}
+      @after_procs.each{|p| p.call_in(@world, *[])}
     end
 
     def visit_step(step)
       if @error.nil?
         proc, args = find_step_proc(step.name)
         begin
-          proc.call_in(@context, *args)
+          proc.call_in(@world, *args)
         rescue ArgCountError => e
           e.backtrace[0] = proc.backtrace_line
           strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-3}:in `visit_step'")
@@ -116,12 +124,15 @@ module Cucumber
 
     def find_step_proc(name)
       args = nil
-      regexp_proc_arr = @step_procs.select do |regexp, _| # TODO: Fix for Ruby 1.9
+      regexp_proc_arr = @step_procs.select do |regexp, _|
         if name =~ regexp
           args = $~.captures 
         end
       end
-      raise "Too many" if regexp_proc_arr.length > 1
+      if regexp_proc_arr.length > 1
+        regexen = regexp_proc_arr.transpose[0].map{|re| re.inspect}.join("\n  ")
+        raise "\"#{name}\" matches several steps:\n\n  #{regexen}\n\nPlease give your steps unambiguous names\n" 
+      end
       regexp_proc = regexp_proc_arr[0]
       regexp_proc.nil? ? [PENDING, []] : [regexp_proc[1], args]
     end
