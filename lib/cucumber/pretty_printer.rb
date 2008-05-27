@@ -10,6 +10,8 @@ module Cucumber
     end
     
     def header_executing(header)
+      @io.puts if @story_newline
+      @story_newline = true
       @io.puts yellow("Story: ") + green(header.name)
     end
     
@@ -33,21 +35,17 @@ module Cucumber
         red(step.name)
       end
       @io.puts yellow("    #{step.keyword} ") + out
+      
+      if step.error
+        @io.puts red("      #{step.error.backtrace.join("\n      ")}")
+      end
     end
 
     def step_skipped(step)
-      @io.puts yellow("    #{step.keyword} ") + blue(step.name)
+      @io.puts yellow("    #{step.keyword} ") + gray(step.name)
     end
     
     def dump
-      # TODO: stick this in a module, it's duped
-      @io.puts
-      @errors.each_with_index do |error,n|
-        @io.puts
-        @io.puts "#{n+1})"
-        @io.puts error.message
-        @io.puts error.backtrace.join("\n")
-      end
     end
   end
 end

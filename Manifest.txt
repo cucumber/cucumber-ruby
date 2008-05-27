@@ -13,6 +13,12 @@ examples/simple_norwegian/steg/matte_steg.rb.rb
 examples/simple_norwegian/summering.story
 examples/web/run_stories.story
 examples/web/steps/stories_steps.rb
+gem_tasks/deployment.rake
+gem_tasks/environment.rake
+gem_tasks/fix_cr_lf.rake
+gem_tasks/rspec.rake
+gem_tasks/treetop.rake
+gem_tasks/website.rake
 lib/cucumber.rb
 lib/cucumber/ansi_colours.rb
 lib/cucumber/cli.rb
@@ -28,6 +34,7 @@ lib/cucumber/parser/story_parser_pt.rb
 lib/cucumber/pretty_printer.rb
 lib/cucumber/progress_formatter.rb
 lib/cucumber/rails/world.rb
+lib/cucumber/rake/task.rb
 lib/cucumber/step_methods.rb
 lib/cucumber/stories.rb
 lib/cucumber/version.rb
@@ -47,12 +54,6 @@ spec/cucumber/visitors/html_formatter_spec.rb
 spec/cucumber/visitors/stories.html
 spec/spec.opts
 spec/spec_helper.rb
-tasks/deployment.rake
-tasks/environment.rake
-tasks/fix_cr_lf.rake
-tasks/rspec.rake
-tasks/treetop.rake
-tasks/website.rake
 website/index.html
 website/index.txt
 website/javascripts/rounded_corners_lite.inc.js

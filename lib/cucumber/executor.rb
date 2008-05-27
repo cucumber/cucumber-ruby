@@ -91,7 +91,7 @@ module Cucumber
     end
 
     def visit_narrative(narrative)
-      @formatter.narratrive_executing(narrative) if @formatter.respond_to?(:narratrive_executing)
+      @formatter.narrative_executing(narrative) if @formatter.respond_to?(:narrative_executing)
     end
 
     def visit_scenario(scenario)

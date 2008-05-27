@@ -1,6 +1,5 @@
-# WARNING - THIS IS PURELY EXPERIMENTAL AT THIS POINT
-# Courtesy of Brian Takita and Yurii Rashkovskii
-# Adapted by Aslak Hellesøy for Cucumber
+# Based on code from Brian Takita, Yurii Rashkovskii and Ben Mabey
+# Adapted by Aslak Hellesøy
 
 if defined?(ActiveRecord::Base)
   require 'test_help' 
@@ -12,12 +11,22 @@ require 'test/unit/testresult'
 require 'spec'
 require 'spec/rails'
 
-# So that Test::Unit doesn't launch at the end - makes it think
-# it has already been run.
+# These allow exceptions to come through as opposed to being caught and hvaing non-helpful responses returned.
+ActionController::Base.class_eval do
+  def perform_action
+    perform_action_without_rescue
+  end
+end
+Dispatcher.class_eval do
+  def self.failsafe_response(output, status, exception = nil)
+    raise exception
+  end
+end
+
+# So that Test::Unit doesn't launch at the end - makes it think it has already been run.
 Test::Unit.run = true
 
-# TODO - eliminate this hack, which is here to stop
-# Rails Stories from dumping the example summary.
+# Hack to stop RSpec from dumping the summary
 Spec::Runner::Options.class_eval do
   def examples_should_be_run?
     false
@@ -49,12 +58,12 @@ end
 
 if defined?(ActiveRecord::Base)
   Before do
-    ActiveRecord::Base.send :increment_open_transactions unless Rails::VERSION::STRING == "1.1.6"
+    ActiveRecord::Base.send :increment_open_transactions
     ActiveRecord::Base.connection.begin_db_transaction
   end
   
   After do
     ActiveRecord::Base.connection.rollback_db_transaction
-    ActiveRecord::Base.send :decrement_open_transactions unless Rails::VERSION::STRING == "1.1.6"
+    ActiveRecord::Base.send :decrement_open_transactions
   end
 end
