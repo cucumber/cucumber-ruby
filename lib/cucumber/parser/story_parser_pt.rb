@@ -72,12 +72,6 @@ module Story
     end
   end
 
-  module Header1
-    def name
-      sentence_line.text_value.strip
-    end
-  end
-
   def _nt_header
     start_index = index
     if node_cache[:header].has_key?(index)
@@ -104,9 +98,8 @@ module Story
       end
     end
     if s0.last
-      r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0 = (Cucumber::Parser::HeaderNode).new(input, i0...index, s0)
       r0.extend(Header0)
-      r0.extend(Header1)
     else
       self.index = i0
       r0 = nil
@@ -189,22 +182,6 @@ module Story
     end
   end
 
-  module Scenario1
-    def accept(visitor)
-      step_nodes.elements.each do |step_node|
-        visitor.visit_step(step_node)
-      end
-    end
-
-    def name
-      sentence.text_value.strip
-    end
-
-    def file
-      parent.parent.file
-    end
-  end
-
   def _nt_scenario
     start_index = index
     if node_cache[:scenario].has_key?(index)
@@ -234,9 +211,8 @@ module Story
       end
     end
     if s0.last
-      r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0 = (Cucumber::Parser::ScenarioNode).new(input, i0...index, s0)
       r0.extend(Scenario0)
-      r0.extend(Scenario1)
     else
       self.index = i0
       r0 = nil
@@ -509,22 +485,33 @@ module Story
     end
 
     i0 = index
-    if input.index("\n", index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 1))
-      @index += 1
+    if input.index("\r\n", index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 2))
+      @index += 2
     else
-      terminal_parse_failure("\n")
+      terminal_parse_failure("\r\n")
       r1 = nil
     end
     if r1
       r0 = r1
     else
-      r2 = _nt_eof
+      if input.index("\n", index) == index
+        r2 = (SyntaxNode).new(input, index...(index + 1))
+        @index += 1
+      else
+        terminal_parse_failure("\n")
+        r2 = nil
+      end
       if r2
         r0 = r2
       else
-        self.index = i0
-        r0 = nil
+        r3 = _nt_eof
+        if r3
+          r0 = r3
+        else
+          self.index = i0
+          r0 = nil
+        end
       end
     end
 

@@ -4,35 +4,15 @@ grammar Story
   end
 
   rule header
-    '<%= words['story'] %>:' space sentence_line {
-      def name
-        sentence_line.text_value.strip
-      end
-    }
+    '<%= words['story'] %>:' space sentence_line <Cucumber::Parser::HeaderNode>
   end
 
   rule narrative
-    (!scenario_start .)* {
-      # text_value to get the string
-    }
+    (!scenario_start .)* <Cucumber::Parser::NarrativeNode>
   end
 
   rule scenario
-    scenario_start sentence:sentence_line step_nodes:(step)* {
-      def accept(visitor)
-        step_nodes.elements.each do |step_node|
-          visitor.visit_step(step_node)
-        end
-      end
-
-      def name
-        sentence.text_value.strip
-      end
-
-      def file
-        parent.parent.file
-      end
-    }
+    scenario_start sentence:sentence_line step_nodes:(step)* <Cucumber::Parser::ScenarioNode>
   end
   
   rule scenario_start
@@ -52,7 +32,7 @@ grammar Story
   end
 
   rule eol
-    "\n" / eof
+    "\r\n" / "\n" / eof
   end
   
   rule eof
