@@ -30,7 +30,7 @@ module Cucumber
           args << '-I'
           args << '"%s"' % libs.join(File::PATH_SEPARATOR)
           args << '"%s"' % BINARY
-          args << ENV['CUCUMBER_OPTS'] || cucumber_opts
+          args << (ENV['CUCUMBER_OPTS'] || cucumber_opts)
 
           step_files.each do |step_file|
             args << '--require'

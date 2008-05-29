@@ -113,10 +113,6 @@ module Story
   module Narrative0
   end
 
-  module Narrative1
-    # text_value to get the string
-  end
-
   def _nt_narrative
     start_index = index
     if node_cache[:narrative].has_key?(index)
@@ -160,8 +156,7 @@ module Story
         break
       end
     end
-    r0 = SyntaxNode.new(input, i0...index, s0)
-    r0.extend(Narrative1)
+    r0 = Cucumber::Parser::NarrativeNode.new(input, i0...index, s0)
 
     node_cache[:narrative][start_index] = r0
 
@@ -457,7 +452,7 @@ module Story
 
     s0, i0 = [], index
     loop do
-      if input.index(Regexp.new('[ \\n]'), index) == index
+      if input.index(Regexp.new('[ \\t\\r\\n]'), index) == index
         r1 = (SyntaxNode).new(input, index...(index + 1))
         @index += 1
       else

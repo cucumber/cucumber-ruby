@@ -2,6 +2,7 @@ class StoryCompiler
   def compile
     require 'yaml'
     require 'erb'
+    tt = PLATFORM =~ /win32/ ? 'tt.bat' : 'tt'
     template = ERB.new(IO.read(File.dirname(__FILE__) + '/../lib/cucumber/parser/story_parser.treetop.erb'))
     langs = YAML.load_file(File.dirname(__FILE__) + '/../lib/cucumber/parser/languages.yml')
     langs.each do |lang, words|
@@ -17,7 +18,7 @@ class StoryCompiler
       File.open(grammar_file, "wb") do |io|
         io.write(grammar)
       end
-      system "tt.bat #{grammar_file}"
+      system "#{tt} #{grammar_file}"
       FileUtils.rm(grammar_file)
       STDOUT.puts("Done!")
     end

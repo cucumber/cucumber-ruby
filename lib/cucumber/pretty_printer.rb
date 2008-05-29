@@ -6,7 +6,10 @@ module Cucumber
     
     def initialize(io)
       @io = (io == STDOUT) ? Kernel : io
-      @errors = []
+      @passed = []
+      @failed = []
+      @pending = []
+      @skipped = []
     end
     
     def header_executing(header)
@@ -25,20 +28,18 @@ module Cucumber
     end
   
     def step_executed(step)
-      out = case(step.error)
+      case(step.error)
       when Pending
-        yellow(step.name)
+        @pending << step
+        @io.puts yellow("    #{step.keyword} ") + yellow(step.name)
       when NilClass
-        green(step.name)
+        @passed << step
+        @io.puts yellow("    #{step.keyword} ") + green(step.name)
       else
-        @errors << step.error
-        red(step.name)
-      end
-      @io.puts yellow("    #{step.keyword} ") + out
-      
-      if step.error
-        @io.puts red("      #{step.error.message}")
-        @io.puts red("      #{step.error.backtrace.join("\n      ")}")
+        @failed << step
+        @io.puts yellow("    #{step.keyword} ") + red(step.name)
+        @io.puts    red("      #{step.error.message}")
+        @io.puts    red("      #{step.error.backtrace.join("\n      ")}")
       end
     end
 
@@ -47,6 +48,11 @@ module Cucumber
     end
     
     def dump
+      @io.puts
+      @io.puts green("#{@passed.length} steps passed") unless @passed.empty?
+      @io.puts red("#{@failed.length} steps failed") unless @failed.empty?
+      @io.puts yellow("#{@pending.length} steps pending") unless @pending.empty?
+      @io.puts gray("#{@skipped.length} steps skipped") unless @skipped.empty?
     end
   end
 end
