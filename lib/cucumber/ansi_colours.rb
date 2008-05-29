@@ -14,14 +14,14 @@ module Cucumber
     if ENV['LSCOLORS'] # TODO: look up how this works
       require 'win32console' if PLATFORM == 'i386-mswin32'
       ANSI_COLORS.each do |c,a|
-        define_method(c) do |s|
+        define_method(c) do |s, *suffix|
           "#{a}#{s}#{ANSI_NEUTRAL}"
         end
       end
     else
       ANSI_COLORS.each do |c,a|
-        define_method(c) do |s|
-          s
+        define_method(c) do |s, *suffix|
+          s + (suffix[0] || '')
         end
       end
     end

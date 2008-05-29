@@ -31,13 +31,13 @@ module Cucumber
       case(step.error)
       when Pending
         @pending << step
-        @io.puts yellow("    #{step.keyword} ") + yellow(step.name)
+        @io.puts yellow("    #{step.keyword} ") + yellow(step.name, " [PENDING]")
       when NilClass
         @passed << step
         @io.puts yellow("    #{step.keyword} ") + green(step.name)
       else
         @failed << step
-        @io.puts yellow("    #{step.keyword} ") + red(step.name)
+        @io.puts yellow("    #{step.keyword} ") + red(step.name, " [FAILED]")
         @io.puts    red("      #{step.error.message}")
         @io.puts    red("      #{step.error.backtrace.join("\n      ")}")
       end
@@ -45,7 +45,7 @@ module Cucumber
 
     def step_skipped(step)
       @skipped << step
-      @io.puts yellow("    #{step.keyword} ") + gray(step.name)
+      @io.puts yellow("    #{step.keyword} ") + gray(step.name, " [SKIPPED]")
     end
     
     def dump
