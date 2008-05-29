@@ -44,6 +44,7 @@ module Cucumber
     end
 
     def step_skipped(step)
+      @skipped << step
       @io.puts yellow("    #{step.keyword} ") + gray(step.name)
     end
     
