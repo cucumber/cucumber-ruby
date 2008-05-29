@@ -113,7 +113,14 @@ module Cucumber
           strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-3}:in `visit_step'")
           format_error(proc, strip_pos, step, e)
         rescue => e
-          strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-6}:in `visit_step'") - (Pending === e ? 3 : 2)
+          visit_step_line = "#{__FILE__}:#{__LINE__-6}:in `visit_step'"
+          visit_step_pos = e.backtrace.index(visit_step_line)
+          if visit_step_pos
+            strip_pos = visit_step_pos - (Pending === e ? 3 : 2)
+          else
+            # This happens with rails, because they screw up the backtrace
+            # before we get here (injecting erb stactrace and such)
+      	  end
           format_error(proc, strip_pos, step, e)
         end
         @formatter.step_executed(step)
@@ -140,7 +147,7 @@ module Cucumber
     def format_error(proc, strip_pos, step, e)
       @error = e unless Pending === e
       # Remove lines underneath the plain text step
-      e.backtrace[strip_pos..-1] = nil
+      e.backtrace[strip_pos..-1] = nil unless strip_pos.nil?
       e.backtrace.flatten
       # Replace the step line with something more readable
       e.backtrace.replace(e.backtrace.map{|l| l.gsub(/`#{proc.meth}'/, "`#{step.keyword} #{proc.name}'")})

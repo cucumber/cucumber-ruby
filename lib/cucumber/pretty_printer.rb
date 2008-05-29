@@ -37,6 +37,7 @@ module Cucumber
       @io.puts yellow("    #{step.keyword} ") + out
       
       if step.error
+        @io.puts red("      #{step.error.message}")
         @io.puts red("      #{step.error.backtrace.join("\n      ")}")
       end
     end

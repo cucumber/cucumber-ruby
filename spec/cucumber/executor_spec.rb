@@ -9,9 +9,8 @@ module Cucumber
       @f = ProgressFormatter.new(@io)
       @r = Executor.new(@f)
       @story_file = File.dirname(__FILE__) + '/sell_cucumbers.story'
-      parser = Parser::StoryParser.new
-      @story = parser.parse(IO.read(@story_file))
-      @story.file = @story_file
+      @parser = Parser::StoryParser.new
+      @story = Parser::StoryNode.parse(@story_file, @parser)
     end
 
     it "should pass when blocks are ok" do
@@ -34,9 +33,18 @@ module Cucumber
 
 1)
 dang
-#{__FILE__}:29:in `Then /I should owe (\\d*) cucumbers/'
+#{__FILE__}:28:in `Then /I should owe (\\d*) cucumbers/'
 #{@story_file}:9:in `Then I should owe 7 cucumbers'
 STDOUT
+    end
+
+    xit "should allow calling of other steps from steps" do
+      @r.register_step_proc("call me please") { @x = 1 }
+      @r.register_step_proc("I will call you") { @r.register_step_proc("call me please") }
+      @r.register_step_proc(/I should owe (\d*) cucumbers/)  { |n| @n.should == -n.to_i }
+      @story.accept(@r)
+      @f.dump
+      @io.string.should == "...\n"
     end
   end
 end
