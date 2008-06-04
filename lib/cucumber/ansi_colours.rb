@@ -2,11 +2,11 @@ module Cucumber
   module AnsiColours
     # http://www.bluesock.org/~willg/dev/ansi.html
     ANSI_COLORS = {
-      :red     => "\e[31m",
-      :green   => "\e[32m",
-      :yellow  => "\e[33m",
-      :blue    => "\e[34m",
-      :magenta => "\e[35m",
+      :red     => "\e[1;31m",
+      :green   => "\e[1;32m",
+      :yellow  => "\e[1;33m",
+      :blue    => "\e[0;34m",
+      :magenta => "\e[0;35m",
       :gray    => "\e[1;30m"
     }
     ANSI_NEUTRAL = "\e[0m"
