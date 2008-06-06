@@ -1,0 +1,7 @@
+$:.unshift(File.dirname(__FILE__) + '/../lib')
+
+require 'cucumber/rake/task'
+
+Cucumber::Rake::Task.new('simple') do |t|
+  t.cucumber_opts = "--format pretty"
+end
