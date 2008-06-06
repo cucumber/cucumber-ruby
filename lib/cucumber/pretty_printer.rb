@@ -3,6 +3,7 @@ require 'cucumber/ansi_colours'
 module Cucumber
   class PrettyPrinter
     include AnsiColours
+    INDENT = "\n      "
     
     def initialize(io)
       @io = (io == STDOUT) ? Kernel : io
@@ -38,8 +39,8 @@ module Cucumber
       else
         @failed << step
         @io.puts yellow("    #{step.keyword} ") + red(step.name, " [FAILED]")
-        @io.puts    red("      #{step.error.message}")
-        @io.puts    red("      #{step.error.backtrace.join("\n      ")}")
+        @io.puts    red("      #{step.error.message.split("\n").join(INDENT)}")
+        @io.puts    red("      #{step.error.backtrace.join(INDENT)}")
       end
     end
 
