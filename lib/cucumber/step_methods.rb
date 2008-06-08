@@ -26,6 +26,7 @@ module Cucumber
     
     # Simple workaround for old skool steps
     def steps_for(*_)
+      STDERR.puts "WARNING: In Cucumber the steps_for method is obsolete"
       yield
     end
   end

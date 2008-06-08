@@ -7,7 +7,7 @@ module Cucumber
       
       def call_in(obj, *args, &proc)
         obj.extend(mod)
-        raise ArgCountError.new("The #{name} block takes #{arity2} arguments, but there are #{args.length} matched variables") if args.length != arity2
+#        raise ArgCountError.new("The #{name} block takes #{arity2} arguments, but there are #{args.length} matched variables") if args.length != arity2
         obj.__send__(meth, *args, &proc)
       end
 
@@ -16,7 +16,7 @@ module Cucumber
       end
       
       def backtrace_line
-        inspect.match(/\d+@(.*)>/)[1] + ":in `#{name}'"
+        inspect.match(/[\d\w]+@(.*)>/)[1] + ":in `#{name}'"
       end
       
       def meth

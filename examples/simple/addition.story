@@ -5,6 +5,7 @@ Story: Addition
 
   Scenario: 50+70
     Given I have entered 50 into the calculator
+    Given foo bar
     And I have entered 70 into the calculator
     When I add
     Then the result should be 12 on the screen

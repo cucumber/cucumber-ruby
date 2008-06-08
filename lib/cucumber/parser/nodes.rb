@@ -68,8 +68,66 @@ module Cucumber
         end
       end
 
-      attr_accessor :error
-      attr_accessor :regexp
+      attr_reader :error
+
+      def regexp
+        @regexp || //
+      end
+      
+      PENDING = lambda do |*_| 
+        raise Pending
+      end
+      PENDING.extend(CoreExt::CallIn)
+      PENDING.name = "PENDING"
+      
+      def proc
+        @proc || PENDING
+      end
+
+      def attach(regexp, proc, args)
+        if @regexp
+          raise <<-EOM
+"#{name}" matches several step definitions:
+
+#{@proc.backtrace_line}
+#{proc.backtrace_line}
+
+Please give your steps unambiguous names
+          EOM
+        end
+        @regexp, @proc, @args = regexp, proc, args
+      end
+
+      def execute_in(world)
+        begin
+          proc.call_in(world, *@args)
+        rescue ArgCountError => e
+          e.backtrace[0] = @proc.backtrace_line
+          strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-3}:in `execute_in'")
+          format_error(strip_pos, e)
+        rescue => e
+          method_line = "#{__FILE__}:#{__LINE__-6}:in `execute_in'"
+          method_line_pos = e.backtrace.index(method_line)
+          if method_line_pos
+            strip_pos = method_line_pos - (Pending === e ? 3 : 2)
+          else
+            # This happens with rails, because they screw up the backtrace
+            # before we get here (injecting erb stactrace and such)
+      	  end
+          format_error(strip_pos, e)
+        end
+      end
+
+      def format_error(strip_pos, e)
+        @error = e
+        # Remove lines underneath the plain text step
+        e.backtrace[strip_pos..-1] = nil unless strip_pos.nil?
+        e.backtrace.flatten
+        # Replace the step line with something more readable
+        e.backtrace.replace(e.backtrace.map{|l| l.gsub(/`#{@proc.meth}'/, "`#{keyword} #{@proc.name}'")})
+        e.backtrace << "#{file}:#{line}:in `#{keyword} #{name}'"
+        raise e
+      end
 
       def gzub(format=nil, &proc)
         name.gzub(regexp, format, &proc)

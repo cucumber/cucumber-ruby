@@ -9,16 +9,12 @@ module Cucumber
 
   class Executor
 
-    PENDING = Proc.new{|| raise Pending}
-    PENDING.extend(CoreExt::CallIn)
-    PENDING.name = "PENDING"
-
     def initialize(formatter)
       @formatter = formatter
       @world_proc = lambda{ Object.new }
-      @step_procs = {}
       @before_procs = []
       @after_procs = []
+      @step_mother = StepMother.new
     end
     
     def register_world_proc(&proc)
@@ -36,20 +32,11 @@ module Cucumber
     end
 
     def register_step_proc(key, &proc)
-      regexp = case(key)
-      when String
-        Regexp.new("^#{key}$")
-      when Regexp
-        key
-      else
-        raise "Step patterns must be Regexp or String, but was: #{key.inspect}"
-      end
-      proc.extend(CoreExt::CallIn)
-      proc.name = key.inspect
-      @step_procs[regexp] = proc
+      @step_mother.register_step_proc(key, &proc)
     end
 
     def visit_stories(stories)
+      @step_mother.visit_stories(stories)
       @formatter.visit_stories(stories) if @formatter.respond_to?(:visit_stories)
       stories.accept(self)
       @formatter.dump
@@ -77,57 +64,17 @@ module Cucumber
     end
 
     def visit_step(step)
-      proc, args = find_step_proc(step)
       if @error.nil?
         begin
-          proc.call_in(@world, *args)
-        rescue ArgCountError => e
-          e.backtrace[0] = proc.backtrace_line
-          strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__-3}:in `visit_step'")
-          format_error(proc, strip_pos, step, e)
+          step.execute_in(@world)
+        rescue Pending => ignore
         rescue => e
-          visit_step_line = "#{__FILE__}:#{__LINE__-6}:in `visit_step'"
-          visit_step_pos = e.backtrace.index(visit_step_line)
-          if visit_step_pos
-            strip_pos = visit_step_pos - (Pending === e ? 3 : 2)
-          else
-            # This happens with rails, because they screw up the backtrace
-            # before we get here (injecting erb stactrace and such)
-      	  end
-          format_error(proc, strip_pos, step, e)
+          @error = e
         end
         @formatter.step_executed(step)
       else
         @formatter.step_skipped(step)
       end
-    end
-
-    def find_step_proc(step)
-      args = nil
-      regexp_proc_arr = @step_procs.select do |regexp, _|
-        if step.name =~ regexp
-          step.regexp = regexp
-          args = $~.captures 
-        end
-      end
-      if regexp_proc_arr.length > 1
-        regexen = regexp_proc_arr.transpose[0].map{|re| re.inspect}.join("\n  ")
-        raise "\"#{step.name}\" matches several steps:\n\n  #{regexen}\n\nPlease give your steps unambiguous names\n" 
-      end
-      regexp_proc = regexp_proc_arr[0]
-      regexp_proc.nil? ? [PENDING, []] : [regexp_proc[1], args]
-    end
-
-    def format_error(proc, strip_pos, step, e)
-      @error = e unless Pending === e
-      # Remove lines underneath the plain text step
-      e.backtrace[strip_pos..-1] = nil unless strip_pos.nil?
-      e.backtrace.flatten
-      # Replace the step line with something more readable
-      e.backtrace.replace(e.backtrace.map{|l| l.gsub(/`#{proc.meth}'/, "`#{step.keyword} #{proc.name}'")})
-      e.backtrace << "#{step.file}:#{step.line}:in `#{step.keyword} #{step.name}'"
-      step.error = e
-    end
-    
+    end    
   end
 end
