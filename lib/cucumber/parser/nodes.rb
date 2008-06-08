@@ -1,5 +1,16 @@
 module Cucumber
   module Parser
+    # This is the root node of a story execution
+    class StoriesNode
+      def initialize(files, parser)
+        @stories = files.map{|f| StoryNode.parse(f, parser)}
+      end
+
+      def accept(visitor)
+        @stories.each{|story| visitor.visit_story(story)}
+      end
+    end
+    
     class StoryNode < Treetop::Runtime::SyntaxNode
       def self.parse(file, parser)
         story = parser.parse(IO.read(file))

@@ -6,7 +6,6 @@ require 'treetop/ruby_extensions'
 require 'cucumber/version'
 require 'cucumber/cli'
 require 'cucumber/executor'
-require 'cucumber/stories'
 require 'cucumber/formatters'
 require 'cucumber/parser/story_parser'
 

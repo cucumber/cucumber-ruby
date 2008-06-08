@@ -8,7 +8,7 @@ module Cucumber
       
       before do
         p = Parser::StoryParser.new
-        @stories = Stories.new(Dir["#{SIMPLE_DIR}/*.story"], p)
+        @stories = Parser::StoriesNode.new(Dir["#{SIMPLE_DIR}/*.story"], p)
         @io = StringIO.new
         @formatter = HtmlFormatter.new(@io)
         @executor = Executor.new(@formatter)

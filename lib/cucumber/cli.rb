@@ -60,14 +60,14 @@ module Cucumber
   private
     
     def stories
-      Stories.new(@files, Parser::StoryParser.new)
+      Parser::StoriesNode.new(@files, Parser::StoryParser.new)
     end
     
     def formatter
       klass = {
         'progress' => Formatters::ProgressFormatter,
-        'html' => Formatters::HtmlFormatter,
-        'pretty' => Formatters::PrettyFormatter,
+        'html'     => Formatters::HtmlFormatter,
+        'pretty'   => Formatters::PrettyFormatter,
       }[@options[:format]]
       klass.new(STDOUT)
     end
