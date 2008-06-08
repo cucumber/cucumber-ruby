@@ -1,3 +1,5 @@
+require 'cucumber/core_ext/proc'
+
 module Cucumber
   class Pending < StandardError
   end
@@ -6,38 +8,9 @@ module Cucumber
   end
 
   class Executor
-    module CallIn
-      attr_accessor :name
-      
-      def call_in(obj, *args, &proc)
-        obj.extend(mod)
-        raise ArgCountError.new("The #{name} block takes #{arity2} arguments, but there are #{args.length} matched variables") if args.length != arity2
-        obj.__send__(meth, *args, &proc)
-      end
-
-      def arity2
-        arity == -1 ? 0 : arity
-      end
-      
-      def backtrace_line
-        inspect.match(/\d+@(.*)>/)[1] + ":in `#{name}'"
-      end
-      
-      def meth
-        @meth ||= "__cucumber_#{object_id}"
-      end
-
-      def mod
-        p = self
-        m = meth
-        @mod ||= Module.new do
-          define_method(m, &p)
-        end
-      end
-    end 
 
     PENDING = Proc.new{|| raise Pending}
-    PENDING.extend(CallIn)
+    PENDING.extend(CoreExt::CallIn)
     PENDING.name = "PENDING"
 
     def initialize(formatter)
@@ -53,12 +26,12 @@ module Cucumber
     end
 
     def register_before_proc(&proc)
-      proc.extend(CallIn)
+      proc.extend(CoreExt::CallIn)
       @before_procs << proc
     end
 
     def register_after_proc(&proc)
-      proc.extend(CallIn)
+      proc.extend(CoreExt::CallIn)
       @after_procs << proc
     end
 
@@ -71,7 +44,7 @@ module Cucumber
       else
         raise "Step patterns must be Regexp or String, but was: #{key.inspect}"
       end
-      proc.extend(CallIn)
+      proc.extend(CoreExt::CallIn)
       proc.name = key.inspect
       @step_procs[regexp] = proc
     end

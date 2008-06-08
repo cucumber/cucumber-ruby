@@ -19,7 +19,7 @@ module Cucumber
       @r.register_step_proc(/I should owe (\d*) cucumbers/)  { |n| @n.should == -n.to_i }
       @story.accept(@r)
       @f.dump
-      @io.string.should == "...\n"
+      @io.string.should == "\e[32m.\e[0m\e[32m.\e[0m\e[32m.\e[0m\n"
     end
 
     it "should print filtered backtrace with story line" do
@@ -29,7 +29,7 @@ module Cucumber
       @story.accept(@r)
       @f.dump
       @io.string.should == <<-STDOUT
-..F
+\e[32m.\e[0m\e[32m.\e[0m\e[31mF\e[0m
 
 1)
 dang

@@ -1,8 +1,8 @@
-require 'cucumber/pretty_printer'
+require 'term/ansicolor'
 
 module Cucumber
   class ProgressFormatter
-    include AnsiColours
+    include Term::ANSIColor
 
     def initialize(io)
       @io = (io == STDOUT) ? Kernel : io
@@ -22,7 +22,7 @@ module Cucumber
     end
     
     def step_skipped(step)
-      @io.print gray('_')
+      @io.print black('_')
     end
 
     def dump

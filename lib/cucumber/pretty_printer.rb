@@ -1,9 +1,9 @@
-require 'cucumber/ansi_colours'
+require 'term/ansicolor'
 require 'cucumber/core_ext/string'
 
 module Cucumber
   class PrettyPrinter
-    include AnsiColours
+    include Term::ANSIColor
     INDENT = "\n      "
     
     def initialize(io)
@@ -17,7 +17,7 @@ module Cucumber
     def header_executing(header)
       @io.puts if @story_newline
       @story_newline = true
-      @io.puts green("Story: ") + green(header.name)
+      @io.puts green("Story: #{header.name}")
     end
     
     def narrative_executing(narrative)
@@ -26,20 +26,20 @@ module Cucumber
   
     def scenario_executing(scenario)
       @io.puts
-      @io.puts green("  Scenario: ") + green(scenario.name)
+      @io.puts green("  Scenario: #{scenario.name}")
     end
   
     def step_executed(step)
       case(step.error)
       when Pending
         @pending << step
-        @io.puts yellow("    #{step.keyword} ") + yellow(step.name, " [PENDING]")
+        @io.puts yellow("    #{step.keyword} #{step.name}")
       when NilClass
         @passed << step
-        @io.puts green("    #{step.keyword} ") + green(step.gzub("\e[7;1;32m%s\e[0;1;32m"))
+        @io.puts green("    #{step.keyword} #{step.gzub{|p| negative(p) << green}}") 
       else
         @failed << step
-        @io.puts red("    #{step.keyword} ") + red(step.gzub("\e[7;1;31m%s\e[0;1;31m"), " [FAILED]")
+        @io.puts red("    #{step.keyword} #{step.gzub{|p| negative(p) << red}}") 
         @io.puts red("      #{step.error.message.split("\n").join(INDENT)}")
         @io.puts red("      #{step.error.backtrace.join(INDENT)}")
       end
@@ -47,7 +47,7 @@ module Cucumber
 
     def step_skipped(step)
       @skipped << step
-      @io.puts gray("    #{step.keyword} ") + gray(step.gzub("\e[7;1;30m%s\e[0;1;30m"), " [SKIPPED]")
+      @io.puts black("    #{step.keyword} #{step.gzub{|p| negative(p) << black}}") 
     end
     
     def dump
@@ -55,7 +55,7 @@ module Cucumber
       @io.puts green("#{@passed.length} steps passed") unless @passed.empty?
       @io.puts red("#{@failed.length} steps failed") unless @failed.empty?
       @io.puts yellow("#{@pending.length} steps pending") unless @pending.empty?
-      @io.puts gray("#{@skipped.length} steps skipped") unless @skipped.empty?
+      @io.puts black("#{@skipped.length} steps skipped") unless @skipped.empty?
     end
   end
 end

@@ -60,7 +60,7 @@ module Cucumber
       attr_accessor :error
       attr_accessor :regexp
 
-      def gzub(format, &proc)
+      def gzub(format=nil, &proc)
         name.gzub(regexp, format, &proc)
       end
 
