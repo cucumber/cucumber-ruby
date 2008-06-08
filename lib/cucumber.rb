@@ -7,9 +7,7 @@ require 'cucumber/version'
 require 'cucumber/cli'
 require 'cucumber/executor'
 require 'cucumber/stories'
-require 'cucumber/progress_formatter'
-require 'cucumber/pretty_printer'
-require 'cucumber/visitors/html_formatter'
+require 'cucumber/formatters'
 require 'cucumber/parser/story_parser'
 
 module Cucumber

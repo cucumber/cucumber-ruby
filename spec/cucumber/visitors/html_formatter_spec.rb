@@ -1,9 +1,8 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'stringio'
-require 'cucumber/visitors/html_formatter'
 
 module Cucumber
-  module Visitors
+  module Formatters
     describe HtmlFormatter do
       SIMPLE_DIR = File.dirname(__FILE__) + '/../../../examples/simple'
       

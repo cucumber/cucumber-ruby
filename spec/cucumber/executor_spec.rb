@@ -1,12 +1,11 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 require 'stringio'
-require 'cucumber/progress_formatter'
 
 module Cucumber
   describe Executor do
     before do # TODO: Way more setup and duplication of lib code. Use lib code!
       @io = StringIO.new
-      @f = ProgressFormatter.new(@io)
+      @f = Formatters::ProgressFormatter.new(@io)
       @r = Executor.new(@f)
       @story_file = File.dirname(__FILE__) + '/sell_cucumbers.story'
       @parser = Parser::StoryParser.new
@@ -33,7 +32,7 @@ module Cucumber
 
 1)
 dang
-#{__FILE__}:28:in `Then /I should owe (\\d*) cucumbers/'
+#{__FILE__}:27:in `Then /I should owe (\\d*) cucumbers/'
 #{@story_file}:9:in `Then I should owe 7 cucumbers'
 STDOUT
     end

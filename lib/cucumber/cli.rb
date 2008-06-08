@@ -65,9 +65,9 @@ module Cucumber
     
     def formatter
       klass = {
-        'progress' => ProgressFormatter,
-        'html' => Visitors::HtmlFormatter,
-        'pretty' => PrettyPrinter,
+        'progress' => Formatters::ProgressFormatter,
+        'html' => Formatters::HtmlFormatter,
+        'pretty' => Formatters::PrettyFormatter,
       }[@options[:format]]
       klass.new(STDOUT)
     end

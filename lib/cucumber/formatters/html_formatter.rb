@@ -1,5 +1,5 @@
 module Cucumber
-  module Visitors
+  module Formatters
     class HtmlFormatter
       def initialize(io)
         @io = io
