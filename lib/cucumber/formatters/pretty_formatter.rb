@@ -1,10 +1,10 @@
-require 'term/ansicolor'
-require 'cucumber/core_ext/string'
+require 'cucumber/formatters/ansicolor'
 
 module Cucumber
   module Formatters
     class PrettyFormatter
-      include Term::ANSIColor
+      include ANSIColor
+
       INDENT = "\n      "
     
       def initialize(io)
@@ -18,45 +18,46 @@ module Cucumber
       def header_executing(header)
         @io.puts if @story_newline
         @story_newline = true
-        @io.puts green("Story: #{header.name}")
+        @io.puts passed("Story: #{header.name}")
       end
     
       def narrative_executing(narrative)
-        @io.puts green(narrative.text_value)
+        @io.puts passed(narrative.text_value)
       end
   
       def scenario_executing(scenario)
         @io.puts
-        @io.puts green("  Scenario: #{scenario.name}")
+        @io.puts passed("  Scenario: #{scenario.name}")
       end
   
       def step_executed(step)
         case(step.error)
         when Pending
           @pending << step
-          @io.puts yellow("    #{step.keyword} #{step.name}")
+          @io.puts pending("    #{step.keyword} #{step.name}")
         when NilClass
           @passed << step
-          @io.puts green("    #{step.keyword} #{step.gzub{|p| negative(p) << green}}") 
+          @io.puts passed("    #{step.keyword} #{step.gzub{|p| parameter(p) << passed}}") 
         else
           @failed << step
-          @io.puts red("    #{step.keyword} #{step.gzub{|p| negative(p) << red}}") 
-          @io.puts red("      #{step.error.message.split("\n").join(INDENT)}")
-          @io.puts red("      #{step.error.backtrace.join(INDENT)}")
+          @io.puts failed("    #{step.keyword} #{step.gzub{|p| parameter(p) << failed}}") 
+          @io.puts failed("      #{step.error.message.split("\n").join(INDENT)}")
+          @io.puts failed("      #{step.error.backtrace.join(INDENT)}")
         end
       end
 
       def step_skipped(step)
         @skipped << step
-        @io.puts black("    #{step.keyword} #{step.gzub{|p| negative(p) << black}}") 
+        @io.puts skipped("    #{step.keyword} #{step.gzub{|p| parameter(p) << black}}") 
       end
     
       def dump
         @io.puts
-        @io.puts green("#{@passed.length} steps passed") unless @passed.empty?
-        @io.puts red("#{@failed.length} steps failed") unless @failed.empty?
-        @io.puts yellow("#{@pending.length} steps pending") unless @pending.empty?
-        @io.puts black("#{@skipped.length} steps skipped") unless @skipped.empty?
+        @io.puts passed("#{@passed.length} steps passed") unless @passed.empty?
+        @io.puts failed("#{@failed.length} steps failed") unless @failed.empty?
+        @io.puts pending("#{@pending.length} steps pending") unless @pending.empty?
+        @io.puts skipped("#{@skipped.length} steps skipped") unless @skipped.empty?
+        @io.print reset
       end
     end
   end

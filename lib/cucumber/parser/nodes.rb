@@ -1,3 +1,5 @@
+require 'cucumber/core_ext/string'
+
 module Cucumber
   module Parser
     # This is the root node of a story execution
