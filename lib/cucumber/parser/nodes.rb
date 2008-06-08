@@ -58,6 +58,11 @@ module Cucumber
       end
 
       attr_accessor :error
+      attr_accessor :regexp
+
+      def gzub(format, &proc)
+        name.gzub(regexp, format, &proc)
+      end
 
       def line
         input.line_of(interval.first)

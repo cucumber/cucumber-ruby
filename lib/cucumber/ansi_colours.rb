@@ -5,8 +5,8 @@ module Cucumber
       :red     => "\e[1;31m",
       :green   => "\e[1;32m",
       :yellow  => "\e[1;33m",
-      :blue    => "\e[0;34m",
-      :magenta => "\e[0;35m",
+      :blue    => "\e[1;34m",
+      :magenta => "\e[1;35m",
       :gray    => "\e[1;30m"
     }
     ANSI_NEUTRAL = "\e[0m"

@@ -1,4 +1,5 @@
 require 'cucumber/ansi_colours'
+require 'cucumber/core_ext/string'
 
 module Cucumber
   class PrettyPrinter
@@ -16,7 +17,7 @@ module Cucumber
     def header_executing(header)
       @io.puts if @story_newline
       @story_newline = true
-      @io.puts yellow("Story: ") + green(header.name)
+      @io.puts green("Story: ") + green(header.name)
     end
     
     def narrative_executing(narrative)
@@ -25,7 +26,7 @@ module Cucumber
   
     def scenario_executing(scenario)
       @io.puts
-      @io.puts yellow("  Scenario: ") + green(scenario.name)
+      @io.puts green("  Scenario: ") + green(scenario.name)
     end
   
     def step_executed(step)
@@ -35,18 +36,18 @@ module Cucumber
         @io.puts yellow("    #{step.keyword} ") + yellow(step.name, " [PENDING]")
       when NilClass
         @passed << step
-        @io.puts yellow("    #{step.keyword} ") + green(step.name)
+        @io.puts green("    #{step.keyword} ") + green(step.gzub("\e[7;1;32m%s\e[0;1;32m"))
       else
         @failed << step
-        @io.puts yellow("    #{step.keyword} ") + red(step.name, " [FAILED]")
-        @io.puts    red("      #{step.error.message.split("\n").join(INDENT)}")
-        @io.puts    red("      #{step.error.backtrace.join(INDENT)}")
+        @io.puts red("    #{step.keyword} ") + red(step.gzub("\e[7;1;31m%s\e[0;1;31m"), " [FAILED]")
+        @io.puts red("      #{step.error.message.split("\n").join(INDENT)}")
+        @io.puts red("      #{step.error.backtrace.join(INDENT)}")
       end
     end
 
     def step_skipped(step)
       @skipped << step
-      @io.puts yellow("    #{step.keyword} ") + gray(step.name, " [SKIPPED]")
+      @io.puts gray("    #{step.keyword} ") + gray(step.gzub("\e[7;1;30m%s\e[0;1;30m"), " [SKIPPED]")
     end
     
     def dump

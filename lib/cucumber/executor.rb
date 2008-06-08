@@ -104,8 +104,8 @@ module Cucumber
     end
 
     def visit_step(step)
+      proc, args = find_step_proc(step)
       if @error.nil?
-        proc, args = find_step_proc(step.name)
         begin
           proc.call_in(@world, *args)
         rescue ArgCountError => e
@@ -129,16 +129,17 @@ module Cucumber
       end
     end
 
-    def find_step_proc(name)
+    def find_step_proc(step)
       args = nil
       regexp_proc_arr = @step_procs.select do |regexp, _|
-        if name =~ regexp
+        if step.name =~ regexp
+          step.regexp = regexp
           args = $~.captures 
         end
       end
       if regexp_proc_arr.length > 1
         regexen = regexp_proc_arr.transpose[0].map{|re| re.inspect}.join("\n  ")
-        raise "\"#{name}\" matches several steps:\n\n  #{regexen}\n\nPlease give your steps unambiguous names\n" 
+        raise "\"#{step.name}\" matches several steps:\n\n  #{regexen}\n\nPlease give your steps unambiguous names\n" 
       end
       regexp_proc = regexp_proc_arr[0]
       regexp_proc.nil? ? [PENDING, []] : [regexp_proc[1], args]

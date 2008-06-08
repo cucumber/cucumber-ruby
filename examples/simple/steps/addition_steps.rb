@@ -22,7 +22,7 @@ end
 After do
 end
 
-Given /I have entered (\d+)/ do |n|
+Given /I have entered (\d+) into the calculator/ do |n|
   @calc.push n.to_i
 end
 
@@ -36,6 +36,10 @@ When 'I divide' do
   @result = @calc.divide
 end
 
-Then /the result should be (\d*)/ do |result|
+Then /the result should be (\d*) on the screen/ do |result|
   @result.should == result.to_i
+end
+
+Then /the result class should be (\w*)/ do |class_name|
+  @result.class.name.should == class_name
 end
