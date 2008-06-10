@@ -2,6 +2,8 @@ require 'cucumber/parser/top_down_visitor'
 require 'cucumber/core_ext/proc'
 
 module Cucumber
+  # A StepMother keeps track of step procs and assigns them
+  # to each step when visiting the tree.
   class StepMother < Parser::TopDownVisitor
     def initialize
       @step_procs = {}

@@ -9,12 +9,12 @@ module Cucumber
 
   class Executor
 
-    def initialize(formatter)
+    def initialize(formatter, step_mother)
       @formatter = formatter
       @world_proc = lambda{ Object.new }
       @before_procs = []
       @after_procs = []
-      @step_mother = StepMother.new
+      @step_mother = step_mother
     end
     
     def register_world_proc(&proc)
@@ -29,10 +29,6 @@ module Cucumber
     def register_after_proc(&proc)
       proc.extend(CoreExt::CallIn)
       @after_procs << proc
-    end
-
-    def register_step_proc(key, &proc)
-      @step_mother.register_step_proc(key, &proc)
     end
 
     def visit_stories(stories)

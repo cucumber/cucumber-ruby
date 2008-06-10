@@ -1,18 +1,20 @@
 require 'optparse'
 require 'cucumber/step_methods'
 
-include Cucumber::StepMethods
-
 module Cucumber
   class CLI
-    def self.execute
-      parse(ARGV).execute!
-    end
+    class << self
+      attr_writer :step_mother
     
-    def self.parse(args)
-      cli = new(args)
-      cli.parse_options!
-      cli
+      def execute
+        parse(ARGV).execute!(@step_mother)
+      end
+
+      def parse(args)
+        cli = new(args)
+        cli.parse_options!
+        cli
+      end
     end
 
     def initialize(args)
@@ -41,9 +43,9 @@ module Cucumber
       @files = @args.map{|path| File.directory?(path) ? Dir["#{path}/**/*.story"] : path}.flatten
     end
     
-    def execute!
+    def execute!(step_mother)
       require "cucumber/parser/story_parser_#{@options[:lang]}"
-      $executor = Executor.new(formatter)
+      $executor = Executor.new(formatter, step_mother)
       libs = @options[:require].map{|path| File.directory?(path) ? Dir["#{path}/**/*.rb"] : path}.flatten
       libs.each do |lib|
         begin
@@ -74,3 +76,7 @@ module Cucumber
     
   end
 end
+
+# Hook the toplevel StepMother to the CLI
+extend Cucumber::StepMethods
+Cucumber::CLI.step_mother = step_mother

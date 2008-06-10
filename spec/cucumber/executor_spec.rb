@@ -6,33 +6,39 @@ module Cucumber
     before do # TODO: Way more setup and duplication of lib code. Use lib code!
       @io = StringIO.new
       @f = Formatters::ProgressFormatter.new(@io)
-      @r = Executor.new(@f)
+      @m = StepMother.new
+      @r = Executor.new(@f, @m)
       @story_file = File.dirname(__FILE__) + '/sell_cucumbers.story'
       @parser = Parser::StoryParser.new
       @stories = Parser::StoriesNode.new([@story_file], @parser)
     end
 
     it "should pass when blocks are ok" do
-      @r.register_step_proc(/there are (\d*) cucumbers/)     { |n| @n = n.to_i }
-      @r.register_step_proc(/I sell (\d*) cucumbers/)        { |n| @n -= n.to_i }
-      @r.register_step_proc(/I should owe (\d*) cucumbers/)  { |n| @n.should == -n.to_i }
+      @m.register_step_proc(/there are (\d*) cucumbers/)     { |n| @n = n.to_i }
+      @m.register_step_proc(/I sell (\d*) cucumbers/)        { |n| @n -= n.to_i }
+      @m.register_step_proc(/I should owe (\d*) cucumbers/)  { |n| @n.should == -n.to_i }
       @r.visit_stories(@stories)
       @f.dump
-      @io.string.should == "\e[32m.\e[0m\e[32m.\e[0m\e[32m.\e[0m\n\n"
+      @io.string.should == (<<-STDOUT).strip
+\e[32m.\e[0m\e[32m.\e[0m\e[32m.\e[0m\e[31m\n\e[0m\e[31m
+\e[0m
+STDOUT
+
     end
 
     it "should print filtered backtrace with story line" do
-      @r.register_step_proc(/there are (\d*) cucumbers/)     { |n| @n = n }
-      @r.register_step_proc(/I sell (\d*) cucumbers/)        { |n| @n = n }
-      @r.register_step_proc(/I should owe (\d*) cucumbers/) { |n| raise "dang" }
+      @m.register_step_proc(/there are (\d*) cucumbers/)     { |n| @n = n }
+      @m.register_step_proc(/I sell (\d*) cucumbers/)        { |n| @n = n }
+      @m.register_step_proc(/I should owe (\d*) cucumbers/) { |n| raise "dang" }
       @r.visit_stories(@stories)
-      @io.string.should == <<-STDOUT
-\e[32m.\e[0m\e[32m.\e[0m\e[31mF\e[0m
+      @io.string.should == (<<-STDOUT).strip
+\e[32m.\e[0m\e[32m.\e[0m\e[31mF\e[0m\e[31m
 
 1)
 dang
-#{__FILE__}:27:in `Then /I should owe (\\d*) cucumbers/'
+#{__FILE__}:32:in `Then /I should owe (\\d*) cucumbers/'
 #{@story_file}:9:in `Then I should owe 7 cucumbers'
+\e[0m
 STDOUT
     end
 

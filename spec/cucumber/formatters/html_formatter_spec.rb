@@ -11,14 +11,14 @@ module Cucumber
         @stories = Parser::StoriesNode.new(Dir["#{SIMPLE_DIR}/*.story"], p)
         @io = StringIO.new
         @formatter = HtmlFormatter.new(@io)
-        @executor = Executor.new(@formatter)
       end
       
       it "should render HTML" do
-        @executor.visit_stories(@stories)
-        expected_stories = File.dirname(__FILE__) + '/stories.html'
-        #File.open(expected_stories, 'w') {|io| io.write(@io.string)}
-        @io.string.should == IO.read(expected_stories)
+        @formatter.visit_stories(@stories)
+        @formatter.dump
+        expected_html = File.dirname(__FILE__) + '/stories.html'
+        #File.open(expected_html, 'w') {|io| io.write(@io.string)}
+        @io.string.should == IO.read(expected_html)
       end
     end
   end
