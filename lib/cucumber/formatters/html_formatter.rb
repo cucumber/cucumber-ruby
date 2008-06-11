@@ -201,7 +201,7 @@ HTML
       end
 
       def visit_step(step)
-        @io.puts "                <li class=\"new\" id=\"#{step.id}\">#{step.name}</li>"
+        @io.puts "                <li class=\"new\" id=\"#{step.id}\">#{step.gzub('<span>%s</span>')}</li>"
       end
       
       def step_executed(step)
