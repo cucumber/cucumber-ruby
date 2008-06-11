@@ -24,6 +24,10 @@ module Cucumber
     end
     
     def visit_step(step)
+      # Maybe we shouldn't attach the regexp etc to
+      # the step? Maybe steps pull them out as needed?
+      # Do we then have to attach ourself to the step instead?
+      # What would we gain from a pull design?
       @step_procs.each do |regexp, proc|
         if step.name =~ regexp
           step.attach(regexp, proc, $~.captures)

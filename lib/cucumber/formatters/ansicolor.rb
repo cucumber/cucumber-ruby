@@ -1,8 +1,9 @@
 require 'term/ansicolor'
 begin
-  require 'Win32/Console/ANSI' if PLATFORM =~ /win32/
+  require 'Win32/Console/ANSI' if PLATFORM =~ /mswin|mingw/
 rescue LoadError
-  raise 'You must gem install win32console to use color on Windows'
+  STDERR.puts "You must gem install win32console to get coloured output on this ruby platform (#{PLATFORM})"
+  ::Term::ANSIColor.coloring = false
 end
 
 module Cucumber
@@ -23,7 +24,7 @@ module Cucumber
       alias passed green
       alias failed red
       alias pending yellow
-      alias skipped black
+      alias skipped blue
       alias parameter underline
       
       if ENV['CUCUMBER_COLORS']
