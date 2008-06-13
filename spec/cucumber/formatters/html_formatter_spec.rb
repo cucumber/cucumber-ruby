@@ -48,7 +48,7 @@ module Cucumber
         @me.visit_stories(@stories) # output result of execution
         @formatter.dump
         expected_html = File.dirname(__FILE__) + '/stories.html'
-        File.open(expected_html, 'w') {|io| io.write(@io.string)}
+        #File.open(expected_html, 'w') {|io| io.write(@io.string)}
         @io.string.should == IO.read(expected_html)
       end
     end

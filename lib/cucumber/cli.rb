@@ -40,7 +40,10 @@ module Cucumber
         end
       end.parse!
       # Whatever is left after option parsing
-      @files = @args.map{|path| File.directory?(path) ? Dir["#{path}/**/*.story"] : path}.flatten
+      @files = @args.map do |path|
+        path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
+        File.directory?(path) ? Dir["#{path}/**/*.story"] : path
+      end.flatten
     end
     
     def execute!(step_mother)

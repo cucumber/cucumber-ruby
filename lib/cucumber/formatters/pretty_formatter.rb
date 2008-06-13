@@ -48,7 +48,7 @@ module Cucumber
 
       def step_skipped(step)
         @skipped << step
-        @io.puts skipped("    #{step.keyword} #{step.gzub{|p| parameter(p) << black}}") 
+        @io.puts skipped("    #{step.keyword} #{step.gzub{|p| parameter(p) << skipped}}") 
       end
     
       def dump
