@@ -8,6 +8,7 @@ module Cucumber
   end
 
   class Executor
+    attr_reader :failed
 
     def initialize(formatter, step_mother)
       @formatter = formatter
@@ -65,6 +66,7 @@ module Cucumber
           step.execute_in(@world)
         rescue Pending => ignore
         rescue => e
+          @failed = true
           @error = e
         end
         @formatter.step_executed(step)

@@ -23,10 +23,13 @@ module Cucumber
     end
     
     def parse_options!
-      @options = { :require => [], :lang => 'en', :format => 'progress', :dry_run => false }
+      @options = { :require => nil, :lang => 'en', :format => 'pretty', :dry_run => false }
       @args.options do |opts|
         opts.banner = "Usage: cucumber [options] FILES|DIRS"
-        opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require the library, before executing your stories") do |v|
+        opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require files before executing the stories.",
+          "If this option is not specified, all *.rb files that",
+          "are siblings or below the stories will be autorequired") do |v|
+          @options[:require] ||= []
           @options[:require] << v
         end
         opts.on("-l LANG", "--language LANG", "Specify language for stories (Default: #{@options[:lang]})") do |v|
@@ -47,9 +50,18 @@ module Cucumber
     end
     
     def execute!(step_mother)
-      require "cucumber/parser/story_parser_#{@options[:lang]}"
       $executor = Executor.new(formatter, step_mother)
-      libs = @options[:require].map{|path| File.directory?(path) ? Dir["#{path}/**/*.rb"] : path}.flatten
+      require_files
+      $executor.visit_stories(stories)
+      exit 1 if $executor.failed
+    end
+    
+  private
+    
+    def require_files
+      require "cucumber/parser/story_parser_#{@options[:lang]}"
+      requires = @options[:require] || @files.map{|f| File.directory?(f) ? f : File.dirname(f)}.uniq
+      libs = requires.map{|path| File.directory?(path) ? Dir["#{path}/**/*.rb"] : path}.flatten
       libs.each do |lib|
         begin
           require lib
@@ -58,11 +70,7 @@ module Cucumber
           raise e
         end
       end
-      
-      $executor.visit_stories(stories)
     end
-    
-  private
     
     def stories
       Parser::StoriesNode.new(@files, Parser::StoryParser.new)
