@@ -46,8 +46,6 @@ module Cucumber
         @steps << RubyStep.new('And', name)
       end
 
-    protected
-
       attr_reader :name, :steps
 
     end
@@ -58,11 +56,10 @@ module Cucumber
     
       def initialize(keyword, name)
         @keyword, @name = keyword, name
+        @file, @line, _ = *caller[2].split(':')
       end
 
-    #protected
-
-      attr_reader :keyword, :name
+      attr_reader :keyword, :name, :file, :line
 
     end
   end

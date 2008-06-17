@@ -76,6 +76,7 @@ module Cucumber
       end
 
       def execute_in(world)
+        strip_pos = nil
         begin
           proc.call_in(world, *@args)
         rescue ArgCountError => e
@@ -86,7 +87,7 @@ module Cucumber
           method_line = "#{__FILE__}:#{__LINE__-6}:in `execute_in'"
           method_line_pos = e.backtrace.index(method_line)
           if method_line_pos
-            strip_pos = method_line_pos - (Pending === e ? 3 : 2)
+            strip_pos = method_line_pos - (Pending === e ? 3 : 2) 
           else
             # This happens with rails, because they screw up the backtrace
             # before we get here (injecting erb stactrace and such)
@@ -101,7 +102,7 @@ module Cucumber
         e.backtrace[strip_pos..-1] = nil unless strip_pos.nil?
         e.backtrace.flatten
         # Replace the step line with something more readable
-        e.backtrace.replace(e.backtrace.map{|l| l.gsub(/`#{@proc.meth}'/, "`#{keyword} #{@proc.name}'")})
+        e.backtrace.replace(e.backtrace.map{|l| l.gsub(/`#{proc.meth}'/, "`#{keyword} #{proc.name}'")})
         e.backtrace << "#{file}:#{line}:in `#{keyword} #{name}'"
         raise e
       end
