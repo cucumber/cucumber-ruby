@@ -1,13 +1,14 @@
 require 'optparse'
 require 'cucumber/step_methods'
+require 'cucumber/ruby_tree'
 
 module Cucumber
   class CLI
     class << self
-      attr_writer :step_mother
+      attr_writer :step_mother, :stories
     
       def execute
-        parse(ARGV).execute!(@step_mother)
+        parse(ARGV).execute!(@step_mother, @stories)
       end
 
       def parse(args)
@@ -49,9 +50,11 @@ module Cucumber
       end.flatten
     end
     
-    def execute!(step_mother)
+    def execute!(step_mother, stories)
       $executor = Executor.new(formatter, step_mother)
       require_files
+      load_plain_text_stories(stories)
+#      $executor.visit_stories(stories)
       $executor.visit_stories(stories)
       exit 1 if $executor.failed
     end
@@ -60,8 +63,11 @@ module Cucumber
     
     def require_files
       require "cucumber/parser/story_parser_#{@options[:lang]}"
-      requires = @options[:require] || @files.map{|f| File.directory?(f) ? f : File.dirname(f)}.uniq
-      libs = requires.map{|path| File.directory?(path) ? Dir["#{path}/**/*.rb"] : path}.flatten
+      requires = @options[:require] || @args.map{|f| File.directory?(f) ? f : File.dirname(f)}.uniq
+      libs = requires.map do |path| 
+        path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
+        File.directory?(path) ? Dir["#{path}/**/*.rb"] : path
+      end.flatten
       libs.each do |lib|
         begin
           require lib
@@ -72,8 +78,11 @@ module Cucumber
       end
     end
     
-    def stories
-      Parser::StoriesNode.new(@files, Parser::StoryParser.new)
+    def load_plain_text_stories(stories)
+      parser = Parser::StoryParser.new
+      @files.each do |f|
+        stories << Parser::StoryNode.parse(f, parser)
+      end
     end
     
     def formatter
@@ -89,5 +98,9 @@ module Cucumber
 end
 
 # Hook the toplevel StepMother to the CLI
+# TODO: Hook in a RubyStories object on toplevel for pure ruby stories
 extend Cucumber::StepMethods
 Cucumber::CLI.step_mother = step_mother
+
+extend(Cucumber::RubyTree)
+Cucumber::CLI.stories = stories

@@ -217,13 +217,13 @@ HTML
       end
       
       def visit_header(header)
-        @io.puts "        <dt>Story: #{header.name}</dt>"
+        @io.puts "        <dt>Story: #{header}</dt>"
       end
 
       def visit_narrative(narrative)
         @io.puts "        <dd>"
         @io.puts "          <p>"
-        @io.puts narrative.text_value.gsub(/\n/, "<br />\n")
+        @io.puts narrative.gsub(/\n/, "<br />\n")
         @io.puts "          </p>"
       end
 

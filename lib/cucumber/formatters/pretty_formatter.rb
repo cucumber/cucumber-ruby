@@ -18,15 +18,17 @@ module Cucumber
       def header_executing(header)
         @io.puts if @story_newline
         @story_newline = true
-        @io.puts passed("Story: #{header.name}")
+        # TODO: i18n Story
+        @io.puts passed("Story: #{header}")
       end
     
       def narrative_executing(narrative)
-        @io.puts passed(narrative.text_value)
+        @io.puts passed(narrative)
       end
   
       def scenario_executing(scenario)
         @io.puts
+        # TODO: i18n Secnario
         @io.puts passed("  Scenario: #{scenario.name}")
       end
   

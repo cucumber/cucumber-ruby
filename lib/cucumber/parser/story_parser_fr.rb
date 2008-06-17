@@ -8,11 +8,11 @@ module Story
   end
 
   module Story0
-    def header
+    def header_node
       elements[0]
     end
 
-    def narrative
+    def narrative_node
       elements[1]
     end
 
@@ -30,10 +30,10 @@ module Story
     end
 
     i0, s0 = index, []
-    r1 = _nt_header
+    r1 = _nt_header_node
     s0 << r1
     if r1
-      r2 = _nt_narrative
+      r2 = _nt_narrative_node
       s0 << r2
       if r2
         s3, i3 = [], index
@@ -62,7 +62,7 @@ module Story
     return r0
   end
 
-  module Header0
+  module HeaderNode0
     def space
       elements[1]
     end
@@ -72,10 +72,10 @@ module Story
     end
   end
 
-  def _nt_header
+  def _nt_header_node
     start_index = index
-    if node_cache[:header].has_key?(index)
-      cached = node_cache[:header][index]
+    if node_cache[:header_node].has_key?(index)
+      cached = node_cache[:header_node][index]
       @index = cached.interval.end if cached
       return cached
     end
@@ -99,24 +99,24 @@ module Story
     end
     if s0.last
       r0 = (Cucumber::Parser::HeaderNode).new(input, i0...index, s0)
-      r0.extend(Header0)
+      r0.extend(HeaderNode0)
     else
       self.index = i0
       r0 = nil
     end
 
-    node_cache[:header][start_index] = r0
+    node_cache[:header_node][start_index] = r0
 
     return r0
   end
 
-  module Narrative0
+  module NarrativeNode0
   end
 
-  def _nt_narrative
+  def _nt_narrative_node
     start_index = index
-    if node_cache[:narrative].has_key?(index)
-      cached = node_cache[:narrative][index]
+    if node_cache[:narrative_node].has_key?(index)
+      cached = node_cache[:narrative_node][index]
       @index = cached.interval.end if cached
       return cached
     end
@@ -145,7 +145,7 @@ module Story
       end
       if s1.last
         r1 = (SyntaxNode).new(input, i1...index, s1)
-        r1.extend(Narrative0)
+        r1.extend(NarrativeNode0)
       else
         self.index = i1
         r1 = nil
@@ -158,7 +158,7 @@ module Story
     end
     r0 = Cucumber::Parser::NarrativeNode.new(input, i0...index, s0)
 
-    node_cache[:narrative][start_index] = r0
+    node_cache[:narrative_node][start_index] = r0
 
     return r0
   end

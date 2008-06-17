@@ -36,7 +36,10 @@ module Cucumber
       
       before do
         p = Parser::StoryParser.new
-        @stories = Parser::StoriesNode.new(Dir["#{SIMPLE_DIR}/*.story"], p)
+        @stories = Tree::Stories.new
+      	Dir["#{SIMPLE_DIR}/*.story"].each do |f|
+          @stories << Parser::StoryNode.parse(f, p)
+        end
         @io = StringIO.new
         @formatter = HtmlFormatter.new(@io)
         @me = MiniExecutor.new(@formatter)
@@ -49,7 +52,7 @@ module Cucumber
         @formatter.dump
         expected_html = File.dirname(__FILE__) + '/stories.html'
         #File.open(expected_html, 'w') {|io| io.write(@io.string)}
-        @io.string.should == IO.read(expected_html)
+        @io.string.should eql(IO.read(expected_html))
       end
     end
   end

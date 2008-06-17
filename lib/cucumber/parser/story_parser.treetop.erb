@@ -1,13 +1,13 @@
 grammar Story
   rule story
-    header narrative scenario_nodes:scenario* <Cucumber::Parser::StoryNode>
+    header_node narrative_node scenario_nodes:scenario* <Cucumber::Parser::StoryNode>
   end
 
-  rule header
+  rule header_node
     '<%= words['story'] %>:' space sentence_line <Cucumber::Parser::HeaderNode>
   end
 
-  rule narrative
+  rule narrative_node
     (!scenario_start .)* <Cucumber::Parser::NarrativeNode>
   end
 

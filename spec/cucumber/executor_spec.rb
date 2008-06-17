@@ -10,7 +10,8 @@ module Cucumber
       @r = Executor.new(@f, @m)
       @story_file = File.dirname(__FILE__) + '/sell_cucumbers.story'
       @parser = Parser::StoryParser.new
-      @stories = Parser::StoriesNode.new([@story_file], @parser)
+      @stories = Tree::Stories.new
+      @stories << Parser::StoryNode.parse(@story_file, @parser)
     end
 
     it "should pass when blocks are ok" do
@@ -36,7 +37,7 @@ STDOUT
 
 1)
 dang
-#{__FILE__}:32:in `Then /I should owe (\\d*) cucumbers/'
+#{__FILE__}:33:in `Then /I should owe (\\d*) cucumbers/'
 #{@story_file}:9:in `Then I should owe 7 cucumbers'
 \e[0m
 STDOUT
