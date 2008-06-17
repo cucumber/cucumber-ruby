@@ -3,16 +3,19 @@ require 'spec'
 case PLATFORM
 when /darwin/
   require 'safariwatir'
-  Watir::Browser = Watir::Safari
+  Browser = Watir::Safari
 when /win32/
   require 'watir'
-  Watir::Browser = Watir::IE
+  Browser = Watir::IE
+when /java/
+  require 'celerity'
+  Browser = Celerity::Browser
 else
-  raise "Can't use Watir on #{PLATFORM}"
+  raise "Can't do web stories on #{PLATFORM}"
 end
 
 Before do
-  @b = Watir::Browser.new
+  @b = Browser.new
 end
 
 After do
