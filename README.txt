@@ -26,7 +26,7 @@ stack trace, along with regular ruby files.
 * TODO: OK Actually execute the stories
 * TODO: Make rake run specs by default
 * TODO: OK Make it work with pure ruby regexen
-* TODO: Make it work with strings
+* TODO: Make it work with string steps
 * TODO: bin/cucumber --require [dir|file|glob]* --language no --format [file]*
 * TODO: Pending steps shold print a block of code that can be pasted into code
 * TODO: cucumber --where "Some text from a step" that prints "__FILE__:__LINE__ (STEP PATTERN)" 
@@ -38,6 +38,7 @@ stack trace, along with regular ruby files.
 * TODO: Call steps from steps
 * TODO: i18n in ruby too
 * TODO: Don't load any treetop files if no .story files are found
+* TODO: Summary prints execution time
 
 == SYNOPSIS:
 

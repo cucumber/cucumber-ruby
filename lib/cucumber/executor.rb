@@ -9,6 +9,10 @@ module Cucumber
 
   class Executor
     attr_reader :failed
+    
+    def line=(line)
+      @line = line
+    end
 
     def initialize(formatter, step_mother)
       @formatter = formatter
@@ -33,6 +37,7 @@ module Cucumber
     end
 
     def visit_stories(stories)
+      raise "Line number can only be specified when there is 1 story. There were #{stories.length}." if @line && stories.length != 1
       @step_mother.visit_stories(stories)
       @formatter.visit_stories(stories) if @formatter.respond_to?(:visit_stories)
       stories.accept(self)
@@ -52,12 +57,14 @@ module Cucumber
     end
 
     def visit_scenario(scenario)
-      @error = nil
-      @world = @world_proc.call
-      @formatter.scenario_executing(scenario) if @formatter.respond_to?(:scenario_executing)
-      @before_procs.each{|p| p.call_in(@world, *[])}
-      scenario.accept(self)
-      @after_procs.each{|p| p.call_in(@world, *[])}
+      if @line.nil? || scenario.at_line?(@line)
+        @error = nil
+        @world = @world_proc.call
+        @formatter.scenario_executing(scenario) if @formatter.respond_to?(:scenario_executing)
+        @before_procs.each{|p| p.call_in(@world, *[])}
+        scenario.accept(self)
+        @after_procs.each{|p| p.call_in(@world, *[])}
+      end
     end
 
     def visit_step(step)

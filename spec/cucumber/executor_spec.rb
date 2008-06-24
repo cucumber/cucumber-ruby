@@ -21,7 +21,7 @@ module Cucumber
       @r.visit_stories(@stories)
       @f.dump
       @io.string.should == (<<-STDOUT).strip
-\e[32m.\e[0m\e[32m.\e[0m\e[32m.\e[0m\e[31m\n\e[0m\e[31m
+\e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[31m\n\e[0m\e[0m\e[1m\e[31m
 \e[0m
 STDOUT
 
@@ -33,7 +33,7 @@ STDOUT
       @m.register_step_proc(/I should owe (\d*) cucumbers/) { |n| raise "dang" }
       @r.visit_stories(@stories)
       @io.string.should == (<<-STDOUT).strip
-\e[32m.\e[0m\e[32m.\e[0m\e[31mF\e[0m\e[31m
+\e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[31mF\e[0m\e[0m\e[0m\e[1m\e[31m
 
 1)
 dang
