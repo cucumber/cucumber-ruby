@@ -59,6 +59,10 @@ module Cucumber
       def steps
         step_nodes.elements
       end
+
+      def line
+        input.line_of(interval.first)
+      end
     end
     
     class StepNode < Treetop::Runtime::SyntaxNode

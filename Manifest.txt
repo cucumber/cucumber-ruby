@@ -60,6 +60,7 @@ script/txt2html.cmd
 setup.rb
 spec/cucumber/core_ext/string_spec.rb
 spec/cucumber/executor_spec.rb
+spec/cucumber/formatters/ansicolor_spec.rb
 spec/cucumber/formatters/html_formatter_spec.rb
 spec/cucumber/formatters/stories.html
 spec/cucumber/sell_cucumbers.story

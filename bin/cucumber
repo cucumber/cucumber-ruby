@@ -1,2 +1,2 @@
-require 'cucumber'
+require 'cucumber/cli'
 Cucumber::CLI.execute

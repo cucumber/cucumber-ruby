@@ -27,6 +27,7 @@ module Cucumber
       def initialize(name, &proc)
         @name = name
         @steps = []
+        @line = *caller[2].split(':')[1].to_i
         instance_eval(&proc)
       end
 
@@ -46,7 +47,7 @@ module Cucumber
         @steps << RubyStep.new('And', name)
       end
 
-      attr_reader :name, :steps
+      attr_reader :name, :steps, :line
 
     end
 

@@ -7,6 +7,10 @@ module Cucumber
       def initialize
         @stories = []
       end
+      
+      def length
+        @stories.length
+      end
 
       def <<(story)
         @stories << story
@@ -32,6 +36,10 @@ module Cucumber
         steps.each do |step|
           visitor.visit_step(step)
         end
+      end
+
+      def at_line?(l)
+        line == l || steps.map{|s| s.line}.index(l)
       end
     end
 

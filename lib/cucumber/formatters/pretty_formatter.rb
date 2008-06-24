@@ -39,10 +39,10 @@ module Cucumber
           @io.puts pending("    #{step.keyword} #{step.name}")
         when NilClass
           @passed << step
-          @io.puts passed("    #{step.keyword} #{step.gzub{|p| parameter(p) << passed}}") 
+          @io.puts passed("    #{step.keyword} #{step.gzub{|param| passed_param(param) << passed}}") 
         else
           @failed << step
-          @io.puts failed("    #{step.keyword} #{step.gzub{|p| parameter(p) << failed}}") 
+          @io.puts failed("    #{step.keyword} #{step.gzub{|param| failed_param(param) << failed}}") 
           @io.puts failed("      #{step.error.message.split("\n").join(INDENT)}")
           @io.puts failed("      #{step.error.backtrace.join(INDENT)}")
         end
@@ -50,7 +50,7 @@ module Cucumber
 
       def step_skipped(step)
         @skipped << step
-        @io.puts skipped("    #{step.keyword} #{step.gzub{|p| parameter(p) << skipped}}") 
+        @io.puts skipped("    #{step.keyword} #{step.gzub{|param| skipped_param(param) << skipped}}") 
       end
     
       def dump

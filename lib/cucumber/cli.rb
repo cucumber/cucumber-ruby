@@ -1,6 +1,5 @@
 require 'optparse'
-require 'cucumber/step_methods'
-require 'cucumber/ruby_tree'
+require 'cucumber'
 
 module Cucumber
   class CLI
@@ -8,7 +7,12 @@ module Cucumber
       attr_writer :step_mother, :stories
     
       def execute
+        @execute_called = true
         parse(ARGV).execute!(@step_mother, @stories)
+      end
+      
+      def execute_called?
+        @execute_called
       end
 
       def parse(args)
@@ -33,7 +37,10 @@ module Cucumber
           @options[:require] ||= []
           @options[:require] << v
         end
-        opts.on("-l LANG", "--language LANG", "Specify language for stories (Default: #{@options[:lang]})") do |v|
+        opts.on("-l LINE", "--line LANG", "Only execute the scenario at the given line") do |v|
+          @options[:line] = v
+        end
+        opts.on("-a LANG", "--language LANG", "Specify language for stories (Default: #{@options[:lang]})") do |v|
           @options[:lang] = v
         end
         opts.on("-f FORMAT", "--format FORMAT", "How to format stories (Default: #{@options[:format]})") do |v|
@@ -54,13 +61,14 @@ module Cucumber
       $executor = Executor.new(formatter, step_mother)
       require_files
       load_plain_text_stories(stories)
-#      $executor.visit_stories(stories)
+      $executor.line = @options[:line].to_i if @options[:line]
       $executor.visit_stories(stories)
       exit 1 if $executor.failed
     end
     
   private
     
+    # Requires files - typically step files and ruby story files.
     def require_files
       require "cucumber/parser/story_parser_#{@options[:lang]}"
       requires = @options[:require] || @args.map{|f| File.directory?(f) ? f : File.dirname(f)}.uniq
@@ -104,3 +112,7 @@ Cucumber::CLI.step_mother = step_mother
 
 extend(Cucumber::RubyTree)
 Cucumber::CLI.stories = stories
+
+at_exit do
+  Cucumber::CLI.execute unless Cucumber::CLI.execute_called?
+end
