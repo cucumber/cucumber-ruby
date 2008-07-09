@@ -1,4 +1,4 @@
-# This file is for GitHub only. We're using Hoe to build the Gem.
+# This file is for GitHub only. We're using Hoe to build the Gem, and Hoe generates a gemspec automatically.
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
   s.version = "0.0.1"
