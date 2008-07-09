@@ -1,8 +1,8 @@
 require 'cucumber/version'
 
-AUTHOR = 'FIXME full name'  # can also be an array of Authors
-EMAIL = "FIXME email"
-DESCRIPTION = "description of gem"
+AUTHOR = 'Aslak Hellesøy'  # can also be an array of Authors
+EMAIL = "aslak.hellesoy@gmail.com"
+DESCRIPTION = "Executable user stories"
 GEM_NAME = 'cucumber' # what ppl will type to install your gem
 RUBYFORGE_PROJECT = 'cucumber' # The unix name for your project
 HOMEPATH = "http://#{RUBYFORGE_PROJECT}.rubyforge.org"
@@ -10,7 +10,7 @@ DOWNLOAD_PATH = "http://rubyforge.org/projects/#{RUBYFORGE_PROJECT}"
 
 @config_file = "~/.rubyforge/user-config.yml"
 @config = nil
-RUBYFORGE_USERNAME = "unknown"
+RUBYFORGE_USERNAME = "aslak_hellesoy"
 def rubyforge_username
   unless @config
     begin
@@ -53,13 +53,12 @@ $hoe = Hoe.new(GEM_NAME, VERS) do |p|
   p.summary = DESCRIPTION
   p.url = HOMEPATH
   p.rubyforge_name = RUBYFORGE_PROJECT if RUBYFORGE_PROJECT
-  p.test_globs = ["test/**/test_*.rb"]
   p.clean_globs |= ['**/.*.sw?', '*.gem', '.config', '**/.DS_Store']  #An array of file patterns to delete on clean.
   
   # == Optional
   p.changes = p.paragraphs_of("History.txt", 0..1).join("\n\n")
   #p.extra_deps = []     # An array of rubygem dependencies [name, version], e.g. [ ['active_support', '>= 1.3.1'] ]
-  p.extra_deps = [ ['term-ansicolor', '>= 1.0.3'] ]
+  p.extra_deps = [ ['term-ansicolor', '>= 1.0.3'], ['treetop', '>= 1.2.4'] ]
 
   #p.spec_extras = {}    # A hash of extra values to set in the gemspec.
   

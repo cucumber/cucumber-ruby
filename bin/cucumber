@@ -1,2 +1,3 @@
+#!/usr/bin/env ruby
 require 'cucumber/cli'
 Cucumber::CLI.execute
