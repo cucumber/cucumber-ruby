@@ -14,36 +14,34 @@ module Cucumber
       attr_accessor :cucumber_opts
       
       # Define a task
-      def initialize(stories_path = "stories")
-        @stories_path = stories_path
+      def initialize(task_name = "stories", desc = "Run Stories")
+        @task_name, @desc = task_name, desc
         @libs = [LIB]
 
         yield self if block_given?
 
-        @story_pattern = "#{@stories_path}/**/*.story" if story_pattern.nil? && story_list.nil?
-        @step_pattern =  "#{@stories_path}/**/*.rb"    if step_pattern.nil? && step_list.nil?
+        @story_pattern = "stories/**/*.story" if story_pattern.nil? && story_list.nil?
+        @step_pattern =  "stories/**/*.rb"    if step_pattern.nil? && step_list.nil?
         define_tasks
       end
     
       def define_tasks
-        namespace :cucumber do
-          desc "Run Cucumber Stories under #{@stories_path}"
-          task @stories_path do
-            args = []
-            args << '-I'
-            args << '"%s"' % libs.join(File::PATH_SEPARATOR)
-            args << '"%s"' % BINARY
-            args << (ENV['CUCUMBER_OPTS'] || cucumber_opts)
+        desc @desc
+        task @task_name do
+          args = []
+          args << '-I'
+          args << '"%s"' % libs.join(File::PATH_SEPARATOR)
+          args << '"%s"' % BINARY
+          args << (ENV['CUCUMBER_OPTS'] || cucumber_opts)
 
-            step_files.each do |step_file|
-              args << '--require'
-              args << step_file
-            end
-            args << story_files
-            args.flatten!
-            args.compact!
-            ruby(args.join(" ")) # ruby(*args) is broken on Windows
+          step_files.each do |step_file|
+            args << '--require'
+            args << step_file
           end
+          args << story_files
+          args.flatten!
+          args.compact!
+          ruby(args.join(" ")) # ruby(*args) is broken on Windows
         end
       end
 
