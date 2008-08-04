@@ -57,8 +57,17 @@ module Cucumber
         @io.puts
         @io.puts passed("#{@passed.length} steps passed") unless @passed.empty?
         @io.puts failed("#{@failed.length} steps failed") unless @failed.empty?
-        @io.puts pending("#{@pending.length} steps pending") unless @pending.empty?
         @io.puts skipped("#{@skipped.length} steps skipped") unless @skipped.empty?
+        @io.puts pending("#{@pending.length} steps pending") unless @pending.empty?
+
+        unless @pending.empty?
+          @io.puts "\nYou can use these snippets to implement pending steps:\n\n"
+          
+          @pending.each do |step|
+            @io.puts "#{step.keyword} /#{step.name}/ do\nend\n\n"
+          end
+        end
+
         @io.print reset
       end
     end

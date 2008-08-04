@@ -5,7 +5,7 @@ rescue LoadError
   STDERR.puts "You must gem install win32console to get coloured output on this ruby platform (#{PLATFORM})"
   ::Term::ANSIColor.coloring = false
 end
-::Term::ANSIColor.coloring = false if PLATFORM =~ /java/ || !STDOUT.tty?
+::Term::ANSIColor.coloring = false if !STDOUT.tty?
 
 module Cucumber
   module Formatters
