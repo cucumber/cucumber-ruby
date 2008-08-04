@@ -7,6 +7,13 @@ bin/cucumber
 config/hoe.rb
 config/requirements.rb
 examples/Rakefile
+examples/java/README.textile
+examples/java/build.sh
+examples/java/hello.story
+examples/java/hello_steps.rb
+examples/java/src/cucumber/demo/Hello.java
+examples/java/tree.story
+examples/java/tree_steps.rb
 examples/pure_ruby/addition.rb
 examples/pure_ruby/steps/addition_steps.rb
 examples/simple/addition.story
