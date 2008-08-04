@@ -34,7 +34,7 @@ When 'I divide' do
   @result = @calc.divide
 end
 
-Then /the result should be (\d*) on the screen/ do |result|
+Then /the result should be (.*) on the screen/ do 
   @result.should == result.to_i
 end
 

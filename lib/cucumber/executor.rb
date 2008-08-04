@@ -4,9 +4,6 @@ module Cucumber
   class Pending < StandardError
   end
 
-  class ArgCountError < StandardError
-  end
-
   class Executor
     attr_reader :failed
     

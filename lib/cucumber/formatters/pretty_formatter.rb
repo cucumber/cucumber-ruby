@@ -43,7 +43,7 @@ module Cucumber
         else
           @failed << step
           @io.puts failed("    #{step.keyword} #{step.gzub{|param| failed_param(param) << failed}}") 
-          @io.puts failed("      #{step.error.message.split("\n").join(INDENT)}")
+          @io.puts failed("      #{step.error.message.split("\n").join(INDENT)} (#{step.error.class})")
           @io.puts failed("      #{step.error.backtrace.join(INDENT)}")
         end
       end

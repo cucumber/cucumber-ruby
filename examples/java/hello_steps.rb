@@ -4,13 +4,18 @@ require 'cucumber_demo' # puts the jar on the classpath
 include_class 'cucumber.demo.Hello'
 
 Given /my name is (\w+)/ do |name|
+  @hello = Hello.new
   @name = name
 end
 
 When /I greet (.*)/ do |someone|
-  @greeting = Hello.new.greet(someone, @name)
+  @greeting = @hello.greet(someone, @name)
 end
 
 Then /he should hear (.*)\./ do |message|
   @greeting.should == message
+end
+
+Then /I should remember (\w+) as a friend/ do |name|
+  @hello.friend?(name).should == true
 end

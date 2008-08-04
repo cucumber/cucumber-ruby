@@ -6,3 +6,4 @@ Story: Hello
     Given my name is Aslak
     When I greet David
     Then he should hear Hi, David. I'm Aslak.
+    And I should remember David as a friend
