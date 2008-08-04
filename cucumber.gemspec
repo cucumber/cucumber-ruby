@@ -1,11 +1,11 @@
-# This file is for GitHub only. We're using Hoe to build the Gem, and Hoe generates a gemspec automatically.
+(in /Users/aslakhellesoy/scm/radiant_ba/vendor/plugins/cucumber)
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
   s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2008-07-09}
+  s.date = %q{2008-08-04}
   s.default_executable = %q{cucumber}
   s.description = %q{Executable user stories}
   s.email = ["aslak.hellesoy@gmail.com"]
