@@ -5,6 +5,5 @@ Story: Tree
   Scenario: Use java.util.TreeSet
     Given I have an empty set
     When I add hello
-    And I add mike
     And I add world
     Then the contents should be hello world
