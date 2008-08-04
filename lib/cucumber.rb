@@ -13,5 +13,12 @@ require 'cucumber/parser/story_parser'
 require 'cucumber/cli'
 
 module Cucumber
-  
+  class << self
+    attr_reader :language
+    
+    def load_language(lang)
+      require 'yaml'
+      @language = YAML.load_file(File.dirname(__FILE__) + '/cucumber/parser/languages.yml')[lang]
+    end
+  end  
 end

@@ -72,6 +72,7 @@ module Cucumber
     end
     
     def execute!(step_mother, stories)
+      Cucumber.load_language(@options[:lang])
       $executor = Executor.new(formatter, step_mother)
       require_files
       load_plain_text_stories(stories)

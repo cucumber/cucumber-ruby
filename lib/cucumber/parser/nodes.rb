@@ -3,6 +3,9 @@ require 'cucumber/tree'
 
 module Cucumber
   module Parser
+    class SyntaxError < StandardError
+    end
+    
     class StoryNode < Treetop::Runtime::SyntaxNode
       include Tree::Story
       attr_accessor :file
@@ -10,7 +13,7 @@ module Cucumber
       def self.parse(file, parser)
         story = parser.parse(IO.read(file))
         if story.nil?
-          raise parser.compile_error(file)
+          raise SyntaxError.new(parser.compile_error(file))
         end
         story.file = file
         story
