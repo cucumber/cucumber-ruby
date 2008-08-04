@@ -49,7 +49,21 @@ module Cucumber
         opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.") do
           @options[:dry_run] = true
         end
+        opts.on_tail("--version", "Show version") do
+          puts VERSION::STRING
+          exit
+        end
+        opts.on_tail("--help", "You're looking at it") do
+          puts opts.help
+          exit
+        end
       end.parse!
+      
+      if @args.empty?
+        puts @args.options.help
+        exit 1
+      end
+      
       # Whatever is left after option parsing
       @files = @args.map do |path|
         path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
