@@ -1,0 +1,10 @@
+h1. Cucumber
+
+Cucumber is a tool for executable documentation in plain text. Cucumber targets non technical domain experts as well as
+programmers and QA people. Cucumber itself is written in Ruby, but it can be used to "test" code written in Ruby, Java 
+(or web applications written in any language). When "IronRuby":http://www.ironruby.net/ matures it can be used to "test"
+.NET code too.
+
+While Cucumber can be thought of as a "testing" tool, most people use it to support "BDD":http://behaviour-driven.org/, so
+the "tests" are typically the first thing that gets written, and the production code is then written outside-in, to make
+the test pass.
