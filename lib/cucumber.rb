@@ -18,7 +18,7 @@ module Cucumber
     
     def load_language(lang)
       require 'yaml'
-      @language = YAML.load_file(File.dirname(__FILE__) + '/cucumber/parser/languages.yml')[lang]
+      @language = YAML.load_file(File.dirname(__FILE__) + '/cucumber/languages.yml')[lang]
     end
   end  
 end

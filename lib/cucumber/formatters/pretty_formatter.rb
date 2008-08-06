@@ -19,15 +19,11 @@ module Cucumber
         @io.puts if @story_newline
         @story_newline = true
         @io.puts passed(header)
-      end
-    
-      def narrative_executing(narrative)
-        @io.puts passed(narrative)
+        @io.puts
       end
   
       def scenario_executing(scenario)
         @scenario_failed = false
-        @io.puts
         if scenario.row?
           @io.print "    |"
         else
@@ -37,7 +33,12 @@ module Cucumber
       end
 
       def scenario_executed(scenario)
-        if scenario.row? && @scenario_failed
+        @io.puts
+        if !scenario.row? && scenario.table_header
+          @io.print "    |"
+          scenario.table_header.each { |h| @io.print h ; @io.print "|" }
+          @io.puts
+        elsif scenario.row? && @scenario_failed
           @io.puts
           step_failed(@failed.last) 
         end

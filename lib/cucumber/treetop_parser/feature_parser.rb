@@ -3,15 +3,32 @@ require 'cucumber/treetop_parser/feature'
 module Cucumber
   module TreetopParser
     module Feature
+      class SyntaxError < StandardError
+        def initialize(file, parser)
+          tf = parser.terminal_failures
+          expected = tf.size == 1 ? tf[0].expected_string : "one of #{tf.map{|f| f.expected_string}.uniq*', '}"
+          @message = "#{file}:#{failure_line}: Parse error, expected #{expected}"
+        end
+        
+        def message
+          @messsage
+        end
+      end
+      
       class << self
         attr_accessor :last_scenario
       end
       
-      def compile_error(file)
-        tf = terminal_failures
-        expected = tf.size == 1 ? tf[0].expected_string : "one of #{tf.map{|f| f.expected_string}.uniq*', '}"
-        "#{file}:#{failure_line}: Parse error, expected #{expected}"
-      end
+      def parse_feature(file)
+        ast = parse(IO.read(file))
+        if ast.nil?
+          raise SyntaxError.new(file, self)
+        else
+          feature = ast.feature
+          feature.file = file
+          feature
+        end
+      end      
     end
   end
 end

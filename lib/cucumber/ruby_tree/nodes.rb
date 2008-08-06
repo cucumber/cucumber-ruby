@@ -11,8 +11,17 @@ module Cucumber
         instance_eval(&proc) if block_given?
       end
 
-      def add_scenario(scenario)
+      def add_scenario(name)
+        raise "Pass a string: #{name.inspect}" unless String === name
+        scenario = RubyScenario.new(self, name)
         @scenarios << scenario
+        scenario
+      end
+      
+      def add_row_scenario(template_scenario, values)
+        scenario = RowScenario.new(self, template_scenario, values)
+        @scenarios << scenario
+        scenario
       end
 
       def Scenario(name, &proc)
@@ -58,8 +67,8 @@ module Cucumber
         true
       end
 
-      def initialize(template_scenario, values)
-        @template_scenario, @values = template_scenario, values
+      def initialize(feature, template_scenario, values)
+        @feature, @template_scenario, @values = feature, template_scenario, values
       end
       
       def steps
@@ -75,19 +84,26 @@ module Cucumber
     class RubyScenario
       include Tree::Scenario
       
+      # If a table follows, the header will be stored here. Weird, but convenient.
+      attr_accessor :table_header
+      
       def row?
         false
       end
+      
+      def file
+        @feature.file
+      end
 
-      def initialize(name, &proc)
-        @name = name
+      def initialize(feature, name, &proc)
+        @feature, @name = feature, name
         @steps = []
         @line = *caller[2].split(':')[1].to_i
         instance_eval(&proc) if block_given?
       end
 
-      def add_step(keyword, name)
-        @steps << RubyStep.new(keyword, name)
+      def add_step(keyword, name, line)
+        @steps << RubyStep.new(self, keyword, name, line)
       end
 
       def Given(name)
@@ -118,9 +134,9 @@ module Cucumber
         false
       end
 
-      def initialize(keyword, name)
-        @keyword, @name = keyword, name
-        @file, @line, _ = *caller[2].split(':')
+      def initialize(scenario, keyword, name, line)
+        @scenario, @keyword, @name, @line = scenario, keyword, name, line
+#        @file, @line, _ = *caller[2].split(':')
         @args = []
       end
 
@@ -128,14 +144,14 @@ module Cucumber
         name.gzub(regexp, format, &proc)
       end
 
-      attr_reader :keyword, :name, :file, :line
+      attr_reader :keyword, :name, :line
     end
   end
   
   class RowStep
     include Tree::Step
     
-    attr_reader :keyword, :file, :line
+    attr_reader :keyword, :line
 
     def initialize(keyword, file, line, proc, args)
       @keyword, @file, @line, @proc, @args = keyword, file, line, proc, args

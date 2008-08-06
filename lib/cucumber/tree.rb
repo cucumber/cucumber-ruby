@@ -22,6 +22,8 @@ module Cucumber
     end
 
     module Story
+      attr_accessor :file
+      
       def accept(visitor)
         visitor.visit_header(header)
         scenarios.each do |scenario|
@@ -54,6 +56,10 @@ module Cucumber
 
       attr_reader :error
       attr_accessor :args
+
+      def file
+        @scenario.file
+      end
 
       def regexp
         @regexp || //

@@ -9,9 +9,9 @@ module Cucumber
       @m = StepMother.new
       @r = Executor.new(@f, @m)
       @story_file = File.dirname(__FILE__) + '/sell_cucumbers.story'
-      @parser = Parser::StoryParser.new
+      @parser = TreetopParser::FeatureParser.new
       @stories = Tree::Stories.new
-      @stories << Parser::StoryNode.parse(@story_file, @parser)
+      @stories << @parser.parse_feature(@story_file)
     end
 
     it "should pass when blocks are ok" do

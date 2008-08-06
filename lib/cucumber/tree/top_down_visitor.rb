@@ -1,5 +1,5 @@
 module Cucumber
-  module Parser
+  module Tree
     class TopDownVisitor
       def visit_stories(stories)
         stories.accept(self)

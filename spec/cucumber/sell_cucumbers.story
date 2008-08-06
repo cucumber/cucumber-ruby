@@ -1,4 +1,4 @@
-Story: Sell cucumbers
+Feature: Sell cucumbers
   As a cucumber farmer
   I want to sell cucumbers
   So that I buy meat

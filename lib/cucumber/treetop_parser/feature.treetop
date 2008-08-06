@@ -3,7 +3,7 @@ module TreetopParser
 
 grammar Feature
   rule root
-    header scenarios {
+    header scenarios {      
       def feature
         f = RubyTree::RubyFeature.new(header.text_value.strip)
         scenarios.populate(f)
@@ -28,8 +28,7 @@ grammar Feature
   rule step_scenario
     whitespace* "Scenario:" whitespace* name:(!newline .)* newline* steps:step+ {
       def populate(feature)
-        sc = RubyTree::RubyScenario.new(name.text_value)
-        feature.add_scenario(sc)
+        sc = feature.add_scenario(name.text_value)
         steps.elements.each{|s| s.populate(sc)}
         Feature.last_scenario = sc
       end
@@ -39,7 +38,8 @@ grammar Feature
   rule step
     whitespace* step_keyword whitespace* name:(!newline .)* newline* {
       def populate(scenario)
-        scenario.add_step(step_keyword.text_value, name.text_value)
+        line = input.line_of(interval.first)
+        scenario.add_step(step_keyword.text_value, name.text_value, line)
       end
     }
   end
@@ -52,9 +52,9 @@ grammar Feature
     table_line more:(newline table_line)+ newline*
     {
       def populate(feature)
-        matrix = [table_line.values] + more.elements.map { |e| e.table_line.values }
-        matrix.each do |line|
-          feature.add_scenario RubyTree::RowScenario.new(Feature.last_scenario, line)
+        Feature.last_scenario.table_header = table_line.values
+        more.elements.each do |e|
+          feature.add_row_scenario(Feature.last_scenario, e.table_line.values)
         end
       end
     }

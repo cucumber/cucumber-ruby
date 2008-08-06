@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'stringio'
-require 'cucumber/parser/top_down_visitor'
+require 'cucumber/tree/top_down_visitor'
 
 module Cucumber
   module Formatters
-    class MiniExecutor < Cucumber::Parser::TopDownVisitor
+    class MiniExecutor < Cucumber::Tree::TopDownVisitor
       def initialize(f)
         @f = f
       end
@@ -35,10 +35,10 @@ module Cucumber
       SIMPLE_DIR = File.dirname(__FILE__) + '/../../../examples/simple'
       
       before do
-        p = Parser::StoryParser.new
+        p = Cucumber::TreetopParser::FeatureParser.new
         @stories = Tree::Stories.new
       	Dir["#{SIMPLE_DIR}/*.story"].each do |f|
-          @stories << Parser::StoryNode.parse(f, p)
+          @stories << p.parse_feature(f)
         end
         @io = StringIO.new
         @formatter = HtmlFormatter.new(@io)

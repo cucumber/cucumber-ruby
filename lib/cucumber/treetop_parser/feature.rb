@@ -19,6 +19,7 @@ module Feature
   end
 
   module Root1
+    
     def feature
       f = RubyTree::RubyFeature.new(header.text_value.strip)
       scenarios.populate(f)
@@ -190,8 +191,7 @@ module Feature
 
   module StepScenario2
     def populate(feature)
-      sc = RubyTree::RubyScenario.new(name.text_value)
-      feature.add_scenario(sc)
+      sc = feature.add_scenario(name.text_value)
       steps.elements.each{|s| s.populate(sc)}
       Feature.last_scenario = sc
     end
@@ -340,7 +340,8 @@ module Feature
 
   module Step2
     def populate(scenario)
-      scenario.add_step(step_keyword.text_value, name.text_value)
+      line = input.line_of(interval.first)
+      scenario.add_step(step_keyword.text_value, name.text_value, line)
     end
   end
 
@@ -531,9 +532,9 @@ module Feature
 
   module Table2
     def populate(feature)
-      matrix = [table_line.values] + more.elements.map { |e| e.table_line.values }
-      matrix.each do |line|
-        feature.add_scenario RubyTree::RowScenario.new(Feature.last_scenario, line)
+      Feature.last_scenario.table_header = table_line.values
+      more.elements.each do |e|
+        feature.add_row_scenario(Feature.last_scenario, e.table_line.values)
       end
     end
   end
