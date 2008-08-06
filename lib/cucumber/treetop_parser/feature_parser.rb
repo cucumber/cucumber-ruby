@@ -1,5 +1,3 @@
-require 'cucumber/treetop_parser/feature'
-
 module Cucumber
   module TreetopParser
     module Feature
@@ -7,11 +5,11 @@ module Cucumber
         def initialize(file, parser)
           tf = parser.terminal_failures
           expected = tf.size == 1 ? tf[0].expected_string : "one of #{tf.map{|f| f.expected_string}.uniq*', '}"
-          @message = "#{file}:#{failure_line}: Parse error, expected #{expected}"
+          @message = "#{file}:#{parser.failure_line}: Parse error, expected #{expected}"
         end
         
         def message
-          @messsage
+          @message
         end
       end
       

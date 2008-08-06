@@ -26,7 +26,7 @@ grammar Feature
   end
 
   rule step_scenario
-    whitespace* "Scenario:" whitespace* name:(!newline .)* newline* steps:step+ {
+    whitespace* scenario_keyword ":" whitespace* name:(!newline .)* newline* steps:step+ {
       def populate(feature)
         sc = feature.add_scenario(name.text_value)
         steps.elements.each{|s| s.populate(sc)}
@@ -45,7 +45,11 @@ grammar Feature
   end
   
   rule step_keyword
-    'Given' / 'When' / 'Then' / 'And'
+    '<%= words['given'] %>' / '<%= words['when'] %>' / '<%= words['then'] %>' / '<%= words['and'] %>'
+  end
+  
+  rule scenario_keyword
+    '<%= words['scenario'] %>'
   end
   
   rule table

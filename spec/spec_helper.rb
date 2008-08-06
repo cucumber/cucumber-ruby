@@ -4,6 +4,7 @@ require 'spec'
 
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'cucumber'
+require 'cucumber/treetop_parser/feature_en'
 require 'cucumber/treetop_parser/feature_parser'
 
 # Prevent CLI's exit hook from running

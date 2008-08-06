@@ -86,7 +86,7 @@ module Cucumber
     
     # Requires files - typically step files and ruby story files.
     def require_files
-      require "cucumber/parser/story_parser_#{@options[:lang]}"
+      require "cucumber/treetop_parser/feature_#{@options[:lang]}"
       require "cucumber/treetop_parser/feature_parser"
 
       requires = @options[:require] || @args.map{|f| File.directory?(f) ? f : File.dirname(f)}.uniq
