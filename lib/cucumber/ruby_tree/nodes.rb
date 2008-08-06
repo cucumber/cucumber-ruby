@@ -2,17 +2,21 @@ require 'cucumber/tree'
 
 module Cucumber
   module RubyTree
-    class RubyStory
+    class RubyFeature
       include Tree::Story
 
-      def initialize(header, narrative, &proc)
-        @header, @narrative = header, narrative
+      def initialize(header, &proc)
+        @header = header
         @scenarios = []
-        instance_eval(&proc)
+        instance_eval(&proc) if block_given?
+      end
+
+      def add_scenario(scenario)
+        @scenarios << scenario
       end
 
       def Scenario(name, &proc)
-        @scenarios << RubyScenario.new(name, &proc)
+        add_scenario RubyScenario.new(name, &proc)
       end
       
       def Table(matrix = [], &proc)
@@ -26,7 +30,7 @@ module Cucumber
 
     protected
 
-      attr_reader :header, :narrative, :scenarios
+      attr_reader :header, :scenarios
 
     end
     
@@ -63,7 +67,7 @@ module Cucumber
           args = template_step.args.map do
             @values.shift
           end
-          RowStep.new(template_step.proc, args)
+          RowStep.new(template_step.keyword, template_step.file, 999, template_step.proc, args)
         end
       end
     end
@@ -79,23 +83,27 @@ module Cucumber
         @name = name
         @steps = []
         @line = *caller[2].split(':')[1].to_i
-        instance_eval(&proc)
+        instance_eval(&proc) if block_given?
+      end
+
+      def add_step(keyword, name)
+        @steps << RubyStep.new(keyword, name)
       end
 
       def Given(name)
-        @steps << RubyStep.new('Given', name)
+        add_step('Given', name)
       end
 
       def When(name)
-        @steps << RubyStep.new('When', name)
+        add_step('When', name)
       end
 
       def Then(name)
-        @steps << RubyStep.new('Then', name)
+        add_step('Then', name)
       end
 
       def And(name)
-        @steps << RubyStep.new('And', name)
+        add_step('And', name)
       end
 
       attr_reader :name, :steps, :line
@@ -113,6 +121,11 @@ module Cucumber
       def initialize(keyword, name)
         @keyword, @name = keyword, name
         @file, @line, _ = *caller[2].split(':')
+        @args = []
+      end
+
+      def gzub(format=nil, &proc)
+        name.gzub(regexp, format, &proc)
       end
 
       attr_reader :keyword, :name, :file, :line
@@ -122,16 +135,18 @@ module Cucumber
   class RowStep
     include Tree::Step
     
-    def row?
-      true
-    end
+    attr_reader :keyword, :file, :line
 
-    def initialize(proc, args)
-      @proc, @args = proc, args
+    def initialize(keyword, file, line, proc, args)
+      @keyword, @file, @line, @proc, @args = keyword, file, line, proc, args
     end
     
-    def name
-      args.inspect
+    def gzub(format=nil, &proc)
+      raise "WWW"
+    end
+
+    def row?
+      true
     end
   end
 end

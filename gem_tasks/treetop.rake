@@ -25,9 +25,18 @@ class StoryCompiler
   end
 end
 
+class FeatureCompiler
+  def compile
+    tt = PLATFORM =~ /win32/ ? 'tt.bat' : 'tt'
+    grammar_file = File.dirname(__FILE__) + "/../lib/cucumber/treetop_parser/feature.treetop"
+    sh "#{tt} #{grammar_file}"
+  end
+end
+
 namespace :treetop do
   desc 'Compile the grammar'
   task :compile do
-    StoryCompiler.new.compile
+    # StoryCompiler.new.compile
+    FeatureCompiler.new.compile
   end
 end

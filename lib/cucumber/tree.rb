@@ -24,7 +24,6 @@ module Cucumber
     module Story
       def accept(visitor)
         visitor.visit_header(header)
-        visitor.visit_narrative(narrative)
         scenarios.each do |scenario|
           visitor.visit_scenario(scenario)
         end
@@ -120,12 +119,12 @@ module Cucumber
         e.backtrace.flatten
         # Replace the step line with something more readable
         e.backtrace.replace(e.backtrace.map{|l| l.gsub(/`#{proc.meth}'/, "`#{keyword} #{proc.name}'")})
-        e.backtrace << "#{file}:#{line}:in `#{keyword} #{name}'"
+        if row?
+          e.backtrace << "#{file}:#{line}:in `#{proc.name}'"
+        else
+          e.backtrace << "#{file}:#{line}:in `#{keyword} #{name}'"
+        end
         raise e
-      end
-
-      def gzub(format=nil, &proc)
-        name.gzub(regexp, format, &proc)
       end
 
       def id

@@ -75,7 +75,8 @@ module Cucumber
       Cucumber.load_language(@options[:lang])
       $executor = Executor.new(formatter, step_mother)
       require_files
-      load_plain_text_stories(stories)
+      # load_plain_text_stories(stories)
+      load_plain_text_features(stories)
       $executor.line = @options[:line].to_i if @options[:line]
       $executor.visit_stories(stories)
       exit 1 if $executor.failed
@@ -86,6 +87,8 @@ module Cucumber
     # Requires files - typically step files and ruby story files.
     def require_files
       require "cucumber/parser/story_parser_#{@options[:lang]}"
+      require "cucumber/treetop_parser/feature_parser"
+
       requires = @options[:require] || @args.map{|f| File.directory?(f) ? f : File.dirname(f)}.uniq
       libs = requires.map do |path| 
         path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
@@ -105,6 +108,17 @@ module Cucumber
       parser = Parser::StoryParser.new
       @files.each do |f|
         stories << Parser::StoryNode.parse(f, parser)
+      end
+    end
+
+    def load_plain_text_features(features)
+      parser = TreetopParser::FeatureParser.new
+      @files.each do |f|
+        ast = parser.parse(IO.read(f)) # parse_file
+        if ast.nil?
+          raise SyntaxError.new(parser.compile_error(f))
+        end
+        features << ast.feature
       end
     end
     

@@ -29,7 +29,7 @@ module Cucumber
       # Do we then have to attach ourself to the step instead?
       # What would we gain from a pull design?
       @step_procs.each do |regexp, proc|
-        if step.name =~ regexp
+        if step.respond_to?(:name) && step.name =~ regexp
           step.attach(regexp, proc, $~.captures)
         end
       end

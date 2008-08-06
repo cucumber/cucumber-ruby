@@ -2,7 +2,7 @@ require 'cucumber/version'
 
 AUTHOR = 'Aslak Hellesøy'  # can also be an array of Authors
 EMAIL = "aslak.hellesoy@gmail.com"
-DESCRIPTION = "Executable user stories"
+DESCRIPTION = "Executable Feature scenarios"
 GEM_NAME = 'cucumber' # what ppl will type to install your gem
 RUBYFORGE_PROJECT = 'cucumber' # The unix name for your project
 HOMEPATH = "http://#{RUBYFORGE_PROJECT}.rubyforge.org"
@@ -32,7 +32,7 @@ REV = nil
 # UNCOMMENT IF REQUIRED: 
 # REV = YAML.load(`svn info`)['Revision']
 VERS = Cucumber::VERSION::STRING + (REV ? ".#{REV}" : "")
-RDOC_OPTS = ['--quiet', '--title', 'cucumber documentation',
+RDOC_OPTS = ['--quiet', '--title', 'Cucumber documentation',
     "--opname", "index.html",
     "--line-numbers", 
     "--main", "README",
@@ -58,7 +58,7 @@ $hoe = Hoe.new(GEM_NAME, VERS) do |p|
   # == Optional
   p.changes = p.paragraphs_of("History.txt", 0..1).join("\n\n")
   #p.extra_deps = []     # An array of rubygem dependencies [name, version], e.g. [ ['active_support', '>= 1.3.1'] ]
-  p.extra_deps = [ ['term-ansicolor', '>= 1.0.3'], ['treetop', '>= 1.2.4'] ]
+  p.extra_deps = [ ['term-ansicolor', '>= 1.0.3'], ['treetop', '>= 1.2.4'], ['rspec', '>= 1.1.4'], ['diff-lcs', '>= 1.1.2'] ]
 
   #p.spec_extras = {}    # A hash of extra values to set in the gemspec.
   

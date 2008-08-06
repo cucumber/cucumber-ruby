@@ -1,0 +1,90 @@
+module Cucumber
+module TreetopParser
+
+grammar Feature
+  rule root
+    header scenarios {
+      def feature
+        f = RubyTree::RubyFeature.new(header.text_value.strip)
+        scenarios.populate(f)
+        f
+      end
+    }
+  end
+
+  rule header
+    (!step_scenario .)*
+  end
+
+  rule scenarios
+    step_scenario more:(table / step_scenario)* {
+      def populate(feature)
+        step_scenario.populate(feature)
+        more.elements.each { |m| m.populate(feature) }
+      end
+    }
+  end
+
+  rule step_scenario
+    whitespace* "Scenario:" whitespace* name:(!newline .)* newline* steps:step+ {
+      def populate(feature)
+        sc = RubyTree::RubyScenario.new(name.text_value)
+        feature.add_scenario(sc)
+        steps.elements.each{|s| s.populate(sc)}
+        Feature.last_scenario = sc
+      end
+    }
+  end
+  
+  rule step
+    whitespace* step_keyword whitespace* name:(!newline .)* newline* {
+      def populate(scenario)
+        scenario.add_step(step_keyword.text_value, name.text_value)
+      end
+    }
+  end
+  
+  rule step_keyword
+    'Given' / 'When' / 'Then' / 'And'
+  end
+  
+  rule table
+    table_line more:(newline table_line)+ newline*
+    {
+      def populate(feature)
+        matrix = [table_line.values] + more.elements.map { |e| e.table_line.values }
+        matrix.each do |line|
+          feature.add_scenario RubyTree::RowScenario.new(Feature.last_scenario, line)
+        end
+      end
+    }
+  end
+
+  rule table_line
+    whitespace* separator cells:(whitespace* cell_value whitespace* separator)+
+    {
+      def values
+        cells.elements.map { |cell| cell.cell_value.text_value }
+      end
+    }
+  end
+
+  rule cell_value
+    (!(separator / newline / whitespace) .)*
+  end
+
+  rule separator
+    '|'
+  end
+
+  rule newline
+    "\r\n?" / "\n"
+  end
+
+  rule whitespace
+    [ \v\f\t]
+  end
+end
+
+end
+end

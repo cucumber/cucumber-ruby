@@ -61,6 +61,7 @@ module Cucumber
         @before_procs.each{|p| p.call_in(@world, *[])}
         scenario.accept(self)
         @after_procs.each{|p| p.call_in(@world, *[])}
+        @formatter.scenario_executed(scenario) if @formatter.respond_to?(:scenario_executed)
       end
     end
 

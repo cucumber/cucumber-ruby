@@ -1,6 +1,6 @@
 require 'cucumber/cli' # Needed in order to run the story with ruby
 
-Story "Addition", %|
+Feature %|Addition
   As a math idiot 
   I want to be told the sum of two numbers
   So that I don't make silly mistakes| do

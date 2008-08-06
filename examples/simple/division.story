@@ -1,4 +1,4 @@
-Story: Division
+Feature: Division
   As a math genius 
   I want to be told the division of two floats
   So that I don't make silly mistakes

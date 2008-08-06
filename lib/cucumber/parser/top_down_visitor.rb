@@ -12,9 +12,6 @@ module Cucumber
       def visit_header(header)
       end
 
-      def visit_narrative(narrative)
-      end
-
       def visit_scenario(scenario)
         scenario.accept(self)
       end

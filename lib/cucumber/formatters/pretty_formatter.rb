@@ -18,8 +18,7 @@ module Cucumber
       def header_executing(header)
         @io.puts if @story_newline
         @story_newline = true
-        # TODO: i18n Story
-        @io.puts passed("Story: #{header}")
+        @io.puts passed(header)
       end
     
       def narrative_executing(narrative)
@@ -27,15 +26,23 @@ module Cucumber
       end
   
       def scenario_executing(scenario)
+        @scenario_failed = false
         @io.puts
-        # TODO: i18n Secnario
         if scenario.row?
           @io.print "    |"
         else
+          # TODO: i18n Secnario
           @io.puts passed("  Scenario: #{scenario.name}")
         end
       end
-  
+
+      def scenario_executed(scenario)
+        if scenario.row? && @scenario_failed
+          @io.puts
+          step_failed(@failed.last) 
+        end
+      end
+
       def step_executed(step)
         if step.row?
           row_step_executed(step)
@@ -54,10 +61,15 @@ module Cucumber
           @io.puts passed("    #{step.keyword} #{step.gzub{|param| passed_param(param) << passed}}") 
         else
           @failed << step
+          @scenario_failed = true
           @io.puts failed("    #{step.keyword} #{step.gzub{|param| failed_param(param) << failed}}") 
-          @io.puts failed("      #{step.error.message.split("\n").join(INDENT)} (#{step.error.class})")
-          @io.puts failed("      #{step.error.backtrace.join(INDENT)}")
+          step_failed(step)
         end
+      end
+      
+      def step_failed(step)
+        @io.puts failed("      #{step.error.message.split("\n").join(INDENT)} (#{step.error.class})")
+        @io.puts failed("      #{step.error.backtrace.join(INDENT)}")
       end
 
       def row_step_executed(step)
@@ -70,6 +82,7 @@ module Cucumber
           step.args.each { |arg| @io.print passed(arg) ; @io.print "|" }
         else
           @failed << step
+          @scenario_failed = true
           step.args.each { |arg| @io.print failed(arg) ; @io.print "|" }
         end
       end
@@ -94,7 +107,7 @@ module Cucumber
           @io.puts "\nYou can use these snippets to implement pending steps:\n\n"
           
           @pending.each do |step|
-            @io.puts "#{step.keyword} /#{step.name}/ do\nend\n\n"
+            @io.puts "#{step.keyword} /#{step.name}/ do\nend\n\n" unless step.row?
           end
         end
 
