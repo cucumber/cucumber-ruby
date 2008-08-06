@@ -9,7 +9,7 @@ require 'cucumber/ruby_tree'
 require 'cucumber/executor'
 require 'cucumber/step_mother'
 require 'cucumber/formatters'
-require 'cucumber/parser/story_parser'
+require 'cucumber/treetop_parser/feature_parser'
 require 'cucumber/cli'
 
 module Cucumber
