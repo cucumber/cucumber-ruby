@@ -1,4 +1,4 @@
-Story: Tree
+Feature: Tree
   In order to have more robust Java software
   I want to use Cucumber against Java classes
 

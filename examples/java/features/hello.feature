@@ -1,4 +1,4 @@
-Story: Hello
+Feature: Hello
   In order to have more friends
   I want to say hello
 

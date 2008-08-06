@@ -217,7 +217,7 @@ HTML
       end
       
       def visit_header(header)
-        @io.puts "        <dt>Story: #{header}</dt>"
+        @io.puts "        <dt>Feature: #{header}</dt>"
       end
 
       def visit_narrative(narrative)
