@@ -78,7 +78,7 @@ module Cucumber
       # load_plain_text_stories(stories)
       load_plain_text_features(stories)
       $executor.line = @options[:line].to_i if @options[:line]
-      $executor.visit_stories(stories)
+      $executor.visit_features(stories)
       exit 1 if $executor.failed
     end
     

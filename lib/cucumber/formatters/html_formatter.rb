@@ -6,7 +6,7 @@ module Cucumber
         @errors = []
       end
 
-      def visit_stories(stories)
+      def visit_features(stories)
         # IMPORTANT NOTICE ABOUT JQUERY BELOW. THE ORIGINAL BACKSLASHES (\) HAVE
         # BEEN REPLACED BY DOUBLE BACKSLASHES (\\) IN THIS FILE TO MAKE SURE THEY
         # ARE PRINTED PROPERLY WITH ONLY ONE BACKSLASH (\).

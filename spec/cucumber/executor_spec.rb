@@ -10,15 +10,15 @@ module Cucumber
       @r = Executor.new(@f, @m)
       @story_file = File.dirname(__FILE__) + '/sell_cucumbers.story'
       @parser = TreetopParser::FeatureParser.new
-      @stories = Tree::Stories.new
-      @stories << @parser.parse_feature(@story_file)
+      @features = Tree::Features.new
+      @features << @parser.parse_feature(@story_file)
     end
 
     it "should pass when blocks are ok" do
       @m.register_step_proc(/there are (\d*) cucumbers/)     { |n| @n = n.to_i }
       @m.register_step_proc(/I sell (\d*) cucumbers/)        { |n| @n -= n.to_i }
       @m.register_step_proc(/I should owe (\d*) cucumbers/)  { |n| @n.should == -n.to_i }
-      @r.visit_stories(@stories)
+      @r.visit_features(@features)
       @f.dump
       @io.string.should == (<<-STDOUT).strip
 \e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[31m\n\e[0m\e[0m\e[1m\e[31m
@@ -31,7 +31,7 @@ STDOUT
       @m.register_step_proc(/there are (\d*) cucumbers/)     { |n| @n = n }
       @m.register_step_proc(/I sell (\d*) cucumbers/)        { |n| @n = n }
       @m.register_step_proc(/I should owe (\d*) cucumbers/) { |n| raise "dang" }
-      @r.visit_stories(@stories)
+      @r.visit_features(@features)
       @io.string.should == (<<-STDOUT).strip
 \e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[31mF\e[0m\e[0m\e[0m\e[1m\e[31m
 

@@ -5,7 +5,10 @@ require 'cucumber/core_ext/string'
 module Cucumber
   module Tree
     def Feature(header, &proc)
-      features << Feature.new("Feature: " + header, &proc)
+      feature = Feature.new("Feature: " + header, &proc)
+      feature.file, _, _ = *caller[0].split(':')
+      features << feature
+      feature
     end
 
     def features #:nodoc:

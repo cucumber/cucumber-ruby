@@ -9,8 +9,8 @@ module Cucumber
         instance_eval(&proc) if block_given?
       end
 
-      def add_scenario(name)
-        scenario = Scenario.new(self, name)
+      def add_scenario(name, &proc)
+        scenario = Scenario.new(self, name, &proc)
         @scenarios << scenario
         scenario
       end
@@ -22,7 +22,7 @@ module Cucumber
       end
 
       def Scenario(name, &proc)
-        add_scenario Scenario.new(self, name, &proc)
+        add_scenario(name, &proc)
       end
       
       def Table(matrix = [], &proc)
@@ -30,7 +30,7 @@ module Cucumber
         proc.call(table)
         template_scenario = @scenarios.last
         matrix[1..-1].each do |row|
-          @scenarios << RowScenario.new(self, template_scenario, row, *caller[2].split(':')[1].to_i)
+          @scenarios << RowScenario.new(self, template_scenario, row, row.line)
         end
       end
 

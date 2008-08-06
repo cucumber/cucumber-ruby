@@ -1,7 +1,7 @@
 module Cucumber
   module Tree
     class TopDownVisitor
-      def visit_stories(stories)
+      def visit_features(stories)
         stories.accept(self)
       end
 

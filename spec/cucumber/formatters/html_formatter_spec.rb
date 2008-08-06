@@ -36,7 +36,7 @@ module Cucumber
       
       before do
         p = Cucumber::TreetopParser::FeatureParser.new
-        @stories = Tree::Stories.new
+        @stories = Tree::Features.new
       	Dir["#{SIMPLE_DIR}/*.story"].each do |f|
           @stories << p.parse_feature(f)
         end
@@ -46,9 +46,9 @@ module Cucumber
       end
       
       it "should render HTML" do
-        @me.visit_stories(@stories) # set regexp+proc+args and execute
-        @formatter.visit_stories(@stories)
-        @me.visit_stories(@stories) # output result of execution
+        @me.visit_features(@stories) # set regexp+proc+args and execute
+        @formatter.visit_features(@stories)
+        @me.visit_features(@stories) # output result of execution
         @formatter.dump
         expected_html = File.dirname(__FILE__) + '/stories.html'
         #File.open(expected_html, 'w') {|io| io.write(@io.string)}

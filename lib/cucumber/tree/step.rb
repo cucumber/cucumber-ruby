@@ -99,7 +99,6 @@ module Cucumber
 
       def initialize(scenario, keyword, name, line)
         @scenario, @keyword, @name, @line = scenario, keyword, name, line
-#        @file, @line, _ = *caller[2].split(':')
         @args = []
       end
 

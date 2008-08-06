@@ -24,7 +24,6 @@ module Cucumber
       def initialize(feature, name, &proc)
         @feature, @name = feature, name
         @steps = []
-#        @line = *caller[2].split(':')[1].to_i
         instance_eval(&proc) if block_given?
       end
 
@@ -37,19 +36,19 @@ module Cucumber
       end
 
       def Given(name)
-        add_step('Given', name, *caller[2].split(':')[1].to_i)
+        add_step('Given', name, *caller[0].split(':')[1].to_i)
       end
 
       def When(name)
-        add_step('When', name, *caller[2].split(':')[1].to_i)
+        add_step('When', name, *caller[0].split(':')[1].to_i)
       end
 
       def Then(name)
-        add_step('Then', name, *caller[2].split(':')[1].to_i)
+        add_step('Then', name, *caller[0].split(':')[1].to_i)
       end
 
       def And(name)
-        add_step('And', name, *caller[2].split(':')[1].to_i)
+        add_step('And', name, *caller[0].split(':')[1].to_i)
       end
 
       attr_reader :name, :steps, :line
