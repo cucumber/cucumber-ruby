@@ -12,7 +12,7 @@ module Cucumber
       def visit_step(step)
         if step.regexp == //
           # Just make sure there are some params so we can get <span>s
-          proc = lambda do
+          proc = lambda do |_|
             case(step.id % 3)
             when 0
               raise Pending

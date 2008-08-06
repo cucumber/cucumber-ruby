@@ -54,6 +54,7 @@ module Cucumber
       end
 
       attr_reader :error
+      attr_accessor :args
 
       def regexp
         @regexp || //
@@ -82,7 +83,7 @@ module Cucumber
         end
         @regexp, @proc, @args = regexp, proc, args
       end
-
+      
       if defined?(JRUBY_VERSION)
         PENDING_ADJUSTMENT = 2
         REGULAR_ADJUSTMENT = 1

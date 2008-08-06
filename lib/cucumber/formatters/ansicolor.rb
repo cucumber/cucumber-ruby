@@ -80,7 +80,7 @@ module Cucumber
         colors = color_string.split(",").reverse
         define_method(m) do |*s|
           clear + colors.inject(s[0]) do |memo, color|
-            s[0].nil? ? __send__(color) + memo.to_s : __send__(color, memo)
+            s[0].nil? ? __send__(color) + memo.to_s : __send__(color, memo.to_s)
           end
         end
       end

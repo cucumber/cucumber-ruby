@@ -29,10 +29,22 @@ module Cucumber
       def scenario_executing(scenario)
         @io.puts
         # TODO: i18n Secnario
-        @io.puts passed("  Scenario: #{scenario.name}")
+        if scenario.row?
+          @io.print "    |"
+        else
+          @io.puts passed("  Scenario: #{scenario.name}")
+        end
       end
   
       def step_executed(step)
+        if step.row?
+          row_step_executed(step)
+        else
+          regular_step_executed(step)
+        end
+      end
+      
+      def regular_step_executed(step)
         case(step.error)
         when Pending
           @pending << step
@@ -48,9 +60,27 @@ module Cucumber
         end
       end
 
+      def row_step_executed(step)
+        case(step.error)
+        when Pending
+          @pending << step
+          step.args.each { |arg| @io.print pending(arg) ; @io.print "|" }
+        when NilClass
+          @passed << step
+          step.args.each { |arg| @io.print passed(arg) ; @io.print "|" }
+        else
+          @failed << step
+          step.args.each { |arg| @io.print failed(arg) ; @io.print "|" }
+        end
+      end
+
       def step_skipped(step)
         @skipped << step
-        @io.puts skipped("    #{step.keyword} #{step.gzub{|param| skipped_param(param) << skipped}}") 
+        if step.row?
+          step.args.each { |arg| @io.print skipped(arg) ; @io.print "|" }
+        else
+          @io.puts skipped("    #{step.keyword} #{step.gzub{|param| skipped_param(param) << skipped}}") 
+        end
       end
     
       def dump

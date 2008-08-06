@@ -49,6 +49,10 @@ module Cucumber
     class ScenarioNode < Treetop::Runtime::SyntaxNode
       include Tree::Scenario
 
+      def row?
+        false
+      end
+
       def name
         sentence.text_value.strip
       end
@@ -70,6 +74,10 @@ module Cucumber
     
     class StepNode < Treetop::Runtime::SyntaxNode
       include Tree::Step
+
+      def row?
+        false
+      end
 
       def line
         input.line_of(interval.first)
