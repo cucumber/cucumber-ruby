@@ -532,10 +532,9 @@ module Feature
 
   module Table2
     def populate(feature)
-      line = input.line_of(interval.first)
       Feature.last_scenario.table_header = table_line.values
       more.elements.each do |e|
-        feature.add_row_scenario(Feature.last_scenario, e.table_line.values, line)
+        feature.add_row_scenario(Feature.last_scenario, e.table_line.values, e.table_line.line)
       end
     end
   end
@@ -632,6 +631,10 @@ module Feature
   module TableLine2
     def values
       cells.elements.map { |cell| cell.cell_value.text_value }
+    end
+    
+    def line
+      input.line_of(interval.first)
     end
   end
 

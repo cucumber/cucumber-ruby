@@ -63,8 +63,14 @@ module Cucumber
     class RowScenario
       include Tree::Scenario
       
+      attr_reader :line
+      
       def row?
         true
+      end
+
+      def file
+        @feature.file
       end
 
       def initialize(feature, template_scenario, values, line)
@@ -153,8 +159,8 @@ module Cucumber
     
     attr_reader :keyword
 
-    def initialize(row_scenario, keyword, proc, args)
-      @row_scenario, @keyword, @proc, @args = row_scenario, keyword, proc, args
+    def initialize(scenario, keyword, proc, args)
+      @scenario, @keyword, @proc, @args = scenario, keyword, proc, args
     end
     
     def gzub(format=nil, &proc)
@@ -166,7 +172,7 @@ module Cucumber
     end
     
     def line
-      @row_scenario.line
+      @scenario.line
     end
   end
 end
