@@ -52,9 +52,10 @@ grammar Feature
     table_line more:(newline table_line)+ newline*
     {
       def populate(feature)
+        line = input.line_of(interval.first)
         Feature.last_scenario.table_header = table_line.values
         more.elements.each do |e|
-          feature.add_row_scenario(Feature.last_scenario, e.table_line.values)
+          feature.add_row_scenario(Feature.last_scenario, e.table_line.values, line)
         end
       end
     }

@@ -114,11 +114,7 @@ module Cucumber
     def load_plain_text_features(features)
       parser = TreetopParser::FeatureParser.new
       @files.each do |f|
-        ast = parser.parse(IO.read(f)) # parse_file
-        if ast.nil?
-          raise SyntaxError.new(parser.compile_error(f))
-        end
-        features << ast.feature
+        features << parser.parse_feature(f)
       end
     end
     

@@ -18,8 +18,8 @@ module Cucumber
         scenario
       end
       
-      def add_row_scenario(template_scenario, values)
-        scenario = RowScenario.new(self, template_scenario, values)
+      def add_row_scenario(template_scenario, values, line)
+        scenario = RowScenario.new(self, template_scenario, values, line)
         @scenarios << scenario
         scenario
       end
@@ -67,8 +67,8 @@ module Cucumber
         true
       end
 
-      def initialize(feature, template_scenario, values)
-        @feature, @template_scenario, @values = feature, template_scenario, values
+      def initialize(feature, template_scenario, values, line)
+        @feature, @template_scenario, @values, @line = feature, template_scenario, values, line
       end
       
       def steps
@@ -76,7 +76,7 @@ module Cucumber
           args = template_step.args.map do
             @values.shift
           end
-          RowStep.new(template_step.keyword, template_step.file, 999, template_step.proc, args)
+          RowStep.new(self, template_step.keyword, template_step.proc, args)
         end
       end
     end
@@ -151,10 +151,10 @@ module Cucumber
   class RowStep
     include Tree::Step
     
-    attr_reader :keyword, :line
+    attr_reader :keyword
 
-    def initialize(keyword, file, line, proc, args)
-      @keyword, @file, @line, @proc, @args = keyword, file, line, proc, args
+    def initialize(row_scenario, keyword, proc, args)
+      @row_scenario, @keyword, @proc, @args = row_scenario, keyword, proc, args
     end
     
     def gzub(format=nil, &proc)
@@ -163,6 +163,10 @@ module Cucumber
 
     def row?
       true
+    end
+    
+    def line
+      @row_scenario.line
     end
   end
 end
