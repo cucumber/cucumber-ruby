@@ -21,7 +21,7 @@ module Feature
   module Root1
     
     def feature
-      f = RubyTree::RubyFeature.new(header.text_value.strip)
+      f = Tree::Feature.new(header.text_value.strip)
       scenarios.populate(f)
       f
     end

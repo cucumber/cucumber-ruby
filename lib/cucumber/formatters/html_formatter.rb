@@ -209,7 +209,7 @@ HTML
         @io.puts "    </div>"
       end
 
-      def visit_story(story)
+      def visit_feature(story)
         @io.puts "      <dl class=\"story new\">"
         story.accept(self)
         @io.puts "        </dd>"

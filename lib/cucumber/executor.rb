@@ -41,7 +41,7 @@ module Cucumber
       @formatter.dump
     end
 
-    def visit_story(story)
+    def visit_feature(story)
       story.accept(self)
     end
 

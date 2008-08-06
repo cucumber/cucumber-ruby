@@ -5,7 +5,7 @@ module Cucumber
         stories.accept(self)
       end
 
-      def visit_story(story)
+      def visit_feature(story)
         story.accept(self)
       end
 

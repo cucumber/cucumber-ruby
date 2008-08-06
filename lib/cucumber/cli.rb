@@ -135,8 +135,8 @@ end
 extend Cucumber::StepMethods
 Cucumber::CLI.step_mother = step_mother
 
-extend(Cucumber::RubyTree)
-Cucumber::CLI.stories = stories
+extend(Cucumber::Tree)
+Cucumber::CLI.stories = features
 
 at_exit do
   Cucumber::CLI.execute unless Cucumber::CLI.execute_called?
