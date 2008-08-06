@@ -14,17 +14,18 @@ h2. Installation
 After you have installed Ruby or JRuby - install Cucumber with the following commands:
 
 Ruby:
-<pre><code>
-gem sources --add http://gems.github.com/ 
+<pre><code>gem sources --add http://gems.github.com/ 
 gem install aslakhellesoy-cucumber
 </code></pre>
 
 JRuby:
-<pre><code>
-jruby -S gem sources --add http://gems.github.com/ 
+<pre><code>jruby -S gem sources --add http://gems.github.com/ 
 jruby -S gem install aslakhellesoy-cucumber
 </code></pre>
 
 h2. Getting started
 
-I haven't written a tutorial yet. Take a look at the "examples":http://github.com/aslakhellesoy/cucumber/tree/master/examples
+I haven't written a tutorial yet. Take a look at the "examples":http://github.com/aslakhellesoy/cucumber/tree/master/examples.
+Each example directory has a Rakefile, and you can run the features with
+
+<pre><code>rake features</code></pre>

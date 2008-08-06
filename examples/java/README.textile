@@ -13,7 +13,7 @@ h2. Running the scenarios
 Open a shell in this directory (java) and execute the following command:
 
 <pre><code>
-examples/java/build.sh && jruby -Ilib bin/cucumber examples/java
+jruby -S rake features
 </code></pre>
 
 This will compile the java code and package it in a jar file, and then run Cucumber against

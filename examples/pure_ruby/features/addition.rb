@@ -14,9 +14,10 @@ Feature %|Addition
   end
   
   Table do |t|
-    t | "input_1" | "input_2" | "output" | "class"  | t
-    t | "20"      | "30"      | "50"     | "Number" | t
-    t | 2         | 5         | 7        | Fixnum   | t
-    t | "20"      | "40"      | "80"     | "Number" | t
+    t   | "input_1" | "input_2" | "output" | "class"  | t
+    # This is kind of dumb - but it illustrates how scenarios can be "generated" in code.
+    10.times do |n|
+      t | n         | n*2       | n*3      | Fixnum   | t
+    end
   end
 end

@@ -14,7 +14,7 @@ module Cucumber
       attr_accessor :cucumber_opts
       
       # Define a task
-      def initialize(task_name = "features", desc = "Run Stories")
+      def initialize(task_name = "features", desc = "Run Features")
         @task_name, @desc = task_name, desc
         @libs = [LIB]
 
