@@ -4,11 +4,11 @@ require 'cucumber'
 module Cucumber
   class CLI
     class << self
-      attr_writer :step_mother, :stories
+      attr_writer :step_mother, :features
     
       def execute
         @execute_called = true
-        parse(ARGV).execute!(@step_mother, @stories)
+        parse(ARGV).execute!(@step_mother, @features)
       end
       
       def execute_called?
@@ -31,19 +31,19 @@ module Cucumber
       @options = { :require => nil, :lang => 'en', :format => 'pretty', :dry_run => false }
       @args.options do |opts|
         opts.banner = "Usage: cucumber [options] FILES|DIRS"
-        opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require files before executing the stories.",
+        opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require files before executing the features.",
           "If this option is not specified, all *.rb files that",
-          "are siblings or below the stories will be autorequired") do |v|
+          "are siblings or below the features will be autorequired") do |v|
           @options[:require] ||= []
           @options[:require] << v
         end
         opts.on("-l LINE", "--line LANG", "Only execute the scenario at the given line") do |v|
           @options[:line] = v
         end
-        opts.on("-a LANG", "--language LANG", "Specify language for stories (Default: #{@options[:lang]})") do |v|
+        opts.on("-a LANG", "--language LANG", "Specify language for features (Default: #{@options[:lang]})") do |v|
           @options[:lang] = v
         end
-        opts.on("-f FORMAT", "--format FORMAT", "How to format stories (Default: #{@options[:format]})") do |v|
+        opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{@options[:format]})") do |v|
           @options[:format] = v
         end
         opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.") do
@@ -67,24 +67,23 @@ module Cucumber
       # Whatever is left after option parsing
       @files = @args.map do |path|
         path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
-        File.directory?(path) ? Dir["#{path}/**/*.story"] : path
+        File.directory?(path) ? Dir["#{path}/**/*.feature"] : path
       end.flatten
     end
     
-    def execute!(step_mother, stories)
+    def execute!(step_mother, features)
       Cucumber.load_language(@options[:lang])
       $executor = Executor.new(formatter, step_mother)
       require_files
-      # load_plain_text_stories(stories)
-      load_plain_text_features(stories)
+      load_plain_text_features(features)
       $executor.line = @options[:line].to_i if @options[:line]
-      $executor.visit_features(stories)
+      $executor.visit_features(features)
       exit 1 if $executor.failed
     end
     
   private
     
-    # Requires files - typically step files and ruby story files.
+    # Requires files - typically step files and ruby feature files.
     def require_files
       require "cucumber/treetop_parser/feature_#{@options[:lang]}"
       require "cucumber/treetop_parser/feature_parser"
@@ -104,13 +103,6 @@ module Cucumber
       end
     end
     
-    def load_plain_text_stories(stories)
-      parser = Parser::StoryParser.new
-      @files.each do |f|
-        stories << Parser::StoryNode.parse(f, parser)
-      end
-    end
-
     def load_plain_text_features(features)
       parser = TreetopParser::FeatureParser.new
       @files.each do |f|
@@ -130,13 +122,11 @@ module Cucumber
   end
 end
 
-# Hook the toplevel StepMother to the CLI
-# TODO: Hook in a RubyStories object on toplevel for pure ruby stories
 extend Cucumber::StepMethods
 Cucumber::CLI.step_mother = step_mother
 
 extend(Cucumber::Tree)
-Cucumber::CLI.stories = features
+Cucumber::CLI.features = features
 
 at_exit do
   Cucumber::CLI.execute unless Cucumber::CLI.execute_called?

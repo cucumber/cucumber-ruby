@@ -1,4 +1,4 @@
-Story: Run Stories
+Feature: Search
   As an information seeker
   I want to find more information
   So that I can learn more

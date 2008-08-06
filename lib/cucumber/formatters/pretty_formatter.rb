@@ -16,8 +16,8 @@ module Cucumber
       end
     
       def header_executing(header)
-        @io.puts if @story_newline
-        @story_newline = true
+        @io.puts if @feature_newline
+        @feature_newline = true
         @io.puts passed(header)
         @io.puts
       end

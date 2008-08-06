@@ -8,10 +8,10 @@ module Cucumber
       @f = Formatters::ProgressFormatter.new(@io)
       @m = StepMother.new
       @r = Executor.new(@f, @m)
-      @story_file = File.dirname(__FILE__) + '/sell_cucumbers.story'
+      @feature_file = File.dirname(__FILE__) + '/sell_cucumbers.feature'
       @parser = TreetopParser::FeatureParser.new
       @features = Tree::Features.new
-      @features << @parser.parse_feature(@story_file)
+      @features << @parser.parse_feature(@feature_file)
     end
 
     it "should pass when blocks are ok" do
@@ -27,7 +27,7 @@ STDOUT
 
     end
 
-    it "should print filtered backtrace with story line" do
+    it "should print filtered backtrace with feature line" do
       @m.register_step_proc(/there are (\d*) cucumbers/)     { |n| @n = n }
       @m.register_step_proc(/I sell (\d*) cucumbers/)        { |n| @n = n }
       @m.register_step_proc(/I should owe (\d*) cucumbers/) { |n| raise "dang" }
@@ -38,7 +38,7 @@ STDOUT
 1)
 dang
 #{__FILE__}:33:in `Then /I should owe (\\d*) cucumbers/'
-#{@story_file}:9:in `Then I should owe 7 cucumbers'
+#{@feature_file}:9:in `Then I should owe 7 cucumbers'
 \e[0m
 STDOUT
     end
@@ -47,7 +47,7 @@ STDOUT
 #       @r.register_step_proc("call me please") { @x = 1 }
 #       @r.register_step_proc("I will call you") { @r.register_step_proc("call me please") }
 #       @r.register_step_proc(/I should owe (\d*) cucumbers/)  { |n| @n.should == -n.to_i }
-#       @story.accept(@r)
+#       @feature.accept(@r)
 #       @f.dump
 #       @io.string.should == "...\n"
 #     end

@@ -33,16 +33,16 @@ module Cucumber
       @after_procs << proc
     end
 
-    def visit_features(stories)
-      raise "Line number can only be specified when there is 1 story. There were #{stories.length}." if @line && stories.length != 1
-      @step_mother.visit_features(stories)
-      @formatter.visit_features(stories) if @formatter.respond_to?(:visit_features)
-      stories.accept(self)
+    def visit_features(features)
+      raise "Line number can only be specified when there is 1 feature. There were #{features.length}." if @line && features.length != 1
+      @step_mother.visit_features(features)
+      @formatter.visit_features(features) if @formatter.respond_to?(:visit_features)
+      features.accept(self)
       @formatter.dump
     end
 
-    def visit_feature(story)
-      story.accept(self)
+    def visit_feature(feature)
+      feature.accept(self)
     end
 
     def visit_header(header)

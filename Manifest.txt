@@ -21,8 +21,8 @@ examples/simple/division.story
 examples/simple/steps/addition_steps.rb
 examples/simple_norwegian/steg/matte_steg.rb.rb
 examples/simple_norwegian/summering.story
-examples/web/run_stories.story
-examples/web/steps/stories_steps.rb
+examples/web/run_features.story
+examples/web/steps/features_steps.rb
 gem_tasks/deployment.rake
 gem_tasks/environment.rake
 gem_tasks/fix_cr_lf.rake
@@ -69,7 +69,7 @@ spec/cucumber/core_ext/string_spec.rb
 spec/cucumber/executor_spec.rb
 spec/cucumber/formatters/ansicolor_spec.rb
 spec/cucumber/formatters/html_formatter_spec.rb
-spec/cucumber/formatters/stories.html
+spec/cucumber/formatters/features.html
 spec/cucumber/sell_cucumbers.story
 spec/spec.opts
 spec/spec_helper.rb

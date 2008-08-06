@@ -6,7 +6,7 @@ module Cucumber
         @errors = []
       end
 
-      def visit_features(stories)
+      def visit_features(features)
         # IMPORTANT NOTICE ABOUT JQUERY BELOW. THE ORIGINAL BACKSLASHES (\) HAVE
         # BEEN REPLACED BY DOUBLE BACKSLASHES (\\) IN THIS FILE TO MAKE SURE THEY
         # ARE PRINTED PROPERLY WITH ONLY ONE BACKSLASH (\).
@@ -205,13 +205,13 @@ div.auto_complete ul li.selected {
   <body>
     <div id="container">
 HTML
-        stories.accept(self)
+        features.accept(self)
         @io.puts "    </div>"
       end
 
-      def visit_feature(story)
-        @io.puts "      <dl class=\"story new\">"
-        story.accept(self)
+      def visit_feature(feature)
+        @io.puts "      <dl class=\"feature new\">"
+        feature.accept(self)
         @io.puts "        </dd>"
         @io.puts "      </dl>"
       end

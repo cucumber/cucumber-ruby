@@ -1,4 +1,4 @@
-require 'cucumber/cli' # Needed in order to run the story with ruby
+require 'cucumber/cli' # Needed in order to run the feature with ruby
 
 Feature %|Addition
   As a math idiot 

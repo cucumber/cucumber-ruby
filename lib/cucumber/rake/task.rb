@@ -1,6 +1,6 @@
 module Cucumber
   module Rake
-    # Defines a task for running stories.
+    # Defines a task for running features.
     # TODO: Base on http://github.com/dchelimsky/rspec/tree/master/lib/spec/rake/spectask.rb
     class Task
       LIB    = File.expand_path(File.dirname(__FILE__) + '/../..')
@@ -9,19 +9,19 @@ module Cucumber
       attr_accessor :libs
       attr_accessor :step_list
       attr_accessor :step_pattern
-      attr_accessor :story_list
-      attr_accessor :story_pattern
+      attr_accessor :feature_list
+      attr_accessor :feature_pattern
       attr_accessor :cucumber_opts
       
       # Define a task
-      def initialize(task_name = "stories", desc = "Run Stories")
+      def initialize(task_name = "features", desc = "Run Stories")
         @task_name, @desc = task_name, desc
         @libs = [LIB]
 
         yield self if block_given?
 
-        @story_pattern = "stories/**/*.story" if story_pattern.nil? && story_list.nil?
-        @step_pattern =  "stories/**/*.rb"    if step_pattern.nil? && step_list.nil?
+        @feature_pattern = "features/**/*.feature" if feature_pattern.nil? && feature_list.nil?
+        @step_pattern =  "features/**/*.rb"    if step_pattern.nil? && step_list.nil?
         define_tasks
       end
     
@@ -38,7 +38,7 @@ module Cucumber
             args << '--require'
             args << step_file
           end
-          args << story_files
+          args << feature_files
           args.flatten!
           args.compact!
           ruby(args.join(" ")) # ruby(*args) is broken on Windows
@@ -46,13 +46,13 @@ module Cucumber
       end
 
 
-      def story_files # :nodoc:
+      def feature_files # :nodoc:
         if ENV['STORY']
           FileList[ ENV['STORY'] ]
         else
           result = []
-          result += story_list.to_a if story_list
-          result += FileList[story_pattern].to_a if story_pattern
+          result += feature_list.to_a if feature_list
+          result += FileList[feature_pattern].to_a if feature_pattern
           FileList[result]
         end
       end

@@ -4,14 +4,14 @@ case PLATFORM
 when /darwin/
   require 'safariwatir'
   Browser = Watir::Safari
-when /win32/
+when /win32|mingw/
   require 'watir'
   Browser = Watir::IE
 when /java/
   require 'celerity'
   Browser = Celerity::Browser
 else
-  raise "Can't do web stories on #{PLATFORM}"
+  raise "This platform is not supported (#{PLATFORM})"
 end
 
 class GoogleSearch
