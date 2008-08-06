@@ -14,6 +14,21 @@ else
   raise "Can't do web stories on #{PLATFORM}"
 end
 
+class GoogleSearch
+  def initialize(b)
+    @b = b
+  end
+  
+  def goto
+    @b.goto 'http://www.google.com/'
+  end
+  
+  def search(text)
+    @b.text_field(:name, 'q').set(text)
+    @b.button(:name, 'btnG').click
+  end
+end
+
 Before do
   @b = Browser.new
 end
@@ -22,16 +37,13 @@ After do
   @b.close
 end
 
-Given 'I am on the search page' do
-  @b.goto 'http://www.google.com/'
+Given 'I am on the Google search page' do
+  @page = GoogleSearch.new(@b)
+  @page.goto
 end
 
-Given /I have entered "(.*)"/ do |query|
-  @b.text_field(:name, 'q').set(query)
-end
-
-When 'I search' do
-  @b.button(:name, 'btnG').click
+When /I search for "(.*)"/ do |query|
+  @page.search(query)
 end
 
 Then /I should see a link to "(.*)":(.*)/ do |text, url|

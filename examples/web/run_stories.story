@@ -4,7 +4,6 @@ Story: Run Stories
   So that I can learn more
 
   Scenario: Find what I'm looking for
-    Given I am on the search page
-    And I have entered "rspec"
-    When I search
-    Then I should see a link to "RSpec-1.1.3: Overview":http://rspec.info/
+    Given I am on the Google search page
+    When I search for "rspec"
+    Then I should see a link to "RSpec-1.1.4: Overview":http://rspec.info/
