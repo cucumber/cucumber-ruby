@@ -1,6 +1,6 @@
 h1. Cucumber
 
-Cucumber is a tool for executable documentation in plain text. Cucumber targets non technical domain experts as well as
+"Cucumber":http://github.com/aslakhellesoy/cucumber is a tool that can execute documentation written in plain text. Cucumber targets non technical domain experts as well as
 programmers and QA people. Cucumber itself is written in Ruby, but it can be used to "test" code written in Ruby, Java 
 (or web applications written in any language). When "IronRuby":http://www.ironruby.net/ matures it can be used to "test"
 .NET code too.
@@ -8,3 +8,23 @@ programmers and QA people. Cucumber itself is written in Ruby, but it can be use
 While Cucumber can be thought of as a "testing" tool, most people use it to support "BDD":http://behaviour-driven.org/, so
 the "tests" are typically the first thing that gets written, and the production code is then written outside-in, to make
 the test pass.
+
+h2. Installation
+
+After you have installed Ruby or JRuby - install Cucumber with the following commands:
+
+Ruby:
+<pre><code>
+gem sources --add http://gems.github.com/ 
+gem install aslakhellesoy-cucumber
+</code></pre>
+
+JRuby:
+<pre><code>
+jruby -S gem sources --add http://gems.github.com/ 
+jruby -S gem install aslakhellesoy-cucumber
+</code></pre>
+
+h2. Getting started
+
+I haven't written a tutorial yet. Take a look at the "examples":http://github.com/aslakhellesoy/cucumber/tree/master/examples

@@ -1,0 +1,30 @@
+== FEATURES/PROBLEMS:
+
+* Run examples with:
+** ruby -Ilib bin/cucumber examples/simple --require examples/simple/steps
+** ruby -Ilib bin/cucumber examples/web --require examples/web/steps
+
+* TODO: OK Refactor: Extract explicit node classes with RDoc (for better API doc)
+* TODO: OK Get rid of the compile method. Compile the parser in Rake.
+* TODO: OK Make grammar support \r\n, \r and \n (Add some fixture features for that) 
+* TODO: OK Make grammar support indentation
+* TODO: OK Make grammar be totally relaxed about narrative
+* TODO: OK Add a yaml file for different languages
+* TODO: OK Custom nodes for the syntax tree
+* TODO: OK Actually execute the features
+* TODO: Make rake run specs by default
+* TODO: OK Make it work with pure ruby regexen
+* TODO: Make it work with string steps
+* TODO: bin/cucumber --require [dir|file|glob]* --language no --format [file]*
+* TODO: OK Pending steps shold print a block of code that can be pasted into code
+* TODO: cucumber --where "Some text from a step" that prints "__FILE__:__LINE__ (STEP PATTERN)" 
+* TODO: Customisable trace output (like javascriptlint)
+* TODO: Experiment: Make $variables become @variables
+* TODO: GivenScenario
+* TODO: OK PureRuby
+  * Make two trees include accept mixin
+* TODO: Call steps from steps
+* TODO: i18n in ruby too
+* TODO: Don't load any treetop files if no .feature files are found
+* TODO: Summary prints execution time
+* TODO: --nocolor option
