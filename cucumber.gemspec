@@ -1,4 +1,3 @@
-(in /Users/aslakhellesoy/scm/radiant_ba/vendor/plugins/cucumber)
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
   s.version = "0.1.1"

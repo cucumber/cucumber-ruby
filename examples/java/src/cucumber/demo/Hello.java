@@ -8,4 +8,8 @@ public class Hello {
     public boolean isFriend(String who) {
         return true;
     }
+    
+    public String getPhoneNumber(String who) {
+        return "99999";
+    }
 }

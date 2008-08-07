@@ -4,7 +4,7 @@ require 'cucumber_demo' # puts the jar on the classpath
 include_class 'cucumber.demo.Hello'
 
 Given /my name is (\w+)/ do |name|
-  @hello = Hello.new
+  @hello = Hello.new # A java object
   @name = name
 end
 
@@ -18,4 +18,8 @@ end
 
 Then /I should remember (\w+) as a friend/ do |name|
   @hello.friend?(name).should == true
+end
+
+Then /I should get (\w+)'s phone number/ do |name|
+  @hello.getPhoneNumber(name).should_not == nil
 end

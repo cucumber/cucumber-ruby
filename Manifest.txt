@@ -7,6 +7,11 @@ TODO.txt
 bin/cucumber
 config/hoe.rb
 config/requirements.rb
+examples/calculator/Rakefile
+examples/calculator/features/addition.feature
+examples/calculator/features/division.feature
+examples/calculator/features/steps/addition_steps.rb
+examples/calculator/lib/calculator.rb
 examples/java/README.textile
 examples/java/Rakefile
 examples/java/features/hello.feature
@@ -17,10 +22,6 @@ examples/java/src/cucumber/demo/Hello.java
 examples/pure_ruby/Rakefile
 examples/pure_ruby/features/addition.rb
 examples/pure_ruby/features/steps/addition_steps.rb
-examples/simple/Rakefile
-examples/simple/features/addition.feature
-examples/simple/features/division.feature
-examples/simple/features/steps/addition_steps.rb
 examples/simple_norwegian/Rakefile
 examples/simple_norwegian/features/steps/matte_steg.rb.rb
 examples/simple_norwegian/features/summering.feature
