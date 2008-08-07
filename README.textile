@@ -29,3 +29,33 @@ I haven't written a tutorial yet. Take a look at the "examples":http://github.co
 Each example directory has a Rakefile, and you can run the features with
 
 <pre><code>rake features</code></pre>
+
+h2. Background and Credits
+
+Cucumber is a rewrite of RSpec's "Story runner", which was originally written by Dan North. Dan's original
+implementation required that stories be written in Ruby. Shortly after, David Chelimsky added 
+"plain text":http://blog.davidchelimsky.net/articles/2007/10/21/story-runner-in-plain-english support.
+
+This brought executable stories a little closer to non-technical users, which is one of the target audiences
+for this kind of tool.
+
+However, the RSpec Story runner has several shortcomings which is rather common for tools that move into new territory.
+Some of the biggest problems with it are:
+
+* Hard to get started with. A special "all.rb" file must be written before it can be used.
+* No out of the box Rake support, which puts a lot of people off.
+* No i18n, so if you want to write stories in a different language than English you're out of luck.
+* Poor error reporting. No way to know on what line a plain text story failed during execution or parsing.
+* Limited colouring of output.
+* No simple way to execute only one scenario.
+* No command line tool to run stories.
+
+While all of this could have been fixed in the existing codebase, I figured it would be easier to do a rewrite from scratch.
+I also had some ideas for extensions of the story grammar, so I decided to use "Treetop":http://treetop.rubyforge.org/
+and base it on a proper "grammar":http://github.com/aslakhellesoy/cucumber/tree/master/lib/cucumber/treetop_parser/feature.treetop.erb
+
+Cucumber addresses all of the shortcomings of RSpec's Story runner. If the community likes it, we'll consider phasing out
+the RSpec story runner.
+
+The term "Feature" has been adopted in favour of "Story" because I believe it is a more appropriate term. A feature's scenarios
+typically increases over time - fed by several user stories.
