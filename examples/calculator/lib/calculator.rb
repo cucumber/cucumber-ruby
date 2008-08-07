@@ -1,5 +1,7 @@
 class Calculator
   def push(n)
+    n += 2 if n == 0 # a really stupiud bug
+
     @args ||= []
     @args << n
   end
@@ -10,9 +12,5 @@ class Calculator
 
   def divide
     @args[0].to_f / @args[1].to_f
-  end
-  
-  def rain?(day)
-    true
   end
 end
