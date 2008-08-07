@@ -14,7 +14,7 @@ module Feature
     end
 
     def scenarios
-      elements[1]
+      elements[2]
     end
   end
 
@@ -39,8 +39,21 @@ module Feature
     r1 = _nt_header
     s0 << r1
     if r1
-      r2 = _nt_scenarios
+      s2, i2 = [], index
+      loop do
+        r3 = _nt_whitespace
+        if r3
+          s2 << r3
+        else
+          break
+        end
+      end
+      r2 = SyntaxNode.new(input, i2...index, s2)
       s0 << r2
+      if r2
+        r4 = _nt_scenarios
+        s0 << r4
+      end
     end
     if s0.last
       r0 = (SyntaxNode).new(input, i0...index, s0)
@@ -181,11 +194,15 @@ module Feature
 
   module StepScenario1
     def scenario_keyword
-      elements[1]
+      elements[0]
     end
 
     def name
-      elements[4]
+      elements[3]
+    end
+
+    def blanks
+      elements[5]
     end
 
     def steps
@@ -195,7 +212,7 @@ module Feature
 
   module StepScenario2
     def populate(feature)
-      sc = feature.add_scenario(name.text_value)
+      sc = feature.add_scenario(name.text_value.strip)
       steps.elements.each{|s| s.populate(sc)}
       Feature.last_scenario = sc
     end
@@ -210,33 +227,59 @@ module Feature
     end
 
     i0, s0 = index, []
-    s1, i1 = [], index
-    loop do
-      r2 = _nt_whitespace
-      if r2
-        s1 << r2
-      else
-        break
-      end
-    end
-    r1 = SyntaxNode.new(input, i1...index, s1)
+    r1 = _nt_scenario_keyword
     s0 << r1
     if r1
-      r3 = _nt_scenario_keyword
-      s0 << r3
-      if r3
-        if input.index(":", index) == index
-          r4 = (SyntaxNode).new(input, index...(index + 1))
-          @index += 1
-        else
-          terminal_parse_failure(":")
-          r4 = nil
+      if input.index(":", index) == index
+        r2 = (SyntaxNode).new(input, index...(index + 1))
+        @index += 1
+      else
+        terminal_parse_failure(":")
+        r2 = nil
+      end
+      s0 << r2
+      if r2
+        s3, i3 = [], index
+        loop do
+          r4 = _nt_whitespace
+          if r4
+            s3 << r4
+          else
+            break
+          end
         end
-        s0 << r4
-        if r4
+        r3 = SyntaxNode.new(input, i3...index, s3)
+        s0 << r3
+        if r3
           s5, i5 = [], index
           loop do
-            r6 = _nt_whitespace
+            i6, s6 = index, []
+            i7 = index
+            r8 = _nt_newline
+            if r8
+              r7 = nil
+            else
+              self.index = i7
+              r7 = SyntaxNode.new(input, index...index)
+            end
+            s6 << r7
+            if r7
+              if index < input_length
+                r9 = (SyntaxNode).new(input, index...(index + 1))
+                @index += 1
+              else
+                terminal_parse_failure("any character")
+                r9 = nil
+              end
+              s6 << r9
+            end
+            if s6.last
+              r6 = (SyntaxNode).new(input, i6...index, s6)
+              r6.extend(StepScenario0)
+            else
+              self.index = i6
+              r6 = nil
+            end
             if r6
               s5 << r6
             else
@@ -246,72 +289,37 @@ module Feature
           r5 = SyntaxNode.new(input, i5...index, s5)
           s0 << r5
           if r5
-            s7, i7 = [], index
+            s10, i10 = [], index
             loop do
-              i8, s8 = index, []
-              i9 = index
-              r10 = _nt_newline
-              if r10
-                r9 = nil
-              else
-                self.index = i9
-                r9 = SyntaxNode.new(input, index...index)
-              end
-              s8 << r9
-              if r9
-                if index < input_length
-                  r11 = (SyntaxNode).new(input, index...(index + 1))
-                  @index += 1
-                else
-                  terminal_parse_failure("any character")
-                  r11 = nil
-                end
-                s8 << r11
-              end
-              if s8.last
-                r8 = (SyntaxNode).new(input, i8...index, s8)
-                r8.extend(StepScenario0)
-              else
-                self.index = i8
-                r8 = nil
-              end
-              if r8
-                s7 << r8
+              r11 = _nt_newline
+              if r11
+                s10 << r11
               else
                 break
               end
             end
-            r7 = SyntaxNode.new(input, i7...index, s7)
-            s0 << r7
-            if r7
-              s12, i12 = [], index
-              loop do
-                r13 = _nt_newline
-                if r13
-                  s12 << r13
-                else
-                  break
-                end
-              end
-              r12 = SyntaxNode.new(input, i12...index, s12)
+            r10 = SyntaxNode.new(input, i10...index, s10)
+            s0 << r10
+            if r10
+              r12 = _nt_blanks
               s0 << r12
               if r12
-                s14, i14 = [], index
+                s13, i13 = [], index
                 loop do
-                  r15 = _nt_step
-                  if r15
-                    s14 << r15
+                  r14 = _nt_step
+                  if r14
+                    s13 << r14
                   else
                     break
                   end
                 end
-                if s14.empty?
-                  self.index = i14
-                  r14 = nil
+                if s13.empty?
+                  self.index = i13
+                  r13 = nil
                 else
-                  r14 = SyntaxNode.new(input, i14...index, s14)
+                  r13 = SyntaxNode.new(input, i13...index, s13)
                 end
-                s0 << r14
+                s0 << r13
               end
             end
           end
@@ -344,12 +352,15 @@ module Feature
       elements[3]
     end
 
+    def blanks
+      elements[5]
+    end
   end
 
   module Step2
     def populate(scenario)
       line = input.line_of(interval.first)
-      scenario.add_step(step_keyword.text_value, name.text_value, line)
+      scenario.add_step(step_keyword.text_value, name.text_value.strip, line)
     end
   end
 
@@ -438,6 +449,10 @@ module Feature
             end
             r11 = SyntaxNode.new(input, i11...index, s11)
             s0 << r11
+            if r11
+              r13 = _nt_blanks
+              s0 << r13
+            end
           end
         end
       end
@@ -853,6 +868,42 @@ module Feature
     return r0
   end
 
+  def _nt_blanks
+    start_index = index
+    if node_cache[:blanks].has_key?(index)
+      cached = node_cache[:blanks][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    s0, i0 = [], index
+    loop do
+      i1 = index
+      r2 = _nt_newline
+      if r2
+        r1 = r2
+      else
+        r3 = _nt_whitespace
+        if r3
+          r1 = r3
+        else
+          self.index = i1
+          r1 = nil
+        end
+      end
+      if r1
+        s0 << r1
+      else
+        break
+      end
+    end
+    r0 = SyntaxNode.new(input, i0...index, s0)
+
+    node_cache[:blanks][start_index] = r0
+
+    return r0
+  end
+
   def _nt_newline
     start_index = index
     if node_cache[:newline].has_key?(index)
@@ -900,7 +951,7 @@ module Feature
       return cached
     end
 
-    if input.index(Regexp.new('[ \\v\\f\\t]'), index) == index
+    if input.index(Regexp.new('[ \\t]'), index) == index
       r0 = (SyntaxNode).new(input, index...(index + 1))
       @index += 1
     else

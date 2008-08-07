@@ -3,7 +3,7 @@ module TreetopParser
 
 grammar Feature
   rule root
-    header scenarios {      
+    header whitespace* scenarios {      
       def feature
         f = Tree::Feature.new(header.text_value.strip)
         scenarios.populate(f)
@@ -26,9 +26,9 @@ grammar Feature
   end
 
   rule step_scenario
-    whitespace* scenario_keyword ":" whitespace* name:(!newline .)* newline* steps:step+ {
+    scenario_keyword ":" whitespace* name:(!newline .)* newline* blanks steps:step+ {
       def populate(feature)
-        sc = feature.add_scenario(name.text_value)
+        sc = feature.add_scenario(name.text_value.strip)
         steps.elements.each{|s| s.populate(sc)}
         Feature.last_scenario = sc
       end
@@ -36,10 +36,10 @@ grammar Feature
   end
   
   rule step
-    whitespace* step_keyword whitespace* name:(!newline .)* newline* {
+    whitespace* step_keyword whitespace* name:(!newline .)* newline* blanks {
       def populate(scenario)
         line = input.line_of(interval.first)
-        scenario.add_step(step_keyword.text_value, name.text_value, line)
+        scenario.add_step(step_keyword.text_value, name.text_value.strip, line)
       end
     }
   end
@@ -85,12 +85,16 @@ grammar Feature
     '|'
   end
 
+  rule blanks
+    (newline / whitespace)*
+  end
+
   rule newline
     "\r\n?" / "\n"
   end
 
   rule whitespace
-    [ \v\f\t]
+    [ \t]
   end
 end
 
