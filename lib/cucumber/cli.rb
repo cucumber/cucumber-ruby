@@ -21,6 +21,12 @@ module Cucumber
         cli
       end
     end
+    
+    FORMATS = {
+      'progress' => Formatters::ProgressFormatter,
+      'html'     => Formatters::HtmlFormatter,
+      'pretty'   => Formatters::PrettyFormatter
+    }
 
     def initialize(args)
       @args = args.dup
@@ -37,13 +43,15 @@ module Cucumber
           @options[:require] ||= []
           @options[:require] << v
         end
-        opts.on("-l LINE", "--line LANG", "Only execute the scenario at the given line") do |v|
+        opts.on("-l LINE", "--line LINE", "Only execute the scenario at the given line") do |v|
           @options[:line] = v
         end
-        opts.on("-a LANG", "--language LANG", "Specify language for features (Default: #{@options[:lang]})") do |v|
+        opts.on("-a LANG", "--language LANG", "Specify language for features (Default: #{@options[:lang]})",
+          "Available languages: #{Cucumber.languages.join(", ")}") do |v|
           @options[:lang] = v
         end
-        opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{@options[:format]})") do |v|
+        opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{@options[:format]})",
+          "Available formats: #{FORMATS.keys.sort.join(", ")}") do |v|
           @options[:format] = v
         end
         opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.") do
@@ -106,11 +114,7 @@ module Cucumber
     end
     
     def formatter
-      klass = {
-        'progress' => Formatters::ProgressFormatter,
-        'html'     => Formatters::HtmlFormatter,
-        'pretty'   => Formatters::PrettyFormatter,
-      }[@options[:format]]
+      klass = FORMATS[@options[:format]]
       klass.new(STDOUT)
     end
     

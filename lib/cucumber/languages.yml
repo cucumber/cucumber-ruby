@@ -19,7 +19,7 @@
   scenario: Scenario
   given_scenario: SoitScenario
   given: Soit
-  when: Quand
+  when: Lorsque
   then: Alors
   and: Et
 "pt":

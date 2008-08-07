@@ -475,11 +475,11 @@ module Feature
     if r1
       r0 = r1
     else
-      if input.index('Quand', index) == index
-        r2 = (SyntaxNode).new(input, index...(index + 5))
-        @index += 5
+      if input.index('Lorsque', index) == index
+        r2 = (SyntaxNode).new(input, index...(index + 7))
+        @index += 7
       else
-        terminal_parse_failure('Quand')
+        terminal_parse_failure('Lorsque')
         r2 = nil
       end
       if r2

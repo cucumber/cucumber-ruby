@@ -49,10 +49,6 @@ module Cucumber
       @formatter.header_executing(header) if @formatter.respond_to?(:header_executing)
     end
 
-    def visit_narrative(narrative)
-      @formatter.narrative_executing(narrative) if @formatter.respond_to?(:narrative_executing)
-    end
-
     def visit_scenario(scenario)
       if @line.nil? || scenario.at_line?(@line)
         @error = nil

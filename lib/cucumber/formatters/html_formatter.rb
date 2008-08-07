@@ -220,6 +220,7 @@ HTML
         @io.puts "        <dt>Feature: #{header}</dt>"
       end
 
+      # TODO: Lose me
       def visit_narrative(narrative)
         @io.puts "        <dd>"
         @io.puts "          <p>"

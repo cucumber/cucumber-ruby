@@ -1,13 +1,13 @@
 h1. Cucumber
 
-"Cucumber":http://github.com/aslakhellesoy/cucumber is a tool that can execute documentation written in plain text. Cucumber targets non technical domain experts as well as
-programmers and QA people. Cucumber itself is written in Ruby, but it can be used to "test" code written in Ruby, Java 
-(or web applications written in any language). When "IronRuby":http://www.ironruby.net/ matures it can be used to "test"
-.NET code too.
+"Cucumber":http://github.com/aslakhellesoy/cucumber is a tool that can execute documentation written in plain text. 
+Cucumber targets non technical domain experts as well as programmers and QA people. Cucumber itself is written in Ruby, 
+but it can be used to "test" code written in Ruby, Java (or web applications written in any language). When
+"IronRuby":http://www.ironruby.net/ matures it can be used to "test" .NET code too.
 
 While Cucumber can be thought of as a "testing" tool, most people use it to support "BDD":http://behaviour-driven.org/, so
-the "tests" are typically the first thing that gets written, and the production code is then written outside-in, to make
-the test pass.
+the "tests" (plain text feature descriptions with scenarios) are typically written before anything else, and the production 
+code is then written outside-in, to make them pass.
 
 h2. Installation
 
@@ -26,9 +26,20 @@ jruby -S gem install aslakhellesoy-cucumber
 h2. Getting started
 
 I haven't written a tutorial yet. Take a look at the "examples":http://github.com/aslakhellesoy/cucumber/tree/master/examples.
-Each example directory has a Rakefile, and you can run the features with
+Each example directory has a Rakefile, and you can run the features in an example directory with
 
 <pre><code>rake features</code></pre>
+
+The examples deliberately have errors so you can get a taste of how the error output looks like. You can get help by asking 
+for it:
+
+<pre><code>cucumber --help</code></pre>
+
+You can also use Cucumber with Rails by adding a simple
+
+<pre><code>require "cucumber/rails/world"</code></pre>
+
+in one of the ruby files underneath your features directory.
 
 h2. Background and Credits
 
@@ -49,13 +60,21 @@ Some of the biggest problems with it are:
 * Limited colouring of output.
 * No simple way to execute only one scenario.
 * No command line tool to run stories.
+* No easy before or after hooks.
 
-While all of this could have been fixed in the existing codebase, I figured it would be easier to do a rewrite from scratch.
-I also had some ideas for extensions of the story grammar, so I decided to use "Treetop":http://treetop.rubyforge.org/
-and base it on a proper "grammar":http://github.com/aslakhellesoy/cucumber/tree/master/lib/cucumber/treetop_parser/feature.treetop.erb
+While all of this could have been fixed in the existing codebase, I figured it would be easier to do a rewrite from scratch. 
+I also had some ideas for extensions of the story grammar (like FIT style tables that you can see in some of the examples), 
+so I decided to base it on a proper 
+"grammar":http://github.com/aslakhellesoy/cucumber/tree/master/lib/cucumber/treetop_parser/feature.treetop.erb using
+"Treetop":http://treetop.rubyforge.org/, which I like a lot.
 
-Cucumber addresses all of the shortcomings of RSpec's Story runner. If the community likes it, we'll consider phasing out
-the RSpec story runner.
+Cucumber addresses all of the above mentioned shortcomings of RSpec's Story runner. 
+If the community likes it, perhaps it will replace the RSpec story runner. Either by
+being assumed into RSpec proper, or remaining a separate tool like now.
 
-The term "Feature" has been adopted in favour of "Story" because I believe it is a more appropriate term. A feature's scenarios
-typically increases over time - fed by several user stories.
+The term "Feature" has been adopted in favour of "Story" because I believe it is a more 
+appropriate term. A feature's scenarios typically increases over time - fed by several user
+stories.
+
+The name Cucumber means absolutely nothing, it was suggested by my girlfriend who was eating a cucumber sandwich
+while I started to write it.

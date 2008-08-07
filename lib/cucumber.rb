@@ -17,8 +17,16 @@ module Cucumber
     attr_reader :language
     
     def load_language(lang)
+      @language = config[lang]
+    end
+    
+    def languages
+      config.keys.sort
+    end
+    
+    def config
       require 'yaml'
-      @language = YAML.load_file(File.dirname(__FILE__) + '/cucumber/languages.yml')[lang]
+      @config ||= YAML.load_file(File.dirname(__FILE__) + '/cucumber/languages.yml')
     end
   end  
 end
