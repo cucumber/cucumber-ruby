@@ -34,7 +34,7 @@ VERS = Cucumber::VERSION::STRING + (REV ? ".#{REV}" : "")
 RDOC_OPTS = ['--quiet', '--title', 'Cucumber documentation',
     "--opname", "index.html",
     "--line-numbers", 
-    "--main", "README.txt",
+    "--main", "README.textile",
     "--inline-source"]
 
 class Hoe
