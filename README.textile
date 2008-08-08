@@ -41,6 +41,85 @@ You can also use Cucumber with Rails by adding a simple
 
 in one of the ruby files underneath your features directory.
 
+h2. Ruby on Rails
+
+Cucumber has very nice Rails support, and I really recommend using "Webrat":http://github.com/brynary/webrat
+in the step definitions. Here is how to get you started.
+
+h3. Install Cucumber, Webrat and RSpec
+
+<pre><code>git submodule add cucumber git://github.com/aslakhellesoy/cucumber.git vendor/plugins/cucumber
+git submodule add webrat git://github.com/brynary/webrat.git vendor/plugins/webrat
+git submodule add rspec-rails git://github.com/dchelimsky/rspec.git vendor/plugins/rspec
+git submodule add rspec-rails git://github.com/dchelimsky/rspec-rails.git vendor/plugins/rspec-rails
+</code></pre>
+
+If your own Rails code is not in Git, just replace "submodule add" with "clone".
+
+h3. Install Other dependencies
+
+<pre><code>gem install hpricot cucumber</code></pre>
+
+Yes, you did already install cucumber as a plugin, but this will install all the dependent libraries you need.
+
+h3. Bootstrap Cucumber
+
+You'll need a Rake task and a file that configures Cucumber for use with Ruby on Rails.
+You create these with:
+
+<pre><code>ruby script/generate cucumber</code></pre>
+
+Check out the generated files. If you need to, you can go and tweak them later.
+
+h3. Start a feature
+
+It's really, really recommended that you write your features by hand - in collaboration with your
+customer / business analyst / domain expert. However, to get you started (and so you can see how you can use
+Webrat, you can use the features generator to generate the first few features:
+
+<pre><code>ruby script/generate feature Frooble name description</code></pre>
+
+This will generate a simple plain text feature with associated steps. Don't get addicted to this
+generator - you're better off writing these by hand in the long run. See the BDD tips section below.
+
+h3. Run features
+
+<pre><code>rake features</code></pre>
+
+This should result in failing scenarios, because you haven't written any code yet (I hope). Now you it's time
+to write some code, or generate some. Try this:
+
+<pre><code>script/generate rspec_scaffold Frooble name:string description:text
+rake db:migrate
+rake features
+</code></pre>
+
+h3. BDD
+
+If you have found a bug or want to add a feature, start by writing a new feature or scenario that describes the
+
+Now run the features again. The one you wrote should have yellow, pending steps - or failing, red ones. 
+(If you don't get that you're doing something wrong, or the feature is already implemented).
+
+This is when you start writing code. You might as well get used to doing it this way, because we won't accept
+any patches unless you also have stories or specs for your code. This is because we don't want to end up with a 
+brittle, unmaintainable, undocumented pile of code that nobody understands. (Yes, stores and specs are *documentation* too).
+
+If you think this sounds annoying, try it out anyway. You'll end up writing better (and less) code this way. Trust me.
+Work outside-in (the outside being the story, the inside being the low level code). Do it the "BDD":http://en.wikipedia.org/wiki/Behavior_driven_development way.
+
+h3. Make sure the feature provides business value
+
+You should discuss the "In order to" part of the feature and pop the "why" stack max 5 times (ask why recursively) 
+until you end up with one of the following business values:
+
+* Protect revenue
+* Increase revenue
+* Manage cost
+
+If you're about to implement a feature that doesn't support one of those values, chances are you're about to
+implement a non-valuable feature.
+
 h2. Background and Credits
 
 Cucumber is a rewrite of RSpec's "Story runner", which was originally written by Dan North. Dan's original
