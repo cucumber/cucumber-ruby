@@ -1,9 +1,15 @@
 h1. Cucumber
 
-"Cucumber":http://github.com/aslakhellesoy/cucumber is a tool that can execute documentation written in plain text. 
-Cucumber targets non technical domain experts as well as programmers and QA people. Cucumber itself is written in Ruby, 
-but it can be used to "test" code written in Ruby, Java (or web applications written in any language). When
-"IronRuby":http://www.ironruby.net/ matures it can be used to "test" .NET code too.
+"Cucumber":http://github.com/aslakhellesoy/cucumber is a tool that can execute feature documentation written in plain text. 
+Cucumber targets non technical business analysts, domain experts, testers (for the plain text part) and programmers
+(for the steps, which are written in Ruby). 
+
+Cucumber itself is also written in Ruby, but it can be used to "test" code written in Ruby, Java (or web applications written 
+in any language). When "IronRuby":http://www.ironruby.net/ matures it can be used to "test" .NET code too.
+
+Cucumber only requires minimal use of Ruby programming, so don't be afraid to try it out even if the code you're
+developing is in a different language. Most programmers should pick up the required Ruby skills and be productive
+with Cucumber in a few of days.
 
 While Cucumber can be thought of as a "testing" tool, most people use it to support "BDD":http://behaviour-driven.org/, so
 the "tests" (plain text feature descriptions with scenarios) are typically written before anything else, and the production 
@@ -82,6 +88,16 @@ Webrat, you can use the features generator to generate the first few features:
 This will generate a simple plain text feature with associated steps. Don't get addicted to this
 generator - you're better off writing these by hand in the long run. See the BDD tips section below.
 
+h3. Tips
+
+These tips apply to Rails development in general...
+
+* Talk to models directly in *Given* steps to set up a known state. Don't use fixtures.
+* Use Webrat in When steps
+* Use Webrat and/or models in Then steps to verify the *outcomes*
+* Organise steps in files named accordingly to resources used
+* Avoid keeping state in @variables in steps. It will couple your steps and make them harder to reuse.
+
 h3. Run features
 
 <pre><code>rake features</code></pre>
@@ -94,7 +110,7 @@ rake db:migrate
 rake features
 </code></pre>
 
-h3. BDD
+h2. BDD
 
 If you have found a bug or want to add a feature, start by writing a new feature or scenario that describes the
 
@@ -108,7 +124,7 @@ brittle, unmaintainable, undocumented pile of code that nobody understands. (Yes
 If you think this sounds annoying, try it out anyway. You'll end up writing better (and less) code this way. Trust me.
 Work outside-in (the outside being the story, the inside being the low level code). Do it the "BDD":http://en.wikipedia.org/wiki/Behavior_driven_development way.
 
-h3. Make sure the feature provides business value
+h3. Business value and MMF
 
 You should discuss the "In order to" part of the feature and pop the "why" stack max 5 times (ask why recursively) 
 until you end up with one of the following business values:
@@ -118,13 +134,28 @@ until you end up with one of the following business values:
 * Manage cost
 
 If you're about to implement a feature that doesn't support one of those values, chances are you're about to
-implement a non-valuable feature.
+implement a non-valuable feature. Consider tossing it altogether or pushing it down in your backlog. Focus on
+implementing the MMFs (Minimal Marketable Features) that will yield the most value.
+
+h3. Outcomes and bottom-up scenarios.
+
+The value provided by a system is what you can get out of it - not what you put into it. Just like the value
+is expressed at the top of a feature (In order to...), the value should be in the steps of a scenarios too,
+more precicely in the *Then* steps.
+
+When you're writing a new scenario, I recommend you start with the formulation of the desired outcome. Write the
+*Then* steps first. Then write the *When* step to discover the action/operation and finally write the *Given*
+steps that need to be in place in order for the When/Then to make sense.
 
 h2. Background and Credits
 
 Cucumber is a rewrite of RSpec's "Story runner", which was originally written by Dan North. Dan's original
 implementation required that stories be written in Ruby. Shortly after, David Chelimsky added 
-"plain text":http://blog.davidchelimsky.net/articles/2007/10/21/story-runner-in-plain-english support.
+"plain text":http://blog.davidchelimsky.net/articles/2007/10/21/story-runner-in-plain-english support with
+contributions from half a dozen other people.
+
+The business value guidelines and general wording in features is based on several conversations and blog posts
+by Chris Matts, Liz Keogh and Dan North.
 
 This brought executable stories a little closer to non-technical users, which is one of the target audiences
 for this kind of tool.
@@ -145,14 +176,14 @@ While all of this could have been fixed in the existing codebase, I figured it w
 I also had some ideas for extensions of the story grammar (like FIT style tables that you can see in some of the examples), 
 so I decided to base it on a proper 
 "grammar":http://github.com/aslakhellesoy/cucumber/tree/master/lib/cucumber/treetop_parser/feature.treetop.erb using
-"Treetop":http://treetop.rubyforge.org/, which I like a lot.
+"Treetop":http://treetop.rubyforge.org/.
 
 Cucumber addresses all of the above mentioned shortcomings of RSpec's Story runner. 
-If the community likes it, perhaps it will replace the RSpec story runner. Either by
+If the community likes it, perhaps it will replace the RSpec story runner - either by
 being assumed into RSpec proper, or remaining a separate tool like now.
 
 The term "Feature" has been adopted in favour of "Story" because I believe it is a more 
-appropriate term. A feature's scenarios typically increases over time - fed by several user
+appropriate term. A feature's scenarios typically grow over time - fed by several user
 stories.
 
 The name Cucumber means absolutely nothing, it was suggested by my girlfriend who was eating a cucumber sandwich
