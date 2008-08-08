@@ -11,9 +11,9 @@ Cucumber only requires minimal use of Ruby programming, so don't be afraid to tr
 developing is in a different language. Most programmers should pick up the required Ruby skills and be productive
 with Cucumber in a few of days.
 
-While Cucumber can be thought of as a "testing" tool, most people use it to support "BDD":http://behaviour-driven.org/, so
-the "tests" (plain text feature descriptions with scenarios) are typically written before anything else, and the production 
-code is then written outside-in, to make them pass.
+While Cucumber can be thought of as a "testing" tool, the intent of the tool is to support "BDD":http://behaviour-driven.org/
+This means that the "tests" (plain text feature descriptions with scenarios) are typically written before anything else, and 
+the production code is then written outside-in, to make them pass.
 
 h2. Installation
 
@@ -31,7 +31,8 @@ jruby -S gem install aslakhellesoy-cucumber
 
 h2. Getting started
 
-I haven't written a tutorial yet. Take a look at the "examples":http://github.com/aslakhellesoy/cucumber/tree/master/examples.
+There are several ways to get started, depending on the architecture of your application.
+Take a look at the "examples":http://github.com/aslakhellesoy/cucumber/tree/master/examples.
 Each example directory has a Rakefile, and you can run the features in an example directory with
 
 <pre><code>rake features</code></pre>
@@ -40,12 +41,6 @@ The examples deliberately have errors so you can get a taste of how the error ou
 for it:
 
 <pre><code>cucumber --help</code></pre>
-
-You can also use Cucumber with Rails by adding a simple
-
-<pre><code>require "cucumber/rails/world"</code></pre>
-
-in one of the ruby files underneath your features directory.
 
 h2. Ruby on Rails
 
@@ -56,7 +51,7 @@ h3. Install Cucumber, Webrat and RSpec
 
 <pre><code>git submodule add cucumber git://github.com/aslakhellesoy/cucumber.git vendor/plugins/cucumber
 git submodule add webrat git://github.com/brynary/webrat.git vendor/plugins/webrat
-git submodule add rspec-rails git://github.com/dchelimsky/rspec.git vendor/plugins/rspec
+git submodule add rspec git://github.com/dchelimsky/rspec.git vendor/plugins/rspec
 git submodule add rspec-rails git://github.com/dchelimsky/rspec-rails.git vendor/plugins/rspec-rails
 </code></pre>
 
@@ -70,7 +65,7 @@ Yes, you did already install cucumber as a plugin, but this will install all the
 
 h3. Bootstrap Cucumber
 
-You'll need a Rake task and a file that configures Cucumber for use with Ruby on Rails.
+You'll need a Rake task and a couple of files that configure Cucumber for use with Ruby on Rails and Webrat.
 You create these with:
 
 <pre><code>ruby script/generate cucumber</code></pre>
@@ -80,23 +75,13 @@ Check out the generated files. If you need to, you can go and tweak them later.
 h3. Start a feature
 
 It's really, really recommended that you write your features by hand - in collaboration with your
-customer / business analyst / domain expert. However, to get you started (and so you can see how you can use
-Webrat, you can use the features generator to generate the first few features:
+customer / business analyst / domain expert. However, to get you started (and so you can see how to use
+Webrat), you can use the feature generator to generate the first few features:
 
-<pre><code>ruby script/generate feature Frooble name description</code></pre>
+<pre><code>ruby script/generate feature Frooble name color description</code></pre>
 
 This will generate a simple plain text feature with associated steps. Don't get addicted to this
 generator - you're better off writing these by hand in the long run. See the BDD tips section below.
-
-h3. Tips
-
-These tips apply to Rails development in general...
-
-* Talk to models directly in *Given* steps to set up a known state. Don't use fixtures.
-* Use Webrat in When steps
-* Use Webrat and/or models in Then steps to verify the *outcomes*
-* Organise steps in files named accordingly to resources used
-* Avoid keeping state in @variables in steps. It will couple your steps and make them harder to reuse.
 
 h3. Run features
 
@@ -105,10 +90,26 @@ h3. Run features
 This should result in failing scenarios, because you haven't written any code yet (I hope). Now you it's time
 to write some code, or generate some. Try this:
 
-<pre><code>script/generate rspec_scaffold Frooble name:string description:text
+<pre><code>script/generate rspec_scaffold Frooble name:string color:string description:text
 rake db:migrate
 rake features
 </code></pre>
+
+h3. Tips
+
+These tips apply to Rails development in general...
+
+* Talk to models directly in *Given* steps to set up a known state. Don't use fixtures.
+* Use Webrat in *When* steps
+* Use *response.should have_tag(...)* (and models) in *Then* steps to verify the *outcomes* (which are on the screen, not only in the database).
+* Organise steps in files named accordingly to resources used
+* Avoid keeping state in @variables in steps. It will couple your steps and make them harder to reuse.
+
+h3. View spec redundancy
+
+Since I recommend you verify outcomes (*Then* steps) by looking at the HTML, you might end up having some degree
+of redundancy with view specs. I recommend you delete generated view specs if you run into too much maintenance
+headaches and rely on the features instead of view specs. However, in some cases it can be handy to use both.
 
 h2. BDD
 
