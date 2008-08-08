@@ -1,8 +1,8 @@
 h1. Cucumber
 
 "Cucumber":http://github.com/aslakhellesoy/cucumber is a tool that can execute feature documentation written in plain text. 
-Cucumber targets non technical business analysts, domain experts, testers (for the plain text part) and programmers
-(for the steps, which are written in Ruby). 
+Cucumber targets non technical business analysts, interaction designers, domain experts, testers (for the plain text part) 
+and programmers (for the steps, which are written in Ruby). 
 
 Cucumber itself is also written in Ruby, but it can be used to "test" code written in Ruby, Java (or web applications written 
 in any language). When "IronRuby":http://www.ironruby.net/ matures it can be used to "test" .NET code too.
@@ -75,7 +75,7 @@ Check out the generated files. If you need to, you can go and tweak them later.
 h3. Start a feature
 
 It's really, really recommended that you write your features by hand - in collaboration with your
-customer / business analyst / domain expert. However, to get you started (and so you can see how to use
+customer / business analyst / domain expert / interaction designer. However, to get you started (and so you can see how to use
 Webrat), you can use the feature generator to generate the first few features:
 
 <pre><code>ruby script/generate feature Frooble name color description</code></pre>
