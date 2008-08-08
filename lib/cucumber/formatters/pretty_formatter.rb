@@ -103,16 +103,27 @@ module Cucumber
         @io.puts failed("#{@failed.length} steps failed") unless @failed.empty?
         @io.puts skipped("#{@skipped.length} steps skipped") unless @skipped.empty?
         @io.puts pending("#{@pending.length} steps pending") unless @pending.empty?
-
+        @io.print reset
+        print_snippets
+      end
+      
+      def print_snippets
         unless @pending.empty?
           @io.puts "\nYou can use these snippets to implement pending steps:\n\n"
           
-          @pending.each do |step|
-            @io.puts "#{step.keyword} /#{step.name}/ do\nend\n\n" unless step.row?
+          prev_keyword = nil
+          snippets = @pending.map do |step|
+            next if step.row?
+            keyword = step.keyword == Cucumber.language['and'] ? prev_keyword : step.keyword
+            snippet = "#{keyword} /#{step.name}/ do\nend\n\n"
+            prev_keyword = step.keyword
+            snippet
+          end.compact.uniq
+          
+          snippets.each do |snippet|
+            @io.puts snippet
           end
         end
-
-        @io.print reset
       end
     end
   end

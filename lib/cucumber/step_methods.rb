@@ -1,7 +1,9 @@
 require 'cucumber/step_mother'
 
 module Cucumber
-  module StepMethods  
+  # Defines "global" methods that may be used in *_steps.rb files.
+  module StepMethods
+    # Each scenario will execute in the context of what the supplied block returns.
     def World(&proc)
       $executor.register_world_proc(&proc)
     end
