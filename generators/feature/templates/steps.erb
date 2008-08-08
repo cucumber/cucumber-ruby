@@ -1,0 +1,22 @@
+Given /I am on the new <%= singular_name %> page/ do
+  visits "/<%= plural_name %>/new"
+end
+
+Given /there are (\d+) <%= plural_name %>/ do |n|
+  <%= class_name %>.transaction do
+    <%= class_name %>.destroy_all
+    n.to_i.times do |n|
+      <%= class_name %>.create! :name => "<%= class_name %> #{n}"
+    end
+  end
+end
+
+When /I delete the first <%= singular_name %>/ do
+  visits <%= plural_name %>_url
+  clicks_link "Destroy"
+end
+
+Then /there should be (\d+) <%= plural_name %> left/ do |n|
+  <%= class_name %>.count.should == n.to_i
+  response.should have_tag("table tr", n.to_i + 1) # There is a header row too
+end

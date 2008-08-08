@@ -8,8 +8,6 @@ else
   require 'action_controller/integration'
 end
 require 'test/unit/testresult'
-require 'spec'
-require 'spec/rails'
 
 # These allow exceptions to come through as opposed to being caught and hvaing non-helpful responses returned.
 ActionController::Base.class_eval do
@@ -26,18 +24,9 @@ end
 # So that Test::Unit doesn't launch at the end - makes it think it has already been run.
 Test::Unit.run = true
 
-# Hack to stop RSpec from dumping the summary
-Spec::Runner::Options.class_eval do
-  def examples_should_be_run?
-    false
-  end
-end
-
-ActionController::Integration::Session.send(:include, Spec::Matchers)
-ActionController::Integration::Session.send(:include, Spec::Rails::Matchers)
-
-module Cucumber
+module Cucumber #:nodoc:
   module Rails
+    # All scenarios will execute in the context of a new instance of World.
     class World < ActionController::IntegrationTest
       if defined?(ActiveRecord::Base)
         self.use_transactional_fixtures = true
