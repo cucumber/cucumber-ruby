@@ -1,6 +1,6 @@
 require 'spec'
 
-class Calculator
+class Kalkulator
   def push(n)
     @args ||= []
     @args << n
@@ -12,7 +12,7 @@ class Calculator
 end
 
 Before do
-  @calc = Calculator.new
+  @calc = Kalkulator.new
 end
 
 After do

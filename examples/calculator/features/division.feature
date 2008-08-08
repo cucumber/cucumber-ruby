@@ -1,7 +1,7 @@
 Feature: Division
-  As a math genius 
-  I want to be told the division of two floats
-  So that I don't make silly mistakes
+  In order to avoid silly mistakes
+  As a math idiot 
+  I want to be told the division of two numbers
 
   Scenario: Regular numbers
     Given I have entered 3 into the calculator

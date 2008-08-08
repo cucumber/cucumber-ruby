@@ -1,9 +1,9 @@
 require 'cucumber/cli' # Needed in order to run the feature with ruby
 
 Feature %|Addition
+  In order to avoid silly mistakes
   As a math idiot 
-  I want to be told the sum of two numbers
-  So that I don't make silly mistakes| do
+  I want to be told the sum of two numbers| do
 
   Scenario "Add two numbers" do
     Given "I have entered 50 into the calculator"

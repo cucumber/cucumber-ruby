@@ -1,9 +1,9 @@
 Egenskap: Summering
-  Som en matteidiot 
-  Vil jeg bli fortalt summen av to tall
-  Slik at jeg ikke gjør dumme feil
+  For å slippe å gjøre dumme feil
+  Som en regnskapsfører
+  Vil jeg kunne legge sammen
 
-  Scenario: 5+7
+  Scenario: to tall
     Gitt at jeg har tastet inn 5
     Og at jeg har tastet inn 7
     Når jeg summerer
