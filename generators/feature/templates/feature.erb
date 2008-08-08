@@ -16,3 +16,12 @@ Feature: Manage <%= plural_name %>
     <%= keyword %> I should see "My <%= singular_name %> <%= arg %>"
 <% keyword = 'And' -%>
 <% end -%>
+
+  Scenario: Delete <%= singular_name %>
+    Given there are 4 <%= plural_name %>
+    When I delete the first <%= singular_name %>
+    Then there should be 3 <%= plural_name %> left
+    
+    | initial | after |
+    | 100     | 99    |
+    | 1       | 0     |
