@@ -28,4 +28,3 @@ end
 Given /it should rain on (\w+)/ do |day|
   @calc.rain?(day).should == true
 end
-
