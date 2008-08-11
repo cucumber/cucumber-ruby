@@ -49,6 +49,7 @@ if defined?(ActiveRecord::Base)
   Before do
     ActiveRecord::Base.send :increment_open_transactions
     ActiveRecord::Base.connection.begin_db_transaction
+    ActionMailer::Base.deliveries = [] if defined?(ActionMailer::Base)
   end
   
   After do

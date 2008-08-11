@@ -14,6 +14,12 @@ module Cucumber
       def at_line?(l)
         line == l || steps.map{|s| s.line}.index(l)
       end
+      
+      def previous_step(step)
+        i = steps.index(step)
+        raise "Couldn't find #{step} among #{steps}" if i.nil?
+        steps[i-1]
+      end
     end
 
     class Scenario < BaseScenario

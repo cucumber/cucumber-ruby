@@ -114,8 +114,7 @@ module Cucumber
           prev_keyword = nil
           snippets = @pending.map do |step|
             next if step.row?
-            keyword = step.keyword == Cucumber.language['and'] ? prev_keyword : step.keyword
-            snippet = "#{keyword} /#{step.name}/ do\nend\n\n"
+            snippet = "#{step.actual_keyword} /#{step.name}/ do\nend\n\n"
             prev_keyword = step.keyword
             snippet
           end.compact.uniq

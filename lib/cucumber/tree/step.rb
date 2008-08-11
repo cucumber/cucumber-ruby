@@ -88,6 +88,14 @@ module Cucumber
       def id
         @id ||= self.class.new_id!
       end
+      
+      def actual_keyword
+        keyword == Cucumber.language['and'] ? previous_step.actual_keyword : keyword
+      end
+      
+      def previous_step
+        @scenario.previous_step(self)
+      end
     end
     
     class Step < BaseStep
