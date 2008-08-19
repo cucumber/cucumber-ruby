@@ -47,13 +47,25 @@ end
 
 if defined?(ActiveRecord::Base)
   Before do
-    ActiveRecord::Base.send :increment_open_transactions
+    if defined?(ActiveRecord::Base)
+      if ActiveRecord::Base.connection.respond_to?(:increment_open_transactions)
+        ActiveRecord::Base.connection.increment_open_transactions
+      else
+        ActiveRecord::Base.send :increment_open_transactions
+      end
+    end
     ActiveRecord::Base.connection.begin_db_transaction
     ActionMailer::Base.deliveries = [] if defined?(ActionMailer::Base)
   end
   
   After do
-    ActiveRecord::Base.connection.rollback_db_transaction
-    ActiveRecord::Base.send :decrement_open_transactions
+    if defined?(ActiveRecord::Base)
+      ActiveRecord::Base.connection.rollback_db_transaction
+      if ActiveRecord::Base.connection.respond_to?(:decrement_open_transactions)
+        ActiveRecord::Base.connection.decrement_open_transactions
+      else
+        ActiveRecord::Base.send :decrement_open_transactions
+      end
+    end
   end
 end
