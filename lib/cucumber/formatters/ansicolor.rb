@@ -79,6 +79,7 @@ module Cucumber
       ALIASES.each do |m, color_string|
         colors = color_string.split(",").reverse
         define_method(m) do |*s|
+          ::Term::ANSIColor.coloring = false if ENV['CUCUMBER_COLORS_DISABLED'] == '1'
           clear + colors.inject(s[0]) do |memo, color|
             s[0].nil? ? __send__(color) + memo.to_s : __send__(color, memo.to_s)
           end
