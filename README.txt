@@ -5,6 +5,7 @@
 == DESCRIPTION:
 
 Cucumber executes plain text documentation of code against that code.
+Documentation: http://github.com/aslakhellesoy/cucumber/wikis/home
 
 == REQUIREMENTS:
 
