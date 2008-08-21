@@ -3,13 +3,13 @@ require 'spec'
 case PLATFORM
 when /darwin/
   require 'safariwatir'
-  Browser = Watir::Safari
+  Watir::Browser = Watir::Safari
 when /win32|mingw/
   require 'watir'
-  Browser = Watir::IE
+  Watir::Browser = Watir::IE
 when /java/
   require 'celerity'
-  Browser = Celerity::Browser
+  Watir::Browser = Celerity::Browser
 else
   raise "This platform is not supported (#{PLATFORM})"
 end
@@ -30,7 +30,7 @@ class GoogleSearch
 end
 
 Before do
-  @b = Browser.new
+  @b = Watir::Browser.new
 end
 
 After do
