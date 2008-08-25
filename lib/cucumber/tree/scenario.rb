@@ -30,6 +30,7 @@ module Cucumber
       def initialize(feature, name, &proc)
         @feature, @name = feature, name
         @steps = []
+        @given_scenarios = []
         instance_eval(&proc) if block_given?
       end
 
@@ -39,6 +40,10 @@ module Cucumber
       
       def add_step(keyword, name, line)
         @steps << Step.new(self, keyword, name, line)
+      end
+      
+      def add_given_scenario(name, line)
+        @given_scenarios << GivenScenario.new(self, name, line)
       end
 
       def Given(name)

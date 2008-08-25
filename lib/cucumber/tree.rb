@@ -1,4 +1,4 @@
-%w{features feature scenario step table top_down_visitor}.each{|f| require "cucumber/tree/#{f}"}
+%w{features feature scenario step given_scenario table top_down_visitor}.each{|f| require "cucumber/tree/#{f}"}
 require 'cucumber/core_ext/proc'
 require 'cucumber/core_ext/string'
 

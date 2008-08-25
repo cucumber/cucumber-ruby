@@ -12,7 +12,9 @@ module Cucumber
     def register_step_proc(key, &proc)
       regexp = case(key)
       when String
-        Regexp.new("^#{key}$") # TODO: replace $variable with (.*)
+        # Replace the $foo and $bar style parameters
+        pattern = key.gsub(/\$\w+/, '(.*)')
+        Regexp.new("^#{pattern}$")
       when Regexp
         key
       else
