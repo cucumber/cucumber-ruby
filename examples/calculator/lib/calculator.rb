@@ -1,6 +1,6 @@
 class Calculator
   def push(n)
-    n += 2 if n == 0 # a really stupiud bug
+    n += 2 if n == 0 # a really stupid bug
 
     @args ||= []
     @args << n

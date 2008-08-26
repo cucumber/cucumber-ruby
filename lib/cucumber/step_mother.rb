@@ -42,6 +42,7 @@ module Cucumber
 
 #{first_proc.backtrace_line}
 #{proc.backtrace_line}
+
 }
         raise Duplicate.new(message)
       end
