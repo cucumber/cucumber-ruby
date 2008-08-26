@@ -24,18 +24,37 @@ module Cucumber
       else
         raise "Step patterns must be Regexp or String, but was: #{key.inspect}"
       end
-      raise "Duplicate pattern: #{regexp.inspect}" if @step_procs.has_key?(regexp)
       proc.extend(CoreExt::CallIn)
       proc.name = key.inspect
+
+      if @step_procs.has_key?(regexp)
+        first_proc = @step_procs[regexp]
+        message = %{Duplicate step definitions:
+
+#{first_proc.backtrace_line}
+#{proc.backtrace_line}
+}
+        raise message
+      end
+
       @step_procs[regexp] = proc
     end
 
-    def regexp_and_args_for(step_name)
+    def regexp_args_proc(step_name)
       candidates = @step_procs.map do |regexp, proc|
         if step_name =~ regexp
-          [regexp, $~.captures]
+          [regexp, $~.captures, proc]
         end
       end.compact
+      
+      if candidates.length > 1
+        message = %{Ambiguos step resolution for #{step_name.inspect}:
+
+#{candidates.map{|regexp, args, proc| proc.backtrace_line}.join("\n")}
+}
+        raise message
+      end
+      
       candidates[0]
     end
     

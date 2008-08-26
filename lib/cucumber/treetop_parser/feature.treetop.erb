@@ -49,7 +49,7 @@ grammar Feature
   end
   
   rule given_scenario
-    given_scenario_keyword ":" whitespace+ name:(!newline .)+ newline* blanks {
+    given_scenario_keyword ":"? whitespace+ name:(!newline .)+ newline* blanks {
       def populate(scenario)
         line = input.line_of(interval.first)
         scenario.add_given_scenario(name.text_value.strip, line)

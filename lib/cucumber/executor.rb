@@ -61,8 +61,7 @@ module Cucumber
     end
 
     def visit_step(step)
-      regexp, args = step.regexp_and_args(@step_mother)
-      proc = @step_mother.proc_for(regexp)
+      regexp, args, proc = step.regexp_args_proc(@step_mother)
       if @error.nil?
         begin
           step.execute_in(@world, regexp, args, proc)

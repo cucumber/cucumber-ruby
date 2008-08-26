@@ -85,10 +85,10 @@ module Cucumber
         @scenario, @keyword, @name, @line = scenario, keyword, name, line
       end
 
-      def regexp_and_args(step_mother)
-        regexp, args = step_mother.regexp_and_args_for(name)
+      def regexp_args_proc(step_mother)
+        regexp, args, proc = step_mother.regexp_args_proc(name)
         @arity = args.length
-        [regexp, args]
+        [regexp, args, proc]
       end
 
       def format(regexp, format=nil, &proc)
@@ -105,9 +105,9 @@ module Cucumber
         @scenario, @step, @args = scenario, step, args
       end
       
-      def regexp_and_args(step_mother)
-        regexp, _ = @step.regexp_and_args(step_mother)
-        [regexp, @args]
+      def regexp_args_proc(step_mother)
+        regexp, _, proc = @step.regexp_args_proc(step_mother)
+        [regexp, @args, proc]
       end
       
       def row?

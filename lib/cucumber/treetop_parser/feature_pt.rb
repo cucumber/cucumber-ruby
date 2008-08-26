@@ -555,88 +555,93 @@ module Feature
     s0 << r1
     if r1
       if input.index(":", index) == index
-        r2 = (SyntaxNode).new(input, index...(index + 1))
+        r3 = (SyntaxNode).new(input, index...(index + 1))
         @index += 1
       else
         terminal_parse_failure(":")
-        r2 = nil
+        r3 = nil
+      end
+      if r3
+        r2 = r3
+      else
+        r2 = SyntaxNode.new(input, index...index)
       end
       s0 << r2
       if r2
-        s3, i3 = [], index
+        s4, i4 = [], index
         loop do
-          r4 = _nt_whitespace
-          if r4
-            s3 << r4
+          r5 = _nt_whitespace
+          if r5
+            s4 << r5
           else
             break
           end
         end
-        if s3.empty?
-          self.index = i3
-          r3 = nil
+        if s4.empty?
+          self.index = i4
+          r4 = nil
         else
-          r3 = SyntaxNode.new(input, i3...index, s3)
+          r4 = SyntaxNode.new(input, i4...index, s4)
         end
-        s0 << r3
-        if r3
-          s5, i5 = [], index
+        s0 << r4
+        if r4
+          s6, i6 = [], index
           loop do
-            i6, s6 = index, []
-            i7 = index
-            r8 = _nt_newline
-            if r8
-              r7 = nil
+            i7, s7 = index, []
+            i8 = index
+            r9 = _nt_newline
+            if r9
+              r8 = nil
             else
-              self.index = i7
-              r7 = SyntaxNode.new(input, index...index)
+              self.index = i8
+              r8 = SyntaxNode.new(input, index...index)
             end
-            s6 << r7
-            if r7
+            s7 << r8
+            if r8
               if index < input_length
-                r9 = (SyntaxNode).new(input, index...(index + 1))
+                r10 = (SyntaxNode).new(input, index...(index + 1))
                 @index += 1
               else
                 terminal_parse_failure("any character")
-                r9 = nil
+                r10 = nil
               end
-              s6 << r9
+              s7 << r10
             end
-            if s6.last
-              r6 = (SyntaxNode).new(input, i6...index, s6)
-              r6.extend(GivenScenario0)
+            if s7.last
+              r7 = (SyntaxNode).new(input, i7...index, s7)
+              r7.extend(GivenScenario0)
             else
-              self.index = i6
-              r6 = nil
+              self.index = i7
+              r7 = nil
             end
-            if r6
-              s5 << r6
+            if r7
+              s6 << r7
             else
               break
             end
           end
-          if s5.empty?
-            self.index = i5
-            r5 = nil
+          if s6.empty?
+            self.index = i6
+            r6 = nil
           else
-            r5 = SyntaxNode.new(input, i5...index, s5)
+            r6 = SyntaxNode.new(input, i6...index, s6)
           end
-          s0 << r5
-          if r5
-            s10, i10 = [], index
+          s0 << r6
+          if r6
+            s11, i11 = [], index
             loop do
-              r11 = _nt_newline
-              if r11
-                s10 << r11
+              r12 = _nt_newline
+              if r12
+                s11 << r12
               else
                 break
               end
             end
-            r10 = SyntaxNode.new(input, i10...index, s10)
-            s0 << r10
-            if r10
-              r12 = _nt_blanks
-              s0 << r12
+            r11 = SyntaxNode.new(input, i11...index, s11)
+            s0 << r11
+            if r11
+              r13 = _nt_blanks
+              s0 << r13
             end
           end
         end
