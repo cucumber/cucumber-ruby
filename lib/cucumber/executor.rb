@@ -1,9 +1,6 @@
 require 'cucumber/core_ext/proc'
 
 module Cucumber
-  class Pending < StandardError
-  end
-
   class Executor
     attr_reader :failed
     
@@ -61,19 +58,22 @@ module Cucumber
     end
 
     def visit_step(step)
-      regexp, args, proc = step.regexp_args_proc(@step_mother)
-      if @error.nil?
-        begin
+      begin
+        regexp, args, proc = step.regexp_args_proc(@step_mother)
+        if @error.nil?
           step.execute_in(@world, regexp, args, proc)
-        rescue Pending => ignore
-        rescue => e
-          @failed = true
-          @error = e
+          @formatter.step_executed(step, regexp, args)
+        else
+          @formatter.step_skipped(step, regexp, args)
         end
+      rescue Pending => ignore
         @formatter.step_executed(step, regexp, args)
-      else
-        @formatter.step_skipped(step, regexp, args)
+      rescue => e
+        @failed = true
+        @error = e
+        @formatter.step_executed(step, regexp, args)
       end
     end    
+
   end
 end

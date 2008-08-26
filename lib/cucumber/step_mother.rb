@@ -2,6 +2,9 @@ require 'cucumber/tree/top_down_visitor'
 require 'cucumber/core_ext/proc'
 
 module Cucumber
+  class Pending < StandardError
+  end
+
   class StepMother
     PENDING = lambda do |*_| 
       raise Pending
@@ -47,16 +50,19 @@ module Cucumber
         end
       end.compact
       
-      if candidates.length > 1
+      case(candidates.length)
+      when 0
+        [nil, [], PENDING]
+      when 1
+        candidates[0]
+      else
         message = %{Ambiguos step resolution for #{step_name.inspect}:
 
 #{candidates.map{|regexp, args, proc| proc.backtrace_line}.join("\n")}
 }
         raise message
       end
-      
-      candidates[0]
-    end
+     end
     
     def proc_for(regexp)
       @step_procs[regexp]

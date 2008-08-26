@@ -1,6 +1,8 @@
 module Cucumber
   module Tree
     class BaseStep
+      attr_accessor :error
+
       def self.new_id!
         @next_id ||= -1
         @next_id += 1
@@ -43,7 +45,6 @@ module Cucumber
           end
           format_error(strip_pos, proc, e)
         end
-        regexp
       end
 
       def format_error(strip_pos, proc, e)
@@ -75,7 +76,7 @@ module Cucumber
     end
     
     class Step < BaseStep
-      attr_accessor :error, :arity
+      attr_accessor :arity
 
       def row?
         false
