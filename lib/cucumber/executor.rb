@@ -35,7 +35,6 @@ module Cucumber
 
     def visit_features(features)
       raise "Line number can only be specified when there is 1 feature. There were #{features.length}." if @line && features.length != 1
-      @step_mother.visit_features(features)
       @formatter.visit_features(features) if @formatter.respond_to?(:visit_features)
       features.accept(self)
       @formatter.dump
@@ -62,17 +61,19 @@ module Cucumber
     end
 
     def visit_step(step)
+      regexp, args = step.regexp_and_args(@step_mother)
+      proc = @step_mother.proc_for(regexp)
       if @error.nil?
         begin
-          step.execute_in(@world)
+          step.execute_in(@world, regexp, args, proc)
         rescue Pending => ignore
         rescue => e
           @failed = true
           @error = e
         end
-        @formatter.step_executed(step)
+        @formatter.step_executed(step, regexp, args)
       else
-        @formatter.step_skipped(step)
+        @formatter.step_skipped(step, regexp, args)
       end
     end    
   end

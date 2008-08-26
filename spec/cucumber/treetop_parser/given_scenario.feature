@@ -2,7 +2,8 @@ Some title
 
   Scenario: first     
     Given a
+    Given b
    
   Scenario: second  
-    GivenScenario: a
-    Given b
+    GivenScenario: first
+    Given c

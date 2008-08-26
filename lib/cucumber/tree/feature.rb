@@ -21,6 +21,10 @@ module Cucumber
         scenario
       end
 
+      def scenario_named(name)
+        @scenarios.find {|s| s.name == name}
+      end
+
       def Scenario(name, &proc)
         add_scenario(name, &proc)
       end

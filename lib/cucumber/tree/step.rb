@@ -7,38 +7,13 @@ module Cucumber
       end
 
       attr_reader :error
-      attr_accessor :args
 
       def file
         @scenario.file
       end
 
-      def regexp
-        @regexp || //
-      end
-
-      PENDING = lambda do |*_| 
-        raise Pending
-      end
-      PENDING.extend(CoreExt::CallIn)
-      PENDING.name = "PENDING"
-
-      def proc
-        @proc || PENDING
-      end
-
-      def attach(regexp, proc, args)
-        if @regexp
-          raise <<-EOM
-  "#{name}" matches several step definitions:
-
-  #{@proc.backtrace_line}
-  #{proc.backtrace_line}
-
-  Please give your steps unambiguous names
-          EOM
-        end
-        @regexp, @proc, @args = regexp, proc, args
+      def steps
+        self
       end
 
       if defined?(JRUBY_VERSION)
@@ -49,12 +24,12 @@ module Cucumber
         REGULAR_ADJUSTMENT = 2
       end
 
-      def execute_in(world)
+      def execute_in(world, regexp, args, proc)
         strip_pos = nil
         begin
-          proc.call_in(world, *@args)
+          proc.call_in(world, *args)
         rescue ArgCountError => e
-          e.backtrace[0] = @proc.backtrace_line
+          e.backtrace[0] = proc.backtrace_line
           strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__ - 3}:in `execute_in'")
           format_error(strip_pos, e)
         rescue => e
@@ -66,11 +41,12 @@ module Cucumber
             # This happens with rails, because they screw up the backtrace
             # before we get here (injecting erb stactrace and such)
           end
-          format_error(strip_pos, e)
+          format_error(strip_pos, proc, e)
         end
+        regexp
       end
 
-      def format_error(strip_pos, e)
+      def format_error(strip_pos, proc, e)
         @error = e
         # Remove lines underneath the plain text step
         e.backtrace[strip_pos..-1] = nil unless strip_pos.nil?
@@ -99,7 +75,7 @@ module Cucumber
     end
     
     class Step < BaseStep
-      attr_accessor :error
+      attr_accessor :error, :arity
 
       def row?
         false
@@ -107,10 +83,15 @@ module Cucumber
 
       def initialize(scenario, keyword, name, line)
         @scenario, @keyword, @name, @line = scenario, keyword, name, line
-        @args = []
       end
 
-      def gzub(format=nil, &proc)
+      def regexp_and_args(step_mother)
+        regexp, args = step_mother.regexp_and_args_for(name)
+        @arity = args.length
+        [regexp, args]
+      end
+
+      def format(regexp, format=nil, &proc)
         name.gzub(regexp, format, &proc)
       end
 
@@ -120,14 +101,15 @@ module Cucumber
     class RowStep < BaseStep
       attr_reader :keyword
 
-      def initialize(scenario, keyword, proc, args)
-        @scenario, @keyword, @proc, @args = scenario, keyword, proc, args
+      def initialize(scenario, step, args)
+        @scenario, @step, @args = scenario, step, args
       end
-
-      def gzub(format=nil, &proc)
-        raise "WWW"
+      
+      def regexp_and_args(step_mother)
+        regexp, _ = @step.regexp_and_args(step_mother)
+        [regexp, @args]
       end
-
+      
       def row?
         true
       end

@@ -44,10 +44,10 @@ module Cucumber
         f.should have(2).scenarios
 
         first = f.scenarios[0]
-        first.should have(1).steps
+        first.should have(2).steps
 
         second = f.scenarios[1]
-        second.should have(1).given_scenarios
+        second.should have(3).steps
       end
     end
   end

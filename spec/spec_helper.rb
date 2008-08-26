@@ -14,16 +14,10 @@ class Cucumber::CLI
 end
 
 # Open up the tree classes a little for easier inspection.
-
-
 module Cucumber
   module Tree
     class Feature
       attr_reader :header, :scenarios
-    end
-
-    class Scenario
-      attr_reader :given_scenarios
     end
   end
 end

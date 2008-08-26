@@ -29,9 +29,20 @@ module Cucumber
       
       def initialize(feature, name, &proc)
         @feature, @name = feature, name
-        @steps = []
-        @given_scenarios = []
+        @steps_and_given_scenarios = []
         instance_eval(&proc) if block_given?
+      end
+      
+      def steps
+        @steps ||= @steps_and_given_scenarios.map{|step| step.steps}.flatten
+      end
+      
+      def given_scenario_steps(name)
+        sibling_named(name).steps
+      end
+      
+      def sibling_named(name)
+        @feature.scenario_named(name)
       end
 
       def row?
@@ -39,11 +50,11 @@ module Cucumber
       end
       
       def add_step(keyword, name, line)
-        @steps << Step.new(self, keyword, name, line)
+        @steps_and_given_scenarios << Step.new(self, keyword, name, line)
       end
       
       def add_given_scenario(name, line)
-        @given_scenarios << GivenScenario.new(self, name, line)
+        @steps_and_given_scenarios << GivenScenario.new(self, name, line)
       end
 
       def Given(name)
@@ -62,7 +73,7 @@ module Cucumber
         add_step('And', name, *caller[0].split(':')[1].to_i)
       end
 
-      attr_reader :name, :steps, :line
+      attr_reader :name, :line
 
     end
 
@@ -79,10 +90,11 @@ module Cucumber
 
       def steps
         @steps ||= @template_scenario.steps.map do |template_step|
-          args = template_step.args.map do
-            @values.shift
+          args = []
+          template_step.arity.times do
+            args << @values.shift
           end
-          RowStep.new(self, template_step.keyword, template_step.proc, args)
+          RowStep.new(self, template_step, args)
         end
       end
     end
