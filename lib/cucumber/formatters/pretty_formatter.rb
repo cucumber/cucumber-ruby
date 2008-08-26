@@ -95,6 +95,7 @@ module Cucumber
         else
           @io.puts skipped("    #{step.keyword} #{step.format(regexp){|param| skipped_param(param) << skipped}}") 
         end
+        step_failed(step) if step.error
       end
     
       def dump

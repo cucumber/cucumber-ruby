@@ -5,6 +5,12 @@ module Cucumber
   class Pending < StandardError
   end
 
+  class Duplicate < StandardError
+  end
+
+  class Ambiguous < StandardError
+  end
+
   class StepMother
     PENDING = lambda do |*_| 
       raise Pending
@@ -37,7 +43,7 @@ module Cucumber
 #{first_proc.backtrace_line}
 #{proc.backtrace_line}
 }
-        raise message
+        raise Duplicate.new(message)
       end
 
       @step_procs[regexp] = proc
@@ -59,8 +65,9 @@ module Cucumber
         message = %{Ambiguos step resolution for #{step_name.inspect}:
 
 #{candidates.map{|regexp, args, proc| proc.backtrace_line}.join("\n")}
+
 }
-        raise message
+        raise Ambiguous.new(message)
       end
      end
     

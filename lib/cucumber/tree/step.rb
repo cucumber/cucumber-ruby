@@ -93,7 +93,7 @@ module Cucumber
       end
 
       def format(regexp, format=nil, &proc)
-        name.gzub(regexp, format, &proc)
+        regexp.nil? ? name : name.gzub(regexp, format, &proc)
       end
 
       attr_reader :keyword, :name, :line

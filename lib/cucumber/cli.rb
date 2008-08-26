@@ -93,7 +93,7 @@ module Cucumber
       require "cucumber/treetop_parser/feature_parser"
 
       requires = @options[:require] || @args.map{|f| File.directory?(f) ? f : File.dirname(f)}.uniq
-      libs = requires.map do |path| 
+      libs = requires.map do |path|
         path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
         File.directory?(path) ? Dir["#{path}/**/*.rb"] : path
       end.flatten
