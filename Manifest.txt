@@ -54,7 +54,10 @@ lib/cucumber/core_ext/string.rb
 lib/cucumber/executor.rb
 lib/cucumber/formatters.rb
 lib/cucumber/formatters/ansicolor.rb
+lib/cucumber/formatters/cucumber.css
+lib/cucumber/formatters/cucumber.js
 lib/cucumber/formatters/html_formatter.rb
+lib/cucumber/formatters/jquery.js
 lib/cucumber/formatters/pretty_formatter.rb
 lib/cucumber/formatters/progress_formatter.rb
 lib/cucumber/languages.yml

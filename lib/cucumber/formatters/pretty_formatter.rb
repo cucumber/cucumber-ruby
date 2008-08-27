@@ -27,8 +27,8 @@ module Cucumber
         if scenario.row?
           @io.print "    |"
         else
-          # TODO: i18n Secnario
-          @io.puts passed("  Scenario: #{scenario.name}")
+          # TODO: i18n
+          @io.puts passed("  #{Cucumber.language['scenario']}: #{scenario.name}")
         end
       end
 

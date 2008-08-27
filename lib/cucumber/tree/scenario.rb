@@ -87,6 +87,10 @@ module Cucumber
       def row?
         true
       end
+      
+      def name
+        @template_scenario.name
+      end
 
       def steps
         @steps ||= @template_scenario.steps.map do |template_step|

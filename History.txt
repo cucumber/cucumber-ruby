@@ -1,4 +1,6 @@
-== 0.0.1 2008-04-08
+== 0.1.5 (in Git)
+
+First release where changes are tracked properly
 
 * 1 major enhancement:
-  * Initial release
+  * GivenScenario is implemented
