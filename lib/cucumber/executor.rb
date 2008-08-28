@@ -45,6 +45,14 @@ module Cucumber
       @formatter.header_executing(header) if @formatter.respond_to?(:header_executing)
     end
 
+    def visit_row_scenario(scenario)
+      visit_scenario(scenario)
+    end
+
+    def visit_regular_scenario(scenario)
+      visit_scenario(scenario)
+    end
+
     def visit_scenario(scenario)
       if @line.nil? || scenario.at_line?(@line)
         @error = nil
@@ -55,6 +63,14 @@ module Cucumber
         @after_procs.each{|p| p.call_in(@world, *[])}
         @formatter.scenario_executed(scenario) if @formatter.respond_to?(:scenario_executed)
       end
+    end
+
+    def visit_row_step(step)
+      visit_step(step)
+    end
+
+    def visit_regular_step(step)
+      visit_step(step)
     end
 
     def visit_step(step)

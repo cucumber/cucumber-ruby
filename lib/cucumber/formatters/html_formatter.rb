@@ -34,51 +34,57 @@ module Cucumber
     <div id="container">
 HTML
         features.accept(self)
-        @io.puts "    </div>"
+        @io.puts %{    </div>}
       end
 
       def visit_feature(feature)
-        @io.puts "      <dl class=\"feature new\">"
+        @io.puts %{      <dl class="feature new">}
         feature.accept(self)
-        @io.puts "        </dd>"
-        @io.puts "      </dl>"
+        @io.puts %{        </dd>}
+        @io.puts %{      </dl>}
       end
       
       def visit_header(header)
-        @io.puts "        <dt>Feature: #{header}</dt>"
+        header = header.gsub(/\n/, "<br />\n")
+        @io.puts %{        <dt>#{header}}
+        @io.puts %{        </dt>}
+        @io.puts %{        <dd>}
       end
 
-      # TODO: Lose me
-      def visit_narrative(narrative)
-        @io.puts "        <dd>"
-        @io.puts "          <p>"
-        @io.puts narrative.gsub(/\n/, "<br />\n")
-        @io.puts "          </p>"
-      end
-
-      def visit_scenario(scenario)
-        @io.puts "          <dl class=\"new\">"
-        @io.puts "            <dt>Scenario: #{scenario.name}</dt>"
-        @io.puts "            <dd>"
-        @io.puts "              <ul>"
+      def visit_regular_scenario(scenario)
+        @io.puts %{          <dl class="new">}
+        @io.puts %{            <dt>#{Cucumber.language['scenario']}: #{scenario.name}</dt>}
+        @io.puts %{            <dd>}
+        @io.puts %{              <ul>}
         scenario.accept(self)
-        @io.puts "              </ul>"
-        @io.puts "            </dd>"
-        @io.puts "          </dl>"
+        @io.puts %{              </ul>}
+        @io.puts %{            </dd>}
+        @io.puts %{          </dl>}
       end
 
-      def visit_step(step)
-        if step.row?
-          visit_row_step(step)
-        else
-          visit_regular_step(step)
-        end
+      def visit_row_scenario(scenario)
+        @io.puts %{          <dl class="new">}
+        @io.puts %{            <dt>#{Cucumber.language['scenario']}: #{scenario.name}</dt>}
+        @io.puts %{            <dd>}
+        @io.puts %{              <table>}
+        @io.puts %{                <thead>}
+        @io.puts %{                  <tr>}
+        @io.puts %{                    <th>COL 1</th>}
+        @io.puts %{                    <th>COL 2</th>}
+        @io.puts %{                  </tr>}
+        @io.puts %{                </thead>}
+        @io.puts %{                <tbody>}
+        scenario.accept(self)
+        @io.puts %{                </tbody>}
+        @io.puts %{              </table>}
+        @io.puts %{            </dd>}
+        @io.puts %{          </dl>}
       end
 
       def visit_row_step(step)
         _, args, _ = step.regexp_args_proc(@step_mother)
         args.each do |arg|
-          @io.write %{<td id="#{step.id}"><span>#{arg}</span></td>}
+          @io.puts %{                    <td id="#{step.id}"><span>#{arg}</span></td>}
         end
       end
 
@@ -98,7 +104,7 @@ HTML
           "stepFailed(#{step.id}, (<r><![CDATA[#{step.error.message}]]></r>).toString(), (<r><![CDATA[#{step.error.backtrace.join("\n")}]]></r>).toString())"
         end
 
-        @io.puts "    <script type=\"text/javascript\">#{js}</script>"
+        @io.puts %{    <script type="text/javascript">#{js}</script>}
       end
 
       def step_skipped(step)

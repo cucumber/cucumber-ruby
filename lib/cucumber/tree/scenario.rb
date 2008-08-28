@@ -7,7 +7,11 @@ module Cucumber
 
       def accept(visitor)
         steps.each do |step|
-          visitor.visit_step(step)
+          if step.row?
+            visitor.visit_row_step(step)
+          else
+            visitor.visit_regular_step(step)
+          end
         end
       end
 

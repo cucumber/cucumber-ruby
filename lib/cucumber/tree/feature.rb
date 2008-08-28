@@ -41,7 +41,11 @@ module Cucumber
       def accept(visitor)
         visitor.visit_header(@header)
         @scenarios.each do |scenario|
-          visitor.visit_scenario(scenario)
+          if scenario.row?
+            visitor.visit_row_scenario(scenario)
+          else
+            visitor.visit_regular_scenario(scenario)
+          end
         end
       end
     end
