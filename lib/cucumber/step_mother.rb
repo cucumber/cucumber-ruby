@@ -63,7 +63,7 @@ module Cucumber
       when 1
         candidates[0]
       else
-        message = %{Ambiguos step resolution for #{step_name.inspect}:
+        message = %{Ambiguous step resolution for #{step_name.inspect}:
 
 #{candidates.map{|regexp, args, proc| proc.backtrace_line}.join("\n")}
 
