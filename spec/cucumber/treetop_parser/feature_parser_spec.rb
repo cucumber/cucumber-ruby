@@ -12,14 +12,17 @@ module Cucumber
             h.should == "Some title"
           end
 
-          def visit_scenario(h)
-            def self.visit_scenario(h)
-              h.name.should == "second"
-              h.accept(self)
+          def visit_scenario(s)
+            def self.visit_scenario(s)
+              s.name.should == "second"
+              s.accept(self)
             end
 
-            h.name.should == "first"
-            h.accept(self)
+            s.name.should == "first"
+            s.accept(self)
+          end
+          
+          def visit_regular_scenario(s)
           end
 
           def visit_step(s)
