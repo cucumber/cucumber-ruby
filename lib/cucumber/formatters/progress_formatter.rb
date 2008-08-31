@@ -10,7 +10,7 @@ module Cucumber
         @errors = []
       end
 
-      def step_executed(step)
+      def step_executed(step, regexp, args)
         case(step.error)
         when Pending
           @io.print pending('P')
@@ -22,7 +22,7 @@ module Cucumber
         end
       end
     
-      def step_skipped(step)
+      def step_skipped(step, regexp, args)
         @io.print skipped('_')
       end
 

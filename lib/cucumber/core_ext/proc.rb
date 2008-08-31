@@ -11,7 +11,7 @@ module Cucumber
       def call_in(obj, *args)
         obj.extend(mod)
         a = arity == -1 ? 0 : arity
-        if self != Tree::Step::PENDING && args.length != a
+        if self != StepMother::PENDING && args.length != a
           # We have to manually raise when the block has arity -1 (no pipes)
           raise ArgCountError.new("wrong number of arguments (#{args.length} for 0)")
         else

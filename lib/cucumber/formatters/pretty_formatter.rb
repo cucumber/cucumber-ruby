@@ -27,8 +27,7 @@ module Cucumber
         if scenario.row?
           @io.print "    |"
         else
-          # TODO: i18n Secnario
-          @io.puts passed("  Scenario: #{scenario.name}")
+          @io.puts passed("  #{Cucumber.language['scenario']}: #{scenario.name}")
         end
       end
 
@@ -43,60 +42,61 @@ module Cucumber
           step_failed(@failed.last) 
         end
       end
-
-      def step_executed(step)
+      
+      def step_executed(step, regexp, args)
         if step.row?
-          row_step_executed(step)
+          row_step_executed(step, regexp, args)
         else
-          regular_step_executed(step)
+          regular_step_executed(step, regexp, args)
         end
       end
       
-      def regular_step_executed(step)
+      def regular_step_executed(step, regexp, args)
         case(step.error)
         when Pending
           @pending << step
           @io.puts pending("    #{step.keyword} #{step.name}")
         when NilClass
           @passed << step
-          @io.puts passed("    #{step.keyword} #{step.gzub{|param| passed_param(param) << passed}}") 
+          @io.puts passed("    #{step.keyword} #{step.format(regexp){|param| passed_param(param) << passed}}") 
         else
           @failed << step
           @scenario_failed = true
-          @io.puts failed("    #{step.keyword} #{step.gzub{|param| failed_param(param) << failed}}") 
+          @io.puts failed("    #{step.keyword} #{step.format(regexp){|param| failed_param(param) << failed}}") 
           step_failed(step)
         end
       end
       
+      def row_step_executed(step, regexp, args)
+        case(step.error)
+        when Pending
+          @pending << step
+          args.each{|arg| @io.print pending(arg) ; @io.print "|"}
+        when NilClass
+          @passed << step
+          args.each{|arg| @io.print passed(arg) ; @io.print "|"}
+        else
+          @failed << step
+          @scenario_failed = true
+          args.each{|arg| @io.print failed(arg) ; @io.print "|"}
+        end
+      end
+
+      def step_skipped(step, regexp, args)
+        @skipped << step
+        if step.row?
+          args.each{|arg| @io.print skipped(arg) ; @io.print "|"}
+        else
+          @io.puts skipped("    #{step.keyword} #{step.format(regexp){|param| skipped_param(param) << skipped}}") 
+        end
+        step_failed(step) if step.error
+      end
+
       def step_failed(step)
         @io.puts failed("      #{step.error.message.split("\n").join(INDENT)} (#{step.error.class})")
         @io.puts failed("      #{step.error.backtrace.join(INDENT)}")
       end
 
-      def row_step_executed(step)
-        case(step.error)
-        when Pending
-          @pending << step
-          step.args.each { |arg| @io.print pending(arg) ; @io.print "|" }
-        when NilClass
-          @passed << step
-          step.args.each { |arg| @io.print passed(arg) ; @io.print "|" }
-        else
-          @failed << step
-          @scenario_failed = true
-          step.args.each { |arg| @io.print failed(arg) ; @io.print "|" }
-        end
-      end
-
-      def step_skipped(step)
-        @skipped << step
-        if step.row?
-          step.args.each { |arg| @io.print skipped(arg) ; @io.print "|" }
-        else
-          @io.puts skipped("    #{step.keyword} #{step.gzub{|param| skipped_param(param) << skipped}}") 
-        end
-      end
-    
       def dump
         @io.puts
         @io.puts passed("#{@passed.length} steps passed") unless @passed.empty?

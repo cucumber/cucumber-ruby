@@ -1,7 +1,7 @@
 History.txt
 License.txt
 Manifest.txt
-README.textile
+README.txt
 Rakefile
 TODO.txt
 bin/cucumber
@@ -15,6 +15,9 @@ examples/calculator/lib/calculator.rb
 examples/calculator_ruby_features/Rakefile
 examples/calculator_ruby_features/features/addition.rb
 examples/calculator_ruby_features/features/steps/calculator_steps.rb
+examples/calculatrice_francaise_avec_soit_scenario/Rakefile
+examples/calculatrice_francaise_avec_soit_scenario/features/addition.feature
+examples/calculatrice_francaise_avec_soit_scenario/features/calculatrice_steps.rb
 examples/java/README.textile
 examples/java/Rakefile
 examples/java/features/hello.feature
@@ -31,12 +34,14 @@ examples/watir/features/steps/stories_steps.rb
 gem_tasks/deployment.rake
 gem_tasks/environment.rake
 gem_tasks/fix_cr_lf.rake
+gem_tasks/flog.rake
 gem_tasks/gemspec.rake
 gem_tasks/rspec.rake
 gem_tasks/treetop.rake
 gem_tasks/website.rake
 generators/cucumber/cucumber_generator.rb
 generators/cucumber/templates/common_webrat.rb
+generators/cucumber/templates/cucumber
 generators/cucumber/templates/cucumber.rake
 generators/cucumber/templates/env.rb
 generators/feature/feature_generator.rb
@@ -49,7 +54,10 @@ lib/cucumber/core_ext/string.rb
 lib/cucumber/executor.rb
 lib/cucumber/formatters.rb
 lib/cucumber/formatters/ansicolor.rb
+lib/cucumber/formatters/cucumber.css
+lib/cucumber/formatters/cucumber.js
 lib/cucumber/formatters/html_formatter.rb
+lib/cucumber/formatters/jquery.js
 lib/cucumber/formatters/pretty_formatter.rb
 lib/cucumber/formatters/progress_formatter.rb
 lib/cucumber/languages.yml
@@ -61,6 +69,7 @@ lib/cucumber/step_mother.rb
 lib/cucumber/tree.rb
 lib/cucumber/tree/feature.rb
 lib/cucumber/tree/features.rb
+lib/cucumber/tree/given_scenario.rb
 lib/cucumber/tree/scenario.rb
 lib/cucumber/tree/step.rb
 lib/cucumber/tree/table.rb
@@ -87,7 +96,10 @@ spec/cucumber/formatters/ansicolor_spec.rb
 spec/cucumber/formatters/features.html
 spec/cucumber/formatters/html_formatter_spec.rb
 spec/cucumber/sell_cucumbers.feature
+spec/cucumber/step_mother_spec.rb
+spec/cucumber/tree/scenario_spec.rb
 spec/cucumber/treetop_parser/feature_parser_spec.rb
+spec/cucumber/treetop_parser/given_scenario.feature
 spec/cucumber/treetop_parser/spaces.feature
 spec/spec.opts
 spec/spec_helper.rb

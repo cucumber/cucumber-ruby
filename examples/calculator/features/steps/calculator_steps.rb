@@ -9,7 +9,7 @@ end
 After do
 end
 
-Given /I have entered (\d+) into the calculator/ do |n|
+Given "I have entered $n into the calculator" do |n|
   @calc.push n.to_i
 end
 
@@ -28,3 +28,4 @@ end
 Given /it should rain on (\w+)/ do |day|
   @calc.rain?(day).should == true
 end
+

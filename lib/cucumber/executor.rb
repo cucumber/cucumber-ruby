@@ -1,9 +1,6 @@
 require 'cucumber/core_ext/proc'
 
 module Cucumber
-  class Pending < StandardError
-  end
-
   class Executor
     attr_reader :failed
     
@@ -35,7 +32,6 @@ module Cucumber
 
     def visit_features(features)
       raise "Line number can only be specified when there is 1 feature. There were #{features.length}." if @line && features.length != 1
-      @step_mother.visit_features(features)
       @formatter.visit_features(features) if @formatter.respond_to?(:visit_features)
       features.accept(self)
       @formatter.dump
@@ -47,6 +43,14 @@ module Cucumber
 
     def visit_header(header)
       @formatter.header_executing(header) if @formatter.respond_to?(:header_executing)
+    end
+
+    def visit_row_scenario(scenario)
+      visit_scenario(scenario)
+    end
+
+    def visit_regular_scenario(scenario)
+      visit_scenario(scenario)
     end
 
     def visit_scenario(scenario)
@@ -61,19 +65,34 @@ module Cucumber
       end
     end
 
+    def visit_row_step(step)
+      visit_step(step)
+    end
+
+    def visit_regular_step(step)
+      visit_step(step)
+    end
+
     def visit_step(step)
-      if @error.nil?
-        begin
-          step.execute_in(@world)
-        rescue Pending => ignore
-        rescue => e
-          @failed = true
-          @error = e
+      begin
+        regexp, args, proc = step.regexp_args_proc(@step_mother)
+        if @error.nil?
+          step.execute_in(@world, regexp, args, proc)
+          @formatter.step_executed(step, regexp, args)
+        else
+          @formatter.step_skipped(step, regexp, args)
         end
-        @formatter.step_executed(step)
-      else
-        @formatter.step_skipped(step)
+      rescue Pending => ignore
+        @formatter.step_executed(step, regexp, args)
+      rescue Ambiguous => e
+        @error = step.error = e
+        @formatter.step_skipped(step, regexp, args)
+      rescue => e
+        @failed = true
+        @error = e
+        @formatter.step_executed(step, regexp, args)
       end
     end    
+
   end
 end

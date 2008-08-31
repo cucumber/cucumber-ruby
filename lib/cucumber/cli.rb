@@ -22,11 +22,7 @@ module Cucumber
       end
     end
     
-    FORMATS = {
-      'progress' => Formatters::ProgressFormatter,
-      'html'     => Formatters::HtmlFormatter,
-      'pretty'   => Formatters::PrettyFormatter
-    }
+    FORMATS = %w{pretty progress html}
 
     def initialize(args)
       @args = args.dup
@@ -51,7 +47,12 @@ module Cucumber
           @options[:lang] = v
         end
         opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{@options[:format]})",
-          "Available formats: #{FORMATS.keys.sort.join(", ")}") do |v|
+          "Available formats: #{FORMATS.join(", ")}") do |v|
+          unless FORMATS.index(v) 
+            STDERR.puts "Invalid format: #{v}\n"
+            STDERR.puts opts.help
+            exit 1
+          end
           @options[:format] = v
         end
         opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.") do
@@ -76,7 +77,7 @@ module Cucumber
     
     def execute!(step_mother, features)
       Cucumber.load_language(@options[:lang])
-      $executor = Executor.new(formatter, step_mother)
+      $executor = Executor.new(formatter(step_mother), step_mother)
       require_files
       load_plain_text_features(features)
       $executor.line = @options[:line].to_i if @options[:line]
@@ -93,7 +94,7 @@ module Cucumber
       require "cucumber/treetop_parser/feature_parser"
 
       requires = @options[:require] || @args.map{|f| File.directory?(f) ? f : File.dirname(f)}.uniq
-      libs = requires.map do |path| 
+      libs = requires.map do |path|
         path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
         File.directory?(path) ? Dir["#{path}/**/*.rb"] : path
       end.flatten
@@ -114,9 +115,15 @@ module Cucumber
       end
     end
     
-    def formatter
-      klass = FORMATS[@options[:format]]
-      klass.new(STDOUT)
+    def formatter(step_mother)
+      case @options[:format]
+      when 'pretty'
+        Formatters::PrettyFormatter.new(STDOUT)
+      when 'progress'
+        Formatters::ProgressFormatter.new(STDOUT)
+      when 'html'
+        Formatters::HtmlFormatter.new(STDOUT, step_mother)
+      end
     end
     
   end

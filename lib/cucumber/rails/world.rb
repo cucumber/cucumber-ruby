@@ -45,6 +45,8 @@ World do
   Cucumber::Rails::World.new
 end
 
+ActionMailer::Base.delivery_method = :test if defined?(ActionMailer::Base)
+
 if defined?(ActiveRecord::Base)
   Before do
     if defined?(ActiveRecord::Base)

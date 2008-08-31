@@ -17,4 +17,11 @@ describe String, "#gzub" do
     end
     f.should == "I <span>ate</span> <span>1</span> <span>egg</span> this <span>morning</span>"
   end
+
+  it "should format match groups in a textile table row" do
+    f = "I ate 1 egg this morning".gzub(/I (\w+) (\d+) (\w+) this (\w+)/) do |m|
+      "<span>#{m}</span>"
+    end
+    f.should == "I <span>ate</span> <span>1</span> <span>egg</span> this <span>morning</span>"
+  end
 end

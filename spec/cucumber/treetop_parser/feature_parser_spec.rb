@@ -35,6 +35,20 @@ module Cucumber
         
         f.accept(v)
       end
+      
+      it "should parse GivenScenario" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/given_scenario.feature')
+
+        f.header.should == "Some title"
+        f.should have(2).scenarios
+
+        first = f.scenarios[0]
+        first.should have(2).steps
+
+        second = f.scenarios[1]
+        second.should have(3).steps
+      end
     end
   end
 end

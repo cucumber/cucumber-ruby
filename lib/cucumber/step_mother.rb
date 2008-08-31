@@ -2,17 +2,32 @@ require 'cucumber/tree/top_down_visitor'
 require 'cucumber/core_ext/proc'
 
 module Cucumber
-  # A StepMother keeps track of step procs and assigns them
-  # to each step when visiting the tree.
-  class StepMother < Tree::TopDownVisitor
+  class Pending < StandardError
+  end
+
+  class Duplicate < StandardError
+  end
+
+  class Ambiguous < StandardError
+  end
+
+  class StepMother
+    PENDING = lambda do |*_| 
+      raise Pending
+    end
+    PENDING.extend(CoreExt::CallIn)
+    PENDING.name = "PENDING"
+
     def initialize
-      @step_procs = {}
+      @step_procs = Hash.new(PENDING)
     end
 
     def register_step_proc(key, &proc)
       regexp = case(key)
       when String
-        Regexp.new("^#{key}$") # TODO: replace $variable with (.*)
+        # Replace the $foo and $bar style parameters
+        pattern = key.gsub(/\$\w+/, '(.*)')
+        Regexp.new("^#{pattern}$")
       when Regexp
         key
       else
@@ -20,19 +35,45 @@ module Cucumber
       end
       proc.extend(CoreExt::CallIn)
       proc.name = key.inspect
+
+      if @step_procs.has_key?(regexp)
+        first_proc = @step_procs[regexp]
+        message = %{Duplicate step definitions:
+
+#{first_proc.backtrace_line}
+#{proc.backtrace_line}
+
+}
+        raise Duplicate.new(message)
+      end
+
       @step_procs[regexp] = proc
     end
-    
-    def visit_step(step)
-      # Maybe we shouldn't attach the regexp etc to
-      # the step? Maybe steps pull them out as needed?
-      # Do we then have to attach ourself to the step instead?
-      # What would we gain from a pull design?
-      @step_procs.each do |regexp, proc|
-        if step.respond_to?(:name) && step.name =~ regexp
-          step.attach(regexp, proc, $~.captures)
+
+    def regexp_args_proc(step_name)
+      candidates = @step_procs.map do |regexp, proc|
+        if step_name =~ regexp
+          [regexp, $~.captures, proc]
         end
+      end.compact
+      
+      case(candidates.length)
+      when 0
+        [nil, [], PENDING]
+      when 1
+        candidates[0]
+      else
+        message = %{Ambiguos step resolution for #{step_name.inspect}:
+
+#{candidates.map{|regexp, args, proc| proc.backtrace_line}.join("\n")}
+
+}
+        raise Ambiguous.new(message)
       end
+     end
+    
+    def proc_for(regexp)
+      @step_procs[regexp]
     end
   end
 end

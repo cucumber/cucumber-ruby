@@ -248,7 +248,12 @@ module Feature
             break
           end
         end
-        r3 = SyntaxNode.new(input, i3...index, s3)
+        if s3.empty?
+          self.index = i3
+          r3 = nil
+        else
+          r3 = SyntaxNode.new(input, i3...index, s3)
+        end
         s0 << r3
         if r3
           s5, i5 = [], index
@@ -286,7 +291,12 @@ module Feature
               break
             end
           end
-          r5 = SyntaxNode.new(input, i5...index, s5)
+          if s5.empty?
+            self.index = i5
+            r5 = nil
+          else
+            r5 = SyntaxNode.new(input, i5...index, s5)
+          end
           s0 << r5
           if r5
             s10, i10 = [], index
@@ -306,7 +316,7 @@ module Feature
               if r12
                 s13, i13 = [], index
                 loop do
-                  r14 = _nt_step
+                  r14 = _nt_step_or_given_scenario
                   if r14
                     s13 << r14
                   else
@@ -336,6 +346,33 @@ module Feature
     end
 
     node_cache[:step_scenario][start_index] = r0
+
+    return r0
+  end
+
+  def _nt_step_or_given_scenario
+    start_index = index
+    if node_cache[:step_or_given_scenario].has_key?(index)
+      cached = node_cache[:step_or_given_scenario][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    i0 = index
+    r1 = _nt_step
+    if r1
+      r0 = r1
+    else
+      r2 = _nt_given_scenario
+      if r2
+        r0 = r2
+      else
+        self.index = i0
+        r0 = nil
+      end
+    end
+
+    node_cache[:step_or_given_scenario][start_index] = r0
 
     return r0
   end
@@ -397,7 +434,12 @@ module Feature
             break
           end
         end
-        r4 = SyntaxNode.new(input, i4...index, s4)
+        if s4.empty?
+          self.index = i4
+          r4 = nil
+        else
+          r4 = SyntaxNode.new(input, i4...index, s4)
+        end
         s0 << r4
         if r4
           s6, i6 = [], index
@@ -435,7 +477,12 @@ module Feature
               break
             end
           end
-          r6 = SyntaxNode.new(input, i6...index, s6)
+          if s6.empty?
+            self.index = i6
+            r6 = nil
+          else
+            r6 = SyntaxNode.new(input, i6...index, s6)
+          end
           s0 << r6
           if r6
             s11, i11 = [], index
@@ -467,6 +514,149 @@ module Feature
     end
 
     node_cache[:step][start_index] = r0
+
+    return r0
+  end
+
+  module GivenScenario0
+  end
+
+  module GivenScenario1
+    def given_scenario_keyword
+      elements[0]
+    end
+
+    def name
+      elements[3]
+    end
+
+    def blanks
+      elements[5]
+    end
+  end
+
+  module GivenScenario2
+    def populate(scenario)
+      line = input.line_of(interval.first)
+      scenario.add_given_scenario(name.text_value.strip, line)
+    end
+  end
+
+  def _nt_given_scenario
+    start_index = index
+    if node_cache[:given_scenario].has_key?(index)
+      cached = node_cache[:given_scenario][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    i0, s0 = index, []
+    r1 = _nt_given_scenario_keyword
+    s0 << r1
+    if r1
+      if input.index(":", index) == index
+        r3 = (SyntaxNode).new(input, index...(index + 1))
+        @index += 1
+      else
+        terminal_parse_failure(":")
+        r3 = nil
+      end
+      if r3
+        r2 = r3
+      else
+        r2 = SyntaxNode.new(input, index...index)
+      end
+      s0 << r2
+      if r2
+        s4, i4 = [], index
+        loop do
+          r5 = _nt_whitespace
+          if r5
+            s4 << r5
+          else
+            break
+          end
+        end
+        if s4.empty?
+          self.index = i4
+          r4 = nil
+        else
+          r4 = SyntaxNode.new(input, i4...index, s4)
+        end
+        s0 << r4
+        if r4
+          s6, i6 = [], index
+          loop do
+            i7, s7 = index, []
+            i8 = index
+            r9 = _nt_newline
+            if r9
+              r8 = nil
+            else
+              self.index = i8
+              r8 = SyntaxNode.new(input, index...index)
+            end
+            s7 << r8
+            if r8
+              if index < input_length
+                r10 = (SyntaxNode).new(input, index...(index + 1))
+                @index += 1
+              else
+                terminal_parse_failure("any character")
+                r10 = nil
+              end
+              s7 << r10
+            end
+            if s7.last
+              r7 = (SyntaxNode).new(input, i7...index, s7)
+              r7.extend(GivenScenario0)
+            else
+              self.index = i7
+              r7 = nil
+            end
+            if r7
+              s6 << r7
+            else
+              break
+            end
+          end
+          if s6.empty?
+            self.index = i6
+            r6 = nil
+          else
+            r6 = SyntaxNode.new(input, i6...index, s6)
+          end
+          s0 << r6
+          if r6
+            s11, i11 = [], index
+            loop do
+              r12 = _nt_newline
+              if r12
+                s11 << r12
+              else
+                break
+              end
+            end
+            r11 = SyntaxNode.new(input, i11...index, s11)
+            s0 << r11
+            if r11
+              r13 = _nt_blanks
+              s0 << r13
+            end
+          end
+        end
+      end
+    end
+    if s0.last
+      r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0.extend(GivenScenario1)
+      r0.extend(GivenScenario2)
+    else
+      self.index = i0
+      r0 = nil
+    end
+
+    node_cache[:given_scenario][start_index] = r0
 
     return r0
   end
@@ -549,6 +739,27 @@ module Feature
     end
 
     node_cache[:scenario_keyword][start_index] = r0
+
+    return r0
+  end
+
+  def _nt_given_scenario_keyword
+    start_index = index
+    if node_cache[:given_scenario_keyword].has_key?(index)
+      cached = node_cache[:given_scenario_keyword][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    if input.index('GittScenario', index) == index
+      r0 = (SyntaxNode).new(input, index...(index + 12))
+      @index += 12
+    else
+      terminal_parse_failure('GittScenario')
+      r0 = nil
+    end
+
+    node_cache[:given_scenario_keyword][start_index] = r0
 
     return r0
   end
