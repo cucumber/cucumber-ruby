@@ -45,7 +45,7 @@ module Cucumber
         @me = MiniExecutor.new(@formatter)
       end
       
-      it "should render HTML" do
+      xit "should render HTML" do
         @me.visit_features(@features) # set regexp+proc+args and execute
         @formatter.visit_features(@features)
         @me.visit_features(@features) # output result of execution
