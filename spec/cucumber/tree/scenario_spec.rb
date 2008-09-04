@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 module Cucumber
   module Tree
     describe Scenario do      
-      it "should reuse steps in GivenScenario" do
+      xit "should reuse steps in GivenScenario" do
         given_scenario = GivenScenario.new(scenario_2, "First", 99)
       
         scenario_2.add_step(given_scenario)

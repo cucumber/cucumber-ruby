@@ -15,8 +15,9 @@ module Cucumber
       rescue => e
         e.message.should == %{Duplicate step definitions:
 
-spec/cucumber/step_mother_spec.rb:8:in `/Three (.*) mice/'
-spec/cucumber/step_mother_spec.rb:12:in `/Three (.*) mice/'
+./spec/cucumber/step_mother_spec.rb:8:in `/Three (.*) mice/'
+./spec/cucumber/step_mother_spec.rb:12:in `/Three (.*) mice/'
+
 }
       end
     end
@@ -31,13 +32,14 @@ spec/cucumber/step_mother_spec.rb:12:in `/Three (.*) mice/'
       end
 
       begin
-        m.regexp_and_args_for('Three blind mice')
+        m.regexp_args_proc('Three blind mice')
         violated("Should raise error")
       rescue => e
-        e.message.should == %{Ambiguos step resolution for "Three blind mice":
+        e.message.should == %{Ambiguous step resolution for "Three blind mice":
 
-spec/cucumber/step_mother_spec.rb:27:in `/Three (.*) mice/'
-spec/cucumber/step_mother_spec.rb:30:in `/Three blind (.*)/'
+./spec/cucumber/step_mother_spec.rb:28:in `/Three (.*) mice/'
+./spec/cucumber/step_mother_spec.rb:31:in `/Three blind (.*)/'
+
 }
       end
     end

@@ -27,8 +27,7 @@ module Cucumber
         if scenario.row?
           @io.print "    |"
         else
-          # TODO: i18n Secnario
-          @io.puts passed("  Scenario: #{scenario.name}")
+          @io.puts passed("  #{Cucumber.language['scenario']}: #{scenario.name}")
         end
       end
 
@@ -43,7 +42,7 @@ module Cucumber
           step_failed(@failed.last) 
         end
       end
-
+      
       def step_executed(step, regexp, args)
         if step.row?
           row_step_executed(step, regexp, args)
@@ -68,11 +67,6 @@ module Cucumber
         end
       end
       
-      def step_failed(step)
-        @io.puts failed("      #{step.error.message.split("\n").join(INDENT)} (#{step.error.class})")
-        @io.puts failed("      #{step.error.backtrace.join(INDENT)}")
-      end
-
       def row_step_executed(step, regexp, args)
         case(step.error)
         when Pending
@@ -97,7 +91,12 @@ module Cucumber
         end
         step_failed(step) if step.error
       end
-    
+
+      def step_failed(step)
+        @io.puts failed("      #{step.error.message.split("\n").join(INDENT)} (#{step.error.class})")
+        @io.puts failed("      #{step.error.backtrace.join(INDENT)}")
+      end
+
       def dump
         @io.puts
         @io.puts passed("#{@passed.length} steps passed") unless @passed.empty?

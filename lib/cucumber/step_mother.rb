@@ -42,6 +42,7 @@ module Cucumber
 
 #{first_proc.backtrace_line}
 #{proc.backtrace_line}
+
 }
         raise Duplicate.new(message)
       end
@@ -62,7 +63,7 @@ module Cucumber
       when 1
         candidates[0]
       else
-        message = %{Ambiguos step resolution for #{step_name.inspect}:
+        message = %{Ambiguous step resolution for #{step_name.inspect}:
 
 #{candidates.map{|regexp, args, proc| proc.backtrace_line}.join("\n")}
 
