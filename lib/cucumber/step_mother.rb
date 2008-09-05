@@ -11,6 +11,9 @@ module Cucumber
   class Ambiguous < StandardError
   end
 
+  class WrongArgs < StandardError
+  end
+
   class StepMother
     PENDING = lambda do |*_| 
       raise Pending
@@ -61,6 +64,15 @@ module Cucumber
       when 0
         [nil, [], PENDING]
       when 1
+        _, args, proc = *candidates[0]
+        if args.length != proc.arity and !(proc.arity == -1 and args.length == 0)
+          message = %{Wrong number of arguments for #{step_name.inspect}:
+
+#{proc.backtrace_line}
+
+}
+          raise WrongArgs.new(message)
+        end
         candidates[0]
       else
         message = %{Ambiguous step resolution for #{step_name.inspect}:
