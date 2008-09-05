@@ -40,6 +40,22 @@ module Cucumber
       end
     end
     
+    it "should report file and line numbers for incorrect argument counts" do
+      m = StepMother.new
+      m.register_step_proc "Three blind mice" do |disability|
+      end
+      begin
+        m.regexp_args_proc('Three blind mice')
+        violated("Should raise error")
+      rescue => e
+        e.message.should == %{Wrong number of arguments for "Three blind mice":
+
+./spec/cucumber/step_mother_spec.rb:45:in `"Three blind mice"'
+
+}
+      end
+    end
+    
     it "should mark step as pending when it doesn't match any procs" do
       pending "think some more about what to expect here" do
         m = StepMother.new
