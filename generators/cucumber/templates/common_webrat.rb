@@ -9,7 +9,7 @@ When /I follow "(.*)"/ do |link|
   clicks_link(link)
 end
 
-When /I enter "(.*)" for "(.*)"/ do |value, field|
+When /I fill in "(.*)" with "(.*)"/ do |field, value|
   fills_in(field, :with => value) 
 end
 
