@@ -21,7 +21,7 @@ path_to = {
   "the home page" => "/"
 }
 
-When /I go to "(.*)"/ do |page|
+When /I go to (.*)/ do |page|
   visits(path_to[page]) 
 end
 
