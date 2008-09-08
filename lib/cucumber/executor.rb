@@ -10,7 +10,11 @@ module Cucumber
 
     def initialize(formatter, step_mother)
       @formatter = formatter
-      @world_proc = lambda{ Object.new }
+      @world_proc = lambda do 
+        world = Object.new
+        world.extend(Spec::Matchers) if defined?(Spec::Matchers)
+        world
+      end
       @before_procs = []
       @after_procs = []
       @step_mother = step_mother
