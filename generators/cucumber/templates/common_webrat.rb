@@ -17,12 +17,13 @@ When /I check "(.*)"/ do |field|
   checks(field) 
 end
 
-path_to = {
-  "the home page" => "/"
-}
-
 When /I go to (.*)/ do |page|
-  visits(path_to[page]) 
+  visits case page
+  when "the home page"
+    "/"
+  else
+    raise "Can't find mapping from \"#{page}\" to a path"
+  end
 end
 
 Then /I should see "(.*)"/ do |text|
