@@ -52,6 +52,14 @@ module Cucumber
         second = f.scenarios[1]
         second.should have(3).steps
       end
+      
+      it "should allow spaces between FIT values" do
+        p = FeatureParser.new
+        Cucumber::Tree::RowScenario.should_receive(:new).with(anything,anything, ['I can have spaces'], anything)
+        
+        f = p.parse_feature(File.dirname(__FILE__) + '/fit_scenario.feature')
+      end
+      
     end
   end
 end
