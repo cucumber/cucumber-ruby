@@ -13,6 +13,11 @@ module Cucumber
       it "should return bold green without wrapping for #passed without arg" do
         passed.should == "\e[0m\e[1m\e[32m"
       end
+      
+      it "should not generate ansi codes when colors are disabled" do
+        ENV['CUCUMBER_COLORS_DISABLED'] = '1'
+        passed("foo").should == "foo"
+      end
     end
   end
 end
