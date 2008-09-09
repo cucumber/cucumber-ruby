@@ -885,7 +885,7 @@ module Feature
 
   module TableLine2
     def values
-      cells.elements.map { |cell| cell.cell_value.text_value }
+      cells.elements.map { |cell| cell.cell_value.text_value.strip }
     end
     
     def line
@@ -1012,13 +1012,8 @@ module Feature
         if r5
           r3 = r5
         else
-          r6 = _nt_whitespace
-          if r6
-            r3 = r6
-          else
-            self.index = i3
-            r3 = nil
-          end
+          self.index = i3
+          r3 = nil
         end
       end
       if r3
@@ -1030,13 +1025,13 @@ module Feature
       s1 << r2
       if r2
         if index < input_length
-          r7 = (SyntaxNode).new(input, index...(index + 1))
+          r6 = (SyntaxNode).new(input, index...(index + 1))
           @index += 1
         else
           terminal_parse_failure("any character")
-          r7 = nil
+          r6 = nil
         end
-        s1 << r7
+        s1 << r6
       end
       if s1.last
         r1 = (SyntaxNode).new(input, i1...index, s1)

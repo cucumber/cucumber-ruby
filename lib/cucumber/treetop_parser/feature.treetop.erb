@@ -85,7 +85,7 @@ grammar Feature
     whitespace* separator cells:(whitespace* cell_value whitespace* separator)+
     {
       def values
-        cells.elements.map { |cell| cell.cell_value.text_value }
+        cells.elements.map { |cell| cell.cell_value.text_value.strip }
       end
       
       def line
@@ -95,7 +95,7 @@ grammar Feature
   end
 
   rule cell_value
-    (!(separator / newline / whitespace) .)*
+    (!(separator / newline) .)*
   end
 
   rule separator
