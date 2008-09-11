@@ -680,31 +680,31 @@ module Feature
     if r1
       r0 = r1
     else
-      if input.index('Quando', index) == index
+      if input.index('Cuando', index) == index
         r2 = (SyntaxNode).new(input, index...(index + 6))
         @index += 6
       else
-        terminal_parse_failure('Quando')
+        terminal_parse_failure('Cuando')
         r2 = nil
       end
       if r2
         r0 = r2
       else
-        if input.index('Então', index) == index
-          r3 = (SyntaxNode).new(input, index...(index + 6))
-          @index += 6
+        if input.index('Entonces', index) == index
+          r3 = (SyntaxNode).new(input, index...(index + 8))
+          @index += 8
         else
-          terminal_parse_failure('Então')
+          terminal_parse_failure('Entonces')
           r3 = nil
         end
         if r3
           r0 = r3
         else
-          if input.index('E', index) == index
+          if input.index('Y', index) == index
             r4 = (SyntaxNode).new(input, index...(index + 1))
             @index += 1
           else
-            terminal_parse_failure('E')
+            terminal_parse_failure('Y')
             r4 = nil
           end
           if r4
@@ -730,11 +730,11 @@ module Feature
       return cached
     end
 
-    if input.index('Cenário', index) == index
-      r0 = (SyntaxNode).new(input, index...(index + 8))
-      @index += 8
+    if input.index('Escenario', index) == index
+      r0 = (SyntaxNode).new(input, index...(index + 9))
+      @index += 9
     else
-      terminal_parse_failure('Cenário')
+      terminal_parse_failure('Escenario')
       r0 = nil
     end
 
@@ -751,11 +751,11 @@ module Feature
       return cached
     end
 
-    if input.index('DadoOCenário', index) == index
-      r0 = (SyntaxNode).new(input, index...(index + 13))
-      @index += 13
+    if input.index('DadoElEscenario', index) == index
+      r0 = (SyntaxNode).new(input, index...(index + 15))
+      @index += 15
     else
-      terminal_parse_failure('DadoOCenário')
+      terminal_parse_failure('DadoElEscenario')
       r0 = nil
     end
 
