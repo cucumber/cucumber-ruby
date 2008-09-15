@@ -18,6 +18,13 @@ examples/calculator_ruby_features/features/steps/calculator_steps.rb
 examples/calculatrice_francaise_avec_soit_scenario/Rakefile
 examples/calculatrice_francaise_avec_soit_scenario/features/addition.feature
 examples/calculatrice_francaise_avec_soit_scenario/features/calculatrice_steps.rb
+examples/cs/README.textile
+examples/cs/Rakefile
+examples/cs/features/hello.feature
+examples/cs/features/steps/hello_steps.rb
+examples/cs/features/steps/tree_steps.rb
+examples/cs/features/tree.feature
+examples/cs/src/Hello.cs
 examples/java/README.textile
 examples/java/Rakefile
 examples/java/features/hello.feature
@@ -28,6 +35,12 @@ examples/java/src/cucumber/demo/Hello.java
 examples/norwegian_calculator/Rakefile
 examples/norwegian_calculator/features/kalkulator_steps.rb
 examples/norwegian_calculator/features/summering.feature
+examples/selenium/Rakefile
+examples/selenium/features/search.feature
+examples/selenium/features/steps/stories_steps.rb
+examples/tickets/Rakefile
+examples/tickets/features/steps/tickets_steps.rb
+examples/tickets/features/tickets.feature
 examples/watir/Rakefile
 examples/watir/features/search.feature
 examples/watir/features/steps/stories_steps.rb
@@ -99,6 +112,7 @@ spec/cucumber/sell_cucumbers.feature
 spec/cucumber/step_mother_spec.rb
 spec/cucumber/tree/scenario_spec.rb
 spec/cucumber/treetop_parser/feature_parser_spec.rb
+spec/cucumber/treetop_parser/fit_scenario.feature
 spec/cucumber/treetop_parser/given_scenario.feature
 spec/cucumber/treetop_parser/spaces.feature
 spec/spec.opts
