@@ -8,7 +8,7 @@ module Cucumber
   class Duplicate < StandardError
   end
 
-  class Ambiguous < StandardError
+  class Multiple < StandardError
   end
 
   class StepMother
@@ -63,12 +63,12 @@ module Cucumber
       when 1
         candidates[0]
       else
-        message = %{Ambiguous step resolution for #{step_name.inspect}:
+        message = %{Multiple step definitions match #{step_name.inspect}:
 
 #{candidates.map{|regexp, args, proc| proc.backtrace_line}.join("\n")}
 
 }
-        raise Ambiguous.new(message)
+        raise Multiple.new(message)
       end
      end
     

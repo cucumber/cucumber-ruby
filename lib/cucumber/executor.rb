@@ -88,7 +88,7 @@ module Cucumber
         end
       rescue Pending => ignore
         @formatter.step_executed(step, regexp, args)
-      rescue Ambiguous => e
+      rescue Multiple => e
         @error = step.error = e
         @formatter.step_skipped(step, regexp, args)
       rescue => e
