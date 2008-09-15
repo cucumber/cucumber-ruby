@@ -18,7 +18,7 @@ module Cucumber
       end
     end
 
-    it "should report file and line numbers for both ambiguous step definitions" do
+    it "should report file and line numbers for multiple step definitions" do
       m = StepMother.new
       
       m.register_step_proc /Three (.*) mice/ do |disability|
