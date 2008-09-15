@@ -31,7 +31,7 @@ module Cucumber
         m.regexp_args_proc('Three blind mice')
         violated("Should raise error")
       rescue => e
-        e.message.should =~ %r{Ambiguous step resolution for "Three blind mice":
+        e.message.should =~ %r{Multiple step definitions match "Three blind mice":
 
 .+step_mother_spec\.rb:24:in `/Three \(\.\*\) mice/'
 .+step_mother_spec\.rb:27:in `/Three blind \(\.\*\)/'
