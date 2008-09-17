@@ -82,19 +82,19 @@ module Cucumber
         regexp, args, proc = step.regexp_args_proc(@step_mother)
         if @error.nil?
           step.execute_in(@world, regexp, args, proc)
-          @formatter.step_executed(step, regexp, args)
+          @formatter.step_passed(step, regexp, args)
         else
           @formatter.step_skipped(step, regexp, args)
         end
-      rescue Pending => ignore
-        @formatter.step_executed(step, regexp, args)
+      rescue Pending
+        @formatter.step_pending(step, regexp, args)
       rescue Multiple => e
         @error = step.error = e
         @formatter.step_skipped(step, regexp, args)
       rescue => e
         @failed = true
         @error = e
-        @formatter.step_executed(step, regexp, args)
+        @formatter.step_failed(step, regexp, args)
       end
     end    
 
