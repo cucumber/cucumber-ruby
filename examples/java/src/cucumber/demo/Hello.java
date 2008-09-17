@@ -10,6 +10,7 @@ public class Hello {
     }
     
     public String getPhoneNumber(String who) {
-        throw new RuntimeException("My phone is secret!");
+        throw new RuntimeException("NOPE");
+        //return "98219458";
     }
 }
