@@ -1,5 +1,5 @@
 module Cucumber
-  class ArgCountError < StandardError
+  class ArityMismatchError < StandardError
   end
 
   module CoreExt
@@ -13,7 +13,7 @@ module Cucumber
         a = arity == -1 ? 0 : arity
         if self != StepMother::PENDING && args.length != a
           # We have to manually raise when the block has arity -1 (no pipes)
-          raise ArgCountError.new("wrong number of arguments (#{args.length} for 0)")
+          raise ArityMismatchError.new("expected #{arity == -1 ? 0 : arity} block argument(s), got #{args.length}")
         else
           obj.__send__(meth, *args)
         end

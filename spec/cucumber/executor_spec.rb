@@ -102,10 +102,10 @@ STDOUT
         @io.string.should =~ make_regex('P','_','_')
       end
       
-      it "should report an ArgCountError" do
+      it "should report an ArityMismatchError" do
         @step_mother.register_step_proc(/there are (\d*) cucumbers/) {}
         @executor.visit_features(@features)
-        @io.string.should =~ /wrong number of arguments \(1 for 0\)/m
+        @io.string.should =~ /expected 0 block argument\(s\), got 1/m
       end
       
     end
