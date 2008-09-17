@@ -33,7 +33,7 @@ module Cucumber
         rescue ArgCountError => e
           e.backtrace[0] = proc.backtrace_line
           strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__ - 3}:in `execute_in'")
-          format_error(strip_pos, e)
+          format_error(strip_pos, proc, e)
         rescue => e
           method_line = "#{__FILE__}:#{__LINE__ - 6}:in `execute_in'"
           method_line_pos = e.backtrace.index(method_line)
