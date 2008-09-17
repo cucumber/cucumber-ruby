@@ -51,6 +51,58 @@ STDOUT
 #       @formatter.dump
 #       @io.string.should == "...\n"
 #     end
+
+    describe "visiting steps" do
+      def make_regex(a,b,c)
+        exp = "#{a}.*#{b}.*#{c}"
+        Regexp.compile(exp)
+      end
+
+      it "should report pending steps after failures" do
+        @step_mother.register_step_proc(/there are (\d*) cucumbers/)     {|n|}
+        @step_mother.register_step_proc(/I sell (\d*) cucumbers/)        {|n| raise "oops"}
+        @executor.visit_features(@features)
+        @io.string.should =~ make_regex('\.','F','P')
+      end
+      
+      it "should skip passing steps after failures" do
+        @step_mother.register_step_proc(/there are (\d*) cucumbers/)     {|n|}
+        @step_mother.register_step_proc(/I sell (\d*) cucumbers/)        {|n| raise "oops"}
+        @step_mother.register_step_proc(/I should owe (\d*) cucumbers/)  {|n|}
+        @executor.visit_features(@features)
+        @io.string.should =~ make_regex('\.','F','_')
+      end
+      
+      it "should skip failing steps after failures" do
+        @step_mother.register_step_proc(/there are (\d*) cucumbers/)     {|n|}
+        @step_mother.register_step_proc(/I sell (\d*) cucumbers/)        {|n| raise "oops"}
+        @step_mother.register_step_proc(/I should owe (\d*) cucumbers/)  {|n| raise "oops again"}
+        @executor.visit_features(@features)
+        @io.string.should =~ make_regex('\.','F','_')
+      end
+      
+
+      it "should report pending steps after pending" do
+        @step_mother.register_step_proc(/I sell (\d*) cucumbers/)        {|n|}
+        @executor.visit_features(@features)
+        @io.string.should =~ make_regex('P','_','P')
+      end
+      
+      it "should skip passing steps after pending" do
+        @step_mother.register_step_proc(/I sell (\d*) cucumbers/)        {|n|}
+        @step_mother.register_step_proc(/I should owe (\d*) cucumbers/)  {|n|}
+        @executor.visit_features(@features)
+        @io.string.should =~ make_regex('P','_','_')
+      end
+      
+      it "should skip failing steps after pending" do
+        @step_mother.register_step_proc(/I sell (\d*) cucumbers/)        {|n| raise "oops"}
+        @step_mother.register_step_proc(/I should owe (\d*) cucumbers/)  {|n| raise "oops again"}
+        @executor.visit_features(@features)
+        @io.string.should =~ make_regex('P','_','_')
+      end
+      
+    end
+
   end
-  
 end
