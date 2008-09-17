@@ -102,6 +102,12 @@ STDOUT
         @io.string.should =~ make_regex('P','_','_')
       end
       
+      it "should report an ArgCountError" do
+        @step_mother.register_step_proc(/there are (\d*) cucumbers/) {}
+        @executor.visit_features(@features)
+        @io.string.should =~ /wrong number of arguments \(1 for 0\)/m
+      end
+      
     end
 
   end

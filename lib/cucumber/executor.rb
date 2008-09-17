@@ -101,7 +101,7 @@ module Cucumber
         @formatter.step_skipped(step, regexp, args)
       rescue => e
         @failed = true
-        @error = e
+        @error = step.error = e
         @formatter.step_failed(step, regexp, args)
       end
     end
