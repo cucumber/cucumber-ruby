@@ -9,5 +9,9 @@ Egenskap: Summering
     Når jeg summerer
     Så skal resultatet være 12
 
-    |a|b|s|
-    |2|3|5|
+  Scenario: tre tall
+    Gitt at jeg har tastet inn 5
+    Og at jeg har tastet inn 7
+    Og at jeg har tastet inn 2
+    Når jeg summerer
+    Så skal resultatet være 14
