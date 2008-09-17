@@ -39,49 +39,43 @@ module Cucumber
           @io.puts
         elsif scenario.row? && @scenario_failed
           @io.puts
-          step_failed(@failed.last) 
+          output_failing_step(@failed.last) 
         end
       end
       
-      def step_executed(step, regexp, args)
+      def step_passed(step, regexp, args)
         if step.row?
-          row_step_executed(step, regexp, args)
+          @passed << step
+          args.each{|arg| @io.print passed(arg) ; @io.print "|"}
         else
-          regular_step_executed(step, regexp, args)
-        end
-      end
-      
-      def regular_step_executed(step, regexp, args)
-        case(step.error)
-        when Pending
-          @pending << step
-          @io.puts pending("    #{step.keyword} #{step.name}")
-        when NilClass
           @passed << step
           @io.puts passed("    #{step.keyword} #{step.format(regexp){|param| passed_param(param) << passed}}") 
+        end
+      end
+      
+      def step_failed(step, regexp, args)
+        if step.row?
+          @failed << step
+          @scenario_failed = true
+          args.each{|arg| @io.print failed(arg) ; @io.print "|"}
         else
           @failed << step
           @scenario_failed = true
           @io.puts failed("    #{step.keyword} #{step.format(regexp){|param| failed_param(param) << failed}}") 
-          step_failed(step)
+          output_failing_step(step)
         end
       end
       
-      def row_step_executed(step, regexp, args)
-        case(step.error)
-        when Pending
+      def step_pending(step, regexp, args)
+        if step.row?
           @pending << step
           args.each{|arg| @io.print pending(arg) ; @io.print "|"}
-        when NilClass
-          @passed << step
-          args.each{|arg| @io.print passed(arg) ; @io.print "|"}
         else
-          @failed << step
-          @scenario_failed = true
-          args.each{|arg| @io.print failed(arg) ; @io.print "|"}
+          @pending << step
+          @io.puts pending("    #{step.keyword} #{step.name}")
         end
       end
-
+      
       def step_skipped(step, regexp, args)
         @skipped << step
         if step.row?
@@ -89,10 +83,10 @@ module Cucumber
         else
           @io.puts skipped("    #{step.keyword} #{step.format(regexp){|param| skipped_param(param) << skipped}}") 
         end
-        step_failed(step) if step.error
+        output_failing_step(step) if step.error
       end
 
-      def step_failed(step)
+      def output_failing_step(step)
         @io.puts failed("      #{step.error.message.split("\n").join(INDENT)} (#{step.error.class})")
         @io.puts failed("      #{step.error.backtrace.join(INDENT)}")
       end
