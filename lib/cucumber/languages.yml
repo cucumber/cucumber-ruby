@@ -22,10 +22,17 @@
   when: Lorsque
   then: Alors
   and: Et
-"pt":
+"es":
   scenario: Escenario
   given_scenario: DadoElEscenario
   given: Dado
   when: Cuando
   then: Entonces
   and: Y
+"pt":
+  scenario: Cenário
+  given_scenario: DadoOCenário
+  given: Dado
+  when: Quando
+  then: Então
+  and: E
