@@ -87,7 +87,10 @@ module Cucumber
 
       def output_failing_step(step)
         clean_backtrace = step.error.backtrace.map {|b| b.split("\n") }.flatten.reject do |line|
-          line =~ /vendor\/rails/ or line =~ /vendor\/plugins\/cucumber/
+          line =~ /vendor\/rails/ or 
+          line =~ /vendor\/plugins\/cucumber/ or
+          line =~ /spec\/expectations/ or
+          line =~ /spec\/matchers/
         end.map { |line| line.strip }
         @io.puts failed("      #{step.error.message.split("\n").join(INDENT)} (#{step.error.class})")
         @io.puts failed("      #{clean_backtrace.join(INDENT)}")
