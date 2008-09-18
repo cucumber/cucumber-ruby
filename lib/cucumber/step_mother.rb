@@ -75,5 +75,8 @@ module Cucumber
     def proc_for(regexp)
       @step_procs[regexp]
     end
+    
+    def execute(step)
+    end
   end
 end
