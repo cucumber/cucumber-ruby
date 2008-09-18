@@ -39,5 +39,15 @@ module Cucumber
 }m
       end
     end
+    
+    it "should mark step as pending when it doesn't match any procs" do
+      pending "think some more about what to expect here" do
+        m = StepMother.new
+        step = mock('step')
+        step.should_receive(:pending!)
+        raise "FIXME"
+        m.execute(step)
+      end
+    end
   end
 end

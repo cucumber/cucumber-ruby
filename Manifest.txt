@@ -33,8 +33,9 @@ examples/java/features/steps/tree_steps.rb
 examples/java/features/tree.feature
 examples/java/src/cucumber/demo/Hello.java
 examples/norwegian_calculator/Rakefile
-examples/norwegian_calculator/features/kalkulator_steps.rb
+examples/norwegian_calculator/features/steps/kalkulator_steps.rb
 examples/norwegian_calculator/features/summering.feature
+examples/norwegian_calculator/lib/kalkulator.rb
 examples/selenium/Rakefile
 examples/selenium/features/search.feature
 examples/selenium/features/steps/stories_steps.rb
@@ -44,14 +45,16 @@ examples/tickets/features/tickets.feature
 examples/watir/Rakefile
 examples/watir/features/search.feature
 examples/watir/features/steps/stories_steps.rb
+features/see_features.feature
+features/steps/features_steps.rb
 gem_tasks/deployment.rake
 gem_tasks/environment.rake
+gem_tasks/features.rake
 gem_tasks/fix_cr_lf.rake
 gem_tasks/flog.rake
 gem_tasks/gemspec.rake
 gem_tasks/rspec.rake
 gem_tasks/treetop.rake
-gem_tasks/website.rake
 generators/cucumber/cucumber_generator.rb
 generators/cucumber/templates/common_webrat.rb
 generators/cucumber/templates/cucumber
@@ -117,8 +120,3 @@ spec/cucumber/treetop_parser/given_scenario.feature
 spec/cucumber/treetop_parser/spaces.feature
 spec/spec.opts
 spec/spec_helper.rb
-website/index.html
-website/index.txt
-website/javascripts/rounded_corners_lite.inc.js
-website/stylesheets/screen.css
-website/template.html.erb

@@ -1,7 +1,6 @@
 Feature: Division
   In order to avoid silly mistakes
-  As a math idiot 
-  I want to be told the division of two numbers
+  Cashiers must be able to calculate a fraction
 
   Scenario: Regular numbers
     Given I have entered 3 into the calculator
