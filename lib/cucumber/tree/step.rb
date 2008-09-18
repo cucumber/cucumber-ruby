@@ -30,7 +30,7 @@ module Cucumber
         strip_pos = nil
         begin
           proc.call_in(world, *args)
-        rescue ArgCountError => e
+        rescue ArityMismatchError => e
           e.backtrace[0] = proc.backtrace_line
           strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__ - 3}:in `execute_in'")
           format_error(strip_pos, proc, e)

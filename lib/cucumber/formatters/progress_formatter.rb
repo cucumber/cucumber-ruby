@@ -9,17 +9,18 @@ module Cucumber
         @io = (io == STDOUT) ? Kernel : io
         @errors = []
       end
-
-      def step_executed(step, regexp, args)
-        case(step.error)
-        when Pending
-          @io.print pending('P')
-        when NilClass
-          @io.print passed('.')
-        else
-          @errors << step.error
-          @io.print failed('F')
-        end
+      
+      def step_passed(step, regexp, args)
+        @io.print passed('.')
+      end
+      
+      def step_failed(step, regexp, args)
+        @errors << step.error
+        @io.print failed('F')
+      end
+      
+      def step_pending(step, regexp, args)
+        @io.print pending('P')
       end
     
       def step_skipped(step, regexp, args)
