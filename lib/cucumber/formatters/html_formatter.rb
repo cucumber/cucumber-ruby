@@ -93,22 +93,25 @@ HTML
         @io.puts %{                <li class="new" id="#{step.id}">#{step.keyword} #{step.format(regexp, '<span>%s</span>')}</li>}
       end
       
-      def step_executed(step, regexp, args)
-        js = case(step.error)
-        when Pending
-          "stepPending(#{step.id})"
-        when NilClass
-          "stepPassed(#{step.id})"
-        else
-          @errors << step.error
-          "stepFailed(#{step.id}, (<r><![CDATA[#{step.error.message}]]></r>).toString(), (<r><![CDATA[#{step.error.backtrace.join("\n")}]]></r>).toString())"
-        end
-
-        @io.puts %{    <script type="text/javascript">#{js}</script>}
+      def step_passed(step, regexp, args)
+        print_javascript_tag("stepPassed(#{step.id})")
       end
-
+      
+      def step_failed(step, regexp, args)
+        @errors << step.error
+        print_javascript_tag("stepFailed(#{step.id}, (<r><![CDATA[#{step.error.message}]]></r>).toString(), (<r><![CDATA[#{step.error.backtrace.join("\n")}]]></r>).toString())")
+      end
+      
+      def step_pending(step, regexp, args)
+        print_javascript_tag("stepPending(#{step.id})")
+      end
+      
       def step_skipped(step)
         # noop
+      end
+
+      def print_javascript_tag(js)
+        @io.puts %{    <script type="text/javascript">#{js}</script>}
       end
 
       def dump
