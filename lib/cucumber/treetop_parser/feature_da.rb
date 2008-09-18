@@ -670,11 +670,11 @@ module Feature
     end
 
     i0 = index
-    if input.index('Gitt', index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 4))
-      @index += 4
+    if input.index('Givet', index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 5))
+      @index += 5
     else
-      terminal_parse_failure('Gitt')
+      terminal_parse_failure('Givet')
       r1 = nil
     end
     if r1
@@ -730,11 +730,11 @@ module Feature
       return cached
     end
 
-    if input.index('Scenario', index) == index
+    if input.index('Scenarie', index) == index
       r0 = (SyntaxNode).new(input, index...(index + 8))
       @index += 8
     else
-      terminal_parse_failure('Scenario')
+      terminal_parse_failure('Scenarie')
       r0 = nil
     end
 
@@ -751,11 +751,11 @@ module Feature
       return cached
     end
 
-    if input.index('GittScenario', index) == index
-      r0 = (SyntaxNode).new(input, index...(index + 12))
-      @index += 12
+    if input.index('GivetScenarie', index) == index
+      r0 = (SyntaxNode).new(input, index...(index + 13))
+      @index += 13
     else
-      terminal_parse_failure('GittScenario')
+      terminal_parse_failure('GivetScenarie')
       r0 = nil
     end
 
