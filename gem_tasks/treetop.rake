@@ -20,7 +20,7 @@ class FeatureCompiler
 end
 
 namespace :treetop do
-  desc 'Compile the grammar'
+  desc 'Compile the grammar for all languages in languages.yml'
   task :compile do
     FeatureCompiler.new.compile
   end
