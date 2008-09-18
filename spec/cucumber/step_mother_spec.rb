@@ -18,7 +18,7 @@ module Cucumber
       end
     end
 
-    it "should report file and line numbers for both ambiguous step definitions" do
+    it "should report file and line numbers for multiple step definitions" do
       m = StepMother.new
       
       m.register_step_proc /Three (.*) mice/ do |disability|
@@ -31,28 +31,12 @@ module Cucumber
         m.regexp_args_proc('Three blind mice')
         violated("Should raise error")
       rescue => e
-        e.message.should =~ %r{Ambiguous step resolution for "Three blind mice":
+        e.message.should =~ %r{Multiple step definitions match "Three blind mice":
 
 .+step_mother_spec\.rb:24:in `/Three \(\.\*\) mice/'
 .+step_mother_spec\.rb:27:in `/Three blind \(\.\*\)/'
 
 }m
-      end
-    end
-    
-    it "should report file and line numbers for incorrect argument counts" do
-      m = StepMother.new
-      m.register_step_proc "Three blind mice" do |disability|
-      end
-      begin
-        m.regexp_args_proc('Three blind mice')
-        violated("Should raise error")
-      rescue => e
-        e.message.should == %{Wrong number of arguments for "Three blind mice":
-
-./spec/cucumber/step_mother_spec.rb:45:in `"Three blind mice"'
-
-}
       end
     end
     
