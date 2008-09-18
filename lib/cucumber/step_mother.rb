@@ -8,10 +8,7 @@ module Cucumber
   class Duplicate < StandardError
   end
 
-  class Ambiguous < StandardError
-  end
-
-  class WrongArgs < StandardError
+  class Multiple < StandardError
   end
 
   class StepMother
@@ -64,23 +61,14 @@ module Cucumber
       when 0
         [nil, [], PENDING]
       when 1
-        _, args, proc = *candidates[0]
-        if args.length != proc.arity and !(proc.arity == -1 and args.length == 0)
-          message = %{Wrong number of arguments for #{step_name.inspect}:
-
-#{proc.backtrace_line}
-
-}
-          raise WrongArgs.new(message)
-        end
         candidates[0]
       else
-        message = %{Ambiguous step resolution for #{step_name.inspect}:
+        message = %{Multiple step definitions match #{step_name.inspect}:
 
 #{candidates.map{|regexp, args, proc| proc.backtrace_line}.join("\n")}
 
 }
-        raise Ambiguous.new(message)
+        raise Multiple.new(message)
       end
      end
     

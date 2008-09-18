@@ -60,6 +60,7 @@ module Cucumber
     def visit_scenario(scenario)
       if @line.nil? || scenario.at_line?(@line)
         @error = nil
+        @pending = nil
         @world = @world_proc.call
         @formatter.scenario_executing(scenario) if @formatter.respond_to?(:scenario_executing)
         @before_procs.each{|p| p.call_in(@world, *[])}
@@ -82,23 +83,35 @@ module Cucumber
       
       begin
         regexp, args, proc = step.regexp_args_proc(@step_mother)
-        if @error.nil?
-          step.execute_in(@world, regexp, args, proc)
-          @formatter.step_executed(step, regexp, args)
+        if @pending || @error
+          begin
+            step.execute_in(@world, regexp, args, proc)
+            @formatter.step_skipped(step, regexp, args)
+          rescue Pending
+            record_pending_step(step, regexp, args)
+          rescue Exception
+            @formatter.step_skipped(step, regexp, args)
+          end
         else
-          @formatter.step_skipped(step, regexp, args)
+          step.execute_in(@world, regexp, args, proc)
+          @formatter.step_passed(step, regexp, args)
         end
-      rescue Pending => ignore
-        @formatter.step_executed(step, regexp, args)
-      rescue Ambiguous => e
+      rescue Pending
+        record_pending_step(step, regexp, args)
+      rescue Multiple => e
         @error = step.error = e
         @formatter.step_skipped(step, regexp, args)
       rescue => e
         @failed = true
-        @error = e
-        @formatter.step_executed(step, regexp, args)
+        @error = step.error = e
+        @formatter.step_failed(step, regexp, args)
       end
-    end    
+    end
+    
+    def record_pending_step(step, regexp, args)
+      @pending = true
+      @formatter.step_pending(step, regexp, args)
+    end
 
   end
 end
