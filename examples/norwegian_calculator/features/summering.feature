@@ -12,6 +12,6 @@ Egenskap: Summering
   Scenario: tre tall
     Gitt at jeg har tastet inn 5
     Og at jeg har tastet inn 7
-    Og at jeg har tastet inn 2
+    Og at jeg har tastet inn 1
     Når jeg summerer
     Så skal resultatet være 14
