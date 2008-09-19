@@ -66,6 +66,15 @@ STDOUT
         @io.string.should =~ make_regex('F','_','P')
       end
       
+      it "should report subsequent multiple definitions as an skipped" do
+        @step_mother.register_step_proc(/there are (\d*) cucumbers/)     {|n|}
+        @step_mother.register_step_proc(/there (.*) (\d*) cucumbers/)    {|n|}
+        @step_mother.register_step_proc(/I sell (\d*) cucumbers/)        {|n|}
+        @step_mother.register_step_proc(/I sell (\d*) (.*)/)             {|n|}
+        @executor.visit_features(@features)
+        @io.string.should =~ make_regex('F','_','P')
+      end
+      
       it "should report pending steps after failures" do
         @step_mother.register_step_proc(/there are (\d*) cucumbers/)     {|n|}
         @step_mother.register_step_proc(/I sell (\d*) cucumbers/)        {|n| raise "oops"}
