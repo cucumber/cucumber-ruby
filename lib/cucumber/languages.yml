@@ -57,3 +57,11 @@
   when: Når
   then: Så
   and: Och
+"et":
+  feature: Omadus
+  scenario: Stsenaarium
+  given_scenario: EeldadesStsenaariumit
+  given: Eeldades
+  when: Kui
+  then: Siis
+  and: Ja
