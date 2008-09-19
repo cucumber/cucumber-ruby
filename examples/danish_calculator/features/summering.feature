@@ -1,7 +1,7 @@
 Egenskab: Summering
   For at slippe for at lave dumme fejl
   Som en regnskabsfører
-  Vil jeg kunne laegge sammen
+  Vil jeg kunne lægge sammen
 
   Scenarie: to tal
     Givet at jeg har indtastet 5
