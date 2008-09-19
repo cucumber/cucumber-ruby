@@ -79,32 +79,28 @@ module Cucumber
     end
 
     def visit_step(step)
-      #@step_mother.execute(step)
-      
-      begin
-        regexp, args, proc = step.regexp_args_proc(@step_mother)
-        if @pending || @error
-          begin
-            step.execute_in(@world, regexp, args, proc)
-            @formatter.step_skipped(step, regexp, args)
-          rescue Pending
-            record_pending_step(step, regexp, args)
-          rescue Exception
-            @formatter.step_skipped(step, regexp, args)
-          end
-        else
+      unless @pending || @error
+        begin
+          regexp, args, proc = step.regexp_args_proc(@step_mother)
           step.execute_in(@world, regexp, args, proc)
           @formatter.step_passed(step, regexp, args)
+        rescue Pending
+          record_pending_step(step, regexp, args)
+        rescue => e
+          @failed = true
+          @error = step.error = e
+          @formatter.step_failed(step, regexp, args)
         end
-      rescue Pending
-        record_pending_step(step, regexp, args)
-      rescue Multiple => e
-        @error = step.error = e
-        @formatter.step_failed(step, regexp, args)
-      rescue => e
-        @failed = true
-        @error = step.error = e
-        @formatter.step_failed(step, regexp, args)
+      else
+        begin
+          regexp, args, proc = step.regexp_args_proc(@step_mother)
+          step.execute_in(@world, regexp, args, proc)
+          @formatter.step_skipped(step, regexp, args)
+        rescue Pending
+          record_pending_step(step, regexp, args)
+        rescue Exception
+          @formatter.step_skipped(step, regexp, args)
+        end
       end
     end
     
