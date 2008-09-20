@@ -3,9 +3,9 @@
 # http://ftp.ics.uci.edu/pub/ietf/http/related/iso639.txt (Use this I think)
 "da":
   feature: Egenskab
-  scenario: Scenario
-  given_scenario: GittScenario
-  given: Gitt
+  scenario: Scenarie
+  given_scenario: GivetScenarie
+  given: Givet
   when: Når
   then: Så
   and: Og
