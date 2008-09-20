@@ -29,12 +29,8 @@ module Cucumber
       @paths = []
     end
 
-    def initializeOLD(args)
-      @args = args.dup
-      @args.extend(OptionParser::Arguable)
-    end
-    
     def parse_options!(args)
+      return parse_args_from_profile('default') if args.empty?
       args.extend(OptionParser::Arguable)
 
       @options = { :require => nil, :lang => 'en', :format => 'pretty', :dry_run => false }
@@ -63,11 +59,7 @@ module Cucumber
           @options[:format] = v
         end
         opts.on("-p=PROFILE", "--profile=PROFILE", "Pull commandline arguments from cucumber.yml.") do |v|
-          require 'yaml'
-          cucumber_yml = YAML::load(IO.read('cucumber.yml'))
-          args_from_yml = cucumber_yml[v]
-          raise "Expected to find a String, got #{args_from_yml.inspect}. cucumber.yml:\n#{cucumber_yml}" unless String === args_from_yml
-          parse_options!(args_from_yml.split(' '))
+          parse_args_from_profile(v)
         end
         opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.") do
           @options[:dry_run] = true
@@ -84,6 +76,14 @@ module Cucumber
       
       # Whatever is left after option parsing is the FILE arguments
       @paths += args
+    end
+    
+    def parse_args_from_profile(profile)
+      require 'yaml'
+      cucumber_yml = YAML::load(IO.read('cucumber.yml'))
+      args_from_yml = cucumber_yml[profile]
+      raise "Expected to find a String, got #{args_from_yml.inspect}. cucumber.yml:\n#{cucumber_yml}" unless String === args_from_yml
+      parse_options!(args_from_yml.split(' '))
     end
     
     def execute!(step_mother, features)
