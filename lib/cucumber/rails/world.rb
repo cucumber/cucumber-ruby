@@ -42,28 +42,24 @@ module Cucumber #:nodoc:
     end
 
     def self.use_transactional_fixtures
-      Cucumber::Rails::World.use_transactional_fixtures = true
+      World.use_transactional_fixtures = true
       if defined?(ActiveRecord::Base)
         $main.Before do
-          if defined?(ActiveRecord::Base)
-            if ActiveRecord::Base.connection.respond_to?(:increment_open_transactions)
-              ActiveRecord::Base.connection.increment_open_transactions
-            else
-              ActiveRecord::Base.send :increment_open_transactions
-            end
+          if ActiveRecord::Base.connection.respond_to?(:increment_open_transactions)
+            ActiveRecord::Base.connection.increment_open_transactions
+          else
+            ActiveRecord::Base.send :increment_open_transactions
           end
           ActiveRecord::Base.connection.begin_db_transaction
           ActionMailer::Base.deliveries = [] if defined?(ActionMailer::Base)
         end
         
         $main.After do
-          if defined?(ActiveRecord::Base)
-            ActiveRecord::Base.connection.rollback_db_transaction
-            if ActiveRecord::Base.connection.respond_to?(:decrement_open_transactions)
-              ActiveRecord::Base.connection.decrement_open_transactions
-            else
-              ActiveRecord::Base.send :decrement_open_transactions
-            end
+          ActiveRecord::Base.connection.rollback_db_transaction
+          if ActiveRecord::Base.connection.respond_to?(:decrement_open_transactions)
+            ActiveRecord::Base.connection.decrement_open_transactions
+          else
+            ActiveRecord::Base.send :decrement_open_transactions
           end
         end
       end

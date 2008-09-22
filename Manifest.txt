@@ -7,7 +7,9 @@ TODO.txt
 bin/cucumber
 config/hoe.rb
 config/requirements.rb
+cucumber.yml
 examples/calculator/Rakefile
+examples/calculator/cucumber.yml
 examples/calculator/features/addition.feature
 examples/calculator/features/division.feature
 examples/calculator/features/steps/calculator_steps.rb
@@ -25,6 +27,13 @@ examples/cs/features/steps/hello_steps.rb
 examples/cs/features/steps/tree_steps.rb
 examples/cs/features/tree.feature
 examples/cs/src/Hello.cs
+examples/danish_calculator/Rakefile
+examples/danish_calculator/features/steps/kalkulator_steps.rb
+examples/danish_calculator/features/summering.feature
+examples/danish_calculator/lib/kalkulator.rb
+examples/estonian_calculator/Rakefile
+examples/estonian_calculator/features/kalkulaator_steps.rb
+examples/estonian_calculator/features/liitmine.feature
 examples/java/README.textile
 examples/java/Rakefile
 examples/java/features/hello.feature
@@ -42,6 +51,10 @@ examples/portuguese_calculator/features/calculadora_steps.rb
 examples/selenium/Rakefile
 examples/selenium/features/search.feature
 examples/selenium/features/steps/stories_steps.rb
+examples/spanish_calculator/Rakefile
+examples/spanish_calculator/features/adicion.feature
+examples/spanish_calculator/features/steps/calculador_steps.rb
+examples/spanish_calculator/lib/Calculador.rb
 examples/tickets/Rakefile
 examples/tickets/features/steps/tickets_steps.rb
 examples/tickets/features/tickets.feature
@@ -97,6 +110,7 @@ lib/cucumber/treetop_parser/feature.treetop.erb
 lib/cucumber/treetop_parser/feature_da.rb
 lib/cucumber/treetop_parser/feature_en.rb
 lib/cucumber/treetop_parser/feature_es.rb
+lib/cucumber/treetop_parser/feature_et.rb
 lib/cucumber/treetop_parser/feature_fr.rb
 lib/cucumber/treetop_parser/feature_no.rb
 lib/cucumber/treetop_parser/feature_parser.rb
@@ -112,6 +126,7 @@ script/generate.cmd
 script/txt2html
 script/txt2html.cmd
 setup.rb
+spec/cucumber/cli_spec.rb
 spec/cucumber/core_ext/proc_spec.rb
 spec/cucumber/core_ext/string_spec.rb
 spec/cucumber/executor_spec.rb
