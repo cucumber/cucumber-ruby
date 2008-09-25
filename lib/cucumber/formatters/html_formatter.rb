@@ -106,7 +106,7 @@ HTML
         print_javascript_tag("stepPending(#{step.id})")
       end
       
-      def step_skipped(step)
+      def step_skipped(step, regexp, args)
         # noop
       end
 
