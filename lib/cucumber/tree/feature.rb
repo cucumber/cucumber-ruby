@@ -1,6 +1,7 @@
 module Cucumber
   module Tree
     class Feature
+      attr_reader :header
       attr_accessor :file
       
       def initialize(header, &proc)

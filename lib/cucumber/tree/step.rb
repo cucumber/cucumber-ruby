@@ -1,6 +1,7 @@
 module Cucumber
   module Tree
     class BaseStep
+      attr_reader :scenario
       attr_accessor :error
 
       def self.new_id!
