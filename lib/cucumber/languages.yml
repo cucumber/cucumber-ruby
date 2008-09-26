@@ -9,6 +9,14 @@
   when: Når
   then: Så
   and: Og
+"de":
+  feature: Funktionalität
+  scenario: Szenario
+  given_scenario: GegebenesSzenario
+  given: Gegeben sei
+  when: Wenn
+  then: Dann
+  and: Und
 "en":
   feature: Feature
   scenario: Scenario
