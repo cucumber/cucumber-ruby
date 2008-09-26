@@ -49,6 +49,14 @@
   when: Quando
   then: Então
   and: E
+"ru":
+  feature: Функционал
+  scenario: Сценарий
+  given_scenario: ДанныйСценарий
+  given: Сначала
+  when: Если
+  then: То
+  and: И
 "se":
   feature: Egenskap
   scenario: Scenario
