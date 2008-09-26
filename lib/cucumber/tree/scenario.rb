@@ -1,6 +1,8 @@
 module Cucumber
   module Tree
     class BaseScenario
+      attr_reader :feature
+      
       def file
         @feature.file
       end
