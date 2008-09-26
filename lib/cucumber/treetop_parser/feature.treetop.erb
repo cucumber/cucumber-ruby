@@ -26,7 +26,7 @@ grammar Feature
   end
 
   rule step_scenario
-    scenario_keyword ":" whitespace+ name:(!newline .)+ newline* blanks steps:step_or_given_scenario+ {
+    scenario_keyword ":" whitespace+ name:(!newline .)+ newline* blanks steps:step_or_given_scenario* {
       def populate(feature)
         sc = feature.add_scenario(name.text_value.strip)
         steps.elements.each{|s| s.populate(sc)}

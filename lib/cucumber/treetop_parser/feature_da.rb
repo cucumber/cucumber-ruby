@@ -323,12 +323,7 @@ module Feature
                     break
                   end
                 end
-                if s13.empty?
-                  self.index = i13
-                  r13 = nil
-                else
-                  r13 = SyntaxNode.new(input, i13...index, s13)
-                end
+                r13 = SyntaxNode.new(input, i13...index, s13)
                 s0 << r13
               end
             end
