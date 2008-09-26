@@ -33,7 +33,7 @@ module Cucumber
       return parse_args_from_profile('default') if args.empty?
       args.extend(OptionParser::Arguable)
 
-      @options = { :require => nil, :lang => 'en', :format => 'pretty', :dry_run => false }
+      @options = { :require => nil, :lang => 'en', :format => 'pretty', :dry_run => false, :excludes => [] }
       args.options do |opts|
         opts.banner = "Usage: cucumber [options] FILES|DIRS"
         opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require files before executing the features.",
@@ -57,6 +57,9 @@ module Cucumber
             exit 1
           end
           @options[:format] = v
+        end
+        opts.on("--exclude=PATTERN", "Don't run features matching a pattern") do |v|
+          @options[:excludes] << v
         end
         opts.on("-p=PROFILE", "--profile=PROFILE", "Pull commandline arguments from cucumber.yml.") do |v|
           parse_args_from_profile(v)
@@ -120,10 +123,18 @@ module Cucumber
     end
 
     def feature_files
-      @paths.map do |path|
+      potential_feature_files = @paths.map do |path|
         path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
         File.directory?(path) ? Dir["#{path}/**/*.feature"] : path
       end.flatten.uniq
+      
+      @options[:excludes].each do |exclude|
+        potential_feature_files.reject! do |path|
+          path =~ /#{Regexp.escape(exclude)}/
+        end
+      end
+      
+      potential_feature_files
     end
     
     def feature_dirs
