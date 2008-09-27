@@ -9,7 +9,7 @@ when /win32|mingw/
   Watir::Browser = Watir::IE
 when /java/
   require 'celerity'
-  Watir::Browser = Celerity::Browser
+  module Watir; Browser = Celerity::Browser; end
 else
   raise "This platform is not supported (#{PLATFORM})"
 end
