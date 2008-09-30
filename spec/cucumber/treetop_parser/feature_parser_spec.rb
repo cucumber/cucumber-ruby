@@ -55,9 +55,15 @@ module Cucumber
       
       it "should allow spaces between FIT values" do
         p = FeatureParser.new
-        Cucumber::Tree::RowScenario.should_receive(:new).with(anything,anything, ['I can have spaces'], anything)
+        Cucumber::Tree::RowScenario.should_receive(:new).with(anything, anything, ['I can have spaces'], anything)
         
         f = p.parse_feature(File.dirname(__FILE__) + '/fit_scenario.feature')
+      end
+      
+      it "should allow comments in feature files" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/with_comments.feature')
+        f.scenarios[0].should have(2).steps
       end
       
     end
