@@ -22,7 +22,7 @@ module Cucumber
         if ast.nil?
           raise SyntaxError.new(file, self)
         else
-          feature = ast.feature
+          feature = ast.compile
           feature.file = file
           feature
         end
