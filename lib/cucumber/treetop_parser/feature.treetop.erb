@@ -17,10 +17,10 @@ grammar Feature
   end
   
   rule scenario_sequence
-    head:scenario tail:(space scenario_or_table)* {
+    head:scenario? tail:(space scenario_or_table)* {
       def compile(feature)
         ([head] + tail).each do |scenario_or_table|
-          scenario_or_table.compile(feature)
+          scenario_or_table.compile(feature) if scenario_or_table.respond_to?(:compile)
         end
       end
       

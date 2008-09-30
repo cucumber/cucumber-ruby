@@ -146,7 +146,7 @@ module Feature
   module ScenarioSequence2
     def compile(feature)
       ([head] + tail).each do |scenario_or_table|
-        scenario_or_table.compile(feature)
+        scenario_or_table.compile(feature) if scenario_or_table.respond_to?(:compile)
       end
     end
     
@@ -164,33 +164,38 @@ module Feature
     end
 
     i0, s0 = index, []
-    r1 = _nt_scenario
+    r2 = _nt_scenario
+    if r2
+      r1 = r2
+    else
+      r1 = SyntaxNode.new(input, index...index)
+    end
     s0 << r1
     if r1
-      s2, i2 = [], index
+      s3, i3 = [], index
       loop do
-        i3, s3 = index, []
-        r4 = _nt_space
-        s3 << r4
-        if r4
-          r5 = _nt_scenario_or_table
-          s3 << r5
+        i4, s4 = index, []
+        r5 = _nt_space
+        s4 << r5
+        if r5
+          r6 = _nt_scenario_or_table
+          s4 << r6
         end
-        if s3.last
-          r3 = (SyntaxNode).new(input, i3...index, s3)
-          r3.extend(ScenarioSequence0)
+        if s4.last
+          r4 = (SyntaxNode).new(input, i4...index, s4)
+          r4.extend(ScenarioSequence0)
         else
-          self.index = i3
-          r3 = nil
+          self.index = i4
+          r4 = nil
         end
-        if r3
-          s2 << r3
+        if r4
+          s3 << r4
         else
           break
         end
       end
-      r2 = SyntaxNode.new(input, i2...index, s2)
-      s0 << r2
+      r3 = SyntaxNode.new(input, i3...index, s3)
+      s0 << r3
     end
     if s0.last
       r0 = (SyntaxNode).new(input, i0...index, s0)
