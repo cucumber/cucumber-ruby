@@ -139,6 +139,7 @@ spec/cucumber/formatters/progress_formatter_spec.rb
 spec/cucumber/sell_cucumbers.feature
 spec/cucumber/step_mother_spec.rb
 spec/cucumber/tree/scenario_spec.rb
+spec/cucumber/treetop_parser/empty_feature.feature
 spec/cucumber/treetop_parser/empty_scenario.feature
 spec/cucumber/treetop_parser/feature_parser_spec.rb
 spec/cucumber/treetop_parser/fit_scenario.feature
