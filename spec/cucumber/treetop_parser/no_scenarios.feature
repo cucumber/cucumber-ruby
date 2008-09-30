@@ -1,0 +1,1 @@
+Feature: Should be valid without any scenarios
