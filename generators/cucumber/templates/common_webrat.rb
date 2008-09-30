@@ -13,8 +13,24 @@ When /^I fill in "(.*)" with "(.*)"$/ do |field, value|
   fills_in(field, :with => value) 
 end
 
+When /^I select "(.*)" from "(.*)"$/ do |field, value|
+  selects(field, :with => value) 
+end
+
 When /^I check "(.*)"$/ do |field|
   checks(field) 
+end
+
+When /^I uncheck "(.*)"$/ do |field|
+  unchecks(field) 
+end
+
+When /^I choose "(.*)"$/ do |field|
+  chooses(field)
+end
+
+When /^I attach the file at "(.*)" to "(.*)" $/ do |path, field|
+  attaches_file(field, path)
 end
 
 When /^I go to (.*)$/ do |page|
