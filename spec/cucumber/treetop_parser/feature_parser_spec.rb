@@ -65,6 +65,14 @@ module Cucumber
         f = p.parse_feature(File.dirname(__FILE__) + '/with_comments.feature')
         f.scenarios[0].should have(2).steps
       end
+
+      it "should allow empty scenarios" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/empty_scenario.feature')
+        f.scenarios[0].should have(1).steps
+        f.scenarios[1].should have(0).steps
+        f.scenarios[2].should have(1).steps
+      end
       
     end
   end

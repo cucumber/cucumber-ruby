@@ -31,10 +31,10 @@ grammar Feature
   end
 
   rule scenario
-    scenario_keyword space name:line_to_eol space step_sequence {
+    scenario_keyword space name:line_to_eol steps:(space step_sequence)? {
       def compile(feature)
         scenario = feature.add_scenario(name.text_value.strip)
-        step_sequence.compile(scenario)
+        steps.step_sequence.compile(scenario) if steps.respond_to?(:step_sequence)
         # TODO - GET RID OF THIS last_scenario NASTINESS
         # Use a better datastructure, like a linked list...
         Feature.last_scenario = scenario

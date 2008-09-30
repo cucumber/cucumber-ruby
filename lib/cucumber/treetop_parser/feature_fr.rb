@@ -207,6 +207,16 @@ module Feature
   end
 
   module Scenario0
+    def space
+      elements[0]
+    end
+
+    def step_sequence
+      elements[1]
+    end
+  end
+
+  module Scenario1
     def scenario_keyword
       elements[0]
     end
@@ -219,19 +229,15 @@ module Feature
       elements[2]
     end
 
-    def space
+    def steps
       elements[3]
-    end
-
-    def step_sequence
-      elements[4]
     end
   end
 
-  module Scenario1
+  module Scenario2
     def compile(feature)
       scenario = feature.add_scenario(name.text_value.strip)
-      step_sequence.compile(scenario)
+      steps.step_sequence.compile(scenario) if steps.respond_to?(:step_sequence)
       # TODO - GET RID OF THIS last_scenario NASTINESS
       # Use a better datastructure, like a linked list...
       Feature.last_scenario = scenario
@@ -256,19 +262,33 @@ module Feature
         r3 = _nt_line_to_eol
         s0 << r3
         if r3
-          r4 = _nt_space
-          s0 << r4
-          if r4
-            r5 = _nt_step_sequence
-            s0 << r5
+          i5, s5 = index, []
+          r6 = _nt_space
+          s5 << r6
+          if r6
+            r7 = _nt_step_sequence
+            s5 << r7
           end
+          if s5.last
+            r5 = (SyntaxNode).new(input, i5...index, s5)
+            r5.extend(Scenario0)
+          else
+            self.index = i5
+            r5 = nil
+          end
+          if r5
+            r4 = r5
+          else
+            r4 = SyntaxNode.new(input, index...index)
+          end
+          s0 << r4
         end
       end
     end
     if s0.last
       r0 = (SyntaxNode).new(input, i0...index, s0)
-      r0.extend(Scenario0)
       r0.extend(Scenario1)
+      r0.extend(Scenario2)
     else
       self.index = i0
       r0 = nil
