@@ -143,6 +143,7 @@ spec/cucumber/treetop_parser/empty_scenario.feature
 spec/cucumber/treetop_parser/feature_parser_spec.rb
 spec/cucumber/treetop_parser/fit_scenario.feature
 spec/cucumber/treetop_parser/given_scenario.feature
+spec/cucumber/treetop_parser/multiple_tables.feature
 spec/cucumber/treetop_parser/spaces.feature
 spec/cucumber/treetop_parser/with_comments.feature
 spec/spec.opts
