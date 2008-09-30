@@ -15,8 +15,9 @@ module Cucumber
         world.extend(Spec::Matchers) if defined?(Spec::Matchers)
         world
       end
-      @before_procs = []
-      @after_procs = []
+      @before_scenario_procs = []
+      @after_scenario_procs = []
+      @after_step_procs = []
       @step_mother = step_mother
     end
     
@@ -24,14 +25,19 @@ module Cucumber
       @world_proc = proc
     end
 
-    def register_before_proc(&proc)
+    def register_before_scenario_proc(&proc)
       proc.extend(CoreExt::CallIn)
-      @before_procs << proc
+      @before_scenario_procs << proc
     end
 
-    def register_after_proc(&proc)
+    def register_after_scenario_proc(&proc)
       proc.extend(CoreExt::CallIn)
-      @after_procs << proc
+      @after_scenario_procs << proc
+    end
+
+    def register_after_step_proc(&proc)
+      proc.extend(CoreExt::CallIn)
+      @after_step_procs << proc
     end
 
     def visit_features(features)
@@ -63,9 +69,9 @@ module Cucumber
         @pending = nil
         @world = @world_proc.call
         @formatter.scenario_executing(scenario) if @formatter.respond_to?(:scenario_executing)
-        @before_procs.each{|p| p.call_in(@world, *[])}
+        @before_scenario_procs.each{|p| p.call_in(@world, *[])}
         scenario.accept(self)
-        @after_procs.each{|p| p.call_in(@world, *[])}
+        @after_scenario_procs.each{|p| p.call_in(@world, *[])}
         @formatter.scenario_executed(scenario) if @formatter.respond_to?(:scenario_executed)
       end
     end
@@ -83,6 +89,7 @@ module Cucumber
         begin
           regexp, args, proc = step.regexp_args_proc(@step_mother)
           step.execute_in(@world, regexp, args, proc)
+          @after_step_procs.each{|p| p.call_in(@world, *[])}
           @formatter.step_passed(step, regexp, args)
         rescue Pending
           record_pending_step(step, regexp, args)
