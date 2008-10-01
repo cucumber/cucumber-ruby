@@ -1,6 +1,3 @@
-== 0.1.5 (in Git)
+== 0.1.5
 
-First release where changes are tracked properly
-
-* 1 major enhancement:
-  * GivenScenario is implemented
+First gem release!
