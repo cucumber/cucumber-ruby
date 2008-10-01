@@ -9,11 +9,15 @@ module Cucumber
     end
 
     def Before(&proc)
-      $executor.register_before_proc(&proc)
+      $executor.register_before_scenario_proc(&proc)
     end
     
     def After(&proc)
-      $executor.register_after_proc(&proc)
+      $executor.register_after_scenario_proc(&proc)
+    end
+
+    def AfterStep(&proc)
+      $executor.register_after_step_proc(&proc)
     end
 
     def Given(key, &proc)
