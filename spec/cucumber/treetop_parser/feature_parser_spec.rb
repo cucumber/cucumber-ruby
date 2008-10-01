@@ -80,13 +80,6 @@ module Cucumber
         f.should have(6).scenarios
         f.scenarios[0].should have(5).steps
       end
-
-      it "should allow no scenarios" do
-        pending
-        p = FeatureParser.new
-        f = p.parse_feature(File.dirname(__FILE__) + '/no_scenarios.feature')
-        f.should have(0).scenarios
-      end
       
     end
   end
