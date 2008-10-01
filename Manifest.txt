@@ -135,6 +135,7 @@ spec/cucumber/executor_spec.rb
 spec/cucumber/formatters/ansicolor_spec.rb
 spec/cucumber/formatters/features.html
 spec/cucumber/formatters/html_formatter_spec.rb
+spec/cucumber/formatters/pretty_formatter_spec.rb
 spec/cucumber/formatters/progress_formatter_spec.rb
 spec/cucumber/sell_cucumbers.feature
 spec/cucumber/step_mother_spec.rb
