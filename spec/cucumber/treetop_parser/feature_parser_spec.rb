@@ -6,37 +6,18 @@ module Cucumber
       it "should parse features with weird spaces" do
         p = FeatureParser.new
         f = p.parse_feature(File.dirname(__FILE__) + '/spaces.feature')
-        
-        v = Object.new.instance_eval do
-          def visit_header(h)
-            h.should == "Some title"
-          end
+        f.header.should == "Some title"
+        f.should have(2).scenarios
 
-          def visit_scenario(s)
-            def self.visit_scenario(s)
-              s.name.should == "second"
-              s.accept(self)
-            end
+        first = f.scenarios[0]
+        first.name.should == "first"
+        first.should have(1).steps
+        first.steps[0].name.should == "a"
 
-            s.name.should == "first"
-            s.accept(self)
-          end
-          
-          def visit_regular_scenario(s)
-          end
-
-          def visit_step(s)
-            def self.visit_step(s)
-              s.name.should == "b"
-            end
-
-            s.name.should == "a"
-          end
-          
-          self
-        end
-        
-        f.accept(v)
+        second = f.scenarios[1]
+        second.name.should == "second"
+        second.should have(1).steps
+        second.steps[0].name.should == "b"
       end
       
       it "should parse GivenScenario" do
@@ -79,6 +60,12 @@ module Cucumber
         f = p.parse_feature(File.dirname(__FILE__) + '/multiple_tables.feature')
         f.should have(6).scenarios
         f.scenarios[0].should have(5).steps
+      end
+
+      it "should allow empty features" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/empty_feature.feature')
+        f.should have(0).scenarios
       end
       
     end
