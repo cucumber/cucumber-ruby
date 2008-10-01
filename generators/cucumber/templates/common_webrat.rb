@@ -14,7 +14,7 @@ When /^I fill in "(.*)" with "(.*)"$/ do |field, value|
 end
 
 When /^I select "(.*)" from "(.*)"$/ do |field, value|
-  selects(field, :with => value) 
+  selects(value, :from => field) 
 end
 
 When /^I check "(.*)"$/ do |field|
