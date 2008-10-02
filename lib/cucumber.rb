@@ -13,6 +13,8 @@ require 'cucumber/treetop_parser/feature_parser'
 require 'cucumber/cli'
 
 module Cucumber
+  LANGUAGE_FILE = File.expand_path(File.dirname(__FILE__) + '/cucumber/languages.yml')
+
   class << self
     attr_reader :language
     
@@ -26,7 +28,7 @@ module Cucumber
     
     def config
       require 'yaml'
-      @config ||= YAML.load_file(File.dirname(__FILE__) + '/cucumber/languages.yml')
+      @config ||= YAML.load_file(LANGUAGE_FILE)
     end
   end  
 end
