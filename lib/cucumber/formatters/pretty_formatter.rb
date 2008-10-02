@@ -8,8 +8,10 @@ module Cucumber
       INDENT = "\n      "
       BACKTRACE_FILTER_PATTERNS = [/vendor\/rails/, /vendor\/plugins\/cucumber/, /spec\/expectations/, /spec\/matchers/]
     
-      def initialize(io)
+      def initialize(io, step_mother, options={})
         @io = (io == STDOUT) ? Kernel : io
+        @options = options
+        @step_mother = step_mother
         @passed = []
         @failed = []
         @pending = []
@@ -50,7 +52,9 @@ module Cucumber
           args.each{|arg| @io.print passed(arg) ; @io.print "|"}
         else
           @passed << step
-          @io.puts passed("    #{step.keyword} #{step.format(regexp){|param| passed_param(param) << passed}}") 
+          @io.print passed("    #{step.keyword} #{step.format(regexp){|param| passed_param(param) << passed}}")
+          @io.print step_source_file(step) if @options[:source] 
+          @io.puts
         end
       end
       
@@ -62,7 +66,9 @@ module Cucumber
         else
           @failed << step
           @scenario_failed = true
-          @io.puts failed("    #{step.keyword} #{step.format(regexp){|param| failed_param(param) << failed}}") 
+          @io.print failed("    #{step.keyword} #{step.format(regexp){|param| failed_param(param) << failed}}") 
+          @io.print step_source_file(step) if @options[:source] 
+          @io.puts
           output_failing_step(step)
         end
       end
@@ -103,7 +109,7 @@ module Cucumber
         @io.print reset
         print_snippets
       end
-      
+            
       def print_snippets
         unless @pending.empty?
           @io.puts "\nYou can use these snippets to implement pending steps:\n\n"
@@ -121,6 +127,14 @@ module Cucumber
           end
         end
       end
+      
+      private
+      def step_source_file(step)
+        _,_,proc = step.regexp_args_proc(@step_mother)
+        source_file_line = proc.to_s.match(/[\d\w]+@(.*)>/)[1][2..-1]
+        comment("  ##{source_file_line}") 
+      end
+      
     end
   end
 end

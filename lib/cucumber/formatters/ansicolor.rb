@@ -44,6 +44,7 @@ module Cucumber
     #   ** magenta
     #   ** cyan
     #   ** white
+    #   ** grey
     #   ** on_black
     #   ** on_red
     #   ** on_green
@@ -67,12 +68,22 @@ module Cucumber
         :failed_param  => "#{param}red",
         :skipped       => 'bold,cyan',
         :skipped_param => "#{param}cyan",
-        :pending       => 'bold,yellow' # No pending_param
+        :pending       => 'bold,yellow', # No pending_param
+        :comment       => 'grey'
       }
       if ENV['CUCUMBER_COLORS']
         ENV['CUCUMBER_COLORS'].split(':').each do |pair|
           a = pair.split('=')
           ALIASES[a[0].to_sym] = a[1]
+        end
+      end
+      
+      #Not supported in Term::ANSIColor
+      def grey(m)
+        if ENV['CUCUMBER_COLORS_DISABLED'] == '1'
+          m
+        else
+          "\e[90m#{m}\e[0m" 
         end
       end
       
