@@ -32,5 +32,13 @@ module Cucumber
         :lang => 'en'
       }
     end
+    
+    it "should accept source option" do
+      cli = CLI.new
+      cli.parse_options!(%w{--source})
+      
+      cli.options[:source].should be_true
+    end
+        
   end
 end

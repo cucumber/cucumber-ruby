@@ -64,6 +64,9 @@ module Cucumber
         opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.") do
           @options[:dry_run] = true
         end
+        opts.on("-s", "--source", "Show the file and line of the step definition with the steps.") do
+          @options[:source] = true
+        end
         opts.on_tail("--version", "Show version") do
           puts VERSION::STRING
           exit
@@ -141,7 +144,7 @@ module Cucumber
     def formatter(step_mother)
       case @options[:format]
       when 'pretty'
-        Formatters::PrettyFormatter.new(STDOUT)
+        Formatters::PrettyFormatter.new(STDOUT, step_mother, @options)
       when 'progress'
         Formatters::ProgressFormatter.new(STDOUT)
       when 'html'
