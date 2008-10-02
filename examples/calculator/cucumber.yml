@@ -1,1 +1,1 @@
-default: --format progress features
+default: --format pretty --source features
