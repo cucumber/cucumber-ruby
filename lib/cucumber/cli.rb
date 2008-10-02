@@ -46,7 +46,8 @@ module Cucumber
           @options[:line] = v
         end
         opts.on("-a LANG", "--language LANG", "Specify language for features (Default: #{@options[:lang]})",
-          "Available languages: #{Cucumber.languages.join(", ")}") do |v|
+          "Available languages: #{Cucumber.languages.join(", ")}",
+          "Look at #{Cucumber::LANGUAGE_FILE} for keywords") do |v|
           @options[:lang] = v
         end
         opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{@options[:format]})",

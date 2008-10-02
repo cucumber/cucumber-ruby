@@ -1,3 +1,9 @@
+== 0.1.7 (Not release yet)
+
+Bla bla
+
+* Hello
+
 == 0.1.6
 
 First gem release!
