@@ -1,11 +1,16 @@
 require 'term/ansicolor'
+require 'rbconfig'
+
+win = Config::CONFIG['host_os'] =~ /mswin|mingw/
+jruby = defined?(JRUBY_VERSION)
+
 begin
-  require 'Win32/Console/ANSI' if PLATFORM =~ /mswin|mingw/
+  require 'Win32/Console/ANSI' if (win && !jruby)
 rescue LoadError
   STDERR.puts "You must gem install win32console to get coloured output on this ruby platform (#{PLATFORM})"
   ::Term::ANSIColor.coloring = false
 end
-::Term::ANSIColor.coloring = false if !STDOUT.tty?
+::Term::ANSIColor.coloring = false if !STDOUT.tty? || (win && jruby)
 
 module Cucumber
   module Formatters
