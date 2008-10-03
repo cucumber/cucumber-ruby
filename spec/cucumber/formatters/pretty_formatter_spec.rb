@@ -35,28 +35,45 @@ module Cucumber
       
       describe "show source option true" do
       
-        it "should display step source for passed step" do
-          io = StringIO.new
-          formatter = PrettyFormatter.new io, StepMother.new, :source => true
-          formatter.step_passed(mock_step(:regexp_args_proc => [nil, nil, mock_proc]), nil, nil)
+        %w{passed failed skipped}.each do |result|
+          it "should display step source for passed step" do
+            io = StringIO.new
+
+            step_mother = mock('step_mother')
+            formatter = PrettyFormatter.new io, step_mother, :source => true
+            formatter.send("step_#{result}".to_sym, mock_step(:regexp_args_proc => [nil, nil, mock_proc], :error => StandardError.new, :padding_length => 2), nil, nil)
           
-          io.string.should include("Given formatted yes  #steps/example_steps.rb:11")
+            io.string.should include("Given formatted yes  # steps/example_steps.rb:11")
+          end
         end
         
-        it "should display step source for failed step" do
+        it "should align step comments" do
           io = StringIO.new
-          formatter = PrettyFormatter.new io, StepMother.new, :source => true
-          formatter.step_failed(mock_step(:regexp_args_proc => [nil, nil, mock_proc], :error => mock_error), nil, nil)
           
-          io.string.should include("Given formatted yes  #steps/example_steps.rb:11")
+          step_1 = mock_step(:regexp_args_proc => [nil, nil, mock_proc], :format => "1", :padding_length => 10)
+          step_4 = mock_step(:regexp_args_proc => [nil, nil, mock_proc], :format => "4444", :padding_length => 7)
+          step_9 = mock_step(:regexp_args_proc => [nil, nil, mock_proc], :format => "999999999", :padding_length => 2)
+
+          step_mother = mock('step_mother')
+          formatter = PrettyFormatter.new io, step_mother, :source => true
+          
+          formatter.step_passed(step_1, nil, nil)
+          formatter.step_passed(step_4, nil, nil)
+          formatter.step_passed(step_9, nil, nil)
+          
+          io.string.should include("Given 1          # steps/example_steps.rb:11")
+          io.string.should include("Given 4444       # steps/example_steps.rb:11")
+          io.string.should include("Given 999999999  # steps/example_steps.rb:11")
         end
         
         it "should NOT display step source for pending step" do
           io = StringIO.new
-          formatter = PrettyFormatter.new io, StepMother.new, :source => true
+          step_mother = mock('step_mother')
+
+          formatter = PrettyFormatter.new io, step_mother, :source => true
           formatter.step_pending(mock_step(:regexp_args_proc => [nil, nil, mock_proc]), nil, nil)
           
-          io.string.should_not include("Given formatted yes   #steps/example_steps.rb:11")
+          io.string.should_not include("steps/example_steps.rb:11")
         end
         
       end

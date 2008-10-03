@@ -53,7 +53,10 @@ module Cucumber
         else
           @passed << step
           @io.print passed("    #{step.keyword} #{step.format(regexp){|param| passed_param(param) << passed}}")
-          @io.print step_source_file(step) if @options[:source] 
+          if @options[:source]
+            @io.print padding_spaces(step)
+            @io.print source_comment(step) 
+          end
           @io.puts
         end
       end
@@ -67,12 +70,29 @@ module Cucumber
           @failed << step
           @scenario_failed = true
           @io.print failed("    #{step.keyword} #{step.format(regexp){|param| failed_param(param) << failed}}") 
-          @io.print step_source_file(step) if @options[:source] 
+          if @options[:source]
+            @io.print padding_spaces(step)
+            @io.print source_comment(step) 
+          end
           @io.puts
           output_failing_step(step)
         end
       end
       
+      def step_skipped(step, regexp, args)
+        @skipped << step
+        if step.row?
+          args.each{|arg| @io.print skipped(arg) ; @io.print "|"}
+        else
+          @io.print skipped("    #{step.keyword} #{step.format(regexp){|param| skipped_param(param) << skipped}}") 
+          if @options[:source]
+            @io.print padding_spaces(step)
+            @io.print source_comment(step) 
+          end
+          @io.puts
+        end
+      end
+
       def step_pending(step, regexp, args)
         if step.row?
           @pending << step
@@ -83,17 +103,9 @@ module Cucumber
         end
       end
       
-      def step_skipped(step, regexp, args)
-        @skipped << step
-        if step.row?
-          args.each{|arg| @io.print skipped(arg) ; @io.print "|"}
-        else
-          @io.puts skipped("    #{step.keyword} #{step.format(regexp){|param| skipped_param(param) << skipped}}") 
-        end
-      end
-
       def output_failing_step(step)
-        clean_backtrace = step.error.backtrace.map {|b| b.split("\n") }.flatten.reject do |line|
+        backtrace = step.error.backtrace || []
+        clean_backtrace = backtrace.map {|b| b.split("\n") }.flatten.reject do |line|
           BACKTRACE_FILTER_PATTERNS.detect{|p| line =~ p}
         end.map { |line| line.strip }
         @io.puts failed("      #{step.error.message.split("\n").join(INDENT)} (#{step.error.class})")
@@ -129,12 +141,17 @@ module Cucumber
       end
       
       private
-      def step_source_file(step)
-        _,_,proc = step.regexp_args_proc(@step_mother)
+
+      def source_comment(step)
+        _, _, proc = step.regexp_args_proc(@step_mother)
+        # TODO: proc.to_comment_line (to_backtrace_line)
         source_file_line = proc.to_s.match(/[\d\w]+@(.*)>/)[1][2..-1]
-        comment("  ##{source_file_line}") 
+        comment("# #{source_file_line}") 
       end
       
+      def padding_spaces(step)
+        " " * step.padding_length
+      end
     end
   end
 end

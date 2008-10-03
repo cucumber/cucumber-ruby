@@ -27,9 +27,11 @@ module Cucumber
     end
 
     class Scenario < BaseScenario
+      MIN_PADDING = 2
       
       # If a table follows, the header will be stored here. Weird, but convenient.
       attr_accessor :table_header
+      attr_reader :name, :line
       
       def initialize(feature, name, &proc)
         @feature, @name = feature, name
@@ -49,35 +51,45 @@ module Cucumber
         @feature.scenario_named(name)
       end
 
+      def padding_length(step)
+        (max_step_length - step.length) + MIN_PADDING
+      end
+      
+      def max_step_length
+        steps.map{|step| step.length}.max
+      end
+
       def row?
         false
       end
       
-      def add_step(keyword, name, line)
-        @steps_and_given_scenarios << Step.new(self, keyword, name, line)
+      def create_step(keyword, name, line)
+        step = Step.new(self, keyword, name, line)
+        @steps_and_given_scenarios << step
+        step
       end
       
-      def add_given_scenario(name, line)
-        @steps_and_given_scenarios << GivenScenario.new(self, name, line)
+      def create_given_scenario(name, line)
+        given_scenario =  GivenScenario.new(self, name, line)
+        @steps_and_given_scenarios << given_scenario
+        given_scenario
       end
 
       def Given(name)
-        add_step('Given', name, *caller[0].split(':')[1].to_i)
+        create_step('Given', name, *caller[0].split(':')[1].to_i)
       end
 
       def When(name)
-        add_step('When', name, *caller[0].split(':')[1].to_i)
+        create_step('When', name, *caller[0].split(':')[1].to_i)
       end
 
       def Then(name)
-        add_step('Then', name, *caller[0].split(':')[1].to_i)
+        create_step('Then', name, *caller[0].split(':')[1].to_i)
       end
 
       def And(name)
-        add_step('And', name, *caller[0].split(':')[1].to_i)
+        create_step('And', name, *caller[0].split(':')[1].to_i)
       end
-
-      attr_reader :name, :line
 
     end
 

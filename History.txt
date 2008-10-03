@@ -2,6 +2,7 @@
 
 Bla bla
 
+* Add --source option to display step definition location next to step text (Joseph Wilk)
 * Fix a bug in Webrat selects (Tim Glen)
 
 == 0.1.6

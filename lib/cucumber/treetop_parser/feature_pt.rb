@@ -741,7 +741,7 @@ module Feature
   module GivenScenario1
     def compile(scenario)
       line = input.line_of(interval.first)
-      scenario.add_given_scenario(name.text_value.strip, line)
+      scenario.create_given_scenario(name.text_value.strip, line)
     end
   end
 
@@ -795,7 +795,7 @@ module Feature
   module PlainStep1
     def compile(scenario)
       line = input.line_of(interval.first)
-      scenario.add_step(step_keyword.text_value, name.text_value.strip, line)
+      scenario.create_step(step_keyword.text_value, name.text_value.strip, line)
     end
   end
 
