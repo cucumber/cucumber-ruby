@@ -17,6 +17,10 @@ module Cucumber
       def steps
         self
       end
+      
+      def length
+        keyword.length + 1 + name.length
+      end
 
       if defined?(JRUBY_VERSION)
         PENDING_ADJUSTMENT = 2
@@ -72,6 +76,10 @@ module Cucumber
       
       def previous_step
         @scenario.previous_step(self)
+      end
+      
+      def padding_length
+        @scenario.padding_length(self)
       end
     end
     

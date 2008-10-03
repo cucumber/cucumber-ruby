@@ -99,7 +99,7 @@ grammar Feature
     given_scenario_keyword space name:line_to_eol {
       def compile(scenario)
         line = input.line_of(interval.first)
-        scenario.add_given_scenario(name.text_value.strip, line)
+        scenario.create_given_scenario(name.text_value.strip, line)
       end
     }
   end
@@ -108,7 +108,7 @@ grammar Feature
     step_keyword space name:line_to_eol {
       def compile(scenario)
         line = input.line_of(interval.first)
-        scenario.add_step(step_keyword.text_value, name.text_value.strip, line)
+        scenario.create_step(step_keyword.text_value, name.text_value.strip, line)
       end
     }
   end
