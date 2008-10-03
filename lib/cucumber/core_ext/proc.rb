@@ -1,5 +1,5 @@
 module Cucumber
-  class ArgCountError < StandardError
+  class ArityMismatchError < StandardError
   end
 
   module CoreExt
@@ -13,7 +13,7 @@ module Cucumber
         a = arity == -1 ? 0 : arity
         if self != StepMother::PENDING && args.length != a
           # We have to manually raise when the block has arity -1 (no pipes)
-          raise ArgCountError.new("wrong number of arguments (#{args.length} for 0)")
+          raise ArityMismatchError.new("expected #{arity == -1 ? 0 : arity} block argument(s), got #{args.length}")
         else
           obj.__send__(meth, *args)
         end
@@ -23,10 +23,19 @@ module Cucumber
         arity == -1 ? 0 : arity
       end
 
-      def backtrace_line
-        to_s.match(/[\d\w]+@(.*)>/)[1] + ":in `#{name}'"
+      def to_backtrace_line
+        "#{file}:in `#{name}'"
       end
       
+      def to_comment_line
+        "# #{file}"
+      end
+      
+      def file
+        file = to_s.match(/[\d\w]+@(.*)>/)[1]
+        file =~ /^\.\/(.*)/ ? $1 : file
+      end
+
       def meth
         @meth ||= "__cucumber_#{object_id}"
       end

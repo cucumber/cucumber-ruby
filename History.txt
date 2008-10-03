@@ -1,6 +1,10 @@
-== 0.1.5 (in Git)
+== 0.1.7 (Not yet released as gem)
 
-First release where changes are tracked properly
+Bla bla
 
-* 1 major enhancement:
-  * GivenScenario is implemented
+* Add --source option to display step definition location next to step text (Joseph Wilk)
+* Fix a bug in Webrat selects (Tim Glen)
+
+== 0.1.6
+
+First gem release!

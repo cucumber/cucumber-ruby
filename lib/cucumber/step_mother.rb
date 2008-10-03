@@ -8,7 +8,7 @@ module Cucumber
   class Duplicate < StandardError
   end
 
-  class Ambiguous < StandardError
+  class Multiple < StandardError
   end
 
   class StepMother
@@ -40,8 +40,8 @@ module Cucumber
         first_proc = @step_procs[regexp]
         message = %{Duplicate step definitions:
 
-#{first_proc.backtrace_line}
-#{proc.backtrace_line}
+#{first_proc.to_backtrace_line}
+#{proc.to_backtrace_line}
 
 }
         raise Duplicate.new(message)
@@ -63,17 +63,21 @@ module Cucumber
       when 1
         candidates[0]
       else
-        message = %{Ambiguous step resolution for #{step_name.inspect}:
+        message = %{Multiple step definitions match #{step_name.inspect}:
 
-#{candidates.map{|regexp, args, proc| proc.backtrace_line}.join("\n")}
+#{candidates.map{|regexp, args, proc| proc.to_backtrace_line}.join("\n")}
 
 }
-        raise Ambiguous.new(message)
+        raise Multiple.new(message)
       end
      end
     
     def proc_for(regexp)
       @step_procs[regexp]
+    end
+    
+    # TODO - move execute here?
+    def execute(step)
     end
   end
 end

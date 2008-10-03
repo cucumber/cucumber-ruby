@@ -1,0 +1,12 @@
+$:.unshift(File.dirname(__FILE__) + '/../../lib')
+require 'cucumber/rake/task'
+
+Cucumber::Rake::Task.new(:features) do |t|
+  t.cucumber_opts = "--format pretty"
+end
+
+task :features => :compile
+
+task :compile do
+  sh "csc /target:library /out:Cucumber.Demo.dll src\\Hello.cs"
+end

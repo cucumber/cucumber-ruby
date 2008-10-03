@@ -1,31 +1,83 @@
 # http://en.wikipedia.org/wiki/IETF_language_tag
 # http://www.iana.org/assignments/language-subtag-registry
 # http://ftp.ics.uci.edu/pub/ietf/http/related/iso639.txt (Use this I think)
+"da":
+  feature: Egenskab
+  scenario: Scenarie
+  given_scenario: GivetScenarie
+  given: Givet
+  when: Når
+  then: Så
+  and: Og
+"de":
+  feature: Funktionalität
+  scenario: Szenario
+  given_scenario: GegebenesSzenario
+  given: Gegeben sei
+  when: Wenn
+  then: Dann
+  and: Und
 "en":
+  feature: Feature
   scenario: Scenario
   given_scenario: GivenScenario
   given: Given
   when: When
   then: Then
   and: And
-"no":
-  scenario: Scenario
-  given_scenario: GittScenario
-  given: Gitt
-  when: Når
-  then: Så
-  and: Og
-"fr":
-  scenario: Scenario
-  given_scenario: SoitScenario
-  given: Soit
-  when: Lorsque
-  then: Alors
-  and: Et
-"pt":
+"es":
+  feature: Característica
   scenario: Escenario
   given_scenario: DadoElEscenario
   given: Dado
   when: Cuando
   then: Entonces
   and: Y
+"fr":
+  feature: Fonction
+  scenario: Scenario
+  given_scenario: SoitScenario
+  given: Soit
+  when: Lorsque
+  then: Alors
+  and: Et
+"no":
+  feature: Egenskap
+  scenario: Scenario
+  given_scenario: GittScenario
+  given: Gitt
+  when: Når
+  then: Så
+  and: Og
+"pt":
+  feature: Característica
+  scenario: Cenário
+  given_scenario: DadoOCenário
+  given: Dado
+  when: Quando
+  then: Então
+  and: E
+"ru":
+  feature: Функционал
+  scenario: Сценарий
+  given_scenario: ДанныйСценарий
+  given: Сначала
+  when: Если
+  then: То
+  and: И
+"se":
+  feature: Egenskap
+  scenario: Scenario
+  given_scenario: GittScenario
+  given: Gitt
+  when: Når
+  then: Så
+  and: Och
+"et":
+  feature: Omadus
+  scenario: Stsenaarium
+  given_scenario: EeldadesStsenaariumit
+  given: Eeldades
+  when: Kui
+  then: Siis
+  and: Ja
