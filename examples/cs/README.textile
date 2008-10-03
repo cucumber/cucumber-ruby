@@ -1,0 +1,22 @@
+h1. Using Cucumber with Java
+
+This directory contains code to demonstrate how Cucumber can be used to develop Java code.
+You need JRuby 1.1.3 or higher installed and JRuby's bin directory on your PATH.
+
+h2. Installing required gems
+
+jruby -S gem install aslakhellesoy-cucumber
+jruby -S gem install diff-lcs
+
+h2. Running the scenarios
+
+Open a shell in this directory (java) and execute the following command:
+
+<pre><code>
+jruby -S rake features
+</code></pre>
+
+This will compile the java code and package it in a jar file, and then run Cucumber against
+that code.
+
+There is a deliberate error. See if you can fix it!

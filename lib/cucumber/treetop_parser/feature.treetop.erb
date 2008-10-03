@@ -3,91 +3,70 @@ module TreetopParser
 
 grammar Feature
   rule root
-    header whitespace* scenarios {      
-      def feature
-        f = Tree::Feature.new(header.text_value.strip)
-        scenarios.populate(f)
-        f
+    header scenario_sequence space? {
+      def compile
+        feature = Tree::Feature.new(header.text_value.strip)
+        scenario_sequence.compile(feature)
+        feature
       end
     }
   end
-
+  
   rule header
-    (!step_scenario .)*
-  end
-
-  rule scenarios
-    step_scenario more:(table / step_scenario)* {
-      def populate(feature)
-        step_scenario.populate(feature)
-        more.elements.each { |m| m.populate(feature) }
-      end
-    }
-  end
-
-  rule step_scenario
-    scenario_keyword ":" whitespace+ name:(!newline .)+ newline* blanks steps:step_or_given_scenario+ {
-      def populate(feature)
-        sc = feature.add_scenario(name.text_value.strip)
-        steps.elements.each{|s| s.populate(sc)}
-        Feature.last_scenario = sc
-      end
-    }
+    (!scenario_keyword .)+
   end
   
-  rule step_or_given_scenario
-    step / given_scenario
-  end
-  
-  rule step
-    whitespace* step_keyword whitespace+ name:(!newline .)+ newline* blanks {
-      def populate(scenario)
-        line = input.line_of(interval.first)
-        scenario.add_step(step_keyword.text_value, name.text_value.strip, line)
-      end
-    }
-  end
-  
-  rule given_scenario
-    given_scenario_keyword ":"? whitespace+ name:(!newline .)+ newline* blanks {
-      def populate(scenario)
-        line = input.line_of(interval.first)
-        scenario.add_given_scenario(name.text_value.strip, line)
-      end
-    }
-  end
-  
-  rule step_keyword
-    '<%= words['given'] %>' / '<%= words['when'] %>' / '<%= words['then'] %>' / '<%= words['and'] %>'
-  end
-  
-  rule scenario_keyword
-    '<%= words['scenario'] %>'
-  end
-  
-  rule given_scenario_keyword
-    '<%= words['given_scenario'] %>'
-  end
-
-  rule table
-    table_line more:(newline table_line)+ newline*
-    {
-      def populate(feature)
-        Feature.last_scenario.table_header = table_line.values
-        more.elements.each do |e|
-          feature.add_row_scenario(Feature.last_scenario, e.table_line.values, e.table_line.line)
+  rule scenario_sequence
+    head:scenario? tail:(space scenario_or_table)* {
+      def compile(feature)
+        ([head] + tail).each do |scenario_or_table|
+          scenario_or_table.compile(feature) if scenario_or_table.respond_to?(:compile)
         end
       end
+      
+      def tail
+        super.elements.map { |elt| elt.scenario_or_table }
+      end
     }
   end
 
-  rule table_line
-    whitespace* separator cells:(whitespace* cell_value whitespace* separator)+
-    {
-      def values
-        cells.elements.map { |cell| cell.cell_value.text_value }
+  rule scenario
+    scenario_keyword space name:line_to_eol steps:(space step_sequence)? {
+      def compile(feature)
+        scenario = feature.add_scenario(name.text_value.strip)
+        steps.step_sequence.compile(scenario) if steps.respond_to?(:step_sequence)
+        # TODO - GET RID OF THIS last_scenario NASTINESS
+        # Use a better datastructure, like a linked list...
+        Feature.last_scenario = scenario
       end
-      
+    }
+  end
+  
+  rule scenario_or_table
+    scenario / table
+  end
+  
+  rule table
+    head:table_line body:(blank* eol space? table_line)* {
+      def compile(feature)
+        Feature.last_scenario.table_header = head.cell_values
+        body.each do |table_line|
+          feature.add_row_scenario(Feature.last_scenario, table_line.cell_values, table_line.line)
+        end
+      end
+
+      def body
+        super.elements.map { |elt| elt.table_line }
+      end
+    }
+  end
+  
+  rule table_line
+    separator cells:(blank* cell_value blank* separator)+ {
+      def cell_values
+        cells.elements.map { |elt| elt.cell_value.text_value.strip }
+      end
+
       def line
         input.line_of(interval.first)
       end
@@ -95,24 +74,85 @@ grammar Feature
   end
 
   rule cell_value
-    (!(separator / newline / whitespace) .)*
+    (!(separator / eol) .)*
+  end
+
+  rule step_sequence
+    head:step tail:(space step)* {
+      def compile(scenario)
+        ([head] + tail).each do |step|
+          step.compile(scenario)
+        end
+      end
+      
+      def tail
+        super.elements.map { |elt| elt.step }
+      end
+    }
+  end
+
+  rule step
+    given_scenario / plain_step
+  end
+  
+  rule given_scenario
+    given_scenario_keyword space name:line_to_eol {
+      def compile(scenario)
+        line = input.line_of(interval.first)
+        scenario.create_given_scenario(name.text_value.strip, line)
+      end
+    }
+  end
+
+  rule plain_step
+    step_keyword space name:line_to_eol {
+      def compile(scenario)
+        line = input.line_of(interval.first)
+        scenario.create_step(step_keyword.text_value, name.text_value.strip, line)
+      end
+    }
   end
 
   rule separator
     '|'
   end
 
-  rule blanks
-    (newline / whitespace)*
+  rule space
+    (white / comment_to_eol)+
   end
 
-  rule newline
+  rule line_to_eol
+    (!eol .)*
+  end
+
+  rule comment_to_eol
+    '#' line_to_eol
+  end
+
+  rule white
+    blank / eol
+  end
+  
+  rule blank
+    [ \t]
+  end
+  
+  rule eol
     "\r\n?" / "\n"
   end
 
-  rule whitespace
-    [ \t]
+  rule step_keyword
+    '<%= words['given'] %>' / '<%= words['when'] %>' / '<%= words['then'] %>' / '<%= words['and'] %>'
   end
+  
+  rule scenario_keyword
+    '<%= words['scenario'] %>:'
+  end
+  
+  rule given_scenario_keyword
+    '<%= words['given_scenario'] %>' ':'?
+  end
+
 end
 
 end

@@ -2,7 +2,7 @@ class FeatureCompiler
   def compile
     require 'yaml'
     require 'erb'
-    tt = PLATFORM =~ /win32/ ? 'tt.bat' : 'tt'
+    tt = PLATFORM =~ /mswin|mingw/ ? 'tt.bat' : 'tt'
 
     template = ERB.new(IO.read(File.dirname(__FILE__) + '/../lib/cucumber/treetop_parser/feature.treetop.erb'))
     langs = YAML.load_file(File.dirname(__FILE__) + '/../lib/cucumber/languages.yml')
@@ -20,7 +20,7 @@ class FeatureCompiler
 end
 
 namespace :treetop do
-  desc 'Compile the grammar'
+  desc 'Compile the grammar for all languages in languages.yml'
   task :compile do
     FeatureCompiler.new.compile
   end

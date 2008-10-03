@@ -1,15 +1,6 @@
 require 'spec'
-
-class Kalkulator
-  def push(n)
-    @args ||= []
-    @args << n
-  end
-  
-  def add
-    @args.inject(0){|n,sum| sum+=n}
-  end
-end
+$:.unshift(File.dirname(__FILE__) + '/../../lib')
+require 'kalkulator'
 
 Before do
   @calc = Kalkulator.new
@@ -18,7 +9,7 @@ end
 After do
 end
 
-Given /at jeg har tastet inn (\d+)/ do |n|
+Given /at jeg har indtastet (\d+)/ do |n|
   @calc.push n.to_i
 end
 

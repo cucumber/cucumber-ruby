@@ -7,7 +7,7 @@ Feature: Manage <%= plural_name %>
     Given I am on the new <%= singular_name %> page
 <% keyword = 'When' -%>
 <% args.each do |arg| -%>
-    <%= keyword %> I fill in "My <%= singular_name %> <%= arg %>" for "<%= arg.humanize %>"
+    <%= keyword %> I fill in "<%= arg.humanize %>" with "My <%= singular_name %> <%= arg %>"
 <% keyword = 'And' -%>
 <% end -%>
     And I press "Create"
