@@ -23,10 +23,19 @@ module Cucumber
         arity == -1 ? 0 : arity
       end
 
-      def backtrace_line
-        to_s.match(/[\d\w]+@(.*)>/)[1] + ":in `#{name}'"
+      def to_backtrace_line
+        "#{file}:in `#{name}'"
       end
       
+      def to_comment_line
+        "# #{file}"
+      end
+      
+      def file
+        file = to_s.match(/[\d\w]+@(.*)>/)[1]
+        file =~ /^\.\/(.*)/ ? $1 : file
+      end
+
       def meth
         @meth ||= "__cucumber_#{object_id}"
       end

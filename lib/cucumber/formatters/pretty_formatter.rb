@@ -144,9 +144,7 @@ module Cucumber
 
       def source_comment(step)
         _, _, proc = step.regexp_args_proc(@step_mother)
-        # TODO: proc.to_comment_line (to_backtrace_line)
-        source_file_line = proc.to_s.match(/[\d\w]+@(.*)>/)[1][2..-1]
-        comment("# #{source_file_line}") 
+        comment(proc.to_comment_line)
       end
       
       def padding_spaces(step)

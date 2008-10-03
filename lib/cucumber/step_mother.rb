@@ -40,8 +40,8 @@ module Cucumber
         first_proc = @step_procs[regexp]
         message = %{Duplicate step definitions:
 
-#{first_proc.backtrace_line}
-#{proc.backtrace_line}
+#{first_proc.to_backtrace_line}
+#{proc.to_backtrace_line}
 
 }
         raise Duplicate.new(message)
@@ -65,7 +65,7 @@ module Cucumber
       else
         message = %{Multiple step definitions match #{step_name.inspect}:
 
-#{candidates.map{|regexp, args, proc| proc.backtrace_line}.join("\n")}
+#{candidates.map{|regexp, args, proc| proc.to_backtrace_line}.join("\n")}
 
 }
         raise Multiple.new(message)

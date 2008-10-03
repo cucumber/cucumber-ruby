@@ -20,7 +20,7 @@ module Cucumber
       end
       
       def mock_proc
-        stub(Proc, :to_s => '#<Proc:0x011ebe18@./steps/example_steps.rb:11>')
+        stub(Proc, :to_comment_line => '# steps/example_steps.rb:11')
       end
             
       it "should print step file and line when passed" do
@@ -29,7 +29,7 @@ module Cucumber
         step = stub('step',
           :error => nil, :row? => false, :keyword => 'Given', :format => 'formatted yes'
         )
-        formatter.step_passed(step,nil,nil)
+        formatter.step_passed(step, nil, nil)
         io.string.should == "    Given formatted yes\n"
       end
       
