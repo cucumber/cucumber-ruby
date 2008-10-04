@@ -2,6 +2,7 @@
 
 Bla bla
 
+* Fix a bug in the command line args being lost when using --profile (Joseph Wilk)
 * Add --source option to display step definition location next to step text (Joseph Wilk)
 * Fix a bug in Webrat selects (Tim Glen)
 
