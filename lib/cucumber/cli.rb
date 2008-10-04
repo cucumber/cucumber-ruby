@@ -161,7 +161,3 @@ Cucumber::CLI.step_mother = step_mother
 
 extend(Cucumber::Tree)
 Cucumber::CLI.features = features
-
-at_exit do
-  Cucumber::CLI.execute unless Cucumber::CLI.execute_called?
-end
