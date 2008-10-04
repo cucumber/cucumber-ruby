@@ -33,7 +33,7 @@ module Cucumber
       return parse_args_from_profile('default') if args.empty?
       args.extend(OptionParser::Arguable)
 
-      @options = { :require => nil, :lang => 'en', :format => 'pretty', :dry_run => false }
+      @options ||= { :require => nil, :lang => 'en', :format => 'pretty', :dry_run => false }
       args.options do |opts|
         opts.banner = "Usage: cucumber [options] FILES|DIRS"
         opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require files before executing the features.",
