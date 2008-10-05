@@ -68,6 +68,11 @@ module Cucumber
         f.should have(0).scenarios
       end
       
+      it "should parse features with dos line endings" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/test_dos.feature')
+        f.should have(5).scenarios
+      end
     end
   end
 end
