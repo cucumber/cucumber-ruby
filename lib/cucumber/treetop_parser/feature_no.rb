@@ -1,33 +1,33 @@
-module Cucumber
-module TreetopParser
+module Cucumber #:nodoc:
+module TreetopParser #:nodoc:
 
-module Feature
+module Feature #:nodoc:
   include Treetop::Runtime
 
-  def root
+  def root #:nodoc:
     @root || :root
   end
 
-  module Root0
-    def header
+  module Root0 #:nodoc:
+    def header #:nodoc:
       elements[0]
     end
 
-    def scenario_sequence
+    def scenario_sequence #:nodoc:
       elements[1]
     end
 
   end
 
-  module Root1
-    def compile
+  module Root1 #:nodoc:
+    def compile #:nodoc:
       feature = Tree::Feature.new(header.text_value.strip)
       scenario_sequence.compile(feature)
       feature
     end
   end
 
-  def _nt_root
+  def _nt_root #:nodoc:
     start_index = index
     if node_cache[:root].has_key?(index)
       cached = node_cache[:root][index]
@@ -65,10 +65,10 @@ module Feature
     return r0
   end
 
-  module Header0
+  module Header0 #:nodoc:
   end
 
-  def _nt_header
+  def _nt_header #:nodoc:
     start_index = index
     if node_cache[:header].has_key?(index)
       cached = node_cache[:header][index]
@@ -123,39 +123,39 @@ module Feature
     return r0
   end
 
-  module ScenarioSequence0
-    def space
+  module ScenarioSequence0 #:nodoc:
+    def space #:nodoc:
       elements[0]
     end
 
-    def scenario_or_table
+    def scenario_or_table #:nodoc:
       elements[1]
     end
   end
 
-  module ScenarioSequence1
-    def head
+  module ScenarioSequence1 #:nodoc:
+    def head #:nodoc:
       elements[0]
     end
 
-    def tail
+    def tail #:nodoc:
       elements[1]
     end
   end
 
-  module ScenarioSequence2
-    def compile(feature)
+  module ScenarioSequence2 #:nodoc:
+    def compile(feature) #:nodoc:
       ([head] + tail).each do |scenario_or_table|
         scenario_or_table.compile(feature) if scenario_or_table.respond_to?(:compile)
       end
     end
     
-    def tail
+    def tail #:nodoc:
       super.elements.map { |elt| elt.scenario_or_table }
     end
   end
 
-  def _nt_scenario_sequence
+  def _nt_scenario_sequence #:nodoc:
     start_index = index
     if node_cache[:scenario_sequence].has_key?(index)
       cached = node_cache[:scenario_sequence][index]
@@ -211,36 +211,36 @@ module Feature
     return r0
   end
 
-  module Scenario0
-    def space
+  module Scenario0 #:nodoc:
+    def space #:nodoc:
       elements[0]
     end
 
-    def step_sequence
+    def step_sequence #:nodoc:
       elements[1]
     end
   end
 
-  module Scenario1
-    def scenario_keyword
+  module Scenario1 #:nodoc:
+    def scenario_keyword #:nodoc:
       elements[0]
     end
 
-    def space
+    def space #:nodoc:
       elements[1]
     end
 
-    def name
+    def name #:nodoc:
       elements[2]
     end
 
-    def steps
+    def steps #:nodoc:
       elements[3]
     end
   end
 
-  module Scenario2
-    def compile(feature)
+  module Scenario2 #:nodoc:
+    def compile(feature) #:nodoc:
       scenario = feature.add_scenario(name.text_value.strip)
       steps.step_sequence.compile(scenario) if steps.respond_to?(:step_sequence)
       # TODO - GET RID OF THIS last_scenario NASTINESS
@@ -249,7 +249,7 @@ module Feature
     end
   end
 
-  def _nt_scenario
+  def _nt_scenario #:nodoc:
     start_index = index
     if node_cache[:scenario].has_key?(index)
       cached = node_cache[:scenario][index]
@@ -304,7 +304,7 @@ module Feature
     return r0
   end
 
-  def _nt_scenario_or_table
+  def _nt_scenario_or_table #:nodoc:
     start_index = index
     if node_cache[:scenario_or_table].has_key?(index)
       cached = node_cache[:scenario_or_table][index]
@@ -331,40 +331,40 @@ module Feature
     return r0
   end
 
-  module Table0
-    def eol
+  module Table0 #:nodoc:
+    def eol #:nodoc:
       elements[1]
     end
 
-    def table_line
+    def table_line #:nodoc:
       elements[3]
     end
   end
 
-  module Table1
-    def head
+  module Table1 #:nodoc:
+    def head #:nodoc:
       elements[0]
     end
 
-    def body
+    def body #:nodoc:
       elements[1]
     end
   end
 
-  module Table2
-    def compile(feature)
+  module Table2 #:nodoc:
+    def compile(feature) #:nodoc:
       Feature.last_scenario.table_header = head.cell_values
       body.each do |table_line|
         feature.add_row_scenario(Feature.last_scenario, table_line.cell_values, table_line.line)
       end
     end
 
-    def body
+    def body #:nodoc:
       super.elements.map { |elt| elt.table_line }
     end
   end
 
-  def _nt_table
+  def _nt_table #:nodoc:
     start_index = index
     if node_cache[:table].has_key?(index)
       cached = node_cache[:table][index]
@@ -437,37 +437,37 @@ module Feature
     return r0
   end
 
-  module TableLine0
-    def cell_value
+  module TableLine0 #:nodoc:
+    def cell_value #:nodoc:
       elements[1]
     end
 
-    def separator
+    def separator #:nodoc:
       elements[3]
     end
   end
 
-  module TableLine1
-    def separator
+  module TableLine1 #:nodoc:
+    def separator #:nodoc:
       elements[0]
     end
 
-    def cells
+    def cells #:nodoc:
       elements[1]
     end
   end
 
-  module TableLine2
-    def cell_values
+  module TableLine2 #:nodoc:
+    def cell_values #:nodoc:
       cells.elements.map { |elt| elt.cell_value.text_value.strip }
     end
 
-    def line
+    def line #:nodoc:
       input.line_of(interval.first)
     end
   end
 
-  def _nt_table_line
+  def _nt_table_line #:nodoc:
     start_index = index
     if node_cache[:table_line].has_key?(index)
       cached = node_cache[:table_line][index]
@@ -549,10 +549,10 @@ module Feature
     return r0
   end
 
-  module CellValue0
+  module CellValue0 #:nodoc:
   end
 
-  def _nt_cell_value
+  def _nt_cell_value #:nodoc:
     start_index = index
     if node_cache[:cell_value].has_key?(index)
       cached = node_cache[:cell_value][index]
@@ -614,39 +614,39 @@ module Feature
     return r0
   end
 
-  module StepSequence0
-    def space
+  module StepSequence0 #:nodoc:
+    def space #:nodoc:
       elements[0]
     end
 
-    def step
+    def step #:nodoc:
       elements[1]
     end
   end
 
-  module StepSequence1
-    def head
+  module StepSequence1 #:nodoc:
+    def head #:nodoc:
       elements[0]
     end
 
-    def tail
+    def tail #:nodoc:
       elements[1]
     end
   end
 
-  module StepSequence2
-    def compile(scenario)
+  module StepSequence2 #:nodoc:
+    def compile(scenario) #:nodoc:
       ([head] + tail).each do |step|
         step.compile(scenario)
       end
     end
     
-    def tail
+    def tail #:nodoc:
       super.elements.map { |elt| elt.step }
     end
   end
 
-  def _nt_step_sequence
+  def _nt_step_sequence #:nodoc:
     start_index = index
     if node_cache[:step_sequence].has_key?(index)
       cached = node_cache[:step_sequence][index]
@@ -697,7 +697,7 @@ module Feature
     return r0
   end
 
-  def _nt_step
+  def _nt_step #:nodoc:
     start_index = index
     if node_cache[:step].has_key?(index)
       cached = node_cache[:step][index]
@@ -724,28 +724,28 @@ module Feature
     return r0
   end
 
-  module GivenScenario0
-    def given_scenario_keyword
+  module GivenScenario0 #:nodoc:
+    def given_scenario_keyword #:nodoc:
       elements[0]
     end
 
-    def space
+    def space #:nodoc:
       elements[1]
     end
 
-    def name
+    def name #:nodoc:
       elements[2]
     end
   end
 
-  module GivenScenario1
-    def compile(scenario)
+  module GivenScenario1 #:nodoc:
+    def compile(scenario) #:nodoc:
       line = input.line_of(interval.first)
       scenario.create_given_scenario(name.text_value.strip, line)
     end
   end
 
-  def _nt_given_scenario
+  def _nt_given_scenario #:nodoc:
     start_index = index
     if node_cache[:given_scenario].has_key?(index)
       cached = node_cache[:given_scenario][index]
@@ -778,28 +778,28 @@ module Feature
     return r0
   end
 
-  module PlainStep0
-    def step_keyword
+  module PlainStep0 #:nodoc:
+    def step_keyword #:nodoc:
       elements[0]
     end
 
-    def space
+    def space #:nodoc:
       elements[1]
     end
 
-    def name
+    def name #:nodoc:
       elements[2]
     end
   end
 
-  module PlainStep1
-    def compile(scenario)
+  module PlainStep1 #:nodoc:
+    def compile(scenario) #:nodoc:
       line = input.line_of(interval.first)
       scenario.create_step(step_keyword.text_value, name.text_value.strip, line)
     end
   end
 
-  def _nt_plain_step
+  def _nt_plain_step #:nodoc:
     start_index = index
     if node_cache[:plain_step].has_key?(index)
       cached = node_cache[:plain_step][index]
@@ -832,7 +832,7 @@ module Feature
     return r0
   end
 
-  def _nt_separator
+  def _nt_separator #:nodoc:
     start_index = index
     if node_cache[:separator].has_key?(index)
       cached = node_cache[:separator][index]
@@ -853,7 +853,7 @@ module Feature
     return r0
   end
 
-  def _nt_space
+  def _nt_space #:nodoc:
     start_index = index
     if node_cache[:space].has_key?(index)
       cached = node_cache[:space][index]
@@ -894,10 +894,10 @@ module Feature
     return r0
   end
 
-  module LineToEol0
+  module LineToEol0 #:nodoc:
   end
 
-  def _nt_line_to_eol
+  def _nt_line_to_eol #:nodoc:
     start_index = index
     if node_cache[:line_to_eol].has_key?(index)
       cached = node_cache[:line_to_eol][index]
@@ -947,13 +947,13 @@ module Feature
     return r0
   end
 
-  module CommentToEol0
-    def line_to_eol
+  module CommentToEol0 #:nodoc:
+    def line_to_eol #:nodoc:
       elements[1]
     end
   end
 
-  def _nt_comment_to_eol
+  def _nt_comment_to_eol #:nodoc:
     start_index = index
     if node_cache[:comment_to_eol].has_key?(index)
       cached = node_cache[:comment_to_eol][index]
@@ -987,7 +987,7 @@ module Feature
     return r0
   end
 
-  def _nt_white
+  def _nt_white #:nodoc:
     start_index = index
     if node_cache[:white].has_key?(index)
       cached = node_cache[:white][index]
@@ -1014,7 +1014,7 @@ module Feature
     return r0
   end
 
-  def _nt_blank
+  def _nt_blank #:nodoc:
     start_index = index
     if node_cache[:blank].has_key?(index)
       cached = node_cache[:blank][index]
@@ -1034,10 +1034,10 @@ module Feature
     return r0
   end
 
-  module Eol0
+  module Eol0 #:nodoc:
   end
 
-  def _nt_eol
+  def _nt_eol #:nodoc:
     start_index = index
     if node_cache[:eol].has_key?(index)
       cached = node_cache[:eol][index]
@@ -1100,7 +1100,7 @@ module Feature
     return r0
   end
 
-  def _nt_step_keyword
+  def _nt_step_keyword #:nodoc:
     start_index = index
     if node_cache[:step_keyword].has_key?(index)
       cached = node_cache[:step_keyword][index]
@@ -1172,7 +1172,7 @@ module Feature
     return r0
   end
 
-  def _nt_scenario_keyword
+  def _nt_scenario_keyword #:nodoc:
     start_index = index
     if node_cache[:scenario_keyword].has_key?(index)
       cached = node_cache[:scenario_keyword][index]
@@ -1193,10 +1193,10 @@ module Feature
     return r0
   end
 
-  module GivenScenarioKeyword0
+  module GivenScenarioKeyword0 #:nodoc:
   end
 
-  def _nt_given_scenario_keyword
+  def _nt_given_scenario_keyword #:nodoc:
     start_index = index
     if node_cache[:given_scenario_keyword].has_key?(index)
       cached = node_cache[:given_scenario_keyword][index]
@@ -1243,7 +1243,7 @@ module Feature
 
 end
 
-class FeatureParser < Treetop::Runtime::CompiledParser
+class FeatureParser < Treetop::Runtime::CompiledParser #:nodoc:
   include Feature
 end
 
