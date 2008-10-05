@@ -1,1 +1,1 @@
-default: --format pretty --no-source features
+default: --format pretty features
