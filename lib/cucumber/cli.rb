@@ -4,11 +4,11 @@ require 'cucumber'
 module Cucumber
   class CLI
     class << self
-      attr_writer :step_mother, :features
+      attr_writer :step_mother, :executor, :features
     
       def execute
         @execute_called = true
-        parse(ARGV).execute!(@step_mother, @features)
+        parse(ARGV).execute!(@step_mother, @executor, @features)
       end
       
       def execute_called?
@@ -90,14 +90,14 @@ module Cucumber
       parse_options!(args_from_yml.split(' '))
     end
     
-    def execute!(step_mother, features)
+    def execute!(step_mother, executor, features)
       Cucumber.load_language(@options[:lang])
-      $executor = Executor.new(formatter(step_mother), step_mother)
+      executor.formatter = formatter(step_mother)
       require_files
       load_plain_text_features(features)
-      $executor.line = @options[:line].to_i if @options[:line]
-      $executor.visit_features(features)
-      exit 1 if $executor.failed
+      executor.line = @options[:line].to_i if @options[:line]
+      executor.visit_features(features)
+      exit 1 if executor.failed
     end
     
   private
@@ -158,6 +158,7 @@ end
 
 extend Cucumber::StepMethods
 Cucumber::CLI.step_mother = step_mother
+Cucumber::CLI.executor = executor
 
-extend(Cucumber::Tree)
+extend Cucumber::Tree
 Cucumber::CLI.features = features
