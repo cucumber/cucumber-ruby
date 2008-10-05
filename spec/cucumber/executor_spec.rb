@@ -5,9 +5,10 @@ module Cucumber
   describe Executor do
     before do # TODO: Way more setup and duplication of lib code. Use lib code!
       @io = StringIO.new
-      @formatter = Formatters::ProgressFormatter.new(@io)
       @step_mother = StepMother.new
-      @executor = Executor.new(@formatter, @step_mother)
+      @executor = Executor.new(@step_mother)
+      @formatter = Formatters::ProgressFormatter.new(@io)
+      @executor.formatter = @formatter
       @feature_file = File.dirname(__FILE__) + '/sell_cucumbers.feature'
       @parser = TreetopParser::FeatureParser.new
       @features = Tree::Features.new
@@ -37,7 +38,7 @@ STDOUT
 
 1)
 dang
-#{__FILE__}:33:in `Then /I should owe (\\d*) cucumbers/'
+#{__FILE__}:34:in `Then /I should owe (\\d*) cucumbers/'
 #{@feature_file}:9:in `Then I should owe 7 cucumbers'
 \e[0m
 STDOUT

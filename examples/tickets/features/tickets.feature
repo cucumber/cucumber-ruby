@@ -7,5 +7,5 @@ Feature: Cucumber
     Given be_empty
     
   Scenario: Call step from step
-    Given calling step is called
+    Given nested step is called
     Then nested step should be executed
