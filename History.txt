@@ -28,7 +28,7 @@ because it's not parameterisable. Calling steps from steps is.
 GivenScenario will still be working several releases, but the plan is to remove it completely in 
 the 0.3.0 release.
 
-== Seeing where a step is defined
+=== Seeing where a step is defined
 
 Prior to this release it could be hard to find out where the ruby step definition matching
 a plain text step is defined. Not anymore! Cucumber will now output this:
