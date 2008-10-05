@@ -138,9 +138,9 @@ grammar Feature
   end
   
   rule eol
-    "\r\n?" / "\n"
+    ("\r" "\n"?) / "\n"
   end
-
+  
   rule step_keyword
     '<%= words['given'] %>' / '<%= words['when'] %>' / '<%= words['then'] %>' / '<%= words['and'] %>' / '<%= words['but'] %>'
   end

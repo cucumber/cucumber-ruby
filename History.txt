@@ -5,6 +5,7 @@ Bla bla
 * Bugfixes
 ** Fixed a bug in the command line args being lost when using --profile (#27, Joseph Wilk)
 ** Fixed a bug in Webrat selects (Tim Glen)
+** Fixed parsing of DOS line endings (#2, #28, Aslak Hellesøy)
 
 * New features
 ** Steps can be called from other steps (#3, Bryan Helmkamp, Aslak Hellesøy)

@@ -31,6 +31,8 @@ examples/danish_calculator/Rakefile
 examples/danish_calculator/features/steps/kalkulator_steps.rb
 examples/danish_calculator/features/summering.feature
 examples/danish_calculator/lib/kalkulator.rb
+examples/dos_line_endings/Rakefile
+examples/dos_line_endings/features/dos_line_endings.feature
 examples/estonian_calculator/Rakefile
 examples/estonian_calculator/features/kalkulaator_steps.rb
 examples/estonian_calculator/features/liitmine.feature
@@ -148,6 +150,7 @@ spec/cucumber/treetop_parser/fit_scenario.feature
 spec/cucumber/treetop_parser/given_scenario.feature
 spec/cucumber/treetop_parser/multiple_tables.feature
 spec/cucumber/treetop_parser/spaces.feature
+spec/cucumber/treetop_parser/test_dos.feature
 spec/cucumber/treetop_parser/with_comments.feature
 spec/spec.opts
 spec/spec_helper.rb

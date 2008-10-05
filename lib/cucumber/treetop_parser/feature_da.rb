@@ -1034,6 +1034,9 @@ module Feature
     return r0
   end
 
+  module Eol0
+  end
+
   def _nt_eol
     start_index = index
     if node_cache[:eol].has_key?(index)
@@ -1043,25 +1046,49 @@ module Feature
     end
 
     i0 = index
-    if input.index("\r\n?", index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 3))
-      @index += 3
+    i1, s1 = index, []
+    if input.index("\r", index) == index
+      r2 = (SyntaxNode).new(input, index...(index + 1))
+      @index += 1
     else
-      terminal_parse_failure("\r\n?")
+      terminal_parse_failure("\r")
+      r2 = nil
+    end
+    s1 << r2
+    if r2
+      if input.index("\n", index) == index
+        r4 = (SyntaxNode).new(input, index...(index + 1))
+        @index += 1
+      else
+        terminal_parse_failure("\n")
+        r4 = nil
+      end
+      if r4
+        r3 = r4
+      else
+        r3 = SyntaxNode.new(input, index...index)
+      end
+      s1 << r3
+    end
+    if s1.last
+      r1 = (SyntaxNode).new(input, i1...index, s1)
+      r1.extend(Eol0)
+    else
+      self.index = i1
       r1 = nil
     end
     if r1
       r0 = r1
     else
       if input.index("\n", index) == index
-        r2 = (SyntaxNode).new(input, index...(index + 1))
+        r5 = (SyntaxNode).new(input, index...(index + 1))
         @index += 1
       else
         terminal_parse_failure("\n")
-        r2 = nil
+        r5 = nil
       end
-      if r2
-        r0 = r2
+      if r5
+        r0 = r5
       else
         self.index = i0
         r0 = nil
