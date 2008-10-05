@@ -10,7 +10,7 @@ Bla bla
 * New features
 ** Steps can be called from other steps (#3, Bryan Helmkamp, Aslak Hellesøy)
 ** Added But keyword to all languages (#21, Aslak Hellesøy)
-** Added --source option to display step definition location next to step text (#26, Joseph Wilk)
+** Added --no-source option to display step definition location next to step text (#26, Joseph Wilk, Aslak Hellesøy)
 ** Added more Webrat steps (#25, Tim Glen)
 
 == 0.1.6

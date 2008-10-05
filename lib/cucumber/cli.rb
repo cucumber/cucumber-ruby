@@ -33,7 +33,7 @@ module Cucumber
       return parse_args_from_profile('default') if args.empty?
       args.extend(OptionParser::Arguable)
 
-      @options ||= { :require => nil, :lang => 'en', :format => 'pretty', :dry_run => false }
+      @options ||= { :require => nil, :lang => 'en', :format => 'pretty', :dry_run => false, :source => true }
       args.options do |opts|
         opts.banner = "Usage: cucumber [options] FILES|DIRS"
         opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require files before executing the features.",
@@ -65,8 +65,8 @@ module Cucumber
         opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.") do
           @options[:dry_run] = true
         end
-        opts.on("-s", "--source", "Show the file and line of the step definition with the steps.") do
-          @options[:source] = true
+        opts.on("-n", "--no-source", "Don't show the file and line of the step definition with the steps.") do
+          @options[:source] = false
         end
         opts.on_tail("--version", "Show version") do
           puts VERSION::STRING

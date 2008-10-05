@@ -14,7 +14,8 @@ module Cucumber
         :format => 'progress',
         :require => ['from/yml'], 
         :dry_run => false, 
-        :lang => 'en'
+        :lang => 'en',
+        :source => true
       }
     end
 
@@ -29,15 +30,16 @@ module Cucumber
         :format => 'pretty',
         :require => ['from/yml'], 
         :dry_run => false, 
-        :lang => 'en'
+        :lang => 'en',
+        :source => true
       }
     end
     
     it "should accept source option" do
       cli = CLI.new
-      cli.parse_options!(%w{--source})
+      cli.parse_options!(%w{--no-source})
       
-      cli.options[:source].should be_true
+      cli.options[:source].should be_false
     end
         
   end
