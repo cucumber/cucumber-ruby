@@ -2,8 +2,14 @@
 
 Bla bla
 
-* Add --source option to display step definition location next to step text (Joseph Wilk)
-* Fix a bug in Webrat selects (Tim Glen)
+* Bugfixes
+** Fixed a bug in the command line args being lost when using --profile (#27, Joseph Wilk)
+** Fixed a bug in Webrat selects (Tim Glen)
+
+* New features
+** Added But keyword to all languages (#21, Aslak Hellesøy)
+** Added --source option to display step definition location next to step text (#26, Joseph Wilk)
+** Added more Webrat steps (#25, Tim Glen)
 
 == 0.1.6
 

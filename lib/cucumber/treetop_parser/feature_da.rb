@@ -1122,8 +1122,19 @@ module Feature
           if r4
             r0 = r4
           else
-            self.index = i0
-            r0 = nil
+            if input.index('Men', index) == index
+              r5 = (SyntaxNode).new(input, index...(index + 3))
+              @index += 3
+            else
+              terminal_parse_failure('Men')
+              r5 = nil
+            end
+            if r5
+              r0 = r5
+            else
+              self.index = i0
+              r0 = nil
+            end
           end
         end
       end
