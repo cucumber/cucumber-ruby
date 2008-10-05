@@ -9,9 +9,9 @@ module Cucumber
       cucumber_yml = {'bongo' => '--require from/yml'}.to_yaml
       IO.should_receive(:read).with('cucumber.yml').and_return(cucumber_yml)
 
-      cli.parse_options!(%w{--format pretty --profile bongo})
+      cli.parse_options!(%w{--format progress --profile bongo})
       cli.options.should == {
-        :format => 'pretty',
+        :format => 'progress',
         :require => ['from/yml'], 
         :dry_run => false, 
         :lang => 'en'
