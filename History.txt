@@ -1,3 +1,8 @@
+== 0.1.8 (Not yet released as gem)
+
+=== Bugfixes
+* Fixed the HTML Formatter to use actual values for FIT table headers (#30, Joseph Wilk)
+
 == 0.1.7
 
 This release fixes a few bugs and adds some new features. The most notable features are:
