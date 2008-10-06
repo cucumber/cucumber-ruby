@@ -1109,21 +1109,21 @@ module Feature #:nodoc:
     end
 
     i0 = index
-    if input.index('Gitt', index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 4))
-      @index += 4
+    if input.index('Givet', index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 5))
+      @index += 5
     else
-      terminal_parse_failure('Gitt')
+      terminal_parse_failure('Givet')
       r1 = nil
     end
     if r1
       r0 = r1
     else
-      if input.index('Når', index) == index
+      if input.index('När', index) == index
         r2 = (SyntaxNode).new(input, index...(index + 4))
         @index += 4
       else
-        terminal_parse_failure('Når')
+        terminal_parse_failure('När')
         r2 = nil
       end
       if r2
@@ -1205,11 +1205,11 @@ module Feature #:nodoc:
     end
 
     i0, s0 = index, []
-    if input.index('GittScenario', index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 12))
-      @index += 12
+    if input.index('GivetScenario', index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 13))
+      @index += 13
     else
-      terminal_parse_failure('GittScenario')
+      terminal_parse_failure('GivetScenario')
       r1 = nil
     end
     s0 << r1
