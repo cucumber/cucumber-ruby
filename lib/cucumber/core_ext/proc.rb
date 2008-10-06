@@ -24,16 +24,19 @@ module Cucumber
       end
 
       def to_backtrace_line
-        "#{file}:in `#{name}'"
+        "#{file_colon_line}:in `#{name}'"
       end
       
       def to_comment_line
-        "# #{file}"
+        "# #{file_colon_line}"
       end
       
-      def file
-        file = to_s.match(/[\d\w]+@(.*)>/)[1]
-        file =~ /^\.\/(.*)/ ? $1 : file
+      def file_colon_line
+        path, line = *to_s.match(/[\d\w]+@(.*):(.*)>/)[1..2]
+        path = File.expand_path(path)
+        pwd = Dir.pwd
+        path = path[pwd.length+1..-1]        
+        "#{path}:#{line}"
       end
 
       def meth
