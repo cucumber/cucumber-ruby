@@ -1,7 +1,8 @@
-== 0.1.8 (not released yet)
+== 0.1.8 (Not yet released as gem)
 
 === Bugfixes
 * Support comments above the first scenario (#31, Aslak Hellesøy)
+* Fixed the HTML Formatter to use actual values for FIT table headers (#30, Joseph Wilk)
 
 === New features
 
