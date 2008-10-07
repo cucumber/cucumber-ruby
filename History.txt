@@ -5,6 +5,7 @@
 * Fixed the HTML Formatter to use actual values for FIT table headers (#30, Joseph Wilk)
 
 === New features
+* Added new --out option to make it easier to specify output from Rake and cucumber.yml
 
 == 0.1.7
 

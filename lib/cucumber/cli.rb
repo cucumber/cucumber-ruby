@@ -33,7 +33,14 @@ module Cucumber
       return parse_args_from_profile('default') if args.empty?
       args.extend(OptionParser::Arguable)
 
-      @options ||= { :require => nil, :lang => 'en', :format => 'pretty', :dry_run => false, :source => true }
+      @options ||= { 
+        :require => nil, 
+        :lang    => 'en', 
+        :format  => 'pretty', 
+        :dry_run => false, 
+        :source  => true,
+        :out     => STDOUT
+      }
       args.options do |opts|
         opts.banner = "Usage: cucumber [options] FILES|DIRS"
         opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require files before executing the features.",
@@ -67,6 +74,9 @@ module Cucumber
         end
         opts.on("-n", "--no-source", "Don't show the file and line of the step definition with the steps.") do
           @options[:source] = false
+        end
+        opts.on("-o", "--out=FILE", "Write output to a file instead of STDOUT.") do |v|
+          @options[:out] = File.open(v, 'w')
         end
         opts.on_tail("--version", "Show version") do
           puts VERSION::STRING
@@ -145,11 +155,11 @@ module Cucumber
     def formatter(step_mother)
       case @options[:format]
       when 'pretty'
-        Formatters::PrettyFormatter.new(STDOUT, step_mother, @options)
+        Formatters::PrettyFormatter.new(@options[:out], step_mother, @options)
       when 'progress'
-        Formatters::ProgressFormatter.new(STDOUT)
+        Formatters::ProgressFormatter.new(@options[:out])
       when 'html'
-        Formatters::HtmlFormatter.new(STDOUT, step_mother)
+        Formatters::HtmlFormatter.new(@options[:out], step_mother)
       end
     end
     
