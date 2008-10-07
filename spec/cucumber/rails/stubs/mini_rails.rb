@@ -1,3 +1,4 @@
+# Define some stubs to fake Rails...
 module ActiveRecord
   class Base
   end
