@@ -22,7 +22,7 @@ Dispatcher.class_eval do
 end
 
 # So that Test::Unit doesn't launch at the end - makes it think it has already been run.
-Test::Unit.run = true
+Test::Unit.run = true if Test::Unit.methods.include?("run")
 
 $main = self
 
