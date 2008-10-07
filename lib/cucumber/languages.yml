@@ -76,9 +76,9 @@
 "se":
   feature: Egenskap
   scenario: Scenario
-  given_scenario: GittScenario
-  given: Gitt
-  when: Når
+  given_scenario: GivetScenario
+  given: Givet
+  when: När
   then: Så
   and: Och
   but: Men
