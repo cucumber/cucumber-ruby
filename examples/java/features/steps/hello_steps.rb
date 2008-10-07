@@ -20,6 +20,6 @@ Then /I should remember (\w+) as a friend/ do |name|
   @hello.friend?(name).should == true
 end
 
-Then /I should get (\w+)'s phone number/ do |name|
+Then /I should get (\w+)'s phone number/ do |name| #'
   @hello.getPhoneNumber(name).should_not == nil
 end

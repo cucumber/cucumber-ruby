@@ -47,6 +47,18 @@ module Cucumber
         f.scenarios[0].should have(2).steps
       end
 
+      it "should skip comments in feature header" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/with_comments.feature')
+        f.header.should == "Some header"
+      end
+
+      it "should skip comments in scenario header" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/with_comments.feature')
+        f.scenarios[0].name.should == "Some scenario"
+      end
+
       it "should allow empty scenarios" do
         p = FeatureParser.new
         f = p.parse_feature(File.dirname(__FILE__) + '/empty_scenario.feature')
