@@ -10,11 +10,11 @@ module Feature #:nodoc:
 
   module Root0 #:nodoc:
     def header #:nodoc:
-      elements[0]
+      elements[1]
     end
 
     def scenario_sequence #:nodoc:
-      elements[1]
+      elements[2]
     end
 
   end
@@ -36,19 +36,28 @@ module Feature #:nodoc:
     end
 
     i0, s0 = index, []
-    r1 = _nt_header
+    r2 = _nt_space
+    if r2
+      r1 = r2
+    else
+      r1 = SyntaxNode.new(input, index...index)
+    end
     s0 << r1
     if r1
-      r2 = _nt_scenario_sequence
-      s0 << r2
-      if r2
-        r4 = _nt_space
+      r3 = _nt_header
+      s0 << r3
+      if r3
+        r4 = _nt_scenario_sequence
+        s0 << r4
         if r4
-          r3 = r4
-        else
-          r3 = SyntaxNode.new(input, index...index)
+          r6 = _nt_space
+          if r6
+            r5 = r6
+          else
+            r5 = SyntaxNode.new(input, index...index)
+          end
+          s0 << r5
         end
-        s0 << r3
       end
     end
     if s0.last
@@ -80,7 +89,19 @@ module Feature #:nodoc:
     loop do
       i1, s1 = index, []
       i2 = index
-      r3 = _nt_scenario_keyword
+      i3 = index
+      r4 = _nt_scenario_keyword
+      if r4
+        r3 = r4
+      else
+        r5 = _nt_comment_to_eol
+        if r5
+          r3 = r5
+        else
+          self.index = i3
+          r3 = nil
+        end
+      end
       if r3
         r2 = nil
       else
@@ -90,13 +111,13 @@ module Feature #:nodoc:
       s1 << r2
       if r2
         if index < input_length
-          r4 = (SyntaxNode).new(input, index...(index + 1))
+          r6 = (SyntaxNode).new(input, index...(index + 1))
           @index += 1
         else
           terminal_parse_failure("any character")
-          r4 = nil
+          r6 = nil
         end
-        s1 << r4
+        s1 << r6
       end
       if s1.last
         r1 = (SyntaxNode).new(input, i1...index, s1)

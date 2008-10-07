@@ -3,7 +3,7 @@ module TreetopParser
 
 grammar Feature
   rule root
-    header scenario_sequence space? {
+    space? header scenario_sequence space? {
       def compile
         feature = Tree::Feature.new(header.text_value.strip)
         scenario_sequence.compile(feature)
@@ -13,7 +13,7 @@ grammar Feature
   end
   
   rule header
-    (!scenario_keyword .)+
+    (!(scenario_keyword / comment_to_eol) .)+
   end
   
   rule scenario_sequence

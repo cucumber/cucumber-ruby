@@ -1,3 +1,10 @@
+== 0.1.8 (not released yet)
+
+=== Bugfixes
+* Support comments above the first scenario (#31, Aslak Hellesøy)
+
+=== New features
+
 == 0.1.7
 
 This release fixes a few bugs and adds some new features. The most notable features are:
