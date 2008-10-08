@@ -9,12 +9,14 @@ module Cucumber
       cucumber_yml = {'bongo' => '--require from/yml'}.to_yaml
       IO.should_receive(:read).with('cucumber.yml').and_return(cucumber_yml)
 
-      cli.parse_options!(%w{--format pretty --profile bongo})
+      cli.parse_options!(%w{--format progress --profile bongo})
       cli.options.should == {
-        :format => 'pretty',
+        :format => 'progress',
         :require => ['from/yml'], 
         :dry_run => false, 
-        :lang => 'en'
+        :lang => 'en',
+        :source => true,
+        :out => STDOUT
       }
     end
 
@@ -29,8 +31,24 @@ module Cucumber
         :format => 'pretty',
         :require => ['from/yml'], 
         :dry_run => false, 
-        :lang => 'en'
+        :lang => 'en',
+        :source => true,
+        :out => STDOUT
       }
     end
+    
+    it "should accept --no-source option" do
+      cli = CLI.new
+      cli.parse_options!(%w{--no-source})
+      
+      cli.options[:source].should be_false
+    end
+
+    it "should accept --out option" do
+      cli = CLI.new
+      File.should_receive(:open).with('jalla.txt', 'w')
+      cli.parse_options!(%w{--out jalla.txt})
+    end
+        
   end
 end

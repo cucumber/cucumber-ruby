@@ -1,1 +1,2 @@
-default: --format progress features
+default: --format pretty
+html: --format html --out features.html

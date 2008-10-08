@@ -18,6 +18,10 @@ module Cucumber
       def steps
         self
       end
+      
+      def length
+        keyword.length + 1 + name.length
+      end
 
       if defined?(JRUBY_VERSION)
         PENDING_ADJUSTMENT = 2
@@ -32,7 +36,7 @@ module Cucumber
         begin
           proc.call_in(world, *args)
         rescue ArityMismatchError => e
-          e.backtrace[0] = proc.backtrace_line
+          e.backtrace[0] = proc.to_backtrace_line
           strip_pos = e.backtrace.index("#{__FILE__}:#{__LINE__ - 3}:in `execute_in'")
           format_error(strip_pos, proc, e)
         rescue => e
@@ -73,6 +77,10 @@ module Cucumber
       
       def previous_step
         @scenario.previous_step(self)
+      end
+      
+      def padding_length
+        @scenario.padding_length(self)
       end
     end
     

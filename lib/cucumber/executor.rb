@@ -3,20 +3,19 @@ require 'cucumber/core_ext/proc'
 module Cucumber
   class Executor
     attr_reader :failed
+    attr_accessor :formatter
     
     def line=(line)
       @line = line
     end
 
-    def initialize(formatter, step_mother)
-      @formatter = formatter
+    def initialize(step_mother)
       @world_proc = lambda do 
-        world = Object.new
-        world.extend(Spec::Matchers) if defined?(Spec::Matchers)
-        world
+        Object.new
       end
-      @before_procs = []
-      @after_procs = []
+      @before_scenario_procs = []
+      @after_scenario_procs = []
+      @after_step_procs = []
       @step_mother = step_mother
     end
     
@@ -24,21 +23,26 @@ module Cucumber
       @world_proc = proc
     end
 
-    def register_before_proc(&proc)
+    def register_before_scenario_proc(&proc)
       proc.extend(CoreExt::CallIn)
-      @before_procs << proc
+      @before_scenario_procs << proc
     end
 
-    def register_after_proc(&proc)
+    def register_after_scenario_proc(&proc)
       proc.extend(CoreExt::CallIn)
-      @after_procs << proc
+      @after_scenario_procs << proc
+    end
+
+    def register_after_step_proc(&proc)
+      proc.extend(CoreExt::CallIn)
+      @after_step_procs << proc
     end
 
     def visit_features(features)
       raise "Line number can only be specified when there is 1 feature. There were #{features.length}." if @line && features.length != 1
-      @formatter.visit_features(features) if @formatter.respond_to?(:visit_features)
+      formatter.visit_features(features) if formatter.respond_to?(:visit_features)
       features.accept(self)
-      @formatter.dump
+      formatter.dump
     end
 
     def visit_feature(feature)
@@ -46,7 +50,7 @@ module Cucumber
     end
 
     def visit_header(header)
-      @formatter.header_executing(header) if @formatter.respond_to?(:header_executing)
+      formatter.header_executing(header) if formatter.respond_to?(:header_executing)
     end
 
     def visit_row_scenario(scenario)
@@ -61,12 +65,16 @@ module Cucumber
       if @line.nil? || scenario.at_line?(@line)
         @error = nil
         @pending = nil
+
         @world = @world_proc.call
-        @formatter.scenario_executing(scenario) if @formatter.respond_to?(:scenario_executing)
-        @before_procs.each{|p| p.call_in(@world, *[])}
+        @world.extend(Spec::Matchers) if defined?(Spec::Matchers)
+        define_step_call_methods(@world)
+
+        formatter.scenario_executing(scenario) if formatter.respond_to?(:scenario_executing)
+        @before_scenario_procs.each{|p| p.call_in(@world, *[])}
         scenario.accept(self)
-        @after_procs.each{|p| p.call_in(@world, *[])}
-        @formatter.scenario_executed(scenario) if @formatter.respond_to?(:scenario_executed)
+        @after_scenario_procs.each{|p| p.call_in(@world, *[])}
+        formatter.scenario_executed(scenario) if formatter.respond_to?(:scenario_executed)
       end
     end
 
@@ -83,31 +91,47 @@ module Cucumber
         begin
           regexp, args, proc = step.regexp_args_proc(@step_mother)
           step.execute_in(@world, regexp, args, proc)
-          @formatter.step_passed(step, regexp, args)
+          @after_step_procs.each{|p| p.call_in(@world, *[])}
+          formatter.step_passed(step, regexp, args)
         rescue Pending
           record_pending_step(step, regexp, args)
         rescue => e
           @failed = true
           @error = step.error = e
-          @formatter.step_failed(step, regexp, args)
+          formatter.step_failed(step, regexp, args)
         end
       else
         begin
           regexp, args, proc = step.regexp_args_proc(@step_mother)
           step.execute_in(@world, regexp, args, proc)
-          @formatter.step_skipped(step, regexp, args)
+          formatter.step_skipped(step, regexp, args)
         rescue Pending
           record_pending_step(step, regexp, args)
         rescue Exception
-          @formatter.step_skipped(step, regexp, args)
+          formatter.step_skipped(step, regexp, args)
         end
       end
     end
     
     def record_pending_step(step, regexp, args)
       @pending = true
-      @formatter.step_pending(step, regexp, args)
+      formatter.step_pending(step, regexp, args)
     end
 
+    def define_step_call_methods(world)
+      world.instance_variable_set('@__executor', self)
+      world.instance_eval do
+        class << self
+          def run_step(name)
+            _, args, proc = @__executor.instance_variable_get(:@step_mother).regexp_args_proc(name)
+            proc.call_in(self, *args)
+          end
+
+          %w{given when then and but}.each do |keyword|
+            alias_method Cucumber.language[keyword], :run_step
+          end
+        end
+      end
+    end
   end
 end

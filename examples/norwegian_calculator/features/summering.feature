@@ -14,4 +14,4 @@ Egenskap: Summering
     Og at jeg har tastet inn 7
     Og at jeg har tastet inn 1
     Når jeg summerer
-    Så skal resultatet være 14
+    Så skal resultatet være 13

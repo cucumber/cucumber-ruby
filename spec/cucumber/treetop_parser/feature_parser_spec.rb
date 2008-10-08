@@ -6,37 +6,18 @@ module Cucumber
       it "should parse features with weird spaces" do
         p = FeatureParser.new
         f = p.parse_feature(File.dirname(__FILE__) + '/spaces.feature')
-        
-        v = Object.new.instance_eval do
-          def visit_header(h)
-            h.should == "Some title"
-          end
+        f.header.should == "Some title"
+        f.should have(2).scenarios
 
-          def visit_scenario(s)
-            def self.visit_scenario(s)
-              s.name.should == "second"
-              s.accept(self)
-            end
+        first = f.scenarios[0]
+        first.name.should == "first"
+        first.should have(1).steps
+        first.steps[0].name.should == "a"
 
-            s.name.should == "first"
-            s.accept(self)
-          end
-          
-          def visit_regular_scenario(s)
-          end
-
-          def visit_step(s)
-            def self.visit_step(s)
-              s.name.should == "b"
-            end
-
-            s.name.should == "a"
-          end
-          
-          self
-        end
-        
-        f.accept(v)
+        second = f.scenarios[1]
+        second.name.should == "second"
+        second.should have(1).steps
+        second.steps[0].name.should == "b"
       end
       
       it "should parse GivenScenario" do
@@ -55,11 +36,55 @@ module Cucumber
       
       it "should allow spaces between FIT values" do
         p = FeatureParser.new
-        Cucumber::Tree::RowScenario.should_receive(:new).with(anything,anything, ['I can have spaces'], anything)
+        Cucumber::Tree::RowScenario.should_receive(:new).with(anything, anything, ['I can have spaces'], anything)
         
         f = p.parse_feature(File.dirname(__FILE__) + '/fit_scenario.feature')
       end
       
+      it "should allow comments in feature files" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/with_comments.feature')
+        f.scenarios[0].should have(2).steps
+      end
+
+      it "should skip comments in feature header" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/with_comments.feature')
+        f.header.should == "Some header"
+      end
+
+      it "should skip comments in scenario header" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/with_comments.feature')
+        f.scenarios[0].name.should == "Some scenario"
+      end
+
+      it "should allow empty scenarios" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/empty_scenario.feature')
+        f.scenarios[0].should have(1).steps
+        f.scenarios[1].should have(0).steps
+        f.scenarios[2].should have(1).steps
+      end
+
+      it "should allow multiple tables" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/multiple_tables.feature')
+        f.should have(6).scenarios
+        f.scenarios[0].should have(5).steps
+      end
+
+      it "should allow empty features" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/empty_feature.feature')
+        f.should have(0).scenarios
+      end
+      
+      it "should parse features with dos line endings" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/test_dos.feature')
+        f.should have(5).scenarios
+      end
     end
   end
 end

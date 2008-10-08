@@ -5,3 +5,7 @@ Feature: Cucumber
 
   Scenario: RSpec be_*
     Given be_empty
+    
+  Scenario: Call step from step
+    Given nested step is called
+    Then nested step should be executed
