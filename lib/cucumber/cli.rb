@@ -4,11 +4,11 @@ require 'cucumber'
 module Cucumber
   class CLI
     class << self
-      attr_writer :step_mother, :features
+      attr_writer :step_mother, :executor, :features
     
       def execute
         @execute_called = true
-        parse(ARGV).execute!(@step_mother, @features)
+        parse(ARGV).execute!(@step_mother, @executor, @features)
       end
       
       def execute_called?
@@ -33,7 +33,16 @@ module Cucumber
       return parse_args_from_profile('default') if args.empty?
       args.extend(OptionParser::Arguable)
 
-      @options = { :require => nil, :lang => 'en', :format => 'pretty', :dry_run => false, :excludes => [] }
+      @options ||= { 
+        :require => nil, 
+        :lang    => 'en', 
+        :format  => 'pretty', 
+        :dry_run => false, 
+        :source  => true,
+        :out     => STDOUT,
+        :excludes => []
+      }
+
       args.options do |opts|
         opts.banner = "Usage: cucumber [options] FILES|DIRS"
         opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require files before executing the features.",
@@ -46,7 +55,8 @@ module Cucumber
           @options[:line] = v
         end
         opts.on("-a LANG", "--language LANG", "Specify language for features (Default: #{@options[:lang]})",
-          "Available languages: #{Cucumber.languages.join(", ")}") do |v|
+          "Available languages: #{Cucumber.languages.join(", ")}",
+          "Look at #{Cucumber::LANGUAGE_FILE} for keywords") do |v|
           @options[:lang] = v
         end
         opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{@options[:format]})",
@@ -66,6 +76,12 @@ module Cucumber
         end
         opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.") do
           @options[:dry_run] = true
+        end
+        opts.on("-n", "--no-source", "Don't show the file and line of the step definition with the steps.") do
+          @options[:source] = false
+        end
+        opts.on("-o", "--out=FILE", "Write output to a file instead of STDOUT.") do |v|
+          @options[:out] = File.open(v, 'w')
         end
         opts.on_tail("--version", "Show version") do
           puts VERSION::STRING
@@ -89,14 +105,14 @@ module Cucumber
       parse_options!(args_from_yml.split(' '))
     end
     
-    def execute!(step_mother, features)
+    def execute!(step_mother, executor, features)
       Cucumber.load_language(@options[:lang])
-      $executor = Executor.new(formatter(step_mother), step_mother)
+      executor.formatter = formatter(step_mother)
       require_files
       load_plain_text_features(features)
-      $executor.line = @options[:line].to_i if @options[:line]
-      $executor.visit_features(features)
-      exit 1 if $executor.failed
+      executor.line = @options[:line].to_i if @options[:line]
+      executor.visit_features(features)
+      exit 1 if executor.failed
     end
     
   private
@@ -152,11 +168,11 @@ module Cucumber
     def formatter(step_mother)
       case @options[:format]
       when 'pretty'
-        Formatters::PrettyFormatter.new(STDOUT)
+        Formatters::PrettyFormatter.new(@options[:out], step_mother, @options)
       when 'progress'
-        Formatters::ProgressFormatter.new(STDOUT)
+        Formatters::ProgressFormatter.new(@options[:out])
       when 'html'
-        Formatters::HtmlFormatter.new(STDOUT, step_mother)
+        Formatters::HtmlFormatter.new(@options[:out], step_mother)
       end
     end
     
@@ -165,10 +181,7 @@ end
 
 extend Cucumber::StepMethods
 Cucumber::CLI.step_mother = step_mother
+Cucumber::CLI.executor = executor
 
-extend(Cucumber::Tree)
+extend Cucumber::Tree
 Cucumber::CLI.features = features
-
-at_exit do
-  Cucumber::CLI.execute unless Cucumber::CLI.execute_called?
-end

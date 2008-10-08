@@ -1,6 +1,65 @@
-== 0.1.5 (in Git)
+== 0.1.8 (Not yet released as gem)
 
-First release where changes are tracked properly
+=== Bugfixes
+* Support comments above the first scenario (#31, Aslak Hellesøy)
+* Fixed the HTML Formatter to use actual values for FIT table headers (#30, Joseph Wilk)
 
-* 1 major enhancement:
-  * GivenScenario is implemented
+=== New features
+* Added new --out option to make it easier to specify output from Rake and cucumber.yml
+
+== 0.1.7
+
+This release fixes a few bugs and adds some new features. The most notable features are:
+
+=== Calling steps from steps
+
+Step definitions are a little bit closer to having regular method semantics.
+You define them, but now you can also call them from other steps. Here is an
+example:
+
+  Given /I am logged in as an (.*) named (.*)$/ do |role, name|
+    Given "I am registered as #{role}, #{name}, secret"
+    When "I log in with #{name}, secret"
+  end
+  
+  Given /I am registered as (.*), (.*), (.*)/ do |role, name, password|
+    # (Code removed for brevity)
+  end
+
+  When /I log in with (.*), (.*)/ do |name, password|
+    # (Code removed for brevity)
+  end
+
+This means that steps can be reused in other steps. The GivenScenario feature achieves a similar
+effect (on the scenario level), but this feature is something we're not very happy with, mostly
+because it's not parameterisable. Calling steps from steps is.
+
+GivenScenario will still be working several releases, but the plan is to remove it completely in 
+the 0.3.0 release.
+
+=== Seeing where a step is defined
+
+Prior to this release it could be hard to find out where the ruby step definition matching
+a plain text step is defined. Not anymore! Cucumber will now output this:
+
+  Scenario: Regular numbers
+    Given I have entered 3 into the calculator   # features/steps/calculator_steps.rb:12
+    And I have entered 2 into the calculator     # features/steps/calculator_steps.rb:12
+    When I press divide                          # features/steps/calculator_steps.rb:16
+    Then the result should be 1.5 on the screen  # features/steps/calculator_steps.rb:20
+    And the result class should be Float         # features/steps/calculator_steps.rb:24
+
+=== Bugfixes
+* Fixed a bug in the command line args being lost when using --profile (#27, Joseph Wilk)
+* Fixed a bug in Webrat selects (Tim Glen)
+* Fixed parsing of DOS line endings (#2, #28, Aslak Hellesøy)
+
+=== New features
+* Steps can be called from other steps (#3, Bryan Helmkamp, Aslak Hellesøy)
+* Added But keyword to all languages (#21, Aslak Hellesøy)
+* Added --no-source option to display step definition location next to step text (#26, Joseph Wilk, Aslak Hellesøy)
+* Added more Webrat steps (#25, Tim Glen)
+
+== 0.1.6
+
+First gem release!

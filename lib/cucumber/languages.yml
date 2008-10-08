@@ -9,6 +9,16 @@
   when: Når
   then: Så
   and: Og
+  but: Men
+"de":
+  feature: Funktionalität
+  scenario: Szenario
+  given_scenario: GegebenesSzenario
+  given: Gegeben sei
+  when: Wenn
+  then: Dann
+  and: Und
+  but: Aber
 "en":
   feature: Feature
   scenario: Scenario
@@ -17,6 +27,7 @@
   when: When
   then: Then
   and: And
+  but: But
 "es":
   feature: Característica
   scenario: Escenario
@@ -25,6 +36,7 @@
   when: Cuando
   then: Entonces
   and: Y
+  but: Pero
 "fr":
   feature: Fonction
   scenario: Scenario
@@ -33,6 +45,7 @@
   when: Lorsque
   then: Alors
   and: Et
+  but: Mais
 "no":
   feature: Egenskap
   scenario: Scenario
@@ -41,6 +54,7 @@
   when: Når
   then: Så
   and: Og
+  but: Men
 "pt":
   feature: Característica
   scenario: Cenário
@@ -49,14 +63,25 @@
   when: Quando
   then: Então
   and: E
+  but: Mas
+"ru":
+  feature: Функционал
+  scenario: Сценарий
+  given_scenario: ДанныйСценарий
+  given: Сначала
+  when: Если
+  then: То
+  and: И
+  but: Но
 "se":
   feature: Egenskap
   scenario: Scenario
-  given_scenario: GittScenario
-  given: Gitt
-  when: Når
+  given_scenario: GivetScenario
+  given: Givet
+  when: När
   then: Så
   and: Och
+  but: Men
 "et":
   feature: Omadus
   scenario: Stsenaarium
@@ -65,3 +90,4 @@
   when: Kui
   then: Siis
   and: Ja
+  but: Kuid

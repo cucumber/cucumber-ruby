@@ -1,11 +1,22 @@
+gem 'term-ansicolor'
+# Hack to work around Win32/Console, which bundles a licence-violating, outdated
+# copy of term/ansicolor that doesn't implement Term::ANSIColor#coloring=. 
+# We want the official one!
+$LOAD_PATH.each{|path| $LOAD_PATH.unshift($LOAD_PATH.delete(path)) if path =~ /term-ansicolor/}
+
 require 'term/ansicolor'
+require 'rbconfig'
+
+win = Config::CONFIG['host_os'] =~ /mswin|mingw/
+jruby = defined?(JRUBY_VERSION)
+
 begin
-  require 'Win32/Console/ANSI' if PLATFORM =~ /mswin|mingw/
+  require 'Win32/Console/ANSI' if (win && !jruby)
 rescue LoadError
   STDERR.puts "You must gem install win32console to get coloured output on this ruby platform (#{PLATFORM})"
   ::Term::ANSIColor.coloring = false
 end
-::Term::ANSIColor.coloring = false if !STDOUT.tty?
+::Term::ANSIColor.coloring = false if !STDOUT.tty? || (win && jruby)
 
 module Cucumber
   module Formatters
@@ -44,6 +55,7 @@ module Cucumber
     #   ** magenta
     #   ** cyan
     #   ** white
+    #   ** grey
     #   ** on_black
     #   ** on_red
     #   ** on_green
@@ -67,12 +79,22 @@ module Cucumber
         :failed_param  => "#{param}red",
         :skipped       => 'bold,cyan',
         :skipped_param => "#{param}cyan",
-        :pending       => 'bold,yellow' # No pending_param
+        :pending       => 'bold,yellow', # No pending_param
+        :comment       => 'grey'
       }
       if ENV['CUCUMBER_COLORS']
         ENV['CUCUMBER_COLORS'].split(':').each do |pair|
           a = pair.split('=')
           ALIASES[a[0].to_sym] = a[1]
+        end
+      end
+      
+      #Not supported in Term::ANSIColor
+      def grey(m)
+        if ENV['CUCUMBER_COLORS_DISABLED'] == '1'
+          m
+        else
+          "\e[90m#{m}\e[0m" 
         end
       end
       

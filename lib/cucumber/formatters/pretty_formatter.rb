@@ -8,8 +8,10 @@ module Cucumber
       INDENT = "\n      "
       BACKTRACE_FILTER_PATTERNS = [/vendor\/rails/, /vendor\/plugins\/cucumber/, /spec\/expectations/, /spec\/matchers/]
     
-      def initialize(io)
+      def initialize(io, step_mother, options={})
         @io = (io == STDOUT) ? Kernel : io
+        @options = options
+        @step_mother = step_mother
         @passed = []
         @failed = []
         @pending = []
@@ -50,7 +52,12 @@ module Cucumber
           args.each{|arg| @io.print passed(arg) ; @io.print "|"}
         else
           @passed << step
-          @io.puts passed("    #{step.keyword} #{step.format(regexp){|param| passed_param(param) << passed}}") 
+          @io.print passed("    #{step.keyword} #{step.format(regexp){|param| passed_param(param) << passed}}")
+          if @options[:source]
+            @io.print padding_spaces(step)
+            @io.print source_comment(step) 
+          end
+          @io.puts
         end
       end
       
@@ -62,11 +69,30 @@ module Cucumber
         else
           @failed << step
           @scenario_failed = true
-          @io.puts failed("    #{step.keyword} #{step.format(regexp){|param| failed_param(param) << failed}}") 
+          @io.print failed("    #{step.keyword} #{step.format(regexp){|param| failed_param(param) << failed}}") 
+          if @options[:source]
+            @io.print padding_spaces(step)
+            @io.print source_comment(step) 
+          end
+          @io.puts
           output_failing_step(step)
         end
       end
       
+      def step_skipped(step, regexp, args)
+        @skipped << step
+        if step.row?
+          args.each{|arg| @io.print skipped(arg) ; @io.print "|"}
+        else
+          @io.print skipped("    #{step.keyword} #{step.format(regexp){|param| skipped_param(param) << skipped}}") 
+          if @options[:source]
+            @io.print padding_spaces(step)
+            @io.print source_comment(step) 
+          end
+          @io.puts
+        end
+      end
+
       def step_pending(step, regexp, args)
         if step.row?
           @pending << step
@@ -77,17 +103,9 @@ module Cucumber
         end
       end
       
-      def step_skipped(step, regexp, args)
-        @skipped << step
-        if step.row?
-          args.each{|arg| @io.print skipped(arg) ; @io.print "|"}
-        else
-          @io.puts skipped("    #{step.keyword} #{step.format(regexp){|param| skipped_param(param) << skipped}}") 
-        end
-      end
-
       def output_failing_step(step)
-        clean_backtrace = step.error.backtrace.map {|b| b.split("\n") }.flatten.reject do |line|
+        backtrace = step.error.backtrace || []
+        clean_backtrace = backtrace.map {|b| b.split("\n") }.flatten.reject do |line|
           BACKTRACE_FILTER_PATTERNS.detect{|p| line =~ p}
         end.map { |line| line.strip }
         @io.puts failed("      #{step.error.message.split("\n").join(INDENT)} (#{step.error.class})")
@@ -103,7 +121,7 @@ module Cucumber
         @io.print reset
         print_snippets
       end
-      
+            
       def print_snippets
         unless @pending.empty?
           @io.puts "\nYou can use these snippets to implement pending steps:\n\n"
@@ -111,7 +129,7 @@ module Cucumber
           prev_keyword = nil
           snippets = @pending.map do |step|
             next if step.row?
-            snippet = "#{step.actual_keyword} /#{step.name}/ do\nend\n\n"
+            snippet = "#{step.actual_keyword} /^#{step.name}$/ do\nend\n\n"
             prev_keyword = step.keyword
             snippet
           end.compact.uniq
@@ -120,6 +138,17 @@ module Cucumber
             @io.puts snippet
           end
         end
+      end
+      
+      private
+
+      def source_comment(step)
+        _, _, proc = step.regexp_args_proc(@step_mother)
+        comment(proc.to_comment_line)
+      end
+      
+      def padding_spaces(step)
+        " " * step.padding_length
       end
     end
   end

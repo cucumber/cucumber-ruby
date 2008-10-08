@@ -31,6 +31,8 @@ examples/danish_calculator/Rakefile
 examples/danish_calculator/features/steps/kalkulator_steps.rb
 examples/danish_calculator/features/summering.feature
 examples/danish_calculator/lib/kalkulator.rb
+examples/dos_line_endings/Rakefile
+examples/dos_line_endings/features/dos_line_endings.feature
 examples/estonian_calculator/Rakefile
 examples/estonian_calculator/features/kalkulaator_steps.rb
 examples/estonian_calculator/features/liitmine.feature
@@ -108,6 +110,7 @@ lib/cucumber/tree/table.rb
 lib/cucumber/tree/top_down_visitor.rb
 lib/cucumber/treetop_parser/feature.treetop.erb
 lib/cucumber/treetop_parser/feature_da.rb
+lib/cucumber/treetop_parser/feature_de.rb
 lib/cucumber/treetop_parser/feature_en.rb
 lib/cucumber/treetop_parser/feature_es.rb
 lib/cucumber/treetop_parser/feature_et.rb
@@ -115,6 +118,7 @@ lib/cucumber/treetop_parser/feature_fr.rb
 lib/cucumber/treetop_parser/feature_no.rb
 lib/cucumber/treetop_parser/feature_parser.rb
 lib/cucumber/treetop_parser/feature_pt.rb
+lib/cucumber/treetop_parser/feature_ru.rb
 lib/cucumber/treetop_parser/feature_se.rb
 lib/cucumber/version.rb
 script/console
@@ -133,13 +137,20 @@ spec/cucumber/executor_spec.rb
 spec/cucumber/formatters/ansicolor_spec.rb
 spec/cucumber/formatters/features.html
 spec/cucumber/formatters/html_formatter_spec.rb
+spec/cucumber/formatters/pretty_formatter_spec.rb
 spec/cucumber/formatters/progress_formatter_spec.rb
 spec/cucumber/sell_cucumbers.feature
 spec/cucumber/step_mother_spec.rb
 spec/cucumber/tree/scenario_spec.rb
+spec/cucumber/tree/step_spec.rb
+spec/cucumber/treetop_parser/empty_feature.feature
+spec/cucumber/treetop_parser/empty_scenario.feature
 spec/cucumber/treetop_parser/feature_parser_spec.rb
 spec/cucumber/treetop_parser/fit_scenario.feature
 spec/cucumber/treetop_parser/given_scenario.feature
+spec/cucumber/treetop_parser/multiple_tables.feature
 spec/cucumber/treetop_parser/spaces.feature
+spec/cucumber/treetop_parser/test_dos.feature
+spec/cucumber/treetop_parser/with_comments.feature
 spec/spec.opts
 spec/spec_helper.rb

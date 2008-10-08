@@ -5,6 +5,7 @@ module Cucumber
         @io = io
         @step_mother = step_mother
         @errors = []
+        @scenario_table_header = []
       end
 
       def visit_features(features)
@@ -52,6 +53,7 @@ HTML
       end
 
       def visit_regular_scenario(scenario)
+        @scenario_table_header = scenario.table_header
         @io.puts %{          <dl class="new">}
         @io.puts %{            <dt>#{Cucumber.language['scenario']}: #{scenario.name}</dt>}
         @io.puts %{            <dd>}
@@ -66,11 +68,12 @@ HTML
         @io.puts %{          <dl class="new">}
         @io.puts %{            <dt>#{Cucumber.language['scenario']}: #{scenario.name}</dt>}
         @io.puts %{            <dd>}
-        @io.puts %{              <table>}
+        @io.puts %{              <table cellpadding="3">}
         @io.puts %{                <thead>}
         @io.puts %{                  <tr>}
-        @io.puts %{                    <th>COL 1</th>}
-        @io.puts %{                    <th>COL 2</th>}
+        @scenario_table_header.each do |column_header|
+          @io.puts %{                    <th>#{column_header}</th>}
+        end
         @io.puts %{                  </tr>}
         @io.puts %{                </thead>}
         @io.puts %{                <tbody>}
@@ -99,14 +102,14 @@ HTML
       
       def step_failed(step, regexp, args)
         @errors << step.error
-        print_javascript_tag("stepFailed(#{step.id}, (<r><![CDATA[#{step.error.message}]]></r>).toString(), (<r><![CDATA[#{step.error.backtrace.join("\n")}]]></r>).toString())")
+        print_javascript_tag("stepFailed(#{step.id}, #{step.error.message.inspect}, #{step.error.backtrace.join("\n").inspect})")
       end
       
       def step_pending(step, regexp, args)
         print_javascript_tag("stepPending(#{step.id})")
       end
       
-      def step_skipped(step)
+      def step_skipped(step, regexp, args)
         # noop
       end
 
