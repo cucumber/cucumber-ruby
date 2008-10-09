@@ -13,7 +13,7 @@ When /^I fill in "(.*)" with "(.*)"$/ do |field, value|
   fills_in(field, :with => value) 
 end
 
-When /^I select "(.*)" from "(.*)"$/ do |field, value|
+When /^I select "(.*)" from "(.*)"$/ do |value, field|
   selects(value, :from => field) 
 end
 
