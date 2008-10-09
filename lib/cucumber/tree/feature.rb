@@ -9,8 +9,8 @@ module Cucumber
         instance_eval(&proc) if block_given?
       end
 
-      def add_scenario(name, &proc)
-        scenario = Scenario.new(self, name, &proc)
+      def add_scenario(name, line, &proc)
+        scenario = Scenario.new(self, name, line, &proc)
         @scenarios << scenario
         scenario
       end

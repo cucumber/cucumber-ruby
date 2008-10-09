@@ -79,7 +79,7 @@ module Cucumber
       end
       
       def padding_length
-        @scenario.padding_length(self)
+        @scenario.step_padding_length(self)
       end
     end
     

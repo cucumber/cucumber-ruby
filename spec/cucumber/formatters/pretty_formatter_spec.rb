@@ -12,6 +12,12 @@ module Cucumber
           :error => nil,
           :row? => false}.merge(stubs))
       end
+      
+      def mock_scenario(stubs={})
+        stub('scenario', {
+          :name => 'test',
+          :row? => false }.merge(stubs))
+      end
     
       def mock_error(stubs={})
         stub('error', {
@@ -47,6 +53,16 @@ module Cucumber
           end
         end
         
+        it "should display file and line for scenario" do
+          io = StringIO.new
+
+          step_mother = mock('step_mother')
+          formatter = PrettyFormatter.new io, step_mother, :source => true
+          formatter.scenario_executing(mock_scenario(:name => "title", :file => 'features/example.feature', :line => 2 , :padding_length => 2))
+          
+          io.string.should include("Scenario: title  # features/example.feature:2")
+        end
+                
         it "should align step comments" do
           io = StringIO.new
           
@@ -65,7 +81,22 @@ module Cucumber
           io.string.should include("Given 4444       # steps/example_steps.rb:11")
           io.string.should include("Given 999999999  # steps/example_steps.rb:11")
         end
-        
+                
+        it "should align step comments with respect to their scenario's comment" do
+          io = StringIO.new
+      
+          step = mock_step(:regexp_args_proc => [nil, nil, mock_proc], :error => StandardError.new, :padding_length => 6)
+
+          step_mother = mock('step_mother')
+          formatter = PrettyFormatter.new io, step_mother, :source => true
+                  
+          formatter.scenario_executing(mock_scenario(:name => "very long title", :file => 'features/example.feature', :line => 5, :steps => [step], :padding_length => 2))
+          formatter.step_passed(step, nil, nil)
+          
+          io.string.should include("Scenario: very long title  # features/example.feature:5")
+          io.string.should include("  Given formatted yes      # steps/example_steps.rb:11")
+        end
+          
         it "should NOT display step source for pending step" do
           io = StringIO.new
           step_mother = mock('step_mother')

@@ -1,5 +1,8 @@
 == 0.1.8 (Not yet released as gem)
 
+=== New features
+* Show the file and line number for scenarios as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
+
 === Bugfixes
 * Support comments above the first scenario (#31, Aslak Hellesøy)
 * Fixed the HTML Formatter to use actual values for FIT table headers (#30, Joseph Wilk)
