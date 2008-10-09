@@ -30,7 +30,12 @@ module Cucumber
         if scenario.row?
           @io.print "    |"
         else
-          @io.puts passed("  #{Cucumber.language['scenario']}: #{scenario.name}")
+          @io.print passed("  #{Cucumber.language['scenario']}: #{scenario.name}")
+          if @options[:source]
+            @io.print padding_spaces(scenario)
+            @io.print comment("# #{scenario.file}:#{scenario.line}")
+          end
+          @io.puts
         end
       end
 
@@ -147,8 +152,8 @@ module Cucumber
         comment(proc.to_comment_line)
       end
       
-      def padding_spaces(step)
-        " " * step.padding_length
+      def padding_spaces(step_or_scenario)
+        " " * step_or_scenario.padding_length
       end
     end
   end
