@@ -100,7 +100,7 @@ module Cucumber
         record_pending_step(step, regexp, args)
       rescue Multiple => e
         @error = step.error = e
-        @formatter.step_skipped(step, regexp, args)
+        @formatter.step_failed(step, regexp, args)
       rescue => e
         @failed = true
         @error = step.error = e
