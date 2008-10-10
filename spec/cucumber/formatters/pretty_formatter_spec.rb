@@ -18,6 +18,10 @@ module Cucumber
           :name => 'test',
           :row? => false }.merge(stubs))
       end
+
+      def mock_feature(stubs={})
+        stub("feature", stubs)
+      end
     
       def mock_error(stubs={})
         stub('error', {
@@ -61,6 +65,21 @@ module Cucumber
           formatter.scenario_executing(mock_scenario(:name => "title", :file => 'features/example.feature', :line => 2 , :padding_length => 2))
           
           io.string.should include("Scenario: title  # features/example.feature:2")
+        end
+        
+        it "should display file for feature" do
+          io = StringIO.new
+
+          step_mother = mock('step_mother')
+          formatter = PrettyFormatter.new io, step_mother, :source => true
+          
+          formatter.visit_feature(mock_feature(:file => 'features/example.feature', :padding_length => 2))
+          formatter.header_executing("Feature: test\n In order to ...\n As a ...\n I want to ...\n")
+          
+          io.string.should include("Feature: test  # features/example.feature\n")
+          io.string.should include("In order to ...\n")
+          io.string.should include("As a ...\n")
+          io.string.should include("I want to ...\n")
         end
                 
         it "should align step comments" do
