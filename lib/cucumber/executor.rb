@@ -46,6 +46,7 @@ module Cucumber
     end
 
     def visit_feature(feature)
+      formatter.visit_feature(feature) if formatter.respond_to?(:visit_feature)
       feature.accept(self)
     end
 

@@ -17,12 +17,24 @@ module Cucumber
         @pending = []
         @skipped = []
       end
-    
+ 
+      def visit_feature(feature)
+        @feature = feature
+      end
+ 
       def header_executing(header)
         @io.puts if @feature_newline
         @feature_newline = true
-        @io.puts passed(header)
-        @io.puts
+
+        header_lines = header.split("\n")
+        header_lines.each_with_index do |line, index|
+          @io.print line
+          if @options[:source] && index==0
+            @io.print padding_spaces(@feature)
+            @io.print comment("# #{@feature.file}") 
+          end
+          @io.puts
+        end
       end
   
       def scenario_executing(scenario)
@@ -152,8 +164,8 @@ module Cucumber
         comment(proc.to_comment_line)
       end
       
-      def padding_spaces(step_or_scenario)
-        " " * step_or_scenario.padding_length
+      def padding_spaces(tree_item)
+        " " * tree_item.padding_length
       end
     end
   end
