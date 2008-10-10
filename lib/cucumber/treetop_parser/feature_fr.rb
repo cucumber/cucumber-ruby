@@ -247,10 +247,6 @@ module Feature #:nodoc:
       elements[0]
     end
 
-    def space #:nodoc:
-      elements[1]
-    end
-
     def name #:nodoc:
       elements[2]
     end
@@ -282,32 +278,37 @@ module Feature #:nodoc:
     r1 = _nt_scenario_keyword
     s0 << r1
     if r1
-      r2 = _nt_space
+      r3 = _nt_space
+      if r3
+        r2 = r3
+      else
+        r2 = SyntaxNode.new(input, index...index)
+      end
       s0 << r2
       if r2
-        r3 = _nt_line_to_eol
-        s0 << r3
-        if r3
-          i5, s5 = index, []
-          r6 = _nt_space
-          s5 << r6
+        r4 = _nt_line_to_eol
+        s0 << r4
+        if r4
+          i6, s6 = index, []
+          r7 = _nt_space
+          s6 << r7
+          if r7
+            r8 = _nt_step_sequence
+            s6 << r8
+          end
+          if s6.last
+            r6 = (SyntaxNode).new(input, i6...index, s6)
+            r6.extend(Scenario0)
+          else
+            self.index = i6
+            r6 = nil
+          end
           if r6
-            r7 = _nt_step_sequence
-            s5 << r7
-          end
-          if s5.last
-            r5 = (SyntaxNode).new(input, i5...index, s5)
-            r5.extend(Scenario0)
+            r5 = r6
           else
-            self.index = i5
-            r5 = nil
+            r5 = SyntaxNode.new(input, index...index)
           end
-          if r5
-            r4 = r5
-          else
-            r4 = SyntaxNode.new(input, index...index)
-          end
-          s0 << r4
+          s0 << r5
         end
       end
     end
@@ -750,10 +751,6 @@ module Feature #:nodoc:
       elements[0]
     end
 
-    def space #:nodoc:
-      elements[1]
-    end
-
     def name #:nodoc:
       elements[2]
     end
@@ -778,11 +775,16 @@ module Feature #:nodoc:
     r1 = _nt_given_scenario_keyword
     s0 << r1
     if r1
-      r2 = _nt_space
+      r3 = _nt_space
+      if r3
+        r2 = r3
+      else
+        r2 = SyntaxNode.new(input, index...index)
+      end
       s0 << r2
       if r2
-        r3 = _nt_line_to_eol
-        s0 << r3
+        r4 = _nt_line_to_eol
+        s0 << r4
       end
     end
     if s0.last
@@ -802,10 +804,6 @@ module Feature #:nodoc:
   module PlainStep0 #:nodoc:
     def step_keyword #:nodoc:
       elements[0]
-    end
-
-    def space #:nodoc:
-      elements[1]
     end
 
     def name #:nodoc:
@@ -832,11 +830,16 @@ module Feature #:nodoc:
     r1 = _nt_step_keyword
     s0 << r1
     if r1
-      r2 = _nt_space
+      r3 = _nt_space
+      if r3
+        r2 = r3
+      else
+        r2 = SyntaxNode.new(input, index...index)
+      end
       s0 << r2
       if r2
-        r3 = _nt_line_to_eol
-        s0 << r3
+        r4 = _nt_line_to_eol
+        s0 << r4
       end
     end
     if s0.last
