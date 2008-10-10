@@ -15,6 +15,16 @@ module Cucumber
         step = scenario.create_step('Given', '666666', 98)
         step.padding_length.should == 5
       end
+      
+      it "should remove indent from padding_length if padding to scenario" do
+        scenario = Scenario.new(nil, '9', 1)
+        step = scenario.create_step('Given', '9', 80)
+
+        #Scenario: 9  #
+        #  Given 9****
+        step.padding_length.should == 4
+      end
+      
     end
   end
 end

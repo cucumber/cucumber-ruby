@@ -16,16 +16,16 @@ module Cucumber
         scenario.padding_length.should == 2
       end
       
-      it "should have padding matching largest step padding" do
+      it "should include indent when padding to step" do
         scenario = Scenario.new(nil, '', 1)
         scenario.create_step('Given', 'a long step', 1)
 
-        # Scenario: ***********
-        #   Given a long step
+        #Scenario: ***********
+        #  Given a long step
         scenario.padding_length.should == 9 + 2 #Allow for indent
       end
   
-      it "should use scenario padding if bigger than all steps" do
+      it "should ignore step padding if scenario is longer than all steps" do
         scenario = Scenario.new(nil, 'Very long scenario and then some', 1)
         scenario.create_step('Given', 'test', 1)
         

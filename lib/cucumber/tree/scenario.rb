@@ -67,9 +67,11 @@ module Cucumber
       end
 
       def step_padding_length(step)
-        (max_line_length - step.length) + MIN_PADDING
+        padding = (max_line_length - step.length) + MIN_PADDING
+        padding -= INDENT if length == max_line_length
+        padding
       end
-      
+
       def max_step_length
         @max_step_length ||= (steps.map{|step| step.length}.max || 0)
       end
