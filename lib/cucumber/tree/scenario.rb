@@ -53,25 +53,25 @@ module Cucumber
       end
 
       def length
-        Cucumber.language['scenario'].length + 2 + (@name.nil? ? 0 : @name.length)
+        @length ||= Cucumber.language['scenario'].length + 2 + (@name.nil? ? 0 : @name.length)
       end
 
-      def max_padding_length
-        length > max_step_length ? length : max_step_length
+      def max_line_length
+        [length, max_step_length].max
       end
 
       def padding_length
-        padding = (max_padding_length - length) + MIN_PADDING
-        padding += INDENT unless length > max_step_length
+        padding = (max_line_length - length) + MIN_PADDING
+        padding += INDENT if length != max_line_length
         padding
       end
 
       def step_padding_length(step)
-        (max_padding_length - step.length) + MIN_PADDING
+        (max_line_length - step.length) + MIN_PADDING
       end
       
       def max_step_length
-        steps.map{|step| step.length}.max || 0
+        @max_step_length ||= (steps.map{|step| step.length}.max || 0)
       end
 
       def row?
