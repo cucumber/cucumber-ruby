@@ -71,5 +71,3 @@ end
 World do
   Cucumber::Rails::World.new
 end
-
-ActionMailer::Base.delivery_method = :test if defined?(ActionMailer::Base)
