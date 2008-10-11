@@ -3,6 +3,7 @@
 === New features
 * Show the file and line number for scenarios as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
 * Show the file for the feature as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
+* Show the feature file and line for pending steps as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
 
 === Bugfixes
 * Support comments above the first scenario (#31, Aslak Hellesøy)
