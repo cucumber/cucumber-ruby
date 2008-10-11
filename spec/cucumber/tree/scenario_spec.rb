@@ -10,6 +10,28 @@ module Cucumber
         scenario_2.create_step(step_a)
         scenario_2.steps.should == [step_1, step_2, step_a]
       end
+      
+      it "should have padding_length 2 when alone" do
+        scenario = Scenario.new(nil, 'test', 1)
+        scenario.padding_length.should == 2
+      end
+      
+      it "should include indent when padding to step" do
+        scenario = Scenario.new(nil, '', 1)
+        scenario.create_step('Given', 'a long step', 1)
+
+        #Scenario: ***********
+        #  Given a long step
+        scenario.padding_length.should == 9 + 2 #Allow for indent
+      end
+  
+      it "should ignore step padding if scenario is longer than all steps" do
+        scenario = Scenario.new(nil, 'Very long scenario and then some', 1)
+        scenario.create_step('Given', 'test', 1)
+        
+        scenario.padding_length.should == 2                                                                                                                                     
+      end
+      
     end
   end
 end
