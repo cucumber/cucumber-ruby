@@ -116,7 +116,12 @@ module Cucumber
           args.each{|arg| @io.print pending(arg) ; @io.print "|"}
         else
           @pending << step
-          @io.puts pending("    #{step.keyword} #{step.name}")
+          @io.print pending("    #{step.keyword} #{step.name}")
+          if @options[:source]
+            @io.print padding_spaces(step)
+            @io.print comment("# #{step.file}:#{step.line}")
+          end
+          @io.puts
         end
       end
       

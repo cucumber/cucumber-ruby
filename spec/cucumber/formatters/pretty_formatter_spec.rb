@@ -58,13 +58,19 @@ module Cucumber
             @io.string.should include("Given formatted yes  # steps/example_steps.rb:11")
           end
         end
+
+        it "should display feature file and line for pending step" do
+          @formatter.step_pending(mock_step(:name => 'test', :file => 'features/example.feature', :line => 5, :padding_length => 2), nil, nil)
+          
+          @io.string.should include("Given test  # features/example.feature:5")
+        end        
         
         it "should display file and line for scenario" do
           @formatter.scenario_executing(mock_scenario(:name => "title", :file => 'features/example.feature', :line => 2 , :padding_length => 2))
           
           @io.string.should include("Scenario: title  # features/example.feature:2")
         end
-        
+               
         it "should display file for feature" do
           @formatter.visit_feature(mock_feature(:file => 'features/example.feature', :padding_length => 2))
           @formatter.header_executing("Feature: test\n In order to ...\n As a ...\n I want to ...\n")
@@ -98,13 +104,7 @@ module Cucumber
           @io.string.should include("Scenario: very long title  # features/example.feature:5")
           @io.string.should include("  Given formatted yes      # steps/example_steps.rb:11")
         end
-          
-        it "should NOT display step source for pending step" do
-          @formatter.step_pending(mock_step(:regexp_args_proc => [nil, nil, mock_proc]), nil, nil)
-          
-          @io.string.should_not include("steps/example_steps.rb:11")
-        end
-        
+
       end
     end
   end
