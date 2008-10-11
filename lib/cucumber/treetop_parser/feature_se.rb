@@ -258,7 +258,8 @@ module Feature #:nodoc:
 
   module Scenario2 #:nodoc:
     def compile(feature) #:nodoc:
-      scenario = feature.add_scenario(name.text_value.strip)
+      line = input.line_of(interval.first)
+      scenario = feature.add_scenario(name.text_value.strip, line)
       steps.step_sequence.compile(scenario) if steps.respond_to?(:step_sequence)
       # TODO - GET RID OF THIS last_scenario NASTINESS
       # Use a better datastructure, like a linked list...
