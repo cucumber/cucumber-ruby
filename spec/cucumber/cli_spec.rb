@@ -15,7 +15,8 @@ module Cucumber
         :require => ['from/yml'], 
         :dry_run => false, 
         :lang => 'en',
-        :source => true
+        :source => true,
+        :out => STDOUT
       }
     end
 
@@ -31,15 +32,22 @@ module Cucumber
         :require => ['from/yml'], 
         :dry_run => false, 
         :lang => 'en',
-        :source => true
+        :source => true,
+        :out => STDOUT
       }
     end
     
-    it "should accept source option" do
+    it "should accept --no-source option" do
       cli = CLI.new
       cli.parse_options!(%w{--no-source})
       
       cli.options[:source].should be_false
+    end
+
+    it "should accept --out option" do
+      cli = CLI.new
+      File.should_receive(:open).with('jalla.txt', 'w')
+      cli.parse_options!(%w{--out jalla.txt})
     end
         
   end

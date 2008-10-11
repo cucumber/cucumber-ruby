@@ -1,1 +1,2 @@
-default: --format pretty features
+default: --format pretty
+html: --format html --out features.html
