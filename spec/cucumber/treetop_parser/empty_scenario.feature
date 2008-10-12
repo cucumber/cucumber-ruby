@@ -1,4 +1,4 @@
-Feature: Empty Scenarios should work
+Feature: Empty scenarios should work
 
   Scenario: Complete scenario
     Given a valid API key

@@ -16,7 +16,7 @@ class FeatureCompiler
   end
   
   def compile(lang)
-    words = @langs[lang]
+    words = @langs['en'].merge(@langs[lang]) # Use English words if languages.yml is missing a word
     grammar_file = File.dirname(__FILE__) + "/../lib/cucumber/treetop_parser/feature_#{lang}.treetop"
     ruby_file    = File.dirname(__FILE__) + "/../lib/cucumber/treetop_parser/feature_#{lang}.rb"
     grammar      = @template.result(binding)

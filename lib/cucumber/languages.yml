@@ -1,6 +1,21 @@
 # http://en.wikipedia.org/wiki/IETF_language_tag
 # http://www.iana.org/assignments/language-subtag-registry
 # http://ftp.ics.uci.edu/pub/ietf/http/related/iso639.txt (Use this I think)
+"en":
+  feature: Feature
+  scenario: Scenario
+  more_examples: More Examples
+  given_scenario: GivenScenario
+  given: Given
+  when: When
+  then: Then
+  and: And
+  but: But
+# Please help us keeping the languages below uptodate. The parsers for a language 
+# that is missing a keyword will expect the English word until the missing word(s)
+# are added.
+#
+# Please keep the grammars in alphabetical order from here and down.
 "da":
   feature: Egenskab
   scenario: Scenarie
@@ -19,18 +34,10 @@
   then: Dann
   and: Und
   but: Aber
-"en":
-  feature: Feature
-  scenario: Scenario
-  given_scenario: GivenScenario
-  given: Given
-  when: When
-  then: Then
-  and: And
-  but: But
 "es":
   feature: Característica
   scenario: Escenario
+  more_examples: Mas exemplos
   given_scenario: DadoElEscenario
   given: Dado
   when: Cuando
@@ -40,6 +47,7 @@
 "fr":
   feature: Fonction
   scenario: Scenario
+  more_examples: Plus d'exemples
   given_scenario: SoitScenario
   given: Soit
   when: Lorsque
@@ -49,6 +57,7 @@
 "no":
   feature: Egenskap
   scenario: Scenario
+  more_examples: Flere eksempler
   given_scenario: GittScenario
   given: Gitt
   when: Når
