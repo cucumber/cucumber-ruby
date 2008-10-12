@@ -340,7 +340,7 @@ module Feature #:nodoc:
     if r1
       r0 = r1
     else
-      r2 = _nt_table
+      r2 = _nt_more_examples
       if r2
         r0 = r2
       else
@@ -350,6 +350,59 @@ module Feature #:nodoc:
     end
 
     node_cache[:scenario_or_table][start_index] = r0
+
+    return r0
+  end
+
+  module MoreExamples0 #:nodoc:
+    def more_examples_keyword #:nodoc:
+      elements[0]
+    end
+
+    def space #:nodoc:
+      elements[1]
+    end
+
+    def table #:nodoc:
+      elements[2]
+    end
+  end
+
+  module MoreExamples1 #:nodoc:
+    def compile(f) #:nodoc:
+      table.compile(f)
+    end
+  end
+
+  def _nt_more_examples #:nodoc:
+    start_index = index
+    if node_cache[:more_examples].has_key?(index)
+      cached = node_cache[:more_examples][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    i0, s0 = index, []
+    r1 = _nt_more_examples_keyword
+    s0 << r1
+    if r1
+      r2 = _nt_space
+      s0 << r2
+      if r2
+        r3 = _nt_table
+        s0 << r3
+      end
+    end
+    if s0.last
+      r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0.extend(MoreExamples0)
+      r0.extend(MoreExamples1)
+    else
+      self.index = i0
+      r0 = nil
+    end
+
+    node_cache[:more_examples][start_index] = r0
 
     return r0
   end
@@ -1197,6 +1250,9 @@ module Feature #:nodoc:
     return r0
   end
 
+  module ScenarioKeyword0 #:nodoc:
+  end
+
   def _nt_scenario_keyword #:nodoc:
     start_index = index
     if node_cache[:scenario_keyword].has_key?(index)
@@ -1205,15 +1261,87 @@ module Feature #:nodoc:
       return cached
     end
 
-    if input.index('Scenario:', index) == index
-      r0 = (SyntaxNode).new(input, index...(index + 9))
-      @index += 9
+    i0, s0 = index, []
+    if input.index('Scenario', index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 8))
+      @index += 8
     else
-      terminal_parse_failure('Scenario:')
+      terminal_parse_failure('Scenario')
+      r1 = nil
+    end
+    s0 << r1
+    if r1
+      if input.index(':', index) == index
+        r3 = (SyntaxNode).new(input, index...(index + 1))
+        @index += 1
+      else
+        terminal_parse_failure(':')
+        r3 = nil
+      end
+      if r3
+        r2 = r3
+      else
+        r2 = SyntaxNode.new(input, index...index)
+      end
+      s0 << r2
+    end
+    if s0.last
+      r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0.extend(ScenarioKeyword0)
+    else
+      self.index = i0
       r0 = nil
     end
 
     node_cache[:scenario_keyword][start_index] = r0
+
+    return r0
+  end
+
+  module MoreExamplesKeyword0 #:nodoc:
+  end
+
+  def _nt_more_examples_keyword #:nodoc:
+    start_index = index
+    if node_cache[:more_examples_keyword].has_key?(index)
+      cached = node_cache[:more_examples_keyword][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    i0, s0 = index, []
+    if input.index('More Examples', index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 13))
+      @index += 13
+    else
+      terminal_parse_failure('More Examples')
+      r1 = nil
+    end
+    s0 << r1
+    if r1
+      if input.index(':', index) == index
+        r3 = (SyntaxNode).new(input, index...(index + 1))
+        @index += 1
+      else
+        terminal_parse_failure(':')
+        r3 = nil
+      end
+      if r3
+        r2 = r3
+      else
+        r2 = SyntaxNode.new(input, index...index)
+      end
+      s0 << r2
+    end
+    if s0.last
+      r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0.extend(MoreExamplesKeyword0)
+    else
+      self.index = i0
+      r0 = nil
+    end
+
+    node_cache[:more_examples_keyword][start_index] = r0
 
     return r0
   end

@@ -1,6 +1,30 @@
 == 0.1.8 (Not yet released as gem)
 
+This release changes the table syntax a little. Tables used to define more examples after a scenario
+must now be prefixed. In English it looks like this:
+
+  Feature: Addition
+    In order to avoid silly mistakes
+    As a math idiot 
+    I want to be told the sum of two numbers
+
+    Scenario: Add two numbers
+      Given I have entered 50 into the calculator
+      And I have entered 70 into the calculator
+      When I press add
+      Then the result should be 120 on the screen
+      And the result class should be Fixnum
+
+    More Examples:
+      | input_1 | input_2 | button | output | class  |
+      | 20      | 30      | add    | 50     | Fixnum |
+      | 2       | 5       | add    | 7      | Fixnum |
+      | 0       | 40      | add    | 40     | Fixnum |
+
+Languages that are not updated yet will have to use "More Examples" until we get the translations.
+
 === New features
+* Tables used to define more examples for a scenario must be prefixed "More Examples" (see languages.yml for other languages)
 * Show the file and line number for scenarios as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
 * Show the file for the feature as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
 * Show the feature file and line for pending steps as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)

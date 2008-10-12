@@ -44,7 +44,15 @@ grammar Feature
   end
   
   rule scenario_or_table
-    scenario / table
+    scenario / more_examples
+  end
+  
+  rule more_examples
+    more_examples_keyword space table {
+      def compile(f)
+        table.compile(f)
+      end
+    }
   end
   
   rule table
@@ -147,7 +155,11 @@ grammar Feature
   end
   
   rule scenario_keyword
-    '<%= words['scenario'] %>:'
+    '<%= words['scenario'] %>' ':'?
+  end
+  
+  rule more_examples_keyword
+    '<%= words['more_examples'] %>' ':'?
   end
   
   rule given_scenario_keyword
