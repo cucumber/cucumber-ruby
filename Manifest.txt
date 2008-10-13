@@ -10,6 +10,7 @@ config/requirements.rb
 cucumber.yml
 examples/calculator/Rakefile
 examples/calculator/cucumber.yml
+examples/calculator/features.html
 examples/calculator/features/addition.feature
 examples/calculator/features/division.feature
 examples/calculator/features/steps/calculator_steps.rb
@@ -57,6 +58,10 @@ examples/spanish_calculator/Rakefile
 examples/spanish_calculator/features/adicion.feature
 examples/spanish_calculator/features/steps/calculador_steps.rb
 examples/spanish_calculator/lib/Calculador.rb
+examples/swedish_calculator/Rakefile
+examples/swedish_calculator/features/steps/kalkulator_steps.rb
+examples/swedish_calculator/features/summering.feature
+examples/swedish_calculator/lib/kalkulator.rb
 examples/tickets/Rakefile
 examples/tickets/features/steps/tickets_steps.rb
 examples/tickets/features/tickets.feature
@@ -95,6 +100,8 @@ lib/cucumber/formatters/jquery.js
 lib/cucumber/formatters/pretty_formatter.rb
 lib/cucumber/formatters/progress_formatter.rb
 lib/cucumber/languages.yml
+lib/cucumber/model.rb
+lib/cucumber/model/table.rb
 lib/cucumber/rails/rspec.rb
 lib/cucumber/rails/world.rb
 lib/cucumber/rake/task.rb
@@ -139,8 +146,13 @@ spec/cucumber/formatters/features.html
 spec/cucumber/formatters/html_formatter_spec.rb
 spec/cucumber/formatters/pretty_formatter_spec.rb
 spec/cucumber/formatters/progress_formatter_spec.rb
+spec/cucumber/model/table_spec.rb
+spec/cucumber/rails/stubs/mini_rails.rb
+spec/cucumber/rails/stubs/test_help.rb
+spec/cucumber/rails/world_spec.rb
 spec/cucumber/sell_cucumbers.feature
 spec/cucumber/step_mother_spec.rb
+spec/cucumber/tree/feature_spec.rb
 spec/cucumber/tree/scenario_spec.rb
 spec/cucumber/tree/step_spec.rb
 spec/cucumber/treetop_parser/empty_feature.feature
@@ -148,6 +160,7 @@ spec/cucumber/treetop_parser/empty_scenario.feature
 spec/cucumber/treetop_parser/feature_parser_spec.rb
 spec/cucumber/treetop_parser/fit_scenario.feature
 spec/cucumber/treetop_parser/given_scenario.feature
+spec/cucumber/treetop_parser/multiline_steps.feature
 spec/cucumber/treetop_parser/multiple_tables.feature
 spec/cucumber/treetop_parser/spaces.feature
 spec/cucumber/treetop_parser/test_dos.feature
