@@ -1,7 +1,10 @@
 == 0.1.8 (Not yet released as gem)
 
-This release changes the table syntax a little. Tables used to define more examples after a scenario
-must now be prefixed. In English it looks like this:
+This release extends the support for tables. It has been possible to use tables to define
+"more examples" of a scenario in a FIT column fixture kind of way. Now you can also use tables
+as arguments to steps.
+
+Tables used to define more examples after a scenario must now be prefixed. In English it looks like this:
 
   Feature: Addition
     In order to avoid silly mistakes
@@ -23,7 +26,36 @@ must now be prefixed. In English it looks like this:
 
 Languages that are not updated yet will have to use "More Examples" until we get the translations.
 
+Steps now support a single argument that can span several lines. This can be a table or a string.
+Example:
+
+  Given the following people exist:
+    | name  | email           | phone |
+    | Aslak | aslak@email.com | 123   |
+    | Joe   | joe@email.com   | 234   |
+    | Bryan | bryan@email.org | 234   |
+  When I search for email.com
+  Then I should see:
+    | name  | email           | phone |
+    | Aslak | aslak@email.com | 123   |
+    | Joe   | joe@email.com   | 234   |
+  And I should see:
+    "Some text
+    on several lines"
+
+The step definitions for such multiline steps must define an extra block argument for the argument:
+
+  Given /the following people exist:/ do |people_table|
+    # people_table is of type Cucumber::Model::Table
+    # See RDoc for more info
+  end
+
+  Then /I should see:/ do |string|
+    # string is a plain old ruby String with leading spaces on each line removed
+  end
+
 === New features
+* Multiline steps are now supported. (#4, Aslak Hellesøy)
 * Tables used to define more examples for a scenario must be prefixed "More Examples" (see languages.yml for other languages)
 * Show the file and line number for scenarios as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
 * Show the file for the feature as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)

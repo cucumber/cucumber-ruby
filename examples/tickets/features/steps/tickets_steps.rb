@@ -15,3 +15,18 @@ end
 Then "nested step should be executed" do
   @magic.should == 'mushroom'
 end
+
+Given /^the following table$/ do |table|
+  @table = table
+end
+
+Then /^I should be (\w+) in (\w+)$/ do |key, value|
+  hash = @table.hashes[0]
+  hash[key].should == value
+end
+
+Then /^I shoule see a multiline string like$/ do |s|
+  s.should == %{A string
+that spans
+several lines}
+end

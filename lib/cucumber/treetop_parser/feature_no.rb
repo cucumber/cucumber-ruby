@@ -434,7 +434,17 @@ module Feature #:nodoc:
         feature.add_row_scenario(Feature.last_scenario, table_line.cell_values, table_line.line)
       end
     end
-
+    
+    def matrix #:nodoc:
+      ([head] + body).map do |table_line|
+        table_line.cell_values # We're losing the line - we'll get it back when we make our own class #:nodoc:
+      end
+    end
+    
+    def to_arg #:nodoc:
+      Model::Table.new(matrix)
+    end
+    
     def body #:nodoc:
       super.elements.map { |elt| elt.table_line }
     end
@@ -856,6 +866,16 @@ module Feature #:nodoc:
   end
 
   module PlainStep0 #:nodoc:
+    def space #:nodoc:
+      elements[0]
+    end
+
+    def multiline_arg #:nodoc:
+      elements[1]
+    end
+  end
+
+  module PlainStep1 #:nodoc:
     def step_keyword #:nodoc:
       elements[0]
     end
@@ -863,12 +883,19 @@ module Feature #:nodoc:
     def name #:nodoc:
       elements[2]
     end
+
+    def multi #:nodoc:
+      elements[3]
+    end
   end
 
-  module PlainStep1 #:nodoc:
+  module PlainStep2 #:nodoc:
     def compile(scenario) #:nodoc:
       line = input.line_of(interval.first)
-      scenario.create_step(step_keyword.text_value, name.text_value.strip, line)
+      step = scenario.create_step(step_keyword.text_value, name.text_value.strip, line)
+      if multi.respond_to?(:multiline_arg)
+        step.extra_args << multi.multiline_arg.to_arg
+      end
     end
   end
 
@@ -894,18 +921,179 @@ module Feature #:nodoc:
       if r2
         r4 = _nt_line_to_eol
         s0 << r4
+        if r4
+          i6, s6 = index, []
+          r7 = _nt_space
+          s6 << r7
+          if r7
+            r8 = _nt_multiline_arg
+            s6 << r8
+          end
+          if s6.last
+            r6 = (SyntaxNode).new(input, i6...index, s6)
+            r6.extend(PlainStep0)
+          else
+            self.index = i6
+            r6 = nil
+          end
+          if r6
+            r5 = r6
+          else
+            r5 = SyntaxNode.new(input, index...index)
+          end
+          s0 << r5
+        end
       end
     end
     if s0.last
       r0 = (SyntaxNode).new(input, i0...index, s0)
-      r0.extend(PlainStep0)
       r0.extend(PlainStep1)
+      r0.extend(PlainStep2)
     else
       self.index = i0
       r0 = nil
     end
 
     node_cache[:plain_step][start_index] = r0
+
+    return r0
+  end
+
+  def _nt_multiline_arg #:nodoc:
+    start_index = index
+    if node_cache[:multiline_arg].has_key?(index)
+      cached = node_cache[:multiline_arg][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    i0 = index
+    r1 = _nt_table
+    if r1
+      r0 = r1
+    else
+      r2 = _nt_multiline_string
+      if r2
+        r0 = r2
+      else
+        self.index = i0
+        r0 = nil
+      end
+    end
+
+    node_cache[:multiline_arg][start_index] = r0
+
+    return r0
+  end
+
+  module MultilineString0 #:nodoc:
+  end
+
+  module MultilineString1 #:nodoc:
+    def quote #:nodoc:
+      elements[0]
+    end
+
+    def string #:nodoc:
+      elements[1]
+    end
+
+    def quote #:nodoc:
+      elements[2]
+    end
+  end
+
+  module MultilineString2 #:nodoc:
+    def to_arg #:nodoc:
+      string.text_value.split("\n").map{|l| l.strip}.join("\n")
+    end
+  end
+
+  def _nt_multiline_string #:nodoc:
+    start_index = index
+    if node_cache[:multiline_string].has_key?(index)
+      cached = node_cache[:multiline_string][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    i0, s0 = index, []
+    r1 = _nt_quote
+    s0 << r1
+    if r1
+      s2, i2 = [], index
+      loop do
+        i3, s3 = index, []
+        i4 = index
+        r5 = _nt_quote
+        if r5
+          r4 = nil
+        else
+          self.index = i4
+          r4 = SyntaxNode.new(input, index...index)
+        end
+        s3 << r4
+        if r4
+          if index < input_length
+            r6 = (SyntaxNode).new(input, index...(index + 1))
+            @index += 1
+          else
+            terminal_parse_failure("any character")
+            r6 = nil
+          end
+          s3 << r6
+        end
+        if s3.last
+          r3 = (SyntaxNode).new(input, i3...index, s3)
+          r3.extend(MultilineString0)
+        else
+          self.index = i3
+          r3 = nil
+        end
+        if r3
+          s2 << r3
+        else
+          break
+        end
+      end
+      r2 = SyntaxNode.new(input, i2...index, s2)
+      s0 << r2
+      if r2
+        r7 = _nt_quote
+        s0 << r7
+      end
+    end
+    if s0.last
+      r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0.extend(MultilineString1)
+      r0.extend(MultilineString2)
+    else
+      self.index = i0
+      r0 = nil
+    end
+
+    node_cache[:multiline_string][start_index] = r0
+
+    return r0
+  end
+
+  def _nt_quote #:nodoc:
+    start_index = index
+    if node_cache[:quote].has_key?(index)
+      cached = node_cache[:quote][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    if input.index('"', index) == index
+      r0 = (SyntaxNode).new(input, index...(index + 1))
+      @index += 1
+    else
+      terminal_parse_failure('"')
+      r0 = nil
+    end
+
+    node_cache[:quote][start_index] = r0
 
     return r0
   end
@@ -1187,51 +1375,51 @@ module Feature #:nodoc:
     end
 
     i0 = index
-    if input.index('Gitt', index) == index
+    if input.index("Gitt", index) == index
       r1 = (SyntaxNode).new(input, index...(index + 4))
       @index += 4
     else
-      terminal_parse_failure('Gitt')
+      terminal_parse_failure("Gitt")
       r1 = nil
     end
     if r1
       r0 = r1
     else
-      if input.index('Når', index) == index
+      if input.index("Når", index) == index
         r2 = (SyntaxNode).new(input, index...(index + 4))
         @index += 4
       else
-        terminal_parse_failure('Når')
+        terminal_parse_failure("Når")
         r2 = nil
       end
       if r2
         r0 = r2
       else
-        if input.index('Så', index) == index
+        if input.index("Så", index) == index
           r3 = (SyntaxNode).new(input, index...(index + 3))
           @index += 3
         else
-          terminal_parse_failure('Så')
+          terminal_parse_failure("Så")
           r3 = nil
         end
         if r3
           r0 = r3
         else
-          if input.index('Og', index) == index
+          if input.index("Og", index) == index
             r4 = (SyntaxNode).new(input, index...(index + 2))
             @index += 2
           else
-            terminal_parse_failure('Og')
+            terminal_parse_failure("Og")
             r4 = nil
           end
           if r4
             r0 = r4
           else
-            if input.index('Men', index) == index
+            if input.index("Men", index) == index
               r5 = (SyntaxNode).new(input, index...(index + 3))
               @index += 3
             else
-              terminal_parse_failure('Men')
+              terminal_parse_failure("Men")
               r5 = nil
             end
             if r5
@@ -1262,20 +1450,20 @@ module Feature #:nodoc:
     end
 
     i0, s0 = index, []
-    if input.index('Scenario', index) == index
+    if input.index("Scenario", index) == index
       r1 = (SyntaxNode).new(input, index...(index + 8))
       @index += 8
     else
-      terminal_parse_failure('Scenario')
+      terminal_parse_failure("Scenario")
       r1 = nil
     end
     s0 << r1
     if r1
-      if input.index(':', index) == index
+      if input.index(":", index) == index
         r3 = (SyntaxNode).new(input, index...(index + 1))
         @index += 1
       else
-        terminal_parse_failure(':')
+        terminal_parse_failure(":")
         r3 = nil
       end
       if r3
@@ -1310,20 +1498,20 @@ module Feature #:nodoc:
     end
 
     i0, s0 = index, []
-    if input.index('More Examples', index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 13))
-      @index += 13
+    if input.index("Flere eksempler", index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 15))
+      @index += 15
     else
-      terminal_parse_failure('More Examples')
+      terminal_parse_failure("Flere eksempler")
       r1 = nil
     end
     s0 << r1
     if r1
-      if input.index(':', index) == index
+      if input.index(":", index) == index
         r3 = (SyntaxNode).new(input, index...(index + 1))
         @index += 1
       else
-        terminal_parse_failure(':')
+        terminal_parse_failure(":")
         r3 = nil
       end
       if r3
@@ -1358,20 +1546,20 @@ module Feature #:nodoc:
     end
 
     i0, s0 = index, []
-    if input.index('GittScenario', index) == index
+    if input.index("GittScenario", index) == index
       r1 = (SyntaxNode).new(input, index...(index + 12))
       @index += 12
     else
-      terminal_parse_failure('GittScenario')
+      terminal_parse_failure("GittScenario")
       r1 = nil
     end
     s0 << r1
     if r1
-      if input.index(':', index) == index
+      if input.index(":", index) == index
         r3 = (SyntaxNode).new(input, index...(index + 1))
         @index += 1
       else
-        terminal_parse_failure(':')
+        terminal_parse_failure(":")
         r3 = nil
       end
       if r3
