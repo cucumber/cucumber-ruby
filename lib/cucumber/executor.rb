@@ -63,7 +63,7 @@ module Cucumber
     end
 
     def visit_scenario(scenario)
-      if @line.nil? || scenario.at_line?(@line)
+      if accept?(scenario)
         @error = nil
         @pending = nil
 
@@ -77,6 +77,10 @@ module Cucumber
         @after_scenario_procs.each{|p| p.call_in(@world, *[])}
         formatter.scenario_executed(scenario) if formatter.respond_to?(:scenario_executed)
       end
+    end
+    
+    def accept?(scenario)
+      @line.nil? || scenario.at_line?(@line)
     end
 
     def visit_row_step(step)
