@@ -54,6 +54,16 @@
   then: Alors
   and: Et
   but: Mais
+"nl":
+  feature: Functionaliteit
+  scenario: Scenario
+  more_examples: Meer voorbeelden
+  given_scenario: GegevenScenario
+  given: Gegeven
+  when: Als
+  then: Dan
+  and: En
+  but: Maar
 "no":
   feature: Egenskap
   scenario: Scenario
