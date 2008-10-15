@@ -10,7 +10,6 @@ config/requirements.rb
 cucumber.yml
 examples/calculator/Rakefile
 examples/calculator/cucumber.yml
-examples/calculator/features.html
 examples/calculator/features/addition.feature
 examples/calculator/features/division.feature
 examples/calculator/features/steps/calculator_steps.rb
@@ -132,6 +131,7 @@ lib/cucumber/treetop_parser/feature_parser.rb
 lib/cucumber/treetop_parser/feature_pt.rb
 lib/cucumber/treetop_parser/feature_ru.rb
 lib/cucumber/treetop_parser/feature_se.rb
+lib/cucumber/treetop_parser/feature_zh-CN.rb
 lib/cucumber/version.rb
 script/console
 script/console.cmd
