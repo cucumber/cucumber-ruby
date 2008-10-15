@@ -68,6 +68,9 @@ The step definitions for such multiline steps must define an extra block argumen
 * Support comments above the first scenario (#31, Aslak Hellesøy)
 * Fixed the HTML Formatter to use actual values for FIT table headers (#30, Joseph Wilk)
 
+=== Removed features
+* Removed the /^I go to (.*)$/ step from common_webrat.rb - it's not language agnostic and provides little value.
+
 === New features
 * Added new --out option to make it easier to specify output from Rake and cucumber.yml
 
