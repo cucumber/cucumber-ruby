@@ -21,6 +21,10 @@ examples/calculator_ruby_features/features/steps/calculator_steps.rb
 examples/calculatrice_francaise_avec_soit_scenario/Rakefile
 examples/calculatrice_francaise_avec_soit_scenario/features/addition.feature
 examples/calculatrice_francaise_avec_soit_scenario/features/calculatrice_steps.rb
+examples/chinese_simplified_calculator/Rakefile
+examples/chinese_simplified_calculator/features/addition.feature
+examples/chinese_simplified_calculator/features/steps/calculator_steps.rb
+examples/chinese_simplified_calculator/lib/calculator.rb
 examples/cs/README.textile
 examples/cs/Rakefile
 examples/cs/features/hello.feature
