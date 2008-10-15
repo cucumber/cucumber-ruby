@@ -110,3 +110,11 @@
   then: Siis
   and: Ja
   but: Kuid
+"zh-CN":
+  scenario: 场景
+  given_scenario: 引用场景
+  given: 假如
+  when: 当
+  then: 那么
+  and: 而且
+  but: 但是

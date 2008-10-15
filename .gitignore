@@ -3,3 +3,4 @@ pkg
 doc
 log/*.log
 .eprj
+*~
