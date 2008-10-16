@@ -54,18 +54,22 @@ module Cucumber
           formatter.step_passed(step_1, /nihon/, nil)
           formatter.step_passed(step_2, /ichiban/, nil)
 
-          formatter.instance_variable_get("@step_times").should == { 'Given /nihon/' => [[step_1, 0.0]], 
-                                                                     'Given /ichiban/' => [[step_2, 0.0]] }
+          step_times = formatter.instance_variable_get("@step_times")
+
+          step_times.has_key?('Given /nihon/').should be_true
+          step_times.has_key?('Given /ichiban/').should be_true
         end
 
         it "should use a previous step's keyword when recording row steps" do
           step = mock_step(:actual_keyword => 'Given')
           step_row = mock_step(:row? => true)
 
-          formatter.step_passed(step, /nihon/, nil)
-          formatter.step_passed(step_row, /nihon/, nil)
+          formatter.step_passed(step, /nihon/, [])
+          formatter.step_passed(step_row, /nihon/, [])
 
-          formatter.instance_variable_get("@step_times").should == { 'Given /nihon/' => [[step, 0.0], [step_row, 0.0]] }
+          step_times = formatter.instance_variable_get("@step_times")
+          
+          step_times['Given /nihon/'].length.should == 2
         end
 
       end
@@ -80,7 +84,7 @@ module Cucumber
 
       it "should correctly record a passed step row" do
         formatter.step_executing(nil, nil, nil)
-        formatter.step_passed(mock_step(:row? => true, :regexp_args_proc => [nil, ['fitty'], mock_proc]), nil, nil)
+        formatter.step_passed(mock_step(:row? => true), /example/, ['fitty'])
         formatter.dump
 
         io.string.should include('fitty')
