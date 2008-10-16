@@ -31,7 +31,8 @@ module Cucumber
       INDENT = 2 
       
       # If a table follows, the header will be stored here. Weird, but convenient.
-      attr_accessor :table_header
+      attr_reader :table_header
+      attr_accessor :table_column_widths
       attr_reader :name, :line
       
       def initialize(feature, name, line, &proc)
@@ -39,7 +40,10 @@ module Cucumber
         @steps_and_given_scenarios = []
         instance_eval(&proc) if block_given?
       end
-      
+      def table_header=  header
+	@table_header = header
+	update_table_column_widths header
+      end
       def steps
         @steps ||= @steps_and_given_scenarios.map{|step| step.steps}.flatten
       end
@@ -76,6 +80,11 @@ module Cucumber
         @max_step_length ||= (steps.map{|step| step.length}.max || 0)
       end
 
+      def update_table_column_widths values
+	@table_column_widths ||= [0] * values.size
+
+	@table_column_widths = @table_column_widths.zip(values).map {|max, value| [max, value.size].max}
+      end
       def row?
         false
       end
@@ -115,6 +124,7 @@ module Cucumber
       
       def initialize(feature, template_scenario, values, line)
         @feature, @template_scenario, @values, @line = feature, template_scenario, values, line
+        template_scenario.update_table_column_widths values
       end
       
       def row?
