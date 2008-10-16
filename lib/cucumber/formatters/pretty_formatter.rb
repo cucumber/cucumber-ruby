@@ -55,7 +55,7 @@ module Cucumber
         @io.puts
         if !scenario.row? && scenario.table_header
           @io.print "    |"
-          scenario.table_header.each { |h| @io.print h ; @io.print "|" }
+	  print_row(scenario.table_header)
           @io.puts
         elsif scenario.row? && @scenario_failed
           @io.puts
@@ -66,7 +66,7 @@ module Cucumber
       def step_passed(step, regexp, args)
         if step.row?
           @passed << step
-          args.each{|arg| @io.print passed(arg) ; @io.print "|"}
+	  print_passed_row(args)
         else
           @passed << step
           @io.print passed("    #{step.keyword} #{step.format(regexp){|param| passed_param(param) << passed}}")
@@ -82,7 +82,7 @@ module Cucumber
         if step.row?
           @failed << step
           @scenario_failed = true
-          args.each{|arg| @io.print failed(arg) ; @io.print "|"}
+          print_failed_row(args)
         else
           @failed << step
           @scenario_failed = true
@@ -99,7 +99,7 @@ module Cucumber
       def step_skipped(step, regexp, args)
         @skipped << step
         if step.row?
-          args.each{|arg| @io.print skipped(arg) ; @io.print "|"}
+          print_skipped_row(args)
         else
           @io.print skipped("    #{step.keyword} #{step.format(regexp){|param| skipped_param(param) << skipped}}") 
           if @options[:source]
@@ -113,7 +113,7 @@ module Cucumber
       def step_pending(step, regexp, args)
         if step.row?
           @pending << step
-          args.each{|arg| @io.print pending(arg) ; @io.print "|"}
+          print_pending_row(args)
         else
           @pending << step
           @io.print pending("    #{step.keyword} #{step.name}")
@@ -171,6 +171,34 @@ module Cucumber
       
       def padding_spaces(tree_item)
         " " * tree_item.padding_length
+      end
+
+      def print_row row_elements, &colorize_proc
+        colorize_proc = Proc.new{|row_element| row_element} unless colorize_proc
+
+        @largest_elements ||= [0]*row_elements.size
+
+        row_elements.each_with_index do |row_element, i|
+          @largest_elements[i] = row_element.size if @largest_elements[i] < row_element.size
+          @io.print colorize_proc[row_element.ljust(@largest_elements[i])]
+          @io.print "|"
+        end
+      end
+
+      def print_passed_row row_elements
+	print_row(row_elements) {|row_element| passed(row_element)}      
+      end
+      
+      def print_skipped_row row_elements
+	print_row(row_elements) {|row_element| skipped(row_element)}      
+      end
+
+      def print_failed_row row_elements
+	print_row(row_elements) {|row_element| failed(row_element)}      
+      end
+
+      def print_pending_row row_elements
+	print_row(row_elements) {|row_element| pending(row_element)}      
       end
     end
   end
