@@ -54,6 +54,7 @@ module Cucumber
       def scenario_executed(scenario)
         @io.puts
         if !scenario.row? && scenario.table_header
+	  @table_column_widths = scenario.table_column_widths
           @io.print "    |"
 	  print_row(scenario.table_header)
           @io.puts
@@ -173,11 +174,19 @@ module Cucumber
         " " * tree_item.padding_length
       end
 
+      def next_column_index
+	@current_column ||= -1
+	@current_column += 1
+	@current_column = 0 if @current_column == @table_column_widths.size
+	@current_column
+      end
+
       def print_row row_args, &colorize_proc
         colorize_proc = Proc.new{|row_element| row_element} unless colorize_proc
 
-        row_args.each_with_index do |row_arg, i|
-          @io.print colorize_proc[row_arg]
+        row_args.each do |row_arg|
+	  column_index = next_column_index
+          @io.print colorize_proc[row_arg.ljust(@table_column_widths[column_index])]
           @io.print "|"
         end
       end
