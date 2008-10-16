@@ -91,6 +91,7 @@ module Cucumber
       unless @pending || @error
         begin
           regexp, args, proc = step.regexp_args_proc(@step_mother)
+          formatter.step_executing(step, regexp, args) if formatter.respond_to?(:step_executing)
           step.execute_in(@world, regexp, args, proc)
           @after_step_procs.each{|p| p.call_in(@world, *[])}
           formatter.step_passed(step, regexp, args)

@@ -55,6 +55,7 @@ The step definitions for such multiline steps must define an extra block argumen
   end
 
 === New features
+* Added profile formatter (#35, Joseph Wilk)
 * Multiline steps are now supported. (#4, Aslak Hellesøy)
 * Tables used to define more examples for a scenario must be prefixed "More Examples" (see languages.yml for other languages)
 * Show the file and line number for scenarios as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)

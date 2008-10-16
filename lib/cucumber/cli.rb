@@ -23,7 +23,7 @@ module Cucumber
     end
     
     attr_reader :options
-    FORMATS = %w{pretty progress html}
+    FORMATS = %w{pretty profile progress html}
 
     def initialize
       @paths = []
@@ -158,6 +158,8 @@ module Cucumber
         Formatters::PrettyFormatter.new(@options[:out], step_mother, @options)
       when 'progress'
         Formatters::ProgressFormatter.new(@options[:out])
+       when 'profile'
+        Formatters::ProfileFormatter.new(@options[:out], step_mother)
       when 'html'
         Formatters::HtmlFormatter.new(@options[:out], step_mother)
       end
