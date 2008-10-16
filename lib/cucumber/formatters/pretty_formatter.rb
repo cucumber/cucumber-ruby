@@ -66,7 +66,7 @@ module Cucumber
       def step_passed(step, regexp, args)
         if step.row?
           @passed << step
-	  print_passed_row(args)
+	  print_passed_args(args)
         else
           @passed << step
           @io.print passed("    #{step.keyword} #{step.format(regexp){|param| passed_param(param) << passed}}")
@@ -82,7 +82,7 @@ module Cucumber
         if step.row?
           @failed << step
           @scenario_failed = true
-          print_failed_row(args)
+          print_failed_args(args)
         else
           @failed << step
           @scenario_failed = true
@@ -99,7 +99,7 @@ module Cucumber
       def step_skipped(step, regexp, args)
         @skipped << step
         if step.row?
-          print_skipped_row(args)
+          print_skipped_args(args)
         else
           @io.print skipped("    #{step.keyword} #{step.format(regexp){|param| skipped_param(param) << skipped}}") 
           if @options[:source]
@@ -113,7 +113,7 @@ module Cucumber
       def step_pending(step, regexp, args)
         if step.row?
           @pending << step
-          print_pending_row(args)
+          print_pending_args(args)
         else
           @pending << step
           @io.print pending("    #{step.keyword} #{step.name}")
@@ -173,32 +173,29 @@ module Cucumber
         " " * tree_item.padding_length
       end
 
-      def print_row row_elements, &colorize_proc
+      def print_row row_args, &colorize_proc
         colorize_proc = Proc.new{|row_element| row_element} unless colorize_proc
 
-        @largest_elements ||= [0]*row_elements.size
-
-        row_elements.each_with_index do |row_element, i|
-          @largest_elements[i] = row_element.size if @largest_elements[i] < row_element.size
-          @io.print colorize_proc[row_element.ljust(@largest_elements[i])]
+        row_args.each_with_index do |row_arg, i|
+          @io.print colorize_proc[row_arg]
           @io.print "|"
         end
       end
 
-      def print_passed_row row_elements
-	print_row(row_elements) {|row_element| passed(row_element)}      
+      def print_passed_args args
+	print_row(args) {|arg| passed(arg)}      
       end
       
-      def print_skipped_row row_elements
-	print_row(row_elements) {|row_element| skipped(row_element)}      
+      def print_skipped_args args
+	print_row(args) {|arg| skipped(arg)}      
       end
 
-      def print_failed_row row_elements
-	print_row(row_elements) {|row_element| failed(row_element)}      
+      def print_failed_args args
+	print_row(args) {|arg| failed(arg)}      
       end
 
-      def print_pending_row row_elements
-	print_row(row_elements) {|row_element| pending(row_element)}      
+      def print_pending_args args
+	print_row(args) {|arg| pending(arg)}      
       end
     end
   end
