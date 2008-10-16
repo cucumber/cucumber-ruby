@@ -41,7 +41,7 @@ module Cucumber
 
       def dump
         super
-        @io.puts "\n\nTop 10 average slowest steps with 5 slowest matches:\n"
+        @io.puts "\n\nTop #{NUMBER_OF_STEP_DEFINITONS_TO_SHOW} average slowest steps with #{NUMBER_OF_STEP_INVOCATIONS_TO_SHOW} slowest matches:\n"
 
         mean_times = map_to_mean_times(@step_times)
         mean_times = mean_times.sort_by { |step_profile_list, keyword_regexp, mean_time| mean_time }.reverse
