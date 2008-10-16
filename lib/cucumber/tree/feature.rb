@@ -41,7 +41,7 @@ module Cucumber
         proc.call(table)
         template_scenario = @scenarios.last
         matrix[1..-1].each do |row|
-          @scenarios << RowScenario.new(self, template_scenario, row, row.line)
+	  add_row_scenario(template_scenario, row, row.line)
         end
       end
 
