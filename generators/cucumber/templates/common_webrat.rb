@@ -33,15 +33,6 @@ When /^I attach the file at "(.*)" to "(.*)" $/ do |path, field|
   attaches_file(field, path)
 end
 
-When /^I go to (.*)$/ do |page|
-  visits case page
-  when "the home page"
-    "/"
-  else
-    raise "Can't find mapping from \"#{page}\" to a path"
-  end
-end
-
 Then /^I should see "(.*)"$/ do |text|
   response.body.should =~ /#{text}/m
 end
