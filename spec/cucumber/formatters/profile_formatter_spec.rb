@@ -142,6 +142,24 @@ module Cucumber
         io.string.should include("5.0000000  Given step invocation")
         io.string.should include("1.0000000  Given step invocation")
       end
+      
+      it "should sort the step invocations in descending order" do
+        now = Time.now
+        Time.stub!(:now).and_return(now, now+1, now, now+5)
+        
+        step = mock_step(:format => 'step invocation', :actual_keyword => 'Given')
+        
+        2.times do
+          formatter.step_executing(step, /example 1/, nil)
+          formatter.step_passed(step, /example 1/, nil)
+        end
+        
+        formatter.dump
+        io_string_lines = io.string.split("\n")
+        
+        io_string_lines.at(-2).should include('5.0000000')
+        io_string_lines.at(-1).should include('1.0000000')
+      end
 
       it "should print the top average 10 step results" do
         formatter.instance_variable_set("@step_time", Time.now)
