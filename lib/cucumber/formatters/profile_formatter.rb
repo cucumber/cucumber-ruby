@@ -44,38 +44,38 @@ module Cucumber
         @io.puts "\n\nTop #{NUMBER_OF_STEP_DEFINITONS_TO_SHOW} average slowest steps with #{NUMBER_OF_STEP_INVOCATIONS_TO_SHOW} slowest matches:\n"
 
         mean_times = map_to_mean_times(@step_times)
-        mean_times = mean_times.sort_by { |step_profile_list, keyword_regexp, mean_time| mean_time }.reverse
+        mean_times = mean_times.sort_by { |step_profiles, keyword_regexp, mean_execution_time| mean_execution_time }.reverse
 
-        mean_times[0...NUMBER_OF_STEP_DEFINITONS_TO_SHOW].each do |step_profile, keyword_regexp, mean_time|
-          print_step_definition(step_profile, keyword_regexp, mean_time)
-          step_profile = step_profile.sort_by { |description, invocation_comment, definition_comment, time| time }.reverse
-          print_step_invocations(step_profile, keyword_regexp)
+        mean_times[0...NUMBER_OF_STEP_DEFINITONS_TO_SHOW].each do |step_profiles, keyword_regexp, mean_execution_time|
+          print_step_definition(step_profiles, keyword_regexp, mean_execution_time)
+          step_profiles = step_profiles.sort_by { |description, invocation_comment, definition_comment, execution_time| execution_time }.reverse
+          print_step_invocations(step_profiles, keyword_regexp)
         end
       end
 
       private
       def map_to_mean_times(step_times)
         mean_times = []
-        step_times.each do |regexp, step_profile_list|
-          mean_time = (step_profile_list.inject(0) { |sum, step_details| step_details[3] + sum } / step_profile_list.length)
-          mean_times << [step_profile_list, regexp, mean_time]
+        step_times.each do |regexp, step_profiles|
+          mean_execution_time = (step_profiles.inject(0) { |sum, step_details| step_details[3] + sum } / step_profiles.length)
+          mean_times << [step_profiles, regexp, mean_execution_time]
         end
         mean_times
       end
 
-      def print_step_definition(step_profile, keyword_regexp, mean_time)
-        unless step_profile.empty?
-          _, _, definition_comment, _ = step_profile.first
-          @io.print red(sprintf("%.7f",  mean_time))
+      def print_step_definition(step_profiles, keyword_regexp, mean_execution_time)
+        unless step_profiles.empty?
+          _, _, definition_comment, _ = step_profiles.first
+          @io.print red(sprintf("%.7f",  mean_execution_time))
           @io.print "  #{keyword_regexp}"
           @io.print "  #{comment(definition_comment)}"
           @io.puts
         end
       end
 
-      def print_step_invocations(step_profile, keyword_regexp)
-        step_profile[0...NUMBER_OF_STEP_INVOCATIONS_TO_SHOW].each do |description, invocation_comment, definition_comment, time|
-          @io.print "  #{yellow(sprintf("%.7f", time))}"
+      def print_step_invocations(step_profiles, keyword_regexp)
+        step_profiles[0...NUMBER_OF_STEP_INVOCATIONS_TO_SHOW].each do |description, invocation_comment, definition_comment, execution_time|
+          @io.print "  #{yellow(sprintf("%.7f", execution_time))}"
           @io.print "  #{description}"
           @io.print "  #{comment(invocation_comment)}"
           @io.puts
