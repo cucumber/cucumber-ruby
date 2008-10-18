@@ -1,11 +1,5 @@
 $:.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'cucumber/rake/task'
 
-# Try these:
-#
-# rake features
-# rake features PROFILE=html
 Cucumber::Rake::Task.new do |t|
-  profile = ENV['PROFILE'] || 'default'
-  t.cucumber_opts = "--profile #{profile}"
 end
