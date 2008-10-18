@@ -94,6 +94,7 @@ lib/cucumber/formatters/cucumber.js
 lib/cucumber/formatters/html_formatter.rb
 lib/cucumber/formatters/jquery.js
 lib/cucumber/formatters/pretty_formatter.rb
+lib/cucumber/formatters/profile_formatter.rb
 lib/cucumber/formatters/progress_formatter.rb
 lib/cucumber/languages.yml
 lib/cucumber/model.rb
@@ -151,6 +152,7 @@ spec/cucumber/formatters/ansicolor_spec.rb
 spec/cucumber/formatters/features.html
 spec/cucumber/formatters/html_formatter_spec.rb
 spec/cucumber/formatters/pretty_formatter_spec.rb
+spec/cucumber/formatters/profile_formatter_spec.rb
 spec/cucumber/formatters/progress_formatter_spec.rb
 spec/cucumber/model/table_spec.rb
 spec/cucumber/rails/stubs/mini_rails.rb
