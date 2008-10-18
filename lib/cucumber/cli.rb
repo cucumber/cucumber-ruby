@@ -24,7 +24,8 @@ module Cucumber
     
     attr_reader :options
     FORMATS = %w{pretty profile progress html}
-
+    DEFAULT_FORMAT = 'pretty'
+    
     def initialize
       @paths = []
     end
@@ -36,7 +37,6 @@ module Cucumber
       @options ||= { 
         :require => nil, 
         :lang    => 'en', 
-        :format  => 'pretty', 
         :dry_run => false, 
         :source  => true,
         :out     => STDOUT
@@ -57,14 +57,15 @@ module Cucumber
           "Look at #{Cucumber::LANGUAGE_FILE} for keywords") do |v|
           @options[:lang] = v
         end
-        opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{@options[:format]})",
+        opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{DEFAULT_FORMAT})",
           "Available formats: #{FORMATS.join(", ")}") do |v|
           unless FORMATS.index(v) 
             STDERR.puts "Invalid format: #{v}\n"
             STDERR.puts opts.help
             exit 1
           end
-          @options[:format] = v
+          @options[:formats] ||= []
+          @options[:formats] << v
         end
         opts.on("-p=PROFILE", "--profile=PROFILE", "Pull commandline arguments from cucumber.yml.") do |v|
           parse_args_from_profile(v)
@@ -88,6 +89,8 @@ module Cucumber
         end
       end.parse!
       
+      @options[:formats] ||= [DEFAULT_FORMAT]
+      
       # Whatever is left after option parsing is the FILE arguments
       @paths += args
     end
@@ -102,7 +105,7 @@ module Cucumber
     
     def execute!(step_mother, executor, features)
       Cucumber.load_language(@options[:lang])
-      executor.formatter = formatter(step_mother)
+      executor.formatters = formatters(step_mother)
       require_files
       load_plain_text_features(features)
       executor.line = @options[:line].to_i if @options[:line]
@@ -152,19 +155,23 @@ module Cucumber
       end
     end
     
-    def formatter(step_mother)
-      case @options[:format]
-      when 'pretty'
-        Formatters::PrettyFormatter.new(@options[:out], step_mother, @options)
-      when 'progress'
-        Formatters::ProgressFormatter.new(@options[:out])
-       when 'profile'
-        Formatters::ProfileFormatter.new(@options[:out], step_mother)
-      when 'html'
-        Formatters::HtmlFormatter.new(@options[:out], step_mother)
-      else
-        raise "Unknown formatter: #{@options[:format]}"
+    def formatters(step_mother)
+      formats = []
+      @options[:formats].each do |format|
+        case format
+        when 'pretty'
+          formats << Formatters::PrettyFormatter.new(@options[:out], step_mother, @options)
+        when 'progress'
+          formats << Formatters::ProgressFormatter.new(@options[:out])
+         when 'profile'
+          formats << Formatters::ProfileFormatter.new(@options[:out], step_mother)
+        when 'html'
+          formats << Formatters::HtmlFormatter.new(@options[:out], step_mother)
+        else
+          raise "Unknown formatter: #{@options[:format]}"
+        end
       end
+      formats
     end
     
   end
