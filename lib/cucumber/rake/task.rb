@@ -15,7 +15,7 @@ module Cucumber
       attr_accessor :rcov_opts
       
       # Define a task
-      def initialize(task_name = "features", desc = "Run Features")
+      def initialize(task_name = "features", desc = "Run Features with Cucumber")
         @task_name, @desc = task_name, desc
         @libs = []
         @rcov_opts = %w{--rails --exclude osx\/objc,gems\/}

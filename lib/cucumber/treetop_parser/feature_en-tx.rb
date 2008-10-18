@@ -1375,51 +1375,51 @@ module Feature #:nodoc:
     end
 
     i0 = index
-    if input.index("Dado", index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 4))
-      @index += 4
+    if input.index("Given y'all", index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 11))
+      @index += 11
     else
-      terminal_parse_failure("Dado")
+      terminal_parse_failure("Given y'all")
       r1 = nil
     end
     if r1
       r0 = r1
     else
-      if input.index("Cuando", index) == index
-        r2 = (SyntaxNode).new(input, index...(index + 6))
-        @index += 6
+      if input.index("When y'all", index) == index
+        r2 = (SyntaxNode).new(input, index...(index + 10))
+        @index += 10
       else
-        terminal_parse_failure("Cuando")
+        terminal_parse_failure("When y'all")
         r2 = nil
       end
       if r2
         r0 = r2
       else
-        if input.index("Entonces", index) == index
-          r3 = (SyntaxNode).new(input, index...(index + 8))
-          @index += 8
+        if input.index("Then y'all", index) == index
+          r3 = (SyntaxNode).new(input, index...(index + 10))
+          @index += 10
         else
-          terminal_parse_failure("Entonces")
+          terminal_parse_failure("Then y'all")
           r3 = nil
         end
         if r3
           r0 = r3
         else
-          if input.index("Y", index) == index
-            r4 = (SyntaxNode).new(input, index...(index + 1))
-            @index += 1
+          if input.index("And y'all", index) == index
+            r4 = (SyntaxNode).new(input, index...(index + 9))
+            @index += 9
           else
-            terminal_parse_failure("Y")
+            terminal_parse_failure("And y'all")
             r4 = nil
           end
           if r4
             r0 = r4
           else
-            if input.index("Pero", index) == index
-              r5 = (SyntaxNode).new(input, index...(index + 4))
-              @index += 4
+            if input.index("But y'all", index) == index
+              r5 = (SyntaxNode).new(input, index...(index + 9))
+              @index += 9
             else
-              terminal_parse_failure("Pero")
+              terminal_parse_failure("But y'all")
               r5 = nil
             end
             if r5
@@ -1450,11 +1450,11 @@ module Feature #:nodoc:
     end
 
     i0, s0 = index, []
-    if input.index("Escenario", index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 9))
-      @index += 9
+    if input.index("Scenario", index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 8))
+      @index += 8
     else
-      terminal_parse_failure("Escenario")
+      terminal_parse_failure("Scenario")
       r1 = nil
     end
     s0 << r1
@@ -1498,11 +1498,11 @@ module Feature #:nodoc:
     end
 
     i0, s0 = index, []
-    if input.index("Más ejemplos", index) == index
+    if input.index("More Examples", index) == index
       r1 = (SyntaxNode).new(input, index...(index + 13))
       @index += 13
     else
-      terminal_parse_failure("Más ejemplos")
+      terminal_parse_failure("More Examples")
       r1 = nil
     end
     s0 << r1
@@ -1546,11 +1546,11 @@ module Feature #:nodoc:
     end
 
     i0, s0 = index, []
-    if input.index("DadoElEscenario", index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 15))
-      @index += 15
+    if input.index("GivenScenario", index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 13))
+      @index += 13
     else
-      terminal_parse_failure("DadoElEscenario")
+      terminal_parse_failure("GivenScenario")
       r1 = nil
     end
     s0 << r1
