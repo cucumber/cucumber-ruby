@@ -1,8 +1,8 @@
-== 0.1.8 (Not yet released as gem)
+== 0.1.8 2008-10-18
 
-This release extends the support for tables. It has been possible to use tables to define
-"more examples" of a scenario in a FIT column fixture kind of way. Now you can also use tables
-as arguments to steps.
+This release extends the support for tables. PLEASE NOTE THAT TABLES ARE STILL EXPERIMENTAL.
+In previous releases it has been possible to use tables to define "more examples" of a scenario i
+n a FIT-style column fixture kind of way. Now you can also use tables as arguments to steps.
 
 Tables used to define more examples after a scenario must now be prefixed. In English it looks like this:
 
@@ -26,7 +26,9 @@ Tables used to define more examples after a scenario must now be prefixed. In En
 
 Languages that are not updated yet will have to use "More Examples" until we get the translations.
 
-Steps now support a single argument that can span several lines. This can be a table or a string.
+Tables can also be used as arguments to individual steps. In fact, steps now support a single argument 
+that can span several lines. This can be a table or a string.
+
 Example:
 
   Given the following people exist:
@@ -55,8 +57,8 @@ The step definitions for such multiline steps must define an extra block argumen
   end
 
 === New features
-* Added profile formatter (#35, Joseph Wilk)
-* Added support for Chinese Simpllfied. (Liming Lian)
+* Added profile formatter. (#35, Joseph Wilk)
+* Added support for Chinese Simplified. (Liming Lian)
 * Added support for Dutch. (Sjoerd Tieleman)
 * Multiline steps are now supported. (#4, Aslak Hellesøy)
 * Tables used to define more examples for a scenario must be prefixed "More Examples" (see languages.yml for other languages)
