@@ -11,7 +11,7 @@
   then: Then
   and: And
   but: But
-# Please help us keeping the languages below uptodate. The parsers for a language 
+# Please help us keeping the languages below uptodate. The parsers for a language
 # that is missing a keyword will expect the English word until the missing word(s)
 # are added.
 #
@@ -118,3 +118,13 @@
   then: 那么
   and: 而且
   but: 但是
+"ja":
+  feature: フィーチャ
+  scenario: シナリオ
+  more_examples: 他のサンプル
+  given_scenario: 前提シナリオ
+  given: 前提
+  when: もし
+  then: ならば
+  and: かつ
+  but: しかし
