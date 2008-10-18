@@ -55,6 +55,7 @@ The step definitions for such multiline steps must define an extra block argumen
   end
 
 === New features
+* Added profile formatter (#35, Joseph Wilk)
 * Added support for Dutch. (Sjoerd Tieleman)
 * Multiline steps are now supported. (#4, Aslak Hellesøy)
 * Tables used to define more examples for a scenario must be prefixed "More Examples" (see languages.yml for other languages)
