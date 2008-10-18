@@ -11,7 +11,7 @@ module Cucumber
 
       cli.parse_options!(%w{--format progress --profile bongo})
       cli.options.should == {
-        :format => 'progress',
+        :formats => ['progress'],
         :require => ['from/yml'], 
         :dry_run => false, 
         :lang => 'en',
@@ -28,7 +28,7 @@ module Cucumber
 
       cli.parse_options!([])
       cli.options.should == {
-        :format => 'pretty',
+        :formats => ['pretty'],
         :require => ['from/yml'], 
         :dry_run => false, 
         :lang => 'en',
@@ -48,6 +48,28 @@ module Cucumber
       cli = CLI.new
       File.should_receive(:open).with('jalla.txt', 'w')
       cli.parse_options!(%w{--out jalla.txt})
+    end
+    
+    it "should accept multiple --format" do
+      cli = CLI.new
+      cli.parse_options!(%w{--format pretty --format progress})
+      cli.options[:formats].should == ['pretty', 'progress']
+    end
+        
+    it "should setup the executor with specified formatters" do
+      cli = CLI.new
+      cli.parse_options!(%w{--format pretty --format progress})
+      
+      pretty_formatter = stub(Formatters::PrettyFormatter)
+      progress_formatter = stub(Formatters::ProgressFormatter)
+      
+      Formatters::PrettyFormatter.stub!(:new).and_return(pretty_formatter)
+      Formatters::ProgressFormatter.stub!(:new).and_return(progress_formatter)
+      
+      mock_executor = mock('executor', :visit_features => nil, :failed => false)
+      mock_executor.should_receive(:formatters=).with([pretty_formatter, progress_formatter])
+
+      cli.execute!(stub('step mother'), mock_executor, stub('features'))
     end
         
   end

@@ -1,3 +1,8 @@
+== 0.1.9 (Not released as gem)
+
+=== New features
+Support specifiying multiple formatters (#47 Joseph Wilk)
+
 == 0.1.8 2008-10-18
 
 This release extends the support for tables. PLEASE NOTE THAT TABLES ARE STILL EXPERIMENTAL.
