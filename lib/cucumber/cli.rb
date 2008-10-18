@@ -93,6 +93,7 @@ module Cucumber
     end
     
     def parse_args_from_profile(profile)
+      return unless File.exist?('cucumber.yml')
       require 'yaml'
       cucumber_yml = YAML::load(IO.read('cucumber.yml'))
       args_from_yml = cucumber_yml[profile]

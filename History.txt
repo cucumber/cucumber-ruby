@@ -6,6 +6,7 @@ Release blurb
 * Added support for Japanese. (Kakutani Shintaro)
 
 === Bugfixes
+* Don't load cucumber.yml unless it exists (Aslak Hellesøy)
 
 === Removed features
 
