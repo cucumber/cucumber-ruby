@@ -27,13 +27,7 @@ module Cucumber
 
     def initialize
       @paths = []
-    end
-
-    def parse_options!(args)
-      return parse_args_from_profile('default') if args.empty?
-      args.extend(OptionParser::Arguable)
-
-      @options ||= { 
+      @options = { 
         :require => nil, 
         :lang    => 'en', 
         :format  => 'pretty', 
@@ -41,6 +35,12 @@ module Cucumber
         :source  => true,
         :out     => STDOUT
       }
+    end
+
+    def parse_options!(args)
+      return parse_args_from_profile('default') if args.empty?
+      args.extend(OptionParser::Arguable)
+
       args.options do |opts|
         opts.banner = "Usage: cucumber [options] FILES|DIRS"
         opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require files before executing the features.",
