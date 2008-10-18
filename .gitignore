@@ -1,7 +1,8 @@
 nbproject
 pkg
 doc
-log/*.log
+*.log
+*.pid
 .eprj
 *~
 .DS_Store
