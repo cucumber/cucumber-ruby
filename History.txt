@@ -56,6 +56,7 @@ The step definitions for such multiline steps must define an extra block argumen
 
 === New features
 * Added profile formatter (#35, Joseph Wilk)
+* Added support for Chinese Simpllfied. (Liming Lian)
 * Added support for Dutch. (Sjoerd Tieleman)
 * Multiline steps are now supported. (#4, Aslak Hellesøy)
 * Tables used to define more examples for a scenario must be prefixed "More Examples" (see languages.yml for other languages)
@@ -64,6 +65,7 @@ The step definitions for such multiline steps must define an extra block argumen
 * Show the feature file and line for pending steps as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
 
 === Bugfixes
+* Fixed speling errors in Spanish (Daniel Cadenas)
 * ActionMailer delivery_method should not be set to test (#41, Luke Melia)
 * Reverse incorrectly ordered args in webrat select step (#43, David Chelimsky)
 * Support comments above the first scenario (#31, Aslak Hellesøy)

@@ -1498,11 +1498,11 @@ module Feature #:nodoc:
     end
 
     i0, s0 = index, []
-    if input.index("Mas exemplos", index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 12))
-      @index += 12
+    if input.index("Más ejemplos", index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 13))
+      @index += 13
     else
-      terminal_parse_failure("Mas exemplos")
+      terminal_parse_failure("Más ejemplos")
       r1 = nil
     end
     s0 << r1

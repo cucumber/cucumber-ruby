@@ -82,7 +82,6 @@ gem_tasks/flog.rake
 gem_tasks/gemspec.rake
 gem_tasks/rspec.rake
 gem_tasks/treetop.rake
-gem_tasks/website.rake
 lib/cucumber.rb
 lib/cucumber/cli.rb
 lib/cucumber/core_ext/proc.rb
@@ -174,8 +173,3 @@ spec/cucumber/treetop_parser/test_dos.feature
 spec/cucumber/treetop_parser/with_comments.feature
 spec/spec.opts
 spec/spec_helper.rb
-website/index.html
-website/index.txt
-website/javascripts/rounded_corners_lite.inc.js
-website/stylesheets/screen.css
-website/template.html.erb

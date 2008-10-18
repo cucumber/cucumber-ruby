@@ -162,6 +162,8 @@ module Cucumber
         Formatters::ProfileFormatter.new(@options[:out], step_mother)
       when 'html'
         Formatters::HtmlFormatter.new(@options[:out], step_mother)
+      else
+        raise "Unknown formatter: #{@options[:format]}"
       end
     end
     
