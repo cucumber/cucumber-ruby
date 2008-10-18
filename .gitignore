@@ -4,3 +4,4 @@ doc
 log/*.log
 .eprj
 *~
+.DS_Store
