@@ -1,8 +1,21 @@
-== 0.1.8 (Not yet released as gem)
+== 0.1.9 (In Git)
 
-This release extends the support for tables. It has been possible to use tables to define
-"more examples" of a scenario in a FIT column fixture kind of way. Now you can also use tables
-as arguments to steps.
+Release blurb
+
+=== New features
+* Added support for Japanese. (Kakutani Shintaro)
+* Added support for Texan (improvements welcome). (Aslak Hellesøy)
+
+=== Bugfixes
+* Don't load cucumber.yml unless it exists (Aslak Hellesøy)
+
+=== Removed features
+
+== 0.1.8 2008-10-18
+
+This release extends the support for tables. PLEASE NOTE THAT TABLES ARE STILL EXPERIMENTAL.
+In previous releases it has been possible to use tables to define "more examples" of a scenario i
+n a FIT-style column fixture kind of way. Now you can also use tables as arguments to steps.
 
 Tables used to define more examples after a scenario must now be prefixed. In English it looks like this:
 
@@ -26,7 +39,9 @@ Tables used to define more examples after a scenario must now be prefixed. In En
 
 Languages that are not updated yet will have to use "More Examples" until we get the translations.
 
-Steps now support a single argument that can span several lines. This can be a table or a string.
+Tables can also be used as arguments to individual steps. In fact, steps now support a single argument 
+that can span several lines. This can be a table or a string.
+
 Example:
 
   Given the following people exist:
@@ -55,6 +70,9 @@ The step definitions for such multiline steps must define an extra block argumen
   end
 
 === New features
+* Added profile formatter. (#35, Joseph Wilk)
+* Added support for Chinese Simplified. (Liming Lian)
+* Added support for Dutch. (Sjoerd Tieleman)
 * Multiline steps are now supported. (#4, Aslak Hellesøy)
 * Tables used to define more examples for a scenario must be prefixed "More Examples" (see languages.yml for other languages)
 * Show the file and line number for scenarios as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
@@ -62,15 +80,19 @@ The step definitions for such multiline steps must define an extra block argumen
 * Show the feature file and line for pending steps as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
 
 === Bugfixes
+* Fixed speling errors in Spanish (Daniel Cadenas)
 * ActionMailer delivery_method should not be set to test (#41, Luke Melia)
 * Reverse incorrectly ordered args in webrat select step (#43, David Chelimsky)
 * Support comments above the first scenario (#31, Aslak Hellesøy)
 * Fixed the HTML Formatter to use actual values for FIT table headers (#30, Joseph Wilk)
 
+=== Removed features
+* Removed the /^I go to (.*)$/ step from common_webrat.rb - it's not language agnostic and provides little value.
+
 === New features
 * Added new --out option to make it easier to specify output from Rake and cucumber.yml
 
-== 0.1.7
+== 0.1.7 2008-10-05
 
 This release fixes a few bugs and adds some new features. The most notable features are:
 
@@ -123,6 +145,6 @@ a plain text step is defined. Not anymore! Cucumber will now output this:
 * Added --no-source option to display step definition location next to step text (#26, Joseph Wilk, Aslak Hellesøy)
 * Added more Webrat steps (#25, Tim Glen)
 
-== 0.1.6
+== 0.1.6 2008-10-01
 
 First gem release!

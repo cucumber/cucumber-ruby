@@ -1,6 +1,8 @@
 module Cucumber
   module Model
     class Table
+      attr_accessor :raw
+      
       # Creates a new table. The +raw+ argument should be an array
       # of arrays
       def initialize(raw)

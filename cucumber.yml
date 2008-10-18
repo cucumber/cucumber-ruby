@@ -1,1 +1,1 @@
-rest: --format progress features
+default: --format progress features
