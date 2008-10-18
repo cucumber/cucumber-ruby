@@ -9,8 +9,6 @@ config/hoe.rb
 config/requirements.rb
 cucumber.yml
 examples/calculator/.gitignore
-examples/calculator/Rakefile
-examples/calculator/cucumber.yml
 examples/calculator/README.txt
 examples/calculator/Rakefile
 examples/calculator/features/addition.feature
@@ -44,6 +42,7 @@ examples/dos_line_endings/features/dos_line_endings.feature
 examples/estonian_calculator/Rakefile
 examples/estonian_calculator/features/kalkulaator_steps.rb
 examples/estonian_calculator/features/liitmine.feature
+examples/japanese_calculator/.gitignore
 examples/japanese_calculator/README.txt
 examples/japanese_calculator/Rakefile
 examples/japanese_calculator/features/addition.feature
@@ -94,18 +93,7 @@ gem_tasks/flog.rake
 gem_tasks/gemspec.rake
 gem_tasks/rspec.rake
 gem_tasks/treetop.rake
-<<<<<<< HEAD:Manifest.txt
 gem_tasks/website.rake
-generators/cucumber/cucumber_generator.rb
-generators/cucumber/templates/common_webrat.rb
-generators/cucumber/templates/cucumber
-generators/cucumber/templates/cucumber.rake
-generators/cucumber/templates/env.rb
-generators/feature/feature_generator.rb
-generators/feature/templates/feature.erb
-generators/feature/templates/steps.erb
-=======
->>>>>>> aslakhellesoy/master:Manifest.txt
 lib/cucumber.rb
 lib/cucumber/cli.rb
 lib/cucumber/core_ext/proc.rb
