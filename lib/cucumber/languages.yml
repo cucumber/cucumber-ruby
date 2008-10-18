@@ -37,7 +37,7 @@
 "es":
   feature: Característica
   scenario: Escenario
-  more_examples: Mas exemplos
+  more_examples: Más ejemplos
   given_scenario: DadoElEscenario
   given: Dado
   when: Cuando
