@@ -8,8 +8,8 @@ bin/cucumber
 config/hoe.rb
 config/requirements.rb
 cucumber.yml
+examples/calculator/README.txt
 examples/calculator/Rakefile
-examples/calculator/cucumber.yml
 examples/calculator/features/addition.feature
 examples/calculator/features/division.feature
 examples/calculator/features/steps/calculator_steps.rb
@@ -66,6 +66,7 @@ examples/swedish_calculator/features/steps/kalkulator_steps.rb
 examples/swedish_calculator/features/summering.feature
 examples/swedish_calculator/lib/kalkulator.rb
 examples/tickets/Rakefile
+examples/tickets/cucumber.yml
 examples/tickets/features/steps/tickets_steps.rb
 examples/tickets/features/tickets.feature
 examples/watir/Rakefile
