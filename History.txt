@@ -1,3 +1,14 @@
+== 0.1.9 (In Git)
+
+Release blurb
+
+=== New features
+* Added support for Japanese. (Kakutani Shintaro)
+
+=== Bugfixes
+
+=== Removed features
+
 == 0.1.8 2008-10-18
 
 This release extends the support for tables. PLEASE NOTE THAT TABLES ARE STILL EXPERIMENTAL.
@@ -79,7 +90,7 @@ The step definitions for such multiline steps must define an extra block argumen
 === New features
 * Added new --out option to make it easier to specify output from Rake and cucumber.yml
 
-== 0.1.7
+== 0.1.7 2008-10-05
 
 This release fixes a few bugs and adds some new features. The most notable features are:
 
@@ -132,6 +143,6 @@ a plain text step is defined. Not anymore! Cucumber will now output this:
 * Added --no-source option to display step definition location next to step text (#26, Joseph Wilk, Aslak Hellesøy)
 * Added more Webrat steps (#25, Tim Glen)
 
-== 0.1.6
+== 0.1.6 2008-10-01
 
 First gem release!
