@@ -121,6 +121,7 @@ lib/cucumber/tree/top_down_visitor.rb
 lib/cucumber/treetop_parser/feature.treetop.erb
 lib/cucumber/treetop_parser/feature_da.rb
 lib/cucumber/treetop_parser/feature_de.rb
+lib/cucumber/treetop_parser/feature_en-tx.rb
 lib/cucumber/treetop_parser/feature_en.rb
 lib/cucumber/treetop_parser/feature_es.rb
 lib/cucumber/treetop_parser/feature_et.rb

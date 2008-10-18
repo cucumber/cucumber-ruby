@@ -4,6 +4,7 @@ Release blurb
 
 === New features
 * Added support for Japanese. (Kakutani Shintaro)
+* Added support for Texan (improvements welcome). (Aslak Hellesøy)
 
 === Bugfixes
 * Don't load cucumber.yml unless it exists (Aslak Hellesøy)

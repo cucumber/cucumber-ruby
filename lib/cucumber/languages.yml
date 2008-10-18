@@ -34,6 +34,17 @@
   then: Dann
   and: Und
   but: Aber
+# Texan
+"en-tx":
+  feature: Feature
+  scenario: Scenario
+  more_examples: More Examples
+  given_scenario: GivenScenario
+  given: Given y'all
+  when: When y'all
+  then: Then y'all
+  and: And y'all
+  but: But y'all
 "es":
   feature: Característica
   scenario: Escenario
