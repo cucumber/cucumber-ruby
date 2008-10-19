@@ -30,13 +30,14 @@ module Cucumber
 
     class Scenario < BaseScenario
       MIN_PADDING = 2
+      INDENT = 2 
       
       # If a table follows, the header will be stored here. Weird, but convenient.
       attr_accessor :table_header
       attr_reader :name, :line
       
-      def initialize(feature, name, &proc)
-        @feature, @name = feature, name
+      def initialize(feature, name, line, &proc)
+        @feature, @name, @line = feature, name, line
         @steps_and_given_scenarios = []
         instance_eval(&proc) if block_given?
       end
@@ -53,12 +54,28 @@ module Cucumber
         @feature.scenario_named(name)
       end
 
-      def padding_length(step)
-        (max_step_length - step.length) + MIN_PADDING
+      def length
+        @length ||= Cucumber.language['scenario'].length + 2 + (@name.nil? ? 0 : @name.length)
       end
-      
+
+      def max_line_length
+        [length, max_step_length].max
+      end
+
+      def padding_length
+        padding = (max_line_length - length) + MIN_PADDING
+        padding += INDENT if length != max_line_length
+        padding
+      end
+
+      def step_padding_length(step)
+        padding = (max_line_length - step.length) + MIN_PADDING
+        padding -= INDENT if length == max_line_length
+        padding
+      end
+
       def max_step_length
-        steps.map{|step| step.length}.max
+        @max_step_length ||= (steps.map{|step| step.length}.max || 0)
       end
 
       def row?

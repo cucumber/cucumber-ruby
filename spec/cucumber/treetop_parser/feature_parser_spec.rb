@@ -85,6 +85,12 @@ module Cucumber
         f = p.parse_feature(File.dirname(__FILE__) + '/test_dos.feature')
         f.should have(5).scenarios
       end
+
+      it "should parse multiline steps" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/multiline_steps.feature')
+        f.should have(1).scenarios
+      end
     end
   end
 end

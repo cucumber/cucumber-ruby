@@ -46,6 +46,7 @@ module Cucumber
     end
 
     def visit_feature(feature)
+      formatter.visit_feature(feature) if formatter.respond_to?(:visit_feature)
       feature.accept(self)
     end
 
@@ -62,7 +63,7 @@ module Cucumber
     end
 
     def visit_scenario(scenario)
-      if @line.nil? || scenario.at_line?(@line)
+      if accept?(scenario)
         @error = nil
         @pending = nil
 
@@ -77,6 +78,10 @@ module Cucumber
         formatter.scenario_executed(scenario) if formatter.respond_to?(:scenario_executed)
       end
     end
+    
+    def accept?(scenario)
+      @line.nil? || scenario.at_line?(@line)
+    end
 
     def visit_row_step(step)
       visit_step(step)
@@ -90,6 +95,7 @@ module Cucumber
       unless @pending || @error
         begin
           regexp, args, proc = step.regexp_args_proc(@step_mother)
+          formatter.step_executing(step, regexp, args) if formatter.respond_to?(:step_executing)
           step.execute_in(@world, regexp, args, proc)
           @after_step_procs.each{|p| p.call_in(@world, *[])}
           formatter.step_passed(step, regexp, args)

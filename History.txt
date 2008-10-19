@@ -1,13 +1,98 @@
-== 0.1.8 (Not yet released as gem)
+== 0.1.9 (In Git)
+
+Release blurb
+
+=== New features
+* Added support for Japanese. (Kakutani Shintaro)
+* Added support for Texan (improvements welcome). (Aslak Hellesøy)
 
 === Bugfixes
+* Don't load cucumber.yml unless it exists (Aslak Hellesøy)
+
+=== Removed features
+
+== 0.1.8 2008-10-18
+
+This release extends the support for tables. PLEASE NOTE THAT TABLES ARE STILL EXPERIMENTAL.
+In previous releases it has been possible to use tables to define "more examples" of a scenario i
+n a FIT-style column fixture kind of way. Now you can also use tables as arguments to steps.
+
+Tables used to define more examples after a scenario must now be prefixed. In English it looks like this:
+
+  Feature: Addition
+    In order to avoid silly mistakes
+    As a math idiot 
+    I want to be told the sum of two numbers
+
+    Scenario: Add two numbers
+      Given I have entered 50 into the calculator
+      And I have entered 70 into the calculator
+      When I press add
+      Then the result should be 120 on the screen
+      And the result class should be Fixnum
+
+    More Examples:
+      | input_1 | input_2 | button | output | class  |
+      | 20      | 30      | add    | 50     | Fixnum |
+      | 2       | 5       | add    | 7      | Fixnum |
+      | 0       | 40      | add    | 40     | Fixnum |
+
+Languages that are not updated yet will have to use "More Examples" until we get the translations.
+
+Tables can also be used as arguments to individual steps. In fact, steps now support a single argument 
+that can span several lines. This can be a table or a string.
+
+Example:
+
+  Given the following people exist:
+    | name  | email           | phone |
+    | Aslak | aslak@email.com | 123   |
+    | Joe   | joe@email.com   | 234   |
+    | Bryan | bryan@email.org | 234   |
+  When I search for email.com
+  Then I should see:
+    | name  | email           | phone |
+    | Aslak | aslak@email.com | 123   |
+    | Joe   | joe@email.com   | 234   |
+  And I should see:
+    "Some text
+    on several lines"
+
+The step definitions for such multiline steps must define an extra block argument for the argument:
+
+  Given /the following people exist:/ do |people_table|
+    # people_table is of type Cucumber::Model::Table
+    # See RDoc for more info
+  end
+
+  Then /I should see:/ do |string|
+    # string is a plain old ruby String with leading spaces on each line removed
+  end
+
+=== New features
+* Added profile formatter. (#35, Joseph Wilk)
+* Added support for Chinese Simplified. (Liming Lian)
+* Added support for Dutch. (Sjoerd Tieleman)
+* Multiline steps are now supported. (#4, Aslak Hellesøy)
+* Tables used to define more examples for a scenario must be prefixed "More Examples" (see languages.yml for other languages)
+* Show the file and line number for scenarios as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
+* Show the file for the feature as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
+* Show the feature file and line for pending steps as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
+
+=== Bugfixes
+* Fixed speling errors in Spanish (Daniel Cadenas)
+* ActionMailer delivery_method should not be set to test (#41, Luke Melia)
+* Reverse incorrectly ordered args in webrat select step (#43, David Chelimsky)
 * Support comments above the first scenario (#31, Aslak Hellesøy)
 * Fixed the HTML Formatter to use actual values for FIT table headers (#30, Joseph Wilk)
+
+=== Removed features
+* Removed the /^I go to (.*)$/ step from common_webrat.rb - it's not language agnostic and provides little value.
 
 === New features
 * Added new --out option to make it easier to specify output from Rake and cucumber.yml
 
-== 0.1.7
+== 0.1.7 2008-10-05
 
 This release fixes a few bugs and adds some new features. The most notable features are:
 
@@ -60,6 +145,6 @@ a plain text step is defined. Not anymore! Cucumber will now output this:
 * Added --no-source option to display step definition location next to step text (#26, Joseph Wilk, Aslak Hellesøy)
 * Added more Webrat steps (#25, Tim Glen)
 
-== 0.1.6
+== 0.1.6 2008-10-01
 
 First gem release!
