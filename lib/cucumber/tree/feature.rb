@@ -2,6 +2,8 @@ module Cucumber
   module Tree
     class Feature
       attr_reader :header
+      MIN_PADDING = 2
+      
       attr_accessor :file
       
       def initialize(header, &proc)
@@ -10,8 +12,8 @@ module Cucumber
         instance_eval(&proc) if block_given?
       end
 
-      def add_scenario(name, &proc)
-        scenario = Scenario.new(self, name, &proc)
+      def add_scenario(name, line, &proc)
+        scenario = Scenario.new(self, name, line, &proc)
         @scenarios << scenario
         scenario
       end
@@ -24,6 +26,10 @@ module Cucumber
 
       def scenario_named(name)
         @scenarios.find {|s| s.name == name}
+      end
+
+      def padding_length
+        MIN_PADDING
       end
 
       def Scenario(name, &proc)

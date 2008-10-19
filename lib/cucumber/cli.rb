@@ -23,17 +23,11 @@ module Cucumber
     end
     
     attr_reader :options
-    FORMATS = %w{pretty progress html}
+    FORMATS = %w{pretty profile progress html}
 
     def initialize
       @paths = []
-    end
-
-    def parse_options!(args)
-      return parse_args_from_profile('default') if args.empty?
-      args.extend(OptionParser::Arguable)
-
-      @options ||= { 
+      @options = { 
         :require => nil, 
         :lang    => 'en', 
         :format  => 'pretty', 
@@ -42,6 +36,11 @@ module Cucumber
         :out     => STDOUT,
         :excludes => []
       }
+    end
+
+    def parse_options!(args)
+      return parse_args_from_profile('default') if args.empty?
+      args.extend(OptionParser::Arguable)
 
       args.options do |opts|
         opts.banner = "Usage: cucumber [options] FILES|DIRS"
@@ -98,6 +97,7 @@ module Cucumber
     end
     
     def parse_args_from_profile(profile)
+      return unless File.exist?('cucumber.yml')
       require 'yaml'
       cucumber_yml = YAML::load(IO.read('cucumber.yml'))
       args_from_yml = cucumber_yml[profile]
@@ -171,8 +171,12 @@ module Cucumber
         Formatters::PrettyFormatter.new(@options[:out], step_mother, @options)
       when 'progress'
         Formatters::ProgressFormatter.new(@options[:out])
+       when 'profile'
+        Formatters::ProfileFormatter.new(@options[:out], step_mother)
       when 'html'
         Formatters::HtmlFormatter.new(@options[:out], step_mother)
+      else
+        raise "Unknown formatter: #{@options[:format]}"
       end
     end
     

@@ -31,9 +31,10 @@ grammar Feature
   end
 
   rule scenario
-    scenario_keyword space name:line_to_eol steps:(space step_sequence)? {
+    scenario_keyword space? name:line_to_eol steps:(space step_sequence)? {
       def compile(feature)
-        scenario = feature.add_scenario(name.text_value.strip)
+        line = input.line_of(interval.first)
+        scenario = feature.add_scenario(name.text_value.strip, line)
         steps.step_sequence.compile(scenario) if steps.respond_to?(:step_sequence)
         # TODO - GET RID OF THIS last_scenario NASTINESS
         # Use a better datastructure, like a linked list...
@@ -43,7 +44,15 @@ grammar Feature
   end
   
   rule scenario_or_table
-    scenario / table
+    scenario / more_examples
+  end
+  
+  rule more_examples
+    more_examples_keyword space table {
+      def compile(f)
+        table.compile(f)
+      end
+    }
   end
   
   rule table
@@ -54,7 +63,17 @@ grammar Feature
           feature.add_row_scenario(Feature.last_scenario, table_line.cell_values, table_line.line)
         end
       end
-
+      
+      def matrix
+        ([head] + body).map do |table_line|
+          table_line.cell_values # We're losing the line - we'll get it back when we make our own class
+        end
+      end
+      
+      def to_arg
+        Model::Table.new(matrix)
+      end
+      
       def body
         super.elements.map { |elt| elt.table_line }
       end
@@ -96,7 +115,7 @@ grammar Feature
   end
   
   rule given_scenario
-    given_scenario_keyword space name:line_to_eol {
+    given_scenario_keyword space? name:line_to_eol {
       def compile(scenario)
         line = input.line_of(interval.first)
         scenario.create_given_scenario(name.text_value.strip, line)
@@ -105,12 +124,31 @@ grammar Feature
   end
 
   rule plain_step
-    step_keyword space name:line_to_eol {
+    step_keyword space? name:line_to_eol multi:(space multiline_arg)? {
       def compile(scenario)
         line = input.line_of(interval.first)
-        scenario.create_step(step_keyword.text_value, name.text_value.strip, line)
+        step = scenario.create_step(step_keyword.text_value, name.text_value.strip, line)
+        if multi.respond_to?(:multiline_arg)
+          step.extra_args << multi.multiline_arg.to_arg
+        end
       end
     }
+  end
+  
+  rule multiline_arg
+    table / multiline_string
+  end
+  
+  rule multiline_string
+    quote string:(!quote .)* quote {
+      def to_arg
+        string.text_value.split("\n").map{|l| l.strip}.join("\n")
+      end
+    }
+  end
+
+  rule quote
+    '"'
   end
 
   rule separator
@@ -142,15 +180,19 @@ grammar Feature
   end
   
   rule step_keyword
-    '<%= words['given'] %>' / '<%= words['when'] %>' / '<%= words['then'] %>' / '<%= words['and'] %>' / '<%= words['but'] %>'
+    "<%= words['given'] %>" / "<%= words['when'] %>" / "<%= words['then'] %>" / "<%= words['and'] %>" / "<%= words['but'] %>"
   end
   
   rule scenario_keyword
-    '<%= words['scenario'] %>:'
+    "<%= words['scenario'] %>" ":"?
+  end
+  
+  rule more_examples_keyword
+    "<%= words['more_examples'] %>" ":"?
   end
   
   rule given_scenario_keyword
-    '<%= words['given_scenario'] %>' ':'?
+    "<%= words['given_scenario'] %>" ":"?
   end
 
 end

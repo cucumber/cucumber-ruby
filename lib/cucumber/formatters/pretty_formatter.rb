@@ -17,12 +17,24 @@ module Cucumber
         @pending = []
         @skipped = []
       end
-    
+ 
+      def visit_feature(feature)
+        @feature = feature
+      end
+ 
       def header_executing(header)
         @io.puts if @feature_newline
         @feature_newline = true
-        @io.puts passed(header)
-        @io.puts
+
+        header_lines = header.split("\n")
+        header_lines.each_with_index do |line, index|
+          @io.print line
+          if @options[:source] && index==0
+            @io.print padding_spaces(@feature)
+            @io.print comment("# #{@feature.file}") 
+          end
+          @io.puts
+        end
       end
   
       def scenario_executing(scenario)
@@ -30,7 +42,12 @@ module Cucumber
         if scenario.row?
           @io.print "    |"
         else
-          @io.puts passed("  #{Cucumber.language['scenario']}: #{scenario.name}")
+          @io.print passed("  #{Cucumber.language['scenario']}: #{scenario.name}")
+          if @options[:source]
+            @io.print padding_spaces(scenario)
+            @io.print comment("# #{scenario.file}:#{scenario.line}")
+          end
+          @io.puts
         end
       end
 
@@ -99,7 +116,12 @@ module Cucumber
           args.each{|arg| @io.print pending(arg) ; @io.print "|"}
         else
           @pending << step
-          @io.puts pending("    #{step.keyword} #{step.name}")
+          @io.print pending("    #{step.keyword} #{step.name}")
+          if @options[:source]
+            @io.print padding_spaces(step)
+            @io.print comment("# #{step.file}:#{step.line}")
+          end
+          @io.puts
         end
       end
       
@@ -147,8 +169,8 @@ module Cucumber
         comment(proc.to_comment_line)
       end
       
-      def padding_spaces(step)
-        " " * step.padding_length
+      def padding_spaces(tree_item)
+        " " * tree_item.padding_length
       end
     end
   end

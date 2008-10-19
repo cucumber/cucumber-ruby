@@ -13,7 +13,7 @@ When /^I fill in "(.*)" with "(.*)"$/ do |field, value|
   fills_in(field, :with => value) 
 end
 
-When /^I select "(.*)" from "(.*)"$/ do |field, value|
+When /^I select "(.*)" from "(.*)"$/ do |value, field|
   selects(value, :from => field) 
 end
 
@@ -31,15 +31,6 @@ end
 
 When /^I attach the file at "(.*)" to "(.*)" $/ do |path, field|
   attaches_file(field, path)
-end
-
-When /^I go to (.*)$/ do |page|
-  visits case page
-  when "the home page"
-    "/"
-  else
-    raise "Can't find mapping from \"#{page}\" to a path"
-  end
 end
 
 Then /^I should see "(.*)"$/ do |text|
