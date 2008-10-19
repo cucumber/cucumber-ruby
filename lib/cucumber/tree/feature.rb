@@ -3,9 +3,9 @@ module Cucumber
     class Feature
       attr_reader :header
       MIN_PADDING = 2
-      
+
       attr_accessor :file
-      
+
       def initialize(header, &proc)
         @header = header
         @scenarios = []
@@ -17,7 +17,7 @@ module Cucumber
         @scenarios << scenario
         scenario
       end
-      
+
       def add_row_scenario(template_scenario, values, line)
         scenario = RowScenario.new(self, template_scenario, values, line)
         @scenarios << scenario
@@ -35,13 +35,13 @@ module Cucumber
       def Scenario(name, &proc)
         add_scenario(name, &proc)
       end
-      
+
       def Table(matrix = [], &proc)
         table = Table.new(matrix)
         proc.call(table)
         template_scenario = @scenarios.last
         matrix[1..-1].each do |row|
-	  add_row_scenario(template_scenario, row, row.line)
+          add_row_scenario(template_scenario, row, row.line)
         end
       end
 
