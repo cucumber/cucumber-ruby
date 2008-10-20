@@ -52,7 +52,7 @@ module Cucumber
         end
       
         %w{passed failed skipped}.each do |result|
-          it "should display step source for passed step" do
+          it "should display step source for #{result} step" do
             @formatter.send("step_#{result}".to_sym, mock_step(:regexp_args_proc => [nil, nil, mock_proc], :error => StandardError.new, :padding_length => 2), nil, nil)
           
             @io.string.should include("Given formatted yes  # steps/example_steps.rb:11")
