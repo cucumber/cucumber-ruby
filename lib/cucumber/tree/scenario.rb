@@ -84,7 +84,6 @@ module Cucumber
 
       def update_table_column_widths values
         @table_column_widths ||= [0] * values.size
-
         @table_column_widths = @table_column_widths.zip(values).map {|max, value| [max, value.size].max}
       end
       def row?
