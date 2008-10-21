@@ -3,6 +3,15 @@ require 'yaml'
 
 module Cucumber
   describe CLI do
+    
+    def mock_executor(stubs = {})
+      @executor ||= stub('executor', {:visit_features => nil, :failed => false, :formatters= => nil}.merge(stubs))
+    end
+    
+    def mock_broadcaster(stubs = {})
+      stub(Broadcaster, {:register => nil}.merge(stubs))
+    end
+    
     it "should expand args from YAML file" do
       cli = CLI.new
 
@@ -11,12 +20,11 @@ module Cucumber
 
       cli.parse_options!(%w{--format progress --profile bongo})
       cli.options.should == {
-        :formats => ['progress'],
-        :require => ['from/yml'], 
-        :dry_run => false, 
+        :formats => {'progress' => [STDOUT]},
+        :require => ['from/yml'],
+        :dry_run => false,
         :lang => 'en',
-        :source => true,
-        :out => STDOUT
+        :source => true
       }
     end
 
@@ -28,19 +36,18 @@ module Cucumber
 
       cli.parse_options!([])
       cli.options.should == {
-        :formats => ['pretty'],
-        :require => ['from/yml'], 
-        :dry_run => false, 
+        :formats => {'pretty' => [STDOUT]},
+        :require => ['from/yml'],
+        :dry_run => false,
         :lang => 'en',
-        :source => true,
-        :out => STDOUT
+        :source => true
       }
     end
-    
+
     it "should accept --no-source option" do
       cli = CLI.new
       cli.parse_options!(%w{--no-source})
-      
+
       cli.options[:source].should be_false
     end
 
@@ -49,28 +56,70 @@ module Cucumber
       File.should_receive(:open).with('jalla.txt', 'w')
       cli.parse_options!(%w{--out jalla.txt})
     end
-    
-    it "should accept multiple --format" do
+
+    it "should accept multiple --out options" do
       cli = CLI.new
-      cli.parse_options!(%w{--format pretty --format progress})
-      cli.options[:formats].should == ['pretty', 'progress']
+      mock_file1 = stub(File, :open => nil)
+      mock_file2 = stub(File, :open => nil)
+      File.stub!(:open).and_return(mock_file1, mock_file2)
+
+      cli.parse_options!(%w{--format progress --out file1 --out file2})
+      cli.options[:formats].should == {'progress' => [mock_file1, mock_file2]}
     end
-        
-    it "should setup the executor with specified formatters" do
+
+    it "should accept multiple --format options" do
       cli = CLI.new
       cli.parse_options!(%w{--format pretty --format progress})
+      cli.options[:formats].should have_key('pretty')
+      cli.options[:formats].should have_key('progress')
+    end
+
+    it "should associate --out to previous --format" do
+      cli = CLI.new
+      mock_file1 = stub(File, :open => nil)
+      mock_file2 = stub(File, :open => nil)
+      File.stub!(:open).and_return(mock_file1, mock_file2)
+
+      cli.parse_options!(%w{--format progress --out file1 --format profile --out file2})
+      cli.options[:formats].should == {'progress' => [mock_file1], 'profile' => [mock_file2]}
+    end
+
+    it "should register --out files with an output broadcaster" do
+      cli = CLI.new
+      mock_file = stub(File)
+      File.stub!(:open).and_return(mock_file)
+      mock_output_broadcaster = mock_broadcaster
+      Broadcaster.stub!(:new).and_return(mock_broadcaster, mock_output_broadcaster)
       
-      pretty_formatter = stub(Formatters::PrettyFormatter)
-      progress_formatter = stub(Formatters::ProgressFormatter)
-      
-      Formatters::PrettyFormatter.stub!(:new).and_return(pretty_formatter)
-      Formatters::ProgressFormatter.stub!(:new).and_return(progress_formatter)
-      
-      mock_executor = mock('executor', :visit_features => nil, :failed => false)
-      mock_executor.should_receive(:formatters=).with([pretty_formatter, progress_formatter])
+      mock_output_broadcaster.should_receive(:register).with(mock_file)
+      cli.parse_options!(%w{--out test.file})
 
       cli.execute!(stub('step mother'), mock_executor, stub('features'))
     end
-        
+
+    it "should register --formatters with the formatter broadcaster" do
+      cli = CLI.new
+      mock_progress_formatter = stub(Formatters::ProgressFormatter)
+      Formatters::ProgressFormatter.stub!(:new).and_return(mock_progress_formatter)
+      mock_formatter_broadcaster = mock_broadcaster
+      Broadcaster.stub!(:new).and_return(mock_formatter_broadcaster, mock_broadcaster)
+   
+      mock_formatter_broadcaster.should_receive(:register).with(mock_progress_formatter)
+      cli.parse_options!(%w{--format progress})
+      
+      cli.execute!(stub('step mother'), mock_executor, stub('features'))
+    end
+
+    it "should setup the executor with the formatter broadcaster" do
+      cli = CLI.new
+      broadcaster = Broadcaster.new
+      Broadcaster.stub!(:new).and_return(broadcaster)
+
+      mock_executor.should_receive(:formatters=).with(broadcaster)
+      cli.parse_options!(%w{--format progress})
+
+      cli.execute!(stub('step mother'), mock_executor, stub('features'))
+    end
+
   end
 end

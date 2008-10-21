@@ -7,7 +7,7 @@ module Cucumber
       @io = StringIO.new
       @step_mother = StepMother.new
       @executor = Executor.new(@step_mother)
-      @formatters = [Formatters::ProgressFormatter.new(@io)]
+      @formatters = Broadcaster.new [Formatters::ProgressFormatter.new(@io)]
       @executor.formatters = @formatters
       @feature_file = File.dirname(__FILE__) + '/sell_cucumbers.feature'
       @parser = TreetopParser::FeatureParser.new
@@ -20,7 +20,7 @@ module Cucumber
       @step_mother.register_step_proc(/I sell (\d*) cucumbers/)        { |n| @n -= n.to_i }
       @step_mother.register_step_proc(/I should owe (\d*) cucumbers/)  { |n| @n.should == -n.to_i }
       @executor.visit_features(@features)
-      @formatters.each { |formatter| formatter.dump }
+      @formatters.dump
       @io.string.should == (<<-STDOUT).strip
 \e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[31m\n\e[0m\e[0m\e[1m\e[31m
 \e[0m

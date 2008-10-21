@@ -1,7 +1,7 @@
 == 0.1.9 (Not released as gem)
 
 === New features
-Support specifiying multiple formatters (#47 Joseph Wilk)
+Support specifiying multiple formatters and multiple outputs (#47 Joseph Wilk)
 
 == 0.1.8 2008-10-18
 

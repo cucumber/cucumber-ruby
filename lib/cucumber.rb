@@ -12,6 +12,7 @@ require 'cucumber/step_mother'
 require 'cucumber/formatters'
 require 'cucumber/treetop_parser/feature_parser'
 require 'cucumber/cli'
+require 'cucumber/broadcaster'
 
 module Cucumber
   LANGUAGE_FILE = File.expand_path(File.dirname(__FILE__) + '/cucumber/languages.yml')
