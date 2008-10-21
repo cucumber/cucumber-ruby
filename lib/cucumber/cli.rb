@@ -34,12 +34,14 @@ module Cucumber
       return parse_args_from_profile('default') if args.empty?
       args.extend(OptionParser::Arguable)
 
+      @active_format = DEFAULT_FORMAT
+
       @options ||= { 
         :require => nil, 
         :lang    => 'en', 
         :dry_run => false, 
         :source  => true,
-        :out     => STDOUT
+        :formats => {}
       }
       args.options do |opts|
         opts.banner = "Usage: cucumber [options] FILES|DIRS"
@@ -64,8 +66,8 @@ module Cucumber
             STDERR.puts opts.help
             exit 1
           end
-          @options[:formats] ||= []
-          @options[:formats] << v
+          @options[:formats][v] ||= [STDOUT]
+          @active_format = v
         end
         opts.on("-p=PROFILE", "--profile=PROFILE", "Pull commandline arguments from cucumber.yml.") do |v|
           parse_args_from_profile(v)
@@ -77,7 +79,9 @@ module Cucumber
           @options[:source] = false
         end
         opts.on("-o", "--out=FILE", "Write output to a file instead of STDOUT.") do |v|
-          @options[:out] = File.open(v, 'w')
+          @options[:formats][@active_format] ||= []
+          @options[:formats][@active_format].delete(STDOUT)
+          @options[:formats][@active_format] << File.open(v, 'w')
         end
         opts.on_tail("--version", "Show version") do
           puts VERSION::STRING
@@ -89,8 +93,10 @@ module Cucumber
         end
       end.parse!
       
-      @options[:formats] ||= [DEFAULT_FORMAT]
-      
+      if @options[:formats].empty?
+        @options[:formats][DEFAULT_FORMAT] = [STDOUT]
+      end
+            
       # Whatever is left after option parsing is the FILE arguments
       @paths += args
     end
@@ -105,7 +111,7 @@ module Cucumber
     
     def execute!(step_mother, executor, features)
       Cucumber.load_language(@options[:lang])
-      executor.formatters = formatters(step_mother)
+      executor.formatters = build_formatter_broadcaster(step_mother)
       require_files
       load_plain_text_features(features)
       executor.line = @options[:line].to_i if @options[:line]
@@ -155,25 +161,34 @@ module Cucumber
       end
     end
     
-    def formatters(step_mother)
-      formats = []
-      @options[:formats].each do |format|
+    def build_formatter_broadcaster(step_mother)
+      formatter_broadcaster = Broadcaster.new
+      @options[:formats].each do |format, output_list|
+        output_broadcaster = build_output_broadcaster(output_list)
         case format
         when 'pretty'
-          formats << Formatters::PrettyFormatter.new(@options[:out], step_mother, @options)
+          formatter_broadcaster.register(Formatters::PrettyFormatter.new(output_broadcaster, step_mother, @options))
         when 'progress'
-          formats << Formatters::ProgressFormatter.new(@options[:out])
-         when 'profile'
-          formats << Formatters::ProfileFormatter.new(@options[:out], step_mother)
+          formatter_broadcaster.register(Formatters::ProgressFormatter.new(output_broadcaster))
+        when 'profile'
+          formatter_broadcaster.register(Formatters::ProfileFormatter.new(output_broadcaster, step_mother))
         when 'html'
-          formats << Formatters::HtmlFormatter.new(@options[:out], step_mother)
+          formatter_broadcaster.register(Formatters::HtmlFormatter.new(output_broadcaster, step_mother))
         else
           raise "Unknown formatter: #{@options[:format]}"
         end
       end
-      formats
+      formatter_broadcaster
     end
-    
+
+    def build_output_broadcaster(output_list)
+      output_broadcaster = Broadcaster.new
+      output_list.each do |output|
+        output_broadcaster.register(output)
+      end
+      output_broadcaster
+    end
+        
   end
 end
 
