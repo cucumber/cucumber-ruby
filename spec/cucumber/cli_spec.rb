@@ -5,7 +5,7 @@ module Cucumber
   describe CLI do
     
     def mock_executor(stubs = {})
-      @executor ||= stub('executor', {:visit_features => nil, :failed => false, :formatters= => nil}.merge(stubs))
+      stub('executor', {:visit_features => nil, :failed => false, :formatters= => nil}.merge(stubs))
     end
     
     def mock_broadcaster(stubs = {})
@@ -114,7 +114,7 @@ module Cucumber
       cli = CLI.new
       broadcaster = Broadcaster.new
       Broadcaster.stub!(:new).and_return(broadcaster)
-
+      mock_executor = mock_executor()
       mock_executor.should_receive(:formatters=).with(broadcaster)
       cli.parse_options!(%w{--format progress})
 
