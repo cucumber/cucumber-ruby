@@ -3,15 +3,23 @@ require 'spec'
 case PLATFORM
 when /darwin/
   require 'safariwatir'
-  Watir::Browser = Watir::Safari
+  Browser = Watir::Safari
 when /win32|mingw/
   require 'watir'
-  Watir::Browser = Watir::IE
+  Browser = Watir::IE
 when /java/
   require 'celerity'
-  Watir::Browser = Celerity::Browser
+  Browser = Celerity::Browser
 else
   raise "This platform is not supported (#{PLATFORM})"
+end
+
+Before do
+  @b = Browser.new
+end
+
+After do
+  @b.close
 end
 
 class GoogleSearch
@@ -27,14 +35,6 @@ class GoogleSearch
     @b.text_field(:name, 'q').set(text)
     @b.button(:name, 'btnG').click
   end
-end
-
-Before do
-  @b = Watir::Browser.new
-end
-
-After do
-  @b.close
 end
 
 Given 'I am on the Google search page' do

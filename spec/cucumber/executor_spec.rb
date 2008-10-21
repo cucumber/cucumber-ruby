@@ -5,9 +5,10 @@ module Cucumber
   describe Executor do
     before do # TODO: Way more setup and duplication of lib code. Use lib code!
       @io = StringIO.new
-      @formatter = Formatters::ProgressFormatter.new(@io)
       @step_mother = StepMother.new
-      @executor = Executor.new(@formatter, @step_mother)
+      @executor = Executor.new(@step_mother)
+      @formatter = Formatters::ProgressFormatter.new(@io)
+      @executor.formatter = @formatter
       @feature_file = File.dirname(__FILE__) + '/sell_cucumbers.feature'
       @parser = TreetopParser::FeatureParser.new
       @features = Tree::Features.new
@@ -37,7 +38,7 @@ STDOUT
 
 1)
 dang
-#{__FILE__}:33:in `Then /I should owe (\\d*) cucumbers/'
+#{__FILE__}:34:in `Then /I should owe (\\d*) cucumbers/'
 #{@feature_file}:9:in `Then I should owe 7 cucumbers'
 \e[0m
 STDOUT
@@ -58,6 +59,23 @@ STDOUT
         Regexp.compile(exp)
       end
 
+      it "should report multiple definitions as an error" do
+        @step_mother.register_step_proc(/there are (\d*) cucumbers/)     {|n|}
+        @step_mother.register_step_proc(/there (.*) (\d*) cucumbers/)    {|n|}
+        @step_mother.register_step_proc(/I sell (\d*) cucumbers/)        {|n|}
+        @executor.visit_features(@features)
+        @io.string.should =~ make_regex('F','_','P')
+      end
+      
+      it "should report subsequent multiple definitions as an skipped" do
+        @step_mother.register_step_proc(/there are (\d*) cucumbers/)     {|n|}
+        @step_mother.register_step_proc(/there (.*) (\d*) cucumbers/)    {|n|}
+        @step_mother.register_step_proc(/I sell (\d*) cucumbers/)        {|n|}
+        @step_mother.register_step_proc(/I sell (\d*) (.*)/)             {|n|}
+        @executor.visit_features(@features)
+        @io.string.should =~ make_regex('F','_','P')
+      end
+      
       it "should report pending steps after failures" do
         @step_mother.register_step_proc(/there are (\d*) cucumbers/)     {|n|}
         @step_mother.register_step_proc(/I sell (\d*) cucumbers/)        {|n| raise "oops"}

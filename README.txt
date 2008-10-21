@@ -13,8 +13,7 @@ Documentation: http://github.com/aslakhellesoy/cucumber/wikis/home
 
 == INSTALL:
 
-* gem sources --add http://gems.github.com/ 
-* gem install aslakhellesoy-cucumber
+* gem install cucumber
 
 == LICENSE:
 
