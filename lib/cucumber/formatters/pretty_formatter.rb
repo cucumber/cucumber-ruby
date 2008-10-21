@@ -177,7 +177,7 @@ module Cucumber
       def next_column_index
         @current_column ||= -1
         @current_column += 1
-        @current_column = 0 if @current_column == @table_column_widths.size
+        @current_column = 0 if @current_column >= @table_column_widths.size
         @current_column
       end
 
