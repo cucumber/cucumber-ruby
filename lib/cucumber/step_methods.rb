@@ -5,15 +5,19 @@ module Cucumber
   module StepMethods
     # Each scenario will execute in the context of what the supplied block returns.
     def World(&proc)
-      $executor.register_world_proc(&proc)
+      executor.register_world_proc(&proc)
     end
 
     def Before(&proc)
-      $executor.register_before_proc(&proc)
+      executor.register_before_scenario_proc(&proc)
     end
     
     def After(&proc)
-      $executor.register_after_proc(&proc)
+      executor.register_after_scenario_proc(&proc)
+    end
+
+    def AfterStep(&proc)
+      executor.register_after_step_proc(&proc)
     end
 
     def Given(key, &proc)
@@ -36,6 +40,10 @@ module Cucumber
     
     def step_mother #:nodoc:
       @step_mother ||= StepMother.new
+    end
+    
+    def executor
+      @executor ||= Executor.new(step_mother)
     end
   end
 end

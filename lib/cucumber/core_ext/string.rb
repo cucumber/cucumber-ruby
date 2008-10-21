@@ -11,8 +11,11 @@ class String
       else
         format % m
       end
-      s[md.offset(n+1)[0] + pos, m.length] = replacement
-      pos += replacement.length - m.length
+      
+      if md.offset(n+1)[0]
+        s[md.offset(n+1)[0] + pos, m.length] = replacement
+        pos += replacement.length - m.length
+      end
     end
     s
   end
