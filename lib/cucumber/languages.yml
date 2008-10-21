@@ -122,6 +122,7 @@
   and: Ja
   but: Kuid
 "zh-CN":
+  feature: 功能
   scenario: 场景
   given_scenario: 引用场景
   given: 假如
