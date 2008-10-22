@@ -66,7 +66,8 @@ module Cucumber
             STDERR.puts opts.help
             exit 1
           end
-          @options[:formats][v] ||= [STDOUT]
+          @options[:formats][v] ||= []
+          @options[:formats][v] << STDOUT
           @active_format = v
         end
         opts.on("-p=PROFILE", "--profile=PROFILE", "Pull commandline arguments from cucumber.yml.") do |v|
@@ -80,8 +81,11 @@ module Cucumber
         end
         opts.on("-o", "--out=FILE", "Write output to a file instead of STDOUT.") do |v|
           @options[:formats][@active_format] ||= []
-          @options[:formats][@active_format].delete(STDOUT)
-          @options[:formats][@active_format] << File.open(v, 'w')
+          if @options[:formats][@active_format].last == STDOUT
+            @options[:formats][@active_format][-1] = File.open(v, 'w')
+          else
+            @options[:formats][@active_format] << File.open(v, 'w')
+          end
         end
         opts.on_tail("--version", "Show version") do
           puts VERSION::STRING
