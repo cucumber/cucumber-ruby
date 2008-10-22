@@ -6,6 +6,14 @@ module Cucumber
     describe ANSIColor do
       include ANSIColor
       
+      before do
+        ::Term::ANSIColor.coloring = true
+      end
+      
+      after do
+        ::Term::ANSIColor.coloring = false
+      end
+      
       it "should wrap string in bold green for #passed with string arg" do
         passed("foo").should == "\e[0m\e[1m\e[32mfoo\e[0m\e[0m"
       end

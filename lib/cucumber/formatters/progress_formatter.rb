@@ -8,6 +8,7 @@ module Cucumber
       def initialize(io)
         @io = (io == STDOUT) ? Kernel : io
         @errors = []
+        @pending = []
       end
       
       def step_passed(step, regexp, args)
@@ -20,6 +21,7 @@ module Cucumber
       end
       
       def step_pending(step, regexp, args)
+        @pending << step.scenario
         @io.print pending('P')
       end
     
@@ -28,7 +30,14 @@ module Cucumber
       end
 
       def dump
+        @io.puts pending
+        @io.puts "\nPending Scenarios:\n\n" if @pending.any?
+        @pending.uniq.each_with_index do |scenario, n|
+          @io.puts "#{n+1}) #{scenario.feature.header.split("\n").first.gsub(/^(Feature|Story):/, '')} (#{scenario.name})"
+        end
+        
         @io.puts failed
+        @io.puts "\nFailed:" if @errors.any?
         @errors.each_with_index do |error,n|
           @io.puts
           @io.puts "#{n+1})"

@@ -1,0 +1,6 @@
+$:.unshift(File.dirname(__FILE__) + '/../../lib') # If you're running off a Cucumber gem you can skip this line
+require 'cucumber/rake/task'
+
+Cucumber::Rake::Task.new do |t|
+  t.cucumber_opts = "--format pretty --language ja"
+end

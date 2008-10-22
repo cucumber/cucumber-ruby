@@ -40,6 +40,12 @@ examples/dos_line_endings/features/dos_line_endings.feature
 examples/estonian_calculator/Rakefile
 examples/estonian_calculator/features/kalkulaator_steps.rb
 examples/estonian_calculator/features/liitmine.feature
+examples/japanese_calculator/README.txt
+examples/japanese_calculator/Rakefile
+examples/japanese_calculator/features/addition.feature
+examples/japanese_calculator/features/division.feature
+examples/japanese_calculator/features/steps/calculator_steps.rb
+examples/japanese_calculator/lib/calculator.rb
 examples/java/README.textile
 examples/java/Rakefile
 examples/java/features/hello.feature
@@ -115,10 +121,12 @@ lib/cucumber/tree/top_down_visitor.rb
 lib/cucumber/treetop_parser/feature.treetop.erb
 lib/cucumber/treetop_parser/feature_da.rb
 lib/cucumber/treetop_parser/feature_de.rb
+lib/cucumber/treetop_parser/feature_en-tx.rb
 lib/cucumber/treetop_parser/feature_en.rb
 lib/cucumber/treetop_parser/feature_es.rb
 lib/cucumber/treetop_parser/feature_et.rb
 lib/cucumber/treetop_parser/feature_fr.rb
+lib/cucumber/treetop_parser/feature_ja.rb
 lib/cucumber/treetop_parser/feature_nl.rb
 lib/cucumber/treetop_parser/feature_no.rb
 lib/cucumber/treetop_parser/feature_parser.rb

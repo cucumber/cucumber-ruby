@@ -28,21 +28,21 @@ module Cucumber
     
     def initialize
       @paths = []
+      @options = { 
+        :require => nil, 
+        :lang    => 'en', 
+        :dry_run => false, 
+        :source  => true,
+        :formats => {},
+        :excludes => []
+      }
+      @active_format = DEFAULT_FORMAT
     end
 
     def parse_options!(args)
       return parse_args_from_profile('default') if args.empty?
       args.extend(OptionParser::Arguable)
 
-      @active_format = DEFAULT_FORMAT
-
-      @options ||= { 
-        :require => nil, 
-        :lang    => 'en', 
-        :dry_run => false, 
-        :source  => true,
-        :formats => {}
-      }
       args.options do |opts|
         opts.banner = "Usage: cucumber [options] FILES|DIRS"
         opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require files before executing the features.",
@@ -69,6 +69,9 @@ module Cucumber
           @options[:formats][v] ||= []
           @options[:formats][v] << STDOUT
           @active_format = v
+        end
+        opts.on("--exclude=PATTERN", "Don't run features matching a pattern") do |v|
+          @options[:excludes] << v
         end
         opts.on("-p=PROFILE", "--profile=PROFILE", "Pull commandline arguments from cucumber.yml.") do |v|
           parse_args_from_profile(v)
@@ -106,6 +109,7 @@ module Cucumber
     end
     
     def parse_args_from_profile(profile)
+      return unless File.exist?('cucumber.yml')
       require 'yaml'
       cucumber_yml = YAML::load(IO.read('cucumber.yml'))
       args_from_yml = cucumber_yml[profile]
@@ -147,10 +151,18 @@ module Cucumber
     end
 
     def feature_files
-      @paths.map do |path|
+      potential_feature_files = @paths.map do |path|
         path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
         File.directory?(path) ? Dir["#{path}/**/*.feature"] : path
       end.flatten.uniq
+      
+      @options[:excludes].each do |exclude|
+        potential_feature_files.reject! do |path|
+          path =~ /#{Regexp.escape(exclude)}/
+        end
+      end
+      
+      potential_feature_files
     end
     
     def feature_dirs
