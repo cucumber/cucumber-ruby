@@ -3,6 +3,7 @@
 Release blurb
 
 === New features
+* Added support for Polish (Joseph Wilk)
 * Support specifying multiple formatters and multiple outputs (#47 Joseph Wilk)
 * Added support for Japanese. (Kakutani Shintaro)
 * Added support for Texan (improvements welcome). (Aslak Hellesøy)
