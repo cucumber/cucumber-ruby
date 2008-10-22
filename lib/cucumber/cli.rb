@@ -24,18 +24,19 @@ module Cucumber
     
     attr_reader :options
     FORMATS = %w{pretty profile progress html}
-
+    DEFAULT_FORMAT = 'pretty'
+    
     def initialize
       @paths = []
       @options = { 
         :require => nil, 
         :lang    => 'en', 
-        :format  => 'pretty', 
         :dry_run => false, 
         :source  => true,
-        :out     => STDOUT,
+        :formats => {},
         :excludes => []
       }
+      @active_format = DEFAULT_FORMAT
     end
 
     def parse_options!(args)
@@ -58,14 +59,16 @@ module Cucumber
           "Look at #{Cucumber::LANGUAGE_FILE} for keywords") do |v|
           @options[:lang] = v
         end
-        opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{@options[:format]})",
+        opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{DEFAULT_FORMAT})",
           "Available formats: #{FORMATS.join(", ")}") do |v|
           unless FORMATS.index(v) 
             STDERR.puts "Invalid format: #{v}\n"
             STDERR.puts opts.help
             exit 1
           end
-          @options[:format] = v
+          @options[:formats][v] ||= []
+          @options[:formats][v] << STDOUT
+          @active_format = v
         end
         opts.on("--exclude=PATTERN", "Don't run features matching a pattern") do |v|
           @options[:excludes] << v
@@ -80,7 +83,12 @@ module Cucumber
           @options[:source] = false
         end
         opts.on("-o", "--out=FILE", "Write output to a file instead of STDOUT.") do |v|
-          @options[:out] = File.open(v, 'w')
+          @options[:formats][@active_format] ||= []
+          if @options[:formats][@active_format].last == STDOUT
+            @options[:formats][@active_format][-1] = File.open(v, 'w')
+          else
+            @options[:formats][@active_format] << File.open(v, 'w')
+          end
         end
         opts.on_tail("--version", "Show version") do
           puts VERSION::STRING
@@ -92,6 +100,10 @@ module Cucumber
         end
       end.parse!
       
+      if @options[:formats].empty?
+        @options[:formats][DEFAULT_FORMAT] = [STDOUT]
+      end
+            
       # Whatever is left after option parsing is the FILE arguments
       @paths += args
     end
@@ -107,7 +119,7 @@ module Cucumber
     
     def execute!(step_mother, executor, features)
       Cucumber.load_language(@options[:lang])
-      executor.formatter = formatter(step_mother)
+      executor.formatters = build_formatter_broadcaster(step_mother)
       require_files
       load_plain_text_features(features)
       executor.line = @options[:line].to_i if @options[:line]
@@ -165,21 +177,34 @@ module Cucumber
       end
     end
     
-    def formatter(step_mother)
-      case @options[:format]
-      when 'pretty'
-        Formatters::PrettyFormatter.new(@options[:out], step_mother, @options)
-      when 'progress'
-        Formatters::ProgressFormatter.new(@options[:out])
-       when 'profile'
-        Formatters::ProfileFormatter.new(@options[:out], step_mother)
-      when 'html'
-        Formatters::HtmlFormatter.new(@options[:out], step_mother)
-      else
-        raise "Unknown formatter: #{@options[:format]}"
+    def build_formatter_broadcaster(step_mother)
+      formatter_broadcaster = Broadcaster.new
+      @options[:formats].each do |format, output_list|
+        output_broadcaster = build_output_broadcaster(output_list)
+        case format
+        when 'pretty'
+          formatter_broadcaster.register(Formatters::PrettyFormatter.new(output_broadcaster, step_mother, @options))
+        when 'progress'
+          formatter_broadcaster.register(Formatters::ProgressFormatter.new(output_broadcaster))
+        when 'profile'
+          formatter_broadcaster.register(Formatters::ProfileFormatter.new(output_broadcaster, step_mother))
+        when 'html'
+          formatter_broadcaster.register(Formatters::HtmlFormatter.new(output_broadcaster, step_mother))
+        else
+          raise "Unknown formatter: #{@options[:format]}"
+        end
       end
+      formatter_broadcaster
     end
-    
+
+    def build_output_broadcaster(output_list)
+      output_broadcaster = Broadcaster.new
+      output_list.each do |output|
+        output_broadcaster.register(output)
+      end
+      output_broadcaster
+    end
+        
   end
 end
 
