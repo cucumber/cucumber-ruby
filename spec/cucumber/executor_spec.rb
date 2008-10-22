@@ -7,8 +7,8 @@ module Cucumber
       @io = StringIO.new
       @step_mother = StepMother.new
       @executor = Executor.new(@step_mother)
-      @formatter = Formatters::ProgressFormatter.new(@io)
-      @executor.formatter = @formatter
+      @formatters = Broadcaster.new [Formatters::ProgressFormatter.new(@io)]
+      @executor.formatters = @formatters
       @feature_file = File.dirname(__FILE__) + '/sell_cucumbers.feature'
       @parser = TreetopParser::FeatureParser.new
       @features = Tree::Features.new
@@ -20,9 +20,9 @@ module Cucumber
       @step_mother.register_step_proc(/I sell (\d*) cucumbers/)        { |n| @n -= n.to_i }
       @step_mother.register_step_proc(/I should owe (\d*) cucumbers/)  { |n| @n.should == -n.to_i }
       @executor.visit_features(@features)
-      @formatter.dump
-      @io.string.should == ("...\n\n\n\n")
+      @formatters.dump
 
+      @io.string.should == ("...\n\n\n\n")
     end
 
     it "should print filtered backtrace with feature line" do
@@ -47,7 +47,7 @@ dang
 #       @executor.register_step_proc("I will call you") { @executor.register_step_proc("call me please") }
 #       @executor.register_step_proc(/I should owe (\d*) cucumbers/)  { |n| @n.should == -n.to_i }
 #       @feature.accept(@executor)
-#       @formatter.dump
+#       @formatters.each { |formatter| formatter.dump }
 #       @io.string.should == "...\n"
 #     end
 

@@ -3,6 +3,7 @@
 Release blurb
 
 === New features
+* Support specifying multiple formatters and multiple outputs (#47 Joseph Wilk)
 * Added support for Japanese. (Kakutani Shintaro)
 * Added support for Texan (improvements welcome). (Aslak Hellesøy)
 
@@ -10,6 +11,7 @@ Release blurb
 * Don't load cucumber.yml unless it exists (Aslak Hellesøy)
 
 === Removed features
+
 
 == 0.1.8 2008-10-18
 
