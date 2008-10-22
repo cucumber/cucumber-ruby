@@ -21,11 +21,8 @@ module Cucumber
       @step_mother.register_step_proc(/I should owe (\d*) cucumbers/)  { |n| @n.should == -n.to_i }
       @executor.visit_features(@features)
       @formatters.dump
-      @io.string.should == (<<-STDOUT).strip
-\e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[31m\n\e[0m\e[0m\e[1m\e[31m
-\e[0m
-STDOUT
 
+      @io.string.should == ("...\n\n\n\n")
     end
 
     it "should print filtered backtrace with feature line" do
@@ -33,15 +30,16 @@ STDOUT
       @step_mother.register_step_proc(/I sell (\d*) cucumbers/)        { |n| @n = n }
       @step_mother.register_step_proc(/I should owe (\d*) cucumbers/) { |n| raise "dang" }
       @executor.visit_features(@features)
-      @io.string.should == (<<-STDOUT).strip
-\e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[32m.\e[0m\e[0m\e[0m\e[1m\e[31mF\e[0m\e[0m\e[0m\e[1m\e[31m
+      @io.string.should == %{..F
+
+
+Failed:
 
 1)
 dang
-#{__FILE__}:34:in `Then /I should owe (\\d*) cucumbers/'
+#{__FILE__}:31:in `Then /I should owe (\\d*) cucumbers/'
 #{@feature_file}:9:in `Then I should owe 7 cucumbers'
-\e[0m
-STDOUT
+}
     end
 
 #     it "should allow calling of other steps from steps" do

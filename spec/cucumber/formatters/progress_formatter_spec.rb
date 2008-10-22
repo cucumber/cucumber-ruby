@@ -27,7 +27,8 @@ module Cucumber
         io = StringIO.new
         formatter = ProgressFormatter.new io
         step = stub('step',
-          :error => Pending.new
+          :error => Pending.new,
+          :scenario => mock('scenario')
         )
         formatter.step_pending(step,nil,nil)
         io.string.should =~ /^\P$/
