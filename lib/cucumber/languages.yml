@@ -85,6 +85,16 @@
   then: Så
   and: Og
   but: Men
+"pl":
+  feature: Właściwość
+  scenario: Scenariusz
+  more_examples: WięcejPrzykładów
+  given_scenario: DanyScenariusz
+  given: Dane
+  when: Jeżeli
+  then: Wtedy
+  and: Oraz
+  but: Ale
 "pt":
   feature: Característica
   scenario: Cenário
