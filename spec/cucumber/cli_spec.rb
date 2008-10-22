@@ -84,6 +84,15 @@ module Cucumber
       cli.options[:formats].should == {'progress' => [mock_file1], 'profile' => [mock_file2]}
     end
 
+    it "should allow a single formatter to have STDOUT and a file" do
+      cli = CLI.new
+      mock_file = stub(File, :open => nil)
+      File.stub!(:open).and_return(mock_file)
+
+      cli.parse_options!(%w{--format progress --format progress --out file})
+      cli.options[:formats].should == {'progress' => [STDOUT, mock_file]}
+    end
+
     it "should register --out files with an output broadcaster" do
       cli = CLI.new
       mock_file = stub(File)
