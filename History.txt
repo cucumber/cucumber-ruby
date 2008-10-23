@@ -1,6 +1,25 @@
 == 0.1.9 (In Git)
 
-Release blurb
+This release changes the way multiline strings work in feature files. Here is an example:
+
+  # In your .feature file
+  Then I should see
+    """
+    A string
+      that "indents"
+    and spans
+    several lines
+  
+    """
+
+  # In your steps.rb file
+  Then 'I should see' do |text|
+    text.should == "A string\n  that \"indents\"\nand spans\nseveral lines\n"
+  end
+
+The triple quotes are used to define the start and end of a string, and it also defines what gets stripped away
+in the inside string. If the triple quotes are indented 4 spaces, then the text within will have the 4 first
+spaces removed too.
 
 === New features
 * Support specifying multiple formatters and multiple outputs (#47 Joseph Wilk)

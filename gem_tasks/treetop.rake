@@ -34,6 +34,7 @@ namespace :treetop do
     FeatureCompiler.new.compile_all
   end
 
+  desc 'Compile the English grammar'
   task :compile_en do
     FeatureCompiler.new.compile('en')
   end
