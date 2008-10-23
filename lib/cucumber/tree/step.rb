@@ -95,6 +95,7 @@ module Cucumber
       def initialize(scenario, keyword, name, line)
         @scenario, @keyword, @name, @line = scenario, keyword, name, line
         @extra_args = []
+        @arity = 0
       end
 
       def regexp_args_proc(step_mother)
