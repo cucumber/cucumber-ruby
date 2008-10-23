@@ -15,6 +15,7 @@ module Cucumber
         :require => ['from/yml'], 
         :dry_run => false, 
         :lang => 'en',
+        :excludes => [],
         :source => true,
         :out => STDOUT
       }
@@ -32,6 +33,7 @@ module Cucumber
         :require => ['from/yml'], 
         :dry_run => false, 
         :lang => 'en',
+        :excludes => [],
         :source => true,
         :out => STDOUT
       }
