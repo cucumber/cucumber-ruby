@@ -10,7 +10,7 @@ Release blurb
 
 === Bugfixes
 * Don't load cucumber.yml unless it exists (Aslak Hellesøy)
-
+* Fixing bug where specifying line number 1 in a feature which starts with a scenario with a scenario table was raising an error (#56 Joseph Wilk)
 === Removed features
 
 
