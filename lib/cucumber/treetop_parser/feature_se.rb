@@ -1,5 +1,5 @@
 module Cucumber
-# :sdtopdoc:
+# :stopdoc:
 module TreetopParser
 module Feature
   include Treetop::Runtime
@@ -359,12 +359,8 @@ module Feature
       elements[0]
     end
 
-    def space
-      elements[1]
-    end
-
     def table
-      elements[2]
+      elements[1]
     end
   end
 
@@ -386,12 +382,8 @@ module Feature
     r1 = _nt_more_examples_keyword
     s0 << r1
     if r1
-      r2 = _nt_space
+      r2 = _nt_table
       s0 << r2
-      if r2
-        r3 = _nt_table
-        s0 << r3
-      end
     end
     if s0.last
       r0 = (SyntaxNode).new(input, i0...index, s0)
@@ -418,12 +410,16 @@ module Feature
   end
 
   module Table1
-    def head
+    def space
       elements[0]
     end
 
-    def body
+    def head
       elements[1]
+    end
+
+    def body
+      elements[2]
     end
   end
 
@@ -459,55 +455,59 @@ module Feature
     end
 
     i0, s0 = index, []
-    r1 = _nt_table_line
+    r1 = _nt_space
     s0 << r1
     if r1
-      s2, i2 = [], index
-      loop do
-        i3, s3 = index, []
-        s4, i4 = [], index
+      r2 = _nt_table_line
+      s0 << r2
+      if r2
+        s3, i3 = [], index
         loop do
-          r5 = _nt_blank
+          i4, s4 = index, []
+          s5, i5 = [], index
+          loop do
+            r6 = _nt_blank
+            if r6
+              s5 << r6
+            else
+              break
+            end
+          end
+          r5 = SyntaxNode.new(input, i5...index, s5)
+          s4 << r5
           if r5
-            s4 << r5
+            r7 = _nt_eol
+            s4 << r7
+            if r7
+              r9 = _nt_space
+              if r9
+                r8 = r9
+              else
+                r8 = SyntaxNode.new(input, index...index)
+              end
+              s4 << r8
+              if r8
+                r10 = _nt_table_line
+                s4 << r10
+              end
+            end
+          end
+          if s4.last
+            r4 = (SyntaxNode).new(input, i4...index, s4)
+            r4.extend(Table0)
+          else
+            self.index = i4
+            r4 = nil
+          end
+          if r4
+            s3 << r4
           else
             break
           end
         end
-        r4 = SyntaxNode.new(input, i4...index, s4)
-        s3 << r4
-        if r4
-          r6 = _nt_eol
-          s3 << r6
-          if r6
-            r8 = _nt_space
-            if r8
-              r7 = r8
-            else
-              r7 = SyntaxNode.new(input, index...index)
-            end
-            s3 << r7
-            if r7
-              r9 = _nt_table_line
-              s3 << r9
-            end
-          end
-        end
-        if s3.last
-          r3 = (SyntaxNode).new(input, i3...index, s3)
-          r3.extend(Table0)
-        else
-          self.index = i3
-          r3 = nil
-        end
-        if r3
-          s2 << r3
-        else
-          break
-        end
+        r3 = SyntaxNode.new(input, i3...index, s3)
+        s0 << r3
       end
-      r2 = SyntaxNode.new(input, i2...index, s2)
-      s0 << r2
     end
     if s0.last
       r0 = (SyntaxNode).new(input, i0...index, s0)
@@ -866,16 +866,6 @@ module Feature
   end
 
   module PlainStep0
-    def space
-      elements[0]
-    end
-
-    def multiline_arg
-      elements[1]
-    end
-  end
-
-  module PlainStep1
     def step_keyword
       elements[0]
     end
@@ -889,12 +879,13 @@ module Feature
     end
   end
 
-  module PlainStep2
+  module PlainStep1
     def compile(scenario)
       line = input.line_of(interval.first)
       step = scenario.create_step(step_keyword.text_value, name.text_value.strip, line)
-      if multi.respond_to?(:multiline_arg)
-        step.extra_args << multi.multiline_arg.to_arg
+
+      if multi.respond_to?(:to_arg)
+        step.extra_args << multi.to_arg
       end
     end
   end
@@ -922,20 +913,7 @@ module Feature
         r4 = _nt_line_to_eol
         s0 << r4
         if r4
-          i6, s6 = index, []
-          r7 = _nt_space
-          s6 << r7
-          if r7
-            r8 = _nt_multiline_arg
-            s6 << r8
-          end
-          if s6.last
-            r6 = (SyntaxNode).new(input, i6...index, s6)
-            r6.extend(PlainStep0)
-          else
-            self.index = i6
-            r6 = nil
-          end
+          r6 = _nt_multiline_arg
           if r6
             r5 = r6
           else
@@ -947,8 +925,8 @@ module Feature
     end
     if s0.last
       r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0.extend(PlainStep0)
       r0.extend(PlainStep1)
-      r0.extend(PlainStep2)
     else
       self.index = i0
       r0 = nil
@@ -990,22 +968,34 @@ module Feature
   end
 
   module MultilineString1
-    def quote
+    def eol
       elements[0]
     end
 
-    def string
+    def indent
       elements[1]
     end
 
-    def quote
+    def triple_quote
       elements[2]
+    end
+
+    def string
+      elements[3]
+    end
+
+    def triple_quote
+      elements[4]
     end
   end
 
   module MultilineString2
     def to_arg
-      string.text_value.split("\n").map{|l| l.strip}.join("\n")
+      indent_length = indent.text_value.length
+      significant_lines = string.text_value.split("\n")[1..-2]
+      significant_lines.map do |l| 
+        l[indent_length..-1]
+      end.join("\n")
     end
   end
 
@@ -1018,49 +1008,57 @@ module Feature
     end
 
     i0, s0 = index, []
-    r1 = _nt_quote
+    r1 = _nt_eol
     s0 << r1
     if r1
-      s2, i2 = [], index
-      loop do
-        i3, s3 = index, []
-        i4 = index
-        r5 = _nt_quote
-        if r5
-          r4 = nil
-        else
-          self.index = i4
-          r4 = SyntaxNode.new(input, index...index)
-        end
-        s3 << r4
-        if r4
-          if index < input_length
-            r6 = (SyntaxNode).new(input, index...(index + 1))
-            @index += 1
-          else
-            terminal_parse_failure("any character")
-            r6 = nil
-          end
-          s3 << r6
-        end
-        if s3.last
-          r3 = (SyntaxNode).new(input, i3...index, s3)
-          r3.extend(MultilineString0)
-        else
-          self.index = i3
-          r3 = nil
-        end
-        if r3
-          s2 << r3
-        else
-          break
-        end
-      end
-      r2 = SyntaxNode.new(input, i2...index, s2)
+      r2 = _nt_space
       s0 << r2
       if r2
-        r7 = _nt_quote
-        s0 << r7
+        r3 = _nt_triple_quote
+        s0 << r3
+        if r3
+          s4, i4 = [], index
+          loop do
+            i5, s5 = index, []
+            i6 = index
+            r7 = _nt_triple_quote
+            if r7
+              r6 = nil
+            else
+              self.index = i6
+              r6 = SyntaxNode.new(input, index...index)
+            end
+            s5 << r6
+            if r6
+              if index < input_length
+                r8 = (SyntaxNode).new(input, index...(index + 1))
+                @index += 1
+              else
+                terminal_parse_failure("any character")
+                r8 = nil
+              end
+              s5 << r8
+            end
+            if s5.last
+              r5 = (SyntaxNode).new(input, i5...index, s5)
+              r5.extend(MultilineString0)
+            else
+              self.index = i5
+              r5 = nil
+            end
+            if r5
+              s4 << r5
+            else
+              break
+            end
+          end
+          r4 = SyntaxNode.new(input, i4...index, s4)
+          s0 << r4
+          if r4
+            r9 = _nt_triple_quote
+            s0 << r9
+          end
+        end
       end
     end
     if s0.last
@@ -1077,23 +1075,23 @@ module Feature
     return r0
   end
 
-  def _nt_quote
+  def _nt_triple_quote
     start_index = index
-    if node_cache[:quote].has_key?(index)
-      cached = node_cache[:quote][index]
+    if node_cache[:triple_quote].has_key?(index)
+      cached = node_cache[:triple_quote][index]
       @index = cached.interval.end if cached
       return cached
     end
 
-    if input.index('"', index) == index
-      r0 = (SyntaxNode).new(input, index...(index + 1))
-      @index += 1
+    if input.index('"""', index) == index
+      r0 = (SyntaxNode).new(input, index...(index + 3))
+      @index += 3
     else
-      terminal_parse_failure('"')
+      terminal_parse_failure('"""')
       r0 = nil
     end
 
-    node_cache[:quote][start_index] = r0
+    node_cache[:triple_quote][start_index] = r0
 
     return r0
   end

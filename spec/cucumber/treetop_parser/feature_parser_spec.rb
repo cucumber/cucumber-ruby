@@ -90,6 +90,8 @@ module Cucumber
         p = FeatureParser.new
         f = p.parse_feature(File.dirname(__FILE__) + '/multiline_steps.feature')
         f.should have(1).scenarios
+        step = f.scenarios[0].steps[3]
+        step.extra_args[0].should == "A string\n  that \"indents\"\nand spans\nseveral lines\n"
       end
     end
   end
