@@ -131,6 +131,7 @@ lib/cucumber/treetop_parser/feature_ja.rb
 lib/cucumber/treetop_parser/feature_nl.rb
 lib/cucumber/treetop_parser/feature_no.rb
 lib/cucumber/treetop_parser/feature_parser.rb
+lib/cucumber/treetop_parser/feature_pl.rb
 lib/cucumber/treetop_parser/feature_pt.rb
 lib/cucumber/treetop_parser/feature_ru.rb
 lib/cucumber/treetop_parser/feature_se.rb
