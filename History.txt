@@ -48,7 +48,7 @@ Example:
     | name  | email           | phone |
     | Aslak | aslak@email.com | 123   |
     | Joe   | joe@email.com   | 234   |
-    | Bryan | bryan@email.org | 234   |
+    | Bryan | bryan@email.org | 456   |
   When I search for email.com
   Then I should see:
     | name  | email           | phone |
