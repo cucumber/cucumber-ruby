@@ -8,7 +8,6 @@ bin/cucumber
 config/hoe.rb
 config/requirements.rb
 cucumber.yml
-examples/calculator/.gitignore
 examples/calculator/README.txt
 examples/calculator/Rakefile
 examples/calculator/features/addition.feature
@@ -31,7 +30,6 @@ examples/cs/features/hello.feature
 examples/cs/features/steps/hello_steps.rb
 examples/cs/features/steps/tree_steps.rb
 examples/cs/features/tree.feature
-examples/cs/src/.gitignore
 examples/cs/src/Hello.cs
 examples/danish_calculator/Rakefile
 examples/danish_calculator/features/steps/kalkulator_steps.rb
@@ -42,7 +40,6 @@ examples/dos_line_endings/features/dos_line_endings.feature
 examples/estonian_calculator/Rakefile
 examples/estonian_calculator/features/kalkulaator_steps.rb
 examples/estonian_calculator/features/liitmine.feature
-examples/japanese_calculator/.gitignore
 examples/japanese_calculator/README.txt
 examples/japanese_calculator/Rakefile
 examples/japanese_calculator/features/addition.feature
@@ -55,8 +52,6 @@ examples/java/features/hello.feature
 examples/java/features/steps/hello_steps.rb
 examples/java/features/steps/tree_steps.rb
 examples/java/features/tree.feature
-examples/java/src/.gitignore
-examples/java/src/cucumber/demo/.gitignore
 examples/java/src/cucumber/demo/Hello.java
 examples/norwegian_calculator/Rakefile
 examples/norwegian_calculator/features/steps/kalkulator_steps.rb
@@ -93,7 +88,6 @@ gem_tasks/flog.rake
 gem_tasks/gemspec.rake
 gem_tasks/rspec.rake
 gem_tasks/treetop.rake
-gem_tasks/website.rake
 lib/cucumber.rb
 lib/cucumber/broadcaster.rb
 lib/cucumber/cli.rb
@@ -191,8 +185,3 @@ spec/cucumber/treetop_parser/test_dos.feature
 spec/cucumber/treetop_parser/with_comments.feature
 spec/spec.opts
 spec/spec_helper.rb
-website/index.html
-website/index.txt
-website/javascripts/rounded_corners_lite.inc.js
-website/stylesheets/screen.css
-website/template.html.erb
