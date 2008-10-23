@@ -24,6 +24,13 @@ module Cucumber
         #  Given 9****
         step.padding_length.should == 4
       end
+
+      it "should default step arity to 0" do
+        scenario = Scenario.new(nil, '9', 1)
+        step = scenario.create_step('Given', '9', 80)
+        
+        step.arity().should == 0
+      end
       
     end
   end
