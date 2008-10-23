@@ -40,3 +40,7 @@ end
 Then /^I should not see "(.*)"$/ do |text|
   response.body.should_not =~ /#{text}/m
 end
+
+Then /^the "(.*)" checkbox should be checked$/ do |label|
+  element_labeled(label).should be_checked
+end
