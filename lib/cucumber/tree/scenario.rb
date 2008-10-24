@@ -42,10 +42,12 @@ module Cucumber
         @steps_and_given_scenarios = []
         instance_eval(&proc) if block_given?
       end
+
       def table_header=  header
         @table_header = header
         update_table_column_widths header
       end
+
       def steps
         @steps ||= @steps_and_given_scenarios.map{|step| step.steps}.flatten
       end
@@ -86,6 +88,7 @@ module Cucumber
         @table_column_widths ||= [0] * values.size
         @table_column_widths = @table_column_widths.zip(values).map {|max, value| [max, value.size].max}
       end
+
       def row?
         false
       end

@@ -194,8 +194,8 @@ module Cucumber
       def print_passed_args args
         print_row(args) {|arg| passed(arg)}      
       end
-      def print_skipped_args args
 
+      def print_skipped_args args
         print_row(args) {|arg| skipped(arg)}      
       end
 
