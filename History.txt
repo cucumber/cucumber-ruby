@@ -28,6 +28,7 @@ spaces removed too.
 * Added support for Texan (improvements welcome). (Aslak Hellesøy)
 
 === Bugfixes
+* Support running scenario table rows when using --line argument (#55 Joseph Wilk)
 * Don't load cucumber.yml unless it exists (Aslak Hellesøy)
 * Fixing bug where specifying line number 1 in a feature which starts with a scenario with a scenario table was raising an error (#56 Joseph Wilk)
 === Removed features

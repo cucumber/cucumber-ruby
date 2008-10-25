@@ -17,6 +17,9 @@ module Cucumber
       @after_scenario_procs = []
       @after_step_procs = []
       @step_mother = step_mother
+
+      @visited_scenarios = {}
+      @regular_scenario_cache = {}
     end
 
     def register_world_proc(&proc)
@@ -48,6 +51,8 @@ module Cucumber
     def visit_feature(feature)
       formatters.visit_feature(feature)
       feature.accept(self)
+      @visited_scenarios = {}
+      @regular_scenario_cache = {}
     end
 
     def visit_header(header)
@@ -55,15 +60,19 @@ module Cucumber
     end
 
     def visit_row_scenario(scenario)
+      visit_scenario(@regular_scenario_cache[scenario.name], force_accept=true) if executing_unprepared_row_scenario?(scenario)
       visit_scenario(scenario)
     end
 
     def visit_regular_scenario(scenario)
+      @regular_scenario_cache[scenario.name] = scenario
       visit_scenario(scenario)
     end
 
-    def visit_scenario(scenario)
-      if accept?(scenario)
+    def visit_scenario(scenario, force_accept = false)
+      if accept?(scenario) || force_accept
+        @visited_scenarios[scenario.name] = true
+
         @error = nil
         @pending = nil
 
@@ -139,5 +148,10 @@ module Cucumber
         end
       end
     end
+    
+    def executing_unprepared_row_scenario?(scenario)
+      accept?(scenario) && !@visited_scenarios[scenario.name]
+    end
+    
   end
 end
