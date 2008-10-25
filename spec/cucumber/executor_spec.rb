@@ -183,7 +183,7 @@ dang
         @executor.visit_feature(feature)
         
         @executor.instance_variable_get("@regular_scenario_cache").should == {}
-        @executor.instance_variable_get("@visited_scenarios").should == {}
+        @executor.instance_variable_get("@executed_scenarios").should == {}
       end
                   
     end

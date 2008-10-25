@@ -18,7 +18,7 @@ module Cucumber
       @after_step_procs = []
       @step_mother = step_mother
 
-      @visited_scenarios = {}
+      @executed_scenarios = {}
       @regular_scenario_cache = {}
     end
 
@@ -51,7 +51,7 @@ module Cucumber
     def visit_feature(feature)
       formatters.visit_feature(feature)
       feature.accept(self)
-      @visited_scenarios = {}
+      @executed_scenarios = {}
       @regular_scenario_cache = {}
     end
 
@@ -71,7 +71,7 @@ module Cucumber
 
     def visit_scenario(scenario)
       if accept?(scenario)
-        @visited_scenarios[scenario.name] = true
+        @executed_scenarios[scenario.name] = true
         execute_scenario(scenario)
       end
     end
@@ -153,7 +153,7 @@ module Cucumber
     end
     
     def executing_unprepared_row_scenario?(scenario)
-      accept?(scenario) && !@visited_scenarios[scenario.name]
+      accept?(scenario) && !@executed_scenarios[scenario.name]
     end
     
   end
