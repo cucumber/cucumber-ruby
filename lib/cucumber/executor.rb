@@ -60,7 +60,7 @@ module Cucumber
     end
 
     def visit_row_scenario(scenario)
-      visit_scenario(@regular_scenario_cache[scenario.name], force_accept=true) if executing_unprepared_row_scenario?(scenario)
+      execute_scenario(@regular_scenario_cache[scenario.name]) if executing_unprepared_row_scenario?(scenario)
       visit_scenario(scenario)
     end
 
@@ -69,25 +69,28 @@ module Cucumber
       visit_scenario(scenario)
     end
 
-    def visit_scenario(scenario, force_accept = false)
-      if accept?(scenario) || force_accept
+    def visit_scenario(scenario)
+      if accept?(scenario)
         @visited_scenarios[scenario.name] = true
-
-        @error = nil
-        @pending = nil
-
-        @world = @world_proc.call
-        @world.extend(Spec::Matchers) if defined?(Spec::Matchers)
-        define_step_call_methods(@world)
-
-        formatters.scenario_executing(scenario)
-        @before_scenario_procs.each{|p| p.call_in(@world, *[])}
-        scenario.accept(self)
-        @after_scenario_procs.each{|p| p.call_in(@world, *[])}
-        formatters.scenario_executed(scenario)
+        execute_scenario(scenario)
       end
     end
 
+    def execute_scenario(scenario)
+      @error = nil
+      @pending = nil
+
+      @world = @world_proc.call
+      @world.extend(Spec::Matchers) if defined?(Spec::Matchers)
+      define_step_call_methods(@world)
+
+      formatters.scenario_executing(scenario)
+      @before_scenario_procs.each{|p| p.call_in(@world, *[])}
+      scenario.accept(self)
+      @after_scenario_procs.each{|p| p.call_in(@world, *[])}
+      formatters.scenario_executed(scenario)
+    end
+    
     def accept?(scenario)
       @line.nil? || scenario.at_line?(@line)
     end
