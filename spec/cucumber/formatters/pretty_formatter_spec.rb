@@ -16,7 +16,10 @@ module Cucumber
       def mock_scenario(stubs={})
         stub('scenario', {
           :name => 'test',
-          :row? => false }.merge(stubs))
+          :row? => false,
+          :file => 'file', 
+          :line => 1,
+          :padding_length => 2}.merge(stubs))
       end
 
       def mock_feature(stubs={})
@@ -41,6 +44,18 @@ module Cucumber
         )
         formatter.step_passed(step, nil, nil)
         io.string.should == "    Given formatted yes\n"
+      end
+      
+      it "should put a line between last row scenario and new scenario" do
+        io = StringIO.new
+        formatter = PrettyFormatter.new io, mock('step_mother'), :source => true
+        scenario = mock_scenario(:row? => true)
+  
+        formatter.scenario_executing(scenario)
+        formatter.scenario_executed(scenario)
+        formatter.scenario_executing(mock_scenario(:name => 'spacey', :row? => false))
+     
+        io.string.should =~ /\n\n  Scenario: spacey/
       end
       
       describe "show source option true" do

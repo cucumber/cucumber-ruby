@@ -16,6 +16,8 @@ module Cucumber
         @failed = []
         @pending = []
         @skipped = []
+        
+        @last_executed_was_row = false
       end
 
       def visit_feature(feature)
@@ -39,9 +41,12 @@ module Cucumber
 
       def scenario_executing(scenario)
         @scenario_failed = false
+        @io.puts if @last_executed_was_row && !scenario.row?
         if scenario.row?
+          @last_executed_was_row = true
           @io.print "    |"
         else
+         @last_executed_was_row = false
           @io.print passed("  #{Cucumber.language['scenario']}: #{scenario.name}")
           if @options[:source]
             @io.print padding_spaces(scenario)
