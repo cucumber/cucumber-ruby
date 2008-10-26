@@ -5,12 +5,12 @@ module Cucumber
   class CLI
     class << self
       attr_writer :step_mother, :executor, :features
-    
+
       def execute
         @execute_called = true
         parse(ARGV).execute!(@step_mother, @executor, @features)
       end
-      
+
       def execute_called?
         @execute_called
       end
@@ -21,17 +21,17 @@ module Cucumber
         cli
       end
     end
-    
+
     attr_reader :options
     FORMATS = %w{pretty profile progress html}
     DEFAULT_FORMAT = 'pretty'
-    
+
     def initialize
       @paths = []
-      @options = { 
-        :require => nil, 
-        :lang    => 'en', 
-        :dry_run => false, 
+      @options = {
+        :require => nil,
+        :lang    => 'en',
+        :dry_run => false,
         :source  => true,
         :formats => {},
         :excludes => []
@@ -61,7 +61,7 @@ module Cucumber
         end
         opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{DEFAULT_FORMAT})",
           "Available formats: #{FORMATS.join(", ")}") do |v|
-          unless FORMATS.index(v) 
+          unless FORMATS.index(v)
             STDERR.puts "Invalid format: #{v}\n"
             STDERR.puts opts.help
             exit 1
@@ -99,15 +99,15 @@ module Cucumber
           exit
         end
       end.parse!
-      
+
       if @options[:formats].empty?
         @options[:formats][DEFAULT_FORMAT] = [STDOUT]
       end
-            
+
       # Whatever is left after option parsing is the FILE arguments
       @paths += args
     end
-    
+
     def parse_args_from_profile(profile)
       return unless File.exist?('cucumber.yml')
       require 'yaml'
@@ -116,7 +116,7 @@ module Cucumber
       raise "Expected to find a String, got #{args_from_yml.inspect}. cucumber.yml:\n#{cucumber_yml}" unless String === args_from_yml
       parse_options!(args_from_yml.split(' '))
     end
-    
+
     def execute!(step_mother, executor, features)
       Cucumber.load_language(@options[:lang])
       executor.formatters = build_formatter_broadcaster(step_mother)
@@ -126,9 +126,9 @@ module Cucumber
       executor.visit_features(features)
       exit 1 if executor.failed
     end
-    
+
   private
-    
+
     # Requires files - typically step files and ruby feature files.
     def require_files
       ARGV.clear # Shut up RSpec
@@ -155,20 +155,20 @@ module Cucumber
         path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
         File.directory?(path) ? Dir["#{path}/**/*.feature"] : path
       end.flatten.uniq
-      
+
       @options[:excludes].each do |exclude|
         potential_feature_files.reject! do |path|
           path =~ /#{Regexp.escape(exclude)}/
         end
       end
-      
+
       potential_feature_files
     end
-    
+
     def feature_dirs
       feature_files.map{|f| File.directory?(f) ? f : File.dirname(f)}.uniq
     end
-    
+
     def load_plain_text_features(features)
       parser = TreetopParser::FeatureParser.new
 
@@ -176,7 +176,7 @@ module Cucumber
         features << parser.parse_feature(f)
       end
     end
-    
+
     def build_formatter_broadcaster(step_mother)
       formatter_broadcaster = Broadcaster.new
       @options[:formats].each do |format, output_list|
@@ -204,7 +204,7 @@ module Cucumber
       end
       output_broadcaster
     end
-        
+
   end
 end
 

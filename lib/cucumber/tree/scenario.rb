@@ -2,7 +2,7 @@ module Cucumber
   module Tree
     class BaseScenario
       attr_reader :feature
-      
+
       def file
         @feature.file
       end
@@ -30,7 +30,7 @@ module Cucumber
 
     class Scenario < BaseScenario
       MIN_PADDING = 2
-      INDENT = 2 
+      INDENT = 2
 
       # If a table follows, the header will be stored here. Weird, but convenient.
       attr_reader :table_header
@@ -91,6 +91,10 @@ module Cucumber
 
       def row?
         false
+      end
+
+      def pending?
+        steps.empty?
       end
 
       def create_step(keyword, name, line)
