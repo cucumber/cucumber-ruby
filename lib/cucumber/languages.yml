@@ -68,6 +68,16 @@
   then: Alors
   and: Et
   but: Mais
+"id":
+  feature: Fitur
+  scenario: Skenario
+  more_examples: Contoh Tambahan
+  given_scenario: DenganSkenario
+  given: Dengan
+  when: Ketika
+  then: Maka
+  and: Dan
+  but: Tapi
 "nl":
   feature: Functionaliteit
   scenario: Scenario
