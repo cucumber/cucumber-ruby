@@ -3,9 +3,9 @@ module Cucumber
     # Defines a task for running features.
     class Task
       LIB    = File.expand_path(File.dirname(__FILE__) + '/../..')
-      BINARY = File.expand_path(File.dirname(__FILE__) + '/../../../bin/cucumber')
 
       attr_accessor :libs
+      attr_accessor :binary
       attr_accessor :step_list
       attr_accessor :step_pattern
       attr_accessor :feature_list
@@ -23,7 +23,8 @@ module Cucumber
         yield self if block_given?
 
         @feature_pattern = "features/**/*.feature" if feature_pattern.nil? && feature_list.nil?
-        @step_pattern =  "features/**/*.rb"    if step_pattern.nil? && step_list.nil?
+        @step_pattern    = "features/**/*.rb"    if step_pattern.nil? && step_list.nil?
+        @binary        ||= File.expand_path(File.dirname(__FILE__) + '/../../../bin/cucumber')
         define_tasks
       end
     
@@ -31,7 +32,7 @@ module Cucumber
         desc @desc
         task @task_name do
           lib_args     = ['"%s"' % ([LIB] + libs).join(File::PATH_SEPARATOR)]
-          cucumber_bin = ['"%s"' % BINARY]
+          cucumber_bin = ['"%s"' % binary]
           cuc_opts     = [(ENV['CUCUMBER_OPTS'] || cucumber_opts)]
 
           step_files.each do |step_file|
@@ -71,5 +72,39 @@ module Cucumber
         end
       end
     end
+  
+    class FeatureTask < Task
+      
+      def initialize(task_name = "feature", desc = "Run an specified feature with Cucumber.  #{task_name}[feature_name]")
+        super(task_name, desc)
+      end
+      
+      def define_tasks
+        desc @desc
+        task @task_name, :feature_name do |t, args|
+          lib_args     = ['"%s"' % ([LIB] + libs).join(File::PATH_SEPARATOR)]
+          cucumber_bin = ['"%s"' % binary]
+          cuc_opts     = [(ENV['CUCUMBER_OPTS'] || cucumber_opts)]
+
+          step_files.each do |step_file|
+            cuc_opts << '--require'
+            cuc_opts << step_file
+          end
+
+          if rcov
+            args = (['-I'] + lib_args + ['-S', 'rcov'] + rcov_opts + cucumber_bin + ['--'] + cuc_opts + feature_files(args[:feature_name])).flatten
+          else
+            args = (['-I'] + lib_args + cucumber_bin + cuc_opts + feature_files(args[:feature_name])).flatten
+          end
+          ruby(args.join(" ")) # ruby(*args) is broken on Windows
+        end        
+      end
+      
+      def feature_files(feature) # :nodoc:
+        FileList[File.join("features", "**", "#{feature}.feature")] if !feature.nil?
+      end
+      
+    end
+    
   end
 end
