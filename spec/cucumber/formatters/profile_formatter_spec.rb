@@ -177,8 +177,7 @@ module Cucumber
 
       it "should print the top 5 step invocations for step definition" do
         formatter.instance_variable_set("@step_time", Time.now)
-        step_definition_put = 1
-
+   
         10.times do |test_number|
           formatter.step_passed(mock_step(:format => 'please invocate me', :actual_keyword => 'Given'), nil, nil)
         end
