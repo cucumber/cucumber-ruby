@@ -13,7 +13,7 @@ module Cucumber
       attr_accessor :cucumber_opts
       attr_accessor :rcov
       attr_accessor :rcov_opts
-      
+
       # Define a task
       def initialize(task_name = "features", desc = "Run Features with Cucumber")
         @task_name, @desc = task_name, desc
@@ -27,7 +27,7 @@ module Cucumber
         @binary        ||= File.expand_path(File.dirname(__FILE__) + '/../../../bin/cucumber')
         define_task
       end
-    
+
       def define_task
         desc @desc
         task @task_name do
@@ -44,14 +44,14 @@ module Cucumber
           cuc_opts << '--require'
           cuc_opts << step_file
         end
-        
+
         if rcov
-          args = (['-I'] + lib_args + ['-S', 'rcov'] + rcov_opts + 
-                  cucumber_bin + ['--'] + cuc_opts + feature_files(task_args)).flatten
+          args = (['-I'] + lib_args + ['-S', 'rcov'] + rcov_opts +
+            cucumber_bin + ['--'] + cuc_opts + feature_files(task_args)).flatten
         else
           args = (['-I'] + lib_args + cucumber_bin + cuc_opts + feature_files(task_args)).flatten
         end
-        
+
         args
       end
 
@@ -77,25 +77,25 @@ module Cucumber
         end
       end
     end
-  
+
     class FeatureTask < Task
-      
-      def initialize(task_name = "feature", desc = "Run an specified feature with Cucumber.  #{task_name}[feature_name]")
+
+      def initialize(task_name = "feature", desc = "Run a specified feature with Cucumber.  #{task_name}[feature_name]")
         super(task_name, desc)
       end
-      
+
       def define_task
         desc @desc
         task @task_name, :feature_name do |t, args|
           ruby(arguments_for_ruby_execution(args).join(" ")) # ruby(*args) is broken on Windows
-        end        
+        end
       end
-      
+
       def feature_files(task_arguments) # :nodoc:
         FileList[File.join("features", "**", "#{task_arguments[:feature_name]}.feature")]
       end
-      
+
     end
-    
+
   end
 end

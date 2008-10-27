@@ -127,7 +127,7 @@ module Cucumber
       exit 1 if executor.failed
     end
 
-  private
+    private
 
     # Requires files - typically step files and ruby feature files.
     def require_files
