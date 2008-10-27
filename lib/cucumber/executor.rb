@@ -17,6 +17,9 @@ module Cucumber
       @after_scenario_procs = []
       @after_step_procs = []
       @step_mother = step_mother
+
+      @executed_scenarios = {}
+      @regular_scenario_cache = {}
     end
 
     def register_world_proc(&proc)
@@ -48,6 +51,8 @@ module Cucumber
     def visit_feature(feature)
       formatters.visit_feature(feature)
       feature.accept(self)
+      @executed_scenarios = {}
+      @regular_scenario_cache = {}
     end
 
     def visit_header(header)
@@ -55,30 +60,37 @@ module Cucumber
     end
 
     def visit_row_scenario(scenario)
+      execute_scenario(@regular_scenario_cache[scenario.name]) if executing_unprepared_row_scenario?(scenario)
       visit_scenario(scenario)
     end
 
     def visit_regular_scenario(scenario)
+      @regular_scenario_cache[scenario.name] = scenario
       visit_scenario(scenario)
     end
 
     def visit_scenario(scenario)
       if accept?(scenario)
-        @error = nil
-        @pending = nil
-
-        @world = @world_proc.call
-        @world.extend(Spec::Matchers) if defined?(Spec::Matchers)
-        define_step_call_methods(@world)
-
-        formatters.scenario_executing(scenario)
-        @before_scenario_procs.each{|p| p.call_in(@world, *[])}
-        scenario.accept(self)
-        @after_scenario_procs.each{|p| p.call_in(@world, *[])}
-        formatters.scenario_executed(scenario)
+        @executed_scenarios[scenario.name] = true
+        execute_scenario(scenario)
       end
     end
 
+    def execute_scenario(scenario)
+      @error = nil
+      @pending = nil
+
+      @world = @world_proc.call
+      @world.extend(Spec::Matchers) if defined?(Spec::Matchers)
+      define_step_call_methods(@world)
+
+      formatters.scenario_executing(scenario)
+      @before_scenario_procs.each{|p| p.call_in(@world, *[])}
+      scenario.accept(self)
+      @after_scenario_procs.each{|p| p.call_in(@world, *[])}
+      formatters.scenario_executed(scenario)
+    end
+    
     def accept?(scenario)
       @line.nil? || scenario.at_line?(@line)
     end
@@ -139,5 +151,10 @@ module Cucumber
         end
       end
     end
+    
+    def executing_unprepared_row_scenario?(scenario)
+      accept?(scenario) && !@executed_scenarios[scenario.name]
+    end
+    
   end
 end
