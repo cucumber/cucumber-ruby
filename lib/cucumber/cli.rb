@@ -34,7 +34,8 @@ module Cucumber
         :dry_run => false,
         :source  => true,
         :formats => {},
-        :excludes => []
+        :excludes => [],
+        :scenario_names => nil
       }
       @active_format = DEFAULT_FORMAT
     end
@@ -53,6 +54,12 @@ module Cucumber
         end
         opts.on("-l LINE", "--line LINE", "Only execute the scenario at the given line") do |v|
           @options[:line] = v
+        end
+        opts.on("-s SCENARIO", "--scenario SCENARIO", "Only execute the scenario with the given name.",
+                                                      "If this option is given more than once, run all",
+                                                      "the specified scenarios.") do |v|
+          @options[:scenario_names] ||= []
+          @options[:scenario_names] << v
         end
         opts.on("-a LANG", "--language LANG", "Specify language for features (Default: #{@options[:lang]})",
           "Available languages: #{Cucumber.languages.join(", ")}",
@@ -123,6 +130,7 @@ module Cucumber
       require_files
       load_plain_text_features(features)
       executor.line = @options[:line].to_i if @options[:line]
+      executor.scenario_names = @options[:scenario_names] if @options[:scenario_names]
       executor.visit_features(features)
       exit 1 if executor.failed
     end
