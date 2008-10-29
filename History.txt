@@ -29,6 +29,7 @@ spaces removed too.
 * Added support for Texan (improvements welcome). (Aslak Hellesøy)
 
 === Bugfixes
+* Prevent feature/scenario/pending step comments from containing '//' when running features by specifying a directory with a trailing '/' (Joseph Wilk)
 * Scenario tables need spacing after them (#59 Joseph Wilk)
 * Support running scenario table rows when using --line argument (#55 Joseph Wilk)
 * Don't load cucumber.yml unless it exists (Aslak Hellesøy)
