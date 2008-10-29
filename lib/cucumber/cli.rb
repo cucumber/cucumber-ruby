@@ -153,6 +153,7 @@ module Cucumber
     def feature_files
       potential_feature_files = @paths.map do |path|
         path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
+        path = path.chomp('/')
         File.directory?(path) ? Dir["#{path}/**/*.feature"] : path
       end.flatten.uniq
 

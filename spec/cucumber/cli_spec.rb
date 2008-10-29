@@ -132,5 +132,16 @@ module Cucumber
       cli.execute!(stub('step mother'), mock_executor, stub('features'))
     end
 
+    it "should search for all features in the specified directory" do
+      cli = CLI.new
+
+      cli.parse_options!(%w{feature_directory/})
+      File.stub!(:directory?).and_return(true)
+
+      Dir.should_receive(:[]).with("feature_directory/**/*.feature").any_number_of_times.and_return([])
+      
+      cli.execute!(stub('step mother'), mock_executor, stub('features', :<< => nil))
+    end
+
   end
 end
