@@ -26,6 +26,7 @@ module Cucumber
         :lang => 'en',
         :source => true,
         :excludes => [],
+        :scenario_names => nil
       }
     end
 
@@ -43,6 +44,7 @@ module Cucumber
         :lang => 'en',
         :source => true,
         :excludes => [],
+        :scenario_names => nil
       }
     end
 
@@ -132,5 +134,19 @@ module Cucumber
       cli.execute!(stub('step mother'), mock_executor, stub('features'))
     end
 
+    it "should accept multiple --scenario options" do
+      cli = CLI.new
+      cli.parse_options!(['--scenario', "User logs in", '--scenario', "User signs up"])
+      cli.options[:scenario_names].should include("User logs in")
+      cli.options[:scenario_names].should include("User signs up")
+    end
+
+    it "should register --scenario options with the executor" do
+      cli = CLI.new
+      cli.parse_options!(['--scenario', "User logs in", '--scenario', "User signs up"])
+      executor = mock_executor
+      executor.should_receive(:scenario_names=).with(["User logs in", "User signs up"])
+      cli.execute!(stub('step mother'), executor, stub('features'))
+    end
   end
 end
