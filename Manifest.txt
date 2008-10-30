@@ -94,6 +94,10 @@ gem_tasks/flog.rake
 gem_tasks/gemspec.rake
 gem_tasks/rspec.rake
 gem_tasks/treetop.rake
+lib/autotest/cucumber_mixin.rb
+lib/autotest/cucumber_rails_rspec.rb
+lib/autotest/cucumber_rspec.rb
+lib/autotest/discover.rb
 lib/cucumber.rb
 lib/cucumber/broadcaster.rb
 lib/cucumber/cli.rb

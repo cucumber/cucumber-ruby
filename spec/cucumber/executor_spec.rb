@@ -12,7 +12,8 @@ module Cucumber
       @feature_file = File.dirname(__FILE__) + '/sell_cucumbers.feature'
       @parser = TreetopParser::FeatureParser.new
       @features = Tree::Features.new
-      @features << @parser.parse_feature(@feature_file)
+      @feature = @parser.parse_feature(@feature_file)
+      @features << @feature
     end
     
     it "should pass when blocks are ok" do
@@ -22,7 +23,7 @@ module Cucumber
       @executor.visit_features(@features)
       @formatters.dump
 
-      @io.string.should == ("...\n\n\n\n")
+      @io.string.should =~ (/\.+\n+/)
     end
 
     it "should print filtered backtrace with feature line" do
@@ -30,16 +31,13 @@ module Cucumber
       @step_mother.register_step_proc(/I sell (\d*) cucumbers/)        { |n| @n = n }
       @step_mother.register_step_proc(/I should owe (\d*) cucumbers/) { |n| raise "dang" }
       @executor.visit_features(@features)
-      @io.string.should == %{..F
-
-
-Failed:
+      @io.string.should include(%{Failed:
 
 1)
 dang
-#{__FILE__}:31:in `Then /I should owe (\\d*) cucumbers/'
+#{__FILE__}:32:in `Then /I should owe (\\d*) cucumbers/'
 #{@feature_file}:9:in `Then I should owe 7 cucumbers'
-}
+})
     end
 
 #     it "should allow calling of other steps from steps" do
@@ -198,6 +196,27 @@ dang
         @executor.instance_variable_get("@executed_scenarios").should == {}
       end
                   
+    end
+    
+    describe "with specified scenarios" do
+      it "should only visit the specified scenarios" do
+        $amounts_sold = []
+
+        @step_mother.register_step_proc(/there are (\d*) cucumbers/) { |n| }
+        @step_mother.register_step_proc(/I should owe (\d*) cucumbers/) { |n| }
+        @step_mother.register_step_proc(/I sell (\d*) cucumbers/) { |n| $amounts_sold << n.to_i }
+
+        @executor.scenario_names = ["Sell a dozen", "Sell fifty"]
+        @executor.visit_features(@features)
+
+        $amounts_sold.should == [12, 50]
+      end
+      
+      it "should only visit features with specified scenarios" do
+        @executor.scenario_names = ["Jump up and down"]
+        @feature.should_not_receive(:accept).with(@executor)
+        @executor.visit_features(@features)
+      end
     end
   end
 end

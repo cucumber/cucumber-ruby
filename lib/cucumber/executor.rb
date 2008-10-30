@@ -4,6 +4,7 @@ module Cucumber
   class Executor
     attr_reader :failed
     attr_accessor :formatters
+    attr_writer :scenario_names
 
     def line=(line)
       @line = line
@@ -49,10 +50,12 @@ module Cucumber
     end
 
     def visit_feature(feature)
-      formatters.visit_feature(feature)
-      feature.accept(self)
-      @executed_scenarios = {}
-      @regular_scenario_cache = {}
+      if accept_feature?(feature)
+        formatters.visit_feature(feature)
+        feature.accept(self)
+        @executed_scenarios = {}
+        @regular_scenario_cache = {}
+      end
     end
 
     def visit_header(header)
@@ -70,7 +73,7 @@ module Cucumber
     end
 
     def visit_scenario(scenario)
-      if accept?(scenario)
+      if accept_scenario?(scenario)
         @executed_scenarios[scenario.name] = true
         execute_scenario(scenario)
       end
@@ -91,8 +94,15 @@ module Cucumber
       formatters.scenario_executed(scenario)
     end
     
-    def accept?(scenario)
-      @line.nil? || scenario.at_line?(@line)
+    def accept_scenario?(scenario)
+      accept = true
+      accept &&= scenario.at_line?(@line) if @line
+      accept &&= @scenario_names.include? scenario.name if @scenario_names && !@scenario_names.empty?
+      accept
+    end
+
+    def accept_feature?(feature)
+      feature.scenarios.any? { |s| accept_scenario?(s) }
     end
 
     def visit_row_step(step)
@@ -153,7 +163,7 @@ module Cucumber
     end
     
     def executing_unprepared_row_scenario?(scenario)
-      accept?(scenario) && !@executed_scenarios[scenario.name]
+      accept_scenario?(scenario) && !@executed_scenarios[scenario.name]
     end
     
   end
