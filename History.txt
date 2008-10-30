@@ -1,6 +1,7 @@
 == 0.1.9 (In Git)
 
-This release changes the way multiline strings work in feature files. Here is an example:
+Main changes in this release is Autotest support and how multiline strings work in feature files. 
+Here is an example om multiline strings:
 
   # In your .feature file
   Then I should see
@@ -22,6 +23,7 @@ in the inside string. If the triple quotes are indented 4 spaces, then the text 
 spaces removed too.
 
 === New features
+* Added Autotest support - work in progress... (Peter Jaros)
 * Renamed common_webrat.rb to common_webrat_steps.rb (Ben Mabey)
 * Added new feature[:feature_path] task (Roman Gonzalez)
 * Added support for Polish (Joseph Wilk)
