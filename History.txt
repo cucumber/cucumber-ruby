@@ -24,6 +24,7 @@ spaces removed too.
 
 === New features
 * Added Autotest support - work in progress... (Peter Jaros)
+* Added new --exclude option (Bryan Helkamp)
 * Added new --scenario option (Peter Jaros)
 * Renamed common_webrat.rb to common_webrat_steps.rb (Ben Mabey)
 * Added new feature[:feature_path] task (Roman Gonzalez)
