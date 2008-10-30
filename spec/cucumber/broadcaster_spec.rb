@@ -5,7 +5,7 @@ module Cucumber
     
     it "should broadcast methods to registered objects" do
       broadcaster = Broadcaster.new
-      mock_receiver = mock('receiver', :konichwa => true)
+      mock_receiver = mock('receiver')
       
       mock_receiver.should_receive(:konbanwa).with('good evening')
       broadcaster.register(mock_receiver)
