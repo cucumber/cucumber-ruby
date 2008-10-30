@@ -48,7 +48,8 @@ module Cucumber
         opts.banner = "Usage: cucumber [options] FILES|DIRS"
         opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require files before executing the features.",
           "If this option is not specified, all *.rb files that",
-          "are siblings or below the features will be autorequired") do |v|
+          "are siblings or below the features will be autorequired",
+          "This option can be specified multiple times.") do |v|
           @options[:require] ||= []
           @options[:require] << v
         end
@@ -67,7 +68,8 @@ module Cucumber
           @options[:lang] = v
         end
         opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{DEFAULT_FORMAT})",
-          "Available formats: #{FORMATS.join(", ")}") do |v|
+          "Available formats: #{FORMATS.join(", ")}",
+          "This option can be specified multiple times.") do |v|
           unless FORMATS.index(v)
             STDERR.puts "Invalid format: #{v}\n"
             STDERR.puts opts.help
@@ -77,10 +79,20 @@ module Cucumber
           @options[:formats][v] << STDOUT
           @active_format = v
         end
-        opts.on("--exclude=PATTERN", "Don't run features matching a pattern") do |v|
+        opts.on("-o", "--out FILE", "Write output to a file instead of STDOUT.",
+          "This option can be specified multiple times, and applies to the previously",
+          "specified --format.") do |v|
+          @options[:formats][@active_format] ||= []
+          if @options[:formats][@active_format].last == STDOUT
+            @options[:formats][@active_format][-1] = File.open(v, 'w')
+          else
+            @options[:formats][@active_format] << File.open(v, 'w')
+          end
+        end
+        opts.on("--exclude PATTERN", "Don't run features matching a pattern") do |v|
           @options[:excludes] << v
         end
-        opts.on("-p=PROFILE", "--profile=PROFILE", "Pull commandline arguments from cucumber.yml.") do |v|
+        opts.on("-p", "--profile PROFILE", "Pull commandline arguments from cucumber.yml.") do |v|
           parse_args_from_profile(v)
         end
         opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.") do
@@ -88,14 +100,6 @@ module Cucumber
         end
         opts.on("-n", "--no-source", "Don't show the file and line of the step definition with the steps.") do
           @options[:source] = false
-        end
-        opts.on("-o", "--out=FILE", "Write output to a file instead of STDOUT.") do |v|
-          @options[:formats][@active_format] ||= []
-          if @options[:formats][@active_format].last == STDOUT
-            @options[:formats][@active_format][-1] = File.open(v, 'w')
-          else
-            @options[:formats][@active_format] << File.open(v, 'w')
-          end
         end
         opts.on_tail("--version", "Show version") do
           puts VERSION::STRING
