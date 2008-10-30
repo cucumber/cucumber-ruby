@@ -22,6 +22,7 @@ in the inside string. If the triple quotes are indented 4 spaces, then the text 
 spaces removed too.
 
 === New features
+* Renamed common_webrat.rb to common_webrat_steps.rb (Ben Mabey)
 * Added new feature[:feature_path] task (Roman Gonzalez)
 * Added support for Polish (Joseph Wilk)
 * Support specifying multiple formatters and multiple outputs (#47 Joseph Wilk)
@@ -33,6 +34,7 @@ spaces removed too.
 * Support running scenario table rows when using --line argument (#55 Joseph Wilk)
 * Don't load cucumber.yml unless it exists (Aslak Hellesøy)
 * Fixing bug where specifying line number 1 in a feature which starts with a scenario with a scenario table was raising an error (#56 Joseph Wilk)
+
 === Removed features
 
 
