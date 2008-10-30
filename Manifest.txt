@@ -40,6 +40,12 @@ examples/dos_line_endings/features/dos_line_endings.feature
 examples/estonian_calculator/Rakefile
 examples/estonian_calculator/features/kalkulaator_steps.rb
 examples/estonian_calculator/features/liitmine.feature
+examples/indonesian_kalkulator/README.txt
+examples/indonesian_kalkulator/Rakefile
+examples/indonesian_kalkulator/features/addition.feature
+examples/indonesian_kalkulator/features/division.feature
+examples/indonesian_kalkulator/features/steps/calculator_steps.rb
+examples/indonesian_kalkulator/lib/calculator.rb
 examples/japanese_calculator/README.txt
 examples/japanese_calculator/Rakefile
 examples/japanese_calculator/features/addition.feature
@@ -127,6 +133,7 @@ lib/cucumber/treetop_parser/feature_en.rb
 lib/cucumber/treetop_parser/feature_es.rb
 lib/cucumber/treetop_parser/feature_et.rb
 lib/cucumber/treetop_parser/feature_fr.rb
+lib/cucumber/treetop_parser/feature_id.rb
 lib/cucumber/treetop_parser/feature_ja.rb
 lib/cucumber/treetop_parser/feature_nl.rb
 lib/cucumber/treetop_parser/feature_no.rb
