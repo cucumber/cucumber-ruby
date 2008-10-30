@@ -91,10 +91,10 @@ module Cucumber
       
       #Not supported in Term::ANSIColor
       def grey(m)
-        if ENV['CUCUMBER_COLORS_DISABLED'] == '1'
-          m
-        else
+        if ::Term::ANSIColor.coloring?
           "\e[90m#{m}\e[0m" 
+        else
+          m
         end
       end
       
