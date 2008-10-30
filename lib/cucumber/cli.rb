@@ -89,7 +89,7 @@ module Cucumber
             @options[:formats][@active_format] << File.open(v, 'w')
           end
         end
-        opts.on("--exclude PATTERN", "Don't run features matching a pattern") do |v|
+        opts.on("-e", "--exclude PATTERN", "Don't run features matching a pattern") do |v|
           @options[:excludes] << v
         end
         opts.on("-p", "--profile PROFILE", "Pull commandline arguments from cucumber.yml.") do |v|
