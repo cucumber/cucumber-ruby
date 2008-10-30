@@ -138,7 +138,7 @@ lib/cucumber/treetop_parser/feature_se.rb
 lib/cucumber/treetop_parser/feature_zh-CN.rb
 lib/cucumber/version.rb
 rails_generators/cucumber/cucumber_generator.rb
-rails_generators/cucumber/templates/common_webrat.rb
+rails_generators/cucumber/templates/common_webrat_steps.rb
 rails_generators/cucumber/templates/cucumber
 rails_generators/cucumber/templates/cucumber.rake
 rails_generators/cucumber/templates/env.rb
