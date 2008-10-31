@@ -102,7 +102,7 @@ module Cucumber
         opts.on("-n", "--no-source", "Don't show the file and line of the step definition with the steps.") do
           @options[:source] = false
         end
-        opts.on("-s", "--no-snippets", "Don't show the snippets for pending steps") do
+        opts.on("-i", "--no-snippets", "Don't show the snippets for pending steps") do
           @options[:snippets] = false
         end
         opts.on_tail("--version", "Show version") do
