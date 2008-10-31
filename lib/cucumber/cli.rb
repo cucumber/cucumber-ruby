@@ -105,6 +105,10 @@ module Cucumber
         opts.on("-i", "--no-snippets", "Don't show the snippets for pending steps") do
           @options[:snippets] = false
         end
+        opts.on("-q", "--quiet", "Don't show any development aid information") do
+          @options[:snippets] = false
+          @options[:source] = false
+        end
         opts.on_tail("--version", "Show version") do
           puts VERSION::STRING
           exit
