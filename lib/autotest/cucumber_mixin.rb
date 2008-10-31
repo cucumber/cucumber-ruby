@@ -1,3 +1,5 @@
+require 'autotest'
+
 module Autotest::CucumberMixin
   def self.included(receiver)
     receiver::ALL_HOOKS << [:run_features, :ran_features]
