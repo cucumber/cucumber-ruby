@@ -10,6 +10,9 @@ module Cucumber
           :format => 'formatted yes',
           :name => 'example',
           :error => nil,
+          :padding_length => 2,
+          :file => 'test',
+          :line => 1,
           :row? => false}.merge(stubs))
       end
 
@@ -78,6 +81,23 @@ module Cucumber
         io.string.should =~ /\n\n  Scenario: spacey/
       end
       
+      {'should' => true, 'should not' => false}.each do |should_or_should_not, show_snippet|
+        describe "snippets option #{show_snippet}" do
+          
+          it "#{should_or_should_not} show snippet for pending step" do
+            @io = StringIO.new
+            step_mother = mock('step_mother')
+            @formatter = PrettyFormatter.new @io, step_mother, :snippets => show_snippet
+                    
+            @formatter.step_pending(mock_step(:actual_keyword => 'Given', :name => 'pending step snippet'), nil, nil)
+            @formatter.dump
+
+            @io.string.send(should_or_should_not.gsub(' ','_').to_sym, include("Given /^pending step snippet$/ do"))
+          end
+        
+        end
+      end
+            
       describe "show source option true" do
 
         before(:each) do
