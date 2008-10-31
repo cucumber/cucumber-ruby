@@ -86,7 +86,7 @@ module Cucumber
           
           it "#{should_or_should_not} show snippet for pending step" do
             @io = StringIO.new
-            step_mother = mock('step_mother')
+            step_mother = mock('step_mother', :has_step_definition? => false)
             @formatter = PrettyFormatter.new @io, step_mother, :snippets => show_snippet
                     
             @formatter.step_pending(mock_step(:actual_keyword => 'Given', :name => 'pending step snippet'), nil, nil)
@@ -98,6 +98,17 @@ module Cucumber
         end
       end
             
+      it "should not show the snippet for a step which already has a step definition" do
+        @io = StringIO.new
+        step_mother = mock('step_mother', :has_step_definition? => true)
+        @formatter = PrettyFormatter.new @io, step_mother, :snippets => true
+
+        @formatter.step_pending(mock_step(:actual_keyword => 'Given', :name => 'pending step snippet'), nil, nil)
+        @formatter.dump
+
+        @io.string.should_not include("Given /^pending step snippet$/ do")
+      end
+                        
       describe "show source option true" do
 
         before(:each) do

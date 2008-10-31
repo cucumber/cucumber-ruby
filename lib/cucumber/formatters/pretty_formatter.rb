@@ -162,12 +162,14 @@ module Cucumber
       end
 
       def print_snippets
-        unless @pending_steps.empty?
+        snippets = @pending_steps
+        snippets.delete_if {|snippet| snippet.row? || @step_mother.has_step_definition?(snippet.name)}
+
+        unless snippets.empty?
           @io.puts "\nYou can use these snippets to implement pending steps:\n\n"
 
           prev_keyword = nil
-          snippets = @pending_steps.map do |step|
-            next if step.row?
+          snippets = snippets.map do |step|
             snippet = "#{step.actual_keyword} /^#{step.name}$/ do\nend\n\n"
             prev_keyword = step.keyword
             snippet
