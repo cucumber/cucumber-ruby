@@ -158,7 +158,7 @@ module Cucumber
 
         @io.print reset
 
-        print_snippets
+        print_snippets if @options[:snippets]
       end
 
       def print_snippets
