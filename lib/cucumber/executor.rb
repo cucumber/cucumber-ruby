@@ -51,7 +51,7 @@ module Cucumber
 
     def visit_feature(feature)
       if accept_feature?(feature)
-        formatters.visit_feature(feature)
+        formatters.feature_executing(feature)
         feature.accept(self)
         @executed_scenarios = {}
         @regular_scenario_cache = {}
