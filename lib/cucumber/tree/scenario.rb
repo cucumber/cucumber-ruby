@@ -26,6 +26,11 @@ module Cucumber
         raise "Couldn't find #{step} among #{steps}" if i.nil?
         steps[i-1]
       end
+      
+      def pending?
+        steps.empty?
+      end
+      
     end
 
     class Scenario < BaseScenario
@@ -91,10 +96,6 @@ module Cucumber
 
       def row?
         false
-      end
-
-      def pending?
-        steps.empty?
       end
 
       def create_step(keyword, name, line)

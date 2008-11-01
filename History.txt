@@ -36,6 +36,7 @@ spaces removed too.
 * Added support for Texan (improvements welcome). (Aslak Hellesøy)
 
 === Bugfixes
+* Row Scenarios need to support pending? in order for the Profile formatter to work (Joseph Wilk)
 * Snippets are not shown for steps which already have a step definition (#65 Joseph Wilk)
 * Prevent feature/scenario/pending step comments from containing '//' when running features by specifying a directory with a trailing '/' (Joseph Wilk)
 * Scenario tables need spacing after them (#59 Joseph Wilk)
