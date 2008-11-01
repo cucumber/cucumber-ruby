@@ -20,7 +20,7 @@ module Cucumber
         @last_executed_was_row = false
       end
 
-      def visit_feature(feature)
+      def feature_executing(feature)
         @feature = feature
       end
 

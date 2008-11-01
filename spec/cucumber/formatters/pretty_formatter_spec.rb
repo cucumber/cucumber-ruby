@@ -138,7 +138,7 @@ module Cucumber
         end
 
         it "should display file for feature" do
-          @formatter.visit_feature(mock_feature(:file => 'features/example.feature', :padding_length => 2))
+          @formatter.feature_executing(mock_feature(:file => 'features/example.feature', :padding_length => 2))
           @formatter.header_executing("Feature: test\n In order to ...\n As a ...\n I want to ...\n")
 
           @io.string.should include("Feature: test  # features/example.feature\n")
