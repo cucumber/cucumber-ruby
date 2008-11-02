@@ -23,6 +23,8 @@ in the inside string. If the triple quotes are indented 4 spaces, then the text 
 spaces removed too.
 
 === New features
+* Added --quiet option to hide all development aid output when using Pretty formatter (#69 Joseph Wilk)
+* Added --no-snippets option to hide snippets for pending steps when using Pretty formatter (#69 Joseph Wilk)
 * Added Autotest support - work in progress... (Peter Jaros)
 * Added new --exclude option (Bryan Helkamp)
 * Added new --scenario option (Peter Jaros)
@@ -34,6 +36,9 @@ spaces removed too.
 * Added support for Texan (improvements welcome). (Aslak Hellesøy)
 
 === Bugfixes
+* The HTML formatter was rendering everything twice. Cannot invoke visit_feature on formatters in executor (#72 Joseph Wilk)
+* Row Scenarios need to support pending? in order for the Profile formatter to work (Joseph Wilk)
+* Snippets are not shown for steps which already have a step definition (#65 Joseph Wilk)
 * Prevent feature/scenario/pending step comments from containing '//' when running features by specifying a directory with a trailing '/' (Joseph Wilk)
 * Scenario tables need spacing after them (#59 Joseph Wilk)
 * Support running scenario table rows when using --line argument (#55 Joseph Wilk)

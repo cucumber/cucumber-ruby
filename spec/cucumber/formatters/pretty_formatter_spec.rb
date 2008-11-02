@@ -10,6 +10,9 @@ module Cucumber
           :format => 'formatted yes',
           :name => 'example',
           :error => nil,
+          :padding_length => 2,
+          :file => 'test',
+          :line => 1,
           :row? => false}.merge(stubs))
       end
 
@@ -78,6 +81,34 @@ module Cucumber
         io.string.should =~ /\n\n  Scenario: spacey/
       end
       
+      {'should' => true, 'should not' => false}.each do |should_or_should_not, show_snippet|
+        describe "snippets option #{show_snippet}" do
+          
+          it "#{should_or_should_not} show snippet for pending step" do
+            @io = StringIO.new
+            step_mother = mock('step_mother', :has_step_definition? => false)
+            @formatter = PrettyFormatter.new @io, step_mother, :snippets => show_snippet
+                    
+            @formatter.step_pending(mock_step(:actual_keyword => 'Given', :name => 'pending step snippet'), nil, nil)
+            @formatter.dump
+
+            @io.string.send(should_or_should_not.gsub(' ','_').to_sym, include("Given /^pending step snippet$/ do"))
+          end
+        
+        end
+      end
+            
+      it "should not show the snippet for a step which already has a step definition" do
+        @io = StringIO.new
+        step_mother = mock('step_mother', :has_step_definition? => true)
+        @formatter = PrettyFormatter.new @io, step_mother, :snippets => true
+
+        @formatter.step_pending(mock_step(:actual_keyword => 'Given', :name => 'pending step snippet'), nil, nil)
+        @formatter.dump
+
+        @io.string.should_not include("Given /^pending step snippet$/ do")
+      end
+                        
       describe "show source option true" do
 
         before(:each) do
@@ -107,7 +138,7 @@ module Cucumber
         end
 
         it "should display file for feature" do
-          @formatter.visit_feature(mock_feature(:file => 'features/example.feature', :padding_length => 2))
+          @formatter.feature_executing(mock_feature(:file => 'features/example.feature', :padding_length => 2))
           @formatter.header_executing("Feature: test\n In order to ...\n As a ...\n I want to ...\n")
 
           @io.string.should include("Feature: test  # features/example.feature\n")

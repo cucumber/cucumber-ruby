@@ -25,6 +25,7 @@ module Cucumber
         :dry_run => false,
         :lang => 'en',
         :source => true,
+        :snippets => true,
         :excludes => [],
         :scenario_names => nil
       }
@@ -43,6 +44,7 @@ module Cucumber
         :dry_run => false,
         :lang => 'en',
         :source => true,
+        :snippets => true,
         :excludes => [],
         :scenario_names => nil
       }
@@ -52,6 +54,21 @@ module Cucumber
       cli = CLI.new
       cli.parse_options!(%w{--no-source})
 
+      cli.options[:source].should be_false
+    end
+
+    it "should accept --no-snippets option" do
+      cli = CLI.new
+      cli.parse_options!(%w{--no-snippets})
+      
+      cli.options[:snippets].should be_false
+    end
+
+    it "should accept --quiet option" do
+      cli = CLI.new
+      cli.parse_options!(%w{--quiet})
+      
+      cli.options[:snippets].should be_false
       cli.options[:source].should be_false
     end
 
