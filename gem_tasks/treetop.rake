@@ -25,15 +25,6 @@ class FeatureCompiler
     end
     sh "#{@tt} #{grammar_file}"
     FileUtils.rm(grammar_file)
-    
-    # Change code so it isn't part of RDoc
-    lines = IO.read(ruby_file).split("\n")
-    lines.each do |line|
-      if line =~ /\s*(def|class|module)/
-        line << " #:nodoc:"
-      end
-    end
-    File.open(ruby_file, 'wb'){|io| io.write(lines.join("\n"))}
   end
 end
 
@@ -43,6 +34,7 @@ namespace :treetop do
     FeatureCompiler.new.compile_all
   end
 
+  desc 'Compile the English grammar'
   task :compile_en do
     FeatureCompiler.new.compile('en')
   end

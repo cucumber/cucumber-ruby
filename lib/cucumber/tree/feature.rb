@@ -2,6 +2,7 @@ module Cucumber
   module Tree
     class Feature
       attr_reader :header
+      attr_reader :scenarios
       MIN_PADDING = 2
 
       attr_accessor :file

@@ -8,6 +8,10 @@ Feature: Multiline steps should work
     Then I should be working in London
     And I should be born in Oslo
     And I should be able to expect
-      "A string
-      that spans
-      several lines"
+      """
+      A string
+        that "indents"
+      and spans
+      several lines
+      
+      """
