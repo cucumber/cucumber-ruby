@@ -185,6 +185,7 @@ spec/cucumber/rails/world_spec.rb
 spec/cucumber/sell_cucumbers.feature
 spec/cucumber/step_mother_spec.rb
 spec/cucumber/tree/feature_spec.rb
+spec/cucumber/tree/row_scenario_spec.rb
 spec/cucumber/tree/scenario_spec.rb
 spec/cucumber/tree/step_spec.rb
 spec/cucumber/treetop_parser/empty_feature.feature
