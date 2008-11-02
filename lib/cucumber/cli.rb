@@ -26,7 +26,9 @@ module Cucumber
     FORMATS = %w{pretty profile progress html}
     DEFAULT_FORMAT = 'pretty'
 
-    def initialize
+    def initialize(out_stream = STDOUT, error_stream = STDERR)
+      @out_stream = out_stream
+      @error_stream = error_stream
       @paths = []
       @options = {
         :require => nil,
@@ -71,19 +73,19 @@ module Cucumber
           "Available formats: #{FORMATS.join(", ")}",
           "This option can be specified multiple times.") do |v|
           unless FORMATS.index(v)
-            STDERR.puts "Invalid format: #{v}\n"
-            STDERR.puts opts.help
+            @error_stream.puts "Invalid format: #{v}\n"
+            @error_stream.puts opts.help
             exit 1
           end
           @options[:formats][v] ||= []
-          @options[:formats][v] << STDOUT
+          @options[:formats][v] << @out_stream
           @active_format = v
         end
-        opts.on("-o", "--out FILE", "Write output to a file instead of STDOUT.",
+        opts.on("-o", "--out FILE", "Write output to a file instead of @out_stream.",
           "This option can be specified multiple times, and applies to the previously",
           "specified --format.") do |v|
           @options[:formats][@active_format] ||= []
-          if @options[:formats][@active_format].last == STDOUT
+          if @options[:formats][@active_format].last == @out_stream
             @options[:formats][@active_format][-1] = File.open(v, 'w')
           else
             @options[:formats][@active_format] << File.open(v, 'w')
@@ -112,7 +114,7 @@ module Cucumber
       end.parse!
 
       if @options[:formats].empty?
-        @options[:formats][DEFAULT_FORMAT] = [STDOUT]
+        @options[:formats][DEFAULT_FORMAT] = [@out_stream]
       end
 
       # Whatever is left after option parsing is the FILE arguments
@@ -120,12 +122,26 @@ module Cucumber
     end
 
     def parse_args_from_profile(profile)
-      return unless File.exist?('cucumber.yml')
+      unless File.exist?('cucumber.yml')
+        return exit_with_error("cucumber.yml was not found.  Please define your '#{profile}' and other profiles in cucumber.yml.\n"+
+                               "Type 'cucumber --help' for usage.\n")
+      end
+      
       require 'yaml'
       cucumber_yml = YAML::load(IO.read('cucumber.yml'))
       args_from_yml = cucumber_yml[profile]
-      raise "Expected to find a String, got #{args_from_yml.inspect}. cucumber.yml:\n#{cucumber_yml}" unless String === args_from_yml
-      parse_options!(args_from_yml.split(' '))
+      if args_from_yml.nil?
+        exit_with_error <<-END_OF_ERROR
+Could not find profile: '#{profile}'
+
+Defined profiles in cucumber.yml:
+  * #{cucumber_yml.keys.join("\n  * ")}
+        END_OF_ERROR
+      elsif !args_from_yml.is_a?(String)
+        exit_with_error "Profiles must be defined as a String.  The '#{profile}' profile was #{args_from_yml.inspect} (#{args_from_yml.class}).\n"
+      else
+        parse_options!(args_from_yml.split(' '))
+      end
     end
 
     def execute!(step_mother, executor, features)
@@ -216,6 +232,13 @@ module Cucumber
         output_broadcaster.register(output)
       end
       output_broadcaster
+    end
+    
+  private
+
+    def exit_with_error(error_message)
+      @error_stream << error_message
+      Kernel.exit 1
     end
 
   end
