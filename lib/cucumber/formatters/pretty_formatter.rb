@@ -12,13 +12,15 @@ module Cucumber
         @io = (io == STDOUT) ? Kernel : io
         @options = options
         @step_mother = step_mother
-        @passed = []
-        @failed = []
-        @pending = []
-        @skipped = []
+        @pending_scenarios  = []
+        @passed             = []
+        @failed             = []
+        @pending_steps      = []
+        @skipped            = []
+        @last_executed_was_row = false
       end
 
-      def visit_feature(feature)
+      def feature_executing(feature)
         @feature = feature
       end
 
@@ -31,7 +33,7 @@ module Cucumber
           @io.print line
           if @options[:source] && index==0
             @io.print padding_spaces(@feature)
-            @io.print comment("# #{@feature.file}") 
+            @io.print comment("# #{@feature.file}")
           end
           @io.puts
         end
@@ -39,10 +41,19 @@ module Cucumber
 
       def scenario_executing(scenario)
         @scenario_failed = false
+        @io.puts if @last_executed_was_row && !scenario.row?
         if scenario.row?
+          @last_executed_was_row = true
           @io.print "    |"
         else
-          @io.print passed("  #{Cucumber.language['scenario']}: #{scenario.name}")
+          if scenario.pending?
+            @pending_scenarios << scenario
+            @io.print pending("  #{Cucumber.language['scenario']}: #{scenario.name}")
+          else
+            @io.print passed("  #{Cucumber.language['scenario']}: #{scenario.name}")
+          end
+          @last_executed_was_row = false
+
           if @options[:source]
             @io.print padding_spaces(scenario)
             @io.print comment("# #{scenario.file}:#{scenario.line}")
@@ -60,7 +71,7 @@ module Cucumber
           @io.puts
         elsif scenario.row? && @scenario_failed
           @io.puts
-          output_failing_step(@failed.last) 
+          output_failing_step(@failed.last)
         end
       end
 
@@ -73,7 +84,7 @@ module Cucumber
           @io.print passed("    #{step.keyword} #{step.format(regexp){|param| passed_param(param) << passed}}")
           if @options[:source]
             @io.print padding_spaces(step)
-            @io.print source_comment(step) 
+            @io.print source_comment(step)
           end
           @io.puts
         end
@@ -87,10 +98,10 @@ module Cucumber
         else
           @failed << step
           @scenario_failed = true
-          @io.print failed("    #{step.keyword} #{step.format(regexp){|param| failed_param(param) << failed}}") 
+          @io.print failed("    #{step.keyword} #{step.format(regexp){|param| failed_param(param) << failed}}")
           if @options[:source]
             @io.print padding_spaces(step)
-            @io.print source_comment(step) 
+            @io.print source_comment(step)
           end
           @io.puts
           output_failing_step(step)
@@ -102,10 +113,10 @@ module Cucumber
         if step.row?
           print_skipped_args(args)
         else
-          @io.print skipped("    #{step.keyword} #{step.format(regexp){|param| skipped_param(param) << skipped}}") 
+          @io.print skipped("    #{step.keyword} #{step.format(regexp){|param| skipped_param(param) << skipped}}")
           if @options[:source]
             @io.print padding_spaces(step)
-            @io.print source_comment(step) 
+            @io.print source_comment(step)
           end
           @io.puts
         end
@@ -113,10 +124,10 @@ module Cucumber
 
       def step_pending(step, regexp, args)
         if step.row?
-          @pending << step
+          @pending_steps << step
           print_pending_args(args)
         else
-          @pending << step
+          @pending_steps << step
           @io.print pending("    #{step.keyword} #{step.name}")
           if @options[:source]
             @io.print padding_spaces(step)
@@ -137,21 +148,28 @@ module Cucumber
 
       def dump
         @io.puts
-        @io.puts passed("#{@passed.length} steps passed") unless @passed.empty?
-        @io.puts failed("#{@failed.length} steps failed") unless @failed.empty?
-        @io.puts skipped("#{@skipped.length} steps skipped") unless @skipped.empty?
-        @io.puts pending("#{@pending.length} steps pending") unless @pending.empty?
+
+        @io.puts pending("#{@pending_scenarios.length} scenarios pending") if @pending_scenarios.any?
+
+        @io.puts passed("#{@passed.length} steps passed")           if @passed.any?
+        @io.puts failed("#{@failed.length} steps failed")           if @failed.any?
+        @io.puts skipped("#{@skipped.length} steps skipped")        if @skipped.any?
+        @io.puts pending("#{@pending_steps.length} steps pending")  if @pending_steps.any?
+
         @io.print reset
-        print_snippets
+
+        print_snippets if @options[:snippets]
       end
 
       def print_snippets
-        unless @pending.empty?
+        snippets = @pending_steps
+        snippets.delete_if {|snippet| snippet.row? || @step_mother.has_step_definition?(snippet.name)}
+
+        unless snippets.empty?
           @io.puts "\nYou can use these snippets to implement pending steps:\n\n"
 
           prev_keyword = nil
-          snippets = @pending.map do |step|
-            next if step.row?
+          snippets = snippets.map do |step|
             snippet = "#{step.actual_keyword} /^#{step.name}$/ do\nend\n\n"
             prev_keyword = step.keyword
             snippet
@@ -192,19 +210,19 @@ module Cucumber
       end
 
       def print_passed_args args
-        print_row(args) {|arg| passed(arg)}      
+        print_row(args) {|arg| passed(arg)}
       end
-      def print_skipped_args args
 
-        print_row(args) {|arg| skipped(arg)}      
+      def print_skipped_args args
+        print_row(args) {|arg| skipped(arg)}
       end
 
       def print_failed_args args
-        print_row(args) {|arg| failed(arg)}      
+        print_row(args) {|arg| failed(arg)}
       end
 
       def print_pending_args args
-        print_row(args) {|arg| pending(arg)}      
+        print_row(args) {|arg| pending(arg)}
       end
     end
   end

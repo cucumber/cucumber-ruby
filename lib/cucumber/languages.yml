@@ -1,3 +1,6 @@
+# http://www.ietf.org/rfc/rfc4646.txt
+# http://www.ietf.org/rfc/rfc4647.txt
+# Others:
 # http://en.wikipedia.org/wiki/IETF_language_tag
 # http://www.iana.org/assignments/language-subtag-registry
 # http://ftp.ics.uci.edu/pub/ietf/http/related/iso639.txt (Use this I think)
@@ -65,6 +68,16 @@
   then: Alors
   and: Et
   but: Mais
+"id":
+  feature: Fitur
+  scenario: Skenario
+  more_examples: Contoh Tambahan
+  given_scenario: DenganSkenario
+  given: Dengan
+  when: Ketika
+  then: Maka
+  and: Dan
+  but: Tapi
 "nl":
   feature: Functionaliteit
   scenario: Scenario
@@ -85,6 +98,16 @@
   then: Så
   and: Og
   but: Men
+"pl":
+  feature: Właściwość
+  scenario: Scenariusz
+  more_examples: WięcejPrzykładów
+  given_scenario: DanyScenariusz
+  given: Dane
+  when: Jeżeli
+  then: Wtedy
+  and: Oraz
+  but: Ale
 "pt":
   feature: Característica
   scenario: Cenário

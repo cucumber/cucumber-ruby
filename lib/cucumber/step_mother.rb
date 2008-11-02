@@ -76,6 +76,11 @@ module Cucumber
       @step_procs[regexp]
     end
     
+    def has_step_definition?(step_name)
+      _, _, proc = regexp_args_proc(step_name)
+      proc != PENDING
+    end
+    
     # TODO - move execute here?
     def execute(step)
     end

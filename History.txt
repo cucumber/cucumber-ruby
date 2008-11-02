@@ -1,15 +1,53 @@
 == 0.1.9 (In Git)
 
-Release blurb
+Main changes in this release is Autotest support and how multiline strings work in feature files. 
+Here is an example om multiline strings:
+
+  # In your .feature file
+  Then I should see
+    """
+    A string
+      that "indents"
+    and spans
+    several lines
+  
+    """
+
+  # In your steps.rb file
+  Then 'I should see' do |text|
+    text.should == "A string\n  that \"indents\"\nand spans\nseveral lines\n"
+  end
+
+The triple quotes are used to define the start and end of a string, and it also defines what gets stripped away
+in the inside string. If the triple quotes are indented 4 spaces, then the text within will have the 4 first
+spaces removed too.
 
 === New features
+* Added --quiet option to hide all development aid output when using Pretty formatter (#69 Joseph Wilk)
+* Added --no-snippets option to hide snippets for pending steps when using Pretty formatter (#69 Joseph Wilk)
+* Added error messages concerning cucumber.yml. (#70 Ben Mabey)
+* Added Autotest support - work in progress... (Peter Jaros)
+* Added new --exclude option (Bryan Helkamp)
+* Added new --scenario option (Peter Jaros)
+* Renamed common_webrat.rb to common_webrat_steps.rb (Ben Mabey)
+* Added new feature[:feature_path] task (Roman Gonzalez)
+* Added support for Polish (Joseph Wilk)
+* Support specifying multiple formatters and multiple outputs (#47 Joseph Wilk)
 * Added support for Japanese. (Kakutani Shintaro)
 * Added support for Texan (improvements welcome). (Aslak Hellesøy)
 
 === Bugfixes
+* The HTML formatter was rendering everything twice. Cannot invoke visit_feature on formatters in executor (#72 Joseph Wilk)
+* Row Scenarios need to support pending? in order for the Profile formatter to work (Joseph Wilk)
+* Snippets are not shown for steps which already have a step definition (#65 Joseph Wilk)
+* Prevent feature/scenario/pending step comments from containing '//' when running features by specifying a directory with a trailing '/' (Joseph Wilk)
+* Scenario tables need spacing after them (#59 Joseph Wilk)
+* Support running scenario table rows when using --line argument (#55 Joseph Wilk)
 * Don't load cucumber.yml unless it exists (Aslak Hellesøy)
+* Fixing bug where specifying line number 1 in a feature which starts with a scenario with a scenario table was raising an error (#56 Joseph Wilk)
 
 === Removed features
+
 
 == 0.1.8 2008-10-18
 

@@ -2,7 +2,7 @@ module Cucumber
   module Tree
     class BaseScenario
       attr_reader :feature
-      
+
       def file
         @feature.file
       end
@@ -26,11 +26,16 @@ module Cucumber
         raise "Couldn't find #{step} among #{steps}" if i.nil?
         steps[i-1]
       end
+      
+      def pending?
+        steps.empty?
+      end
+      
     end
 
     class Scenario < BaseScenario
       MIN_PADDING = 2
-      INDENT = 2 
+      INDENT = 2
 
       # If a table follows, the header will be stored here. Weird, but convenient.
       attr_reader :table_header
@@ -42,10 +47,12 @@ module Cucumber
         @steps_and_given_scenarios = []
         instance_eval(&proc) if block_given?
       end
+
       def table_header=  header
         @table_header = header
         update_table_column_widths header
       end
+
       def steps
         @steps ||= @steps_and_given_scenarios.map{|step| step.steps}.flatten
       end
@@ -86,6 +93,7 @@ module Cucumber
         @table_column_widths ||= [0] * values.size
         @table_column_widths = @table_column_widths.zip(values).map {|max, value| [max, value.size].max}
       end
+
       def row?
         false
       end

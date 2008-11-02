@@ -1,33 +1,33 @@
-module Cucumber #:nodoc:
-module TreetopParser #:nodoc:
-
-module Feature #:nodoc:
+module Cucumber
+# :stopdoc:
+module TreetopParser
+module Feature
   include Treetop::Runtime
 
-  def root #:nodoc:
+  def root
     @root || :root
   end
 
-  module Root0 #:nodoc:
-    def header #:nodoc:
+  module Root0
+    def header
       elements[1]
     end
 
-    def scenario_sequence #:nodoc:
+    def scenario_sequence
       elements[2]
     end
 
   end
 
-  module Root1 #:nodoc:
-    def compile #:nodoc:
+  module Root1
+    def compile
       feature = Tree::Feature.new(header.text_value.strip)
       scenario_sequence.compile(feature)
       feature
     end
   end
 
-  def _nt_root #:nodoc:
+  def _nt_root
     start_index = index
     if node_cache[:root].has_key?(index)
       cached = node_cache[:root][index]
@@ -74,10 +74,10 @@ module Feature #:nodoc:
     return r0
   end
 
-  module Header0 #:nodoc:
+  module Header0
   end
 
-  def _nt_header #:nodoc:
+  def _nt_header
     start_index = index
     if node_cache[:header].has_key?(index)
       cached = node_cache[:header][index]
@@ -144,39 +144,39 @@ module Feature #:nodoc:
     return r0
   end
 
-  module ScenarioSequence0 #:nodoc:
-    def space #:nodoc:
+  module ScenarioSequence0
+    def space
       elements[0]
     end
 
-    def scenario_or_table #:nodoc:
+    def scenario_or_table
       elements[1]
     end
   end
 
-  module ScenarioSequence1 #:nodoc:
-    def head #:nodoc:
+  module ScenarioSequence1
+    def head
       elements[0]
     end
 
-    def tail #:nodoc:
+    def tail
       elements[1]
     end
   end
 
-  module ScenarioSequence2 #:nodoc:
-    def compile(feature) #:nodoc:
+  module ScenarioSequence2
+    def compile(feature)
       ([head] + tail).each do |scenario_or_table|
         scenario_or_table.compile(feature) if scenario_or_table.respond_to?(:compile)
       end
     end
     
-    def tail #:nodoc:
+    def tail
       super.elements.map { |elt| elt.scenario_or_table }
     end
   end
 
-  def _nt_scenario_sequence #:nodoc:
+  def _nt_scenario_sequence
     start_index = index
     if node_cache[:scenario_sequence].has_key?(index)
       cached = node_cache[:scenario_sequence][index]
@@ -232,32 +232,32 @@ module Feature #:nodoc:
     return r0
   end
 
-  module Scenario0 #:nodoc:
-    def space #:nodoc:
+  module Scenario0
+    def space
       elements[0]
     end
 
-    def step_sequence #:nodoc:
+    def step_sequence
       elements[1]
     end
   end
 
-  module Scenario1 #:nodoc:
-    def scenario_keyword #:nodoc:
+  module Scenario1
+    def scenario_keyword
       elements[0]
     end
 
-    def name #:nodoc:
+    def name
       elements[2]
     end
 
-    def steps #:nodoc:
+    def steps
       elements[3]
     end
   end
 
-  module Scenario2 #:nodoc:
-    def compile(feature) #:nodoc:
+  module Scenario2
+    def compile(feature)
       line = input.line_of(interval.first)
       scenario = feature.add_scenario(name.text_value.strip, line)
       steps.step_sequence.compile(scenario) if steps.respond_to?(:step_sequence)
@@ -267,7 +267,7 @@ module Feature #:nodoc:
     end
   end
 
-  def _nt_scenario #:nodoc:
+  def _nt_scenario
     start_index = index
     if node_cache[:scenario].has_key?(index)
       cached = node_cache[:scenario][index]
@@ -327,7 +327,7 @@ module Feature #:nodoc:
     return r0
   end
 
-  def _nt_scenario_or_table #:nodoc:
+  def _nt_scenario_or_table
     start_index = index
     if node_cache[:scenario_or_table].has_key?(index)
       cached = node_cache[:scenario_or_table][index]
@@ -354,27 +354,23 @@ module Feature #:nodoc:
     return r0
   end
 
-  module MoreExamples0 #:nodoc:
-    def more_examples_keyword #:nodoc:
+  module MoreExamples0
+    def more_examples_keyword
       elements[0]
     end
 
-    def space #:nodoc:
+    def table
       elements[1]
-    end
-
-    def table #:nodoc:
-      elements[2]
     end
   end
 
-  module MoreExamples1 #:nodoc:
-    def compile(f) #:nodoc:
+  module MoreExamples1
+    def compile(f)
       table.compile(f)
     end
   end
 
-  def _nt_more_examples #:nodoc:
+  def _nt_more_examples
     start_index = index
     if node_cache[:more_examples].has_key?(index)
       cached = node_cache[:more_examples][index]
@@ -386,12 +382,8 @@ module Feature #:nodoc:
     r1 = _nt_more_examples_keyword
     s0 << r1
     if r1
-      r2 = _nt_space
+      r2 = _nt_table
       s0 << r2
-      if r2
-        r3 = _nt_table
-        s0 << r3
-      end
     end
     if s0.last
       r0 = (SyntaxNode).new(input, i0...index, s0)
@@ -407,50 +399,54 @@ module Feature #:nodoc:
     return r0
   end
 
-  module Table0 #:nodoc:
-    def eol #:nodoc:
+  module Table0
+    def eol
       elements[1]
     end
 
-    def table_line #:nodoc:
+    def table_line
       elements[3]
     end
   end
 
-  module Table1 #:nodoc:
-    def head #:nodoc:
+  module Table1
+    def space
       elements[0]
     end
 
-    def body #:nodoc:
+    def head
       elements[1]
+    end
+
+    def body
+      elements[2]
     end
   end
 
-  module Table2 #:nodoc:
-    def compile(feature) #:nodoc:
+  module Table2
+    def compile(feature)
       Feature.last_scenario.table_header = head.cell_values
       body.each do |table_line|
         feature.add_row_scenario(Feature.last_scenario, table_line.cell_values, table_line.line)
       end
     end
     
-    def matrix #:nodoc:
+    def matrix
       ([head] + body).map do |table_line|
-        table_line.cell_values # We're losing the line - we'll get it back when we make our own class #:nodoc:
+        table_line.cell_values # We're losing the line - we'll get it back when we make our own class
       end
     end
     
-    def to_arg #:nodoc:
+    def to_arg
       Model::Table.new(matrix)
     end
     
-    def body #:nodoc:
+    def body
       super.elements.map { |elt| elt.table_line }
     end
   end
 
-  def _nt_table #:nodoc:
+  def _nt_table
     start_index = index
     if node_cache[:table].has_key?(index)
       cached = node_cache[:table][index]
@@ -459,55 +455,59 @@ module Feature #:nodoc:
     end
 
     i0, s0 = index, []
-    r1 = _nt_table_line
+    r1 = _nt_space
     s0 << r1
     if r1
-      s2, i2 = [], index
-      loop do
-        i3, s3 = index, []
-        s4, i4 = [], index
+      r2 = _nt_table_line
+      s0 << r2
+      if r2
+        s3, i3 = [], index
         loop do
-          r5 = _nt_blank
+          i4, s4 = index, []
+          s5, i5 = [], index
+          loop do
+            r6 = _nt_blank
+            if r6
+              s5 << r6
+            else
+              break
+            end
+          end
+          r5 = SyntaxNode.new(input, i5...index, s5)
+          s4 << r5
           if r5
-            s4 << r5
+            r7 = _nt_eol
+            s4 << r7
+            if r7
+              r9 = _nt_space
+              if r9
+                r8 = r9
+              else
+                r8 = SyntaxNode.new(input, index...index)
+              end
+              s4 << r8
+              if r8
+                r10 = _nt_table_line
+                s4 << r10
+              end
+            end
+          end
+          if s4.last
+            r4 = (SyntaxNode).new(input, i4...index, s4)
+            r4.extend(Table0)
+          else
+            self.index = i4
+            r4 = nil
+          end
+          if r4
+            s3 << r4
           else
             break
           end
         end
-        r4 = SyntaxNode.new(input, i4...index, s4)
-        s3 << r4
-        if r4
-          r6 = _nt_eol
-          s3 << r6
-          if r6
-            r8 = _nt_space
-            if r8
-              r7 = r8
-            else
-              r7 = SyntaxNode.new(input, index...index)
-            end
-            s3 << r7
-            if r7
-              r9 = _nt_table_line
-              s3 << r9
-            end
-          end
-        end
-        if s3.last
-          r3 = (SyntaxNode).new(input, i3...index, s3)
-          r3.extend(Table0)
-        else
-          self.index = i3
-          r3 = nil
-        end
-        if r3
-          s2 << r3
-        else
-          break
-        end
+        r3 = SyntaxNode.new(input, i3...index, s3)
+        s0 << r3
       end
-      r2 = SyntaxNode.new(input, i2...index, s2)
-      s0 << r2
     end
     if s0.last
       r0 = (SyntaxNode).new(input, i0...index, s0)
@@ -523,37 +523,37 @@ module Feature #:nodoc:
     return r0
   end
 
-  module TableLine0 #:nodoc:
-    def cell_value #:nodoc:
+  module TableLine0
+    def cell_value
       elements[1]
     end
 
-    def separator #:nodoc:
+    def separator
       elements[3]
     end
   end
 
-  module TableLine1 #:nodoc:
-    def separator #:nodoc:
+  module TableLine1
+    def separator
       elements[0]
     end
 
-    def cells #:nodoc:
+    def cells
       elements[1]
     end
   end
 
-  module TableLine2 #:nodoc:
-    def cell_values #:nodoc:
+  module TableLine2
+    def cell_values
       cells.elements.map { |elt| elt.cell_value.text_value.strip }
     end
 
-    def line #:nodoc:
+    def line
       input.line_of(interval.first)
     end
   end
 
-  def _nt_table_line #:nodoc:
+  def _nt_table_line
     start_index = index
     if node_cache[:table_line].has_key?(index)
       cached = node_cache[:table_line][index]
@@ -635,10 +635,10 @@ module Feature #:nodoc:
     return r0
   end
 
-  module CellValue0 #:nodoc:
+  module CellValue0
   end
 
-  def _nt_cell_value #:nodoc:
+  def _nt_cell_value
     start_index = index
     if node_cache[:cell_value].has_key?(index)
       cached = node_cache[:cell_value][index]
@@ -700,39 +700,39 @@ module Feature #:nodoc:
     return r0
   end
 
-  module StepSequence0 #:nodoc:
-    def space #:nodoc:
+  module StepSequence0
+    def space
       elements[0]
     end
 
-    def step #:nodoc:
+    def step
       elements[1]
     end
   end
 
-  module StepSequence1 #:nodoc:
-    def head #:nodoc:
+  module StepSequence1
+    def head
       elements[0]
     end
 
-    def tail #:nodoc:
+    def tail
       elements[1]
     end
   end
 
-  module StepSequence2 #:nodoc:
-    def compile(scenario) #:nodoc:
+  module StepSequence2
+    def compile(scenario)
       ([head] + tail).each do |step|
         step.compile(scenario)
       end
     end
     
-    def tail #:nodoc:
+    def tail
       super.elements.map { |elt| elt.step }
     end
   end
 
-  def _nt_step_sequence #:nodoc:
+  def _nt_step_sequence
     start_index = index
     if node_cache[:step_sequence].has_key?(index)
       cached = node_cache[:step_sequence][index]
@@ -783,7 +783,7 @@ module Feature #:nodoc:
     return r0
   end
 
-  def _nt_step #:nodoc:
+  def _nt_step
     start_index = index
     if node_cache[:step].has_key?(index)
       cached = node_cache[:step][index]
@@ -810,24 +810,24 @@ module Feature #:nodoc:
     return r0
   end
 
-  module GivenScenario0 #:nodoc:
-    def given_scenario_keyword #:nodoc:
+  module GivenScenario0
+    def given_scenario_keyword
       elements[0]
     end
 
-    def name #:nodoc:
+    def name
       elements[2]
     end
   end
 
-  module GivenScenario1 #:nodoc:
-    def compile(scenario) #:nodoc:
+  module GivenScenario1
+    def compile(scenario)
       line = input.line_of(interval.first)
       scenario.create_given_scenario(name.text_value.strip, line)
     end
   end
 
-  def _nt_given_scenario #:nodoc:
+  def _nt_given_scenario
     start_index = index
     if node_cache[:given_scenario].has_key?(index)
       cached = node_cache[:given_scenario][index]
@@ -865,41 +865,32 @@ module Feature #:nodoc:
     return r0
   end
 
-  module PlainStep0 #:nodoc:
-    def space #:nodoc:
+  module PlainStep0
+    def step_keyword
       elements[0]
     end
 
-    def multiline_arg #:nodoc:
-      elements[1]
-    end
-  end
-
-  module PlainStep1 #:nodoc:
-    def step_keyword #:nodoc:
-      elements[0]
-    end
-
-    def name #:nodoc:
+    def name
       elements[2]
     end
 
-    def multi #:nodoc:
+    def multi
       elements[3]
     end
   end
 
-  module PlainStep2 #:nodoc:
-    def compile(scenario) #:nodoc:
+  module PlainStep1
+    def compile(scenario)
       line = input.line_of(interval.first)
       step = scenario.create_step(step_keyword.text_value, name.text_value.strip, line)
-      if multi.respond_to?(:multiline_arg)
-        step.extra_args << multi.multiline_arg.to_arg
+
+      if multi.respond_to?(:to_arg)
+        step.extra_args << multi.to_arg
       end
     end
   end
 
-  def _nt_plain_step #:nodoc:
+  def _nt_plain_step
     start_index = index
     if node_cache[:plain_step].has_key?(index)
       cached = node_cache[:plain_step][index]
@@ -922,20 +913,7 @@ module Feature #:nodoc:
         r4 = _nt_line_to_eol
         s0 << r4
         if r4
-          i6, s6 = index, []
-          r7 = _nt_space
-          s6 << r7
-          if r7
-            r8 = _nt_multiline_arg
-            s6 << r8
-          end
-          if s6.last
-            r6 = (SyntaxNode).new(input, i6...index, s6)
-            r6.extend(PlainStep0)
-          else
-            self.index = i6
-            r6 = nil
-          end
+          r6 = _nt_multiline_arg
           if r6
             r5 = r6
           else
@@ -947,8 +925,8 @@ module Feature #:nodoc:
     end
     if s0.last
       r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0.extend(PlainStep0)
       r0.extend(PlainStep1)
-      r0.extend(PlainStep2)
     else
       self.index = i0
       r0 = nil
@@ -959,7 +937,7 @@ module Feature #:nodoc:
     return r0
   end
 
-  def _nt_multiline_arg #:nodoc:
+  def _nt_multiline_arg
     start_index = index
     if node_cache[:multiline_arg].has_key?(index)
       cached = node_cache[:multiline_arg][index]
@@ -986,30 +964,42 @@ module Feature #:nodoc:
     return r0
   end
 
-  module MultilineString0 #:nodoc:
+  module MultilineString0
   end
 
-  module MultilineString1 #:nodoc:
-    def quote #:nodoc:
+  module MultilineString1
+    def eol
       elements[0]
     end
 
-    def string #:nodoc:
+    def indent
       elements[1]
     end
 
-    def quote #:nodoc:
+    def triple_quote
       elements[2]
     end
-  end
 
-  module MultilineString2 #:nodoc:
-    def to_arg #:nodoc:
-      string.text_value.split("\n").map{|l| l.strip}.join("\n")
+    def string
+      elements[3]
+    end
+
+    def triple_quote
+      elements[4]
     end
   end
 
-  def _nt_multiline_string #:nodoc:
+  module MultilineString2
+    def to_arg
+      indent_length = indent.text_value.length
+      significant_lines = string.text_value.split("\n")[1..-2]
+      significant_lines.map do |l| 
+        l[indent_length..-1]
+      end.join("\n")
+    end
+  end
+
+  def _nt_multiline_string
     start_index = index
     if node_cache[:multiline_string].has_key?(index)
       cached = node_cache[:multiline_string][index]
@@ -1018,49 +1008,57 @@ module Feature #:nodoc:
     end
 
     i0, s0 = index, []
-    r1 = _nt_quote
+    r1 = _nt_eol
     s0 << r1
     if r1
-      s2, i2 = [], index
-      loop do
-        i3, s3 = index, []
-        i4 = index
-        r5 = _nt_quote
-        if r5
-          r4 = nil
-        else
-          self.index = i4
-          r4 = SyntaxNode.new(input, index...index)
-        end
-        s3 << r4
-        if r4
-          if index < input_length
-            r6 = (SyntaxNode).new(input, index...(index + 1))
-            @index += 1
-          else
-            terminal_parse_failure("any character")
-            r6 = nil
-          end
-          s3 << r6
-        end
-        if s3.last
-          r3 = (SyntaxNode).new(input, i3...index, s3)
-          r3.extend(MultilineString0)
-        else
-          self.index = i3
-          r3 = nil
-        end
-        if r3
-          s2 << r3
-        else
-          break
-        end
-      end
-      r2 = SyntaxNode.new(input, i2...index, s2)
+      r2 = _nt_space
       s0 << r2
       if r2
-        r7 = _nt_quote
-        s0 << r7
+        r3 = _nt_triple_quote
+        s0 << r3
+        if r3
+          s4, i4 = [], index
+          loop do
+            i5, s5 = index, []
+            i6 = index
+            r7 = _nt_triple_quote
+            if r7
+              r6 = nil
+            else
+              self.index = i6
+              r6 = SyntaxNode.new(input, index...index)
+            end
+            s5 << r6
+            if r6
+              if index < input_length
+                r8 = (SyntaxNode).new(input, index...(index + 1))
+                @index += 1
+              else
+                terminal_parse_failure("any character")
+                r8 = nil
+              end
+              s5 << r8
+            end
+            if s5.last
+              r5 = (SyntaxNode).new(input, i5...index, s5)
+              r5.extend(MultilineString0)
+            else
+              self.index = i5
+              r5 = nil
+            end
+            if r5
+              s4 << r5
+            else
+              break
+            end
+          end
+          r4 = SyntaxNode.new(input, i4...index, s4)
+          s0 << r4
+          if r4
+            r9 = _nt_triple_quote
+            s0 << r9
+          end
+        end
       end
     end
     if s0.last
@@ -1077,28 +1075,28 @@ module Feature #:nodoc:
     return r0
   end
 
-  def _nt_quote #:nodoc:
+  def _nt_triple_quote
     start_index = index
-    if node_cache[:quote].has_key?(index)
-      cached = node_cache[:quote][index]
+    if node_cache[:triple_quote].has_key?(index)
+      cached = node_cache[:triple_quote][index]
       @index = cached.interval.end if cached
       return cached
     end
 
-    if input.index('"', index) == index
-      r0 = (SyntaxNode).new(input, index...(index + 1))
-      @index += 1
+    if input.index('"""', index) == index
+      r0 = (SyntaxNode).new(input, index...(index + 3))
+      @index += 3
     else
-      terminal_parse_failure('"')
+      terminal_parse_failure('"""')
       r0 = nil
     end
 
-    node_cache[:quote][start_index] = r0
+    node_cache[:triple_quote][start_index] = r0
 
     return r0
   end
 
-  def _nt_separator #:nodoc:
+  def _nt_separator
     start_index = index
     if node_cache[:separator].has_key?(index)
       cached = node_cache[:separator][index]
@@ -1119,7 +1117,7 @@ module Feature #:nodoc:
     return r0
   end
 
-  def _nt_space #:nodoc:
+  def _nt_space
     start_index = index
     if node_cache[:space].has_key?(index)
       cached = node_cache[:space][index]
@@ -1160,10 +1158,10 @@ module Feature #:nodoc:
     return r0
   end
 
-  module LineToEol0 #:nodoc:
+  module LineToEol0
   end
 
-  def _nt_line_to_eol #:nodoc:
+  def _nt_line_to_eol
     start_index = index
     if node_cache[:line_to_eol].has_key?(index)
       cached = node_cache[:line_to_eol][index]
@@ -1213,13 +1211,13 @@ module Feature #:nodoc:
     return r0
   end
 
-  module CommentToEol0 #:nodoc:
-    def line_to_eol #:nodoc:
+  module CommentToEol0
+    def line_to_eol
       elements[1]
     end
   end
 
-  def _nt_comment_to_eol #:nodoc:
+  def _nt_comment_to_eol
     start_index = index
     if node_cache[:comment_to_eol].has_key?(index)
       cached = node_cache[:comment_to_eol][index]
@@ -1253,7 +1251,7 @@ module Feature #:nodoc:
     return r0
   end
 
-  def _nt_white #:nodoc:
+  def _nt_white
     start_index = index
     if node_cache[:white].has_key?(index)
       cached = node_cache[:white][index]
@@ -1280,7 +1278,7 @@ module Feature #:nodoc:
     return r0
   end
 
-  def _nt_blank #:nodoc:
+  def _nt_blank
     start_index = index
     if node_cache[:blank].has_key?(index)
       cached = node_cache[:blank][index]
@@ -1300,10 +1298,10 @@ module Feature #:nodoc:
     return r0
   end
 
-  module Eol0 #:nodoc:
+  module Eol0
   end
 
-  def _nt_eol #:nodoc:
+  def _nt_eol
     start_index = index
     if node_cache[:eol].has_key?(index)
       cached = node_cache[:eol][index]
@@ -1366,7 +1364,7 @@ module Feature #:nodoc:
     return r0
   end
 
-  def _nt_step_keyword #:nodoc:
+  def _nt_step_keyword
     start_index = index
     if node_cache[:step_keyword].has_key?(index)
       cached = node_cache[:step_keyword][index]
@@ -1438,10 +1436,10 @@ module Feature #:nodoc:
     return r0
   end
 
-  module ScenarioKeyword0 #:nodoc:
+  module ScenarioKeyword0
   end
 
-  def _nt_scenario_keyword #:nodoc:
+  def _nt_scenario_keyword
     start_index = index
     if node_cache[:scenario_keyword].has_key?(index)
       cached = node_cache[:scenario_keyword][index]
@@ -1486,10 +1484,10 @@ module Feature #:nodoc:
     return r0
   end
 
-  module MoreExamplesKeyword0 #:nodoc:
+  module MoreExamplesKeyword0
   end
 
-  def _nt_more_examples_keyword #:nodoc:
+  def _nt_more_examples_keyword
     start_index = index
     if node_cache[:more_examples_keyword].has_key?(index)
       cached = node_cache[:more_examples_keyword][index]
@@ -1534,10 +1532,10 @@ module Feature #:nodoc:
     return r0
   end
 
-  module GivenScenarioKeyword0 #:nodoc:
+  module GivenScenarioKeyword0
   end
 
-  def _nt_given_scenario_keyword #:nodoc:
+  def _nt_given_scenario_keyword
     start_index = index
     if node_cache[:given_scenario_keyword].has_key?(index)
       cached = node_cache[:given_scenario_keyword][index]
@@ -1584,7 +1582,7 @@ module Feature #:nodoc:
 
 end
 
-class FeatureParser < Treetop::Runtime::CompiledParser #:nodoc:
+class FeatureParser < Treetop::Runtime::CompiledParser
   include Feature
 end
 

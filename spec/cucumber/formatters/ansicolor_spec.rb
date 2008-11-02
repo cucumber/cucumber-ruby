@@ -27,7 +27,7 @@ module Cucumber
       end
       
       it "should not generate ansi codes when colors are disabled" do
-        ENV['CUCUMBER_COLORS_DISABLED'] = '1'
+        ::Term::ANSIColor.coloring = false
         passed("foo").should == "foo"
       end
     end
