@@ -25,6 +25,7 @@ spaces removed too.
 === New features
 * Added --quiet option to hide all development aid output when using Pretty formatter (#69 Joseph Wilk)
 * Added --no-snippets option to hide snippets for pending steps when using Pretty formatter (#69 Joseph Wilk)
+* Added error messages concerning cucumber.yml. (#70 Ben Mabey)
 * Added Autotest support - work in progress... (Peter Jaros)
 * Added new --exclude option (Bryan Helkamp)
 * Added new --scenario option (Peter Jaros)
