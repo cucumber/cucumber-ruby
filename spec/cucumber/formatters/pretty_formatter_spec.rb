@@ -172,6 +172,22 @@ module Cucumber
         end
 
       end
+
+      it "should reset the column count correctly" do
+        io = StringIO.new
+        formatter = PrettyFormatter.new io, mock('step_mother'), :source => true
+
+        large_scenario = mock_scenario(:row? => false, :table_column_widths => [3,3,5,4,4], :table_header => %w(one two three four five))
+        formatter.scenario_executing(large_scenario)
+        formatter.scenario_executed(large_scenario)
+
+        small_scenario = mock_scenario(:row? => false, :table_column_widths => [3,3], :table_header => %w(one two))
+        formatter.scenario_executing(small_scenario)
+        lambda {
+          formatter.scenario_executed(small_scenario)
+        }.should_not raise_error(TypeError)
+      end
+
     end
   end
 end
