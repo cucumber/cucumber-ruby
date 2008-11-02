@@ -12,11 +12,20 @@ module Cucumber
       stub(Broadcaster, {:register => nil}.merge(stubs))
     end
     
+    before(:each) do
+      Kernel.stub!(:exit)
+    end
+    
+    def given_cucumber_yml_defined_as(hash)
+      File.stub!(:exist?).and_return(true)
+      cucumber_yml = hash.to_yaml
+      IO.stub!(:read).with('cucumber.yml').and_return(cucumber_yml)
+    end
+    
     it "should expand args from YAML file" do
       cli = CLI.new
-
-      cucumber_yml = {'bongo' => '--require from/yml'}.to_yaml
-      IO.should_receive(:read).with('cucumber.yml').and_return(cucumber_yml)
+      
+      given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})
 
       cli.parse_options!(%w{--format progress --profile bongo})
       cli.options.should == {
@@ -34,8 +43,7 @@ module Cucumber
     it "should expand args from YAML file's default if there are no args" do
       cli = CLI.new
 
-      cucumber_yml = {'default' => '--require from/yml'}.to_yaml
-      IO.should_receive(:read).with('cucumber.yml').and_return(cucumber_yml)
+      given_cucumber_yml_defined_as({'default' => '--require from/yml'})
 
       cli.parse_options!([])
       cli.options.should == {
@@ -48,6 +56,44 @@ module Cucumber
         :excludes => [],
         :scenario_names => nil
       }
+    end
+    
+    it "should provide a helpful error message when a specified profile does not exists in YAML file" do
+      cli = CLI.new(StringIO.new, error = StringIO.new)
+      
+      given_cucumber_yml_defined_as({'default' => '--require from/yml', 'html_report' =>  '--format html'})
+    
+      cli.parse_options!(%w{--profile i_do_not_exist})
+      
+      expected_message = <<-END_OF_MESSAGE
+Could not find profile: 'i_do_not_exist'
+
+Defined profiles in cucumber.yml:
+  * default
+  * html_report
+      END_OF_MESSAGE
+        
+      error.string.should == expected_message
+    end
+    
+    it "should provide a helpful error message when a specified profile is not a String" do
+      cli = CLI.new(StringIO.new, error = StringIO.new)
+
+      given_cucumber_yml_defined_as({'foo' => [1,2,3]})
+
+      cli.parse_options!(%w{--profile foo})
+
+      error.string.should == "Profiles must be defined as a String.  The 'foo' profile was [1, 2, 3] (Array).\n"
+    end
+    
+    it "should provide a helpful error message when no YAML file exists and a profile is specified" do
+      cli = CLI.new(StringIO.new, error = StringIO.new)
+      
+      File.should_receive(:exist?).with('cucumber.yml').and_return(false)
+    
+      cli.parse_options!(%w{--profile i_do_not_exist})
+        
+      error.string.should match(/cucumber.yml was not found.  Please define your 'i_do_not_exist' and other profiles in cucumber.yml./)
     end
 
     it "should accept --no-source option" do
