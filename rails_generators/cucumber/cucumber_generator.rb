@@ -8,9 +8,10 @@ class CucumberGenerator < Rails::Generator::Base
     record do |m|
       script_options     = { :chmod => 0755, :shebang => options[:shebang] == DEFAULT_SHEBANG ? nil : options[:shebang] }
 
-      m.directory 'features/steps'
-      m.file      'env.rb', 'features/steps/env.rb'
-      m.file      'common_webrat_steps.rb', 'features/steps/common_webrat_steps.rb'
+      m.directory 'features/step_definitions'
+      m.directory 'features/support'
+      m.file      'env.rb', 'features/support/env.rb'
+      m.file      'webrat_common.rb', 'features/step_definitions/webrat_common.rb'
 
       m.directory 'lib/tasks'
       m.file      'cucumber.rake', 'lib/tasks/cucumber.rake'
