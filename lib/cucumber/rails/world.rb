@@ -26,8 +26,6 @@ Test::Unit.run = true if Test::Unit.respond_to?(:run=)
 
 $main = self
 
-$main = self
-
 module Cucumber #:nodoc:
   module Rails
     # All scenarios will execute in the context of a new instance of World.
