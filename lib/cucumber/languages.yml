@@ -19,6 +19,16 @@
 # are added.
 #
 # Please keep the grammars in alphabetical order from here and down.
+"cy":
+  feature: Arwedd
+  scenario: Scenario
+  more_examples: Hychwaneg enghreifftiau
+  given_scenario: Anrhegedig scenario
+  given: anrhegedig a
+  when: Pryd
+  then: Yna
+  and: A
+  but: Ond
 "da":
   feature: Egenskab
   scenario: Scenarie
