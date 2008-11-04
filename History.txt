@@ -37,6 +37,7 @@ spaces removed too.
 * Added support for Texan (improvements welcome). (Aslak Hellesøy)
 
 === Bugfixes
+* Fixed next_column_index not resetting after large tables (#60, Barry Mitchelson)
 * The HTML formatter was rendering everything twice. Cannot invoke visit_feature on formatters in executor (#72 Joseph Wilk)
 * Row Scenarios need to support pending? in order for the Profile formatter to work (Joseph Wilk)
 * Snippets are not shown for steps which already have a step definition (#65 Joseph Wilk)
