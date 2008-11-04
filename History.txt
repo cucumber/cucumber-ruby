@@ -23,6 +23,7 @@ in the inside string. If the triple quotes are indented 4 spaces, then the text 
 spaces removed too.
 
 === New features
+* Added support for Welsh (improvements welcome) (Joseph Wilk)
 * Added --quiet option to hide all development aid output when using Pretty formatter (#69 Joseph Wilk)
 * Added --no-snippets option to hide snippets for pending steps when using Pretty formatter (#69 Joseph Wilk)
 * Added error messages concerning cucumber.yml. (#70 Ben Mabey)
