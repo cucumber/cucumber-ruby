@@ -19,15 +19,8 @@ module Cucumber
       IO.should_receive(:read).with('cucumber.yml').and_return(cucumber_yml)
 
       cli.parse_options!(%w{--format progress --profile bongo})
-      cli.options.should == {
-        :formats => {'progress' => [STDOUT]},
-        :require => ['from/yml'],
-        :dry_run => false,
-        :lang => 'en',
-        :source => true,
-        :excludes => [],
-        :scenario_names => nil
-      }
+      cli.options[:formats].should == {'progress' => [STDOUT]}
+      cli.options[:require].should == ['from/yml']
     end
 
     it "should expand args from YAML file's default if there are no args" do
@@ -37,15 +30,7 @@ module Cucumber
       IO.should_receive(:read).with('cucumber.yml').and_return(cucumber_yml)
 
       cli.parse_options!([])
-      cli.options.should == {
-        :formats => {'pretty' => [STDOUT]},
-        :require => ['from/yml'],
-        :dry_run => false,
-        :lang => 'en',
-        :source => true,
-        :excludes => [],
-        :scenario_names => nil
-      }
+      cli.options[:require].should == ['from/yml']
     end
 
     it "should accept --no-source option" do
