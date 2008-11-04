@@ -134,6 +134,38 @@ module Cucumber
       cli.execute!(stub('step mother'), executor, stub('features'))
     end
 
+    it "should accept --color option" do
+      cli = CLI.new
+      cli.parse_options!(['--color'])
+      cli.options[:color].should == true
+      Term::ANSIColor.should_receive(:coloring=).with(true)
+      cli.execute!(stub('step mother'), mock_executor, stub('features'))
+    end
+
+    it "should accept --no-color option" do
+      cli = CLI.new
+      cli.parse_options!(['--no-color'])
+      cli.options[:color].should == false
+      Term::ANSIColor.should_receive(:coloring=).with(false)
+      cli.execute!(stub('step mother'), mock_executor, stub('features'))
+    end
+
+    it "should accept --color and --no-color and use the last one" do
+      cli = CLI.new
+      cli.parse_options!(['--color', '--no-color'])
+      cli.options[:color].should == false
+      Term::ANSIColor.should_receive(:coloring=).with(false)
+      cli.execute!(stub('step mother'), mock_executor, stub('features'))
+    end
+
+    it "should use a default color setting if no option is given" do
+      cli = CLI.new
+      cli.parse_options!(['--'])
+      cli.options[:color].should == nil
+      Term::ANSIColor.should_not_receive(:coloring=)
+      cli.execute!(stub('step mother'), mock_executor, stub('features'))
+    end
+
     it "should search for all features in the specified directory" do
       cli = CLI.new
 
