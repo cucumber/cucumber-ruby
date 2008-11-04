@@ -11,7 +11,6 @@ class FeatureGenerator < Rails::Generator::NamedBase
 protected
 
   def banner
-    "Usage: #{$0} cucumber"
+    "Usage: #{$0} feature ModelName [field:type, field:type]"
   end
-
 end
