@@ -7,7 +7,7 @@ class CucumberGenerator < Rails::Generator::Base
   def manifest
     record do |m|
       m.directory 'features/step_definitions'
-      m.file      'webrat_common.rb', 'features/step_definitions/webrat_common.rb'
+      m.file      'webrat_steps.rb', 'features/step_definitions/webrat_steps.rb'
 
       m.directory 'features/support'
       m.file      'env.rb',           'features/support/env.rb'
