@@ -38,6 +38,7 @@ spaces removed too.
 * Added support for Texan (improvements welcome). (Aslak Hellesøy)
 
 === Bugfixes
+* Scenario without a body shouldn't show up as complete (#63 Josh Knowles)
 * Fixed bug where utf-8 strings where breaking comment alighments. (#79 Joseph Wilk)
 * Fixed next_column_index not resetting after large tables (#60, Barry Mitchelson)
 * The HTML formatter was rendering everything twice. Cannot invoke visit_feature on formatters in executor (#72 Joseph Wilk)
