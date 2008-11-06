@@ -1,3 +1,3 @@
 Autotest.add_discovery do
-  "cucumber" if File.directory?('features')
+  "cucumber" if ENV['AUTOFEATURE'] == 'true' && File.directory?('features')
 end
