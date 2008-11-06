@@ -66,7 +66,7 @@ module Cucumber
       end
 
       def length
-        @length ||= Cucumber.language['scenario'].length + 2 + (@name.nil? ? 0 : @name.length)
+        @length ||= Cucumber.language['scenario'].jlength + 2 + (@name.nil? ? 0 : @name.jlength)
       end
 
       def max_line_length
