@@ -26,6 +26,11 @@ module Cucumber
         raise "Couldn't find #{step} among #{steps}" if i.nil?
         steps[i-1]
       end
+      
+      def pending?
+        steps.empty?
+      end
+      
     end
 
     class Scenario < BaseScenario
@@ -61,7 +66,7 @@ module Cucumber
       end
 
       def length
-        @length ||= Cucumber.language['scenario'].length + 2 + (@name.nil? ? 0 : @name.length)
+        @length ||= Cucumber.language['scenario'].jlength + 2 + (@name.nil? ? 0 : @name.jlength)
       end
 
       def max_line_length
@@ -91,10 +96,6 @@ module Cucumber
 
       def row?
         false
-      end
-
-      def pending?
-        steps.empty?
       end
 
       def create_step(keyword, name, line)
