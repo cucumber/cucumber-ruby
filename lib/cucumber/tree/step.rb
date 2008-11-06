@@ -20,7 +20,7 @@ module Cucumber
       end
       
       def length
-        keyword.length + 1 + name.length
+        keyword.jlength + 1 + name.jlength
       end
 
       if defined?(JRUBY_VERSION)
