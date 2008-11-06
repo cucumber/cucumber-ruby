@@ -42,5 +42,5 @@ Then /^I should not see "(.*)"$/ do |text|
 end
 
 Then /^the "(.*)" checkbox should be checked$/ do |label|
-  element_labeled(label).should be_checked
+  field_labeled(label).should be_checked
 end

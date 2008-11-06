@@ -20,9 +20,9 @@ module Cucumber
         scenario = Scenario.new(nil, '', 1)
         scenario.create_step('Given', 'a long step', 1)
 
-        #Scenario: ***********
+        #Scenario: *********
         #  Given a long step
-        scenario.padding_length.should == 9 + 2 #Allow for indent
+        scenario.padding_length.should == 9 + Scenario::INDENT
       end
 
       it "should ignore step padding if scenario is longer than all steps" do
@@ -32,6 +32,31 @@ module Cucumber
         scenario.padding_length.should == 2
       end
 
+      describe "utf-8 strings" do
+        describe "when calculating padding" do
+
+          it "should take into consideration utf-8 scenario names" do
+            scenario = Scenario.new(nil, 'こんばんは', 1)
+            scenario.create_step('Given', 'a long step', 1)
+        
+            #Scenario: こんばんは****
+            #  Given a long step
+            scenario.padding_length.should == 4 + Scenario::INDENT
+          end
+      
+          it "should take into consideration a utf-8 keyword for 'scenario'" do
+            Cucumber.language.stub!(:[]).with('scenario').and_return("シナリオ")
+            scenario = Scenario.new(nil, '', 1)
+            scenario.create_step('Given', 'step', 1)
+        
+            #シナリオ: ******
+            #  Given step
+            scenario.padding_length.should == 6 + Scenario::INDENT
+          end
+        
+        end
+      end
+      
       describe "pending?" do
         before :each do
           @scenario = Scenario.new(nil, '', 1)
