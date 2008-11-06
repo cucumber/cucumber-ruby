@@ -23,7 +23,7 @@ module Cucumber
     end
 
     attr_reader :options
-    FORMATS = %w{pretty profile progress html}
+    FORMATS = %w{pretty profile progress html autotest}
     DEFAULT_FORMAT = 'pretty'
 
     def initialize(out_stream = STDOUT, error_stream = STDERR)
@@ -234,6 +234,8 @@ Defined profiles in cucumber.yml:
           formatter_broadcaster.register(Formatters::ProfileFormatter.new(output_broadcaster, step_mother))
         when 'html'
           formatter_broadcaster.register(Formatters::HtmlFormatter.new(output_broadcaster, step_mother))
+        when 'autotest'
+          formatter_broadcaster.register(Formatters::AutotestFormatter.new(output_broadcaster))
         else
           raise "Unknown formatter: #{@options[:format]}"
         end
