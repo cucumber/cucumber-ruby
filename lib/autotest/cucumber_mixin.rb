@@ -1,11 +1,12 @@
 require 'autotest'
+require 'tempfile'
 
 module Autotest::CucumberMixin
   def self.included(receiver)
     receiver::ALL_HOOKS << [:run_features, :ran_features]
   end
   
-  attr_accessor :scenarios_to_run, :feature_results
+  attr_accessor :scenarios_to_run
   
   def initialize
     super
@@ -68,76 +69,23 @@ module Autotest::CucumberMixin
   # with tests/specs.
   def run_features
     hook :run_features
-    cmd = self.make_cucumber_cmd self.scenarios_to_run
-    return if cmd.empty?
-    
-    puts cmd unless $q
-    
-    old_sync = $stdout.sync
-    $stdout.sync = true
-    self.feature_results = []
-    line = []
-    begin
-      open("| #{cmd}", "r") do |f|
-        until f.eof? do
-          c = f.getc
-          putc c
-          line << c
-          if c == ?\n then
-            self.feature_results << if RUBY_VERSION >= "1.9" then
-                                      line.join
-                                    else
-                                      line.pack "c*"
-                                    end
-            line.clear
-          end
-        end
-      end
-    ensure
-      $stdout.sync = old_sync
+    Tempfile.open('autotest-cucumber') do |dirty_scenarios_file|
+      cmd = self.make_cucumber_cmd self.scenarios_to_run, dirty_scenarios_file.path
+      return if cmd.empty?
+      puts cmd unless $q
+      system cmd
+      self.scenarios_to_run = dirty_scenarios_file.readlines.map { |l| l.chomp }
+      self.tainted = true unless self.scenarios_to_run == []
     end
     hook :ran_features
-    self.feature_results = self.feature_results.join
-    
-    handle_feature_results(self.feature_results)
   end
   
-  def handle_feature_results(results)
-    # Run completed if we get to the final results.
-    completed = results =~ /\d+ steps (passed|failed|skipped|pending)/
-    return unless completed
-    
-    # Strategy: Find failing scenarios by color.  Since color is customizable,
-    #           we need to find the colors for various statuses.
-    
-    color_by_status = lambda do |status|
-      m = /^((?:\e\[\d+m)+)\d+ steps #{status}/.match(results)
-      m && m[1]
-    end
-    passing_color = color_by_status["passed"]
-    nonpassing_colors = %w{ failed skipped pending }.map(&color_by_status).compact
-    
-    if nonpassing_colors.empty? # nonpassing_colors is empty if all steps passed.
-      failing_scenarios = []
-    elsif passing_color.nil?    # passing_color is nil if no steps passed.
-      failing_scenarios = :all
-    else
-      nonpassing_color_re = "(?:" + nonpassing_colors.map { |c| Regexp.escape(c) }.join("|") + ")"
-    
-      # Regexp matches scenarios and captures the scenario names
-      failing_scenarios = results.scan(/^\s*#{Regexp.escape(passing_color)}\s*Scenario: (.+?)\e\[0m.*\n(?:.+\n)*(?:.*#{nonpassing_color_re}.+)(?:.+\n)*/).flatten
-    end
-    
-    self.scenarios_to_run = failing_scenarios
-    
-    self.tainted = true unless self.scenarios_to_run == []
-  end
-  
-  def make_cucumber_cmd(scenarios_to_run)
+  def make_cucumber_cmd(scenarios_to_run, dirty_scenarios_filename)
     return '' if scenarios_to_run == []
     
     args = File.exist?("cucumber.yml") ? %w{--profile autotest} : %w{-r features features}
     args << "--color"
+    args += %w{--format autotest --out} << dirty_scenarios_filename
     args = args.join(' ')
     
     if scenarios_to_run == :all
