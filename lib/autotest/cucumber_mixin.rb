@@ -78,7 +78,6 @@ module Autotest::CucumberMixin
     self.feature_results = []
     line = []
     begin
-      ENV['CUCUMBER_COLORS_DISABLED'] ||= '0'
       open("| #{cmd}", "r") do |f|
         until f.eof? do
           c = f.getc
@@ -137,7 +136,9 @@ module Autotest::CucumberMixin
   def make_cucumber_cmd(scenarios_to_run)
     return '' if scenarios_to_run == []
     
-    args = File.exist?("cucumber.yml") ? "--profile autotest" : "-r features features"
+    args = File.exist?("cucumber.yml") ? %w{--profile autotest} : %w{-r features features}
+    args << "--color"
+    args = args.join(' ')
     
     if scenarios_to_run == :all
       scenario_args = nil
