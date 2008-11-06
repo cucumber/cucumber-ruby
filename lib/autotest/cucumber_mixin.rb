@@ -83,7 +83,13 @@ module Autotest::CucumberMixin
   def make_cucumber_cmd(scenarios_to_run, dirty_scenarios_filename)
     return '' if scenarios_to_run == []
     
-    args = File.exist?("cucumber.yml") ? %w{--profile autotest} : %w{-r features features}
+    profiles = YAML.load_file("cucumber.yml").keys rescue []
+    
+    profile ||= "autotest-all" if profiles.include?("autotest-all") and scenarios_to_run == :all
+    profile ||= "autotest"     if profiles.include?("autotest")
+    profile ||= nil
+    
+    args = profile ? ["--profile", profile] : %w{features --format pretty}
     args << "--color"
     args += %w{--format autotest --out} << dirty_scenarios_filename
     args = args.join(' ')
