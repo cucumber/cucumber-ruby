@@ -86,8 +86,11 @@ module Autotest::CucumberMixin
     profile ||= "autotest"     if profiles.include?("autotest")
     profile ||= nil
     
-    args = profile ? ["--profile", profile] : %w{features --format pretty}
-    args << "--color"
+    if profile
+      args = ["--profile", profile]
+    else
+      args = %w{features --format} << (scenarios_to_run == :all ? "progress" : "pretty")
+    end
     args += %w{--format autotest --out} << dirty_scenarios_filename
     args = args.join(' ')
     
