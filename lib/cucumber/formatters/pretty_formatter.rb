@@ -170,7 +170,7 @@ module Cucumber
 
           prev_keyword = nil
           snippets = snippets.map do |step|
-            snippet = "#{step.actual_keyword} /^#{step.name}$/ do\nend\n\n"
+            snippet = "#{step.actual_keyword} /^#{escape_regexp_characters(step.name)}$/ do\nend\n\n"
             prev_keyword = step.keyword
             snippet
           end.compact.uniq
@@ -183,6 +183,10 @@ module Cucumber
 
       private
 
+      def escape_regexp_characters(string)
+        Regexp.escape(string).gsub('\ ', ' ').gsub('/', '\/') unless string.nil?
+      end
+      
       def source_comment(step)
         _, _, proc = step.regexp_args_proc(@step_mother)
         comment(proc.to_comment_line)

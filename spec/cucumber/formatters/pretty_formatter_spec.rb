@@ -96,8 +96,19 @@ module Cucumber
           end
         
         end
+      end                  
+      
+      it  "should escape snippets which have special regular expression characters" do
+        @io = StringIO.new
+        step_mother = mock('step_mother', :has_step_definition? => false)
+        @formatter = PrettyFormatter.new @io, step_mother, :snippets => true
+
+        @formatter.step_pending(mock_step(:actual_keyword => 'Given', :name => "$1 millon /'s"), nil, nil)
+        @formatter.dump
+
+        @io.string.should include("Given /^\\$1 millon \\/'s$/ do")
       end
-            
+          
       it "should not show the snippet for a step which already has a step definition" do
         @io = StringIO.new
         step_mother = mock('step_mother', :has_step_definition? => true)
@@ -108,7 +119,7 @@ module Cucumber
 
         @io.string.should_not include("Given /^pending step snippet$/ do")
       end
-                        
+      
       describe "show source option true" do
 
         before(:each) do
