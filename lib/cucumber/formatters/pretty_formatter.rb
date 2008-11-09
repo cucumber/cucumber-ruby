@@ -66,6 +66,7 @@ module Cucumber
         @io.puts
         if !scenario.row? && scenario.table_header
           @table_column_widths = scenario.table_column_widths
+          @current_column = -1
           @io.print "    |"
           print_row(scenario.table_header)
           @io.puts
