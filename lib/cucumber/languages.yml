@@ -88,6 +88,16 @@
   then: Maka
   and: Dan
   but: Tapi
+"it":
+  feature: Funzionalità
+  scenario: Scenario
+  more_examples: Più esempi
+  given_scenario: DatoLoScenario
+  given: Dato
+  when: Quando
+  then: Allora
+  and: E
+  but: Ma
 "nl":
   feature: Functionaliteit
   scenario: Scenario
