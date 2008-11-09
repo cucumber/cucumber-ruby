@@ -1,6 +1,6 @@
 require 'spec'
 $:.unshift(File.dirname(__FILE__) + '/../../lib')
-require 'calculador'
+require 'calcolatrice'
 
 Before do
   @calc = Calcolatrice.new
