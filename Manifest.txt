@@ -46,6 +46,10 @@ examples/indonesian_kalkulator/features/addition.feature
 examples/indonesian_kalkulator/features/division.feature
 examples/indonesian_kalkulator/features/steps/calculator_steps.rb
 examples/indonesian_kalkulator/lib/calculator.rb
+examples/italian_calculator/Rakefile
+examples/italian_calculator/features/somma.feature
+examples/italian_calculator/features/steps/calcolatrice_steps.rb
+examples/italian_calculator/lib/calcolatrice.rb
 examples/japanese_calculator/README.txt
 examples/japanese_calculator/Rakefile
 examples/japanese_calculator/features/addition.feature
