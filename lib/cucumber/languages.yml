@@ -137,6 +137,26 @@
   then: Então
   and: E
   but: Mas
+"ro":
+  feature: Functionalitate
+  scenario: Scenariu
+  more_examples: Mai multe exemple
+  given_scenario: ScenariuDat
+  given: Daca
+  when: Cand
+  then: Atunci
+  and: Si
+  but: Dar
+"ro2":
+  feature: Funcționalitate
+  scenario: Scenariu
+  more_examples: Mai multe exemple
+  given_scenario: ScenariuDat
+  given: Dacă
+  when: Când
+  then: Atunci
+  and: Și
+  but: Dar
 "ru":
   feature: Функционал
   scenario: Сценарий
