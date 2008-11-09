@@ -1,1 +1,3 @@
 default: --format progress features
+autotest: --format pretty features
+autotest-all: --format progress features
