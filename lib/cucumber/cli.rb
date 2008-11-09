@@ -23,7 +23,7 @@ module Cucumber
     end
 
     attr_reader :options
-    FORMATS = %w{pretty profile progress html}
+    FORMATS = %w{pretty profile progress html autotest}
     DEFAULT_FORMAT = 'pretty'
 
     def initialize(out_stream = STDOUT, error_stream = STDERR)
@@ -92,6 +92,12 @@ module Cucumber
             @options[:formats][@active_format] << File.open(v, 'w')
           end
         end
+        opts.on("-c", "--[no-]color", "Use ANSI color in the output, if formatters use it.  If",
+                                      "these options are given multiple times, the last one is",
+                                      "used.  If neither --color or --no-color is given cucumber",
+                                      "decides based on your platform and the output destination") do |v|
+          @options[:color] = v
+        end
         opts.on("-e", "--exclude PATTERN", "Don't run features matching a pattern") do |v|
           @options[:excludes] << v
         end
@@ -153,6 +159,7 @@ Defined profiles in cucumber.yml:
     end
 
     def execute!(step_mother, executor, features)
+      Term::ANSIColor.coloring = @options[:color] unless @options[:color].nil?
       Cucumber.load_language(@options[:lang])
       executor.formatters = build_formatter_broadcaster(step_mother)
       require_files
@@ -227,6 +234,8 @@ Defined profiles in cucumber.yml:
           formatter_broadcaster.register(Formatters::ProfileFormatter.new(output_broadcaster, step_mother))
         when 'html'
           formatter_broadcaster.register(Formatters::HtmlFormatter.new(output_broadcaster, step_mother))
+        when 'autotest'
+          formatter_broadcaster.register(Formatters::AutotestFormatter.new(output_broadcaster))
         else
           raise "Unknown formatter: #{@options[:format]}"
         end

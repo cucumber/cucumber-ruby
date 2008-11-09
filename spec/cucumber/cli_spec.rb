@@ -28,16 +28,8 @@ module Cucumber
       given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})
 
       cli.parse_options!(%w{--format progress --profile bongo})
-      cli.options.should == {
-        :formats => {'progress' => [STDOUT]},
-        :require => ['from/yml'],
-        :dry_run => false,
-        :lang => 'en',
-        :source => true,
-        :snippets => true,
-        :excludes => [],
-        :scenario_names => nil
-      }
+      cli.options[:formats].should == {'progress' => [STDOUT]}
+      cli.options[:require].should == ['from/yml']
     end
 
     it "should expand args from YAML file's default if there are no args" do
@@ -46,16 +38,7 @@ module Cucumber
       given_cucumber_yml_defined_as({'default' => '--require from/yml'})
 
       cli.parse_options!([])
-      cli.options.should == {
-        :formats => {'pretty' => [STDOUT]},
-        :require => ['from/yml'],
-        :dry_run => false,
-        :lang => 'en',
-        :source => true,
-        :snippets => true,
-        :excludes => [],
-        :scenario_names => nil
-      }
+      cli.options[:require].should == ['from/yml']
     end
     
     it "should provide a helpful error message when a specified profile does not exists in YAML file" do
@@ -210,6 +193,38 @@ Defined profiles in cucumber.yml:
       executor = mock_executor
       executor.should_receive(:scenario_names=).with(["User logs in", "User signs up"])
       cli.execute!(stub('step mother'), executor, stub('features'))
+    end
+
+    it "should accept --color option" do
+      cli = CLI.new
+      cli.parse_options!(['--color'])
+      cli.options[:color].should == true
+      Term::ANSIColor.should_receive(:coloring=).with(true)
+      cli.execute!(stub('step mother'), mock_executor, stub('features'))
+    end
+
+    it "should accept --no-color option" do
+      cli = CLI.new
+      cli.parse_options!(['--no-color'])
+      cli.options[:color].should == false
+      Term::ANSIColor.should_receive(:coloring=).with(false)
+      cli.execute!(stub('step mother'), mock_executor, stub('features'))
+    end
+
+    it "should accept --color and --no-color and use the last one" do
+      cli = CLI.new
+      cli.parse_options!(['--color', '--no-color'])
+      cli.options[:color].should == false
+      Term::ANSIColor.should_receive(:coloring=).with(false)
+      cli.execute!(stub('step mother'), mock_executor, stub('features'))
+    end
+
+    it "should use a default color setting if no option is given" do
+      cli = CLI.new
+      cli.parse_options!(['--'])
+      cli.options[:color].should == nil
+      Term::ANSIColor.should_not_receive(:coloring=)
+      cli.execute!(stub('step mother'), mock_executor, stub('features'))
     end
 
     it "should search for all features in the specified directory" do
