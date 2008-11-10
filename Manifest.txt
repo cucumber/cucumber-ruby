@@ -137,6 +137,7 @@ lib/cucumber/tree/step.rb
 lib/cucumber/tree/table.rb
 lib/cucumber/tree/top_down_visitor.rb
 lib/cucumber/treetop_parser/feature.treetop.erb
+lib/cucumber/treetop_parser/feature_ar.rb
 lib/cucumber/treetop_parser/feature_cy.rb
 lib/cucumber/treetop_parser/feature_da.rb
 lib/cucumber/treetop_parser/feature_de.rb
