@@ -24,6 +24,7 @@ spaces removed too.
 
 === New features
 * Added --[no-]color option to force color on or off (Peter Jaros)
+* Step definition without a block will be treated as pending (#64 Joseph Wilk)
 * Added support for Welsh (improvements welcome) (Joseph Wilk)
 * Added --quiet option to hide all development aid output when using Pretty formatter (#69 Joseph Wilk)
 * Added --no-snippets option to hide snippets for pending steps when using Pretty formatter (#69 Joseph Wilk)
@@ -39,6 +40,7 @@ spaces removed too.
 * Added support for Texan (improvements welcome). (Aslak Hellesøy)
 
 === Bugfixes
+* Pending step snippets should escape special Regexp characters (#82 Joseph Wilk)
 * Scenario without a body shouldn't show up as complete (#63 Josh Knowles)
 * Fixed bug where utf-8 strings where breaking comment alighments. (#79 Joseph Wilk)
 * Fixed next_column_index not resetting after large tables (#60, Barry Mitchelson)
