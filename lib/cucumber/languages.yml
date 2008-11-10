@@ -181,6 +181,28 @@
   then: Então
   and: E
   but: Mas
+# Romanian (without diacritics - the commonly used)
+"ro":
+  feature: Functionalitate
+  scenario: Scenariu
+  more_examples: Mai multe exemple
+  given_scenario: ScenariuDat
+  given: Daca
+  when: Cand
+  then: Atunci
+  and: Si
+  but: Dar
+# Romanian (with diacritics - not commonly used)
+"ro2":
+  feature: Funcționalitate
+  scenario: Scenariu
+  more_examples: Mai multe exemple
+  given_scenario: ScenariuDat
+  given: Dacă
+  when: Când
+  then: Atunci
+  and: Și
+  but: Dar
 # Russian
 "ru":
   feature: Функционал

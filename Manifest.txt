@@ -70,6 +70,10 @@ examples/norwegian_calculator/lib/kalkulator.rb
 examples/portuguese_calculator/Rakefile
 examples/portuguese_calculator/features/adicao.feature
 examples/portuguese_calculator/features/calculadora_steps.rb
+examples/romanian_calculator/Rakefile
+examples/romanian_calculator/features/steps/calculator_steps.rb
+examples/romanian_calculator/features/suma.feature
+examples/romanian_calculator/lib/calculator.rb
 examples/selenium/Rakefile
 examples/selenium/features/search.feature
 examples/selenium/features/steps/stories_steps.rb
@@ -154,6 +158,8 @@ lib/cucumber/treetop_parser/feature_no.rb
 lib/cucumber/treetop_parser/feature_parser.rb
 lib/cucumber/treetop_parser/feature_pl.rb
 lib/cucumber/treetop_parser/feature_pt.rb
+lib/cucumber/treetop_parser/feature_ro.rb
+lib/cucumber/treetop_parser/feature_ro2.rb
 lib/cucumber/treetop_parser/feature_ru.rb
 lib/cucumber/treetop_parser/feature_se.rb
 lib/cucumber/treetop_parser/feature_zh-CN.rb
