@@ -64,9 +64,6 @@ module Autotest::CucumberMixin
     self.scenarios_to_run = :all
   end
     
-  # This resuses a lot of Autotest's logic, but there's
-  # no way to hijack it for Cucumber without interfering
-  # with tests/specs.
   def run_features
     hook :run_features
     Tempfile.open('autotest-cucumber') do |dirty_scenarios_file|
@@ -89,8 +86,11 @@ module Autotest::CucumberMixin
     profile ||= "autotest"     if profiles.include?("autotest")
     profile ||= nil
     
-    args = profile ? ["--profile", profile] : %w{features --format pretty}
-    args << "--color"
+    if profile
+      args = ["--profile", profile]
+    else
+      args = %w{features --format} << (scenarios_to_run == :all ? "progress" : "pretty")
+    end
     args += %w{--format autotest --out} << dirty_scenarios_filename
     args = args.join(' ')
     
