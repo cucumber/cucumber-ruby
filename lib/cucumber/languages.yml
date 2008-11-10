@@ -19,6 +19,16 @@
 # are added.
 #
 # Please keep the grammars in alphabetical order from here and down.
+"ar":
+  feature: خاصية
+  scenario: سيناريو
+  more_examples: امثلة اكثر
+  given_scenario: بفرض سيناريو معين
+  given: بفرض
+  when: متى
+  then: اذاً
+  and: و
+  but: لكن
 "cy":
   feature: Arwedd
   scenario: Scenario
