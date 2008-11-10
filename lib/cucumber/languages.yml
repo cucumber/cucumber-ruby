@@ -19,6 +19,8 @@
 # are added.
 #
 # Please keep the grammars in alphabetical order from here and down.
+
+# Arabic
 "ar":
   feature: خاصية
   scenario: سيناريو
@@ -29,6 +31,7 @@
   then: اذاً
   and: و
   but: لكن
+# Welsh
 "cy":
   feature: Arwedd
   scenario: Scenario
@@ -39,6 +42,7 @@
   then: Yna
   and: A
   but: Ond
+# Danish
 "da":
   feature: Egenskab
   scenario: Scenarie
@@ -48,6 +52,7 @@
   then: Så
   and: Og
   but: Men
+# German
 "de":
   feature: Funktionalität
   scenario: Szenario
@@ -68,6 +73,7 @@
   then: Then y'all
   and: And y'all
   but: But y'all
+# Spanish
 "es":
   feature: Característica
   scenario: Escenario
@@ -78,6 +84,17 @@
   then: Entonces
   and: Y
   but: Pero
+# Estonian
+"et":
+  feature: Omadus
+  scenario: Stsenaarium
+  given_scenario: EeldadesStsenaariumit
+  given: Eeldades
+  when: Kui
+  then: Siis
+  and: Ja
+  but: Kuid
+# French
 "fr":
   feature: Fonction
   scenario: Scenario
@@ -88,6 +105,7 @@
   then: Alors
   and: Et
   but: Mais
+# Malay
 "id":
   feature: Fitur
   scenario: Skenario
@@ -98,6 +116,7 @@
   then: Maka
   and: Dan
   but: Tapi
+# Italian
 "it":
   feature: Funzionalità
   scenario: Scenario
@@ -108,81 +127,7 @@
   then: Allora
   and: E
   but: Ma
-"nl":
-  feature: Functionaliteit
-  scenario: Scenario
-  more_examples: Meer voorbeelden
-  given_scenario: GegevenScenario
-  given: Gegeven
-  when: Als
-  then: Dan
-  and: En
-  but: Maar
-"no":
-  feature: Egenskap
-  scenario: Scenario
-  more_examples: Flere eksempler
-  given_scenario: GittScenario
-  given: Gitt
-  when: Når
-  then: Så
-  and: Og
-  but: Men
-"pl":
-  feature: Właściwość
-  scenario: Scenariusz
-  more_examples: WięcejPrzykładów
-  given_scenario: DanyScenariusz
-  given: Dane
-  when: Jeżeli
-  then: Wtedy
-  and: Oraz
-  but: Ale
-"pt":
-  feature: Característica
-  scenario: Cenário
-  given_scenario: DadoOCenário
-  given: Dado
-  when: Quando
-  then: Então
-  and: E
-  but: Mas
-"ru":
-  feature: Функционал
-  scenario: Сценарий
-  given_scenario: ДанныйСценарий
-  given: Сначала
-  when: Если
-  then: То
-  and: И
-  but: Но
-"se":
-  feature: Egenskap
-  scenario: Scenario
-  given_scenario: GivetScenario
-  given: Givet
-  when: När
-  then: Så
-  and: Och
-  but: Men
-"et":
-  feature: Omadus
-  scenario: Stsenaarium
-  given_scenario: EeldadesStsenaariumit
-  given: Eeldades
-  when: Kui
-  then: Siis
-  and: Ja
-  but: Kuid
-"zh-CN":
-  feature: 功能
-  scenario: 场景
-  given_scenario: 引用场景
-  given: 假如
-  when: 当
-  then: 那么
-  and: 而且
-  but: 但是
+# Japanese
 "ja":
   feature: フィーチャ
   scenario: シナリオ
@@ -193,3 +138,76 @@
   then: ならば
   and: かつ
   but: しかし
+# Dutch
+"nl":
+  feature: Functionaliteit
+  scenario: Scenario
+  more_examples: Meer voorbeelden
+  given_scenario: GegevenScenario
+  given: Gegeven
+  when: Als
+  then: Dan
+  and: En
+  but: Maar
+# Norwegian
+"no":
+  feature: Egenskap
+  scenario: Scenario
+  more_examples: Flere eksempler
+  given_scenario: GittScenario
+  given: Gitt
+  when: Når
+  then: Så
+  and: Og
+  but: Men
+# Polish
+"pl":
+  feature: Właściwość
+  scenario: Scenariusz
+  more_examples: WięcejPrzykładów
+  given_scenario: DanyScenariusz
+  given: Dane
+  when: Jeżeli
+  then: Wtedy
+  and: Oraz
+  but: Ale
+# Portuguese
+"pt":
+  feature: Característica
+  scenario: Cenário
+  given_scenario: DadoOCenário
+  given: Dado
+  when: Quando
+  then: Então
+  and: E
+  but: Mas
+# Russian
+"ru":
+  feature: Функционал
+  scenario: Сценарий
+  given_scenario: ДанныйСценарий
+  given: Сначала
+  when: Если
+  then: То
+  and: И
+  but: Но
+# Swedish
+"se":
+  feature: Egenskap
+  scenario: Scenario
+  given_scenario: GivetScenario
+  given: Givet
+  when: När
+  then: Så
+  and: Och
+  but: Men
+# Chinese simplified
+"zh-CN":
+  feature: 功能
+  scenario: 场景
+  given_scenario: 引用场景
+  given: 假如
+  when: 当
+  then: 那么
+  and: 而且
+  but: 但是
