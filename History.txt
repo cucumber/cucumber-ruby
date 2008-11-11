@@ -1,12 +1,31 @@
 == 0.1.9 (In Git)
 
-With this release Cucumber supports 19 (!) natural languages: Arabic, Welsh, Danish, German, Texan, Spanish, Estonian,
-French, Malay, Italian, Japanese, Dutch, Norwegian, Polish, Portuguese, Russian, Swedish and Chinese - all in UTF-8 
-encoding. Thanks a lot to everyone who has contributed translations. If you don't see your language here, please 
+With this release Cucumber supports 19 (!) natural languages:
+
+* Arabic
+* Chinese Simplified
+* Danish
+* Dutch
+* Estonian
+* French
+* German
+* Italian
+* Japanese
+* Malay
+* Norwegian
+* Polish
+* Portuguese
+* Russian
+* Spanish
+* Swedish
+* Texan
+* Welsh
+
+Thanks a lot to everyone who has contributed translations. If you don't see your language here, please
 add it: http://github.com/aslakhellesoy/cucumber/wikis/spoken-languages
 
-Main functional changes in this release is Autotest support and how multiline strings work in feature files. 
-Here is an example om multiline strings:
+Main functional changes in this release is "Autotest":http://github.com/aslakhellesoy/cucumber/wikis/autotest-integration
+support and how multiline strings work in feature files:
 
   # In your .feature file
   Then I should see
@@ -37,7 +56,7 @@ spaces removed too.
 * Added Autotest support - work in progress... (Peter Jaros)
 * Added new --exclude option (Bryan Helkamp)
 * Added new --scenario option (Peter Jaros)
-* Renamed common_webrat.rb to common_webrat_steps.rb (Ben Mabey)
+* Renamed common_webrat.rb to webrat_steps.rb (Ben Mabey, Aslak Hellesøy)
 * Added new feature[:feature_path] task (Roman Gonzalez)
 * Added support for Polish (Joseph Wilk)
 * Support specifying multiple formatters and multiple outputs (#47 Joseph Wilk)
