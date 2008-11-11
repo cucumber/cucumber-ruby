@@ -22,6 +22,10 @@ examples/dos_line_endings/Rakefile
 examples/dos_line_endings/features/dos_line_endings.feature
 examples/i18n/README.textile
 examples/i18n/Rakefile
+examples/i18n/ar/Rakefile
+examples/i18n/ar/features/addition.feature
+examples/i18n/ar/features/steps/calculator_steps.rb
+examples/i18n/ar/lib/calculator.rb
 examples/i18n/da/Rakefile
 examples/i18n/da/features/steps/kalkulator_steps.rb
 examples/i18n/da/features/summering.feature
