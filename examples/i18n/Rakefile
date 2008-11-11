@@ -1,0 +1,16 @@
+desc 'Run features for all languages'
+task :i18n do
+  dir = File.dirname(__FILE__)
+  Dir["#{dir}/*"].each do |f|
+    if File.directory?(f)
+      lang = f[dir.length+1..-1]
+      Dir.chdir(f) do
+        rake("features")
+      end
+    end
+  end
+end
+
+def rake(args)
+  ruby(File.join(Gem.bindir, 'rake'), args)
+end
