@@ -1,9 +1,9 @@
 == 0.1.9 (In Git)
 
-With this release Cucumber supports 19 natural languages: Arabic, Welsh, Danish, German, Texan, Spanish, Estonian,
+With this release Cucumber supports 19 (!) natural languages: Arabic, Welsh, Danish, German, Texan, Spanish, Estonian,
 French, Malay, Italian, Japanese, Dutch, Norwegian, Polish, Portuguese, Russian, Swedish and Chinese - all in UTF-8 
 encoding. Thanks a lot to everyone who has contributed translations. If you don't see your language here, please 
-add it: 
+add it: http://github.com/aslakhellesoy/cucumber/wikis/spoken-languages
 
 Main functional changes in this release is Autotest support and how multiline strings work in feature files. 
 Here is an example om multiline strings:
