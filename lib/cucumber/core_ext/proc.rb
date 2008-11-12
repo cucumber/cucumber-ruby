@@ -10,10 +10,9 @@ module Cucumber
       
       def call_in(obj, *args)
         obj.extend(mod)
-        a = arity == -1 ? 0 : arity
-        if self != StepMother::PENDING && args.length != a
+        if self != StepMother::PENDING && args.length != arity2
           # We have to manually raise when the block has arity -1 (no pipes)
-          raise ArityMismatchError.new("expected #{arity == -1 ? 0 : arity} block argument(s), got #{args.length}")
+          raise ArityMismatchError.new("expected #{arity2} block argument(s), got #{args.length}")
         else
           obj.__send__(meth, *args)
         end
