@@ -1496,11 +1496,11 @@ module Feature
     end
 
     i0, s0 = index, []
-    if input.index("More Examples", index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 13))
-      @index += 13
+    if input.index("Mehr Beispiele", index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 14))
+      @index += 14
     else
-      terminal_parse_failure("More Examples")
+      terminal_parse_failure("Mehr Beispiele")
       r1 = nil
     end
     s0 << r1
@@ -1544,11 +1544,11 @@ module Feature
     end
 
     i0, s0 = index, []
-    if input.index("GegebenesSzenario", index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 17))
-      @index += 17
+    if input.index("Gegebenes Szenario", index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 18))
+      @index += 18
     else
-      terminal_parse_failure("GegebenesSzenario")
+      terminal_parse_failure("Gegebenes Szenario")
       r1 = nil
     end
     s0 << r1
