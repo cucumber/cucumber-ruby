@@ -56,7 +56,8 @@
 "de":
   feature: Funktionalität
   scenario: Szenario
-  given_scenario: GegebenesSzenario
+  more_examples: Mehr Beispiele
+  given_scenario: Gegebenes Szenario
   given: Gegeben sei
   when: Wenn
   then: Dann
