@@ -3,7 +3,10 @@
 Blurb
 
 === New features
+* Try to load webrat gem if it's not installed as a plugin (Aslak Hellesøy)
+
 === Bugfixes
+
 === Removed features
 
 == 0.1.9
