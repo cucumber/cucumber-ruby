@@ -8,6 +8,7 @@ Blurb
 === Bugfixes
 
 === Removed features
+* Step definition without a block being treated as pending (#64 Joseph Wilk)
 
 == 0.1.9
 
