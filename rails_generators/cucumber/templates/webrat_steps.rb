@@ -19,6 +19,30 @@ When /^I select "(.*)" from "(.*)"$/ do |value, field|
   selects(value, :from => field) 
 end
 
+When /^I select "(.*)" as the date and time$/ do |time|
+  selects_datetime(time)
+end
+
+When /^I select "(.*)" as the "(.*)" date and time$/ do |datetime, datetime_label|
+  selects_datetime(datetime, :from => datetime_label)
+end
+
+When /^I select "(.*)" as the time$/ do |time|
+  selects_time(time)
+end
+
+When /^I select "(.*)" as the "(.*)" time$/ do |time, time_label|
+  selects_time(time, :from => time_label)
+end
+
+When /^I select "(.*)" as the date$/ do |date|
+  selects_date(date)
+end
+
+When /^I select "(.*)" as the "(.*)" date$/ do |date, date_label|
+  selects_date(date, :from => date_label)
+end
+
 When /^I check "(.*)"$/ do |field|
   checks(field) 
 end

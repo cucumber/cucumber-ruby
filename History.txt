@@ -3,6 +3,7 @@
 Blurb
 
 === New features
+* New webrat step defintions to wrap the new selects_time, selects_date, and selects_datetime methods. (Ben Mabey) 
 * Try to load webrat gem if it's not installed as a plugin (Aslak Hellesøy)
 
 === Bugfixes
