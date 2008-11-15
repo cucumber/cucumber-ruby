@@ -6,6 +6,7 @@ Blurb
 * Try to load webrat gem if it's not installed as a plugin (Aslak Hellesøy)
 
 === Bugfixes
+* Features written using Ruby where breaking due to missing a line number (#91 Joseph Wilk)
 
 === Removed features
 * Step definition without a block being treated as pending (#64 Joseph Wilk)
