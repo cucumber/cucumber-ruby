@@ -7,6 +7,7 @@ Blurb
 
 === Bugfixes
 * Features written using Ruby where breaking due to missing a line number (#91 Joseph Wilk)
+* Directly creating a Table meant the scenario table header was never set which was causing a formatter error (#91 Joseph Wilk)
 
 === Removed features
 * Step definition without a block being treated as pending (#64 Joseph Wilk)
