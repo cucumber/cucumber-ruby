@@ -34,7 +34,8 @@ module Cucumber
       end
 
       def Scenario(name, &proc)
-        add_scenario(name, &proc)
+        _, line, _ = *caller[0].split(':')
+        add_scenario(name, line, &proc)
       end
 
       def Table(matrix = [], &proc)
