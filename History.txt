@@ -7,6 +7,7 @@ cucumber examples/i18n/en/features/addition.feature:15 examples/i18n/en/features
 Will run addition.feature at line 15 and divison.feature at line 6
 
 === New features
+* New webrat step defintions to wrap the new selects_time, selects_date, and selects_datetime methods. (Ben Mabey) 
 * Try to load webrat gem if it's not installed as a plugin (Aslak Hellesøy)
 * Support example.feature:20 syntax for running features at a line number. (#88 Joseph Wilk)
 
