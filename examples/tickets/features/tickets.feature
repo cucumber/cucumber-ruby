@@ -17,6 +17,8 @@ Feature: Cucumber
     Then I should be working in London
     And I should be born in Oslo
     And I shoule see a multiline string like
-      "A string
+      """
+      A string
       that spans
-      several lines"
+      several lines
+      """
