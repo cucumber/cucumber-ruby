@@ -3,6 +3,17 @@ require 'stringio'
 
 module Cucumber
   describe Executor do
+    
+    def mock_scenario(stubs = {})
+      @scenario ||= stub("scenario", {
+        :row? => false, 
+        :name => 'test', 
+        :accept => nil, 
+        :steps => [],
+        :pending? => true
+      }.merge(stubs))
+    end
+    
     before do # TODO: Way more setup and duplication of lib code. Use lib code!
       @io = StringIO.new
       @step_mother = StepMother.new
@@ -35,7 +46,7 @@ module Cucumber
 
 1)
 dang
-#{__FILE__}:32:in `Then /I should owe (\\d*) cucumbers/'
+#{__FILE__}:43:in `Then /I should owe (\\d*) cucumbers/'
 #{@feature_file}:9:in `Then I should owe 7 cucumbers'
 })
     end
@@ -48,6 +59,17 @@ dang
 #       @formatters.each { |formatter| formatter.dump }
 #       @io.string.should == "...\n"
 #     end
+
+    describe "visiting feature" do
+
+      it "should set the feature file being visited" do
+        mock_feature = mock('feature', :file => 'womble.feature', :scenarios => [])
+        @executor.visit_feature(mock_feature)
+    
+        @executor.instance_variable_get('@feature_file').should == 'womble.feature'
+      end
+
+    end
 
     describe "visiting steps" do
       def make_regex(a,b,c)
@@ -172,18 +194,53 @@ dang
       end
     end
     
-    describe "caching visited scenarios" do
-
-      def mock_scenario(stubs = {})
-        @scenario ||= stub("scenario", {
-          :row? => false, 
-          :name => 'test', 
-          :accept => nil, 
-          :steps => [],
-          :pending? => true
-        }.merge(stubs))
-      end
+    describe "visiting scenarios" do
       
+      it "should check if a scenario is at the specified line number" do
+        mock_scenario = mock('scenario', :null_object => true)
+        @executor.line = 1
+
+        mock_scenario.should_receive(:at_line?).with(1)
+
+        @executor.visit_scenario(mock_scenario)
+      end
+    
+     describe "with specific features and lines" do
+
+        it "should check if a scenario is at the specified feature line number" do
+          @executor.instance_variable_set('@feature_file', 'sell_cucumbers.feature')
+          @executor.lines_for_features = {'sell_cucumbers.feature' => [11]}
+
+          mock_scenario.should_receive(:at_line?).with(11).and_return(false)
+
+          @executor.visit_scenario(mock_scenario)
+        end
+
+        it "should not check feature line numbers if --line is already set" do
+          @executor.instance_variable_set('@feature_file', 'sell_cucumbers.feature')
+          @executor.lines_for_features = {'sell_cucumbers.feature' => [11]}
+          @executor.line = 5
+
+          mock_scenario.should_not_receive(:at_line?).with(11).and_return(false)
+
+          @executor.visit_scenario(mock_scenario)
+        end
+
+        it "should not check feature line numbers if the current feature file does not have lines specified" do
+          @executor.instance_variable_set('@feature_file', 'beetlejuice.feature')
+          @executor.lines_for_features = {'sell_cucumbers.feature' => [11]}
+
+          mock_scenario.should_not_receive(:at_line?).with(11).and_return(false)
+
+          @executor.visit_scenario(mock_scenario)
+        end
+
+      end
+    
+    end
+    
+    describe "caching visited scenarios" do
+ 
       it "should reset cache after each feature visit" do
         Tree::Scenario.stub!(:new).and_return(mock_scenario)
 
@@ -218,5 +275,6 @@ dang
         @executor.visit_features(@features)
       end
     end
+        
   end
 end

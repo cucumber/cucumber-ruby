@@ -22,7 +22,7 @@ module Cucumber
       end
     end
 
-    attr_reader :options
+    attr_reader :options, :paths
     FORMATS = %w{pretty profile progress html autotest}
     DEFAULT_FORMAT = 'pretty'
 
@@ -130,8 +130,9 @@ module Cucumber
       if @options[:formats].empty?
         @options[:formats][DEFAULT_FORMAT] = [@out_stream]
       end
-
+      
       # Whatever is left after option parsing is the FILE arguments
+      args = extract_and_store_line_numbers(args)
       @paths += args
     end
 
@@ -165,6 +166,7 @@ Defined profiles in cucumber.yml:
       require_files
       load_plain_text_features(features)
       executor.line = @options[:line].to_i if @options[:line]
+      executor.lines_for_features = @options[:lines_for_features]
       executor.scenario_names = @options[:scenario_names] if @options[:scenario_names]
       executor.visit_features(features)
       exit 1 if executor.failed
@@ -172,6 +174,18 @@ Defined profiles in cucumber.yml:
 
     private
 
+    def extract_and_store_line_numbers(file_arguments)
+      @options[:lines_for_features] = Hash.new{|k,v| k[v] = []}
+      file_arguments.map do |arg|
+        _, file, line = */^([\w\W]*):(\d+)$/.match(arg)
+        unless file.nil?
+          @options[:lines_for_features][file] << line.to_i
+          arg = file          
+        end
+        arg
+      end
+    end
+    
     # Requires files - typically step files and ruby feature files.
     def require_files
       ARGV.clear # Shut up RSpec

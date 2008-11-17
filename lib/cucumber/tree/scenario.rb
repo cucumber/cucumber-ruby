@@ -144,8 +144,19 @@ module Cucumber
         @template_scenario.name
       end
 
+      #We can only cache steps once the template scenarios steps have been bound in order to know what arity the steps have
       def steps
-        @steps ||= @template_scenario.steps.map do |template_step|
+        if template_steps_bound?
+          @unbound_steps = nil
+          @steps ||= build_steps
+        else
+          @unbound_steps ||= build_steps
+        end
+      end
+      
+      private
+      def build_steps
+        @template_scenario.steps.map do |template_step|
           args = []
           template_step.arity.times do
             args << @values.shift
@@ -153,6 +164,11 @@ module Cucumber
           RowStep.new(self, template_step, args)
         end
       end
+      
+      def template_steps_bound?
+        @template_steps_bound ||= @template_scenario.steps.inject(0) { |arity_sum, step| arity_sum + step.arity } != 0
+      end
+      
     end
   end
 end
