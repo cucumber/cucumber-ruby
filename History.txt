@@ -1,13 +1,21 @@
 == 0.1.10 (In Git)
 
-Blurb
+Running multiple features at specific lines numbers:
+
+cucumber examples/i18n/en/features/addition.feature:15 examples/i18n/en/features/division.feature:6
+
+Will run addition.feature at line 15 and divison.feature at line 6
 
 === New features
 * Try to load webrat gem if it's not installed as a plugin (Aslak Hellesøy)
+* Support example.feature:20 syntax for running features at a line number. (#88 Joseph Wilk)
 
 === Bugfixes
+* Features written using Ruby where breaking due to missing a line number (#91 Joseph Wilk)
+* Directly creating a Table meant the scenario table header was never set which was causing a formatter error (#91 Joseph Wilk)
 
 === Removed features
+* Step definition without a block being treated as pending (#64 Joseph Wilk)
 
 == 0.1.9
 

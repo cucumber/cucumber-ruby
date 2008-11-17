@@ -53,7 +53,6 @@ module Cucumber
     def regexp_args_proc(step_name)
       candidates = @step_procs.map do |regexp, proc|
         if step_name =~ regexp
-          proc = PENDING if proc.nil?
           [regexp, $~.captures, proc]
         end
       end.compact

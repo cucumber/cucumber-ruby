@@ -4,7 +4,7 @@ module Cucumber
   class Executor
     attr_reader :failed
     attr_accessor :formatters
-    attr_writer :scenario_names
+    attr_writer :scenario_names, :lines_for_features
 
     def line=(line)
       @line = line
@@ -50,6 +50,8 @@ module Cucumber
     end
 
     def visit_feature(feature)
+      @feature_file = feature.file
+            
       if accept_feature?(feature)
         formatters.feature_executing(feature)
         feature.accept(self)
@@ -96,6 +98,7 @@ module Cucumber
     
     def accept_scenario?(scenario)
       accept = true
+      accept &&= @lines_for_features[@feature_file].inject(false) { |at_line, line| at_line || scenario.at_line?(line) } if !@line && lines_defined_for_current_feature?
       accept &&= scenario.at_line?(@line) if @line
       accept &&= @scenario_names.include? scenario.name if @scenario_names && !@scenario_names.empty?
       accept
@@ -164,6 +167,10 @@ module Cucumber
     
     def executing_unprepared_row_scenario?(scenario)
       accept_scenario?(scenario) && !@executed_scenarios[scenario.name]
+    end
+    
+    def lines_defined_for_current_feature?
+      @lines_for_features && !@lines_for_features[@feature_file].nil? && !@lines_for_features[@feature_file].empty?
     end
     
   end
