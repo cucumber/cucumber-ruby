@@ -50,13 +50,6 @@ module Cucumber
       end
     end
 
-    it "should mark a step as pending if it does not have a proc" do
-      m = StepMother.new
-      m.register_step_proc /I have no body/
-      regexp, args, proc = m.regexp_args_proc "I have no body"
-      proc.should == StepMother::PENDING
-    end
-
     it "should report that a step has a definition if the step is registered" do
       m = StepMother.new
       m.register_step_proc /I am a real step definition/ do end

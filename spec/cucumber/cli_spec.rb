@@ -5,7 +5,7 @@ module Cucumber
   describe CLI do
     
     def mock_executor(stubs = {})
-      stub('executor', {:visit_features => nil, :failed => false, :formatters= => nil}.merge(stubs))
+      stub('executor', {:visit_features => nil, :lines_for_features= => nil, :failed => false, :formatters= => nil}.merge(stubs))
     end
     
     def mock_broadcaster(stubs = {})
@@ -225,6 +225,27 @@ Defined profiles in cucumber.yml:
       cli.options[:color].should == nil
       Term::ANSIColor.should_not_receive(:coloring=)
       cli.execute!(stub('step mother'), mock_executor, stub('features'))
+    end
+
+    it "should extract line numbers attached to the end of feature file args" do
+      cli = CLI.new
+      cli.parse_options!(%w{example.feature:10})
+      
+      cli.options[:lines_for_features]['example.feature'].should == [10]
+    end
+    
+    it "should remove line numbers attached to the end of feature file" do
+      cli = CLI.new
+      cli.parse_options!(%w{example.feature:10})
+      
+      cli.paths.should == ["example.feature"]
+    end
+
+    it "should support multiple feature:line numbers" do
+      cli = CLI.new
+      cli.parse_options!(%w{example.feature:11 another_example.feature:12})
+      
+      cli.options[:lines_for_features].should == {'another_example.feature' => [12], 'example.feature' => [11]}
     end
 
     it "should search for all features in the specified directory" do

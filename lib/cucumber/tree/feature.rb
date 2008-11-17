@@ -34,13 +34,15 @@ module Cucumber
       end
 
       def Scenario(name, &proc)
-        add_scenario(name, &proc)
+        line = caller[0] =~ /:(\d+)$/ ? $1 : nil
+        add_scenario(name, line, &proc)
       end
 
       def Table(matrix = [], &proc)
         table = Table.new(matrix)
         proc.call(table)
         template_scenario = @scenarios.last
+        template_scenario.table_header = matrix[0]
         matrix[1..-1].each do |row|
           add_row_scenario(template_scenario, row, row.line)
         end
