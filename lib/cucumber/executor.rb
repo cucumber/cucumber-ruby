@@ -98,9 +98,9 @@ module Cucumber
     
     def accept_scenario?(scenario)
       accept = true
-      accept &&= @lines_for_features[@feature_file].inject(false) { |at_line, line| at_line || scenario.at_line?(line) } if !@line && lines_defined_for_current_feature?
+      accept &&= scenario_at_specified_line?(scenario)
       accept &&= scenario.at_line?(@line) if @line
-      accept &&= @scenario_names.include? scenario.name if @scenario_names && !@scenario_names.empty?
+      accept &&= scenario_has_specified_name?(scenario)
       accept
     end
 
@@ -167,6 +167,22 @@ module Cucumber
     
     def executing_unprepared_row_scenario?(scenario)
       accept_scenario?(scenario) && !@executed_scenarios[scenario.name]
+    end
+    
+    def scenario_at_specified_line?(scenario)
+      if !@line && lines_defined_for_current_feature?
+        @lines_for_features[@feature_file].inject(false) { |at_line, line| at_line || scenario.at_line?(line) }
+      else
+        true
+      end
+    end
+    
+    def scenario_has_specified_name?(scenario)
+      if @scenario_names && !@scenario_names.empty?
+        @scenario_names.include?(scenario.name)
+      else
+        true
+      end
     end
     
     def lines_defined_for_current_feature?
