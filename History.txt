@@ -10,6 +10,7 @@ Will run addition.feature at line 15 and divison.feature at line 6
 * New webrat step defintions to wrap the new selects_time, selects_date, and selects_datetime methods. (Ben Mabey) 
 * Try to load webrat gem if it's not installed as a plugin (Aslak Hellesøy)
 * Support example.feature:20 syntax for running features at a line number. (#88 Joseph Wilk)
+* Support example.feature:10:20:30 syntax for running a feature at multiple lines. (#88 Joseph Wilk)
 
 === Bugfixes
 * Features written using Ruby where breaking due to missing a line number (#91 Joseph Wilk)
