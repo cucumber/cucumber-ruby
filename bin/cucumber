@@ -8,5 +8,6 @@ if Config::CONFIG['sitedir'] =~ /IronRuby/
 end
 # Add .rb to work around an IronRuby bug
 $:.unshift(File.dirname(__FILE__ + '.rb') + '/../lib') unless $:.include?(File.dirname(__FILE__ + '.rb') + '/../lib')
+
 require 'cucumber/cli'
 Cucumber::CLI.execute

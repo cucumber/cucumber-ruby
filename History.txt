@@ -1,16 +1,241 @@
-== 0.1.7 (Not yet released as gem)
+== 0.1.10 (In Git)
 
-Bla bla
+Running multiple features at specific lines numbers:
 
-* Bugfixes
-** Fixed a bug in the command line args being lost when using --profile (#27, Joseph Wilk)
-** Fixed a bug in Webrat selects (Tim Glen)
+cucumber examples/i18n/en/features/addition.feature:15 examples/i18n/en/features/division.feature:6
 
-* New features
-** Added But keyword to all languages (#21, Aslak Hellesøy)
-** Added --source option to display step definition location next to step text (#26, Joseph Wilk)
-** Added more Webrat steps (#25, Tim Glen)
+Will run addition.feature at line 15 and divison.feature at line 6
 
-== 0.1.6
+=== New features
+* New webrat step defintions to wrap the new selects_time, selects_date, and selects_datetime methods. (Ben Mabey) 
+* Try to load webrat gem if it's not installed as a plugin (Aslak Hellesøy)
+* Support example.feature:20 or example.feature:10:20:30 syntax for running features at specific line number(s). (#88 Joseph Wilk)
+
+=== Bugfixes
+* Features written using Ruby where breaking due to missing a line number (#91 Joseph Wilk)
+* Directly creating a Table meant the scenario table header was never set which was causing a formatter error (#91 Joseph Wilk)
+
+=== Removed features
+* Step definition without a block being treated as pending (#64 Joseph Wilk)
+* The --line option has been removed. Use the new file.feature:line format instead.
+
+== 0.1.9
+
+With this release Cucumber supports 19 (!) natural languages:
+
+* Arabic
+* Chinese Simplified
+* Danish
+* Dutch
+* Estonian
+* French
+* German
+* Italian
+* Japanese
+* Malay
+* Norwegian
+* Polish
+* Portuguese
+* Romanian
+* Russian
+* Spanish
+* Swedish
+* Texan
+* Welsh
+
+Thanks a lot to everyone who has contributed translations. If you don't see your language here, please
+add it: http://github.com/aslakhellesoy/cucumber/wikis/spoken-languages
+
+Main functional changes in this release is "Autotest":http://github.com/aslakhellesoy/cucumber/wikis/autotest-integration
+support and how multiline strings work in feature files:
+
+  # In your .feature file
+  Then I should see
+    """
+    A string
+      that "indents"
+    and spans
+    several lines
+  
+    """
+
+  # In your steps.rb file
+  Then 'I should see' do |text|
+    text.should == "A string\n  that \"indents\"\nand spans\nseveral lines\n"
+  end
+
+The triple quotes are used to define the start and end of a string, and it also defines what gets stripped away
+in the inside string. If the triple quotes are indented 4 spaces, then the text within will have the 4 first
+spaces removed too.
+
+=== New features
+* Added --[no-]color option to force color on or off (Peter Jaros)
+* Step definition without a block will be treated as pending (#64 Joseph Wilk)
+* Added support for Welsh (improvements welcome) (Joseph Wilk)
+* Added --quiet option to hide all development aid output when using Pretty formatter (#69 Joseph Wilk)
+* Added --no-snippets option to hide snippets for pending steps when using Pretty formatter (#69 Joseph Wilk)
+* Added error messages concerning cucumber.yml. (#70 Ben Mabey)
+* Added Autotest support - work in progress... (Peter Jaros)
+* Added new --exclude option (Bryan Helkamp)
+* Added new --scenario option (Peter Jaros)
+* Renamed common_webrat.rb to webrat_steps.rb (Ben Mabey, Aslak Hellesøy)
+* Added new feature[:feature_path] task (Roman Gonzalez)
+* Added support for Polish (Joseph Wilk)
+* Support specifying multiple formatters and multiple outputs (#47 Joseph Wilk)
+* Added support for Japanese. (Kakutani Shintaro)
+* Added support for Texan (improvements welcome). (Aslak Hellesøy)
+
+=== Bugfixes
+* Pending step snippets should escape special Regexp characters (#82 Joseph Wilk)
+* Scenario without a body shouldn't show up as complete (#63 Josh Knowles)
+* Fixed bug where utf-8 strings where breaking comment alighments. (#79 Joseph Wilk)
+* Fixed next_column_index not resetting after large tables (#60, Barry Mitchelson)
+* The HTML formatter was rendering everything twice. Cannot invoke visit_feature on formatters in executor (#72 Joseph Wilk)
+* Row Scenarios need to support pending? in order for the Profile formatter to work (Joseph Wilk)
+* Snippets are not shown for steps which already have a step definition (#65 Joseph Wilk)
+* Prevent feature/scenario/pending step comments from containing '//' when running features by specifying a directory with a trailing '/' (Joseph Wilk)
+* Scenario tables need spacing after them (#59 Joseph Wilk)
+* Support running scenario table rows when using --line argument (#55 Joseph Wilk)
+* Don't load cucumber.yml unless it exists (Aslak Hellesøy)
+* Fixing bug where specifying line number 1 in a feature which starts with a scenario with a scenario table was raising an error (#56 Joseph Wilk)
+
+=== Removed features
+
+
+== 0.1.8 2008-10-18
+
+This release extends the support for tables. PLEASE NOTE THAT TABLES ARE STILL EXPERIMENTAL.
+In previous releases it has been possible to use tables to define "more examples" of a scenario i
+n a FIT-style column fixture kind of way. Now you can also use tables as arguments to steps.
+
+Tables used to define more examples after a scenario must now be prefixed. In English it looks like this:
+
+  Feature: Addition
+    In order to avoid silly mistakes
+    As a math idiot 
+    I want to be told the sum of two numbers
+
+    Scenario: Add two numbers
+      Given I have entered 50 into the calculator
+      And I have entered 70 into the calculator
+      When I press add
+      Then the result should be 120 on the screen
+      And the result class should be Fixnum
+
+    More Examples:
+      | input_1 | input_2 | button | output | class  |
+      | 20      | 30      | add    | 50     | Fixnum |
+      | 2       | 5       | add    | 7      | Fixnum |
+      | 0       | 40      | add    | 40     | Fixnum |
+
+Languages that are not updated yet will have to use "More Examples" until we get the translations.
+
+Tables can also be used as arguments to individual steps. In fact, steps now support a single argument 
+that can span several lines. This can be a table or a string.
+
+Example:
+
+  Given the following people exist:
+    | name  | email           | phone |
+    | Aslak | aslak@email.com | 123   |
+    | Joe   | joe@email.com   | 234   |
+    | Bryan | bryan@email.org | 456   |
+  When I search for email.com
+  Then I should see:
+    | name  | email           | phone |
+    | Aslak | aslak@email.com | 123   |
+    | Joe   | joe@email.com   | 234   |
+  And I should see:
+    "Some text
+    on several lines"
+
+The step definitions for such multiline steps must define an extra block argument for the argument:
+
+  Given /the following people exist:/ do |people_table|
+    # people_table is of type Cucumber::Model::Table
+    # See RDoc for more info
+  end
+
+  Then /I should see:/ do |string|
+    # string is a plain old ruby String with leading spaces on each line removed
+  end
+
+=== New features
+* Added profile formatter. (#35, Joseph Wilk)
+* Added support for Chinese Simplified. (Liming Lian)
+* Added support for Dutch. (Sjoerd Tieleman)
+* Multiline steps are now supported. (#4, Aslak Hellesøy)
+* Tables used to define more examples for a scenario must be prefixed "More Examples" (see languages.yml for other languages)
+* Show the file and line number for scenarios as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
+* Show the file for the feature as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
+* Show the feature file and line for pending steps as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
+
+=== Bugfixes
+* Fixed speling errors in Spanish (Daniel Cadenas)
+* ActionMailer delivery_method should not be set to test (#41, Luke Melia)
+* Reverse incorrectly ordered args in webrat select step (#43, David Chelimsky)
+* Support comments above the first scenario (#31, Aslak Hellesøy)
+* Fixed the HTML Formatter to use actual values for FIT table headers (#30, Joseph Wilk)
+
+=== Removed features
+* Removed the /^I go to (.*)$/ step from common_webrat.rb - it's not language agnostic and provides little value.
+
+=== New features
+* Added new --out option to make it easier to specify output from Rake and cucumber.yml
+
+== 0.1.7 2008-10-05
+
+This release fixes a few bugs and adds some new features. The most notable features are:
+
+=== Calling steps from steps
+
+Step definitions are a little bit closer to having regular method semantics.
+You define them, but now you can also call them from other steps. Here is an
+example:
+
+  Given /I am logged in as an (.*) named (.*)$/ do |role, name|
+    Given "I am registered as #{role}, #{name}, secret"
+    When "I log in with #{name}, secret"
+  end
+  
+  Given /I am registered as (.*), (.*), (.*)/ do |role, name, password|
+    # (Code removed for brevity)
+  end
+
+  When /I log in with (.*), (.*)/ do |name, password|
+    # (Code removed for brevity)
+  end
+
+This means that steps can be reused in other steps. The GivenScenario feature achieves a similar
+effect (on the scenario level), but this feature is something we're not very happy with, mostly
+because it's not parameterisable. Calling steps from steps is.
+
+GivenScenario will still be working several releases, but the plan is to remove it completely in 
+the 0.3.0 release.
+
+=== Seeing where a step is defined
+
+Prior to this release it could be hard to find out where the ruby step definition matching
+a plain text step is defined. Not anymore! Cucumber will now output this:
+
+  Scenario: Regular numbers
+    Given I have entered 3 into the calculator   # features/steps/calculator_steps.rb:12
+    And I have entered 2 into the calculator     # features/steps/calculator_steps.rb:12
+    When I press divide                          # features/steps/calculator_steps.rb:16
+    Then the result should be 1.5 on the screen  # features/steps/calculator_steps.rb:20
+    And the result class should be Float         # features/steps/calculator_steps.rb:24
+
+=== Bugfixes
+* Fixed a bug in the command line args being lost when using --profile (#27, Joseph Wilk)
+* Fixed a bug in Webrat selects (Tim Glen)
+* Fixed parsing of DOS line endings (#2, #28, Aslak Hellesøy)
+
+=== New features
+* Steps can be called from other steps (#3, Bryan Helmkamp, Aslak Hellesøy)
+* Added But keyword to all languages (#21, Aslak Hellesøy)
+* Added --no-source option to display step definition location next to step text (#26, Joseph Wilk, Aslak Hellesøy)
+* Added more Webrat steps (#25, Tim Glen)
+
+== 0.1.6 2008-10-01
 
 First gem release!

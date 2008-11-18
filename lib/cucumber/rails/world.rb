@@ -9,7 +9,7 @@ else
 end
 require 'test/unit/testresult'
 
-# These allow exceptions to come through as opposed to being caught and hvaing non-helpful responses returned.
+# These allow exceptions to come through as opposed to being caught and having non-helpful responses returned.
 ActionController::Base.class_eval do
   def perform_action
     perform_action_without_rescue
@@ -22,7 +22,7 @@ Dispatcher.class_eval do
 end
 
 # So that Test::Unit doesn't launch at the end - makes it think it has already been run.
-Test::Unit.run = true
+Test::Unit.run = true if Test::Unit.respond_to?(:run=)
 
 $main = self
 
@@ -71,5 +71,3 @@ end
 World do
   Cucumber::Rails::World.new
 end
-
-ActionMailer::Base.delivery_method = :test if defined?(ActionMailer::Base)

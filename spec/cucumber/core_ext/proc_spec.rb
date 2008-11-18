@@ -34,6 +34,12 @@ module Cucumber
           proc.call_in(Object.new, 1)
         }.should raise_error(Cucumber::ArityMismatchError, "expected 2 block argument(s), got 1")
       end
+      
+      it "should remove extraneous path info for file" do
+        proc = lambda {|a,b|}
+        proc.extend CallIn
+        proc.file_colon_line.should == "spec/cucumber/core_ext/proc_spec.rb:39"
+      end
     end
   end
 end

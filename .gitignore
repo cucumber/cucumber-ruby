@@ -1,5 +1,10 @@
 nbproject
 pkg
 doc
-log/*.log
+*.log
+*.pid
 .eprj
+.tmtags
+*~
+.DS_Store
+*.swp

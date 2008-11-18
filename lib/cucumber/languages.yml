@@ -1,6 +1,48 @@
+# http://www.ietf.org/rfc/rfc4646.txt
+# http://www.ietf.org/rfc/rfc4647.txt
+# Others:
 # http://en.wikipedia.org/wiki/IETF_language_tag
 # http://www.iana.org/assignments/language-subtag-registry
 # http://ftp.ics.uci.edu/pub/ietf/http/related/iso639.txt (Use this I think)
+"en":
+  feature: Feature
+  scenario: Scenario
+  more_examples: More Examples
+  given_scenario: GivenScenario
+  given: Given
+  when: When
+  then: Then
+  and: And
+  but: But
+# Please help us keeping the languages below uptodate. The parsers for a language
+# that is missing a keyword will expect the English word until the missing word(s)
+# are added.
+#
+# Please keep the grammars in alphabetical order from here and down.
+
+# Arabic
+"ar":
+  feature: خاصية
+  scenario: سيناريو
+  more_examples: امثلة اكثر
+  given_scenario: بفرض سيناريو معين
+  given: بفرض
+  when: متى
+  then: اذاً
+  and: و
+  but: لكن
+# Welsh
+"cy":
+  feature: Arwedd
+  scenario: Scenario
+  more_examples: Hychwaneg enghreifftiau
+  given_scenario: Anrhegedig scenario
+  given: anrhegedig a
+  when: Pryd
+  then: Yna
+  and: A
+  but: Ond
+# Danish
 "da":
   feature: Egenskab
   scenario: Scenarie
@@ -10,78 +52,40 @@
   then: Så
   and: Og
   but: Men
+# German
 "de":
   feature: Funktionalität
   scenario: Szenario
-  given_scenario: GegebenesSzenario
+  more_examples: Mehr Beispiele
+  given_scenario: Gegebenes Szenario
   given: Gegeben sei
   when: Wenn
   then: Dann
   and: Und
   but: Aber
-"en":
+# Texan
+"en-tx":
   feature: Feature
   scenario: Scenario
+  more_examples: More Examples
   given_scenario: GivenScenario
-  given: Given
-  when: When
-  then: Then
-  and: And
-  but: But
+  given: Given y'all
+  when: When y'all
+  then: Then y'all
+  and: And y'all
+  but: But y'all
+# Spanish
 "es":
   feature: Característica
   scenario: Escenario
+  more_examples: Más ejemplos
   given_scenario: DadoElEscenario
   given: Dado
   when: Cuando
   then: Entonces
   and: Y
   but: Pero
-"fr":
-  feature: Fonction
-  scenario: Scenario
-  given_scenario: SoitScenario
-  given: Soit
-  when: Lorsque
-  then: Alors
-  and: Et
-  but: Mais
-"no":
-  feature: Egenskap
-  scenario: Scenario
-  given_scenario: GittScenario
-  given: Gitt
-  when: Når
-  then: Så
-  and: Og
-  but: Men
-"pt":
-  feature: Característica
-  scenario: Cenário
-  given_scenario: DadoOCenário
-  given: Dado
-  when: Quando
-  then: Então
-  and: E
-  but: Mas
-"ru":
-  feature: Функционал
-  scenario: Сценарий
-  given_scenario: ДанныйСценарий
-  given: Сначала
-  when: Если
-  then: То
-  and: И
-  but: Но
-"se":
-  feature: Egenskap
-  scenario: Scenario
-  given_scenario: GittScenario
-  given: Gitt
-  when: Når
-  then: Så
-  and: Och
-  but: Men
+# Estonian
 "et":
   feature: Omadus
   scenario: Stsenaarium
@@ -91,3 +95,142 @@
   then: Siis
   and: Ja
   but: Kuid
+# French
+"fr":
+  feature: Fonction
+  scenario: Scenario
+  more_examples: Plus d'exemples
+  given_scenario: SoitScenario
+  given: Soit
+  when: Lorsque
+  then: Alors
+  and: Et
+  but: Mais
+# Malay
+"id":
+  feature: Fitur
+  scenario: Skenario
+  more_examples: Contoh Tambahan
+  given_scenario: DenganSkenario
+  given: Dengan
+  when: Ketika
+  then: Maka
+  and: Dan
+  but: Tapi
+# Italian
+"it":
+  feature: Funzionalità
+  scenario: Scenario
+  more_examples: Più esempi
+  given_scenario: DatoLoScenario
+  given: Dato
+  when: Quando
+  then: Allora
+  and: E
+  but: Ma
+# Japanese
+"ja":
+  feature: フィーチャ
+  scenario: シナリオ
+  more_examples: 他のサンプル
+  given_scenario: 前提シナリオ
+  given: 前提
+  when: もし
+  then: ならば
+  and: かつ
+  but: しかし
+# Dutch
+"nl":
+  feature: Functionaliteit
+  scenario: Scenario
+  more_examples: Meer voorbeelden
+  given_scenario: GegevenScenario
+  given: Gegeven
+  when: Als
+  then: Dan
+  and: En
+  but: Maar
+# Norwegian
+"no":
+  feature: Egenskap
+  scenario: Scenario
+  more_examples: Flere eksempler
+  given_scenario: GittScenario
+  given: Gitt
+  when: Når
+  then: Så
+  and: Og
+  but: Men
+# Polish
+"pl":
+  feature: Właściwość
+  scenario: Scenariusz
+  more_examples: WięcejPrzykładów
+  given_scenario: DanyScenariusz
+  given: Dane
+  when: Jeżeli
+  then: Wtedy
+  and: Oraz
+  but: Ale
+# Portuguese
+"pt":
+  feature: Característica
+  scenario: Cenário
+  given_scenario: DadoOCenário
+  given: Dado
+  when: Quando
+  then: Então
+  and: E
+  but: Mas
+# Romanian (without diacritics - the commonly used)
+"ro":
+  feature: Functionalitate
+  scenario: Scenariu
+  more_examples: Mai multe exemple
+  given_scenario: ScenariuDat
+  given: Daca
+  when: Cand
+  then: Atunci
+  and: Si
+  but: Dar
+# Romanian (with diacritics - not commonly used)
+"ro2":
+  feature: Funcționalitate
+  scenario: Scenariu
+  more_examples: Mai multe exemple
+  given_scenario: ScenariuDat
+  given: Dacă
+  when: Când
+  then: Atunci
+  and: Și
+  but: Dar
+# Russian
+"ru":
+  feature: Функционал
+  scenario: Сценарий
+  given_scenario: ДанныйСценарий
+  given: Сначала
+  when: Если
+  then: То
+  and: И
+  but: Но
+# Swedish
+"se":
+  feature: Egenskap
+  scenario: Scenario
+  given_scenario: GivetScenario
+  given: Givet
+  when: När
+  then: Så
+  and: Och
+  but: Men
+# Chinese simplified
+"zh-CN":
+  feature: 功能
+  scenario: 场景
+  given_scenario: 引用场景
+  given: 假如
+  when: 当
+  then: 那么
+  and: 而且
+  but: 但是
