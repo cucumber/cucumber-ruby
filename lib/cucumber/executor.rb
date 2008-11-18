@@ -6,10 +6,6 @@ module Cucumber
     attr_accessor :formatters
     attr_writer :scenario_names, :lines_for_features
 
-    def line=(line)
-      @line = line
-    end
-
     def initialize(step_mother)
       @world_proc = lambda do
         Object.new
@@ -43,7 +39,6 @@ module Cucumber
     end
 
     def visit_features(features)
-      raise "Line number can only be specified when there is 1 feature. There were #{features.length}." if @line && features.length != 1
       formatters.visit_features(features)
       features.accept(self)
       formatters.dump
@@ -98,7 +93,6 @@ module Cucumber
     
     def accept_scenario?(scenario)
       scenario_at_specified_line?(scenario) &&
-      scenario_at_specified_line_old?(scenario) &&
       scenario_has_specified_name?(scenario)
     end
 
@@ -168,16 +162,8 @@ module Cucumber
     end
     
     def scenario_at_specified_line?(scenario)
-      if !@line && lines_defined_for_current_feature?
+      if lines_defined_for_current_feature?
         @lines_for_features[@feature_file].inject(false) { |at_line, line| at_line || scenario.at_line?(line) }
-      else
-        true
-      end
-    end
-    
-    def scenario_at_specified_line_old?(scenario)
-      if @line
-        scenario.at_line?(@line)
       else
         true
       end

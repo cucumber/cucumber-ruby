@@ -56,9 +56,6 @@ module Cucumber
           @options[:require] ||= []
           @options[:require] << v
         end
-        opts.on("-l LINE", "--line LINE", "Only execute the scenario at the given line") do |v|
-          @options[:line] = v
-        end
         opts.on("-s SCENARIO", "--scenario SCENARIO", "Only execute the scenario with the given name.",
                                                       "If this option is given more than once, run all",
                                                       "the specified scenarios.") do |v|
@@ -165,7 +162,6 @@ Defined profiles in cucumber.yml:
       executor.formatters = build_formatter_broadcaster(step_mother)
       require_files
       load_plain_text_features(features)
-      executor.line = @options[:line].to_i if @options[:line]
       executor.lines_for_features = @options[:lines_for_features]
       executor.scenario_names = @options[:scenario_names] if @options[:scenario_names]
       executor.visit_features(features)
