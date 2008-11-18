@@ -47,6 +47,18 @@ module Cucumber
         f.scenarios[0].should have(2).steps
       end
 
+      it "should skip comments in feature header" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/with_comments.feature')
+        f.header.should == "Some header"
+      end
+
+      it "should skip comments in scenario header" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/with_comments.feature')
+        f.scenarios[0].name.should == "Some scenario"
+      end
+
       it "should allow empty scenarios" do
         p = FeatureParser.new
         f = p.parse_feature(File.dirname(__FILE__) + '/empty_scenario.feature')
@@ -72,6 +84,14 @@ module Cucumber
         p = FeatureParser.new
         f = p.parse_feature(File.dirname(__FILE__) + '/test_dos.feature')
         f.should have(5).scenarios
+      end
+
+      it "should parse multiline steps" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/multiline_steps.feature')
+        f.should have(1).scenarios
+        step = f.scenarios[0].steps[3]
+        step.extra_args[0].should == "A string\n  that \"indents\"\nand spans\nseveral lines\n"
       end
     end
   end

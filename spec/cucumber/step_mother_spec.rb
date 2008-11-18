@@ -49,5 +49,19 @@ module Cucumber
         m.execute(step)
       end
     end
+
+    it "should report that a step has a definition if the step is registered" do
+      m = StepMother.new
+      m.register_step_proc /I am a real step definition/ do end
+
+      m.has_step_definition?('I am a real step definition').should be_true
+    end
+
+    it "should report that a step does not have a definition if it has not been registered" do
+      m = StepMother.new
+    
+      m.has_step_definition?('I am a step without a definition').should be_false
+    end
+
   end
 end

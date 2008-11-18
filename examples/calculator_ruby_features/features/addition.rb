@@ -10,7 +10,7 @@ Feature %|Addition
     And "I have entered 70 into the calculator"
     When "I add"
     Then "the result should be 120 on the screen"
-    And "the result class should be Float"
+    And "the result class should be Fixnum"
   end
   
   Table do |t|

@@ -41,7 +41,8 @@ module Cucumber
           @features << p.parse_feature(f)
         end
         @io = StringIO.new
-        @formatter = HtmlFormatter.new(@io)
+        step_mother = mock('step mother')
+        @formatter = HtmlFormatter.new(@io, step_mother)
         @me = MiniExecutor.new(@formatter)
       end
       
@@ -54,6 +55,20 @@ module Cucumber
         #File.open(expected_html, 'w') {|io| io.write(@io.string)}
         @io.string.should eql(IO.read(expected_html))
       end
+      
+      it "should render FIT table headers" do
+        scenario = mock('scenario', :name => 'test', :accept => nil)
+        row_scenario = mock('row scenario', :name => 'test', :accept => nil)
+        scenario.stub!(:table_header).and_return(['test', 'fit', 'headers'])
+                
+        @formatter.visit_regular_scenario(scenario)
+        @formatter.visit_row_scenario(row_scenario)
+        
+        ['test', 'fit' ,'headers'].each do |column_header|
+          @io.string.should include(column_header)
+        end
+      end
+      
     end
   end
 end

@@ -27,7 +27,8 @@ module Cucumber
         io = StringIO.new
         formatter = ProgressFormatter.new io
         step = stub('step',
-          :error => Pending.new
+          :error => Pending.new,
+          :scenario => mock('scenario')
         )
         formatter.step_pending(step,nil,nil)
         io.string.should =~ /^\P$/
@@ -38,6 +39,26 @@ module Cucumber
         formatter = ProgressFormatter.new io
         formatter.step_skipped(nil,nil,nil)
         io.string.should =~ /^_$/
+      end
+
+      describe "scenario without any steps" do
+        before :each do
+          @io         = StringIO.new
+          @formatter  = ProgressFormatter.new(@io)
+          @feature    = stub("feature", :header => "Feature Header")
+          @scenario   = stub("scenario", :feature => @feature, :name => "Scenario Title", :row? => false, :pending? => true)
+        end
+
+        it "should print a P when executing" do
+          @formatter.should_receive(:pending).with("P")
+          @formatter.scenario_executing(@scenario)
+        end
+
+        it "should display as pending in the dump" do
+          @formatter.scenario_executing(@scenario)
+          @formatter.dump
+          @io.string.should include("Feature Header (Scenario Title)")
+        end
       end
     end
   end

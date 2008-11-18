@@ -94,17 +94,16 @@ module Cucumber
       
       #Not supported in Term::ANSIColor
       def grey(m)
-        if ENV['CUCUMBER_COLORS_DISABLED'] == '1'
-          m
-        else
+        if ::Term::ANSIColor.coloring?
           "\e[90m#{m}\e[0m" 
+        else
+          m
         end
       end
       
       ALIASES.each do |m, color_string|
         colors = color_string.split(",").reverse
         define_method(m) do |*s|
-          ::Term::ANSIColor.coloring = false if ENV['CUCUMBER_COLORS_DISABLED'] == '1'
           clear + colors.inject(s[0]) do |memo, color|
             s[0].nil? ? __send__(color) + memo.to_s : __send__(color, memo.to_s)
           end

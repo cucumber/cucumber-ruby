@@ -1,6 +1,7 @@
 module Cucumber
   module Tree
     class BaseStep
+      attr_reader :scenario
       attr_accessor :error
 
       def self.new_id!
@@ -19,7 +20,7 @@ module Cucumber
       end
       
       def length
-        keyword.length + 1 + name.length
+        keyword.jlength + 1 + name.jlength
       end
 
       if defined?(JRUBY_VERSION)
@@ -45,7 +46,7 @@ module Cucumber
             strip_pos = method_line_pos - (Pending === e ? PENDING_ADJUSTMENT : REGULAR_ADJUSTMENT) 
           else
             # This happens with rails, because they screw up the backtrace
-            # before we get here (injecting erb stactrace and such)
+            # before we get here (injecting erb stacktrace and such)
           end
           format_error(strip_pos, proc, e)
         end
@@ -79,13 +80,13 @@ module Cucumber
       end
       
       def padding_length
-        @scenario.padding_length(self)
+        @scenario.step_padding_length(self)
       end
     end
     
     class Step < BaseStep
       attr_reader :keyword, :name, :line
-      attr_accessor :arity
+      attr_accessor :arity, :extra_args
 
       def row?
         false
@@ -93,12 +94,14 @@ module Cucumber
 
       def initialize(scenario, keyword, name, line)
         @scenario, @keyword, @name, @line = scenario, keyword, name, line
+        @extra_args = []
+        @arity = 0
       end
 
       def regexp_args_proc(step_mother)
         regexp, args, proc = step_mother.regexp_args_proc(name)
         @arity = args.length
-        [regexp, args, proc]
+        [regexp, (args + extra_args), proc]
       end
 
       def format(regexp, format=nil, &proc)
