@@ -139,6 +139,17 @@
   then: ならば
   and: かつ
   but: しかし
+# Lithuanian
+"lt":
+  feature: Sąvybė
+  scenario: Scenarijus
+  more_examples: Daugiau pavyzdžių
+  given_scenario: DuotasScenarijus
+  given: Duota
+  when: Kai
+  then: Tada
+  and: Ir
+  but: Bet
 # Dutch
 "nl":
   feature: Functionaliteit
