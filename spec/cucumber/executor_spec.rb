@@ -51,15 +51,6 @@ dang
 })
     end
 
-#     it "should allow calling of other steps from steps" do
-#       @executor.register_step_proc("call me please") { @x = 1 }
-#       @executor.register_step_proc("I will call you") { @executor.register_step_proc("call me please") }
-#       @executor.register_step_proc(/I should owe (\d*) cucumbers/)  { |n| @n.should == -n.to_i }
-#       @feature.accept(@executor)
-#       @formatters.each { |formatter| formatter.dump }
-#       @io.string.should == "...\n"
-#     end
-
     describe "visiting feature" do
 
       it "should set the feature file being visited" do
@@ -161,21 +152,22 @@ dang
       describe "without having first run the matching regular scenario" do
       
         before(:each) do
-          @scenario = Tree::Scenario.new(nil, 'test', 1)
-          @executor.line=5        
-          @executor.visit_regular_scenario(@scenario)
+          @regular_scenario = Tree::Scenario.new(nil, 'test', 1)
+          @executor.lines_for_features = Hash.new([5])
+          @executor.visit_regular_scenario(@regular_scenario)
         end
         
         it "should run the regular scenario before the row scenario" do
-          @scenario.should_receive(:accept)
-
-          @executor.visit_row_scenario(mock_row_scenario(:name => 'test', :at_line? => true, :accept => nil))
+          @regular_scenario.should_receive(:accept)
+          row_scenario = mock_row_scenario(:name => 'test', :at_line? => true)
+          row_scenario.should_receive(:accept)
+          @executor.visit_row_scenario(row_scenario)
         end
 
         it "should run the row scenario after running the regular scenario" do
-          mock_row_scenario(:at_line? => true).should_receive(:accept)
-
-          @executor.visit_row_scenario(mock_row_scenario)
+          row_scenario = mock_row_scenario(:at_line? => true)
+          row_scenario.should_receive(:accept)
+          @executor.visit_row_scenario(row_scenario)
         end
       
       end
@@ -198,7 +190,7 @@ dang
       
       it "should check if a scenario is at the specified line number" do
         mock_scenario = mock('scenario', :null_object => true)
-        @executor.line = 1
+        @executor.lines_for_features = Hash.new([1])
 
         mock_scenario.should_receive(:at_line?).with(1)
 
@@ -219,7 +211,7 @@ dang
         it "should not check feature line numbers if --line is already set" do
           @executor.instance_variable_set('@feature_file', 'sell_cucumbers.feature')
           @executor.lines_for_features = {'sell_cucumbers.feature' => [11]}
-          @executor.line = 5
+          @executor.lines_for_features = Hash.new([5])
 
           mock_scenario.should_not_receive(:at_line?).with(11).and_return(false)
 
