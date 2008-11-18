@@ -177,9 +177,9 @@ Defined profiles in cucumber.yml:
     def extract_and_store_line_numbers(file_arguments)
       @options[:lines_for_features] = Hash.new{|k,v| k[v] = []}
       file_arguments.map do |arg|
-        _, file, line = */^([\w\W]*):(\d+)$/.match(arg)
+        _, file, lines = */^([\w\W]*?):([\d:]+)$/.match(arg)
         unless file.nil?
-          @options[:lines_for_features][file] << line.to_i
+          @options[:lines_for_features][file] += lines.split(':').map { |line| line.to_i }
           arg = file          
         end
         arg
