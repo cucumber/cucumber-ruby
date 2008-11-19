@@ -11,6 +11,12 @@ module Cucumber
   class Multiple < StandardError
   end
 
+  class MissingProc < StandardError
+    def message
+      "Step definitions must always have a proc"
+    end
+  end
+
   class StepMother
     PENDING = lambda do |*_| 
       raise Pending
@@ -23,6 +29,7 @@ module Cucumber
     end
 
     def register_step_proc(key, &proc)
+      raise MissingProc if proc.nil?
       regexp = case(key)
       when String
         # Replace the $foo and $bar style parameters
