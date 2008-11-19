@@ -1,12 +1,5 @@
 #!/usr/bin/env ruby
-require 'rbconfig'
-if Config::CONFIG['sitedir'] =~ /IronRuby/
-  mri = ENV['MRI'] || "C:/ruby"
-  %w{treetop-1.2.4 term-ansicolor-1.0.3 rspec-1.1.11}.each do |gem|
-    $:.unshift(File.join(mri, 'lib/ruby/gems/1.8/gems', gem, 'lib'))
-  end
-end
-# Add .rb to work around an IronRuby bug
+# Add '.rb' to work around a bug in IronRuby's File#dirname
 $:.unshift(File.dirname(__FILE__ + '.rb') + '/../lib') unless $:.include?(File.dirname(__FILE__ + '.rb') + '/../lib')
 
 require 'cucumber/cli'
