@@ -1,25 +1,24 @@
-require 'rbconfig'
+gem 'term-ansicolor'
 
-jruby     = defined?(JRUBY_VERSION)
-win       = Config::CONFIG['host_os'] =~ /mswin|mingw/
-ironruby  = Config::CONFIG['sitedir'] =~ /IronRuby/
-wincolour =
-
-gem 'term-ansicolor' unless ironruby # Rubygems don't work here yet.
 # Hack to work around Win32/Console, which bundles a licence-violating, outdated
 # copy of term/ansicolor that doesn't implement Term::ANSIColor#coloring=. 
 # We want the official one!
 $LOAD_PATH.each{|path| $LOAD_PATH.unshift($LOAD_PATH.delete(path)) if path =~ /term-ansicolor/}
-
 require 'term/ansicolor'
 
-begin
-  require 'Win32/Console/ANSI' if (win && !jruby && !ironruby)
-rescue LoadError
-  STDERR.puts "You must gem install win32console to get coloured output on this ruby platform (#{PLATFORM})"
-  ::Term::ANSIColor.coloring = false
+if $CUCUMBER_WINDOWS_MRI
+  begin
+    require 'Win32/Console/ANSI' 
+  rescue LoadError
+    STDERR.puts "You must gem install win32console to get coloured output on this ruby platform (#{PLATFORM})"
+    Term::ANSIColor.coloring = false
+  end
+else
+  $KCODE='u'
 end
-::Term::ANSIColor.coloring = false if !STDOUT.tty? || (win && (jruby || ironruby))
+
+Term::ANSIColor.coloring = false if !STDOUT.tty? || ($CUCUMBER_WINDOWS && !$CUCUMBER_WINDOWS_MRI)
+require 'jcode'
 
 module Cucumber
   module Formatters
