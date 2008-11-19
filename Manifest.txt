@@ -1,3 +1,4 @@
+.tmtags
 History.txt
 License.txt
 Manifest.txt
@@ -67,6 +68,11 @@ examples/i18n/ja/features/addition.feature
 examples/i18n/ja/features/division.feature
 examples/i18n/ja/features/step_definitons/calculator_steps.rb
 examples/i18n/ja/lib/calculator.rb
+examples/i18n/lt/Rakefile
+examples/i18n/lt/features/addition.feature
+examples/i18n/lt/features/division.feature
+examples/i18n/lt/features/step_definitons/calculator_steps.rb
+examples/i18n/lt/lib/calculator.rb
 examples/i18n/no/Rakefile
 examples/i18n/no/features/step_definitons/kalkulator_steps.rb
 examples/i18n/no/features/summering.feature
@@ -139,6 +145,7 @@ lib/cucumber/formatters/progress_formatter.rb
 lib/cucumber/languages.yml
 lib/cucumber/model.rb
 lib/cucumber/model/table.rb
+lib/cucumber/platform.rb
 lib/cucumber/rails/rspec.rb
 lib/cucumber/rails/world.rb
 lib/cucumber/rake/task.rb
@@ -165,6 +172,7 @@ lib/cucumber/treetop_parser/feature_fr.rb
 lib/cucumber/treetop_parser/feature_id.rb
 lib/cucumber/treetop_parser/feature_it.rb
 lib/cucumber/treetop_parser/feature_ja.rb
+lib/cucumber/treetop_parser/feature_lt.rb
 lib/cucumber/treetop_parser/feature_nl.rb
 lib/cucumber/treetop_parser/feature_no.rb
 lib/cucumber/treetop_parser/feature_parser.rb
