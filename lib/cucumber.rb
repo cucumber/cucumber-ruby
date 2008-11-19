@@ -1,5 +1,7 @@
 $:.unshift(File.dirname(__FILE__)) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
+
+require 'cucumber/platform'
 require 'rubygems'
 require 'treetop/runtime'
 require 'treetop/ruby_extensions'
@@ -13,9 +15,6 @@ require 'cucumber/formatters'
 require 'cucumber/treetop_parser/feature_parser'
 require 'cucumber/cli'
 require 'cucumber/broadcaster'
-
-$KCODE='u'
-require 'jcode'
 
 module Cucumber
   LANGUAGE_FILE = File.expand_path(File.dirname(__FILE__) + '/cucumber/languages.yml')
