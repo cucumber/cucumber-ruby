@@ -5,17 +5,19 @@ to run individual scenarios.
 
 You can now run multiple features at specific lines numbers like this:
 
-  cucumber examples/i18n/en/features/addition.feature:15 examples/i18n/en/features/division.feature:6:88
+  cucumber foo.feature:15 bar.feature:6:45:111
 
-This will run addition.feature at line 15 and divison.feature at line 6 and line 88.
+This will run foo.feature at line 15 and bar.feature at line 6, 45 and 111.
 
 === New features
 * Support for .NET via IronRuby. See examples for details. (Aslak Hellesøy)
+* Lithuanian translation (sauliusgrigaitis)
 * New webrat step defintions to wrap the new selects_time, selects_date, and selects_datetime methods. (Ben Mabey) 
 * Try to load webrat gem if it's not installed as a plugin (Aslak Hellesøy)
 * Support example.feature:20 or example.feature:10:20:30 syntax for running features at specific line number(s). (#88 Joseph Wilk)
 
 === Bugfixes
+* Raise a nice error when encountering step definition without block (#95 Aslak Hellesøy)
 * Features written using Ruby where breaking due to missing a line number (#91 Joseph Wilk)
 * Directly creating a Table meant the scenario table header was never set which was causing a formatter error (#91 Joseph Wilk)
 

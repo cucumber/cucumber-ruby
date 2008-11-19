@@ -62,6 +62,13 @@ module Cucumber
     
       m.has_step_definition?('I am a step without a definition').should be_false
     end
+    
+    it "should explain to the programmer that step definitions always need a proc" do
+      m = StepMother.new
+      lambda do
+        m.register_step_proc(/no milk today/)
+      end.should raise_error(MissingProc, "Step definitions must always have a proc")
+    end
 
   end
 end
