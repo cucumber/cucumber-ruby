@@ -3,7 +3,6 @@ require 'rbconfig'
 jruby     = defined?(JRUBY_VERSION)
 win       = Config::CONFIG['host_os'] =~ /mswin|mingw/
 ironruby  = Config::CONFIG['sitedir'] =~ /IronRuby/
-wincolour =
 
 gem 'term-ansicolor' unless ironruby # Rubygems don't work here yet.
 # Hack to work around Win32/Console, which bundles a licence-violating, outdated
