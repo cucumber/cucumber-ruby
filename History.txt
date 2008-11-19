@@ -1,12 +1,16 @@
 == 0.1.10 (In Git)
 
-Running multiple features at specific lines numbers:
+The major changes in this release is basic support for .NET via IronRuby and a better way
+to run individual scenarios.
 
-cucumber examples/i18n/en/features/addition.feature:15 examples/i18n/en/features/division.feature:6
+You can now run multiple features at specific lines numbers like this:
 
-Will run addition.feature at line 15 and divison.feature at line 6
+  cucumber examples/i18n/en/features/addition.feature:15 examples/i18n/en/features/division.feature:6:88
+
+This will run addition.feature at line 15 and divison.feature at line 6 and line 88.
 
 === New features
+* Support for .NET via IronRuby. See examples for details. (Aslak Hellesøy)
 * New webrat step defintions to wrap the new selects_time, selects_date, and selects_datetime methods. (Ben Mabey) 
 * Try to load webrat gem if it's not installed as a plugin (Aslak Hellesøy)
 * Support example.feature:20 or example.feature:10:20:30 syntax for running features at specific line number(s). (#88 Joseph Wilk)
