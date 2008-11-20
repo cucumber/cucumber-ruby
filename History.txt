@@ -10,6 +10,7 @@ You can now run multiple features at specific lines numbers like this:
 This will run foo.feature at line 15 and bar.feature at line 6, 45 and 111.
 
 === New features
+* AUTOFEATURE=tRue works (case insensitive) (Aslak Hellesøy)
 * Support for .NET via IronRuby. See examples for details. (Aslak Hellesøy)
 * Lithuanian translation (sauliusgrigaitis)
 * New webrat step defintions to wrap the new selects_time, selects_date, and selects_datetime methods. (Ben Mabey) 
