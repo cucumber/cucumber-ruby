@@ -1,8 +1,7 @@
-gem 'term-ansicolor'
-
 # Hack to work around Win32/Console, which bundles a licence-violating, outdated
 # copy of term/ansicolor that doesn't implement Term::ANSIColor#coloring=. 
 # We want the official one!
+gem 'term-ansicolor'
 $LOAD_PATH.each{|path| $LOAD_PATH.unshift($LOAD_PATH.delete(path)) if path =~ /term-ansicolor/}
 require 'term/ansicolor'
 
@@ -10,15 +9,12 @@ if $CUCUMBER_WINDOWS_MRI
   begin
     require 'Win32/Console/ANSI' 
   rescue LoadError
-    STDERR.puts "You must gem install win32console to get coloured output on this ruby platform (#{PLATFORM})"
+    STDERR.puts "You must gem install win32console to get coloured output on MRI/Windows"
     Term::ANSIColor.coloring = false
   end
-else
-  $KCODE='u'
 end
 
 Term::ANSIColor.coloring = false if !STDOUT.tty? || ($CUCUMBER_WINDOWS && !$CUCUMBER_WINDOWS_MRI)
-require 'jcode'
 
 module Cucumber
   module Formatters
@@ -91,7 +87,7 @@ module Cucumber
         end
       end
       
-      #Not supported in Term::ANSIColor
+      # Not supported in Term::ANSIColor
       def grey(m)
         if ::Term::ANSIColor.coloring?
           "\e[90m#{m}\e[0m" 
