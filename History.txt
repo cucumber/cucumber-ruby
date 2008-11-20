@@ -10,6 +10,7 @@ You can now run multiple features at specific lines numbers like this:
 This will run foo.feature at line 15 and bar.feature at line 6, 45 and 111.
 
 === New features
+* AUTOFEATURE=tRue works (case insensitive) (Aslak Hellesøy)
 * Support for .NET via IronRuby. See examples for details. (Aslak Hellesøy)
 * Lithuanian translation (sauliusgrigaitis)
 * New webrat step defintions to wrap the new selects_time, selects_date, and selects_datetime methods. (Ben Mabey) 
@@ -22,6 +23,7 @@ This will run foo.feature at line 15 and bar.feature at line 6, 45 and 111.
 * Directly creating a Table meant the scenario table header was never set which was causing a formatter error (#91 Joseph Wilk)
 
 === Removed features
+* $KCODE='u' is no longer done automatically. Developers should do that explicitly when needed in step definitions or env.rb.
 * Step definition without a block being treated as pending (#64 Joseph Wilk)
 * The --line option has been removed. Use the new file.feature:line format instead.
 
