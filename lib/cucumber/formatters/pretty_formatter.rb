@@ -6,7 +6,7 @@ module Cucumber
       include ANSIColor
 
       INDENT = "\n      "
-      BACKTRACE_FILTER_PATTERNS = [/vendor\/rails/, /vendor\/plugins\/cucumber/, /spec\/expectations/, /spec\/matchers/]
+      BACKTRACE_FILTER_PATTERNS = [/vendor\/rails/, /vendor\/plugins\/cucumber/]
 
       def initialize(io, step_mother, options={})
         @io = (io == STDOUT) ? Kernel : io

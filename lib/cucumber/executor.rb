@@ -81,7 +81,7 @@ module Cucumber
       @pending = nil
 
       @world = @world_proc.call
-      @world.extend(Spec::Matchers) if defined?(Spec::Matchers)
+##SUPERSPEC      @world.extend(Spec::Matchers) if defined?(Spec::Matchers)
       define_step_call_methods(@world)
 
       formatters.scenario_executing(scenario)
