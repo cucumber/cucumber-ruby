@@ -7,9 +7,7 @@ module Cucumber
     attr_writer :scenario_names, :lines_for_features
 
     def initialize(step_mother)
-      @world_proc = lambda do
-        Object.new
-      end
+      @world_procs = []
       @before_scenario_procs = []
       @after_scenario_procs = []
       @after_step_procs = []
@@ -20,7 +18,7 @@ module Cucumber
     end
 
     def register_world_proc(&proc)
-      @world_proc = proc
+      @world_procs << proc
     end
 
     def register_before_scenario_proc(&proc)
@@ -80,7 +78,7 @@ module Cucumber
       @error = nil
       @pending = nil
 
-      @world = @world_proc.call
+      @world = create_world
       @world.extend(Spec::Matchers) if defined?(Spec::Matchers)
       define_step_call_methods(@world)
 
@@ -181,5 +179,12 @@ module Cucumber
       @lines_for_features && !@lines_for_features[@feature_file].nil? && !@lines_for_features[@feature_file].empty?
     end
     
+    def create_world
+      world = Object.new
+      @world_procs.each do |world_proc|
+        world = world_proc.call(world)
+      end
+      world
+    end
   end
 end
