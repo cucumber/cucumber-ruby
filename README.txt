@@ -1,12 +1,20 @@
 = Cucumber
 
-* http://github.com/aslakhellesoy/cucumber
+* Fork of http://github.com/aslakhellesoy/cucumber
 
 == DESCRIPTION:
 
 Cucumber executes plain text documentation of code against that code.
-Documentation: http://github.com/aslakhellesoy/cucumber/wikis/home
+Documentation: http://github.com/aslakhellesoy/cucumber/wikis/home. This
+fork removes any dependency on RSpec. You can simply use Cucumber with 
+Test::Unit assertions and win. This is a surprisingly easy thing to change
+and will ideally be merged into the core cucumber gem. 
 
+To use your own matching library (e.g., matchy) simply set up the matchers 
+class in your env.rb:
+
+  Cucumber::Executor.matchers = Spec::Matchers
+  
 == REQUIREMENTS:
 
 * FIX (list of requirements)
