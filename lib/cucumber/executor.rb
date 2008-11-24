@@ -5,11 +5,10 @@ module Cucumber
     attr_reader :failed
     attr_accessor :formatters
     attr_writer :scenario_names, :lines_for_features
+    cattr_accessor :matchers
 
     def initialize(step_mother)
-      @world_proc = lambda do
-        Object.new
-      end
+      @world_procs = []
       @before_scenario_procs = []
       @after_scenario_procs = []
       @after_step_procs = []
@@ -20,7 +19,7 @@ module Cucumber
     end
 
     def register_world_proc(&proc)
-      @world_proc = proc
+      @world_procs << proc
     end
 
     def register_before_scenario_proc(&proc)
@@ -80,8 +79,8 @@ module Cucumber
       @error = nil
       @pending = nil
 
-      @world = @world_proc.call
-##SUPERSPEC      @world.extend(Spec::Matchers) if defined?(Spec::Matchers)
+      @world = create_world
+      @world.extend(@@matchers) if defined?(@@matchers) and !@@matchers.blank?
       define_step_call_methods(@world)
 
       formatters.scenario_executing(scenario)
@@ -181,5 +180,12 @@ module Cucumber
       @lines_for_features && !@lines_for_features[@feature_file].nil? && !@lines_for_features[@feature_file].empty?
     end
     
+    def create_world
+      world = Object.new
+      @world_procs.each do |world_proc|
+        world = world_proc.call(world)
+      end
+      world
+    end
   end
 end
