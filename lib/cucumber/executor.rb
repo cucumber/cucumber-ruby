@@ -5,7 +5,6 @@ module Cucumber
     attr_reader :failed
     attr_accessor :formatters
     attr_writer :scenario_names, :lines_for_features
-    cattr_accessor :matchers
 
     def initialize(step_mother)
       @world_procs = []
@@ -73,6 +72,10 @@ module Cucumber
         @executed_scenarios[scenario.name] = true
         execute_scenario(scenario)
       end
+    end
+    
+    def self.matchers=(klass_or_module)
+      @@matchers = klass_or_module
     end
 
     def execute_scenario(scenario)
