@@ -69,12 +69,11 @@ module Cucumber
         end
         opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{DEFAULT_FORMAT})",
           "Available formats: #{FORMATS.join(", ")}",
+          "You can also provide your own formatters as long as they have been",
+          "previously required using --require or if they are in the folder",
+          "structure such that cucumber will require them automatically.",
           "This option can be specified multiple times.") do |v|
-          unless FORMATS.index(v)
-            @error_stream.puts "Invalid format: #{v}\n"
-            @error_stream.puts opts.help
-            exit 1
-          end
+  
           @options[:formats][v] ||= []
           @options[:formats][v] << @out_stream
           @active_format = v
@@ -115,11 +114,11 @@ module Cucumber
           @options[:source] = false
         end
         opts.on_tail("--version", "Show version") do
-          puts VERSION::STRING
+          @out_stream.puts VERSION::STRING
           exit
         end
         opts.on_tail("--help", "You're looking at it") do
-          puts opts.help
+          @out_stream.puts opts.help
           exit
         end
       end.parse!
@@ -159,8 +158,8 @@ Defined profiles in cucumber.yml:
     def execute!(step_mother, executor, features)
       Term::ANSIColor.coloring = @options[:color] unless @options[:color].nil?
       Cucumber.load_language(@options[:lang])
-      executor.formatters = build_formatter_broadcaster(step_mother)
       require_files
+      executor.formatters = build_formatter_broadcaster(step_mother)
       load_plain_text_features(features)
       executor.lines_for_features = @options[:lines_for_features]
       executor.scenario_names = @options[:scenario_names] if @options[:scenario_names]
@@ -247,7 +246,17 @@ Defined profiles in cucumber.yml:
         when 'autotest'
           formatter_broadcaster.register(Formatters::AutotestFormatter.new(output_broadcaster))
         else
-          raise "Unknown formatter: #{@options[:format]}"
+          begin
+            formatter_class = Kernel.const_get(format)
+            formatter_broadcaster.register(formatter_class.new(output_broadcaster, step_mother, @options))
+          rescue NameError => e
+            @error_stream.puts "Invalid format: #{format}\n"
+            exit_with_help
+          rescue Exception => e
+            @error_stream.puts "Error creating formatter: #{format}\n"
+            @error_stream.puts "#{e}"
+            exit
+          end
         end
       end
       formatter_broadcaster
@@ -262,6 +271,10 @@ Defined profiles in cucumber.yml:
     end
     
   private
+
+    def exit_with_help
+      parse_options!(%w{--help})
+    end
 
     def exit_with_error(error_message)
       @error_stream << error_message
