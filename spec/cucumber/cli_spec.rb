@@ -12,6 +12,10 @@ module Cucumber
       stub(Broadcaster, {:register => nil}.merge(stubs))
     end
     
+    def mock_features(stubs ={})
+      stub('features', :<< => nil)
+    end
+    
     before(:each) do
       Kernel.stub!(:exit)
     end
@@ -99,6 +103,40 @@ Defined profiles in cucumber.yml:
       
       cli.options[:snippets].should be_false
       cli.options[:source].should be_false
+    end
+
+    it "should accept --verbose option" do
+      cli = CLI.new
+      cli.parse_options!(%w{--verbose})
+
+      cli.options[:verbose].should be_true
+    end
+
+    describe "verbose mode" do
+      
+      before(:each) do
+        @out = StringIO.new
+        @cli = CLI.new(@out)
+        @cli.stub!(:require)
+        Dir.stub!(:[])
+      end
+
+      it "should show ruby files required" do
+        @cli.parse_options!(%w{--verbose --require example.rb})
+        @cli.execute!(stub('step mother'), mock_executor, mock_features)
+        
+        @out.string.should include('example.rb')
+      end
+      
+      it "should show feature files parsed" do
+        TreetopParser::FeatureParser.stub!(:new).and_return(mock("feature parser", :parse_feature => nil))
+          
+        @cli.parse_options!(%w{--verbose example.feature})
+        @cli.execute!(stub('step mother'), mock_executor, mock_features)
+
+        @out.string.should include('example.feature')
+      end
+      
     end
 
     it "should accept --out option" do
@@ -367,7 +405,7 @@ Defined profiles in cucumber.yml:
 
       Dir.should_receive(:[]).with("feature_directory/**/*.feature").any_number_of_times.and_return([])
       
-      cli.execute!(stub('step mother'), mock_executor, stub('features', :<< => nil))
+      cli.execute!(stub('step mother'), mock_executor, mock_features)
     end
 
   end

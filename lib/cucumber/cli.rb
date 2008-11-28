@@ -113,6 +113,9 @@ module Cucumber
           @options[:snippets] = false
           @options[:source] = false
         end
+        opts.on("-v", "--verbose", "Show the files and features loaded") do
+          @options[:verbose] = true
+        end
         opts.on_tail("--version", "Show version") do
           @out_stream.puts VERSION::STRING
           Kernel.exit
@@ -187,6 +190,7 @@ Defined profiles in cucumber.yml:
       require "cucumber/treetop_parser/feature_#{@options[:lang]}"
       require "cucumber/treetop_parser/feature_parser"
 
+      verbose_log("Ruby files required:")
       requires = @options[:require] || feature_dirs
       libs = requires.map do |path|
         path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
@@ -195,11 +199,13 @@ Defined profiles in cucumber.yml:
       libs.each do |lib|
         begin
           require lib
+          verbose_log("  * #{lib}")
         rescue LoadError => e
           e.message << "\nFailed to load #{lib}"
           raise e
         end
       end
+      verbose_log("\n")
     end
 
     def feature_files
@@ -225,9 +231,12 @@ Defined profiles in cucumber.yml:
     def load_plain_text_features(features)
       parser = TreetopParser::FeatureParser.new
 
+      verbose_log("Features:")
       feature_files.each do |f|
         features << parser.parse_feature(f)
+        verbose_log("  * #{f}")
       end
+      verbose_log("\n"*2)
     end
 
     def build_formatter_broadcaster(step_mother)
@@ -269,6 +278,10 @@ Defined profiles in cucumber.yml:
     end
     
   private
+
+    def verbose_log(string)
+      @out_stream.puts(string) if @options[:verbose]
+    end
 
     def exit_with_help
       parse_options!(%w{--help})
