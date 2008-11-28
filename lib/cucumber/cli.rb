@@ -69,7 +69,7 @@ module Cucumber
         end
         opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{DEFAULT_FORMAT})",
           "Available formats: #{FORMATS.join(", ")}",
-          "You can also provide your own formatters as long as they have been",
+          "You can also provide your own formatter classes as long as they have been",
           "previously required using --require or if they are in the folder",
           "structure such that cucumber will require them automatically.",
           "This option can be specified multiple times.") do |v|
@@ -115,11 +115,11 @@ module Cucumber
         end
         opts.on_tail("--version", "Show version") do
           @out_stream.puts VERSION::STRING
-          exit
+          Kernel.exit
         end
         opts.on_tail("--help", "You're looking at it") do
           @out_stream.puts opts.help
-          exit
+          Kernel.exit
         end
       end.parse!
 
@@ -253,9 +253,7 @@ Defined profiles in cucumber.yml:
             @error_stream.puts "Invalid format: #{format}\n"
             exit_with_help
           rescue Exception => e
-            @error_stream.puts "Error creating formatter: #{format}\n"
-            @error_stream.puts "#{e}"
-            exit
+            exit_with_error("Error creating formatter: #{format}\n#{e}")
           end
         end
       end

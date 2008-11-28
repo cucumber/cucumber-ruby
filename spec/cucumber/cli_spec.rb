@@ -229,7 +229,7 @@ Defined profiles in cucumber.yml:
         end
         
         it "should show exception" do
-          @cli.stub!(:exit)
+          Kernel.stub!(:exit)
 
           @cli.execute!(stub('step mother'), mock_executor, stub('features'))
 
@@ -237,7 +237,7 @@ Defined profiles in cucumber.yml:
         end
         
         it "should exit" do
-          @cli.should_receive(:exit)
+          Kernel.should_receive(:exit)
 
           @cli.execute!(stub('step mother'), mock_executor, stub('features'))
         end
@@ -255,7 +255,7 @@ Defined profiles in cucumber.yml:
         end
 
         it "should display a format error" do
-          @cli.stub!(:exit)
+          Kernel.stub!(:exit)
 
           @cli.execute!(stub('step mother'), mock_executor, stub('features'))
           
@@ -263,7 +263,7 @@ Defined profiles in cucumber.yml:
         end
         
         it "should display --help" do
-          @cli.stub!(:exit)
+          Kernel.stub!(:exit)
 
           @cli.execute!(stub('step mother'), mock_executor, stub('features'))
           
@@ -271,7 +271,7 @@ Defined profiles in cucumber.yml:
         end
 
         it "should exit" do
-          @cli.should_receive(:exit)
+          Kernel.should_receive(:exit)
 
           @cli.execute!(stub('step mother'), mock_executor, stub('features'))
         end
