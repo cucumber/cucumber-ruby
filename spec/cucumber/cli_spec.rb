@@ -13,7 +13,7 @@ module Cucumber
     end
     
     def mock_features(stubs ={})
-      stub('features', :<< => nil)
+      stub('features', {:<< => nil}.merge(stubs))
     end
     
     before(:each) do
