@@ -12,6 +12,10 @@ module Cucumber
       stub(Broadcaster, {:register => nil}.merge(stubs))
     end
     
+    def mock_features(stubs ={})
+      stub('features', {:<< => nil}.merge(stubs))
+    end
+    
     before(:each) do
       Kernel.stub!(:exit)
     end
@@ -101,6 +105,40 @@ Defined profiles in cucumber.yml:
       cli.options[:source].should be_false
     end
 
+    it "should accept --verbose option" do
+      cli = CLI.new
+      cli.parse_options!(%w{--verbose})
+
+      cli.options[:verbose].should be_true
+    end
+
+    describe "verbose mode" do
+      
+      before(:each) do
+        @out = StringIO.new
+        @cli = CLI.new(@out)
+        @cli.stub!(:require)
+        Dir.stub!(:[])
+      end
+
+      it "should show ruby files required" do
+        @cli.parse_options!(%w{--verbose --require example.rb})
+        @cli.execute!(stub('step mother'), mock_executor, mock_features)
+        
+        @out.string.should include('example.rb')
+      end
+      
+      it "should show feature files parsed" do
+        TreetopParser::FeatureParser.stub!(:new).and_return(mock("feature parser", :parse_feature => nil))
+          
+        @cli.parse_options!(%w{--verbose example.feature})
+        @cli.execute!(stub('step mother'), mock_executor, mock_features)
+
+        @out.string.should include('example.feature')
+      end
+      
+    end
+
     it "should accept --out option" do
       cli = CLI.new
       File.should_receive(:open).with('jalla.txt', 'w')
@@ -178,6 +216,106 @@ Defined profiles in cucumber.yml:
       cli.parse_options!(%w{--format progress})
 
       cli.execute!(stub('step mother'), mock_executor, stub('features'))
+    end
+
+    describe "external formatter" do
+
+      describe "exists and valid constructor" do
+        
+        before(:each) do
+          @mock_formatter_class = mock('formatter class')
+          Kernel.stub!(:const_get).and_return(@mock_formatter_class)
+        end
+        
+        it "should create the formatter" do
+          cli = CLI.new
+          mock_formatter = mock('magical formatter')
+          cli.parse_options!(%w{--format magical})
+
+          @mock_formatter_class.should_receive(:new)
+
+          cli.execute!(stub('step mother'), mock_executor, stub('features'))
+        end
+
+        it "should register the formatter with broadcaster" do
+          cli = CLI.new
+          broadcaster = Broadcaster.new
+          mock_formatter = mock('magical formatter')
+          Broadcaster.stub!(:new).and_return(broadcaster, stub("output broadcaster", :register => nil))
+          @mock_formatter_class.stub!(:new).and_return(mock_formatter)
+          cli.parse_options!(%w{--format magical})
+
+          broadcaster.should_receive(:register).with(mock_formatter)
+        
+          cli.execute!(stub('step mother'), mock_executor, stub('features'))
+        end
+      
+      end
+          
+      describe "exists but invalid constructor" do
+
+        before(:each) do
+          @out = StringIO.new
+          @error = StringIO.new
+          @cli = CLI.new(@out, @error)
+          
+          mock_formatter_class = stub('formatter class')
+          mock_formatter_class.stub!(:new).and_raise("No such method")
+          Kernel.stub!(:const_get).and_return(mock_formatter_class)
+          
+          @cli.parse_options!(%w{--format exists_but_evil}) 
+        end
+        
+        it "should show exception" do
+          Kernel.stub!(:exit)
+
+          @cli.execute!(stub('step mother'), mock_executor, stub('features'))
+
+          @error.string.should include("No such method")
+        end
+        
+        it "should exit" do
+          Kernel.should_receive(:exit)
+
+          @cli.execute!(stub('step mother'), mock_executor, stub('features'))
+        end
+                
+      end
+          
+      describe "non-existent" do
+
+        before(:each) do
+          @out = StringIO.new
+          @error = StringIO.new
+          @cli = CLI.new(@out, @error)
+          
+          @cli.parse_options!(%w{--format invalid})
+        end
+
+        it "should display a format error" do
+          Kernel.stub!(:exit)
+
+          @cli.execute!(stub('step mother'), mock_executor, stub('features'))
+          
+          @error.string.should include("Invalid format: invalid\n")
+        end
+        
+        it "should display --help" do
+          Kernel.stub!(:exit)
+
+          @cli.execute!(stub('step mother'), mock_executor, stub('features'))
+          
+          @out.string.should include("Usage: cucumber")
+        end
+
+        it "should exit" do
+          Kernel.should_receive(:exit)
+
+          @cli.execute!(stub('step mother'), mock_executor, stub('features'))
+        end
+        
+      end
+            
     end
 
     it "should accept multiple --scenario options" do
@@ -267,7 +405,7 @@ Defined profiles in cucumber.yml:
 
       Dir.should_receive(:[]).with("feature_directory/**/*.feature").any_number_of_times.and_return([])
       
-      cli.execute!(stub('step mother'), mock_executor, stub('features', :<< => nil))
+      cli.execute!(stub('step mother'), mock_executor, mock_features)
     end
 
   end

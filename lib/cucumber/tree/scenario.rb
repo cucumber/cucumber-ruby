@@ -148,7 +148,7 @@ module Cucumber
       def steps
         if template_steps_bound?
           @unbound_steps = nil
-          @steps ||= build_steps
+          @bound_steps ||= build_steps
         else
           @unbound_steps ||= build_steps
         end
