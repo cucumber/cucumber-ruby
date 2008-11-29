@@ -1,3 +1,8 @@
+== 0.1.11 In Git
+
+=== New features
+* I CAN SPEAK LOLCAT. KTHXBAI (Aimee)
+
 == 0.1.10 2008-11-25
 
 This release mostly has smaller bugfixes. The most significant new feature is how
