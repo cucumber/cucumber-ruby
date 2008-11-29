@@ -1,7 +1,13 @@
-== 0.1.11 In Git
+== 0.1.11 (In Git)
 
-=== New features
-* I CAN SPEAK LOLCAT. KTHXBAI (Aimee)
+== New features
+* CUCUMBR LIKEZ 2 SPEEK WIF KATS. KTHXBAI (Aimee Daniells)
+* Support for dynamically pluggable formatters (#99 Joseph Wilk)
+* --verbose mode to see ruby files and feature files loaded by Cucumber (#106 Joseph Wilk)
+
+== Bugfixes
+
+== Removed features
 
 == 0.1.10 2008-11-25
 
