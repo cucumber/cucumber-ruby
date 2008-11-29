@@ -63,6 +63,17 @@
   then: Dann
   and: Und
   but: Aber
+# LOLCAT
+"en-lol":
+  feature: OH HAI
+  scenario: MISHUN
+  more_examples: MOAR EXAMPLZ
+  given_scenario: SRSLY
+  given: GIVN
+  when: WEN
+  then: DEN
+  and: AN
+  but: BUT
 # Texan
 "en-tx":
   feature: Feature
