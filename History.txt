@@ -6,6 +6,7 @@
 * --verbose mode to see ruby files and feature files loaded by Cucumber (#106 Joseph Wilk)
 
 == Bugfixes
+* Support including modules for class passed to --format (#109 Joseph Wilk)
 
 == Removed features
 
