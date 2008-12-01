@@ -1,5 +1,0 @@
-rm -rf /tmp/gem
-mkdir /tmp/gem
-mv ./.gi* /tmp/gem/
-rake gemspec:refresh
-mv /tmp/gem/.gi* .
