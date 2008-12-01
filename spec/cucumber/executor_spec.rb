@@ -51,6 +51,32 @@ dang
 })
     end
 
+    describe "creating a world" do
+      module DoitExtension
+        def doit
+          "dunit"
+        end
+      end
+
+      module BeatitExtension
+        def beatit
+          "beatenit"
+        end
+      end
+      
+      it "should yield an Object to the world proc" do
+        @executor.register_world_proc do |world|
+          world.extend(DoitExtension)
+        end
+        @executor.register_world_proc do |world|
+          world.extend(BeatitExtension)
+        end
+        world = @executor.create_world
+        world.doit.should == "dunit"
+        world.beatit.should == "beatenit"
+      end
+    end
+
     describe "visiting feature" do
 
       it "should set the feature file being visited" do

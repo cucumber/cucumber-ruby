@@ -1,23 +1,36 @@
-== 0.1.10 (In Git)
+== 0.1.11 (In Git)
 
-The major changes in this release is basic support for .NET via IronRuby and a better way
-to run individual scenarios.
+== New features
+* CUCUMBER_NO_JCODE environment variable disables jcode. Workaround for http://tinyurl.com/55uu3u (Aslak Hellesøy)
+* CUCUMBR LIKEZ 2 SPEEK WIF KATS. KTHXBAI (Aimee Daniells)
+* Support for dynamically pluggable formatters (#99 Joseph Wilk)
+* --verbose mode to see ruby files and feature files loaded by Cucumber (#106 Joseph Wilk)
 
-You can now run multiple features at specific lines numbers like this:
+== Bugfixes
+
+== Removed features
+
+== 0.1.10 2008-11-25
+
+This release mostly has smaller bugfixes. The most significant new feature is how
+line numbers are specified. You can now run multiple features at specific lines numbers like this:
 
   cucumber foo.feature:15 bar.feature:6:45:111
 
 This will run foo.feature at line 15 and bar.feature at line 6, 45 and 111.
 
 === New features
+* Added example showing how to use Cucumber with Test::Unit + Matchy instead of RSpec (Aslak Hellesøy)
+* Yield existing world object to World block (#87 Aslak Hellesøy)
 * AUTOFEATURE=tRue works (case insensitive) (Aslak Hellesøy)
-* Support for .NET via IronRuby. See examples for details. (Aslak Hellesøy)
+* Initial support for .NET via IronRuby. (Aslak Hellesøy)
 * Lithuanian translation (sauliusgrigaitis)
 * New webrat step defintions to wrap the new selects_time, selects_date, and selects_datetime methods. (Ben Mabey) 
 * Try to load webrat gem if it's not installed as a plugin (Aslak Hellesøy)
 * Support example.feature:20 or example.feature:10:20:30 syntax for running features at specific line number(s). (#88 Joseph Wilk)
 
 === Bugfixes
+* Windows - all the 'a' characters in the output have gone on strike (#81 Luis Lavena, Joseph Wilk, Aslak Hellesøy)
 * Raise a nice error when encountering step definition without block (#95 Aslak Hellesøy)
 * Features written using Ruby where breaking due to missing a line number (#91 Joseph Wilk)
 * Directly creating a Table meant the scenario table header was never set which was causing a formatter error (#91 Joseph Wilk)
@@ -27,7 +40,7 @@ This will run foo.feature at line 15 and bar.feature at line 6, 45 and 111.
 * Step definition without a block being treated as pending (#64 Joseph Wilk)
 * The --line option has been removed. Use the new file.feature:line format instead.
 
-== 0.1.9
+== 0.1.9 2008-11-12
 
 With this release Cucumber supports 19 (!) natural languages:
 
