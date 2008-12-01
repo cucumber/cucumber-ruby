@@ -19,4 +19,10 @@ class String
     end
     s
   end
+
+  if ENV['CUCUMBER_NO_JCODE']
+    alias jlength length
+  else
+    require 'jcode'
+  end
 end
