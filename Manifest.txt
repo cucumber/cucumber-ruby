@@ -102,6 +102,9 @@ examples/java/src/cucumber/demo/Hello.java
 examples/selenium/Rakefile
 examples/selenium/features/search.feature
 examples/selenium/features/step_definitons/stories_steps.rb
+examples/test_unit/Rakefile
+examples/test_unit/features/step_definitions/test_unit_steps.rb
+examples/test_unit/features/test_unit.feature
 examples/tickets/Rakefile
 examples/tickets/cucumber.yml
 examples/tickets/features/step_definitons/tickets_steps.rb
