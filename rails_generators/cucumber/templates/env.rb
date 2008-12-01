@@ -6,3 +6,5 @@ Cucumber::Rails.use_transactional_fixtures
 
 # Comment out the next line if you're not using RSpec's matchers (should / should_not) in your steps.
 require 'cucumber/rails/rspec'
+
+require "webrat/rails"
