@@ -16,7 +16,7 @@ Bugfix release with a couple of minor additional features to the command line op
 * Support including modules for class passed to --format (#109 Joseph Wilk)
 
 == Removed features
-* The cucumber gem no longer depends on the rspec gem. It must be downloaded manually if RSpec is used.
+* The cucumber gem no longer depends on the rspec gem. It must be downloaded manually if RSpec is used. (Jeff Rafter)
 
 == 0.1.10 2008-11-25
 
