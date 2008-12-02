@@ -256,13 +256,13 @@ Defined profiles in cucumber.yml:
           formatter_broadcaster.register(Formatters::AutotestFormatter.new(output_broadcaster))
         else
           begin
-            formatter_class = Kernel.const_get(format)
+            formatter_class = constantize(format)
             formatter_broadcaster.register(formatter_class.new(output_broadcaster, step_mother, @options))
           rescue NameError => e
             @error_stream.puts "Invalid format: #{format}\n"
             exit_with_help
           rescue Exception => e
-            exit_with_error("Error creating formatter: #{format}\n#{e}")
+            exit_with_error("Error creating formatter: #{format}\n#{e}\n")
           end
         end
       end
@@ -279,6 +279,17 @@ Defined profiles in cucumber.yml:
     
   private
 
+    def constantize(camel_cased_word)
+        names = camel_cased_word.split('::')
+        names.shift if names.empty? || names.first.empty?
+ 
+        constant = Object
+        names.each do |name|
+          constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
+        end
+        constant
+    end
+    
     def verbose_log(string)
       @out_stream.puts(string) if @options[:verbose]
     end

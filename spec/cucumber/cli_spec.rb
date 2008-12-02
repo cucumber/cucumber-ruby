@@ -217,14 +217,32 @@ Defined profiles in cucumber.yml:
 
       cli.execute!(stub('step mother'), mock_executor, stub('features'))
     end
+    
+    describe "--format with class" do
+     
+     describe "in module" do
 
-    describe "external formatter" do
+        it "should resolve each module until it gets Formatter class" do
+          cli = CLI.new
+          mock_module = mock('module')
+          cli.parse_options!(%w{--format ZooModule::MonkeyFormatterClass})
+          Object.stub!(:const_defined?).and_return(true)
+          mock_module.stub!(:const_defined?).and_return(true)
 
+          Object.should_receive(:const_get).with('ZooModule').and_return(mock_module)
+          mock_module.should_receive(:const_get).with('MonkeyFormatterClass').and_return(mock('formatter class', :new => nil))
+
+          cli.execute!(stub('step mother'), mock_executor, stub('features'))
+        end
+
+      end
+     
       describe "exists and valid constructor" do
-        
+     
         before(:each) do
           @mock_formatter_class = mock('formatter class')
-          Kernel.stub!(:const_get).and_return(@mock_formatter_class)
+          Object.stub!(:const_get).and_return(@mock_formatter_class)
+          Object.stub!(:const_defined?).with('magical').and_return(true)
         end
         
         it "should create the formatter" do
@@ -236,7 +254,7 @@ Defined profiles in cucumber.yml:
 
           cli.execute!(stub('step mother'), mock_executor, stub('features'))
         end
-
+                
         it "should register the formatter with broadcaster" do
           cli = CLI.new
           broadcaster = Broadcaster.new
@@ -261,7 +279,8 @@ Defined profiles in cucumber.yml:
           
           mock_formatter_class = stub('formatter class')
           mock_formatter_class.stub!(:new).and_raise("No such method")
-          Kernel.stub!(:const_get).and_return(mock_formatter_class)
+          Object.stub!(:const_get).and_return(mock_formatter_class)
+          Object.stub!(:const_defined?).with('exists_but_evil').and_return(true)
           
           @cli.parse_options!(%w{--format exists_but_evil}) 
         end
