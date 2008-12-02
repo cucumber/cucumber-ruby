@@ -7,6 +7,7 @@
 
 == Bugfixes
 * The jcode library is not loaded on JRuby/Rails. Workaround for http://tinyurl.com/55uu3u. (Aslak Hellesøy)
+* Support including modules for class passed to --format (#109 Joseph Wilk)
 
 == Removed features
 * The cucumber gem no longer depends on the rspec gem. It must be downloaded manually if RSpec is used.
