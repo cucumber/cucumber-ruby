@@ -166,6 +166,7 @@ lib/cucumber/treetop_parser/feature_ar.rb
 lib/cucumber/treetop_parser/feature_cy.rb
 lib/cucumber/treetop_parser/feature_da.rb
 lib/cucumber/treetop_parser/feature_de.rb
+lib/cucumber/treetop_parser/feature_en-lol.rb
 lib/cucumber/treetop_parser/feature_en-tx.rb
 lib/cucumber/treetop_parser/feature_en.rb
 lib/cucumber/treetop_parser/feature_es.rb

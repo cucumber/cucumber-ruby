@@ -9,6 +9,7 @@
 * The jcode library is not loaded on JRuby/Rails. Workaround for http://tinyurl.com/55uu3u. (Aslak Hellesøy)
 
 == Removed features
+* The cucumber gem no longer depends on the rspec gem. It must be downloaded manually if RSpec is used.
 
 == 0.1.10 2008-11-25
 
