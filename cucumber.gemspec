@@ -27,20 +27,17 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<term-ansicolor>, [">= 1.0.3"])
       s.add_runtime_dependency(%q<treetop>, [">= 1.2.4"])
       s.add_runtime_dependency(%q<diff-lcs>, [">= 1.1.2"])
-      s.add_development_dependency(%q<rspec>, [">= 1.1.11"])
       s.add_development_dependency(%q<hoe>, [">= 1.8.2"])
     else
       s.add_dependency(%q<term-ansicolor>, [">= 1.0.3"])
       s.add_dependency(%q<treetop>, [">= 1.2.4"])
       s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
-      s.add_dependency(%q<rspec>, [">= 1.1.11"])
       s.add_dependency(%q<hoe>, [">= 1.8.2"])
     end
   else
     s.add_dependency(%q<term-ansicolor>, [">= 1.0.3"])
     s.add_dependency(%q<treetop>, [">= 1.2.4"])
     s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
-    s.add_dependency(%q<rspec>, [">= 1.1.11"])
     s.add_dependency(%q<hoe>, [">= 1.8.2"])
   end
 end
