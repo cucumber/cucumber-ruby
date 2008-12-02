@@ -1,5 +1,5 @@
 def unable_to_load
-  puts <<-EOS
+  STDERR.puts <<-EOS
 To use rspec for testing you must install rspec gem:
     gem install rspec
     
@@ -27,7 +27,7 @@ if require_spec
     unable_to_load
   end
 
-  desc "Run the specs under spec/models"
+  desc "Run the Cucumber specs"
   Spec::Rake::SpecTask.new do |t|
     t.spec_opts = ['--options', "spec/spec.opts"]
     t.spec_files = FileList['spec/**/*_spec.rb']
