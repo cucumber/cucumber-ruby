@@ -43,6 +43,7 @@ module Cucumber
       attr_reader :name, :line
 
       def initialize(feature, name, line, &proc)
+        require 'cucumber/core_ext/string'
         @feature, @name, @line = feature, name, line
         @steps_and_given_scenarios = []
         instance_eval(&proc) if block_given?

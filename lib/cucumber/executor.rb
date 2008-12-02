@@ -1,5 +1,3 @@
-require 'cucumber/core_ext/proc'
-
 module Cucumber
   class Executor
     attr_reader :failed
