@@ -1,4 +1,6 @@
-== 0.1.11 (In Git)
+== 0.1.11
+
+Bugfix release with a couple of minor additional features to the command line options.
 
 == New features
 * Capture output from cucumber in Autotest (Alan Larkin)
