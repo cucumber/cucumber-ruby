@@ -1,5 +1,7 @@
 == 0.1.12 (In Git)
 
+This is the "getting serious with IronRuby release"
+
 == New features
 
 == Bugfixes
