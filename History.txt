@@ -2,7 +2,7 @@
 
 This is the "getting serious with IronRuby release" - largely based on 
 "Patrick Gannon":http://www.patrickgannon.net/archive/2008/10/23/bdd-style-feature-tests-using-ironruby-and-rspeccucumber.aspx's
-blog entry
+blog entry.
 
 == New features
 
