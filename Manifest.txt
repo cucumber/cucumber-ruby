@@ -11,13 +11,6 @@ cucumber.yml
 examples/calculator_ruby_features/Rakefile
 examples/calculator_ruby_features/features/addition.rb
 examples/calculator_ruby_features/features/step_definitons/calculator_steps.rb
-examples/cs/README.textile
-examples/cs/Rakefile
-examples/cs/features/hello.feature
-examples/cs/features/step_definitons/hello_steps.rb
-examples/cs/features/step_definitons/tree_steps.rb
-examples/cs/features/tree.feature
-examples/cs/src/Hello.cs
 examples/dos_line_endings/Rakefile
 examples/dos_line_endings/features/dos_line_endings.feature
 examples/i18n/README.textile

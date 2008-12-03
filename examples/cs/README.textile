@@ -1,22 +1,110 @@
-h1. Using Cucumber with Java
+h1. Using Cucumber with C#
 
-This directory contains code to demonstrate how Cucumber can be used to develop Java code.
-You need JRuby 1.1.3 or higher installed and JRuby's bin directory on your PATH.
+This directory contains code to demonstrate how Cucumber can be used to develop C# code.
+You need both IronRuby and MRI (Matz Ruby Interpreter).
+
+h2. Installing MRI
+
+You'll need MRI to build IronRuby. You also need MRI to install gems since IronRuby can
+not install its own gems yet (although it can use them). When you have installed IronRuby you 
+can use gems installed into MRI from IronRuby.
+
+Just download the latest Ruby One click installer from RubyForge and run it with the defaults.
+When you open a new command prompt you should be able to run:
+
+<pre>ruby --version</pre>
+
+and
+
+<pre>rake --version</pre>
+
+h2. Installing IronRuby
+
+With MRI installed we can install IronRuby. At the time of this writing there is no installer
+for IronRuby, so you have to download the IronRuby sources from the Subversion repository and build 
+it yourself.
+
+If you don't have Subversion installed, install the Subversion command line toolset (or TortoiseSvn
+if you have command line fobia).
+
+h3. Get IronRuby sources
+
+<pre>svn checkout http://ironruby.rubyforge.org/svn/trunk ironruby
+cd ironruby
+</pre>
+
+Note: *checkout* means "pull down a copy of the sources to my local machine". It's not the same
+as checkout in TFS or Visual SourceSafe (which I truly hope you have moved past).
+
+h3. Build IronRuby
+
+Open a Visual Studio command prompt and cd to where you downloaded the IronRuby sources. Build it:
+
+<code>rake build</code>
+
+When you have completed this step you should be able to run
+
+<code>build\debug\ir.exe <code>
+
+This should give you a new prompt (Interactive IronRuby shell). Just type <code>exit</code>
+and hit enter. You have installed IronRuby!
+
+You can now close your Visual Studio command prompt. From here on a regular command prompt
+will suffice.
 
 h2. Installing required gems
 
-jruby -S gem install aslakhellesoy-cucumber
-jruby -S gem install diff-lcs
+Since IronRuby doesn't yet know how to install gems you have to install them using MRI:
 
-h2. Running the scenarios
+<pre>gem install cucumber
+ruby gem install rspec
+</pre>
 
-Open a shell in this directory (java) and execute the following command:
+h2. Creating a cucumber wrapper script for IronRuby
+
+When Cucumber is installed, a cucumber.bat script is placed under your MRI's bin directory.
+This script will run cucumber with MRI. We'll make a similar one that will launch Cucumber
+with IronRuby.
+
+Create an empty file called <code>icucumber.bat</code> in MRI's bin directory.
+Open it in your favourite text editor (I hope you have installed something better than
+Notepad, but it will do). 
+
+On my system icucumber.bat looks like this (You may have to change the paths).
 
 <pre><code>
-jruby -S rake features
+@ECHO OFF
+REM This is to tell IronRuby where to find gems.
+SET GEM_PATH=%~dp0..\lib\ruby\gems\1.8
+@"C:\scm\ironruby\build\debug\ir.exe" "%~dp0cucumber" %*
 </code></pre>
 
-This will compile the java code and package it in a jar file, and then run Cucumber against
-that code.
+Tip: <code>%~dp0</code> evaluates to "current script's directory with trailing backslash" in case
+you're wondering what this is.
 
-There is a deliberate error. See if you can fix it!
+Now you should be able to run Cucumber:
+
+<code>icucumber --help<code>
+
+h2. Running the Cucumber C# example
+
+Open a command prompt and cd to the Cucumber examples directory for C#. If you have installed MRI to the default
+location you'll find them under <code>C:\ruby\lib\ruby\gems\1.8\gems\cucumber-X.Y.Z\examples</code>
+
+(Replace <code>X.Y.Z</code> with the Cucumber version you installed above)
+
+h3. Run the plain ruby example
+
+<pre><code>
+cd i18n\en
+icucumber features
+</code></pre>
+
+h3. Run the C# example
+
+<pre><code>
+cd cs
+icucumber features
+</code></pre>
+
+There is a deliberate error in the C# code. See if you can fix it!
