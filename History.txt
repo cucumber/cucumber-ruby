@@ -3,10 +3,9 @@
 == New features
 
 == Bugfixes
+* Fixed bug which was preventing coloring under Autotest (#111, Alan Larkin)
 
 == Removed features
-
-* Fixed bug which was preventing coloring under Autotest (#111, Alan Larkin)
 
 == 0.1.11 2008-12-02
 
