@@ -41,6 +41,14 @@ module Cucumber
           format_error(strip_pos, proc, e)
         rescue => e
           method_line = "#{__FILE__}:#{__LINE__ - 6}:in `execute_in'"
+
+          # IronRuby returns nil for backtrace...
+          if e.backtrace.nil?
+            def e.backtrace
+              @cucumber_backtrace ||= []
+            end
+          end
+
           method_line_pos = e.backtrace.index(method_line)
           if method_line_pos
             strip_pos = method_line_pos - (Pending === e ? PENDING_ADJUSTMENT : REGULAR_ADJUSTMENT) 
