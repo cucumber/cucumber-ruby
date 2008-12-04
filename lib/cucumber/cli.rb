@@ -48,7 +48,11 @@ module Cucumber
       args.extend(OptionParser::Arguable)
 
       args.options do |opts|
-        opts.banner = "Usage: cucumber [options] FILES|DIRS"
+        opts.banner = ["Usage: cucumber [options] [[FILE[:LINE]] | [FILES|DIRS]]", "",
+          "Examples:",
+          "cucumber examples/i18n/en/features",
+          "cucumber --language it examples/i18n/it/features/somma.feature:6", "", ""
+        ].join("\n")
         opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require files before executing the features.",
           "If this option is not specified, all *.rb files that",
           "are siblings or below the features will be autorequired",
