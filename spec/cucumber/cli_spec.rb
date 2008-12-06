@@ -17,12 +17,12 @@ module Cucumber
     end
     
     before(:each) do
-      Kernel.stub!(:exit)
+      Kernel.stub!(:exit).and_return(nil)
     end
     
-    def given_cucumber_yml_defined_as(hash)
+    def given_cucumber_yml_defined_as(hash_or_string)
       File.stub!(:exist?).and_return(true)
-      cucumber_yml = hash.to_yaml
+      cucumber_yml = hash_or_string.is_a?(Hash) ? hash_or_string.to_yaml : hash_or_string
       IO.stub!(:read).with('cucumber.yml').and_return(cucumber_yml)
     end
     
@@ -80,7 +80,32 @@ Defined profiles in cucumber.yml:
     
       cli.parse_options!(%w{--profile i_do_not_exist})
         
-      error.string.should match(/cucumber.yml was not found.  Please define your 'i_do_not_exist' and other profiles in cucumber.yml./)
+      error.string.should match(/cucumber.yml was not found.  Please refer to cucumber's documentaion on defining profiles in cucumber.yml./)
+    end
+
+    it "should provide a helpful error message when cucumber.yml is blank or malformed" do
+        expected_error_message = /cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentaion on correct profile usage./
+          
+      ['', 'sfsadfs', "--- \n- an\n- array\n", "---dddfd"].each do |bad_input|
+        cli = CLI.new(StringIO.new, error = StringIO.new)
+      
+        given_cucumber_yml_defined_as(bad_input)
+        cli.parse_options!([])
+        
+        error.string.should match(expected_error_message)
+      end
+    end
+    
+    it "should procide a helpful error message when the YAML can not be parsed" do
+        expected_error_message = /cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentaion on correct profile usage./
+      cli = CLI.new(StringIO.new, error = StringIO.new)
+      
+      given_cucumber_yml_defined_as("input that causes an exception in YAML loading")
+      YAML.should_receive(:load).and_raise Exception
+      
+      cli.parse_options!([])
+      
+      error.string.should match(expected_error_message)
     end
 
     it "should accept --no-source option" do
