@@ -3,6 +3,7 @@
 === New features
 
 === Bugfixes
+* better handling and error messages for malformed cucumber.yml files (#117, Ben Mabey) 
 * document :x run option in command line help (#114, Aslak Hellesøy)
 
 === Removed features
