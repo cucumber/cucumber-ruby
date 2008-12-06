@@ -189,16 +189,21 @@ module Cucumber
     end 
 
     def parse_args_from_profile(profile)
-      args_from_yml = cucumber_yml[profile]
-      if args_from_yml.nil?
-        exit_with_error <<-END_OF_ERROR
+      unless cucumber_yml.has_key?(profile)
+        return(exit_with_error <<-END_OF_ERROR)
 Could not find profile: '#{profile}'
 
 Defined profiles in cucumber.yml:
   * #{cucumber_yml.keys.join("\n  * ")}
         END_OF_ERROR
-      elsif !args_from_yml.is_a?(String)
+      end
+
+      args_from_yml = cucumber_yml[profile] || ''
+
+      if !args_from_yml.is_a?(String)
         exit_with_error "Profiles must be defined as a String.  The '#{profile}' profile was #{args_from_yml.inspect} (#{args_from_yml.class}).\n"
+      elsif args_from_yml =~ /^\s*$/
+        exit_with_error "The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml.\n"
       else
         parse_options!(args_from_yml.split(' '))
       end
