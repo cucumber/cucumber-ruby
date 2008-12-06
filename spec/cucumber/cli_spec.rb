@@ -73,6 +73,18 @@ Defined profiles in cucumber.yml:
       error.string.should == "Profiles must be defined as a String.  The 'foo' profile was [1, 2, 3] (Array).\n"
     end
     
+    it "should provide a helpful error message when a specified profile exists but is nil or blank" do
+      [nil, '   '].each do |bad_input|
+        cli = CLI.new(StringIO.new, error = StringIO.new)
+
+        given_cucumber_yml_defined_as({'foo' => bad_input})
+
+        cli.parse_options!(%w{--profile foo})
+
+        error.string.should match (/The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml./)
+      end
+    end
+
     it "should provide a helpful error message when no YAML file exists and a profile is specified" do
       cli = CLI.new(StringIO.new, error = StringIO.new)
       
