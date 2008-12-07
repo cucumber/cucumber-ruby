@@ -4,6 +4,7 @@
 
 === Bugfixes
 * document :x run option in command line help (#114, Aslak Hellesøy)
+* Change 'visits' to 'visit' in features generator to comply with new Webrat API (Darius Roberts)
 
 === Removed features
 None
