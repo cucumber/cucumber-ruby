@@ -67,6 +67,13 @@ module Cucumber
         f.scenarios[2].should have(1).steps
       end
 
+      it "should allow empty scenario outlines" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/empty_scenario_outline.feature')
+        
+        f.scenarios[0].should have(0).steps
+      end
+
       it "should allow multiple tables" do
         p = FeatureParser.new
         f = p.parse_feature(File.dirname(__FILE__) + '/multiple_tables.feature')
@@ -93,6 +100,21 @@ module Cucumber
         step = f.scenarios[0].steps[3]
         step.extra_args[0].should == "A string\n  that \"indents\"\nand spans\nseveral lines\n"
       end
+      
+      it "should parse scenario outlines" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/scenario_outline.feature')
+
+        f.should have(4).scenarios
+      end
+      
+      it "should not allow a scenario outline with an example table but no steps" do
+        p = FeatureParser.new
+        lambda{
+          p.parse_feature(File.dirname(__FILE__) + '/invalid_scenario_outlines.feature')
+        }.should raise_error(Feature::SyntaxError)
+      end
+      
     end
   end
 end

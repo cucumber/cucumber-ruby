@@ -1,5 +1,5 @@
 Given /I am on the new <%= singular_name %> page/ do
-  visits "/<%= plural_name %>/new"
+  visit "/<%= plural_name %>/new"
 end
 
 Given /there are (\d+) <%= plural_name %>/ do |n|
@@ -12,8 +12,8 @@ Given /there are (\d+) <%= plural_name %>/ do |n|
 end
 
 When /I delete the first <%= singular_name %>/ do
-  visits <%= plural_name %>_url
-  clicks_link "Destroy"
+  visit <%= plural_name %>_url
+  click_link "Destroy"
 end
 
 Then /there should be (\d+) <%= plural_name %> left/ do |n|

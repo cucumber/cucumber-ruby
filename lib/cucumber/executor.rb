@@ -65,6 +65,10 @@ module Cucumber
       visit_scenario(scenario)
     end
 
+    def visit_scenario_outline(scenario)
+      visit_regular_scenario(scenario)
+    end
+
     def visit_scenario(scenario)
       if accept_scenario?(scenario)
         @executed_scenarios[scenario.name] = true
@@ -102,6 +106,11 @@ module Cucumber
 
     def visit_regular_step(step)
       visit_step(step)
+    end
+
+    def visit_step_outline(step)
+      regexp, args, proc = step.regexp_args_proc(@step_mother)
+      formatters.step_traced(step, regexp, args)
     end
 
     def visit_step(step)

@@ -33,6 +33,18 @@ module Cucumber
   
     describe HtmlFormatter do
       SIMPLE_DIR = File.dirname(__FILE__) + '/../../../examples/simple'
+
+      def mock_row_step(stubs = {})
+        mock('row step', {:id => 1, :outline? => true, :regexp_args_proc => [nil, nil, nil], :visible_args => []}.merge(stubs))
+      end
+      
+      def mock_step(stubs = {})
+        mock('step', {:id => 1, :keyword => 'Given', :format => '', :regexp_args_proc => [nil, nil, nil]}.merge(stubs))
+      end
+      
+      def mock_scenario_outline(stubs = {})
+        mock('scenario outline', {:table_header => nil, :accept => nil}.merge(stubs))
+      end
       
       before do
         p = Cucumber::TreetopParser::FeatureParser.new
@@ -67,6 +79,24 @@ module Cucumber
         ['test', 'fit' ,'headers'].each do |column_header|
           @io.string.should include(column_header)
         end
+      end
+
+      it "should only show arguments in a row step outline that are visible" do
+        @formatter.visit_row_step(mock_row_step(:outline? => true, :regexp_args_proc => [nil, ['mouse', 'monkey'], nil], :visible_args => ['mouse']))
+        
+        @io.string.should_not =~ /monkey/
+      end
+
+      it "should escape placeholders in step outline" do
+        CGI.should_receive(:escapeHTML).with("I'm a <placeholder>")
+                
+        @formatter.visit_step_outline(mock_step(:format => "I'm a <placeholder>"))
+      end
+      
+      it "should show Scenario Outline keyword for scenario outline" do
+        @formatter.visit_scenario_outline(mock_scenario_outline(:name => "outline", :accept => nil))
+        
+        @io.string.should =~ /Scenario Outline/
       end
       
     end

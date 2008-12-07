@@ -2,6 +2,8 @@ require 'optparse'
 require 'cucumber'
 
 module Cucumber
+  class YmlLoadError < StandardError; end
+
   class CLI
     class << self
       attr_writer :step_mother, :executor, :features
@@ -139,28 +141,6 @@ module Cucumber
       @paths += args
     end
 
-    def parse_args_from_profile(profile)
-      unless File.exist?('cucumber.yml')
-        return exit_with_error("cucumber.yml was not found.  Please define your '#{profile}' and other profiles in cucumber.yml.\n"+
-                               "Type 'cucumber --help' for usage.\n")
-      end
-      
-      require 'yaml'
-      cucumber_yml = YAML::load(IO.read('cucumber.yml'))
-      args_from_yml = cucumber_yml[profile]
-      if args_from_yml.nil?
-        exit_with_error <<-END_OF_ERROR
-Could not find profile: '#{profile}'
-
-Defined profiles in cucumber.yml:
-  * #{cucumber_yml.keys.join("\n  * ")}
-        END_OF_ERROR
-      elsif !args_from_yml.is_a?(String)
-        exit_with_error "Profiles must be defined as a String.  The '#{profile}' profile was #{args_from_yml.inspect} (#{args_from_yml.class}).\n"
-      else
-        parse_options!(args_from_yml.split(' '))
-      end
-    end
 
     def execute!(step_mother, executor, features)
       Term::ANSIColor.coloring = @options[:color] unless @options[:color].nil?
@@ -187,7 +167,52 @@ Defined profiles in cucumber.yml:
         arg
       end
     end
-    
+   
+    def cucumber_yml
+      return @cucumber_yml if @cucumber_yml
+      unless File.exist?('cucumber.yml')
+        raise(YmlLoadError,"cucumber.yml was not found.  Please refer to cucumber's documentaion on defining profiles in cucumber.yml.  You must define a 'default' profile to use the cucumber command without any arguments.\nType 'cucumber --help' for usage.\n")
+      end
+      
+      require 'yaml'
+      begin
+        @cucumber_yml = YAML::load(IO.read('cucumber.yml'))
+      rescue Exception => e
+        raise(YmlLoadError,"cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentaion on correct profile usage.\n")
+       end
+     
+      if @cucumber_yml.nil? || !@cucumber_yml.is_a?(Hash)
+        raise(YmlLoadError,"cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentaion on correct profile usage.\n")
+      end
+
+      return @cucumber_yml
+    end 
+
+    def parse_args_from_profile(profile)
+      unless cucumber_yml.has_key?(profile)
+        return(exit_with_error <<-END_OF_ERROR)
+Could not find profile: '#{profile}'
+
+Defined profiles in cucumber.yml:
+  * #{cucumber_yml.keys.join("\n  * ")}
+        END_OF_ERROR
+      end
+
+      args_from_yml = cucumber_yml[profile] || ''
+
+      if !args_from_yml.is_a?(String)
+        exit_with_error "Profiles must be defined as a String.  The '#{profile}' profile was #{args_from_yml.inspect} (#{args_from_yml.class}).\n"
+      elsif args_from_yml =~ /^\s*$/
+        exit_with_error "The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml.\n"
+      else
+        parse_options!(args_from_yml.split(' '))
+      end
+      
+    rescue YmlLoadError => e
+      exit_with_error(e.message)
+    end
+
+
     # Requires files - typically step files and ruby feature files.
     def require_files
       ARGV.clear # Shut up RSpec
