@@ -18,6 +18,8 @@ module Cucumber
         @pending_steps      = []
         @skipped            = []
         @last_executed_was_row = false
+        @pending_messages = {}
+        @forced_pending_step_count = 0
       end
 
       def feature_executing(feature)
@@ -136,6 +138,10 @@ module Cucumber
           end
           @io.puts
         end
+        if step.forced_to_pending?
+          @pending_messages[regexp.inspect] ||= "#{step.keyword} #{regexp.inspect} (#{step.error.message}) #{source_comment(step)}" 
+          @forced_pending_step_count += 1
+        end
       end
 
       def output_failing_step(step)
@@ -150,16 +156,30 @@ module Cucumber
       def dump
         @io.puts
 
+        print_pending_messages if @pending_messages.any?
+
         @io.puts pending("#{@pending_scenarios.length} scenarios pending") if @pending_scenarios.any?
 
         @io.puts passed("#{@passed.length} steps passed")           if @passed.any?
         @io.puts failed("#{@failed.length} steps failed")           if @failed.any?
         @io.puts skipped("#{@skipped.length} steps skipped")        if @skipped.any?
-        @io.puts pending("#{@pending_steps.length} steps pending")  if @pending_steps.any?
+        if @pending_steps.any?
+          @io.print pending("#{@pending_steps.length} steps pending") 
+          @io.print pending(" (#{number_of_unimplemented_steps} with no step definition)") if number_of_unimplemented_steps > 0
+          @io.puts
+        end
 
         @io.print reset
 
         print_snippets if @options[:snippets]
+      end
+
+      def print_pending_messages
+        @io.puts "Pending Notes:"
+        @pending_messages.each_value do |message|
+          @io.puts message
+        end
+        @io.puts
       end
 
       def print_snippets
@@ -167,7 +187,7 @@ module Cucumber
         snippets.delete_if {|snippet| snippet.row? || @step_mother.has_step_definition?(snippet.name)}
 
         unless snippets.empty?
-          @io.puts "\nYou can use these snippets to implement pending steps:\n\n"
+          @io.puts "\nYou can use these snippets to implement pending steps which have no step definition:\n\n"
 
           prev_keyword = nil
           snippets = snippets.map do |step|
@@ -183,6 +203,10 @@ module Cucumber
       end
 
       private
+
+      def number_of_unimplemented_steps
+        @pending_steps.length - @forced_pending_step_count
+      end
 
       def escape_regexp_characters(string)
         Regexp.escape(string).gsub('\ ', ' ').gsub('/', '\/') unless string.nil?

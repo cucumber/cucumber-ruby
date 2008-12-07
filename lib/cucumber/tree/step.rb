@@ -90,6 +90,11 @@ module Cucumber
       def padding_length
         @scenario.step_padding_length(self)
       end
+
+      def forced_to_pending?
+        @error.kind_of?(ForcedPending)
+      end
+            
     end
     
     class Step < BaseStep

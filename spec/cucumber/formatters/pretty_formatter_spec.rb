@@ -13,9 +13,11 @@ module Cucumber
           :padding_length => 2,
           :file => 'test',
           :line => 1,
-          :row? => false}.merge(stubs))
+          :row? => false,
+          :forced_to_pending? => false,
+          :regexp_args_proc => [nil, nil, mock_proc]}.merge(stubs))
       end
-
+   
       def mock_scenario(stubs={})
         stub('scenario', {
           :name => 'test',
@@ -36,8 +38,8 @@ module Cucumber
           :backtrace => 'example backtrace'}.merge(stubs))
       end
 
-      def mock_proc
-        stub(Proc, :to_comment_line => '# steps/example_steps.rb:11')
+      def mock_proc(stubs={})
+        stub(Proc, {:to_comment_line => '# steps/example_steps.rb:11'}.merge(stubs))
       end
 
       it "should print step file and line when passed" do
@@ -197,6 +199,74 @@ module Cucumber
         lambda {
           formatter.scenario_executed(small_scenario)
         }.should_not raise_error(TypeError)
+      end
+
+      describe "pending messages" do
+
+        before(:each) do
+          @io = StringIO.new
+          @formatter = PrettyFormatter.new @io, mock('step_mother')
+        end
+
+        it "should show pending message for step" do
+          @formatter.step_pending(mock_step(:keyword => 'Given', :forced_to_pending? => true, :error => ForcedPending.new("please implement me")), /yatta/, nil)
+
+          @formatter.dump
+        
+          @io.string.should include("Given /yatta/ (please implement me)")
+        end
+        
+        it "should show pending step's file and line" do
+          @formatter.step_pending(mock_step(:forced_to_pending? => true, :error => ForcedPending.new("please implement me"), 
+                                            :regexp_args_proc => [nil, nil, mock_proc(:to_comment_line => "steps/example_steps.rb:11")]), nil, nil)
+
+          @formatter.dump
+        
+          @io.string.should include("steps/example_steps.rb:11")
+        end
+        
+        it "should not show duplicates" do
+          @formatter.step_pending(mock_step(:keyword => 'Given', :forced_to_pending? => true, :error => ForcedPending.new("please implement me")), /yatta/, [])
+          @formatter.step_pending(mock_step(:forced_to_pending? => true, :error => ForcedPending.new("please implement me"), :row? => true), /yatta/, [])
+
+          @formatter.dump
+
+          @io.string.scan(/please implement me/).length.should_not == 2
+        end
+        
+        it "should ignore messages from steps that where not forced to pending" do
+          @formatter.step_pending(mock_step(:keyword => 'Given', :forced_to_pending? => false, :error => Pending.new("do not show me")), nil, [])
+          
+          @formatter.dump
+          
+          @io.string.should_not include("do not show me")
+        end
+        
+      end
+
+      describe "no pending messages" do
+        
+        it "should not show any pending message information" do
+          io = StringIO.new
+          formatter = PrettyFormatter.new io, mock('step_mother')
+
+          formatter.dump
+        
+          io.string.should_not include("Pending Notes:\n")
+        end
+
+      end
+      
+      it "should show number of pending steps that have no step definition" do
+        io = StringIO.new
+        formatter = PrettyFormatter.new io, mock('step_mother')
+        
+        formatter.step_pending(mock_step(:error => ForcedPending.new, :forced_to_pending? => true), nil, [])
+        formatter.step_pending(mock_step(:error => Pending.new, :forced_to_pending? => false), nil, [])
+        
+        formatter.dump
+        
+        io.string.should include("1 with no step definition")
       end
 
     end
