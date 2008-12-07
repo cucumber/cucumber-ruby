@@ -9,7 +9,9 @@ module Cucumber
 
       def accept(visitor)
         steps.each do |step|
-          if step.row?
+          if step.outline? && !step.row?
+            visitor.visit_step_outline(step)
+          elsif step.row?
             visitor.visit_row_step(step)
           else
             visitor.visit_regular_step(step)
@@ -29,6 +31,10 @@ module Cucumber
       
       def pending?
         steps.empty?
+      end
+      
+      def outline?
+        false
       end
       
     end
@@ -129,6 +135,22 @@ module Cucumber
 
     end
 
+    class ScenarioOutline < Scenario
+      def outline?
+        true
+      end
+
+      def length
+        @length ||= Cucumber.language['scenario_outline'].jlength + 2 + (@name.nil? ? 0 : @name.jlength)
+      end
+      
+      def create_step(keyword, name, line)
+        step = StepOutline.new(self, keyword, name, line)
+        @steps_and_given_scenarios << step
+        step
+      end
+    end
+
     class RowScenario < BaseScenario
       attr_reader :line
 
@@ -171,5 +193,44 @@ module Cucumber
       end
       
     end
+    
+    class RowScenarioOutline < RowScenario
+      def outline?
+        true
+      end
+
+      def steps
+        @processed_placeholders = []
+        @steps ||= @template_scenario.steps.map do |template_step|
+          build_row_step_outline(template_step)
+        end
+      end
+
+      private
+
+      def build_row_step_outline(template_step)
+        step_name = template_step.name
+        placeholder_values = []
+
+        @template_scenario.table_header.each_with_index do |column_name, column_number|
+
+          if step_name =~ placeholder_regexp(column_name)
+            step_name = step_name.gsub(placeholder_regexp(column_name), @values[column_number])
+            
+            unless @processed_placeholders.include?(column_name)
+              placeholder_values << @values[column_number]
+              @processed_placeholders << column_name
+            end
+          end
+
+        end
+        RowStepOutline.new(self, template_step.keyword, step_name, placeholder_values, @line)
+      end
+      
+      def placeholder_regexp(string)
+        /#{Regexp.escape("<#{string}>")}/
+      end
+    end
+    
   end
 end

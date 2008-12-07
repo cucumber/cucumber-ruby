@@ -15,7 +15,12 @@ module Cucumber
           :line => 1,
           :row? => false,
           :forced_to_pending? => false,
-          :regexp_args_proc => [nil, nil, mock_proc]}.merge(stubs))
+          :regexp_args_proc => [nil, nil, mock_proc],
+          :outline? => false}.merge(stubs))
+      end
+
+      def mock_step_outline(stubs={})
+        mock_step({:outline? => true}.merge(stubs))
       end
    
       def mock_scenario(stubs={})
@@ -25,7 +30,12 @@ module Cucumber
           :pending? => false,
           :file => 'file', 
           :line => 1,
-          :padding_length => 2}.merge(stubs))
+          :padding_length => 2,
+          :outline? => false}.merge(stubs))
+      end
+      
+      def mock_scenario_outline(stubs={})
+        mock_scenario({:outline? => true}.merge(stubs))
       end
 
       def mock_feature(stubs={})
@@ -41,7 +51,7 @@ module Cucumber
       def mock_proc(stubs={})
         stub(Proc, {:to_comment_line => '# steps/example_steps.rb:11'}.merge(stubs))
       end
-
+      
       it "should print step file and line when passed" do
         io = StringIO.new
         formatter = PrettyFormatter.new io, StepMother.new
@@ -82,6 +92,27 @@ module Cucumber
      
         io.string.should =~ /\n\n  Scenario: spacey/
       end
+      
+      it "should distinguish a scenario outline from a scenario when displaying keywords" do
+        io = StringIO.new
+        formatter = PrettyFormatter.new(io,  mock('step_mother'))
+        
+        formatter.scenario_executing(mock_scenario_outline(:name => 'outliner'))
+
+        io.string.should =~ /Scenario Outline: outliner/
+      end
+      
+      %w{passed pending failed skipped}.each do |result|
+        it "should only show visible placeholder values in #{result} step " do
+          io = StringIO.new
+          formatter = PrettyFormatter.new(io,  mock('step_mother'))
+          formatter.instance_variable_set('@table_column_widths', [0])
+
+          formatter.send("step_#{result}".to_sym, mock_step_outline(:row? => true, :visible_args => ['monkey'], :padding_length => 2), nil, ['mouse'])
+
+          io.string.should =~ /monkey/
+         end
+       end
       
       {'should' => true, 'should not' => false}.each do |should_or_should_not, show_snippet|
         describe "snippets option #{show_snippet}" do
@@ -136,6 +167,12 @@ module Cucumber
 
             @io.string.should include("Given formatted yes  # steps/example_steps.rb:11")
           end
+        end
+
+        it "should display feature file and line for step outline" do
+          @formatter.step_traced(mock_step_outline(:file => "features/example.feature", :line => 11, :padding_length => 2), nil, nil)
+
+          @io.string.should include("Given formatted yes  # features/example.feature:11")
         end
 
         it "should display feature file and line for pending step" do
@@ -212,7 +249,7 @@ module Cucumber
           @formatter.step_pending(mock_step(:keyword => 'Given', :forced_to_pending? => true, :error => ForcedPending.new("please implement me")), /yatta/, nil)
 
           @formatter.dump
-        
+
           @io.string.should include("Given /yatta/ (please implement me)")
         end
         
@@ -269,6 +306,26 @@ module Cucumber
         io.string.should include("1 with no step definition")
       end
 
+      describe "colour" do
+
+        before(:all) do
+          Term::ANSIColor.coloring = true
+        end
+
+        after(:all) do
+          Term::ANSIColor.coloring = false
+        end
+
+        it "should show the scenario outline keyword and title as pending blue" do
+          io = StringIO.new
+          formatter = PrettyFormatter.new io, mock('step_mother')
+
+          formatter.scenario_executing(mock_scenario(:outline? => true, :name => 'blue'))
+
+          io.string.should =~ /\e\[36m\s*Scenario Outline: blue\e\[0m/
+        end
+
+      end
     end
   end
 end

@@ -94,7 +94,10 @@ module Cucumber
       def forced_to_pending?
         @error.kind_of?(ForcedPending)
       end
-            
+      
+      def outline?
+        false
+      end
     end
     
     class Step < BaseStep
@@ -122,6 +125,12 @@ module Cucumber
       end
     end
 
+    class StepOutline < Step
+      def outline?
+        true
+      end
+    end
+
     class RowStep < BaseStep
       attr_reader :keyword
 
@@ -143,5 +152,21 @@ module Cucumber
       end
     end
 
+    class RowStepOutline < Step
+      attr_reader :visible_args
+      
+      def initialize(scenario, keyword, name, visible_args, line)
+        @visible_args = visible_args
+        super(scenario, keyword, name, line)
+      end
+
+      def row?
+        true
+      end
+
+      def outline?
+        true
+      end
+    end
   end
 end

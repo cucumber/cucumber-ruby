@@ -1,3 +1,5 @@
+require 'cgi'
+
 module Cucumber
   module Formatters
     class HtmlFormatter
@@ -53,15 +55,11 @@ HTML
       end
 
       def visit_regular_scenario(scenario)
-        @scenario_table_header = scenario.table_header
-        @io.puts %{          <dl class="new">}
-        @io.puts %{            <dt>#{Cucumber.language['scenario']}: #{scenario.name}</dt>}
-        @io.puts %{            <dd>}
-        @io.puts %{              <ul>}
-        scenario.accept(self)
-        @io.puts %{              </ul>}
-        @io.puts %{            </dd>}
-        @io.puts %{          </dl>}
+        visit_scenario(scenario, Cucumber.language['scenario'])
+      end
+
+      def visit_scenario_outline(scenario)
+        visit_scenario(scenario, Cucumber.language['scenario_outline'])
       end
 
       def visit_row_scenario(scenario)
@@ -86,6 +84,7 @@ HTML
 
       def visit_row_step(step)
         _, args, _ = step.regexp_args_proc(@step_mother)
+        args = step.visible_args if step.outline?
         args.each do |arg|
           @io.puts %{                    <td id="#{step.id}"><span>#{arg}</span></td>}
         end
@@ -94,6 +93,11 @@ HTML
       def visit_regular_step(step)
         regexp, _, _ = step.regexp_args_proc(@step_mother)
         @io.puts %{                <li class="new" id="#{step.id}">#{step.keyword} #{step.format(regexp, '<span>%s</span>')}</li>}
+      end
+
+      def visit_step_outline(step)
+        regexp, _, _ = step.regexp_args_proc(@step_mother)
+        @io.puts %{                <li class="new" id="#{step.id}">#{step.keyword} #{CGI.escapeHTML(step.format(nil))}</li>}
       end
       
       def step_passed(step, regexp, args)
@@ -112,7 +116,11 @@ HTML
       def step_skipped(step, regexp, args)
         # noop
       end
-
+      
+      def step_traced(step, regexp, args)
+        # noop
+      end
+      
       def print_javascript_tag(js)
         @io.puts %{    <script type="text/javascript">#{js}</script>}
       end
@@ -123,6 +131,21 @@ HTML
 </html>
 HTML
       end
+      
+      private
+      
+      def visit_scenario(scenario, scenario_or_scenario_outline_keyword)
+        @scenario_table_header = scenario.table_header
+        @io.puts %{          <dl class="new">}
+        @io.puts %{            <dt>#{scenario_or_scenario_outline_keyword}: #{scenario.name}</dt>}
+        @io.puts %{            <dd>}
+        @io.puts %{              <ul>}
+        scenario.accept(self)
+        @io.puts %{              </ul>}
+        @io.puts %{            </dd>}
+        @io.puts %{          </dl>}
+      end
+            
     end
   end
 end

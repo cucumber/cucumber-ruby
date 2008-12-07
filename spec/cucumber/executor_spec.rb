@@ -10,8 +10,14 @@ module Cucumber
         :name => 'test', 
         :accept => nil, 
         :steps => [],
-        :pending? => true
+        :pending? => true,
+        :outline? => false,
       }.merge(stubs))
+    end
+    
+    def parse_features(feature_file)
+      parser = TreetopParser::FeatureParser.new
+      feature = parser.parse_feature(feature_file)
     end
     
     before do # TODO: Way more setup and duplication of lib code. Use lib code!
@@ -21,9 +27,8 @@ module Cucumber
       @formatters = Broadcaster.new [Formatters::ProgressFormatter.new(@io)]
       @executor.formatters = @formatters
       @feature_file = File.dirname(__FILE__) + '/sell_cucumbers.feature'
-      @parser = TreetopParser::FeatureParser.new
-      @features = Tree::Features.new
-      @feature = @parser.parse_feature(@feature_file)
+      @features = features = Tree::Features.new
+      @feature = parse_features(@feature_file)
       @features << @feature
     end
     
@@ -46,7 +51,7 @@ module Cucumber
 
 1)
 dang
-#{__FILE__}:43:in `Then /I should owe (\\d*) cucumbers/'
+#{__FILE__}:48:in `Then /I should owe (\\d*) cucumbers/'
 #{@feature_file}:9:in `Then I should owe 7 cucumbers'
 })
     end
@@ -170,6 +175,20 @@ dang
       
     end
     
+    describe "visiting step outline" do
+        
+      it "should trace step" do
+        mock_formatter = mock('formatter')
+        @executor.formatters = mock_formatter
+        mock_step_outline = mock('step outline', :regexp_args_proc => [])
+ 
+        mock_formatter.should_receive(:step_traced)
+        
+        @executor.visit_step_outline(mock_step_outline)
+      end
+      
+    end
+    
     describe "visit forced pending step" do
 
       before(:each) do
@@ -216,40 +235,44 @@ dang
         }.merge(stubs))
       end
 
-      describe "without having first run the matching regular scenario" do
-      
+      %w{regular_scenario scenario_outline}.each do |regular_or_outline|
+
         before(:each) do
-          @regular_scenario = Tree::Scenario.new(nil, 'test', 1)
+          @scenario = mock("#{regular_or_outline} scenario", :name => 'test', :at_line? => true, :pending? => false, :accept => nil)
+
           @executor.lines_for_features = Hash.new([5])
-          @executor.visit_regular_scenario(@regular_scenario)
+          @executor.send("visit_#{regular_or_outline}".to_sym, @scenario)
         end
+
+        describe "without having first run the matching #{regular_or_outline}" do
         
-        it "should run the regular scenario before the row scenario" do
-          @regular_scenario.should_receive(:accept)
-          row_scenario = mock_row_scenario(:name => 'test', :at_line? => true)
-          row_scenario.should_receive(:accept)
-          @executor.visit_row_scenario(row_scenario)
+            it "should run the #{regular_or_outline} before the row scenario" do
+              @scenario.should_receive(:accept)
+              row_scenario = mock_row_scenario(:name => 'test', :at_line? => true)
+              row_scenario.should_receive(:accept)
+
+              @executor.visit_row_scenario(row_scenario)
+            end
+
+            it "should run the row scenario after running the #{regular_or_outline}" do
+              row_scenario = mock_row_scenario(:at_line? => true)
+              row_scenario.should_receive(:accept)
+              @scenario.stub!(:accept)
+
+              @executor.visit_row_scenario(row_scenario)
+            end
+      
         end
 
-        it "should run the row scenario after running the regular scenario" do
-          row_scenario = mock_row_scenario(:at_line? => true)
-          row_scenario.should_receive(:accept)
-          @executor.visit_row_scenario(row_scenario)
+        describe "having run matching #{regular_or_outline}" do
+      
+          it "should not run the regular scenario if it has already run" do
+            @scenario.should_not_receive(:accept)
+
+            @executor.visit_row_scenario(mock_row_scenario(:name => 'test', :at_line? => true, :accept => nil))
+          end
+      
         end
-      
-      end
-
-      describe "having run matching regular scenario" do
-      
-        it "should not run the regular scenario if it has already run" do
-          scenario = Tree::Scenario.new(nil, 'test', 1)
-          @executor.visit_regular_scenario(scenario)
-
-          scenario.should_not_receive(:accept)
-
-          @executor.visit_row_scenario(mock_row_scenario(:name => 'test', :at_line? => true, :accept => nil))
-        end
-      
       end
     end
     
