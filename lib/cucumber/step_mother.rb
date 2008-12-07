@@ -1,5 +1,4 @@
 require 'cucumber/tree/top_down_visitor'
-require 'cucumber/core_ext/proc'
 
 module Cucumber
   class Pending < StandardError
@@ -21,6 +20,7 @@ module Cucumber
     PENDING = lambda do |*_| 
       raise Pending
     end
+    require 'cucumber/core_ext/proc'
     PENDING.extend(CoreExt::CallIn)
     PENDING.name = "PENDING"
 
