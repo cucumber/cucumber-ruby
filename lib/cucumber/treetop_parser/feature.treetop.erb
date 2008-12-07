@@ -13,21 +13,25 @@ grammar Feature
   end
   
   rule header
-    (!(scenario_keyword / comment_to_eol) .)+
+    (!(scenario_keyword / scenario_outline_keyword / comment_to_eol) .)+
   end
   
   rule scenario_sequence
-    head:scenario? tail:(space scenario_or_table)* {
+    head:scenario_outline_or_scenario? tail:(space scenario_or_scenario_outline_or_table)* {
       def compile(feature)
-        ([head] + tail).each do |scenario_or_table|
-          scenario_or_table.compile(feature) if scenario_or_table.respond_to?(:compile)
+        ([head] + tail).each do |scenario_or_scenario_outline_or_table|
+          scenario_or_scenario_outline_or_table.compile(feature) if scenario_or_scenario_outline_or_table.respond_to?(:compile)
         end
       end
       
       def tail
-        super.elements.map { |elt| elt.scenario_or_table }
+        super.elements.map { |elt| elt.scenario_or_scenario_outline_or_table }
       end
     }
+  end
+
+  rule scenario_outline_or_scenario
+    scenario_outline / scenario
   end
 
   rule scenario
@@ -42,9 +46,29 @@ grammar Feature
       end
     }
   end
+
+  rule scenario_outline
+    scenario_outline_keyword space? name:line_to_eol outline_body:(steps_and_optional_examples)? {
+      def compile(feature)
+        line = input.line_of(interval.first)
+        scenario = feature.add_scenario_outline(name.text_value.strip, line)
+        Feature.last_scenario = scenario
+        outline_body.compile(feature, scenario) if outline_body.respond_to?(:compile)
+      end
+    }
+  end
   
-  rule scenario_or_table
-    scenario / more_examples
+  rule scenario_or_scenario_outline_or_table
+    scenario_outline / (scenario / more_examples)
+  end
+  
+  rule steps_and_optional_examples
+    steps:(space step_sequence) table:(space examples)? {
+      def compile(feature, scenario)
+        steps.step_sequence.compile(scenario) if steps.respond_to?(:step_sequence)
+        table.examples.compile(feature, scenario) if table.respond_to?(:examples) && table.examples.respond_to?(:compile)
+      end
+    }
   end
   
   rule more_examples
@@ -55,12 +79,27 @@ grammar Feature
     }
   end
   
+  rule examples
+    examples_keyword table {
+      def compile(feature, scenario)
+        table.compile_examples(feature, scenario)
+      end
+    }
+  end
+  
   rule table
     space head:table_line body:(blank* eol space? table_line)* {
       def compile(feature)
         Feature.last_scenario.table_header = head.cell_values
         body.each do |table_line|
           feature.add_row_scenario(Feature.last_scenario, table_line.cell_values, table_line.line)
+        end
+      end
+      
+      def compile_examples(feature, scenario)
+        scenario.table_header = head.cell_values
+        body.each do |table_line|
+          feature.add_row_scenario_outline(scenario, table_line.cell_values, table_line.line)
         end
       end
       
@@ -192,10 +231,18 @@ grammar Feature
     "<%= words['scenario'] %>" ":"?
   end
   
+  rule scenario_outline_keyword
+    "<%= words['scenario_outline'] %>" ":"?
+  end
+    
   rule more_examples_keyword
     "<%= words['more_examples'] %>" ":"?
   end
   
+  rule examples_keyword
+    "<%= words['examples'] %>" ":"?
+  end
+    
   rule given_scenario_keyword
     "<%= words['given_scenario'] %>" ":"?
   end

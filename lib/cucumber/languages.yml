@@ -7,6 +7,8 @@
 "en":
   feature: Feature
   scenario: Scenario
+  scenario_outline: Scenario Outline
+  examples: Examples
   more_examples: More Examples
   given_scenario: GivenScenario
   given: Given

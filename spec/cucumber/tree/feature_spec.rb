@@ -4,6 +4,14 @@ module Cucumber
   module Tree
     describe Feature do
       
+      def mock_scenario(stubs = {})
+        mock("scenario", {:update_table_column_widths => nil}.merge(stubs))
+      end
+      
+      def mock_scenario_outline(stubs = {})
+        mock_scenario({:outline? => true, :row? => false}.merge(stubs))
+      end
+      
       it "should have padding_length 2 when alone" do
         feature = Feature.new('header')
         feature.padding_length.should == 2
@@ -14,7 +22,7 @@ module Cucumber
         it "should create a new scenario for a feature" do
           feature = Feature.new('header')
 
-          Scenario.should_receive(:new).with(feature, 'test scenario', "19")
+          Scenario.should_receive(:new).with(feature, 'test scenario', "27")
 
           feature.Scenario('test scenario') {}
         end
@@ -25,7 +33,7 @@ module Cucumber
     
         it "should set the table header of the template scenario" do
           feature = Feature.new('header')
-          mock_scenario = mock("scenario", :update_table_column_widths => nil)
+          mock_scenario = mock("scenario", :update_table_column_widths => nil, :outline? => false)
           Scenario.stub!(:new).and_return(mock_scenario)
           feature.add_scenario('scenario', 5)    
 
@@ -38,6 +46,26 @@ module Cucumber
         end
       
       end
+      
+      it "should create a new row scenario outline" do
+        feature = Feature.new('header')
+         
+        RowScenarioOutline.should_receive(:new)
+           
+        feature.add_row_scenario_outline(mock_scenario_outline, [], 1)
+      end
+      
+      it "should visit scenario outline" do
+        feature = Feature.new('header')
+        ScenarioOutline.stub!(:new).and_return(mock_scenario_outline(:outline? => true, :row? => false))
+        feature.add_scenario_outline(nil, nil)
+        mock_visitor = mock('visitor', :visit_header => nil)
+
+        mock_visitor.should_receive(:visit_scenario_outline)
+        
+        feature.accept(mock_visitor)
+      end
+            
     end
   end
 end
