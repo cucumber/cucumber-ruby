@@ -1,6 +1,7 @@
 == 0.1.13 (In Git)
 
 === New features
+* Scenario Outlines which through placeholders in the steps allow control of how scenario table values are used. (#57 Joseph Wilk)
 
 === Bugfixes
 * Provide helpful and non-confusing error message when specified profile is blank. (#118, Ben Mabey)
