@@ -19,8 +19,20 @@ module Cucumber
         scenario
       end
 
+      def add_scenario_outline(name, line, &proc)
+        scenario = ScenarioOutline.new(self, name, line, &proc)
+        @scenarios << scenario
+        scenario
+      end
+
       def add_row_scenario(template_scenario, values, line)
         scenario = RowScenario.new(self, template_scenario, values, line)
+        @scenarios << scenario
+        scenario
+      end
+            
+      def add_row_scenario_outline(template_scenario, values, line)
+        scenario = RowScenarioOutline.new(self, template_scenario, values, line)
         @scenarios << scenario
         scenario
       end
@@ -51,7 +63,9 @@ module Cucumber
       def accept(visitor)
         visitor.visit_header(@header)
         @scenarios.each do |scenario|
-          if scenario.row?
+          if scenario.outline? && !scenario.row?
+            visitor.visit_scenario_outline(scenario)
+          elsif scenario.row?
             visitor.visit_row_scenario(scenario)
           else
             visitor.visit_regular_scenario(scenario)

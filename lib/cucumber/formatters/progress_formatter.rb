@@ -36,6 +36,9 @@ module Cucumber
         @io.print skipped('_')
       end
 
+      def step_traced(step, regexp, args)
+      end
+
       def dump
         @io.puts pending
         @io.puts "\nPending Scenarios:\n\n" if @pending_scenarios.any?
