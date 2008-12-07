@@ -70,7 +70,29 @@ module Autotest::CucumberMixin
       cmd = self.make_cucumber_cmd self.scenarios_to_run, dirty_scenarios_file.path
       return if cmd.empty?
       puts cmd unless $q
-      system cmd
+      old_sync = $stdout.sync
+      $stdout.sync = true
+      self.results = []
+      line = []
+      begin
+        open("| #{cmd}", "r") do |f|
+          until f.eof? do
+            c = f.getc
+            putc c
+            line << c
+            if c == ?\n then
+              self.results << if RUBY_VERSION >= "1.9" then
+                                line.join
+                              else
+                                line.pack "c*"
+                              end
+              line.clear
+            end
+          end
+        end
+      ensure
+        $stdout.sync = old_sync
+      end
       self.scenarios_to_run = dirty_scenarios_file.readlines.map { |l| l.chomp }
       self.tainted = true unless self.scenarios_to_run == []
     end
@@ -91,7 +113,7 @@ module Autotest::CucumberMixin
     else
       args = %w{features --format} << (scenarios_to_run == :all ? "progress" : "pretty")
     end
-    args += %w{--format autotest --out} << dirty_scenarios_filename
+    args += %w{--format autotest --color --out} << dirty_scenarios_filename
     args = args.join(' ')
     
     if scenarios_to_run == :all

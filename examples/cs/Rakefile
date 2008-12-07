@@ -8,5 +8,5 @@ end
 task :features => :compile
 
 task :compile do
-  sh "csc /target:library /out:Cucumber.Demo.dll src\\Hello.cs"
+  sh "csc /target:library /out:Demo.dll src\\demo\\Calculator.cs"
 end
