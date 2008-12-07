@@ -75,6 +75,13 @@ dang
         world.doit.should == "dunit"
         world.beatit.should == "beatenit"
       end
+      
+      it "should add support for calling 'pending' from world" do
+        world = @executor.create_world
+      
+        world.should respond_to(:pending)
+      end
+      
     end
 
     describe "visiting feature" do
@@ -161,6 +168,40 @@ dang
         @io.string.should =~ /expected 0 block argument\(s\), got 1/m
       end
       
+    end
+    
+    describe "visit forced pending step" do
+
+      before(:each) do
+        @executor.formatters = mock('formatter', :null_object => true)          
+      end
+
+      it "should store the pending exception with the step" do
+        mock_step = mock("mock step", :regexp_args_proc => nil)
+        pending_exception = ForcedPending.new("implement me")
+        mock_step.stub!(:execute_in).and_raise(pending_exception)
+
+        mock_step.should_receive(:'error=').with(pending_exception)
+        
+        @executor.visit_step(mock_step)
+      end
+      
+      describe "after failed/pending step" do
+        
+        it "should store the pending exception with the step" do
+          mock_step_1 = mock("mock step", :null_object => true)
+          mock_step_2 = mock("mock step", :regexp_args_proc => nil)
+          pending_exception = ForcedPending.new("implement me")
+          mock_step_1.stub!(:execute_in).and_raise(StandardError)
+          mock_step_2.stub!(:execute_in).and_raise(pending_exception)
+
+          mock_step_2.should_receive(:'error=').with(pending_exception)
+
+          @executor.visit_step(mock_step_1)
+          @executor.visit_step(mock_step_2)
+        end
+        
+      end
     end
               
     describe "visiting row scenarios" do
@@ -293,6 +334,6 @@ dang
         @executor.visit_features(@features)
       end
     end
-        
+
   end
 end
