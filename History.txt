@@ -3,6 +3,8 @@
 === New features
 
 === Bugfixes
+* Provide helpful and non-confusing error message when specified profile is blank. (#118, Ben Mabey)
+* Improve handling and error messages for malformed cucumber.yml files. (#117, Ben Mabey) 
 * document :x run option in command line help (#114, Aslak Hellesøy)
 * Change 'visits' to 'visit' in features generator to comply with new Webrat API (Darius Roberts)
 
