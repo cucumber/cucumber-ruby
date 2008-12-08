@@ -1,5 +1,6 @@
 require 'autotest'
 require 'tempfile'
+require File.dirname(__FILE__) + '/../cucumber/platform'
 
 module Autotest::CucumberMixin
   def self.included(receiver)
@@ -121,11 +122,10 @@ module Autotest::CucumberMixin
     else
       scenario_args = scenarios_to_run.map { |s| "-s '#{s}'" }.join(' ')
     end
-    
-    return "#{cucumber} #{args} #{scenario_args}"
+    return "#{$CUCUMBER_RUBY} #{cucumber} #{args} #{scenario_args}"
   end
   
   def cucumber
-    File.exist?("script/cucumber") ? "script/cucumber" : "cucumber"
+    File.file?("script/cucumber") ? "script/cucumber" : "cucumber"
   end
 end
