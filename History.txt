@@ -2,6 +2,7 @@
 
 === New features
 * Scenario Outlines which through placeholders in the steps allow control of how scenario table values are used. (#57 Joseph Wilk)
+* Scenario Outlines are now usable in pure ruby (Joseph Wilk)
 * Add support for calling 'pending' from step definitions. (#112 Joseph Wilk)
 
 === Bugfixes

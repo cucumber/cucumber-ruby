@@ -50,13 +50,20 @@ module Cucumber
         add_scenario(name, line, &proc)
       end
 
+      def ScenarioOutline(name, &proc)
+        line = caller[0] =~ /:(\d+)$/ ? $1 : nil
+        add_scenario_outline(name, line, &proc)
+      end
+
       def Table(matrix = [], &proc)
-        table = Table.new(matrix)
-        proc.call(table)
-        template_scenario = @scenarios.last
-        template_scenario.table_header = matrix[0]
-        matrix[1..-1].each do |row|
+        build_scenarios_from_matrix(matrix, proc) do |row, template_scenario|
           add_row_scenario(template_scenario, row, row.line)
+        end
+      end
+      
+      def TableExamples(matrix = [], &proc)
+        build_scenarios_from_matrix(matrix, proc) do |row, template_scenario|
+          add_row_scenario_outline(template_scenario, row, row.line)
         end
       end
 
@@ -72,6 +79,21 @@ module Cucumber
           end
         end
       end
+      
+      private
+      
+      def build_scenarios_from_matrix(matrix, table_proc, &proc)
+        table = Table.new(matrix)
+        table_proc.call(table)
+  
+        template_scenario = @scenarios.last
+        template_scenario.table_header = matrix[0]
+
+        matrix[1..-1].each do |row|
+          yield row, template_scenario
+        end
+      end
+      
     end
   end
 end

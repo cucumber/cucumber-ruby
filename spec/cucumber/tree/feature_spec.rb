@@ -29,11 +29,41 @@ module Cucumber
       
       end
       
+      describe "creating a Scenario Outline" do
+
+        it "should create a new scenario outline for feature" do
+          feature = Feature.new('header')
+          
+          ScenarioOutline.should_receive(:new).with(feature, 'test', '39')
+          
+          feature.ScenarioOutline('test') {}
+        end
+
+      end
+      
+      describe "creating Table Examples" do
+
+        it "should create a row scenario outline for feature" do
+          feature = Feature.new('header')
+          mock_scenario = mock("scenario", :null_object => true)
+          Scenario.stub!(:new).and_return(mock_scenario)
+          feature.add_scenario('scenario', 5)    
+   
+          RowScenarioOutline.should_receive(:new).with(feature, mock_scenario, ['1', '2'], 56)
+          
+          feature.TableExamples do |t| 
+            t | "input_1" | "input_2" | t 
+            t | 1 | 2 | t
+          end
+        end
+
+      end
+      
       describe "creating a Table" do
     
         it "should set the table header of the template scenario" do
           feature = Feature.new('header')
-          mock_scenario = mock("scenario", :update_table_column_widths => nil, :outline? => false)
+          mock_scenario = mock("scenario", :update_table_column_widths => nil)
           Scenario.stub!(:new).and_return(mock_scenario)
           feature.add_scenario('scenario', 5)    
 
