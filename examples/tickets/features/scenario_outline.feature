@@ -47,10 +47,10 @@ Feature: Outlines
 
   Scenario Outline: with step tables
     Given I have the following fruits in my pantry
-      |    name    | quantity |
-      | Cucumber   |    10    |
-      | Strawberry |    5     |
-      | Apricot    |    7     |
+      |    name     | quantity |
+      | cucumbers   |    10    |
+      | strawberrys |    5     |
+      | apricots    |    7     |
 
     When I eat <number> <fruits> from the pantry
     Then I should have <left> <fruits> in the pantry
