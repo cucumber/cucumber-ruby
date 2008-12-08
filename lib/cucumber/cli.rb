@@ -220,12 +220,7 @@ Defined profiles in cucumber.yml:
       require "cucumber/treetop_parser/feature_parser"
 
       verbose_log("Ruby files required:")
-      requires = @options[:require] || feature_dirs
-      libs = requires.map do |path|
-        path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
-        File.directory?(path) ? Dir["#{path}/**/*.rb"] : path
-      end.flatten.uniq
-      libs.each do |lib|
+      files_to_require.each do |lib|
         begin
           require lib
           verbose_log("  * #{lib}")
@@ -235,6 +230,14 @@ Defined profiles in cucumber.yml:
         end
       end
       verbose_log("\n")
+    end
+    
+    def files_to_require
+      requires = @options[:require] || feature_dirs
+      requires.map do |path|
+        path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
+        File.directory?(path) ? Dir["#{path}/**/*.rb"] : path
+      end.flatten.uniq
     end
 
     def feature_files
