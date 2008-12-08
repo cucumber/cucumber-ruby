@@ -44,3 +44,21 @@ Feature: Outlines
     | start  | eat  | left |
     |  12    |  5   |  7   |
     |  20    |  5   |  15  |
+
+  Scenario Outline: with step tables
+    Given I have the following fruits in my pantry
+      |    name    | quantity |
+      | Cucumber   |    10    |
+      | Strawberry |    5     |
+      | Apricot    |    7     |
+
+    When I eat <number> <fruits> from the pantry
+    Then I should have <left> <fruits> in the pantry
+
+    Examples:
+      | number |   fruits   | left |
+      |   2    | cucumbers  |  8   |
+      |   4    | strawberrys|  1   |
+      |   2    | apricots   |  5   |
+
+
