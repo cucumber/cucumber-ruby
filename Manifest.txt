@@ -189,6 +189,8 @@ lib/cucumber/treetop_parser/feature_ru.rb
 lib/cucumber/treetop_parser/feature_se.rb
 lib/cucumber/treetop_parser/feature_zh-CN.rb
 lib/cucumber/version.rb
+lib/cucumber/world.rb
+lib/cucumber/world/pending.rb
 rails_generators/cucumber/USAGE
 rails_generators/cucumber/cucumber_generator.rb
 rails_generators/cucumber/templates/cucumber
@@ -247,5 +249,6 @@ spec/cucumber/treetop_parser/scenario_outline.feature
 spec/cucumber/treetop_parser/spaces.feature
 spec/cucumber/treetop_parser/test_dos.feature
 spec/cucumber/treetop_parser/with_comments.feature
+spec/cucumber/world/pending_spec.rb
 spec/spec.opts
 spec/spec_helper.rb
