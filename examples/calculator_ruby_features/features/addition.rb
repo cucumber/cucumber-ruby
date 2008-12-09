@@ -29,7 +29,7 @@ Feature %|Addition
     And "the result class should be <class>"
   end
   
-  TableExamples do |t|
+  Table do |t|
     t | "input_1" | "input_2" | "output" | "class"  | t
     10.times do |n|
       t | n         | n*2       | n*3      | Fixnum   | t

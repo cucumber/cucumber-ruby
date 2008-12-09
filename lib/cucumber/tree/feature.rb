@@ -56,14 +56,18 @@ module Cucumber
       end
 
       def Table(matrix = [], &proc)
-        build_scenarios_from_matrix(matrix, proc) do |row, template_scenario|
-          add_row_scenario(template_scenario, row, row.line)
-        end
-      end
-      
-      def TableExamples(matrix = [], &proc)
-        build_scenarios_from_matrix(matrix, proc) do |row, template_scenario|
-          add_row_scenario_outline(template_scenario, row, row.line)
+        table = Table.new(matrix)
+        proc.call(table)
+  
+        template_scenario = @scenarios.last
+        template_scenario.table_header = matrix[0]
+
+        matrix[1..-1].each do |row|
+          if template_scenario.outline?
+            add_row_scenario_outline(template_scenario, row, row.line)
+          else
+            add_row_scenario(template_scenario, row, row.line)
+          end
         end
       end
 
@@ -77,20 +81,6 @@ module Cucumber
           else
             visitor.visit_regular_scenario(scenario)
           end
-        end
-      end
-      
-      private
-      
-      def build_scenarios_from_matrix(matrix, table_proc, &proc)
-        table = Table.new(matrix)
-        table_proc.call(table)
-  
-        template_scenario = @scenarios.last
-        template_scenario.table_header = matrix[0]
-
-        matrix[1..-1].each do |row|
-          yield row, template_scenario
         end
       end
       
