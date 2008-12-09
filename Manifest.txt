@@ -3,7 +3,6 @@ License.txt
 Manifest.txt
 README.txt
 Rakefile
-TODO.txt
 bin/cucumber
 config/hoe.rb
 config/requirements.rb
