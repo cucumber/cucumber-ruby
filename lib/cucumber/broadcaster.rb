@@ -11,7 +11,7 @@ module Cucumber
 
     def method_missing(method_name, *args)
       @receivers.each  do |receiver|
-        r = (receiver == STDOUT) ? Kernel: receiver # Needed to make colors work on Windows
+        r = (receiver == STDOUT) ? Kernel : receiver # Needed to make colors work on Windows
         r.__send__(method_name, *args) if receiver.respond_to?(method_name)
       end
     end
