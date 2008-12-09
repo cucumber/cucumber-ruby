@@ -1,6 +1,7 @@
 == 0.1.13 (In Git)
 
 === New features
+* --language is aliased to -l instead of -a (-l became available when --line was refactored) (Aslak Hellesøy)
 
 === Bugfixes
 * The Cucumber Autotest plugin now launches JRuby if autotest is run with JRuby (Aslak Hellesøy)
@@ -10,7 +11,6 @@
 * Change 'visits' to 'visit' in features generator to comply with new Webrat API (Darius Roberts)
 
 === Removed features
-None
 
 == 0.1.12 2008-12-04
 
