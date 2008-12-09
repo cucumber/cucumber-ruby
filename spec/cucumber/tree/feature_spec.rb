@@ -5,11 +5,13 @@ module Cucumber
     describe Feature do
       
       def mock_scenario(stubs = {})
-        mock("scenario", {:update_table_column_widths => nil}.merge(stubs))
+        mock("scenario", {:update_table_column_widths => nil,
+                          :outline? => false,
+                          :table_header= => nil}.merge(stubs))
       end
       
       def mock_scenario_outline(stubs = {})
-        mock_scenario({:outline? => true, :row? => false}.merge(stubs))
+        mock_scenario({:outline? => true, :row? => false, :table_header= => nil}.merge(stubs))
       end
       
       it "should have padding_length 2 when alone" do
@@ -22,7 +24,7 @@ module Cucumber
         it "should create a new scenario for a feature" do
           feature = Feature.new('header')
 
-          Scenario.should_receive(:new).with(feature, 'test scenario', "27")
+          Scenario.should_receive(:new).with(feature, 'test scenario', "29")
 
           feature.Scenario('test scenario') {}
         end
@@ -34,42 +36,61 @@ module Cucumber
         it "should create a new scenario outline for feature" do
           feature = Feature.new('header')
           
-          ScenarioOutline.should_receive(:new).with(feature, 'test', '39')
+          ScenarioOutline.should_receive(:new).with(feature, 'test', '41')
           
           feature.ScenarioOutline('test') {}
         end
 
       end
       
-      describe "creating Table Examples" do
+      describe "creating a Table" do
 
-        it "should create a row scenario outline for feature" do
-          feature = Feature.new('header')
-          mock_scenario = mock("scenario", :null_object => true)
-          Scenario.stub!(:new).and_return(mock_scenario)
-          feature.add_scenario('scenario', 5)    
-   
-          RowScenarioOutline.should_receive(:new).with(feature, mock_scenario, ['1', '2'], 56)
-          
-          feature.TableExamples do |t| 
-            t | "input_1" | "input_2" | t 
-            t | 1 | 2 | t
-          end
+        before(:each) do
+          @feature = Feature.new('header')
         end
 
-      end
-      
-      describe "creating a Table" do
+        describe "previous scenario is a scenario outline" do
+
+          it "should create a row scenario outline for feature" do
+            mock_scenario_outline = mock_scenario_outline(:outline? => true)
+            Scenario.stub!(:new).and_return(mock_scenario_outline)
+            @feature.add_scenario('scenario', 5)    
+
+            RowScenarioOutline.should_receive(:new).with(@feature, mock_scenario_outline, ['1', '2'], anything)
+
+            @feature.Table do |t| 
+              t | "input_1" | "input_2" | t 
+              t | 1 | 2 | t
+            end
+          end
+
+        end
+        
+        describe "previous scenario was a regular scenario" do
+          
+          it "should create a row scenario for feature" do
+            mock_scenario = mock_scenario(:outline? => false)
+            Scenario.stub!(:new).and_return(mock_scenario)
+            @feature.add_scenario('scenario', 5)    
+
+            RowScenario.should_receive(:new).with(@feature, mock_scenario, ['1', '2'], anything)
+
+            @feature.Table do |t| 
+              t | "input_1" | "input_2" | t 
+              t | 1 | 2 | t
+            end
+          end
+          
+        end
     
         it "should set the table header of the template scenario" do
-          feature = Feature.new('header')
-          mock_scenario = mock("scenario", :update_table_column_widths => nil)
+          mock_scenario = mock("scenario", :update_table_column_widths => nil, :outline? => false)
           Scenario.stub!(:new).and_return(mock_scenario)
-          feature.add_scenario('scenario', 5)    
+          @feature.add_scenario('scenario', 5)    
 
           mock_scenario.should_receive(:table_header=).with(["input_1", "input_2"])
 
-          feature.Table do |t| 
+          @feature.Table do |t| 
             t | "input_1" | "input_2" | t 
             t | 1 | 2 | t
           end
