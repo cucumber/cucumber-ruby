@@ -29,13 +29,13 @@ module Cucumber
           mock_scenario = mock_scenario(:table_header => ["animal"], :steps => [mock_step] )
           outline = RowScenarioOutline.new(mock_feature, mock_scenario, ["tiger"], 1)
 
-          RowStepOutline.should_receive(:new).with(outline, 'Given', 'tiger burning bright', ["tiger"], 1)
+          RowStepOutline.should_receive(:new).with(outline, mock_step, 'tiger burning bright', ["tiger"], 1)
 
           outline.steps
         end
       
         it "should leave the scenario template's name unchanged when replacing placeholders" do
-          mock_step = mock_step(:keyword => 'Given', :name => '<animal> burning bright')
+          mock_step = mock_step(:keyword => 'Given', :name => '<animal> burning bright', :extra_args => [])
           mock_scenario = mock_scenario(:table_header => ["animal"], :steps => [mock_step] )
           outline = RowScenarioOutline.new(mock_feature, mock_scenario, ["tiger"], 1)
 
@@ -49,7 +49,7 @@ module Cucumber
           mock_scenario = mock_scenario(:table_header => ["animal"], :steps => [mock_step] )     
           outline = RowScenarioOutline.new(mock_feature, mock_scenario, ["tiger"], 1)
 
-          RowStepOutline.should_receive(:new).with(outline, 'Given', 'beauty too rich for earth too dear', [], 1)
+          RowStepOutline.should_receive(:new).with(outline, mock_step, 'beauty too rich for earth too dear', [], 1)
 
           outline.steps
         end

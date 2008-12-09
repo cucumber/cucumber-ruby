@@ -224,7 +224,7 @@ module Cucumber
           end
 
         end
-        RowStepOutline.new(self, template_step.keyword, step_name, placeholder_values, @line)
+        RowStepOutline.new(self, template_step, step_name, placeholder_values, @line)
       end
       
       def placeholder_regexp(string)

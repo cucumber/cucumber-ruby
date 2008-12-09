@@ -110,7 +110,7 @@ module Cucumber
 
       def initialize(scenario, keyword, name, line)
         @scenario, @keyword, @name, @line = scenario, keyword, name, line
-        @extra_args = []
+        @extra_args ||= []
         @arity = 0
       end
 
@@ -155,8 +155,9 @@ module Cucumber
     class RowStepOutline < Step
       attr_reader :visible_args
       
-      def initialize(scenario, keyword, name, visible_args, line)
+      def initialize(scenario, step, name, visible_args, line)
         @visible_args = visible_args
+        @extra_args = step.extra_args
         super(scenario, keyword, name, line)
       end
 
