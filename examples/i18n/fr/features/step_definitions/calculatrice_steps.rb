@@ -9,14 +9,17 @@ end
 After do
 end
 
-Given /que j'ai entré (\d+)/ do |n|
+# Etant donné que je tape ...
+Given /que je tape (\d+)/ do |n|
   @calc.push n.to_i
 end
 
+# Lorsque je tape additionner
 When 'je tape additionner' do
   @result = @calc.additionner
 end
 
-Then /le reultat doit être (\d*)/ do |result|
+# Alors le résultat doit être ...
+Then /le résultat doit être (\d*)/ do |result|
   @result.should == result.to_i
 end

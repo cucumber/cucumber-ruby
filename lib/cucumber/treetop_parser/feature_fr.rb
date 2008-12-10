@@ -1636,11 +1636,11 @@ module Feature
     end
 
     i0 = index
-    if input.index("Soit", index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 4))
-      @index += 4
+    if input.index("Etant donné", index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 12))
+      @index += 12
     else
-      terminal_parse_failure("Soit")
+      terminal_parse_failure("Etant donné")
       r1 = nil
     end
     if r1
@@ -1711,11 +1711,11 @@ module Feature
     end
 
     i0, s0 = index, []
-    if input.index("Scenario", index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 8))
-      @index += 8
+    if input.index("Scénario", index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 9))
+      @index += 9
     else
-      terminal_parse_failure("Scenario")
+      terminal_parse_failure("Scénario")
       r1 = nil
     end
     s0 << r1
@@ -1903,11 +1903,11 @@ module Feature
     end
 
     i0, s0 = index, []
-    if input.index("SoitScenario", index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 12))
-      @index += 12
+    if input.index("Soit le Scénario", index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 17))
+      @index += 17
     else
-      terminal_parse_failure("SoitScenario")
+      terminal_parse_failure("Soit le Scénario")
       r1 = nil
     end
     s0 << r1
