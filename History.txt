@@ -2,8 +2,12 @@
 
 === New features
 * --language is aliased to -l instead of -a (-l became available when --line was refactored) (Aslak Hellesøy)
+* Scenario Outlines which through placeholders in the steps allow control of how scenario table values are used. (#57 Joseph Wilk)
+* Scenario Outlines are now usable in pure ruby (Joseph Wilk)
+* Add support for calling 'pending' from step definitions. (#112 Joseph Wilk)
 
 === Bugfixes
+* Fixed a bug where row step outlines were loosing step tables. (#121 Joseph Wilk, Ben Mabey)
 * The Cucumber Autotest plugin now launches JRuby if autotest is run with JRuby (Aslak Hellesøy)
 * Provide helpful and non-confusing error message when specified profile is blank. (#118, Ben Mabey)
 * Improve handling and error messages for malformed cucumber.yml files. (#117, Ben Mabey) 
