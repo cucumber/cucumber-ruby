@@ -8,7 +8,27 @@ class FeatureGenerator < Rails::Generator::NamedBase
     end
   end
 
-protected
+  class NamedArg
+    attr_reader :name
+
+    def initialize(s)
+      @name, @type = *s.split(':')
+    end
+
+    def value(n)
+      if @type == 'boolean'
+        (n % 2) == 0
+      else
+        "#{@name} #{n}"
+      end
+    end
+  end
+
+  def named_args
+    args.map{|arg| NamedArg.new(arg)}
+  end
+
+  protected
 
   def banner
     "Usage: #{$0} feature ModelName [field:type, field:type]"
