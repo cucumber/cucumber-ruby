@@ -6,23 +6,26 @@ Feature: Manage <%= plural_name %>
   Scenario: Register new <%= singular_name %>
     Given I am on the new <%= singular_name %> page
 <% keyword = 'When' -%>
-<% args.each do |arg| -%>
-    <%= keyword %> I fill in "<%= arg.humanize %>" with "My <%= singular_name %> <%= arg %>"
+<% named_args.each do |arg| -%>
+    <%= keyword %> I fill in "<%= arg.name.humanize %>" with "<%= arg.value(1) %>"
 <% keyword = 'And' -%>
 <% end -%>
     And I press "Create"
 <% keyword = 'Then' -%>
-<% args.each do |arg| -%>
-    <%= keyword %> I should see "My <%= singular_name %> <%= arg %>"
+<% named_args.each do |arg| -%>
+    <%= keyword %> I should see "<%= arg.value(1) %>"
 <% keyword = 'And' -%>
 <% end -%>
 
   Scenario: Delete <%= singular_name %>
-    Given there are 4 <%= plural_name %>
+    Given the following <%= plural_name %>:
+      |<%= named_args.map(&:name).join('|') %>|
+<% (1..4).each do |n| -%>
+      |<%= named_args.map{|arg| arg.value(n)}.join('|') %>|
+<% end -%>
     When I delete the first <%= singular_name %>
-    Then there should be 3 <%= plural_name %> left
-    
-  More Examples:
-    | initial | after |
-    | 100     | 99    |
-    | 1       | 0     |
+    Then I should see the following <%= plural_name %>:
+      |<%= named_args.map(&:name).join('|') %>|
+<% (2..4).each do |n| -%>
+      |<%= named_args.map{|arg| arg.value(n)}.join('|') %>|
+<% end -%>
