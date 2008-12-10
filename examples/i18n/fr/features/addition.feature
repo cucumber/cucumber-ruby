@@ -1,13 +1,15 @@
-Fonction: Addition
-  Afin d'eviter des conneries
-  Etant un comptable
-  Je désire additionner deux chiffres
+Fonctionnalité: Addition
+  Afin de financer mon bonus avec l'argent des pigeons
+  En tant que trader
+  Je souhaite pouvoir additionner 2 chiffres
 
-  Scenario: 7 et 5
-    Soit que j'ai entré 5
-    Et que j'ai entré 7
-    
-  Scenario: Additionner
-    SoitScenario: 7 et 5
+  Scénario: Addition de produits dérivés
+    Etant donné que je tape 2
+    Et que je tape 1
     Lorsque je tape additionner
-    Alors le reultat doit être 12
+    Alors le résultat doit être 3
+
+  Plus d'exemples:
+    | a | b | sum |
+    | 2 | 2 | 4   |
+    | 2 | 3 | 5   |
