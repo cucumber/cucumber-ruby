@@ -2,21 +2,27 @@ Given /I am on the new <%= singular_name %> page/ do
   visit "/<%= plural_name %>/new"
 end
 
-Given /there are (\d+) <%= plural_name %>/ do |n|
+Given /^the following <%= plural_name %>:$/ do |<%= plural_name %>|
   <%= class_name %>.transaction do
-    <%= class_name %>.destroy_all
-    n.to_i.times do |n|
-      <%= class_name %>.create! :name => "<%= class_name %> #{n}"
+    <%= plural_name %>.hashes.each do |record|
+      <%= class_name %>.create!(record)
     end
   end
 end
 
-When /I delete the first <%= singular_name %>/ do
-  visit <%= plural_name %>_url
-  click_link "Destroy"
+When /^I delete the (\d+)(?:st|nd|rd|th) post$/ do |pos|
+  visit posts_url
+  within("table > tr:nth-child(#{pos.to_i+1})") do
+    click_link "Destroy"
+  end
 end
 
-Then /there should be (\d+) <%= plural_name %> left/ do |n|
-  <%= class_name %>.count.should == n.to_i
-  response.should have_tag("table tr", n.to_i + 1) # There is a header row too
+Then /^I should see the following <%= plural_name %>:$/ do |<%= plural_name %>|
+  posts.raw[1..-1].each_with_index do |row, i|
+    row.each_with_index do |cell, j|
+      response.should have_selector("table > tr:nth-child(#{i+2}) > td:nth-child(#{j+1})") { |td|
+        td.inner_text.should == cell
+      }
+    end
+  end
 end
