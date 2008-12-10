@@ -251,7 +251,7 @@ module Cucumber
         @current_column
       end
 
-      def print_row row_args, &colorize_proc
+      def print_row(row_args, &colorize_proc)
         colorize_proc = Proc.new{|row_element| row_element} unless colorize_proc
 
         row_args.each do |row_arg|
@@ -261,19 +261,19 @@ module Cucumber
         end
       end
 
-      def print_passed_args args
+      def print_passed_args(args)
         print_row(args) {|arg| passed(arg)}
       end
 
-      def print_skipped_args args
+      def print_skipped_args(args)
         print_row(args) {|arg| skipped(arg)}
       end
 
-      def print_failed_args args
+      def print_failed_args(args)
         print_row(args) {|arg| failed(arg)}
       end
 
-      def print_pending_args args
+      def print_pending_args(args)
         print_row(args) {|arg| pending(arg)}
       end
     end
