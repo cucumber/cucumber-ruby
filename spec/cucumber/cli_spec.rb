@@ -81,7 +81,7 @@ Defined profiles in cucumber.yml:
 
         cli.parse_options!(%w{--profile foo})
 
-        error.string.should match (/The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml./)
+        error.string.should match(/The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml./)
       end
     end
 
