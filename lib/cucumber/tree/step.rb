@@ -90,6 +90,14 @@ module Cucumber
       def padding_length
         @scenario.step_padding_length(self)
       end
+
+      def forced_to_pending?
+        @error.kind_of?(ForcedPending)
+      end
+      
+      def outline?
+        false
+      end
     end
     
     class Step < BaseStep
@@ -102,7 +110,7 @@ module Cucumber
 
       def initialize(scenario, keyword, name, line)
         @scenario, @keyword, @name, @line = scenario, keyword, name, line
-        @extra_args = []
+        @extra_args ||= []
         @arity = 0
       end
 
@@ -114,6 +122,12 @@ module Cucumber
 
       def format(regexp, format=nil, &proc)
         regexp.nil? ? name : name.gzub(regexp, format, &proc)
+      end
+    end
+
+    class StepOutline < Step
+      def outline?
+        true
       end
     end
 
@@ -138,5 +152,22 @@ module Cucumber
       end
     end
 
+    class RowStepOutline < Step
+      attr_reader :visible_args
+      
+      def initialize(scenario, step, name, visible_args, line)
+        @visible_args = visible_args
+        @extra_args = step.extra_args
+        super(scenario, keyword, name, line)
+      end
+
+      def row?
+        true
+      end
+
+      def outline?
+        true
+      end
+    end
   end
 end

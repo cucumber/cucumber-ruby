@@ -65,6 +65,10 @@ module Cucumber
       visit_scenario(scenario)
     end
 
+    def visit_scenario_outline(scenario)
+      visit_regular_scenario(scenario)
+    end
+
     def visit_scenario(scenario)
       if accept_scenario?(scenario)
         @executed_scenarios[scenario.name] = true
@@ -104,6 +108,11 @@ module Cucumber
       visit_step(step)
     end
 
+    def visit_step_outline(step)
+      regexp, args, proc = step.regexp_args_proc(@step_mother)
+      formatters.step_traced(step, regexp, args)
+    end
+
     def visit_step(step)
       unless @pending || @error
         begin
@@ -112,6 +121,9 @@ module Cucumber
           step.execute_in(@world, regexp, args, proc)
           @after_step_procs.each{|p| p.call_in(@world, *[])}
           formatters.step_passed(step, regexp, args)
+        rescue ForcedPending => e
+          step.error = e
+          record_pending_step(step, regexp, args)
         rescue Pending
           record_pending_step(step, regexp, args)
         rescue => e
@@ -124,6 +136,9 @@ module Cucumber
           regexp, args, proc = step.regexp_args_proc(@step_mother)
           step.execute_in(@world, regexp, args, proc)
           formatters.step_skipped(step, regexp, args)
+        rescue ForcedPending => e
+          step.error = e
+          record_pending_step(step, regexp, args)
         rescue Pending
           record_pending_step(step, regexp, args)
         rescue Exception
@@ -179,6 +194,7 @@ module Cucumber
     
     def create_world
       world = Object.new
+      world.extend(World::Pending)
       @world_procs.each do |world_proc|
         world = world_proc.call(world)
       end
