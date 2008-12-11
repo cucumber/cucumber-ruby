@@ -2,6 +2,8 @@ require 'optparse'
 require 'cucumber'
 
 module Cucumber
+  class YmlLoadError < StandardError; end
+
   class CLI
     class << self
       attr_writer :step_mother, :executor, :features
@@ -48,7 +50,11 @@ module Cucumber
       args.extend(OptionParser::Arguable)
 
       args.options do |opts|
-        opts.banner = "Usage: cucumber [options] FILES|DIRS"
+        opts.banner = ["Usage: cucumber [options] [[FILE[:LINE[:LINE]*]] | [FILES|DIRS]]", "",
+          "Examples:",
+          "cucumber examples/i18n/en/features",
+          "cucumber --language it examples/i18n/it/features/somma.feature:6:98:113", "", ""
+        ].join("\n")
         opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require files before executing the features.",
           "If this option is not specified, all *.rb files that",
           "are siblings or below the features will be autorequired",
@@ -62,7 +68,7 @@ module Cucumber
           @options[:scenario_names] ||= []
           @options[:scenario_names] << v
         end
-        opts.on("-a LANG", "--language LANG", "Specify language for features (Default: #{@options[:lang]})",
+        opts.on("-l LANG", "--language LANG", "Specify language for features (Default: #{@options[:lang]})",
           "Available languages: #{Cucumber.languages.join(", ")}",
           "Look at #{Cucumber::LANGUAGE_FILE} for keywords") do |v|
           @options[:lang] = v
@@ -135,28 +141,6 @@ module Cucumber
       @paths += args
     end
 
-    def parse_args_from_profile(profile)
-      unless File.exist?('cucumber.yml')
-        return exit_with_error("cucumber.yml was not found.  Please define your '#{profile}' and other profiles in cucumber.yml.\n"+
-                               "Type 'cucumber --help' for usage.\n")
-      end
-      
-      require 'yaml'
-      cucumber_yml = YAML::load(IO.read('cucumber.yml'))
-      args_from_yml = cucumber_yml[profile]
-      if args_from_yml.nil?
-        exit_with_error <<-END_OF_ERROR
-Could not find profile: '#{profile}'
-
-Defined profiles in cucumber.yml:
-  * #{cucumber_yml.keys.join("\n  * ")}
-        END_OF_ERROR
-      elsif !args_from_yml.is_a?(String)
-        exit_with_error "Profiles must be defined as a String.  The '#{profile}' profile was #{args_from_yml.inspect} (#{args_from_yml.class}).\n"
-      else
-        parse_options!(args_from_yml.split(' '))
-      end
-    end
 
     def execute!(step_mother, executor, features)
       Term::ANSIColor.coloring = @options[:color] unless @options[:color].nil?
@@ -183,7 +167,52 @@ Defined profiles in cucumber.yml:
         arg
       end
     end
-    
+   
+    def cucumber_yml
+      return @cucumber_yml if @cucumber_yml
+      unless File.exist?('cucumber.yml')
+        raise(YmlLoadError,"cucumber.yml was not found.  Please refer to cucumber's documentaion on defining profiles in cucumber.yml.  You must define a 'default' profile to use the cucumber command without any arguments.\nType 'cucumber --help' for usage.\n")
+      end
+      
+      require 'yaml'
+      begin
+        @cucumber_yml = YAML::load(IO.read('cucumber.yml'))
+      rescue Exception => e
+        raise(YmlLoadError,"cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentaion on correct profile usage.\n")
+       end
+     
+      if @cucumber_yml.nil? || !@cucumber_yml.is_a?(Hash)
+        raise(YmlLoadError,"cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentaion on correct profile usage.\n")
+      end
+
+      return @cucumber_yml
+    end 
+
+    def parse_args_from_profile(profile)
+      unless cucumber_yml.has_key?(profile)
+        return(exit_with_error <<-END_OF_ERROR)
+Could not find profile: '#{profile}'
+
+Defined profiles in cucumber.yml:
+  * #{cucumber_yml.keys.join("\n  * ")}
+        END_OF_ERROR
+      end
+
+      args_from_yml = cucumber_yml[profile] || ''
+
+      if !args_from_yml.is_a?(String)
+        exit_with_error "Profiles must be defined as a String.  The '#{profile}' profile was #{args_from_yml.inspect} (#{args_from_yml.class}).\n"
+      elsif args_from_yml =~ /^\s*$/
+        exit_with_error "The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml.\n"
+      else
+        parse_options!(args_from_yml.split(' '))
+      end
+      
+    rescue YmlLoadError => e
+      exit_with_error(e.message)
+    end
+
+
     # Requires files - typically step files and ruby feature files.
     def require_files
       ARGV.clear # Shut up RSpec
@@ -191,12 +220,7 @@ Defined profiles in cucumber.yml:
       require "cucumber/treetop_parser/feature_parser"
 
       verbose_log("Ruby files required:")
-      requires = @options[:require] || feature_dirs
-      libs = requires.map do |path|
-        path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
-        File.directory?(path) ? Dir["#{path}/**/*.rb"] : path
-      end.flatten.uniq
-      libs.each do |lib|
+      files_to_require.each do |lib|
         begin
           require lib
           verbose_log("  * #{lib}")
@@ -206,6 +230,14 @@ Defined profiles in cucumber.yml:
         end
       end
       verbose_log("\n")
+    end
+    
+    def files_to_require
+      requires = @options[:require] || feature_dirs
+      requires.map do |path|
+        path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
+        File.directory?(path) ? Dir["#{path}/**/*.rb"] : path
+      end.flatten.uniq
     end
 
     def feature_files
@@ -280,14 +312,14 @@ Defined profiles in cucumber.yml:
   private
 
     def constantize(camel_cased_word)
-        names = camel_cased_word.split('::')
-        names.shift if names.empty? || names.first.empty?
- 
-        constant = Object
-        names.each do |name|
-          constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
-        end
-        constant
+      names = camel_cased_word.split('::')
+      names.shift if names.empty? || names.first.empty?
+
+      constant = Object
+      names.each do |name|
+        constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
+      end
+      constant
     end
     
     def verbose_log(string)

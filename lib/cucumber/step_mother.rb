@@ -4,6 +4,9 @@ module Cucumber
   class Pending < StandardError
   end
 
+  class ForcedPending < Pending
+  end
+
   class Duplicate < StandardError
   end
 

@@ -1,3 +1,22 @@
+== 0.1.13 (In Git)
+
+=== New features
+* The Rails features generator got some love and is now tested: http://github.com/aslakhellesoy/cucumber_rails (Aslak Hellesøy)
+* --language is aliased to -l instead of -a (-l became available when --line was refactored) (Aslak Hellesøy)
+* Scenario Outlines which through placeholders in the steps allow control of how scenario table values are used. (#57 Joseph Wilk)
+* Scenario Outlines are now usable in pure ruby (Joseph Wilk)
+* Add support for calling 'pending' from step definitions. (#112 Joseph Wilk)
+
+=== Bugfixes
+* Fixed a bug where row step outlines were loosing step tables. (#121 Joseph Wilk, Ben Mabey)
+* The Cucumber Autotest plugin now launches JRuby if autotest is run with JRuby (Aslak Hellesøy)
+* Provide helpful and non-confusing error message when specified profile is blank. (#118, Ben Mabey)
+* Improve handling and error messages for malformed cucumber.yml files. (#117, Ben Mabey) 
+* document :x run option in command line help (#114, Aslak Hellesøy)
+* Change 'visits' to 'visit' in features generator to comply with new Webrat API (Darius Roberts)
+
+=== Removed features
+
 == 0.1.12 2008-12-04
 
 This is the "getting serious with IronRuby release" - largely based on 
@@ -17,18 +36,18 @@ None
 
 Bugfix release with a couple of minor additional features to the command line options.
 
-== New features
+=== New features
 * Capture output from cucumber in Autotest (Alan Larkin)
 * Update cucumber generator to work with latest Webrat (Bryan Helkamp)
 * CUCUMBR LIKEZ 2 SPEEK WIF KATS. KTHXBAI (Aimee Daniells)
 * Support for dynamically pluggable formatters (#99 Joseph Wilk)
 * --verbose mode to see ruby files and feature files loaded by Cucumber (#106 Joseph Wilk)
 
-== Bugfixes
+=== Bugfixes
 * The jcode library is not loaded on JRuby/Rails. Workaround for http://tinyurl.com/55uu3u. (Aslak Hellesøy)
 * Support including modules for class passed to --format (#109 Joseph Wilk)
 
-== Removed features
+=== Removed features
 * The cucumber gem no longer depends on the rspec gem. It must be downloaded manually if RSpec is used. (Jeff Rafter)
 
 == 0.1.10 2008-11-25

@@ -41,6 +41,14 @@ module Cucumber
         io.string.should =~ /^_$/
       end
 
+      it "should print nothing when traced" do
+        io = StringIO.new
+        formatter = ProgressFormatter.new io
+        formatter.step_traced(nil, nil, nil)
+        
+        io.string.should =~ /^$/
+      end
+
       describe "scenario without any steps" do
         before :each do
           @io         = StringIO.new

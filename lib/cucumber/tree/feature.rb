@@ -19,8 +19,20 @@ module Cucumber
         scenario
       end
 
+      def add_scenario_outline(name, line, &proc)
+        scenario = ScenarioOutline.new(self, name, line, &proc)
+        @scenarios << scenario
+        scenario
+      end
+
       def add_row_scenario(template_scenario, values, line)
         scenario = RowScenario.new(self, template_scenario, values, line)
+        @scenarios << scenario
+        scenario
+      end
+            
+      def add_row_scenario_outline(template_scenario, values, line)
+        scenario = RowScenarioOutline.new(self, template_scenario, values, line)
         @scenarios << scenario
         scenario
       end
@@ -38,26 +50,40 @@ module Cucumber
         add_scenario(name, line, &proc)
       end
 
+      def ScenarioOutline(name, &proc)
+        line = caller[0] =~ /:(\d+)$/ ? $1 : nil
+        add_scenario_outline(name, line, &proc)
+      end
+
       def Table(matrix = [], &proc)
         table = Table.new(matrix)
         proc.call(table)
+  
         template_scenario = @scenarios.last
         template_scenario.table_header = matrix[0]
+
         matrix[1..-1].each do |row|
-          add_row_scenario(template_scenario, row, row.line)
+          if template_scenario.outline?
+            add_row_scenario_outline(template_scenario, row, row.line)
+          else
+            add_row_scenario(template_scenario, row, row.line)
+          end
         end
       end
 
       def accept(visitor)
         visitor.visit_header(@header)
         @scenarios.each do |scenario|
-          if scenario.row?
+          if scenario.outline? && !scenario.row?
+            visitor.visit_scenario_outline(scenario)
+          elsif scenario.row?
             visitor.visit_row_scenario(scenario)
           else
             visitor.visit_regular_scenario(scenario)
           end
         end
       end
+      
     end
   end
 end

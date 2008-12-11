@@ -18,6 +18,8 @@ module Cucumber
         @pending_steps      = []
         @skipped            = []
         @last_executed_was_row = false
+        @pending_messages = {}
+        @forced_pending_step_count = 0
       end
 
       def feature_executing(feature)
@@ -40,17 +42,23 @@ module Cucumber
       end
 
       def scenario_executing(scenario)
+        scenario_or_scenario_outline_keyword = scenario.outline? ? Cucumber.language['scenario_outline'] : Cucumber.language['scenario']
+        
         @scenario_failed = false
         @io.puts if @last_executed_was_row && !scenario.row?
         if scenario.row?
           @last_executed_was_row = true
           @io.print "    |"
         else
+          scenario_text = "#{scenario_or_scenario_outline_keyword}: #{scenario.name}"
+          
           if scenario.pending?
             @pending_scenarios << scenario
-            @io.print pending("  #{Cucumber.language['scenario']}: #{scenario.name}")
+            @io.print pending("  #{scenario_text}")
+          elsif scenario.outline?
+            @io.print skipped("  #{scenario_text}")
           else
-            @io.print passed("  #{Cucumber.language['scenario']}: #{scenario.name}")
+            @io.print passed("  #{scenario_text}")
           end
           @last_executed_was_row = false
 
@@ -78,6 +86,7 @@ module Cucumber
 
       def step_passed(step, regexp, args)
         if step.row?
+          args = step.visible_args if step.outline?
           @passed << step
           print_passed_args(args)
         else
@@ -93,6 +102,7 @@ module Cucumber
 
       def step_failed(step, regexp, args)
         if step.row?
+          args = step.visible_args if step.outline?
           @failed << step
           @scenario_failed = true
           print_failed_args(args)
@@ -112,12 +122,17 @@ module Cucumber
       def step_skipped(step, regexp, args)
         @skipped << step
         if step.row?
+          args = step.visible_args if step.outline?
           print_skipped_args(args)
         else
           @io.print skipped("    #{step.keyword} #{step.format(regexp){|param| skipped_param(param) << skipped}}")
           if @options[:source]
             @io.print padding_spaces(step)
-            @io.print source_comment(step)
+            if step.outline?
+              @io.print comment("# #{step.file}:#{step.line}")
+            else
+              @io.print source_comment(step)
+            end
           end
           @io.puts
         end
@@ -125,6 +140,7 @@ module Cucumber
 
       def step_pending(step, regexp, args)
         if step.row?
+          args = step.visible_args if step.outline?
           @pending_steps << step
           print_pending_args(args)
         else
@@ -136,6 +152,19 @@ module Cucumber
           end
           @io.puts
         end
+        if step.forced_to_pending?
+          @pending_messages[regexp.inspect] ||= "#{step.keyword} #{regexp.inspect} (#{step.error.message}) #{source_comment(step)}" 
+          @forced_pending_step_count += 1
+        end
+      end
+
+      def step_traced(step, regexp, args)
+        @io.print skipped("    #{step.keyword} #{step.format(regexp){|param| skipped_param(param) << skipped}}")
+        if @options[:source]
+          @io.print padding_spaces(step)
+          @io.print comment("# #{step.file}:#{step.line}")
+        end
+        @io.puts
       end
 
       def output_failing_step(step)
@@ -150,16 +179,30 @@ module Cucumber
       def dump
         @io.puts
 
+        print_pending_messages if @pending_messages.any?
+
         @io.puts pending("#{@pending_scenarios.length} scenarios pending") if @pending_scenarios.any?
 
         @io.puts passed("#{@passed.length} steps passed")           if @passed.any?
         @io.puts failed("#{@failed.length} steps failed")           if @failed.any?
         @io.puts skipped("#{@skipped.length} steps skipped")        if @skipped.any?
-        @io.puts pending("#{@pending_steps.length} steps pending")  if @pending_steps.any?
+        if @pending_steps.any?
+          @io.print pending("#{@pending_steps.length} steps pending") 
+          @io.print pending(" (#{number_of_unimplemented_steps} with no step definition)") if number_of_unimplemented_steps > 0
+          @io.puts
+        end
 
         @io.print reset
 
         print_snippets if @options[:snippets]
+      end
+
+      def print_pending_messages
+        @io.puts "Pending Notes:"
+        @pending_messages.each_value do |message|
+          @io.puts message
+        end
+        @io.puts
       end
 
       def print_snippets
@@ -167,7 +210,7 @@ module Cucumber
         snippets.delete_if {|snippet| snippet.row? || @step_mother.has_step_definition?(snippet.name)}
 
         unless snippets.empty?
-          @io.puts "\nYou can use these snippets to implement pending steps:\n\n"
+          @io.puts "\nYou can use these snippets to implement pending steps which have no step definition:\n\n"
 
           prev_keyword = nil
           snippets = snippets.map do |step|
@@ -183,6 +226,10 @@ module Cucumber
       end
 
       private
+
+      def number_of_unimplemented_steps
+        @pending_steps.length - @forced_pending_step_count
+      end
 
       def escape_regexp_characters(string)
         Regexp.escape(string).gsub('\ ', ' ').gsub('/', '\/') unless string.nil?
