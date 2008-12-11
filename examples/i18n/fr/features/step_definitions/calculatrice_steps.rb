@@ -1,5 +1,6 @@
 require 'spec'
 $:.unshift(File.dirname(__FILE__) + '/../../lib')
+require 'cucumber/formatters/unicode'
 require 'calculatrice'
 
 Before do

@@ -146,6 +146,7 @@ lib/cucumber/formatters/jquery.js
 lib/cucumber/formatters/pretty_formatter.rb
 lib/cucumber/formatters/profile_formatter.rb
 lib/cucumber/formatters/progress_formatter.rb
+lib/cucumber/formatters/unicode.rb
 lib/cucumber/languages.yml
 lib/cucumber/model.rb
 lib/cucumber/model/table.rb
