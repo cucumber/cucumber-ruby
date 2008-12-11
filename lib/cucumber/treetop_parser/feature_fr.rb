@@ -94,12 +94,17 @@ module Feature
       if r4
         r3 = r4
       else
-        r5 = _nt_comment_to_eol
+        r5 = _nt_scenario_outline_keyword
         if r5
           r3 = r5
         else
-          self.index = i3
-          r3 = nil
+          r6 = _nt_comment_to_eol
+          if r6
+            r3 = r6
+          else
+            self.index = i3
+            r3 = nil
+          end
         end
       end
       if r3
@@ -111,13 +116,13 @@ module Feature
       s1 << r2
       if r2
         if index < input_length
-          r6 = (SyntaxNode).new(input, index...(index + 1))
+          r7 = (SyntaxNode).new(input, index...(index + 1))
           @index += 1
         else
           terminal_parse_failure("any character")
-          r6 = nil
+          r7 = nil
         end
-        s1 << r6
+        s1 << r7
       end
       if s1.last
         r1 = (SyntaxNode).new(input, i1...index, s1)
@@ -149,7 +154,7 @@ module Feature
       elements[0]
     end
 
-    def scenario_or_table
+    def scenario_or_scenario_outline_or_table
       elements[1]
     end
   end
@@ -166,13 +171,13 @@ module Feature
 
   module ScenarioSequence2
     def compile(feature)
-      ([head] + tail).each do |scenario_or_table|
-        scenario_or_table.compile(feature) if scenario_or_table.respond_to?(:compile)
+      ([head] + tail).each do |scenario_or_scenario_outline_or_table|
+        scenario_or_scenario_outline_or_table.compile(feature) if scenario_or_scenario_outline_or_table.respond_to?(:compile)
       end
     end
     
     def tail
-      super.elements.map { |elt| elt.scenario_or_table }
+      super.elements.map { |elt| elt.scenario_or_scenario_outline_or_table }
     end
   end
 
@@ -185,7 +190,7 @@ module Feature
     end
 
     i0, s0 = index, []
-    r2 = _nt_scenario
+    r2 = _nt_scenario_outline_or_scenario
     if r2
       r1 = r2
     else
@@ -199,7 +204,7 @@ module Feature
         r5 = _nt_space
         s4 << r5
         if r5
-          r6 = _nt_scenario_or_table
+          r6 = _nt_scenario_or_scenario_outline_or_table
           s4 << r6
         end
         if s4.last
@@ -228,6 +233,33 @@ module Feature
     end
 
     node_cache[:scenario_sequence][start_index] = r0
+
+    return r0
+  end
+
+  def _nt_scenario_outline_or_scenario
+    start_index = index
+    if node_cache[:scenario_outline_or_scenario].has_key?(index)
+      cached = node_cache[:scenario_outline_or_scenario][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    i0 = index
+    r1 = _nt_scenario_outline
+    if r1
+      r0 = r1
+    else
+      r2 = _nt_scenario
+      if r2
+        r0 = r2
+      else
+        self.index = i0
+        r0 = nil
+      end
+    end
+
+    node_cache[:scenario_outline_or_scenario][start_index] = r0
 
     return r0
   end
@@ -327,20 +359,102 @@ module Feature
     return r0
   end
 
-  def _nt_scenario_or_table
+  module ScenarioOutline0
+    def scenario_outline_keyword
+      elements[0]
+    end
+
+    def name
+      elements[2]
+    end
+
+    def outline_body
+      elements[3]
+    end
+  end
+
+  module ScenarioOutline1
+    def compile(feature)
+      line = input.line_of(interval.first)
+      scenario = feature.add_scenario_outline(name.text_value.strip, line)
+      Feature.last_scenario = scenario
+      outline_body.compile(feature, scenario) if outline_body.respond_to?(:compile)
+    end
+  end
+
+  def _nt_scenario_outline
     start_index = index
-    if node_cache[:scenario_or_table].has_key?(index)
-      cached = node_cache[:scenario_or_table][index]
+    if node_cache[:scenario_outline].has_key?(index)
+      cached = node_cache[:scenario_outline][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    i0, s0 = index, []
+    r1 = _nt_scenario_outline_keyword
+    s0 << r1
+    if r1
+      r3 = _nt_space
+      if r3
+        r2 = r3
+      else
+        r2 = SyntaxNode.new(input, index...index)
+      end
+      s0 << r2
+      if r2
+        r4 = _nt_line_to_eol
+        s0 << r4
+        if r4
+          r6 = _nt_steps_and_optional_examples
+          if r6
+            r5 = r6
+          else
+            r5 = SyntaxNode.new(input, index...index)
+          end
+          s0 << r5
+        end
+      end
+    end
+    if s0.last
+      r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0.extend(ScenarioOutline0)
+      r0.extend(ScenarioOutline1)
+    else
+      self.index = i0
+      r0 = nil
+    end
+
+    node_cache[:scenario_outline][start_index] = r0
+
+    return r0
+  end
+
+  def _nt_scenario_or_scenario_outline_or_table
+    start_index = index
+    if node_cache[:scenario_or_scenario_outline_or_table].has_key?(index)
+      cached = node_cache[:scenario_or_scenario_outline_or_table][index]
       @index = cached.interval.end if cached
       return cached
     end
 
     i0 = index
-    r1 = _nt_scenario
+    r1 = _nt_scenario_outline
     if r1
       r0 = r1
     else
-      r2 = _nt_more_examples
+      i2 = index
+      r3 = _nt_scenario
+      if r3
+        r2 = r3
+      else
+        r4 = _nt_more_examples
+        if r4
+          r2 = r4
+        else
+          self.index = i2
+          r2 = nil
+        end
+      end
       if r2
         r0 = r2
       else
@@ -349,7 +463,104 @@ module Feature
       end
     end
 
-    node_cache[:scenario_or_table][start_index] = r0
+    node_cache[:scenario_or_scenario_outline_or_table][start_index] = r0
+
+    return r0
+  end
+
+  module StepsAndOptionalExamples0
+    def space
+      elements[0]
+    end
+
+    def step_sequence
+      elements[1]
+    end
+  end
+
+  module StepsAndOptionalExamples1
+    def space
+      elements[0]
+    end
+
+    def examples
+      elements[1]
+    end
+  end
+
+  module StepsAndOptionalExamples2
+    def steps
+      elements[0]
+    end
+
+    def table
+      elements[1]
+    end
+  end
+
+  module StepsAndOptionalExamples3
+    def compile(feature, scenario)
+      steps.step_sequence.compile(scenario) if steps.respond_to?(:step_sequence)
+      table.examples.compile(feature, scenario) if table.respond_to?(:examples) && table.examples.respond_to?(:compile)
+    end
+  end
+
+  def _nt_steps_and_optional_examples
+    start_index = index
+    if node_cache[:steps_and_optional_examples].has_key?(index)
+      cached = node_cache[:steps_and_optional_examples][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    i0, s0 = index, []
+    i1, s1 = index, []
+    r2 = _nt_space
+    s1 << r2
+    if r2
+      r3 = _nt_step_sequence
+      s1 << r3
+    end
+    if s1.last
+      r1 = (SyntaxNode).new(input, i1...index, s1)
+      r1.extend(StepsAndOptionalExamples0)
+    else
+      self.index = i1
+      r1 = nil
+    end
+    s0 << r1
+    if r1
+      i5, s5 = index, []
+      r6 = _nt_space
+      s5 << r6
+      if r6
+        r7 = _nt_examples
+        s5 << r7
+      end
+      if s5.last
+        r5 = (SyntaxNode).new(input, i5...index, s5)
+        r5.extend(StepsAndOptionalExamples1)
+      else
+        self.index = i5
+        r5 = nil
+      end
+      if r5
+        r4 = r5
+      else
+        r4 = SyntaxNode.new(input, index...index)
+      end
+      s0 << r4
+    end
+    if s0.last
+      r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0.extend(StepsAndOptionalExamples2)
+      r0.extend(StepsAndOptionalExamples3)
+    else
+      self.index = i0
+      r0 = nil
+    end
+
+    node_cache[:steps_and_optional_examples][start_index] = r0
 
     return r0
   end
@@ -399,6 +610,51 @@ module Feature
     return r0
   end
 
+  module Examples0
+    def examples_keyword
+      elements[0]
+    end
+
+    def table
+      elements[1]
+    end
+  end
+
+  module Examples1
+    def compile(feature, scenario)
+      table.compile_examples(feature, scenario)
+    end
+  end
+
+  def _nt_examples
+    start_index = index
+    if node_cache[:examples].has_key?(index)
+      cached = node_cache[:examples][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    i0, s0 = index, []
+    r1 = _nt_examples_keyword
+    s0 << r1
+    if r1
+      r2 = _nt_table
+      s0 << r2
+    end
+    if s0.last
+      r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0.extend(Examples0)
+      r0.extend(Examples1)
+    else
+      self.index = i0
+      r0 = nil
+    end
+
+    node_cache[:examples][start_index] = r0
+
+    return r0
+  end
+
   module Table0
     def eol
       elements[1]
@@ -428,6 +684,13 @@ module Feature
       Feature.last_scenario.table_header = head.cell_values
       body.each do |table_line|
         feature.add_row_scenario(Feature.last_scenario, table_line.cell_values, table_line.line)
+      end
+    end
+    
+    def compile_examples(feature, scenario)
+      scenario.table_header = head.cell_values
+      body.each do |table_line|
+        feature.add_row_scenario_outline(scenario, table_line.cell_values, table_line.line)
       end
     end
     
@@ -1373,11 +1636,11 @@ module Feature
     end
 
     i0 = index
-    if input.index("Soit", index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 4))
-      @index += 4
+    if input.index("Etant donné", index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 12))
+      @index += 12
     else
-      terminal_parse_failure("Soit")
+      terminal_parse_failure("Etant donné")
       r1 = nil
     end
     if r1
@@ -1448,11 +1711,11 @@ module Feature
     end
 
     i0, s0 = index, []
-    if input.index("Scenario", index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 8))
-      @index += 8
+    if input.index("Scénario", index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 9))
+      @index += 9
     else
-      terminal_parse_failure("Scenario")
+      terminal_parse_failure("Scénario")
       r1 = nil
     end
     s0 << r1
@@ -1480,6 +1743,54 @@ module Feature
     end
 
     node_cache[:scenario_keyword][start_index] = r0
+
+    return r0
+  end
+
+  module ScenarioOutlineKeyword0
+  end
+
+  def _nt_scenario_outline_keyword
+    start_index = index
+    if node_cache[:scenario_outline_keyword].has_key?(index)
+      cached = node_cache[:scenario_outline_keyword][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    i0, s0 = index, []
+    if input.index("Scenario Outline", index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 16))
+      @index += 16
+    else
+      terminal_parse_failure("Scenario Outline")
+      r1 = nil
+    end
+    s0 << r1
+    if r1
+      if input.index(":", index) == index
+        r3 = (SyntaxNode).new(input, index...(index + 1))
+        @index += 1
+      else
+        terminal_parse_failure(":")
+        r3 = nil
+      end
+      if r3
+        r2 = r3
+      else
+        r2 = SyntaxNode.new(input, index...index)
+      end
+      s0 << r2
+    end
+    if s0.last
+      r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0.extend(ScenarioOutlineKeyword0)
+    else
+      self.index = i0
+      r0 = nil
+    end
+
+    node_cache[:scenario_outline_keyword][start_index] = r0
 
     return r0
   end
@@ -1532,6 +1843,54 @@ module Feature
     return r0
   end
 
+  module ExamplesKeyword0
+  end
+
+  def _nt_examples_keyword
+    start_index = index
+    if node_cache[:examples_keyword].has_key?(index)
+      cached = node_cache[:examples_keyword][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    i0, s0 = index, []
+    if input.index("Examples", index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 8))
+      @index += 8
+    else
+      terminal_parse_failure("Examples")
+      r1 = nil
+    end
+    s0 << r1
+    if r1
+      if input.index(":", index) == index
+        r3 = (SyntaxNode).new(input, index...(index + 1))
+        @index += 1
+      else
+        terminal_parse_failure(":")
+        r3 = nil
+      end
+      if r3
+        r2 = r3
+      else
+        r2 = SyntaxNode.new(input, index...index)
+      end
+      s0 << r2
+    end
+    if s0.last
+      r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0.extend(ExamplesKeyword0)
+    else
+      self.index = i0
+      r0 = nil
+    end
+
+    node_cache[:examples_keyword][start_index] = r0
+
+    return r0
+  end
+
   module GivenScenarioKeyword0
   end
 
@@ -1544,11 +1903,11 @@ module Feature
     end
 
     i0, s0 = index, []
-    if input.index("SoitScenario", index) == index
-      r1 = (SyntaxNode).new(input, index...(index + 12))
-      @index += 12
+    if input.index("Soit le Scénario", index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 17))
+      @index += 17
     else
-      terminal_parse_failure("SoitScenario")
+      terminal_parse_failure("Soit le Scénario")
       r1 = nil
     end
     s0 << r1

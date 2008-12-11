@@ -7,6 +7,8 @@
 "en":
   feature: Feature
   scenario: Scenario
+  scenario_outline: Scenario Outline
+  examples: Examples
   more_examples: More Examples
   given_scenario: GivenScenario
   given: Given
@@ -108,11 +110,11 @@
   but: Kuid
 # French
 "fr":
-  feature: Fonction
-  scenario: Scenario
+  feature: Fonctionnalité
+  scenario: Scénario
   more_examples: Plus d'exemples
-  given_scenario: SoitScenario
-  given: Soit
+  given_scenario: Soit le Scénario
+  given: Etant donné
   when: Lorsque
   then: Alors
   and: Et

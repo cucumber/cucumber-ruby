@@ -43,6 +43,15 @@ module Cucumber
         end
 
       end
+
+      it "should indicate if a forced pending exception occured" do
+        scenario = Scenario.new(nil, '9', 1)
+        step = scenario.create_step('Given', '666666', 98)
+        
+        step.instance_variable_set("@error", ForcedPending.new)
+        
+        step.should be_forced_to_pending
+      end
       
     end
   end
