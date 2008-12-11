@@ -35,7 +35,6 @@ When /I search for "(.*)"/ do |query|
   @page.search(query)
 end
 
-Then /I should see a link to "(.*)":(.*)/ do |text, expected_url|
-  observed_url = @browser.get_attribute("link=#{text}@href")
-  observed_url.should == expected_url
+Then /I should see a link to (.*)/ do |expected_url|
+  @browser.is_element_present("css=a[href='#{expected_url}']").should be_true
 end
