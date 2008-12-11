@@ -15,7 +15,7 @@ if $CUCUMBER_WINDOWS_MRI && `chcp` =~ /Active code page: (\d+)/
     module Kernel
       alias cucumber_print print
       def print(*a)
-        cucumber_print Iconv.iconv($CUCUMBER_CODEPAGE, "UTF-8", *a)
+        cucumber_print *Iconv.iconv($CUCUMBER_CODEPAGE, "UTF-8", *a)
       end
 
       alias cucumber_puts puts
