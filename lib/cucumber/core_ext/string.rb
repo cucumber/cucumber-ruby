@@ -20,7 +20,7 @@ class String
     s
   end
 
-  if $CUCUMBER_JRUBY && $CUCUMBER_RAILS
+  if ($CUCUMBER_JRUBY && $CUCUMBER_RAILS)
     # Workaround for http://tinyurl.com/55uu3u 
     alias jlength length
   else
