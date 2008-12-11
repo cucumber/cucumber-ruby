@@ -4,32 +4,24 @@ require 'cucumber/formatters/ansicolor'
 
 $KCODE='u'
 
-if $CUCUMBER_WINDOWS_MRI
-  if `chcp` =~ /Active code page: (\d+)/
-    codepage = $1
-    codepages = %w{1252 65001}
-    if !codepages.include?(codepage)
-      STDERR.puts %{
-=====================================================================
-Your console's current code page is #{codepage}.
-You should change it to one of #{codepages.join(', ')} - for example:
+if $CUCUMBER_WINDOWS_MRI && `chcp` =~ /Active code page: (\d+)/
+  codepage = $1.to_i
+  codepages = (1251..1252)
 
-  chcp 1252
-=====================================================================
-      }
-    end
-  end
+  if codepages.include?(codepage)
+    $CUCUMBER_CODEPAGE = "cp#{codepage}"
+  
+    require 'iconv'
+    module Kernel
+      alias cucumber_print print
+      def print(*a)
+        cucumber_print Iconv.iconv($CUCUMBER_CODEPAGE, "UTF-8", *a)
+      end
 
-  require 'iconv'
-  module Kernel
-    alias cucumber_print print
-    def print(*a)
-      cucumber_print Iconv.iconv("LATIN1", "UTF-8", *a)
-    end
-
-    alias cucumber_puts puts
-    def puts(*a)
-      cucumber_puts *Iconv.iconv("LATIN1", "UTF-8", *a)
+      alias cucumber_puts puts
+      def puts(*a)
+        cucumber_puts *Iconv.iconv($CUCUMBER_CODEPAGE, "UTF-8", *a)
+      end
     end
   end
 end
