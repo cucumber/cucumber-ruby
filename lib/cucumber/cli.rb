@@ -8,9 +8,9 @@ module Cucumber
     class << self
       attr_writer :step_mother, :executor, :features
 
-      def execute
+      def execute(args)
         @execute_called = true
-        parse(ARGV).execute!(@step_mother, @executor, @features)
+        parse(args).execute!(@step_mother, @executor, @features)
       end
 
       def execute_called?
@@ -46,6 +46,7 @@ module Cucumber
     end
 
     def parse_options!(args)
+      @args = args
       return parse_args_from_profile('default') if args.empty?
       args.extend(OptionParser::Arguable)
 
@@ -215,7 +216,7 @@ Defined profiles in cucumber.yml:
 
     # Requires files - typically step files and ruby feature files.
     def require_files
-      ARGV.clear # Shut up RSpec
+      @args.clear # Shut up RSpec
       require "cucumber/treetop_parser/feature_#{@options[:lang]}"
       require "cucumber/treetop_parser/feature_parser"
 
