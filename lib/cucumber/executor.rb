@@ -81,8 +81,6 @@ module Cucumber
       @pending = nil
 
       @world = create_world
-      @world.extend(Spec::Matchers) if defined?(Spec::Matchers)
-      define_step_call_methods(@world)
 
       formatters.scenario_executing(scenario)
       @before_scenario_procs.each{|p| p.call_in(@world, *[])}
@@ -152,22 +150,6 @@ module Cucumber
       formatters.step_pending(step, regexp, args)
     end
 
-    def define_step_call_methods(world)
-      world.instance_variable_set('@__executor', self)
-      world.instance_eval do
-        class << self
-          def run_step(name)
-            _, args, proc = @__executor.instance_variable_get(:@step_mother).regexp_args_proc(name)
-            proc.call_in(self, *args)
-          end
-
-          %w{given when then and but}.each do |keyword|
-            alias_method Cucumber.language[keyword], :run_step
-          end
-        end
-      end
-    end
-    
     def executing_unprepared_row_scenario?(scenario)
       accept_scenario?(scenario) && !@executed_scenarios[scenario.name]
     end
@@ -195,10 +177,29 @@ module Cucumber
     def create_world
       world = Object.new
       world.extend(World::Pending)
+      world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
+      define_step_call_methods(world)
+
       @world_procs.each do |world_proc|
         world = world_proc.call(world)
       end
       world
+    end
+
+    def define_step_call_methods(world)
+      world.instance_variable_set('@__executor', self)
+      world.instance_eval do
+        class << self
+          def run_step(name)
+            _, args, proc = @__executor.instance_variable_get(:@step_mother).regexp_args_proc(name)
+            proc.call_in(self, *args)
+          end
+
+          %w{given when then and but}.each do |keyword|
+            alias_method Cucumber.language[keyword], :run_step
+          end
+        end
+      end
     end
   end
 end

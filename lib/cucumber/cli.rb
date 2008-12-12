@@ -147,6 +147,7 @@ module Cucumber
       Term::ANSIColor.coloring = @options[:color] unless @options[:color].nil?
       Cucumber.load_language(@options[:lang])
       require_files
+      enable_diffing
       executor.formatters = build_formatter_broadcaster(step_mother)
       load_plain_text_features(features)
       executor.lines_for_features = @options[:lines_for_features]
@@ -336,6 +337,13 @@ Defined profiles in cucumber.yml:
       Kernel.exit 1
     end
 
+    def enable_diffing
+      if defined?(::Spec)
+        require 'spec/expectations/differs/default'
+        options = ::Spec::Runner::Options.new(nil, nil)
+        ::Spec::Expectations.differ = ::Spec::Expectations::Differs::Default.new(options)
+      end
+    end
   end
 end
 
