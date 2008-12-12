@@ -120,6 +120,9 @@ module Cucumber
           @options[:snippets] = false
           @options[:source] = false
         end
+        opts.on("-b", "--backtrace", "Show full backtrace for all errors") do
+          Exception.cucumber_full_backtrace = true
+        end
         opts.on("-v", "--verbose", "Show the files and features loaded") do
           @options[:verbose] = true
         end

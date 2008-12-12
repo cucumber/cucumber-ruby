@@ -1,6 +1,7 @@
 == 0.1.13 (In Git)
 
 === New features
+* Added new --backtrace option to show full backtrace (Aslak Hellesøy)   
 * Enable RSpec's diffing automatically if RSpec is loaded (Aslak Hellesøy)
 * The Rails features generator got some love and is now tested: http://github.com/aslakhellesoy/cucumber_rails (Aslak Hellesøy)
 * --language is aliased to -l instead of -a (-l became available when --line was refactored) (Aslak Hellesøy)
