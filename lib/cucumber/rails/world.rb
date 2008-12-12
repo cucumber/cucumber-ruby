@@ -11,7 +11,7 @@ require 'test/unit/testresult'
 
 # These allow exceptions to come through as opposed to being caught and having non-helpful responses returned.
 ActionController::Base.class_eval do
-  def perform_action
+  def perform_action_with_rescue
     perform_action_without_rescue
   end
 end
