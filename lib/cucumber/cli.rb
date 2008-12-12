@@ -239,12 +239,7 @@ Defined profiles in cucumber.yml:
         path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
         File.directory?(path) ? Dir["#{path}/**/*.rb"] : path
       end.flatten.uniq
-      support_files = []
-      other_files = []
-      files.each do |file|
-        (file =~ %r{/support/} ? support_files : other_files ) << file
-      end
-      support_files + other_files
+      files.sort { |a,b| (b =~ %r{/support/} || -1) <=>  (a =~ %r{/support/} || -1) }
     end
 
     def feature_files
