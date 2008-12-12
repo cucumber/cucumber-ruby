@@ -2,6 +2,8 @@ module Cucumber
   module World
     module Pending
 
+      ##
+      # Mark this step as pending
       def pending(message = "TODO")
         if block_given?
           begin

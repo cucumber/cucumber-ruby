@@ -1,6 +1,7 @@
 nbproject
 pkg
 doc
+.yardoc
 *.log
 *.pid
 .eprj
