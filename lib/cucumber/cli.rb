@@ -235,10 +235,16 @@ Defined profiles in cucumber.yml:
     
     def files_to_require
       requires = @options[:require] || feature_dirs
-      requires.map do |path|
+      files = requires.map do |path|
         path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
         File.directory?(path) ? Dir["#{path}/**/*.rb"] : path
       end.flatten.uniq
+      support_files = []
+      other_files = []
+      files.each do |file|
+        (file =~ %r{/support/} ? support_files : other_files ) << file
+      end
+      support_files + other_files
     end
 
     def feature_files
