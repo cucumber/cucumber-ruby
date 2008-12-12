@@ -421,6 +421,36 @@ Defined profiles in cucumber.yml:
       cli.execute!(stub('step mother'), mock_executor, stub('features'))
     end
 
+    describe "--backtrace" do
+      before do
+        Exception.cucumber_full_backtrace = false
+      end
+      
+      it "should show full backtrace when --backtrace is present" do
+        cli = CLI.new
+        cli.parse_options!(['--backtrace'])
+        begin
+          "x".should == "y"
+        rescue => e
+          e.cucumber_backtrace[0].should_not == "#{__FILE__}:#{__LINE__ - 2}"
+        end
+      end
+
+      it "should strip gems when --backtrace is absent" do
+        cli = CLI.new
+        cli.parse_options!(['--'])
+        begin
+          "x".should == "y"
+        rescue => e
+          e.cucumber_backtrace[0].should == "#{__FILE__}:#{__LINE__ - 2}"
+        end
+      end
+
+      after do
+        Exception.cucumber_full_backtrace = false
+      end
+    end
+
     describe "example.feature:line file arguments" do
 
       it "should extract line numbers" do
@@ -450,8 +480,7 @@ Defined profiles in cucumber.yml:
       
         cli.options[:lines_for_features].should == {'example.feature' => [11, 12]}
       end
-    
-  end
+    end
 
     it "should search for all features in the specified directory" do
       cli = CLI.new

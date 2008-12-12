@@ -124,6 +124,7 @@ gem_tasks/flog.rake
 gem_tasks/gemspec.rake
 gem_tasks/rspec.rake
 gem_tasks/treetop.rake
+gem_tasks/yard.rake
 lib/autotest/cucumber.rb
 lib/autotest/cucumber_mixin.rb
 lib/autotest/cucumber_rails.rb
@@ -133,6 +134,7 @@ lib/autotest/discover.rb
 lib/cucumber.rb
 lib/cucumber/broadcaster.rb
 lib/cucumber/cli.rb
+lib/cucumber/core_ext/exception.rb
 lib/cucumber/core_ext/proc.rb
 lib/cucumber/core_ext/string.rb
 lib/cucumber/executor.rb

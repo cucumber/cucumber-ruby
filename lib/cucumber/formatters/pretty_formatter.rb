@@ -6,7 +6,6 @@ module Cucumber
       include ANSIColor
 
       INDENT = "\n      "
-      BACKTRACE_FILTER_PATTERNS = [/vendor\/rails/, /vendor\/plugins\/cucumber/, /spec\/expectations/, /spec\/matchers/]
 
       def initialize(io, step_mother, options={})
         @io = (io == STDOUT) ? Kernel : io
@@ -168,12 +167,8 @@ module Cucumber
       end
 
       def output_failing_step(step)
-        backtrace = step.error.backtrace || []
-        clean_backtrace = backtrace.map {|b| b.split("\n") }.flatten.reject do |line|
-          BACKTRACE_FILTER_PATTERNS.detect{|p| line =~ p}
-        end.map { |line| line.strip }
         @io.puts failed("      #{step.error.message.split("\n").join(INDENT)} (#{step.error.class})")
-        @io.puts failed("      #{clean_backtrace.join(INDENT)}")
+        @io.puts failed("      #{step.error.cucumber_backtrace.join(INDENT)}")
       end
 
       def dump
