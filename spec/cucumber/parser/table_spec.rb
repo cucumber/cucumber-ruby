@@ -20,6 +20,7 @@ module Cucumber
       it "should parse a row with two cells" do
         parse("hello|my|friend").build.should == %w{hello my friend}
       end
+
     end
   end
 end
