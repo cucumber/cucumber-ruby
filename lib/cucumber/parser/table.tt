@@ -1,0 +1,17 @@
+module Cucumber
+  module Parser
+    grammar Table
+      rule record
+        (cell_value separator record) / cell_value
+      end
+      
+      rule separator
+        '|'
+      end
+      
+      rule cell_value
+        (!separator .)+
+      end
+    end
+  end
+end
