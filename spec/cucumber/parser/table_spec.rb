@@ -14,11 +14,11 @@ module Cucumber
       end
 
       it "should parse a row with one cell" do
-        parse("hi")
+        parse("hi").build.should == %w{hi}
       end
 
       it "should parse a row with two cells" do
-        parse("hello|there")
+        parse("hello|my|friend").build.should == %w{hello my friend}
       end
     end
   end

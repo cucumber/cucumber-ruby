@@ -2,7 +2,17 @@ module Cucumber
   module Parser
     grammar Table
       rule record
-        (cell_value separator record) / cell_value
+        cell_value separator record {
+          def build
+            [cell_value.text_value] + record.build
+          end
+        }
+        /
+        cell_value {
+          def build
+            [text_value]
+          end
+        }
       end
       
       rule separator
