@@ -1,6 +1,10 @@
 module Cucumber
   module Parser
     grammar Basic
+      rule comment
+        "# My comment"
+      end
+
       rule blank
         [ \t]
       end

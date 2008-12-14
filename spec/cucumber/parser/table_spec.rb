@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 require 'treetop'
 require 'cucumber/parser/basic'
 require 'cucumber/parser/table'
-require 'cucumber/ast/table'
+require 'cucumber/ast'
 
 module Cucumber
   module Parser
@@ -12,7 +12,9 @@ module Cucumber
       end
       
       def parse(text)
-        @parser.parse(text).build.raw || raise(@parser.failure_reason)
+        tree = @parser.parse(text)
+        raise(@parser.failure_reason) if tree.nil?
+        tree.build.raw
       end
 
       it "should parse a 1x2 table with newline" do
@@ -35,6 +37,12 @@ module Cucumber
 
       it "should parse a 2x2 table with empty cells" do
         parse("| 1 |  |\n|| 4 |").should == [['1', nil], [nil, '4']]
+      end
+
+      it "should not parse a 2x2 table that isn't closed" do
+        lambda do
+          parse("| 1 |  |\n|| 4 ").should == [['1', nil], [nil, '4']]
+        end.should raise_error(/Expected one of \|/)
       end
 
       it "should not parse tables with uneven rows" do
