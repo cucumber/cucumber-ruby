@@ -2,7 +2,11 @@ module Cucumber
   module Parser
     grammar Basic
       rule comment
-        "# My comment"
+        '#' line_to_eol
+      end
+
+      rule line_to_eol
+        (!eol .)*
       end
 
       rule blank

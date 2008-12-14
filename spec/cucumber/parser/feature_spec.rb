@@ -20,6 +20,7 @@ module Cucumber
       
       it "should parse a file with only comments" do
         parse("# My comment").comment.should == "# My comment"
+        parse("# My other comment").comment.should == "# My other comment"
       end
     end
   end
