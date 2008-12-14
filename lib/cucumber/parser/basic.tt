@@ -1,0 +1,17 @@
+module Cucumber
+  module Parser
+    grammar Basic
+      rule blank
+        [ \t]
+      end
+
+      rule eol
+        ("\r" "\n"?) / "\n" / eof
+      end
+      
+      rule eof
+        !.
+      end
+    end
+  end
+end

@@ -1,6 +1,8 @@
 module Cucumber
   module Parser
     grammar Table
+      include Basic
+
       rule table
         table_row+ {
           def build
@@ -23,18 +25,6 @@ module Cucumber
       
       rule cell
         (!('|' / eol) .)*
-      end
-
-      rule blank
-        [ \t]
-      end
-
-      rule eol
-        ("\r" "\n"?) / "\n" / eof
-      end
-      
-      rule eof
-        !.
       end
     end
   end

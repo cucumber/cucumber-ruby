@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'treetop'
+require 'cucumber/parser/basic'
 require 'cucumber/parser/table'
 require 'cucumber/ast/table'
 
