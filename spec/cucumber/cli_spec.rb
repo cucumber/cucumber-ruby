@@ -149,6 +149,21 @@ Defined profiles in cucumber.yml:
       cli.options[:verbose].should be_true
     end
 
+    it "should require files in support paths first" do
+      File.stub!(:directory?).and_return(true)
+      Dir.stub!(:[]).and_return(["/features/step_definitions/foo.rb","/features/support/env.rb"])
+      
+      cli = CLI.new(StringIO.new)
+      cli.parse_options!(%w{--require /features})
+
+      cli.should_receive(:require).twice.with(/treetop_parser/).ordered
+      cli.should_receive(:require).with("/features/support/env.rb").ordered
+      cli.should_receive(:require).with("/features/step_definitions/foo.rb").ordered
+      cli.should_receive(:require).with("spec/expectations/differs/default").ordered
+
+      cli.execute!(stub('step mother'), mock_executor, mock_features)
+    end
+
     describe "verbose mode" do
       
       before(:each) do
