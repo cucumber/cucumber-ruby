@@ -1,9 +1,6 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'treetop'
-require 'cucumber/parser/basic'
-require 'cucumber/parser/table'
-require 'cucumber/parser/feature'
-require 'cucumber/ast'
+require 'cucumber/parser'
 
 module Cucumber
   module Parser
@@ -13,14 +10,27 @@ module Cucumber
       end
       
       def parse(text)
-        tree = @parser.parse(text)
-        raise(@parser.failure_reason) if tree.nil?
-        tree.build
+        @parser.parse_or_fail(text)
       end
       
-      it "should parse a file with only comments" do
-        parse("# My comment").comment.should == "# My comment"
-        parse("# My other comment").comment.should == "# My other comment"
+      def parse_file(file)
+        @parser.parse_file(File.dirname(__FILE__) + "/../treetop_parser/" + file)
+      end
+
+      describe "Comments" do
+        it "should parse a file with only a one line comment" do
+          parse("# My comment").comment.should == "# My comment"
+        end
+
+        it "should parse a file with only a multiline comment" do
+          parse("# Hello\n# World").comment.should == "# Hello\n# World"
+        end
+
+        it "should parse a file with only a multiline comment with newlines" do
+          pending do
+            parse("# Hello\n\n# World\n").comment.should == "# Hello\n# World"
+          end
+        end
       end
     end
   end

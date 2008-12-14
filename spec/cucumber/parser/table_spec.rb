@@ -1,8 +1,6 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'treetop'
-require 'cucumber/parser/basic'
-require 'cucumber/parser/table'
-require 'cucumber/ast'
+require 'cucumber/parser'
 
 module Cucumber
   module Parser
@@ -12,9 +10,8 @@ module Cucumber
       end
       
       def parse(text)
-        tree = @parser.parse(text)
-        raise(@parser.failure_reason) if tree.nil?
-        tree.build.raw
+        table = @parser.parse_or_fail(text)
+        table.raw
       end
 
       it "should parse a 1x2 table with newline" do
@@ -30,7 +27,7 @@ module Cucumber
       end
 
       it "should parse a 2x2 table with several newlines" do
-        pending "FIX THIS PLEASE" do
+        pending do
           parse("| 1 | 2 |\n| 3 | 4 |\n\n\n").should == [%w{1 2}, %w{3 4}]
         end
       end
@@ -42,7 +39,7 @@ module Cucumber
       it "should not parse a 2x2 table that isn't closed" do
         lambda do
           parse("| 1 |  |\n|| 4 ").should == [['1', nil], [nil, '4']]
-        end.should raise_error(/Expected one of \|/)
+        end.should raise_error(SyntaxError)
       end
 
       it "should not parse tables with uneven rows" do

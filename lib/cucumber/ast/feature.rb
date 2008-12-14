@@ -2,6 +2,7 @@ module Cucumber
   module Ast
     # Represents the root node of a parsed feature.
     class Feature
+      attr_accessor :file
       attr_reader :comment
       
       def initialize(comment)
