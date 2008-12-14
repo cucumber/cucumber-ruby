@@ -14,7 +14,7 @@ module Cucumber
       end
 
       it "should parse a 1x2 table" do
-        parse("|1|2|").build.should == [%w{1 2}]
+        parse("| 1 | 2 |").build.should == [%w{1 2}]
       end
 
     end
