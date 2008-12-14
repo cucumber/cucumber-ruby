@@ -32,6 +32,12 @@ module Cucumber
           end
         end
       end
+
+      describe "Scenarios" do
+        it "should parse an empty scenario" do
+          parse("Scenario: Hello").scenarios[0].name.should == "Hello"
+        end
+      end
     end
   end
 end
