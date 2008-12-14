@@ -29,6 +29,11 @@ module Cucumber
         parse("| 1 |  |\n|| 4 |").build.should == [['1', nil], [nil, '4']]
       end
 
+      it "should not parse tables with uneven rows" do
+        lambda do
+          parse("|1|\n|2|3|").build
+        end.should raise_error(IndexError, "element size differs (2 should be 1)")
+      end
     end
   end
 end
