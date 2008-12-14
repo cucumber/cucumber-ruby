@@ -13,12 +13,8 @@ module Cucumber
         @parser.parse(text) || raise(@parser.failure_reason)
       end
 
-      it "should parse a row with one cell" do
-        parse("|hi|").build.should == %w{hi}
-      end
-
-      it "should parse a row with two cells" do
-        parse("|hello|my|friend|").build.should == %w{hello my friend}
+      it "should parse a 1x2 table" do
+        parse("|1|2|").build.should == [%w{1 2}]
       end
 
     end

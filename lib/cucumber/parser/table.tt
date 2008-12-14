@@ -1,6 +1,14 @@
 module Cucumber
   module Parser
     grammar Table
+      rule table
+        table_row+ {
+          def build
+            elements.map{|e| e.build}
+          end
+        }
+      end
+    
       rule table_row
         separator record separator {
           def build
@@ -12,13 +20,13 @@ module Cucumber
       rule record
         cell_value separator record {
           def build
-            [cell_value.text_value] + record.build
+            [cell_value.text_value.strip] + record.build
           end
         }
         /
         cell_value {
           def build
-            [text_value]
+            [text_value.strip]
           end
         }
       end
