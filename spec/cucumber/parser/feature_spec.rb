@@ -19,11 +19,11 @@ module Cucumber
 
       describe "Comments" do
         it "should parse a file with only a one line comment" do
-          parse("# My comment").comment.should == "# My comment"
+          parse("# My comment\nFeature: hi\n").comment.should == "# My comment\n"
         end
 
         it "should parse a file with only a multiline comment" do
-          parse("# Hello\n# World").comment.should == "# Hello\n# World"
+          parse("# Hello\n# World\nFeature: hi\n").comment.should == "# Hello\n# World\n"
         end
 
         it "should parse a file with only a multiline comment with newlines" do
@@ -35,7 +35,7 @@ module Cucumber
 
       describe "Scenarios" do
         it "should parse an empty scenario" do
-          parse("Scenario: Hello").scenarios[0].name.should == "Hello"
+          parse("Feature: Hi\nScenario: Hello\n").scenarios[0].name.should == "Hello"
         end
       end
     end

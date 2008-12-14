@@ -22,7 +22,7 @@ module Cucumber
       end
 
       rule eol
-        ("\r" "\n"?) / "\n" / eof
+        "\n" / ("\r" "\n"?)
       end
       
       rule eof
