@@ -4,10 +4,8 @@ module Cucumber
       rule table
         table_row+ {
           def build
-            matrix = elements.map{|e| e.build}
-            # Verify that it's square
-            matrix.transpose
-            matrix
+            raw = elements.map{|e| e.build}
+            Ast::Table.new(raw)
           end
         }
       end
