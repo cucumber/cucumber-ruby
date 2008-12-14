@@ -35,7 +35,7 @@ module Cucumber
 
       describe "Scenarios" do
         it "should parse an empty scenario" do
-          parse("Feature: Hi\nScenario: Hello\n").scenarios[0].name.should == "Hello"
+          parse("Feature: Hi\nScenario: Hello\n").feature_elements[0].name.should == "Hello"
         end
       end
     end
