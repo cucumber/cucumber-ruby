@@ -13,11 +13,11 @@ module Cucumber
         (!eol .)*
       end
 
-      rule white
+      rule whitesss
         blank / eol
       end
 
-      rule blank
+      rule space
         [ \t]
       end
 
