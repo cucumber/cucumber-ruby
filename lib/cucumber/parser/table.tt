@@ -2,6 +2,7 @@ module Cucumber
   module Parser
     grammar Table
       include Basic
+      include FileParser
 
       rule table
         table_row+ {

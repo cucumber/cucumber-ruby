@@ -40,16 +40,6 @@ module Cucumber
       end
     end
     
-    it "should mark step as pending when it doesn't match any procs" do
-      pending "think some more about what to expect here" do
-        m = StepMother.new
-        step = mock('step')
-        step.should_receive(:pending!)
-        raise "FIXME"
-        m.execute(step)
-      end
-    end
-
     it "should report that a step has a definition if the step is registered" do
       m = StepMother.new
       m.register_step_proc /I am a real step definition/ do end

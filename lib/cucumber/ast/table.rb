@@ -9,6 +9,8 @@ module Cucumber
     # This gets parsed into a Table holding the values <tt>[['a', 'b'], ['c', 'd']]</tt>
     #
     class Table
+      attr_accessor :file
+
       # The raw data of this table, as a 2-dimensional array.
       attr_reader :raw
       

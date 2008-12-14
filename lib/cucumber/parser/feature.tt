@@ -2,11 +2,12 @@ module Cucumber
   module Parser
     grammar Feature
       include Basic
+      include FileParser
 
       rule feature
-        comment {
+        c:comment eol {
           def build
-            Ast::Feature.new(text_value)
+            Ast::Feature.new(c.text_value)
           end
         }
       end
