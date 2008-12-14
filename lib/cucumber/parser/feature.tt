@@ -1,0 +1,15 @@
+module Cucumber
+  module Parser
+    grammar Feature
+      include Basic
+
+      rule feature
+        comment {
+          def build
+            Ast::Feature.new(text_value)
+          end
+        }
+      end
+    end
+  end
+end
