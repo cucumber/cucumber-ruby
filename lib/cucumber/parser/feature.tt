@@ -5,7 +5,7 @@ module Cucumber
       include FileParser
 
       rule feature
-        c:comment? scenarios:scenario* {
+        c:comment? feature_keyword space? name:line_to_eol eol+ scenarios:scenario* {
           def build
             scenario_nodes = scenarios.elements.map{|s| s.build}
             Ast::Feature.new(c.text_value, scenario_nodes)
@@ -14,11 +14,15 @@ module Cucumber
       end
 
       rule scenario
-        scenario_keyword space? name:line_to_eol steps:(space step_sequence)? {
+        scenario_keyword space? name:line_to_eol eol+ {
           def build
             Ast::Scenario.new(name.text_value)
           end
         }
+      end
+
+      rule feature_keyword
+        "Feature" ":"?
       end
 
       rule scenario_keyword
