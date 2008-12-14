@@ -159,6 +159,7 @@ Defined profiles in cucumber.yml:
       cli.should_receive(:require).twice.with(/treetop_parser/).ordered
       cli.should_receive(:require).with("/features/support/env.rb").ordered
       cli.should_receive(:require).with("/features/step_definitions/foo.rb").ordered
+      cli.should_receive(:require).with("spec/expectations/differs/default").ordered
 
       cli.execute!(stub('step mother'), mock_executor, mock_features)
     end
