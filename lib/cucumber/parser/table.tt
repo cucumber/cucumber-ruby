@@ -10,33 +10,30 @@ module Cucumber
       end
     
       rule table_row
-        separator record separator {
+        blank* '|' cells:(cell '|')+ blank* eol {
           def build
-            record.build
-          end
-        }
-      end
-    
-      rule record
-        cell_value separator record {
-          def build
-            [cell_value.text_value.strip] + record.build
-          end
-        }
-        /
-        cell_value {
-          def build
-            [text_value.strip]
+            cells.elements.map do |elt| 
+              value = elt.cell.text_value.strip
+              value.empty? ? nil : value
+            end
           end
         }
       end
       
-      rule separator
-        '|'
+      rule cell
+        (!('|' / eol) .)*
+      end
+
+      rule blank
+        [ \t]
+      end
+
+      rule eol
+        ("\r" "\n"?) / "\n" / eof
       end
       
-      rule cell_value
-        (!separator .)+
+      rule eof
+        !.
       end
     end
   end
