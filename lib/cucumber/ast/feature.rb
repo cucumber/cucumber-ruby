@@ -4,11 +4,11 @@ module Cucumber
     class Feature
       attr_accessor :file
       attr_reader :comment
-      attr_reader :scenarios
+      attr_reader :feature_elements
       
-      def initialize(comment, scenarios)
+      def initialize(comment, feature_elements)
         @comment = comment
-        @scenarios = scenarios
+        @feature_elements = feature_elements
       end
     end
   end
