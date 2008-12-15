@@ -12,14 +12,6 @@ module Cucumber
       def initialize(tag_names)
         @tag_names = tag_names
       end
-
-      def format(io, indent=0)
-        tags = @tag_names.map do |tag_name|
-          (" " * indent) + "@#{tag_name}"
-        end.join(" ")
-        io.write(tags)
-        io.write("\n")
-      end
     end
   end
 end

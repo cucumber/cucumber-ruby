@@ -9,11 +9,13 @@ module Cucumber
         @comment, @tags, @name, @feature_elements = comment, tags, name, feature_elements
       end
 
-      def format(io)
-        comment.format(io, 0)
-        tags.format(io)
-        io.write("Feature: #{@name}\n\n")
-        feature_elements.each {|feature_element| feature_element.format(io)}
+      def accept(visitor)
+        visitor.visit_comment(comment)
+        visitor.visit_tags(tags)
+        visitor.visit_feature_name(name)
+        feature_elements.each do |feature_element|
+          visitor.visit_feature_element(feature_element)
+        end
       end
     end
   end

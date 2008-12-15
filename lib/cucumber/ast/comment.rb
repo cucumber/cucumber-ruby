@@ -14,11 +14,10 @@ module Cucumber
         @value = value
       end
 
-      def format(io, indent)
+      # Returns the value of this comment - aligned and indented by +indent+ spaces
+      def indented(indent)
         space = " " * indent
-        indented = space + value.split("\n").map{|line| line.strip}.join("\n#{space}")
-        io.write(indented)
-        io.write("\n")
+        space + value.split("\n").map{|line| line.strip}.join("\n#{space}") + "\n"
       end
     end
   end
