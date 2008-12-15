@@ -14,8 +14,11 @@ module Cucumber
         @value = value
       end
 
-      def format(io)
-        io.write(@value)
+      def format(io, indent)
+        space = " " * indent
+        indented = space + value.split("\n").map{|line| line.strip}.join("\n#{space}")
+        io.write(indented)
+        io.write("\n")
       end
     end
   end

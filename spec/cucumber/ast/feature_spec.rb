@@ -6,11 +6,29 @@ module Cucumber
   module Ast
     describe Feature do
       it "should format itself" do
-        f = Feature.new(Comment.new("# My comment\n"), Tags.new(['one', 'two']), [])
+        f = Feature.new(
+          Comment.new("# My feature comment\n"),
+          Tags.new(['one', 'two']),
+          "Pretty printing",
+          [Scenario.new(
+            Comment.new("    # My scenario comment  \n# On two lines \n"),
+            Tags.new(['three']),
+            "A Scenario",
+            []
+          )]
+        )
         io = StringIO.new
         f.format(io)
         io.rewind
-        io.read.should == %{# My comment\n@one @two\n}
+        io.read.should == %{# My feature comment
+@one @two
+Feature: Pretty printing
+
+  # My scenario comment
+  # On two lines
+  @three
+  Scenario: A Scenario
+}
       end
     end
   end

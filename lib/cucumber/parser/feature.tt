@@ -7,7 +7,7 @@ module Cucumber
       rule feature
         c:comment? t:tags? feature_keyword space? name:line_to_eol eol+ feature_elements {
           def build
-            Ast::Feature.new(c.build, t.build, feature_elements.build)
+            Ast::Feature.new(c.build, t.build, name.text_value, feature_elements.build)
           end
         }
       end
@@ -21,9 +21,9 @@ module Cucumber
       end
 
       rule scenario
-        scenario_keyword space? name:line_to_eol eol+ {
+        c:comment? t:tags? scenario_keyword space? name:line_to_eol eol+ {
           def build
-            Ast::Scenario.new(name.text_value)
+            Ast::Scenario.new(c.build, t.build, name.text_value, [])
           end
         }
       end
