@@ -39,7 +39,7 @@ module Cucumber
 
       describe "Tags" do
         it "should parse a file with tags on a feature" do
-          parse("# My comment\n@hello @world Feature: hi\n").tags.map{|tag| tag.name}.should == %w{hello world}
+          parse("# My comment\n@hello @world Feature: hi\n").tags.tag_names.should == %w{hello world}
         end
       end
 

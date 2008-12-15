@@ -13,6 +13,10 @@ module Cucumber
       def initialize(value)
         @value = value
       end
+
+      def format(io)
+        io.write(@value)
+      end
     end
   end
 end
