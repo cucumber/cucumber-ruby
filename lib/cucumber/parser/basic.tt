@@ -4,7 +4,8 @@ module Cucumber
       rule tags
         (tag space)* {
           def build
-            elements.map{|e| Ast::Tag.new(e.tag.tag_name.text_value)}
+            tag_names = elements.map{|e| e.tag.tag_name.text_value}
+            Ast::Tags.new(tag_names)
           end
         }
       end
