@@ -1,5 +1,7 @@
 require 'cucumber/ast/feature'
 require 'cucumber/ast/scenario'
+require 'cucumber/ast/tag'
+require 'cucumber/ast/comment'
 require 'cucumber/ast/table'
 
 module Cucumber
