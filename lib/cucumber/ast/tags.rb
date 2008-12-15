@@ -13,8 +13,12 @@ module Cucumber
         @tag_names = tag_names
       end
 
-      def format(io)
-        io.puts @tag_names.map{|tag_name| "@#{tag_name}"}.join(" ")
+      def format(io, indent=0)
+        tags = @tag_names.map do |tag_name|
+          (" " * indent) + "@#{tag_name}"
+        end.join(" ")
+        io.write(tags)
+        io.write("\n")
       end
     end
   end
