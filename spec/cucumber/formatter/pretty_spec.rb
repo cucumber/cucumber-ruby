@@ -4,18 +4,18 @@ require 'cucumber/ast'
 require 'cucumber/formatter/pretty'
 
 module Cucumber
-  module Ast
-    describe Feature do
+  module Formatter
+    describe Pretty do
       it "should format itself" do
-        f = Feature.new(
-          Comment.new("# My feature comment\n"),
-          Tags.new(['one', 'two']),
+        f = Ast::Feature.new(
+          Ast::Comment.new("# My feature comment\n"),
+          Ast::Tags.new(['one', 'two']),
           "Pretty printing",
-          [Scenario.new(
-            Comment.new("    # My scenario comment  \n# On two lines \n"),
-            Tags.new(['three']),
+          [Ast::Scenario.new(
+            Ast::Comment.new("    # My scenario comment  \n# On two lines \n"),
+            Ast::Tags.new(['three']),
             "A Scenario",
-            []
+            [Ast::Step.new("Given", "A step var1 and var2")]
           )]
         )
 
@@ -32,6 +32,7 @@ Feature: Pretty printing
   # On two lines
   @three
   Scenario: A Scenario
+    Given A step var1 and var2
 }
       end
     end
