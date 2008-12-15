@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
-require 'cucumber/ast'
 require 'stringio'
+require 'cucumber/ast'
+require 'cucumber/formatter/pretty'
 
 module Cucumber
   module Ast
@@ -17,8 +18,11 @@ module Cucumber
             []
           )]
         )
+
         io = StringIO.new
-        f.format(io)
+        pretty = Formatter::Pretty.new(io)
+        pretty.visit_feature(f)
+
         io.rewind
         io.read.should == %{# My feature comment
 @one @two
