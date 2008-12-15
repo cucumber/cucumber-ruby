@@ -1,7 +1,6 @@
 module Cucumber
   module Ast
-    # Holds the data of a table parsed from a feature file.
-    # Consider the following table:
+    # Holds the data of a table parsed from a feature file:
     #
     #   |a|b|
     #   |c|d|
