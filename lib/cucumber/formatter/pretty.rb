@@ -42,6 +42,10 @@ module Cucumber
 
       def visit_step(step)
         @io.write("    " + step.format(FORMATS) + "\n")
+        if step.error
+          @io.write("      " + step.error.message + "\n")
+          @io.write("      " + step.error.cucumber_backtrace.join("\n      ") + "\n")
+        end
       end
     end
   end
