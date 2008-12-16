@@ -1,0 +1,50 @@
+module Cucumber
+  module Parser
+    grammar Basic
+      rule tags
+        (tag space)* {
+          def build
+            tag_names = elements.map{|e| e.tag.tag_name.text_value}
+            Ast::Tags.new(tag_names)
+          end
+        }
+      end
+
+      rule tag
+        '@' tag_name:[a-z]+
+      end
+
+      rule comment
+        (comment_line eol)* {
+          def build
+            Ast::Comment.new(text_value)
+          end
+        }
+      end
+
+      rule comment_line
+        '#' line_to_eol
+      end
+
+      rule line_to_eol
+        (!eol .)*
+      end
+
+      rule whitesss
+        blank / eol
+      end
+
+      rule space
+        [ \t]
+      end
+
+      rule eol
+        "\n" / ("\r" "\n"?)
+      end
+      
+      rule eof
+        !.
+      end
+    end
+  end
+end

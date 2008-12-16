@@ -8,6 +8,8 @@ class String
     md.captures.each_with_index do |m, n|
       replacement = if block_given?
         proc.call(m)
+      elsif Proc === format
+        format.call(m)
       else
         format % m
       end
