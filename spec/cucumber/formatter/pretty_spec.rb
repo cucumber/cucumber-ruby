@@ -15,9 +15,19 @@ module Cucumber
             Ast::Comment.new("    # My scenario comment  \n# On two lines \n"),
             Ast::Tags.new(['three']),
             "A Scenario",
-            [Ast::Step.new("Given", "A step var1 and var2")]
+            [
+              step1=Ast::Step.new("Given", "A step var1 and var2"),
+              step2=Ast::Step.new("Given", "A step var1 and var2")
+            ]
           )]
         )
+        
+        step2.step_def = StepDefinition.new /A step (.*) and (.*)/ do |a, b|
+          raise "Error"
+        end
+
+        step1.execute
+        step2.execute
 
         io = StringIO.new
         pretty = Formatter::Pretty.new(io)
@@ -32,7 +42,8 @@ Feature: Pretty printing
   # On two lines
   @three
   Scenario: A Scenario
-    Given A step var1 and var2
+    \e[33mGiven A step var1 and var2\e[0m
+    \e[31mGiven A step \e[31m\e[1mvar1\e[0m\e[0m\e[31m and \e[31m\e[1mvar2\e[0m\e[0m\e[31m\e[0m
 }
       end
     end

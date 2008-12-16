@@ -1,3 +1,6 @@
+require 'cucumber/step_definition'
+require 'cucumber/core_ext/string'
+
 module Cucumber
   module Ast
     class Step
@@ -13,6 +16,7 @@ module Cucumber
       end
 
       def execute
+        return if @step_def.nil?
         @step_def.execute
         @status = :passed
       rescue Exception
@@ -44,7 +48,7 @@ module Cucumber
         line = if (@status == :pending)
           @gwt + " " + @name
         else
-          @gwt + " " + @name.gzub(@step_def.regex, format_for(formats, @status, :param))
+          @gwt + " " + @name.gzub(@step_def.regexp, format_for(formats, @status, :param))
         end
         line_format = format_for(formats, @status)
         if Proc === line_format
