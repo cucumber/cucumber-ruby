@@ -1,5 +1,5 @@
 # Hack to work around Win32/Console, which bundles a licence-violating, outdated
-# copy of term/ansicolor that doesn't implement Term::ANSIColor#coloring=. 
+# copy of term/ansicolor that doesn't implement Term::ANSIColor#coloring=.
 # We want the official one!
 gem 'term-ansicolor'
 $LOAD_PATH.each{|path| $LOAD_PATH.unshift($LOAD_PATH.delete(path)) if path =~ /term-ansicolor/}
@@ -7,7 +7,7 @@ require 'term/ansicolor'
 
 if $CUCUMBER_WINDOWS_MRI
   begin
-    require 'Win32/Console/ANSI' 
+    require 'Win32/Console/ANSI'
   rescue LoadError
     STDERR.puts "You must gem install win32console to get coloured output on MRI/Windows"
     Term::ANSIColor.coloring = false
@@ -18,90 +18,81 @@ Term::ANSIColor.coloring = false if !STDOUT.tty? || ($CUCUMBER_WINDOWS && !$CUCU
 
 module Cucumber
   module Formatters
-    # Adds ANSI color support to formatters.
-    # You can define your own colours by defining CUCUMBER_COLORS in your shell. Example:
+    # Defines aliases for coloured output. You can tweak the colours by defining
+    # a <tt>$CUCUMBER_COLORS</tt> variable in your shell, very much like you can
+    # tweak the familiar POSIX command <tt>ls</tt> with
+    # <a href="http://mipsisrisc.com/rambling/2008/06/27/lscolorsls_colors-now-with-linux-support/">$LSCOLORS/$LS_COLORS</a>
     #
-    #   CUCUMBER_COLORS=pending=black,on_yellow:failed=dark,magenta:failed_param=bold,red
-    # 
-    # The string must be a series of key=value pairs where:
+    # The colours that you can change are:
     #
-    #   * Each key=value pair is separated by a colon (:)
-    #   * Each key must be one of:
-    #   ** passed
-    #   ** passed_param
-    #   ** failed
-    #   ** failed_param
-    #   ** skipped
-    #   ** skipped_param
-    #   ** pending
-    #   * Each value must be a comma-separated string composed of:
-    #   ** bold
-    #   ** dark
-    #   ** italic
-    #   ** underline
-    #   ** underscore
-    #   ** blink
-    #   ** rapid_blink
-    #   ** negative
-    #   ** concealed
-    #   ** strikethrough
-    #   ** black
-    #   ** red
-    #   ** green
-    #   ** yellow
-    #   ** blue
-    #   ** magenta
-    #   ** cyan
-    #   ** white
-    #   ** grey
-    #   ** on_black
-    #   ** on_red
-    #   ** on_green
-    #   ** on_yellow
-    #   ** on_blue
-    #   ** on_magenta
-    #   ** on_cyan
-    #   ** on_white
+    # * <tt>pending</tt>       - defaults to <tt>yellow</tt>
+    # * <tt>pending_param</tt> - defaults to <tt>yellow,bold</tt>
+    # * <tt>failed</tt>        - defaults to <tt>red</tt>
+    # * <tt>failed_param</tt>  - defaults to <tt>red,bold</tt>
+    # * <tt>passed</tt>        - defaults to <tt>green</tt>
+    # * <tt>passed_param</tt>  - defaults to <tt>green,bold</tt>
+    # * <tt>skipped</tt>       - defaults to <tt>cyan</tt>
+    # * <tt>skipped_param</tt> - defaults to <tt>cyan,bold</tt>
+    # * <tt>comment</tt>       - defaults to <tt>grey</tt>
+    # * <tt>tag</tt>           - defaults to <tt>blue</tt>
     #
+    # For instance, if your shell has a black background and a green font (like the
+    # "Homebrew" settings for OS X' Terminal.app), you may want to override passed
+    # steps to be white instead of green. Examples:
+    #
+    #   export CUCUMBER_COLORS="passed=white"
+    #   export CUCUMBER_COLORS="passed=white,bold:passed_param=white,bold,underline"
+    #
+    # (If you're on Windows, use SET instead of export).
+    # To see what colours and effects are available, just run this in your shell:
+    #
+    #   ruby -e "require 'rubygems'; require 'term/ansicolor'; puts Term::ANSIColor.attributes"
+    #
+    # Although not listed, you can also use <tt>grey</tt>
     module ANSIColor
-      include ::Term::ANSIColor
+      include Term::ANSIColor
 
-      # Params are underlined bold, except in windows, which doesn't support underline. Use non-bold colour.
-      param = PLATFORM =~ /mswin|mingw/ ? '' : 'underline,bold,'
-
-      # Default aliases
-      ALIASES = {
-        :passed        => 'bold,green',
-        :passed_param  => "#{param}green",
-        :failed        => 'bold,red',
-        :failed_param  => "#{param}red",
-        :skipped       => 'bold,cyan',
-        :skipped_param => "#{param}cyan",
-        :pending       => 'bold,yellow', # No pending_param
-        :comment       => 'grey'
-      }
-      if ENV['CUCUMBER_COLORS']
-        ENV['CUCUMBER_COLORS'].split(':').each do |pair|
-          a = pair.split('=')
-          ALIASES[a[0].to_sym] = a[1]
-        end
-      end
-      
       # Not supported in Term::ANSIColor
       def grey(m)
         if ::Term::ANSIColor.coloring?
-          "\e[90m#{m}\e[0m" 
+          "\e[90m#{m}\e[0m"
         else
           m
         end
       end
-      
-      ALIASES.each do |m, color_string|
-        colors = color_string.split(",").reverse
-        define_method(m) do |*s|
-          clear + colors.inject(s[0]) do |memo, color|
-            s[0].nil? ? __send__(color) + memo.to_s : __send__(color, memo.to_s)
+
+      ALIASES = Hash.new do |h,k|
+        if k.to_s =~ /(.*)_param/
+          h[$1] + ',bold'
+        end
+      end.merge({
+        'pending' => 'yellow',
+        'failed'  => 'red',
+        'passed'  => 'green',
+        'skipped' => 'cyan',
+        'comment' => 'grey',
+        'tag'     => 'blue'
+      })
+
+      if ENV['CUCUMBER_COLORS'] # Example: export CUCUMBER_COLORS="passed=red:failed=yellow"
+        ENV['CUCUMBER_COLORS'].split(':').each do |pair|
+          a = pair.split('=')
+          ALIASES[a[0]] = a[1]
+        end
+      end
+
+      ALIASES.each do |method, color|
+        unless method =~ /.*_param/
+          code = <<-EOF
+          def #{method}(string=nil, &proc)
+            #{ALIASES[method].split(",").join("(") + "(string, &proc" + ")" * ALIASES[method].split(",").length}
           end
+          # This resets the colour to the non-param colour
+          def #{method}_param(string=nil, &proc)
+            #{ALIASES[method+'_param'].split(",").join("(") + "(string, &proc" + ")" * ALIASES[method+'_param'].split(",").length} + #{ALIASES[method].split(",").join(' + ')}
+          end
+          EOF
+          eval(code)
         end
       end
     end
