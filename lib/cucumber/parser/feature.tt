@@ -1,0 +1,53 @@
+module Cucumber
+  module Parser
+    grammar Feature
+      include Basic
+      include FileParser
+
+      rule feature
+        c:comment? t:tags? feature_keyword space? name:line_to_eol eol+ feature_elements {
+          def build
+            Ast::Feature.new(c.build, t.build, name.text_value, feature_elements.build)
+          end
+        }
+      end
+
+      rule feature_elements
+        scenario* {
+          def build
+            elements.map{|s| s.build}
+          end
+        }
+      end
+
+      rule scenario
+        c:comment? t:tags? scenario_keyword space? name:line_to_eol eol+ {
+          def build
+            Ast::Scenario.new(c.build, t.build, name.text_value, [])
+          end
+        }
+      end
+
+      rule feature_keyword
+        "Feature" ":"?
+      end
+
+      rule scenario_keyword
+        "Scenario" ":"?
+      end
+
+      rule step_keyword
+        "Given" / "When" / "Then" / "And" / "But"
+      end
+
+      rule more_examples_keyword
+        "More Examples" ":"?
+      end
+
+      rule given_scenario_keyword
+        "GivenScenario" ":"?
+      end
+
+    end
+  end
+end
