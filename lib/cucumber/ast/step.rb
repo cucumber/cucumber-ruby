@@ -6,8 +6,8 @@ module Cucumber
     class Step
       attr_reader :name, :error
 
-      def initialize(gwt, name)
-        @gwt, @name = gwt, name
+      def initialize(step_mother, gwt, name)
+        @step_mother, @gwt, @name = step_mother, gwt, name
         @status = :pending
       end
 
@@ -16,27 +16,18 @@ module Cucumber
       end
 
       def execute_in(world)
-        return if @step_def.nil?
-        @step_def.execute_in(world, name)
+        @step_mother.execute_step_definition(name, world)
         @status = :passed
       rescue Exception => e
-        method_line = "#{__FILE__}:#{__LINE__ - 3}:in `execute_in'"
-        @step_def.strip_backtrace!(e, method_line)
-        
         @error = e
         @status = :failed
       end
 
       # Returns a formatted representation of this step's name as a String.
-      # The +formats+ argument must be a Hash that has the following keys:
+      # The +formats+ argument must be a Hash that has the same keys as the
+      # colour codes in Formatters::ANSIColor.
       #
-      # * <tt>:param   - formats each parameter
-      # * <tt>:pending - formats the whole line when the step is pending
-      # * <tt>:passed  - formats the whole line when the step is passed
-      # * <tt>:failed  - formats the whole line when the step is failed
-      # * <tt>:skipped - formats the whole line when the step is skipped
-      #
-      # The values of each key can be either a String or a Proc.
+      # The value of each key must be either a String or a Proc.
       #
       # If it is a String it should be a format string according to
       # <tt>Kernel#sprinf</tt>, for example:
@@ -52,7 +43,7 @@ module Cucumber
         line = if (@status == :pending)
           @gwt + " " + @name
         else
-          @gwt + " " + @name.gzub(@step_def.regexp, format_for(formats, @status, :param))
+          @gwt + " " + @step_mother.format(@name, format_for(formats, @status, :param))
         end
         line_format = format_for(formats, @status)
         if Proc === line_format
@@ -61,7 +52,9 @@ module Cucumber
           line_format % line
         end
       end
-      
+
+    private
+
       def format_for(formats, *keys)
         key = keys.join('_').to_sym
         fmt = formats[key]

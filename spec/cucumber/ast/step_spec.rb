@@ -7,13 +7,14 @@ module Cucumber
     describe Step do
       before do
         @formats = {
-          :passed_param   => lambda{|p| "[#{p}]"},
-          :passed         => lambda{|s| "[[#{s}]]"},
+          :passed_param   => @passed_param = lambda{|p| "[#{p}]"},
+          :passed         => @passed = lambda{|s| "[[#{s}]]"},
           :failed_param   => "<%s>",
           :failed         => "<<%s>>",
           :pending        => "??%s??"
         }
-        @step = Step.new("Given", "hi var1 yo var2")
+        @step_mother = mock('StepMother')
+        @step = Step.new(@step_mother, "Given", "hi var1 yo var2")
         @world = Object.new
       end
       
@@ -22,38 +23,17 @@ module Cucumber
       end
 
       it "should highlight parameters when it has passed" do
-        step_def = mock('StepDef')
-        step_def.should_receive(:execute_in)
-        step_def.should_receive(:regexp).and_return(/hi (.*) yo (.*)/)
-        @step.step_def = step_def
+        @step_mother.should_receive(:execute_step_definition)
+        @step_mother.should_receive(:format).with("hi var1 yo var2", @passed_param).and_return("hi [var1] yo [var2]")
         @step.execute_in(@world)
         @step.format(@formats).should == "[[Given hi [var1] yo [var2]]]"
       end
 
       it "should highlight parameters when it has failed" do
-        step_def = mock('StepDef')
-        step_def.should_receive(:execute_in).and_raise(e=Exception.new)
-        step_def.should_receive(:regexp).and_return(/hi (.*) yo (.*)/)
-        step_def.should_receive(:strip_backtrace!).with(e, anything)
-        @step.step_def = step_def
+        @step_mother.should_receive(:execute_step_definition).and_raise(e=Exception.new)
+        @step_mother.should_receive(:format).with("hi var1 yo var2", "<%s>").and_return("hi <var1> yo <var2>")
         @step.execute_in(@world)
         @step.format(@formats).should == "<<Given hi <var1> yo <var2>>>"
-      end
-      
-      it "should execute with plain variables" do
-        @step.step_def = StepDefinition.new(/hi (.*) yo (.*)/) { |var1, var2|
-          var1.should == "nope"
-        }
-        @step.execute_in(@world)
-        @step.error.message.should =~ /expected: "nope"/
-      end
-
-      it "should execute within world" do
-        @step.step_def = StepDefinition.new(/hi (.*) yo (.*)/) { |var1, var2|
-          @world_var = 'hello'
-        }
-        @step.execute_in(@world)
-        @world.instance_variable_get('@world_var').should == 'hello'
       end
     end
   end

@@ -1,3 +1,5 @@
+require 'cucumber/core_ext/string'
+
 module Cucumber
   # A Step Definition holds a Regexp and a Proc, and is created
   # by calling <tt>Given</tt>, <tt>When</tt> or <tt>Then</tt>
@@ -15,6 +17,14 @@ module Cucumber
       @proc.extend(CoreExt::CallIn)
     end
     
+    def match(step_name)
+      @regexp.match(step_name)
+    end
+    
+    def format(step_name, format)
+      step_name.gzub(@regexp, format)
+    end
+
     def execute_in(world, step_name)
       args = step_name.match(@regexp).captures
       @proc.call_in(world, *args)
