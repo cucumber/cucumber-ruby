@@ -4,7 +4,7 @@ require 'cucumber/core_ext/string'
 module Cucumber
   module Ast
     class Step
-      attr_reader :name
+      attr_reader :name, :error
 
       def initialize(gwt, name)
         @gwt, @name = gwt, name
@@ -15,11 +15,15 @@ module Cucumber
         @step_def = step_def
       end
 
-      def execute
+      def execute_in(world)
         return if @step_def.nil?
-        @step_def.execute
+        @step_def.execute_in(world, name)
         @status = :passed
-      rescue Exception
+      rescue Exception => e
+        method_line = "#{__FILE__}:#{__LINE__ - 3}:in `execute_in'"
+        @step_def.strip_backtrace!(e, method_line)
+        
+        @error = e
         @status = :failed
       end
 

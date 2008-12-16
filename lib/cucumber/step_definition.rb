@@ -12,6 +12,16 @@ module Cucumber
     
     def initialize(regexp, &proc)
       @regexp, @proc = regexp, proc
+      @proc.extend(CoreExt::CallIn)
+    end
+    
+    def execute_in(world, step_name)
+      args = step_name.match(@regexp).captures
+      @proc.call_in(world, *args)
+    end
+    
+    def strip_backtrace!(error, line)
+      error.cucumber_strip_backtrace!(line, regexp.to_s)
     end
   end
 end
