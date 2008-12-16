@@ -3,6 +3,14 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 module Cucumber
   module Formatters
     describe ProgressFormatter do
+      before do
+        ::Term::ANSIColor.coloring = false
+      end
+
+      after do
+        ::Term::ANSIColor.coloring = true
+      end
+      
       it "should print . when passed" do
         io = StringIO.new
         formatter = ProgressFormatter.new io
