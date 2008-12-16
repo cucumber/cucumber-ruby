@@ -24,7 +24,7 @@ module Cucumber
         step = Step.new("Given", "hi var1 yo var2")
         step_def = mock('StepDef')
         step_def.should_receive(:execute)
-        step_def.should_receive(:regex).and_return(/hi (.*) yo (.*)/)
+        step_def.should_receive(:regexp).and_return(/hi (.*) yo (.*)/)
         step.step_def = step_def
         step.execute
         step.format(@formats).should == "[[Given hi [var1] yo [var2]]]"
@@ -34,7 +34,7 @@ module Cucumber
         step = Step.new("Given", "hi var1 yo var2")
         step_def = mock('StepDef')
         step_def.should_receive(:execute).and_raise(Exception.new)
-        step_def.should_receive(:regex).and_return(/hi (.*) yo (.*)/)
+        step_def.should_receive(:regexp).and_return(/hi (.*) yo (.*)/)
         step.step_def = step_def
         step.execute
         step.format(@formats).should == "<<Given hi <var1> yo <var2>>>"
