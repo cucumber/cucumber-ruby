@@ -51,7 +51,15 @@ module Cucumber
       def mock_proc(stubs={})
         stub(Proc, {:to_comment_line => '# steps/example_steps.rb:11'}.merge(stubs))
       end
-      
+
+      before do
+        ::Term::ANSIColor.coloring = false
+      end
+
+      after do
+        ::Term::ANSIColor.coloring = true
+      end
+
       it "should print step file and line when passed" do
         io = StringIO.new
         formatter = PrettyFormatter.new io, StepMother.new
@@ -317,9 +325,9 @@ module Cucumber
         end
 
         it "should show the scenario outline keyword and title as pending blue" do
+          ::Term::ANSIColor.coloring = true
           io = StringIO.new
           formatter = PrettyFormatter.new io, mock('step_mother')
-
           formatter.scenario_executing(mock_scenario(:outline? => true, :name => 'blue'))
 
           io.string.should =~ /\e\[36m\s*Scenario Outline: blue\e\[0m/
