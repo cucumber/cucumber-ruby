@@ -28,9 +28,9 @@ module Cucumber
       step_name.gzub(@regexp, format)
     end
 
-    def execute_in(world, step_name)
+    def execute_in(world, step_name, *inline_args)
       args = step_name.match(@regexp).captures
-      @proc.call_in(world, *args)
+      @proc.call_in(world, *(args + inline_args))
     end
     
     def strip_backtrace!(error, line)

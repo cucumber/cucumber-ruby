@@ -2,6 +2,11 @@ require 'cucumber/formatters/ansicolor'
 
 module Cucumber
   module Formatter
+    # This formatter prints features to plain text - exactly how they were parsed,
+    # just prettier. That means with proper indentation and alignment of table columns.
+    #
+    # If the output is STDOUT (and not a file), there are bright colours to watch too.
+    #
     class Pretty
       extend Formatters::ANSIColor
       FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
@@ -46,6 +51,20 @@ module Cucumber
 
       def visit_step_name(formatted_step_name)
         @io.write("    " + formatted_step_name + "\n")
+      end
+
+      def visit_inline_arg(inline_arg)
+        inline_arg.accept(self)
+      end
+
+      def visit_table_row(table_row)
+        @io.write "      |"
+        table_row.accept(self)
+        @io.puts
+      end
+
+      def visit_table_cell(table_cell)
+        @io.write table_cell.to_s + "|"
       end
 
       def visit_step_error(e)

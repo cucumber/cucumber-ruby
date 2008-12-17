@@ -6,13 +6,9 @@ module Cucumber
     class Step
       attr_writer :world
 
-      def initialize(step_mother, gwt, name)
-        @step_mother, @gwt, @name = step_mother, gwt, name
+      def initialize(step_mother, gwt, name, *inline_args)
+        @step_mother, @gwt, @name, @inline_args = step_mother, gwt, name, inline_args
         @status = :pending
-      end
-
-      def step_def=(step_def)
-        @step_def = step_def
       end
 
       # Executes the step and calls back on +visitor+ with a formatted
@@ -33,8 +29,11 @@ module Cucumber
       #   lambda { |param| "[#{param}]" }
       #
       def accept(visitor, formats)
-        @step_mother.execute_step_definition(@name, @world)
+        @step_mother.execute_step_definition(@name, @world, *@inline_args)
         visitor.visit_step_name(format(formats, :passed))
+        @inline_args.each do |inline_arg|
+          visitor.visit_inline_arg(inline_arg)
+        end
       rescue StepMom::Pending => e
         visitor.visit_step_name(format(formats, :pending))
       rescue Exception => e
