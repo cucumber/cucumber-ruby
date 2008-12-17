@@ -17,5 +17,27 @@ module Cucumber
       format = @step_mother.format("it snows in april", "[%s]")
       format.should == "it [snows] in [april]"
     end
+
+    it "should raise Multiple error when multiple step definitions match" do
+      @step_mother.Given(/Three (.*) mice/) {|disability|}
+      @step_mother.Given(/Three blind (.*)/) {|animal|}
+
+      lambda do
+        @step_mother.find_step_definition("Three blind mice")
+      end.should raise_error(StepMom::Multiple)
+    end
+
+    it "should raise Pending error when no step definitions match" do
+      lambda do
+        @step_mother.find_step_definition("Three blind mice")
+      end.should raise_error(StepMom::Pending)
+    end
+
+    it "should raise Duplicate error when same regexp is registered twice" do
+      @step_mother.Given(/Three (.*) mice/) {|disability|}
+      lambda do
+        @step_mother.Given(/Three (.*) mice/) {|disability|}
+      end.should raise_error(StepMom::Duplicate)
+    end
   end
 end

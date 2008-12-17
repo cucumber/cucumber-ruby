@@ -18,7 +18,10 @@ module Cucumber
     end
     
     def match(step_name)
-      @regexp.match(step_name)
+      case step_name
+      when String then @regexp.match(step_name)
+      when Regexp then @regexp == step_name
+      end
     end
     
     def format(step_name, format)
