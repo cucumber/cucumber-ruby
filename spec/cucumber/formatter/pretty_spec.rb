@@ -36,8 +36,8 @@ module Cucumber
         )
         
         world = MyWorld.new
-        step1.execute_in(world)
-        step2.execute_in(world)
+        step1.world = world
+        step2.world = world
 
         io = StringIO.new
         pretty = Formatter::Pretty.new(io)
