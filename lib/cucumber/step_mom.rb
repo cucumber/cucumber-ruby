@@ -15,10 +15,10 @@ module Cucumber
       end
     end
     
-    def execute_step_definition(step_name, world)
+    def execute_step_definition(step_name, world, *inline_args)
       step_definition = find_step_definition(step_name)
       begin
-        step_definition.execute_in(world, step_name)
+        step_definition.execute_in(world, step_name, *inline_args)
       rescue Exception => e
         method_line = "#{__FILE__}:#{__LINE__ - 2}:in `execute_step_definition'"
         step_definition.strip_backtrace!(e, method_line)
