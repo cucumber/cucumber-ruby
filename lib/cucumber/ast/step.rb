@@ -1,10 +1,13 @@
+require 'cucumber/step_definition'
+require 'cucumber/core_ext/string'
+
 module Cucumber
   module Ast
     class Step
-      attr_reader :name
+      attr_writer :world
 
-      def initialize(gwt, name)
-        @gwt, @name = gwt, name
+      def initialize(step_mother, gwt, name)
+        @step_mother, @gwt, @name = step_mother, gwt, name
         @status = :pending
       end
 
@@ -12,23 +15,12 @@ module Cucumber
         @step_def = step_def
       end
 
-      def execute
-        @step_def.execute
-        @status = :passed
-      rescue Exception
-        @status = :failed
-      end
-
-      # Returns a formatted representation of this step's name as a String.
-      # The +formats+ argument must be a Hash that has the following keys:
+      # Executes the step and calls back on +visitor+ with a formatted
+      # representation of the step's name.
+      # The +formats+ argument must be a Hash that has the same keys as the
+      # colour codes in Formatters::ANSIColor.
       #
-      # * <tt>:param   - formats each parameter
-      # * <tt>:pending - formats the whole line when the step is pending
-      # * <tt>:passed  - formats the whole line when the step is passed
-      # * <tt>:failed  - formats the whole line when the step is failed
-      # * <tt>:skipped - formats the whole line when the step is skipped
-      #
-      # The values of each key can be either a String or a Proc.
+      # The value of each key must be either a String or a Proc.
       #
       # If it is a String it should be a format string according to
       # <tt>Kernel#sprinf</tt>, for example:
@@ -40,20 +32,32 @@ module Cucumber
       #
       #   lambda { |param| "[#{param}]" }
       #
-      def format(formats)
-        line = if (@status == :pending)
+      def accept(visitor, formats)
+        @step_mother.execute_step_definition(@name, @world)
+        visitor.visit_step_name(format(formats, :passed))
+      rescue StepMom::Pending => e
+        visitor.visit_step_name(format(formats, :pending))
+      rescue Exception => e
+        visitor.visit_step_name(format(formats, :failed))
+        visitor.visit_step_error(e)
+      end
+
+      private
+
+      def format(formats, status)
+        line = if (status == :pending)
           @gwt + " " + @name
         else
-          @gwt + " " + @name.gzub(@step_def.regex, format_for(formats, @status, :param))
+          @gwt + " " + @step_mother.format(@name, format_for(formats, status, :param))
         end
-        line_format = format_for(formats, @status)
+        line_format = format_for(formats, status)
         if Proc === line_format
           line_format.call(line)
         else
           line_format % line
         end
       end
-      
+
       def format_for(formats, *keys)
         key = keys.join('_').to_sym
         fmt = formats[key]

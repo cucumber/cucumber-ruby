@@ -5,7 +5,7 @@ module Cucumber
     class Pretty
       extend Formatters::ANSIColor
       FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
-      
+
       def initialize(io)
         @io = io
       end
@@ -41,8 +41,20 @@ module Cucumber
       end
 
       def visit_step(step)
-        @io.write("    " + step.format(FORMATS) + "\n")
+        step.accept(self, FORMATS)
       end
+
+      def visit_step_name(formatted_step_name)
+        @io.write("    " + formatted_step_name + "\n")
+      end
+
+      def visit_step_error(e)
+        @io.write("      " + e.message + "\n")
+        @io.write("      " + e.cucumber_backtrace.join("\n      ") + "\n")
+      end
+
+      private
+
     end
   end
 end
