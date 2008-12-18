@@ -14,19 +14,19 @@ module Cucumber
       end
 
       it "should not highlight parameters when it is pending" do
-        @step_mother.should_receive(:execute_step).and_raise(StepMom::Pending.new)
+        @step_mother.should_receive(:execute_step_by_name).and_raise(StepMom::Pending.new)
         @visitor.should_receive(:visit_step_name).with("Given", "hi var1 yo var2", :pending)
         @step.accept(@visitor)
       end
 
       it "should highlight parameters when it has passed" do
-        @step_mother.should_receive(:execute_step)
+        @step_mother.should_receive(:execute_step_by_name)
         @visitor.should_receive(:visit_step_name).with("Given", "hi var1 yo var2", :passed)
         @step.accept(@visitor)
       end
 
       it "should highlight parameters when it has failed" do
-        @step_mother.should_receive(:execute_step).and_raise(e=Exception.new)
+        @step_mother.should_receive(:execute_step_by_name).and_raise(e=Exception.new)
 
         @visitor.should_receive(:visit_step_name).with("Given", "hi var1 yo var2", :failed)
         @visitor.should_receive(:visit_step_error).with(e)
@@ -37,7 +37,7 @@ module Cucumber
         @step = Step.new(@step_mother, "Given", "hi var1 yo var2", table=Table.new([['x']]))
         @step.world = world = Object.new
 
-        @step_mother.should_receive(:execute_step).with("hi var1 yo var2", world, table)
+        @step_mother.should_receive(:execute_step_by_name).with("hi var1 yo var2", world, table)
         @visitor.should_receive(:visit_step_name).with("Given", "hi var1 yo var2", :passed)
         @visitor.should_receive(:visit_inline_arg).with(table)
         @step.accept(@visitor)
