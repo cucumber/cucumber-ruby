@@ -46,7 +46,7 @@ module Cucumber
         step2.world = world
 
         io = StringIO.new
-        pretty = Formatter::Pretty.new(io)
+        pretty = Formatter::Pretty.new(step_mother, io)
         pretty.visit_feature(f)
 
         io.rewind
