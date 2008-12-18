@@ -94,7 +94,7 @@ module Cucumber
         line = if (status == :pending)
           gwt + " " + step_name
         else
-          gwt + " " + @step_mother.format(step_name, format_for(status, :param))
+          gwt + " " + @step_mother.format_args(step_name, format_for(status, :param))
         end
         line_format = format_for(status)
         if Proc === line_format
