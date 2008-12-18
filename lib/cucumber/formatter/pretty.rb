@@ -21,7 +21,13 @@ module Cucumber
       end
 
       def visit_comment(comment)
-        @io.write(comment.indented(@indent))
+        comment.accept(self)
+      end
+
+      def visit_comment_line(comment_line)
+        @io.write(" " * @indent)
+        @io.write(comment_line)
+        @io.write("\n")
       end
 
       def visit_tags(tags)
