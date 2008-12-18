@@ -8,12 +8,7 @@ module Cucumber
     # This gets parsed into a Table holding the values <tt>[['a', 'b'], ['c', 'd']]</tt>
     #
     class Table
-      include Enumerable
-
       attr_accessor :file
-
-      # The raw data of this table, as a 2-dimensional array.
-      attr_reader :raw
 
       def initialize(raw)
         # Verify that it's square
@@ -27,6 +22,12 @@ module Cucumber
         end
       end
 
+      private
+
+      def col_width(col)
+        columns[col].__send__(:width)
+      end
+
       def each(&proc)
         rows.each(&proc)
       end
@@ -37,17 +38,11 @@ module Cucumber
         end
       end
 
-      def col_width(col)
-        columns[col].width
-      end
-
       def columns
         @columns ||= cell_matrix.transpose.map do |cell_row|
           Cells.new(cell_row)
         end
       end
-
-      private
 
       def cell_matrix
         row = -1
@@ -75,6 +70,8 @@ module Cucumber
           end
         end
 
+        private
+
         def width
           map{|cell| cell.value.length}.max
         end
@@ -95,12 +92,14 @@ module Cucumber
           @value, @table, @row, @col = value, table, row, col
         end
 
-        def col_width
-          @table.col_width(@col)
+        def accept(visitor)
+          visitor.visit_table_cell_value(@value, col_width)
         end
 
-        def to_s
-          " " + @value.ljust(col_width) + " "
+        private
+
+        def col_width
+          @col_width ||= @table.__send__(:col_width, @col)
         end
       end
     end
