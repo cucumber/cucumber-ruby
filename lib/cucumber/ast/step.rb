@@ -27,40 +27,17 @@ module Cucumber
       #
       #   lambda { |param| "[#{param}]" }
       #
-      def accept(visitor, formats)
+      def accept(visitor)
         @step_mother.execute_step_definition(@name, @world, *@inline_args)
-        visitor.visit_step_name(format(formats, :passed))
+        visitor.visit_step_name(@gwt, @name, :passed)
         @inline_args.each do |inline_arg|
           visitor.visit_inline_arg(inline_arg)
         end
       rescue StepMom::Pending => e
-        visitor.visit_step_name(format(formats, :pending))
+        visitor.visit_step_name(@gwt, @name, :pending)
       rescue Exception => e
-        visitor.visit_step_name(format(formats, :failed))
+        visitor.visit_step_name(@gwt, @name, :failed)
         visitor.visit_step_error(e)
-      end
-
-      private
-
-      def format(formats, status)
-        line = if (status == :pending)
-          @gwt + " " + @name
-        else
-          @gwt + " " + @step_mother.format(@name, format_for(formats, status, :param))
-        end
-        line_format = format_for(formats, status)
-        if Proc === line_format
-          line_format.call(line)
-        else
-          line_format % line
-        end
-      end
-
-      def format_for(formats, *keys)
-        key = keys.join('_').to_sym
-        fmt = formats[key]
-        raise "No format for #{key.inspect}: #{formats.inspect}" if fmt.nil?
-        fmt
       end
     end
   end

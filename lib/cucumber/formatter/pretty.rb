@@ -11,8 +11,8 @@ module Cucumber
       extend Formatters::ANSIColor
       FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
 
-      def initialize(io)
-        @io = io
+      def initialize(step_mother, io)
+        @step_mother, @io = step_mother, io
       end
 
       def visit_feature(feature)
@@ -57,10 +57,11 @@ module Cucumber
       end
 
       def visit_step(step)
-        step.accept(self, FORMATS)
+        step.accept(self)
       end
 
-      def visit_step_name(formatted_step_name)
+      def visit_step_name(gwt, step_name, status)
+        formatted_step_name = format(gwt, step_name, status)
         @io.write("    " + formatted_step_name + "\n")
       end
 
@@ -85,6 +86,29 @@ module Cucumber
       def visit_step_error(e)
         @io.write("      " + e.message + "\n")
         @io.write("      " + e.cucumber_backtrace.join("\n      ") + "\n")
+      end
+
+    private
+
+      def format(gwt, step_name, status)
+        line = if (status == :pending)
+          gwt + " " + step_name
+        else
+          gwt + " " + @step_mother.format(step_name, format_for(status, :param))
+        end
+        line_format = format_for(status)
+        if Proc === line_format
+          line_format.call(line)
+        else
+          line_format % line
+        end
+      end
+
+      def format_for(*keys)
+        key = keys.join('_').to_sym
+        fmt = FORMATS[key]
+        raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
+        fmt
       end
     end
   end
