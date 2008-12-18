@@ -12,7 +12,7 @@ module Cucumber
 
       # Executes the step and calls methods back on +visitor+
       def accept(visitor)
-        @step_mother.execute_step(@name, @world, *@inline_args)
+        @step_mother.execute_step_by_name(@name, @world, *@inline_args)
         visitor.visit_step_name(@gwt, @name, :passed)
         @inline_args.each do |inline_arg|
           visitor.visit_inline_arg(inline_arg)

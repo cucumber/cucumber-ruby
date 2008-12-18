@@ -46,9 +46,9 @@ module Cucumber
     # of +inline_args+ can be passed, although in practice
     # there will be 0 or 1, since the parser only supports
     # 1 inline argument (Table or InlineString) per Step.
-    def execute_step(step_name, world, *inline_args) #:nodoc
+    def execute_step_by_name(step_name, world, *inline_args) #:nodoc
       step_definition = find_step_definition(step_name)
-      step_definition.execute_in(world, step_name, *inline_args)
+      step_definition.execute_by_name(world, step_name, *inline_args)
     end
     
     # Formats the matched arguments of a Step. This method

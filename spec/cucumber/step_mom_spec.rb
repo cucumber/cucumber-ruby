@@ -23,13 +23,13 @@ module Cucumber
       @step_mother.Given(/Three blind (.*)/) {|animal|}
 
       lambda do
-        @step_mother.execute_step("Three blind mice", Object.new)
+        @step_mother.execute_step_by_name("Three blind mice", Object.new)
       end.should raise_error(StepMom::Multiple)
     end
 
     it "should raise Pending error when no step definitions match" do
       lambda do
-        @step_mother.execute_step("Three blind mice", Object.new)
+        @step_mother.execute_step_by_name("Three blind mice", Object.new)
       end.should raise_error(StepMom::Pending)
     end
 

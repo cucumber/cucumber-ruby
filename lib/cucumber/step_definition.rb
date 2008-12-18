@@ -30,16 +30,16 @@ module Cucumber
       step_name.gzub(@regexp, format)
     end
 
-    def execute_in(world, step_name, *inline_args)
+    def execute_by_name(world, step_name, *inline_args)
       args = step_name.match(@regexp).captures + inline_args
-      execute_with(world, *args)
+      execute(world, *args)
     end
 
-    def execute_with(world, *args)
+    def execute(world, *args)
       begin
         @proc.call_in(world, *args)
       rescue Exception => e
-        method_line = "#{__FILE__}:#{__LINE__ - 2}:in `execute_with'"
+        method_line = "#{__FILE__}:#{__LINE__ - 2}:in `execute'"
         e.cucumber_strip_backtrace!(method_line, @regexp.to_s)
         raise e
       end
