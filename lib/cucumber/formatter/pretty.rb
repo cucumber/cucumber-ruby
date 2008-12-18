@@ -75,16 +75,17 @@ module Cucumber
       end
 
       def visit_table_cell(table_cell)
-        @io.write table_cell.to_s + "|"
+        table_cell.accept(self)
+      end
+
+      def visit_table_cell_value(value, width)
+        @io.write(" " + value.ljust(width) + " |")
       end
 
       def visit_step_error(e)
         @io.write("      " + e.message + "\n")
         @io.write("      " + e.cucumber_backtrace.join("\n      ") + "\n")
       end
-
-      private
-
     end
   end
 end

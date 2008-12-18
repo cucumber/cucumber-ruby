@@ -8,7 +8,6 @@ module Cucumber
 
       def initialize(step_mother, gwt, name, *inline_args)
         @step_mother, @gwt, @name, @inline_args = step_mother, gwt, name, inline_args
-        @status = :pending
       end
 
       # Executes the step and calls back on +visitor+ with a formatted
