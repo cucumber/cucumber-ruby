@@ -10,7 +10,10 @@ module Cucumber
       end
       
       def parse(text)
-        @parser.parse_or_fail(text)
+        feature = @parser.parse_or_fail(text)
+        feature.extend(Module.new{
+          attr_reader :comment, :tags, :name, :feature_elements
+        })
       end
       
       def parse_file(file)
@@ -39,13 +42,21 @@ module Cucumber
 
       describe "Tags" do
         it "should parse a file with tags on a feature" do
-          parse("# My comment\n@hello @world Feature: hi\n").tags.tag_names.should == %w{hello world}
+          tags = parse("# My comment\n@hello @world Feature: hi\n").tags
+          tags.extend(Module.new{
+            attr_reader :tag_names
+          })
+          tags.tag_names.should == %w{hello world}
         end
       end
 
       describe "Scenarios" do
         it "should parse an empty scenario" do
-          parse("Feature: Hi\nScenario: Hello\n").feature_elements[0].name.should == "Hello"
+          scenario = parse("Feature: Hi\nScenario: Hello\n").feature_elements[0]
+          scenario.extend(Module.new{
+            attr_reader :name
+          })
+          scenario.name.should == "Hello"
         end
       end
     end
