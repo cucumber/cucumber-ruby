@@ -19,7 +19,15 @@ module Cucumber
       parser = TreetopParser::FeatureParser.new
       feature = parser.parse_feature(feature_file)
     end
-    
+
+    before do
+      ::Term::ANSIColor.coloring = false
+    end
+
+    after do
+      ::Term::ANSIColor.coloring = true
+    end
+
     before do # TODO: Way more setup and duplication of lib code. Use lib code!
       @io = StringIO.new
       @step_mother = StepMother.new
@@ -51,7 +59,7 @@ module Cucumber
 
 1)
 dang
-#{__FILE__}:48:in `Then /I should owe (\\d*) cucumbers/'
+#{__FILE__}:56:in `Then /I should owe (\\d*) cucumbers/'
 #{@feature_file}:9:in `Then I should owe 7 cucumbers'
 })
     end
