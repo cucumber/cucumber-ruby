@@ -48,13 +48,7 @@ module Cucumber
     # 1 inline argument (Table or InlineString) per Step.
     def execute_step(step_name, world, *inline_args) #:nodoc
       step_definition = find_step_definition(step_name)
-      begin
-        step_definition.execute_in(world, step_name, *inline_args)
-      rescue Exception => e
-        method_line = "#{__FILE__}:#{__LINE__ - 2}:in `execute_step'"
-        step_definition.strip_backtrace!(e, method_line)
-        raise e
-      end
+      step_definition.execute_in(world, step_name, *inline_args)
     end
     
     # Formats the matched arguments of a Step. This method

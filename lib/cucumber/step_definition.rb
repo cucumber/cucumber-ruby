@@ -31,12 +31,18 @@ module Cucumber
     end
 
     def execute_in(world, step_name, *inline_args)
-      args = step_name.match(@regexp).captures
-      @proc.call_in(world, *(args + inline_args))
+      args = step_name.match(@regexp).captures + inline_args
+      execute_with(world, *args)
     end
 
-    def strip_backtrace!(error, line)
-      error.cucumber_strip_backtrace!(line, regexp.to_s)
+    def execute_with(world, *args)
+      begin
+        @proc.call_in(world, *args)
+      rescue Exception => e
+        method_line = "#{__FILE__}:#{__LINE__ - 2}:in `execute_with'"
+        e.cucumber_strip_backtrace!(method_line, @regexp.to_s)
+        raise e
+      end
     end
   end
 end
