@@ -61,4 +61,18 @@ Feature: Outlines
       |   4    | strawberrys|  1   |
       |   2    | apricots   |  5   |
 
+  Scenario Outline: with step tables and placeholders in step tables
+    Given I have the following fruits in my pantry
+      |    name     | quantity      |
+      | cucumbers   | <quant_cukes> |
+      | strawberrys | <quant_straw> |
+      | apricots    | <quant_apric> |
 
+    When I eat <number> <fruits> from the pantry
+    Then I should have <left> <fruits> in the pantry
+
+    Examples:
+      | quant_cukes | quant_straw | quant_apric | number |   fruits   | left |
+      | 10          | 5           | 7           |   2    | cucumbers  |  8   |
+      | 10          | 5           | 7           |   4    | strawberrys|  1   |
+      | 10          | 5           | 7           |   2    | apricots   |  5   |
