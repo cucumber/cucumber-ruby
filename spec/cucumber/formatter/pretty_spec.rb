@@ -32,7 +32,7 @@ module Cucumber
           "Pretty printing",
           [Ast::Scenario.new(
             Ast::Comment.new("    # My scenario comment  \n# On two lines \n"),
-            Ast::Tags.new(['three']),
+            Ast::Tags.new(['three', 'four']),
             "A Scenario",
             [
               step1=Ast::Step.new(step_mother, "Given", "a passing step with a table:", table),
@@ -56,7 +56,7 @@ Feature: Pretty printing
 
   # My scenario comment
   # On two lines
-  @three
+  @three @four
   Scenario: A Scenario
     \e[32mGiven a \e[32m\e[1mpassing\e[0m\e[0m\e[32m step with a table:\e[0m
       | 1    | 22    | 333    |

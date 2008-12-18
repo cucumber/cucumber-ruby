@@ -25,11 +25,16 @@ module Cucumber
       end
 
       def visit_tags(tags)
-        tag_line = tags.tag_names.map do |tag_name|
-          (" " * @indent) + "@#{tag_name}"
-        end.join(" ")
-        @io.write(tag_line)
+        @io.write(" " * @indent)
+        @tag_space = ""
+        tags.accept(self)
         @io.write("\n")
+      end
+
+      def visit_tag_name(tag_name)
+        @io.write(@tag_space)
+        @io.write("@#{tag_name}")
+        @tag_space = " "
       end
 
       def visit_feature_name(name)
