@@ -22,15 +22,27 @@ module Cucumber
 
       describe "Comments" do
         it "should parse a file with only a one line comment" do
-          parse("# My comment\nFeature: hi\n").comment.value.should == "# My comment\n"
+          comment = parse("# My comment\nFeature: hi\n").comment
+          comment.extend(Module.new{
+            attr_reader :value
+          })
+          comment.value.should == "# My comment\n"
         end
 
         it "should parse a file with only a multiline comment" do
-          parse("# Hello\n# World\nFeature: hi\n").comment.value.should == "# Hello\n# World\n"
+          comment = parse("# Hello\n# World\nFeature: hi\n").comment
+          comment.extend(Module.new{
+            attr_reader :value
+          })
+          comment.value.should == "# Hello\n# World\n"
         end
 
         it "should parse a file with no comments" do
-          parse("Feature: hi\n").comment.value.should == ""
+          comment = parse("Feature: hi\n").comment
+          comment.extend(Module.new{
+            attr_reader :value
+          })
+          comment.value.should == ""
         end
 
         it "should parse a file with only a multiline comment with newlines" do
