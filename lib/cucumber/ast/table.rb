@@ -14,6 +14,8 @@ module Cucumber
         # Verify that it's square
         raw.transpose
         @raw = raw
+        @cells_class = Cells
+        @cell_class = Cell
       end
 
       def accept(visitor)
@@ -34,13 +36,13 @@ module Cucumber
 
       def rows
         @rows ||= cell_matrix.map do |cell_row|
-          Cells.new(cell_row)
+          @cells_class.new(self, cell_row)
         end
       end
 
       def columns
         @columns ||= cell_matrix.transpose.map do |cell_row|
-          Cells.new(cell_row)
+          @cells_class.new(self, cell_row)
         end
       end
 
@@ -51,7 +53,7 @@ module Cucumber
           col = -1
           raw_row.map do |raw_cell|
             col += 1
-            Cell.new(raw_cell, self, row, col)
+            @cell_class.new(raw_cell, self, row, col)
           end
         end
       end
@@ -60,8 +62,8 @@ module Cucumber
       class Cells
         include Enumerable
 
-        def initialize(cells)
-          @cells = cells
+        def initialize(table, cells)
+          @table, @cells = table, cells
         end
 
         def accept(visitor)

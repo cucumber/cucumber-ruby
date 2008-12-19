@@ -42,6 +42,10 @@ module Cucumber
         @visitor.should_receive(:visit_inline_arg).with(table)
         @step.accept(@visitor)
       end
+
+      it "should generate outline name" do
+
+      end
     end
   end
 end

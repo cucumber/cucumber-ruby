@@ -25,13 +25,13 @@ module Cucumber
       end
 
       def visit_comment_line(comment_line)
-        @io.write(" " * @indent)
+        indent
         @io.write(comment_line)
         @io.write("\n")
       end
 
       def visit_tags(tags)
-        @io.write(" " * @indent)
+        indent
         @tag_space = ""
         tags.accept(self)
         @io.write("\n")
@@ -52,11 +52,18 @@ module Cucumber
         feature_element.accept(self)
       end
 
+      def visit_examples(examples)
+        @io.write("  Examples:\n")
+        @indent = 4
+        examples.accept(self)
+      end
+
       def visit_scenario_name(name)
         @io.write("  Scenario: #{name}\n")
       end
 
       def visit_step(step)
+        @indent = 6
         step.accept(self)
       end
 
@@ -70,7 +77,8 @@ module Cucumber
       end
 
       def visit_table_row(table_row)
-        @io.write "      |"
+        indent
+        @io.write "|"
         table_row.accept(self)
         @io.puts
       end
@@ -89,6 +97,10 @@ module Cucumber
       end
 
     private
+
+      def indent
+        @io.write(" " * @indent)
+      end
 
       def format(gwt, step_name, status)
         line = if (status == :pending)

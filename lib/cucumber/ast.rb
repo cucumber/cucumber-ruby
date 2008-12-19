@@ -5,6 +5,9 @@ require 'cucumber/ast/scenario'
 require 'cucumber/ast/scenario_outline'
 require 'cucumber/ast/step'
 require 'cucumber/ast/table'
+require 'cucumber/ast/outline_table'
+require 'cucumber/ast/examples'
+require 'cucumber/ast/visitor'
 
 module Cucumber
   # Classes in this module represent the Abstract Syntax Tree (AST)
