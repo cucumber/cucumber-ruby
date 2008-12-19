@@ -10,6 +10,7 @@ module Cucumber
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@name)
         @steps.each do |step|
+          # TODO - set the world here?
           visitor.visit_step(step)
         end
       end
