@@ -24,7 +24,7 @@ end
 # So that Test::Unit doesn't launch at the end - makes it think it has already been run.
 Test::Unit.run = true if Test::Unit.respond_to?(:run=)
 
-$main = self
+$cucumber_toplevel = self
 
 module Cucumber #:nodoc:
   module Rails
@@ -44,22 +44,22 @@ module Cucumber #:nodoc:
     def self.use_transactional_fixtures
       World.use_transactional_fixtures = true
       if defined?(ActiveRecord::Base)
-        $main.Before do
+        $cucumber_toplevel.Before do
           if ActiveRecord::Base.connection.respond_to?(:increment_open_transactions)
             ActiveRecord::Base.connection.increment_open_transactions
           else
-            ActiveRecord::Base.send :increment_open_transactions
+            ActiveRecord::Base.__send__(:increment_open_transactions)
           end
           ActiveRecord::Base.connection.begin_db_transaction
           ActionMailer::Base.deliveries = [] if defined?(ActionMailer::Base)
         end
         
-        $main.After do
+        $cucumber_toplevel.After do
           ActiveRecord::Base.connection.rollback_db_transaction
           if ActiveRecord::Base.connection.respond_to?(:decrement_open_transactions)
             ActiveRecord::Base.connection.decrement_open_transactions
           else
-            ActiveRecord::Base.send :decrement_open_transactions
+            ActiveRecord::Base.__send__(:decrement_open_transactions)
           end
         end
       end
