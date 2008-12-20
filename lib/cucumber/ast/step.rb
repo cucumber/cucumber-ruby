@@ -28,7 +28,7 @@ module Cucumber
         @step_mother.execute_step_by_name(name, @world, *@inline_args)
       end
 
-      def outline_name(args)
+      def outline_name(*args)
         if @name.subs(/<\w+>/, *args) == @name.subs(/<\w+>/, *(args + ['']))
           @name.subs(/<\w+>/, *args)
         end

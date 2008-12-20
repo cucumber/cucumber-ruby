@@ -14,17 +14,27 @@ module Cucumber
 
       def prepare
         @world = Object.new
+        @dupe_steps = @steps.dup
+        next_step
       end
 
       def push_arg(cell_arg)
-        @args ||= []
         @args << cell_arg
 
-        if(replaced_name = @steps[0].outline_name(@args))
-          @args = nil
-          @steps[0].world = @world
-          @steps[0].execute(replaced_name)
+        if(replaced_name = @current_step.outline_name(*@args))
+          step = @current_step
+          next_step
+          step.execute(replaced_name)
         end
+      end
+
+      private
+
+      def next_step
+        return if @dupe_steps.empty?
+        @current_step = @dupe_steps.shift
+        @current_step.world = @world
+        @args = []
       end
     end
   end
