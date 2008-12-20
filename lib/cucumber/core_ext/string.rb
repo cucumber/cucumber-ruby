@@ -1,4 +1,5 @@
 class String
+  # re.source.gsub(/\([^)]*\)/, '$var')
   # Cumulative #sub
   def subs(re, *args)
     args.inject(self) do |s,arg|

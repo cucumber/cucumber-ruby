@@ -59,14 +59,6 @@ module Cucumber
         step_mother.should_receive(:execute_step_by_name).with("a tasty tomato", anything)
         visitor = Visitor.new
         scenario_outline.accept(visitor)
-
-        # Just keeping this code for debugging (output)
-        #
-        # require 'cucumber/formatter/pretty'
-        # mom = Object.new
-        # mom.extend(StepMom)
-        # visitor = Formatter::Pretty.new(mom, STDOUT)
-        # visitor.visit_feature_element(scenario_outline)
       end
     end
   end
