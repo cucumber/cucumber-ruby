@@ -8,16 +8,14 @@ module Cucumber
     # This gets parsed into a Comment with value <tt>"# Lorem ipsum\n# dolor sit amet\n"</tt>
     #
     class Comment
-      attr_reader :value
-      
       def initialize(value)
         @value = value
       end
 
-      # Returns the value of this comment - aligned and indented by +indent+ spaces
-      def indented(indent)
-        space = " " * indent
-        space + value.split("\n").map{|line| line.strip}.join("\n#{space}") + "\n"
+      def accept(visitor)
+        @value.split("\n").each do |line|
+          visitor.visit_comment_line(line.strip)
+        end
       end
     end
   end

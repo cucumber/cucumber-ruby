@@ -2,20 +2,23 @@ require 'cucumber/ast/comment'
 require 'cucumber/ast/tags'
 require 'cucumber/ast/feature'
 require 'cucumber/ast/scenario'
+require 'cucumber/ast/scenario_outline'
 require 'cucumber/ast/step'
 require 'cucumber/ast/table'
+require 'cucumber/ast/outline_table'
+require 'cucumber/ast/examples'
+require 'cucumber/ast/visitor'
 
 module Cucumber
   # Classes in this module represent the Abstract Syntax Tree (AST)
   # that gets created when feature files are parsed.
   #
-  # The AST can be traversed with a visitor, which must define the
-  # following methods:
+  # AST classes don't expose any internal data directly. This is
+  # in order to encourage a less coupled design in the classes
+  # that operate on the AST. The only public method is #accept.
   #
-  #   class SomeVisitor
-  #     def visit_feature
-  #     end
-  #   end
+  # The AST can be traversed with a visitor. See Cucumber::Format::Pretty
+  # for an example.
   module Ast
   end
 end

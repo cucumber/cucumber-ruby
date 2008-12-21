@@ -11,6 +11,9 @@ module Cucumber
       
       def parse(text)
         table = @parser.parse_or_fail(text)
+        table.extend(Module.new{
+          attr_reader :raw
+        })
         table.raw
       end
 

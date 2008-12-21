@@ -1,4 +1,12 @@
 class String
+  # re.source.gsub(/\([^)]*\)/, '$var')
+  # Cumulative #sub
+  def subs(re, *args)
+    args.inject(self) do |s,arg|
+      s.sub(re, arg)
+    end
+  end
+
   def gzub(regexp, format=nil, &proc)
     md = match(regexp)
     raise "#{self.inspect} doesn't match #{regexp.inspect}" if md.nil?

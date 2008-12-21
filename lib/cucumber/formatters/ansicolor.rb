@@ -69,6 +69,7 @@ module Cucumber
         'pending' => 'yellow',
         'failed'  => 'red',
         'passed'  => 'green',
+        'outline' => 'cyan',
         'skipped' => 'cyan',
         'comment' => 'grey',
         'tag'     => 'blue'
