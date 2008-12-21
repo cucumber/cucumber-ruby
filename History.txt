@@ -1,7 +1,17 @@
-== 0.1.13 (In Git)
+== 0.1.13 2008-12-20
+
+It's time for some new features again. Output is now much better since you can use diffing, tweak
+the output colours and get the full --backtrace if you want. Managing your support/* files became 
+a little easier since they are now always loaded before the step definitions. Life became easier 
+for Windows users in Norway (and other countries using unicode in the features). Plus several other 
+bug fixes.
+
+Enjoy!
 
 === New features
-* Added new --backtrace option to show full backtrace (Aslak Hellesøy)   
+* Console output is no longer bold, but regular. Step arguments are bold instead of blold+underlined. (Aslak Hellesøy)
+* Console output can be configured with CUCUMBER_COLORS in your shell. (Aslak Hellesøy)
+* Added new --backtrace option to show full backtrace (Aslak Hellesøy)
 * Enable RSpec's diffing automatically if RSpec is loaded (Aslak Hellesøy)
 * Files in support directories are loaded before any other file (i.e. step definitions.)  (#120, Ben Mabey)
 * The Rails features generator got some love and is now tested: http://github.com/aslakhellesoy/cucumber_rails (Aslak Hellesøy)
