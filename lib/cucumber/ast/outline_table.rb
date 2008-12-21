@@ -5,30 +5,22 @@ module Cucumber
         super(raw)
         @scenario_outline = scenario_outline
         @cells_class = ExampleCells
-        @cell_class = ArgCell
       end
 
-      # Prepares the outline to be executed.
-      # This happens when a row accepts a visitor
-      def prepare_outline #:nodoc:
-        @scenario_outline.prepare
-      end
-
-      def push_arg(cell_arg)
-        @scenario_outline.push_arg(cell_arg)
+      def execute_row(cells)
+        @scenario_outline.execute_row(cells)
       end
 
       class ExampleCells < Cells
         def accept(visitor)
-          @table.prepare_outline
+          unless header?
+            @table.execute_row(self.to_hash)
+          end
           super
         end
-      end
-      
-      class ArgCell < Cell
-        def accept(visitor)
-          @table.push_arg(@value)
-          visitor.visit_table_cell_value(@value, col_width)
+
+        def header?
+          index == 0
         end
       end
     end

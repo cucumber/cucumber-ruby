@@ -32,6 +32,12 @@ module Cucumber
       it "should know about max width of a row" do
         @table.columns[1].__send__(:width).should == 5
       end
+
+      it "should be convertible to an array of hashes" do
+        @table.hashes.should == [
+          {'1' => '4444', '22' => '55555', '333' => '666666'}
+        ]
+      end
     end
   end
 end

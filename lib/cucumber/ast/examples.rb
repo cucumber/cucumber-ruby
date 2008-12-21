@@ -1,8 +1,8 @@
 module Cucumber
   module Ast
     class Examples
-      def initialize(scenario_outline, matrix)
-        @outline_table = OutlineTable.new(matrix, scenario_outline)
+      def initialize(scenario_outline, outline_table)
+        @outline_table = outline_table
       end
 
       def accept(visitor)

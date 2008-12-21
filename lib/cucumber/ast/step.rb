@@ -28,10 +28,12 @@ module Cucumber
         @step_mother.execute_step_by_name(name, @world, *@inline_args)
       end
 
-      def outline_name(*args)
-        if @name.subs(/<\w+>/, *args) == @name.subs(/<\w+>/, *(args + ['']))
-          @name.subs(/<\w+>/, *args)
+      def execute_with_arguments(arguments)
+        name_with_arguments_replaced = @name
+        arguments.each do |name, value|
+          name_with_arguments_replaced = name_with_arguments_replaced.gsub(/<#{name}>/, value)
         end
+        execute(name_with_arguments_replaced)
       end
     end
   end

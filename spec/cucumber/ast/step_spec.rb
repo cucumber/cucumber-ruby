@@ -42,11 +42,6 @@ module Cucumber
         @visitor.should_receive(:visit_inline_arg).with(table)
         @step.accept(@visitor)
       end
-
-      it "should generate outline name" do
-        @step = Step.new(nil, "Given", "I <what> my <vegetable>")
-        @step.outline_name("like", "cucumber").should == "I like my cucumber"
-      end
     end
   end
 end
