@@ -62,9 +62,9 @@ module Cucumber
         @io.write("  Scenario: #{name}\n")
       end
 
-      def visit_step(step)
+      def visit_step(step, world)
         @indent = 6
-        step.accept(self)
+        step.accept(self, world)
       end
 
       def visit_step_name(gwt, step_name, status)
@@ -103,7 +103,7 @@ module Cucumber
       end
 
       def format(gwt, step_name, status)
-        line = if (status == :pending)
+        line = if [:pending, :outline].index(status)
           gwt + " " + step_name
         else
           gwt + " " + @step_mother.format_args(step_name, format_for(status, :param))

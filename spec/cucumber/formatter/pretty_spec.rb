@@ -21,8 +21,11 @@ module Cucumber
         step_mother.Given /^a (.*) step$/ do |what|
           flunk if what == 'failing'
         end
+        step_mother.World do
+          MyWorld.new
+        end
 
-        table =Ast::Table.new([
+        table = Ast::Table.new([
           %w{1 22 333},
           %w{4444 55555 666666}
         ])
@@ -31,19 +34,16 @@ module Cucumber
           Ast::Tags.new(['one', 'two']),
           "Pretty printing",
           [Ast::Scenario.new(
+            step_mother,
             Ast::Comment.new("    # My scenario comment  \n# On two lines \n"),
             Ast::Tags.new(['three', 'four']),
             "A Scenario",
             [
-              step1=Ast::Step.new(step_mother, "Given", "a passing step with a table:", table),
-              step2=Ast::Step.new(step_mother, "Given", "a failing step")
+              ["Given", "a passing step with a table:", table],
+              ["Given", "a failing step"]
             ]
           )]
         )
-        
-        world = MyWorld.new
-        step1.world = world
-        step2.world = world
 
         io = StringIO.new
         pretty = Formatter::Pretty.new(step_mother, io)

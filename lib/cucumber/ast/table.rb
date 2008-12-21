@@ -35,7 +35,7 @@ module Cucumber
       #
       #   [{'a' => '2', 'b' => '3', 'sum' => '5'}, {'a' => '7', 'b' => '9', 'sum' => '16'}]
       #
-      def hashes(symbol=false)
+      def hashes
         @hashes ||= rows[1..-1].map do |row|
           row.to_hash
         end

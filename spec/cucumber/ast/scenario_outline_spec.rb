@@ -6,28 +6,20 @@ require 'cucumber/core_ext/string'
 module Cucumber
   module Ast
     describe ScenarioOutline do
-      # Scenario Outline: reusing place holder
-      #   Given there are <start> cucumbers
-      #   When I eat <eat> cucumbers
-      #   Then I should have <left> cucumbers
-      #   And I should have <eat> cucumbers in my belly
-      # 
-      # Examples:
-      #   | start  | eat  | left |
-      #   |  12    |  5   |  7   |
-      #   |  20    |  6   |  14  |
-      it "should reuse variables" do
+      it "should reuplace all variables" do
         step_mother = mock("StepMother")
+        step_mother.should_receive(:new_world).twice.and_return(Object.new)
 
         scenario_outline = ScenarioOutline.new(
+          step_mother,
           Comment.new(""),
           Tags.new([]),
           "My outline",
           [
-            Step.new(step_mother, 'Given', 'there are <start> cucumbers'),
-            Step.new(step_mother, 'When',  'I eat <eat> cucumbers'),
-            Step.new(step_mother, 'Then',  'I should have <left> cucumbers'),
-            Step.new(step_mother, 'And',   'I should have <eat> cucumbers in my belly')
+            ['Given', 'there are <start> cucumbers'],
+            ['When',  'I eat <eat> cucumbers'],
+            ['Then',  'I should have <left> cucumbers'],
+            ['And',   'I should have <eat> cucumbers in my belly']
           ],
           [
             %w{start eat left},
