@@ -41,6 +41,23 @@ module Cucumber
       alias_method adverb, :register_step_definition
     end
 
+    # Registers a World proc. You can call this method as many times as you
+    # want (typically from ruby scripts under <tt>support</tt>).
+    def World(&proc)
+      @world_procs ||= []
+      @world_procs << proc
+    end
+
+    # Creates a new world instance
+    def new_world #:nodoc:
+      world = Object.new
+      @world_procs.each do |world_proc|
+        world = world_proc.call(world)
+      end
+      world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
+      world
+    end
+
     # Finds a StepDefinition that matches +step_name+ and
     # executes it in the context of +world+. Any number
     # of +inline_args+ can be passed, although in practice
@@ -50,7 +67,7 @@ module Cucumber
       step_definition = find_step_definition(step_name)
       step_definition.execute_by_name(world, step_name, *inline_args)
     end
-    
+
     # Formats the matched arguments of a Step. This method
     # is usually called from visitors, which render output.
     #

@@ -37,8 +37,8 @@ module Cucumber
       def visit_scenario_name(name)
       end
 
-      def visit_step(step)
-        step.accept(self)
+      def visit_step(step, world)
+        step.accept(self, world)
       end
 
       def visit_step_name(gwt, step_name, status)
