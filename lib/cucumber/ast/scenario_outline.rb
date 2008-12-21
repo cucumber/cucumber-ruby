@@ -2,39 +2,25 @@ module Cucumber
   module Ast
     class ScenarioOutline
       def initialize(comment, tags, name, steps, matrix)
-        @comment, @tags, @name, @steps, @examples = comment, tags, name, steps, Examples.new(self, matrix)
+        @comment, @tags, @name, @steps = comment, tags, name, steps
+        outline_table = OutlineTable.new(matrix, self)
+        @hashes = outline_table.hashes
+        @examples = Examples.new(self, outline_table)
       end
 
       def accept(visitor)
+        @row_index = 0
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@name)
         visitor.visit_examples(@examples)
       end
 
-      def prepare
+      def execute_row(hash)
         @world = Object.new
-        @dupe_steps = @steps.dup
-        next_step
-      end
-
-      def push_arg(cell_arg)
-        @args << cell_arg
-
-        if(replaced_name = @current_step.outline_name(*@args))
-          step = @current_step
-          next_step
-          step.execute(replaced_name)
+        @steps.each do |step|
+          step.execute_with_arguments(hash)
         end
-      end
-
-      private
-
-      def next_step
-        return if @dupe_steps.empty?
-        @current_step = @dupe_steps.shift
-        @current_step.world = @world
-        @args = []
       end
     end
   end

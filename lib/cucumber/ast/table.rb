@@ -2,8 +2,8 @@ module Cucumber
   module Ast
     # Holds the data of a table parsed from a feature file:
     #
-    #   |a|b|
-    #   |c|d|
+    #   | a | b |
+    #   | c | d |
     #
     # This gets parsed into a Table holding the values <tt>[['a', 'b'], ['c', 'd']]</tt>
     #
@@ -22,6 +22,35 @@ module Cucumber
         each do |row|
           visitor.visit_table_row(row)
         end
+      end
+
+      # Converts this table into an Array of Hash. For example,
+      # a Table built from the following plain text:
+      #
+      #   | a | b | sum |
+      #   | 2 | 3 | 5   |
+      #   | 7 | 9 | 16  |
+      #
+      # Gets converted into the following:
+      #
+      #   [{'a' => '2', 'b' => '3', 'sum' => '5'}, {'a' => '7', 'b' => '9', 'sum' => '16'}]
+      #
+      def hashes(symbol=false)
+        @hashes ||= rows[1..-1].map do |row|
+          row.to_hash
+        end
+      end
+
+      def to_hash(cells)
+        hash = {}
+        @raw[0].each_with_index do |key, n|
+          hash[key] = cells.value(n)
+        end
+        hash
+      end
+
+      def index(cells)
+        rows.index(cells)
       end
 
       private
@@ -72,7 +101,19 @@ module Cucumber
           end
         end
 
+        def to_hash
+          @to_hash ||= @table.to_hash(self)
+        end
+
+        def value(n)
+          self[n].value
+        end
+
         private
+
+        def index
+          @table.index(self)
+        end
 
         def width
           map{|cell| cell.value.length}.max
