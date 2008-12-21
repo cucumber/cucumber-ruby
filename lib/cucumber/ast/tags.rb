@@ -7,10 +7,14 @@ module Cucumber
     # This gets stored internally as <tt>["invoice", "release_2"]</tt>
     #
     class Tags
-      attr_reader :tag_names
-      
       def initialize(tag_names)
         @tag_names = tag_names
+      end
+
+      def accept(visitor)
+        @tag_names.each do |tag_name|
+          visitor.visit_tag_name(tag_name)
+        end
       end
     end
   end

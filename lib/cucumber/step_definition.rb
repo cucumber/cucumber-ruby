@@ -11,30 +11,38 @@ module Cucumber
   #
   class StepDefinition
     attr_reader :regexp
-    
+
     def initialize(regexp, &proc)
       @regexp, @proc = regexp, proc
       @proc.extend(CoreExt::CallIn)
     end
-    
+
+    #:stopdoc:
+
     def match(step_name)
       case step_name
       when String then @regexp.match(step_name)
       when Regexp then @regexp == step_name
       end
     end
-    
-    def format(step_name, format)
+
+    def format_args(step_name, format)
       step_name.gzub(@regexp, format)
     end
 
-    def execute_in(world, step_name)
-      args = step_name.match(@regexp).captures
-      @proc.call_in(world, *args)
+    def execute_by_name(world, step_name, *inline_args)
+      args = step_name.match(@regexp).captures + inline_args
+      execute(world, *args)
     end
-    
-    def strip_backtrace!(error, line)
-      error.cucumber_strip_backtrace!(line, regexp.to_s)
+
+    def execute(world, *args)
+      begin
+        @proc.call_in(world, *args)
+      rescue Exception => e
+        method_line = "#{__FILE__}:#{__LINE__ - 2}:in `execute'"
+        e.cucumber_strip_backtrace!(method_line, @regexp.to_s)
+        raise e
+      end
     end
   end
 end

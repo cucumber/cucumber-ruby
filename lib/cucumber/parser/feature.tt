@@ -23,7 +23,7 @@ module Cucumber
       rule scenario
         c:comment? t:tags? scenario_keyword space? name:line_to_eol eol+ {
           def build
-            Ast::Scenario.new(c.build, t.build, name.text_value, [])
+            Ast::Scenario.new(@step_mother, c.build, t.build, name.text_value, [])
           end
         }
       end

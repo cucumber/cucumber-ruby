@@ -1,5 +1,5 @@
 class Exception
-  CUCUMBER_STRIP_ADJUSTMENT = 3
+  CUCUMBER_STRIP_ADJUSTMENT = 2
   
   CUCUMBER_FILTER_PATTERNS = [
     /vendor\/rails/, 
