@@ -176,13 +176,13 @@ module Cucumber
     
     def create_world
       world = Object.new
-      world.extend(World::Pending)
-      world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
-      define_step_call_methods(world)
-
       @world_procs.each do |world_proc|
         world = world_proc.call(world)
       end
+
+      world.extend(World::Pending)
+      world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
+      define_step_call_methods(world)
       world
     end
 

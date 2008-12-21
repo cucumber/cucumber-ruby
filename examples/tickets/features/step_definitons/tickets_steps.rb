@@ -1,5 +1,9 @@
 require 'spec'
 
+World do
+  Object.new
+end
+
 Given "be_empty" do
   [1,2].should_not be_empty
 end
