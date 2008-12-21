@@ -1,3 +1,9 @@
+== In Git
+
+=== New features
+=== Bugfixes
+=== Removed features
+
 == 0.1.13 2008-12-20
 
 It's time for some new features again. Output is now much better since you can use diffing, tweak
