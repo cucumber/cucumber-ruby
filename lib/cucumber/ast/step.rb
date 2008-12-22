@@ -10,19 +10,15 @@ module Cucumber
 
       def accept(visitor)
         if @outline
-          visitor.visit_step_name(@gwt, @name, :outline)
-          visit_inline_args(visitor, :outline)
+          visit_name_and_inline_args(visitor, :outline)
         else
           begin
             @step_mother.execute_step(@name, *@inline_args)
-            visitor.visit_step_name(@gwt, @name, :passed)
-            visit_inline_args(visitor, :passed)
+            visit_name_and_inline_args(visitor, :passed)
           rescue StepMom::Pending
-            visitor.visit_step_name(@gwt, @name, :pending)
-            visit_inline_args(visitor, :pending)
+            visit_name_and_inline_args(visitor, :pending)
           rescue Exception => error
-            visitor.visit_step_name(@gwt, @name, :failed)
-            visit_inline_args(visitor, :failed)
+            visit_name_and_inline_args(visitor, :failed)
             visitor.visit_step_error(error)
           end
         end
@@ -42,7 +38,8 @@ module Cucumber
 
       private
 
-      def visit_inline_args(visitor, status)
+      def visit_name_and_inline_args(visitor, status)
+        visitor.visit_step_name(@gwt, @name, status)
         @inline_args.each do |inline_arg|
           visitor.visit_inline_arg(inline_arg, status)
         end
