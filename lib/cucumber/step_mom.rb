@@ -7,7 +7,7 @@ module Cucumber
   # available from the top-level.
   module StepMom
 
-    class Pending < StandardError
+    class Missing < StandardError
     end
 
     class Multiple < StandardError
@@ -31,6 +31,7 @@ module Cucumber
         raise Duplicate.new(already, step_definition) if already.match(regexp)
       end
       step_definitions << step_definition
+      step_definition
     end
 
     # Registers a World proc. You can call this method as many times as you
@@ -54,7 +55,7 @@ module Cucumber
       found = step_definitions.select do |step_definition|
         step_definition.match(step_name)
       end
-      raise Pending.new(step_name) if found.empty?
+      raise Missing.new(step_name) if found.empty?
       raise Multiple.new(step_name) if found.size > 1
       Invocation.new(@world, found[0], step_name)
     end

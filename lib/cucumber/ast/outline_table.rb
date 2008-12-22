@@ -16,7 +16,7 @@ module Cucumber
           @table.execute_row(self.to_hash) unless header?
           visit_cells(visitor, :passed)
         rescue StepMom::Pending
-          visit_cells(visitor, :pending)
+          visit_cells(visitor, :missing)
         rescue Exception => error
           visit_cells(visitor, :failed)
         end
