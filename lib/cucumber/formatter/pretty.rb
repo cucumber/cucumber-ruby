@@ -62,33 +62,33 @@ module Cucumber
         @io.write("  Scenario: #{name}\n")
       end
 
-      def visit_step(step, world)
+      def visit_step(step)
         @indent = 6
-        step.accept(self, world)
+        step.accept(self)
       end
 
-      def visit_step_name(gwt, step_name, status)
-        formatted_step_name = format(gwt, step_name, status)
+      def visit_step_name(gwt, step_name, status, invocation, comment_padding)
+        formatted_step_name = format_step(gwt, step_name, status, invocation, comment_padding)
         @io.write("    " + formatted_step_name + "\n")
       end
 
-      def visit_inline_arg(inline_arg)
-        inline_arg.accept(self)
+      def visit_inline_arg(inline_arg, status)
+        inline_arg.accept(self, status)
       end
 
-      def visit_table_row(table_row)
+      def visit_table_row(table_row, status)
         indent
         @io.write "|"
-        table_row.accept(self)
+        table_row.accept(self, status)
         @io.puts
       end
 
-      def visit_table_cell(table_cell)
-        table_cell.accept(self)
+      def visit_table_cell(table_cell, status)
+        table_cell.accept(self, status)
       end
 
-      def visit_table_cell_value(value, width)
-        @io.write(" " + value.ljust(width) + " |")
+      def visit_table_cell_value(value, width, status)
+        @io.write(" " + format_string(value.ljust(width), status) + " |")
       end
 
       def visit_step_error(e)
@@ -96,32 +96,39 @@ module Cucumber
         @io.write("      " + e.cucumber_backtrace.join("\n      ") + "\n")
       end
 
-    private
+      private
 
       def indent
         @io.write(" " * @indent)
       end
 
-      def format(gwt, step_name, status)
+      def format_step(gwt, step_name, status, invocation, comment_padding)
+        # TODO - we want to format args for outline steps too. -And show line number of step def
         line = if [:pending, :outline].index(status)
-          gwt + " " + step_name
-        else
-          gwt + " " + @step_mother.format_args(step_name, format_for(status, :param))
-        end
-        line_format = format_for(status)
-        if Proc === line_format
-          line_format.call(line)
-        else
-          line_format % line
-        end
+        gwt + " " + step_name
+      else
+        comment = format_string(' # ' + invocation.file_colon_line, :comment)
+        padding = " " * comment_padding
+        gwt + " " + invocation.format_args(format_for(status, :param)) + padding + comment
       end
+      format_string(line, status)
+    end
 
-      def format_for(*keys)
-        key = keys.join('_').to_sym
-        fmt = FORMATS[key]
-        raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
-        fmt
+    def format_string(string, status)
+      fmt = format_for(status)
+      if Proc === fmt
+        fmt.call(string)
+      else
+        fmt % string
       end
     end
+
+    def format_for(*keys)
+      key = keys.join('_').to_sym
+      fmt = FORMATS[key]
+      raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
+      fmt
+    end
   end
+end
 end
