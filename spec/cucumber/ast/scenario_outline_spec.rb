@@ -6,10 +6,7 @@ require 'cucumber/core_ext/string'
 module Cucumber
   module Ast
     describe ScenarioOutline do
-      it "should reuplace all variables" do
-        step_mother = mock("StepMother")
-        step_mother.should_receive(:new_world).twice.and_return(Object.new)
-
+      def make_scenario_outline(step_mother)
         scenario_outline = ScenarioOutline.new(
           step_mother,
           Comment.new(""),
@@ -27,27 +24,42 @@ module Cucumber
             %w{20 6 14}
           ]
         )
+      end
 
-        step_mother.should_receive(:execute_step_by_name).with("there are 12 cucumbers", anything)
-        step_mother.should_receive(:execute_step_by_name).with("I eat 5 cucumbers", anything)
-        step_mother.should_receive(:execute_step_by_name).with("I should have 7 cucumbers", anything)
-        step_mother.should_receive(:execute_step_by_name).with("I should have 5 cucumbers in my belly", anything)
+      it "should replace all variables and call outline once for each table row" do
+        step_mother = mock("StepMother")
+        step_mother.should_receive(:new_world!).exactly(2).times.and_return(Object.new)
+        scenario_outline = make_scenario_outline(step_mother)
 
-        step_mother.should_receive(:execute_step_by_name).with("there are 20 cucumbers", anything)
-        step_mother.should_receive(:execute_step_by_name).with("I eat 6 cucumbers", anything)
-        step_mother.should_receive(:execute_step_by_name).with("I should have 14 cucumbers", anything)
-        step_mother.should_receive(:execute_step_by_name).with("I should have 6 cucumbers in my belly", anything)
+        visitor = Visitor.new
+        invocation = mock('Invocation')
+        invocation.stub!(:invoke)
 
-        if ENV['CUCUMBER_DEBUG']
-          require 'cucumber/formatter/pretty'
-          mom = Object.new
-          mom.extend(StepMom)
-          visitor = Formatter::Pretty.new(mom, STDOUT)
-          visitor.visit_feature_element(scenario_outline)
-        else
-          visitor = Visitor.new
-          visitor.visit_feature_element(scenario_outline)
-        end
+        visitor.should_receive(:visit_step_name).with('Given', 'there are <start> cucumbers', :outline, nil, 12)
+        visitor.should_receive(:visit_step_name).with('When',  'I eat <eat> cucumbers', :outline, nil, 19)
+        visitor.should_receive(:visit_step_name).with('Then',  'I should have <left> cucumbers', :outline, nil, 10)
+        visitor.should_receive(:visit_step_name).with('And',   'I should have <eat> cucumbers in my belly', :outline, nil, 0)
+
+        step_mother.should_receive(:invocation).with("there are 12 cucumbers").and_return(invocation)
+        step_mother.should_receive(:invocation).with("I eat 5 cucumbers").and_return(invocation)
+        step_mother.should_receive(:invocation).with("I should have 7 cucumbers").and_return(invocation)
+        step_mother.should_receive(:invocation).with("I should have 5 cucumbers in my belly").and_return(invocation)
+
+        step_mother.should_receive(:invocation).with("there are 20 cucumbers").and_return(invocation)
+        step_mother.should_receive(:invocation).with("I eat 6 cucumbers").and_return(invocation)
+        step_mother.should_receive(:invocation).with("I should have 14 cucumbers").and_return(invocation)
+        step_mother.should_receive(:invocation).with("I should have 6 cucumbers in my belly").and_return(invocation)
+
+        visitor.visit_feature_element(scenario_outline)
+      end
+
+      xit "should pretty print" do
+        require 'cucumber/formatter/pretty'
+        step_mother = Object.new
+        step_mother.extend(StepMom)
+        scenario_outline = make_scenario_outline(step_mother)
+        visitor = Formatter::Pretty.new(step_mother, STDOUT)
+        visitor.visit_feature_element(scenario_outline)
       end
     end
   end

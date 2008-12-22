@@ -44,5 +44,9 @@ module Cucumber
         raise e
       end
     end
+
+    def file_colon_line
+      @proc.file_colon_line
+    end
   end
 end
