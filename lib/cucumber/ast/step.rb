@@ -18,6 +18,8 @@ module Cucumber
             visit_name_and_inline_args(visitor, :passed, invocation)
           rescue StepMom::Missing
             visit_name_and_inline_args(visitor, :missing, nil)
+          rescue StepMom::Pending
+            visit_name_and_inline_args(visitor, :pending, invocation)
           rescue Exception => error
             visit_name_and_inline_args(visitor, :failed, invocation)
             visitor.visit_step_error(error)
