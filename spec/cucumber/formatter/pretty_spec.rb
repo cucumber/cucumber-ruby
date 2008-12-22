@@ -59,8 +59,8 @@ Feature: Pretty printing
   @three @four
   Scenario: A Scenario
     \e[32mGiven a \e[32m\e[1mpassing\e[0m\e[0m\e[32m step with a table:\e[0m
-      | 1    | 22    | 333    |
-      | 4444 | 55555 | 666666 |
+      | \e[32m1   \e[0m | \e[32m22   \e[0m | \e[32m333   \e[0m |
+      | \e[32m4444\e[0m | \e[32m55555\e[0m | \e[32m666666\e[0m |
     \e[31mGiven a \e[31m\e[1mfailing\e[0m\e[0m\e[31m step\e[0m
       I flunked
       ./spec/cucumber/formatter/pretty_spec.rb:12:in `flunk'

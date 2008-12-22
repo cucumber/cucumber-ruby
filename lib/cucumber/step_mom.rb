@@ -44,18 +44,20 @@ module Cucumber
     # Registers a World proc. You can call this method as many times as you
     # want (typically from ruby scripts under <tt>support</tt>).
     def World(&proc)
-      @world_procs ||= []
-      @world_procs << proc
+      (@world_procs ||= []) << proc
     end
 
     # Creates a new world instance
-    def new_world #:nodoc:
-      world = Object.new
-      @world_procs.each do |world_proc|
-        world = world_proc.call(world)
+    def new_world! #:nodoc:
+      @world = Object.new
+      (@world_procs ||= []).each do |world_proc|
+        @world = world_proc.call(@world)
       end
-      world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
-      world
+      @world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
+    end
+
+    def execute_step(name, *inline_args)
+      execute_step_by_name(name, *inline_args)
     end
 
     # Finds a StepDefinition that matches +step_name+ and
@@ -63,9 +65,9 @@ module Cucumber
     # of +inline_args+ can be passed, although in practice
     # there will be 0 or 1, since the parser only supports
     # 1 inline argument (Table or InlineString) per Step.
-    def execute_step_by_name(step_name, world, *inline_args) #:nodoc
-      step_definition = find_step_definition(step_name)
-      step_definition.execute_by_name(world, step_name, *inline_args)
+    def execute_step_by_name(name, *inline_args) #:nodoc
+      step_definition = find_step_definition(name)
+      step_definition.execute_by_name(@world, name, *inline_args)
     end
 
     # Formats the matched arguments of a Step. This method

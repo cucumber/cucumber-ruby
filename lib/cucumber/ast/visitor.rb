@@ -37,26 +37,26 @@ module Cucumber
       def visit_scenario_name(name)
       end
 
-      def visit_step(step, world)
-        step.accept(self, world)
+      def visit_step(step)
+        step.accept(self)
       end
 
       def visit_step_name(gwt, step_name, status)
       end
 
-      def visit_inline_arg(inline_arg)
-        inline_arg.accept(self)
+      def visit_inline_arg(inline_arg, status)
+        inline_arg.accept(self, status)
       end
 
-      def visit_table_row(table_row)
-        table_row.accept(self)
+      def visit_table_row(table_row, status)
+        table_row.accept(self, status)
       end
 
-      def visit_table_cell(table_cell)
-        table_cell.accept(self)
+      def visit_table_cell(table_cell, status)
+        table_cell.accept(self, status)
       end
 
-      def visit_table_cell_value(value, width)
+      def visit_table_cell_value(value, width, status)
       end
 
       def visit_step_error(e)

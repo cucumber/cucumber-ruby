@@ -6,7 +6,7 @@ module Cucumber
       end
 
       def accept(visitor)
-        @outline_table.accept(visitor)
+        @outline_table.accept(visitor, nil)
       end
     end
   end

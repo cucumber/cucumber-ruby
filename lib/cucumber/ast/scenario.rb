@@ -10,15 +10,10 @@ module Cucumber
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@name)
-        world = new_world_for_steps
+        @step_mother.new_world!
         @steps.each do |step|
-          # TODO - set the world here?
-          visitor.visit_step(step, world)
+          visitor.visit_step(step)
         end
-      end
-
-      def new_world_for_steps
-        @step_mother.new_world
       end
     end
   end
