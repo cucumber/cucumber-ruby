@@ -20,14 +20,10 @@ module Cucumber
     end
 
     # Registers a new StepDefinition. This method is aliased
-    # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>,
-    # and you can create your own aliases simply by
-    # adding the following to your <tt>support/env.rb</tt>:
+    # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>.
     #
-    #   # Given When Then in Norwegian
-    #   %w{Gitt Når Så}.each do |adverb|
-    #     alias_method adverb, :register_step_definition
-    #   end
+    # See Cucumber#alias_keywords for details on how to
+    # create your own aliases.
     #
     def register_step_definition(regexp, &proc)
       step_definition = StepDefinition.new(regexp, &proc)
@@ -35,10 +31,6 @@ module Cucumber
         raise Duplicate.new(already, step_definition) if already.match(regexp)
       end
       step_definitions << step_definition
-    end
-
-    %w{Given When Then}.each do |adverb|
-      alias_method adverb, :register_step_definition
     end
 
     # Registers a World proc. You can call this method as many times as you
@@ -109,9 +101,29 @@ module Cucumber
     end
 
     module StepCalling
-      def Given(name, *inline_arguments)
+      def __cucumber_invoke(name, *inline_arguments)
         @__cucumber_step_mother.invocation(name).invoke(*inline_arguments)
       end
     end
   end
+
+  # Sets up additional aliases for Given, When and Then.
+  # Try adding the following to your <tt>support/env.rb</tt>:
+  #
+  #   # Given When Then in Norwegian
+  #   Cucumber.alias_keywords %w{Gitt Når Så}
+  #
+  def self.alias_keywords(keywords)
+    keywords.each do |adverb|
+      StepMom.class_eval do
+        alias_method adverb, :register_step_definition
+      end
+
+      StepMom::StepCalling.class_eval do
+        alias_method adverb, :__cucumber_invoke
+      end
+    end
+  end
+
+  alias_keywords %w{Given When Then}
 end
