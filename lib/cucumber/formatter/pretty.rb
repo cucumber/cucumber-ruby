@@ -67,8 +67,8 @@ module Cucumber
         step.accept(self)
       end
 
-      def visit_step_name(gwt, step_name, status)
-        formatted_step_name = format_step(gwt, step_name, status)
+      def visit_step_name(gwt, step_name, status, invocation)
+        formatted_step_name = format_step(gwt, step_name, status, invocation)
         @io.write("    " + formatted_step_name + "\n")
       end
 
@@ -102,12 +102,12 @@ module Cucumber
         @io.write(" " * @indent)
       end
 
-      def format_step(gwt, step_name, status)
+      def format_step(gwt, step_name, status, invocation)
         # TODO - we want to format args for outline steps too. -And show line number of step def
         line = if [:pending, :outline].index(status)
         gwt + " " + step_name
       else
-        gwt + " " + @step_mother.format_args(step_name, format_for(status, :param))
+        gwt + " " + invocation.format_args(format_for(status, :param))
       end
       format_string(line, status)
     end
