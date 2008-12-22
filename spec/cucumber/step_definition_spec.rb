@@ -10,7 +10,7 @@ module Cucumber
       extend StepMom
       $inside = nil
     end
-    
+
     it "should allow calling of other steps" do
       Given /Outside/ do
         Given "Inside"
@@ -18,7 +18,7 @@ module Cucumber
       Given /Inside/ do
         $inside = true
       end
-      
+
       new_world!
       invocation("Outside").invoke
       $inside.should == true
@@ -31,10 +31,21 @@ module Cucumber
       Given /Inside/ do |table|
         $inside = table.raw[0][0]
       end
-      
+
       new_world!
       invocation("Outside").invoke
       $inside.should == 'inside'
+    end
+
+    it "should raise Missing when inside step is pending" do
+      outside = Given /Outside/ do
+        Given "Inside"
+      end
+
+      new_world!
+      lambda do
+        invocation("Outside").invoke
+      end.should raise_error(StepMom::Missing, "Inside")
     end
   end
 end

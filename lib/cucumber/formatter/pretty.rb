@@ -104,7 +104,7 @@ module Cucumber
 
       def format_step(gwt, step_name, status, invocation, comment_padding)
         # TODO - we want to format args for outline steps too. -And show line number of step def
-        line = if [:pending, :outline].index(status)
+        line = if [:missing, :outline].index(status)
         gwt + " " + step_name
       else
         comment = format_string(' # ' + invocation.file_colon_line, :comment)
