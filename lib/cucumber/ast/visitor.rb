@@ -41,7 +41,7 @@ module Cucumber
         step.accept(self)
       end
 
-      def visit_step_name(gwt, step_name, status)
+      def visit_step_name(gwt, step_name, status, invocation, comment_padding)
       end
 
       def visit_inline_arg(inline_arg, status)
@@ -59,7 +59,7 @@ module Cucumber
       def visit_table_cell_value(value, width, status)
       end
 
-      def visit_step_error(e)
+      def visit_step_error(error)
       end
     end
   end

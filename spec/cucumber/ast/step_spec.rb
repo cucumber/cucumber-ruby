@@ -6,14 +6,15 @@ require 'cucumber/core_ext/string'
 module Cucumber
   module Ast
     describe StepMom do
-      xit "should pass inline arguments to step mother and visitor" do
-        @step = Step.new(@step_mother, false, "Given", "hi var1 yo var2", table=Table.new([['x']]))
+      it "should calculate comment padding" do
+        scenario = Scenario.new(step_mother=nil, comment=nil, tags=nil, name=nil, step_names_and_inline_args=[
+          ["Given", "tøtal 13"],
+          ["And",   "the total 15"]
+        ])
+        step1, step2 = *scenario.instance_variable_get('@steps')
 
-        world = Object.new
-        @step_mother.should_receive(:execute_step_by_name).with("hi var1 yo var2", world, table)
-        @visitor.should_receive(:visit_step_name).with("Given", "hi var1 yo var2", :passed)
-        @visitor.should_receive(:visit_inline_arg).with(table)
-        @step.accept(@visitor, world)
+        step1.comment_padding.should == 2
+        step2.comment_padding.should == 0
       end
     end
   end

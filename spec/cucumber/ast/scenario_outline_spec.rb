@@ -35,10 +35,10 @@ module Cucumber
         invocation = mock('Invocation')
         invocation.stub!(:invoke)
 
-        visitor.should_receive(:visit_step_name).with('Given', 'there are <start> cucumbers', :outline, nil)
-        visitor.should_receive(:visit_step_name).with('When',  'I eat <eat> cucumbers', :outline, nil)
-        visitor.should_receive(:visit_step_name).with('Then',  'I should have <left> cucumbers', :outline, nil)
-        visitor.should_receive(:visit_step_name).with('And',   'I should have <eat> cucumbers in my belly', :outline, nil)
+        visitor.should_receive(:visit_step_name).with('Given', 'there are <start> cucumbers', :outline, nil, 12)
+        visitor.should_receive(:visit_step_name).with('When',  'I eat <eat> cucumbers', :outline, nil, 19)
+        visitor.should_receive(:visit_step_name).with('Then',  'I should have <left> cucumbers', :outline, nil, 10)
+        visitor.should_receive(:visit_step_name).with('And',   'I should have <eat> cucumbers in my belly', :outline, nil, 0)
 
         step_mother.should_receive(:invocation).with("there are 12 cucumbers").and_return(invocation)
         step_mother.should_receive(:invocation).with("I eat 5 cucumbers").and_return(invocation)

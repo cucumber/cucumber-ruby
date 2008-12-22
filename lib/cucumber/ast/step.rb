@@ -4,8 +4,8 @@ require 'cucumber/core_ext/string'
 module Cucumber
   module Ast
     class Step
-      def initialize(step_mother, outline, gwt, name, *inline_args)
-        @step_mother, @outline, @gwt, @name, @inline_args = step_mother, outline, gwt, name, inline_args
+      def initialize(scenario, outline, gwt, name, *inline_args)
+        @scenario, @outline, @gwt, @name, @inline_args = scenario, outline, gwt, name, inline_args
       end
 
       def accept(visitor)
@@ -13,7 +13,7 @@ module Cucumber
           visit_name_and_inline_args(visitor, :outline, nil)
         else
           begin
-            invocation = @step_mother.invocation(@name)
+            invocation = @scenario.invocation(@name)
             invocation.invoke(*@inline_args)
             visit_name_and_inline_args(visitor, :passed, invocation)
           rescue StepMom::Pending
@@ -30,14 +30,23 @@ module Cucumber
         arguments.each do |name, value|
           name_with_arguments_replaced = name_with_arguments_replaced.gsub(/<#{name}>/, value)
         end
-        invocation = @step_mother.invocation(name_with_arguments_replaced)
+        invocation = @scenario.invocation(name_with_arguments_replaced)
         invocation.invoke(*@inline_args)
+      end
+
+      def comment_padding
+        max_length = @scenario.max_step_length
+        max_length - text_length
+      end
+
+      def text_length
+        @gwt.jlength + @name.jlength
       end
 
       private
 
       def visit_name_and_inline_args(visitor, status, invocation)
-        visitor.visit_step_name(@gwt, @name, status, invocation)
+        visitor.visit_step_name(@gwt, @name, status, invocation, comment_padding)
         @inline_args.each do |inline_arg|
           visitor.visit_inline_arg(inline_arg, status)
         end
