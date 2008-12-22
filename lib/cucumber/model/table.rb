@@ -14,7 +14,7 @@ module Cucumber
       # and the values are the individual row cells.
       def hashes
         header = @raw[0]
-        @raw[1..-1].map do |row|
+        rows.map do |row|
           h = {}
           row.each_with_index do |v,n|
             key = header[n]
@@ -22,6 +22,10 @@ module Cucumber
           end
           h
         end
+      end
+      
+      def rows
+        @raw[1..-1]
       end
     end
   end
