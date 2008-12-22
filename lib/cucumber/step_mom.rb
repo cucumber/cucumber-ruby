@@ -53,6 +53,7 @@ module Cucumber
       (@world_procs ||= []).each do |world_proc|
         @world = world_proc.call(@world)
       end
+      @world.extend(StepCalling); @world.instance_variable_set('@__cucumber_step_mother', self)
       @world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
     end
 
@@ -104,6 +105,12 @@ module Cucumber
 
       def file_colon_line
         @step_definition.file_colon_line
+      end
+    end
+
+    module StepCalling
+      def Given(name, *inline_arguments)
+        @__cucumber_step_mother.invocation(name).invoke(*inline_arguments)
       end
     end
   end
