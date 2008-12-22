@@ -3,7 +3,8 @@ module Cucumber #:nodoc:
     MAJOR = 0
     MINOR = 1
     TINY  = 13
+    PATCH = 2 # Set to nil for official release
 
-    STRING = [MAJOR, MINOR, TINY].join('.')
+    STRING = [MAJOR, MINOR, TINY, PATCH].compact.join('.')
   end
 end
