@@ -101,6 +101,10 @@ module Cucumber
       def format_args(format)
         @step_definition.format_args(@step_name, format)
       end
+
+      def file_colon_line
+        @step_definition.file_colon_line
+      end
     end
   end
 end

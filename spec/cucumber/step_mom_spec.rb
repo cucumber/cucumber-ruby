@@ -9,7 +9,7 @@ module Cucumber
       @step_mother.extend(StepMom)
       @visitor = mock('Visitor')
     end
-    
+
     it "should format step names" do
       @step_mother.Given(/it (.*) in (.*)/) do |what, month|
       end

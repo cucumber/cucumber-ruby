@@ -3,7 +3,7 @@ module Cucumber
     class Scenario
       def initialize(step_mother, comment, tags, name, step_names_and_inline_args)
         @step_mother, @comment, @tags, @name = step_mother, comment, tags, name
-        @steps = step_names_and_inline_args.map{|saia| Step.new(step_mother, false, *saia)}
+        @steps = step_names_and_inline_args.map{|saia| Step.new(self, false, *saia)}
       end
 
       def accept(visitor)
@@ -14,6 +14,14 @@ module Cucumber
         @steps.each do |step|
           visitor.visit_step(step)
         end
+      end
+
+      def invocation(step_name)
+        @step_mother.invocation(step_name)
+      end
+
+      def max_step_length
+        @steps.map{|step| step.text_length}.max
       end
     end
   end

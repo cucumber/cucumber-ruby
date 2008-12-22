@@ -18,8 +18,6 @@ module Cucumber
         rescue StepMom::Pending
           visit_cells(visitor, :pending)
         rescue Exception => error
-          puts error.message
-          puts error.backtrace
           visit_cells(visitor, :failed)
         end
 
