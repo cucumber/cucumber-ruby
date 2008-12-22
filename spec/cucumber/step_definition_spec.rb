@@ -38,7 +38,7 @@ module Cucumber
     end
 
     it "should raise Missing when inside step is pending" do
-      outside = Given /Outside/ do
+      Given /Outside/ do
         Given "Inside"
       end
 
@@ -46,6 +46,17 @@ module Cucumber
       lambda do
         invocation("Outside").invoke
       end.should raise_error(StepMom::Missing, "Inside")
+    end
+
+    it "should allow forced pending" do
+      Given /Outside/ do
+        pending("Do me!")
+      end
+
+      new_world!
+      lambda do
+        invocation("Outside").invoke
+      end.should raise_error(StepMom::Pending, "Do me!")
     end
   end
 end

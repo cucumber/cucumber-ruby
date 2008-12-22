@@ -10,21 +10,29 @@ module Cucumber
     class Missing < StandardError
     end
 
+    class Pending < StandardError
+    end
+
     class Multiple < StandardError
       # TODO: Give the user some hints about how to resolve ambiguity.
     end
 
     class Duplicate < StandardError
       def initialize(step_def_1, step_def_2)
+        # TODO: Print the lines of the dupes.
       end
     end
 
     # Registers a new StepDefinition. This method is aliased
     # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>.
     #
-    # See Cucumber#alias_keywords for details on how to
+    # See Cucumber#alias_steps for details on how to
     # create your own aliases.
     #
+    # The +&proc+ gets executed in the context of a <tt>world</tt>
+    # object, which is defined by #World. A new <tt>world</tt>
+    # object is created for each scenario and is shared across
+    # step definitions within that scenario.
     def register_step_definition(regexp, &proc)
       step_definition = StepDefinition.new(regexp, &proc)
       step_definitions.each do |already|
@@ -46,7 +54,7 @@ module Cucumber
       (@world_procs ||= []).each do |world_proc|
         @world = world_proc.call(@world)
       end
-      @world.extend(StepCalling); @world.instance_variable_set('@__cucumber_step_mother', self)
+      @world.extend(WorldMethods); @world.instance_variable_set('@__cucumber_step_mother', self)
       @world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
     end
 
@@ -101,9 +109,14 @@ module Cucumber
       end
     end
 
-    module StepCalling
+    module WorldMethods #:nodoc:
+      # Call a step from within a step definition
       def __cucumber_invoke(name, *inline_arguments)
         @__cucumber_step_mother.invocation(name).invoke(*inline_arguments)
+      end
+
+      def pending(message="TODO - implement me")
+        raise Pending.new(message)
       end
     end
   end
@@ -112,19 +125,19 @@ module Cucumber
   # Try adding the following to your <tt>support/env.rb</tt>:
   #
   #   # Given When Then in Norwegian
-  #   Cucumber.alias_keywords %w{Gitt Når Så}
+  #   Cucumber.alias_steps %w{Gitt Når Så}
   #
-  def self.alias_keywords(keywords)
+  def self.alias_steps(keywords)
     keywords.each do |adverb|
       StepMom.class_eval do
         alias_method adverb, :register_step_definition
       end
 
-      StepMom::StepCalling.class_eval do
+      StepMom::WorldMethods.class_eval do
         alias_method adverb, :__cucumber_invoke
       end
     end
   end
 
-  alias_keywords %w{Given When Then}
+  alias_steps %w{Given When Then}
 end
