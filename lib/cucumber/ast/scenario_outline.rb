@@ -9,18 +9,20 @@ module Cucumber
       end
 
       def accept(visitor)
-        super
+        visitor.visit_comment(@comment)
+        visitor.visit_tags(@tags)
+        visitor.visit_scenario_name(@name)
+        @steps.each do |step|
+          visitor.visit_step(step)
+        end
         visitor.visit_examples(@examples)
       end
 
       def execute_row(hash)
-        world = @step_mother.new_world
+        @step_mother.new_world!
         @steps.each do |step|
-          step.execute_with_arguments(hash, world)
+          step.execute_with_arguments(hash)
         end
-      end
-
-      def new_world_for_steps
       end
     end
   end

@@ -7,6 +7,7 @@ module Cucumber
     before do
       @step_mother = Object.new
       @step_mother.extend(StepMom)
+      @visitor = mock('Visitor')
     end
     
     it "should format step names" do

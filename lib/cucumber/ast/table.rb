@@ -18,9 +18,9 @@ module Cucumber
         @cell_class = Cell
       end
 
-      def accept(visitor)
+      def accept(visitor, status)
         each do |row|
-          visitor.visit_table_row(row)
+          visitor.visit_table_row(row, status)
         end
       end
 
@@ -95,9 +95,9 @@ module Cucumber
           @table, @cells = table, cells
         end
 
-        def accept(visitor)
+        def accept(visitor, status)
           each do |cell|
-            visitor.visit_table_cell(cell)
+            visitor.visit_table_cell(cell, status)
           end
         end
 
@@ -135,8 +135,8 @@ module Cucumber
           @value, @table, @row, @col = value, table, row, col
         end
 
-        def accept(visitor)
-          visitor.visit_table_cell_value(@value, col_width)
+        def accept(visitor, status)
+          visitor.visit_table_cell_value(@value, col_width, status)
         end
 
         private
