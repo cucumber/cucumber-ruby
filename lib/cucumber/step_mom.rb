@@ -56,53 +56,51 @@ module Cucumber
       @world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
     end
 
-    def execute_step(name, *inline_args)
-      execute_step_by_name(name, *inline_args)
-    end
-
-    # Finds a StepDefinition that matches +step_name+ and
-    # executes it in the context of +world+. Any number
-    # of +inline_args+ can be passed, although in practice
-    # there will be 0 or 1, since the parser only supports
-    # 1 inline argument (Table or InlineString) per Step.
-    def execute_step_by_name(name, *inline_args) #:nodoc
-      step_definition = find_step_definition(name)
-      step_definition.execute_by_name(@world, name, *inline_args)
-    end
-
-    # Formats the matched arguments of a Step. This method
-    # is usually called from visitors, which render output.
-    #
-    # The +format+ either be a String or a Proc.
-    #
-    # If it is a String it should be a format string according to
-    # <tt>Kernel#sprinf</tt>, for example:
-    #
-    #   '<span class="param">%s</span></tt>'
-    #
-    # If it is a Proc, it should take one argument and return the formatted
-    # argument, for example:
-    #
-    #   lambda { |param| "[#{param}]" }
-    #
-    def format_args(step_name, format)
-      step_definition = find_step_definition(step_name)
-      step_definition.format_args(step_name, format)
-    end
-
-    private
-
-    def find_step_definition(step_name)
+    # Creates an Invocation that holds a StepDefinition that matches +step_name+
+    def invocation(step_name) #:nodoc:
       found = step_definitions.select do |step_definition|
         step_definition.match(step_name)
       end
       raise Pending.new(step_name) if found.empty?
       raise Multiple.new(step_name) if found.size > 1
-      found[0]
+      Invocation.new(@world, found[0], step_name)
     end
 
     def step_definitions
       @step_definitions ||= []
+    end
+
+    class Invocation #:nodoc:
+      def initialize(world, step_definition, step_name)
+        @world, @step_definition, @step_name = world, step_definition, step_name
+      end
+
+      # Invokes the step deficition. Any number
+      # of +inline_args+ can also be passed, although in practice
+      # there will be 0 or 1, since the parser only supports
+      # 1 inline argument (Table or InlineString) per Step.
+      def invoke(*inline_args) #:nodoc
+        @step_definition.execute_by_name(@world, @step_name, *inline_args)
+      end
+
+      # Formats the matched arguments of the associated Step. This method
+      # is usually called from visitors, which render output.
+      #
+      # The +format+ either be a String or a Proc.
+      #
+      # If it is a String it should be a format string according to
+      # <tt>Kernel#sprinf</tt>, for example:
+      #
+      #   '<span class="param">%s</span></tt>'
+      #
+      # If it is a Proc, it should take one argument and return the formatted
+      # argument, for example:
+      #
+      #   lambda { |param| "[#{param}]" }
+      #
+      def format_args(format)
+        @step_definition.format_args(@step_name, format)
+      end
     end
   end
 end

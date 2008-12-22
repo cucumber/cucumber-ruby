@@ -10,22 +10,19 @@ module Cucumber
 
       def accept(visitor)
         if @outline
-          visit_name_and_inline_args(visitor, :outline)
+          visit_name_and_inline_args(visitor, :outline, nil)
         else
           begin
-            @step_mother.execute_step(@name, *@inline_args)
-            visit_name_and_inline_args(visitor, :passed)
+            invocation = @step_mother.invocation(@name)
+            invocation.invoke(*@inline_args)
+            visit_name_and_inline_args(visitor, :passed, invocation)
           rescue StepMom::Pending
-            visit_name_and_inline_args(visitor, :pending)
+            visit_name_and_inline_args(visitor, :pending, nil)
           rescue Exception => error
-            visit_name_and_inline_args(visitor, :failed)
+            visit_name_and_inline_args(visitor, :failed, invocation)
             visitor.visit_step_error(error)
           end
         end
-      end
-
-      def execute(name)
-        @step_mother.execute_step_by_name(name, *@inline_args)
       end
 
       def execute_with_arguments(arguments)
@@ -33,13 +30,14 @@ module Cucumber
         arguments.each do |name, value|
           name_with_arguments_replaced = name_with_arguments_replaced.gsub(/<#{name}>/, value)
         end
-        execute(name_with_arguments_replaced)
+        invocation = @step_mother.invocation(name_with_arguments_replaced)
+        invocation.invoke(*@inline_args)
       end
 
       private
 
-      def visit_name_and_inline_args(visitor, status)
-        visitor.visit_step_name(@gwt, @name, status)
+      def visit_name_and_inline_args(visitor, status, invocation)
+        visitor.visit_step_name(@gwt, @name, status, invocation)
         @inline_args.each do |inline_arg|
           visitor.visit_inline_arg(inline_arg, status)
         end
