@@ -24,8 +24,9 @@ module Cucumber
         end
       end
 
-      # Converts this table into an Array of Hash. For example,
-      # a Table built from the following plain text:
+      # Converts this table into an Array of Hash where the keys of each
+      # Hash are the headers in the table. For example, a Table built from
+      # the following plain text:
       #
       #   | a | b | sum |
       #   | 2 | 3 | 5   |
@@ -41,7 +42,21 @@ module Cucumber
         end
       end
 
-      def to_hash(cells)
+      # Gets the raw data of this table. For example, a Table built from
+      # the following plain text:
+      #
+      #   | a | b |
+      #   | c | d |
+      #
+      # Get converted into the following:
+      #
+      #   [['a', 'b], ['c', 'd']]
+      #
+      def raw
+        @raw
+      end
+
+      def to_hash(cells) #:nodoc:
         hash = {}
         @raw[0].each_with_index do |key, n|
           hash[key] = cells.value(n)
@@ -49,7 +64,7 @@ module Cucumber
         hash
       end
 
-      def index(cells)
+      def index(cells) #:nodoc:
         rows.index(cells)
       end
 
@@ -101,11 +116,11 @@ module Cucumber
           end
         end
 
-        def to_hash
+        def to_hash #:nodoc:
           @to_hash ||= @table.to_hash(self)
         end
 
-        def value(n)
+        def value(n) #:nodoc:
           self[n].value
         end
 

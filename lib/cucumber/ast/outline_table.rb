@@ -15,6 +15,8 @@ module Cucumber
         def accept(visitor, status)
           @table.execute_row(self.to_hash) unless header?
           visit_cells(visitor, :passed)
+        rescue StepMom::Missing
+          visit_cells(visitor, :missing)
         rescue StepMom::Pending
           visit_cells(visitor, :pending)
         rescue Exception => error

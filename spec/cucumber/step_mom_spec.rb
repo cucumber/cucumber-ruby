@@ -28,10 +28,10 @@ module Cucumber
       end.should raise_error(StepMom::Multiple)
     end
 
-    it "should raise Pending error when no step definitions match" do
+    it "should raise Missing error when no step definitions match" do
       lambda do
         @step_mother.invocation("Three blind mice")
-      end.should raise_error(StepMom::Pending)
+      end.should raise_error(StepMom::Missing)
     end
 
     it "should raise Duplicate error when same regexp is registered twice" do
