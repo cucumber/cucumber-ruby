@@ -1,6 +1,8 @@
 == In Git
 
 === New features
+* Pretty formatter shows number of scenarios (#139 Joseph Wilk)
+
 === Bugfixes
 === Removed features
 
