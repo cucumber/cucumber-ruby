@@ -25,6 +25,7 @@ module Cucumber
     #
     # The colours that you can change are:
     #
+    # * <tt>missing</tt>       - defaults to <tt>yellow</tt>
     # * <tt>pending</tt>       - defaults to <tt>yellow</tt>
     # * <tt>pending_param</tt> - defaults to <tt>yellow,bold</tt>
     # * <tt>failed</tt>        - defaults to <tt>red</tt>
@@ -66,6 +67,7 @@ module Cucumber
           h[$1] + ',bold'
         end
       end.merge({
+        'missing' => 'yellow',
         'pending' => 'yellow',
         'failed'  => 'red',
         'passed'  => 'green',

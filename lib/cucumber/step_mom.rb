@@ -7,6 +7,9 @@ module Cucumber
   # available from the top-level.
   module StepMom
 
+    class Missing < StandardError
+    end
+
     class Pending < StandardError
     end
 
@@ -16,29 +19,27 @@ module Cucumber
 
     class Duplicate < StandardError
       def initialize(step_def_1, step_def_2)
+        # TODO: Print the lines of the dupes.
       end
     end
 
     # Registers a new StepDefinition. This method is aliased
-    # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>,
-    # and you can create your own aliases simply by
-    # adding the following to your <tt>support/env.rb</tt>:
+    # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>.
     #
-    #   # Given When Then in Norwegian
-    #   %w{Gitt Når Så}.each do |adverb|
-    #     alias_method adverb, :register_step_definition
-    #   end
+    # See Cucumber#alias_steps for details on how to
+    # create your own aliases.
     #
+    # The +&proc+ gets executed in the context of a <tt>world</tt>
+    # object, which is defined by #World. A new <tt>world</tt>
+    # object is created for each scenario and is shared across
+    # step definitions within that scenario.
     def register_step_definition(regexp, &proc)
       step_definition = StepDefinition.new(regexp, &proc)
       step_definitions.each do |already|
         raise Duplicate.new(already, step_definition) if already.match(regexp)
       end
       step_definitions << step_definition
-    end
-
-    %w{Given When Then}.each do |adverb|
-      alias_method adverb, :register_step_definition
+      step_definition
     end
 
     # Registers a World proc. You can call this method as many times as you
@@ -53,6 +54,7 @@ module Cucumber
       (@world_procs ||= []).each do |world_proc|
         @world = world_proc.call(@world)
       end
+      @world.extend(WorldMethods); @world.instance_variable_set('@__cucumber_step_mother', self)
       @world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
     end
 
@@ -61,7 +63,7 @@ module Cucumber
       found = step_definitions.select do |step_definition|
         step_definition.match(step_name)
       end
-      raise Pending.new(step_name) if found.empty?
+      raise Missing.new(step_name) if found.empty?
       raise Multiple.new(step_name) if found.size > 1
       Invocation.new(@world, found[0], step_name)
     end
@@ -106,5 +108,36 @@ module Cucumber
         @step_definition.file_colon_line
       end
     end
+
+    module WorldMethods #:nodoc:
+      # Call a step from within a step definition
+      def __cucumber_invoke(name, *inline_arguments)
+        @__cucumber_step_mother.invocation(name).invoke(*inline_arguments)
+      end
+
+      def pending(message="TODO - implement me")
+        raise Pending.new(message)
+      end
+    end
   end
+
+  # Sets up additional aliases for Given, When and Then.
+  # Try adding the following to your <tt>support/env.rb</tt>:
+  #
+  #   # Given When Then in Norwegian
+  #   Cucumber.alias_steps %w{Gitt Når Så}
+  #
+  def self.alias_steps(keywords)
+    keywords.each do |adverb|
+      StepMom.class_eval do
+        alias_method adverb, :register_step_definition
+      end
+
+      StepMom::WorldMethods.class_eval do
+        alias_method adverb, :__cucumber_invoke
+      end
+    end
+  end
+
+  alias_steps %w{Given When Then}
 end
