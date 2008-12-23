@@ -19,6 +19,8 @@ module Cucumber
         @last_executed_was_row = false
         @pending_messages = {}
         @forced_pending_step_count = 0
+        
+        @total_scenario_count = 0
       end
 
       def feature_executing(feature)
@@ -81,6 +83,7 @@ module Cucumber
           @io.puts
           output_failing_step(@failed.last)
         end
+        @total_scenario_count += 1
       end
 
       def step_passed(step, regexp, args)
@@ -100,14 +103,13 @@ module Cucumber
       end
 
       def step_failed(step, regexp, args)
+        @scenario_failed = true
         if step.row?
           args = step.visible_args if step.outline?
           @failed << step
-          @scenario_failed = true
           print_failed_args(args)
         else
           @failed << step
-          @scenario_failed = true
           @io.print failed("    #{step.keyword} #{step.format(regexp){|param| failed_param(param) << failed}}")
           if @options[:source]
             @io.print padding_spaces(step)
@@ -176,6 +178,8 @@ module Cucumber
 
         print_pending_messages if @pending_messages.any?
 
+        @io.puts "#{@total_scenario_count} scenarios"
+
         @io.puts pending("#{@pending_scenarios.length} scenarios pending") if @pending_scenarios.any?
 
         @io.puts passed("#{@passed.length} steps passed")           if @passed.any?
@@ -199,7 +203,7 @@ module Cucumber
         end
         @io.puts
       end
-
+      
       def print_snippets
         snippets = @pending_steps
         snippets.delete_if {|snippet| snippet.row? || @step_mother.has_step_definition?(snippet.name)}
