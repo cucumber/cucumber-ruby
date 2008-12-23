@@ -31,7 +31,8 @@ module Cucumber
           :file => 'file', 
           :line => 1,
           :padding_length => 2,
-          :outline? => false}.merge(stubs))
+          :outline? => false,
+          :table_header => nil}.merge(stubs))
       end
       
       def mock_scenario_outline(stubs={})
@@ -314,6 +315,18 @@ module Cucumber
         io.string.should include("1 with no step definition")
       end
 
+      it "should display the total number of scenarios executed" do
+        io = StringIO.new
+        formatter = PrettyFormatter.new io, mock('step_mother')
+                
+        formatter.scenario_executing(mock_scenario)
+        formatter.scenario_executed(mock_scenario)
+
+        formatter.dump
+        
+        io.string.should include("1 scenarios")
+      end
+          
       describe "colour" do
 
         before(:all) do

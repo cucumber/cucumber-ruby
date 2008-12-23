@@ -1,6 +1,8 @@
 == In Git
 
 === New features
+* Pretty formatter shows number of scenarios (#139 Joseph Wilk)
+
 === Bugfixes
 * Fixed `load_missing_constant': uninitialized constant Dispatcher error with Rails (Aslak Hellesøy)
 === Removed features
