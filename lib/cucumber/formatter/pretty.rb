@@ -103,32 +103,31 @@ module Cucumber
       end
 
       def format_step(gwt, step_name, status, invocation, comment_padding)
-        # TODO - we want to format args for outline steps too. -And show line number of step def
-        line = if [:pending, :outline].index(status)
-        gwt + " " + step_name
-      else
-        comment = format_string(' # ' + invocation.file_colon_line, :comment)
-        padding = " " * comment_padding
-        gwt + " " + invocation.format_args(format_for(status, :param)) + padding + comment
+        line = if invocation
+          comment = format_string(' # ' + invocation.file_colon_line, :comment)
+          padding = " " * comment_padding
+          gwt + " " + invocation.format_args(format_for(status, :param)) + padding + comment
+        else
+          gwt + " " + step_name
+        end
+        format_string(line, status)
       end
-      format_string(line, status)
-    end
 
-    def format_string(string, status)
-      fmt = format_for(status)
-      if Proc === fmt
-        fmt.call(string)
-      else
-        fmt % string
+      def format_string(string, status)
+        fmt = format_for(status)
+        if Proc === fmt
+          fmt.call(string)
+        else
+          fmt % string
+        end
       end
-    end
 
-    def format_for(*keys)
-      key = keys.join('_').to_sym
-      fmt = FORMATS[key]
-      raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
-      fmt
+      def format_for(*keys)
+        key = keys.join('_').to_sym
+        fmt = FORMATS[key]
+        raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
+        fmt
+      end
     end
   end
-end
 end
