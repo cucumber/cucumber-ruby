@@ -2,6 +2,7 @@
 
 === New features
 === Bugfixes
+* Fixed `load_missing_constant': uninitialized constant Dispatcher error with Rails (Aslak Hellesøy)
 === Removed features
 
 == 0.1.13 2008-12-20

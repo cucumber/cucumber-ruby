@@ -15,7 +15,7 @@ ActionController::Base.class_eval do
     perform_action_without_rescue
   end
 end
-Dispatcher.class_eval do
+ActionController::Dispatcher.class_eval do
   def self.failsafe_response(output, status, exception = nil)
     raise exception
   end
