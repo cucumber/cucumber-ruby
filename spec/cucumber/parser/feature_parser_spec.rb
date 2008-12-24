@@ -71,6 +71,16 @@ module Cucumber
           scenario.name.should == "Hello"
         end
       end
+      
+      describe "Scenario Outlines" do
+        it "should parse an empty scenario outline" do
+          scenario_outline = parse("Feature: Hi\nScenario Outline: Hello\n").feature_elements[0]
+          scenario_outline.extend(Module.new{
+            attr_reader :name
+          })
+          scenario_outline.name.should == "Hello"
+        end
+      end
     end
   end
 end
