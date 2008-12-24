@@ -78,9 +78,16 @@ module Cucumber
 
       def visit_table_row(table_row, status)
         indent
-        @io.write "|"
+        @io.write '|'
         table_row.accept(self, status)
         @io.puts
+      end
+
+      def visit_py_string(string, status)
+        indent
+        @io.write '"""'
+        @io.write string.split("\n", -1).map{|line| (' ' * @indent) + line}.join("\n")
+        @io.puts '"""'
       end
 
       def visit_table_cell(table_cell, status)
@@ -88,18 +95,18 @@ module Cucumber
       end
 
       def visit_table_cell_value(value, width, status)
-        @io.write(" " + format_string(value.ljust(width), status) + " |")
+        @io.write(' ' + format_string(value.ljust(width), status) + ' |')
       end
 
       def visit_step_error(e)
-        @io.write("      " + e.message + "\n")
-        @io.write("      " + e.cucumber_backtrace.join("\n      ") + "\n")
+        @io.write('      ' + e.message + "\n")
+        @io.write('      ' + e.cucumber_backtrace.join("\n      ") + "\n")
       end
 
       private
 
       def indent
-        @io.write(" " * @indent)
+        @io.write(' ' * @indent)
       end
 
       def format_step(gwt, step_name, status, invocation, comment_padding)

@@ -48,6 +48,9 @@ module Cucumber
         inline_arg.accept(self, status)
       end
 
+      def visit_py_string(string, status)
+      end
+
       def visit_table_row(table_row, status)
         table_row.accept(self, status)
       end
