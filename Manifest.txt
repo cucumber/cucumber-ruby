@@ -134,11 +134,16 @@ lib/autotest/discover.rb
 lib/cucumber.rb
 lib/cucumber/ast.rb
 lib/cucumber/ast/comment.rb
+lib/cucumber/ast/examples.rb
 lib/cucumber/ast/feature.rb
+lib/cucumber/ast/outline_table.rb
+lib/cucumber/ast/py_string.rb
 lib/cucumber/ast/scenario.rb
+lib/cucumber/ast/scenario_outline.rb
 lib/cucumber/ast/step.rb
 lib/cucumber/ast/table.rb
 lib/cucumber/ast/tags.rb
+lib/cucumber/ast/visitor.rb
 lib/cucumber/broadcaster.rb
 lib/cucumber/cli.rb
 lib/cucumber/core_ext/exception.rb
@@ -229,6 +234,8 @@ script/generate.cmd
 script/txt2html
 script/txt2html.cmd
 setup.rb
+spec/cucumber/ast/py_string_spec.rb
+spec/cucumber/ast/scenario_outline_spec.rb
 spec/cucumber/ast/step_spec.rb
 spec/cucumber/ast/table_spec.rb
 spec/cucumber/broadcaster_spec.rb
@@ -251,6 +258,7 @@ spec/cucumber/rails/stubs/mini_rails.rb
 spec/cucumber/rails/stubs/test_help.rb
 spec/cucumber/rails/world_spec.rb
 spec/cucumber/sell_cucumbers.feature
+spec/cucumber/step_definition_spec.rb
 spec/cucumber/step_mom_spec.rb
 spec/cucumber/step_mother_spec.rb
 spec/cucumber/tree/feature_spec.rb
