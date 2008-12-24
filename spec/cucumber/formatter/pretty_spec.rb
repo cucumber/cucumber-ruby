@@ -29,9 +29,8 @@ module Cucumber
           %w{1 22 333},
           %w{4444 55555 666666}
         ])
-        py_string = Ast::PyString.new(%{
-          10 indent
-  2 indent
+        py_string = Ast::PyString.new(%{I like
+          Cucumber sandwich
         })
         f = Ast::Feature.new(
           Ast::Comment.new("# My feature comment\n"),
@@ -71,10 +70,10 @@ Feature: Pretty printing
       | \e[32m1   \e[0m | \e[32m22   \e[0m | \e[32m333   \e[0m |
       | \e[32m4444\e[0m | \e[32m55555\e[0m | \e[32m666666\e[0m |
     \e[32mGiven a \e[32m\e[1mhappy\e[0m\e[0m\e[32m step with an inline arg:  \e[90m # spec/cucumber/formatter/pretty_spec.rb:19\e[0m\e[0m
-      """      
-      10 indent
-      2 indent
-      """
+      \e[32m\"\"\"
+      I like
+      Cucumber sandwich
+      \"\"\"\e[0m
     \e[31mGiven a \e[31m\e[1mfailing\e[0m\e[0m\e[31m step                    \e[90m # spec/cucumber/formatter/pretty_spec.rb:21\e[0m\e[0m
       I flunked
       ./spec/cucumber/formatter/pretty_spec.rb:12:in `flunk'
