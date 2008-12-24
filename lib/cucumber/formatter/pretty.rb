@@ -85,9 +85,8 @@ module Cucumber
 
       def visit_py_string(string, status)
         indent
-        @io.write '"""'
-        @io.write string.split("\n", -1).map{|line| (' ' * @indent) + line}.join("\n")
-        @io.puts '"""'
+        s = "\"\"\"\n" + string.split("\n", -1).map{|line| (' ' * @indent) + line}.join("\n") + "\"\"\""
+        @io.write(format_string(s, status) + "\n")
       end
 
       def visit_table_cell(table_cell, status)
