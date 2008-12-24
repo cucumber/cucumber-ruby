@@ -13,7 +13,7 @@ module Cucumber
       end
 
       rule feature_elements
-        scenario* {
+        (scenario_outline / scenario)* {
           def build
             elements.map{|s| s.build}
           end
@@ -28,12 +28,24 @@ module Cucumber
         }
       end
 
+      rule scenario_outline
+        c:comment? t:tags? scenario_outline_keyword space? name:line_to_eol eol+ {
+          def build
+            Ast::ScenarioOutline.new(@step_mother, c.build, t.build, name.text_value, [], [])
+          end
+        }
+      end
+
       rule feature_keyword
         "Feature" ":"?
       end
 
       rule scenario_keyword
         "Scenario" ":"?
+      end
+
+      rule scenario_outline_keyword
+        "Scenario Outline" ":"?
       end
 
       rule step_keyword
