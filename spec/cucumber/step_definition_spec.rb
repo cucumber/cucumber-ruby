@@ -20,7 +20,7 @@ module Cucumber
       end
 
       new_world!
-      invocation("Outside").invoke
+      step_invocation("Outside").invoke
       $inside.should == true
     end
 
@@ -33,7 +33,7 @@ module Cucumber
       end
 
       new_world!
-      invocation("Outside").invoke
+      step_invocation("Outside").invoke
       $inside.should == 'inside'
     end
 
@@ -44,7 +44,7 @@ module Cucumber
 
       new_world!
       lambda do
-        invocation("Outside").invoke
+        step_invocation("Outside").invoke
       end.should raise_error(StepMom::Missing, "Inside")
     end
 
@@ -55,7 +55,7 @@ module Cucumber
 
       new_world!
       lambda do
-        invocation("Outside").invoke
+        step_invocation("Outside").invoke
       end.should raise_error(StepMom::Pending, "Do me!")
     end
   end

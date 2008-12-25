@@ -41,7 +41,7 @@ module Cucumber
         step.accept(self)
       end
 
-      def visit_step_name(gwt, step_name, status, invocation, comment_padding)
+      def visit_step_name(gwt, step_name, status, step_invocation, comment_padding)
       end
 
       def visit_inline_arg(inline_arg, status)

@@ -67,8 +67,8 @@ module Cucumber
         step.accept(self)
       end
 
-      def visit_step_name(gwt, step_name, status, invocation, comment_padding)
-        formatted_step_name = format_step(gwt, step_name, status, invocation, comment_padding)
+      def visit_step_name(gwt, step_name, status, step_invocation, comment_padding)
+        formatted_step_name = format_step(gwt, step_name, status, step_invocation, comment_padding)
         @io.write("    " + formatted_step_name + "\n")
       end
 
@@ -108,11 +108,11 @@ module Cucumber
         @io.write(' ' * @indent)
       end
 
-      def format_step(gwt, step_name, status, invocation, comment_padding)
-        line = if invocation
-          comment = format_string(' # ' + invocation.file_colon_line, :comment)
+      def format_step(gwt, step_name, status, step_invocation, comment_padding)
+        line = if step_invocation
+          comment = format_string(' # ' + step_invocation.file_colon_line, :comment)
           padding = " " * comment_padding
-          gwt + " " + invocation.format_args(format_for(status, :param)) + padding + comment
+          gwt + " " + step_invocation.format_args(format_for(status, :param)) + padding + comment
         else
           gwt + " " + step_name
         end

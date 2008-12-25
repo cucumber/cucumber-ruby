@@ -32,23 +32,23 @@ module Cucumber
         scenario_outline = make_scenario_outline(step_mother)
 
         visitor = Visitor.new
-        invocation = mock('Invocation')
-        invocation.stub!(:invoke)
+        step_invocation = mock('Invocation')
+        step_invocation.stub!(:invoke)
 
         visitor.should_receive(:visit_step_name).with('Given', 'there are <start> cucumbers', :outline, nil, 12)
         visitor.should_receive(:visit_step_name).with('When',  'I eat <eat> cucumbers', :outline, nil, 19)
         visitor.should_receive(:visit_step_name).with('Then',  'I should have <left> cucumbers', :outline, nil, 10)
         visitor.should_receive(:visit_step_name).with('And',   'I should have <eat> cucumbers in my belly', :outline, nil, 0)
 
-        step_mother.should_receive(:invocation).with("there are 12 cucumbers").and_return(invocation)
-        step_mother.should_receive(:invocation).with("I eat 5 cucumbers").and_return(invocation)
-        step_mother.should_receive(:invocation).with("I should have 7 cucumbers").and_return(invocation)
-        step_mother.should_receive(:invocation).with("I should have 5 cucumbers in my belly").and_return(invocation)
+        step_mother.should_receive(:step_invocation).with("there are 12 cucumbers").and_return(step_invocation)
+        step_mother.should_receive(:step_invocation).with("I eat 5 cucumbers").and_return(step_invocation)
+        step_mother.should_receive(:step_invocation).with("I should have 7 cucumbers").and_return(step_invocation)
+        step_mother.should_receive(:step_invocation).with("I should have 5 cucumbers in my belly").and_return(step_invocation)
 
-        step_mother.should_receive(:invocation).with("there are 20 cucumbers").and_return(invocation)
-        step_mother.should_receive(:invocation).with("I eat 6 cucumbers").and_return(invocation)
-        step_mother.should_receive(:invocation).with("I should have 14 cucumbers").and_return(invocation)
-        step_mother.should_receive(:invocation).with("I should have 6 cucumbers in my belly").and_return(invocation)
+        step_mother.should_receive(:step_invocation).with("there are 20 cucumbers").and_return(step_invocation)
+        step_mother.should_receive(:step_invocation).with("I eat 6 cucumbers").and_return(step_invocation)
+        step_mother.should_receive(:step_invocation).with("I should have 14 cucumbers").and_return(step_invocation)
+        step_mother.should_receive(:step_invocation).with("I should have 6 cucumbers in my belly").and_return(step_invocation)
 
         visitor.visit_feature_element(scenario_outline)
       end
