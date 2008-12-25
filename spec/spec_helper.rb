@@ -9,6 +9,9 @@ require 'cucumber'
 require 'cucumber/treetop_parser/feature_en'
 Cucumber.load_language('en')
 
+$:.unshift(File.dirname(__FILE__))
+
+
 ::Term::ANSIColor.coloring = true
 
 # Open up the tree classes a little for easier inspection.
