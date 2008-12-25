@@ -13,15 +13,15 @@ module Cucumber
           visit_name_and_multiline_args(visitor, :outline, nil)
         else
           begin
-            invocation = @scenario.invocation(@name)
-            invocation.invoke(*@multiline_args)
-            visit_name_and_multiline_args(visitor, :passed, invocation)
+            step_invocation = @scenario.step_invocation(@name)
+            step_invocation.invoke(*@multiline_args)
+            visit_name_and_multiline_args(visitor, :passed, step_invocation)
           rescue StepMom::Missing
             visit_name_and_multiline_args(visitor, :missing, nil)
           rescue StepMom::Pending
-            visit_name_and_multiline_args(visitor, :pending, invocation)
+            visit_name_and_multiline_args(visitor, :pending, step_invocation)
           rescue Exception => error
-            visit_name_and_multiline_args(visitor, :failed, invocation)
+            visit_name_and_multiline_args(visitor, :failed, step_invocation)
             visitor.visit_step_error(error)
           end
         end
@@ -32,8 +32,8 @@ module Cucumber
         arguments.each do |name, value|
           name_with_arguments_replaced = name_with_arguments_replaced.gsub(/<#{name}>/, value)
         end
-        invocation = @scenario.invocation(name_with_arguments_replaced)
-        invocation.invoke(*@multiline_args)
+        step_invocation = @scenario.step_invocation(name_with_arguments_replaced)
+        step_invocation.invoke(*@multiline_args)
       end
 
       def comment_padding
@@ -47,8 +47,8 @@ module Cucumber
 
       private
 
-      def visit_name_and_multiline_args(visitor, status, invocation)
-        visitor.visit_step_name(@gwt, @name, status, invocation, comment_padding)
+      def visit_name_and_multiline_args(visitor, status, step_invocation)
+        visitor.visit_step_name(@gwt, @name, status, step_invocation, comment_padding)
         @multiline_args.each do |inline_arg|
           visitor.visit_inline_arg(inline_arg, status)
         end

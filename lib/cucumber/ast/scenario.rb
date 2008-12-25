@@ -16,8 +16,8 @@ module Cucumber
         end
       end
 
-      def invocation(step_name)
-        @step_mother.invocation(step_name)
+      def step_invocation(step_name)
+        @step_mother.step_invocation(step_name)
       end
 
       def max_step_length

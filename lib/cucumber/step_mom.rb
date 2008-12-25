@@ -59,7 +59,7 @@ module Cucumber
     end
 
     # Creates an Invocation that holds a StepDefinition that matches +step_name+
-    def invocation(step_name) #:nodoc:
+    def step_invocation(step_name) #:nodoc:
       found = step_definitions.select do |step_definition|
         step_definition.match(step_name)
       end
@@ -112,7 +112,7 @@ module Cucumber
     module WorldMethods #:nodoc:
       # Call a step from within a step definition
       def __cucumber_invoke(name, *inline_arguments)
-        @__cucumber_step_mother.invocation(name).invoke(*inline_arguments)
+        @__cucumber_step_mother.step_invocation(name).invoke(*inline_arguments)
       end
 
       def pending(message="TODO - implement me")
