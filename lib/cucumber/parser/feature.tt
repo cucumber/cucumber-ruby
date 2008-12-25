@@ -21,9 +21,9 @@ module Cucumber
       end
 
       rule scenario
-        c:comment? t:tags? scenario_keyword space? name:line_to_eol eol+ {
+        c:comment? t:tags? scenario_keyword space? name:line_to_eol eol+ steps {
           def build
-            Ast::Scenario.new(@step_mother, c.build, t.build, name.text_value, [])
+            Ast::Scenario.new(@step_mother, c.build, t.build, name.text_value, steps.build)
           end
         }
       end
@@ -32,6 +32,22 @@ module Cucumber
         c:comment? t:tags? scenario_outline_keyword space? name:line_to_eol eol+ {
           def build
             Ast::ScenarioOutline.new(@step_mother, c.build, t.build, name.text_value, [], [])
+          end
+        }
+      end
+
+      rule steps
+        step* {
+          def build
+            elements.map{|s| s.build}
+          end
+        }
+      end
+
+      rule step
+        step_keyword space? name:line_to_eol eol+ {
+          def build
+            [step_keyword.text_value, name.text_value]
           end
         }
       end
@@ -54,10 +70,6 @@ module Cucumber
 
       rule more_examples_keyword
         "More Examples" ":"?
-      end
-
-      rule given_scenario_keyword
-        "GivenScenario" ":"?
       end
 
     end

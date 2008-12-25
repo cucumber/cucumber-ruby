@@ -63,15 +63,22 @@ module Cucumber
       end
 
       describe "Scenarios" do
-        it "should parse an empty scenario" do
+        it "can be empty" do
           scenario = parse("Feature: Hi\nScenario: Hello\n").feature_elements[0]
           scenario.extend(Module.new{
             attr_reader :name
           })
           scenario.name.should == "Hello"
         end
+
+        it "should have steps" do
+          scenario = parse("Feature: Hi\nScenario: Hello\nGiven I am a step\n").feature_elements[0]
+          step = scenario.instance_variable_get('@steps')[0]
+          gwt  = step.instance_variable_get('@gwt').should == 'Given'
+          name = step.instance_variable_get('@name').should == 'I am a step'
+        end
       end
-      
+
       describe "Scenario Outlines" do
         it "should parse an empty scenario outline" do
           scenario_outline = parse("Feature: Hi\nScenario Outline: Hello\n").feature_elements[0]
