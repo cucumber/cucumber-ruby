@@ -1,10 +1,11 @@
 module Cucumber
   module Ast
     class ScenarioOutline < Scenario
-      def initialize(step_mother, comment, tags, name, step_names, matrix)
+      def initialize(step_mother, comment, tags, name, step_names_and_multiline_args, example_matrix)
         @step_mother, @comment, @tags, @name = step_mother, comment, tags, name
-        @steps = step_names.map{|names| Step.new(self, true, *names)}
-        outline_table = OutlineTable.new(matrix, self)
+        @steps = step_names_and_multiline_args.map{|saia| Step.new(self, true, *saia)}
+
+        outline_table = OutlineTable.new(example_matrix, self)
         @examples = Examples.new(self, outline_table)
       end
 

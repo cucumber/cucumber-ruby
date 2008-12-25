@@ -77,6 +77,13 @@ module Cucumber
           gwt  = step.instance_variable_get('@gwt').should == 'Given'
           name = step.instance_variable_get('@name').should == 'I am a step'
         end
+
+        it "should have steps with inline table" do
+          scenario = parse("Feature: Hi\nScenario: Hello\nGiven I have a table\n|1|2|\n").feature_elements[0]
+          step = scenario.instance_variable_get('@steps')[0]
+          table = step.instance_variable_get('@multiline_args')[0]
+          table.raw.should == [['1', '2']]
+        end
       end
 
       describe "Scenario Outlines" do

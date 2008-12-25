@@ -30,8 +30,8 @@ module Cucumber
       step_name.gzub(@regexp, format)
     end
 
-    def execute_by_name(world, step_name, *inline_args)
-      args = step_name.match(@regexp).captures + inline_args
+    def execute_by_name(world, step_name, *multiline_args)
+      args = step_name.match(@regexp).captures + multiline_args
       execute(world, *args)
     end
 
