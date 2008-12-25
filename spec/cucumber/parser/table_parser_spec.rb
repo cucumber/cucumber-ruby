@@ -22,9 +22,7 @@ module Cucumber
       end
 
       it "should parse a 1x2 table without newline" do
-        pending do
-          parse("| 1 | 2 |").should == [%w{1 2}]
-        end
+        parse("| 1 | 2 |").should == [%w{1 2}]
       end
 
       it "should parse a 2x2 table" do
