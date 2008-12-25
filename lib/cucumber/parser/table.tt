@@ -14,7 +14,7 @@ module Cucumber
       end
     
       rule table_row
-        space* '|' cells:(cell '|')+ space* eol {
+        space* '|' cells:(cell '|')+ space* eol+ {
           def build
             cells.elements.map do |elt| 
               value = elt.cell.text_value.strip
