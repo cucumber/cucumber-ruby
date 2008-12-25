@@ -30,9 +30,9 @@ module Cucumber
       end
 
       rule scenario_outline
-        c:comment? t:tags? scenario_outline_keyword space? name:line_to_eol eol+ {
+        c:comment? t:tags? scenario_outline_keyword space? name:line_to_eol eol+ steps examples {
           def build
-            Ast::ScenarioOutline.new(@step_mother, c.build, t.build, name.text_value, [], [])
+            Ast::ScenarioOutline.new(@step_mother, c.build, t.build, name.text_value, steps.build, examples.build)
           end
         }
       end
@@ -57,6 +57,14 @@ module Cucumber
         }
       end
 
+      rule examples
+        examples_keyword eol+ table {
+          def build
+            table.raw
+          end
+        }
+      end
+
       rule multiline_arg
         table
       end
@@ -77,8 +85,8 @@ module Cucumber
         "Given" / "When" / "Then" / "And" / "But"
       end
 
-      rule more_examples_keyword
-        "More Examples" ":"?
+      rule examples_keyword
+        "Examples" ":"?
       end
 
     end
