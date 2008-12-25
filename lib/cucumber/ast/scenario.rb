@@ -1,9 +1,9 @@
 module Cucumber
   module Ast
     class Scenario
-      def initialize(step_mother, comment, tags, name, step_names_and_inline_args)
+      def initialize(step_mother, comment, tags, name, step_names_and_multiline_args)
         @step_mother, @comment, @tags, @name = step_mother, comment, tags, name
-        @steps = step_names_and_inline_args.map{|saia| Step.new(self, false, *saia)}
+        @steps = step_names_and_multiline_args.map{|saia| Step.new(self, false, *saia)}
       end
 
       def accept(visitor)

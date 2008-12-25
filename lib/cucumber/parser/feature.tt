@@ -2,6 +2,7 @@ module Cucumber
   module Parser
     grammar Feature
       include Basic
+      include Table
       include FileParser
 
       rule feature
@@ -45,11 +46,19 @@ module Cucumber
       end
 
       rule step
-        step_keyword space? name:line_to_eol eol+ {
+        step_keyword space? name:line_to_eol eol+ multi:multiline_arg? {
           def build
-            [step_keyword.text_value, name.text_value]
+            if multi.respond_to?(:build)
+              [step_keyword.text_value, name.text_value, multi.build]
+            else
+              [step_keyword.text_value, name.text_value]
+            end
           end
         }
+      end
+
+      rule multiline_arg
+        table
       end
 
       rule feature_keyword

@@ -25,6 +25,10 @@ module Cucumber
         parse("| 1 | 2 |").should == [%w{1 2}]
       end
 
+      it "should parse a 1x2 table without spaces" do
+        parse("|1|2|").should == [%w{1 2}]
+      end
+
       it "should parse a 2x2 table" do
         parse("| 1 | 2 |\n| 3 | 4 |\n").should == [%w{1 2}, %w{3 4}]
       end

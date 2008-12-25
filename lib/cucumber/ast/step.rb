@@ -4,24 +4,24 @@ require 'cucumber/core_ext/string'
 module Cucumber
   module Ast
     class Step
-      def initialize(scenario, outline, gwt, name, *inline_args)
-        @scenario, @outline, @gwt, @name, @inline_args = scenario, outline, gwt, name, inline_args
+      def initialize(scenario, outline, gwt, name, *multiline_args)
+        @scenario, @outline, @gwt, @name, @multiline_args = scenario, outline, gwt, name, multiline_args
       end
 
       def accept(visitor)
         if @outline
-          visit_name_and_inline_args(visitor, :outline, nil)
+          visit_name_and_multiline_args(visitor, :outline, nil)
         else
           begin
             invocation = @scenario.invocation(@name)
-            invocation.invoke(*@inline_args)
-            visit_name_and_inline_args(visitor, :passed, invocation)
+            invocation.invoke(*@multiline_args)
+            visit_name_and_multiline_args(visitor, :passed, invocation)
           rescue StepMom::Missing
-            visit_name_and_inline_args(visitor, :missing, nil)
+            visit_name_and_multiline_args(visitor, :missing, nil)
           rescue StepMom::Pending
-            visit_name_and_inline_args(visitor, :pending, invocation)
+            visit_name_and_multiline_args(visitor, :pending, invocation)
           rescue Exception => error
-            visit_name_and_inline_args(visitor, :failed, invocation)
+            visit_name_and_multiline_args(visitor, :failed, invocation)
             visitor.visit_step_error(error)
           end
         end
@@ -33,7 +33,7 @@ module Cucumber
           name_with_arguments_replaced = name_with_arguments_replaced.gsub(/<#{name}>/, value)
         end
         invocation = @scenario.invocation(name_with_arguments_replaced)
-        invocation.invoke(*@inline_args)
+        invocation.invoke(*@multiline_args)
       end
 
       def comment_padding
@@ -47,9 +47,9 @@ module Cucumber
 
       private
 
-      def visit_name_and_inline_args(visitor, status, invocation)
+      def visit_name_and_multiline_args(visitor, status, invocation)
         visitor.visit_step_name(@gwt, @name, status, invocation, comment_padding)
-        @inline_args.each do |inline_arg|
+        @multiline_args.each do |inline_arg|
           visitor.visit_inline_arg(inline_arg, status)
         end
       end
