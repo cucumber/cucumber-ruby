@@ -5,13 +5,12 @@ module ActiveRecord
 end
 
 module ActionController
+  module Dispatcher
+  end
   class Base
   end
   class IntegrationTest
     def self.use_transactional_fixtures=(x)
     end
   end
-end
-
-module Dispatcher
 end
