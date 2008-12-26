@@ -6,7 +6,7 @@ module Cucumber
       include FileParser
 
       rule feature
-        c:comment? t:tags? feature_keyword space? name:line_to_eol eol+ feature_elements {
+        c:comment? t:tags? feature_keyword space? name:line_to_eol eol+ (feature_elements .)* feature_elements {
           def build
             Ast::Feature.new(c.build, t.build, name.text_value, feature_elements.build)
           end
