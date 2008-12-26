@@ -37,7 +37,7 @@ module Cucumber
 
     def execute(world, *args)
       begin
-        @proc.call_in(world, *args)
+        world.instance_exec(*args, &@proc)
       rescue Exception => e
         method_line = "#{__FILE__}:#{__LINE__ - 2}:in `execute'"
         e.cucumber_strip_backtrace!(method_line, @regexp.to_s)
