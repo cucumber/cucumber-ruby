@@ -9,12 +9,7 @@ module Cucumber
       attr_writer :step_mother, :executor, :features
 
       def execute(args)
-        @execute_called = true
         parse(args).execute!(@step_mother, @executor, @features)
-      end
-
-      def execute_called?
-        @execute_called
       end
 
       def parse(args)
