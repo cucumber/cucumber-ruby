@@ -27,6 +27,18 @@ module Cucumber
         $x.should == 3
         $y.should == 5
       end
+
+      it "should skip steps when previous is not passed" do
+        scenario = Scenario.new(@step_mother, comment=Comment.new(""),
+          tags=Tags.new([]), name="", step_names_and_multiline_args=[
+          ["Given", "this is missing"],
+          ["Given", "y is 5"]
+        ])
+        @visitor.visit_feature_element(scenario)
+
+        $x.should == 3
+        $y.should == nil
+      end
     end
   end
 end

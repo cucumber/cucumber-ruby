@@ -14,7 +14,7 @@ module Cucumber
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@name)
         @steps.each do |step|
-          visitor.visit_step(step, nil)
+          visitor.visit_step(step, nil, false)
         end
         visitor.visit_examples(@examples)
       end

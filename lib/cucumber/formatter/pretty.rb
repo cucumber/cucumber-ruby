@@ -62,9 +62,9 @@ module Cucumber
         @io.write("  Scenario: #{name}\n")
       end
 
-      def visit_step(step, world)
+      def visit_step(step, world, invoke)
         @indent = 6
-        step.accept(self, world)
+        step.accept(self, world, invoke)
       end
 
       def visit_step_name(gwt, step_name, status, step_invocation, comment_padding)
