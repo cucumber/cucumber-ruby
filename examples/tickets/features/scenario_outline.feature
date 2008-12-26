@@ -61,4 +61,30 @@ Feature: Outlines
       |   4    | strawberrys|  1   |
       |   2    | apricots   |  5   |
 
+  Scenario Outline: placeholder in a multiline string
+    Given my shopping list
+      """
+        Must buy some <fruits>
+      """
+    Then my shopping list should equal
+      """
+        Must buy some cucumbers
+      """
+    
+    Examples:
+      |  fruits   |
+      | cucumbers |
 
+  Scenario Outline: placeholder in step table
+    Given I have the following fruits in my pantry
+      |    name     | quantity      |
+      | cucumbers   | <quant_cukes> |
+      | strawberrys | <quant_straw> |
+
+    When I eat <number> <fruits> from the pantry
+    Then I should have <left> <fruits> in the pantry
+
+    Examples:
+      | quant_cukes | quant_straw | number |   fruits    | left |
+      | 10          | 5           |   2    | cucumbers   |  8   |
+      | 5           | 5           |   4    | strawberrys |  1   |
