@@ -1,4 +1,6 @@
-  Some title  
+
+
+    Feature:  Some title  
 
   Scenario: first     
   

@@ -5,7 +5,7 @@ module ActiveRecord
 end
 
 module ActionController
-  module Dispatcher
+  class Dispatcher
   end
   class Base
   end
