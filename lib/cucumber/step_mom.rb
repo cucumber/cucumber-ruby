@@ -42,14 +42,18 @@ module Cucumber
       step_definition
     end
 
-    def run_scenario(scenario, visitor)
+    def world(&proc)
       world = new_world
-      scenario.run_steps(world, visitor)
+      (@before_procs ||= []).each do |proc|
+        world.instance_eval(&proc)
+      end
+      yield world
     end
 
-    def run_example(scenario_outline, hash)
-      world = new_world
-      scenario_outline.run_steps(world, hash)
+    # Registers a Before proc. You can call this method as many times as you
+    # want (typically from ruby scripts under <tt>support</tt>).
+    def Before(&proc)
+      (@before_procs ||= []) << proc
     end
 
     # Registers a World proc. You can call this method as many times as you
@@ -61,8 +65,8 @@ module Cucumber
     # Creates a new world instance
     def new_world #:nodoc:
       world = Object.new
-      (@world_procs ||= []).each do |world_proc|
-        world = world_proc.call(world)
+      (@world_procs ||= []).each do |proc|
+        world = proc.call(world)
       end
       world.extend(WorldMethods); world.instance_variable_set('@__cucumber_step_mother', self)
       world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)

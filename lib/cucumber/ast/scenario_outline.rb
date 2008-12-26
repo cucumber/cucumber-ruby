@@ -20,12 +20,10 @@ module Cucumber
       end
 
       def execute_row(hash)
-        @step_mother.run_example(self, hash)
-      end
-
-      def run_steps(world, hash)
-        @steps.each do |step|
-          step.execute_with_arguments(hash, world)
+        @step_mother.world do |world|
+          @steps.each do |step|
+            step.execute_with_arguments(hash, world)
+          end
         end
       end
     end
