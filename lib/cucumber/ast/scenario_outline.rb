@@ -14,15 +14,18 @@ module Cucumber
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@name)
         @steps.each do |step|
-          visitor.visit_step(step)
+          visitor.visit_step(step, nil)
         end
         visitor.visit_examples(@examples)
       end
 
       def execute_row(hash)
-        @step_mother.new_world!
+        @step_mother.run_example(self, hash)
+      end
+
+      def run_steps(world, hash)
         @steps.each do |step|
-          step.execute_with_arguments(hash)
+          step.execute_with_arguments(hash, world)
         end
       end
     end

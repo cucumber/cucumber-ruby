@@ -15,7 +15,7 @@ module Cucumber
       end
       @step_mother.Given(/nope something else/) do |what, month|
       end
-      format = @step_mother.step_invocation("it snows in april").format_args("[%s]")
+      format = @step_mother.step_invocation("it snows in april", Object.new).format_args("[%s]")
       format.should == "it [snows] in [april]"
     end
 
@@ -24,13 +24,13 @@ module Cucumber
       @step_mother.Given(/Three blind (.*)/) {|animal|}
 
       lambda do
-        @step_mother.step_invocation("Three blind mice")
+        @step_mother.step_invocation("Three blind mice", Object.new)
       end.should raise_error(StepMom::Multiple)
     end
 
     it "should raise Missing error when no step definitions match" do
       lambda do
-        @step_mother.step_invocation("Three blind mice")
+        @step_mother.step_invocation("Three blind mice", Object.new)
       end.should raise_error(StepMom::Missing)
     end
 
