@@ -12,6 +12,10 @@ Given "I have the following fruits in my pantry" do |pantry_table|
   end
 end
 
+Given "my shopping list" do |list|
+  @shopping_list = list
+end
+
 When /^I eat (\d+) (\w+)$/ do |count, fruit|
   @eattingMachine.eat(count)
   @eattingMachine.belly_count = count.to_i
@@ -31,4 +35,8 @@ end
 
 Then /^I should have (\d+) (\w+) in the pantry$/ do |count, fruit|
   @pantry.count(fruit).should == count.to_i
+end
+
+Then /^my shopping list should equal$/ do |list|
+  @shopping_list.should == list
 end
