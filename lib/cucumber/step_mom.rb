@@ -42,6 +42,16 @@ module Cucumber
       step_definition
     end
 
+    def run_scenario(scenario, visitor)
+      world = new_world
+      scenario.run_steps(world, visitor)
+    end
+
+    def run_example(scenario_outline, hash)
+      world = new_world
+      scenario_outline.run_steps(world, hash)
+    end
+
     # Registers a World proc. You can call this method as many times as you
     # want (typically from ruby scripts under <tt>support</tt>).
     def World(&proc)
@@ -49,23 +59,24 @@ module Cucumber
     end
 
     # Creates a new world instance
-    def new_world! #:nodoc:
-      @world = Object.new
+    def new_world #:nodoc:
+      world = Object.new
       (@world_procs ||= []).each do |world_proc|
-        @world = world_proc.call(@world)
+        world = world_proc.call(world)
       end
-      @world.extend(WorldMethods); @world.instance_variable_set('@__cucumber_step_mother', self)
-      @world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
+      world.extend(WorldMethods); world.instance_variable_set('@__cucumber_step_mother', self)
+      world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
+      world
     end
 
     # Creates an Invocation that holds a StepDefinition that matches +step_name+
-    def step_invocation(step_name) #:nodoc:
+    def step_invocation(step_name, world) #:nodoc:
       found = step_definitions.select do |step_definition|
         step_definition.match(step_name)
       end
       raise Missing.new(step_name) if found.empty?
       raise Multiple.new(step_name) if found.size > 1
-      Invocation.new(@world, found[0], step_name)
+      Invocation.new(world, found[0], step_name)
     end
 
     def step_definitions
@@ -112,7 +123,7 @@ module Cucumber
     module WorldMethods #:nodoc:
       # Call a step from within a step definition
       def __cucumber_invoke(name, *inline_arguments)
-        @__cucumber_step_mother.step_invocation(name).invoke(*inline_arguments)
+        @__cucumber_step_mother.step_invocation(name, self).invoke(*inline_arguments)
       end
 
       def pending(message="TODO - implement me")

@@ -8,6 +8,7 @@ module Cucumber
   describe StepDefinition do
     before do
       extend StepMom
+      @world = new_world
       $inside = nil
     end
 
@@ -19,8 +20,7 @@ module Cucumber
         $inside = true
       end
 
-      new_world!
-      step_invocation("Outside").invoke
+      step_invocation("Outside", @world).invoke
       $inside.should == true
     end
 
@@ -32,8 +32,7 @@ module Cucumber
         $inside = table.raw[0][0]
       end
 
-      new_world!
-      step_invocation("Outside").invoke
+      step_invocation("Outside", @world).invoke
       $inside.should == 'inside'
     end
 
@@ -42,9 +41,8 @@ module Cucumber
         Given "Inside"
       end
 
-      new_world!
       lambda do
-        step_invocation("Outside").invoke
+        step_invocation("Outside", @world).invoke
       end.should raise_error(StepMom::Missing, "Inside")
     end
 
@@ -53,9 +51,8 @@ module Cucumber
         pending("Do me!")
       end
 
-      new_world!
       lambda do
-        step_invocation("Outside").invoke
+        step_invocation("Outside", @world).invoke
       end.should raise_error(StepMom::Pending, "Do me!")
     end
   end

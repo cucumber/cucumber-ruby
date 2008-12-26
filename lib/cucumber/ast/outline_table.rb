@@ -13,8 +13,12 @@ module Cucumber
 
       class ExampleCells < Cells
         def accept(visitor, status)
-          @table.execute_row(self.to_hash) unless header?
-          visit_cells(visitor, :passed)
+          if header?
+            visit_cells(visitor, :skipped)
+          else
+            @table.execute_row(self.to_hash)
+            visit_cells(visitor, :passed)
+          end
         rescue StepMom::Missing
           visit_cells(visitor, :missing)
         rescue StepMom::Pending

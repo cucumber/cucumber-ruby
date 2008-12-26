@@ -8,12 +8,12 @@ module Cucumber
         @scenario, @outline, @gwt, @name, @multiline_args = scenario, outline, gwt, name, multiline_args
       end
 
-      def accept(visitor)
+      def accept(visitor, world)
         if @outline
           visit_name_and_multiline_args(visitor, :outline, nil)
         else
           begin
-            step_invocation = @scenario.step_invocation(@name)
+            step_invocation = @scenario.step_invocation(@name, world)
             step_invocation.invoke(*@multiline_args)
             visit_name_and_multiline_args(visitor, :passed, step_invocation)
           rescue StepMom::Missing
@@ -27,12 +27,12 @@ module Cucumber
         end
       end
 
-      def execute_with_arguments(arguments)
+      def execute_with_arguments(arguments, world)
         name_with_arguments_replaced = @name
         arguments.each do |name, value|
           name_with_arguments_replaced = name_with_arguments_replaced.gsub(/<#{name}>/, value)
         end
-        step_invocation = @scenario.step_invocation(name_with_arguments_replaced)
+        step_invocation = @scenario.step_invocation(name_with_arguments_replaced, world)
         step_invocation.invoke(*@multiline_args)
       end
 
