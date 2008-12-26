@@ -20,6 +20,12 @@ module Cucumber
         @parser.parse_file(File.dirname(__FILE__) + "/../treetop_parser/" + file)
       end
 
+      describe "Header" do
+        it "should parse Feature with blurb" do
+          parse("Feature: hi\nwith blurb\n")
+        end
+      end
+
       describe "Comments" do
         it "should parse a file with only a one line comment" do
           comment = parse("# My comment\nFeature: hi\n").comment
@@ -107,6 +113,14 @@ module Cucumber
           examples = scenario_outline.instance_variable_get('@examples')
           examples_table = examples.instance_variable_get('@outline_table')
           examples_table.raw.should == [%w{x y}, %w{1 2}]
+        end
+      end
+
+      describe "Syntax" do
+        Dir["#{File.dirname(__FILE__)}/../treetop_parser/*.feature"].each do |f|
+          xit "should parse #{f}" do
+            @parser.parse_or_fail(IO.read(f))
+          end
         end
       end
     end
