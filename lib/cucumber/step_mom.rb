@@ -1,4 +1,5 @@
 require 'cucumber/step_definition'
+require 'cucumber/core_ext/instance_exec'
 
 module Cucumber
   # This is the main interface for registering step definitions, which is done
@@ -42,10 +43,10 @@ module Cucumber
       step_definition
     end
 
-    def world(&proc)
+    def world(scenario, &proc)
       world = new_world
       (@before_procs ||= []).each do |proc|
-        world.instance_eval(&proc)
+        world.instance_exec(scenario, &proc)
       end
       yield world
     end

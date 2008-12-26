@@ -10,7 +10,7 @@ module Cucumber
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@name)
-        @step_mother.world do |world|
+        @step_mother.world(self) do |world|
           invoke = true
           @steps.each do |step|
             invoke = visitor.visit_step(step, world, invoke)
