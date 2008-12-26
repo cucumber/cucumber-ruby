@@ -10,17 +10,15 @@ module Cucumber
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@name)
-        @step_mother.run_scenario(self, visitor)
+        @step_mother.world do |world|
+          @steps.each do |step|
+            visitor.visit_step(step, world)
+          end
+        end
       end
 
       def step_invocation(step_name, world)
         @step_mother.step_invocation(step_name, world)
-      end
-
-      def run_steps(world, visitor)
-        @steps.each do |step|
-          visitor.visit_step(step, world)
-        end
       end
 
       def max_step_length

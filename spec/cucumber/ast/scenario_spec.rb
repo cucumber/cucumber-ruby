@@ -12,7 +12,7 @@ module Cucumber
         @step_mother.Before do
           $x = 3
         end
-        @step_mother.Given /$y is (\d+)/ do |n|
+        @step_mother.Given /y is (\d+)/ do |n|
           $y = n.to_i
         end
         @visitor = Visitor.new
@@ -21,7 +21,7 @@ module Cucumber
       it "should execute Before blocks before steps" do
         scenario = Scenario.new(@step_mother, comment=Comment.new(""), 
           tags=Tags.new([]), name="", step_names_and_multiline_args=[
-          ["Given", "$y is 5"]
+          ["Given", "y is 5"]
         ])
         @visitor.visit_feature_element(scenario)
         $x.should == 3
