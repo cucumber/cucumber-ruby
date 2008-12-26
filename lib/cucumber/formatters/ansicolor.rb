@@ -32,6 +32,8 @@ module Cucumber
     # * <tt>failed_param</tt>  - defaults to <tt>red,bold</tt>
     # * <tt>passed</tt>        - defaults to <tt>green</tt>
     # * <tt>passed_param</tt>  - defaults to <tt>green,bold</tt>
+    # * <tt>outline</tt>       - defaults to <tt>cyan</tt>
+    # * <tt>outline_param</tt> - defaults to <tt>cyan,bold</tt>
     # * <tt>skipped</tt>       - defaults to <tt>cyan</tt>
     # * <tt>skipped_param</tt> - defaults to <tt>cyan,bold</tt>
     # * <tt>comment</tt>       - defaults to <tt>grey</tt>
