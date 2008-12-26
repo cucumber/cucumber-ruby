@@ -6,7 +6,7 @@ module Cucumber
       it "should parse features with weird spaces" do
         p = FeatureParser.new
         f = p.parse_feature(File.dirname(__FILE__) + '/spaces.feature')
-        f.header.should == "Some title"
+        f.header.should == "Feature:  Some title"
         f.should have(2).scenarios
 
         first = f.scenarios[0]
@@ -50,7 +50,7 @@ module Cucumber
       it "should skip comments in feature header" do
         p = FeatureParser.new
         f = p.parse_feature(File.dirname(__FILE__) + '/with_comments.feature')
-        f.header.should == "Some header"
+        f.header.should == "Feature: Some header"
       end
 
       it "should skip comments in scenario header" do

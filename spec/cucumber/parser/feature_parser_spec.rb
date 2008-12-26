@@ -118,7 +118,7 @@ module Cucumber
 
       describe "Syntax" do
         Dir["#{File.dirname(__FILE__)}/../treetop_parser/*.feature"].each do |f|
-          xit "should parse #{f}" do
+          it "should parse #{f}" do
             @parser.parse_or_fail(IO.read(f))
           end
         end
