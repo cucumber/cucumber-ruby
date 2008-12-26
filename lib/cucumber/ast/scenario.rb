@@ -11,8 +11,9 @@ module Cucumber
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@name)
         @step_mother.world do |world|
+          invoke = true
           @steps.each do |step|
-            visitor.visit_step(step, world)
+            invoke = visitor.visit_step(step, world, invoke)
           end
         end
       end
