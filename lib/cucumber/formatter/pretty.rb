@@ -56,13 +56,13 @@ module Cucumber
         examples.accept(self)
       end
 
-      def visit_examples_name(name)
-        @io.write("  Examples: #{name}\n")
+      def visit_examples_name(keyword, name)
+        @io.write("  #{keyword} #{name}\n")
         @indent = 4
       end
 
-      def visit_scenario_name(name)
-        @io.write("  Scenario: #{name}\n")
+      def visit_scenario_name(keyword, name)
+        @io.write("  #{keyword} #{name}\n")
       end
 
       def visit_step(step)

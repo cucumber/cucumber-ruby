@@ -22,17 +22,17 @@ module Cucumber
       end
 
       rule scenario
-        c:comment? t:tags? scenario_keyword space? name:line_to_eol eol+ steps {
+        c:comment? t:tags? scenario_keyword space* name:line_to_eol eol+ steps {
           def build
-            Ast::Scenario.new(@step_mother, c.build, t.build, name.text_value, steps.build)
+            Ast::Scenario.new(@step_mother, c.build, t.build, scenario_keyword.text_value, name.text_value, steps.build)
           end
         }
       end
 
       rule scenario_outline
-        c:comment? t:tags? scenario_outline_keyword space? name:line_to_eol eol+ steps examples_sections {
+        c:comment? t:tags? scenario_outline_keyword space* name:line_to_eol eol+ steps examples_sections {
           def build
-            Ast::ScenarioOutline.new(@step_mother, c.build, t.build, name.text_value, steps.build, examples_sections.build)
+            Ast::ScenarioOutline.new(@step_mother, c.build, t.build, scenario_outline_keyword.text_value, name.text_value, steps.build, examples_sections.build)
           end
         }
       end
@@ -46,7 +46,7 @@ module Cucumber
       end
 
       rule step
-        step_keyword space? name:line_to_eol eol+ multi:multiline_arg? {
+        step_keyword space* name:line_to_eol eol+ multi:multiline_arg? {
           def build
             if multi.respond_to?(:build)
               [step_keyword.text_value, name.text_value, multi.build]
@@ -66,9 +66,9 @@ module Cucumber
       end
 
       rule examples
-        examples_keyword name:line_to_eol eol+ table {
+        examples_keyword space* name:line_to_eol eol+ table {
           def build
-            [name.text_value, table.raw]
+            [examples_keyword.text_value, name.text_value, table.raw]
           end
         }
       end

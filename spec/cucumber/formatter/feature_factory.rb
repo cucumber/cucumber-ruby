@@ -33,7 +33,7 @@ module Cucumber
             step_mother,
             Ast::Comment.new("    # My scenario comment  \n# On two lines \n"),
             Ast::Tags.new(['three', 'four']),
-            "A Scenario",
+            "Scenario:", "A Scenario",
             [
               ["Given", "a passing step with an inline arg:", table],
               ["Given", "a happy step with an inline arg:", py_string],
