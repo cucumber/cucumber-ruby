@@ -22,7 +22,10 @@ module Cucumber
       end
 
       def accept(visitor)
-        visit_name_and_multiline_args(visitor, @staus, @step_invocation)
+        visitor.visit_step_name(@gwt, @name, @status, @step_invocation, comment_padding)
+        @multiline_args.each do |inline_arg|
+          visitor.visit_inline_arg(inline_arg, @status)
+        end
       end
 
       def comment_padding
@@ -56,13 +59,6 @@ module Cucumber
           end
         end
         @status
-      end
-
-      def visit_name_and_multiline_args(visitor, status, step_invocation)
-        visitor.visit_step_name(@gwt, @name, status, step_invocation, comment_padding)
-        @multiline_args.each do |inline_arg|
-          visitor.visit_inline_arg(inline_arg, status)
-        end
       end
     end
   end
