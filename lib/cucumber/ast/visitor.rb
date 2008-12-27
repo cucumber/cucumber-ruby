@@ -34,10 +34,10 @@ module Cucumber
         examples.accept(self)
       end
 
-      def visit_examples_name(name)
+      def visit_examples_name(keyword, name)
       end
 
-      def visit_scenario_name(name)
+      def visit_scenario_name(keyword, name)
       end
 
       def visit_step(step)

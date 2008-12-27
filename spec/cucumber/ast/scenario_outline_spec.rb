@@ -26,7 +26,7 @@ module Cucumber
           @step_mother,
           Comment.new(""),
           Tags.new([]),
-          "My outline",
+          "Scenario:", "My outline",
           [
             ['Given', 'there are <start> cucumbers'],
             ['When',  'I eat <eat> cucumbers'],
@@ -35,6 +35,7 @@ module Cucumber
           ],
           [
             [ 
+              'Examples:',
               'First table',
               [
                 %w{start eat left},

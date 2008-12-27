@@ -20,7 +20,7 @@ module Cucumber
 
       it "should execute Before blocks before steps" do
         scenario = Scenario.new(@step_mother, comment=Comment.new(""), 
-          tags=Tags.new([]), name="", step_names_and_multiline_args=[
+          tags=Tags.new([]), keyword="", name="", step_names_and_multiline_args=[
           ["Given", "y is 5"]
         ])
         @visitor.visit_feature_element(scenario)
@@ -30,7 +30,7 @@ module Cucumber
 
       it "should skip steps when previous is not passed" do
         scenario = Scenario.new(@step_mother, comment=Comment.new(""),
-          tags=Tags.new([]), name="", step_names_and_multiline_args=[
+          tags=Tags.new([]), keyword="", name="", step_names_and_multiline_args=[
           ["Given", "this is missing"],
           ["Given", "y is 5"]
         ])
