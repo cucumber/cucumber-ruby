@@ -117,7 +117,10 @@ module Cucumber
       end
 
       describe "Syntax" do
-        Dir["#{File.dirname(__FILE__)}/../treetop_parser/*.feature"].each do |f|
+        files = Dir["#{File.dirname(__FILE__)}/../treetop_parser/*.feature"].reject do |f|
+          f =~ /given_scenario.feature/ || f =~ /fit_scenario.feature/
+        end
+        files.each do |f|
           it "should parse #{f}" do
             @parser.parse_or_fail(IO.read(f))
           end

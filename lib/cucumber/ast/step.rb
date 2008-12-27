@@ -8,6 +8,8 @@ module Cucumber
         @scenario, @outline, @gwt, @name, @multiline_args = scenario, outline, gwt, name, multiline_args
       end
 
+      # TODO - Don't execute in accept. It should happen before - in Scenario.
+      # Store the result in the step itself
       def accept(visitor, world, invoke)
         result = false
         if @outline
