@@ -34,9 +34,14 @@ module Cucumber
             ['And',   'I should have <eat> cucumbers in my belly']
           ],
           [
-            %w{start eat left},
-            %w{12 5 7},
-            %w{20 6 14}
+            [ 
+              'First table',
+              [
+                %w{start eat left},
+                %w{12 5 7},
+                %w{20 6 14}
+              ]
+            ]
           ]
         )
       end

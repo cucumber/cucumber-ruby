@@ -53,9 +53,12 @@ module Cucumber
       end
 
       def visit_examples(examples)
-        @io.write("  Examples:\n")
-        @indent = 4
         examples.accept(self)
+      end
+
+      def visit_examples_name(name)
+        @io.write("  Examples: #{name}\n")
+        @indent = 4
       end
 
       def visit_scenario_name(name)
@@ -97,7 +100,7 @@ module Cucumber
         @io.write(' ' + format_string(value.ljust(width), status) + ' |')
       end
 
-      def visit_step_error(e)
+      def visit_step_exception(e)
         @io.write('      ' + e.message + "\n")
         @io.write('      ' + e.cucumber_backtrace.join("\n      ") + "\n")
       end
@@ -110,30 +113,30 @@ module Cucumber
 
       def format_step(gwt, step_name, status, step_invocation, comment_padding)
         line = if step_invocation
-          comment = format_string(' # ' + step_invocation.file_colon_line, :comment)
-          padding = " " * comment_padding
-          gwt + " " + step_invocation.format_args(format_for(status, :param)) + padding + comment
-        else
-          gwt + " " + step_name
-        end
-        format_string(line, status)
+        comment = format_string(' # ' + step_invocation.file_colon_line, :comment)
+        padding = " " * comment_padding
+        gwt + " " + step_invocation.format_args(format_for(status, :param)) + padding + comment
+      else
+        gwt + " " + step_name
       end
+      format_string(line, status)
+    end
 
-      def format_string(string, status)
-        fmt = format_for(status)
-        if Proc === fmt
-          fmt.call(string)
-        else
-          fmt % string
-        end
-      end
-
-      def format_for(*keys)
-        key = keys.join('_').to_sym
-        fmt = FORMATS[key]
-        raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
-        fmt
+    def format_string(string, status)
+      fmt = format_for(status)
+      if Proc === fmt
+        fmt.call(string)
+      else
+        fmt % string
       end
     end
+
+    def format_for(*keys)
+      key = keys.join('_').to_sym
+      fmt = FORMATS[key]
+      raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
+      fmt
+    end
   end
+end
 end

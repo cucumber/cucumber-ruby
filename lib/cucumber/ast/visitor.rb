@@ -34,6 +34,9 @@ module Cucumber
         examples.accept(self)
       end
 
+      def visit_examples_name(name)
+      end
+
       def visit_scenario_name(name)
       end
 
@@ -62,7 +65,7 @@ module Cucumber
       def visit_table_cell_value(value, width, status)
       end
 
-      def visit_step_error(error)
+      def visit_step_exception(error)
       end
     end
   end
