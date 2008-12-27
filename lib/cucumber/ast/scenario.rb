@@ -3,7 +3,7 @@ module Cucumber
     class Scenario
       def initialize(step_mother, comment, tags, name, step_names_and_multiline_args)
         @step_mother, @comment, @tags, @name = step_mother, comment, tags, name
-        @steps = step_names_and_multiline_args.map{|saia| Step.new(self, false, *saia)}
+        @steps = step_names_and_multiline_args.map{|saia| Step.new(self, nil, *saia)}
       end
 
       def accept(visitor)
@@ -11,9 +11,10 @@ module Cucumber
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@name)
         @step_mother.world(self) do |world|
-          invoke = true
+          previous = :passed
           @steps.each do |step|
-            invoke = visitor.visit_step(step, world, invoke)
+            previous = step.execute(world, previous)
+            visitor.visit_step(step)
           end
         end
       end
