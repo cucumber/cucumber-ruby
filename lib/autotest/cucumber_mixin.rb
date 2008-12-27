@@ -122,10 +122,6 @@ module Autotest::CucumberMixin
     else
       scenario_args = scenarios_to_run.map { |s| "-s '#{s}'" }.join(' ')
     end
-    return "#{$CUCUMBER_RUBY} #{cucumber} #{args} #{scenario_args}"
-  end
-  
-  def cucumber
-    File.file?("script/cucumber") ? "script/cucumber" : "cucumber"
+    return "#{$CUCUMBER_RUBY} #{Cucumber.binary} #{args} #{scenario_args}"
   end
 end

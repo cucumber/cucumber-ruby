@@ -36,5 +36,9 @@ module Cucumber
       require 'yaml'
       @config ||= YAML.load_file(LANGUAGE_FILE)
     end
+
+    def binary
+      @binary ||= File.expand_path(File.dirname(__FILE__) + '/../bin/cucumber')
+    end
   end  
 end

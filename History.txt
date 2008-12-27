@@ -4,6 +4,7 @@
 * Pretty formatter shows number of scenarios (#139 Joseph Wilk)
 
 === Bugfixes
+* Fixed "No such file or directory -- cucumber (LoadError)" bug with AutoTest (Aslak Hellesøy)
 * Fixed `load_missing_constant': uninitialized constant Dispatcher error with Rails (Aslak Hellesøy)
 
 === Removed features
