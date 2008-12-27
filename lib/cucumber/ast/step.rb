@@ -26,6 +26,7 @@ module Cucumber
         @multiline_args.each do |inline_arg|
           visitor.visit_inline_arg(inline_arg, @status)
         end
+        visitor.visit_step_exception(@exception) if @exception
       end
 
       def comment_padding

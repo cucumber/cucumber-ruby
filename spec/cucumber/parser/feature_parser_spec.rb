@@ -110,7 +110,7 @@ module Cucumber
 
         it "should have examples" do
           scenario_outline = parse("Feature: Hi\nScenario Outline: Hello\nGiven I have a table\n|1|2|\nExamples:\n|x|y|\n|1|2|").feature_elements[0]
-          examples = scenario_outline.instance_variable_get('@examples')
+          examples = scenario_outline.instance_variable_get('@examples_array')[0]
           examples_table = examples.instance_variable_get('@outline_table')
           examples_table.raw.should == [%w{x y}, %w{1 2}]
         end

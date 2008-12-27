@@ -1,6 +1,7 @@
 == In Git
 
 === New features
+* Scenario Outline can be followed by several named Examples sections (#123 Aslak Hellesøy)
 * Pretty formatter shows number of scenarios (#139 Joseph Wilk)
 
 === Bugfixes
