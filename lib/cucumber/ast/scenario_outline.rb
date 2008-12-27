@@ -3,7 +3,7 @@ module Cucumber
     class ScenarioOutline < Scenario
       def initialize(step_mother, comment, tags, name, step_names_and_multiline_args, example_matrix)
         @step_mother, @comment, @tags, @name = step_mother, comment, tags, name
-        @steps = step_names_and_multiline_args.map{|saia| Step.new(self, true, *saia)}
+        @steps = step_names_and_multiline_args.map{|saia| Step.new(self, :outline, *saia)}
 
         outline_table = OutlineTable.new(example_matrix, self)
         @examples = Examples.new(self, outline_table)
@@ -14,15 +14,16 @@ module Cucumber
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@name)
         @steps.each do |step|
-          visitor.visit_step(step, nil, false)
+          visitor.visit_step(step)
         end
         visitor.visit_examples(@examples)
       end
 
       def execute_row(hash)
         @step_mother.world do |world|
+          previous = :passed
           @steps.each do |step|
-            step.execute_with_arguments(hash, world)
+            previous = step.execute_with_arguments(hash, world, previous)
           end
         end
       end
