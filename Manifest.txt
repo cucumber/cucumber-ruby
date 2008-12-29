@@ -111,9 +111,11 @@ examples/tickets/features/scenario_outline.feature
 examples/tickets/features/step_definitons/scenario_outline_steps.rb
 examples/tickets/features/step_definitons/tickets_steps.rb
 examples/tickets/features/tickets.feature
+examples/watir/README.textile
 examples/watir/Rakefile
 examples/watir/features/search.feature
-examples/watir/features/step_definitons/stories_steps.rb
+examples/watir/features/step_definitons/search_steps.rb
+examples/watir/features/support/env.rb
 features/see_features.feature
 features/steps/features_steps.rb
 gem_tasks/deployment.rake
