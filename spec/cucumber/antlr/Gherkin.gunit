@@ -16,3 +16,10 @@ OK
 |ghi|jkl|
 >>
 OK
+
+// no closing bar
+<<
+|abc|def
+|ghi|jkl|
+>>
+FAIL
