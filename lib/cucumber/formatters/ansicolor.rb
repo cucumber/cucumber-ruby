@@ -19,7 +19,7 @@ Term::ANSIColor.coloring = false if !STDOUT.tty? || (Cucumber::WINDOWS && !Cucum
 module Cucumber
   module Formatters
     # Defines aliases for coloured output. You can tweak the colours by defining
-    # a <tt>Cucumber::COLORS</tt> variable in your shell, very much like you can
+    # a <tt>CUCUMBER_COLORS</tt> variable in your shell, very much like you can
     # tweak the familiar POSIX command <tt>ls</tt> with
     # <a href="http://mipsisrisc.com/rambling/2008/06/27/lscolorsls_colors-now-with-linux-support/">$LSCOLORS/$LS_COLORS</a>
     #
