@@ -96,7 +96,6 @@ examples/java/features/hello.feature
 examples/java/features/step_definitons/hello_steps.rb
 examples/java/features/step_definitons/tree_steps.rb
 examples/java/features/tree.feature
-examples/java/src/cucumber/demo/Hello.java
 examples/selenium/Rakefile
 examples/selenium/features/search.feature
 examples/selenium/features/step_definitons/stories_steps.rb
@@ -116,6 +115,7 @@ examples/watir/features/search.feature
 examples/watir/features/step_definitons/stories_steps.rb
 features/see_features.feature
 features/steps/features_steps.rb
+gem_tasks/antlr.rake
 gem_tasks/deployment.rake
 gem_tasks/environment.rake
 gem_tasks/features.rake
@@ -132,6 +132,7 @@ lib/autotest/cucumber_rails_rspec.rb
 lib/autotest/cucumber_rspec.rb
 lib/autotest/discover.rb
 lib/cucumber.rb
+lib/cucumber/antlr/Gherkin.g
 lib/cucumber/ast.rb
 lib/cucumber/ast/comment.rb
 lib/cucumber/ast/examples.rb
@@ -226,15 +227,8 @@ rails_generators/feature/USAGE
 rails_generators/feature/feature_generator.rb
 rails_generators/feature/templates/feature.erb
 rails_generators/feature/templates/steps.erb
-script/console
-script/console.cmd
-script/destroy
-script/destroy.cmd
-script/generate
-script/generate.cmd
-script/txt2html
-script/txt2html.cmd
 setup.rb
+spec/cucumber/antlr/Gherkin.gunit
 spec/cucumber/ast/py_string_spec.rb
 spec/cucumber/ast/scenario_outline_spec.rb
 spec/cucumber/ast/scenario_spec.rb

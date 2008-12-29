@@ -1,0 +1,18 @@
+gunit Gherkin;
+
+table:
+
+// newline
+<<
+|abc|def|
+|ghi|jkl|
+
+>>
+OK
+
+// no newline
+<<
+|abc|def|
+|ghi|jkl|
+>>
+OK
