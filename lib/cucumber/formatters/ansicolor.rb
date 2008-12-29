@@ -5,7 +5,7 @@ gem 'term-ansicolor'
 $LOAD_PATH.each{|path| $LOAD_PATH.unshift($LOAD_PATH.delete(path)) if path =~ /term-ansicolor/}
 require 'term/ansicolor'
 
-if $CUCUMBER_WINDOWS_MRI
+if Cucumber::WINDOWS_MRI
   begin
     require 'Win32/Console/ANSI'
   rescue LoadError
@@ -14,23 +14,26 @@ if $CUCUMBER_WINDOWS_MRI
   end
 end
 
-Term::ANSIColor.coloring = false if !STDOUT.tty? || ($CUCUMBER_WINDOWS && !$CUCUMBER_WINDOWS_MRI)
+Term::ANSIColor.coloring = false if !STDOUT.tty? || (Cucumber::WINDOWS && !Cucumber::WINDOWS_MRI)
 
 module Cucumber
   module Formatters
     # Defines aliases for coloured output. You can tweak the colours by defining
-    # a <tt>$CUCUMBER_COLORS</tt> variable in your shell, very much like you can
+    # a <tt>Cucumber::COLORS</tt> variable in your shell, very much like you can
     # tweak the familiar POSIX command <tt>ls</tt> with
     # <a href="http://mipsisrisc.com/rambling/2008/06/27/lscolorsls_colors-now-with-linux-support/">$LSCOLORS/$LS_COLORS</a>
     #
     # The colours that you can change are:
     #
+    # * <tt>missing</tt>       - defaults to <tt>yellow</tt>
     # * <tt>pending</tt>       - defaults to <tt>yellow</tt>
     # * <tt>pending_param</tt> - defaults to <tt>yellow,bold</tt>
     # * <tt>failed</tt>        - defaults to <tt>red</tt>
     # * <tt>failed_param</tt>  - defaults to <tt>red,bold</tt>
     # * <tt>passed</tt>        - defaults to <tt>green</tt>
     # * <tt>passed_param</tt>  - defaults to <tt>green,bold</tt>
+    # * <tt>outline</tt>       - defaults to <tt>cyan</tt>
+    # * <tt>outline_param</tt> - defaults to <tt>cyan,bold</tt>
     # * <tt>skipped</tt>       - defaults to <tt>cyan</tt>
     # * <tt>skipped_param</tt> - defaults to <tt>cyan,bold</tt>
     # * <tt>comment</tt>       - defaults to <tt>grey</tt>
@@ -66,9 +69,11 @@ module Cucumber
           h[$1] + ',bold'
         end
       end.merge({
+        'missing' => 'yellow',
         'pending' => 'yellow',
         'failed'  => 'red',
         'passed'  => 'green',
+        'outline' => 'cyan',
         'skipped' => 'cyan',
         'comment' => 'grey',
         'tag'     => 'blue'

@@ -17,28 +17,3 @@ require 'cucumber/cli'
 require 'cucumber/broadcaster'
 require 'cucumber/world'
 require 'cucumber/core_ext/exception'
-
-module Cucumber
-  LANGUAGE_FILE = File.expand_path(File.dirname(__FILE__) + '/cucumber/languages.yml')
-
-  class << self
-    attr_reader :language
-    
-    def load_language(lang)
-      @language = config[lang]
-    end
-    
-    def languages
-      config.keys.sort
-    end
-    
-    def config
-      require 'yaml'
-      @config ||= YAML.load_file(LANGUAGE_FILE)
-    end
-
-    def binary
-      @binary ||= File.expand_path(File.dirname(__FILE__) + '/../bin/cucumber')
-    end
-  end  
-end
