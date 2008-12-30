@@ -16,6 +16,15 @@ module Cucumber
           visitor.visit_feature_element(feature_element)
         end
       end
+      
+      def to_sexp
+        sexp = [:feature, @comment.to_sexp] 
+        tags = @tags.to_sexp
+        sexp += tags if tags.any?
+        sexp += [[:name, @name]] 
+        sexp += @feature_elements.map{|e| e.to_sexp}
+        sexp
+      end
     end
   end
 end

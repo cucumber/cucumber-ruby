@@ -17,6 +17,10 @@ module Cucumber
           visitor.visit_comment_line(line.strip)
         end
       end
+      
+      def to_sexp
+        [:comment, @value]
+      end
     end
   end
 end
