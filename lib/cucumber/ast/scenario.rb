@@ -26,12 +26,15 @@ module Cucumber
       def max_step_length
         @steps.map{|step| step.text_length}.max
       end
-      
+
       def to_sexp
-        sexp = [:scenario, @comment.to_sexp] 
+        sexp = [:scenario, @keyword, @name]
+        comment = @comment.to_sexp
+        sexp += [comment] if comment
         tags = @tags.to_sexp
         sexp += tags if tags.any?
-        sexp += [[:name, @name]] 
+        steps = @steps.map{|step| step.to_sexp}
+        sexp += steps if steps.any?
         sexp
       end
     end

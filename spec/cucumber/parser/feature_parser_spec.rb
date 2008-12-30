@@ -8,14 +8,14 @@ module Cucumber
       before do
         @parser = FeatureParser.new
       end
-      
+
       def parse(text)
         feature = @parser.parse_or_fail(text)
         feature.extend(Module.new{
           attr_reader :comment, :tags, :name, :feature_elements
         })
       end
-      
+
       def parse_file(file)
         @parser.parse_file(File.dirname(__FILE__) + "/../treetop_parser/" + file)
       end
@@ -28,27 +28,20 @@ module Cucumber
 
       describe "Comments" do
         it "should parse a file with only a one line comment" do
-          comment = parse("# My comment\nFeature: hi\n").comment
-          comment.extend(Module.new{
-            attr_reader :value
-          })
-          comment.value.should == "# My comment\n"
+          parse("# My comment\nFeature: hi\n").to_sexp.should ==
+          [:feature, "hi",
+            [:comment, "# My comment\n"]]
         end
 
         it "should parse a file with only a multiline comment" do
-          comment = parse("# Hello\n# World\nFeature: hi\n").comment
-          comment.extend(Module.new{
-            attr_reader :value
-          })
-          comment.value.should == "# Hello\n# World\n"
+          parse("# Hello\n# World\nFeature: hi\n").to_sexp.should ==
+          [:feature, "hi",
+            [:comment, "# Hello\n# World\n"]]
         end
 
         it "should parse a file with no comments" do
-          comment = parse("Feature: hi\n").comment
-          comment.extend(Module.new{
-            attr_reader :value
-          })
-          comment.value.should == ""
+          parse("Feature: hi\n").to_sexp.should ==
+          [:feature, "hi"]
         end
 
         it "should parse a file with only a multiline comment with newlines" do
@@ -60,59 +53,80 @@ module Cucumber
 
       describe "Tags" do
         it "should parse a file with tags on a feature" do
-          tags = parse("# My comment\n@hello @world Feature: hi\n").tags
-          tags.extend(Module.new{
-            attr_reader :tag_names
-          })
-          tags.tag_names.should == %w{hello world}
+          parse("# My comment\n@hello @world Feature: hi\n").to_sexp.should ==
+          [:feature, "hi",
+            [:comment, "# My comment\n"],
+            [:tag, "hello"],
+            [:tag, "world"]]
         end
       end
 
       describe "Scenarios" do
         it "can be empty" do
-          scenario = parse("Feature: Hi\nScenario: Hello\n").feature_elements[0]
-          scenario.extend(Module.new{
-            attr_reader :name
-          })
-          scenario.name.should == "Hello"
+          parse("Feature: Hi\nScenario: Hello\n").to_sexp.should ==
+          [:feature, "Hi",
+            [:scenario, "Scenario:", "Hello"]]
         end
 
         it "should have steps" do
-          scenario = parse("Feature: Hi\nScenario: Hello\nGiven I am a step\n").feature_elements[0]
-          step = scenario.instance_variable_get('@steps')[0]
-          gwt  = step.instance_variable_get('@gwt').should == 'Given'
-          name = step.instance_variable_get('@name').should == 'I am a step'
+          parse("Feature: Hi\nScenario: Hello\nGiven I am a step\n").to_sexp.should ==
+          [:feature, "Hi",
+            [:scenario, "Scenario:", "Hello",
+              [:step, "Given", "I am a step"]]]
         end
 
         it "should have steps with inline table" do
-          scenario = parse("Feature: Hi\nScenario: Hello\nGiven I have a table\n|1|2|\n").feature_elements[0]
-          step = scenario.instance_variable_get('@steps')[0]
-          table = step.instance_variable_get('@multiline_args')[0]
-          table.raw.should == [['1', '2']]
+          parse("Feature: Hi\nScenario: Hello\nGiven I have a table\n|1|2|\n").to_sexp.should ==
+          [:feature, "Hi",
+            [:scenario, "Scenario:", "Hello",
+              [:step, "Given", "I have a table",
+                [:table,
+                  [:row,
+                    [:cell, "1"],
+                    [:cell, "2"]]]]]]
         end
       end
 
       describe "Scenario Outlines" do
         it "can be empty" do
-          scenario_outline = parse("Feature: Hi\nScenario Outline: Hello\nExamples:\n|1|2|\n").feature_elements[0]
-          scenario_outline.extend(Module.new{
-            attr_reader :name
-          })
-          scenario_outline.name.should == "Hello"
+          parse("Feature: Hi\nScenario Outline: Hello\nExamples:\n|1|2|\n").to_sexp.should ==
+          [:feature, "Hi",
+            [:scenario_outline, "Scenario Outline:", "Hello",
+              [:examples, "Examples:", "",
+                [:table,
+                  [:row,
+                    [:cell, "1"],
+                    [:cell, "2"]]]]]]
         end
 
         it "should have steps with inline table" do
-          scenario_outline = parse("Feature: Hi\nScenario Outline: Hello\nGiven I have a table\n|1|2|\n").feature_elements[0]
-          step = scenario_outline.instance_variable_get('@steps')[0]
-          table = step.instance_variable_get('@multiline_args')[0]
-          table.raw.should == [['1', '2']]
+          parse("Feature: Hi\nScenario Outline: Hello\nGiven I have a table\n|1|2|\n").to_sexp.should ==
+          [:feature, "Hi",
+            [:scenario_outline, "Scenario Outline:", "Hello",
+              [:step, "Given", "I have a table",
+                [:table,
+                  [:row,
+                    [:cell, "1"],
+                    [:cell, "2"]]]]]]
         end
 
         it "should have examples" do
-          scenario_outline = parse("Feature: Hi\nScenario Outline: Hello\nGiven I have a table\n|1|2|\nExamples:\n|x|y|\n|1|2|").feature_elements[0]
-          examples = scenario_outline.instance_variable_get('@examples_array')[0]
-          examples_table = examples.instance_variable_get('@outline_table')
-          examples_table.raw.should == [%w{x y}, %w{1 2}]
+          parse("Feature: Hi\nScenario Outline: Hello\nGiven I have a table\n|1|2|\nExamples:\n|x|y|\n|5|6|").to_sexp.should ==
+          [:feature, "Hi",
+            [:scenario_outline, "Scenario Outline:", "Hello",
+              [:step, "Given", "I have a table",
+                [:table,
+                  [:row,
+                    [:cell, "1"],
+                    [:cell, "2"]]]],
+              [:examples, "Examples:", "",
+                [:table,
+                  [:row,
+                    [:cell, "x"],
+                    [:cell, "y"]],
+                  [:row,
+                    [:cell, "5"],
+                    [:cell, "6"]]]]]]
         end
       end
 

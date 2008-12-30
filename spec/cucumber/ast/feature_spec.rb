@@ -18,9 +18,7 @@ module Cucumber
               [:comment, "    # My scenario comment  \n# On two lines \n"],
               [:tag, "three"],
               [:tag, "four"],
-              [:name, "A Scenario"]
-            ]
-          ]
+              [:name, "A Scenario"]]]
       end
     end
   end

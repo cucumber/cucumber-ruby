@@ -29,6 +29,10 @@ module Cucumber
         visitor.visit_step_exception(@exception) if @exception
       end
 
+      def to_sexp
+        [:step, @gwt, @name, *@multiline_args.map{|arg| arg.to_sexp}]
+      end
+
       def comment_padding
         max_length = @scenario.max_step_length
         max_length - text_length

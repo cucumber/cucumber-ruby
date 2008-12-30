@@ -3,11 +3,12 @@ module Cucumber
     class ScenarioOutline < Scenario
       # The +example_sections+ argument must be an Array where each element is another array representing
       # an Examples section. This array has 3 elements:
-      # 
+      #
       # * Examples keyword
       # * Examples section name
       # * Raw matrix
       def initialize(step_mother, comment, tags, keyword, name, step_names_and_multiline_args, example_sections)
+        @sexp_type = :scenario_outline
         @step_mother, @comment, @tags, @keyword, @name = step_mother, comment, tags, keyword, name
         @steps = step_names_and_multiline_args.map{|saia| Step.new(self, :outline, *saia)}
 
@@ -40,6 +41,18 @@ module Cucumber
             previous = step.execute_with_arguments(hash, world, previous)
           end
         end
+      end
+
+      def to_sexp
+        sexp = [:scenario_outline, @keyword, @name]
+        comment = @comment.to_sexp
+        sexp += [comment] if comment
+        tags = @tags.to_sexp
+        sexp += tags if tags.any?
+        steps = @steps.map{|step| step.to_sexp}
+        sexp += steps if steps.any?
+        sexp += @examples_array.map{|e| e.to_sexp}
+        sexp
       end
     end
   end
