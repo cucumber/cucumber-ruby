@@ -1,5 +1,8 @@
+require 'cucumber/ast'
+require 'cucumber/step_mom'
+
 module Cucumber
-  module Formatter
+  module Ast
     module FeatureFactory
       class MyWorld
         def flunk
