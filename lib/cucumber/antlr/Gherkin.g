@@ -1,24 +1,38 @@
 grammar Gherkin;
 
 options {
+  output = AST;
   language = Java;
 }
 
-table	:	table_line+;
+tokens {
+  STEP;
+  TABLE;
+  TABLE_ROW;
+  TABLE_CELL;
+}
 
-table_line	:	(NEWLINE) => NEWLINE | 
-		BAR (table_cell BAR)+ (NEWLINE|EOF)
+steps : step+;
+
+step : STEP_KEYWORD WS line_to_eol -> ^(STEP STEP_KEYWORD line_to_eol);
+
+line_to_eol : (options {greedy=false;} : .)* (NEWLINE|EOF)!;
+
+table	:	table_row+ -> ^(TABLE table_row+);
+
+table_row	:	(NEWLINE) => NEWLINE | 
+		BAR (table_cell BAR)+ (NEWLINE|EOF) -> ^(TABLE_ROW table_cell+)
 		;
 
-table_cell	: (f=CELL_VALUE
-	  | // nothing
-	  );
+table_cell	: CELL_VALUE -> ^(TABLE_CELL CELL_VALUE);
 
 NEWLINE	:	'\r'? '\n';
 
-BAR	:	( WS* '|' WS*);
+BAR	:	WS* '|' WS*;
 
-WS	:	(' ' | '\t');
+WS	:	' ' | '\t';
+
+STEP_KEYWORD : 'Given' | 'When';
 
 CELL_VALUE
 	:	~('\r' | '\n' | '|' | ' ')+;
