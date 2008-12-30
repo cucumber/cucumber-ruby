@@ -56,6 +56,11 @@ module Cucumber
         @raw
       end
 
+      # For testing only
+      def to_sexp #:nodoc:
+        [:table, *rows.map{|row| row.to_sexp}]
+      end
+
       def to_hash(cells) #:nodoc:
         hash = {}
         @raw[0].each_with_index do |key, n|
@@ -116,6 +121,11 @@ module Cucumber
           end
         end
 
+        # For testing only
+        def to_sexp #:nodoc:
+          [:row, *@cells.map{|cell| cell.to_sexp}]
+        end
+
         def to_hash #:nodoc:
           @to_hash ||= @table.to_hash(self)
         end
@@ -152,6 +162,11 @@ module Cucumber
 
         def accept(visitor, status)
           visitor.visit_table_cell_value(@value, col_width, status)
+        end
+
+        # For testing only
+        def to_sexp #:nodoc:
+          [:cell, @value]
         end
 
         private

@@ -38,6 +38,22 @@ module Cucumber
           {'1' => '4444', '22' => '55555', '333' => '666666'}
         ]
       end
+      
+      it "should convert to sexp" do
+        @table.to_sexp.should == 
+          [:table, 
+            [:row, 
+              [:cell, "1"], 
+              [:cell, "22"],
+              [:cell, "333"]
+            ],
+            [:row, 
+              [:cell, "4444"], 
+              [:cell, "55555"],
+              [:cell, "666666"]
+            ]
+          ]
+      end
     end
   end
 end
