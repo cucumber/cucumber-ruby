@@ -50,9 +50,7 @@ module Cucumber
             [:row, 
               [:cell, "4444"], 
               [:cell, "55555"],
-              [:cell, "666666"]
-            ]
-          ]
+              [:cell, "666666"]]]
       end
     end
   end

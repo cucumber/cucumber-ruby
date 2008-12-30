@@ -19,7 +19,7 @@ module Cucumber
       end
       
       def to_sexp
-        [:comment, @value]
+        (@value.nil? || @value == '') ? nil : [:comment, @value]
       end
     end
   end
