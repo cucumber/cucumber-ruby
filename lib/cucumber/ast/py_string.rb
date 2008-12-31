@@ -28,6 +28,12 @@ module Cucumber
       def accept(visitor, status)
         visitor.visit_py_string(to_s, status)
       end
+      
+      # For testing only
+      def to_sexp #:nodoc:
+        [to_s]
+      end
+                
     end
   end
 end
