@@ -108,13 +108,6 @@ module Cucumber
         f.should have(4).scenarios
       end
       
-      it "should not allow a scenario outline with an example table but no steps" do
-        p = FeatureParser.new
-        lambda{
-          p.parse_feature(File.dirname(__FILE__) + '/invalid_scenario_outlines.feature')
-        }.should raise_error(Feature::SyntaxError)
-      end
-      
     end
   end
 end

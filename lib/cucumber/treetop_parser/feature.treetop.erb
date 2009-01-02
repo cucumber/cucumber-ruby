@@ -61,10 +61,10 @@ grammar Feature
   end
   
   rule steps_and_optional_examples
-    steps:(space step_sequence) table:(space examples)? {
+    step_sequence ex:examples? {
       def compile(feature, scenario)
-        steps.step_sequence.compile(scenario) if steps.respond_to?(:step_sequence)
-        table.examples.compile(feature, scenario) if table.respond_to?(:examples) && table.examples.respond_to?(:compile)
+        step_sequence.compile(scenario)
+        ex.compile(feature, scenario) if ex.respond_to?(:compile)
       end
     }
   end
@@ -79,6 +79,7 @@ grammar Feature
   end
   
   rule examples
+    space?
     examples_keyword table {
       def compile(feature, scenario)
         table.compile_examples(feature, scenario)
