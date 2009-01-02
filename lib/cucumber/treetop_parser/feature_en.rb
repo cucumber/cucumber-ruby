@@ -404,39 +404,19 @@ module Feature
   end
 
   module StepsAndOptionalExamples0
-    def space
+    def step_sequence
       elements[0]
     end
 
-    def step_sequence
+    def ex
       elements[1]
     end
   end
 
   module StepsAndOptionalExamples1
-    def space
-      elements[0]
-    end
-
-    def examples
-      elements[1]
-    end
-  end
-
-  module StepsAndOptionalExamples2
-    def steps
-      elements[0]
-    end
-
-    def table
-      elements[1]
-    end
-  end
-
-  module StepsAndOptionalExamples3
     def compile(feature, scenario)
-      steps.step_sequence.compile(scenario) if steps.respond_to?(:step_sequence)
-      table.examples.compile(feature, scenario) if table.respond_to?(:examples) && table.examples.respond_to?(:compile)
+      step_sequence.compile(scenario)
+      ex.compile(feature, scenario) if ex.respond_to?(:compile)
     end
   end
 
@@ -449,47 +429,21 @@ module Feature
     end
 
     i0, s0 = index, []
-    i1, s1 = index, []
-    r2 = _nt_space
-    s1 << r2
-    if r2
-      r3 = _nt_step_sequence
-      s1 << r3
-    end
-    if s1.last
-      r1 = (SyntaxNode).new(input, i1...index, s1)
-      r1.extend(StepsAndOptionalExamples0)
-    else
-      self.index = i1
-      r1 = nil
-    end
+    r1 = _nt_step_sequence
     s0 << r1
     if r1
-      i5, s5 = index, []
-      r6 = _nt_space
-      s5 << r6
-      if r6
-        r7 = _nt_examples
-        s5 << r7
-      end
-      if s5.last
-        r5 = (SyntaxNode).new(input, i5...index, s5)
-        r5.extend(StepsAndOptionalExamples1)
+      r3 = _nt_examples
+      if r3
+        r2 = r3
       else
-        self.index = i5
-        r5 = nil
+        r2 = SyntaxNode.new(input, index...index)
       end
-      if r5
-        r4 = r5
-      else
-        r4 = SyntaxNode.new(input, index...index)
-      end
-      s0 << r4
+      s0 << r2
     end
     if s0.last
       r0 = (SyntaxNode).new(input, i0...index, s0)
-      r0.extend(StepsAndOptionalExamples2)
-      r0.extend(StepsAndOptionalExamples3)
+      r0.extend(StepsAndOptionalExamples0)
+      r0.extend(StepsAndOptionalExamples1)
     else
       self.index = i0
       r0 = nil
@@ -556,11 +510,11 @@ module Feature
 
   module Examples0
     def examples_keyword
-      elements[0]
+      elements[1]
     end
 
     def table
-      elements[1]
+      elements[2]
     end
   end
 
@@ -579,11 +533,20 @@ module Feature
     end
 
     i0, s0 = index, []
-    r1 = _nt_examples_keyword
+    r2 = _nt_space
+    if r2
+      r1 = r2
+    else
+      r1 = SyntaxNode.new(input, index...index)
+    end
     s0 << r1
     if r1
-      r2 = _nt_table
-      s0 << r2
+      r3 = _nt_examples_keyword
+      s0 << r3
+      if r3
+        r4 = _nt_table
+        s0 << r4
+      end
     end
     if s0.last
       r0 = (SyntaxNode).new(input, i0...index, s0)
