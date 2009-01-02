@@ -150,34 +150,10 @@ module Feature
   end
 
   module ScenarioSequence0
-    def space
-      elements[0]
-    end
-
-    def scenario_or_scenario_outline_or_table
-      elements[1]
-    end
-  end
-
-  module ScenarioSequence1
-    def head
-      elements[0]
-    end
-
-    def tail
-      elements[1]
-    end
-  end
-
-  module ScenarioSequence2
     def compile(feature)
-      ([head] + tail).each do |scenario_or_scenario_outline_or_table|
-        scenario_or_scenario_outline_or_table.compile(feature) if scenario_or_scenario_outline_or_table.respond_to?(:compile)
+      elements.each do |scenario_or_scenario_outline_or_table|
+        scenario_or_scenario_outline_or_table.compile(feature)
       end
-    end
-    
-    def tail
-      super.elements.map { |elt| elt.scenario_or_scenario_outline_or_table }
     end
   end
 
@@ -189,48 +165,17 @@ module Feature
       return cached
     end
 
-    i0, s0 = index, []
-    r2 = _nt_scenario_outline_or_scenario
-    if r2
-      r1 = r2
-    else
-      r1 = SyntaxNode.new(input, index...index)
-    end
-    s0 << r1
-    if r1
-      s3, i3 = [], index
-      loop do
-        i4, s4 = index, []
-        r5 = _nt_space
-        s4 << r5
-        if r5
-          r6 = _nt_scenario_or_scenario_outline_or_table
-          s4 << r6
-        end
-        if s4.last
-          r4 = (SyntaxNode).new(input, i4...index, s4)
-          r4.extend(ScenarioSequence0)
-        else
-          self.index = i4
-          r4 = nil
-        end
-        if r4
-          s3 << r4
-        else
-          break
-        end
+    s0, i0 = [], index
+    loop do
+      r1 = _nt_scenario_or_scenario_outline_or_table
+      if r1
+        s0 << r1
+      else
+        break
       end
-      r3 = SyntaxNode.new(input, i3...index, s3)
-      s0 << r3
     end
-    if s0.last
-      r0 = (SyntaxNode).new(input, i0...index, s0)
-      r0.extend(ScenarioSequence1)
-      r0.extend(ScenarioSequence2)
-    else
-      self.index = i0
-      r0 = nil
-    end
+    r0 = SyntaxNode.new(input, i0...index, s0)
+    r0.extend(ScenarioSequence0)
 
     node_cache[:scenario_sequence][start_index] = r0
 
@@ -266,15 +211,15 @@ module Feature
 
   module Scenario0
     def scenario_keyword
-      elements[0]
+      elements[1]
     end
 
     def name
-      elements[2]
+      elements[3]
     end
 
     def step_sequence
-      elements[3]
+      elements[4]
     end
   end
 
@@ -298,22 +243,31 @@ module Feature
     end
 
     i0, s0 = index, []
-    r1 = _nt_scenario_keyword
+    r2 = _nt_space
+    if r2
+      r1 = r2
+    else
+      r1 = SyntaxNode.new(input, index...index)
+    end
     s0 << r1
     if r1
-      r3 = _nt_space
+      r3 = _nt_scenario_keyword
+      s0 << r3
       if r3
-        r2 = r3
-      else
-        r2 = SyntaxNode.new(input, index...index)
-      end
-      s0 << r2
-      if r2
-        r4 = _nt_line_to_eol
+        r5 = _nt_space
+        if r5
+          r4 = r5
+        else
+          r4 = SyntaxNode.new(input, index...index)
+        end
         s0 << r4
         if r4
-          r5 = _nt_step_sequence
-          s0 << r5
+          r6 = _nt_line_to_eol
+          s0 << r6
+          if r6
+            r7 = _nt_step_sequence
+            s0 << r7
+          end
         end
       end
     end
@@ -333,15 +287,15 @@ module Feature
 
   module ScenarioOutline0
     def scenario_outline_keyword
-      elements[0]
+      elements[1]
     end
 
     def name
-      elements[2]
+      elements[3]
     end
 
     def outline_body
-      elements[3]
+      elements[4]
     end
   end
 
@@ -363,27 +317,36 @@ module Feature
     end
 
     i0, s0 = index, []
-    r1 = _nt_scenario_outline_keyword
+    r2 = _nt_space
+    if r2
+      r1 = r2
+    else
+      r1 = SyntaxNode.new(input, index...index)
+    end
     s0 << r1
     if r1
-      r3 = _nt_space
+      r3 = _nt_scenario_outline_keyword
+      s0 << r3
       if r3
-        r2 = r3
-      else
-        r2 = SyntaxNode.new(input, index...index)
-      end
-      s0 << r2
-      if r2
-        r4 = _nt_line_to_eol
+        r5 = _nt_space
+        if r5
+          r4 = r5
+        else
+          r4 = SyntaxNode.new(input, index...index)
+        end
         s0 << r4
         if r4
-          r6 = _nt_steps_and_optional_examples
+          r6 = _nt_line_to_eol
+          s0 << r6
           if r6
-            r5 = r6
-          else
-            r5 = SyntaxNode.new(input, index...index)
+            r8 = _nt_steps_and_optional_examples
+            if r8
+              r7 = r8
+            else
+              r7 = SyntaxNode.new(input, index...index)
+            end
+            s0 << r7
           end
-          s0 << r5
         end
       end
     end
@@ -539,11 +502,11 @@ module Feature
 
   module MoreExamples0
     def more_examples_keyword
-      elements[0]
+      elements[1]
     end
 
     def table
-      elements[1]
+      elements[2]
     end
   end
 
@@ -562,11 +525,20 @@ module Feature
     end
 
     i0, s0 = index, []
-    r1 = _nt_more_examples_keyword
+    r2 = _nt_space
+    if r2
+      r1 = r2
+    else
+      r1 = SyntaxNode.new(input, index...index)
+    end
     s0 << r1
     if r1
-      r2 = _nt_table
-      s0 << r2
+      r3 = _nt_more_examples_keyword
+      s0 << r3
+      if r3
+        r4 = _nt_table
+        s0 << r4
+      end
     end
     if s0.last
       r0 = (SyntaxNode).new(input, i0...index, s0)

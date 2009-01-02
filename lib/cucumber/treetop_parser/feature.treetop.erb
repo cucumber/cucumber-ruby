@@ -17,15 +17,11 @@ grammar Feature
   end
   
   rule scenario_sequence
-    head:scenario_outline_or_scenario? tail:(space scenario_or_scenario_outline_or_table)* {
+    scenario_or_scenario_outline_or_table* {
       def compile(feature)
-        ([head] + tail).each do |scenario_or_scenario_outline_or_table|
-          scenario_or_scenario_outline_or_table.compile(feature) if scenario_or_scenario_outline_or_table.respond_to?(:compile)
+        elements.each do |scenario_or_scenario_outline_or_table|
+          scenario_or_scenario_outline_or_table.compile(feature)
         end
-      end
-      
-      def tail
-        super.elements.map { |elt| elt.scenario_or_scenario_outline_or_table }
       end
     }
   end
@@ -35,6 +31,7 @@ grammar Feature
   end
 
   rule scenario
+    space?
     scenario_keyword space? name:line_to_eol step_sequence {
       def compile(feature)
         line = input.line_of(interval.first)
@@ -48,6 +45,7 @@ grammar Feature
   end
 
   rule scenario_outline
+    space?
     scenario_outline_keyword space? name:line_to_eol outline_body:(steps_and_optional_examples)? {
       def compile(feature)
         line = input.line_of(interval.first)
@@ -72,6 +70,7 @@ grammar Feature
   end
   
   rule more_examples
+    space?
     more_examples_keyword table {
       def compile(f)
         table.compile(f)
