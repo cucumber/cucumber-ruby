@@ -265,16 +265,6 @@ module Feature
   end
 
   module Scenario0
-    def space
-      elements[0]
-    end
-
-    def step_sequence
-      elements[1]
-    end
-  end
-
-  module Scenario1
     def scenario_keyword
       elements[0]
     end
@@ -283,16 +273,16 @@ module Feature
       elements[2]
     end
 
-    def steps
+    def step_sequence
       elements[3]
     end
   end
 
-  module Scenario2
+  module Scenario1
     def compile(feature)
       line = input.line_of(interval.first)
       scenario = feature.add_scenario(name.text_value.strip, line)
-      steps.step_sequence.compile(scenario) if steps.respond_to?(:step_sequence)
+      step_sequence.compile(scenario)
       # TODO - GET RID OF THIS last_scenario NASTINESS
       # Use a better datastructure, like a linked list...
       Feature.last_scenario = scenario
@@ -322,33 +312,15 @@ module Feature
         r4 = _nt_line_to_eol
         s0 << r4
         if r4
-          i6, s6 = index, []
-          r7 = _nt_space
-          s6 << r7
-          if r7
-            r8 = _nt_step_sequence
-            s6 << r8
-          end
-          if s6.last
-            r6 = (SyntaxNode).new(input, i6...index, s6)
-            r6.extend(Scenario0)
-          else
-            self.index = i6
-            r6 = nil
-          end
-          if r6
-            r5 = r6
-          else
-            r5 = SyntaxNode.new(input, index...index)
-          end
+          r5 = _nt_step_sequence
           s0 << r5
         end
       end
     end
     if s0.last
       r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0.extend(Scenario0)
       r0.extend(Scenario1)
-      r0.extend(Scenario2)
     else
       self.index = i0
       r0 = nil
@@ -964,34 +936,10 @@ module Feature
   end
 
   module StepSequence0
-    def space
-      elements[0]
-    end
-
-    def step
-      elements[1]
-    end
-  end
-
-  module StepSequence1
-    def head
-      elements[0]
-    end
-
-    def tail
-      elements[1]
-    end
-  end
-
-  module StepSequence2
     def compile(scenario)
-      ([head] + tail).each do |step|
+      elements.each do |step|
         step.compile(scenario)
       end
-    end
-    
-    def tail
-      super.elements.map { |elt| elt.step }
     end
   end
 
@@ -1003,43 +951,17 @@ module Feature
       return cached
     end
 
-    i0, s0 = index, []
-    r1 = _nt_step
-    s0 << r1
-    if r1
-      s2, i2 = [], index
-      loop do
-        i3, s3 = index, []
-        r4 = _nt_space
-        s3 << r4
-        if r4
-          r5 = _nt_step
-          s3 << r5
-        end
-        if s3.last
-          r3 = (SyntaxNode).new(input, i3...index, s3)
-          r3.extend(StepSequence0)
-        else
-          self.index = i3
-          r3 = nil
-        end
-        if r3
-          s2 << r3
-        else
-          break
-        end
+    s0, i0 = [], index
+    loop do
+      r1 = _nt_step
+      if r1
+        s0 << r1
+      else
+        break
       end
-      r2 = SyntaxNode.new(input, i2...index, s2)
-      s0 << r2
     end
-    if s0.last
-      r0 = (SyntaxNode).new(input, i0...index, s0)
-      r0.extend(StepSequence1)
-      r0.extend(StepSequence2)
-    else
-      self.index = i0
-      r0 = nil
-    end
+    r0 = SyntaxNode.new(input, i0...index, s0)
+    r0.extend(StepSequence0)
 
     node_cache[:step_sequence][start_index] = r0
 
@@ -1075,11 +997,11 @@ module Feature
 
   module GivenScenario0
     def given_scenario_keyword
-      elements[0]
+      elements[1]
     end
 
     def name
-      elements[2]
+      elements[3]
     end
   end
 
@@ -1099,19 +1021,28 @@ module Feature
     end
 
     i0, s0 = index, []
-    r1 = _nt_given_scenario_keyword
+    r2 = _nt_space
+    if r2
+      r1 = r2
+    else
+      r1 = SyntaxNode.new(input, index...index)
+    end
     s0 << r1
     if r1
-      r3 = _nt_space
+      r3 = _nt_given_scenario_keyword
+      s0 << r3
       if r3
-        r2 = r3
-      else
-        r2 = SyntaxNode.new(input, index...index)
-      end
-      s0 << r2
-      if r2
-        r4 = _nt_line_to_eol
+        r5 = _nt_space
+        if r5
+          r4 = r5
+        else
+          r4 = SyntaxNode.new(input, index...index)
+        end
         s0 << r4
+        if r4
+          r6 = _nt_line_to_eol
+          s0 << r6
+        end
       end
     end
     if s0.last
@@ -1130,21 +1061,21 @@ module Feature
 
   module PlainStep0
     def step_keyword
-      elements[0]
+      elements[1]
     end
 
     def name
-      elements[2]
+      elements[3]
     end
 
     def multi
-      elements[3]
+      elements[4]
     end
   end
 
   module PlainStep1
     def compile(scenario)
-      line = input.line_of(interval.first)
+      line = input.line_of(interval.last)
       step = scenario.create_step(step_keyword.text_value, name.text_value.strip, line)
 
       if multi.respond_to?(:to_arg)
@@ -1162,27 +1093,36 @@ module Feature
     end
 
     i0, s0 = index, []
-    r1 = _nt_step_keyword
+    r2 = _nt_space
+    if r2
+      r1 = r2
+    else
+      r1 = SyntaxNode.new(input, index...index)
+    end
     s0 << r1
     if r1
-      r3 = _nt_space
+      r3 = _nt_step_keyword
+      s0 << r3
       if r3
-        r2 = r3
-      else
-        r2 = SyntaxNode.new(input, index...index)
-      end
-      s0 << r2
-      if r2
-        r4 = _nt_line_to_eol
+        r5 = _nt_space
+        if r5
+          r4 = r5
+        else
+          r4 = SyntaxNode.new(input, index...index)
+        end
         s0 << r4
         if r4
-          r6 = _nt_multiline_arg
+          r6 = _nt_line_to_eol
+          s0 << r6
           if r6
-            r5 = r6
-          else
-            r5 = SyntaxNode.new(input, index...index)
+            r8 = _nt_multiline_arg
+            if r8
+              r7 = r8
+            else
+              r7 = SyntaxNode.new(input, index...index)
+            end
+            s0 << r7
           end
-          s0 << r5
         end
       end
     end
