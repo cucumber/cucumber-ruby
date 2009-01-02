@@ -35,11 +35,11 @@ grammar Feature
   end
 
   rule scenario
-    scenario_keyword space? name:line_to_eol steps:(space step_sequence)? {
+    scenario_keyword space? name:line_to_eol step_sequence {
       def compile(feature)
         line = input.line_of(interval.first)
         scenario = feature.add_scenario(name.text_value.strip, line)
-        steps.step_sequence.compile(scenario) if steps.respond_to?(:step_sequence)
+        step_sequence.compile(scenario)
         # TODO - GET RID OF THIS last_scenario NASTINESS
         # Use a better datastructure, like a linked list...
         Feature.last_scenario = scenario
@@ -136,15 +136,11 @@ grammar Feature
   end
 
   rule step_sequence
-    head:step tail:(space step)* {
+    step* {
       def compile(scenario)
-        ([head] + tail).each do |step|
+        elements.each do |step|
           step.compile(scenario)
         end
-      end
-      
-      def tail
-        super.elements.map { |elt| elt.step }
       end
     }
   end
@@ -154,6 +150,7 @@ grammar Feature
   end
   
   rule given_scenario
+    space?
     given_scenario_keyword space? name:line_to_eol {
       def compile(scenario)
         line = input.line_of(interval.first)
@@ -163,9 +160,10 @@ grammar Feature
   end
 
   rule plain_step
+    space?
     step_keyword space? name:line_to_eol multi:multiline_arg? {
       def compile(scenario)
-        line = input.line_of(interval.first)
+        line = input.line_of(interval.last)
         step = scenario.create_step(step_keyword.text_value, name.text_value.strip, line)
 
         if multi.respond_to?(:to_arg)
