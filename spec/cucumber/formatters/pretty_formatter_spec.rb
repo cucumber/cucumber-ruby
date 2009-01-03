@@ -86,7 +86,14 @@ module Cucumber
         it "should display as pending in the dump" do
           @formatter.scenario_executing(@scenario)
           @formatter.dump
-          @io.string.should include("1 scenarios pending")
+          @io.string.should include("1 scenario pending")
+        end
+
+        it "should display as pending in the dump (with two scenarios)" do
+          @formatter.scenario_executing(@scenario)
+          @formatter.scenario_executing(@scenario)
+          @formatter.dump
+          @io.string.should include("2 scenarios pending")
         end
       end
       

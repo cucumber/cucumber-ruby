@@ -178,15 +178,16 @@ module Cucumber
 
         print_pending_messages if @pending_messages.any?
 
-        @io.puts "#{@total_scenario_count} scenario#{@total_scenario_count == 1 ? '' : 's'}"
+        @io.puts dump_count(@total_scenario_count, "scenario")
 
-        @io.puts pending("#{@pending_scenarios.length} scenarios pending") if @pending_scenarios.any?
+        @io.puts pending(dump_count(@pending_scenarios.length, "scenario", "pending")) if @pending_scenarios.any?
 
-        @io.puts passed("#{@passed.length} steps passed")           if @passed.any?
-        @io.puts failed("#{@failed.length} steps failed")           if @failed.any?
-        @io.puts skipped("#{@skipped.length} steps skipped")        if @skipped.any?
+        @io.puts passed(dump_count(@passed.length, "step", "passed"))   if @passed.any?
+        @io.puts passed(dump_count(@failed.length, "step", "failed"))   if @failed.any?
+        @io.puts passed(dump_count(@skipped.length, "step", "skipped")) if @skipped.any?
+
         if @pending_steps.any?
-          @io.print pending("#{@pending_steps.length} steps pending") 
+          @io.print pending(dump_count(@pending_steps.length, "step", "pending")) 
           @io.print pending(" (#{number_of_unimplemented_steps} with no step definition)") if number_of_unimplemented_steps > 0
           @io.puts
         end
@@ -194,6 +195,10 @@ module Cucumber
         @io.print reset
 
         print_snippets if @options[:snippets]
+      end
+      
+      def dump_count(count, what, state=nil)
+        return [count, "#{what}#{count == 1 ? '' : 's'}", state].compact.join(" ")
       end
 
       def print_pending_messages
