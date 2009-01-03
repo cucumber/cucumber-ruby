@@ -1,4 +1,4 @@
-require 'spec'
+require 'spec/expectations'
 
 if ENV['FIREWATIR']
   require 'firewatir'

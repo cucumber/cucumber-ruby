@@ -1,4 +1,4 @@
-require 'spec'
+require 'spec/expectations'
 require 'spec/rails'
 
 # Hack to stop RSpec from dumping the summary

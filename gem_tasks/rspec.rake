@@ -8,14 +8,14 @@ EOS
 end
 
 def require_spec
-  require 'spec'
+  require 'spec/expectations'
 rescue LoadError
   require_spec_with_rubygems
 end
 
 def require_spec_with_rubygems
   require 'rubygems'
-  require 'spec'
+  require 'spec/expectations'
 rescue LoadError
   unable_to_load
 end
