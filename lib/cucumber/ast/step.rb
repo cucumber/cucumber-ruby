@@ -9,7 +9,7 @@ module Cucumber
       end
 
       def execute(world, previous)
-        _execute(@name, world, previous)
+        _execute(@name, @multiline_args, world, previous)
       end
 
       def execute_with_arguments(arguments, world, previous)
@@ -17,8 +17,10 @@ module Cucumber
         arguments.each do |name, value|
           name_with_arguments_replaced = name_with_arguments_replaced.gsub(/<#{name}>/, value)
         end
-        
-        _execute(name_with_arguments_replaced, world, previous)
+        multiline_args_with_arguments_replaced = @multiline_args.map do |arg|
+          arg.arguments_replaced(arguments)
+        end
+        _execute(name_with_arguments_replaced, multiline_args_with_arguments_replaced, world, previous)
       end
 
       def accept(visitor)
@@ -44,12 +46,12 @@ module Cucumber
 
       private
 
-      def _execute(name, world, previous)
+      def _execute(name, multiline_args, world, previous)
         if @status.nil?
           begin
             @step_invocation = @scenario.step_invocation(name, world)
             if previous == :passed
-              @step_invocation.invoke(*@multiline_args)
+              @step_invocation.invoke(*multiline_args)
               @status = :passed
             else
               @status = :skipped
