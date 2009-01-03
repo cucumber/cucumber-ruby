@@ -107,6 +107,13 @@ module Cucumber
 
         f.should have(4).scenarios
       end
+
+      it "should parse features with tags" do
+        p = FeatureParser.new
+        f = p.parse_feature(File.dirname(__FILE__) + '/with_tags.feature')
+
+        f.should have(3).scenarios
+      end
       
     end
   end

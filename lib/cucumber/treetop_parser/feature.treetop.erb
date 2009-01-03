@@ -13,7 +13,7 @@ grammar Feature
   end
   
   rule header
-    (!(scenario_keyword / scenario_outline_keyword / comment_to_eol) .)+
+    (!(scenario_outline_or_scenario / comment_to_eol) .)+
   end
   
   rule scenario_sequence
@@ -31,7 +31,7 @@ grammar Feature
   end
 
   rule scenario
-    space?
+    space? tags space?
     scenario_keyword space? name:line_to_eol step_sequence {
       def compile(feature)
         line = input.line_of(interval.first)
@@ -195,6 +195,19 @@ grammar Feature
 
   rule separator
     '|'
+  end
+
+  rule tags
+    (tag space)* {
+      def build
+        tag_names = elements.map{|e| e.tag.tag_name.text_value}
+        Ast::Tags.new(tag_names)
+      end
+    }
+  end
+
+  rule tag
+    '@' tag_name:(!('@' / space) .)+
   end
 
   rule space
