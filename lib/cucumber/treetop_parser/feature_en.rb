@@ -90,21 +90,16 @@ module Feature
       i1, s1 = index, []
       i2 = index
       i3 = index
-      r4 = _nt_scenario_keyword
+      r4 = _nt_scenario_outline_or_scenario
       if r4
         r3 = r4
       else
-        r5 = _nt_scenario_outline_keyword
+        r5 = _nt_comment_to_eol
         if r5
           r3 = r5
         else
-          r6 = _nt_comment_to_eol
-          if r6
-            r3 = r6
-          else
-            self.index = i3
-            r3 = nil
-          end
+          self.index = i3
+          r3 = nil
         end
       end
       if r3
@@ -116,13 +111,13 @@ module Feature
       s1 << r2
       if r2
         if index < input_length
-          r7 = (SyntaxNode).new(input, index...(index + 1))
+          r6 = (SyntaxNode).new(input, index...(index + 1))
           @index += 1
         else
           terminal_parse_failure("any character")
-          r7 = nil
+          r6 = nil
         end
-        s1 << r7
+        s1 << r6
       end
       if s1.last
         r1 = (SyntaxNode).new(input, i1...index, s1)
@@ -210,16 +205,20 @@ module Feature
   end
 
   module Scenario0
-    def scenario_keyword
+    def tags
       elements[1]
     end
 
-    def name
+    def scenario_keyword
       elements[3]
     end
 
+    def name
+      elements[5]
+    end
+
     def step_sequence
-      elements[4]
+      elements[6]
     end
   end
 
@@ -251,7 +250,7 @@ module Feature
     end
     s0 << r1
     if r1
-      r3 = _nt_scenario_keyword
+      r3 = _nt_tags
       s0 << r3
       if r3
         r5 = _nt_space
@@ -262,11 +261,24 @@ module Feature
         end
         s0 << r4
         if r4
-          r6 = _nt_line_to_eol
+          r6 = _nt_scenario_keyword
           s0 << r6
           if r6
-            r7 = _nt_step_sequence
+            r8 = _nt_space
+            if r8
+              r7 = r8
+            else
+              r7 = SyntaxNode.new(input, index...index)
+            end
             s0 << r7
+            if r7
+              r9 = _nt_line_to_eol
+              s0 << r9
+              if r9
+                r10 = _nt_step_sequence
+                s0 << r10
+              end
+            end
           end
         end
       end
@@ -1251,6 +1263,162 @@ module Feature
     end
 
     node_cache[:separator][start_index] = r0
+
+    return r0
+  end
+
+  module Tags0
+    def tag
+      elements[0]
+    end
+
+    def space
+      elements[1]
+    end
+  end
+
+  module Tags1
+    def build
+      tag_names = elements.map{|e| e.tag.tag_name.text_value}
+      Ast::Tags.new(tag_names)
+    end
+  end
+
+  def _nt_tags
+    start_index = index
+    if node_cache[:tags].has_key?(index)
+      cached = node_cache[:tags][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    s0, i0 = [], index
+    loop do
+      i1, s1 = index, []
+      r2 = _nt_tag
+      s1 << r2
+      if r2
+        r3 = _nt_space
+        s1 << r3
+      end
+      if s1.last
+        r1 = (SyntaxNode).new(input, i1...index, s1)
+        r1.extend(Tags0)
+      else
+        self.index = i1
+        r1 = nil
+      end
+      if r1
+        s0 << r1
+      else
+        break
+      end
+    end
+    r0 = SyntaxNode.new(input, i0...index, s0)
+    r0.extend(Tags1)
+
+    node_cache[:tags][start_index] = r0
+
+    return r0
+  end
+
+  module Tag0
+  end
+
+  module Tag1
+    def tag_name
+      elements[1]
+    end
+  end
+
+  def _nt_tag
+    start_index = index
+    if node_cache[:tag].has_key?(index)
+      cached = node_cache[:tag][index]
+      @index = cached.interval.end if cached
+      return cached
+    end
+
+    i0, s0 = index, []
+    if input.index('@', index) == index
+      r1 = (SyntaxNode).new(input, index...(index + 1))
+      @index += 1
+    else
+      terminal_parse_failure('@')
+      r1 = nil
+    end
+    s0 << r1
+    if r1
+      s2, i2 = [], index
+      loop do
+        i3, s3 = index, []
+        i4 = index
+        i5 = index
+        if input.index('@', index) == index
+          r6 = (SyntaxNode).new(input, index...(index + 1))
+          @index += 1
+        else
+          terminal_parse_failure('@')
+          r6 = nil
+        end
+        if r6
+          r5 = r6
+        else
+          r7 = _nt_space
+          if r7
+            r5 = r7
+          else
+            self.index = i5
+            r5 = nil
+          end
+        end
+        if r5
+          r4 = nil
+        else
+          self.index = i4
+          r4 = SyntaxNode.new(input, index...index)
+        end
+        s3 << r4
+        if r4
+          if index < input_length
+            r8 = (SyntaxNode).new(input, index...(index + 1))
+            @index += 1
+          else
+            terminal_parse_failure("any character")
+            r8 = nil
+          end
+          s3 << r8
+        end
+        if s3.last
+          r3 = (SyntaxNode).new(input, i3...index, s3)
+          r3.extend(Tag0)
+        else
+          self.index = i3
+          r3 = nil
+        end
+        if r3
+          s2 << r3
+        else
+          break
+        end
+      end
+      if s2.empty?
+        self.index = i2
+        r2 = nil
+      else
+        r2 = SyntaxNode.new(input, i2...index, s2)
+      end
+      s0 << r2
+    end
+    if s0.last
+      r0 = (SyntaxNode).new(input, i0...index, s0)
+      r0.extend(Tag1)
+    else
+      self.index = i0
+      r0 = nil
+    end
+
+    node_cache[:tag][start_index] = r0
 
     return r0
   end
