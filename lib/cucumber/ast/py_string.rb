@@ -29,6 +29,14 @@ module Cucumber
         visitor.visit_py_string(to_s, status)
       end
       
+      def arguments_replaced(arguments) #:nodoc:
+        string = @string
+        arguments.each do |name, value|
+          string = string.gsub(/<#{name}>/, value)
+        end
+        PyString.new(string)
+      end
+      
       # For testing only
       def to_sexp #:nodoc:
         [:pystring, to_s]
