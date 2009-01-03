@@ -178,7 +178,7 @@ module Cucumber
 
         print_pending_messages if @pending_messages.any?
 
-        @io.puts "#{@total_scenario_count} scenarios"
+        @io.puts "#{@total_scenario_count} scenario#{@total_scenario_count == 1 ? '' : 's'}"
 
         @io.puts pending("#{@pending_scenarios.length} scenarios pending") if @pending_scenarios.any?
 
