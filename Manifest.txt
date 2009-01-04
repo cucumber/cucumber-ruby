@@ -96,7 +96,6 @@ examples/java/features/hello.feature
 examples/java/features/step_definitons/hello_steps.rb
 examples/java/features/step_definitons/tree_steps.rb
 examples/java/features/tree.feature
-examples/java/src/cucumber/demo/Hello.java
 examples/selenium/Rakefile
 examples/selenium/features/search.feature
 examples/selenium/features/step_definitons/stories_steps.rb
