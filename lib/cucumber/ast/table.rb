@@ -73,6 +73,20 @@ module Cucumber
         rows.index(cells)
       end
 
+      def arguments_replaced(arguments) #:nodoc:
+        raw_with_replaced_args = raw.map do |row|
+          row.map do |cell|
+            cell_with_replaced_args = cell
+            arguments.each do |name, value|
+              cell_with_replaced_args = cell_with_replaced_args.gsub(/<#{name}>/, value)              
+            end
+            cell_with_replaced_args
+          end
+        end
+
+        Table.new(raw_with_replaced_args)
+      end
+
       private
 
       def col_width(col)
