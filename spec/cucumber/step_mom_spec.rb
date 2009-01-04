@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-require 'cucumber/step_mom'
+require 'cucumber/step_mother'
 
 module Cucumber
   describe StepMom do

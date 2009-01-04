@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'stringio'
 require 'cucumber/ast'
-require 'cucumber/step_mom'
+require 'cucumber/step_mother'
 require 'cucumber/formatter/pretty'
 
 require 'cucumber/ast/feature_factory'

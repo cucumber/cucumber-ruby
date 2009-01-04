@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 require 'cucumber/ast'
-require 'cucumber/step_mom'
+require 'cucumber/step_mother'
 require 'cucumber/step_definition'
 
 module Cucumber
