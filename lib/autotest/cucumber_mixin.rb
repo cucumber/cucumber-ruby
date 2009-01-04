@@ -122,6 +122,6 @@ module Autotest::CucumberMixin
     else
       scenario_args = scenarios_to_run.map { |s| "-s '#{s}'" }.join(' ')
     end
-    return "#{Cucumber::RUBY} #{Cucumber::BINARY} #{args} #{scenario_args}"
+    return "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} #{args} #{scenario_args}"
   end
 end

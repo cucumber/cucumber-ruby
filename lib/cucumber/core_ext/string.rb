@@ -20,7 +20,7 @@ class String
     s
   end
 
-  if (Cucumber::JRUBY && Cucumber::RAILS)
+  if (Cucumber::JRUBY && Cucumber::RAILS) || Cucumber::RUBY_1_9
     # Workaround for http://tinyurl.com/55uu3u 
     alias jlength length
   else
