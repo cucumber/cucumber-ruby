@@ -38,6 +38,30 @@ module Cucumber
           {'1' => '4444', '22' => '55555', '333' => '666666'}
         ]
       end
+
+      describe "replacing arguments" do
+
+        before(:each) do
+          @table = table = Table.new([
+            %w{qty book},
+            %w{<qty> <book>}
+            ])
+        end
+
+        it "should return a new table with arguments replaced with values" do
+          table_with_replaced_args = @table.arguments_replaced('book' => 'Unbearable lightness of being', 'qty' => '5')
+
+          table_with_replaced_args.hashes[0]['book'].should == 'Unbearable lightness of being'
+          table_with_replaced_args.hashes[0]['qty'].should == '5'
+        end
+      
+        it "should not change the original table" do
+          table_with_replaced_args = @table.arguments_replaced('book' => 'Unbearable lightness of being')
+          
+          @table.hashes[0]['book'].should_not == 'Unbearable lightness of being'
+        end
+
+      end
       
       it "should convert to sexp" do
         @table.to_sexp.should == 

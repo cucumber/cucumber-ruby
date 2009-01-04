@@ -17,5 +17,31 @@ module Cucumber
         step2.comment_padding.should == 0
       end
     end
+    
+    describe Step do
+      describe "execute step with arguments" do
+      
+        it "should replace arguments in multiline args" do
+          mock_multiline_arg = mock('multiline arg')
+          step = Step.new(mock('scenario'), nil, 'Given', '<test>', mock_multiline_arg)
+
+          mock_multiline_arg.should_receive(:arguments_replaced).with('test' => '10').and_return(mock_multiline_arg)
+        
+          step.execute_with_arguments({'test' => '10'}, stub('world'), :passed)
+        end
+       
+        it "should invoke step with replaced multiline args" do
+          mock_step_invocation = mock('step invocation')
+          mock_multiline_arg_replaced = mock('multiline arg replaced')
+          mock_multiline_arg = mock('multiline arg', :arguments_replaced => mock_multiline_arg_replaced)
+          step = Step.new(mock('scenario', :step_invocation => mock_step_invocation), nil, 'Given', '<test>', mock_multiline_arg)
+          
+          mock_step_invocation.should_receive(:invoke).with(mock_multiline_arg_replaced)
+        
+          step.execute_with_arguments({'test' => '10'}, stub('world'), :passed)
+        end
+  
+      end
+    end
   end
 end
