@@ -1,5 +1,5 @@
 require 'cucumber/ast'
-require 'cucumber/step_mom'
+require 'cucumber/step_mother'
 
 module Cucumber
   module Ast
