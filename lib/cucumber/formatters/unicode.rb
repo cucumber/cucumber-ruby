@@ -2,7 +2,7 @@
 require 'cucumber/platform'
 require 'cucumber/formatters/ansicolor'
 
-$KCODE='u'
+$KCODE='u' unless Cucumber::RUBY_1_9
 
 if Cucumber::WINDOWS_MRI && `chcp` =~ /Active code page: (\d+)/
   codepage = $1.to_i
