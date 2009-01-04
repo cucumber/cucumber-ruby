@@ -112,7 +112,7 @@ module Cucumber
         p = FeatureParser.new
         f = p.parse_feature(File.dirname(__FILE__) + '/with_tags.feature')
 
-        f.should have(3).scenarios
+        f.should have(4).scenarios
       end
       
     end

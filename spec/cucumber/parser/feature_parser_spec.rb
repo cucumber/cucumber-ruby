@@ -11,9 +11,6 @@ module Cucumber
 
       def parse(text)
         feature = @parser.parse_or_fail(text)
-        feature.extend(Module.new{
-          attr_reader :comment, :tags, :name, :feature_elements
-        })
       end
 
       def parse_file(file)
@@ -22,26 +19,33 @@ module Cucumber
 
       describe "Header" do
         it "should parse Feature with blurb" do
-          parse("Feature: hi\nwith blurb\n")
+          parse(%{Feature: hi
+with blurb
+})
         end
       end
 
       describe "Comments" do
         it "should parse a file with only a one line comment" do
-          parse("# My comment\nFeature: hi\n").to_sexp.should ==
-          [:feature, "hi",
+          parse(%{# My comment
+Feature: hi
+}).to_sexp.should ==
+          [:feature, "Feature: hi\n",
             [:comment, "# My comment\n"]]
         end
 
         it "should parse a file with only a multiline comment" do
-          parse("# Hello\n# World\nFeature: hi\n").to_sexp.should ==
-          [:feature, "hi",
+          parse(%{# Hello
+# World
+Feature: hi
+}).to_sexp.should ==
+          [:feature, "Feature: hi\n",
             [:comment, "# Hello\n# World\n"]]
         end
 
         it "should parse a file with no comments" do
           parse("Feature: hi\n").to_sexp.should ==
-          [:feature, "hi"]
+          [:feature, "Feature: hi\n"]
         end
 
         it "should parse a file with only a multiline comment with newlines" do
@@ -54,7 +58,7 @@ module Cucumber
       describe "Tags" do
         it "should parse a file with tags on a feature" do
           parse("# My comment\n@hello @world Feature: hi\n").to_sexp.should ==
-          [:feature, "hi",
+          [:feature, "Feature: hi\n",
             [:comment, "# My comment\n"],
             [:tag, "hello"],
             [:tag, "world"]]
@@ -64,55 +68,78 @@ module Cucumber
       describe "Scenarios" do
         it "can be empty" do
           parse("Feature: Hi\nScenario: Hello\n").to_sexp.should ==
-          [:feature, "Hi",
+          [:feature, "Feature: Hi",
             [:scenario, "Scenario:", "Hello"]]
         end
 
         it "should have steps" do
           parse("Feature: Hi\nScenario: Hello\nGiven I am a step\n").to_sexp.should ==
-          [:feature, "Hi",
+          [:feature, "Feature: Hi",
             [:scenario, "Scenario:", "Hello",
               [:step, "Given", "I am a step"]]]
         end
 
         it "should have steps with inline table" do
-          parse("Feature: Hi\nScenario: Hello\nGiven I have a table\n|1|2|\n").to_sexp.should ==
-          [:feature, "Hi",
+          parse(%{Feature: Hi
+Scenario: Hello
+Given I have a table
+|a|b|
+}).to_sexp.should ==
+          [:feature, "Feature: Hi",
             [:scenario, "Scenario:", "Hello",
               [:step, "Given", "I have a table",
                 [:table,
                   [:row,
-                    [:cell, "1"],
-                    [:cell, "2"]]]]]]
+                    [:cell, "a"],
+                    [:cell, "b"]]]]]]
         end
       end
 
       describe "Scenario Outlines" do
         it "can be empty" do
-          parse("Feature: Hi\nScenario Outline: Hello\nExamples:\n|1|2|\n").to_sexp.should ==
-          [:feature, "Hi",
+          parse(%{Feature: Hi
+Scenario Outline: Hello
+Given a <what> cucumber
+Examples:
+|what|
+|green|
+}).to_sexp.should ==
+          [:feature, "Feature: Hi",
             [:scenario_outline, "Scenario Outline:", "Hello",
+              [:step, "Given", "a <what> cucumber"],
               [:examples, "Examples:", "",
-                [:table,
-                  [:row,
-                    [:cell, "1"],
-                    [:cell, "2"]]]]]]
+                [:table, [:row, [:cell, "what"]], [:row, [:cell, "green"]]]]]]
         end
 
         it "should have steps with inline table" do
-          parse("Feature: Hi\nScenario Outline: Hello\nGiven I have a table\n|1|2|\n").to_sexp.should ==
-          [:feature, "Hi",
+          parse(%{Feature: Hi
+Scenario Outline: Hello
+Given I have a table
+|<a>|<b>|
+Examples:
+|a|b|
+|c|d|
+}).to_sexp.should ==
+          [:feature, "Feature: Hi",
             [:scenario_outline, "Scenario Outline:", "Hello",
               [:step, "Given", "I have a table",
-                [:table,
-                  [:row,
-                    [:cell, "1"],
-                    [:cell, "2"]]]]]]
+                [:table, 
+                  [:row, 
+                    [:cell, "<a>"], 
+                    [:cell, "<b>"]]]],
+            [:examples, "Examples:", "",
+              [:table,
+                [:row, 
+                  [:cell, "a"], 
+                  [:cell, "b"]],
+                [:row, 
+                  [:cell, "c"], 
+                  [:cell, "d"]]]]]]
         end
 
         it "should have examples" do
           parse("Feature: Hi\nScenario Outline: Hello\nGiven I have a table\n|1|2|\nExamples:\n|x|y|\n|5|6|").to_sexp.should ==
-          [:feature, "Hi",
+          [:feature, "Feature: Hi",
             [:scenario_outline, "Scenario Outline:", "Hello",
               [:step, "Given", "I have a table",
                 [:table,
@@ -131,13 +158,24 @@ module Cucumber
       end
 
       describe "Syntax" do
-        files = Dir["#{File.dirname(__FILE__)}/../treetop_parser/*.feature"].reject do |f|
-          f =~ /given_scenario.feature/ || f =~ /fit_scenario.feature/
+        it "should parse empty_feature" do
+          parse_file("empty_feature.feature")
         end
-        files.each do |f|
-          it "should parse #{f}" do
-            @parser.parse_or_fail(IO.read(f))
-          end
+
+        it "should parse empty_scenario" do
+          parse_file("empty_scenario.feature")
+        end
+
+        it "should parse empty_scenario_outline" do
+          parse_file("empty_scenario_outline.feature")
+        end
+
+        it "should parse fit_scenario" do
+          parse_file("multiline_steps.feature")
+        end
+
+        it "should parse scenario_outline" do
+          parse_file("scenario_outline.feature")
         end
       end
     end
