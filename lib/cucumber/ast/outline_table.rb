@@ -19,8 +19,8 @@ module Cucumber
             @table.execute_row(self.to_hash, visitor)
             visit_cells(visitor, :passed)
           end
-        rescue StepMom::Missing
-          visit_cells(visitor, :missing)
+        rescue StepMom::Undefined
+          visit_cells(visitor, :undefined)
         rescue StepMom::Pending
           visit_cells(visitor, :pending)
         rescue Exception => error

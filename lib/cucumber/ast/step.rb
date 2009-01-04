@@ -56,8 +56,8 @@ module Cucumber
             else
               @status = :skipped
             end
-          rescue StepMom::Missing
-            @status = :missing
+          rescue StepMom::Undefined
+            @status = :undefined
           rescue StepMom::Pending
             @status = :pending
           rescue Exception => exception

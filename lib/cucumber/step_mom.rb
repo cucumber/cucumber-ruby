@@ -8,7 +8,7 @@ module Cucumber
   # available from the top-level.
   module StepMom
 
-    class Missing < StandardError
+    class Undefined < StandardError
     end
 
     class Pending < StandardError
@@ -79,7 +79,7 @@ module Cucumber
       found = step_definitions.select do |step_definition|
         step_definition.match(step_name)
       end
-      raise Missing.new(step_name) if found.empty?
+      raise Undefined.new(step_name) if found.empty?
       raise Multiple.new(step_name) if found.size > 1
       Invocation.new(world, found[0], step_name)
     end
