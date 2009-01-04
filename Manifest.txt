@@ -110,12 +110,13 @@ examples/tickets/features/scenario_outline.feature
 examples/tickets/features/step_definitons/scenario_outline_steps.rb
 examples/tickets/features/step_definitons/tickets_steps.rb
 examples/tickets/features/tickets.feature
+examples/watir/README.textile
 examples/watir/Rakefile
 examples/watir/features/search.feature
-examples/watir/features/step_definitons/stories_steps.rb
+examples/watir/features/step_definitons/search_steps.rb
+examples/watir/features/support/env.rb
 features/see_features.feature
 features/steps/features_steps.rb
-gem_tasks/antlr.rake
 gem_tasks/deployment.rake
 gem_tasks/environment.rake
 gem_tasks/features.rake
@@ -132,7 +133,6 @@ lib/autotest/cucumber_rails_rspec.rb
 lib/autotest/cucumber_rspec.rb
 lib/autotest/discover.rb
 lib/cucumber.rb
-lib/cucumber/antlr/Gherkin.g
 lib/cucumber/ast.rb
 lib/cucumber/ast/comment.rb
 lib/cucumber/ast/examples.rb
@@ -228,7 +228,8 @@ rails_generators/feature/feature_generator.rb
 rails_generators/feature/templates/feature.erb
 rails_generators/feature/templates/steps.erb
 setup.rb
-spec/cucumber/antlr/Gherkin.gunit
+spec/cucumber/ast/feature_factory.rb
+spec/cucumber/ast/feature_spec.rb
 spec/cucumber/ast/py_string_spec.rb
 spec/cucumber/ast/scenario_outline_spec.rb
 spec/cucumber/ast/scenario_spec.rb
@@ -239,7 +240,6 @@ spec/cucumber/cli_spec.rb
 spec/cucumber/core_ext/proc_spec.rb
 spec/cucumber/core_ext/string_spec.rb
 spec/cucumber/executor_spec.rb
-spec/cucumber/formatter/feature_factory.rb
 spec/cucumber/formatter/pretty_spec.rb
 spec/cucumber/formatters/ansicolor_spec.rb
 spec/cucumber/formatters/autotest_formatter_spec.rb
@@ -279,6 +279,7 @@ spec/cucumber/treetop_parser/scenario_outline.feature
 spec/cucumber/treetop_parser/spaces.feature
 spec/cucumber/treetop_parser/test_dos.feature
 spec/cucumber/treetop_parser/with_comments.feature
+spec/cucumber/treetop_parser/with_tags.feature
 spec/cucumber/world/pending_spec.rb
 spec/spec.opts
 spec/spec_helper.rb
