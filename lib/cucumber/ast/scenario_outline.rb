@@ -7,9 +7,8 @@ module Cucumber
       # * Examples keyword
       # * Examples section name
       # * Raw matrix
-      def initialize(step_mother, comment, tags, keyword, name, step_names_and_multiline_args, example_sections)
-        @sexp_type = :scenario_outline
-        @step_mother, @comment, @tags, @keyword, @name = step_mother, comment, tags, keyword, name
+      def initialize(comment, tags, keyword, name, step_names_and_multiline_args, example_sections)
+        @comment, @tags, @keyword, @name = comment, tags, keyword, name
         @steps = step_names_and_multiline_args.map{|saia| Step.new(self, :outline, *saia)}
 
         @examples_array = example_sections.map do |example_section|
@@ -34,11 +33,11 @@ module Cucumber
         end
       end
 
-      def execute_row(hash)
-        @step_mother.world do |world|
+      def execute_row(hash, visitor)
+        visitor.world(self) do |world|
           previous = :passed
           @steps.each do |step|
-            previous = step.execute_with_arguments(hash, world, previous)
+            previous = step.execute_with_arguments(hash, world, previous, visitor)
           end
         end
       end

@@ -7,8 +7,8 @@ module Cucumber
         @cells_class = ExampleCells
       end
 
-      def execute_row(cells)
-        @scenario_outline.execute_row(cells)
+      def execute_row(cells, visitor)
+        @scenario_outline.execute_row(cells, visitor)
       end
 
       class ExampleCells < Cells
@@ -16,7 +16,7 @@ module Cucumber
           if header?
             visit_cells(visitor, :skipped)
           else
-            @table.execute_row(self.to_hash)
+            @table.execute_row(self.to_hash, visitor)
             visit_cells(visitor, :passed)
           end
         rescue StepMom::Missing
@@ -24,6 +24,8 @@ module Cucumber
         rescue StepMom::Pending
           visit_cells(visitor, :pending)
         rescue Exception => error
+          puts error.message
+          puts error.backtrace
           visit_cells(visitor, :failed)
         end
 

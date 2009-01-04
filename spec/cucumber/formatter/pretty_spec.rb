@@ -19,7 +19,7 @@ module Cucumber
         pretty.visit_feature(f)
 
         # Just to ensure that the API is the same
-        visitor = Ast::Visitor.new
+        visitor = Ast::Visitor.new(step_mother)
         visitor.visit_feature(f)
 
         io.rewind

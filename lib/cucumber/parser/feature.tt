@@ -24,7 +24,7 @@ module Cucumber
       rule scenario
         comment tags white scenario_keyword space* name:line_to_eol eol+ steps {
           def build
-            Ast::Scenario.new(@step_mother, comment.build, tags.build, scenario_keyword.text_value, name.text_value, steps.build)
+            Ast::Scenario.new(comment.build, tags.build, scenario_keyword.text_value, name.text_value, steps.build)
           end
         }
       end
@@ -32,7 +32,7 @@ module Cucumber
       rule scenario_outline
         comment tags white scenario_outline_keyword space* name:line_to_eol white steps examples_sections {
           def build
-            Ast::ScenarioOutline.new(@step_mother, comment.build, tags.build, scenario_outline_keyword.text_value, name.text_value, steps.build, examples_sections.build)
+            Ast::ScenarioOutline.new(comment.build, tags.build, scenario_outline_keyword.text_value, name.text_value, steps.build, examples_sections.build)
           end
         }
       end

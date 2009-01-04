@@ -7,12 +7,13 @@ module Cucumber
     #
     # If the output is STDOUT (and not a file), there are bright colours to watch too.
     #
-    class Pretty
+    class Pretty < Ast::Visitor
       extend Formatters::ANSIColor
       FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
 
       def initialize(step_mother, io)
-        @step_mother, @io = step_mother, io
+        super(step_mother)
+        @io = io
       end
 
       def visit_feature(feature)
