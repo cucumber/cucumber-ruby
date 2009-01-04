@@ -86,7 +86,14 @@ module Cucumber
         it "should display as pending in the dump" do
           @formatter.scenario_executing(@scenario)
           @formatter.dump
-          @io.string.should include("1 scenarios pending")
+          @io.string.should include("1 scenario pending")
+        end
+
+        it "should display as pending in the dump (with two scenarios)" do
+          @formatter.scenario_executing(@scenario)
+          @formatter.scenario_executing(@scenario)
+          @formatter.dump
+          @io.string.should include("2 scenarios pending")
         end
       end
       
@@ -315,7 +322,16 @@ module Cucumber
         io.string.should include("1 with no step definition")
       end
 
-      it "should display the total number of scenarios executed" do
+      it "should display the total number of scenarios executed (for 0 scenarios)" do
+        io = StringIO.new
+        formatter = PrettyFormatter.new io, mock('step_mother')
+                
+        formatter.dump
+        
+        io.string.should include("0 scenarios")
+      end
+          
+      it "should display the total number of scenarios executed (for 1 scenario)" do
         io = StringIO.new
         formatter = PrettyFormatter.new io, mock('step_mother')
                 
@@ -324,7 +340,22 @@ module Cucumber
 
         formatter.dump
         
-        io.string.should include("1 scenarios")
+        io.string.should include("1 scenario")
+      end
+          
+      it "should display the total number of scenarios executed (for 2 scenarios)" do
+        io = StringIO.new
+        formatter = PrettyFormatter.new io, mock('step_mother')
+                
+        formatter.scenario_executing(mock_scenario)
+        formatter.scenario_executed(mock_scenario)
+
+        formatter.scenario_executing(mock_scenario)
+        formatter.scenario_executed(mock_scenario)
+
+        formatter.dump
+        
+        io.string.should include("2 scenarios")
       end
           
       describe "colour" do

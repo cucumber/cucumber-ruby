@@ -1,4 +1,4 @@
-require 'spec'
+require 'spec/expectations'
 $:.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'cucumber/formatters/unicode'
 require 'calculadora'
