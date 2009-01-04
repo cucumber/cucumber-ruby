@@ -27,11 +27,27 @@ module Cucumber
       end
 
       rule line_to_eol
-        (!eol .)*
+        (!eol .)+
       end
 
-      rule whitesss
-        blank / eol
+      rule py_string
+        open_py_string s:(!close_py_string .)* close_py_string {
+          def build
+            Ast::PyString.new(s.text_value)
+          end
+        }
+      end
+
+      rule open_py_string
+        white '"""' space* eol
+      end
+
+      rule close_py_string
+        eol space* '"""'
+      end
+
+      rule white
+        (space / eol)*
       end
 
       rule space

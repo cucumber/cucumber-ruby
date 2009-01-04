@@ -6,15 +6,15 @@ module Cucumber
       include FileParser
 
       rule feature
-        eol* c:comment? eol* space* t:tags? eol* space* feature_keyword space* name:line_to_eol eol+ (feature_elements .)* feature_elements {
+        white comment white tags white header:(!(scenario_outline / scenario) .)* feature_elements {
           def build
-            Ast::Feature.new(c.build, t.build, name.text_value, feature_elements.build)
+            Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build)
           end
         }
       end
 
       rule feature_elements
-        (scenario_outline / scenario)* {
+        (scenario / scenario_outline)* {
           def build
             elements.map{|s| s.build}
           end
@@ -22,17 +22,17 @@ module Cucumber
       end
 
       rule scenario
-        c:comment? t:tags? scenario_keyword space* name:line_to_eol eol+ steps {
+        comment tags white scenario_keyword space* name:line_to_eol eol+ steps {
           def build
-            Ast::Scenario.new(@step_mother, c.build, t.build, scenario_keyword.text_value, name.text_value, steps.build)
+            Ast::Scenario.new(@step_mother, comment.build, tags.build, scenario_keyword.text_value, name.text_value, steps.build)
           end
         }
       end
 
       rule scenario_outline
-        c:comment? t:tags? scenario_outline_keyword space* name:line_to_eol eol+ steps examples_sections {
+        comment tags white scenario_outline_keyword space* name:line_to_eol white steps examples_sections {
           def build
-            Ast::ScenarioOutline.new(@step_mother, c.build, t.build, scenario_outline_keyword.text_value, name.text_value, steps.build, examples_sections.build)
+            Ast::ScenarioOutline.new(@step_mother, comment.build, tags.build, scenario_outline_keyword.text_value, name.text_value, steps.build, examples_sections.build)
           end
         }
       end
@@ -46,7 +46,7 @@ module Cucumber
       end
 
       rule step
-        step_keyword space* name:line_to_eol eol+ multi:multiline_arg? {
+        space* step_keyword space* name:line_to_eol eol+ multi:multiline_arg? {
           def build
             if multi.respond_to?(:build)
               [step_keyword.text_value, name.text_value, multi.build]
@@ -66,27 +66,23 @@ module Cucumber
       end
 
       rule examples
-        examples_keyword space* name:line_to_eol eol+ table {
+        examples_keyword white table {
           def build
-            [examples_keyword.text_value, name.text_value, table.raw]
+            [examples_keyword.text_value, "", table.raw]
           end
         }
       end
 
       rule multiline_arg
-        table
-      end
-
-      rule feature_keyword
-        "Feature" ":"?
+        table / py_string
       end
 
       rule scenario_keyword
-        "Scenario" ":"?
+        "Scenario:"
       end
 
       rule scenario_outline_keyword
-        "Scenario Outline" ":"?
+        "Scenario Outline:"
       end
 
       rule step_keyword

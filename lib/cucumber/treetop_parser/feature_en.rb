@@ -9,12 +9,16 @@ module Feature
   end
 
   module Root0
-    def header
+    def tags
       elements[1]
     end
 
+    def header
+      elements[3]
+    end
+
     def scenario_sequence
-      elements[2]
+      elements[4]
     end
 
   end
@@ -44,19 +48,32 @@ module Feature
     end
     s0 << r1
     if r1
-      r3 = _nt_header
+      r3 = _nt_tags
       s0 << r3
       if r3
-        r4 = _nt_scenario_sequence
+        r5 = _nt_space
+        if r5
+          r4 = r5
+        else
+          r4 = SyntaxNode.new(input, index...index)
+        end
         s0 << r4
         if r4
-          r6 = _nt_space
+          r6 = _nt_header
+          s0 << r6
           if r6
-            r5 = r6
-          else
-            r5 = SyntaxNode.new(input, index...index)
+            r7 = _nt_scenario_sequence
+            s0 << r7
+            if r7
+              r9 = _nt_space
+              if r9
+                r8 = r9
+              else
+                r8 = SyntaxNode.new(input, index...index)
+              end
+              s0 << r8
+            end
           end
-          s0 << r5
         end
       end
     end
@@ -298,16 +315,20 @@ module Feature
   end
 
   module ScenarioOutline0
-    def scenario_outline_keyword
+    def tags
       elements[1]
     end
 
-    def name
+    def scenario_outline_keyword
       elements[3]
     end
 
+    def name
+      elements[5]
+    end
+
     def outline_body
-      elements[4]
+      elements[6]
     end
   end
 
@@ -337,7 +358,7 @@ module Feature
     end
     s0 << r1
     if r1
-      r3 = _nt_scenario_outline_keyword
+      r3 = _nt_tags
       s0 << r3
       if r3
         r5 = _nt_space
@@ -348,16 +369,29 @@ module Feature
         end
         s0 << r4
         if r4
-          r6 = _nt_line_to_eol
+          r6 = _nt_scenario_outline_keyword
           s0 << r6
           if r6
-            r8 = _nt_steps_and_optional_examples
+            r8 = _nt_space
             if r8
               r7 = r8
             else
               r7 = SyntaxNode.new(input, index...index)
             end
             s0 << r7
+            if r7
+              r9 = _nt_line_to_eol
+              s0 << r9
+              if r9
+                r11 = _nt_steps_and_optional_examples
+                if r11
+                  r10 = r11
+                else
+                  r10 = SyntaxNode.new(input, index...index)
+                end
+                s0 << r10
+              end
+            end
           end
         end
       end
@@ -1280,7 +1314,6 @@ module Feature
   module Tags1
     def build
       tag_names = elements.map{|e| e.tag.tag_name.text_value}
-      Ast::Tags.new(tag_names)
     end
   end
 

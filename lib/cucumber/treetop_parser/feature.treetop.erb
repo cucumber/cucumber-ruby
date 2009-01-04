@@ -3,7 +3,7 @@ module Cucumber
 module TreetopParser
 grammar Feature
   rule root
-    space? header scenario_sequence space? {
+    space? tags space? header scenario_sequence space? {
       def compile
         feature = Tree::Feature.new(header.text_value.strip)
         scenario_sequence.compile(feature)
@@ -45,7 +45,7 @@ grammar Feature
   end
 
   rule scenario_outline
-    space?
+    space? tags space?
     scenario_outline_keyword space? name:line_to_eol outline_body:(steps_and_optional_examples)? {
       def compile(feature)
         line = input.line_of(interval.first)
@@ -201,7 +201,6 @@ grammar Feature
     (tag space)* {
       def build
         tag_names = elements.map{|e| e.tag.tag_name.text_value}
-        Ast::Tags.new(tag_names)
       end
     }
   end
