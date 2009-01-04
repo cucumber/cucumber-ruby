@@ -4,6 +4,18 @@ module Cucumber
   module Ast
     # A dumb visitor that implements the whole Visitor API and just walks the tree.
     class Visitor
+      def initialize(step_mother)
+        @step_mother = step_mother
+      end
+
+      def world(scenario, &proc)
+        @step_mother.world(scenario, &proc)
+      end
+
+      def step_invocation(step_name, world)
+        @step_mother.step_invocation(step_name, world)
+      end
+
       def visit_feature(feature)
         feature.accept(self)
       end

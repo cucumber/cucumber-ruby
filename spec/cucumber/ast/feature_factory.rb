@@ -33,7 +33,6 @@ module Cucumber
           Ast::Tags.new(['one', 'two']),
           "Pretty printing",
           [Ast::Scenario.new(
-            step_mother,
             Ast::Comment.new("    # My scenario comment  \n# On two lines \n"),
             Ast::Tags.new(['three', 'four']),
             "Scenario:", "A Scenario",

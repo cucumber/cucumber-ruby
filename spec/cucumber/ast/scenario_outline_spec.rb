@@ -23,7 +23,6 @@ module Cucumber
         end
 
         @scenario_outline = ScenarioOutline.new(
-          @step_mother,
           Comment.new(""),
           Tags.new([]),
           "Scenario:", "My outline",
@@ -48,12 +47,12 @@ module Cucumber
       end
 
       it "should replace all variables and call outline once for each table row" do
-        visitor = Visitor.new
+        visitor = Visitor.new(@step_mother)
         visitor.should_receive(:visit_table_row).exactly(3).times
         visitor.visit_feature_element(@scenario_outline)
       end
 
-      xit "should pretty print" do
+      it "should pretty print" do
         require 'cucumber/formatter/pretty'
         visitor = Formatter::Pretty.new(@step_mother, STDOUT)
         visitor.visit_feature_element(@scenario_outline)
