@@ -1,5 +1,6 @@
 require 'optparse'
 require 'cucumber'
+require 'ostruct'
 
 module Cucumber
   class YmlLoadError < StandardError; end
@@ -339,7 +340,7 @@ Defined profiles in cucumber.yml:
     def enable_diffing
       if defined?(::Spec)
         require 'spec/expectations/differs/default'
-        options = ::Spec::Runner::Options.new(nil, nil)
+        options = OpenStruct.new(:diff_format => :unified, :context_lines => 3)
         ::Spec::Expectations.differ = ::Spec::Expectations::Differs::Default.new(options)
       end
     end

@@ -1,4 +1,4 @@
-require 'spec'
+require 'spec/expectations'
 
 World do
   Object.new

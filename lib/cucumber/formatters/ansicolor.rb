@@ -5,7 +5,7 @@ gem 'term-ansicolor'
 $LOAD_PATH.each{|path| $LOAD_PATH.unshift($LOAD_PATH.delete(path)) if path =~ /term-ansicolor/}
 require 'term/ansicolor'
 
-if $CUCUMBER_WINDOWS_MRI
+if Cucumber::WINDOWS_MRI
   begin
     require 'Win32/Console/ANSI'
   rescue LoadError
@@ -14,12 +14,12 @@ if $CUCUMBER_WINDOWS_MRI
   end
 end
 
-Term::ANSIColor.coloring = false if !STDOUT.tty? || ($CUCUMBER_WINDOWS && !$CUCUMBER_WINDOWS_MRI)
+Term::ANSIColor.coloring = false if !STDOUT.tty? || (Cucumber::WINDOWS && !Cucumber::WINDOWS_MRI)
 
 module Cucumber
   module Formatters
     # Defines aliases for coloured output. You can tweak the colours by defining
-    # a <tt>$CUCUMBER_COLORS</tt> variable in your shell, very much like you can
+    # a <tt>CUCUMBER_COLORS</tt> variable in your shell, very much like you can
     # tweak the familiar POSIX command <tt>ls</tt> with
     # <a href="http://mipsisrisc.com/rambling/2008/06/27/lscolorsls_colors-now-with-linux-support/">$LSCOLORS/$LS_COLORS</a>
     #

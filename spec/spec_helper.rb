@@ -1,6 +1,6 @@
 require 'rubygems'
 gem 'rspec'
-require 'spec'
+require 'spec/expectations'
 
 ENV['CUCUMBER_COLORS']=nil
 $KCODE='u'
