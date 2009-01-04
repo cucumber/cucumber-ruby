@@ -36,14 +36,14 @@ module Cucumber
       $inside.should == 'inside'
     end
 
-    it "should raise Missing when inside step is pending" do
+    it "should raise Undefined when inside step is not defined" do
       Given /Outside/ do
         Given "Inside"
       end
 
       lambda do
         step_invocation("Outside", @world).invoke
-      end.should raise_error(StepMom::Missing, "Inside")
+      end.should raise_error(StepMom::Undefined, "Inside")
     end
 
     it "should allow forced pending" do
