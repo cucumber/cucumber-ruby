@@ -1,4 +1,3 @@
-require 'cucumber/ast/argument'
 require 'cucumber/ast/comment'
 require 'cucumber/ast/tags'
 require 'cucumber/ast/feature'

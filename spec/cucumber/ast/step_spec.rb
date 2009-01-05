@@ -25,7 +25,7 @@ module Cucumber
           mock_multiline_arg = mock('multiline arg')
           step = Step.new(mock('scenario'), nil, 'Given', '<test>', mock_multiline_arg)
 
-          mock_multiline_arg.should_receive(:arguments_replaced).and_return(mock_multiline_arg)
+          mock_multiline_arg.should_receive(:arguments_replaced).with({'<test>' => '10'}).and_return(mock_multiline_arg)
         
           step.execute_with_arguments({'test' => '10'}, stub('world'), :passed, visitor=nil)
         end

@@ -4,6 +4,9 @@ require 'cucumber/core_ext/string'
 module Cucumber
   module Ast
     class Step
+      ARGUMENT_START = '<'
+      ARGUMENT_END  = '>'
+      
       def initialize(scenario, status, gwt, name, *multiline_args)
         @scenario, @status, @gwt, @name, @multiline_args = scenario, status, gwt, name, multiline_args
       end
@@ -13,7 +16,7 @@ module Cucumber
       end
 
       def execute_with_arguments(arguments, world, previous, visitor)
-        arguments = arguments.map{|name, value| Argument.new(name, value)}
+        arguments = delimit_argument_names(arguments)
         name = replace_name_arguments(arguments)
         multiline_args = replace_multiline_args_arguments(arguments)
       
@@ -65,10 +68,14 @@ module Cucumber
         @status
       end
       
+      def delimit_argument_names(arguments)
+        arguments.inject({}) { |h,(k,v)| h["#{ARGUMENT_START}#{k}#{ARGUMENT_END}"] = v; h }
+      end
+      
       def replace_name_arguments(arguments)
         name_with_arguments_replaced = @name
-        arguments.each do |argument|
-          name_with_arguments_replaced = argument.replace_in(name_with_arguments_replaced)
+        arguments.each do |name, value|
+          name_with_arguments_replaced = name_with_arguments_replaced.gsub(name, value)
         end
         name_with_arguments_replaced
       end

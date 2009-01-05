@@ -1,6 +1,5 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'cucumber/ast/table'
-require 'cucumber/ast/argument'
 
 module Cucumber
   module Ast
@@ -50,15 +49,14 @@ module Cucumber
         end
 
         it "should return a new table with arguments replaced with values" do
-          arguments = [Argument.new('book', 'Unbearable lightness of being'), Argument.new('qty', '5')]
-          table_with_replaced_args = @table.arguments_replaced(arguments)
+          table_with_replaced_args = @table.arguments_replaced({'<book>' => 'Unbearable lightness of being', '<qty>' => '5'})
 
           table_with_replaced_args.hashes[0]['book'].should == 'Unbearable lightness of being'
           table_with_replaced_args.hashes[0]['qty'].should == '5'
         end
       
         it "should not change the original table" do
-          table_with_replaced_args = @table.arguments_replaced([Argument.new('book', 'Unbearable lightness of being')])
+          table_with_replaced_args = @table.arguments_replaced({'<book>' => 'Unbearable lightness of being'})
           
           @table.hashes[0]['book'].should_not == 'Unbearable lightness of being'
         end
