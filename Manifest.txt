@@ -65,6 +65,11 @@ examples/i18n/ja/features/addition.feature
 examples/i18n/ja/features/division.feature
 examples/i18n/ja/features/step_definitons/calculator_steps.rb
 examples/i18n/ja/lib/calculator.rb
+examples/i18n/ko/Rakefile
+examples/i18n/ko/features/addition.feature
+examples/i18n/ko/features/division.feature
+examples/i18n/ko/features/step_definitons/calculator_steps.rb
+examples/i18n/ko/lib/calculator.rb
 examples/i18n/lt/Rakefile
 examples/i18n/lt/features/addition.feature
 examples/i18n/lt/features/division.feature
@@ -181,6 +186,7 @@ lib/cucumber/treetop_parser/feature_fr.rb
 lib/cucumber/treetop_parser/feature_id.rb
 lib/cucumber/treetop_parser/feature_it.rb
 lib/cucumber/treetop_parser/feature_ja.rb
+lib/cucumber/treetop_parser/feature_ko.rb
 lib/cucumber/treetop_parser/feature_lt.rb
 lib/cucumber/treetop_parser/feature_nl.rb
 lib/cucumber/treetop_parser/feature_no.rb
