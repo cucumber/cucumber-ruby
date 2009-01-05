@@ -1,7 +1,7 @@
 == In Git
 
 === New features
-* 한국어! (Korean!)
+* 한국어! (Korean!) (John Hwang)
 
 == 0.1.14 2009-01-04
 
