@@ -21,7 +21,7 @@ end
 
 def supported?(lang)
   if RUBY_VERSION =~ /^1\.9/
-    !%w{ar ja}.index(lang)
+    !%w{ar ja ko zh-CN}.index(lang)
   else
     true
   end
