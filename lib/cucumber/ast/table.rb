@@ -77,8 +77,8 @@ module Cucumber
         raw_with_replaced_args = raw.map do |row|
           row.map do |cell|
             cell_with_replaced_args = cell
-            arguments.each do |name, value|
-              cell_with_replaced_args = cell_with_replaced_args.gsub(/<#{name}>/, value)              
+            arguments.each do |argument|
+              cell_with_replaced_args = argument.replace_in(cell_with_replaced_args)
             end
             cell_with_replaced_args
           end
