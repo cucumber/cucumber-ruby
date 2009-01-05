@@ -13,14 +13,11 @@ module Cucumber
       end
 
       def execute_with_arguments(arguments, world, previous, visitor)
-        name_with_arguments_replaced = @name
-        arguments.each do |name, value|
-          name_with_arguments_replaced = name_with_arguments_replaced.gsub(/<#{name}>/, value)
-        end
-        multiline_args_with_arguments_replaced = @multiline_args.map do |arg|
-          arg.arguments_replaced(arguments)
-        end
-        _execute(name_with_arguments_replaced, multiline_args_with_arguments_replaced, world, previous, visitor)
+        arguments = arguments.map{|name, value| Argument.new(name, value)}
+        name = replace_name_arguments(arguments)
+        multiline_args = replace_multiline_args_arguments(arguments)
+      
+        _execute(name, multiline_args, world, previous, visitor)
       end
 
       def accept(visitor)
@@ -67,6 +64,21 @@ module Cucumber
         end
         @status
       end
+      
+      def replace_name_arguments(arguments)
+        name_with_arguments_replaced = @name
+        arguments.each do |argument|
+          name_with_arguments_replaced = argument.replace_in(name_with_arguments_replaced)
+        end
+        name_with_arguments_replaced
+      end
+
+      def replace_multiline_args_arguments(arguments)
+        @multiline_args.map do |arg|
+          arg.arguments_replaced(arguments)
+        end
+      end
+      
     end
   end
 end
