@@ -49,9 +49,9 @@ Feature: hi
         end
 
         it "should parse a file with only a multiline comment with newlines" do
-          pending do
-            parse("# Hello\n\n# World\n").comment.should == "# Hello\n# World"
-          end
+          parse("# Hello\n\n# World\n").to_sexp.should == 
+          [:feature, "", 
+            [:comment, "# Hello\n\n# World\n"]]
         end
       end
 
