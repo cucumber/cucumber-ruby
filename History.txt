@@ -4,6 +4,7 @@
 * 한국어! (Korean!) (John Hwang)
 
 === Bugfixes
+* Fix a minor bug in the console formatter's summary (David Chelimsky)
 * Better quoting of Scenario names in Autotest (Peter Jaros)
 
 == 0.1.14 2009-01-04
