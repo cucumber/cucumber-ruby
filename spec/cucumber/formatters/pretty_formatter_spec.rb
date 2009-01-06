@@ -360,21 +360,48 @@ module Cucumber
           
       describe "colour" do
 
-        before(:all) do
-          Term::ANSIColor.coloring = true
-        end
-
-        after(:all) do
-          Term::ANSIColor.coloring = false
-        end
-
-        it "should show the scenario outline keyword and title as pending blue" do
+        before(:each) do
           ::Term::ANSIColor.coloring = true
-          io = StringIO.new
-          formatter = PrettyFormatter.new io, mock('step_mother')
-          formatter.scenario_executing(mock_scenario(:outline? => true, :name => 'blue'))
+          @io = StringIO.new
+          @formatter = PrettyFormatter.new @io, mock('step_mother')
+        end
+        
+        it "should show the scenario outline keyword and title as pending blue" do
+          @formatter.scenario_executing(mock_scenario(:outline? => true, :name => 'blue'))
 
-          io.string.should =~ /\e\[36m\s*Scenario Outline: blue\e\[0m/
+          @io.string.should =~ /\e\[36m\s*Scenario Outline: blue\e\[0m/
+        end
+        
+        it "should show passing steps as green" do
+          @formatter.scenario_executing(mock_scenario)
+          @formatter.step_passed(mock_step, nil, nil)
+          @formatter.dump
+
+          @io.string.should =~ /\e\[32m1 step passed\e/
+        end
+        
+        it "should show pending steps as yellow" do
+          @formatter.scenario_executing(mock_scenario)
+          @formatter.step_pending(mock_step, nil, nil)
+          @formatter.dump
+
+          @io.string.should =~ /\e\[33m1 step pending\e/
+        end
+        
+        it "should show failed steps as red" do
+          @formatter.scenario_executing(mock_scenario)
+          @formatter.step_failed(mock_step(:error => mock_error(:cucumber_backtrace => [])), nil, nil)
+          @formatter.dump
+
+          @io.string.should =~ /\e\[31m1 step failed\e/
+        end
+        
+        it "should show skipped steps as cyan" do
+          @formatter.scenario_executing(mock_scenario)
+          @formatter.step_skipped(mock_step, nil, nil)
+          @formatter.dump
+
+          @io.string.should =~ /\e\[36m1 step skipped\e/
         end
 
       end

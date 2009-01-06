@@ -183,8 +183,8 @@ module Cucumber
         @io.puts pending(dump_count(@pending_scenarios.length, "scenario", "pending")) if @pending_scenarios.any?
 
         @io.puts passed(dump_count(@passed.length, "step", "passed"))   if @passed.any?
-        @io.puts passed(dump_count(@failed.length, "step", "failed"))   if @failed.any?
-        @io.puts passed(dump_count(@skipped.length, "step", "skipped")) if @skipped.any?
+        @io.puts failed(dump_count(@failed.length, "step", "failed"))   if @failed.any?
+        @io.puts skipped(dump_count(@skipped.length, "step", "skipped")) if @skipped.any?
 
         if @pending_steps.any?
           @io.print pending(dump_count(@pending_steps.length, "step", "pending")) 
