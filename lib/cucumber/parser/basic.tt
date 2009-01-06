@@ -15,7 +15,7 @@ module Cucumber
       end
 
       rule comment
-        (comment_line eol)* {
+        (comment_line eol+)* {
           def build
             Ast::Comment.new(text_value)
           end
