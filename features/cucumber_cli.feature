@@ -47,3 +47,22 @@ Feature: Run single scenario
 
       """
 
+  Scenario: Run all with progress formatter
+    When I run cucumber -q --format progress features/sample.feature
+    Then the output should be
+      """
+      P.F
+
+      Pending Scenarios:
+      
+      1)  Sample (Missing)
+      
+      
+      Failed:
+      
+      1)
+      FAIL
+      ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
+      features/sample.feature:10:in `Given failing'
+
+      """
