@@ -66,3 +66,31 @@ Feature: Run single scenario
       features/sample.feature:10:in `Given failing'
 
       """
+
+    Scenario: Run Norwegian
+      Given I am in i18n/no
+      When I run cucumber -q --language no features
+      Then the output should be
+        """
+        Egenskap: Summering
+          For å slippe å gjøre dumme feil
+          Som en regnskapsfører
+          Vil jeg kunne legge sammen
+          Scenario: to tall
+            Gitt at jeg har tastet inn 5
+            Og at jeg har tastet inn 7
+            Når jeg summerer
+            Så skal resultatet være 12
+
+          Scenario: tre tall
+            Gitt at jeg har tastet inn 5
+            Og at jeg har tastet inn 7
+            Og at jeg har tastet inn 1
+            Når jeg summerer
+            Så skal resultatet være 13
+
+
+        2 scenarios
+        9 steps passed
+
+        """
