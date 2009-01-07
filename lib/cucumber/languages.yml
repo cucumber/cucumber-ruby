@@ -258,3 +258,14 @@
   then: 那么
   and: 而且
   but: 但是
+# Korean
+"ko":
+  feature: 기능
+  scenario: 예
+  more_examples: 다른 예
+  given_scenario: 주어진 예
+  given: 조건
+  when: 만일
+  then: 그러면
+  and: 그리고
+  but: 하지만
