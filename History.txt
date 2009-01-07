@@ -3,7 +3,21 @@
 === New features
 * Allow argument placeholders in step tables and multiline comments (#121 Joseph Wilk)
 * Scenario Outline can be followed by several named Examples sections (#123 Aslak Hellesøy)
+* 한국어! (Korean!) (John Hwang)
+
+=== Bugfixes
+* Fix a minor bug in the console formatter's summary (David Chelimsky)
+* Better quoting of Scenario names in Autotest (Peter Jaros)
+
+== 0.1.14 2009-01-04
+
+This is the first release of Cucumber that runs on Ruby 1.9. There are still some encoding-related issues 
+with Arabic (ar), Japanese (ja) and Simplified Chinese (zh-CN). Patches are welcome. Other than that - 
+a couple of minor bug fixes and polishing.
+
+=== New features
 * Pretty formatter shows number of scenarios (#139 Joseph Wilk)
+* Rudimentary support for Ruby 1.9. Now it's ok to file Ruby 1.9-related bugs.
 
 === Bugfixes
 * Fixed "No such file or directory -- cucumber (LoadError)" bug with AutoTest (Aslak Hellesøy)
@@ -11,7 +25,6 @@
 
 === Removed features
 * The #binary= method is gone from the Rake task. It will always point to the binary in the current gem. (Aslak Hellesøy)
-
 
 == 0.1.13 2008-12-20
 

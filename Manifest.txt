@@ -65,6 +65,11 @@ examples/i18n/ja/features/addition.feature
 examples/i18n/ja/features/division.feature
 examples/i18n/ja/features/step_definitons/calculator_steps.rb
 examples/i18n/ja/lib/calculator.rb
+examples/i18n/ko/Rakefile
+examples/i18n/ko/features/addition.feature
+examples/i18n/ko/features/division.feature
+examples/i18n/ko/features/step_definitons/calculator_steps.rb
+examples/i18n/ko/lib/calculator.rb
 examples/i18n/lt/Rakefile
 examples/i18n/lt/features/addition.feature
 examples/i18n/lt/features/division.feature
@@ -99,6 +104,9 @@ examples/java/features/tree.feature
 examples/selenium/Rakefile
 examples/selenium/features/search.feature
 examples/selenium/features/step_definitons/stories_steps.rb
+examples/self_test/README.textile
+examples/self_test/features/sample.feature
+examples/self_test/features/step_definitions/sample_steps.rb
 examples/test_unit/Rakefile
 examples/test_unit/features/step_definitions/test_unit_steps.rb
 examples/test_unit/features/test_unit.feature
@@ -110,12 +118,15 @@ examples/tickets/features/scenario_outline.feature
 examples/tickets/features/step_definitons/scenario_outline_steps.rb
 examples/tickets/features/step_definitons/tickets_steps.rb
 examples/tickets/features/tickets.feature
+examples/watir/README.textile
 examples/watir/Rakefile
 examples/watir/features/search.feature
-examples/watir/features/step_definitons/stories_steps.rb
-features/see_features.feature
-features/steps/features_steps.rb
-gem_tasks/antlr.rake
+examples/watir/features/step_definitons/search_steps.rb
+examples/watir/features/support/env.rb
+features/cucumber_cli.feature
+features/step_definitions/cucumber_steps.rb
+features/step_definitions/extra_steps.rb
+features/support/env.rb
 gem_tasks/deployment.rake
 gem_tasks/environment.rake
 gem_tasks/features.rake
@@ -132,7 +143,6 @@ lib/autotest/cucumber_rails_rspec.rb
 lib/autotest/cucumber_rspec.rb
 lib/autotest/discover.rb
 lib/cucumber.rb
-lib/cucumber/antlr/Gherkin.g
 lib/cucumber/ast.rb
 lib/cucumber/ast/comment.rb
 lib/cucumber/ast/examples.rb
@@ -180,7 +190,7 @@ lib/cucumber/rake/task.rb
 lib/cucumber/step_definition.rb
 lib/cucumber/step_methods.rb
 lib/cucumber/step_mother.rb
-lib/cucumber/step_mother.rb
+lib/cucumber/step_mother_old.rb
 lib/cucumber/tree.rb
 lib/cucumber/tree/feature.rb
 lib/cucumber/tree/features.rb
@@ -203,6 +213,7 @@ lib/cucumber/treetop_parser/feature_fr.rb
 lib/cucumber/treetop_parser/feature_id.rb
 lib/cucumber/treetop_parser/feature_it.rb
 lib/cucumber/treetop_parser/feature_ja.rb
+lib/cucumber/treetop_parser/feature_ko.rb
 lib/cucumber/treetop_parser/feature_lt.rb
 lib/cucumber/treetop_parser/feature_nl.rb
 lib/cucumber/treetop_parser/feature_no.rb
@@ -228,7 +239,8 @@ rails_generators/feature/feature_generator.rb
 rails_generators/feature/templates/feature.erb
 rails_generators/feature/templates/steps.erb
 setup.rb
-spec/cucumber/antlr/Gherkin.gunit
+spec/cucumber/ast/feature_factory.rb
+spec/cucumber/ast/feature_spec.rb
 spec/cucumber/ast/py_string_spec.rb
 spec/cucumber/ast/scenario_outline_spec.rb
 spec/cucumber/ast/scenario_spec.rb
@@ -239,7 +251,6 @@ spec/cucumber/cli_spec.rb
 spec/cucumber/core_ext/proc_spec.rb
 spec/cucumber/core_ext/string_spec.rb
 spec/cucumber/executor_spec.rb
-spec/cucumber/formatter/feature_factory.rb
 spec/cucumber/formatter/pretty_spec.rb
 spec/cucumber/formatters/ansicolor_spec.rb
 spec/cucumber/formatters/autotest_formatter_spec.rb
@@ -256,7 +267,7 @@ spec/cucumber/rails/stubs/test_help.rb
 spec/cucumber/rails/world_spec.rb
 spec/cucumber/sell_cucumbers.feature
 spec/cucumber/step_definition_spec.rb
-spec/cucumber/step_mother_spec.rb
+spec/cucumber/step_mom_spec.rb
 spec/cucumber/step_mother_spec.rb
 spec/cucumber/tree/feature_spec.rb
 spec/cucumber/tree/row_scenario_outline_spec.rb
@@ -279,6 +290,7 @@ spec/cucumber/treetop_parser/scenario_outline.feature
 spec/cucumber/treetop_parser/spaces.feature
 spec/cucumber/treetop_parser/test_dos.feature
 spec/cucumber/treetop_parser/with_comments.feature
+spec/cucumber/treetop_parser/with_tags.feature
 spec/cucumber/world/pending_spec.rb
 spec/spec.opts
 spec/spec_helper.rb

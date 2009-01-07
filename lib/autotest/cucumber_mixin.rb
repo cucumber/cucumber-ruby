@@ -120,8 +120,11 @@ module Autotest::CucumberMixin
     if scenarios_to_run == :all
       scenario_args = nil
     else
-      scenario_args = scenarios_to_run.map { |s| "-s '#{s}'" }.join(' ')
+      # We escape scenario names for the shell by wrapping them in $'...' and replacing
+      # every single quote with an escaped version, "\'".  We use a double backslash for
+      # Ruby, and we put it in a block or gsub interpolates the sequence "\'" as $'.
+      scenario_args = scenarios_to_run.map { |s| "-s $'#{s.gsub("'") {"\\'"} }'" }.join(' ')
     end
-    return "#{Cucumber::RUBY} #{Cucumber::BINARY} #{args} #{scenario_args}"
+    return "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} #{args} #{scenario_args}"
   end
 end

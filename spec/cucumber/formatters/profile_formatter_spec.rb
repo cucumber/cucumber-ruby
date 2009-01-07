@@ -20,9 +20,14 @@ module Cucumber
       end
 
       before(:each) do
+        ::Term::ANSIColor.coloring = false
         @io = StringIO.new
         step_mother = stub('step_mother')
         @formatter = ProfileFormatter.new(io, step_mother)
+      end
+      
+      after(:each) do
+        ::Term::ANSIColor.coloring = true
       end
 
       it "should print a heading" do

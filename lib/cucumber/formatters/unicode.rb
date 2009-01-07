@@ -2,7 +2,7 @@
 require 'cucumber/platform'
 require 'cucumber/formatters/ansicolor'
 
-$KCODE='u'
+$KCODE='u' unless Cucumber::RUBY_1_9
 
 if Cucumber::WINDOWS_MRI && `chcp` =~ /Active code page: (\d+)/
   codepage = $1.to_i
@@ -15,12 +15,20 @@ if Cucumber::WINDOWS_MRI && `chcp` =~ /Active code page: (\d+)/
     module Kernel
       alias cucumber_print print
       def print(*a)
-        cucumber_print *Iconv.iconv(Cucumber::CODEPAGE, "UTF-8", *a)
+        begin
+          cucumber_print *Iconv.iconv(Cucumber::CODEPAGE, "UTF-8", *a)
+        rescue Iconv::IllegalSequence
+          cucumber_print(*a)
+        end
       end
 
       alias cucumber_puts puts
       def puts(*a)
-        cucumber_puts *Iconv.iconv(Cucumber::CODEPAGE, "UTF-8", *a)
+        begin
+          cucumber_puts *Iconv.iconv(Cucumber::CODEPAGE, "UTF-8", *a)
+        rescue Iconv::IllegalSequence
+          cucumber_puts(*a)
+        end
       end
     end
   end
