@@ -2,7 +2,7 @@ Feature: Run single scenario
   In order to speed up development
   Developers should be able to run just a single scenario
   
-  Scenario: Missing
+  Scenario: Run single scenario with missing step definition
     When I run cucumber -q features/sample.feature:3
     Then the output should be
       """
@@ -16,7 +16,7 @@ Feature: Run single scenario
       
       """
       
-  Scenario: Failing
+  Scenario: Run single failing scenario
     When I run cucumber -q features/sample.feature:9
     Then the output should be
       """
@@ -32,3 +32,18 @@ Feature: Run single scenario
       1 step failed
 
       """
+      
+  Scenario: Require missing step definition from elsewhere
+    When I run cucumber -q -r ../../features/step_definitions/extra_steps.rb features/sample.feature:3
+    Then the output should be
+      """
+      Feature: Sample
+        Scenario: Missing
+          Given missing
+
+
+      1 scenario
+      1 step passed
+
+      """
+
