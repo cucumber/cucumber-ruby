@@ -1,3 +1,9 @@
+== In Git
+
+=== New features
+=== Bugfixes
+=== Removed features
+
 == 0.1.15 2009-01-08
 
 Bugfix release
