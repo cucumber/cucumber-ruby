@@ -1,3 +1,4 @@
+# encoding: utf-8
 module Cucumber
 # :stopdoc:
 module TreetopParser
