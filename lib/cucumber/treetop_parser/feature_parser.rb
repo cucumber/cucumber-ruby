@@ -20,7 +20,9 @@ module Cucumber
       end
       
       def parse_feature(file)
-        ast = parse(IO.read(file))
+        gherkin = IO.read(file)
+        gherkin = gherkin.force_encoding('utf-8') if Cucumber::RUBY_1_9
+        ast = parse(gherkin)
         if ast.nil?
           raise SyntaxError.new(file, self)
         else

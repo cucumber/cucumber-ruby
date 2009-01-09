@@ -1,4 +1,4 @@
-require 'spec'
+require 'spec/expectations'
 include_class 'java.util.TreeSet'
 
 Given /I have an empty set/ do
