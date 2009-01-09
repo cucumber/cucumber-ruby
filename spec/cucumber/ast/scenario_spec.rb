@@ -19,25 +19,54 @@ module Cucumber
       end
 
       it "should execute Before blocks before steps" do
-        scenario = Scenario.new(comment=Comment.new(""), 
-          tags=Tags.new([]), keyword="", name="", step_names_and_multiline_args=[
-          ["Given", "y is 5"]
-        ])
+        scenario = Scenario.new(
+          comment=Comment.new(""), 
+          tags=Tags.new([]), 
+          keyword="", 
+          name="", 
+          steps=[
+            Step.new("Given", "y is 5")
+          ])
         @visitor.visit_feature_element(scenario)
         $x.should == 3
         $y.should == 5
       end
 
       it "should skip steps when previous is not passed" do
-        scenario = Scenario.new(comment=Comment.new(""),
-          tags=Tags.new([]), keyword="", name="", step_names_and_multiline_args=[
-          ["Given", "this is missing"],
-          ["Given", "y is 5"]
-        ])
+        scenario = Scenario.new(
+          comment=Comment.new(""),
+          tags=Tags.new([]), 
+          keyword="", 
+          name="", 
+          steps=[
+            Step.new("Given", "this is missing"),
+            Step.new("Given", "y is 5")
+          ])
         @visitor.visit_feature_element(scenario)
 
         $x.should == 3
         $y.should == nil
+      end
+
+      it "should be at exact line" do
+        s = Scenario.new(comment=Comment.new(""), 
+          tags=Tags.new([]), keyword="", name="", steps=[])
+
+        s.line = 45
+        s.should be_at_line(45)
+      end
+
+      it "should be at line if step is" do
+        s = Scenario.new(
+          comment=Comment.new(""), 
+          tags=Tags.new([]), 
+          keyword="", 
+          name="", 
+          steps=[]
+        )
+
+        s.line = 45
+        s.should be_at_line(47)
       end
     end
   end

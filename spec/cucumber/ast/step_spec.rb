@@ -7,9 +7,9 @@ module Cucumber
   module Ast
     describe StepMom do
       it "should calculate comment padding" do
-        scenario = Scenario.new(comment=nil, tags=nil, keyword=nil, name=nil, step_names_and_multiline_args=[
-          ["Given", "tøtal 13"],
-          ["And",   "the total 15"]
+        scenario = Scenario.new(comment=nil, tags=nil, keyword=nil, name=nil, steps=[
+          Step.new("Given", "tøtal 13"),
+          Step.new("And",   "the total 15")
         ])
         step1, step2 = *scenario.instance_variable_get('@steps')
 
@@ -23,7 +23,7 @@ module Cucumber
       
         it "should replace arguments in multiline args" do
           mock_multiline_arg = mock('multiline arg')
-          step = Step.new(mock('scenario'), nil, 'Given', '<test>', mock_multiline_arg)
+          step = Step.new('Given', '<test>', mock_multiline_arg)
 
           mock_multiline_arg.should_receive(:arguments_replaced).with({'<test>' => '10'}).and_return(mock_multiline_arg)
         
@@ -34,9 +34,7 @@ module Cucumber
           mock_step_invocation = mock('step invocation')
           mock_multiline_arg_replaced = mock('multiline arg replaced')
           mock_multiline_arg = mock('multiline arg', :arguments_replaced => mock_multiline_arg_replaced)
-          step = Step.new(mock('scenario', :step_invocation => mock_step_invocation), nil, 'Given', '<test>', mock_multiline_arg)
-          
-#          mock_step_invocation.should_receive(:invoke).with(mock_multiline_arg_replaced)
+          step = Step.new('Given', '<test>', mock_multiline_arg)
         
           step.execute_with_arguments({'test' => '10'}, stub('world'), :passed, visitor=nil)
         end

@@ -1,9 +1,12 @@
 module Cucumber
   module Ast
     class Scenario
-      def initialize(comment, tags, keyword, name, step_names_and_multiline_args)
+      attr_writer :line
+
+      def initialize(comment, tags, keyword, name, steps)
         @comment, @tags, @keyword, @name = comment, tags, keyword, name
-        @steps = step_names_and_multiline_args.map{|saia| Step.new(self, nil, *saia)}
+        steps.each {|step| step.scenario = self}
+        @steps = steps
       end
 
       def accept(visitor)
@@ -21,6 +24,10 @@ module Cucumber
 
       def max_step_length
         @steps.map{|step| step.text_length}.max
+      end
+
+      def at_line?(line)
+        @line == line
       end
 
       def to_sexp

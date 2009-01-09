@@ -5,7 +5,7 @@ module Cucumber
   module Ast
     describe Feature do
       include FeatureFactory
-      
+
       it "should convert to sexp" do
         feature = create_feature(Object.new)
         feature.to_sexp.should == 
@@ -28,7 +28,29 @@ module Cucumber
             [:step, "Given", "a happy step with an inline arg:", 
               [:pystring, "I like\nCucumber sandwich\n"]], 
             [:step, "Given", "a failing step"]]]
-                
+      end
+
+      it "should only visit scenarios that match line number" do
+        s1 = mock("Scenario 1")
+        s2 = mock("Scenario 2")
+        s3 = mock("Scenario 3")
+        f = Ast::Feature.new(
+          Ast::Comment.new(""),
+          Ast::Tags.new([]),
+          "My feature",
+          [s1, s2, s3]
+        )
+
+        f.line = 33
+
+        s1.should_receive(:at_line?).and_return(false)
+        s2.should_receive(:at_line?).and_return(true)
+        s3.should_receive(:at_line?).and_return(false)
+
+        s2.should_receive(:accept)
+
+        visitor = Visitor.new(nil)
+        visitor.visit_feature(f)
       end
     end
   end

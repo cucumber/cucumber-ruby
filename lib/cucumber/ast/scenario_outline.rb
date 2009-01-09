@@ -7,9 +7,9 @@ module Cucumber
       # * Examples keyword
       # * Examples section name
       # * Raw matrix
-      def initialize(comment, tags, keyword, name, step_names_and_multiline_args, example_sections)
-        @comment, @tags, @keyword, @name = comment, tags, keyword, name
-        @steps = step_names_and_multiline_args.map{|saia| Step.new(self, :outline, *saia)}
+      def initialize(comment, tags, keyword, name, steps, example_sections)
+        super(comment, tags, keyword, name, steps)
+        steps.each {|step| step.status = :outline}
 
         @examples_array = example_sections.map do |example_section|
           examples_keyword    = example_section[0]
