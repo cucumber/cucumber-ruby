@@ -63,7 +63,7 @@ dang
 #{@feature_file}:9:in `Then I should owe 7 cucumbers'
 })
     end
-
+    
     describe "creating a world" do
       module DoitExtension
         def doit
@@ -181,6 +181,16 @@ dang
         @io.string.should =~ /expected 0 block argument\(s\), got 1/m
       end
       
+      it "should fake a pass during a dry run" do
+        steps_run = []
+        @step_mother.register_step_proc(/there are (\d*) cucumbers/)     {|n| steps_run << :g}
+        @step_mother.register_step_proc(/I sell (\d*) cucumbers/)        {|n| steps_run << :w}
+        @step_mother.register_step_proc(/I should owe (\d*) cucumbers/)  {|n| steps_run << :t}
+        @executor.dry_run = true
+        @executor.visit_features(@features)
+        @io.string.should =~ (/\.+\n+/)
+        steps_run.should be_empty
+      end
     end
     
     describe "visiting step outline" do
