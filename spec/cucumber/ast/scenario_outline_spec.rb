@@ -27,10 +27,10 @@ module Cucumber
           Tags.new([]),
           "Scenario:", "My outline",
           [
-            ['Given', 'there are <start> cucumbers'],
-            ['When',  'I eat <eat> cucumbers'],
-            ['Then',  'I should have <left> cucumbers'],
-            ['And',   'I should have <eat> cucumbers in my belly']
+            Step.new('Given', 'there are <start> cucumbers'),
+            Step.new('When',  'I eat <eat> cucumbers'),
+            Step.new('Then',  'I should have <left> cucumbers'),
+            Step.new('And',   'I should have <eat> cucumbers in my belly')
           ],
           [
             [ 

@@ -7,8 +7,10 @@ module Cucumber
       ARGUMENT_START = '<'
       ARGUMENT_END  = '>'
       
-      def initialize(scenario, status, gwt, name, *multiline_args)
-        @scenario, @status, @gwt, @name, @multiline_args = scenario, status, gwt, name, multiline_args
+      attr_writer :scenario, :status
+
+      def initialize(gwt, name, *multiline_args)
+        @gwt, @name, @multiline_args = gwt, name, multiline_args
       end
 
       def execute(world, previous, visitor)

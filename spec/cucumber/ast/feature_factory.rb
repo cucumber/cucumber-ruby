@@ -37,9 +37,9 @@ module Cucumber
             Ast::Tags.new(['three', 'four']),
             "Scenario:", "A Scenario",
             [
-              ["Given", "a passing step with an inline arg:", table],
-              ["Given", "a happy step with an inline arg:", py_string],
-              ["Given", "a failing step"]
+              Step.new("Given", "a passing step with an inline arg:", table),
+              Step.new("Given", "a happy step with an inline arg:", py_string),
+              Step.new("Given", "a failing step")
             ]
           )]
         )

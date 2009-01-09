@@ -49,9 +49,9 @@ module Cucumber
         space* step_keyword space* name:line_to_eol eol+ multi:multiline_arg? {
           def build
             if multi.respond_to?(:build)
-              [step_keyword.text_value, name.text_value, multi.build]
+              Ast::Step.new(step_keyword.text_value, name.text_value, multi.build)
             else
-              [step_keyword.text_value, name.text_value]
+              Ast::Step.new(step_keyword.text_value, name.text_value)
             end
           end
         }
