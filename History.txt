@@ -4,6 +4,7 @@
 * 한국어! (Korean!) (John Hwang)
 
 === Bugfixes
+* --dry-run skips running before/after/steps (#147 Ian Dees)
 * Fix a minor bug in the console formatter's summary (David Chelimsky)
 * Better quoting of Scenario names in Autotest (Peter Jaros)
 

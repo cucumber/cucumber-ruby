@@ -119,6 +119,15 @@ Defined profiles in cucumber.yml:
       
       error.string.should match(expected_error_message)
     end
+    
+    it "should accept --dry-run option" do
+      cli = CLI.new
+      cli.parse_options!(%w{--dry-run})
+      cli.options[:dry_run].should be_true
+      mock_executor = mock_executor()
+      mock_executor.should_receive(:dry_run=).with(true)
+      cli.execute!(stub('step mother'), mock_executor, mock_features)
+    end
 
     it "should accept --no-source option" do
       cli = CLI.new
