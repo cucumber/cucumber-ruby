@@ -2,8 +2,8 @@ class Exception
   CUCUMBER_FILTER_PATTERNS = [
     /vendor\/rails/, 
     /vendor\/plugins\/cucumber/, 
-    /spec\/expectations/, 
-    /spec\/matchers/
+    /vendor\/plugins\/rspec/,
+    /gems\/rspec/
   ]
 
   def self.cucumber_full_backtrace=(v)

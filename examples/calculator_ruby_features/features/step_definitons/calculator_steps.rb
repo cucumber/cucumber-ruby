@@ -1,4 +1,4 @@
-require 'spec'
+require 'spec/expectations'
 
 class Calculator
   def push(n)

@@ -64,7 +64,7 @@ module Cucumber
         @error = e
         # Remove lines underneath the plain text step
         e.backtrace[strip_pos..-1] = nil unless strip_pos.nil?
-        e.backtrace.flatten
+        e.backtrace.compact!
         # Replace the step line with something more readable
         e.backtrace.replace(e.backtrace.map{|l| l.gsub(/`#{proc.meth}'/, "`#{keyword} #{proc.name}'")})
         if row?

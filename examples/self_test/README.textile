@@ -1,0 +1,3 @@
+h1. Self Test
+
+Cucumber's own features (ROOT_DIR/features) run the features in this directory and look at the output.
