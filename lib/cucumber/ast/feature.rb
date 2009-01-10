@@ -3,7 +3,7 @@ module Cucumber
     # Represents the root node of a parsed feature.
     class Feature
       attr_accessor :file
-      attr_writer :line
+      attr_writer :lines
 
       def initialize(comment, tags, name, feature_elements)
         @comment, @tags, @name, @feature_elements = comment, tags, name, feature_elements
@@ -14,7 +14,7 @@ module Cucumber
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@name)
         @feature_elements.each do |feature_element|
-          visitor.visit_feature_element(feature_element) if @line.nil? || feature_element.at_line?(@line)
+          visitor.visit_feature_element(feature_element) if @lines.nil? || feature_element.at_any_line?(@lines)
         end
       end
 

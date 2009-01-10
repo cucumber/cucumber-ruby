@@ -26,6 +26,11 @@ module Cucumber
         @steps.map{|step| step.text_length}.max
       end
 
+      def at_eny_line?(lines)
+        lines.each {|line| return true if at_line?(line)}
+        false
+      end
+
       def at_line?(line)
         if @line == line
           true
