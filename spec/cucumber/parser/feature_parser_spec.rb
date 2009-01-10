@@ -160,6 +160,11 @@ Examples:
                     [:cell, "5"],
                     [:cell, "6"]]]]]]
         end
+
+        it "should set line numbers on feature" do
+          feature = parse_file("empty_feature.feature:11:12")
+          feature.instance_variable_get('@lines').should == [11, 12]
+        end
       end
 
       describe "Syntax" do

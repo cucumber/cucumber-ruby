@@ -1,9 +1,19 @@
 module Cucumber
   module Parser
     module FileParser
+      FILE_LINE_PATTERN = /^([\w\W]*?):([\d:]+)$/
+
       # Parses a file and returns a Cucumber::Ast
       def parse_file(file)
-        parse_or_fail(IO.read(file), file)
+        _, path, lines = *FILE_LINE_PATTERN.match(file)
+        if path
+          lines = lines.split(':').map { |line| line.to_i }
+        else
+          path = file
+        end
+        feature = parse_or_fail(IO.read(path), path)
+        feature.lines = lines
+        feature
       end
       
       def parse_or_fail(s, file=nil)
