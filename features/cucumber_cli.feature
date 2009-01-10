@@ -17,7 +17,7 @@ Feature: Run single scenario
       """
       
   Scenario: Run single failing scenario
-    When I run cucumber -q features/sample.feature:9
+    When I run cucumber -q features/sample.feature:12
     Then the output should be
       """
       Feature: Sample
@@ -25,7 +25,7 @@ Feature: Run single scenario
           Given failing
             FAIL (RuntimeError)
             ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
-            features/sample.feature:10:in `Given failing'
+            features/sample.feature:12:in `Given failing'
 
 
       1 scenario
@@ -34,7 +34,7 @@ Feature: Run single scenario
       """
 
   Scenario: Specify 2 line numbers
-    When I run cucumber -q features/sample.feature:3:10
+    When I run cucumber -q features/sample.feature:3:12
     Then the output should be
       """
       Feature: Sample
@@ -45,7 +45,7 @@ Feature: Run single scenario
           Given failing
             FAIL (RuntimeError)
             ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
-            features/sample.feature:10:in `Given failing'
+            features/sample.feature:12:in `Given failing'
 
 
       2 scenarios
@@ -85,7 +85,7 @@ Feature: Run single scenario
       1)
       FAIL
       ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
-      features/sample.feature:10:in `Given failing'
+      features/sample.feature:12:in `Given failing'
 
       """
 
