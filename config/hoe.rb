@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'cucumber/version'
 
 AUTHOR = 'Aslak Hellesøy'  # can also be an array of Authors

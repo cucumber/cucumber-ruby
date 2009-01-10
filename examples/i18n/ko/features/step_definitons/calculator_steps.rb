@@ -1,0 +1,28 @@
+# encoding: utf-8
+require 'spec/expectations'
+$:.unshift(File.dirname(__FILE__) + '/../../lib')
+require 'cucumber/formatters/unicode'
+require 'calculator'
+
+Before do
+  @calc = Calculator.new
+end
+
+After do
+end
+
+Given /^계산기에 (.*)을 입력했음$/ do |n|
+  @calc.push n.to_i
+end
+
+When /^내가 (.*)를 누루면$/ do |op|
+  @result = @calc.send op
+end
+
+Then /^화면에 출력된 결과는 (.*)이다$/ do |result|
+  @result.should == result.to_f
+end
+
+Then /^결과의 class는 (.*)이다$/ do |class_name|
+  @result.class.name.should == class_name
+end
