@@ -76,7 +76,7 @@ Feature: hi
           parse("Feature: Hi\nScenario: Hello\nGiven I am a step\n").to_sexp.should ==
           [:feature, "Feature: Hi",
             [:scenario, "Scenario:", "Hello",
-              [:step, "Given", "I am a step"]]]
+              [:step, 3, "Given", "I am a step"]]]
         end
 
         it "should have steps with inline table" do
@@ -87,7 +87,7 @@ Given I have a table
 }).to_sexp.should ==
           [:feature, "Feature: Hi",
             [:scenario, "Scenario:", "Hello",
-              [:step, "Given", "I have a table",
+              [:step, 3, "Given", "I have a table",
                 [:table,
                   [:row,
                     [:cell, "a"],
@@ -106,15 +106,20 @@ Examples:
 }).to_sexp.should ==
           [:feature, "Feature: Hi",
             [:scenario_outline, "Scenario Outline:", "Hello",
-              [:step, "Given", "a <what> cucumber"],
+              [:step, 3, "Given", "a <what> cucumber"],
               [:examples, "Examples:", "",
-                [:table, [:row, [:cell, "what"]], [:row, [:cell, "green"]]]]]]
+                [:table, 
+                  [:row, 
+                    [:cell, "what"]], 
+                    [:row, [:cell, "green"]]]]]]
         end
 
-        it "should have steps with inline table" do
+        it "should have line numbered steps with inline table" do
           parse(%{Feature: Hi
 Scenario Outline: Hello
+
 Given I have a table
+
 |<a>|<b>|
 Examples:
 |a|b|
@@ -122,7 +127,7 @@ Examples:
 }).to_sexp.should ==
           [:feature, "Feature: Hi",
             [:scenario_outline, "Scenario Outline:", "Hello",
-              [:step, "Given", "I have a table",
+              [:step, 4, "Given", "I have a table",
                 [:table, 
                   [:row, 
                     [:cell, "<a>"], 
@@ -141,7 +146,7 @@ Examples:
           parse("Feature: Hi\nScenario Outline: Hello\nGiven I have a table\n|1|2|\nExamples:\n|x|y|\n|5|6|").to_sexp.should ==
           [:feature, "Feature: Hi",
             [:scenario_outline, "Scenario Outline:", "Hello",
-              [:step, "Given", "I have a table",
+              [:step, 3, "Given", "I have a table",
                 [:table,
                   [:row,
                     [:cell, "1"],
