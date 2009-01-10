@@ -71,6 +71,64 @@ module Cucumber
           @scenario.should_not be_pending
         end
       end
+      
+      describe "at_line?" do
+        
+        describe "when there is a next scenario" do
+        
+          before :each do
+            feature = Feature.new(nil)
+            @scenario = feature.add_scenario('', 5)
+            feature.add_scenario('', 10)
+          end
+        
+          it "should return false if the line is lesser than the scenario's line" do
+            @scenario.should_not be_at_line(4)
+          end
+        
+          it "should return true if the line is equal to the scenario's line" do
+            @scenario.should be_at_line(5)
+          end
+        
+          it "should return false if the line is equal to the next scenario's line" do
+            @scenario.should_not be_at_line(10)
+          end
+        
+          it "should return false if the line is greater than the next scenario's line" do
+            @scenario.should_not be_at_line(11)
+          end
+        
+          it "should return true if the line is lesser then the next scenario's line" do
+            @scenario.should be_at_line(9)
+          end
+          
+        end
+        
+        describe "when there is no next scenario" do
+          
+          before :each do
+            feature = Feature.new(nil)
+            feature.stub!(:lines => 20)
+            @scenario = feature.add_scenario('', 12)
+          end
+          
+          it "should return false if the line is lesser than the scenario's line" do
+            @scenario.should_not be_at_line(11)
+          end
+          
+          it "should return true if the line is within the scenario's line and the lines of the feature" do
+            @scenario.should be_at_line(12)
+            @scenario.should be_at_line(20)
+          end
+          
+          it "should return false if the line is greater than the lines of the feature" do
+            @scenario.should_not be_at_line(21)
+          end
+          
+        end
+        
+      end
+      
     end
   end
 end
