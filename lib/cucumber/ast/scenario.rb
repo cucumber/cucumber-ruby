@@ -27,7 +27,12 @@ module Cucumber
       end
 
       def at_line?(line)
-        @line == line
+        if @line == line
+          true
+        else
+          @steps.each {|step| return true if step.at_line?(line)}
+          false
+        end
       end
 
       def to_sexp

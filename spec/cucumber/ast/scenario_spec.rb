@@ -25,7 +25,7 @@ module Cucumber
           keyword="", 
           name="", 
           steps=[
-            Step.new("Given", "y is 5")
+            Step.new(7, "Given", "y is 5")
           ])
         @visitor.visit_feature_element(scenario)
         $x.should == 3
@@ -39,8 +39,8 @@ module Cucumber
           keyword="", 
           name="", 
           steps=[
-            Step.new("Given", "this is missing"),
-            Step.new("Given", "y is 5")
+            Step.new(7, "Given", "this is missing"),
+            Step.new(8, "Given", "y is 5")
           ])
         @visitor.visit_feature_element(scenario)
 
@@ -62,11 +62,16 @@ module Cucumber
           tags=Tags.new([]), 
           keyword="", 
           name="", 
-          steps=[]
+          steps=[
+            Step.new(46, "Given", ""),
+            Step.new(47, "Given", ""),
+            Step.new(48, "Given", ""),
+          ]
         )
 
         s.line = 45
         s.should be_at_line(47)
+        s.should_not be_at_line(49)
       end
     end
   end

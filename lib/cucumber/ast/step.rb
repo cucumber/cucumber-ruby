@@ -6,11 +6,11 @@ module Cucumber
     class Step
       ARGUMENT_START = '<'
       ARGUMENT_END  = '>'
-      
+
       attr_writer :scenario, :status
 
-      def initialize(gwt, name, *multiline_args)
-        @gwt, @name, @multiline_args = gwt, name, multiline_args
+      def initialize(line, gwt, name, *multiline_args)
+        @line, @gwt, @name, @multiline_args = line, gwt, name, multiline_args
       end
 
       def execute(world, previous, visitor)
@@ -21,7 +21,7 @@ module Cucumber
         arguments = delimit_argument_names(arguments)
         name = replace_name_arguments(arguments)
         multiline_args = replace_multiline_args_arguments(arguments)
-      
+
         _execute(name, multiline_args, world, previous, visitor)
       end
 
@@ -34,7 +34,11 @@ module Cucumber
       end
 
       def to_sexp
-        [:step, @gwt, @name, *@multiline_args.map{|arg| arg.to_sexp}]
+        [:step, @line, @gwt, @name, *@multiline_args.map{|arg| arg.to_sexp}]
+      end
+
+      def at_line?(line)
+        @line == line
       end
 
       def comment_padding
@@ -69,11 +73,11 @@ module Cucumber
         end
         @status
       end
-      
+
       def delimit_argument_names(arguments)
         arguments.inject({}) { |h,(k,v)| h["#{ARGUMENT_START}#{k}#{ARGUMENT_END}"] = v; h }
       end
-      
+
       def replace_name_arguments(arguments)
         name_with_arguments_replaced = @name
         arguments.each do |name, value|
@@ -87,7 +91,7 @@ module Cucumber
           arg.arguments_replaced(arguments)
         end
       end
-      
+
     end
   end
 end
