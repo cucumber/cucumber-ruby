@@ -1,20 +1,20 @@
-Feature: Run single scenario outline
-  In order to speed up development
-  Developers should be able to run just a single scenario outline
+Feature: Cucumber command line
+  In order to write better software
+  Developers should be able to execute requirements as tests
   
   Scenario: Run scenario outline steps only
-  When I run cucumber -q features/outline_sample.feature:3
-  Then it should pass with
-    """
-    Feature: Outline Sample
-      Scenario Outline: Test state
-        Given <state> without a table
+    When I run cucumber -q features/outline_sample.feature:3
+    Then it should pass with
+      """
+      Feature: Outline Sample
+        Scenario Outline: Test state
+          Given <state> without a table
 
-        |state  |
+          |state  |
 
-    1 scenario
+      1 scenario
     
-    """
+      """
   
   Scenario: Run single scenario outline table row with missing step definition
     When I run cucumber -q features/outline_sample.feature:7
