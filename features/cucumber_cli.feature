@@ -146,3 +146,36 @@ Feature: Cucumber command line
       6 steps passed
 
       """
+
+  Scenario: Multiple formatters and outputs
+    When I run cucumber --format progress --out tmp/progress.txt --format html --out tmp/features.html features
+    Then it should fail with
+      """
+      """
+    And examples/self_test/tmp/progress.txt should contain
+      """
+      P.FP.F
+
+      Pending Scenarios:
+
+      1)  Outline Sample (Test state)
+      2)  Sample (Missing)
+
+
+      Failed:
+
+      1)
+      FAIL
+      ./features/step_definitions/sample_steps.rb:12:in ` /^failing without a table$/'
+      features/outline_sample.feature:9:in `/^failing without a table$/'
+
+      2)
+      FAIL
+      ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
+      features/sample.feature:12:in `Given failing'
+
+      """
+    And examples/self_test/tmp/features.html should match
+      """
+      Given passing
+      """
