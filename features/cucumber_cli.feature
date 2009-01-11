@@ -4,7 +4,7 @@ Feature: Run single scenario
   
   Scenario: Run single scenario with missing step definition
     When I run cucumber -q features/sample.feature:3
-    Then the output should be
+    Then it should pass with
       """
       Feature: Sample
         Scenario: Missing
@@ -18,7 +18,7 @@ Feature: Run single scenario
       
   Scenario: Run single failing scenario
     When I run cucumber -q features/sample.feature:12
-    Then the output should be
+    Then it should fail with
       """
       Feature: Sample
         Scenario: Failing
@@ -35,7 +35,7 @@ Feature: Run single scenario
 
   Scenario: Specify 2 line numbers
     When I run cucumber -q features/sample.feature:3:12
-    Then the output should be
+    Then it should fail with
       """
       Feature: Sample
         Scenario: Missing
@@ -57,7 +57,7 @@ Feature: Run single scenario
 
   Scenario: Require missing step definition from elsewhere
     When I run cucumber -q -r ../../features/step_definitions/extra_steps.rb features/sample.feature:3
-    Then the output should be
+    Then it should pass with
       """
       Feature: Sample
         Scenario: Missing
@@ -71,7 +71,7 @@ Feature: Run single scenario
 
   Scenario: Run all with progress formatter
     When I run cucumber -q --format progress features/sample.feature
-    Then the output should be
+    Then it should fail with
       """
       P.F
 
@@ -92,7 +92,7 @@ Feature: Run single scenario
   Scenario: Run Norwegian
     Given I am in i18n/no
     When I run cucumber -q --language no features
-    Then the output should be
+    Then it should pass with
       """
       Egenskap: Summering
         For å slippe å gjøre dumme feil

@@ -12,10 +12,8 @@ When /^I run cucumber (.*)$/ do |cmd|
   end
 end
 
-Then /^the output should be$/ do |output|
+Then /^it should (fail|pass) with$/ do |success, output|
   @out.should == output
-end
-
-Then /^exit code should be (\d+)$/ do |code|
-  @status.should == code.to_i
+  code = success == 'fail' ? 1 : 0
+  @status.should == code
 end

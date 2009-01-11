@@ -4,7 +4,7 @@ Feature: Run single scenario outline
   
   Scenario: Run scenario outline steps only
   When I run cucumber -q features/outline_sample.feature:3
-  Then the output should be
+  Then it should pass with
     """
     Feature: Outline Sample
       Scenario Outline: Test state
@@ -18,7 +18,7 @@ Feature: Run single scenario outline
   
   Scenario: Run single scenario outline table row with missing step definition
     When I run cucumber -q features/outline_sample.feature:7
-    Then the output should be
+    Then it should pass with
       """
       Feature: Outline Sample
         Scenario Outline: Test state
@@ -34,7 +34,7 @@ Feature: Run single scenario outline
 
   Scenario: Run single failing scenario outline table row
     When I run cucumber -q features/outline_sample.feature:9
-    Then the output should be
+    Then it should fail with
       """
       Feature: Outline Sample
         Scenario Outline: Test state
@@ -54,7 +54,7 @@ Feature: Run single scenario outline
 
   Scenario: Run all with progress formatter
     When I run cucumber -q --format progress features/outline_sample.feature
-    Then the output should be
+    Then it should fail with
       """
       P.F
 
