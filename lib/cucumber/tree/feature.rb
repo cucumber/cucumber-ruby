@@ -84,6 +84,22 @@ module Cucumber
         end
       end
       
+      def last_line(scenario)
+        next_scenario = next_scenario(scenario) 
+        next_scenario ? next_scenario.line - 1 : lines
+      end
+      
+      protected
+      
+      def next_scenario(scenario)
+        index = @scenarios.index(scenario)
+        @scenarios[index + 1]
+      end
+      
+      def lines
+        @lines ||= File.readlines(file).size
+      end
+      
     end
   end
 end
