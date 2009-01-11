@@ -68,6 +68,34 @@ Feature: Cucumber command line
       1 step passed
 
       """
+      
+  Scenario: Specify the line number of a blank line
+    When I run cucumber -q features/sample.feature:10
+    Then it should pass with
+      """
+      Feature: Sample
+        Scenario: Passing
+          Given passing
+
+
+      1 scenario
+      1 step passed
+
+      """
+
+  Scenario: Specify the line number of a row
+    When I run cucumber -q features/sample.feature:8
+    Then the output should be
+      """
+      Feature: Sample
+        Scenario: Passing
+          Given passing
+
+
+      1 scenario
+      1 step passed
+
+      """
 
   Scenario: Run all with progress formatter
     When I run cucumber -q --format progress features/sample.feature
