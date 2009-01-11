@@ -7,8 +7,8 @@ module Cucumber
       # * Examples keyword
       # * Examples section name
       # * Raw matrix
-      def initialize(comment, tags, keyword, name, steps, example_sections)
-        super(comment, tags, keyword, name, steps)
+      def initialize(comment, tags, line, keyword, name, steps, example_sections)
+        super(comment, tags, line, keyword, name, steps)
         steps.each {|step| step.status = :outline}
 
         @examples_array = example_sections.map do |example_section|

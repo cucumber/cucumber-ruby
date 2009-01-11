@@ -67,15 +67,15 @@ Feature: hi
 
       describe "Scenarios" do
         it "can be empty" do
-          parse("Feature: Hi\nScenario: Hello\n").to_sexp.should ==
+          parse("Feature: Hi\n\nScenario: Hello\n").to_sexp.should ==
           [:feature, "Feature: Hi",
-            [:scenario, "Scenario:", "Hello"]]
+            [:scenario, 3, "Scenario:", "Hello"]]
         end
 
         it "should have steps" do
           parse("Feature: Hi\nScenario: Hello\nGiven I am a step\n").to_sexp.should ==
           [:feature, "Feature: Hi",
-            [:scenario, "Scenario:", "Hello",
+            [:scenario, 2, "Scenario:", "Hello",
               [:step, 3, "Given", "I am a step"]]]
         end
 
@@ -86,7 +86,7 @@ Given I have a table
 |a|b|
 }).to_sexp.should ==
           [:feature, "Feature: Hi",
-            [:scenario, "Scenario:", "Hello",
+            [:scenario, 2, "Scenario:", "Hello",
               [:step, 3, "Given", "I have a table",
                 [:table,
                   [:row,

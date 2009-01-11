@@ -35,6 +35,7 @@ module Cucumber
           [Ast::Scenario.new(
             Ast::Comment.new("    # My scenario comment  \n# On two lines \n"),
             Ast::Tags.new(['three', 'four']),
+            9,
             "Scenario:", "A Scenario",
             [
               Step.new(10, "Given", "a passing step with an inline arg:", table),

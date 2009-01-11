@@ -1,10 +1,8 @@
 module Cucumber
   module Ast
     class Scenario
-      attr_writer :line
-
-      def initialize(comment, tags, keyword, name, steps)
-        @comment, @tags, @keyword, @name = comment, tags, keyword, name
+      def initialize(comment, tags, line, keyword, name, steps)
+        @comment, @tags, @line, @keyword, @name = comment, tags, line, keyword, name
         steps.each {|step| step.scenario = self}
         @steps = steps
       end
@@ -41,7 +39,7 @@ module Cucumber
       end
 
       def to_sexp
-        sexp = [:scenario, @keyword, @name]
+        sexp = [:scenario, @line, @keyword, @name]
         comment = @comment.to_sexp
         sexp += [comment] if comment
         tags = @tags.to_sexp

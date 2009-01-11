@@ -7,7 +7,7 @@ module Cucumber
   module Ast
     describe StepMom do
       it "should calculate comment padding" do
-        scenario = Scenario.new(comment=nil, tags=nil, keyword=nil, name=nil, steps=[
+        scenario = Scenario.new(comment=nil, tags=nil, line=nil, keyword=nil, name=nil, steps=[
           Step.new(22, "Given", "tøtal 13"),
           Step.new(23, "And",   "the total 15")
         ])
