@@ -150,6 +150,7 @@ module Cucumber
       executor.formatters = build_formatter_broadcaster(step_mother)
       load_plain_text_features(features)
       executor.lines_for_features = @options[:lines_for_features]
+      executor.dry_run = @options[:dry_run] if @options[:dry_run]
       executor.scenario_names = @options[:scenario_names] if @options[:scenario_names]
       executor.visit_features(features)
       exit 1 if executor.failed
