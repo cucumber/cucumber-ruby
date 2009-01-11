@@ -21,7 +21,8 @@ module Cucumber
       it "should execute Before blocks before steps" do
         scenario = Scenario.new(
           comment=Comment.new(""), 
-          tags=Tags.new([]), 
+          tags=Tags.new([]),
+          line=99,
           keyword="", 
           name="", 
           steps=[
@@ -36,7 +37,8 @@ module Cucumber
         scenario = Scenario.new(
           comment=Comment.new(""),
           tags=Tags.new([]), 
-          keyword="", 
+          line=99,
+          keyword="",
           name="", 
           steps=[
             Step.new(7, "Given", "this is missing"),
@@ -50,9 +52,8 @@ module Cucumber
 
       it "should be at exact line" do
         s = Scenario.new(comment=Comment.new(""), 
-          tags=Tags.new([]), keyword="", name="", steps=[])
+          tags=Tags.new([]), 45, keyword="", name="", steps=[])
 
-        s.line = 45
         s.should be_at_line(45)
       end
 
@@ -60,7 +61,8 @@ module Cucumber
         s = Scenario.new(
           comment=Comment.new(""), 
           tags=Tags.new([]), 
-          keyword="", 
+          line=45,
+          keyword="",
           name="", 
           steps=[
             Step.new(46, "Given", ""),
@@ -69,7 +71,6 @@ module Cucumber
           ]
         )
 
-        s.line = 45
         s.should be_at_line(47)
         s.should_not be_at_line(49)
       end

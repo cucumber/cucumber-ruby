@@ -1,5 +1,6 @@
 require 'cucumber/ast'
 require 'cucumber/parser/file_parser'
+require 'cucumber/parser/treetop_ext'
 %w{basic table feature}.each{ |grammar| Treetop.load File.dirname(__FILE__) + "/parser/#{grammar}.tt" }
 
 module Cucumber

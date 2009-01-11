@@ -25,6 +25,7 @@ module Cucumber
         @scenario_outline = ScenarioOutline.new(
           Comment.new(""),
           Tags.new([]),
+          19,
           "Scenario:", "My outline",
           [
             Step.new(20, 'Given', 'there are <start> cucumbers'),
