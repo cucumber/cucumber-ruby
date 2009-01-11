@@ -11,7 +11,7 @@ end
 After do
 end
 
-Given "I have entered $n into the calculator" do |n|
+Given /I have entered (.*) into the calculator/ do |n|
   @calc.push n.to_i
 end
 

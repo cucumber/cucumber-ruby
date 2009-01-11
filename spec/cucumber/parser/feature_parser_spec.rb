@@ -1,5 +1,4 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
-require 'treetop'
 require 'cucumber/parser'
 
 module Cucumber
@@ -15,6 +14,10 @@ module Cucumber
 
       def parse_file(file)
         @parser.parse_file(File.dirname(__FILE__) + "/../treetop_parser/" + file)
+      end
+
+      def parse_example_file(file)
+        @parser.parse_file(File.dirname(__FILE__) + "/../../../examples/" + file)
       end
 
       describe "Header" do
@@ -143,10 +146,21 @@ Examples:
         end
 
         it "should have examples" do
-          parse("Feature: Hi\nScenario Outline: Hello\nGiven I have a table\n|1|2|\nExamples:\n|x|y|\n|5|6|").to_sexp.should ==
+          parse("Feature: Hi
+
+  Scenario Outline: Hello
+
+  Given I have a table
+    |1|2|
+
+  Examples:
+|x|y|
+|5|6|
+
+").to_sexp.should ==
           [:feature, "Feature: Hi",
             [:scenario_outline, "Scenario Outline:", "Hello",
-              [:step, 3, "Given", "I have a table",
+              [:step, 5, "Given", "I have a table",
                 [:table,
                   [:row,
                     [:cell, "1"],

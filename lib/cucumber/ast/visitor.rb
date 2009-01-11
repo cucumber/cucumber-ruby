@@ -16,6 +16,10 @@ module Cucumber
         @step_mother.step_invocation(step_name, world)
       end
 
+      def visit_features(features)
+        features.accept(self)
+      end
+
       def visit_feature(feature)
         feature.accept(self)
       end

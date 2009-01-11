@@ -30,7 +30,14 @@ module Cucumber
 
     class Duplicate < StandardError
       def initialize(step_def_1, step_def_2)
-        # TODO: Print the lines of the dupes.
+        @step_def_1, @step_def_2 = step_def_1, step_def_2
+      end
+
+      def message
+        message = "Multiple step definitions have the same Regexp:\n\n"
+        message << @step_def_1.to_backtrace_line << "\n"
+        message << @step_def_2.to_backtrace_line << "\n\n"
+        message
       end
     end
 
@@ -145,8 +152,17 @@ module Cucumber
         @__cucumber_step_mother.step_invocation(name, self).invoke(*inline_arguments)
       end
 
-      def pending(message="TODO - implement me")
-        raise Pending.new(message)
+      def pending(message = "TODO")
+        if block_given?
+          begin
+            yield
+          rescue Exception => e
+            raise Pending.new(message)
+          end
+          raise Pending.new("Expected pending '#{message}' to fail. No Error was raised. No longer pending?")
+        else
+          raise Pending.new(message)
+        end
       end
     end
   end
