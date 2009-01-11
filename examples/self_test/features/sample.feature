@@ -5,9 +5,6 @@ Feature: Sample
 
   Scenario: Passing
     Given passing
-    
-  Scenario: Failing
-    Given failing
       |a|b|
       |c|d|
     
