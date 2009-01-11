@@ -17,3 +17,11 @@ Then /^it should (fail|pass) with$/ do |success, output|
   code = success == 'fail' ? 1 : 0
   @status.should == code
 end
+
+Then /^(.*) should contain$/ do |file, text|
+  IO.read(file).should == text
+end
+
+Then /^(.*) should match$/ do |file, text|
+  IO.read(file).should =~ Regexp.new(text)
+end
