@@ -56,6 +56,11 @@ module Cucumber
         @raw
       end
 
+      # Same as #raw, but skips the first (header) row
+      def rows
+        @raw[1..-1]
+      end
+
       # For testing only
       def to_sexp #:nodoc:
         [:table, *rows.map{|row| row.to_sexp}]
