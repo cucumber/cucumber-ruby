@@ -1,7 +1,10 @@
 == In Git
 
 === New features
+* Add the #binary= method back to the Rake task. It is needed by merb_cucumber for running the features of a merb app with it's bundled gems. (Thomas Marek)
+
 === Bugfixes
+
 === Removed features
 
 == 0.1.15 2009-01-08
