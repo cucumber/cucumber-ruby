@@ -183,6 +183,7 @@ lib/cucumber/parser/basic.tt
 lib/cucumber/parser/feature.tt
 lib/cucumber/parser/file_parser.rb
 lib/cucumber/parser/table.tt
+lib/cucumber/parser/treetop_ext.rb
 lib/cucumber/platform.rb
 lib/cucumber/rails/rspec.rb
 lib/cucumber/rails/world.rb
@@ -251,6 +252,7 @@ spec/cucumber/cli_spec.rb
 spec/cucumber/core_ext/proc_spec.rb
 spec/cucumber/core_ext/string_spec.rb
 spec/cucumber/executor_spec.rb
+spec/cucumber/formatter/html_formatted.html
 spec/cucumber/formatter/pretty_spec.rb
 spec/cucumber/formatters/ansicolor_spec.rb
 spec/cucumber/formatters/autotest_formatter_spec.rb

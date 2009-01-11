@@ -3,11 +3,23 @@
 === New features
 * Allow argument placeholders in step tables and multiline comments (#121 Joseph Wilk)
 * Scenario Outline can be followed by several named Examples sections (#123 Aslak Hellesøy)
+* Add the #binary= method back to the Rake task. It is needed by merb_cucumber for running the features of a merb app with it's bundled gems. (Thomas Marek)
+
+=== Bugfixes
+
+=== Removed features
+
+== 0.1.15 2009-01-08
+
+Bugfix release
+
+=== New features
 * 한국어! (Korean!) (John Hwang)
 
 === Bugfixes
 * Fix a minor bug in the console formatter's summary (David Chelimsky)
 * Better quoting of Scenario names in Autotest (Peter Jaros)
+* Added some small workarounds for unicode handling on Windows (Aslak Hellesøy)
 
 == 0.1.14 2009-01-04
 

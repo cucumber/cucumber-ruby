@@ -58,6 +58,8 @@
 "de":
   feature: Funktionalität
   scenario: Szenario
+  scenario_outline: Szenariogrundriss
+  examples: Beispiele
   more_examples: Mehr Beispiele
   given_scenario: Gegebenes Szenario
   given: Gegeben sei
