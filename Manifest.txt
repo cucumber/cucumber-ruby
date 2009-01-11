@@ -105,6 +105,7 @@ examples/selenium/Rakefile
 examples/selenium/features/search.feature
 examples/selenium/features/step_definitons/stories_steps.rb
 examples/self_test/README.textile
+examples/self_test/features/outline_sample.feature
 examples/self_test/features/sample.feature
 examples/self_test/features/step_definitions/sample_steps.rb
 examples/test_unit/Rakefile
@@ -124,6 +125,7 @@ examples/watir/features/search.feature
 examples/watir/features/step_definitons/search_steps.rb
 examples/watir/features/support/env.rb
 features/cucumber_cli.feature
+features/cucumber_cli_outlines.feature
 features/step_definitions/cucumber_steps.rb
 features/step_definitions/extra_steps.rb
 features/support/env.rb

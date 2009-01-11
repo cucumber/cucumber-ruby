@@ -8,9 +8,12 @@ When /^I run cucumber (.*)$/ do |cmd|
   Dir.chdir(full_dir) do
     @full_cmd = "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} #{cmd}"
     @out = `#{@full_cmd}`
+    @status = $?.exitstatus
   end
 end
 
-Then /^the output should be$/ do |output|
+Then /^it should (fail|pass) with$/ do |success, output|
   @out.should == output
+  code = success == 'fail' ? 1 : 0
+  @status.should == code
 end

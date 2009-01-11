@@ -2,7 +2,7 @@ module Cucumber
   class Executor
     attr_reader :failed
     attr_accessor :formatters
-    attr_writer :scenario_names, :lines_for_features
+    attr_writer :scenario_names, :lines_for_features, :dry_run
 
     def initialize(step_mother)
       @world_procs = []
@@ -83,9 +83,9 @@ module Cucumber
       @world = create_world
 
       formatters.scenario_executing(scenario)
-      @before_scenario_procs.each{|p| p.call_in(@world, *[])}
+      @before_scenario_procs.each{|p| p.call_in(@world, *[])} unless @dry_run
       scenario.accept(self)
-      @after_scenario_procs.each{|p| p.call_in(@world, *[])}
+      @after_scenario_procs.each{|p| p.call_in(@world, *[])} unless @dry_run
       formatters.scenario_executed(scenario)
     end
     
@@ -116,7 +116,7 @@ module Cucumber
         begin
           regexp, args, proc = step.regexp_args_proc(@step_mother)
           formatters.step_executing(step, regexp, args)
-          step.execute_in(@world, regexp, args, proc)
+          step.execute_in(@world, regexp, args, proc) unless @dry_run
           @after_step_procs.each{|p| p.call_in(@world, *[])}
           formatters.step_passed(step, regexp, args)
         rescue ForcedPending => e
