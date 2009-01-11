@@ -3,4 +3,5 @@
 $:.unshift(File.dirname(__FILE__ + '.rb') + '/../lib') unless $:.include?(File.dirname(__FILE__ + '.rb') + '/../lib')
 
 require 'cucumber/cli'
+Cucumber::CLI.step_mother = self
 Cucumber::CLI.execute(ARGV)

@@ -1,4 +1,5 @@
 require 'cucumber/core_ext/string'
+require 'cucumber/core_ext/proc'
 
 module Cucumber
   # A Step Definition holds a Regexp and a Proc, and is created
@@ -43,6 +44,10 @@ module Cucumber
         e.cucumber_strip_backtrace!(method_line, @regexp.to_s)
         raise e
       end
+    end
+
+    def to_backtrace_line
+      "#{file_colon_line}:in `#{@regexp.inspect}'"
     end
 
     def file_colon_line
