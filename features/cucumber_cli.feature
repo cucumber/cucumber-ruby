@@ -1,10 +1,10 @@
-Feature: Run single scenario
-  In order to speed up development
-  Developers should be able to run just a single scenario
+Feature: Cucumber command line
+  In order to write better software
+  Developers should be able to execute requirements as tests
   
   Scenario: Run single scenario with missing step definition
     When I run cucumber -q features/sample.feature:3
-    Then the output should be
+    Then it should pass with
       """
       Feature: Sample
         Scenario: Missing
@@ -18,7 +18,7 @@ Feature: Run single scenario
       
   Scenario: Run single failing scenario
     When I run cucumber -q features/sample.feature:12
-    Then the output should be
+    Then it should fail with
       """
       Feature: Sample
         Scenario: Failing
@@ -35,7 +35,7 @@ Feature: Run single scenario
 
   Scenario: Specify 2 line numbers
     When I run cucumber -q features/sample.feature:3:12
-    Then the output should be
+    Then it should fail with
       """
       Feature: Sample
         Scenario: Missing
@@ -57,7 +57,7 @@ Feature: Run single scenario
 
   Scenario: Require missing step definition from elsewhere
     When I run cucumber -q -r ../../features/step_definitions/extra_steps.rb features/sample.feature:3
-    Then the output should be
+    Then it should pass with
       """
       Feature: Sample
         Scenario: Missing
@@ -71,7 +71,7 @@ Feature: Run single scenario
 
   Scenario: Run all with progress formatter
     When I run cucumber -q --format progress features/sample.feature
-    Then the output should be
+    Then it should fail with
       """
       P.F
 
@@ -92,7 +92,7 @@ Feature: Run single scenario
   Scenario: Run Norwegian
     Given I am in i18n/no
     When I run cucumber -q --language no features
-    Then the output should be
+    Then it should pass with
       """
       Egenskap: Summering
         For å slippe å gjøre dumme feil
@@ -114,5 +114,35 @@ Feature: Run single scenario
 
       2 scenarios
       9 steps passed
+
+      """
+
+  Scenario: --dry-run
+    When I run cucumber --dry-run features
+    Then it should pass with
+      """
+      Feature: Outline Sample  # features/outline_sample.feature
+        Scenario Outline: Test state     # features/outline_sample.feature:3
+          Given <state> without a table  # features/outline_sample.feature:4
+
+          |state  |
+          |missing|
+          |passing|
+          |failing|
+
+      Feature: Sample  # features/sample.feature
+
+        Scenario: Missing  # features/sample.feature:3
+          Given missing    # other.rb:23
+
+        Scenario: Passing  # features/sample.feature:6
+          Given passing    # features/step_definitions/sample_steps.rb:1
+
+        Scenario: Failing  # features/sample.feature:11
+          Given failing    # features/step_definitions/sample_steps.rb:4
+
+
+      7 scenarios
+      6 steps passed
 
       """
