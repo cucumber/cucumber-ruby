@@ -116,3 +116,33 @@ Feature: Run single scenario
       9 steps passed
 
       """
+
+  Scenario: --dry-run
+    When I run cucumber --dry-run features
+    Then it should pass with
+      """
+      Feature: Outline Sample  # features/outline_sample.feature
+        Scenario Outline: Test state     # features/outline_sample.feature:3
+          Given <state> without a table  # features/outline_sample.feature:4
+
+          |state  |
+          |missing|
+          |passing|
+          |failing|
+
+      Feature: Sample  # features/sample.feature
+
+        Scenario: Missing  # features/sample.feature:3
+          Given missing    # other.rb:23
+
+        Scenario: Passing  # features/sample.feature:6
+          Given passing    # features/step_definitions/sample_steps.rb:1
+
+        Scenario: Failing  # features/sample.feature:11
+          Given failing    # features/step_definitions/sample_steps.rb:4
+
+
+      7 scenarios
+      6 steps passed
+
+      """
