@@ -179,3 +179,17 @@ Feature: Cucumber command line
       """
       Given passing
       """
+      
+  Scenario: Run scenario specified by name using --scenario
+    When I run cucumber --scenario Passing -q features/sample.feature
+    Then it should pass with
+      """
+      Feature: Sample
+        Scenario: Passing
+          Given passing
+
+
+      1 scenario
+      1 step passed
+
+      """
