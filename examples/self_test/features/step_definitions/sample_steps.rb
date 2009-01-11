@@ -1,6 +1,6 @@
-Given /^passing$/ do
+Given /^passing$/ do |table|
 end
 
-Given /^failing$/ do
+Given /^failing$/ do |table|
   raise "FAIL"
 end
