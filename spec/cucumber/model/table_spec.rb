@@ -18,17 +18,15 @@ module Cucumber
           {'name' => 'patty', 'gender' => 'female'}
         ]
       end
-
-      it "should iterate over each row" do
-        rows = []
-        Table.new(@raw).raw[1..-1].each do |name, gender|
-          rows << [name, gender]
-        end
-        rows.should == [
-          %w{aslak male},
-          %w{patty female}
+      
+      it "should return the rows of the table" do
+        ar = Table.new(@raw).rows
+        ar.should == [
+          ["aslak", "male"],
+          ["patty", "female"]
         ]
       end
+      
     end
   end
 end

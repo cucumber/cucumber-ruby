@@ -4,6 +4,7 @@
 * Add the #binary= method back to the Rake task. It is needed by merb_cucumber for running the features of a merb app with it's bundled gems. (Thomas Marek)
 
 === Bugfixes
+* Fix to run single scenarios when the line number specified doesn't correspond to a step (i.e. blank lines or rows) (#160 Luismi Cavallé)
 
 === Removed features
 
