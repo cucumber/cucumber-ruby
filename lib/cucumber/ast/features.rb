@@ -1,20 +1,18 @@
 module Cucumber
-  module Tree
+  module Ast
     class Features
       def initialize
         @features = []
       end
       
-      def length
-        @features.length
-      end
-
-      def <<(feature)
+      def add_feature(feature)
         @features << feature
       end
-
+      
       def accept(visitor)
-        @features.each{|feature| visitor.visit_feature(feature)}
+        @features.each do |feature|
+          visitor.visit_feature(feature)
+        end
       end
     end
   end

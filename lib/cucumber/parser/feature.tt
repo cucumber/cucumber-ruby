@@ -81,7 +81,7 @@ module Cucumber
       end
 
       rule examples
-        examples_keyword white table {
+        space* examples_keyword white table {
           def build
             [examples_keyword.text_value, "", table.raw]
           end

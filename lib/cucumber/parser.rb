@@ -1,3 +1,4 @@
+require 'treetop'
 require 'cucumber/ast'
 require 'cucumber/parser/file_parser'
 require 'cucumber/parser/treetop_ext'

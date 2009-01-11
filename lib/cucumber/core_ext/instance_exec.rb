@@ -1,5 +1,20 @@
 # http://eigenclass.org/hiki/bounded+space+instance_exec
+module Cucumber
+  class ArityMismatchError < StandardError
+  end
+end
+
 class Object
+  def cucumber_instance_exec(*args, &block)
+    arity = block.arity
+    arity = 0 if arity == -1
+    if args.length != block.arity
+      raise Cucumber::ArityMismatchError.new("expected #{arity} block argument(s), got #{args.length}")
+    else
+      instance_exec(*args, &block)
+    end
+  end
+  
   module InstanceExecHelper; end
   include InstanceExecHelper
   def instance_exec(*args, &block)

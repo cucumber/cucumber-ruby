@@ -11,9 +11,16 @@ module Cucumber
   #   end
   #
   class StepDefinition
+    class MissingProc < StandardError
+      def message
+        "Step definitions must always have a proc"
+      end
+    end
+
     attr_reader :regexp
 
     def initialize(regexp, &proc)
+      raise MissingProc if proc.nil?
       @regexp, @proc = regexp, proc
       @proc.extend(CoreExt::CallIn)
     end
