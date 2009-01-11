@@ -2,6 +2,7 @@
 
 === New features
 === Bugfixes
+* Fix to run single scenarios when the line number specified doesn't correspond to a step (i.e. blank lines or rows) (#160 Luismi Cavallé)
 === Removed features
 
 == 0.1.15 2009-01-08

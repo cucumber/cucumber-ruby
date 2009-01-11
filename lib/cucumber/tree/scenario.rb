@@ -20,7 +20,11 @@ module Cucumber
       end
 
       def at_line?(l)
-        line == l || steps.map{|s| s.line}.index(l)
+        (line..last_line).include?(l)
+      end
+      
+      def last_line
+        @last_line ||= @feature.last_line(self)
       end
 
       def previous_step(step)
