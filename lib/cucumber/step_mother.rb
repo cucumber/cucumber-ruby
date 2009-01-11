@@ -15,7 +15,17 @@ module Cucumber
     end
 
     class Multiple < StandardError
-      # TODO: Give the user some hints about how to resolve ambiguity.
+      def initialize(step_name, step_definitions)
+        @step_name = step_name
+        @step_definitions = step_definitions
+      end
+      
+      def message
+        message = "Multiple step definitions match \"#{@step_name}\":\n\n"
+        message << @step_definitions.map{|sd| sd.to_backtrace_line}.join("\n")
+        message << "\n\n"
+        message
+      end
     end
 
     class Duplicate < StandardError
@@ -57,6 +67,10 @@ module Cucumber
       (@before_procs ||= []) << proc
     end
 
+    def After(&proc)
+      # TODO: implement me
+    end
+
     # Registers a World proc. You can call this method as many times as you
     # want (typically from ruby scripts under <tt>support</tt>).
     def World(&proc)
@@ -80,7 +94,7 @@ module Cucumber
         step_definition.match(step_name)
       end
       raise Undefined.new(step_name) if found.empty?
-      raise Multiple.new(step_name) if found.size > 1
+      raise Multiple.new(step_name, found) if found.size > 1
       Invocation.new(world, found[0], step_name)
     end
 

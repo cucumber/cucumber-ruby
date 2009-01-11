@@ -7,7 +7,10 @@ module Cucumber
 
   class CLI
     class << self
-      attr_writer :step_mother, :executor, :features
+      def step_mother=(step_mother)
+        @step_mother = step_mother
+        @step_mother.extend(StepMom)
+      end
 
       def execute(args)
         parse(args).execute!(@step_mother, @executor, @features)
@@ -147,7 +150,7 @@ module Cucumber
       Cucumber.load_language(@options[:lang])
       require_files
       enable_diffing
-      executor.formatters = build_formatter_broadcaster(step_mother)
+#      executor.formatters = build_formatter_broadcaster(step_mother)
       load_plain_text_features(features)
       executor.lines_for_features = @options[:lines_for_features]
       executor.dry_run = @options[:dry_run] if @options[:dry_run]
@@ -264,7 +267,8 @@ Defined profiles in cucumber.yml:
     end
 
     def load_plain_text_features(features)
-      parser = TreetopParser::FeatureParser.new
+      require 'cucumber/parser'
+      parser = Parser::FeatureParser.new
 
       verbose_log("Features:")
       feature_files.each do |f|
@@ -347,10 +351,3 @@ Defined profiles in cucumber.yml:
     end
   end
 end
-
-extend Cucumber::StepMethods
-Cucumber::CLI.step_mother = step_mother
-Cucumber::CLI.executor = executor
-
-extend Cucumber::Tree
-Cucumber::CLI.features = features

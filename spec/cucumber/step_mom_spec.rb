@@ -25,7 +25,12 @@ module Cucumber
 
       lambda do
         @step_mother.step_invocation("Three blind mice", Object.new)
-      end.should raise_error(StepMom::Multiple)
+      end.should raise_error(StepMom::Multiple, %{Multiple step definitions match "Three blind mice":
+
+spec/cucumber/step_mom_spec.rb:23:in `/Three (.*) mice/'
+spec/cucumber/step_mom_spec.rb:24:in `/Three blind (.*)/'
+
+})
     end
 
     it "should raise Undefined error when no step definitions match" do
