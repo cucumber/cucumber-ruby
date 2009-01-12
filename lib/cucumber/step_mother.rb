@@ -166,24 +166,4 @@ module Cucumber
       end
     end
   end
-
-  # Sets up additional aliases for Given, When and Then.
-  # Try adding the following to your <tt>support/env.rb</tt>:
-  #
-  #   # Given When Then in Norwegian
-  #   Cucumber.alias_steps %w{Gitt Når Så}
-  #
-  def self.alias_steps(keywords)
-    keywords.each do |adverb|
-      StepMom.class_eval do
-        alias_method adverb, :register_step_definition
-      end
-
-      StepMom::WorldMethods.class_eval do
-        alias_method adverb, :__cucumber_invoke
-      end
-    end
-  end
-
-  alias_steps %w{Given When Then}
 end

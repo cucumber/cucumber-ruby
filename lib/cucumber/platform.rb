@@ -12,21 +12,4 @@ module Cucumber
   RAILS         = defined?(Rails)
   RUBY_BINARY   = File.join(Config::CONFIG['bindir'], Config::CONFIG['ruby_install_name'])
   RUBY_1_9      = RUBY_VERSION =~ /^1\.9/
-
-  class << self
-    attr_reader :language
-    
-    def load_language(lang)
-      @language = config[lang]
-    end
-    
-    def languages
-      config.keys.sort
-    end
-    
-    def config
-      require 'yaml'
-      @config ||= YAML.load_file(LANGUAGE_FILE)
-    end
-  end  
 end

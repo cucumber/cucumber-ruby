@@ -4,16 +4,15 @@ require 'cucumber/parser'
 
 module Cucumber
   module Parser
-    describe Table do
+    describe 'Tables' do
       before do
-        @parser = TableParser.new
+        @parser = FeatureParser.new
       end
       
       def parse(text)
-        table = @parser.parse_or_fail(text)
-        table.extend(Module.new{
-          attr_reader :raw
-        })
+        @parser.__send__(:prepare_to_parse, text)
+        @parser.root = :table
+        table = @parser._nt_table
         table.raw
       end
 
@@ -42,15 +41,7 @@ module Cucumber
       end
 
       it "should not parse a 2x2 table that isn't closed" do
-        lambda do
-          parse("| 1 |  |\n|| 4 ").should == [['1', nil], [nil, '4']]
-        end.should raise_error(SyntaxError)
-      end
-
-      it "should not parse tables with uneven rows" do
-        lambda do
-          parse("|1|\n|2|3|\n")
-        end.should raise_error(IndexError, "element size differs (2 should be 1)")
+        parse("| 1 |  |\n|| 4 ").should_not == [['1', nil], [nil, '4']]
       end
     end
   end

@@ -1,0 +1,22 @@
+module Cucumber
+  module Parser
+    grammar I18n
+
+      rule scenario_keyword
+        "<%= language['scenario'] %>:"
+      end
+
+      rule scenario_outline_keyword
+        "Scenario Outline:"
+      end
+
+      rule step_keyword
+        "Given" / "When" / "Then" / "And" / "But"
+      end
+
+      rule examples_keyword
+        "Examples" ":"?
+      end
+    end
+  end
+end
