@@ -15,7 +15,7 @@ module Cucumber
   #
   # The AST classes are defined in the Cucumber::Ast module.
   module Parser
-    def self.load_parser(language)
+    def self.load_parser(keywords)
       template = ERB.new(IO.read(File.dirname(__FILE__) + "/parser/i18n.tt"))
       grammar = template.result(binding)
       Treetop.load_from_string(grammar)

@@ -1,6 +1,7 @@
 $:.unshift(File.dirname(__FILE__)) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
+require 'yaml'
 require 'cucumber/platform'
 require 'rubygems'
 require 'cucumber/parser'
@@ -19,25 +20,24 @@ require 'cucumber/core_ext/exception'
 
 module Cucumber
   class << self
-    attr_reader :language
+    def languages
+      LANGUAGES.keys.sort
+    end
+    
+    def keywords
+      @keyword_hash
+    end
     
     def load_language(lang)
-      @language = config[lang]
-      
-      keywords = %w{given when then and but}.map{|keyword| @language[keyword]}
-      alias_steps(keywords)
-      Parser.load_parser(language)
-    end
-    
-    def languages
-      config.keys.sort
-    end
-    
-    def config
-      require 'yaml'
-      @config ||= YAML.load_file(LANGUAGE_FILE)
-    end
+      return if @lang
+      @lang = lang
+      @keyword_hash = LANGUAGES[@lang]
 
+      keywords = %w{given when then and but}.map{|keyword| @keyword_hash[keyword]}
+      alias_steps(keywords)
+      Parser.load_parser(@keyword_hash)
+    end
+    
     # Sets up additional aliases for Given, When and Then.
     # Try adding the following to your <tt>support/env.rb</tt>:
     #

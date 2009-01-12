@@ -4,6 +4,7 @@ require 'rbconfig'
 
 module Cucumber
   LANGUAGE_FILE = File.expand_path(File.dirname(__FILE__) + '/languages.yml')
+  LANGUAGES     = YAML.load_file(LANGUAGE_FILE)
   BINARY        = File.expand_path(File.dirname(__FILE__) + '/../../bin/cucumber')
   JRUBY         = defined?(JRUBY_VERSION)
   IRONRUBY      = Config::CONFIG['sitedir'] =~ /IronRuby/

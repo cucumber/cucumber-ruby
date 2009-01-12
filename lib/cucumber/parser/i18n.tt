@@ -3,7 +3,7 @@ module Cucumber
     grammar I18n
 
       rule scenario_keyword
-        "<%= language['scenario'] %>:"
+        "<%= keywords['scenario'] %>:"
       end
 
       rule scenario_outline_keyword
