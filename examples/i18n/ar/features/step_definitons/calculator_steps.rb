@@ -26,8 +26,3 @@ end
 Then /يجب ان يكون (\w*)/ do |class_name|
   @result.class.name.should == class_name
 end
-
-Given /it should rain on (\w+)/ do |day|
-  @calc.rain?(day).should == true
-end
-

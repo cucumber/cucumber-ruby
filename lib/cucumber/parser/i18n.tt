@@ -7,15 +7,19 @@ module Cucumber
       end
 
       rule scenario_outline_keyword
-        "Scenario Outline:"
+        "<%= keywords['scenario_outline'] %>:"
       end
 
       rule step_keyword
-        "Given" / "When" / "Then" / "And" / "But"
+        "<%= keywords['given'] %>" / 
+        "<%= keywords['when'] %>" / 
+        "<%= keywords['then'] %>" / 
+        "<%= keywords['and'] %>" / 
+        "<%= keywords['but'] %>"
       end
 
       rule examples_keyword
-        "Examples" ":"?
+        "<%= keywords['examples'] %>" ":"?
       end
     end
   end

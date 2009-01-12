@@ -1,4 +1,7 @@
 # encoding: utf-8
+
+Cucumber.alias_steps %w{Gitt Naar Saa}
+
 require 'spec/expectations'
 $:.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'cucumber/formatters/unicode'
@@ -11,14 +14,14 @@ end
 After do
 end
 
-Given /at jeg har tastet inn (\d+)/ do |n|
+Gitt /at jeg har tastet inn (\d+)/ do |n|
   @calc.push n.to_i
 end
 
-When 'jeg summerer' do
+Naar 'jeg summerer' do
   @result = @calc.add
 end
 
-Then /skal resultatet være (\d*)/ do |result|
+Saa /skal resultatet være (\d*)/ do |result|
   @result.should == result.to_i
 end
