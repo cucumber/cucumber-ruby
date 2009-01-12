@@ -21,7 +21,7 @@ module Cucumber
       end
 
       rule scenario
-        comment tags white scenario_keyword space* name:line_to_eol eol+ steps {
+        comment tags white scenario_keyword space* name:line_to_eol (eol+ / eof) steps {
           def build
             Ast::Scenario.new(
               comment.build, 
@@ -60,7 +60,7 @@ module Cucumber
       end
 
       rule step
-        space* step_keyword space* name:line_to_eol eol+ multi:multiline_arg? {
+        space* step_keyword space* name:line_to_eol (eol+ / eof) multi:multiline_arg? {
           def build
             if multi.respond_to?(:build)
               Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value, multi.build)

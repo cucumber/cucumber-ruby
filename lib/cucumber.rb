@@ -20,31 +20,36 @@ require 'cucumber/core_ext/exception'
 
 module Cucumber
   class << self
+    # Returns all the language names
     def languages
       LANGUAGES.keys.sort
     end
     
+    # Returns the keyword Hash for the current language
     def keywords
-      @keyword_hash
+      LANGUAGES['en'].merge(LANGUAGES[@lang])
     end
     
-    def load_language(lang)
+    def load_language(lang) #:nodoc:
       return if @lang
       @lang = lang
-      @keyword_hash = LANGUAGES[@lang]
-
-      keywords = %w{given when then and but}.map{|keyword| @keyword_hash[keyword]}
+      alias_step_definitions(@lang)
+      Parser.load_parser(keywords)
+    end
+    
+    def alias_step_definitions(lang) #:nodoc:
+      keyword_hash = LANGUAGES[lang]
+      keywords = %w{given when then and but}.map{|keyword| keyword_hash[keyword]}
       alias_steps(keywords)
-      Parser.load_parser(@keyword_hash)
     end
     
     # Sets up additional aliases for Given, When and Then.
     # Try adding the following to your <tt>support/env.rb</tt>:
     #
     #   # Given When Then in Norwegian
-    #   Cucumber.alias_steps %w{Gitt Når Så}
+    #   Cucumber.alias_steps %w{Gitt Naar Saa}
     #
-    def alias_steps(keywords) #:nodoc:
+    def alias_steps(keywords)
       keywords.each do |adverb|
         StepMom.class_eval do
           alias_method adverb, :register_step_definition
@@ -56,4 +61,7 @@ module Cucumber
       end
     end
   end  
+
+  # Make sure we always have English aliases
+  alias_step_definitions('en')
 end

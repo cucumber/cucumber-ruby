@@ -264,25 +264,37 @@ module Cucumber
                   r7 = _nt_line_to_eol
                   s0 << r7
                   if r7
-                    s8, i8 = [], index
+                    i8 = index
+                    s9, i9 = [], index
                     loop do
-                      r9 = _nt_eol
-                      if r9
-                        s8 << r9
+                      r10 = _nt_eol
+                      if r10
+                        s9 << r10
                       else
                         break
                       end
                     end
-                    if s8.empty?
-                      self.index = i8
-                      r8 = nil
+                    if s9.empty?
+                      self.index = i9
+                      r9 = nil
                     else
-                      r8 = SyntaxNode.new(input, i8...index, s8)
+                      r9 = SyntaxNode.new(input, i9...index, s9)
+                    end
+                    if r9
+                      r8 = r9
+                    else
+                      r11 = _nt_eof
+                      if r11
+                        r8 = r11
+                      else
+                        self.index = i8
+                        r8 = nil
+                      end
                     end
                     s0 << r8
                     if r8
-                      r10 = _nt_steps
-                      s0 << r10
+                      r12 = _nt_steps
+                      s0 << r12
                     end
                   end
                 end
@@ -512,30 +524,42 @@ module Cucumber
               r6 = _nt_line_to_eol
               s0 << r6
               if r6
-                s7, i7 = [], index
+                i7 = index
+                s8, i8 = [], index
                 loop do
-                  r8 = _nt_eol
-                  if r8
-                    s7 << r8
+                  r9 = _nt_eol
+                  if r9
+                    s8 << r9
                   else
                     break
                   end
                 end
-                if s7.empty?
-                  self.index = i7
-                  r7 = nil
+                if s8.empty?
+                  self.index = i8
+                  r8 = nil
                 else
-                  r7 = SyntaxNode.new(input, i7...index, s7)
+                  r8 = SyntaxNode.new(input, i8...index, s8)
+                end
+                if r8
+                  r7 = r8
+                else
+                  r10 = _nt_eof
+                  if r10
+                    r7 = r10
+                  else
+                    self.index = i7
+                    r7 = nil
+                  end
                 end
                 s0 << r7
                 if r7
-                  r10 = _nt_multiline_arg
-                  if r10
-                    r9 = r10
+                  r12 = _nt_multiline_arg
+                  if r12
+                    r11 = r12
                   else
-                    r9 = SyntaxNode.new(input, index...index)
+                    r11 = SyntaxNode.new(input, index...index)
                   end
-                  s0 << r9
+                  s0 << r11
                 end
               end
             end

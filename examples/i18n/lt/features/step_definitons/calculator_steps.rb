@@ -11,23 +11,15 @@ end
 After do
 end
 
-Given "aš įvedžiau $n į skaičiuotuvą" do |n|
+Given /aš įvedžiau (.*) į skaičiuotuvą/ do |n|
   @calc.push n.to_i
 end
 
-When /aš paspaudžiu "(\w+)"/ do |op|
+When /aš paspaudžiu "(.*)"/ do |op|
   @result = @calc.send op
 end
 
 Then /rezultatas ekrane turi būti (.*)/ do |result|
   @result.should == result.to_f
-end
-
-Then /rezultato klasė turi būti "(\w*)"/ do |class_name|
-  @result.class.name.should == class_name
-end
-
-Given /turi lyti (\w+)/ do |day|
-  @calc.rain?(day).should == true
 end
 

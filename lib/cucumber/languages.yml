@@ -114,18 +114,20 @@
 "fr":
   feature: Fonctionnalité
   scenario: Scénario
-  more_examples: Plus d'exemples
+  scenario_outline: Scénario esquisse
+  examples: Exemples
   given_scenario: Soit le Scénario
   given: Etant donné
   when: Lorsque
   then: Alors
   and: Et
   but: Mais
-# Malay
+# Malay (Indonesian)
 "id":
   feature: Fitur
   scenario: Skenario
-  more_examples: Contoh Tambahan
+  scenario_outline: Skenario konsep
+  examples: Contoh
   given_scenario: DenganSkenario
   given: Dengan
   when: Ketika
@@ -158,7 +160,7 @@
 "lt":
   feature: Sąvybė
   scenario: Scenarijus
-  more_examples: Daugiau pavyzdžių
+  examples: Pavyzdžių
   given_scenario: DuotasScenarijus
   given: Duota
   when: Kai
