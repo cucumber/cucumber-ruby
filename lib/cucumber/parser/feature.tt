@@ -1,9 +1,8 @@
 module Cucumber
   module Parser
     grammar Feature
-      include Basic
-      include Table
       include FileParser
+      include I18n
 
       rule feature
         white comment white tags white header:(!(scenario_outline / scenario) .)* feature_elements {
@@ -92,20 +91,92 @@ module Cucumber
         table / py_string
       end
 
-      rule scenario_keyword
-        "Scenario:"
+      rule table
+        table_row+ {
+          def build
+            Ast::Table.new(raw)
+          end
+
+          def raw
+            elements.map{|e| e.build}
+          end
+        }
       end
 
-      rule scenario_outline_keyword
-        "Scenario Outline:"
+      rule table_row
+        space* '|' cells:(cell '|')+ space* (eol+ / eof) {
+          def build
+            cells.elements.map do |elt| 
+              value = elt.cell.text_value.strip
+              value.empty? ? nil : value
+            end
+          end
+        }
       end
 
-      rule step_keyword
-        "Given" / "When" / "Then" / "And" / "But"
+      rule cell
+        (!('|' / eol) .)*
+      end
+      
+      rule tags
+        (tag space)* {
+          def build
+            tag_names = elements.map{|e| e.tag.tag_name.text_value}
+            Ast::Tags.new(tag_names)
+          end
+        }
       end
 
-      rule examples_keyword
-        "Examples" ":"?
+      rule tag
+        '@' tag_name:[a-z]+
+      end
+
+      rule comment
+        (comment_line eol+)* {
+          def build
+            Ast::Comment.new(text_value)
+          end
+        }
+      end
+
+      rule comment_line
+        '#' line_to_eol
+      end
+
+      rule line_to_eol
+        (!eol .)+
+      end
+
+      rule py_string
+        open_py_string s:(!close_py_string .)* close_py_string {
+          def build
+            Ast::PyString.new(s.text_value)
+          end
+        }
+      end
+
+      rule open_py_string
+        white '"""' space* eol
+      end
+
+      rule close_py_string
+        eol space* '"""'
+      end
+
+      rule white
+        (space / eol)*
+      end
+
+      rule space
+        [ \t]
+      end
+
+      rule eol
+        "\n" / ("\r" "\n"?)
+      end
+      
+      rule eof
+        !.
       end
 
     end

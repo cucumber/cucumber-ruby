@@ -1,8 +1,10 @@
+require 'erb'
 require 'treetop'
+require 'treetop/runtime'
+require 'treetop/ruby_extensions'
 require 'cucumber/ast'
 require 'cucumber/parser/file_parser'
 require 'cucumber/parser/treetop_ext'
-%w{basic table feature}.each{ |grammar| Treetop.load File.dirname(__FILE__) + "/parser/#{grammar}.tt" }
 
 module Cucumber
   # Classes in this module parse feature files and translate the parse tree 
@@ -13,5 +15,11 @@ module Cucumber
   #
   # The AST classes are defined in the Cucumber::Ast module.
   module Parser
+    def self.load_parser(language)
+      template = ERB.new(IO.read(File.dirname(__FILE__) + "/parser/i18n.tt"))
+      grammar = template.result(binding)
+      Treetop.load_from_string(grammar)
+      require 'cucumber/parser/feature'
+    end
   end
 end
