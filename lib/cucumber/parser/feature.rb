@@ -146,6 +146,225 @@ module Cucumber
         return r0
       end
 
+      module Tags0
+        def tag
+          elements[0]
+        end
+
+        def space
+          elements[1]
+        end
+      end
+
+      module Tags1
+        def build
+          tag_names = elements.map{|e| e.tag.tag_name.text_value}
+          Ast::Tags.new(tag_names)
+        end
+      end
+
+      def _nt_tags
+        start_index = index
+        if node_cache[:tags].has_key?(index)
+          cached = node_cache[:tags][index]
+          @index = cached.interval.end if cached
+          return cached
+        end
+
+        s0, i0 = [], index
+        loop do
+          i1, s1 = index, []
+          r2 = _nt_tag
+          s1 << r2
+          if r2
+            r3 = _nt_space
+            s1 << r3
+          end
+          if s1.last
+            r1 = (SyntaxNode).new(input, i1...index, s1)
+            r1.extend(Tags0)
+          else
+            self.index = i1
+            r1 = nil
+          end
+          if r1
+            s0 << r1
+          else
+            break
+          end
+        end
+        r0 = SyntaxNode.new(input, i0...index, s0)
+        r0.extend(Tags1)
+
+        node_cache[:tags][start_index] = r0
+
+        return r0
+      end
+
+      module Tag0
+        def tag_name
+          elements[1]
+        end
+      end
+
+      def _nt_tag
+        start_index = index
+        if node_cache[:tag].has_key?(index)
+          cached = node_cache[:tag][index]
+          @index = cached.interval.end if cached
+          return cached
+        end
+
+        i0, s0 = index, []
+        if input.index('@', index) == index
+          r1 = (SyntaxNode).new(input, index...(index + 1))
+          @index += 1
+        else
+          terminal_parse_failure('@')
+          r1 = nil
+        end
+        s0 << r1
+        if r1
+          s2, i2 = [], index
+          loop do
+            if input.index(Regexp.new('[a-z]'), index) == index
+              r3 = (SyntaxNode).new(input, index...(index + 1))
+              @index += 1
+            else
+              r3 = nil
+            end
+            if r3
+              s2 << r3
+            else
+              break
+            end
+          end
+          if s2.empty?
+            self.index = i2
+            r2 = nil
+          else
+            r2 = SyntaxNode.new(input, i2...index, s2)
+          end
+          s0 << r2
+        end
+        if s0.last
+          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0.extend(Tag0)
+        else
+          self.index = i0
+          r0 = nil
+        end
+
+        node_cache[:tag][start_index] = r0
+
+        return r0
+      end
+
+      module Comment0
+        def comment_line
+          elements[0]
+        end
+
+      end
+
+      module Comment1
+        def build
+          Ast::Comment.new(text_value)
+        end
+      end
+
+      def _nt_comment
+        start_index = index
+        if node_cache[:comment].has_key?(index)
+          cached = node_cache[:comment][index]
+          @index = cached.interval.end if cached
+          return cached
+        end
+
+        s0, i0 = [], index
+        loop do
+          i1, s1 = index, []
+          r2 = _nt_comment_line
+          s1 << r2
+          if r2
+            s3, i3 = [], index
+            loop do
+              r4 = _nt_eol
+              if r4
+                s3 << r4
+              else
+                break
+              end
+            end
+            if s3.empty?
+              self.index = i3
+              r3 = nil
+            else
+              r3 = SyntaxNode.new(input, i3...index, s3)
+            end
+            s1 << r3
+          end
+          if s1.last
+            r1 = (SyntaxNode).new(input, i1...index, s1)
+            r1.extend(Comment0)
+          else
+            self.index = i1
+            r1 = nil
+          end
+          if r1
+            s0 << r1
+          else
+            break
+          end
+        end
+        r0 = SyntaxNode.new(input, i0...index, s0)
+        r0.extend(Comment1)
+
+        node_cache[:comment][start_index] = r0
+
+        return r0
+      end
+
+      module CommentLine0
+        def line_to_eol
+          elements[1]
+        end
+      end
+
+      def _nt_comment_line
+        start_index = index
+        if node_cache[:comment_line].has_key?(index)
+          cached = node_cache[:comment_line][index]
+          @index = cached.interval.end if cached
+          return cached
+        end
+
+        i0, s0 = index, []
+        if input.index('#', index) == index
+          r1 = (SyntaxNode).new(input, index...(index + 1))
+          @index += 1
+        else
+          terminal_parse_failure('#')
+          r1 = nil
+        end
+        s0 << r1
+        if r1
+          r2 = _nt_line_to_eol
+          s0 << r2
+        end
+        if s0.last
+          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0.extend(CommentLine0)
+        else
+          self.index = i0
+          r0 = nil
+        end
+
+        node_cache[:comment_line][start_index] = r0
+
+        return r0
+      end
+
       module FeatureElements0
         def build
           elements.map{|s| s.build}
@@ -966,225 +1185,6 @@ module Cucumber
         return r0
       end
 
-      module Tags0
-        def tag
-          elements[0]
-        end
-
-        def space
-          elements[1]
-        end
-      end
-
-      module Tags1
-        def build
-          tag_names = elements.map{|e| e.tag.tag_name.text_value}
-          Ast::Tags.new(tag_names)
-        end
-      end
-
-      def _nt_tags
-        start_index = index
-        if node_cache[:tags].has_key?(index)
-          cached = node_cache[:tags][index]
-          @index = cached.interval.end if cached
-          return cached
-        end
-
-        s0, i0 = [], index
-        loop do
-          i1, s1 = index, []
-          r2 = _nt_tag
-          s1 << r2
-          if r2
-            r3 = _nt_space
-            s1 << r3
-          end
-          if s1.last
-            r1 = (SyntaxNode).new(input, i1...index, s1)
-            r1.extend(Tags0)
-          else
-            self.index = i1
-            r1 = nil
-          end
-          if r1
-            s0 << r1
-          else
-            break
-          end
-        end
-        r0 = SyntaxNode.new(input, i0...index, s0)
-        r0.extend(Tags1)
-
-        node_cache[:tags][start_index] = r0
-
-        return r0
-      end
-
-      module Tag0
-        def tag_name
-          elements[1]
-        end
-      end
-
-      def _nt_tag
-        start_index = index
-        if node_cache[:tag].has_key?(index)
-          cached = node_cache[:tag][index]
-          @index = cached.interval.end if cached
-          return cached
-        end
-
-        i0, s0 = index, []
-        if input.index('@', index) == index
-          r1 = (SyntaxNode).new(input, index...(index + 1))
-          @index += 1
-        else
-          terminal_parse_failure('@')
-          r1 = nil
-        end
-        s0 << r1
-        if r1
-          s2, i2 = [], index
-          loop do
-            if input.index(Regexp.new('[a-z]'), index) == index
-              r3 = (SyntaxNode).new(input, index...(index + 1))
-              @index += 1
-            else
-              r3 = nil
-            end
-            if r3
-              s2 << r3
-            else
-              break
-            end
-          end
-          if s2.empty?
-            self.index = i2
-            r2 = nil
-          else
-            r2 = SyntaxNode.new(input, i2...index, s2)
-          end
-          s0 << r2
-        end
-        if s0.last
-          r0 = (SyntaxNode).new(input, i0...index, s0)
-          r0.extend(Tag0)
-        else
-          self.index = i0
-          r0 = nil
-        end
-
-        node_cache[:tag][start_index] = r0
-
-        return r0
-      end
-
-      module Comment0
-        def comment_line
-          elements[0]
-        end
-
-      end
-
-      module Comment1
-        def build
-          Ast::Comment.new(text_value)
-        end
-      end
-
-      def _nt_comment
-        start_index = index
-        if node_cache[:comment].has_key?(index)
-          cached = node_cache[:comment][index]
-          @index = cached.interval.end if cached
-          return cached
-        end
-
-        s0, i0 = [], index
-        loop do
-          i1, s1 = index, []
-          r2 = _nt_comment_line
-          s1 << r2
-          if r2
-            s3, i3 = [], index
-            loop do
-              r4 = _nt_eol
-              if r4
-                s3 << r4
-              else
-                break
-              end
-            end
-            if s3.empty?
-              self.index = i3
-              r3 = nil
-            else
-              r3 = SyntaxNode.new(input, i3...index, s3)
-            end
-            s1 << r3
-          end
-          if s1.last
-            r1 = (SyntaxNode).new(input, i1...index, s1)
-            r1.extend(Comment0)
-          else
-            self.index = i1
-            r1 = nil
-          end
-          if r1
-            s0 << r1
-          else
-            break
-          end
-        end
-        r0 = SyntaxNode.new(input, i0...index, s0)
-        r0.extend(Comment1)
-
-        node_cache[:comment][start_index] = r0
-
-        return r0
-      end
-
-      module CommentLine0
-        def line_to_eol
-          elements[1]
-        end
-      end
-
-      def _nt_comment_line
-        start_index = index
-        if node_cache[:comment_line].has_key?(index)
-          cached = node_cache[:comment_line][index]
-          @index = cached.interval.end if cached
-          return cached
-        end
-
-        i0, s0 = index, []
-        if input.index('#', index) == index
-          r1 = (SyntaxNode).new(input, index...(index + 1))
-          @index += 1
-        else
-          terminal_parse_failure('#')
-          r1 = nil
-        end
-        s0 << r1
-        if r1
-          r2 = _nt_line_to_eol
-          s0 << r2
-        end
-        if s0.last
-          r0 = (SyntaxNode).new(input, i0...index, s0)
-          r0.extend(CommentLine0)
-        else
-          self.index = i0
-          r0 = nil
-        end
-
-        node_cache[:comment_line][start_index] = r0
-
-        return r0
-      end
-
       module LineToEol0
       end
 
@@ -1400,6 +1400,9 @@ module Cucumber
           elements[0]
         end
 
+        def white
+          elements[3]
+        end
       end
 
       def _nt_close_py_string
@@ -1434,6 +1437,10 @@ module Cucumber
               r4 = nil
             end
             s0 << r4
+            if r4
+              r5 = _nt_white
+              s0 << r5
+            end
           end
         end
         if s0.last

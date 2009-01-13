@@ -96,6 +96,23 @@ Given I have a table
                     [:cell, "a"],
                     [:cell, "b"]]]]]]
         end
+
+        it "should have steps with inline py_string" do
+          parse(%{Feature: Hi
+Scenario: Hello
+Given I have a string
+
+"""
+hello
+world
+"""
+
+}).to_sexp.should ==
+          [:feature, "Feature: Hi",
+            [:scenario, 2, "Scenario:", "Hello",
+              [:step, 3, "Given", "I have a string",
+                [:py_string, "hello\nworld"]]]]
+        end
       end
 
       describe "Scenario Outlines" do
