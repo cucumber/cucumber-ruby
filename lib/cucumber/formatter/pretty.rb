@@ -88,8 +88,7 @@ module Cucumber
       end
 
       def visit_py_string(string, status)
-        indent
-        s = "\"\"\"\n" + string.split("\n", -1).map{|line| (' ' * @indent) + line}.join("\n") + "\"\"\""
+        s = "\"\"\"\n#{string}\n\"\"\"".indent(@indent)
         @io.write(format_string(s, status) + "\n")
       end
 
