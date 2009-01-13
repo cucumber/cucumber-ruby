@@ -25,9 +25,10 @@ module Cucumber
           %w{1 22 333},
           %w{4444 55555 666666}
         ])
-        py_string = Ast::PyString.new(%{I like
+        py_string = Ast::PyString.new(%{
+           I like
           Cucumber sandwich
-        })
+        }, 10)
         f = Ast::Feature.new(
           Ast::Comment.new("# My feature comment\n"),
           Ast::Tags.new(['one', 'two']),

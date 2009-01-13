@@ -102,10 +102,11 @@ Given I have a table
 Scenario: Hello
 Given I have a string
 
-"""
-hello
-world
-"""
+
+   """
+  hello
+  world
+  """
 
 }).to_sexp.should ==
           [:feature, "Feature: Hi",

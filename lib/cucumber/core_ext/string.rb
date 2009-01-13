@@ -1,4 +1,12 @@
 class String
+  def indent(n)
+    if n >= 0
+      gsub(/^/, ' ' * n)
+    else
+      gsub(/^ {0,#{-n}}/, "")
+    end
+  end
+  
   # re.source.gsub(/\([^)]*\)/, '$var')
   # Cumulative #sub
   def subs(re, *args)
@@ -7,6 +15,7 @@ class String
     end
   end
 
+  # TODO: Use subs instead...
   def gzub(regexp, format=nil, &proc)
     md = match(regexp)
     raise "#{self.inspect} doesn't match #{regexp.inspect}" if md.nil?
