@@ -1262,7 +1262,7 @@ module Cucumber
 
       module PyString2
         def build
-          Ast::PyString.new(s.text_value)
+          Ast::PyString.new(s.text_value, open_py_string.indent)
         end
       end
 
@@ -1344,6 +1344,12 @@ module Cucumber
         end
       end
 
+      module OpenPyString1
+        def indent
+          white.text_value.length
+        end
+      end
+
       def _nt_open_py_string
         start_index = index
         if node_cache[:open_py_string].has_key?(index)
@@ -1385,6 +1391,7 @@ module Cucumber
         if s0.last
           r0 = (SyntaxNode).new(input, i0...index, s0)
           r0.extend(OpenPyString0)
+          r0.extend(OpenPyString1)
         else
           self.index = i0
           r0 = nil

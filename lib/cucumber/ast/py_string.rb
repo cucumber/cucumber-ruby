@@ -17,12 +17,12 @@ module Cucumber
     # Note how the indentation from the source is stripped away.
     #
     class PyString
-      def initialize(string)
-        @string = string
+      def initialize(string, quotes_indent)
+        @string, @quotes_indent = string, quotes_indent
       end
 
       def to_s
-        @string.split("\n", -1).map{|line| line.lstrip}.join("\n")
+        @string.indent(-@quotes_indent)
       end
 
       def accept(visitor, status)
@@ -34,7 +34,7 @@ module Cucumber
         arguments.each do |name, value|
           string = string.gsub(name, value)
         end
-        PyString.new(string)
+        PyString.new(string, @quotes_indent)
       end
       
       # For testing only

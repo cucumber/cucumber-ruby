@@ -5,19 +5,20 @@ module Cucumber
   module Ast
     describe PyString do
       it "should handle unindented" do
-        ps = PyString.new("4.1\n4.2\n")
+        ps = PyString.new("4.1\n4.2\n", 0)
         ps.to_s.should == "4.1\n4.2\n"
       end
 
       it "should handle indented" do
-        ps = PyString.new("  4.1\n  4.2\n")
-        ps.to_s.should == "4.1\n4.2\n"
+        #                    """
+        ps = PyString.new("     4.1\n   4.2\n", 2)
+        ps.to_s.should == "   4.1\n 4.2\n"
       end
       
       describe "replacing arguments" do
 
         before(:each) do
-          @ps = PyString.new("<book>\n<qty>\n")
+          @ps = PyString.new("<book>\n<qty>\n", 0)
         end
       
         it "should return a new py_string with arguments replaced with values" do

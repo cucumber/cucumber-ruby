@@ -152,7 +152,7 @@ module Cucumber
 #      executor.formatters = build_formatter_broadcaster(step_mother)
       features = load_plain_text_features
       require 'cucumber/formatter/pretty'
-      visitor = Formatter::Pretty.new(step_mother, STDOUT)
+      visitor = Formatter::Pretty.new(step_mother, @out_stream)
       visitor.visit_features(features)
     end
 
