@@ -45,6 +45,7 @@ module Cucumber
 
     def execute(world, *args)
       begin
+        args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
         world.instance_exec(*args, &@proc)
       rescue Exception => e
         method_line = "#{__FILE__}:#{__LINE__ - 2}:in `execute'"

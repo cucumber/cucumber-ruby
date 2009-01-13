@@ -20,14 +20,14 @@ module Cucumber
           @ps = PyString.new("<book>\n<qty>\n")
         end
       
-        it "should return a new pystring with arguments replaced with values" do
-          pystring_with_replaced_arg = @ps.arguments_replaced({'<book>' => 'Life is elsewhere', '<qty>' => '5'})
+        it "should return a new py_string with arguments replaced with values" do
+          py_string_with_replaced_arg = @ps.arguments_replaced({'<book>' => 'Life is elsewhere', '<qty>' => '5'})
                 
-          pystring_with_replaced_arg.to_s.should == "Life is elsewhere\n5\n"
+          py_string_with_replaced_arg.to_s.should == "Life is elsewhere\n5\n"
         end
         
-        it "should not change the original pystring" do
-          pystring_with_replaced_arg = @ps.arguments_replaced({'<book>' => 'Life is elsewhere'})
+        it "should not change the original py_string" do
+          py_string_with_replaced_arg = @ps.arguments_replaced({'<book>' => 'Life is elsewhere'})
           
           @ps.to_s.should_not include("Life is elsewhere")
         end

@@ -26,7 +26,7 @@ module Cucumber
                 [:row, 
                   [:cell, "4444"], [:cell, "55555"], [:cell, "666666"]]]], 
             [:step, 11, "Given", "a happy step with an inline arg:", 
-              [:pystring, "I like\nCucumber sandwich\n"]], 
+              [:py_string, "I like\nCucumber sandwich\n"]], 
             [:step, 12, "Given", "a failing step"]]]
       end
 

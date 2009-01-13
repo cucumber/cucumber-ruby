@@ -39,7 +39,7 @@ module Cucumber
       
       # For testing only
       def to_sexp #:nodoc:
-        [:pystring, to_s]
+        [:py_string, to_s]
       end
                 
     end
