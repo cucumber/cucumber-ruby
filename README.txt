@@ -1,5 +1,4 @@
 = Cucumber
 
-Cast your ballot for the Cucumber logo! http://cukes.info/
-
-Cucumber documentation is over at http://github.com/aslakhellesoy/cucumber/wikis/home
+The main website is at http://cukes.info/
+The documentation is at http://github.com/aslakhellesoy/cucumber/wikis/home/
