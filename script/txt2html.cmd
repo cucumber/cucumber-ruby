@@ -1,1 +1,0 @@
-@ruby script/txt2html %*

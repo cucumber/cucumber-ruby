@@ -55,16 +55,16 @@ HTML
       end
 
       def visit_regular_scenario(scenario)
-        visit_scenario(scenario, Cucumber.language['scenario'])
+        visit_scenario(scenario, Cucumber.keywords['scenario'])
       end
 
       def visit_scenario_outline(scenario)
-        visit_scenario(scenario, Cucumber.language['scenario_outline'])
+        visit_scenario(scenario, Cucumber.keywords['scenario_outline'])
       end
 
       def visit_row_scenario(scenario)
         @io.puts %{          <dl class="new">}
-        @io.puts %{            <dt>#{Cucumber.language['scenario']}: #{scenario.name}</dt>}
+        @io.puts %{            <dt>#{Cucumber.keywords['scenario']}: #{scenario.name}</dt>}
         @io.puts %{            <dd>}
         @io.puts %{              <table cellpadding="3">}
         @io.puts %{                <thead>}

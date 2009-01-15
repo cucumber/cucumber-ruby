@@ -7,4 +7,3 @@ Funktionalität: Division
     Und ich habe 2 in den Taschenrechner eingegeben
     Wenn ich divide drücke
     Dann sollte das Ergebniss auf dem Bildschirm 1.5 sein
-    Und die Ergebnissklasse sollte eine Float sein
