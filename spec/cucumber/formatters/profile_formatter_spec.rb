@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
+require 'cucumber/formatters/profile_formatter'
 
 module Cucumber
   module Formatters
