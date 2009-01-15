@@ -1,6 +1,6 @@
 # Require this file if you need Unicode support.
 require 'cucumber/platform'
-require 'cucumber/formatters/ansicolor'
+require 'cucumber/formatter/ansicolor'
 
 $KCODE='u' unless Cucumber::RUBY_1_9
 

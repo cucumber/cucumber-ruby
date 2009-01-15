@@ -1,13 +1,13 @@
-require 'cucumber/formatters/progress_formatter'
+require 'cucumber/formatter/progress'
 
 module Cucumber
   module Formatters
-    class ProfileFormatter < ProgressFormatter
+    class ProfileFormatter < Formatter::Progress
       NUMBER_OF_STEP_DEFINITONS_TO_SHOW = 10
       NUMBER_OF_STEP_INVOCATIONS_TO_SHOW = 5
 
-      def initialize(io, step_mother)
-        super(io)
+      def initialize(step_mother, io)
+        super(step_mother, io)
         @step_mother = step_mother
         @step_times = Hash.new { |k,v| k[v] = [] }
         @step_keywords = {}
@@ -68,18 +68,18 @@ module Cucumber
       def print_step_definition(step_profiles, keyword_regexp, mean_execution_time)
         unless step_profiles.empty?
           _, _, definition_comment, _ = step_profiles.first
-          @io.print red(sprintf("%.7f",  mean_execution_time))
+          @io.print format_string(sprintf("%.7f",  mean_execution_time), :failed)
           @io.print "  #{keyword_regexp}"
-          @io.print "  #{comment(definition_comment)}"
+          @io.print "  #{format_string(definition_comment, :comment)}"
           @io.puts
         end
       end
 
       def print_step_invocations(step_profiles, keyword_regexp)
         step_profiles[0...NUMBER_OF_STEP_INVOCATIONS_TO_SHOW].each do |description, invocation_comment, definition_comment, execution_time|
-          @io.print "  #{yellow(sprintf("%.7f", execution_time))}"
+          @io.print "  #{format_string(sprintf("%.7f", execution_time), :pending)}"
           @io.print "  #{description}"
-          @io.print "  #{comment(invocation_comment)}"
+          @io.print "  #{format_string(invocation_comment, :comment)}"
           @io.puts
         end
       end

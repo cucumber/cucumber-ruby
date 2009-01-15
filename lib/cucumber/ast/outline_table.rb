@@ -14,7 +14,7 @@ module Cucumber
       class ExampleCells < Cells
         def accept(visitor, status)
           if header?
-            visit_cells(visitor, :skipped)
+            visit_cells(visitor, :thead)
           else
             @table.execute_row(self.to_hash, visitor)
             visit_cells(visitor, :passed)

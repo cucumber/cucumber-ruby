@@ -1,0 +1,1 @@
+%w{pretty progress}.each{|n| require "cucumber/formatter/#{n}"}

@@ -1,8 +1,8 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
-require 'cucumber/formatters/ansicolor'
+require 'cucumber/formatter/ansicolor'
 
 module Cucumber
-  module Formatters
+  module Formatter
     describe ANSIColor do
       include ANSIColor
       

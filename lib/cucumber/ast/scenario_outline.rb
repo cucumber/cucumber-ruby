@@ -42,6 +42,8 @@ module Cucumber
         end
       end
 
+      def pending? ; false ; end
+
       def to_sexp
         sexp = [:scenario_outline, @keyword, @name]
         comment = @comment.to_sexp

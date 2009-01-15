@@ -1,5 +1,3 @@
-require 'cucumber/formatters/ansicolor'
-
 module Cucumber
   module Ast
     # A dumb visitor that implements the whole Visitor API and just walks the tree.
