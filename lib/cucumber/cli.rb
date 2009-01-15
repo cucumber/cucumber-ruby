@@ -1,6 +1,8 @@
 require 'optparse'
 require 'cucumber'
 require 'ostruct'
+require 'cucumber/parser'
+require 'cucumber/formatter/pretty'
 
 module Cucumber
   class YmlLoadError < StandardError; end
@@ -32,12 +34,12 @@ module Cucumber
       @error_stream = error_stream
       @paths = []
       @options = {
-        :require => nil,
-        :lang    => 'en',
-        :dry_run => false,
-        :source  => true,
+        :require  => nil,
+        :lang     => 'en',
+        :dry_run  => false,
+        :source   => true,
         :snippets => true,
-        :formats => {},
+        :formats  => {},
         :excludes => [],
         :scenario_names => nil
       }
@@ -151,7 +153,6 @@ module Cucumber
       enable_diffing
 #      executor.formatters = build_formatter_broadcaster(step_mother)
       features = load_plain_text_features
-      require 'cucumber/formatter/pretty'
       visitor = Formatter::Pretty.new(step_mother, @out_stream)
       visitor.visit_features(features)
     end
@@ -206,8 +207,6 @@ Defined profiles in cucumber.yml:
     # Requires files - typically step files and ruby feature files.
     def require_files
       @args.clear # Shut up RSpec
-#      require "cucumber/treetop_parser/feature_#{@options[:lang]}"
-#      require "cucumber/treetop_parser/feature_parser"
 
       verbose_log("Ruby files required:")
       files_to_require.each do |lib|
@@ -252,7 +251,6 @@ Defined profiles in cucumber.yml:
     end
 
     def load_plain_text_features
-      require 'cucumber/parser'
       features = Ast::Features.new
       parser = Parser::FeatureParser.new
 

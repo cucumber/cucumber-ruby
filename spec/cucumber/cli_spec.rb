@@ -156,19 +156,18 @@ Defined profiles in cucumber.yml:
       cli.options[:verbose].should be_true
     end
 
-    xit "should require files in support paths first" do
+    it "should require files in support paths first" do
       File.stub!(:directory?).and_return(true)
       Dir.stub!(:[]).and_return(["/features/step_definitions/foo.rb","/features/support/env.rb"])
       
       cli = CLI.new(StringIO.new)
       cli.parse_options!(%w{--require /features})
 
-#      cli.should_receive(:require).with('cucumber/parser').ordered
       cli.should_receive(:require).with("/features/support/env.rb").ordered
       cli.should_receive(:require).with("/features/step_definitions/foo.rb").ordered
       cli.should_receive(:require).with("spec/expectations/differs/default").ordered
 
-      cli.execute!(stub('step mother'), mock_executor, mock_features)
+      cli.execute!(stub('step mother'))
     end
 
     describe "verbose mode" do
@@ -177,6 +176,7 @@ Defined profiles in cucumber.yml:
         @out = StringIO.new
         @cli = CLI.new(@out)
         @cli.stub!(:require)
+        @empty_feature = Ast::Feature.new(Ast::Comment.new(''), Ast::Tags.new([]), "Feature", [])
         Dir.stub!(:[])
       end
 
@@ -187,8 +187,8 @@ Defined profiles in cucumber.yml:
         @out.string.should include('example.rb')
       end
       
-      xit "should show feature files parsed" do
-        TreetopParser::FeatureParser.stub!(:new).and_return(mock("feature parser", :parse_feature => nil))
+      it "should show feature files parsed" do
+        Parser::FeatureParser.stub!(:new).and_return(mock("feature parser", :parse_file => @empty_feature))
           
         @cli.parse_options!(%w{--verbose example.feature})
         @cli.execute!(stub('step mother'))

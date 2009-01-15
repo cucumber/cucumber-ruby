@@ -16,7 +16,7 @@ if Cucumber::WINDOWS_MRI && `chcp` =~ /Active code page: (\d+)/
       alias cucumber_print print
       def print(*a)
         begin
-          cucumber_print *Iconv.iconv(Cucumber::CODEPAGE, "UTF-8", *a)
+          cucumber_print(*Iconv.iconv(Cucumber::CODEPAGE, "UTF-8", *a))
         rescue Iconv::IllegalSequence
           cucumber_print(*a)
         end
@@ -25,7 +25,7 @@ if Cucumber::WINDOWS_MRI && `chcp` =~ /Active code page: (\d+)/
       alias cucumber_puts puts
       def puts(*a)
         begin
-          cucumber_puts *Iconv.iconv(Cucumber::CODEPAGE, "UTF-8", *a)
+          cucumber_puts(*Iconv.iconv(Cucumber::CODEPAGE, "UTF-8", *a))
         rescue Iconv::IllegalSequence
           cucumber_puts(*a)
         end

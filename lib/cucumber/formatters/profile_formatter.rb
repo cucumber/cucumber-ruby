@@ -1,3 +1,5 @@
+require 'cucumber/formatters/progress_formatter'
+
 module Cucumber
   module Formatters
     class ProfileFormatter < ProgressFormatter
