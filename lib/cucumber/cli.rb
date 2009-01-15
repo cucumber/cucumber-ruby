@@ -7,10 +7,13 @@ module Cucumber
 
   class CLI
     class << self
-      attr_writer :step_mother, :executor, :features
+      def step_mother=(step_mother)
+        @step_mother = step_mother
+        @step_mother.extend(StepMom)
+      end
 
       def execute(args)
-        parse(args).execute!(@step_mother, @executor, @features)
+        parse(args).execute!(@step_mother)
       end
 
       def parse(args)
@@ -137,39 +140,24 @@ module Cucumber
       end
       
       # Whatever is left after option parsing is the FILE arguments
-      args = extract_and_store_line_numbers(args)
       @paths += args
     end
 
 
-    def execute!(step_mother, executor, features)
+    def execute!(step_mother)
       Term::ANSIColor.coloring = @options[:color] unless @options[:color].nil?
       Cucumber.load_language(@options[:lang])
       require_files
       enable_diffing
-      executor.formatters = build_formatter_broadcaster(step_mother)
-      load_plain_text_features(features)
-      executor.lines_for_features = @options[:lines_for_features]
-      executor.dry_run = @options[:dry_run] if @options[:dry_run]
-      executor.scenario_names = @options[:scenario_names] if @options[:scenario_names]
-      executor.visit_features(features)
-      exit 1 if executor.failed
+#      executor.formatters = build_formatter_broadcaster(step_mother)
+      features = load_plain_text_features
+      require 'cucumber/formatter/pretty'
+      visitor = Formatter::Pretty.new(step_mother, @out_stream)
+      visitor.visit_features(features)
     end
 
     private
 
-    def extract_and_store_line_numbers(file_arguments)
-      @options[:lines_for_features] = Hash.new{|k,v| k[v] = []}
-      file_arguments.map do |arg|
-        _, file, lines = */^([\w\W]*?):([\d:]+)$/.match(arg)
-        unless file.nil?
-          @options[:lines_for_features][file] += lines.split(':').map { |line| line.to_i }
-          arg = file          
-        end
-        arg
-      end
-    end
-   
     def cucumber_yml
       return @cucumber_yml if @cucumber_yml
       unless File.exist?('cucumber.yml')
@@ -218,8 +206,8 @@ Defined profiles in cucumber.yml:
     # Requires files - typically step files and ruby feature files.
     def require_files
       @args.clear # Shut up RSpec
-      require "cucumber/treetop_parser/feature_#{@options[:lang]}"
-      require "cucumber/treetop_parser/feature_parser"
+#      require "cucumber/treetop_parser/feature_#{@options[:lang]}"
+#      require "cucumber/treetop_parser/feature_parser"
 
       verbose_log("Ruby files required:")
       files_to_require.each do |lib|
@@ -263,15 +251,18 @@ Defined profiles in cucumber.yml:
       feature_files.map{|f| File.directory?(f) ? f : File.dirname(f)}.uniq
     end
 
-    def load_plain_text_features(features)
-      parser = TreetopParser::FeatureParser.new
+    def load_plain_text_features
+      require 'cucumber/parser'
+      features = Ast::Features.new
+      parser = Parser::FeatureParser.new
 
       verbose_log("Features:")
       feature_files.each do |f|
-        features << parser.parse_feature(f)
+        features.add_feature(parser.parse_file(f))
         verbose_log("  * #{f}")
       end
       verbose_log("\n"*2)
+      features
     end
 
     def build_formatter_broadcaster(step_mother)
@@ -348,9 +339,4 @@ Defined profiles in cucumber.yml:
   end
 end
 
-extend Cucumber::StepMethods
-Cucumber::CLI.step_mother = step_mother
-Cucumber::CLI.executor = executor
-
-extend Cucumber::Tree
-Cucumber::CLI.features = features
+Cucumber::CLI.step_mother = self

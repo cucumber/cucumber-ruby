@@ -1,6 +1,8 @@
 == In Git
 
 === New features
+* Allow argument placeholders in step tables and multiline comments (#121 Joseph Wilk)
+* Scenario Outline can be followed by several named Examples sections (#123 Aslak Hellesøy)
 * Add the #binary= method back to the Rake task. It is needed by merb_cucumber for running the features of a merb app with it's bundled gems. (Thomas Marek)
 
 === Bugfixes
