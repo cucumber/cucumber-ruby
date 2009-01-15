@@ -17,7 +17,7 @@ end
 Term::ANSIColor.coloring = false if !STDOUT.tty? || (Cucumber::WINDOWS && !Cucumber::WINDOWS_MRI)
 
 module Cucumber
-  module Formatters
+  module Formatter
     # Defines aliases for coloured output. You can tweak the colours by defining
     # a <tt>CUCUMBER_COLORS</tt> variable in your shell, very much like you can
     # tweak the familiar POSIX command <tt>ls</tt> with
@@ -73,6 +73,7 @@ module Cucumber
         'pending'   => 'yellow',
         'failed'    => 'red',
         'passed'    => 'green',
+        'thead'     => 'cyan',
         'outline'   => 'cyan',
         'skipped'   => 'cyan',
         'comment'   => 'grey',

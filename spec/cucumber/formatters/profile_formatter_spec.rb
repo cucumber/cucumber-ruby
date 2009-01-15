@@ -24,7 +24,7 @@ module Cucumber
         ::Term::ANSIColor.coloring = false
         @io = StringIO.new
         step_mother = stub('step_mother')
-        @formatter = ProfileFormatter.new(io, step_mother)
+        @formatter = ProfileFormatter.new(step_mother, io)
       end
       
       after(:each) do

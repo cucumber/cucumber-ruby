@@ -38,6 +38,10 @@ module Cucumber
         end
       end
 
+      def pending?
+        @steps.empty?
+      end
+
       def to_sexp
         sexp = [:scenario, @line, @keyword, @name]
         comment = @comment.to_sexp

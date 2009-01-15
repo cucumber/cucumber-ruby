@@ -240,22 +240,20 @@ Defined profiles in cucumber.yml:
       cli.options[:formats].should == {'progress' => [STDOUT, mock_file]}
     end
 
-    xit "should setup the executor with the formatter broadcaster" do
+    it "should setup the executor with the formatter broadcaster" do
       cli = CLI.new
       broadcaster = Broadcaster.new
       Broadcaster.stub!(:new).and_return(broadcaster)
-      mock_executor = mock_executor()
-      mock_executor.should_receive(:formatters=).with(broadcaster)
       cli.parse_options!(%w{--format progress})
 
-      cli.execute!(stub('step mother'), mock_executor, stub('features'))
+      cli.execute!(stub('step mother'))
     end
     
     describe "--format with class" do
      
      describe "in module" do
 
-        xit "should resolve each module until it gets Formatter class" do
+        it "should resolve each module until it gets Formatter class" do
           cli = CLI.new
           mock_module = mock('module')
           cli.parse_options!(%w{--format ZooModule::MonkeyFormatterClass})
@@ -265,7 +263,7 @@ Defined profiles in cucumber.yml:
           Object.should_receive(:const_get).with('ZooModule').and_return(mock_module)
           mock_module.should_receive(:const_get).with('MonkeyFormatterClass').and_return(mock('formatter class', :new => nil))
 
-          cli.execute!(stub('step mother'), mock_executor, stub('features'))
+          cli.execute!(stub('step mother'))
         end
 
       end

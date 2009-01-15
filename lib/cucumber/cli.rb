@@ -2,7 +2,7 @@ require 'optparse'
 require 'cucumber'
 require 'ostruct'
 require 'cucumber/parser'
-require 'cucumber/formatter/pretty'
+require 'cucumber/formatter'
 
 module Cucumber
   class YmlLoadError < StandardError; end
@@ -151,9 +151,9 @@ module Cucumber
       Cucumber.load_language(@options[:lang])
       require_files
       enable_diffing
-#      executor.formatters = build_formatter_broadcaster(step_mother)
       features = load_plain_text_features
-      visitor = Formatter::Pretty.new(step_mother, @out_stream)
+
+      visitor = build_formatter_broadcaster(step_mother)
       visitor.visit_features(features)
     end
 
@@ -269,9 +269,9 @@ Defined profiles in cucumber.yml:
         output_broadcaster = build_output_broadcaster(output_list)
         case format
         when 'pretty'
-          formatter_broadcaster.register(Formatters::PrettyFormatter.new(output_broadcaster, step_mother, @options))
+          formatter_broadcaster.register(Formatter::Pretty.new(step_mother, output_broadcaster))
         when 'progress'
-          formatter_broadcaster.register(Formatters::ProgressFormatter.new(output_broadcaster))
+          formatter_broadcaster.register(Formatter::Progress.new(step_mother, output_broadcaster))
         when 'profile'
           formatter_broadcaster.register(Formatters::ProfileFormatter.new(output_broadcaster, step_mother))
         when 'html'
