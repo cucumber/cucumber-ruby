@@ -426,7 +426,7 @@ Defined profiles in cucumber.yml:
         begin
           "x".should == "y"
         rescue => e
-          e.cucumber_backtrace[0].should_not == "#{__FILE__}:#{__LINE__ - 2}"
+          e.backtrace[0].should_not == "#{__FILE__}:#{__LINE__ - 2}"
         end
       end
 
@@ -436,7 +436,7 @@ Defined profiles in cucumber.yml:
         begin
           "x".should == "y"
         rescue => e
-          e.cucumber_backtrace[0].should == "#{__FILE__}:#{__LINE__ - 2}"
+          e.backtrace[0].should == "#{__FILE__}:#{__LINE__ - 2}"
         end
       end
 

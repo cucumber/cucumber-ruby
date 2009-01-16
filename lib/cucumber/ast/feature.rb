@@ -23,6 +23,10 @@ module Cucumber
         @features.step_executed(scenario, step_status) if @features
       end
 
+      def append_backtrace_line(exception, step_name, line)
+        exception.backtrace << "#{@file}:#{line}:in `#{step_name}'"
+      end
+
       def to_sexp
         sexp = [:feature, @name]
         comment = @comment.to_sexp

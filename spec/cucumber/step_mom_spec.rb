@@ -19,13 +19,13 @@ module Cucumber
       format.should == "it [snows] in [april]"
     end
 
-    it "should raise Multiple error when multiple step definitions match" do
+    it "should raise Ambiguous error when multiple step definitions match" do
       @step_mother.Given(/Three (.*) mice/) {|disability|}
       @step_mother.Given(/Three blind (.*)/) {|animal|}
 
       lambda do
         @step_mother.step_invocation("Three blind mice", Object.new)
-      end.should raise_error(StepMom::Multiple, %{Multiple step definitions match "Three blind mice":
+      end.should raise_error(StepMom::Ambiguous, %{Ambiguous match of "Three blind mice":
 
 spec/cucumber/step_mom_spec.rb:23:in `/Three (.*) mice/'
 spec/cucumber/step_mom_spec.rb:24:in `/Three blind (.*)/'
@@ -39,11 +39,11 @@ spec/cucumber/step_mom_spec.rb:24:in `/Three blind (.*)/'
       end.should raise_error(StepMom::Undefined)
     end
 
-    it "should raise Duplicate error when same regexp is registered twice" do
+    it "should raise Redundant error when same regexp is registered twice" do
       @step_mother.Given(/Three (.*) mice/) {|disability|}
       lambda do
         @step_mother.Given(/Three (.*) mice/) {|disability|}
-      end.should raise_error(StepMom::Duplicate)
+      end.should raise_error(StepMom::Redundant)
     end
   end
 end

@@ -5,9 +5,10 @@ module Cucumber
     class Progress < Ast::Visitor
       include Console
 
-      def initialize(step_mother, io)
+      def initialize(step_mother, io, options)
         super(step_mother)
         @io = (io == STDOUT) ? Kernel : io
+        @options = options
         @errors             = []
         @pending_scenarios  = []
       end

@@ -170,7 +170,7 @@ module Cucumber
 
       def output_failing_step(step)
         @io.puts failed("      #{step.error.message.split("\n").join(INDENT)} (#{step.error.class})")
-        @io.puts failed("      #{step.error.cucumber_backtrace.join(INDENT)}")
+        @io.puts failed("      #{step.error.backtrace.join(INDENT)}")
       end
 
       def dump
