@@ -30,7 +30,7 @@ Pretty printing
   # My scenario comment
   # On two lines
   @three @four
-  Scenario: A Scenario
+  Scenario: A Scenario\e[90m                       # features/pretty_printing.feature:9\e[0m
     \e[32mGiven a \e[32m\e[1mpassing\e[0m\e[0m\e[32m step with an inline arg:\e[90m # spec/cucumber/ast/feature_factory.rb:15\e[0m\e[0m
       | \e[32m1   \e[0m | \e[32m22   \e[0m | \e[32m333   \e[0m |
       | \e[32m4444\e[0m | \e[32m55555\e[0m | \e[32m666666\e[0m |

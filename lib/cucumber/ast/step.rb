@@ -46,12 +46,11 @@ module Cucumber
       end
 
       def comment_padding
-        max_length = @scenario.max_step_length
-        max_length - text_length
+        @scenario.comment_padding(text_length)
       end
 
       def text_length
-        @gwt.jlength + @name.jlength
+        @gwt.jlength + @name.jlength + 2 # Add 2 because steps get indented 2 more than scenarios
       end
 
       private

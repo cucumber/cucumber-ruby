@@ -24,7 +24,11 @@ module Cucumber
       end
 
       def append_backtrace_line(exception, step_name, line)
-        exception.backtrace << "#{@file}:#{line}:in `#{step_name}'"
+        exception.backtrace << "#{file_line(line)}:in `#{step_name}'"
+      end
+
+      def file_line(line)
+        "#{@file}:#{line}"
       end
 
       def to_sexp
