@@ -75,6 +75,7 @@ module Cucumber
           rescue Exception => exception
             @status = :failed
             @exception = exception
+            @scenario.append_backtrace_line(@exception, "#{@gwt} #{@name}", @line) if @scenario
           end
         end
         @scenario.step_executed(@status) if @scenario
@@ -98,7 +99,6 @@ module Cucumber
           arg.arguments_replaced(arguments)
         end
       end
-
     end
   end
 end

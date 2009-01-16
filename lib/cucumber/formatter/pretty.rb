@@ -10,9 +10,10 @@ module Cucumber
     class Pretty < Ast::Visitor
       include Console
 
-      def initialize(step_mother, io)
+      def initialize(step_mother, io, options)
         super(step_mother)
         @io = (io == STDOUT) ? Kernel : io
+        @options = options
       end
 
       def visit_features(features)
@@ -100,14 +101,14 @@ module Cucumber
 
       def visit_step_exception(e)
         @io.print('      ' + e.message + "\n")
-        @io.print('      ' + e.cucumber_backtrace.join("\n      ") + "\n")
+        @io.print('      ' + e.backtrace.join("\n      ") + "\n")
       end
 
       private
 
       def format_step(gwt, step_name, status, step_invocation, comment_padding)
         line = if step_invocation
-          comment = format_string(' # ' + step_invocation.file_colon_line, :comment)
+          comment = @options[:source] ? format_string(' # ' + step_invocation.file_colon_line, :comment) : ''
           padding = " " * comment_padding
           gwt + " " + step_invocation.format_args(format_for(status, :param)) + padding + comment
         else

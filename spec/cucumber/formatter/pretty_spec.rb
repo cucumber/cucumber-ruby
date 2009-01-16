@@ -15,7 +15,7 @@ module Cucumber
         step_mother = Object.new
         f = create_feature(step_mother)
         io = StringIO.new
-        pretty = Formatter::Pretty.new(step_mother, io)
+        pretty = Formatter::Pretty.new(step_mother, io, {:source => true})
         pretty.visit_feature(f)
 
         # Just to ensure that the API is the same
@@ -43,7 +43,8 @@ Pretty printing
     \e[31mGiven a \e[31m\e[1mfailing\e[0m\e[0m\e[31m step                    \e[90m # spec/cucumber/ast/feature_factory.rb:17\e[0m\e[0m
       I flunked
       ./spec/cucumber/ast/../../cucumber/ast/feature_factory.rb:9:in `flunk'
-      ./spec/cucumber/ast/../../cucumber/ast/feature_factory.rb:18:in `(?-mix:^a (.*) step$)'
+      ./spec/cucumber/ast/../../cucumber/ast/feature_factory.rb:18:in `/^a (.*) step$/'
+      features/pretty_printing.feature:12:in `Given a failing step'
 }
       end
     end

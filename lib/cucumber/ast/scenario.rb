@@ -48,6 +48,10 @@ module Cucumber
         @feature.step_executed(self, step_status) if @feature
       end
 
+      def append_backtrace_line(exception, step_name, line)
+        @feature.append_backtrace_line(exception, step_name, line)
+      end
+
       def to_sexp
         sexp = [:scenario, @line, @keyword, @name]
         comment = @comment.to_sexp

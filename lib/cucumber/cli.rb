@@ -269,9 +269,9 @@ Defined profiles in cucumber.yml:
         output_broadcaster = build_output_broadcaster(output_list)
         case format
         when 'pretty'
-          formatter_broadcaster.register(Formatter::Pretty.new(step_mother, output_broadcaster))
+          formatter_broadcaster.register(Formatter::Pretty.new(step_mother, output_broadcaster, @options))
         when 'progress'
-          formatter_broadcaster.register(Formatter::Progress.new(step_mother, output_broadcaster))
+          formatter_broadcaster.register(Formatter::Progress.new(step_mother, output_broadcaster, @options))
         when 'profile'
           formatter_broadcaster.register(Formatters::ProfileFormatter.new(output_broadcaster, step_mother))
         when 'html'

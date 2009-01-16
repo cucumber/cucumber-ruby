@@ -5,13 +5,19 @@ module Cucumber
 end
 
 class Object
-  def cucumber_instance_exec(*args, &block)
+  def cucumber_instance_exec(check_arity, pseudo_method, *args, &block)
     arity = block.arity
     arity = 0 if arity == -1
-    if args.length != block.arity
+    if check_arity && args.length != arity
       raise Cucumber::ArityMismatchError.new("expected #{arity} block argument(s), got #{args.length}")
     else
-      instance_exec(*args, &block)
+      begin
+        instance_exec(*args, &block)
+      rescue Exception => e
+        instance_exec_invocation_line = "#{__FILE__}:#{__LINE__ - 2}:in `cucumber_instance_exec'"
+        e.cucumber_strip_backtrace!(instance_exec_invocation_line, pseudo_method)
+        raise e
+      end
     end
   end
   

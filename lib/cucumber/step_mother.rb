@@ -14,21 +14,23 @@ module Cucumber
     class Pending < StandardError
     end
 
-    class Multiple < StandardError
+    # Raised when a step matches 2 or more StepDefinition
+    class Ambiguous < StandardError
       def initialize(step_name, step_definitions)
         @step_name = step_name
         @step_definitions = step_definitions
       end
       
       def message
-        message = "Multiple step definitions match \"#{@step_name}\":\n\n"
+        message = "Ambiguous match of \"#{@step_name}\":\n\n"
         message << @step_definitions.map{|sd| sd.to_backtrace_line}.join("\n")
         message << "\n\n"
         message
       end
     end
 
-    class Duplicate < StandardError
+    # Raised when 2 or more StepDefinition have the same Regexp
+    class Redundant < StandardError
       def initialize(step_def_1, step_def_2)
         @step_def_1, @step_def_2 = step_def_1, step_def_2
       end
@@ -54,7 +56,7 @@ module Cucumber
     def register_step_definition(regexp, &proc)
       step_definition = StepDefinition.new(regexp, &proc)
       step_definitions.each do |already|
-        raise Duplicate.new(already, step_definition) if already.match(regexp)
+        raise Redundant.new(already, step_definition) if already.match(regexp)
       end
       step_definitions << step_definition
       step_definition
@@ -63,7 +65,7 @@ module Cucumber
     def world(scenario, &proc)
       world = new_world
       (@before_procs ||= []).each do |proc|
-        world.instance_exec(scenario, &proc)
+        world.cucumber_instance_exec(false, 'Before', scenario, &proc)
       end
       yield world
     end
@@ -101,7 +103,7 @@ module Cucumber
         step_definition.match(step_name)
       end
       raise Undefined.new(step_name) if found.empty?
-      raise Multiple.new(step_name, found) if found.size > 1
+      raise Ambiguous.new(step_name, found) if found.size > 1
       Invocation.new(world, found[0], step_name)
     end
 

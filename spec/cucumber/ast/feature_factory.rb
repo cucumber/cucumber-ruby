@@ -45,6 +45,8 @@ module Cucumber
             ]
           )]
         )
+        f.file = 'features/pretty_printing.feature'
+        f
       end
     end
   end

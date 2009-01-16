@@ -22,7 +22,6 @@ module Cucumber
     def initialize(regexp, &proc)
       raise MissingProc if proc.nil?
       @regexp, @proc = regexp, proc
-      @proc.extend(CoreExt::CallIn)
     end
 
     #:stopdoc:
@@ -43,14 +42,8 @@ module Cucumber
     end
 
     def execute(world, *args)
-      begin
-        args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
-        world.instance_exec(*args, &@proc)
-      rescue Exception => e
-        method_line = "#{__FILE__}:#{__LINE__ - 2}:in `execute'"
-        e.cucumber_strip_backtrace!(method_line, @regexp.to_s)
-        raise e
-      end
+      args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
+      world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
     end
 
     def to_backtrace_line
