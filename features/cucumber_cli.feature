@@ -7,9 +7,9 @@ Feature: Cucumber command line
     Then it should pass with
       """
       Feature: Sample
+
         Scenario: Missing
           Given missing
-
 
       1 scenario
       1 step undefined
@@ -21,12 +21,15 @@ Feature: Cucumber command line
     Then it should fail with
       """
       Feature: Sample
+
         Scenario: Failing
           Given failing
+            | e | f |
+            | g | h |
             FAIL (RuntimeError)
-            ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
+            ./features/step_definitions/sample_steps.rb:2:in `flunker'
+            ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
             features/sample.feature:12:in `Given failing'
-
 
       1 scenario
       1 step failed
@@ -38,19 +41,22 @@ Feature: Cucumber command line
     Then it should fail with
       """
       Feature: Sample
+
         Scenario: Missing
           Given missing
 
         Scenario: Failing
           Given failing
+            | e | f |
+            | g | h |
             FAIL (RuntimeError)
-            ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
+            ./features/step_definitions/sample_steps.rb:2:in `flunker'
+            ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
             features/sample.feature:12:in `Given failing'
-
 
       2 scenarios
       1 step failed
-      1 step pending (1 with no step definition)
+      1 step undefined
 
       """
 
@@ -60,9 +66,9 @@ Feature: Cucumber command line
     Then it should pass with
       """
       Feature: Sample
+
         Scenario: Missing
           Given missing
-
 
       1 scenario
       1 step passed
@@ -74,9 +80,9 @@ Feature: Cucumber command line
     Then it should pass with
       """
       Feature: Sample
+
         Scenario: Passing
           Given passing
-
 
       1 scenario
       1 step passed
@@ -85,12 +91,12 @@ Feature: Cucumber command line
 
   Scenario: Specify the line number of a row
     When I run cucumber -q features/sample.feature:8
-    Then the output should be
+    Then it should pass with
       """
       Feature: Sample
+
         Scenario: Passing
           Given passing
-
 
       1 scenario
       1 step passed

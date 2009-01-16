@@ -13,9 +13,13 @@ When /^I run cucumber (.*)$/ do |cmd|
 end
 
 Then /^it should (fail|pass) with$/ do |success, output|
+#puts @out
   @out.should == output
-  code = success == 'fail' ? 1 : 0
-  @status.should == code
+  if success == 'fail'
+    @status.should_not == 0
+  else
+    @status.should == 0
+  end
 end
 
 Then /^(.*) should contain$/ do |file, text|

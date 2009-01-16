@@ -155,6 +155,7 @@ module Cucumber
 
       visitor = build_formatter_broadcaster(step_mother)
       visitor.visit_features(features)
+      Kernel.exit features.step_count[:failed]
     end
 
     private

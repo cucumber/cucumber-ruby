@@ -26,6 +26,7 @@ module Cucumber
         io.read.should == %{# My feature comment
 @one @two
 Pretty printing
+
   # My scenario comment
   # On two lines
   @three @four
@@ -41,10 +42,11 @@ Pretty printing
       
       \"\"\"\e[0m
     \e[31mGiven a \e[31m\e[1mfailing\e[0m\e[0m\e[31m step                    \e[90m # spec/cucumber/ast/feature_factory.rb:17\e[0m\e[0m
-      I flunked
+      I flunked (RuntimeError)
       ./spec/cucumber/ast/../../cucumber/ast/feature_factory.rb:9:in `flunk'
       ./spec/cucumber/ast/../../cucumber/ast/feature_factory.rb:18:in `/^a (.*) step$/'
       features/pretty_printing.feature:12:in `Given a failing step'
+
 }
       end
     end

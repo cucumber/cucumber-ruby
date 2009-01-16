@@ -9,13 +9,19 @@ module Cucumber
         super(step_mother)
         @io = (io == STDOUT) ? Kernel : io
         @options = options
-        @errors             = []
-        @pending_scenarios  = []
       end
 
       def visit_features(features)
         super
+        @io.puts
+        @io.puts
         print_summary(@io, features)
+      end
+
+      def visit_multiline_arg(multiline_arg, status)
+        @multiline_arg = true
+        super
+        @multiline_arg = false
       end
 
       def visit_feature_element(feature_element)
@@ -24,12 +30,28 @@ module Cucumber
       end
 
       def visit_step_name(gwt, step_name, status, step_invocation, comment_padding)
-        @io.print(format_string('.', status)) unless status == :outline
+        progress(status) unless status == :outline
       end
 
       def visit_table_cell_value(value, width, status)
-        @io.print(format_string('.', status)) unless status == :thead
+        progress(status) if (status != :thead) && !@multiline_arg
       end
+      
+    private
+
+      CHARS = {
+        :passed    => '.',
+        :failed    => 'F',
+        :undefined => 'U',
+        :pending   => 'P',
+        :skipped   => 'S'
+      }
+
+      def progress(status)
+        char = CHARS[status]
+        @io.print(format_string(char, status))
+      end
+      
     end
   end
 end

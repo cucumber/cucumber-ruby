@@ -44,9 +44,9 @@ class Exception
       bt[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'")
       bt[replacement_line+1..-1] = nil
 
-      # bt.map {|b| b.split("\n") }.flatten.reject do |line|
-      #   CUCUMBER_FILTER_PATTERNS.detect{|p| line =~ p}
-      # end.map { |line| line.strip }
+      bt.reject! do |line|
+        CUCUMBER_FILTER_PATTERNS.detect{|p| line =~ p}
+      end
 
       bt.compact!
     else
