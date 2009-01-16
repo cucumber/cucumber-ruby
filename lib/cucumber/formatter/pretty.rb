@@ -110,9 +110,13 @@ module Cucumber
 
       def format_step(gwt, step_name, status, step_invocation, comment_padding)
         line = if step_invocation
-          comment = @options[:source] ? format_string(' # ' + step_invocation.file_colon_line, :comment) : ''
-          padding = " " * comment_padding
-          gwt + " " + step_invocation.format_args(format_for(status, :param)) + padding + comment
+          comment = if @options[:source]
+            c = (' # ' + step_invocation.file_colon_line).indent(comment_padding)
+            format_string(c, :comment)
+          else
+            ''
+          end
+          gwt + " " + step_invocation.format_args(format_for(status, :param)) + comment
         else
           gwt + " " + step_name
         end
