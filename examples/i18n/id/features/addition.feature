@@ -5,7 +5,7 @@ Fitur: Addition
 
   Skenario konsep: Menjumlahkan dua bilangan
     Dengan aku sudah masukkan <input_1> ke kalkulator
-    Dan aku sudah masukkan <input_1> ke kalkulator
+    Dan aku sudah masukkan <input_2> ke kalkulator
     Ketika aku tekan <button>
     Maka hasilnya harus <output> di layar
 

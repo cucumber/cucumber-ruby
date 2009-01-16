@@ -19,9 +19,9 @@ module Cucumber
       end
 
       def execute_with_arguments(argument_hash, world, previous, visitor)
-        arguments = delimit_argument_names(argument_hash)
-        name = replace_name_arguments(argument_hash)
-        multiline_args = replace_multiline_args_arguments(argument_hash)
+        delimited_arguments = delimit_argument_names(argument_hash)
+        name                = replace_name_arguments(delimited_arguments)
+        multiline_args      = replace_multiline_args_arguments(delimited_arguments)
 
         # We'll create a new step and execute that
         step = Step.new(-1, @gwt, name, *multiline_args)
