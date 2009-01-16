@@ -45,12 +45,14 @@ module Cucumber
       end
 
       def visit_feature_name(name)
-        @io.print("#{name}\n")
+        @io.puts(name)
+        @io.puts
       end
 
       def visit_feature_element(feature_element)
         @indent = 2
         feature_element.accept(self)
+        @io.puts
       end
 
       def visit_examples(examples)
@@ -63,7 +65,7 @@ module Cucumber
       end
 
       def visit_scenario_name(keyword, name)
-        @io.print("  #{keyword} #{name}\n")
+        @io.puts("  #{keyword} #{name}")
       end
 
       def visit_step(step)
@@ -76,8 +78,8 @@ module Cucumber
         @io.print("    " + formatted_step_name + "\n")
       end
 
-      def visit_inline_arg(inline_arg, status)
-        inline_arg.accept(self, status)
+      def visit_multiline_arg(multiline_arg, status)
+        multiline_arg.accept(self, status)
       end
 
       def visit_table_row(table_row, status)
@@ -100,8 +102,8 @@ module Cucumber
       end
 
       def visit_step_exception(e)
-        @io.print('      ' + e.message + "\n")
-        @io.print('      ' + e.backtrace.join("\n      ") + "\n")
+        @io.puts("      #{e.message} (#{e.class})")
+        @io.puts('      ' + e.backtrace.join("\n      "))
       end
 
       private

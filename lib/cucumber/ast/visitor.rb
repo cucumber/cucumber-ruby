@@ -61,8 +61,8 @@ module Cucumber
       def visit_step_name(gwt, step_name, status, step_invocation, comment_padding)
       end
 
-      def visit_inline_arg(inline_arg, status)
-        inline_arg.accept(self, status)
+      def visit_multiline_arg(multiline_arg, status)
+        multiline_arg.accept(self, status)
       end
 
       def visit_py_string(string, status)

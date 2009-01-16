@@ -150,8 +150,8 @@ module Cucumber
 
     module WorldMethods #:nodoc:
       # Call a step from within a step definition
-      def __cucumber_invoke(name, *inline_arguments)
-        @__cucumber_step_mother.step_invocation(name, self).invoke(*inline_arguments)
+      def __cucumber_invoke(name, *multiline_arguments)
+        @__cucumber_step_mother.step_invocation(name, self).invoke(*multiline_arguments)
       end
 
       def pending(message = "TODO")

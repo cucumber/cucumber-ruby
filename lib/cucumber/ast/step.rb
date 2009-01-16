@@ -31,8 +31,8 @@ module Cucumber
 
       def accept(visitor)
         visitor.visit_step_name(@gwt, @name, @status, @step_invocation, comment_padding)
-        @multiline_args.each do |inline_arg|
-          visitor.visit_inline_arg(inline_arg, @status)
+        @multiline_args.each do |multiline_arg|
+          visitor.visit_multiline_arg(multiline_arg, @status)
         end
         visitor.visit_step_exception(@exception) if @exception
       end

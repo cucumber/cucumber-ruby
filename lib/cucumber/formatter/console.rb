@@ -16,9 +16,6 @@ module Cucumber
       end
 
       def print_summary(io, features)
-        io.puts
-        io.puts
-        
         io.puts dump_count(features.scenarios.length, "scenario")
 
         pending_count = features.scenarios.select{|scenario| scenario.pending?}.length
