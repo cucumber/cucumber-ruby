@@ -77,7 +77,7 @@ module Cucumber
             @exception = exception
           end
         end
-        @scenario.increment_step_count(@status) if @scenario
+        @scenario.step_executed(@status) if @scenario
         [@status, matched_args]
       end
 

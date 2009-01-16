@@ -19,11 +19,12 @@ module Cucumber
         io.puts
         io.puts
         
-        io.puts dump_count(scenarios.length, "scenario")
+        io.puts dump_count(features.scenarios.length, "scenario")
 
-        if scenarios(pending=true).any?
-          pending_count = dump_count(scenarios(:pending).length, "scenario", "pending")
-          io.puts format_string(pending_count, :pending)
+        pending_count = features.scenarios.select{|scenario| scenario.pending?}.length
+        if pending_count > 0
+          pending_count_string = dump_count(pending_count, "scenario", "pending")
+          io.puts format_string(pending_count_string, :pending)
         end
         
         [:failed, :skipped, :undefined, :pending, :passed].each do |status|

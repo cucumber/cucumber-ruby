@@ -19,8 +19,8 @@ module Cucumber
         end
       end
 
-      def increment_step_count(step_status)
-        @features.increment_step_count(step_status) if @features
+      def step_executed(scenario, step_status)
+        @features.step_executed(scenario, step_status) if @features
       end
 
       def to_sexp

@@ -30,26 +30,21 @@ module Cucumber
       end
 
       def visit_comment_line(comment_line)
-        indent
-        @io.print(comment_line)
-        @io.print("\n")
+        @io.puts(comment_line.indent(@indent)) unless comment_line.blank?
       end
 
       def visit_tags(tags)
-        indent
-        @tag_space = ""
         tags.accept(self)
-        @io.print("\n")
+        @io.puts if @indent == 1
       end
 
       def visit_tag_name(tag_name)
-        @io.print(@tag_space)
-        @io.print("@#{tag_name}")
-        @tag_space = " "
+        @io.print("@#{tag_name}".indent(@indent))
+        @indent = 1
       end
 
       def visit_feature_name(name)
-        @io.print("Feature: #{name}\n\n")
+        @io.print("#{name}\n")
       end
 
       def visit_feature_element(feature_element)
@@ -85,8 +80,7 @@ module Cucumber
       end
 
       def visit_table_row(table_row, status)
-        indent
-        @io.print '|'
+        @io.print '|'.indent(@indent)
         table_row.accept(self, status)
         @io.puts
       end
@@ -110,10 +104,6 @@ module Cucumber
       end
 
       private
-
-      def indent
-        @io.print(' ' * @indent)
-      end
 
       def format_step(gwt, step_name, status, step_invocation, comment_padding)
         line = if step_invocation
