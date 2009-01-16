@@ -107,7 +107,7 @@ Feature: Cucumber command line
     When I run cucumber -q --format progress features/sample.feature
     Then it should fail with
       """
-      P.F
+      U.F
 
       Pending Scenarios:
       
@@ -132,6 +132,7 @@ Feature: Cucumber command line
         For å slippe å gjøre dumme feil
         Som en regnskapsfører
         Vil jeg kunne legge sammen
+
         Scenario: to tall
           Gitt at jeg har tastet inn 5
           Og at jeg har tastet inn 7
@@ -144,7 +145,6 @@ Feature: Cucumber command line
           Og at jeg har tastet inn 1
           Når jeg summerer
           Så skal resultatet være 13
-
 
       2 scenarios
       9 steps passed
