@@ -41,8 +41,11 @@ module Cucumber
           @steps.each do |step|
             previous, matched_args = step.execute_with_arguments(argument_hash, world, previous, visitor)
             matched_args.each do
-              proc.call(cells[cell_index], previous)
-              cell_index += 1
+              cell = cells[cell_index]
+              if cell
+                proc.call(cell, previous)
+                cell_index += 1
+              end
             end
           end
         end

@@ -121,7 +121,7 @@ Defined profiles in cucumber.yml:
     end
     
     it "should accept --dry-run option" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       cli.parse_options!(%w{--dry-run})
       cli.options[:dry_run].should be_true
       cli.execute!(stub('step mother'))
@@ -199,13 +199,13 @@ Defined profiles in cucumber.yml:
     end
 
     it "should accept --out option" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       File.should_receive(:open).with('jalla.txt', 'w')
       cli.parse_options!(%w{--out jalla.txt})
     end
 
     it "should accept multiple --out options" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       mock_file1 = stub(File, :open => nil)
       mock_file2 = stub(File, :open => nil)
       File.stub!(:open).and_return(mock_file1, mock_file2)
@@ -215,14 +215,14 @@ Defined profiles in cucumber.yml:
     end
 
     it "should accept multiple --format options" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       cli.parse_options!(%w{--format pretty --format progress})
       cli.options[:formats].should have_key('pretty')
       cli.options[:formats].should have_key('progress')
     end
 
     it "should associate --out to previous --format" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       mock_file1 = stub(File, :open => nil)
       mock_file2 = stub(File, :open => nil)
       File.stub!(:open).and_return(mock_file1, mock_file2)
@@ -241,7 +241,7 @@ Defined profiles in cucumber.yml:
     end
 
     it "should setup the executor with the formatter broadcaster" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       broadcaster = Broadcaster.new
       Broadcaster.stub!(:new).and_return(broadcaster)
       cli.parse_options!(%w{--format progress})
@@ -254,7 +254,7 @@ Defined profiles in cucumber.yml:
      describe "in module" do
 
         it "should resolve each module until it gets Formatter class" do
-          cli = CLI.new
+          cli = CLI.new(StringIO.new)
           mock_module = mock('module')
           cli.parse_options!(%w{--format ZooModule::MonkeyFormatterClass})
           Object.stub!(:const_defined?).and_return(true)
@@ -384,7 +384,7 @@ Defined profiles in cucumber.yml:
     end
 
     it "should accept --color option" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       cli.parse_options!(['--color'])
       cli.options[:color].should == true
       Term::ANSIColor.should_receive(:coloring=).with(true)
@@ -392,7 +392,7 @@ Defined profiles in cucumber.yml:
     end
 
     it "should accept --no-color option" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       cli.parse_options!(['--no-color'])
       cli.options[:color].should == false
       Term::ANSIColor.should_receive(:coloring=).with(false)
@@ -400,7 +400,7 @@ Defined profiles in cucumber.yml:
     end
 
     it "should accept --color and --no-color and use the last one" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       cli.parse_options!(['--color', '--no-color'])
       cli.options[:color].should == false
       Term::ANSIColor.should_receive(:coloring=).with(false)
@@ -408,7 +408,7 @@ Defined profiles in cucumber.yml:
     end
 
     it "should use a default color setting if no option is given" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       cli.parse_options!(['--'])
       cli.options[:color].should == nil
       Term::ANSIColor.should_not_receive(:coloring=)
@@ -446,7 +446,7 @@ Defined profiles in cucumber.yml:
     end
 
     it "should search for all features in the specified directory" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
 
       cli.parse_options!(%w{feature_directory/})
       File.stub!(:directory?).and_return(true)
