@@ -12,7 +12,7 @@ module Cucumber
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, @name)
+        visitor.visit_scenario_name(@keyword, @name, file_line, comment_padding(text_length))
         visitor.world(self) do |world|
           previous = :passed
           @steps.each do |step|
@@ -22,8 +22,17 @@ module Cucumber
         end
       end
 
-      def max_step_length
-        @steps.map{|step| step.text_length}.max
+      def comment_padding(text_length)
+        max_line_length - text_length
+      end
+
+      def max_line_length
+        lengths = (@steps + [self]).map{|e| e.text_length}
+        lengths.max
+      end
+
+      def text_length
+        @keyword.jlength + @name.jlength
       end
 
       def at_any_line?(lines)
@@ -50,6 +59,10 @@ module Cucumber
 
       def append_backtrace_line(exception, step_name, line)
         @feature.append_backtrace_line(exception, step_name, line)
+      end
+
+      def file_line
+        @feature.file_line(@line) if @feature
       end
 
       def to_sexp

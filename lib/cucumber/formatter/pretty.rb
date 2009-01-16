@@ -64,8 +64,9 @@ module Cucumber
         @indent = 4
       end
 
-      def visit_scenario_name(keyword, name)
-        @io.puts("  #{keyword} #{name}")
+      def visit_scenario_name(keyword, name, file_line, comment_padding)
+        line_comment = " # #{file_line}".indent(comment_padding)
+        @io.puts("  #{keyword} #{name}" + format_string(line_comment, :comment))
       end
 
       def visit_step(step)

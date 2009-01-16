@@ -51,7 +51,7 @@ module Cucumber
       def visit_examples_name(keyword, name)
       end
 
-      def visit_scenario_name(keyword, name)
+      def visit_scenario_name(keyword, name, file_line, comment_padding)
       end
 
       def visit_step(step)
