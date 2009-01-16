@@ -4,8 +4,6 @@ module Cucumber
     class Visitor
       def initialize(step_mother)
         @step_mother = step_mother
-        
-        @scenarios = []
       end
 
       def world(scenario, &proc)
@@ -14,10 +12,6 @@ module Cucumber
 
       def step_invocation(step_name, world)
         @step_mother.step_invocation(step_name, world)
-      end
-
-      def scenarios(pending=false)
-        @scenarios.select{|scenario| scenario.pending? == pending}
       end
 
       def visit_features(features)
@@ -47,7 +41,6 @@ module Cucumber
 
       # +feature_element+ is either Scenario or ScenarioOutline
       def visit_feature_element(feature_element)
-        @scenarios << feature_element if Scenario === feature_element
         feature_element.accept(self)
       end
 

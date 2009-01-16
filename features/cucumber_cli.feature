@@ -12,7 +12,7 @@ Feature: Cucumber command line
 
 
       1 scenario
-      1 step pending (1 with no step definition)
+      1 step undefined
       
       """
       
@@ -177,9 +177,6 @@ Feature: Cucumber command line
 
   Scenario: Multiple formatters and outputs
     When I run cucumber --format progress --out tmp/progress.txt --format html --out tmp/features.html features
-    Then it should fail with
-      """
-      """
     And examples/self_test/tmp/progress.txt should contain
       """
       P.FP.F

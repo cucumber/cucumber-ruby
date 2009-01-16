@@ -25,8 +25,7 @@ module Cucumber
         io.rewind
         io.read.should == %{# My feature comment
 @one @two
-Feature: Pretty printing
-
+Pretty printing
   # My scenario comment
   # On two lines
   @three @four

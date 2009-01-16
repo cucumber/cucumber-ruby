@@ -26,7 +26,7 @@ module Cucumber
         @steps.map{|step| step.text_length}.max
       end
 
-      def at_eny_line?(lines)
+      def at_any_line?(lines)
         lines.each {|line| return true if at_line?(line)}
         false
       end
@@ -44,8 +44,8 @@ module Cucumber
         @steps.empty?
       end
       
-      def increment_step_count(step_status)
-        @feature.increment_step_count(step_status) if @feature
+      def step_executed(step_status)
+        @feature.step_executed(self, step_status) if @feature
       end
 
       def to_sexp

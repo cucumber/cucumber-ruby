@@ -1,6 +1,3 @@
-Given /^passing$/ do
-end
-
 Given /^passing$/ do |table|
 end
 
