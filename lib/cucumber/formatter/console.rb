@@ -15,6 +15,39 @@ module Cucumber
         end
       end
 
+      def print_summary(io, features)
+        io.puts
+        io.puts
+        
+        io.puts dump_count(scenarios.length, "scenario")
+
+        if scenarios(pending=true).any?
+          pending_count = dump_count(scenarios(:pending).length, "scenario", "pending")
+          io.puts format_string(pending_count, :pending)
+        end
+        
+        [:failed, :skipped, :undefined, :pending, :passed].each do |status|
+          if features.step_count[status] > 0
+            count_string = dump_count(features.step_count[status], "step", status.to_s)
+            io.puts format_string(count_string, status)
+          end
+        end
+      end
+
+    private
+
+      def dump_count(count, what, state=nil)
+        [count, "#{what}#{count == 1 ? '' : 's'}", state].compact.join(" ")
+      end
+
+      def print_pending_messages
+        @io.puts "Pending Notes:"
+        @pending_messages.each_value do |message|
+          @io.puts message
+        end
+        @io.puts
+      end
+
       def format_for(*keys)
         key = keys.join('_').to_sym
         fmt = FORMATS[key]

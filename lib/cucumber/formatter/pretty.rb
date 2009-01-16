@@ -15,6 +15,11 @@ module Cucumber
         @io = (io == STDOUT) ? Kernel : io
       end
 
+      def visit_features(features)
+        super
+        print_summary(@io, features)
+      end
+
       def visit_feature(feature)
         @indent = 0
         feature.accept(self)

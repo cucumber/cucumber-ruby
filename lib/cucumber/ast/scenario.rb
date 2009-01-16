@@ -1,6 +1,8 @@
 module Cucumber
   module Ast
     class Scenario
+      attr_writer :feature
+      
       def initialize(comment, tags, line, keyword, name, steps)
         @comment, @tags, @line, @keyword, @name = comment, tags, line, keyword, name
         steps.each {|step| step.scenario = self}
@@ -14,7 +16,7 @@ module Cucumber
         visitor.world(self) do |world|
           previous = :passed
           @steps.each do |step|
-            previous = step.execute(world, previous, visitor)
+            previous, matched_args = step.execute(world, previous, visitor)
             visitor.visit_step(step)
           end
         end
@@ -40,6 +42,10 @@ module Cucumber
 
       def pending?
         @steps.empty?
+      end
+      
+      def increment_step_count(step_status)
+        @feature.increment_step_count(step_status) if @feature
       end
 
       def to_sexp

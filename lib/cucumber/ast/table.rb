@@ -153,6 +153,10 @@ module Cucumber
           self[n].value
         end
 
+        def [](n)
+          @cells[n]
+        end
+
         private
 
         def index
@@ -161,10 +165,6 @@ module Cucumber
 
         def width
           map{|cell| cell.value.length}.max
-        end
-
-        def [](n)
-          @cells[n]
         end
 
         def each(&proc)

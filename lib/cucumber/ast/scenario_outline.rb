@@ -33,11 +33,17 @@ module Cucumber
         end
       end
 
-      def execute_row(hash, visitor)
+      def execute_row(cells, visitor, &proc)
         visitor.world(self) do |world|
           previous = :passed
+          argument_hash = cells.to_hash
+          cell_index = 0
           @steps.each do |step|
-            previous = step.execute_with_arguments(hash, world, previous, visitor)
+            previous, matched_args = step.execute_with_arguments(argument_hash, world, previous, visitor)
+            matched_args.each do
+              proc.call(cells[cell_index], previous)
+              cell_index += 1
+            end
           end
         end
       end

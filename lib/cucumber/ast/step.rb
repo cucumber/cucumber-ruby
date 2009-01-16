@@ -7,7 +7,8 @@ module Cucumber
       ARGUMENT_START = '<'
       ARGUMENT_END  = '>'
 
-      attr_writer :scenario, :status
+      attr_writer :scenario
+      attr_accessor :status
 
       def initialize(line, gwt, name, *multiline_args)
         @line, @gwt, @name, @multiline_args = line, gwt, name, multiline_args
@@ -17,12 +18,15 @@ module Cucumber
         _execute(@name, @multiline_args, world, previous, visitor)
       end
 
-      def execute_with_arguments(arguments, world, previous, visitor)
-        arguments = delimit_argument_names(arguments)
-        name = replace_name_arguments(arguments)
-        multiline_args = replace_multiline_args_arguments(arguments)
+      def execute_with_arguments(argument_hash, world, previous, visitor)
+        arguments = delimit_argument_names(argument_hash)
+        name = replace_name_arguments(argument_hash)
+        multiline_args = replace_multiline_args_arguments(argument_hash)
 
-        _execute(name, multiline_args, world, previous, visitor)
+        # We'll create a new step and execute that
+        step = Step.new(-1, @gwt, name, *multiline_args)
+        step.scenario = @scenario
+        step.execute(world, previous, visitor)
       end
 
       def accept(visitor)
@@ -53,11 +57,13 @@ module Cucumber
       private
 
       def _execute(name, multiline_args, world, previous, visitor)
+        matched_args = []
         if @status.nil?
           begin
             @step_invocation = visitor.step_invocation(name, world)
+            matched_args = @step_invocation.matched_args
             if previous == :passed
-              @step_invocation.invoke(*multiline_args)
+              @step_invocation.invoke(*(matched_args + multiline_args))
               @status = :passed
             else
               @status = :skipped
@@ -71,16 +77,17 @@ module Cucumber
             @exception = exception
           end
         end
-        @status
+        @scenario.increment_step_count(@status) if @scenario
+        [@status, matched_args]
       end
 
-      def delimit_argument_names(arguments)
-        arguments.inject({}) { |h,(k,v)| h["#{ARGUMENT_START}#{k}#{ARGUMENT_END}"] = v; h }
+      def delimit_argument_names(argument_hash)
+        argument_hash.inject({}) { |h,(k,v)| h["#{ARGUMENT_START}#{k}#{ARGUMENT_END}"] = v; h }
       end
 
-      def replace_name_arguments(arguments)
+      def replace_name_arguments(argument_hash)
         name_with_arguments_replaced = @name
-        arguments.each do |name, value|
+        argument_hash.each do |name, value|
           name_with_arguments_replaced = name_with_arguments_replaced.gsub(name, value)
         end
         name_with_arguments_replaced

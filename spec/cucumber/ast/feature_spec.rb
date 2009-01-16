@@ -34,6 +34,7 @@ module Cucumber
         s1 = mock("Scenario 1")
         s2 = mock("Scenario 2")
         s3 = mock("Scenario 3")
+        [s1, s2, s3].each{|s| s.should_receive(:feature=)}
         f = Ast::Feature.new(
           Ast::Comment.new(""),
           Ast::Tags.new([]),

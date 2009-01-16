@@ -114,12 +114,12 @@ module Cucumber
         @world, @step_definition, @step_name = world, step_definition, step_name
       end
 
-      # Invokes the step deficition. Any number
-      # of +multiline_args+ can also be passed, although in practice
-      # there will be 0 or 1, since the parser only supports
-      # 1 inline argument (Table or InlineString) per Step.
-      def invoke(*multiline_args) #:nodoc
-        @step_definition.execute_by_name(@world, @step_name, *multiline_args)
+      def matched_args
+        @step_definition.matched_args(@step_name)
+      end
+
+      def invoke(*args) #:nodoc
+        @step_definition.execute(@world, *args)
       end
 
       # Formats the matched arguments of the associated Step. This method

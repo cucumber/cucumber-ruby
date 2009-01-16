@@ -3,10 +3,11 @@ module Cucumber
     # Represents the root node of a parsed feature.
     class Feature
       attr_accessor :file
-      attr_writer :lines
+      attr_writer :lines, :features
 
       def initialize(comment, tags, name, feature_elements)
         @comment, @tags, @name, @feature_elements = comment, tags, name, feature_elements
+        feature_elements.each{|feature_element| feature_element.feature = self}
       end
 
       def accept(visitor)
@@ -16,6 +17,10 @@ module Cucumber
         @feature_elements.each do |feature_element|
           visitor.visit_feature_element(feature_element) if @lines.nil? || feature_element.at_any_line?(@lines)
         end
+      end
+
+      def increment_step_count(step_status)
+        @features.increment_step_count(step_status) if @features
       end
 
       def to_sexp
