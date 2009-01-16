@@ -26,7 +26,7 @@ class Exception
     /gems\/rspec/
   ]
 
-  INSTANCE_EXEC_OFFSET = -3
+  INSTANCE_EXEC_OFFSET = Cucumber::RUBY_1_9 ? -2 : -3
 
   def self.cucumber_full_backtrace=(v)
     @@cucumber_full_backtrace = v
@@ -38,10 +38,9 @@ class Exception
     return if @@cucumber_full_backtrace
 
     bt = (backtrace || [])
-
-    line_pos = bt.index(instance_exec_invocation_line)
-    if line_pos
-      replacement_line = line_pos + INSTANCE_EXEC_OFFSET
+    instance_exec_pos = bt.index(instance_exec_invocation_line)
+    if instance_exec_pos
+      replacement_line = instance_exec_pos + INSTANCE_EXEC_OFFSET
       bt[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'")
       bt[replacement_line+1..-1] = nil
 
