@@ -23,8 +23,8 @@ module Cucumber
         @features.step_executed(scenario, step_status) if @features
       end
 
-      def append_backtrace_line(exception, step_name, line)
-        exception.backtrace << "#{file_line(line)}:in `#{step_name}'"
+      def backtrace_line(step_name, line)
+        "#{file_line(line)}:in `#{step_name}'"
       end
 
       def file_line(line)

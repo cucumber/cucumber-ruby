@@ -52,6 +52,14 @@ module Cucumber
         @gwt.jlength + @name.jlength + 2 # Add 2 because steps get indented 2 more than scenarios
       end
 
+      def backtrace_line
+        @backtrace_line ||= @scenario.backtrace_line("#{@gwt} #{@name}", @line) unless @scenario.nil?
+      end
+
+      def file_line
+        @file_line ||= @scenario.file_line(@line) unless @scenario.nil?
+      end
+
       private
 
       def execute(visitor)
@@ -73,7 +81,7 @@ module Cucumber
           rescue Exception => exception
             @status = :failed
             @exception = exception
-            @scenario.append_backtrace_line(@exception, "#{@gwt} #{@name}", @line) if @scenario
+            @exception.backtrace << backtrace_line unless backtrace_line.nil?
           end
         end
         @scenario.step_executed(@status) if @scenario
