@@ -79,7 +79,7 @@ module Cucumber
       end
 
       def visit_step_name(gwt, step_name, status, step_invocation, comment_padding)
-        formatted_step_name = format_step(gwt, step_name, status, step_invocation, comment_padding)
+        formatted_step_name = format_step(gwt, step_name, status, step_invocation, comment_padding, @options[:source])
         @io.print("    " + formatted_step_name + "\n")
       end
 
@@ -109,23 +109,6 @@ module Cucumber
       def visit_step_exception(e)
         @io.puts("      #{e.message} (#{e.class})")
         @io.puts('      ' + e.backtrace.join("\n      "))
-      end
-
-      private
-
-      def format_step(gwt, step_name, status, step_invocation, comment_padding)
-        line = if step_invocation
-          comment = if @options[:source]
-            c = (' # ' + step_invocation.file_colon_line).indent(comment_padding)
-            format_string(c, :comment)
-          else
-            ''
-          end
-          gwt + " " + step_invocation.format_args(format_for(status, :param)) + comment
-        else
-          gwt + " " + step_name
-        end
-        format_string(line, status)
       end
     end
   end

@@ -8,6 +8,7 @@ module Cucumber
       def initialize(step_mother, io, options)
         super(step_mother)
         @io = (io == STDOUT) ? Kernel : io
+        @flushable = @io.respond_to?(:flush) ? @io : STDOUT
         @options = options
       end
 
@@ -50,6 +51,7 @@ module Cucumber
       def progress(status)
         char = CHARS[status]
         @io.print(format_string(char, status))
+        @flushable.flush
       end
       
     end

@@ -1,1 +1,1 @@
-%w{pretty progress}.each{|n| require "cucumber/formatter/#{n}"}
+%w{pretty progress profile}.each{|n| require "cucumber/formatter/#{n}"}

@@ -6,6 +6,21 @@ module Cucumber
       extend ANSIColor
       FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
 
+      def format_step(gwt, step_name, status, step_invocation, comment_padding, source_comment)
+        line = if step_invocation
+          comment = if source_comment
+            c = (' # ' + step_invocation.file_colon_line).indent(comment_padding)
+            format_string(c, :comment)
+          else
+            ''
+          end
+          gwt + " " + step_invocation.format_args(format_for(status, :param)) + comment
+        else
+          gwt + " " + step_name
+        end
+        format_string(line, status)
+      end
+
       def format_string(string, status)
         fmt = format_for(status)
         if Proc === fmt
