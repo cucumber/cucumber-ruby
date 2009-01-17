@@ -112,6 +112,8 @@ module Cucumber
     end
 
     class Invocation #:nodoc:
+      attr_reader :step_definition
+      
       def initialize(world, step_definition, step_name)
         @world, @step_definition, @step_name = world, step_definition, step_name
       end

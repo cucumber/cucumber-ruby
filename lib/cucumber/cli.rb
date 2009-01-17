@@ -274,7 +274,7 @@ Defined profiles in cucumber.yml:
         when 'progress'
           formatter_broadcaster.register(Formatter::Progress.new(step_mother, output_broadcaster, @options))
         when 'profile'
-          formatter_broadcaster.register(Formatters::ProfileFormatter.new(output_broadcaster, step_mother))
+          formatter_broadcaster.register(Formatter::Profile.new(step_mother, output_broadcaster, @options))
         when 'html'
           formatter_broadcaster.register(Formatters::HtmlFormatter.new(output_broadcaster, step_mother))
         when 'autotest'

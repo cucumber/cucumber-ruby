@@ -1,9 +1,9 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
-require 'cucumber/formatters/profile_formatter'
+require 'cucumber/formatter/profile'
 
 module Cucumber
-  module Formatters
-    describe ProfileFormatter do
+  module Formatter
+    describe Progress do
       attr_reader :io, :formatter
 
       def mock_proc(stubs={})
