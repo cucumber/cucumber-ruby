@@ -1,0 +1,37 @@
+body {
+  background: #000000;
+  color: #FFFFFF;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 10px;
+}
+ 
+td
+{
+  border-color: #FFFFFF;
+  border-width: 0 0.15em 0 0.15em;
+  border-style: solid;
+  padding: 0 0.5em 0 0.5em;
+}
+
+.multiline_table {
+  padding-left: 4em;
+}
+ 
+.missing {
+  color: yellow;
+}
+
+.pending {
+  color: yellow;
+}
+
+.passed {
+  color: green;
+}
+
+.failed {
+  color: red;
+}
