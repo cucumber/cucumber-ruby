@@ -40,6 +40,11 @@ module Cucumber
           cell_index = 0
           @steps.each do |step|
             previous, matched_args = step.execute_with_arguments(argument_hash, world, previous, visitor)
+
+            # There might be steps that don't have any arguments
+            # If there are no matched args, we'll still iterate once
+            matched_args = [nil] if matched_args.empty?
+
             matched_args.each do
               cell = cells[cell_index]
               if cell
