@@ -56,7 +56,7 @@ Feature: Cucumber command line
     When I run cucumber -q --format progress features/outline_sample.feature
     Then it should fail with
       """
-      P.F
+      U.F
 
       Pending Scenarios:
 
