@@ -7,15 +7,11 @@ module Cucumber
       ARGUMENT_START = '<'
       ARGUMENT_END  = '>'
 
-      attr_writer :scenario
+      attr_writer :scenario, :world, :previous
       attr_accessor :status
 
       def initialize(line, gwt, name, *multiline_args)
         @line, @gwt, @name, @multiline_args = line, gwt, name, multiline_args
-      end
-
-      def execute(world, previous, visitor)
-        _execute(@name, @multiline_args, world, previous, visitor)
       end
 
       def execute_with_arguments(argument_hash, world, previous, visitor)
@@ -26,10 +22,13 @@ module Cucumber
         # We'll create a new step and execute that
         step = Step.new(-1, @gwt, name, *multiline_args)
         step.scenario = @scenario
-        step.execute(world, previous, visitor)
+        step.world    = world
+        step.previous = previous
+        step.__send__(:execute, visitor)
       end
 
       def accept(visitor)
+        execute(visitor)
         visitor.visit_step_name(@gwt, @name, @status, @step_invocation, comment_padding)
         @multiline_args.each do |multiline_arg|
           visitor.visit_multiline_arg(multiline_arg, @status)
@@ -55,14 +54,14 @@ module Cucumber
 
       private
 
-      def _execute(name, multiline_args, world, previous, visitor)
+      def execute(visitor)
         matched_args = []
         if @status.nil?
           begin
-            @step_invocation = visitor.step_invocation(name, world)
+            @step_invocation = visitor.step_invocation(@name, @world)
             matched_args = @step_invocation.matched_args
-            if previous == :passed
-              @step_invocation.invoke(*(matched_args + multiline_args))
+            if @previous == :passed
+              @step_invocation.invoke(*(matched_args + @multiline_args))
               @status = :passed
             else
               @status = :skipped

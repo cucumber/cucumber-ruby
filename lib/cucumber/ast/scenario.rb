@@ -16,8 +16,10 @@ module Cucumber
         visitor.world(self) do |world|
           previous = :passed
           @steps.each do |step|
-            previous, matched_args = step.execute(world, previous, visitor)
+            step.previous = previous
+            step.world    = world
             visitor.visit_step(step)
+            previous = step.status
           end
         end
       end
@@ -58,7 +60,7 @@ module Cucumber
       end
 
       def append_backtrace_line(exception, step_name, line)
-        @feature.append_backtrace_line(exception, step_name, line)
+        @feature.append_backtrace_line(exception, step_name, line) if @feature
       end
 
       def file_line
