@@ -12,7 +12,7 @@ module Cucumber
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, @name, file_line, comment_padding(text_length))
+        visitor.visit_scenario_name(@keyword, @name, file_line(@line), comment_padding(text_length))
         visitor.world(self) do |world|
           previous = :passed
           @steps.each do |step|
@@ -59,12 +59,12 @@ module Cucumber
         @feature.step_executed(self, step_status) if @feature
       end
 
-      def append_backtrace_line(exception, step_name, line)
-        @feature.append_backtrace_line(exception, step_name, line) if @feature
+      def backtrace_line(step_name, line)
+        @feature.backtrace_line(step_name, line) if @feature
       end
 
-      def file_line
-        @feature.file_line(@line) if @feature
+      def file_line(line)
+        @feature.file_line(line) if @feature
       end
 
       def to_sexp

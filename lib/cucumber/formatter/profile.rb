@@ -13,6 +13,7 @@ module Cucumber
 
       def visit_step(step)
         @step_duration = Time.now
+        @step = step
         super
       end
 
@@ -23,7 +24,7 @@ module Cucumber
 
         if step_invocation # nil for outline steps
           description = format_step(gwt, step_name, status, step_invocation, comment_padding, false)
-          @step_definition_durations[step_invocation.step_definition] << [duration, description]
+          @step_definition_durations[step_invocation.step_definition] << [duration, description, @step.file_line]
         end
       end
 
@@ -38,7 +39,7 @@ module Cucumber
 
         mean_durations[0...NUMBER_OF_STEP_DEFINITONS_TO_SHOW].each do |duration_description_location, step_definition, mean_duration|
           print_step_definition(step_definition, mean_duration)
-          duration_description_location = duration_description_location.sort_by do |duration, description| 
+          duration_description_location = duration_description_location.sort_by do |duration, description, location| 
             duration 
           end.reverse
           print_step_invocations(duration_description_location, step_definition)
@@ -46,6 +47,7 @@ module Cucumber
       end
 
       private
+
       def map_to_mean_durations(step_definition_durations)
         mean_durations = []
         step_definition_durations.each do |step_definition, duration_description_location|
@@ -63,9 +65,10 @@ module Cucumber
       end
 
       def print_step_invocations(duration_description_location, step_definition)
-        duration_description_location[0...NUMBER_OF_STEP_INVOCATIONS_TO_SHOW].each do |duration, description|
+        duration_description_location[0...NUMBER_OF_STEP_INVOCATIONS_TO_SHOW].each do |duration, description, location|
           @io.print "  #{format_string(sprintf("%.7f", duration), :pending)}"
           @io.print "  #{description}"
+          @io.print "  # #{location}"
           @io.puts
         end
       end
