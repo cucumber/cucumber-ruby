@@ -65,10 +65,11 @@ module Cucumber
       end
 
       def print_step_invocations(duration_description_location, step_definition)
+        max_length = duration_description_location[0...NUMBER_OF_STEP_INVOCATIONS_TO_SHOW].map{|_, d, _| d.jlength}.max
         duration_description_location[0...NUMBER_OF_STEP_INVOCATIONS_TO_SHOW].each do |duration, description, location|
-          @io.print "  #{format_string(sprintf("%.7f", duration), :pending)}"
+          @io.print format_string("  #{sprintf("%.7f", duration)}", :pending)
           @io.print "  #{description}"
-          @io.print "  # #{location}"
+          @io.print format_string("  # #{location}".indent(max_length - description.jlength), :comment)
           @io.puts
         end
       end
