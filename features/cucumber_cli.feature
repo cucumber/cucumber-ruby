@@ -85,7 +85,7 @@ Feature: Cucumber command line
 
   Scenario: Specify the line number of a row
     When I run cucumber -q features/sample.feature:8
-    Then the output should be
+    Then it should pass with
       """
       Feature: Sample
         Scenario: Passing
