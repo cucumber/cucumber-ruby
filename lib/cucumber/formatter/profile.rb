@@ -17,7 +17,6 @@ module Cucumber
         super
       end
 
-      #def step_passed(step, regexp, args)
       def visit_step_name(gwt, step_name, status, step_invocation, comment_padding)
         duration = Time.now - @step_duration
         super

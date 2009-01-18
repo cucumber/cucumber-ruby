@@ -1,12 +1,12 @@
 module Cucumber
   module Ast
     class Features
-      attr_reader :step_count, :scenarios
+      attr_reader :steps, :scenarios
 
       def initialize
         @features = []
 
-        @step_count = Hash.new{|counts, status| counts[status] = 0}
+        @steps = Hash.new{|steps, status| steps[status] = []}
         @scenarios = []
       end
 
@@ -15,9 +15,9 @@ module Cucumber
         @features << feature
       end
       
-      def step_executed(scenario, step_status)
-        @scenarios << scenario unless @scenarios.index(scenario)
-        @step_count[step_status] += 1
+      def step_executed(step)
+        @scenarios << step.scenario unless @scenarios.index(step.scenario)
+        @steps[step.status] << step
       end
 
       def accept(visitor)

@@ -31,6 +31,12 @@ module Cucumber
       end
 
       def print_summary(io, features)
+        features.steps[:failed].each_with_index do |step, i|
+          io.puts format_string("#{i+1}) #{step.exception.message} (#{step.exception.class})", :failed)
+          io.puts format_string(step.exception.backtrace.join("\n"), :failed)
+          io.puts
+        end
+
         io.puts dump_count(features.scenarios.length, "scenario")
 
         pending_count = features.scenarios.select{|scenario| scenario.pending?}.length
@@ -40,8 +46,8 @@ module Cucumber
         end
         
         [:failed, :skipped, :undefined, :pending, :passed].each do |status|
-          if features.step_count[status] > 0
-            count_string = dump_count(features.step_count[status], "step", status.to_s)
+          if features.steps[status].any?
+            count_string = dump_count(features.steps[status].length, "step", status.to_s)
             io.puts format_string(count_string, status)
           end
         end
