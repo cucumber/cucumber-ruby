@@ -51,14 +51,14 @@ module Cucumber
       def visit_examples_name(keyword, name)
       end
 
-      def visit_scenario_name(keyword, name, file_line, comment_padding)
+      def visit_scenario_name(keyword, name, file_line, source_indent)
       end
 
       def visit_step(step)
         step.accept(self)
       end
 
-      def visit_step_name(gwt, step_name, status, step_invocation, comment_padding)
+      def visit_step_name(gwt, step_name, status, step_invocation, source_indent)
       end
 
       def visit_multiline_arg(multiline_arg, status)

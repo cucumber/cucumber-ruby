@@ -12,7 +12,7 @@ module Cucumber
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, @name, file_line(@line), comment_padding(text_length))
+        visitor.visit_scenario_name(@keyword, @name, file_line(@line), source_indent(text_length))
         visitor.world(self) do |world|
           previous = :passed
           @steps.each do |step|
@@ -24,7 +24,7 @@ module Cucumber
         end
       end
 
-      def comment_padding(text_length)
+      def source_indent(text_length)
         max_line_length - text_length
       end
 

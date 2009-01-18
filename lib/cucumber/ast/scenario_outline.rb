@@ -24,7 +24,7 @@ module Cucumber
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, @name, file_line(@line), comment_padding(text_length))
+        visitor.visit_scenario_name(@keyword, @name, file_line(@line), source_indent(text_length))
         @steps.each do |step|
           visitor.visit_step(step)
         end
