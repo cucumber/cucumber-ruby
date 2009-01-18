@@ -55,8 +55,8 @@ module Cucumber
         @steps.empty?
       end
       
-      def step_executed(step_status)
-        @feature.step_executed(self, step_status) if @feature
+      def step_executed(step)
+        @feature.step_executed(step) if @feature
       end
 
       def backtrace_line(step_name, line)

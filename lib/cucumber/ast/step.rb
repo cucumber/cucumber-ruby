@@ -7,8 +7,9 @@ module Cucumber
       ARGUMENT_START = '<'
       ARGUMENT_END  = '>'
 
-      attr_writer :scenario, :world, :previous
-      attr_accessor :status
+      attr_reader :exception
+      attr_writer :world, :previous
+      attr_accessor :status, :scenario
 
       def initialize(line, gwt, name, *multiline_args)
         @line, @gwt, @name, @multiline_args = line, gwt, name, multiline_args
@@ -84,7 +85,7 @@ module Cucumber
             @exception.backtrace << backtrace_line unless backtrace_line.nil?
           end
         end
-        @scenario.step_executed(@status) if @scenario
+        @scenario.step_executed(self) if @scenario
         [@status, matched_args]
       end
 
