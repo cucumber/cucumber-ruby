@@ -64,10 +64,10 @@ module Cucumber
         @indent = 4
       end
 
-      def visit_scenario_name(keyword, name, file_line, comment_padding)
+      def visit_scenario_name(keyword, name, file_line, source_indent)
         @io.print("  #{keyword} #{name}")
         if @options[:source]
-          line_comment = " # #{file_line}".indent(comment_padding)
+          line_comment = " # #{file_line}".indent(source_indent)
           @io.print(format_string(line_comment, :comment))
         end
         @io.puts
@@ -78,8 +78,9 @@ module Cucumber
         step.accept(self)
       end
 
-      def visit_step_name(gwt, step_name, status, step_invocation, comment_padding)
-        formatted_step_name = format_step(gwt, step_name, status, step_invocation, comment_padding, @options[:source])
+      def visit_step_name(gwt, step_name, status, step_invocation, source_indent)
+        source_indent = nil unless @options[:source]
+        formatted_step_name = format_step(gwt, step_name, status, step_invocation, source_indent)
         @io.print("    " + formatted_step_name + "\n")
       end
 
@@ -107,8 +108,7 @@ module Cucumber
       end
 
       def visit_step_exception(e)
-        @io.puts("      #{e.message} (#{e.class})")
-        @io.puts('      ' + e.backtrace.join("\n      "))
+        print_exception(@io, e, '', 6)
       end
     end
   end

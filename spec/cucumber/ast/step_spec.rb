@@ -13,8 +13,8 @@ module Cucumber
         ])
         step1, step2 = *scenario.instance_variable_get('@steps')
 
-        step1.comment_padding.should == 2
-        step2.comment_padding.should == 0
+        step1.source_indent.should == 2
+        step2.source_indent.should == 0
       end
     end
     

@@ -6,10 +6,10 @@ module Cucumber
       extend ANSIColor
       FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
 
-      def format_step(gwt, step_name, status, step_invocation, comment_padding, source_comment)
-        line = if step_invocation
-          comment = if source_comment
-            c = (' # ' + step_invocation.file_colon_line).indent(comment_padding)
+      def format_step(gwt, step_name, status, step_invocation, source_indent)
+        line = if step_invocation # nil for :outline
+          comment = if source_indent
+            c = (' # ' + step_invocation.file_colon_line).indent(source_indent)
             format_string(c, :comment)
           else
             ''
@@ -31,13 +31,7 @@ module Cucumber
       end
 
       def print_summary(io, features)
-        features.steps[:failed].each_with_index do |step, i|
-          io.puts format_string("#{i+1}) #{step.exception.message} (#{step.exception.class})", :failed)
-          io.puts format_string(step.exception.backtrace.join("\n"), :failed)
-          io.puts
-        end
-
-        io.puts dump_count(features.scenarios.length, "scenario")
+        print_exceptions(io, features)
 
         pending_count = features.scenarios.select{|scenario| scenario.pending?}.length
         if pending_count > 0
@@ -45,6 +39,19 @@ module Cucumber
           io.puts format_string(pending_count_string, :pending)
         end
         
+        print_counts(io, features)
+      end
+
+      def print_exceptions(io, features)
+        features.steps[:failed].each_with_index do |step, i|
+          print_exception(io, step.exception, "#{i+1}) ", 0)
+          io.puts
+        end
+      end
+
+      def print_counts(io, features)
+        io.puts dump_count(features.scenarios.length, "scenario")
+
         [:failed, :skipped, :undefined, :pending, :passed].each do |status|
           if features.steps[status].any?
             count_string = dump_count(features.steps[status].length, "step", status.to_s)
@@ -53,18 +60,14 @@ module Cucumber
         end
       end
 
+      def print_exception(io, e, prefix, indent)
+        io.puts(format_string("#{prefix}#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), :failed))
+      end
+
     private
 
       def dump_count(count, what, state=nil)
         [count, "#{what}#{count == 1 ? '' : 's'}", state].compact.join(" ")
-      end
-
-      def print_pending_messages
-        @io.puts "Pending Notes:"
-        @pending_messages.each_value do |message|
-          @io.puts message
-        end
-        @io.puts
       end
 
       def format_for(*keys)

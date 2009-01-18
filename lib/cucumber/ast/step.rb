@@ -30,7 +30,7 @@ module Cucumber
 
       def accept(visitor)
         execute(visitor)
-        visitor.visit_step_name(@gwt, @name, @status, @step_invocation, comment_padding)
+        visitor.visit_step_name(@gwt, @name, @status, @step_invocation, source_indent)
         @multiline_args.each do |multiline_arg|
           visitor.visit_multiline_arg(multiline_arg, @status)
         end
@@ -45,8 +45,8 @@ module Cucumber
         @line == line
       end
 
-      def comment_padding
-        @scenario.comment_padding(text_length)
+      def source_indent
+        @scenario.source_indent(text_length)
       end
 
       def text_length

@@ -30,7 +30,7 @@ module Cucumber
         super
       end
 
-      def visit_step_name(gwt, step_name, status, step_invocation, comment_padding)
+      def visit_step_name(gwt, step_name, status, step_invocation, source_indent)
         progress(status) unless status == :outline
       end
 
