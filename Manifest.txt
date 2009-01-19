@@ -225,14 +225,6 @@ rails_generators/feature/USAGE
 rails_generators/feature/feature_generator.rb
 rails_generators/feature/templates/feature.erb
 rails_generators/feature/templates/steps.erb
-script/console
-script/console.cmd
-script/destroy
-script/destroy.cmd
-script/generate
-script/generate.cmd
-script/txt2html
-script/txt2html.cmd
 setup.rb
 spec/cucumber/broadcaster_spec.rb
 spec/cucumber/cli_spec.rb
