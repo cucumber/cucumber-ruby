@@ -1,9 +1,13 @@
-== In Git
+== 0.1.16 2009-01-19
+
+This is a small bugfix release. The most notable improvement is compatibility with Webrat 0.4. Rails/Webrat users should
+upgrade both Cucumber and Webrat gems.
 
 === New features
 * Allow argument placeholders in step tables and multiline comments (#121 Joseph Wilk)
 * Scenario Outline can be followed by several named Examples sections (#123 Aslak Hellesøy)
 * Add the #binary= method back to the Rake task. It is needed by merb_cucumber for running the features of a merb app with it's bundled gems. (Thomas Marek)
+* Added a /^When I go to (.+)$/ step definition to webrat_steps.rb and a simple page name to path mapping method (Bryan Helmkamp)
 
 === Bugfixes
 * Fix to run single scenarios when the line number specified doesn't correspond to a step (i.e. blank lines or rows) (#160 Luismi Cavallé)
