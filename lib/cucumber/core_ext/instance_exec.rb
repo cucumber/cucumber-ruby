@@ -22,7 +22,7 @@ class Object
     end
   end
   
-  unless Cucumber::RUBY_1_9
+  unless defined? instance_exec # 1.9
     # http://eigenclass.org/hiki/bounded+space+instance_exec
     module InstanceExecHelper; end
     include InstanceExecHelper

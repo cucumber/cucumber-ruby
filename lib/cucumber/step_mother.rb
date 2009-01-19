@@ -64,10 +64,16 @@ module Cucumber
 
     def world(scenario, &proc)
       world = new_world
-      (@before_procs ||= []).each do |proc|
-        world.cucumber_instance_exec(false, 'Before', scenario, &proc)
+      begin
+        (@before_procs ||= []).each do |proc|
+          world.cucumber_instance_exec(false, 'Before', scenario, &proc)
+        end
+        yield world
+      ensure
+        (@after_procs ||= []).each do |proc|
+          world.cucumber_instance_exec(false, 'After', scenario, &proc) rescue nil
+        end
       end
-      yield world
     end
 
     # Registers a Before proc. You can call this method as many times as you
@@ -77,7 +83,7 @@ module Cucumber
     end
 
     def After(&proc)
-      # TODO: implement me
+      (@after_procs ||= []) << proc
     end
 
     # Registers a World proc. You can call this method as many times as you
