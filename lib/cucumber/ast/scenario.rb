@@ -52,7 +52,7 @@ module Cucumber
         end
       end
 
-      def pending?
+      def undefined?
         @steps.empty?
       end
 
@@ -60,8 +60,8 @@ module Cucumber
         @feature.step_executed(step) if @feature
       end
 
-      def backtrace_line(step_name, line)
-        @feature.backtrace_line(step_name, line) if @feature
+      def backtrace_line(name="#{@keyword} #{@name}", line=@line)
+        @feature.backtrace_line(name, line) if @feature
       end
 
       def file_line(line)

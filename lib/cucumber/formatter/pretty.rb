@@ -114,7 +114,6 @@ module Cucumber
       private
 
       def print_summary(io, features)
-        print_pending_scenarios(io, features)
         print_counts(io, features)
       end
 

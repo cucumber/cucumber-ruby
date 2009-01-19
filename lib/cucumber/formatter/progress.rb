@@ -26,7 +26,7 @@ module Cucumber
       end
 
       def visit_feature_element(feature_element)
-        @io.print(pending("S")) if feature_element.pending?
+        progress(:undefined) if feature_element.undefined?
         super
       end
 
@@ -41,7 +41,6 @@ module Cucumber
       private
 
       def print_summary(io, features)
-        print_pending_scenarios(io, features)
         print_steps(io, features, :undefined)
         print_steps(io, features, :pending)
         print_steps(io, features, :failed)
