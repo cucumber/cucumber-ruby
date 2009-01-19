@@ -8,10 +8,9 @@ Feature: Addition
     And I have entered 70 into the calculator
     When I press add
     Then the result should be 120 on the screen
-    And the result class should be Fixnum
 
   More Examples:
-    | input_1 | input_2 | button | output | class  |
-    | 20      | 30      | add    | 50     | Fixnum |
-    | 2       | 5       | add    | 7      | Fixnum |
-    | 0       | 40      | add    | 40     | Fixnum |
+    | input_1 | input_2 | button | output |
+    | 20      | 30      | add    | 50     |
+    | 2       | 5       | add    | 7      |
+    | 0       | 40      | add    | 40     |

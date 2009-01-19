@@ -7,4 +7,3 @@ Ominaisuus: Jakolasku
     Ja että olen syöttänyt laskimeen luvun 2
     Kun painan "jaa"
     Niin laskimen ruudulla pitäisi näkyä tulos 1.5
-    Ja tuloksen luokan pitäisi olla Float

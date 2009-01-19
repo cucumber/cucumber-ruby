@@ -8,10 +8,9 @@ Omadus: Liitmine
     Ja olen sisestanud kalkulaatorisse numbri 70 
     Kui ma vajutan liida
     Siis vastuseks peab ekraanil kuvatama 120
-    Ja vastuseklass peab olema tüüpi Fixnum
 
   More Examples:
-    | input_1 | input_2 | button   | output | class  |
-    | 20      | 30      | liida    | 50     | Fixnum |
-    | 2       | 5       | liida    | 7      | Fixnum |
-    | 0       | 40      | liida    | 40     | Fixnum |
+    | input_1 | input_2 | button   | output |
+    | 20      | 30      | liida    | 50     |
+    | 2       | 5       | liida    | 7      |
+    | 0       | 40      | liida    | 40     |
