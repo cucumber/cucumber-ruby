@@ -10,8 +10,8 @@ module Cucumber
         @step_mother.world(scenario, &proc)
       end
 
-      def step_invocation(step_name, world)
-        @step_mother.step_invocation(step_name, world)
+      def step_definition(step_name)
+        @step_mother.step_definition(step_name)
       end
 
       def visit_features(features)
@@ -58,7 +58,7 @@ module Cucumber
         step.accept(self)
       end
 
-      def visit_step_name(gwt, step_name, status, step_invocation, source_indent)
+      def visit_step_name(gwt, step_name, status, step_definition, source_indent)
       end
 
       def visit_multiline_arg(multiline_arg, status)

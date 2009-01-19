@@ -33,6 +33,21 @@ module Cucumber
       end
     end
 
+    # Formats the matched arguments of the associated Step. This method
+    # is usually called from visitors, which render output.
+    #
+    # The +format+ either be a String or a Proc.
+    #
+    # If it is a String it should be a format string according to
+    # <tt>Kernel#sprinf</tt>, for example:
+    #
+    #   '<span class="param">%s</span></tt>'
+    #
+    # If it is a Proc, it should take one argument and return the formatted
+    # argument, for example:
+    #
+    #   lambda { |param| "[#{param}]" }
+    #
     def format_args(step_name, format)
       step_name.gzub(@regexp, format)
     end

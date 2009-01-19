@@ -109,17 +109,15 @@ Feature: Cucumber command line
       """
       U.F
 
-      Pending Scenarios:
-      
-      1)  Sample (Missing)
-      
-      
-      Failed:
-      
-      1)
-      FAIL
-      ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
+      1) FAIL (RuntimeError)
+      ./features/step_definitions/sample_steps.rb:2:in `flunker'
+      ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
       features/sample.feature:12:in `Given failing'
+
+      3 scenarios
+      1 step failed
+      1 step undefined
+      1 step passed
 
       """
 

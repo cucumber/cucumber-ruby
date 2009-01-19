@@ -17,13 +17,13 @@ module Cucumber
         super
       end
 
-      def visit_step_name(gwt, step_name, status, step_invocation, source_indent)
+      def visit_step_name(gwt, step_name, status, step_definition, source_indent)
         duration = Time.now - @step_duration
         super
 
-        if step_invocation # nil for outline steps
-          description = format_step(gwt, step_name, status, step_invocation, nil)
-          @step_definition_durations[step_invocation.step_definition] << [duration, description, @step.file_line]
+        if step_definition # nil for outline steps
+          description = format_step(gwt, step_name, status, step_definition, nil)
+          @step_definition_durations[step_definition.step_definition] << [duration, description, @step.file_line]
         end
       end
 
@@ -41,7 +41,7 @@ module Cucumber
           duration_description_location = duration_description_location.sort_by do |duration, description, location| 
             duration 
           end.reverse
-          print_step_invocations(duration_description_location, step_definition)
+          print_step_definitions(duration_description_location, step_definition)
         end
       end
 
@@ -63,7 +63,7 @@ module Cucumber
         @io.puts format_string("#{duration} #{step_definition.to_backtrace_line}", :failed)
       end
 
-      def print_step_invocations(duration_description_location, step_definition)
+      def print_step_definitions(duration_description_location, step_definition)
         max_length = duration_description_location[0...NUMBER_OF_STEP_INVOCATIONS_TO_SHOW].map{|_, d, _| d.jlength}.max
         duration_description_location[0...NUMBER_OF_STEP_INVOCATIONS_TO_SHOW].each do |duration, description, location|
           @io.print format_string("  #{sprintf("%.7f", duration)}", :pending)
