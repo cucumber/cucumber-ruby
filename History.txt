@@ -1,3 +1,9 @@
+== Git
+
+=== New features
+
+* Use Webrat's #contain matcher in generated "I should (not) see" step definitions
+
 == 0.1.16 2009-01-19
 
 This is a small bugfix release. The most notable improvement is compatibility with Webrat 0.4. Rails/Webrat users should
