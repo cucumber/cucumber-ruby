@@ -213,6 +213,7 @@ rails_generators/cucumber/cucumber_generator.rb
 rails_generators/cucumber/templates/cucumber
 rails_generators/cucumber/templates/cucumber.rake
 rails_generators/cucumber/templates/env.rb
+rails_generators/cucumber/templates/paths.rb
 rails_generators/cucumber/templates/webrat_steps.rb
 rails_generators/feature/USAGE
 rails_generators/feature/feature_generator.rb

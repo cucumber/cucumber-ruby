@@ -1,4 +1,7 @@
-== In Git
+== 0.1.16 2009-01-19
+
+This is a small bugfix release. The most notable improvement is compatibility with Webrat 0.4. Rails/Webrat users should
+upgrade both Cucumber and Webrat gems.
 
 === New features
 * Add the #binary= method back to the Rake task. It is needed by merb_cucumber for running the features of a merb app with it's bundled gems. (Thomas Marek)
