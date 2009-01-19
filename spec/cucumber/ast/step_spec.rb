@@ -31,7 +31,7 @@ module Cucumber
         end
        
         it "should invoke step with replaced multiline args" do
-          mock_step_invocation = mock('step invocation')
+          mock_step_definition = mock('step invocation')
           mock_multiline_arg_replaced = mock('multiline arg replaced')
           mock_multiline_arg = mock('multiline arg', :arguments_replaced => mock_multiline_arg_replaced)
           step = Step.new(45, 'Given', '<test>', mock_multiline_arg)

@@ -30,7 +30,7 @@ module Cucumber
         super
       end
 
-      def visit_step_name(gwt, step_name, status, step_invocation, source_indent)
+      def visit_step_name(gwt, step_name, status, step_definition, source_indent)
         progress(status) unless status == :outline
       end
 
@@ -38,7 +38,13 @@ module Cucumber
         progress(status) if (status != :thead) && !@multiline_arg
       end
       
-    private
+      private
+
+      def print_summary(io, features)
+        print_exceptions(io, features)
+        print_pending_scenarios(io, features)
+        print_counts(io, features)
+      end
 
       CHARS = {
         :passed    => '.',

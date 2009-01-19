@@ -30,7 +30,7 @@ module Cucumber
 
       def accept(visitor)
         execute(visitor)
-        visitor.visit_step_name(@gwt, @name, @status, @step_invocation, source_indent)
+        visitor.visit_step_name(@gwt, @name, @status, @step_definition, source_indent)
         @multiline_args.each do |multiline_arg|
           visitor.visit_multiline_arg(multiline_arg, @status)
         end
@@ -67,10 +67,10 @@ module Cucumber
         matched_args = []
         if @status.nil?
           begin
-            @step_invocation = visitor.step_invocation(@name, @world)
-            matched_args = @step_invocation.matched_args
+            @step_definition = visitor.step_definition(@name)
+            matched_args = @step_definition.matched_args(@name)
             if @previous == :passed
-              @step_invocation.invoke(*(matched_args + @multiline_args))
+              @step_definition.execute(@world, *(matched_args + @multiline_args))
               @status = :passed
             else
               @status = :skipped

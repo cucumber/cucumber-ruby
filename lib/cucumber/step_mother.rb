@@ -103,63 +103,24 @@ module Cucumber
       world
     end
 
-    # Creates an Invocation that holds a StepDefinition that matches +step_name+
-    def step_invocation(step_name, world) #:nodoc:
+    # Looks up the StepDefinition that matches +step_name+
+    def step_definition(step_name) #:nodoc:
       found = step_definitions.select do |step_definition|
         step_definition.match(step_name)
       end
       raise Undefined.new(step_name) if found.empty?
       raise Ambiguous.new(step_name, found) if found.size > 1
-      Invocation.new(world, found[0], step_name)
+      found[0]
     end
 
     def step_definitions
       @step_definitions ||= []
     end
 
-    class Invocation #:nodoc:
-      attr_reader :step_definition
-      
-      def initialize(world, step_definition, step_name)
-        @world, @step_definition, @step_name = world, step_definition, step_name
-      end
-
-      def matched_args
-        @step_definition.matched_args(@step_name)
-      end
-
-      def invoke(*args) #:nodoc
-        @step_definition.execute(@world, *args)
-      end
-
-      # Formats the matched arguments of the associated Step. This method
-      # is usually called from visitors, which render output.
-      #
-      # The +format+ either be a String or a Proc.
-      #
-      # If it is a String it should be a format string according to
-      # <tt>Kernel#sprinf</tt>, for example:
-      #
-      #   '<span class="param">%s</span></tt>'
-      #
-      # If it is a Proc, it should take one argument and return the formatted
-      # argument, for example:
-      #
-      #   lambda { |param| "[#{param}]" }
-      #
-      def format_args(format)
-        @step_definition.format_args(@step_name, format)
-      end
-
-      def file_colon_line
-        @step_definition.file_colon_line
-      end
-    end
-
     module WorldMethods #:nodoc:
       # Call a step from within a step definition
       def __cucumber_invoke(name, *multiline_arguments)
-        @__cucumber_step_mother.step_invocation(name, self).invoke(*multiline_arguments)
+        @__cucumber_step_mother.step_definition(name).execute(self, *multiline_arguments)
       end
 
       def pending(message = "TODO")

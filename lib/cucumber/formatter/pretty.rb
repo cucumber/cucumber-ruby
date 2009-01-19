@@ -78,9 +78,9 @@ module Cucumber
         step.accept(self)
       end
 
-      def visit_step_name(gwt, step_name, status, step_invocation, source_indent)
+      def visit_step_name(gwt, step_name, status, step_definition, source_indent)
         source_indent = nil unless @options[:source]
-        formatted_step_name = format_step(gwt, step_name, status, step_invocation, source_indent)
+        formatted_step_name = format_step(gwt, step_name, status, step_definition, source_indent)
         @io.print("    " + formatted_step_name + "\n")
       end
 
@@ -110,6 +110,14 @@ module Cucumber
       def visit_step_exception(e)
         print_exception(@io, e, '', 6)
       end
+
+      private
+
+      def print_summary(io, features)
+        print_pending_scenarios(io, features)
+        print_counts(io, features)
+      end
+
     end
   end
 end

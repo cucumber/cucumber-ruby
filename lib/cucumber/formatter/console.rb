@@ -6,15 +6,15 @@ module Cucumber
       extend ANSIColor
       FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
 
-      def format_step(gwt, step_name, status, step_invocation, source_indent)
-        line = if step_invocation # nil for :outline
+      def format_step(gwt, step_name, status, step_definition, source_indent)
+        line = if step_definition # nil for :outline
           comment = if source_indent
-            c = (' # ' + step_invocation.file_colon_line).indent(source_indent)
+            c = (' # ' + step_definition.file_colon_line).indent(source_indent)
             format_string(c, :comment)
           else
             ''
           end
-          gwt + " " + step_invocation.format_args(format_for(status, :param)) + comment
+          gwt + " " + step_definition.format_args(step_name, format_for(status, :param)) + comment
         else
           gwt + " " + step_name
         end
@@ -30,22 +30,18 @@ module Cucumber
         end
       end
 
-      def print_summary(io, features)
-        print_exceptions(io, features)
-
-        pending_count = features.scenarios.select{|scenario| scenario.pending?}.length
-        if pending_count > 0
-          pending_count_string = dump_count(pending_count, "scenario", "pending")
-          io.puts format_string(pending_count_string, :pending)
-        end
-        
-        print_counts(io, features)
-      end
-
       def print_exceptions(io, features)
         features.steps[:failed].each_with_index do |step, i|
           print_exception(io, step.exception, "#{i+1}) ", 0)
           io.puts
+        end
+      end
+
+      def print_pending_scenarios(io, features)
+        pending_count = features.scenarios.select{|scenario| scenario.pending?}.length
+        if pending_count > 0
+          pending_count_string = dump_count(pending_count, "scenario", "pending")
+          io.puts format_string(pending_count_string, :pending)
         end
       end
 

@@ -15,7 +15,7 @@ module Cucumber
       end
       @step_mother.Given(/nope something else/) do |what, month|
       end
-      format = @step_mother.step_invocation("it snows in april", Object.new).format_args("[%s]")
+      format = @step_mother.step_definition("it snows in april").format_args("it snows in april", "[%s]")
       format.should == "it [snows] in [april]"
     end
 
@@ -24,7 +24,7 @@ module Cucumber
       @step_mother.Given(/Three blind (.*)/) {|animal|}
 
       lambda do
-        @step_mother.step_invocation("Three blind mice", Object.new)
+        @step_mother.step_definition("Three blind mice")
       end.should raise_error(StepMom::Ambiguous, %{Ambiguous match of "Three blind mice":
 
 spec/cucumber/step_mom_spec.rb:23:in `/Three (.*) mice/'
@@ -35,7 +35,7 @@ spec/cucumber/step_mom_spec.rb:24:in `/Three blind (.*)/'
 
     it "should raise Undefined error when no step definitions match" do
       lambda do
-        @step_mother.step_invocation("Three blind mice", Object.new)
+        @step_mother.step_definition("Three blind mice")
       end.should raise_error(StepMom::Undefined)
     end
 
