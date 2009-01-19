@@ -46,6 +46,11 @@ examples/i18n/et/Rakefile
 examples/i18n/et/features/liitmine.feature
 examples/i18n/et/features/step_definitions/kalkulaator_steps.rb
 examples/i18n/et/lib/kalkulaator.rb
+examples/i18n/fi/Rakefile
+examples/i18n/fi/features/jakolasku.feature
+examples/i18n/fi/features/step_definitons/laskin_steps.rb
+examples/i18n/fi/features/yhteenlasku.feature
+examples/i18n/fi/lib/laskin.rb
 examples/i18n/fr/Rakefile
 examples/i18n/fr/features/addition.feature
 examples/i18n/fr/features/step_definitions/calculatrice_steps.rb
@@ -189,6 +194,7 @@ lib/cucumber/treetop_parser/feature_en-tx.rb
 lib/cucumber/treetop_parser/feature_en.rb
 lib/cucumber/treetop_parser/feature_es.rb
 lib/cucumber/treetop_parser/feature_et.rb
+lib/cucumber/treetop_parser/feature_fi.rb
 lib/cucumber/treetop_parser/feature_fr.rb
 lib/cucumber/treetop_parser/feature_id.rb
 lib/cucumber/treetop_parser/feature_it.rb

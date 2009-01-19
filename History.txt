@@ -2,6 +2,7 @@
 
 === New features
 
+* Finnish translation (Tero Tilus)
 * Use Webrat's #contain matcher in generated "I should (not) see" step definitions
 
 == 0.1.16 2009-01-19
