@@ -1,3 +1,12 @@
+== ast branch
+
+=== New features
+* Multiline arguments (tables and """ strings) are printed in the output
+* No longer necessary to compile the Treetop grammar for spoken languages
+
+=== Removed features
+* Pure Ruby features are no longer supported
+
 == Git
 
 === New features
