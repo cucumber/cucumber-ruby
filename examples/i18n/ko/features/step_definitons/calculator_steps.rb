@@ -22,7 +22,3 @@ end
 Then /^화면에 출력된 결과는 (.*)이다$/ do |result|
   @result.should == result.to_f
 end
-
-Then /^결과의 class는 (.*)이다$/ do |class_name|
-  @result.class.name.should == class_name
-end

@@ -23,11 +23,3 @@ end
 Then /結果は (.*) を表示/ do |result|
   @result.should == result.to_f
 end
-
-Then /結果のクラスは (\w*)/ do |class_name|
-  @result.class.name.should == class_name
-end
-
-Given /it should rain on (\w+)/ do |day|
-  @calc.rain?(day).should == true
-end

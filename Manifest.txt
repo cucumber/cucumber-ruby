@@ -46,6 +46,11 @@ examples/i18n/et/Rakefile
 examples/i18n/et/features/liitmine.feature
 examples/i18n/et/features/step_definitions/kalkulaator_steps.rb
 examples/i18n/et/lib/kalkulaator.rb
+examples/i18n/fi/Rakefile
+examples/i18n/fi/features/jakolasku.feature
+examples/i18n/fi/features/step_definitons/laskin_steps.rb
+examples/i18n/fi/features/yhteenlasku.feature
+examples/i18n/fi/lib/laskin.rb
 examples/i18n/fr/Rakefile
 examples/i18n/fr/features/addition.feature
 examples/i18n/fr/features/step_definitions/calculatrice_steps.rb
@@ -190,6 +195,7 @@ lib/cucumber/rails/world.rb
 lib/cucumber/rake/task.rb
 lib/cucumber/step_definition.rb
 lib/cucumber/step_mother.rb
+lib/cucumber/treetop_parser/feature_fi.rb
 lib/cucumber/version.rb
 rails_generators/cucumber/USAGE
 rails_generators/cucumber/cucumber_generator.rb
@@ -234,6 +240,7 @@ spec/cucumber/step_mom_spec.rb
 spec/cucumber/treetop_parser/empty_feature.feature
 spec/cucumber/treetop_parser/empty_scenario.feature
 spec/cucumber/treetop_parser/empty_scenario_outline.feature
+spec/cucumber/treetop_parser/feature_parser_spec.rb
 spec/cucumber/treetop_parser/fit_scenario.feature
 spec/cucumber/treetop_parser/given_scenario.feature
 spec/cucumber/treetop_parser/invalid_scenario_outlines.feature
