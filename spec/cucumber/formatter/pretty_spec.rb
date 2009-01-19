@@ -42,10 +42,10 @@ Pretty printing
       
       \"\"\"\e[0m
     \e[31mGiven a \e[31m\e[1mfailing\e[0m\e[0m\e[31m step\e[90m                     # spec/cucumber/ast/feature_factory.rb:17\e[0m\e[0m
-      I flunked (RuntimeError)
+\e[31m      I flunked (RuntimeError)
       ./spec/cucumber/ast/../../cucumber/ast/feature_factory.rb:9:in `flunk'
       ./spec/cucumber/ast/../../cucumber/ast/feature_factory.rb:18:in `/^a (.*) step$/'
-      features/pretty_printing.feature:12:in `Given a failing step'
+      features/pretty_printing.feature:12:in `Given a failing step'\e[0m
 
 }
       end
