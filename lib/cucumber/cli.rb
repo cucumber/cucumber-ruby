@@ -65,15 +65,21 @@ module Cucumber
           @options[:require] << v
         end
         opts.on("-s SCENARIO", "--scenario SCENARIO", "Only execute the scenario with the given name.",
-                                                      "If this option is given more than once, run all",
-                                                      "the specified scenarios.") do |v|
+          "If this option is given more than once, run all",
+          "the specified scenarios.") do |v|
           @options[:scenario_names] ||= []
           @options[:scenario_names] << v
         end
         opts.on("-l LANG", "--language LANG", "Specify language for features (Default: #{@options[:lang]})",
-          "Available languages: #{Cucumber.languages.join(", ")}",
-          "Look at #{Cucumber::LANGUAGE_FILE} for keywords") do |v|
-          @options[:lang] = v
+          %{Run with "--language help" to see all languages},
+          %{Run with "--language LANG help" to list keywords for LANG}) do |v|
+          if v == 'help'
+            list_languages
+          elsif ARGV==['help']
+            list_keywords('en', v)
+          else
+            @options[:lang] = v
+          end
         end
         opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{DEFAULT_FORMAT})",
           "Available formats: #{FORMATS.join(", ")}",
@@ -81,7 +87,7 @@ module Cucumber
           "previously required using --require or if they are in the folder",
           "structure such that cucumber will require them automatically.",
           "This option can be specified multiple times.") do |v|
-  
+
           @options[:formats][v] ||= []
           @options[:formats][v] << @out_stream
           @active_format = v
@@ -97,9 +103,9 @@ module Cucumber
           end
         end
         opts.on("-c", "--[no-]color", "Use ANSI color in the output, if formatters use it.  If",
-                                      "these options are given multiple times, the last one is",
-                                      "used.  If neither --color or --no-color is given cucumber",
-                                      "decides based on your platform and the output destination") do |v|
+          "these options are given multiple times, the last one is",
+          "used.  If neither --color or --no-color is given cucumber",
+          "decides based on your platform and the output destination") do |v|
           @options[:color] = v
         end
         opts.on("-e", "--exclude PATTERN", "Don't run features matching a pattern") do |v|
@@ -140,7 +146,7 @@ module Cucumber
       if @options[:formats].empty?
         @options[:formats][DEFAULT_FORMAT] = [@out_stream]
       end
-      
+
       # Whatever is left after option parsing is the FILE arguments
       @paths += args
     end
@@ -166,20 +172,20 @@ module Cucumber
       unless File.exist?('cucumber.yml')
         raise(YmlLoadError,"cucumber.yml was not found.  Please refer to cucumber's documentaion on defining profiles in cucumber.yml.  You must define a 'default' profile to use the cucumber command without any arguments.\nType 'cucumber --help' for usage.\n")
       end
-      
+
       require 'yaml'
       begin
         @cucumber_yml = YAML::load(IO.read('cucumber.yml'))
       rescue Exception => e
         raise(YmlLoadError,"cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentaion on correct profile usage.\n")
-       end
-     
+      end
+
       if @cucumber_yml.nil? || !@cucumber_yml.is_a?(Hash)
         raise(YmlLoadError,"cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentaion on correct profile usage.\n")
       end
 
       return @cucumber_yml
-    end 
+    end
 
     def parse_args_from_profile(profile)
       unless cucumber_yml.has_key?(profile)
@@ -200,7 +206,7 @@ Defined profiles in cucumber.yml:
       else
         parse_options!(args_from_yml.split(' '))
       end
-      
+
     rescue YmlLoadError => e
       exit_with_error(e.message)
     end
@@ -222,7 +228,7 @@ Defined profiles in cucumber.yml:
       end
       verbose_log("\n")
     end
-    
+
     def files_to_require
       requires = @options[:require] || feature_dirs
       files = requires.map do |path|
@@ -302,7 +308,7 @@ Defined profiles in cucumber.yml:
       end
       output_broadcaster
     end
-    
+
     def constantize(camel_cased_word)
       names = camel_cased_word.split('::')
       names.shift if names.empty? || names.first.empty?
@@ -313,7 +319,7 @@ Defined profiles in cucumber.yml:
       end
       constant
     end
-    
+
     def verbose_log(string)
       @out_stream.puts(string) if @options[:verbose]
     end
@@ -333,6 +339,34 @@ Defined profiles in cucumber.yml:
         options = OpenStruct.new(:diff_format => :unified, :context_lines => 3)
         ::Spec::Expectations.differ = ::Spec::Expectations::Differs::Default.new(options)
       end
+    end
+
+    def list_languages
+      max = Cucumber::LANGUAGES.keys.map{|lang| lang.length}.max
+      Cucumber::LANGUAGES.keys.sort.each do |lang|
+        name = Cucumber::LANGUAGES[lang]['name']
+        puts lang + "  #{name}".indent(max - lang.length)
+      end
+      Kernel.exit
+    end
+
+    def list_keywords(ref, lang)
+      unless Cucumber::LANGUAGES[lang]
+        exit_with_error("No language with key #{v}")
+      end
+      reference  = Cucumber::LANGUAGES[ref]
+      reference_name = reference['name']
+
+      Cucumber.load_language(lang)
+
+      keys = %w{feature scenario scenario_outline examples given when then but}
+      max = (keys.map{|key| reference[key].length} + [reference_name.length]).max
+
+      puts reference_name + "  #{Cucumber.keywords['name']}".indent(max - reference_name.length)
+      keys.each do |key|
+        puts reference[key] + "  #{Cucumber.keywords[key]}".indent(max - reference[key].length)
+      end
+      Kernel.exit
     end
   end
 end

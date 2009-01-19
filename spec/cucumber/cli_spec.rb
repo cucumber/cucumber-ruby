@@ -58,7 +58,7 @@ Could not find profile: 'i_do_not_exist'
 Defined profiles in cucumber.yml:
   * default
   * html_report
-      END_OF_MESSAGE
+END_OF_MESSAGE
         
       error.string.should == expected_message
     end

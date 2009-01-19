@@ -5,6 +5,7 @@
 # http://www.iana.org/assignments/language-subtag-registry
 # http://ftp.ics.uci.edu/pub/ietf/http/related/iso639.txt (Use this I think)
 "en":
+  name: English
   feature: Feature
   scenario: Scenario
   scenario_outline: Scenario Outline
@@ -18,10 +19,10 @@
 # that is missing a keyword will expect the English word until the missing word(s)
 # are added.
 #
-# Please keep the grammars in alphabetical order from here and down.
+# Please keep the grammars in alphabetical order by name from here and down.
 
-# Arabic
 "ar":
+  name: Arabic
   feature: خاصية
   scenario: سيناريو
   given: بفرض
@@ -29,8 +30,8 @@
   then: اذاً
   and: و
   but: لكن
-# Welsh
 "cy":
+  name: Welsh
   feature: Arwedd
   scenario: Scenario
   examples: Enghreifftiau
@@ -39,8 +40,8 @@
   then: Yna
   and: A
   but: Ond
-# Danish
 "da":
+  name: Danish
   feature: Egenskab
   scenario: Scenarie
   examples: Eksempler
@@ -49,8 +50,8 @@
   then: Så
   and: Og
   but: Men
-# German
 "de":
+  name: German
   feature: Funktionalität
   scenario: Szenario
   scenario_outline: Szenariogrundriss
@@ -60,8 +61,8 @@
   then: Dann
   and: Und
   but: Aber
-# LOLCAT
 "en-lol":
+  name: LOLCAT
   feature: OH HAI
   scenario: MISHUN
   scenario_outline: MISHUN SRSLY
@@ -71,8 +72,8 @@
   then: DEN
   and: AN
   but: BUT
-# Texan
 "en-tx":
+  name: Texan
   feature: Feature
   scenario: Scenario
   scenario_outline: Scenario Outline
@@ -81,8 +82,8 @@
   then: Then y'all
   and: And y'all
   but: But y'all
-# Spanish
 "es":
+  name: Spanish
   feature: Característica
   scenario: Escenario
   given: Dado
@@ -90,8 +91,8 @@
   then: Entonces
   and: Y
   but: Pero
-# Estonian
 "et":
+  name: Estonian
   feature: Omadus
   scenario: Stsenaarium
   given: Eeldades
@@ -99,8 +100,8 @@
   then: Siis
   and: Ja
   but: Kuid
-# Finnish
 "fi":
+  name: Finnish
   feature: Ominaisuus
   scenario: Tapaus
   scenario_outline: Tapausaihio
@@ -110,8 +111,8 @@
   then: Niin
   and: Ja
   but: Mutta
-# French
 "fr":
+  name: French
   feature: Fonctionnalité
   scenario: Scénario
   scenario_outline: Scénario esquisse
@@ -121,8 +122,8 @@
   then: Alors
   and: Et
   but: Mais
-# Malay (Indonesian)
 "id":
+  name: Malay (Indonesian)
   feature: Fitur
   scenario: Skenario
   scenario_outline: Skenario konsep
@@ -132,8 +133,8 @@
   then: Maka
   and: Dan
   but: Tapi
-# Italian
 "it":
+  name: Italian
   feature: Funzionalità
   scenario: Scenario
   more_examples: Più esempi
@@ -142,8 +143,8 @@
   then: Allora
   and: E
   but: Ma
-# Japanese
 "ja":
+  name: Japanese
   feature: フィーチャ
   scenario: シナリオ
   more_examples: 他のサンプル
@@ -152,8 +153,8 @@
   then: ならば
   and: かつ
   but: しかし
-# Lithuanian
 "lt":
+  name: Lithuanian
   feature: Sąvybė
   scenario: Scenarijus
   examples: Pavyzdžių
@@ -162,8 +163,8 @@
   then: Tada
   and: Ir
   but: Bet
-# Dutch
 "nl":
+  name: Dutch
   feature: Functionaliteit
   scenario: Scenario
   given: Gegeven
@@ -171,8 +172,8 @@
   then: Dan
   and: En
   but: Maar
-# Norwegian
 "no":
+  name: Norwegian
   feature: Egenskap
   scenario: Scenario
   scenario_outline: Scenarioskisse
@@ -182,8 +183,8 @@
   then: Så
   and: Og
   but: Men
-# Polish
 "pl":
+  name: Polish
   feature: Właściwość
   scenario: Scenariusz
   given: Dane
@@ -191,8 +192,8 @@
   then: Wtedy
   and: Oraz
   but: Ale
-# Portuguese
 "pt":
+  name: Portuguese
   feature: Característica
   scenario: Cenário
   given: Dado
@@ -200,8 +201,8 @@
   then: Então
   and: E
   but: Mas
-# Romanian (without diacritics - the commonly used)
 "ro":
+  name: Romanian
   feature: Functionalitate
   scenario: Scenariu
   given: Daca
@@ -209,8 +210,8 @@
   then: Atunci
   and: Si
   but: Dar
-# Romanian (with diacritics - not commonly used)
 "ro2":
+  name: Romanian (diacritics)
   feature: Funcționalitate
   scenario: Scenariu
   given: Dacă
@@ -218,8 +219,8 @@
   then: Atunci
   and: Și
   but: Dar
-# Russian
 "ru":
+  name: Russian
   feature: Функционал
   scenario: Сценарий
   given: Сначала
@@ -227,8 +228,8 @@
   then: То
   and: И
   but: Но
-# Swedish
 "se":
+  name: Swedish
   feature: Egenskap
   scenario: Scenario
   given: Givet
@@ -236,8 +237,8 @@
   then: Så
   and: Och
   but: Men
-# Chinese simplified
 "zh-CN":
+  name: Chinese simplified
   feature: 功能
   scenario: 场景
   given: 假如
@@ -245,8 +246,8 @@
   then: 那么
   and: 而且
   but: 但是
-# Korean
 "ko":
+  name: Korean
   feature: 기능
   scenario: 예
   given: 조건
