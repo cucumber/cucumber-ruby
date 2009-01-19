@@ -39,8 +39,7 @@ module Cucumber
           argument_hash = cells.to_hash
           cell_index = 0
           @steps.each do |step|
-            previous, matched_args = step.execute_with_arguments(argument_hash, world, previous, visitor)
-
+            previous, matched_args = step.execute_with_arguments(argument_hash, world, previous, visitor, cells[0].line)
             # There might be steps that don't have any arguments
             # If there are no matched args, we'll still iterate once
             matched_args = [nil] if matched_args.empty?

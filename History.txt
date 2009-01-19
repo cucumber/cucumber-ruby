@@ -18,10 +18,10 @@ Blurb ideas
 * TODO Autotest uses file:line instead of --scenario (current impl doesn't work on Windows)
 
 === New features
-* Run cucumber --language help to see all supported languages.
-* Run cucumber --language LANG help to see keywords for a given language.
 * TODO: "Background" section
 * TODO: --tags
+* Run cucumber --language help to see all supported languages.
+* Run cucumber --language LANG help to see keywords for a given language.
 * Multiline arguments (tables and """ strings) are printed in the output
 * It's no longer necessary to compile the Treetop grammar when adding a new language. Localised parser is generated at runtime.
 

@@ -27,7 +27,7 @@ module Cucumber
 
           mock_multiline_arg.should_receive(:arguments_replaced).with({'<test>' => '10'}).and_return(mock_multiline_arg)
         
-          step.execute_with_arguments({'test' => '10'}, stub('world'), :passed, visitor=nil)
+          step.execute_with_arguments({'test' => '10'}, stub('world'), :passed, visitor=nil, line=-1)
         end
        
         it "should invoke step with replaced multiline args" do
@@ -36,7 +36,7 @@ module Cucumber
           mock_multiline_arg = mock('multiline arg', :arguments_replaced => mock_multiline_arg_replaced)
           step = Step.new(45, 'Given', '<test>', mock_multiline_arg)
         
-          step.execute_with_arguments({'test' => '10'}, stub('world'), :passed, visitor=nil)
+          step.execute_with_arguments({'test' => '10'}, stub('world'), :passed, visitor=nil, line=-1)
         end
   
       end

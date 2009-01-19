@@ -117,11 +117,12 @@ module Cucumber
       def cell_matrix
         row = -1
         @cell_matrix ||= @raw.map do |raw_row|
+          line = raw_row.line rescue -1
           row += 1
           col = -1
           raw_row.map do |raw_cell|
             col += 1
-            @cell_class.new(raw_cell, self, row, col)
+            @cell_class.new(raw_cell, self, row, col, line)
           end
         end
       end
@@ -157,6 +158,10 @@ module Cucumber
           @cells[n]
         end
 
+        def line
+          @cells.line
+        end
+
         private
 
         def index
@@ -173,10 +178,10 @@ module Cucumber
       end
 
       class Cell
-        attr_reader :value
+        attr_reader :value, :line
 
-        def initialize(value, table, row, col)
-          @value, @table, @row, @col = value, table, row, col
+        def initialize(value, table, row, col, line)
+          @value, @table, @row, @col, @line = value, table, row, col, line
         end
 
         def accept(visitor, status)
