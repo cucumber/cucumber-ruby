@@ -108,7 +108,7 @@ module Cucumber
       end
 
       def visit_step_exception(e)
-        print_exception(@io, e, '', 6)
+        print_exception(@io, e, 6)
       end
 
       private

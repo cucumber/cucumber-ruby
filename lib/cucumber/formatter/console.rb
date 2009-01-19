@@ -30,18 +30,27 @@ module Cucumber
         end
       end
 
-      def print_exceptions(io, features)
-        features.steps[:failed].each_with_index do |step, i|
-          print_exception(io, step.exception, "#{i+1}) ", 0)
-          io.puts
-        end
-      end
-
       def print_pending_scenarios(io, features)
         pending_count = features.scenarios.select{|scenario| scenario.pending?}.length
         if pending_count > 0
           pending_count_string = dump_count(pending_count, "scenario", "pending")
           io.puts format_string(pending_count_string, :pending)
+        end
+      end
+
+      def print_steps(io, features, status)
+        if features.steps[status].any?
+          io.puts(format_string('(::) #{status} (::)', status))
+          io.puts
+        end
+
+        features.steps[status].each_with_index do |step, i|
+          if status == :failed
+            print_exception(io, step.exception, 0)
+          else
+            io.puts(format_string(step.backtrace_line, status))
+          end
+          io.puts
         end
       end
 
@@ -56,8 +65,8 @@ module Cucumber
         end
       end
 
-      def print_exception(io, e, prefix, indent)
-        io.puts(format_string("#{prefix}#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), :failed))
+      def print_exception(io, e, indent)
+        io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), :failed))
       end
 
     private
