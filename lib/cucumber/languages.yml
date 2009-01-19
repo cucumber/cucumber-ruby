@@ -110,6 +110,19 @@
   then: Siis
   and: Ja
   but: Kuid
+# Finnish
+"fi":
+  feature: Ominaisuus
+  scenario: Tapaus
+  scenario_outline: Tapausaihio
+  examples: Tapaukset
+  more_examples: Lisätapaukset
+  given_scenario: Oletetaan tapaus
+  given: Oletetaan
+  when: Kun
+  then: Niin
+  and: Ja
+  but: Mutta
 # French
 "fr":
   feature: Fonctionnalité
