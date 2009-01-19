@@ -41,8 +41,10 @@ module Cucumber
       private
 
       def print_summary(io, features)
-        print_exceptions(io, features)
         print_pending_scenarios(io, features)
+        print_steps(io, features, :undefined)
+        print_steps(io, features, :pending)
+        print_steps(io, features, :failed)
         print_counts(io, features)
       end
 
