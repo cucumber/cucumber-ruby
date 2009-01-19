@@ -983,10 +983,17 @@ module Cucumber
 
       module TableRow2
         def build
-          cells.elements.map do |elt| 
+          row = cells.elements.map do |elt| 
             value = elt.cell.text_value.strip
             value.empty? ? nil : value
           end
+
+          class << row
+            attr_accessor :line
+          end
+          row.line = cells.line
+
+          row
         end
       end
 

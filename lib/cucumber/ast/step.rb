@@ -15,13 +15,13 @@ module Cucumber
         @line, @gwt, @name, @multiline_args = line, gwt, name, multiline_args
       end
 
-      def execute_with_arguments(argument_hash, world, previous, visitor)
+      def execute_with_arguments(argument_hash, world, previous, visitor, row_line)
         delimited_arguments = delimit_argument_names(argument_hash)
         name                = replace_name_arguments(delimited_arguments)
         multiline_args      = replace_multiline_args_arguments(delimited_arguments)
 
         # We'll create a new step and execute that
-        step = Step.new(-1, @gwt, name, *multiline_args)
+        step = Step.new(row_line, @gwt, name, *multiline_args)
         step.scenario = @scenario
         step.world    = world
         step.previous = previous
