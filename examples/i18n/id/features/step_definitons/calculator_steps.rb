@@ -11,7 +11,7 @@ end
 After do
 end
 
-Given "aku sudah masukkan $n ke kalkulator" do |n|
+Given /aku sudah masukkan (\d+) ke kalkulator/ do |n|
   @calc.push n.to_i
 end
 
@@ -22,12 +22,3 @@ end
 Then /hasilnya harus (.*) di layar/ do |result|
   @result.should == result.to_f
 end
-
-Then /class hasilnya harus (\w*)/ do |class_name|
-  @result.class.name.should == class_name
-end
-
-Given /it should rain on (\w+)/ do |day|
-  @calc.rain?(day).should == true
-end
-

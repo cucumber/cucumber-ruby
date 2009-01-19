@@ -11,7 +11,7 @@ end
 After do
 end
 
-Given "我已经在计算器里输入$n" do |n|
+Given /我已经在计算器里输入(\d+)/ do |n|
   @calc.push n.to_i
 end
 

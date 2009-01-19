@@ -1,3 +1,10 @@
+== Git
+
+=== New features
+
+* Finnish translation (Tero Tilus)
+* Use Webrat's #contain matcher in generated "I should (not) see" step definitions
+
 == 0.1.16 2009-01-19
 
 This is a small bugfix release. The most notable improvement is compatibility with Webrat 0.4. Rails/Webrat users should
@@ -243,13 +250,12 @@ Tables used to define more examples after a scenario must now be prefixed. In En
       And I have entered 70 into the calculator
       When I press add
       Then the result should be 120 on the screen
-      And the result class should be Fixnum
 
     More Examples:
-      | input_1 | input_2 | button | output | class  |
-      | 20      | 30      | add    | 50     | Fixnum |
-      | 2       | 5       | add    | 7      | Fixnum |
-      | 0       | 40      | add    | 40     | Fixnum |
+      | input_1 | input_2 | button | output |
+      | 20      | 30      | add    | 50     |
+      | 2       | 5       | add    | 7      |
+      | 0       | 40      | add    | 40     |
 
 Languages that are not updated yet will have to use "More Examples" until we get the translations.
 

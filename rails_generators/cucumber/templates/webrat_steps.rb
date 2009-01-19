@@ -87,11 +87,11 @@ When /^I attach the file at "(.*)" to "(.*)" $/ do |path, field|
 end
 
 Then /^I should see "(.*)"$/ do |text|
-  response.body.should =~ /#{text}/m
+  response.should contain(text)
 end
 
 Then /^I should not see "(.*)"$/ do |text|
-  response.body.should_not =~ /#{text}/m
+  response.should_not contain(text)
 end
 
 Then /^the "(.*)" checkbox should be checked$/ do |label|
