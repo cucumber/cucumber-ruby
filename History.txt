@@ -2,6 +2,7 @@
 
 Blurb ideas
 
+* We need updated translations! (List all incomplete languages and what the missing keywords are)
 * Cucumber 0.2 runs about X times faster than Cucumber 0.1.16
 * Cucumber 0.2 is about 2/3 the size of Cucumber 0.1.16, and it is 2-3 times faster to install (less RDoc/Ri).
 
