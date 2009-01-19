@@ -16,6 +16,7 @@ module Cucumber
           $y = n.to_i
         end
         @visitor = Visitor.new(@step_mother)
+        @visitor.options = {}
       end
 
       it "should execute Before blocks before steps" do

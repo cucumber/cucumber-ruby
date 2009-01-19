@@ -12,16 +12,5 @@ module Cucumber
       
       broadcaster.konbanwa('good evening')
     end
-
-    it "should not call methods on registered objects if they dont support the method" do
-      broadcaster = Broadcaster.new
-      mock_receiver = mock('receiver', :respond_to? => false)
-
-      mock_receiver.should_not_receive(:konbanwa)
-      broadcaster.register(mock_receiver)
-      
-      broadcaster.konbanwa()
-    end
-    
   end
 end

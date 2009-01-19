@@ -12,7 +12,8 @@ Blurb ideas
 * --scenario
 * snippets
 * Several disabled specs should be fixed or removed
-* Make all selftest features pass
+* Make all self-test features pass
+* Support multiple --format switches in one run
 
 == Bugfixes
 * TODO Autotest uses file:line instead of --scenario (current impl doesn't work on Windows)

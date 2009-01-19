@@ -153,29 +153,35 @@ Feature: Cucumber command line
     When I run cucumber --dry-run features
     Then it should pass with
       """
-      Feature: Outline Sample  # features/outline_sample.feature
-        Scenario Outline: Test state     # features/outline_sample.feature:3
-          Given <state> without a table  # features/outline_sample.feature:4
+      Feature: Outline Sample
 
-          |state  |
-          |missing|
-          |passing|
-          |failing|
+        Scenario Outline: Test state    # features/outline_sample.feature:3
+          Given <state> without a table
 
-      Feature: Sample  # features/sample.feature
+        Examples: 
+          | state   |
+          | missing |
+          | passing |
+          | failing |
 
-        Scenario: Missing  # features/sample.feature:3
-          Given missing    # other.rb:23
+      Feature: Sample
 
-        Scenario: Passing  # features/sample.feature:6
-          Given passing    # features/step_definitions/sample_steps.rb:1
+        Scenario: Missing # features/sample.feature:3
+          Given missing
 
-        Scenario: Failing  # features/sample.feature:11
-          Given failing    # features/step_definitions/sample_steps.rb:4
+        Scenario: Passing # features/sample.feature:6
+          Given passing   # features/step_definitions/sample_steps.rb:5
+            | a | b |
+            | c | d |
 
+        Scenario: Failing # features/sample.feature:11
+          Given failing   # features/step_definitions/sample_steps.rb:8
+            | e | f |
+            | g | h |
 
-      7 scenarios
-      6 steps passed
+      6 scenarios
+      4 steps skipped
+      2 steps undefined
 
       """
 

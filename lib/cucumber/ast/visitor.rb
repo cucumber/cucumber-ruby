@@ -2,6 +2,8 @@ module Cucumber
   module Ast
     # A dumb visitor that implements the whole Visitor API and just walks the tree.
     class Visitor
+      attr_accessor :options
+
       def initialize(step_mother)
         @step_mother = step_mother
       end

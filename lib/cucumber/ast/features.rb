@@ -14,9 +14,12 @@ module Cucumber
         feature.features = self
         @features << feature
       end
+
+      def scenario_executed(scenario)
+        @scenarios << scenario
+      end
       
       def step_executed(step)
-        @scenarios << step.scenario unless @scenarios.index(step.scenario)
         @steps[step.status] << step
       end
 

@@ -60,7 +60,7 @@ module Cucumber
       end
 
       def visit_examples_name(keyword, name)
-        @io.print("  #{keyword} #{name}\n")
+        @io.print("\n  #{keyword} #{name}\n")
         @indent = 4
       end
 

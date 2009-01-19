@@ -8,7 +8,7 @@ module Cucumber
       ARGUMENT_END  = '>'
 
       attr_reader :exception
-      attr_writer :world, :previous
+      attr_writer :world, :previous, :options
       attr_accessor :status, :scenario
 
       def initialize(line, gwt, name, *multiline_args)
@@ -69,7 +69,7 @@ module Cucumber
           begin
             @step_definition = visitor.step_definition(@name)
             matched_args = @step_definition.matched_args(@name)
-            if @previous == :passed
+            if @previous == :passed && !visitor.options[:dry_run]
               @step_definition.execute(@world, *(matched_args + @multiline_args))
               @status = :passed
             else

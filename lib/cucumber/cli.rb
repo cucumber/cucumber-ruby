@@ -154,6 +154,7 @@ module Cucumber
       features = load_plain_text_features
 
       visitor = build_formatter_broadcaster(step_mother)
+      visitor.options = @options
       visitor.visit_features(features)
       Kernel.exit features.steps[:failed].length
     end
@@ -302,8 +303,6 @@ Defined profiles in cucumber.yml:
       output_broadcaster
     end
     
-  private
-
     def constantize(camel_cased_word)
       names = camel_cased_word.split('::')
       names.shift if names.empty? || names.first.empty?

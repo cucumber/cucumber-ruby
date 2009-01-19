@@ -239,29 +239,22 @@ Defined profiles in cucumber.yml:
       cli.parse_options!(%w{--format progress --format progress --out file})
       cli.options[:formats].should == {'progress' => [STDOUT, mock_file]}
     end
-
-    it "should setup the executor with the formatter broadcaster" do
-      cli = CLI.new(StringIO.new)
-      broadcaster = Broadcaster.new
-      Broadcaster.stub!(:new).and_return(broadcaster)
-      cli.parse_options!(%w{--format progress})
-
-      cli.execute!(stub('step mother'))
-    end
     
     describe "--format with class" do
      
      describe "in module" do
 
         it "should resolve each module until it gets Formatter class" do
-          cli = CLI.new(StringIO.new)
+          cli = CLI.new(nil)
           mock_module = mock('module')
           cli.parse_options!(%w{--format ZooModule::MonkeyFormatterClass})
           Object.stub!(:const_defined?).and_return(true)
           mock_module.stub!(:const_defined?).and_return(true)
 
+          f = stub('formatter', :null_object => true)
+
           Object.should_receive(:const_get).with('ZooModule').and_return(mock_module)
-          mock_module.should_receive(:const_get).with('MonkeyFormatterClass').and_return(mock('formatter class', :new => nil))
+          mock_module.should_receive(:const_get).with('MonkeyFormatterClass').and_return(mock('formatter class', :new => f))
 
           cli.execute!(stub('step mother'))
         end

@@ -19,6 +19,10 @@ module Cucumber
         end
       end
 
+      def scenario_executed(scenario)
+        @features.scenario_executed(scenario) if @features
+      end
+
       def step_executed(step)
         @features.step_executed(step) if @features
       end

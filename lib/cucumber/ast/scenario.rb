@@ -22,6 +22,7 @@ module Cucumber
             previous = step.status
           end
         end
+        @feature.scenario_executed(self) if @feature
       end
 
       def source_indent(text_length)
@@ -54,7 +55,7 @@ module Cucumber
       def pending?
         @steps.empty?
       end
-      
+
       def step_executed(step)
         @feature.step_executed(step) if @feature
       end
