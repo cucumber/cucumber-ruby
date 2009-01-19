@@ -8,7 +8,6 @@ Blurb ideas
 
 === Existing features that don't work yet:
 * --exclude
-* --dry-run
 * --scenario
 * snippets
 * Several disabled specs should be fixed or removed
