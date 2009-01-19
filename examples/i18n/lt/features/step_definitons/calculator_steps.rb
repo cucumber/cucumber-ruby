@@ -22,12 +22,3 @@ end
 Then /rezultatas ekrane turi būti (.*)/ do |result|
   @result.should == result.to_f
 end
-
-Then /rezultato klasė turi būti "(\w*)"/ do |class_name|
-  @result.class.name.should == class_name
-end
-
-Given /turi lyti (\w+)/ do |day|
-  @calc.rain?(day).should == true
-end
-

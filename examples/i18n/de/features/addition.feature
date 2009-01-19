@@ -8,10 +8,9 @@ Funktionalität: Addition
     Und ich habe 70 in den Taschenrechner eingegeben
     Wenn ich add drücke
     Dann sollte das Ergebniss auf dem Bildschirm 120 sein
-    Und die Ergebnissklasse sollte eine Fixnum sein
 
   Mehr Beispiele:
-    | Eingabe_1 | Eingabe_2 | Knopf | Ausgabe | Klasse |
-    | 20        | 30        | add   | 50      | Fixnum |
-    | 2         | 5         | add   | 7       | Fixnum |
-    | 0         | 40        | add   | 40      | Fixnum |
+    | Eingabe_1 | Eingabe_2 | Knopf | Ausgabe |
+    | 20        | 30        | add   | 50      |
+    | 2         | 5         | add   | 7       |
+    | 0         | 40        | add   | 40      |

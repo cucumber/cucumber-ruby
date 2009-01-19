@@ -22,7 +22,3 @@ end
 Then /laskimen ruudulla pitäisi näkyä tulos (.*)/ do |tulos|
   @tulos.should == tulos.to_f
 end
-
-Then /tuloksen luokan pitäisi olla (\w*)/ do |luokan_nimi|
-  @tulos.class.name.should == luokan_nimi
-end

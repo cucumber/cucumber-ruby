@@ -7,4 +7,3 @@ Feature: Dalyba
     Ir aš įvedžiau 2 į skaičiuotuvą
     Kai aš paspaudžiu "divide"
     Tada rezultatas ekrane turi būti 1.5
-    Ir rezultato klasė turi būti "Float"
