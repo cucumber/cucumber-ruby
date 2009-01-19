@@ -13,11 +13,6 @@ require 'cucumber/core_ext/exception'
 
 module Cucumber
   class << self
-    # Returns all the language names
-    def languages
-      LANGUAGES.keys.sort
-    end
-    
     # Returns the keyword Hash for the current language
     def keywords
       LANGUAGES['en'].merge(LANGUAGES[@lang])
