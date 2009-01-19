@@ -54,6 +54,7 @@ module Cucumber
             end
           end
         end
+        @feature.scenario_executed(self) if @feature
       end
 
       def pending? ; false ; end
