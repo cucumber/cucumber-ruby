@@ -7,9 +7,6 @@ bin/cucumber
 config/hoe.rb
 config/requirements.rb
 cucumber.yml
-examples/calculator_ruby_features/Rakefile
-examples/calculator_ruby_features/features/addition.rb
-examples/calculator_ruby_features/features/step_definitons/calculator_steps.rb
 examples/cs/README.textile
 examples/cs/Rakefile
 examples/cs/compile.bat
@@ -240,7 +237,6 @@ spec/cucumber/step_mom_spec.rb
 spec/cucumber/treetop_parser/empty_feature.feature
 spec/cucumber/treetop_parser/empty_scenario.feature
 spec/cucumber/treetop_parser/empty_scenario_outline.feature
-spec/cucumber/treetop_parser/feature_parser_spec.rb
 spec/cucumber/treetop_parser/fit_scenario.feature
 spec/cucumber/treetop_parser/given_scenario.feature
 spec/cucumber/treetop_parser/invalid_scenario_outlines.feature

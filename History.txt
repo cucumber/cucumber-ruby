@@ -1,13 +1,34 @@
-== ast branch
+== Git (ast - future 0.2)
+
+Blurb ideas
+
+* Cucumber 0.2 runs about X times faster than Cucumber 0.1.16
+* Cucumber 0.2 is about 2/3 the size of Cucumber 0.1.16, and it is 2-3 times faster to install (less RDoc/Ri).
+
+=== Existing features that don't work yet:
+* --exclude
+* --dry-run
+* --scenario
+* snippets
+* Several disabled specs should be fixed or removed
+* Make all selftest features pass
+
+== Bugfixes
+* TODO Autotest uses file:line instead of --scenario (current impl doesn't work on Windows)
 
 === New features
+* TODO: Run cucumber --language LANG with no args to see keywords.
+* TODO: "Background" section
+* TODO: --tags
 * Multiline arguments (tables and """ strings) are printed in the output
-* No longer necessary to compile the Treetop grammar for spoken languages
+* It's no longer necessary to compile the Treetop grammar when adding a new language. Localised parser is generated at runtime.
 
 === Removed features
+* "GivenScenario" is gone. Instead you can use "Background" or call Steps from Steps.
+* "More Examples" is gone. "Scenario" + "More Examples" is no longer supported. Use "Scenario Outline" + "Examples" instead.
 * Pure Ruby features are no longer supported
 
-== Git
+== Git (master)
 
 === New features
 
