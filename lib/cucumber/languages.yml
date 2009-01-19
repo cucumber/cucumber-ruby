@@ -9,8 +9,6 @@
   scenario: Scenario
   scenario_outline: Scenario Outline
   examples: Examples
-  more_examples: More Examples
-  given_scenario: GivenScenario
   given: Given
   when: When
   then: Then
@@ -26,8 +24,6 @@
 "ar":
   feature: خاصية
   scenario: سيناريو
-  more_examples: امثلة اكثر
-  given_scenario: بفرض سيناريو معين
   given: بفرض
   when: متى
   then: اذاً
@@ -37,8 +33,7 @@
 "cy":
   feature: Arwedd
   scenario: Scenario
-  more_examples: Hychwaneg enghreifftiau
-  given_scenario: Anrhegedig scenario
+  examples: Enghreifftiau
   given: anrhegedig a
   when: Pryd
   then: Yna
@@ -48,7 +43,7 @@
 "da":
   feature: Egenskab
   scenario: Scenarie
-  given_scenario: GivetScenarie
+  examples: Eksempler
   given: Givet
   when: Når
   then: Så
@@ -60,8 +55,6 @@
   scenario: Szenario
   scenario_outline: Szenariogrundriss
   examples: Beispiele
-  more_examples: Mehr Beispiele
-  given_scenario: Gegebenes Szenario
   given: Gegeben sei
   when: Wenn
   then: Dann
@@ -71,8 +64,8 @@
 "en-lol":
   feature: OH HAI
   scenario: MISHUN
-  more_examples: MOAR EXAMPLZ
-  given_scenario: SRSLY
+  scenario_outline: MISHUN SRSLY
+  examples: MOAR EXAMPLZ
   given: GIVN
   when: WEN
   then: DEN
@@ -82,8 +75,7 @@
 "en-tx":
   feature: Feature
   scenario: Scenario
-  more_examples: More Examples
-  given_scenario: GivenScenario
+  scenario_outline: Scenario Outline
   given: Given y'all
   when: When y'all
   then: Then y'all
@@ -93,8 +85,6 @@
 "es":
   feature: Característica
   scenario: Escenario
-  more_examples: Más ejemplos
-  given_scenario: DadoElEscenario
   given: Dado
   when: Cuando
   then: Entonces
@@ -104,7 +94,6 @@
 "et":
   feature: Omadus
   scenario: Stsenaarium
-  given_scenario: EeldadesStsenaariumit
   given: Eeldades
   when: Kui
   then: Siis
@@ -116,8 +105,6 @@
   scenario: Tapaus
   scenario_outline: Tapausaihio
   examples: Tapaukset
-  more_examples: Lisätapaukset
-  given_scenario: Oletetaan tapaus
   given: Oletetaan
   when: Kun
   then: Niin
@@ -129,7 +116,6 @@
   scenario: Scénario
   scenario_outline: Scénario esquisse
   examples: Exemples
-  given_scenario: Soit le Scénario
   given: Etant donné
   when: Lorsque
   then: Alors
@@ -141,7 +127,6 @@
   scenario: Skenario
   scenario_outline: Skenario konsep
   examples: Contoh
-  given_scenario: DenganSkenario
   given: Dengan
   when: Ketika
   then: Maka
@@ -152,7 +137,6 @@
   feature: Funzionalità
   scenario: Scenario
   more_examples: Più esempi
-  given_scenario: DatoLoScenario
   given: Dato
   when: Quando
   then: Allora
@@ -163,7 +147,6 @@
   feature: フィーチャ
   scenario: シナリオ
   more_examples: 他のサンプル
-  given_scenario: 前提シナリオ
   given: 前提
   when: もし
   then: ならば
@@ -174,7 +157,6 @@
   feature: Sąvybė
   scenario: Scenarijus
   examples: Pavyzdžių
-  given_scenario: DuotasScenarijus
   given: Duota
   when: Kai
   then: Tada
@@ -184,8 +166,6 @@
 "nl":
   feature: Functionaliteit
   scenario: Scenario
-  more_examples: Meer voorbeelden
-  given_scenario: GegevenScenario
   given: Gegeven
   when: Als
   then: Dan
@@ -195,8 +175,8 @@
 "no":
   feature: Egenskap
   scenario: Scenario
-  more_examples: Flere eksempler
-  given_scenario: GittScenario
+  scenario_outline: Scenarioskisse
+  examples: Eksempler
   given: Gitt
   when: Når
   then: Så
@@ -206,8 +186,6 @@
 "pl":
   feature: Właściwość
   scenario: Scenariusz
-  more_examples: WięcejPrzykładów
-  given_scenario: DanyScenariusz
   given: Dane
   when: Jeżeli
   then: Wtedy
@@ -217,7 +195,6 @@
 "pt":
   feature: Característica
   scenario: Cenário
-  given_scenario: DadoOCenário
   given: Dado
   when: Quando
   then: Então
@@ -227,8 +204,6 @@
 "ro":
   feature: Functionalitate
   scenario: Scenariu
-  more_examples: Mai multe exemple
-  given_scenario: ScenariuDat
   given: Daca
   when: Cand
   then: Atunci
@@ -238,8 +213,6 @@
 "ro2":
   feature: Funcționalitate
   scenario: Scenariu
-  more_examples: Mai multe exemple
-  given_scenario: ScenariuDat
   given: Dacă
   when: Când
   then: Atunci
@@ -249,7 +222,6 @@
 "ru":
   feature: Функционал
   scenario: Сценарий
-  given_scenario: ДанныйСценарий
   given: Сначала
   when: Если
   then: То
@@ -259,7 +231,6 @@
 "se":
   feature: Egenskap
   scenario: Scenario
-  given_scenario: GivetScenario
   given: Givet
   when: När
   then: Så
@@ -269,7 +240,6 @@
 "zh-CN":
   feature: 功能
   scenario: 场景
-  given_scenario: 引用场景
   given: 假如
   when: 当
   then: 那么
@@ -279,8 +249,6 @@
 "ko":
   feature: 기능
   scenario: 예
-  more_examples: 다른 예
-  given_scenario: 주어진 예
   given: 조건
   when: 만일
   then: 그러면
