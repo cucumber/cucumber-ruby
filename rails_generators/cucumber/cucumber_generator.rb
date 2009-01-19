@@ -11,6 +11,7 @@ class CucumberGenerator < Rails::Generator::Base
 
       m.directory 'features/support'
       m.file      'env.rb',           'features/support/env.rb'
+      m.file      'paths.rb',         'features/support/paths.rb'
 
       m.directory 'lib/tasks'
       m.file      'cucumber.rake',    'lib/tasks/cucumber.rake'
