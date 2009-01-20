@@ -22,6 +22,7 @@ module Cucumber
         each do |row|
           visitor.visit_table_row(row, status)
         end
+        nil
       end
 
       # Converts this table into an Array of Hash where the keys of each
@@ -139,6 +140,7 @@ module Cucumber
           each do |cell|
             visitor.visit_table_cell(cell, status)
           end
+          nil
         end
 
         # For testing only

@@ -80,7 +80,8 @@ module Cucumber
 
       def visit_step(step)
         @indent = 6
-        step.accept(self)
+        exception = step.accept(self)
+        print_exception(@io, exception, @indent) if exception
       end
 
       def visit_step_name(gwt, step_name, status, step_definition, source_indent)
@@ -95,8 +96,9 @@ module Cucumber
 
       def visit_table_row(table_row, status)
         @io.print @delim.indent(@indent)
-        table_row.accept(self, status)
+        exception = table_row.accept(self, status)
         @io.puts
+        print_exception(@io, exception, 6) if exception
       end
 
       def visit_py_string(string, status)
@@ -110,10 +112,6 @@ module Cucumber
 
       def visit_table_cell_value(value, width, status)
         @io.print(' ' + format_string((value || '').ljust(width), status) + " #{@delim}")
-      end
-
-      def visit_step_exception(e)
-        print_exception(@io, e, 6)
       end
 
       private

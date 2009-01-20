@@ -33,22 +33,30 @@ Feature: Cucumber command line
       """
 
   Scenario: Run single failing scenario outline table row
-    When I run cucumber -q features/outline_sample.feature:9
+    When I run cucumber features/outline_sample.feature:5
     Then it should fail with
       """
       Feature: Outline Sample
-        Scenario Outline: Test state
+
+        Scenario Outline: Test state          # features/outline_sample.feature:5
           Given <state> without a table
+          Given <other_state> without a table
 
-          |state  |
-          |failing|
-
+        Examples: 
+          | state   | other_state |
+          | missing | passing     |
+          | passing | passing     |
+          | failing | passing     |
             FAIL (RuntimeError)
-            ./features/step_definitions/sample_steps.rb:12:in ` /^failing without a table$/'
-            features/outline_sample.feature:9:in `/^failing without a table$/'
+            ./features/step_definitions/sample_steps.rb:2:in `flunker'
+            ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
+            features/outline_sample.feature:12:in `Given failing without a table'
 
-      2 scenarios
+      3 scenarios
       1 step failed
+      2 steps skipped
+      1 step undefined
+      2 steps passed
 
       """
 
@@ -56,24 +64,25 @@ Feature: Cucumber command line
     When I run cucumber -q --format progress features/outline_sample.feature
     Then it should fail with
       """
-      UU.F
+      UUS..FS
 
       (::) undefined (::)
 
       features/outline_sample.feature:3:in `Scenario: I have no steps'
 
-      features/outline_sample.feature:9:in `Given missing without a table'
+      features/outline_sample.feature:10:in `Given missing without a table'
 
       (::) failed (::)
 
       FAIL (RuntimeError)
       ./features/step_definitions/sample_steps.rb:2:in `flunker'
       ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-      features/outline_sample.feature:11:in `Given failing without a table'
+      features/outline_sample.feature:12:in `Given failing without a table'
 
       4 scenarios
       1 step failed
+      2 steps skipped
       1 step undefined
-      1 step passed
+      2 steps passed
 
       """

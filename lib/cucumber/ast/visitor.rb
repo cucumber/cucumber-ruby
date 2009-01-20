@@ -80,9 +80,6 @@ module Cucumber
 
       def visit_table_cell_value(value, width, status)
       end
-
-      def visit_step_exception(error)
-      end
     end
   end
 end

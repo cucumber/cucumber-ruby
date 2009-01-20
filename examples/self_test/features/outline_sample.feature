@@ -4,8 +4,9 @@ Feature: Outline Sample
 
   Scenario Outline: Test state
     Given <state> without a table
+    Given <other_state> without a table
   Examples:
-    |  state   |
-    | missing |
-    | passing|
-| failing |
+    |  state   | other_state |
+    | missing |  passing|
+    | passing| passing |
+| failing | passing |
