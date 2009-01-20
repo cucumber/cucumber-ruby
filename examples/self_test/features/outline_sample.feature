@@ -3,7 +3,7 @@ Feature: Outline Sample
   Scenario Outline: Test state
     Given <state> without a table
   Examples:
-    |  state  |
+    |  state   |
     | missing |
-    | passing |
-    | failing |
+    | passing|
+| failing |

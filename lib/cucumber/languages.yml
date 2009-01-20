@@ -1,12 +1,11 @@
-# http://www.ietf.org/rfc/rfc4646.txt
-# http://www.ietf.org/rfc/rfc4647.txt
-# Others:
-# http://en.wikipedia.org/wiki/IETF_language_tag
-# http://www.iana.org/assignments/language-subtag-registry
-# http://ftp.ics.uci.edu/pub/ietf/http/related/iso639.txt (Use this I think)
+# We use the codes here (prefer 2 letters when possible)
+# http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes
+#
 "en":
   name: English
+  native: English
   feature: Feature
+  background: Background
   scenario: Scenario
   scenario_outline: Scenario Outline
   examples: Examples
@@ -23,6 +22,7 @@
 
 "ar":
   name: Arabic
+  native: العربية
   feature: خاصية
   scenario: سيناريو
   given: بفرض
@@ -32,6 +32,7 @@
   but: لكن
 "cy":
   name: Welsh
+  native: Cymraeg
   feature: Arwedd
   scenario: Scenario
   examples: Enghreifftiau
@@ -42,7 +43,9 @@
   but: Ond
 "da":
   name: Danish
+  native: dansk
   feature: Egenskab
+  background: Baggrund
   scenario: Scenarie
   examples: Eksempler
   given: Givet
@@ -52,6 +55,7 @@
   but: Men
 "de":
   name: German
+  native: Deutsch
   feature: Funktionalität
   scenario: Szenario
   scenario_outline: Szenariogrundriss
@@ -63,10 +67,12 @@
   but: Aber
 "en-lol":
   name: LOLCAT
+  native: LOLCAT
   feature: OH HAI
+  background: B4
   scenario: MISHUN
   scenario_outline: MISHUN SRSLY
-  examples: MOAR EXAMPLZ
+  examples: EXAMPLZ
   given: GIVN
   when: WEN
   then: DEN
@@ -74,6 +80,7 @@
   but: BUT
 "en-tx":
   name: Texan
+  native: Texan
   feature: Feature
   scenario: Scenario
   scenario_outline: Scenario Outline
@@ -84,6 +91,7 @@
   but: But y'all
 "es":
   name: Spanish
+  native: español
   feature: Característica
   scenario: Escenario
   given: Dado
@@ -93,6 +101,7 @@
   but: Pero
 "et":
   name: Estonian
+  native: eesti keel
   feature: Omadus
   scenario: Stsenaarium
   given: Eeldades
@@ -102,6 +111,7 @@
   but: Kuid
 "fi":
   name: Finnish
+  native: suomi
   feature: Ominaisuus
   scenario: Tapaus
   scenario_outline: Tapausaihio
@@ -113,6 +123,7 @@
   but: Mutta
 "fr":
   name: French
+  native: français
   feature: Fonctionnalité
   scenario: Scénario
   scenario_outline: Scénario esquisse
@@ -123,7 +134,8 @@
   and: Et
   but: Mais
 "id":
-  name: Malay (Indonesian)
+  name: Indonesian
+  native: Bahasa Indonesia
   feature: Fitur
   scenario: Skenario
   scenario_outline: Skenario konsep
@@ -135,6 +147,7 @@
   but: Tapi
 "it":
   name: Italian
+  native: italiano
   feature: Funzionalità
   scenario: Scenario
   more_examples: Più esempi
@@ -145,6 +158,7 @@
   but: Ma
 "ja":
   name: Japanese
+  native: 日本語
   feature: フィーチャ
   scenario: シナリオ
   more_examples: 他のサンプル
@@ -155,6 +169,7 @@
   but: しかし
 "lt":
   name: Lithuanian
+  native: lietuvių kalba
   feature: Sąvybė
   scenario: Scenarijus
   examples: Pavyzdžių
@@ -165,6 +180,7 @@
   but: Bet
 "nl":
   name: Dutch
+  native: Nederlands
   feature: Functionaliteit
   scenario: Scenario
   given: Gegeven
@@ -174,7 +190,9 @@
   but: Maar
 "no":
   name: Norwegian
+  native: norsk
   feature: Egenskap
+  background: Bakgrunn
   scenario: Scenario
   scenario_outline: Scenarioskisse
   examples: Eksempler
@@ -185,6 +203,7 @@
   but: Men
 "pl":
   name: Polish
+  native: polski
   feature: Właściwość
   scenario: Scenariusz
   given: Dane
@@ -194,6 +213,7 @@
   but: Ale
 "pt":
   name: Portuguese
+  native: português
   feature: Característica
   scenario: Cenário
   given: Dado
@@ -203,6 +223,7 @@
   but: Mas
 "ro":
   name: Romanian
+  native: română
   feature: Functionalitate
   scenario: Scenariu
   given: Daca
@@ -211,7 +232,8 @@
   and: Si
   but: Dar
 "ro2":
-  name: Romanian (diacritics)
+  name: Romanian (diacritical)
+  native: română (diacritical)
   feature: Funcționalitate
   scenario: Scenariu
   given: Dacă
@@ -221,6 +243,7 @@
   but: Dar
 "ru":
   name: Russian
+  native: русский язык
   feature: Функционал
   scenario: Сценарий
   given: Сначала
@@ -230,7 +253,9 @@
   but: Но
 "se":
   name: Swedish
+  native: Svenska
   feature: Egenskap
+  background: Bakgrund
   scenario: Scenario
   given: Givet
   when: När
@@ -239,6 +264,7 @@
   but: Men
 "zh-CN":
   name: Chinese simplified
+  native: 中文
   feature: 功能
   scenario: 场景
   given: 假如
@@ -248,6 +274,7 @@
   but: 但是
 "ko":
   name: Korean
+  native: 한국어
   feature: 기능
   scenario: 예
   given: 조건
