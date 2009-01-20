@@ -18,6 +18,8 @@ Blurb ideas
 * TODO Autotest uses file:line instead of --scenario (current impl doesn't work on Windows)
 
 === New features
+* TODO: --no-multiline
+* TODO: Autoformatting (--autoformat -a)
 * TODO: "Background" section
 * TODO: --tags
 * Run cucumber --language help to see all supported languages.

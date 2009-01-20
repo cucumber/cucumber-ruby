@@ -9,11 +9,13 @@ module Cucumber
     #
     class Pretty < Ast::Visitor
       include Console
+      attr_writer :indent
 
-      def initialize(step_mother, io, options)
+      def initialize(step_mother, io, options, delim='|')
         super(step_mother)
         @io = (io == STDOUT) ? Kernel : io
         @options = options
+        @delim = delim
       end
 
       def visit_features(features)
@@ -89,7 +91,7 @@ module Cucumber
       end
 
       def visit_table_row(table_row, status)
-        @io.print '|'.indent(@indent)
+        @io.print @delim.indent(@indent)
         table_row.accept(self, status)
         @io.puts
       end
@@ -104,7 +106,7 @@ module Cucumber
       end
 
       def visit_table_cell_value(value, width, status)
-        @io.print(' ' + format_string(value.ljust(width), status) + ' |')
+        @io.print(' ' + format_string(value.ljust(width), status) + " #{@delim}")
       end
 
       def visit_step_exception(e)

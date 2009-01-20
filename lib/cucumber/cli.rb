@@ -75,7 +75,7 @@ module Cucumber
           %{Run with "--language LANG help" to list keywords for LANG}) do |v|
           if v == 'help'
             list_languages
-          elsif ARGV==['help']
+          elsif args==['help']
             list_keywords('en', v)
           else
             @options[:lang] = v
@@ -342,30 +342,28 @@ Defined profiles in cucumber.yml:
     end
 
     def list_languages
-      max = Cucumber::LANGUAGES.keys.map{|lang| lang.length}.max
-      Cucumber::LANGUAGES.keys.sort.each do |lang|
-        name = Cucumber::LANGUAGES[lang]['name']
-        puts lang + "  #{name}".indent(max - lang.length)
+      raw = Cucumber::LANGUAGES.keys.sort.map do |lang|
+        [lang, Cucumber::LANGUAGES[lang]['name'], Cucumber::LANGUAGES[lang]['native']]
       end
-      Kernel.exit
+      print_table(raw)
     end
 
     def list_keywords(ref, lang)
       unless Cucumber::LANGUAGES[lang]
         exit_with_error("No language with key #{v}")
       end
-      reference  = Cucumber::LANGUAGES[ref]
-      reference_name = reference['name']
-
       Cucumber.load_language(lang)
-
-      keys = %w{feature scenario scenario_outline examples given when then but}
-      max = (keys.map{|key| reference[key].length} + [reference_name.length]).max
-
-      puts reference_name + "  #{Cucumber.keywords['name']}".indent(max - reference_name.length)
-      keys.each do |key|
-        puts reference[key] + "  #{Cucumber.keywords[key]}".indent(max - reference[key].length)
+      raw = %w{feature scenario scenario_outline examples given when then but}.map do |key|
+        [Cucumber::LANGUAGES[ref][key], Cucumber.keywords[key]]
       end
+      print_table(raw)
+    end
+    
+    def print_table(raw)
+      table = Ast::Table.new(raw)
+      formatter = Formatter::Pretty.new(nil, @out_stream, {}, '')
+      formatter.indent = 0
+      formatter.visit_multiline_arg(table, :passed)
       Kernel.exit
     end
   end
