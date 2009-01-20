@@ -24,11 +24,8 @@ Feature: Cucumber command line
 
         Scenario: Failing
           Given failing
-            | e | f |
-            | g | h |
-            FAIL (RuntimeError)
-            ./features/step_definitions/sample_steps.rb:2:in `flunker'
-            ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
+            expected 1 block argument(s), got 0 (Cucumber::ArityMismatchError)
+            ../../bin/../lib/cucumber/core_ext/instance_exec.rb:15:in `/^failing$/'
             features/sample.feature:12:in `Given failing'
 
       1 scenario
@@ -109,9 +106,14 @@ Feature: Cucumber command line
       """
       U.F
 
-      1) FAIL (RuntimeError)
-      ./features/step_definitions/sample_steps.rb:2:in `flunker'
-      ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
+      (::) undefined (::)
+
+      features/sample.feature:4:in `Given missing'
+
+      (::) failed (::)
+
+      expected 1 block argument(s), got 0 (Cucumber::ArityMismatchError)
+      features/step_definitions/sample_steps.rb:8:in `/^failing$/'
       features/sample.feature:12:in `Given failing'
 
       3 scenarios

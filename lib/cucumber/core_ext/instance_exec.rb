@@ -9,10 +9,12 @@ class Object
   def cucumber_instance_exec(check_arity, pseudo_method, *args, &block)
     arity = block.arity
     arity = 0 if arity == -1
-    if check_arity && args.length != arity
-      raise Cucumber::ArityMismatchError.new("expected #{arity} block argument(s), got #{args.length}")
-    else
-      cucumber_run_with_backtrace_filtering(pseudo_method) do
+    cucumber_run_with_backtrace_filtering(pseudo_method) do
+      if check_arity && args.length != arity
+        instance_exec do
+          raise Cucumber::ArityMismatchError.new("expected #{arity} block argument(s), got #{args.length}")
+        end
+      else
         instance_exec(*args, &block)
       end
     end

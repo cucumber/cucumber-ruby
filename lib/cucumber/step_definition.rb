@@ -58,7 +58,12 @@ module Cucumber
 
     def execute(world, *args)
       args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
-      world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
+      begin
+        world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
+      rescue Cucumber::ArityMismatchError => e
+        e.backtrace.unshift(self.to_backtrace_line)
+        raise e
+      end
     end
 
     def to_backtrace_line
