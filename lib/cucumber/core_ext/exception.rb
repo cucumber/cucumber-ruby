@@ -26,7 +26,7 @@ class Exception
     /gems\/rspec/
   ]
 
-  INSTANCE_EXEC_OFFSET = Cucumber::RUBY_1_9 ? -3 : -4
+  INSTANCE_EXEC_OFFSET = (Cucumber::RUBY_1_9 || Cucumber::JRUBY) ? -3 : -4
 
   def self.cucumber_full_backtrace=(v)
     @@cucumber_full_backtrace = v
