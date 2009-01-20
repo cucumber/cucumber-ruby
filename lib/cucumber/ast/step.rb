@@ -28,7 +28,7 @@ module Cucumber
         @multiline_args.each do |multiline_arg|
           visitor.visit_multiline_arg(multiline_arg, @status)
         end
-        visitor.visit_step_exception(@exception) if @exception
+        @exception
       end
 
       def to_sexp
@@ -81,7 +81,7 @@ module Cucumber
           end
         end
         @scenario.step_executed(self) if @scenario
-        [@status, matched_args]
+        [self, @status, matched_args]
       end
 
       def execute_twin(world, previous, visitor, line, name, *multiline_args)

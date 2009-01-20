@@ -17,8 +17,9 @@ module Cucumber
             @cells.each do |cell|
               visitor.visit_table_cell(cell, :thead)
             end
+            nil
           else
-            @table.execute_row(self, visitor) do |cell, status|
+            exception = @table.execute_row(self, visitor) do |cell, status|
               visitor.visit_table_cell(cell, status)
             end
           end

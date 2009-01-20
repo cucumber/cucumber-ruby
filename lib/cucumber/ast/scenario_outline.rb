@@ -34,12 +34,14 @@ module Cucumber
       end
 
       def execute_row(cells, visitor, &proc)
+        exception = nil
         visitor.world(self) do |world|
-          previous = :passed
+          previous_status = :passed
           argument_hash = cells.to_hash
           cell_index = 0
           @steps.each do |step|
-            previous, matched_args = step.execute_with_arguments(argument_hash, world, previous, visitor, cells[0].line)
+            executed_step, previous_status, matched_args = 
+              step.execute_with_arguments(argument_hash, world, previous_status, visitor, cells[0].line)
             # There might be steps that don't have any arguments
             # If there are no matched args, we'll still iterate once
             matched_args = [nil] if matched_args.empty?
@@ -47,14 +49,15 @@ module Cucumber
             matched_args.each do
               cell = cells[cell_index]
               if cell
-                proc.call(cell, previous)
+                proc.call(cell, previous_status)
                 cell_index += 1
               end
             end
-            visitor.visit_step_exception(step.exception) if step.exception
+            exception ||= executed_step.exception
           end
         end
         @feature.scenario_executed(self) if @feature
+        exception
       end
 
       def pending? ; false ; end
