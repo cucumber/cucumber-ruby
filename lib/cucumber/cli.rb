@@ -354,7 +354,7 @@ Defined profiles in cucumber.yml:
       end
       Cucumber.load_language(lang)
       raw = %w{feature scenario scenario_outline examples given when then but}.map do |key|
-        [Cucumber::LANGUAGES[ref][key], Cucumber.keywords[key]]
+        [Cucumber::LANGUAGES[ref][key], Cucumber::LANGUAGES[lang][key]]
       end
       print_table(raw)
     end
@@ -362,6 +362,18 @@ Defined profiles in cucumber.yml:
     def print_table(raw)
       table = Ast::Table.new(raw)
       formatter = Formatter::Pretty.new(nil, @out_stream, {}, '')
+
+      def formatter.visit_table_row(table_row, status)
+        @col = 1
+        super
+      end
+
+      def formatter.visit_table_cell_value(value, width, status)
+        status = :comment if @col == 1
+        @col += 1
+        super(value, width, status)
+      end
+
       formatter.indent = 0
       formatter.visit_multiline_arg(table, :passed)
       Kernel.exit

@@ -106,7 +106,7 @@ module Cucumber
       end
 
       def visit_table_cell_value(value, width, status)
-        @io.print(' ' + format_string(value.ljust(width), status) + " #{@delim}")
+        @io.print(' ' + format_string((value || '').ljust(width), status) + " #{@delim}")
       end
 
       def visit_step_exception(e)
