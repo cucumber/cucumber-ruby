@@ -13,16 +13,13 @@ require 'cucumber/core_ext/exception'
 
 module Cucumber
   class << self
-    # Returns the keyword Hash for the current language
-    def keywords
-      LANGUAGES['en'].merge(LANGUAGES[@lang])
-    end
+    attr_reader :lang
     
     def load_language(lang) #:nodoc:
       return if @lang
       @lang = lang
-      alias_step_definitions(@lang)
-      Parser.load_parser(keywords)
+      alias_step_definitions(lang)
+      Parser.load_parser(LANGUAGES[lang])
     end
     
     def alias_step_definitions(lang) #:nodoc:
