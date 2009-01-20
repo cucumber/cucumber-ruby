@@ -84,6 +84,7 @@
   feature: Feature
   scenario: Scenario
   scenario_outline: Scenario Outline
+  examples: Examples
   given: Given y'all
   when: When y'all
   then: Then y'all

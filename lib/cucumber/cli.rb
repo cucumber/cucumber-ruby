@@ -353,7 +353,7 @@ Defined profiles in cucumber.yml:
         exit_with_error("No language with key #{v}")
       end
       Cucumber.load_language(lang)
-      raw = %w{feature scenario scenario_outline examples given when then but}.map do |key|
+      raw = %w{feature background scenario scenario_outline examples given when then but}.map do |key|
         [Cucumber::LANGUAGES[ref][key], Cucumber::LANGUAGES[lang][key]]
       end
       print_table(raw)
