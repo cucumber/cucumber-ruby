@@ -51,6 +51,7 @@ module Cucumber
                 cell_index += 1
               end
             end
+            visitor.visit_step_exception(step.exception) if step.exception
           end
         end
         @feature.scenario_executed(self) if @feature
