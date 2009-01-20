@@ -12,13 +12,19 @@ class Object
     if check_arity && args.length != arity
       raise Cucumber::ArityMismatchError.new("expected #{arity} block argument(s), got #{args.length}")
     else
-      begin
+      cucumber_run_with_backtrace_filtering(pseudo_method) do
         instance_exec(*args, &block)
-      rescue Exception => e
-        instance_exec_invocation_line = "#{__FILE__}:#{__LINE__ - 2}:in `cucumber_instance_exec'"
-        e.cucumber_strip_backtrace!(instance_exec_invocation_line, pseudo_method)
-        raise e
       end
+    end
+  end
+  
+  def cucumber_run_with_backtrace_filtering(pseudo_method)
+    begin
+      yield
+    rescue Exception => e
+      instance_exec_invocation_line = "#{__FILE__}:#{__LINE__ - 2}:in `cucumber_run_with_backtrace_filtering'"
+      e.cucumber_strip_backtrace!(instance_exec_invocation_line, pseudo_method)
+      raise e
     end
   end
   

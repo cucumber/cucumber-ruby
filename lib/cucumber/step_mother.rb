@@ -9,37 +9,33 @@ module Cucumber
   module StepMom
 
     class Undefined < StandardError
+      def initialize(step_name)
+        super %{Undefined step: "#{step_name}"}
+      end
+      Cucumber::EXCEPTION_STATUS[self] = :undefined
     end
 
     class Pending < StandardError
+      Cucumber::EXCEPTION_STATUS[self] = :pending
     end
 
     # Raised when a step matches 2 or more StepDefinition
     class Ambiguous < StandardError
       def initialize(step_name, step_definitions)
-        @step_name = step_name
-        @step_definitions = step_definitions
-      end
-      
-      def message
-        message = "Ambiguous match of \"#{@step_name}\":\n\n"
-        message << @step_definitions.map{|sd| sd.to_backtrace_line}.join("\n")
+        message = "Ambiguous match of \"#{step_name}\":\n\n"
+        message << step_definitions.map{|sd| sd.to_backtrace_line}.join("\n")
         message << "\n\n"
-        message
+        super(message)
       end
     end
 
     # Raised when 2 or more StepDefinition have the same Regexp
     class Redundant < StandardError
       def initialize(step_def_1, step_def_2)
-        @step_def_1, @step_def_2 = step_def_1, step_def_2
-      end
-
-      def message
         message = "Multiple step definitions have the same Regexp:\n\n"
-        message << @step_def_1.to_backtrace_line << "\n"
-        message << @step_def_2.to_backtrace_line << "\n\n"
-        message
+        message << step_def_1.to_backtrace_line << "\n"
+        message << step_def_2.to_backtrace_line << "\n\n"
+        super(message)
       end
     end
 
@@ -98,7 +94,10 @@ module Cucumber
       (@world_procs ||= []).each do |proc|
         world = proc.call(world)
       end
-      world.extend(WorldMethods); world.instance_variable_set('@__cucumber_step_mother', self)
+
+      world.extend(WorldMethods)
+      world.__cucumber_step_mother = self
+
       world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
       world
     end
@@ -118,9 +117,16 @@ module Cucumber
     end
 
     module WorldMethods #:nodoc:
+      attr_writer :__cucumber_step_mother, :__cucumber_current_step
+
       # Call a step from within a step definition
       def __cucumber_invoke(name, *multiline_arguments)
-        @__cucumber_step_mother.step_definition(name).execute(self, *multiline_arguments)
+        begin
+          @__cucumber_step_mother.step_definition(name).execute(self, *multiline_arguments)
+        rescue Exception => e
+          @__cucumber_current_step.exception = e
+          raise e
+        end
       end
 
       def pending(message = "TODO")

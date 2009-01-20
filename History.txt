@@ -16,7 +16,7 @@ Blurb ideas
 * Support multiple --format switches in one run
 
 == Bugfixes
-* TODO: Fix http://rspec.lighthouseapp.com/projects/16211/tickets/65-pending-steps-in-steps-called-from-steps
+* Pending steps in > steps called from steps (#65 Aslak Hellesøy)
 * TODO Autotest uses file:line instead of --scenario (current impl doesn't work on Windows)
 
 === New features

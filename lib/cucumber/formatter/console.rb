@@ -61,7 +61,8 @@ module Cucumber
       end
 
       def print_exception(io, e, indent)
-        io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), :failed))
+        status = Cucumber::EXCEPTION_STATUS[e.class]
+        io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
       end
 
     private

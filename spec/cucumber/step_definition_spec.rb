@@ -38,12 +38,15 @@ module Cucumber
 
     it "should raise Undefined when inside step is not defined" do
       Given /Outside/ do
-        Given "Inside"
+        Given 'Inside'
       end
 
+      step = mock('Step')
+      step.should_receive(:exception=)
       lambda do
-        step_definition("Outside").execute(@world)
-      end.should raise_error(StepMom::Undefined, "Inside")
+        @world.__cucumber_current_step = step
+        step_definition('Outside').execute(@world)
+      end.should raise_error(StepMom::Undefined, 'Undefined step: "Inside"')
     end
 
     it "should allow forced pending" do
