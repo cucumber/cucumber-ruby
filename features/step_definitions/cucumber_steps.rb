@@ -6,7 +6,7 @@ When /^I run cucumber (.*)$/ do |cmd|
   @dir ||= 'self_test'
   full_dir ||= File.expand_path(File.dirname(__FILE__) + "/../../examples/#{@dir}")
   Dir.chdir(full_dir) do
-    @full_cmd = "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} #{cmd}"
+    @full_cmd = "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} --no-color #{cmd}"
     @out = `#{@full_cmd}`
     @status = $?.exitstatus
   end
