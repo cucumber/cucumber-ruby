@@ -56,20 +56,22 @@ Feature: Cucumber command line
     When I run cucumber -q --format progress features/outline_sample.feature
     Then it should fail with
       """
-      U.F
+      UU.F
 
       (::) undefined (::)
 
-      features/outline_sample.feature:7:in `Given missing without a table'
+      features/outline_sample.feature:3:in `Scenario: I have no steps'
+
+      features/outline_sample.feature:9:in `Given missing without a table'
 
       (::) failed (::)
 
       FAIL (RuntimeError)
       ./features/step_definitions/sample_steps.rb:2:in `flunker'
       ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-      features/outline_sample.feature:9:in `Given failing without a table'
+      features/outline_sample.feature:11:in `Given failing without a table'
 
-      3 scenarios
+      4 scenarios
       1 step failed
       1 step undefined
       1 step passed
