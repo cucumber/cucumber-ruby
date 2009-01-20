@@ -58,16 +58,20 @@ Feature: Cucumber command line
       """
       U.F
 
-      Pending Scenarios:
+      (::) undefined (::)
 
-      1)  Outline Sample (Test state)
+      features/outline_sample.feature:7:in `Given missing without a table'
 
+      (::) failed (::)
 
-      Failed:
+      FAIL (RuntimeError)
+      ./features/step_definitions/sample_steps.rb:2:in `flunker'
+      ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
+      features/outline_sample.feature:9:in `Given failing without a table'
 
-      1)
-      FAIL
-      ./features/step_definitions/sample_steps.rb:12:in ` /^failing without a table$/'
-      features/outline_sample.feature:9:in `/^failing without a table$/'
+      3 scenarios
+      1 step failed
+      1 step undefined
+      1 step passed
 
       """

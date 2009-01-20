@@ -20,12 +20,7 @@ module Cucumber
         name                = replace_name_arguments(delimited_arguments)
         multiline_args      = replace_multiline_args_arguments(delimited_arguments)
 
-        # We'll create a new step and execute that
-        step = Step.new(row_line, @gwt, name, *multiline_args)
-        step.scenario = @scenario
-        step.world    = world
-        step.previous = previous
-        step.__send__(:execute, visitor)
+        execute_twin(world, previous, visitor, row_line, name, *multiline_args)
       end
 
       def accept(visitor)
@@ -87,6 +82,15 @@ module Cucumber
         end
         @scenario.step_executed(self) if @scenario
         [@status, matched_args]
+      end
+
+      def execute_twin(world, previous, visitor, line, name, *multiline_args)
+        # We'll create a new step and execute that
+        step = Step.new(line, @gwt, name, *multiline_args)
+        step.scenario = @scenario
+        step.world    = world
+        step.previous = previous
+        step.__send__(:execute, visitor)
       end
 
       def delimit_argument_names(argument_hash)
