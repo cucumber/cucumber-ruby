@@ -18,6 +18,7 @@ module Cucumber
         cli.parse_options!(args)
         cli
       end
+
     end
 
     attr_reader :options, :paths
@@ -217,21 +218,22 @@ Defined profiles in cucumber.yml:
 
     # Requires files - typically step files and ruby feature files.
     def require_files
-      @args.clear # Shut up RSpec
       require "cucumber/treetop_parser/feature_#{@options[:lang]}"
       require "cucumber/treetop_parser/feature_parser"
 
-      verbose_log("Ruby files required:")
-      files_to_require.each do |lib|
-        begin
-          require lib
-          verbose_log("  * #{lib}")
-        rescue LoadError => e
-          e.message << "\nFailed to load #{lib}"
-          raise e
+      with_clean_argv do  # used to prevent rspec from parsing ARGV
+        verbose_log("Ruby files required:")
+        files_to_require.each do |lib|
+          begin
+            require lib
+            verbose_log("  * #{lib}")
+          rescue LoadError => e
+            e.message << "\nFailed to load #{lib}"
+            raise e
+          end
         end
+        verbose_log("\n")
       end
-      verbose_log("\n")
     end
     
     def files_to_require
@@ -337,6 +339,15 @@ Defined profiles in cucumber.yml:
       @error_stream << error_message
       Kernel.exit 1
     end
+
+    def with_clean_argv
+      original_argv = ARGV.dup
+      ARGV.clear
+      result = yield
+      ARGV.concat(original_argv)
+      result
+    end
+
 
     def enable_diffing
       if defined?(::Spec)
