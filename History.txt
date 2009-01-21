@@ -20,6 +20,7 @@ Blurb ideas
 * TODO Autotest uses file:line instead of --scenario (current impl doesn't work on Windows)
 
 === New features
+* TODO: --strict (Fail if there are missing or pending steps)
 * TODO: --no-multiline
 * TODO: Autoformatting (--autoformat -a)
 * TODO: "Background" section
