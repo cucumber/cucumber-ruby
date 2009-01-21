@@ -65,7 +65,7 @@ module Cucumber
             matched_args = @step_definition.matched_args(@name)
             if @previous == :passed && !visitor.options[:dry_run]
               @world.__cucumber_current_step = self
-              @step_definition.execute(@world, *(matched_args + @multiline_args))
+              @step_definition.execute(@name, @world, *(matched_args + @multiline_args))
               @status = :passed
             else
               @status = :skipped

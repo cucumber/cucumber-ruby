@@ -6,7 +6,7 @@ Feature: Trading
     Given a stock of prices 0.5,1.0 and a threshold of 10.0
     When the stock is traded at 5.0
     Then the alert status should be OFF
-    When the stock is sold at 11.0
+    When the stock is traded at 11.0
     Then the alert status should be ON
 
   Scenario: Status alert is never activated

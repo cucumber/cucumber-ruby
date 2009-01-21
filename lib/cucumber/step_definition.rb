@@ -56,7 +56,7 @@ module Cucumber
       step_name.match(@regexp).captures
     end
 
-    def execute(world, *args)
+    def execute(step_name, world, *args)
       args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
       begin
         world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
@@ -73,5 +73,6 @@ module Cucumber
     def file_colon_line
       @proc.file_colon_line
     end
+
   end
 end
