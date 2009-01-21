@@ -12,10 +12,12 @@ are implemented simply by subclassing org.jbehave.scenario.steps.Steps. Example:
   public class MyJavaSteps extends Steps {
       @Given("I have %count cucumbers in my belly")
       public void cucumbersInTheBelly(int count) {
+          // talk to the Belly class
       }
 
       @Then("I should not be hungry for %n hours")
-      public void cucumbersInTheBelly(int n) {
+      public void shouldNotBeHungry(int n) {
+          // Make assertions with JUnit or Hamcrest
       }
   }
 
