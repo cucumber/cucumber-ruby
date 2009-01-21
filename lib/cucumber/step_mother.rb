@@ -7,7 +7,6 @@ module Cucumber
   # so #register_step_definition (and more interestingly - its aliases) are
   # available from the top-level.
   module StepMom
-
     class Undefined < StandardError
       def initialize(step_name)
         super %{Undefined step: "#{step_name}"}
@@ -122,7 +121,7 @@ module Cucumber
       # Call a step from within a step definition
       def __cucumber_invoke(name, *multiline_arguments)
         begin
-          @__cucumber_step_mother.step_definition(name).execute(self, *multiline_arguments)
+          @__cucumber_step_mother.step_definition(name).execute(name, self, *multiline_arguments)
         rescue Exception => e
           @__cucumber_current_step.exception = e
           raise e

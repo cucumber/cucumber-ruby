@@ -1,71 +1,45 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.jbehave</groupId>
-    <artifactId>jbehave-examples</artifactId>
-    <version>2.2-SNAPSHOT</version>
-  </parent>
-  <artifactId>jbehave-trader-example</artifactId>
-  <name>JBehave Trader Example</name>
-
+  <groupId>info.cukes</groupId>
+  <artifactId>jbehave-example</artifactId>
+  <packaging>jar</packaging>
+  <version>0.2-SNAPSHOT</version>
+  <name>Cucumber JBehave Example</name>
+  <url>http://cukes.info/</url>
   <dependencies>
+    <dependency>
+      <groupId>org.jbehave</groupId>
+      <artifactId>jbehave-core</artifactId>
+      <version>2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jbehave</groupId>
+      <artifactId>jbehave-core</artifactId>
+      <version>2.1</version>
+    </dependency>
   </dependencies>
+
   <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <testSourceDirectory>src/behaviour/java</testSourceDirectory>
-    <resources>
-      <resource>
-        <directory>${basedir}/src/main/java</directory>
-        <filtering>false</filtering>
-      </resource>
-    </resources>
-    <plugins>
-      <plugin>
-        <groupId>org.jbehave</groupId>
-        <artifactId>jbehave-maven-plugin</artifactId>
-        <version>${pom.version}</version>
-        <executions>
-          <execution>
-            <id>run-scenarios-found</id>
-            <phase>integration-test</phase>
-            <configuration>
-              <scenarioIncludes>
-                <scenarioInclude>org/jbehave/examples/trader/scenarios/*.java</scenarioInclude>
-              </scenarioIncludes>
-              <scenarioExcludes>
-                <scenarioExclude>**/*Steps.java</scenarioExclude>
-              </scenarioExcludes>
-              <skip>true</skip>
-            </configuration>
-            <goals>
-              <goal>run-scenarios</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>run-scenarios-via-ant</id>
-            <phase>integration-test</phase>
-            <configuration>
-              <tasks>
-                <taskdef name="scenarioRunner" classname="org.jbehave.ant.ScenarioRunnerTask" classpathref="maven.runtime.classpath" />
-                <scenarioRunner scenarioIncludes="org/jbehave/examples/trader/scenarios/*.java"
-                  scenarioExcludes="**/*Steps.java" skip="false" />
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-
-    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>2.0.2</version>
+          <configuration>
+            <source>1.5</source>
+            <target>1.5</target>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 </project>
