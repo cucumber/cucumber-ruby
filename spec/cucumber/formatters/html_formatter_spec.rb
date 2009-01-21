@@ -99,6 +99,12 @@ module Cucumber
         @io.string.should =~ /Scenario Outline/
       end
       
+      it "should flush the broadcaster after dumping" do
+        io = mock(File, {:puts => nil})
+        io.should_receive(:flush)
+        HtmlFormatter.new(io, nil).dump
+      end
+      
     end
   end
 end
