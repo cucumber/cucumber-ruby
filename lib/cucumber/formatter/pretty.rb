@@ -42,7 +42,8 @@ module Cucumber
       end
 
       def visit_tag_name(tag_name)
-        @io.print("@#{tag_name}".indent(@indent))
+        tag = format_string("@#{tag_name}", :tag).indent(@indent)
+        @io.print(tag)
         @indent = 1
       end
 

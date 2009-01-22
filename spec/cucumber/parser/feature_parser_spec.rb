@@ -66,6 +66,28 @@ Feature: hi
             [:tag, "hello"],
             [:tag, "world"]]
         end
+
+        it "should parse a file with tags on a scenario" do
+          parse(%{# FC
+  @ft
+Feature: hi
+
+  @st1 @st2   
+  Scenario: First
+    Given Pepper
+
+@st3 
+   @st4
+  Scenario: Second}).to_sexp.should ==
+          [:feature, "Feature: hi",
+            [:comment, "# FC\n"],
+            [:tag, "ft"],
+            [:scenario, 6, 'Scenario:', 'First',
+              [:tag, "st1"], [:tag, "st2"],
+              [:step, 7, "Given", "Pepper"]],
+            [:scenario, 11, 'Scenario:', 'Second',
+              [:tag, "st3"], [:tag, "st4"]]]
+        end
       end
 
       describe "Scenarios" do
