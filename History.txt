@@ -28,9 +28,9 @@ The only Ruby code you have to write is a little wiring in your env.rb file:
 
 You might be wondering what this brings over just using the whole JBehave tool
 standalone. Well, it gives you access to the Gherkin language in your features,
-which is a richer DSL than JBehave's language. Tables, Scenario Outlines, the 
-rich command line, the nice output format and everything pure Ruby users have
-been enjoying.
+which is a richer DSL than JBehave's language. -Over 20 spoken languages, Tables, 
+Scenario Outlines, the rich command line, the nice output format and everything 
+pure Ruby users have been enjoying for a while.
 
 More blurb ideas
 

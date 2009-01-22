@@ -13,16 +13,16 @@ module Cucumber
       end
 
       rule tags
-        (tag space)* {
+        white ts:(tag (space/eol)+)* {
           def build
-            tag_names = elements.map{|e| e.tag.tag_name.text_value}
+            tag_names = ts.elements.map{|e| e.tag.tag_name.text_value}
             Ast::Tags.new(tag_names)
           end
         }
       end
 
       rule tag
-        '@' tag_name:[a-z]+
+        '@' tag_name:([a-z0-9])+
       end
 
       rule comment

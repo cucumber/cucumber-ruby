@@ -151,14 +151,21 @@ module Cucumber
           elements[0]
         end
 
-        def space
+      end
+
+      module Tags1
+        def white
+          elements[0]
+        end
+
+        def ts
           elements[1]
         end
       end
 
-      module Tags1
+      module Tags2
         def build
-          tag_names = elements.map{|e| e.tag.tag_name.text_value}
+          tag_names = ts.elements.map{|e| e.tag.tag_name.text_value}
           Ast::Tags.new(tag_names)
         end
       end
@@ -171,30 +178,69 @@ module Cucumber
           return cached
         end
 
-        s0, i0 = [], index
-        loop do
-          i1, s1 = index, []
-          r2 = _nt_tag
-          s1 << r2
-          if r2
-            r3 = _nt_space
-            s1 << r3
+        i0, s0 = index, []
+        r1 = _nt_white
+        s0 << r1
+        if r1
+          s2, i2 = [], index
+          loop do
+            i3, s3 = index, []
+            r4 = _nt_tag
+            s3 << r4
+            if r4
+              s5, i5 = [], index
+              loop do
+                i6 = index
+                r7 = _nt_space
+                if r7
+                  r6 = r7
+                else
+                  r8 = _nt_eol
+                  if r8
+                    r6 = r8
+                  else
+                    self.index = i6
+                    r6 = nil
+                  end
+                end
+                if r6
+                  s5 << r6
+                else
+                  break
+                end
+              end
+              if s5.empty?
+                self.index = i5
+                r5 = nil
+              else
+                r5 = SyntaxNode.new(input, i5...index, s5)
+              end
+              s3 << r5
+            end
+            if s3.last
+              r3 = (SyntaxNode).new(input, i3...index, s3)
+              r3.extend(Tags0)
+            else
+              self.index = i3
+              r3 = nil
+            end
+            if r3
+              s2 << r3
+            else
+              break
+            end
           end
-          if s1.last
-            r1 = (SyntaxNode).new(input, i1...index, s1)
-            r1.extend(Tags0)
-          else
-            self.index = i1
-            r1 = nil
-          end
-          if r1
-            s0 << r1
-          else
-            break
-          end
+          r2 = SyntaxNode.new(input, i2...index, s2)
+          s0 << r2
         end
-        r0 = SyntaxNode.new(input, i0...index, s0)
-        r0.extend(Tags1)
+        if s0.last
+          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0.extend(Tags1)
+          r0.extend(Tags2)
+        else
+          self.index = i0
+          r0 = nil
+        end
 
         node_cache[:tags][start_index] = r0
 
@@ -227,7 +273,7 @@ module Cucumber
         if r1
           s2, i2 = [], index
           loop do
-            if input.index(Regexp.new('[a-z]'), index) == index
+            if input.index(Regexp.new('[a-z0-9]'), index) == index
               r3 = (SyntaxNode).new(input, index...(index + 1))
               @index += 1
             else
