@@ -94,6 +94,8 @@ Feature: Cucumber command line
 
         Scenario: Passing
           Given passing
+            | a | b |
+            | c | d |
 
       1 scenario
       1 step passed
@@ -156,16 +158,27 @@ Feature: Cucumber command line
     When I run cucumber --dry-run features
     Then it should pass with
       """
+      Feature: Calling undefined step
+
+        Scenario: Call directly                                # features/call_undefined_step_from_step_def.feature:3
+          Given a step definition that calls an undefined step # features/step_definitions/sample_steps.rb:19
+
+        Scenario: Call via another                                         # features/call_undefined_step_from_step_def.feature:6
+          Given call step "a step definition that calls an undefined step" # features/step_definitions/sample_steps.rb:23
+
       Feature: Outline Sample
 
-        Scenario Outline: Test state    # features/outline_sample.feature:3
+        Scenario: I have no steps # features/outline_sample.feature:3
+
+        Scenario Outline: Test state          # features/outline_sample.feature:5
           Given <state> without a table
+          Given <other_state> without a table
 
         Examples: 
-          | state   |
-          | missing |
-          | passing |
-          | failing |
+          | state   | other_state |
+          | missing | passing     |
+          | passing | passing     |
+          | failing | passing     |
 
       Feature: Sample
 
@@ -179,11 +192,9 @@ Feature: Cucumber command line
 
         Scenario: Failing # features/sample.feature:11
           Given failing   # features/step_definitions/sample_steps.rb:8
-            | e | f |
-            | g | h |
 
-      6 scenarios
-      4 steps skipped
+      9 scenarios
+      9 steps skipped
       2 steps undefined
 
       """

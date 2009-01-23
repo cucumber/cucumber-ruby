@@ -36,7 +36,7 @@ module Cucumber
       end
 
       def at_lines?(*lines)
-        lines.empty? || lines.index(@line)
+        lines.empty? || lines.index(@line) || @multiline_args.detect{|a| a.at_lines?(*lines)}
       end
 
       def source_indent

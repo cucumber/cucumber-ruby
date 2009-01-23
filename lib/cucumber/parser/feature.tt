@@ -157,21 +157,29 @@ module Cucumber
       rule py_string
         open_py_string s:(!close_py_string .)* close_py_string {
           def build
-            Ast::PyString.new(s.text_value, open_py_string.indent)
+            Ast::PyString.new(open_py_string.line, close_py_string.line, s.text_value, open_py_string.indentation)
           end
         }
       end
 
       rule open_py_string
         white '"""' space* eol {
-          def indent
+          def indentation
             white.text_value.length
+          end
+
+          def line
+            white.line
           end
         }
       end
 
       rule close_py_string
-        eol space* '"""' white
+        eol space* quotes:'"""' white {
+          def line
+            quotes.line
+          end
+        }
       end
 
       rule white

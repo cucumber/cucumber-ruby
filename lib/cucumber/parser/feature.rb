@@ -1315,7 +1315,7 @@ module Cucumber
 
       module PyString2
         def build
-          Ast::PyString.new(s.text_value, open_py_string.indent)
+          Ast::PyString.new(open_py_string.line, close_py_string.line, s.text_value, open_py_string.indentation)
         end
       end
 
@@ -1398,8 +1398,12 @@ module Cucumber
       end
 
       module OpenPyString1
-        def indent
+        def indentation
           white.text_value.length
+        end
+        
+        def line
+          white.line
         end
       end
 
@@ -1460,8 +1464,18 @@ module Cucumber
           elements[0]
         end
 
+        def quotes
+          elements[2]
+        end
+
         def white
           elements[3]
+        end
+      end
+
+      module ClosePyString1
+        def line
+          quotes.line
         end
       end
 
@@ -1506,6 +1520,7 @@ module Cucumber
         if s0.last
           r0 = (SyntaxNode).new(input, i0...index, s0)
           r0.extend(ClosePyString0)
+          r0.extend(ClosePyString1)
         else
           self.index = i0
           r0 = nil
