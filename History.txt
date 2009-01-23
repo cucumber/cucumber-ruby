@@ -18,7 +18,7 @@ to this:
 
 == Bugfixes
 * Flush output in HTML formatter since JRuby doesnt do it automatically (Diego Carrion)
-* Better handling of ARGV (#169 David Chelimsky)
+* Better handling of ARGV (#169 David Chelimsky, Ben Mabey)
 * Compatibility with ruby-debug (do ARGV.dup in bin/cucumber so it can restart ruby with same args) (Aslak Hellesøy)
 
 == 0.1.16 2009-01-19

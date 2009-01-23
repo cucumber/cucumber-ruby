@@ -217,7 +217,6 @@ Defined profiles in cucumber.yml:
 
     # Requires files - typically step files and ruby feature files.
     def require_files
-      @args.clear # Shut up RSpec
       require "cucumber/treetop_parser/feature_#{@options[:lang]}"
       require "cucumber/treetop_parser/feature_parser"
 
