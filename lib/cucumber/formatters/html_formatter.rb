@@ -130,6 +130,7 @@ HTML
   </body>
 </html>
 HTML
+        @io.flush
       end
       
       private
