@@ -25,7 +25,7 @@ class Object
       yield
     rescue Exception => e
       instance_exec_invocation_line = "#{__FILE__}:#{__LINE__ - 2}:in `cucumber_run_with_backtrace_filtering'"
-      e.cucumber_strip_backtrace!(instance_exec_invocation_line, pseudo_method)
+      Exception.cucumber_strip_backtrace!((e.backtrace || []), instance_exec_invocation_line, pseudo_method)
       raise e
     end
   end

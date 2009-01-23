@@ -20,10 +20,7 @@
 #
 class Exception
   CUCUMBER_FILTER_PATTERNS = [
-    /vendor\/rails/,
-    /vendor\/plugins\/cucumber/,
-    /vendor\/plugins\/rspec/,
-    /gems\/rspec/
+    /vendor\/rails|lib\/cucumber|lib\/rspec|gems\//
   ]
 
   INSTANCE_EXEC_OFFSET = (Cucumber::RUBY_1_9 || Cucumber::JRUBY) ? -3 : -4
@@ -34,24 +31,23 @@ class Exception
   self.cucumber_full_backtrace = false
 
   # Strips the backtrace from +line+ and down
-  def cucumber_strip_backtrace!(instance_exec_invocation_line, pseudo_method)
+  def self.cucumber_strip_backtrace!(backtrace, instance_exec_invocation_line, pseudo_method)
     return if @@cucumber_full_backtrace
 
-    bt = (backtrace || [])
-    instance_exec_pos = bt.index(instance_exec_invocation_line)
+    instance_exec_pos = backtrace.index(instance_exec_invocation_line)
     if instance_exec_pos
       replacement_line = instance_exec_pos + INSTANCE_EXEC_OFFSET
-      bt[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'") if pseudo_method
-      bt[replacement_line+1..-1] = nil
+      backtrace[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'") if pseudo_method
+      backtrace[replacement_line+1..-1] = nil
 
-      bt.reject! do |line|
-        CUCUMBER_FILTER_PATTERNS.detect{|p| line =~ p}
-      end
-
-      bt.compact!
+      backtrace.compact!
     else
       # This happens with rails, because they screw up the backtrace
       # before we get here (injecting erb stacktrace and such)
+    end
+
+    backtrace.reject! do |line|
+      CUCUMBER_FILTER_PATTERNS.detect{|p| line =~ p}
     end
   end
 end

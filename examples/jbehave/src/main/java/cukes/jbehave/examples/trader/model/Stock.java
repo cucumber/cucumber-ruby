@@ -1,7 +1,7 @@
-package org.jbehave.examples.trader.model;
+package cukes.jbehave.examples.trader.model;
 
-import static org.jbehave.examples.trader.model.Stock.AlertStatus.OFF;
-import static org.jbehave.examples.trader.model.Stock.AlertStatus.ON;
+import static cukes.jbehave.examples.trader.model.Stock.AlertStatus.OFF;
+import static cukes.jbehave.examples.trader.model.Stock.AlertStatus.ON;
 
 import java.util.List;
 

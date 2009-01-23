@@ -1,4 +1,4 @@
-package org.jbehave.examples.trader.scenarios;
+package cukes.jbehave.examples.trader.scenarios;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -6,10 +6,10 @@ import static org.jbehave.Ensure.ensureThat;
 
 import java.util.List;
 
-import org.jbehave.examples.trader.converters.TraderConverter;
-import org.jbehave.examples.trader.model.Stock;
-import org.jbehave.examples.trader.model.Trader;
-import org.jbehave.examples.trader.persistence.TraderPersister;
+import cukes.jbehave.examples.trader.converters.TraderConverter;
+import cukes.jbehave.examples.trader.model.Stock;
+import cukes.jbehave.examples.trader.model.Trader;
+import cukes.jbehave.examples.trader.persistence.TraderPersister;
 import org.jbehave.scenario.annotations.Given;
 import org.jbehave.scenario.annotations.Then;
 import org.jbehave.scenario.annotations.When;

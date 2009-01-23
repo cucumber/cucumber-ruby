@@ -3,4 +3,5 @@ require 'jbehave-example-0.2-SNAPSHOT.jar'
 
 require 'cucumber/jbehave'
 
-JBehave(org.jbehave.examples.trader.scenarios.TraderSteps.new)
+import 'cukes.jbehave.examples.trader.scenarios.TraderSteps'
+JBehave(TraderSteps.new)

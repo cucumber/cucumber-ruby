@@ -8,6 +8,8 @@ require 'hamcrest-all-1.1.jar'
 require 'junit-4.4.jar'
 require 'jbehave-core-2.1.jar'
 
+Exception::CUCUMBER_FILTER_PATTERNS.unshift(/^org\/jruby|^org\/jbehave|^org\/junit|^java\/|^sun\/|^\$_dot_dot_/)
+
 module Cucumber
   module JBehave
     # Register an instance of org.jbehave.scenario.steps.Steps
@@ -79,7 +81,9 @@ module Cucumber
         ruby_exception.set_backtrace([]) # work around backtrace bug in jruby
         
         exception = JBehaveException.new(java_exception.getMessage)
-        exception.set_backtrace(ruby_exception.backtrace.reject{|line| line =~ /^org\/jruby/})
+        bt = ruby_exception.backtrace
+        Exception.cucumber_strip_backtrace!(bt, nil, nil)
+        exception.set_backtrace(bt)
         exception
       end
     end

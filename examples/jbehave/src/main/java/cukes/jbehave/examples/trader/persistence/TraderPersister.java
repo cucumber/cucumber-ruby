@@ -1,6 +1,6 @@
-package org.jbehave.examples.trader.persistence;
+package cukes.jbehave.examples.trader.persistence;
 
-import org.jbehave.examples.trader.model.Trader;
+import cukes.jbehave.examples.trader.model.Trader;
 
 public class TraderPersister {
 
