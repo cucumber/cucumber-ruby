@@ -1,5 +1,8 @@
 module Cucumber
   module Parser
+    # TIP: When you hack on the grammar, just delete feature.rb in this directory.
+    # Treetop will then generate the parser in-memory. When you're happy, just generate
+    # the rb file with tt feature.tt
     module Feature
       include Treetop::Runtime
 
@@ -1401,7 +1404,7 @@ module Cucumber
         def indentation
           white.text_value.length
         end
-        
+
         def line
           white.line
         end

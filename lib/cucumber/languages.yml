@@ -105,6 +105,8 @@
   native: eesti keel
   feature: Omadus
   scenario: Stsenaarium
+  scenario_outline: Scenario Outline
+  examples: Examples
   given: Eeldades
   when: Kui
   then: Siis
