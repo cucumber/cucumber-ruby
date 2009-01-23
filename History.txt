@@ -1,4 +1,73 @@
-== 0.1.16.x (Git)
+== Git (ast - future 0.2)
+
+This version brings Cucumber even closer to Java. Although it has been possible to
+run Cucumber on JRuby since v0.1.11, it has required that step definitions be defined
+in Ruby code. This has been a barrier for many Java developers who don't know Ruby.
+
+With this version you can write step definitions in pure Java code! Java step definitions
+are implemented simply by subclassing org.jbehave.scenario.steps.Steps. Example:
+
+  package super.duper;
+
+  public class MyJavaSteps extends Steps {
+      @Given("I have %count cucumbers in my belly")
+      public void cucumbersInTheBelly(int count) {
+          // talk to the Belly class
+      }
+
+      @Then("I should not be hungry for %n hours")
+      public void shouldNotBeHungry(int n) {
+          // Make assertions with JUnit or Hamcrest
+      }
+  }
+
+The only Ruby code you have to write is a little wiring in your env.rb file:
+
+  require 'cucumber/jbehave'
+  JBehave(super.duper.MyJavaSteps.new)
+
+You might be wondering what this brings over just using the whole JBehave tool
+standalone. Well, it gives you access to the Gherkin language in your features,
+which is a richer DSL than JBehave's language. -Over 20 spoken languages, Tables, 
+Scenario Outlines, the rich command line, the nice output format and everything 
+pure Ruby users have been enjoying for a while.
+
+More blurb ideas
+
+* Fully backwards compatible with 0.1.16 (if you find issues - please report during beta period)
+* We need updated translations! (List all incomplete languages and what the missing keywords are)
+* Cucumber 0.2 runs about X times faster than Cucumber 0.1.16
+* Cucumber 0.2 is about 2/3 the size of Cucumber 0.1.16, and it is 2-3 times faster to install (less RDoc/Ri).
+
+=== Existing features that don't work yet:
+* --exclude
+* --scenario
+* snippets
+* Several disabled specs should be fixed or removed
+* Make all self-test features pass
+* Support multiple --format switches in one run
+
+== Bugfixes
+* Pending steps in > steps called from steps (#65 Aslak Hellesøy)
+* TODO Autotest uses file:line instead of --scenario (current impl doesn't work on Windows)
+
+=== New features
+* TODO: --strict (Fail if there are missing or pending steps)
+* TODO: --no-multiline
+* TODO: Autoformatting (--autoformat -a)
+* TODO: "Background" section
+* TODO: --tags
+* Run cucumber --language help to see all supported languages.
+* Run cucumber --language LANG help to see keywords for a given language.
+* Multiline arguments (tables and """ strings) are printed in the output
+* It's no longer necessary to compile the Treetop grammar when adding a new language. Localised parser is generated at runtime.
+
+=== Removed features
+* "GivenScenario" is gone. Instead you can use "Background" or call Steps from Steps.
+* "More Examples" is gone. "Scenario" + "More Examples" is no longer supported. Use "Scenario Outline" + "Examples" instead.
+* Pure Ruby features are no longer supported
+
+== 0.1.16.x (Master)
 
 Bugfix release.
 
@@ -27,6 +96,8 @@ This is a small bugfix release. The most notable improvement is compatibility wi
 upgrade both Cucumber and Webrat gems.
 
 === New features
+* Allow argument placeholders in step tables and multiline comments (#121 Joseph Wilk)
+* Scenario Outline can be followed by several named Examples sections (#123 Aslak Hellesøy)
 * Add the #binary= method back to the Rake task. It is needed by merb_cucumber for running the features of a merb app with it's bundled gems. (Thomas Marek)
 * Added a /^When I go to (.+)$/ step definition to webrat_steps.rb and a simple page name to path mapping method (Bryan Helmkamp)
 

@@ -58,7 +58,7 @@ Could not find profile: 'i_do_not_exist'
 Defined profiles in cucumber.yml:
   * default
   * html_report
-      END_OF_MESSAGE
+END_OF_MESSAGE
         
       error.string.should == expected_message
     end
@@ -121,12 +121,10 @@ Defined profiles in cucumber.yml:
     end
     
     it "should accept --dry-run option" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       cli.parse_options!(%w{--dry-run})
       cli.options[:dry_run].should be_true
-      mock_executor = mock_executor()
-      mock_executor.should_receive(:dry_run=).with(true)
-      cli.execute!(stub('step mother'), mock_executor, mock_features)
+      cli.execute!(stub('step mother'))
     end
 
     it "should accept --no-source option" do
@@ -165,12 +163,11 @@ Defined profiles in cucumber.yml:
       cli = CLI.new(StringIO.new)
       cli.parse_options!(%w{--require /features})
 
-      cli.should_receive(:require).twice.with(/treetop_parser/).ordered
       cli.should_receive(:require).with("/features/support/env.rb").ordered
       cli.should_receive(:require).with("/features/step_definitions/foo.rb").ordered
       cli.should_receive(:require).with("spec/expectations/differs/default").ordered
 
-      cli.execute!(stub('step mother'), mock_executor, mock_features)
+      cli.execute!(stub('step mother'))
     end
 
     describe "verbose mode" do
@@ -179,21 +176,22 @@ Defined profiles in cucumber.yml:
         @out = StringIO.new
         @cli = CLI.new(@out)
         @cli.stub!(:require)
+        @empty_feature = Ast::Feature.new(Ast::Comment.new(''), Ast::Tags.new([]), "Feature", [])
         Dir.stub!(:[])
       end
 
       it "should show ruby files required" do
         @cli.parse_options!(%w{--verbose --require example.rb})
-        @cli.execute!(stub('step mother'), mock_executor, mock_features)
+        @cli.execute!(stub('step mother'))
         
         @out.string.should include('example.rb')
       end
       
       it "should show feature files parsed" do
-        TreetopParser::FeatureParser.stub!(:new).and_return(mock("feature parser", :parse_feature => nil))
+        Parser::FeatureParser.stub!(:new).and_return(mock("feature parser", :parse_file => @empty_feature))
           
         @cli.parse_options!(%w{--verbose example.feature})
-        @cli.execute!(stub('step mother'), mock_executor, mock_features)
+        @cli.execute!(stub('step mother'))
 
         @out.string.should include('example.feature')
       end
@@ -201,13 +199,13 @@ Defined profiles in cucumber.yml:
     end
 
     it "should accept --out option" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       File.should_receive(:open).with('jalla.txt', 'w')
       cli.parse_options!(%w{--out jalla.txt})
     end
 
     it "should accept multiple --out options" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       mock_file1 = stub(File, :open => nil)
       mock_file2 = stub(File, :open => nil)
       File.stub!(:open).and_return(mock_file1, mock_file2)
@@ -217,14 +215,14 @@ Defined profiles in cucumber.yml:
     end
 
     it "should accept multiple --format options" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       cli.parse_options!(%w{--format pretty --format progress})
       cli.options[:formats].should have_key('pretty')
       cli.options[:formats].should have_key('progress')
     end
 
     it "should associate --out to previous --format" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       mock_file1 = stub(File, :open => nil)
       mock_file2 = stub(File, :open => nil)
       File.stub!(:open).and_return(mock_file1, mock_file2)
@@ -241,59 +239,24 @@ Defined profiles in cucumber.yml:
       cli.parse_options!(%w{--format progress --format progress --out file})
       cli.options[:formats].should == {'progress' => [STDOUT, mock_file]}
     end
-
-    it "should register --out files with an output broadcaster" do
-      cli = CLI.new
-      mock_file = stub(File)
-      File.stub!(:open).and_return(mock_file)
-      mock_output_broadcaster = mock_broadcaster
-      Broadcaster.stub!(:new).and_return(mock_broadcaster, mock_output_broadcaster)
-      
-      mock_output_broadcaster.should_receive(:register).with(mock_file)
-      cli.parse_options!(%w{--out test.file})
-
-      cli.execute!(stub('step mother'), mock_executor, stub('features'))
-    end
-
-    it "should register --formatters with the formatter broadcaster" do
-      cli = CLI.new
-      mock_progress_formatter = stub(Formatters::ProgressFormatter)
-      Formatters::ProgressFormatter.stub!(:new).and_return(mock_progress_formatter)
-      mock_formatter_broadcaster = mock_broadcaster
-      Broadcaster.stub!(:new).and_return(mock_formatter_broadcaster, mock_broadcaster)
-   
-      mock_formatter_broadcaster.should_receive(:register).with(mock_progress_formatter)
-      cli.parse_options!(%w{--format progress})
-      
-      cli.execute!(stub('step mother'), mock_executor, stub('features'))
-    end
-
-    it "should setup the executor with the formatter broadcaster" do
-      cli = CLI.new
-      broadcaster = Broadcaster.new
-      Broadcaster.stub!(:new).and_return(broadcaster)
-      mock_executor = mock_executor()
-      mock_executor.should_receive(:formatters=).with(broadcaster)
-      cli.parse_options!(%w{--format progress})
-
-      cli.execute!(stub('step mother'), mock_executor, stub('features'))
-    end
     
     describe "--format with class" do
      
      describe "in module" do
 
         it "should resolve each module until it gets Formatter class" do
-          cli = CLI.new
+          cli = CLI.new(nil)
           mock_module = mock('module')
           cli.parse_options!(%w{--format ZooModule::MonkeyFormatterClass})
           Object.stub!(:const_defined?).and_return(true)
           mock_module.stub!(:const_defined?).and_return(true)
 
-          Object.should_receive(:const_get).with('ZooModule').and_return(mock_module)
-          mock_module.should_receive(:const_get).with('MonkeyFormatterClass').and_return(mock('formatter class', :new => nil))
+          f = stub('formatter', :null_object => true)
 
-          cli.execute!(stub('step mother'), mock_executor, stub('features'))
+          Object.should_receive(:const_get).with('ZooModule').and_return(mock_module)
+          mock_module.should_receive(:const_get).with('MonkeyFormatterClass').and_return(mock('formatter class', :new => f))
+
+          cli.execute!(stub('step mother'))
         end
 
       end
@@ -306,7 +269,7 @@ Defined profiles in cucumber.yml:
           Object.stub!(:const_defined?).with('magical').and_return(true)
         end
         
-        it "should create the formatter" do
+        xit "should create the formatter" do
           cli = CLI.new
           mock_formatter = mock('magical formatter')
           cli.parse_options!(%w{--format magical})
@@ -316,7 +279,7 @@ Defined profiles in cucumber.yml:
           cli.execute!(stub('step mother'), mock_executor, stub('features'))
         end
                 
-        it "should register the formatter with broadcaster" do
+        xit "should register the formatter with broadcaster" do
           cli = CLI.new
           broadcaster = Broadcaster.new
           mock_formatter = mock('magical formatter')
@@ -346,15 +309,15 @@ Defined profiles in cucumber.yml:
           @cli.parse_options!(%w{--format exists_but_evil}) 
         end
         
-        it "should show exception" do
+        xit "should show exception" do
           Kernel.stub!(:exit)
 
-          @cli.execute!(stub('step mother'), mock_executor, stub('features'))
+          @cli.execute!(stub('step mother'))
 
           @error.string.should include("No such method")
         end
         
-        it "should exit" do
+        xit "should exit" do
           Kernel.should_receive(:exit)
 
           @cli.execute!(stub('step mother'), mock_executor, stub('features'))
@@ -372,7 +335,7 @@ Defined profiles in cucumber.yml:
           @cli.parse_options!(%w{--format invalid})
         end
 
-        it "should display a format error" do
+        xit "should display a format error" do
           Kernel.stub!(:exit)
 
           @cli.execute!(stub('step mother'), mock_executor, stub('features'))
@@ -380,15 +343,15 @@ Defined profiles in cucumber.yml:
           @error.string.should include("Invalid format: invalid\n")
         end
         
-        it "should display --help" do
+        xit "should display --help" do
           Kernel.stub!(:exit)
 
-          @cli.execute!(stub('step mother'), mock_executor, stub('features'))
+          @cli.execute!(stub('step mother'))
           
           @out.string.should include("Usage: cucumber")
         end
 
-        it "should exit" do
+        xit "should exit" do
           Kernel.should_receive(:exit)
 
           @cli.execute!(stub('step mother'), mock_executor, stub('features'))
@@ -405,7 +368,7 @@ Defined profiles in cucumber.yml:
       cli.options[:scenario_names].should include("User signs up")
     end
 
-    it "should register --scenario options with the executor" do
+    xit "should register --scenario options with the executor" do
       cli = CLI.new
       cli.parse_options!(['--scenario', "User logs in", '--scenario', "User signs up"])
       executor = mock_executor
@@ -414,35 +377,35 @@ Defined profiles in cucumber.yml:
     end
 
     it "should accept --color option" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       cli.parse_options!(['--color'])
       cli.options[:color].should == true
       Term::ANSIColor.should_receive(:coloring=).with(true)
-      cli.execute!(stub('step mother'), mock_executor, stub('features'))
+      cli.execute!(stub('step mother'))
     end
 
     it "should accept --no-color option" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       cli.parse_options!(['--no-color'])
       cli.options[:color].should == false
       Term::ANSIColor.should_receive(:coloring=).with(false)
-      cli.execute!(stub('step mother'), mock_executor, stub('features'))
+      cli.execute!(stub('step mother'))
     end
 
     it "should accept --color and --no-color and use the last one" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       cli.parse_options!(['--color', '--no-color'])
       cli.options[:color].should == false
       Term::ANSIColor.should_receive(:coloring=).with(false)
-      cli.execute!(stub('step mother'), mock_executor, stub('features'))
+      cli.execute!(stub('step mother'))
     end
 
     it "should use a default color setting if no option is given" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
       cli.parse_options!(['--'])
       cli.options[:color].should == nil
       Term::ANSIColor.should_not_receive(:coloring=)
-      cli.execute!(stub('step mother'), mock_executor, stub('features'))
+      cli.execute!(stub('step mother'))
     end
 
     describe "--backtrace" do
@@ -456,17 +419,17 @@ Defined profiles in cucumber.yml:
         begin
           "x".should == "y"
         rescue => e
-          e.cucumber_backtrace[0].should_not == "#{__FILE__}:#{__LINE__ - 2}"
+          e.backtrace[0].should_not == "#{__FILE__}:#{__LINE__ - 2}"
         end
       end
 
-      it "should strip gems when --backtrace is absent" do
+      xit "should strip gems when --backtrace is absent" do
         cli = CLI.new
         cli.parse_options!(['--'])
         begin
           "x".should == "y"
         rescue => e
-          e.cucumber_backtrace[0].should == "#{__FILE__}:#{__LINE__ - 2}"
+          e.backtrace[0].should == "#{__FILE__}:#{__LINE__ - 2}"
         end
       end
 
@@ -475,46 +438,15 @@ Defined profiles in cucumber.yml:
       end
     end
 
-    describe "example.feature:line file arguments" do
-
-      it "should extract line numbers" do
-        cli = CLI.new
-        cli.parse_options!(%w{example.feature:10})
-      
-        cli.options[:lines_for_features]['example.feature'].should == [10]
-      end
-    
-      it "should remove line numbers" do
-        cli = CLI.new
-        cli.parse_options!(%w{example.feature:10})
-      
-        cli.paths.should == ["example.feature"]
-      end
-
-      it "should support multiple feature:line numbers" do
-        cli = CLI.new
-        cli.parse_options!(%w{example.feature:11 another_example.feature:12})
-      
-        cli.options[:lines_for_features].should == {'another_example.feature' => [12], 'example.feature' => [11]}
-      end
-
-      it "should accept multiple line numbers for a single feature" do
-        cli = CLI.new
-        cli.parse_options!(%w{example.feature:11:12})
-      
-        cli.options[:lines_for_features].should == {'example.feature' => [11, 12]}
-      end
-    end
-
     it "should search for all features in the specified directory" do
-      cli = CLI.new
+      cli = CLI.new(StringIO.new)
 
       cli.parse_options!(%w{feature_directory/})
       File.stub!(:directory?).and_return(true)
 
       Dir.should_receive(:[]).with("feature_directory/**/*.feature").any_number_of_times.and_return([])
       
-      cli.execute!(stub('step mother'), mock_executor, mock_features)
+      cli.execute!(stub('step mother'))
     end
 
   end
