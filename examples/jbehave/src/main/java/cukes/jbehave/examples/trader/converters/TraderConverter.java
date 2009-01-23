@@ -1,9 +1,9 @@
-package org.jbehave.examples.trader.converters;
+package cukes.jbehave.examples.trader.converters;
 
 import java.lang.reflect.Type;
 
-import org.jbehave.examples.trader.model.Trader;
-import org.jbehave.examples.trader.persistence.TraderPersister;
+import cukes.jbehave.examples.trader.model.Trader;
+import cukes.jbehave.examples.trader.persistence.TraderPersister;
 import org.jbehave.scenario.steps.ParameterConverters.InvalidParameterException;
 import org.jbehave.scenario.steps.ParameterConverters.ParameterConverter;
 

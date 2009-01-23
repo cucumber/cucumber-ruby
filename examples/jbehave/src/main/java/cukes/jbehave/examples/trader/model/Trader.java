@@ -1,4 +1,4 @@
-package org.jbehave.examples.trader.model;
+package cukes.jbehave.examples.trader.model;
 
 import static java.util.Arrays.asList;
 
