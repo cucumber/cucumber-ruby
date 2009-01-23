@@ -1,44 +1,45 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 module Cucumber
-  module World
-    describe Pending do
+  module StepMom
+    describe 'Pending' do
 
       before(:each) do
-        @world = Object.new
-        @world.extend(World::Pending)
+        @step_mom = Object.new
+        @step_mom.extend(StepMom)
+        @world = @step_mom.new_world
       end
 
-      it 'should raise a ForcedPending if no block is supplied' do
+      it 'should raise a Pending if no block is supplied' do
         lambda {
           @world.pending "TODO"
-        }.should raise_error(ForcedPending, /TODO/)
+        }.should raise_error(Pending, /TODO/)
       end
 
-      it 'should raise a ForcedPending if a supplied block fails as expected' do
+      it 'should raise a Pending if a supplied block fails as expected' do
         lambda {
           @world.pending "TODO" do
             raise "oops"
           end
-        }.should raise_error(ForcedPending, /TODO/)
+        }.should raise_error(Pending, /TODO/)
       end
 
-      it 'should raise a ForcedPending if a supplied block fails as expected with a mock' do
+      it 'should raise a Pending if a supplied block fails as expected with a mock' do
         lambda {
           @world.pending "TODO" do
             m = mock('thing')
             m.should_receive(:foo)
             m.rspec_verify
           end
-        }.should raise_error(ForcedPending, /TODO/)
+        }.should raise_error(Pending, /TODO/)
       end
 
-      it 'should raise a ForcedPending if a supplied block starts working' do
+      it 'should raise a Pending if a supplied block starts working' do
         lambda {
           @world.pending "TODO" do
             # success!
           end
-        }.should raise_error(ForcedPending, /TODO/)
+        }.should raise_error(Pending, /TODO/)
       end
 
     end

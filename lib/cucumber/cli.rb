@@ -1,16 +1,21 @@
 require 'optparse'
 require 'cucumber'
 require 'ostruct'
+require 'cucumber/parser'
+require 'cucumber/formatter'
 
 module Cucumber
   class YmlLoadError < StandardError; end
 
   class CLI
     class << self
-      attr_writer :step_mother, :executor, :features
+      def step_mother=(step_mother)
+        @step_mother = step_mother
+        @step_mother.extend(StepMom)
+      end
 
       def execute(args)
-        parse(args).execute!(@step_mother, @executor, @features)
+        parse(args).execute!(@step_mother)
       end
 
       def parse(args)
@@ -29,12 +34,12 @@ module Cucumber
       @error_stream = error_stream
       @paths = []
       @options = {
-        :require => nil,
-        :lang    => 'en',
-        :dry_run => false,
-        :source  => true,
+        :require  => nil,
+        :lang     => 'en',
+        :dry_run  => false,
+        :source   => true,
         :snippets => true,
-        :formats => {},
+        :formats  => {},
         :excludes => [],
         :scenario_names => nil
       }
@@ -60,15 +65,21 @@ module Cucumber
           @options[:require] << v
         end
         opts.on("-s SCENARIO", "--scenario SCENARIO", "Only execute the scenario with the given name.",
-                                                      "If this option is given more than once, run all",
-                                                      "the specified scenarios.") do |v|
+          "If this option is given more than once, run all",
+          "the specified scenarios.") do |v|
           @options[:scenario_names] ||= []
           @options[:scenario_names] << v
         end
         opts.on("-l LANG", "--language LANG", "Specify language for features (Default: #{@options[:lang]})",
-          "Available languages: #{Cucumber.languages.join(", ")}",
-          "Look at #{Cucumber::LANGUAGE_FILE} for keywords") do |v|
-          @options[:lang] = v
+          %{Run with "--language help" to see all languages},
+          %{Run with "--language LANG help" to list keywords for LANG}) do |v|
+          if v == 'help'
+            list_languages
+          elsif args==['help']
+            list_keywords('en', v)
+          else
+            @options[:lang] = v
+          end
         end
         opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{DEFAULT_FORMAT})",
           "Available formats: #{FORMATS.join(", ")}",
@@ -76,7 +87,7 @@ module Cucumber
           "previously required using --require or if they are in the folder",
           "structure such that cucumber will require them automatically.",
           "This option can be specified multiple times.") do |v|
-  
+
           @options[:formats][v] ||= []
           @options[:formats][v] << @out_stream
           @active_format = v
@@ -92,9 +103,9 @@ module Cucumber
           end
         end
         opts.on("-c", "--[no-]color", "Use ANSI color in the output, if formatters use it.  If",
-                                      "these options are given multiple times, the last one is",
-                                      "used.  If neither --color or --no-color is given cucumber",
-                                      "decides based on your platform and the output destination") do |v|
+          "these options are given multiple times, the last one is",
+          "used.  If neither --color or --no-color is given cucumber",
+          "decides based on your platform and the output destination") do |v|
           @options[:color] = v
         end
         opts.on("-e", "--exclude PATTERN", "Don't run features matching a pattern") do |v|
@@ -135,60 +146,46 @@ module Cucumber
       if @options[:formats].empty?
         @options[:formats][DEFAULT_FORMAT] = [@out_stream]
       end
-      
+
       # Whatever is left after option parsing is the FILE arguments
-      args = extract_and_store_line_numbers(args)
       @paths += args
     end
 
 
-    def execute!(step_mother, executor, features)
+    def execute!(step_mother)
       Term::ANSIColor.coloring = @options[:color] unless @options[:color].nil?
       Cucumber.load_language(@options[:lang])
       require_files
       enable_diffing
-      executor.formatters = build_formatter_broadcaster(step_mother)
-      load_plain_text_features(features)
-      executor.lines_for_features = @options[:lines_for_features]
-      executor.dry_run = @options[:dry_run] if @options[:dry_run]
-      executor.scenario_names = @options[:scenario_names] if @options[:scenario_names]
-      executor.visit_features(features)
-      exit 1 if executor.failed
+      features = load_plain_text_features
+
+      visitor = build_formatter_broadcaster(step_mother)
+      visitor.options = @options
+      visitor.visit_features(features)
+      Kernel.exit features.steps[:failed].length
     end
 
     private
 
-    def extract_and_store_line_numbers(file_arguments)
-      @options[:lines_for_features] = Hash.new{|k,v| k[v] = []}
-      file_arguments.map do |arg|
-        _, file, lines = */^([\w\W]*?):([\d:]+)$/.match(arg)
-        unless file.nil?
-          @options[:lines_for_features][file] += lines.split(':').map { |line| line.to_i }
-          arg = file          
-        end
-        arg
-      end
-    end
-   
     def cucumber_yml
       return @cucumber_yml if @cucumber_yml
       unless File.exist?('cucumber.yml')
         raise(YmlLoadError,"cucumber.yml was not found.  Please refer to cucumber's documentaion on defining profiles in cucumber.yml.  You must define a 'default' profile to use the cucumber command without any arguments.\nType 'cucumber --help' for usage.\n")
       end
-      
+
       require 'yaml'
       begin
         @cucumber_yml = YAML::load(IO.read('cucumber.yml'))
       rescue Exception => e
         raise(YmlLoadError,"cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentaion on correct profile usage.\n")
-       end
-     
+      end
+
       if @cucumber_yml.nil? || !@cucumber_yml.is_a?(Hash)
         raise(YmlLoadError,"cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentaion on correct profile usage.\n")
       end
 
       return @cucumber_yml
-    end 
+    end
 
     def parse_args_from_profile(profile)
       unless cucumber_yml.has_key?(profile)
@@ -209,7 +206,7 @@ Defined profiles in cucumber.yml:
       else
         parse_options!(args_from_yml.split(' '))
       end
-      
+
     rescue YmlLoadError => e
       exit_with_error(e.message)
     end
@@ -218,8 +215,6 @@ Defined profiles in cucumber.yml:
     # Requires files - typically step files and ruby feature files.
     def require_files
       @args.clear # Shut up RSpec
-      require "cucumber/treetop_parser/feature_#{@options[:lang]}"
-      require "cucumber/treetop_parser/feature_parser"
 
       verbose_log("Ruby files required:")
       files_to_require.each do |lib|
@@ -233,7 +228,7 @@ Defined profiles in cucumber.yml:
       end
       verbose_log("\n")
     end
-    
+
     def files_to_require
       requires = @options[:require] || feature_dirs
       files = requires.map do |path|
@@ -263,15 +258,17 @@ Defined profiles in cucumber.yml:
       feature_files.map{|f| File.directory?(f) ? f : File.dirname(f)}.uniq
     end
 
-    def load_plain_text_features(features)
-      parser = TreetopParser::FeatureParser.new
+    def load_plain_text_features
+      features = Ast::Features.new
+      parser = Parser::FeatureParser.new
 
       verbose_log("Features:")
       feature_files.each do |f|
-        features << parser.parse_feature(f)
+        features.add_feature(parser.parse_file(f))
         verbose_log("  * #{f}")
       end
       verbose_log("\n"*2)
+      features
     end
 
     def build_formatter_broadcaster(step_mother)
@@ -280,11 +277,11 @@ Defined profiles in cucumber.yml:
         output_broadcaster = build_output_broadcaster(output_list)
         case format
         when 'pretty'
-          formatter_broadcaster.register(Formatters::PrettyFormatter.new(output_broadcaster, step_mother, @options))
+          formatter_broadcaster.register(Formatter::Pretty.new(step_mother, output_broadcaster, @options))
         when 'progress'
-          formatter_broadcaster.register(Formatters::ProgressFormatter.new(output_broadcaster))
+          formatter_broadcaster.register(Formatter::Progress.new(step_mother, output_broadcaster, @options))
         when 'profile'
-          formatter_broadcaster.register(Formatters::ProfileFormatter.new(output_broadcaster, step_mother))
+          formatter_broadcaster.register(Formatter::Profile.new(step_mother, output_broadcaster, @options))
         when 'html'
           formatter_broadcaster.register(Formatters::HtmlFormatter.new(output_broadcaster, step_mother))
         when 'autotest'
@@ -311,8 +308,6 @@ Defined profiles in cucumber.yml:
       end
       output_broadcaster
     end
-    
-  private
 
     def constantize(camel_cased_word)
       names = camel_cased_word.split('::')
@@ -324,7 +319,7 @@ Defined profiles in cucumber.yml:
       end
       constant
     end
-    
+
     def verbose_log(string)
       @out_stream.puts(string) if @options[:verbose]
     end
@@ -345,12 +340,45 @@ Defined profiles in cucumber.yml:
         ::Spec::Expectations.differ = ::Spec::Expectations::Differs::Default.new(options)
       end
     end
+
+    def list_languages
+      raw = Cucumber::LANGUAGES.keys.sort.map do |lang|
+        [lang, Cucumber::LANGUAGES[lang]['name'], Cucumber::LANGUAGES[lang]['native']]
+      end
+      print_table(raw)
+    end
+
+    def list_keywords(ref, lang)
+      unless Cucumber::LANGUAGES[lang]
+        exit_with_error("No language with key #{v}")
+      end
+      Cucumber.load_language(lang)
+      raw = %w{feature background scenario scenario_outline examples given when then but}.map do |key|
+        [Cucumber::LANGUAGES[ref][key], Cucumber::LANGUAGES[lang][key]]
+      end
+      print_table(raw)
+    end
+    
+    def print_table(raw)
+      table = Ast::Table.new(raw)
+      formatter = Formatter::Pretty.new(nil, @out_stream, {}, '')
+
+      def formatter.visit_table_row(table_row, status)
+        @col = 1
+        super
+      end
+
+      def formatter.visit_table_cell_value(value, width, status)
+        status = :comment if @col == 1
+        @col += 1
+        super(value, width, status)
+      end
+
+      formatter.indent = 0
+      formatter.visit_multiline_arg(table, :passed)
+      Kernel.exit
+    end
   end
 end
 
-extend Cucumber::StepMethods
-Cucumber::CLI.step_mother = step_mother
-Cucumber::CLI.executor = executor
-
-extend Cucumber::Tree
-Cucumber::CLI.features = features
+Cucumber::CLI.step_mother = self

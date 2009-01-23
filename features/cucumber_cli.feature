@@ -7,12 +7,12 @@ Feature: Cucumber command line
     Then it should pass with
       """
       Feature: Sample
+
         Scenario: Missing
           Given missing
 
-
       1 scenario
-      1 step pending (1 with no step definition)
+      1 step undefined
       
       """
       
@@ -21,12 +21,12 @@ Feature: Cucumber command line
     Then it should fail with
       """
       Feature: Sample
+
         Scenario: Failing
           Given failing
-            FAIL (RuntimeError)
-            ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
+            expected 1 block argument(s), got 0 (Cucumber::ArityMismatchError)
+            ../../bin/../lib/cucumber/core_ext/instance_exec.rb:15:in `/^failing$/'
             features/sample.feature:12:in `Given failing'
-
 
       1 scenario
       1 step failed
@@ -38,19 +38,22 @@ Feature: Cucumber command line
     Then it should fail with
       """
       Feature: Sample
+
         Scenario: Missing
           Given missing
 
         Scenario: Failing
           Given failing
+            | e | f |
+            | g | h |
             FAIL (RuntimeError)
-            ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
+            ./features/step_definitions/sample_steps.rb:2:in `flunker'
+            ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
             features/sample.feature:12:in `Given failing'
-
 
       2 scenarios
       1 step failed
-      1 step pending (1 with no step definition)
+      1 step undefined
 
       """
 
@@ -60,9 +63,9 @@ Feature: Cucumber command line
     Then it should pass with
       """
       Feature: Sample
+
         Scenario: Missing
           Given missing
-
 
       1 scenario
       1 step passed
@@ -74,9 +77,9 @@ Feature: Cucumber command line
     Then it should pass with
       """
       Feature: Sample
+
         Scenario: Passing
           Given passing
-
 
       1 scenario
       1 step passed
@@ -88,9 +91,11 @@ Feature: Cucumber command line
     Then it should pass with
       """
       Feature: Sample
+
         Scenario: Passing
           Given passing
-
+            | a | b |
+            | c | d |
 
       1 scenario
       1 step passed
@@ -101,19 +106,22 @@ Feature: Cucumber command line
     When I run cucumber -q --format progress features/sample.feature
     Then it should fail with
       """
-      P.F
+      U.F
 
-      Pending Scenarios:
-      
-      1)  Sample (Missing)
-      
-      
-      Failed:
-      
-      1)
-      FAIL
-      ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
+      (::) undefined (::)
+
+      features/sample.feature:4:in `Given missing'
+
+      (::) failed (::)
+
+      expected 1 block argument(s), got 0 (Cucumber::ArityMismatchError)
+      features/step_definitions/sample_steps.rb:8:in `/^failing$/'
       features/sample.feature:12:in `Given failing'
+
+      3 scenarios
+      1 step failed
+      1 step undefined
+      1 step passed
 
       """
 
@@ -126,19 +134,20 @@ Feature: Cucumber command line
         For å slippe å gjøre dumme feil
         Som en regnskapsfører
         Vil jeg kunne legge sammen
+
         Scenario: to tall
           Gitt at jeg har tastet inn 5
           Og at jeg har tastet inn 7
           Når jeg summerer
           Så skal resultatet være 12
 
+        @iterasjon3
         Scenario: tre tall
           Gitt at jeg har tastet inn 5
           Og at jeg har tastet inn 7
           Og at jeg har tastet inn 1
           Når jeg summerer
           Så skal resultatet være 13
-
 
       2 scenarios
       9 steps passed
@@ -149,37 +158,49 @@ Feature: Cucumber command line
     When I run cucumber --dry-run features
     Then it should pass with
       """
-      Feature: Outline Sample  # features/outline_sample.feature
-        Scenario Outline: Test state     # features/outline_sample.feature:3
-          Given <state> without a table  # features/outline_sample.feature:4
+      Feature: Calling undefined step
 
-          |state  |
-          |missing|
-          |passing|
-          |failing|
+        Scenario: Call directly                                # features/call_undefined_step_from_step_def.feature:3
+          Given a step definition that calls an undefined step # features/step_definitions/sample_steps.rb:19
 
-      Feature: Sample  # features/sample.feature
+        Scenario: Call via another                                         # features/call_undefined_step_from_step_def.feature:6
+          Given call step "a step definition that calls an undefined step" # features/step_definitions/sample_steps.rb:23
 
-        Scenario: Missing  # features/sample.feature:3
-          Given missing    # other.rb:23
+      Feature: Outline Sample
 
-        Scenario: Passing  # features/sample.feature:6
-          Given passing    # features/step_definitions/sample_steps.rb:1
+        Scenario: I have no steps # features/outline_sample.feature:3
 
-        Scenario: Failing  # features/sample.feature:11
-          Given failing    # features/step_definitions/sample_steps.rb:4
+        Scenario Outline: Test state          # features/outline_sample.feature:5
+          Given <state> without a table
+          Given <other_state> without a table
 
+        Examples: 
+          | state   | other_state |
+          | missing | passing     |
+          | passing | passing     |
+          | failing | passing     |
 
-      7 scenarios
-      6 steps passed
+      Feature: Sample
+
+        Scenario: Missing # features/sample.feature:3
+          Given missing
+
+        Scenario: Passing # features/sample.feature:6
+          Given passing   # features/step_definitions/sample_steps.rb:5
+            | a | b |
+            | c | d |
+
+        Scenario: Failing # features/sample.feature:11
+          Given failing   # features/step_definitions/sample_steps.rb:8
+
+      9 scenarios
+      9 steps skipped
+      2 steps undefined
 
       """
 
   Scenario: Multiple formatters and outputs
     When I run cucumber --format progress --out tmp/progress.txt --format html --out tmp/features.html features
-    Then it should fail with
-      """
-      """
     And examples/self_test/tmp/progress.txt should contain
       """
       P.FP.F

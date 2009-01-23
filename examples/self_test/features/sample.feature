@@ -10,5 +10,3 @@ Feature: Sample
     
   Scenario: Failing
     Given failing
-      |e|f|
-      |g|h|

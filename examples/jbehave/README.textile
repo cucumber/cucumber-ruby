@@ -1,0 +1,17 @@
+h1. Cucumber and JBehave
+
+Look ma - no Ruby!
+
+h2. Running the example
+
+First, compile the java code (and JBehave steps)
+
+<code>mvn compile jar:jar</code>
+
+Second, run Cucumber:
+
+<code>jruby -S cucumber features</code>
+
+Or if you got the source with Git:
+
+<code>jruby ../../bin/cucumber features</code>
