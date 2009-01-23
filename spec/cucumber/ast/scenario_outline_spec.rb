@@ -34,7 +34,8 @@ module Cucumber
             Step.new(23, 'And',   'I should have <eat> cucumbers in my belly')
           ],
           [
-            [ 
+            [
+              24,
               'Examples:',
               'First table',
               [

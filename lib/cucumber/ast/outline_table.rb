@@ -7,6 +7,19 @@ module Cucumber
         @cells_class = ExampleCells
       end
 
+      def accept(visitor, status)
+        rows.each_with_index do |row, n|
+          should_visit = n == 0 || 
+            row.at_lines?(*visitor.current_feature_lines) ||
+            @scenario_outline.at_header_or_step_lines?(*visitor.current_feature_lines)
+
+          if should_visit
+            visitor.visit_table_row(row, status)
+          end
+        end
+        nil
+      end
+
       def execute_row(cells, visitor, &proc)
         @scenario_outline.execute_row(cells, visitor, &proc)
       end

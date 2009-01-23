@@ -38,18 +38,12 @@ module Cucumber
         @keyword.jlength + @name.jlength
       end
 
-      def at_any_line?(lines)
-        lines.each {|line| return true if at_line?(line)}
-        false
+      def at_lines?(*lines)
+        lines.empty? || lines.index(@line) || at_header_or_step_lines?(*lines)
       end
 
-      def at_line?(line)
-        if @line == line
-          true
-        else
-          @steps.each {|step| return true if step.at_line?(line)}
-          false
-        end
+      def at_header_or_step_lines?(*lines)
+        @steps.detect {|step| step.at_lines?(*lines)}
       end
 
       def undefined?

@@ -10,6 +10,7 @@ module Cucumber
           lines = lines.split(':').map { |line| line.to_i }
         else
           path = file
+          lines = []
         end
         feature = parse_or_fail(IO.read(path), path)
         feature.lines = lines

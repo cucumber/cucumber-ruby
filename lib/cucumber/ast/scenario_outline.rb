@@ -12,13 +12,18 @@ module Cucumber
         steps.each {|step| step.status = :outline}
 
         @examples_array = example_sections.map do |example_section|
-          examples_keyword    = example_section[0]
-          examples_name       = example_section[1]
-          examples_matrix     = example_section[2]
+          examples_line       = example_section[0]
+          examples_keyword    = example_section[1]
+          examples_name       = example_section[2]
+          examples_matrix     = example_section[3]
 
           examples_table = OutlineTable.new(examples_matrix, self)
-          Examples.new(examples_keyword, examples_name, examples_table)
+          Examples.new(examples_line, examples_keyword, examples_name, examples_table)
         end
+      end
+
+      def at_lines?(*lines)
+        super || @examples_array.detect { |examples| examples.at_lines?(*lines) }
       end
 
       def accept(visitor)
