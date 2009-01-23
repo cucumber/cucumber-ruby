@@ -1,4 +1,4 @@
-require 'spec'
+require 'spec/expectations'
 require 'fileutils'
 
 Before do
