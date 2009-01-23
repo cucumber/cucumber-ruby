@@ -25,7 +25,7 @@ module Cucumber
           %w{1 22 333},
           %w{4444 55555 666666}
         ])
-        py_string = Ast::PyString.new(%{
+        py_string = Ast::PyString.new(21, 22, %{
            I like
           Cucumber sandwich
         }, 10)
