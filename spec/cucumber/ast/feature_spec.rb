@@ -44,9 +44,9 @@ module Cucumber
 
         f.lines = [33]
 
-        s1.should_receive(:at_any_line?).and_return(false)
-        s2.should_receive(:at_any_line?).and_return(true)
-        s3.should_receive(:at_any_line?).and_return(false)
+        s1.should_receive(:at_lines?).and_return(false)
+        s2.should_receive(:at_lines?).and_return(true)
+        s3.should_receive(:at_lines?).and_return(false)
 
         s2.should_receive(:accept)
 

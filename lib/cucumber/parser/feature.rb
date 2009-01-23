@@ -896,7 +896,7 @@ module Cucumber
 
       module Examples1
         def build
-          [examples_keyword.text_value, "", table.raw]
+          [examples_keyword.line, examples_keyword.text_value, "", table.raw]
         end
       end
 

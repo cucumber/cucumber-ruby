@@ -35,8 +35,8 @@ module Cucumber
         [:step, @line, @gwt, @name, *@multiline_args.map{|arg| arg.to_sexp}]
       end
 
-      def at_line?(line)
-        @line == line
+      def at_lines?(*lines)
+        lines.empty? || lines.index(@line)
       end
 
       def source_indent

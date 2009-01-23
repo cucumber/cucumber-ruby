@@ -18,8 +18,12 @@ module Cucumber
         @cell_class = Cell
       end
 
+      def at_lines?(*lines)
+        rows.detect { |row| row.at_lines?(*lines) }
+      end
+
       def accept(visitor, status)
-        each do |row|
+        rows.each do |row|
           visitor.visit_table_row(row, status)
         end
         nil
@@ -93,14 +97,14 @@ module Cucumber
         Table.new(raw_with_replaced_args)
       end
 
+      def at_lines?(*lines)
+        rows.detect{|row| row.at_lines?(*lines)}
+      end
+
       private
 
       def col_width(col)
         columns[col].__send__(:width)
-      end
-
-      def each(&proc)
-        rows.each(&proc)
       end
 
       def rows
@@ -161,7 +165,11 @@ module Cucumber
         end
 
         def line
-          @cells.line
+          @cells[0].line
+        end
+
+        def at_lines?(*lines)
+          lines.empty? || lines.index(line)
         end
 
         private

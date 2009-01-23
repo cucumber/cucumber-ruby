@@ -16,6 +16,14 @@ module Cucumber
         @step_mother.step_definition(step_name)
       end
 
+      def current_feature_lines=(lines)
+        @current_feature_lines = lines
+      end
+
+      def current_feature_lines
+        @current_feature_lines || []
+      end
+
       def visit_features(features)
         features.accept(self)
       end

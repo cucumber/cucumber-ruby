@@ -107,7 +107,7 @@ module Cucumber
       rule examples
         space* examples_keyword white table {
           def build
-            [examples_keyword.text_value, "", table.raw]
+            [examples_keyword.line, examples_keyword.text_value, "", table.raw]
           end
         }
       end
