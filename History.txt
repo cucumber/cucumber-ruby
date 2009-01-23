@@ -17,6 +17,7 @@ to this:
 * Use Webrat's #contain matcher in generated "I should (not) see" step definitions (Bryan Helmkamp)
 
 == Bugfixes
+* Flush output in HTML formatter since JRuby doesnt do it automatically (Diego Carrion)
 * Better handling of ARGV (#169 David Chelimsky)
 * Compatibility with ruby-debug (do ARGV.dup in bin/cucumber so it can restart ruby with same args) (Aslak Hellesøy)
 
