@@ -26,7 +26,7 @@ module Cucumber
         @string.indent(-@quotes_indent)
       end
 
-      def at_lines?(*lines)
+      def at_lines?(lines)
         lines.detect{|l| l >= @start_line && l <= @end_line}
       end
 

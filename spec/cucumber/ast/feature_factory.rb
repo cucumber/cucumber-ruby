@@ -31,11 +31,11 @@ module Cucumber
         }, 10)
         f = Ast::Feature.new(
           Ast::Comment.new("# My feature comment\n"),
-          Ast::Tags.new(['one', 'two']),
+          Ast::Tags.new(6, ['one', 'two']),
           "Pretty printing",
           [Ast::Scenario.new(
             Ast::Comment.new("    # My scenario comment  \n# On two lines \n"),
-            Ast::Tags.new(['three', 'four']),
+            Ast::Tags.new(8, ['three', 'four']),
             9,
             "Scenario:", "A Scenario",
             [
@@ -46,6 +46,7 @@ module Cucumber
           )]
         )
         f.file = 'features/pretty_printing.feature'
+        f.features = Features.new(Filter.new({:tags => []}))
         f
       end
     end

@@ -3,11 +3,13 @@ Feature: Cucumber command line
   Developers should be able to execute requirements as tests
   
   Scenario: Run single scenario with missing step definition
-    When I run cucumber -q features/sample.feature:3
+    When I run cucumber -q features/sample.feature:5
     Then it should pass with
       """
+      @one
       Feature: Sample
 
+        @two @three
         Scenario: Missing
           Given missing
 
@@ -16,21 +18,24 @@ Feature: Cucumber command line
       
       """
 
-  Scenario: Specify 2 line numbers
-    When I run cucumber -q features/sample.feature:3:12
+  Scenario: Specify 2 line numbers where one is a tag
+    When I run cucumber -q features/sample.feature:5:14
     Then it should fail with
       """
+      @one
       Feature: Sample
 
+        @two @three
         Scenario: Missing
           Given missing
 
+        @four
         Scenario: Failing
           Given failing
             FAIL (RuntimeError)
             ./features/step_definitions/sample_steps.rb:2:in `flunker'
             ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
-            features/sample.feature:12:in `Given failing'
+            features/sample.feature:16:in `Given failing'
 
       2 scenarios
       1 failed step
@@ -40,11 +45,13 @@ Feature: Cucumber command line
 
 
   Scenario: Require missing step definition from elsewhere
-    When I run cucumber -q -r ../../features/step_definitions/extra_steps.rb features/sample.feature:3
+    When I run cucumber -q -r ../../features/step_definitions/extra_steps.rb features/sample.feature:5
     Then it should pass with
       """
+      @one
       Feature: Sample
 
+        @two @three
         Scenario: Missing
           Given missing
 
@@ -54,11 +61,13 @@ Feature: Cucumber command line
       """
       
   Scenario: Specify the line number of a row
-    When I run cucumber -q features/sample.feature:8
+    When I run cucumber -q features/sample.feature:12
     Then it should pass with
       """
+      @one
       Feature: Sample
 
+        @three
         Scenario: Passing
           Given passing
             | a | b |
@@ -80,7 +89,7 @@ Feature: Cucumber command line
       FAIL (RuntimeError)
       ./features/step_definitions/sample_steps.rb:2:in `flunker'
       ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
-      features/sample.feature:12:in `Given failing'
+      features/sample.feature:16:in `Given failing'
 
       3 scenarios
       1 failed step
@@ -153,16 +162,20 @@ Feature: Cucumber command line
           | passing | passing     |
           | failing | passing     |
 
+      @one
       Feature: Sample
 
+        @two @three
         Scenario: Missing
           Given missing
 
+        @three
         Scenario: Passing
           Given passing
             | a | b |
             | c | d |
 
+        @four
         Scenario: Failing
           Given failing
 

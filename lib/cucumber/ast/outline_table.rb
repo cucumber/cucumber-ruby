@@ -10,8 +10,8 @@ module Cucumber
       def accept(visitor, status)
         rows.each_with_index do |row, n|
           should_visit = n == 0 || 
-            row.at_lines?(*visitor.current_feature_lines) ||
-            @scenario_outline.at_header_or_step_lines?(*visitor.current_feature_lines)
+            row.at_lines?(visitor.current_feature_lines) ||
+            @scenario_outline.at_header_or_step_lines?(visitor.current_feature_lines)
 
           if should_visit
             visitor.visit_table_row(row, status)

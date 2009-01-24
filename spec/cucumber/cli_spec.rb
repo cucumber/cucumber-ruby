@@ -176,7 +176,7 @@ END_OF_MESSAGE
         @out = StringIO.new
         @cli = CLI.new(@out)
         @cli.stub!(:require)
-        @empty_feature = Ast::Feature.new(Ast::Comment.new(''), Ast::Tags.new([]), "Feature", [])
+        @empty_feature = Ast::Feature.new(Ast::Comment.new(''), Ast::Tags.new(2, []), "Feature", [])
         Dir.stub!(:[])
       end
 

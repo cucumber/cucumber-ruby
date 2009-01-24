@@ -10,8 +10,8 @@ module Cucumber
         @outline_table.accept(visitor, nil)
       end
 
-      def at_lines?(*lines)
-        lines.empty? || lines.index(@line) || @outline_table.at_lines?(*lines)
+      def at_lines?(lines)
+        lines.empty? || lines.index(@line) || @outline_table.at_lines?(lines)
       end
 
       def to_sexp

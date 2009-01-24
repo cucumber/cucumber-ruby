@@ -30,23 +30,25 @@ module Cucumber
             [:step, 12, "Given", "a failing step"]]]
       end
 
-      it "should only visit scenarios that match line number" do
+      it "should only visit scenarios that match" do
         s1 = mock("Scenario 1")
         s2 = mock("Scenario 2")
         s3 = mock("Scenario 3")
         [s1, s2, s3].each{|s| s.should_receive(:feature=)}
         f = Ast::Feature.new(
           Ast::Comment.new(""),
-          Ast::Tags.new([]),
+          Ast::Tags.new(22, []),
           "My feature",
           [s1, s2, s3]
         )
+        features = mock('Features')
+        f.features = features
 
         f.lines = [33]
 
-        s1.should_receive(:at_lines?).and_return(false)
-        s2.should_receive(:at_lines?).and_return(true)
-        s3.should_receive(:at_lines?).and_return(false)
+        features.should_receive(:visit?).with(s1, [33]).and_return(false)
+        features.should_receive(:visit?).with(s2, [33]).and_return(true)
+        features.should_receive(:visit?).with(s3, [33]).and_return(false)
 
         s2.should_receive(:accept)
 

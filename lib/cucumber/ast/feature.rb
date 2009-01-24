@@ -17,7 +17,7 @@ module Cucumber
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@name)
         @feature_elements.each do |feature_element|
-          visitor.visit_feature_element(feature_element) if feature_element.at_lines?(*@lines)
+          visitor.visit_feature_element(feature_element) if @features.visit?(feature_element, @lines)
         end
       end
 

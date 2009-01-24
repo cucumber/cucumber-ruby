@@ -7,8 +7,16 @@ module Cucumber
     # This gets stored internally as <tt>["invoice", "release_2"]</tt>
     #
     class Tags
-      def initialize(tag_names)
-        @tag_names = tag_names
+      def initialize(line, tag_names)
+        @line, @tag_names = line, tag_names
+      end
+
+      def among?(tag_names)
+        (@tag_names & tag_names).any?
+      end
+
+      def at_lines?(lines)
+        lines.empty? || lines.index(@line)
       end
 
       def accept(visitor)
