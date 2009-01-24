@@ -299,3 +299,27 @@ Feature: Cucumber command line
       1 passed step
 
       """
+
+  Scenario: Reformat files with --autoformat
+    When I run cucumber --autoformat tmp/formatted features
+    Then examples/self_test/tmp/formatted/features/sample.feature should contain
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+        @three
+        Scenario: Passing
+          Given passing
+            | a | b |
+            | c | d |
+
+        @four
+        Scenario: Failing
+          Given failing
+
+
+      """

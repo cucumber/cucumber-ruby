@@ -138,6 +138,15 @@ module Cucumber
           @options[:dry_run] = true
           @quiet = true
         end
+        opts.on("-a", "--autoformat DIRECTORY", 
+          "Reformats (pretty prints) feature files and write them to DIRECTORY.",
+          "Be careful if you choose to overwrite the originals.",
+          "Implies --dry-run --formatter pretty.") do |directory|
+          @options[:autoformat] = directory
+          Term::ANSIColor.coloring = false
+          @options[:dry_run] = true
+          @quiet = true
+        end
         opts.on("-n", "--[no-]source", 
           "Don't show the file and line of the step definition with the steps.") do |v|
           @options[:source] = v
@@ -301,6 +310,7 @@ Defined profiles in cucumber.yml:
     end
 
     def build_formatter_broadcaster(step_mother)
+      return Formatter::Pretty.new(step_mother, nil, @options) if @options[:autoformat]
       formatter_broadcaster = Broadcaster.new
       @options[:formats].each do |format, output_list|
         output_broadcaster = build_output_broadcaster(output_list)
