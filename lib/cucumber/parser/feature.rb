@@ -169,7 +169,7 @@ module Cucumber
       module Tags2
         def build
           tag_names = ts.elements.map{|e| e.tag.tag_name.text_value}
-          Ast::Tags.new(tag_names)
+          Ast::Tags.new(ts.line, tag_names)
         end
       end
 

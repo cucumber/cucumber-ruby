@@ -57,8 +57,11 @@ More blurb ideas
 * TODO: --no-multiline
 * TODO: Autoformatting (--autoformat -a)
 * TODO: "Background" section
-* TODO: --tags
-* New Cucumber.alias_steps method
+* Filtering with --tags
+* Given, When, Then are automatically aliased to current language. 
+  Ruby 1.8 doesn't allow non-ascii method names in the source, so unless you're on 1.9
+  you will have to use Given, When, Then or set up your own aliases. Here is Norwegian:
+    Cucumber.alias_steps(%w{Naar Saa}) # Når, Så already aliased, but can't be called.
 * Run cucumber --language help to see all supported languages.
 * Run cucumber --language LANG help to see keywords for a given language.
 * Multiline arguments (tables and """ strings) are printed in the output

@@ -107,11 +107,13 @@ examples/jbehave/README.textile
 examples/jbehave/features/support/env.rb
 examples/jbehave/features/trading.feature
 examples/jbehave/pom.xml
+examples/jbehave/target/maven-archiver/pom.properties
 examples/selenium/Rakefile
 examples/selenium/features/search.feature
 examples/selenium/features/step_definitons/stories_steps.rb
 examples/self_test/README.textile
 examples/self_test/features/call_undefined_step_from_step_def.feature
+examples/self_test/features/lots_of_undefined.feature
 examples/self_test/features/outline_sample.feature
 examples/self_test/features/sample.feature
 examples/self_test/features/step_definitions/sample_steps.rb
@@ -157,6 +159,7 @@ lib/cucumber/ast/comment.rb
 lib/cucumber/ast/examples.rb
 lib/cucumber/ast/feature.rb
 lib/cucumber/ast/features.rb
+lib/cucumber/ast/filter.rb
 lib/cucumber/ast/outline_table.rb
 lib/cucumber/ast/py_string.rb
 lib/cucumber/ast/scenario.rb

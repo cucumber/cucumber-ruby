@@ -10,6 +10,7 @@ require 'cucumber/ast/py_string'
 require 'cucumber/ast/outline_table'
 require 'cucumber/ast/examples'
 require 'cucumber/ast/visitor'
+require 'cucumber/ast/filter'
 
 module Cucumber
   # Classes in this module represent the Abstract Syntax Tree (AST)

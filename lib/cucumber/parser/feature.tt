@@ -19,7 +19,7 @@ module Cucumber
         white ts:(tag (space/eol)+)* {
           def build
             tag_names = ts.elements.map{|e| e.tag.tag_name.text_value}
-            Ast::Tags.new(tag_names)
+            Ast::Tags.new(ts.line, tag_names)
           end
         }
       end

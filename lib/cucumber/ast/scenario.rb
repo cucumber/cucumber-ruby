@@ -9,6 +9,10 @@ module Cucumber
         @steps = steps
       end
 
+      def tagged_with?(tag_names)
+        @tags.among?(tag_names)
+      end
+
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
@@ -38,12 +42,12 @@ module Cucumber
         @keyword.jlength + @name.jlength
       end
 
-      def at_lines?(*lines)
-        lines.empty? || lines.index(@line) || at_header_or_step_lines?(*lines)
+      def at_lines?(lines)
+        at_header_or_step_lines?(lines)
       end
 
-      def at_header_or_step_lines?(*lines)
-        @steps.detect {|step| step.at_lines?(*lines)}
+      def at_header_or_step_lines?(lines)
+        lines.empty? || lines.index(@line) || @steps.detect {|step| step.at_lines?(lines)} || @tags.at_lines?(lines)
       end
 
       def undefined?

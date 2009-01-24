@@ -44,6 +44,7 @@ module Cucumber
         :require  => nil,
         :lang     => 'en',
         :dry_run  => false,
+        :tags     => [],
         :formats  => {},
         :excludes => [],
         :scenario_names => nil
@@ -108,6 +109,11 @@ module Cucumber
           else
             @options[:formats][@active_format] << File.open(v, 'w')
           end
+        end
+        opts.on("-t TAGS", "--tags TAGS", 
+          "Only execute the features or scenarios with the specified tags.",
+          "TAGS must be comma-separated without spaces.") do |v|
+          @options[:tags] = v.split(",")
         end
         opts.on("-s SCENARIO", "--scenario SCENARIO", 
           "Only execute the scenario with the given name. If this option",
@@ -275,7 +281,8 @@ Defined profiles in cucumber.yml:
     end
 
     def load_plain_text_features
-      features = Ast::Features.new
+      filter = Ast::Filter.new(@options)
+      features = Ast::Features.new(filter)
       parser = Parser::FeatureParser.new
 
       verbose_log("Features:")

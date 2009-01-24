@@ -24,7 +24,7 @@ module Cucumber
 
         @scenario_outline = ScenarioOutline.new(
           Comment.new(""),
-          Tags.new([]),
+          Tags.new(18, []),
           19,
           "Scenario:", "My outline",
           [
