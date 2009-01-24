@@ -53,9 +53,9 @@ More blurb ideas
 * TODO Autotest uses file:line instead of --scenario (current impl doesn't work on Windows)
 
 === New features
-* TODO: --strict (Fail if there are missing or pending steps)
 * TODO: Autoformatting (--autoformat -a)
 * TODO: "Background" section
+* New --strict option exits with an error code if there are undefined or pending steps.
 * Filtering with --tags. If you put @various @tags on your features and scenarios, --tags lets you run a subset of them.
 * Given, When, Then are automatically aliased to current language. 
   Ruby 1.8 doesn't allow non-ascii method names in the source, so unless you're on 1.9

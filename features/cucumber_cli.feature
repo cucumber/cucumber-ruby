@@ -18,6 +18,22 @@ Feature: Cucumber command line
       
       """
 
+  Scenario: Fail with --strict
+    When I run cucumber -q features/sample.feature:5 --strict
+    Then it should fail with
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+      1 scenario
+      1 undefined step
+
+      """
+
   Scenario: Specify 2 line numbers where one is a tag
     When I run cucumber -q features/sample.feature:5:14
     Then it should fail with
