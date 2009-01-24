@@ -11,6 +11,11 @@ module Cucumber
   #   end
   #
   class StepDefinition
+    def self.snippet_text(step_keyword, step_name)
+      escaped = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
+      "#{step_keyword} /^#{escaped}$/ do\nend"
+    end
+
     class MissingProc < StandardError
       def message
         "Step definitions must always have a proc"

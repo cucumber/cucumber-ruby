@@ -12,6 +12,7 @@ module Cucumber
       def step_mother=(step_mother)
         @step_mother = step_mother
         @step_mother.extend(StepMother)
+        @step_mother.snippet_generator = StepDefinition
       end
 
       def execute(args)

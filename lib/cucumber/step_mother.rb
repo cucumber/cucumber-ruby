@@ -7,6 +7,8 @@ module Cucumber
   # so #register_step_definition (and more interestingly - its aliases) are
   # available from the top-level.
   module StepMother
+    attr_writer :snippet_generator
+
     class Undefined < StandardError
       attr_reader :step_name
 
@@ -116,6 +118,10 @@ module Cucumber
 
     def step_definitions
       @step_definitions ||= []
+    end
+
+    def snippet_text(step_keyword, step_name)
+      @snippet_generator.snippet_text(step_keyword, step_name)
     end
 
     module WorldMethods #:nodoc:
