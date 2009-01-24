@@ -55,14 +55,20 @@ module Cucumber
           "cucumber examples/i18n/en/features",
           "cucumber --language it examples/i18n/it/features/somma.feature:6:98:113", "", ""
         ].join("\n")
-        opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", "Require files before executing the features.",
-          "If this option is not specified, all *.rb files that",
-          "are siblings or below the features will be autorequired",
+        opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", 
+          "Require files before executing the features. If this",
+          "option is not specified, all *.rb files that are",
+          "siblings or below the features will be loaded auto-",
+          "matically. Automatic loading is disabled when this",
+          "option is specified, and all loading becomes explicit.",
+          "Files under directories named \"support\" are always",
+          "loaded first.",
           "This option can be specified multiple times.") do |v|
           @options[:require] ||= []
           @options[:require] << v
         end
-        opts.on("-l LANG", "--language LANG", "Specify language for features (Default: #{@options[:lang]})",
+        opts.on("-l LANG", "--language LANG", 
+          "Specify language for features (Default: #{@options[:lang]})",
           %{Run with "--language help" to see all languages},
           %{Run with "--language LANG help" to list keywords for LANG}) do |v|
           if v == 'help'
@@ -73,19 +79,21 @@ module Cucumber
             @options[:lang] = v
           end
         end
-        opts.on("-f FORMAT", "--format FORMAT", "How to format features (Default: #{DEFAULT_FORMAT})",
+        opts.on("-f FORMAT", "--format FORMAT", 
+          "How to format features (Default: #{DEFAULT_FORMAT})",
           "Available formats: #{FORMATS.join(", ")}",
-          "You can also provide your own formatter classes as long as they have been",
-          "previously required using --require or if they are in the folder",
-          "structure such that cucumber will require them automatically.",
+          "You can also provide your own formatter classes as long",
+          "as they have been previously required using --require or",
+          "if they are in the folder structure such that cucumber",
+          "will require them automatically.", 
           "This option can be specified multiple times.") do |v|
-
           @options[:formats][v] ||= []
           @options[:formats][v] << @out_stream
           @active_format = v
         end
-        opts.on("-o", "--out FILE", "Write output to a file instead of @out_stream.",
-          "This option can be specified multiple times, and applies to the previously",
+        opts.on("-o", "--out FILE", 
+          "Write output to a file instead of @out_stream. This option",
+          "can be specified multiple times, and applies to the previously",
           "specified --format.") do |v|
           @options[:formats][@active_format] ||= []
           if @options[:formats][@active_format].last == @out_stream
@@ -94,49 +102,49 @@ module Cucumber
             @options[:formats][@active_format] << File.open(v, 'w')
           end
         end
-        opts.on("-s SCENARIO", "--scenario SCENARIO", "Only execute the scenario with the given name.",
-          "If this option is given more than once, run all",
-          "the specified scenarios.") do |v|
+        opts.on("-s SCENARIO", "--scenario SCENARIO", 
+          "Only execute the scenario with the given name. If this option",
+          "is given more than once, run all the specified scenarios.") do |v|
           @options[:scenario_names] ||= []
           @options[:scenario_names] << v
         end
-        opts.on("-e", "--exclude PATTERN", "Don't run features matching a pattern") do |v|
+        opts.on("-e", "--exclude PATTERN", "Don't run feature files matching PATTERN") do |v|
           @options[:excludes] << v
         end
         opts.on("-p", "--profile PROFILE", "Pull commandline arguments from cucumber.yml.") do |v|
           parse_args_from_profile(v)
         end
-        opts.on("-c", "--[no-]color", "Use ANSI color in the output, if formatters use it.  If",
-          "these options are given multiple times, the last one is",
-          "used.  If neither --color or --no-color is given cucumber",
-          "decides based on your platform and the output destination") do |v|
-          @options[:color] = v
+        opts.on("-c", "--[no-]color",
+          "Whether or not to use ANSI color in the output. Cucumber decides",
+          "based on your platform and the output destination if not specified.") do |v|
+          Term::ANSIColor.coloring = v
         end
         opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.",
-          "Implies --quiet") do
+          "Implies --quiet.") do
           @options[:dry_run] = true
           @quiet = true
         end
-        opts.on("-n", "--[no-]source", "Don't show the file and line of the step definition with the steps.") do |v|
+        opts.on("-n", "--[no-]source", 
+          "Don't show the file and line of the step definition with the steps.") do |v|
           @options[:source] = v
         end
-        opts.on("-i", "--[no-]snippets", "Don't show the snippets for pending steps") do |v|
+        opts.on("-i", "--[no-]snippets", "Don't show the snippets for pending steps.") do |v|
           @options[:snippets] = v
         end
-        opts.on("-q", "--quiet", "Alias for --no-snippets --no-source") do
+        opts.on("-q", "--quiet", "Alias for --no-snippets --no-source.") do
           @quiet = true
         end
         opts.on("-b", "--backtrace", "Show full backtrace for all errors") do
           Exception.cucumber_full_backtrace = true
         end
-        opts.on("-v", "--verbose", "Show the files and features loaded") do
+        opts.on("-v", "--verbose", "Show the files and features loaded.") do
           @options[:verbose] = true
         end
-        opts.on_tail("--version", "Show version") do
+        opts.on_tail("--version", "Show version.") do
           @out_stream.puts VERSION::STRING
           Kernel.exit
         end
-        opts.on_tail("--help", "You're looking at it") do
+        opts.on_tail("--help", "You're looking at it.") do
           @out_stream.puts opts.help
           Kernel.exit
         end
@@ -155,7 +163,6 @@ module Cucumber
 
 
     def execute!(step_mother)
-      Term::ANSIColor.coloring = @options[:color] unless @options[:color].nil?
       Cucumber.load_language(@options[:lang])
       require_files
       enable_diffing
