@@ -305,19 +305,16 @@ Defined profiles in cucumber.yml:
           formatter_broadcaster.register(Formatter::Progress.new(step_mother, output_broadcaster, @options))
         when 'profile'
           formatter_broadcaster.register(Formatter::Profile.new(step_mother, output_broadcaster, @options))
-        when 'html'
-          formatter_broadcaster.register(Formatters::HtmlFormatter.new(output_broadcaster, step_mother))
-        when 'autotest'
-          formatter_broadcaster.register(Formatters::AutotestFormatter.new(output_broadcaster))
+        # when 'html'
+        #   formatter_broadcaster.register(Formatters::HtmlFormatter.new(output_broadcaster, step_mother))
+        # when 'autotest'
+        #   formatter_broadcaster.register(Formatters::AutotestFormatter.new(output_broadcaster))
         else
           begin
             formatter_class = constantize(format)
             formatter_broadcaster.register(formatter_class.new(output_broadcaster, step_mother, @options))
-          rescue NameError => e
-            @error_stream.puts "Invalid format: #{format}\n"
-            exit_with_help
           rescue Exception => e
-            exit_with_error("Error creating formatter: #{format}\n#{e}\n")
+            exit_with_error("Error creating formatter: #{format}", e)
           end
         end
       end
@@ -351,8 +348,12 @@ Defined profiles in cucumber.yml:
       parse_options!(%w{--help})
     end
 
-    def exit_with_error(error_message)
-      @error_stream << error_message
+    def exit_with_error(error_message, e=nil)
+      @error_stream.puts(error_message)
+      if e
+        @error_stream.puts("#{e.message} (#{e.class})")
+        @error_stream.puts(e.backtrace.join("\n"))
+      end
       Kernel.exit 1
     end
 
