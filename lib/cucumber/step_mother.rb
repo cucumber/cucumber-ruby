@@ -6,10 +6,13 @@ module Cucumber
   # from <tt>*_steps.rb</tt> files. This module is included right at the top-level
   # so #register_step_definition (and more interestingly - its aliases) are
   # available from the top-level.
-  module StepMom
+  module StepMother
     class Undefined < StandardError
+      attr_reader :step_name
+
       def initialize(step_name)
         super %{Undefined step: "#{step_name}"}
+        @step_name = step_name
       end
       Cucumber::EXCEPTION_STATUS[self] = :undefined
     end

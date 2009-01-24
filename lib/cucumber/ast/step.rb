@@ -4,14 +4,12 @@ require 'cucumber/core_ext/string'
 module Cucumber
   module Ast
     class Step
-      ARGUMENT_START = '<'
-      ARGUMENT_END  = '>'
-
+      attr_reader :keyword, :name
       attr_writer :world, :previous, :options
       attr_accessor :status, :scenario, :exception
 
-      def initialize(line, gwt, name, *multiline_args)
-        @line, @gwt, @name, @multiline_args = line, gwt, name, multiline_args
+      def initialize(line, keyword, name, *multiline_args)
+        @line, @keyword, @name, @multiline_args = line, keyword, name, multiline_args
       end
 
       def execute_with_arguments(argument_hash, world, previous, visitor, row_line)
@@ -24,7 +22,7 @@ module Cucumber
 
       def accept(visitor)
         execute(visitor)
-        visitor.visit_step_name(@gwt, @name, @status, @step_definition, source_indent)
+        visitor.visit_step_name(@keyword, @name, @status, @step_definition, source_indent)
         @multiline_args.each do |multiline_arg|
           visitor.visit_multiline_arg(multiline_arg, @status)
         end
@@ -32,7 +30,7 @@ module Cucumber
       end
 
       def to_sexp
-        [:step, @line, @gwt, @name, *@multiline_args.map{|arg| arg.to_sexp}]
+        [:step, @line, @keyword, @name, *@multiline_args.map{|arg| arg.to_sexp}]
       end
 
       def at_lines?(*lines)
@@ -44,15 +42,29 @@ module Cucumber
       end
 
       def text_length
-        @gwt.jlength + @name.jlength + 2 # Add 2 because steps get indented 2 more than scenarios
+        @keyword.jlength + @name.jlength + 2 # Add 2 because steps get indented 2 more than scenarios
       end
 
       def backtrace_line
-        @backtrace_line ||= @scenario.backtrace_line("#{@gwt} #{@name}", @line) unless @scenario.nil?
+        @backtrace_line ||= @scenario.backtrace_line("#{@keyword} #{@name}", @line) unless @scenario.nil?
       end
 
       def file_line
         @file_line ||= @scenario.file_line(@line) unless @scenario.nil?
+      end
+
+      def actual_keyword
+        if [Cucumber.keyword_hash['and'], Cucumber.keyword_hash['but']].index(@keyword) && previous_step
+          previous_step.actual_keyword
+        else
+          @keyword
+        end
+      end
+
+      protected
+
+      def previous_step
+        @scenario.previous_step(self)
       end
 
       private
@@ -70,9 +82,9 @@ module Cucumber
             else
               @status = :skipped
             end
-          rescue StepMom::Undefined
+          rescue StepMother::Undefined
             @status = :undefined
-          rescue StepMom::Pending
+          rescue StepMother::Pending
             @status = :pending
           rescue Exception => exception
             @status = :failed
@@ -86,12 +98,15 @@ module Cucumber
 
       def execute_twin(world, previous, visitor, line, name, *multiline_args)
         # We'll create a new step and execute that
-        step = Step.new(line, @gwt, name, *multiline_args)
+        step = Step.new(line, @keyword, name, *multiline_args)
         step.scenario = @scenario
         step.world    = world
         step.previous = previous
         step.__send__(:execute, visitor)
       end
+
+      ARGUMENT_START = '<'
+      ARGUMENT_END   = '>'
 
       def delimit_argument_names(argument_hash)
         argument_hash.inject({}) { |h,(k,v)| h["#{ARGUMENT_START}#{k}#{ARGUMENT_END}"] = v; h }

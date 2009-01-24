@@ -8,7 +8,7 @@ module Cucumber
     describe ScenarioOutline do
       before do
         @step_mother = Object.new
-        @step_mother.extend(StepMom)
+        @step_mother.extend(StepMother)
         @step_mother.Given(/^there are (\d+) cucumbers$/) do |n|
           @initial = n.to_i
         end

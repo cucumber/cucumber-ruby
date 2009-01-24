@@ -141,12 +141,12 @@ END_OF_MESSAGE
       cli.options[:snippets].should be_false
     end
 
-    it "should accept --quiet option" do
+    it "should set snippets and source to false with --quiet option" do
       cli = CLI.new
       cli.parse_options!(%w{--quiet})
       
-      cli.options[:snippets].should be_false
-      cli.options[:source].should be_false
+      cli.options[:snippets].should be_nil
+      cli.options[:source].should be_nil
     end
 
     it "should accept --verbose option" do

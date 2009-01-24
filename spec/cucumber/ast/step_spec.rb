@@ -5,7 +5,7 @@ require 'cucumber/core_ext/string'
 
 module Cucumber
   module Ast
-    describe StepMom do
+    describe StepMother do
       it "should calculate comment padding" do
         scenario = Scenario.new(comment=nil, tags=nil, line=nil, keyword='Given', name='Gazpacho', steps=[
           Step.new(22, "Given", "tøtal 13"),

@@ -15,23 +15,6 @@ Feature: Cucumber command line
       1 step undefined
       
       """
-      
-  Scenario: Run single failing scenario
-    When I run cucumber -q features/sample.feature:12
-    Then it should fail with
-      """
-      Feature: Sample
-
-        Scenario: Failing
-          Given failing
-            expected 1 block argument(s), got 0 (Cucumber::ArityMismatchError)
-            ../../bin/../lib/cucumber/core_ext/instance_exec.rb:15:in `/^failing$/'
-            features/sample.feature:12:in `Given failing'
-
-      1 scenario
-      1 step failed
-
-      """
 
   Scenario: Specify 2 line numbers
     When I run cucumber -q features/sample.feature:3:12
@@ -44,8 +27,6 @@ Feature: Cucumber command line
 
         Scenario: Failing
           Given failing
-            | e | f |
-            | g | h |
             FAIL (RuntimeError)
             ./features/step_definitions/sample_steps.rb:2:in `flunker'
             ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
@@ -72,20 +53,6 @@ Feature: Cucumber command line
 
       """
       
-  Scenario: Specify the line number of a blank line
-    When I run cucumber -q features/sample.feature:10
-    Then it should pass with
-      """
-      Feature: Sample
-
-        Scenario: Passing
-          Given passing
-
-      1 scenario
-      1 step passed
-
-      """
-
   Scenario: Specify the line number of a row
     When I run cucumber -q features/sample.feature:8
     Then it should pass with
@@ -114,8 +81,9 @@ Feature: Cucumber command line
 
       (::) failed (::)
 
-      expected 1 block argument(s), got 0 (Cucumber::ArityMismatchError)
-      features/step_definitions/sample_steps.rb:8:in `/^failing$/'
+      FAIL (RuntimeError)
+      ./features/step_definitions/sample_steps.rb:2:in `flunker'
+      ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
       features/sample.feature:12:in `Given failing'
 
       3 scenarios
@@ -155,22 +123,31 @@ Feature: Cucumber command line
       """
 
   Scenario: --dry-run
-    When I run cucumber --dry-run features
+    When I run cucumber --dry-run --no-snippets features
     Then it should pass with
       """
       Feature: Calling undefined step
 
-        Scenario: Call directly                                # features/call_undefined_step_from_step_def.feature:3
-          Given a step definition that calls an undefined step # features/step_definitions/sample_steps.rb:19
+        Scenario: Call directly
+          Given a step definition that calls an undefined step
 
-        Scenario: Call via another                                         # features/call_undefined_step_from_step_def.feature:6
-          Given call step "a step definition that calls an undefined step" # features/step_definitions/sample_steps.rb:23
+        Scenario: Call via another
+          Given call step "a step definition that calls an undefined step"
+
+      Feature: Lots of undefined
+
+        Scenario: Implement me
+          Given it snows in Sahara
+          Given it's 40 degrees in Norway
+          And it's 40 degrees in Norway
+          When I stop procrastinating
+          And there is world peace
 
       Feature: Outline Sample
 
-        Scenario: I have no steps # features/outline_sample.feature:3
+        Scenario: I have no steps
 
-        Scenario Outline: Test state          # features/outline_sample.feature:5
+        Scenario Outline: Test state
           Given <state> without a table
           Given <other_state> without a table
 
@@ -182,20 +159,20 @@ Feature: Cucumber command line
 
       Feature: Sample
 
-        Scenario: Missing # features/sample.feature:3
+        Scenario: Missing
           Given missing
 
-        Scenario: Passing # features/sample.feature:6
-          Given passing   # features/step_definitions/sample_steps.rb:5
+        Scenario: Passing
+          Given passing
             | a | b |
             | c | d |
 
-        Scenario: Failing # features/sample.feature:11
-          Given failing   # features/step_definitions/sample_steps.rb:8
+        Scenario: Failing
+          Given failing
 
-      9 scenarios
+      10 scenarios
       9 steps skipped
-      2 steps undefined
+      7 steps undefined
 
       """
 

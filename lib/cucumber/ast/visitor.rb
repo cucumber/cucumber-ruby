@@ -68,7 +68,7 @@ module Cucumber
         step.accept(self)
       end
 
-      def visit_step_name(gwt, step_name, status, step_definition, source_indent)
+      def visit_step_name(keyword, step_name, status, step_definition, source_indent)
       end
 
       def visit_multiline_arg(multiline_arg, status)

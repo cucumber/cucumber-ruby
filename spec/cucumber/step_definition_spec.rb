@@ -7,7 +7,7 @@ require 'cucumber/step_definition'
 module Cucumber
   describe StepDefinition do
     before do
-      extend StepMom
+      extend StepMother
       @world = new_world
       $inside = nil
     end
@@ -46,7 +46,7 @@ module Cucumber
       lambda do
         @world.__cucumber_current_step = step
         step_definition('Outside').execute(nil, @world)
-      end.should raise_error(StepMom::Undefined, 'Undefined step: "Inside"')
+      end.should raise_error(StepMother::Undefined, 'Undefined step: "Inside"')
     end
 
     it "should allow forced pending" do
@@ -56,7 +56,7 @@ module Cucumber
 
       lambda do
         step_definition("Outside").execute(nil, @world)
-      end.should raise_error(StepMom::Pending, "Do me!")
+      end.should raise_error(StepMother::Pending, "Do me!")
     end
   end
 end

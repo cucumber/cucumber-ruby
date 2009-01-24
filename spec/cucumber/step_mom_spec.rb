@@ -3,10 +3,10 @@ require File.dirname(__FILE__) + '/../spec_helper'
 require 'cucumber/step_mother'
 
 module Cucumber
-  describe StepMom do
+  describe StepMother do
     before do
       @step_mother = Object.new
-      @step_mother.extend(StepMom)
+      @step_mother.extend(StepMother)
       @visitor = mock('Visitor')
     end
 
@@ -25,7 +25,7 @@ module Cucumber
 
       lambda do
         @step_mother.step_definition("Three blind mice")
-      end.should raise_error(StepMom::Ambiguous, %{Ambiguous match of "Three blind mice":
+      end.should raise_error(StepMother::Ambiguous, %{Ambiguous match of "Three blind mice":
 
 spec/cucumber/step_mom_spec.rb:23:in `/Three (.*) mice/'
 spec/cucumber/step_mom_spec.rb:24:in `/Three blind (.*)/'
@@ -36,14 +36,14 @@ spec/cucumber/step_mom_spec.rb:24:in `/Three blind (.*)/'
     it "should raise Undefined error when no step definitions match" do
       lambda do
         @step_mother.step_definition("Three blind mice")
-      end.should raise_error(StepMom::Undefined)
+      end.should raise_error(StepMother::Undefined)
     end
 
     it "should raise Redundant error when same regexp is registered twice" do
       @step_mother.Given(/Three (.*) mice/) {|disability|}
       lambda do
         @step_mother.Given(/Three (.*) mice/) {|disability|}
-      end.should raise_error(StepMom::Redundant)
+      end.should raise_error(StepMother::Redundant)
     end
   end
 end

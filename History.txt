@@ -1,6 +1,8 @@
 == Git (ast - future 0.2)
 
-This version brings Cucumber even closer to Java. Although it has been possible to
+This is a major rewrite
+
+This version also brings Cucumber even closer to Java. Although it has been possible to
 run Cucumber on JRuby since v0.1.11, it has required that step definitions be defined
 in Ruby code. This has been a barrier for many Java developers who don't know Ruby.
 
@@ -40,7 +42,6 @@ More blurb ideas
 * Cucumber 0.2 is about 2/3 the size of Cucumber 0.1.16, and it is 2-3 times faster to install (less RDoc/Ri).
 
 === Existing features that don't work yet:
-* --exclude
 * --scenario
 * snippets
 * Several disabled specs should be fixed or removed
@@ -57,6 +58,7 @@ More blurb ideas
 * TODO: Autoformatting (--autoformat -a)
 * TODO: "Background" section
 * TODO: --tags
+* New Cucumber.alias_steps method
 * Run cucumber --language help to see all supported languages.
 * Run cucumber --language LANG help to see keywords for a given language.
 * Multiline arguments (tables and """ strings) are printed in the output

@@ -19,12 +19,18 @@ module Cucumber
       return if @lang
       @lang = lang
       alias_step_definitions(lang)
-      Parser.load_parser(LANGUAGES[lang])
+      Parser.load_parser(keyword_hash)
+    end
+
+    # Returns a Hash of the currently active
+    # language, or for a specific language if +lang+ is
+    # specified.
+    def keyword_hash(lang=@lang)
+      LANGUAGES[lang]
     end
     
     def alias_step_definitions(lang) #:nodoc:
-      keyword_hash = LANGUAGES[lang]
-      keywords = %w{given when then and but}.map{|keyword| keyword_hash[keyword]}
+      keywords = %w{given when then and but}.map{|keyword| keyword_hash(lang)[keyword]}
       alias_steps(keywords)
     end
     
@@ -34,13 +40,16 @@ module Cucumber
     #   # Given When Then in Norwegian
     #   Cucumber.alias_steps %w{Gitt Naar Saa}
     #
+    # You cannot use special characters here, because methods
+    # with special characters is not valid Ruby code
+    #
     def alias_steps(keywords)
       keywords.each do |adverb|
-        StepMom.class_eval do
+        StepMother.class_eval do
           alias_method adverb, :register_step_definition
         end
 
-        StepMom::WorldMethods.class_eval do
+        StepMother::WorldMethods.class_eval do
           alias_method adverb, :__cucumber_invoke
         end
       end

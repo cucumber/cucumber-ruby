@@ -85,9 +85,9 @@ module Cucumber
         print_exception(@io, exception, @indent) if exception
       end
 
-      def visit_step_name(gwt, step_name, status, step_definition, source_indent)
+      def visit_step_name(keyword, step_name, status, step_definition, source_indent)
         source_indent = nil unless @options[:source]
-        formatted_step_name = format_step(gwt, step_name, status, step_definition, source_indent)
+        formatted_step_name = format_step(keyword, step_name, status, step_definition, source_indent)
         @io.print("    " + formatted_step_name + "\n")
       end
 
@@ -119,6 +119,7 @@ module Cucumber
 
       def print_summary(io, features)
         print_counts(io, features)
+        print_snippets(io, features, @options)
       end
 
     end
