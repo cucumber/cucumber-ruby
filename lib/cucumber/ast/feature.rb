@@ -11,6 +11,10 @@ module Cucumber
         @lines = []
       end
 
+      def tagged_with?(tag_names, check_elements=true)
+        @tags.among?(tag_names) || (check_elements && @feature_elements.detect{|e| e.tagged_with?(tag_names)})
+      end
+
       def accept(visitor)
         visitor.current_feature_lines = @lines
         visitor.visit_comment(@comment)

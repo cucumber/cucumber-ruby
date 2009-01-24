@@ -10,7 +10,7 @@ module Cucumber
       end
 
       def tagged_with?(tag_names)
-        @tags.among?(tag_names)
+        @tags.among?(tag_names) || @feature.tagged_with?(tag_names, false)
       end
 
       def accept(visitor)

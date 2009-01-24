@@ -54,10 +54,9 @@ More blurb ideas
 
 === New features
 * TODO: --strict (Fail if there are missing or pending steps)
-* TODO: --no-multiline
 * TODO: Autoformatting (--autoformat -a)
 * TODO: "Background" section
-* Filtering with --tags
+* Filtering with --tags. If you put @various @tags on your features and scenarios, --tags lets you run a subset of them.
 * Given, When, Then are automatically aliased to current language. 
   Ruby 1.8 doesn't allow non-ascii method names in the source, so unless you're on 1.9
   you will have to use Given, When, Then or set up your own aliases. Here is Norwegian:

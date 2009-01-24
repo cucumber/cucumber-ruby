@@ -18,7 +18,7 @@ module Cucumber
 
       def visit?(node, lines)
         @filter.matched?(node) &&
-        node.at_lines?(lines)
+        (lines.empty? ? true : node.at_lines?(lines))
       end
 
       def scenario_executed(scenario)
@@ -31,7 +31,7 @@ module Cucumber
 
       def accept(visitor)
         @features.each do |feature|
-          visitor.visit_feature(feature)
+          visitor.visit_feature(feature) if visit?(feature, [])
         end
       end
     end

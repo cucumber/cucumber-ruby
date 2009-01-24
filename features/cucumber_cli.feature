@@ -214,7 +214,7 @@ Feature: Cucumber command line
       """
       Given passing
       """
-      
+
   Scenario: Run scenario specified by name using --scenario
     When I run cucumber --scenario Passing -q features/sample.feature
     Then it should pass with
@@ -225,6 +225,61 @@ Feature: Cucumber command line
 
 
       1 scenario
+      1 passed step
+
+      """
+
+  Scenario: Run with a tag that exists on 2 scenarios
+    When I run cucumber -q features --tags three
+    Then it should pass with
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+        @three
+        Scenario: Passing
+          Given passing
+            | a | b |
+            | c | d |
+
+      2 scenarios
+      1 undefined step
+      1 passed step
+
+      """
+
+  Scenario: Run with a tag that exists on 1 feature
+    When I run cucumber -q features --tags one
+    Then it should fail with
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+        @three
+        Scenario: Passing
+          Given passing
+            | a | b |
+            | c | d |
+
+        @four
+        Scenario: Failing
+          Given failing
+            FAIL (RuntimeError)
+            ./features/step_definitions/sample_steps.rb:2:in `flunker'
+            ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
+            features/sample.feature:16:in `Given failing'
+
+      3 scenarios
+      1 failed step
+      1 undefined step
       1 passed step
 
       """
