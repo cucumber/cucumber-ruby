@@ -53,7 +53,7 @@ More blurb ideas
 * TODO Autotest uses file:line instead of --scenario (current impl doesn't work on Windows)
 
 === New features
-* TODO: Autoformatting (--autoformat -a)
+* Run cucumber with --autoformat DIR to reformat (pretty print) all of your feature files.
 * TODO: "Background" section
 * New --strict option exits with an error code if there are undefined or pending steps.
 * Filtering with --tags. If you put @various @tags on your features and scenarios, --tags lets you run a subset of them.

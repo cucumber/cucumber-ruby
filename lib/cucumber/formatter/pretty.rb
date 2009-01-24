@@ -1,4 +1,5 @@
 require 'cucumber/formatter/console'
+require 'fileutils'
 
 module Cucumber
   module Formatter
@@ -8,6 +9,7 @@ module Cucumber
     # If the output is STDOUT (and not a file), there are bright colours to watch too.
     #
     class Pretty < Ast::Visitor
+      include FileUtils
       include Console
       attr_writer :indent
 
@@ -25,7 +27,18 @@ module Cucumber
 
       def visit_feature(feature)
         @indent = 0
-        feature.accept(self)
+        if @options[:autoformat]
+          file = File.join(@options[:autoformat], feature.file)
+          dir = File.dirname(file)
+          mkdir_p(dir) unless File.directory?(dir)
+          mode = Cucumber::RUBY_1_9 ? "w:#{Cucumber.keyword_hash['encoding']}" : 'w'
+          File.open(file, mode) do |io|
+            @io = io
+            feature.accept(self)
+          end
+        else
+          feature.accept(self)
+        end
       end
 
       def visit_comment(comment)
@@ -132,6 +145,7 @@ module Cucumber
       private
 
       def print_summary(io, features)
+        return if @options[:autoformat]
         print_counts(io, features)
         print_snippets(io, features, @options)
       end

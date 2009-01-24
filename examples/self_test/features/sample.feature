@@ -1,11 +1,11 @@
 @one
 Feature: Sample
 
-  @two @three
+    @two @three
   Scenario: Missing
     Given missing
 
-  @three
+@three
   Scenario: Passing
     Given passing
       |a|b|
