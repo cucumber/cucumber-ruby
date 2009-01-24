@@ -21,3 +21,4 @@ Feature: Trading
     Given a stock of prices 0.5,1.0 and a threshold of 1.5
     When the stock is traded at 2.0
     Then the trader sells all stocks
+    And the trader gets a bonus

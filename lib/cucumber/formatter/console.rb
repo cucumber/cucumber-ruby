@@ -80,7 +80,7 @@ module Cucumber
         return if undefined.empty?
         snippets = undefined.map do |step|
           step_name = StepMother::Undefined === step.exception ? step.exception.step_name : step.name
-          snippet = "#{step.actual_keyword} /^#{escape_regexp_characters(step_name)}$/ do\nend"
+          snippet = @step_mother.snippet_text(step.actual_keyword, step_name)
           snippet
         end.compact.uniq
 
@@ -101,10 +101,6 @@ module Cucumber
         fmt = FORMATS[key]
         raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
         fmt
-      end
-
-      def escape_regexp_characters(string)
-        Regexp.escape(string).gsub('\ ', ' ').gsub('/', '\/') unless string.nil?
       end
     end
   end

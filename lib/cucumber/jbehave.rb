@@ -89,7 +89,16 @@ module Cucumber
     end
     
     REPORTER = Reporter.new
+
+    def self.snippet_text(step_keyword, step_name)
+      camel = step_name.gsub(/(\s.)/) {$1.upcase.strip}
+      method = camel[0..0].downcase + camel[1..-1]
+      snippet = %{    @#{step_keyword}("#{step_name}")
+    public void #{method}() {
+    }}
+    end
   end
 end
 
 self.extend(Cucumber::JBehave)
+self.snippet_generator = Cucumber::JBehave
