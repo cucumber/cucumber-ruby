@@ -36,10 +36,10 @@ Pretty printing
       | \e[32m4444\e[0m | \e[32m55555\e[0m | \e[32m666666\e[0m |
     \e[32mGiven a \e[32m\e[1mhappy\e[0m\e[0m\e[32m step with an inline arg:\e[90m   # spec/cucumber/ast/feature_factory.rb:15\e[0m\e[0m
 \e[32m      \"\"\"
-      
+
        I like
       Cucumber sandwich
-      
+
       \"\"\"\e[0m
     \e[31mGiven a \e[31m\e[1mfailing\e[0m\e[0m\e[31m step\e[90m                     # spec/cucumber/ast/feature_factory.rb:17\e[0m\e[0m
 \e[31m      I flunked (RuntimeError)

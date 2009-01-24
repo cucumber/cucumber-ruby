@@ -1,7 +1,7 @@
 Feature: Cucumber command line
   In order to find out what step definitions need to be implemented
   Developers should always see what step definition is missing
-  
+
   Scenario: Get info at arbitrary levels of nesting
     When I run cucumber features/call_undefined_step_from_step_def.feature
     Then it should pass with
@@ -22,10 +22,10 @@ Feature: Cucumber command line
       2 undefined steps
 
       You can implement step definitions for missing steps with these snippets:
-      
+
       Given /^this does not exist$/ do
       end
 
 
       """
-  
+

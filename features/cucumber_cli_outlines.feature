@@ -1,7 +1,7 @@
 Feature: Cucumber command line
   In order to write better software
   Developers should be able to execute requirements as tests
-  
+
   Scenario: Run scenario outline steps only
     When I run cucumber -q features/outline_sample.feature:7
     Then it should fail with
@@ -27,7 +27,7 @@ Feature: Cucumber command line
       2 skipped steps
       1 undefined step
       2 passed steps
-      
+
       """
 
   Scenario: Run single failing scenario outline table row
@@ -78,3 +78,4 @@ Feature: Cucumber command line
       2 passed steps
 
       """
+
