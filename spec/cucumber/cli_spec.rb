@@ -32,7 +32,7 @@ module Cucumber
       given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})
 
       cli.parse_options!(%w{--format progress --profile bongo})
-      cli.options[:formats].should == {'progress' => [STDOUT]}
+      cli.options[:formats].should == {'progress' => [Kernel]}
       cli.options[:require].should == ['from/yml']
     end
 
@@ -237,7 +237,7 @@ END_OF_MESSAGE
       File.stub!(:open).and_return(mock_file)
 
       cli.parse_options!(%w{--format progress --format progress --out file})
-      cli.options[:formats].should == {'progress' => [STDOUT, mock_file]}
+      cli.options[:formats].should == {'progress' => [Kernel, mock_file]}
     end
     
     describe "--format with class" do

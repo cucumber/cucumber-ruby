@@ -29,8 +29,14 @@ module Cucumber
     FORMATS = %w{pretty profile progress html autotest}
     DEFAULT_FORMAT = 'pretty'
 
-    def initialize(out_stream = STDOUT, error_stream = STDERR)
+    def initialize(out_stream = Kernel, error_stream = STDERR)
       @out_stream = out_stream
+      if out_stream == Kernel
+        def Kernel.flush
+          STDOUT.flush
+        end
+      end
+
       @error_stream = error_stream
       @paths = []
       @options = {

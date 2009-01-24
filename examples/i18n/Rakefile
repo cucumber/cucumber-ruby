@@ -28,5 +28,5 @@ def supported?(lang)
 end
 
 def rake(args)
-  ruby(File.join(Gem.bindir, 'rake'), args)
+  ruby($0, args) rescue nil
 end
