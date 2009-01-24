@@ -13,7 +13,7 @@ module Cucumber
 
       def initialize(step_mother, io, options, delim='|')
         super(step_mother)
-        @io = (io == STDOUT) ? Kernel : io
+        @io = io
         @options = options
         @delim = delim
       end
@@ -33,23 +33,31 @@ module Cucumber
       end
 
       def visit_comment_line(comment_line)
-        @io.puts(comment_line.indent(@indent)) unless comment_line.blank?
+        unless comment_line.blank?
+          @io.puts(comment_line.indent(@indent)) 
+          @io.flush
+        end
       end
 
       def visit_tags(tags)
         tags.accept(self)
-        @io.puts if @indent == 1
+        if @indent == 1
+          @io.puts 
+          @io.flush
+        end
       end
 
       def visit_tag_name(tag_name)
         tag = format_string("@#{tag_name}", :tag).indent(@indent)
         @io.print(tag)
+        @io.flush
         @indent = 1
       end
 
       def visit_feature_name(name)
         @io.puts(name)
         @io.puts
+        @io.flush
       end
 
       def visit_feature_element(feature_element)
@@ -57,6 +65,7 @@ module Cucumber
         @last_undefined = feature_element.undefined?
         feature_element.accept(self)
         @io.puts
+        @io.flush
       end
 
       def visit_examples(examples)
@@ -64,7 +73,8 @@ module Cucumber
       end
 
       def visit_examples_name(keyword, name)
-        @io.print("\n  #{keyword} #{name}\n")
+        @io.puts("\n  #{keyword} #{name}")
+        @io.flush
         @indent = 4
       end
 
@@ -77,6 +87,7 @@ module Cucumber
           @io.print(format_string(line_comment, :comment))
         end
         @io.puts
+        @io.flush
       end
 
       def visit_step(step)
@@ -88,7 +99,8 @@ module Cucumber
       def visit_step_name(keyword, step_name, status, step_definition, source_indent)
         source_indent = nil unless @options[:source]
         formatted_step_name = format_step(keyword, step_name, status, step_definition, source_indent)
-        @io.print("    " + formatted_step_name + "\n")
+        @io.puts("    " + formatted_step_name)
+        @io.flush
       end
 
       def visit_multiline_arg(multiline_arg, status)
@@ -104,7 +116,8 @@ module Cucumber
 
       def visit_py_string(string, status)
         s = "\"\"\"\n#{string}\n\"\"\"".indent(@indent)
-        @io.print(format_string(s, status) + "\n")
+        @io.puts(format_string(s, status))
+        @io.flush
       end
 
       def visit_table_cell(table_cell, status)
@@ -113,6 +126,7 @@ module Cucumber
 
       def visit_table_cell_value(value, width, status)
         @io.print(' ' + format_string((value || '').ljust(width), status) + " #{@delim}")
+        @io.flush
       end
 
       private

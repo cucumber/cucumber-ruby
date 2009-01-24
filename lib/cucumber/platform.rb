@@ -1,6 +1,7 @@
 # Detect the platform we're running on so we can tweak behaviour
 # in various places.
 require 'rbconfig'
+require 'yaml'
 
 module Cucumber
   LANGUAGE_FILE = File.expand_path(File.dirname(__FILE__) + '/languages.yml')

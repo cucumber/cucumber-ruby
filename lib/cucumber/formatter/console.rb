@@ -43,6 +43,7 @@ module Cucumber
         if elements.any?
           io.puts(format_string("(::) #{status} #{kind} (::)", status))
           io.puts
+          io.flush
         end
 
         elements.each_with_index do |element, i|
@@ -52,6 +53,7 @@ module Cucumber
             io.puts(format_string(element.backtrace_line, status))
           end
           io.puts
+          io.flush
         end
       end
 
@@ -62,6 +64,7 @@ module Cucumber
           if features.steps[status].any?
             count_string = dump_count(features.steps[status].length, "step", status.to_s)
             io.puts format_string(count_string, status)
+            io.flush
           end
         end
       end
@@ -83,7 +86,8 @@ module Cucumber
 
         text = "\nYou can implement step definitions for missing steps with these snippets:\n\n"
         text += snippets.join("\n\n")
-        @io.puts format_string(text, :undefined)
+        io.puts format_string(text, :undefined)
+        io.flush
       end
 
     private
