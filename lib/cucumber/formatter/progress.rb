@@ -41,10 +41,11 @@ module Cucumber
       private
 
       def print_summary(io, features)
-        print_steps(io, features, :undefined)
+        print_undefined_scenarios(io, features)
         print_steps(io, features, :pending)
         print_steps(io, features, :failed)
         print_counts(io, features)
+        print_snippets(io, features, @options)
       end
 
       CHARS = {

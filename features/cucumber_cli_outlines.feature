@@ -23,10 +23,10 @@ Feature: Cucumber command line
             features/outline_sample.feature:12:in `Given failing without a table'
 
       3 scenarios
-      1 step failed
-      2 steps skipped
-      1 step undefined
-      2 steps passed
+      1 failed step
+      2 skipped steps
+      1 undefined step
+      2 passed steps
       
       """
 
@@ -49,8 +49,8 @@ Feature: Cucumber command line
             features/outline_sample.feature:12:in `Given failing without a table'
 
       1 scenario
-      1 step failed
-      1 step skipped
+      1 failed step
+      1 skipped step
 
       """
 
@@ -60,13 +60,11 @@ Feature: Cucumber command line
       """
       UUS..FS
 
-      (::) undefined (::)
+      (::) undefined scenarios (::)
 
       features/outline_sample.feature:3:in `Scenario: I have no steps'
 
-      features/outline_sample.feature:10:in `Given missing without a table'
-
-      (::) failed (::)
+      (::) failed steps (::)
 
       FAIL (RuntimeError)
       ./features/step_definitions/sample_steps.rb:2:in `flunker'
@@ -74,9 +72,9 @@ Feature: Cucumber command line
       features/outline_sample.feature:12:in `Given failing without a table'
 
       4 scenarios
-      1 step failed
-      2 steps skipped
-      1 step undefined
-      2 steps passed
+      1 failed step
+      2 skipped steps
+      1 undefined step
+      2 passed steps
 
       """
