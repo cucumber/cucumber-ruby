@@ -87,6 +87,7 @@ module Cucumber
         text = "\nYou can implement step definitions for missing steps with these snippets:\n\n"
         text += snippets.join("\n\n")
         io.puts format_string(text, :undefined)
+        io.puts
         io.flush
       end
 

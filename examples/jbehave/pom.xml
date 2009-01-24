@@ -9,21 +9,24 @@
   <version>0.2-SNAPSHOT</version>
   <name>Cucumber JBehave Example</name>
   <url>http://cukes.info/</url>
+
+  <repositories>
+    <repository>
+      <id>codehaus</id>
+      <url>http://repository.codehaus.org</url>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>org.jbehave</groupId>
       <artifactId>jbehave-core</artifactId>
-      <version>2.1</version>
+      <version>2.1.1</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.4</version>
-    </dependency>
-    <dependency>
-      <groupId>org.jbehave</groupId>
-      <artifactId>jbehave-core</artifactId>
-      <version>2.1</version>
     </dependency>
   </dependencies>
 
