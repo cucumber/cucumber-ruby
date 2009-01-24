@@ -1,7 +1,7 @@
 Feature: Cucumber command line
   In order to write better software
   Developers should be able to execute requirements as tests
-  
+
   Scenario: Run single scenario with missing step definition
     When I run cucumber -q features/sample.feature:5
     Then it should pass with
@@ -15,7 +15,7 @@ Feature: Cucumber command line
 
       1 scenario
       1 undefined step
-      
+
       """
 
   Scenario: Fail with --strict
@@ -59,7 +59,6 @@ Feature: Cucumber command line
 
       """
 
-
   Scenario: Require missing step definition from elsewhere
     When I run cucumber -q -r ../../features/step_definitions/extra_steps.rb features/sample.feature:5
     Then it should pass with
@@ -75,7 +74,7 @@ Feature: Cucumber command line
       1 passed step
 
       """
-      
+
   Scenario: Specify the line number of a row
     When I run cucumber -q features/sample.feature:12
     Then it should pass with
@@ -323,3 +322,4 @@ Feature: Cucumber command line
 
 
       """
+

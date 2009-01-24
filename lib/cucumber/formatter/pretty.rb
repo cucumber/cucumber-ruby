@@ -129,6 +129,7 @@ module Cucumber
 
       def visit_py_string(string, status)
         s = "\"\"\"\n#{string}\n\"\"\"".indent(@indent)
+        s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}.join("\n")
         @io.puts(format_string(s, status))
         @io.flush
       end
