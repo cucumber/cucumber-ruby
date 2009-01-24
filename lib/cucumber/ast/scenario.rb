@@ -62,6 +62,11 @@ module Cucumber
         @feature.file_line(line) if @feature
       end
 
+      def previous_step(step)
+        i = @steps.index(step)
+        @steps[i-1]
+      end
+
       def to_sexp
         sexp = [:scenario, @line, @keyword, @name]
         comment = @comment.to_sexp

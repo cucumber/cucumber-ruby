@@ -11,7 +11,7 @@ module Cucumber
       end
       
       def create_feature(step_mother)
-        step_mother.extend(StepMom)
+        step_mother.extend(StepMother)
         step_mother.Given /^a (.*) step with an inline arg:$/ do |what, table|
         end
         step_mother.Given /^a (.*) step$/ do |what|

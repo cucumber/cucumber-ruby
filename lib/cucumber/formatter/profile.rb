@@ -17,12 +17,12 @@ module Cucumber
         super
       end
 
-      def visit_step_name(gwt, step_name, status, step_definition, source_indent)
+      def visit_step_name(keyword, step_name, status, step_definition, source_indent)
         duration = Time.now - @step_duration
         super
 
         if step_definition # nil for outline steps
-          description = format_step(gwt, step_name, status, step_definition, nil)
+          description = format_step(keyword, step_name, status, step_definition, nil)
           @step_definition_durations[step_definition.step_definition] << [duration, description, @step.file_line]
         end
       end

@@ -11,7 +11,7 @@ module Cucumber
     class << self
       def step_mother=(step_mother)
         @step_mother = step_mother
-        @step_mother.extend(StepMom)
+        @step_mother.extend(StepMother)
       end
 
       def execute(args)
@@ -37,8 +37,6 @@ module Cucumber
         :require  => nil,
         :lang     => 'en',
         :dry_run  => false,
-        :source   => true,
-        :snippets => true,
         :formats  => {},
         :excludes => [],
         :scenario_names => nil
@@ -63,12 +61,6 @@ module Cucumber
           "This option can be specified multiple times.") do |v|
           @options[:require] ||= []
           @options[:require] << v
-        end
-        opts.on("-s SCENARIO", "--scenario SCENARIO", "Only execute the scenario with the given name.",
-          "If this option is given more than once, run all",
-          "the specified scenarios.") do |v|
-          @options[:scenario_names] ||= []
-          @options[:scenario_names] << v
         end
         opts.on("-l LANG", "--language LANG", "Specify language for features (Default: #{@options[:lang]})",
           %{Run with "--language help" to see all languages},
@@ -102,11 +94,11 @@ module Cucumber
             @options[:formats][@active_format] << File.open(v, 'w')
           end
         end
-        opts.on("-c", "--[no-]color", "Use ANSI color in the output, if formatters use it.  If",
-          "these options are given multiple times, the last one is",
-          "used.  If neither --color or --no-color is given cucumber",
-          "decides based on your platform and the output destination") do |v|
-          @options[:color] = v
+        opts.on("-s SCENARIO", "--scenario SCENARIO", "Only execute the scenario with the given name.",
+          "If this option is given more than once, run all",
+          "the specified scenarios.") do |v|
+          @options[:scenario_names] ||= []
+          @options[:scenario_names] << v
         end
         opts.on("-e", "--exclude PATTERN", "Don't run features matching a pattern") do |v|
           @options[:excludes] << v
@@ -114,18 +106,25 @@ module Cucumber
         opts.on("-p", "--profile PROFILE", "Pull commandline arguments from cucumber.yml.") do |v|
           parse_args_from_profile(v)
         end
-        opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.") do
+        opts.on("-c", "--[no-]color", "Use ANSI color in the output, if formatters use it.  If",
+          "these options are given multiple times, the last one is",
+          "used.  If neither --color or --no-color is given cucumber",
+          "decides based on your platform and the output destination") do |v|
+          @options[:color] = v
+        end
+        opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.",
+          "Implies --quiet") do
           @options[:dry_run] = true
+          @quiet = true
         end
-        opts.on("-n", "--no-source", "Don't show the file and line of the step definition with the steps.") do
-          @options[:source] = false
+        opts.on("-n", "--[no-]source", "Don't show the file and line of the step definition with the steps.") do |v|
+          @options[:source] = v
         end
-        opts.on("-i", "--no-snippets", "Don't show the snippets for pending steps") do
-          @options[:snippets] = false
+        opts.on("-i", "--[no-]snippets", "Don't show the snippets for pending steps") do |v|
+          @options[:snippets] = v
         end
-        opts.on("-q", "--quiet", "Don't show any development aid information") do
-          @options[:snippets] = false
-          @options[:source] = false
+        opts.on("-q", "--quiet", "Alias for --no-snippets --no-source") do
+          @quiet = true
         end
         opts.on("-b", "--backtrace", "Show full backtrace for all errors") do
           Exception.cucumber_full_backtrace = true
@@ -142,6 +141,9 @@ module Cucumber
           Kernel.exit
         end
       end.parse!
+
+      @options[:snippets] = true if !@quiet && @options[:snippets].nil?
+      @options[:source]   = true if !@quiet && @options[:source].nil?
 
       if @options[:formats].empty?
         @options[:formats][DEFAULT_FORMAT] = [@out_stream]

@@ -1,12 +1,12 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 module Cucumber
-  module StepMom
+  module StepMother
     describe 'Pending' do
 
       before(:each) do
         @step_mom = Object.new
-        @step_mom.extend(StepMom)
+        @step_mom.extend(StepMother)
         @world = @step_mom.new_world
       end
 

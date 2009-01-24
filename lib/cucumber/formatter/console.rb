@@ -6,7 +6,7 @@ module Cucumber
       extend ANSIColor
       FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
 
-      def format_step(gwt, step_name, status, step_definition, source_indent)
+      def format_step(keyword, step_name, status, step_definition, source_indent)
         line = if step_definition # nil for :outline
           comment = if source_indent
             c = (' # ' + step_definition.file_colon_line).indent(source_indent)
@@ -14,9 +14,9 @@ module Cucumber
           else
             ''
           end
-          gwt + " " + step_definition.format_args(step_name, format_for(status, :param)) + comment
+          keyword + " " + step_definition.format_args(step_name, format_for(status, :param)) + comment
         else
-          gwt + " " + step_name
+          keyword + " " + step_name
         end
         format_string(line, status)
       end
@@ -65,6 +65,21 @@ module Cucumber
         io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
       end
 
+      def print_snippets(io, features, options)
+        return unless options[:snippets]
+        undefined = features.steps[:undefined]
+        return if undefined.empty?
+        snippets = undefined.map do |step|
+          step_name = StepMother::Undefined === step.exception ? step.exception.step_name : step.name
+          snippet = "#{step.actual_keyword} /^#{escape_regexp_characters(step_name)}$/ do\nend"
+          snippet
+        end.compact.uniq
+
+        text = "\nYou can implement step definitions for missing steps with these snippets:\n\n"
+        text += snippets.join("\n\n")
+        @io.puts format_string(text, :undefined)
+      end
+
     private
 
       def dump_count(count, what, state=nil)
@@ -76,6 +91,10 @@ module Cucumber
         fmt = FORMATS[key]
         raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
         fmt
+      end
+
+      def escape_regexp_characters(string)
+        Regexp.escape(string).gsub('\ ', ' ').gsub('/', '\/') unless string.nil?
       end
     end
   end

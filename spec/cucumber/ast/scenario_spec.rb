@@ -7,7 +7,7 @@ module Cucumber
     describe Scenario do
       before do
         @step_mother = Object.new
-        @step_mother.extend(StepMom)
+        @step_mother.extend(StepMother)
         $x = $y = nil
         @step_mother.Before do
           $x = 3

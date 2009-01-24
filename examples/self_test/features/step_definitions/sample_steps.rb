@@ -5,7 +5,7 @@ end
 Given /^passing$/ do |table|
 end
 
-Given /^failing$/ do |table|
+Given /^failing$/ do
   flunker
 end
 
