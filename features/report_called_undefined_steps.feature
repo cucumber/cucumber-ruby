@@ -19,7 +19,7 @@ Feature: Cucumber command line
             ./features/step_definitions/sample_steps.rb:20:in `/^a step definition that calls an undefined step$/'
 
       2 scenarios
-      2 steps undefined
+      2 undefined steps
 
       You can implement step definitions for missing steps with these snippets:
       

@@ -12,7 +12,7 @@ Feature: Cucumber command line
           Given missing
 
       1 scenario
-      1 step undefined
+      1 undefined step
       
       """
 
@@ -33,8 +33,8 @@ Feature: Cucumber command line
             features/sample.feature:12:in `Given failing'
 
       2 scenarios
-      1 step failed
-      1 step undefined
+      1 failed step
+      1 undefined step
 
       """
 
@@ -49,7 +49,7 @@ Feature: Cucumber command line
           Given missing
 
       1 scenario
-      1 step passed
+      1 passed step
 
       """
       
@@ -65,7 +65,7 @@ Feature: Cucumber command line
             | c | d |
 
       1 scenario
-      1 step passed
+      1 passed step
 
       """
 
@@ -75,11 +75,7 @@ Feature: Cucumber command line
       """
       U.F
 
-      (::) undefined (::)
-
-      features/sample.feature:4:in `Given missing'
-
-      (::) failed (::)
+      (::) failed steps (::)
 
       FAIL (RuntimeError)
       ./features/step_definitions/sample_steps.rb:2:in `flunker'
@@ -87,9 +83,9 @@ Feature: Cucumber command line
       features/sample.feature:12:in `Given failing'
 
       3 scenarios
-      1 step failed
-      1 step undefined
-      1 step passed
+      1 failed step
+      1 undefined step
+      1 passed step
 
       """
 
@@ -118,7 +114,7 @@ Feature: Cucumber command line
           Så skal resultatet være 13
 
       2 scenarios
-      9 steps passed
+      9 passed steps
 
       """
 
@@ -171,8 +167,8 @@ Feature: Cucumber command line
           Given failing
 
       10 scenarios
-      9 steps skipped
-      7 steps undefined
+      9 skipped steps
+      7 undefined steps
 
       """
 
@@ -216,6 +212,6 @@ Feature: Cucumber command line
 
 
       1 scenario
-      1 step passed
+      1 passed step
 
       """

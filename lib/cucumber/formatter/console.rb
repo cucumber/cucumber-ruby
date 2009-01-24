@@ -30,20 +30,26 @@ module Cucumber
         end
       end
 
-      def print_steps(io, features, status)
-        steps = status == :undefined ? features.scenarios.select{|scenario| scenario.undefined?} : []
-        steps += features.steps[status].dup
+      def print_undefined_scenarios(io, features)
+        elements = features.scenarios.select{|scenario| scenario.undefined?}
+        print_elements(io, elements, :undefined, 'scenarios')
+      end
 
-        if steps.any?
-          io.puts(format_string("(::) #{status} (::)", status))
+      def print_steps(io, features, status)
+        print_elements(io, features.steps[status], status, 'steps')
+      end
+
+      def print_elements(io, elements, status, kind)
+        if elements.any?
+          io.puts(format_string("(::) #{status} #{kind} (::)", status))
           io.puts
         end
 
-        steps.each_with_index do |step, i|
+        elements.each_with_index do |element, i|
           if status == :failed
-            print_exception(io, step.exception, 0)
+            print_exception(io, element.exception, 0)
           else
-            io.puts(format_string(step.backtrace_line, status))
+            io.puts(format_string(element.backtrace_line, status))
           end
           io.puts
         end
@@ -83,7 +89,7 @@ module Cucumber
     private
 
       def dump_count(count, what, state=nil)
-        [count, "#{what}#{count == 1 ? '' : 's'}", state].compact.join(" ")
+        [count, state, "#{what}#{count == 1 ? '' : 's'}"].compact.join(" ")
       end
 
       def format_for(*keys)
