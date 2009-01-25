@@ -57,6 +57,7 @@ Scenario Outlines, the rich command line, the nice output format and everything
 pure Ruby users have been enjoying for a while.
 
 == Bugfixes
+* No output for multi-line strings (#71 Aslak Hellesøy)
 * Fix cucumber/formatters/unicode flaws on Windows (#145 Michael)
 * Autotest-related Bugs: YAML missing (#136 Tobias Pape)
 * Overeager "rescue LoadError" hides lots of errors (#137 Jonathan del Strother)
