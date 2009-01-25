@@ -27,8 +27,8 @@ module Cucumber
         @step_mother.step_definition("Three blind mice")
       end.should raise_error(StepMother::Ambiguous, %{Ambiguous match of "Three blind mice":
 
-spec/cucumber/step_mom_spec.rb:23:in `/Three (.*) mice/'
-spec/cucumber/step_mom_spec.rb:24:in `/Three blind (.*)/'
+spec/cucumber/step_mother_spec.rb:23:in `/Three (.*) mice/'
+spec/cucumber/step_mother_spec.rb:24:in `/Three blind (.*)/'
 
 })
     end
