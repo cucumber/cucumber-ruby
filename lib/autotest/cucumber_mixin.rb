@@ -94,7 +94,7 @@ module Autotest::CucumberMixin
       ensure
         $stdout.sync = old_sync
       end
-      self.features_to_run = dirty_scenarios_file.read
+      self.features_to_run = dirty_features_file.read
       self.tainted = true unless self.features_to_run == []
     end
     hook :ran_features
@@ -114,10 +114,10 @@ module Autotest::CucumberMixin
     else
       args = %w{--format} << (features_to_run == :all ? "progress" : "pretty")
     end
-    args += %w{--format autotest --color --out} << dirty_features_filename
-    args += (features_to_run == :all ? "features" : features_to_run)
+    args += %w{--color --format rerun --out} << dirty_features_filename
+    args << (features_to_run == :all ? "features" : features_to_run)
     args = args.join(' ')
 
-    return "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} #{args} #{scenario_args}"
+    return "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} #{args}"
   end
 end
