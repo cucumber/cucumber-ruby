@@ -888,18 +888,18 @@ module Cucumber
           elements[1]
         end
 
-        def white
-          elements[2]
+        def name
+          elements[3]
         end
 
         def table
-          elements[3]
+          elements[5]
         end
       end
 
       module Examples1
         def build
-          [examples_keyword.line, examples_keyword.text_value, "", table.raw]
+          [examples_keyword.line, examples_keyword.text_value, name.text_value, table.raw]
         end
       end
 
@@ -927,11 +927,47 @@ module Cucumber
           r3 = _nt_examples_keyword
           s0 << r3
           if r3
-            r4 = _nt_white
+            s4, i4 = [], index
+            loop do
+              r5 = _nt_space
+              if r5
+                s4 << r5
+              else
+                break
+              end
+            end
+            r4 = SyntaxNode.new(input, i4...index, s4)
             s0 << r4
             if r4
-              r5 = _nt_table
-              s0 << r5
+              r7 = _nt_line_to_eol
+              if r7
+                r6 = r7
+              else
+                r6 = SyntaxNode.new(input, index...index)
+              end
+              s0 << r6
+              if r6
+                s8, i8 = [], index
+                loop do
+                  r9 = _nt_eol
+                  if r9
+                    s8 << r9
+                  else
+                    break
+                  end
+                end
+                if s8.empty?
+                  self.index = i8
+                  r8 = nil
+                else
+                  r8 = SyntaxNode.new(input, i8...index, s8)
+                end
+                s0 << r8
+                if r8
+                  r10 = _nt_table
+                  s0 << r10
+                end
+              end
             end
           end
         end

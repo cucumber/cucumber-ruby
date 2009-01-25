@@ -173,11 +173,15 @@ Feature: Cucumber command line
           Given <state> without a table
           Given <other_state> without a table
 
-        Examples: 
+        Examples: Rainbow colours
           | state   | other_state |
           | missing | passing     |
           | passing | passing     |
           | failing | passing     |
+
+        Examples: Only passing
+          | state   | other_state |
+          | passing | passing     |
 
       @one
       Feature: Sample
@@ -196,8 +200,8 @@ Feature: Cucumber command line
         Scenario: Failing
           Given failing
 
-      10 scenarios
-      9 skipped steps
+      11 scenarios
+      11 skipped steps
       7 undefined steps
 
       """

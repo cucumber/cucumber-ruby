@@ -19,10 +19,15 @@ Feature: Outlines
     Then I should have <left> cucumbers
     And I should have <eat> cucumbers in my belly
 
-  Examples:
+  Examples: Lots of cukes
     | start  | eat  | left |
     |  12    |  5   |  7   |
     |  20    |  5   |  15  |
+
+  Examples: Ridiculous amounts of cukes
+    | start  | eat  | left |
+    |  120    |  50   |  70   |
+    |  200    |  50   |  150  |
   
   Scenario Outline: no placeholders
     Given there are 12 cucumbers

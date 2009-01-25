@@ -135,6 +135,10 @@ module Cucumber
           @options[:dry_run] = true
           @quiet = true
         end
+        opts.on("-m", "--[no-]multiline", 
+          "Don't print multiline strings and tables under steps.") do |v|
+          @options[:source] = v
+        end
         opts.on("-n", "--[no-]source", 
           "Don't show the file and line of the step definition with the steps.") do |v|
           @options[:source] = v
