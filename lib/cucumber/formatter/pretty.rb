@@ -21,10 +21,8 @@ module Cucumber
       end
 
       def visit_features(features)
-        with_color do
-          super
-          print_summary(features)
-        end
+        super
+        print_summary(features) unless @options[:autoformat]
       end
 
       def visit_feature(feature)
@@ -35,10 +33,14 @@ module Cucumber
           mkdir_p(dir) unless File.directory?(dir)
           File.open(file, Cucumber.file_mode('w')) do |io|
             @io = io
-            feature.accept(self)
+            with_color do
+              feature.accept(self)
+            end
           end
         else
-          feature.accept(self)
+          with_color do
+            feature.accept(self)
+          end
         end
       end
 
@@ -147,7 +149,6 @@ module Cucumber
       private
 
       def print_summary(features)
-        return if @options[:autoformat]
         print_counts(features)
         print_snippets(features, @options)
       end
