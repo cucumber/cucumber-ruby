@@ -180,6 +180,7 @@ lib/cucumber/formatter/console.rb
 lib/cucumber/formatter/pretty.rb
 lib/cucumber/formatter/profile.rb
 lib/cucumber/formatter/progress.rb
+lib/cucumber/formatter/rerun.rb
 lib/cucumber/formatters/autotest_formatter.rb
 lib/cucumber/formatters/cucumber.css
 lib/cucumber/formatters/cucumber.js
@@ -204,6 +205,7 @@ lib/cucumber/step_definition.rb
 lib/cucumber/step_mother.rb
 lib/cucumber/treetop_parser/feature_fi.rb
 lib/cucumber/version.rb
+pretty.txt
 rails_generators/cucumber/USAGE
 rails_generators/cucumber/cucumber_generator.rb
 rails_generators/cucumber/templates/cucumber
@@ -232,7 +234,6 @@ spec/cucumber/formatter/html/cucumber.js
 spec/cucumber/formatter/html/index.html
 spec/cucumber/formatter/html/jquery-1.3.min.js
 spec/cucumber/formatter/html/jquery.uitableedit.js
-spec/cucumber/formatter/pretty_spec.rb
 spec/cucumber/formatters/autotest_formatter_spec.rb
 spec/cucumber/formatters/features.html
 spec/cucumber/formatters/profile_formatter_spec.rb
