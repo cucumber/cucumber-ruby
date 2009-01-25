@@ -27,7 +27,7 @@ module Cucumber
     end
 
     attr_reader :options, :paths
-    FORMATS = %w{pretty profile progress html autotest}
+    FORMATS = %w{pretty profile progress rerun}
     DEFAULT_FORMAT = 'pretty'
 
     def initialize(out_stream = STDOUT, error_stream = STDERR)
