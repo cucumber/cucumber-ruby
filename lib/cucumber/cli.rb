@@ -152,7 +152,7 @@ module Cucumber
         opts.on("-b", "--backtrace", "Show full backtrace for all errors.") do
           Exception.cucumber_full_backtrace = true
         end
-        opts.on("--strict", "Fail if there are any undefined or pending steps.") do
+        opts.on("--strict", "Fail if there are any undefined steps.") do
           @options[:strict] = true
         end
         opts.on("-v", "--verbose", "Show the files and features loaded.") do
@@ -187,9 +187,9 @@ module Cucumber
       visitor = build_formatter_broadcaster(step_mother)
       visitor.options = @options
       visitor.visit_features(features)
-      exit_code = features.steps[:failed].length
-      exit_code += (features.steps[:undefined].length + features.steps[:pending].length) if @options[:strict]
-      Kernel.exit(exit_code)
+      
+      failure = features.steps[:failed].any? || (@options[:strict] && features.steps[:undefined].length)
+      Kernel.exit(failure ? 1 : 0)
     end
 
     private
