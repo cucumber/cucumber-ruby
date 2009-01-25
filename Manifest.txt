@@ -186,12 +186,7 @@ lib/cucumber/formatter/pretty.rb
 lib/cucumber/formatter/profile.rb
 lib/cucumber/formatter/progress.rb
 lib/cucumber/formatter/rerun.rb
-lib/cucumber/formatters/autotest_formatter.rb
-lib/cucumber/formatters/cucumber.css
-lib/cucumber/formatters/cucumber.js
-lib/cucumber/formatters/html_formatter.rb
-lib/cucumber/formatters/jquery.js
-lib/cucumber/formatters/pretty_formatter.rb
+lib/cucumber/formatter/unicode.rb
 lib/cucumber/formatters/unicode.rb
 lib/cucumber/jbehave.rb
 lib/cucumber/languages.yml
@@ -209,7 +204,6 @@ lib/cucumber/rails/world.rb
 lib/cucumber/rake/task.rb
 lib/cucumber/step_definition.rb
 lib/cucumber/step_mother.rb
-lib/cucumber/treetop_parser/feature_fi.rb
 lib/cucumber/version.rb
 pretty.txt
 rails_generators/cucumber/USAGE
@@ -240,8 +234,6 @@ spec/cucumber/formatter/html/cucumber.js
 spec/cucumber/formatter/html/index.html
 spec/cucumber/formatter/html/jquery-1.3.min.js
 spec/cucumber/formatter/html/jquery.uitableedit.js
-spec/cucumber/formatters/autotest_formatter_spec.rb
-spec/cucumber/formatters/features.html
 spec/cucumber/formatters/profile_formatter_spec.rb
 spec/cucumber/parser/feature_parser_spec.rb
 spec/cucumber/parser/table_parser_spec.rb
@@ -250,7 +242,7 @@ spec/cucumber/rails/stubs/test_help.rb
 spec/cucumber/rails/world_spec.rb
 spec/cucumber/sell_cucumbers.feature
 spec/cucumber/step_definition_spec.rb
-spec/cucumber/step_mom_spec.rb
+spec/cucumber/step_mother_spec.rb
 spec/cucumber/treetop_parser/empty_feature.feature
 spec/cucumber/treetop_parser/empty_scenario.feature
 spec/cucumber/treetop_parser/empty_scenario_outline.feature
