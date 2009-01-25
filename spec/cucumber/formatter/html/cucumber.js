@@ -7,5 +7,7 @@ jQuery.fn.status = function(s) {
 
 jQuery.fn.failed = function(message, backtrace) {
   this.status('failed');
-  this.append("\n<span>" + message.replace(/^/gm, '      ') + "</span>").append("\n<span>" + backtrace.replace(/^/gm, '      ') + "</span>");
+  var indentedMessage   =   message.replace(/^/gm, '      ');
+  var indentedBacktrace = backtrace.replace(/^/gm, '      ');
+  this.append("\n<span>" + indentedMessage + "</span>").append("\n<span>" + indentedBacktrace + "</span>");
 }
