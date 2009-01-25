@@ -9,6 +9,10 @@ module Cucumber
         @steps = steps
       end
 
+      def status
+        @steps.map{|step| step.status}
+      end
+
       def tagged_with?(tag_names)
         @tags.among?(tag_names) || @feature.tagged_with?(tag_names, false)
       end
