@@ -892,8 +892,16 @@ module Cucumber
           elements[3]
         end
 
+        def eol
+          elements[4]
+        end
+
         def table
           elements[5]
+        end
+
+        def white
+          elements[6]
         end
       end
 
@@ -947,25 +955,15 @@ module Cucumber
               end
               s0 << r6
               if r6
-                s8, i8 = [], index
-                loop do
-                  r9 = _nt_eol
-                  if r9
-                    s8 << r9
-                  else
-                    break
-                  end
-                end
-                if s8.empty?
-                  self.index = i8
-                  r8 = nil
-                else
-                  r8 = SyntaxNode.new(input, i8...index, s8)
-                end
+                r8 = _nt_eol
                 s0 << r8
                 if r8
-                  r10 = _nt_table
-                  s0 << r10
+                  r9 = _nt_table
+                  s0 << r9
+                  if r9
+                    r10 = _nt_white
+                    s0 << r10
+                  end
                 end
               end
             end
