@@ -12,7 +12,12 @@ module Cucumber
       end
 
       def tagged_with?(tag_names, check_elements=true)
-        @tags.among?(tag_names) || (check_elements && @feature_elements.detect{|e| e.tagged_with?(tag_names)})
+        @tags.among?(tag_names) || 
+        (check_elements && @feature_elements.detect{|e| e.tagged_with?(tag_names)})
+      end
+      
+      def matches_scenario_names?(scenario_names)
+        @feature_elements.detect{|e| e.matches_scenario_names?(scenario_names)}
       end
 
       def accept(visitor)
