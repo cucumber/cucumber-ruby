@@ -1,5 +1,6 @@
 require 'autotest'
 require 'tempfile'
+require 'yaml'
 require File.dirname(__FILE__) + '/../cucumber'
 
 module Autotest::CucumberMixin
