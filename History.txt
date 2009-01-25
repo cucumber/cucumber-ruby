@@ -1,6 +1,20 @@
 == Git (ast - future 0.2)
 
-This is a major rewrite
+This is a major rewrite of Cucumber's internals. The rewrite was done to address technical
+debt and to have a codebase that is easier to evolve and maintain. There are some major
+changes to the Gherkin language, so this release is not fully backwards compatible. You
+may have to edit your feature files a little. Most importantly, "GivenScenario" and 
+"More Examples" no longer exist. See the "Removed features" section below for more details
+on how to use alternatives.
+
+**** CALL FOR TRANSLATORS ****
+Since the grammar has changed, there are some new keywords. We have to rely on the community
+to provide updated translations. This is much easier than before - just update languages.yml.
+There is no static code generation anymore.
+
+There are some exciting new feaqtures, so upgrading is not in vain. Tagging, Autoformatting,
+Auto aliasing of keywords in all languages, much better Ruby 1.9 support and improved output 
+for multiline arguments should make the upgrade worthwhile. 
 
 This version also brings Cucumber even closer to Java. Although it has been possible to
 run Cucumber on JRuby since v0.1.11, it has required that step definitions be defined
@@ -34,27 +48,11 @@ which is a richer DSL than JBehave's language. -Over 20 spoken languages, Tables
 Scenario Outlines, the rich command line, the nice output format and everything 
 pure Ruby users have been enjoying for a while.
 
-More blurb ideas
-
-* Fully backwards compatible with 0.1.16 (if you find issues - please report during beta period)
-* We need updated translations! (List all incomplete languages and what the missing keywords are)
-* Cucumber 0.2 runs about X times faster than Cucumber 0.1.16
-* Cucumber 0.2 is about 2/3 the size of Cucumber 0.1.16, and it is 2-3 times faster to install (less RDoc/Ri).
-
-=== Existing features that don't work yet:
-* --scenario
-* snippets
-* Several disabled specs should be fixed or removed
-* Make all self-test features pass
-* Support multiple --format switches in one run
-
 == Bugfixes
 * Pending steps in > steps called from steps (#65 Aslak Hellesøy)
-* TODO Autotest uses file:line instead of --scenario (current impl doesn't work on Windows)
 
 === New features
 * Run cucumber with --autoformat DIR to reformat (pretty print) all of your feature files.
-* TODO: "Background" section
 * New --strict option exits with an error code if there are undefined or pending steps.
 * Filtering with --tags. If you put @various @tags on your features and scenarios, --tags lets you run a subset of them.
 * Given, When, Then are automatically aliased to current language. 

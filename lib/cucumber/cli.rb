@@ -40,10 +40,10 @@ module Cucumber
         :require  => nil,
         :lang     => 'en',
         :dry_run  => false,
-        :tags     => [],
         :formats  => {},
         :excludes => [],
-        :scenario_names => nil
+        :tags     => [],
+        :scenario_names => []
       }
       @active_format = DEFAULT_FORMAT
     end
@@ -108,7 +108,6 @@ module Cucumber
         opts.on("-s SCENARIO", "--scenario SCENARIO", 
           "Only execute the scenario with the given name. If this option",
           "is given more than once, run all the specified scenarios.") do |v|
-          @options[:scenario_names] ||= []
           @options[:scenario_names] << v
         end
         opts.on("-e", "--exclude PATTERN", "Don't run feature files matching PATTERN") do |v|

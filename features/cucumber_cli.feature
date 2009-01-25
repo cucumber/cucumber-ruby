@@ -227,13 +227,17 @@ Feature: Cucumber command line
       """
 
   Scenario: Run scenario specified by name using --scenario
-    When I run cucumber --scenario Passing -q features/sample.feature
+    When I run cucumber --scenario Passing -q features
     Then it should pass with
       """
+      @one
       Feature: Sample
+
+        @three
         Scenario: Passing
           Given passing
-
+            | a | b |
+            | c | d |
 
       1 scenario
       1 passed step

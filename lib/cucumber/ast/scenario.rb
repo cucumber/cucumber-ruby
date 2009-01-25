@@ -13,6 +13,10 @@ module Cucumber
         @tags.among?(tag_names) || @feature.tagged_with?(tag_names, false)
       end
 
+      def matches_scenario_names?(scenario_names)
+        scenario_names.detect{|name| @name == name}
+      end
+
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
