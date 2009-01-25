@@ -4,6 +4,12 @@ World do
   Object.new
 end
 
+After do |scenario|
+  if scenario.status.index(:failed)
+    # Call the BDD police
+  end
+end
+
 Given "be_empty" do
   [1,2].should_not be_empty
 end

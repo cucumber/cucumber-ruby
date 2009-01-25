@@ -71,7 +71,7 @@ module Cucumber
         yield world
       ensure
         (@after_procs ||= []).each do |proc|
-          world.cucumber_instance_exec(false, 'After', scenario, &proc) rescue nil
+          world.cucumber_instance_exec(false, 'After', scenario, &proc)
         end
       end
     end
