@@ -108,7 +108,7 @@ module Cucumber
       end
 
       rule examples
-        space* examples_keyword space* name:line_to_eol? eol+ table {
+        space* examples_keyword space* name:line_to_eol? eol table white {
           def build
             [examples_keyword.line, examples_keyword.text_value, name.text_value, table.raw]
           end
