@@ -103,10 +103,16 @@ examples/java/features/hello.feature
 examples/java/features/step_definitons/hello_steps.rb
 examples/java/features/step_definitons/tree_steps.rb
 examples/java/features/tree.feature
+examples/java/src/cucumber/demo/Hello.java
 examples/jbehave/README.textile
 examples/jbehave/features/support/env.rb
 examples/jbehave/features/trading.feature
 examples/jbehave/pom.xml
+examples/jbehave/src/main/java/cukes/jbehave/examples/trader/converters/TraderConverter.java
+examples/jbehave/src/main/java/cukes/jbehave/examples/trader/model/Stock.java
+examples/jbehave/src/main/java/cukes/jbehave/examples/trader/model/Trader.java
+examples/jbehave/src/main/java/cukes/jbehave/examples/trader/persistence/TraderPersister.java
+examples/jbehave/src/main/java/cukes/jbehave/examples/trader/scenarios/TraderSteps.java
 examples/selenium/Rakefile
 examples/selenium/features/search.feature
 examples/selenium/features/step_definitons/stories_steps.rb
