@@ -91,8 +91,8 @@ module Cucumber
             @exception = exception
             @exception.backtrace << backtrace_line unless backtrace_line.nil?
           end
+          @scenario.step_executed(self) if @scenario
         end
-        @scenario.step_executed(self) if @scenario
         [self, @status, matched_args]
       end
 

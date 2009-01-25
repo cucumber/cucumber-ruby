@@ -26,7 +26,8 @@ module Cucumber
             previous = step.status
           end
         end
-        @feature.scenario_executed(self) if @feature
+        @feature.scenario_executed(self) if @feature && !@executed
+        @executed = true
       end
 
       def source_indent(text_length)
@@ -58,11 +59,11 @@ module Cucumber
         @feature.step_executed(step) if @feature
       end
 
-      def backtrace_line(name="#{@keyword} #{@name}", line=@line)
+      def backtrace_line(name = "#{@keyword} #{@name}", line = @line)
         @feature.backtrace_line(name, line) if @feature
       end
 
-      def file_line(line)
+      def file_line(line = @line)
         @feature.file_line(line) if @feature
       end
 

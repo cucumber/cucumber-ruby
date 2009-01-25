@@ -201,33 +201,29 @@ Feature: Cucumber command line
       """
 
   Scenario: Multiple formatters and outputs
-    When I run cucumber --format progress --out tmp/progress.txt --format html --out tmp/features.html features
+    When I run cucumber --format progress --out tmp/progress.txt --format pretty --out tmp/pretty.txt  --dry-run features/lots_of_undefined.feature
     And examples/self_test/tmp/progress.txt should contain
       """
-      P.FP.F
+      UUUUU
 
-      Pending Scenarios:
-
-      1)  Outline Sample (Test state)
-      2)  Sample (Missing)
-
-
-      Failed:
-
-      1)
-      FAIL
-      ./features/step_definitions/sample_steps.rb:12:in ` /^failing without a table$/'
-      features/outline_sample.feature:9:in `/^failing without a table$/'
-
-      2)
-      FAIL
-      ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
-      features/sample.feature:12:in `Given failing'
+      1 scenario
+      5 undefined steps
 
       """
-    And examples/self_test/tmp/features.html should match
+    And examples/self_test/tmp/pretty.txt should match
       """
-      Given passing
+      Feature: Lots of undefined
+
+        Scenario: Implement me
+          Given it snows in Sahara
+          Given it's 40 degrees in Norway
+          And it's 40 degrees in Norway
+          When I stop procrastinating
+          And there is world peace
+
+      1 scenario
+      5 undefined steps
+
       """
 
   Scenario: Run scenario specified by name using --scenario

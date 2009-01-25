@@ -21,8 +21,10 @@ module Cucumber
       end
 
       def visit_features(features)
-        super
-        print_summary(@io, features)
+        with_color do
+          super
+          print_summary(features)
+        end
       end
 
       def visit_feature(feature)
@@ -31,8 +33,7 @@ module Cucumber
           file = File.join(@options[:autoformat], feature.file)
           dir = File.dirname(file)
           mkdir_p(dir) unless File.directory?(dir)
-          mode = Cucumber::RUBY_1_9 ? "w:#{Cucumber.keyword_hash['encoding']}" : 'w'
-          File.open(file, mode) do |io|
+          File.open(file, Cucumber.file_mode('w')) do |io|
             @io = io
             feature.accept(self)
           end
@@ -106,7 +107,7 @@ module Cucumber
       def visit_step(step)
         @indent = 6
         exception = step.accept(self)
-        print_exception(@io, exception, @indent) if exception
+        print_exception(exception, @indent) if exception
       end
 
       def visit_step_name(keyword, step_name, status, step_definition, source_indent)
@@ -124,7 +125,7 @@ module Cucumber
         @io.print @delim.indent(@indent)
         exception = table_row.accept(self, status)
         @io.puts
-        print_exception(@io, exception, 6) if exception
+        print_exception(exception, 6) if exception
       end
 
       def visit_py_string(string, status)
@@ -145,10 +146,10 @@ module Cucumber
 
       private
 
-      def print_summary(io, features)
+      def print_summary(features)
         return if @options[:autoformat]
-        print_counts(io, features)
-        print_snippets(io, features, @options)
+        print_counts(features)
+        print_snippets(features, @options)
       end
 
     end

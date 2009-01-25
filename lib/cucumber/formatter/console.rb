@@ -30,51 +30,51 @@ module Cucumber
         end
       end
 
-      def print_undefined_scenarios(io, features)
+      def print_undefined_scenarios(features)
         elements = features.scenarios.select{|scenario| scenario.undefined?}
-        print_elements(io, elements, :undefined, 'scenarios')
+        print_elements(elements, :undefined, 'scenarios')
       end
 
-      def print_steps(io, features, status)
-        print_elements(io, features.steps[status], status, 'steps')
+      def print_steps(features, status)
+        print_elements(features.steps[status], status, 'steps')
       end
 
-      def print_elements(io, elements, status, kind)
+      def print_elements(elements, status, kind)
         if elements.any?
-          io.puts(format_string("(::) #{status} #{kind} (::)", status))
-          io.puts
-          io.flush
+          @io.puts(format_string("(::) #{status} #{kind} (::)", status))
+          @io.puts
+          @io.flush
         end
 
         elements.each_with_index do |element, i|
           if status == :failed
-            print_exception(io, element.exception, 0)
+            print_exception(element.exception, 0)
           else
-            io.puts(format_string(element.backtrace_line, status))
+            @io.puts(format_string(element.backtrace_line, status))
           end
-          io.puts
-          io.flush
+          @io.puts
+          @io.flush
         end
       end
 
-      def print_counts(io, features)
-        io.puts dump_count(features.scenarios.length, "scenario")
+      def print_counts(features)
+        @io.puts dump_count(features.scenarios.length, "scenario")
 
         [:failed, :skipped, :undefined, :pending, :passed].each do |status|
           if features.steps[status].any?
             count_string = dump_count(features.steps[status].length, "step", status.to_s)
-            io.puts format_string(count_string, status)
-            io.flush
+            @io.puts format_string(count_string, status)
+            @io.flush
           end
         end
       end
 
-      def print_exception(io, e, indent)
+      def print_exception(e, indent)
         status = Cucumber::EXCEPTION_STATUS[e.class]
-        io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
+        @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
       end
 
-      def print_snippets(io, features, options)
+      def print_snippets(features, options)
         return unless options[:snippets]
         undefined = features.steps[:undefined]
         return if undefined.empty?
@@ -86,12 +86,20 @@ module Cucumber
 
         text = "\nYou can implement step definitions for missing steps with these snippets:\n\n"
         text += snippets.join("\n\n")
-        io.puts format_string(text, :undefined)
-        io.puts
-        io.flush
+
+        @io.puts format_string(text, :undefined)
+        @io.puts
+        @io.flush
       end
 
     private
+
+      def with_color
+        c = Term::ANSIColor.coloring?
+        Term::ANSIColor.coloring = @io.tty?
+        yield
+        Term::ANSIColor.coloring = c
+      end
 
       def dump_count(count, what, state=nil)
         [count, state, "#{what}#{count == 1 ? '' : 's'}"].compact.join(" ")

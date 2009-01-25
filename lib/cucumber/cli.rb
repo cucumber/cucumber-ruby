@@ -30,13 +30,8 @@ module Cucumber
     FORMATS = %w{pretty profile progress html autotest}
     DEFAULT_FORMAT = 'pretty'
 
-    def initialize(out_stream = Kernel, error_stream = STDERR)
+    def initialize(out_stream = STDOUT, error_stream = STDERR)
       @out_stream = out_stream
-      if out_stream == Kernel
-        def Kernel.flush
-          STDOUT.flush
-        end
-      end
 
       @error_stream = error_stream
       @paths = []
@@ -96,20 +91,14 @@ module Cucumber
           "if they are in the folder structure such that cucumber",
           "will require them automatically.", 
           "This option can be specified multiple times.") do |v|
-          @options[:formats][v] ||= []
-          @options[:formats][v] << @out_stream
+          @options[:formats][v] = @out_stream
           @active_format = v
         end
         opts.on("-o", "--out FILE", 
-          "Write output to a file instead of @out_stream. This option",
-          "can be specified multiple times, and applies to the previously",
-          "specified --format.") do |v|
-          @options[:formats][@active_format] ||= []
-          if @options[:formats][@active_format].last == @out_stream
-            @options[:formats][@active_format][-1] = File.open(v, 'w')
-          else
-            @options[:formats][@active_format] << File.open(v, 'w')
-          end
+          "Write output to a file instead of STDOUT. This option",
+          "applies to the previously specified --format, or the",
+          "default format if no format is specified.") do |v|
+          @options[:formats][@active_format] = v
         end
         opts.on("-t TAGS", "--tags TAGS", 
           "Only execute the features or scenarios with the specified tags.",
@@ -176,12 +165,10 @@ module Cucumber
         end
       end.parse!
 
+      @options[:formats]['pretty'] = @out_stream if @options[:formats].empty?
+
       @options[:snippets] = true if !@quiet && @options[:snippets].nil?
       @options[:source]   = true if !@quiet && @options[:source].nil?
-
-      if @options[:formats].empty?
-        @options[:formats][DEFAULT_FORMAT] = [@out_stream]
-      end
 
       # Whatever is left after option parsing is the FILE arguments
       @paths += args
@@ -311,38 +298,34 @@ Defined profiles in cucumber.yml:
 
     def build_formatter_broadcaster(step_mother)
       return Formatter::Pretty.new(step_mother, nil, @options) if @options[:autoformat]
-      formatter_broadcaster = Broadcaster.new
-      @options[:formats].each do |format, output_list|
-        output_broadcaster = build_output_broadcaster(output_list)
+      formatters = @options[:formats].map do |format, out|
+        if String === out # file name
+          out = File.open(out, Cucumber.file_mode('w'))
+          at_exit do
+            out.flush
+            out.close
+          end
+        end
+
         case format
         when 'pretty'
-          formatter_broadcaster.register(Formatter::Pretty.new(step_mother, output_broadcaster, @options))
+          Formatter::Pretty.new(step_mother, out, @options)
         when 'progress'
-          formatter_broadcaster.register(Formatter::Progress.new(step_mother, output_broadcaster, @options))
+          Formatter::Progress.new(step_mother, out, @options)
         when 'profile'
-          formatter_broadcaster.register(Formatter::Profile.new(step_mother, output_broadcaster, @options))
-        # when 'html'
-        #   formatter_broadcaster.register(Formatters::HtmlFormatter.new(output_broadcaster, step_mother))
-        # when 'autotest'
-        #   formatter_broadcaster.register(Formatters::AutotestFormatter.new(output_broadcaster))
+          Formatter::Profile.new(step_mother, out, @options)
+        when 'rerun'
+          Formatter::Rerun.new(step_mother, out, @options)
         else
           begin
             formatter_class = constantize(format)
-            formatter_broadcaster.register(formatter_class.new(output_broadcaster, step_mother, @options))
+            formatter_class.new(step_mother, out, @options)
           rescue Exception => e
             exit_with_error("Error creating formatter: #{format}", e)
           end
         end
       end
-      formatter_broadcaster
-    end
-
-    def build_output_broadcaster(output_list)
-      output_broadcaster = Broadcaster.new
-      output_list.each do |output|
-        output_broadcaster.register(output)
-      end
-      output_broadcaster
+      Broadcaster.new(formatters)
     end
 
     def constantize(camel_cased_word)

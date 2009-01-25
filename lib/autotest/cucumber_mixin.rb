@@ -7,7 +7,7 @@ module Autotest::CucumberMixin
     receiver::ALL_HOOKS << [:run_features, :ran_features]
   end
   
-  attr_accessor :scenarios_to_run
+  attr_accessor :features_to_run
   
   def initialize
     super
@@ -45,7 +45,7 @@ module Autotest::CucumberMixin
   end
   
   def all_features_good
-    scenarios_to_run == []
+    features_to_run == ""
   end
   
   def get_to_green
@@ -62,13 +62,13 @@ module Autotest::CucumberMixin
   end
   
   def reset_features
-    self.scenarios_to_run = :all
+    self.features_to_run = :all
   end
     
   def run_features
     hook :run_features
-    Tempfile.open('autotest-cucumber') do |dirty_scenarios_file|
-      cmd = self.make_cucumber_cmd self.scenarios_to_run, dirty_scenarios_file.path
+    Tempfile.open('autotest-cucumber') do |dirty_features_file|
+      cmd = self.make_cucumber_cmd(self.features_to_run, dirty_features_file.path)
       return if cmd.empty?
       puts cmd unless $q
       old_sync = $stdout.sync
@@ -94,37 +94,30 @@ module Autotest::CucumberMixin
       ensure
         $stdout.sync = old_sync
       end
-      self.scenarios_to_run = dirty_scenarios_file.readlines.map { |l| l.chomp }
-      self.tainted = true unless self.scenarios_to_run == []
+      self.features_to_run = dirty_scenarios_file.read
+      self.tainted = true unless self.features_to_run == []
     end
     hook :ran_features
   end
   
-  def make_cucumber_cmd(scenarios_to_run, dirty_scenarios_filename)
-    return '' if scenarios_to_run == []
+  def make_cucumber_cmd(features_to_run, dirty_features_filename)
+    return '' if features_to_run == ''
     
     profiles = YAML.load_file("cucumber.yml").keys rescue []
     
-    profile ||= "autotest-all" if profiles.include?("autotest-all") and scenarios_to_run == :all
+    profile ||= "autotest-all" if profiles.include?("autotest-all") and features_to_run == :all
     profile ||= "autotest"     if profiles.include?("autotest")
     profile ||= nil
     
     if profile
       args = ["--profile", profile]
     else
-      args = %w{features --format} << (scenarios_to_run == :all ? "progress" : "pretty")
+      args = %w{--format} << (features_to_run == :all ? "progress" : "pretty")
     end
-    args += %w{--format autotest --color --out} << dirty_scenarios_filename
+    args += %w{--format autotest --color --out} << dirty_features_filename
+    args += (features_to_run == :all ? "features" : features_to_run)
     args = args.join(' ')
-    
-    if scenarios_to_run == :all
-      scenario_args = nil
-    else
-      # We escape scenario names for the shell by wrapping them in $'...' and replacing
-      # every single quote with an escaped version, "\'".  We use a double backslash for
-      # Ruby, and we put it in a block or gsub interpolates the sequence "\'" as $'.
-      scenario_args = scenarios_to_run.map { |s| "-s $'#{s.gsub("'") {"\\'"} }'" }.join(' ')
-    end
+
     return "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} #{args} #{scenario_args}"
   end
 end
