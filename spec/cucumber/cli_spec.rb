@@ -32,7 +32,7 @@ module Cucumber
       given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})
 
       cli.parse_options!(%w{--format progress --profile bongo})
-      cli.options[:formats].should == {'progress' => [Kernel]}
+      cli.options[:formats].should == {'progress' => STDOUT}
       cli.options[:require].should == ['from/yml']
     end
 
@@ -200,18 +200,14 @@ END_OF_MESSAGE
 
     it "should accept --out option" do
       cli = CLI.new(StringIO.new)
-      File.should_receive(:open).with('jalla.txt', 'w')
       cli.parse_options!(%w{--out jalla.txt})
+      cli.options[:formats]['pretty'].should == 'jalla.txt'
     end
 
     it "should accept multiple --out options" do
       cli = CLI.new(StringIO.new)
-      mock_file1 = stub(File, :open => nil)
-      mock_file2 = stub(File, :open => nil)
-      File.stub!(:open).and_return(mock_file1, mock_file2)
-
       cli.parse_options!(%w{--format progress --out file1 --out file2})
-      cli.options[:formats].should == {'progress' => [mock_file1, mock_file2]}
+      cli.options[:formats].should == {'progress' => 'file2'}
     end
 
     it "should accept multiple --format options" do
@@ -223,23 +219,10 @@ END_OF_MESSAGE
 
     it "should associate --out to previous --format" do
       cli = CLI.new(StringIO.new)
-      mock_file1 = stub(File, :open => nil)
-      mock_file2 = stub(File, :open => nil)
-      File.stub!(:open).and_return(mock_file1, mock_file2)
-
       cli.parse_options!(%w{--format progress --out file1 --format profile --out file2})
-      cli.options[:formats].should == {'progress' => [mock_file1], 'profile' => [mock_file2]}
+      cli.options[:formats].should == {"profile"=>"file2", "progress"=>"file1"}
     end
 
-    it "should allow a single formatter to have STDOUT and a file" do
-      cli = CLI.new
-      mock_file = stub(File, :open => nil)
-      File.stub!(:open).and_return(mock_file)
-
-      cli.parse_options!(%w{--format progress --format progress --out file})
-      cli.options[:formats].should == {'progress' => [Kernel, mock_file]}
-    end
-    
     describe "--format with class" do
      
      describe "in module" do

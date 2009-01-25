@@ -12,10 +12,12 @@ module Cucumber
       end
 
       def visit_features(features)
-        super
-        @io.puts
-        @io.puts
-        print_summary(@io, features)
+        with_color do
+          super
+          @io.puts
+          @io.puts
+          print_summary(features)
+        end
       end
 
       def visit_multiline_arg(multiline_arg, status)
@@ -39,12 +41,12 @@ module Cucumber
       
       private
 
-      def print_summary(io, features)
-        print_undefined_scenarios(io, features)
-        print_steps(io, features, :pending)
-        print_steps(io, features, :failed)
-        print_counts(io, features)
-        print_snippets(io, features, @options)
+      def print_summary(features)
+        print_undefined_scenarios(features)
+        print_steps(features, :pending)
+        print_steps(features, :failed)
+        print_counts(features)
+        print_snippets(features, @options)
       end
 
       CHARS = {

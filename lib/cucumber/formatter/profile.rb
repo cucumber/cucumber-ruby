@@ -23,11 +23,11 @@ module Cucumber
 
         if step_definition # nil for outline steps
           description = format_step(keyword, step_name, status, step_definition, nil)
-          @step_definition_durations[step_definition.step_definition] << [duration, description, @step.file_line]
+          @step_definition_durations[step_definition] << [duration, description, @step.file_line]
         end
       end
 
-      def print_summary(io, features)
+      def print_summary(features)
         super
         @io.puts "\n\nTop #{NUMBER_OF_STEP_DEFINITONS_TO_SHOW} average slowest steps with #{NUMBER_OF_STEP_INVOCATIONS_TO_SHOW} slowest matches:\n"
 

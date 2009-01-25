@@ -13,8 +13,7 @@ module Cucumber
           lines = []
         end
 
-        mode = Cucumber::RUBY_1_9 ? "r:#{Cucumber.keyword_hash['encoding']}" : 'r'
-        feature = File.open(path, mode) do |io|
+        feature = File.open(path, Cucumber.file_mode('r')) do |io|
           parse_or_fail(io.read, path)
         end
         feature.lines = lines

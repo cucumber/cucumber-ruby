@@ -22,6 +22,11 @@ module Cucumber
       Parser.load_parser(keyword_hash)
     end
 
+    # File mode that accounts for Ruby platform and current language
+    def file_mode(m)
+      Cucumber::RUBY_1_9 ? "#{m}:#{keyword_hash['encoding']}" : m
+    end
+
     # Returns a Hash of the currently active
     # language, or for a specific language if +lang+ is
     # specified.
