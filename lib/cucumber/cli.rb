@@ -78,7 +78,7 @@ module Cucumber
           if v == 'help'
             list_languages
           elsif args==['help']
-            list_keywords('en', v)
+            list_keywords(v)
           else
             @options[:lang] = v
           end
@@ -364,23 +364,22 @@ Defined profiles in cucumber.yml:
       raw = Cucumber::LANGUAGES.keys.sort.map do |lang|
         [lang, Cucumber::LANGUAGES[lang]['name'], Cucumber::LANGUAGES[lang]['native']]
       end
-      print_table(raw)
+      print_lang_table(raw, {:check_lang=>true})
     end
 
-    def list_keywords(ref, lang)
+    def list_keywords(lang)
       unless Cucumber::LANGUAGES[lang]
         exit_with_error("No language with key #{v}")
       end
-      Cucumber.load_language(lang)
-      raw = %w{feature background scenario scenario_outline examples given when then but}.map do |key|
-        [Cucumber::LANGUAGES[ref][key], Cucumber::LANGUAGES[lang][key]]
+      raw = Cucumber::KEYWORD_KEYS.map do |key|
+        [key, Cucumber::LANGUAGES[lang][key]]
       end
-      print_table(raw)
+      print_lang_table(raw, {})
     end
     
-    def print_table(raw)
+    def print_lang_table(raw, options)
       table = Ast::Table.new(raw)
-      formatter = Formatter::Pretty.new(nil, @out_stream, {}, '')
+      formatter = Formatter::Pretty.new(nil, @out_stream, options, '')
 
       def formatter.visit_table_row(table_row, status)
         @col = 1
@@ -388,7 +387,15 @@ Defined profiles in cucumber.yml:
       end
 
       def formatter.visit_table_cell_value(value, width, status)
-        status = :comment if @col == 1
+        if @col == 1
+          if(@options[:check_lang])
+            @incomplete = Cucumber.language_complete?(value)
+          end
+          status = :comment 
+        elsif @incomplete
+          status = :failed
+        end
+        
         @col += 1
         super(value, width, status)
       end

@@ -21,6 +21,7 @@ module Cucumber
       rule examples_keyword
         '<%= keywords['examples'] %>' ':'?
       end
+
     end
   end
 end

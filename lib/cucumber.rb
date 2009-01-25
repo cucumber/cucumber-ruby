@@ -12,6 +12,8 @@ require 'cucumber/broadcaster'
 require 'cucumber/core_ext/exception'
 
 module Cucumber
+  KEYWORD_KEYS = %w{name native encoding feature background scenario scenario_outline examples given when then but}
+  
   class << self
     attr_reader :lang
     
@@ -20,6 +22,10 @@ module Cucumber
       @lang = lang
       alias_step_definitions(lang)
       Parser.load_parser(keyword_hash)
+    end
+
+    def language_complete?(lang)
+      KEYWORD_KEYS.detect{|key| keyword_hash(lang)[key].nil?}
     end
 
     # File mode that accounts for Ruby platform and current language

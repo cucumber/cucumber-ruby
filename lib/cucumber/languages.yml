@@ -52,6 +52,7 @@
   feature: Egenskab
   background: Baggrund
   scenario: Scenarie
+  scenario_outline: Abstrakt Scenario
   examples: Eksempler
   given: Givet
   when: Når
@@ -115,8 +116,6 @@
   encoding: UTF-8
   feature: Omadus
   scenario: Stsenaarium
-  scenario_outline: Scenario Outline
-  examples: Examples
   given: Eeldades
   when: Kui
   then: Siis
@@ -215,7 +214,7 @@
   feature: Egenskap
   background: Bakgrunn
   scenario: Scenario
-  scenario_outline: Scenarioskisse
+  scenario_outline: Abstrakt Scenario
   examples: Eksempler
   given: Gitt
   when: Når
@@ -284,6 +283,8 @@
   feature: Egenskap
   background: Bakgrund
   scenario: Scenario
+  scenario_outline: Abstrakt Scenario
+  examples: Exempel
   given: Givet
   when: När
   then: Så
