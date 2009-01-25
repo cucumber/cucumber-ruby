@@ -4,8 +4,8 @@ module Cucumber
     # Treetop will then generate the parser in-memory. When you're happy, just generate
     # the rb file with tt feature.tt
     grammar Feature
-      include FileParser
       include I18n
+      include Table
 
       rule feature
         white comment white tags white header:(!(scenario_outline / scenario) .)* feature_elements {
@@ -119,40 +119,6 @@ module Cucumber
         table / py_string
       end
 
-      rule table
-        table_row+ {
-          def build
-            Ast::Table.new(raw)
-          end
-
-          def raw
-            elements.map{|e| e.build}
-          end
-        }
-      end
-
-      rule table_row
-        space* '|' cells:(cell '|')+ space* (eol+ / eof) {
-          def build
-            row = cells.elements.map do |elt| 
-              value = elt.cell.text_value.strip
-              value.empty? ? nil : value
-            end
-
-            class << row
-              attr_accessor :line
-            end
-            row.line = cells.line
-
-            row
-          end
-        }
-      end
-
-      rule cell
-        (!('|' / eol) .)*
-      end
-      
       rule line_to_eol
         (!eol .)+
       end
@@ -187,18 +153,6 @@ module Cucumber
 
       rule white
         (space / eol)*
-      end
-
-      rule space
-        [ \t]
-      end
-
-      rule eol
-        "\n" / ("\r" "\n"?)
-      end
-      
-      rule eof
-        !.
       end
 
     end

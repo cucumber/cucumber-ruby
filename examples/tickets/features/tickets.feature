@@ -9,6 +9,10 @@ Feature: Cucumber
   Scenario: Call step from step
     Given nested step is called
     Then nested step should be executed
+
+  Scenario: Call step from step using text table
+    Given nested step is called using text table
+    Then nested step should be executed
     
   Scenario: Reading a table
     Given the following table

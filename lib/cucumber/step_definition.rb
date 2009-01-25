@@ -24,9 +24,13 @@ module Cucumber
 
     attr_reader :regexp
 
-    def initialize(regexp, &proc)
+    def initialize(pattern, &proc)
       raise MissingProc if proc.nil?
-      @regexp, @proc = regexp, proc
+      if String === pattern
+        p = pattern.gsub(/\$\w+/, '(.*)')
+        pattern = Regexp.new("^#{p}$") 
+      end
+      @regexp, @proc = pattern, proc
     end
 
     #:stopdoc:

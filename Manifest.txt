@@ -193,8 +193,9 @@ lib/cucumber/parser.rb
 lib/cucumber/parser/basic.rb
 lib/cucumber/parser/feature.rb
 lib/cucumber/parser/feature.tt
-lib/cucumber/parser/file_parser.rb
 lib/cucumber/parser/i18n.tt
+lib/cucumber/parser/table.rb
+lib/cucumber/parser/table.tt
 lib/cucumber/parser/treetop_ext.rb
 lib/cucumber/platform.rb
 lib/cucumber/rails/rspec.rb

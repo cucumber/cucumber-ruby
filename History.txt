@@ -10,11 +10,19 @@ on how to use alternatives.
 **** CALL FOR TRANSLATORS ****
 Since the grammar has changed, there are some new keywords. We have to rely on the community
 to provide updated translations. This is much easier than before - just update languages.yml.
-There is no static code generation anymore.
+There is no static code generation anymore. To list all languages:
 
-There are some exciting new feaqtures, so upgrading is not in vain. Tagging, Autoformatting,
-Auto aliasing of keywords in all languages, much better Ruby 1.9 support and improved output 
-for multiline arguments should make the upgrade worthwhile. 
+  cucumber --lang help
+  
+And to list the keywords for a particular language:
+
+  cucumber --lang en-lol help
+  
+So just go ahead and list the language of your choice and send us updated translations.
+
+There are some really awesome new features in this release: Tagging, Autoformatting, automatic 
+aliasing of keywords in all languages, much better Ruby 1.9 support and improved output 
+for multiline arguments are some of the highlights. 
 
 This version also brings Cucumber even closer to Java. Although it has been possible to
 run Cucumber on JRuby since v0.1.11, it has required that step definitions be defined
@@ -65,9 +73,9 @@ pure Ruby users have been enjoying for a while.
 * It's no longer necessary to compile the Treetop grammar when adding a new language. Localised parser is generated at runtime.
 
 === Removed features
-* "GivenScenario" is gone. Instead you can use "Background" or call Steps from Steps.
+* "GivenScenario" is gone. Instead you can call Steps from Steps, or wait for "Background (#153)"
 * "More Examples" is gone. "Scenario" + "More Examples" is no longer supported. Use "Scenario Outline" + "Examples" instead.
-* Pure Ruby features are no longer supported
+* Pure Ruby features are no longer supported.
 
 == 0.1.16.x (Master)
 

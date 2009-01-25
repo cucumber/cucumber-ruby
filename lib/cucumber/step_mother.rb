@@ -130,11 +130,21 @@ module Cucumber
       # Call a step from within a step definition
       def __cucumber_invoke(name, *multiline_arguments)
         begin
-          @__cucumber_step_mother.step_definition(name).execute(name, self, *multiline_arguments)
+          # TODO: Very similar to code in Step. Refactor. Get back StepInvocation?
+          # Make more similar to JBehave?
+          step_definition = @__cucumber_step_mother.step_definition(name)
+          matched_args = step_definition.matched_args(name)
+          args = (matched_args + multiline_arguments)
+          step_definition.execute(name, self, *args)
         rescue Exception => e
           @__cucumber_current_step.exception = e
           raise e
         end
+      end
+      
+      def table(text, file=nil, line=0)
+        @table_parser ||= Parser::TableParser.new
+        @table_parser.parse_or_fail(text.strip, file, line)
       end
 
       def pending(message = "TODO")

@@ -1,11 +1,8 @@
 require 'erb'
-require 'treetop'
-require 'treetop/runtime'
-require 'treetop/ruby_extensions'
 require 'cucumber/platform'
 require 'cucumber/ast'
-require 'cucumber/parser/file_parser'
 require 'cucumber/parser/treetop_ext'
+require 'cucumber/parser/table'
 
 module Cucumber
   # Classes in this module parse feature files and translate the parse tree 
