@@ -57,20 +57,23 @@ Scenario Outlines, the rich command line, the nice output format and everything
 pure Ruby users have been enjoying for a while.
 
 == Bugfixes
+* Overeager "rescue LoadError" hides lots of errors (#137 Jonathan del Strother)
 * Pending steps in > steps called from steps (#65 Aslak Hellesøy)
 
 === New features
-* Run cucumber with --autoformat DIR to reformat (pretty print) all of your feature files.
-* New --strict option exits with an error code if there are undefined or pending steps.
-* Filtering with --tags. If you put @various @tags on your features and scenarios, --tags lets you run a subset of them.
+* Call multiline steps from other steps (#144 Aslak Hellesøy)
+* Run cucumber with --autoformat DIR to reformat (pretty print) all of your feature files. (Aslak Hellesøy)
+* New --strict option exits with an error code if there are undefined or pending steps. (Aslak Hellesøy)
+* Filtering with --tags. If you put @various @tags on your features and scenarios, 
+  --tags lets you run a subset of them. (Aslak Hellesøy)
 * Given, When, Then are automatically aliased to current language. 
   Ruby 1.8 doesn't allow non-ascii method names in the source, so unless you're on 1.9
   you will have to use Given, When, Then or set up your own aliases. Here is Norwegian:
-    Cucumber.alias_steps(%w{Naar Saa}) # Når, Så already aliased, but can't be called.
-* Run cucumber --language help to see all supported languages.
-* Run cucumber --language LANG help to see keywords for a given language.
-* Multiline arguments (tables and """ strings) are printed in the output
-* It's no longer necessary to compile the Treetop grammar when adding a new language. Localised parser is generated at runtime.
+    Cucumber.alias_steps(%w{Naar Saa}) # Når, Så already aliased, but can't be called. (Aslak Hellesøy)
+* Run cucumber --language help to see all supported languages. (Aslak Hellesøy)
+* Run cucumber --language LANG help to see keywords for a given language. (Aslak Hellesøy)
+* Multiline arguments (tables and """ strings) are printed in the output. (Aslak Hellesøy)
+* It's no longer necessary to compile the Treetop grammar when adding a new language. Localised parser is generated at runtime. (Aslak Hellesøy)
 
 === Removed features
 * "GivenScenario" is gone. Instead you can call Steps from Steps, or wait for "Background (#153)"
