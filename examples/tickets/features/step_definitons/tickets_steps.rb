@@ -16,6 +16,7 @@ Given "nested step is called" do
 end
 
 Given 'nested step is called using text table' do
+  pending
   Given "I like mushroom", table(%{
     | sponge | bob  |
     | is     | cool |

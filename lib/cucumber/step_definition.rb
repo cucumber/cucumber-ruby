@@ -13,7 +13,7 @@ module Cucumber
   class StepDefinition
     def self.snippet_text(step_keyword, step_name)
       escaped = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
-      "#{step_keyword} /^#{escaped}$/ do\nend"
+      "#{step_keyword} /^#{escaped}$/ do\n  pending\nend"
     end
 
     class MissingProc < StandardError
