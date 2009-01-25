@@ -1,54 +1,56 @@
 Feature: Cucumber command line
   In order to write better software
   Developers should be able to execute requirements as tests
-  
+
   Scenario: Run scenario outline steps only
-    When I run cucumber -q features/outline_sample.feature:3
-    Then it should pass with
-      """
-      Feature: Outline Sample
-        Scenario Outline: Test state
-          Given <state> without a table
-
-          |state  |
-
-      1 scenario
-    
-      """
-  
-  Scenario: Run single scenario outline table row with missing step definition
     When I run cucumber -q features/outline_sample.feature:7
-    Then it should pass with
-      """
-      Feature: Outline Sample
-        Scenario Outline: Test state
-          Given <state> without a table
-
-          |state  |
-          |missing|
-
-      2 scenarios
-      1 step pending (1 with no step definition)
-      
-      """
-
-  Scenario: Run single failing scenario outline table row
-    When I run cucumber -q features/outline_sample.feature:9
     Then it should fail with
       """
       Feature: Outline Sample
+
         Scenario Outline: Test state
           Given <state> without a table
+          Given <other_state> without a table
 
-          |state  |
-          |failing|
-
+        Examples: 
+          | state   | other_state |
+          | missing | passing     |
+          | passing | passing     |
+          | failing | passing     |
             FAIL (RuntimeError)
-            ./features/step_definitions/sample_steps.rb:12:in ` /^failing without a table$/'
-            features/outline_sample.feature:9:in `/^failing without a table$/'
+            ./features/step_definitions/sample_steps.rb:2:in `flunker'
+            ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
+            features/outline_sample.feature:12:in `Given failing without a table'
 
-      2 scenarios
-      1 step failed
+      3 scenarios
+      1 failed step
+      2 skipped steps
+      1 undefined step
+      2 passed steps
+
+      """
+
+  Scenario: Run single failing scenario outline table row
+    When I run cucumber features/outline_sample.feature:12
+    Then it should fail with
+      """
+      Feature: Outline Sample
+
+        Scenario Outline: Test state          # features/outline_sample.feature:5
+          Given <state> without a table
+          Given <other_state> without a table
+
+        Examples: 
+          | state   | other_state |
+          | failing | passing     |
+            FAIL (RuntimeError)
+            ./features/step_definitions/sample_steps.rb:2:in `flunker'
+            ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
+            features/outline_sample.feature:12:in `Given failing without a table'
+
+      1 scenario
+      1 failed step
+      1 skipped step
 
       """
 
@@ -56,18 +58,24 @@ Feature: Cucumber command line
     When I run cucumber -q --format progress features/outline_sample.feature
     Then it should fail with
       """
-      P.F
+      UUS..FS
 
-      Pending Scenarios:
+      (::) undefined scenarios (::)
 
-      1)  Outline Sample (Test state)
+      features/outline_sample.feature:3:in `Scenario: I have no steps'
 
+      (::) failed steps (::)
 
-      Failed:
+      FAIL (RuntimeError)
+      ./features/step_definitions/sample_steps.rb:2:in `flunker'
+      ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
+      features/outline_sample.feature:12:in `Given failing without a table'
 
-      1)
-      FAIL
-      ./features/step_definitions/sample_steps.rb:12:in ` /^failing without a table$/'
-      features/outline_sample.feature:9:in `/^failing without a table$/'
+      4 scenarios
+      1 failed step
+      2 skipped steps
+      1 undefined step
+      2 passed steps
 
       """
+

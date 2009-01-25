@@ -1,5 +1,3 @@
-require 'cucumber/formatters/ansicolor'
-
 module Cucumber
   module Formatters
     class AutotestFormatter

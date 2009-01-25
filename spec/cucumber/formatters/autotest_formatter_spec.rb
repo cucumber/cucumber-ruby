@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
+require 'cucumber/formatters/autotest_formatter'
 
 module Cucumber::Formatters
   describe AutotestFormatter do

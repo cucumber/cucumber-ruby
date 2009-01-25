@@ -11,7 +11,7 @@ end
 After do
 end
 
-Given "että olen syöttänyt laskimeen luvun $n" do |n|
+Given /että olen syöttänyt laskimeen luvun (\d+)/ do |n|
   @laskin.pinoa n.to_i
 end
 

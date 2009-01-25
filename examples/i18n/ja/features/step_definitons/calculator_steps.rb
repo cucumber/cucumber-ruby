@@ -1,8 +1,7 @@
-# encoding: utf-8
+# encoding: Shift_JIS
 require 'spec/expectations'
-$:.unshift(File.dirname(__FILE__) + '/../../lib')
+$:.unshift(File.dirname(__FILE__) + '/../../lib') # This line is not needed in your own project
 require 'cucumber/formatters/unicode'
-$KCODE = 'e'
 require 'calculator'
 
 Before do

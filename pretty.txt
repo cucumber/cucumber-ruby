@@ -1,0 +1,486 @@
+Feature: Cucumber command line
+  In order to write better software
+  Developers should be able to execute requirements as tests
+
+  Scenario: Run single scenario with missing step definition # features/cucumber_cli.feature:5
+    When I run cucumber -q features/sample.feature:5         # features/step_definitions/cucumber_steps.rb:5
+    Then it should pass with                                 # features/step_definitions/cucumber_steps.rb:15
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+      1 scenario
+      1 undefined step
+
+      """
+
+  Scenario: Fail with --strict                                # features/cucumber_cli.feature:21
+    When I run cucumber -q features/sample.feature:5 --strict # features/step_definitions/cucumber_steps.rb:5
+    Then it should fail with                                  # features/step_definitions/cucumber_steps.rb:15
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+      1 scenario
+      1 undefined step
+
+      """
+
+  Scenario: Specify 2 line numbers where one is a tag   # features/cucumber_cli.feature:37
+    When I run cucumber -q features/sample.feature:5:14 # features/step_definitions/cucumber_steps.rb:5
+    Then it should fail with                            # features/step_definitions/cucumber_steps.rb:15
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+        @four
+        Scenario: Failing
+          Given failing
+            FAIL (RuntimeError)
+            ./features/step_definitions/sample_steps.rb:2:in `flunker'
+            ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
+            features/sample.feature:16:in `Given failing'
+
+      2 scenarios
+      1 failed step
+      1 undefined step
+
+      """
+
+  Scenario: Require missing step definition from elsewhere                                             # features/cucumber_cli.feature:62
+    When I run cucumber -q -r ../../features/step_definitions/extra_steps.rb features/sample.feature:5 # features/step_definitions/cucumber_steps.rb:5
+    Then it should pass with                                                                           # features/step_definitions/cucumber_steps.rb:15
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+      1 scenario
+      1 passed step
+
+      """
+
+  Scenario: Specify the line number of a row          # features/cucumber_cli.feature:78
+    When I run cucumber -q features/sample.feature:12 # features/step_definitions/cucumber_steps.rb:5
+    Then it should pass with                          # features/step_definitions/cucumber_steps.rb:15
+      """
+      @one
+      Feature: Sample
+
+        @three
+        Scenario: Passing
+          Given passing
+            | a | b |
+            | c | d |
+
+      1 scenario
+      1 passed step
+
+      """
+
+  Scenario: Run all with progress formatter                          # features/cucumber_cli.feature:96
+    When I run cucumber -q --format progress features/sample.feature # features/step_definitions/cucumber_steps.rb:5
+    Then it should fail with                                         # features/step_definitions/cucumber_steps.rb:15
+      """
+      U.F
+
+      (::) failed steps (::)
+
+      FAIL (RuntimeError)
+      ./features/step_definitions/sample_steps.rb:2:in `flunker'
+      ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
+      features/sample.feature:16:in `Given failing'
+
+      3 scenarios
+      1 failed step
+      1 undefined step
+      1 passed step
+
+      """
+
+  Scenario: Run Norwegian                         # features/cucumber_cli.feature:116
+    Given I am in i18n/no                         # features/step_definitions/cucumber_steps.rb:1
+    When I run cucumber -q --language no features # features/step_definitions/cucumber_steps.rb:5
+    Then it should pass with                      # features/step_definitions/cucumber_steps.rb:15
+      """
+      Egenskap: Summering
+        For å slippe å gjøre dumme feil
+        Som en regnskapsfører
+        Vil jeg kunne legge sammen
+
+        Scenario: to tall
+          Gitt at jeg har tastet inn 5
+          Og at jeg har tastet inn 7
+          Når jeg summerer
+          Så skal resultatet være 12
+
+        @iterasjon3
+        Scenario: tre tall
+          Gitt at jeg har tastet inn 5
+          Og at jeg har tastet inn 7
+          Og at jeg har tastet inn 1
+          Når jeg summerer
+          Så skal resultatet være 13
+
+      2 scenarios
+      9 passed steps
+
+      """
+
+  Scenario: --dry-run                                    # features/cucumber_cli.feature:145
+    When I run cucumber --dry-run --no-snippets features # features/step_definitions/cucumber_steps.rb:5
+    Then it should pass with                             # features/step_definitions/cucumber_steps.rb:15
+      """
+      Feature: Calling undefined step
+
+        Scenario: Call directly
+          Given a step definition that calls an undefined step
+
+        Scenario: Call via another
+          Given call step "a step definition that calls an undefined step"
+
+      Feature: Lots of undefined
+
+        Scenario: Implement me
+          Given it snows in Sahara
+          Given it's 40 degrees in Norway
+          And it's 40 degrees in Norway
+          When I stop procrastinating
+          And there is world peace
+
+      Feature: Outline Sample
+
+        Scenario: I have no steps
+
+        Scenario Outline: Test state
+          Given <state> without a table
+          Given <other_state> without a table
+
+        Examples: 
+          | state   | other_state |
+          | missing | passing     |
+          | passing | passing     |
+          | failing | passing     |
+
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+        @three
+        Scenario: Passing
+          Given passing
+            | a | b |
+            | c | d |
+
+        @four
+        Scenario: Failing
+          Given failing
+
+      10 scenarios
+      9 skipped steps
+      7 undefined steps
+
+      """
+
+  Scenario: Multiple formatters and outputs                                                                     # features/cucumber_cli.feature:203
+    When I run cucumber --format progress --out tmp/progress.txt --format html --out tmp/features.html features # features/step_definitions/cucumber_steps.rb:5
+    And examples/self_test/tmp/progress.txt should contain                                                      # features/step_definitions/cucumber_steps.rb:25
+      """
+      P.FP.F
+
+      Pending Scenarios:
+
+      1)  Outline Sample (Test state)
+      2)  Sample (Missing)
+
+
+      Failed:
+
+      1)
+      FAIL
+      ./features/step_definitions/sample_steps.rb:12:in ` /^failing without a table$/'
+      features/outline_sample.feature:9:in `/^failing without a table$/'
+
+      2)
+      FAIL
+      ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
+      features/sample.feature:12:in `Given failing'
+
+      """
+      No such file or directory - examples/self_test/tmp/progress.txt (Errno::ENOENT)
+      ./features/step_definitions/cucumber_steps.rb:26:in `read'
+      ./features/step_definitions/cucumber_steps.rb:26:in `/^(.*) should contain$/'
+      features/cucumber_cli.feature:205:in `And examples/self_test/tmp/progress.txt should contain'
+    And examples/self_test/tmp/features.html should match                                                       # features/step_definitions/cucumber_steps.rb:29
+      """
+      Given passing
+      """
+
+  Scenario: Run scenario specified by name using --scenario           # features/cucumber_cli.feature:233
+    When I run cucumber --scenario Passing -q features/sample.feature # features/step_definitions/cucumber_steps.rb:5
+    Then it should pass with                                          # features/step_definitions/cucumber_steps.rb:15
+      """
+      Feature: Sample
+        Scenario: Passing
+          Given passing
+
+
+      1 scenario
+      1 passed step
+
+      """
+      expected: "Feature: Sample\n  Scenario: Passing\n    Given passing\n\n\n1 scenario\n1 passed step\n",
+           got: "@one\nFeature: Sample\n\n  @two @three\n  Scenario: Missing\n    Given missing\n\n  @three\n  Scenario: Passing\n    Given passing\n      | a | b |\n      | c | d |\n\n  @four\n  Scenario: Failing\n    Given failing\n      FAIL (RuntimeError)\n      ./features/step_definitions/sample_steps.rb:2:in `flunker'\n      ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'\n      features/sample.feature:16:in `Given failing'\n\n3 scenarios\n1 failed step\n1 undefined step\n1 passed step\n" (using ==)
+      Diff:
+      
+      
+      
+      
+      @@ -1,8 +1,26 @@
+      +@one
+       Feature: Sample
+      +
+      +  @two @three
+      +  Scenario: Missing
+      +    Given missing
+      +
+      +  @three
+         Scenario: Passing
+           Given passing
+      +      | a | b |
+      +      | c | d |
+       
+      +  @four
+      +  Scenario: Failing
+      +    Given failing
+      +      FAIL (RuntimeError)
+      +      ./features/step_definitions/sample_steps.rb:2:in `flunker'
+      +      ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
+      +      features/sample.feature:16:in `Given failing'
+       
+      -1 scenario
+      +3 scenarios
+      +1 failed step
+      +1 undefined step
+       1 passed step
+       (Spec::Expectations::ExpectationNotMetError)
+      ./features/step_definitions/cucumber_steps.rb:17:in `/^it should (fail|pass) with$/'
+      features/cucumber_cli.feature:235:in `Then it should pass with'
+
+  Scenario: Run with a tag that exists on 2 scenarios # features/cucumber_cli.feature:247
+    When I run cucumber -q features --tags three      # features/step_definitions/cucumber_steps.rb:5
+    Then it should pass with                          # features/step_definitions/cucumber_steps.rb:15
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+        @three
+        Scenario: Passing
+          Given passing
+            | a | b |
+            | c | d |
+
+      2 scenarios
+      1 undefined step
+      1 passed step
+
+      """
+
+  Scenario: Run with a tag that exists on 1 feature # features/cucumber_cli.feature:270
+    When I run cucumber -q features --tags one      # features/step_definitions/cucumber_steps.rb:5
+    Then it should fail with                        # features/step_definitions/cucumber_steps.rb:15
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+        @three
+        Scenario: Passing
+          Given passing
+            | a | b |
+            | c | d |
+
+        @four
+        Scenario: Failing
+          Given failing
+            FAIL (RuntimeError)
+            ./features/step_definitions/sample_steps.rb:2:in `flunker'
+            ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
+            features/sample.feature:16:in `Given failing'
+
+      3 scenarios
+      1 failed step
+      1 undefined step
+      1 passed step
+
+      """
+
+  Scenario: Reformat files with --autoformat                                     # features/cucumber_cli.feature:302
+    When I run cucumber --autoformat tmp/formatted features                      # features/step_definitions/cucumber_steps.rb:5
+    Then examples/self_test/tmp/formatted/features/sample.feature should contain # features/step_definitions/cucumber_steps.rb:25
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+        @three
+        Scenario: Passing
+          Given passing
+            | a | b |
+            | c | d |
+
+        @four
+        Scenario: Failing
+          Given failing
+
+
+      """
+      No such file or directory - examples/self_test/tmp/formatted/features/sample.feature (Errno::ENOENT)
+      ./features/step_definitions/cucumber_steps.rb:26:in `read'
+      ./features/step_definitions/cucumber_steps.rb:26:in `/^(.*) should contain$/'
+      features/cucumber_cli.feature:304:in `Then examples/self_test/tmp/formatted/features/sample.feature should contain'
+
+Feature: Cucumber command line
+  In order to write better software
+  Developers should be able to execute requirements as tests
+
+  Scenario: Run scenario outline steps only                  # features/cucumber_cli_outlines.feature:5
+    When I run cucumber -q features/outline_sample.feature:7 # features/step_definitions/cucumber_steps.rb:5
+    Then it should fail with                                 # features/step_definitions/cucumber_steps.rb:15
+      """
+      Feature: Outline Sample
+
+        Scenario Outline: Test state
+          Given <state> without a table
+          Given <other_state> without a table
+
+        Examples: 
+          | state   | other_state |
+          | missing | passing     |
+          | passing | passing     |
+          | failing | passing     |
+            FAIL (RuntimeError)
+            ./features/step_definitions/sample_steps.rb:2:in `flunker'
+            ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
+            features/outline_sample.feature:12:in `Given failing without a table'
+
+      3 scenarios
+      1 failed step
+      2 skipped steps
+      1 undefined step
+      2 passed steps
+
+      """
+
+  Scenario: Run single failing scenario outline table row  # features/cucumber_cli_outlines.feature:33
+    When I run cucumber features/outline_sample.feature:12 # features/step_definitions/cucumber_steps.rb:5
+    Then it should fail with                               # features/step_definitions/cucumber_steps.rb:15
+      """
+      Feature: Outline Sample
+
+        Scenario Outline: Test state          # features/outline_sample.feature:5
+          Given <state> without a table
+          Given <other_state> without a table
+
+        Examples: 
+          | state   | other_state |
+          | failing | passing     |
+            FAIL (RuntimeError)
+            ./features/step_definitions/sample_steps.rb:2:in `flunker'
+            ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
+            features/outline_sample.feature:12:in `Given failing without a table'
+
+      1 scenario
+      1 failed step
+      1 skipped step
+
+      """
+
+  Scenario: Run all with progress formatter                                  # features/cucumber_cli_outlines.feature:57
+    When I run cucumber -q --format progress features/outline_sample.feature # features/step_definitions/cucumber_steps.rb:5
+    Then it should fail with                                                 # features/step_definitions/cucumber_steps.rb:15
+      """
+      UUS..FS
+
+      (::) undefined scenarios (::)
+
+      features/outline_sample.feature:3:in `Scenario: I have no steps'
+
+      (::) failed steps (::)
+
+      FAIL (RuntimeError)
+      ./features/step_definitions/sample_steps.rb:2:in `flunker'
+      ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
+      features/outline_sample.feature:12:in `Given failing without a table'
+
+      4 scenarios
+      1 failed step
+      2 skipped steps
+      1 undefined step
+      2 passed steps
+
+      """
+
+Feature: Cucumber command line
+  In order to find out what step definitions need to be implemented
+  Developers should always see what step definition is missing
+
+  Scenario: Get info at arbitrary levels of nesting                        # features/report_called_undefined_steps.feature:5
+    When I run cucumber features/call_undefined_step_from_step_def.feature # features/step_definitions/cucumber_steps.rb:5
+    Then it should pass with                                               # features/step_definitions/cucumber_steps.rb:15
+      """
+      Feature: Calling undefined step
+
+        Scenario: Call directly                                # features/call_undefined_step_from_step_def.feature:3
+          Given a step definition that calls an undefined step # features/step_definitions/sample_steps.rb:19
+            Undefined step: "this does not exist" (Cucumber::StepMother::Undefined)
+            ./features/step_definitions/sample_steps.rb:20:in `/^a step definition that calls an undefined step$/'
+
+        Scenario: Call via another                                         # features/call_undefined_step_from_step_def.feature:6
+          Given call step "a step definition that calls an undefined step" # features/step_definitions/sample_steps.rb:23
+            Undefined step: "this does not exist" (Cucumber::StepMother::Undefined)
+            ./features/step_definitions/sample_steps.rb:20:in `/^a step definition that calls an undefined step$/'
+
+      2 scenarios
+      2 undefined steps
+
+      You can implement step definitions for missing steps with these snippets:
+
+      Given /^this does not exist$/ do
+      end
+
+
+      """
+
+17 scenarios
+3 failed steps
+1 skipped step
+32 passed steps

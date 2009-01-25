@@ -11,7 +11,7 @@ task :i18n do
       else
         STDERR.puts %{
 !!!!!
-!!!!! SKIPPING #{lang} (Haven't made it work on Ruby 1.9 yet)
+!!!!! SKIPPING #{lang} (Still needs some work)
 !!!!!
 }
       end
@@ -23,10 +23,10 @@ def supported?(lang)
   if RUBY_VERSION =~ /^1\.9/
     !%w{ar ja ko zh-CN}.index(lang)
   else
-    true
+    !%w{ar ja ko}.index(lang)
   end
 end
 
 def rake(args)
-  ruby(File.join(Gem.bindir, 'rake'), args)
+  ruby($0, args) rescue nil
 end

@@ -1,99 +1,95 @@
 Feature: Cucumber command line
   In order to write better software
   Developers should be able to execute requirements as tests
-  
+
   Scenario: Run single scenario with missing step definition
-    When I run cucumber -q features/sample.feature:3
+    When I run cucumber -q features/sample.feature:5
     Then it should pass with
       """
+      @one
       Feature: Sample
+
+        @two @three
         Scenario: Missing
           Given missing
 
-
       1 scenario
-      1 step pending (1 with no step definition)
-      
+      1 undefined step
+
       """
-      
-  Scenario: Run single failing scenario
-    When I run cucumber -q features/sample.feature:12
+
+  Scenario: Fail with --strict
+    When I run cucumber -q features/sample.feature:5 --strict
     Then it should fail with
       """
+      @one
       Feature: Sample
-        Scenario: Failing
-          Given failing
-            FAIL (RuntimeError)
-            ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
-            features/sample.feature:12:in `Given failing'
 
-
-      1 scenario
-      1 step failed
-
-      """
-
-  Scenario: Specify 2 line numbers
-    When I run cucumber -q features/sample.feature:3:12
-    Then it should fail with
-      """
-      Feature: Sample
+        @two @three
         Scenario: Missing
           Given missing
 
+      1 scenario
+      1 undefined step
+
+      """
+
+  Scenario: Specify 2 line numbers where one is a tag
+    When I run cucumber -q features/sample.feature:5:14
+    Then it should fail with
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+        @four
         Scenario: Failing
           Given failing
             FAIL (RuntimeError)
-            ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
-            features/sample.feature:12:in `Given failing'
-
+            ./features/step_definitions/sample_steps.rb:2:in `flunker'
+            ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
+            features/sample.feature:16:in `Given failing'
 
       2 scenarios
-      1 step failed
-      1 step pending (1 with no step definition)
+      1 failed step
+      1 undefined step
 
       """
-
 
   Scenario: Require missing step definition from elsewhere
-    When I run cucumber -q -r ../../features/step_definitions/extra_steps.rb features/sample.feature:3
+    When I run cucumber -q -r ../../features/step_definitions/extra_steps.rb features/sample.feature:5
     Then it should pass with
       """
+      @one
       Feature: Sample
+
+        @two @three
         Scenario: Missing
           Given missing
 
-
       1 scenario
-      1 step passed
-
-      """
-      
-  Scenario: Specify the line number of a blank line
-    When I run cucumber -q features/sample.feature:10
-    Then it should pass with
-      """
-      Feature: Sample
-        Scenario: Passing
-          Given passing
-
-
-      1 scenario
-      1 step passed
+      1 passed step
 
       """
 
   Scenario: Specify the line number of a row
-    When I run cucumber -q features/sample.feature:8
+    When I run cucumber -q features/sample.feature:12
     Then it should pass with
       """
+      @one
       Feature: Sample
+
+        @three
         Scenario: Passing
           Given passing
-
+            | a | b |
+            | c | d |
 
       1 scenario
-      1 step passed
+      1 passed step
 
       """
 
@@ -101,19 +97,19 @@ Feature: Cucumber command line
     When I run cucumber -q --format progress features/sample.feature
     Then it should fail with
       """
-      P.F
+      U.F
 
-      Pending Scenarios:
-      
-      1)  Sample (Missing)
-      
-      
-      Failed:
-      
-      1)
-      FAIL
-      ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
-      features/sample.feature:12:in `Given failing'
+      (::) failed steps (::)
+
+      FAIL (RuntimeError)
+      ./features/step_definitions/sample_steps.rb:2:in `flunker'
+      ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
+      features/sample.feature:16:in `Given failing'
+
+      3 scenarios
+      1 failed step
+      1 undefined step
+      1 passed step
 
       """
 
@@ -126,12 +122,14 @@ Feature: Cucumber command line
         For å slippe å gjøre dumme feil
         Som en regnskapsfører
         Vil jeg kunne legge sammen
+
         Scenario: to tall
           Gitt at jeg har tastet inn 5
           Og at jeg har tastet inn 7
           Når jeg summerer
           Så skal resultatet være 12
 
+        @iterasjon3
         Scenario: tre tall
           Gitt at jeg har tastet inn 5
           Og at jeg har tastet inn 7
@@ -139,85 +137,189 @@ Feature: Cucumber command line
           Når jeg summerer
           Så skal resultatet være 13
 
-
       2 scenarios
-      9 steps passed
+      9 passed steps
 
       """
 
   Scenario: --dry-run
-    When I run cucumber --dry-run features
+    When I run cucumber --dry-run --no-snippets features
     Then it should pass with
       """
-      Feature: Outline Sample  # features/outline_sample.feature
-        Scenario Outline: Test state     # features/outline_sample.feature:3
-          Given <state> without a table  # features/outline_sample.feature:4
+      Feature: Calling undefined step
 
-          |state  |
-          |missing|
-          |passing|
-          |failing|
+        Scenario: Call directly
+          Given a step definition that calls an undefined step
 
-      Feature: Sample  # features/sample.feature
+        Scenario: Call via another
+          Given call step "a step definition that calls an undefined step"
 
-        Scenario: Missing  # features/sample.feature:3
-          Given missing    # other.rb:23
+      Feature: Lots of undefined
 
-        Scenario: Passing  # features/sample.feature:6
-          Given passing    # features/step_definitions/sample_steps.rb:1
+        Scenario: Implement me
+          Given it snows in Sahara
+          Given it's 40 degrees in Norway
+          And it's 40 degrees in Norway
+          When I stop procrastinating
+          And there is world peace
 
-        Scenario: Failing  # features/sample.feature:11
-          Given failing    # features/step_definitions/sample_steps.rb:4
+      Feature: Outline Sample
 
+        Scenario: I have no steps
 
-      7 scenarios
-      6 steps passed
+        Scenario Outline: Test state
+          Given <state> without a table
+          Given <other_state> without a table
+
+        Examples: 
+          | state   | other_state |
+          | missing | passing     |
+          | passing | passing     |
+          | failing | passing     |
+
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+        @three
+        Scenario: Passing
+          Given passing
+            | a | b |
+            | c | d |
+
+        @four
+        Scenario: Failing
+          Given failing
+
+      10 scenarios
+      9 skipped steps
+      7 undefined steps
 
       """
 
   Scenario: Multiple formatters and outputs
-    When I run cucumber --format progress --out tmp/progress.txt --format html --out tmp/features.html features
-    Then it should fail with
-      """
-      """
+    When I run cucumber --format progress --out tmp/progress.txt --format pretty --out tmp/pretty.txt  --dry-run features/lots_of_undefined.feature
     And examples/self_test/tmp/progress.txt should contain
       """
-      P.FP.F
-
-      Pending Scenarios:
-
-      1)  Outline Sample (Test state)
-      2)  Sample (Missing)
-
-
-      Failed:
-
-      1)
-      FAIL
-      ./features/step_definitions/sample_steps.rb:12:in ` /^failing without a table$/'
-      features/outline_sample.feature:9:in `/^failing without a table$/'
-
-      2)
-      FAIL
-      ./features/step_definitions/sample_steps.rb:5:in `Given /^failing$/'
-      features/sample.feature:12:in `Given failing'
-
-      """
-    And examples/self_test/tmp/features.html should match
-      """
-      Given passing
-      """
-      
-  Scenario: Run scenario specified by name using --scenario
-    When I run cucumber --scenario Passing -q features/sample.feature
-    Then it should pass with
-      """
-      Feature: Sample
-        Scenario: Passing
-          Given passing
-
+      UUUUU
 
       1 scenario
-      1 step passed
+      5 undefined steps
 
       """
+    And examples/self_test/tmp/pretty.txt should match
+      """
+      Feature: Lots of undefined
+
+        Scenario: Implement me
+          Given it snows in Sahara
+          Given it's 40 degrees in Norway
+          And it's 40 degrees in Norway
+          When I stop procrastinating
+          And there is world peace
+
+      1 scenario
+      5 undefined steps
+
+      """
+
+  Scenario: Run scenario specified by name using --scenario
+    When I run cucumber --scenario Passing -q features
+    Then it should pass with
+      """
+      @one
+      Feature: Sample
+
+        @three
+        Scenario: Passing
+          Given passing
+            | a | b |
+            | c | d |
+
+      1 scenario
+      1 passed step
+
+      """
+
+  Scenario: Run with a tag that exists on 2 scenarios
+    When I run cucumber -q features --tags three
+    Then it should pass with
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+        @three
+        Scenario: Passing
+          Given passing
+            | a | b |
+            | c | d |
+
+      2 scenarios
+      1 undefined step
+      1 passed step
+
+      """
+
+  Scenario: Run with a tag that exists on 1 feature
+    When I run cucumber -q features --tags one
+    Then it should fail with
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+        @three
+        Scenario: Passing
+          Given passing
+            | a | b |
+            | c | d |
+
+        @four
+        Scenario: Failing
+          Given failing
+            FAIL (RuntimeError)
+            ./features/step_definitions/sample_steps.rb:2:in `flunker'
+            ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
+            features/sample.feature:16:in `Given failing'
+
+      3 scenarios
+      1 failed step
+      1 undefined step
+      1 passed step
+
+      """
+
+  Scenario: Reformat files with --autoformat
+    When I run cucumber --autoformat tmp/formatted features
+    Then examples/self_test/tmp/formatted/features/sample.feature should contain
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+        @three
+        Scenario: Passing
+          Given passing
+            | a | b |
+            | c | d |
+
+        @four
+        Scenario: Failing
+          Given failing
+
+
+      """
+
