@@ -1,4 +1,4 @@
-== Git (ast - future 0.2)
+== Git (future 0.2)
 
 This is a major rewrite of Cucumber's internals. The rewrite was done to address technical
 debt and to have a codebase that is easier to evolve and maintain. There are some major

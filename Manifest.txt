@@ -107,7 +107,6 @@ examples/jbehave/README.textile
 examples/jbehave/features/support/env.rb
 examples/jbehave/features/trading.feature
 examples/jbehave/pom.xml
-examples/jbehave/target/maven-archiver/pom.properties
 examples/selenium/Rakefile
 examples/selenium/features/search.feature
 examples/selenium/features/step_definitons/stories_steps.rb
