@@ -1,4 +1,4 @@
-== Git (future 0.2)
+== Git (0.2 alpha)
 
 This is a major rewrite of Cucumber's internals. The rewrite was done to address technical
 debt and to have a codebase that is easier to evolve and maintain. There are some major
@@ -84,7 +84,7 @@ pure Ruby users have been enjoying for a while.
 * "More Examples" is gone. "Scenario" + "More Examples" is no longer supported. Use "Scenario Outline" + "Examples" instead.
 * Pure Ruby features are no longer supported.
 
-== 0.1.16.x (Master)
+== 0.1.16
 
 Bugfix release.
 
