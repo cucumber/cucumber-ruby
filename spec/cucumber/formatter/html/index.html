@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Cucumber results</title>
+  <link rel="stylesheet" href="cucumber.css" type="text/css" charset="utf-8" />
+	<script type="text/javascript" src="jquery-1.3.min.js"></script>
+	<script type="text/javascript" src="jquery.uitableedit.js"></script>
+	<script type="text/javascript" src="cucumber.js"></script>
+</head>
+
+<body>
+<pre>
+<span><span class="feature">Feature: Sample</span>
+
+<span class="scenario">  Scenario: Missing
+<span id="step_1">    Given missing</span></span>
+
+<span class="scenario">  Scenario: Passing
+<span id="step_2">    Given passing</span><div class="multiline_table"><table>
+  <tr>
+    <td class="passed">1</td>
+    <td class="passed">22</td>
+  </tr>
+  <tr>
+    <td class="failed">4444</td>
+    <td class="failed">333</td>
+  </tr>
+</table></div></span>
+<span class="scenario">  Scenario: Failing
+<span id="step_3">    Given failing</span>
+<span class="multiline">      """
+      Aslak
+      Hellesøy
+      """</span></span></span>
+</pre>
+
+<script type="text/javascript">$('#step_1').failed('error message', "line1\nline2\nline3")</script>
+<script type="text/javascript">$('#step_2').status('pending')</script>
+<script type="text/javascript">$('#step_3').status('passed')</script>
+
+</body>
+</html>

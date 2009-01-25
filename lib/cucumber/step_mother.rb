@@ -1,98 +1,154 @@
-require 'cucumber/tree/top_down_visitor'
+require 'cucumber/step_definition'
+require 'cucumber/core_ext/instance_exec'
 
 module Cucumber
-  class Pending < StandardError
-  end
+  # This is the main interface for registering step definitions, which is done
+  # from <tt>*_steps.rb</tt> files. This module is included right at the top-level
+  # so #register_step_definition (and more interestingly - its aliases) are
+  # available from the top-level.
+  module StepMother
+    attr_writer :snippet_generator
 
-  class ForcedPending < Pending
-  end
+    class Undefined < StandardError
+      attr_reader :step_name
 
-  class Duplicate < StandardError
-  end
-
-  class Multiple < StandardError
-  end
-
-  class MissingProc < StandardError
-    def message
-      "Step definitions must always have a proc"
-    end
-  end
-
-  class StepMother
-    PENDING = lambda do |*_| 
-      raise Pending
-    end
-    require 'cucumber/core_ext/proc'
-    PENDING.extend(CoreExt::CallIn)
-    PENDING.name = "PENDING"
-
-    def initialize
-      @step_procs = Hash.new(PENDING)
-    end
-
-    def register_step_proc(key, &proc)
-      raise MissingProc if proc.nil?
-      regexp = case(key)
-      when String
-        # Replace the $foo and $bar style parameters
-        pattern = key.gsub(/\$\w+/, '(.*)')
-        Regexp.new("^#{pattern}$")
-      when Regexp
-        key
-      else
-        raise "Step patterns must be Regexp or String, but was: #{key.inspect}"
+      def initialize(step_name)
+        super %{Undefined step: "#{step_name}"}
+        @step_name = step_name
       end
-      proc.extend(CoreExt::CallIn)
-      proc.name = key.inspect
-
-      if @step_procs.has_key?(regexp)
-        first_proc = @step_procs[regexp]
-        message = %{Duplicate step definitions:
-
-#{first_proc.to_backtrace_line}
-#{proc.to_backtrace_line}
-
-}
-        raise Duplicate.new(message)
-      end
-
-      @step_procs[regexp] = proc
+      Cucumber::EXCEPTION_STATUS[self] = :undefined
     end
 
-    def regexp_args_proc(step_name)
-      candidates = @step_procs.map do |regexp, proc|
-        if step_name =~ regexp
-          [regexp, $~.captures, proc]
+    class Pending < StandardError
+      Cucumber::EXCEPTION_STATUS[self] = :pending
+    end
+
+    # Raised when a step matches 2 or more StepDefinition
+    class Ambiguous < StandardError
+      def initialize(step_name, step_definitions)
+        message = "Ambiguous match of \"#{step_name}\":\n\n"
+        message << step_definitions.map{|sd| sd.to_backtrace_line}.join("\n")
+        message << "\n\n"
+        super(message)
+      end
+    end
+
+    # Raised when 2 or more StepDefinition have the same Regexp
+    class Redundant < StandardError
+      def initialize(step_def_1, step_def_2)
+        message = "Multiple step definitions have the same Regexp:\n\n"
+        message << step_def_1.to_backtrace_line << "\n"
+        message << step_def_2.to_backtrace_line << "\n\n"
+        super(message)
+      end
+    end
+
+    # Registers a new StepDefinition. This method is aliased
+    # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>.
+    #
+    # See Cucumber#alias_steps for details on how to
+    # create your own aliases.
+    #
+    # The +&proc+ gets executed in the context of a <tt>world</tt>
+    # object, which is defined by #World. A new <tt>world</tt>
+    # object is created for each scenario and is shared across
+    # step definitions within that scenario.
+    def register_step_definition(regexp, &proc)
+      step_definition = StepDefinition.new(regexp, &proc)
+      step_definitions.each do |already|
+        raise Redundant.new(already, step_definition) if already.match(regexp)
+      end
+      step_definitions << step_definition
+      step_definition
+    end
+
+    def world(scenario, &proc)
+      world = new_world
+      begin
+        (@before_procs ||= []).each do |proc|
+          world.cucumber_instance_exec(false, 'Before', scenario, &proc)
         end
-      end.compact
-      
-      case(candidates.length)
-      when 0
-        [nil, [], PENDING]
-      when 1
-        candidates[0]
-      else
-        message = %{Multiple step definitions match #{step_name.inspect}:
-
-#{candidates.map{|regexp, args, proc| proc.to_backtrace_line}.join("\n")}
-
-}
-        raise Multiple.new(message)
+        yield world
+      ensure
+        (@after_procs ||= []).each do |proc|
+          world.cucumber_instance_exec(false, 'After', scenario, &proc) rescue nil
+        end
       end
-     end
-    
-    def proc_for(regexp)
-      @step_procs[regexp]
     end
-    
-    def has_step_definition?(step_name)
-      _, _, proc = regexp_args_proc(step_name)
-      proc != PENDING
+
+    # Registers a Before proc. You can call this method as many times as you
+    # want (typically from ruby scripts under <tt>support</tt>).
+    def Before(&proc)
+      (@before_procs ||= []) << proc
     end
-    
-    # TODO - move execute here?
-    def execute(step)
+
+    def After(&proc)
+      (@after_procs ||= []) << proc
+    end
+
+    # Registers a World proc. You can call this method as many times as you
+    # want (typically from ruby scripts under <tt>support</tt>).
+    def World(&proc)
+      (@world_procs ||= []) << proc
+    end
+
+    # Creates a new world instance
+    def new_world #:nodoc:
+      world = Object.new
+      (@world_procs ||= []).each do |proc|
+        world = proc.call(world)
+      end
+
+      world.extend(WorldMethods)
+      world.__cucumber_step_mother = self
+
+      world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
+      world
+    end
+
+    # Looks up the StepDefinition that matches +step_name+
+    def step_definition(step_name) #:nodoc:
+      found = step_definitions.select do |step_definition|
+        step_definition.match(step_name)
+      end
+      raise Undefined.new(step_name) if found.empty?
+      raise Ambiguous.new(step_name, found) if found.size > 1
+      found[0]
+    end
+
+    def step_definitions
+      @step_definitions ||= []
+    end
+
+    def snippet_text(step_keyword, step_name)
+      @snippet_generator.snippet_text(step_keyword, step_name)
+    end
+
+    module WorldMethods #:nodoc:
+      attr_writer :__cucumber_step_mother, :__cucumber_current_step
+
+      # Call a step from within a step definition
+      def __cucumber_invoke(name, *multiline_arguments)
+        begin
+          @__cucumber_step_mother.step_definition(name).execute(name, self, *multiline_arguments)
+        rescue Exception => e
+          @__cucumber_current_step.exception = e
+          raise e
+        end
+      end
+
+      def pending(message = "TODO")
+        if block_given?
+          begin
+            yield
+          rescue Exception => e
+            raise Pending.new(message)
+          end
+          raise Pending.new("Expected pending '#{message}' to fail. No Error was raised. No longer pending?")
+        else
+          raise Pending.new(message)
+        end
+      end
     end
   end
 end

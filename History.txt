@@ -1,4 +1,75 @@
-== 0.1.16.x (Git)
+== Git (ast - future 0.2)
+
+This is a major rewrite of Cucumber's internals. The rewrite was done to address technical
+debt and to have a codebase that is easier to evolve and maintain. There are some major
+changes to the Gherkin language, so this release is not fully backwards compatible. You
+may have to edit your feature files a little. Most importantly, "GivenScenario" and 
+"More Examples" no longer exist. See the "Removed features" section below for more details
+on how to use alternatives.
+
+**** CALL FOR TRANSLATORS ****
+Since the grammar has changed, there are some new keywords. We have to rely on the community
+to provide updated translations. This is much easier than before - just update languages.yml.
+There is no static code generation anymore.
+
+There are some exciting new feaqtures, so upgrading is not in vain. Tagging, Autoformatting,
+Auto aliasing of keywords in all languages, much better Ruby 1.9 support and improved output 
+for multiline arguments should make the upgrade worthwhile. 
+
+This version also brings Cucumber even closer to Java. Although it has been possible to
+run Cucumber on JRuby since v0.1.11, it has required that step definitions be defined
+in Ruby code. This has been a barrier for many Java developers who don't know Ruby.
+
+With this version you can write step definitions in pure Java code! Java step definitions
+are implemented simply by subclassing org.jbehave.scenario.steps.Steps. Example:
+
+  package super.duper;
+
+  public class MyJavaSteps extends Steps {
+      @Given("I have %count cucumbers in my belly")
+      public void cucumbersInTheBelly(int count) {
+          // talk to the Belly class
+      }
+
+      @Then("I should not be hungry for %n hours")
+      public void shouldNotBeHungry(int n) {
+          // Make assertions with JUnit or Hamcrest
+      }
+  }
+
+The only Ruby code you have to write is a little wiring in your env.rb file:
+
+  require 'cucumber/jbehave'
+  JBehave(super.duper.MyJavaSteps.new)
+
+You might be wondering what this brings over just using the whole JBehave tool
+standalone. Well, it gives you access to the Gherkin language in your features,
+which is a richer DSL than JBehave's language. -Over 20 spoken languages, Tables, 
+Scenario Outlines, the rich command line, the nice output format and everything 
+pure Ruby users have been enjoying for a while.
+
+== Bugfixes
+* Pending steps in > steps called from steps (#65 Aslak Hellesøy)
+
+=== New features
+* Run cucumber with --autoformat DIR to reformat (pretty print) all of your feature files.
+* New --strict option exits with an error code if there are undefined or pending steps.
+* Filtering with --tags. If you put @various @tags on your features and scenarios, --tags lets you run a subset of them.
+* Given, When, Then are automatically aliased to current language. 
+  Ruby 1.8 doesn't allow non-ascii method names in the source, so unless you're on 1.9
+  you will have to use Given, When, Then or set up your own aliases. Here is Norwegian:
+    Cucumber.alias_steps(%w{Naar Saa}) # Når, Så already aliased, but can't be called.
+* Run cucumber --language help to see all supported languages.
+* Run cucumber --language LANG help to see keywords for a given language.
+* Multiline arguments (tables and """ strings) are printed in the output
+* It's no longer necessary to compile the Treetop grammar when adding a new language. Localised parser is generated at runtime.
+
+=== Removed features
+* "GivenScenario" is gone. Instead you can use "Background" or call Steps from Steps.
+* "More Examples" is gone. "Scenario" + "More Examples" is no longer supported. Use "Scenario Outline" + "Examples" instead.
+* Pure Ruby features are no longer supported
+
+== 0.1.16.x (Master)
 
 Bugfix release.
 
@@ -27,6 +98,8 @@ This is a small bugfix release. The most notable improvement is compatibility wi
 upgrade both Cucumber and Webrat gems.
 
 === New features
+* Allow argument placeholders in step tables and multiline comments (#121 Joseph Wilk)
+* Scenario Outline can be followed by several named Examples sections (#123 Aslak Hellesøy)
 * Add the #binary= method back to the Rake task. It is needed by merb_cucumber for running the features of a merb app with it's bundled gems. (Thomas Marek)
 * Added a /^When I go to (.+)$/ step definition to webrat_steps.rb and a simple page name to path mapping method (Bryan Helmkamp)
 
