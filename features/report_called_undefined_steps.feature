@@ -24,6 +24,7 @@ Feature: Cucumber command line
       You can implement step definitions for missing steps with these snippets:
 
       Given /^this does not exist$/ do
+        pending
       end
 
 

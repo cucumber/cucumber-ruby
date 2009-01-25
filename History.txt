@@ -62,6 +62,7 @@ pure Ruby users have been enjoying for a while.
 * Pending steps in > steps called from steps (#65 Aslak Hellesøy)
 
 === New features
+* Step definition snippets contain a 'pending' call (#84 Aslak Hellesøy)
 * Call multiline steps from other steps (#144 Aslak Hellesøy)
 * Run cucumber with --autoformat DIR to reformat (pretty print) all of your feature files. (Aslak Hellesøy)
 * New --strict option exits with an error code if there are undefined or pending steps. (Aslak Hellesøy)

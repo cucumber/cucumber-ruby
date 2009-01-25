@@ -82,14 +82,17 @@ module Cucumber
             else
               @status = :skipped
             end
-          rescue StepMother::Undefined
-            @status = :undefined
-          rescue StepMother::Pending
-            @status = :pending
+          rescue StepMother::Undefined => exception
+            if visitor.options[:strict]
+              exception.set_backtrace([])
+              failed(exception)
+            else
+              @status = :undefined
+            end
+          rescue StepMother::Pending => exception
+            visitor.options[:strict] ? failed(exception) : @status = :pending
           rescue Exception => exception
-            @status = :failed
-            @exception = exception
-            @exception.backtrace << backtrace_line unless backtrace_line.nil?
+            failed(exception)
           end
           @scenario.step_executed(self) if @scenario
         end
@@ -124,6 +127,12 @@ module Cucumber
         @multiline_args.map do |arg|
           arg.arguments_replaced(arguments)
         end
+      end
+
+      def failed(exception)
+        @status = :failed
+        @exception = exception
+        @exception.backtrace << backtrace_line unless backtrace_line.nil?
       end
     end
   end
