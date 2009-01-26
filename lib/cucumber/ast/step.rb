@@ -118,7 +118,7 @@ module Cucumber
       def replace_name_arguments(argument_hash)
         name_with_arguments_replaced = @name
         argument_hash.each do |name, value|
-          name_with_arguments_replaced = name_with_arguments_replaced.gsub(name, value)
+          name_with_arguments_replaced = name_with_arguments_replaced.gsub(name, value) if value
         end
         name_with_arguments_replaced
       end

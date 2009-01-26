@@ -127,6 +127,7 @@ examples/test_unit/features/step_definitions/test_unit_steps.rb
 examples/test_unit/features/test_unit.feature
 examples/tickets/Rakefile
 examples/tickets/cucumber.yml
+examples/tickets/features/77.feature
 examples/tickets/features/lib/eatting_machine.rb
 examples/tickets/features/lib/pantry.rb
 examples/tickets/features/scenario_outline.feature
