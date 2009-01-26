@@ -7,7 +7,7 @@ require 'rubygems'
 require 'cucumber/parser'
 require 'cucumber/version'
 require 'cucumber/step_mother'
-require 'cucumber/cli'
+require 'cucumber/cli/main'
 require 'cucumber/broadcaster'
 require 'cucumber/core_ext/exception'
 
@@ -24,7 +24,7 @@ module Cucumber
       Parser.load_parser(keyword_hash)
     end
 
-    def language_complete?(lang)
+    def language_incomplete?(lang=@lang)
       KEYWORD_KEYS.detect{|key| keyword_hash(lang)[key].nil?}
     end
 
