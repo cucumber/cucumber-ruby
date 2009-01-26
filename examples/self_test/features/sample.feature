@@ -14,3 +14,6 @@ Feature: Sample
   @four
   Scenario: Failing
     Given failing
+      """
+      hello
+      """
