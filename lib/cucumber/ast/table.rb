@@ -19,11 +19,11 @@ module Cucumber
       end
 
       def at_lines?(lines)
-        rows.detect { |row| row.at_lines?(lines) }
+        cells_rows.detect { |row| row.at_lines?(lines) }
       end
 
       def accept(visitor, status)
-        rows.each do |row|
+        cells_rows.each do |row|
           visitor.visit_table_row(row, status)
         end
         nil
@@ -42,7 +42,7 @@ module Cucumber
       #   [{'a' => '2', 'b' => '3', 'sum' => '5'}, {'a' => '7', 'b' => '9', 'sum' => '16'}]
       #
       def hashes
-        @hashes ||= rows[1..-1].map do |row|
+        @hashes ||= cells_rows[1..-1].map do |row|
           row.to_hash
         end
       end
@@ -68,7 +68,7 @@ module Cucumber
 
       # For testing only
       def to_sexp #:nodoc:
-        [:table, *rows.map{|row| row.to_sexp}]
+        [:table, *cells_rows.map{|row| row.to_sexp}]
       end
 
       def to_hash(cells) #:nodoc:
@@ -80,7 +80,7 @@ module Cucumber
       end
 
       def index(cells) #:nodoc:
-        rows.index(cells)
+        cells_rows.index(cells)
       end
 
       def arguments_replaced(arguments) #:nodoc:
@@ -98,7 +98,7 @@ module Cucumber
       end
 
       def at_lines?(lines)
-        rows.detect{|row| row.at_lines?(lines)}
+        cells_rows.detect{|row| row.at_lines?(lines)}
       end
 
       private
@@ -107,7 +107,7 @@ module Cucumber
         columns[col].__send__(:width)
       end
 
-      def rows
+      def cells_rows
         @rows ||= cell_matrix.map do |cell_row|
           @cells_class.new(self, cell_row)
         end
