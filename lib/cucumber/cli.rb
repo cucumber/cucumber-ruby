@@ -57,7 +57,8 @@ module Cucumber
         opts.banner = ["Usage: cucumber [options] [[FILE[:LINE[:LINE]*]] | [FILES|DIRS]]", "",
           "Examples:",
           "cucumber examples/i18n/en/features",
-          "cucumber --language it examples/i18n/it/features/somma.feature:6:98:113", "", ""
+          "cucumber --language it examples/i18n/it/features/somma.feature:6:98:113", "", "",
+          "cucumber --no-snippets http://tinyurl.com/cuke-mastermind", "", "",
         ].join("\n")
         opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", 
           "Require files before executing the features. If this",
@@ -259,7 +260,7 @@ Defined profiles in cucumber.yml:
         path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
         File.directory?(path) ? Dir["#{path}/**/*.rb"] : path
       end.flatten.uniq
-      files.sort { |a,b| (b =~ %r{/support/} || -1) <=>  (a =~ %r{/support/} || -1) }
+      files.sort { |a,b| (b =~ %r{/support/} || -1) <=>  (a =~ %r{/support/} || -1) }.reject{|f| f =~ /^http/}
     end
 
     def feature_files
