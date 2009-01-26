@@ -57,7 +57,7 @@ module Cucumber
         opts.banner = ["Usage: cucumber [options] [[FILE[:LINE[:LINE]*]] | [FILES|DIRS]]", "",
           "Examples:",
           "cucumber examples/i18n/en/features",
-          "cucumber --language it examples/i18n/it/features/somma.feature:6:98:113", "", "",
+          "cucumber --language it examples/i18n/it/features/somma.feature:6:98:113",
           "cucumber --no-snippets http://tinyurl.com/cuke-mastermind", "", "",
         ].join("\n")
         opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", 
