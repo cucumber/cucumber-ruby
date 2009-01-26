@@ -5,7 +5,10 @@ class Calculador
   end
   
   def add
-    #@args[0] + @args[1]
     @args.inject(0){|n,sum| sum+=n}
+  end
+
+  def divide
+    @args[0].to_f / @args[1].to_f
   end
 end
