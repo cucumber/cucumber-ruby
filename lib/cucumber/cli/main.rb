@@ -3,11 +3,13 @@ require 'cucumber'
 require 'ostruct'
 require 'cucumber/parser'
 require 'cucumber/formatter'
+require 'cucumber/cli/language_help_formatter'
 
 module Cucumber
+module Cli
   class YmlLoadError < StandardError; end
 
-  class CLI
+  class Main
     class << self
       def step_mother=(step_mother)
         @step_mother = step_mother
@@ -181,6 +183,10 @@ module Cucumber
 
     def execute!(step_mother)
       Cucumber.load_language(@options[:lang])
+      if Cucumber.language_incomplete?
+        list_keywords(Cucumber.lang)
+      end
+
       require_files
       enable_diffing
       features = load_plain_text_features
@@ -366,50 +372,19 @@ Defined profiles in cucumber.yml:
     end
 
     def list_languages
-      raw = Cucumber::LANGUAGES.keys.sort.map do |lang|
-        [lang, Cucumber::LANGUAGES[lang]['name'], Cucumber::LANGUAGES[lang]['native']]
-      end
-      print_lang_table(raw, {:check_lang=>true})
+      Cli2::LanguageHelpFormatter.list_languages(@out_stream)
+      Kernel.exit
     end
 
     def list_keywords(lang)
       unless Cucumber::LANGUAGES[lang]
-        exit_with_error("No language with key #{v}")
+        exit_with_error("No language with key #{lang}")
       end
-      raw = Cucumber::KEYWORD_KEYS.map do |key|
-        [key, Cucumber::LANGUAGES[lang][key]]
-      end
-      print_lang_table(raw, {})
-    end
-    
-    def print_lang_table(raw, options)
-      table = Ast::Table.new(raw)
-      formatter = Formatter::Pretty.new(nil, @out_stream, options, '')
-
-      def formatter.visit_table_row(table_row, status)
-        @col = 1
-        super
-      end
-
-      def formatter.visit_table_cell_value(value, width, status)
-        if @col == 1
-          if(@options[:check_lang])
-            @incomplete = Cucumber.language_complete?(value)
-          end
-          status = :comment 
-        elsif @incomplete
-          status = :failed
-        end
-        
-        @col += 1
-        super(value, width, status)
-      end
-
-      formatter.indent = 0
-      formatter.visit_multiline_arg(table, :passed)
+      Cli2::LanguageHelpFormatter.list_keywords(@out_stream, lang)
       Kernel.exit
     end
   end
 end
+end
 
-Cucumber::CLI.step_mother = self
+Cucumber::Cli::Main.step_mother = self

@@ -18,6 +18,7 @@ module Cucumber
         @io = io
         @options = options
         @delim = delim
+        @indent = 0
       end
 
       def visit_features(features)
