@@ -66,6 +66,7 @@ pure Ruby users have been enjoying for a while.
 * Pending steps in > steps called from steps (#65 Aslak Hellesøy)
 
 === New features
+* Added ability to pass URIs to cucumber in addition to files and directories. Useful for troubleshooting! (Aslak Hellesøy)
 * Groups of tabular scenarios (#57 Aslak Hellesøy)
 * Tagging scenarios and features. Pick the ones to run with --tags (#54 Aslak Hellesøy)
 * Make the current scenario available to the steps. (#44 Aslak Hellesøy)

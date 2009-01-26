@@ -17,8 +17,12 @@ module Cucumber
           lines = []
         end
 
-        feature = File.open(path, Cucumber.file_mode('r')) do |io|
-          parse_or_fail(io.read, path)
+        loader = lambda { |io| parse_or_fail(io.read, path) }
+        feature = if path =~ /^http/
+          require 'open-uri'
+          open(path, &loader)
+        else
+          File.open(path, Cucumber.file_mode('r'), &loader) 
         end
         feature.lines = lines
         feature
