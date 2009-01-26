@@ -19,7 +19,7 @@ module Cucumber
     class PyString
       def initialize(start_line, end_line, string, quotes_indent)
         @start_line, @end_line = start_line, end_line
-        @string, @quotes_indent = string, quotes_indent
+        @string, @quotes_indent = string.gsub(/\\"/, '"'), quotes_indent
       end
 
       def to_s
@@ -46,7 +46,7 @@ module Cucumber
       def to_sexp #:nodoc:
         [:py_string, to_s]
       end
-                
+    
     end
   end
 end

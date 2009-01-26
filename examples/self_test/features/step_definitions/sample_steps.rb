@@ -5,7 +5,7 @@ end
 Given /^passing$/ do |table|
 end
 
-Given /^failing$/ do
+Given /^failing$/ do |string|
   flunker
 end
 

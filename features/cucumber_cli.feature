@@ -50,6 +50,9 @@ Feature: Cucumber command line
         @four
         Scenario: Failing
           Given failing
+            \"\"\"
+            hello
+            \"\"\"
             FAIL (RuntimeError)
             ./features/step_definitions/sample_steps.rb:2:in `flunker'
             ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
@@ -199,6 +202,9 @@ Feature: Cucumber command line
         @four
         Scenario: Failing
           Given failing
+            \"\"\"
+            hello
+            \"\"\"
 
       11 scenarios
       11 skipped steps
@@ -293,6 +299,9 @@ Feature: Cucumber command line
         @four
         Scenario: Failing
           Given failing
+            \"\"\"
+            hello
+            \"\"\"
             FAIL (RuntimeError)
             ./features/step_definitions/sample_steps.rb:2:in `flunker'
             ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
@@ -325,6 +334,9 @@ Feature: Cucumber command line
         @four
         Scenario: Failing
           Given failing
+            \"\"\"
+            hello
+            \"\"\"
 
 
       """
