@@ -741,6 +741,10 @@ module Cucumber
         def multi
           elements[5]
         end
+
+        def white
+          elements[6]
+        end
       end
 
       module Step1
@@ -828,6 +832,10 @@ module Cucumber
                     r11 = SyntaxNode.new(input, index...index)
                   end
                   s0 << r11
+                  if r11
+                    r13 = _nt_white
+                    s0 << r13
+                  end
                 end
               end
             end
@@ -870,13 +878,8 @@ module Cucumber
             break
           end
         end
-        if s0.empty?
-          self.index = i0
-          r0 = nil
-        else
-          r0 = SyntaxNode.new(input, i0...index, s0)
-          r0.extend(ExamplesSections0)
-        end
+        r0 = SyntaxNode.new(input, i0...index, s0)
+        r0.extend(ExamplesSections0)
 
         node_cache[:examples_sections][start_index] = r0
 
