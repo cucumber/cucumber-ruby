@@ -1,4 +1,3 @@
-require 'treetop'
 require 'treetop/runtime'
 require 'treetop/ruby_extensions'
 
