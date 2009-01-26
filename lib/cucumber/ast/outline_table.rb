@@ -8,7 +8,7 @@ module Cucumber
       end
 
       def accept(visitor, status)
-        rows.each_with_index do |row, n|
+        cells_rows.each_with_index do |row, n|
           should_visit = n == 0 || 
             row.at_lines?(visitor.current_feature_lines) ||
             @scenario_outline.at_header_or_step_lines?(visitor.current_feature_lines)
