@@ -206,7 +206,6 @@ lib/cucumber/rake/task.rb
 lib/cucumber/step_definition.rb
 lib/cucumber/step_mother.rb
 lib/cucumber/version.rb
-pretty.txt
 rails_generators/cucumber/USAGE
 rails_generators/cucumber/cucumber_generator.rb
 rails_generators/cucumber/templates/cucumber

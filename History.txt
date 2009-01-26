@@ -90,7 +90,7 @@ pure Ruby users have been enjoying for a while.
 * "More Examples" is gone. "Scenario" + "More Examples" is no longer supported. Use "Scenario Outline" + "Examples" instead.
 * Pure Ruby features are no longer supported.
 
-== 0.1.16
+== (0.16.4 aslakhellesoy-webrat gem on GitHub)
 
 Bugfix release.
 
