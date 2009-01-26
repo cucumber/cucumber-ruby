@@ -1,17 +1,16 @@
 Característica: adición
   Para evitar hacer errores tontos
-  Como contador
+  Como un matemático idiota
   Quiero saber la suma de los números
 
-  Escenario: dos números
-    Dado que he introducido 5
-    Y he introducido 7
-    Cuando añado
-    Entonces el resultado debe ser 12
+  Esquema del escenario: Sumar dos números
+    Dado que he introducido <entrada_1> en la calculadora
+    Y que he introducido <entrada_2> en la calculadora
+    Cuando oprimo el <botón>
+    Entonces el resultado debe ser <resultado> en la pantalla
 
-  Escenario: tres números
-    Dado que he introducido 5
-    Y he introducido 7
-    Y he introducido 1
-    Cuando añado
-    Entonces el resultado debe ser 13
+  Ejemplos:
+    | entrada_1 | entrada_2 | botón | resultado |
+    | 20        | 30        | add   | 50        |
+    | 2         | 5         | add   | 7         |
+    | 0         | 40        | add   | 40        |

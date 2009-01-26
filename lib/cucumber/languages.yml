@@ -103,8 +103,11 @@
   name: Spanish
   native: español
   encoding: UTF-8
+  background: Antecedentes
   feature: Característica
   scenario: Escenario
+  scenario_outline: Esquema del escenario
+  examples: Ejemplos
   given: Dado
   when: Cuando
   then: Entonces

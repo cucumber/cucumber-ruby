@@ -11,14 +11,14 @@ end
 After do
 end
 
-Given /he introducido (\d+)/ do |n|
+Given /que he introducido (\d+) en la calculadora/ do |n|
   @calc.push n.to_i
 end
 
-When 'añado' do
-  @result = @calc.add
+When /oprimo el (\w+)/ do |op|
+  @result = @calc.send op
 end
 
-Then /el resultado debe ser (\d*)/ do |result|
-  @result.should == result.to_i
+Then /el resultado debe ser (.*) en la pantalla/ do |result|
+  @result.should == result.to_f
 end
