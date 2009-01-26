@@ -76,7 +76,7 @@ module Cucumber
       end
 
       def previous_step(step)
-        i = @steps.index(step)
+        i = @steps.index(step) || -1
         @steps[i-1]
       end
 
