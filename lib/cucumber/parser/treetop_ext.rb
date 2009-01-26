@@ -28,13 +28,9 @@ module Cucumber
     class SyntaxError < StandardError
       def initialize(parser, file, line_offset)
         tf = parser.terminal_failures
-        expected = tf.size == 1 ? tf[0].expected_string.inspect : "one of #{tf.map{|f| f.expected_string.inspect}.uniq*', '}"
-        after = parser.input[parser.index...parser.failure_index]
-        found = parser.input[parser.failure_index..parser.failure_index]
-        
+        expected = tf.size == 1 ? tf[0].expected_string.inspect : "one of #{tf.map{|f| f.expected_string}.uniq*', '}"
         line = parser.failure_line + line_offset
-        message = "#{file}:#{line}:#{parser.failure_column}: " +
-          "Parse error, expected #{expected}. After #{after.inspect}. Found: #{found.inspect}"
+        message = "#{file}:#{line}:#{parser.failure_column}: Parse error, expected #{expected}."
         super(message)
       end
     end

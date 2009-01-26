@@ -88,7 +88,7 @@ module Cucumber
       end
 
       rule step
-        space* step_keyword space* name:line_to_eol (eol+ / eof) multi:multiline_arg? {
+        space* step_keyword space* name:line_to_eol (eol+ / eof) multi:multiline_arg? white {
           def build
             if multi.respond_to?(:build)
               Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value, multi.build)
@@ -100,7 +100,7 @@ module Cucumber
       end
 
       rule examples_sections
-        examples+ {
+        examples* {
           def build
             elements.map{|e| e.build}
           end
