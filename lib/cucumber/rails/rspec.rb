@@ -1,5 +1,8 @@
+require 'cucumber/rails/world'
 require 'spec/expectations'
 require 'spec/rails/matchers'
 
-Cucumber::Rails::World.send(:include, Spec::Matchers)
-Cucumber::Rails::World.send(:include, Spec::Rails::Matchers)
+class Cucumber::Rails::World
+  include Spec::Matchers
+  include Spec::Rails::Matcher
+end

@@ -57,6 +57,7 @@ Scenario Outlines, the rich command line, the nice output format and everything
 pure Ruby users have been enjoying for a while.
 
 == Bugfixes
+* Errors with rspec-rails matchers in cucumber 0.1.99 (#173 David Chelimsky)
 * Can't use an empty string as a table value in a scenario outline (#172 Aslak Hellesøy)
 * Really skip skipped steps (#90 Aslak Hellesøy)
 * No output for multi-line strings (#71 Aslak Hellesøy)
