@@ -57,8 +57,8 @@ module Cucumber
       step_definition
     end
 
-    def world(scenario, &proc)
-      world = new_world
+    def world(scenario, prior_world = nil, &proc)
+      world = prior_world || new_world
       begin
         (@before_procs ||= []).each do |proc|
           world.cucumber_instance_exec(false, 'Before', scenario, &proc)

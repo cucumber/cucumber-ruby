@@ -5,9 +5,13 @@ module Cucumber
       attr_accessor :file
       attr_writer :features, :lines
 
-      def initialize(comment, tags, name, feature_elements)
-        @comment, @tags, @name, @feature_elements = comment, tags, name, feature_elements
-        feature_elements.each{|feature_element| feature_element.feature = self}
+      def initialize(comment, tags, name, feature_elements, background = nil)
+        @comment, @tags, @name, @feature_elements, @background = comment, tags, name, feature_elements, background
+        feature_elements.each do |feature_element| 
+          feature_element.feature = self
+          feature_element.background = background if background
+        end
+        background.feature = self if background
         @lines = []
       end
 
@@ -16,6 +20,7 @@ module Cucumber
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@name)
+        
         @feature_elements.each do |feature_element|
           visitor.visit_feature_element(feature_element) if feature_element.at_lines?(*@lines)
         end
@@ -43,6 +48,7 @@ module Cucumber
         sexp += [comment] if comment
         tags = @tags.to_sexp
         sexp += tags if tags.any?
+        sexp += [@background.to_sexp] if @background
         sexp += @feature_elements.map{|e| e.to_sexp}
         sexp
       end
