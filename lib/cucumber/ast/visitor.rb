@@ -8,8 +8,12 @@ module Cucumber
         @step_mother = step_mother
       end
 
-      def world(scenario, &proc)
-        @step_mother.world(scenario, &proc)
+      def world(scenario, world = nil, &proc)
+        @step_mother.world(scenario, world, &proc)
+      end
+      
+      def new_world
+        @step_mother.new_world
       end
 
       def step_definition(step_name)
@@ -52,6 +56,10 @@ module Cucumber
       # +feature_element+ is either Scenario or ScenarioOutline
       def visit_feature_element(feature_element)
         feature_element.accept(self)
+      end
+      
+      def visit_background(background)
+        background.accept(self)
       end
 
       def visit_examples(examples)

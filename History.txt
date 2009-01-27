@@ -69,6 +69,7 @@ pure Ruby users have been enjoying for a while.
 * Pending steps in > steps called from steps (#65 Aslak Hellesøy)
 
 === New features
+* Adding support for Background (#153 Joseph Wilk) 
 * New --no-multiline option to reduce noise. Useful if lots of features are failing.
 * Added ability to pass URIs to cucumber in addition to files and directories. Useful for troubleshooting! (Aslak Hellesøy)
 * Groups of tabular scenarios (#57 Aslak Hellesøy)
