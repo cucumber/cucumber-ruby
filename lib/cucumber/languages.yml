@@ -2,6 +2,10 @@
 # We use the codes here (prefer 2 letters when possible)
 # http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes
 #
+# If you want several aliases for a keyword, just separate them
+# with a | character. Make sure there are no ambiguities in the
+# keywords.
+#
 "en":
   name: English
   native: English
@@ -10,7 +14,7 @@
   background: Background
   scenario: Scenario
   scenario_outline: Scenario Outline
-  examples: Examples
+  examples: Scenarios|Examples
   given: Given
   when: When
   then: Then

@@ -75,6 +75,7 @@ pure Ruby users have been enjoying for a while.
 * Pending steps in > steps called from steps (#65 Aslak Hellesøy)
 
 === New features
+* Keywords can be aliased in languages.yml. See English for an example (scenarios: Scenarios|Examples)
 * Adding support for Background (#153 Joseph Wilk) 
 * Added Česky/Czech (Vojtech Salbaba)
 * New --no-multiline option to reduce noise. Useful if lots of features are failing.
