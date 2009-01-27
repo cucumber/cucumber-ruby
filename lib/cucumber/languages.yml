@@ -14,7 +14,7 @@
   background: Background
   scenario: Scenario
   scenario_outline: Scenario Outline
-  examples: Scenarios|Examples
+  examples: Examples|Scenarios
   given: Given
   when: When
   then: Then
