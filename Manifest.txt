@@ -117,11 +117,19 @@ examples/selenium/Rakefile
 examples/selenium/features/search.feature
 examples/selenium/features/step_definitons/stories_steps.rb
 examples/self_test/README.textile
+examples/self_test/features/background/failing_background.feature
+examples/self_test/features/background/failing_background_after_success.feature
+examples/self_test/features/background/multiline_args_background.feature
+examples/self_test/features/background/passing_background.feature
+examples/self_test/features/background/pending_background.feature
+examples/self_test/features/background/scenario_outline_failing_background.feature
+examples/self_test/features/background/scenario_outline_passing_background.feature
 examples/self_test/features/call_undefined_step_from_step_def.feature
 examples/self_test/features/lots_of_undefined.feature
 examples/self_test/features/outline_sample.feature
 examples/self_test/features/sample.feature
 examples/self_test/features/step_definitions/sample_steps.rb
+examples/self_test/features/support/env.rb
 examples/test_unit/Rakefile
 examples/test_unit/features/step_definitions/test_unit_steps.rb
 examples/test_unit/features/test_unit.feature
@@ -139,6 +147,7 @@ examples/watir/Rakefile
 examples/watir/features/search.feature
 examples/watir/features/step_definitons/search_steps.rb
 examples/watir/features/support/env.rb
+features/background.feature
 features/cucumber_cli.feature
 features/cucumber_cli_outlines.feature
 features/report_called_undefined_steps.feature
@@ -161,6 +170,7 @@ lib/autotest/cucumber_rspec.rb
 lib/autotest/discover.rb
 lib/cucumber.rb
 lib/cucumber/ast.rb
+lib/cucumber/ast/background.rb
 lib/cucumber/ast/comment.rb
 lib/cucumber/ast/examples.rb
 lib/cucumber/ast/feature.rb
@@ -218,6 +228,7 @@ rails_generators/feature/USAGE
 rails_generators/feature/feature_generator.rb
 rails_generators/feature/templates/feature.erb
 rails_generators/feature/templates/steps.erb
+spec/cucumber/ast/background_spec.rb
 spec/cucumber/ast/feature_factory.rb
 spec/cucumber/ast/feature_spec.rb
 spec/cucumber/ast/py_string_spec.rb
