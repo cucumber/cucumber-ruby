@@ -78,6 +78,7 @@
   native: Deutsch
   encoding: UTF-8
   feature: Funktionalität
+  background: Grundlage
   scenario: Szenario
   scenario_outline: Szenariogrundriss
   examples: Beispiele
