@@ -121,6 +121,7 @@ module Cucumber
       end
 
       def visit_multiline_arg(multiline_arg, status)
+        return if @options[:no_multiline]
         multiline_arg.accept(self, status)
       end
 

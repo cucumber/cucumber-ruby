@@ -56,11 +56,11 @@ module Cli
       args.extend(OptionParser::Arguable)
 
       args.options do |opts|
-        opts.banner = ["Usage: cucumber [options] [[FILE[:LINE[:LINE]*]] | [FILES|DIRS]]", "",
+        opts.banner = ["Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+", "",
           "Examples:",
           "cucumber examples/i18n/en/features",
           "cucumber --language it examples/i18n/it/features/somma.feature:6:98:113",
-          "cucumber --no-snippets http://tinyurl.com/cuke-mastermind", "", "",
+          "cucumber -n -i http://rubyurl.com/eeCl", "", "",
         ].join("\n")
         opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", 
           "Require files before executing the features. If this",
@@ -138,16 +138,16 @@ module Cli
           @options[:dry_run] = true
           @quiet = true
         end
-        opts.on("-m", "--[no-]multiline", 
-          "Don't print multiline strings and tables under steps.") do |v|
-          @options[:source] = v
+        opts.on("-m", "--no-multiline", 
+          "Don't print multiline strings and tables under steps.") do
+          @options[:no_multiline] = true
         end
-        opts.on("-n", "--[no-]source", 
-          "Don't show the file and line of the step definition with the steps.") do |v|
-          @options[:source] = v
+        opts.on("-n", "--no-source", 
+          "Don't print the file and line of the step definition with the steps.") do
+          @options[:source] = false
         end
-        opts.on("-i", "--[no-]snippets", "Don't show the snippets for pending steps.") do |v|
-          @options[:snippets] = v
+        opts.on("-i", "--no-snippets", "Don't print snippets for pending steps.") do
+          @options[:snippets] = false
         end
         opts.on("-q", "--quiet", "Alias for --no-snippets --no-source.") do
           @quiet = true
