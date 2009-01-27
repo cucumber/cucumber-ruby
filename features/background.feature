@@ -219,4 +219,5 @@ Feature: backgrounds
     
     """
 
+  @josephwilk
   Scenario: run a scenario showing explicit background steps --explicit-background
