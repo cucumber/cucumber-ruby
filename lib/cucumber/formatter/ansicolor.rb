@@ -1,7 +1,11 @@
 # Hack to work around Win32/Console, which bundles a licence-violating, outdated
 # copy of term/ansicolor that doesn't implement Term::ANSIColor#coloring=.
 # We want the official one!
-gem 'term-ansicolor'
+begin
+  gem 'term-ansicolor' 
+rescue Exception => ignore
+  # In order to work with Cucumber.java, which doesn't bundle gems.
+end
 $LOAD_PATH.each{|path| $LOAD_PATH.unshift($LOAD_PATH.delete(path)) if path =~ /term-ansicolor/}
 require 'term/ansicolor'
 

@@ -56,6 +56,12 @@ which is a richer DSL than JBehave's language. -Over 20 spoken languages, Tables
 Scenario Outlines, the rich command line, the nice output format and everything 
 pure Ruby users have been enjoying for a while.
 
+== TODO Before 0.2 release
+* Verify that custom formatters work - write a feature for it
+* Implement at least a basic HTML formatter
+* Get cucumber.jar working. Move to separate github project. I have it somewhat working with:
+  mvn compile && java -classpath /usr/local/jruby/lib/jruby-complete.jar:target/classes:/usr/local/jruby/lib/ruby/gems/1.8/gems/treetop-1.2.4/lib:/usr/local/jruby/lib/ruby/gems/1.8/gems/polyglot-0.2.3/lib:/usr/local/jruby/lib/ruby/gems/1.8/gems/term-ansicolor-1.0.3/lib:. cukes.Cucumber --help
+
 == Bugfixes
 * -n option does not suppress the line info for a Scenario Outline (#175 Aslak Hellesøy)
 * Errors with rspec-rails matchers in cucumber 0.1.99 (#173 David Chelimsky)
