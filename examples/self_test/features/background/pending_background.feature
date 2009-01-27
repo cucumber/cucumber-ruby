@@ -3,8 +3,8 @@ Feature: Pending background sample
   Background:
     Given pending
 
-  Scenario: passing background
+  Scenario: pending background
     Then I should have '10' cukes
     
-  Scenario: another passing background
+  Scenario: another pending background
     Then I should have '10' cukes

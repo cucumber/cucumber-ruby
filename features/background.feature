@@ -104,14 +104,14 @@ Feature: backgrounds
           ./features/step_definitions/sample_steps.rb:2:in `/^failing without a table$/'
           features/background/scenario_outline_failing_background.feature:4:in `Given failing without a table'
 
-      Scenario Outline: passing background
+      Scenario Outline: failing background
         Then I should have '<count>' cukes
 
       Examples: 
         | count |
         | 10    |
 
-      Scenario Outline: another passing background
+      Scenario Outline: another failing background
         Then I should have '<count>' cukes
 
       Examples: 
@@ -133,10 +133,10 @@ Feature: backgrounds
       Background: 
         Given pending
 
-      Scenario: passing background
+      Scenario: pending background
         Then I should have '10' cukes
 
-      Scenario: another passing background
+      Scenario: another pending background
         Then I should have '10' cukes
 
     2 scenarios
@@ -165,7 +165,7 @@ Feature: backgrounds
           ./features/step_definitions/sample_steps.rb:2:in `/^'(.+)' global cukes$/'
           features/background/failing_background_after_success.feature:3:in `And '10' global cukes'
 
-      Scenario: another passing background
+      Scenario: failing background
         Then I should have '10' global cukes
 
     2 scenarios
@@ -173,6 +173,47 @@ Feature: backgrounds
     1 skipped step
     4 passed steps
 
+    """
+
+  Scenario: background with multline args
+  When I run cucumber -q features/background/multiline_args_background.feature --require features
+  Then it should pass with
+    """
+    Feature: Passing background with multiline args
+
+      Background: 
+        Given table
+          | a | b |
+          | c | d |
+        And multiline string
+          \"\"\"
+            I'm a cucumber and I'm okay. 
+            I sleep all night and I test all day
+          \"\"\"
+
+      Scenario: passing background
+        Then the table should be
+          | a | b |
+          | c | d |
+        Then the multiline string should be
+          \"\"\"
+            I'm a cucumber and I'm okay. 
+            I sleep all night and I test all day
+          \"\"\"
+
+      Scenario: another passing background
+        Then the table should be
+          | a | b |
+          | c | d |
+        Then the multiline string should be
+          \"\"\"
+            I'm a cucumber and I'm okay. 
+            I sleep all night and I test all day
+          \"\"\"
+
+    2 scenarios
+    8 passed steps
+    
     """
 
   Scenario: run a scenario showing explicit background steps --explicit-background
