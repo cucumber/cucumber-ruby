@@ -33,10 +33,10 @@ Then /^I should have '(.+)' cukes$/ do |cukes|
 end
 
 Given /^'(.+)' global cukes$/ do |cukes|
-  $x ||= 0
-  flunker if $x > 0
+  $scenario_runs ||= 0
+  flunker if $scenario_runs > 0
   $cukes = cukes
-  $x += 1
+  $scenario_runs += 1
 end
 
 Then /^I should have '(.+)' global cukes$/ do |cukes|
