@@ -45,6 +45,20 @@
   then: Yna
   and: A
   but: Ond
+"cz":
+  name: Czech
+  native: Česky
+  encoding: UTF-8
+  feature: Požadavek
+  background: Pozadí
+  scenario: Scénář
+  scenario_outline: Náčrt Scénáře
+  examples: Příklady
+  given: Pokud
+  when: Když
+  then: Pak
+  and: A
+  but: Ale
 "da":
   name: Danish
   native: dansk
