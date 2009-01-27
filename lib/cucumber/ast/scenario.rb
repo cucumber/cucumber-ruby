@@ -1,7 +1,7 @@
 module Cucumber
   module Ast
     class Scenario
-      attr_writer :feature
+      attr_writer :feature, :background
       
       def initialize(comment, tags, line, keyword, name, steps)
         @comment, @tags, @line, @keyword, @name = comment, tags, line, keyword, name
@@ -10,11 +10,15 @@ module Cucumber
       end
 
       def accept(visitor)
+        visitor.visit_background(@background) if @background
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, @name, file_line(@line), source_indent(text_length))
-        visitor.world(self) do |world|
-          previous = :passed
+
+        prior_world = @background ? @background.world : nil
+        visitor.world(self, prior_world) do |world|
+
+          previous = @background ? @background.status : :passed
           @steps.each do |step|
             step.previous = previous
             step.world    = world

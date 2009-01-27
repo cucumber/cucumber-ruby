@@ -5,9 +5,13 @@ module Cucumber
       include I18n
 
       rule feature
-        white comment white tags white header:(!(scenario_outline / scenario) .)* feature_elements {
+        white comment white tags white header:(!(scenario_outline / scenario / background) .)* background:(background)? feature_elements {
           def build
-            Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build)
+            if background.respond_to?(:build)
+              Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build, background.build)
+            else
+              Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build)
+            end
           end
         }
       end
@@ -35,6 +39,19 @@ module Cucumber
 
       rule comment_line
         '#' line_to_eol
+      end
+
+      rule background
+         comment white background_keyword space* (eol+ / eof) steps {
+           def build
+             Ast::Background.new(
+               comment.build, 
+               background_keyword.line,
+               background_keyword.text_value, 
+               steps.build
+             )
+            end
+          }
       end
 
       rule feature_elements

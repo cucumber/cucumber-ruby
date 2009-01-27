@@ -27,6 +27,7 @@ module Cucumber
       end
 
       def accept(visitor)
+        visitor.visit_background(@background) if @background
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, @name, file_line(@line), source_indent(text_length))
@@ -40,8 +41,11 @@ module Cucumber
 
       def execute_row(cells, visitor, &proc)
         exception = nil
-        visitor.world(self) do |world|
-          previous_status = :passed
+        
+        prior_world = @background ? @background.world : nil
+        visitor.world(self, prior_world) do |world|
+          
+          previous_status = @background ? @background.status : :passed
           argument_hash = cells.to_hash
           cell_index = 0
           @steps.each do |step|
