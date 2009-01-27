@@ -2,6 +2,10 @@ module Cucumber
   module Parser
     grammar I18n
 
+      rule background_keyword
+        "<%= keywords['background'] %>:"
+      end
+
       rule scenario_keyword
         '<%= keywords['scenario'] %>:'
       end

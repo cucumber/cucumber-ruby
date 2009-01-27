@@ -19,6 +19,10 @@ module Cucumber
 
         execute_twin(world, previous, visitor, row_line, name, *multiline_args)
       end
+      
+      def execute_as_new(world, previous, visitor, row_line)
+        execute_twin(world, previous, visitor, row_line, @name, *@multiline_args)
+      end
 
       def accept(visitor)
         execute(visitor)
