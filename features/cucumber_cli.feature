@@ -148,7 +148,7 @@ Feature: Cucumber command line
       """
 
   Scenario: --dry-run
-    When I run cucumber --dry-run --no-snippets features
+    When I run cucumber --dry-run --no-snippets features/*.feature
     Then it should pass with
       """
       Feature: Calling undefined step

@@ -42,14 +42,22 @@ module Cucumber
           elements[5]
         end
 
-        def feature_elements
+        def background
           elements[6]
+        end
+
+        def feature_elements
+          elements[7]
         end
       end
 
       module Feature2
         def build
-          Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build)
+          if background.respond_to?(:build)
+            Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build, background.build)
+          else
+            Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build)
+          end
         end
       end
 
@@ -90,8 +98,13 @@ module Cucumber
                       if r11
                         r9 = r11
                       else
-                        self.index = i9
-                        r9 = nil
+                        r12 = _nt_background
+                        if r12
+                          r9 = r12
+                        else
+                          self.index = i9
+                          r9 = nil
+                        end
                       end
                     end
                     if r9
@@ -103,13 +116,13 @@ module Cucumber
                     s7 << r8
                     if r8
                       if index < input_length
-                        r12 = (SyntaxNode).new(input, index...(index + 1))
+                        r13 = (SyntaxNode).new(input, index...(index + 1))
                         @index += 1
                       else
                         terminal_parse_failure("any character")
-                        r12 = nil
+                        r13 = nil
                       end
-                      s7 << r12
+                      s7 << r13
                     end
                     if s7.last
                       r7 = (SyntaxNode).new(input, i7...index, s7)
@@ -127,8 +140,17 @@ module Cucumber
                   r6 = SyntaxNode.new(input, i6...index, s6)
                   s0 << r6
                   if r6
-                    r13 = _nt_feature_elements
-                    s0 << r13
+                    r15 = _nt_background
+                    if r15
+                      r14 = r15
+                    else
+                      r14 = SyntaxNode.new(input, index...index)
+                    end
+                    s0 << r14
+                    if r14
+                      r16 = _nt_feature_elements
+                      s0 << r16
+                    end
                   end
                 end
               end
@@ -410,6 +432,115 @@ module Cucumber
         end
 
         node_cache[:comment_line][start_index] = r0
+
+        return r0
+      end
+
+      module Background0
+        def comment
+          elements[0]
+        end
+
+        def white
+          elements[1]
+        end
+
+        def background_keyword
+          elements[2]
+        end
+
+        def steps
+          elements[5]
+        end
+      end
+
+      module Background1
+        def build
+          Ast::Background.new(
+            comment.build, 
+            background_keyword.line,
+            background_keyword.text_value, 
+            steps.build
+          )
+         end
+      end
+
+      def _nt_background
+        start_index = index
+        if node_cache[:background].has_key?(index)
+          cached = node_cache[:background][index]
+          @index = cached.interval.end if cached
+          return cached
+        end
+
+        i0, s0 = index, []
+        r1 = _nt_comment
+        s0 << r1
+        if r1
+          r2 = _nt_white
+          s0 << r2
+          if r2
+            r3 = _nt_background_keyword
+            s0 << r3
+            if r3
+              s4, i4 = [], index
+              loop do
+                r5 = _nt_space
+                if r5
+                  s4 << r5
+                else
+                  break
+                end
+              end
+              r4 = SyntaxNode.new(input, i4...index, s4)
+              s0 << r4
+              if r4
+                i6 = index
+                s7, i7 = [], index
+                loop do
+                  r8 = _nt_eol
+                  if r8
+                    s7 << r8
+                  else
+                    break
+                  end
+                end
+                if s7.empty?
+                  self.index = i7
+                  r7 = nil
+                else
+                  r7 = SyntaxNode.new(input, i7...index, s7)
+                end
+                if r7
+                  r6 = r7
+                else
+                  r9 = _nt_eof
+                  if r9
+                    r6 = r9
+                  else
+                    self.index = i6
+                    r6 = nil
+                  end
+                end
+                s0 << r6
+                if r6
+                  r10 = _nt_steps
+                  s0 << r10
+                end
+              end
+            end
+          end
+        end
+        if s0.last
+          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0.extend(Background0)
+          r0.extend(Background1)
+        else
+          self.index = i0
+          r0 = nil
+        end
+
+        node_cache[:background][start_index] = r0
 
         return r0
       end
