@@ -89,6 +89,15 @@ Feature: hi
               [:tag, "st3"], [:tag, "st4"]]]
         end
       end
+      
+      describe "Background" do
+        it "should have steps" do
+          parse("Feature: Hi\nBackground:\nGiven I am a step\n").to_sexp.should ==
+          [:feature, "Feature: Hi",
+            [:background, 2, "Background:",
+              [:step, 3, "Given", "I am a step"]]]
+        end
+      end
 
       describe "Scenarios" do
         it "can be empty" do
