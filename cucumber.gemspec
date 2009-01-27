@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
-  s.version = "0.1.99.12"
+  s.version = "0.1.99.13"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2009-01-27}
+  s.date = %q{2009-01-28}
   s.default_executable = %q{cucumber}
   s.description = %q{Executable Feature scenarios}
   s.email = ["aslak.hellesoy@gmail.com"]
@@ -29,17 +29,17 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<term-ansicolor>, [">= 1.0.3"])
       s.add_runtime_dependency(%q<treetop>, [">= 1.2.4"])
       s.add_runtime_dependency(%q<diff-lcs>, [">= 1.1.2"])
-      s.add_development_dependency(%q<hoe>, [">= 1.8.2"])
+      s.add_development_dependency(%q<hoe>, [">= 1.8.3"])
     else
       s.add_dependency(%q<term-ansicolor>, [">= 1.0.3"])
       s.add_dependency(%q<treetop>, [">= 1.2.4"])
       s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
-      s.add_dependency(%q<hoe>, [">= 1.8.2"])
+      s.add_dependency(%q<hoe>, [">= 1.8.3"])
     end
   else
     s.add_dependency(%q<term-ansicolor>, [">= 1.0.3"])
     s.add_dependency(%q<treetop>, [">= 1.2.4"])
     s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
-    s.add_dependency(%q<hoe>, [">= 1.8.2"])
+    s.add_dependency(%q<hoe>, [">= 1.8.3"])
   end
 end
