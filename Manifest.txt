@@ -117,6 +117,7 @@ examples/selenium/Rakefile
 examples/selenium/features/search.feature
 examples/selenium/features/step_definitons/stories_steps.rb
 examples/self_test/README.textile
+examples/self_test/Rakefile
 examples/self_test/features/background/failing_background.feature
 examples/self_test/features/background/failing_background_after_success.feature
 examples/self_test/features/background/multiline_args_background.feature
@@ -217,7 +218,6 @@ lib/cucumber/rake/task.rb
 lib/cucumber/step_definition.rb
 lib/cucumber/step_mother.rb
 lib/cucumber/version.rb
-pom.xml
 rails_generators/cucumber/USAGE
 rails_generators/cucumber/cucumber_generator.rb
 rails_generators/cucumber/templates/cucumber
@@ -272,4 +272,3 @@ spec/cucumber/treetop_parser/with_tags.feature
 spec/cucumber/world/pending_spec.rb
 spec/spec.opts
 spec/spec_helper.rb
-src/main/java/cukes/Cucumber.java

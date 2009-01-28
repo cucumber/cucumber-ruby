@@ -66,6 +66,10 @@ module Cucumber
         @raw[1..-1]
       end
 
+      def each_cells_row(&proc)
+        cells_rows.each(&proc)
+      end
+
       # For testing only
       def to_sexp #:nodoc:
         [:table, *cells_rows.map{|row| row.to_sexp}]

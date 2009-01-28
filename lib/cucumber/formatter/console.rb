@@ -7,17 +7,20 @@ module Cucumber
       FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
 
       def format_step(keyword, step_name, status, step_definition, source_indent)
-        line = if step_definition # nil for :outline
-          comment = if source_indent
-            c = (' # ' + step_definition.file_colon_line).indent(source_indent)
-            format_string(c, :comment)
-          else
-            ''
-          end
-          keyword + " " + step_definition.format_args(step_name, format_for(status, :param)) + comment
+        comment = if source_indent
+          c = (' # ' + step_definition.file_colon_line).indent(source_indent)
+          format_string(c, :comment)
         else
-          keyword + " " + step_name
+          ''
         end
+
+        begin
+          line = keyword + " " + step_definition.format_args(step_name, format_for(status, :param)) + comment
+        rescue
+          # It didn't match. This often happens for :outline steps
+          line = keyword + " " + step_name + comment
+        end
+
         format_string(line, status)
       end
 
