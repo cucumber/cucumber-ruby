@@ -10,6 +10,10 @@ module Cucumber
         @outline_table.accept(visitor, nil)
       end
 
+      def each_example_row(&proc)
+        @outline_table.each_cells_row(&proc)
+      end
+
       def at_lines?(lines)
         lines.empty? || lines.index(@line) || @outline_table.at_lines?(lines)
       end

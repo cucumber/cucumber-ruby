@@ -39,6 +39,12 @@ module Cucumber
         end
       end
 
+      def each_example_row(&proc)
+        @examples_array.each do |examples|
+          examples.each_example_row(&proc)
+        end
+      end
+
       def execute_row(cells, visitor, &proc)
         exception = nil
         

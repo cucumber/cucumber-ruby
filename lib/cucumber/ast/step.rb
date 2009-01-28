@@ -26,11 +26,29 @@ module Cucumber
 
       def accept(visitor)
         execute(visitor)
-        visitor.visit_step_name(@keyword, @name, @status, @step_definition, source_indent)
+
+        if @status == :outline
+          step_definition = find_first_name_and_step_definition_from_examples(visitor)
+        else
+          step_definition = @step_definition
+        end
+        visitor.visit_step_name(@keyword, @name, @status, step_definition, source_indent)
         @multiline_args.each do |multiline_arg|
           visitor.visit_multiline_arg(multiline_arg, @status)
         end
         @exception
+      end
+
+      def find_first_name_and_step_definition_from_examples(visitor)
+        # @scenario is always a ScenarioOutline in this case
+        @scenario.each_example_row do |cells|
+          argument_hash       = cells.to_hash
+          delimited_arguments = delimit_argument_names(argument_hash)
+          name                = replace_name_arguments(delimited_arguments)
+          step_definition     = visitor.step_definition(name) rescue nil
+          return step_definition if step_definition
+        end
+        nil
       end
 
       def to_sexp
