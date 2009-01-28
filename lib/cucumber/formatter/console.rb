@@ -7,7 +7,7 @@ module Cucumber
       FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
 
       def format_step(keyword, step_name, status, step_definition, source_indent)
-        comment = if source_indent
+        comment = if source_indent && step_definition
           c = (' # ' + step_definition.file_colon_line).indent(source_indent)
           format_string(c, :comment)
         else
