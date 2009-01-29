@@ -104,14 +104,14 @@ module Cucumber
             else
               @status = :skipped
             end
-          rescue StepMother::Undefined => exception
+          rescue Undefined => exception
             if visitor.options[:strict]
               exception.set_backtrace([])
               failed(exception)
             else
               @status = :undefined
             end
-          rescue StepMother::Pending => exception
+          rescue Pending => exception
             visitor.options[:strict] ? failed(exception) : @status = :pending
           rescue Exception => exception
             failed(exception)

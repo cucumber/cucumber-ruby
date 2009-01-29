@@ -82,7 +82,7 @@ module Cucumber
         undefined = features.steps[:undefined]
         return if undefined.empty?
         snippets = undefined.map do |step|
-          step_name = StepMother::Undefined === step.exception ? step.exception.step_name : step.name
+          step_name = Undefined === step.exception ? step.exception.step_name : step.name
           snippet = @step_mother.snippet_text(step.actual_keyword, step_name)
           snippet
         end.compact.uniq

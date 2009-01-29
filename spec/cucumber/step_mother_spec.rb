@@ -25,7 +25,7 @@ module Cucumber
 
       lambda do
         @step_mother.step_definition("Three blind mice")
-      end.should raise_error(StepMother::Ambiguous, %{Ambiguous match of "Three blind mice":
+      end.should raise_error(Ambiguous, %{Ambiguous match of "Three blind mice":
 
 spec/cucumber/step_mother_spec.rb:23:in `/Three (.*) mice/'
 spec/cucumber/step_mother_spec.rb:24:in `/Three blind (.*)/'
@@ -36,14 +36,14 @@ spec/cucumber/step_mother_spec.rb:24:in `/Three blind (.*)/'
     it "should raise Undefined error when no step definitions match" do
       lambda do
         @step_mother.step_definition("Three blind mice")
-      end.should raise_error(StepMother::Undefined)
+      end.should raise_error(Undefined)
     end
 
     it "should raise Redundant error when same regexp is registered twice" do
       @step_mother.Given(/Three (.*) mice/) {|disability|}
       lambda do
         @step_mother.Given(/Three (.*) mice/) {|disability|}
-      end.should raise_error(StepMother::Redundant)
+      end.should raise_error(Redundant)
     end
   end
 end
