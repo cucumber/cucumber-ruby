@@ -44,6 +44,14 @@ namespace :jar do
   task :bundle_jars do
     sh 'jar uf cucumber.jar -C pkg/jar_deps .'
   end
+  
+  task :fix_gem_binaries do
+    mkdir_p 'pkg/gem_binaries/META-INF/jruby.home'
+    Dir.chdir 'pkg/gem_binaries/META-INF/jruby.home' do
+      sh 'jar xvf ../../../../cucumber.jar bin'
+    end
+    sh 'jar uf cucumber.jar -C pkg/gem_binaries .'
+  end
 
   task :test_jar do
     sh 'java -cp pkg/jar_deps:examples/jbehave/target/classes -jar cucumber.jar -S cucumber examples/jbehave/features'
