@@ -54,6 +54,6 @@ namespace :jar do
   end
 
   task :test_jar do
-    sh 'java -cp pkg/jar_deps:examples/jbehave/target/classes -jar cucumber.jar -S cucumber examples/jbehave/features'
+    sh 'java -cp examples/jbehave/target/classes -jar cucumber.jar -S cucumber examples/jbehave/features'
   end
 end
