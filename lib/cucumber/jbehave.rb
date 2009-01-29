@@ -1,13 +1,5 @@
 require 'java'
 
-$:.unshift(ENV['HOME'] + '/.m2/repository/org/hamcrest/hamcrest-all/1.1')
-$:.unshift(ENV['HOME'] + '/.m2/repository/junit/junit/4.4')
-$:.unshift(ENV['HOME'] + '/.m2/repository/org/jbehave/jbehave-core/2.1')
-
-require 'hamcrest-all-1.1.jar'
-require 'junit-4.4.jar'
-require 'jbehave-core-2.1.jar'
-
 Exception::CUCUMBER_FILTER_PATTERNS.unshift(/^org\/jruby|^org\/jbehave|^org\/junit|^java\/|^sun\/|^\$_dot_dot_/)
 
 module Cucumber
