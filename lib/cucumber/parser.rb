@@ -26,7 +26,8 @@ module Cucumber
     class Loader
       def initialize(keywords)
         @keywords = keywords
-        template = File.open(File.dirname(__FILE__) + "/parser/i18n.tt", Cucumber.file_mode('r')).read
+        i18n_tt = File.expand_path(File.dirname(__FILE__) + '/parser/i18n.tt')
+        template = File.open(i18n_tt, Cucumber.file_mode('r')).read
         erb = ERB.new(template)
         grammar = erb.result(binding)
         Treetop.load_from_string(grammar)
