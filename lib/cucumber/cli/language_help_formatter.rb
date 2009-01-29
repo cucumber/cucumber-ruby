@@ -1,7 +1,7 @@
 require 'cucumber/formatter/pretty'
 
 module Cucumber
-  module Cli2
+  module Cli
     class LanguageHelpFormatter < Formatter::Pretty
       INCOMPLETE = %{
 This language is incomplete. Please translate the missing words in
