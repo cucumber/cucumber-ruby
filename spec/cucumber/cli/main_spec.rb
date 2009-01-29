@@ -5,193 +5,33 @@ module Cucumber
 module Cli
   describe Main do
     
-    def mock_executor(stubs = {})
-      stub('executor', {:visit_features => nil, :lines_for_features= => nil, :failed => false, :formatters= => nil}.merge(stubs))
-    end
-    
-    def mock_broadcaster(stubs = {})
-      stub(Broadcaster, {:register => nil}.merge(stubs))
-    end
-    
-    def mock_features(stubs ={})
-      stub('features', {:<< => nil}.merge(stubs))
-    end
-    
     before(:each) do
       Kernel.stub!(:exit).and_return(nil)
-    end
-    
-    def given_cucumber_yml_defined_as(hash_or_string)
-      File.stub!(:exist?).and_return(true)
-      cucumber_yml = hash_or_string.is_a?(Hash) ? hash_or_string.to_yaml : hash_or_string
-      IO.stub!(:read).with('cucumber.yml').and_return(cucumber_yml)
-    end
-    
-    it "should expand args from YAML file" do
-      cli = Main.new
-      
-      given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})
-
-      cli.parse_options!(%w{--format progress --profile bongo})
-      cli.options[:formats].should == {'progress' => STDOUT}
-      cli.options[:require].should == ['from/yml']
-    end
-
-    it "should expand args from YAML file's default if there are no args" do
-      cli = Main.new
-
-      given_cucumber_yml_defined_as({'default' => '--require from/yml'})
-
-      cli.parse_options!([])
-      cli.options[:require].should == ['from/yml']
-    end
-    
-    it "should provide a helpful error message when a specified profile does not exists in YAML file" do
-      cli = Main.new(StringIO.new, error = StringIO.new)
-      
-      given_cucumber_yml_defined_as({'default' => '--require from/yml', 'html_report' =>  '--format html'})
-    
-      cli.parse_options!(%w{--profile i_do_not_exist})
-      
-      expected_message = <<-END_OF_MESSAGE
-Could not find profile: 'i_do_not_exist'
-
-Defined profiles in cucumber.yml:
-  * default
-  * html_report
-END_OF_MESSAGE
-        
-      error.string.should == expected_message
-    end
-    
-    it "should provide a helpful error message when a specified profile is not a String" do
-      cli = Main.new(StringIO.new, error = StringIO.new)
-
-      given_cucumber_yml_defined_as({'foo' => [1,2,3]})
-
-      cli.parse_options!(%w{--profile foo})
-
-      error.string.should == "Profiles must be defined as a String.  The 'foo' profile was [1, 2, 3] (Array).\n"
-    end
-    
-    it "should provide a helpful error message when a specified profile exists but is nil or blank" do
-      [nil, '   '].each do |bad_input|
-        cli = Main.new(StringIO.new, error = StringIO.new)
-
-        given_cucumber_yml_defined_as({'foo' => bad_input})
-
-        cli.parse_options!(%w{--profile foo})
-
-        error.string.should match(/The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml./)
-      end
-    end
-
-    it "should provide a helpful error message when no YAML file exists and a profile is specified" do
-      cli = Main.new(StringIO.new, error = StringIO.new)
-      
-      File.should_receive(:exist?).with('cucumber.yml').and_return(false)
-    
-      cli.parse_options!(%w{--profile i_do_not_exist})
-        
-      error.string.should match(/cucumber.yml was not found.  Please refer to cucumber's documentaion on defining profiles in cucumber.yml./)
-    end
-
-    it "should provide a helpful error message when cucumber.yml is blank or malformed" do
-        expected_error_message = /cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentaion on correct profile usage./
-          
-      ['', 'sfsadfs', "--- \n- an\n- array\n", "---dddfd"].each do |bad_input|
-        cli = Main.new(StringIO.new, error = StringIO.new)
-      
-        given_cucumber_yml_defined_as(bad_input)
-        cli.parse_options!([])
-        
-        error.string.should match(expected_error_message)
-      end
-    end
-    
-    it "should procide a helpful error message when the YAML can not be parsed" do
-        expected_error_message = /cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentaion on correct profile usage./
-      cli = Main.new(StringIO.new, error = StringIO.new)
-      
-      given_cucumber_yml_defined_as("input that causes an exception in YAML loading")
-      YAML.should_receive(:load).and_raise Exception
-      
-      cli.parse_options!([])
-      
-      error.string.should match(expected_error_message)
-    end
-    
-    it "should accept --dry-run option" do
-      cli = Main.new(StringIO.new)
-      cli.parse_options!(%w{--dry-run})
-      cli.options[:dry_run].should be_true
-      cli.execute!(stub('step mother'))
-    end
-
-    it "should accept --no-source option" do
-      cli = Main.new
-      cli.parse_options!(%w{--no-source})
-
-      cli.options[:source].should be_false
-    end
-
-    it "should accept --no-snippets option" do
-      cli = Main.new
-      cli.parse_options!(%w{--no-snippets})
-      
-      cli.options[:snippets].should be_false
-    end
-
-    it "should set snippets and source to false with --quiet option" do
-      cli = Main.new
-      cli.parse_options!(%w{--quiet})
-      
-      cli.options[:snippets].should be_nil
-      cli.options[:source].should be_nil
-    end
-
-    it "should accept --verbose option" do
-      cli = Main.new
-      cli.parse_options!(%w{--verbose})
-
-      cli.options[:verbose].should be_true
-    end
-
-    it "should require files in support paths first" do
-      File.stub!(:directory?).and_return(true)
-      Dir.stub!(:[]).and_return(["/features/step_definitions/foo.rb","/features/support/env.rb"])
-      
-      cli = Main.new(StringIO.new)
-      cli.parse_options!(%w{--require /features})
-
-      cli.should_receive(:require).with("/features/support/env.rb").ordered
-      cli.should_receive(:require).with("/features/step_definitions/foo.rb").ordered
-      cli.should_receive(:require).with("spec/expectations/differs/default").ordered
-
-      cli.execute!(stub('step mother'))
     end
 
     describe "verbose mode" do
       
       before(:each) do
         @out = StringIO.new
-        @cli = Main.new(@out)
-        @cli.stub!(:require)
         @empty_feature = Ast::Feature.new(Ast::Comment.new(''), Ast::Tags.new(2, []), "Feature", [])
         Dir.stub!(:[])
       end
 
       it "should show ruby files required" do
-        @cli.parse_options!(%w{--verbose --require example.rb})
+        @cli = Main.new(%w{--verbose --require example.rb}, @out)
+        @cli.stub!(:require)
+        
         @cli.execute!(stub('step mother'))
         
         @out.string.should include('example.rb')
       end
       
       it "should show feature files parsed" do
+        @cli = Main.new(%w{--verbose example.feature}, @out)
+        @cli.stub!(:require)
+        
         Parser::FeatureParser.stub!(:new).and_return(mock("feature parser", :parse_file => @empty_feature))
           
-        @cli.parse_options!(%w{--verbose example.feature})
         @cli.execute!(stub('step mother'))
 
         @out.string.should include('example.feature')
@@ -199,39 +39,13 @@ END_OF_MESSAGE
       
     end
 
-    it "should accept --out option" do
-      cli = Main.new(StringIO.new)
-      cli.parse_options!(%w{--out jalla.txt})
-      cli.options[:formats]['pretty'].should == 'jalla.txt'
-    end
-
-    it "should accept multiple --out options" do
-      cli = Main.new(StringIO.new)
-      cli.parse_options!(%w{--format progress --out file1 --out file2})
-      cli.options[:formats].should == {'progress' => 'file2'}
-    end
-
-    it "should accept multiple --format options" do
-      cli = Main.new(StringIO.new)
-      cli.parse_options!(%w{--format pretty --format progress})
-      cli.options[:formats].should have_key('pretty')
-      cli.options[:formats].should have_key('progress')
-    end
-
-    it "should associate --out to previous --format" do
-      cli = Main.new(StringIO.new)
-      cli.parse_options!(%w{--format progress --out file1 --format profile --out file2})
-      cli.options[:formats].should == {"profile"=>"file2", "progress"=>"file1"}
-    end
-
     describe "--format with class" do
      
      describe "in module" do
 
         it "should resolve each module until it gets Formatter class" do
-          cli = Main.new(nil)
+          cli = Main.new(%w{--format ZooModule::MonkeyFormatterClass}, nil)
           mock_module = mock('module')
-          cli.parse_options!(%w{--format ZooModule::MonkeyFormatterClass})
           Object.stub!(:const_defined?).and_return(true)
           mock_module.stub!(:const_defined?).and_return(true)
 
@@ -343,74 +157,6 @@ END_OF_MESSAGE
         
       end
             
-    end
-
-    it "should accept multiple --scenario options" do
-      cli = Main.new
-      cli.parse_options!(['--scenario', "User logs in", '--scenario', "User signs up"])
-      cli.options[:scenario_names].should include("User logs in")
-      cli.options[:scenario_names].should include("User signs up")
-    end
-
-    xit "should register --scenario options with the executor" do
-      cli = Main.new
-      cli.parse_options!(['--scenario', "User logs in", '--scenario', "User signs up"])
-      executor = mock_executor
-      executor.should_receive(:scenario_names=).with(["User logs in", "User signs up"])
-      cli.execute!(stub('step mother'), executor, stub('features'))
-    end
-
-    it "should accept --color option" do
-      cli = Main.new(StringIO.new)
-      Term::ANSIColor.should_receive(:coloring=).with(true)
-      cli.parse_options!(['--color'])
-    end
-
-    it "should accept --no-color option" do
-      cli = Main.new(StringIO.new)
-      Term::ANSIColor.should_receive(:coloring=).with(false)
-      cli.parse_options!(['--no-color'])
-    end
-
-    describe "--backtrace" do
-      before do
-        Exception.cucumber_full_backtrace = false
-      end
-      
-      it "should show full backtrace when --backtrace is present" do
-        cli = Main.new
-        cli.parse_options!(['--backtrace'])
-        begin
-          "x".should == "y"
-        rescue => e
-          e.backtrace[0].should_not == "#{__FILE__}:#{__LINE__ - 2}"
-        end
-      end
-
-      xit "should strip gems when --backtrace is absent" do
-        cli = Main.new
-        cli.parse_options!(['--'])
-        begin
-          "x".should == "y"
-        rescue => e
-          e.backtrace[0].should == "#{__FILE__}:#{__LINE__ - 2}"
-        end
-      end
-
-      after do
-        Exception.cucumber_full_backtrace = false
-      end
-    end
-
-    it "should search for all features in the specified directory" do
-      cli = Main.new(StringIO.new)
-
-      cli.parse_options!(%w{feature_directory/})
-      File.stub!(:directory?).and_return(true)
-
-      Dir.should_receive(:[]).with("feature_directory/**/*.feature").any_number_of_times.and_return([])
-      
-      cli.execute!(stub('step mother'))
     end
 
   end
