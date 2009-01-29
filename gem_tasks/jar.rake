@@ -1,5 +1,11 @@
 # http://blog.nicksieger.com/articles/2009/01/10/jruby-1-1-6-gems-in-a-jar
 
+USE_JRUBY_VERSION    = '1.1.6'
+USE_JBEHAVE_VERSION  = '2.1'
+USE_JUNIT_VERSION    = '4.5'
+USE_HAMCREST_VERSION = '1.1'
+CUCUMBER_VERSIONED   = "cucumber-#{Cucumber::VERSION::STRING}"
+
 task :jar => [
   :clean,
   'jar:download_jruby',
@@ -14,23 +20,23 @@ task :jar => [
 
 namespace :jar do
   task :download_jruby do
-    sh 'wget http://dist.codehaus.org/jruby/1.1.6/jruby-complete-1.1.6.jar -O cucumber.jar'
+    sh "wget http://dist.codehaus.org/jruby/#{USE_JRUBY_VERSION}/jruby-complete-#{USE_JRUBY_VERSION}.jar -O #{CUCUMBER_VERSIONED}.jar"
   end
 
   task :install_gems => :gem do
     mkdir 'pkg/jar_gems'
-    sh 'java -jar cucumber.jar -S gem install -i ./pkg/jar_gems pkg/cucumber-0.1.99.14.gem --no-ri --no-rdoc'
+    sh "java -jar #{CUCUMBER_VERSIONED}.jar -S gem install -i ./pkg/jar_gems pkg/#{CUCUMBER_VERSIONED}.gem --no-ri --no-rdoc"
   end
 
   task :bundle_gems do
-    sh 'jar uf cucumber.jar -C pkg/jar_gems .'
+    sh "jar uf #{CUCUMBER_VERSIONED}.jar -C pkg/jar_gems ."
   end
 
   task :download_jars_deps do
     mkdir 'pkg/jar_deps'
-    sh 'wget http://repository.codehaus.org/org/jbehave/jbehave-core/2.1/jbehave-core-2.1.jar -O pkg/jar_deps/jbehave.jar'
-    sh 'wget http://mirrors.ibiblio.org/pub/mirrors/maven2/junit/junit/4.5/junit-4.5.jar -O pkg/jar_deps/junit.jar'
-    sh 'wget http://hamcrest.googlecode.com/files/hamcrest-all-1.1.jar -O pkg/jar_deps/hamcrest.jar'
+    sh "wget http://repository.codehaus.org/org/jbehave/jbehave-core/#{USE_JBEHAVE_VERSION}/jbehave-core-#{USE_JBEHAVE_VERSION}.jar -O pkg/jar_deps/jbehave-core-#{USE_JBEHAVE_VERSION}.jar"
+    sh "wget http://mirrors.ibiblio.org/pub/mirrors/maven2/junit/junit/#{USE_JUNIT_VERSION}/junit-#{USE_JUNIT_VERSION}.jar -O pkg/jar_deps/junit-#{USE_JUNIT_VERSION}.jar"
+    sh "wget http://hamcrest.googlecode.com/files/hamcrest-all-#{USE_HAMCREST_VERSION}.jar -O pkg/jar_deps/hamcrest-all-#{USE_HAMCREST_VERSION}.jar"
   end
 
   task :unpack_jar_deps do
@@ -44,18 +50,18 @@ namespace :jar do
   end
 
   task :bundle_jars do
-    sh 'jar uf cucumber.jar -C pkg/jar_deps .'
+    sh "jar uf #{CUCUMBER_VERSIONED}.jar -C pkg/jar_deps ."
   end
   
   task :fix_gem_binaries do
     mkdir_p 'pkg/gem_binaries/META-INF/jruby.home'
     Dir.chdir 'pkg/gem_binaries/META-INF/jruby.home' do
-      sh 'jar xvf ../../../../cucumber.jar bin'
+      sh "jar xvf ../../../../#{CUCUMBER_VERSIONED}.jar bin"
     end
-    sh 'jar uf cucumber.jar -C pkg/gem_binaries .'
+    sh "jar uf #{CUCUMBER_VERSIONED}.jar -C pkg/gem_binaries ."
   end
 
   task :test_jar do
-    sh 'java -cp examples/jbehave/target/classes -jar cucumber.jar -S cucumber examples/jbehave/features'
+    sh "java -cp examples/jbehave/target/classes -jar #{CUCUMBER_VERSIONED}.jar -S cucumber examples/jbehave/features"
   end
 end

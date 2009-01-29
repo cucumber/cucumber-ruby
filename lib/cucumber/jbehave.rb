@@ -87,7 +87,8 @@ if defined?(JRUBY_VERSION)
         camel = step_name.gsub(/(\s.)/) {$1.upcase.strip}
         method = camel[0..0].downcase + camel[1..-1]
         snippet = %{    @#{step_keyword}("#{step_name}")
-        public void #{method}() {
+    public void #{method}() {
+        throw new RuntimeException("pending");
     }}
       end
     end
