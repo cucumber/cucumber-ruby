@@ -7,6 +7,8 @@ task :jar => [
   'jar:bundle_gems',
   'jar:download_jars_deps',
   'jar:unpack_jar_deps',
+  'jar:bundle_jars',
+  'jar:fix_gem_binaries',
   'jar:test_jar'
 ]
 
