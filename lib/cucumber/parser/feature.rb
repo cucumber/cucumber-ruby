@@ -612,6 +612,10 @@ module Cucumber
         def steps
           elements[7]
         end
+
+        def white
+          elements[8]
+        end
       end
 
       module Scenario1
@@ -694,6 +698,10 @@ module Cucumber
                     if r8
                       r12 = _nt_steps
                       s0 << r12
+                      if r12
+                        r13 = _nt_white
+                        s0 << r13
+                      end
                     end
                   end
                 end
@@ -746,6 +754,10 @@ module Cucumber
 
         def examples_sections
           elements[8]
+        end
+
+        def white
+          elements[9]
         end
       end
 
@@ -807,6 +819,10 @@ module Cucumber
                       if r9
                         r10 = _nt_examples_sections
                         s0 << r10
+                        if r10
+                          r11 = _nt_white
+                          s0 << r11
+                        end
                       end
                     end
                   end
