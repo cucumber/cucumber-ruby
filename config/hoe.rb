@@ -5,7 +5,7 @@ AUTHOR = 'Aslak Hellesøy'  # can also be an array of Authors
 EMAIL = "aslak.hellesoy@gmail.com"
 DESCRIPTION = "Executable Feature scenarios"
 GEM_NAME = 'cucumber' # what ppl will type to install your gem
-HOMEPATH = "http://github.com/aslakhellesoy/cucumber"
+HOMEPATH = "http://cukes.info"
 RUBYFORGE_PROJECT = 'rspec'
 
 @config_file = "~/.rubyforge/user-config.yml"
