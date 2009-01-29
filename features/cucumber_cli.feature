@@ -28,7 +28,7 @@ Feature: Cucumber command line
         @two @three
         Scenario: Missing
           Given missing
-            Undefined step: "missing" (Cucumber::StepMother::Undefined)
+            Undefined step: "missing" (Cucumber::Undefined)
             features/sample.feature:6:in `Given missing'
 
       1 scenario

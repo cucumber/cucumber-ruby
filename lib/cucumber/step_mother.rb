@@ -2,46 +2,46 @@ require 'cucumber/step_definition'
 require 'cucumber/core_ext/instance_exec'
 
 module Cucumber
+  class Undefined < StandardError
+    attr_reader :step_name
+
+    def initialize(step_name)
+      super %{Undefined step: "#{step_name}"}
+      @step_name = step_name
+    end
+    Cucumber::EXCEPTION_STATUS[self] = :undefined
+  end
+
+  class Pending < StandardError
+    Cucumber::EXCEPTION_STATUS[self] = :pending
+  end
+
+  # Raised when a step matches 2 or more StepDefinition
+  class Ambiguous < StandardError
+    def initialize(step_name, step_definitions)
+      message = "Ambiguous match of \"#{step_name}\":\n\n"
+      message << step_definitions.map{|sd| sd.to_backtrace_line}.join("\n")
+      message << "\n\n"
+      super(message)
+    end
+  end
+
+  # Raised when 2 or more StepDefinition have the same Regexp
+  class Redundant < StandardError
+    def initialize(step_def_1, step_def_2)
+      message = "Multiple step definitions have the same Regexp:\n\n"
+      message << step_def_1.to_backtrace_line << "\n"
+      message << step_def_2.to_backtrace_line << "\n\n"
+      super(message)
+    end
+  end
+
   # This is the main interface for registering step definitions, which is done
   # from <tt>*_steps.rb</tt> files. This module is included right at the top-level
   # so #register_step_definition (and more interestingly - its aliases) are
   # available from the top-level.
   module StepMother
     attr_writer :snippet_generator
-
-    class Undefined < StandardError
-      attr_reader :step_name
-
-      def initialize(step_name)
-        super %{Undefined step: "#{step_name}"}
-        @step_name = step_name
-      end
-      Cucumber::EXCEPTION_STATUS[self] = :undefined
-    end
-
-    class Pending < StandardError
-      Cucumber::EXCEPTION_STATUS[self] = :pending
-    end
-
-    # Raised when a step matches 2 or more StepDefinition
-    class Ambiguous < StandardError
-      def initialize(step_name, step_definitions)
-        message = "Ambiguous match of \"#{step_name}\":\n\n"
-        message << step_definitions.map{|sd| sd.to_backtrace_line}.join("\n")
-        message << "\n\n"
-        super(message)
-      end
-    end
-
-    # Raised when 2 or more StepDefinition have the same Regexp
-    class Redundant < StandardError
-      def initialize(step_def_1, step_def_2)
-        message = "Multiple step definitions have the same Regexp:\n\n"
-        message << step_def_1.to_backtrace_line << "\n"
-        message << step_def_2.to_backtrace_line << "\n\n"
-        super(message)
-      end
-    end
 
     # Registers a new StepDefinition. This method is aliased
     # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>.
