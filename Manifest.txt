@@ -188,6 +188,7 @@ lib/cucumber/ast/table.rb
 lib/cucumber/ast/tags.rb
 lib/cucumber/ast/visitor.rb
 lib/cucumber/broadcaster.rb
+lib/cucumber/cli/configuration.rb
 lib/cucumber/cli/language_help_formatter.rb
 lib/cucumber/cli/main.rb
 lib/cucumber/core_ext/exception.rb
@@ -240,6 +241,7 @@ spec/cucumber/ast/scenario_spec.rb
 spec/cucumber/ast/step_spec.rb
 spec/cucumber/ast/table_spec.rb
 spec/cucumber/broadcaster_spec.rb
+spec/cucumber/cli/configuration_spec.rb
 spec/cucumber/cli/main_spec.rb
 spec/cucumber/core_ext/proc_spec.rb
 spec/cucumber/core_ext/string_spec.rb
