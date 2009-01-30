@@ -1,6 +1,9 @@
 module Cucumber
   module Parser
     # TIP: When you hack on the grammar, just delete feature.rb in this directory.
+    # Also make sure you have uninstalled all cucumber gems (don't forget xxx-cucumber
+    # github gems).
+    #
     # Treetop will then generate the parser in-memory. When you're happy, just generate
     # the rb file with tt feature.tt
     grammar Feature
@@ -8,7 +11,15 @@ module Cucumber
       include Table
 
       rule feature
-        white comment white tags white header:(!(scenario_outline / scenario / background) .)* background:(background)? feature_elements {
+        white 
+        comment 
+        white 
+        tags 
+        white 
+        header:(!(scenario_outline / scenario / background) .)* 
+        background:(background)? 
+        feature_elements
+        comment? {
           def build
             if background.respond_to?(:build)
               Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build, background.build)

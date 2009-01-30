@@ -1,5 +1,11 @@
 module Cucumber
   module Parser
+    # TIP: When you hack on the grammar, just delete feature.rb in this directory.
+    # Also make sure you have uninstalled all cucumber gems (don't forget xxx-cucumber
+    # github gems).
+    #
+    # Treetop will then generate the parser in-memory. When you're happy, just generate
+    # the rb file with tt feature.tt
     module Table
       include Treetop::Runtime
 
