@@ -42,7 +42,8 @@ module Cucumber
   # available from the top-level.
   module StepMother
     attr_writer :snippet_generator
-
+    attr_writer :guess
+    
     # Registers a new StepDefinition. This method is aliased
     # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>.
     #
@@ -112,10 +113,26 @@ module Cucumber
         step_definition.match(step_name)
       end
       raise Undefined.new(step_name) if found.empty?
+      found = best_matches(step_name, found) if found.size > 1 && guess?
       raise Ambiguous.new(step_name, found) if found.size > 1
       found[0]
     end
-
+    
+    def guess?
+      @guess
+    end
+    
+    def best_matches(step_name, step_definitions)
+      top_group_score = step_definitions.map {|s| s.match(step_name).captures.length }.sort.last
+      top_groups = step_definitions.select {|s| s.match(step_name).captures.length == top_group_score }
+      if top_groups.size > 1
+        shortest_capture_length = top_groups.map {|s| s.match(step_name).captures.inject(0) {|sum, c| sum + c.length } }.sort.first
+        top_groups.select {|s| s.match(step_name).captures.inject(0) {|sum, c| sum + c.length } == shortest_capture_length }
+      else
+        top_groups
+      end
+    end
+    
     def step_definitions
       @step_definitions ||= []
     end
