@@ -36,6 +36,23 @@ Feature: hi
           [:feature, "Feature: hi\n",
             [:comment, "# My comment\n"]]
         end
+        
+        it "should parse a comment within a scenario" do
+          pending
+          parse(%{Feature: Hi
+  Scenario: Hello
+    Given foo
+    # When bar
+    Then baz
+}).to_sexp.should == 
+          [:feature, "Feature: Hi", 
+            [:scenario, 2, "Scenario:", "Hello", 
+              [:step, 3, "Given", "foo"],
+              [:comment, "# When bar\n"], 
+              [:step, 5, "Then", "baz"] 
+            ]
+          ]
+        end
 
         it "should parse a file with only a multiline comment" do
           parse(%{# Hello
