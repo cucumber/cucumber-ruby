@@ -21,7 +21,7 @@ module Cli
         @cli = Main.new(%w{--verbose --require example.rb}, @out)
         @cli.stub!(:require)
         
-        @cli.execute!(stub('step mother'))
+        @cli.execute!(Object.new.extend(StepMother))
         
         @out.string.should include('example.rb')
       end
@@ -32,7 +32,7 @@ module Cli
         
         Parser::FeatureParser.stub!(:new).and_return(mock("feature parser", :parse_file => @empty_feature))
           
-        @cli.execute!(stub('step mother'))
+        @cli.execute!(Object.new.extend(StepMother))
 
         @out.string.should include('example.feature')
       end
@@ -54,7 +54,7 @@ module Cli
           Object.should_receive(:const_get).with('ZooModule').and_return(mock_module)
           mock_module.should_receive(:const_get).with('MonkeyFormatterClass').and_return(mock('formatter class', :new => f))
 
-          cli.execute!(stub('step mother'))
+          cli.execute!(Object.new.extend(StepMother))
         end
 
       end
