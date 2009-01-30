@@ -94,6 +94,7 @@ pure Ruby users have been enjoying for a while.
 * Run cucumber --language LANG help to see keywords for a given language. (Aslak Hellesøy)
 * Multiline arguments (tables and """ strings) are printed in the output. (Aslak Hellesøy)
 * It's no longer necessary to compile the Treetop grammar when adding a new language. Localised parser is generated at runtime. (Aslak Hellesøy)
+* New --guess option tries to guess the best step definition match instead of raising Cucumber::Multiple.  (Jake Howerton)
 
 === Removed features
 * "GivenScenario" is gone. Instead you can call Steps from Steps, or wait for "Background (#153)"
