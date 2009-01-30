@@ -1,4 +1,4 @@
 = Cucumber
 
-Please see the "wiki":http://github.com/aslakhellesoy/cucumber/wikis/home
-for documentation.
+The main website is at http://cukes.info/
+The documentation is at http://github.com/aslakhellesoy/cucumber/wikis/home/

@@ -1,0 +1,31 @@
+module Cucumber
+  module Parser
+    grammar I18n
+
+      rule background_keyword
+        (<%= keywords('background') %>) ':'
+      end
+
+      rule scenario_keyword
+        (<%= keywords('scenario') %>) ':'
+      end
+
+      rule scenario_outline_keyword
+        (<%= keywords('scenario_outline') %>) ':'
+      end
+
+      rule step_keyword
+        (<%= keywords('given') %>) /
+        (<%= keywords('when') %>) /
+        (<%= keywords('then') %>) /
+        (<%= keywords('and') %>) /
+        (<%= keywords('but') %>)
+      end
+
+      rule examples_keyword
+        (<%= keywords('examples') %>) ':'?
+      end
+
+    end
+  end
+end

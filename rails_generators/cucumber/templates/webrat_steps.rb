@@ -1,5 +1,11 @@
+require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
+
 # Commonly used webrat steps
 # http://github.com/brynary/webrat
+
+When /^I go to (.+)$/ do |page_name|
+  visit path_to(page_name)
+end
 
 When /^I press "(.*)"$/ do |button|
   click_button(button)
@@ -81,11 +87,11 @@ When /^I attach the file at "(.*)" to "(.*)" $/ do |path, field|
 end
 
 Then /^I should see "(.*)"$/ do |text|
-  response.body.should =~ /#{text}/m
+  response.should contain(text)
 end
 
 Then /^I should not see "(.*)"$/ do |text|
-  response.body.should_not =~ /#{text}/m
+  response.should_not contain(text)
 end
 
 Then /^the "(.*)" checkbox should be checked$/ do |label|

@@ -1,13 +1,13 @@
 require 'rubygems'
 gem 'rspec'
-require 'spec'
+require 'spec/expectations'
 
 ENV['CUCUMBER_COLORS']=nil
 $KCODE='u'
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'cucumber'
-require 'cucumber/treetop_parser/feature_en'
 Cucumber.load_language('en')
+$:.unshift(File.dirname(__FILE__))
 
 ::Term::ANSIColor.coloring = true
 

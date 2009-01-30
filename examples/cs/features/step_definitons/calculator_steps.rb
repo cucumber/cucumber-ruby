@@ -1,5 +1,5 @@
-require 'spec'
-$:.unshift(File.dirname(__FILE__) + '/../../lib')
+require 'spec/expectations'
+$:.unshift(File.dirname(__FILE__) + '/../../lib') # This line is not needed in your own project
 require 'Calculator'
 
 Before do
@@ -16,8 +16,4 @@ end
 
 Then /the result should be (.*) on the screen/ do |result|
   @result.should == result.to_i
-end
-
-Then /the result class should be (\w*)/ do |class_name|
-  @result.class.name.should == class_name
 end

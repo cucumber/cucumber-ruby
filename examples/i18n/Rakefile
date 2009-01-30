@@ -4,13 +4,29 @@ task :i18n do
   Dir["#{dir}/*"].each do |f|
     if File.directory?(f)
       lang = f[dir.length+1..-1]
-      Dir.chdir(f) do
-        rake("features")
+      if supported?(lang)
+        Dir.chdir(f) do
+          rake("features")
+        end
+      else
+        STDERR.puts %{
+!!!!!
+!!!!! SKIPPING #{lang} (Still needs some work)
+!!!!!
+}
       end
     end
   end
 end
 
+def supported?(lang)
+  if RUBY_VERSION =~ /^1\.9/
+    !%w{ar ja ko zh-CN}.index(lang)
+  else
+    !%w{ar ja ko}.index(lang)
+  end
+end
+
 def rake(args)
-  ruby(File.join(Gem.bindir, 'rake'), args)
+  ruby($0, args) rescue nil
 end
