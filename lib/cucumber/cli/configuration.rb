@@ -129,6 +129,9 @@ module Cucumber
           opts.on("-v", "--verbose", "Show the files and features loaded.") do
             @options[:verbose] = true
           end
+          opts.on("-g", "--guess", "Guess best match for Ambiguous steps.") do
+            @options[:guess] = true
+          end
           opts.on_tail("--version", "Show version.") do
             @out_stream.puts VERSION::STRING
             Kernel.exit
@@ -158,6 +161,10 @@ module Cucumber
     
       def strict?
         @options[:strict]
+      end
+      
+      def guess?
+        !!@options[:guess]
       end
     
       def load_language
