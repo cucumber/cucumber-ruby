@@ -7,4 +7,3 @@ Fitur: Division
     Dan aku sudah masukkan 2 ke kalkulator
     Ketika aku tekan divide
     Maka hasilnya harus 1.5 di layar
-    Dan class hasilnya harus Float

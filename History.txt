@@ -1,7 +1,189 @@
-== 0.1.13 (In Git)
+== Git (0.2 alpha)
+
+This is a major rewrite of Cucumber's internals. The rewrite was done to address technical
+debt and to have a codebase that is easier to evolve and maintain. There are some major
+changes to the Gherkin language, so this release is not fully backwards compatible. You
+may have to edit your feature files a little. Most importantly, "GivenScenario" and 
+"More Examples" no longer exist. See the "Removed features" section below for more details
+on how to use alternatives.
+
+**** CALL FOR TRANSLATORS ****
+Since the grammar has changed, there are some new keywords. We have to rely on the community
+to provide updated translations. This is much easier than before - just update languages.yml.
+There is no static code generation anymore. To list all languages:
+
+  cucumber --lang help
+  
+And to list the keywords for a particular language:
+
+  cucumber --lang en-lol help
+  
+So just go ahead and list the language of your choice and send us updated translations.
+
+There are some really awesome new features in this release: Tagging, Autoformatting, automatic 
+aliasing of keywords in all languages, much better Ruby 1.9 support and improved output 
+for multiline arguments are some of the highlights. 
+
+This version also brings Cucumber even closer to Java. Although it has been possible to
+run Cucumber on JRuby since v0.1.11, it has required that step definitions be defined
+in Ruby code. This has been a barrier for many Java developers who don't know Ruby.
+
+With this version you can write step definitions in pure Java code! Java step definitions
+are implemented simply by subclassing org.jbehave.scenario.steps.Steps. Example:
+
+  package super.duper;
+
+  public class MyJavaSteps extends Steps {
+      @Given("I have %count cucumbers in my belly")
+      public void cucumbersInTheBelly(int count) {
+          // talk to the Belly class
+      }
+
+      @Then("I should not be hungry for %n hours")
+      public void shouldNotBeHungry(int n) {
+          // Make assertions with JUnit or Hamcrest
+      }
+  }
+
+The only Ruby code you have to write is a little wiring in your env.rb file:
+
+  require 'cucumber/jbehave'
+  JBehave(super.duper.MyJavaSteps.new)
+
+You might be wondering what this brings over just using the whole JBehave tool
+standalone. Well, it gives you access to the Gherkin language in your features,
+which is a richer DSL than JBehave's language. -Over 20 spoken languages, Tables, 
+Scenario Outlines, the rich command line, the nice output format and everything 
+pure Ruby users have been enjoying for a while.
+
+== TODO Before 0.2 release
+* Verify that custom formatters work - write a feature for it
+* Implement at least a basic HTML formatter
+* Run a single cucumber feature from rake "rake features FEATURE=/path/to/feature:line"
+
+== Bugfixes
+* -n option does not suppress the line info for a Scenario Outline (#175 Aslak Hellesøy)
+* Errors with rspec-rails matchers in cucumber 0.1.99 (#173 David Chelimsky)
+* Can't use an empty string as a table value in a scenario outline (#172 Aslak Hellesøy)
+* Really skip skipped steps (#90 Aslak Hellesøy)
+* No output for multi-line strings (#71 Aslak Hellesøy)
+* Fix cucumber/formatters/unicode flaws on Windows (#145 Michael)
+* Autotest-related Bugs: YAML missing (#136 Tobias Pape)
+* Overeager "rescue LoadError" hides lots of errors (#137 Jonathan del Strother)
+* Nested steps don't show mismatch (#116 Aslak Hellesøy)
+* Pending steps in > steps called from steps (#65 Aslak Hellesøy)
 
 === New features
-* Added new --backtrace option to show full backtrace (Aslak Hellesøy)   
+* Keywords can be aliased in languages.yml. See English for an example (examples: Examples|Scenarios)
+* Adding support for Background (#153 Joseph Wilk) 
+* Added Česky/Czech (Vojtech Salbaba)
+* New --no-multiline option to reduce noise. Useful if lots of features are failing.
+* Added ability to pass URIs to cucumber in addition to files and directories. Useful for troubleshooting! (Aslak Hellesøy)
+* Groups of tabular scenarios (#57 Aslak Hellesøy)
+* Tagging scenarios and features. Pick the ones to run with --tags (#54 Aslak Hellesøy)
+* Make the current scenario available to the steps. (#44 Aslak Hellesøy)
+* Step definition snippets contain a 'pending' call (#84 Aslak Hellesøy)
+* Call multiline steps from other steps (#144 Aslak Hellesøy)
+* Run cucumber with --autoformat DIR to reformat (pretty print) all of your feature files. (Aslak Hellesøy)
+* New --strict option exits with an error code if there are undefined steps. (#52 Aslak Hellesøy)
+* Given, When, Then are automatically aliased to current language. 
+  Ruby 1.8 doesn't allow non-ascii method names in the source, so unless you're on 1.9
+  you will have to use Given, When, Then or set up your own aliases. Here is Norwegian:
+    Cucumber.alias_steps(%w{Naar Saa}) # Når, Så already aliased, but can't be called. (Aslak Hellesøy)
+* Run cucumber --language help to see all supported languages. (Aslak Hellesøy)
+* Run cucumber --language LANG help to see keywords for a given language. (Aslak Hellesøy)
+* Multiline arguments (tables and """ strings) are printed in the output. (Aslak Hellesøy)
+* It's no longer necessary to compile the Treetop grammar when adding a new language. Localised parser is generated at runtime. (Aslak Hellesøy)
+
+=== Removed features
+* "GivenScenario" is gone. Instead you can call Steps from Steps, or wait for "Background (#153)"
+* "More Examples" is gone. "Scenario" + "More Examples" is no longer supported. Use "Scenario Outline" + "Examples" instead.
+* Pure Ruby features are no longer supported.
+
+== (0.16.4 aslakhellesoy-webrat gem on GitHub)
+
+Bugfix release.
+
+IMPORTANT NOTE FOR RAILS USERS.
+The template used to generate your features/support/env.rb has changed. You have to apply a minor change
+manually for existing Rails projects when you upgrade to this version. Change this:
+
+  require 'webrat/rspec-rails'
+
+to this:
+
+  require 'webrat/core/matchers'
+
+=== New features
+* Finnish translation (Tero Tilus)
+* Use Webrat's #contain matcher in generated "I should (not) see" step definitions (Bryan Helmkamp)
+
+== Bugfixes
+* Escaped quotes - \" - inside multiline strings will be unescaped.
+* Flush output in HTML formatter since JRuby doesnt do it automatically (Diego Carrion)
+* Better handling of ARGV (#169 David Chelimsky, Ben Mabey)
+* Compatibility with ruby-debug (do ARGV.dup in bin/cucumber so it can restart ruby with same args) (Aslak Hellesøy)
+
+== 0.1.16 2009-01-19
+
+This is a small bugfix release. The most notable improvement is compatibility with Webrat 0.4. Rails/Webrat users should
+upgrade both Cucumber and Webrat gems.
+
+=== New features
+* Allow argument placeholders in step tables and multiline comments (#121 Joseph Wilk)
+* Scenario Outline can be followed by several named Examples sections (#123 Aslak Hellesøy)
+* Add the #binary= method back to the Rake task. It is needed by merb_cucumber for running the features of a merb app with it's bundled gems. (Thomas Marek)
+* Added a /^When I go to (.+)$/ step definition to webrat_steps.rb and a simple page name to path mapping method (Bryan Helmkamp)
+
+=== Bugfixes
+* Fix to run single scenarios when the line number specified doesn't correspond to a step (i.e. blank lines or rows) (#160 Luismi Cavallé)
+
+=== Removed features
+
+== 0.1.15 2009-01-08
+
+Bugfix release
+
+=== New features
+* 한국어! (Korean!) (John Hwang)
+
+=== Bugfixes
+* --dry-run skips running before/after/steps (#147 Ian Dees)
+* Fix a minor bug in the console formatter's summary (David Chelimsky)
+* Better quoting of Scenario names in Autotest (Peter Jaros)
+* Added some small workarounds for unicode handling on Windows (Aslak Hellesøy)
+
+== 0.1.14 2009-01-04
+
+This is the first release of Cucumber that runs on Ruby 1.9. There are still some encoding-related issues 
+with Arabic (ar), Japanese (ja) and Simplified Chinese (zh-CN). Patches are welcome. Other than that - 
+a couple of minor bug fixes and polishing.
+
+=== New features
+* Pretty formatter shows number of scenarios (#139 Joseph Wilk)
+* Rudimentary support for Ruby 1.9. Now it's ok to file Ruby 1.9-related bugs.
+
+=== Bugfixes
+* Fixed "No such file or directory -- cucumber (LoadError)" bug with AutoTest (Aslak Hellesøy)
+* Fixed `load_missing_constant': uninitialized constant Dispatcher error with Rails (Aslak Hellesøy)
+
+=== Removed features
+* The #binary= method is gone from the Rake task. It will always point to the binary in the current gem. (Aslak Hellesøy)
+
+== 0.1.13 2008-12-20
+
+It's time for some new features again. Output is now much better since you can use diffing, tweak
+the output colours and get the full --backtrace if you want. Managing your support/* files became 
+a little easier since they are now always loaded before the step definitions. Life became easier 
+for Windows users in Norway (and other countries using unicode in the features). Plus several other 
+bug fixes.
+
+Enjoy!
+
+=== New features
+* Console output is no longer bold, but regular. Step arguments are bold instead of blold+underlined. (Aslak Hellesøy)
+* Console output can be configured with CUCUMBER_COLORS in your shell. (Aslak Hellesøy)
+* Added new --backtrace option to show full backtrace (Aslak Hellesøy)
 * Enable RSpec's diffing automatically if RSpec is loaded (Aslak Hellesøy)
 * Files in support directories are loaded before any other file (i.e. step definitions.)  (#120, Ben Mabey)
 * The Rails features generator got some love and is now tested: http://github.com/aslakhellesoy/cucumber_rails (Aslak Hellesøy)
@@ -187,13 +369,12 @@ Tables used to define more examples after a scenario must now be prefixed. In En
       And I have entered 70 into the calculator
       When I press add
       Then the result should be 120 on the screen
-      And the result class should be Fixnum
 
     More Examples:
-      | input_1 | input_2 | button | output | class  |
-      | 20      | 30      | add    | 50     | Fixnum |
-      | 2       | 5       | add    | 7      | Fixnum |
-      | 0       | 40      | add    | 40     | Fixnum |
+      | input_1 | input_2 | button | output |
+      | 20      | 30      | add    | 50     |
+      | 2       | 5       | add    | 7      |
+      | 0       | 40      | add    | 40     |
 
 Languages that are not updated yet will have to use "More Examples" until we get the translations.
 

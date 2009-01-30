@@ -1,74 +1,49 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+require 'cucumber/step_mother'
+
 module Cucumber
   describe StepMother do
-    it "should report file and line numbers for both duplicate step definitions" do
-      m = StepMother.new
-      
-      m.register_step_proc /Three (.*) mice/ do |disability|
-      end
-
-      begin
-        m.register_step_proc /Three (.*) mice/ do |disability|
-        end
-        violated("Should raise error")
-      rescue => e
-        e.message.should =~ %r{Duplicate step definitions:.+step_mother_spec\.rb:8:in `/Three \(\.\*\) mice/'.+step_mother_spec\.rb\:12:in `/Three \(\.\*\) mice/'}m
-
-      end
+    before do
+      @step_mother = Object.new
+      @step_mother.extend(StepMother)
+      @visitor = mock('Visitor')
     end
 
-    it "should report file and line numbers for multiple step definitions" do
-      m = StepMother.new
-      
-      m.register_step_proc /Three (.*) mice/ do |disability|
+    it "should format step names" do
+      @step_mother.Given(/it (.*) in (.*)/) do |what, month|
       end
-
-      m.register_step_proc /Three blind (.*)/ do |animal|
+      @step_mother.Given(/nope something else/) do |what, month|
       end
-
-      begin
-        m.regexp_args_proc('Three blind mice')
-        violated("Should raise error")
-      rescue => e
-        e.message.should =~ %r{Multiple step definitions match "Three blind mice":
-
-.+step_mother_spec\.rb:24:in `/Three \(\.\*\) mice/'
-.+step_mother_spec\.rb:27:in `/Three blind \(\.\*\)/'
-
-}m
-      end
-    end
-    
-    it "should mark step as pending when it doesn't match any procs" do
-      pending "think some more about what to expect here" do
-        m = StepMother.new
-        step = mock('step')
-        step.should_receive(:pending!)
-        raise "FIXME"
-        m.execute(step)
-      end
+      format = @step_mother.step_definition("it snows in april").format_args("it snows in april", "[%s]")
+      format.should == "it [snows] in [april]"
     end
 
-    it "should report that a step has a definition if the step is registered" do
-      m = StepMother.new
-      m.register_step_proc /I am a real step definition/ do end
+    it "should raise Ambiguous error when multiple step definitions match" do
+      @step_mother.Given(/Three (.*) mice/) {|disability|}
+      @step_mother.Given(/Three blind (.*)/) {|animal|}
 
-      m.has_step_definition?('I am a real step definition').should be_true
-    end
-
-    it "should report that a step does not have a definition if it has not been registered" do
-      m = StepMother.new
-    
-      m.has_step_definition?('I am a step without a definition').should be_false
-    end
-    
-    it "should explain to the programmer that step definitions always need a proc" do
-      m = StepMother.new
       lambda do
-        m.register_step_proc(/no milk today/)
-      end.should raise_error(MissingProc, "Step definitions must always have a proc")
+        @step_mother.step_definition("Three blind mice")
+      end.should raise_error(Ambiguous, %{Ambiguous match of "Three blind mice":
+
+spec/cucumber/step_mother_spec.rb:23:in `/Three (.*) mice/'
+spec/cucumber/step_mother_spec.rb:24:in `/Three blind (.*)/'
+
+})
     end
 
+    it "should raise Undefined error when no step definitions match" do
+      lambda do
+        @step_mother.step_definition("Three blind mice")
+      end.should raise_error(Undefined)
+    end
+
+    it "should raise Redundant error when same regexp is registered twice" do
+      @step_mother.Given(/Three (.*) mice/) {|disability|}
+      lambda do
+        @step_mother.Given(/Three (.*) mice/) {|disability|}
+      end.should raise_error(Redundant)
+    end
   end
 end

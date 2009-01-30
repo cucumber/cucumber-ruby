@@ -1,5 +1,6 @@
-require 'spec'
-$:.unshift(File.dirname(__FILE__) + '/../../lib')
+# encoding: utf-8
+require 'spec/expectations'
+$:.unshift(File.dirname(__FILE__) + '/../../lib') # This line is not needed in your own project
 require 'cucumber/formatters/unicode'
 require 'calculador'
 
@@ -7,17 +8,14 @@ Before do
   @calc = Calculador.new
 end
 
-After do
-end
-
-Given /he introducido (\d+)/ do |n|
+Dado /que he introducido (\d+) en la calculadora/ do |n|
   @calc.push n.to_i
 end
 
-When 'añado' do
-  @result = @calc.add
+Cuando /oprimo el (\w+)/ do |op|
+  @result = @calc.send op
 end
 
-Then /el resultado debe ser (\d*)/ do |result|
-  @result.should == result.to_i
+Entonces /el resultado debe ser (.*) en la pantalla/ do |result|
+  @result.should == result.to_f
 end

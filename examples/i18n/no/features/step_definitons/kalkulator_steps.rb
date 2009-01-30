@@ -1,23 +1,24 @@
-require 'spec'
-$:.unshift(File.dirname(__FILE__) + '/../../lib')
+# encoding: utf-8
+require 'spec/expectations'
+$:.unshift(File.dirname(__FILE__) + '/../../lib') # This line is not needed in your own project
 require 'cucumber/formatters/unicode'
 require 'kalkulator'
+
+# Not necessary with Ruby 1.9 - Gitt, Når Så automatically aliased.
+Cucumber.alias_steps %w{Naar Saa}
 
 Before do
   @calc = Kalkulator.new
 end
 
-After do
-end
-
-Given /at jeg har tastet inn (\d+)/ do |n|
+Gitt /at jeg har tastet inn (\d+)/ do |n|
   @calc.push n.to_i
 end
 
-When 'jeg summerer' do
+Naar 'jeg summerer' do
   @result = @calc.add
 end
 
-Then /skal resultatet være (\d*)/ do |result|
+Saa /skal resultatet være (\d*)/ do |result|
   @result.should == result.to_i
 end

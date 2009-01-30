@@ -1,40 +1,72 @@
 $:.unshift(File.dirname(__FILE__)) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
+require 'yaml'
 require 'cucumber/platform'
 require 'rubygems'
-require 'treetop/runtime'
-require 'treetop/ruby_extensions'
+require 'cucumber/parser'
 require 'cucumber/version'
-require 'cucumber/step_methods'
-require 'cucumber/tree'
-require 'cucumber/model'
-require 'cucumber/executor'
 require 'cucumber/step_mother'
-require 'cucumber/formatters'
-require 'cucumber/treetop_parser/feature_parser'
-require 'cucumber/cli'
+require 'cucumber/cli/main'
 require 'cucumber/broadcaster'
-require 'cucumber/world'
 require 'cucumber/core_ext/exception'
 
 module Cucumber
-  LANGUAGE_FILE = File.expand_path(File.dirname(__FILE__) + '/cucumber/languages.yml')
-
+  KEYWORD_KEYS = %w{name native encoding feature background scenario scenario_outline examples given when then but}
+  
   class << self
-    attr_reader :language
+    attr_reader :lang
     
-    def load_language(lang)
-      @language = config[lang]
+    def load_language(lang) #:nodoc:
+      return if @lang
+      @lang = lang
+      alias_step_definitions(lang)
+      Parser.load_parser(keyword_hash)
+    end
+
+    def language_incomplete?(lang=@lang)
+      KEYWORD_KEYS.detect{|key| keyword_hash(lang)[key].nil?}
+    end
+
+    # File mode that accounts for Ruby platform and current language
+    def file_mode(m)
+      Cucumber::RUBY_1_9 ? "#{m}:#{keyword_hash['encoding']}" : m
+    end
+
+    # Returns a Hash of the currently active
+    # language, or for a specific language if +lang+ is
+    # specified.
+    def keyword_hash(lang=@lang)
+      LANGUAGES[lang]
     end
     
-    def languages
-      config.keys.sort
+    def alias_step_definitions(lang) #:nodoc:
+      keywords = %w{given when then and but}.map{|keyword| keyword_hash(lang)[keyword]}
+      alias_steps(keywords)
     end
     
-    def config
-      require 'yaml'
-      @config ||= YAML.load_file(LANGUAGE_FILE)
+    # Sets up additional aliases for Given, When and Then.
+    # Try adding the following to your <tt>support/env.rb</tt>:
+    #
+    #   # Given When Then in Norwegian
+    #   Cucumber.alias_steps %w{Gitt Naar Saa}
+    #
+    # You cannot use special characters here, because methods
+    # with special characters is not valid Ruby code
+    #
+    def alias_steps(keywords)
+      keywords.each do |adverb|
+        StepMother.class_eval do
+          alias_method adverb, :register_step_definition
+        end
+
+        StepMother::WorldMethods.class_eval do
+          alias_method adverb, :__cucumber_invoke
+        end
+      end
     end
   end  
+
+  # Make sure we always have English aliases
+  alias_step_definitions('en')
 end

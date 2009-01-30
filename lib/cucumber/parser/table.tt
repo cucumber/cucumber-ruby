@@ -1,0 +1,53 @@
+module Cucumber
+  module Parser
+    grammar Table
+
+      rule table
+        table_row+ {
+          def build
+            Ast::Table.new(raw)
+          end
+
+          def raw
+            elements.map{|e| e.build}
+          end
+        }
+      end
+
+      rule table_row
+        space* '|' cells:(cell '|')+ space* (eol+ / eof) {
+          def build
+            row = cells.elements.map do |elt| 
+              value = elt.cell.text_value.strip
+              value.empty? ? nil : value
+            end
+
+            class << row
+              attr_accessor :line
+            end
+            row.line = cells.line
+
+            row
+          end
+        }
+      end
+
+      rule cell
+        (!('|' / eol) .)*
+      end
+
+      rule space
+        [ \t]
+      end
+
+      rule eol
+        "\n" / ("\r" "\n"?)
+      end
+
+      rule eof
+        !.
+      end
+
+    end
+  end
+end

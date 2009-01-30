@@ -1,3 +1,5 @@
+require 'cucumber/platform'
+
 module Cucumber
   module Rake
     # Defines a task for running features.
@@ -24,7 +26,10 @@ module Cucumber
 
         @feature_pattern = "features/**/*.feature" if feature_pattern.nil? && feature_list.nil?
         @step_pattern    = "features/**/*.rb"      if step_pattern.nil? && step_list.nil?
-        @binary        ||= File.expand_path(File.dirname(__FILE__) + '/../../../bin/cucumber')
+
+        @binary = binary.nil? ? Cucumber::BINARY : File.expand_path(binary)
+        @libs.insert(0, LIB) if binary == Cucumber::BINARY
+
         define_task
       end
 
@@ -36,7 +41,7 @@ module Cucumber
       end
 
       def arguments_for_ruby_execution(task_args = nil)
-        lib_args     = ['"%s"' % ([LIB] + libs).join(File::PATH_SEPARATOR)]
+        lib_args     = ['"%s"' % libs.join(File::PATH_SEPARATOR)]
         cucumber_bin = ['"%s"' % binary]
         cuc_opts     = [(ENV['CUCUMBER_OPTS'] || cucumber_opts)]
 
