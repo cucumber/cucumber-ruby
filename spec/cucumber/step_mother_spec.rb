@@ -34,7 +34,7 @@ spec/cucumber/step_mother_spec.rb:24:in `/Three blind (.*)/'
     end
 
     it "should not raise Ambiguous error when multiple step definitions match, but --guess is enabled" do
-      @step_mother.guess = true
+      @step_mother.options = {:guess => true}
       @step_mother.Given(/Three (.*) mice/) {|disability|}
       @step_mother.Given(/Three (.*)/) {|animal|}
 
@@ -44,14 +44,14 @@ spec/cucumber/step_mother_spec.rb:24:in `/Three blind (.*)/'
     end
     
     it "should pick right step definition when --guess is enabled and equal number of capture groups" do
-      @step_mother.guess = true
+      @step_mother.options = {:guess => true}
       right = @step_mother.Given(/Three (.*) mice/) {|disability|}
       wrong = @step_mother.Given(/Three (.*)/) {|animal|}
       @step_mother.step_definition("Three blind mice").should == right
     end
     
     it "should pick right step definition when --guess is enabled and unequal number of capture groups" do
-      @step_mother.guess = true
+      @step_mother.options = {:guess => true}
       right = @step_mother.Given(/Three (.*) mice ran (.*)/) {|disability|}
       wrong = @step_mother.Given(/Three (.*)/) {|animal|}
       @step_mother.step_definition("Three blind mice ran far").should == right

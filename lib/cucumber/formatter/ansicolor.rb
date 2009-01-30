@@ -41,7 +41,7 @@ module Cucumber
     # * <tt>skipped</tt>       - defaults to <tt>cyan</tt>
     # * <tt>skipped_param</tt> - defaults to <tt>cyan,bold</tt>
     # * <tt>comment</tt>       - defaults to <tt>grey</tt>
-    # * <tt>tag</tt>           - defaults to <tt>blue</tt>
+    # * <tt>tag</tt>           - defaults to <tt>cyan</tt>
     #
     # For instance, if your shell has a black background and a green font (like the
     # "Homebrew" settings for OS X' Terminal.app), you may want to override passed
@@ -81,7 +81,7 @@ module Cucumber
         'outline'   => 'cyan',
         'skipped'   => 'cyan',
         'comment'   => 'grey',
-        'tag'       => 'blue'
+        'tag'       => 'cyan'
       })
 
       if ENV['CUCUMBER_COLORS'] # Example: export CUCUMBER_COLORS="passed=red:failed=yellow"

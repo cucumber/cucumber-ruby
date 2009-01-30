@@ -42,7 +42,7 @@ module Cucumber
   # available from the top-level.
   module StepMother
     attr_writer :snippet_generator
-    attr_writer :guess
+    attr_writer :options
     
     # Registers a new StepDefinition. This method is aliased
     # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>.
@@ -113,15 +113,11 @@ module Cucumber
         step_definition.match(step_name)
       end
       raise Undefined.new(step_name) if found.empty?
-      found = best_matches(step_name, found) if found.size > 1 && guess?
+      found = best_matches(step_name, found) if found.size > 1 && options[:guess]
       raise Ambiguous.new(step_name, found) if found.size > 1
       found[0]
     end
-    
-    def guess?
-      @guess
-    end
-    
+
     def best_matches(step_name, step_definitions)
       top_group_score = step_definitions.map {|s| s.match(step_name).captures.length }.sort.last
       top_groups = step_definitions.select {|s| s.match(step_name).captures.length == top_group_score }
@@ -139,6 +135,12 @@ module Cucumber
 
     def snippet_text(step_keyword, step_name)
       @snippet_generator.snippet_text(step_keyword, step_name)
+    end
+
+    private
+    
+    def options
+      @options || {}
     end
 
     module WorldMethods #:nodoc:
