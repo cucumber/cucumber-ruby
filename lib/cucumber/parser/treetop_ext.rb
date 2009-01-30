@@ -1,6 +1,14 @@
-require 'treetop'
-require 'treetop/runtime'
-require 'treetop/ruby_extensions'
+begin
+  require 'treetop'
+  require 'treetop/runtime'
+  require 'treetop/ruby_extensions'
+rescue LoadError
+  require "rubygems"
+  gem "treetop"
+  require 'treetop'
+  require 'treetop/runtime'
+  require 'treetop/ruby_extensions'
+end
 
 module Cucumber
   module Parser

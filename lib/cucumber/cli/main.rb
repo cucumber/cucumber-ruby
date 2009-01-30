@@ -29,7 +29,7 @@ module Cucumber
       
       def execute!(step_mother)
         configuration.load_language
-        step_mother.guess = configuration.guess?
+        step_mother.options = configuration.options
 
         require_files
         enable_diffing
