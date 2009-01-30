@@ -336,6 +336,9 @@ module Cucumber
           elements[0]
         end
 
+        def white
+          elements[1]
+        end
       end
 
       module Comment1
@@ -358,21 +361,7 @@ module Cucumber
           r2 = _nt_comment_line
           s1 << r2
           if r2
-            s3, i3 = [], index
-            loop do
-              r4 = _nt_eol
-              if r4
-                s3 << r4
-              else
-                break
-              end
-            end
-            if s3.empty?
-              self.index = i3
-              r3 = nil
-            else
-              r3 = SyntaxNode.new(input, i3...index, s3)
-            end
+            r3 = _nt_white
             s1 << r3
           end
           if s1.last
@@ -1206,12 +1195,7 @@ module Cucumber
             break
           end
         end
-        if s0.empty?
-          self.index = i0
-          r0 = nil
-        else
-          r0 = SyntaxNode.new(input, i0...index, s0)
-        end
+        r0 = SyntaxNode.new(input, i0...index, s0)
 
         node_cache[:line_to_eol][start_index] = r0
 
