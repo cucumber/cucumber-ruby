@@ -3,7 +3,6 @@ $:.unshift(File.dirname(__FILE__)) unless
 
 require 'yaml'
 require 'cucumber/platform'
-require 'rubygems'
 require 'cucumber/parser'
 require 'cucumber/version'
 require 'cucumber/step_mother'
