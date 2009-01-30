@@ -139,6 +139,7 @@ examples/tickets/Rakefile
 examples/tickets/cucumber.yml
 examples/tickets/features/172.feature
 examples/tickets/features/177-1.feature
+examples/tickets/features/177-2.feature
 examples/tickets/features/180.feature
 examples/tickets/features/lib/eatting_machine.rb
 examples/tickets/features/lib/pantry.rb
