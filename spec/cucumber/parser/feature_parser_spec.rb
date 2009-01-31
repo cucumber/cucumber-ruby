@@ -38,7 +38,7 @@ Feature: hi
         end
         
         it "should parse a comment within a scenario" do
-          pending
+          pending "Store comment in node and output it in pretty formatter"
           parse(%{Feature: Hi
   Scenario: Hello
     Given foo
