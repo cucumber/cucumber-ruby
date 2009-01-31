@@ -61,6 +61,20 @@ pure Ruby users have been enjoying for a while.
 * Verify that custom formatters work - write a feature for it
 * Implement at least a basic HTML formatter
 * Run a single cucumber feature from rake "rake features FEATURE=/path/to/feature:line"
+* Wiki page about running subsets
+** file:line
+*** scenario (or step within)
+*** scenario outline
+*** scenario outline examples
+*** line in an example table
+*** background (same as whole file)
+*** fix bugs in any of those cases (there are some)
+** --tags
+*** Link to page about tags
+* Tags with arguments
+* cucumber.jar + examples
+** Remove need for -S cucumber
+** Full jar and simple jar
 
 == Bugfixes
 * -n option does not suppress the line info for a Scenario Outline (#175 Aslak Hellesøy)
