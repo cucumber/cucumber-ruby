@@ -879,20 +879,24 @@ module Cucumber
       end
 
       module Step0
+        def comment
+          elements[0]
+        end
+
         def step_keyword
-          elements[1]
+          elements[2]
         end
 
         def name
-          elements[3]
+          elements[4]
         end
 
         def multi
-          elements[5]
+          elements[6]
         end
 
         def white
-          elements[6]
+          elements[7]
         end
       end
 
@@ -915,75 +919,79 @@ module Cucumber
         end
 
         i0, s0 = index, []
-        s1, i1 = [], index
-        loop do
-          r2 = _nt_space
-          if r2
-            s1 << r2
-          else
-            break
-          end
-        end
-        r1 = SyntaxNode.new(input, i1...index, s1)
+        r1 = _nt_comment
         s0 << r1
         if r1
-          r3 = _nt_step_keyword
-          s0 << r3
-          if r3
-            s4, i4 = [], index
-            loop do
-              r5 = _nt_space
-              if r5
-                s4 << r5
-              else
-                break
-              end
+          s2, i2 = [], index
+          loop do
+            r3 = _nt_space
+            if r3
+              s2 << r3
+            else
+              break
             end
-            r4 = SyntaxNode.new(input, i4...index, s4)
+          end
+          r2 = SyntaxNode.new(input, i2...index, s2)
+          s0 << r2
+          if r2
+            r4 = _nt_step_keyword
             s0 << r4
             if r4
-              r6 = _nt_line_to_eol
-              s0 << r6
-              if r6
-                i7 = index
-                s8, i8 = [], index
-                loop do
-                  r9 = _nt_eol
-                  if r9
-                    s8 << r9
-                  else
-                    break
-                  end
-                end
-                if s8.empty?
-                  self.index = i8
-                  r8 = nil
+              s5, i5 = [], index
+              loop do
+                r6 = _nt_space
+                if r6
+                  s5 << r6
                 else
-                  r8 = SyntaxNode.new(input, i8...index, s8)
+                  break
                 end
-                if r8
-                  r7 = r8
-                else
-                  r10 = _nt_eof
-                  if r10
-                    r7 = r10
-                  else
-                    self.index = i7
-                    r7 = nil
-                  end
-                end
+              end
+              r5 = SyntaxNode.new(input, i5...index, s5)
+              s0 << r5
+              if r5
+                r7 = _nt_line_to_eol
                 s0 << r7
                 if r7
-                  r12 = _nt_multiline_arg
-                  if r12
-                    r11 = r12
-                  else
-                    r11 = SyntaxNode.new(input, index...index)
+                  i8 = index
+                  s9, i9 = [], index
+                  loop do
+                    r10 = _nt_eol
+                    if r10
+                      s9 << r10
+                    else
+                      break
+                    end
                   end
-                  s0 << r11
-                  if r11
-                    r13 = _nt_white
-                    s0 << r13
+                  if s9.empty?
+                    self.index = i9
+                    r9 = nil
+                  else
+                    r9 = SyntaxNode.new(input, i9...index, s9)
+                  end
+                  if r9
+                    r8 = r9
+                  else
+                    r11 = _nt_eof
+                    if r11
+                      r8 = r11
+                    else
+                      self.index = i8
+                      r8 = nil
+                    end
+                  end
+                  s0 << r8
+                  if r8
+                    r13 = _nt_multiline_arg
+                    if r13
+                      r12 = r13
+                    else
+                      r12 = SyntaxNode.new(input, index...index)
+                    end
+                    s0 << r12
+                    if r12
+                      r14 = _nt_white
+                      s0 << r14
+                    end
                   end
                 end
               end
