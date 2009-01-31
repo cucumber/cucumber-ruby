@@ -4,7 +4,9 @@ module Cucumber
   module Cli
     class LanguageHelpFormatter < Formatter::Pretty
       INCOMPLETE = %{
-This language is incomplete. Please translate the missing words in
+The Cucumber grammar has evolved since this translation was written.
+Please help us complete the translation by translating the missing words in
+
 #{Cucumber::LANGUAGE_FILE}
 
 Then contribute back to the Cucumber project. Details here:
@@ -20,12 +22,11 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
       end
 
       def self.list_keywords(io, lang)
-        Cucumber.load_language(lang)
         raw = Cucumber::KEYWORD_KEYS.map do |key|
           [key, Cucumber::LANGUAGES[lang][key]]
         end
         table = Ast::Table.new(raw)
-        new(nil, io, {:incomplete => Cucumber.language_incomplete?}, '').visit_multiline_arg(table, :passed)
+        new(nil, io, {:incomplete => Cucumber.language_incomplete?(lang)}, '').visit_multiline_arg(table, :passed)
       end
 
       def visit_multiline_arg(table, status)
