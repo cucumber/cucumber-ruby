@@ -58,7 +58,6 @@ pure Ruby users have been enjoying for a while.
 
 == TODO Before 0.2 release
 * Make sure all features and specs pass on Windows, JRuby and Ruby 1.9
-* Verify that custom formatters work - write a feature for it
 * Implement at least a basic HTML formatter
 * Run a single cucumber feature from rake "rake features FEATURE=/path/to/feature:line"
 * Wiki page about running subsets

@@ -183,7 +183,7 @@ module Cucumber
         end
 
         def width
-          map{|cell| cell.value ? cell.value.jlength : 0}.max
+          map{|cell| cell.value ? cell.value.to_s.jlength : 0}.max
         end
 
         def each(&proc)
