@@ -261,6 +261,8 @@
   background: Contexto
   feature: Característica
   scenario: Cenário
+  scenario_outline: Esquema do Cenário
+  examples: Exemplos
   given: Dado
   when: Quando
   then: Então
