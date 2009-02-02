@@ -3,17 +3,6 @@ module Cucumber
     class Scenario
       attr_writer :feature, :background
 
-      # Helper class to support Visitor#visit_steps
-      class Steps #:nodoc:
-        def initialize(scenario)
-          @scenario = scenario
-        end
-
-        def accept(visitor)
-          @scenario.accept_steps(visitor)
-        end
-      end
-
       def initialize(comment, tags, line, keyword, name, steps)
         @comment, @tags, @line, @keyword, @name = comment, tags, line, keyword, name
         steps.each {|step| step.scenario = self}

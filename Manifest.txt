@@ -190,6 +190,7 @@ lib/cucumber/ast/py_string.rb
 lib/cucumber/ast/scenario.rb
 lib/cucumber/ast/scenario_outline.rb
 lib/cucumber/ast/step.rb
+lib/cucumber/ast/steps.rb
 lib/cucumber/ast/table.rb
 lib/cucumber/ast/tags.rb
 lib/cucumber/ast/visitor.rb
@@ -204,6 +205,8 @@ lib/cucumber/core_ext/string.rb
 lib/cucumber/formatter.rb
 lib/cucumber/formatter/ansicolor.rb
 lib/cucumber/formatter/console.rb
+lib/cucumber/formatter/cucumber.css
+lib/cucumber/formatter/cucumber.sass
 lib/cucumber/formatter/html.rb
 lib/cucumber/formatter/pretty.rb
 lib/cucumber/formatter/profile.rb
