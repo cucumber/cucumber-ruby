@@ -201,10 +201,11 @@ module Cucumber
     
       def formatter_class(format)
         case format
-        when 'pretty'   then Formatter::Pretty
-        when 'progress' then Formatter::Progress
-        when 'profile'  then Formatter::Profile
-        when 'rerun'    then Formatter::Rerun
+          when 'pretty'   then Formatter::Pretty
+          when 'progress' then Formatter::Progress
+          when 'profile'  then Formatter::Profile
+          when 'rerun'    then Formatter::Rerun
+          when 'html'     then Formatter::Html
         else
           constantize(format)
         end
