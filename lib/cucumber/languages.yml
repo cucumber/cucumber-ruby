@@ -258,6 +258,7 @@
   name: Portuguese
   native: português
   encoding: UTF-8
+  background: Contexto
   feature: Característica
   scenario: Cenário
   given: Dado
