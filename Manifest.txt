@@ -132,6 +132,7 @@ examples/self_test/features/outline_sample.feature
 examples/self_test/features/sample.feature
 examples/self_test/features/step_definitions/sample_steps.rb
 examples/self_test/features/support/env.rb
+examples/self_test/features/support/tag_count_formatter.rb
 examples/test_unit/Rakefile
 examples/test_unit/features/step_definitions/test_unit_steps.rb
 examples/test_unit/features/test_unit.feature
@@ -156,6 +157,7 @@ examples/watir/features/support/env.rb
 features/background.feature
 features/cucumber_cli.feature
 features/cucumber_cli_outlines.feature
+features/custom_formatter.feature
 features/report_called_undefined_steps.feature
 features/step_definitions/cucumber_steps.rb
 features/step_definitions/extra_steps.rb
