@@ -2,11 +2,23 @@ module Cucumber
   module Ast
     class Scenario
       attr_writer :feature, :background
-      
+
+      # Helper class to support Visitor#visit_steps
+      class Steps #:nodoc:
+        def initialize(scenario)
+          @scenario = scenario
+        end
+
+        def accept(visitor)
+          @scenario.accept_steps(visitor)
+        end
+      end
+
       def initialize(comment, tags, line, keyword, name, steps)
         @comment, @tags, @line, @keyword, @name = comment, tags, line, keyword, name
         steps.each {|step| step.scenario = self}
         @steps = steps
+        @steps_helper = Steps.new(self)
       end
 
       def status
@@ -26,10 +38,15 @@ module Cucumber
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, @name, file_line(@line), source_indent(text_length))
+        visitor.visit_steps(@steps_helper)
 
+        @feature.scenario_executed(self) if @feature && !@executed
+        @executed = true
+      end
+
+      def accept_steps(visitor)
         prior_world = @background ? @background.world : nil
         visitor.world(self, prior_world) do |world|
-
           previous = @background ? @background.status : :passed
           @steps.each do |step|
             step.previous = previous
@@ -38,8 +55,6 @@ module Cucumber
             previous = step.status
           end
         end
-        @feature.scenario_executed(self) if @feature && !@executed
-        @executed = true
       end
 
       def source_indent(text_length)

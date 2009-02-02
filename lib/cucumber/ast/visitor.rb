@@ -72,6 +72,10 @@ module Cucumber
       def visit_scenario_name(keyword, name, file_line, source_indent)
       end
 
+      def visit_steps(steps)
+        steps.accept(self)
+      end
+
       def visit_step(step)
         step.accept(self)
       end
