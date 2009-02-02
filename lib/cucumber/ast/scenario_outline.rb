@@ -31,9 +31,8 @@ module Cucumber
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, @name, file_line(@line), source_indent(text_length))
-        @steps.each do |step|
-          visitor.visit_step(step)
-        end
+        visitor.visit_steps(@steps_helper)
+
         @examples_array.each do |examples|
           visitor.visit_examples(examples)
         end
