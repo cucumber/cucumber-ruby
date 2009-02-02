@@ -11,7 +11,7 @@ module Cucumber
       def world(scenario, world = nil, &proc)
         @step_mother.world(scenario, world, &proc)
       end
-      
+
       def new_world
         @step_mother.new_world
       end
@@ -57,7 +57,7 @@ module Cucumber
       def visit_feature_element(feature_element)
         feature_element.accept(self)
       end
-      
+
       def visit_background(background)
         background.accept(self)
       end
@@ -67,6 +67,10 @@ module Cucumber
       end
 
       def visit_examples_name(keyword, name)
+      end
+
+      def visit_outline_table(outline_table)
+        outline_table.accept(self, nil)
       end
 
       def visit_scenario_name(keyword, name, file_line, source_indent)

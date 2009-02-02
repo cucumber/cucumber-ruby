@@ -7,7 +7,7 @@ module Cucumber
 
       def accept(visitor)
         visitor.visit_examples_name(@keyword, @name)
-        @outline_table.accept(visitor, nil)
+        visitor.visit_outline_table(@outline_table)
       end
 
       def each_example_row(&proc)

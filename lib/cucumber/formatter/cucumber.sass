@@ -1,0 +1,49 @@
+# cucumber.css is generated from cucumber.sass
+# Regenerate with the following command:
+#
+#   sass -t expanded lib/cucumber/formatter/cucumber.sass > lib/cucumber/formatter/cucumber.css
+#
+.cucumber
+  :background black
+  :color white
+  :padding 1em
+
+  .passed
+    :color green
+  .undefined
+    :color yellow
+  .pending
+    :color yellow
+  .failed
+    :color red
+  .skipped
+    :color cyan
+  .outline
+    :color cyan
+  .param
+    :font-weight bold
+
+  a
+    :text-decoration none
+    :color inherit
+
+    &:hover
+      :text-decoration underline
+    &:visited
+      :font-weight normal
+
+  ol
+    :list-style none
+
+  .stats
+    :margin 2em
+
+  .summary
+    ul.features
+      li
+        :display inline
+
+  .backtrace
+    :margin-top 0
+    :margin-bottom 0
+    :margin-left 1em
