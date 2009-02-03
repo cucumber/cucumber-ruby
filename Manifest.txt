@@ -113,7 +113,6 @@ examples/jbehave/src/main/java/cukes/jbehave/examples/trader/model/Stock.java
 examples/jbehave/src/main/java/cukes/jbehave/examples/trader/model/Trader.java
 examples/jbehave/src/main/java/cukes/jbehave/examples/trader/persistence/TraderPersister.java
 examples/jbehave/src/main/java/cukes/jbehave/examples/trader/scenarios/TraderSteps.java
-examples/jbehave/target/maven-archiver/pom.properties
 examples/selenium/Rakefile
 examples/selenium/features/search.feature
 examples/selenium/features/step_definitons/stories_steps.rb
