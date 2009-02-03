@@ -27,7 +27,6 @@ module Cucumber
       end
 
       def accept(visitor)
-        visitor.visit_background(@background) if @background
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, @name, file_line(@line), source_indent(text_length))
@@ -47,29 +46,25 @@ module Cucumber
 
       def execute_row(cells, visitor, &proc)
         exception = nil
-        
-        prior_world = @background ? @background.world : nil
-        visitor.world(self, prior_world) do |world|
-          
-          previous_status = @background ? @background.status : :passed
-          argument_hash = cells.to_hash
-          cell_index = 0
-          @steps.each do |step|
-            executed_step, previous_status, matched_args = 
-              step.execute_with_arguments(argument_hash, world, previous_status, visitor, cells[0].line)
-            # There might be steps that don't have any arguments
-            # If there are no matched args, we'll still iterate once
-            matched_args = [nil] if matched_args.empty?
 
-            matched_args.each do
-              cell = cells[cell_index]
-              if cell
-                proc.call(cell, previous_status)
-                cell_index += 1
-              end
+        previous_status = @background.status
+        argument_hash = cells.to_hash
+        cell_index = 0
+        @steps.each do |step|
+          executed_step, previous_status, matched_args = 
+            step.execute_with_arguments(argument_hash, @background.world, previous_status, visitor, cells[0].line)
+          # There might be steps that don't have any arguments
+          # If there are no matched args, we'll still iterate once
+          matched_args = [nil] if matched_args.empty?
+
+          matched_args.each do
+            cell = cells[cell_index]
+            if cell
+              proc.call(cell, previous_status)
+              cell_index += 1
             end
-            exception ||= executed_step.exception
           end
+          exception ||= executed_step.exception
         end
         @feature.scenario_executed(self) if @feature
         exception

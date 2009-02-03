@@ -57,6 +57,7 @@ Scenario Outlines, the rich command line, the nice output format and everything
 pure Ruby users have been enjoying for a while.
 
 == TODO Before 0.2 release
+* Newlines between backgrounds and feature elements with pretty formatter
 * Make sure all features and specs pass on Windows, JRuby and Ruby 1.9
 * Verify that custom formatters work - write a feature for it
 * Implement at least a basic HTML formatter
@@ -77,6 +78,7 @@ pure Ruby users have been enjoying for a while.
 ** Full jar and simple jar
 
 == Bugfixes
+* Re-structure the ast: Feature -> Background -> (Scenario|ScenarioOutline)*. Fixes bug with background being called outside transactions. (#181 Joseph Wilk)
 * -n option does not suppress the line info for a Scenario Outline (#175 Aslak Hellesøy)
 * Errors with rspec-rails matchers in cucumber 0.1.99 (#173 David Chelimsky)
 * Can't use an empty string as a table value in a scenario outline (#172 Aslak Hellesøy)

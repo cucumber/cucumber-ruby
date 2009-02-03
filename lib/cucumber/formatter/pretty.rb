@@ -87,9 +87,7 @@ module Cucumber
 
      def visit_background(background)
         @indent = 2
-        background_already_visible = background.already_visited_steps?
         background.accept(self)
-        @io.puts unless background_already_visible
       end
 
       def visit_examples(examples)

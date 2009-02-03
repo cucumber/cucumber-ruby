@@ -6,22 +6,29 @@ module Cucumber
       attr_writer :features, :lines
 
       def initialize(comment, tags, name, feature_elements, background = nil)
-        @comment, @tags, @name, @feature_elements, @background = comment, tags, name, feature_elements, background
+        @comment, @tags, @name, @background = comment, tags, name, background
+        @background ||= Background.new
+        @background.feature_elements = feature_elements
+        @background.feature = self
+
         feature_elements.each do |feature_element| 
           feature_element.feature = self
-          feature_element.background = background if background
+          feature_element.background = @background
         end
-        background.feature = self if background
         @lines = []
       end
 
-      def tagged_with?(tag_names, check_elements=true)
+      def tagged_with?(tag_names, check_background = true)
         @tags.among?(tag_names) || 
-        (check_elements && @feature_elements.detect{|e| e.tagged_with?(tag_names)})
+        (check_background && @background.tagged_with?(tag_names))
+      end
+
+      def visit?(feature_element)
+        @features.visit?(feature_element, @lines)
       end
       
       def matches_scenario_names?(scenario_names)
-        @feature_elements.detect{|e| e.matches_scenario_names?(scenario_names)}
+        @background.matches_scenario_names?(scenario_names)
       end
 
       def accept(visitor)
@@ -29,10 +36,7 @@ module Cucumber
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@name)
-        
-        @feature_elements.each do |feature_element|
-          visitor.visit_feature_element(feature_element) if @features.visit?(feature_element, @lines)
-        end
+        visitor.visit_background(@background)
       end
 
       def scenario_executed(scenario)
@@ -57,8 +61,7 @@ module Cucumber
         sexp += [comment] if comment
         tags = @tags.to_sexp
         sexp += tags if tags.any?
-        sexp += [@background.to_sexp] if @background
-        sexp += @feature_elements.map{|e| e.to_sexp}
+        sexp += @background.to_sexp if @background
         sexp
       end
     end
