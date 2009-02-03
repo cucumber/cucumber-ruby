@@ -132,6 +132,7 @@ examples/self_test/features/outline_sample.feature
 examples/self_test/features/sample.feature
 examples/self_test/features/step_definitions/sample_steps.rb
 examples/self_test/features/support/env.rb
+examples/self_test/features/support/tag_count_formatter.rb
 examples/test_unit/Rakefile
 examples/test_unit/features/step_definitions/test_unit_steps.rb
 examples/test_unit/features/test_unit.feature
@@ -156,6 +157,7 @@ examples/watir/features/support/env.rb
 features/background.feature
 features/cucumber_cli.feature
 features/cucumber_cli_outlines.feature
+features/custom_formatter.feature
 features/report_called_undefined_steps.feature
 features/step_definitions/cucumber_steps.rb
 features/step_definitions/extra_steps.rb
@@ -188,6 +190,7 @@ lib/cucumber/ast/py_string.rb
 lib/cucumber/ast/scenario.rb
 lib/cucumber/ast/scenario_outline.rb
 lib/cucumber/ast/step.rb
+lib/cucumber/ast/steps.rb
 lib/cucumber/ast/table.rb
 lib/cucumber/ast/tags.rb
 lib/cucumber/ast/visitor.rb
@@ -202,6 +205,9 @@ lib/cucumber/core_ext/string.rb
 lib/cucumber/formatter.rb
 lib/cucumber/formatter/ansicolor.rb
 lib/cucumber/formatter/console.rb
+lib/cucumber/formatter/cucumber.css
+lib/cucumber/formatter/cucumber.sass
+lib/cucumber/formatter/html.rb
 lib/cucumber/formatter/pretty.rb
 lib/cucumber/formatter/profile.rb
 lib/cucumber/formatter/progress.rb

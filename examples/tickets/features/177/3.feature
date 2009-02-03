@@ -1,4 +1,4 @@
-Matt's example with a comment before a step
+Feature: Matt's example with a comment before a step
 
 Scenario: Upload an image for an artist and create a concert in the process
   Given I am logged in to my account
