@@ -7,6 +7,7 @@ module Cucumber
         @comment, @tags, @line, @keyword, @name = comment, tags, line, keyword, name
         steps.each {|step| step.scenario = self}
         @steps = steps
+        @steps_helper = Steps.new(self)
       end
 
        def status
@@ -25,7 +26,13 @@ module Cucumber
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, @name, file_line(@line), source_indent(text_length))
+        visitor.visit_steps(@steps_helper)
 
+        @feature.scenario_executed(self) if @feature && !@executed
+        @executed = true
+      end
+
+      def accept_steps(visitor)
         previous = @background.status
         @steps.each do |step|
           step.previous = previous
@@ -33,9 +40,6 @@ module Cucumber
           visitor.visit_step(step)
           previous = step.status
         end
-
-        @feature.scenario_executed(self) if @feature && !@executed
-        @executed = true
       end
 
       def at_lines?(lines)

@@ -1,0 +1,55 @@
+
+
+
+
+
+.cucumber {
+  background: black;
+  color: white;
+  padding: 1em;
+}
+.cucumber .passed {
+  color: green;
+}
+.cucumber .undefined {
+  color: yellow;
+}
+.cucumber .pending {
+  color: yellow;
+}
+.cucumber .failed {
+  color: red;
+}
+.cucumber .skipped {
+  color: cyan;
+}
+.cucumber .outline {
+  color: cyan;
+}
+.cucumber .param {
+  font-weight: bold;
+}
+.cucumber a {
+  text-decoration: none;
+  color: inherit;
+}
+.cucumber a:hover {
+  text-decoration: underline;
+}
+.cucumber a:visited {
+  font-weight: normal;
+}
+.cucumber ol {
+  list-style: none;
+}
+.cucumber .stats {
+  margin: 2em;
+}
+.cucumber .summary ul.features li {
+  display: inline;
+}
+.cucumber .backtrace {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 1em;
+}

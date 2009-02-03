@@ -11,7 +11,7 @@ module Cucumber
       def world(scenario, &proc)
         @step_mother.world(scenario, &proc)
       end
-      
+
       def step_definition(step_name)
         @step_mother.step_definition(step_name)
       end
@@ -53,7 +53,7 @@ module Cucumber
       def visit_feature_element(feature_element)
         feature_element.accept(self)
       end
-      
+
       def visit_background(background)
         background.accept(self)
       end
@@ -65,7 +65,15 @@ module Cucumber
       def visit_examples_name(keyword, name)
       end
 
+      def visit_outline_table(outline_table)
+        outline_table.accept(self, nil)
+      end
+
       def visit_scenario_name(keyword, name, file_line, source_indent)
+      end
+
+      def visit_steps(steps)
+        steps.accept(self)
       end
 
       def visit_step(step)
