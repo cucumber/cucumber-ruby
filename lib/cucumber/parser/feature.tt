@@ -77,7 +77,7 @@ module Cucumber
       end
 
       rule scenario
-        comment tags white scenario_keyword space* name:line_to_eol (eol+ / eof) steps white {
+        comment tags white scenario_keyword space* name:line_to_eol (white / eof) steps white {
           def build
             Ast::Scenario.new(
               comment.build, 
