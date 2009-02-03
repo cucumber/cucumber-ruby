@@ -123,6 +123,14 @@ Feature: hi
             [:scenario, 3, "Scenario:", "Hello"]]
         end
 
+        it "should allow whitespace lines after the Scenario line" do
+          parse(%{Feature: Foo
+
+Scenario: bar
+
+  Given baz})
+        end
+            
         it "should have steps" do
           parse("Feature: Hi\nScenario: Hello\nGiven I am a step\n").to_sexp.should ==
           [:feature, "Feature: Hi",
