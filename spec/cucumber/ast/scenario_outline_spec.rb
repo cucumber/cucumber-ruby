@@ -45,7 +45,11 @@ module Cucumber
               ]
             ]
           ]
+          
         )
+        @background = Background.new
+        @background.world = @step_mother.new_world
+        @scenario_outline.background = @background
       end
 
       it "should replace all variables and call outline once for each table row" do

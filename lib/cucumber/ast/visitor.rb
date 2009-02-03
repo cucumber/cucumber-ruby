@@ -8,14 +8,10 @@ module Cucumber
         @step_mother = step_mother
       end
 
-      def world(scenario, world = nil, &proc)
-        @step_mother.world(scenario, world, &proc)
+      def world(scenario, &proc)
+        @step_mother.world(scenario, &proc)
       end
       
-      def new_world
-        @step_mother.new_world
-      end
-
       def step_definition(step_name)
         @step_mother.step_definition(step_name)
       end
@@ -61,7 +57,7 @@ module Cucumber
       def visit_background(background)
         background.accept(self)
       end
-
+      
       def visit_examples(examples)
         examples.accept(self)
       end

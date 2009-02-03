@@ -43,7 +43,11 @@ module Cucumber
               Step.new(11, "Given", "a happy step with an inline arg:", py_string),
               Step.new(12, "Given", "a failing step")
             ]
-          )]
+          )],
+          Ast::Background.new(Ast::Comment.new(""), 2, "Background:",
+            [
+              Step.new(3, "Given", "a passing step")
+            ])
         )
         f.file = 'features/pretty_printing.feature'
         f.features = Features.new(Filter.new({:tags => []}))
