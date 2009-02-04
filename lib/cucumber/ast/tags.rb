@@ -12,7 +12,14 @@ module Cucumber
       end
 
       def among?(tag_names)
-        (@tag_names & tag_names).any?
+        no_tags, yes_tags = tag_names.partition{|tag| tag =~ /^\!/}
+        no_tags = no_tags.map{|tag| tag[1..-1]}
+
+        # Strip @
+        yes_tags = yes_tags.map{|tag| tag =~ /^@(.*)/ ? $1 : tag}
+        no_tags = no_tags.map{|tag| tag =~ /^@(.*)/ ? $1 : tag}
+
+        (@tag_names & yes_tags).any? && (@tag_names & no_tags).empty?
       end
 
       def at_lines?(lines)
