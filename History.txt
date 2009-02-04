@@ -58,6 +58,9 @@ pure Ruby users have been enjoying for a while.
 
 == TODO Before 0.2 release
 * Make sure all features and specs pass on Windows, JRuby and Ruby 1.9
+* Tighten up and simplify the grammar. More edge case features/specs.
+* Reintroduce StepInvocation. Reduce some of the redundant calls to StepDefinition/StepMother. Align with JBehave.
+* Make some class diagrams.
 * Implement at least a basic HTML formatter
 * Run a single cucumber feature from rake "rake features FEATURE=/path/to/feature:line"
 * Wiki page about running subsets
