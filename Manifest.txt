@@ -203,6 +203,7 @@ lib/cucumber/core_ext/proc.rb
 lib/cucumber/core_ext/string.rb
 lib/cucumber/formatter.rb
 lib/cucumber/formatter/ansicolor.rb
+lib/cucumber/formatter/color_io.rb
 lib/cucumber/formatter/console.rb
 lib/cucumber/formatter/cucumber.css
 lib/cucumber/formatter/cucumber.sass
