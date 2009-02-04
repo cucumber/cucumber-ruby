@@ -1,19 +1,12 @@
-# Hack to work around Win32/Console, which bundles a licence-violating, outdated
-# copy of term/ansicolor that doesn't implement Term::ANSIColor#coloring=.
-# We want the official one!
-begin
-  gem 'term-ansicolor' 
-rescue Exception => ignore
-  # In order to work with Cucumber.java, which doesn't bundle gems.
-end
-$LOAD_PATH.each{|path| $LOAD_PATH.unshift($LOAD_PATH.delete(path)) if path =~ /term-ansicolor/}
+gem 'term-ansicolor'
 require 'term/ansicolor'
 
 if Cucumber::WINDOWS_MRI
   begin
+    gem 'win32console', '>= 1.2.0'
     require 'Win32/Console/ANSI'
   rescue LoadError
-    STDERR.puts "You must gem install win32console to get coloured output on MRI/Windows"
+    STDERR.puts "*** WARNING: You must gem install win32console (1.2.0 or higher) to get coloured output on MRI/Windows"
     Term::ANSIColor.coloring = false
   end
 end
