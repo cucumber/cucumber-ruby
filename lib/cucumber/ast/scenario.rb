@@ -4,9 +4,8 @@ module Cucumber
       attr_writer :background
       
       def initialize(comment, tags, line, keyword, name, steps)
-        @comment, @tags, @line, @keyword, @name = comment, tags, line, keyword, name
-        steps.each {|step| step.scenario = self}
-        @steps = steps
+        super(comment, line, keyword, steps)
+        @tags, @name = tags, name
         @steps_helper = Steps.new(self)
       end
 
@@ -48,10 +47,6 @@ module Cucumber
 
       def at_header_or_step_lines?(lines)
         lines.empty? || lines.index(@line) || @steps.detect {|step| step.at_lines?(lines)} || @tags.at_lines?(lines)
-      end
-
-      def step_executed(step)
-        @feature.step_executed(step) if @feature
       end
 
       def text_length
