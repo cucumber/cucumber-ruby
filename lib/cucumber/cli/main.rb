@@ -23,7 +23,7 @@ module Cucumber
 
       def initialize(args, out_stream = STDOUT, error_stream = STDERR)
         @args         = args
-        @out_stream   = out_stream
+        @out_stream   = out_stream == STDOUT ? Formatter::ColorIO.new : out_stream
         @error_stream = error_stream
       end
       
