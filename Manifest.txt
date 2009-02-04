@@ -250,6 +250,7 @@ spec/cucumber/ast/scenario_outline_spec.rb
 spec/cucumber/ast/scenario_spec.rb
 spec/cucumber/ast/step_spec.rb
 spec/cucumber/ast/table_spec.rb
+spec/cucumber/ast/tags_spec.rb
 spec/cucumber/broadcaster_spec.rb
 spec/cucumber/cli/configuration_spec.rb
 spec/cucumber/cli/main_spec.rb
