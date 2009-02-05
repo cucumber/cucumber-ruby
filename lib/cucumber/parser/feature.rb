@@ -889,9 +889,9 @@ module Cucumber
       module Step1
         def build
           if multi.respond_to?(:build)
-            Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value, multi.build)
+            Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value.strip, multi.build)
           else
-            Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value)
+            Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value.strip)
           end
         end
       end
