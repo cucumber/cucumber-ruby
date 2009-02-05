@@ -4,7 +4,7 @@ Feature: Cucumber command line
 
   Scenario: Run single scenario with missing step definition
     When I run cucumber -q features/sample.feature:5
-    Then it should pass with
+    Then it should pass with      
       """
       @one
       Feature: Sample
