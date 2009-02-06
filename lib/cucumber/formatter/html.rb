@@ -1,4 +1,9 @@
-require 'builder'
+begin
+  require 'builder'
+rescue LoadError
+  gem 'builder'
+  require 'builder'
+end
 
 module Cucumber
   module Formatter
