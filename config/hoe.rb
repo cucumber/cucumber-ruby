@@ -62,7 +62,8 @@ $hoe = Hoe.new(GEM_NAME, VERS) do |p|
     ['term-ansicolor', '>= 1.0.3'], 
     ['treetop', '>= 1.2.4'], 
     ['polyglot', '>= 0.2.4'], # Remove this when Treetop no longer loads polyglot by default. 
-    ['diff-lcs', '>= 1.1.2'] 
+    ['diff-lcs', '>= 1.1.2'],
+    ['builder', '>= 2.1.2']
   ]
 
   #p.spec_extras = {}    # A hash of extra values to set in the gemspec.
