@@ -161,8 +161,9 @@
   native: français
   encoding: UTF-8
   feature: Fonctionnalité
+  background: Contexte
   scenario: Scénario
-  scenario_outline: Scénario esquisse
+  scenario_outline: Plan du Scénario
   examples: Exemples
   given: Etant donné
   when: Lorsque
@@ -258,8 +259,11 @@
   name: Portuguese
   native: português
   encoding: UTF-8
+  background: Contexto
   feature: Característica
   scenario: Cenário
+  scenario_outline: Esquema do Cenário
+  examples: Exemplos
   given: Dado
   when: Quando
   then: Então

@@ -3,13 +3,13 @@ Fonctionnalité: Addition
   En tant que trader
   Je souhaite pouvoir additionner 2 chiffres
 
-  Scénario esquisse: Addition de produits dérivés
-    Etant donné que je tape 2
-    Et que je tape 1
+  Plan du Scénario: Addition de produits dérivés
+    Etant donné que je tape <a>
+    Et que je tape <b>
     Lorsque je tape additionner
-    Alors le résultat doit être 3
+    Alors le résultat doit être <somme>
 
   Exemples:
-    | a | b | sum |
-    | 2 | 2 | 4   |
-    | 2 | 3 | 5   |
+    | a | b | somme |
+    | 2 | 2 | 4     |
+    | 2 | 3 | 5     |

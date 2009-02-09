@@ -49,7 +49,7 @@ module Cucumber
             if v == 'help'
               list_languages
             elsif args==['help']
-              list_keywords(v)
+              list_keywords_and_exit(v)
             else
               @options[:lang] = v
             end
@@ -73,7 +73,9 @@ module Cucumber
           end
           opts.on("-t TAGS", "--tags TAGS", 
             "Only execute the features or scenarios with the specified tags.",
-            "TAGS must be comma-separated without spaces.") do |v|
+            "TAGS must be comma-separated without spaces. Prefix tags with ~ to",
+            "exclude features or scenarios having that tag. tags can be specified",
+            "with or without the @ prefix.") do |v|
             @options[:tags] = v.split(",")
           end
           opts.on("-s SCENARIO", "--scenario SCENARIO", 
@@ -168,10 +170,10 @@ module Cucumber
       end
     
       def load_language
-        Cucumber.load_language(@options[:lang])
-      
-        if Cucumber.language_incomplete?
-          list_keywords(Cucumber.lang)
+        if Cucumber.language_incomplete?(@options[:lang])
+          list_keywords_and_exit(@options[:lang])
+        else
+          Cucumber.load_language(@options[:lang])
         end
       end
     
@@ -297,7 +299,7 @@ Defined profiles in cucumber.yml:
         return @cucumber_yml
       end
     
-      def list_keywords(lang)
+      def list_keywords_and_exit(lang)
         unless Cucumber::LANGUAGES[lang]
           exit_with_error("No language with key #{lang}")
         end
