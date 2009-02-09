@@ -16,7 +16,11 @@ module Cucumber
       end
 
       it "should not be among other tags" do
-        @tags.should_not be_among(%w{one !two})
+        @tags.should_not be_among(%w{one ~two})
+      end
+
+      it "should not be among other tags with @ prefix" do
+        @tags.should_not be_among(%w{one ~@two})
       end
     end
   end
