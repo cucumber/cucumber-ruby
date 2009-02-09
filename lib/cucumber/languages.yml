@@ -161,8 +161,9 @@
   native: français
   encoding: UTF-8
   feature: Fonctionnalité
+  background: Contexte
   scenario: Scénario
-  scenario_outline: Scénario esquisse
+  scenario_outline: Plan du Scénario
   examples: Exemples
   given: Etant donné
   when: Lorsque
