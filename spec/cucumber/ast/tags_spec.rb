@@ -22,6 +22,14 @@ module Cucumber
       it "should not be among other tags with @ prefix" do
         @tags.should_not be_among(%w{one ~@two})
       end
+
+      it "should be among other tags with irrelevant negative tag" do
+        @tags.should be_among(%w{~bacon})
+      end
+
+      it "should not be among other tags with irrelevent tag" do
+        @tags.should_not be_among(%w{bacon})
+      end
     end
   end
 end
