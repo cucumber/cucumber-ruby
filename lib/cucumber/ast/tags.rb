@@ -19,7 +19,7 @@ module Cucumber
         yes_tags = yes_tags.map{|tag| tag =~ /^@(.*)/ ? $1 : tag}
         no_tags = no_tags.map{|tag| tag =~ /^@(.*)/ ? $1 : tag}
 
-        (@tag_names & yes_tags).any? && (@tag_names & no_tags).empty?
+        (yes_tags.empty? || (@tag_names & yes_tags).any?) && (no_tags.empty? || (@tag_names & no_tags).empty?)
       end
 
       def at_lines?(lines)
