@@ -1,7 +1,7 @@
 == Git (0.2 alpha)
 
 This is a major rewrite of Cucumber's internals. The rewrite was done to address technical
-debt and to have a codebase that is easier to evolve and maintain. There are some major
+debt and to have a code base that is easier to evolve and maintain. There are some major
 changes to the Gherkin language, so this release is not fully backwards compatible. You
 may have to edit your feature files a little. Most importantly, "GivenScenario" and 
 "More Examples" no longer exist. See the "Removed features" section below for more details

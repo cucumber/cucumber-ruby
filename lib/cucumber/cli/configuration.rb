@@ -73,7 +73,7 @@ module Cucumber
           end
           opts.on("-t TAGS", "--tags TAGS", 
             "Only execute the features or scenarios with the specified tags.",
-            "TAGS must be comma-separated without spaces. Prefix tags with ! to",
+            "TAGS must be comma-separated without spaces. Prefix tags with ~ to",
             "exclude features or scenarios having that tag. tags can be specified",
             "with or without the @ prefix.") do |v|
             @options[:tags] = v.split(",")
