@@ -1,7 +1,7 @@
 == Git (0.2 alpha)
 
 This is a major rewrite of Cucumber's internals. The rewrite was done to address technical
-debt and to have a codebase that is easier to evolve and maintain. There are some major
+debt and to have a code base that is easier to evolve and maintain. There are some major
 changes to the Gherkin language, so this release is not fully backwards compatible. You
 may have to edit your feature files a little. Most importantly, "GivenScenario" and 
 "More Examples" no longer exist. See the "Removed features" section below for more details
@@ -59,6 +59,9 @@ pure Ruby users have been enjoying for a while.
 == TODO Before 0.2 release
 * Newlines between backgrounds and feature elements with pretty formatter
 * Make sure all features and specs pass on Windows, JRuby and Ruby 1.9
+* Tighten up and simplify the grammar. More edge case features/specs.
+* Reintroduce StepInvocation. Reduce some of the redundant calls to StepDefinition/StepMother. Align with JBehave.
+* Make some class diagrams.
 * Implement at least a basic HTML formatter
 * Run a single cucumber feature from rake "rake features FEATURE=/path/to/feature:line"
 * Wiki page about running subsets
@@ -78,6 +81,7 @@ pure Ruby users have been enjoying for a while.
 
 == Bugfixes
 * Re-structure the ast: Feature -> Background -> (Scenario|ScenarioOutline)*. Fixes bug with background being called outside transactions. (#181 Joseph Wilk)
+* Depend on polyglot version (0.2.4) to avoid masking require errors. (Aslak Hellesøy).
 * -n option does not suppress the line info for a Scenario Outline (#175 Aslak Hellesøy)
 * Errors with rspec-rails matchers in cucumber 0.1.99 (#173 David Chelimsky)
 * Can't use an empty string as a table value in a scenario outline (#172 Aslak Hellesøy)
@@ -102,10 +106,7 @@ pure Ruby users have been enjoying for a while.
 * Call multiline steps from other steps (#144 Aslak Hellesøy)
 * Run cucumber with --autoformat DIR to reformat (pretty print) all of your feature files. (Aslak Hellesøy)
 * New --strict option exits with an error code if there are undefined steps. (#52 Aslak Hellesøy)
-* Given, When, Then are automatically aliased to current language. 
-  Ruby 1.8 doesn't allow non-ascii method names in the source, so unless you're on 1.9
-  you will have to use Given, When, Then or set up your own aliases. Here is Norwegian:
-    Cucumber.alias_steps(%w{Naar Saa}) # Når, Så already aliased, but can't be called. (Aslak Hellesøy)
+* Given, When, Then methods (used in step definitions) are automatically aliased to current language. Use $KCODE='u' in env.rb if needed.
 * Run cucumber --language help to see all supported languages. (Aslak Hellesøy)
 * Run cucumber --language LANG help to see keywords for a given language. (Aslak Hellesøy)
 * Multiline arguments (tables and """ strings) are printed in the output. (Aslak Hellesøy)

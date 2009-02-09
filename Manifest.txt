@@ -113,7 +113,6 @@ examples/jbehave/src/main/java/cukes/jbehave/examples/trader/model/Stock.java
 examples/jbehave/src/main/java/cukes/jbehave/examples/trader/model/Trader.java
 examples/jbehave/src/main/java/cukes/jbehave/examples/trader/persistence/TraderPersister.java
 examples/jbehave/src/main/java/cukes/jbehave/examples/trader/scenarios/TraderSteps.java
-examples/jbehave/target/maven-archiver/pom.properties
 examples/selenium/Rakefile
 examples/selenium/features/search.feature
 examples/selenium/features/step_definitons/stories_steps.rb
@@ -204,6 +203,7 @@ lib/cucumber/core_ext/proc.rb
 lib/cucumber/core_ext/string.rb
 lib/cucumber/formatter.rb
 lib/cucumber/formatter/ansicolor.rb
+lib/cucumber/formatter/color_io.rb
 lib/cucumber/formatter/console.rb
 lib/cucumber/formatter/cucumber.css
 lib/cucumber/formatter/cucumber.sass
@@ -250,6 +250,7 @@ spec/cucumber/ast/scenario_outline_spec.rb
 spec/cucumber/ast/scenario_spec.rb
 spec/cucumber/ast/step_spec.rb
 spec/cucumber/ast/table_spec.rb
+spec/cucumber/ast/tags_spec.rb
 spec/cucumber/broadcaster_spec.rb
 spec/cucumber/cli/configuration_spec.rb
 spec/cucumber/cli/main_spec.rb

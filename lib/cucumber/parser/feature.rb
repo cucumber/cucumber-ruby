@@ -670,27 +670,13 @@ module Cucumber
                   s0 << r7
                   if r7
                     i8 = index
-                    s9, i9 = [], index
-                    loop do
-                      r10 = _nt_eol
-                      if r10
-                        s9 << r10
-                      else
-                        break
-                      end
-                    end
-                    if s9.empty?
-                      self.index = i9
-                      r9 = nil
-                    else
-                      r9 = SyntaxNode.new(input, i9...index, s9)
-                    end
+                    r9 = _nt_white
                     if r9
                       r8 = r9
                     else
-                      r11 = _nt_eof
-                      if r11
-                        r8 = r11
+                      r10 = _nt_eof
+                      if r10
+                        r8 = r10
                       else
                         self.index = i8
                         r8 = nil
@@ -698,11 +684,11 @@ module Cucumber
                     end
                     s0 << r8
                     if r8
-                      r12 = _nt_steps
-                      s0 << r12
-                      if r12
-                        r13 = _nt_white
-                        s0 << r13
+                      r11 = _nt_steps
+                      s0 << r11
+                      if r11
+                        r12 = _nt_white
+                        s0 << r12
                       end
                     end
                   end
@@ -903,9 +889,9 @@ module Cucumber
       module Step1
         def build
           if multi.respond_to?(:build)
-            Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value, multi.build)
+            Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value.strip, multi.build)
           else
-            Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value)
+            Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value.strip)
           end
         end
       end
