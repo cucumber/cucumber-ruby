@@ -32,8 +32,8 @@ module Cucumber
         @step_mother.step_definition(step_name)
       end
 
-      def step_invocation(step, previous, world)
-        StepInvocation.new(@step_mother, @options, step, previous, world)
+      def step_invocation(step, world)
+        StepInvocation.new(@step_mother, @options, step, world)
       end
 
       def current_feature_lines=(lines)

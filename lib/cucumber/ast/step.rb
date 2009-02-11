@@ -5,8 +5,8 @@ module Cucumber
   module Ast
     class Step
       attr_reader :keyword, :name, :multiline_args
-      attr_writer :world, :previous, :options
-      attr_accessor :status, :feature_element, :exception
+      attr_writer :step_collection, :options
+      attr_accessor :feature_element, :exception
 
       def initialize(line, keyword, name, *multiline_args)
         @line, @keyword, @name, @multiline_args = line, keyword, name, multiline_args
@@ -28,31 +28,29 @@ module Cucumber
         execute_twin(world, previous, visitor, row_line, @name, *@multiline_args)
       end
 
-      def accept(visitor) # TODO: delete - move to StepDefinition
-        execute(visitor)
-
-        if @status == :outline
-          step_definition = find_first_name_and_step_definition_from_examples(visitor)
-        else
-          step_definition = @step_definition
-        end
-        visitor.visit_step_name(@keyword, @name, @status, step_definition, source_indent)
+      def accept(visitor)
+        # The only time a Step is visited is when it is in a ScenarioOutline.
+        # Otherwise it's always StepInvocation that gest visited instead.
+        visit_step_name(visitor, first_match(visitor), nil)
+      end
+      
+      def visit_step_name(visitor, step_match, exception)
+        visitor.visit_step_name(@keyword, step_match, exception, source_indent)
         @multiline_args.each do |multiline_arg|
-          visitor.visit_multiline_arg(multiline_arg, @status)
+          visitor.visit_multiline_arg(multiline_arg, status)
         end
-        @exception
       end
 
-      def find_first_name_and_step_definition_from_examples(visitor)
+      def first_match(visitor)
         # @feature_element is always a ScenarioOutline in this case
         @feature_element.each_example_row do |cells|
           argument_hash       = cells.to_hash
           delimited_arguments = delimit_argument_names(argument_hash)
           name                = replace_name_arguments(delimited_arguments)
-          step_definition     = visitor.step_definition(name) rescue nil
-          return step_definition if step_definition
+          step_match          = visitor.step_match(name) rescue nil
+          return step_match if step_match
         end
-        nil
+        StepMatch.new(nil, @name, []) # Didn't find any
       end
 
       def to_sexp
@@ -89,41 +87,12 @@ module Cucumber
 
       protected
 
+      # TODO: Refactor when we use StepCollection everywhere
       def previous_step
         @feature_element.previous_step(self)
       end
 
       private
-
-      def execute(visitor)
-        matched_args = []
-        if @status.nil?
-          begin
-            @step_definition = visitor.step_definition(@name)
-            matched_args = @step_definition.matched_args(@name)
-            if @previous == :passed && !visitor.options[:dry_run]
-              @world.__cucumber_current_step = self
-              @step_definition.execute(@name, @world, *(matched_args + @multiline_args))
-              @status = :passed
-            else
-              @status = :skipped
-            end
-          rescue Undefined => exception
-            if visitor.options[:strict]
-              exception.set_backtrace([])
-              failed(exception)
-            else
-              @status = :undefined
-            end
-          rescue Pending => exception
-            visitor.options[:strict] ? failed(exception) : @status = :pending
-          rescue Exception => exception
-            failed(exception)
-          end
-          visitor.step_executed(self) unless @visitor.nil?
-        end
-        [self, @status, matched_args]
-      end
 
       def execute_twin(world, previous, visitor, line, name, *multiline_args)
         # We'll create a new step and execute that

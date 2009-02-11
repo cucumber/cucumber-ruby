@@ -6,22 +6,17 @@ module Cucumber
       extend ANSIColor
       FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
 
-      def format_step(keyword, step_name, status, step_definition, source_indent)
-        comment = if source_indent && step_definition
-          c = (' # ' + step_definition.file_colon_line).indent(source_indent)
+      def format_step(keyword, step_match, exception, source_indent)
+        comment = if source_indent && step_match.file_colon_line
+          c = (' # ' + step_match.file_colon_line).indent(source_indent)
           format_string(c, :comment)
         else
           ''
         end
 
-        begin
-          line = keyword + " " + step_definition.format_args(step_name, format_for(status, :param)) + comment
-        rescue
-          # It didn't match. This often happens for :outline steps
-          line = keyword + " " + step_name + comment
-        end
-
-        format_string(line, status)
+        format = format_for(status(exception), :param)
+        line = keyword + " " + step_match.format_args(format) + comment
+        format_string(line, status(exception))
       end
 
       def format_string(string, status)
@@ -73,8 +68,7 @@ module Cucumber
       end
 
       def print_exception(e, indent)
-        status = Cucumber::EXCEPTION_STATUS[e.class]
-        @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
+        @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status(e)))
       end
 
       def print_snippets(options)
@@ -96,6 +90,10 @@ module Cucumber
       end
 
     private
+
+      def status(exception)
+        Cucumber::EXCEPTION_STATUS[exception.class]
+      end
 
       def with_color
         c = Term::ANSIColor.coloring?
