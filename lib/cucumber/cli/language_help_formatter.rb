@@ -48,7 +48,7 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
           end
           status = :comment 
         elsif @incomplete
-          status = :failed
+          status = :undefined
         end
         
         @col += 1
