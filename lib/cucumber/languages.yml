@@ -331,7 +331,7 @@
   name: Korean
   native: 한국어
   encoding: UTF-8
-  background: Contexto
+  background: 배경
   feature: 기능
   scenario: 시나리오
   scenario_outline: 시나리오 개요
