@@ -42,7 +42,7 @@ When /^I select "(.*)" as the "(.*)" date and time$/ do |datetime, datetime_labe
   select_datetime(datetime, :from => datetime_label)
 end
 
-# Use this step in conjuction with Rail's time_select helper. For example:
+# Use this step in conjunction with Rail's time_select helper. For example:
 # When I select "2:20PM" as the time
 # Note: Rail's default time helper provides 24-hour time-- not 12 hour time. Webrat
 # will convert the 2:20PM to 14:20 and then select it. 
@@ -57,7 +57,7 @@ When /^I select "(.*)" as the "(.*)" time$/ do |time, time_label|
   select_time(time, :from => time_label)
 end
 
-# Use this step in conjuction with Rail's date_select helper.  For example:
+# Use this step in conjunction with Rail's date_select helper.  For example:
 # When I select "February 20, 1981" as the date
 When /^I select "(.*)" as the date$/ do |date|
   select_date(date)
