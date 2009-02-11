@@ -1,4 +1,5 @@
 require 'cucumber/step_definition'
+require 'cucumber/world'
 require 'cucumber/core_ext/instance_exec'
 
 module Cucumber
@@ -41,9 +42,30 @@ module Cucumber
   # so #register_step_definition (and more interestingly - its aliases) are
   # available from the top-level.
   module StepMother
-    attr_writer :snippet_generator
-    attr_writer :options
+    class << self
+      def alias_adverb(adverb)
+        alias_method adverb, :register_step_definition
+      end
+    end
+
+    attr_writer :snippet_generator, :options
+
+    def scenario_executed(scenario)
+      scenarios << scenario
+    end
     
+    def step_executed(step)
+      steps[step.status] << step
+    end
+    
+    def steps
+      @steps ||= Hash.new{|hash, status| hash[status] = []}
+    end
+
+    def scenarios
+      @scenarios ||= []
+    end
+
     # Registers a new StepDefinition. This method is aliased
     # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>.
     #
@@ -100,11 +122,19 @@ module Cucumber
         world = proc.call(world)
       end
 
-      world.extend(WorldMethods)
+      world.extend(World)
       world.__cucumber_step_mother = self
 
       world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
       world
+    end
+
+    def step_match(step_name)
+      matches = step_definitions.map { |d| d.step_match(step_name) }.compact
+      raise Undefined.new(step_name) if matches.empty?
+      found = best_matches(step_name, matches) if matches.size > 1 && options[:guess]
+      raise Ambiguous.new(step_name, matches) if matches.size > 1
+      matches[0]
     end
 
     # Looks up the StepDefinition that matches +step_name+
@@ -141,43 +171,6 @@ module Cucumber
     
     def options
       @options || {}
-    end
-
-    module WorldMethods #:nodoc:
-      attr_writer :__cucumber_step_mother, :__cucumber_current_step
-
-      # Call a step from within a step definition
-      def __cucumber_invoke(name, *multiline_arguments)
-        begin
-          # TODO: Very similar to code in Step. Refactor. Get back StepInvocation?
-          # Make more similar to JBehave?
-          step_definition = @__cucumber_step_mother.step_definition(name)
-          matched_args = step_definition.matched_args(name)
-          args = (matched_args + multiline_arguments)
-          step_definition.execute(name, self, *args)
-        rescue Exception => e
-          @__cucumber_current_step.exception = e
-          raise e
-        end
-      end
-      
-      def table(text, file=nil, line=0)
-        @table_parser ||= Parser::TableParser.new
-        @table_parser.parse_or_fail(text.strip, file, line)
-      end
-
-      def pending(message = "TODO")
-        if block_given?
-          begin
-            yield
-          rescue Exception => e
-            raise Pending.new(message)
-          end
-          raise Pending.new("Expected pending '#{message}' to fail. No Error was raised. No longer pending?")
-        else
-          raise Pending.new(message)
-        end
-      end
     end
   end
 end

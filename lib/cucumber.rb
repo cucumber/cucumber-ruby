@@ -6,6 +6,7 @@ require 'cucumber/platform'
 require 'cucumber/parser'
 require 'cucumber/version'
 require 'cucumber/step_mother'
+require 'cucumber/step_invocation'
 require 'cucumber/cli/main'
 require 'cucumber/broadcaster'
 require 'cucumber/core_ext/exception'
@@ -55,13 +56,8 @@ module Cucumber
     #
     def alias_steps(keywords)
       keywords.each do |adverb|
-        StepMother.class_eval do
-          alias_method adverb, :register_step_definition
-        end
-
-        StepMother::WorldMethods.class_eval do
-          alias_method adverb, :__cucumber_invoke
-        end
+        StepMother.alias_adverb(adverb)
+        World.alias_adverb(adverb)
       end
     end
   end  

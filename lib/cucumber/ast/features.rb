@@ -1,14 +1,9 @@
 module Cucumber
   module Ast
     class Features
-      attr_reader :steps, :scenarios
-
       def initialize(filter)
         @filter = filter
-
         @features = []
-        @scenarios = []
-        @steps = Hash.new{|steps, status| steps[status] = []}
       end
 
       def add_feature(feature)
@@ -19,14 +14,6 @@ module Cucumber
       def visit?(node, lines)
         @filter.matched?(node) &&
         (lines.empty? ? true : node.at_lines?(lines))
-      end
-
-      def scenario_executed(scenario)
-        @scenarios << scenario
-      end
-      
-      def step_executed(step)
-        @steps[step.status] << step
       end
 
       def accept(visitor)

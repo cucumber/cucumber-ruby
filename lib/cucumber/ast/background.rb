@@ -1,18 +1,21 @@
+require 'cucumber/ast/feature_element'
+
 module Cucumber
   module Ast
     # Represents the background node which contains any background steps and all the feature elements.
     class Background
+      include FeatureElement
 
       attr_accessor :world
       attr_writer :feature_elements, :feature
       attr_reader :status
 
       def initialize(comment = Ast::Comment.new(""), line=0, keyword="", steps=[])
-        @comment, @line, @keyword = comment, line, keyword
-        steps.each {|step| step.scenario = self}
-        @steps = steps
-        @record_executed_steps = true
+        @comment, @line, @keyword, @steps = comment, line, keyword, steps
+        attach_steps(steps)
+
         @status = :passed
+        @name = "" # TODO: send it in
       end
 
       def accept(visitor)
@@ -26,7 +29,7 @@ module Cucumber
       def already_visited_steps?
         @steps_visited
       end
-      
+
       def undefined?
         @steps.empty?
       end
@@ -40,14 +43,6 @@ module Cucumber
         (check_elements && @feature_elements.detect{|e| e.tagged_with?(tag_names)})
       end
 
-      def step_executed(step)
-        @feature.step_executed(step) if @feature && @record_executed_steps
-      end
-
-      def text_length
-        @keyword.jlength
-      end
-
       def source_indent(text_length)
         max_line_length - text_length
       end
@@ -55,14 +50,6 @@ module Cucumber
       def max_line_length
         lengths = (@steps + [self]).map{|e| e.text_length}
         lengths.max
-      end
-       
-      def file_line(line = @line)
-        @feature.file_line(line) if @feature
-      end
-
-      def backtrace_line(name = "#{@keyword} #{@name}", line = @line)
-        @feature.backtrace_line(name, line) if @feature
       end
 
       def to_sexp #:nodoc:
@@ -122,22 +109,13 @@ module Cucumber
         @steps = executed_steps
         
         if exception && @status != :failed
-          without_recording_steps do
-            @steps_visited = false
-            #Since the steps have already been executed they will not be re-run, they will just be displayed
-            visit_background_and_steps(visitor)
-          end 
+          @steps_visited = false
+          #Since the steps have already been executed they will not be re-run, they will just be displayed
+          visit_background_and_steps(visitor)
         end
 
         previous
       end
-
-      def without_recording_steps
-        @record_executed_steps = false
-        yield
-        @record_executed_steps = true
-      end
-
     end
   end
 end
