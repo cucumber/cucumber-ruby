@@ -331,8 +331,12 @@
   name: Korean
   native: 한국어
   encoding: UTF-8
+  background: 배경
   feature: 기능
-  scenario: 예
+  scenario: 시나리오
+  scenario_outline: 시나리오 개요
+  examples: 예
+  more_examples: 다른 예
   given: 조건
   when: 만일
   then: 그러면
