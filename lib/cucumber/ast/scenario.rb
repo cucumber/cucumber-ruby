@@ -11,17 +11,11 @@ module Cucumber
       def initialize(comment, tags, line, keyword, name, steps)
         @comment, @tags, @line, @keyword, @name, @steps = comment, tags, line, keyword, name, steps
         attach_steps(steps)
-
         @status = :passed
-        @steps_helper = Steps.new(self)
       end
 
       def status
         @steps.map{|step| step.status}
-      end
-
-      def tagged_with?(tag_names)
-        @tags.among?(tag_names)
       end
 
       def matches_scenario_names?(scenario_names)
@@ -32,7 +26,7 @@ module Cucumber
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, @name, file_line(@line), source_indent(text_length))
-        visitor.visit_steps(@steps_helper)
+        visitor.visit_steps(step_invocations(visitor))
 
         visitor.scenario_executed(self) unless @executed
         @executed = true
@@ -47,10 +41,6 @@ module Cucumber
         end
       end
 
-      def undefined?
-        @steps.empty?
-      end
-
       def to_sexp
         sexp = [:scenario, @line, @keyword, @name]
         comment = @comment.to_sexp
@@ -61,6 +51,14 @@ module Cucumber
         sexp += steps if steps.any?
         sexp
       end
+
+      private
+
+      # TODO: delegate to background
+      def step_invocations(visitor)
+        @step_invocations ||= StepCollection.new(@steps.map{|step| visitor.step_invocation(step, @background.world)})
+      end
+
     end
   end
 end

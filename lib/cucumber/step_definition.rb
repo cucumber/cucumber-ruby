@@ -36,7 +36,7 @@ module Cucumber
 
     def step_match(step_name)
       if(match = step_name.match(@regexp))
-        StepMatch.new(self, match.captures)
+        StepMatch.new(self, step_name, match.captures)
       else
         nil
       end

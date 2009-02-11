@@ -114,14 +114,14 @@ module Cucumber
 
       def visit_step(step)
         @indent = 6
-        exception = step.accept(self)
-        print_exception(exception, @indent) if exception
+        step.accept(self)
       end
 
-      def visit_step_name(keyword, step_name, status, step_definition, source_indent)
+      def visit_step_name(keyword, step_match, exception, source_indent)
         source_indent = nil unless @options[:source]
-        formatted_step_name = format_step(keyword, step_name, status, step_definition, source_indent)
+        formatted_step_name = format_step(keyword, step_match, exception, source_indent)
         @io.puts("    " + formatted_step_name)
+        print_exception(exception, @indent) if exception
         @io.flush
       end
 

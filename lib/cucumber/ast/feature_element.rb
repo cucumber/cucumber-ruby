@@ -30,9 +30,18 @@ module Cucumber
       lengths.max
     end
 
+    # TODO: Remove when we use StepCollection everywhere
     def previous_step(step)
       i = @steps.index(step) || -1
       @steps[i-1]
+    end
+
+    def tagged_with?(tag_names)
+      @tags.among?(tag_names)
+    end
+
+    def undefined?
+      @steps.empty?
     end
   end
 end

@@ -1,9 +1,10 @@
 module Cucumber
   class StepInvocation
+    attr_writer :step_collection
     attr_reader :status, :exception
     
-    def initialize(step_mother, options, step, previous, world)
-      @step_mother, @options, @step, @previous, @world = step_mother, options, step, previous, world
+    def initialize(step_mother, options, step, world)
+      @step_mother, @options, @step, @world = step_mother, options, step, world
     end
     
     # TODO: name, actual_keyword and padding in accept should be members
@@ -21,43 +22,38 @@ module Cucumber
         invoke
         visitor.step_executed(self)
       end
-        
-      visitor.visit_step_name(@step.keyword, @step.name, @status, @step_match, 10)
-      # TODO: Keep our own copy of multiline_args - with any arguments replaced
-      @step.multiline_args.each do |multiline_arg|
-        visitor.visit_multiline_arg(multiline_arg, @status)
-      end
-      @exception # TODO: Don't return anything - pass exception to visit call
+      @step.visit_step_name(visitor, @step_match, @exception)
     end
 
     def invoke
-      return if @status
+      return if @invoked
       begin
-        @status = :skipped
-        step_match = @step_mother.step_match(@step.name)
-        if @previous == :passed && !options[:dry_run]
-          @step.invoke(step_match, @world)
-          @status = :passed
+        @step_match = @step_mother.step_match(@step.name)
+        unless previous.exception || options[:dry_run]
+          begin
+            @step.invoke(@step_match, @world)
+          rescue Pending => exception
+            @exception = exception
+          rescue Exception => exception
+            @exception = exception
+            append_backtrace
+          end
         end
       rescue Undefined => exception
-        if options[:strict]
-          exception.set_backtrace([])
-          failed(exception)
-        else
-          @status = :undefined
-        end
-      rescue Pending => exception
-        @status = :pending
-      rescue Exception => exception
-        failed(exception)
+        @step_match = StepMatch.new(nil, @step.name, [])
+        @exception = exception
+        @exception.set_backtrace([])
+        append_backtrace
       end
-      nil
+      @invoked = true
     end
 
-    def failed(exception)
-      @status = :failed
-      @exception = exception
+    def append_backtrace
       @exception.backtrace << @step.backtrace_line unless @step.backtrace_line.nil?
+    end
+
+    def previous
+      @step_collection.previous_step(self)
     end
 
     private

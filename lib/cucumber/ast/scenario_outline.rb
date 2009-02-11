@@ -1,6 +1,11 @@
 module Cucumber
   module Ast
-    class ScenarioOutline < Scenario
+    class ScenarioOutline
+      include FeatureElement
+      
+      attr_writer :background
+      attr_writer :feature
+
       # The +example_sections+ argument must be an Array where each element is another array representing
       # an Examples section. This array has 3 elements:
       #
@@ -8,8 +13,8 @@ module Cucumber
       # * Examples section name
       # * Raw matrix
       def initialize(comment, tags, line, keyword, name, steps, example_sections)
-        super(comment, tags, line, keyword, name, steps)
-        steps.each {|step| step.status = :outline}
+        @comment, @tags, @line, @keyword, @name, @steps = comment, tags, line, keyword, name, steps
+        attach_steps(steps)
 
         @examples_array = example_sections.map do |example_section|
           examples_line       = example_section[0]
@@ -30,7 +35,7 @@ module Cucumber
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, @name, file_line(@line), source_indent(text_length))
-        visitor.visit_steps(@steps_helper)
+        visitor.visit_steps(steps)
 
         @examples_array.each do |examples|
           visitor.visit_examples(examples)
@@ -43,6 +48,7 @@ module Cucumber
         end
       end
 
+      # TODO: Move to Steps and remove @steps here
       def execute_row(cells, visitor, &proc)
         exception = nil
 
@@ -81,6 +87,12 @@ module Cucumber
         sexp += steps if steps.any?
         sexp += @examples_array.map{|e| e.to_sexp}
         sexp
+      end
+
+      private
+      
+      def steps
+        @step_collection ||= StepCollection.new(@steps)
       end
     end
   end
