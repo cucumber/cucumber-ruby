@@ -39,14 +39,6 @@ module Cucumber
         visitor.visit_background(@background)
       end
 
-      def scenario_executed(scenario)
-        @features.scenario_executed(scenario) if @features
-      end
-
-      def step_executed(step)
-        @features.step_executed(step) if @features
-      end
-
       def backtrace_line(step_name, line)
         "#{file_line(line)}:in `#{step_name}'"
       end

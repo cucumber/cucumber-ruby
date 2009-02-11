@@ -16,7 +16,7 @@ module Cucumber
           super
           @io.puts
           @io.puts
-          print_summary(features)
+          print_summary
         end
       end
 
@@ -41,12 +41,12 @@ module Cucumber
       
       private
 
-      def print_summary(features)
-        print_undefined_scenarios(features)
-        print_steps(features, :pending)
-        print_steps(features, :failed)
-        print_counts(features)
-        print_snippets(features, @options)
+      def print_summary
+        print_undefined_scenarios
+        print_steps(:pending)
+        print_steps(:failed)
+        print_counts
+        print_snippets(@options)
       end
 
       CHARS = {

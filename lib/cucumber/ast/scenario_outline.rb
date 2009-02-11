@@ -65,7 +65,7 @@ module Cucumber
           end
           exception ||= executed_step.exception
         end
-        @feature.scenario_executed(self) if @feature
+        visitor.scenario_executed(self)
         exception
       end
 

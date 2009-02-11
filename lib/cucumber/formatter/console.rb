@@ -33,13 +33,13 @@ module Cucumber
         end
       end
 
-      def print_undefined_scenarios(features)
-        elements = features.scenarios.select{|scenario| scenario.undefined?}
+      def print_undefined_scenarios
+        elements = scenarios.select{|scenario| scenario.undefined?}
         print_elements(elements, :undefined, 'scenarios')
       end
 
-      def print_steps(features, status)
-        print_elements(features.steps[status], status, 'steps')
+      def print_steps(status)
+        print_elements(steps[status], status, 'steps')
       end
 
       def print_elements(elements, status, kind)
@@ -60,12 +60,12 @@ module Cucumber
         end
       end
 
-      def print_counts(features)
-        @io.puts dump_count(features.scenarios.length, "scenario")
+      def print_counts
+        @io.puts dump_count(scenarios.length, "scenario")
 
         [:failed, :skipped, :undefined, :pending, :passed].each do |status|
-          if features.steps[status].any?
-            count_string = dump_count(features.steps[status].length, "step", status.to_s)
+          if steps[status].any?
+            count_string = dump_count(steps[status].length, "step", status.to_s)
             @io.puts format_string(count_string, status)
             @io.flush
           end
@@ -77,9 +77,9 @@ module Cucumber
         @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
       end
 
-      def print_snippets(features, options)
+      def print_snippets(options)
         return unless options[:snippets]
-        undefined = features.steps[:undefined]
+        undefined = steps[:undefined]
         return if undefined.empty?
         snippets = undefined.map do |step|
           step_name = Undefined === step.exception ? step.exception.step_name : step.name

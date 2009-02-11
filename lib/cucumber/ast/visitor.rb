@@ -8,12 +8,32 @@ module Cucumber
         @step_mother = step_mother
       end
 
+      def scenarios
+        @step_mother.scenarios
+      end
+
+      def steps
+        @step_mother.steps
+      end
+
+      def scenario_executed(scenario)
+        @step_mother.scenario_executed(scenario)
+      end
+      
+      def step_executed(step)
+        @step_mother.step_executed(step)
+      end
+
       def world(scenario, &proc)
         @step_mother.world(scenario, &proc)
       end
 
       def step_definition(step_name)
         @step_mother.step_definition(step_name)
+      end
+
+      def step_invocation(step, previous, world)
+        StepInvocation.new(@step_mother, @options, step, previous, world)
       end
 
       def current_feature_lines=(lines)

@@ -1,20 +1,27 @@
+require 'cucumber/ast/feature_element'
+
 module Cucumber
   module Ast
-    class Scenario < Background
+    class Scenario
+      include FeatureElement
+      
       attr_writer :background
+      attr_writer :feature
       
       def initialize(comment, tags, line, keyword, name, steps)
-        super(comment, line, keyword, steps)
-        @tags, @name = tags, name
+        @comment, @tags, @line, @keyword, @name, @steps = comment, tags, line, keyword, name, steps
+        attach_steps(steps)
+
+        @status = :passed
         @steps_helper = Steps.new(self)
       end
 
-       def status
+      def status
         @steps.map{|step| step.status}
       end
 
       def tagged_with?(tag_names)
-        @tags.among?(tag_names) || @background.tagged_with?(tag_names, false)
+        @tags.among?(tag_names)
       end
 
       def matches_scenario_names?(scenario_names)
@@ -27,35 +34,21 @@ module Cucumber
         visitor.visit_scenario_name(@keyword, @name, file_line(@line), source_indent(text_length))
         visitor.visit_steps(@steps_helper)
 
-        @feature.scenario_executed(self) if @feature && !@executed
+        visitor.scenario_executed(self) unless @executed
         @executed = true
       end
 
       def accept_steps(visitor)
         previous = @background.status
         @steps.each do |step|
-          step.previous = previous
-          step.world    = @background.world
-          visitor.visit_step(step)
-          previous = step.status
+          step_invocation = visitor.step_invocation(step, previous, @background.world)
+          visitor.visit_step(step_invocation)
+          previous = step_invocation.status
         end
       end
 
-      def at_lines?(lines)
-        at_header_or_step_lines?(lines)
-      end
-
-      def at_header_or_step_lines?(lines)
-        lines.empty? || lines.index(@line) || @steps.detect {|step| step.at_lines?(lines)} || @tags.at_lines?(lines)
-      end
-
-      def text_length
-        super + @name.jlength
-      end
-
-      def previous_step(step)
-        i = @steps.index(step) || -1
-        @steps[i-1]
+      def undefined?
+        @steps.empty?
       end
 
       def to_sexp

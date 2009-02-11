@@ -4,12 +4,16 @@ require 'cucumber/core_ext/string'
 module Cucumber
   module Ast
     class Step
-      attr_reader :keyword, :name
+      attr_reader :keyword, :name, :multiline_args
       attr_writer :world, :previous, :options
-      attr_accessor :status, :scenario, :exception
+      attr_accessor :status, :feature_element, :exception
 
       def initialize(line, keyword, name, *multiline_args)
         @line, @keyword, @name, @multiline_args = line, keyword, name, multiline_args
+      end
+
+      def invoke(step_match, world)
+        step_match.invoke(world, @multiline_args)
       end
 
       def execute_with_arguments(argument_hash, world, previous, visitor, row_line)
@@ -24,7 +28,7 @@ module Cucumber
         execute_twin(world, previous, visitor, row_line, @name, *@multiline_args)
       end
 
-      def accept(visitor)
+      def accept(visitor) # TODO: delete - move to StepDefinition
         execute(visitor)
 
         if @status == :outline
@@ -40,8 +44,8 @@ module Cucumber
       end
 
       def find_first_name_and_step_definition_from_examples(visitor)
-        # @scenario is always a ScenarioOutline in this case
-        @scenario.each_example_row do |cells|
+        # @feature_element is always a ScenarioOutline in this case
+        @feature_element.each_example_row do |cells|
           argument_hash       = cells.to_hash
           delimited_arguments = delimit_argument_names(argument_hash)
           name                = replace_name_arguments(delimited_arguments)
@@ -60,7 +64,7 @@ module Cucumber
       end
 
       def source_indent
-        @scenario.source_indent(text_length)
+        @feature_element.source_indent(text_length)
       end
 
       def text_length
@@ -68,11 +72,11 @@ module Cucumber
       end
 
       def backtrace_line
-        @backtrace_line ||= @scenario.backtrace_line("#{@keyword} #{@name}", @line) unless @scenario.nil?
+        @backtrace_line ||= @feature_element.backtrace_line("#{@keyword} #{@name}", @line) unless @feature_element.nil?
       end
 
       def file_line
-        @file_line ||= @scenario.file_line(@line) unless @scenario.nil?
+        @file_line ||= @feature_element.file_line(@line) unless @feature_element.nil?
       end
 
       def actual_keyword
@@ -86,7 +90,7 @@ module Cucumber
       protected
 
       def previous_step
-        @scenario.previous_step(self)
+        @feature_element.previous_step(self)
       end
 
       private
@@ -116,7 +120,7 @@ module Cucumber
           rescue Exception => exception
             failed(exception)
           end
-          @scenario.step_executed(self) if @scenario
+          visitor.step_executed(self) unless @visitor.nil?
         end
         [self, @status, matched_args]
       end
@@ -124,7 +128,7 @@ module Cucumber
       def execute_twin(world, previous, visitor, line, name, *multiline_args)
         # We'll create a new step and execute that
         step = Step.new(line, @keyword, name, *multiline_args)
-        step.scenario = @scenario
+        step.feature_element = @feature_element
         step.world    = world
         step.previous = previous
         step.__send__(:execute, visitor)

@@ -1,3 +1,4 @@
+require 'cucumber/step_match'
 require 'cucumber/core_ext/string'
 require 'cucumber/core_ext/proc'
 
@@ -27,10 +28,28 @@ module Cucumber
     def initialize(pattern, &proc)
       raise MissingProc if proc.nil?
       if String === pattern
-        p = pattern.gsub(/\$\w+/, '(.*)')
+        p = pattern.gsub(/\$\w+/, '(.*)') # Replace $var with (.*)
         pattern = Regexp.new("^#{p}$") 
       end
       @regexp, @proc = pattern, proc
+    end
+
+    def step_match(step_name)
+      if(match = step_name.match(@regexp))
+        StepMatch.new(self, match.captures)
+      else
+        nil
+      end
+    end
+
+    def invoke(world, args)
+      args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
+      begin
+        world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
+      rescue Cucumber::ArityMismatchError => e
+        e.backtrace.unshift(self.to_backtrace_line)
+        raise e
+      end
     end
 
     #:stopdoc:
@@ -65,7 +84,7 @@ module Cucumber
       step_name.match(@regexp).captures
     end
 
-    def execute(step_name, world, *args)
+    def execute(step_name, world, *args) # TODO: unsplat, and call it invoke
       args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
       begin
         world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
