@@ -6,7 +6,7 @@ module Cucumber
       extend ANSIColor
       FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
 
-      def format_step(keyword, step_match, exception, source_indent)
+      def format_step(keyword, step_match, status, source_indent)
         comment = if source_indent && step_match.file_colon_line
           c = (' # ' + step_match.file_colon_line).indent(source_indent)
           format_string(c, :comment)
@@ -14,9 +14,9 @@ module Cucumber
           ''
         end
 
-        format = format_for(status(exception), :param)
+        format = format_for(status, :param)
         line = keyword + " " + step_match.format_args(format) + comment
-        format_string(line, status(exception))
+        format_string(line, status)
       end
 
       def format_string(string, status)
@@ -46,7 +46,7 @@ module Cucumber
 
         elements.each_with_index do |element, i|
           if status == :failed
-            print_exception(element.exception, 0)
+            print_exception(element.exception, element.status, 0)
           else
             @io.puts(format_string(element.backtrace_line, status))
           end
@@ -56,24 +56,24 @@ module Cucumber
       end
 
       def print_counts
-        @io.puts dump_count(scenarios.length, "scenario")
+        @io.puts dump_count(step_mother.scenarios.length, "scenario")
 
         [:failed, :skipped, :undefined, :pending, :passed].each do |status|
-          if steps[status].any?
-            count_string = dump_count(steps[status].length, "step", status.to_s)
+          if step_mother.steps[status].any?
+            count_string = dump_count(step_mother.steps[status].length, "step", status.to_s)
             @io.puts format_string(count_string, status)
             @io.flush
           end
         end
       end
 
-      def print_exception(e, indent)
-        @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status(e)))
+      def print_exception(e, status, indent)
+        @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
       end
 
       def print_snippets(options)
         return unless options[:snippets]
-        undefined = steps[:undefined]
+        undefined = step_mother.steps[:undefined]
         return if undefined.empty?
         snippets = undefined.map do |step|
           step_name = Undefined === step.exception ? step.exception.step_name : step.name
@@ -90,10 +90,6 @@ module Cucumber
       end
 
     private
-
-      def status(exception)
-        Cucumber::EXCEPTION_STATUS[exception.class]
-      end
 
       def with_color
         c = Term::ANSIColor.coloring?

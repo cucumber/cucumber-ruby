@@ -8,7 +8,7 @@ module Cucumber
   describe StepDefinition do
     before do
       extend StepMother
-      @world = new_world
+      @world = new_world!
       $inside = nil
     end
 

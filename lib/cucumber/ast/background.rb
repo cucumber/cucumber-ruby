@@ -6,8 +6,7 @@ module Cucumber
     class Background
       include FeatureElement
 
-      attr_accessor :world
-      attr_writer :feature_elements, :feature
+      attr_writer :feature_elements
       attr_reader :status
 
       def initialize(comment = Ast::Comment.new(""), line=0, keyword="", steps=[])
@@ -69,8 +68,7 @@ module Cucumber
       private
 
       def visit_background_and_feature_element(visitor, feature_element)
-        visitor.world(self) do |world|
-          @world = world
+        visitor.step_mother.new_world! do
           unless undefined?
             if already_visited_steps?
               @status = execute_steps(visitor)

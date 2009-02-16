@@ -70,7 +70,6 @@ module Cucumber
         'pending'   => 'yellow',
         'failed'    => 'red',
         'passed'    => 'green',
-        'thead'     => 'cyan',
         'outline'   => 'cyan',
         'skipped'   => 'cyan',
         'comment'   => 'grey',

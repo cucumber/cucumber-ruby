@@ -1,5 +1,6 @@
 module Cucumber
   module FeatureElement
+    attr_writer :feature
 
     def attach_steps(steps)
       steps.each {|step| step.feature_element = self}
@@ -14,7 +15,7 @@ module Cucumber
     end
 
     def at_lines?(lines)
-      lines.empty? || lines.index(@line) || @steps.detect {|step| step.at_lines?(lines)} || @tags.at_lines?(lines)
+      lines.empty? || lines.index(@line) || @steps.at_lines?(lines) || @tags.at_lines?(lines)
     end
 
     def backtrace_line(name = "#{@keyword} #{@name}", line = @line)
@@ -26,8 +27,7 @@ module Cucumber
     end
 
     def max_line_length
-      lengths = (@steps + [self]).map{|e| e.text_length}
-      lengths.max
+      @steps.max_line_length(self)
     end
 
     # TODO: Remove when we use StepCollection everywhere

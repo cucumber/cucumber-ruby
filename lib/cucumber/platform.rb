@@ -15,5 +15,4 @@ module Cucumber
   RUBY_BINARY   = File.join(Config::CONFIG['bindir'], Config::CONFIG['ruby_install_name'])
   RUBY_1_9      = RUBY_VERSION =~ /^1\.9/
   EXCEPTION_STATUS = Hash.new(:failed)
-  EXCEPTION_STATUS[NilClass] = :passed
 end

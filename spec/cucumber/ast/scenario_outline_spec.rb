@@ -9,6 +9,7 @@ module Cucumber
       before do
         @step_mother = Object.new
         @step_mother.extend(StepMother)
+
         @step_mother.Given(/^there are (\d+) cucumbers$/) do |n|
           @initial = n.to_i
         end
@@ -48,7 +49,6 @@ module Cucumber
           
         )
         @background = Background.new
-        @background.world = @step_mother.new_world
         @scenario_outline.background = @background
       end
 
