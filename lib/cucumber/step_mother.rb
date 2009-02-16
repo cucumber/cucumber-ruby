@@ -85,20 +85,6 @@ module Cucumber
       step_definition
     end
 
-    def world(scenario, &proc)
-      world = new_world
-      begin
-        (@before_procs ||= []).each do |proc|
-          world.cucumber_instance_exec(false, 'Before', scenario, &proc)
-        end
-        yield world
-      ensure
-        (@after_procs ||= []).each do |proc|
-          world.cucumber_instance_exec(false, 'After', scenario, &proc)
-        end
-      end
-    end
-
     # Registers a Before proc. You can call this method as many times as you
     # want (typically from ruby scripts under <tt>support</tt>).
     def Before(&proc)
@@ -115,18 +101,36 @@ module Cucumber
       (@world_procs ||= []) << proc
     end
 
+    def execute_scenario(scenario, &proc)
+      new_world!
+      begin
+        (@before_procs ||= []).each do |proc|
+          world.cucumber_instance_exec(false, 'Before', scenario, &proc)
+        end
+        yield
+      ensure
+        (@after_procs ||= []).each do |proc|
+          world.cucumber_instance_exec(false, 'After', scenario, &proc)
+        end
+      end
+    end
+
     # Creates a new world instance
-    def new_world #:nodoc:
-      world = Object.new
+    def new_world!
+      @current_world = Object.new
       (@world_procs ||= []).each do |proc|
-        world = proc.call(world)
+        @current_world = proc.call(@current_world)
       end
 
-      world.extend(World)
-      world.__cucumber_step_mother = self
+      @current_world.extend(World)
+      @current_world.__cucumber_step_mother = self
 
-      world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
-      world
+      @current_world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
+      @current_world
+    end
+
+    def current_world
+      @current_world
     end
 
     def step_match(step_name)
@@ -168,7 +172,7 @@ module Cucumber
     end
 
     private
-    
+
     def options
       @options || {}
     end

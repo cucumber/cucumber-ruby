@@ -4,18 +4,12 @@ module Cucumber
   module Ast
     class Scenario
       include FeatureElement
-      
       attr_writer :background
-      attr_writer :feature
       
       def initialize(comment, tags, line, keyword, name, steps)
-        @comment, @tags, @line, @keyword, @name, @steps = comment, tags, line, keyword, name, steps
+        @comment, @tags, @line, @keyword, @name = comment, tags, line, keyword, name
         attach_steps(steps)
-        @status = :passed
-      end
-
-      def status
-        @steps.map{|step| step.status}
+        @steps = StepCollection.new(steps.map{|step| step.step_invocation})
       end
 
       def matches_scenario_names?(scenario_names)
@@ -26,19 +20,10 @@ module Cucumber
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, @name, file_line(@line), source_indent(text_length))
-        visitor.visit_steps(step_invocations(visitor))
+        visitor.visit_steps(@steps)
 
-        visitor.scenario_executed(self) unless @executed
+        visitor.step_mother.scenario_executed(self) unless @executed
         @executed = true
-      end
-
-      def accept_steps(visitor)
-        previous = @background.status
-        @steps.each do |step|
-          step_invocation = visitor.step_invocation(step, previous, @background.world)
-          visitor.visit_step(step_invocation)
-          previous = step_invocation.status
-        end
       end
 
       def to_sexp
@@ -47,16 +32,9 @@ module Cucumber
         sexp += [comment] if comment
         tags = @tags.to_sexp
         sexp += tags if tags.any?
-        steps = @steps.map{|step| step.to_sexp}
+        steps = @steps.to_sexp
         sexp += steps if steps.any?
         sexp
-      end
-
-      private
-
-      # TODO: delegate to background
-      def step_invocations(visitor)
-        @step_invocations ||= StepCollection.new(@steps.map{|step| visitor.step_invocation(step, @background.world)})
       end
 
     end

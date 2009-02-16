@@ -35,12 +35,12 @@ module Cucumber
           File.open(file, Cucumber.file_mode('w')) do |io|
             @io = io
             with_color do
-              feature.accept(self)
+              super
             end
           end
         else
           with_color do
-            feature.accept(self)
+            super
           end
         end
       end
@@ -80,18 +80,14 @@ module Cucumber
       def visit_feature_element(feature_element)
         @indent = 2
         @last_undefined = feature_element.undefined?
-        feature_element.accept(self)
+        super
         @io.puts
         @io.flush
       end
 
-     def visit_background(background)
+      def visit_background(background)
         @indent = 2
-        background.accept(self)
-      end
-
-      def visit_examples(examples)
-        examples.accept(self)
+        super
       end
 
       def visit_examples_name(keyword, name)
@@ -114,27 +110,30 @@ module Cucumber
 
       def visit_step(step)
         @indent = 6
-        step.accept(self)
+        super
       end
 
-      def visit_step_name(keyword, step_match, exception, source_indent)
+      def visit_step_name(keyword, step_match, status, source_indent)
         source_indent = nil unless @options[:source]
-        formatted_step_name = format_step(keyword, step_match, exception, source_indent)
+        formatted_step_name = format_step(keyword, step_match, status, source_indent)
         @io.puts("    " + formatted_step_name)
-        print_exception(exception, @indent) if exception
-        @io.flush
       end
 
       def visit_multiline_arg(multiline_arg, status)
         return if @options[:no_multiline]
-        multiline_arg.accept(self, status)
+        super
       end
 
-      def visit_table_row(table_row, status)
+      def visit_exception(exception)
+        print_exception(exception, @indent) if exception
+        @io.flush
+      end
+
+      def visit_table_row(table_row)
         @io.print @delim.indent(@indent)
-        exception = table_row.accept(self, status)
+        super
         @io.puts
-        print_exception(exception, 6) if exception
+        print_exception(table_row.exception, table_row.status, 6) if table_row.exception
       end
 
       def visit_py_string(string, status)
@@ -144,8 +143,8 @@ module Cucumber
         @io.flush
       end
 
-      def visit_table_cell(table_cell, status)
-        table_cell.accept(self, status)
+      def visit_table_cell(table_cell)
+        super
       end
 
       def visit_table_cell_value(value, width, status)

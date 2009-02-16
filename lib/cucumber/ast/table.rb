@@ -22,9 +22,9 @@ module Cucumber
         cells_rows.detect { |row| row.at_lines?(lines) }
       end
 
-      def accept(visitor, status)
+      def accept(visitor)
         cells_rows.each do |row|
-          visitor.visit_table_row(row, status)
+          visitor.visit_table_row(row)
         end
         nil
       end
@@ -105,16 +105,20 @@ module Cucumber
         cells_rows.detect{|row| row.at_lines?(lines)}
       end
 
-      private
-
-      def col_width(col)
-        columns[col].__send__(:width)
-      end
-
       def cells_rows
         @rows ||= cell_matrix.map do |cell_row|
           @cells_class.new(self, cell_row)
         end
+      end
+
+      def header_cell(col)
+        cells_rows[0][col]
+      end
+
+      private
+
+      def col_width(col)
+        columns[col].__send__(:width)
       end
 
       def columns
@@ -139,14 +143,15 @@ module Cucumber
       # Represents a row of cells or columns of cells
       class Cells
         include Enumerable
+        attr_reader :exception
 
         def initialize(table, cells)
           @table, @cells = table, cells
         end
 
-        def accept(visitor, status)
+        def accept(visitor)
           each do |cell|
-            visitor.visit_table_cell(cell, status)
+            visitor.visit_table_cell(cell)
           end
           nil
         end
@@ -176,6 +181,10 @@ module Cucumber
           lines.empty? || lines.index(line)
         end
 
+        def status
+          Cucumber::EXCEPTION_STATUS[exception.class]
+        end
+
         private
 
         def index
@@ -193,13 +202,19 @@ module Cucumber
 
       class Cell
         attr_reader :value, :line
+        attr_writer :status
 
         def initialize(value, table, row, col, line)
           @value, @table, @row, @col, @line = value, table, row, col, line
+          @status = :passed
         end
 
-        def accept(visitor, status)
-          visitor.visit_table_cell_value(@value, col_width, status)
+        def accept(visitor)
+          visitor.visit_table_cell_value(@value, col_width, @status)
+        end
+
+        def header_cell
+          @table.header_cell(@col)
         end
 
         # For testing only

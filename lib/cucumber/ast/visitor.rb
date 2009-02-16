@@ -3,37 +3,10 @@ module Cucumber
     # A dumb visitor that implements the whole Visitor API and just walks the tree.
     class Visitor
       attr_accessor :options
+      attr_reader :step_mother
 
       def initialize(step_mother)
         @step_mother = step_mother
-      end
-
-      def scenarios
-        @step_mother.scenarios
-      end
-
-      def steps
-        @step_mother.steps
-      end
-
-      def scenario_executed(scenario)
-        @step_mother.scenario_executed(scenario)
-      end
-      
-      def step_executed(step)
-        @step_mother.step_executed(step)
-      end
-
-      def world(scenario, &proc)
-        @step_mother.world(scenario, &proc)
-      end
-
-      def step_definition(step_name)
-        @step_mother.step_definition(step_name)
-      end
-
-      def step_invocation(step, world)
-        StepInvocation.new(@step_mother, @options, step, world)
       end
 
       def current_feature_lines=(lines)
@@ -86,7 +59,7 @@ module Cucumber
       end
 
       def visit_outline_table(outline_table)
-        outline_table.accept(self, nil)
+        outline_table.accept(self)
       end
 
       def visit_scenario_name(keyword, name, file_line, source_indent)
@@ -100,25 +73,28 @@ module Cucumber
         step.accept(self)
       end
 
-      def visit_step_name(keyword, step_name, status, step_definition, source_indent)
+      def visit_step_name(keyword, step_match, exception, source_indent)
       end
 
-      def visit_multiline_arg(multiline_arg, status)
-        multiline_arg.accept(self, status)
+      def visit_multiline_arg(multiline_arg)
+        multiline_arg.accept(self)
       end
 
       def visit_py_string(string, status)
       end
 
-      def visit_table_row(table_row, status)
-        table_row.accept(self, status)
+      def visit_table_row(table_row)
+        table_row.accept(self)
       end
 
-      def visit_table_cell(table_cell, status)
-        table_cell.accept(self, status)
+      def visit_table_cell(table_cell)
+        table_cell.accept(self)
       end
 
       def visit_table_cell_value(value, width, status)
+      end
+
+      def visit_exception(exception)
       end
     end
   end

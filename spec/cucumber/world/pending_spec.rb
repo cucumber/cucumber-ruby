@@ -7,7 +7,7 @@ module Cucumber
       before(:each) do
         @step_mom = Object.new
         @step_mom.extend(StepMother)
-        @world = @step_mom.new_world
+        @world = @step_mom.new_world!
       end
 
       it 'should raise a Pending if no block is supplied' do

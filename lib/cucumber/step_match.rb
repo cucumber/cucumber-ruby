@@ -4,8 +4,8 @@ module Cucumber
       @step_definition, @step_name, @args = step_definition, step_name, args
     end
     
-    def invoke(world, multiline_args)
-      all_args = (@args + multiline_args)
+    def invoke(world, multiline_arg)
+      all_args = (@args + [multiline_arg])
       @step_definition.invoke(world, all_args)
     end
 

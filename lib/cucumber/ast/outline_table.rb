@@ -7,38 +7,49 @@ module Cucumber
         @cells_class = ExampleCells
       end
 
-      def accept(visitor, status)
+      def accept(visitor)
         cells_rows.each_with_index do |row, n|
           should_visit = n == 0 || 
             row.at_lines?(visitor.current_feature_lines) ||
             @scenario_outline.at_header_or_step_lines?(visitor.current_feature_lines)
 
           if should_visit
-            visitor.visit_table_row(row, status)
+            visitor.visit_table_row(row)
           end
         end
         nil
       end
 
-      def execute_row(cells, visitor, &proc)
-        @scenario_outline.execute_row(cells, visitor, &proc)
+      def step_invocations(cells)
+        @scenario_outline.step_invocations(cells)
       end
 
       class ExampleCells < Cells
-        def accept(visitor, status)
+        def accept(visitor)
           if header?
             @cells.each do |cell|
-              visitor.visit_table_cell(cell, :thead)
+              cell.status = :skipped
+              visitor.visit_table_cell(cell)
             end
-            nil
           else
-            exception = @table.execute_row(self, visitor) do |cell, status|
-              visitor.visit_table_cell(cell, status)
+            visitor.step_mother.execute_scenario(self) do
+              step_invocations.each_step do |step_invocation|
+                step_invocation.invoke(visitor.step_mother)
+                @exception ||= step_invocation.exception
+              end
+            end
+
+            @cells.each do |cell|
+              visitor.visit_table_cell(cell)
             end
           end
         end
 
         private
+
+        def step_invocations
+          @step_invocations ||= @table.step_invocations(self)
+        end
 
         def header?
           index == 0
