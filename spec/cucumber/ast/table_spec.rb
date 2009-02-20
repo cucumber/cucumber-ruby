@@ -6,7 +6,7 @@ module Cucumber
     describe Table do
       before do
         @table = Table.new([
-          %w{1 22 333},
+          %w{one four seven},
           %w{4444 55555 666666}
         ])
         @table.extend(Module.new{
@@ -17,11 +17,11 @@ module Cucumber
       end
 
       it "should have rows" do
-        @table.cells_rows[0].map{|cell| cell.value}.should == %w{1 22 333}
+        @table.cells_rows[0].map{|cell| cell.value}.should == %w{one four seven}
       end
 
       it "should have columns" do
-        @table.columns[1].map{|cell| cell.value}.should == %w{22 55555}
+        @table.columns[1].map{|cell| cell.value}.should == %w{four 55555}
       end
 
       it "should have same cell objects in rows and columns" do
@@ -35,8 +35,12 @@ module Cucumber
 
       it "should be convertible to an array of hashes" do
         @table.hashes.should == [
-          {'1' => '4444', '22' => '55555', '333' => '666666'}
+          {'one' => '4444', 'four' => '55555', 'seven' => '666666'}
         ]
+      end
+
+      it "should accept symbols as keys for the hashes" do
+        @table.hashes.first[:one].should == '4444'
       end
 
       describe "replacing arguments" do
@@ -67,9 +71,9 @@ module Cucumber
         @table.to_sexp.should == 
           [:table, 
             [:row, 
-              [:cell, "1"], 
-              [:cell, "22"],
-              [:cell, "333"]
+              [:cell, "one"], 
+              [:cell, "four"],
+              [:cell, "seven"]
             ],
             [:row, 
               [:cell, "4444"], 
