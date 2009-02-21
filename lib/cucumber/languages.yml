@@ -318,13 +318,29 @@
   but: Men
 "zh-CN":
   name: Chinese simplified
-  native: 中文
+  native: 简体中文
   encoding: UTF-8
   feature: 功能
   scenario: 场景
+  scenario_outline: 场景简述
+  examples: 例子
   given: 假如
   when: 当
   then: 那么
+  and: 而且
+  but: 但是
+"zh-TW":
+  name: Chinese traditional
+  native: 繁體中文
+  encoding: UTF-8
+  feature: 功能
+  background: 背景
+  scenario: 場景
+  scenario_outline: 場景簡述
+  examples: 例子
+  given: 假設
+  when: 當
+  then: 那麼
   and: 而且
   but: 但是
 "ko":
