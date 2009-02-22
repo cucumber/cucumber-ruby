@@ -349,7 +349,7 @@
   feature: 功能
   background: 背景
   scenario: 劇本
-  scenario_outline: 劇情概要
+  scenario_outline: 劇本概要
   examples: 例如
   given: 如果
   when: 當
