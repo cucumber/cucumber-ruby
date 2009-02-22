@@ -343,8 +343,8 @@
   and: 그리고
   but: 하지만
 "zh-TW":
-  name: Chinese tranditional
-  native: 中文
+  name: Chinese traditional
+  native: 繁體中文
   encoding: UTF-8
   feature: 功能
   scenario: 劇本
