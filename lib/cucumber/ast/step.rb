@@ -38,7 +38,7 @@ module Cucumber
       
       def visit_step_details(visitor, step_match, multiline_arg, status, exception)
         visitor.visit_step_name(@keyword, step_match, status, source_indent)
-        visitor.visit_multiline_arg(@multiline_arg, status) if @multiline_arg
+        visitor.visit_multiline_arg(@multiline_arg) if @multiline_arg
         visitor.visit_exception(exception) if exception
       end
 
@@ -51,7 +51,7 @@ module Cucumber
           step_match          = visitor.step_match(name) rescue nil
           return step_match if step_match
         end
-        StepMatch.new(nil, @name, []) # Didn't find any
+        NoStepMatch.new(self)
       end
 
       def to_sexp
@@ -74,8 +74,8 @@ module Cucumber
         @backtrace_line ||= @feature_element.backtrace_line("#{@keyword} #{@name}", @line) unless @feature_element.nil?
       end
 
-      def file_line
-        @file_line ||= @feature_element.file_line(@line) unless @feature_element.nil?
+      def file_colon_line
+        @file_colon_line ||= @feature_element.file_colon_line(@line) unless @feature_element.nil?
       end
 
       def actual_keyword

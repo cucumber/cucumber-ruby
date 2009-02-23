@@ -62,7 +62,7 @@ module Cucumber
         outline_table.accept(self)
       end
 
-      def visit_scenario_name(keyword, name, file_line, source_indent)
+      def visit_scenario_name(keyword, name, file_colon_line, source_indent)
       end
 
       def visit_steps(steps)
@@ -73,14 +73,14 @@ module Cucumber
         step.accept(self)
       end
 
-      def visit_step_name(keyword, step_match, exception, source_indent)
+      def visit_step_name(keyword, step_match, status, source_indent)
       end
 
       def visit_multiline_arg(multiline_arg)
         multiline_arg.accept(self)
       end
 
-      def visit_py_string(string, status)
+      def visit_py_string(string)
       end
 
       def visit_table_row(table_row)

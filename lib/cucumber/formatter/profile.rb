@@ -23,7 +23,7 @@ module Cucumber
 
         if step_definition # nil for outline steps
           description = format_step(keyword, step_name, status, step_definition, nil)
-          @step_definition_durations[step_definition] << [duration, description, @step.file_line]
+          @step_definition_durations[step_definition] << [duration, description, @step.file_colon_line]
         end
       end
 

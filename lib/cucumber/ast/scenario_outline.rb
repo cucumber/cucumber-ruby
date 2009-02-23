@@ -2,9 +2,6 @@ module Cucumber
   module Ast
     class ScenarioOutline
       include FeatureElement
-      
-      attr_writer :background
-      attr_writer :feature
 
       # The +example_sections+ argument must be an Array where each element is another array representing
       # an Examples section. This array has 3 elements:
@@ -12,8 +9,8 @@ module Cucumber
       # * Examples keyword
       # * Examples section name
       # * Raw matrix
-      def initialize(comment, tags, line, keyword, name, steps, example_sections)
-        @comment, @tags, @line, @keyword, @name = comment, tags, line, keyword, name
+      def initialize(background, comment, tags, line, keyword, name, steps, example_sections)
+        @background, @comment, @tags, @line, @keyword, @name = background, comment, tags, line, keyword, name
         attach_steps(steps)
         @steps ||= StepCollection.new(steps)
 
@@ -32,10 +29,15 @@ module Cucumber
         super || @examples_array.detect { |examples| examples.at_lines?(lines) }
       end
 
+      def visit(visitor)
+        # TODO: visit background if we're the first. Otherwise just execute it. Skip if nil
+        visitor.visit_feature_element(self)
+      end
+
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, @name, file_line(@line), source_indent(text_length))
+        visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(text_length))
         visitor.visit_steps(@steps)
 
         @examples_array.each do |examples|

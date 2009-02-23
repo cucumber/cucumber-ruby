@@ -5,17 +5,13 @@ module Cucumber
       attr_accessor :file
       attr_writer :features, :lines
 
-      def initialize(comment, tags, name, feature_elements, background = nil)
-        @comment, @tags, @name, @background = comment, tags, name, background
-        @background ||= Background.new
-        @background.feature_elements = feature_elements
-        @background.feature = self
-
-        feature_elements.each do |feature_element| 
-          feature_element.feature = self
-          feature_element.background = @background
-        end
+      def initialize(comment, tags, name, feature_elements)
+        @comment, @tags, @name, @feature_elements = comment, tags, name, feature_elements
         @lines = []
+
+        @feature_elements.each do |feature_element|
+          feature_element.feature = self
+        end
       end
 
       def tagged_with?(tag_names, check_background = true)
@@ -36,14 +32,16 @@ module Cucumber
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@name)
-        visitor.visit_background(@background)
+        @feature_elements.each do |feature_element|
+          feature_element.visit(visitor)
+        end
       end
 
       def backtrace_line(step_name, line)
-        "#{file_line(line)}:in `#{step_name}'"
+        "#{file_colon_line(line)}:in `#{step_name}'"
       end
 
-      def file_line(line)
+      def file_colon_line(line)
         "#{@file}:#{line}"
       end
 

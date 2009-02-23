@@ -13,11 +13,11 @@ end
 module Cucumber
   module Parser
     module TreetopExt
-      FILE_LINE_PATTERN = /^([\w\W]*?):([\d:]+)$/
+      FILE_COLON_LINE_PATTERN = /^([\w\W]*?):([\d:]+)$/
 
       # Parses a file and returns a Cucumber::Ast
       def parse_file(file)
-        _, path, lines = *FILE_LINE_PATTERN.match(file)
+        _, path, lines = *FILE_COLON_LINE_PATTERN.match(file)
         if path
           lines = lines.split(':').map { |line| line.to_i }
         else
