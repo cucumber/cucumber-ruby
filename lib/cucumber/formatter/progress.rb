@@ -20,7 +20,7 @@ module Cucumber
         end
       end
 
-      def visit_multiline_arg(multiline_arg, status)
+      def visit_multiline_arg(multiline_arg)
         @multiline_arg = true
         super
         @multiline_arg = false
@@ -31,7 +31,7 @@ module Cucumber
         super
       end
 
-      def visit_step_name(keyword, step_name, status, step_definition, source_indent)
+      def visit_step_name(keyword, step_match, status, source_indent)
         progress(status) unless status == :outline
       end
 

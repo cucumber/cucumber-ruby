@@ -4,10 +4,9 @@ module Cucumber
   module Ast
     class Scenario
       include FeatureElement
-      attr_writer :background
       
-      def initialize(comment, tags, line, keyword, name, steps)
-        @comment, @tags, @line, @keyword, @name = comment, tags, line, keyword, name
+      def initialize(background, comment, tags, line, keyword, name, steps)
+        @background, @comment, @tags, @line, @keyword, @name = background, comment, tags, line, keyword, name
         attach_steps(steps)
         @steps = StepCollection.new(steps.map{|step| step.step_invocation})
       end
@@ -16,11 +15,25 @@ module Cucumber
         scenario_names.detect{|name| @name == name}
       end
 
+      def visit(visitor)
+        # TODO: visit background if we're the first. Otherwise just execute it. Skip if nil
+        if visit?(visitor.current_feature_lines)
+          visitor.visit_feature_element(self)
+        end
+      end
+
+      def visit?(lines)
+        lines.empty? || lines.index(@line) || @steps.at_lines?(lines) || @tags.at_lines?(lines)
+      end
+
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, @name, file_line(@line), source_indent(text_length))
-        visitor.visit_steps(@steps)
+        visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(text_length))
+        # TODO: Find a better way to capture errors in Before and After
+        visitor.step_mother.execute_scenario(self) do
+          visitor.visit_steps(@steps)
+        end
 
         visitor.step_mother.scenario_executed(self) unless @executed
         @executed = true

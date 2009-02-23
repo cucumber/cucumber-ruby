@@ -67,7 +67,7 @@ module Cucumber
         @open_step_list = true
       end
       
-      def visit_scenario_name(keyword, name, file_line, source_indent)
+      def visit_scenario_name(keyword, name, file_colon_line, source_indent)
         @builder.h3("#{keyword} #{name}")
       end
 
@@ -87,18 +87,19 @@ module Cucumber
         end
       end
 
-      def visit_step_name(keyword, step_name, status, step_definition, source_indent)
+      def visit_step_name(keyword, step_match, status, source_indent)
+        step_name = format_args(lambda{|param| "<span>#{param}</span>"})
         @builder.li("#{keyword} #{step_name}", :class => status)
       end
 
-      def visit_multiline_arg(multiline_arg, status)
+      def visit_multiline_arg(multiline_arg)
         if Ast::Table === multiline_arg
           @builder.table do
-            super(multiline_arg, status)
+            super
           end
         else
           @builder.p do
-            super(multiline_arg, status)
+            super
           end
         end
       end

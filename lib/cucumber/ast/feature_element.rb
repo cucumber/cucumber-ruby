@@ -6,8 +6,8 @@ module Cucumber
       steps.each {|step| step.feature_element = self}
     end
 
-    def file_line(line = @line)
-      @feature.file_line(line) if @feature
+    def file_colon_line(line = @line)
+      @feature.file_colon_line(line) if @feature
     end
 
     def text_length

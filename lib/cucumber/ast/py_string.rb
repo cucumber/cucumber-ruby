@@ -30,8 +30,8 @@ module Cucumber
         lines.detect{|l| l >= @start_line && l <= @end_line}
       end
 
-      def accept(visitor, status)
-        visitor.visit_py_string(to_s, status)
+      def accept(visitor)
+        visitor.visit_py_string(to_s)
       end
       
       def arguments_replaced(arguments) #:nodoc:

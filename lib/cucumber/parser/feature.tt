@@ -21,11 +21,8 @@ module Cucumber
         feature_elements
         comment? {
           def build
-            if background.respond_to?(:build)
-              Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build, background.build)
-            else
-              Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build)
-            end
+            background = background.respond_to?(:build) ? background.build : nil
+            Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build(background))
           end
         }
       end
@@ -70,16 +67,17 @@ module Cucumber
 
       rule feature_elements
         (scenario / scenario_outline)* {
-          def build
-            elements.map{|s| s.build}
+          def build(background)
+            elements.map{|s| s.build(background)}
           end
         }
       end
 
       rule scenario
         comment tags white scenario_keyword space* name:line_to_eol (white / eof) steps white {
-          def build
+          def build(background)
             Ast::Scenario.new(
+              background,
               comment.build, 
               tags.build,
               scenario_keyword.line,
@@ -93,8 +91,9 @@ module Cucumber
 
       rule scenario_outline
         comment tags white scenario_outline_keyword space* name:line_to_eol white steps examples_sections white {
-          def build
+          def build(background)
             Ast::ScenarioOutline.new(
+              background,
               comment.build, 
               tags.build,
               scenario_outline_keyword.line, 

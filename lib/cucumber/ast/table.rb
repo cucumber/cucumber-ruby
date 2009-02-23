@@ -181,10 +181,6 @@ module Cucumber
           lines.empty? || lines.index(line)
         end
 
-        def status
-          Cucumber::EXCEPTION_STATUS[exception.class]
-        end
-
         private
 
         def index

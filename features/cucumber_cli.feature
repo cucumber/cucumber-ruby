@@ -32,7 +32,7 @@ Feature: Cucumber command line
             features/sample.feature:6:in `Given missing'
 
       1 scenario
-      1 failed step
+      1 undefined step
 
       """
 

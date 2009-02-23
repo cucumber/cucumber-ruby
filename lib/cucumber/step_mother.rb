@@ -10,11 +10,10 @@ module Cucumber
       super %{Undefined step: "#{step_name}"}
       @step_name = step_name
     end
-    Cucumber::EXCEPTION_STATUS[self] = :undefined
   end
 
+  # Raised when a StepDefinition's block invokes World#pending
   class Pending < StandardError
-    Cucumber::EXCEPTION_STATUS[self] = :pending
   end
 
   # Raised when a step matches 2 or more StepDefinition
@@ -54,12 +53,17 @@ module Cucumber
       scenarios << scenario
     end
     
-    def step_executed(step)
-      steps[step.status] << step
+    def step_accepted(step)
+      steps << step unless steps.index(step)
     end
     
-    def steps
-      @steps ||= Hash.new{|hash, status| hash[status] = []}
+    def steps(status = nil)
+      @steps ||= []
+      if(status)
+        @steps.select{|step| step.status == status}
+      else
+        @steps
+      end
     end
 
     def scenarios
@@ -105,12 +109,12 @@ module Cucumber
       new_world!
       begin
         (@before_procs ||= []).each do |proc|
-          world.cucumber_instance_exec(false, 'Before', scenario, &proc)
+          @current_world.cucumber_instance_exec(false, 'Before', scenario, &proc)
         end
         yield
       ensure
         (@after_procs ||= []).each do |proc|
-          world.cucumber_instance_exec(false, 'After', scenario, &proc)
+          @current_world.cucumber_instance_exec(false, 'After', scenario, &proc)
         end
       end
     end

@@ -96,12 +96,12 @@ module Cucumber
         @indent = 4
       end
 
-      def visit_scenario_name(keyword, name, file_line, source_indent)
+      def visit_scenario_name(keyword, name, file_colon_line, source_indent)
         line = "  #{keyword} #{name}"
         line = format_string(line, :undefined) if @last_undefined
         @io.print(line)
         if @options[:source]
-          line_comment = " # #{file_line}".indent(source_indent)
+          line_comment = " # #{file_colon_line}".indent(source_indent)
           @io.print(format_string(line_comment, :comment))
         end
         @io.puts
@@ -114,18 +114,19 @@ module Cucumber
       end
 
       def visit_step_name(keyword, step_match, status, source_indent)
+        @status = status
         source_indent = nil unless @options[:source]
         formatted_step_name = format_step(keyword, step_match, status, source_indent)
         @io.puts("    " + formatted_step_name)
       end
 
-      def visit_multiline_arg(multiline_arg, status)
+      def visit_multiline_arg(multiline_arg)
         return if @options[:no_multiline]
         super
       end
 
       def visit_exception(exception)
-        print_exception(exception, @indent) if exception
+        print_exception(exception, @indent) if @options[:strict] || !(Undefined === exception)
         @io.flush
       end
 
@@ -133,13 +134,13 @@ module Cucumber
         @io.print @delim.indent(@indent)
         super
         @io.puts
-        print_exception(table_row.exception, table_row.status, 6) if table_row.exception
+        print_exception(table_row.exception, @indent) if table_row.exception
       end
 
-      def visit_py_string(string, status)
+      def visit_py_string(string)
         s = "\"\"\"\n#{string}\n\"\"\"".indent(@indent)
         s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}.join("\n")
-        @io.puts(format_string(s, status))
+        @io.puts(format_string(s, @status))
         @io.flush
       end
 
