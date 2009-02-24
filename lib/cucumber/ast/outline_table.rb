@@ -34,7 +34,7 @@ module Cucumber
           else
             visitor.step_mother.execute_scenario(self) do
               step_invocations.each_step do |step_invocation|
-                step_invocation.invoke(visitor.step_mother)
+                step_invocation.invoke(visitor.step_mother, visitor.options)
                 @exception ||= step_invocation.exception
               end
             end

@@ -5,56 +5,55 @@ module Cucumber
 
     def initialize(step, name, multiline_arg, matched_cells)
       @step, @name, @multiline_arg, @matched_cells = step, name, multiline_arg, matched_cells
-      @status = :skipped
+      status!(:skipped)
     end
 
     def accept(visitor)
-      find_step_match!(visitor.step_mother, visitor.options[:strict])
-      visitor.step_mother.step_accepted(self)
-
-      unless @invoked || visitor.options[:dry_run] || exception || previous.exception
-        invoke(visitor.step_mother)
-        @invoked = true
-      end
+      invoke(visitor.step_mother, visitor.options)
       @step.visit_step_details(visitor, @step_match, @multiline_arg, status, @exception)
     end
 
-    def find_step_match!(step_mother, strict)
+    def invoke(step_mother, options)
+      find_step_match!(step_mother)
+      unless @invoked || options[:dry_run] || exception || previous.exception
+        @invoked = true
+        begin
+          @step.invoke(@step_match, step_mother.current_world)
+          status!(:passed)
+        rescue Pending => e
+          failed(e, false)
+          status!(:pending)
+        rescue Exception => e
+          failed(e, false)
+          status!(:failed)
+        end
+      end
+    end
+
+    def find_step_match!(step_mother)
       return if @step_match
       begin
         @step_match = step_mother.step_match(@name)
       rescue Undefined => e
-        @status = :undefined
         failed(e, true)
+        status!(:undefined)
         @step_match = NoStepMatch.new(@step)
       rescue Ambiguous => e
         failed(e, false)
-        @status = :failed
+        status!(:failed)
         @step_match = NoStepMatch.new(@step)
       end
-      @step_match
-    end
-
-    def invoke(step_mother)
-      begin
-        @step.invoke(@step_match, step_mother.current_world)
-        @status = :passed
-      rescue Pending => e
-        failed(e, false)
-        @status = :pending
-      rescue Exception => e
-        failed(e, false)
-        @status = :failed
-      ensure
-        step_mother.step_accepted(self)
-      end
+      step_mother.step_accepted(self)
     end
 
     def failed(exception, clear_backtrace)
       @exception = exception
       @exception.set_backtrace([]) if clear_backtrace
       @exception.backtrace << @step.backtrace_line unless @step.backtrace_line.nil?
+    end
 
+    def status!(status)
+      @status = status
       @matched_cells.each do |cell|
         cell.status = status
       end
