@@ -49,11 +49,11 @@ module Cucumber
 
     attr_writer :snippet_generator, :options
 
-    def scenario_executed(scenario)
-      scenarios << scenario
+    def scenario_visited(scenario)
+      scenarios << scenario unless scenarios.index(scenario)
     end
     
-    def step_accepted(step)
+    def step_visited(step)
       steps << step unless steps.index(step)
     end
     

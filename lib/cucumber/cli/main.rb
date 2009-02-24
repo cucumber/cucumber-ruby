@@ -69,8 +69,7 @@ module Cucumber
       end
 
       def load_plain_text_features
-        filter = configuration.ast_filter
-        features = Ast::Features.new(filter)
+        features = Ast::Features.new
         parser = Parser::FeatureParser.new
 
         verbose_log("Features:")

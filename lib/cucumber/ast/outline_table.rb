@@ -9,9 +9,7 @@ module Cucumber
 
       def accept(visitor)
         cells_rows.each_with_index do |row, n|
-          should_visit = n == 0 || 
-            row.at_lines?(visitor.current_feature_lines) ||
-            @scenario_outline.at_header_or_step_lines?(visitor.current_feature_lines)
+          should_visit = n == 0 || visitor.visit?(row)
 
           if should_visit
             visitor.visit_table_row(row)
@@ -42,6 +40,7 @@ module Cucumber
             @cells.each do |cell|
               visitor.visit_table_cell(cell)
             end
+            visitor.step_mother.scenario_visited(self)
           end
         end
 

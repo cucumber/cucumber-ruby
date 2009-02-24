@@ -25,8 +25,8 @@ module Cucumber
         end
       end
 
-      def at_lines?(lines)
-        super || @examples_array.detect { |examples| examples.at_lines?(lines) }
+      def matches_lines?(lines)
+        super || @examples_array.detect { |examples| examples.matches_lines?(lines) }
       end
 
       def visit(visitor)

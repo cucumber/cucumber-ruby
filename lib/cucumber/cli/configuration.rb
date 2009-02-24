@@ -76,7 +76,7 @@ module Cucumber
             "TAGS must be comma-separated without spaces. Prefix tags with ~ to",
             "exclude features or scenarios having that tag. tags can be specified",
             "with or without the @ prefix.") do |v|
-            @options[:tags] = v.split(",")
+            @options[:tag_names] = v.split(",")
           end
           opts.on("-s SCENARIO", "--scenario SCENARIO", 
             "Only execute the scenario with the given name. If this option",
@@ -125,7 +125,7 @@ module Cucumber
           opts.on("-b", "--backtrace", "Show full backtrace for all errors.") do
             Exception.cucumber_full_backtrace = true
           end
-          opts.on("--strict", "Fail if there are any undefined steps.") do
+          opts.on("-S", "--strict", "Fail if there are any undefined steps.") do
             @options[:strict] = true
           end
           opts.on("-v", "--verbose", "Show the files and features loaded.") do
@@ -138,7 +138,7 @@ module Cucumber
             @out_stream.puts VERSION::STRING
             Kernel.exit
           end
-          opts.on_tail("--help", "You're looking at it.") do
+          opts.on_tail("-h", "--help", "You're looking at it.") do
             @out_stream.puts opts.help
             Kernel.exit
           end
@@ -151,10 +151,6 @@ module Cucumber
 
         # Whatever is left after option parsing is the FILE arguments
         @paths += args
-      end
-    
-      def ast_filter
-        Ast::Filter.new(@options)
       end
     
       def verbose?
@@ -314,13 +310,13 @@ Defined profiles in cucumber.yml:
     
       def default_options
         {
-          :strict   => false,
-          :require  => nil,
-          :lang     => 'en',
-          :dry_run  => false,
-          :formats  => {},
-          :excludes => [],
-          :tags     => [],
+          :strict         => false,
+          :require        => nil,
+          :lang           => 'en',
+          :dry_run        => false,
+          :formats        => {},
+          :excludes       => [],
+          :tag_names      => [],
           :scenario_names => []
         }
       end

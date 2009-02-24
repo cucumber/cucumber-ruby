@@ -14,8 +14,8 @@ module Cucumber
         @outline_table.each_cells_row(&proc)
       end
 
-      def at_lines?(lines)
-        lines.empty? || lines.index(@line) || @outline_table.at_lines?(lines)
+      def matches_lines?(lines)
+        lines.empty? || lines.index(@line) || @outline_table.matches_lines?(lines)
       end
 
       def to_sexp

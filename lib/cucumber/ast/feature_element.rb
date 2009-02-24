@@ -14,8 +14,16 @@ module Cucumber
       @keyword.jlength + @name.jlength
     end
 
-    def at_lines?(lines)
-      lines.empty? || lines.index(@line) || @steps.at_lines?(lines) || @tags.at_lines?(lines)
+    def matches_lines?(lines)
+      lines.empty? || lines.index(@line) || @steps.matches_lines?(lines) || @tags.matches_lines?(lines)
+    end
+
+    def matches_tags?(tag_names)
+      @tags.among?(tag_names)
+    end
+
+    def matches_scenario_names?(scenario_names)
+      scenario_names.detect{|name| name == @name}
     end
 
     def backtrace_line(name = "#{@keyword} #{@name}", line = @line)
@@ -34,10 +42,6 @@ module Cucumber
     def previous_step(step)
       i = @steps.index(step) || -1
       @steps[i-1]
-    end
-
-    def tagged_with?(tag_names)
-      @tags.among?(tag_names)
     end
 
     def undefined?

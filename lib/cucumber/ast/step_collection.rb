@@ -26,8 +26,8 @@ module Cucumber
         @steps[i-1]
       end
 
-      def at_lines?(lines)
-        @steps.detect {|step| step.at_lines?(lines)}
+      def matches_lines?(lines)
+        @steps.detect {|step| step.matches_lines?(lines)}
       end
 
       def empty?

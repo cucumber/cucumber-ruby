@@ -7,14 +7,29 @@ module Cucumber
 
       def initialize(step_mother)
         @step_mother = step_mother
+        @current_feature_lines = []
       end
 
       def current_feature_lines=(lines)
         @current_feature_lines = lines
       end
 
-      def current_feature_lines
-        @current_feature_lines || []
+      def visit?(node)
+        matches_lines?(node) &&
+        matches_tags?(node) &&
+        matches_scenario_names?(node)
+      end
+
+      def matches_lines?(node)
+        @current_feature_lines.empty? || node.matches_lines?(@current_feature_lines)
+      end
+
+      def matches_tags?(node)
+        options[:tag_names].empty? || node.matches_tags?(options[:tag_names])
+      end
+
+      def matches_scenario_names?(node)
+        options[:scenario_names].empty? || node.matches_scenario_names?(options[:scenario_names])
       end
 
       def visit_features(features)
