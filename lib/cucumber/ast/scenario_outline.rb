@@ -41,7 +41,7 @@ module Cucumber
         visitor.visit_steps(@steps)
 
         @examples_array.each do |examples|
-          visitor.visit_examples(examples)
+          visitor.visit_examples(examples) if visitor.visit?(self) || visitor.visit?(examples)
         end
       end
 

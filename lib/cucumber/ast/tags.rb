@@ -23,7 +23,7 @@ module Cucumber
       end
 
       def matches_lines?(lines)
-        lines.empty? || lines.index(@line)
+        lines.index(@line)
       end
 
       def accept(visitor)

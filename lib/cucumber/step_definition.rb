@@ -34,9 +34,9 @@ module Cucumber
       @regexp, @proc = pattern, proc
     end
 
-    def step_match(step_name)
-      if(match = step_name.match(@regexp))
-        StepMatch.new(self, step_name, match.captures)
+    def step_match(name_to_match, name_to_report)
+      if(match = name_to_match.match(@regexp))
+        StepMatch.new(self, name_to_match, name_to_report, match.captures)
       else
         nil
       end

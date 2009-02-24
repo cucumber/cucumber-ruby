@@ -1,7 +1,7 @@
 module Cucumber
   class StepMatch
-    def initialize(step_definition, step_name, args)
-      @step_definition, @step_name, @args = step_definition, step_name, args
+    def initialize(step_definition, step_name, formatted_step_name, args)
+      @step_definition, @step_name, @formatted_step_name, @args = step_definition, step_name, formatted_step_name, args
     end
     
     def invoke(world, multiline_arg)
@@ -11,7 +11,7 @@ module Cucumber
     end
 
     def format_args(format)
-      @step_definition.format_args(@step_name, format)
+      @formatted_step_name || @step_definition.format_args(@step_name, format)
     end
     
     def file_colon_line

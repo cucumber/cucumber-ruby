@@ -11,11 +11,11 @@ module Cucumber
       end
 
       def each_example_row(&proc)
-        @outline_table.each_cells_row(&proc)
+        @outline_table.cells_rows[1..-1].each(&proc)
       end
 
       def matches_lines?(lines)
-        lines.empty? || lines.index(@line) || @outline_table.matches_lines?(lines)
+        lines.index(@line) || @outline_table.matches_lines?(lines)
       end
 
       def to_sexp

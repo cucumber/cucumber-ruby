@@ -137,8 +137,8 @@ module Cucumber
       @current_world
     end
 
-    def step_match(step_name)
-      matches = step_definitions.map { |d| d.step_match(step_name) }.compact
+    def step_match(step_name, formatted_step_name=nil)
+      matches = step_definitions.map { |d| d.step_match(step_name, formatted_step_name) }.compact
       raise Undefined.new(step_name) if matches.empty?
       found = best_matches(step_name, matches) if matches.size > 1 && options[:guess]
       raise Ambiguous.new(step_name, matches) if matches.size > 1
