@@ -45,17 +45,15 @@ module Cucumber
         end
       end
 
+      def each_invocation(cells, &proc)
+        @steps.step_invocations_from_cells(cells).each_step(&proc)
+      end
+
       def each_example_row(&proc)
         @examples_array.each do |examples|
           examples.each_example_row(&proc)
         end
       end
-
-      def step_invocations(cells)
-        @steps.step_invocations_from_cells(cells)
-      end
-
-      def pending? ; false ; end
 
       def to_sexp
         sexp = [:scenario_outline, @keyword, @name]

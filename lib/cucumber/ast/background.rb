@@ -12,7 +12,14 @@ module Cucumber
       end
 
       def accept(visitor)
+        visitor.visit_comment(@comment)
+        visitor.visit_background_name(@keyword, "TODO BG NAME", file_colon_line(@line), source_indent(text_length))
+
         visitor.visit_steps(@steps)
+      end
+
+      def text_length
+        20
       end
     end
   end

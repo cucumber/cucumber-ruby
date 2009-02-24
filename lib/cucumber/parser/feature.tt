@@ -17,11 +17,11 @@ module Cucumber
         tags 
         white 
         header:(!(scenario_outline / scenario / background) .)* 
-        background:(background)? 
+        bg:background? 
         feature_elements
         comment? {
           def build
-            background = background.respond_to?(:build) ? background.build : nil
+            background = bg.respond_to?(:build) ? bg.build : nil
             Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build(background))
           end
         }

@@ -87,6 +87,12 @@ module Cucumber
       def visit_background(background)
         @indent = 2
         super
+        @io.puts
+        @io.flush
+      end
+
+      def visit_background_name(keyword, name, file_colon_line, source_indent)
+        visit_feature_element_name(keyword, name, file_colon_line, source_indent)
       end
 
       def visit_examples_name(keyword, name)
@@ -96,6 +102,10 @@ module Cucumber
       end
 
       def visit_scenario_name(keyword, name, file_colon_line, source_indent)
+        visit_feature_element_name(keyword, name, file_colon_line, source_indent)
+      end
+
+      def visit_feature_element_name(keyword, name, file_colon_line, source_indent)
         line = "  #{keyword} #{name}"
         @io.print(line)
         if @options[:source]
