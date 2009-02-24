@@ -18,8 +18,8 @@ module Cucumber
         @cell_class = Cell
       end
 
-      def at_lines?(lines)
-        cells_rows.detect { |row| row.at_lines?(lines) }
+      def matches_lines?(lines)
+        cells_rows.detect { |row| row.matches_lines?(lines) }
       end
 
       def accept(visitor)
@@ -101,8 +101,8 @@ module Cucumber
         Table.new(raw_with_replaced_args)
       end
 
-      def at_lines?(lines)
-        cells_rows.detect{|row| row.at_lines?(lines)}
+      def matches_lines?(lines)
+        cells_rows.detect{|row| row.matches_lines?(lines)}
       end
 
       def cells_rows
@@ -177,7 +177,7 @@ module Cucumber
           @cells[0].line
         end
 
-        def at_lines?(lines)
+        def matches_lines?(lines)
           lines.empty? || lines.index(line)
         end
 

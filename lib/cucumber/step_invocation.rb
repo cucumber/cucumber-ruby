@@ -43,7 +43,7 @@ module Cucumber
         status!(:failed)
         @step_match = NoStepMatch.new(@step)
       end
-      step_mother.step_accepted(self)
+      step_mother.step_visited(self)
     end
 
     def failed(exception, clear_backtrace)
@@ -71,8 +71,8 @@ module Cucumber
       end
     end
 
-    def at_lines?(lines)
-      @step.at_lines?(lines)
+    def matches_lines?(lines)
+      @step.matches_lines?(lines)
     end
 
     def text_length

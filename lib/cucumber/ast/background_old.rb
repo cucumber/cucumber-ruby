@@ -37,9 +37,9 @@ module Cucumber
         @feature_elements.detect{|e| e.matches_scenario_names?(scenario_names)}
       end
 
-      def tagged_with?(tag_names, check_elements=true)
-        @feature.tagged_with?(tag_names, false) || 
-        (check_elements && @feature_elements.detect{|e| e.tagged_with?(tag_names)})
+      def matches_tags?(tag_names, check_elements=true)
+        @feature.matches_tags?(tag_names, false) || 
+        (check_elements && @feature_elements.detect{|e| e.matches_tags?(tag_names)})
       end
 
       def source_indent(text_length)

@@ -22,7 +22,7 @@ module Cucumber
         (yes_tags.empty? || (@tag_names & yes_tags).any?) && (no_tags.empty? || (@tag_names & no_tags).empty?)
       end
 
-      def at_lines?(lines)
+      def matches_lines?(lines)
         lines.empty? || lines.index(@line)
       end
 

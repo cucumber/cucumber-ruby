@@ -14,27 +14,31 @@ module Cucumber
         end
       end
 
-      def tagged_with?(tag_names, check_background = true)
-        @tags.among?(tag_names) || 
-        (check_background && @background.tagged_with?(tag_names))
-      end
-
-      def visit?(feature_element)
-        @features.visit?(feature_element, @lines)
-      end
-      
-      def matches_scenario_names?(scenario_names)
-        @background.matches_scenario_names?(scenario_names)
-      end
-
       def accept(visitor)
         visitor.current_feature_lines = @lines
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@name)
         @feature_elements.each do |feature_element|
-          feature_element.visit(visitor)
+          feature_element.visit(visitor) if visitor.visit?(self) || visitor.visit?(feature_element)
         end
+      end
+
+      def visit?(visitor)
+        visitor.visit?(self) ||
+          @feature_elements.detect{ |feature_element| visitor.visit?(feature_element) }
+      end
+
+      def matches_tags?(tag_names)
+        @tags.among?(tag_names)
+      end
+
+      def matches_scenario_names?(scenario_names)
+        false
+      end
+
+      def matches_lines?(lines)
+        false
       end
 
       def backtrace_line(step_name, line)

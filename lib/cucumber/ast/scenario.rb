@@ -11,19 +11,13 @@ module Cucumber
         @steps = StepCollection.new(steps.map{|step| step.step_invocation})
       end
 
-      def matches_scenario_names?(scenario_names)
-        scenario_names.detect{|name| @name == name}
-      end
-
       def visit(visitor)
         # TODO: visit background if we're the first. Otherwise just execute it. Skip if nil
-        if visit?(visitor.current_feature_lines)
-          visitor.visit_feature_element(self)
-        end
+        visitor.visit_feature_element(self)
       end
 
       def visit?(lines)
-        lines.empty? || lines.index(@line) || @steps.at_lines?(lines) || @tags.at_lines?(lines)
+        lines.empty? || lines.index(@line) || @steps.matches_lines?(lines) || @tags.matches_lines?(lines)
       end
 
       def accept(visitor)
@@ -35,8 +29,7 @@ module Cucumber
           visitor.visit_steps(@steps)
         end
 
-        visitor.step_mother.scenario_executed(self) unless @executed
-        @executed = true
+        visitor.step_mother.scenario_visited(self)
       end
 
       def to_sexp
