@@ -16,10 +16,6 @@ module Cucumber
         visitor.visit_feature_element(self)
       end
 
-      def visit?(lines)
-        lines.empty? || lines.index(@line) || @steps.matches_lines?(lines) || @tags.matches_lines?(lines)
-      end
-
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)

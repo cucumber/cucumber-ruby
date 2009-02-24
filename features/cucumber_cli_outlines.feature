@@ -17,10 +17,10 @@ Feature: Cucumber command line
           | missing | passing     |
           | passing | passing     |
           | failing | passing     |
-            FAIL (RuntimeError)
-            ./features/step_definitions/sample_steps.rb:2:in `flunker'
-            ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-            features/outline_sample.feature:12:in `Given failing without a table'
+          FAIL (RuntimeError)
+          ./features/step_definitions/sample_steps.rb:2:in `flunker'
+          ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
+          features/outline_sample.feature:6:in `Given <state> without a table'
 
         Examples: Only passing
           | state   | other_state |
@@ -49,10 +49,10 @@ Feature: Cucumber command line
         Examples: Rainbow colours
           | state   | other_state |
           | failing | passing     |
-            FAIL (RuntimeError)
-            ./features/step_definitions/sample_steps.rb:2:in `flunker'
-            ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-            features/outline_sample.feature:12:in `Given failing without a table'
+          FAIL (RuntimeError)
+          ./features/step_definitions/sample_steps.rb:2:in `flunker'
+          ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
+          features/outline_sample.feature:12:in `Given failing without a table'
 
         Examples: Only passing
           | state   | other_state |
