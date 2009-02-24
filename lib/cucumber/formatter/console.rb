@@ -34,7 +34,7 @@ module Cucumber
       end
 
       def print_steps(status)
-        print_elements(step_mother.steps[status], status, 'steps')
+        print_elements(step_mother.steps(status), status, 'steps')
       end
 
       def print_elements(elements, status, kind)
@@ -68,7 +68,9 @@ module Cucumber
       end
 
       def print_exception(e, indent)
-        @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), :failed))
+        if @options[:strict] || !(Undefined === e)
+          @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), :failed))
+        end
       end
 
       def print_snippets(options)

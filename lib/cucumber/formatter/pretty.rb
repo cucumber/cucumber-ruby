@@ -126,7 +126,7 @@ module Cucumber
       end
 
       def visit_exception(exception)
-        print_exception(exception, @indent) if @options[:strict] || !(Undefined === exception)
+        print_exception(exception, @indent)
         @io.flush
       end
 
