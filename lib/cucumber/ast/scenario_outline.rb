@@ -25,8 +25,8 @@ module Cucumber
         end
       end
 
-      def matches_lines?(lines)
-        super || @examples_array.detect { |examples| examples.matches_lines?(lines) }
+      def descend?(visitor)
+        super || @examples_array.detect { |examples| examples.descend?(visitor) }
       end
 
       def visit(visitor)
@@ -41,7 +41,7 @@ module Cucumber
         visitor.visit_steps(@steps)
 
         @examples_array.each do |examples|
-          visitor.visit_examples(examples) if visitor.visit?(self) || visitor.visit?(examples)
+          visitor.visit_examples(examples) if visitor.matches_filters?(self) || examples.descend?(visitor)
         end
       end
 

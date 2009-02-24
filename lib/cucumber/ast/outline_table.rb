@@ -9,9 +9,7 @@ module Cucumber
 
       def accept(visitor)
         cells_rows.each_with_index do |row, n|
-          should_visit = n == 0 || visitor.visit?(@scenario_outline) || visitor.visit?(row)
-
-          if should_visit
+          if n == 0 || visitor.matches_filters?(@scenario_outline) || visitor.matches_filters?(row)
             visitor.visit_table_row(row)
           end
         end

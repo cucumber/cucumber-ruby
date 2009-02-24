@@ -28,11 +28,6 @@ module Cucumber
         end
       end
 
-      def print_undefined_scenarios
-        elements = step_mother.scenarios.select{|scenario| scenario.undefined?}
-        print_elements(elements, :undefined, 'scenarios')
-      end
-
       def print_steps(status)
         print_elements(step_mother.steps(status), status, 'steps')
       end

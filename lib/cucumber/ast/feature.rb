@@ -20,13 +20,13 @@ module Cucumber
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@name)
         @feature_elements.each do |feature_element|
-          feature_element.visit(visitor) if visitor.visit?(self) || visitor.visit?(feature_element)
+          feature_element.visit(visitor) if visitor.matches_filters?(self) || feature_element.descend?(visitor)
         end
       end
 
-      def visit?(visitor)
-        visitor.visit?(self) ||
-          @feature_elements.detect{ |feature_element| visitor.visit?(feature_element) }
+      def descend?(visitor)
+        visitor.matches_filters?(self) ||
+          @feature_elements.detect{ |feature_element| visitor.matches_filters?(feature_element) }
       end
 
       def matches_tags?(tag_names)

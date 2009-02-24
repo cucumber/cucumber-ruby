@@ -14,6 +14,10 @@ module Cucumber
       @keyword.jlength + @name.jlength
     end
 
+    def descend?(visitor)
+      visitor.matches_filters?(self)
+    end
+
     def matches_lines?(lines)
       lines.index(@line) || @steps.matches_lines?(lines) || @tags.matches_lines?(lines)
     end
@@ -42,10 +46,6 @@ module Cucumber
     def previous_step(step)
       i = @steps.index(step) || -1
       @steps[i-1]
-    end
-
-    def undefined?
-      @steps.empty?
     end
   end
 end

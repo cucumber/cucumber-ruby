@@ -14,7 +14,7 @@ module Cucumber
         @current_feature_lines = lines
       end
 
-      def visit?(node)
+      def matches_filters?(node)
         matches_lines?(node) &&
         matches_tags?(node) &&
         matches_scenario_names?(node)
