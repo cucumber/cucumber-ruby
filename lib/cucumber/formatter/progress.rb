@@ -26,11 +26,6 @@ module Cucumber
         @multiline_arg = false
       end
 
-      def visit_feature_element(feature_element)
-        progress(:undefined) if feature_element.undefined?
-        super
-      end
-
       def visit_step_name(keyword, step_match, status, source_indent)
         progress(status) unless status == :outline
       end
@@ -42,7 +37,6 @@ module Cucumber
       private
 
       def print_summary
-        print_undefined_scenarios
         print_steps(:pending)
         print_steps(:failed)
         print_counts
@@ -54,7 +48,7 @@ module Cucumber
         :failed    => 'F',
         :undefined => 'U',
         :pending   => 'P',
-        :skipped   => 'S'
+        :skipped   => '#'
       }
 
       def progress(status)

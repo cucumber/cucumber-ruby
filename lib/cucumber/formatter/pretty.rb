@@ -79,7 +79,6 @@ module Cucumber
 
       def visit_feature_element(feature_element)
         @indent = 2
-        @last_undefined = feature_element.undefined?
         super
         @io.puts
         @io.flush
@@ -98,7 +97,6 @@ module Cucumber
 
       def visit_scenario_name(keyword, name, file_colon_line, source_indent)
         line = "  #{keyword} #{name}"
-        line = format_string(line, :undefined) if @last_undefined
         @io.print(line)
         if @options[:source]
           line_comment = " # #{file_colon_line}".indent(source_indent)

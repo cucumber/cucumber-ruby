@@ -18,8 +18,12 @@ module Cucumber
         @cell_class = Cell
       end
 
+      def descend?(visitor)
+        cells_rows.detect{|cells_row| cells_row.descend?(visitor)}
+      end
+
       def matches_lines?(lines)
-        cells_rows.detect { |row| row.matches_lines?(lines) }
+        cells_rows.detect{|row| row.matches_lines?(lines)}
       end
 
       def accept(visitor)
@@ -97,10 +101,6 @@ module Cucumber
         Table.new(raw_with_replaced_args)
       end
 
-      def matches_lines?(lines)
-        cells_rows.detect{|row| row.matches_lines?(lines)}
-      end
-
       def cells_rows
         @rows ||= cell_matrix.map do |cell_row|
           @cells_class.new(self, cell_row)
@@ -145,6 +145,14 @@ module Cucumber
           @table, @cells = table, cells
         end
 
+        def descend?(visitor)
+          visitor.matches_lines?(self)
+        end
+
+        def matches_lines?(lines)
+          lines.index(line)
+        end
+
         def accept(visitor)
           each do |cell|
             visitor.visit_table_cell(cell)
@@ -171,10 +179,6 @@ module Cucumber
 
         def line
           @cells[0].line
-        end
-
-        def matches_lines?(lines)
-          lines.index(line)
         end
 
         private

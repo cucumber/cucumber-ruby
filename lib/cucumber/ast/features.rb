@@ -12,7 +12,7 @@ module Cucumber
 
       def accept(visitor)
         @features.each do |feature|
-          visitor.visit_feature(feature) if feature.visit?(visitor)
+          visitor.visit_feature(feature) if feature.descend?(visitor)
         end
       end
     end

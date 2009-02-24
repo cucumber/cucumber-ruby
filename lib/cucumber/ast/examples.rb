@@ -10,6 +10,10 @@ module Cucumber
         visitor.visit_outline_table(@outline_table)
       end
 
+      def descend?(visitor)
+        visitor.matches_filters?(self) || @outline_table.descend?(visitor)
+      end
+
       def each_example_row(&proc)
         @outline_table.cells_rows[1..-1].each(&proc)
       end
