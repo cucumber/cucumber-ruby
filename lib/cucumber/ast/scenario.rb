@@ -12,8 +12,11 @@ module Cucumber
       end
 
       def visit(visitor)
-        # TODO: visit background if we're the first. Otherwise just execute it. Skip if nil
-        visitor.visit_feature_element(self)
+        visitor.step_mother.execute_scenario(self) do
+          # TODO: visit background if we're the first. Otherwise just execute it. Skip if nil
+          visitor.visit_background(@background) if @background
+          visitor.visit_feature_element(self)
+        end
       end
 
       def accept(visitor)
@@ -21,9 +24,7 @@ module Cucumber
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(text_length))
         # TODO: Find a better way to capture errors in Before and After
-        visitor.step_mother.execute_scenario(self) do
-          visitor.visit_steps(@steps)
-        end
+        visitor.visit_steps(@steps)
 
         visitor.step_mother.scenario_visited(self)
       end

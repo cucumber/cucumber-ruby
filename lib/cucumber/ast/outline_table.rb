@@ -16,8 +16,8 @@ module Cucumber
         nil
       end
 
-      def step_invocations(cells)
-        @scenario_outline.step_invocations(cells)
+      def each_invocation(cells, &block)
+        @scenario_outline.each_invocation(cells, &block)
       end
 
       class ExampleCells < Cells
@@ -28,11 +28,9 @@ module Cucumber
               visitor.visit_table_cell(cell)
             end
           else
-            visitor.step_mother.execute_scenario(self) do
-              step_invocations.each_step do |step_invocation|
-                step_invocation.invoke(visitor.step_mother, visitor.options)
-                @exception ||= step_invocation.exception
-              end
+            @table.each_invocation(self) do |step_invocation|
+              step_invocation.invoke(visitor.step_mother, visitor.options)
+              @exception ||= step_invocation.exception
             end
 
             @cells.each do |cell|
@@ -43,10 +41,6 @@ module Cucumber
         end
 
         private
-
-        def step_invocations
-          @step_invocations ||= @table.step_invocations(self)
-        end
 
         def header?
           index == 0
