@@ -94,7 +94,7 @@ Feature: hi
     Given Pepper
 
 @st3 
-   @st4
+   @st4 @ST5 @#^%&ST6**!
   Scenario: Second}).to_sexp.should ==
           [:feature, "Feature: hi",
             [:comment, "# FC\n  "],
@@ -103,7 +103,7 @@ Feature: hi
               [:tag, "st1"], [:tag, "st2"],
               [:step, 7, "Given", "Pepper"]],
             [:scenario, 11, 'Scenario:', 'Second',
-              [:tag, "st3"], [:tag, "st4"]]]
+              [:tag, "st3"], [:tag, "st4"], [:tag, "ST5"], [:tag, "#^%&ST6**!"]]]
         end
       end
       
