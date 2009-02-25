@@ -1,7 +1,5 @@
 module Cucumber
   module FeatureElement
-    attr_writer :feature
-
     def attach_steps(steps)
       steps.each {|step| step.feature_element = self}
     end
@@ -47,5 +45,13 @@ module Cucumber
       i = @steps.index(step) || -1
       @steps[i-1]
     end
+    
+    def skip_invoke
+      @steps.each{|step_invocation| step_invocation.skip_invoke = true}
+      @feature.next_feature_element(self) do |next_one|
+        next_one.skip_invoke
+      end
+    end
+    
   end
 end

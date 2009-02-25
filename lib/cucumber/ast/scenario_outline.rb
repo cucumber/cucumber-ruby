@@ -12,7 +12,7 @@ module Cucumber
       def initialize(background, comment, tags, line, keyword, name, steps, example_sections)
         @background, @comment, @tags, @line, @keyword, @name = background, comment, tags, line, keyword, name
         attach_steps(steps)
-        @steps ||= StepCollection.new(steps)
+        @steps = StepCollection.new(steps)
 
         @examples_array = example_sections.map do |example_section|
           examples_line       = example_section[0]
@@ -25,12 +25,19 @@ module Cucumber
         end
       end
 
+      def feature=(feature)
+        @feature = feature
+        @background.feature = feature if @background
+      end
+
       def descend?(visitor)
         super || @examples_array.detect { |examples| examples.descend?(visitor) }
       end
 
       def visit(visitor)
-        # TODO: visit background if we're the first. Otherwise just execute it. Skip if nil
+        if @background
+          @background.visit_if_first(visitor, self)
+        end
         visitor.visit_feature_element(self)
       end
 
@@ -45,8 +52,8 @@ module Cucumber
         end
       end
 
-      def each_invocation(cells, &proc)
-        @steps.step_invocations_from_cells(cells).each_step(&proc)
+      def invocations(cells)
+        @steps.step_invocations_from_cells(cells)
       end
 
       def each_example_row(&proc)

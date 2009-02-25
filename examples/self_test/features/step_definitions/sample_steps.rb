@@ -25,18 +25,16 @@ Given /^call step "(.*)"$/ do |step|
 end
 
 Given /^'(.+)' cukes$/ do |cukes|
-  puts "MY BACKGROUND CUKES: #{self}"
   @cukes = cukes
 end
 
 Then /^I should have '(.+)' cukes$/ do |cukes|
-  puts "MY THEN: #{self}"
   @cukes.should == cukes
 end
 
 Given /^'(.+)' global cukes$/ do |cukes|
   $scenario_runs ||= 0
-  flunker if $scenario_runs > 0
+  flunker if $scenario_runs > 1
   $cukes = cukes
   $scenario_runs += 1
 end

@@ -29,6 +29,12 @@ module Cucumber
           @feature_elements.detect{ |feature_element| visitor.matches_filters?(feature_element) }
       end
 
+      def next_feature_element(feature_element, &proc)
+        index = @feature_elements.index(feature_element)
+        next_one = @feature_elements[index+1]
+        proc.call(next_one) if next_one
+      end
+
       def matches_tags?(tag_names)
         @tags.among?(tag_names)
       end
