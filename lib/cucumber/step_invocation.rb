@@ -1,6 +1,6 @@
 module Cucumber
   class StepInvocation
-    attr_writer :step_collection
+    attr_writer :step_collection, :background
     attr_reader :name, :matched_cells, :exception, :status
 
     def initialize(step, name, multiline_arg, matched_cells)
@@ -10,13 +10,14 @@ module Cucumber
 
     def accept(visitor)
       invoke(visitor.step_mother, visitor.options)
-      @step.visit_step_details(visitor, @step_match, @multiline_arg, status, @exception)
+      visit = !@background || @exception
+      @step.visit_step_details(visitor, @step_match, @multiline_arg, status, @exception) if visit
     end
 
     def invoke(step_mother, options)
       find_step_match!(step_mother)
-      unless @invoked || options[:dry_run] || exception || previous.exception
-        @invoked = true
+      unless @skip_invoke || options[:dry_run] || exception || previous.exception
+        @skip_invoke = true
         begin
           @step.invoke(@step_match, step_mother.current_world)
           status!(:passed)

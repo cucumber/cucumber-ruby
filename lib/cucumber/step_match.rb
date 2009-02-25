@@ -29,7 +29,7 @@ module Cucumber
     end
 
     def file_colon_line
-      raise "FFF" unless @step.file_colon_line
+      raise "No file:line for #{@step}" unless @step.file_colon_line
       @step.file_colon_line
     end
   end

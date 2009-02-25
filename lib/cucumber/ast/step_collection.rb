@@ -2,6 +2,8 @@ module Cucumber
   module Ast
     # Holds an Array of Step or StepDefinition
     class StepCollection
+      include Enumerable
+      
       def initialize(steps)
         @steps = steps
         @steps.each{|step| step.step_collection = self}
@@ -13,11 +15,15 @@ module Cucumber
         end
       end
 
+      def step_invocations
+        StepCollection.new(@steps.map{|step| step.step_invocation})
+      end
+
       def step_invocations_from_cells(cells)
         StepCollection.new(@steps.map{|step| step.step_invocation_from_cells(cells)})
       end
 
-      def each_step(&proc)
+      def each(&proc)
         @steps.each(&proc)
       end
 
