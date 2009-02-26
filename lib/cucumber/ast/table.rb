@@ -94,7 +94,7 @@ module Cucumber
           row.map do |cell|
             cell_with_replaced_args = cell
             arguments.each do |name, value|
-              cell_with_replaced_args = cell_with_replaced_args.gsub(name, value)
+              cell_with_replaced_args = value ? cell_with_replaced_args.gsub(name, value) : nil
             end
             cell_with_replaced_args
           end
