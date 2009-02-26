@@ -198,10 +198,12 @@
 "ja":
   name: Japanese
   native: 日本語
-  encoding: Shift_JIS
+  encoding: UTF-8
   feature: フィーチャ
+  background: 背景
   scenario: シナリオ
-  more_examples: 他のサンプル
+  scenario_outline: シナリオテンプレート
+  examples: 例|サンプル
   given: 前提
   when: もし
   then: ならば
