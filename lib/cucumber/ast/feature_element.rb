@@ -12,16 +12,12 @@ module Cucumber
       @keyword.jlength + @name.jlength
     end
 
-    def descend?(visitor)
-      visitor.matches_filters?(self)
-    end
-
     def matches_lines?(lines)
       lines.index(@line) || @steps.matches_lines?(lines) || @tags.matches_lines?(lines)
     end
 
-    def matches_tags?(tag_names)
-      @tags.among?(tag_names)
+    def has_tags?(tags)
+      @tags.has_tags?(tags) || @feature.has_tags?(tags)
     end
 
     def matches_scenario_names?(scenario_names)

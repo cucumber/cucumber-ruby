@@ -20,31 +20,22 @@ module Cucumber
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@name)
         @feature_elements.each do |feature_element|
-          feature_element.visit(visitor) if visitor.matches_filters?(self) || feature_element.descend?(visitor)
+          feature_element.visit(visitor) if feature_element.descend?(visitor)
         end
       end
 
       def descend?(visitor)
-        visitor.matches_filters?(self) ||
-          @feature_elements.detect{ |feature_element| visitor.matches_filters?(feature_element) }
+        @feature_elements.detect{ |feature_element| feature_element.descend?(visitor) }
+      end
+
+      def has_tags?(tags)
+        @tags.has_tags?(tags)
       end
 
       def next_feature_element(feature_element, &proc)
         index = @feature_elements.index(feature_element)
         next_one = @feature_elements[index+1]
         proc.call(next_one) if next_one
-      end
-
-      def matches_tags?(tag_names)
-        @tags.among?(tag_names)
-      end
-
-      def matches_scenario_names?(scenario_names)
-        false
-      end
-
-      def matches_lines?(lines)
-        false
       end
 
       def backtrace_line(step_name, line)

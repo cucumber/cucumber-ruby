@@ -31,7 +31,13 @@ module Cucumber
       end
 
       def descend?(visitor)
-        super || @examples_array.detect { |examples| examples.descend?(visitor) }
+        @examples_array.detect { |examples| examples.descend?(visitor) }
+      end
+
+      def matches_tags_and_name?(visitor)
+        visitor.included_by_tags?(self) &&
+        !visitor.excluded_by_tags?(self) &&
+        visitor.matches_scenario_names?(self)
       end
 
       def visit(visitor)
@@ -48,7 +54,7 @@ module Cucumber
         visitor.visit_steps(@steps)
 
         @examples_array.each do |examples|
-          visitor.visit_examples(examples) if visitor.matches_filters?(self) || examples.descend?(visitor)
+          visitor.visit_examples(examples) if examples.descend?(visitor)
         end
       end
 

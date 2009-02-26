@@ -76,7 +76,7 @@ module Cucumber
             "TAGS must be comma-separated without spaces. Prefix tags with ~ to",
             "exclude features or scenarios having that tag. tags can be specified",
             "with or without the @ prefix.") do |v|
-            @options[:tag_names] = v.split(",")
+            @options[:include_tags], @options[:exclude_tags] = *parse_tags(v)
           end
           opts.on("-s SCENARIO", "--scenario SCENARIO", 
             "Only execute the scenario with the given name. If this option",
@@ -172,7 +172,18 @@ module Cucumber
           Cucumber.load_language(@options[:lang])
         end
       end
-    
+
+      def parse_tags(tag_string)
+        tag_names = tag_string.split(",")
+        excludes, includes = tag_names.partition{|tag| tag =~ /^~/}
+        excludes = excludes.map{|tag| tag[1..-1]}
+
+        # Strip @
+        includes = includes.map{|tag| tag =~ /^@(.*)/ ? $1 : tag}
+        excludes = excludes.map{|tag| tag =~ /^@(.*)/ ? $1 : tag}
+        [includes, excludes]
+      end
+
       def build_formatter_broadcaster(step_mother)
         return Formatter::Pretty.new(step_mother, nil, @options) if @options[:autoformat]
         formatters = @options[:formats].map do |format, out|
@@ -316,7 +327,8 @@ Defined profiles in cucumber.yml:
           :dry_run        => false,
           :formats        => {},
           :excludes       => [],
-          :tag_names      => [],
+          :include_tags   => [],
+          :exclude_tags   => [],
           :scenario_names => []
         }
       end

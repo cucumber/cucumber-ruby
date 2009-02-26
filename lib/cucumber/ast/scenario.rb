@@ -21,6 +21,13 @@ module Cucumber
         @background.feature = feature if @background
       end
 
+      def descend?(visitor)
+        visitor.matches_lines?(self) &&
+        visitor.included_by_tags?(self) &&
+        !visitor.excluded_by_tags?(self) &&
+        visitor.matches_scenario_names?(self)
+      end
+
       def visit(visitor)
         visitor.step_mother.execute_scenario(self) do
           # TODO: visit background if we're the first. Otherwise just execute it. Skip if nil
