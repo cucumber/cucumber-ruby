@@ -342,3 +342,17 @@
   then: 그러면
   and: 그리고
   but: 하지만
+"zh-TW":
+  name: Chinese traditional
+  native: 繁體中文
+  encoding: UTF-8
+  feature: 功能
+  background: 背景
+  scenario: 劇本
+  scenario_outline: 劇本概要
+  examples: 例如
+  given: 如果
+  when: 當
+  then: 然後
+  and: 而且
+  but: 但是
