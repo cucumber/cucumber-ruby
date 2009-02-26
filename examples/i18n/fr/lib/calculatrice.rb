@@ -1,4 +1,4 @@
-class Calulatrice
+class Calculatrice
   def push(n)
     @args ||= []
     @args << n
