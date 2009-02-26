@@ -50,7 +50,7 @@ module Cucumber
             ])
         )
         f.file = 'features/pretty_printing.feature'
-        f.features = Features.new(Filter.new({:tag_names => []}))
+        f.features = Features.new
         f
       end
     end

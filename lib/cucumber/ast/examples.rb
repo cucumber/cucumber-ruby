@@ -11,7 +11,12 @@ module Cucumber
       end
 
       def descend?(visitor)
-        visitor.matches_filters?(self) || @outline_table.descend?(visitor)
+#        visitor.matches_scenario_names?(self) && 
+        @outline_table.descend?(visitor)
+      end
+
+      def matches_scenario_names?(scenario_names)
+        scenario_names.detect{|name| name == @name}
       end
 
       def each_example_row(&proc)

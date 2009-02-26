@@ -314,6 +314,29 @@ Feature: Cucumber command line
 
       """
 
+  Scenario: Run with a negative tag
+    When I run cucumber -q features/sample.feature --dry-run -t ~four
+    Then it should pass with
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+        @three
+        Scenario: Passing
+          Given passing
+            | a | b |
+            | c | d |
+
+      2 scenarios
+      1 skipped step
+      1 undefined step
+
+      """
+
   Scenario: Reformat files with --autoformat
     When I run cucumber --autoformat tmp/formatted features
     Then examples/self_test/tmp/formatted/features/sample.feature should contain

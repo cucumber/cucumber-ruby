@@ -14,18 +14,16 @@ module Cucumber
         @current_feature_lines = lines
       end
 
-      def matches_filters?(node)
-        matches_lines?(node) &&
-        matches_tags?(node) &&
-        matches_scenario_names?(node)
-      end
-
       def matches_lines?(node)
         @current_feature_lines.empty? || node.matches_lines?(@current_feature_lines)
       end
 
-      def matches_tags?(node)
-        options[:tag_names].empty? || node.matches_tags?(options[:tag_names])
+      def included_by_tags?(node)
+        options[:include_tags].empty? || node.has_tags?(options[:include_tags])
+      end
+
+      def excluded_by_tags?(node)
+        options[:exclude_tags].any? && node.has_tags?(options[:exclude_tags])
       end
 
       def matches_scenario_names?(node)

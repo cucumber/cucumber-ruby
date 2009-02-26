@@ -30,6 +30,11 @@ module Cucumber
       it "should not be among other tags with irrelevent tag" do
         @tags.should_not be_among(%w{bacon})
       end
+
+      it "should not be among other single tags" do
+        @tags = Tags.new(-1, %w{four})
+        @tags.should_not be_among(%w{~four})
+      end
     end
   end
 end

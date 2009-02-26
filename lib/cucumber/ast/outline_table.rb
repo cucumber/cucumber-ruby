@@ -9,11 +9,20 @@ module Cucumber
 
       def accept(visitor)
         cells_rows.each_with_index do |row, n|
-          if n == 0 || visitor.matches_filters?(@scenario_outline) || visitor.matches_filters?(row)
+          if n == 0 || matches?(visitor, row)
             visitor.visit_table_row(row)
           end
         end
         nil
+      end
+
+      def descend?(visitor)
+        cells_rows.detect{|cells_row| cells_row.descend?(visitor)}
+      end
+      
+      def matches?(visitor, cells)
+        @scenario_outline.matches_tags_and_name?(visitor) &&
+        (visitor.matches_lines?(cells) || visitor.matches_lines?(@scenario_outline))
       end
 
       def invocations(cells)
@@ -21,6 +30,10 @@ module Cucumber
       end
 
       class ExampleCells < Cells
+        def descend?(visitor)
+          @table.matches?(visitor, self)
+        end
+
         def accept(visitor)
           if header?
             @cells.each do |cell|
