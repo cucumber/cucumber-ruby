@@ -298,7 +298,10 @@
   native: русский язык
   encoding: UTF-8
   feature: Функционал
+  background: Предыстория
   scenario: Сценарий
+  scenario_outline: Структура сценария
+  examples: Примеры
   given: Сначала
   when: Если
   then: То
