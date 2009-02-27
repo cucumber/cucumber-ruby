@@ -17,14 +17,27 @@ module Cli
 
     it "should require files in support paths first" do
       File.stub!(:directory?).and_return(true)
-      Dir.stub!(:[]).and_return(["/features/step_definitions/foo.rb","/features/support/env.rb"])
+      Dir.stub!(:[]).and_return(["/features/step_definitions/foo.rb","/features/support/bar.rb"])
+      
+      config = Configuration.new(StringIO.new)
+      config.parse!(%w{--require /features})
+
+      config.files_to_require.should == [
+        "/features/support/bar.rb",
+        "/features/step_definitions/foo.rb"
+      ]
+    end
+
+    it "should require env.rb files first" do
+      File.stub!(:directory?).and_return(true)
+      Dir.stub!(:[]).and_return(["/features/support/a_file.rb","/features/support/env.rb"])
       
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--require /features})
 
       config.files_to_require.should == [
         "/features/support/env.rb",
-        "/features/step_definitions/foo.rb"
+        "/features/support/a_file.rb"
       ]
     end
     

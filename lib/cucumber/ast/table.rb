@@ -76,7 +76,9 @@ module Cucumber
       end
 
       def to_hash(cells) #:nodoc:
-        hash = {}
+        hash = Hash.new do |hash, key|
+          hash[key.to_s] if key.is_a?(Symbol)
+        end
         @raw[0].each_with_index do |key, n|
           hash[key] = cells.value(n)
         end
@@ -92,7 +94,7 @@ module Cucumber
           row.map do |cell|
             cell_with_replaced_args = cell
             arguments.each do |name, value|
-              cell_with_replaced_args = cell_with_replaced_args.gsub(name, value)
+              cell_with_replaced_args = value ? cell_with_replaced_args.gsub(name, value) : nil
             end
             cell_with_replaced_args
           end

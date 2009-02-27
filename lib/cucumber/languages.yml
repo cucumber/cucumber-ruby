@@ -165,7 +165,7 @@
   scenario: Scénario
   scenario_outline: Plan du Scénario
   examples: Exemples
-  given: Etant donné
+  given: Soit
   when: Lorsque
   then: Alors
   and: Et
@@ -198,10 +198,12 @@
 "ja":
   name: Japanese
   native: 日本語
-  encoding: Shift_JIS
+  encoding: UTF-8
   feature: フィーチャ
+  background: 背景
   scenario: シナリオ
-  more_examples: 他のサンプル
+  scenario_outline: シナリオテンプレート|テンプレ|シナリオテンプレ
+  examples: 例|サンプル
   given: 前提
   when: もし
   then: ならば
@@ -296,7 +298,10 @@
   native: русский язык
   encoding: UTF-8
   feature: Функционал
+  background: Предыстория
   scenario: Сценарий
+  scenario_outline: Структура сценария
+  examples: Примеры
   given: Сначала
   when: Если
   then: То
@@ -323,7 +328,7 @@
   feature: 功能
   background: 背景
   scenario: 场景
-  scenario_outline: 场景简述
+  scenario_outline: 场景大纲
   examples: 例子
   given: 假如
   when: 当
@@ -336,8 +341,8 @@
   encoding: UTF-8
   feature: 功能
   background: 背景
-  scenario: 場景
-  scenario_outline: 場景簡述
+  scenario: 場景|劇本
+  scenario_outline: 場景大綱
   examples: 例子
   given: 假設
   when: 當

@@ -219,7 +219,9 @@ module Cucumber
           path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
           File.directory?(path) ? Dir["#{path}/**/*.rb"] : path
         end.flatten.uniq
-        files.sort { |a,b| (b =~ %r{/support/} || -1) <=>  (a =~ %r{/support/} || -1) }.reject{|f| f =~ /^http/}
+        sorted_files = files.sort { |a,b| (b =~ %r{/support/} || -1) <=>  (a =~ %r{/support/} || -1) }.reject{|f| f =~ /^http/}
+        env_files = sorted_files.select {|f| f =~ %r{/support/env.rb} }
+        env_files + sorted_files.reject {|f| f =~ %r{/support/env.rb} }
       end
     
       def feature_files

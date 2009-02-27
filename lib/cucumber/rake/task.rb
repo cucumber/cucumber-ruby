@@ -2,21 +2,54 @@ require 'cucumber/platform'
 
 module Cucumber
   module Rake
-    # Defines a task for running features.
+    # Defines a Rake task for running features.
+    #
+    # The simplest use of it goes something like:
+    #
+    #   Cucumber::Rake::Task.new
+    #
+    # This will create a task named 'features' described as 'Run Features with 
+    # Cucumber'. It will use steps from 'features/**/*.rb' and features in 'features/**/*.feature'.
+    #
+    # To further configure the task, you can pass a block:
+    #
+    #   Cucumber::Rake::Task.new do |t|
+    #     t.libs << 'lib'
+    #     t.cucumber_opts = "--format progress"
+    #   end
+    #
+    # This task can also be configured to be run with RCov:
+    #
+    #   Cucumber::Rake::Task.new do |t|
+    #     t.rcov = true
+    #   end
+    # 
+    # See the attributes for additional configuration possibilities.
     class Task
-      LIB    = File.expand_path(File.dirname(__FILE__) + '/../..')
+      LIB    = File.expand_path(File.dirname(__FILE__) + '/../..') # :nodoc:
 
+      # Directories to add to the load path
       attr_accessor :libs
+      # Name of the cucumber binary to use for running features. Defaults to Cucumber::BINARY
       attr_accessor :binary
+      # Array of paths to specific steps to use
       attr_accessor :step_list
+      # File pattern for finding step definitions. Defaults to 
+      # 'features/**/*.rb'. Can be overriden by the SPEC environment variable.
       attr_accessor :step_pattern
+      # Array of paths to specific features to run. 
       attr_accessor :feature_list
+      # File pattern for finding features to run. Defaults to 
+      # 'features/**/*.feature'. Can be overriden by the FEATURE environment variable.
       attr_accessor :feature_pattern
+      # Extra options to pass to the cucumber binary. Can be overridden by the CUCUMBER_OPTS environment variable.
       attr_accessor :cucumber_opts
+      # Run cucumber with RCov?
       attr_accessor :rcov
+      # Extra options to pass to rcov
       attr_accessor :rcov_opts
 
-      # Define a task
+      # Define a Rake
       def initialize(task_name = "features", desc = "Run Features with Cucumber")
         @task_name, @desc = task_name, desc
         @libs = []
@@ -33,14 +66,14 @@ module Cucumber
         define_task
       end
 
-      def define_task
+      def define_task # :nodoc:
         desc @desc
         task @task_name do
           ruby(arguments_for_ruby_execution.join(" ")) # ruby(*args) is broken on Windows
         end
       end
 
-      def arguments_for_ruby_execution(task_args = nil)
+      def arguments_for_ruby_execution(task_args = nil) # :nodoc:
         lib_args     = ['"%s"' % libs.join(File::PATH_SEPARATOR)]
         cucumber_bin = ['"%s"' % binary]
         cuc_opts     = [(ENV['CUCUMBER_OPTS'] || cucumber_opts)]
@@ -89,7 +122,7 @@ module Cucumber
         super(task_name, desc)
       end
 
-      def define_task
+      def define_task # :nodoc:
         desc @desc
         task @task_name, :feature_name do |t, args|
           ruby(arguments_for_ruby_execution(args).join(" ")) # ruby(*args) is broken on Windows
