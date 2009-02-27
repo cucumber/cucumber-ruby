@@ -116,6 +116,7 @@ pure Ruby users have been enjoying for a while.
 * "GivenScenario" is gone. Instead you can call Steps from Steps, or wait for "Background (#153)"
 * "More Examples" is gone. "Scenario" + "More Examples" is no longer supported. Use "Scenario Outline" + "Examples" instead.
 * Pure Ruby features are no longer supported.
+* Remove --color option in autotest. Can be added manually in cucumber.yml (#215 Jean-Michel Garnier)
 
 == (0.16.4 aslakhellesoy-webrat gem on GitHub)
 
