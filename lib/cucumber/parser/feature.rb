@@ -45,7 +45,7 @@ module Cucumber
           elements[5]
         end
 
-        def background
+        def bg
           elements[6]
         end
 
@@ -57,11 +57,8 @@ module Cucumber
 
       module Feature2
         def build
-          if background.respond_to?(:build)
-            Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build, background.build)
-          else
-            Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build)
-          end
+          background = bg.respond_to?(:build) ? bg.build : nil
+          Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build(background))
         end
       end
 
@@ -548,8 +545,8 @@ module Cucumber
       end
 
       module FeatureElements0
-        def build
-          elements.map{|s| s.build}
+        def build(background)
+          elements.map{|s| s.build(background)}
         end
       end
 
@@ -621,8 +618,9 @@ module Cucumber
       end
 
       module Scenario1
-        def build
+        def build(background)
           Ast::Scenario.new(
+            background,
             comment.build, 
             tags.build,
             scenario_keyword.line,
@@ -750,8 +748,9 @@ module Cucumber
       end
 
       module ScenarioOutline1
-        def build
+        def build(background)
           Ast::ScenarioOutline.new(
+            background,
             comment.build, 
             tags.build,
             scenario_outline_keyword.line, 
