@@ -1,13 +1,15 @@
 Fonctionnalité: Addition
-  Afin de financer mon bonus avec l'argent des pigeons
-  En tant que trader
-  Je souhaite pouvoir additionner 2 chiffres
+  Afin de gagner du temps lors du calcul de la facture
+  En tant que commerçant
+  Je souhaite pouvoir faire une additionn
 
-  Plan du Scénario: Addition de produits dérivés
-    Etant donné que je tape <a>
-    Et que je tape <b>
-    Lorsque je tape additionner
-    Alors le résultat doit être <somme>
+  Plan du Scénario: Addition de deux nombres
+    Soit une calculatrice
+    Et que j'entre <a> pour le premier nombre
+    Et que je tape sur la touche "+"
+    Et que j'entre <b> pour le second nombre
+    Lorsque je tape sur la touche "="
+    Alors le résultat affiché doit être <somme>
 
   Exemples:
     | a | b | somme |

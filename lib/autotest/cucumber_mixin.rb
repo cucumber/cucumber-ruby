@@ -115,7 +115,8 @@ module Autotest::CucumberMixin
     else
       args = %w{--format} << (features_to_run == :all ? "progress" : "pretty")
     end
-    args += %w{--color --format rerun --out} << dirty_features_filename
+    # No --color option as some IDEs (Netbeans) don't output them very well ([31m1 failed step[0m)
+    args += %w{--format rerun --out} << dirty_features_filename
     args << (features_to_run == :all ? "features" : features_to_run)
     args = args.join(' ')
 

@@ -4,24 +4,22 @@ $:.unshift(File.dirname(__FILE__) + '/../../lib') # This line is not needed in y
 require 'cucumber/formatters/unicode'
 require 'calculatrice'
 
-Before do
-  @calc = Calulatrice.new
+Soit /^une calculatrice$/ do
+  @calc = Calculatrice.new
 end
 
-After do
-end
-
-# Etant donné que je tape ...
-Given /que je tape (\d+)/ do |n|
+Et /^que j'entre (\d+) pour le (.*) nombre/ do |n, x|
   @calc.push n.to_i
 end
 
-# Lorsque je tape additionner
-When 'je tape additionner' do
-  @result = @calc.additionner
+Lorsque /^je tape sur la touche "="$/ do
+  @expected_result = @calc.additionner
 end
 
-# Alors le résultat doit être ...
-Then /le résultat doit être (\d*)/ do |result|
-  @result.should == result.to_i
+Alors /le résultat affiché doit être (\d*)/ do |result|
+  result.to_i.should == @expected_result
+end
+
+Soit /^que je tape sur la touche "\+"$/ do
+  # noop
 end
