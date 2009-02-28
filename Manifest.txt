@@ -226,7 +226,6 @@ lib/cucumber/parser/table.tt
 lib/cucumber/parser/treetop_ext.rb
 lib/cucumber/platform.rb
 lib/cucumber/rails/rspec.rb
-lib/cucumber/rails/testunit.rb
 lib/cucumber/rails/world.rb
 lib/cucumber/rake/task.rb
 lib/cucumber/step_definition.rb
