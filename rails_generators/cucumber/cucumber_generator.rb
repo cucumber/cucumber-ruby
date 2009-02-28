@@ -10,7 +10,7 @@ class CucumberGenerator < Rails::Generator::Base
       m.file      'webrat_steps.rb', 'features/step_definitions/webrat_steps.rb'
 
       m.directory 'features/support'
-      m.file      'env.rb',           'features/support/env.rb'
+      m.template  'env.rb',           'features/support/env.rb'
       m.file      'paths.rb',         'features/support/paths.rb'
 
       m.directory 'lib/tasks'
@@ -22,6 +22,15 @@ class CucumberGenerator < Rails::Generator::Base
     end
   end
 
+
+  def framework
+    # TODO is there a better check for this?
+    if File.directory?(File.join(Rails.root, 'spec'))
+      :rspec
+    else
+      :testunit
+    end
+  end
 protected
 
   def banner
