@@ -10,6 +10,8 @@ require 'webrat'
 Webrat.configure do |config|
   config.mode = :rails
 end
+<% if framework == :rspec -%>
 
-require 'cucumber/rails/<%= framework %>'
+require 'cucumber/rails/rspec'
 require 'webrat/core/matchers'
+<% end -%>
