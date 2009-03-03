@@ -295,18 +295,18 @@
   but: Dar
 "ru":
   name: Russian
-  native: русский язык
+  native: русский
   encoding: UTF-8
   feature: Функционал
   background: Предыстория
   scenario: Сценарий
   scenario_outline: Структура сценария
-  examples: Примеры
-  given: Сначала
+  examples: Значения
+  given: Допустим
   when: Если
   then: То
-  and: И
-  but: Но
+  and: И|К тому же
+  but: Но|А
 "se":
   name: Swedish
   native: Svenska
