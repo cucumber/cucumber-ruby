@@ -342,7 +342,7 @@
   feature: 功能
   background: 背景
   scenario: 場景|劇本
-  scenario_outline: 場景大綱
+  scenario_outline: 場景大綱|劇本大綱
   examples: 例子
   given: 假設
   when: 當
