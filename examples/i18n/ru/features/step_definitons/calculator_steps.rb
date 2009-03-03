@@ -4,14 +4,20 @@ $:.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'cucumber/formatters/unicode'
 require 'calculator'
 
-Допустим /ввожу число (\d+)/ do |n|
-  @calc.push n.to_i
+Допустим /ввожу число (\d+)/ do |число|
+  calc.push число.to_i
 end
 
-Если /нажимаю "(.*)"/ do |op|
-  @calc.send op
+Если /нажимаю "(.*)"/ do |операция|
+  calc.send операция
 end
 
-То /должен увидеть на экране число (\d+)/ do |result|
-  @calc.result.should == result.to_f
+То /результатом должно быть число (\d+)/ do |результат|
+  calc.result.should == результат.to_f
+end
+
+Допустим /я сложил (\d+) и (\d+)/ do |слагаемое1, слагаемое2|
+  Допустим %{я ввожу число #{слагаемое1}}
+  Допустим %{затем ввожу число #{слагаемое2}}
+  Допустим %{я нажимаю "+"}
 end
