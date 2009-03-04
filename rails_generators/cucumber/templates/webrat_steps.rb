@@ -91,25 +91,25 @@ When /^I attach the file at "(.*)" to "(.*)" $/ do |path, field|
 end
 
 Then /^I should see "(.*)"$/ do |text|
-  <% if framework == :rspec -%>
+<% if framework == :rspec -%>
   response.should contain(text)
-  <% else -%>
+<% else -%>
   assert_contain text
-  <% end -%>
+<% end -%>
 end
 
 Then /^I should not see "(.*)"$/ do |text|
-  <% if framework == :rspec -%>
+<% if framework == :rspec -%>
   response.should_not contain(text)
-  <% else -%>
+<% else -%>
   assert_not_contain text
-  <% end -%>
+<% end -%>
 end
 
 Then /^the "(.*)" checkbox should be checked$/ do |label|
-  <% if framework == :rspec -%>
+<% if framework == :rspec -%>
   field_labeled(label).should be_checked
-  <% else -%>
+<% else -%>
   assert field_labeled(label).checked?
-  <% end -%>
+<% end -%>
 end
