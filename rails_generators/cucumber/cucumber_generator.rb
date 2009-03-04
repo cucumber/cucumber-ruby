@@ -4,6 +4,9 @@ require 'rbconfig'
 class CucumberGenerator < Rails::Generator::Base
   DEFAULT_SHEBANG = File.join(Config::CONFIG['bindir'],
                               Config::CONFIG['ruby_install_name'])
+
+  attr_accessor :framework
+
   def manifest
     record do |m|
       m.directory 'features/step_definitions'
@@ -22,19 +25,25 @@ class CucumberGenerator < Rails::Generator::Base
     end
   end
 
-
   def framework
-    # TODO is there a better check for this?
-    if File.directory?(File.join(Rails.root, 'spec'))
-      :rspec
-    else
-      :testunit
-    end
+    options[:framework] || :rspec
   end
+
 protected
 
   def banner
     "Usage: #{$0} cucumber"
+  end
+
+  def add_options!(opt)
+    opt.separator ''
+    opt.on('--rspec', 'Setup cucumber for use with RSpec (default)') do |value|
+      options[:framework] = :rspec
+    end
+
+    opt.on('--testunit', 'Setup cucumber for use with test/unit') do |value|
+      options[:framework] = :testunit
+    end
   end
 
 end
