@@ -79,6 +79,7 @@ pure Ruby users have been enjoying for a while.
 ** Full jar and simple jar
 
 == Bugfixes
+* Add support for using << in formatters to ensure the html formatter works (#210 Joseph Wilk)
 * Depend on polyglot version (0.2.4) to avoid masking require errors. (Aslak Hellesøy).
 * -n option does not suppress the line info for a Scenario Outline (#175 Aslak Hellesøy)
 * Errors with rspec-rails matchers in cucumber 0.1.99 (#173 David Chelimsky)
