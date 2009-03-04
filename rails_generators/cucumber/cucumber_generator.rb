@@ -37,6 +37,7 @@ protected
 
   def add_options!(opt)
     opt.separator ''
+    opt.separator 'Options:'
     opt.on('--rspec', 'Setup cucumber for use with RSpec (default)') do |value|
       options[:framework] = :rspec
     end
