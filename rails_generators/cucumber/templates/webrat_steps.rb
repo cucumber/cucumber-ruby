@@ -94,7 +94,7 @@ Then /^I should see "(.*)"$/ do |text|
   <% if framework == :rspec -%>
   response.should contain(text)
   <% else -%>
-  assert_match /#{text}/m, @response.body
+  assert_contain text
   <% end -%>
 end
 
@@ -102,7 +102,7 @@ Then /^I should not see "(.*)"$/ do |text|
   <% if framework == :rspec -%>
   response.should_not contain(text)
   <% else -%>
-  assert_no_match /#{text}/m, @response.body
+  assert_not_contain text
   <% end -%>
 end
 
