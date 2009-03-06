@@ -43,6 +43,17 @@ module Cucumber
         @table.hashes.first[:one].should == '4444'
       end
 
+      it "should allow map'ing columns" do
+        @table.map_column('one') { |v| v.to_i }
+        @table.hashes.first['one'].should == 4444
+      end
+
+      it "should fail silently if a map'd column does not exist" do
+        lambda {
+          @table.map_column('two') { |v| v.to_i }
+        }.should_not raise_error
+      end
+
       describe "replacing arguments" do
 
         before(:each) do
