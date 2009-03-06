@@ -155,6 +155,11 @@ module Cucumber
         @io.flush
       end
 
+      def announce(announcement)
+        @io.puts(announcement)
+        @io.flush
+      end
+
       private
 
       def print_summary(features)

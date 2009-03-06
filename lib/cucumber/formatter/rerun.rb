@@ -30,6 +30,10 @@ module Cucumber
       def visit_step_name(keyword, step_name, status, step_definition, source_indent)
         @rerun = true if [:failed].index(status)
       end
+
+      def announce(announcement)
+      end
+
     end
   end
 end
