@@ -38,6 +38,12 @@ module Cucumber
       def visit_table_cell_value(value, width, status)
         progress(status) if (status != :thead) && !@multiline_arg
       end
+
+      def announce(announcement)
+        @io.puts(announcement)
+        @io.flush
+      end
+
       
       private
 

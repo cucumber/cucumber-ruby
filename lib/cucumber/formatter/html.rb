@@ -113,6 +113,10 @@ module Cucumber
         @builder.td(value, :class => status)
       end
 
+      def announce(announcement)
+        @builder.pre(announcement, :class => 'announcement')
+      end
+
       private
 
       def inline_css
