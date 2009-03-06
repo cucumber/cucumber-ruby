@@ -75,6 +75,14 @@ module Cucumber
         [:table, *cells_rows.map{|row| row.to_sexp}]
       end
 
+      def map_column(name, &block)
+        return unless index = @raw[0].index(name)
+
+        rows.each do |row|
+          row[index] = block.call(row[index])
+        end
+      end
+
       def to_hash(cells) #:nodoc:
         hash = Hash.new do |hash, key|
           hash[key.to_s] if key.is_a?(Symbol)
