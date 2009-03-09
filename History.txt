@@ -79,6 +79,7 @@ pure Ruby users have been enjoying for a while.
 ** Full jar and simple jar
 
 == Bugfixes
+* Add support for using << in formatters to ensure the html formatter works (#210 Joseph Wilk)
 * Depend on polyglot version (0.2.4) to avoid masking require errors. (Aslak Hellesøy).
 * -n option does not suppress the line info for a Scenario Outline (#175 Aslak Hellesøy)
 * Errors with rspec-rails matchers in cucumber 0.1.99 (#173 David Chelimsky)
@@ -92,6 +93,7 @@ pure Ruby users have been enjoying for a while.
 * Pending steps in > steps called from steps (#65 Aslak Hellesøy)
 
 === New features
+* Rails generators supports testunit and rspec option, defaulting to rspec (#217 Josh Nichols)
 * Sinatra Example (#204 Rob Holland)
 * Keywords can be aliased in languages.yml. See English for an example (examples: Examples|Scenarios)
 * Adding support for Background (#153 Joseph Wilk) 

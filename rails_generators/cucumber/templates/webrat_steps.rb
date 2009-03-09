@@ -35,10 +35,10 @@ end
 
 # Use this step when using multiple datetime_select helpers on a page or 
 # you want to specify which datetime to select. Given the following view:
-#   <%= f.label :preferred %><br />
-#   <%= f.datetime_select :preferred %>
-#   <%= f.label :alternative %><br />
-#   <%= f.datetime_select :alternative %>
+#   <%%= f.label :preferred %><br />
+#   <%%= f.datetime_select :preferred %>
+#   <%%= f.label :alternative %><br />
+#   <%%= f.datetime_select :alternative %>
 # The following steps would fill out the form:
 # When I select "November 23, 2004 11:20" as the "Preferred" data and time
 # And I select "November 25, 2004 10:30" as the "Alternative" data and time
@@ -86,18 +86,30 @@ When /^I choose "(.*)"$/ do |field|
   choose(field)
 end
 
-When /^I attach the file at "(.*)" to "(.*)" $/ do |path, field|
+When /^I attach the file at "(.*)" to "(.*)"$/ do |path, field|
   attach_file(field, path)
 end
 
 Then /^I should see "(.*)"$/ do |text|
+<% if framework == :rspec -%>
   response.should contain(text)
+<% else -%>
+  assert_contain text
+<% end -%>
 end
 
 Then /^I should not see "(.*)"$/ do |text|
+<% if framework == :rspec -%>
   response.should_not contain(text)
+<% else -%>
+  assert_not_contain text
+<% end -%>
 end
 
 Then /^the "(.*)" checkbox should be checked$/ do |label|
+<% if framework == :rspec -%>
   field_labeled(label).should be_checked
+<% else -%>
+  assert field_labeled(label).checked?
+<% end -%>
 end
