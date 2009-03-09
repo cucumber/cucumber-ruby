@@ -295,18 +295,18 @@
   but: Dar
 "ru":
   name: Russian
-  native: русский язык
+  native: русский
   encoding: UTF-8
   feature: Функционал
   background: Предыстория
   scenario: Сценарий
   scenario_outline: Структура сценария
-  examples: Примеры
-  given: Сначала
+  examples: Значения
+  given: Допустим
   when: Если
   then: То
-  and: И
-  but: Но
+  and: И|К тому же
+  but: Но|А
 "se":
   name: Swedish
   native: Svenska
@@ -323,14 +323,31 @@
   but: Men
 "zh-CN":
   name: Chinese simplified
-  native: 中文
+  native: 简体中文
   encoding: UTF-8
   feature: 功能
+  background: 背景
   scenario: 场景
+  scenario_outline: 场景大纲
+  examples: 例子
   given: 假如
   when: 当
   then: 那么
   and: 而且
+  but: 但是
+"zh-TW":
+  name: Chinese traditional
+  native: 繁體中文
+  encoding: UTF-8
+  feature: 功能
+  background: 背景
+  scenario: 場景|劇本
+  scenario_outline: 場景大綱|劇本大綱
+  examples: 例子
+  given: 假設
+  when: 當
+  then: 那麼
+  and: 而且|並且
   but: 但是
 "ko":
   name: Korean
@@ -347,17 +364,3 @@
   then: 그러면
   and: 그리고
   but: 하지만
-"zh-TW":
-  name: Chinese traditional
-  native: 繁體中文
-  encoding: UTF-8
-  feature: 功能
-  background: 背景
-  scenario: 劇本
-  scenario_outline: 劇本概要
-  examples: 例如
-  given: 如果
-  when: 當
-  then: 然後
-  and: 而且
-  but: 但是

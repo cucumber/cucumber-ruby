@@ -13,7 +13,6 @@ When /^I run cucumber (.*)$/ do |cmd|
 end
 
 Then /^it should (fail|pass) with$/ do |success, output|
-#puts @out
   @out.should == output
   if success == 'fail'
     @status.should_not == 0

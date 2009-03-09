@@ -163,7 +163,7 @@ END_OF_MESSAGE
 
       config.options[:verbose].should be_true
     end
-        
+
     it "should accept --out option" do
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--out jalla.txt})
@@ -229,6 +229,22 @@ END_OF_MESSAGE
       end
     end
     
+    describe "diff output" do
+
+      it "is enabled by default" do
+        config = Configuration.new
+        config.diff_enabled?.should be_true
+      end
+      
+      it "is disabled when the --no-diff option is supplied" do
+        config = Configuration.new
+        config.parse!(%w{--no-diff})
+
+        config.diff_enabled?.should be_false
+      end
+        
+    end
+
     it "should accept multiple --scenario options" do
       config = Configuration.new
       config.parse!(['--scenario', "User logs in", '--scenario', "User signs up"])

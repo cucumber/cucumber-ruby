@@ -95,7 +95,7 @@ module Autotest::CucumberMixin
       ensure
         $stdout.sync = old_sync
       end
-      self.features_to_run = dirty_features_file.read
+      self.features_to_run = dirty_features_file.read.strip
       self.tainted = true unless self.features_to_run == []
     end
     hook :ran_features
