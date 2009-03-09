@@ -103,7 +103,7 @@ module Cucumber
       end
 
       def verify_column(column_name)
-        raise %{The column named "#{column_name}" does not exist} unless @raw[0].detect{|name| column_name == name}
+        raise %{The column named "#{column_name}" does not exist} unless @raw[0].include?(column_name)
       end
 
       def arguments_replaced(arguments) #:nodoc:
