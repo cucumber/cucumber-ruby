@@ -44,14 +44,20 @@ module Cucumber
       end
 
       it "should allow map'ing columns" do
-        @table.map_column('one') { |v| v.to_i }
+        @table.map_column!('one') { |v| v.to_i }
         @table.hashes.first['one'].should == 4444
       end
 
-      it "should fail silently if a map'd column does not exist" do
+      it "should pass silently if a mapped column does not exist in non-strict mode" do
         lambda {
-          @table.map_column('two') { |v| v.to_i }
+          @table.map_column!('two', false) { |v| v.to_i }
         }.should_not raise_error
+      end
+
+      it "should fail if a mapped column does not exist in strict mode" do
+        lambda {
+          @table.map_column!('two', true) { |v| v.to_i }
+        }.should raise_error('The column named "two" does not exist')
       end
 
       describe "replacing arguments" do

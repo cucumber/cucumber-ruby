@@ -16,6 +16,7 @@ module Cucumber
         @raw = raw
         @cells_class = Cells
         @cell_class = Cell
+        @conversion_procs = Hash.new(lambda{|cell_value| cell_value})
       end
 
       def at_lines?(lines)
@@ -40,6 +41,8 @@ module Cucumber
       # Gets converted into the following:
       #
       #   [{'a' => '2', 'b' => '3', 'sum' => '5'}, {'a' => '7', 'b' => '9', 'sum' => '16'}]
+      #
+      # Use #map_column! to specify how values in a column are converted.
       #
       def hashes
         @hashes ||= cells_rows[1..-1].map do |row|
@@ -75,26 +78,32 @@ module Cucumber
         [:table, *cells_rows.map{|row| row.to_sexp}]
       end
 
-      def map_column(name, &block)
-        return unless index = @raw[0].index(name)
-
-        rows.each do |row|
-          row[index] = block.call(row[index])
-        end
+      # Change how #hashes converts column values. The +column_name+ argument identifies the column
+      # and +conversion_proc+ performs the conversion for each cell in that column. If +strict+ is 
+      # true, an error will be raised if the column named +column_name+ is not found. If +strict+ 
+      # is false, no error will be raised. 
+      def map_column!(column_name, strict=true, &conversion_proc)
+        verify_column(column_name) if strict
+        @conversion_procs[column_name] = conversion_proc
       end
 
       def to_hash(cells) #:nodoc:
         hash = Hash.new do |hash, key|
           hash[key.to_s] if key.is_a?(Symbol)
         end
-        @raw[0].each_with_index do |key, n|
-          hash[key] = cells.value(n)
+        @raw[0].each_with_index do |column_name, column_index|
+          value = @conversion_procs[column_name].call(cells.value(column_index))
+          hash[column_name] = value
         end
         hash
       end
 
       def index(cells) #:nodoc:
         cells_rows.index(cells)
+      end
+
+      def verify_column(column_name)
+        raise %{The column named "#{column_name}" does not exist} unless @raw[0].detect{|name| column_name == name}
       end
 
       def arguments_replaced(arguments) #:nodoc:
