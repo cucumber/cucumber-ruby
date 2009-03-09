@@ -134,6 +134,9 @@ module Cucumber
           opts.on("-g", "--guess", "Guess best match for Ambiguous steps.") do
             @options[:guess] = true
           end
+          opts.on("--no-diff", "Disable diff output on failing expectations.") do
+            @options[:diff_enabled] = false
+          end
           opts.on_tail("--version", "Show version.") do
             @out_stream.puts VERSION::STRING
             Kernel.exit
@@ -167,6 +170,10 @@ module Cucumber
       
       def guess?
         !!@options[:guess]
+      end
+    
+      def diff_enabled?
+        @options[:diff_enabled]
       end
     
       def load_language
@@ -323,7 +330,8 @@ Defined profiles in cucumber.yml:
           :formats  => {},
           :excludes => [],
           :tags     => [],
-          :scenario_names => []
+          :scenario_names => [],
+          :diff_enabled => true
         }
       end
     

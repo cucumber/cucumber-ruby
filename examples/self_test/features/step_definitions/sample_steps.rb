@@ -59,4 +59,6 @@ Then /^the multiline string should be$/ do |string|
   @multiline.should == string
 end
 
-
+Given /^failing expectation$/ do
+  'this'.should == 'that'
+end
