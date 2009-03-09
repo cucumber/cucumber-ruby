@@ -93,6 +93,14 @@ pure Ruby users have been enjoying for a while.
 * Pending steps in > steps called from steps (#65 Aslak Hellesøy)
 
 === New features
+* Added map_column to AST tables to ease casting of cell values into relevant types (#223 Rob Holland)
+  Given /^an expense report for (.*) with the following posts:$/ do |date, posts_table|
+    posts_table.map_column('amount') { |a| a.to_i }
+    posts_table.hashes.each do |post|
+      # post['amount'] is a Fixnum, rather than a String
+    end
+  end
+  Mapping a column which is not specified in the table will not produce an error, this is to allow different Scenarios to re-use the step definition with different table columns.
 * Rails generators supports testunit and rspec option, defaulting to rspec (#217 Josh Nichols)
 * Sinatra Example (#204 Rob Holland)
 * Keywords can be aliased in languages.yml. See English for an example (examples: Examples|Scenarios)
