@@ -60,6 +60,43 @@ module Cucumber
         }.should raise_error('The column named "two" does not exist')
       end
 
+			describe "rows hash" do
+				
+        before(:each) do
+        	@table = Table.new([
+          	%w{one 1111},
+          	%w{two 22222}
+        	])
+					@to_wide_table = Table.new([
+          	%w{one 1111 abc},
+           	%w{two 22222 def}
+       		])
+					@to_narrow_table = Table.new([
+          	%w{one},
+           	%w{two}
+       		])
+				end
+
+				it "should be convertible in to an array where each row is a hash" do 
+					@table.rows_hash.should == {'one' => '1111', 'two' => '22222'}
+				end
+				
+      	it "should accept symbols as keys for the hashes" do
+				end
+
+				it "should fail if the table has more than two columns" do 
+					lambda {
+						@to_wide_table.rows_hash
+					}.should raise_error('The table must have two columns')
+				end				
+
+				it "should fail if the table has less than two columns" do 
+					lambda {
+						@to_narrow_table.rows_hash
+					}.should raise_error('The table must have two columns')
+				end				
+			end
+
       describe "replacing arguments" do
 
         before(:each) do
