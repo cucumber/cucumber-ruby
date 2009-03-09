@@ -159,6 +159,11 @@ Feature: Cucumber command line
         Scenario: Call via another
           Given call step "a step definition that calls an undefined step"
 
+      Feature: Failing expectation
+
+        Scenario: Failing expectation
+          Given failing expectation
+
       Feature: Lots of undefined
 
         Scenario: Implement me
@@ -206,8 +211,8 @@ Feature: Cucumber command line
             hello
             \"\"\"
 
-      11 scenarios
-      11 skipped steps
+      12 scenarios
+      12 skipped steps
       7 undefined steps
 
       """

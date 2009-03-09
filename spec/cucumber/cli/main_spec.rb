@@ -39,6 +39,35 @@ module Cli
       
     end
 
+    describe "diffing" do
+
+      before :each do
+        @configuration = mock('Configuration', :null_object => true)
+        Configuration.should_receive(:new).and_return(@configuration)
+        
+        @step_mother = mock('StepMother', :null_object => true)
+        
+        @cli = Main.new(nil)
+      end
+      
+      it "uses Spec Differ::Default when diff is enabled" do
+        @configuration.should_receive(:diff_enabled?).and_return(true)
+        
+        ::Spec::Expectations::Differs::Default.should_receive(:new)
+        
+        @cli.execute!(@step_mother)
+      end
+      
+      it "does not use Spec Differ::Default when diff is disabled" do
+        @configuration.should_receive(:diff_enabled?).and_return(false)
+        
+        ::Spec::Expectations::Differs::Default.should_not_receive(:new)
+        
+        @cli.execute!(@step_mother)
+      end
+      
+    end
+
     describe "--format with class" do
      
      describe "in module" do
