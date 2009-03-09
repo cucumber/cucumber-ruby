@@ -94,6 +94,7 @@ pure Ruby users have been enjoying for a while.
 * Pending steps in > steps called from steps (#65 Aslak Hellesøy)
 
 === New features
+* New --no-diff option (#218 Bryan Ash)
 * Rails generators supports testunit and rspec option, defaulting to rspec (#217 Josh Nichols)
 * Sinatra Example (#204 Rob Holland)
 * Keywords can be aliased in languages.yml. See English for an example (examples: Examples|Scenarios)
