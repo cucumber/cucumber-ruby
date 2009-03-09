@@ -50,6 +50,27 @@ module Cucumber
         end
       end
 
+     	# Converts a table with two columns into a Hash where the key is
+  		# the first cell of the row and the value the second cell.
+      # For example, a Table built from the following plain text:
+      #
+      # | a | 7 |
+      # | b | 9 |
+      #
+      # Gets converted into the following:
+      #
+      # {'a' => '7', 'b' => '9'}
+      #
+      def rows_hash
+				raise "The table must have two columns" if columns.size != 2
+      	@rows_hash = {} 
+        @raw.map do |raw_row|
+      		@rows_hash[raw_row[0]] = raw_row[1]     
+        end
+    		@rows_hash
+    	end
+
+
       # Gets the raw data of this table. For example, a Table built from
       # the following plain text:
       #
