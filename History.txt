@@ -96,12 +96,12 @@ pure Ruby users have been enjoying for a while.
 === New features
 * Added map_column to AST tables to ease casting of cell values into relevant types (#223 Rob Holland)
   Given /^an expense report for (.*) with the following posts:$/ do |date, posts_table|
-    posts_table.map_column('amount') { |a| a.to_i }
+    posts_table.map_column!('amount') { |a| a.to_i }
     posts_table.hashes.each do |post|
       # post['amount'] is a Fixnum, rather than a String
     end
   end
-  Mapping a column which is not specified in the table will not produce an error, this is to allow different Scenarios to re-use the step definition with different table columns.
+  Mapping a column which is not specified in the table will produce an error unless you explicitly pass a 2nd false argument. This is to allow different Scenarios to re-use the step definition with different table columns.
 * New --no-diff option (#218 Bryan Ash)
 * Rails generators supports testunit and rspec option, defaulting to rspec (#217 Josh Nichols)
 * Sinatra Example (#204 Rob Holland)
