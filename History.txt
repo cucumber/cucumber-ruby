@@ -94,6 +94,7 @@ pure Ruby users have been enjoying for a while.
 * Pending steps in > steps called from steps (#65 Aslak Hellesøy)
 
 === New features
+* New -S/--step-definitions option. Useful (among other things) for tools that implement automcompletion. (#208 Aslak Hellesøy).
 * The cucumber.rake file defines a dummy :features task if Cucumber is not installed (#225 Josh Nichols)
 * Added map_column to AST tables to ease casting of cell values into relevant types (#223 Rob Holland)
   Given /^an expense report for (.*) with the following posts:$/ do |date, posts_table|

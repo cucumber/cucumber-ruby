@@ -137,6 +137,9 @@ module Cucumber
           opts.on("--no-diff", "Disable diff output on failing expectations.") do
             @options[:diff_enabled] = false
           end
+          opts.on("-S", "--step-definitions", "Print the regexp and line of all step definitions, then exit.") do
+            @options[:print_step_definitions] = true
+          end
           opts.on_tail("--version", "Show version.") do
             @out_stream.puts VERSION::STRING
             Kernel.exit
@@ -169,13 +172,17 @@ module Cucumber
       end
       
       def guess?
-        !!@options[:guess]
+        @options[:guess]
       end
     
       def diff_enabled?
         @options[:diff_enabled]
       end
-    
+
+      def print_step_definitions?
+        @options[:print_step_definitions]
+      end
+
       def load_language
         if Cucumber.language_incomplete?(@options[:lang])
           list_keywords_and_exit(@options[:lang])
