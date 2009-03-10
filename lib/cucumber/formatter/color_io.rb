@@ -8,15 +8,15 @@ module Cucumber
       def_delegators :@kernel, :puts, :print # win32console colours only work when sent to Kernel
       def_delegators :@stdout, :flush, :tty?
 
+      def initialize
+        @kernel = Kernel
+        @stdout = STDOUT
+      end
+
       # Ensure using << still gets colours in win32console
       def <<(output)
         print(output)
         self
-      end
-
-      def initialize
-        @kernel = Kernel
-        @stdout = STDOUT
       end
     end
   end
