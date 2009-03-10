@@ -15,10 +15,10 @@ Given /olen sisestanud kalkulaatorisse numbri (\d+)/ do |n|
   @calc.push n.to_i
 end
 
-When /ma vajutan (.*)/ do |op|
+When /ma vajutan (\w+)/ do |op|
   @result = @calc.send op
 end
 
-Then /vastuseks peab ekraanil kuvatama (\d*)/ do |result|
-  @result.should == result.to_i
+Then /vastuseks peab ekraanil kuvatama (.*)/ do |result|
+  @result.should == result.to_f
 end
