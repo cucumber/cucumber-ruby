@@ -8,15 +8,22 @@ module Cucumber
     # This gets parsed into a Table holding the values <tt>[['a', 'b'], ['c', 'd']]</tt>
     #
     class Table
+      NULL_CONVERSIONS = Hash.new(lambda{ |cell_value| cell_value }).freeze
+
       attr_accessor :file
 
-      def initialize(raw)
+      def initialize(raw, conversions = NULL_CONVERSIONS.dup)
         # Verify that it's square
         raw.transpose
         @raw = raw
         @cells_class = Cells
         @cell_class = Cell
-        @conversion_procs = Hash.new(lambda{|cell_value| cell_value})
+        @conversion_procs = conversions
+      end
+
+      # Creates a copy of this table, inheriting the column mappings.
+      def dup
+        self.class.new(@raw.dup, @conversion_procs.dup)
       end
 
       def at_lines?(lines)
@@ -79,7 +86,7 @@ module Cucumber
       end
 
       def map_headers(mappings)
-        table = self.clone
+        table = self.dup
         table.map_headers!(mappings)
         table
       end
