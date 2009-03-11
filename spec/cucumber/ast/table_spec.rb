@@ -60,6 +60,17 @@ module Cucumber
         }.should raise_error('The column named "two" does not exist')
       end
 
+      it "should allow renaming columns" do
+        table2 = @table.map_headers('one' => 'three')
+        table2.hashes.first['three'].should == '4444'
+      end
+
+      it "should copy column mappings when mapping headers" do
+        @table.map_column!('one') { |v| v.to_i }
+        table2 = @table.map_headers('one' => 'three')
+        table2.hashes.first['three'].should == 4444
+      end
+
       describe "replacing arguments" do
 
         before(:each) do
