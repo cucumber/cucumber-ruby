@@ -9,9 +9,6 @@ module Cucumber
           %w{one four seven},
           %w{4444 55555 666666}
         ])
-        @table.extend(Module.new{
-          attr_reader :raw
-        })
         def @table.cells_rows; super; end
         def @table.columns; super; end
       end
