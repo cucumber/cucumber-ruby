@@ -8,15 +8,22 @@ module Cucumber
     # This gets parsed into a Table holding the values <tt>[['a', 'b'], ['c', 'd']]</tt>
     #
     class Table
+      NULL_CONVERSIONS = Hash.new(lambda{ |cell_value| cell_value }).freeze
+
       attr_accessor :file
 
-      def initialize(raw)
+      def initialize(raw, conversions = NULL_CONVERSIONS.dup)
         # Verify that it's square
         raw.transpose
         @raw = raw
         @cells_class = Cells
         @cell_class = Cell
-        @conversion_procs = Hash.new(lambda{|cell_value| cell_value})
+        @conversion_procs = conversions
+      end
+
+      # Creates a copy of this table, inheriting the column mappings.
+      def dup
+        self.class.new(@raw.dup, @conversion_procs.dup)
       end
 
       def at_lines?(lines)
@@ -78,10 +85,16 @@ module Cucumber
         [:table, *cells_rows.map{|row| row.to_sexp}]
       end
 
+      def map_headers(mappings)
+        table = self.dup
+        table.map_headers!(mappings)
+        table
+      end
+
       # Change how #hashes converts column values. The +column_name+ argument identifies the column
       # and +conversion_proc+ performs the conversion for each cell in that column. If +strict+ is 
       # true, an error will be raised if the column named +column_name+ is not found. If +strict+ 
-      # is false, no error will be raised. 
+      # is false, no error will be raised.
       def map_column!(column_name, strict=true, &conversion_proc)
         verify_column(column_name) if strict
         @conversion_procs[column_name] = conversion_proc
@@ -122,6 +135,18 @@ module Cucumber
 
       def at_lines?(lines)
         cells_rows.detect{|row| row.at_lines?(lines)}
+      end
+
+      protected
+
+      def map_headers!(mappings)
+        headers = @raw[0]
+        mappings.each_pair do |pre, post|
+          headers[headers.index(pre)] = post
+          if @conversion_procs.has_key?(pre)
+            @conversion_procs[post] = @conversion_procs.delete(pre)
+          end
+        end
       end
 
       private
