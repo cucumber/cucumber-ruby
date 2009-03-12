@@ -137,7 +137,10 @@
   native: eesti keel
   encoding: UTF-8
   feature: Omadus
+  background: Taust
   scenario: Stsenaarium
+  scenario_outline: Raamstsenaarium
+  examples: Juhtumid
   given: Eeldades
   when: Kui
   then: Siis
