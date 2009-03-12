@@ -9,9 +9,6 @@ module Cucumber
           %w{one four seven},
           %w{4444 55555 666666}
         ])
-        @table.extend(Module.new{
-          attr_reader :raw
-        })
         def @table.cells_rows; super; end
         def @table.columns; super; end
       end
@@ -58,6 +55,17 @@ module Cucumber
         lambda {
           @table.map_column!('two', true) { |v| v.to_i }
         }.should raise_error('The column named "two" does not exist')
+      end
+
+      it "should allow renaming columns" do
+        table2 = @table.map_headers('one' => 'three')
+        table2.hashes.first['three'].should == '4444'
+      end
+
+      it "should copy column mappings when mapping headers" do
+        @table.map_column!('one') { |v| v.to_i }
+        table2 = @table.map_headers('one' => 'three')
+        table2.hashes.first['three'].should == 4444
       end
 
       describe "replacing arguments" do
