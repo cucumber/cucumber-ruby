@@ -136,9 +136,20 @@ module Cucumber
     def snippet_text(step_keyword, step_name)
       @snippet_generator.snippet_text(step_keyword, step_name)
     end
+    
+    def print_step_definitions(out)
+      step_definitions.each do |step_definition|
+        indent = max_step_definition_length - step_definition.text_length
+        out.puts(step_definition.to_s(indent))
+      end
+    end
 
     private
-    
+
+    def max_step_definition_length
+      @max_step_definition_length ||= step_definitions.map{|step_definition| step_definition.text_length}.max
+    end
+
     def options
       @options || {}
     end
