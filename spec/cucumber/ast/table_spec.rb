@@ -83,9 +83,19 @@ module Cucumber
         end
 
         it "should not change the original table" do
-          table_with_replaced_args = @table.arguments_replaced({'<book>' => 'Unbearable lightness of being'})
+          @table.arguments_replaced({'<book>' => 'Unbearable lightness of being'})
 
           @table.hashes[0]['book'].should_not == 'Unbearable lightness of being'
+        end
+
+        it "should not raise an error when there are nil values in the table" do
+          table = Table.new([
+                              ['book'],
+                              [nil]
+                            ])
+          lambda{ 
+            table.arguments_replaced({'<book>' => 'The great sheep chase'})
+          }.should_not raise_error
         end
 
       end
