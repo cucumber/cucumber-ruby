@@ -85,6 +85,19 @@ module Cucumber
         [:table, *cells_rows.map{|row| row.to_sexp}]
       end
 
+      # Returns a new Table where the headers are redefined. This makes it
+      # possible to use prettier header names in the features. Example:
+      #
+      #   | Phone Number | Address |
+      #   | 123456       | xyz     |
+      #   | 345678       | abc     |
+      #
+      # A StepDefinition receiving this table can then map the columns:
+      #
+      #   mapped_table = table.map_columns('Phone Number' => :phone, 'Address' => :address)
+      #   hashes = mapped_table.hashes
+      #   # => [{:phone => '123456', :address => 'xyz'}, {:phone => '345678', :address => 'abc'}]
+      #
       def map_headers(mappings)
         table = self.dup
         table.map_headers!(mappings)

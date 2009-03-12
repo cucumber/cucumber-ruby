@@ -58,8 +58,8 @@ module Cucumber
       end
 
       it "should allow renaming columns" do
-        table2 = @table.map_headers('one' => 'three')
-        table2.hashes.first['three'].should == '4444'
+        table2 = @table.map_headers('one' => :three)
+        table2.hashes.first[:three].should == '4444'
       end
 
       it "should copy column mappings when mapping headers" do
