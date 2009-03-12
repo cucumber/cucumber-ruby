@@ -28,14 +28,14 @@ module Cucumber
     class Task
       LIB    = File.expand_path(File.dirname(__FILE__) + '/../..') # :nodoc:
 
-      # Directories to add to the load path
+      # Directories to add to the Ruby $LOAD_PATH
       attr_accessor :libs
       # Name of the cucumber binary to use for running features. Defaults to Cucumber::BINARY
       attr_accessor :binary
-      # Array of paths to specific steps to use
+      # Array of paths to specific step definition files to use
       attr_accessor :step_list
       # File pattern for finding step definitions. Defaults to 
-      # 'features/**/*.rb'. Can be overriden by the SPEC environment variable.
+      # 'features/**/*.rb'.
       attr_accessor :step_pattern
       # Array of paths to specific features to run. 
       attr_accessor :feature_list
