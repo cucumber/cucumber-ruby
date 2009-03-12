@@ -9,9 +9,6 @@ module Cucumber
           %w{one four seven},
           %w{4444 55555 666666}
         ])
-        @table.extend(Module.new{
-          attr_reader :raw
-        })
         def @table.cells_rows; super; end
         def @table.columns; super; end
       end
@@ -60,40 +57,28 @@ module Cucumber
         }.should raise_error('The column named "two" does not exist')
       end
 
-      describe "rows hash" do
+      describe ".transpose" do
         before(:each) do
           @table = Table.new([
             %w{one 1111},
             %w{two 22222}
           ])
-          @to_wide_table = Table.new([
-            %w{one 1111 abc},
-            %w{two 22222 def}
-          ])
-          @to_narrow_table = Table.new([
-            %w{one},
-            %w{two}
-          ])
         end
                 
         it "should be convertible in to an array where each row is a hash" do 
-          @table.rows_hash.should == {'one' => '1111', 'two' => '22222'}
+          @table.transpose.hashes[0].should == {'one' => '1111', 'two' => '22222'}
         end
-                
-        it "should accept symbols as keys for the hashes" do
-        end
-  
-        it "should fail if the table has more than two columns" do 
-          lambda {
-            @to_wide_table.rows_hash
-          }.should raise_error('The table must have two columns')
-        end             
-  
-        it "should fail if the table has less than two columns" do 
-          lambda {
-            @to_narrow_table.rows_hash
-           }.should raise_error('The table must have two columns')
-        end             
+      end
+        
+      it "should allow renaming columns" do
+        table2 = @table.map_headers('one' => :three)
+        table2.hashes.first[:three].should == '4444'
+      end
+
+      it "should copy column mappings when mapping headers" do
+        @table.map_column!('one') { |v| v.to_i }
+        table2 = @table.map_headers('one' => 'three')
+        table2.hashes.first['three'].should == 4444
       end
 
       describe "replacing arguments" do

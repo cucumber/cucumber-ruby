@@ -89,6 +89,14 @@ examples/i18n/ro/Rakefile
 examples/i18n/ro/features/step_definitons/calculator_steps.rb
 examples/i18n/ro/features/suma.feature
 examples/i18n/ro/lib/calculator.rb
+examples/i18n/ru/Rakefile
+examples/i18n/ru/features/addition.feature
+examples/i18n/ru/features/consecutive_calculations.feature
+examples/i18n/ru/features/division.feature
+examples/i18n/ru/features/step_definitons/calculator_steps.rb
+examples/i18n/ru/features/support/env.rb
+examples/i18n/ru/features/support/world.rb
+examples/i18n/ru/lib/calculator.rb
 examples/i18n/se/Rakefile
 examples/i18n/se/features/step_definitons/kalkulator_steps.rb
 examples/i18n/se/features/summering.feature
@@ -131,6 +139,7 @@ examples/self_test/features/background/pending_background.feature
 examples/self_test/features/background/scenario_outline_failing_background.feature
 examples/self_test/features/background/scenario_outline_passing_background.feature
 examples/self_test/features/call_undefined_step_from_step_def.feature
+examples/self_test/features/failing_expectation.feature
 examples/self_test/features/lots_of_undefined.feature
 examples/self_test/features/outline_sample.feature
 examples/self_test/features/sample.feature
@@ -167,6 +176,7 @@ examples/watir/features/step_definitons/search_steps.rb
 examples/watir/features/support/env.rb
 features/background.feature
 features/cucumber_cli.feature
+features/cucumber_cli_diff_disabled.feature
 features/cucumber_cli_outlines.feature
 features/custom_formatter.feature
 features/report_called_undefined_steps.feature
@@ -269,6 +279,7 @@ spec/cucumber/cli/main_spec.rb
 spec/cucumber/core_ext/proc_spec.rb
 spec/cucumber/core_ext/string_spec.rb
 spec/cucumber/formatter/ansicolor_spec.rb
+spec/cucumber/formatter/color_io_spec.rb
 spec/cucumber/formatter/html/cucumber.css
 spec/cucumber/formatter/html/cucumber.js
 spec/cucumber/formatter/html/index.html
