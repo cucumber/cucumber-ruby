@@ -5,7 +5,6 @@ require 'spec/expectations/differs/default'
 module Cucumber
 module Cli
   describe Main do
-    
     before(:each) do
       @out = StringIO.new
       Kernel.stub!(:exit).and_return(nil)
