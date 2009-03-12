@@ -79,6 +79,7 @@ pure Ruby users have been enjoying for a while.
 ** Full jar and simple jar
 
 == Bugfixes
+* Fix error with nil values in tables raising an exception (#227 Joseph Wilk)
 * Add support for using << in formatters to ensure the html formatter works (#210 Joseph Wilk)
 * Explicitly require env.rb files first to avoid potential load order problems. (#213, Ben Mabey, Randy Harmon)
 * Depend on polyglot version (0.2.4) to avoid masking require errors. (Aslak Hellesøy).
