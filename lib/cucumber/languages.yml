@@ -113,6 +113,7 @@
   native: Texan
   encoding: UTF-8
   feature: Feature
+  background: Background
   scenario: Scenario
   scenario_outline: Scenario Outline
   examples: Examples
