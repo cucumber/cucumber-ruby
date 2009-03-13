@@ -314,7 +314,7 @@ module Cucumber
         if r1
           s2, i2 = [], index
           loop do
-            if input.index(Regexp.new('[a-z0-9]'), index) == index
+            if input.index(Regexp.new('[^@\\n\\t ]'), index) == index
               r3 = (SyntaxNode).new(input, index...(index + 1))
               @index += 1
             else

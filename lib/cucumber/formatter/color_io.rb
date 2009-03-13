@@ -12,6 +12,12 @@ module Cucumber
         @kernel = Kernel
         @stdout = STDOUT
       end
+
+      # Ensure using << still gets colours in win32console
+      def <<(output)
+        print(output)
+        self
+      end
     end
   end
 end
