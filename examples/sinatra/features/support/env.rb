@@ -13,8 +13,8 @@ Webrat.configure do |config|
 end
 
 World do
-  include Webrat::Matchers
-  include Webrat::HaveTagMatcher
-
-  Webrat::SinatraSession.new
+  session = Webrat::SinatraSession.new
+  session.extend(Webrat::Matchers)
+  session.extend(Webrat::HaveTagMatcher)
+  session
 end

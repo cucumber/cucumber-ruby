@@ -9,9 +9,6 @@ module Cucumber
           %w{one four seven},
           %w{4444 55555 666666}
         ])
-        @table.extend(Module.new{
-          attr_reader :raw
-        })
         def @table.cells_rows; super; end
         def @table.columns; super; end
       end
@@ -43,6 +40,47 @@ module Cucumber
         @table.hashes.first[:one].should == '4444'
       end
 
+      it "should allow map'ing columns" do
+        @table.map_column!('one') { |v| v.to_i }
+        @table.hashes.first['one'].should == 4444
+      end
+
+      it "should pass silently if a mapped column does not exist in non-strict mode" do
+        lambda {
+          @table.map_column!('two', false) { |v| v.to_i }
+        }.should_not raise_error
+      end
+
+      it "should fail if a mapped column does not exist in strict mode" do
+        lambda {
+          @table.map_column!('two', true) { |v| v.to_i }
+        }.should raise_error('The column named "two" does not exist')
+      end
+
+      describe ".transpose" do
+        before(:each) do
+          @table = Table.new([
+            %w{one 1111},
+            %w{two 22222}
+          ])
+        end
+                
+        it "should be convertible in to an array where each row is a hash" do 
+          @table.transpose.hashes[0].should == {'one' => '1111', 'two' => '22222'}
+        end
+      end
+        
+      it "should allow renaming columns" do
+        table2 = @table.map_headers('one' => :three)
+        table2.hashes.first[:three].should == '4444'
+      end
+
+      it "should copy column mappings when mapping headers" do
+        @table.map_column!('one') { |v| v.to_i }
+        table2 = @table.map_headers('one' => 'three')
+        table2.hashes.first['three'].should == 4444
+      end
+
       describe "replacing arguments" do
 
         before(:each) do
@@ -66,9 +104,19 @@ module Cucumber
         end
 
         it "should not change the original table" do
-          table_with_replaced_args = @table.arguments_replaced({'<book>' => 'Unbearable lightness of being'})
+          @table.arguments_replaced({'<book>' => 'Unbearable lightness of being'})
 
           @table.hashes[0]['book'].should_not == 'Unbearable lightness of being'
+        end
+
+        it "should not raise an error when there are nil values in the table" do
+          table = Table.new([
+                              ['book'],
+                              [nil]
+                            ])
+          lambda{ 
+            table.arguments_replaced({'<book>' => 'The great sheep chase'})
+          }.should_not raise_error
         end
 
       end

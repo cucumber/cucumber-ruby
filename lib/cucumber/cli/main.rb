@@ -32,6 +32,13 @@ module Cucumber
         step_mother.options = configuration.options
 
         require_files
+
+        if(configuration.print_step_definitions?)
+          step_mother.print_step_definitions(@out_stream)
+          Kernel.exit(0)
+          return # In specs, exit is stubbed
+        end
+        
         enable_diffing
       
         features = load_plain_text_features
@@ -39,7 +46,7 @@ module Cucumber
         visitor = configuration.build_formatter_broadcaster(step_mother)
         visitor.visit_features(features)
       
-        failure = features.steps[:failed].any? || (configuration.strict? && features.steps[:undefined].length)
+        failure = features.steps[:failed].any? || (configuration.strict? && features.steps[:undefined].any?)
         Kernel.exit(failure ? 1 : 0)
       end
 
@@ -86,7 +93,7 @@ module Cucumber
       end
 
       def enable_diffing
-        if defined?(::Spec)
+        if configuration.diff_enabled? && defined?(::Spec)
           require 'spec/expectations/differs/default'
           options = OpenStruct.new(:diff_format => :unified, :context_lines => 3)
           ::Spec::Expectations.differ = ::Spec::Expectations::Differs::Default.new(options)
