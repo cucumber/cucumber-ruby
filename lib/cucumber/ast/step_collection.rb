@@ -24,7 +24,7 @@ module Cucumber
       end
 
       def step_invocations_from_cells(cells)
-        StepCollection.new(@steps.map{|step| step.step_invocation_from_cells(cells)})
+        @steps.map{|step| step.step_invocation_from_cells(cells)}
       end
 
       # Duplicates this instance and adds +step_invocations+ to the end

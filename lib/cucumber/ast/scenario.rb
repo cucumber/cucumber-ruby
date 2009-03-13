@@ -36,12 +36,9 @@ module Cucumber
 
         skip = @background && @background.failed?
         skip_invoke! if skip
-        visitor.step_mother.new_world! unless visitor.step_mother.current_world || skip
-        visitor.step_mother.execute_before(self) unless skip
-        visitor.visit_steps(@steps)
-        visitor.step_mother.execute_after(self) unless skip
-        visitor.step_mother.nil_world!
-        visitor.step_mother.scenario_visited(self)
+        visitor.step_mother.before_and_after(self, skip) do
+          visitor.visit_steps(@steps)
+        end
       end
 
       def skip_invoke!
