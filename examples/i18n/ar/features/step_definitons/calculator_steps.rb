@@ -22,7 +22,3 @@ end
 Then /يظهر (.*) على الشاشة/ do |result|
   @result.should == result.to_f
 end
-
-Then /يجب ان يكون (\w*)/ do |class_name|
-  @result.class.name.should == class_name
-end
