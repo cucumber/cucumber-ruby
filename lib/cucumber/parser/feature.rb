@@ -58,7 +58,13 @@ module Cucumber
       module Feature2
         def build
           background = bg.respond_to?(:build) ? bg.build : nil
-          Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build(background))
+          Ast::Feature.new(
+            background, 
+            comment.build, 
+            tags.build, 
+            header.text_value, 
+            feature_elements.build(background)
+          )
         end
       end
 

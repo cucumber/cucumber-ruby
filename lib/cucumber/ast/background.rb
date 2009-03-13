@@ -9,35 +9,27 @@ module Cucumber
       def initialize(comment, line, keyword, steps)
         @comment, @line, @keyword, @steps = comment, line, keyword, StepCollection.new(steps)
         attach_steps(steps)
+        @step_invocations = @steps.step_invocations(true)
       end
 
       def step_collection(step_invocations)
-        background_invocations = @steps.map do |step| 
-          i = step.step_invocation
-          i.background = true
-          i
+        unless(@first_collection_created)
+          @first_collection_created = true
+          @step_invocations.dup(step_invocations)
+        else
+          @steps.step_invocations(true).dup(step_invocations)
         end
-        StepCollection.new(background_invocations + step_invocations)
-      end
-
-      def visit_if_first(visitor, scenario)
-        if first_scenario?(scenario)
-          @first_scenario = scenario
-          visitor.visit_background(self)
-        end
-      end
-
-      def first_scenario?(scenario)
-        # If we're using 2 visitors, the 2nd pass will not be nil.
-        @first_scenario.nil? || @first_scenario == scenario
       end
 
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_background_name(@keyword, "", file_colon_line(@line), source_indent(text_length))
-        # TODO: Use @first_scenario's background steps instead.
-        # We're currently vising steps that won't be used in any scenarios :-/ 
-        visitor.visit_steps(@steps.step_invocations)
+        visitor.visit_steps(@step_invocations)
+        @failed = @step_invocations.detect{|step_invocation| step_invocation.exception}
+      end
+
+      def failed?
+        @failed
       end
 
       def text_length

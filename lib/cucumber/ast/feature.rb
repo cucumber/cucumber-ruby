@@ -5,8 +5,8 @@ module Cucumber
       attr_accessor :file
       attr_writer :features, :lines
 
-      def initialize(comment, tags, name, feature_elements)
-        @comment, @tags, @name, @feature_elements = comment, tags, name, feature_elements
+      def initialize(background, comment, tags, name, feature_elements)
+        @background, @comment, @tags, @name, @feature_elements = background, comment, tags, name, feature_elements
         @lines = []
 
         @feature_elements.each do |feature_element|
@@ -19,8 +19,9 @@ module Cucumber
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@name)
+        visitor.visit_background(@background) if @background
         @feature_elements.each do |feature_element|
-          feature_element.visit(visitor) if feature_element.descend?(visitor)
+          visitor.visit_feature_element(feature_element) if feature_element.descend?(visitor)
         end
       end
 

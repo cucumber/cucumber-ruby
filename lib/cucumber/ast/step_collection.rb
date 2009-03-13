@@ -9,18 +9,27 @@ module Cucumber
         @steps.each{|step| step.step_collection = self}
       end
 
-      def accept(visitor)
+      def accept(visitor, &proc)
         @steps.each do |step|
-          visitor.visit_step(step)
+          visitor.visit_step(step) if proc.nil? || proc.call(step)
         end
       end
 
-      def step_invocations
-        StepCollection.new(@steps.map{|step| step.step_invocation})
+      def step_invocations(background = false)
+        StepCollection.new(@steps.map{ |step| 
+          i = step.step_invocation
+          i.background = background
+          i
+        })
       end
 
       def step_invocations_from_cells(cells)
         StepCollection.new(@steps.map{|step| step.step_invocation_from_cells(cells)})
+      end
+
+      # Duplicates this instance and adds +step_invocations+ to the end
+      def dup(step_invocations = [])
+        StepCollection.new(@steps + step_invocations)
       end
 
       def each(&proc)

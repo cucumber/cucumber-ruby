@@ -36,7 +36,7 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
         super
       end
 
-      def visit_table_row(table_row, status)
+      def visit_table_row(table_row)
         @col = 1
         super
       end

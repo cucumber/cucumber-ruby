@@ -11,8 +11,11 @@ module Cucumber
       end
 
       def descend?(visitor)
-#        visitor.matches_scenario_names?(self) && 
         @outline_table.descend?(visitor)
+      end
+
+      def skip_invoke!
+        @outline_table.skip_invoke!
       end
 
       def matches_scenario_names?(scenario_names)
