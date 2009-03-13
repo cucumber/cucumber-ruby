@@ -58,5 +58,13 @@ module Cucumber
         step_definition("Outside").execute(nil, @world)
       end.should raise_error(Pending, "Do me!")
     end
+    
+    it "should have a #to_s suitable for automcompletion" do
+      stepdef = Given /Hello (.*)/ do
+      end
+      
+      stepdef.to_s.should    == '/Hello (.*)/ # spec/cucumber/step_definition_spec.rb:63'
+      stepdef.to_s(2).should == '/Hello (.*)/   # spec/cucumber/step_definition_spec.rb:63'
+    end
   end
 end

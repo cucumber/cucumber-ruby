@@ -43,7 +43,7 @@ module Cucumber
       end
 
       rule tag
-        '@' tag_name:([a-z0-9])+
+        '@' tag_name:([^@\n\t ])+
       end
 
       rule comment

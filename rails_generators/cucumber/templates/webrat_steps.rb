@@ -3,6 +3,10 @@ require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "pat
 # Commonly used webrat steps
 # http://github.com/brynary/webrat
 
+Given /^I am on (.+)$/ do |page_name|
+  visit path_to(page_name)
+end
+
 When /^I go to (.+)$/ do |page_name|
   visit path_to(page_name)
 end
@@ -31,10 +35,10 @@ end
 
 # Use this step when using multiple datetime_select helpers on a page or 
 # you want to specify which datetime to select. Given the following view:
-#   <%= f.label :preferred %><br />
-#   <%= f.datetime_select :preferred %>
-#   <%= f.label :alternative %><br />
-#   <%= f.datetime_select :alternative %>
+#   <%%= f.label :preferred %><br />
+#   <%%= f.datetime_select :preferred %>
+#   <%%= f.label :alternative %><br />
+#   <%%= f.datetime_select :alternative %>
 # The following steps would fill out the form:
 # When I select "November 23, 2004 11:20" as the "Preferred" data and time
 # And I select "November 25, 2004 10:30" as the "Alternative" data and time
@@ -42,7 +46,7 @@ When /^I select "(.*)" as the "(.*)" date and time$/ do |datetime, datetime_labe
   select_datetime(datetime, :from => datetime_label)
 end
 
-# Use this step in conjuction with Rail's time_select helper. For example:
+# Use this step in conjunction with Rail's time_select helper. For example:
 # When I select "2:20PM" as the time
 # Note: Rail's default time helper provides 24-hour time-- not 12 hour time. Webrat
 # will convert the 2:20PM to 14:20 and then select it. 
@@ -57,7 +61,7 @@ When /^I select "(.*)" as the "(.*)" time$/ do |time, time_label|
   select_time(time, :from => time_label)
 end
 
-# Use this step in conjuction with Rail's date_select helper.  For example:
+# Use this step in conjunction with Rail's date_select helper.  For example:
 # When I select "February 20, 1981" as the date
 When /^I select "(.*)" as the date$/ do |date|
   select_date(date)
@@ -82,18 +86,30 @@ When /^I choose "(.*)"$/ do |field|
   choose(field)
 end
 
-When /^I attach the file at "(.*)" to "(.*)" $/ do |path, field|
+When /^I attach the file at "(.*)" to "(.*)"$/ do |path, field|
   attach_file(field, path)
 end
 
 Then /^I should see "(.*)"$/ do |text|
+<% if framework == :rspec -%>
   response.should contain(text)
+<% else -%>
+  assert_contain text
+<% end -%>
 end
 
 Then /^I should not see "(.*)"$/ do |text|
+<% if framework == :rspec -%>
   response.should_not contain(text)
+<% else -%>
+  assert_not_contain text
+<% end -%>
 end
 
 Then /^the "(.*)" checkbox should be checked$/ do |label|
+<% if framework == :rspec -%>
   field_labeled(label).should be_checked
+<% else -%>
+  assert field_labeled(label).checked?
+<% end -%>
 end
