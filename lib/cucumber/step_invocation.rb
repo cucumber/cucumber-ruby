@@ -8,10 +8,17 @@ module Cucumber
       status!(:skipped)
     end
 
+    def background?
+      @background
+    end
+
+    def skip_invoke!
+      @skip_invoke = true
+    end
+
     def accept(visitor)
       invoke(visitor.step_mother, visitor.options)
-      visit = !@background || @exception
-      @step.visit_step_details(visitor, @step_match, @multiline_arg, status, @exception) if visit
+      @step.visit_step_details(visitor, @step_match, @multiline_arg, status, @exception, @background)
     end
 
     def invoke(step_mother, options)

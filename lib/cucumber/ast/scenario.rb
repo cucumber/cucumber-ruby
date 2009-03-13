@@ -9,10 +9,11 @@ module Cucumber
         @background, @comment, @tags, @line, @keyword, @name = background, comment, tags, line, keyword, name
         attach_steps(steps)
         
+        step_invocations = steps.map{|step| step.step_invocation}
         if @background
-          @steps = @background.step_collection(steps.map{|step| step.step_invocation})
+          @steps = @background.step_collection(step_invocations)
         else
-          @steps = StepCollection.new(steps.map{|step| step.step_invocation})
+          @steps = StepCollection.new(step_invocations)
         end
       end
 
@@ -28,22 +29,21 @@ module Cucumber
         visitor.matches_scenario_names?(self)
       end
 
-      def visit(visitor)
-        visitor.step_mother.execute_scenario(self) do
-          # TODO: visit background if we're the first. Otherwise just execute it. Skip if nil
-          if @background
-            @background.visit_if_first(visitor, self)
-          end
-          visitor.visit_feature_element(self)
-        end
-      end
-
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(text_length))
+
+        skip_invoke! if @background && @background.failed?
         visitor.visit_steps(@steps)
         visitor.step_mother.scenario_visited(self)
+      end
+
+      def skip_invoke!
+        @steps.each{|step_invocation| step_invocation.skip_invoke!}
+        @feature.next_feature_element(self) do |next_one|
+          next_one.skip_invoke!
+        end
       end
 
       def to_sexp

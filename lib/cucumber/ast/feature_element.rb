@@ -42,12 +42,5 @@ module Cucumber
       @steps[i-1]
     end
     
-    def skip_invoke
-      @steps.each{|step_invocation| step_invocation.skip_invoke = true}
-      @feature.next_feature_element(self) do |next_one|
-        next_one.skip_invoke
-      end
-    end
-    
   end
 end

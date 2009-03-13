@@ -40,21 +40,22 @@ module Cucumber
         visitor.matches_scenario_names?(self)
       end
 
-      def visit(visitor)
-        if @background
-          @background.visit_if_first(visitor, self)
-        end
-        visitor.visit_feature_element(self)
-      end
-
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(text_length))
         visitor.visit_steps(@steps)
 
+        skip_invoke! if @background && @background.failed?
         @examples_array.each do |examples|
           visitor.visit_examples(examples) if examples.descend?(visitor)
+        end
+      end
+
+      def skip_invoke!
+        @examples_array.each{|examples| examples.skip_invoke!}
+        @feature.next_feature_element(self) do |next_one|
+          next_one.skip_invoke!
         end
       end
 

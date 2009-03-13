@@ -86,7 +86,9 @@ module Cucumber
 
       def visit_background(background)
         @indent = 2
+        @in_background = true
         super
+        @in_background = nil
         @io.puts
         @io.flush
       end
@@ -121,19 +123,28 @@ module Cucumber
         super
       end
 
-      def visit_step_name(keyword, step_match, status, source_indent)
-        @status = status
-        source_indent = nil unless @options[:source]
-        formatted_step_name = format_step(keyword, step_match, status, source_indent)
-        @io.puts("    " + formatted_step_name)
+      def visit_step_name(keyword, step_match, status, source_indent, background)
+        @step_matches ||= []
+        
+        non_failed_background_step_outside_background = !@in_background && background && (status != :failed)
+        @skip_step = @step_matches.index(step_match) || non_failed_background_step_outside_background
+        
+        unless(@skip_step)
+          @status = status
+          source_indent = nil unless @options[:source]
+          formatted_step_name = format_step(keyword, step_match, status, source_indent)
+          @io.puts("    " + formatted_step_name)
+        end
+        @step_matches << step_match
       end
 
       def visit_multiline_arg(multiline_arg)
-        return if @options[:no_multiline]
+        return if @options[:no_multiline] || @skip_step
         super
       end
 
       def visit_exception(exception)
+        return if @skip_step
         print_exception(exception, @indent)
         @io.flush
       end
