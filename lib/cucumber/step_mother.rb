@@ -105,20 +105,6 @@ module Cucumber
       (@world_procs ||= []) << proc
     end
 
-    def execute_scenario(scenario, &proc)
-      new_world!
-      begin
-        (@before_procs ||= []).each do |proc|
-          @current_world.cucumber_instance_exec(false, 'Before', scenario, &proc)
-        end
-        yield
-      ensure
-        (@after_procs ||= []).each do |proc|
-          @current_world.cucumber_instance_exec(false, 'After', scenario, &proc)
-        end
-      end
-    end
-
     # Creates a new world instance
     def new_world!
       @current_world = Object.new
@@ -135,6 +121,22 @@ module Cucumber
 
     def current_world
       @current_world
+    end
+
+    def nil_world!
+      @current_world = nil
+    end
+
+    def execute_before(scenario)
+      (@before_procs ||= []).each do |proc|
+        @current_world.cucumber_instance_exec(false, 'Before', scenario, &proc)
+      end
+    end
+
+    def execute_after(scenario)
+      (@after_procs ||= []).each do |proc|
+        @current_world.cucumber_instance_exec(false, 'After', scenario, &proc)
+      end
     end
 
     def step_match(step_name, formatted_step_name=nil)

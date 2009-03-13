@@ -57,6 +57,9 @@ module Cucumber
               visitor.visit_table_cell(cell)
             end
           else
+            visitor.step_mother.new_world! unless visitor.step_mother.current_world
+            visitor.step_mother.execute_before(self)
+
             @step_invocations.each do |step_invocation|
               step_invocation.invoke(visitor.step_mother, visitor.options)
               @exception ||= step_invocation.exception
@@ -65,6 +68,9 @@ module Cucumber
             @cells.each do |cell|
               visitor.visit_table_cell(cell)
             end
+
+            visitor.step_mother.execute_after(self)
+            visitor.step_mother.nil_world!
             visitor.step_mother.scenario_visited(self)
           end
         end
