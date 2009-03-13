@@ -40,6 +40,7 @@ examples/i18n/es/features/adicion.feature
 examples/i18n/es/features/step_definitons/calculador_steps.rb
 examples/i18n/es/lib/calculador.rb
 examples/i18n/et/Rakefile
+examples/i18n/et/features/jagamine.feature
 examples/i18n/et/features/liitmine.feature
 examples/i18n/et/features/step_definitions/kalkulaator_steps.rb
 examples/i18n/et/lib/kalkulaator.rb
@@ -128,7 +129,12 @@ examples/jbehave/src/main/java/cukes/jbehave/examples/trader/persistence/TraderP
 examples/jbehave/src/main/java/cukes/jbehave/examples/trader/scenarios/TraderSteps.java
 examples/selenium/Rakefile
 examples/selenium/features/search.feature
-examples/selenium/features/step_definitons/stories_steps.rb
+examples/selenium/features/step_definitons/search_steps.rb
+examples/selenium/features/support/env.rb
+examples/selenium_webrat/Rakefile
+examples/selenium_webrat/features/search.feature
+examples/selenium_webrat/features/step_definitons/search_steps.rb
+examples/selenium_webrat/features/support/env.rb
 examples/self_test/README.textile
 examples/self_test/Rakefile
 examples/self_test/features/background/failing_background.feature
