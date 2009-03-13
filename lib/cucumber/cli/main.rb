@@ -46,7 +46,7 @@ module Cucumber
         visitor = configuration.build_formatter_broadcaster(step_mother)
         visitor.visit_features(features)
       
-        failure = features.steps[:failed].any? || (configuration.strict? && features.steps[:undefined].length)
+        failure = features.steps[:failed].any? || (configuration.strict? && features.steps[:undefined].any?)
         Kernel.exit(failure ? 1 : 0)
       end
 

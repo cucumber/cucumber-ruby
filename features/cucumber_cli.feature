@@ -36,6 +36,24 @@ Feature: Cucumber command line
 
       """
 
+  Scenario: Succeed with --strict
+    When I run cucumber -q features/sample.feature:9 --strict
+    Then it should pass with
+    """
+    @one
+    Feature: Sample
+
+      @three
+      Scenario: Passing
+        Given passing
+          | a | b |
+          | c | d |
+
+    1 scenario
+    1 passed step
+
+    """
+
   Scenario: Specify 2 line numbers where one is a tag
     When I run cucumber -q features/sample.feature:5:14
     Then it should fail with
