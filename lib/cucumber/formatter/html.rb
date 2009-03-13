@@ -54,10 +54,12 @@ module Cucumber
 
       def visit_background(background)
         @builder.div(:class => 'background') do
-          @builder.ol do
-            super
-          end
+          super
         end
+      end
+
+      def visit_background_name(keyword, name, file_colon_line, source_indent)
+        @builder.h3("#{keyword} #{name}")
       end
 
       def visit_feature_element(feature_element)
@@ -87,8 +89,8 @@ module Cucumber
         end
       end
 
-      def visit_step_name(keyword, step_match, status, source_indent)
-        step_name = format_args(lambda{|param| "<span>#{param}</span>"})
+      def visit_step_name(keyword, step_match, status, source_indent, background)
+        step_name = step_match.format_args(lambda{|param| "<span>#{param}</span>"})
         @builder.li("#{keyword} #{step_name}", :class => status)
       end
 
@@ -104,9 +106,9 @@ module Cucumber
         end
       end
 
-      def visit_table_row(table_row, status)
+      def visit_table_row(table_row)
         @builder.tr do
-          super(table_row, status)
+          super
         end
       end
 

@@ -24,6 +24,7 @@ module Cucumber
         end
 
         @scenario_outline = ScenarioOutline.new(
+          background=nil,
           Comment.new(""),
           Tags.new(18, []),
           19,
@@ -48,8 +49,6 @@ module Cucumber
           ]
           
         )
-        @background = Background.new
-        @scenario_outline.background = @background
       end
 
       it "should replace all variables and call outline once for each table row" do

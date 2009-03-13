@@ -53,7 +53,8 @@ module Cucumber
         sexp += [comment] if comment
         tags = @tags.to_sexp
         sexp += tags if tags.any?
-        sexp += @background.to_sexp if @background
+        sexp += [@background.to_sexp] if @background
+        sexp += @feature_elements.map{|fe| fe.to_sexp}
         sexp
       end
     end

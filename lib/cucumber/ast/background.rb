@@ -36,6 +36,15 @@ module Cucumber
       def text_length
         @keyword.jlength
       end
+
+      def to_sexp
+        sexp = [:background, @line, @keyword]
+        comment = @comment.to_sexp
+        sexp += [comment] if comment
+        steps = @steps.to_sexp
+        sexp += steps if steps.any?
+        sexp
+      end
     end
   end
 end
