@@ -26,7 +26,7 @@ module Cucumber
         @multiline_arg = false
       end
 
-      def visit_step_name(keyword, step_match, status, source_indent)
+      def visit_step_name(keyword, step_match, status, source_indent, background)
         progress(status) unless status == :outline
       end
 
