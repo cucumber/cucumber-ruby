@@ -49,10 +49,6 @@ module Cucumber
 
     attr_writer :snippet_generator, :options
 
-    def scenario_visited(scenario)
-      scenarios << scenario unless scenarios.index(scenario)
-    end
-    
     def step_visited(step)
       steps << step unless steps.index(step)
     end
@@ -105,38 +101,8 @@ module Cucumber
       (@world_procs ||= []) << proc
     end
 
-    # Creates a new world instance
-    def new_world!
-      @current_world = Object.new
-      (@world_procs ||= []).each do |proc|
-        @current_world = proc.call(@current_world)
-      end
-
-      @current_world.extend(World)
-      @current_world.__cucumber_step_mother = self
-
-      @current_world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
-      @current_world
-    end
-
     def current_world
       @current_world
-    end
-
-    def nil_world!
-      @current_world = nil
-    end
-
-    def execute_before(scenario)
-      (@before_procs ||= []).each do |proc|
-        @current_world.cucumber_instance_exec(false, 'Before', scenario, &proc)
-      end
-    end
-
-    def execute_after(scenario)
-      (@after_procs ||= []).each do |proc|
-        @current_world.cucumber_instance_exec(false, 'After', scenario, &proc)
-      end
     end
 
     def step_match(step_name, formatted_step_name=nil)
@@ -177,7 +143,54 @@ module Cucumber
       @snippet_generator.snippet_text(step_keyword, step_name)
     end
 
+    def before_and_after(scenario, skip=false)
+      unless current_world || skip
+        new_world!
+        execute_before(scenario)
+      end
+      if block_given?
+        yield
+        execute_after(scenario) unless skip
+        nil_world!
+        scenario_visited(scenario)
+      end
+    end
+
     private
+
+    # Creates a new world instance
+    def new_world!
+      @current_world = Object.new
+      (@world_procs ||= []).each do |proc|
+        @current_world = proc.call(@current_world)
+      end
+
+      @current_world.extend(World)
+      @current_world.__cucumber_step_mother = self
+
+      @current_world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
+      @current_world
+    end
+
+    def nil_world!
+      @current_world = nil
+    end
+
+    def execute_before(scenario)
+      (@before_procs ||= []).each do |proc|
+        @current_world.cucumber_instance_exec(false, 'Before', scenario, &proc)
+      end
+    end
+
+    def execute_after(scenario)
+      (@after_procs ||= []).each do |proc|
+        @current_world.cucumber_instance_exec(false, 'After', scenario, &proc)
+      end
+    end
+
+    def scenario_visited(scenario)
+      scenarios << scenario unless scenarios.index(scenario)
+    end
 
     def options
       @options || {}

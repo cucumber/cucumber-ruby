@@ -24,8 +24,7 @@ module Cucumber
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_background_name(@keyword, "", file_colon_line(@line), source_indent(text_length))
-        visitor.step_mother.new_world!
-        visitor.step_mother.execute_before(self)
+        visitor.step_mother.before_and_after(self)
         visitor.visit_steps(@step_invocations)
         @failed = @step_invocations.detect{|step_invocation| step_invocation.exception}
       end

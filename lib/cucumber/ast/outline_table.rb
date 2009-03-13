@@ -37,7 +37,7 @@ module Cucumber
 
       class ExampleCells < Cells
         def create_step_invocations!(scenario_outline)
-          @step_invocations = scenario_outline.invocations(self)
+          @step_invocations = scenario_outline.step_invocations(self)
         end
         
         def descend?(visitor)
@@ -57,21 +57,16 @@ module Cucumber
               visitor.visit_table_cell(cell)
             end
           else
-            visitor.step_mother.new_world! unless visitor.step_mother.current_world
-            visitor.step_mother.execute_before(self)
+            visitor.step_mother.before_and_after(self) do
+              @step_invocations.each do |step_invocation|
+                step_invocation.invoke(visitor.step_mother, visitor.options)
+                @exception ||= step_invocation.exception
+              end
 
-            @step_invocations.each do |step_invocation|
-              step_invocation.invoke(visitor.step_mother, visitor.options)
-              @exception ||= step_invocation.exception
+              @cells.each do |cell|
+                visitor.visit_table_cell(cell)
+              end
             end
-
-            @cells.each do |cell|
-              visitor.visit_table_cell(cell)
-            end
-
-            visitor.step_mother.execute_after(self)
-            visitor.step_mother.nil_world!
-            visitor.step_mother.scenario_visited(self)
           end
         end
 
