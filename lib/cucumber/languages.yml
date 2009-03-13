@@ -31,10 +31,13 @@
   native: العربية
   encoding: UTF-8
   feature: خاصية
+  background: الخلفية
   scenario: سيناريو
+  scenario_outline: سيناريو مخطط
+  examples: امثلة
   given: بفرض
-  when: متى
-  then: اذاً
+  when: متى|عندما
+  then: اذاً|ثم
   and: و
   but: لكن
 "cy":
