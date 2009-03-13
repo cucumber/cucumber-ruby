@@ -154,6 +154,7 @@
   native: suomi
   encoding: UTF-8
   feature: Ominaisuus
+  background: Tausta
   scenario: Tapaus
   scenario_outline: Tapausaihio
   examples: Tapaukset
