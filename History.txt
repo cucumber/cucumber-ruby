@@ -2,8 +2,8 @@
 
 This is a major rewrite of Cucumber's internals. The rewrite was done to address technical
 debt and to have a code base that is easier to evolve and maintain. There are some major
-changes to the Gherkin language, so this release is not fully backwards compatible. You
-may have to edit your feature files a little. Most importantly, "GivenScenario" and 
+changes to the Gherkin language, so this release is not fully backwards compatible with the 0.1.x series. 
+You may have to edit your feature files a little. Most importantly, "GivenScenario" and 
 "More Examples" no longer exist. See the "Removed features" section below for more details
 on how to use alternatives.
 
@@ -79,6 +79,10 @@ pure Ruby users have been enjoying for a while.
 ** Full jar and simple jar
 
 == Bugfixes
+* --strict always exits with status 1 (#230 Tim Cuthbertson)
+* Fix error with nil values in tables raising an exception (#227 Joseph Wilk)
+* Add support for using << in formatters to ensure the html formatter works (#210 Joseph Wilk)
+* Explicitly require env.rb files first to avoid potential load order problems. (#213, Ben Mabey, Randy Harmon)
 * Depend on polyglot version (0.2.4) to avoid masking require errors. (Aslak Hellesøy).
 * -n option does not suppress the line info for a Scenario Outline (#175 Aslak Hellesøy)
 * Errors with rspec-rails matchers in cucumber 0.1.99 (#173 David Chelimsky)
@@ -92,6 +96,20 @@ pure Ruby users have been enjoying for a while.
 * Pending steps in > steps called from steps (#65 Aslak Hellesøy)
 
 === New features
+* Added Table#transpose to to allow use of vertically aligned table keys (Torbjørn Vatn, Aslak Hellesøy)
+* Added Table#map_headers to to allow use of more readable headers (Rob Holland)
+* New -S/--step-definitions option. Useful (among other things) for tools that implement automcompletion. (#208 Aslak Hellesøy).
+* The cucumber.rake file defines a dummy :features task if Cucumber is not installed (#225 Josh Nichols)
+* Added map_column! to AST tables to ease casting of cell values into relevant types (#223 Rob Holland)
+  Given /^an expense report for (.*) with the following posts:$/ do |date, posts_table|
+    posts_table.map_column!('amount') { |a| a.to_i }
+    posts_table.hashes.each do |post|
+      # post['amount'] is a Fixnum, rather than a String
+    end
+  end
+  Mapping a column which is not specified in the table will produce an error unless you explicitly pass a 2nd false argument. This is to allow different Scenarios to re-use the step definition with different table columns.
+* New --no-diff option (#218 Bryan Ash)
+* Rails generators supports testunit and rspec option, defaulting to rspec (#217 Josh Nichols)
 * Sinatra Example (#204 Rob Holland)
 * Keywords can be aliased in languages.yml. See English for an example (examples: Examples|Scenarios)
 * Adding support for Background (#153 Joseph Wilk) 

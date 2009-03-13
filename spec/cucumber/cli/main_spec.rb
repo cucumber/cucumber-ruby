@@ -1,18 +1,30 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'yaml'
+require 'spec/expectations/differs/default'
 
 module Cucumber
 module Cli
   describe Main do
-    
     before(:each) do
+      @out = StringIO.new
       Kernel.stub!(:exit).and_return(nil)
+    end
+
+    it "should print step definitions" do
+      step_mother = Object.new.extend(StepMother)
+      step_mother.Given(/Bonjour/) {}
+      step_mother.Given(/Monde/) {}
+      @cli = Main.new(%w{-S}, @out)
+      @cli.execute!(step_mother)
+      @out.string.should == %{
+/Bonjour/ # spec/cucumber/cli/main_spec.rb:15
+/Monde/   # spec/cucumber/cli/main_spec.rb:16
+}.lstrip
     end
 
     describe "verbose mode" do
       
       before(:each) do
-        @out = StringIO.new
         @empty_feature = Ast::Feature.new(Ast::Comment.new(''), Ast::Tags.new(2, []), "Feature", [])
         Dir.stub!(:[])
       end
@@ -35,6 +47,35 @@ module Cli
         @cli.execute!(Object.new.extend(StepMother))
 
         @out.string.should include('example.feature')
+      end
+      
+    end
+
+    describe "diffing" do
+
+      before :each do
+        @configuration = mock('Configuration', :null_object => true, :print_step_definitions? => nil)
+        Configuration.should_receive(:new).and_return(@configuration)
+        
+        @step_mother = mock('StepMother', :null_object => true)
+        
+        @cli = Main.new(nil, @out)
+      end
+      
+      it "uses Spec Differ::Default when diff is enabled" do
+        @configuration.should_receive(:diff_enabled?).and_return(true)
+        
+        ::Spec::Expectations::Differs::Default.should_receive(:new)
+        
+        @cli.execute!(@step_mother)
+      end
+      
+      it "does not use Spec Differ::Default when diff is disabled" do
+        @configuration.should_receive(:diff_enabled?).and_return(false)
+        
+        ::Spec::Expectations::Differs::Default.should_not_receive(:new)
+        
+        @cli.execute!(@step_mother)
       end
       
     end
@@ -128,9 +169,7 @@ module Cli
         before(:each) do
           @out = StringIO.new
           @error = StringIO.new
-          @cli = Main.new(@out, @error)
-          
-          @cli.parse_options!(%w{--format invalid})
+          @cli = Main.new(%w{--format invalid}, @out, @error)
         end
 
         xit "should display a format error" do
@@ -144,7 +183,7 @@ module Cli
         xit "should display --help" do
           Kernel.stub!(:exit)
 
-          @cli.execute!(stub('step mother'))
+          @cli.execute!(Object.new.extend(StepMother))
           
           @out.string.should include("Usage: cucumber")
         end
