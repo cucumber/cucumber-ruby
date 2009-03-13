@@ -112,12 +112,14 @@
   but: Kuid
 # Finnish
 "fi":
+  name: Finnish
+  native: suomi
+  encoding: UTF-8
   feature: Ominaisuus
+  background: Tausta
   scenario: Tapaus
   scenario_outline: Tapausaihio
   examples: Tapaukset
-  more_examples: Lisätapaukset
-  given_scenario: Oletetaan tapaus
   given: Oletetaan
   when: Kun
   then: Niin
