@@ -48,7 +48,7 @@ module Cucumber
         :failed    => 'F',
         :undefined => 'U',
         :pending   => 'P',
-        :skipped   => '#'
+        :skipped   => '-'
       }
 
       def progress(status)

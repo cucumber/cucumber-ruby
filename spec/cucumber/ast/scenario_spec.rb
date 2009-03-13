@@ -18,6 +18,7 @@ module Cucumber
 
       it "should skip steps when previous is not passed" do
         scenario = Scenario.new(
+          background=nil,
           comment=Comment.new(""),
           tags=Tags.new(98, []), 
           line=99,
@@ -27,22 +28,22 @@ module Cucumber
             Step.new(7, "Given", "this is missing"),
             Step.new(8, "Given", "y is 5")
           ])
-        scenario.background = Background.new
         @visitor.visit_feature_element(scenario)
 
         $y.should == nil
       end
 
       it "should be at exact line" do
-        s = Scenario.new(comment=Comment.new(""), 
+        s = Scenario.new(background=nil, comment=Comment.new(""), 
           tags=Tags.new(44, []), 45, keyword="", name="", steps=[])
 
-        s.should be_at_lines([44])
-        s.should be_at_lines([45])
+        s.should be_matches_lines([44])
+        s.should be_matches_lines([45])
       end
 
       it "should be at line if tags or steps are" do
         s = Scenario.new(
+          background=nil,
           comment=Comment.new(""), 
           tags=Tags.new(43, []), 
           line=45,
@@ -55,9 +56,9 @@ module Cucumber
           ]
         )
 
-        s.should be_at_lines([43])
-        s.should be_at_lines([47])
-        s.should_not be_at_lines([49])
+        s.should be_matches_lines([43])
+        s.should be_matches_lines([47])
+        s.should_not be_matches_lines([49])
       end
     end
   end

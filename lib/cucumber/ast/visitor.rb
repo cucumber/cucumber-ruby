@@ -6,6 +6,7 @@ module Cucumber
       attr_reader :step_mother
 
       def initialize(step_mother)
+        @options = {}
         @step_mother = step_mother
         @current_feature_lines = []
       end
@@ -19,15 +20,18 @@ module Cucumber
       end
 
       def included_by_tags?(node)
-        options[:include_tags].empty? || node.has_tags?(options[:include_tags])
+        tags = options[:include_tags] || []
+        tags.empty? || node.has_tags?(tags)
       end
 
       def excluded_by_tags?(node)
-        options[:exclude_tags].any? && node.has_tags?(options[:exclude_tags])
+        tags = options[:exclude_tags] || []
+        tags.any? && node.has_tags?(tags)
       end
 
       def matches_scenario_names?(node)
-        options[:scenario_names].empty? || node.matches_scenario_names?(options[:scenario_names])
+        scenario_names = options[:exclude_tags] || []
+        scenario_names.empty? || node.matches_scenario_names?(scenario_names)
       end
 
       def visit_features(features)
