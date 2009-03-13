@@ -34,8 +34,13 @@ module Cucumber
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(text_length))
 
-        skip_invoke! if @background && @background.failed?
+        skip = @background && @background.failed?
+        skip_invoke! if skip
+        visitor.step_mother.new_world! unless visitor.step_mother.current_world || skip
+        visitor.step_mother.execute_before(self) unless skip
         visitor.visit_steps(@steps)
+        visitor.step_mother.execute_after(self) unless skip
+        visitor.step_mother.nil_world!
         visitor.step_mother.scenario_visited(self)
       end
 

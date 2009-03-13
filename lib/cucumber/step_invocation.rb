@@ -1,7 +1,8 @@
 module Cucumber
   class StepInvocation
     attr_writer :step_collection, :background
-    attr_reader :name, :matched_cells, :exception, :status
+    attr_reader :name, :matched_cells, :status
+    attr_accessor :exception
 
     def initialize(step, name, multiline_arg, matched_cells)
       @step, @name, @multiline_arg, @matched_cells = step, name, multiline_arg, matched_cells
@@ -26,6 +27,7 @@ module Cucumber
       unless @skip_invoke || options[:dry_run] || exception || previous.exception
         @skip_invoke = true
         begin
+          step_mother.current_world.__cucumber_current_step = self
           @step.invoke(@step_match, step_mother.current_world)
           status!(:passed)
         rescue Pending => e

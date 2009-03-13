@@ -63,7 +63,10 @@ module Cucumber
       def visit_background(background)
         background.accept(self)
       end
-      
+
+      def visit_background_name(keyword, name, file_colon_line, source_indent)
+      end
+
       def visit_examples(examples)
         examples.accept(self)
       end
@@ -86,7 +89,7 @@ module Cucumber
         step.accept(self)
       end
 
-      def visit_step_name(keyword, step_match, status, source_indent)
+      def visit_step_name(keyword, step_match, status, source_indent, background)
       end
 
       def visit_multiline_arg(multiline_arg)
