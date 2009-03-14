@@ -31,10 +31,13 @@
   native: العربية
   encoding: UTF-8
   feature: خاصية
+  background: الخلفية
   scenario: سيناريو
+  scenario_outline: سيناريو مخطط
+  examples: امثلة
   given: بفرض
-  when: متى
-  then: اذاً
+  when: متى|عندما
+  then: اذاً|ثم
   and: و
   but: لكن
 "cy":
@@ -110,6 +113,7 @@
   native: Texan
   encoding: UTF-8
   feature: Feature
+  background: Background
   scenario: Scenario
   scenario_outline: Scenario Outline
   examples: Examples
@@ -137,7 +141,10 @@
   native: eesti keel
   encoding: UTF-8
   feature: Omadus
+  background: Taust
   scenario: Stsenaarium
+  scenario_outline: Raamstsenaarium
+  examples: Juhtumid
   given: Eeldades
   when: Kui
   then: Siis
@@ -148,6 +155,7 @@
   native: suomi
   encoding: UTF-8
   feature: Ominaisuus
+  background: Tausta
   scenario: Tapaus
   scenario_outline: Tapausaihio
   examples: Tapaukset
@@ -165,7 +173,7 @@
   scenario: Scénario
   scenario_outline: Plan du Scénario
   examples: Exemples
-  given: Etant donné
+  given: Soit
   when: Lorsque
   then: Alors
   and: Et
@@ -198,10 +206,12 @@
 "ja":
   name: Japanese
   native: 日本語
-  encoding: Shift_JIS
+  encoding: UTF-8
   feature: フィーチャ
+  background: 背景
   scenario: シナリオ
-  more_examples: 他のサンプル
+  scenario_outline: シナリオテンプレート|テンプレ|シナリオテンプレ
+  examples: 例|サンプル
   given: 前提
   when: もし
   then: ならば
@@ -293,15 +303,18 @@
   but: Dar
 "ru":
   name: Russian
-  native: русский язык
+  native: русский
   encoding: UTF-8
   feature: Функционал
+  background: Предыстория
   scenario: Сценарий
-  given: Сначала
+  scenario_outline: Структура сценария
+  examples: Значения
+  given: Допустим
   when: Если
   then: То
-  and: И
-  but: Но
+  and: И|К тому же
+  but: Но|А
 "se":
   name: Swedish
   native: Svenska
@@ -318,14 +331,31 @@
   but: Men
 "zh-CN":
   name: Chinese simplified
-  native: 中文
+  native: 简体中文
   encoding: UTF-8
   feature: 功能
+  background: 背景
   scenario: 场景
+  scenario_outline: 场景大纲
+  examples: 例子
   given: 假如
   when: 当
   then: 那么
   and: 而且
+  but: 但是
+"zh-TW":
+  name: Chinese traditional
+  native: 繁體中文
+  encoding: UTF-8
+  feature: 功能
+  background: 背景
+  scenario: 場景|劇本
+  scenario_outline: 場景大綱|劇本大綱
+  examples: 例子
+  given: 假設
+  when: 當
+  then: 那麼
+  and: 而且|並且
   but: 但是
 "ko":
   name: Korean

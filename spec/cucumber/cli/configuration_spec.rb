@@ -17,14 +17,27 @@ module Cli
 
     it "should require files in support paths first" do
       File.stub!(:directory?).and_return(true)
-      Dir.stub!(:[]).and_return(["/features/step_definitions/foo.rb","/features/support/env.rb"])
+      Dir.stub!(:[]).and_return(["/features/step_definitions/foo.rb","/features/support/bar.rb"])
+      
+      config = Configuration.new(StringIO.new)
+      config.parse!(%w{--require /features})
+
+      config.files_to_require.should == [
+        "/features/support/bar.rb",
+        "/features/step_definitions/foo.rb"
+      ]
+    end
+
+    it "should require env.rb files first" do
+      File.stub!(:directory?).and_return(true)
+      Dir.stub!(:[]).and_return(["/features/support/a_file.rb","/features/support/env.rb"])
       
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--require /features})
 
       config.files_to_require.should == [
         "/features/support/env.rb",
-        "/features/step_definitions/foo.rb"
+        "/features/support/a_file.rb"
       ]
     end
     
@@ -150,7 +163,7 @@ END_OF_MESSAGE
 
       config.options[:verbose].should be_true
     end
-        
+
     it "should accept --out option" do
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--out jalla.txt})
@@ -216,6 +229,22 @@ END_OF_MESSAGE
       end
     end
     
+    describe "diff output" do
+
+      it "is enabled by default" do
+        config = Configuration.new
+        config.diff_enabled?.should be_true
+      end
+      
+      it "is disabled when the --no-diff option is supplied" do
+        config = Configuration.new
+        config.parse!(%w{--no-diff})
+
+        config.diff_enabled?.should be_false
+      end
+        
+    end
+
     it "should accept multiple --scenario options" do
       config = Configuration.new
       config.parse!(['--scenario', "User logs in", '--scenario', "User signs up"])

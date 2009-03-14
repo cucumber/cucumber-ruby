@@ -83,5 +83,12 @@ module Cucumber
       @proc.file_colon_line
     end
 
+    def text_length
+      @regexp.inspect.jlength
+    end
+
+    def to_s(indent = 0)
+      @regexp.inspect + (' # ').indent(indent) + file_colon_line
+    end
   end
 end
