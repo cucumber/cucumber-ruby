@@ -114,7 +114,7 @@ module Cucumber
       def visit_table_cell_value(value, width, status)
       end
 
-      def visit_exception(exception)
+      def visit_exception(exception, status)
       end
     end
   end

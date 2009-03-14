@@ -19,7 +19,7 @@ module Cucumber
 
     def accept(visitor)
       invoke(visitor.step_mother, visitor.options)
-      @step.visit_step_details(visitor, @step_match, @multiline_arg, status, @exception, @background)
+      @step.visit_step_details(visitor, @step_match, @multiline_arg, @status, @exception, @background)
     end
 
     def invoke(step_mother, options)
@@ -33,6 +33,9 @@ module Cucumber
         rescue Pending => e
           failed(e, false)
           status!(:pending)
+        rescue Undefined => e
+          failed(e, false)
+          status!(:undefined)
         rescue Exception => e
           failed(e, false)
           status!(:failed)
@@ -64,6 +67,7 @@ module Cucumber
 
     def status!(status)
       @status = status
+      @multiline_arg.status = status if @multiline_arg
       @matched_cells.each do |cell|
         cell.status = status
       end

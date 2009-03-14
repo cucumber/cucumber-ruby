@@ -19,6 +19,7 @@ module Cucumber
         args = (matched_args + multiline_arguments)
         step_definition.execute(name, self, *args)
       rescue Exception => e
+        e.nested! if Undefined === e
         @__cucumber_current_step.exception = e
         raise e
       end
