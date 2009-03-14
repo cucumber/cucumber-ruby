@@ -6,22 +6,19 @@ module Cucumber
     describe Table do
       before do
         @table = Table.new([
-          %w{1 22 333},
+          %w{one four seven},
           %w{4444 55555 666666}
         ])
-        @table.extend(Module.new{
-          attr_reader :raw
-        })
         def @table.cells_rows; super; end
         def @table.columns; super; end
       end
 
       it "should have rows" do
-        @table.cells_rows[0].map{|cell| cell.value}.should == %w{1 22 333}
+        @table.cells_rows[0].map{|cell| cell.value}.should == %w{one four seven}
       end
 
       it "should have columns" do
-        @table.columns[1].map{|cell| cell.value}.should == %w{22 55555}
+        @table.columns[1].map{|cell| cell.value}.should == %w{four 55555}
       end
 
       it "should have same cell objects in rows and columns" do
@@ -35,8 +32,53 @@ module Cucumber
 
       it "should be convertible to an array of hashes" do
         @table.hashes.should == [
-          {'1' => '4444', '22' => '55555', '333' => '666666'}
+          {'one' => '4444', 'four' => '55555', 'seven' => '666666'}
         ]
+      end
+
+      it "should accept symbols as keys for the hashes" do
+        @table.hashes.first[:one].should == '4444'
+      end
+
+      it "should allow map'ing columns" do
+        @table.map_column!('one') { |v| v.to_i }
+        @table.hashes.first['one'].should == 4444
+      end
+
+      it "should pass silently if a mapped column does not exist in non-strict mode" do
+        lambda {
+          @table.map_column!('two', false) { |v| v.to_i }
+        }.should_not raise_error
+      end
+
+      it "should fail if a mapped column does not exist in strict mode" do
+        lambda {
+          @table.map_column!('two', true) { |v| v.to_i }
+        }.should raise_error('The column named "two" does not exist')
+      end
+
+      describe ".transpose" do
+        before(:each) do
+          @table = Table.new([
+            %w{one 1111},
+            %w{two 22222}
+          ])
+        end
+                
+        it "should be convertible in to an array where each row is a hash" do 
+          @table.transpose.hashes[0].should == {'one' => '1111', 'two' => '22222'}
+        end
+      end
+        
+      it "should allow renaming columns" do
+        table2 = @table.map_headers('one' => :three)
+        table2.hashes.first[:three].should == '4444'
+      end
+
+      it "should copy column mappings when mapping headers" do
+        @table.map_column!('one') { |v| v.to_i }
+        table2 = @table.map_headers('one' => 'three')
+        table2.hashes.first['three'].should == 4444
       end
 
       describe "replacing arguments" do
@@ -54,11 +96,27 @@ module Cucumber
           table_with_replaced_args.hashes[0]['book'].should == 'Unbearable lightness of being'
           table_with_replaced_args.hashes[0]['qty'].should == '5'
         end
-      
+
+        it "should replace nil values with nil" do
+          table_with_replaced_args = @table.arguments_replaced({'<book>' => nil})
+
+          table_with_replaced_args.hashes[0]['book'].should == nil
+        end
+
         it "should not change the original table" do
-          table_with_replaced_args = @table.arguments_replaced({'<book>' => 'Unbearable lightness of being'})
-          
+          @table.arguments_replaced({'<book>' => 'Unbearable lightness of being'})
+
           @table.hashes[0]['book'].should_not == 'Unbearable lightness of being'
+        end
+
+        it "should not raise an error when there are nil values in the table" do
+          table = Table.new([
+                              ['book'],
+                              [nil]
+                            ])
+          lambda{ 
+            table.arguments_replaced({'<book>' => 'The great sheep chase'})
+          }.should_not raise_error
         end
 
       end
@@ -67,9 +125,9 @@ module Cucumber
         @table.to_sexp.should == 
           [:table, 
             [:row, 
-              [:cell, "1"], 
-              [:cell, "22"],
-              [:cell, "333"]
+              [:cell, "one"], 
+              [:cell, "four"],
+              [:cell, "seven"]
             ],
             [:row, 
               [:cell, "4444"], 
