@@ -45,15 +45,12 @@ module Cucumber
       alias_steps(keywords)
     end
     
-    # Sets up additional aliases for Given, When and Then.
-    # Try adding the following to your <tt>support/env.rb</tt>:
+    # Sets up additional method aliases for Given, When and Then.
+    # This does *not* affect how feature files are parsed. If you
+    # want to create aliases in the parser, you have to do this in
+    # languages.yml. For example:
     #
-    #   # Given When Then in Norwegian
-    #   Cucumber.alias_steps %w{Gitt Naar Saa}
-    #
-    # You cannot use special characters here, because methods
-    # with special characters is not valid Ruby code
-    #
+    # and: And|With
     def alias_steps(keywords)
       keywords.each do |adverb|
         StepMother.alias_adverb(adverb)

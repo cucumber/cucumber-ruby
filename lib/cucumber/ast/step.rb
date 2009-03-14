@@ -43,7 +43,7 @@ module Cucumber
       def visit_step_details(visitor, step_match, multiline_arg, status, exception, background)
         visitor.visit_step_name(@keyword, step_match, status, source_indent, background)
         visitor.visit_multiline_arg(@multiline_arg) if @multiline_arg
-        visitor.visit_exception(exception) if exception
+        visitor.visit_exception(exception, status) if exception
       end
 
       def first_match(visitor)

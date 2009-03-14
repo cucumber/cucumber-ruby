@@ -130,7 +130,6 @@ module Cucumber
         @skip_step = @step_matches.index(step_match) || non_failed_background_step_outside_background
         
         unless(@skip_step)
-          @status = status
           source_indent = nil unless @options[:source]
           formatted_step_name = format_step(keyword, step_match, status, source_indent)
           @io.puts("    " + formatted_step_name)
@@ -143,9 +142,9 @@ module Cucumber
         super
       end
 
-      def visit_exception(exception)
+      def visit_exception(exception, status)
         return if @skip_step
-        print_exception(exception, @indent)
+        print_exception(exception, status, @indent)
         @io.flush
       end
 
@@ -153,13 +152,13 @@ module Cucumber
         @io.print @delim.indent(@indent)
         super
         @io.puts
-        print_exception(table_row.exception, @indent) if table_row.exception
+        print_exception(table_row.exception, :failed, @indent) if table_row.exception
       end
 
-      def visit_py_string(string)
+      def visit_py_string(string, status)
         s = "\"\"\"\n#{string}\n\"\"\"".indent(@indent)
         s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}.join("\n")
-        @io.puts(format_string(s, @status))
+        @io.puts(format_string(s, status))
         @io.flush
       end
 

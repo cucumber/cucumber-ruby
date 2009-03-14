@@ -10,6 +10,14 @@ module Cucumber
       super %{Undefined step: "#{step_name}"}
       @step_name = step_name
     end
+    
+    def nested!
+      @nested = true
+    end
+
+    def nested?
+      @nested
+    end
   end
 
   # Raised when a StepDefinition's block invokes World#pending

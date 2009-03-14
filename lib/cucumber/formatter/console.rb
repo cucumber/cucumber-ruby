@@ -41,7 +41,7 @@ module Cucumber
 
         elements.each_with_index do |element, i|
           if status == :failed
-            print_exception(element.exception, 0)
+            print_exception(element.exception, status, 0)
           else
             @io.puts(format_string(element.backtrace_line, status))
           end
@@ -62,9 +62,9 @@ module Cucumber
         end
       end
 
-      def print_exception(e, indent)
-        if @options[:strict] || !(Undefined === e)
-          @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), :failed))
+      def print_exception(e, status, indent)
+        if @options[:strict] || !(Undefined === e) || e.nested?
+          @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
         end
       end
 
