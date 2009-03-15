@@ -25,9 +25,9 @@ module Cucumber
       end
     end
     
-    def table(text, file=nil, line=0)
+    def table(text, file=nil, line_offset=0)
       @table_parser ||= Parser::TableParser.new
-      @table_parser.parse_or_fail(text.strip, file, line)
+      @table_parser.parse_or_fail(text.strip, file, line_offset)
     end
 
     def pending(message = "TODO")

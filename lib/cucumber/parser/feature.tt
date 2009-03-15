@@ -43,7 +43,7 @@ module Cucumber
       end
 
       rule tag
-        '@' tag_name:([^@\n\t ])+
+        '@' tag_name:([^@\r\n\t ])+
       end
 
       rule comment
@@ -80,7 +80,7 @@ module Cucumber
       end
 
       rule scenario
-        comment tags white scenario_keyword space* name:line_to_eol (white / eof) steps white {
+        comment tags white scenario_keyword space* name:line_to_eol white steps white {
           def build(background)
             Ast::Scenario.new(
               background,

@@ -94,7 +94,7 @@ Feature: hi
     Given Pepper
 
 @st3 
-   @st4 @ST5 @#^%&ST6**!
+   @st4    @ST5  @#^%&ST6**!
   Scenario: Second}).to_sexp.should ==
           [:feature, "Feature: hi",
             [:comment, "# FC\n  "],

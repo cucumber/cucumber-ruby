@@ -35,6 +35,17 @@ module Cucumber
         feature.lines = lines
         feature
       end
+
+      def parse_or_fail(s, file=nil, line_offset=0)
+        parse_tree = parse(s)
+        if parse_tree.nil?
+          raise Cucumber::Parser::SyntaxError.new(self, file, line_offset)
+        else
+          ast = parse_tree.build
+          ast.file = file
+          ast
+        end
+      end
     end
 
     class SyntaxError < StandardError
@@ -59,17 +70,6 @@ module Treetop
     
     class CompiledParser
       include Cucumber::Parser::TreetopExt
-      
-      def parse_or_fail(s, file=nil, line=0)
-        parse_tree = parse(s)
-        if parse_tree.nil?
-          raise Cucumber::Parser::SyntaxError.new(self, file, line)
-        else
-          ast = parse_tree.build
-          ast.file = file
-          ast
-        end
-      end
     end
   end
 end
