@@ -23,65 +23,58 @@ if defined?(JRUBY_VERSION)
         def initialize(jbehave_steps, jbehave_candidate_step)
           @jbehave_steps = jbehave_steps
           @jbehave_candidate_step = jbehave_candidate_step
+          @regexp = Regexp.new(jbehave_candidate_step.pattern.pattern)
         end
-      
-        def match(step_name)
-          full_text = "Given #{step_name}" # JBehave doesn't distinguish GWT internally :-)
-          @jbehave_candidate_step.matches(full_text)
+
+        def step_match(name_to_match, name_to_report)
+          if(match = name_to_match.match(@regexp))
+            StepMatch.new(self, name_to_match, name_to_report, match.captures)
+          else
+            nil
+          end
         end
-      
+
         def file_colon_line
           @jbehave_steps.java_class.name
         end
 
         def format_args(step_name, format)
-          java_pattern = @jbehave_candidate_step.pattern.pattern
-          regexp = Regexp.new(java_pattern)
-          step_name.gzub(regexp, format)
+          step_name.gzub(@regexp, format)
         end
 
-        def matched_args(step_name)
-          java_pattern = @jbehave_candidate_step.pattern.pattern
-          regexp = Regexp.new(java_pattern)
-          step_name.match(regexp).captures
-        end
-
-        def execute(step_name, world, *args)
-          step = @jbehave_candidate_step.createFrom("Given #{step_name}")
+        def invoke(world, args, step_name)
+          step = @jbehave_candidate_step.createFrom("Given #{step_name}") # JBehave doesn't care about the adverb.
           result = step.perform
-          result.describeTo(JBehave::REPORTER)
+          result.describeTo(Reporter)
         end
-      end
-
-      class JBehaveException < Exception
       end
 
       # Implements the org.jbehave.scenario.reporters.ScenarioReporter methods
       class Reporter
-        def successful(step_text)
+        def self.successful(step_text)
           # noop
         end
 
-        def failed(step, java_exception)
+        def self.failed(step, java_exception)
           raise java_exception_to_ruby_exception(java_exception)
         end
 
         private
       
-        def java_exception_to_ruby_exception(java_exception)
+        def self.java_exception_to_ruby_exception(java_exception)
           # OK, this is a little funky - JRuby weirdness
           ruby_exception = org.jruby.NativeException.new(JRuby.runtime, JBehaveException, java_exception)
           ruby_exception.set_backtrace([]) # work around backtrace bug in jruby
-        
-          exception = JBehaveException.new(java_exception.getMessage)
+          exception = JBehaveException.new("#{java_exception.getClass.getName}: #{java_exception.getMessage}")
           bt = ruby_exception.backtrace
           Exception.cucumber_strip_backtrace!(bt, nil, nil)
           exception.set_backtrace(bt)
           exception
         end
       end
-    
-      REPORTER = Reporter.new
+
+      class JBehaveException < Exception
+      end
 
       def self.snippet_text(step_keyword, step_name)
         camel = step_name.gsub(/(\s.)/) {$1.upcase.strip}
