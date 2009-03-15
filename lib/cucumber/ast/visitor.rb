@@ -30,7 +30,7 @@ module Cucumber
       end
 
       def matches_scenario_names?(node)
-        scenario_names = options[:exclude_tags] || []
+        scenario_names = options[:scenario_names] || []
         scenario_names.empty? || node.matches_scenario_names?(scenario_names)
       end
 
@@ -100,7 +100,7 @@ module Cucumber
         multiline_arg.accept(self)
       end
 
-      def visit_py_string(string)
+      def visit_py_string(string, status)
       end
 
       def visit_table_row(table_row)
