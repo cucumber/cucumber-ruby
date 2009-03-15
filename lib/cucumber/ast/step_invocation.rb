@@ -94,6 +94,10 @@ module Cucumber
         @step.text_length
       end
 
+      def file_colon_line
+        @step.file_colon_line
+      end
+
       def to_sexp
         [:step_invocation, @step.line, @step.keyword, @name, (@multiline_arg.nil? ? nil : @multiline_arg.to_sexp)].compact
       end
