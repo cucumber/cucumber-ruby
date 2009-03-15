@@ -42,7 +42,7 @@ module Cucumber
       end
     end
 
-    def invoke(world, args)
+    def invoke(world, args, step_name)
       args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
       begin
         world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
@@ -82,16 +82,6 @@ module Cucumber
 
     def matched_args(step_name)
       step_name.match(@regexp).captures
-    end
-
-    def execute(step_name, world, *args) # TODO: unsplat, and call it invoke
-      args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
-      begin
-        world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
-      rescue Cucumber::ArityMismatchError => e
-        e.backtrace.unshift(self.to_backtrace_line)
-        raise e
-      end
     end
 
     def to_backtrace_line

@@ -10,14 +10,10 @@ module Cucumber
     attr_writer :__cucumber_step_mother, :__cucumber_current_step
 
     # Call a step from within a step definition
-    def __cucumber_invoke(name, *multiline_arguments) #:nodoc:
+    def __cucumber_invoke(name, multiline_argument=nil) #:nodoc:
       begin
-        # TODO: Very similar to code in Step. Refactor. Get back StepInvocation?
-        # Make more similar to JBehave?
         step_definition = @__cucumber_step_mother.step_definition(name)
-        matched_args = step_definition.matched_args(name)
-        args = (matched_args + multiline_arguments)
-        step_definition.execute(name, self, *args)
+        step_definition.step_match(name, name).invoke(self, multiline_argument)
       rescue Exception => e
         e.nested! if Undefined === e
         @__cucumber_current_step.exception = e
