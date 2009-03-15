@@ -247,6 +247,7 @@ lib/cucumber/jbehave.rb
 lib/cucumber/languages.yml
 lib/cucumber/parser.rb
 lib/cucumber/parser/basic.rb
+lib/cucumber/parser/feature.rb
 lib/cucumber/parser/feature.tt
 lib/cucumber/parser/i18n.tt
 lib/cucumber/parser/table.rb
