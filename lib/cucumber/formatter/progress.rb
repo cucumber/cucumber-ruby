@@ -12,12 +12,10 @@ module Cucumber
       end
 
       def visit_features(features)
-        with_color do
-          super
-          @io.puts
-          @io.puts
-          print_summary
-        end
+        super
+        @io.puts
+        @io.puts
+        print_summary
       end
 
       def visit_multiline_arg(multiline_arg)

@@ -88,13 +88,6 @@ module Cucumber
 
     private
 
-      def with_color
-        c = Term::ANSIColor.coloring?
-        Term::ANSIColor.coloring = @io.tty?
-        yield
-        Term::ANSIColor.coloring = c
-      end
-
       def dump_count(count, what, state=nil)
         [count, state, "#{what}#{count == 1 ? '' : 's'}"].compact.join(" ")
       end
