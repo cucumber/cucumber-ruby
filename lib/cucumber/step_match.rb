@@ -21,8 +21,8 @@ module Cucumber
       @step_definition.file_colon_line
     end
 
-    def to_backtrace_line
-      @step_definition.to_backtrace_line
+    def backtrace_line
+      @step_definition.backtrace_line
     end
   end
   
@@ -42,7 +42,7 @@ module Cucumber
       @step.file_colon_line
     end
 
-    def to_backtrace_line
+    def backtrace_line
       @step.backtrace_line
     end
   end
