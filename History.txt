@@ -56,23 +56,6 @@ which is a richer DSL than JBehave's language. -Over 20 spoken languages, Tables
 Scenario Outlines, the rich command line, the nice output format and everything 
 pure Ruby users have been enjoying for a while.
 
-== TODO Before 0.2 release
-* Make sure all features and specs pass on Windows, JRuby and Ruby 1.9
-* Wiki page about running subsets
-** file:line
-*** scenario (or step within)
-*** scenario outline
-*** scenario outline examples
-*** line in an example table
-*** background (same as whole file)
-*** fix bugs in any of those cases (there are some)
-** --tags
-*** Link to page about tags
-* Tags with arguments
-* cucumber.jar + examples
-** Remove need for -S cucumber
-** Full jar and simple jar
-
 == Bugfixes
 * Re-structure the ast: Feature -> Background -> (Scenario|ScenarioOutline)*. Fixes bug with background being called outside transactions. (#181 Joseph Wilk)
 * --strict always exits with status 1 (#230 Tim Cuthbertson)
