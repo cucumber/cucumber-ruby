@@ -44,6 +44,7 @@ module Cucumber
         features = load_plain_text_features
 
         visitor = configuration.build_formatter_broadcaster(step_mother)
+        step_mother.visitor = visitor # Needed to support World#announce
         visitor.visit_features(features)
 
         failure = step_mother.steps(:failed).any? || 

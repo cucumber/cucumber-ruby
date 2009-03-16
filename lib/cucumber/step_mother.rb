@@ -55,7 +55,7 @@ module Cucumber
       end
     end
 
-    attr_writer :snippet_generator, :options
+    attr_writer :snippet_generator, :options, :visitor
 
     def step_visited(step)
       steps << step unless steps.index(step)
@@ -180,6 +180,7 @@ module Cucumber
 
       @current_world.extend(World)
       @current_world.__cucumber_step_mother = self
+      @current_world.__cucumber_visitor = @visitor
 
       @current_world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
       @current_world

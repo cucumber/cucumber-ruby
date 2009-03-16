@@ -92,6 +92,7 @@ pure Ruby users have been enjoying for a while.
 * Pending steps in > steps called from steps (#65 Aslak Hellesøy)
 
 === New features
+* Added World#announce(announcment) which lets you output text to the formatted output (#222 Rob Kaufmann)
 * Added Table#transpose to to allow use of vertically aligned table keys (Torbjørn Vatn, Aslak Hellesøy)
 * Added Table#map_headers to to allow use of more readable headers (Rob Holland)
 * New -S/--step-definitions option. Useful (among other things) for tools that implement automcompletion. (#208 Aslak Hellesøy).

@@ -321,4 +321,3 @@ spec/cucumber/treetop_parser/with_tags.feature
 spec/cucumber/world/pending_spec.rb
 spec/spec.opts
 spec/spec_helper.rb
-target/maven-archiver/pom.properties

@@ -116,6 +116,10 @@ module Cucumber
 
       def visit_exception(exception, status)
       end
+
+      def announce(announcement)
+      end
+
     end
   end
 end
