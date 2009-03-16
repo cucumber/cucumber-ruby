@@ -7,7 +7,7 @@ module Cucumber
     #
     # This gets parsed into a Table holding the values <tt>[['a', 'b'], ['c', 'd']]</tt>
     #
-    class Table
+    class Table      
       NULL_CONVERSIONS = Hash.new(lambda{ |cell_value| cell_value }).freeze
 
       attr_accessor :file

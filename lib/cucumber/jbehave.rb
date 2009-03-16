@@ -44,6 +44,8 @@ if defined?(JRUBY_VERSION)
 
         def invoke(world, args, step_name)
           step = @jbehave_candidate_step.createFrom("Given #{step_name}") # JBehave doesn't care about the adverb.
+          step = @jbehave_candidate_step.__send__(:createStep, "Given #{step_name}", args) # JBehave doesn't care about the adverb.
+
           result = step.perform
           result.describeTo(Reporter)
         end
