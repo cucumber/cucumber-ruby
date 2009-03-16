@@ -34,7 +34,7 @@ end
 
 Given /^'(.+)' global cukes$/ do |cukes|
   $scenario_runs ||= 0
-  flunker if $scenario_runs > 0
+  flunker if $scenario_runs >= 1
   $cukes = cukes
   $scenario_runs += 1
 end

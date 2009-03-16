@@ -94,14 +94,15 @@ Feature: hi
     Given Pepper
 
 @st3 
-   @st4 @ST5 @#^%&ST6**!
+   @st4    @ST5  @#^%&ST6**!
   Scenario: Second}).to_sexp.should ==
           [:feature, "Feature: hi",
             [:comment, "# FC\n  "],
             [:tag, "ft"],
             [:scenario, 6, 'Scenario:', 'First',
               [:tag, "st1"], [:tag, "st2"],
-              [:step, 7, "Given", "Pepper"]],
+              [:step_invocation, 7, "Given", "Pepper"]
+            ],
             [:scenario, 11, 'Scenario:', 'Second',
               [:tag, "st3"], [:tag, "st4"], [:tag, "ST5"], [:tag, "#^%&ST6**!"]]]
         end
@@ -135,7 +136,7 @@ Scenario: bar
           parse("Feature: Hi\nScenario: Hello\nGiven I am a step\n").to_sexp.should ==
           [:feature, "Feature: Hi",
             [:scenario, 2, "Scenario:", "Hello",
-              [:step, 3, "Given", "I am a step"]]]
+              [:step_invocation, 3, "Given", "I am a step"]]]
         end
 
         it "should have steps with inline table" do
@@ -146,7 +147,7 @@ Given I have a table
 }).to_sexp.should ==
           [:feature, "Feature: Hi",
             [:scenario, 2, "Scenario:", "Hello",
-              [:step, 3, "Given", "I have a table",
+              [:step_invocation, 3, "Given", "I have a table",
                 [:table,
                   [:row,
                     [:cell, "a"],
@@ -167,7 +168,7 @@ Given I have a string
 }).to_sexp.should ==
           [:feature, "Feature: Hi",
             [:scenario, 2, "Scenario:", "Hello",
-              [:step, 3, "Given", "I have a string",
+              [:step_invocation, 3, "Given", "I have a string",
                 [:py_string, "hello\nworld"]]]]
         end
       end

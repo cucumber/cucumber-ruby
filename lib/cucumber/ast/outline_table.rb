@@ -5,35 +5,67 @@ module Cucumber
         super(raw)
         @scenario_outline = scenario_outline
         @cells_class = ExampleCells
+        
+        cells_rows.each do |cells|
+          cells.create_step_invocations!(scenario_outline)
+        end
       end
 
-      def accept(visitor, status)
+      def accept(visitor)
         cells_rows.each_with_index do |row, n|
-          should_visit = n == 0 || 
-            row.at_lines?(visitor.current_feature_lines) ||
-            @scenario_outline.at_header_or_step_lines?(visitor.current_feature_lines)
-
-          if should_visit
-            visitor.visit_table_row(row, status)
+          if n == 0 || matches?(visitor, row)
+            visitor.visit_table_row(row)
           end
         end
         nil
       end
 
-      def execute_row(cells, visitor, &proc)
-        @scenario_outline.execute_row(cells, visitor, &proc)
+      def descend?(visitor)
+        cells_rows.detect{|cells_row| cells_row.descend?(visitor)}
+      end
+      
+      def matches?(visitor, cells)
+        @scenario_outline.matches_tags_and_name?(visitor) &&
+        (visitor.matches_lines?(cells) || visitor.matches_lines?(@scenario_outline))
+      end
+      
+      def skip_invoke!
+        cells_rows.each do |cells|
+          cells.skip_invoke!
+        end
       end
 
       class ExampleCells < Cells
-        def accept(visitor, status)
+        def create_step_invocations!(scenario_outline)
+          @step_invocations = scenario_outline.step_invocations(self)
+        end
+        
+        def descend?(visitor)
+          @table.matches?(visitor, self)
+        end
+
+        def skip_invoke!
+          @step_invocations.each do |step_invocation|
+            step_invocation.skip_invoke!
+          end
+        end
+
+        def accept(visitor)
           if header?
             @cells.each do |cell|
-              visitor.visit_table_cell(cell, :thead)
+              cell.status = :skipped
+              visitor.visit_table_cell(cell)
             end
-            nil
           else
-            exception = @table.execute_row(self, visitor) do |cell, status|
-              visitor.visit_table_cell(cell, status)
+            visitor.step_mother.before_and_after(self) do
+              @step_invocations.each do |step_invocation|
+                step_invocation.invoke(visitor.step_mother, visitor.options)
+                @exception ||= step_invocation.exception
+              end
+
+              @cells.each do |cell|
+                visitor.visit_table_cell(cell)
+              end
             end
           end
         end

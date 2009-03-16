@@ -19,7 +19,7 @@ module Tag
     def print_summary
       matrix = @counts.to_a.sort{|paira, pairb| paira[0] <=> pairb[0]}.transpose
       table = Cucumber::Ast::Table.new(matrix)
-      Cucumber::Formatter::Pretty.new(@step_mother, @io, {}).visit_multiline_arg(table, :tag)
+      Cucumber::Formatter::Pretty.new(@step_mother, @io, {}).visit_multiline_arg(table)
     end
   end
 end

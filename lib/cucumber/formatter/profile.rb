@@ -17,17 +17,17 @@ module Cucumber
         super
       end
 
-      def visit_step_name(keyword, step_name, status, step_definition, source_indent)
+      def visit_step_name(keyword, step_match, status, source_indent, background)
         duration = Time.now - @step_duration
         super
 
-        if step_definition # nil for outline steps
-          description = format_step(keyword, step_name, status, step_definition, nil)
-          @step_definition_durations[step_definition] << [duration, description, @step.file_line]
+        if step_match.step_definition
+          description = format_step(keyword, step_match, status, nil)
+          @step_definition_durations[step_match.step_definition] << [duration, description, @step.file_colon_line]
         end
       end
 
-      def print_summary(features)
+      def print_summary
         super
         @io.puts "\n\nTop #{NUMBER_OF_STEP_DEFINITONS_TO_SHOW} average slowest steps with #{NUMBER_OF_STEP_INVOCATIONS_TO_SHOW} slowest matches:\n"
 
@@ -60,7 +60,7 @@ module Cucumber
 
       def print_step_definition(step_definition, mean_duration)
         duration = sprintf("%.7f",  mean_duration)
-        @io.puts format_string("#{duration} #{step_definition.to_backtrace_line}", :failed)
+        @io.puts format_string("#{duration} #{step_definition.backtrace_line}", :failed)
       end
 
       def print_step_definitions(duration_description_location, step_definition)

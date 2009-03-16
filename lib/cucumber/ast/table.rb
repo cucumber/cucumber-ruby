@@ -7,7 +7,7 @@ module Cucumber
     #
     # This gets parsed into a Table holding the values <tt>[['a', 'b'], ['c', 'd']]</tt>
     #
-    class Table
+    class Table      
       NULL_CONVERSIONS = Hash.new(lambda{ |cell_value| cell_value }).freeze
 
       attr_accessor :file
@@ -84,15 +84,21 @@ module Cucumber
         cells_rows.each(&proc)
       end
 
-      def at_lines?(lines)
-        cells_rows.detect { |row| row.at_lines?(lines) }
+      def matches_lines?(lines)
+        cells_rows.detect{|row| row.matches_lines?(lines)}
       end
 
-      def accept(visitor, status)
+      def accept(visitor)
         cells_rows.each do |row|
-          visitor.visit_table_row(row, status)
+          visitor.visit_table_row(row)
         end
         nil
+      end
+
+      def status=(status)
+        cells_rows.each do |row|
+          row.status = status
+        end
       end
 
       # For testing only
@@ -152,7 +158,7 @@ module Cucumber
           row.map do |cell|
             cell_with_replaced_args = cell
             arguments.each do |name, value|
-              cell_with_replaced_args = value && !cell.nil? ? cell_with_replaced_args.gsub(name, value) : nil
+              cell_with_replaced_args = value && cell_with_replaced_args ? cell_with_replaced_args.gsub(name, value) : nil
             end
             cell_with_replaced_args
           end
@@ -161,8 +167,14 @@ module Cucumber
         Table.new(raw_with_replaced_args)
       end
 
-      def at_lines?(lines)
-        cells_rows.detect{|row| row.at_lines?(lines)}
+      def cells_rows
+        @rows ||= cell_matrix.map do |cell_row|
+          @cells_class.new(self, cell_row)
+        end
+      end
+
+      def header_cell(col)
+        cells_rows[0][col]
       end
 
       protected
@@ -181,12 +193,6 @@ module Cucumber
 
       def col_width(col)
         columns[col].__send__(:width)
-      end
-
-      def cells_rows
-        @rows ||= cell_matrix.map do |cell_row|
-          @cells_class.new(self, cell_row)
-        end
       end
 
       def columns
@@ -211,14 +217,19 @@ module Cucumber
       # Represents a row of cells or columns of cells
       class Cells
         include Enumerable
+        attr_reader :exception
 
         def initialize(table, cells)
           @table, @cells = table, cells
         end
 
-        def accept(visitor, status)
+        def matches_lines?(lines)
+          lines.index(line)
+        end
+
+        def accept(visitor)
           each do |cell|
-            visitor.visit_table_cell(cell, status)
+            visitor.visit_table_cell(cell)
           end
           nil
         end
@@ -244,8 +255,10 @@ module Cucumber
           @cells[0].line
         end
 
-        def at_lines?(lines)
-          lines.empty? || lines.index(line)
+        def status=(status)
+          each do |cell|
+            cell.status = status
+          end
         end
 
         private
@@ -265,13 +278,19 @@ module Cucumber
 
       class Cell
         attr_reader :value, :line
+        attr_writer :status
 
         def initialize(value, table, row, col, line)
           @value, @table, @row, @col, @line = value, table, row, col, line
+          @status = :passed
         end
 
-        def accept(visitor, status)
-          visitor.visit_table_cell_value(@value, col_width, status)
+        def accept(visitor)
+          visitor.visit_table_cell_value(@value, col_width, @status)
+        end
+
+        def header_cell
+          @table.header_cell(@col)
         end
 
         # For testing only

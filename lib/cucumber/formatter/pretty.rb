@@ -23,7 +23,7 @@ module Cucumber
 
       def visit_features(features)
         super
-        print_summary(features) unless @options[:autoformat]
+        print_summary unless @options[:autoformat]
       end
 
       def visit_feature(feature)
@@ -34,14 +34,10 @@ module Cucumber
           mkdir_p(dir) unless File.directory?(dir)
           File.open(file, Cucumber.file_mode('w')) do |io|
             @io = io
-            with_color do
-              feature.accept(self)
-            end
+            super
           end
         else
-          with_color do
-            feature.accept(self)
-          end
+          super
         end
       end
 
@@ -79,21 +75,22 @@ module Cucumber
 
       def visit_feature_element(feature_element)
         @indent = 2
-        @last_undefined = feature_element.undefined?
-        feature_element.accept(self)
+        super
         @io.puts
         @io.flush
       end
 
-     def visit_background(background)
+      def visit_background(background)
         @indent = 2
-        background_already_visible = background.already_visited_steps?
-        background.accept(self)
-        @io.puts unless background_already_visible
+        @in_background = true
+        super
+        @in_background = nil
+        @io.puts
+        @io.flush
       end
 
-      def visit_examples(examples)
-        examples.accept(self)
+      def visit_background_name(keyword, name, file_colon_line, source_indent)
+        visit_feature_element_name(keyword, name, file_colon_line, source_indent)
       end
 
       def visit_examples_name(keyword, name)
@@ -102,12 +99,15 @@ module Cucumber
         @indent = 4
       end
 
-      def visit_scenario_name(keyword, name, file_line, source_indent)
+      def visit_scenario_name(keyword, name, file_colon_line, source_indent)
+        visit_feature_element_name(keyword, name, file_colon_line, source_indent)
+      end
+
+      def visit_feature_element_name(keyword, name, file_colon_line, source_indent)
         line = "  #{keyword} #{name}"
-        line = format_string(line, :undefined) if @last_undefined
         @io.print(line)
         if @options[:source]
-          line_comment = " # #{file_line}".indent(source_indent)
+          line_comment = " # #{file_colon_line}".indent(source_indent)
           @io.print(format_string(line_comment, :comment))
         end
         @io.puts
@@ -116,27 +116,39 @@ module Cucumber
 
       def visit_step(step)
         @indent = 6
-        exception = step.accept(self)
-        print_exception(exception, @indent) if exception
+        super
       end
 
-      def visit_step_name(keyword, step_name, status, step_definition, source_indent)
-        source_indent = nil unless @options[:source]
-        formatted_step_name = format_step(keyword, step_name, status, step_definition, source_indent)
-        @io.puts("    " + formatted_step_name)
+      def visit_step_name(keyword, step_match, status, source_indent, background)
+        @step_matches ||= []
+        
+        non_failed_background_step_outside_background = !@in_background && background && (status != :failed)
+        @skip_step = @step_matches.index(step_match) || non_failed_background_step_outside_background
+        
+        unless(@skip_step)
+          source_indent = nil unless @options[:source]
+          formatted_step_name = format_step(keyword, step_match, status, source_indent)
+          @io.puts("    " + formatted_step_name)
+        end
+        @step_matches << step_match
+      end
+
+      def visit_multiline_arg(multiline_arg)
+        return if @options[:no_multiline] || @skip_step
+        super
+      end
+
+      def visit_exception(exception, status)
+        return if @skip_step
+        print_exception(exception, status, @indent)
         @io.flush
       end
 
-      def visit_multiline_arg(multiline_arg, status)
-        return if @options[:no_multiline]
-        multiline_arg.accept(self, status)
-      end
-
-      def visit_table_row(table_row, status)
+      def visit_table_row(table_row)
         @io.print @delim.indent(@indent)
-        exception = table_row.accept(self, status)
+        super
         @io.puts
-        print_exception(exception, 6) if exception
+        print_exception(table_row.exception, :failed, @indent) if table_row.exception
       end
 
       def visit_py_string(string, status)
@@ -146,8 +158,8 @@ module Cucumber
         @io.flush
       end
 
-      def visit_table_cell(table_cell, status)
-        table_cell.accept(self, status)
+      def visit_table_cell(table_cell)
+        super
       end
 
       def visit_table_cell_value(value, width, status)
@@ -162,9 +174,9 @@ module Cucumber
 
       private
 
-      def print_summary(features)
-        print_counts(features)
-        print_snippets(features, @options)
+      def print_summary
+        print_counts
+        print_snippets(@options)
       end
 
     end

@@ -4,63 +4,70 @@ require 'cucumber/core_ext/string'
 module Cucumber
   module Ast
     class Step
-      attr_reader :keyword, :name
-      attr_writer :world, :previous, :options
-      attr_accessor :status, :scenario, :exception
+      attr_reader :line, :keyword, :name, :multiline_arg
+      attr_writer :step_collection, :options
+      attr_accessor :feature_element, :exception
 
-      def initialize(line, keyword, name, *multiline_args)
-        @line, @keyword, @name, @multiline_args = line, keyword, name, multiline_args
+      def initialize(line, keyword, name, multiline_arg=nil)
+        @line, @keyword, @name, @multiline_arg = line, keyword, name, multiline_arg
       end
 
-      def execute_with_arguments(argument_hash, world, previous, visitor, row_line)
-        delimited_arguments = delimit_argument_names(argument_hash)
+      def background?
+        false
+      end
+
+      def step_invocation
+        StepInvocation.new(self, @name, @multiline_arg, [])
+      end
+
+      def step_invocation_from_cells(cells)
+        matched_cells = matched_cells(cells)
+
+        delimited_arguments = delimit_argument_names(cells.to_hash)
         name                = replace_name_arguments(delimited_arguments)
-        multiline_args      = replace_multiline_args_arguments(delimited_arguments)
+        multiline_arg       = @multiline_arg.nil? ? nil : @multiline_arg.arguments_replaced(delimited_arguments)
 
-        execute_twin(world, previous, visitor, row_line, name, *multiline_args)
+        StepInvocation.new(self, name, multiline_arg, matched_cells)
       end
-      
-      def execute_as_new(world, previous, visitor, row_line)
-        execute_twin(world, previous, visitor, row_line, @name, *@multiline_args)
+
+      def invoke(step_match, world)
+        step_match.invoke(world, @multiline_arg)
       end
 
       def accept(visitor)
-        execute(visitor)
-
-        if @status == :outline
-          step_definition = find_first_name_and_step_definition_from_examples(visitor)
-        else
-          step_definition = @step_definition
-        end
-        visitor.visit_step_name(@keyword, @name, @status, step_definition, source_indent)
-        @multiline_args.each do |multiline_arg|
-          visitor.visit_multiline_arg(multiline_arg, @status)
-        end
-        @exception
+        # The only time a Step is visited is when it is in a ScenarioOutline.
+        # Otherwise it's always StepInvocation that gest visited instead.
+        visit_step_details(visitor, first_match(visitor), @multiline_arg, :skipped, nil, nil)
+      end
+      
+      def visit_step_details(visitor, step_match, multiline_arg, status, exception, background)
+        visitor.visit_step_name(@keyword, step_match, status, source_indent, background)
+        visitor.visit_multiline_arg(@multiline_arg) if @multiline_arg
+        visitor.visit_exception(exception, status) if exception
       end
 
-      def find_first_name_and_step_definition_from_examples(visitor)
-        # @scenario is always a ScenarioOutline in this case
-        @scenario.each_example_row do |cells|
+      def first_match(visitor)
+        # @feature_element is always a ScenarioOutline in this case
+        @feature_element.each_example_row do |cells|
           argument_hash       = cells.to_hash
           delimited_arguments = delimit_argument_names(argument_hash)
           name                = replace_name_arguments(delimited_arguments)
-          step_definition     = visitor.step_definition(name) rescue nil
-          return step_definition if step_definition
+          step_match          = visitor.step_mother.step_match(name, @name) rescue nil
+          return step_match if step_match
         end
-        nil
+        NoStepMatch.new(self)
       end
 
       def to_sexp
-        [:step, @line, @keyword, @name, *@multiline_args.map{|arg| arg.to_sexp}]
+        [:step, @line, @keyword, @name, (@multiline_arg.nil? ? nil : @multiline_arg.to_sexp)].compact
       end
 
-      def at_lines?(lines)
-        lines.empty? || lines.index(@line) || @multiline_args.detect{|a| a.at_lines?(lines)}
+      def matches_lines?(lines)
+        lines.index(@line) || (@multiline_arg && @multiline_arg.matches_lines?(lines))
       end
 
       def source_indent
-        @scenario.source_indent(text_length)
+        @feature_element.source_indent(text_length)
       end
 
       def text_length
@@ -68,11 +75,11 @@ module Cucumber
       end
 
       def backtrace_line
-        @backtrace_line ||= @scenario.backtrace_line("#{@keyword} #{@name}", @line) unless @scenario.nil?
+        @backtrace_line ||= @feature_element.backtrace_line("#{@keyword} #{@name}", @line) unless @feature_element.nil?
       end
 
-      def file_line
-        @file_line ||= @scenario.file_line(@line) unless @scenario.nil?
+      def file_colon_line
+        @file_colon_line ||= @feature_element.file_colon_line(@line) unless @feature_element.nil?
       end
 
       def actual_keyword
@@ -85,56 +92,25 @@ module Cucumber
 
       protected
 
+      # TODO: Remove when we use StepCollection everywhere
       def previous_step
-        @scenario.previous_step(self)
+        @feature_element.previous_step(self)
       end
 
       private
 
-      def execute(visitor)
-        matched_args = []
-        if @status.nil?
-          begin
-            @step_definition = visitor.step_definition(@name)
-            matched_args = @step_definition.matched_args(@name)
-            if @previous == :passed && !visitor.options[:dry_run]
-              @world.__cucumber_current_step = self
-              @step_definition.execute(@name, @world, *(matched_args + @multiline_args))
-              @status = :passed
-            else
-              @status = :skipped
-            end
-          rescue Undefined => exception
-            if visitor.options[:strict]
-              exception.set_backtrace([])
-              failed(exception)
-            else
-              @status = :undefined
-            end
-          rescue Pending => exception
-            visitor.options[:strict] ? failed(exception) : @status = :pending
-          rescue Exception => exception
-            failed(exception)
-          end
-          @scenario.step_executed(self) if @scenario
+      def matched_cells(cells)
+        cells.select do |cell|
+          @name.index(delimited(cell.header_cell.value))
         end
-        [self, @status, matched_args]
       end
-
-      def execute_twin(world, previous, visitor, line, name, *multiline_args)
-        # We'll create a new step and execute that
-        step = Step.new(line, @keyword, name, *multiline_args)
-        step.scenario = @scenario
-        step.world    = world
-        step.previous = previous
-        step.__send__(:execute, visitor)
-      end
-
-      ARGUMENT_START = '<'
-      ARGUMENT_END   = '>'
 
       def delimit_argument_names(argument_hash)
-        argument_hash.inject({}) { |h,(k,v)| h["#{ARGUMENT_START}#{k}#{ARGUMENT_END}"] = v; h }
+        argument_hash.inject({}) { |h,(name,value)| h[delimited(name)] = value; h }
+      end
+
+      def delimited(s)
+        "<#{s}>"
       end
 
       def replace_name_arguments(argument_hash)
@@ -143,18 +119,6 @@ module Cucumber
           name_with_arguments_replaced = name_with_arguments_replaced.gsub(name, value) if value
         end
         name_with_arguments_replaced
-      end
-
-      def replace_multiline_args_arguments(arguments)
-        @multiline_args.map do |arg|
-          arg.arguments_replaced(arguments)
-        end
-      end
-
-      def failed(exception)
-        @status = :failed
-        @exception = exception
-        @exception.backtrace << backtrace_line unless backtrace_line.nil?
       end
     end
   end

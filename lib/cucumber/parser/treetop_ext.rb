@@ -13,11 +13,11 @@ end
 module Cucumber
   module Parser
     module TreetopExt
-      FILE_LINE_PATTERN = /^([\w\W]*?):([\d:]+)$/
+      FILE_COLON_LINE_PATTERN = /^([\w\W]*?):([\d:]+)$/
 
       # Parses a file and returns a Cucumber::Ast
       def parse_file(file)
-        _, path, lines = *FILE_LINE_PATTERN.match(file)
+        _, path, lines = *FILE_COLON_LINE_PATTERN.match(file)
         if path
           lines = lines.split(':').map { |line| line.to_i }
         else
@@ -34,6 +34,17 @@ module Cucumber
         end
         feature.lines = lines
         feature
+      end
+
+      def parse_or_fail(s, file=nil, line_offset=0)
+        parse_tree = parse(s)
+        if parse_tree.nil?
+          raise Cucumber::Parser::SyntaxError.new(self, file, line_offset)
+        else
+          ast = parse_tree.build
+          ast.file = file
+          ast
+        end
       end
     end
 
@@ -59,17 +70,6 @@ module Treetop
     
     class CompiledParser
       include Cucumber::Parser::TreetopExt
-      
-      def parse_or_fail(s, file=nil, line=0)
-        parse_tree = parse(s)
-        if parse_tree.nil?
-          raise Cucumber::Parser::SyntaxError.new(self, file, line)
-        else
-          ast = parse_tree.build
-          ast.file = file
-          ast
-        end
-      end
     end
   end
 end

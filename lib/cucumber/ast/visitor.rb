@@ -3,29 +3,35 @@ module Cucumber
     # A dumb visitor that implements the whole Visitor API and just walks the tree.
     class Visitor
       attr_accessor :options
+      attr_reader :step_mother
 
       def initialize(step_mother)
+        @options = {}
         @step_mother = step_mother
-      end
-
-      def world(scenario, world = nil, &proc)
-        @step_mother.world(scenario, world, &proc)
-      end
-
-      def new_world
-        @step_mother.new_world
-      end
-
-      def step_definition(step_name)
-        @step_mother.step_definition(step_name)
+        @current_feature_lines = []
       end
 
       def current_feature_lines=(lines)
         @current_feature_lines = lines
       end
 
-      def current_feature_lines
-        @current_feature_lines || []
+      def matches_lines?(node)
+        @current_feature_lines.empty? || node.matches_lines?(@current_feature_lines)
+      end
+
+      def included_by_tags?(node)
+        tags = options[:include_tags] || []
+        tags.empty? || node.has_tags?(tags)
+      end
+
+      def excluded_by_tags?(node)
+        tags = options[:exclude_tags] || []
+        tags.any? && node.has_tags?(tags)
+      end
+
+      def matches_scenario_names?(node)
+        scenario_names = options[:scenario_names] || []
+        scenario_names.empty? || node.matches_scenario_names?(scenario_names)
       end
 
       def visit_features(features)
@@ -62,6 +68,9 @@ module Cucumber
         background.accept(self)
       end
 
+      def visit_background_name(keyword, name, file_colon_line, source_indent)
+      end
+
       def visit_examples(examples)
         examples.accept(self)
       end
@@ -70,10 +79,10 @@ module Cucumber
       end
 
       def visit_outline_table(outline_table)
-        outline_table.accept(self, nil)
+        outline_table.accept(self)
       end
 
-      def visit_scenario_name(keyword, name, file_line, source_indent)
+      def visit_scenario_name(keyword, name, file_colon_line, source_indent)
       end
 
       def visit_steps(steps)
@@ -84,25 +93,28 @@ module Cucumber
         step.accept(self)
       end
 
-      def visit_step_name(keyword, step_name, status, step_definition, source_indent)
+      def visit_step_name(keyword, step_match, status, source_indent, background)
       end
 
-      def visit_multiline_arg(multiline_arg, status)
-        multiline_arg.accept(self, status)
+      def visit_multiline_arg(multiline_arg)
+        multiline_arg.accept(self)
       end
 
       def visit_py_string(string, status)
       end
 
-      def visit_table_row(table_row, status)
-        table_row.accept(self, status)
+      def visit_table_row(table_row)
+        table_row.accept(self)
       end
 
-      def visit_table_cell(table_cell, status)
-        table_cell.accept(self, status)
+      def visit_table_cell(table_cell)
+        table_cell.accept(self)
       end
 
       def visit_table_cell_value(value, width, status)
+      end
+
+      def visit_exception(exception, status)
       end
     end
   end

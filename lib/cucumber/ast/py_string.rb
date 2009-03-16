@@ -20,18 +20,23 @@ module Cucumber
       def initialize(start_line, end_line, string, quotes_indent)
         @start_line, @end_line = start_line, end_line
         @string, @quotes_indent = string.gsub(/\\"/, '"'), quotes_indent
+        @status = :passed
+      end
+
+      def status=(status)
+        @status = status
       end
 
       def to_s
         @string.indent(-@quotes_indent)
       end
 
-      def at_lines?(lines)
+      def matches_lines?(lines)
         lines.detect{|l| l >= @start_line && l <= @end_line}
       end
 
-      def accept(visitor, status)
-        visitor.visit_py_string(to_s, status)
+      def accept(visitor)
+        visitor.visit_py_string(to_s, @status)
       end
       
       def arguments_replaced(arguments) #:nodoc:

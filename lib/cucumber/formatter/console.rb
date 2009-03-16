@@ -6,21 +6,16 @@ module Cucumber
       extend ANSIColor
       FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
 
-      def format_step(keyword, step_name, status, step_definition, source_indent)
-        comment = if source_indent && step_definition
-          c = (' # ' + step_definition.file_colon_line).indent(source_indent)
+      def format_step(keyword, step_match, status, source_indent)
+        comment = if source_indent
+          c = (' # ' + step_match.file_colon_line).indent(source_indent)
           format_string(c, :comment)
         else
           ''
         end
 
-        begin
-          line = keyword + " " + step_definition.format_args(step_name, format_for(status, :param)) + comment
-        rescue
-          # It didn't match. This often happens for :outline steps
-          line = keyword + " " + step_name + comment
-        end
-
+        format = format_for(status, :param)
+        line = keyword + " " + step_match.format_args(format) + comment
         format_string(line, status)
       end
 
@@ -33,13 +28,8 @@ module Cucumber
         end
       end
 
-      def print_undefined_scenarios(features)
-        elements = features.scenarios.select{|scenario| scenario.undefined?}
-        print_elements(elements, :undefined, 'scenarios')
-      end
-
-      def print_steps(features, status)
-        print_elements(features.steps[status], status, 'steps')
+      def print_steps(status)
+        print_elements(step_mother.steps(status), status, 'steps')
       end
 
       def print_elements(elements, status, kind)
@@ -51,7 +41,7 @@ module Cucumber
 
         elements.each_with_index do |element, i|
           if status == :failed
-            print_exception(element.exception, 0)
+            print_exception(element.exception, status, 0)
           else
             @io.puts(format_string(element.backtrace_line, status))
           end
@@ -60,26 +50,27 @@ module Cucumber
         end
       end
 
-      def print_counts(features)
-        @io.puts dump_count(features.scenarios.length, "scenario")
+      def print_counts
+        @io.puts dump_count(step_mother.scenarios.length, "scenario")
 
         [:failed, :skipped, :undefined, :pending, :passed].each do |status|
-          if features.steps[status].any?
-            count_string = dump_count(features.steps[status].length, "step", status.to_s)
+          if step_mother.steps(status).any?
+            count_string = dump_count(step_mother.steps(status).length, "step", status.to_s)
             @io.puts format_string(count_string, status)
             @io.flush
           end
         end
       end
 
-      def print_exception(e, indent)
-        status = Cucumber::EXCEPTION_STATUS[e.class]
-        @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
+      def print_exception(e, status, indent)
+        if @options[:strict] || !(Undefined === e) || e.nested?
+          @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
+        end
       end
 
-      def print_snippets(features, options)
+      def print_snippets(options)
         return unless options[:snippets]
-        undefined = features.steps[:undefined]
+        undefined = step_mother.steps(:undefined)
         return if undefined.empty?
         snippets = undefined.map do |step|
           step_name = Undefined === step.exception ? step.exception.step_name : step.name
@@ -96,13 +87,6 @@ module Cucumber
       end
 
     private
-
-      def with_color
-        c = Term::ANSIColor.coloring?
-        Term::ANSIColor.coloring = @io.tty?
-        yield
-        Term::ANSIColor.coloring = c
-      end
 
       def dump_count(count, what, state=nil)
         [count, state, "#{what}#{count == 1 ? '' : 's'}"].compact.join(" ")

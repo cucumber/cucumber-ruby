@@ -8,7 +8,7 @@ module Cucumber
   describe StepDefinition do
     before do
       extend StepMother
-      @world = new_world
+      @world = new_world!
       $inside = nil
     end
 
@@ -20,7 +20,7 @@ module Cucumber
         $inside = true
       end
 
-      step_definition("Outside").execute(nil, @world)
+      step_match("Outside").invoke(@world, nil)
       $inside.should == true
     end
 
@@ -32,7 +32,7 @@ module Cucumber
         $inside = table.raw[0][0]
       end
 
-      step_definition("Outside").execute(nil, @world)
+      step_match("Outside").invoke(@world, nil)
       $inside.should == 'inside'
     end
 
@@ -45,7 +45,7 @@ module Cucumber
       step.should_receive(:exception=)
       lambda do
         @world.__cucumber_current_step = step
-        step_definition('Outside').execute(nil, @world)
+        step_match('Outside').invoke(@world, nil)
       end.should raise_error(Undefined, 'Undefined step: "Inside"')
     end
 
@@ -55,7 +55,7 @@ module Cucumber
       end
 
       lambda do
-        step_definition("Outside").execute(nil, @world)
+        step_match("Outside").invoke(@world, nil)
       end.should raise_error(Pending, "Do me!")
     end
     

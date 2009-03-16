@@ -1,91 +1,51 @@
+require 'cucumber/ast/feature_element'
+
 module Cucumber
   module Ast
     class Scenario
-      attr_writer :feature, :background
-
-      def initialize(comment, tags, line, keyword, name, steps)
-        @comment, @tags, @line, @keyword, @name = comment, tags, line, keyword, name
-        steps.each {|step| step.scenario = self}
-        @steps = steps
-        @steps_helper = Steps.new(self)
-      end
-
-      def status
-        @steps.map{|step| step.status}
-      end
-
-      def tagged_with?(tag_names)
-        @tags.among?(tag_names) || @feature.tagged_with?(tag_names, false)
-      end
-
-      def matches_scenario_names?(scenario_names)
-        scenario_names.detect{|name| @name == name}
-      end
-
-      def accept(visitor)
-        visitor.visit_background(@background) if @background
-        visitor.visit_comment(@comment)
-        visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, @name, file_line(@line), source_indent(text_length))
-        visitor.visit_steps(@steps_helper)
-
-        @feature.scenario_executed(self) if @feature && !@executed
-        @executed = true
-      end
-
-      def accept_steps(visitor)
-        prior_world = @background ? @background.world : nil
-        visitor.world(self, prior_world) do |world|
-          previous = @background ? @background.status : :passed
-          @steps.each do |step|
-            step.previous = previous
-            step.world    = world
-            visitor.visit_step(step)
-            previous = step.status
-          end
+      include FeatureElement
+      
+      def initialize(background, comment, tags, line, keyword, name, steps)
+        @background, @comment, @tags, @line, @keyword, @name = background, comment, tags, line, keyword, name
+        attach_steps(steps)
+        
+        step_invocations = steps.map{|step| step.step_invocation}
+        if @background
+          @steps = @background.step_collection(step_invocations)
+        else
+          @steps = StepCollection.new(step_invocations)
         end
       end
 
-      def source_indent(text_length)
-        max_line_length - text_length
+      def feature=(feature)
+        @feature = feature
+        @background.feature = feature if @background
       end
 
-      def max_line_length
-        lengths = (@steps + [self]).map{|e| e.text_length}
-        lengths.max
+      def descend?(visitor)
+        visitor.matches_lines?(self) &&
+        visitor.included_by_tags?(self) &&
+        !visitor.excluded_by_tags?(self) &&
+        visitor.matches_scenario_names?(self)
       end
 
-      def text_length
-        @keyword.jlength + @name.jlength
+      def accept(visitor)
+        visitor.visit_comment(@comment)
+        visitor.visit_tags(@tags)
+        visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(text_length))
+
+        skip = @background && @background.failed?
+        skip_invoke! if skip
+        visitor.step_mother.before_and_after(self, skip) do
+          visitor.visit_steps(@steps)
+        end
       end
 
-      def at_lines?(lines)
-        at_header_or_step_lines?(lines)
-      end
-
-      def at_header_or_step_lines?(lines)
-        lines.empty? || lines.index(@line) || @steps.detect {|step| step.at_lines?(lines)} || @tags.at_lines?(lines)
-      end
-
-      def undefined?
-        @steps.empty?
-      end
-
-      def step_executed(step)
-        @feature.step_executed(step) if @feature
-      end
-
-      def backtrace_line(name = "#{@keyword} #{@name}", line = @line)
-        @feature.backtrace_line(name, line) if @feature
-      end
-
-      def file_line(line = @line)
-        @feature.file_line(line) if @feature
-      end
-
-      def previous_step(step)
-        i = @steps.index(step) || -1
-        @steps[i-1]
+      def skip_invoke!
+        @steps.each{|step_invocation| step_invocation.skip_invoke!}
+        @feature.next_feature_element(self) do |next_one|
+          next_one.skip_invoke!
+        end
       end
 
       def to_sexp
@@ -94,10 +54,11 @@ module Cucumber
         sexp += [comment] if comment
         tags = @tags.to_sexp
         sexp += tags if tags.any?
-        steps = @steps.map{|step| step.to_sexp}
+        steps = @steps.to_sexp
         sexp += steps if steps.any?
         sexp
       end
+
     end
   end
 end

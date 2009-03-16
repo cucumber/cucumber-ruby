@@ -18,7 +18,7 @@ module Cucumber
     end
 
     def method_missing(method_name, *args)
-      @receivers.each  do |receiver|
+      @receivers.map do |receiver|
         receiver.__send__(method_name, *args)
       end
     end

@@ -58,11 +58,6 @@ pure Ruby users have been enjoying for a while.
 
 == TODO Before 0.2 release
 * Make sure all features and specs pass on Windows, JRuby and Ruby 1.9
-* Tighten up and simplify the grammar. More edge case features/specs.
-* Reintroduce StepInvocation. Reduce some of the redundant calls to StepDefinition/StepMother. Align with JBehave.
-* Make some class diagrams.
-* Implement at least a basic HTML formatter
-* Run a single cucumber feature from rake "rake features FEATURE=/path/to/feature:line"
 * Wiki page about running subsets
 ** file:line
 *** scenario (or step within)
@@ -79,6 +74,7 @@ pure Ruby users have been enjoying for a while.
 ** Full jar and simple jar
 
 == Bugfixes
+* Re-structure the ast: Feature -> Background -> (Scenario|ScenarioOutline)*. Fixes bug with background being called outside transactions. (#181 Joseph Wilk)
 * --strict always exits with status 1 (#230 Tim Cuthbertson)
 * Fix error with nil values in tables raising an exception (#227 Joseph Wilk)
 * Add support for using << in formatters to ensure the html formatter works (#210 Joseph Wilk)
@@ -136,7 +132,7 @@ pure Ruby users have been enjoying for a while.
 * Pure Ruby features are no longer supported.
 * Remove --color option in autotest. Can be added manually in cucumber.yml (#215 Jean-Michel Garnier)
 
-== (0.16.4 aslakhellesoy-webrat gem on GitHub)
+== (0.16.4 aslakhellesoy-cucumber gem on GitHub)
 
 Bugfix release.
 

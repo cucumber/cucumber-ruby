@@ -45,8 +45,10 @@ module Cucumber
 
         visitor = configuration.build_formatter_broadcaster(step_mother)
         visitor.visit_features(features)
-      
-        failure = features.steps[:failed].any? || (configuration.strict? && features.steps[:undefined].any?)
+
+        failure = step_mother.steps(:failed).any? || 
+          (configuration.strict? && step_mother.steps(:undefined).any?)
+
         Kernel.exit(failure ? 1 : 0)
       end
 
@@ -75,8 +77,7 @@ module Cucumber
       end
 
       def load_plain_text_features
-        filter = configuration.ast_filter
-        features = Ast::Features.new(filter)
+        features = Ast::Features.new
         parser = Parser::FeatureParser.new
 
         verbose_log("Features:")

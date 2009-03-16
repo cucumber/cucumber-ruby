@@ -11,19 +11,12 @@ module Cucumber
         @line, @tag_names = line, tag_names
       end
 
-      def among?(tag_names)
-        no_tags, yes_tags = tag_names.partition{|tag| tag =~ /^~/}
-        no_tags = no_tags.map{|tag| tag[1..-1]}
-
-        # Strip @
-        yes_tags = yes_tags.map{|tag| tag =~ /^@(.*)/ ? $1 : tag}
-        no_tags = no_tags.map{|tag| tag =~ /^@(.*)/ ? $1 : tag}
-
-        (yes_tags.empty? || (@tag_names & yes_tags).any?) && (no_tags.empty? || (@tag_names & no_tags).empty?)
+      def has_tags?(tags)
+        (@tag_names & tags).any?
       end
 
-      def at_lines?(lines)
-        lines.empty? || lines.index(@line)
+      def matches_lines?(lines)
+        lines.index(@line)
       end
 
       def accept(visitor)

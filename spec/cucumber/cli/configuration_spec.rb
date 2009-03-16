@@ -201,6 +201,13 @@ END_OF_MESSAGE
       config.parse!(['--no-color'])
     end
     
+    it "should parse tags" do
+      config = Configuration.new(nil)
+      includes, excludes = config.parse_tags("one,~two,@three,~@four")
+      includes.should == ['one', 'three']
+      excludes.should == ['two', 'four']
+    end
+    
     describe "--backtrace" do
       before do
         Exception.cucumber_full_backtrace = false

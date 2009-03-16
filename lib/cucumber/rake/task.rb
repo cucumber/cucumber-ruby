@@ -14,7 +14,6 @@ module Cucumber
     # To further configure the task, you can pass a block:
     #
     #   Cucumber::Rake::Task.new do |t|
-    #     t.libs << 'lib'
     #     t.cucumber_opts = "--format progress"
     #   end
     #

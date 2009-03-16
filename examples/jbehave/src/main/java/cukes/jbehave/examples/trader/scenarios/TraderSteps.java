@@ -18,6 +18,7 @@ import org.jbehave.scenario.steps.ParameterConverters;
 import org.jbehave.scenario.steps.SilentStepMonitor;
 import org.jbehave.scenario.steps.Steps;
 import org.jbehave.scenario.steps.StepsConfiguration;
+import cucumber.ast.Table;
 
 public class TraderSteps extends Steps {
 
@@ -46,6 +47,11 @@ public class TraderSteps extends Steps {
         stock = new Stock(prices, threshold);
     }
 
+    @Given("the following table")
+    public void theFollowingTable(Table table) {
+        System.out.println("My table:" + table);
+    }
+
     @When("the stock is traded at %price")
     public void theStockIsTradedAt(double price) {
         stock.tradeAt(price);
@@ -61,5 +67,4 @@ public class TraderSteps extends Steps {
         trader.sellAllStocks();
         ensureThat(trader.getStocks().size(), equalTo(0));
     }
-
 }
