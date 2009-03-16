@@ -25,7 +25,7 @@ module Cucumber
 
       def invoke(step_mother, options)
         find_step_match!(step_mother)
-        unless @skip_invoke || options[:dry_run] || exception || previous.exception
+        unless @skip_invoke || options[:dry_run] || exception || @step_collection.exception
           @skip_invoke = true
           begin
             step_mother.current_world.__cucumber_current_step = self

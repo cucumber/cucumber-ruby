@@ -54,6 +54,10 @@ module Cucumber
         lengths.max
       end
 
+      def exception
+        @exception ||= ((failed = @steps.detect {|step| step.exception}) && failed.exception)
+      end
+
       def to_sexp
         @steps.map{|step| step.to_sexp}
       end
