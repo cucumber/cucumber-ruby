@@ -86,6 +86,12 @@ module Cucumber
         @io.flush
       end
 
+      def announce(announcement)
+        @io.puts
+        @io.puts(format_string(announcement, :tag))
+        @io.flush
+      end
+
     private
 
       def dump_count(count, what, state=nil)

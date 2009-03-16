@@ -66,5 +66,16 @@ module Cucumber
       stepdef.to_s.should    == '/Hello (.*)/ # spec/cucumber/step_definition_spec.rb:63'
       stepdef.to_s(2).should == '/Hello (.*)/   # spec/cucumber/step_definition_spec.rb:63'
     end
+    
+    it "should allow announce" do
+      v = mock('visitor')
+      v.should_receive(:announce).with('wasup')
+      self.visitor = v
+      world = new_world!
+      Given /Loud/ do
+        announce 'wasup'
+      end
+      step_match("Loud").invoke(world, nil)
+    end
   end
 end
