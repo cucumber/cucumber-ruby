@@ -15,7 +15,7 @@ module Cucumber
       end
       @step_mother.Given(/nope something else/) do |what, month|
       end
-      format = @step_mother.step_definition("it snows in april").format_args("it snows in april", "[%s]")
+      format = @step_mother.step_match("it snows in april").format_args("[%s]")
       format.should == "it [snows] in [april]"
     end
 
@@ -24,7 +24,7 @@ module Cucumber
       @step_mother.Given(/Three blind (.*)/) {|animal|}
 
       lambda do
-        @step_mother.step_definition("Three blind mice")
+        @step_mother.step_match("Three blind mice")
       end.should raise_error(Ambiguous, %{Ambiguous match of "Three blind mice":
 
 spec/cucumber/step_mother_spec.rb:23:in `/Three (.*) mice/'
@@ -39,7 +39,7 @@ spec/cucumber/step_mother_spec.rb:24:in `/Three blind (.*)/'
       @step_mother.Given(/Three (.*)/) {|animal|}
 
       lambda do
-        @step_mother.step_definition("Three blind mice")
+        @step_mother.step_match("Three blind mice")
       end.should_not raise_error
     end
     
@@ -47,19 +47,19 @@ spec/cucumber/step_mother_spec.rb:24:in `/Three blind (.*)/'
       @step_mother.options = {:guess => true}
       right = @step_mother.Given(/Three (.*) mice/) {|disability|}
       wrong = @step_mother.Given(/Three (.*)/) {|animal|}
-      @step_mother.step_definition("Three blind mice").should == right
+      @step_mother.step_match("Three blind mice").step_definition.should == right
     end
     
     it "should pick right step definition when --guess is enabled and unequal number of capture groups" do
       @step_mother.options = {:guess => true}
       right = @step_mother.Given(/Three (.*) mice ran (.*)/) {|disability|}
       wrong = @step_mother.Given(/Three (.*)/) {|animal|}
-      @step_mother.step_definition("Three blind mice ran far").should == right
+      @step_mother.step_match("Three blind mice ran far").step_definition.should == right
     end
     
     it "should raise Undefined error when no step definitions match" do
       lambda do
-        @step_mother.step_definition("Three blind mice")
+        @step_mother.step_match("Three blind mice")
       end.should raise_error(Undefined)
     end
 

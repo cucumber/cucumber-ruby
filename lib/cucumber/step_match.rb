@@ -1,6 +1,7 @@
 module Cucumber
   class StepMatch
     attr_reader :step_definition
+    attr_reader :args
     
     def initialize(step_definition, step_name, formatted_step_name, args)
       @step_definition, @step_name, @formatted_step_name, @args = step_definition, step_name, formatted_step_name, args
@@ -19,6 +20,10 @@ module Cucumber
     def file_colon_line
       @step_definition.file_colon_line
     end
+
+    def to_backtrace_line
+      @step_definition.to_backtrace_line
+    end
   end
   
   class NoStepMatch
@@ -35,6 +40,10 @@ module Cucumber
     def file_colon_line
       raise "No file:line for #{@step}" unless @step.file_colon_line
       @step.file_colon_line
+    end
+
+    def to_backtrace_line
+      @step.backtrace_line
     end
   end
 end

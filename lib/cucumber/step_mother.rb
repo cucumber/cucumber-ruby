@@ -116,28 +116,18 @@ module Cucumber
     def step_match(step_name, formatted_step_name=nil)
       matches = step_definitions.map { |d| d.step_match(step_name, formatted_step_name) }.compact
       raise Undefined.new(step_name) if matches.empty?
-      found = best_matches(step_name, matches) if matches.size > 1 && options[:guess]
+      matches = best_matches(step_name, matches) if matches.size > 1 && options[:guess]
       raise Ambiguous.new(step_name, matches) if matches.size > 1
       matches[0]
     end
 
-    # Looks up the StepDefinition that matches +step_name+
-    def step_definition(step_name) #:nodoc:
-      found = step_definitions.select do |step_definition|
-        step_definition.match(step_name)
-      end
-      raise Undefined.new(step_name) if found.empty?
-      found = best_matches(step_name, found) if found.size > 1 && options[:guess]
-      raise Ambiguous.new(step_name, found) if found.size > 1
-      found[0]
-    end
+    def best_matches(step_name, step_matches)
+      top_group_score = step_matches.map {|step_match| step_match.args.length }.max
 
-    def best_matches(step_name, step_definitions)
-      top_group_score = step_definitions.map {|s| s.match(step_name).captures.length }.sort.last
-      top_groups = step_definitions.select {|s| s.match(step_name).captures.length == top_group_score }
-      if top_groups.size > 1
-        shortest_capture_length = top_groups.map {|s| s.match(step_name).captures.inject(0) {|sum, c| sum + c.length } }.sort.first
-        top_groups.select {|s| s.match(step_name).captures.inject(0) {|sum, c| sum + c.length } == shortest_capture_length }
+      top_groups      = step_matches.select {|step_match| step_match.args.length == top_group_score }
+      if top_groups.length > 1
+        shortest_capture_length = top_groups.map {|step_match| step_match.args.inject(0) {|sum, c| sum + c.length } }.min
+        top_groups.select {|step_match| step_match.args.inject(0) {|sum, c| sum + c.length } == shortest_capture_length }
       else
         top_groups
       end
