@@ -111,11 +111,11 @@ module Cucumber
 
         it "should not raise an error when there are nil values in the table" do
           table = Table.new([
-                              ['book'],
-                              [nil]
+                              ['book', 'qty'],
+                              ['<book>', nil],
                             ])
           lambda{ 
-            table.arguments_replaced({'<book>' => 'The great sheep chase'})
+            table.arguments_replaced({'<book>' => nil, '<qty>' => '5'})
           }.should_not raise_error
         end
 
