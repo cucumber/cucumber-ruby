@@ -17,10 +17,10 @@ Feature: Cucumber command line
           | missing | passing     |
           | passing | passing     |
           | failing | passing     |
-            FAIL (RuntimeError)
-            ./features/step_definitions/sample_steps.rb:2:in `flunker'
-            ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-            features/outline_sample.feature:12:in `Given failing without a table'
+          FAIL (RuntimeError)
+          ./features/step_definitions/sample_steps.rb:2:in `flunker'
+          ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
+          features/outline_sample.feature:6:in `Given <state> without a table'
 
         Examples: Only passing
           | state   | other_state |
@@ -34,8 +34,6 @@ Feature: Cucumber command line
 
       """
 
-  # The "Only Passing" should not be printed
-  @buggy
   Scenario: Run single failing scenario outline table row
     When I run cucumber features/outline_sample.feature:12
     Then it should fail with
@@ -49,13 +47,10 @@ Feature: Cucumber command line
         Examples: Rainbow colours
           | state   | other_state |
           | failing | passing     |
-            FAIL (RuntimeError)
-            ./features/step_definitions/sample_steps.rb:2:in `flunker'
-            ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-            features/outline_sample.feature:12:in `Given failing without a table'
-
-        Examples: Only passing
-          | state   | other_state |
+          FAIL (RuntimeError)
+          ./features/step_definitions/sample_steps.rb:2:in `flunker'
+          ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
+          features/outline_sample.feature:6:in `Given <state> without a table'
 
       1 scenario
       1 failed step
@@ -67,18 +62,14 @@ Feature: Cucumber command line
     When I run cucumber -q --format progress features/outline_sample.feature
     Then it should fail with
       """
-      UUS..FS..
-
-      (::) undefined scenarios (::)
-
-      features/outline_sample.feature:3:in `Scenario: I have no steps'
+      ----U-..F---..
 
       (::) failed steps (::)
 
       FAIL (RuntimeError)
       ./features/step_definitions/sample_steps.rb:2:in `flunker'
       ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-      features/outline_sample.feature:12:in `Given failing without a table'
+      features/outline_sample.feature:6:in `Given <state> without a table'
 
       5 scenarios
       1 failed step

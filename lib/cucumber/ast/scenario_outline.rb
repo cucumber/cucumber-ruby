@@ -1,15 +1,18 @@
 module Cucumber
   module Ast
-    class ScenarioOutline < Scenario
+    class ScenarioOutline
+      include FeatureElement
+
       # The +example_sections+ argument must be an Array where each element is another array representing
       # an Examples section. This array has 3 elements:
       #
       # * Examples keyword
       # * Examples section name
       # * Raw matrix
-      def initialize(comment, tags, line, keyword, name, steps, example_sections)
-        super(comment, tags, line, keyword, name, steps)
-        steps.each {|step| step.status = :outline}
+      def initialize(background, comment, tags, line, keyword, name, steps, example_sections)
+        @background, @comment, @tags, @line, @keyword, @name = background, comment, tags, line, keyword, name
+        attach_steps(steps)
+        @steps = StepCollection.new(steps)
 
         @examples_array = example_sections.map do |example_section|
           examples_line       = example_section[0]
@@ -22,19 +25,46 @@ module Cucumber
         end
       end
 
-      def at_lines?(lines)
-        super || @examples_array.detect { |examples| examples.at_lines?(lines) }
+      def feature=(feature)
+        @feature = feature
+        @background.feature = feature if @background
+      end
+
+      def descend?(visitor)
+        @examples_array.detect { |examples| examples.descend?(visitor) }
+      end
+
+      def matches_tags_and_name?(visitor)
+        visitor.included_by_tags?(self) &&
+        !visitor.excluded_by_tags?(self) &&
+        visitor.matches_scenario_names?(self)
       end
 
       def accept(visitor)
-        visitor.visit_background(@background) if @background
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, @name, file_line(@line), source_indent(text_length))
-        visitor.visit_steps(@steps_helper)
+        visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(text_length))
+        visitor.visit_steps(@steps)
 
+        skip_invoke! if @background && @background.failed?
         @examples_array.each do |examples|
-          visitor.visit_examples(examples)
+          visitor.visit_examples(examples) if examples.descend?(visitor)
+        end
+      end
+
+      def skip_invoke!
+        @examples_array.each{|examples| examples.skip_invoke!}
+        @feature.next_feature_element(self) do |next_one|
+          next_one.skip_invoke!
+        end
+      end
+
+      def step_invocations(cells)
+        step_invocations = @steps.step_invocations_from_cells(cells)
+        if @background
+          @background.step_collection(step_invocations)
+        else
+          StepCollection.new(step_invocations)
         end
       end
 
@@ -44,45 +74,13 @@ module Cucumber
         end
       end
 
-      def execute_row(cells, visitor, &proc)
-        exception = nil
-        
-        prior_world = @background ? @background.world : nil
-        visitor.world(self, prior_world) do |world|
-          
-          previous_status = @background ? @background.status : :passed
-          argument_hash = cells.to_hash
-          cell_index = 0
-          @steps.each do |step|
-            executed_step, previous_status, matched_args = 
-              step.execute_with_arguments(argument_hash, world, previous_status, visitor, cells[0].line)
-            # There might be steps that don't have any arguments
-            # If there are no matched args, we'll still iterate once
-            matched_args = [nil] if matched_args.empty?
-
-            matched_args.each do
-              cell = cells[cell_index]
-              if cell
-                proc.call(cell, previous_status)
-                cell_index += 1
-              end
-            end
-            exception ||= executed_step.exception
-          end
-        end
-        @feature.scenario_executed(self) if @feature
-        exception
-      end
-
-      def pending? ; false ; end
-
       def to_sexp
         sexp = [:scenario_outline, @keyword, @name]
         comment = @comment.to_sexp
         sexp += [comment] if comment
         tags = @tags.to_sexp
         sexp += tags if tags.any?
-        steps = @steps.map{|step| step.to_sexp}
+        steps = @steps.to_sexp
         sexp += steps if steps.any?
         sexp += @examples_array.map{|e| e.to_sexp}
         sexp

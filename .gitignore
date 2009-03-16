@@ -1,4 +1,5 @@
 nbproject
+coverage
 pkg
 doc
 .yardoc
@@ -9,3 +10,4 @@ doc
 *~
 .DS_Store
 *.swp
+target

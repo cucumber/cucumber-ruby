@@ -1,3 +1,4 @@
+require 'cucumber/step_match'
 require 'cucumber/core_ext/string'
 require 'cucumber/core_ext/proc'
 
@@ -27,10 +28,28 @@ module Cucumber
     def initialize(pattern, &proc)
       raise MissingProc if proc.nil?
       if String === pattern
-        p = pattern.gsub(/\$\w+/, '(.*)')
+        p = pattern.gsub(/\$\w+/, '(.*)') # Replace $var with (.*)
         pattern = Regexp.new("^#{p}$") 
       end
       @regexp, @proc = pattern, proc
+    end
+
+    def step_match(name_to_match, name_to_report)
+      if(match = name_to_match.match(@regexp))
+        StepMatch.new(self, name_to_match, name_to_report, match.captures)
+      else
+        nil
+      end
+    end
+
+    def invoke(world, args, step_name)
+      args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
+      begin
+        world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
+      rescue Cucumber::ArityMismatchError => e
+        e.backtrace.unshift(self.backtrace_line)
+        raise e
+      end
     end
 
     #:stopdoc:
@@ -65,17 +84,7 @@ module Cucumber
       step_name.match(@regexp).captures
     end
 
-    def execute(step_name, world, *args)
-      args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
-      begin
-        world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
-      rescue Cucumber::ArityMismatchError => e
-        e.backtrace.unshift(self.to_backtrace_line)
-        raise e
-      end
-    end
-
-    def to_backtrace_line
+    def backtrace_line
       "#{file_colon_line}:in `#{@regexp.inspect}'"
     end
 

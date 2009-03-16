@@ -9,6 +9,7 @@ module Cucumber
       before do
         @step_mother = Object.new
         @step_mother.extend(StepMother)
+
         @step_mother.Given(/^there are (\d+) cucumbers$/) do |n|
           @initial = n.to_i
         end
@@ -23,6 +24,7 @@ module Cucumber
         end
 
         @scenario_outline = ScenarioOutline.new(
+          background=nil,
           Comment.new(""),
           Tags.new(18, []),
           19,
@@ -45,6 +47,7 @@ module Cucumber
               ]
             ]
           ]
+          
         )
       end
 

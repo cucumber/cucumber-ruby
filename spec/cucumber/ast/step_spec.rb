@@ -5,40 +5,48 @@ require 'cucumber/core_ext/string'
 
 module Cucumber
   module Ast
-    describe StepMother do
-      it "should calculate comment padding" do
-        scenario = Scenario.new(comment=nil, tags=nil, line=nil, keyword='Given', name='Gazpacho', steps=[
-          Step.new(22, "Given", "tøtal 13"),
-          Step.new(23, "And",   "the total 15")
-        ])
-        step1, step2 = *scenario.instance_variable_get('@steps')
-
-        step1.source_indent.should == 2
-        step2.source_indent.should == 0
-      end
-    end
-    
     describe Step do
-      describe "execute step with arguments" do
-      
-        it "should replace arguments in multiline args" do
-          mock_multiline_arg = mock('multiline arg')
-          step = Step.new(23, 'Given', '<test>', mock_multiline_arg)
+      it "should replace arguments in name" do
+        step = Step.new(1, 'Given', 'a <color> cucumber')
 
-          mock_multiline_arg.should_receive(:arguments_replaced).with({'<test>' => '10'}).and_return(mock_multiline_arg)
+        invocation_table = Table.new([
+          %w{color taste},
+          %w{green juicy}
+        ])
+        cells = invocation_table.cells_rows[1]
+        step_invocation = step.step_invocation_from_cells(cells)
         
-          step.execute_with_arguments({'test' => '10'}, stub('world'), :passed, visitor=nil, line=-1)
-        end
-       
-        it "should invoke step with replaced multiline args" do
-          mock_step_definition = mock('step definition')
-          mock_multiline_arg_replaced = mock('multiline arg replaced')
-          mock_multiline_arg = mock('multiline arg', :arguments_replaced => mock_multiline_arg_replaced)
-          step = Step.new(45, 'Given', '<test>', mock_multiline_arg)
+        step_invocation.name.should == 'a green cucumber'
+      end
+
+      it "should replace arguments in table arg" do
+        arg_table = Table.new([%w{taste_<taste> color_<color>}])
+
+        step = Step.new(1, 'Given', 'a <color> cucumber', arg_table)
+
+        invocation_table = Table.new([
+          %w{color taste},
+          %w{green juicy}
+        ])
+        cells = invocation_table.cells_rows[1]
+        step_invocation = step.step_invocation_from_cells(cells)
         
-          step.execute_with_arguments({'test' => '10'}, stub('world'), :passed, visitor=nil, line=-1)
-        end
-  
+        step_invocation.instance_variable_get('@multiline_arg').raw.should == [%w{taste_juicy color_green}]
+      end
+
+      it "should replace arguments in py string arg" do
+        py_string = PyString.new(1, 2, 'taste_<taste> color_<color>', 0)
+
+        step = Step.new(1, 'Given', 'a <color> cucumber', py_string)
+
+        invocation_table = Table.new([
+          %w{color taste},
+          %w{green juicy}
+        ])
+        cells = invocation_table.cells_rows[1]
+        step_invocation = step.step_invocation_from_cells(cells)
+        
+        step_invocation.instance_variable_get('@multiline_arg').to_s.should == 'taste_juicy color_green'
       end
     end
   end

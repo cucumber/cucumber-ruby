@@ -5,23 +5,13 @@ module Cucumber
       attr_accessor :file
       attr_writer :features, :lines
 
-      def initialize(comment, tags, name, feature_elements, background = nil)
-        @comment, @tags, @name, @feature_elements, @background = comment, tags, name, feature_elements, background
-        feature_elements.each do |feature_element| 
-          feature_element.feature = self
-          feature_element.background = background if background
-        end
-        background.feature = self if background
+      def initialize(background, comment, tags, name, feature_elements)
+        @background, @comment, @tags, @name, @feature_elements = background, comment, tags, name, feature_elements
         @lines = []
-      end
 
-      def tagged_with?(tag_names, check_elements=true)
-        @tags.among?(tag_names) || 
-        (check_elements && @feature_elements.detect{|e| e.tagged_with?(tag_names)})
-      end
-      
-      def matches_scenario_names?(scenario_names)
-        @feature_elements.detect{|e| e.matches_scenario_names?(scenario_names)}
+        @feature_elements.each do |feature_element|
+          feature_element.feature = self
+        end
       end
 
       def accept(visitor)
@@ -29,25 +19,31 @@ module Cucumber
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@name)
-        
+        visitor.visit_background(@background) if @background
         @feature_elements.each do |feature_element|
-          visitor.visit_feature_element(feature_element) if @features.visit?(feature_element, @lines)
+          visitor.visit_feature_element(feature_element) if feature_element.descend?(visitor)
         end
       end
 
-      def scenario_executed(scenario)
-        @features.scenario_executed(scenario) if @features
+      def descend?(visitor)
+        @feature_elements.detect{ |feature_element| feature_element.descend?(visitor) }
       end
 
-      def step_executed(step)
-        @features.step_executed(step) if @features
+      def has_tags?(tags)
+        @tags.has_tags?(tags)
+      end
+
+      def next_feature_element(feature_element, &proc)
+        index = @feature_elements.index(feature_element)
+        next_one = @feature_elements[index+1]
+        proc.call(next_one) if next_one
       end
 
       def backtrace_line(step_name, line)
-        "#{file_line(line)}:in `#{step_name}'"
+        "#{file_colon_line(line)}:in `#{step_name}'"
       end
 
-      def file_line(line)
+      def file_colon_line(line)
         "#{@file}:#{line}"
       end
 
@@ -58,7 +54,7 @@ module Cucumber
         tags = @tags.to_sexp
         sexp += tags if tags.any?
         sexp += [@background.to_sexp] if @background
-        sexp += @feature_elements.map{|e| e.to_sexp}
+        sexp += @feature_elements.map{|fe| fe.to_sexp}
         sexp
       end
     end

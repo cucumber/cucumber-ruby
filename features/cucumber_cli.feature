@@ -32,7 +32,7 @@ Feature: Cucumber command line
             features/sample.feature:6:in `Given missing'
 
       1 scenario
-      1 failed step
+      1 undefined step
 
       """
 
@@ -334,6 +334,29 @@ Feature: Cucumber command line
       1 failed step
       1 undefined step
       1 passed step
+
+      """
+
+  Scenario: Run with a negative tag
+    When I run cucumber -q features/sample.feature --dry-run -t ~four
+    Then it should pass with
+      """
+      @one
+      Feature: Sample
+
+        @two @three
+        Scenario: Missing
+          Given missing
+
+        @three
+        Scenario: Passing
+          Given passing
+            | a | b |
+            | c | d |
+
+      2 scenarios
+      1 skipped step
+      1 undefined step
 
       """
 

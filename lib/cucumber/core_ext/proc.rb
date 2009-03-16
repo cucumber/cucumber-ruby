@@ -3,7 +3,7 @@ class Proc
   PROC_PATTERN = /[\d\w]+@(.*):(.*)>/
   
   if Proc.new{}.to_s =~ PROC_PATTERN
-    def to_backtrace_line(name)
+    def backtrace_line(name)
       "#{file_colon_line}:in `#{name}'"
     end
 
@@ -22,7 +22,7 @@ class Proc
     # This Ruby implementation doesn't implement Proc#to_s correctly
     STDERR.puts "*** THIS RUBY IMPLEMENTATION DOESN'T REPORT FILE AND LINE FOR PROCS ***"
     
-    def to_backtrace_line
+    def backtrace_line
       nil
     end
 

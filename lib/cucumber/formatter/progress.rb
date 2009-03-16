@@ -12,26 +12,19 @@ module Cucumber
       end
 
       def visit_features(features)
-        with_color do
-          super
-          @io.puts
-          @io.puts
-          print_summary(features)
-        end
+        super
+        @io.puts
+        @io.puts
+        print_summary
       end
 
-      def visit_multiline_arg(multiline_arg, status)
+      def visit_multiline_arg(multiline_arg)
         @multiline_arg = true
         super
         @multiline_arg = false
       end
 
-      def visit_feature_element(feature_element)
-        progress(:undefined) if feature_element.undefined?
-        super
-      end
-
-      def visit_step_name(keyword, step_name, status, step_definition, source_indent)
+      def visit_step_name(keyword, step_match, status, source_indent, background)
         progress(status) unless status == :outline
       end
 
@@ -47,12 +40,11 @@ module Cucumber
       
       private
 
-      def print_summary(features)
-        print_undefined_scenarios(features)
-        print_steps(features, :pending)
-        print_steps(features, :failed)
-        print_counts(features)
-        print_snippets(features, @options)
+      def print_summary
+        print_steps(:pending)
+        print_steps(:failed)
+        print_counts
+        print_snippets(@options)
       end
 
       CHARS = {
@@ -60,7 +52,7 @@ module Cucumber
         :failed    => 'F',
         :undefined => 'U',
         :pending   => 'P',
-        :skipped   => 'S'
+        :skipped   => '-'
       }
 
       def progress(status)

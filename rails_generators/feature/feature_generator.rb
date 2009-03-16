@@ -5,6 +5,10 @@ class FeatureGenerator < Rails::Generator::NamedBase
       m.directory 'features/step_definitions'
       m.template  'feature.erb', "features/manage_#{plural_name}.feature"
       m.template  'steps.erb', "features/step_definitions/#{singular_name}_steps.rb"
+
+      m.gsub_file 'features/support/paths.rb', /root_path/mi do |match|
+        "#{match}\n    when /the new #{singular_name} page/\n      new_#{singular_name}_path\n"
+      end
     end
   end
 

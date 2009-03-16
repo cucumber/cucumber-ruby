@@ -5,13 +5,13 @@ module Cucumber
         super(step_mother)
         @io = io
         @file_names = []
-        @file_lines = Hash.new{|h,k| h[k] = []}
+        @file_colon_lines = Hash.new{|h,k| h[k] = []}
       end
 
       def visit_features(features)
         super
         files = @file_names.uniq.map do |file|
-          lines = @file_lines[file]
+          lines = @file_colon_lines[file]
           "#{file}:#{lines.join(':')}"
         end
         @io.puts files.join(' ')
@@ -21,13 +21,13 @@ module Cucumber
         @rerun = false
         super
         if @rerun
-          file, line = *feature_element.file_line.split(':')
-          @file_lines[file] << line
+          file, line = *feature_element.file_colon_line.split(':')
+          @file_colon_lines[file] << line
           @file_names << file
         end
       end
 
-      def visit_step_name(keyword, step_name, status, step_definition, source_indent)
+      def visit_step_name(keyword, step_match, status, source_indent)
         @rerun = true if [:failed].index(status)
       end
 

@@ -17,6 +17,10 @@ Feature: Trading
     Then the alert status should be OFF
 
   Scenario: Trader sells all stocks
+    # Given the following table
+    #   | a | b |
+    #   | 1 | 2 |
+    #   | 3 | 4 |
     Given a trader of name Mauro
     Given a stock of prices 0.5,1.0 and a threshold of 1.5
     When the stock is traded at 2.0

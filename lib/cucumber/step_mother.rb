@@ -1,4 +1,5 @@
 require 'cucumber/step_definition'
+require 'cucumber/world'
 require 'cucumber/core_ext/instance_exec'
 
 module Cucumber
@@ -9,18 +10,25 @@ module Cucumber
       super %{Undefined step: "#{step_name}"}
       @step_name = step_name
     end
-    Cucumber::EXCEPTION_STATUS[self] = :undefined
+    
+    def nested!
+      @nested = true
+    end
+
+    def nested?
+      @nested
+    end
   end
 
+  # Raised when a StepDefinition's block invokes World#pending
   class Pending < StandardError
-    Cucumber::EXCEPTION_STATUS[self] = :pending
   end
 
   # Raised when a step matches 2 or more StepDefinition
   class Ambiguous < StandardError
     def initialize(step_name, step_definitions)
       message = "Ambiguous match of \"#{step_name}\":\n\n"
-      message << step_definitions.map{|sd| sd.to_backtrace_line}.join("\n")
+      message << step_definitions.map{|sd| sd.backtrace_line}.join("\n")
       message << "\n\n"
       super(message)
     end
@@ -30,8 +38,8 @@ module Cucumber
   class Redundant < StandardError
     def initialize(step_def_1, step_def_2)
       message = "Multiple step definitions have the same Regexp:\n\n"
-      message << step_def_1.to_backtrace_line << "\n"
-      message << step_def_2.to_backtrace_line << "\n\n"
+      message << step_def_1.backtrace_line << "\n"
+      message << step_def_2.backtrace_line << "\n\n"
       super(message)
     end
   end
@@ -41,9 +49,31 @@ module Cucumber
   # so #register_step_definition (and more interestingly - its aliases) are
   # available from the top-level.
   module StepMother
-    attr_writer :snippet_generator
-    attr_writer :options
+    class << self
+      def alias_adverb(adverb)
+        alias_method adverb, :register_step_definition
+      end
+    end
+
+    attr_writer :snippet_generator, :options
+
+    def step_visited(step)
+      steps << step unless steps.index(step)
+    end
     
+    def steps(status = nil)
+      @steps ||= []
+      if(status)
+        @steps.select{|step| step.status == status}
+      else
+        @steps
+      end
+    end
+
+    def scenarios
+      @scenarios ||= []
+    end
+
     # Registers a new StepDefinition. This method is aliased
     # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>.
     #
@@ -63,20 +93,6 @@ module Cucumber
       step_definition
     end
 
-    def world(scenario, prior_world = nil, &proc)
-      world = prior_world || new_world
-      begin
-        (@before_procs ||= []).each do |proc|
-          world.cucumber_instance_exec(false, 'Before', scenario, &proc)
-        end
-        yield world
-      ensure
-        (@after_procs ||= []).each do |proc|
-          world.cucumber_instance_exec(false, 'After', scenario, &proc)
-        end
-      end
-    end
-
     # Registers a Before proc. You can call this method as many times as you
     # want (typically from ruby scripts under <tt>support</tt>).
     def Before(&proc)
@@ -93,37 +109,25 @@ module Cucumber
       (@world_procs ||= []) << proc
     end
 
-    # Creates a new world instance
-    def new_world #:nodoc:
-      world = Object.new
-      (@world_procs ||= []).each do |proc|
-        world = proc.call(world)
-      end
-
-      world.extend(WorldMethods)
-      world.__cucumber_step_mother = self
-
-      world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
-      world
+    def current_world
+      @current_world
     end
 
-    # Looks up the StepDefinition that matches +step_name+
-    def step_definition(step_name) #:nodoc:
-      found = step_definitions.select do |step_definition|
-        step_definition.match(step_name)
-      end
-      raise Undefined.new(step_name) if found.empty?
-      found = best_matches(step_name, found) if found.size > 1 && options[:guess]
-      raise Ambiguous.new(step_name, found) if found.size > 1
-      found[0]
+    def step_match(step_name, formatted_step_name=nil)
+      matches = step_definitions.map { |d| d.step_match(step_name, formatted_step_name) }.compact
+      raise Undefined.new(step_name) if matches.empty?
+      matches = best_matches(step_name, matches) if matches.size > 1 && options[:guess]
+      raise Ambiguous.new(step_name, matches) if matches.size > 1
+      matches[0]
     end
 
-    def best_matches(step_name, step_definitions)
-      top_group_score = step_definitions.map {|s| s.match(step_name).captures.length }.sort.last
-      top_groups = step_definitions.select {|s| s.match(step_name).captures.length == top_group_score }
-      if top_groups.size > 1
-        shortest_capture_length = top_groups.map {|s| s.match(step_name).captures.inject(0) {|sum, c| sum + c.length } }.sort.first
-        top_groups.select {|s| s.match(step_name).captures.inject(0) {|sum, c| sum + c.length } == shortest_capture_length }
+    def best_matches(step_name, step_matches)
+      max_arg_length = step_matches.map {|step_match| step_match.args.length }.max
+      top_groups     = step_matches.select {|step_match| step_match.args.length == max_arg_length }
+
+      if top_groups.length > 1
+        shortest_capture_length = top_groups.map {|step_match| step_match.args.inject(0) {|sum, c| sum + c.length } }.min
+        top_groups.select {|step_match| step_match.args.inject(0) {|sum, c| sum + c.length } == shortest_capture_length }
       else
         top_groups
       end
@@ -144,6 +148,19 @@ module Cucumber
       end
     end
 
+    def before_and_after(scenario, skip=false)
+      unless current_world || skip
+        new_world!
+        execute_before(scenario)
+      end
+      if block_given?
+        yield
+        execute_after(scenario) unless skip
+        nil_world!
+        scenario_visited(scenario)
+      end
+    end
+
     private
 
     def max_step_definition_length
@@ -154,41 +171,42 @@ module Cucumber
       @options || {}
     end
 
-    module WorldMethods #:nodoc:
-      attr_writer :__cucumber_step_mother, :__cucumber_current_step
-
-      # Call a step from within a step definition
-      def __cucumber_invoke(name, *multiline_arguments)
-        begin
-          # TODO: Very similar to code in Step. Refactor. Get back StepInvocation?
-          # Make more similar to JBehave?
-          step_definition = @__cucumber_step_mother.step_definition(name)
-          matched_args = step_definition.matched_args(name)
-          args = (matched_args + multiline_arguments)
-          step_definition.execute(name, self, *args)
-        rescue Exception => e
-          @__cucumber_current_step.exception = e
-          raise e
-        end
-      end
-      
-      def table(text, file=nil, line=0)
-        @table_parser ||= Parser::TableParser.new
-        @table_parser.parse_or_fail(text.strip, file, line)
+    # Creates a new world instance
+    def new_world!
+      @current_world = Object.new
+      (@world_procs ||= []).each do |proc|
+        @current_world = proc.call(@current_world)
       end
 
-      def pending(message = "TODO")
-        if block_given?
-          begin
-            yield
-          rescue Exception => e
-            raise Pending.new(message)
-          end
-          raise Pending.new("Expected pending '#{message}' to fail. No Error was raised. No longer pending?")
-        else
-          raise Pending.new(message)
-        end
+      @current_world.extend(World)
+      @current_world.__cucumber_step_mother = self
+
+      @current_world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
+      @current_world
+    end
+
+    def nil_world!
+      @current_world = nil
+    end
+
+    def execute_before(scenario)
+      (@before_procs ||= []).each do |proc|
+        @current_world.cucumber_instance_exec(false, 'Before', scenario, &proc)
       end
+    end
+
+    def execute_after(scenario)
+      (@after_procs ||= []).each do |proc|
+        @current_world.cucumber_instance_exec(false, 'After', scenario, &proc)
+      end
+    end
+
+    def scenario_visited(scenario)
+      scenarios << scenario unless scenarios.index(scenario)
+    end
+
+    def options
+      @options || {}
     end
   end
 end

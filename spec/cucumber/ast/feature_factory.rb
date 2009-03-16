@@ -29,11 +29,20 @@ module Cucumber
            I like
           Cucumber sandwich
         }, 10)
+        
+        background = Ast::Background.new(Ast::Comment.new(""), 2, "Background:",
+          [
+            Step.new(3, "Given", "a passing step")
+          ]
+        )
+        
         f = Ast::Feature.new(
+          background,
           Ast::Comment.new("# My feature comment\n"),
           Ast::Tags.new(6, ['one', 'two']),
           "Pretty printing",
           [Ast::Scenario.new(
+            background,
             Ast::Comment.new("    # My scenario comment  \n# On two lines \n"),
             Ast::Tags.new(8, ['three', 'four']),
             9,
@@ -46,7 +55,7 @@ module Cucumber
           )]
         )
         f.file = 'features/pretty_printing.feature'
-        f.features = Features.new(Filter.new({:tags => []}))
+        f.features = Features.new
         f
       end
     end

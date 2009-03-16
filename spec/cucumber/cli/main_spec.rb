@@ -25,7 +25,7 @@ module Cli
     describe "verbose mode" do
       
       before(:each) do
-        @empty_feature = Ast::Feature.new(Ast::Comment.new(''), Ast::Tags.new(2, []), "Feature", [])
+        @empty_feature = Ast::Feature.new(nil, Ast::Comment.new(''), Ast::Tags.new(2, []), "Feature", [])
         Dir.stub!(:[])
       end
 

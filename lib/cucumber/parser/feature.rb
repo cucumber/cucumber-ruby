@@ -45,7 +45,7 @@ module Cucumber
           elements[5]
         end
 
-        def background
+        def bg
           elements[6]
         end
 
@@ -57,11 +57,14 @@ module Cucumber
 
       module Feature2
         def build
-          if background.respond_to?(:build)
-            Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build, background.build)
-          else
-            Ast::Feature.new(comment.build, tags.build, header.text_value, feature_elements.build)
-          end
+          background = bg.respond_to?(:build) ? bg.build : nil
+          Ast::Feature.new(
+            background, 
+            comment.build, 
+            tags.build, 
+            header.text_value, 
+            feature_elements.build(background)
+          )
         end
       end
 
@@ -311,7 +314,7 @@ module Cucumber
         if r1
           s2, i2 = [], index
           loop do
-            if input.index(Regexp.new('[^@\\n\\t ]'), index) == index
+            if input.index(Regexp.new('[^@\\r\\n\\t ]'), index) == index
               r3 = (SyntaxNode).new(input, index...(index + 1))
               @index += 1
             else
@@ -548,8 +551,8 @@ module Cucumber
       end
 
       module FeatureElements0
-        def build
-          elements.map{|s| s.build}
+        def build(background)
+          elements.map{|s| s.build(background)}
         end
       end
 
@@ -611,6 +614,10 @@ module Cucumber
           elements[5]
         end
 
+        def white
+          elements[6]
+        end
+
         def steps
           elements[7]
         end
@@ -621,8 +628,9 @@ module Cucumber
       end
 
       module Scenario1
-        def build
+        def build(background)
           Ast::Scenario.new(
+            background,
             comment.build, 
             tags.build,
             scenario_keyword.line,
@@ -669,26 +677,14 @@ module Cucumber
                   r7 = _nt_line_to_eol
                   s0 << r7
                   if r7
-                    i8 = index
-                    r9 = _nt_white
-                    if r9
-                      r8 = r9
-                    else
-                      r10 = _nt_eof
-                      if r10
-                        r8 = r10
-                      else
-                        self.index = i8
-                        r8 = nil
-                      end
-                    end
+                    r8 = _nt_white
                     s0 << r8
                     if r8
-                      r11 = _nt_steps
-                      s0 << r11
-                      if r11
-                        r12 = _nt_white
-                        s0 << r12
+                      r9 = _nt_steps
+                      s0 << r9
+                      if r9
+                        r10 = _nt_white
+                        s0 << r10
                       end
                     end
                   end
@@ -750,8 +746,9 @@ module Cucumber
       end
 
       module ScenarioOutline1
-        def build
+        def build(background)
           Ast::ScenarioOutline.new(
+            background,
             comment.build, 
             tags.build,
             scenario_outline_keyword.line, 
