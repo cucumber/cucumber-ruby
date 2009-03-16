@@ -34,14 +34,10 @@ module Cucumber
           mkdir_p(dir) unless File.directory?(dir)
           File.open(file, Cucumber.file_mode('w')) do |io|
             @io = io
-            with_color do
-              super
-            end
-          end
-        else
-          with_color do
             super
           end
+        else
+          super
         end
       end
 
