@@ -122,9 +122,9 @@ module Cucumber
     end
 
     def best_matches(step_name, step_matches)
-      top_group_score = step_matches.map {|step_match| step_match.args.length }.max
+      max_arg_length = step_matches.map {|step_match| step_match.args.length }.max
+      top_groups      = step_matches.select {|step_match| step_match.args.length == max_arg_length }
 
-      top_groups      = step_matches.select {|step_match| step_match.args.length == top_group_score }
       if top_groups.length > 1
         shortest_capture_length = top_groups.map {|step_match| step_match.args.inject(0) {|sum, c| sum + c.length } }.min
         top_groups.select {|step_match| step_match.args.inject(0) {|sum, c| sum + c.length } == shortest_capture_length }

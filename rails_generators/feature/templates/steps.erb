@@ -1,7 +1,3 @@
-Given /I am on the new <%= singular_name %> page/ do
-  visit "/<%= plural_name %>/new"
-end
-
 Given /^the following <%= plural_name %>:$/ do |<%= plural_name %>|
   <%= class_name %>.create!(<%= plural_name %>.hashes)
 end
