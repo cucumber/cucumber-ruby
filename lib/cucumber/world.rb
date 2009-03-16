@@ -12,8 +12,8 @@ module Cucumber
     # Call a step from within a step definition
     def __cucumber_invoke(name, multiline_argument=nil) #:nodoc:
       begin
-        step_definition = @__cucumber_step_mother.step_definition(name)
-        step_definition.step_match(name, name).invoke(self, multiline_argument)
+        step_match = @__cucumber_step_mother.step_match(name)
+        step_match.invoke(self, multiline_argument)
       rescue Exception => e
         e.nested! if Undefined === e
         @__cucumber_current_step.exception = e
