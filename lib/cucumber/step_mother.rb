@@ -28,7 +28,7 @@ module Cucumber
   class Ambiguous < StandardError
     def initialize(step_name, step_definitions)
       message = "Ambiguous match of \"#{step_name}\":\n\n"
-      message << step_definitions.map{|sd| sd.to_backtrace_line}.join("\n")
+      message << step_definitions.map{|sd| sd.backtrace_line}.join("\n")
       message << "\n\n"
       super(message)
     end
@@ -38,8 +38,8 @@ module Cucumber
   class Redundant < StandardError
     def initialize(step_def_1, step_def_2)
       message = "Multiple step definitions have the same Regexp:\n\n"
-      message << step_def_1.to_backtrace_line << "\n"
-      message << step_def_2.to_backtrace_line << "\n\n"
+      message << step_def_1.backtrace_line << "\n"
+      message << step_def_2.backtrace_line << "\n\n"
       super(message)
     end
   end

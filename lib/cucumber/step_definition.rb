@@ -47,7 +47,7 @@ module Cucumber
       begin
         world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
       rescue Cucumber::ArityMismatchError => e
-        e.backtrace.unshift(self.to_backtrace_line)
+        e.backtrace.unshift(self.backtrace_line)
         raise e
       end
     end
@@ -84,7 +84,7 @@ module Cucumber
       step_name.match(@regexp).captures
     end
 
-    def to_backtrace_line
+    def backtrace_line
       "#{file_colon_line}:in `#{@regexp.inspect}'"
     end
 
