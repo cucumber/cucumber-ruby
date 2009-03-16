@@ -263,7 +263,6 @@ lib/cucumber/step_match.rb
 lib/cucumber/step_mother.rb
 lib/cucumber/version.rb
 lib/cucumber/world.rb
-pom.xml
 rails_generators/cucumber/USAGE
 rails_generators/cucumber/cucumber_generator.rb
 rails_generators/cucumber/templates/cucumber
@@ -322,5 +321,4 @@ spec/cucumber/treetop_parser/with_tags.feature
 spec/cucumber/world/pending_spec.rb
 spec/spec.opts
 spec/spec_helper.rb
-src/main/java/cucumber/ast/Table.java
 target/maven-archiver/pom.properties
