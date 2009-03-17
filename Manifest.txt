@@ -170,6 +170,7 @@ examples/tickets/features/177/1.feature
 examples/tickets/features/177/2.feature
 examples/tickets/features/177/3.feature
 examples/tickets/features/180.feature
+examples/tickets/features/236.feature
 examples/tickets/features/lib/eatting_machine.rb
 examples/tickets/features/lib/pantry.rb
 examples/tickets/features/scenario_outline.feature
