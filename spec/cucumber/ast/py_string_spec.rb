@@ -33,6 +33,13 @@ module Cucumber
           @ps.to_s.should_not include("Life is elsewhere")
         end
 
+        it "should replaced nil with empty string" do
+          ps = PyString.new(10, 13, "'<book>'", 0)
+          py_string_with_replaced_arg = ps.arguments_replaced({'<book>' => nil}) 
+          
+          py_string_with_replaced_arg.to_s.should == "''"
+        end
+
       end
       
     end

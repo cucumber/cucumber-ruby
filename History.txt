@@ -57,6 +57,7 @@ Scenario Outlines, the rich command line, the nice output format and everything
 pure Ruby users have been enjoying for a while.
 
 == Bugfixes
+* Within Scenario Outlines when replacing with a nil in multiline strings use empty string instead. (#238 Joseph Wilk)
 * Re-structure the ast: Feature -> Background -> (Scenario|ScenarioOutline)*. Fixes bug with background being called outside transactions. (#181 Joseph Wilk)
 * --strict always exits with status 1 (#230 Tim Cuthbertson)
 * Fix error with nil values in tables raising an exception (#227 Joseph Wilk)

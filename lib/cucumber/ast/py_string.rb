@@ -42,6 +42,7 @@ module Cucumber
       def arguments_replaced(arguments) #:nodoc:
         string = @string
         arguments.each do |name, value|
+          value ||= ''
           string = string.gsub(name, value)
         end
         PyString.new(@start_line, @end_line, string, @quotes_indent)
