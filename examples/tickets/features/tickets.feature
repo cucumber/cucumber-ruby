@@ -20,7 +20,7 @@ Feature: Cucumber
       | Oslo  | London  |
     Then I should be working in London
     And I should be born in Oslo
-    And I shoule see a multiline string like
+    And I should see a multiline string like
       """
       A string
       that spans

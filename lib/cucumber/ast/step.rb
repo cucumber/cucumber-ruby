@@ -30,10 +30,6 @@ module Cucumber
         StepInvocation.new(self, name, multiline_arg, matched_cells)
       end
 
-      def invoke(step_match, world)
-        step_match.invoke(world, @multiline_arg)
-      end
-
       def accept(visitor)
         # The only time a Step is visited is when it is in a ScenarioOutline.
         # Otherwise it's always StepInvocation that gest visited instead.
