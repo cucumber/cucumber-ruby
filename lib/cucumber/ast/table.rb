@@ -163,7 +163,6 @@ module Cucumber
             cell_with_replaced_args
           end
         end
-
         Table.new(raw_with_replaced_args)
       end
 

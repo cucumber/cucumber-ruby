@@ -29,7 +29,7 @@ module Cucumber
           @skip_invoke = true
           begin
             step_mother.current_world.__cucumber_current_step = self
-            @step.invoke(@step_match, step_mother.current_world)
+            @step_match.invoke(step_mother.current_world, @multiline_arg)
             status!(:passed)
           rescue Pending => e
             failed(e, false)

@@ -5,9 +5,6 @@ World do
 end
 
 After do |scenario|
-  if scenario.status.index(:failed)
-    # Call the BDD police
-  end
 end
 
 Given "be_empty" do
@@ -53,8 +50,12 @@ Then /^I should be (\w+) in (\w+)$/ do |key, value|
   hash[key].should == value
 end
 
-Then /^I shoule see a multiline string like$/ do |s|
+Then /^I should see a multiline string like$/ do |s|
   s.should == %{A string
 that spans
 several lines}
+end
+
+Given /^the following users exist in the system$/ do |table|
+  table.hashes[0][:role_assignments].should == 'HUMAN RESOURCE'
 end
