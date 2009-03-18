@@ -27,7 +27,7 @@ module Cucumber
         end
       end
 
-      def visit_step_name(keyword, step_match, status, source_indent)
+      def visit_step_name(keyword, step_match, status, source_indent, background)
         @rerun = true if [:failed].index(status)
       end
     end
