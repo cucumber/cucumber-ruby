@@ -59,3 +59,15 @@ end
 Given /^the following users exist in the system$/ do |table|
   table.hashes[0][:role_assignments].should == 'HUMAN RESOURCE'
 end
+
+Given /^I have a pending step$/ do
+  pending
+end
+
+When /^I run this feature with the progress format$/ do
+  pending
+end
+
+Then /^I should get a no method error for 'backtrace_line'$/ do
+  pending
+end
