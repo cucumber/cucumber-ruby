@@ -1,13 +1,12 @@
-== Git (0.2 alpha)
+== 0.2.0 2009-03-18
 
-This is a major rewrite of Cucumber's internals. The rewrite was done to address technical
-debt and to have a code base that is easier to evolve and maintain. There are some major
-changes to the Gherkin language, so this release is not fully backwards compatible with the 0.1.x series. 
-You may have to edit your feature files a little. Most importantly, "GivenScenario" and 
-"More Examples" no longer exist. See the "Removed features" section below for more details
-on how to use alternatives.
+This release sports a bunch of new and exciting features, as well a major rewrite of Cucumber's internals. 
+The rewrite was done to address technical debt and to have a code base that is easier to evolve and maintain. 
 
-**** CALL FOR TRANSLATORS ****
+There are some changes to the Gherkin language that breaks backwards compatible with the 0.1.x series. 
+Most importantly, "GivenScenario" and "More Examples" no longer exist. See the "Removed features" section 
+below for more details on how to use alternatives.
+
 Since the grammar has changed, there are some new keywords. We have to rely on the community
 to provide updated translations. This is much easier than before - just update languages.yml.
 There is no static code generation anymore. To list all languages:
@@ -18,43 +17,9 @@ And to list the keywords for a particular language:
 
   cucumber --lang en-lol help
   
-So just go ahead and list the language of your choice and send us updated translations.
-
 There are some really awesome new features in this release: Tagging, Autoformatting, automatic 
-aliasing of keywords in all languages, much better Ruby 1.9 support and improved output 
+aliasing of keywords in all languages, full Ruby 1.9 support and improved output 
 for multiline arguments are some of the highlights. 
-
-This version also brings Cucumber even closer to Java. Although it has been possible to
-run Cucumber on JRuby since v0.1.11, it has required that step definitions be defined
-in Ruby code. This has been a barrier for many Java developers who don't know Ruby.
-
-With this version you can write step definitions in pure Java code! Java step definitions
-are implemented simply by subclassing org.jbehave.scenario.steps.Steps. Example:
-
-  package super.duper;
-
-  public class MyJavaSteps extends Steps {
-      @Given("I have %count cucumbers in my belly")
-      public void cucumbersInTheBelly(int count) {
-          // talk to the Belly class
-      }
-
-      @Then("I should not be hungry for %n hours")
-      public void shouldNotBeHungry(int n) {
-          // Make assertions with JUnit or Hamcrest
-      }
-  }
-
-The only Ruby code you have to write is a little wiring in your env.rb file:
-
-  require 'cucumber/jbehave'
-  JBehave(super.duper.MyJavaSteps.new)
-
-You might be wondering what this brings over just using the whole JBehave tool
-standalone. Well, it gives you access to the Gherkin language in your features,
-which is a richer DSL than JBehave's language. -Over 20 spoken languages, Tables, 
-Scenario Outlines, the rich command line, the nice output format and everything 
-pure Ruby users have been enjoying for a while.
 
 == Bugfixes
 * New StepInvocation breaks console formatter for pending steps. (#241 Jacob Radford) 
@@ -85,21 +50,14 @@ pure Ruby users have been enjoying for a while.
 * Added Table#map_headers to to allow use of more readable headers (Rob Holland)
 * New -S/--step-definitions option. Useful (among other things) for tools that implement automcompletion. (#208 Aslak Hellesøy).
 * The cucumber.rake file defines a dummy :features task if Cucumber is not installed (#225 Josh Nichols)
-* Added map_column! to AST tables to ease casting of cell values into relevant types (#223 Rob Holland)
-  Given /^an expense report for (.*) with the following posts:$/ do |date, posts_table|
-    posts_table.map_column!('amount') { |a| a.to_i }
-    posts_table.hashes.each do |post|
-      # post['amount'] is a Fixnum, rather than a String
-    end
-  end
-  Mapping a column which is not specified in the table will produce an error unless you explicitly pass a 2nd false argument. This is to allow different Scenarios to re-use the step definition with different table columns.
+* Added Table#map_column! to ease casting of cell values into relevant types (#223 Rob Holland)
 * New --no-diff option (#218 Bryan Ash)
 * Rails generators supports testunit and rspec option, defaulting to rspec (#217 Josh Nichols)
 * Sinatra Example (#204 Rob Holland)
 * Keywords can be aliased in languages.yml. See English for an example (examples: Examples|Scenarios)
 * Adding support for Background (#153 Joseph Wilk) 
 * Added Česky/Czech (Vojtech Salbaba)
-* New --no-multiline option to reduce noise. Useful if lots of features are failing.
+* New --no-multiline option to reduce noise in output. Useful if lots of features are failing. (Aslak Hellesøy)
 * Added ability to pass URIs to cucumber in addition to files and directories. Useful for troubleshooting! (Aslak Hellesøy)
 * Groups of tabular scenarios (#57 Aslak Hellesøy)
 * Tagging scenarios and features. Pick the ones to run with --tags (#54 Aslak Hellesøy)
@@ -116,7 +74,7 @@ pure Ruby users have been enjoying for a while.
 * New --guess option tries to guess the best step definition match instead of raising Cucumber::Multiple. (Jake Howerton)
 
 === Removed features
-* "GivenScenario" is gone. Instead you can call Steps from Steps, or wait for "Background (#153)"
+* "GivenScenario" is gone. Instead you can call Steps from Step Definitions, or use the new Background feature (#153)
 * "More Examples" is gone. "Scenario" + "More Examples" is no longer supported. Use "Scenario Outline" + "Examples" instead.
 * Pure Ruby features are no longer supported.
 * Remove --color option in autotest. Can be added manually in cucumber.yml (#215 Jean-Michel Garnier)
