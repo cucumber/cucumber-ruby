@@ -98,6 +98,10 @@ module Cucumber
         @step.file_colon_line
       end
 
+      def backtrace_line
+        @step.backtrace_line
+      end
+
       def to_sexp
         [:step_invocation, @step.line, @step.keyword, @name, (@multiline_arg.nil? ? nil : @multiline_arg.to_sexp)].compact
       end

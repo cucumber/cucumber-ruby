@@ -57,6 +57,7 @@ Scenario Outlines, the rich command line, the nice output format and everything
 pure Ruby users have been enjoying for a while.
 
 == Bugfixes
+* New StepInvocation breaks console formatter for pending steps. (#241 Jacob Radford) 
 * Within Scenario Outlines when replacing with a nil in a step name use empty string instead. (#237 Joseph Wilk) 
 * Fixed bug with Scenario Outlines incorrectly replacing values in step tables with nil. (#237 Joseph Wilk)
 * Within Scenario Outlines when replacing with a nil in multiline strings use empty string instead. (#238 Joseph Wilk)
