@@ -128,7 +128,15 @@ module Cucumber
       # Change how #hashes converts column values. The +column_name+ argument identifies the column
       # and +conversion_proc+ performs the conversion for each cell in that column. If +strict+ is 
       # true, an error will be raised if the column named +column_name+ is not found. If +strict+ 
-      # is false, no error will be raised.
+      # is false, no error will be raised. Example:
+      #
+      #   Given /^an expense report for (.*) with the following posts:$/ do |table|
+      #     posts_table.map_column!('amount') { |a| a.to_i }
+      #     posts_table.hashes.each do |post|
+      #       # post['amount'] is a Fixnum, rather than a String
+      #     end
+      #   end
+      #
       def map_column!(column_name, strict=true, &conversion_proc)
         verify_column(column_name) if strict
         @conversion_procs[column_name] = conversion_proc
