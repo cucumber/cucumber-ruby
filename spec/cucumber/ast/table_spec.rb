@@ -103,6 +103,16 @@ module Cucumber
           table_with_replaced_args.hashes[0]['book'].should == nil
         end
 
+        it "should preserve values which don't match a placeholder when replacing with nil" do
+          table = Table.new([
+                              %w{book},
+                              %w{cat}
+                            ])
+          table_with_replaced_args = table.arguments_replaced({'<book>' => nil})
+          
+          table_with_replaced_args.hashes[0]['book'].should == 'cat'
+        end
+
         it "should not change the original table" do
           @table.arguments_replaced({'<book>' => 'Unbearable lightness of being'})
 
