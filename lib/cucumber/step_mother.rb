@@ -51,6 +51,7 @@ module Cucumber
   module StepMother
     class << self
       def alias_adverb(adverb)
+        adverb = adverb.gsub(/\s/, '')
         alias_method adverb, :register_step_definition
       end
     end

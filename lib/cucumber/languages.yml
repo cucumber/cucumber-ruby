@@ -20,6 +20,7 @@
   then: Then
   and: And
   but: But
+
 # Please help us keeping the languages below uptodate. The parsers for a language
 # that is missing a keyword will expect the English word until the missing word(s)
 # are added.
@@ -94,6 +95,20 @@
   then: Dann
   and: Und
   but: Aber
+"en-au":
+  name: Australian
+  native: Australian
+  encoding: UTF-8
+  feature: Crikey
+  background: Background
+  scenario: Mate
+  scenario_outline: Blokes
+  examples: Cobber
+  given: Ya know how
+  when: When
+  then: Ya gotta
+  and: N
+  but: Cept
 "en-lol":
   name: LOLCAT
   native: LOLCAT
@@ -103,7 +118,7 @@
   scenario: MISHUN
   scenario_outline: MISHUN SRSLY
   examples: EXAMPLZ
-  given: GIVN
+  given: I CAN HAZ
   when: WEN
   then: DEN
   and: AN
@@ -115,7 +130,7 @@
   feature: Feature
   background: Background
   scenario: Scenario
-  scenario_outline: Scenario Outline
+  scenario_outline: All y'all
   examples: Examples
   given: Given y'all
   when: When y'all

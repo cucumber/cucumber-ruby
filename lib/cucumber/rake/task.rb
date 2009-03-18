@@ -51,7 +51,7 @@ module Cucumber
       # Define a Rake
       def initialize(task_name = "features", desc = "Run Features with Cucumber")
         @task_name, @desc = task_name, desc
-        @libs = []
+        @libs = ['lib']
         @rcov_opts = %w{--rails --exclude osx\/objc,gems\/}
 
         yield self if block_given?
