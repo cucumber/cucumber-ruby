@@ -30,6 +30,12 @@ examples/i18n/de/features/addition.feature
 examples/i18n/de/features/division.feature
 examples/i18n/de/features/step_definitons/calculator_steps.rb
 examples/i18n/de/lib/calculator.rb
+examples/i18n/en-lol/Rakefile
+examples/i18n/en-lol/features/step_definitions/cucumbrz_steps.rb
+examples/i18n/en-lol/features/stuffing.feature
+examples/i18n/en-lol/features/support/env.rb
+examples/i18n/en-lol/lib/basket.rb
+examples/i18n/en-lol/lib/belly.rb
 examples/i18n/en/Rakefile
 examples/i18n/en/features/addition.feature
 examples/i18n/en/features/division.feature
