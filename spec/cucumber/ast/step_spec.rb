@@ -19,6 +19,19 @@ module Cucumber
         step_invocation.name.should == 'a green cucumber'
       end
 
+      it "should use empty string for the replacement of arguments in name when replace value is nil" do
+        step = Step.new(1, 'Given', 'a <color>cucumber')
+
+        invocation_table = Table.new([
+          ['color'],
+          [nil]
+        ])
+        cells = invocation_table.cells_rows[1]
+        step_invocation = step.step_invocation_from_cells(cells)
+        
+        step_invocation.name.should == 'a cucumber'
+      end
+
       it "should replace arguments in table arg" do
         arg_table = Table.new([%w{taste_<taste> color_<color>}])
 
