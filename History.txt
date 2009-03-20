@@ -1,3 +1,8 @@
+== 0.2.1 (In Git)
+
+== Bugfixes
+* Snippets are showing 'Ands' (#249 Aslak Hellesøy)
+
 == 0.2.0 2009-03-18
 
 This release sports a bunch of new and exciting features, as well a major rewrite of Cucumber's internals. 

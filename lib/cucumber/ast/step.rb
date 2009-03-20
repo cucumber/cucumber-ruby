@@ -78,21 +78,6 @@ module Cucumber
         @file_colon_line ||= @feature_element.file_colon_line(@line) unless @feature_element.nil?
       end
 
-      def actual_keyword
-        if [Cucumber.keyword_hash['and'], Cucumber.keyword_hash['but']].index(@keyword) && previous_step
-          previous_step.actual_keyword
-        else
-          @keyword
-        end
-      end
-
-      protected
-
-      # TODO: Remove when we use StepCollection everywhere
-      def previous_step
-        @feature_element.previous_step(self)
-      end
-
       private
 
       def matched_cells(cells)
