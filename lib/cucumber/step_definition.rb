@@ -64,7 +64,7 @@ module Cucumber
     # Formats the matched arguments of the associated Step. This method
     # is usually called from visitors, which render output.
     #
-    # The +format+ either be a String or a Proc.
+    # The +format+ can either be a String or a Proc.
     #
     # If it is a String it should be a format string according to
     # <tt>Kernel#sprinf</tt>, for example:
