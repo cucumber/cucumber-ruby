@@ -79,7 +79,7 @@ module Cucumber
       end
 
       def actual_keyword
-        if [Cucumber.keyword_hash['and'], Cucumber.keyword_hash['but']].index(@keyword) && previous
+        if [Cucumber.keyword_hash['and'], Cucumber.keyword_hash['but']].index(@step.keyword) && previous
           previous.actual_keyword
         else
           @step.keyword
