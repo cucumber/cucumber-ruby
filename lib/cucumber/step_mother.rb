@@ -101,7 +101,7 @@ module Cucumber
     end
 
     def After(&proc)
-      (@after_procs ||= []) << proc
+      (@after_procs ||= []).unshift(proc)
     end
 
     # Registers a World proc. You can call this method as many times as you

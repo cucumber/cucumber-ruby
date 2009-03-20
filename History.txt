@@ -1,6 +1,7 @@
 == 0.2.1 (In Git)
 
 == Bugfixes
+* After blocks are run in reverse order of registration. (#113 Aslak Hellesøy)
 * Snippets are showing 'Ands' (#249 Aslak Hellesøy)
 
 == 0.2.0 2009-03-18
