@@ -13,7 +13,7 @@ module Cucumber
       @step_definition.invoke(world, all_args, @step_name)
     end
 
-    def format_args(format)
+    def format_args(format = lambda{|a| a})
       @formatted_step_name || @step_definition.format_args(@step_name, format)
     end
     
@@ -23,6 +23,10 @@ module Cucumber
 
     def backtrace_line
       @step_definition.backtrace_line
+    end
+
+    def text_length
+      @step_definition.text_length
     end
   end
   
@@ -44,6 +48,10 @@ module Cucumber
 
     def backtrace_line
       @step.backtrace_line
+    end
+
+    def text_length
+      @step.text_length
     end
   end
 end

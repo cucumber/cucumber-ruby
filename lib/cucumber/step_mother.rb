@@ -141,13 +141,6 @@ module Cucumber
     def snippet_text(step_keyword, step_name)
       @snippet_generator.snippet_text(step_keyword, step_name)
     end
-    
-    def print_step_definitions(out)
-      step_definitions.each do |step_definition|
-        indent = max_step_definition_length - step_definition.text_length
-        out.puts(step_definition.to_s(indent))
-      end
-    end
 
     def before_and_after(scenario, skip=false)
       unless current_world || skip

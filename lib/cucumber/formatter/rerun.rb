@@ -1,5 +1,13 @@
 module Cucumber
   module Formatter
+    # This formatter keeps track of all failing features and print out their location.
+    # Example:
+    #
+    #   features/foo.feature:34 features/bar.feature:11:76:81
+    #
+    # This formatter is used by AutoTest - it will use the output to decide what
+    # to run the next time, simply passing the output string on the command line.
+    #
     class Rerun < Ast::Visitor
       def initialize(step_mother, io, options)
         super(step_mother)

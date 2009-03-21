@@ -82,7 +82,7 @@ module Cucumber
         if [Cucumber.keyword_hash['and'], Cucumber.keyword_hash['but']].index(@step.keyword) && previous
           previous.actual_keyword
         else
-          @step.keyword
+          keyword
         end
       end
 
@@ -92,6 +92,10 @@ module Cucumber
 
       def text_length
         @step.text_length
+      end
+
+      def keyword
+        @step.keyword
       end
 
       def file_colon_line

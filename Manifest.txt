@@ -199,6 +199,7 @@ features/report_called_undefined_steps.feature
 features/step_definitions/cucumber_steps.rb
 features/step_definitions/extra_steps.rb
 features/support/env.rb
+features/usage.feature
 gem_tasks/deployment.rake
 gem_tasks/environment.rake
 gem_tasks/features.rake
@@ -252,6 +253,7 @@ lib/cucumber/formatter/profile.rb
 lib/cucumber/formatter/progress.rb
 lib/cucumber/formatter/rerun.rb
 lib/cucumber/formatter/unicode.rb
+lib/cucumber/formatter/usage.rb
 lib/cucumber/formatters/unicode.rb
 lib/cucumber/jbehave.rb
 lib/cucumber/languages.yml

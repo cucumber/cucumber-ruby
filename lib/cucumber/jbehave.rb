@@ -27,6 +27,7 @@ if defined?(JRUBY_VERSION)
         end
 
         def step_match(name_to_match, name_to_report)
+          raise "FIXME"
           if(match = name_to_match.match(@regexp))
             StepMatch.new(self, name_to_match, name_to_report, match.captures)
           else

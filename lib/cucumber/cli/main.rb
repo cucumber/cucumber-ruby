@@ -32,13 +32,6 @@ module Cucumber
         step_mother.options = configuration.options
 
         require_files
-
-        if(configuration.print_step_definitions?)
-          step_mother.print_step_definitions(@out_stream)
-          Kernel.exit(0)
-          return # In specs, exit is stubbed
-        end
-        
         enable_diffing
       
         features = load_plain_text_features
