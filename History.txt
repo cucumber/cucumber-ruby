@@ -5,7 +5,7 @@
 * Snippets are showing 'Ands' (#249 Aslak Hellesøy)
 
 === New features
-* New usage formatter. This is the foundation for editor autocompletion and navigation between steps and step definitions.
+* New usage formatter. This is the foundation for editor autocompletion and navigation between steps and step definitions. (#209 Aslak Hellesøy)
 
 === Removed features
 * -S/--step-definitions option introduced in 0.2.0 is removed. Use --format usage [--dry-run] [--no-color].
