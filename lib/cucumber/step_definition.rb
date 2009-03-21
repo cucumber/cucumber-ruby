@@ -95,9 +95,5 @@ module Cucumber
     def text_length
       @regexp.inspect.jlength
     end
-
-    def to_s(indent = 0)
-      @regexp.inspect + (' # ').indent(indent) + file_colon_line
-    end
   end
 end

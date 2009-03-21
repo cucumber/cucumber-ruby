@@ -10,18 +10,6 @@ module Cli
       Kernel.stub!(:exit).and_return(nil)
     end
 
-    it "should print step definitions" do
-      step_mother = Object.new.extend(StepMother)
-      step_mother.Given(/Bonjour/) {}
-      step_mother.Given(/Monde/) {}
-      @cli = Main.new(%w{-S}, @out)
-      @cli.execute!(step_mother)
-      @out.string.should == %{
-/Bonjour/ # spec/cucumber/cli/main_spec.rb:15
-/Monde/   # spec/cucumber/cli/main_spec.rb:16
-}.lstrip
-    end
-
     describe "verbose mode" do
       
       before(:each) do
@@ -54,7 +42,7 @@ module Cli
     describe "diffing" do
 
       before :each do
-        @configuration = mock('Configuration', :null_object => true, :print_step_definitions? => nil)
+        @configuration = mock('Configuration', :null_object => true)
         Configuration.should_receive(:new).and_return(@configuration)
         
         @step_mother = mock('StepMother', :null_object => true)

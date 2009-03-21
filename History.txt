@@ -4,6 +4,12 @@
 * After blocks are run in reverse order of registration. (#113 Aslak Hellesøy)
 * Snippets are showing 'Ands' (#249 Aslak Hellesøy)
 
+=== New features
+* New usage formatter. This is the foundation for editor autocompletion and navigation between steps and step definitions.
+
+=== Removed features
+* -S/--step-definitions option introduced in 0.2.0 is removed. Use --format usage [--dry-run] [--no-color].
+
 == 0.2.0 2009-03-18
 
 This release sports a bunch of new and exciting features, as well a major rewrite of Cucumber's internals. 

@@ -137,9 +137,6 @@ module Cucumber
           opts.on("--no-diff", "Disable diff output on failing expectations.") do
             @options[:diff_enabled] = false
           end
-          opts.on("-S", "--step-definitions", "Print the regexp and line of all step definitions, then exit.") do
-            @options[:print_step_definitions] = true
-          end
           opts.on_tail("--version", "Show version.") do
             @out_stream.puts VERSION::STRING
             Kernel.exit
@@ -173,10 +170,6 @@ module Cucumber
     
       def diff_enabled?
         @options[:diff_enabled]
-      end
-
-      def print_step_definitions?
-        @options[:print_step_definitions]
       end
 
       def load_language
@@ -224,11 +217,12 @@ module Cucumber
     
       def formatter_class(format)
         case format
-          when 'pretty'   then Formatter::Pretty
-          when 'progress' then Formatter::Progress
-          when 'profile'  then Formatter::Profile
-          when 'rerun'    then Formatter::Rerun
           when 'html'     then Formatter::Html
+          when 'pretty'   then Formatter::Pretty
+          when 'profile'  then Formatter::Profile
+          when 'progress' then Formatter::Progress
+          when 'rerun'    then Formatter::Rerun
+          when 'usage'    then Formatter::Usage
         else
           constantize(format)
         end
