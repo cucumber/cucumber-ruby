@@ -9,7 +9,8 @@ module Cucumber
       it "should convert to sexp" do
         feature = create_feature(Object.new)
         feature.to_sexp.should == 
-        [:feature, 
+        [:feature,
+          "features/pretty_printing.feature",
           "Pretty printing", 
           [:comment, "# My feature comment\n"], 
           [:tag, "one"], 
