@@ -28,7 +28,7 @@ module Cucumber
         unless @skip_invoke || options[:dry_run] || exception || @step_collection.exception
           @skip_invoke = true
           begin
-            step_mother.current_world.__cucumber_current_step = self
+            step_mother.current_world.__cucumber_current_step = self if step_mother.current_world # Nil in Pure Java
             @step_match.invoke(step_mother.current_world, @multiline_arg)
             status!(:passed)
           rescue Pending => e

@@ -206,7 +206,6 @@ gem_tasks/features.rake
 gem_tasks/fix_cr_lf.rake
 gem_tasks/flog.rake
 gem_tasks/gemspec.rake
-gem_tasks/jar.rake
 gem_tasks/rspec.rake
 gem_tasks/yard.rake
 lib/autotest/cucumber.rb

@@ -10,7 +10,7 @@ module Cucumber
     def invoke(world, multiline_arg)
       all_args = @args.dup
       all_args << multiline_arg if multiline_arg
-      @step_definition.invoke(world, all_args, @step_name)
+      @step_definition.invoke(world, all_args)
     end
 
     def format_args(format = lambda{|a| a})
