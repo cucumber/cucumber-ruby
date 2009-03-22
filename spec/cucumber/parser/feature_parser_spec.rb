@@ -33,7 +33,7 @@ with blurb
           parse(%{# My comment
 Feature: hi
 }).to_sexp.should ==
-          [:feature, "Feature: hi\n",
+          [:feature, nil, "Feature: hi\n",
             [:comment, "# My comment\n"]]
         end
         
@@ -45,7 +45,7 @@ Feature: hi
     # When bar
     Then baz
 }).to_sexp.should == 
-          [:feature, "Feature: Hi", 
+          [:feature, nil, "Feature: Hi", 
             [:scenario, 2, "Scenario:", "Hello", 
               [:step, 3, "Given", "foo"],
               [:comment, "# When bar\n"], 
@@ -59,18 +59,18 @@ Feature: hi
 # World
 Feature: hi
 }).to_sexp.should ==
-          [:feature, "Feature: hi\n",
+          [:feature, nil, "Feature: hi\n",
             [:comment, "# Hello\n# World\n"]]
         end
 
         it "should parse a file with no comments" do
           parse("Feature: hi\n").to_sexp.should ==
-          [:feature, "Feature: hi\n"]
+          [:feature, nil, "Feature: hi\n"]
         end
 
         it "should parse a file with only a multiline comment with newlines" do
           parse("# Hello\n\n# World\n").to_sexp.should == 
-          [:feature, "", 
+          [:feature, nil, "", 
             [:comment, "# Hello\n\n# World\n"]]
         end
       end
@@ -78,7 +78,7 @@ Feature: hi
       describe "Tags" do
         it "should parse a file with tags on a feature" do
           parse("# My comment\n@hello @world Feature: hi\n").to_sexp.should ==
-          [:feature, "Feature: hi\n",
+          [:feature, nil, "Feature: hi\n",
             [:comment, "# My comment\n"],
             [:tag, "hello"],
             [:tag, "world"]]
@@ -96,7 +96,7 @@ Feature: hi
 @st3 
    @st4    @ST5  @#^%&ST6**!
   Scenario: Second}).to_sexp.should ==
-          [:feature, "Feature: hi",
+          [:feature, nil, "Feature: hi",
             [:comment, "# FC\n  "],
             [:tag, "ft"],
             [:scenario, 6, 'Scenario:', 'First',
@@ -111,7 +111,7 @@ Feature: hi
       describe "Background" do
         it "should have steps" do
           parse("Feature: Hi\nBackground:\nGiven I am a step\n").to_sexp.should ==
-          [:feature, "Feature: Hi",
+          [:feature, nil, "Feature: Hi",
             [:background, 2, "Background:",
               [:step, 3, "Given", "I am a step"]]]
         end
@@ -120,7 +120,7 @@ Feature: hi
       describe "Scenarios" do
         it "can be empty" do
           parse("Feature: Hi\n\nScenario: Hello\n").to_sexp.should ==
-          [:feature, "Feature: Hi",
+          [:feature, nil, "Feature: Hi",
             [:scenario, 3, "Scenario:", "Hello"]]
         end
 
@@ -134,7 +134,7 @@ Scenario: bar
             
         it "should have steps" do
           parse("Feature: Hi\nScenario: Hello\nGiven I am a step\n").to_sexp.should ==
-          [:feature, "Feature: Hi",
+          [:feature, nil, "Feature: Hi",
             [:scenario, 2, "Scenario:", "Hello",
               [:step_invocation, 3, "Given", "I am a step"]]]
         end
@@ -145,7 +145,7 @@ Scenario: Hello
 Given I have a table
 |a|b|
 }).to_sexp.should ==
-          [:feature, "Feature: Hi",
+          [:feature, nil, "Feature: Hi",
             [:scenario, 2, "Scenario:", "Hello",
               [:step_invocation, 3, "Given", "I have a table",
                 [:table,
@@ -166,7 +166,7 @@ Given I have a string
   """
 
 }).to_sexp.should ==
-          [:feature, "Feature: Hi",
+          [:feature, nil, "Feature: Hi",
             [:scenario, 2, "Scenario:", "Hello",
               [:step_invocation, 3, "Given", "I have a string",
                 [:py_string, "hello\nworld"]]]]
@@ -182,7 +182,7 @@ Examples:
 |what|
 |green|
 }).to_sexp.should ==
-          [:feature, "Feature: Hi",
+          [:feature, nil, "Feature: Hi",
             [:scenario_outline, "Scenario Outline:", "Hello",
               [:step, 3, "Given", "a <what> cucumber"],
               [:examples, "Examples:", "",
@@ -203,7 +203,7 @@ Examples:
 |a|b|
 |c|d|
 }).to_sexp.should ==
-          [:feature, "Feature: Hi",
+          [:feature, nil, "Feature: Hi",
             [:scenario_outline, "Scenario Outline:", "Hello",
               [:step, 4, "Given", "I have a table",
                 [:table, 
@@ -233,7 +233,7 @@ Examples:
 |5|6|
 
 ").to_sexp.should ==
-          [:feature, "Feature: Hi",
+          [:feature, nil, "Feature: Hi",
             [:scenario_outline, "Scenario Outline:", "Hello",
               [:step, 5, "Given", "I have a table",
                 [:table,

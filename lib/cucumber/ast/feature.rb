@@ -48,7 +48,7 @@ module Cucumber
       end
 
       def to_sexp
-        sexp = [:feature, @name]
+        sexp = [:feature, @file, @name]
         comment = @comment.to_sexp
         sexp += [comment] if comment
         tags = @tags.to_sexp
