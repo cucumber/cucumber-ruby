@@ -58,7 +58,22 @@ module Cucumber
   class StepDefinition
     def self.snippet_text(step_keyword, step_name)
       escaped = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
-      "#{step_keyword} /^#{escaped}$/ do\n  pending\nend"
+      param_pattern = /"([^\"]*)"/
+
+      match = escaped.match(param_pattern)
+      if match
+        n = 0
+        block_args = match.captures.map do |a|
+          n += 1
+          "arg#{n}"
+        end
+        block_arg_string = " |#{block_args.join(", ")}|"
+      else
+        block_arg_string = ""
+      end
+
+      escaped = escaped.gsub(param_pattern, '"([^\\"]*)"')
+      "#{step_keyword} /^#{escaped}$/ do#{block_arg_string}\n  pending\nend"
     end
 
     class MissingProc < StandardError
