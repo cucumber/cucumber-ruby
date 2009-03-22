@@ -5,6 +5,7 @@
 * Snippets are showing 'Ands' (#249 Aslak Hellesøy)
 
 === New features
+* support/env.rb is not loaded when --dry-run is specified. This is to increase performance. (Aslak Hellesøy)
 * New usage formatter. This is the foundation for editor autocompletion and navigation between steps and step definitions. (#209 Aslak Hellesøy)
 
 === Removed features

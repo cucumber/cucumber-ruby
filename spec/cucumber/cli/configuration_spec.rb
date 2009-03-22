@@ -18,7 +18,7 @@ module Cli
     it "should require files in support paths first" do
       File.stub!(:directory?).and_return(true)
       Dir.stub!(:[]).and_return(["/features/step_definitions/foo.rb","/features/support/bar.rb"])
-      
+
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--require /features})
 
@@ -31,7 +31,7 @@ module Cli
     it "should require env.rb files first" do
       File.stub!(:directory?).and_return(true)
       Dir.stub!(:[]).and_return(["/features/support/a_file.rb","/features/support/env.rb"])
-      
+
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--require /features})
 
@@ -40,7 +40,19 @@ module Cli
         "/features/support/a_file.rb"
       ]
     end
-    
+
+    it "should not require env.rb files when --dry-run" do
+      File.stub!(:directory?).and_return(true)
+      Dir.stub!(:[]).and_return(["/features/support/a_file.rb","/features/support/env.rb"])
+
+      config = Configuration.new(StringIO.new)
+      config.parse!(%w{--require /features --dry-run})
+
+      config.files_to_require.should == [
+        "/features/support/a_file.rb"
+      ]
+    end
+
     it "should expand args from YAML file" do
       given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})
 
