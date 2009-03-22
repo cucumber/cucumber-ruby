@@ -69,5 +69,25 @@ module Cucumber
       end
       step_match("Loud").invoke(world, nil)
     end
+    
+    def unindented(s)
+      s.split("\n")[1..-2].join("\n").indent(-8)
+    end
+    
+    it "should recognise quotes in name and make according regexp" do
+      StepDefinition.snippet_text('Given', 'A "first" arg').should == unindented(%{
+        Given /^A "([^\\"]*)" arg$/ do |arg1|
+          pending
+        end
+      })
+    end
+
+    it "should not use quote group when there are no quotes" do
+      StepDefinition.snippet_text('Given', 'A first arg').should == unindented(%{
+        Given /^A first arg$/ do
+          pending
+        end
+      })
+    end
   end
 end
