@@ -94,6 +94,11 @@ module Cucumber
         @builder.li("#{keyword} #{step_name}", :class => status)
       end
 
+      def visit_exception(exception, status)
+        e = (["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n")
+        @builder.pre(e, :class => status)
+      end
+
       def visit_multiline_arg(multiline_arg)
         if Ast::Table === multiline_arg
           @builder.table do
