@@ -95,6 +95,7 @@ module Cucumber
             Term::ANSIColor.coloring = v
           end
           opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.",
+            "This also omits the loading of your support/env.rb file if it exists.",
             "Implies --quiet.") do
             @options[:dry_run] = true
             @quiet = true
@@ -236,7 +237,9 @@ module Cucumber
         end.flatten.uniq
         sorted_files = files.sort { |a,b| (b =~ %r{/support/} || -1) <=>  (a =~ %r{/support/} || -1) }.reject{|f| f =~ /^http/}
         env_files = sorted_files.select {|f| f =~ %r{/support/env.rb} }
-        env_files + sorted_files.reject {|f| f =~ %r{/support/env.rb} }
+        files = env_files + sorted_files.reject {|f| f =~ %r{/support/env.rb} }
+        files.reject! {|f| f =~ %r{/support/env.rb} } if @options[:dry_run]
+        files
       end
     
       def feature_files

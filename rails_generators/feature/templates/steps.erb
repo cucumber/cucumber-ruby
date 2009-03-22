@@ -10,7 +10,7 @@ When /^I delete the (\d+)(?:st|nd|rd|th) <%= singular_name %>$/ do |pos|
 end
 
 Then /^I should see the following <%= plural_name %>:$/ do |<%= plural_name %>|
-  <%= plural_name %>.raw[1..-1].each_with_index do |row, i|
+  <%= plural_name %>.rows.each_with_index do |row, i|
     row.each_with_index do |cell, j|
       response.should have_selector("table > tr:nth-child(#{i+2}) > td:nth-child(#{j+1})") { |td|
         td.inner_text.should == cell
