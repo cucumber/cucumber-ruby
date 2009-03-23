@@ -121,16 +121,15 @@ module Cucumber
 
       def visit_step_name(keyword, step_match, status, source_indent, background)
         @step_matches ||= []
-        
         non_failed_background_step_outside_background = !@in_background && background && (status != :failed)
         @skip_step = @step_matches.index(step_match) || non_failed_background_step_outside_background
+        @step_matches << step_match
         
         unless(@skip_step)
           source_indent = nil unless @options[:source]
           formatted_step_name = format_step(keyword, step_match, status, source_indent)
           @io.puts("    " + formatted_step_name)
         end
-        @step_matches << step_match
       end
 
       def visit_multiline_arg(multiline_arg)
