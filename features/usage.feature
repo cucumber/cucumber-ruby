@@ -22,6 +22,55 @@ Feature: Cucumber command line
        And '10' cukes    # features/background/failing_background.feature:5
        Given '10' cukes  # features/background/passing_background.feature:4
        Given '10' cukes  # features/background/scenario_outline_passing_background.feature:4
+       Given '2' cukes   # features/tons_of_cukes.feature:3
+       Given '2' cukes   # features/tons_of_cukes.feature:4
+       Given '2' cukes   # features/tons_of_cukes.feature:5
+       Given '2' cukes   # features/tons_of_cukes.feature:6
+       Given '2' cukes   # features/tons_of_cukes.feature:7
+       Given '2' cukes   # features/tons_of_cukes.feature:8
+       Given '2' cukes   # features/tons_of_cukes.feature:9
+       Given '2' cukes   # features/tons_of_cukes.feature:10
+       Given '2' cukes   # features/tons_of_cukes.feature:11
+       Given '2' cukes   # features/tons_of_cukes.feature:12
+       Given '2' cukes   # features/tons_of_cukes.feature:13
+       Given '2' cukes   # features/tons_of_cukes.feature:14
+       Given '2' cukes   # features/tons_of_cukes.feature:15
+       Given '2' cukes   # features/tons_of_cukes.feature:16
+       Given '2' cukes   # features/tons_of_cukes.feature:17
+       Given '2' cukes   # features/tons_of_cukes.feature:18
+       Given '2' cukes   # features/tons_of_cukes.feature:19
+       Given '2' cukes   # features/tons_of_cukes.feature:20
+       Given '2' cukes   # features/tons_of_cukes.feature:21
+       Given '2' cukes   # features/tons_of_cukes.feature:22
+       Given '2' cukes   # features/tons_of_cukes.feature:23
+       Given '2' cukes   # features/tons_of_cukes.feature:24
+       Given '2' cukes   # features/tons_of_cukes.feature:25
+       Given '2' cukes   # features/tons_of_cukes.feature:26
+       Given '2' cukes   # features/tons_of_cukes.feature:27
+       Given '2' cukes   # features/tons_of_cukes.feature:28
+       Given '2' cukes   # features/tons_of_cukes.feature:29
+       Given '2' cukes   # features/tons_of_cukes.feature:30
+       Given '2' cukes   # features/tons_of_cukes.feature:31
+       Given '2' cukes   # features/tons_of_cukes.feature:32
+       Given '2' cukes   # features/tons_of_cukes.feature:33
+       Given '2' cukes   # features/tons_of_cukes.feature:34
+       Given '2' cukes   # features/tons_of_cukes.feature:35
+       Given '2' cukes   # features/tons_of_cukes.feature:36
+       Given '2' cukes   # features/tons_of_cukes.feature:37
+       Given '2' cukes   # features/tons_of_cukes.feature:38
+       Given '2' cukes   # features/tons_of_cukes.feature:39
+       Given '2' cukes   # features/tons_of_cukes.feature:40
+       Given '2' cukes   # features/tons_of_cukes.feature:41
+       Given '2' cukes   # features/tons_of_cukes.feature:42
+       Given '2' cukes   # features/tons_of_cukes.feature:43
+       Given '2' cukes   # features/tons_of_cukes.feature:44
+       Given '2' cukes   # features/tons_of_cukes.feature:45
+       Given '2' cukes   # features/tons_of_cukes.feature:46
+       Given '2' cukes   # features/tons_of_cukes.feature:47
+       Given '2' cukes   # features/tons_of_cukes.feature:48
+       Given '2' cukes   # features/tons_of_cukes.feature:49
+       Given '2' cukes   # features/tons_of_cukes.feature:50
+       Given '2' cukes   # features/tons_of_cukes.feature:51
       /^I should have '(.+)' cukes$/      # features/step_definitions/sample_steps.rb:31
        Then I should have '10' cukes      # features/background/failing_background.feature:8
        Then I should have '10' cukes      # features/background/failing_background.feature:11
