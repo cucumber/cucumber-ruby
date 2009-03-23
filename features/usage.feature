@@ -22,7 +22,6 @@ Feature: Cucumber command line
        And '10' cukes    # features/background/failing_background.feature:5
        Given '10' cukes  # features/background/passing_background.feature:4
        Given '10' cukes  # features/background/scenario_outline_passing_background.feature:4
-       Given '2' cukes   # features/tons_of_cukes.feature:3
        Given '2' cukes   # features/tons_of_cukes.feature:4
        Given '2' cukes   # features/tons_of_cukes.feature:5
        Given '2' cukes   # features/tons_of_cukes.feature:6
@@ -71,6 +70,7 @@ Feature: Cucumber command line
        Given '2' cukes   # features/tons_of_cukes.feature:49
        Given '2' cukes   # features/tons_of_cukes.feature:50
        Given '2' cukes   # features/tons_of_cukes.feature:51
+       Given '2' cukes   # features/tons_of_cukes.feature:52
       /^I should have '(.+)' cukes$/      # features/step_definitions/sample_steps.rb:31
        Then I should have '10' cukes      # features/background/failing_background.feature:8
        Then I should have '10' cukes      # features/background/failing_background.feature:11
