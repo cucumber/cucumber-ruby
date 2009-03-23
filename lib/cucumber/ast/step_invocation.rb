@@ -102,6 +102,10 @@ module Cucumber
         @step.file_colon_line
       end
 
+      def dom_id
+        @step.dom_id
+      end
+
       def backtrace_line
         @step.backtrace_line
       end
