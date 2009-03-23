@@ -91,13 +91,15 @@ module Cucumber
 
       def visit_step(step)
         @step_id = step.dom_id
-        super
+        @builder.li(:id => @step_id) do
+          super
+        end
       end
 
       def visit_step_name(keyword, step_match, status, source_indent, background)
         step_name = step_match.format_args(lambda{|param| "<span>#{param}</span>"})
-        @builder.li(:class => status, :id => @step_id) do |li|
-          li << "#{keyword} #{step_name}"
+        @builder.div(:class => status) do |div|
+          div << "#{keyword} #{step_name}"
         end
       end
 

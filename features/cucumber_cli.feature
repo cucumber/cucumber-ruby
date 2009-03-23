@@ -166,7 +166,7 @@ Feature: Cucumber command line
       """
 
   Scenario: --dry-run
-    When I run cucumber --dry-run --no-snippets features/*.feature
+    When I run cucumber --dry-run --no-snippets features/*.feature --tags ~@lots
     Then it should pass with
       """
       Feature: Calling undefined step
