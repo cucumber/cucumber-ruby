@@ -264,6 +264,10 @@ module Cucumber
           @cells[0].line
         end
 
+        def dom_id
+          "row_#{line}"
+        end
+
         def status=(status)
           each do |cell|
             cell.status = status

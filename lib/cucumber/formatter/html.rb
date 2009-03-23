@@ -97,9 +97,15 @@ module Cucumber
       end
 
       def visit_step_name(keyword, step_match, status, source_indent, background)
-        step_name = step_match.format_args(lambda{|param| "<span>#{param}</span>"})
-        @builder.div(:class => status) do |div|
-          div << "#{keyword} #{step_name}"
+        @step_matches ||= []
+        @skip_step = @step_matches.index(step_match)
+        @step_matches << step_match
+
+        unless @skip_step
+          step_name = step_match.format_args(lambda{|param| "<span>#{param}</span>"})
+          @builder.div(:class => status) do |div|
+            div << "#{keyword} #{step_name}"
+          end
         end
       end
 
@@ -109,25 +115,33 @@ module Cucumber
       end
 
       def visit_multiline_arg(multiline_arg)
+        return if @skip_step
         if Ast::Table === multiline_arg
           @builder.table do
             super
           end
         else
-          @builder.p do
-            super
-          end
+          super
+        end
+      end
+
+      def visit_py_string(string, status)
+        @builder.pre(:class => status) do |pre|
+          pre << string
         end
       end
 
       def visit_table_row(table_row)
-        @builder.tr do
+        @row_id = table_row.dom_id
+        @col_index = 0
+        @builder.tr(:id => @row_id) do
           super
         end
       end
 
       def visit_table_cell_value(value, width, status)
-        @builder.td(value, :class => status)
+        @builder.td(value, :class => status, :id => "#{@row_id}_#{@col_index}")
+        @col_index += 1
       end
 
       def announce(announcement)
