@@ -1,7 +1,7 @@
 module Cucumber
   module Cli
     class YmlLoadError < StandardError; end
-  
+
     class Configuration
       FORMATS = %w{pretty profile progress rerun}
       DEFAULT_FORMAT = 'pretty'

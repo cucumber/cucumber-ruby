@@ -83,15 +83,22 @@ module Cucumber
         @builder.h4("#{keyword} #{name}")
       end
 
-      def visit_steps(scenarios)
+      def visit_steps(steps)
         @builder.ol do
           super
         end
       end
 
+      def visit_step(step)
+        @step_id = step.dom_id
+        super
+      end
+
       def visit_step_name(keyword, step_match, status, source_indent, background)
         step_name = step_match.format_args(lambda{|param| "<span>#{param}</span>"})
-        @builder.li("#{keyword} #{step_name}", :class => status)
+        @builder.li(:class => status, :id => @step_id) do |li|
+          li << "#{keyword} #{step_name}"
+        end
       end
 
       def visit_exception(exception, status)

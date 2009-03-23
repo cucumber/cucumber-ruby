@@ -78,6 +78,10 @@ module Cucumber
         @file_colon_line ||= @feature_element.file_colon_line(@line) unless @feature_element.nil?
       end
 
+      def dom_id
+        @dom_id ||= file_colon_line.gsub(/\//, '_').gsub(/\./, '_').gsub(/:/, '_')
+      end
+
       private
 
       def matched_cells(cells)

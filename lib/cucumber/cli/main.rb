@@ -46,7 +46,18 @@ module Cucumber
         Kernel.exit(failure ? 1 : 0)
       end
 
-      private
+      def load_plain_text_features
+        features = Ast::Features.new
+        parser = Parser::FeatureParser.new
+
+        verbose_log("Features:")
+        configuration.feature_files.each do |f|
+          features.add_feature(parser.parse_file(f))
+          verbose_log("  * #{f}")
+        end
+        verbose_log("\n"*2)
+        features
+      end
 
       def configuration
         return @configuration if @configuration
@@ -55,6 +66,8 @@ module Cucumber
         @configuration.parse!(@args)
         @configuration
       end
+
+      private
     
       def require_files
         verbose_log("Ruby files required:")
@@ -68,19 +81,6 @@ module Cucumber
           end
         end
         verbose_log("\n")
-      end
-
-      def load_plain_text_features
-        features = Ast::Features.new
-        parser = Parser::FeatureParser.new
-
-        verbose_log("Features:")
-        configuration.feature_files.each do |f|
-          features.add_feature(parser.parse_file(f))
-          verbose_log("  * #{f}")
-        end
-        verbose_log("\n"*2)
-        features
       end
 
       def verbose_log(string)
