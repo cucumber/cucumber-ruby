@@ -110,8 +110,7 @@ module Cucumber
       end
 
       def visit_exception(exception, status)
-        e = (["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n")
-        @builder.pre(e, :class => status)
+        @builder.pre(format_exception(e), :class => status)
       end
 
       def visit_multiline_arg(multiline_arg)
@@ -137,6 +136,15 @@ module Cucumber
         @builder.tr(:id => @row_id) do
           super
         end
+        if table_row.exception
+          @builder.tr do
+            @builder.td(:colspan => @col_index.to_s, :class => 'failed') do
+              @builder.pre do |pre|
+                pre << format_exception(table_row.exception)
+              end
+            end
+          end
+        end
       end
 
       def visit_table_cell_value(value, width, status)
@@ -156,6 +164,9 @@ module Cucumber
         end
       end
 
+      def format_exception(exception)
+        (["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n")
+      end
     end
   end
 end
