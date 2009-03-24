@@ -110,7 +110,7 @@ module Cucumber
       end
 
       def visit_exception(exception, status)
-        @builder.pre(format_exception(e), :class => status)
+        @builder.pre(format_exception(exception), :class => status)
       end
 
       def visit_multiline_arg(multiline_arg)
