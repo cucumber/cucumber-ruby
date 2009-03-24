@@ -302,18 +302,18 @@ Defined profiles in cucumber.yml:
       def cucumber_yml
         return @cucumber_yml if @cucumber_yml
         unless File.exist?('cucumber.yml')
-          raise(YmlLoadError,"cucumber.yml was not found.  Please refer to cucumber's documentaion on defining profiles in cucumber.yml.  You must define a 'default' profile to use the cucumber command without any arguments.\nType 'cucumber --help' for usage.\n")
+          raise(YmlLoadError,"cucumber.yml was not found.  Please refer to cucumber's documentation on defining profiles in cucumber.yml.  You must define a 'default' profile to use the cucumber command without any arguments.\nType 'cucumber --help' for usage.\n")
         end
 
         require 'yaml'
         begin
           @cucumber_yml = YAML::load(IO.read('cucumber.yml'))
         rescue Exception => e
-          raise(YmlLoadError,"cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentaion on correct profile usage.\n")
+          raise(YmlLoadError,"cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage.\n")
         end
 
         if @cucumber_yml.nil? || !@cucumber_yml.is_a?(Hash)
-          raise(YmlLoadError,"cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentaion on correct profile usage.\n")
+          raise(YmlLoadError,"cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentation on correct profile usage.\n")
         end
 
         return @cucumber_yml
