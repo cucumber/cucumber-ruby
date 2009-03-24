@@ -158,6 +158,7 @@ examples/self_test/features/sample.feature
 examples/self_test/features/step_definitions/sample_steps.rb
 examples/self_test/features/support/env.rb
 examples/self_test/features/support/tag_count_formatter.rb
+examples/self_test/features/tons_of_cukes.feature
 examples/sinatra/Rakefile
 examples/sinatra/app.rb
 examples/sinatra/features/add.feature
