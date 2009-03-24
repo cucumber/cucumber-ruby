@@ -1,7 +1,7 @@
 require 'autotest'
 require 'tempfile'
 require 'yaml'
-require File.dirname(__FILE__) + '/../cucumber'
+require 'cucumber'
 
 module Autotest::CucumberMixin
   def self.included(receiver)
