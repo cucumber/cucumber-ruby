@@ -113,11 +113,11 @@ END_OF_MESSAGE
       config = Configuration.new(StringIO.new, error = StringIO.new)
       config.parse!(%w{--profile i_do_not_exist})
 
-      error.string.should match(/cucumber.yml was not found.  Please refer to cucumber's documentaion on defining profiles in cucumber.yml./)
+      error.string.should match(/cucumber.yml was not found.  Please refer to cucumber's documentation on defining profiles in cucumber.yml./)
     end
 
     it "should provide a helpful error message when cucumber.yml is blank or malformed" do
-        expected_error_message = /cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentaion on correct profile usage./
+        expected_error_message = /cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentation on correct profile usage./
 
       ['', 'sfsadfs', "--- \n- an\n- array\n", "---dddfd"].each do |bad_input|
         given_cucumber_yml_defined_as(bad_input)
@@ -130,7 +130,7 @@ END_OF_MESSAGE
     end
 
     it "should procide a helpful error message when the YAML can not be parsed" do
-      expected_error_message = /cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentaion on correct profile usage./
+      expected_error_message = /cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage./
 
       given_cucumber_yml_defined_as("input that causes an exception in YAML loading")
       YAML.should_receive(:load).and_raise Exception
