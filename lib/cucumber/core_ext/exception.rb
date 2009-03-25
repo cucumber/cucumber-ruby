@@ -20,7 +20,7 @@
 #
 class Exception
   CUCUMBER_FILTER_PATTERNS = [
-    /vendor\/rails|lib\/cucumber|lib\/rspec|gems\//
+    /vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\//
   ]
 
   INSTANCE_EXEC_OFFSET = (Cucumber::RUBY_1_9 || Cucumber::JRUBY) ? -3 : -4
