@@ -225,7 +225,7 @@
   feature: フィーチャ
   background: 背景
   scenario: シナリオ
-  scenario_outline: シナリオテンプレート|テンプレ|シナリオテンプレ
+  scenario_outline: シナリオアウトライン|シナリオテンプレート|テンプレ|シナリオテンプレ
   examples: 例|サンプル
   given: 前提
   when: もし
