@@ -1,4 +1,6 @@
-== 0.2.1 (In Git)
+== 0.2.1 2009-03-25
+
+This release fixes a few minor bugs and adds a couple of new features.
 
 == Bugfixes
 * Fixed Cucumber, and rails controller error handling (#49 Matt Patterson)
