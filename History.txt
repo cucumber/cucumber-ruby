@@ -1,6 +1,7 @@
 == 0.2.1 (In Git)
 
 == Bugfixes
+* Fixed Cucumber, and rails controller error handling (#49 Matt Patterson)
 * HTML Formatter doesn't work correctly with scenario Outlines. (#260 Aslak Hellesøy)
 * After blocks are run in reverse order of registration. (#113 Aslak Hellesøy)
 * Snippets are showing 'Ands' (#249 Aslak Hellesøy)
