@@ -9,18 +9,6 @@ else
 end
 require 'test/unit/testresult'
 
-# These allow exceptions to come through as opposed to being caught and having non-helpful responses returned.
-ActionController::Base.class_eval do
-  def rescue_action(exception)
-    raise exception
-  end
-end
-ActionController::Dispatcher.class_eval do
-  def self.failsafe_response(output, status, exception = nil)
-    raise exception
-  end
-end
-
 # So that Test::Unit doesn't launch at the end - makes it think it has already been run.
 Test::Unit.run = true if Test::Unit.respond_to?(:run=)
 
@@ -66,6 +54,18 @@ module Cucumber #:nodoc:
       end
     end
 
+    def self.bypass_rescue
+      ActionController::Base.class_eval do
+        def rescue_action(exception)
+          raise exception
+        end
+      end
+      ActionController::Dispatcher.class_eval do
+        def self.failsafe_response(output, status, exception = nil)
+          raise exception
+        end
+      end
+    end
   end
 end
 
