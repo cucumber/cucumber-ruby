@@ -1,3 +1,12 @@
+== 0.2.2 2009-03-25
+
+This release includes some minor changes to make Cucumber work with pure Java. Cucumber
+has already worked with Java for a while (using JRuby and step definitions in Ruby),
+but now you can write step definitions in pure Java!
+
+Check out the Cucumber Java project for more details:
+http://github.com/aslakhellesoy/cucumber_java/tree/master
+
 == 0.2.1 2009-03-25
 
 This release fixes a few minor bugs and adds a couple of new features.
