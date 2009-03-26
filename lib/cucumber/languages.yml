@@ -211,8 +211,10 @@
   native: italiano
   encoding: UTF-8
   feature: Funzionalità
+  background: Contesto
   scenario: Scenario
-  more_examples: Più esempi
+  scenario_outline: Schema dello scenario
+  examples: Esempi
   given: Dato
   when: Quando
   then: Allora
