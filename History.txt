@@ -1,6 +1,7 @@
 == 0.2.2.1 (In Git)
 
 === New features
+* Updated language for Dutch (Bart Zonneveld)
 * Updated language for Italian (Alessandro Baroni)
 * Updated language for Japanese (KAKUTANI Shintaro)
 
