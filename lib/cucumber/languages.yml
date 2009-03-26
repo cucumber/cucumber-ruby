@@ -251,7 +251,10 @@
   native: Nederlands
   encoding: UTF-8
   feature: Functionaliteit
+  background: Achtergrond
   scenario: Scenario
+  scenario_outline: Abstract Scenario
+  examples: Voorbeelden
   given: Gegeven
   when: Als
   then: Dan
