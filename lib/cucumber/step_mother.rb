@@ -26,10 +26,11 @@ module Cucumber
 
   # Raised when a step matches 2 or more StepDefinition
   class Ambiguous < StandardError
-    def initialize(step_name, step_definitions)
+    def initialize(step_name, step_definitions, used_guess)
       message = "Ambiguous match of \"#{step_name}\":\n\n"
       message << step_definitions.map{|sd| sd.backtrace_line}.join("\n")
       message << "\n\n"
+      message << "You can run again with --guess to make Cucumber be more smart about it\n" unless used_guess
       super(message)
     end
   end
@@ -118,7 +119,7 @@ module Cucumber
       matches = step_definitions.map { |d| d.step_match(step_name, formatted_step_name) }.compact
       raise Undefined.new(step_name) if matches.empty?
       matches = best_matches(step_name, matches) if matches.size > 1 && options[:guess]
-      raise Ambiguous.new(step_name, matches) if matches.size > 1
+      raise Ambiguous.new(step_name, matches, options[:guess]) if matches.size > 1
       matches[0]
     end
 

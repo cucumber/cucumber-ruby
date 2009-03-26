@@ -19,7 +19,7 @@ module Cucumber
       format.should == "it [snows] in [april]"
     end
 
-    it "should raise Ambiguous error when multiple step definitions match" do
+    it "should raise Ambiguous error with guess hint when multiple step definitions match" do
       @step_mother.Given(/Three (.*) mice/) {|disability|}
       @step_mother.Given(/Three blind (.*)/) {|animal|}
 
@@ -29,6 +29,22 @@ module Cucumber
 
 spec/cucumber/step_mother_spec.rb:23:in `/Three (.*) mice/'
 spec/cucumber/step_mother_spec.rb:24:in `/Three blind (.*)/'
+
+You can run again with --guess to make Cucumber be more smart about it
+})
+    end
+
+    it "should not show --guess hint when --guess is used" do
+      @step_mother.options = {:guess => true}
+      @step_mother.Given(/Three (.*) mice/) {|disability|}
+      @step_mother.Given(/Three cute (.*)/) {|animal|}
+
+      lambda do
+        @step_mother.step_match("Three cute mice")
+      end.should raise_error(Ambiguous, %{Ambiguous match of "Three cute mice":
+
+spec/cucumber/step_mother_spec.rb:39:in `/Three (.*) mice/'
+spec/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
 
 })
     end
