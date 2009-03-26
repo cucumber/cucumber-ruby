@@ -1,3 +1,9 @@
+== 0.2.2.1 (In Git)
+
+=== New features
+* Updated language for Italian (Alessandro Baroni)
+* Updated language for Japanese (KAKUTANI Shintaro)
+
 == 0.2.2 2009-03-25
 
 This release includes some minor changes to make Cucumber work with pure Java. Cucumber
