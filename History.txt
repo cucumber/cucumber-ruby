@@ -1,6 +1,7 @@
 == 0.2.3 (In Git)
 
 === New features
+* Windows/JRuby users can now enjoy colourful output (via http://aslakhellesoy.github.com/ansicolor) (Aslak Hellesøy)
 * Ambiguous step errors hint about --guess (unless --guess already on) (Aslak Hellesøy)
 * Updated language for Dutch (Bart Zonneveld)
 * Updated language for Italian (Alessandro Baroni)
