@@ -69,6 +69,27 @@ module Cucumber
           @table.transpose.hashes[0].should == {'one' => '1111', 'two' => '22222'}
         end
       end
+      
+      describe ".rows_hash" do
+                
+        it "should return a hash of the rows" do
+          table = Table.new([
+            %w{one 1111},
+            %w{two 22222}
+          ])
+          table.rows_hash.should == {'one' => '1111', 'two' => '22222'}
+        end
+        
+        it "should fail if the table doesn't have two columns" do
+          faulty_table = Table.new([
+            %w{one 1111 abc},
+            %w{two 22222 def}
+          ])
+          lambda {
+            faulty_table.rows_hash
+          }.should raise_error('The table must have exactly 2 columns')
+        end
+      end
         
       it "should allow renaming columns" do
         table2 = @table.map_headers('one' => :three)
