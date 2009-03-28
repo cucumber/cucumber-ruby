@@ -6,12 +6,20 @@ if Cucumber::WINDOWS_MRI
     gem 'win32console', '>= 1.2.0'
     require 'Win32/Console/ANSI'
   rescue LoadError
-    STDERR.puts "*** WARNING: You must gem install win32console (1.2.0 or higher) to get coloured output on MRI/Windows"
+    STDERR.puts %{*** WARNING: You must "gem install win32console" (1.2.0 or higher) to get coloured output on MRI/Windows}
+    Term::ANSIColor.coloring = false
+  end
+elsif Cucumber::WINDOWS && Cucumber::JRUBY
+  begin
+    gem 'aslakhellesoy-ansicolor', '>= 1.0'
+    require 'ansicolor'
+  rescue LoadError
+    STDERR.puts %{*** WARNING: You must "gem install aslakhellesoy-ansicolor --source http://gems.github.com" (1.0 or higher) to get coloured output on JRuby/Windows}
     Term::ANSIColor.coloring = false
   end
 end
 
-Term::ANSIColor.coloring = false if !STDOUT.tty? || (Cucumber::WINDOWS && !Cucumber::WINDOWS_MRI)
+Term::ANSIColor.coloring = false if !STDOUT.tty?
 
 module Cucumber
   module Formatter
