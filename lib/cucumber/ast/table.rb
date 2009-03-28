@@ -60,6 +60,23 @@ module Cucumber
           row.to_hash
         end
       end
+      
+      # Converts this table into a Hash where the first column is
+      # used as keys and the second column is used as values
+      #
+      #   | a | 2 |
+      #   | b | 3 |
+      #
+      # Gets converted into the following:
+      #
+      #   {'a' => '2', 'b' => '3'}
+      #
+      # The table must be exactly two columns wide 
+      #
+      def rows_hash
+        verify_table_width(2)
+        @rows_hash = self.transpose.hashes[0]
+      end
 
       # Gets the raw data of this table. For example, a Table built from
       # the following plain text:
@@ -159,6 +176,10 @@ module Cucumber
 
       def verify_column(column_name)
         raise %{The column named "#{column_name}" does not exist} unless @raw[0].include?(column_name)
+      end
+      
+      def verify_table_width(width)
+        raise %{The table must have exactly #{width} columns} unless @raw[0].size == width
       end
 
       def arguments_replaced(arguments) #:nodoc:
