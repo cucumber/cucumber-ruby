@@ -4,7 +4,7 @@
 * Added new Then /^I should be on (.+)$/ do |page_name| step (Grant Hollingworth)
 * Use skipped_param color for examples table header (#266 Eugene Naydanov)
 * Added new Cucumber::Ast::Table#rows_hash method (Torbjørn Vatn)
-* Windows/JRuby users can now enjoy colourful output (via http://aslakhellesoy.github.com/ansicolor) (Aslak Hellesøy)
+* Windows/JRuby users can now enjoy colourful output (via http://github.com/aslakhellesoy/ansicolor) (#166 Aslak Hellesøy)
 * Ambiguous step errors hint about --guess (unless --guess already on) (Aslak Hellesøy)
 * Updated language for Dutch (Bart Zonneveld)
 * Updated language for Italian (Alessandro Baroni)
