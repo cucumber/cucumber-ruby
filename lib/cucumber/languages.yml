@@ -20,6 +20,7 @@
   then: Then
   and: And
   but: But
+  space_after_keyword: true
 
 # Please help us keeping the languages below uptodate. The parsers for a language
 # that is missing a keyword will expect the English word until the missing word(s)
@@ -41,6 +42,7 @@
   then: اذاً|ثم
   and: و
   but: لكن
+  space_after_keyword: true
 "cy":
   name: Welsh
   native: Cymraeg
@@ -53,6 +55,7 @@
   then: Yna
   and: A
   but: Ond
+  space_after_keyword: true
 "cz":
   name: Czech
   native: Česky
@@ -67,6 +70,7 @@
   then: Pak
   and: A
   but: Ale
+  space_after_keyword: true
 "da":
   name: Danish
   native: dansk
@@ -81,6 +85,7 @@
   then: Så
   and: Og
   but: Men
+  space_after_keyword: true
 "de":
   name: German
   native: Deutsch
@@ -95,6 +100,7 @@
   then: Dann
   and: Und
   but: Aber
+  space_after_keyword: true
 "en-au":
   name: Australian
   native: Australian
@@ -109,6 +115,7 @@
   then: Ya gotta
   and: N
   but: Cept
+  space_after_keyword: true
 "en-lol":
   name: LOLCAT
   native: LOLCAT
@@ -123,6 +130,7 @@
   then: DEN
   and: AN
   but: BUT
+  space_after_keyword: true
 "en-tx":
   name: Texan
   native: Texan
@@ -137,6 +145,7 @@
   then: Then y'all
   and: And y'all
   but: But y'all
+  space_after_keyword: true
 "es":
   name: Spanish
   native: español
@@ -151,6 +160,7 @@
   then: Entonces
   and: Y
   but: Pero
+  space_after_keyword: true
 "et":
   name: Estonian
   native: eesti keel
@@ -165,6 +175,7 @@
   then: Siis
   and: Ja
   but: Kuid
+  space_after_keyword: true
 "fi":
   name: Finnish
   native: suomi
@@ -179,6 +190,7 @@
   then: Niin
   and: Ja
   but: Mutta
+  space_after_keyword: true
 "fr":
   name: French
   native: français
@@ -193,6 +205,7 @@
   then: Alors
   and: Et
   but: Mais
+  space_after_keyword: true
 "id":
   name: Indonesian
   native: Bahasa Indonesia
@@ -207,6 +220,7 @@
   then: Maka
   and: Dan
   but: Tapi
+  space_after_keyword: true
 "it":
   name: Italian
   native: italiano
@@ -221,6 +235,7 @@
   then: Allora
   and: E
   but: Ma
+  space_after_keyword: true
 "ja":
   name: Japanese
   native: 日本語
@@ -235,6 +250,7 @@
   then: ならば
   and: かつ
   but: しかし
+  space_after_keyword: false
 "lt":
   name: Lithuanian
   native: lietuvių kalba
@@ -247,6 +263,7 @@
   then: Tada
   and: Ir
   but: Bet
+  space_after_keyword: true
 "nl":
   name: Dutch
   native: Nederlands
@@ -261,6 +278,7 @@
   then: Dan
   and: En
   but: Maar
+  space_after_keyword: true
 "no":
   name: Norwegian
   native: norsk
@@ -275,6 +293,7 @@
   then: Så
   and: Og
   but: Men
+  space_after_keyword: true
 "pl":
   name: Polish
   native: polski
@@ -286,6 +305,7 @@
   then: Wtedy
   and: Oraz
   but: Ale
+  space_after_keyword: true
 "pt":
   name: Portuguese
   native: português
@@ -300,6 +320,7 @@
   then: Então
   and: E
   but: Mas
+  space_after_keyword: true
 "ro":
   name: Romanian
   native: română
@@ -311,6 +332,7 @@
   then: Atunci
   and: Si
   but: Dar
+  space_after_keyword: true
 "ro2":
   name: Romanian (diacritical)
   native: română (diacritical)
@@ -322,6 +344,7 @@
   then: Atunci
   and: Și
   but: Dar
+  space_after_keyword: true
 "ru":
   name: Russian
   native: русский
@@ -336,6 +359,7 @@
   then: То
   and: И|К тому же
   but: Но|А
+  space_after_keyword: true
 "se":
   name: Swedish
   native: Svenska
@@ -350,6 +374,7 @@
   then: Så
   and: Och
   but: Men
+  space_after_keyword: true
 "zh-CN":
   name: Chinese simplified
   native: 简体中文
@@ -364,6 +389,7 @@
   then: 那么
   and: 而且
   but: 但是
+  space_after_keyword: false
 "zh-TW":
   name: Chinese traditional
   native: 繁體中文
@@ -378,6 +404,7 @@
   then: 那麼
   and: 而且|並且
   but: 但是
+  space_after_keyword: false
 "ko":
   name: Korean
   native: 한국어
@@ -392,3 +419,4 @@
   then: 그러면
   and: 그리고
   but: 하지만
+  space_after_keyword: false
