@@ -53,7 +53,7 @@ module Cucumber
         def accept(visitor)
           if header?
             @cells.each do |cell|
-              cell.status = :skipped
+              cell.status = :skipped_param
               visitor.visit_table_cell(cell)
             end
           else
