@@ -198,6 +198,7 @@
   native: Bahasa Indonesia
   encoding: UTF-8
   feature: Fitur
+  background: Dasar
   scenario: Skenario
   scenario_outline: Skenario konsep
   examples: Contoh
@@ -386,7 +387,6 @@
   scenario: 시나리오
   scenario_outline: 시나리오 개요
   examples: 예
-  more_examples: 다른 예
   given: 조건
   when: 만일
   then: 그러면

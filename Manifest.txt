@@ -246,7 +246,7 @@ lib/cucumber/formatter/progress.rb
 lib/cucumber/formatter/rerun.rb
 lib/cucumber/formatter/unicode.rb
 lib/cucumber/formatter/usage.rb
-lib/cucumber/formatters/unicode.rb
+lib/cucumber/formatter/unicode.rb
 lib/cucumber/languages.yml
 lib/cucumber/parser.rb
 lib/cucumber/parser/basic.rb

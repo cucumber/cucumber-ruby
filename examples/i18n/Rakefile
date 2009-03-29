@@ -4,14 +4,16 @@ task :i18n do
   Dir["#{dir}/*"].each do |f|
     if File.directory?(f)
       lang = f[dir.length+1..-1]
-      if supported?(lang)
+      if examples_working?(lang)
         Dir.chdir(f) do
           rake("features")
         end
       else
         STDERR.puts %{
 !!!!!
-!!!!! SKIPPING #{lang} (Still needs some work)
+!!!!!
+!!!!! SKIPPING #{lang} (The examples are out of date - please help update them)
+!!!!!
 !!!!!
 }
       end
@@ -19,12 +21,8 @@ task :i18n do
   end
 end
 
-def supported?(lang)
-  if RUBY_VERSION =~ /^1\.9/
-    !%w{ar ko zh-CN}.index(lang)
-  else
-    !%w{ar ko}.index(lang)
-  end
+def examples_working?(lang)
+  !%w{ro ko li lt}.index(lang)
 end
 
 def rake(args)

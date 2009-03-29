@@ -1,6 +1,7 @@
 == 0.2.3 (In Git)
 
 === New features
+* Added new Then /^I should be on (.+)$/ do |page_name| step (Grant Hollingworth)
 * Use skipped_param color for examples table header (#266 Eugene Naydanov)
 * Added new Cucumber::Ast::Table#rows_hash method (Torbjørn Vatn)
 * Windows/JRuby users can now enjoy colourful output (via http://aslakhellesoy.github.com/ansicolor) (Aslak Hellesøy)
@@ -76,7 +77,7 @@ for multiline arguments are some of the highlights.
 * Can't use an empty string as a table value in a scenario outline (#172 Aslak Hellesøy)
 * Really skip skipped steps (#90 Aslak Hellesøy)
 * No output for multi-line strings (#71 Aslak Hellesøy)
-* Fix cucumber/formatters/unicode flaws on Windows (#145 Michael)
+* Fix cucumber/formatter/unicode flaws on Windows (#145 Michael)
 * Autotest-related Bugs: YAML missing (#136 Tobias Pape)
 * Overeager "rescue LoadError" hides lots of errors (#137 Jonathan del Strother)
 * Nested steps don't show mismatch (#116 Aslak Hellesøy)
