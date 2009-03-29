@@ -10,6 +10,10 @@
 * Updated language for Italian (Alessandro Baroni)
 * Updated language for Japanese (KAKUTANI Shintaro)
 
+=== Bugfixes
+* Fixed step name after step keyword without space (#265 Aslak Hellesøy)
+* Backtrace is back in HTML reports
+
 == 0.2.2 2009-03-25
 
 This release includes some minor changes to make Cucumber work with pure Java. Cucumber

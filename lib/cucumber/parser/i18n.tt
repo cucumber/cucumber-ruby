@@ -22,6 +22,10 @@ module Cucumber
         (<%= keywords('but') %>)
       end
 
+      rule keyword_space
+        <%= keywords('space_after_keyword', true) ? 'space+' : 'space*' %>
+      end
+
       rule examples_keyword
         (<%= keywords('examples') %>) ':'?
       end

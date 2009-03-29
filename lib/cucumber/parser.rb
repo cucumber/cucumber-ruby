@@ -13,12 +13,6 @@ module Cucumber
   #
   # The AST classes are defined in the Cucumber::Ast module.
   module Parser
-    translator = Module.new do
-      def keywordz(key)
-        'Scenario'
-      end
-    end
-
     def self.load_parser(keywords)
       Loader.new(keywords)
     end
@@ -34,7 +28,8 @@ module Cucumber
         require 'cucumber/parser/feature'
       end
 
-      def keywords(key)
+      def keywords(key, raw=false)
+        return @keywords[key] if raw
         values = @keywords[key].split('|')
         values.map{|value| "'#{value}'"}.join(" / ")
       end
