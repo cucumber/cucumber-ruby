@@ -56,23 +56,20 @@ module Cucumber
   #   end
   #
   class StepDefinition
+    PARAM_PATTERN = /"([^\"]*)"/
+    ESCAPED_PARAM_PATTERN = '"([^\\"]*)"'
+    
     def self.snippet_text(step_keyword, step_name)
       escaped = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
-      param_pattern = /"([^\"]*)"/
+      escaped = escaped.gsub(PARAM_PATTERN, ESCAPED_PARAM_PATTERN)
 
-      match = escaped.match(param_pattern)
-      if match
-        n = 0
-        block_args = match.captures.map do |a|
-          n += 1
-          "arg#{n}"
-        end
-        block_arg_string = " |#{block_args.join(", ")}|"
-      else
-        block_arg_string = ""
+      n = 0
+      block_args = escaped.scan(ESCAPED_PARAM_PATTERN).map do |a|
+        n += 1
+        "arg#{n}"
       end
+      block_arg_string = block_args.empty? ? "" : " |#{block_args.join(", ")}|"
 
-      escaped = escaped.gsub(param_pattern, '"([^\\"]*)"')
       "#{step_keyword} /^#{escaped}$/ do#{block_arg_string}\n  pending\nend"
     end
 

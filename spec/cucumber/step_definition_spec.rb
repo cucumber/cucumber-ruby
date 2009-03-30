@@ -82,6 +82,14 @@ module Cucumber
       })
     end
 
+    it "should recognise several quoted words in name and make according regexp and args" do
+      StepDefinition.snippet_text('Given', 'A "first" and "second" arg').should == unindented(%{
+        Given /^A "([^\\"]*)" and "([^\\"]*)" arg$/ do |arg1, arg2|
+          pending
+        end
+      })
+    end
+
     it "should not use quote group when there are no quotes" do
       StepDefinition.snippet_text('Given', 'A first arg').should == unindented(%{
         Given /^A first arg$/ do
