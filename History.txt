@@ -1,3 +1,5 @@
+== 0.2.4 (In Git)
+
 == 0.2.3 2009-03-30
 
 This release sports 4 updated languages, slightly better help with snippets if you "quote" arguments
