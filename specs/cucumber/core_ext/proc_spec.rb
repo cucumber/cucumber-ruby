@@ -32,6 +32,6 @@ describe Proc do
   
   it "should remove extraneous path info for file" do
     proc = lambda {|a,b|}
-    proc.file_colon_line.should == "spec/cucumber/core_ext/proc_spec.rb:34"
+    proc.file_colon_line.should == "specs/cucumber/core_ext/proc_spec.rb:34"
   end
 end

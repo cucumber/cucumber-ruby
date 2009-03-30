@@ -27,8 +27,8 @@ module Cucumber
         @step_mother.step_match("Three blind mice")
       end.should raise_error(Ambiguous, %{Ambiguous match of "Three blind mice":
 
-spec/cucumber/step_mother_spec.rb:23:in `/Three (.*) mice/'
-spec/cucumber/step_mother_spec.rb:24:in `/Three blind (.*)/'
+specs/cucumber/step_mother_spec.rb:23:in `/Three (.*) mice/'
+specs/cucumber/step_mother_spec.rb:24:in `/Three blind (.*)/'
 
 You can run again with --guess to make Cucumber be more smart about it
 })
@@ -43,8 +43,8 @@ You can run again with --guess to make Cucumber be more smart about it
         @step_mother.step_match("Three cute mice")
       end.should raise_error(Ambiguous, %{Ambiguous match of "Three cute mice":
 
-spec/cucumber/step_mother_spec.rb:39:in `/Three (.*) mice/'
-spec/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
+specs/cucumber/step_mother_spec.rb:39:in `/Three (.*) mice/'
+specs/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
 
 })
     end
