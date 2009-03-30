@@ -60,8 +60,8 @@ $hoe = Hoe.new(GEM_NAME, VERS) do |p|
   #p.extra_deps = []     # An array of rubygem dependencies [name, version], e.g. [ ['active_support', '>= 1.3.1'] ]
   p.extra_deps = [ 
     ['term-ansicolor', '>= 1.0.3'], 
-    ['treetop', '>= 1.2.4'], 
-    ['polyglot', '>= 0.2.4'], # Remove this when Treetop no longer loads polyglot by default. 
+    ['treetop', '>= 1.2.5'], 
+    ['polyglot', '>= 0.2.5'], # Remove this when Treetop no longer loads polyglot by default. 
     ['diff-lcs', '>= 1.1.2'],
     ['builder', '>= 2.1.2']
   ]
