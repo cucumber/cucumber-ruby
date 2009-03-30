@@ -1,5 +1,5 @@
 Požiadavka: Sčítavanie
-  Aby som sa vyhol hlúpim chybám
+  Aby som sa vyhol hlúpym chybám
   Ako matematický idiot
   Chcem vedieť ako sa sčítavajú dve čísla
 
