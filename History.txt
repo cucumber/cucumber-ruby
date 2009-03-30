@@ -1,14 +1,18 @@
 == 0.2.3 (In Git)
 
+This release sports 4 updated languages, slightly better help with snippets if you "quote" arguments
+in your steps. Windows/JRuby users can enjoy colours and you get some more sugar with Tables.
+
 === New features
 * Added new Then /^I should be on (.+)$/ do |page_name| step (Grant Hollingworth)
 * Use skipped_param color for examples table header (#266 Eugene Naydanov)
 * Added new Cucumber::Ast::Table#rows_hash method (Torbjørn Vatn)
 * Windows/JRuby users can now enjoy colourful output (via http://github.com/aslakhellesoy/ansicolor) (#166 Aslak Hellesøy)
 * Ambiguous step errors hint about --guess (unless --guess already on) (Aslak Hellesøy)
-* Updated language for Dutch (Bart Zonneveld)
-* Updated language for Italian (Alessandro Baroni)
-* Updated language for Japanese (KAKUTANI Shintaro)
+* Added translation for Slovak (Ahmed Al Hafoudh) 
+* Updated translation for Dutch (Bart Zonneveld)
+* Updated translation for Italian (Alessandro Baroni)
+* Updated translation for Japanese (KAKUTANI Shintaro)
 
 === Bugfixes
 * Fixed step name after step keyword without space (#265 Aslak Hellesøy)
