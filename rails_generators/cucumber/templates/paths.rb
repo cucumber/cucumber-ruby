@@ -8,7 +8,8 @@ module NavigationHelpers
     # Add more page name => path mappings here
     
     else
-      raise "Can't find mapping from \"#{page_name}\" to a path."
+      raise "Can't find mapping from \"#{page_name}\" to a path.\n" +
+        "Now, go and add a mapping in features/support/paths.rb"
     end
   end
 end
