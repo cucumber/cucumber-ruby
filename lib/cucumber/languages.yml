@@ -375,6 +375,21 @@
   and: Och
   but: Men
   space_after_keyword: true
+"sk":
+  name: Slovak
+  native: Slovensky
+  encoding: UTF-8
+  feature: Požiadavka
+  background: Pozadie
+  scenario: Scenár
+  scenario_outline: Náčrt Scenáru
+  examples: Príklady
+  given: Pokiaľ
+  when: Keď
+  then: Tak
+  and: A
+  but: Ale
+  space_after_keyword: true
 "zh-CN":
   name: Chinese simplified
   native: 简体中文
