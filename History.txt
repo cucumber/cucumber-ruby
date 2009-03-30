@@ -1,4 +1,4 @@
-== 0.2.3 (In Git)
+== 0.2.3 2009-03-30
 
 This release sports 4 updated languages, slightly better help with snippets if you "quote" arguments
 in your steps. Windows/JRuby users can enjoy colours and you get some more sugar with Tables.
