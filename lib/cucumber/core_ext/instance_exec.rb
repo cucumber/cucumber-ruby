@@ -7,17 +7,30 @@ end
 
 class Object
   def cucumber_instance_exec(check_arity, pseudo_method, *args, &block)
-    arity = block.arity
-    arity = 0 if arity == -1
     cucumber_run_with_backtrace_filtering(pseudo_method) do
-      if check_arity && args.length != arity
+      if check_arity && !cucumber_compatible_arity?(args, block)
         instance_exec do
-          raise Cucumber::ArityMismatchError.new("expected #{arity} block argument(s), got #{args.length}")
+          s1 = cucumber_arity(block) == 1 ? "" : "s"
+          s2 = args.length == 1 ? "" : "s"
+          raise Cucumber::ArityMismatchError.new(
+            "Your block takes #{cucumber_arity(block)} argument#{s1}, but the Regexp matched #{args.length} argument#{s2}."
+          )
         end
       else
         instance_exec(*args, &block)
       end
     end
+  end
+  
+  def cucumber_arity(block)
+    a = block.arity
+    Cucumber::RUBY_1_9 ? a : (a == -1 ? 0 : a)
+  end
+  
+  def cucumber_compatible_arity?(args, block)
+    a = cucumber_arity(block)
+    return true if (a == -1) && Cucumber::RUBY_1_9
+    a == args.length
   end
   
   def cucumber_run_with_backtrace_filtering(pseudo_method)

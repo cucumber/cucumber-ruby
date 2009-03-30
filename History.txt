@@ -1,5 +1,8 @@
 == 0.2.4 (In Git)
 
+=== New features
+* Allow Step Definitions to use |*varargs|, but only on Ruby 1.9. (Aslak Hellesøy)
+
 == 0.2.3 2009-03-30
 
 This release sports 4 updated languages, slightly better help with snippets if you "quote" arguments
@@ -18,7 +21,7 @@ in your steps. Windows/JRuby users can enjoy colours and you get some more sugar
 
 === Bugfixes
 * Fixed step name after step keyword without space (#265 Aslak Hellesøy)
-* Backtrace is back in HTML reports
+* Backtrace is back in HTML reports (Aslak Hellesøy)
 
 == 0.2.2 2009-03-25
 
