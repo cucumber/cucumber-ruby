@@ -1,6 +1,7 @@
 == 0.2.4 (In Git)
 
 === New features
+* Better exception if a World proc returns nil. (Aslak Hellesøy)
 * Allow Step Definitions to use |*varargs|, but only on Ruby 1.9. (Aslak Hellesøy)
 
 == 0.2.3 2009-03-30
