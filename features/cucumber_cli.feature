@@ -229,9 +229,22 @@ Feature: Cucumber command line
             hello
             \"\"\"
 
-      12 scenarios
+      Feature: undefined multiline args
+      
+        Scenario: pystring
+          Given a pystring
+            \"\"\"
+              example
+            \"\"\"
+      
+        Scenario: table
+          Given a table
+            | table   |
+            | example |
+
+      14 scenarios
       12 skipped steps
-      7 undefined steps
+      9 undefined steps
 
       """
 
