@@ -10,6 +10,7 @@ module Cucumber
         @io = io
         @options = options
         @step_definitions = Hash.new { |h,step_definition| h[step_definition] = [] }
+        @all_step_definitions = step_mother.step_definitions.dup
         @locations = []
       end
 
@@ -32,6 +33,7 @@ module Cucumber
           description = format_step(keyword, step_match, status, nil)
           length = (keyword + step_match.format_args).jlength
           @step_definitions[step_match.step_definition] << [step_match, description, length, location]
+          @all_step_definitions.delete(step_match.step_definition)
         end
       end
 
@@ -61,6 +63,20 @@ module Cucumber
             file_colon_line = step_match_and_description[3]
             @io.print " #{description}"
             @io.puts format_string(" # #{file_colon_line}".indent(max_length - length), :comment)
+          end
+        end
+
+        print_unused_step_definitions
+      end
+
+      def print_unused_step_definitions
+        if @all_step_definitions.any?
+          max_length = @all_step_definitions.map{|step_definition| step_definition.text_length}.max
+
+          @io.puts format_string("(::) UNUSED (::)", :failed)
+          @all_step_definitions.each do |step_definition|
+            @io.print format_string(step_definition.regexp.inspect, :failed)
+            @io.puts format_string("  # #{step_definition.file_colon_line}".indent(max_length - step_definition.text_length), :comment)
           end
         end
       end

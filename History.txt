@@ -1,6 +1,8 @@
 == 0.2.4 (In Git)
 
 === New features
+* The usage formatter also prints unused step definitions (Aslak Hellesøy)
+* Better exception if a World proc returns nil. (Aslak Hellesøy)
 * Allow Step Definitions to use |*varargs|, but only on Ruby 1.9. (Aslak Hellesøy)
 * Snippets for steps that use Step Tables or Pystrings include block param and object type hint comment (#247 Joseph Wilk)
 * Support description string for Backgrounds (#271 Joseph Wilk)

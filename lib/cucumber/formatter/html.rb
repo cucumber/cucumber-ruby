@@ -74,9 +74,11 @@ module Cucumber
       end
 
       def visit_outline_table(outline_table)
+        @outline_row = 0
         @builder.table do
           super(outline_table)
         end
+        @outline_row = nil
       end
 
       def visit_examples_name(keyword, name)
@@ -145,10 +147,12 @@ module Cucumber
             end
           end
         end
+        @outline_row += 1 if @outline_row
       end
 
       def visit_table_cell_value(value, width, status)
-        @builder.td(value, :class => status, :id => "#{@row_id}_#{@col_index}")
+        cell_type = @outline_row == 0 ? :th : :td
+        @builder.__send__(cell_type, value, :class => status, :id => "#{@row_id}_#{@col_index}")
         @col_index += 1
       end
 

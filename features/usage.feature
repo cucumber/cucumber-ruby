@@ -105,6 +105,9 @@ Feature: Cucumber command line
        Given failing expectation # features/failing_expectation.feature:4
       /^failing$/    # features/step_definitions/sample_steps.rb:8
        Given failing # features/sample.feature:16
+      (::) UNUSED (::)
+      /^unused$/          # features/step_definitions/sample_steps.rb:66
+      /^another unused$/  # features/step_definitions/sample_steps.rb:69
 
       """
 

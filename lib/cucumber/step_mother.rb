@@ -45,6 +45,12 @@ module Cucumber
     end
   end
 
+  class NilWorld < StandardError
+    def initialize
+      super("World procs should never return nil")
+    end
+  end
+
   # This is the main interface for registering step definitions, which is done
   # from <tt>*_steps.rb</tt> files. This module is included right at the top-level
   # so #register_step_definition (and more interestingly - its aliases) are
@@ -171,6 +177,15 @@ module Cucumber
       @current_world = Object.new
       (@world_procs ||= []).each do |proc|
         @current_world = proc.call(@current_world)
+        if @current_world.nil?
+          begin
+            raise NilWorld.new
+          rescue NilWorld => e
+            e.backtrace.clear
+            e.backtrace.push(proc.backtrace_line("World"))
+            raise e
+          end
+        end
       end
 
       @current_world.extend(World)

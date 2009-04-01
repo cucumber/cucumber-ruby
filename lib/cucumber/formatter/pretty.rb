@@ -157,10 +157,6 @@ module Cucumber
         @io.flush
       end
 
-      def visit_table_cell(table_cell)
-        super
-      end
-
       def visit_table_cell_value(value, width, status)
         @io.print(' ' + format_string((value.to_s || '').ljust(width), status) + " #{@delim}")
         @io.flush

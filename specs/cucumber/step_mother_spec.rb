@@ -85,5 +85,18 @@ specs/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
         @step_mother.Given(/Three (.*) mice/) {|disability|}
       end.should raise_error(Redundant)
     end
+
+    it "should raise an error if the world is nil" do
+      @step_mother.World do
+      end
+
+      begin
+        @step_mother.before_and_after(nil)
+        raise "Should fail"
+      rescue => e
+        e.message.should == "World procs should never return nil"
+        e.backtrace.should == ["specs/cucumber/step_mother_spec.rb:90:in `World'"]
+      end
+    end
   end
 end

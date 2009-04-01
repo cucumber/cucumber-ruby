@@ -1,5 +1,5 @@
 Požiadavka: Delenie
-  Aby som sa vyhol hlúpim chybám
+  Aby som sa vyhol hlúpym chybám
   Pokladníci musia vedieť vypočítať podiel
 
   Scenár: Prirodzené čísla
