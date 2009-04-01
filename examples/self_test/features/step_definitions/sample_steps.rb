@@ -62,3 +62,9 @@ end
 Given /^failing expectation$/ do
   'this'.should == 'that'
 end
+
+Given /^unused$/ do
+end
+
+Given /^another unused$/ do
+end
