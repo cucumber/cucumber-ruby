@@ -140,6 +140,7 @@ examples/selenium_webrat/features/step_definitons/search_steps.rb
 examples/selenium_webrat/features/support/env.rb
 examples/self_test/README.textile
 examples/self_test/Rakefile
+examples/self_test/features/background/background_with_name.feature
 examples/self_test/features/background/failing_background.feature
 examples/self_test/features/background/failing_background_after_success.feature
 examples/self_test/features/background/multiline_args_background.feature
@@ -156,6 +157,7 @@ examples/self_test/features/step_definitions/sample_steps.rb
 examples/self_test/features/support/env.rb
 examples/self_test/features/support/tag_count_formatter.rb
 examples/self_test/features/tons_of_cukes.feature
+examples/self_test/features/undefined_multiline_args.feature
 examples/sinatra/Rakefile
 examples/sinatra/app.rb
 examples/sinatra/features/add.feature
@@ -196,6 +198,7 @@ features/cucumber_cli_diff_disabled.feature
 features/cucumber_cli_outlines.feature
 features/custom_formatter.feature
 features/report_called_undefined_steps.feature
+features/snippet.feature
 features/step_definitions/cucumber_steps.rb
 features/step_definitions/extra_steps.rb
 features/support/env.rb
