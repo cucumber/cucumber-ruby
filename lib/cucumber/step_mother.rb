@@ -139,8 +139,8 @@ module Cucumber
       @step_definitions ||= []
     end
 
-    def snippet_text(step_keyword, step_name)
-      @snippet_generator.snippet_text(step_keyword, step_name)
+    def snippet_text(step_keyword, step_name, multiline_arg_class)
+      @snippet_generator.snippet_text(step_keyword, step_name, multiline_arg_class)
     end
 
     def before_and_after(scenario, skip=false)

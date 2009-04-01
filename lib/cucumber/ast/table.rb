@@ -12,6 +12,10 @@ module Cucumber
 
       attr_accessor :file
 
+      def self.default_arg_name
+        "table"
+      end
+
       def initialize(raw, conversions = NULL_CONVERSIONS.dup)
         # Verify that it's square
         raw.transpose

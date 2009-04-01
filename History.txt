@@ -2,6 +2,7 @@
 
 === New features
 * Allow Step Definitions to use |*varargs|, but only on Ruby 1.9. (Aslak Hellesøy)
+* Snippets for steps that use Step Tables or Pystrings include block param and object type hint comment (#247 Joseph Wilk)
 
 == 0.2.3 2009-03-30
 

@@ -21,10 +21,14 @@ Then /^it should (fail|pass) with$/ do |success, output|
   end
 end
 
-Then /^(.*) should contain$/ do |file, text|
+Then /^the output should contain$/ do |text|
+  @out.should include(text)
+end
+
+Then /^"(.*)" should contain$/ do |file, text|
   IO.read(file).should == text
 end
 
-Then /^(.*) should match$/ do |file, text|
+Then /^"(.*)" should match$/ do |file, text|
   IO.read(file).should =~ Regexp.new(text)
 end

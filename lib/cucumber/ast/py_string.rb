@@ -17,6 +17,11 @@ module Cucumber
     # Note how the indentation from the source is stripped away.
     #
     class PyString
+
+      def self.default_arg_name
+        "string"
+      end
+
       def initialize(start_line, end_line, string, quotes_indent)
         @start_line, @end_line = start_line, end_line
         @string, @quotes_indent = string.gsub(/\\"/, '"'), quotes_indent
@@ -52,7 +57,6 @@ module Cucumber
       def to_sexp #:nodoc:
         [:py_string, to_s]
       end
-    
     end
   end
 end

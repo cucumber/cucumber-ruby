@@ -74,7 +74,8 @@ module Cucumber
         return if undefined.empty?
         snippets = undefined.map do |step|
           step_name = Undefined === step.exception ? step.exception.step_name : step.name
-          snippet = @step_mother.snippet_text(step.actual_keyword, step_name)
+          step_multiline_class = step.multiline_arg ? step.multiline_arg.class : nil
+          snippet = @step_mother.snippet_text(step.actual_keyword, step_name, step_multiline_class)
           snippet
         end.compact.uniq
 

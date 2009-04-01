@@ -59,7 +59,7 @@ module Cucumber
     PARAM_PATTERN = /"([^\"]*)"/
     ESCAPED_PARAM_PATTERN = '"([^\\"]*)"'
     
-    def self.snippet_text(step_keyword, step_name)
+    def self.snippet_text(step_keyword, step_name, multiline_arg_class = nil)
       escaped = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
       escaped = escaped.gsub(PARAM_PATTERN, ESCAPED_PARAM_PATTERN)
 
@@ -68,9 +68,11 @@ module Cucumber
         n += 1
         "arg#{n}"
       end
+      block_args << multiline_arg_class.default_arg_name unless multiline_arg_class.nil?
       block_arg_string = block_args.empty? ? "" : " |#{block_args.join(", ")}|"
+      multiline_class_string = multiline_arg_class ? "# #{multiline_arg_class.default_arg_name} is a #{multiline_arg_class.to_s}\n  " : ""
 
-      "#{step_keyword} /^#{escaped}$/ do#{block_arg_string}\n  pending\nend"
+      "#{step_keyword} /^#{escaped}$/ do#{block_arg_string}\n  #{multiline_class_string}pending\nend"
     end
 
     class MissingProc < StandardError

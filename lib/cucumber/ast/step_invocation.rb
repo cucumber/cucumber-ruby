@@ -98,6 +98,10 @@ module Cucumber
         @step.keyword
       end
 
+      def multiline_arg
+        @step.multiline_arg
+      end
+
       def file_colon_line
         @step.file_colon_line
       end
