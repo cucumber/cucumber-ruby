@@ -6,8 +6,8 @@ module Cucumber
       include FeatureElement
       attr_writer :feature
 
-      def initialize(comment, line, keyword, steps)
-        @comment, @line, @keyword, @steps = comment, line, keyword, StepCollection.new(steps)
+      def initialize(comment, line, keyword, name, steps)
+        @comment, @line, @keyword, @name, @steps = comment, line, keyword, name, StepCollection.new(steps)
         attach_steps(steps)
         @step_invocations = @steps.step_invocations(true)
       end
@@ -23,7 +23,7 @@ module Cucumber
 
       def accept(visitor)
         visitor.visit_comment(@comment)
-        visitor.visit_background_name(@keyword, "", file_colon_line(@line), source_indent(text_length))
+        visitor.visit_background_name(@keyword, @name, file_colon_line(@line), source_indent(text_length))
         visitor.step_mother.before_and_after(self)
         visitor.visit_steps(@step_invocations)
         @failed = @step_invocations.detect{|step_invocation| step_invocation.exception}

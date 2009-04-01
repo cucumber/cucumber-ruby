@@ -19,6 +19,7 @@ Feature: Cucumber command line
       /^call step "(.*)"$/                                              # features/step_definitions/sample_steps.rb:23
        Given call step "a step definition that calls an undefined step" # features/call_undefined_step_from_step_def.feature:7
       /^'(.+)' cukes$/   # features/step_definitions/sample_steps.rb:27
+       Given '10' cukes  # features/background/background_with_name.feature:4
        And '10' cukes    # features/background/failing_background.feature:5
        Given '10' cukes  # features/background/passing_background.feature:4
        Given '10' cukes  # features/background/scenario_outline_passing_background.feature:4
@@ -72,6 +73,7 @@ Feature: Cucumber command line
        Given '2' cukes   # features/tons_of_cukes.feature:51
        Given '2' cukes   # features/tons_of_cukes.feature:52
       /^I should have '(.+)' cukes$/      # features/step_definitions/sample_steps.rb:31
+       Then I should have '10' cukes      # features/background/background_with_name.feature:7
        Then I should have '10' cukes      # features/background/failing_background.feature:8
        Then I should have '10' cukes      # features/background/failing_background.feature:11
        Then I should have '10' cukes      # features/background/passing_background.feature:7

@@ -217,5 +217,22 @@ Feature: backgrounds
     
     """
 
+  Scenario: background with name
+    When I run cucumber -q features/background/background_with_name.feature --require features
+    Then it should pass with
+    """
+    Feature: background with name
+
+      Background: I'm a background and I'm ok
+        Given '10' cukes
+
+      Scenario: example
+        Then I should have '10' cukes
+
+    1 scenario
+    2 passed steps
+    
+    """
+
   @josephwilk
   Scenario: run a scenario showing explicit background steps --explicit-background

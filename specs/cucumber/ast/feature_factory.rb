@@ -30,7 +30,7 @@ module Cucumber
           Cucumber sandwich
         }, 10)
         
-        background = Ast::Background.new(Ast::Comment.new(""), 2, "Background:",
+        background = Ast::Background.new(Ast::Comment.new(""), 2, "Background:", "",
           [
             Step.new(3, "Given", "a passing step")
           ]

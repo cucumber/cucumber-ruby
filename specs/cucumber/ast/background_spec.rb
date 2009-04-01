@@ -26,6 +26,7 @@ module Cucumber
           comment=Comment.new(''),
           line=2,
           keyword="", 
+          name="",
           steps=[
             Step.new(7, "Given", "y is 5")
           ])
