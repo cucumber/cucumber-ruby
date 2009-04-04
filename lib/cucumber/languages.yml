@@ -311,21 +311,6 @@
   native: português
   encoding: UTF-8
   background: Contexto
-  feature: Característica
-  scenario: Cenário
-  scenario_outline: Esquema do Cenário
-  examples: Exemplos
-  given: Dado
-  when: Quando
-  then: Então
-  and: E
-  but: Mas
-  space_after_keyword: true
-"pt-BR":
-  name: Portuguese (Brazil)
-  native: Português (Brasil)
-  encoding: UTF-8
-  background: Contexto
   feature: Funcionalidade
   scenario: Cenário
   scenario_outline: Esquema do Cenário
