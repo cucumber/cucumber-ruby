@@ -119,6 +119,11 @@ module Cucumber
         super
       end
 
+      def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+        @status = status
+        super
+      end
+
       def visit_step_name(keyword, step_match, status, source_indent, background)
         @step_matches ||= []
         non_failed_background_step_outside_background = !@in_background && background && (status != :failed)
@@ -150,14 +155,15 @@ module Cucumber
         print_exception(table_row.exception, :failed, @indent) if table_row.exception
       end
 
-      def visit_py_string(string, status)
-        s = "\"\"\"\n#{string}\n\"\"\"".indent(@indent)
+      def visit_py_string(string)
+        s = %{"""\n#{string}\n"""}.indent(@indent)
         s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}.join("\n")
-        @io.puts(format_string(s, status))
+        @io.puts(format_string(s, @status))
         @io.flush
       end
 
       def visit_table_cell_value(value, width, status)
+        status ||= @status || :passed
         @io.print(' ' + format_string((value.to_s || '').ljust(width), status) + " #{@delim}")
         @io.flush
       end

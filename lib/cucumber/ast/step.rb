@@ -33,13 +33,11 @@ module Cucumber
       def accept(visitor)
         # The only time a Step is visited is when it is in a ScenarioOutline.
         # Otherwise it's always StepInvocation that gest visited instead.
-        visit_step_details(visitor, first_match(visitor), @multiline_arg, :skipped, nil, nil)
+        visit_step_result(visitor, first_match(visitor), @multiline_arg, :skipped, nil, nil)
       end
       
-      def visit_step_details(visitor, step_match, multiline_arg, status, exception, background)
-        visitor.visit_step_name(@keyword, step_match, status, source_indent, background)
-        visitor.visit_multiline_arg(@multiline_arg) if @multiline_arg
-        visitor.visit_exception(exception, status) if exception
+      def visit_step_result(visitor, step_match, multiline_arg, status, exception, background)
+        visitor.visit_step_result(@keyword, step_match, @multiline_arg, status, exception, source_indent, background)
       end
 
       def first_match(visitor)

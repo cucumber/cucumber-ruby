@@ -25,11 +25,6 @@ module Cucumber
       def initialize(start_line, end_line, string, quotes_indent)
         @start_line, @end_line = start_line, end_line
         @string, @quotes_indent = string.gsub(/\\"/, '"'), quotes_indent
-        @status = :passed
-      end
-
-      def status=(status)
-        @status = status
       end
 
       def to_s
@@ -41,7 +36,7 @@ module Cucumber
       end
 
       def accept(visitor)
-        visitor.visit_py_string(to_s, @status)
+        visitor.visit_py_string(to_s)
       end
       
       def arguments_replaced(arguments) #:nodoc:

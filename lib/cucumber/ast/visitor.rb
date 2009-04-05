@@ -93,14 +93,23 @@ module Cucumber
         step.accept(self)
       end
 
-      def visit_step_name(keyword, step_match, status, source_indent, background)
+      def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+        visit_step_name(keyword, step_match, status, source_indent, background)
+        visit_multiline_arg(multiline_arg) if multiline_arg
+        visit_exception(exception, status) if exception
       end
 
-      def visit_multiline_arg(multiline_arg)
+      def visit_step_name(keyword, step_match, status, source_indent, background) #:nodoc:
+      end
+
+      def visit_multiline_arg(multiline_arg) #:nodoc:
         multiline_arg.accept(self)
       end
 
-      def visit_py_string(string, status)
+      def visit_exception(exception, status) #:nodoc:
+      end
+
+      def visit_py_string(string)
       end
 
       def visit_table_row(table_row)
@@ -112,9 +121,6 @@ module Cucumber
       end
 
       def visit_table_cell_value(value, width, status)
-      end
-
-      def visit_exception(exception, status)
       end
 
       def announce(announcement)

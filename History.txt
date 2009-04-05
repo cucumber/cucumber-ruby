@@ -7,6 +7,13 @@
 * Snippets for steps that use Step Tables or Pystrings include block param and object type hint comment (#247 Joseph Wilk)
 * Support description string for Backgrounds (#271 Joseph Wilk)
 
+=== Removed/changed features
+* The visitor API has changed slightly:
+** #visit_step_name, #visit_multiline_arg and #visit_exception are no longer official API methods.
+** #visit_step_result replaces those 3 methods.
+** Table and PyString no longer hold status information. Each visitor subclass should store state in @state if needed.
+** #visit_py_string no longer takes a status argument.
+
 == 0.2.3 2009-03-30
 
 This release sports 4 updated languages, slightly better help with snippets if you "quote" arguments

@@ -116,12 +116,6 @@ module Cucumber
         nil
       end
 
-      def status=(status)
-        cells_rows.each do |row|
-          row.status = status
-        end
-      end
-
       # For testing only
       def to_sexp #:nodoc:
         [:table, *cells_rows.map{|row| row.to_sexp}]
@@ -293,12 +287,6 @@ module Cucumber
           "row_#{line}"
         end
 
-        def status=(status)
-          each do |cell|
-            cell.status = status
-          end
-        end
-
         private
 
         def index
@@ -320,7 +308,6 @@ module Cucumber
 
         def initialize(value, table, row, col, line)
           @value, @table, @row, @col, @line = value, table, row, col, line
-          @status = :passed
         end
 
         def accept(visitor)

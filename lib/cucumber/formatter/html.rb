@@ -1,3 +1,4 @@
+require 'erb'
 begin
   require 'builder'
 rescue LoadError
@@ -8,6 +9,8 @@ end
 module Cucumber
   module Formatter
     class Html < Ast::Visitor
+      include ERB::Util # for the #h method
+
       def initialize(step_mother, io, options)
         super(step_mother)
         @builder = Builder::XmlMarkup.new(:target => io, :indent => 2)
@@ -93,7 +96,12 @@ module Cucumber
 
       def visit_step(step)
         @step_id = step.dom_id
-        @builder.li(:id => @step_id) do
+        super
+      end
+
+      def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+        @status = status
+        @builder.li(:id => @step_id, :class => status) do
           super
         end
       end
@@ -105,8 +113,8 @@ module Cucumber
 
         unless @skip_step
           step_name = step_match.format_args(lambda{|param| "<span>#{param}</span>"})
-          @builder.div(:class => status) do |div|
-            div << "#{keyword} #{step_name}"
+          @builder.div do |div|
+            div << h("#{keyword} #{step_name}")
           end
         end
       end
@@ -126,8 +134,8 @@ module Cucumber
         end
       end
 
-      def visit_py_string(string, status)
-        @builder.pre(:class => status) do |pre|
+      def visit_py_string(string)
+        @builder.pre(:class => @status) do |pre|
           pre << string
         end
       end
@@ -152,7 +160,9 @@ module Cucumber
 
       def visit_table_cell_value(value, width, status)
         cell_type = @outline_row == 0 ? :th : :td
-        @builder.__send__(cell_type, value, :class => status, :id => "#{@row_id}_#{@col_index}")
+        attributes = {:id => "#{@row_id}_#{@col_index}"}
+        attributes[:class] = status if status
+        @builder.__send__(cell_type, value, attributes)
         @col_index += 1
       end
 
