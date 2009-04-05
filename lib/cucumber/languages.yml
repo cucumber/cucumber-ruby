@@ -311,7 +311,7 @@
   native: português
   encoding: UTF-8
   background: Contexto
-  feature: Característica
+  feature: Funcionalidade
   scenario: Cenário
   scenario_outline: Esquema do Cenário
   examples: Exemplos
