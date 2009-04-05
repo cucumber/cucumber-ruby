@@ -118,12 +118,12 @@ module Cucumber
                       r8 = nil
                     else
                       self.index = i8
-                      r8 = SyntaxNode.new(input, index...index)
+                      r8 = instantiate_node(SyntaxNode,input, index...index)
                     end
                     s7 << r8
                     if r8
                       if index < input_length
-                        r13 = (SyntaxNode).new(input, index...(index + 1))
+                        r13 = instantiate_node(SyntaxNode,input, index...(index + 1))
                         @index += 1
                       else
                         terminal_parse_failure("any character")
@@ -132,7 +132,7 @@ module Cucumber
                       s7 << r13
                     end
                     if s7.last
-                      r7 = (SyntaxNode).new(input, i7...index, s7)
+                      r7 = instantiate_node(SyntaxNode,input, i7...index, s7)
                       r7.extend(Feature0)
                     else
                       self.index = i7
@@ -144,14 +144,14 @@ module Cucumber
                       break
                     end
                   end
-                  r6 = SyntaxNode.new(input, i6...index, s6)
+                  r6 = instantiate_node(SyntaxNode,input, i6...index, s6)
                   s0 << r6
                   if r6
                     r15 = _nt_background
                     if r15
                       r14 = r15
                     else
-                      r14 = SyntaxNode.new(input, index...index)
+                      r14 = instantiate_node(SyntaxNode,input, index...index)
                     end
                     s0 << r14
                     if r14
@@ -162,7 +162,7 @@ module Cucumber
                         if r18
                           r17 = r18
                         else
-                          r17 = SyntaxNode.new(input, index...index)
+                          r17 = instantiate_node(SyntaxNode,input, index...index)
                         end
                         s0 << r17
                       end
@@ -174,7 +174,7 @@ module Cucumber
           end
         end
         if s0.last
-          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
           r0.extend(Feature1)
           r0.extend(Feature2)
         else
@@ -254,12 +254,12 @@ module Cucumber
                 self.index = i5
                 r5 = nil
               else
-                r5 = SyntaxNode.new(input, i5...index, s5)
+                r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
               end
               s3 << r5
             end
             if s3.last
-              r3 = (SyntaxNode).new(input, i3...index, s3)
+              r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
               r3.extend(Tags0)
             else
               self.index = i3
@@ -271,11 +271,11 @@ module Cucumber
               break
             end
           end
-          r2 = SyntaxNode.new(input, i2...index, s2)
+          r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
           s0 << r2
         end
         if s0.last
-          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
           r0.extend(Tags1)
           r0.extend(Tags2)
         else
@@ -304,7 +304,7 @@ module Cucumber
 
         i0, s0 = index, []
         if input.index('@', index) == index
-          r1 = (SyntaxNode).new(input, index...(index + 1))
+          r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
           @index += 1
         else
           terminal_parse_failure('@')
@@ -315,7 +315,7 @@ module Cucumber
           s2, i2 = [], index
           loop do
             if input.index(Regexp.new('[^@\\r\\n\\t ]'), index) == index
-              r3 = (SyntaxNode).new(input, index...(index + 1))
+              r3 = instantiate_node(SyntaxNode,input, index...(index + 1))
               @index += 1
             else
               r3 = nil
@@ -330,12 +330,12 @@ module Cucumber
             self.index = i2
             r2 = nil
           else
-            r2 = SyntaxNode.new(input, i2...index, s2)
+            r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
           end
           s0 << r2
         end
         if s0.last
-          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
           r0.extend(Tag0)
         else
           self.index = i0
@@ -381,7 +381,7 @@ module Cucumber
             s1 << r3
           end
           if s1.last
-            r1 = (SyntaxNode).new(input, i1...index, s1)
+            r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
             r1.extend(Comment0)
           else
             self.index = i1
@@ -393,7 +393,7 @@ module Cucumber
             break
           end
         end
-        r0 = SyntaxNode.new(input, i0...index, s0)
+        r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
         r0.extend(Comment1)
 
         node_cache[:comment][start_index] = r0
@@ -417,7 +417,7 @@ module Cucumber
 
         i0, s0 = index, []
         if input.index('#', index) == index
-          r1 = (SyntaxNode).new(input, index...(index + 1))
+          r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
           @index += 1
         else
           terminal_parse_failure('#')
@@ -429,7 +429,7 @@ module Cucumber
           s0 << r2
         end
         if s0.last
-          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
           r0.extend(CommentLine0)
         else
           self.index = i0
@@ -502,14 +502,14 @@ module Cucumber
                   break
                 end
               end
-              r4 = SyntaxNode.new(input, i4...index, s4)
+              r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
               s0 << r4
               if r4
                 r7 = _nt_line_to_eol
                 if r7
                   r6 = r7
                 else
-                  r6 = SyntaxNode.new(input, index...index)
+                  r6 = instantiate_node(SyntaxNode,input, index...index)
                 end
                 s0 << r6
                 if r6
@@ -527,7 +527,7 @@ module Cucumber
                     self.index = i9
                     r9 = nil
                   else
-                    r9 = SyntaxNode.new(input, i9...index, s9)
+                    r9 = instantiate_node(SyntaxNode,input, i9...index, s9)
                   end
                   if r9
                     r8 = r9
@@ -551,7 +551,7 @@ module Cucumber
           end
         end
         if s0.last
-          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
           r0.extend(Background0)
           r0.extend(Background1)
         else
@@ -599,7 +599,7 @@ module Cucumber
             break
           end
         end
-        r0 = SyntaxNode.new(input, i0...index, s0)
+        r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
         r0.extend(FeatureElements0)
 
         node_cache[:feature_elements][start_index] = r0
@@ -685,7 +685,7 @@ module Cucumber
                     break
                   end
                 end
-                r5 = SyntaxNode.new(input, i5...index, s5)
+                r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
                 s0 << r5
                 if r5
                   r7 = _nt_line_to_eol
@@ -708,7 +708,7 @@ module Cucumber
           end
         end
         if s0.last
-          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
           r0.extend(Scenario0)
           r0.extend(Scenario1)
         else
@@ -804,7 +804,7 @@ module Cucumber
                     break
                   end
                 end
-                r5 = SyntaxNode.new(input, i5...index, s5)
+                r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
                 s0 << r5
                 if r5
                   r7 = _nt_line_to_eol
@@ -831,7 +831,7 @@ module Cucumber
           end
         end
         if s0.last
-          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
           r0.extend(ScenarioOutline0)
           r0.extend(ScenarioOutline1)
         else
@@ -867,7 +867,7 @@ module Cucumber
             break
           end
         end
-        r0 = SyntaxNode.new(input, i0...index, s0)
+        r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
         r0.extend(Steps0)
 
         node_cache[:steps][start_index] = r0
@@ -932,7 +932,7 @@ module Cucumber
               break
             end
           end
-          r2 = SyntaxNode.new(input, i2...index, s2)
+          r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
           s0 << r2
           if r2
             r4 = _nt_step_keyword
@@ -958,7 +958,7 @@ module Cucumber
                     self.index = i8
                     r8 = nil
                   else
-                    r8 = SyntaxNode.new(input, i8...index, s8)
+                    r8 = instantiate_node(SyntaxNode,input, i8...index, s8)
                   end
                   if r8
                     r7 = r8
@@ -977,7 +977,7 @@ module Cucumber
                     if r12
                       r11 = r12
                     else
-                      r11 = SyntaxNode.new(input, index...index)
+                      r11 = instantiate_node(SyntaxNode,input, index...index)
                     end
                     s0 << r11
                     if r11
@@ -991,7 +991,7 @@ module Cucumber
           end
         end
         if s0.last
-          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
           r0.extend(Step0)
           r0.extend(Step1)
         else
@@ -1027,7 +1027,7 @@ module Cucumber
             break
           end
         end
-        r0 = SyntaxNode.new(input, i0...index, s0)
+        r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
         r0.extend(ExamplesSections0)
 
         node_cache[:examples_sections][start_index] = r0
@@ -1081,7 +1081,7 @@ module Cucumber
             break
           end
         end
-        r1 = SyntaxNode.new(input, i1...index, s1)
+        r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
         s0 << r1
         if r1
           r3 = _nt_examples_keyword
@@ -1096,14 +1096,14 @@ module Cucumber
                 break
               end
             end
-            r4 = SyntaxNode.new(input, i4...index, s4)
+            r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
             s0 << r4
             if r4
               r7 = _nt_line_to_eol
               if r7
                 r6 = r7
               else
-                r6 = SyntaxNode.new(input, index...index)
+                r6 = instantiate_node(SyntaxNode,input, index...index)
               end
               s0 << r6
               if r6
@@ -1122,7 +1122,7 @@ module Cucumber
           end
         end
         if s0.last
-          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
           r0.extend(Examples0)
           r0.extend(Examples1)
         else
@@ -1182,12 +1182,12 @@ module Cucumber
             r2 = nil
           else
             self.index = i2
-            r2 = SyntaxNode.new(input, index...index)
+            r2 = instantiate_node(SyntaxNode,input, index...index)
           end
           s1 << r2
           if r2
             if index < input_length
-              r4 = (SyntaxNode).new(input, index...(index + 1))
+              r4 = instantiate_node(SyntaxNode,input, index...(index + 1))
               @index += 1
             else
               terminal_parse_failure("any character")
@@ -1196,7 +1196,7 @@ module Cucumber
             s1 << r4
           end
           if s1.last
-            r1 = (SyntaxNode).new(input, i1...index, s1)
+            r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
             r1.extend(LineToEol0)
           else
             self.index = i1
@@ -1208,7 +1208,7 @@ module Cucumber
             break
           end
         end
-        r0 = SyntaxNode.new(input, i0...index, s0)
+        r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
 
         node_cache[:line_to_eol][start_index] = r0
 
@@ -1259,12 +1259,12 @@ module Cucumber
               r4 = nil
             else
               self.index = i4
-              r4 = SyntaxNode.new(input, index...index)
+              r4 = instantiate_node(SyntaxNode,input, index...index)
             end
             s3 << r4
             if r4
               if index < input_length
-                r6 = (SyntaxNode).new(input, index...(index + 1))
+                r6 = instantiate_node(SyntaxNode,input, index...(index + 1))
                 @index += 1
               else
                 terminal_parse_failure("any character")
@@ -1273,7 +1273,7 @@ module Cucumber
               s3 << r6
             end
             if s3.last
-              r3 = (SyntaxNode).new(input, i3...index, s3)
+              r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
               r3.extend(PyString0)
             else
               self.index = i3
@@ -1285,7 +1285,7 @@ module Cucumber
               break
             end
           end
-          r2 = SyntaxNode.new(input, i2...index, s2)
+          r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
           s0 << r2
           if r2
             r7 = _nt_close_py_string
@@ -1293,7 +1293,7 @@ module Cucumber
           end
         end
         if s0.last
-          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
           r0.extend(PyString1)
           r0.extend(PyString2)
         else
@@ -1339,7 +1339,7 @@ module Cucumber
         s0 << r1
         if r1
           if input.index('"""', index) == index
-            r2 = (SyntaxNode).new(input, index...(index + 3))
+            r2 = instantiate_node(SyntaxNode,input, index...(index + 3))
             @index += 3
           else
             terminal_parse_failure('"""')
@@ -1356,7 +1356,7 @@ module Cucumber
                 break
               end
             end
-            r3 = SyntaxNode.new(input, i3...index, s3)
+            r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
             s0 << r3
             if r3
               r5 = _nt_eol
@@ -1365,7 +1365,7 @@ module Cucumber
           end
         end
         if s0.last
-          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
           r0.extend(OpenPyString0)
           r0.extend(OpenPyString1)
         else
@@ -1419,11 +1419,11 @@ module Cucumber
               break
             end
           end
-          r2 = SyntaxNode.new(input, i2...index, s2)
+          r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
           s0 << r2
           if r2
             if input.index('"""', index) == index
-              r4 = (SyntaxNode).new(input, index...(index + 3))
+              r4 = instantiate_node(SyntaxNode,input, index...(index + 3))
               @index += 3
             else
               terminal_parse_failure('"""')
@@ -1437,7 +1437,7 @@ module Cucumber
           end
         end
         if s0.last
-          r0 = (SyntaxNode).new(input, i0...index, s0)
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
           r0.extend(ClosePyString0)
           r0.extend(ClosePyString1)
         else
@@ -1479,7 +1479,7 @@ module Cucumber
             break
           end
         end
-        r0 = SyntaxNode.new(input, i0...index, s0)
+        r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
 
         node_cache[:white][start_index] = r0
 
