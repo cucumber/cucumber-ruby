@@ -1,6 +1,7 @@
 == 0.2.4 (In Git)
 
 === New features
+* Portuguese uses Funcionalidade in stead of Característica and accented words are aliased with unaccented ones (Alexandre da Silva and Felipe Coury).
 * The usage formatter also prints unused step definitions (Aslak Hellesøy)
 * Better exception if a World proc returns nil. (Aslak Hellesøy)
 * Allow Step Definitions to use |*varargs|, but only on Ruby 1.9. (Aslak Hellesøy)
