@@ -93,10 +93,45 @@ spec/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
       begin
         @step_mother.before_and_after(nil)
         raise "Should fail"
-      rescue => e
+      rescue NilWorld => e
         e.message.should == "World procs should never return nil"
         e.backtrace.should == ["spec/cucumber/step_mother_spec.rb:90:in `World'"]
       end
+    end
+
+    module ModuleOne
+    end
+
+    module ModuleTwo
+    end
+
+    class ClassOne
+    end
+
+    it "should implicitly extend world with modules" do
+      @step_mother.World(ModuleOne, ModuleTwo)
+
+      w = @step_mother.__send__(:new_world!)
+      class << w
+        included_modules.index(ModuleOne).should_not == nil
+        included_modules.index(ModuleTwo).should_not == nil
+      end
+      w.class.should == Object
+    end
+
+    it "should raise error when we try to register more than one World proc" do
+      @step_mother.World { Hash.new }
+      lambda do
+        @step_mother.World { Array.new }
+      end.should raise_error(MultipleWorld, %{You can only pass a proc to #World once, but it's happening
+in 2 places:
+
+spec/cucumber/step_mother_spec.rb:123:in `World'
+spec/cucumber/step_mother_spec.rb:125:in `World'
+
+Use Ruby modules instead to extend your worlds. See the #World RDoc.
+
+})
     end
   end
 end

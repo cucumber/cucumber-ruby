@@ -1,11 +1,24 @@
-== 0.2.4 (In Git)
+== 0.3.0 (In Git)
+
+This release has some minor changes to the APIs, but big enough that a new major release is in order.
+The biggest change is the new semantics of the #World method. Previously you would call this method
+several times, passing a Proc and extending the world object of the previous one with a Ruby module.
+The problem was that there was no nice way to ensure the order in which these procs were called, which
+led to some unexpected situations. In this release you can only register a single World proc. If you
+want to extend a world with certain modules, you simply call the #World method with the module(s)
+you wish to extend the World with. The Sinatra example illustrates how to do this.
+
+The Visitor API (which is used for formatters) has also changed slightly. However, we have tried to
+do this in a backwards compatible way, so if you have custom formatters for Cucumber 0.2 they should
+still work.
 
 === New features
+* Only a single World proc can be registered. World extension now happens by calling #World with ruby modules.
 * Portuguese uses Funcionalidade in stead of Característica and accented words are aliased with unaccented ones (Alexandre da Silva and Felipe Coury).
 * The usage formatter also prints unused step definitions (Aslak Hellesøy)
 * Better exception if a World proc returns nil. (Aslak Hellesøy)
 * Allow Step Definitions to use |*varargs|, but only on Ruby 1.9. (Aslak Hellesøy)
-* Snippets for steps that use Step Tables or Pystrings include block param and object type hint comment (#247 Joseph Wilk)
+* Snippets for steps that use Step Tables or PyStrings include block param and object type hint comment (#247 Joseph Wilk)
 * Support description string for Backgrounds (#271 Joseph Wilk)
 
 === Removed/changed features

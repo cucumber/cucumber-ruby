@@ -1,8 +1,5 @@
 require 'test/unit/assertions'
-World do |o|
-  o.extend(Test::Unit::Assertions)
-  o
-end
+World(Test::Unit::Assertions)
 
 Given /^(\w+) = (\w+)$/ do |var, value|
   instance_variable_set("@#{var}", value)
