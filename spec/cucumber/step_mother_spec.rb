@@ -27,8 +27,8 @@ module Cucumber
         @step_mother.step_match("Three blind mice")
       end.should raise_error(Ambiguous, %{Ambiguous match of "Three blind mice":
 
-specs/cucumber/step_mother_spec.rb:23:in `/Three (.*) mice/'
-specs/cucumber/step_mother_spec.rb:24:in `/Three blind (.*)/'
+spec/cucumber/step_mother_spec.rb:23:in `/Three (.*) mice/'
+spec/cucumber/step_mother_spec.rb:24:in `/Three blind (.*)/'
 
 You can run again with --guess to make Cucumber be more smart about it
 })
@@ -43,8 +43,8 @@ You can run again with --guess to make Cucumber be more smart about it
         @step_mother.step_match("Three cute mice")
       end.should raise_error(Ambiguous, %{Ambiguous match of "Three cute mice":
 
-specs/cucumber/step_mother_spec.rb:39:in `/Three (.*) mice/'
-specs/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
+spec/cucumber/step_mother_spec.rb:39:in `/Three (.*) mice/'
+spec/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
 
 })
     end
@@ -95,7 +95,7 @@ specs/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
         raise "Should fail"
       rescue => e
         e.message.should == "World procs should never return nil"
-        e.backtrace.should == ["specs/cucumber/step_mother_spec.rb:90:in `World'"]
+        e.backtrace.should == ["spec/cucumber/step_mother_spec.rb:90:in `World'"]
       end
     end
   end
