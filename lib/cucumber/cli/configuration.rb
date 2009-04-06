@@ -257,11 +257,11 @@ module Cucumber
 
         potential_feature_files
       end
-    
+
     protected
   
       def feature_dirs
-        feature_files.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq
+        @paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq
       end
     
       def constantize(camel_cased_word)

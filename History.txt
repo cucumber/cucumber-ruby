@@ -21,6 +21,9 @@ still work.
 * Snippets for steps that use Step Tables or PyStrings include block param and object type hint comment (#247 Joseph Wilk)
 * Support description string for Backgrounds (#271 Joseph Wilk)
 
+=== Bugfixes
+* Sibling file detecting not working (#278 Aslak Hellesøy)
+
 === Removed/changed features
 * The visitor API has changed slightly:
 ** #visit_step_name, #visit_multiline_arg and #visit_exception are no longer official API methods.
