@@ -25,9 +25,9 @@ Given /^call step "(.*)"$/ do |step|
 end
 
 Given /^'(.+)' cukes$/ do |cukes|
+  # raise "We already have #{@cukes} cukes!" if @cukes
   @cukes = cukes
 end
-
 Then /^I should have '(.+)' cukes$/ do |cukes|
   @cukes.should == cukes
 end

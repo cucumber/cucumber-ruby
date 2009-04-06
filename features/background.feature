@@ -64,7 +64,7 @@ Feature: backgrounds
         | 10    |
 
     2 scenarios
-    5 passed steps
+    4 passed steps
 
     """
 
@@ -123,7 +123,7 @@ Feature: backgrounds
 
     2 scenarios
     1 failed step
-    4 skipped steps
+    3 skipped steps
 
     """
 

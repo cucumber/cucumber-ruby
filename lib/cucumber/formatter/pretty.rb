@@ -19,6 +19,7 @@ module Cucumber
         @options = options
         @delim = delim
         @indent = 0
+        @exceptions = []
       end
 
       def visit_features(features)
@@ -120,30 +121,32 @@ module Cucumber
       end
 
       def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+        if exception
+          return if @exceptions.index(exception)
+          @exceptions << exception
+        end
+        return if status != :failed && @in_background ^ background
+
+        # @step_matches ||= []
+        # return if @step_matches.index(step_match)
+        # @step_matches << step_match
+
         @status = status
         super
       end
 
       def visit_step_name(keyword, step_match, status, source_indent, background)
-        @step_matches ||= []
-        non_failed_background_step_outside_background = !@in_background && background && (status != :failed)
-        @skip_step = @step_matches.index(step_match) || non_failed_background_step_outside_background
-        @step_matches << step_match
-        
-        unless(@skip_step)
-          source_indent = nil unless @options[:source]
-          formatted_step_name = format_step(keyword, step_match, status, source_indent)
-          @io.puts("    " + formatted_step_name)
-        end
+        source_indent = nil unless @options[:source]
+        formatted_step_name = format_step(keyword, step_match, status, source_indent)
+        @io.puts("    " + formatted_step_name)
       end
 
       def visit_multiline_arg(multiline_arg)
-        return if @options[:no_multiline] || @skip_step
+        return if @options[:no_multiline]
         super
       end
 
       def visit_exception(exception, status)
-        return if @skip_step
         print_exception(exception, status, @indent)
         @io.flush
       end
@@ -152,7 +155,9 @@ module Cucumber
         @io.print @delim.indent(@indent)
         super
         @io.puts
-        print_exception(table_row.exception, :failed, @indent) if table_row.exception
+        if table_row.exception && !@exceptions.index(table_row.exception)
+          print_exception(table_row.exception, :failed, @indent) 
+        end
       end
 
       def visit_py_string(string)

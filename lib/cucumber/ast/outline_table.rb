@@ -5,10 +5,7 @@ module Cucumber
         super(raw)
         @scenario_outline = scenario_outline
         @cells_class = ExampleCells
-        
-        cells_rows.each do |cells|
-          cells.create_step_invocations!(scenario_outline)
-        end
+        create_step_invocations_for_example_rows!(scenario_outline)
       end
 
       def accept(visitor)
@@ -30,9 +27,19 @@ module Cucumber
       end
       
       def skip_invoke!
-        cells_rows.each do |cells|
+        example_rows.each do |cells|
           cells.skip_invoke!
         end
+      end
+
+      def create_step_invocations_for_example_rows!(scenario_outline)
+        example_rows.each do |cells|
+          cells.create_step_invocations!(scenario_outline)
+        end
+      end
+      
+      def example_rows
+        cells_rows[1..-1]
       end
 
       class ExampleCells < Cells

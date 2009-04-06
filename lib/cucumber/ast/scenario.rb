@@ -8,7 +8,7 @@ module Cucumber
       def initialize(background, comment, tags, line, keyword, name, steps)
         @background, @comment, @tags, @line, @keyword, @name = background, comment, tags, line, keyword, name
         attach_steps(steps)
-        
+
         step_invocations = steps.map{|step| step.step_invocation}
         if @background
           @steps = @background.step_collection(step_invocations)
