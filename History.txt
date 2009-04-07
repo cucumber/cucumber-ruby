@@ -13,6 +13,7 @@ do this in a backwards compatible way, so if you have custom formatters for Cucu
 still work.
 
 === New features
+* Updated language for Polish (#273 Grzegorz Marszałek)
 * Only a single World proc can be registered. World extension now happens by calling #World with ruby modules.
 * Portuguese uses Funcionalidade in stead of Característica and accented words are aliased with unaccented ones (Alexandre da Silva and Felipe Coury).
 * The usage formatter also prints unused step definitions (Aslak Hellesøy)

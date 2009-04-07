@@ -299,8 +299,11 @@
   native: polski
   encoding: UTF-8
   feature: Właściwość
+  background: Założenia
   scenario: Scenariusz
-  given: Dane
+  scenario_outline: Szablon scenariusza
+  examples: Przykłady
+  given: Zakładając
   when: Jeżeli
   then: Wtedy
   and: Oraz
