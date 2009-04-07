@@ -22,6 +22,8 @@ still work.
 * Support description string for Backgrounds (#271 Joseph Wilk)
 
 === Bugfixes
+* Fixed Background runs twice (#255 Aslak Hellesøy)
+* Fixed Background Transactions and :xx (#270 Aslak Hellesøy)
 * Fixed Autospec failing with cucumber 0.2 (#254 Aslak Hellesøy)
 * Sibling file detecting not working (#278 Aslak Hellesøy)
 
