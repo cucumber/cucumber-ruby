@@ -179,6 +179,8 @@ examples/tickets/features/236.feature
 examples/tickets/features/241.feature
 examples/tickets/features/246.feature
 examples/tickets/features/248.feature
+examples/tickets/features/270/back.feature
+examples/tickets/features/270/back.steps.rb
 examples/tickets/features/lib/eatting_machine.rb
 examples/tickets/features/lib/pantry.rb
 examples/tickets/features/scenario_outline.feature
@@ -259,7 +261,6 @@ lib/cucumber/formatter/usage.rb
 lib/cucumber/formatters/unicode.rb
 lib/cucumber/languages.yml
 lib/cucumber/parser.rb
-lib/cucumber/parser/basic.rb
 lib/cucumber/parser/feature.rb
 lib/cucumber/parser/feature.tt
 lib/cucumber/parser/i18n.tt
