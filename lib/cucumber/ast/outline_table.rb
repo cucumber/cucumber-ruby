@@ -22,8 +22,7 @@ module Cucumber
       end
       
       def matches?(visitor, cells)
-        @scenario_outline.matches_tags_and_name?(visitor) &&
-        (visitor.matches_lines?(cells) || visitor.matches_lines?(@scenario_outline))
+        @scenario_outline.matches_tags_and_name?(visitor)
       end
       
       def skip_invoke!

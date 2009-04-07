@@ -12,10 +12,6 @@ module Cucumber
       @keyword.jlength + @name.jlength
     end
 
-    def matches_lines?(lines)
-      lines.index(@line) || @steps.matches_lines?(lines) || @tags.matches_lines?(lines)
-    end
-
     def has_tags?(tags)
       @tags.has_tags?(tags) || @feature.has_tags?(tags)
     end

@@ -15,10 +15,6 @@ module Cucumber
         (@tag_names & tags).any?
       end
 
-      def matches_lines?(lines)
-        lines.index(@line)
-      end
-
       def accept(visitor)
         @tag_names.each do |tag_name|
           visitor.visit_tag_name(tag_name)

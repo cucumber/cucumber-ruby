@@ -105,10 +105,6 @@ module Cucumber
         cells_rows.each(&proc)
       end
 
-      def matches_lines?(lines)
-        cells_rows.detect{|row| row.matches_lines?(lines)}
-      end
-
       def accept(visitor)
         cells_rows.each do |row|
           visitor.visit_table_row(row)
@@ -251,10 +247,6 @@ module Cucumber
           @table, @cells = table, cells
         end
 
-        def matches_lines?(lines)
-          lines.index(line)
-        end
-
         def accept(visitor)
           each do |cell|
             visitor.visit_table_cell(cell)
@@ -264,7 +256,7 @@ module Cucumber
 
         # For testing only
         def to_sexp #:nodoc:
-          [:row, *@cells.map{|cell| cell.to_sexp}]
+          [:row, line, *@cells.map{|cell| cell.to_sexp}]
         end
 
         def to_hash #:nodoc:

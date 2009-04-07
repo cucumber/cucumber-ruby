@@ -12,7 +12,25 @@ end
 
 module Cucumber
   module Parser
-    module TreetopExt
+    class Filter
+      def initialize(lines)
+        @lines = lines
+      end
+
+      def accept?(syntax_node)
+        at_line?(syntax_node) # || more to come...
+      end
+
+      def at_line?(syntax_node)
+        @lines.detect{|line| syntax_node.at_line?(line)}
+      end
+
+      def outline_at_line?(syntax_node)
+        @lines.detect{|line| syntax_node.outline_at_line?(line)}
+      end
+    end
+
+    module TreetopExt      
       FILE_COLON_LINE_PATTERN = /^([\w\W]*?):([\d:]+)$/
 
       # Parses a file and returns a Cucumber::Ast
@@ -20,28 +38,28 @@ module Cucumber
         _, path, lines = *FILE_COLON_LINE_PATTERN.match(file)
         if path
           lines = lines.split(':').map { |line| line.to_i }
+          filter = Filter.new(lines)
         else
           path = file
-          lines = []
+          filter = nil
         end
 
-        loader = lambda { |io| parse_or_fail(io.read, path) }
+        loader = lambda { |io| parse_or_fail(io.read, filter, path) }
         feature = if path =~ /^http/
           require 'open-uri'
           open(path, &loader)
         else
           File.open(path, Cucumber.file_mode('r'), &loader) 
         end
-        feature.lines = lines
         feature
       end
 
-      def parse_or_fail(s, file=nil, line_offset=0)
-        parse_tree = parse(s)
+      def parse_or_fail(string, filter=nil, file=nil, line_offset=0)
+        parse_tree = parse(string)
         if parse_tree.nil?
           raise Cucumber::Parser::SyntaxError.new(self, file, line_offset)
         else
-          ast = parse_tree.build
+          ast = parse_tree.build(filter)
           ast.file = file
           ast
         end

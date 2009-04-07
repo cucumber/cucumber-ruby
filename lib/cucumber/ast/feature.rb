@@ -3,11 +3,10 @@ module Cucumber
     # Represents the root node of a parsed feature.
     class Feature
       attr_accessor :file
-      attr_writer :features, :lines
+      attr_writer :features
 
       def initialize(background, comment, tags, name, feature_elements)
         @background, @comment, @tags, @name, @feature_elements = background, comment, tags, name, feature_elements
-        @lines = []
 
         @feature_elements.each do |feature_element|
           feature_element.feature = self
@@ -15,7 +14,6 @@ module Cucumber
       end
 
       def accept(visitor)
-        visitor.current_feature_lines = @lines
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@name)

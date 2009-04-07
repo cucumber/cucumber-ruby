@@ -56,10 +56,6 @@ module Cucumber
         [:step, @line, @keyword, @name, (@multiline_arg.nil? ? nil : @multiline_arg.to_sexp)].compact
       end
 
-      def matches_lines?(lines)
-        lines.index(@line) || (@multiline_arg && @multiline_arg.matches_lines?(lines))
-      end
-
       def source_indent
         @feature_element.source_indent(text_length)
       end

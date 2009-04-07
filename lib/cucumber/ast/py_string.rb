@@ -31,10 +31,6 @@ module Cucumber
         @string.indent(-@quotes_indent)
       end
 
-      def matches_lines?(lines)
-        lines.detect{|l| l >= @start_line && l <= @end_line}
-      end
-
       def accept(visitor)
         visitor.visit_py_string(to_s)
       end
