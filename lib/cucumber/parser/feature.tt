@@ -166,13 +166,13 @@ module Cucumber
       end
 
       rule open_py_string
-        white '"""' space* eol {
+        indent:space* '"""' space* eol {
           def indentation
-            white.text_value.length
+            indent.text_value.length
           end
 
           def line
-            white.line
+            indent.line
           end
         }
       end

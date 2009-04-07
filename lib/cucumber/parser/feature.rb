@@ -1307,7 +1307,7 @@ module Cucumber
       end
 
       module OpenPyString0
-        def white
+        def indent
           elements[0]
         end
 
@@ -1318,11 +1318,11 @@ module Cucumber
 
       module OpenPyString1
         def indentation
-          white.text_value.length
+          indent.text_value.length
         end
 
         def line
-          white.line
+          indent.line
         end
       end
 
@@ -1335,32 +1335,41 @@ module Cucumber
         end
 
         i0, s0 = index, []
-        r1 = _nt_white
+        s1, i1 = [], index
+        loop do
+          r2 = _nt_space
+          if r2
+            s1 << r2
+          else
+            break
+          end
+        end
+        r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
         s0 << r1
         if r1
           if input.index('"""', index) == index
-            r2 = instantiate_node(SyntaxNode,input, index...(index + 3))
+            r3 = instantiate_node(SyntaxNode,input, index...(index + 3))
             @index += 3
           else
             terminal_parse_failure('"""')
-            r2 = nil
+            r3 = nil
           end
-          s0 << r2
-          if r2
-            s3, i3 = [], index
+          s0 << r3
+          if r3
+            s4, i4 = [], index
             loop do
-              r4 = _nt_space
-              if r4
-                s3 << r4
+              r5 = _nt_space
+              if r5
+                s4 << r5
               else
                 break
               end
             end
-            r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
-            s0 << r3
-            if r3
-              r5 = _nt_eol
-              s0 << r5
+            r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
+            s0 << r4
+            if r4
+              r6 = _nt_eol
+              s0 << r6
             end
           end
         end
