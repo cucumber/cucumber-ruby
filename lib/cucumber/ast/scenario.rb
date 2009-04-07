@@ -23,7 +23,6 @@ module Cucumber
       end
 
       def descend?(visitor)
-        visitor.matches_lines?(self) &&
         visitor.included_by_tags?(self) &&
         !visitor.excluded_by_tags?(self) &&
         visitor.matches_scenario_names?(self)

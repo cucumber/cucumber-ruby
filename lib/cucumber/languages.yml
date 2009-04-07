@@ -299,8 +299,11 @@
   native: polski
   encoding: UTF-8
   feature: Właściwość
+  background: Założenia
   scenario: Scenariusz
-  given: Dane
+  scenario_outline: Szablon scenariusza
+  examples: Przykłady
+  given: Zakładając
   when: Jeżeli
   then: Wtedy
   and: Oraz
@@ -435,3 +438,18 @@
   and: 그리고
   but: 하지만
   space_after_keyword: false
+"bg":
+  name: Bulgarian
+  native: български
+  encoding: UTF-8
+  feature: Функционалност
+  background: Предистория
+  scenario: Сценарий
+  scenario_outline: Рамка на сценарий
+  examples: Примери
+  given: Дадено
+  when: Когато
+  then: То
+  and: И
+  but: Но
+  space_after_keyword: true  

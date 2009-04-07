@@ -26,10 +26,6 @@ module Cucumber
         @outline_table.cells_rows[1..-1].each(&proc)
       end
 
-      def matches_lines?(lines)
-        lines.index(@line) || @outline_table.matches_lines?(lines)
-      end
-
       def to_sexp
         [:examples, @keyword, @name, @outline_table.to_sexp]
       end

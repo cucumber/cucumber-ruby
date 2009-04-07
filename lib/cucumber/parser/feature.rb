@@ -56,14 +56,14 @@ module Cucumber
       end
 
       module Feature2
-        def build
+        def build(filter)
           background = bg.respond_to?(:build) ? bg.build : nil
           Ast::Feature.new(
             background, 
             comment.build, 
             tags.build, 
             header.text_value, 
-            feature_elements.build(background)
+            feature_elements.build(background, filter)
           )
         end
       end
@@ -205,6 +205,10 @@ module Cucumber
       end
 
       module Tags2
+        def at_line?(line)
+          ts.elements.detect{|e| e.tag.line == line}
+        end
+
         def build
           tag_names = ts.elements.map{|e| e.tag.tag_name.text_value}
           Ast::Tags.new(ts.line, tag_names)
@@ -565,8 +569,12 @@ module Cucumber
       end
 
       module FeatureElements0
-        def build(background)
-          elements.map{|s| s.build(background)}
+        def build(background, filter)
+          elements.map do |feature_element|
+            if filter.nil? || filter.accept?(feature_element)
+              feature_element.build(background, filter)
+            end
+          end.compact
         end
       end
 
@@ -642,7 +650,13 @@ module Cucumber
       end
 
       module Scenario1
-        def build(background)
+        def at_line?(line)
+          scenario_keyword.line == line ||
+          steps.at_line?(line) ||
+          tags.at_line?(line)
+        end
+
+        def build(background, filter)
           Ast::Scenario.new(
             background,
             comment.build, 
@@ -760,7 +774,18 @@ module Cucumber
       end
 
       module ScenarioOutline1
-        def build(background)
+        def at_line?(line)
+          outline_at_line?(line) ||
+          examples_sections.at_line?(line) ||
+          tags.at_line?(line)
+        end
+
+        def outline_at_line?(line)
+          scenario_outline_keyword.line == line ||
+          steps.at_line?(line)
+        end
+
+        def build(background, filter)
           Ast::ScenarioOutline.new(
             background,
             comment.build, 
@@ -769,7 +794,7 @@ module Cucumber
             scenario_outline_keyword.text_value, 
             name.text_value, 
             steps.build, 
-            examples_sections.build
+            examples_sections.build(filter, self)
           )
         end
       end
@@ -845,6 +870,10 @@ module Cucumber
       end
 
       module Steps0
+        def at_line?(line)
+          elements.detect{|e| e.at_line?(line)}
+        end
+
         def build
           elements.map{|e| e.build}
         end
@@ -902,6 +931,11 @@ module Cucumber
       end
 
       module Step1
+        def at_line?(line)
+          step_keyword.line == line ||
+          (multi.respond_to?(:at_line?) && multi.at_line?(line))
+        end
+
         def build
           if multi.respond_to?(:build)
             Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value.strip, multi.build)
@@ -1005,8 +1039,16 @@ module Cucumber
       end
 
       module ExamplesSections0
-        def build
-          elements.map{|e| e.build}
+        def at_line?(line)
+          elements.detect { |e| e.at_line?(line) }
+        end
+
+        def build(filter, scenario_outline)
+          elements.map do |e| 
+            if(filter.nil? || filter.accept?(e) || filter.outline_at_line?(scenario_outline))
+              e.build(filter, scenario_outline)
+            end
+          end.compact
         end
       end
 
@@ -1058,8 +1100,13 @@ module Cucumber
       end
 
       module Examples1
-        def build
-          [examples_keyword.line, examples_keyword.text_value, name.text_value, table.raw]
+        def at_line?(line)
+          examples_keyword.line == line ||
+          table.at_line?(line)
+        end
+
+        def build(filter, scenario_outline)
+          [examples_keyword.line, examples_keyword.text_value, name.text_value, table.raw(filter, scenario_outline)]
         end
       end
 
@@ -1233,6 +1280,10 @@ module Cucumber
       end
 
       module PyString2
+        def at_line?(line)
+          line >= open_py_string.line && line <= close_py_string.line
+        end
+
         def build
           Ast::PyString.new(open_py_string.line, close_py_string.line, s.text_value, open_py_string.indentation)
         end

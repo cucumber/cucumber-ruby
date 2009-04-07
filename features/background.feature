@@ -16,7 +16,7 @@ Feature: backgrounds
         Then I should have '10' cukes
 
     1 scenario
-    3 passed steps
+    2 passed steps
     
     """
   

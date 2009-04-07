@@ -41,7 +41,7 @@ Feature: Cucumber command line
       Feature: Outline Sample
 
         Scenario Outline: Test state          # features/outline_sample.feature:5
-          Given <state> without a table       # features/step_definitions/sample_steps.rb:12
+          Given <state> without a table       # features/step_definitions/sample_steps.rb:15
           Given <other_state> without a table # features/step_definitions/sample_steps.rb:12
 
         Examples: Rainbow colours

@@ -13,6 +13,8 @@ do this in a backwards compatible way, so if you have custom formatters for Cucu
 still work.
 
 === New features
+* Added translation for Bulgarian (Krasimir Angelov)
+* Updated translation for Polish (#273 Grzegorz Marszałek)
 * Only a single World proc can be registered. World extension now happens by calling #World with ruby modules.
 * Portuguese uses Funcionalidade in stead of Característica and accented words are aliased with unaccented ones (Alexandre da Silva and Felipe Coury).
 * The usage formatter also prints unused step definitions (Aslak Hellesøy)
@@ -22,6 +24,8 @@ still work.
 * Support description string for Backgrounds (#271 Joseph Wilk)
 
 === Bugfixes
+* Fixed Background runs twice (#255 Aslak Hellesøy)
+* Fixed Background Transactions and :xx (#270 Aslak Hellesøy)
 * Fixed Autospec failing with cucumber 0.2 (#254 Aslak Hellesøy)
 * Sibling file detecting not working (#278 Aslak Hellesøy)
 

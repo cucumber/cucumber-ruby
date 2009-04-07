@@ -21,6 +21,14 @@ examples/i18n/ar/Rakefile
 examples/i18n/ar/features/addition.feature
 examples/i18n/ar/features/step_definitons/calculator_steps.rb
 examples/i18n/ar/lib/calculator.rb
+examples/i18n/bg/Rakefile
+examples/i18n/bg/features/addition.feature
+examples/i18n/bg/features/consecutive_calculations.feature
+examples/i18n/bg/features/division.feature
+examples/i18n/bg/features/step_definitons/calculator_steps.rb
+examples/i18n/bg/features/support/env.rb
+examples/i18n/bg/features/support/world.rb
+examples/i18n/bg/lib/calculator.rb
 examples/i18n/da/Rakefile
 examples/i18n/da/features/step_definitons/kalkulator_steps.rb
 examples/i18n/da/features/summering.feature
@@ -179,6 +187,8 @@ examples/tickets/features/236.feature
 examples/tickets/features/241.feature
 examples/tickets/features/246.feature
 examples/tickets/features/248.feature
+examples/tickets/features/270/back.feature
+examples/tickets/features/270/back.steps.rb
 examples/tickets/features/lib/eatting_machine.rb
 examples/tickets/features/lib/pantry.rb
 examples/tickets/features/scenario_outline.feature
@@ -259,7 +269,6 @@ lib/cucumber/formatter/usage.rb
 lib/cucumber/formatters/unicode.rb
 lib/cucumber/languages.yml
 lib/cucumber/parser.rb
-lib/cucumber/parser/basic.rb
 lib/cucumber/parser/feature.rb
 lib/cucumber/parser/feature.tt
 lib/cucumber/parser/i18n.tt
