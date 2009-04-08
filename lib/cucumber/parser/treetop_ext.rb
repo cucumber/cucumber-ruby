@@ -13,20 +13,42 @@ end
 module Cucumber
   module Parser
     class Filter
-      def initialize(lines)
+      def initialize(lines, options)
         @lines = lines
+        @include_tags = options[:include_tags] || []
+        @exclude_tags = options[:exclude_tags] || []
+        @names        = options[:scenario_names] || []
       end
 
       def accept?(syntax_node)
-        at_line?(syntax_node) # || more to come...
+        at_line?(syntax_node) &&
+        matches_tags?(syntax_node) &&
+        matches_names?(syntax_node)
       end
 
       def at_line?(syntax_node)
-        @lines.detect{|line| syntax_node.at_line?(line)}
+        @lines.nil? || @lines.empty? || @lines.detect{|line| syntax_node.at_line?(line)}
       end
 
       def outline_at_line?(syntax_node)
-        @lines.detect{|line| syntax_node.outline_at_line?(line)}
+         @lines.nil? || @lines.empty? || @lines.detect{|line| syntax_node.outline_at_line?(line)}
+      end
+
+      def matches_tags?(syntax_node)
+        !excluded_by_tags?(syntax_node) &&
+        included_by_tags?(syntax_node)
+      end
+
+      def included_by_tags?(syntax_node)
+        @include_tags.empty? || syntax_node.has_tags?(@include_tags)
+      end
+
+      def excluded_by_tags?(syntax_node)
+        @exclude_tags.any? && syntax_node.has_tags?(@exclude_tags)
+      end
+      
+      def matches_names?(syntax_node)
+        @names.nil? || @names.empty? || @names.detect{|name| syntax_node.matches_name?(name)}
       end
     end
 
@@ -34,15 +56,14 @@ module Cucumber
       FILE_COLON_LINE_PATTERN = /^([\w\W]*?):([\d:]+)$/
 
       # Parses a file and returns a Cucumber::Ast
-      def parse_file(file)
+      def parse_file(file, options)
         _, path, lines = *FILE_COLON_LINE_PATTERN.match(file)
         if path
           lines = lines.split(':').map { |line| line.to_i }
-          filter = Filter.new(lines)
         else
           path = file
-          filter = nil
         end
+        filter = Filter.new(lines, options)
 
         loader = lambda { |io| parse_or_fail(io.read, filter, path) }
         feature = if path =~ /^http/
@@ -59,8 +80,8 @@ module Cucumber
         if parse_tree.nil?
           raise Cucumber::Parser::SyntaxError.new(self, file, line_offset)
         else
-          ast = parse_tree.build(filter)
-          ast.file = file
+          ast = parse_tree.build(filter) # may return nil if it doesn't match filter.
+          ast.file = file unless ast.nil?
           ast
         end
       end

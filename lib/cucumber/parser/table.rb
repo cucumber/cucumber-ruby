@@ -18,7 +18,7 @@ module Cucumber
           elements.detect{|table_row| table_row.at_line?(line)}
         end
 
-        def build
+        def build(filter=nil)
           Ast::Table.new(raw)
         end
 

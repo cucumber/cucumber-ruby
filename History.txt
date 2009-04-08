@@ -6,7 +6,8 @@ several times, passing a Proc and extending the world object of the previous one
 The problem was that there was no nice way to ensure the order in which these procs were called, which
 led to some unexpected situations. In this release you can only register a single World proc. If you
 want to extend a world with certain modules, you simply call the #World method with the module(s)
-you wish to extend the World with. The Sinatra example illustrates how to do this.
+you wish to extend the World with. The Sinatra example illustrates how to do this. Also check out
+the RDoc for Cucumber::StepMother#World.
 
 The Visitor API (which is used for formatters) has also changed slightly. However, we have tried to
 do this in a backwards compatible way, so if you have custom formatters for Cucumber 0.2 they should

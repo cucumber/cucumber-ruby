@@ -177,7 +177,6 @@ examples/test_unit/Rakefile
 examples/test_unit/features/step_definitions/test_unit_steps.rb
 examples/test_unit/features/test_unit.feature
 examples/tickets/Rakefile
-examples/tickets/cucumber.yml
 examples/tickets/features/172.feature
 examples/tickets/features/177/1.feature
 examples/tickets/features/177/2.feature
@@ -304,7 +303,6 @@ spec/cucumber/ast/scenario_spec.rb
 spec/cucumber/ast/step_collection_spec.rb
 spec/cucumber/ast/step_spec.rb
 spec/cucumber/ast/table_spec.rb
-spec/cucumber/ast/tags_spec.rb
 spec/cucumber/broadcaster_spec.rb
 spec/cucumber/cli/configuration_spec.rb
 spec/cucumber/cli/main_spec.rb

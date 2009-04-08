@@ -13,19 +13,11 @@ module Cucumber
       end
 
       def parse_file(file)
-        @parser.parse_file(File.dirname(__FILE__) + "/../treetop_parser/" + file)
+        @parser.parse_file(File.dirname(__FILE__) + "/../treetop_parser/" + file, {})
       end
 
       def parse_example_file(file)
-        @parser.parse_file(File.dirname(__FILE__) + "/../../../examples/" + file)
-      end
-
-      describe "Header" do
-        it "should parse Feature with blurb" do
-          parse(%{Feature: hi
-with blurb
-})
-        end
+        @parser.parse_file(File.dirname(__FILE__) + "/../../../examples/" + file, {})
       end
 
       describe "Comments" do

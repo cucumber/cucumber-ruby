@@ -30,16 +30,6 @@ module Cucumber
         @background.feature = feature if @background
       end
 
-      def descend?(visitor)
-        @examples_array.detect { |examples| examples.descend?(visitor) }
-      end
-
-      def matches_tags_and_name?(visitor)
-        visitor.included_by_tags?(self) &&
-        !visitor.excluded_by_tags?(self) &&
-        visitor.matches_scenario_names?(self)
-      end
-
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
@@ -48,7 +38,7 @@ module Cucumber
 
         skip_invoke! if @background && @background.failed?
         @examples_array.each do |examples|
-          visitor.visit_examples(examples) if examples.descend?(visitor)
+          visitor.visit_examples(examples)
         end
       end
 

@@ -1,3 +1,0 @@
-default: --format pretty
-html: --format html --out features.html
-progress: --format progress -i -n
