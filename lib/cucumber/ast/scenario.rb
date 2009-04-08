@@ -22,12 +22,6 @@ module Cucumber
         @background.feature = feature if @background
       end
 
-      def descend?(visitor)
-        visitor.included_by_tags?(self) &&
-        !visitor.excluded_by_tags?(self) &&
-        visitor.matches_scenario_names?(self)
-      end
-
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)

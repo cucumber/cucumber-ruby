@@ -56,15 +56,21 @@ module Cucumber
       end
 
       module Feature2
+        def has_tags?(tag_names)
+          tags.has_tags?(tag_names)
+        end
+        
         def build(filter)
-          background = bg.respond_to?(:build) ? bg.build : nil
-          Ast::Feature.new(
-            background, 
-            comment.build, 
-            tags.build, 
-            header.text_value, 
-            feature_elements.build(background, filter)
-          )
+          if(filter.nil? || feature_elements.accept?(filter))
+            background = bg.respond_to?(:build) ? bg.build : nil
+            Ast::Feature.new(
+              background, 
+              comment.build, 
+              tags.build, 
+              header.text_value, 
+              feature_elements.build(background, filter)
+            )
+          end
         end
       end
 
@@ -209,9 +215,16 @@ module Cucumber
           ts.elements.detect{|e| e.tag.line == line}
         end
 
+        def has_tags?(tags)
+          tag_names.detect{|tag_name| tags.index(tag_name)}
+        end
+
         def build
-          tag_names = ts.elements.map{|e| e.tag.tag_name.text_value}
           Ast::Tags.new(ts.line, tag_names)
+        end
+        
+        def tag_names
+          ts.elements.map{|e| e.tag.tag_name.text_value}
         end
       end
 
@@ -569,6 +582,10 @@ module Cucumber
       end
 
       module FeatureElements0
+        def accept?(filter)
+          filter.nil? || elements.empty? || elements.detect{|feature_element| filter.accept?(feature_element)}
+        end
+        
         def build(background, filter)
           elements.map do |feature_element|
             if filter.nil? || filter.accept?(feature_element)
@@ -654,6 +671,15 @@ module Cucumber
           scenario_keyword.line == line ||
           steps.at_line?(line) ||
           tags.at_line?(line)
+        end
+
+        def has_tags?(tag_names)
+          feature_tags = self.parent.parent.tags
+          tags.has_tags?(tag_names) || feature_tags.has_tags?(tag_names)
+        end
+
+        def matches_name?(name_to_match)
+          name.text_value == name_to_match
         end
 
         def build(background, filter)
@@ -783,6 +809,15 @@ module Cucumber
         def outline_at_line?(line)
           scenario_outline_keyword.line == line ||
           steps.at_line?(line)
+        end
+
+        def has_tags?(tag_names)
+          feature_tags = self.parent.parent.tags
+          tags.has_tags?(tag_names) || feature_tags.has_tags?(tag_names)
+        end
+
+        def matches_name?(name_to_match)
+          name.text_value == name_to_match
         end
 
         def build(background, filter)
@@ -1044,7 +1079,7 @@ module Cucumber
         end
 
         def build(filter, scenario_outline)
-          elements.map do |e| 
+          elements.map do |e|
             if(filter.nil? || filter.accept?(e) || filter.outline_at_line?(scenario_outline))
               e.build(filter, scenario_outline)
             end
@@ -1103,6 +1138,14 @@ module Cucumber
         def at_line?(line)
           examples_keyword.line == line ||
           table.at_line?(line)
+        end
+
+        def has_tags?(tag_names)
+          true
+        end
+
+        def outline_at_line?(line)
+          true
         end
 
         def build(filter, scenario_outline)

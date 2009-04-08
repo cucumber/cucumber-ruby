@@ -12,10 +12,6 @@ module Cucumber
       @keyword.jlength + @name.jlength
     end
 
-    def has_tags?(tags)
-      @tags.has_tags?(tags) || @feature.has_tags?(tags)
-    end
-
     def matches_scenario_names?(scenario_names)
       scenario_names.detect{|name| name == @name}
     end

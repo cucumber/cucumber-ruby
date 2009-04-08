@@ -10,16 +10,8 @@ module Cucumber
         visitor.visit_outline_table(@outline_table)
       end
 
-      def descend?(visitor)
-        @outline_table.descend?(visitor)
-      end
-
       def skip_invoke!
         @outline_table.skip_invoke!
-      end
-
-      def matches_scenario_names?(scenario_names)
-        scenario_names.detect{|name| name == @name}
       end
 
       def each_example_row(&proc)

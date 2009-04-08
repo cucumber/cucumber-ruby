@@ -19,16 +19,8 @@ module Cucumber
         visitor.visit_feature_name(@name)
         visitor.visit_background(@background) if @background
         @feature_elements.each do |feature_element|
-          visitor.visit_feature_element(feature_element) if feature_element.descend?(visitor)
+          visitor.visit_feature_element(feature_element)
         end
-      end
-
-      def descend?(visitor)
-        @feature_elements.detect{ |feature_element| feature_element.descend?(visitor) }
-      end
-
-      def has_tags?(tags)
-        @tags.has_tags?(tags)
       end
 
       def next_feature_element(feature_element, &proc)

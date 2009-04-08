@@ -10,16 +10,6 @@ module Cucumber
         @step_mother = step_mother
       end
 
-      def included_by_tags?(node)
-        tags = options[:include_tags] || []
-        tags.empty? || node.has_tags?(tags)
-      end
-
-      def excluded_by_tags?(node)
-        tags = options[:exclude_tags] || []
-        tags.any? && node.has_tags?(tags)
-      end
-
       def matches_scenario_names?(node)
         scenario_names = options[:scenario_names] || []
         scenario_names.empty? || node.matches_scenario_names?(scenario_names)

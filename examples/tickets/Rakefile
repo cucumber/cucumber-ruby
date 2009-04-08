@@ -2,7 +2,7 @@ $:.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'cucumber/rake/task'
 
 Cucumber::Rake::Task.new(:pretty) do |t|
-  t.cucumber_opts = "--format pretty"
+  t.cucumber_opts = "--format pretty -q"
 end
 
 Cucumber::Rake::Task.new(:html) do |t|
