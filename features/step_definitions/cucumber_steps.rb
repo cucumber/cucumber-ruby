@@ -1,14 +1,33 @@
 Given /^I am in (.*)$/ do |example_dir_relative_path|
-  @dir = examples_dir(example_dir_relative_path)
+  @current_dir = examples_dir(example_dir_relative_path)
+end
+
+Given /^a standard Cucumber project directory structure$/ do
+  @current_dir = working_dir
+  in_current_dir do
+    FileUtils.mkdir_p 'features/support'
+    FileUtils.mkdir 'features/step_definitions'
+  end
+end
+
+Given /^a file named "([^\"]*)" with:$/ do |file_name, file_content|
+  create_file(file_name, file_content)
+end
+
+Given /^the following profiles? (?:are|is) defined:$/ do |profiles|
+  create_file('cucumber.yml', profiles)
 end
 
 When /^I run cucumber (.*)$/ do |cmd|
-  @dir ||= self_test_dir
-  Dir.chdir(@dir) do
+  in_current_dir do
     @full_cmd = "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} --no-color #{cmd}"
     @out = `#{@full_cmd}`
     @status = $?.exitstatus
   end
+end
+
+When /^I run rake (.*)$/ do |args|
+  pending
 end
 
 Then /^it should (fail|pass) with$/ do |success, output|
