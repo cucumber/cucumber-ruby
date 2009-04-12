@@ -68,3 +68,7 @@ end
 
 Given /^another unused$/ do
 end
+
+After do
+  File.open File.dirname(__FILE__) + '/../../tmp/after.txt', 'w'
+end
