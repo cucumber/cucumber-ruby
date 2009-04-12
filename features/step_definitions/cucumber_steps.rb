@@ -18,33 +18,25 @@ Given /^the following profiles? (?:are|is) defined:$/ do |profiles|
   create_file('cucumber.yml', profiles)
 end
 
-When /^I run cucumber (.*)$/ do |cmd|
-  in_current_dir do
-    @full_cmd = "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} --no-color #{cmd}"
-    @out = `#{@full_cmd}`
-    @status = $?.exitstatus
-  end
+When /^I run cucumber (.*)$/ do |cucumber_opts|
+  run "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} --no-color #{cucumber_opts}"
 end
 
-When /^I run rake (.*)$/ do |args|
-  in_current_dir do
-    @full_cmd = "rake #{args}"
-    @out = `#{@full_cmd}`
-    @status = $?.exitstatus
-  end
+When /^I run rake (.*)$/ do |rake_opts|
+  run "rake #{rake_opts}"
 end
 
 Then /^it should (fail|pass) with$/ do |success, output|
-  @out.should == output
+  last_stdout.should == output
   if success == 'fail'
-    @status.should_not == 0
+    last_exit_status.should_not == 0
   else
-    @status.should == 0
+    last_exit_status.should == 0
   end
 end
 
 Then /^the output should contain$/ do |text|
-  @out.should include(text)
+  last_stdout.should include(text)
 end
 
 Then /^"(.*)" should contain$/ do |file, text|

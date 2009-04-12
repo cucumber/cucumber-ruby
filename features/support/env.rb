@@ -30,6 +30,7 @@ class CucumberWorld
   end
 
   private
+  attr_reader :last_exit_status, :last_stdout
 
   def create_file(file_name, file_content)
     file_content.gsub!("CUCUMBER_LIB", "'#{cucumber_lib_dir}'") # Some files, such as Rakefiles need to use the lib dir
@@ -40,6 +41,13 @@ class CucumberWorld
 
   def in_current_dir(&block)
     Dir.chdir(@current_dir, &block)
+  end
+
+  def run(command)
+    in_current_dir do
+      @last_stdout = `#{command}`
+      @last_exit_status = $?.exitstatus
+    end
   end
 
 end
