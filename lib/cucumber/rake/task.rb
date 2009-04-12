@@ -39,7 +39,7 @@ module Cucumber
       # Array of paths to specific features to run. 
       attr_accessor :feature_list
       # File pattern for finding features to run. Defaults to 
-      # 'features/**/*.feature'. Can be overriden by the FEATURE environment variable.
+      # 'features/**/*.feature'. Can be overridden by the FEATURE environment variable.
       attr_accessor :feature_pattern
       # Extra options to pass to the cucumber binary. Can be overridden by the CUCUMBER_OPTS environment variable.
       attr_accessor :cucumber_opts
@@ -47,6 +47,14 @@ module Cucumber
       attr_accessor :rcov
       # Extra options to pass to rcov
       attr_accessor :rcov_opts
+      # Define what profile to be used.  When used with cucumber_opts it is simply appended to it. Will be ignored when CUCUMBER_OPTS is used.
+      def profile=(profile)
+        @profile = profile
+        unless feature_list
+          self.feature_list = []
+        end
+      end
+      attr_reader :profile
 
       # Define a Rake
       def initialize(task_name = "features", desc = "Run Features with Cucumber")
@@ -75,7 +83,7 @@ module Cucumber
       def arguments_for_ruby_execution(task_args = nil) # :nodoc:
         lib_args     = ['"%s"' % libs.join(File::PATH_SEPARATOR)]
         cucumber_bin = ['"%s"' % binary]
-        cuc_opts     = [(ENV['CUCUMBER_OPTS'] || cucumber_opts)]
+        cuc_opts     = [(ENV['CUCUMBER_OPTS'] || cucumber_opts_with_profile)]
 
         step_files(task_args).each do |step_file|
           cuc_opts << '--require'
@@ -90,6 +98,10 @@ module Cucumber
         end
 
         args
+      end
+
+      def cucumber_opts_with_profile # :nodoc:
+        @profile ? "#{cucumber_opts} --profile #{@profile}" : cucumber_opts
       end
 
       def feature_files(task_args = nil) # :nodoc:

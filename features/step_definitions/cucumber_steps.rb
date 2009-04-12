@@ -26,13 +26,17 @@ When /^I run rake (.*)$/ do |rake_opts|
   run "rake #{rake_opts}"
 end
 
-Then /^it should (fail|pass) with$/ do |success, output|
-  last_stdout.should == output
+Then /^it should (fail|pass)$/ do |success|
   if success == 'fail'
     last_exit_status.should_not == 0
   else
     last_exit_status.should == 0
   end
+end
+
+Then /^it should (fail|pass) with$/ do |success, output|
+  last_stdout.should == output
+  Then("it should #{success}")
 end
 
 Then /^the output should contain$/ do |text|

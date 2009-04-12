@@ -1,11 +1,9 @@
-@pending
-
 Feature: Rake task
   In order to ease the development process
   As a developer and CI server administrator
   Cucumber features should be executable via Rake
 
-  Scenario: Run rake task with a defined profile
+  Background:
     Given a standard Cucumber project directory structure
     And a file named "features/missing_step_definitions.feature" with:
     """
@@ -17,9 +15,12 @@ Feature: Rake task
       Scenario: Unwanted
         Given I don't want this ran
     """
-    And the following profile is defined:
+
+
+  Scenario: rake task with a defined profile
+    Given the following profile is defined:
     """
-    foo: --quiet --no-color features/single_scenario_with_missing_step_definition.feature:3"
+    foo: --quiet --no-color features/missing_step_definitions.feature:3
     """
     And a file named "Rakefile" with:
     """
@@ -32,15 +33,82 @@ Feature: Rake task
     """
 
     When I run rake features
-    Then it should pass with
-      """
-      Feature: Sample
+    Then it should pass
+    And the output should contain
+    """
+    Feature: Sample
 
-        Scenario: Wanted
-          Given I want to run this
+      Scenario: Wanted
+        Given I want to run this
 
-      1 scenario
-      1 undefined step
+    1 scenario
+    1 undefined step
+    """
 
-      """
+  Scenario: rake task with a defined profile and cucumber_opts
+    Given the following profile is defined:
+    """
+    bar: features/missing_step_definitions.feature:3
+    """
+    And a file named "Rakefile" with:
+    """
+    $LOAD_PATH.unshift(CUCUMBER_LIB)
+    require 'cucumber/rake/task'
+
+    Cucumber::Rake::Task.new(:features) do |t|
+      t.profile = "bar"
+      t.cucumber_opts = "--quiet --no-color"
+    end
+    """
+
+    When I run rake features
+    Then it should pass
+    And the output should contain
+    """
+    Feature: Sample
+
+      Scenario: Wanted
+        Given I want to run this
+
+    1 scenario
+    1 undefined step
+    """
+
+  Scenario: rake task with a defined profile and feature list
+    Given a file named "features/the_one_i_want_to_run.feature" with:
+    """
+    Feature: Desired
+
+      Scenario: Something
+        Given this is missing
+    """
+   Given the following profile is defined:
+    """
+    baz: --quiet --no-color
+    """
+    And a file named "Rakefile" with:
+    """
+    $LOAD_PATH.unshift(CUCUMBER_LIB)
+    require 'cucumber/rake/task'
+
+    Cucumber::Rake::Task.new(:features) do |t|
+      t.profile = "baz"
+      t.feature_list = ['features/the_one_i_want_to_run.feature']
+    end
+    """
+
+    When I run rake features
+    Then it should pass
+    And the output should contain
+    """
+    Feature: Desired
+
+      Scenario: Something
+        Given this is missing
+
+    1 scenario
+    1 undefined step
+    """
+
+
 
