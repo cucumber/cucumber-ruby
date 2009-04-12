@@ -1,1 +1,1 @@
-default: --format progress features
+default: --format progress features --tags ~@pending
