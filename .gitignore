@@ -12,3 +12,4 @@ doc
 *.swp
 target
 *.tmproj
+examples/self_test/tmp

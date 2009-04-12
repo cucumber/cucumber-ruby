@@ -56,7 +56,7 @@ World do
   CucumberWorld.new
 end
 
-After do
+Before do
   FileUtils.rm_rf CucumberWorld.working_dir
   FileUtils.mkdir CucumberWorld.working_dir
 end
