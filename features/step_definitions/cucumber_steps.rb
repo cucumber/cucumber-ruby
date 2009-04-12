@@ -1,11 +1,10 @@
-Given /^I am in (.*)$/ do |dir|
-  @dir = dir
+Given /^I am in (.*)$/ do |example_dir_relative_path|
+  @dir = examples_dir(example_dir_relative_path)
 end
 
 When /^I run cucumber (.*)$/ do |cmd|
-  @dir ||= 'self_test'
-  full_dir ||= File.expand_path(File.dirname(__FILE__) + "/../../examples/#{@dir}")
-  Dir.chdir(full_dir) do
+  @dir ||= self_test_dir
+  Dir.chdir(@dir) do
     @full_cmd = "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} --no-color #{cmd}"
     @out = `#{@full_cmd}`
     @status = $?.exitstatus
