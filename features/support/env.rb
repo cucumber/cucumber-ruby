@@ -6,7 +6,7 @@ require 'forwardable'
 
 class CucumberWorld
   extend Forwardable
-  def_delegators CucumberWorld, :examples_dir, :self_test_dir, :working_dir
+  def_delegators CucumberWorld, :examples_dir, :self_test_dir, :working_dir, :cucumber_lib_dir
 
   def self.examples_dir(subdir=nil)
     @examples_dir ||= File.expand_path(File.join(File.dirname(__FILE__), '../../examples'))
@@ -21,6 +21,10 @@ class CucumberWorld
     @working_dir ||= examples_dir('self_test/tmp')
   end
 
+  def cucumber_lib_dir
+    @cucumber_lib_dir ||= File.expand_path(File.join(File.dirname(__FILE__), '../../lib'))
+  end
+
   def initialize
     @current_dir = self_test_dir
   end
@@ -28,6 +32,7 @@ class CucumberWorld
   private
 
   def create_file(file_name, file_content)
+    file_content.gsub!("CUCUMBER_LIB", "'#{cucumber_lib_dir}'") # Some files, such as Rakefiles need to use the lib dir
     in_current_dir do
       File.open(file_name, 'w') { |f| f << file_content }
     end
