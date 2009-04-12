@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'tempfile'
 require 'spec/expectations'
 require 'fileutils'
 require 'forwardable'
@@ -30,7 +31,7 @@ class CucumberWorld
   end
 
   private
-  attr_reader :last_exit_status, :last_stdout
+  attr_reader :last_exit_status, :last_stdout, :last_stderr
 
   def create_file(file_name, file_content)
     file_content.gsub!("CUCUMBER_LIB", "'#{cucumber_lib_dir}'") # Some files, such as Rakefiles need to use the lib dir
@@ -44,10 +45,13 @@ class CucumberWorld
   end
 
   def run(command)
+    stderr_file = Tempfile.new('cucumber')
+    stderr_file.close
     in_current_dir do
-      @last_stdout = `#{command}`
+      @last_stdout = `#{command} 2> #{stderr_file.path}`
       @last_exit_status = $?.exitstatus
     end
+    @last_stderr = IO.read(stderr_file.path)
   end
 
 end
