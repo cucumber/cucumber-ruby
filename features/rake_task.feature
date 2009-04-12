@@ -19,7 +19,7 @@ Feature: Rake task
     """
     And the following profile is defined:
     """
-    foo: -q features/single_scenario_with_missing_step_definition.feature:3"
+    foo: --quiet --no-color features/single_scenario_with_missing_step_definition.feature:3"
     """
     And a file named "Rakefile" with:
     """

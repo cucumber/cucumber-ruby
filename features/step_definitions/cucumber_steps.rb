@@ -27,7 +27,11 @@ When /^I run cucumber (.*)$/ do |cmd|
 end
 
 When /^I run rake (.*)$/ do |args|
-  pending
+  in_current_dir do
+    @full_cmd = "rake #{args}"
+    @out = `#{@full_cmd}`
+    @status = $?.exitstatus
+  end
 end
 
 Then /^it should (fail|pass) with$/ do |success, output|
