@@ -106,6 +106,22 @@ Then /^I should not see "([^\"]*)"$/ do |text|
 <% end -%>
 end
 
+Then /^I should see the field "([^\"]*)" contain "([^\"]*)"$/ do |field, value|
+  <% if framework == :rspec -%>
+    field_labeled(field).value.should =~ /#{value}/
+  <% else -%>
+    assert_not_nil field_labeled(field).value =~ /#{value}/
+  <% end -%>
+end
+
+Then /^I should not see the field "([^\"]*)" contain "([^\"]*)"$/ do |field, value|
+  <% if framework == :rspec -%>
+    field_labeled(field).value.should !~ /#{value}/
+  <% else -%>
+    assert_not_nil field_labeled(field).value !~ /#{value}/
+  <% end -%>
+end
+    
 Then /^the "([^\"]*)" checkbox should be checked$/ do |label|
 <% if framework == :rspec -%>
   field_labeled(label).should be_checked
