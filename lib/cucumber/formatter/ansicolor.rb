@@ -19,7 +19,7 @@ elsif Cucumber::WINDOWS && Cucumber::JRUBY
   end
 end
 
-Term::ANSIColor.coloring = false if !STDOUT.tty?
+Term::ANSIColor.coloring = false if !STDOUT.tty? and not ENV.has_key?("AUTOTEST")
 
 module Cucumber
   module Formatter
