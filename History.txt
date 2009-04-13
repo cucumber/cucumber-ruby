@@ -14,6 +14,7 @@ do this in a backwards compatible way, so if you have custom formatters for Cucu
 still work.
 
 === New features
+* Field value steps for Webrat (Jack Chen)
 * Added translation for Bulgarian (Krasimir Angelov)
 * Updated translation for Polish (#273 Grzegorz Marszałek)
 * Only a single World proc can be registered. World extension now happens by calling #World with ruby modules.

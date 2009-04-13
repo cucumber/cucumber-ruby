@@ -106,19 +106,19 @@ Then /^I should not see "([^\"]*)"$/ do |text|
 <% end -%>
 end
 
-Then /^I should see the field "([^\"]*)" contain "([^\"]*)"$/ do |field, value|
+Then /^the "([^\"]*)" field should contain "([^\"]*)"$/ do |field, value|
   <% if framework == :rspec -%>
     field_labeled(field).value.should =~ /#{value}/
   <% else -%>
-    assert_not_nil field_labeled(field).value =~ /#{value}/
+    assert_match(/#{value}/, field_labeled(field).value)
   <% end -%>
 end
 
-Then /^I should not see the field "([^\"]*)" contain "([^\"]*)"$/ do |field, value|
+Then /^the "([^\"]*)" field should not contain "([^\"]*)"$/ do |field, value|
   <% if framework == :rspec -%>
-    field_labeled(field).value.should !~ /#{value}/
+    field_labeled(field).value.should_not =~ /#{value}/
   <% else -%>
-    assert_not_nil field_labeled(field).value !~ /#{value}/
+    assert_no_match(/#{value}/, field_labeled(field).value)
   <% end -%>
 end
     
