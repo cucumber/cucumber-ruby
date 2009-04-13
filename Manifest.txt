@@ -188,6 +188,9 @@ examples/tickets/features/246.feature
 examples/tickets/features/248.feature
 examples/tickets/features/270/back.feature
 examples/tickets/features/270/back.steps.rb
+examples/tickets/features/279/py_string_indent.feature
+examples/tickets/features/279/py_string_indent.steps.rb
+examples/tickets/features/279/wrong.feature_
 examples/tickets/features/lib/eatting_machine.rb
 examples/tickets/features/lib/pantry.rb
 examples/tickets/features/scenario_outline.feature
