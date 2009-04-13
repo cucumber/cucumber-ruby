@@ -1,6 +1,10 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'yaml'
-require 'spec/runner/differs/default'
+begin
+  require 'spec/runner/differs/default' # RSpec >=1.2.4
+rescue ::LoadError
+  require 'spec/expectations/differs/default' # RSpec <=1.2.3
+end
 
 module Cucumber
 module Cli
