@@ -52,7 +52,7 @@ Then /^"(.*)" should match$/ do |file, text|
 end
 
 Then /^STDERR should match$/ do |text|
-  Then %{"#{@stderr.path}" should match}, text
+  last_stderr.should =~ /#{text}/
 end
 
 Then /^"(.*)" should exist$/ do |file|
