@@ -26,6 +26,7 @@ still work.
 * Support description string for Backgrounds (#271 Joseph Wilk)
 
 === Bugfixes
+* After methods not being executed when Background fails (#288 Luismi Cavallé)
 * Fixed dependency on internal files in rspec breaks cucumber w/ rspec-1.2.4 (#291 Aslak Hellesøy)
 * Fix color use when using autotest on Linux. (Hans de Graaff)
 * Fixed incorrect calculation of pystring indentation (#279 Eugene Naydanov)
