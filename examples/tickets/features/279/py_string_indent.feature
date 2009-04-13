@@ -19,3 +19,7 @@ Feature: pystring indentaion testcase
       """
 
       """
+    And STDERR should match
+      """
+      wrong.feature_:8:10: Parse error
+      """

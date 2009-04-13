@@ -1,3 +1,5 @@
+require 'tempfile'
+
 Given /^I am in (.*)$/ do |dir|
   @dir = dir
 end
@@ -5,8 +7,10 @@ end
 When /^I run cucumber (.*)$/ do |cmd|
   @dir ||= 'self_test'
   full_dir ||= File.expand_path(File.dirname(__FILE__) + "/../../examples/#{@dir}")
+  @stderr = Tempfile.new('cucumber')
+  @stderr.close
   Dir.chdir(full_dir) do
-    @full_cmd = "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} --no-color #{cmd}"
+    @full_cmd = "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} --no-color #{cmd} 2> #{@stderr.path}"
     @out = `#{@full_cmd}`
     @status = $?.exitstatus
   end
@@ -31,4 +35,8 @@ end
 
 Then /^"(.*)" should match$/ do |file, text|
   IO.read(file).should =~ Regexp.new(text)
+end
+
+Then /^STDERR should match$/ do |text|
+  Then %{"#{@stderr.path}" should match}, text
 end
