@@ -92,7 +92,7 @@ module Cucumber
 
       def enable_diffing
         if configuration.diff_enabled? && defined?(::Spec)
-          require 'spec/expectations/differs/default'
+          require 'spec/runner/differs/default'
           options = OpenStruct.new(:diff_format => :unified, :context_lines => 3)
           ::Spec::Expectations.differ = ::Spec::Expectations::Differs::Default.new(options)
         end
