@@ -56,15 +56,21 @@ module Cucumber
       end
 
       module Feature2
-        def build
-          background = bg.respond_to?(:build) ? bg.build : nil
-          Ast::Feature.new(
-            background, 
-            comment.build, 
-            tags.build, 
-            header.text_value, 
-            feature_elements.build(background)
-          )
+        def has_tags?(tag_names)
+          tags.has_tags?(tag_names)
+        end
+        
+        def build(filter)
+          if(filter.nil? || feature_elements.accept?(filter))
+            background = bg.respond_to?(:build) ? bg.build : nil
+            Ast::Feature.new(
+              background, 
+              comment.build, 
+              tags.build, 
+              header.text_value, 
+              feature_elements.build(background, filter)
+            )
+          end
         end
       end
 
@@ -205,9 +211,20 @@ module Cucumber
       end
 
       module Tags2
+        def at_line?(line)
+          ts.elements.detect{|e| e.tag.line == line}
+        end
+
+        def has_tags?(tags)
+          tag_names.detect{|tag_name| tags.index(tag_name)}
+        end
+
         def build
-          tag_names = ts.elements.map{|e| e.tag.tag_name.text_value}
           Ast::Tags.new(ts.line, tag_names)
+        end
+        
+        def tag_names
+          ts.elements.map{|e| e.tag.tag_name.text_value}
         end
       end
 
@@ -565,8 +582,16 @@ module Cucumber
       end
 
       module FeatureElements0
-        def build(background)
-          elements.map{|s| s.build(background)}
+        def accept?(filter)
+          filter.nil? || elements.empty? || elements.detect{|feature_element| filter.accept?(feature_element)}
+        end
+        
+        def build(background, filter)
+          elements.map do |feature_element|
+            if filter.nil? || filter.accept?(feature_element)
+              feature_element.build(background, filter)
+            end
+          end.compact
         end
       end
 
@@ -642,7 +667,22 @@ module Cucumber
       end
 
       module Scenario1
-        def build(background)
+        def at_line?(line)
+          scenario_keyword.line == line ||
+          steps.at_line?(line) ||
+          tags.at_line?(line)
+        end
+
+        def has_tags?(tag_names)
+          feature_tags = self.parent.parent.tags
+          tags.has_tags?(tag_names) || feature_tags.has_tags?(tag_names)
+        end
+
+        def matches_name?(name_to_match)
+          name.text_value == name_to_match
+        end
+
+        def build(background, filter)
           Ast::Scenario.new(
             background,
             comment.build, 
@@ -760,7 +800,27 @@ module Cucumber
       end
 
       module ScenarioOutline1
-        def build(background)
+        def at_line?(line)
+          outline_at_line?(line) ||
+          examples_sections.at_line?(line) ||
+          tags.at_line?(line)
+        end
+
+        def outline_at_line?(line)
+          scenario_outline_keyword.line == line ||
+          steps.at_line?(line)
+        end
+
+        def has_tags?(tag_names)
+          feature_tags = self.parent.parent.tags
+          tags.has_tags?(tag_names) || feature_tags.has_tags?(tag_names)
+        end
+
+        def matches_name?(name_to_match)
+          name.text_value == name_to_match
+        end
+
+        def build(background, filter)
           Ast::ScenarioOutline.new(
             background,
             comment.build, 
@@ -769,7 +829,7 @@ module Cucumber
             scenario_outline_keyword.text_value, 
             name.text_value, 
             steps.build, 
-            examples_sections.build
+            examples_sections.build(filter, self)
           )
         end
       end
@@ -845,6 +905,10 @@ module Cucumber
       end
 
       module Steps0
+        def at_line?(line)
+          elements.detect{|e| e.at_line?(line)}
+        end
+
         def build
           elements.map{|e| e.build}
         end
@@ -902,6 +966,11 @@ module Cucumber
       end
 
       module Step1
+        def at_line?(line)
+          step_keyword.line == line ||
+          (multi.respond_to?(:at_line?) && multi.at_line?(line))
+        end
+
         def build
           if multi.respond_to?(:build)
             Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value.strip, multi.build)
@@ -1005,8 +1074,16 @@ module Cucumber
       end
 
       module ExamplesSections0
-        def build
-          elements.map{|e| e.build}
+        def at_line?(line)
+          elements.detect { |e| e.at_line?(line) }
+        end
+
+        def build(filter, scenario_outline)
+          elements.map do |e|
+            if(filter.nil? || filter.accept?(e) || filter.outline_at_line?(scenario_outline))
+              e.build(filter, scenario_outline)
+            end
+          end.compact
         end
       end
 
@@ -1058,8 +1135,21 @@ module Cucumber
       end
 
       module Examples1
-        def build
-          [examples_keyword.line, examples_keyword.text_value, name.text_value, table.raw]
+        def at_line?(line)
+          examples_keyword.line == line ||
+          table.at_line?(line)
+        end
+
+        def has_tags?(tag_names)
+          true
+        end
+
+        def outline_at_line?(line)
+          true
+        end
+
+        def build(filter, scenario_outline)
+          [examples_keyword.line, examples_keyword.text_value, name.text_value, table.raw(filter, scenario_outline)]
         end
       end
 
@@ -1233,6 +1323,10 @@ module Cucumber
       end
 
       module PyString2
+        def at_line?(line)
+          line >= open_py_string.line && line <= close_py_string.line
+        end
+
         def build
           Ast::PyString.new(open_py_string.line, close_py_string.line, s.text_value, open_py_string.indentation)
         end
@@ -1307,7 +1401,7 @@ module Cucumber
       end
 
       module OpenPyString0
-        def white
+        def indent
           elements[0]
         end
 
@@ -1318,11 +1412,11 @@ module Cucumber
 
       module OpenPyString1
         def indentation
-          white.text_value.length
+          indent.text_value.length
         end
 
         def line
-          white.line
+          indent.line
         end
       end
 
@@ -1335,32 +1429,41 @@ module Cucumber
         end
 
         i0, s0 = index, []
-        r1 = _nt_white
+        s1, i1 = [], index
+        loop do
+          r2 = _nt_space
+          if r2
+            s1 << r2
+          else
+            break
+          end
+        end
+        r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
         s0 << r1
         if r1
           if input.index('"""', index) == index
-            r2 = instantiate_node(SyntaxNode,input, index...(index + 3))
+            r3 = instantiate_node(SyntaxNode,input, index...(index + 3))
             @index += 3
           else
             terminal_parse_failure('"""')
-            r2 = nil
+            r3 = nil
           end
-          s0 << r2
-          if r2
-            s3, i3 = [], index
+          s0 << r3
+          if r3
+            s4, i4 = [], index
             loop do
-              r4 = _nt_space
-              if r4
-                s3 << r4
+              r5 = _nt_space
+              if r5
+                s4 << r5
               else
                 break
               end
             end
-            r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
-            s0 << r3
-            if r3
-              r5 = _nt_eol
-              s0 << r5
+            r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
+            s0 << r4
+            if r4
+              r6 = _nt_eol
+              s0 << r6
             end
           end
         end

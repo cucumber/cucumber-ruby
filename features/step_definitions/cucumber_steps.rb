@@ -50,3 +50,11 @@ end
 Then /^"(.*)" should match$/ do |file, text|
   IO.read(file).should =~ Regexp.new(text)
 end
+
+Then /^STDERR should match$/ do |text|
+  Then %{"#{@stderr.path}" should match}, text
+end
+
+Then /^"(.*)" should exist$/ do |file|
+  File.exists?(file).should be_true
+end

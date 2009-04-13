@@ -25,9 +25,9 @@ module Cucumber
             [:step_invocation, 3, "Given", "a passing step"], # From the background
             [:step_invocation, 10, "Given", "a passing step with an inline arg:",
               [:table, 
-                [:row, 
+                [:row, -1,
                   [:cell, "1"], [:cell, "22"], [:cell, "333"]], 
-                [:row, 
+                [:row, -1,
                   [:cell, "4444"], [:cell, "55555"], [:cell, "666666"]]]], 
             [:step_invocation, 11, "Given", "a happy step with an inline arg:", 
               [:py_string, "\n I like\nCucumber sandwich\n"]], 

@@ -13,19 +13,11 @@ module Cucumber
       end
 
       def parse_file(file)
-        @parser.parse_file(File.dirname(__FILE__) + "/../treetop_parser/" + file)
+        @parser.parse_file(File.dirname(__FILE__) + "/../treetop_parser/" + file, {})
       end
 
       def parse_example_file(file)
-        @parser.parse_file(File.dirname(__FILE__) + "/../../../examples/" + file)
-      end
-
-      describe "Header" do
-        it "should parse Feature with blurb" do
-          parse(%{Feature: hi
-with blurb
-})
-        end
+        @parser.parse_file(File.dirname(__FILE__) + "/../../../examples/" + file, {})
       end
 
       describe "Comments" do
@@ -35,23 +27,6 @@ Feature: hi
 }).to_sexp.should ==
           [:feature, nil, "Feature: hi\n",
             [:comment, "# My comment\n"]]
-        end
-        
-        it "should parse a comment within a scenario" do
-          pending "Store comment in node and output it in pretty formatter"
-          parse(%{Feature: Hi
-  Scenario: Hello
-    Given foo
-    # When bar
-    Then baz
-}).to_sexp.should == 
-          [:feature, nil, "Feature: Hi", 
-            [:scenario, 2, "Scenario:", "Hello", 
-              [:step, 3, "Given", "foo"],
-              [:comment, "# When bar\n"], 
-              [:step, 5, "Then", "baz"] 
-            ]
-          ]
         end
 
         it "should parse a file with only a multiline comment" do
@@ -149,7 +124,7 @@ Given I have a table
             [:scenario, 2, "Scenario:", "Hello",
               [:step_invocation, 3, "Given", "I have a table",
                 [:table,
-                  [:row,
+                  [:row, 4,
                     [:cell, "a"],
                     [:cell, "b"]]]]]]
         end
@@ -187,9 +162,10 @@ Examples:
               [:step, 3, "Given", "a <what> cucumber"],
               [:examples, "Examples:", "",
                 [:table, 
-                  [:row, 
+                  [:row, 5,
                     [:cell, "what"]], 
-                    [:row, [:cell, "green"]]]]]]
+                  [:row, 6,
+                    [:cell, "green"]]]]]]
         end
 
         it "should have line numbered steps with inline table" do
@@ -207,15 +183,15 @@ Examples:
             [:scenario_outline, "Scenario Outline:", "Hello",
               [:step, 4, "Given", "I have a table",
                 [:table, 
-                  [:row, 
+                  [:row, 6,
                     [:cell, "<a>"], 
                     [:cell, "<b>"]]]],
             [:examples, "Examples:", "",
               [:table,
-                [:row, 
+                [:row, 8,
                   [:cell, "a"], 
                   [:cell, "b"]],
-                [:row, 
+                [:row, 9,
                   [:cell, "c"], 
                   [:cell, "d"]]]]]]
         end
@@ -237,22 +213,17 @@ Examples:
             [:scenario_outline, "Scenario Outline:", "Hello",
               [:step, 5, "Given", "I have a table",
                 [:table,
-                  [:row,
+                  [:row, 6, 
                     [:cell, "1"],
                     [:cell, "2"]]]],
               [:examples, "Examples:", "",
                 [:table,
-                  [:row,
+                  [:row, 9,
                     [:cell, "x"],
                     [:cell, "y"]],
-                  [:row,
+                  [:row, 10,
                     [:cell, "5"],
                     [:cell, "6"]]]]]]
-        end
-
-        it "should set line numbers on feature" do
-          feature = parse_file("empty_feature.feature:11:12")
-          feature.instance_variable_get('@lines').should == [11, 12]
         end
       end
 
@@ -275,6 +246,37 @@ Examples:
 
         it "should parse scenario_outline" do
           parse_file("scenario_outline.feature")
+        end
+      end
+
+      describe "Filtering" do
+        it "should filter outline tables" do
+          f = parse_example_file('self_test/features/outline_sample.feature:12')
+          f.to_sexp.should ==
+          [:feature,
+           "./spec/cucumber/parser/../../../examples/self_test/features/outline_sample.feature",
+           "Feature: Outline Sample",
+           [:scenario_outline,
+            "Scenario Outline:",
+            "Test state",
+            [:step, 6, "Given", "<state> without a table"],
+            [:step, 7, "Given", "<other_state> without a table"],
+            [:examples,
+             "Examples:",
+             "Rainbow colours",
+             [:table,
+              [:row, 9, [:cell, "state"], [:cell, "other_state"]],
+#              [:row, 10, [:cell, "missing"], [:cell, "passing"]],
+#              [:row, 11, [:cell, "passing"], [:cell, "passing"]],
+              [:row, 12, [:cell, "failing"], [:cell, "passing"]]]]
+            # ,
+            # [:examples,
+            #  "Examples:",
+            #  "Only passing",
+            #  [:table,
+            #   [:row, 14, [:cell, "state"], [:cell, "other_state"]],
+            #   [:row, 15, [:cell, "passing"], [:cell, "passing"]]]]]
+              ]]
         end
       end
     end

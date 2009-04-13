@@ -102,7 +102,7 @@ module Cucumber
       def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         @status = status
         @builder.li(:id => @step_id, :class => status) do
-          super
+          super(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         end
       end
 

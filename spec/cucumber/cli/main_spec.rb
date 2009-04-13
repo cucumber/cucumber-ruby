@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'yaml'
-require 'spec/expectations/differs/default'
+require 'spec/runner/differs/default'
 
 module Cucumber
 module Cli

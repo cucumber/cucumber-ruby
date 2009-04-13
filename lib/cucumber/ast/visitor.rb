@@ -8,25 +8,6 @@ module Cucumber
       def initialize(step_mother)
         @options = {}
         @step_mother = step_mother
-        @current_feature_lines = []
-      end
-
-      def current_feature_lines=(lines)
-        @current_feature_lines = lines
-      end
-
-      def matches_lines?(node)
-        @current_feature_lines.empty? || node.matches_lines?(@current_feature_lines)
-      end
-
-      def included_by_tags?(node)
-        tags = options[:include_tags] || []
-        tags.empty? || node.has_tags?(tags)
-      end
-
-      def excluded_by_tags?(node)
-        tags = options[:exclude_tags] || []
-        tags.any? && node.has_tags?(tags)
       end
 
       def matches_scenario_names?(node)

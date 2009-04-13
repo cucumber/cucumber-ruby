@@ -41,10 +41,6 @@ module Cucumber
         @steps[i-1]
       end
 
-      def matches_lines?(lines)
-        @steps.detect {|step| step.matches_lines?(lines)}
-      end
-
       def empty?
         @steps.empty?
       end

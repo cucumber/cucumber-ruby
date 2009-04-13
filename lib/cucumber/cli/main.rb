@@ -52,8 +52,11 @@ module Cucumber
 
         verbose_log("Features:")
         configuration.feature_files.each do |f|
-          features.add_feature(parser.parse_file(f))
-          verbose_log("  * #{f}")
+          feature = parser.parse_file(f, configuration.options)
+          if feature
+            features.add_feature(feature)
+            verbose_log("  * #{f}")
+          end
         end
         verbose_log("\n"*2)
         features
@@ -89,7 +92,7 @@ module Cucumber
 
       def enable_diffing
         if configuration.diff_enabled? && defined?(::Spec)
-          require 'spec/expectations/differs/default'
+          require 'spec/runner/differs/default'
           options = OpenStruct.new(:diff_format => :unified, :context_lines => 3)
           ::Spec::Expectations.differ = ::Spec::Expectations::Differs::Default.new(options)
         end

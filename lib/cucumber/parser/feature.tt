@@ -20,24 +20,41 @@ module Cucumber
         bg:background? 
         feature_elements
         comment? {
-          def build
-            background = bg.respond_to?(:build) ? bg.build : nil
-            Ast::Feature.new(
-              background, 
-              comment.build, 
-              tags.build, 
-              header.text_value, 
-              feature_elements.build(background)
-            )
+          def has_tags?(tag_names)
+            tags.has_tags?(tag_names)
+          end
+          
+          def build(filter)
+            if(filter.nil? || feature_elements.accept?(filter))
+              background = bg.respond_to?(:build) ? bg.build : nil
+              Ast::Feature.new(
+                background, 
+                comment.build, 
+                tags.build, 
+                header.text_value, 
+                feature_elements.build(background, filter)
+              )
+            end
           end
         }
       end
 
       rule tags
         white ts:(tag (space/eol)+)* {
+          def at_line?(line)
+            ts.elements.detect{|e| e.tag.line == line}
+          end
+
+          def has_tags?(tags)
+            tag_names.detect{|tag_name| tags.index(tag_name)}
+          end
+
           def build
-            tag_names = ts.elements.map{|e| e.tag.tag_name.text_value}
             Ast::Tags.new(ts.line, tag_names)
+          end
+          
+          def tag_names
+            ts.elements.map{|e| e.tag.tag_name.text_value}
           end
         }
       end
@@ -74,15 +91,38 @@ module Cucumber
 
       rule feature_elements
         (scenario / scenario_outline)* {
-          def build(background)
-            elements.map{|s| s.build(background)}
+          def accept?(filter)
+            filter.nil? || elements.empty? || elements.detect{|feature_element| filter.accept?(feature_element)}
+          end
+          
+          def build(background, filter)
+            elements.map do |feature_element|
+              if filter.nil? || filter.accept?(feature_element)
+                feature_element.build(background, filter)
+              end
+            end.compact
           end
         }
       end
 
       rule scenario
         comment tags white scenario_keyword space* name:line_to_eol white steps white {
-          def build(background)
+          def at_line?(line)
+            scenario_keyword.line == line ||
+            steps.at_line?(line) ||
+            tags.at_line?(line)
+          end
+
+          def has_tags?(tag_names)
+            feature_tags = self.parent.parent.tags
+            tags.has_tags?(tag_names) || feature_tags.has_tags?(tag_names)
+          end
+
+          def matches_name?(name_to_match)
+            name.text_value == name_to_match
+          end
+
+          def build(background, filter)
             Ast::Scenario.new(
               background,
               comment.build, 
@@ -98,7 +138,27 @@ module Cucumber
 
       rule scenario_outline
         comment tags white scenario_outline_keyword space* name:line_to_eol white steps examples_sections white {
-          def build(background)
+          def at_line?(line)
+            outline_at_line?(line) ||
+            examples_sections.at_line?(line) ||
+            tags.at_line?(line)
+          end
+
+          def outline_at_line?(line)
+            scenario_outline_keyword.line == line ||
+            steps.at_line?(line)
+          end
+
+          def has_tags?(tag_names)
+            feature_tags = self.parent.parent.tags
+            tags.has_tags?(tag_names) || feature_tags.has_tags?(tag_names)
+          end
+
+          def matches_name?(name_to_match)
+            name.text_value == name_to_match
+          end
+
+          def build(background, filter)
             Ast::ScenarioOutline.new(
               background,
               comment.build, 
@@ -107,7 +167,7 @@ module Cucumber
               scenario_outline_keyword.text_value, 
               name.text_value, 
               steps.build, 
-              examples_sections.build
+              examples_sections.build(filter, self)
             )
           end
         }
@@ -115,6 +175,10 @@ module Cucumber
 
       rule steps
         step* {
+          def at_line?(line)
+            elements.detect{|e| e.at_line?(line)}
+          end
+
           def build
             elements.map{|e| e.build}
           end
@@ -123,6 +187,11 @@ module Cucumber
 
       rule step
         comment space* step_keyword keyword_space name:line_to_eol (eol+ / eof) multi:multiline_arg? white {
+          def at_line?(line)
+            step_keyword.line == line ||
+            (multi.respond_to?(:at_line?) && multi.at_line?(line))
+          end
+
           def build
             if multi.respond_to?(:build)
               Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value.strip, multi.build)
@@ -135,16 +204,37 @@ module Cucumber
 
       rule examples_sections
         examples* {
-          def build
-            elements.map{|e| e.build}
+          def at_line?(line)
+            elements.detect { |e| e.at_line?(line) }
+          end
+
+          def build(filter, scenario_outline)
+            elements.map do |e|
+              if(filter.nil? || filter.accept?(e) || filter.outline_at_line?(scenario_outline))
+                e.build(filter, scenario_outline)
+              end
+            end.compact
           end
         }
       end
 
       rule examples
         space* examples_keyword space* name:line_to_eol? eol table white {
-          def build
-            [examples_keyword.line, examples_keyword.text_value, name.text_value, table.raw]
+          def at_line?(line)
+            examples_keyword.line == line ||
+            table.at_line?(line)
+          end
+
+          def has_tags?(tag_names)
+            true
+          end
+
+          def outline_at_line?(line)
+            true
+          end
+
+          def build(filter, scenario_outline)
+            [examples_keyword.line, examples_keyword.text_value, name.text_value, table.raw(filter, scenario_outline)]
           end
         }
       end
@@ -159,6 +249,10 @@ module Cucumber
 
       rule py_string
         open_py_string s:(!close_py_string .)* close_py_string {
+          def at_line?(line)
+            line >= open_py_string.line && line <= close_py_string.line
+          end
+
           def build
             Ast::PyString.new(open_py_string.line, close_py_string.line, s.text_value, open_py_string.indentation)
           end
@@ -166,13 +260,13 @@ module Cucumber
       end
 
       rule open_py_string
-        white '"""' space* eol {
+        indent:space* '"""' space* eol {
           def indentation
-            white.text_value.length
+            indent.text_value.length
           end
 
           def line
-            white.line
+            indent.line
           end
         }
       end

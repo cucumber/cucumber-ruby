@@ -24,9 +24,10 @@ module Cucumber
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_background_name(@keyword, @name, file_colon_line(@line), source_indent(text_length))
-        visitor.step_mother.before_and_after(self)
+        visitor.step_mother.before(self)
         visitor.visit_steps(@step_invocations)
         @failed = @step_invocations.detect{|step_invocation| step_invocation.exception}
+        visitor.step_mother.after(self) if @failed
       end
 
       def failed?

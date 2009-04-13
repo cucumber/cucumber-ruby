@@ -197,16 +197,22 @@ module Cucumber
     end
 
     def before_and_after(scenario, skip=false)
-      unless current_world || skip
+      before(scenario) unless skip
+      yield
+      after(scenario) unless skip
+      scenario_visited(scenario)
+    end
+    
+    def before(scenario)
+      unless current_world
         new_world!
         execute_before(scenario)
       end
-      if block_given?
-        yield
-        execute_after(scenario) unless skip
-        nil_world!
-        scenario_visited(scenario)
-      end
+    end
+    
+    def after(scenario)
+      execute_after(scenario)
+      nil_world!
     end
 
     private

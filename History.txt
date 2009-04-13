@@ -6,7 +6,8 @@ several times, passing a Proc and extending the world object of the previous one
 The problem was that there was no nice way to ensure the order in which these procs were called, which
 led to some unexpected situations. In this release you can only register a single World proc. If you
 want to extend a world with certain modules, you simply call the #World method with the module(s)
-you wish to extend the World with. The Sinatra example illustrates how to do this.
+you wish to extend the World with. The Sinatra example illustrates how to do this. Also check out
+the RDoc for Cucumber::StepMother#World.
 
 The Visitor API (which is used for formatters) has also changed slightly. However, we have tried to
 do this in a backwards compatible way, so if you have custom formatters for Cucumber 0.2 they should
@@ -14,6 +15,9 @@ still work.
 
 === New features
 * Rake task supports cucumber.yml profiles (#187 Ben Mabey)
+* Field value steps for Webrat (Jack Chen)
+* Added translation for Bulgarian (Krasimir Angelov)
+* Updated translation for Polish (#273 Grzegorz Marszałek)
 * Only a single World proc can be registered. World extension now happens by calling #World with ruby modules.
 * Portuguese uses Funcionalidade in stead of Característica and accented words are aliased with unaccented ones (Alexandre da Silva and Felipe Coury).
 * The usage formatter also prints unused step definitions (Aslak Hellesøy)
@@ -23,6 +27,14 @@ still work.
 * Support description string for Backgrounds (#271 Joseph Wilk)
 
 === Bugfixes
+* After methods not being executed when Background fails (#288 Luismi Cavallé)
+* Fixed dependency on internal files in rspec breaks cucumber w/ rspec-1.2.4 (#291 Aslak Hellesøy)
+* Fix color use when using autotest on Linux. (Hans de Graaff)
+* Fixed incorrect calculation of pystring indentation (#279 Eugene Naydanov)
+* Fixed --format html leads to an error (#252 Aslak Hellesøy)
+* Fixed Background runs twice (#255 Aslak Hellesøy)
+* Fixed Background Transactions and :xx (#270 Aslak Hellesøy)
+* Fixed Autospec failing with cucumber 0.2 (#254 Aslak Hellesøy)
 * Sibling file detecting not working (#278 Aslak Hellesøy)
 
 === Removed/changed features

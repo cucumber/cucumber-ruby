@@ -85,10 +85,6 @@ module Cucumber
         end
       end
 
-      def matches_lines?(lines)
-        @step.matches_lines?(lines)
-      end
-
       def text_length
         @step.text_length
       end

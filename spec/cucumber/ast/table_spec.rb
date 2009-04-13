@@ -155,12 +155,12 @@ module Cucumber
       it "should convert to sexp" do
         @table.to_sexp.should == 
           [:table, 
-            [:row, 
+            [:row, -1,
               [:cell, "one"], 
               [:cell, "four"],
               [:cell, "seven"]
             ],
-            [:row, 
+            [:row, -1,
               [:cell, "4444"], 
               [:cell, "55555"],
               [:cell, "666666"]]]

@@ -21,6 +21,14 @@ examples/i18n/ar/Rakefile
 examples/i18n/ar/features/addition.feature
 examples/i18n/ar/features/step_definitons/calculator_steps.rb
 examples/i18n/ar/lib/calculator.rb
+examples/i18n/bg/Rakefile
+examples/i18n/bg/features/addition.feature
+examples/i18n/bg/features/consecutive_calculations.feature
+examples/i18n/bg/features/division.feature
+examples/i18n/bg/features/step_definitons/calculator_steps.rb
+examples/i18n/bg/features/support/env.rb
+examples/i18n/bg/features/support/world.rb
+examples/i18n/bg/lib/calculator.rb
 examples/i18n/da/Rakefile
 examples/i18n/da/features/step_definitons/kalkulator_steps.rb
 examples/i18n/da/features/summering.feature
@@ -158,6 +166,7 @@ examples/self_test/features/support/env.rb
 examples/self_test/features/support/tag_count_formatter.rb
 examples/self_test/features/tons_of_cukes.feature
 examples/self_test/features/undefined_multiline_args.feature
+examples/self_test/tmp/after.txt
 examples/sinatra/Rakefile
 examples/sinatra/app.rb
 examples/sinatra/features/add.feature
@@ -169,7 +178,6 @@ examples/test_unit/Rakefile
 examples/test_unit/features/step_definitions/test_unit_steps.rb
 examples/test_unit/features/test_unit.feature
 examples/tickets/Rakefile
-examples/tickets/cucumber.yml
 examples/tickets/features/172.feature
 examples/tickets/features/177/1.feature
 examples/tickets/features/177/2.feature
@@ -179,6 +187,11 @@ examples/tickets/features/236.feature
 examples/tickets/features/241.feature
 examples/tickets/features/246.feature
 examples/tickets/features/248.feature
+examples/tickets/features/270/back.feature
+examples/tickets/features/270/back.steps.rb
+examples/tickets/features/279/py_string_indent.feature
+examples/tickets/features/279/py_string_indent.steps.rb
+examples/tickets/features/279/wrong.feature_
 examples/tickets/features/lib/eatting_machine.rb
 examples/tickets/features/lib/pantry.rb
 examples/tickets/features/scenario_outline.feature
@@ -197,6 +210,7 @@ features/cucumber_cli.feature
 features/cucumber_cli_diff_disabled.feature
 features/cucumber_cli_outlines.feature
 features/custom_formatter.feature
+features/rake_task.feature
 features/report_called_undefined_steps.feature
 features/snippet.feature
 features/step_definitions/cucumber_steps.rb
@@ -259,7 +273,6 @@ lib/cucumber/formatter/usage.rb
 lib/cucumber/formatters/unicode.rb
 lib/cucumber/languages.yml
 lib/cucumber/parser.rb
-lib/cucumber/parser/basic.rb
 lib/cucumber/parser/feature.rb
 lib/cucumber/parser/feature.tt
 lib/cucumber/parser/i18n.tt
@@ -295,7 +308,6 @@ spec/cucumber/ast/scenario_spec.rb
 spec/cucumber/ast/step_collection_spec.rb
 spec/cucumber/ast/step_spec.rb
 spec/cucumber/ast/table_spec.rb
-spec/cucumber/ast/tags_spec.rb
 spec/cucumber/broadcaster_spec.rb
 spec/cucumber/cli/configuration_spec.rb
 spec/cucumber/cli/main_spec.rb

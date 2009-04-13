@@ -4,7 +4,6 @@ require 'spec/expectations'
 require 'fileutils'
 require 'forwardable'
 
-
 class CucumberWorld
   extend Forwardable
   def_delegators CucumberWorld, :examples_dir, :self_test_dir, :working_dir, :cucumber_lib_dir

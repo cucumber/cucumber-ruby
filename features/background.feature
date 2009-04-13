@@ -16,7 +16,7 @@ Feature: backgrounds
         Then I should have '10' cukes
 
     1 scenario
-    3 passed steps
+    2 passed steps
     
     """
   
@@ -93,6 +93,7 @@ Feature: backgrounds
     5 skipped steps
 
     """
+    And "examples/self_test/tmp/after.txt" should exist
 
   Scenario: run a feature with scenario outlines that has a background that fails
     When I run cucumber -q features/background/scenario_outline_failing_background.feature --require features

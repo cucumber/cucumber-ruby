@@ -25,7 +25,7 @@ Given /^call step "(.*)"$/ do |step|
 end
 
 Given /^'(.+)' cukes$/ do |cukes|
-  # raise "We already have #{@cukes} cukes!" if @cukes
+  raise "We already have #{@cukes} cukes!" if @cukes
   @cukes = cukes
 end
 Then /^I should have '(.+)' cukes$/ do |cukes|
@@ -52,7 +52,7 @@ Given /^multiline string$/ do |string|
 end
 
 Then /^the table should be$/ do |table|
-  @table.to_sexp.should == table.to_sexp
+  @table.raw.should == table.raw
 end
 
 Then /^the multiline string should be$/ do |string|
@@ -67,4 +67,8 @@ Given /^unused$/ do
 end
 
 Given /^another unused$/ do
+end
+
+After do
+  File.open File.dirname(__FILE__) + '/../../tmp/after.txt', 'w'
 end
