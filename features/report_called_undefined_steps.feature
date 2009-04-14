@@ -23,7 +23,7 @@ Feature: Cucumber command line
       2 scenarios
       2 undefined steps
 
-      You can implement step definitions for missing steps with these snippets:
+      You can implement step definitions for undefined steps with these snippets:
 
       Given /^this does not exist$/ do
         pending

@@ -129,7 +129,8 @@ in 2 places:
 spec/cucumber/step_mother_spec.rb:123:in `World'
 spec/cucumber/step_mother_spec.rb:125:in `World'
 
-Use Ruby modules instead to extend your worlds. See the #World RDoc.
+Use Ruby modules instead to extend your worlds. See the Cucumber::StepMother#World RDoc
+or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
 
 })
     end

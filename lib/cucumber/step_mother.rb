@@ -57,7 +57,8 @@ module Cucumber
       message << "in 2 places:\n\n"
       message << first_proc.backtrace_line('World') << "\n"
       message << second_proc.backtrace_line('World') << "\n\n"
-      message << "Use Ruby modules instead to extend your worlds. See the #World RDoc.\n\n"
+      message << "Use Ruby modules instead to extend your worlds. See the Cucumber::StepMother#World RDoc\n"
+      message << "or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.\n\n"
       super(message)
     end
   end

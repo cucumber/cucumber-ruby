@@ -79,7 +79,7 @@ module Cucumber
           snippet
         end.compact.uniq
 
-        text = "\nYou can implement step definitions for missing steps with these snippets:\n\n"
+        text = "\nYou can implement step definitions for undefined steps with these snippets:\n\n"
         text += snippets.join("\n\n")
 
         @io.puts format_string(text, :undefined)
