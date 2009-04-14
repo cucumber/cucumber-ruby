@@ -166,7 +166,6 @@ examples/self_test/features/support/env.rb
 examples/self_test/features/support/tag_count_formatter.rb
 examples/self_test/features/tons_of_cukes.feature
 examples/self_test/features/undefined_multiline_args.feature
-examples/self_test/tmp/after.txt
 examples/sinatra/Rakefile
 examples/sinatra/app.rb
 examples/sinatra/features/add.feature
