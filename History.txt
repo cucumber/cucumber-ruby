@@ -13,6 +13,10 @@ The Visitor API (which is used for formatters) has also changed slightly. Howeve
 do this in a backwards compatible way, so if you have custom formatters for Cucumber 0.2 they should
 still work.
 
+We are also deprecating the step_list, step_pattern, feature_list, and feature_pattern accessors on
+Cucumber::Rake::Task.  For complex settings please rely on cucumber profiles in your rake tasks:
+http://wiki.github.com/aslakhellesoy/cucumber/using-rake#profiles
+
 === New features
 * Rake task supports cucumber.yml profiles (#187 Ben Mabey)
 * Field value steps for Webrat (Jack Chen)

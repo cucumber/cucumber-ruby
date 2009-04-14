@@ -27,20 +27,31 @@ module Cucumber
     class Task
       LIB    = File.expand_path(File.dirname(__FILE__) + '/../..') # :nodoc:
 
+      # TODO: remove depreated accessors for 0.4.0
+      def self.deprecate_accessor(attribute) # :nodoc:
+        attr_reader attribute
+        class_eval <<-EOF, __FILE__, __LINE__ + 1
+          def #{attribute}=(value)
+            @#{attribute} = value
+            warn("Cucumber::Rake::Task##{attribute} is deprecated and will be removed in 0.4.0.  Please use profiles for complex settings: http://wiki.github.com/aslakhellesoy/cucumber/using-rake#profiles")
+          end
+        EOF
+      end
+
       # Directories to add to the Ruby $LOAD_PATH
       attr_accessor :libs
       # Name of the cucumber binary to use for running features. Defaults to Cucumber::BINARY
       attr_accessor :binary
       # Array of paths to specific step definition files to use
-      attr_accessor :step_list
+      deprecate_accessor :step_list
       # File pattern for finding step definitions. Defaults to 
       # 'features/**/*.rb'.
-      attr_accessor :step_pattern
+      deprecate_accessor :step_pattern
       # Array of paths to specific features to run. 
-      attr_accessor :feature_list
+      deprecate_accessor :feature_list
       # File pattern for finding features to run. Defaults to 
       # 'features/**/*.feature'. Can be overridden by the FEATURE environment variable.
-      attr_accessor :feature_pattern
+      deprecate_accessor :feature_pattern
       # Extra options to pass to the cucumber binary. Can be overridden by the CUCUMBER_OPTS environment variable.
       attr_accessor :cucumber_opts
       # Run cucumber with RCov?
@@ -51,7 +62,7 @@ module Cucumber
       def profile=(profile)
         @profile = profile
         unless feature_list
-          self.feature_list = []
+          @feature_list = [] # Don't use accessor to avoid deprecation warning.
         end
       end
       attr_reader :profile

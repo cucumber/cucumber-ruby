@@ -110,5 +110,23 @@ Feature: Rake task
     1 undefined step
     """
 
+  Scenario: deprecation warnings
+    Given a file named "Rakefile" with:
+    """
+    $LOAD_PATH.unshift(CUCUMBER_LIB)
+    require 'cucumber/rake/task'
+
+    Cucumber::Rake::Task.new(:features) do |t|
+      t.feature_list = ['features/missing_step_definitions.feature']
+    end
+    """
+    When I run rake features
+    Then it should pass
+    And STDERR should match
+    """
+    Cucumber::Rake::Task#feature_list is deprecated and will be removed in 0.4.0.  Please use profiles for complex settings: http://wiki.github.com/aslakhellesoy/cucumber/using-rake#profiles
+    """
+
+
 
 
