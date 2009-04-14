@@ -15,6 +15,10 @@ module Cucumber
         nil
       end
 
+      def accept_hook?(hook)
+        @scenario_outline.accept_hook?(hook)
+      end
+
       def skip_invoke!
         example_rows.each do |cells|
           cells.skip_invoke!
@@ -60,6 +64,10 @@ module Cucumber
               end
             end
           end
+        end
+
+        def accept_hook?(hook)
+          @table.accept_hook?(hook)
         end
 
         private

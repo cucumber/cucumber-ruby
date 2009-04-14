@@ -133,5 +133,16 @@ Use Ruby modules instead to extend your worlds. See the #World RDoc.
 
 })
     end
+
+    it "should find before hooks" do
+      fish = @step_mother.Before('@fish'){}
+      meat = @step_mother.Before('@meat'){}
+      
+      scenario = mock('Scenario')
+      scenario.should_receive(:accept_hook?).with(fish).and_return(true)
+      scenario.should_receive(:accept_hook?).with(meat).and_return(false)
+      
+      @step_mother.hooks_for(:before, scenario).should == [fish]
+    end
   end
 end

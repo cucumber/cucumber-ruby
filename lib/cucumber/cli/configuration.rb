@@ -187,8 +187,8 @@ module Cucumber
         excludes = excludes.map{|tag| tag[1..-1]}
 
         # Strip @
-        includes = includes.map{|tag| tag =~ /^@(.*)/ ? $1 : tag}
-        excludes = excludes.map{|tag| tag =~ /^@(.*)/ ? $1 : tag}
+        includes = includes.map{|tag| Ast::Tags.strip_prefix(tag)}
+        excludes = excludes.map{|tag| Ast::Tags.strip_prefix(tag)}
         [includes, excludes]
       end
 

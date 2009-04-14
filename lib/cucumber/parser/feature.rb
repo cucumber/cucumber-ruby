@@ -216,7 +216,7 @@ module Cucumber
         end
 
         def has_tags?(tags)
-          tag_names.detect{|tag_name| tags.index(tag_name)}
+          (tag_names & tags).any?
         end
 
         def build
@@ -224,7 +224,7 @@ module Cucumber
         end
         
         def tag_names
-          ts.elements.map{|e| e.tag.tag_name.text_value}
+          @tag_names ||= ts.elements.map{|e| e.tag.tag_name.text_value}
         end
       end
 

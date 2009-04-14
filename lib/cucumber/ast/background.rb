@@ -30,6 +30,15 @@ module Cucumber
         visitor.step_mother.after(self) if @failed
       end
 
+      def accept_hook?(hook)
+        # TODO: When background is involved - no tag based hook filtering is occurring with
+        # the current implementation. All hooks will be executed. This is because of the line
+        #   visitor.step_mother.before(self)
+        # in the #accept method above. Instead, we should really be passing the first scenario
+        # here. We currently don't have access to that, so a refactoring is in order to make that happen.
+        true
+      end
+
       def failed?
         @failed
       end

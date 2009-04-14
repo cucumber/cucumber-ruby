@@ -67,6 +67,21 @@ module Cucumber
   # so #register_step_definition (and more interestingly - its aliases) are
   # available from the top-level.
   module StepMother
+    class Hook
+      def initialize(tag_names, proc)
+        @tag_names = tag_names.map{|tag| Ast::Tags.strip_prefix(tag)}
+        @proc = proc
+      end
+
+      def matches_tag_names?(tag_names)
+        @tag_names.empty? || (@tag_names & tag_names).any?
+      end
+
+      def execute_in(world, scenario, location)
+        world.cucumber_instance_exec(false, location, scenario, &@proc)
+      end
+    end
+
     class << self
       def alias_adverb(adverb)
         adverb = adverb.gsub(/\s/, '')
@@ -114,12 +129,26 @@ module Cucumber
 
     # Registers a Before proc. You can call this method as many times as you
     # want (typically from ruby scripts under <tt>support</tt>).
-    def Before(&proc)
-      (@before_procs ||= []) << proc
+    def Before(*tag_names, &proc)
+      register_hook(:before, tag_names, proc)
     end
 
-    def After(&proc)
-      (@after_procs ||= []).unshift(proc)
+    def After(*tag_names, &proc)
+      register_hook(:after, tag_names, proc)
+    end
+
+    def register_hook(phase, tags, proc)
+      hook = Hook.new(tags, proc)
+      hooks[phase] << hook
+      hook
+    end
+
+    def hooks
+      @hooks ||= Hash.new {|hash, phase| hash[phase] = []}
+    end
+
+    def hooks_for(phase, scenario)
+      hooks[phase].select{|hook| scenario.accept_hook?(hook)}
     end
 
     # Registers any number of +world_modules+ (Ruby Modules) and/or a Proc.
@@ -274,14 +303,14 @@ module Cucumber
     end
 
     def execute_before(scenario)
-      (@before_procs ||= []).each do |proc|
-        @current_world.cucumber_instance_exec(false, 'Before', scenario, &proc)
+      hooks_for(:before, scenario).each do |hook|
+        hook.execute_in(@current_world, scenario, 'Before')
       end
     end
 
     def execute_after(scenario)
-      (@after_procs ||= []).each do |proc|
-        @current_world.cucumber_instance_exec(false, 'After', scenario, &proc)
+      hooks_for(:after, scenario).each do |hook|
+        hook.execute_in(@current_world, scenario, 'After')
       end
     end
 

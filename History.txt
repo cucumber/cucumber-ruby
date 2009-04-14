@@ -18,6 +18,7 @@ Cucumber::Rake::Task.  For complex settings please rely on cucumber profiles in 
 http://wiki.github.com/aslakhellesoy/cucumber/using-rake#profiles
 
 === New features
+* Use Hooks with @tags (#229 Aslak Hellesoy)
 * Rake task supports cucumber.yml profiles (#187 Ben Mabey)
 * Field value steps for Webrat (Jack Chen)
 * Added translation for Bulgarian (Krasimir Angelov)
