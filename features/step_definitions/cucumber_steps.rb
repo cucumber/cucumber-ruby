@@ -57,4 +57,5 @@ end
 
 Then /^"(.*)" should exist$/ do |file|
   File.exists?(file).should be_true
+  FileUtils.rm(file)
 end

@@ -13,12 +13,16 @@ The Visitor API (which is used for formatters) has also changed slightly. Howeve
 do this in a backwards compatible way, so if you have custom formatters for Cucumber 0.2 they should
 still work.
 
+One of the most significant new features is Tagged Hooks: http://wiki.github.com/aslakhellesoy/cucumber/hooks
+This lets you associate Before and After blocks with specific scenarios.
+
 We are also deprecating the step_list, step_pattern, feature_list, and feature_pattern accessors on
-Cucumber::Rake::Task.  For complex settings please rely on cucumber profiles in your rake tasks:
+Cucumber::Rake::Task. These accessors will be completely removed in version 0.4. For complex settings 
+please rely on cucumber profiles in your rake tasks:
 http://wiki.github.com/aslakhellesoy/cucumber/using-rake#profiles
 
 === New features
-* Use Hooks with @tags (#229 Aslak Hellesoy)
+* Use Hooks with @tags (#229 Aslak Hellesøy)
 * Rake task supports cucumber.yml profiles (#187 Ben Mabey)
 * Field value steps for Webrat (Jack Chen)
 * Added translation for Bulgarian (Krasimir Angelov)

@@ -69,6 +69,12 @@ end
 Given /^another unused$/ do
 end
 
-After do
-  File.open File.dirname(__FILE__) + '/../../tmp/after.txt', 'w'
+after_file = File.dirname(__FILE__) + '/../../tmp/after.txt'
+
+Before('@after_file') do
+  FileUtils.rm(after_file) if File.exist?(after_file)
+end
+
+After('@after_file') do
+  FileUtils.touch(after_file)
 end
