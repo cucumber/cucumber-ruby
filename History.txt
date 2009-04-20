@@ -1,7 +1,8 @@
 == 0.3.x (In Git)
-* New translation for Hungarian (#287 Bence Golda)
 
 === New features
+* New translation for Hungarian (#287 Bence Golda)
+
 === Bugfixes
 * Exceptions from steps called within hooks are now reraised. (#294 Ben Mabey)
 

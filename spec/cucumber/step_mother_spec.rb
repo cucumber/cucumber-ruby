@@ -86,6 +86,12 @@ spec/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
       end.should raise_error(Redundant)
     end
 
+    # http://railsforum.com/viewtopic.php?pid=93881
+    it "should not raise Redundant unless it's really redundant" do
+      @step_mother.Given(/^(.*) (.*) user named '(.*)'$/) {|a,b,c|}
+      @step_mother.Given(/^there is no (.*) user named '(.*)'$/) {|a,b|}
+    end
+
     it "should raise an error if the world is nil" do
       @step_mother.World do
       end
@@ -95,7 +101,7 @@ spec/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
         raise "Should fail"
       rescue NilWorld => e
         e.message.should == "World procs should never return nil"
-        e.backtrace.should == ["spec/cucumber/step_mother_spec.rb:90:in `World'"]
+        e.backtrace.should == ["spec/cucumber/step_mother_spec.rb:96:in `World'"]
       end
     end
 
@@ -126,8 +132,8 @@ spec/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
       end.should raise_error(MultipleWorld, %{You can only pass a proc to #World once, but it's happening
 in 2 places:
 
-spec/cucumber/step_mother_spec.rb:123:in `World'
-spec/cucumber/step_mother_spec.rb:125:in `World'
+spec/cucumber/step_mother_spec.rb:129:in `World'
+spec/cucumber/step_mother_spec.rb:131:in `World'
 
 Use Ruby modules instead to extend your worlds. See the Cucumber::StepMother#World RDoc
 or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
