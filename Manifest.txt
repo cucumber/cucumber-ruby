@@ -195,6 +195,8 @@ examples/tickets/features/246.feature
 examples/tickets/features/248.feature
 examples/tickets/features/270/back.feature
 examples/tickets/features/270/back.steps.rb
+examples/tickets/features/272/hooks.feature
+examples/tickets/features/272/hooks_steps.rb
 examples/tickets/features/279/py_string_indent.feature
 examples/tickets/features/279/py_string_indent.steps.rb
 examples/tickets/features/279/wrong.feature_
