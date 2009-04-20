@@ -1,10 +1,10 @@
 == 0.3.x (In Git)
 
-== 0.3.0 2009-04-14
-
 === New features
 === Bugfixes
 * Exceptions from steps called within hooks are now reraised. (#294 Ben Mabey)
+
+== 0.3.0 2009-04-14
 
 This release has some minor changes to the APIs, but big enough that a new major release is in order.
 The biggest change is the new semantics of the #World method. Previously you would call this method
