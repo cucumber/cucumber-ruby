@@ -97,7 +97,7 @@ spec/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
       end
 
       begin
-        @step_mother.before_and_after(nil)
+        @step_mother.before_and_after(nil) {}
         raise "Should fail"
       rescue NilWorld => e
         e.message.should == "World procs should never return nil"
