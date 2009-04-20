@@ -61,7 +61,7 @@ module Cucumber
         }.should raise_error('The column named "two" does not exist')
       end
 
-      describe ".transpose" do
+      describe "#transpose" do
         before(:each) do
           @table = Table.new([
             %w{one 1111},
@@ -74,7 +74,7 @@ module Cucumber
         end
       end
       
-      describe ".rows_hash" do
+      describe "#rows_hash" do
                 
         it "should return a hash of the rows" do
           table = Table.new([
