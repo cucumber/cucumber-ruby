@@ -1,6 +1,7 @@
 == 0.3.x (In Git)
 
 === New features
+* Added #headers to Cucumber::Ast::Table (Ben Mabey)
 * New translation for Hungarian (#287 Bence Golda)
 * Pick up failure on after hook (#272 Aslak Hellesøy)
 
