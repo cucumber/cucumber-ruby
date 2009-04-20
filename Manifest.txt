@@ -67,6 +67,11 @@ examples/i18n/fr/Rakefile
 examples/i18n/fr/features/addition.feature
 examples/i18n/fr/features/step_definitions/calculatrice_steps.rb
 examples/i18n/fr/lib/calculatrice.rb
+examples/i18n/hu/Rakefile
+examples/i18n/hu/features/addition.feature
+examples/i18n/hu/features/division.feature
+examples/i18n/hu/features/step_definitons/calculator_steps.rb
+examples/i18n/hu/lib/calculator.rb
 examples/i18n/id/Rakefile
 examples/i18n/id/features/addition.feature
 examples/i18n/id/features/division.feature
