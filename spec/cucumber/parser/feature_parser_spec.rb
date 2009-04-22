@@ -90,6 +90,18 @@ Feature: hi
             [:background, 2, "Background:",
               [:step, 3, "Given", "I am a step"]]]
         end
+        
+        it "should allow multiline names" do
+          parse(%{Feature: Hi
+Background: It is my ambition to say 
+            in ten sentences
+            what others say 
+            in a whole book.
+Given I am a step}).to_sexp.should ==
+          [:feature, nil, "Feature: Hi",
+            [:background, 2, "Background:", "It is my ambition to say\nin ten sentences\nwhat others say\nin a whole book.",
+              [:step, 6, "Given", "I am a step"]]]
+        end
       end
 
       describe "Scenarios" do

@@ -193,6 +193,11 @@ Feature: Cucumber command line
 
       Feature: multiline
 
+        Background: I'm a multiline name
+          which goes on and on and on for three lines
+          yawn
+          Given passing without a table
+
         Scenario: I'm a multiline name
           which goes on and on and on for three lines
           yawn
@@ -259,7 +264,7 @@ Feature: Cucumber command line
             | example |
 
       16 scenarios
-      14 skipped steps
+      16 skipped steps
       9 undefined steps
 
       """

@@ -76,13 +76,13 @@ module Cucumber
       end
 
       rule background
-         comment white background_keyword space* name:line_to_eol? (eol+ / eof) steps {
+         comment white background_keyword space* name:lines_to_keyword? (eol+ / eof) steps {
            def build
              Ast::Background.new(
                comment.build, 
                background_keyword.line,
                background_keyword.text_value,
-               name.text_value, 
+               name.build, 
                steps.build
              )
             end
@@ -248,7 +248,7 @@ module Cucumber
       end
 
       rule line_to_keyword
-        white text:(!step_keyword !scenario_keyword !scenario_outline_keyword !eol .)+ white {
+        white text:(!step_keyword !scenario_keyword !scenario_outline_keyword !eol .)+ {
           def build
             text.text_value.strip
           end

@@ -23,7 +23,7 @@ module Cucumber
 
       def accept(visitor)
         visitor.visit_comment(@comment)
-        visitor.visit_background_name(@keyword, @name, file_colon_line(@line), source_indent(text_length))
+        visitor.visit_background_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
         visitor.step_mother.before(self)
         visitor.visit_steps(@step_invocations)
         @failed = @step_invocations.detect{|step_invocation| step_invocation.exception}
@@ -43,12 +43,9 @@ module Cucumber
         @failed
       end
 
-      def text_length
-        @keyword.jlength
-      end
-
       def to_sexp
         sexp = [:background, @line, @keyword]
+        sexp += [@name] unless @name.empty?
         comment = @comment.to_sexp
         sexp += [comment] if comment
         steps = @steps.to_sexp

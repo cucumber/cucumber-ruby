@@ -1,7 +1,7 @@
 == 0.3.x (In Git)
 
 === New features
-* Support multiline names for Scenarios, Scenario Outlines (#231 Joseph Wilk)
+* Support multiline names for Scenarios, Scenario Outlines, Backgrounds (#231 Joseph Wilk)
 
 
 == 0.3.0 2009-04-14

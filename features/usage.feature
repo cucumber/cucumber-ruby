@@ -10,7 +10,8 @@ Feature: Cucumber command line
       /^passing without a table$/          # features/step_definitions/sample_steps.rb:12
        Given passing without a table       # features/background/failing_background_after_success.feature:4
        Given passing without a table       # features/multiline_name.feature:6
-       Given <state> without a table       # features/multiline_name.feature:11
+       Given passing without a table       # features/multiline_name.feature:11
+       Given <state> without a table       # features/multiline_name.feature:16
        Given <state> without a table       # features/outline_sample.feature:6
        Given <other_state> without a table # features/outline_sample.feature:7
       /^failing without a table$/    # features/step_definitions/sample_steps.rb:15
