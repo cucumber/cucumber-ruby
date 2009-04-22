@@ -1,7 +1,10 @@
 == 0.3.x (In Git)
 
+With the addition of Latvian and Hungarian Cucumber now supports 32(!!) languages.
+
 === New features
 * Added #headers to Cucumber::Ast::Table (Ben Mabey)
+* New translation for Latvian (Vitauts Stočka)
 * New translation for Hungarian (#287 Bence Golda)
 * Pick up failure on after hook (#272 Aslak Hellesøy)
 
