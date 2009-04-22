@@ -1149,7 +1149,7 @@ module Cucumber
         end
 
         def build(filter, scenario_outline)
-          [examples_keyword.line, examples_keyword.text_value, name.text_value, table.raw(filter, scenario_outline)]
+          [examples_keyword.line, examples_keyword.text_value, name.build, table.raw(filter, scenario_outline)]
         end
       end
 
@@ -1189,7 +1189,7 @@ module Cucumber
             r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
             s0 << r4
             if r4
-              r7 = _nt_line_to_eol
+              r7 = _nt_lines_to_keyword
               if r7
                 r6 = r7
               else
@@ -1370,7 +1370,7 @@ module Cucumber
                 s3 << r8
                 if r8
                   i10 = index
-                  r11 = _nt_eol
+                  r11 = _nt_table
                   if r11
                     r10 = nil
                   else
@@ -1379,14 +1379,25 @@ module Cucumber
                   end
                   s3 << r10
                   if r10
-                    if index < input_length
-                      r12 = instantiate_node(SyntaxNode,input, index...(index + 1))
-                      @index += 1
-                    else
-                      terminal_parse_failure("any character")
+                    i12 = index
+                    r13 = _nt_eol
+                    if r13
                       r12 = nil
+                    else
+                      self.index = i12
+                      r12 = instantiate_node(SyntaxNode,input, index...index)
                     end
                     s3 << r12
+                    if r12
+                      if index < input_length
+                        r14 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                        @index += 1
+                      else
+                        terminal_parse_failure("any character")
+                        r14 = nil
+                      end
+                      s3 << r14
+                    end
                   end
                 end
               end
