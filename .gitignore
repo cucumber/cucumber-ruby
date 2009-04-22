@@ -13,3 +13,4 @@ doc
 target
 *.tmproj
 examples/self_test/tmp
+.#*
