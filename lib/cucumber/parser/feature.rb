@@ -679,7 +679,7 @@ module Cucumber
         end
 
         def matches_name?(name_to_match)
-          name.text_value == name_to_match
+          name.build == name_to_match
         end
 
         def build(background, filter)
@@ -689,7 +689,7 @@ module Cucumber
             tags.build,
             scenario_keyword.line,
             scenario_keyword.text_value, 
-            name.text_value, 
+            name.build, 
             steps.build
           )
         end
@@ -728,7 +728,7 @@ module Cucumber
                 r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
                 s0 << r5
                 if r5
-                  r7 = _nt_line_to_eol
+                  r7 = _nt_lines_to_keyword
                   s0 << r7
                   if r7
                     r8 = _nt_white
@@ -1301,6 +1301,167 @@ module Cucumber
         r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
 
         node_cache[:line_to_eol][start_index] = r0
+
+        return r0
+      end
+
+      module LineToKeyword0
+      end
+
+      module LineToKeyword1
+        def white
+          elements[0]
+        end
+
+        def text
+          elements[1]
+        end
+
+        def white
+          elements[2]
+        end
+      end
+
+      module LineToKeyword2
+        def build
+          text.text_value.strip
+        end
+      end
+
+      def _nt_line_to_keyword
+        start_index = index
+        if node_cache[:line_to_keyword].has_key?(index)
+          cached = node_cache[:line_to_keyword][index]
+          @index = cached.interval.end if cached
+          return cached
+        end
+
+        i0, s0 = index, []
+        r1 = _nt_white
+        s0 << r1
+        if r1
+          s2, i2 = [], index
+          loop do
+            i3, s3 = index, []
+            i4 = index
+            r5 = _nt_step_keyword
+            if r5
+              r4 = nil
+            else
+              self.index = i4
+              r4 = instantiate_node(SyntaxNode,input, index...index)
+            end
+            s3 << r4
+            if r4
+              i6 = index
+              r7 = _nt_scenario_keyword
+              if r7
+                r6 = nil
+              else
+                self.index = i6
+                r6 = instantiate_node(SyntaxNode,input, index...index)
+              end
+              s3 << r6
+              if r6
+                i8 = index
+                r9 = _nt_scenario_outline_keyword
+                if r9
+                  r8 = nil
+                else
+                  self.index = i8
+                  r8 = instantiate_node(SyntaxNode,input, index...index)
+                end
+                s3 << r8
+                if r8
+                  i10 = index
+                  r11 = _nt_eol
+                  if r11
+                    r10 = nil
+                  else
+                    self.index = i10
+                    r10 = instantiate_node(SyntaxNode,input, index...index)
+                  end
+                  s3 << r10
+                  if r10
+                    if index < input_length
+                      r12 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                      @index += 1
+                    else
+                      terminal_parse_failure("any character")
+                      r12 = nil
+                    end
+                    s3 << r12
+                  end
+                end
+              end
+            end
+            if s3.last
+              r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
+              r3.extend(LineToKeyword0)
+            else
+              self.index = i3
+              r3 = nil
+            end
+            if r3
+              s2 << r3
+            else
+              break
+            end
+          end
+          if s2.empty?
+            self.index = i2
+            r2 = nil
+          else
+            r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
+          end
+          s0 << r2
+          if r2
+            r13 = _nt_white
+            s0 << r13
+          end
+        end
+        if s0.last
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
+          r0.extend(LineToKeyword1)
+          r0.extend(LineToKeyword2)
+        else
+          self.index = i0
+          r0 = nil
+        end
+
+        node_cache[:line_to_keyword][start_index] = r0
+
+        return r0
+      end
+
+      module LinesToKeyword0
+ 
+        def build
+          elements.map{|s| s.build}.join("\n")
+        end
+      end
+
+      def _nt_lines_to_keyword
+        start_index = index
+        if node_cache[:lines_to_keyword].has_key?(index)
+          cached = node_cache[:lines_to_keyword][index]
+          @index = cached.interval.end if cached
+          return cached
+        end
+
+        s0, i0 = [], index
+        loop do
+          r1 = _nt_line_to_keyword
+          if r1
+            s0 << r1
+          else
+            break
+          end
+        end
+        r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
+        r0.extend(LinesToKeyword0)
+
+        node_cache[:lines_to_keyword][start_index] = r0
 
         return r0
       end
