@@ -240,6 +240,20 @@ Examples:
                     [:cell, "5"],
                     [:cell, "6"]]]]]]
         end
+
+        it "should allow multiline names" do
+          parse(%{Feature: Hi
+Scenario Outline: It is my ambition to say 
+          in ten sentences
+          what others say 
+          in a whole book.
+Given I am a step
+
+}).to_sexp.should ==
+          [:feature, nil, "Feature: Hi",
+            [:scenario_outline, "Scenario Outline:", "It is my ambition to say\nin ten sentences\nwhat others say\nin a whole book.",
+              [:step, 6, "Given", "I am a step"]]]
+        end
       end
 
       describe "Syntax" do

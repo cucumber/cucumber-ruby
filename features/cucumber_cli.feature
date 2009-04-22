@@ -197,6 +197,15 @@ Feature: Cucumber command line
           which goes on and on and on for three lines
           yawn
           Given passing without a table
+
+        Scenario Outline: I'm a multiline name
+          which goes on and on and on for three lines
+          yawn
+          Given <state> without a table
+
+        Examples: 
+          | state   |
+          | passing |
     
       Feature: Outline Sample
 
@@ -249,8 +258,8 @@ Feature: Cucumber command line
             | table   |
             | example |
 
-      15 scenarios
-      13 skipped steps
+      16 scenarios
+      14 skipped steps
       9 undefined steps
 
       """
