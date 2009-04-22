@@ -279,6 +279,21 @@
   and: Ir
   but: Bet
   space_after_keyword: true
+"lv":
+  name: Latvian
+  native: latviešu
+  encoding: UTF-8
+  feature: Funkcionalitāte|Fīča
+  background: Konteksts|Situācija
+  scenario: Scenārijs
+  scenario_outline: Scenārijs pēc parauga
+  examples: Piemēri|Paraugs
+  given: Kad
+  when: Ja
+  then: Tad
+  and: Un
+  but: Bet
+  space_after_keyword: true
 "nl":
   name: Dutch
   native: Nederlands
