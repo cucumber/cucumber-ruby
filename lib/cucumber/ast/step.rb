@@ -8,6 +8,8 @@ module Cucumber
       attr_writer :step_collection, :options
       attr_accessor :feature_element, :exception
 
+      INDENT = 2
+      
       def initialize(line, keyword, name, multiline_arg=nil)
         @line, @keyword, @name, @multiline_arg = line, keyword, name, multiline_arg
       end
@@ -61,7 +63,7 @@ module Cucumber
       end
 
       def text_length
-        @keyword.jlength + @name.jlength + 2 # Add 2 because steps get indented 2 more than scenarios
+        @keyword.jlength + @name.jlength + INDENT # Add indent as steps get indented more than scenarios
       end
 
       def backtrace_line

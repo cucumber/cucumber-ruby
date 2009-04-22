@@ -106,7 +106,7 @@ module Cucumber
       end
 
       rule scenario
-        comment tags white scenario_keyword space* name:line_to_eol white steps white {
+        comment tags white scenario_keyword space* name:lines_to_keyword white steps white {
           def at_line?(line)
             scenario_keyword.line == line ||
             steps.at_line?(line) ||
@@ -119,7 +119,7 @@ module Cucumber
           end
 
           def matches_name?(name_to_match)
-            name.text_value == name_to_match
+            name.build == name_to_match
           end
 
           def build(background, filter)
@@ -129,7 +129,7 @@ module Cucumber
               tags.build,
               scenario_keyword.line,
               scenario_keyword.text_value, 
-              name.text_value, 
+              name.build, 
               steps.build
             )
           end
@@ -245,6 +245,22 @@ module Cucumber
 
       rule line_to_eol
         (!eol .)*
+      end
+
+      rule line_to_keyword
+        white text:(!step_keyword !scenario_keyword !scenario_outline_keyword !eol .)+ white {
+          def build
+            text.text_value.strip
+          end
+	}
+      end
+      
+      rule lines_to_keyword
+        (line_to_keyword)* { 
+        def build
+          elements.map{|s| s.build}.join("\n")
+        end
+        }
       end
 
       rule py_string

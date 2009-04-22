@@ -1,3 +1,9 @@
+== 0.3.x (In Git)
+
+=== New features
+* Support multiline names for scenarios (#231 Joseph Wilk)
+
+
 == 0.3.0 2009-04-14
 
 This release has some minor changes to the APIs, but big enough that a new major release is in order.

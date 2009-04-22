@@ -191,6 +191,13 @@ Feature: Cucumber command line
           When I stop procrastinating
           And there is world peace
 
+      Feature: multiline
+
+        Scenario: I'm a multiline name
+          which goes on and on and on for three lines
+          yawn
+          Given passing without a table
+    
       Feature: Outline Sample
 
         Scenario: I have no steps
@@ -242,8 +249,8 @@ Feature: Cucumber command line
             | table   |
             | example |
 
-      14 scenarios
-      12 skipped steps
+      15 scenarios
+      13 skipped steps
       9 undefined steps
 
       """

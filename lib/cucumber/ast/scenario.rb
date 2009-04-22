@@ -25,7 +25,7 @@ module Cucumber
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(text_length))
+        visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
 
         skip = @background && @background.failed?
         skip_invoke! if skip

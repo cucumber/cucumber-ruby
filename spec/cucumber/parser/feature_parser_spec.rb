@@ -146,6 +146,21 @@ Given I have a string
               [:step_invocation, 3, "Given", "I have a string",
                 [:py_string, "hello\nworld"]]]]
         end
+        
+        it "should allow multiline names" do
+          parse(%{Feature: Hi
+Scenario: It is my ambition to say 
+          in ten sentences
+          what others say 
+          in a whole book.
+Given I am a step
+
+}).to_sexp.should ==
+          [:feature, nil, "Feature: Hi",
+            [:scenario, 2, "Scenario:", "It is my ambition to say\nin ten sentences\nwhat others say\nin a whole book.",
+              [:step_invocation, 6, "Given", "I am a step"]]]
+        end
+        
       end
 
       describe "Scenario Outlines" do
