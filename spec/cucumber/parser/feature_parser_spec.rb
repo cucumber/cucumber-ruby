@@ -266,6 +266,28 @@ Given I am a step
             [:scenario_outline, "Scenario Outline:", "It is my ambition to say\nin ten sentences\nwhat others say\nin a whole book.",
               [:step, 6, "Given", "I am a step"]]]
         end
+        
+        it "should allow Examples to have multiline names" do
+          parse(%{Feature: Hi
+Scenario Outline: name
+Given I am a step
+
+Examples: I'm a multiline name
+          and I'm ok
+|x|
+|5|
+
+}).to_sexp.should ==
+          [:feature, nil, "Feature: Hi",
+            [:scenario_outline, "Scenario Outline:", "name",
+              [:step, 3, "Given", "I am a step"],
+              [:examples, "Examples:", "I'm a multiline name\nand I'm ok",
+                [:table,
+                  [:row, 7,
+                    [:cell, "x"]],
+                  [:row, 8,
+                    [:cell, "5"]]]]]]
+        end
       end
 
       describe "Syntax" do

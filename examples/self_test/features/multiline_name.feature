@@ -17,3 +17,11 @@ Feature: multiline
     Examples:
       | state |
       |passing|
+
+  Scenario Outline: name
+    Given <state> without a table 
+    Examples: I'm a multiline name
+              which goes on and on and on for three lines
+              yawn
+      | state |
+      |passing|

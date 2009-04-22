@@ -219,7 +219,7 @@ module Cucumber
       end
 
       rule examples
-        space* examples_keyword space* name:line_to_eol? eol table white {
+        space* examples_keyword space* name:lines_to_keyword? eol table white {
           def at_line?(line)
             examples_keyword.line == line ||
             table.at_line?(line)
@@ -234,7 +234,7 @@ module Cucumber
           end
 
           def build(filter, scenario_outline)
-            [examples_keyword.line, examples_keyword.text_value, name.text_value, table.raw(filter, scenario_outline)]
+            [examples_keyword.line, examples_keyword.text_value, name.build, table.raw(filter, scenario_outline)]
           end
         }
       end
@@ -248,7 +248,7 @@ module Cucumber
       end
 
       rule line_to_keyword
-        white text:(!step_keyword !scenario_keyword !scenario_outline_keyword !eol .)+ {
+        white text:(!step_keyword !scenario_keyword !scenario_outline_keyword !table !eol .)+ {
           def build
             text.text_value.strip
           end

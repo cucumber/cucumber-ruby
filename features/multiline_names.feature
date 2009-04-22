@@ -28,7 +28,16 @@ Feature: Multiline description names
         | state   |
         | passing |
 
-    2 scenarios
-    4 passed steps
+      Scenario Outline: name          # features/multiline_name.feature:21
+        Given <state> without a table # features/step_definitions/sample_steps.rb:12
+
+      Examples: I'm a multiline name
+        which goes on and on and on for three lines
+        yawn
+        | state   |
+        | passing |
+
+    3 scenarios
+    6 passed steps
 
     """
