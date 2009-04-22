@@ -817,7 +817,7 @@ module Cucumber
         end
 
         def matches_name?(name_to_match)
-          name.text_value == name_to_match
+          name.build == name_to_match
         end
 
         def build(background, filter)
@@ -827,7 +827,7 @@ module Cucumber
             tags.build,
             scenario_outline_keyword.line, 
             scenario_outline_keyword.text_value, 
-            name.text_value, 
+            name.build, 
             steps.build, 
             examples_sections.build(filter, self)
           )
@@ -867,7 +867,7 @@ module Cucumber
                 r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
                 s0 << r5
                 if r5
-                  r7 = _nt_line_to_eol
+                  r7 = _nt_lines_to_keyword
                   s0 << r7
                   if r7
                     r8 = _nt_white
