@@ -486,7 +486,7 @@ module Cucumber
             comment.build, 
             background_keyword.line,
             background_keyword.text_value,
-            name.text_value, 
+            name.build, 
             steps.build
           )
          end
@@ -522,7 +522,7 @@ module Cucumber
               r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
               s0 << r4
               if r4
-                r7 = _nt_line_to_eol
+                r7 = _nt_lines_to_keyword
                 if r7
                   r6 = r7
                 else
@@ -1316,10 +1316,6 @@ module Cucumber
         def text
           elements[1]
         end
-
-        def white
-          elements[2]
-        end
       end
 
       module LineToKeyword2
@@ -1415,10 +1411,6 @@ module Cucumber
             r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
           end
           s0 << r2
-          if r2
-            r13 = _nt_white
-            s0 << r13
-          end
         end
         if s0.last
           r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
