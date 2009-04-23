@@ -10,7 +10,7 @@ module Cucumber
       it "should select the longest line as the text length" do
         @keyword = "key"  
         @name = "short\nvery longer\ntiny"
-        text_length.should == 11 + Ast::Step::INDENT
+        text_length.should == 11 + Ast::Step::INDENT - 1
       end
       
       it "should add keyword to first lines length" do
