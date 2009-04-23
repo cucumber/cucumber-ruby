@@ -23,7 +23,7 @@ module Cucumber
         [@keyword.jlength]
       else
         @name.split("\n").enum_for(:each_with_index).map do |line, line_number| 
-          line_number == 0 ? @keyword.jlength + line.jlength : line.jlength + Ast::Step::INDENT
+          line_number == 0 ? @keyword.jlength + line.jlength : line.jlength + Ast::Step::INDENT - 1 # We -1 as names which are not keyword lines are missing a space between keyword and name
         end
       end
     end
