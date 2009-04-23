@@ -59,6 +59,14 @@ Feature: hi
             [:tag, "world"]]
         end
 
+        it "should not take the tags as part of a multiline name feature element" do
+          parse("Feature: hi\n Scenario: test\n\n@hello Scenario: another").to_sexp.should ==
+          [:feature, nil, "Feature: hi",
+           [:scenario, 2, "Scenario:", "test"], 
+           [:scenario, 4, "Scenario:", "another", 
+             [:tag, "hello"]]]
+        end
+
         it "should parse a file with tags on a scenario" do
           parse(%{# FC
   @ft
