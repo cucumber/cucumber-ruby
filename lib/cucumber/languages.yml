@@ -206,6 +206,21 @@
   and: Et
   but: Mais
   space_after_keyword: true
+"hu":
+  name: Hungarian
+  native: magyar
+  encoding: UTF-8
+  feature: Jellemző
+  background: Háttér
+  scenario: Forgatókönyv
+  scenario_outline: Forgatókönyv vázlat
+  examples: Példák
+  given: Ha
+  when: Majd
+  then: Akkor
+  and: És
+  but: De
+  space_after_keyword: true
 "id":
   name: Indonesian
   native: Bahasa Indonesia
@@ -262,6 +277,21 @@
   when: Kai
   then: Tada
   and: Ir
+  but: Bet
+  space_after_keyword: true
+"lv":
+  name: Latvian
+  native: latviešu
+  encoding: UTF-8
+  feature: Funkcionalitāte|Fīča
+  background: Konteksts|Situācija
+  scenario: Scenārijs
+  scenario_outline: Scenārijs pēc parauga
+  examples: Piemēri|Paraugs
+  given: Kad
+  when: Ja
+  then: Tad
+  and: Un
   but: Bet
   space_after_keyword: true
 "nl":

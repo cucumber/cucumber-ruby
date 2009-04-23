@@ -21,6 +21,10 @@ module Cucumber
         @table.columns[1].map{|cell| cell.value}.should == %w{four 55555}
       end
 
+      it "should have headers" do
+        @table.headers.should == %w{one four seven}
+      end
+
       it "should have same cell objects in rows and columns" do
         # 666666
         @table.cells_rows[1].__send__(:[], 2).should equal(@table.columns[2].__send__(:[], 1))
@@ -57,7 +61,7 @@ module Cucumber
         }.should raise_error('The column named "two" does not exist')
       end
 
-      describe ".transpose" do
+      describe "#transpose" do
         before(:each) do
           @table = Table.new([
             %w{one 1111},
@@ -70,7 +74,7 @@ module Cucumber
         end
       end
       
-      describe ".rows_hash" do
+      describe "#rows_hash" do
                 
         it "should return a hash of the rows" do
           table = Table.new([

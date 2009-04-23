@@ -197,6 +197,10 @@ module Cucumber
         end
       end
 
+      def headers
+        @raw.first
+      end
+
       def header_cell(col)
         cells_rows[0][col]
       end

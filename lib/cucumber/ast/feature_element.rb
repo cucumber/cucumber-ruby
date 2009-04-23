@@ -47,12 +47,5 @@ module Cucumber
     def accept_hook?(hook)
       @tags.accept_hook?(hook)
     end
-
-    # TODO: Remove when we use StepCollection everywhere
-    def previous_step(step)
-      i = @steps.index(step) || -1
-      @steps[i-1]
-    end
-    
   end
 end

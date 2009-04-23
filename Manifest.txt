@@ -67,6 +67,11 @@ examples/i18n/fr/Rakefile
 examples/i18n/fr/features/addition.feature
 examples/i18n/fr/features/step_definitions/calculatrice_steps.rb
 examples/i18n/fr/lib/calculatrice.rb
+examples/i18n/hu/Rakefile
+examples/i18n/hu/features/addition.feature
+examples/i18n/hu/features/division.feature
+examples/i18n/hu/features/step_definitons/calculator_steps.rb
+examples/i18n/hu/lib/calculator.rb
 examples/i18n/id/Rakefile
 examples/i18n/id/features/addition.feature
 examples/i18n/id/features/division.feature
@@ -91,6 +96,11 @@ examples/i18n/lt/features/addition.feature
 examples/i18n/lt/features/division.feature
 examples/i18n/lt/features/step_definitons/calculator_steps.rb
 examples/i18n/lt/lib/calculator.rb
+examples/i18n/lv/Rakefile
+examples/i18n/lv/features/addition.feature
+examples/i18n/lv/features/division.feature
+examples/i18n/lv/features/step_definitons/calculator_steps.rb
+examples/i18n/lv/lib/calculator.rb
 examples/i18n/no/Rakefile
 examples/i18n/no/features/step_definitons/kalkulator_steps.rb
 examples/i18n/no/features/summering.feature
@@ -190,6 +200,8 @@ examples/tickets/features/246.feature
 examples/tickets/features/248.feature
 examples/tickets/features/270/back.feature
 examples/tickets/features/270/back.steps.rb
+examples/tickets/features/272/hooks.feature
+examples/tickets/features/272/hooks_steps.rb
 examples/tickets/features/279/py_string_indent.feature
 examples/tickets/features/279/py_string_indent.steps.rb
 examples/tickets/features/279/wrong.feature_
@@ -321,7 +333,6 @@ spec/cucumber/formatter/html/cucumber.js
 spec/cucumber/formatter/html/index.html
 spec/cucumber/formatter/html/jquery-1.3.min.js
 spec/cucumber/formatter/html/jquery.uitableedit.js
-spec/cucumber/formatters/profile_formatter_spec.rb
 spec/cucumber/parser/feature_parser_spec.rb
 spec/cucumber/parser/table_parser_spec.rb
 spec/cucumber/rails/stubs/mini_rails.rb

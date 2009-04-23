@@ -70,6 +70,16 @@ module Cucumber
           @table.accept_hook?(hook)
         end
 
+        # Returns true if one or more steps failed
+        def failed?
+          @step_invocations.failed?
+        end
+
+        # Returns true if all steps passed
+        def passed?
+          @step_invocations.passed?
+        end
+
         private
 
         def header?

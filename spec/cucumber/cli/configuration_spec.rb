@@ -234,15 +234,6 @@ END_OF_MESSAGE
         end
       end
 
-      xit "should strip gems when --backtrace is absent" do
-        config = Main.new(['--'])
-        begin
-          "x".should == "y"
-        rescue => e
-          e.backtrace[0].should == "#{__FILE__}:#{__LINE__ - 2}"
-        end
-      end
-
       after do
         Exception.cucumber_full_backtrace = false
       end

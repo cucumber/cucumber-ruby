@@ -130,11 +130,6 @@ module Cucumber
           @exceptions << exception
         end
         return if status != :failed && @in_background ^ background
-
-        # @step_matches ||= []
-        # return if @step_matches.index(step_match)
-        # @step_matches << step_match
-
         @status = status
         super
       end
@@ -173,7 +168,7 @@ module Cucumber
 
       def visit_table_cell_value(value, width, status)
         status ||= @status || :passed
-        @io.print(' ' + format_string((value.to_s || '').ljust(width), status) + " #{@delim}")
+        @io.print(' ' + format_string((value.to_s || '').ljust(width), status) + ::Term::ANSIColor.reset(" #{@delim}"))
         @io.flush
       end
 

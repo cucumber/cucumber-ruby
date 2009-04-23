@@ -34,6 +34,21 @@ module Cucumber
         end
       end
 
+      # Returns true if one or more steps failed
+      def failed?
+        @steps.failed?
+      end
+
+      # Returns true if all steps passed
+      def passed?
+        @steps.passed?
+      end
+
+      # Returns the first exception (if any)
+      def exception
+        @steps.exception
+      end
+
       def skip_invoke!
         @steps.each{|step_invocation| step_invocation.skip_invoke!}
         @feature.next_feature_element(self) do |next_one|
