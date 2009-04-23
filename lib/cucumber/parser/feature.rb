@@ -1380,7 +1380,7 @@ module Cucumber
                   s3 << r10
                   if r10
                     i12 = index
-                    r13 = _nt_eol
+                    r13 = _nt_tag
                     if r13
                       r12 = nil
                     else
@@ -1389,14 +1389,25 @@ module Cucumber
                     end
                     s3 << r12
                     if r12
-                      if index < input_length
-                        r14 = instantiate_node(SyntaxNode,input, index...(index + 1))
-                        @index += 1
-                      else
-                        terminal_parse_failure("any character")
+                      i14 = index
+                      r15 = _nt_eol
+                      if r15
                         r14 = nil
+                      else
+                        self.index = i14
+                        r14 = instantiate_node(SyntaxNode,input, index...index)
                       end
                       s3 << r14
+                      if r14
+                        if index < input_length
+                          r16 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                          @index += 1
+                        else
+                          terminal_parse_failure("any character")
+                          r16 = nil
+                        end
+                        s3 << r16
+                      end
                     end
                   end
                 end
