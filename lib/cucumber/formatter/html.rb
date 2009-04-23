@@ -114,7 +114,7 @@ module Cucumber
         unless @skip_step
           step_name = step_match.format_args(lambda{|param| "<span>#{param}</span>"})
           @builder.div do |div|
-            div << h("#{keyword} #{step_name}")
+            div << h("#{keyword} #{step_name}").gsub(/&lt;span&gt;/, '<span>').gsub(/&lt;\/span&gt;/, '</span>')
           end
         end
       end
