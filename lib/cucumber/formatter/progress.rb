@@ -29,7 +29,6 @@ module Cucumber
       end
 
       def visit_table_cell_value(value, width, status)
-        status ||= @status || :passed
         progress(status) if (status != :thead) && !@multiline_arg
       end
 
