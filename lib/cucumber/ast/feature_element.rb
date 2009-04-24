@@ -1,3 +1,5 @@
+require 'enumerator'
+
 module Cucumber
   module FeatureElement
     def attach_steps(steps)
@@ -9,7 +11,21 @@ module Cucumber
     end
 
     def text_length
-      @keyword.jlength + @name.jlength
+      name_line_lengths.max
+    end
+
+    def first_line_length
+      name_line_lengths[0]
+    end
+
+    def name_line_lengths
+      if @name.empty?
+        [@keyword.jlength]
+      else
+        @name.split("\n").enum_for(:each_with_index).map do |line, line_number| 
+          line_number == 0 ? @keyword.jlength + line.jlength : line.jlength + Ast::Step::INDENT - 1 # We -1 as names which are not keyword lines are missing a space between keyword and name
+        end
+      end
     end
 
     def matches_scenario_names?(scenario_names)

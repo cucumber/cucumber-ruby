@@ -95,7 +95,9 @@ module Cucumber
       end
 
       def visit_examples_name(keyword, name)
-        @io.puts("\n  #{keyword} #{name}")
+        names = name.empty? ? [name] : name.split("\n")
+        @io.puts("\n  #{keyword} #{names[0]}")
+        names[1..-1].each {|s| @io.puts "    #{s}" }
         @io.flush
         @indent = 4
       end
@@ -105,13 +107,15 @@ module Cucumber
       end
 
       def visit_feature_element_name(keyword, name, file_colon_line, source_indent)
-        line = "  #{keyword} #{name}"
+        names = name.empty? ? [name] : name.split("\n")
+        line = "  #{keyword} #{names[0]}"
         @io.print(line)
         if @options[:source]
           line_comment = " # #{file_colon_line}".indent(source_indent)
           @io.print(format_string(line_comment, :comment))
         end
         @io.puts
+        names[1..-1].each {|s| @io.puts "    #{s}"}
         @io.flush
       end
 
