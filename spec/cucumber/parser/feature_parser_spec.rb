@@ -48,6 +48,14 @@ Feature: hi
           [:feature, nil, "", 
             [:comment, "# Hello\n\n# World\n"]]
         end
+        
+        it "should not consume comments as part of a multiline name" do
+          parse("Feature: hi\n Scenario: test\n\n#hello\n Scenario: another").to_sexp.should ==
+            [:feature, nil, "Feature: hi", 
+             [:scenario, 2, "Scenario:", "test"], 
+             [:scenario, 5, "Scenario:", "another", 
+              [:comment, "#hello\n "]]]
+        end
       end
 
       describe "Tags" do

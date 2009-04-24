@@ -248,7 +248,7 @@ module Cucumber
       end
 
       rule line_to_keyword
-        white text:(!step_keyword !scenario_keyword !scenario_outline_keyword !table !tag !eol .)+ {
+        white text:(!step_keyword !scenario_keyword !scenario_outline_keyword !table !tag !comment_line !eol .)+ {
           def build
             text.text_value.strip
           end
