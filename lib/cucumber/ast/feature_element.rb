@@ -47,7 +47,7 @@ module Cucumber
     end
 
     def accept_hook?(hook)
-      @tags.accept_hook?(hook)
+      @tags.accept_hook?(hook) || @feature.accept_hook?(hook)
     end
   end
 end

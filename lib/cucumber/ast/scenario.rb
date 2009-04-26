@@ -12,6 +12,7 @@ module Cucumber
         step_invocations = steps.map{|step| step.step_invocation}
         if @background
           @steps = @background.step_collection(step_invocations)
+          @background.feature_elements << self
         else
           @steps = StepCollection.new(step_invocations)
         end

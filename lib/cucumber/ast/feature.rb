@@ -24,6 +24,10 @@ module Cucumber
         end
       end
 
+      def accept_hook?(hook)
+        @tags.accept_hook?(hook)
+      end
+
       def next_feature_element(feature_element, &proc)
         index = @feature_elements.index(feature_element)
         next_one = @feature_elements[index+1]

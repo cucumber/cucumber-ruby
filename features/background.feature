@@ -72,6 +72,7 @@ Feature: backgrounds
     When I run cucumber -q features/background/failing_background.feature --require features
     Then it should fail with
     """
+    @after_file
     Feature: Failing background sample
 
       Background: 
@@ -79,7 +80,7 @@ Feature: backgrounds
           FAIL (RuntimeError)
           ./features/step_definitions/sample_steps.rb:2:in `flunker'
           ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-          features/background/failing_background.feature:4:in `Given failing without a table'
+          features/background/failing_background.feature:5:in `Given failing without a table'
         And '10' cukes
 
       Scenario: failing background

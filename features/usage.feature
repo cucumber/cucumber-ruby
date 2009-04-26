@@ -16,7 +16,7 @@ Feature: Cucumber command line
        Given <state> without a table       # features/outline_sample.feature:6
        Given <other_state> without a table # features/outline_sample.feature:7
       /^failing without a table$/    # features/step_definitions/sample_steps.rb:15
-       Given failing without a table # features/background/failing_background.feature:4
+       Given failing without a table # features/background/failing_background.feature:5
        Given failing without a table # features/background/scenario_outline_failing_background.feature:4
       /^a step definition that calls an undefined step$/    # features/step_definitions/sample_steps.rb:19
        Given a step definition that calls an undefined step # features/call_undefined_step_from_step_def.feature:4
@@ -24,7 +24,7 @@ Feature: Cucumber command line
        Given call step "a step definition that calls an undefined step" # features/call_undefined_step_from_step_def.feature:7
       /^'(.+)' cukes$/   # features/step_definitions/sample_steps.rb:27
        Given '10' cukes  # features/background/background_with_name.feature:4
-       And '10' cukes    # features/background/failing_background.feature:5
+       And '10' cukes    # features/background/failing_background.feature:6
        Given '10' cukes  # features/background/passing_background.feature:4
        Given '10' cukes  # features/background/scenario_outline_passing_background.feature:4
        Given '2' cukes   # features/tons_of_cukes.feature:4
@@ -78,8 +78,8 @@ Feature: Cucumber command line
        Given '2' cukes   # features/tons_of_cukes.feature:52
       /^I should have '(.+)' cukes$/      # features/step_definitions/sample_steps.rb:31
        Then I should have '10' cukes      # features/background/background_with_name.feature:7
-       Then I should have '10' cukes      # features/background/failing_background.feature:8
-       Then I should have '10' cukes      # features/background/failing_background.feature:11
+       Then I should have '10' cukes      # features/background/failing_background.feature:9
+       Then I should have '10' cukes      # features/background/failing_background.feature:12
        Then I should have '10' cukes      # features/background/passing_background.feature:7
        Then I should have '10' cukes      # features/background/passing_background.feature:10
        Then I should have '10' cukes      # features/background/pending_background.feature:7

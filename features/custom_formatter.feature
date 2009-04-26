@@ -4,8 +4,8 @@ Feature: Custom Formatter
     When I run cucumber --format Tag::Count features
     Then it should fail with
       """
-      | four | lots | one | three | two |
-      | 1    | 1    | 1   | 2     | 1   |
+      | after_file | four | lots | one | three | two |
+      | 1          | 1    | 1    | 1   | 2     | 1   |
 
       """
     
