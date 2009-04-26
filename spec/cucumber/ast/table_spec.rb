@@ -109,10 +109,10 @@ module Cucumber
       describe "replacing arguments" do
 
         before(:each) do
-          @table = table = Table.new([
+          @table = Table.new([
             %w{qty book},
             %w{<qty> <book>}
-            ])
+          ])
         end
 
         it "should return a new table with arguments replaced with values" do
@@ -120,6 +120,18 @@ module Cucumber
 
           table_with_replaced_args.hashes[0]['book'].should == 'Unbearable lightness of being'
           table_with_replaced_args.hashes[0]['qty'].should == '5'
+        end
+
+        it "should recognise when entire cell is delimited" do
+          @table.should have_text('<book>')
+        end
+
+        it "should recognise when just a subset of a cell is delimited" do
+          table = Table.new([
+            %w{qty book},
+            ['<qty>', "This is <who>'s book"]
+          ])
+          table.should have_text('<who>')
         end
 
         it "should replace nil values with nil" do

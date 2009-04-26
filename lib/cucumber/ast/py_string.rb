@@ -43,7 +43,11 @@ module Cucumber
         end
         PyString.new(@start_line, @end_line, string, @quotes_indent)
       end
-      
+
+      def has_text?(text)
+        @string.index(text)
+      end
+
       # For testing only
       def to_sexp #:nodoc:
         [:py_string, to_s]
