@@ -52,16 +52,16 @@ Feature: backgrounds
       Scenario Outline: passing background
         Then I should have '<count>' cukes
 
-      Examples: 
-        | count |
-        | 10    |
+        Examples: 
+          | count |
+          | 10    |
 
       Scenario Outline: another passing background
         Then I should have '<count>' cukes
 
-      Examples: 
-        | count |
-        | 10    |
+        Examples: 
+          | count |
+          | 10    |
 
     2 scenarios
     4 passed steps
@@ -112,16 +112,16 @@ Feature: backgrounds
       Scenario Outline: failing background
         Then I should have '<count>' cukes
 
-      Examples: 
-        | count |
-        | 10    |
+        Examples: 
+          | count |
+          | 10    |
 
       Scenario Outline: another failing background
         Then I should have '<count>' cukes
 
-      Examples: 
-        | count |
-        | 10    |
+        Examples: 
+          | count |
+          | 10    |
 
     2 scenarios
     1 failed step

@@ -24,18 +24,18 @@ Feature: Multiline description names
         yawn
         Given <state> without a table               # features/step_definitions/sample_steps.rb:12
 
-      Examples: 
-        | state   |
-        | passing |
+        Examples: 
+          | state   |
+          | passing |
 
       Scenario Outline: name          # features/multiline_name.feature:21
         Given <state> without a table # features/step_definitions/sample_steps.rb:12
 
-      Examples: I'm a multiline name
-        which goes on and on and on for three lines
-        yawn
-        | state   |
-        | passing |
+        Examples: I'm a multiline name
+          which goes on and on and on for three lines
+          yawn
+          | state   |
+          | passing |
 
     3 scenarios
     6 passed steps

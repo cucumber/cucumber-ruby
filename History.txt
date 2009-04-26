@@ -1,3 +1,8 @@
+== 0.3.1 (In Git)
+
+=== New features
+* Examples and the associated tables are indented one level deeper than Scenario Outline. (Aslak Hellesøy)
+
 == 0.3.1 2009-04-26
 
 This release has several minor bug fixes and new features. With the addition of Latvian and Hungarian Cucumber

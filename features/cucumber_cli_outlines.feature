@@ -12,19 +12,19 @@ Feature: Cucumber command line
           Given <state> without a table
           Given <other_state> without a table
 
-        Examples: Rainbow colours
-          | state   | other_state |
-          | missing | passing     |
-          | passing | passing     |
-          | failing | passing     |
-          FAIL (RuntimeError)
-          ./features/step_definitions/sample_steps.rb:2:in `flunker'
-          ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-          features/outline_sample.feature:6:in `Given <state> without a table'
+          Examples: Rainbow colours
+            | state   | other_state |
+            | missing | passing     |
+            | passing | passing     |
+            | failing | passing     |
+            FAIL (RuntimeError)
+            ./features/step_definitions/sample_steps.rb:2:in `flunker'
+            ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
+            features/outline_sample.feature:6:in `Given <state> without a table'
 
-        Examples: Only passing
-          | state   | other_state |
-          | passing | passing     |
+          Examples: Only passing
+            | state   | other_state |
+            | passing | passing     |
 
       4 scenarios
       1 failed step
@@ -44,19 +44,19 @@ Feature: Cucumber command line
           Given <state> without a table
           Given <other_state> without a table
 
-        Examples: Rainbow colours
-          | state   | other_state |
-          | missing | passing     |
-          | passing | passing     |
-          | failing | passing     |
-          FAIL (RuntimeError)
-          ./features/step_definitions/sample_steps.rb:2:in `flunker'
-          ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-          features/outline_sample.feature:6:in `Given <state> without a table'
+          Examples: Rainbow colours
+            | state   | other_state |
+            | missing | passing     |
+            | passing | passing     |
+            | failing | passing     |
+            FAIL (RuntimeError)
+            ./features/step_definitions/sample_steps.rb:2:in `flunker'
+            ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
+            features/outline_sample.feature:6:in `Given <state> without a table'
 
-        Examples: Only passing
-          | state   | other_state |
-          | passing | passing     |
+          Examples: Only passing
+            | state   | other_state |
+            | passing | passing     |
 
       4 scenarios
       1 failed step
@@ -76,13 +76,13 @@ Feature: Cucumber command line
           Given <state> without a table       # features/step_definitions/sample_steps.rb:15
           Given <other_state> without a table # features/step_definitions/sample_steps.rb:12
 
-        Examples: Rainbow colours
-          | state   | other_state |
-          | failing | passing     |
-          FAIL (RuntimeError)
-          ./features/step_definitions/sample_steps.rb:2:in `flunker'
-          ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-          features/outline_sample.feature:6:in `Given <state> without a table'
+          Examples: Rainbow colours
+            | state   | other_state |
+            | failing | passing     |
+            FAIL (RuntimeError)
+            ./features/step_definitions/sample_steps.rb:2:in `flunker'
+            ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
+            features/outline_sample.feature:6:in `Given <state> without a table'
 
       1 scenario
       1 failed step

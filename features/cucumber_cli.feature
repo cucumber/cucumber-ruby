@@ -208,18 +208,18 @@ Feature: Cucumber command line
           yawn
           Given <state> without a table
 
-        Examples: 
-          | state   |
-          | passing |
+          Examples: 
+            | state   |
+            | passing |
     
         Scenario Outline: name
           Given <state> without a table
 
-        Examples: I'm a multiline name
-          which goes on and on and on for three lines
-          yawn
-          | state   |
-          | passing |
+          Examples: I'm a multiline name
+            which goes on and on and on for three lines
+            yawn
+            | state   |
+            | passing |
 
       Feature: Outline Sample
 
@@ -229,15 +229,15 @@ Feature: Cucumber command line
           Given <state> without a table
           Given <other_state> without a table
 
-        Examples: Rainbow colours
-          | state   | other_state |
-          | missing | passing     |
-          | passing | passing     |
-          | failing | passing     |
+          Examples: Rainbow colours
+            | state   | other_state |
+            | missing | passing     |
+            | passing | passing     |
+            | failing | passing     |
 
-        Examples: Only passing
-          | state   | other_state |
-          | passing | passing     |
+          Examples: Only passing
+            | state   | other_state |
+            | passing | passing     |
 
       @one
       Feature: Sample
@@ -273,16 +273,16 @@ Feature: Cucumber command line
         Scenario Outline: Ignore me
           Given <state> without a table
 
-        Examples: 
-          | state   |
-          | failing |
+          Examples: 
+            | state   |
+            | failing |
 
         Scenario Outline: Hantu Pisang match
           Given <state> without a table
 
-        Examples: 
-          | state   |
-          | passing |
+          Examples: 
+            | state   |
+            | passing |
 
       Feature: undefined multiline args
       
@@ -344,9 +344,9 @@ Feature: Cucumber command line
         Scenario Outline: Hantu Pisang match
           Given <state> without a table
 
-        Examples: 
-          | state   |
-          | passing |
+          Examples: 
+            | state   |
+            | passing |
 
       2 scenarios
       4 passed steps
