@@ -1,6 +1,7 @@
-== 0.3.x (In Git)
+== 0.3.1 2009-04-26
 
-With the addition of Latvian and Hungarian Cucumber now supports 32(!!) languages.
+This release has several minor bug fixes and new features. With the addition of Latvian and Hungarian Cucumber
+now supports 32(!!) languages.
 
 === New features
 * Support multiline names for Scenarios, Scenario Outlines, Backgrounds, Examples (#231 Joseph Wilk)
