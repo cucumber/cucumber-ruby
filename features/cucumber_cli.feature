@@ -353,6 +353,21 @@ Feature: Cucumber command line
 
       """
 
+  Scenario: Run a single background which matches a name using --name
+    When I run cucumber --name 'Hantu Pisang background' -q features/
+    Then it should pass with
+      """
+      Feature: search examples
+
+        Background: Hantu Pisang background match
+          Given passing without a table
+
+      0 scenarios
+      1 passed step
+
+      """
+
+
   Scenario: Run with a tag that exists on 2 scenarios
     When I run cucumber -q features --tags three
     Then it should pass with

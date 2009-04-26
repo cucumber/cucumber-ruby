@@ -19,7 +19,7 @@ With the addition of Latvian and Hungarian Cucumber now supports 32(!!) language
 * Exceptions from steps called within hooks are now reraised. (#294 Ben Mabey)
 
 === Removed/changed features
-* --scenario handle has been removed and replaced with --name which supports partial matches (#295 Joseph Wilk)
+* --scenario handle has been removed and replaced with --name which supports partial matches, regexp special characters, running named backgrounds (#295 Joseph Wilk)
 
 == 0.3.0 2009-04-14
 
