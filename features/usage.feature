@@ -15,9 +15,14 @@ Feature: Cucumber command line
        Given <state> without a table       # features/multiline_name.feature:22
        Given <state> without a table       # features/outline_sample.feature:6
        Given <other_state> without a table # features/outline_sample.feature:7
+       Given passing without a table       # features/search_sample.feature:4
+       Given passing without a table       # features/search_sample.feature:7
+       Given <state> without a table       # features/search_sample.feature:19
       /^failing without a table$/    # features/step_definitions/sample_steps.rb:15
        Given failing without a table # features/background/failing_background.feature:5
        Given failing without a table # features/background/scenario_outline_failing_background.feature:4
+       Given failing without a table # features/search_sample.feature:10
+       Given <state> without a table # features/search_sample.feature:13
       /^a step definition that calls an undefined step$/    # features/step_definitions/sample_steps.rb:19
        Given a step definition that calls an undefined step # features/call_undefined_step_from_step_def.feature:4
       /^call step "(.*)"$/                                              # features/step_definitions/sample_steps.rb:23

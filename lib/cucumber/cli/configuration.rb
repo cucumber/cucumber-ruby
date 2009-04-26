@@ -78,10 +78,11 @@ module Cucumber
             "with or without the @ prefix.") do |v|
             @options[:include_tags], @options[:exclude_tags] = *parse_tags(v)
           end
-          opts.on("-s SCENARIO", "--scenario SCENARIO", 
-            "Only execute the scenario with the given name. If this option",
-            "is given more than once, run all the specified scenarios.") do |v|
-            @options[:scenario_names] << v
+          opts.on("-n NAME", "--name NAME", 
+            "Only execute the feature elements which match part of the given name.",
+            "If this option is given more than once, it will match against all the",
+            "given names.") do |v|
+            @options[:name_regexps] << /#{v}/
           end
           opts.on("-e", "--exclude PATTERN", "Don't run feature files matching PATTERN") do |v|
             @options[:excludes] << v
@@ -334,16 +335,16 @@ Defined profiles in cucumber.yml:
     
       def default_options
         {
-          :strict         => false,
-          :require        => nil,
-          :lang           => 'en',
-          :dry_run        => false,
-          :formats        => {},
-          :excludes       => [],
-          :include_tags   => [],
-          :exclude_tags   => [],
-          :scenario_names => [],
-          :diff_enabled   => true
+          :strict       => false,
+          :require      => nil,
+          :lang         => 'en',
+          :dry_run      => false,
+          :formats      => {},
+          :excludes     => [],
+          :include_tags => [],
+          :exclude_tags => [],
+          :name_regexps => [],
+          :diff_enabled => true
         }
       end
     

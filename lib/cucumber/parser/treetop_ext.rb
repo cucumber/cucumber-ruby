@@ -17,7 +17,7 @@ module Cucumber
         @lines = lines
         @include_tags = options[:include_tags] || []
         @exclude_tags = options[:exclude_tags] || []
-        @names        = options[:scenario_names] || []
+        @name_regexps = options[:name_regexps] || []
       end
 
       def accept?(syntax_node)
@@ -48,7 +48,7 @@ module Cucumber
       end
       
       def matches_names?(syntax_node)
-        @names.nil? || @names.empty? || @names.detect{|name| syntax_node.matches_name?(name)}
+        @name_regexps.nil? || @name_regexps.empty? || @name_regexps.detect{|name_regexp| syntax_node.matches_name?(name_regexp)}
       end
     end
 

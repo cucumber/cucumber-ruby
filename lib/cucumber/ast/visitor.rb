@@ -11,8 +11,8 @@ module Cucumber
       end
 
       def matches_scenario_names?(node)
-        scenario_names = options[:scenario_names] || []
-        scenario_names.empty? || node.matches_scenario_names?(scenario_names)
+        scenario_name_regexps = options[:name_regexps] || []
+        scenario_name_regexps.empty? || node.matches_scenario_names?(scenario_name_regexps)
       end
 
       def visit_features(features)

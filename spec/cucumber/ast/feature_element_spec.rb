@@ -29,6 +29,11 @@ module Cucumber
         text_length.should == 3
       end
     end
+
+    it "should support checking if its name matches a list of regexps" do
+      @name = 'test'
+      matches_scenario_names?([/es/]).should be_true
+    end
     
   end
 end
