@@ -169,6 +169,7 @@ examples/self_test/features/background/scenario_outline_passing_background.featu
 examples/self_test/features/call_undefined_step_from_step_def.feature
 examples/self_test/features/failing_expectation.feature
 examples/self_test/features/lots_of_undefined.feature
+examples/self_test/features/multiline_name.feature
 examples/self_test/features/outline_sample.feature
 examples/self_test/features/sample.feature
 examples/self_test/features/step_definitions/sample_steps.rb
@@ -223,6 +224,7 @@ features/cucumber_cli.feature
 features/cucumber_cli_diff_disabled.feature
 features/cucumber_cli_outlines.feature
 features/custom_formatter.feature
+features/multiline_names.feature
 features/rake_task.feature
 features/report_called_undefined_steps.feature
 features/snippet.feature
@@ -313,6 +315,7 @@ rails_generators/feature/feature_generator.rb
 rails_generators/feature/templates/feature.erb
 rails_generators/feature/templates/steps.erb
 spec/cucumber/ast/background_spec.rb
+spec/cucumber/ast/feature_element_spec.rb
 spec/cucumber/ast/feature_factory.rb
 spec/cucumber/ast/feature_spec.rb
 spec/cucumber/ast/py_string_spec.rb

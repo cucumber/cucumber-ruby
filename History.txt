@@ -1,6 +1,5 @@
 == 0.3.x (In Git)
 
-=======
 With the addition of Latvian and Hungarian Cucumber now supports 32(!!) languages.
 
 === New features
@@ -11,6 +10,7 @@ With the addition of Latvian and Hungarian Cucumber now supports 32(!!) language
 * Pick up failure on after hook (#272 Aslak Hellesøy)
 
 === Bugfixes
+* Gem no longer depends on Hoe (Aslak Hellesøy)
 * Span html tags appear on HTML results with 0.3.0 (#299 Aslak Hellesøy)
 * Fixed incorrect colours in pretty formatter's table headers for outline tables (Aslak Hellesøy)
 * Exceptions from steps called within hooks are now reraised. (#294 Ben Mabey)
