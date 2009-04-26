@@ -20,6 +20,9 @@ now supports 32(!!) languages.
 * Fixed incorrect colours in pretty formatter's table headers for outline tables (Aslak Hellesøy)
 * Exceptions from steps called within hooks are now reraised. (#294 Ben Mabey)
 
+=== Removed/changed features
+* --scenario handle has been removed and replaced with --name which supports partial matches, regexp special characters, running named backgrounds (#295 Joseph Wilk)
+
 == 0.3.0 2009-04-14
 
 This release has some minor changes to the APIs, but big enough that a new major release is in order.

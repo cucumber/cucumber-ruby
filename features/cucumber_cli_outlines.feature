@@ -3,7 +3,7 @@ Feature: Cucumber command line
   Developers should be able to execute requirements as tests
 
   Scenario: Run scenario outline with filtering on outline name
-    When I run cucumber -q features --scenario "Test state"
+    When I run cucumber -q features --name "Test state"
     Then it should fail with
       """
       Feature: Outline Sample

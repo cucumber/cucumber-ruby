@@ -255,12 +255,12 @@ END_OF_MESSAGE
         
     end
 
-    it "should accept multiple --scenario options" do
+    it "should accept multiple --name options" do
       config = Configuration.new
-      config.parse!(['--scenario', "User logs in", '--scenario', "User signs up"])
+      config.parse!(['--name', "User logs in", '--name', "User signs up"])
       
-      config.options[:scenario_names].should include("User logs in")
-      config.options[:scenario_names].should include("User signs up")
+      config.options[:name_regexps].should include(/User logs in/)
+      config.options[:name_regexps].should include(/User signs up/)
     end
     
     it "should search for all features in the specified directory" do

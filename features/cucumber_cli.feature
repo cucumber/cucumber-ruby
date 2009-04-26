@@ -259,6 +259,31 @@ Feature: Cucumber command line
             hello
             \"\"\"
 
+      Feature: search examples
+
+        Background: Hantu Pisang background match
+          Given passing without a table
+
+        Scenario: should match Hantu Pisang
+          Given passing without a table
+
+        Scenario: Ignore me
+          Given failing without a table
+
+        Scenario Outline: Ignore me
+          Given <state> without a table
+
+        Examples: 
+          | state   |
+          | failing |
+
+        Scenario Outline: Hantu Pisang match
+          Given <state> without a table
+
+        Examples: 
+          | state   |
+          | passing |
+
       Feature: undefined multiline args
       
         Scenario: pystring
@@ -272,8 +297,8 @@ Feature: Cucumber command line
             | table   |
             | example |
 
-      17 scenarios
-      18 skipped steps
+      21 scenarios
+      26 skipped steps
       9 undefined steps
 
       """
@@ -304,23 +329,44 @@ Feature: Cucumber command line
 
       """
 
-  Scenario: Run scenario specified by name using --scenario
-    When I run cucumber --scenario Passing -q features
+  Scenario: Run feature elements which matches a name using --name
+    When I run cucumber --name Pisang -q features/
     Then it should pass with
       """
-      @one
-      Feature: Sample
+      Feature: search examples
 
-        @three
-        Scenario: Passing
-          Given passing
-            | a | b |
-            | c | d |
+        Background: Hantu Pisang background match
+          Given passing without a table
 
-      1 scenario
+        Scenario: should match Hantu Pisang
+          Given passing without a table
+
+        Scenario Outline: Hantu Pisang match
+          Given <state> without a table
+
+        Examples: 
+          | state   |
+          | passing |
+
+      2 scenarios
+      4 passed steps
+
+      """
+
+  Scenario: Run a single background which matches a name using --name
+    When I run cucumber --name 'Hantu Pisang background' -q features/
+    Then it should pass with
+      """
+      Feature: search examples
+
+        Background: Hantu Pisang background match
+          Given passing without a table
+
+      0 scenarios
       1 passed step
 
       """
+
 
   Scenario: Run with a tag that exists on 2 scenarios
     When I run cucumber -q features --tags three
