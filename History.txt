@@ -10,6 +10,7 @@ With the addition of Latvian and Hungarian Cucumber now supports 32(!!) language
 * Pick up failure on after hook (#272 Aslak Hellesøy)
 
 === Bugfixes
+* Problem using --scenario and Scenario Outline (#298 Aslak Hellesøy)
 * Tag Hook gets executed always there is a background (#301 Aslak Hellesøy)
 * Feature which only has a Background with steps causes an exception (#306 Aslak Hellesøy)
 * Gem no longer depends on Hoe (Aslak Hellesøy)

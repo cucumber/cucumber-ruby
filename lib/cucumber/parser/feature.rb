@@ -1148,6 +1148,10 @@ module Cucumber
           true
         end
 
+        def matches_name?(name_to_match)
+          name.build == name_to_match
+        end
+
         def build(filter, scenario_outline)
           [examples_keyword.line, examples_keyword.text_value, name.build, table.raw(filter, scenario_outline)]
         end
