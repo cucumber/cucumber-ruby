@@ -61,8 +61,8 @@ module Cucumber
         end
         
         def build(filter)
-          if(filter.nil? || feature_elements.accept?(filter))
-            background = bg.respond_to?(:build) ? bg.build : nil
+          if(filter.nil? || feature_elements.accept?(filter) || (!bg.empty? && filter.accept?(bg)))
+            background = bg.respond_to?(:build) ? bg.build : nil      
             Ast::Feature.new(
               background, 
               comment.build, 
@@ -481,6 +481,16 @@ module Cucumber
       end
 
       module Background1
+
+        def matches_name?(regexp_to_match)
+          name.build =~ regexp_to_match
+        end
+
+	   def has_tags?(tag_names)
+          feature_tags = self.parent.tags
+          feature_tags.has_tags?(tag_names)
+	   end
+
         def build
           Ast::Background.new(
             comment.build, 
