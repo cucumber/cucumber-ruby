@@ -69,12 +69,13 @@ end
 Given /^another unused$/ do
 end
 
-after_file = File.dirname(__FILE__) + '/../../tmp/after.txt'
+after_file = File.expand_path(File.dirname(__FILE__) + '/../../tmp/after.txt')
 
-Before('@after_file') do
+Before do
   FileUtils.rm(after_file) if File.exist?(after_file)
 end
 
 After('@after_file') do
+  FileUtils.mkdir_p(File.dirname(after_file))
   FileUtils.touch(after_file)
 end
