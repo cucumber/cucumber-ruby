@@ -172,6 +172,7 @@ examples/self_test/features/lots_of_undefined.feature
 examples/self_test/features/multiline_name.feature
 examples/self_test/features/outline_sample.feature
 examples/self_test/features/sample.feature
+examples/self_test/features/search_sample.feature
 examples/self_test/features/step_definitions/sample_steps.rb
 examples/self_test/features/support/env.rb
 examples/self_test/features/support/tag_count_formatter.rb
@@ -327,6 +328,7 @@ spec/cucumber/ast/scenario_spec.rb
 spec/cucumber/ast/step_collection_spec.rb
 spec/cucumber/ast/step_spec.rb
 spec/cucumber/ast/table_spec.rb
+spec/cucumber/ast/visitor_spec.rb
 spec/cucumber/broadcaster_spec.rb
 spec/cucumber/cli/configuration_spec.rb
 spec/cucumber/cli/main_spec.rb
