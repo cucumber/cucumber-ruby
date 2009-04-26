@@ -486,10 +486,10 @@ module Cucumber
           name.build =~ regexp_to_match
         end
 
-	   def has_tags?(tag_names)
-          feature_tags = self.parent.tags
-          feature_tags.has_tags?(tag_names)
-	   end
+       def has_tags?(tag_names)
+         feature_tags = self.parent.tags
+         feature_tags.has_tags?(tag_names)
+       end
 
         def build
           Ast::Background.new(
