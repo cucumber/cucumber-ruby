@@ -4,7 +4,6 @@ module Cucumber
   module Ast
     class Background
       include FeatureElement
-      attr_writer :feature
 
       def initialize(comment, line, keyword, name, steps)
         @comment, @line, @keyword, @name, @steps = comment, line, keyword, name, StepCollection.new(steps)

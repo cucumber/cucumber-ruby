@@ -2,6 +2,8 @@ require 'enumerator'
 
 module Cucumber
   module FeatureElement
+    attr_writer :feature
+
     def attach_steps(steps)
       steps.each {|step| step.feature_element = self}
     end

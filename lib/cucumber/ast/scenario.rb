@@ -17,11 +17,6 @@ module Cucumber
         end
       end
 
-      def feature=(feature)
-        @feature = feature
-        @background.feature = feature if @background
-      end
-
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)

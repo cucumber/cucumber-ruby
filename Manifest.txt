@@ -206,6 +206,7 @@ examples/tickets/features/272/hooks_steps.rb
 examples/tickets/features/279/py_string_indent.feature
 examples/tickets/features/279/py_string_indent.steps.rb
 examples/tickets/features/279/wrong.feature_
+examples/tickets/features/306/only_background.feature
 examples/tickets/features/lib/eatting_machine.rb
 examples/tickets/features/lib/pantry.rb
 examples/tickets/features/scenario_outline.feature
