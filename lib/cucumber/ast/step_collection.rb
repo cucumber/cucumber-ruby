@@ -55,11 +55,11 @@ module Cucumber
       end
 
       def failed?
-        @steps.detect{|step_invocation| step_invocation.status == :failed}
+        status == :failed
       end
 
       def passed?
-        @steps.detect{|step_invocation| step_invocation.status != :passed}.nil?
+        status == :passed
       end
       
       def status
