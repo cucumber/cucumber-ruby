@@ -52,26 +52,14 @@ module Cucumber
 
       def print_counts
         @io.print dump_count(step_mother.scenarios.length, "scenario")
-        scenario_counts = [:failed, :skipped, :undefined, :pending, :passed].map do |status|
-          if step_mother.scenarios(status).any?
-            count_string = "#{step_mother.scenarios(status).length} #{status.to_s}"
-            format_string(count_string, status)
-          end
-        end
-        @io.puts(" (#{scenario_counts.compact.join(', ')})")
+        print_status_counts{|status| step_mother.scenarios(status)}
 
         @io.print dump_count(step_mother.steps.length, "step")
-        step_counts = [:failed, :skipped, :undefined, :pending, :passed].map do |status|
-          if step_mother.steps(status).any?
-            count_string = "#{step_mother.steps(status).length} #{status.to_s}"
-            format_string(count_string, status)
-          end
-        end
-        @io.puts(" (#{step_counts.compact.join(', ')})")
+        print_status_counts{|status| step_mother.steps(status)}
 
         @io.flush
       end
-
+      
       def print_exception(e, status, indent)
         if @options[:strict] || !(Undefined === e) || e.nested?
           @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
@@ -104,6 +92,14 @@ module Cucumber
       end
 
     private
+
+      def print_status_counts
+        counts = [:failed, :skipped, :undefined, :pending, :passed].map do |status|
+          elements = yield status
+          elements.any? ? format_string("#{elements.length} #{status.to_s}", status) : nil
+        end
+        @io.puts(" (#{counts.compact.join(', ')})")
+      end
 
       def dump_count(count, what, state=nil)
         [count, state, "#{what}#{count == 1 ? '' : 's'}"].compact.join(" ")
