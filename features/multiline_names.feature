@@ -37,7 +37,7 @@ Feature: Multiline description names
           | state   |
           | passing |
 
-    3 scenarios
-    6 passed steps
+    3 scenarios (3 passed)
+    6 steps (6 passed)
 
     """

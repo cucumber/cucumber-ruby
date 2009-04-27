@@ -26,11 +26,8 @@ Feature: Cucumber command line
             | state   | other_state |
             | passing | passing     |
 
-      4 scenarios
-      1 failed step
-      2 skipped steps
-      1 undefined step
-      4 passed steps
+      4 scenarios (1 failed, 1 undefined, 2 passed)
+      8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
 
       """
 
@@ -58,11 +55,8 @@ Feature: Cucumber command line
             | state   | other_state |
             | passing | passing     |
 
-      4 scenarios
-      1 failed step
-      2 skipped steps
-      1 undefined step
-      4 passed steps
+      4 scenarios (1 failed, 1 undefined, 2 passed)
+      8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
 
       """
 
@@ -84,9 +78,8 @@ Feature: Cucumber command line
             ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
             features/outline_sample.feature:6:in `Given <state> without a table'
 
-      1 scenario
-      1 failed step
-      1 skipped step
+      1 scenario (1 failed)
+      2 steps (1 failed, 1 skipped)
 
       """
 
@@ -106,11 +99,8 @@ Feature: Cucumber command line
       ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
       features/outline_sample.feature:6:in `Given <state> without a table'
 
-      5 scenarios
-      1 failed step
-      2 skipped steps
-      1 undefined step
-      4 passed steps
+      5 scenarios (1 failed, 1 undefined, 3 passed)
+      8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
 
       """
 

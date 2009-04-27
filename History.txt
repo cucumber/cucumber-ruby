@@ -4,6 +4,7 @@
 * Step table with blank cell fails (#308 JohnnyT)
 
 === New features
+* Summary should report scenarios (#32 Aslak Hellesøy)
 * Examples and the associated tables are indented one level deeper than Scenario Outline. (Aslak Hellesøy)
 
 == 0.3.1 2009-04-26

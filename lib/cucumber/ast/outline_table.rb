@@ -80,6 +80,11 @@ module Cucumber
           @step_invocations.passed?
         end
 
+        # Returns the status
+        def status
+          @step_invocations.status
+        end
+
         private
 
         def header?

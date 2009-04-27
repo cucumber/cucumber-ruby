@@ -45,6 +45,11 @@ module Cucumber
         @steps.exception
       end
 
+      # Returns the status
+      def status
+        @steps.status
+      end
+
       def skip_invoke!
         @steps.each{|step_invocation| step_invocation.skip_invoke!}
         @feature.next_feature_element(self) do |next_one|

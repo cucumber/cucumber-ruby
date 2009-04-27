@@ -61,6 +61,11 @@ module Cucumber
       def passed?
         @steps.detect{|step_invocation| step_invocation.status != :passed}.nil?
       end
+      
+      def status
+        @steps.each{|step_invocation| return step_invocation.status if step_invocation.status != :passed}
+        :passed
+      end
 
       def to_sexp
         @steps.map{|step| step.to_sexp}

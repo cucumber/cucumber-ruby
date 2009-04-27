@@ -105,8 +105,13 @@ module Cucumber
       end
     end
 
-    def scenarios
+    def scenarios(status = nil)
       @scenarios ||= []
+      if(status)
+        @scenarios.select{|scenario| scenario.status == status}
+      else
+        @scenarios
+      end
     end
 
     # Registers a new StepDefinition. This method is aliased
