@@ -1,4 +1,7 @@
-== 0.3.1 (In Git)
+== 0.3.2 (In Git)
+
+=== Bugfixes
+* Step table with blank cell fails (#308 JohnnyT)
 
 === New features
 * Examples and the associated tables are indented one level deeper than Scenario Outline. (Aslak Hellesøy)
