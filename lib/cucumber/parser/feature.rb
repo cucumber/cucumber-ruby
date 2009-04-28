@@ -827,6 +827,10 @@ module Cucumber
         end
 
         def matches_name?(regexp_to_match)
+          outline_matches_name?(regexp_to_match) || examples_sections.matches_name?(regexp_to_match)
+        end
+
+        def outline_matches_name?(regexp_to_match)
           name.build =~ regexp_to_match
         end
 
@@ -1088,9 +1092,13 @@ module Cucumber
           elements.detect { |e| e.at_line?(line) }
         end
 
+        def matches_name?(regexp_to_match)
+          elements.detect { |e| e.matches_name?(regexp_to_match) }
+        end
+
         def build(filter, scenario_outline)
           elements.map do |e|
-            if(filter.nil? || filter.accept?(e) || filter.outline_at_line?(scenario_outline))
+            if(filter.nil? || filter.accept_example?(e, scenario_outline))
               e.build(filter, scenario_outline)
             end
           end.compact
