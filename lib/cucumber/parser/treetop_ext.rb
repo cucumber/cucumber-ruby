@@ -26,6 +26,11 @@ module Cucumber
         matches_names?(syntax_node)
       end
 
+      def accept_example?(syntax_node, outline)
+        (at_line?(syntax_node) || outline_at_line?(outline)) && 
+        (matches_names?(syntax_node) || outline_matches_names?(outline))
+      end
+      
       def at_line?(syntax_node)
         @lines.nil? || @lines.empty? || @lines.detect{|line| syntax_node.at_line?(line)}
       end
@@ -45,6 +50,10 @@ module Cucumber
 
       def excluded_by_tags?(syntax_node)
         @exclude_tags.any? && syntax_node.has_tags?(@exclude_tags)
+      end
+      
+      def outline_matches_names?(syntax_node)
+        @name_regexps.nil? || @name_regexps.empty? || @name_regexps.detect{|name_regexp| syntax_node.outline_matches_name?(name_regexp)}
       end
       
       def matches_names?(syntax_node)

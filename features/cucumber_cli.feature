@@ -284,6 +284,17 @@ Feature: Cucumber command line
             | state   |
             | passing |
 
+        Scenario Outline: no match in name but in examples
+          Given <state> without a table
+
+          Examples: Hantu Pisang
+            | state   |
+            | passing |
+
+          Examples: Ignore me
+            | state   |
+            | failing |
+
       Feature: undefined multiline args
       
         Scenario: pystring
@@ -297,8 +308,8 @@ Feature: Cucumber command line
             | table   |
             | example |
 
-      21 scenarios
-      26 skipped steps
+      23 scenarios
+      30 skipped steps
       9 undefined steps
 
       """
@@ -348,8 +359,15 @@ Feature: Cucumber command line
             | state   |
             | passing |
 
-      2 scenarios
-      4 passed steps
+        Scenario Outline: no match in name but in examples
+          Given <state> without a table
+
+          Examples: Hantu Pisang
+            | state   |
+            | passing |
+
+      3 scenarios
+      6 passed steps
 
       """
 

@@ -18,6 +18,7 @@ Feature: Cucumber command line
        Given passing without a table       # features/search_sample.feature:4
        Given passing without a table       # features/search_sample.feature:7
        Given <state> without a table       # features/search_sample.feature:19
+       Given <state> without a table       # features/search_sample.feature:25
       /^failing without a table$/    # features/step_definitions/sample_steps.rb:15
        Given failing without a table # features/background/failing_background.feature:5
        Given failing without a table # features/background/scenario_outline_failing_background.feature:4
