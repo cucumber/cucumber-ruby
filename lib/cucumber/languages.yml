@@ -316,7 +316,7 @@
   feature: Egenskap
   background: Bakgrunn
   scenario: Scenario
-  scenario_outline: Abstrakt Scenario
+  scenario_outline: Abstrakt Scenario|Scenariomal
   examples: Eksempler
   given: Gitt
   when: Når
