@@ -304,6 +304,18 @@ Examples: I'm a multiline name
                   [:row, 8,
                     [:cell, "5"]]]]]]
         end
+
+        it "should allow Examples to have multiline names" do
+          pending('https://rspec.lighthouseapp.com/projects/16211/tickets/307-031-step-mother-parses-scenario-titles') do
+            parse(%{Feature: Hi
+Scenario: When I have when in scenario
+Given I am a step
+}).to_sexp.should ==
+            [:feature, nil, "Feature: Hi",
+              [:scenario, 2, "Scenario:", "When I have when in scenario",
+                [:step, 3, "Given", "I am a step"]]]
+          end
+        end
       end
 
       describe "Syntax" do

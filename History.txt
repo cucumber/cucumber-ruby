@@ -1,6 +1,10 @@
-== 0.3.1 (In Git)
+== 0.3.2 (In Git)
+
+=== Bugfixes
+* Step table with blank cell fails (#308 JohnnyT)
 
 === New features
+* Summary should report scenarios (#32 Aslak Hellesøy)
 * Examples and the associated tables are indented one level deeper than Scenario Outline. (Aslak Hellesøy)
 * Added support for Examples selection when using --name. (#295 Joseph Wilk)
 

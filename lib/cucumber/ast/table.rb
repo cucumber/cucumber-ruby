@@ -192,7 +192,7 @@ module Cucumber
       end
 
       def has_text?(text)
-        raw.flatten.detect{|cell_value| cell_value.index(text)}
+        raw.flatten.compact.detect{|cell_value| cell_value.index(text)}
       end
 
       def cells_rows

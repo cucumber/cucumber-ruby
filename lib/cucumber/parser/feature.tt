@@ -278,10 +278,10 @@ module Cucumber
       end
       
       rule lines_to_keyword
-        (line_to_keyword)* { 
-        def build
-          elements.map{|s| s.build}.join("\n")
-        end
+        line_to_keyword* {
+          def build
+            elements.map{|s| s.build}.join("\n")
+          end
         }
       end
 

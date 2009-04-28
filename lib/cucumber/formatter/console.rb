@@ -51,17 +51,15 @@ module Cucumber
       end
 
       def print_counts
-        @io.puts dump_count(step_mother.scenarios.length, "scenario")
+        @io.print dump_count(step_mother.scenarios.length, "scenario")
+        print_status_counts{|status| step_mother.scenarios(status)}
 
-        [:failed, :skipped, :undefined, :pending, :passed].each do |status|
-          if step_mother.steps(status).any?
-            count_string = dump_count(step_mother.steps(status).length, "step", status.to_s)
-            @io.puts format_string(count_string, status)
-            @io.flush
-          end
-        end
+        @io.print dump_count(step_mother.steps.length, "step")
+        print_status_counts{|status| step_mother.steps(status)}
+
+        @io.flush
       end
-
+      
       def print_exception(e, status, indent)
         if @options[:strict] || !(Undefined === e) || e.nested?
           @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
@@ -94,6 +92,14 @@ module Cucumber
       end
 
     private
+
+      def print_status_counts
+        counts = [:failed, :skipped, :undefined, :pending, :passed].map do |status|
+          elements = yield status
+          elements.any? ? format_string("#{elements.length} #{status.to_s}", status) : nil
+        end
+        @io.puts(" (#{counts.compact.join(', ')})")
+      end
 
       def dump_count(count, what, state=nil)
         [count, state, "#{what}#{count == 1 ? '' : 's'}"].compact.join(" ")

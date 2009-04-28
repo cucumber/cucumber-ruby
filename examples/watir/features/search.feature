@@ -6,4 +6,7 @@ Feature: Search
   Scenario: Find what I'm looking for
     Given I am on the Google search page
     When I search for "cucumber github"
-    Then I should see a link to "Ruby on Rails — cucumber — GitHub":http://github.com/aslakhellesoy/cucumber/wikis/ruby-on-rails
+    Then I should see
+      """
+      BDD that talks to domain experts first and code second
+      """

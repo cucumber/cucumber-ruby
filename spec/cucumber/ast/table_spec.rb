@@ -129,7 +129,7 @@ module Cucumber
         it "should recognise when just a subset of a cell is delimited" do
           table = Table.new([
             %w{qty book},
-            ['<qty>', "This is <who>'s book"]
+            [nil, "This is <who>'s book"]
           ])
           table.should have_text('<who>')
         end

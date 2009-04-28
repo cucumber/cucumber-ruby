@@ -15,8 +15,8 @@ Feature: backgrounds
       Scenario: another passing background
         Then I should have '10' cukes
 
-    1 scenario
-    2 passed steps
+    1 scenario (1 passed)
+    2 steps (2 passed)
     
     """
   
@@ -35,8 +35,8 @@ Feature: backgrounds
       Scenario: another passing background
         Then I should have '10' cukes
 
-    2 scenarios
-    4 passed steps
+    2 scenarios (2 passed)
+    4 steps (4 passed)
     
     """
 
@@ -63,8 +63,8 @@ Feature: backgrounds
           | count |
           | 10    |
 
-    2 scenarios
-    4 passed steps
+    2 scenarios (2 passed)
+    4 steps (4 passed)
 
     """
 
@@ -89,9 +89,8 @@ Feature: backgrounds
       Scenario: another failing background
         Then I should have '10' cukes
 
-    2 scenarios
-    1 failed step
-    5 skipped steps
+    2 scenarios (1 failed, 1 skipped)
+    6 steps (1 failed, 5 skipped)
 
     """
     And "examples/self_test/tmp/after.txt" should exist
@@ -123,9 +122,8 @@ Feature: backgrounds
           | count |
           | 10    |
 
-    2 scenarios
-    1 failed step
-    3 skipped steps
+    2 scenarios (1 failed, 1 skipped)
+    4 steps (1 failed, 3 skipped)
 
     """
 
@@ -144,9 +142,8 @@ Feature: backgrounds
       Scenario: another pending background
         Then I should have '10' cukes
 
-    2 scenarios
-    2 skipped steps
-    2 undefined steps
+    2 scenarios (2 undefined)
+    4 steps (2 skipped, 2 undefined)
 
     """
 
@@ -171,10 +168,8 @@ Feature: backgrounds
           features/background/failing_background_after_success.feature:5:in `And '10' global cukes'
         Then I should have '10' global cukes
 
-    2 scenarios
-    1 failed step
-    1 skipped step
-    4 passed steps
+    2 scenarios (1 failed, 1 passed)
+    6 steps (1 failed, 1 skipped, 4 passed)
 
     """
 
@@ -214,8 +209,8 @@ Feature: backgrounds
             I sleep all night and I test all day
           \"\"\"
 
-    2 scenarios
-    8 passed steps
+    2 scenarios (2 passed)
+    8 steps (8 passed)
     
     """
 
@@ -231,8 +226,8 @@ Feature: backgrounds
       Scenario: example
         Then I should have '10' cukes
 
-    1 scenario
-    2 passed steps
+    1 scenario (1 passed)
+    2 steps (2 passed)
     
     """
 

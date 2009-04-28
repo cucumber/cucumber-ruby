@@ -13,8 +13,8 @@ Feature: Cucumber command line
         Scenario: Missing
           Given missing
 
-      1 scenario
-      1 undefined step
+      1 scenario (1 undefined)
+      1 step (1 undefined)
 
       """
 
@@ -31,8 +31,8 @@ Feature: Cucumber command line
             Undefined step: "missing" (Cucumber::Undefined)
             features/sample.feature:6:in `Given missing'
 
-      1 scenario
-      1 undefined step
+      1 scenario (1 undefined)
+      1 step (1 undefined)
 
       """
 
@@ -49,8 +49,8 @@ Feature: Cucumber command line
           | a | b |
           | c | d |
 
-    1 scenario
-    1 passed step
+    1 scenario (1 passed)
+    1 step (1 passed)
 
     """
 
@@ -76,9 +76,8 @@ Feature: Cucumber command line
             ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
             features/sample.feature:16:in `Given failing'
 
-      2 scenarios
-      1 failed step
-      1 undefined step
+      2 scenarios (1 failed, 1 undefined)
+      2 steps (1 failed, 1 undefined)
 
       """
 
@@ -93,8 +92,8 @@ Feature: Cucumber command line
         Scenario: Missing
           Given missing
 
-      1 scenario
-      1 passed step
+      1 scenario (1 passed)
+      1 step (1 passed)
 
       """
 
@@ -111,8 +110,8 @@ Feature: Cucumber command line
             | a | b |
             | c | d |
 
-      1 scenario
-      1 passed step
+      1 scenario (1 passed)
+      1 step (1 passed)
 
       """
 
@@ -129,10 +128,8 @@ Feature: Cucumber command line
       ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
       features/sample.feature:16:in `Given failing'
 
-      3 scenarios
-      1 failed step
-      1 undefined step
-      1 passed step
+      3 scenarios (1 failed, 1 undefined, 1 passed)
+      3 steps (1 failed, 1 undefined, 1 passed)
 
       """
 
@@ -160,8 +157,8 @@ Feature: Cucumber command line
           Når jeg summerer
           Så skal resultatet være 13
 
-      2 scenarios
-      9 passed steps
+      2 scenarios (2 passed)
+      9 steps (9 passed)
 
       """
 
@@ -307,10 +304,9 @@ Feature: Cucumber command line
           Given a table
             | table   |
             | example |
-
-      23 scenarios
-      30 skipped steps
-      9 undefined steps
+      
+      23 scenarios (17 skipped, 5 undefined, 1 passed)
+      39 steps (30 skipped, 9 undefined)
 
       """
 
@@ -320,11 +316,11 @@ Feature: Cucumber command line
       """
       UUUUU
 
-      1 scenario
-      5 undefined steps
+      1 scenario (1 undefined)
+      5 steps (5 undefined)
 
       """
-    And "examples/self_test/tmp/pretty.txt" should match
+    And "examples/self_test/tmp/pretty.txt" should contain
       """
       Feature: Lots of undefined
 
@@ -334,9 +330,9 @@ Feature: Cucumber command line
           And it's 40 degrees in Norway
           When I stop procrastinating
           And there is world peace
-
-      1 scenario
-      5 undefined steps
+      
+      1 scenario (1 undefined)
+      5 steps (5 undefined)
 
       """
 
@@ -366,8 +362,8 @@ Feature: Cucumber command line
             | state   |
             | passing |
 
-      3 scenarios
-      6 passed steps
+      3 scenarios (3 passed)
+      6 steps (6 passed)
 
       """
 
@@ -380,8 +376,8 @@ Feature: Cucumber command line
         Background: Hantu Pisang background match
           Given passing without a table
 
-      0 scenarios
-      1 passed step
+      0 scenarios ()
+      1 step (1 passed)
 
       """
 
@@ -403,9 +399,8 @@ Feature: Cucumber command line
             | a | b |
             | c | d |
 
-      2 scenarios
-      1 undefined step
-      1 passed step
+      2 scenarios (1 undefined, 1 passed)
+      2 steps (1 undefined, 1 passed)
 
       """
 
@@ -437,10 +432,8 @@ Feature: Cucumber command line
             ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
             features/sample.feature:16:in `Given failing'
 
-      3 scenarios
-      1 failed step
-      1 undefined step
-      1 passed step
+      3 scenarios (1 failed, 1 undefined, 1 passed)
+      3 steps (1 failed, 1 undefined, 1 passed)
 
       """
 
@@ -461,9 +454,8 @@ Feature: Cucumber command line
             | a | b |
             | c | d |
 
-      2 scenarios
-      1 skipped step
-      1 undefined step
+      2 scenarios (1 skipped, 1 undefined)
+      2 steps (1 skipped, 1 undefined)
 
       """
 

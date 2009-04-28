@@ -1482,7 +1482,6 @@ module Cucumber
       end
 
       module LinesToKeyword0
- 
         def build
           elements.map{|s| s.build}.join("\n")
         end
