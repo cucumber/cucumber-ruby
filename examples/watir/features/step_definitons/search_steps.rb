@@ -10,10 +10,8 @@ When /I search for "(.*)"/ do |query|
   @browser.button(:name, 'btnG').click
 end
 
-Then /I should see a link to "(.*)":(.*)/ do |text, url|
-  link = @browser.link(:url, url)
-  link.should_not == nil
-  link.text.should == text
+Then /I should see/ do |text|
+  @browser.text.should =~ /#{text}/m
 end
 
 # To avoid step definitions that are tightly coupled to your user interface,
