@@ -10,6 +10,10 @@ Given /^a standard Cucumber project directory structure$/ do
   end
 end
 
+Given /^a file named "([^\"]*)"$/ do |file_name|
+  create_file(file_name, '')
+end
+
 Given /^a file named "([^\"]*)" with:$/ do |file_name, file_content|
   create_file(file_name, file_content)
 end
@@ -41,6 +45,10 @@ end
 
 Then /^the output should contain$/ do |text|
   last_stdout.should include(text)
+end
+
+Then /^the output should not contain$/ do |text|
+  last_stdout.should_not include(text)
 end
 
 Then /^"(.*)" should contain$/ do |file, text|
