@@ -3,6 +3,7 @@
 === Bugfixes
 * rake tasks with profiles not respecting --require flags (#311 Ben Mabey)
 * Step table with blank cell fails (#308 JohnnyT)
+* Fixed error where unused table cells in Examples where raising exceptions due to having no status (#302 Joseph Wilk)
 
 === New features
 * Support for Hebrew (Ido Kanner)
