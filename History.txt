@@ -1,6 +1,7 @@
 == 0.3.2 (In Git)
 
 === Bugfixes
+* rake tasks with profiles not respecting --require flags (#311 Ben Mabey)
 * Step table with blank cell fails (#308 JohnnyT)
 
 === New features

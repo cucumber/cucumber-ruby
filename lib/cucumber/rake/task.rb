@@ -62,6 +62,8 @@ module Cucumber
       def profile=(profile)
         @profile = profile
         unless feature_list
+          # TODO: remove once we completely remove these from the rake task.
+          @step_list = []
           @feature_list = [] # Don't use accessor to avoid deprecation warning.
         end
       end
