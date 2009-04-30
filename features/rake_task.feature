@@ -128,23 +128,23 @@ Feature: Rake task
     Given a file named "features/support/env.rb"
     And a file named "features/support/dont_require_me.rb"
     And the following profile is defined:
-    """
-    no_bomb: features/missing_step_definitions.feature:3 --require features/support/env.rb --verbose
-    """
+      """
+      no_bomb: features/missing_step_definitions.feature:3 --require features/support/env.rb --verbose
+      """
     And a file named "Rakefile" with:
-    """
-    $LOAD_PATH.unshift(CUCUMBER_LIB)
-    require 'cucumber/rake/task'
+      """
+      $LOAD_PATH.unshift(CUCUMBER_LIB)
+      require 'cucumber/rake/task'
 
-    Cucumber::Rake::Task.new(:features) do |t|
-      t.profile = "no_bomb"
-      t.cucumber_opts = "--quiet --no-color"
-    end
-    """
+      Cucumber::Rake::Task.new(:features) do |t|
+        t.profile = "no_bomb"
+        t.cucumber_opts = "--quiet --no-color"
+      end
+      """
 
     When I run rake features
     Then it should pass
     And the output should not contain
-    """
-      * features/support/dont_require_me.rb
-    """
+      """
+        * features/support/dont_require_me.rb
+      """
