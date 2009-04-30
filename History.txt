@@ -4,6 +4,7 @@
 * Step table with blank cell fails (#308 JohnnyT)
 
 === New features
+* Support for Hebrew (Ido Kanner)
 * Summary should report scenarios (#32 Aslak Hellesøy)
 * Examples and the associated tables are indented one level deeper than Scenario Outline. (Aslak Hellesøy)
 * Added support for Examples selection when using --name. (#295 Joseph Wilk)
