@@ -11,7 +11,7 @@ end
 After do
 end
 
-Given /להוסיף את המספר (\d+) למחשבון/ do |n|
+Given /שהזנתי (\d+) למחשבון/ do |n|
   @calc.push n.to_i
 end
 

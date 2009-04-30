@@ -210,15 +210,15 @@
   name: Hebrew
   native: עברית
   encoding: UTF-8
-  feature: תאור
+  feature: תכונה
   background: רקע
-  scenario: תסריט
-  scenario_outline: מסגרת תסריט
+  scenario: תרחיש
+  scenario_outline: תבנית תרחיש
   examples: דוגמאות
-  given: ניתן
+  given: בהינתן
   when: כאשר
-  then: אז
-  and: ו
+  then: אז|אזי
+  and: וגם
   but: אבל
   space_after_keyword: true
 "hu":

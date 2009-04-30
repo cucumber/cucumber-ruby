@@ -4,7 +4,7 @@ class Calculator
     @args << n
   end
 
-  def הוסף
+  def חבר
     @args.inject(0){|n,sum| sum+=n}
   end
 
