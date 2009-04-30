@@ -206,6 +206,21 @@
   and: Et
   but: Mais
   space_after_keyword: true
+"he":
+  name: Hebrew
+  native: עברית
+  encoding: UTF-8
+  feature: תאור
+  background: רקע
+  scenario: תסריט
+  scenario_outline: מסגרת תסריט
+  examples: דוגמאות
+  given: ניתן
+  when: כאשר
+  then: אז
+  and: ו
+  but: אבל
+  space_after_keyword: true
 "hu":
   name: Hungarian
   native: magyar
@@ -316,7 +331,7 @@
   feature: Egenskap
   background: Bakgrunn
   scenario: Scenario
-  scenario_outline: Abstrakt Scenario|Scenariomal
+  scenario_outline: Abstrakt Scenario
   examples: Eksempler
   given: Gitt
   when: Når
@@ -482,4 +497,4 @@
   then: То
   and: И
   but: Но
-  space_after_keyword: true  
+  space_after_keyword: true
