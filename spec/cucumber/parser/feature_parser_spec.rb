@@ -313,7 +313,7 @@ Given I am a step
 }).to_sexp.should ==
             [:feature, nil, "Feature: Hi",
               [:scenario, 2, "Scenario:", "When I have when in scenario",
-                [:step, 3, "Given", "I am a step"]]]
+                [:step_invocation, 3, "Given", "I am a step"]]]
           end
         end
       end
