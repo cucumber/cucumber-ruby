@@ -78,7 +78,7 @@ module Cucumber
             "with or without the @ prefix.") do |v|
             @options[:include_tags], @options[:exclude_tags] = *parse_tags(v)
           end
-          opts.on("-n NAME", "--name NAME", 
+          opts.on("-N NAME", "--name NAME",
             "Only execute the feature elements which match part of the given name.",
             "If this option is given more than once, it will match against all the",
             "given names.") do |v|
