@@ -17,6 +17,7 @@ require 'spec/expectations'
 
 # Webrat
 require 'webrat'
+
 Webrat.configure do |config|
   config.mode = :selenium
 end
@@ -31,11 +32,14 @@ end
 
 # START HACK
 # Disable Rails-specific code
-module Webrat
-  def self.start_app_server
+class Webrat::Selenium::ApplicationServer
+  def self.boot
+    
+    STDOUT.puts "Starting app server"
   end
   
-  def self.stop_app_server
+  def self.stop_at_exit
+    STDOUT.puts "Stopping app server"
   end
 end
 # END HACK
