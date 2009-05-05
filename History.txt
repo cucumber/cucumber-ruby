@@ -1,4 +1,7 @@
-== 0.3.2 (In Git)
+== 0.3.2 2009-05-05
+
+This release has some minor bug fixes and new features.
+Nothing major, but we need a release for RailsConf'09 in Las Vegas!
 
 === Bugfixes
 * rake tasks with profiles not respecting --require flags (#311 Ben Mabey)
