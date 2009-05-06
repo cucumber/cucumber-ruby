@@ -1,7 +1,7 @@
 Feature: search examples
 
- Background: Hantu Pisang background match
-   Given passing without a table
+  Background: Hantu Pisang background match
+    Given passing without a table
 
   Scenario: should match Hantu Pisang
     Given passing without a table
@@ -12,21 +12,21 @@ Feature: search examples
   Scenario Outline: Ignore me
     Given <state> without a table
     Examples:
-      |state|
-      |failing|
+      | state   |
+      | failing |
 
   Scenario Outline: Hantu Pisang match
     Given <state> without a table
     Examples:
-      |state|
-      |passing|
+      | state   |
+      | passing |
   
   Scenario Outline: no match in name but in examples
     Given <state> without a table
     Examples: Hantu Pisang
-      |state|
-      |passing|
+      | state   |
+      | passing |
 
     Examples: Ignore me
-      |state|
-      |failing|
+      | state   |
+      | failing |
