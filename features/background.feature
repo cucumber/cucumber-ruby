@@ -68,6 +68,28 @@ Feature: backgrounds
 
     """
 
+  Scenario: run a feature with scenario outlines that has a background that passes
+    When I run cucumber -q features/background/background_tagged_before_on_outline.feature --require features
+    Then it should pass with
+    """
+    @background_tagged_before_on_outline
+    Feature: Background tagged Before on Outline
+
+      Background: 
+        Given passing without a table
+
+      Scenario Outline: passing background
+        Then I should have '<count>' cukes
+
+        Examples: 
+          | count |
+          | 888   |
+
+    1 scenario (1 passed)
+    2 steps (2 passed)
+
+    """
+
   Scenario: run a feature with a background that fails
     When I run cucumber -q features/background/failing_background.feature --require features
     Then it should fail with

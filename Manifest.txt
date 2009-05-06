@@ -163,6 +163,7 @@ examples/selenium_webrat/features/step_definitons/search_steps.rb
 examples/selenium_webrat/features/support/env.rb
 examples/self_test/README.textile
 examples/self_test/Rakefile
+examples/self_test/features/background/background_tagged_before_on_outline.feature
 examples/self_test/features/background/background_with_name.feature
 examples/self_test/features/background/failing_background.feature
 examples/self_test/features/background/failing_background_after_success.feature

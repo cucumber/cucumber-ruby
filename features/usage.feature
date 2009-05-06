@@ -8,6 +8,7 @@ Feature: Cucumber command line
     Then it should pass with
       """
       /^passing without a table$/          # features/step_definitions/sample_steps.rb:12
+       Given passing without a table       # features/background/background_tagged_before_on_outline.feature:5
        Given passing without a table       # features/background/failing_background_after_success.feature:4
        Given passing without a table       # features/multiline_name.feature:6
        Given passing without a table       # features/multiline_name.feature:11
@@ -83,6 +84,7 @@ Feature: Cucumber command line
        Given '2' cukes   # features/tons_of_cukes.feature:51
        Given '2' cukes   # features/tons_of_cukes.feature:52
       /^I should have '(.+)' cukes$/      # features/step_definitions/sample_steps.rb:31
+       Then I should have '<count>' cukes # features/background/background_tagged_before_on_outline.feature:8
        Then I should have '10' cukes      # features/background/background_with_name.feature:7
        Then I should have '10' cukes      # features/background/failing_background.feature:9
        Then I should have '10' cukes      # features/background/failing_background.feature:12

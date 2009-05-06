@@ -23,6 +23,8 @@ module Cucumber
           examples_table = OutlineTable.new(examples_matrix, self)
           Examples.new(examples_line, examples_keyword, examples_name, examples_table)
         end
+
+        @background.feature_elements << self if @background
       end
 
       def accept(visitor)

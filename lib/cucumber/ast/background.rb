@@ -32,7 +32,12 @@ module Cucumber
       end
 
       def accept_hook?(hook)
-        false
+        if hook_context != self
+          hook_context.accept_hook?(hook)
+        else
+          # We have no scenarios
+          false
+        end
       end
 
       def failed?
