@@ -1,3 +1,8 @@
+== 0.3.3 (In Git)
+
+=== Bugfixes
+* Multiline String snippets no longer give misleading info. It's a String, not a PyString that's sent to step def.
+
 == 0.3.2 2009-05-05
 
 This release has some minor bug fixes and new features.

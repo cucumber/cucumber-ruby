@@ -8,7 +8,6 @@ Feature: Snippets
     Then the output should contain
       """
       Given /^a pystring$/ do |string|
-        # string is a Cucumber::Ast::PyString
         pending
       end
       """

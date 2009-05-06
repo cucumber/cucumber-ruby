@@ -70,9 +70,12 @@ module Cucumber
       end
       block_args << multiline_arg_class.default_arg_name unless multiline_arg_class.nil?
       block_arg_string = block_args.empty? ? "" : " |#{block_args.join(", ")}|"
-      multiline_class_string = multiline_arg_class ? "# #{multiline_arg_class.default_arg_name} is a #{multiline_arg_class.to_s}\n  " : ""
+      multiline_class_comment = ""
+      if(multiline_arg_class == Ast::Table)
+        multiline_class_comment = "# #{multiline_arg_class.default_arg_name} is a #{multiline_arg_class.to_s}\n  "
+      end
 
-      "#{step_keyword} /^#{escaped}$/ do#{block_arg_string}\n  #{multiline_class_string}pending\nend"
+      "#{step_keyword} /^#{escaped}$/ do#{block_arg_string}\n  #{multiline_class_comment}pending\nend"
     end
 
     class MissingProc < StandardError
