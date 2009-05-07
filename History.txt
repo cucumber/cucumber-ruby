@@ -1,6 +1,7 @@
 == 0.3.3 (In Git)
 
 === Bugfixes
+* Summaries are no longer printed in an empty () if there are no scenarios/steps (Aslak Hellesøy)
 * Background, Scenario Outline, Before Hook interaction (#309 Aslak Hellesøy)
 * Multiline String snippets no longer give misleading info. It's a String, not a PyString that's sent to step def.
 

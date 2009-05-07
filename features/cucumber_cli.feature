@@ -367,7 +367,7 @@ Feature: Cucumber command line
 
       """
 
-  Scenario: Run a single background which matches a name using --name
+  Scenario: Run a single background which matches a name using --name (Useful if there is an error in it)
     When I run cucumber --name 'Hantu Pisang background' -q features/
     Then it should pass with
       """
@@ -376,7 +376,7 @@ Feature: Cucumber command line
         Background: Hantu Pisang background match
           Given passing without a table
 
-      0 scenarios ()
+      0 scenarios
       1 step (1 passed)
 
       """

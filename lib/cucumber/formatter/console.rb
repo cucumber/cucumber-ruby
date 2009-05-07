@@ -97,8 +97,12 @@ module Cucumber
         counts = [:failed, :skipped, :undefined, :pending, :passed].map do |status|
           elements = yield status
           elements.any? ? format_string("#{elements.length} #{status.to_s}", status) : nil
+        end.compact
+        if counts.any?
+          @io.puts(" (#{counts.join(', ')})")
+        else
+          @io.puts
         end
-        @io.puts(" (#{counts.compact.join(', ')})")
       end
 
       def dump_count(count, what, state=nil)
