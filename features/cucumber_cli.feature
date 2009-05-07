@@ -486,3 +486,33 @@ Feature: Cucumber command line
 
       """
 
+  Scenario: Run feature elements which match a name using -N
+    When I run cucumber -N Pisang -q features/
+    Then it should pass with
+      """
+      Feature: search examples
+
+        Background: Hantu Pisang background match
+          Given passing without a table
+
+        Scenario: should match Hantu Pisang
+          Given passing without a table
+
+        Scenario Outline: Hantu Pisang match
+          Given <state> without a table
+
+          Examples:
+            | state   |
+            | passing |
+
+        Scenario Outline: no match in name but in examples
+          Given <state> without a table
+
+          Examples: Hantu Pisang
+            | state   |
+            | passing |
+
+      3 scenarios (3 passed)
+      6 steps (6 passed)
+
+      """
