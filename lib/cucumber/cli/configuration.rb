@@ -28,7 +28,7 @@ module Cucumber
             "Examples:",
             "cucumber examples/i18n/en/features",
             "cucumber --language it examples/i18n/it/features/somma.feature:6:98:113",
-            "cucumber -n -i http://rubyurl.com/eeCl", "", "",
+            "cucumber -s -i http://rubyurl.com/eeCl", "", "",
           ].join("\n")
           opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", 
             "Require files before executing the features. If this",
@@ -78,7 +78,7 @@ module Cucumber
             "with or without the @ prefix.") do |v|
             @options[:include_tags], @options[:exclude_tags] = *parse_tags(v)
           end
-          opts.on("-N NAME", "--name NAME",
+          opts.on("-n NAME", "--name NAME",
             "Only execute the feature elements which match part of the given name.",
             "If this option is given more than once, it will match against all the",
             "given names.") do |v|
@@ -114,7 +114,7 @@ module Cucumber
             "Don't print multiline strings and tables under steps.") do
             @options[:no_multiline] = true
           end
-          opts.on("-n", "--no-source", 
+          opts.on("-s", "--no-source", 
             "Don't print the file and line of the step definition with the steps.") do
             @options[:source] = false
           end

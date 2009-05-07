@@ -5,6 +5,9 @@
 * Background, Scenario Outline, Before Hook interaction (#309 Aslak Hellesøy)
 * Multiline String snippets no longer give misleading info. It's a String, not a PyString that's sent to step def.
 
+=== Removed/changed features
+* New aliases: --no-source/-s, --name/-n (#317 Lonnon Foster)
+
 == 0.3.2 2009-05-05
 
 This release has some minor bug fixes and new features.

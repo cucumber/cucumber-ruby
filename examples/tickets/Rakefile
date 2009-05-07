@@ -10,7 +10,7 @@ Cucumber::Rake::Task.new(:html) do |t|
 end
 
 Cucumber::Rake::Task.new(:progress) do |t|
-  t.cucumber_opts = "--tags ~@intentional_failure --format progress -i -n"
+  t.cucumber_opts = "--tags ~@intentional_failure --format progress -i -s"
 end
 
 task :default => [:pretty, :html, :progress]

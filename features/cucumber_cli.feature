@@ -486,8 +486,8 @@ Feature: Cucumber command line
 
       """
 
-  Scenario: Run feature elements which match a name using -N
-    When I run cucumber -N Pisang -q features/
+  Scenario: Run feature elements which match a name using -n
+    When I run cucumber -n Pisang -q features/
     Then it should pass with
       """
       Feature: search examples
@@ -501,7 +501,7 @@ Feature: Cucumber command line
         Scenario Outline: Hantu Pisang match
           Given <state> without a table
 
-          Examples:
+          Examples: 
             | state   |
             | passing |
 

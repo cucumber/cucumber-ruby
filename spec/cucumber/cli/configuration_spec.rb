@@ -263,9 +263,9 @@ END_OF_MESSAGE
       config.options[:name_regexps].should include(/User signs up/)
     end
     
-    it "should accept multiple -N options" do
+    it "should accept multiple -n options" do
       config = Configuration.new
-      config.parse!(['-N', "User logs in", '-N', "User signs up"])
+      config.parse!(['-n', "User logs in", '-n', "User signs up"])
 
       config.options[:name_regexps].should include(/User logs in/)
       config.options[:name_regexps].should include(/User signs up/)
@@ -273,7 +273,8 @@ END_OF_MESSAGE
 
     it "should search for all features in the specified directory" do
       File.stub!(:directory?).and_return(true)
-      Dir.should_receive(:[]).with("feature_directory/**/*.feature").any_number_of_times.and_return(["cucumber.feature"])
+      Dir.should_receive(:[]).with("feature_directory/**/*.feature").
+        any_number_of_times.and_return(["cucumber.feature"])
       
       config = Configuration.new(StringIO)
       config.parse!(%w{feature_directory/})
