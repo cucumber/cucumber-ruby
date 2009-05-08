@@ -40,8 +40,8 @@ end
 #   <%%= f.label :alternative %><br />
 #   <%%= f.datetime_select :alternative %>
 # The following steps would fill out the form:
-# When I select "November 23, 2004 11:20" as the "Preferred" data and time
-# And I select "November 25, 2004 10:30" as the "Alternative" data and time
+# When I select "November 23, 2004 11:20" as the "Preferred" date and time
+# And I select "November 25, 2004 10:30" as the "Alternative" date and time
 When /^I select "([^\"]*)" as the "([^\"]*)" date and time$/ do |datetime, datetime_label|
   select_datetime(datetime, :from => datetime_label)
 end
