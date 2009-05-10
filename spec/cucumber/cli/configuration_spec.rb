@@ -57,8 +57,7 @@ module Cli
 
     describe "--exclude" do
 
-
-      it "excludes ruby files when the name matches exactly" do
+      it "excludes a ruby file from requiring when the name matches exactly" do
         given_the_following_files("/features/support/a_file.rb","/features/support/env.rb")
 
         config = Configuration.new(StringIO.new)
@@ -68,6 +67,21 @@ module Cli
           "/features/support/env.rb"
         ]
       end
+
+      it "excludes all ruby files that match the provided patterns from requiring" do
+        given_the_following_files("/features/support/foof.rb","/features/support/bar.rb",
+                                  "/features/support/food.rb","/features/blah.rb",
+                                  "/features/support/fooz.rb")
+
+        config = Configuration.new(StringIO.new)
+        config.parse!(%w{--require /features --exclude foo[df] --exclude blah})
+
+        config.files_to_require.should == [
+          "/features/support/bar.rb",
+          "/features/support/fooz.rb"
+        ]
+      end
+
 
     end
 

@@ -84,8 +84,8 @@ module Cucumber
             "given names.") do |v|
             @options[:name_regexps] << /#{v}/
           end
-          opts.on("-e", "--exclude PATTERN", "Don't run feature files matching PATTERN") do |v|
-            @options[:excludes] << v
+          opts.on("-e", "--exclude PATTERN", "Don't run feature files or require ruby files matching PATTERN") do |v|
+            @options[:excludes] << Regexp.new(v)
           end
           opts.on("-p", "--profile PROFILE", "Pull commandline arguments from cucumber.yml.") do |v|
             parse_args_from_profile(v)
@@ -239,16 +239,11 @@ module Cucumber
         sorted_files = files.sort { |a,b| (b =~ %r{/support/} || -1) <=>  (a =~ %r{/support/} || -1) }.reject{|f| f =~ /^http/}
         env_files = sorted_files.select {|f| f =~ %r{/support/env.rb} }
         files = env_files + sorted_files.reject {|f| f =~ %r{/support/env.rb} }
-
-        @options[:excludes].each do |exclude|
-          files.reject! do |path|
-            path =~ /#{Regexp.escape(exclude)}/
-          end
-        end
-
+        remove_excluded_files_from(files)
         files.reject! {|f| f =~ %r{/support/env.rb} } if @options[:dry_run]
         files
       end
+
 
       def feature_files
         potential_feature_files = @paths.map do |path|
@@ -256,18 +251,15 @@ module Cucumber
           path = path.chomp('/')
           File.directory?(path) ? Dir["#{path}/**/*.feature"] : path
         end.flatten.uniq
-
-        @options[:excludes].each do |exclude|
-          potential_feature_files.reject! do |path|
-            path =~ /#{Regexp.escape(exclude)}/
-          end
-
-        end
-
+        remove_excluded_files_from(potential_feature_files)
         potential_feature_files
       end
 
     protected
+
+      def remove_excluded_files_from(files)
+        files.reject! {|path| @options[:excludes].detect {|pattern| path =~ pattern } }
+      end
 
       def feature_dirs
         @paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq
