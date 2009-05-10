@@ -4,13 +4,13 @@ require 'yaml'
 module Cucumber
 module Cli
   describe Configuration do
-    
+
     def given_cucumber_yml_defined_as(hash_or_string)
       File.stub!(:exist?).and_return(true)
       cucumber_yml = hash_or_string.is_a?(Hash) ? hash_or_string.to_yaml : hash_or_string
       IO.stub!(:read).with('cucumber.yml').and_return(cucumber_yml)
     end
-    
+
     before(:each) do
       Kernel.stub!(:exit).and_return(nil)
     end
@@ -121,7 +121,7 @@ END_OF_MESSAGE
 
       ['', 'sfsadfs', "--- \n- an\n- array\n", "---dddfd"].each do |bad_input|
         given_cucumber_yml_defined_as(bad_input)
-        
+
         config = Configuration.new(StringIO.new, error = StringIO.new)
         config.parse!([])
 
@@ -194,13 +194,13 @@ END_OF_MESSAGE
       config.options[:formats].should have_key('pretty')
       config.options[:formats].should have_key('progress')
     end
-    
+
     it "should associate --out to previous --format" do
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--format progress --out file1 --format profile --out file2})
       config.options[:formats].should == {"profile"=>"file2", "progress"=>"file1"}
     end
-    
+
     it "should accept --color option" do
       Term::ANSIColor.should_receive(:coloring=).with(true)
       config = Configuration.new(StringIO.new)
@@ -212,19 +212,19 @@ END_OF_MESSAGE
       config = Configuration.new(StringIO.new)
       config.parse!(['--no-color'])
     end
-    
+
     it "should parse tags" do
       config = Configuration.new(nil)
       includes, excludes = config.parse_tags("one,~two,@three,~@four")
       includes.should == ['one', 'three']
       excludes.should == ['two', 'four']
     end
-    
+
     describe "--backtrace" do
       before do
         Exception.cucumber_full_backtrace = false
       end
-      
+
       it "should show full backtrace when --backtrace is present" do
         config = Main.new(['--backtrace'])
         begin
@@ -238,31 +238,31 @@ END_OF_MESSAGE
         Exception.cucumber_full_backtrace = false
       end
     end
-    
+
     describe "diff output" do
 
       it "is enabled by default" do
         config = Configuration.new
         config.diff_enabled?.should be_true
       end
-      
+
       it "is disabled when the --no-diff option is supplied" do
         config = Configuration.new
         config.parse!(%w{--no-diff})
 
         config.diff_enabled?.should be_false
       end
-        
+
     end
 
     it "should accept multiple --name options" do
       config = Configuration.new
       config.parse!(['--name', "User logs in", '--name', "User signs up"])
-      
+
       config.options[:name_regexps].should include(/User logs in/)
       config.options[:name_regexps].should include(/User signs up/)
     end
-    
+
     it "should accept multiple -n options" do
       config = Configuration.new
       config.parse!(['-n', "User logs in", '-n', "User signs up"])
@@ -275,13 +275,13 @@ END_OF_MESSAGE
       File.stub!(:directory?).and_return(true)
       Dir.should_receive(:[]).with("feature_directory/**/*.feature").
         any_number_of_times.and_return(["cucumber.feature"])
-      
+
       config = Configuration.new(StringIO)
       config.parse!(%w{feature_directory/})
-      
+
       config.feature_files.should == ["cucumber.feature"]
     end
-    
+
   end
 end
 end
