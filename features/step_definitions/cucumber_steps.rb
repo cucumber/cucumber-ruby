@@ -67,3 +67,12 @@ Then /^"(.*)" should exist$/ do |file|
   File.exists?(file).should be_true
   FileUtils.rm(file)
 end
+
+Then /^"([^\"]*)" should not be required$/ do |file_name|
+  last_stdout.should_not include("* #{file_name}")
+end
+
+Then /^"([^\"]*)" should be required$/ do |file_name|
+  last_stdout.should include("* #{file_name}")
+end
+

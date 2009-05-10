@@ -239,6 +239,13 @@ module Cucumber
         sorted_files = files.sort { |a,b| (b =~ %r{/support/} || -1) <=>  (a =~ %r{/support/} || -1) }.reject{|f| f =~ /^http/}
         env_files = sorted_files.select {|f| f =~ %r{/support/env.rb} }
         files = env_files + sorted_files.reject {|f| f =~ %r{/support/env.rb} }
+
+        @options[:excludes].each do |exclude|
+          files.reject! do |path|
+            path =~ /#{Regexp.escape(exclude)}/
+          end
+        end
+
         files.reject! {|f| f =~ %r{/support/env.rb} } if @options[:dry_run]
         files
       end
@@ -254,6 +261,7 @@ module Cucumber
           potential_feature_files.reject! do |path|
             path =~ /#{Regexp.escape(exclude)}/
           end
+
         end
 
         potential_feature_files

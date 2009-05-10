@@ -53,6 +53,23 @@ module Cli
       ]
     end
 
+    describe "--exclude" do
+
+      it "excludes ruby files when the name matches exactly" do
+        File.stub!(:directory?).and_return(true)
+        Dir.stub!(:[]).and_return(["/features/support/a_file.rb","/features/support/env.rb"])
+
+        config = Configuration.new(StringIO.new)
+        config.parse!(%w{--require /features --exclude a_file.rb})
+
+        config.files_to_require.should == [
+          "/features/support/env.rb"
+        ]
+      end
+
+    end
+
+
     it "should expand args from YAML file" do
       given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})
 

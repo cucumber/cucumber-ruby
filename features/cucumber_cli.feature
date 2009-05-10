@@ -2,6 +2,8 @@ Feature: Cucumber command line
   In order to write better software
   Developers should be able to execute requirements as tests
 
+
+
   Scenario: Run single scenario with missing step definition
     When I run cucumber -q features/sample.feature:5
     Then it should pass with      
