@@ -11,13 +11,17 @@ module Cli
       IO.stub!(:read).with('cucumber.yml').and_return(cucumber_yml)
     end
 
+    def given_the_following_files(*files)
+      File.stub!(:directory?).and_return(true)
+      Dir.stub!(:[]).and_return(files)
+    end
+
     before(:each) do
       Kernel.stub!(:exit).and_return(nil)
     end
 
     it "should require files in support paths first" do
-      File.stub!(:directory?).and_return(true)
-      Dir.stub!(:[]).and_return(["/features/step_definitions/foo.rb","/features/support/bar.rb"])
+      given_the_following_files("/features/step_definitions/foo.rb","/features/support/bar.rb")
 
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--require /features})
@@ -29,8 +33,7 @@ module Cli
     end
 
     it "should require env.rb files first" do
-      File.stub!(:directory?).and_return(true)
-      Dir.stub!(:[]).and_return(["/features/support/a_file.rb","/features/support/env.rb"])
+      given_the_following_files("/features/support/a_file.rb","/features/support/env.rb")
 
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--require /features})
@@ -42,8 +45,7 @@ module Cli
     end
 
     it "should not require env.rb files when --dry-run" do
-      File.stub!(:directory?).and_return(true)
-      Dir.stub!(:[]).and_return(["/features/support/a_file.rb","/features/support/env.rb"])
+      given_the_following_files("/features/support/a_file.rb","/features/support/env.rb")
 
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--require /features --dry-run})
@@ -55,9 +57,9 @@ module Cli
 
     describe "--exclude" do
 
+
       it "excludes ruby files when the name matches exactly" do
-        File.stub!(:directory?).and_return(true)
-        Dir.stub!(:[]).and_return(["/features/support/a_file.rb","/features/support/env.rb"])
+        given_the_following_files("/features/support/a_file.rb","/features/support/env.rb")
 
         config = Configuration.new(StringIO.new)
         config.parse!(%w{--require /features --exclude a_file.rb})
