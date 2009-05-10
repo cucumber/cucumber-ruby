@@ -1,3 +1,8 @@
+== 0.3.4 (In Git)
+
+=== New features
+* Support for Catalan (Francesc Esplugas)
+
 == 0.3.3 2009-05-10
 
 Minor bugfix release, made specially for EuRuKo!
