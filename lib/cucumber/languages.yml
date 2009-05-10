@@ -161,6 +161,21 @@
   and: Y
   but: Pero
   space_after_keyword: true
+"cat":
+  name: Catalan
+  native: català
+  encoding: UTF-8
+  background: Rerefons
+  feature: Característica
+  scenario: Escenari
+  scenario_outline: Esquema de l'escenari
+  examples: Exemples
+  given: Donat
+  when: Quan
+  then: aleshores
+  and: i
+  but: Però
+  space_after_keyword: true
 "et":
   name: Estonian
   native: eesti keel
