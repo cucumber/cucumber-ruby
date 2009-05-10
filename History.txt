@@ -1,4 +1,6 @@
-== 0.3.3 (In Git)
+== 0.3.3 2009-05-10
+
+Minor bugfix release, made specially for EuRuKo!
 
 === Bugfixes
 * Summaries are no longer printed in an empty () if there are no scenarios/steps (Aslak Hellesøy)

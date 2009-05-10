@@ -235,6 +235,7 @@ features/cucumber_cli.feature
 features/cucumber_cli_diff_disabled.feature
 features/cucumber_cli_outlines.feature
 features/custom_formatter.feature
+features/exclude_files.feature
 features/multiline_names.feature
 features/rake_task.feature
 features/report_called_undefined_steps.feature
