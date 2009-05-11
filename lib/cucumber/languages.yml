@@ -172,8 +172,8 @@
   examples: Exemples
   given: Donat
   when: Quan
-  then: aleshores
-  and: i
+  then: Aleshores
+  and: I
   but: Però
   space_after_keyword: true
 "et":
