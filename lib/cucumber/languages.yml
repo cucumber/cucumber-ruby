@@ -168,7 +168,7 @@
   background: Rerefons
   feature: Característica
   scenario: Escenari
-  scenario_outline: Esquema de l'escenari
+  scenario_outline: Esquema de l\'escenari
   examples: Exemples
   given: Donat
   when: Quan
