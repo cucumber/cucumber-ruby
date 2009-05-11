@@ -114,6 +114,7 @@ examples/i18n/no/lib/kalkulator.rb
 examples/i18n/pt/Rakefile
 examples/i18n/pt/features/adicao.feature
 examples/i18n/pt/features/step_definitions/calculadora_steps.rb
+examples/i18n/pt/features/support/env.rb
 examples/i18n/pt/lib/calculadora.rb
 examples/i18n/ro/Rakefile
 examples/i18n/ro/features/step_definitons/calculator_steps.rb

@@ -40,8 +40,8 @@ module Cucumber
     end
     
     def alias_step_definitions(lang) #:nodoc:
-      keywords = %w{given when then and but}.map{|keyword| keyword_hash(lang)[keyword]}
-      alias_steps(keywords)
+      keywords = %w{given when then and but}.map{|keyword| keyword_hash(lang)[keyword].split('|')}
+      alias_steps(keywords.flatten)
     end
     
     # Sets up additional method aliases for Given, When and Then.

@@ -1,5 +1,8 @@
 == 0.3.4 (In Git)
 
+=== Bugfixes
+* Problem with multiple terms in languages.yml (#321 Aslak Hellesøy)
+
 === New features
 * Support for Catalan (Francesc Esplugas)
 
