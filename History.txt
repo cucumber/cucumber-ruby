@@ -4,6 +4,7 @@
 * Problem with multiple terms in languages.yml (#321 Aslak Hellesøy)
 
 === New features
+* Added aliases for Feature and But in Japanese (Leonard Chin)
 * Support for Catalan (Francesc Esplugas)
 
 == 0.3.3 2009-05-10

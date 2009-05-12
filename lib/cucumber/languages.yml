@@ -285,7 +285,7 @@
   name: Japanese
   native: 日本語
   encoding: UTF-8
-  feature: フィーチャ
+  feature: フィーチャ|機能
   background: 背景
   scenario: シナリオ
   scenario_outline: シナリオアウトライン|シナリオテンプレート|テンプレ|シナリオテンプレ
@@ -294,7 +294,7 @@
   when: もし
   then: ならば
   and: かつ
-  but: しかし
+  but: しかし|但し
   space_after_keyword: false
 "lt":
   name: Lithuanian
