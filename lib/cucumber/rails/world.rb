@@ -56,12 +56,17 @@ module Cucumber #:nodoc:
 
     def self.bypass_rescue
       ActionController::Base.class_eval do
+        alias_method :rescue_action_without_bypass, :rescue_action
+
         def rescue_action(exception)
           raise exception
         end
       end
-      ActionController::Dispatcher.class_eval do
-        def self.failsafe_response(output, status, exception = nil)
+
+      ActionController::Failsafe.class_eval do
+        alias_method :failsafe_response_without_bypass, :failsafe_response
+        
+        def failsafe_response(exception)
           raise exception
         end
       end
