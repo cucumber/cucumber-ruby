@@ -42,8 +42,6 @@ module Cucumber
 
         failure = step_mother.steps(:failed).any? || 
           (configuration.strict? && step_mother.steps(:undefined).any?)
-
-        Kernel.exit(failure ? 1 : 0)
       end
 
       def load_plain_text_features

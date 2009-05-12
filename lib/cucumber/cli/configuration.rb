@@ -48,7 +48,7 @@ module Cucumber
             %{Run with "--language help" to see all languages},
             %{Run with "--language LANG help" to list keywords for LANG}) do |v|
             if v == 'help'
-              list_languages
+              list_languages_and_exit
             elsif args==['help']
               list_keywords_and_exit(v)
             else
@@ -209,7 +209,8 @@ module Cucumber
             formatter_class = formatter_class(format)
             formatter_class.new(step_mother, out, @options)
           rescue Exception => e
-            exit_with_error("Error creating formatter: #{format}", e)
+            e.message += "\nError creating formatter: #{format}"
+            raise e
           end
         end
 
@@ -278,7 +279,7 @@ module Cucumber
 
       def parse_args_from_profile(profile)
         unless cucumber_yml.has_key?(profile)
-          return(exit_with_error <<-END_OF_ERROR)
+          raise(<<-END_OF_ERROR)
 Could not find profile: '#{profile}'
 
 Defined profiles in cucumber.yml:
@@ -290,16 +291,14 @@ Defined profiles in cucumber.yml:
 
         case(args_from_yml)
           when String
-            exit_with_error "The '#{profile}' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml.\n" if args_from_yml =~ /^\s*$/
+            raise "The '#{profile}' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml.\n" if args_from_yml =~ /^\s*$/
             args_from_yml = args_from_yml.split(' ')
           when Array
-            exit_with_error "The '#{profile}' profile in cucumber.yml was empty.  Please define the command line arguments for the 'foo' profile in cucumber.yml.\n" if args_from_yml.empty?
+            raise "The '#{profile}' profile in cucumber.yml was empty.  Please define the command line arguments for the 'foo' profile in cucumber.yml.\n" if args_from_yml.empty?
           else
             raise "The '#{profile}' profile in cucumber.yml was a #{args_from_yml.class}. It must be a String or Array"
         end
         parse!(args_from_yml)
-      rescue YmlLoadError => e
-        exit_with_error(e.message)
       end
 
       def cucumber_yml
@@ -324,13 +323,13 @@ Defined profiles in cucumber.yml:
 
       def list_keywords_and_exit(lang)
         unless Cucumber::LANGUAGES[lang]
-          exit_with_error("No language with key #{lang}")
+          raise("No language with key #{lang}")
         end
         LanguageHelpFormatter.list_keywords(@out_stream, lang)
         Kernel.exit
       end
 
-      def list_languages
+      def list_languages_and_exit
         LanguageHelpFormatter.list_languages(@out_stream)
         Kernel.exit
       end
@@ -348,15 +347,6 @@ Defined profiles in cucumber.yml:
           :name_regexps => [],
           :diff_enabled => true
         }
-      end
-
-      def exit_with_error(error_message, e=nil)
-        @error_stream.puts(error_message)
-        if e
-          @error_stream.puts("#{e.message} (#{e.class})")
-          @error_stream.puts(e.backtrace.join("\n"))
-        end
-        Kernel.exit 1
       end
     end
 

@@ -3,4 +3,14 @@
 $:.unshift(File.dirname(__FILE__ + '.rb') + '/../lib') unless $:.include?(File.dirname(__FILE__ + '.rb') + '/../lib')
 
 require 'cucumber/cli/main'
-Cucumber::Cli::Main.execute(ARGV.dup) # The dup is to keep ARGV intact, so that tools like ruby-debug can respawn.
+begin
+  # The dup is to keep ARGV intact, so that tools like ruby-debug can respawn.
+  failure = Cucumber::Cli::Main.execute(ARGV.dup)
+  Kernel.exit(failure ? 1 : 0)
+rescue SystemExit => e
+  Kernel.exit(e.status)
+rescue Exception => e
+  STDERR.puts("#{e.message} (#{e.class})")
+  STDERR.puts(e.backtrace.join("\n"))
+  Kernel.exit 1
+end
