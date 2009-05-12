@@ -244,7 +244,7 @@ for multiline arguments are some of the highlights.
 * Pure Ruby features are no longer supported.
 * Remove --color option in autotest. Can be added manually in cucumber.yml (#215 Jean-Michel Garnier)
 
-== (0.16.4 aslakhellesoy-cucumber gem on GitHub)
+== (0.1.16.4 aslakhellesoy-cucumber gem on GitHub)
 
 Bugfix release.
 
