@@ -15,6 +15,7 @@ module Cucumber
 
         @paths          = []
         @options        = default_options
+
         @active_format  = DEFAULT_FORMAT
       end
 
@@ -244,7 +245,6 @@ module Cucumber
         files
       end
 
-
       def feature_files
         potential_feature_files = @paths.map do |path|
           path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
@@ -288,14 +288,16 @@ Defined profiles in cucumber.yml:
 
         args_from_yml = cucumber_yml[profile] || ''
 
-        if !args_from_yml.is_a?(String)
-          exit_with_error "Profiles must be defined as a String.  The '#{profile}' profile was #{args_from_yml.inspect} (#{args_from_yml.class}).\n"
-        elsif args_from_yml =~ /^\s*$/
-          exit_with_error "The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml.\n"
-        else
-          parse!(args_from_yml.split(' '))
+        case(args_from_yml)
+          when String
+            exit_with_error "The '#{profile}' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml.\n" if args_from_yml =~ /^\s*$/
+            args_from_yml = args_from_yml.split(' ')
+          when Array
+            exit_with_error "The '#{profile}' profile in cucumber.yml was empty.  Please define the command line arguments for the 'foo' profile in cucumber.yml.\n" if args_from_yml.empty?
+          else
+            raise "The '#{profile}' profile in cucumber.yml was a #{args_from_yml.class}. It must be a String or Array"
         end
-
+        parse!(args_from_yml)
       rescue YmlLoadError => e
         exit_with_error(e.message)
       end

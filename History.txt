@@ -1,11 +1,19 @@
 == 0.3.4 (In Git)
 
+Hooray - speed improvements when using Rake!
+
 === Bugfixes
 * Problem with multiple terms in languages.yml (#321 Aslak Hellesøy)
 
 === New features
 * Added aliases for Feature and But in Japanese (Leonard Chin)
 * Support for Catalan (Francesc Esplugas)
+
+=== Changed features
+* Rake task should not shell out (#297 Aslak Hellesøy)
+  The Cucumber Rake task will run Cucumber in the same Ruby interpreter as Rake itself
+  unless explicitly told to fork a new interpreter. This is to increase speed. You can
+  force a new interpreter by setting fork=true or rcov=true in the task.
 
 == 0.3.3 2009-05-10
 

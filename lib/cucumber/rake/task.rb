@@ -14,7 +14,7 @@ module Cucumber
     # To further configure the task, you can pass a block:
     #
     #   Cucumber::Rake::Task.new do |t|
-    #     t.cucumber_opts = "--format progress"
+    #     t.cucumber_opts = %w{--format progress}
     #   end
     #
     # This task can also be configured to be run with RCov:
@@ -25,7 +25,62 @@ module Cucumber
     # 
     # See the attributes for additional configuration possibilities.
     class Task
-      LIB    = File.expand_path(File.dirname(__FILE__) + '/../..') # :nodoc:
+      class InProcessCucumberRunner #:nodoc:
+        attr_reader :args
+        
+        def initialize(libs, cucumber_opts, feature_files)
+          libs.reverse.each{|lib| $:.unshift(lib)}
+          @args = (
+            cucumber_opts + 
+            feature_files
+          ).flatten.compact
+        end
+        
+        def run
+          require 'cucumber/cli/main'
+          Cucumber::Cli::Main.execute(args)
+        end
+      end
+      
+      class ForkedCucumberRunner #:nodoc:
+        attr_reader :args
+        
+        def initialize(libs, cucumber_bin, cucumber_opts, feature_files)
+          @args = (
+            ['-I'] + load_path(libs) + 
+            quoted_binary(cucumber_bin) + 
+            cucumber_opts + 
+            feature_files
+          ).flatten
+        end
+
+        def load_path(libs)
+          ['"%s"' % libs.join(File::PATH_SEPARATOR)]
+        end
+
+        def quoted_binary(cucumber_bin)
+          ['"%s"' % cucumber_bin]
+        end
+
+        def run
+          ruby(args.join(" ")) # ruby(*args) is broken on Windows
+        end
+      end
+
+      class RCovCucumberRunner < ForkedCucumberRunner #:nodoc:
+        def initialize(libs, cucumber_bin, cucumber_opts, feature_files, rcov_opts)
+          @args = (
+            ['-I'] + load_path(libs) + 
+            ['-S', 'rcov'] + rcov_opts +
+            quoted_binary(cucumber_bin) + 
+            ['--'] + 
+            cucumber_opts + 
+            feature_files
+          ).flatten
+        end
+      end
+
+      LIB = File.expand_path(File.dirname(__FILE__) + '/../..') # :nodoc:
 
       # TODO: remove depreated accessors for 0.4.0
       def self.deprecate_accessor(attribute) # :nodoc:
@@ -40,24 +95,45 @@ module Cucumber
 
       # Directories to add to the Ruby $LOAD_PATH
       attr_accessor :libs
+
       # Name of the cucumber binary to use for running features. Defaults to Cucumber::BINARY
       attr_accessor :binary
+
       # Array of paths to specific step definition files to use
       deprecate_accessor :step_list
+
       # File pattern for finding step definitions. Defaults to 
       # 'features/**/*.rb'.
       deprecate_accessor :step_pattern
+
       # Array of paths to specific features to run. 
       deprecate_accessor :feature_list
+
       # File pattern for finding features to run. Defaults to 
       # 'features/**/*.feature'. Can be overridden by the FEATURE environment variable.
       deprecate_accessor :feature_pattern
+
       # Extra options to pass to the cucumber binary. Can be overridden by the CUCUMBER_OPTS environment variable.
+      # It's recommended to pass an Array, but if it's a String it will be #split by ' '.
       attr_accessor :cucumber_opts
-      # Run cucumber with RCov?
+      def cucumber_opts=(opts) #:nodoc:
+        @cucumber_opts = String === opts ? opts.split(' ') : opts
+      end
+
+      # Run cucumber with RCov? Defaults to false. If you set this to
+      # true, +fork+ is implicit.
       attr_accessor :rcov
-      # Extra options to pass to rcov
+
+      # Extra options to pass to rcov.
+      # It's recommended to pass an Array, but if it's a String it will be #split by ' '.
       attr_accessor :rcov_opts
+      def rcov_opts=(opts) #:nodoc:
+        @rcov_opts = String === opts ? opts.split(' ') : opts
+      end
+
+      # Whether or not to fork a new ruby interpreter. Defaults to false.
+      attr_accessor :fork
+
       # Define what profile to be used.  When used with cucumber_opts it is simply appended to it. Will be ignored when CUCUMBER_OPTS is used.
       def profile=(profile)
         @profile = profile
@@ -69,13 +145,14 @@ module Cucumber
       end
       attr_reader :profile
 
-      # Define a Rake
+      # Define Cucumber Rake task
       def initialize(task_name = "features", desc = "Run Features with Cucumber")
         @task_name, @desc = task_name, desc
         @libs = ['lib']
         @rcov_opts = %w{--rails --exclude osx\/objc,gems\/}
 
         yield self if block_given?
+        @fork = true if @rcov
 
         @feature_pattern = "features/**/*.feature" if feature_pattern.nil? && feature_list.nil?
         @step_pattern    = "features/**/*.rb"      if step_pattern.nil? && step_list.nil?
@@ -89,32 +166,23 @@ module Cucumber
       def define_task # :nodoc:
         desc @desc
         task @task_name do
-          ruby(arguments_for_ruby_execution.join(" ")) # ruby(*args) is broken on Windows
+          runner.run
         end
       end
 
-      def arguments_for_ruby_execution(task_args = nil) # :nodoc:
-        lib_args     = ['"%s"' % libs.join(File::PATH_SEPARATOR)]
-        cucumber_bin = ['"%s"' % binary]
-        cuc_opts     = [(ENV['CUCUMBER_OPTS'] || cucumber_opts_with_profile)]
-
-        step_files(task_args).each do |step_file|
-          cuc_opts << '--require'
-          cuc_opts << step_file
-        end
-
-        if rcov
-          args = (['-I'] + lib_args + ['-S', 'rcov'] + rcov_opts +
-            cucumber_bin + ['--'] + cuc_opts + feature_files(task_args)).flatten
+      def runner(task_args = nil) # :nodoc:
+        cucumber_opts = [(ENV['CUCUMBER_OPTS'] || cucumber_opts_with_profile)]
+        if(@rcov)
+          RCovCucumberRunner.new(libs, binary, cucumber_opts, feature_files(task_args), rcov_opts)
+        elsif(@fork)
+          ForkedCucumberRunner.new(libs, binary, cucumber_opts, feature_files(task_args))
         else
-          args = (['-I'] + lib_args + cucumber_bin + cuc_opts + feature_files(task_args)).flatten
+          InProcessCucumberRunner.new(libs, cucumber_opts, feature_files(task_args))
         end
-
-        args
       end
 
       def cucumber_opts_with_profile # :nodoc:
-        @profile ? "#{cucumber_opts} --profile #{@profile}" : cucumber_opts
+        @profile ? [cucumber_opts, '--profile', @profile] : cucumber_opts
       end
 
       def feature_files(task_args = nil) # :nodoc:
@@ -149,7 +217,7 @@ module Cucumber
       def define_task # :nodoc:
         desc @desc
         task @task_name, :feature_name do |t, args|
-          ruby(arguments_for_ruby_execution(args).join(" ")) # ruby(*args) is broken on Windows
+          runner(args).run
         end
       end
 

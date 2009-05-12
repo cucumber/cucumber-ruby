@@ -120,13 +120,12 @@ END_OF_MESSAGE
       error.string.should == expected_message
     end
 
-    it "should provide a helpful error message when a specified profile is not a String" do
+    it "should allow array as profile" do
       given_cucumber_yml_defined_as({'foo' => [1,2,3]})
 
       config = Configuration.new(StringIO.new, error = StringIO.new)
       config.parse!(%w{--profile foo})
-
-      error.string.should == "Profiles must be defined as a String.  The 'foo' profile was [1, 2, 3] (Array).\n"
+      config.paths.should == [1,2,3]
     end
 
     it "should provide a helpful error message when a specified profile exists but is nil or blank" do

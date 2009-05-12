@@ -3,7 +3,7 @@ require 'cucumber/rake/task'
 
 raise "This example only works with JRuby" unless Cucumber::JRUBY
 Cucumber::Rake::Task.new(:features) do |t|
-  t.cucumber_opts = "--format pretty"
+  t.cucumber_opts = %w{--format pretty}
 end
 
 task :features => :compile

@@ -27,14 +27,16 @@ When /^I run cucumber (.*)$/ do |cucumber_opts|
 end
 
 When /^I run rake (.*)$/ do |rake_opts|
-  run "rake #{rake_opts}"
+  run "rake #{rake_opts} --trace"
 end
 
 Then /^it should (fail|pass)$/ do |success|
   if success == 'fail'
     last_exit_status.should_not == 0
   else
-    last_exit_status.should == 0
+    if last_exit_status != 0
+      raise "Failed with exit status #{last_exit_status}\nSTDOUT:\n#{last_stdout}\nSTDERR:\n#{last_stderr}"
+    end
   end
 end
 
