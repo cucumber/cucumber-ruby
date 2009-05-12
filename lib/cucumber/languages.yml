@@ -300,9 +300,11 @@
   name: Lithuanian
   native: lietuvių kalba
   encoding: UTF-8
-  feature: Sąvybė
+  feature: Savybė
+  background: Kontekstas
   scenario: Scenarijus
-  examples: Pavyzdžių
+  scenario_outline: Scenarijaus šablonas
+  examples: Pavyzdžiai|Scenarijai|Variantai
   given: Duota
   when: Kai
   then: Tada
