@@ -29,6 +29,10 @@ examples/i18n/bg/features/step_definitons/calculator_steps.rb
 examples/i18n/bg/features/support/env.rb
 examples/i18n/bg/features/support/world.rb
 examples/i18n/bg/lib/calculator.rb
+examples/i18n/cat/Rakefile
+examples/i18n/cat/features/step_definitons/calculator_steps.rb
+examples/i18n/cat/features/suma.feature
+examples/i18n/cat/lib/calculadora.rb
 examples/i18n/da/Rakefile
 examples/i18n/da/features/step_definitons/kalkulator_steps.rb
 examples/i18n/da/features/summering.feature
