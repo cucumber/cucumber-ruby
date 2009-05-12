@@ -1,6 +1,7 @@
 $:.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'cucumber/rake/task'
 
+raise "This example only works with JRuby" unless Cucumber::JRUBY
 Cucumber::Rake::Task.new(:features) do |t|
   t.cucumber_opts = "--format pretty"
 end
