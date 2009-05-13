@@ -10,6 +10,13 @@ Given /^a standard Cucumber project directory structure$/ do
   end
 end
 
+Given /^the (.*) directory is empty$/ do |directory|
+  in_current_dir do
+    FileUtils.remove_dir directory
+    FileUtils.mkdir 'tmp'
+  end
+end
+
 Given /^a file named "([^\"]*)"$/ do |file_name|
   create_file(file_name, '')
 end

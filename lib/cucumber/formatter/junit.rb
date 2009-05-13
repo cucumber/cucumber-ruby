@@ -43,7 +43,7 @@ module Cucumber
       end
       
       def visit_scenario_name(keyword, name, file_colon_line, source_indent)
-        puts "Running #{keyword}:#{name}"
+        puts "Running #{keyword} #{name}"
         @scenario = name
       end
       
