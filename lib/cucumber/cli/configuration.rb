@@ -3,7 +3,7 @@ module Cucumber
     class YmlLoadError < StandardError; end
 
     class Configuration
-      FORMATS = %w{pretty profile progress rerun}
+      FORMATS = %w{pretty profile progress rerun junit}
       DEFAULT_FORMAT = 'pretty'
 
       attr_reader :paths
@@ -71,6 +71,11 @@ module Cucumber
             "applies to the previously specified --format, or the",
             "default format if no format is specified.") do |v|
             @options[:formats][@active_format] = v
+          end
+          opts.on("--reportdir DIR",
+            "Write output files to DIR. This option only applies",
+            " if the previous --format option was junit.") do |v|
+            @options[:reportdir] = v
           end
           opts.on("-t TAGS", "--tags TAGS",
             "Only execute the features or scenarios with the specified tags.",
@@ -227,6 +232,7 @@ module Cucumber
           when 'progress' then Formatter::Progress
           when 'rerun'    then Formatter::Rerun
           when 'usage'    then Formatter::Usage
+          when 'junit'    then Formatter::JUnit
         else
           constantize(format)
         end
