@@ -6,6 +6,7 @@ Hooray - speed improvements when using Rake!
 * Problem with multiple terms in languages.yml (#321 Aslak Hellesøy)
 
 === New features
+* Support for Vietnamese (Ngoc Dao)
 * Added aliases for Feature and But in Japanese (Leonard Chin)
 * Support for Catalan (Francesc Esplugas)
 
