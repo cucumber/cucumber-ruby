@@ -4,6 +4,7 @@ A couple of great new features in this release. Running with Rake is faster than
 and there is a brand new JUnit formatter - great for Continuous Integration reports!
 
 === Bugfixes
+* Proper UTF8 use in HTML formatter (Herminio Torres)
 * Problem with multiple terms in languages.yml (#321 Aslak Hellesøy)
 
 === New features
