@@ -1,11 +1,13 @@
 == 0.3.4 (In Git)
 
-Hooray - speed improvements when using Rake!
+A couple of great new features in this release. Running with Rake is faster than before,
+and there is a brand new JUnit formatter - great for Continuous Integration reports!
 
 === Bugfixes
 * Problem with multiple terms in languages.yml (#321 Aslak Hellesøy)
 
 === New features
+* New JUnit formatter (Gareth Jones)
 * Support for Vietnamese (Ngoc Dao)
 * Added aliases for Feature and But in Japanese (Leonard Chin)
 * Support for Catalan (Francesc Esplugas)

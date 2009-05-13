@@ -7,45 +7,40 @@ Feature: JUnit output formatter
     And the tmp directory is empty
     
   Scenario: one feature, one passing scenario, one failing scenario
-    When I run cucumber --format junit --reportdir tmp/ features/one_passing_one_failing.feature
+    When I run cucumber --format junit --out tmp/ features/one_passing_one_failing.feature
     Then it should fail with
       """
-      Beginning Feature: One passing scenario, one failing scenario
-      Running Scenario: Passing
-      Running Scenario: Failing
-      Writing test output tmp/TEST-One_passing_scenario__one_failing_scenario.xml
-      
+
       """
-    And "examples/junit/tmp/TEST-One_passing_scenario__one_failing_scenario.xml" should contain
+    And "examples/junit/tmp/TEST-One_passing_scenario__one_failing_scenario.xml" should contain XML
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite failures="1" errors="0" name="One passing scenario, one failing scenario" tests="2">
-      <testcase classname="One passing scenario, one failing scenario.Passing" name="Given a passing scenario">
+      <testsuite errors="0" tests="2" name="One passing scenario, one failing scenario" failures="1">
+      <testcase name="Given a passing scenario" classname="One passing scenario, one failing scenario.Passing">
       </testcase>
-      <testcase classname="One passing scenario, one failing scenario.Failing" name="Given a failing scenario">
+      <testcase name="Given a failing scenario" classname="One passing scenario, one failing scenario.Failing">
         <failure message="Given a failing scenario">
        (RuntimeError)
+      ./features/step_definitions/steps.rb:6:in `/a failing scenario/'
       features/one_passing_one_failing.feature:7:in `Given a failing scenario'  </failure>
       </testcase>
       </testsuite>
       
       """
   Scenario: pending step
-    When I run cucumber --format junit --reportdir tmp/ features/pending.feature
+    When I run cucumber --format junit --out tmp/ features/pending.feature
     Then it should pass with
       """
-      Beginning Feature: Pending step
-      Running Scenario: Pending
-      Writing test output tmp/TEST-Pending_step.xml
       
       """
-    And "examples/junit/tmp/TEST-Pending_step.xml" should contain
+    And "examples/junit/tmp/TEST-Pending_step.xml" should contain XML
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite failures="1" errors="0" name="Pending step" tests="1">
-      <testcase classname="Pending step.Pending" name="Given a pending step">
+      <testsuite errors="0" tests="1" name="Pending step" failures="1">
+      <testcase name="Given a pending step" classname="Pending step.Pending">
         <failure message="Given a pending step">
       TODO (Cucumber::Pending)
+      ./features/step_definitions/steps.rb:10:in `/a pending step/'
       features/pending.feature:4:in `Given a pending step'  </failure>
       </testcase>
       </testsuite>
@@ -53,16 +48,9 @@ Feature: JUnit output formatter
       """
     
   Scenario: run all features
-    When I run cucumber --format junit --reportdir tmp/ features
+    When I run cucumber --format junit --out tmp/ features
     Then it should fail with
       """
-      Beginning Feature: One passing scenario, one failing scenario
-      Running Scenario: Passing
-      Running Scenario: Failing
-      Writing test output tmp/TEST-One_passing_scenario__one_failing_scenario.xml
-      Beginning Feature: Pending step
-      Running Scenario: Pending
-      Writing test output tmp/TEST-Pending_step.xml
       
       """
     And "examples/junit/tmp/TEST-One_passing_scenario__one_failing_scenario.xml" should exist

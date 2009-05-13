@@ -157,6 +157,9 @@ examples/java/features/step_definitons/hello_steps.rb
 examples/java/features/step_definitons/tree_steps.rb
 examples/java/features/tree.feature
 examples/java/src/cucumber/demo/Hello.java
+examples/junit/features/one_passing_one_failing.feature
+examples/junit/features/pending.feature
+examples/junit/features/step_definitions/steps.rb
 examples/pure_java/README.textile
 examples/selenium/Rakefile
 examples/selenium/features/search.feature
@@ -241,6 +244,7 @@ features/cucumber_cli_diff_disabled.feature
 features/cucumber_cli_outlines.feature
 features/custom_formatter.feature
 features/exclude_files.feature
+features/junit_formatter.feature
 features/multiline_names.feature
 features/rake_task.feature
 features/report_called_undefined_steps.feature
@@ -296,6 +300,7 @@ lib/cucumber/formatter/console.rb
 lib/cucumber/formatter/cucumber.css
 lib/cucumber/formatter/cucumber.sass
 lib/cucumber/formatter/html.rb
+lib/cucumber/formatter/junit.rb
 lib/cucumber/formatter/pretty.rb
 lib/cucumber/formatter/profile.rb
 lib/cucumber/formatter/progress.rb
