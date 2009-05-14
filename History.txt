@@ -3,6 +3,24 @@
 A couple of great new features in this release. Running with Rake is faster than before,
 and there is a brand new JUnit formatter - great for Continuous Integration reports!
 
+** IMPORTANT UPGRADE NOTES FOR RAILS USERS **
+
+Running Cucumber features in the same Ruby interpreter as Rake doesn't seem to work,
+so you have to explicitly tell the task to fork (like it was doing by default in prior
+versions). In lib/tasks/cucumber.rake:
+
+  Cucumber::Rake::Task.new(:features) do |t|
+    t.fork = true # Explicitly fork
+    t.cucumber_opts = %w{--format pretty}
+  end
+
+(If you run script/generate cucumber this will be done for you).
+Alternatively you can omit forking and run features like this:
+
+  RAILS_ENV=test rake features
+
+However, setting the RAILS_ENV is easy to forget, so I don't recommend relying on this.
+
 === Bugfixes
 * Proper UTF8 use in HTML formatter (Herminio Torres)
 * Problem with multiple terms in languages.yml (#321 Aslak Hellesøy)
