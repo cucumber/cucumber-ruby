@@ -3,7 +3,7 @@ module Cucumber
     class YmlLoadError < StandardError; end
 
     class Configuration
-      FORMATS = %w{pretty profile progress rerun}
+      FORMATS = %w{pretty profile progress rerun junit}
       DEFAULT_FORMAT = 'pretty'
 
       attr_reader :paths
@@ -66,10 +66,11 @@ module Cucumber
             @options[:formats][v] = @out_stream
             @active_format = v
           end
-          opts.on("-o", "--out FILE",
-            "Write output to a file instead of STDOUT. This option",
+          opts.on("-o", "--out [FILE|DIR]",
+            "Write output to a file/directory instead of STDOUT. This option",
             "applies to the previously specified --format, or the",
-            "default format if no format is specified.") do |v|
+            "default format if no format is specified. Check the specific",
+            "formatter's docs to see whether to pass a file or a dir.") do |v|
             @options[:formats][@active_format] = v
           end
           opts.on("-t TAGS", "--tags TAGS",
@@ -198,10 +199,12 @@ module Cucumber
         return Formatter::Pretty.new(step_mother, nil, @options) if @options[:autoformat]
         formatters = @options[:formats].map do |format, out|
           if String === out # file name
-            out = File.open(out, Cucumber.file_mode('w'))
-            at_exit do
-              out.flush
-              out.close
+            unless File.directory?(out)
+              out = File.open(out, Cucumber.file_mode('w'))
+              at_exit do
+                out.flush
+                out.close
+              end
             end
           end
 
@@ -209,7 +212,7 @@ module Cucumber
             formatter_class = formatter_class(format)
             formatter_class.new(step_mother, out, @options)
           rescue Exception => e
-            e.message += "\nError creating formatter: #{format}"
+            e.message << "\nError creating formatter: #{format}"
             raise e
           end
         end
@@ -227,6 +230,7 @@ module Cucumber
           when 'progress' then Formatter::Progress
           when 'rerun'    then Formatter::Rerun
           when 'usage'    then Formatter::Usage
+          when 'junit'    then Formatter::JUnit
         else
           constantize(format)
         end

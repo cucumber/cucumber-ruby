@@ -76,27 +76,31 @@ module Cucumber
       end
 
       rule background
-         comment white background_keyword space* name:lines_to_keyword? (eol+ / eof) steps {
+        comment white background_keyword space* name:lines_to_keyword? (eol+ / eof) steps {
+          def matches_name?(regexp_to_match)
+            name.build =~ regexp_to_match
+          end
 
-           def matches_name?(regexp_to_match)
-             name.build =~ regexp_to_match
-           end
+          def at_line?(line)
+            background_keyword.line == line ||
+            steps.at_line?(line)
+          end
 
           def has_tags?(tag_names)
             feature_tags = self.parent.tags
             feature_tags.has_tags?(tag_names)
           end
 
-           def build
-             Ast::Background.new(
-               comment.build, 
-               background_keyword.line,
-               background_keyword.text_value,
-               name.build, 
-               steps.build
-             )
-            end
-          }
+          def build
+            Ast::Background.new(
+              comment.build, 
+              background_keyword.line,
+              background_keyword.text_value,
+              name.build, 
+              steps.build
+            )
+          end
+        }
       end
 
       rule feature_elements

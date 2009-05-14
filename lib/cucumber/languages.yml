@@ -515,3 +515,18 @@
   and: И
   but: Но
   space_after_keyword: true
+"vi":
+  name: Vietnamese
+  native: Tiếng Việt
+  encoding: UTF-8
+  feature: Tính năng
+  background: Bối cảnh
+  scenario: Kịch bản
+  scenario_outline: Khung kịch bản
+  examples: Dữ liệu
+  given: Cho
+  when: Khi
+  then: Thì
+  and: Và
+  but: Nhưng
+  space_after_keyword: true

@@ -262,6 +262,7 @@ module Cucumber
 
     # Creates a new world instance
     def new_world!
+      return if options[:dry_run]
       create_world!
       extend_world
       connect_world
@@ -309,12 +310,14 @@ module Cucumber
     end
 
     def execute_before(scenario)
+      return if options[:dry_run]
       hooks_for(:before, scenario).each do |hook|
         hook.execute_in(@current_world, scenario, 'Before')
       end
     end
 
     def execute_after(scenario)
+      return if options[:dry_run]
       hooks_for(:after, scenario).each do |hook|
         hook.execute_in(@current_world, scenario, 'After')
       end
