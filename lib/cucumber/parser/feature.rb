@@ -1327,163 +1327,22 @@ module Cucumber
         return r0
       end
 
-      module LineToKeyword0
-      end
-
-      module LineToKeyword1
-        def white
+      module LinesToKeyword0
+        def eol
           elements[0]
         end
 
-        def text
-          elements[1]
+        def reserved_words_and_symbols
+          elements[2]
         end
       end
 
-      module LineToKeyword2
+      module LinesToKeyword1
+      end
+
+      module LinesToKeyword2
         def build
-          text.text_value.strip
-        end
-      end
-
-      def _nt_line_to_keyword
-        start_index = index
-        if node_cache[:line_to_keyword].has_key?(index)
-          cached = node_cache[:line_to_keyword][index]
-          @index = cached.interval.end if cached
-          return cached
-        end
-
-        i0, s0 = index, []
-        r1 = _nt_white
-        s0 << r1
-        if r1
-          s2, i2 = [], index
-          loop do
-            i3, s3 = index, []
-            i4 = index
-            r5 = _nt_step_keyword
-            if r5
-              r4 = nil
-            else
-              self.index = i4
-              r4 = instantiate_node(SyntaxNode,input, index...index)
-            end
-            s3 << r4
-            if r4
-              i6 = index
-              r7 = _nt_scenario_keyword
-              if r7
-                r6 = nil
-              else
-                self.index = i6
-                r6 = instantiate_node(SyntaxNode,input, index...index)
-              end
-              s3 << r6
-              if r6
-                i8 = index
-                r9 = _nt_scenario_outline_keyword
-                if r9
-                  r8 = nil
-                else
-                  self.index = i8
-                  r8 = instantiate_node(SyntaxNode,input, index...index)
-                end
-                s3 << r8
-                if r8
-                  i10 = index
-                  r11 = _nt_table
-                  if r11
-                    r10 = nil
-                  else
-                    self.index = i10
-                    r10 = instantiate_node(SyntaxNode,input, index...index)
-                  end
-                  s3 << r10
-                  if r10
-                    i12 = index
-                    r13 = _nt_tag
-                    if r13
-                      r12 = nil
-                    else
-                      self.index = i12
-                      r12 = instantiate_node(SyntaxNode,input, index...index)
-                    end
-                    s3 << r12
-                    if r12
-                      i14 = index
-                      r15 = _nt_comment_line
-                      if r15
-                        r14 = nil
-                      else
-                        self.index = i14
-                        r14 = instantiate_node(SyntaxNode,input, index...index)
-                      end
-                      s3 << r14
-                      if r14
-                        i16 = index
-                        r17 = _nt_eol
-                        if r17
-                          r16 = nil
-                        else
-                          self.index = i16
-                          r16 = instantiate_node(SyntaxNode,input, index...index)
-                        end
-                        s3 << r16
-                        if r16
-                          if index < input_length
-                            r18 = instantiate_node(SyntaxNode,input, index...(index + 1))
-                            @index += 1
-                          else
-                            terminal_parse_failure("any character")
-                            r18 = nil
-                          end
-                          s3 << r18
-                        end
-                      end
-                    end
-                  end
-                end
-              end
-            end
-            if s3.last
-              r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
-              r3.extend(LineToKeyword0)
-            else
-              self.index = i3
-              r3 = nil
-            end
-            if r3
-              s2 << r3
-            else
-              break
-            end
-          end
-          if s2.empty?
-            self.index = i2
-            r2 = nil
-          else
-            r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
-          end
-          s0 << r2
-        end
-        if s0.last
-          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
-          r0.extend(LineToKeyword1)
-          r0.extend(LineToKeyword2)
-        else
-          self.index = i0
-          r0 = nil
-        end
-
-        node_cache[:line_to_keyword][start_index] = r0
-
-        return r0
-      end
-
-      module LinesToKeyword0
-        def build
-          elements.map{|s| s.build}.join("\n")
+          self.text_value.split("\n").map{|s| s.strip }.join("\n")
         end
       end
 
@@ -1497,7 +1356,59 @@ module Cucumber
 
         s0, i0 = [], index
         loop do
-          r1 = _nt_line_to_keyword
+          i1, s1 = index, []
+          i2 = index
+          i3, s3 = index, []
+          r4 = _nt_eol
+          s3 << r4
+          if r4
+            s5, i5 = [], index
+            loop do
+              r6 = _nt_space
+              if r6
+                s5 << r6
+              else
+                break
+              end
+            end
+            r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
+            s3 << r5
+            if r5
+              r7 = _nt_reserved_words_and_symbols
+              s3 << r7
+            end
+          end
+          if s3.last
+            r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
+            r3.extend(LinesToKeyword0)
+          else
+            self.index = i3
+            r3 = nil
+          end
+          if r3
+            r2 = nil
+          else
+            self.index = i2
+            r2 = instantiate_node(SyntaxNode,input, index...index)
+          end
+          s1 << r2
+          if r2
+            if index < input_length
+              r8 = instantiate_node(SyntaxNode,input, index...(index + 1))
+              @index += 1
+            else
+              terminal_parse_failure("any character")
+              r8 = nil
+            end
+            s1 << r8
+          end
+          if s1.last
+            r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
+            r1.extend(LinesToKeyword1)
+          else
+            self.index = i1
+            r1 = nil
+          end
           if r1
             s0 << r1
           else
@@ -1505,9 +1416,56 @@ module Cucumber
           end
         end
         r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
-        r0.extend(LinesToKeyword0)
+        r0.extend(LinesToKeyword2)
 
         node_cache[:lines_to_keyword][start_index] = r0
+
+        return r0
+      end
+
+      def _nt_reserved_words_and_symbols
+        start_index = index
+        if node_cache[:reserved_words_and_symbols].has_key?(index)
+          cached = node_cache[:reserved_words_and_symbols][index]
+          @index = cached.interval.end if cached
+          return cached
+        end
+
+        i0 = index
+        r1 = _nt_step_keyword
+        if r1
+          r0 = r1
+        else
+          r2 = _nt_scenario_keyword
+          if r2
+            r0 = r2
+          else
+            r3 = _nt_scenario_outline_keyword
+            if r3
+              r0 = r3
+            else
+              r4 = _nt_table
+              if r4
+                r0 = r4
+              else
+                r5 = _nt_tag
+                if r5
+                  r0 = r5
+                else
+                  r6 = _nt_comment_line
+                  if r6
+                    r0 = r6
+                  else
+                    self.index = i0
+                    r0 = nil
+                  end
+                end
+              end
+            end
+          end
+        end
+
+        node_cache[:reserved_words_and_symbols][start_index] = r0
 
         return r0
       end
