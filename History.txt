@@ -2,6 +2,7 @@
 
 === Bugfixes
 * Problem with multiple terms in languages.yml (#321 Aslak Hellesøy)
+* Allow feature element names to contain Gherkin keywords as long as they are not the first word on a newline (#319, #307 Joseph Wilk)
 
 === New features
 * Support for Catalan (Francesc Esplugas)

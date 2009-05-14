@@ -269,20 +269,16 @@ module Cucumber
         (!eol .)*
       end
 
-      rule line_to_keyword
-        white text:(!step_keyword !scenario_keyword !scenario_outline_keyword !table !tag !comment_line !eol .)+ {
+      rule lines_to_keyword
+        (!(eol space* reserved_words_and_symbols) .)* {
           def build
-            text.text_value.strip
+            self.text_value.split("\n").map{|s| s.strip }.join("\n")
           end
         }
       end
-      
-      rule lines_to_keyword
-        line_to_keyword* {
-          def build
-            elements.map{|s| s.build}.join("\n")
-          end
-        }
+
+      rule reserved_words_and_symbols
+        step_keyword / scenario_keyword / scenario_outline_keyword / table / tag / comment_line
       end
 
       rule py_string

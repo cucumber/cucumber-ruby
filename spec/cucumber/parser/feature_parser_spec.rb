@@ -177,7 +177,7 @@ Given I have a string
         
         it "should allow multiline names" do
           parse(%{Feature: Hi
-Scenario: It is my ambition to say 
+Scenario: It is my ambition to say
           in ten sentences
           what others say 
           in a whole book.
@@ -188,7 +188,17 @@ Given I am a step
             [:scenario, 2, "Scenario:", "It is my ambition to say\nin ten sentences\nwhat others say\nin a whole book.",
               [:step_invocation, 6, "Given", "I am a step"]]]
         end
-        
+
+        it "should ignore gherkin keywords which are parts of other words in the name" do
+          parse(%{Feature: Parser bug
+Scenario: I have a Button
+  Given I have it
+}).to_sexp.should ==
+            [:feature, nil, "Feature: Parser bug",
+            [:scenario, 2, "Scenario:", "I have a Button",
+              [:step_invocation, 3, "Given", "I have it"]]]
+
+        end
       end
 
       describe "Scenario Outlines" do
@@ -306,16 +316,15 @@ Examples: I'm a multiline name
         end
 
         it "should allow Examples to have multiline names" do
-          pending('https://rspec.lighthouseapp.com/projects/16211/tickets/307-031-step-mother-parses-scenario-titles') do
             parse(%{Feature: Hi
 Scenario: When I have when in scenario
+          I should be fine
 Given I am a step
 }).to_sexp.should ==
             [:feature, nil, "Feature: Hi",
-              [:scenario, 2, "Scenario:", "When I have when in scenario",
-                [:step_invocation, 3, "Given", "I am a step"]]]
+              [:scenario, 2, "Scenario:", "When I have when in scenario\nI should be fine",
+                [:step_invocation, 4, "Given", "I am a step"]]]
           end
-        end
       end
 
       describe "Syntax" do
