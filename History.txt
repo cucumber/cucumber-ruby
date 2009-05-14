@@ -10,6 +10,7 @@ Hooray - speed improvements when using Rake!
 * Support for Catalan (Francesc Esplugas)
 
 === Changed features
+* --exclude flag now works on ruby files in addition to feature files (#312 Ben Mabey)
 * Rake task should not shell out (#297 Aslak Hellesøy)
   The Cucumber Rake task will run Cucumber in the same Ruby interpreter as Rake itself
   unless explicitly told to fork a new interpreter. This is to increase speed. You can
