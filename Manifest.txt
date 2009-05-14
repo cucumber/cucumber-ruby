@@ -151,7 +151,7 @@ examples/i18n/zh-TW/features/division.feature
 examples/i18n/zh-TW/features/step_definitons/calculator_steps.rb
 examples/i18n/zh-TW/lib/calculator.rb
 examples/java/README.textile
-examples/java/Rakefile
+examples/java/build.xml
 examples/java/features/hello.feature
 examples/java/features/step_definitons/hello_steps.rb
 examples/java/features/step_definitons/tree_steps.rb

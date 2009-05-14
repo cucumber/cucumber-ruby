@@ -66,7 +66,7 @@ module Cucumber
       private
 
       def convert_to_file_name(feature_name)
-        @reportdir + "TEST-" + feature_name.gsub(/[^\w_\.]/, '_') + ".xml"
+        File.join(@reportdir, "TEST-" + feature_name.gsub(/[^\w_\.]/, '_') + ".xml")
       end
 
       def format_exception(exception)
