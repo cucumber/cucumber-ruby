@@ -2,15 +2,15 @@
 class Proc
   PROC_PATTERN = /[\d\w]+@(.*):(.*)>/
   
+  def to_comment_line
+    "# #{file_colon_line}"
+  end
+
+  def backtrace_line(name)
+    "#{file_colon_line}:in `#{name}'"
+  end
+
   if Proc.new{}.to_s =~ PROC_PATTERN
-    def backtrace_line(name)
-      "#{file_colon_line}:in `#{name}'"
-    end
-
-    def to_comment_line
-      "# #{file_colon_line}"
-    end
-
     def file_colon_line
       path, line = *to_s.match(PROC_PATTERN)[1..2]
       path = File.expand_path(path)
@@ -22,12 +22,8 @@ class Proc
     # This Ruby implementation doesn't implement Proc#to_s correctly
     STDERR.puts "*** THIS RUBY IMPLEMENTATION DOESN'T REPORT FILE AND LINE FOR PROCS ***"
     
-    def backtrace_line
-      nil
-    end
-
-    def to_comment_line
-      ""
+    def file_colon_line
+      "UNKNOWN:-1"
     end
   end
 end 
