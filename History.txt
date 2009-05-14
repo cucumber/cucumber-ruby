@@ -1,7 +1,9 @@
-== 0.3.4 (In Git)
+== 0.3.4 2009-05-14
 
 A couple of great new features in this release. Running with Rake is faster than before,
 and there is a brand new JUnit formatter - great for Continuous Integration reports!
+
+This release was made especially for the Oslo XP Meetup today.
 
 ** IMPORTANT UPGRADE NOTES FOR RAILS USERS **
 
@@ -33,6 +35,7 @@ However, setting the RAILS_ENV is easy to forget, so I don't recommend relying o
 * Support for Catalan (Francesc Esplugas)
 
 === Changed features
+* The Java example under examples/java uses Ant instead of Rake - and the new JUnit formatter.
 * Rake task should not shell out (#297 Aslak Hellesøy)
   The Cucumber Rake task will run Cucumber in the same Ruby interpreter as Rake itself
   unless explicitly told to fork a new interpreter. This is to increase speed. You can
