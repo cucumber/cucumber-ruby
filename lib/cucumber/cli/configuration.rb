@@ -3,7 +3,7 @@ module Cucumber
     class YmlLoadError < StandardError; end
 
     class Configuration
-      FORMATS = %w{pretty profile progress rerun}
+      FORMATS = %w{pretty profile progress rerun junit}
       DEFAULT_FORMAT = 'pretty'
 
       attr_reader :paths
@@ -15,6 +15,7 @@ module Cucumber
 
         @paths          = []
         @options        = default_options
+
         @active_format  = DEFAULT_FORMAT
       end
 
@@ -47,7 +48,7 @@ module Cucumber
             %{Run with "--language help" to see all languages},
             %{Run with "--language LANG help" to list keywords for LANG}) do |v|
             if v == 'help'
-              list_languages
+              list_languages_and_exit
             elsif args==['help']
               list_keywords_and_exit(v)
             else
@@ -65,10 +66,11 @@ module Cucumber
             @options[:formats][v] = @out_stream
             @active_format = v
           end
-          opts.on("-o", "--out FILE",
-            "Write output to a file instead of STDOUT. This option",
+          opts.on("-o", "--out [FILE|DIR]",
+            "Write output to a file/directory instead of STDOUT. This option",
             "applies to the previously specified --format, or the",
-            "default format if no format is specified.") do |v|
+            "default format if no format is specified. Check the specific",
+            "formatter's docs to see whether to pass a file or a dir.") do |v|
             @options[:formats][@active_format] = v
           end
           opts.on("-t TAGS", "--tags TAGS",
@@ -197,10 +199,12 @@ module Cucumber
         return Formatter::Pretty.new(step_mother, nil, @options) if @options[:autoformat]
         formatters = @options[:formats].map do |format, out|
           if String === out # file name
-            out = File.open(out, Cucumber.file_mode('w'))
-            at_exit do
-              out.flush
-              out.close
+            unless File.directory?(out)
+              out = File.open(out, Cucumber.file_mode('w'))
+              at_exit do
+                out.flush
+                out.close
+              end
             end
           end
 
@@ -208,7 +212,8 @@ module Cucumber
             formatter_class = formatter_class(format)
             formatter_class.new(step_mother, out, @options)
           rescue Exception => e
-            exit_with_error("Error creating formatter: #{format}", e)
+            e.message << "\nError creating formatter: #{format}"
+            raise e
           end
         end
 
@@ -225,6 +230,7 @@ module Cucumber
           when 'progress' then Formatter::Progress
           when 'rerun'    then Formatter::Rerun
           when 'usage'    then Formatter::Usage
+          when 'junit'    then Formatter::JUnit
         else
           constantize(format)
         end
@@ -243,7 +249,6 @@ module Cucumber
         files.reject! {|f| f =~ %r{/support/env.rb} } if @options[:dry_run]
         files
       end
-
 
       def feature_files
         potential_feature_files = @paths.map do |path|
@@ -278,7 +283,7 @@ module Cucumber
 
       def parse_args_from_profile(profile)
         unless cucumber_yml.has_key?(profile)
-          return(exit_with_error <<-END_OF_ERROR)
+          raise(<<-END_OF_ERROR)
 Could not find profile: '#{profile}'
 
 Defined profiles in cucumber.yml:
@@ -288,16 +293,16 @@ Defined profiles in cucumber.yml:
 
         args_from_yml = cucumber_yml[profile] || ''
 
-        if !args_from_yml.is_a?(String)
-          exit_with_error "Profiles must be defined as a String.  The '#{profile}' profile was #{args_from_yml.inspect} (#{args_from_yml.class}).\n"
-        elsif args_from_yml =~ /^\s*$/
-          exit_with_error "The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml.\n"
-        else
-          parse!(args_from_yml.split(' '))
+        case(args_from_yml)
+          when String
+            raise "The '#{profile}' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml.\n" if args_from_yml =~ /^\s*$/
+            args_from_yml = args_from_yml.split(' ')
+          when Array
+            raise "The '#{profile}' profile in cucumber.yml was empty.  Please define the command line arguments for the 'foo' profile in cucumber.yml.\n" if args_from_yml.empty?
+          else
+            raise "The '#{profile}' profile in cucumber.yml was a #{args_from_yml.class}. It must be a String or Array"
         end
-
-      rescue YmlLoadError => e
-        exit_with_error(e.message)
+        parse!(args_from_yml)
       end
 
       def cucumber_yml
@@ -322,13 +327,13 @@ Defined profiles in cucumber.yml:
 
       def list_keywords_and_exit(lang)
         unless Cucumber::LANGUAGES[lang]
-          exit_with_error("No language with key #{lang}")
+          raise("No language with key #{lang}")
         end
         LanguageHelpFormatter.list_keywords(@out_stream, lang)
         Kernel.exit
       end
 
-      def list_languages
+      def list_languages_and_exit
         LanguageHelpFormatter.list_languages(@out_stream)
         Kernel.exit
       end
@@ -346,15 +351,6 @@ Defined profiles in cucumber.yml:
           :name_regexps => [],
           :diff_enabled => true
         }
-      end
-
-      def exit_with_error(error_message, e=nil)
-        @error_stream.puts(error_message)
-        if e
-          @error_stream.puts("#{e.message} (#{e.class})")
-          @error_stream.puts(e.backtrace.join("\n"))
-        end
-        Kernel.exit 1
       end
     end
 

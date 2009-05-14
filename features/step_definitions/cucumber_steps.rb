@@ -1,3 +1,5 @@
+require 'tempfile'
+
 Given /^I am in (.*)$/ do |example_dir_relative_path|
   @current_dir = examples_dir(example_dir_relative_path)
 end
@@ -7,6 +9,13 @@ Given /^a standard Cucumber project directory structure$/ do
   in_current_dir do
     FileUtils.mkdir_p 'features/support'
     FileUtils.mkdir 'features/step_definitions'
+  end
+end
+
+Given /^the (.*) directory is empty$/ do |directory|
+  in_current_dir do
+    FileUtils.remove_dir(directory) rescue nil
+    FileUtils.mkdir 'tmp'
   end
 end
 
@@ -27,14 +36,16 @@ When /^I run cucumber (.*)$/ do |cucumber_opts|
 end
 
 When /^I run rake (.*)$/ do |rake_opts|
-  run "rake #{rake_opts}"
+  run "rake #{rake_opts} --trace"
 end
 
 Then /^it should (fail|pass)$/ do |success|
   if success == 'fail'
     last_exit_status.should_not == 0
   else
-    last_exit_status.should == 0
+    if last_exit_status != 0
+      raise "Failed with exit status #{last_exit_status}\nSTDOUT:\n#{last_stdout}\nSTDERR:\n#{last_stderr}"
+    end
   end
 end
 
@@ -49,6 +60,18 @@ end
 
 Then /^the output should not contain$/ do |text|
   last_stdout.should_not include(text)
+end
+
+# http://diffxml.sourceforge.net/
+Then /^"(.*)" should contain XML$/ do |file, xml|
+  t = Tempfile.new('cucumber-junit')
+  t.write(xml)
+  t.flush
+  t.close
+  diff = `diffxml #{t.path} #{file}`
+  if diff =~ /<delta>/m
+    raise diff + "\nXML WAS:\n" + IO.read(file)
+  end
 end
 
 Then /^"(.*)" should contain$/ do |file, text|

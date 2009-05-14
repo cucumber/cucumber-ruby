@@ -1,11 +1,46 @@
-== 0.3.4 (In Git)
+== 0.3.4 2009-05-14
+
+A couple of great new features in this release. Running with Rake is faster than before,
+and there is a brand new JUnit formatter - great for Continuous Integration reports!
+
+This release was made especially for the Oslo XP Meetup today.
+
+** IMPORTANT UPGRADE NOTES FOR RAILS USERS **
+
+Running Cucumber features in the same Ruby interpreter as Rake doesn't seem to work,
+so you have to explicitly tell the task to fork (like it was doing by default in prior
+versions). In lib/tasks/cucumber.rake:
+
+  Cucumber::Rake::Task.new(:features) do |t|
+    t.fork = true # Explicitly fork
+    t.cucumber_opts = %w{--format pretty}
+  end
+
+(If you run script/generate cucumber this will be done for you).
+Alternatively you can omit forking and run features like this:
+
+  RAILS_ENV=test rake features
+
+However, setting the RAILS_ENV is easy to forget, so I don't recommend relying on this.
 
 === Bugfixes
+* Hooks (World, Before, After) are no longer executed when --dry-run (Aslak Hellesøy)
+* Proper UTF8 use in HTML formatter (Herminio Torres)
 * Problem with multiple terms in languages.yml (#321 Aslak Hellesøy)
 * Allow feature element names to contain Gherkin keywords as long as they are not the first word on a newline (#319, #307 Joseph Wilk)
 
 === New features
+* New JUnit formatter (Gareth Jones)
+* Support for Vietnamese (Ngoc Dao)
+* Added aliases for Feature and But in Japanese (Leonard Chin)
 * Support for Catalan (Francesc Esplugas)
+
+=== Changed features
+* The Java example under examples/java uses Ant instead of Rake - and the new JUnit formatter.
+* Rake task should not shell out (#297 Aslak Hellesøy)
+  The Cucumber Rake task will run Cucumber in the same Ruby interpreter as Rake itself
+  unless explicitly told to fork a new interpreter. This is to increase speed. You can
+  force a new interpreter by setting fork=true or rcov=true in the task.
 
 == 0.3.3 2009-05-10
 
@@ -244,7 +279,7 @@ for multiline arguments are some of the highlights.
 * Pure Ruby features are no longer supported.
 * Remove --color option in autotest. Can be added manually in cucumber.yml (#215 Jean-Michel Garnier)
 
-== (0.16.4 aslakhellesoy-cucumber gem on GitHub)
+== (0.1.16.4 aslakhellesoy-cucumber gem on GitHub)
 
 Bugfix release.
 

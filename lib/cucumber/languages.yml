@@ -168,7 +168,7 @@
   background: Rerefons
   feature: Característica
   scenario: Escenari
-  scenario_outline: Esquema de l'escenari
+  scenario_outline: Esquema de l\'escenari
   examples: Exemples
   given: Donat
   when: Quan
@@ -285,7 +285,7 @@
   name: Japanese
   native: 日本語
   encoding: UTF-8
-  feature: フィーチャ
+  feature: フィーチャ|機能
   background: 背景
   scenario: シナリオ
   scenario_outline: シナリオアウトライン|シナリオテンプレート|テンプレ|シナリオテンプレ
@@ -294,15 +294,17 @@
   when: もし
   then: ならば
   and: かつ
-  but: しかし
+  but: しかし|但し
   space_after_keyword: false
 "lt":
   name: Lithuanian
   native: lietuvių kalba
   encoding: UTF-8
-  feature: Sąvybė
+  feature: Savybė
+  background: Kontekstas
   scenario: Scenarijus
-  examples: Pavyzdžių
+  scenario_outline: Scenarijaus šablonas
+  examples: Pavyzdžiai|Scenarijai|Variantai
   given: Duota
   when: Kai
   then: Tada
@@ -512,4 +514,19 @@
   then: То
   and: И
   but: Но
+  space_after_keyword: true
+"vi":
+  name: Vietnamese
+  native: Tiếng Việt
+  encoding: UTF-8
+  feature: Tính năng
+  background: Bối cảnh
+  scenario: Kịch bản
+  scenario_outline: Khung kịch bản
+  examples: Dữ liệu
+  given: Cho
+  when: Khi
+  then: Thì
+  and: Và
+  but: Nhưng
   space_after_keyword: true

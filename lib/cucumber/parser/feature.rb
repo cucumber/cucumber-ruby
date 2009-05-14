@@ -481,15 +481,19 @@ module Cucumber
       end
 
       module Background1
-
         def matches_name?(regexp_to_match)
           name.build =~ regexp_to_match
         end
 
-       def has_tags?(tag_names)
-         feature_tags = self.parent.tags
-         feature_tags.has_tags?(tag_names)
-       end
+        def at_line?(line)
+          background_keyword.line == line ||
+          steps.at_line?(line)
+        end
+
+        def has_tags?(tag_names)
+          feature_tags = self.parent.tags
+          feature_tags.has_tags?(tag_names)
+        end
 
         def build
           Ast::Background.new(
@@ -499,7 +503,7 @@ module Cucumber
             name.build, 
             steps.build
           )
-         end
+        end
       end
 
       def _nt_background

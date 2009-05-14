@@ -47,7 +47,7 @@ Feature: Rake task
   Scenario: rake task with a defined profile and cucumber_opts
     Given the following profile is defined:
       """
-      bar: features/missing_step_definitions.feature:3
+      bar: ['features/missing_step_definitions.feature:3']
       """
     And a file named "Rakefile" with:
       """
@@ -56,7 +56,7 @@ Feature: Rake task
 
       Cucumber::Rake::Task.new(:features) do |t|
         t.profile = "bar"
-        t.cucumber_opts = "--quiet --no-color"
+        t.cucumber_opts = %w{--quiet --no-color}
       end
       """
     When I run rake features
@@ -82,7 +82,7 @@ Feature: Rake task
       """
     Given the following profile is defined:
       """
-      baz: --quiet --no-color
+      baz: ['--quiet', '--no-color']
       """
     And a file named "Rakefile" with:
       """
@@ -138,7 +138,7 @@ Feature: Rake task
 
       Cucumber::Rake::Task.new(:features) do |t|
         t.profile = "no_bomb"
-        t.cucumber_opts = "--quiet --no-color"
+        t.cucumber_opts = %w{--quiet --no-color}
       end
       """
 
