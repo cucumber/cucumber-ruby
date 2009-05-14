@@ -1,3 +1,8 @@
+== 0.3.x (In Git)
+
+=== Bugfixes
+* Allow feature element names to contain Gherkin keywords as long as they are not the first word on a newline (#319, #307 Joseph Wilk)
+
 == 0.3.4 2009-05-14
 
 A couple of great new features in this release. Running with Rake is faster than before,
@@ -27,7 +32,6 @@ However, setting the RAILS_ENV is easy to forget, so I don't recommend relying o
 * Hooks (World, Before, After) are no longer executed when --dry-run (Aslak Hellesøy)
 * Proper UTF8 use in HTML formatter (Herminio Torres)
 * Problem with multiple terms in languages.yml (#321 Aslak Hellesøy)
-* Allow feature element names to contain Gherkin keywords as long as they are not the first word on a newline (#319, #307 Joseph Wilk)
 
 === New features
 * New JUnit formatter (Gareth Jones)
