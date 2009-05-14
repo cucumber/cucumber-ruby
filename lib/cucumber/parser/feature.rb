@@ -1423,6 +1423,16 @@ module Cucumber
         return r0
       end
 
+      module ReservedWordsAndSymbols0
+        def step_keyword
+          elements[0]
+        end
+
+        def keyword_space
+          elements[1]
+        end
+      end
+
       def _nt_reserved_words_and_symbols
         start_index = index
         if node_cache[:reserved_words_and_symbols].has_key?(index)
@@ -1432,29 +1442,42 @@ module Cucumber
         end
 
         i0 = index
-        r1 = _nt_step_keyword
+        i1, s1 = index, []
+        r2 = _nt_step_keyword
+        s1 << r2
+        if r2
+          r3 = _nt_keyword_space
+          s1 << r3
+        end
+        if s1.last
+          r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
+          r1.extend(ReservedWordsAndSymbols0)
+        else
+          self.index = i1
+          r1 = nil
+        end
         if r1
           r0 = r1
         else
-          r2 = _nt_scenario_keyword
-          if r2
-            r0 = r2
+          r4 = _nt_scenario_keyword
+          if r4
+            r0 = r4
           else
-            r3 = _nt_scenario_outline_keyword
-            if r3
-              r0 = r3
+            r5 = _nt_scenario_outline_keyword
+            if r5
+              r0 = r5
             else
-              r4 = _nt_table
-              if r4
-                r0 = r4
+              r6 = _nt_table
+              if r6
+                r0 = r6
               else
-                r5 = _nt_tag
-                if r5
-                  r0 = r5
+                r7 = _nt_tag
+                if r7
+                  r0 = r7
                 else
-                  r6 = _nt_comment_line
-                  if r6
-                    r0 = r6
+                  r8 = _nt_comment_line
+                  if r8
+                    r0 = r8
                   else
                     self.index = i0
                     r0 = nil
