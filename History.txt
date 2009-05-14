@@ -22,6 +22,7 @@ Alternatively you can omit forking and run features like this:
 However, setting the RAILS_ENV is easy to forget, so I don't recommend relying on this.
 
 === Bugfixes
+* Hooks (World, Before, After) are no longer executed when --dry-run (Aslak Hellesøy)
 * Proper UTF8 use in HTML formatter (Herminio Torres)
 * Problem with multiple terms in languages.yml (#321 Aslak Hellesøy)
 
