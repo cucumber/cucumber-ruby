@@ -1,9 +1,9 @@
 require 'spec/expectations'
 $:.unshift(File.dirname(__FILE__) + '/../../lib') # This line is not needed in your own project
-require 'Calculator'
+require 'Calculator' # Calculator.dll
 
 Before do
-  @calc = Demo::Calculator.new
+  @calc = Demo::Calculator.new # A .NET class in Calculator.dll
 end
 
 Given "I have entered $n into the calculator" do |n|
