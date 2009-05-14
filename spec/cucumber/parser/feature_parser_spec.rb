@@ -192,11 +192,12 @@ Given I am a step
         it "should ignore gherkin keywords which are parts of other words in the name" do
           parse(%{Feature: Parser bug
 Scenario: I have a Button
+          Buttons are great
   Given I have it
 }).to_sexp.should ==
             [:feature, nil, "Feature: Parser bug",
-            [:scenario, 2, "Scenario:", "I have a Button",
-              [:step_invocation, 3, "Given", "I have it"]]]
+            [:scenario, 2, "Scenario:", "I have a Button\nButtons are great",
+              [:step_invocation, 4, "Given", "I have it"]]]
 
         end
       end

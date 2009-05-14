@@ -272,13 +272,13 @@ module Cucumber
       rule lines_to_keyword
         (!(eol space* reserved_words_and_symbols) .)* {
           def build
-            self.text_value.split("\n").map{|s| s.strip }.join("\n")
+            self.text_value.split("\n").map{|s| s.strip}.join("\n")
           end
         }
       end
 
       rule reserved_words_and_symbols
-        step_keyword / scenario_keyword / scenario_outline_keyword / table / tag / comment_line
+        (step_keyword keyword_space) / scenario_keyword / scenario_outline_keyword / table / tag / comment_line
       end
 
       rule py_string
