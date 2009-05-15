@@ -1,4 +1,6 @@
-== 0.3.x (In Git)
+== 0.3.5 2009-05-14
+
+Let's make a new release today because two annoying bugs are fixed.
 
 === Bugfixes
 * Allow feature element names to contain Gherkin keywords as long as they are not the first word on a newline (#319, #307 Joseph Wilk)
