@@ -40,6 +40,7 @@ However, setting the RAILS_ENV is easy to forget, so I don't recommend relying o
 * Support for Catalan (Francesc Esplugas)
 
 === Changed features
+* --exclude flag now works on ruby files in addition to feature files (#312 Ben Mabey)
 * The Java example under examples/java uses Ant instead of Rake - and the new JUnit formatter.
 * Rake task should not shell out (#297 Aslak Hellesøy)
   The Cucumber Rake task will run Cucumber in the same Ruby interpreter as Rake itself
