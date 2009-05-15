@@ -81,10 +81,7 @@ module Cli
           "/features/support/fooz.rb"
         ]
       end
-
-
     end
-
 
     it "should expand args from YAML file" do
       given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})

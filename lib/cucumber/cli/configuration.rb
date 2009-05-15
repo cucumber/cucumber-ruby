@@ -58,11 +58,13 @@ module Cucumber
           opts.on("-f FORMAT", "--format FORMAT",
             "How to format features (Default: #{DEFAULT_FORMAT})",
             "Available formats: #{FORMATS.join(", ")}",
-            "You can also provide your own formatter classes as long",
-            "as they have been previously required using --require or",
-            "if they are in the folder structure such that cucumber",
-            "will require them automatically.",
-            "This option can be specified multiple times.") do |v|
+            "FORMAT can also be the fully qualified class name of",
+            "your own custom formatter. This class *must* be defined",
+            "in a ruby file available on Ruby's LOAD_PATH, with a relative",
+            "file name that is the underscore name of the class name.",
+            "Example: --format Foo::BarZap -> Cucumber will look for",
+            "foo/bar_zap.rb. You can place the file with this relative",
+            "path underneath your features/support directory if you wish.") do |v|
             @options[:formats][v] = @out_stream
             @active_format = v
           end
@@ -222,15 +224,19 @@ module Cucumber
         return broadcaster
       end
 
+      BUILTIN_FORMATS = {
+        'html'     => 'Cucumber::Formatter::Html',
+        'pretty'   => 'Cucumber::Formatter::Pretty',
+        'profile'  => 'Cucumber::Formatter::Profile',
+        'progress' => 'Cucumber::Formatter::Progress',
+        'rerun'    => 'Cucumber::Formatter::Rerun',
+        'usage'    => 'Cucumber::Formatter::Usage',
+        'junit'    => 'Cucumber::Formatter::Junit'
+      }
+
       def formatter_class(format)
-        case format
-          when 'html'     then Formatter::Html
-          when 'pretty'   then Formatter::Pretty
-          when 'profile'  then Formatter::Profile
-          when 'progress' then Formatter::Progress
-          when 'rerun'    then Formatter::Rerun
-          when 'usage'    then Formatter::Usage
-          when 'junit'    then Formatter::JUnit
+        if(builtin = BUILTIN_FORMATS[format])
+          constantize(builtin)
         else
           constantize(format)
         end
@@ -271,14 +277,28 @@ module Cucumber
       end
 
       def constantize(camel_cased_word)
-        names = camel_cased_word.split('::')
-        names.shift if names.empty? || names.first.empty?
+        begin
+          names = camel_cased_word.split('::')
+          names.shift if names.empty? || names.first.empty?
 
-        constant = Object
-        names.each do |name|
-          constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
+          constant = Object
+          names.each do |name|
+            constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
+          end
+          constant
+        rescue NameError
+          require underscore(camel_cased_word)
+          retry
         end
-        constant
+      end
+
+      # Snagged from active_support
+      def underscore(camel_cased_word)
+        camel_cased_word.to_s.gsub(/::/, '/').
+          gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+          gsub(/([a-z\d])([A-Z])/,'\1_\2').
+          tr("-", "_").
+          downcase
       end
 
       def parse_args_from_profile(profile)

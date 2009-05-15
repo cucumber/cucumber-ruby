@@ -7,7 +7,7 @@ end
 
 module Cucumber
   module Formatter
-    class JUnit < Cucumber::Ast::Visitor
+    class Junit < Cucumber::Ast::Visitor
 
       def initialize(step_mother, io, options)
         super(step_mother)

@@ -190,7 +190,6 @@ examples/self_test/features/sample.feature
 examples/self_test/features/search_sample.feature
 examples/self_test/features/step_definitions/sample_steps.rb
 examples/self_test/features/support/env.rb
-examples/self_test/features/support/tag_count_formatter.rb
 examples/self_test/features/tons_of_cukes.feature
 examples/self_test/features/undefined_multiline_args.feature
 examples/sinatra/Rakefile
@@ -293,7 +292,6 @@ lib/cucumber/core_ext/exception.rb
 lib/cucumber/core_ext/instance_exec.rb
 lib/cucumber/core_ext/proc.rb
 lib/cucumber/core_ext/string.rb
-lib/cucumber/formatter.rb
 lib/cucumber/formatter/ansicolor.rb
 lib/cucumber/formatter/color_io.rb
 lib/cucumber/formatter/console.rb
@@ -305,6 +303,7 @@ lib/cucumber/formatter/pretty.rb
 lib/cucumber/formatter/profile.rb
 lib/cucumber/formatter/progress.rb
 lib/cucumber/formatter/rerun.rb
+lib/cucumber/formatter/tag_cloud.rb
 lib/cucumber/formatter/unicode.rb
 lib/cucumber/formatter/usage.rb
 lib/cucumber/formatters/unicode.rb

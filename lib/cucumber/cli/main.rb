@@ -2,7 +2,7 @@ require 'optparse'
 require 'cucumber'
 require 'ostruct'
 require 'cucumber/parser'
-require 'cucumber/formatter'
+require 'cucumber/formatter/color_io'
 require 'cucumber/cli/language_help_formatter'
 require 'cucumber/cli/configuration'
 
