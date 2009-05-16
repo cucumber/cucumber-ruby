@@ -521,8 +521,8 @@
   encoding: UTF-8
   feature: Tính năng
   background: Bối cảnh
-  scenario: Kịch bản
-  scenario_outline: Khung kịch bản
+  scenario: Tình huống
+  scenario_outline: Khung tình huống
   examples: Dữ liệu
   given: Cho
   when: Khi
