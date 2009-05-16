@@ -314,10 +314,10 @@ Defined profiles in cucumber.yml:
 
         case(args_from_yml)
           when String
-            raise "The '#{profile}' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml.\n" if args_from_yml =~ /^\s*$/
+            raise "The '#{profile}' profile in cucumber.yml was blank.  Please define the command line arguments for the '#{profile}' profile in cucumber.yml.\n" if args_from_yml =~ /^\s*$/
             args_from_yml = args_from_yml.split(' ')
           when Array
-            raise "The '#{profile}' profile in cucumber.yml was empty.  Please define the command line arguments for the 'foo' profile in cucumber.yml.\n" if args_from_yml.empty?
+            raise "The '#{profile}' profile in cucumber.yml was empty.  Please define the command line arguments for the '#{profile}' profile in cucumber.yml.\n" if args_from_yml.empty?
           else
             raise "The '#{profile}' profile in cucumber.yml was a #{args_from_yml.class}. It must be a String or Array"
         end
