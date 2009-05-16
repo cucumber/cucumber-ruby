@@ -43,6 +43,36 @@
   and: و
   but: لكن
   space_after_keyword: true
+"bg":
+  name: Bulgarian
+  native: български
+  encoding: UTF-8
+  feature: Функционалност
+  background: Предистория
+  scenario: Сценарий
+  scenario_outline: Рамка на сценарий
+  examples: Примери
+  given: Дадено
+  when: Когато
+  then: То
+  and: И
+  but: Но
+  space_after_keyword: true
+"cat":
+  name: Catalan
+  native: català
+  encoding: UTF-8
+  background: Rerefons
+  feature: Característica
+  scenario: Escenari
+  scenario_outline: Esquema de l\'escenari
+  examples: Exemples
+  given: Donat
+  when: Quan
+  then: Aleshores
+  and: I
+  but: Però
+  space_after_keyword: true
 "cy":
   name: Welsh
   native: Cymraeg
@@ -160,21 +190,6 @@
   then: Entonces
   and: Y
   but: Pero
-  space_after_keyword: true
-"cat":
-  name: Catalan
-  native: català
-  encoding: UTF-8
-  background: Rerefons
-  feature: Característica
-  scenario: Escenari
-  scenario_outline: Esquema de l\'escenari
-  examples: Exemples
-  given: Donat
-  when: Quan
-  then: Aleshores
-  and: I
-  but: Però
   space_after_keyword: true
 "et":
   name: Estonian
@@ -295,6 +310,21 @@
   then: ならば
   and: かつ
   but: しかし|但し
+  space_after_keyword: false
+"ko":
+  name: Korean
+  native: 한국어
+  encoding: UTF-8
+  background: 배경
+  feature: 기능
+  scenario: 시나리오
+  scenario_outline: 시나리오 개요
+  examples: 예
+  given: 조건
+  when: 만일
+  then: 그러면
+  and: 그리고
+  but: 하지만
   space_after_keyword: false
 "lt":
   name: Lithuanian
@@ -455,6 +485,21 @@
   and: A
   but: Ale
   space_after_keyword: true
+"vi":
+  name: Vietnamese
+  native: Tiếng Việt
+  encoding: UTF-8
+  feature: Tính năng
+  background: Bối cảnh
+  scenario: Kịch bản
+  scenario_outline: Khung kịch bản
+  examples: Dữ liệu
+  given: Cho
+  when: Khi
+  then: Thì
+  and: Và
+  but: Nhưng
+  space_after_keyword: true
 "zh-CN":
   name: Chinese simplified
   native: 简体中文
@@ -485,48 +530,3 @@
   and: 而且|並且
   but: 但是
   space_after_keyword: false
-"ko":
-  name: Korean
-  native: 한국어
-  encoding: UTF-8
-  background: 배경
-  feature: 기능
-  scenario: 시나리오
-  scenario_outline: 시나리오 개요
-  examples: 예
-  given: 조건
-  when: 만일
-  then: 그러면
-  and: 그리고
-  but: 하지만
-  space_after_keyword: false
-"bg":
-  name: Bulgarian
-  native: български
-  encoding: UTF-8
-  feature: Функционалност
-  background: Предистория
-  scenario: Сценарий
-  scenario_outline: Рамка на сценарий
-  examples: Примери
-  given: Дадено
-  when: Когато
-  then: То
-  and: И
-  but: Но
-  space_after_keyword: true
-"vi":
-  name: Vietnamese
-  native: Tiếng Việt
-  encoding: UTF-8
-  feature: Tính năng
-  background: Bối cảnh
-  scenario: Kịch bản
-  scenario_outline: Khung kịch bản
-  examples: Dữ liệu
-  given: Cho
-  when: Khi
-  then: Thì
-  and: Và
-  but: Nhưng
-  space_after_keyword: true
