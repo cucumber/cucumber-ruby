@@ -3,7 +3,15 @@ module Cucumber
     class YmlLoadError < StandardError; end
 
     class Configuration
-      FORMATS = %w{pretty profile progress rerun junit}
+      BUILTIN_FORMATS = {
+        'html'     => 'Cucumber::Formatter::Html',
+        'pretty'   => 'Cucumber::Formatter::Pretty',
+        'profile'  => 'Cucumber::Formatter::Profile',
+        'progress' => 'Cucumber::Formatter::Progress',
+        'rerun'    => 'Cucumber::Formatter::Rerun',
+        'usage'    => 'Cucumber::Formatter::Usage',
+        'junit'    => 'Cucumber::Formatter::Junit'
+      }
       DEFAULT_FORMAT = 'pretty'
 
       attr_reader :paths
@@ -57,14 +65,15 @@ module Cucumber
           end
           opts.on("-f FORMAT", "--format FORMAT",
             "How to format features (Default: #{DEFAULT_FORMAT})",
-            "Available formats: #{FORMATS.join(", ")}",
+            "Available formats: #{BUILTIN_FORMATS.keys.sort.join(", ")}",
             "FORMAT can also be the fully qualified class name of",
-            "your own custom formatter. This class *must* be defined",
-            "in a ruby file available on Ruby's LOAD_PATH, with a relative",
+            "your own custom formatter. If the class isn't loaded,",
+            "Cucumber will attempt to require a file with a relative",
             "file name that is the underscore name of the class name.",
             "Example: --format Foo::BarZap -> Cucumber will look for",
             "foo/bar_zap.rb. You can place the file with this relative",
-            "path underneath your features/support directory if you wish.") do |v|
+            "path underneath your features/support directory or anywhere",
+            "on Ruby's LOAD_PATH, for example in a Ruby gem.") do |v|
             @options[:formats][v] = @out_stream
             @active_format = v
           end
@@ -223,16 +232,6 @@ module Cucumber
         broadcaster.options = @options
         return broadcaster
       end
-
-      BUILTIN_FORMATS = {
-        'html'     => 'Cucumber::Formatter::Html',
-        'pretty'   => 'Cucumber::Formatter::Pretty',
-        'profile'  => 'Cucumber::Formatter::Profile',
-        'progress' => 'Cucumber::Formatter::Progress',
-        'rerun'    => 'Cucumber::Formatter::Rerun',
-        'usage'    => 'Cucumber::Formatter::Usage',
-        'junit'    => 'Cucumber::Formatter::Junit'
-      }
 
       def formatter_class(format)
         if(builtin = BUILTIN_FORMATS[format])

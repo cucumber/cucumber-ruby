@@ -1,7 +1,9 @@
 == 0.3.6 (In Git)
 
+With this release you can package your formatters in RubyGems.
+
 === New features
-* Automatic require of custom formatters. --require is no longer needed to load them. See --help. (Aslak Hellesøy)
+* Automatic require of custom formatters. --require is no longer needed to load them, and they can be in Ruby gems. (Aslak Hellesøy)
 * Lazy loading of built-in formatters. Should improve startup time a little bit.
 
 == 0.3.5 2009-05-14
