@@ -14,6 +14,7 @@ module Cucumber
   KEYWORD_KEYS = %w{name native encoding feature background scenario scenario_outline examples given when then but}
   
   class << self
+    # The currently active language
     attr_reader :lang
     
     def load_language(lang) #:nodoc:
