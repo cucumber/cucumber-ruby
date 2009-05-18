@@ -135,7 +135,8 @@ module Cucumber
       attr_accessor :fork
 
       # Define what profile to be used.  When used with cucumber_opts it is simply appended to it. Will be ignored when CUCUMBER_OPTS is used.
-      def profile=(profile)
+      attr_accessor :profile
+      def profile=(profile) #:nodoc:
         @profile = profile
         unless feature_list
           # TODO: remove once we completely remove these from the rake task.
@@ -143,7 +144,6 @@ module Cucumber
           @feature_list = [] # Don't use accessor to avoid deprecation warning.
         end
       end
-      attr_reader :profile
 
       # Define Cucumber Rake task
       def initialize(task_name = "features", desc = "Run Features with Cucumber")

@@ -1,3 +1,4 @@
+#:stopdoc:
 module Cucumber
   module Parser
     # TIP: When you hack on the grammar, just delete feature.rb in this directory.
