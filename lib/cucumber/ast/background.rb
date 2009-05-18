@@ -28,15 +28,15 @@ module Cucumber
         visitor.step_mother.before(hook_context)
         visitor.visit_steps(@step_invocations)
         @failed = @step_invocations.detect{|step_invocation| step_invocation.exception}
-        visitor.step_mother.after(hook_context) if @failed
+        visitor.step_mother.after(hook_context) if @failed || @feature_elements.empty?
       end
 
       def accept_hook?(hook)
         if hook_context != self
           hook_context.accept_hook?(hook)
         else
-          # We have no scenarios
-          false
+          # We have no scenarios, just ask our feature
+          @feature.accept_hook?(hook)
         end
       end
 

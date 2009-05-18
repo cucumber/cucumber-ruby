@@ -62,6 +62,10 @@ Then /^the output should not contain$/ do |text|
   last_stdout.should_not include(text)
 end
 
+Then /^the output should be$/ do |text|
+  last_stdout.should == text
+end
+
 # http://diffxml.sourceforge.net/
 Then /^"(.*)" should contain XML$/ do |file, xml|
   t = Tempfile.new('cucumber-junit')
@@ -84,6 +88,10 @@ end
 
 Then /^STDERR should match$/ do |text|
   last_stderr.should =~ /#{text}/
+end
+
+Then /^STDERR should be empty$/ do
+  last_stderr.should == ""
 end
 
 Then /^"(.*)" should exist$/ do |file|

@@ -7,6 +7,9 @@ With this release you can package your formatters in RubyGems.
 * Automatic require of custom formatters. --require is no longer needed to load them, and they can be in Ruby gems. (Aslak Hellesøy)
 * Lazy loading of built-in formatters. Should improve startup time a little bit.
 
+=== Bugfixes
+* Feature with only Background doesn't run hooks (#329 Aslak Hellesøy)
+
 == 0.3.5 2009-05-14
 
 Let's make a new release today because two annoying bugs are fixed.
