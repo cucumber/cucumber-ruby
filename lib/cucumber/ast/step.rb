@@ -51,7 +51,7 @@ module Cucumber
           step_match          = visitor.step_mother.step_match(name, @name) rescue nil
           return step_match if step_match
         end
-        NoStepMatch.new(self)
+        NoStepMatch.new(self, @name)
       end
 
       def to_sexp

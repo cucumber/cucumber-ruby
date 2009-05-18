@@ -61,6 +61,10 @@ module Cucumber
         end
       end
 
+      def expand_name(visitor, row)
+        visitor.visit_scenario_name(@keyword, @name, file_colon_line(row.line), 0)
+      end
+
       def to_sexp
         sexp = [:scenario_outline, @keyword, @name]
         comment = @comment.to_sexp

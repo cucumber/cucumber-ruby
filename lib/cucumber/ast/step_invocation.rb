@@ -20,6 +20,10 @@ module Cucumber
 
       def accept(visitor)
         invoke(visitor.step_mother, visitor.options)
+        visit_step_results(visitor)
+      end
+
+      def visit_step_results(visitor)
         @step.visit_step_result(visitor, @step_match, @multiline_arg, @status, @exception, @background)
       end
 
@@ -51,11 +55,11 @@ module Cucumber
         rescue Undefined => e
           failed(e, true)
           status!(:undefined)
-          @step_match = NoStepMatch.new(@step)
+          @step_match = NoStepMatch.new(@step, @name)
         rescue Ambiguous => e
           failed(e, false)
           status!(:failed)
-          @step_match = NoStepMatch.new(@step)
+          @step_match = NoStepMatch.new(@step, @name)
         end
         step_mother.step_visited(self)
       end

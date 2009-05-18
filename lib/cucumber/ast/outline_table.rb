@@ -10,7 +10,11 @@ module Cucumber
 
       def accept(visitor)
         cells_rows.each_with_index do |row, n|
-          visitor.visit_table_row(row)
+          if(visitor.options[:expand])
+            row.accept(visitor)
+          else
+            visitor.visit_table_row(row)
+          end
         end
         nil
       end
@@ -35,6 +39,10 @@ module Cucumber
         cells_rows[1..-1]
       end
 
+      def expand_scenario(visitor, row)
+        @scenario_outline.expand_name(visitor, row)
+      end
+
       class ExampleCells < Cells
         def create_step_invocations!(scenario_outline)
           @step_invocations = scenario_outline.step_invocations(self)
@@ -47,6 +55,10 @@ module Cucumber
         end
 
         def accept(visitor)
+          visitor.options[:expand] ? accept_expand(visitor) : accept_plain(visitor)
+        end
+
+        def accept_plain(visitor)
           if header?
             @cells.each do |cell|
               cell.status = :skipped_param
@@ -61,6 +73,20 @@ module Cucumber
 
               @cells.each do |cell|
                 visitor.visit_table_cell(cell)
+              end
+            end
+          end
+        end
+
+        def accept_expand(visitor)
+          if header?
+          else
+            visitor.step_mother.before_and_after(self) do
+              @table.expand_scenario(visitor, self)
+              @step_invocations.each do |step_invocation|
+                step_invocation.invoke(visitor.step_mother, visitor.options)
+                @exception ||= step_invocation.exception
+                step_invocation.visit_step_results(visitor)
               end
             end
           end

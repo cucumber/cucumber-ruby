@@ -33,12 +33,13 @@ module Cucumber
   class NoStepMatch
     attr_reader :step_definition
 
-    def initialize(step)
+    def initialize(step, name)
       @step = step
+      @name = name
     end
     
     def format_args(format)
-      @step.name
+      @name
     end
 
     def file_colon_line
