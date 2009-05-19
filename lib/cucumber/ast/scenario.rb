@@ -33,7 +33,7 @@ module Cucumber
 
       # Returns true if one or more steps failed
       def failed?
-        @steps.failed? || @exception
+        @steps.failed? || !!@exception
       end
       
       def fail!(exception)
