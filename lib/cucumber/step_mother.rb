@@ -79,7 +79,11 @@ module Cucumber
       end
 
       def execute_in(world, scenario, location)
-        world.cucumber_instance_exec(false, location, scenario, &@proc)
+        begin
+          world.cucumber_instance_exec(false, location, scenario, &@proc)
+        rescue Exception => exception
+          scenario.fail!(exception)
+        end
       end
     end
 
@@ -319,11 +323,7 @@ module Cucumber
     def execute_after(scenario)
       return if options[:dry_run]
       hooks_for(:after, scenario).each do |hook|
-        begin
-          hook.execute_in(@current_world, scenario, 'After')
-        rescue Exception => exception
-          scenario.fail!(exception)
-        end
+        hook.execute_in(@current_world, scenario, 'After')
       end
     end
 
