@@ -28,25 +28,31 @@ module Cucumber
         visitor.step_mother.before_and_after(self, skip) do
           visitor.visit_steps(@steps)
         end
+        visitor.visit_exception(@exception, :failed) if @exception
       end
 
       # Returns true if one or more steps failed
       def failed?
-        @steps.failed?
+        @steps.failed? || @exception
+      end
+      
+      def fail!(exception)
+        @exception = exception
       end
 
       # Returns true if all steps passed
       def passed?
-        @steps.passed?
+        !failed?
       end
 
       # Returns the first exception (if any)
       def exception
-        @steps.exception
+        @exception || @steps.exception
       end
 
       # Returns the status
       def status
+        return :failed if @exception
         @steps.status
       end
 
