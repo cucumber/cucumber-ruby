@@ -1,4 +1,9 @@
-== 0.3.6
+== 0.3.7 (In Git)
+
+=== New Features
+* You can override the formatter in Rails-generated rake tasks with the CUCUMBER_FORMAT environment variable (#335 Aslak Hellesøy)
+
+== 0.3.6 2009-05-20
 
 Kanban! With this release you can tag features or scenarios that are work in progress
 with a tag and use the new --wip switch.
