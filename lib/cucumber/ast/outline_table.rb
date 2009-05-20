@@ -125,8 +125,11 @@ module Cucumber
         end
 
         def backtrace_line
-          name = "| #{@cells.collect{|c| c.value }.join(' | ')} |"
           @scenario_outline.backtrace_line(name, line)
+        end
+
+        def name
+          "| #{@cells.collect{|c| c.value }.join(' | ')} |"
         end
 
         private

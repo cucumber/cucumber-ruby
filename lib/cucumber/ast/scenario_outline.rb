@@ -62,7 +62,8 @@ module Cucumber
       end
 
       def expand_name(visitor, row)
-        visitor.visit_scenario_name(@keyword, @name, file_colon_line(row.line), 0)
+        keyword = Cucumber.scenario_keyword
+        visitor.visit_scenario_name(keyword, row.name, file_colon_line(row.line), 0)
       end
 
       def to_sexp

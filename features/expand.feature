@@ -21,7 +21,7 @@ Feature: --expand option
 
   Scenario: Expand the outline
     When I run cucumber -i -q --expand features/expand_me.feature
-    Then the output should contain
+    Then it should pass with
       """
       Feature: submit guess
 
@@ -31,12 +31,18 @@ Feature: --expand option
           Then the mark should be <mark>
 
           Examples: all colors correct
-        Scenario Outline: submit guess
-          Given the secret code is r g y c
-          When I guess r g y c
-          Then the mark should be bbbb
-        Scenario Outline: submit guess
-          Given the secret code is r g y c
-          When I guess r g c y
-          Then the mark should be bbww
+
+            Scenario: | r g y c | r g y c | bbbb |
+              Given the secret code is r g y c
+              When I guess r g y c
+              Then the mark should be bbbb
+
+            Scenario: | r g y c | r g c y | bbww |
+              Given the secret code is r g y c
+              When I guess r g c y
+              Then the mark should be bbww
+
+      2 scenarios (2 undefined)
+      6 steps (6 undefined)
+      
       """
