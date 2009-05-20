@@ -3,6 +3,7 @@
 With this release you can package your formatters in RubyGems.
 
 === New features
+* Added a AfterStep hook (Luke Melia)
 * New aliases for Vietnamese (Ngoc Dao)
 * Automatic require of custom formatters. --require is no longer needed to load them, and they can be in Ruby gems. (Aslak Hellesøy)
 * Lazy loading of built-in formatters. Should improve startup time a little bit.
