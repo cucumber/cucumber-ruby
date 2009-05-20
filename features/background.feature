@@ -253,5 +253,50 @@ Feature: backgrounds
     
     """
 
-  @josephwilk
-  Scenario: run a scenario showing explicit background steps --explicit-background
+  Scenario: https://rspec.lighthouseapp.com/projects/16211/tickets/329
+    Given a standard Cucumber project directory structure
+    And a file named "features/only_background_and_hooks.feature" with:
+      """
+      Feature: woo yeah
+
+        Background:
+          Given whatever
+
+      """
+    And a file named "features/only_background_and_hooks_steps.rb" with:
+      """
+      require 'spec/expectations'
+
+      Before do
+        $before = true
+      end
+
+      After do
+        $after = true
+      end
+
+      Given /^whatever$/ do
+        $before.should == true
+        $step = true
+      end
+
+      at_exit do
+        $before.should == true
+        $step.should == true
+        $after.should == true
+      end
+      """
+    When I run cucumber features/only_background_and_hooks.feature 
+    Then it should pass
+    And the output should be
+      """
+      Feature: woo yeah
+
+        Background:      # features/only_background_and_hooks.feature:3
+          Given whatever # features/only_background_and_hooks_steps.rb:11
+
+      0 scenarios
+      1 step (1 passed)
+      
+      """
+    And STDERR should be empty

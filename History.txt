@@ -1,12 +1,26 @@
-== 0.3.6 (In Git)
+== 0.3.7 (In Git)
 
-With this release you can package your formatters in RubyGems.
+=== New Features
+* New --expand option. This will print Scenario Outlines once for each Example row - with values expanded. (Aslak Hellesøy)
+* You can override the formatter in Rails-generated rake tasks with the CUCUMBER_FORMAT environment variable (#335 Aslak Hellesøy)
+
+== 0.3.6 2009-05-20
+
+Kanban! With this release you can tag features or scenarios that are work in progress
+with a tag and use the new --wip switch.
+
+Another handy feature in this release is that you can package your own formatters in RubyGems.
 
 === New features
-* New --expand option. This will print Scenario Outlines once for each Example row - with values expanded. (Aslak Hellesøy)
+* New --wip switch. See http://www.jroller.com/perryn/entry/bdd_on_a_multi_disciplined (Perryn Fowler)
+* Added a AfterStep hook (Luke Melia)
 * New aliases for Vietnamese (Ngoc Dao)
 * Automatic require of custom formatters. --require is no longer needed to load them, and they can be in Ruby gems. (Aslak Hellesøy)
 * Lazy loading of built-in formatters. Should improve startup time a little bit.
+
+=== Bugfixes
+* Gracefully handle exceptions in After block (#330 Matt Wynne)
+* Feature with only Background doesn't run hooks (#314, #329 Aslak Hellesøy)
 
 == 0.3.5 2009-05-14
 

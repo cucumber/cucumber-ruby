@@ -237,6 +237,8 @@ examples/watir/Rakefile
 examples/watir/features/search.feature
 examples/watir/features/step_definitons/search_steps.rb
 examples/watir/features/support/env.rb
+features/after_block_exceptions.feature
+features/after_step_block_exceptions.feature
 features/background.feature
 features/cucumber_cli.feature
 features/cucumber_cli_diff_disabled.feature
@@ -253,6 +255,7 @@ features/step_definitions/cucumber_steps.rb
 features/step_definitions/extra_steps.rb
 features/support/env.rb
 features/usage.feature
+features/work_in_progress.feature
 gem_tasks/deployment.rake
 gem_tasks/environment.rake
 gem_tasks/features.rake

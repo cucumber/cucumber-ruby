@@ -78,8 +78,16 @@ module Cucumber
         @tag_names.empty? || (@tag_names & tag_names).any?
       end
 
-      def execute_in(world, scenario, location)
-        world.cucumber_instance_exec(false, location, scenario, &@proc)
+      def execute_in(world, scenario, location, exception_fails_scenario = true)
+        begin
+          world.cucumber_instance_exec(false, location, scenario, &@proc)
+        rescue Exception => exception
+          if exception_fails_scenario
+            scenario.fail!(exception)
+          else
+            raise
+          end
+        end
       end
     end
 
@@ -141,6 +149,10 @@ module Cucumber
 
     def After(*tag_names, &proc)
       register_hook(:after, tag_names, proc)
+    end
+
+    def AfterStep(*tag_names, &proc)
+      register_hook(:after_step, tag_names, proc)
     end
 
     def register_hook(phase, tags, proc)
@@ -233,7 +245,9 @@ module Cucumber
 
     def before_and_after(scenario, skip=false)
       before(scenario) unless skip
-      yield
+      @current_scenario = scenario
+      yield scenario
+      @current_scenario = nil
       after(scenario) unless skip
       scenario_visited(scenario)
     end
@@ -249,7 +263,11 @@ module Cucumber
       execute_after(scenario)
       nil_world!
     end
-
+    
+    def after_step
+      execute_after_step(@current_scenario)
+    end
+    
     private
 
     def max_step_definition_length
@@ -320,6 +338,13 @@ module Cucumber
       return if options[:dry_run]
       hooks_for(:after, scenario).each do |hook|
         hook.execute_in(@current_world, scenario, 'After')
+      end
+    end
+
+    def execute_after_step(scenario)
+      return if options[:dry_run]
+      hooks_for(:after_step, scenario).each do |hook|
+        hook.execute_in(@current_world, scenario, 'AfterStep', false)
       end
     end
 
