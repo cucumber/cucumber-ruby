@@ -1,4 +1,4 @@
-# This generator bootstraps a Rails project for use with Cucumber
+# This generator generates a baic feature.
 class FeatureGenerator < Rails::Generator::NamedBase
   def manifest
     record do |m|
