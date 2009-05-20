@@ -43,6 +43,36 @@
   and: و
   but: لكن
   space_after_keyword: true
+"bg":
+  name: Bulgarian
+  native: български
+  encoding: UTF-8
+  feature: Функционалност
+  background: Предистория
+  scenario: Сценарий
+  scenario_outline: Рамка на сценарий
+  examples: Примери
+  given: Дадено
+  when: Когато
+  then: То
+  and: И
+  but: Но
+  space_after_keyword: true
+"cat":
+  name: Catalan
+  native: català
+  encoding: UTF-8
+  background: Rerefons
+  feature: Característica
+  scenario: Escenari
+  scenario_outline: Esquema de l\'escenari
+  examples: Exemples
+  given: Donat
+  when: Quan
+  then: Aleshores
+  and: I
+  but: Però
+  space_after_keyword: true
 "cy":
   name: Welsh
   native: Cymraeg
@@ -206,6 +236,36 @@
   and: Et
   but: Mais
   space_after_keyword: true
+"he":
+  name: Hebrew
+  native: עברית
+  encoding: UTF-8
+  feature: תכונה
+  background: רקע
+  scenario: תרחיש
+  scenario_outline: תבנית תרחיש
+  examples: דוגמאות
+  given: בהינתן
+  when: כאשר
+  then: אז|אזי
+  and: וגם
+  but: אבל
+  space_after_keyword: true
+"hu":
+  name: Hungarian
+  native: magyar
+  encoding: UTF-8
+  feature: Jellemző
+  background: Háttér
+  scenario: Forgatókönyv
+  scenario_outline: Forgatókönyv vázlat
+  examples: Példák
+  given: Ha
+  when: Majd
+  then: Akkor
+  and: És
+  but: De
+  space_after_keyword: true
 "id":
   name: Indonesian
   native: Bahasa Indonesia
@@ -240,7 +300,7 @@
   name: Japanese
   native: 日本語
   encoding: UTF-8
-  feature: フィーチャ
+  feature: フィーチャ|機能
   background: 背景
   scenario: シナリオ
   scenario_outline: シナリオアウトライン|シナリオテンプレート|テンプレ|シナリオテンプレ
@@ -249,19 +309,51 @@
   when: もし
   then: ならば
   and: かつ
-  but: しかし
+  but: しかし|但し
+  space_after_keyword: false
+"ko":
+  name: Korean
+  native: 한국어
+  encoding: UTF-8
+  background: 배경
+  feature: 기능
+  scenario: 시나리오
+  scenario_outline: 시나리오 개요
+  examples: 예
+  given: 조건
+  when: 만일
+  then: 그러면
+  and: 그리고
+  but: 하지만
   space_after_keyword: false
 "lt":
   name: Lithuanian
   native: lietuvių kalba
   encoding: UTF-8
-  feature: Sąvybė
+  feature: Savybė
+  background: Kontekstas
   scenario: Scenarijus
-  examples: Pavyzdžių
+  scenario_outline: Scenarijaus šablonas
+  examples: Pavyzdžiai|Scenarijai|Variantai
   given: Duota
   when: Kai
   then: Tada
   and: Ir
+  but: Bet
+  space_after_keyword: true
+"lv":
+  name: Latvian
+  native: latviešu
+  encoding: UTF-8
+  feature: Funkcionalitāte|Fīča
+  background: Konteksts|Situācija
+  scenario: Scenārijs
+  scenario_outline: Scenārijs pēc parauga
+  examples: Piemēri|Paraugs
+  given: Kad
+  when: Ja
+  then: Tad
+  and: Un
   but: Bet
   space_after_keyword: true
 "nl":
@@ -393,6 +485,21 @@
   and: A
   but: Ale
   space_after_keyword: true
+"vi":
+  name: Vietnamese
+  native: Tiếng Việt
+  encoding: UTF-8
+  feature: Tính năng
+  background: Bối cảnh
+  scenario: Tình huống|Kịch bản
+  scenario_outline: Khung tình huống|Khung kịch bản
+  examples: Dữ liệu
+  given: Biết|Cho
+  when: Khi
+  then: Thì
+  and: Và
+  but: Nhưng
+  space_after_keyword: true
 "zh-CN":
   name: Chinese simplified
   native: 简体中文
@@ -423,33 +530,3 @@
   and: 而且|並且
   but: 但是
   space_after_keyword: false
-"ko":
-  name: Korean
-  native: 한국어
-  encoding: UTF-8
-  background: 배경
-  feature: 기능
-  scenario: 시나리오
-  scenario_outline: 시나리오 개요
-  examples: 예
-  given: 조건
-  when: 만일
-  then: 그러면
-  and: 그리고
-  but: 하지만
-  space_after_keyword: false
-"bg":
-  name: Bulgarian
-  native: български
-  encoding: UTF-8
-  feature: Функционалност
-  background: Предистория
-  scenario: Сценарий
-  scenario_outline: Рамка на сценарий
-  examples: Примери
-  given: Дадено
-  when: Когато
-  then: То
-  and: И
-  but: Но
-  space_after_keyword: true  

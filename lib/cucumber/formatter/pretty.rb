@@ -95,9 +95,11 @@ module Cucumber
       end
 
       def visit_examples_name(keyword, name)
-        @io.puts("\n  #{keyword} #{name}")
+        names = name.empty? ? [name] : name.split("\n")
+        @io.puts("\n    #{keyword} #{names[0]}")
+        names[1..-1].each {|s| @io.puts "      #{s}" }
         @io.flush
-        @indent = 4
+        @indent = 6
       end
 
       def visit_scenario_name(keyword, name, file_colon_line, source_indent)
@@ -105,13 +107,15 @@ module Cucumber
       end
 
       def visit_feature_element_name(keyword, name, file_colon_line, source_indent)
-        line = "  #{keyword} #{name}"
+        names = name.empty? ? [name] : name.split("\n")
+        line = "  #{keyword} #{names[0]}"
         @io.print(line)
         if @options[:source]
           line_comment = " # #{file_colon_line}".indent(source_indent)
           @io.print(format_string(line_comment, :comment))
         end
         @io.puts
+        names[1..-1].each {|s| @io.puts "    #{s}"}
         @io.flush
       end
 
@@ -126,11 +130,6 @@ module Cucumber
           @exceptions << exception
         end
         return if status != :failed && @in_background ^ background
-
-        # @step_matches ||= []
-        # return if @step_matches.index(step_match)
-        # @step_matches << step_match
-
         @status = status
         super
       end
@@ -169,7 +168,7 @@ module Cucumber
 
       def visit_table_cell_value(value, width, status)
         status ||= @status || :passed
-        @io.print(' ' + format_string((value.to_s || '').ljust(width), status) + " #{@delim}")
+        @io.print(' ' + format_string((value.to_s || '').ljust(width), status) + ::Term::ANSIColor.reset(" #{@delim}"))
         @io.flush
       end
 

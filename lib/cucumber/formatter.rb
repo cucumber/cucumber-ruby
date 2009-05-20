@@ -1,1 +1,0 @@
-%w{color_io pretty progress profile rerun html usage}.each{|n| require "cucumber/formatter/#{n}"}

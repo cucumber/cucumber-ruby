@@ -15,8 +15,8 @@ Feature: backgrounds
       Scenario: another passing background
         Then I should have '10' cukes
 
-    1 scenario
-    2 passed steps
+    1 scenario (1 passed)
+    2 steps (2 passed)
     
     """
   
@@ -35,8 +35,8 @@ Feature: backgrounds
       Scenario: another passing background
         Then I should have '10' cukes
 
-    2 scenarios
-    4 passed steps
+    2 scenarios (2 passed)
+    4 steps (4 passed)
     
     """
 
@@ -52,19 +52,41 @@ Feature: backgrounds
       Scenario Outline: passing background
         Then I should have '<count>' cukes
 
-      Examples: 
-        | count |
-        | 10    |
+        Examples: 
+          | count |
+          | 10    |
 
       Scenario Outline: another passing background
         Then I should have '<count>' cukes
 
-      Examples: 
-        | count |
-        | 10    |
+        Examples: 
+          | count |
+          | 10    |
 
-    2 scenarios
-    4 passed steps
+    2 scenarios (2 passed)
+    4 steps (4 passed)
+
+    """
+
+  Scenario: run a feature with scenario outlines that has a background that passes
+    When I run cucumber -q features/background/background_tagged_before_on_outline.feature --require features
+    Then it should pass with
+    """
+    @background_tagged_before_on_outline
+    Feature: Background tagged Before on Outline
+
+      Background: 
+        Given passing without a table
+
+      Scenario Outline: passing background
+        Then I should have '<count>' cukes
+
+        Examples: 
+          | count |
+          | 888   |
+
+    1 scenario (1 passed)
+    2 steps (2 passed)
 
     """
 
@@ -72,6 +94,7 @@ Feature: backgrounds
     When I run cucumber -q features/background/failing_background.feature --require features
     Then it should fail with
     """
+    @after_file
     Feature: Failing background sample
 
       Background: 
@@ -79,7 +102,7 @@ Feature: backgrounds
           FAIL (RuntimeError)
           ./features/step_definitions/sample_steps.rb:2:in `flunker'
           ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-          features/background/failing_background.feature:4:in `Given failing without a table'
+          features/background/failing_background.feature:5:in `Given failing without a table'
         And '10' cukes
 
       Scenario: failing background
@@ -88,11 +111,11 @@ Feature: backgrounds
       Scenario: another failing background
         Then I should have '10' cukes
 
-    2 scenarios
-    1 failed step
-    5 skipped steps
+    2 scenarios (1 failed, 1 skipped)
+    6 steps (1 failed, 5 skipped)
 
     """
+    And "examples/self_test/tmp/after.txt" should exist
 
   Scenario: run a feature with scenario outlines that has a background that fails
     When I run cucumber -q features/background/scenario_outline_failing_background.feature --require features
@@ -110,20 +133,19 @@ Feature: backgrounds
       Scenario Outline: failing background
         Then I should have '<count>' cukes
 
-      Examples: 
-        | count |
-        | 10    |
+        Examples: 
+          | count |
+          | 10    |
 
       Scenario Outline: another failing background
         Then I should have '<count>' cukes
 
-      Examples: 
-        | count |
-        | 10    |
+        Examples: 
+          | count |
+          | 10    |
 
-    2 scenarios
-    1 failed step
-    3 skipped steps
+    2 scenarios (1 failed, 1 skipped)
+    4 steps (1 failed, 3 skipped)
 
     """
 
@@ -142,9 +164,8 @@ Feature: backgrounds
       Scenario: another pending background
         Then I should have '10' cukes
 
-    2 scenarios
-    2 skipped steps
-    2 undefined steps
+    2 scenarios (2 undefined)
+    4 steps (2 skipped, 2 undefined)
 
     """
 
@@ -169,10 +190,8 @@ Feature: backgrounds
           features/background/failing_background_after_success.feature:5:in `And '10' global cukes'
         Then I should have '10' global cukes
 
-    2 scenarios
-    1 failed step
-    1 skipped step
-    4 passed steps
+    2 scenarios (1 failed, 1 passed)
+    6 steps (1 failed, 1 skipped, 4 passed)
 
     """
 
@@ -212,8 +231,8 @@ Feature: backgrounds
             I sleep all night and I test all day
           \"\"\"
 
-    2 scenarios
-    8 passed steps
+    2 scenarios (2 passed)
+    8 steps (8 passed)
     
     """
 
@@ -229,10 +248,55 @@ Feature: backgrounds
       Scenario: example
         Then I should have '10' cukes
 
-    1 scenario
-    2 passed steps
+    1 scenario (1 passed)
+    2 steps (2 passed)
     
     """
 
-  @josephwilk
-  Scenario: run a scenario showing explicit background steps --explicit-background
+  Scenario: https://rspec.lighthouseapp.com/projects/16211/tickets/329
+    Given a standard Cucumber project directory structure
+    And a file named "features/only_background_and_hooks.feature" with:
+      """
+      Feature: woo yeah
+
+        Background:
+          Given whatever
+
+      """
+    And a file named "features/only_background_and_hooks_steps.rb" with:
+      """
+      require 'spec/expectations'
+
+      Before do
+        $before = true
+      end
+
+      After do
+        $after = true
+      end
+
+      Given /^whatever$/ do
+        $before.should == true
+        $step = true
+      end
+
+      at_exit do
+        $before.should == true
+        $step.should == true
+        $after.should == true
+      end
+      """
+    When I run cucumber features/only_background_and_hooks.feature 
+    Then it should pass
+    And the output should be
+      """
+      Feature: woo yeah
+
+        Background:      # features/only_background_and_hooks.feature:3
+          Given whatever # features/only_background_and_hooks_steps.rb:11
+
+      0 scenarios
+      1 step (1 passed)
+      
+      """
+    And STDERR should be empty

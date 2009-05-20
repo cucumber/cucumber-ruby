@@ -38,11 +38,12 @@ RDOC_OPTS = ['--quiet', '--title', 'Cucumber documentation',
     "--main", "README.textile",
     "--inline-source"]
 
+# Remove Hoe dependency
 class Hoe
-  def extra_deps 
-    @extra_deps.reject! { |x| Array(x).first == 'hoe' } 
-    @extra_deps
-  end 
+  def extra_dev_deps
+    @extra_dev_deps.reject! { |dep| dep[0] == "hoe" }
+    @extra_dev_deps
+  end
 end
 
 # Generate all the Rake tasks
@@ -53,7 +54,7 @@ $hoe = Hoe.new(GEM_NAME, VERS) do |p|
   p.summary = DESCRIPTION
   p.url = HOMEPATH
   p.rubyforge_name = RUBYFORGE_PROJECT if RUBYFORGE_PROJECT
-  p.clean_globs |= ['**/.*.sw?', '*.gem', '.config', '**/.DS_Store', '**/*.class', '**/*.jar']  #An array of file patterns to delete on clean.
+  p.clean_globs |= ['**/.*.sw?', '*.gem', '.config', '**/.DS_Store', '**/*.class', '**/*.jar', '**/tmp']  #An array of file patterns to delete on clean.
   
   # == Optional
   p.changes = p.paragraphs_of("History.txt", 0..1).join("\n\n")

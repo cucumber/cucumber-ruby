@@ -20,10 +20,10 @@ Feature: Cucumber command line
             ./features/step_definitions/sample_steps.rb:20:in `/^a step definition that calls an undefined step$/'
             features/call_undefined_step_from_step_def.feature:7:in `Given call step "a step definition that calls an undefined step"'
 
-      2 scenarios
-      2 undefined steps
+      2 scenarios (2 undefined)
+      2 steps (2 undefined)
 
-      You can implement step definitions for missing steps with these snippets:
+      You can implement step definitions for undefined steps with these snippets:
 
       Given /^this does not exist$/ do
         pending

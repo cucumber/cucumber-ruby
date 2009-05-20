@@ -191,10 +191,18 @@ module Cucumber
         Table.new(raw_with_replaced_args)
       end
 
+      def has_text?(text)
+        raw.flatten.compact.detect{|cell_value| cell_value.index(text)}
+      end
+
       def cells_rows
         @rows ||= cell_matrix.map do |cell_row|
           @cells_class.new(self, cell_row)
         end
+      end
+
+      def headers
+        @raw.first
       end
 
       def header_cell(col)

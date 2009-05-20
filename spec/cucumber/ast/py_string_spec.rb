@@ -40,6 +40,10 @@ module Cucumber
           py_string_with_replaced_arg.to_s.should == "''"
         end
 
+        it "should recognise when just a subset of a cell is delimited" do
+          @ps.should have_text('<qty>')
+        end
+
       end
       
     end

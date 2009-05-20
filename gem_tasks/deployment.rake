@@ -5,7 +5,7 @@ end
 
 namespace :manifest do
   desc 'Recreate Manifest.txt to include ALL files'
-  task :refresh do
+  task :refresh => :clobber do
     `rake check_manifest | patch -p0 > Manifest.txt`
   end
 end

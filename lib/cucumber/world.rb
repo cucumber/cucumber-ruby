@@ -16,7 +16,7 @@ module Cucumber
         step_match.invoke(self, multiline_argument)
       rescue Exception => e
         e.nested! if Undefined === e
-        @__cucumber_current_step.exception = e
+        @__cucumber_current_step.exception = e if @__cucumber_current_step
         raise e
       end
     end

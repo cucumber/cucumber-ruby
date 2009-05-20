@@ -1,5 +1,9 @@
+require 'enumerator'
+
 module Cucumber
   module FeatureElement
+    attr_writer :feature
+
     def attach_steps(steps)
       steps.each {|step| step.feature_element = self}
     end
@@ -9,12 +13,26 @@ module Cucumber
     end
 
     def text_length
-      @keyword.jlength + @name.jlength
+      name_line_lengths.max
     end
 
-    def matches_scenario_names?(scenario_names)
-      scenario_names.detect{|name| name == @name}
+    def first_line_length
+      name_line_lengths[0]
     end
+
+    def name_line_lengths
+      if @name.empty?
+        [@keyword.jlength]
+      else
+        @name.split("\n").enum_for(:each_with_index).map do |line, line_number| 
+          line_number == 0 ? @keyword.jlength + line.jlength : line.jlength + Ast::Step::INDENT - 1 # We -1 as names which are not keyword lines are missing a space between keyword and name
+        end
+      end
+    end
+
+    def matches_scenario_names?(scenario_name_regexps)
+      scenario_name_regexps.detect{|name| name =~ @name}
+    end 
 
     def backtrace_line(name = "#{@keyword} #{@name}", line = @line)
       @feature.backtrace_line(name, line) if @feature
@@ -28,11 +46,8 @@ module Cucumber
       @steps.max_line_length(self)
     end
 
-    # TODO: Remove when we use StepCollection everywhere
-    def previous_step(step)
-      i = @steps.index(step) || -1
-      @steps[i-1]
+    def accept_hook?(hook)
+      @tags.accept_hook?(hook) || @feature.accept_hook?(hook)
     end
-    
   end
 end

@@ -7,7 +7,14 @@ else
   require 'action_controller/test_process'
   require 'action_controller/integration'
 end
-require 'test/unit/testresult'
+
+begin
+  require 'test/unit/testresult'
+rescue LoadError => e
+  e.message << "\nYou must gem install test-unit. For more info see https://rspec.lighthouseapp.com/projects/16211/tickets/292"
+  e.message << "\nAlso make sure you have rack 1.0.0 or higher."
+  raise e
+end
 
 # So that Test::Unit doesn't launch at the end - makes it think it has already been run.
 Test::Unit.run = true if Test::Unit.respond_to?(:run=)
@@ -30,6 +37,11 @@ module Cucumber #:nodoc:
     end
 
     def self.use_transactional_fixtures
+
+      unless ::Rails.configuration.cache_classes
+        warn "WARNING: You have set Rails' config.cache_classes to false (most likely in config/environments/test.rb).  This setting is known to break Cucumber's use_transactional_fixtures method. Set config.cache_classes to true if you want to use transactional fixtures.  For more information see https://rspec.lighthouseapp.com/projects/16211/tickets/165."
+      end
+
       World.use_transactional_fixtures = true
       if defined?(ActiveRecord::Base)
         $__cucumber_toplevel.Before do

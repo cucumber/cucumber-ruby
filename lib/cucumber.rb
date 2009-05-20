@@ -14,6 +14,7 @@ module Cucumber
   KEYWORD_KEYS = %w{name native encoding feature background scenario scenario_outline examples given when then but}
   
   class << self
+    # The currently active language
     attr_reader :lang
     
     def load_language(lang) #:nodoc:
@@ -40,8 +41,8 @@ module Cucumber
     end
     
     def alias_step_definitions(lang) #:nodoc:
-      keywords = %w{given when then and but}.map{|keyword| keyword_hash(lang)[keyword]}
-      alias_steps(keywords)
+      keywords = %w{given when then and but}.map{|keyword| keyword_hash(lang)[keyword].split('|')}
+      alias_steps(keywords.flatten)
     end
     
     # Sets up additional method aliases for Given, When and Then.

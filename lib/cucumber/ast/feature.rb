@@ -8,6 +8,7 @@ module Cucumber
       def initialize(background, comment, tags, name, feature_elements)
         @background, @comment, @tags, @name, @feature_elements = background, comment, tags, name, feature_elements
 
+        background.feature = self if background
         @feature_elements.each do |feature_element|
           feature_element.feature = self
         end
@@ -21,6 +22,10 @@ module Cucumber
         @feature_elements.each do |feature_element|
           visitor.visit_feature_element(feature_element)
         end
+      end
+
+      def accept_hook?(hook)
+        @tags.accept_hook?(hook)
       end
 
       def next_feature_element(feature_element, &proc)

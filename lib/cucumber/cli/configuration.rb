@@ -3,34 +3,43 @@ module Cucumber
     class YmlLoadError < StandardError; end
 
     class Configuration
-      FORMATS = %w{pretty profile progress rerun}
+      BUILTIN_FORMATS = {
+        'html'     => 'Cucumber::Formatter::Html',
+        'pretty'   => 'Cucumber::Formatter::Pretty',
+        'profile'  => 'Cucumber::Formatter::Profile',
+        'progress' => 'Cucumber::Formatter::Progress',
+        'rerun'    => 'Cucumber::Formatter::Rerun',
+        'usage'    => 'Cucumber::Formatter::Usage',
+        'junit'    => 'Cucumber::Formatter::Junit'
+      }
       DEFAULT_FORMAT = 'pretty'
-    
+
       attr_reader :paths
       attr_reader :options
-    
+
       def initialize(out_stream = STDOUT, error_stream = STDERR)
         @out_stream   = out_stream
         @error_stream = error_stream
-      
+
         @paths          = []
         @options        = default_options
+
         @active_format  = DEFAULT_FORMAT
       end
-    
+
       def parse!(args)
         @args = args
         return parse_args_from_profile('default') if @args.empty?
         @args.extend(::OptionParser::Arguable)
-      
+
         @args.options do |opts|
           opts.banner = ["Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+", "",
             "Examples:",
             "cucumber examples/i18n/en/features",
             "cucumber --language it examples/i18n/it/features/somma.feature:6:98:113",
-            "cucumber -n -i http://rubyurl.com/eeCl", "", "",
+            "cucumber -s -i http://rubyurl.com/eeCl", "", "",
           ].join("\n")
-          opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", 
+          opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR",
             "Require files before executing the features. If this",
             "option is not specified, all *.rb files that are",
             "siblings or below the features will be loaded auto-",
@@ -42,49 +51,54 @@ module Cucumber
             @options[:require] ||= []
             @options[:require] << v
           end
-          opts.on("-l LANG", "--language LANG", 
+          opts.on("-l LANG", "--language LANG",
             "Specify language for features (Default: #{@options[:lang]})",
             %{Run with "--language help" to see all languages},
             %{Run with "--language LANG help" to list keywords for LANG}) do |v|
             if v == 'help'
-              list_languages
+              list_languages_and_exit
             elsif args==['help']
               list_keywords_and_exit(v)
             else
               @options[:lang] = v
             end
           end
-          opts.on("-f FORMAT", "--format FORMAT", 
+          opts.on("-f FORMAT", "--format FORMAT",
             "How to format features (Default: #{DEFAULT_FORMAT})",
-            "Available formats: #{FORMATS.join(", ")}",
-            "You can also provide your own formatter classes as long",
-            "as they have been previously required using --require or",
-            "if they are in the folder structure such that cucumber",
-            "will require them automatically.", 
-            "This option can be specified multiple times.") do |v|
+            "Available formats: #{BUILTIN_FORMATS.keys.sort.join(", ")}",
+            "FORMAT can also be the fully qualified class name of",
+            "your own custom formatter. If the class isn't loaded,",
+            "Cucumber will attempt to require a file with a relative",
+            "file name that is the underscore name of the class name.",
+            "Example: --format Foo::BarZap -> Cucumber will look for",
+            "foo/bar_zap.rb. You can place the file with this relative",
+            "path underneath your features/support directory or anywhere",
+            "on Ruby's LOAD_PATH, for example in a Ruby gem.") do |v|
             @options[:formats][v] = @out_stream
             @active_format = v
           end
-          opts.on("-o", "--out FILE", 
-            "Write output to a file instead of STDOUT. This option",
+          opts.on("-o", "--out [FILE|DIR]",
+            "Write output to a file/directory instead of STDOUT. This option",
             "applies to the previously specified --format, or the",
-            "default format if no format is specified.") do |v|
+            "default format if no format is specified. Check the specific",
+            "formatter's docs to see whether to pass a file or a dir.") do |v|
             @options[:formats][@active_format] = v
           end
-          opts.on("-t TAGS", "--tags TAGS", 
+          opts.on("-t TAGS", "--tags TAGS",
             "Only execute the features or scenarios with the specified tags.",
             "TAGS must be comma-separated without spaces. Prefix tags with ~ to",
             "exclude features or scenarios having that tag. Tags can be specified",
             "with or without the @ prefix.") do |v|
             @options[:include_tags], @options[:exclude_tags] = *parse_tags(v)
           end
-          opts.on("-s SCENARIO", "--scenario SCENARIO", 
-            "Only execute the scenario with the given name. If this option",
-            "is given more than once, run all the specified scenarios.") do |v|
-            @options[:scenario_names] << v
+          opts.on("-n NAME", "--name NAME",
+            "Only execute the feature elements which match part of the given name.",
+            "If this option is given more than once, it will match against all the",
+            "given names.") do |v|
+            @options[:name_regexps] << /#{v}/
           end
-          opts.on("-e", "--exclude PATTERN", "Don't run feature files matching PATTERN") do |v|
-            @options[:excludes] << v
+          opts.on("-e", "--exclude PATTERN", "Don't run feature files or require ruby files matching PATTERN") do |v|
+            @options[:excludes] << Regexp.new(v)
           end
           opts.on("-p", "--profile PROFILE", "Pull commandline arguments from cucumber.yml.") do |v|
             parse_args_from_profile(v)
@@ -100,7 +114,7 @@ module Cucumber
             @options[:dry_run] = true
             @quiet = true
           end
-          opts.on("-a", "--autoformat DIRECTORY", 
+          opts.on("-a", "--autoformat DIRECTORY",
             "Reformats (pretty prints) feature files and write them to DIRECTORY.",
             "Be careful if you choose to overwrite the originals.",
             "Implies --dry-run --formatter pretty.") do |directory|
@@ -109,11 +123,11 @@ module Cucumber
             @options[:dry_run] = true
             @quiet = true
           end
-          opts.on("-m", "--no-multiline", 
+          opts.on("-m", "--no-multiline",
             "Don't print multiline strings and tables under steps.") do
             @options[:no_multiline] = true
           end
-          opts.on("-n", "--no-source", 
+          opts.on("-s", "--no-source",
             "Don't print the file and line of the step definition with the steps.") do
             @options[:source] = false
           end
@@ -156,19 +170,19 @@ module Cucumber
         # Whatever is left after option parsing is the FILE arguments
         @paths += args
       end
-    
+
       def verbose?
         @options[:verbose]
       end
-    
+
       def strict?
         @options[:strict]
       end
-      
+
       def guess?
         @options[:guess]
       end
-    
+
       def diff_enabled?
         @options[:diff_enabled]
       end
@@ -187,8 +201,8 @@ module Cucumber
         excludes = excludes.map{|tag| tag[1..-1]}
 
         # Strip @
-        includes = includes.map{|tag| tag =~ /^@(.*)/ ? $1 : tag}
-        excludes = excludes.map{|tag| tag =~ /^@(.*)/ ? $1 : tag}
+        includes = includes.map{|tag| Ast::Tags.strip_prefix(tag)}
+        excludes = excludes.map{|tag| Ast::Tags.strip_prefix(tag)}
         [includes, excludes]
       end
 
@@ -196,39 +210,37 @@ module Cucumber
         return Formatter::Pretty.new(step_mother, nil, @options) if @options[:autoformat]
         formatters = @options[:formats].map do |format, out|
           if String === out # file name
-            out = File.open(out, Cucumber.file_mode('w'))
-            at_exit do
-              out.flush
-              out.close
+            unless File.directory?(out)
+              out = File.open(out, Cucumber.file_mode('w'))
+              at_exit do
+                out.flush
+                out.close
+              end
             end
           end
-        
+
           begin
             formatter_class = formatter_class(format)
             formatter_class.new(step_mother, out, @options)
           rescue Exception => e
-            exit_with_error("Error creating formatter: #{format}", e)
+            e.message << "\nError creating formatter: #{format}"
+            raise e
           end
         end
-      
+
         broadcaster = Broadcaster.new(formatters)
         broadcaster.options = @options
         return broadcaster
       end
-    
+
       def formatter_class(format)
-        case format
-          when 'html'     then Formatter::Html
-          when 'pretty'   then Formatter::Pretty
-          when 'profile'  then Formatter::Profile
-          when 'progress' then Formatter::Progress
-          when 'rerun'    then Formatter::Rerun
-          when 'usage'    then Formatter::Usage
+        if(builtin = BUILTIN_FORMATS[format])
+          constantize(builtin)
         else
           constantize(format)
         end
       end
-    
+
       def files_to_require
         requires = @options[:require] || feature_dirs
         files = requires.map do |path|
@@ -238,46 +250,59 @@ module Cucumber
         sorted_files = files.sort { |a,b| (b =~ %r{/support/} || -1) <=>  (a =~ %r{/support/} || -1) }.reject{|f| f =~ /^http/}
         env_files = sorted_files.select {|f| f =~ %r{/support/env.rb} }
         files = env_files + sorted_files.reject {|f| f =~ %r{/support/env.rb} }
+        remove_excluded_files_from(files)
         files.reject! {|f| f =~ %r{/support/env.rb} } if @options[:dry_run]
         files
       end
-    
+
       def feature_files
         potential_feature_files = @paths.map do |path|
           path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
           path = path.chomp('/')
           File.directory?(path) ? Dir["#{path}/**/*.feature"] : path
         end.flatten.uniq
-
-        @options[:excludes].each do |exclude|
-          potential_feature_files.reject! do |path|
-            path =~ /#{Regexp.escape(exclude)}/
-          end
-        end
-
+        remove_excluded_files_from(potential_feature_files)
         potential_feature_files
       end
 
     protected
-  
+
+      def remove_excluded_files_from(files)
+        files.reject! {|path| @options[:excludes].detect {|pattern| path =~ pattern } }
+      end
+
       def feature_dirs
         @paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq
       end
-    
-      def constantize(camel_cased_word)
-        names = camel_cased_word.split('::')
-        names.shift if names.empty? || names.first.empty?
 
-        constant = Object
-        names.each do |name|
-          constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
+      def constantize(camel_cased_word)
+        begin
+          names = camel_cased_word.split('::')
+          names.shift if names.empty? || names.first.empty?
+
+          constant = Object
+          names.each do |name|
+            constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
+          end
+          constant
+        rescue NameError
+          require underscore(camel_cased_word)
+          retry
         end
-        constant
       end
-    
+
+      # Snagged from active_support
+      def underscore(camel_cased_word)
+        camel_cased_word.to_s.gsub(/::/, '/').
+          gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+          gsub(/([a-z\d])([A-Z])/,'\1_\2').
+          tr("-", "_").
+          downcase
+      end
+
       def parse_args_from_profile(profile)
         unless cucumber_yml.has_key?(profile)
-          return(exit_with_error <<-END_OF_ERROR)
+          raise(<<-END_OF_ERROR)
 Could not find profile: '#{profile}'
 
 Defined profiles in cucumber.yml:
@@ -287,18 +312,18 @@ Defined profiles in cucumber.yml:
 
         args_from_yml = cucumber_yml[profile] || ''
 
-        if !args_from_yml.is_a?(String)
-          exit_with_error "Profiles must be defined as a String.  The '#{profile}' profile was #{args_from_yml.inspect} (#{args_from_yml.class}).\n"
-        elsif args_from_yml =~ /^\s*$/
-          exit_with_error "The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml.\n"
-        else
-          parse!(args_from_yml.split(' '))
+        case(args_from_yml)
+          when String
+            raise "The '#{profile}' profile in cucumber.yml was blank.  Please define the command line arguments for the '#{profile}' profile in cucumber.yml.\n" if args_from_yml =~ /^\s*$/
+            args_from_yml = args_from_yml.split(' ')
+          when Array
+            raise "The '#{profile}' profile in cucumber.yml was empty.  Please define the command line arguments for the '#{profile}' profile in cucumber.yml.\n" if args_from_yml.empty?
+          else
+            raise "The '#{profile}' profile in cucumber.yml was a #{args_from_yml.class}. It must be a String or Array"
         end
-
-      rescue YmlLoadError => e
-        exit_with_error(e.message)
+        parse!(args_from_yml)
       end
-    
+
       def cucumber_yml
         return @cucumber_yml if @cucumber_yml
         unless File.exist?('cucumber.yml')
@@ -318,44 +343,35 @@ Defined profiles in cucumber.yml:
 
         return @cucumber_yml
       end
-    
+
       def list_keywords_and_exit(lang)
         unless Cucumber::LANGUAGES[lang]
-          exit_with_error("No language with key #{lang}")
+          raise("No language with key #{lang}")
         end
         LanguageHelpFormatter.list_keywords(@out_stream, lang)
         Kernel.exit
       end
-    
-      def list_languages
+
+      def list_languages_and_exit
         LanguageHelpFormatter.list_languages(@out_stream)
         Kernel.exit
       end
-    
+
       def default_options
         {
-          :strict         => false,
-          :require        => nil,
-          :lang           => 'en',
-          :dry_run        => false,
-          :formats        => {},
-          :excludes       => [],
-          :include_tags   => [],
-          :exclude_tags   => [],
-          :scenario_names => [],
-          :diff_enabled   => true
+          :strict       => false,
+          :require      => nil,
+          :lang         => 'en',
+          :dry_run      => false,
+          :formats      => {},
+          :excludes     => [],
+          :include_tags => [],
+          :exclude_tags => [],
+          :name_regexps => [],
+          :diff_enabled => true
         }
       end
-    
-      def exit_with_error(error_message, e=nil)
-        @error_stream.puts(error_message)
-        if e
-          @error_stream.puts("#{e.message} (#{e.class})")
-          @error_stream.puts(e.backtrace.join("\n"))
-        end
-        Kernel.exit 1
-      end
     end
-  
+
   end
 end

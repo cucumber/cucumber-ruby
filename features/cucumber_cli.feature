@@ -2,6 +2,8 @@ Feature: Cucumber command line
   In order to write better software
   Developers should be able to execute requirements as tests
 
+
+
   Scenario: Run single scenario with missing step definition
     When I run cucumber -q features/sample.feature:5
     Then it should pass with      
@@ -13,8 +15,8 @@ Feature: Cucumber command line
         Scenario: Missing
           Given missing
 
-      1 scenario
-      1 undefined step
+      1 scenario (1 undefined)
+      1 step (1 undefined)
 
       """
 
@@ -31,8 +33,8 @@ Feature: Cucumber command line
             Undefined step: "missing" (Cucumber::Undefined)
             features/sample.feature:6:in `Given missing'
 
-      1 scenario
-      1 undefined step
+      1 scenario (1 undefined)
+      1 step (1 undefined)
 
       """
 
@@ -49,8 +51,8 @@ Feature: Cucumber command line
           | a | b |
           | c | d |
 
-    1 scenario
-    1 passed step
+    1 scenario (1 passed)
+    1 step (1 passed)
 
     """
 
@@ -76,9 +78,8 @@ Feature: Cucumber command line
             ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
             features/sample.feature:16:in `Given failing'
 
-      2 scenarios
-      1 failed step
-      1 undefined step
+      2 scenarios (1 failed, 1 undefined)
+      2 steps (1 failed, 1 undefined)
 
       """
 
@@ -93,8 +94,8 @@ Feature: Cucumber command line
         Scenario: Missing
           Given missing
 
-      1 scenario
-      1 passed step
+      1 scenario (1 passed)
+      1 step (1 passed)
 
       """
 
@@ -111,8 +112,8 @@ Feature: Cucumber command line
             | a | b |
             | c | d |
 
-      1 scenario
-      1 passed step
+      1 scenario (1 passed)
+      1 step (1 passed)
 
       """
 
@@ -129,10 +130,8 @@ Feature: Cucumber command line
       ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
       features/sample.feature:16:in `Given failing'
 
-      3 scenarios
-      1 failed step
-      1 undefined step
-      1 passed step
+      3 scenarios (1 failed, 1 undefined, 1 passed)
+      3 steps (1 failed, 1 undefined, 1 passed)
 
       """
 
@@ -160,8 +159,8 @@ Feature: Cucumber command line
           Når jeg summerer
           Så skal resultatet være 13
 
-      2 scenarios
-      9 passed steps
+      2 scenarios (2 passed)
+      9 steps (9 passed)
 
       """
 
@@ -191,6 +190,36 @@ Feature: Cucumber command line
           When I stop procrastinating
           And there is world peace
 
+      Feature: multiline
+
+        Background: I'm a multiline name
+          which goes on and on and on for three lines
+          yawn
+          Given passing without a table
+
+        Scenario: I'm a multiline name
+          which goes on and on and on for three lines
+          yawn
+          Given passing without a table
+
+        Scenario Outline: I'm a multiline name
+          which goes on and on and on for three lines
+          yawn
+          Given <state> without a table
+
+          Examples: 
+            | state   |
+            | passing |
+    
+        Scenario Outline: name
+          Given <state> without a table
+
+          Examples: I'm a multiline name
+            which goes on and on and on for three lines
+            yawn
+            | state   |
+            | passing |
+
       Feature: Outline Sample
 
         Scenario: I have no steps
@@ -199,15 +228,15 @@ Feature: Cucumber command line
           Given <state> without a table
           Given <other_state> without a table
 
-        Examples: Rainbow colours
-          | state   | other_state |
-          | missing | passing     |
-          | passing | passing     |
-          | failing | passing     |
+          Examples: Rainbow colours
+            | state   | other_state |
+            | missing | passing     |
+            | passing | passing     |
+            | failing | passing     |
 
-        Examples: Only passing
-          | state   | other_state |
-          | passing | passing     |
+          Examples: Only passing
+            | state   | other_state |
+            | passing | passing     |
 
       @one
       Feature: Sample
@@ -229,6 +258,42 @@ Feature: Cucumber command line
             hello
             \"\"\"
 
+      Feature: search examples
+
+        Background: Hantu Pisang background match
+          Given passing without a table
+
+        Scenario: should match Hantu Pisang
+          Given passing without a table
+
+        Scenario: Ignore me
+          Given failing without a table
+
+        Scenario Outline: Ignore me
+          Given <state> without a table
+
+          Examples: 
+            | state   |
+            | failing |
+
+        Scenario Outline: Hantu Pisang match
+          Given <state> without a table
+
+          Examples: 
+            | state   |
+            | passing |
+
+        Scenario Outline: no match in name but in examples
+          Given <state> without a table
+
+          Examples: Hantu Pisang
+            | state   |
+            | passing |
+
+          Examples: Ignore me
+            | state   |
+            | failing |
+
       Feature: undefined multiline args
       
         Scenario: pystring
@@ -241,10 +306,9 @@ Feature: Cucumber command line
           Given a table
             | table   |
             | example |
-
-      14 scenarios
-      12 skipped steps
-      9 undefined steps
+      
+      23 scenarios (17 skipped, 5 undefined, 1 passed)
+      39 steps (30 skipped, 9 undefined)
 
       """
 
@@ -254,11 +318,11 @@ Feature: Cucumber command line
       """
       UUUUU
 
-      1 scenario
-      5 undefined steps
+      1 scenario (1 undefined)
+      5 steps (5 undefined)
 
       """
-    And "examples/self_test/tmp/pretty.txt" should match
+    And "examples/self_test/tmp/pretty.txt" should contain
       """
       Feature: Lots of undefined
 
@@ -268,29 +332,57 @@ Feature: Cucumber command line
           And it's 40 degrees in Norway
           When I stop procrastinating
           And there is world peace
-
-      1 scenario
-      5 undefined steps
+      
+      1 scenario (1 undefined)
+      5 steps (5 undefined)
 
       """
 
-  Scenario: Run scenario specified by name using --scenario
-    When I run cucumber --scenario Passing -q features
+  Scenario: Run feature elements which matches a name using --name
+    When I run cucumber --name Pisang -q features/
     Then it should pass with
       """
-      @one
-      Feature: Sample
+      Feature: search examples
 
-        @three
-        Scenario: Passing
-          Given passing
-            | a | b |
-            | c | d |
+        Background: Hantu Pisang background match
+          Given passing without a table
 
-      1 scenario
-      1 passed step
+        Scenario: should match Hantu Pisang
+          Given passing without a table
+
+        Scenario Outline: Hantu Pisang match
+          Given <state> without a table
+
+          Examples: 
+            | state   |
+            | passing |
+
+        Scenario Outline: no match in name but in examples
+          Given <state> without a table
+
+          Examples: Hantu Pisang
+            | state   |
+            | passing |
+
+      3 scenarios (3 passed)
+      6 steps (6 passed)
 
       """
+
+  Scenario: Run a single background which matches a name using --name (Useful if there is an error in it)
+    When I run cucumber --name 'Hantu Pisang background' -q features/
+    Then it should pass with
+      """
+      Feature: search examples
+
+        Background: Hantu Pisang background match
+          Given passing without a table
+
+      0 scenarios
+      1 step (1 passed)
+
+      """
+
 
   Scenario: Run with a tag that exists on 2 scenarios
     When I run cucumber -q features --tags three
@@ -309,9 +401,8 @@ Feature: Cucumber command line
             | a | b |
             | c | d |
 
-      2 scenarios
-      1 undefined step
-      1 passed step
+      2 scenarios (1 undefined, 1 passed)
+      2 steps (1 undefined, 1 passed)
 
       """
 
@@ -343,10 +434,8 @@ Feature: Cucumber command line
             ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
             features/sample.feature:16:in `Given failing'
 
-      3 scenarios
-      1 failed step
-      1 undefined step
-      1 passed step
+      3 scenarios (1 failed, 1 undefined, 1 passed)
+      3 steps (1 failed, 1 undefined, 1 passed)
 
       """
 
@@ -367,9 +456,8 @@ Feature: Cucumber command line
             | a | b |
             | c | d |
 
-      2 scenarios
-      1 skipped step
-      1 undefined step
+      2 scenarios (1 skipped, 1 undefined)
+      2 steps (1 skipped, 1 undefined)
 
       """
 
@@ -400,3 +488,33 @@ Feature: Cucumber command line
 
       """
 
+  Scenario: Run feature elements which match a name using -n
+    When I run cucumber -n Pisang -q features/
+    Then it should pass with
+      """
+      Feature: search examples
+
+        Background: Hantu Pisang background match
+          Given passing without a table
+
+        Scenario: should match Hantu Pisang
+          Given passing without a table
+
+        Scenario Outline: Hantu Pisang match
+          Given <state> without a table
+
+          Examples: 
+            | state   |
+            | passing |
+
+        Scenario Outline: no match in name but in examples
+          Given <state> without a table
+
+          Examples: Hantu Pisang
+            | state   |
+            | passing |
+
+      3 scenarios (3 passed)
+      6 steps (6 passed)
+
+      """

@@ -4,20 +4,24 @@ require 'yaml'
 module Cucumber
 module Cli
   describe Configuration do
-    
+
     def given_cucumber_yml_defined_as(hash_or_string)
       File.stub!(:exist?).and_return(true)
       cucumber_yml = hash_or_string.is_a?(Hash) ? hash_or_string.to_yaml : hash_or_string
       IO.stub!(:read).with('cucumber.yml').and_return(cucumber_yml)
     end
-    
+
+    def given_the_following_files(*files)
+      File.stub!(:directory?).and_return(true)
+      Dir.stub!(:[]).and_return(files)
+    end
+
     before(:each) do
       Kernel.stub!(:exit).and_return(nil)
     end
 
     it "should require files in support paths first" do
-      File.stub!(:directory?).and_return(true)
-      Dir.stub!(:[]).and_return(["/features/step_definitions/foo.rb","/features/support/bar.rb"])
+      given_the_following_files("/features/step_definitions/foo.rb","/features/support/bar.rb")
 
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--require /features})
@@ -29,8 +33,7 @@ module Cli
     end
 
     it "should require env.rb files first" do
-      File.stub!(:directory?).and_return(true)
-      Dir.stub!(:[]).and_return(["/features/support/a_file.rb","/features/support/env.rb"])
+      given_the_following_files("/features/support/a_file.rb","/features/support/env.rb")
 
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--require /features})
@@ -42,8 +45,7 @@ module Cli
     end
 
     it "should not require env.rb files when --dry-run" do
-      File.stub!(:directory?).and_return(true)
-      Dir.stub!(:[]).and_return(["/features/support/a_file.rb","/features/support/env.rb"])
+      given_the_following_files("/features/support/a_file.rb","/features/support/env.rb")
 
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--require /features --dry-run})
@@ -51,6 +53,34 @@ module Cli
       config.files_to_require.should == [
         "/features/support/a_file.rb"
       ]
+    end
+
+    describe "--exclude" do
+
+      it "excludes a ruby file from requiring when the name matches exactly" do
+        given_the_following_files("/features/support/a_file.rb","/features/support/env.rb")
+
+        config = Configuration.new(StringIO.new)
+        config.parse!(%w{--require /features --exclude a_file.rb})
+
+        config.files_to_require.should == [
+          "/features/support/env.rb"
+        ]
+      end
+
+      it "excludes all ruby files that match the provided patterns from requiring" do
+        given_the_following_files("/features/support/foof.rb","/features/support/bar.rb",
+                                  "/features/support/food.rb","/features/blah.rb",
+                                  "/features/support/fooz.rb")
+
+        config = Configuration.new(StringIO.new)
+        config.parse!(%w{--require /features --exclude foo[df] --exclude blah})
+
+        config.files_to_require.should == [
+          "/features/support/bar.rb",
+          "/features/support/fooz.rb"
+        ]
+      end
     end
 
     it "should expand args from YAML file" do
@@ -74,8 +104,6 @@ module Cli
       given_cucumber_yml_defined_as({'default' => '--require from/yml', 'html_report' =>  '--format html'})
 
       config = Configuration.new(StringIO.new, error = StringIO.new)
-      config.parse!(%w{--profile i_do_not_exist})
-
       expected_message = <<-END_OF_MESSAGE
 Could not find profile: 'i_do_not_exist'
 
@@ -84,16 +112,15 @@ Defined profiles in cucumber.yml:
   * html_report
 END_OF_MESSAGE
 
-      error.string.should == expected_message
+      lambda{config.parse!(%w{--profile i_do_not_exist})}.should raise_error(expected_message)
     end
 
-    it "should provide a helpful error message when a specified profile is not a String" do
+    it "should allow array as profile" do
       given_cucumber_yml_defined_as({'foo' => [1,2,3]})
 
       config = Configuration.new(StringIO.new, error = StringIO.new)
       config.parse!(%w{--profile foo})
-
-      error.string.should == "Profiles must be defined as a String.  The 'foo' profile was [1, 2, 3] (Array).\n"
+      config.paths.should == [1,2,3]
     end
 
     it "should provide a helpful error message when a specified profile exists but is nil or blank" do
@@ -101,9 +128,8 @@ END_OF_MESSAGE
         given_cucumber_yml_defined_as({'foo' => bad_input})
 
         config = Configuration.new(StringIO.new, error = StringIO.new)
-        config.parse!(%w{--profile foo})
-
-        error.string.should match(/The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml./)
+        expected_error = /The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml./
+        lambda{config.parse!(%w{--profile foo})}.should raise_error(expected_error)
       end
     end
 
@@ -111,9 +137,8 @@ END_OF_MESSAGE
       File.should_receive(:exist?).with('cucumber.yml').and_return(false)
 
       config = Configuration.new(StringIO.new, error = StringIO.new)
-      config.parse!(%w{--profile i_do_not_exist})
-
-      error.string.should match(/cucumber.yml was not found.  Please refer to cucumber's documentation on defining profiles in cucumber.yml./)
+      expected_error = /cucumber.yml was not found.  Please refer to cucumber's documentation on defining profiles in cucumber.yml./
+      lambda{config.parse!(%w{--profile i_do_not_exist})}.should raise_error(expected_error)
     end
 
     it "should provide a helpful error message when cucumber.yml is blank or malformed" do
@@ -121,11 +146,9 @@ END_OF_MESSAGE
 
       ['', 'sfsadfs', "--- \n- an\n- array\n", "---dddfd"].each do |bad_input|
         given_cucumber_yml_defined_as(bad_input)
-        
-        config = Configuration.new(StringIO.new, error = StringIO.new)
-        config.parse!([])
 
-        error.string.should match(expected_error_message)
+        config = Configuration.new(StringIO.new, error = StringIO.new)
+        lambda{config.parse!([])}.should raise_error(expected_error_message)
       end
     end
 
@@ -136,9 +159,7 @@ END_OF_MESSAGE
       YAML.should_receive(:load).and_raise Exception
 
       config = Configuration.new(StringIO.new, error = StringIO.new)
-      config.parse!([])
-
-      error.string.should match(expected_error_message)
+      lambda{config.parse!([])}.should raise_error(expected_error_message)
     end
 
     it "should accept --dry-run option" do
@@ -194,13 +215,13 @@ END_OF_MESSAGE
       config.options[:formats].should have_key('pretty')
       config.options[:formats].should have_key('progress')
     end
-    
+
     it "should associate --out to previous --format" do
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--format progress --out file1 --format profile --out file2})
       config.options[:formats].should == {"profile"=>"file2", "progress"=>"file1"}
     end
-    
+
     it "should accept --color option" do
       Term::ANSIColor.should_receive(:coloring=).with(true)
       config = Configuration.new(StringIO.new)
@@ -212,19 +233,19 @@ END_OF_MESSAGE
       config = Configuration.new(StringIO.new)
       config.parse!(['--no-color'])
     end
-    
+
     it "should parse tags" do
       config = Configuration.new(nil)
       includes, excludes = config.parse_tags("one,~two,@three,~@four")
       includes.should == ['one', 'three']
       excludes.should == ['two', 'four']
     end
-    
+
     describe "--backtrace" do
       before do
         Exception.cucumber_full_backtrace = false
       end
-      
+
       it "should show full backtrace when --backtrace is present" do
         config = Main.new(['--backtrace'])
         begin
@@ -234,54 +255,54 @@ END_OF_MESSAGE
         end
       end
 
-      xit "should strip gems when --backtrace is absent" do
-        config = Main.new(['--'])
-        begin
-          "x".should == "y"
-        rescue => e
-          e.backtrace[0].should == "#{__FILE__}:#{__LINE__ - 2}"
-        end
-      end
-
       after do
         Exception.cucumber_full_backtrace = false
       end
     end
-    
+
     describe "diff output" do
 
       it "is enabled by default" do
         config = Configuration.new
         config.diff_enabled?.should be_true
       end
-      
+
       it "is disabled when the --no-diff option is supplied" do
         config = Configuration.new
         config.parse!(%w{--no-diff})
 
         config.diff_enabled?.should be_false
       end
-        
+
     end
 
-    it "should accept multiple --scenario options" do
+    it "should accept multiple --name options" do
       config = Configuration.new
-      config.parse!(['--scenario', "User logs in", '--scenario', "User signs up"])
-      
-      config.options[:scenario_names].should include("User logs in")
-      config.options[:scenario_names].should include("User signs up")
+      config.parse!(['--name', "User logs in", '--name', "User signs up"])
+
+      config.options[:name_regexps].should include(/User logs in/)
+      config.options[:name_regexps].should include(/User signs up/)
     end
-    
+
+    it "should accept multiple -n options" do
+      config = Configuration.new
+      config.parse!(['-n', "User logs in", '-n', "User signs up"])
+
+      config.options[:name_regexps].should include(/User logs in/)
+      config.options[:name_regexps].should include(/User signs up/)
+    end
+
     it "should search for all features in the specified directory" do
       File.stub!(:directory?).and_return(true)
-      Dir.should_receive(:[]).with("feature_directory/**/*.feature").any_number_of_times.and_return(["cucumber.feature"])
-      
+      Dir.should_receive(:[]).with("feature_directory/**/*.feature").
+        any_number_of_times.and_return(["cucumber.feature"])
+
       config = Configuration.new(StringIO)
       config.parse!(%w{feature_directory/})
-      
+
       config.feature_files.should == ["cucumber.feature"]
     end
-    
+
   end
 end
 end

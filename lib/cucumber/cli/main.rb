@@ -2,7 +2,7 @@ require 'optparse'
 require 'cucumber'
 require 'ostruct'
 require 'cucumber/parser'
-require 'cucumber/formatter'
+require 'cucumber/formatter/color_io'
 require 'cucumber/cli/language_help_formatter'
 require 'cucumber/cli/configuration'
 
@@ -40,10 +40,8 @@ module Cucumber
         step_mother.visitor = visitor # Needed to support World#announce
         visitor.visit_features(features)
 
-        failure = step_mother.steps(:failed).any? || 
+        failure = step_mother.scenarios(:failed).any? || 
           (configuration.strict? && step_mother.steps(:undefined).any?)
-
-        Kernel.exit(failure ? 1 : 0)
       end
 
       def load_plain_text_features
@@ -92,7 +90,11 @@ module Cucumber
 
       def enable_diffing
         if configuration.diff_enabled? && defined?(::Spec)
-          require 'spec/expectations/differs/default'
+          begin
+            require 'spec/runner/differs/default' # RSpec >=1.2.4
+          rescue ::LoadError
+            require 'spec/expectations/differs/default' # RSpec <=1.2.3
+          end
           options = OpenStruct.new(:diff_format => :unified, :context_lines => 3)
           ::Spec::Expectations.differ = ::Spec::Expectations::Differs::Default.new(options)
         end

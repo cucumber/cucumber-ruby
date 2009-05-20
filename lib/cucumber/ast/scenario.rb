@@ -12,26 +12,48 @@ module Cucumber
         step_invocations = steps.map{|step| step.step_invocation}
         if @background
           @steps = @background.step_collection(step_invocations)
+          @background.feature_elements << self
         else
           @steps = StepCollection.new(step_invocations)
         end
       end
 
-      def feature=(feature)
-        @feature = feature
-        @background.feature = feature if @background
-      end
-
       def accept(visitor)
         visitor.visit_comment(@comment)
         visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(text_length))
+        visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
 
         skip = @background && @background.failed?
         skip_invoke! if skip
         visitor.step_mother.before_and_after(self, skip) do
           visitor.visit_steps(@steps)
         end
+        visitor.visit_exception(@exception, :failed) if @exception
+      end
+
+      # Returns true if one or more steps failed
+      def failed?
+        @steps.failed? || !!@exception
+      end
+      
+      def fail!(exception)
+        @exception = exception
+      end
+
+      # Returns true if all steps passed
+      def passed?
+        !failed?
+      end
+
+      # Returns the first exception (if any)
+      def exception
+        @exception || @steps.exception
+      end
+
+      # Returns the status
+      def status
+        return :failed if @exception
+        @steps.status
       end
 
       def skip_invoke!

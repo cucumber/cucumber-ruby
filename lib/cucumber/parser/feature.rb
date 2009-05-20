@@ -61,8 +61,8 @@ module Cucumber
         end
         
         def build(filter)
-          if(filter.nil? || feature_elements.accept?(filter))
-            background = bg.respond_to?(:build) ? bg.build : nil
+          if(filter.nil? || feature_elements.accept?(filter) || (!bg.empty? && filter.accept?(bg)))
+            background = bg.respond_to?(:build) ? bg.build : nil      
             Ast::Feature.new(
               background, 
               comment.build, 
@@ -216,7 +216,7 @@ module Cucumber
         end
 
         def has_tags?(tags)
-          tag_names.detect{|tag_name| tags.index(tag_name)}
+          (tag_names & tags).any?
         end
 
         def build
@@ -224,7 +224,7 @@ module Cucumber
         end
         
         def tag_names
-          ts.elements.map{|e| e.tag.tag_name.text_value}
+          @tag_names ||= ts.elements.map{|e| e.tag.tag_name.text_value}
         end
       end
 
@@ -481,15 +481,29 @@ module Cucumber
       end
 
       module Background1
+        def matches_name?(regexp_to_match)
+          name.build =~ regexp_to_match
+        end
+
+        def at_line?(line)
+          background_keyword.line == line ||
+          steps.at_line?(line)
+        end
+
+        def has_tags?(tag_names)
+          feature_tags = self.parent.tags
+          feature_tags.has_tags?(tag_names)
+        end
+
         def build
           Ast::Background.new(
             comment.build, 
             background_keyword.line,
             background_keyword.text_value,
-            name.text_value, 
+            name.build, 
             steps.build
           )
-         end
+        end
       end
 
       def _nt_background
@@ -522,7 +536,7 @@ module Cucumber
               r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
               s0 << r4
               if r4
-                r7 = _nt_line_to_eol
+                r7 = _nt_lines_to_keyword
                 if r7
                   r6 = r7
                 else
@@ -678,8 +692,8 @@ module Cucumber
           tags.has_tags?(tag_names) || feature_tags.has_tags?(tag_names)
         end
 
-        def matches_name?(name_to_match)
-          name.text_value == name_to_match
+        def matches_name?(regexp_to_match)
+          name.build =~ regexp_to_match
         end
 
         def build(background, filter)
@@ -689,7 +703,7 @@ module Cucumber
             tags.build,
             scenario_keyword.line,
             scenario_keyword.text_value, 
-            name.text_value, 
+            name.build, 
             steps.build
           )
         end
@@ -728,7 +742,7 @@ module Cucumber
                 r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
                 s0 << r5
                 if r5
-                  r7 = _nt_line_to_eol
+                  r7 = _nt_lines_to_keyword
                   s0 << r7
                   if r7
                     r8 = _nt_white
@@ -816,8 +830,12 @@ module Cucumber
           tags.has_tags?(tag_names) || feature_tags.has_tags?(tag_names)
         end
 
-        def matches_name?(name_to_match)
-          name.text_value == name_to_match
+        def matches_name?(regexp_to_match)
+          outline_matches_name?(regexp_to_match) || examples_sections.matches_name?(regexp_to_match)
+        end
+
+        def outline_matches_name?(regexp_to_match)
+          name.build =~ regexp_to_match
         end
 
         def build(background, filter)
@@ -827,7 +845,7 @@ module Cucumber
             tags.build,
             scenario_outline_keyword.line, 
             scenario_outline_keyword.text_value, 
-            name.text_value, 
+            name.build, 
             steps.build, 
             examples_sections.build(filter, self)
           )
@@ -867,7 +885,7 @@ module Cucumber
                 r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
                 s0 << r5
                 if r5
-                  r7 = _nt_line_to_eol
+                  r7 = _nt_lines_to_keyword
                   s0 << r7
                   if r7
                     r8 = _nt_white
@@ -1078,9 +1096,13 @@ module Cucumber
           elements.detect { |e| e.at_line?(line) }
         end
 
+        def matches_name?(regexp_to_match)
+          elements.detect { |e| e.matches_name?(regexp_to_match) }
+        end
+
         def build(filter, scenario_outline)
           elements.map do |e|
-            if(filter.nil? || filter.accept?(e) || filter.outline_at_line?(scenario_outline))
+            if(filter.nil? || filter.accept_example?(e, scenario_outline))
               e.build(filter, scenario_outline)
             end
           end.compact
@@ -1148,8 +1170,12 @@ module Cucumber
           true
         end
 
+        def matches_name?(regexp_to_match)
+          name.build =~ regexp_to_match
+        end
+
         def build(filter, scenario_outline)
-          [examples_keyword.line, examples_keyword.text_value, name.text_value, table.raw(filter, scenario_outline)]
+          [examples_keyword.line, examples_keyword.text_value, name.build, table.raw(filter, scenario_outline)]
         end
       end
 
@@ -1189,7 +1215,7 @@ module Cucumber
             r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
             s0 << r4
             if r4
-              r7 = _nt_line_to_eol
+              r7 = _nt_lines_to_keyword
               if r7
                 r6 = r7
               else
@@ -1305,6 +1331,172 @@ module Cucumber
         return r0
       end
 
+      module LinesToKeyword0
+        def eol
+          elements[0]
+        end
+
+        def reserved_words_and_symbols
+          elements[2]
+        end
+      end
+
+      module LinesToKeyword1
+      end
+
+      module LinesToKeyword2
+        def build
+          self.text_value.split("\n").map{|s| s.strip }.join("\n")
+        end
+      end
+
+      def _nt_lines_to_keyword
+        start_index = index
+        if node_cache[:lines_to_keyword].has_key?(index)
+          cached = node_cache[:lines_to_keyword][index]
+          @index = cached.interval.end if cached
+          return cached
+        end
+
+        s0, i0 = [], index
+        loop do
+          i1, s1 = index, []
+          i2 = index
+          i3, s3 = index, []
+          r4 = _nt_eol
+          s3 << r4
+          if r4
+            s5, i5 = [], index
+            loop do
+              r6 = _nt_space
+              if r6
+                s5 << r6
+              else
+                break
+              end
+            end
+            r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
+            s3 << r5
+            if r5
+              r7 = _nt_reserved_words_and_symbols
+              s3 << r7
+            end
+          end
+          if s3.last
+            r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
+            r3.extend(LinesToKeyword0)
+          else
+            self.index = i3
+            r3 = nil
+          end
+          if r3
+            r2 = nil
+          else
+            self.index = i2
+            r2 = instantiate_node(SyntaxNode,input, index...index)
+          end
+          s1 << r2
+          if r2
+            if index < input_length
+              r8 = instantiate_node(SyntaxNode,input, index...(index + 1))
+              @index += 1
+            else
+              terminal_parse_failure("any character")
+              r8 = nil
+            end
+            s1 << r8
+          end
+          if s1.last
+            r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
+            r1.extend(LinesToKeyword1)
+          else
+            self.index = i1
+            r1 = nil
+          end
+          if r1
+            s0 << r1
+          else
+            break
+          end
+        end
+        r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
+        r0.extend(LinesToKeyword2)
+
+        node_cache[:lines_to_keyword][start_index] = r0
+
+        return r0
+      end
+
+      module ReservedWordsAndSymbols0
+        def step_keyword
+          elements[0]
+        end
+
+        def keyword_space
+          elements[1]
+        end
+      end
+
+      def _nt_reserved_words_and_symbols
+        start_index = index
+        if node_cache[:reserved_words_and_symbols].has_key?(index)
+          cached = node_cache[:reserved_words_and_symbols][index]
+          @index = cached.interval.end if cached
+          return cached
+        end
+
+        i0 = index
+        i1, s1 = index, []
+        r2 = _nt_step_keyword
+        s1 << r2
+        if r2
+          r3 = _nt_keyword_space
+          s1 << r3
+        end
+        if s1.last
+          r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
+          r1.extend(ReservedWordsAndSymbols0)
+        else
+          self.index = i1
+          r1 = nil
+        end
+        if r1
+          r0 = r1
+        else
+          r4 = _nt_scenario_keyword
+          if r4
+            r0 = r4
+          else
+            r5 = _nt_scenario_outline_keyword
+            if r5
+              r0 = r5
+            else
+              r6 = _nt_table
+              if r6
+                r0 = r6
+              else
+                r7 = _nt_tag
+                if r7
+                  r0 = r7
+                else
+                  r8 = _nt_comment_line
+                  if r8
+                    r0 = r8
+                  else
+                    self.index = i0
+                    r0 = nil
+                  end
+                end
+              end
+            end
+          end
+        end
+
+        node_cache[:reserved_words_and_symbols][start_index] = r0
+
+        return r0
+      end
+
       module PyString0
       end
 
@@ -1401,7 +1593,7 @@ module Cucumber
       end
 
       module OpenPyString0
-        def white
+        def indent
           elements[0]
         end
 
@@ -1412,11 +1604,11 @@ module Cucumber
 
       module OpenPyString1
         def indentation
-          white.text_value.length
+          indent.text_value.length
         end
 
         def line
-          white.line
+          indent.line
         end
       end
 
@@ -1429,32 +1621,41 @@ module Cucumber
         end
 
         i0, s0 = index, []
-        r1 = _nt_white
+        s1, i1 = [], index
+        loop do
+          r2 = _nt_space
+          if r2
+            s1 << r2
+          else
+            break
+          end
+        end
+        r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
         s0 << r1
         if r1
           if input.index('"""', index) == index
-            r2 = instantiate_node(SyntaxNode,input, index...(index + 3))
+            r3 = instantiate_node(SyntaxNode,input, index...(index + 3))
             @index += 3
           else
             terminal_parse_failure('"""')
-            r2 = nil
+            r3 = nil
           end
-          s0 << r2
-          if r2
-            s3, i3 = [], index
+          s0 << r3
+          if r3
+            s4, i4 = [], index
             loop do
-              r4 = _nt_space
-              if r4
-                s3 << r4
+              r5 = _nt_space
+              if r5
+                s4 << r5
               else
                 break
               end
             end
-            r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
-            s0 << r3
-            if r3
-              r5 = _nt_eol
-              s0 << r5
+            r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
+            s0 << r4
+            if r4
+              r6 = _nt_eol
+              s0 << r6
             end
           end
         end

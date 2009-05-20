@@ -54,6 +54,19 @@ module Cucumber
         @exception ||= ((failed = @steps.detect {|step| step.exception}) && failed.exception)
       end
 
+      def failed?
+        status == :failed
+      end
+
+      def passed?
+        status == :passed
+      end
+      
+      def status
+        @steps.each{|step_invocation| return step_invocation.status if step_invocation.status != :passed}
+        :passed
+      end
+
       def to_sexp
         @steps.map{|step| step.to_sexp}
       end

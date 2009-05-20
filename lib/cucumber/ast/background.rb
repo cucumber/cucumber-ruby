@@ -4,12 +4,13 @@ module Cucumber
   module Ast
     class Background
       include FeatureElement
-      attr_writer :feature
+      attr_reader :feature_elements
 
       def initialize(comment, line, keyword, name, steps)
         @comment, @line, @keyword, @name, @steps = comment, line, keyword, name, StepCollection.new(steps)
         attach_steps(steps)
         @step_invocations = @steps.step_invocations(true)
+        @feature_elements = []
       end
 
       def step_collection(step_invocations)
@@ -23,22 +24,33 @@ module Cucumber
 
       def accept(visitor)
         visitor.visit_comment(@comment)
-        visitor.visit_background_name(@keyword, @name, file_colon_line(@line), source_indent(text_length))
-        visitor.step_mother.before_and_after(self)
+        visitor.visit_background_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
+        visitor.step_mother.before(hook_context)
         visitor.visit_steps(@step_invocations)
         @failed = @step_invocations.detect{|step_invocation| step_invocation.exception}
+        visitor.step_mother.after(hook_context) if @failed || @feature_elements.empty?
+      end
+
+      def accept_hook?(hook)
+        if hook_context != self
+          hook_context.accept_hook?(hook)
+        else
+          # We have no scenarios, just ask our feature
+          @feature.accept_hook?(hook)
+        end
       end
 
       def failed?
         @failed
       end
 
-      def text_length
-        @keyword.jlength
+      def hook_context
+        @feature_elements.first || self
       end
 
       def to_sexp
         sexp = [:background, @line, @keyword]
+        sexp += [@name] unless @name.empty?
         comment = @comment.to_sexp
         sexp += [comment] if comment
         steps = @steps.to_sexp

@@ -48,6 +48,14 @@ Feature: hi
           [:feature, nil, "", 
             [:comment, "# Hello\n\n# World\n"]]
         end
+        
+        it "should not consume comments as part of a multiline name" do
+          parse("Feature: hi\n Scenario: test\n\n#hello\n Scenario: another").to_sexp.should ==
+            [:feature, nil, "Feature: hi", 
+             [:scenario, 2, "Scenario:", "test"], 
+             [:scenario, 5, "Scenario:", "another", 
+              [:comment, "#hello\n "]]]
+        end
       end
 
       describe "Tags" do
@@ -57,6 +65,14 @@ Feature: hi
             [:comment, "# My comment\n"],
             [:tag, "hello"],
             [:tag, "world"]]
+        end
+
+        it "should not take the tags as part of a multiline name feature element" do
+          parse("Feature: hi\n Scenario: test\n\n@hello Scenario: another").to_sexp.should ==
+          [:feature, nil, "Feature: hi",
+           [:scenario, 2, "Scenario:", "test"], 
+           [:scenario, 4, "Scenario:", "another", 
+             [:tag, "hello"]]]
         end
 
         it "should parse a file with tags on a scenario" do
@@ -89,6 +105,18 @@ Feature: hi
           [:feature, nil, "Feature: Hi",
             [:background, 2, "Background:",
               [:step, 3, "Given", "I am a step"]]]
+        end
+        
+        it "should allow multiline names" do
+          parse(%{Feature: Hi
+Background: It is my ambition to say 
+            in ten sentences
+            what others say 
+            in a whole book.
+Given I am a step}).to_sexp.should ==
+          [:feature, nil, "Feature: Hi",
+            [:background, 2, "Background:", "It is my ambition to say\nin ten sentences\nwhat others say\nin a whole book.",
+              [:step, 6, "Given", "I am a step"]]]
         end
       end
 
@@ -145,6 +173,32 @@ Given I have a string
             [:scenario, 2, "Scenario:", "Hello",
               [:step_invocation, 3, "Given", "I have a string",
                 [:py_string, "hello\nworld"]]]]
+        end
+        
+        it "should allow multiline names" do
+          parse(%{Feature: Hi
+Scenario: It is my ambition to say
+          in ten sentences
+          what others say 
+          in a whole book.
+Given I am a step
+
+}).to_sexp.should ==
+          [:feature, nil, "Feature: Hi",
+            [:scenario, 2, "Scenario:", "It is my ambition to say\nin ten sentences\nwhat others say\nin a whole book.",
+              [:step_invocation, 6, "Given", "I am a step"]]]
+        end
+
+        it "should ignore gherkin keywords which are parts of other words in the name" do
+          parse(%{Feature: Parser bug
+Scenario: I have a Button
+          Buttons are great
+  Given I have it
+}).to_sexp.should ==
+            [:feature, nil, "Feature: Parser bug",
+            [:scenario, 2, "Scenario:", "I have a Button\nButtons are great",
+              [:step_invocation, 4, "Given", "I have it"]]]
+
         end
       end
 
@@ -225,6 +279,53 @@ Examples:
                     [:cell, "5"],
                     [:cell, "6"]]]]]]
         end
+
+        it "should allow multiline names" do
+          parse(%{Feature: Hi
+Scenario Outline: It is my ambition to say 
+          in ten sentences
+          what others say 
+          in a whole book.
+Given I am a step
+
+}).to_sexp.should ==
+          [:feature, nil, "Feature: Hi",
+            [:scenario_outline, "Scenario Outline:", "It is my ambition to say\nin ten sentences\nwhat others say\nin a whole book.",
+              [:step, 6, "Given", "I am a step"]]]
+        end
+        
+        it "should allow Examples to have multiline names" do
+          parse(%{Feature: Hi
+Scenario Outline: name
+Given I am a step
+
+Examples: I'm a multiline name
+          and I'm ok
+|x|
+|5|
+
+}).to_sexp.should ==
+          [:feature, nil, "Feature: Hi",
+            [:scenario_outline, "Scenario Outline:", "name",
+              [:step, 3, "Given", "I am a step"],
+              [:examples, "Examples:", "I'm a multiline name\nand I'm ok",
+                [:table,
+                  [:row, 7,
+                    [:cell, "x"]],
+                  [:row, 8,
+                    [:cell, "5"]]]]]]
+        end
+
+        it "should allow Examples to have multiline names" do
+            parse(%{Feature: Hi
+Scenario: When I have when in scenario
+          I should be fine
+Given I am a step
+}).to_sexp.should ==
+            [:feature, nil, "Feature: Hi",
+              [:scenario, 2, "Scenario:", "When I have when in scenario\nI should be fine",
+                [:step_invocation, 4, "Given", "I am a step"]]]
+          end
       end
 
       describe "Syntax" do

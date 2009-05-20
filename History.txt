@@ -1,4 +1,121 @@
-== 0.3.0 (In Git)
+== 0.3.6 (In Git)
+
+With this release you can package your formatters in RubyGems.
+
+=== New features
+* New aliases for Vietnamese (Ngoc Dao)
+* Automatic require of custom formatters. --require is no longer needed to load them, and they can be in Ruby gems. (Aslak Hellesøy)
+* Lazy loading of built-in formatters. Should improve startup time a little bit.
+
+=== Bugfixes
+* Gracefully handle exceptions in After block (#330 Matt Wynne)
+* Feature with only Background doesn't run hooks (#329 Aslak Hellesøy)
+
+== 0.3.5 2009-05-14
+
+Let's make a new release today because two annoying bugs are fixed.
+
+=== Bugfixes
+* Allow feature element names to contain Gherkin keywords as long as they are not the first word on a newline (#319, #307 Joseph Wilk)
+
+== 0.3.4 2009-05-14
+
+A couple of great new features in this release. Running with Rake is faster than before,
+and there is a brand new JUnit formatter - great for Continuous Integration reports!
+
+This release was made especially for the Oslo XP Meetup today.
+
+** IMPORTANT UPGRADE NOTES FOR RAILS USERS **
+
+Running Cucumber features in the same Ruby interpreter as Rake doesn't seem to work,
+so you have to explicitly tell the task to fork (like it was doing by default in prior
+versions). In lib/tasks/cucumber.rake:
+
+  Cucumber::Rake::Task.new(:features) do |t|
+    t.fork = true # Explicitly fork
+    t.cucumber_opts = %w{--format pretty}
+  end
+
+(If you run script/generate cucumber this will be done for you).
+Alternatively you can omit forking and run features like this:
+
+  RAILS_ENV=test rake features
+
+However, setting the RAILS_ENV is easy to forget, so I don't recommend relying on this.
+
+=== Bugfixes
+* Hooks (World, Before, After) are no longer executed when --dry-run (Aslak Hellesøy)
+* Proper UTF8 use in HTML formatter (Herminio Torres)
+* Problem with multiple terms in languages.yml (#321 Aslak Hellesøy)
+
+=== New features
+* New JUnit formatter (Gareth Jones)
+* Support for Vietnamese (Ngoc Dao)
+* Added aliases for Feature and But in Japanese (Leonard Chin)
+* Support for Catalan (Francesc Esplugas)
+
+=== Changed features
+* --exclude flag now works on ruby files in addition to feature files (#312 Ben Mabey)
+* The Java example under examples/java uses Ant instead of Rake - and the new JUnit formatter.
+* Rake task should not shell out (#297 Aslak Hellesøy)
+  The Cucumber Rake task will run Cucumber in the same Ruby interpreter as Rake itself
+  unless explicitly told to fork a new interpreter. This is to increase speed. You can
+  force a new interpreter by setting fork=true or rcov=true in the task.
+
+== 0.3.3 2009-05-10
+
+Minor bugfix release, made specially for EuRuKo!
+
+=== Bugfixes
+* Summaries are no longer printed in an empty () if there are no scenarios/steps (Aslak Hellesøy)
+* Background, Scenario Outline, Before Hook interaction (#309 Aslak Hellesøy)
+* Multiline String snippets no longer give misleading info. It's a String, not a PyString that's sent to step def.
+
+=== Removed/changed features
+* New aliases: --no-source/-s, --name/-n (#317 Lonnon Foster)
+
+== 0.3.2 2009-05-05
+
+This release has some minor bug fixes and new features.
+Nothing major, but we need a release for RailsConf'09 in Las Vegas!
+
+=== Bugfixes
+* rake tasks with profiles not respecting --require flags (#311 Ben Mabey)
+* Step table with blank cell fails (#308 JohnnyT)
+* Fixed error where unused table cells in Examples where raising exceptions due to having no status (#302 Joseph Wilk)
+
+=== New features
+* Support for Hebrew (Ido Kanner)
+* Summary should report scenarios (#32 Aslak Hellesøy)
+* Examples and the associated tables are indented one level deeper than Scenario Outline. (Aslak Hellesøy)
+* Added support for Examples selection when using --name. (#295 Joseph Wilk)
+
+== 0.3.1 2009-04-26
+
+This release has several minor bug fixes and new features. With the addition of Latvian and Hungarian Cucumber
+now supports 32(!!) languages.
+
+=== New features
+* Support multiline names for Scenarios, Scenario Outlines, Backgrounds, Examples (#231 Joseph Wilk)
+* Added #headers to Cucumber::Ast::Table (Ben Mabey)
+* New translation for Latvian (Vitauts Stočka)
+* New translation for Hungarian (#287 Bence Golda)
+* Pick up failure on after hook (#272 Aslak Hellesøy)
+
+=== Bugfixes
+* Pretty formatter not colouring Examples tables correctly (#304 Aslak Hellesøy)
+* Problem using --scenario and Scenario Outline (#298 Aslak Hellesøy)
+* Tag Hook gets executed always there is a background (#301 Aslak Hellesøy)
+* Feature which only has a Background with steps causes an exception (#306 Aslak Hellesøy)
+* Gem no longer depends on Hoe (Aslak Hellesøy)
+* Span html tags appear on HTML results with 0.3.0 (#299 Aslak Hellesøy)
+* Fixed incorrect colours in pretty formatter's table headers for outline tables (Aslak Hellesøy)
+* Exceptions from steps called within hooks are now reraised. (#294 Ben Mabey)
+
+=== Removed/changed features
+* --scenario handle has been removed and replaced with --name which supports partial matches, regexp special characters, running named backgrounds (#295 Joseph Wilk)
+
+== 0.3.0 2009-04-14
 
 This release has some minor changes to the APIs, but big enough that a new major release is in order.
 The biggest change is the new semantics of the #World method. Previously you would call this method
@@ -13,7 +130,18 @@ The Visitor API (which is used for formatters) has also changed slightly. Howeve
 do this in a backwards compatible way, so if you have custom formatters for Cucumber 0.2 they should
 still work.
 
+One of the most significant new features is Tagged Hooks: http://wiki.github.com/aslakhellesoy/cucumber/hooks
+This lets you associate Before and After blocks with specific scenarios.
+
+We are also deprecating the step_list, step_pattern, feature_list, and feature_pattern accessors on
+Cucumber::Rake::Task. These accessors will be completely removed in version 0.4. For complex settings 
+please rely on cucumber profiles in your rake tasks:
+http://wiki.github.com/aslakhellesoy/cucumber/using-rake#profiles
+
 === New features
+* Use Hooks with @tags (#229 Aslak Hellesøy)
+* Rake task supports cucumber.yml profiles (#187 Ben Mabey)
+* Field value steps for Webrat (Jack Chen)
 * Added translation for Bulgarian (Krasimir Angelov)
 * Updated translation for Polish (#273 Grzegorz Marszałek)
 * Only a single World proc can be registered. World extension now happens by calling #World with ruby modules.
@@ -25,6 +153,10 @@ still work.
 * Support description string for Backgrounds (#271 Joseph Wilk)
 
 === Bugfixes
+* After methods not being executed when Background fails (#288 Luismi Cavallé)
+* Fixed dependency on internal files in rspec breaks cucumber w/ rspec-1.2.4 (#291 Aslak Hellesøy)
+* Fix color use when using autotest on Linux. (Hans de Graaff)
+* Fixed incorrect calculation of pystring indentation (#279 Eugene Naydanov)
 * Fixed --format html leads to an error (#252 Aslak Hellesøy)
 * Fixed Background runs twice (#255 Aslak Hellesøy)
 * Fixed Background Transactions and :xx (#270 Aslak Hellesøy)
@@ -167,7 +299,7 @@ for multiline arguments are some of the highlights.
 * Pure Ruby features are no longer supported.
 * Remove --color option in autotest. Can be added manually in cucumber.yml (#215 Jean-Michel Garnier)
 
-== (0.16.4 aslakhellesoy-cucumber gem on GitHub)
+== (0.1.16.4 aslakhellesoy-cucumber gem on GitHub)
 
 Bugfix release.
 

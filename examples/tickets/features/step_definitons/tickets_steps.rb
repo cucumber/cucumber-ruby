@@ -1,12 +1,5 @@
 require 'spec/expectations'
 
-World do
-  Object.new
-end
-
-After do |scenario|
-end
-
 Given "be_empty" do
   [1,2].should_not be_empty
 end

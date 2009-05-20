@@ -27,6 +27,7 @@ module Cucumber
         )
         @builder.html(:xmlns => 'http://www.w3.org/1999/xhtml') do
           @builder.head do
+            @builder.meta(:content => 'text/html;charset=utf-8')
             @builder.title 'Cucumber'
             inline_css
           end
@@ -114,7 +115,7 @@ module Cucumber
         unless @skip_step
           step_name = step_match.format_args(lambda{|param| "<span>#{param}</span>"})
           @builder.div do |div|
-            div << h("#{keyword} #{step_name}")
+            div << h("#{keyword} #{step_name}").gsub(/&lt;span&gt;/, '<span>').gsub(/&lt;\/span&gt;/, '</span>')
           end
         end
       end

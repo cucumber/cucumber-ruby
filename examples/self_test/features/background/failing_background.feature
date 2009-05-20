@@ -1,3 +1,4 @@
+@after_file
 Feature: Failing background sample
   
   Background:

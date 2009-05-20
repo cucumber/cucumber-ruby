@@ -6,4 +6,4 @@ Feature: Search
   Scenario: Find what I'm looking for
     Given I am on the Google search page
     When I search for "rspec"
-    Then I should see a link to http://rspec.info/
+    Then I should see a link to RSpec-1.2.4: Home

@@ -40,8 +40,8 @@ end
 #   <%%= f.label :alternative %><br />
 #   <%%= f.datetime_select :alternative %>
 # The following steps would fill out the form:
-# When I select "November 23, 2004 11:20" as the "Preferred" data and time
-# And I select "November 25, 2004 10:30" as the "Alternative" data and time
+# When I select "November 23, 2004 11:20" as the "Preferred" date and time
+# And I select "November 25, 2004 10:30" as the "Alternative" date and time
 When /^I select "([^\"]*)" as the "([^\"]*)" date and time$/ do |datetime, datetime_label|
   select_datetime(datetime, :from => datetime_label)
 end
@@ -106,6 +106,22 @@ Then /^I should not see "([^\"]*)"$/ do |text|
 <% end -%>
 end
 
+Then /^the "([^\"]*)" field should contain "([^\"]*)"$/ do |field, value|
+<% if framework == :rspec -%>
+  field_labeled(field).value.should =~ /#{value}/
+<% else -%>
+  assert_match(/#{value}/, field_labeled(field).value)
+<% end -%>
+end
+
+Then /^the "([^\"]*)" field should not contain "([^\"]*)"$/ do |field, value|
+<% if framework == :rspec -%>
+  field_labeled(field).value.should_not =~ /#{value}/
+<% else -%>
+  assert_no_match(/#{value}/, field_labeled(field).value)
+<% end -%>
+end
+    
 Then /^the "([^\"]*)" checkbox should be checked$/ do |label|
 <% if framework == :rspec -%>
   field_labeled(label).should be_checked

@@ -18,18 +18,14 @@ module Cucumber
         print_summary
       end
 
-      def visit_multiline_arg(multiline_arg)
-        @multiline_arg = true
-        super
-        @multiline_arg = false
-      end
-
-      def visit_step_name(keyword, step_match, status, source_indent, background)
-        progress(status) unless status == :outline
+      def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+        progress(status)
+        @status = status
       end
 
       def visit_table_cell_value(value, width, status)
-        progress(status) if (status != :thead) && !@multiline_arg
+        status ||= @status
+        progress(status) unless table_header_cell?(status)
       end
 
       private
@@ -55,6 +51,9 @@ module Cucumber
         @io.flush
       end
       
+      def table_header_cell?(status)
+        status == :skipped_param
+      end
     end
   end
 end

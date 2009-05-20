@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
+require 'cucumber/formatter/color_io'
 
 module Cucumber
   module Formatter

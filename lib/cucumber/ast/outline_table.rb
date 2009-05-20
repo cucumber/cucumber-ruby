@@ -15,6 +15,10 @@ module Cucumber
         nil
       end
 
+      def accept_hook?(hook)
+        @scenario_outline.accept_hook?(hook)
+      end
+
       def skip_invoke!
         example_rows.each do |cells|
           cells.skip_invoke!
@@ -32,6 +36,7 @@ module Cucumber
       end
 
       class ExampleCells < Cells
+        
         def create_step_invocations!(scenario_outline)
           @step_invocations = scenario_outline.step_invocations(self)
         end
@@ -58,8 +63,38 @@ module Cucumber
               @cells.each do |cell|
                 visitor.visit_table_cell(cell)
               end
+              
+              visitor.visit_exception(@scenario_exception, :failed) if @scenario_exception
             end
           end
+        end
+
+        def accept_hook?(hook)
+          @table.accept_hook?(hook)
+        end
+        
+        def exception
+          @exception || @scenario_exception
+        end
+        
+        def fail!(exception)
+          @scenario_exception = exception
+        end
+        
+        # Returns true if one or more steps failed
+        def failed?
+          @step_invocations.failed? || !!@scenario_exception
+        end
+
+        # Returns true if all steps passed
+        def passed?
+          !failed?
+        end
+
+        # Returns the status
+        def status
+          return :failed if @scenario_exception
+          @step_invocations.status
         end
 
         private
