@@ -38,6 +38,7 @@ module Cucumber
       class ExampleCells < Cells
         
         def create_step_invocations!(scenario_outline)
+          @scenario_outline = scenario_outline
           @step_invocations = scenario_outline.step_invocations(self)
         end
         
@@ -95,6 +96,11 @@ module Cucumber
         def status
           return :failed if @scenario_exception
           @step_invocations.status
+        end
+
+        def backtrace_line
+          name = "| #{@cells.collect{|c| c.value }.join(' | ')} |"
+          @scenario_outline.backtrace_line(name, line)
         end
 
         private
