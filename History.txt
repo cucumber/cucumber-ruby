@@ -10,7 +10,7 @@ With this release you can package your formatters in RubyGems.
 
 === Bugfixes
 * Gracefully handle exceptions in After block (#330 Matt Wynne)
-* Feature with only Background doesn't run hooks (#329 Aslak Hellesøy)
+* Feature with only Background doesn't run hooks (#314, #329 Aslak Hellesøy)
 
 == 0.3.5 2009-05-14
 
