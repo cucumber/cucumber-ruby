@@ -1,7 +1,7 @@
-== 0.3.7 (In Git)
+== 0.3.7 2209-05-21
 
 === New Features
-* New --expand option. This will print Scenario Outlines once for each Example row - with values expanded. (Aslak Hellesøy)
+* New --expand option. This will print Scenario Outlines once for each Example row - with values expanded. (#327 Aslak Hellesøy)
 * You can override the formatter in Rails-generated rake tasks with the CUCUMBER_FORMAT environment variable (#335 Aslak Hellesøy)
 
 == 0.3.6 2009-05-20
