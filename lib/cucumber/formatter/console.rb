@@ -85,6 +85,15 @@ module Cucumber
         @io.flush
       end
 
+      def print_passing_wip(options)
+        return unless options[:wip]
+        passed = step_mother.scenarios(:passed)
+        if passed.any?
+          @io.puts "\nThe --wip switch was used, so I didn't expect anything to pass. These scenarios passed:"
+          print_elements(passed, :passed, "scenarios")
+        end
+      end
+
       def announce(announcement)
         @io.puts
         @io.puts(format_string(announcement, :tag))

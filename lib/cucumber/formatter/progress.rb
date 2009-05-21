@@ -35,6 +35,7 @@ module Cucumber
         print_steps(:failed)
         print_counts
         print_snippets(@options)
+        print_passing_wip(@options)
       end
 
       CHARS = {
