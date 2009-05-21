@@ -39,8 +39,8 @@ module Cucumber
         cells_rows[1..-1]
       end
 
-      def expand_scenario(visitor, row)
-        @scenario_outline.expand_name(visitor, row)
+      def visit_scenario_name(visitor, row)
+        @scenario_outline.visit_scenario_name(visitor, row)
       end
 
       class ExampleCells < Cells
@@ -86,11 +86,11 @@ module Cucumber
           if header?
           else
             visitor.step_mother.before_and_after(self) do
-              @table.expand_scenario(visitor, self)
+              @table.visit_scenario_name(visitor, self)
               @step_invocations.each do |step_invocation|
                 step_invocation.invoke(visitor.step_mother, visitor.options)
                 @exception ||= step_invocation.exception
-                step_invocation.visit_step_results(visitor)
+                step_invocation.visit_step_result(visitor)
               end
             end
           end

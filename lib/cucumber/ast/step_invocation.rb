@@ -20,11 +20,11 @@ module Cucumber
 
       def accept(visitor)
         invoke(visitor.step_mother, visitor.options)
-        visit_step_results(visitor)
+        visit_step_result(visitor)
       end
 
-      def visit_step_results(visitor)
-        @step.visit_step_result(visitor, @step_match, @multiline_arg, @status, @exception, @background)
+      def visit_step_result(visitor)
+        visitor.visit_step_result(keyword, @step_match, @multiline_arg, @status, @exception, source_indent, @background)
       end
 
       def invoke(step_mother, options)
@@ -90,8 +90,12 @@ module Cucumber
         end
       end
 
+      def source_indent
+        @step.feature_element.source_indent(text_length)
+      end
+
       def text_length
-        @step.text_length
+        @step.text_length(@name)
       end
 
       def keyword

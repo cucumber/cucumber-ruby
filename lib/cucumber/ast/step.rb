@@ -62,8 +62,8 @@ module Cucumber
         @feature_element.source_indent(text_length)
       end
 
-      def text_length
-        @keyword.jlength + @name.jlength + INDENT # Add indent as steps get indented more than scenarios
+      def text_length(name=@name)
+        @keyword.jlength + name.jlength + INDENT # Add indent as steps get indented more than scenarios
       end
 
       def backtrace_line
