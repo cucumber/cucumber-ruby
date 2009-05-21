@@ -143,6 +143,9 @@ module Cucumber
           opts.on("-S", "--strict", "Fail if there are any undefined steps.") do
             @options[:strict] = true
           end
+          opts.on("-w", "--wip", "Fail if there are any passing scenarios.") do
+            @options[:wip] = true
+          end
           opts.on("-v", "--verbose", "Show the files and features loaded.") do
             @options[:verbose] = true
           end
@@ -167,6 +170,8 @@ module Cucumber
         @options[:snippets] = true if !@quiet && @options[:snippets].nil?
         @options[:source]   = true if !@quiet && @options[:source].nil?
 
+        raise("You can't use both --strict and --wip") if @options[:strict] && @options[:wip]
+
         # Whatever is left after option parsing is the FILE arguments
         @paths += args
       end
@@ -177,6 +182,10 @@ module Cucumber
 
       def strict?
         @options[:strict]
+      end
+
+      def wip?
+        @options[:wip]
       end
 
       def guess?

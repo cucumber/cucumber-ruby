@@ -40,8 +40,12 @@ module Cucumber
         step_mother.visitor = visitor # Needed to support World#announce
         visitor.visit_features(features)
 
-        failure = step_mother.scenarios(:failed).any? || 
+        failure = if configuration.wip?
+          step_mother.scenarios(:passed).any?
+        else
+          step_mother.scenarios(:failed).any? || 
           (configuration.strict? && step_mother.steps(:undefined).any?)
+        end
       end
 
       def load_plain_text_features
