@@ -11,6 +11,8 @@ class CucumberGenerator < Rails::Generator::Base
     record do |m|
       m.directory 'features/step_definitions'
       m.template  'webrat_steps.rb', 'features/step_definitions/webrat_steps.rb'
+      m.template  'cucumber_environment.rb', 'config/environments/cucumber.rb'
+      m.gsub_file 'config/database.yml', /\z/, "\ncucumber:\n  adapter: sqlite3\n  database: db/cucumber.sqlite3"
 
       m.directory 'features/support'
       m.template  'env.rb',           'features/support/env.rb'

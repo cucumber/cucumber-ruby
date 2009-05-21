@@ -3,6 +3,7 @@
 With this release you can package your formatters in RubyGems.
 
 === New features
+* Rails generator creates a cucumber environment file to avoid potential cache_classes conflicts in test.rb (#165, Ben Mabey)
 * New aliases for Vietnamese (Ngoc Dao)
 * Automatic require of custom formatters. --require is no longer needed to load them, and they can be in Ruby gems. (Aslak Hellesøy)
 * Lazy loading of built-in formatters. Should improve startup time a little bit.
