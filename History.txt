@@ -1,4 +1,6 @@
-== 0.3.7 (In Git)
+== 0.3.7 2009-05-22
+
+This is the "Help JetBrains RubyMine" release!
 
 === New Features
 * Added new Given alias for Catalan: Donat|Donada (Lleïr Borràs Metje)
