@@ -1,34 +1,53 @@
-
-
-
-
-
 .cucumber {
   background: black;
   color: white;
   padding: 1em;
 }
 .cucumber .passed {
-  color: green;
+  color: #008800;
 }
 .cucumber .undefined {
-  color: yellow;
+  color: #888800;
 }
 .cucumber .pending {
-  color: yellow;
+  color: #888800;
 }
 .cucumber .failed {
-  color: red;
+  color: #880000;
 }
 .cucumber .skipped {
-  color: cyan;
+  color: #008888;
 }
 .cucumber .outline {
-  color: cyan;
+  color: #008888;
 }
-.cucumber .param {
+
+.cucumber .passed_param {
   font-weight: bold;
+  color: #00ff00;
 }
+.cucumber .undefined_param {
+  font-weight: bold;
+  color: #ffff00;
+}
+.cucumber .pending_param {
+  font-weight: bold;
+  color: #ffff00;
+}
+.cucumber .failed_param {
+  font-weight: bold;
+  font-weight: bold;
+  color: #ff0000;
+}
+.cucumber .skipped_param {
+  font-weight: bold;
+  color: #00ffff;
+}
+.cucumber .outline_param {
+  font-weight: bold;
+  color: #00ffff;
+}
+
 .cucumber a {
   text-decoration: none;
   color: inherit;
