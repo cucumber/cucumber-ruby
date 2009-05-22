@@ -4,7 +4,7 @@ module Cucumber
       def initialize(raw, scenario_outline)
         super(raw)
         @scenario_outline = scenario_outline
-        @cells_class = ExampleCells
+        @cells_class = ExampleRow
         create_step_invocations_for_example_rows!(scenario_outline)
       end
 
@@ -43,7 +43,7 @@ module Cucumber
         @scenario_outline.visit_scenario_name(visitor, row)
       end
 
-      class ExampleCells < Cells
+      class ExampleRow < Cells
         
         def create_step_invocations!(scenario_outline)
           @scenario_outline = scenario_outline

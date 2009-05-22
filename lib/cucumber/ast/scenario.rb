@@ -5,6 +5,8 @@ module Cucumber
     class Scenario
       include FeatureElement
       
+      attr_reader :name, :line
+      
       def initialize(background, comment, tags, line, keyword, name, steps)
         @background, @comment, @tags, @line, @keyword, @name = background, comment, tags, line, keyword, name
         attach_steps(steps)

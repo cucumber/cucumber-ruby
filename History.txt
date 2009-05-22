@@ -1,6 +1,7 @@
 == 0.3.8 (Git)
 
 === New Features
+* Scenario and ExampleRow objects (passed to Before and After hooks) have #name and #line methods (#316 Aslak Hellesøy)
 * Rails generator creates a cucumber environment file to avoid potential cache_classes conflicts in test.rb (#165, Ben Mabey)
 
 == 0.3.7 2009-05-22
