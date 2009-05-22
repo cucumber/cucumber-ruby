@@ -6,6 +6,7 @@
 * You can override the formatter in Rails-generated rake tasks with the CUCUMBER_FORMAT environment variable (#335 Aslak Hellesøy)
 
 === Bugfixes
+* 'specs' folder needs to be renamed back to 'spec' (#339 Aslak Hellesøy)
 * CUCUMBER_OPTS doesn't work for cucumber rake tasks (#336 Aslak Hellesøy)
 
 == 0.3.6 2009-05-20
