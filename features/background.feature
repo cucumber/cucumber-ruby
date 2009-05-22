@@ -90,6 +90,7 @@ Feature: backgrounds
 
     """
 
+  @mri186
   Scenario: run a feature with a background that fails
     When I run cucumber -q features/background/failing_background.feature --require features
     Then it should fail with
@@ -117,6 +118,7 @@ Feature: backgrounds
     """
     And "examples/self_test/tmp/after.txt" should exist
 
+  @mri186
   Scenario: run a feature with scenario outlines that has a background that fails
     When I run cucumber -q features/background/scenario_outline_failing_background.feature --require features
     Then it should fail with
@@ -169,6 +171,7 @@ Feature: backgrounds
 
     """
 
+  @mri186
   Scenario: background passes with first scenario but fails with second
     When I run cucumber -q features/background/failing_background_after_success.feature --require features
     Then it should fail with
