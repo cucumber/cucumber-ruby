@@ -1,4 +1,3 @@
-@diffxml
 Feature: JUnit output formatter
   In order for developers to create test reports with ant
   Cucumber should be able to output JUnit xml files
@@ -6,7 +5,8 @@ Feature: JUnit output formatter
   Background:
     Given I am in junit
     And the tmp directory is empty
-    
+  
+  @mri186 @diffxml
   Scenario: one feature, one passing scenario, one failing scenario
     When I run cucumber --format junit --out tmp/ features/one_passing_one_failing.feature
     Then it should fail with
@@ -28,6 +28,8 @@ Feature: JUnit output formatter
       </testsuite>
       
       """
+  
+  @mri186 @diffxml
   Scenario: pending step
     When I run cucumber --format junit --out tmp/ features/pending.feature
     Then it should pass with
