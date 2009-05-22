@@ -63,6 +63,7 @@ module Cucumber
       end
 
       def visit_background_name(keyword, name, file_colon_line, source_indent)
+        @listing_background = true
         @builder.h3("#{keyword} #{name}")
       end
 
@@ -74,6 +75,7 @@ module Cucumber
       end
       
       def visit_scenario_name(keyword, name, file_colon_line, source_indent)
+        @listing_background = false
         @builder.h3("#{keyword} #{name}")
       end
 
@@ -109,7 +111,8 @@ module Cucumber
 
       def visit_step_name(keyword, step_match, status, source_indent, background)
         @step_matches ||= []
-        @skip_step = @step_matches.index(step_match)
+        background_in_scenario = background && !@listing_background
+        @skip_step = @step_matches.index(step_match) || background_in_scenario
         @step_matches << step_match
 
         unless @skip_step
