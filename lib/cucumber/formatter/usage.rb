@@ -56,14 +56,14 @@ module Cucumber
 
           @io.print step_definition.regexp.inspect
           @io.puts format_string("   # #{step_definition.file_colon_line}".indent(max_length - step_definition.text_length), :comment)
-          step_matches_and_descriptions.each do |step_match_and_description|
+          da = step_matches_and_descriptions.map do |step_match_and_description|
             step_match      = step_match_and_description[0]
             description     = step_match_and_description[1]
             length          = step_match_and_description[2]
             file_colon_line = step_match_and_description[3]
-            @io.print " #{description}"
-            @io.puts format_string(" # #{file_colon_line}".indent(max_length - length), :comment)
+            " #{description}" + format_string(" # #{file_colon_line}".indent(max_length - length), :comment)
           end
+          da.sort.each{|d| puts d}
         end
 
         print_unused_step_definitions
