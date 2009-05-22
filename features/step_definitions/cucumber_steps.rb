@@ -86,6 +86,10 @@ Then /^"(.*)" should match$/ do |file, text|
   IO.read(file).should =~ Regexp.new(text)
 end
 
+Then /^"([^\"]*)" should have the same contents as "([^\"]*)"$/ do |actual_file, expected_file|
+  IO.read(actual_file).should == IO.read(expected_file)
+end
+
 Then /^STDERR should match$/ do |text|
   last_stderr.should =~ /#{text}/
 end
