@@ -49,6 +49,7 @@ Feature: Cucumber --work-in-progress switch
       end
       """
 
+  @mri186
   Scenario: Pass with Failing Scenarios
     When I run cucumber -q -w -t @failing features/wip.feature
     Then it should pass with
@@ -82,6 +83,7 @@ Feature: Cucumber --work-in-progress switch
 
       """
 
+  @mri186
   Scenario: Pass with Undefined Scenarios
     When I run cucumber -q -w -t @pending features/wip.feature
     Then it should pass with

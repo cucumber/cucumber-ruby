@@ -72,7 +72,9 @@ Then /^"(.*)" should contain XML$/ do |file, xml|
   t.write(xml)
   t.flush
   t.close
-  diff = `diffxml #{t.path} #{file}`
+  cmd = "diffxml #{t.path} #{file}"
+  diff = `#{cmd}`
+  fail "Failed to run `#{cmd}`"  if $?.exitstatus != 0
   if diff =~ /<delta>/m
     raise diff + "\nXML WAS:\n" + IO.read(file)
   end

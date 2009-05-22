@@ -3,6 +3,7 @@ Feature: Cucumber command line
   steps and step definitions, Cucumber must provide a way to
   display how they are related.
 
+  @mri186
   Scenario: List usage of step definitions
     When I run cucumber features --format usage --dry-run
     Then it should pass with
