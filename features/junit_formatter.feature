@@ -1,3 +1,4 @@
+@diffxml
 Feature: JUnit output formatter
   In order for developers to create test reports with ant
   Cucumber should be able to output JUnit xml files

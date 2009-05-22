@@ -63,3 +63,8 @@ Before do
   FileUtils.rm_rf CucumberWorld.working_dir
   FileUtils.mkdir CucumberWorld.working_dir
 end
+
+Before('@diffxml') do
+  `diffxml --version`
+  raise "Please install diffxml from http://diffxml.sourceforge.net/" if $? != 0
+end

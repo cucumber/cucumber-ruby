@@ -1,6 +1,7 @@
-== 0.3.7 2209-05-21
+== 0.3.7 (In Git)
 
 === New Features
+* Added new Given alias for Catalan: Donat|Donada (Lleïr Borràs Metje)
 * New --expand option. This will print Scenario Outlines once for each Example row - with values expanded. (#327 Aslak Hellesøy)
 * You can override the formatter in Rails-generated rake tasks with the CUCUMBER_FORMAT environment variable (#335 Aslak Hellesøy)
 
