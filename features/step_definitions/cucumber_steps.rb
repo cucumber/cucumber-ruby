@@ -66,7 +66,6 @@ Then /^the output should be$/ do |text|
   last_stdout.should == text
 end
 
-# http://diffxml.sourceforge.net/
 Then /^"(.*)" should contain XML$/ do |file, xml|
   t = Tempfile.new('cucumber-junit')
   t.write(xml)
@@ -74,7 +73,6 @@ Then /^"(.*)" should contain XML$/ do |file, xml|
   t.close
   cmd = "diffxml #{t.path} #{file}"
   diff = `#{cmd}`
-  fail "Failed to run `#{cmd}`"  if $?.exitstatus != 0
   if diff =~ /<delta>/m
     raise diff + "\nXML WAS:\n" + IO.read(file)
   end
