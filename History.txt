@@ -1,4 +1,4 @@
-== 0.3.x (Git)
+== 0.3.8 (Git)
 
 === New Features
 * Rails generator creates a cucumber environment file to avoid potential cache_classes conflicts in test.rb (#165, Ben Mabey)
