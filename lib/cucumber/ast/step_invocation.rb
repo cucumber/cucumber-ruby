@@ -20,7 +20,11 @@ module Cucumber
 
       def accept(visitor)
         invoke(visitor.step_mother, visitor.options)
-        @step.visit_step_result(visitor, @step_match, @multiline_arg, @status, @exception, @background)
+        visit_step_result(visitor)
+      end
+
+      def visit_step_result(visitor)
+        visitor.visit_step_result(keyword, @step_match, @multiline_arg, @status, @exception, source_indent, @background)
       end
 
       def invoke(step_mother, options)
@@ -52,11 +56,11 @@ module Cucumber
         rescue Undefined => e
           failed(e, true)
           status!(:undefined)
-          @step_match = NoStepMatch.new(@step)
+          @step_match = NoStepMatch.new(@step, @name)
         rescue Ambiguous => e
           failed(e, false)
           status!(:failed)
-          @step_match = NoStepMatch.new(@step)
+          @step_match = NoStepMatch.new(@step, @name)
         end
         step_mother.step_visited(self)
       end
@@ -86,8 +90,12 @@ module Cucumber
         end
       end
 
+      def source_indent
+        @step.feature_element.source_indent(text_length)
+      end
+
       def text_length
-        @step.text_length
+        @step.text_length(@name)
       end
 
       def keyword

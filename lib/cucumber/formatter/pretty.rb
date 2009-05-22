@@ -76,6 +76,7 @@ module Cucumber
 
       def visit_feature_element(feature_element)
         @indent = 2
+        @scenario_indent = 2
         super
         @io.puts
         @io.flush
@@ -83,6 +84,7 @@ module Cucumber
 
       def visit_background(background)
         @indent = 2
+        @scenario_indent = 2
         @in_background = true
         super
         @in_background = nil
@@ -100,6 +102,7 @@ module Cucumber
         names[1..-1].each {|s| @io.puts "      #{s}" }
         @io.flush
         @indent = 6
+        @scenario_indent = 6
       end
 
       def visit_scenario_name(keyword, name, file_colon_line, source_indent)
@@ -107,8 +110,9 @@ module Cucumber
       end
 
       def visit_feature_element_name(keyword, name, file_colon_line, source_indent)
+        @io.puts if @scenario_indent == 6
         names = name.empty? ? [name] : name.split("\n")
-        line = "  #{keyword} #{names[0]}"
+        line = "#{keyword} #{names[0]}".indent(@scenario_indent)
         @io.print(line)
         if @options[:source]
           line_comment = " # #{file_colon_line}".indent(source_indent)
@@ -137,7 +141,7 @@ module Cucumber
       def visit_step_name(keyword, step_match, status, source_indent, background)
         source_indent = nil unless @options[:source]
         formatted_step_name = format_step(keyword, step_match, status, source_indent)
-        @io.puts("    " + formatted_step_name)
+        @io.puts(formatted_step_name.indent(@scenario_indent + 2))
       end
 
       def visit_multiline_arg(multiline_arg)

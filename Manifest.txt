@@ -245,6 +245,7 @@ features/cucumber_cli_diff_disabled.feature
 features/cucumber_cli_outlines.feature
 features/custom_formatter.feature
 features/exclude_files.feature
+features/expand.feature
 features/junit_formatter.feature
 features/multiline_names.feature
 features/rake_task.feature

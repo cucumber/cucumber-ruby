@@ -39,6 +39,10 @@ module Cucumber
     def keyword_hash(lang=@lang)
       LANGUAGES[lang]
     end
+
+    def scenario_keyword
+      keyword_hash['scenario'].split('|')[0] + ':'
+    end
     
     def alias_step_definitions(lang) #:nodoc:
       keywords = %w{given when then and but}.map{|keyword| keyword_hash(lang)[keyword].split('|')}

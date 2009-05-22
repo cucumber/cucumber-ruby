@@ -11,7 +11,7 @@ Fonctionnalité: Addition
     Lorsque je tape sur la touche "="
     Alors le résultat affiché doit être <somme>
 
-  Exemples:
-    | a | b | somme |
-    | 2 | 2 | 4     |
-    | 2 | 3 | 5     |
+    Exemples:
+      | a | b | somme |
+      | 2 | 2 | 4     |
+      | 2 | 3 | 5     |

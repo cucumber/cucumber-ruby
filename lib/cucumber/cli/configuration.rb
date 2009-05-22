@@ -152,6 +152,9 @@ module Cucumber
           opts.on("-g", "--guess", "Guess best match for Ambiguous steps.") do
             @options[:guess] = true
           end
+          opts.on("-x", "--expand", "Expand Scenario Outline Tables in output.") do
+            @options[:expand] = true
+          end
           opts.on("--no-diff", "Disable diff output on failing expectations.") do
             @options[:diff_enabled] = false
           end

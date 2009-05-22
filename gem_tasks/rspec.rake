@@ -27,10 +27,17 @@ if require_spec
     unable_to_load
   end
 
+  def undefine_task(*names)
+    app = Rake.application
+    tasks = app.instance_variable_get('@tasks')
+    names.flatten.each { |name| tasks.delete(name) }
+  end
+  undefine_task('spec') # Hoe 1.2.12 is broken - it defines a spec task that we can't tweak.
+
   desc "Run the Cucumber specs"
   Spec::Rake::SpecTask.new do |t|
-    t.spec_opts = ['--options', "specs/spec.opts"]
-    t.spec_files = FileList['specs/**/*_spec.rb']
+    t.spec_opts = ['--options', "spec/spec.opts"]
+    t.spec_files = FileList['spec/**/*_spec.rb']
     t.rcov = ENV['RCOV']
     t.rcov_opts = %w{--exclude osx\/objc,gems\/,spec\/}
     t.verbose = true

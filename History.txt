@@ -1,8 +1,20 @@
-== 0.3.7 (In Git)
+== 0.3.x (Git)
 
 === New Features
 * Rails generator creates a cucumber environment file to avoid potential cache_classes conflicts in test.rb (#165, Ben Mabey)
+
+== 0.3.7 2009-05-22
+
+This is the "Help JetBrains RubyMine" release!
+
+=== New Features
+* Added new Given alias for Catalan: Donat|Donada (Lleïr Borràs Metje)
+* New --expand option. This will print Scenario Outlines once for each Example row - with values expanded. (#327 Aslak Hellesøy)
 * You can override the formatter in Rails-generated rake tasks with the CUCUMBER_FORMAT environment variable (#335 Aslak Hellesøy)
+
+=== Bugfixes
+* 'specs' folder needs to be renamed back to 'spec' (#339 Aslak Hellesøy)
+* CUCUMBER_OPTS doesn't work for cucumber rake tasks (#336 Aslak Hellesøy)
 
 == 0.3.6 2009-05-20
 

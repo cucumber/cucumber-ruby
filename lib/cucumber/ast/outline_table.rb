@@ -10,7 +10,11 @@ module Cucumber
 
       def accept(visitor)
         cells_rows.each_with_index do |row, n|
-          visitor.visit_table_row(row)
+          if(visitor.options[:expand])
+            row.accept(visitor)
+          else
+            visitor.visit_table_row(row)
+          end
         end
         nil
       end
@@ -35,6 +39,10 @@ module Cucumber
         cells_rows[1..-1]
       end
 
+      def visit_scenario_name(visitor, row)
+        @scenario_outline.visit_scenario_name(visitor, row)
+      end
+
       class ExampleCells < Cells
         
         def create_step_invocations!(scenario_outline)
@@ -49,6 +57,10 @@ module Cucumber
         end
 
         def accept(visitor)
+          visitor.options[:expand] ? accept_expand(visitor) : accept_plain(visitor)
+        end
+
+        def accept_plain(visitor)
           if header?
             @cells.each do |cell|
               cell.status = :skipped_param
@@ -66,6 +78,20 @@ module Cucumber
               end
               
               visitor.visit_exception(@scenario_exception, :failed) if @scenario_exception
+            end
+          end
+        end
+
+        def accept_expand(visitor)
+          if header?
+          else
+            visitor.step_mother.before_and_after(self) do
+              @table.visit_scenario_name(visitor, self)
+              @step_invocations.each do |step_invocation|
+                step_invocation.invoke(visitor.step_mother, visitor.options)
+                @exception ||= step_invocation.exception
+                step_invocation.visit_step_result(visitor)
+              end
             end
           end
         end
@@ -99,8 +125,11 @@ module Cucumber
         end
 
         def backtrace_line
-          name = "| #{@cells.collect{|c| c.value }.join(' | ')} |"
           @scenario_outline.backtrace_line(name, line)
+        end
+
+        def name
+          "| #{@cells.collect{|c| c.value }.join(' | ')} |"
         end
 
         private

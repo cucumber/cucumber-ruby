@@ -62,12 +62,12 @@
   name: Catalan
   native: català
   encoding: UTF-8
-  background: Rerefons
+  background: Rerefons|Antecedents
   feature: Característica
   scenario: Escenari
   scenario_outline: Esquema de l\'escenari
   examples: Exemples
-  given: Donat
+  given: Donat|Donada
   when: Quan
   then: Aleshores
   and: I
