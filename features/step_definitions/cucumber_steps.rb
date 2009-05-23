@@ -79,7 +79,7 @@ Then /^"(.*)" should contain XML$/ do |file, xml|
 end
 
 Then /^"(.*)" should contain$/ do |file, text|
-  IO.read(file).should == text
+  strip_duration(IO.read(file)).should == text
 end
 
 Then /^"(.*)" should match$/ do |file, text|
@@ -87,7 +87,9 @@ Then /^"(.*)" should match$/ do |file, text|
 end
 
 Then /^"([^\"]*)" should have the same contents as "([^\"]*)"$/ do |actual_file, expected_file|
-  IO.read(actual_file).should == IO.read(expected_file)
+  actual = IO.read(actual_file)
+  actual = replace_duration(actual, '0m30.005s')
+  actual.should == IO.read(expected_file)
 end
 
 Then /^STDERR should match$/ do |text|

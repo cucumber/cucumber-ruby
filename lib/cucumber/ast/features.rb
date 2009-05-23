@@ -3,6 +3,8 @@ module Cucumber
     class Features
       include Enumerable
 
+      attr_reader :duration
+
       def initialize
         @features = []
       end
@@ -17,9 +19,11 @@ module Cucumber
       end
 
       def accept(visitor)
+        start = Time.now
         @features.each do |feature|
           visitor.visit_feature(feature)
         end
+        @duration = Time.now - start
       end
     end
   end

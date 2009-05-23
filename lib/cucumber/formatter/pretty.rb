@@ -24,7 +24,7 @@ module Cucumber
 
       def visit_features(features)
         super
-        print_summary unless @options[:autoformat]
+        print_summary(features) unless @options[:autoformat]
       end
 
       def visit_feature(feature)
@@ -178,8 +178,8 @@ module Cucumber
 
       private
 
-      def print_summary
-        print_counts
+      def print_summary(features)
+        print_stats(features)
         print_snippets(@options)
         print_passing_wip(@options)
       end

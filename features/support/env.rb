@@ -30,7 +30,20 @@ class CucumberWorld
   end
 
   private
-  attr_reader :last_exit_status, :last_stdout, :last_stderr
+  attr_reader :last_exit_status, :last_stderr
+
+  # The last standard out, with the duration line taken out (unpredictable)
+  def last_stdout
+    strip_duration(@last_stdout)
+  end
+
+  def strip_duration(s)
+    s.gsub(/^\d+m\d+\.\d+s\n/m, "")
+  end
+
+  def replace_duration(s, replacement)
+    s.gsub(/\d+m\d+\.\d+s/m, replacement)
+  end
 
   def create_file(file_name, file_content)
     file_content.gsub!("CUCUMBER_LIB", "'#{cucumber_lib_dir}'") # Some files, such as Rakefiles need to use the lib dir

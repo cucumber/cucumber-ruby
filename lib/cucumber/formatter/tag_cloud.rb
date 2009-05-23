@@ -10,14 +10,14 @@ module Cucumber
 
       def visit_features(features)
         super
-        print_summary
+        print_summary(features)
       end
 
       def visit_tag_name(tag_name)
         @counts[tag_name] += 1
       end
   
-      def print_summary
+      def print_summary(features)
         matrix = @counts.to_a.sort{|paira, pairb| paira[0] <=> pairb[0]}.transpose
         table = Cucumber::Ast::Table.new(matrix)
         Cucumber::Formatter::Pretty.new(@step_mother, @io, {}).visit_multiline_arg(table)

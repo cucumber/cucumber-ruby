@@ -5,11 +5,13 @@ rescue LoadError
   gem 'builder'
   require 'builder'
 end
+require 'cucumber/formatter/duration'
 
 module Cucumber
   module Formatter
     class Html < Ast::Visitor
       include ERB::Util # for the #h method
+      include Duration
 
       def initialize(step_mother, io, options)
         super(step_mother)
@@ -34,6 +36,7 @@ module Cucumber
           @builder.body do
             @builder.div(:class => 'cucumber') do
               super
+              @builder.div(format_duration(features.duration), :class => 'duration')
             end
           end
         end

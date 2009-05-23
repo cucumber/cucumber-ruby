@@ -1,6 +1,7 @@
 == 0.3.8 (Git)
 
 === New Features
+* Most formatters now report how long a run took (#228 Aslak Hellesøy)
 * Scenario and ExampleRow objects (passed to Before and After hooks) have #name and #line methods (#316 Aslak Hellesøy)
 * Rails generator creates a cucumber environment file to avoid potential cache_classes conflicts in test.rb (#165, Ben Mabey)
 

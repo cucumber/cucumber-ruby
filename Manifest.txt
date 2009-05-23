@@ -303,6 +303,7 @@ lib/cucumber/formatter/color_io.rb
 lib/cucumber/formatter/console.rb
 lib/cucumber/formatter/cucumber.css
 lib/cucumber/formatter/cucumber.sass
+lib/cucumber/formatter/duration.rb
 lib/cucumber/formatter/html.rb
 lib/cucumber/formatter/junit.rb
 lib/cucumber/formatter/pretty.rb
@@ -360,6 +361,7 @@ spec/cucumber/core_ext/proc_spec.rb
 spec/cucumber/core_ext/string_spec.rb
 spec/cucumber/formatter/ansicolor_spec.rb
 spec/cucumber/formatter/color_io_spec.rb
+spec/cucumber/formatter/duration_spec.rb
 spec/cucumber/formatter/html/cucumber.css
 spec/cucumber/formatter/html/cucumber.js
 spec/cucumber/formatter/html/index.html

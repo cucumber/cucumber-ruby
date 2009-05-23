@@ -27,7 +27,7 @@ module Cucumber
         end
       end
 
-      def print_summary
+      def print_summary(features)
         super
         @io.puts "\n\nTop #{NUMBER_OF_STEP_DEFINITONS_TO_SHOW} average slowest steps with #{NUMBER_OF_STEP_INVOCATIONS_TO_SHOW} slowest matches:\n"
 

@@ -15,7 +15,7 @@ module Cucumber
         super
         @io.puts
         @io.puts
-        print_summary
+        print_summary(features)
       end
 
       def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
@@ -30,10 +30,10 @@ module Cucumber
 
       private
 
-      def print_summary
+      def print_summary(features)
         print_steps(:pending)
         print_steps(:failed)
-        print_counts
+        print_stats(features)
         print_snippets(@options)
         print_passing_wip(@options)
       end

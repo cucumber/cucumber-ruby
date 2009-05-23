@@ -16,7 +16,7 @@ module Cucumber
 
       def visit_features(features)
         super
-        print_summary
+        print_summary(features)
       end
 
       def visit_step(step)
@@ -37,7 +37,7 @@ module Cucumber
         end
       end
 
-      def print_summary
+      def print_summary(features)
         sorted_defs = @step_definitions.keys.sort_by{|step_definition| step_definition.backtrace_line}
         
         sorted_defs.each do |step_definition|          

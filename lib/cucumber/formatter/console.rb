@@ -1,9 +1,12 @@
 require 'cucumber/formatter/ansicolor'
+require 'cucumber/formatter/duration'
 
 module Cucumber
   module Formatter
     module Console
       extend ANSIColor
+      include Duration
+      
       FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
 
       def format_step(keyword, step_match, status, source_indent)
@@ -50,12 +53,14 @@ module Cucumber
         end
       end
 
-      def print_counts
+      def print_stats(features)
         @io.print dump_count(step_mother.scenarios.length, "scenario")
         print_status_counts{|status| step_mother.scenarios(status)}
 
         @io.print dump_count(step_mother.steps.length, "step")
         print_status_counts{|status| step_mother.steps(status)}
+
+        @io.puts(format_duration(features.duration))
 
         @io.flush
       end
