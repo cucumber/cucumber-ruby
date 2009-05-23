@@ -29,7 +29,8 @@ module Cucumber
         attr_reader :args
         
         def initialize(libs, cucumber_opts, feature_files)
-          libs.reverse.each{|lib| $:.unshift(lib)}
+          raise "libs must be an Array when running in-process" unless Array === libs
+          libs.reverse.each{|lib| $LOAD_PATH.unshift(lib)}
           @args = (
             cucumber_opts + 
             feature_files
@@ -131,7 +132,7 @@ module Cucumber
         @rcov_opts = String === opts ? opts.split(' ') : opts
       end
 
-      # Whether or not to fork a new ruby interpreter. Defaults to false.
+      # Whether or not to fork a new ruby interpreter. Defaults to true.
       attr_accessor :fork
 
       # Define what profile to be used.  When used with cucumber_opts it is simply appended to it. Will be ignored when CUCUMBER_OPTS is used.
@@ -148,11 +149,11 @@ module Cucumber
       # Define Cucumber Rake task
       def initialize(task_name = "features", desc = "Run Features with Cucumber")
         @task_name, @desc = task_name, desc
+        @fork = true
         @libs = ['lib']
         @rcov_opts = %w{--rails --exclude osx\/objc,gems\/}
 
         yield self if block_given?
-        @fork = true if @rcov
 
         @feature_pattern = "features/**/*.feature" if feature_pattern.nil? && feature_list.nil?
         @step_pattern    = "features/**/*.rb"      if step_pattern.nil? && step_list.nil?

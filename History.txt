@@ -4,6 +4,12 @@
 * Scenario and ExampleRow objects (passed to Before and After hooks) have #name and #line methods (#316 Aslak Hellesøy)
 * Rails generator creates a cucumber environment file to avoid potential cache_classes conflicts in test.rb (#165, Ben Mabey)
 
+=== Removed/changed features
+* The fork/shell out feature of the Rake task from v0.3.4 defaults to false and must be turned on explicitly. (Aslak Hellesøy)
+
+=== Bugfixes
+* The differ= exception is gone (#325, #340 Aslak Hellesøy)
+
 == 0.3.7 2009-05-22
 
 This is the "Help JetBrains RubyMine" release!
