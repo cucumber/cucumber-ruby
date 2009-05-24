@@ -8,7 +8,7 @@
 * Rails generator creates a cucumber environment file to avoid potential cache_classes conflicts in test.rb (#165, Ben Mabey)
 
 === Removed/changed features
-* The fork/shell out feature of the Rake task from v0.3.4 defaults to false and must be turned on explicitly. (Aslak Hellesøy)
+* The Cucumber Rake task will again fork by default (as before 0.3.4). Forking must be turned off explicitly. (Aslak Hellesøy)
 
 === Bugfixes
 * The differ= exception is gone (#325, #340 Aslak Hellesøy)
