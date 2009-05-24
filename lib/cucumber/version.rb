@@ -6,5 +6,6 @@ module Cucumber #:nodoc:
     PATCH = 2 # Set to nil for official release
 
     STRING = [MAJOR, MINOR, TINY, PATCH].compact.join('.')
+    STABLE_STRING = [MAJOR, MINOR, TINY].join('.')
   end
 end
