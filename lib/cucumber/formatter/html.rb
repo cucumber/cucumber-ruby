@@ -169,12 +169,18 @@ module Cucumber
         cell_type = @outline_row == 0 ? :th : :td
         attributes = {:id => "#{@row_id}_#{@col_index}"}
         attributes[:class] = status if status
-        @builder.__send__(cell_type, value, attributes)
+        build_cell(cell_type, value, attributes)
         @col_index += 1
       end
-
+      
       def announce(announcement)
         @builder.pre(announcement, :class => 'announcement')
+      end
+
+      protected
+      
+      def build_cell(cell_type, value, attributes)
+        @builder.__send__(cell_type, value, attributes)
       end
 
       private
