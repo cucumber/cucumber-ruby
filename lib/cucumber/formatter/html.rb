@@ -183,8 +183,6 @@ module Cucumber
         @builder.__send__(cell_type, value, attributes)
       end
 
-      private
-
       def inline_css
         @builder.style(:type => 'text/css') do
           @builder.text!(File.read(File.dirname(__FILE__) + '/cucumber.css'))
@@ -194,6 +192,7 @@ module Cucumber
       def format_exception(exception)
         (["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n")
       end
+      
     end
   end
 end
