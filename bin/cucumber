@@ -3,6 +3,7 @@
 $:.unshift(File.dirname(__FILE__ + '.rb') + '/../lib') unless $:.include?(File.dirname(__FILE__ + '.rb') + '/../lib')
 
 require 'cucumber/cli/main'
+require 'cucumber/rspec_option_parser_detector'
 begin
   # The dup is to keep ARGV intact, so that tools like ruby-debug can respawn.
   failure = Cucumber::Cli::Main.execute(ARGV.dup)
