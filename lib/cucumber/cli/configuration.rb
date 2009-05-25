@@ -257,6 +257,7 @@ module Cucumber
         requires = @options[:require] || feature_dirs
         files = requires.map do |path|
           path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
+          path = path.gsub(/\/$/, '') # Strip trailing slash.
           File.directory?(path) ? Dir["#{path}/**/*.rb"] : path
         end.flatten.uniq
         sorted_files = files.sort { |a,b| (b =~ %r{/support/} || -1) <=>  (a =~ %r{/support/} || -1) }.reject{|f| f =~ /^http/}

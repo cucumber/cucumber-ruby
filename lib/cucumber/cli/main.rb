@@ -75,11 +75,12 @@ module Cucumber
       private
     
       def require_files
+        requires = configuration.files_to_require
         verbose_log("Ruby files required:")
-        configuration.files_to_require.each do |lib|
+        verbose_log(requires.map{|lib| "  * #{lib}"}.join("\n"))
+        requires.each do |lib|
           begin
             require lib
-            verbose_log("  * #{lib}")
           rescue LoadError => e
             e.message << "\nFailed to load #{lib}"
             raise e
