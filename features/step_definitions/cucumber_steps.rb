@@ -88,6 +88,8 @@ end
 
 Then /^"([^\"]*)" should have the same contents as "([^\"]*)"$/ do |actual_file, expected_file|
   actual = IO.read(actual_file)
+  # Comment out to replace expected file. Use with care! Remember to update duration afterwards.
+  # File.open(expected_file, "w"){|io| io.write(actual)}
   actual = replace_duration(actual, '0m30.005s')
   actual.should == IO.read(expected_file)
 end

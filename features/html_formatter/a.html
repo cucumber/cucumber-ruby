@@ -83,6 +83,7 @@
   <body>
     <div class="cucumber">
       <div class="feature">
+        <span class="tag">@background_tagged_before_on_outline</span>
         <h2>Feature: Background tagged Before on Outline</h2>
         <p>
         </p>
@@ -140,6 +141,7 @@ Then I should have '<span class="passed_param">10</span>' cukes              </d
         </div>
       </div>
       <div class="feature">
+        <span class="tag">@after_file</span>
         <h2>Feature: Failing background sample</h2>
         <p>
         </p>
@@ -442,7 +444,7 @@ Then I should have '&lt;count&gt;' cukes              </div>
               <td class="skipped" id="row_10_0">10</td>
             </tr>
             <tr>
-              <td class="failed" colspan="1">
+              <td colspan="1" class="failed">
                 <pre>
 FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
@@ -714,7 +716,7 @@ Given &lt;other_state&gt; without a table              </div>
               <td class="skipped" id="row_10_1">passing</td>
             </tr>
             <tr>
-              <td class="failed" colspan="2">
+              <td colspan="2" class="failed">
                 <pre>
 Undefined step: "missing without a table" (Cucumber::Undefined)
 features/outline_sample.feature:6:in `Given <state> without a table'                </pre>
@@ -729,7 +731,7 @@ features/outline_sample.feature:6:in `Given <state> without a table'            
               <td class="skipped" id="row_12_1">passing</td>
             </tr>
             <tr>
-              <td class="failed" colspan="2">
+              <td colspan="2" class="failed">
                 <pre>
 FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
@@ -752,10 +754,13 @@ features/outline_sample.feature:6:in `Given <state> without a table'            
         </div>
       </div>
       <div class="feature">
+        <span class="tag">@one</span>
         <h2>Feature: Sample</h2>
         <p>
         </p>
         <div class="scenario">
+          <span class="tag">@two</span>
+          <span class="tag">@three</span>
           <h3>Scenario: Missing</h3>
           <ol>
             <li class="step undefined" id="features_sample_feature_6">
@@ -767,6 +772,7 @@ features/sample.feature:6:in `Given missing'</pre>
           </ol>
         </div>
         <div class="scenario">
+          <span class="tag">@three</span>
           <h3>Scenario: Passing</h3>
           <ol>
             <li class="step passed" id="features_sample_feature_10">
@@ -786,6 +792,7 @@ Given passing              </div>
           </ol>
         </div>
         <div class="scenario">
+          <span class="tag">@four</span>
           <h3>Scenario: Failing</h3>
           <ol>
             <li class="step failed" id="features_sample_feature_16">
@@ -857,7 +864,7 @@ Given &lt;state&gt; without a table              </div>
               <td class="failed" id="row_16_0">failing</td>
             </tr>
             <tr>
-              <td class="failed" colspan="1">
+              <td colspan="1" class="failed">
                 <pre>
 FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
@@ -911,7 +918,7 @@ Given &lt;state&gt; without a table              </div>
               <td class="failed" id="row_32_0">failing</td>
             </tr>
             <tr>
-              <td class="failed" colspan="1">
+              <td colspan="1" class="failed">
                 <pre>
 FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
@@ -923,6 +930,7 @@ features/search_sample.feature:25:in `Given <state> without a table'            
         </div>
       </div>
       <div class="feature">
+        <span class="tag">@lots</span>
         <h2>Feature: Tons of cukes</h2>
         <p>
         </p>
