@@ -48,6 +48,10 @@ module Cucumber
         end
       end
 
+      def visit_tag_name(tag_name)
+        @builder.span("@#{tag_name}", :class => 'tag')
+      end
+
       def visit_feature_name(name)
         lines = name.split(/\r?\n/)
         @builder.h2(lines[0])
