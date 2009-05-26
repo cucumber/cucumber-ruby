@@ -326,7 +326,7 @@ lib/cucumber/platform.rb
 lib/cucumber/rails/rspec.rb
 lib/cucumber/rails/world.rb
 lib/cucumber/rake/task.rb
-lib/cucumber/rspec_option_parser_detector.rb
+lib/cucumber/rspec_neuter.rb
 lib/cucumber/step_definition.rb
 lib/cucumber/step_match.rb
 lib/cucumber/step_mother.rb
