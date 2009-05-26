@@ -1,15 +1,19 @@
 == 0.3.8 (Git)
 
+This Cucumber version fixes several bugs related to Ruby on Rails and RSpec. If you
+use Cucumber with a Rails app we *strongly* recommend you bootstrap Cucumber again:
+
+  ruby script/generate cucumber
+
 === New Features
 * Rails cucumber generator sets up default gem dependencies in cucumber environment.
-* Better error if RSpec's option parser is "accidentally" loaded. (Aslak Hellesøy)
 * The duration of a run is reported by formatters - same format as the Linux time command (#228 Aslak Hellesøy)
 * Scenario and ExampleRow objects (passed to Before and After hooks) have #name and #line methods (#316 Aslak Hellesøy)
 * Rails generator creates a cucumber environment file to avoid potential cache_classes conflicts in test.rb (#165, Ben Mabey)
 * HTML formatter renders @tags (but the CSS is still ugly)
 
 === Removed/changed features
-* The Cucumber Rake task will again fork by default (as before 0.3.4). Forking must be turned off explicitly. (Aslak Hellesøy)
+* The Cucumber Rake task will again fork by default (as 0.3.3 and earlier). Forking must be turned off explicitly. (Aslak Hellesøy)
 
 === Bugfixes
 * Better coexistence with RSpec - Cucumber now *neuters* the part of RSpec that tries to parse ARGV.
