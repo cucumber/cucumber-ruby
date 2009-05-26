@@ -6,6 +6,13 @@
 
   <target name="cucumber" depends="compile" description="Run Cucumber">
     <property environment="ENV" />
+    <fail unless="ENV.JRUBY_HOME">
+      (::) ERROR (::)
+      Define JRUBY_HOME in your shell. For example:
+      
+      export JRUBY_HOME=/usr/local/jruby
+      set JRUBY_HOME=C:\jruby
+    </fail>
     <java classname="org.jruby.Main" fork="true" failonerror="true">
       <classpath>
         <pathelement path="${ENV.JRUBY_HOME}/lib/jruby.jar"/>
