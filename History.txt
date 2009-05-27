@@ -2,6 +2,7 @@
 
 === Bugfixes
 * RSpec's be_* matchers did not work in 0.3.9 and probably earlier versions. Now they do. (Aslak Hellesøy)
+* The Rails cucumber environment won't declare gem dependencies if the plugin exists. (Aslak Hellesøy)
 
 == 0.3.9 2009-05-27
 
