@@ -123,10 +123,7 @@ module Cucumber
         @step_matches << step_match
 
         unless @skip_step
-          step_name = step_match.format_args(lambda{|param| "<span class=\"#{status}_param\">#{param}</span>"})
-          @builder.div do |div|
-            div << h("#{keyword} #{step_name}").gsub(/&lt;span class=&quot;(.*?)&quot;&gt;/, '<span class="\1">').gsub(/&lt;\/span&gt;/, '</span>')
-          end
+          build_step(keyword, step_match, status)
         end
       end
 
@@ -182,6 +179,13 @@ module Cucumber
       end
 
       protected
+      
+      def build_step(keyword, step_match, status)
+        step_name = step_match.format_args(lambda{|param| %{<span class="#{status}_param">#{param}</span>}})
+        @builder.div do |div|
+          div << h("#{keyword} #{step_name}").gsub(/&lt;span class=&quot;(.*?)&quot;&gt;/, '<span class="\1">').gsub(/&lt;\/span&gt;/, '</span>')
+        end
+      end
       
       def build_cell(cell_type, value, attributes)
         @builder.__send__(cell_type, value, attributes)
