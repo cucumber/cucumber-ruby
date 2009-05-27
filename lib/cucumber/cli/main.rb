@@ -10,6 +10,10 @@ module Cucumber
   module Cli
     class Main
       class << self
+        def step_mother
+          @step_mother
+        end
+
         def step_mother=(step_mother)
           @step_mother = step_mother
           @step_mother.extend(StepMother)
@@ -72,15 +76,23 @@ module Cucumber
         @configuration
       end
 
+      def load_files
+        each_lib{|lib| load(lib)}
+      end
+
       private
-    
+
       def require_files
+        each_lib{|lib| require lib}
+      end
+
+      def each_lib
         requires = configuration.files_to_require
         verbose_log("Ruby files required:")
         verbose_log(requires.map{|lib| "  * #{lib}"}.join("\n"))
         requires.each do |lib|
           begin
-            require lib
+            yield lib
           rescue LoadError => e
             e.message << "\nFailed to load #{lib}"
             raise e
