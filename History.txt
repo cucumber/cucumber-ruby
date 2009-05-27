@@ -1,6 +1,10 @@
-== 0.3.9 (In Git)
+== 0.3.9 2009-05-27
+
+Bugfix release for 0.3.8 released earlier today. 0.3.8 had a bug in the Rails cucumber
+generator which is fixed in 0.3.9.
 
 === Bugfixes
+* Fix broken Rails cucumber generator (Tim Glen)
 * The Cucumber Rake task in non-fork mode will properly cause Rake to exit with 1 when Cucumber fails. (Aslak Hellesøy)
 
 == 0.3.8 2009-05-27

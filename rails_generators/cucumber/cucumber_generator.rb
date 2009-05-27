@@ -1,4 +1,5 @@
 require 'rbconfig'
+require 'cucumber/version'
 
 # This generator bootstraps a Rails project for use with Cucumber
 class CucumberGenerator < Rails::Generator::Base
@@ -11,7 +12,9 @@ class CucumberGenerator < Rails::Generator::Base
     record do |m|
       m.directory 'features/step_definitions'
       m.template  'webrat_steps.rb', 'features/step_definitions/webrat_steps.rb'
-      m.template  'cucumber_environment.rb', 'config/environments/cucumber.rb'
+      m.template  'cucumber_environment.rb', 'config/environments/cucumber.rb',
+        :assigns => { :cucumber_version => ::Cucumber::VERSION::STRING }
+
       m.gsub_file 'config/database.yml', /test:.*\n/, "test: &TEST\n"
       m.gsub_file 'config/database.yml', /\z/, "\ncucumber:\n  <<: *TEST"
 
