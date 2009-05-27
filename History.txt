@@ -1,8 +1,11 @@
 == 0.3.10 (In Git)
 
+This release has some minor bugfixes related to RSpec and Rails interop.
+
 === Bugfixes
 * RSpec's be_* matchers did not work in 0.3.9 and probably earlier versions. Now they do. (Aslak Hellesøy)
 * The Rails cucumber environment won't declare gem dependencies if the plugin exists. (Aslak Hellesøy)
+* The Rails cucumber generator will no longer declare gem dependencies on rspec if you use --testunit. (Aslak Hellesøy)
 
 == 0.3.9 2009-05-27
 
