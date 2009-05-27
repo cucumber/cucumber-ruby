@@ -1,4 +1,4 @@
-== 0.3.8 (Git)
+== 0.3.8 2009-05-27
 
 This Cucumber version fixes several bugs related to Ruby on Rails and RSpec. If you
 use Cucumber with a Rails app we *strongly* recommend you bootstrap Cucumber again:
