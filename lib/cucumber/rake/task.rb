@@ -39,7 +39,8 @@ module Cucumber
         
         def run
           require 'cucumber/cli/main'
-          Cucumber::Cli::Main.execute(args)
+          failure = Cucumber::Cli::Main.execute(args)
+          raise "Cucumber failed" if failure
         end
       end
       

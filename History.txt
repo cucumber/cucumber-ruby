@@ -1,3 +1,8 @@
+== 0.3.9 (In Git)
+
+=== Bugfixes
+* The Cucumber Rake task in non-fork mode will properly cause Rake to exit with 1 when Cucumber fails. (Aslak Hellesøy)
+
 == 0.3.8 2009-05-27
 
 This Cucumber version fixes several bugs related to Ruby on Rails and RSpec. If you
