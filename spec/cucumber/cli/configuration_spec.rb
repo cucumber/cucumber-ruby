@@ -156,7 +156,7 @@ END_OF_MESSAGE
       expected_error_message = /cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage./
 
       given_cucumber_yml_defined_as("input that causes an exception in YAML loading")
-      YAML.should_receive(:load).and_raise Exception
+      YAML.should_receive(:load).and_raise ArgumentError
 
       config = Configuration.new(StringIO.new, error = StringIO.new)
       lambda{config.parse!([])}.should raise_error(expected_error_message)

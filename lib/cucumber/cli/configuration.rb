@@ -346,7 +346,7 @@ Defined profiles in cucumber.yml:
         require 'yaml'
         begin
           @cucumber_yml = YAML::load(IO.read('cucumber.yml'))
-        rescue Exception => e
+        rescue StandardError => e
           raise(YmlLoadError,"cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage.\n")
         end
 
