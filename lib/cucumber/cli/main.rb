@@ -5,6 +5,7 @@ require 'cucumber/parser'
 require 'cucumber/formatter/color_io'
 require 'cucumber/cli/language_help_formatter'
 require 'cucumber/cli/configuration'
+require 'cucumber/cli/drb_client'
 
 module Cucumber
   module Cli
@@ -27,11 +28,14 @@ module Cucumber
 
       def initialize(args, out_stream = STDOUT, error_stream = STDERR)
         @args         = args
-        @out_stream   = out_stream == STDOUT ? Formatter::ColorIO.new : out_stream
+        @out_stream   = out_stream #== STDOUT ? Formatter::ColorIO.new : out_stream
         @error_stream = error_stream
       end
       
       def execute!(step_mother)
+        if configuration.drb?
+          return DrbClient.run(@args, @error_stream, @out_stream)
+        end
         configuration.load_language
         step_mother.options = configuration.options
 

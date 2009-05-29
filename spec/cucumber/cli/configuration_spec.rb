@@ -83,6 +83,38 @@ module Cli
       end
     end
 
+    describe '#drb?' do
+      it "indicates whether the --drb flag was passed in or not" do
+        config = Configuration.new(StringIO.new)
+
+        config.parse!(%w{features})
+        config.drb?.should == false
+
+
+        config.parse!(%w{features --drb})
+        config.drb?.should == true
+      end
+    end
+
+    context '--drb' do
+      it "removes the --drb flag from the args" do
+        config = Configuration.new(StringIO.new)
+
+        args = %w{features --drb}
+        config.parse!(args)
+        args.should == %w{features}
+      end
+
+      it "keeps all other flags intact" do
+        config = Configuration.new(StringIO.new)
+
+        args = %w{features --drb --format profile}
+        config.parse!(args)
+        args.should == %w{features --format profile}
+      end
+
+    end
+
     it "should expand args from YAML file" do
       given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})
 

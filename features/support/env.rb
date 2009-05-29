@@ -52,6 +52,10 @@ class CucumberWorld
     end
   end
 
+  def background_jobs
+    @background_jobs ||= []
+  end
+
   def in_current_dir(&block)
     Dir.chdir(@current_dir, &block)
   end

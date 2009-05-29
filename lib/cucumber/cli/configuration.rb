@@ -13,6 +13,7 @@ module Cucumber
         'junit'    => 'Cucumber::Formatter::Junit'
       }
       DEFAULT_FORMAT = 'pretty'
+      DRB_FLAG = '--drb'
 
       attr_reader :paths
       attr_reader :options
@@ -29,6 +30,7 @@ module Cucumber
 
       def parse!(args)
         @args = args
+        return if parse_drb
         return parse_args_from_profile('default') if @args.empty?
         @args.extend(::OptionParser::Arguable)
 
@@ -158,6 +160,9 @@ module Cucumber
           opts.on("--no-diff", "Disable diff output on failing expectations.") do
             @options[:diff_enabled] = false
           end
+          opts.on(DRB_FLAG, "Run features against a DRb server. (i.e. with the spork gem)") do
+            # Processing of this is done previsouly in order to short circuit args from being lost.
+          end
           opts.on_tail("--version", "Show version.") do
             @out_stream.puts VERSION::STRING
             Kernel.exit
@@ -197,6 +202,10 @@ module Cucumber
 
       def diff_enabled?
         @options[:diff_enabled]
+      end
+
+      def drb?
+        @drb
       end
 
       def load_language
@@ -368,6 +377,10 @@ Defined profiles in cucumber.yml:
       def list_languages_and_exit
         LanguageHelpFormatter.list_languages(@out_stream)
         Kernel.exit
+      end
+
+      def parse_drb
+        @drb = @args.delete(DRB_FLAG) ? true : false
       end
 
       def default_options

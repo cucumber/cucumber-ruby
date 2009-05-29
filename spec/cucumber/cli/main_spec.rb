@@ -46,7 +46,7 @@ module Cucumber
       describe "diffing" do
 
         before :each do
-          @configuration = mock('Configuration', :null_object => true)
+          @configuration = mock('Configuration', :null_object => true, :drb? => false)
           Configuration.should_receive(:new).and_return(@configuration)
 
           @step_mother = mock('StepMother', :null_object => true)
@@ -92,6 +92,39 @@ module Cucumber
 
         end
       end
+
+      context "--drb" do
+        before(:each) do
+          @configuration = mock('Configuration', :drb? => true, :null_object => true)
+          Configuration.stub!(:new).and_return(@configuration)
+          @error_stream = mock('standard error')
+
+          @args = ['features']
+
+          @cli = Main.new(@args, @out, @error_stream)
+          @step_mother = mock('StepMother', :null_object => true)
+        end
+
+        it "delegates the execution to the DRB client passing the args and streams" do
+          DrbClient.should_receive(:run).with(@args, @out, @error_stream).and_return(true)
+
+          @cli.execute!(@step_mother)
+        end
+
+        it "ceases execution if the DrbClient is able to perform the execution" do
+          DrbClient.stub!(:run).and_return(true)
+          @configuration.should_not_receive(:load_language)
+
+          @cli.execute!(@step_mother)
+        end
+
+        context "when the DrbClient is unable to perfrom the execution" do
+          it "alerts the user that execution will be performed locally"
+          it "proceeds with the execution locally"
+        end
+
+      end
+
     end
   end
 end
