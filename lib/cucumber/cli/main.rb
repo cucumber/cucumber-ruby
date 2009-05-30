@@ -34,7 +34,7 @@ module Cucumber
       
       def execute!(step_mother)
         if configuration.drb?
-          return DrbClient.run(@args, @error_stream, @out_stream)
+          return false if DrbClient.run(@args, @error_stream, @out_stream)
         end
         configuration.load_language
         step_mother.options = configuration.options
