@@ -28,12 +28,22 @@ Feature: DRb Server Integration
         Scenario: this is a test
           Given I am just testing stuff
       """
+    And a file named "features/step_definitions/all_your_steps_are_belong_to_us.rb" with:
+    """
+    Given /^I am just testing stuff$/ do
+      # no-op
+    end
+    """
 
   Scenario: Feature Run with --drb flag
     Given I am running "spork cuc" in the background
 
     When I run cucumber features/sample.feature --drb
     Then it should pass
+    And the output should contain
+      """
+      1 step (1 passed)
+      """
     And the output should contain
       """
       I'm loading the stuff just for this run...
