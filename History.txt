@@ -8,7 +8,7 @@ This release has some minor bugfixes related to RSpec and Rails interop.
 * The Rails cucumber generator will no longer declare gem dependencies on rspec if you use --testunit. (Aslak Hellesøy)
 
 === Changed features
-* The HTML formatter wraps examples in a div, and distinguishes between Scenario and Scenario Outline.
+* The HTML formatter wraps examples in a div, and distinguishes between Scenario and Scenario Outline. (Aslak Hellesøy)
 
 == 0.3.9 2009-05-27
 
