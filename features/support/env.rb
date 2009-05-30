@@ -70,6 +70,27 @@ class CucumberWorld
     @last_stderr = IO.read(stderr_file.path)
   end
 
+  def run_in_background(command)
+    pid = fork
+    in_current_dir do
+      if pid
+        background_jobs << pid
+      else
+        #STDOUT.close
+        #STDERR.close
+        exec command
+      end
+    end
+  end
+
+  def terminate_background_jobs
+    if @background_jobs
+      @background_jobs.each do |pid|
+        Process.kill(Signal.list['TERM'], pid)
+      end
+    end
+  end
+
 end
 
 World do
@@ -79,6 +100,10 @@ end
 Before do
   FileUtils.rm_rf CucumberWorld.working_dir
   FileUtils.mkdir CucumberWorld.working_dir
+end
+
+After do
+  terminate_background_jobs
 end
 
 Before('@diffxml') do

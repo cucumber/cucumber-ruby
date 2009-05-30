@@ -32,14 +32,7 @@ Given /^the following profiles? (?:are|is) defined:$/ do |profiles|
 end
 
 Given /^I am running "([^\"]*)" in the background$/ do |command|
-  pid = fork
-  if pid
-    background_jobs << pid
-  else
-    #STDOUT.close
-    #STDERR.close
-    exec command
-  end
+  run_in_background command
 end
 
 When /^I run cucumber (.*)$/ do |cucumber_opts|
