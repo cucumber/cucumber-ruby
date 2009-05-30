@@ -3,6 +3,11 @@ require 'tempfile'
 require 'spec/expectations'
 require 'fileutils'
 require 'forwardable'
+begin
+  gem "spork", ">= 0.4.0", :lib => false
+rescue Gem::LoadError => ex
+  warn "WARNING: #{ex.message}You need to have the spork gem installed to run the DRb feature properly!"
+end
 
 class CucumberWorld
   extend Forwardable
