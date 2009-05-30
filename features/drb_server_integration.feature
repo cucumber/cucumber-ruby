@@ -29,7 +29,7 @@ Feature: DRb Server Integration
           Given I am just testing stuff
       """
 
-  Scenario: Basic Feature Run
+  Scenario: Feature Run with --drb flag
     Given I am running "spork cuc" in the background
 
     When I run cucumber features/sample.feature --drb
@@ -41,4 +41,19 @@ Feature: DRb Server Integration
     And the output should not contain
       """
       I'm loading all the heavy stuff...
+      """
+
+
+  Scenario: Feature Run with --drb flag with no DRb server running
+            Cucumber will fall back on running the features locally in this case.
+
+    Given I am not running a DRb server in the background
+
+    When I run cucumber features/sample.feature --drb
+    Then it should pass
+    And the output should contain
+      """
+      No DRb server is running. Running features locally:
+      I'm loading all the heavy stuff...
+      I'm loading the stuff just for this run...
       """

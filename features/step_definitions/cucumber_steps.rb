@@ -35,6 +35,11 @@ Given /^I am running "([^\"]*)" in the background$/ do |command|
   run_in_background command
 end
 
+Given /^I am not running (?:.*) in the background$/ do
+  # no-op
+end
+
+
 When /^I run cucumber (.*)$/ do |cucumber_opts|
   run "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} --no-color #{cucumber_opts}"
 end

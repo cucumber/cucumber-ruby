@@ -13,7 +13,6 @@ module Cucumber
           feature_server.run(args, error_stream, out_stream)
           true
         rescue DRb::DRbConnError
-          options.error_stream.puts "No server is running"
           false
         end
       end
