@@ -34,7 +34,7 @@ module Cucumber
       
       def execute!(step_mother)
         if configuration.drb?
-          if DrbClient.run(@args, @error_stream, @out_stream)
+          if DRbClient.run(@args, @error_stream, @out_stream)
             return false
           else
             @out_stream.puts "No DRb server is running. Running features locally:"

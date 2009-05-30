@@ -4,7 +4,7 @@ require "drb/drb"
 module Cucumber
   module Cli
     # Runs features on a DRB server, originally created with Spork compatibility in mind.
-    class DrbClient
+    class DRbClient
       def self.run(args, error_stream, out_stream)
         begin
           # See http://redmine.ruby-lang.org/issues/show/496 as to why we specify localhost:0
