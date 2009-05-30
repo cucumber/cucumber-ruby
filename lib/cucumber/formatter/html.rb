@@ -75,7 +75,11 @@ module Cucumber
       end
 
       def visit_feature_element(feature_element)
-        @builder.div(:class => 'scenario') do
+        css_class = {
+          Ast::Scenario        => 'scenario',
+          Ast::ScenarioOutline => 'scenario outline'
+        }[feature_element.class]
+        @builder.div(:class => css_class) do
           super
         end
         @open_step_list = true
@@ -92,6 +96,12 @@ module Cucumber
           super(outline_table)
         end
         @outline_row = nil
+      end
+
+      def visit_examples(examples)
+        @builder.div(:class => 'examples') do
+          super(examples)
+        end
       end
 
       def visit_examples_name(keyword, name)

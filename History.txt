@@ -7,6 +7,9 @@ This release has some minor bugfixes related to RSpec and Rails interop.
 * The Rails cucumber environment won't declare gem dependencies if the plugin exists. (Aslak Hellesøy)
 * The Rails cucumber generator will no longer declare gem dependencies on rspec if you use --testunit. (Aslak Hellesøy)
 
+=== Changed features
+* The HTML formatter wraps examples in a div, and distinguishes between Scenario and Scenario Outline.
+
 == 0.3.9 2009-05-27
 
 Bugfix release for 0.3.8 released earlier today. 0.3.8 had a bug in the Rails cucumber
