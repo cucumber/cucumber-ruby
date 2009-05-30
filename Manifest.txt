@@ -20,6 +20,7 @@
 .git/logs/refs/heads/aslakhellesoy/logos
 .git/logs/refs/heads/aslakhellesoy/master
 .git/logs/refs/heads/drb_server
+.git/logs/refs/heads/drb_server_exit_code
 .git/logs/refs/heads/master
 .git/logs/refs/remotes/aslakhellesoy/ast
 .git/logs/refs/remotes/aslakhellesoy/background
@@ -27,6 +28,7 @@
 .git/logs/refs/remotes/aslakhellesoy/master
 .git/logs/refs/remotes/aslakhellesoy/v0.1.x
 .git/logs/refs/remotes/origin/HEAD
+.git/logs/refs/remotes/origin/drb_server
 .git/logs/refs/remotes/origin/master
 .git/logs/refs/stash
 .git/objects/00/04d8e40728960dd5b762771fbb5d3806cdf975
@@ -75,6 +77,7 @@
 .git/objects/0a/b404e2ffc1ebfabbf8c6711abcd9f4de4942da
 .git/objects/0a/c6b602f008b7f6bc9f83d395b31a7afd045220
 .git/objects/0a/c83393523a22d19554e6f02e910fbb54a1310b
+.git/objects/0a/c885628eb003ed6c5d1dc3b6e5133ea873fa6c
 .git/objects/0b/28aa389b10704e21e72883792bded4eb8fb6e8
 .git/objects/0b/9f75e60be946184d1e391416fb44562580d31e
 .git/objects/0b/d525e79f0a831d07ed0cabde15e0ab9812fe18
@@ -100,6 +103,7 @@
 .git/objects/10/63342d76589d06fab4f623fa5e5a7fb48ab38e
 .git/objects/10/7b9ea349f419ce2cf2cae2e0e85af4dbcb301f
 .git/objects/10/db60c50fa7a98085ef0b86c5c0845289b3d025
+.git/objects/11/03bc8ea18e8dfa8837f67cbfd0ff36009af122
 .git/objects/11/0c34a3e54e58c23c1206a6c9709af4afd6000e
 .git/objects/11/914d42f88458ac7bfb346bd11cdf43e958f644
 .git/objects/11/97e94533ae06d0e95a2e3c3ae6a3b275d68c9a
@@ -141,6 +145,7 @@
 .git/objects/1a/0a06a8be7dd0e6ae3a308c73b08918019dd69a
 .git/objects/1a/3fc27d030968b2e5bc944cd55e238baa78659b
 .git/objects/1a/447f26da422535285d3352f264a89f9c2e5d22
+.git/objects/1a/48df2d53a873ef27b26272e1ac4758442622d8
 .git/objects/1a/6cc1682fe97f80d6a063c7a324ea64f80d416f
 .git/objects/1a/7b05f3e396a26e8c818866f98f192c2f645fe8
 .git/objects/1a/85a50e913a58b15273855208a1dadc6af1946a
@@ -233,6 +238,7 @@
 .git/objects/2b/e6f012f670e5a54e653afe5637264b6c8207c4
 .git/objects/2c/5bf90855e8385dae4a16aedfa0c4e351fba29f
 .git/objects/2c/6a59f16143422ef6864379f4d3385d07a2fe6d
+.git/objects/2d/724bf00d0101f45c7bfae874794d0e2622005d
 .git/objects/2e/02791103ffe8a42eb329e1d9c30ac72c198a06
 .git/objects/2e/04ce00d52283c066dd57284753881a331c0c61
 .git/objects/2e/0d75edf6701e40bd0ce47223c9d2463c43225b
@@ -245,6 +251,7 @@
 .git/objects/2f/3f34dd9cfe88afaaa48559219f27e53d3c5fd7
 .git/objects/2f/44927e929c8ae1f68316f550bf39c99b563b96
 .git/objects/2f/91ddf29e680401636bda5f210c2bd3a9ac57c4
+.git/objects/2f/a4d47cfaef6ce7c86876873a092f17ed75a72b
 .git/objects/2f/ca15588254b72c585060cf5670651daba95d8a
 .git/objects/30/10169227f7bc03a836e4dd5f7dbad0da10044f
 .git/objects/30/6998d903bbb6301115dd44f7655555ef68f99a
@@ -270,6 +277,7 @@
 .git/objects/33/8fe5004fe79f1bf082fd4475c89dbf4f5d7afc
 .git/objects/33/9e661df59dc06b9347ff3c8aac053e2b74b49b
 .git/objects/33/d69c01a761799c30e75c6ef7d694d27dd3c045
+.git/objects/35/0c80d3141fcc7238a9de3f16c5f2bf90ed77c1
 .git/objects/35/0eefc04683096d7e72c15d7d27c930eeae4c47
 .git/objects/35/384e27865fd25a2a9e18aed5835415229c8ecf
 .git/objects/35/d836b8cf4ac8f20e8d46a51660f3df0b806d31
@@ -347,7 +355,10 @@
 .git/objects/47/0108d3dfc55c084af5689b00430cefd77b0eee
 .git/objects/47/61d7a5385166b4703ce694beac3eda93971f23
 .git/objects/47/6e17b148ea047bf798d1f736d1d6d03774c52b
+.git/objects/47/8eaf81c06ad9c9d2e717e7ed15744822c8ce8b
 .git/objects/47/e1f9b7b66fd2a528bb5b346e7c8e58ad0f4323
+.git/objects/48/853122eea23c55a97752fe518cede9e89321fa
+.git/objects/49/97f12fc89a1c113eaa2cbebcdec4129129b13e
 .git/objects/4a/3c6b0307c4e0fe35cea4b56fd853bb4ca545a8
 .git/objects/4a/53d879058fafcfbd9f0f7d25e10b8ea91df81c
 .git/objects/4a/b377ba0b6c7c186a912b0ff6ee59945654987c
@@ -382,6 +393,7 @@
 .git/objects/51/9f219a0b6dc02b09b0e296e4b5f59651397a4d
 .git/objects/51/bb017078da2bec19a283f3541e4341e64c20e6
 .git/objects/52/b6751abc84593f7baacfedf2119e89f5284c52
+.git/objects/52/b7b63e8b19d0d8808d0c451ccc30bf058f8563
 .git/objects/52/e8b8baf048152f4edffb09cdebfa6524eca282
 .git/objects/53/0981c43f3311a1ccff85d5b7ee3ad4a1db1890
 .git/objects/53/3a9568b64cfc08c495a698b88ded6cac9fe460
@@ -412,7 +424,9 @@
 .git/objects/57/6b11a57c918ba66e1ee186faccf50acb00ffa8
 .git/objects/57/bd26fe3300ec0ee98bc7d4c96f0d14b3450254
 .git/objects/58/0573421cb2d348f59151711c30292bfdd9eb7d
+.git/objects/58/2d09b819a68ace2148a437da4890e3e22a9c0b
 .git/objects/58/2dfd7998a0dcdf94ce4c393c2555496dd5d185
+.git/objects/58/b06764ac2e2e4b1f6f1a362e93bc57295e1a3d
 .git/objects/58/be801bab59885fcb815136e5370e572aa2f5bb
 .git/objects/58/d5281fc6ebc0fc999a376af22b62d18dcfb126
 .git/objects/59/5a86baf55cf9e0c7ba45536946c960c672d632
@@ -426,6 +440,7 @@
 .git/objects/5c/3e527dcce28d2bf4e3173b136408ac72403b7e
 .git/objects/5c/7960911c939be1eec4dd95163ed1e03cc29ec1
 .git/objects/5c/87a05249f486e05744303e5440777667ccc259
+.git/objects/5d/4db68b5d5cdacd2d9aea9674eb1dbd4cd5a097
 .git/objects/5d/95d52aa81dfeda4a19e24bf5d36720876971fd
 .git/objects/5d/d3ba85b4d2dfbe7deab667c340b37be3e26d3c
 .git/objects/5d/e0d8caa6740bca9392520b0d09ad1944376745
@@ -437,6 +452,7 @@
 .git/objects/5f/ba7a17c3e67196eab2650fc518e34c6e1ce2ac
 .git/objects/5f/d4b30f0cfd9b7d98f502bf9aba5c8b8d107f70
 .git/objects/5f/e6e9f4b7343aab9f4c9d1bbd3b197b35ee2ea4
+.git/objects/5f/f9cd29c215c4b2f0fdd369be3c0d384bb3f45e
 .git/objects/60/64afd48bb69aa62e81a1cdb36b9f0491a972a4
 .git/objects/60/69ba2d4f229fa7811ffc1ff1543ea8aefc6c76
 .git/objects/60/744f77950520df3bd92ef293efba3ac2ad9092
@@ -516,6 +532,7 @@
 .git/objects/71/b4fc96388210a00e79768fdf38947826adb5cc
 .git/objects/72/784cb99950642d6d2632443cf0530b54af8556
 .git/objects/72/824708701841cf6f09454d7dc119d37f1f0772
+.git/objects/73/17ff3233b75863059f56822f83a5ea65d9d4c5
 .git/objects/73/1887aa820e9bde8c60a035564b9f0b99d51f6c
 .git/objects/73/2cb06cef51d57c3c0d202e27c6fbd1ad593134
 .git/objects/73/5df029f40bc7205a103bdefae4970d6adcf778
@@ -606,6 +623,7 @@
 .git/objects/86/05012950ab98299cb367cd1be3493b14c3f37c
 .git/objects/86/59628852c935b4994b5df97b9160110a9ad426
 .git/objects/86/a3e4baa309950cb8e29727beec90b806db22ae
+.git/objects/86/e7c3cdb5bc673ca01cd19a0ae062fad0362011
 .git/objects/87/23aaee70e3b547ecb15f566a78a201cc519713
 .git/objects/87/44327b70d92448170d973a8639879c543b05f9
 .git/objects/87/4abfc02709d7bfc597cd8e1a2af2a7389f3bd6
@@ -623,6 +641,7 @@
 .git/objects/88/763940918267025cb6512c1ab2d2e43faf3add
 .git/objects/88/8b09575a192cd1e77c108e9df8f8b663396d37
 .git/objects/88/ce9641b852e67cad1489f121930290637c0218
+.git/objects/89/256a304448793adf78f5992781ea2b002909f0
 .git/objects/89/5388b74ee7023adf4c50d9091f2a81db24c08a
 .git/objects/89/88fa25b30727c85fb090b7076416092386afe7
 .git/objects/89/915f2bfd9b030bc31bb9ce9d94b3078c3483a9
@@ -642,6 +661,7 @@
 .git/objects/90/a41a5f3a6edbff9df189340e270f28e104d206
 .git/objects/90/b5405533402353e099346c57a2aa529c172c4b
 .git/objects/90/ef83da5f7d4784433b41ef470d1a9675856219
+.git/objects/91/1f7f3f8c23a970a04098b46722121f06422ffb
 .git/objects/91/4f6949275444e6b13f485a03f2bb1a1051d6b5
 .git/objects/91/ea9bdd1c4a1ee54eaef11175adac6f8fb880d3
 .git/objects/91/f3fd3534e0b4048ccb3cc9edfc7dd601f11235
@@ -663,6 +683,7 @@
 .git/objects/95/34668974d6763c09643b5ed9e4a1206026e46c
 .git/objects/95/4604facbba5b08bfe164554168e95f877fe16d
 .git/objects/95/4d45162c68a2cc6ca1fc67d1c72790346d4dbf
+.git/objects/95/9d3f5896daf3dc3db3a413daeae908d9830bb4
 .git/objects/95/a19e1bf665f1cdbda3da231db2b9b2586f3426
 .git/objects/95/c9d2110ff919e0a36c1e689217330d4d7cb69d
 .git/objects/95/f0adc39b8070dccc1aa3ccab833bc3fc5a410e
@@ -674,6 +695,7 @@
 .git/objects/96/d34756ef73323d1b47a95a2e8043432329e4ff
 .git/objects/96/e9baff078ca971bc366d37d0249b3b6f97f6de
 .git/objects/97/193ac74e98e1140adb5cfecff84963a67d6497
+.git/objects/97/45d0f0331ed55a4d3eb27fd0e765d0be8836b3
 .git/objects/97/7c5ecb75f8bfb1b80afd8d54d16abc6651a716
 .git/objects/97/85bbb79331df1198167b4fa828ce99873498c4
 .git/objects/98/93487f12d06b9c820fb629019061952813185e
@@ -681,6 +703,7 @@
 .git/objects/98/f19a34b7f9c47df5000713f20293733aa0d97d
 .git/objects/99/01e3de6af45d726c04af4f1a8dd9ea85e58a8b
 .git/objects/99/036c8060b9940a6a56b5990a8533ce5e2e653d
+.git/objects/99/054b5be378585e358c2e30b03645fc2511f045
 .git/objects/99/322b8a9500ae40afd1f4e239d7145f2b622cf8
 .git/objects/99/4ad5b0233962ee0625834336c73b658fabfdb2
 .git/objects/99/9d9e4cd865653e63deebc4dca513898024a98d
@@ -701,6 +724,7 @@
 .git/objects/9c/755c5dbb82881f7841fdce2a248b1a70cbe4b1
 .git/objects/9c/7fc04caa83c07883824ec9a0736f4f82d89cab
 .git/objects/9c/84356b61f64559404fff80a73dcad632fa4323
+.git/objects/9c/af6ceaa74b721d80d90a9509d2946fa9aa37ad
 .git/objects/9c/c1542e715b65cdbb4f6dbfa9d51f85404a354c
 .git/objects/9c/edde9c7fbde8ec12c68b283ed8f60b1d33231d
 .git/objects/9c/f58645128349fb08e607207a688d4353fc55d6
@@ -719,6 +743,7 @@
 .git/objects/9e/9de4d2425f729b1ea261ba18d6340012573296
 .git/objects/9e/d630428f422259d235ca90c0ebb932cb6e6a64
 .git/objects/9e/f16b68f619b7fab1e5d6911a7d4f483bfccd88
+.git/objects/9f/79c0d0817600ebd1fe61559a955228e777fbec
 .git/objects/9f/a7d65c9f9cad28a889c965d3736a902d57cc12
 .git/objects/9f/dcf66863f47200cdeb5877c9ee3cc61542112f
 .git/objects/a0/047df60581330ec5eb8f34ee3642a12b943066
@@ -756,6 +781,7 @@
 .git/objects/a6/bd9c1784d72fad263c63b57ae0b6fb668060a5
 .git/objects/a6/cf8e492f3264c040565d8014f2e865dda9ac33
 .git/objects/a6/dec05786746b2f724fd636574bf6ae0d1907a2
+.git/objects/a7/73d3ba9fb4f4569e8d6ed9500e8709b8e3ab52
 .git/objects/a7/97535e3892213d5e2ad6e78133f13dd408b46c
 .git/objects/a7/e0a07d2c7564551cf8fae96afdd20b0a7a1ea5
 .git/objects/a7/e0c4c72ac9d15f783ea6e6c7653c05f89bd0da
@@ -770,6 +796,7 @@
 .git/objects/aa/162956ffd1da7d16a64ae3bb836bb969f77aa2
 .git/objects/aa/38926430cd96d370c8ed008e8510a01e22ffec
 .git/objects/aa/6e2ee6fc25625cd8c9283dfaab74c908b3022d
+.git/objects/ab/356bb67548c3725d027f301123eb18a8fb127e
 .git/objects/ab/362f281802f72991bc7b1fe7dfe651683fa463
 .git/objects/ab/825a3012675542658be5a40377639f2be6014f
 .git/objects/ab/8702cf578d25465904cdbd10c063f34f79b4a2
@@ -796,6 +823,7 @@
 .git/objects/af/5b751c7157130b0d34e89a2c0e65157258b02d
 .git/objects/af/9da864a0ea84de885f99bcf2ed10797d14e6e5
 .git/objects/b0/4dcca591aaa341d0376ce1ba41ac82b0f3ab20
+.git/objects/b0/5b11e6d27dd1e6530dde040a2043273e39247d
 .git/objects/b0/5fb4e8c99b2d45bcbbd88724a9adfedd694828
 .git/objects/b0/843dfa0797bcf0965ed9d675ac16e34f2db392
 .git/objects/b0/9b72e134cdecab6bebcb29f636cfb9a2b5652a
@@ -840,6 +868,7 @@
 .git/objects/bb/62216b6f9fe4ae0407ac0b59f6d53f781d7464
 .git/objects/bb/790122a2d4dbbd6cd8f22e7e2f6266544e6650
 .git/objects/bb/c5a32556382488efca9363c0eaf2a7c2ce94bb
+.git/objects/bb/e239746d26215a58c28f41b8c4ce6f769353ca
 .git/objects/bc/0d1a7ce7903a7b516f5127835c6b6427327fb9
 .git/objects/bc/1a468d0ebdfbff11d86ed8326c609018644a39
 .git/objects/bc/51edfa5f8c0de58f33ddea0bb468adc0a09a87
@@ -879,6 +908,7 @@
 .git/objects/c4/e0c2323b8324db6e7501d768c9a1475122119f
 .git/objects/c4/ffba590b2d8c3ad5bc4298f39e20fd45e5a883
 .git/objects/c5/4e480036cd5db577e54c347da5972633b1ee7f
+.git/objects/c5/8276da809ad627da15415a60acc981354c8675
 .git/objects/c5/aeef845fdddee208e1c1b586757d52a081610a
 .git/objects/c5/bed038d368e7c340dc0041cb22be81a6877adf
 .git/objects/c5/f774078507b2147d0fd37616acaa385070a40f
@@ -899,6 +929,7 @@
 .git/objects/cb/2ccd7c8b21db56fab68a4959ca2ce149d111b1
 .git/objects/cb/495122ed826dbfd599a899112c9c326e933c83
 .git/objects/cb/7ebb03c73a002836c7f251b3bd7bd0d2c23be5
+.git/objects/cb/d93aabb1fefa47586bd15cc6601638c81ffcd9
 .git/objects/cc/330d0360d9526e459606bdb97711c3ba43c10c
 .git/objects/cc/37829bdbffd07056f600be30fb1e4ef01cb602
 .git/objects/cc/38395f4e07be80af64c5c11620166c24474984
@@ -945,6 +976,7 @@
 .git/objects/d5/0577b8f448f7173129de92a5f9d8787cc70876
 .git/objects/d5/2bcdaa743fbe304c7d7aae0745ddad9c183e81
 .git/objects/d5/3f88e8db6012737e439d65b9739c107bc0c7f5
+.git/objects/d5/5a9472a67d9b2cd8c71f656f62d758263deb14
 .git/objects/d5/9fb2913eadeb1c58079e14ce40b8d867aadd9f
 .git/objects/d5/a9c5bb235a247a7cc3f88c4642d622edd2071f
 .git/objects/d5/b2b103e40d0d63010fd0f3cf3bce7255b20b41
@@ -977,6 +1009,7 @@
 .git/objects/db/5fad7ffceca8a35cdcda830fcef76b51b7c6f0
 .git/objects/db/780bfc598192433f4168eac378e7efe2fbcd32
 .git/objects/db/a639dfc7b41a0991e4d74e81890dbb7bd359cd
+.git/objects/db/c528453ff2d2d0ae7e201236b5cf6ff4db0ef6
 .git/objects/db/df786c36b3b65960b01efdb31ed25beabbb4f4
 .git/objects/db/e2f085a99f5635f6e98ee09a6c3ff2699ae83b
 .git/objects/dc/a21dff1837ede0706db5a140c159f5ba13b514
@@ -986,12 +1019,14 @@
 .git/objects/dd/793eb631836b8fdb1f5579b6224f494f9823b9
 .git/objects/dd/90ce26a90717ed1a39ece57384b8f35e5dc443
 .git/objects/dd/ac33f56f97afdcd2e1d38e8e63adc0a8e1e4c6
+.git/objects/dd/d0a16ff3a44241708fbb96fd392b89e0a7d0cb
 .git/objects/dd/db2119c8dbaac2e4236c57b74e6308c82474a0
 .git/objects/dd/e2f3189474a429bfed0c85199c4eb9ef731d39
 .git/objects/dd/f981b380dd2eb219eff6c8d4b1dd1e6b72250a
 .git/objects/de/1768dbe98d16571ed1e3f8fd8efc31f9b72e58
 .git/objects/de/5e4096776c10a32cf884fb09f8b00bf36c2435
 .git/objects/de/89716b277971d922107cec6ea98e183b3e4cc3
+.git/objects/de/c40ca45dcd1323d6eff7a5add8e346791ab9d1
 .git/objects/de/d4ca21da6088e919dcea56541b455675089bc2
 .git/objects/de/d6245e492f3acb901cf453e46c9fc529a3ad60
 .git/objects/de/f589529223fb8b17d48ed652499bf7afc0134e
@@ -1006,6 +1041,7 @@
 .git/objects/e1/9af3f5b5e05b10c912d7457ba8e690ec9f9406
 .git/objects/e1/cfacd19a5cfea50cbaa284edba7f4af571d9e9
 .git/objects/e2/1fed38cbc1ebe9151ce2c18f69ce8c4f3b1ec9
+.git/objects/e2/5486aeaf34bef0cea3559c808e61f69787add6
 .git/objects/e2/9764439f2b4a4c4402bcedd36eb94f1a5ee38d
 .git/objects/e2/e9d7cd8baf771e007de7e488b279e26a86b77e
 .git/objects/e3/148f0765a9ce57a1f899f1ec8fa9994c02e184
@@ -1020,6 +1056,7 @@
 .git/objects/e5/e6f11313649b8d69c3834ff645462e59570903
 .git/objects/e6/0c04884bbe0e11cc0a545867089439169bf0d9
 .git/objects/e6/23d032c0a475810927d61d192708f894348188
+.git/objects/e6/3794aaef98fb1fa2e329818c0e9a7f30442bb8
 .git/objects/e6/5caf5bb70f6eea3eca81db50855608ba439723
 .git/objects/e6/a27e4f99f87720e35126b2410a0ce68b5f603c
 .git/objects/e6/ac4ba905b7c1071c2f28d739d1d8c76cb8dec6
@@ -1027,6 +1064,7 @@
 .git/objects/e6/f0c9eea2ec21230c12604fc4f103ac06df6611
 .git/objects/e7/1d7341362c67438dbd5275e6d7cf0d462a1e1a
 .git/objects/e7/44d242759fbba699ec21a353c927015ec310ae
+.git/objects/e7/bf075dd6cdc2f28a748483be705d35960073a6
 .git/objects/e7/dc632f7ba887953953f126ae03dbf1eaddaf84
 .git/objects/e7/eeb49623de9fa79cd54fd68482ddb87e9853c6
 .git/objects/e7/f080a605db7ea40e1362e8ca8a85c2012b75e8
@@ -1035,10 +1073,12 @@
 .git/objects/e9/0faf78217120c762377e620fad28395c325471
 .git/objects/e9/25647b215e325a4e04d54618da85b07a5fb962
 .git/objects/e9/ba91b94f91956d8c010deb45e334659d47e097
+.git/objects/e9/e46c8094a190c507ce428a0d046d95e8611f01
 .git/objects/ea/408a1f0c94cf09c1bd97a9f20b9522ed43af63
 .git/objects/ea/7fbcace9826e48b1ff750af4b56a3442be600e
 .git/objects/ea/c4a9fab75f1a9882cedfe9df7ce3daf63dd1b7
 .git/objects/eb/3199890c814164152fb2d368d59b24a05f8ca9
+.git/objects/eb/441e251606153fcb595cfd83f4f6abdac4b332
 .git/objects/eb/491fe6cf55394f4c45558b5edec7da82f3b8da
 .git/objects/eb/77019405acbf26ce044bf1aec05ba48d3b0bcd
 .git/objects/eb/c9f6dcf1a24064cbd72220f2df6cdbd2a0a44b
@@ -1049,6 +1089,7 @@
 .git/objects/ec/3fdb63d8b701146af3f640f39b36d22b945d8c
 .git/objects/ec/57147556295c7dd09ea97228b617d8c9dc7c22
 .git/objects/ec/6b2d6221ba370c1dacc8245a4786f66a82012a
+.git/objects/ec/d435b49482760f1e130138723ea1862f099239
 .git/objects/ed/a649073abff2ac5eaeaf6af04ae008b8c7c3a1
 .git/objects/ed/d8f2d989de48957a5eb49b797042ecc3ce1cc2
 .git/objects/ee/2c2e265fa2fd3407bd0ca273bf67b7777482ad
@@ -1061,6 +1102,7 @@
 .git/objects/f1/0944820fef5adaa4e084e0899ff507dee366ca
 .git/objects/f1/2334c79298f1fe442f496a10641bc29705ec51
 .git/objects/f1/7f87ea794fd9cf9ef86170423009b23b7b9adc
+.git/objects/f1/b7bc4f1c5a3c005a95687d41562066351a37d4
 .git/objects/f1/e32074fdbf301862a59fb8aea35964e4655da2
 .git/objects/f2/34f9828892d1d904859d86e43baacfcf39a1f8
 .git/objects/f2/5fb9d101f28a42c27e8080402c1e8037c65fd8
@@ -1080,6 +1122,7 @@
 .git/objects/f5/5d9066ff79ac402783317596cf2fd16ec90507
 .git/objects/f5/d15426955160985d82f54d64dd0bc46adcdedf
 .git/objects/f5/db179f99466e9817838fb6517310e79a3f0d6b
+.git/objects/f5/f0a31192fa54d3cc4da5e4936d47168c76dc74
 .git/objects/f5/f720e121da4d58d1c65d9248e858450c7c48a7
 .git/objects/f6/4dbdcfefcb5d15260ff5a4d037e6a7c8a9b15a
 .git/objects/f6/51cd669c74537512daf641c8b71ca6d070c5a8
@@ -1108,6 +1151,7 @@
 .git/objects/fb/effccd367682ee61b60baef0f8550d94348d97
 .git/objects/fc/10ce854fd30947c225a33e1734e865397f2fd6
 .git/objects/fc/9abfd16f5305fde77d2b2bf937b50092533d3b
+.git/objects/fc/d01531db2137237eb10615a9b05b4ee342e204
 .git/objects/fc/e4440fdd59edfb100aceb2c3e6d1ff88d873d9
 .git/objects/fd/51946613d9d30e725abdd08c55ee4cfe2cf535
 .git/objects/fd/6316d8800a23c36bcbd01a137dd33eb3ce9ed8
@@ -1158,6 +1202,7 @@
 .git/refs/heads/aslakhellesoy/logos
 .git/refs/heads/aslakhellesoy/master
 .git/refs/heads/drb_server
+.git/refs/heads/drb_server_exit_code
 .git/refs/heads/master
 .git/refs/remotes/aslakhellesoy/ast
 .git/refs/remotes/aslakhellesoy/background
@@ -1165,6 +1210,7 @@
 .git/refs/remotes/aslakhellesoy/master
 .git/refs/remotes/aslakhellesoy/v0.1.x
 .git/refs/remotes/origin/HEAD
+.git/refs/remotes/origin/drb_server
 .git/refs/remotes/origin/master
 .git/refs/stash
 .git/refs/tags/v0.1.10
@@ -1596,6 +1642,7 @@ spec/cucumber/ast/table_spec.rb
 spec/cucumber/ast/visitor_spec.rb
 spec/cucumber/broadcaster_spec.rb
 spec/cucumber/cli/configuration_spec.rb
+spec/cucumber/cli/drb_client_spec.rb
 spec/cucumber/cli/main_spec.rb
 spec/cucumber/core_ext/proc_spec.rb
 spec/cucumber/core_ext/string_spec.rb
