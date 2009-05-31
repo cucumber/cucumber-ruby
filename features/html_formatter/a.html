@@ -96,7 +96,7 @@ Given passing without a table              </div>
             </li>
           </ol>
         </div>
-        <div class="scenario">
+        <div class="scenario outline">
           <h3>Scenario Outline: passing background</h3>
           <ol>
             <li class="step skipped" id="features_background_background_tagged_before_on_outline_feature_8">
@@ -104,15 +104,17 @@ Given passing without a table              </div>
 Then I should have '&lt;count&gt;' cukes              </div>
             </li>
           </ol>
-          <h4>Examples: </h4>
-          <table>
-            <tr id="row_11">
-              <th class="skipped_param" id="row_11_0">count</th>
-            </tr>
-            <tr id="row_12">
-              <td class="passed" id="row_12_0">888</td>
-            </tr>
-          </table>
+          <div class="examples">
+            <h4>Examples: </h4>
+            <table>
+              <tr id="row_11">
+                <th class="skipped_param" id="row_11_0">count</th>
+              </tr>
+              <tr id="row_12">
+                <td class="passed" id="row_12_0">888</td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
       <div class="feature">
@@ -427,7 +429,7 @@ features/background/scenario_outline_failing_background.feature:4:in `Given fail
             </li>
           </ol>
         </div>
-        <div class="scenario">
+        <div class="scenario outline">
           <h3>Scenario Outline: failing background</h3>
           <ol>
             <li class="step skipped" id="features_background_scenario_outline_failing_background_feature_7">
@@ -435,26 +437,28 @@ features/background/scenario_outline_failing_background.feature:4:in `Given fail
 Then I should have '&lt;count&gt;' cukes              </div>
             </li>
           </ol>
-          <h4>Examples: </h4>
-          <table>
-            <tr id="row_9">
-              <th class="skipped_param" id="row_9_0">count</th>
-            </tr>
-            <tr id="row_10">
-              <td class="skipped" id="row_10_0">10</td>
-            </tr>
-            <tr>
-              <td class="failed" colspan="1">
-                <pre>
+          <div class="examples">
+            <h4>Examples: </h4>
+            <table>
+              <tr id="row_9">
+                <th class="skipped_param" id="row_9_0">count</th>
+              </tr>
+              <tr id="row_10">
+                <td class="skipped" id="row_10_0">10</td>
+              </tr>
+              <tr>
+                <td class="failed" colspan="1">
+                  <pre>
 FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
 ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-features/background/scenario_outline_failing_background.feature:4:in `Given failing without a table'                </pre>
-              </td>
-            </tr>
-          </table>
+features/background/scenario_outline_failing_background.feature:4:in `Given failing without a table'                  </pre>
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
-        <div class="scenario">
+        <div class="scenario outline">
           <h3>Scenario Outline: another failing background</h3>
           <ol>
             <li class="step skipped" id="features_background_scenario_outline_failing_background_feature_13">
@@ -462,15 +466,17 @@ features/background/scenario_outline_failing_background.feature:4:in `Given fail
 Then I should have '&lt;count&gt;' cukes              </div>
             </li>
           </ol>
-          <h4>Examples: </h4>
-          <table>
-            <tr id="row_15">
-              <th class="skipped_param" id="row_15_0">count</th>
-            </tr>
-            <tr id="row_16">
-              <td class="skipped" id="row_16_0">10</td>
-            </tr>
-          </table>
+          <div class="examples">
+            <h4>Examples: </h4>
+            <table>
+              <tr id="row_15">
+                <th class="skipped_param" id="row_15_0">count</th>
+              </tr>
+              <tr id="row_16">
+                <td class="skipped" id="row_16_0">10</td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
       <div class="feature">
@@ -486,7 +492,7 @@ Given '<span class="passed_param">10</span>' cukes              </div>
             </li>
           </ol>
         </div>
-        <div class="scenario">
+        <div class="scenario outline">
           <h3>Scenario Outline: passing background</h3>
           <ol>
             <li class="step skipped" id="features_background_scenario_outline_passing_background_feature_7">
@@ -494,17 +500,19 @@ Given '<span class="passed_param">10</span>' cukes              </div>
 Then I should have '&lt;count&gt;' cukes              </div>
             </li>
           </ol>
-          <h4>Examples: </h4>
-          <table>
-            <tr id="row_9">
-              <th class="skipped_param" id="row_9_0">count</th>
-            </tr>
-            <tr id="row_10">
-              <td class="passed" id="row_10_0">10</td>
-            </tr>
-          </table>
+          <div class="examples">
+            <h4>Examples: </h4>
+            <table>
+              <tr id="row_9">
+                <th class="skipped_param" id="row_9_0">count</th>
+              </tr>
+              <tr id="row_10">
+                <td class="passed" id="row_10_0">10</td>
+              </tr>
+            </table>
+          </div>
         </div>
-        <div class="scenario">
+        <div class="scenario outline">
           <h3>Scenario Outline: another passing background</h3>
           <ol>
             <li class="step skipped" id="features_background_scenario_outline_passing_background_feature_13">
@@ -512,15 +520,17 @@ Then I should have '&lt;count&gt;' cukes              </div>
 Then I should have '&lt;count&gt;' cukes              </div>
             </li>
           </ol>
-          <h4>Examples: </h4>
-          <table>
-            <tr id="row_15">
-              <th class="skipped_param" id="row_15_0">count</th>
-            </tr>
-            <tr id="row_16">
-              <td class="passed" id="row_16_0">10</td>
-            </tr>
-          </table>
+          <div class="examples">
+            <h4>Examples: </h4>
+            <table>
+              <tr id="row_15">
+                <th class="skipped_param" id="row_15_0">count</th>
+              </tr>
+              <tr id="row_16">
+                <td class="passed" id="row_16_0">10</td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
       <div class="feature">
@@ -643,7 +653,7 @@ Given passing without a table              </div>
             </li>
           </ol>
         </div>
-        <div class="scenario">
+        <div class="scenario outline">
           <h3>Scenario Outline: I'm a multiline name
 which goes on and on and on for three lines
 yawn</h3>
@@ -653,17 +663,19 @@ yawn</h3>
 Given &lt;state&gt; without a table              </div>
             </li>
           </ol>
-          <h4>Examples: </h4>
-          <table>
-            <tr id="row_18">
-              <th class="skipped_param" id="row_18_0">state</th>
-            </tr>
-            <tr id="row_19">
-              <td class="passed" id="row_19_0">passing</td>
-            </tr>
-          </table>
+          <div class="examples">
+            <h4>Examples: </h4>
+            <table>
+              <tr id="row_18">
+                <th class="skipped_param" id="row_18_0">state</th>
+              </tr>
+              <tr id="row_19">
+                <td class="passed" id="row_19_0">passing</td>
+              </tr>
+            </table>
+          </div>
         </div>
-        <div class="scenario">
+        <div class="scenario outline">
           <h3>Scenario Outline: name</h3>
           <ol>
             <li class="step skipped" id="features_multiline_name_feature_22">
@@ -671,17 +683,19 @@ Given &lt;state&gt; without a table              </div>
 Given &lt;state&gt; without a table              </div>
             </li>
           </ol>
-          <h4>Examples: I'm a multiline name
+          <div class="examples">
+            <h4>Examples: I'm a multiline name
 which goes on and on and on for three lines
 yawn</h4>
-          <table>
-            <tr id="row_26">
-              <th class="skipped_param" id="row_26_0">state</th>
-            </tr>
-            <tr id="row_27">
-              <td class="passed" id="row_27_0">passing</td>
-            </tr>
-          </table>
+            <table>
+              <tr id="row_26">
+                <th class="skipped_param" id="row_26_0">state</th>
+              </tr>
+              <tr id="row_27">
+                <td class="passed" id="row_27_0">passing</td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
       <div class="feature">
@@ -693,7 +707,7 @@ yawn</h4>
           <ol>
           </ol>
         </div>
-        <div class="scenario">
+        <div class="scenario outline">
           <h3>Scenario Outline: Test state</h3>
           <ol>
             <li class="step skipped" id="features_outline_sample_feature_6">
@@ -705,52 +719,56 @@ Given &lt;state&gt; without a table              </div>
 Given &lt;other_state&gt; without a table              </div>
             </li>
           </ol>
-          <h4>Examples: Rainbow colours</h4>
-          <table>
-            <tr id="row_9">
-              <th class="skipped_param" id="row_9_0">state</th>
-              <th class="skipped_param" id="row_9_1">other_state</th>
-            </tr>
-            <tr id="row_10">
-              <td class="undefined" id="row_10_0">missing</td>
-              <td class="skipped" id="row_10_1">passing</td>
-            </tr>
-            <tr>
-              <td class="failed" colspan="2">
-                <pre>
+          <div class="examples">
+            <h4>Examples: Rainbow colours</h4>
+            <table>
+              <tr id="row_9">
+                <th class="skipped_param" id="row_9_0">state</th>
+                <th class="skipped_param" id="row_9_1">other_state</th>
+              </tr>
+              <tr id="row_10">
+                <td class="undefined" id="row_10_0">missing</td>
+                <td class="skipped" id="row_10_1">passing</td>
+              </tr>
+              <tr>
+                <td class="failed" colspan="2">
+                  <pre>
 Undefined step: "missing without a table" (Cucumber::Undefined)
-features/outline_sample.feature:6:in `Given <state> without a table'                </pre>
-              </td>
-            </tr>
-            <tr id="row_11">
-              <td class="passed" id="row_11_0">passing</td>
-              <td class="passed" id="row_11_1">passing</td>
-            </tr>
-            <tr id="row_12">
-              <td class="failed" id="row_12_0">failing</td>
-              <td class="skipped" id="row_12_1">passing</td>
-            </tr>
-            <tr>
-              <td class="failed" colspan="2">
-                <pre>
+features/outline_sample.feature:6:in `Given <state> without a table'                  </pre>
+                </td>
+              </tr>
+              <tr id="row_11">
+                <td class="passed" id="row_11_0">passing</td>
+                <td class="passed" id="row_11_1">passing</td>
+              </tr>
+              <tr id="row_12">
+                <td class="failed" id="row_12_0">failing</td>
+                <td class="skipped" id="row_12_1">passing</td>
+              </tr>
+              <tr>
+                <td class="failed" colspan="2">
+                  <pre>
 FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
 ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-features/outline_sample.feature:6:in `Given <state> without a table'                </pre>
-              </td>
-            </tr>
-          </table>
-          <h4>Examples: Only passing</h4>
-          <table>
-            <tr id="row_14">
-              <th class="skipped_param" id="row_14_0">state</th>
-              <th class="skipped_param" id="row_14_1">other_state</th>
-            </tr>
-            <tr id="row_15">
-              <td class="passed" id="row_15_0">passing</td>
-              <td class="passed" id="row_15_1">passing</td>
-            </tr>
-          </table>
+features/outline_sample.feature:6:in `Given <state> without a table'                  </pre>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="examples">
+            <h4>Examples: Only passing</h4>
+            <table>
+              <tr id="row_14">
+                <th class="skipped_param" id="row_14_0">state</th>
+                <th class="skipped_param" id="row_14_1">other_state</th>
+              </tr>
+              <tr id="row_15">
+                <td class="passed" id="row_15_0">passing</td>
+                <td class="passed" id="row_15_1">passing</td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
       <div class="feature">
@@ -847,7 +865,7 @@ features/search_sample.feature:10:in `Given failing without a table'</pre>
             </li>
           </ol>
         </div>
-        <div class="scenario">
+        <div class="scenario outline">
           <h3>Scenario Outline: Ignore me</h3>
           <ol>
             <li class="step skipped" id="features_search_sample_feature_13">
@@ -855,26 +873,28 @@ features/search_sample.feature:10:in `Given failing without a table'</pre>
 Given &lt;state&gt; without a table              </div>
             </li>
           </ol>
-          <h4>Examples: </h4>
-          <table>
-            <tr id="row_15">
-              <th class="skipped_param" id="row_15_0">state</th>
-            </tr>
-            <tr id="row_16">
-              <td class="failed" id="row_16_0">failing</td>
-            </tr>
-            <tr>
-              <td class="failed" colspan="1">
-                <pre>
+          <div class="examples">
+            <h4>Examples: </h4>
+            <table>
+              <tr id="row_15">
+                <th class="skipped_param" id="row_15_0">state</th>
+              </tr>
+              <tr id="row_16">
+                <td class="failed" id="row_16_0">failing</td>
+              </tr>
+              <tr>
+                <td class="failed" colspan="1">
+                  <pre>
 FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
 ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-features/search_sample.feature:13:in `Given <state> without a table'                </pre>
-              </td>
-            </tr>
-          </table>
+features/search_sample.feature:13:in `Given <state> without a table'                  </pre>
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
-        <div class="scenario">
+        <div class="scenario outline">
           <h3>Scenario Outline: Hantu Pisang match</h3>
           <ol>
             <li class="step skipped" id="features_search_sample_feature_19">
@@ -882,17 +902,19 @@ features/search_sample.feature:13:in `Given <state> without a table'            
 Given &lt;state&gt; without a table              </div>
             </li>
           </ol>
-          <h4>Examples: </h4>
-          <table>
-            <tr id="row_21">
-              <th class="skipped_param" id="row_21_0">state</th>
-            </tr>
-            <tr id="row_22">
-              <td class="passed" id="row_22_0">passing</td>
-            </tr>
-          </table>
+          <div class="examples">
+            <h4>Examples: </h4>
+            <table>
+              <tr id="row_21">
+                <th class="skipped_param" id="row_21_0">state</th>
+              </tr>
+              <tr id="row_22">
+                <td class="passed" id="row_22_0">passing</td>
+              </tr>
+            </table>
+          </div>
         </div>
-        <div class="scenario">
+        <div class="scenario outline">
           <h3>Scenario Outline: no match in name but in examples</h3>
           <ol>
             <li class="step skipped" id="features_search_sample_feature_25">
@@ -900,33 +922,37 @@ Given &lt;state&gt; without a table              </div>
 Given &lt;state&gt; without a table              </div>
             </li>
           </ol>
-          <h4>Examples: Hantu Pisang</h4>
-          <table>
-            <tr id="row_27">
-              <th class="skipped_param" id="row_27_0">state</th>
-            </tr>
-            <tr id="row_28">
-              <td class="passed" id="row_28_0">passing</td>
-            </tr>
-          </table>
-          <h4>Examples: Ignore me</h4>
-          <table>
-            <tr id="row_31">
-              <th class="skipped_param" id="row_31_0">state</th>
-            </tr>
-            <tr id="row_32">
-              <td class="failed" id="row_32_0">failing</td>
-            </tr>
-            <tr>
-              <td class="failed" colspan="1">
-                <pre>
+          <div class="examples">
+            <h4>Examples: Hantu Pisang</h4>
+            <table>
+              <tr id="row_27">
+                <th class="skipped_param" id="row_27_0">state</th>
+              </tr>
+              <tr id="row_28">
+                <td class="passed" id="row_28_0">passing</td>
+              </tr>
+            </table>
+          </div>
+          <div class="examples">
+            <h4>Examples: Ignore me</h4>
+            <table>
+              <tr id="row_31">
+                <th class="skipped_param" id="row_31_0">state</th>
+              </tr>
+              <tr id="row_32">
+                <td class="failed" id="row_32_0">failing</td>
+              </tr>
+              <tr>
+                <td class="failed" colspan="1">
+                  <pre>
 FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
 ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-features/search_sample.feature:25:in `Given <state> without a table'                </pre>
-              </td>
-            </tr>
-          </table>
+features/search_sample.feature:25:in `Given <state> without a table'                  </pre>
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
       <div class="feature">

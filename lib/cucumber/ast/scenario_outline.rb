@@ -3,6 +3,14 @@ module Cucumber
     class ScenarioOutline
       include FeatureElement
 
+      module ExamplesArray
+        def accept(visitor)
+          each do |examples|
+            visitor.visit_examples(examples)
+          end
+        end
+      end
+
       # The +example_sections+ argument must be an Array where each element is another array representing
       # an Examples section. This array has 3 elements:
       #
@@ -23,6 +31,7 @@ module Cucumber
           examples_table = OutlineTable.new(examples_matrix, self)
           Examples.new(examples_line, examples_keyword, examples_name, examples_table)
         end
+        @examples_array.extend(ExamplesArray)
 
         @background.feature_elements << self if @background
       end
@@ -34,9 +43,7 @@ module Cucumber
         visitor.visit_steps(@steps)
 
         skip_invoke! if @background && @background.failed?
-        @examples_array.each do |examples|
-          visitor.visit_examples(examples)
-        end
+        visitor.visit_examples_array(@examples_array) unless @examples_array.empty?
       end
 
       def skip_invoke!
