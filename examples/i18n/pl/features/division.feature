@@ -3,7 +3,7 @@ Właściwość: Dzielenie
   Kasjer musi znać się na ułamkach
 
   Scenariusz: Zwykłe liczby
-    Zakładając wpisanie 3 do kalkulatora
-    Oraz wpisanie 2 do kalkulatora
+    Zakładając wprowadzenie do kalkulatora liczby 3
+    Oraz wprowadzenie do kalkulatora liczby 2
     Jeżeli nacisnę podziel
     Wtedy rezultat 1.5 wyświetli się na ekranie

@@ -4,8 +4,8 @@ Właściwość: Dodawanie
   Chcę sprawdzić wartość sumy dwóch liczb
 
   Szablon scenariusza: Dodaj dwie liczby
-    Zakładając wpisanie <liczba_1> do kalkulatora
-    Oraz wpisanie <liczba_2> do kalkulatora
+    Zakładając wprowadzenie do kalkulatora liczby <liczba_1>
+    Oraz wprowadzenie do kalkulatora liczby <liczba_2>
     Jeżeli nacisnę <przycisk>
     Wtedy rezultat <wynik> wyświetli się na ekranie
 

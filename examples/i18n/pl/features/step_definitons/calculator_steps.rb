@@ -11,7 +11,7 @@ end
 After do
 end
 
-Zakładając /wpisanie (\d+) do kalkulatora/ do |n|
+Zakładając /wprowadzenie do kalkulatora liczby (\d+)/ do |n|
   @calc.push n.to_i
 end
 
