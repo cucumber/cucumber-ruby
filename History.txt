@@ -2,10 +2,18 @@
 
 This release has some minor bugfixes related to RSpec and Rails interop.
 
+TODO: Maybe always require all steps under features/ even if a deeper feature is run?
+People ask about this all the time. People could still override with -r, but there would
+be less confusion about the default cases. Need to find out what part of the doco recommends
+deeper structures. Selenium? Others?
+
 === Bugfixes
 * RSpec's be_* matchers did not work in 0.3.9 and probably earlier versions. Now they do. (Aslak Hellesøy)
 * The Rails cucumber environment won't declare gem dependencies if the plugin exists. (Aslak Hellesøy)
 * The Rails cucumber generator will no longer declare gem dependencies on rspec if you use --testunit. (Aslak Hellesøy)
+
+=== New features
+* Added a Ast::Feature#name method for convenience
 
 === Changed features
 * The HTML formatter wraps examples in a div, and distinguishes between Scenario and Scenario Outline. (Aslak Hellesøy)

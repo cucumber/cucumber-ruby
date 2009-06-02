@@ -772,6 +772,9 @@ features/outline_sample.feature:6:in `Given <state> without a table'            
         </div>
       </div>
       <div class="feature">
+        <pre class="comment">
+# Feature comment
+        </pre>
         <span class="tag">@one</span>
         <h2>Feature: Sample</h2>
         <p>
@@ -781,29 +784,32 @@ features/outline_sample.feature:6:in `Given <state> without a table'            
           <span class="tag">@three</span>
           <h3>Scenario: Missing</h3>
           <ol>
-            <li class="step undefined" id="features_sample_feature_6">
+            <li class="step undefined" id="features_sample_feature_7">
               <div>
 Given missing              </div>
               <pre class="undefined">Undefined step: "missing" (Cucumber::Undefined)
-features/sample.feature:6:in `Given missing'</pre>
+features/sample.feature:7:in `Given missing'</pre>
             </li>
           </ol>
         </div>
         <div class="scenario">
+          <pre class="comment">
+# Scenario comment
+          </pre>
           <span class="tag">@three</span>
           <h3>Scenario: Passing</h3>
           <ol>
-            <li class="step passed" id="features_sample_feature_10">
+            <li class="step passed" id="features_sample_feature_12">
               <div>
 Given passing              </div>
               <table>
-                <tr id="row_11">
-                  <td id="row_11_0">a</td>
-                  <td id="row_11_1">b</td>
+                <tr id="row_13">
+                  <td id="row_13_0">a</td>
+                  <td id="row_13_1">b</td>
                 </tr>
-                <tr id="row_12">
-                  <td id="row_12_0">c</td>
-                  <td id="row_12_1">d</td>
+                <tr id="row_14">
+                  <td id="row_14_0">c</td>
+                  <td id="row_14_1">d</td>
                 </tr>
               </table>
             </li>
@@ -813,7 +819,7 @@ Given passing              </div>
           <span class="tag">@four</span>
           <h3>Scenario: Failing</h3>
           <ol>
-            <li class="step failed" id="features_sample_feature_16">
+            <li class="step failed" id="features_sample_feature_18">
               <div>
 Given failing              </div>
               <pre class="failed">
@@ -821,7 +827,7 @@ hello              </pre>
               <pre class="failed">FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
 ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
-features/sample.feature:16:in `Given failing'</pre>
+features/sample.feature:18:in `Given failing'</pre>
             </li>
           </ol>
         </div>

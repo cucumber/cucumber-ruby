@@ -37,7 +37,7 @@ module Cucumber
       end
 
       def accept(visitor)
-        visitor.visit_comment(@comment)
+        visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
         visitor.visit_steps(@steps)

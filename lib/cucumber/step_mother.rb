@@ -100,6 +100,10 @@ module Cucumber
 
     attr_writer :snippet_generator, :options, :visitor
 
+    def options
+      @options ||= {}
+    end
+
     def step_visited(step)
       steps << step unless steps.index(step)
     end
@@ -235,6 +239,13 @@ module Cucumber
       end
     end
     
+    def clear!
+      step_definitions.clear
+      hooks.clear
+      steps.clear
+      scenarios.clear
+    end
+
     def step_definitions
       @step_definitions ||= []
     end
@@ -272,10 +283,6 @@ module Cucumber
 
     def max_step_definition_length
       @max_step_definition_length ||= step_definitions.map{|step_definition| step_definition.text_length}.max
-    end
-
-    def options
-      @options || {}
     end
 
     # Creates a new world instance
@@ -350,10 +357,6 @@ module Cucumber
 
     def scenario_visited(scenario)
       scenarios << scenario unless scenarios.index(scenario)
-    end
-
-    def options
-      @options || {}
     end
   end
 end

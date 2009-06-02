@@ -4,6 +4,7 @@ module Cucumber
     class Feature
       attr_accessor :file
       attr_writer :features
+      attr_reader :name
 
       def initialize(background, comment, tags, name, feature_elements)
         @background, @comment, @tags, @name, @feature_elements = background, comment, tags, name, feature_elements
@@ -15,7 +16,7 @@ module Cucumber
       end
 
       def accept(visitor)
-        visitor.visit_comment(@comment)
+        visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@name)
         visitor.visit_background(@background) if @background

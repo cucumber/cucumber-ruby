@@ -15,6 +15,7 @@ module Cucumber
 
       def initialize(step_mother, io, options)
         super(step_mother)
+        @options = options
         @builder = Builder::XmlMarkup.new(:target => io, :indent => 2)
       end
       
@@ -40,6 +41,16 @@ module Cucumber
             end
           end
         end
+      end
+
+      def visit_comment(comment)
+        @builder.pre(:class => 'comment') do
+          super
+        end
+      end
+
+      def visit_comment_line(comment_line)
+        @builder.text!(comment_line.strip + "\n")
       end
 
       def visit_feature(feature)

@@ -6,6 +6,7 @@ Feature: Cucumber command line
     When I run cucumber -q features/sample.feature:5
     Then it should pass with      
       """
+      # Feature comment
       @one
       Feature: Sample
 
@@ -22,6 +23,7 @@ Feature: Cucumber command line
     When I run cucumber -q features/sample.feature:5 --strict
     Then it should fail with
       """
+      # Feature comment
       @one
       Feature: Sample
 
@@ -29,7 +31,7 @@ Feature: Cucumber command line
         Scenario: Missing
           Given missing
             Undefined step: "missing" (Cucumber::Undefined)
-            features/sample.feature:6:in `Given missing'
+            features/sample.feature:7:in `Given missing'
 
       1 scenario (1 undefined)
       1 step (1 undefined)
@@ -37,12 +39,14 @@ Feature: Cucumber command line
       """
 
   Scenario: Succeed with --strict
-    When I run cucumber -q features/sample.feature:9 --strict
+    When I run cucumber -q features/sample.feature:10 --strict
     Then it should pass with
     """
+    # Feature comment
     @one
     Feature: Sample
 
+      # Scenario comment
       @three
       Scenario: Passing
         Given passing
@@ -56,9 +60,10 @@ Feature: Cucumber command line
 
   @mri186
   Scenario: Specify 2 line numbers where one is a tag
-    When I run cucumber -q features/sample.feature:5:14
+    When I run cucumber -q features/sample.feature:5:16
     Then it should fail with
       """
+      # Feature comment
       @one
       Feature: Sample
 
@@ -75,7 +80,7 @@ Feature: Cucumber command line
             FAIL (RuntimeError)
             ./features/step_definitions/sample_steps.rb:2:in `flunker'
             ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
-            features/sample.feature:16:in `Given failing'
+            features/sample.feature:18:in `Given failing'
 
       2 scenarios (1 failed, 1 undefined)
       2 steps (1 failed, 1 undefined)
@@ -86,6 +91,7 @@ Feature: Cucumber command line
     When I run cucumber -q -r ../../features/step_definitions/extra_steps.rb features/sample.feature:5
     Then it should pass with
       """
+      # Feature comment
       @one
       Feature: Sample
 
@@ -102,9 +108,11 @@ Feature: Cucumber command line
     When I run cucumber -q features/sample.feature:12
     Then it should pass with
       """
+      # Feature comment
       @one
       Feature: Sample
 
+        # Scenario comment
         @three
         Scenario: Passing
           Given passing
@@ -128,7 +136,7 @@ Feature: Cucumber command line
       FAIL (RuntimeError)
       ./features/step_definitions/sample_steps.rb:2:in `flunker'
       ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
-      features/sample.feature:16:in `Given failing'
+      features/sample.feature:18:in `Given failing'
 
       3 scenarios (1 failed, 1 undefined, 1 passed)
       3 steps (1 failed, 1 undefined, 1 passed)
@@ -238,6 +246,7 @@ Feature: Cucumber command line
             | state   | other_state |
             | passing | passing     |
 
+      # Feature comment
       @one
       Feature: Sample
 
@@ -245,6 +254,7 @@ Feature: Cucumber command line
         Scenario: Missing
           Given missing
 
+        # Scenario comment
         @three
         Scenario: Passing
           Given passing
@@ -388,6 +398,7 @@ Feature: Cucumber command line
     When I run cucumber -q features --tags three
     Then it should pass with
       """
+      # Feature comment
       @one
       Feature: Sample
 
@@ -395,6 +406,7 @@ Feature: Cucumber command line
         Scenario: Missing
           Given missing
 
+        # Scenario comment
         @three
         Scenario: Passing
           Given passing
@@ -411,6 +423,7 @@ Feature: Cucumber command line
     When I run cucumber -q features --tags one
     Then it should fail with
       """
+      # Feature comment
       @one
       Feature: Sample
 
@@ -418,6 +431,7 @@ Feature: Cucumber command line
         Scenario: Missing
           Given missing
 
+        # Scenario comment
         @three
         Scenario: Passing
           Given passing
@@ -433,7 +447,7 @@ Feature: Cucumber command line
             FAIL (RuntimeError)
             ./features/step_definitions/sample_steps.rb:2:in `flunker'
             ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
-            features/sample.feature:16:in `Given failing'
+            features/sample.feature:18:in `Given failing'
 
       3 scenarios (1 failed, 1 undefined, 1 passed)
       3 steps (1 failed, 1 undefined, 1 passed)
@@ -444,6 +458,7 @@ Feature: Cucumber command line
     When I run cucumber -q features/sample.feature --dry-run -t ~four
     Then it should pass with
       """
+      # Feature comment
       @one
       Feature: Sample
 
@@ -451,6 +466,7 @@ Feature: Cucumber command line
         Scenario: Missing
           Given missing
 
+        # Scenario comment
         @three
         Scenario: Passing
           Given passing
@@ -466,6 +482,7 @@ Feature: Cucumber command line
     When I run cucumber --autoformat tmp/formatted features
     Then "examples/self_test/tmp/formatted/features/sample.feature" should contain
       """
+      # Feature comment
       @one
       Feature: Sample
 
@@ -473,6 +490,7 @@ Feature: Cucumber command line
         Scenario: Missing
           Given missing
 
+        # Scenario comment
         @three
         Scenario: Passing
           Given passing
