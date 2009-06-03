@@ -66,7 +66,9 @@ module Cucumber
 
       def visit_feature_name(name)
         lines = name.split(/\r?\n/)
-        @builder.h2(lines[0])
+        @builder.h2 do |h2|
+          @builder.span(lines[0], :class => 'val')
+        end
         @builder.p do
           lines[1..-1].each do |line|
             @builder.text!(line.strip)
@@ -85,7 +87,10 @@ module Cucumber
 
       def visit_background_name(keyword, name, file_colon_line, source_indent)
         @listing_background = true
-        @builder.h3("#{keyword} #{name}")
+        @builder.h3 do |h3|
+          @builder.span(keyword, :class => 'keyword')
+          @builder.span(name, :class => 'val')
+        end
       end
 
       def visit_feature_element(feature_element)
@@ -175,7 +180,7 @@ module Cucumber
       end
 
       def visit_py_string(string)
-        @builder.pre(:class => @status) do |pre|
+        @builder.pre(:class => 'val') do |pre|
           pre << string
         end
       end
