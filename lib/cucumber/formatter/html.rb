@@ -103,7 +103,7 @@ module Cucumber
         @listing_background = false
         @builder.h3 do
           @builder.span(keyword, :class => 'keyword')
-          @builder.span(name, :class => 'name')
+          @builder.span(name, :class => 'val')
         end
       end
 
@@ -160,10 +160,7 @@ module Cucumber
       end
 
       def visit_exception(exception, status)
-        # TODO: Move this test to the AST!!
-        if @options[:strict] || !(Undefined === exception) || exception.nested?
-          @builder.pre(format_exception(exception), :class => status)
-        end
+        @builder.pre(format_exception(exception), :class => status)
       end
 
       def visit_multiline_arg(multiline_arg)
@@ -203,8 +200,8 @@ module Cucumber
 
       def visit_table_cell_value(value, width, status)
         cell_type = @outline_row == 0 ? :th : :td
-        attributes = {:id => "#{@row_id}_#{@col_index}"}
-        attributes[:class] = status if status
+        attributes = {:id => "#{@row_id}_#{@col_index}", :class => 'val'}
+        attributes[:class] += " #{status}" if status
         build_cell(cell_type, value, attributes)
         @col_index += 1
       end
@@ -219,7 +216,7 @@ module Cucumber
         step_name = step_match.format_args(lambda{|param| %{<span class="param">#{param}</span>}})
         @builder.div do |div|
           @builder.span(keyword, :class => 'keyword')
-          @builder.span(:class => 'name') do |name|
+          @builder.span(:class => 'step val') do |name|
             name << h(step_name).gsub(/&lt;span class=&quot;(.*?)&quot;&gt;/, '<span class="\1">').gsub(/&lt;\/span&gt;/, '</span>')
           end
         end
