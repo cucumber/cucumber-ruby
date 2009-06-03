@@ -115,6 +115,12 @@ examples/i18n/no/features/step_definitons/kalkulator_steps.rb
 examples/i18n/no/features/summering.feature
 examples/i18n/no/features/support/env.rb
 examples/i18n/no/lib/kalkulator.rb
+examples/i18n/pl/Rakefile
+examples/i18n/pl/features/addition.feature
+examples/i18n/pl/features/division.feature
+examples/i18n/pl/features/step_definitons/calculator_steps.rb
+examples/i18n/pl/features/support/env.rb
+examples/i18n/pl/lib/calculator.rb
 examples/i18n/pt/Rakefile
 examples/i18n/pt/features/adicao.feature
 examples/i18n/pt/features/step_definitions/calculadora_steps.rb
