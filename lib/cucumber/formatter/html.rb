@@ -54,6 +54,7 @@ module Cucumber
       end
 
       def visit_feature(feature)
+        @exceptions = []
         @builder.div(:class => 'feature') do
           super
         end
@@ -76,7 +77,9 @@ module Cucumber
 
       def visit_background(background)
         @builder.div(:class => 'background') do
+          @in_background = true
           super
+          @in_background = nil
         end
       end
 
@@ -98,7 +101,10 @@ module Cucumber
       
       def visit_scenario_name(keyword, name, file_colon_line, source_indent)
         @listing_background = false
-        @builder.h3("#{keyword} #{name}")
+        @builder.h3 do
+          @builder.span(keyword, :class => 'keyword')
+          @builder.span(name, :class => 'name')
+        end
       end
 
       def visit_outline_table(outline_table)
@@ -131,6 +137,11 @@ module Cucumber
       end
 
       def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+        if exception
+          return if @exceptions.index(exception)
+          @exceptions << exception
+        end
+        return if status != :failed && @in_background ^ background
         @status = status
         @builder.li(:id => @step_id, :class => "step #{status}") do
           super(keyword, step_match, multiline_arg, status, exception, source_indent, background)
@@ -149,7 +160,10 @@ module Cucumber
       end
 
       def visit_exception(exception, status)
-        @builder.pre(format_exception(exception), :class => status)
+        # TODO: Move this test to the AST!!
+        if @options[:strict] || !(Undefined === exception) || exception.nested?
+          @builder.pre(format_exception(exception), :class => status)
+        end
       end
 
       def visit_multiline_arg(multiline_arg)
@@ -202,9 +216,12 @@ module Cucumber
       protected
       
       def build_step(keyword, step_match, status)
-        step_name = step_match.format_args(lambda{|param| %{<span class="#{status}_param">#{param}</span>}})
+        step_name = step_match.format_args(lambda{|param| %{<span class="param">#{param}</span>}})
         @builder.div do |div|
-          div << h("#{keyword} #{step_name}").gsub(/&lt;span class=&quot;(.*?)&quot;&gt;/, '<span class="\1">').gsub(/&lt;\/span&gt;/, '</span>')
+          @builder.span(keyword, :class => 'keyword')
+          @builder.span(:class => 'name') do |name|
+            name << h(step_name).gsub(/&lt;span class=&quot;(.*?)&quot;&gt;/, '<span class="\1">').gsub(/&lt;\/span&gt;/, '</span>')
+          end
         end
       end
       

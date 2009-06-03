@@ -66,9 +66,7 @@ module Cucumber
       end
       
       def print_exception(e, status, indent)
-        if @options[:strict] || !(Undefined === e) || e.nested?
-          @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
-        end
+        @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
       end
 
       def print_snippets(options)
