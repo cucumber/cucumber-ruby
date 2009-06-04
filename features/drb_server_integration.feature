@@ -67,3 +67,20 @@ Feature: DRb Server Integration
       I'm loading all the heavy stuff...
       I'm loading the stuff just for this run...
       """
+
+  Scenario: Feature Run with --drb flag *defined in a profile* with no DRb server running
+
+    Given I am not running a DRb server in the background
+    And the following profile is defined:
+      """
+      server: --drb features
+      """
+
+    When I run cucumber --profile server
+    Then it should pass
+    And the output should contain
+      """
+      No DRb server is running. Running features locally:
+      I'm loading all the heavy stuff...
+      I'm loading the stuff just for this run...
+      """

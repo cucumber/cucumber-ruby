@@ -115,6 +115,29 @@ module Cli
 
     end
 
+    context '--drb in a profile' do
+      it "removes the --drb flag from the args" do
+        given_cucumber_yml_defined_as({'server' => '--drb features'})
+        config = Configuration.new(StringIO.new)
+
+        args = %w{--profile server}
+        config.parse!(args)
+        args.should == %w{features}
+      end
+
+      it "keeps all other flags intact from all profiles involved" do
+        given_cucumber_yml_defined_as({'server' => '--drb features --profile nested',
+                                       'nested' => '--verbose'})
+
+        config = Configuration.new(StringIO.new)
+
+        args = %w{--profile server --format profile}
+        config.parse!(args)
+        args.should == %w{features --verbose --format profile}
+      end
+
+    end
+
     it "should expand args from YAML file" do
       given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})
 

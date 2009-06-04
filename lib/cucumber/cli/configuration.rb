@@ -14,6 +14,8 @@ module Cucumber
       }
       DEFAULT_FORMAT = 'pretty'
       DRB_FLAG = '--drb'
+      PROFILE_SHORT_FLAG = '-p'
+      PROFILE_LONG_FLAG = '--profile'
 
       attr_reader :paths
       attr_reader :options
@@ -29,9 +31,10 @@ module Cucumber
       end
 
       def parse!(args)
-        @args = args
+        @args = args.empty? ? args_from_profile('default') : args
+        expand_profiles_into_args
         return if parse_drb
-        return parse_args_from_profile('default') if @args.empty?
+
         @args.extend(::OptionParser::Arguable)
 
         @args.options do |opts|
@@ -102,8 +105,8 @@ module Cucumber
           opts.on("-e", "--exclude PATTERN", "Don't run feature files or require ruby files matching PATTERN") do |v|
             @options[:excludes] << Regexp.new(v)
           end
-          opts.on("-p", "--profile PROFILE", "Pull commandline arguments from cucumber.yml.") do |v|
-            parse_args_from_profile(v)
+          opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE", "Pull commandline arguments from cucumber.yml.") do |v|
+            # Processing of this is done previsouly so that the DRb flag can be detected within profiles.
           end
           opts.on("-c", "--[no-]color",
             "Whether or not to use ANSI color in the output. Cucumber decides",
@@ -181,7 +184,7 @@ module Cucumber
         raise("You can't use both --strict and --wip") if @options[:strict] && @options[:wip]
 
         # Whatever is left after option parsing is the FILE arguments
-        @paths += args
+        @paths += @args
       end
 
       def verbose?
@@ -322,7 +325,15 @@ module Cucumber
           downcase
       end
 
-      def parse_args_from_profile(profile)
+      def expand_profiles_into_args
+        while (profile_index = @args.index(PROFILE_SHORT_FLAG) || @args.index(PROFILE_LONG_FLAG)) do
+          @args.delete_at(profile_index)
+          @args[profile_index] = args_from_profile(@args[profile_index])
+          @args.flatten!
+        end
+      end
+
+      def args_from_profile(profile)
         unless cucumber_yml.has_key?(profile)
           raise(<<-END_OF_ERROR)
 Could not find profile: '#{profile}'
@@ -343,7 +354,7 @@ Defined profiles in cucumber.yml:
           else
             raise "The '#{profile}' profile in cucumber.yml was a #{args_from_yml.class}. It must be a String or Array"
         end
-        parse!(args_from_yml)
+        args_from_yml
       end
 
       def cucumber_yml
