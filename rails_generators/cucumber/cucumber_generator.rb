@@ -19,7 +19,13 @@ class CucumberGenerator < Rails::Generator::Base
       m.gsub_file 'config/database.yml', /\z/, "\ncucumber:\n  <<: *TEST"
 
       m.directory 'features/support'
-      m.template  'env.rb',           'features/support/env.rb'
+
+      if options[:spork]
+        m.template  'spork_env.rb',     'features/support/env.rb'
+      else
+        m.template  'env.rb',           'features/support/env.rb'
+      end
+
       m.file      'paths.rb',         'features/support/paths.rb'
 
       m.directory 'lib/tasks'
@@ -50,6 +56,10 @@ protected
 
     opt.on('--testunit', 'Setup cucumber for use with test/unit') do |value|
       options[:framework] = :testunit
+    end
+
+    opt.on('--spork', 'Setup cucumber for use with Spork') do |value|
+      options[:spork] = true
     end
   end
 
