@@ -1,4 +1,3 @@
-.yardoc
 History.txt
 License.txt
 Manifest.txt
