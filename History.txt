@@ -1,11 +1,19 @@
 == 0.3.10 (In Git)
 
-This release has some minor bugfixes related to RSpec and Rails interop.
+This release has an exciting new feature - a new --drb switch! This magic switch lets you run your
+features much faster than before, because you can eliminate the startup time for your code. This is
+thanks to a brand new gem called Spork by Tim Harper and Ben Mabey. You can start Spork and have it
+preload your application in a separate process. Spork listens for DRb connections, and when you run
+cucumber with --drb they will run inside the Spork server instead. Spork provides two simple hooks
+for preloading your application - one for framework/stable code (Spork.prefork) and one for the code 
+that *you* write and change often (Spork.each_run). This works great for Ruby on Rails, which can
+take a while to load, but Spork isn't tied to Rails.
 
-TODO: Maybe always require all steps under features/ even if a deeper feature is run?
-People ask about this all the time. People could still override with -r, but there would
-be less confusion about the default cases. Need to find out what part of the doco recommends
-deeper structures. Selenium? Others?
+Cucumber's built-in cucumber generator now has a new --spork switch, so when you bootstrap your Rails
+application for cucumber, you can have spork configuration set up out of the box. (It's just a
+slightly different env.rb).
+
+This release also has some minor bugfixes related to RSpec and Rails interop.
 
 === Bugfixes
 * RSpec's be_* matchers did not work in 0.3.9 and probably earlier versions. Now they do. (Aslak Hellesøy)
@@ -13,6 +21,7 @@ deeper structures. Selenium? Others?
 * The Rails cucumber generator will no longer declare gem dependencies on rspec if you use --testunit. (Aslak Hellesøy)
 
 === New features
+* Spork support via --drb. (Ben Mabey)
 * Added a Ast::Feature#name method for convenience
 
 === Changed features
