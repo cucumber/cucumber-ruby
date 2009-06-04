@@ -1,19 +1,25 @@
-== 0.3.10 (In Git)
+== 0.3.10 (In Git - The Spork Release!)
 
 This release has an exciting new feature - a new --drb switch! This magic switch lets you run your
 features much faster than before, because you can eliminate the startup time for your code. This is
-thanks to a brand new gem called Spork by Tim Harper and Ben Mabey. You can start Spork and have it
-preload your application in a separate process. Spork listens for DRb connections, and when you run
-cucumber with --drb they will run inside the Spork server instead. Spork provides two simple hooks
-for preloading your application - one for framework/stable code (Spork.prefork) and one for the code 
-that *you* write and change often (Spork.each_run). This works great for Ruby on Rails, which can
-take a while to load, but Spork isn't tied to Rails. The new --drb switch also works great alongside
-autotest (just add --drb to your autotest profile in cucumber.yml), so now you can get even faster
-feedback.
+thanks to a brand new gem called Spork by Tim Harper and Ben Mabey. (You can find out more about Spork 
+here: http://github.com/timcharper/spork/tree/master). You can start Spork and have it preload your 
+application in a separate process. Spork listens for DRb connections, and when you run cucumber with 
+--drb they will run inside the Spork server instead. Spork provides two simple hooks for preloading your 
+application - one for framework/stable code (Spork.prefork) and one for the code that *you* write and 
+change often (Spork.each_run). This works great for Ruby on Rails, which can take a while to load, but 
+Spork isn't tied to Rails. The new --drb switch also works great alongside autotest (just add --drb to 
+ your autotest profile in cucumber.yml), so now you can get even faster feedback.
 
 Cucumber's built-in cucumber generator now has a new --spork switch, so when you bootstrap your Rails
 application for cucumber, you can have spork configuration set up out of the box. (It's just a
-slightly different env.rb).
+slightly different env.rb.)
+
+Although Spork was in mind when this feature was added it is important to realize that all that was added
+to Cucumber was a DRb client.  Any DRb server that adheres to this protocol can interop with Cucumber.
+While Spork is geared towards removing the load time to give you a faster feedback loop you could just as
+easily use this client with a server that distributes your features to run in parallel. Someone just
+needs to write such a server. ;)
 
 This release also has some minor bugfixes related to RSpec and Rails interop.
 
