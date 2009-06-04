@@ -29,7 +29,7 @@ class CucumberGenerator < Rails::Generator::Base
       m.file      'paths.rb',         'features/support/paths.rb'
 
       m.directory 'lib/tasks'
-      m.file      'cucumber.rake',    'lib/tasks/cucumber.rake'
+      m.template  'cucumber.rake',    'lib/tasks/cucumber.rake'
 
       m.file      'cucumber',         'script/cucumber', {
         :chmod => 0755, :shebang => options[:shebang] == DEFAULT_SHEBANG ? nil : options[:shebang]
