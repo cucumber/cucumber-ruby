@@ -90,7 +90,7 @@ module Cucumber
         class_eval <<-EOF, __FILE__, __LINE__ + 1
           def #{attribute}=(value)
             @#{attribute} = value
-            warn("Cucumber::Rake::Task##{attribute} is deprecated and will be removed in 0.4.0.  Please use profiles for complex settings: http://wiki.github.com/aslakhellesoy/cucumber/using-rake#profiles")
+            warn("\nWARNING: Cucumber::Rake::Task##{attribute} is deprecated and will be removed in 0.4.0.  Please use profiles for complex settings: http://wiki.github.com/aslakhellesoy/cucumber/using-rake#profiles\n")
           end
         EOF
       end

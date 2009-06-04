@@ -16,7 +16,11 @@ module Cucumber
       def initialize(step_mother, io, options)
         super(step_mother)
         @options = options
-        @builder = Builder::XmlMarkup.new(:target => io, :indent => 2)
+        @builder = create_builder(io)
+      end
+      
+      def create_builder(io)
+        Builder::XmlMarkup.new(:target => io, :indent => 2)
       end
       
       def visit_features(features)
@@ -89,6 +93,7 @@ module Cucumber
         @listing_background = true
         @builder.h3 do |h3|
           @builder.span(keyword, :class => 'keyword')
+          @builder.text!(' ')
           @builder.span(name, :class => 'val')
         end
       end
@@ -108,6 +113,7 @@ module Cucumber
         @listing_background = false
         @builder.h3 do
           @builder.span(keyword, :class => 'keyword')
+          @builder.text!(' ')
           @builder.span(name, :class => 'val')
         end
       end
@@ -127,7 +133,11 @@ module Cucumber
       end
 
       def visit_examples_name(keyword, name)
-        @builder.h4("#{keyword} #{name}")
+        @builder.h4 do
+          @builder.span(keyword, :class => 'keyword')
+          @builder.text!(' ')
+          @builder.span(name, :class => 'val')
+        end
       end
 
       def visit_steps(steps)
@@ -181,7 +191,7 @@ module Cucumber
 
       def visit_py_string(string)
         @builder.pre(:class => 'val') do |pre|
-          pre << string
+          @builder.text!(string)
         end
       end
 
@@ -221,6 +231,7 @@ module Cucumber
         step_name = step_match.format_args(lambda{|param| %{<span class="param">#{param}</span>}})
         @builder.div do |div|
           @builder.span(keyword, :class => 'keyword')
+          @builder.text!(' ')
           @builder.span(:class => 'step val') do |name|
             name << h(step_name).gsub(/&lt;span class=&quot;(.*?)&quot;&gt;/, '<span class="\1">').gsub(/&lt;\/span&gt;/, '</span>')
           end
