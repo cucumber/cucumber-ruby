@@ -12,6 +12,7 @@ module Cucumber
       def initialize(step_mother, io, options)
         super(step_mother)
         @reportdir = io
+        @options = options
         raise "You *must* specify --out DIR for the junit formatter" unless @reportdir
         raise "Use --out DIR (not --out FILE) for the junit formatter" if File === @reportdir
       end

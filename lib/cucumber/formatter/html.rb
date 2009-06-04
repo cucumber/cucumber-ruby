@@ -15,7 +15,12 @@ module Cucumber
 
       def initialize(step_mother, io, options)
         super(step_mother)
-        @builder = Builder::XmlMarkup.new(:target => io, :indent => 2)
+        @options = options
+        @builder = create_builder(io)
+      end
+      
+      def create_builder(io)
+        Builder::XmlMarkup.new(:target => io, :indent => 2)
       end
       
       def visit_features(features)
@@ -42,7 +47,18 @@ module Cucumber
         end
       end
 
+      def visit_comment(comment)
+        @builder.pre(:class => 'comment') do
+          super
+        end
+      end
+
+      def visit_comment_line(comment_line)
+        @builder.text!(comment_line.strip + "\n")
+      end
+
       def visit_feature(feature)
+        @exceptions = []
         @builder.div(:class => 'feature') do
           super
         end
@@ -54,7 +70,9 @@ module Cucumber
 
       def visit_feature_name(name)
         lines = name.split(/\r?\n/)
-        @builder.h2(lines[0])
+        @builder.h2 do |h2|
+          @builder.span(lines[0], :class => 'val')
+        end
         @builder.p do
           lines[1..-1].each do |line|
             @builder.text!(line.strip)
@@ -65,17 +83,27 @@ module Cucumber
 
       def visit_background(background)
         @builder.div(:class => 'background') do
+          @in_background = true
           super
+          @in_background = nil
         end
       end
 
       def visit_background_name(keyword, name, file_colon_line, source_indent)
         @listing_background = true
-        @builder.h3("#{keyword} #{name}")
+        @builder.h3 do |h3|
+          @builder.span(keyword, :class => 'keyword')
+          @builder.text!(' ')
+          @builder.span(name, :class => 'val')
+        end
       end
 
       def visit_feature_element(feature_element)
-        @builder.div(:class => 'scenario') do
+        css_class = {
+          Ast::Scenario        => 'scenario',
+          Ast::ScenarioOutline => 'scenario outline'
+        }[feature_element.class]
+        @builder.div(:class => css_class) do
           super
         end
         @open_step_list = true
@@ -83,7 +111,11 @@ module Cucumber
       
       def visit_scenario_name(keyword, name, file_colon_line, source_indent)
         @listing_background = false
-        @builder.h3("#{keyword} #{name}")
+        @builder.h3 do
+          @builder.span(keyword, :class => 'keyword')
+          @builder.text!(' ')
+          @builder.span(name, :class => 'val')
+        end
       end
 
       def visit_outline_table(outline_table)
@@ -94,8 +126,18 @@ module Cucumber
         @outline_row = nil
       end
 
+      def visit_examples(examples)
+        @builder.div(:class => 'examples') do
+          super(examples)
+        end
+      end
+
       def visit_examples_name(keyword, name)
-        @builder.h4("#{keyword} #{name}")
+        @builder.h4 do
+          @builder.span(keyword, :class => 'keyword')
+          @builder.text!(' ')
+          @builder.span(name, :class => 'val')
+        end
       end
 
       def visit_steps(steps)
@@ -110,6 +152,11 @@ module Cucumber
       end
 
       def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+        if exception
+          return if @exceptions.index(exception)
+          @exceptions << exception
+        end
+        return if status != :failed && @in_background ^ background
         @status = status
         @builder.li(:id => @step_id, :class => "step #{status}") do
           super(keyword, step_match, multiline_arg, status, exception, source_indent, background)
@@ -143,8 +190,8 @@ module Cucumber
       end
 
       def visit_py_string(string)
-        @builder.pre(:class => @status) do |pre|
-          pre << string
+        @builder.pre(:class => 'val') do |pre|
+          @builder.text!(string)
         end
       end
 
@@ -168,8 +215,8 @@ module Cucumber
 
       def visit_table_cell_value(value, width, status)
         cell_type = @outline_row == 0 ? :th : :td
-        attributes = {:id => "#{@row_id}_#{@col_index}"}
-        attributes[:class] = status if status
+        attributes = {:id => "#{@row_id}_#{@col_index}", :class => 'val'}
+        attributes[:class] += " #{status}" if status
         build_cell(cell_type, value, attributes)
         @col_index += 1
       end
@@ -181,9 +228,13 @@ module Cucumber
       protected
       
       def build_step(keyword, step_match, status)
-        step_name = step_match.format_args(lambda{|param| %{<span class="#{status}_param">#{param}</span>}})
+        step_name = step_match.format_args(lambda{|param| %{<span class="param">#{param}</span>}})
         @builder.div do |div|
-          div << h("#{keyword} #{step_name}").gsub(/&lt;span class=&quot;(.*?)&quot;&gt;/, '<span class="\1">').gsub(/&lt;\/span&gt;/, '</span>')
+          @builder.span(keyword, :class => 'keyword')
+          @builder.text!(' ')
+          @builder.span(:class => 'step val') do |name|
+            name << h(step_name).gsub(/&lt;span class=&quot;(.*?)&quot;&gt;/, '<span class="\1">').gsub(/&lt;\/span&gt;/, '</span>')
+          end
         end
       end
       

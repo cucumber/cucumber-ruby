@@ -113,11 +113,11 @@ Feature: Cucumber command line
        Then the multiline string should be # features/background/multiline_args_background.feature:17
        Then the multiline string should be # features/background/multiline_args_background.feature:27
       /^passing$/    # features/step_definitions/sample_steps.rb:5
-       Given passing # features/sample.feature:10
+       Given passing # features/sample.feature:12
       /^failing expectation$/    # features/step_definitions/sample_steps.rb:62
        Given failing expectation # features/failing_expectation.feature:4
       /^failing$/    # features/step_definitions/sample_steps.rb:8
-       Given failing # features/sample.feature:16
+       Given failing # features/sample.feature:18
       (::) UNUSED (::)
       /^unused$/          # features/step_definitions/sample_steps.rb:66
       /^another unused$/  # features/step_definitions/sample_steps.rb:69

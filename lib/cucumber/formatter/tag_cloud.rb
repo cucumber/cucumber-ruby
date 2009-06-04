@@ -5,6 +5,7 @@ module Cucumber
       def initialize(step_mother, io, options)
         super(step_mother)
         @io = io
+        @options = options
         @counts = Hash.new{|h,k| h[k] = 0}
       end
 

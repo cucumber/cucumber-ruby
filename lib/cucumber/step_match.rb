@@ -1,11 +1,15 @@
 module Cucumber
   class StepMatch
-    attr_reader :step_definition, :args, :step_name
+    attr_reader :step_definition, :args
 
     def initialize(step_definition, step_name, formatted_step_name, args)
       @step_definition, @step_name, @formatted_step_name, @args = step_definition, step_name, formatted_step_name, args
     end
-    
+
+    def name
+      @formatted_step_name
+    end
+
     def invoke(world, multiline_arg)
       all_args = @args.dup
       all_args << multiline_arg if multiline_arg

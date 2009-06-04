@@ -12,6 +12,10 @@ module Cucumber
         @value = value
       end
 
+      def empty?
+        @value.nil? || @value == ""
+      end
+
       def accept(visitor)
         @value.split("\n").each do |line|
           visitor.visit_comment_line(line.strip)

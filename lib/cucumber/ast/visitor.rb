@@ -52,6 +52,10 @@ module Cucumber
       def visit_background_name(keyword, name, file_colon_line, source_indent)
       end
 
+      def visit_examples_array(examples_array)
+        examples_array.accept(self)
+      end
+
       def visit_examples(examples)
         examples.accept(self)
       end

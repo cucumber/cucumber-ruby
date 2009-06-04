@@ -1,3 +1,4 @@
+# Feature comment
 @one
 Feature: Sample
 
@@ -5,6 +6,7 @@ Feature: Sample
   Scenario: Missing
     Given missing
 
+# Scenario comment
 @three
   Scenario: Passing
     Given passing

@@ -18,8 +18,8 @@ module Cucumber
         @io = io
         @options = options
         @delim = delim
-        @indent = 0
         @exceptions = []
+        @indent = 0
       end
 
       def visit_features(features)
@@ -28,6 +28,7 @@ module Cucumber
       end
 
       def visit_feature(feature)
+        @exceptions = []
         @indent = 0
         if @options[:autoformat]
           file = File.join(@options[:autoformat], feature.file)

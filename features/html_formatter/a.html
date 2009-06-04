@@ -84,73 +84,112 @@
     <div class="cucumber">
       <div class="feature">
         <span class="tag">@background_tagged_before_on_outline</span>
-        <h2>Feature: Background tagged Before on Outline</h2>
+        <h2>
+          <span class="val">Feature: Background tagged Before on Outline</span>
+        </h2>
         <p>
         </p>
         <div class="background">
-          <h3>Background: </h3>
+          <h3>
+            <span class="keyword">Background:</span>
+             <span class="val"></span>
+          </h3>
           <ol>
             <li class="step passed" id="features_background_background_tagged_before_on_outline_feature_5">
               <div>
-Given passing without a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+passing without a table                </span>
+              </div>
             </li>
           </ol>
         </div>
-        <div class="scenario">
-          <h3>Scenario Outline: passing background</h3>
+        <div class="scenario outline">
+          <h3>
+            <span class="keyword">Scenario Outline:</span>
+             <span class="val">passing background</span>
+          </h3>
           <ol>
             <li class="step skipped" id="features_background_background_tagged_before_on_outline_feature_8">
               <div>
-Then I should have '&lt;count&gt;' cukes              </div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should have '&lt;count&gt;' cukes                </span>
+              </div>
             </li>
           </ol>
-          <h4>Examples: </h4>
-          <table>
-            <tr id="row_11">
-              <th class="skipped_param" id="row_11_0">count</th>
-            </tr>
-            <tr id="row_12">
-              <td class="passed" id="row_12_0">888</td>
-            </tr>
-          </table>
+          <div class="examples">
+            <h4>
+              <span class="keyword">Examples:</span>
+               <span class="val"></span>
+            </h4>
+            <table>
+              <tr id="row_11">
+                <th class="val skipped_param" id="row_11_0">count</th>
+              </tr>
+              <tr id="row_12">
+                <td class="val passed" id="row_12_0">888</td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
       <div class="feature">
-        <h2>Feature: background with name</h2>
+        <h2>
+          <span class="val">Feature: background with name</span>
+        </h2>
         <p>
         </p>
         <div class="background">
-          <h3>Background: I'm a background and I'm ok</h3>
+          <h3>
+            <span class="keyword">Background:</span>
+             <span class="val">I'm a background and I'm ok</span>
+          </h3>
           <ol>
             <li class="step passed" id="features_background_background_with_name_feature_4">
               <div>
-Given '<span class="passed_param">10</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">10</span>' cukes                </span>
+              </div>
             </li>
           </ol>
         </div>
         <div class="scenario">
-          <h3>Scenario: example</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">example</span>
+          </h3>
           <ol>
-            <li class="step passed" id="features_background_background_with_name_feature_4">
-            </li>
             <li class="step passed" id="features_background_background_with_name_feature_7">
               <div>
-Then I should have '<span class="passed_param">10</span>' cukes              </div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should have '<span class="param">10</span>' cukes                </span>
+              </div>
             </li>
           </ol>
         </div>
       </div>
       <div class="feature">
         <span class="tag">@after_file</span>
-        <h2>Feature: Failing background sample</h2>
+        <h2>
+          <span class="val">Feature: Failing background sample</span>
+        </h2>
         <p>
         </p>
         <div class="background">
-          <h3>Background: </h3>
+          <h3>
+            <span class="keyword">Background:</span>
+             <span class="val"></span>
+          </h3>
           <ol>
             <li class="step failed" id="features_background_failing_background_feature_5">
               <div>
-Given failing without a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+failing without a table                </span>
+              </div>
               <pre class="failed">FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
 ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
@@ -158,76 +197,93 @@ features/background/failing_background.feature:5:in `Given failing without a tab
             </li>
             <li class="step skipped" id="features_background_failing_background_feature_6">
               <div>
-And '<span class="skipped_param">10</span>' cukes              </div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+'<span class="param">10</span>' cukes                </span>
+              </div>
             </li>
           </ol>
         </div>
         <div class="scenario">
-          <h3>Scenario: failing background</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">failing background</span>
+          </h3>
           <ol>
-            <li class="step failed" id="features_background_failing_background_feature_5">
-              <pre class="failed">FAIL (RuntimeError)
-./features/step_definitions/sample_steps.rb:2:in `flunker'
-./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-features/background/failing_background.feature:5:in `Given failing without a table'</pre>
-            </li>
-            <li class="step skipped" id="features_background_failing_background_feature_6">
-            </li>
             <li class="step skipped" id="features_background_failing_background_feature_9">
               <div>
-Then I should have '<span class="skipped_param">10</span>' cukes              </div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should have '<span class="param">10</span>' cukes                </span>
+              </div>
             </li>
           </ol>
         </div>
         <div class="scenario">
-          <h3>Scenario: another failing background</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">another failing background</span>
+          </h3>
           <ol>
-            <li class="step skipped" id="features_background_failing_background_feature_5">
-            </li>
-            <li class="step skipped" id="features_background_failing_background_feature_6">
-            </li>
             <li class="step skipped" id="features_background_failing_background_feature_12">
               <div>
-Then I should have '<span class="skipped_param">10</span>' cukes              </div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should have '<span class="param">10</span>' cukes                </span>
+              </div>
             </li>
           </ol>
         </div>
       </div>
       <div class="feature">
-        <h2>Feature: Failing background after previously successful background sample</h2>
+        <h2>
+          <span class="val">Feature: Failing background after previously successful background sample</span>
+        </h2>
         <p>
         </p>
         <div class="background">
-          <h3>Background: </h3>
+          <h3>
+            <span class="keyword">Background:</span>
+             <span class="val"></span>
+          </h3>
           <ol>
             <li class="step passed" id="features_background_failing_background_after_success_feature_4">
               <div>
-Given passing without a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+passing without a table                </span>
+              </div>
             </li>
             <li class="step passed" id="features_background_failing_background_after_success_feature_5">
               <div>
-And '<span class="passed_param">10</span>' global cukes              </div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+'<span class="param">10</span>' global cukes                </span>
+              </div>
             </li>
           </ol>
         </div>
         <div class="scenario">
-          <h3>Scenario: passing background</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">passing background</span>
+          </h3>
           <ol>
-            <li class="step passed" id="features_background_failing_background_after_success_feature_4">
-            </li>
-            <li class="step passed" id="features_background_failing_background_after_success_feature_5">
-            </li>
             <li class="step passed" id="features_background_failing_background_after_success_feature_8">
               <div>
-Then I should have '<span class="passed_param">10</span>' global cukes              </div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should have '<span class="param">10</span>' global cukes                </span>
+              </div>
             </li>
           </ol>
         </div>
         <div class="scenario">
-          <h3>Scenario: failing background</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">failing background</span>
+          </h3>
           <ol>
-            <li class="step passed" id="features_background_failing_background_after_success_feature_4">
-            </li>
             <li class="step failed" id="features_background_failing_background_after_success_feature_5">
               <pre class="failed">FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
@@ -236,96 +292,120 @@ features/background/failing_background_after_success.feature:5:in `And '10' glob
             </li>
             <li class="step skipped" id="features_background_failing_background_after_success_feature_11">
               <div>
-Then I should have '<span class="skipped_param">10</span>' global cukes              </div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should have '<span class="param">10</span>' global cukes                </span>
+              </div>
             </li>
           </ol>
         </div>
       </div>
       <div class="feature">
-        <h2>Feature: Passing background with multiline args</h2>
+        <h2>
+          <span class="val">Feature: Passing background with multiline args</span>
+        </h2>
         <p>
         </p>
         <div class="background">
-          <h3>Background: </h3>
+          <h3>
+            <span class="keyword">Background:</span>
+             <span class="val"></span>
+          </h3>
           <ol>
             <li class="step passed" id="features_background_multiline_args_background_feature_4">
               <div>
-Given table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+table                </span>
+              </div>
               <table>
                 <tr id="row_5">
-                  <td id="row_5_0">a</td>
-                  <td id="row_5_1">b</td>
+                  <td class="val" id="row_5_0">a</td>
+                  <td class="val" id="row_5_1">b</td>
                 </tr>
                 <tr id="row_6">
-                  <td id="row_6_0">c</td>
-                  <td id="row_6_1">d</td>
+                  <td class="val" id="row_6_0">c</td>
+                  <td class="val" id="row_6_1">d</td>
                 </tr>
               </table>
             </li>
             <li class="step passed" id="features_background_multiline_args_background_feature_7">
               <div>
-And multiline string              </div>
-              <pre class="passed">
+                <span class="keyword">And</span>
+                 <span class="step val">
+multiline string                </span>
+              </div>
+              <pre class="val">
   I'm a cucumber and I'm okay. 
   I sleep all night and I test all day              </pre>
             </li>
           </ol>
         </div>
         <div class="scenario">
-          <h3>Scenario: passing background</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">passing background</span>
+          </h3>
           <ol>
-            <li class="step passed" id="features_background_multiline_args_background_feature_4">
-            </li>
-            <li class="step passed" id="features_background_multiline_args_background_feature_7">
-            </li>
             <li class="step passed" id="features_background_multiline_args_background_feature_14">
               <div>
-Then the table should be              </div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+the table should be                </span>
+              </div>
               <table>
                 <tr id="row_15">
-                  <td id="row_15_0">a</td>
-                  <td id="row_15_1">b</td>
+                  <td class="val" id="row_15_0">a</td>
+                  <td class="val" id="row_15_1">b</td>
                 </tr>
                 <tr id="row_16">
-                  <td id="row_16_0">c</td>
-                  <td id="row_16_1">d</td>
+                  <td class="val" id="row_16_0">c</td>
+                  <td class="val" id="row_16_1">d</td>
                 </tr>
               </table>
             </li>
             <li class="step passed" id="features_background_multiline_args_background_feature_17">
               <div>
-Then the multiline string should be              </div>
-              <pre class="passed">
+                <span class="keyword">Then</span>
+                 <span class="step val">
+the multiline string should be                </span>
+              </div>
+              <pre class="val">
   I'm a cucumber and I'm okay. 
   I sleep all night and I test all day              </pre>
             </li>
           </ol>
         </div>
         <div class="scenario">
-          <h3>Scenario: another passing background</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">another passing background</span>
+          </h3>
           <ol>
-            <li class="step passed" id="features_background_multiline_args_background_feature_4">
-            </li>
-            <li class="step passed" id="features_background_multiline_args_background_feature_7">
-            </li>
             <li class="step passed" id="features_background_multiline_args_background_feature_24">
               <div>
-Then the table should be              </div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+the table should be                </span>
+              </div>
               <table>
                 <tr id="row_25">
-                  <td id="row_25_0">a</td>
-                  <td id="row_25_1">b</td>
+                  <td class="val" id="row_25_0">a</td>
+                  <td class="val" id="row_25_1">b</td>
                 </tr>
                 <tr id="row_26">
-                  <td id="row_26_0">c</td>
-                  <td id="row_26_1">d</td>
+                  <td class="val" id="row_26_0">c</td>
+                  <td class="val" id="row_26_1">d</td>
                 </tr>
               </table>
             </li>
             <li class="step passed" id="features_background_multiline_args_background_feature_27">
               <div>
-Then the multiline string should be              </div>
-              <pre class="passed">
+                <span class="keyword">Then</span>
+                 <span class="step val">
+the multiline string should be                </span>
+              </div>
+              <pre class="val">
   I'm a cucumber and I'm okay. 
   I sleep all night and I test all day              </pre>
             </li>
@@ -333,93 +413,127 @@ Then the multiline string should be              </div>
         </div>
       </div>
       <div class="feature">
-        <h2>Feature: Passing background sample</h2>
+        <h2>
+          <span class="val">Feature: Passing background sample</span>
+        </h2>
         <p>
         </p>
         <div class="background">
-          <h3>Background: </h3>
+          <h3>
+            <span class="keyword">Background:</span>
+             <span class="val"></span>
+          </h3>
           <ol>
             <li class="step passed" id="features_background_passing_background_feature_4">
               <div>
-Given '<span class="passed_param">10</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">10</span>' cukes                </span>
+              </div>
             </li>
           </ol>
         </div>
         <div class="scenario">
-          <h3>Scenario: passing background</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">passing background</span>
+          </h3>
           <ol>
-            <li class="step passed" id="features_background_passing_background_feature_4">
-            </li>
             <li class="step passed" id="features_background_passing_background_feature_7">
               <div>
-Then I should have '<span class="passed_param">10</span>' cukes              </div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should have '<span class="param">10</span>' cukes                </span>
+              </div>
             </li>
           </ol>
         </div>
         <div class="scenario">
-          <h3>Scenario: another passing background</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">another passing background</span>
+          </h3>
           <ol>
-            <li class="step passed" id="features_background_passing_background_feature_4">
-            </li>
             <li class="step passed" id="features_background_passing_background_feature_10">
               <div>
-Then I should have '<span class="passed_param">10</span>' cukes              </div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should have '<span class="param">10</span>' cukes                </span>
+              </div>
             </li>
           </ol>
         </div>
       </div>
       <div class="feature">
-        <h2>Feature: Pending background sample</h2>
+        <h2>
+          <span class="val">Feature: Pending background sample</span>
+        </h2>
         <p>
         </p>
         <div class="background">
-          <h3>Background: </h3>
+          <h3>
+            <span class="keyword">Background:</span>
+             <span class="val"></span>
+          </h3>
           <ol>
             <li class="step undefined" id="features_background_pending_background_feature_4">
               <div>
-Given pending              </div>
-              <pre class="undefined">Undefined step: "pending" (Cucumber::Undefined)
-features/background/pending_background.feature:4:in `Given pending'</pre>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+pending                </span>
+              </div>
             </li>
           </ol>
         </div>
         <div class="scenario">
-          <h3>Scenario: pending background</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">pending background</span>
+          </h3>
           <ol>
-            <li class="step undefined" id="features_background_pending_background_feature_4">
-              <pre class="undefined">Undefined step: "pending" (Cucumber::Undefined)
-features/background/pending_background.feature:4:in `Given pending'</pre>
-            </li>
             <li class="step skipped" id="features_background_pending_background_feature_7">
               <div>
-Then I should have '<span class="skipped_param">10</span>' cukes              </div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should have '<span class="param">10</span>' cukes                </span>
+              </div>
             </li>
           </ol>
         </div>
         <div class="scenario">
-          <h3>Scenario: another pending background</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">another pending background</span>
+          </h3>
           <ol>
-            <li class="step undefined" id="features_background_pending_background_feature_4">
-              <pre class="undefined">Undefined step: "pending" (Cucumber::Undefined)
-features/background/pending_background.feature:4:in `Given pending'</pre>
-            </li>
             <li class="step skipped" id="features_background_pending_background_feature_10">
               <div>
-Then I should have '<span class="skipped_param">10</span>' cukes              </div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should have '<span class="param">10</span>' cukes                </span>
+              </div>
             </li>
           </ol>
         </div>
       </div>
       <div class="feature">
-        <h2>Feature: Failing background with scenario outlines sample</h2>
+        <h2>
+          <span class="val">Feature: Failing background with scenario outlines sample</span>
+        </h2>
         <p>
         </p>
         <div class="background">
-          <h3>Background: </h3>
+          <h3>
+            <span class="keyword">Background:</span>
+             <span class="val"></span>
+          </h3>
           <ol>
             <li class="step failed" id="features_background_scenario_outline_failing_background_feature_4">
               <div>
-Given failing without a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+failing without a table                </span>
+              </div>
               <pre class="failed">FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
 ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
@@ -427,112 +541,172 @@ features/background/scenario_outline_failing_background.feature:4:in `Given fail
             </li>
           </ol>
         </div>
-        <div class="scenario">
-          <h3>Scenario Outline: failing background</h3>
+        <div class="scenario outline">
+          <h3>
+            <span class="keyword">Scenario Outline:</span>
+             <span class="val">failing background</span>
+          </h3>
           <ol>
             <li class="step skipped" id="features_background_scenario_outline_failing_background_feature_7">
               <div>
-Then I should have '&lt;count&gt;' cukes              </div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should have '&lt;count&gt;' cukes                </span>
+              </div>
             </li>
           </ol>
-          <h4>Examples: </h4>
-          <table>
-            <tr id="row_9">
-              <th class="skipped_param" id="row_9_0">count</th>
-            </tr>
-            <tr id="row_10">
-              <td class="skipped" id="row_10_0">10</td>
-            </tr>
-            <tr>
-              <td class="failed" colspan="1">
-                <pre>
+          <div class="examples">
+            <h4>
+              <span class="keyword">Examples:</span>
+               <span class="val"></span>
+            </h4>
+            <table>
+              <tr id="row_9">
+                <th class="val skipped_param" id="row_9_0">count</th>
+              </tr>
+              <tr id="row_10">
+                <td class="val skipped" id="row_10_0">10</td>
+              </tr>
+              <tr>
+                <td colspan="1" class="failed">
+                  <pre>
 FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
 ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-features/background/scenario_outline_failing_background.feature:4:in `Given failing without a table'                </pre>
-              </td>
-            </tr>
-          </table>
+features/background/scenario_outline_failing_background.feature:4:in `Given failing without a table'                  </pre>
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
-        <div class="scenario">
-          <h3>Scenario Outline: another failing background</h3>
+        <div class="scenario outline">
+          <h3>
+            <span class="keyword">Scenario Outline:</span>
+             <span class="val">another failing background</span>
+          </h3>
           <ol>
             <li class="step skipped" id="features_background_scenario_outline_failing_background_feature_13">
               <div>
-Then I should have '&lt;count&gt;' cukes              </div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should have '&lt;count&gt;' cukes                </span>
+              </div>
             </li>
           </ol>
-          <h4>Examples: </h4>
-          <table>
-            <tr id="row_15">
-              <th class="skipped_param" id="row_15_0">count</th>
-            </tr>
-            <tr id="row_16">
-              <td class="skipped" id="row_16_0">10</td>
-            </tr>
-          </table>
+          <div class="examples">
+            <h4>
+              <span class="keyword">Examples:</span>
+               <span class="val"></span>
+            </h4>
+            <table>
+              <tr id="row_15">
+                <th class="val skipped_param" id="row_15_0">count</th>
+              </tr>
+              <tr id="row_16">
+                <td class="val skipped" id="row_16_0">10</td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
       <div class="feature">
-        <h2>Feature: Passing background with scenario outlines sample</h2>
+        <h2>
+          <span class="val">Feature: Passing background with scenario outlines sample</span>
+        </h2>
         <p>
         </p>
         <div class="background">
-          <h3>Background: </h3>
+          <h3>
+            <span class="keyword">Background:</span>
+             <span class="val"></span>
+          </h3>
           <ol>
             <li class="step passed" id="features_background_scenario_outline_passing_background_feature_4">
               <div>
-Given '<span class="passed_param">10</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">10</span>' cukes                </span>
+              </div>
             </li>
           </ol>
         </div>
-        <div class="scenario">
-          <h3>Scenario Outline: passing background</h3>
+        <div class="scenario outline">
+          <h3>
+            <span class="keyword">Scenario Outline:</span>
+             <span class="val">passing background</span>
+          </h3>
           <ol>
             <li class="step skipped" id="features_background_scenario_outline_passing_background_feature_7">
               <div>
-Then I should have '&lt;count&gt;' cukes              </div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should have '&lt;count&gt;' cukes                </span>
+              </div>
             </li>
           </ol>
-          <h4>Examples: </h4>
-          <table>
-            <tr id="row_9">
-              <th class="skipped_param" id="row_9_0">count</th>
-            </tr>
-            <tr id="row_10">
-              <td class="passed" id="row_10_0">10</td>
-            </tr>
-          </table>
+          <div class="examples">
+            <h4>
+              <span class="keyword">Examples:</span>
+               <span class="val"></span>
+            </h4>
+            <table>
+              <tr id="row_9">
+                <th class="val skipped_param" id="row_9_0">count</th>
+              </tr>
+              <tr id="row_10">
+                <td class="val passed" id="row_10_0">10</td>
+              </tr>
+            </table>
+          </div>
         </div>
-        <div class="scenario">
-          <h3>Scenario Outline: another passing background</h3>
+        <div class="scenario outline">
+          <h3>
+            <span class="keyword">Scenario Outline:</span>
+             <span class="val">another passing background</span>
+          </h3>
           <ol>
             <li class="step skipped" id="features_background_scenario_outline_passing_background_feature_13">
               <div>
-Then I should have '&lt;count&gt;' cukes              </div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should have '&lt;count&gt;' cukes                </span>
+              </div>
             </li>
           </ol>
-          <h4>Examples: </h4>
-          <table>
-            <tr id="row_15">
-              <th class="skipped_param" id="row_15_0">count</th>
-            </tr>
-            <tr id="row_16">
-              <td class="passed" id="row_16_0">10</td>
-            </tr>
-          </table>
+          <div class="examples">
+            <h4>
+              <span class="keyword">Examples:</span>
+               <span class="val"></span>
+            </h4>
+            <table>
+              <tr id="row_15">
+                <th class="val skipped_param" id="row_15_0">count</th>
+              </tr>
+              <tr id="row_16">
+                <td class="val passed" id="row_16_0">10</td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
       <div class="feature">
-        <h2>Feature: Calling undefined step</h2>
+        <h2>
+          <span class="val">Feature: Calling undefined step</span>
+        </h2>
         <p>
         </p>
         <div class="scenario">
-          <h3>Scenario: Call directly</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Call directly</span>
+          </h3>
           <ol>
             <li class="step undefined" id="features_call_undefined_step_from_step_def_feature_4">
               <div>
-Given a step definition that calls an undefined step              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+a step definition that calls an undefined step                </span>
+              </div>
               <pre class="undefined">Undefined step: "this does not exist" (Cucumber::Undefined)
 ./features/step_definitions/sample_steps.rb:20:in `/^a step definition that calls an undefined step$/'
 features/call_undefined_step_from_step_def.feature:4:in `Given a step definition that calls an undefined step'</pre>
@@ -540,11 +714,17 @@ features/call_undefined_step_from_step_def.feature:4:in `Given a step definition
           </ol>
         </div>
         <div class="scenario">
-          <h3>Scenario: Call via another</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Call via another</span>
+          </h3>
           <ol>
             <li class="step undefined" id="features_call_undefined_step_from_step_def_feature_7">
               <div>
-Given call step &quot;<span class="undefined_param">a step definition that calls an undefined step</span>&quot;              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+call step &quot;<span class="param">a step definition that calls an undefined step</span>&quot;                </span>
+              </div>
               <pre class="undefined">Undefined step: "this does not exist" (Cucumber::Undefined)
 ./features/step_definitions/sample_steps.rb:20:in `/^a step definition that calls an undefined step$/'
 features/call_undefined_step_from_step_def.feature:7:in `Given call step "a step definition that calls an undefined step"'</pre>
@@ -553,15 +733,23 @@ features/call_undefined_step_from_step_def.feature:7:in `Given call step "a step
         </div>
       </div>
       <div class="feature">
-        <h2>Feature: Failing expectation</h2>
+        <h2>
+          <span class="val">Feature: Failing expectation</span>
+        </h2>
         <p>
         </p>
         <div class="scenario">
-          <h3>Scenario: Failing expectation</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Failing expectation</span>
+          </h3>
           <ol>
             <li class="step failed" id="features_failing_expectation_feature_4">
               <div>
-Given failing expectation              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+failing expectation                </span>
+              </div>
               <pre class="failed">expected: "that",
      got: "this" (using ==)
 Diff:
@@ -576,216 +764,295 @@ features/failing_expectation.feature:4:in `Given failing expectation'</pre>
         </div>
       </div>
       <div class="feature">
-        <h2>Feature: Lots of undefined</h2>
+        <h2>
+          <span class="val">Feature: Lots of undefined</span>
+        </h2>
         <p>
         </p>
         <div class="scenario">
-          <h3>Scenario: Implement me</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Implement me</span>
+          </h3>
           <ol>
             <li class="step undefined" id="features_lots_of_undefined_feature_4">
               <div>
-Given it snows in Sahara              </div>
-              <pre class="undefined">Undefined step: "it snows in Sahara" (Cucumber::Undefined)
-features/lots_of_undefined.feature:4:in `Given it snows in Sahara'</pre>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+it snows in Sahara                </span>
+              </div>
             </li>
             <li class="step undefined" id="features_lots_of_undefined_feature_5">
               <div>
-Given it's 40 degrees in Norway              </div>
-              <pre class="undefined">Undefined step: "it's 40 degrees in Norway" (Cucumber::Undefined)
-features/lots_of_undefined.feature:5:in `Given it's 40 degrees in Norway'</pre>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+it's 40 degrees in Norway                </span>
+              </div>
             </li>
             <li class="step undefined" id="features_lots_of_undefined_feature_6">
               <div>
-And it's 40 degrees in Norway              </div>
-              <pre class="undefined">Undefined step: "it's 40 degrees in Norway" (Cucumber::Undefined)
-features/lots_of_undefined.feature:6:in `And it's 40 degrees in Norway'</pre>
+                <span class="keyword">And</span>
+                 <span class="step val">
+it's 40 degrees in Norway                </span>
+              </div>
             </li>
             <li class="step undefined" id="features_lots_of_undefined_feature_7">
               <div>
-When I stop procrastinating              </div>
-              <pre class="undefined">Undefined step: "I stop procrastinating" (Cucumber::Undefined)
-features/lots_of_undefined.feature:7:in `When I stop procrastinating'</pre>
+                <span class="keyword">When</span>
+                 <span class="step val">
+I stop procrastinating                </span>
+              </div>
             </li>
             <li class="step undefined" id="features_lots_of_undefined_feature_8">
               <div>
-And there is world peace              </div>
-              <pre class="undefined">Undefined step: "there is world peace" (Cucumber::Undefined)
-features/lots_of_undefined.feature:8:in `And there is world peace'</pre>
+                <span class="keyword">And</span>
+                 <span class="step val">
+there is world peace                </span>
+              </div>
             </li>
           </ol>
         </div>
       </div>
       <div class="feature">
-        <h2>Feature: multiline</h2>
+        <h2>
+          <span class="val">Feature: multiline</span>
+        </h2>
         <p>
         </p>
         <div class="background">
-          <h3>Background: I'm a multiline name
+          <h3>
+            <span class="keyword">Background:</span>
+             <span class="val">I'm a multiline name
 which goes on and on and on for three lines
-yawn</h3>
+yawn</span>
+          </h3>
           <ol>
             <li class="step passed" id="features_multiline_name_feature_6">
               <div>
-Given passing without a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+passing without a table                </span>
+              </div>
             </li>
           </ol>
         </div>
         <div class="scenario">
-          <h3>Scenario: I'm a multiline name
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">I'm a multiline name
 which goes on and on and on for three lines
-yawn</h3>
+yawn</span>
+          </h3>
           <ol>
-            <li class="step passed" id="features_multiline_name_feature_6">
-            </li>
             <li class="step passed" id="features_multiline_name_feature_11">
               <div>
-Given passing without a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+passing without a table                </span>
+              </div>
             </li>
           </ol>
         </div>
-        <div class="scenario">
-          <h3>Scenario Outline: I'm a multiline name
+        <div class="scenario outline">
+          <h3>
+            <span class="keyword">Scenario Outline:</span>
+             <span class="val">I'm a multiline name
 which goes on and on and on for three lines
-yawn</h3>
+yawn</span>
+          </h3>
           <ol>
             <li class="step skipped" id="features_multiline_name_feature_16">
               <div>
-Given &lt;state&gt; without a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+&lt;state&gt; without a table                </span>
+              </div>
             </li>
           </ol>
-          <h4>Examples: </h4>
-          <table>
-            <tr id="row_18">
-              <th class="skipped_param" id="row_18_0">state</th>
-            </tr>
-            <tr id="row_19">
-              <td class="passed" id="row_19_0">passing</td>
-            </tr>
-          </table>
+          <div class="examples">
+            <h4>
+              <span class="keyword">Examples:</span>
+               <span class="val"></span>
+            </h4>
+            <table>
+              <tr id="row_18">
+                <th class="val skipped_param" id="row_18_0">state</th>
+              </tr>
+              <tr id="row_19">
+                <td class="val passed" id="row_19_0">passing</td>
+              </tr>
+            </table>
+          </div>
         </div>
-        <div class="scenario">
-          <h3>Scenario Outline: name</h3>
+        <div class="scenario outline">
+          <h3>
+            <span class="keyword">Scenario Outline:</span>
+             <span class="val">name</span>
+          </h3>
           <ol>
             <li class="step skipped" id="features_multiline_name_feature_22">
               <div>
-Given &lt;state&gt; without a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+&lt;state&gt; without a table                </span>
+              </div>
             </li>
           </ol>
-          <h4>Examples: I'm a multiline name
+          <div class="examples">
+            <h4>
+              <span class="keyword">Examples:</span>
+               <span class="val">I'm a multiline name
 which goes on and on and on for three lines
-yawn</h4>
-          <table>
-            <tr id="row_26">
-              <th class="skipped_param" id="row_26_0">state</th>
-            </tr>
-            <tr id="row_27">
-              <td class="passed" id="row_27_0">passing</td>
-            </tr>
-          </table>
+yawn</span>
+            </h4>
+            <table>
+              <tr id="row_26">
+                <th class="val skipped_param" id="row_26_0">state</th>
+              </tr>
+              <tr id="row_27">
+                <td class="val passed" id="row_27_0">passing</td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
       <div class="feature">
-        <h2>Feature: Outline Sample</h2>
+        <h2>
+          <span class="val">Feature: Outline Sample</span>
+        </h2>
         <p>
         </p>
         <div class="scenario">
-          <h3>Scenario: I have no steps</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">I have no steps</span>
+          </h3>
           <ol>
           </ol>
         </div>
-        <div class="scenario">
-          <h3>Scenario Outline: Test state</h3>
+        <div class="scenario outline">
+          <h3>
+            <span class="keyword">Scenario Outline:</span>
+             <span class="val">Test state</span>
+          </h3>
           <ol>
             <li class="step skipped" id="features_outline_sample_feature_6">
               <div>
-Given &lt;state&gt; without a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+&lt;state&gt; without a table                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_outline_sample_feature_7">
               <div>
-Given &lt;other_state&gt; without a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+&lt;other_state&gt; without a table                </span>
+              </div>
             </li>
           </ol>
-          <h4>Examples: Rainbow colours</h4>
-          <table>
-            <tr id="row_9">
-              <th class="skipped_param" id="row_9_0">state</th>
-              <th class="skipped_param" id="row_9_1">other_state</th>
-            </tr>
-            <tr id="row_10">
-              <td class="undefined" id="row_10_0">missing</td>
-              <td class="skipped" id="row_10_1">passing</td>
-            </tr>
-            <tr>
-              <td class="failed" colspan="2">
-                <pre>
-Undefined step: "missing without a table" (Cucumber::Undefined)
-features/outline_sample.feature:6:in `Given <state> without a table'                </pre>
-              </td>
-            </tr>
-            <tr id="row_11">
-              <td class="passed" id="row_11_0">passing</td>
-              <td class="passed" id="row_11_1">passing</td>
-            </tr>
-            <tr id="row_12">
-              <td class="failed" id="row_12_0">failing</td>
-              <td class="skipped" id="row_12_1">passing</td>
-            </tr>
-            <tr>
-              <td class="failed" colspan="2">
-                <pre>
+          <div class="examples">
+            <h4>
+              <span class="keyword">Examples:</span>
+               <span class="val">Rainbow colours</span>
+            </h4>
+            <table>
+              <tr id="row_9">
+                <th class="val skipped_param" id="row_9_0">state</th>
+                <th class="val skipped_param" id="row_9_1">other_state</th>
+              </tr>
+              <tr id="row_10">
+                <td class="val undefined" id="row_10_0">missing</td>
+                <td class="val skipped" id="row_10_1">passing</td>
+              </tr>
+              <tr id="row_11">
+                <td class="val passed" id="row_11_0">passing</td>
+                <td class="val passed" id="row_11_1">passing</td>
+              </tr>
+              <tr id="row_12">
+                <td class="val failed" id="row_12_0">failing</td>
+                <td class="val skipped" id="row_12_1">passing</td>
+              </tr>
+              <tr>
+                <td colspan="2" class="failed">
+                  <pre>
 FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
 ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-features/outline_sample.feature:6:in `Given <state> without a table'                </pre>
-              </td>
-            </tr>
-          </table>
-          <h4>Examples: Only passing</h4>
-          <table>
-            <tr id="row_14">
-              <th class="skipped_param" id="row_14_0">state</th>
-              <th class="skipped_param" id="row_14_1">other_state</th>
-            </tr>
-            <tr id="row_15">
-              <td class="passed" id="row_15_0">passing</td>
-              <td class="passed" id="row_15_1">passing</td>
-            </tr>
-          </table>
+features/outline_sample.feature:6:in `Given <state> without a table'                  </pre>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="examples">
+            <h4>
+              <span class="keyword">Examples:</span>
+               <span class="val">Only passing</span>
+            </h4>
+            <table>
+              <tr id="row_14">
+                <th class="val skipped_param" id="row_14_0">state</th>
+                <th class="val skipped_param" id="row_14_1">other_state</th>
+              </tr>
+              <tr id="row_15">
+                <td class="val passed" id="row_15_0">passing</td>
+                <td class="val passed" id="row_15_1">passing</td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
       <div class="feature">
+        <pre class="comment">
+# Feature comment
+        </pre>
         <span class="tag">@one</span>
-        <h2>Feature: Sample</h2>
+        <h2>
+          <span class="val">Feature: Sample</span>
+        </h2>
         <p>
         </p>
         <div class="scenario">
           <span class="tag">@two</span>
           <span class="tag">@three</span>
-          <h3>Scenario: Missing</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Missing</span>
+          </h3>
           <ol>
-            <li class="step undefined" id="features_sample_feature_6">
+            <li class="step undefined" id="features_sample_feature_7">
               <div>
-Given missing              </div>
-              <pre class="undefined">Undefined step: "missing" (Cucumber::Undefined)
-features/sample.feature:6:in `Given missing'</pre>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+missing                </span>
+              </div>
             </li>
           </ol>
         </div>
         <div class="scenario">
+          <pre class="comment">
+# Scenario comment
+          </pre>
           <span class="tag">@three</span>
-          <h3>Scenario: Passing</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Passing</span>
+          </h3>
           <ol>
-            <li class="step passed" id="features_sample_feature_10">
+            <li class="step passed" id="features_sample_feature_12">
               <div>
-Given passing              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+passing                </span>
+              </div>
               <table>
-                <tr id="row_11">
-                  <td id="row_11_0">a</td>
-                  <td id="row_11_1">b</td>
+                <tr id="row_13">
+                  <td class="val" id="row_13_0">a</td>
+                  <td class="val" id="row_13_1">b</td>
                 </tr>
-                <tr id="row_12">
-                  <td id="row_12_0">c</td>
-                  <td id="row_12_1">d</td>
+                <tr id="row_14">
+                  <td class="val" id="row_14_0">c</td>
+                  <td class="val" id="row_14_1">d</td>
                 </tr>
               </table>
             </li>
@@ -793,53 +1060,75 @@ Given passing              </div>
         </div>
         <div class="scenario">
           <span class="tag">@four</span>
-          <h3>Scenario: Failing</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Failing</span>
+          </h3>
           <ol>
-            <li class="step failed" id="features_sample_feature_16">
+            <li class="step failed" id="features_sample_feature_18">
               <div>
-Given failing              </div>
-              <pre class="failed">
+                <span class="keyword">Given</span>
+                 <span class="step val">
+failing                </span>
+              </div>
+              <pre class="val">
 hello              </pre>
               <pre class="failed">FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
 ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
-features/sample.feature:16:in `Given failing'</pre>
+features/sample.feature:18:in `Given failing'</pre>
             </li>
           </ol>
         </div>
       </div>
       <div class="feature">
-        <h2>Feature: search examples</h2>
+        <h2>
+          <span class="val">Feature: search examples</span>
+        </h2>
         <p>
         </p>
         <div class="background">
-          <h3>Background: Hantu Pisang background match</h3>
+          <h3>
+            <span class="keyword">Background:</span>
+             <span class="val">Hantu Pisang background match</span>
+          </h3>
           <ol>
             <li class="step passed" id="features_search_sample_feature_4">
               <div>
-Given passing without a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+passing without a table                </span>
+              </div>
             </li>
           </ol>
         </div>
         <div class="scenario">
-          <h3>Scenario: should match Hantu Pisang</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">should match Hantu Pisang</span>
+          </h3>
           <ol>
-            <li class="step passed" id="features_search_sample_feature_4">
-            </li>
             <li class="step passed" id="features_search_sample_feature_7">
               <div>
-Given passing without a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+passing without a table                </span>
+              </div>
             </li>
           </ol>
         </div>
         <div class="scenario">
-          <h3>Scenario: Ignore me</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Ignore me</span>
+          </h3>
           <ol>
-            <li class="step passed" id="features_search_sample_feature_4">
-            </li>
             <li class="step failed" id="features_search_sample_feature_10">
               <div>
-Given failing without a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+failing without a table                </span>
+              </div>
               <pre class="failed">FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
 ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
@@ -847,331 +1136,531 @@ features/search_sample.feature:10:in `Given failing without a table'</pre>
             </li>
           </ol>
         </div>
-        <div class="scenario">
-          <h3>Scenario Outline: Ignore me</h3>
+        <div class="scenario outline">
+          <h3>
+            <span class="keyword">Scenario Outline:</span>
+             <span class="val">Ignore me</span>
+          </h3>
           <ol>
             <li class="step skipped" id="features_search_sample_feature_13">
               <div>
-Given &lt;state&gt; without a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+&lt;state&gt; without a table                </span>
+              </div>
             </li>
           </ol>
-          <h4>Examples: </h4>
-          <table>
-            <tr id="row_15">
-              <th class="skipped_param" id="row_15_0">state</th>
-            </tr>
-            <tr id="row_16">
-              <td class="failed" id="row_16_0">failing</td>
-            </tr>
-            <tr>
-              <td class="failed" colspan="1">
-                <pre>
+          <div class="examples">
+            <h4>
+              <span class="keyword">Examples:</span>
+               <span class="val"></span>
+            </h4>
+            <table>
+              <tr id="row_15">
+                <th class="val skipped_param" id="row_15_0">state</th>
+              </tr>
+              <tr id="row_16">
+                <td class="val failed" id="row_16_0">failing</td>
+              </tr>
+              <tr>
+                <td colspan="1" class="failed">
+                  <pre>
 FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
 ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-features/search_sample.feature:13:in `Given <state> without a table'                </pre>
-              </td>
-            </tr>
-          </table>
+features/search_sample.feature:13:in `Given <state> without a table'                  </pre>
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
-        <div class="scenario">
-          <h3>Scenario Outline: Hantu Pisang match</h3>
+        <div class="scenario outline">
+          <h3>
+            <span class="keyword">Scenario Outline:</span>
+             <span class="val">Hantu Pisang match</span>
+          </h3>
           <ol>
             <li class="step skipped" id="features_search_sample_feature_19">
               <div>
-Given &lt;state&gt; without a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+&lt;state&gt; without a table                </span>
+              </div>
             </li>
           </ol>
-          <h4>Examples: </h4>
-          <table>
-            <tr id="row_21">
-              <th class="skipped_param" id="row_21_0">state</th>
-            </tr>
-            <tr id="row_22">
-              <td class="passed" id="row_22_0">passing</td>
-            </tr>
-          </table>
+          <div class="examples">
+            <h4>
+              <span class="keyword">Examples:</span>
+               <span class="val"></span>
+            </h4>
+            <table>
+              <tr id="row_21">
+                <th class="val skipped_param" id="row_21_0">state</th>
+              </tr>
+              <tr id="row_22">
+                <td class="val passed" id="row_22_0">passing</td>
+              </tr>
+            </table>
+          </div>
         </div>
-        <div class="scenario">
-          <h3>Scenario Outline: no match in name but in examples</h3>
+        <div class="scenario outline">
+          <h3>
+            <span class="keyword">Scenario Outline:</span>
+             <span class="val">no match in name but in examples</span>
+          </h3>
           <ol>
             <li class="step skipped" id="features_search_sample_feature_25">
               <div>
-Given &lt;state&gt; without a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+&lt;state&gt; without a table                </span>
+              </div>
             </li>
           </ol>
-          <h4>Examples: Hantu Pisang</h4>
-          <table>
-            <tr id="row_27">
-              <th class="skipped_param" id="row_27_0">state</th>
-            </tr>
-            <tr id="row_28">
-              <td class="passed" id="row_28_0">passing</td>
-            </tr>
-          </table>
-          <h4>Examples: Ignore me</h4>
-          <table>
-            <tr id="row_31">
-              <th class="skipped_param" id="row_31_0">state</th>
-            </tr>
-            <tr id="row_32">
-              <td class="failed" id="row_32_0">failing</td>
-            </tr>
-            <tr>
-              <td class="failed" colspan="1">
-                <pre>
+          <div class="examples">
+            <h4>
+              <span class="keyword">Examples:</span>
+               <span class="val">Hantu Pisang</span>
+            </h4>
+            <table>
+              <tr id="row_27">
+                <th class="val skipped_param" id="row_27_0">state</th>
+              </tr>
+              <tr id="row_28">
+                <td class="val passed" id="row_28_0">passing</td>
+              </tr>
+            </table>
+          </div>
+          <div class="examples">
+            <h4>
+              <span class="keyword">Examples:</span>
+               <span class="val">Ignore me</span>
+            </h4>
+            <table>
+              <tr id="row_31">
+                <th class="val skipped_param" id="row_31_0">state</th>
+              </tr>
+              <tr id="row_32">
+                <td class="val failed" id="row_32_0">failing</td>
+              </tr>
+              <tr>
+                <td colspan="1" class="failed">
+                  <pre>
 FAIL (RuntimeError)
 ./features/step_definitions/sample_steps.rb:2:in `flunker'
 ./features/step_definitions/sample_steps.rb:16:in `/^failing without a table$/'
-features/search_sample.feature:25:in `Given <state> without a table'                </pre>
-              </td>
-            </tr>
-          </table>
+features/search_sample.feature:25:in `Given <state> without a table'                  </pre>
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
       <div class="feature">
         <span class="tag">@lots</span>
-        <h2>Feature: Tons of cukes</h2>
+        <h2>
+          <span class="val">Feature: Tons of cukes</span>
+        </h2>
         <p>
         </p>
         <div class="scenario">
-          <h3>Scenario: Lots and lots</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Lots and lots</span>
+          </h3>
           <ol>
             <li class="step passed" id="features_tons_of_cukes_feature_4">
               <div>
-Given '<span class="passed_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step failed" id="features_tons_of_cukes_feature_5">
               <div>
-Given '<span class="failed_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
               <pre class="failed">We already have 2 cukes! (RuntimeError)
 ./features/step_definitions/sample_steps.rb:28:in `/^'(.+)' cukes$/'
 features/tons_of_cukes.feature:5:in `Given '2' cukes'</pre>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_6">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_7">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_8">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_9">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_10">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_11">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_12">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_13">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_14">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_15">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_16">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_17">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_18">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_19">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_20">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_21">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_22">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_23">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_24">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_25">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_26">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_27">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_28">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_29">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_30">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_31">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_32">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_33">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_34">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_35">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_36">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_37">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_38">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_39">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_40">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_41">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_42">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_43">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_44">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_45">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_46">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_47">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_48">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_49">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_50">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_51">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
             <li class="step skipped" id="features_tons_of_cukes_feature_52">
               <div>
-Given '<span class="skipped_param">2</span>' cukes              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+'<span class="param">2</span>' cukes                </span>
+              </div>
             </li>
           </ol>
         </div>
       </div>
       <div class="feature">
-        <h2>Feature: undefined multiline args</h2>
+        <h2>
+          <span class="val">Feature: undefined multiline args</span>
+        </h2>
         <p>
         </p>
         <div class="scenario">
-          <h3>Scenario: pystring</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">pystring</span>
+          </h3>
           <ol>
             <li class="step undefined" id="features_undefined_multiline_args_feature_4">
               <div>
-Given a pystring              </div>
-              <pre class="undefined">
+                <span class="keyword">Given</span>
+                 <span class="step val">
+a pystring                </span>
+              </div>
+              <pre class="val">
   example              </pre>
-              <pre class="undefined">Undefined step: "a pystring" (Cucumber::Undefined)
-features/undefined_multiline_args.feature:4:in `Given a pystring'</pre>
             </li>
           </ol>
         </div>
         <div class="scenario">
-          <h3>Scenario: table</h3>
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">table</span>
+          </h3>
           <ol>
             <li class="step undefined" id="features_undefined_multiline_args_feature_10">
               <div>
-Given a table              </div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+a table                </span>
+              </div>
               <table>
                 <tr id="row_11">
-                  <td id="row_11_0">table</td>
+                  <td class="val" id="row_11_0">table</td>
                 </tr>
                 <tr id="row_12">
-                  <td id="row_12_0">example</td>
+                  <td class="val" id="row_12_0">example</td>
                 </tr>
               </table>
-              <pre class="undefined">Undefined step: "a table" (Cucumber::Undefined)
-features/undefined_multiline_args.feature:10:in `Given a table'</pre>
             </li>
           </ol>
         </div>

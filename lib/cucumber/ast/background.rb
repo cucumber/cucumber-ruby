@@ -23,7 +23,7 @@ module Cucumber
       end
 
       def accept(visitor)
-        visitor.visit_comment(@comment)
+        visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_background_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
         visitor.step_mother.before(hook_context)
         visitor.visit_steps(@step_invocations)

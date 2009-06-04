@@ -130,6 +130,14 @@ Then /^the "([^\"]*)" checkbox should be checked$/ do |label|
 <% end -%>
 end
 
+Then /^the "([^\"]*)" checkbox should not be checked$/ do |label|
+<% if framework == :rspec -%>
+  field_labeled(label).should_not be_checked
+<% else -%>
+  assert !field_labeled(label).checked?
+<% end -%>
+end
+
 Then /^I should be on (.+)$/ do |page_name|
 <% if framework == :rspec -%>
   URI.parse(current_url).path.should == path_to(page_name)

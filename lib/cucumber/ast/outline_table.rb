@@ -70,7 +70,7 @@ module Cucumber
             visitor.step_mother.before_and_after(self) do
               @step_invocations.each do |step_invocation|
                 step_invocation.invoke(visitor.step_mother, visitor.options)
-                @exception ||= step_invocation.exception
+                @exception ||= step_invocation.reported_exception
               end
 
               @cells.each do |cell|
@@ -89,7 +89,7 @@ module Cucumber
               @table.visit_scenario_name(visitor, self)
               @step_invocations.each do |step_invocation|
                 step_invocation.invoke(visitor.step_mother, visitor.options)
-                @exception ||= step_invocation.exception
+                @exception ||= step_invocation.reported_exception
                 step_invocation.visit_step_result(visitor)
               end
             end

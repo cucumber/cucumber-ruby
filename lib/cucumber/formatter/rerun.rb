@@ -12,6 +12,7 @@ module Cucumber
       def initialize(step_mother, io, options)
         super(step_mother)
         @io = io
+        @options = options
         @file_names = []
         @file_colon_lines = Hash.new{|h,k| h[k] = []}
       end
