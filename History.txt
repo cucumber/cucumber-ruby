@@ -7,7 +7,9 @@ preload your application in a separate process. Spork listens for DRb connection
 cucumber with --drb they will run inside the Spork server instead. Spork provides two simple hooks
 for preloading your application - one for framework/stable code (Spork.prefork) and one for the code 
 that *you* write and change often (Spork.each_run). This works great for Ruby on Rails, which can
-take a while to load, but Spork isn't tied to Rails.
+take a while to load, but Spork isn't tied to Rails. The new --drb switch also works great alongside
+autotest (just add --drb to your autotest profile in cucumber.yml), so now you can get even faster
+feedback.
 
 Cucumber's built-in cucumber generator now has a new --spork switch, so when you bootstrap your Rails
 application for cucumber, you can have spork configuration set up out of the box. (It's just a
