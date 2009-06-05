@@ -58,5 +58,14 @@ Feature: JUnit output formatter
       """
     And "examples/junit/tmp/TEST-One_passing_scenario__one_failing_scenario.xml" should exist
     And "examples/junit/tmp/TEST-Pending_step.xml" should exist
-    
-    
+  
+  Scenario: show correct error message if no --out is passed
+    When I run cucumber --format junit features
+	  Then STDERR should not match 
+		  """
+can't convert .* into String \(TypeError\)
+		  """
+    And STDERR should match
+		  """
+You \*must\* specify \-\-out DIR for the junit formatter
+	    """
