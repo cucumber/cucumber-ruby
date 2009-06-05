@@ -1,5 +1,8 @@
 == 0.3.12 (In Git)
 
+=== Bugfixes
+* Make sure script/generate cucumber --spork uses the cucumber Rails environment (Philippe Lafoucrière)
+
 === Changed Features
 * The data returned from Table#hashes and similar methods are frozen. Dup if you need to modify. (Aslak Hellesøy)
 
