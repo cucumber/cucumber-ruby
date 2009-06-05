@@ -61,9 +61,12 @@ Feature: DRb Server Integration
 
     When I run cucumber features/sample.feature --drb
     Then it should pass
-    And the output should contain
+    And STDERR should match
       """
       No DRb server is running. Running features locally:
+      """
+    And the output should contain
+      """
       I'm loading all the heavy stuff...
       I'm loading the stuff just for this run...
       """
@@ -78,9 +81,12 @@ Feature: DRb Server Integration
 
     When I run cucumber --profile server
     Then it should pass
-    And the output should contain
+    And STDERR should match
       """
       No DRb server is running. Running features locally:
+      """
+    And the output should contain
+      """
       I'm loading all the heavy stuff...
       I'm loading the stuff just for this run...
       """
