@@ -13,8 +13,8 @@ module Cucumber
         super(step_mother)
         @reportdir = io
         @options = options
-        raise "You *must* specify --out DIR for the junit formatter" unless @reportdir
         raise "Use --out DIR (not --out FILE) for the junit formatter" if File === @reportdir
+        raise "You *must* specify --out DIR for the junit formatter" unless File.directory?(@reportdir)
       end
 
       def visit_feature(feature)

@@ -107,6 +107,10 @@ Then /^STDERR should match$/ do |text|
   last_stderr.should =~ /#{text}/
 end
 
+Then /^STDERR should not match$/ do |text|
+  last_stderr.should_not =~ /#{text}/
+end
+
 Then /^STDERR should be empty$/ do
   last_stderr.should == ""
 end
