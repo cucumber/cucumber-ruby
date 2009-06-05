@@ -53,6 +53,11 @@ module Cucumber
         end
       end
 
+      def print_counts
+        STDERR.puts("The #print_counts method is deprecated and will be removed in 0.4. Use #print_stats instead")
+        print_stats(nil)
+      end
+
       def print_stats(features)
         @io.print dump_count(step_mother.scenarios.length, "scenario")
         print_status_counts{|status| step_mother.scenarios(status)}
@@ -60,7 +65,7 @@ module Cucumber
         @io.print dump_count(step_mother.steps.length, "step")
         print_status_counts{|status| step_mother.steps(status)}
 
-        @io.puts(format_duration(features.duration))
+        @io.puts(format_duration(features.duration)) if features
 
         @io.flush
       end
