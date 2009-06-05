@@ -62,7 +62,7 @@ module Cucumber
       def hashes
         @hashes ||= cells_rows[1..-1].map do |row|
           row.to_hash
-        end
+        end.freeze
       end
       
       # Converts this table into a Hash where the first column is
@@ -198,7 +198,7 @@ module Cucumber
       def cells_rows
         @rows ||= cell_matrix.map do |cell_row|
           @cells_class.new(self, cell_row)
-        end
+        end.freeze
       end
 
       def headers
@@ -230,7 +230,7 @@ module Cucumber
       def columns
         @columns ||= cell_matrix.transpose.map do |cell_row|
           @cells_class.new(self, cell_row)
-        end
+        end.freeze
       end
 
       def cell_matrix
@@ -243,7 +243,7 @@ module Cucumber
             col += 1
             @cell_class.new(raw_cell, self, row, col, line)
           end
-        end
+        end.freeze
       end
 
       # Represents a row of cells or columns of cells
@@ -268,7 +268,7 @@ module Cucumber
         end
 
         def to_hash #:nodoc:
-          @to_hash ||= @table.to_hash(self)
+          @to_hash ||= @table.to_hash(self).freeze
         end
 
         def value(n) #:nodoc:
@@ -326,7 +326,7 @@ module Cucumber
         private
 
         def col_width
-          @col_width ||= @table.__send__(:col_width, @col)
+          @col_width ||= @table.__send__(:col_width, @col).freeze
         end
       end
     end
