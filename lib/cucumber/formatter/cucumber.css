@@ -86,8 +86,8 @@
   background: #ffc0cb;
   color: #8b0000;
 }
-.cucumber ol li.failed span {
-  background: #FF0000;
+.cucumber ol li.failed span.param {
+  background: !failed_dark;
 }
 .cucumber ol li.passed {
   border-left: 5px solid #00ff00;
@@ -95,17 +95,8 @@
   background: #98fb98;
   color: #001111;
 }
-.cucumber ol li.passed span {
-  background: #00FF00;
-}
-.cucumber ol li.undefined {
-  border-left: 5px solid #ff8000;
-  border-bottom: 1px solid #ff8000;
-  background: #ffff00;
-  color: #2a1b0a;
-}
-.cucumber ol li.undefined span {
-  background: #FF8000;
+.cucumber ol li.passed span.param {
+  background: #00ff00;
 }
 .cucumber ol li.skipped {
   border-left: 5px solid #00ffff;
@@ -115,4 +106,22 @@
 }
 .cucumber ol li.skipped span.param {
   background: #00ffff;
+}
+.cucumber ol li.pending {
+  border-left: 5px solid #ff8000;
+  border-bottom: 1px solid #ff8000;
+  background: #ffff00;
+  color: #2a1b0a;
+}
+.cucumber ol li.pending span.param {
+  background: #ff8000;
+}
+.cucumber ol li.undefined {
+  border-left: 5px solid #ff8000;
+  border-bottom: 1px solid #ff8000;
+  background: #ffff00;
+  color: #2a1b0a;
+}
+.cucumber ol li.undefined span.param {
+  background: #ff8000;
 }

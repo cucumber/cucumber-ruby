@@ -102,22 +102,15 @@
       :border-bottom= !step_bottom !failed_dark
       :background= !failed
       :color= !failed_text
-      span
-        :background #FF0000
+      span.param
+        :background !failed_dark
     li.passed
       :border-left= !step_left !passed_dark
       :border-bottom= !step_bottom !passed_dark
       :background= !passed
       :color= !passed_text
-      span
-        :background #00FF00
-    li.undefined
-      :border-left= !step_left !undefined_dark
-      :border-bottom= !step_bottom !undefined_dark
-      :background= !undefined
-      :color= !undefined_text
-      span
-        :background #FF8000
+      span.param
+        :background= !passed_dark
     li.skipped
       :border-left= !step_left !skipped_dark
       :border-bottom= !step_bottom !skipped_dark
@@ -125,3 +118,17 @@
       :color= !skipped_text
       span.param
         :background= !skipped_dark
+    li.pending
+      :border-left= !step_left !pending_dark
+      :border-bottom= !step_bottom !pending_dark
+      :background= !pending
+      :color= !pending_text
+      span.param
+        :background= !pending_dark
+    li.undefined
+      :border-left= !step_left !undefined_dark
+      :border-bottom= !step_bottom !undefined_dark
+      :background= !undefined
+      :color= !undefined_text
+      span.param
+        :background= !undefined_dark
