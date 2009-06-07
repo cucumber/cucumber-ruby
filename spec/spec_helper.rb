@@ -10,3 +10,5 @@ Cucumber.load_language('en')
 $:.unshift(File.dirname(__FILE__))
 
 ::Term::ANSIColor.coloring = true
+
+alias running lambda

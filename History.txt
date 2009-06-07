@@ -1,6 +1,7 @@
 == 0.3.12 (In Git)
 
 === Bugfixes
+* CLI issues correct exit code when using --drb. Requires Spork version >= 0.5.1. (#355 Ben Mabey)
 * Make sure script/generate cucumber --spork uses the cucumber Rails environment (Philippe Lafoucrière)
 
 === Changed Features

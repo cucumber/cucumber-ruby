@@ -34,10 +34,10 @@ module Cucumber
       
       def execute!(step_mother)
         if configuration.drb?
-          if DRbClient.run(@args, @error_stream, @out_stream)
-            return false
-          else
-            @error_stream.puts "WARNING: No DRb server is running. Running features locally:"
+          begin
+            return DRbClient.run(@args, @error_stream, @out_stream)
+          rescue DRbClientError => e
+            @error_stream.puts "WARNING: #{e.message} Running features locally:"
             configuration.parse!(@args)
           end
         end

@@ -110,6 +110,12 @@ module Cucumber
           @cli.execute!(@step_mother)
         end
 
+        it "returns the result from the DRbClient" do
+          DRbClient.stub!(:run).and_return('foo')
+          @cli.execute!(@step_mother).should == 'foo'
+        end
+
+
         it "ceases execution if the DrbClient is able to perform the execution" do
           DRbClient.stub!(:run).and_return(true)
           @configuration.should_not_receive(:load_language)
@@ -117,11 +123,11 @@ module Cucumber
         end
 
         context "when the DrbClient is unable to perfrom the execution" do
-          before { DRbClient.stub!(:run).and_return(false) }
+          before { DRbClient.stub!(:run).and_raise(DRbClientError.new('error message.')) }
 
           it "alerts the user that execution will be performed locally" do
             @cli.execute!(@step_mother)
-            @err.string.should include("WARNING: No DRb server is running. Running features locally:")
+            @err.string.should include("WARNING: error message. Running features locally:")
           end
 
           it "reparses the configuration since the --drb flag causes the initial parsing to short circuit" do

@@ -28,13 +28,14 @@ module Cucumber
         DRbClient.run(@args, @error_stream, @out_stream)
       end
 
-      it "returns false when it can't connect to the server" do
+      it "returns raises an error when it can't connect to the server" do
         DRbObject.stub!(:new_with_uri).and_raise(DRb::DRbConnError)
-        DRbClient.run(@args, @error_stream, @out_stream).should be_false
+        running { DRbClient.run(@args, @error_stream, @out_stream) }.should raise_error(DRbClientError, "No DRb server is running.")
       end
 
-      it "returns true when it connects to the server and runs the features" do
-        DRbClient.run(@args, @error_stream, @out_stream).should be_true
+      it "returns the result from the DRb server call" do
+        @drb_object.should_receive(:run).and_return('foo')
+        DRbClient.run(@args, @error_stream, @out_stream).should == 'foo'
       end
 
     end
