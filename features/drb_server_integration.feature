@@ -1,4 +1,3 @@
-@in_progress
 Feature: DRb Server Integration
   To prevent waiting for Rails and other large Ruby applications to load their environments
   for each feature run Cucumber ships with a DRb client that can speak to a server which
@@ -35,7 +34,7 @@ Feature: DRb Server Integration
     end
     """
 
-  Scenario: Feature Run with --drb flag
+  Scenario: Feature Passing with --drb flag
     Given I am running "spork cuc" in the background
 
     When I run cucumber features/sample.feature --drb
@@ -53,6 +52,30 @@ Feature: DRb Server Integration
       I'm loading all the heavy stuff...
       """
 
+  @in_progress
+  Scenario: Feature Failing with --drb flag
+    Given a file named "features/step_definitions/all_your_steps_are_belong_to_us.rb" with:
+    """
+    Given /^I am just testing stuff$/ do
+      raise "Oh noes!"
+    end
+    """
+    And I am running "spork cuc" in the background
+
+    When I run cucumber features/sample.feature --drb
+    Then it should fail
+    And the output should contain
+      """
+      1 step (1 failed)
+      """
+    And the output should contain
+      """
+      I'm loading the stuff just for this run...
+      """
+    And the output should not contain
+      """
+      I'm loading all the heavy stuff...
+      """
 
   Scenario: Feature Run with --drb flag with no DRb server running
             Cucumber will fall back on running the features locally in this case.
