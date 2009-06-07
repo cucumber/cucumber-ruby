@@ -6,6 +6,22 @@
   background: white;
   padding: 1em;
 }
+.cucumber h1, .cucumber h2, .cucumber h3, .cucumber h4, .cucumber ol, .cucumber li, .cucumber pre, .cucumber p {
+  font-size: 1em;
+  padding: 0px;
+  margin: 0px;
+}
+.cucumber div.feature {
+  border: 1px solid;
+  padding: 2px;
+  margin: 4px;
+}
+.cucumber div.feature div.background, .cucumber div.feature div.scenario, .cucumber div.feature p {
+  padding: 0em 0em 0em 1em;
+}
+.cucumber div.feature div.background div.examples, .cucumber div.feature div.scenario div.examples, .cucumber div.feature p div.examples {
+  padding: 0em 0em 0em 1em;
+}
 .cucumber .stats {
   margin: 2em;
 }
@@ -27,16 +43,7 @@
 .cucumber a:visited {
   font-weight: normal;
 }
-.cucumber div.background, .cucumber div.scenario {
-  border: 1px solid;
-  padding: 2px;
-  margin: 4px;
-}
-.cucumber div.background h3, .cucumber div.background h4, .cucumber div.scenario h3, .cucumber div.scenario h4 {
-  padding: 0px;
-  margin: 0px;
-}
-.cucumber div.background div.examples, .cucumber div.scenario div.examples {
+.cucumber a div.examples {
   border: 1px solid;
   padding: 2px;
   margin: 4px;
@@ -70,12 +77,10 @@
 }
 .cucumber ol {
   list-style: none;
-  margin-left: 0;
-  padding-left: 0;
 }
 .cucumber ol li {
-  margin: 5px 0 5px 5px;
-  padding: 0.3em;
+  margin: 0em 0em 0em 1em;
+  padding: 0em 0em 0em 0.2em;
 }
 .cucumber ol li span.param {
   font-weight: bold;

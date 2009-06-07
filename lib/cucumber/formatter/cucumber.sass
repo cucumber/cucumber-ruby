@@ -29,6 +29,21 @@
   :font-size 0.7em
   :background white
   :padding 1em
+  
+  h1, h2, h3, h4, ol, li, pre, p
+    :font-size 1em
+    :padding 0px
+    :margin 0px
+
+  div.feature
+    :border 1px solid 
+    :padding 2px
+    :margin 4px
+
+    div.background, div.scenario, p
+      :padding 0em 0em 0em 1em
+      div.examples
+        :padding 0em 0em 0em 1em
 
   .stats
     :margin 2em
@@ -52,14 +67,6 @@
     &:visited
       :font-weight normal
 
-  div.background, div.scenario
-    :border 1px solid 
-    :padding 2px
-    :margin 4px
-    
-    h3, h4
-      :padding 0px
-      :margin 0px
     div.examples
       :border 1px solid 
       :padding 2px
@@ -67,7 +74,7 @@
 
   table
     :border-collapse collapse
-
+    
     td, th
       :font-size 0.7em
       :border 1px solid #AAAAAA
@@ -89,12 +96,10 @@
 
   ol
     :list-style none
-    :margin-left 0
-    :padding-left 0
   
     li
-      :margin 5px 0 5px 5px
-      :padding 0.3em
+      :margin 0em 0em 0em 1em
+      :padding 0em 0em 0em 0.2em
       span.param
         :font-weight bold
     li.failed
