@@ -20,7 +20,7 @@ module Cucumber
       end
       
       def create_builder(io)
-        Builder::XmlMarkup.new(:target => io, :indent => 2)
+        Builder::XmlMarkup.new(:target => io, :indent => 0)
       end
       
       def visit_features(features)

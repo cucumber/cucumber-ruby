@@ -11,6 +11,7 @@ module Cucumber
     describe Main do
       before(:each) do
         @out = StringIO.new
+        @err = StringIO.new
         Kernel.stub!(:exit).and_return(nil)
       end
 
@@ -97,16 +98,15 @@ module Cucumber
         before(:each) do
           @configuration = mock('Configuration', :drb? => true, :null_object => true)
           Configuration.stub!(:new).and_return(@configuration)
-          @error_stream = mock('standard error')
 
           @args = ['features']
 
-          @cli = Main.new(@args, @out, @error_stream)
+          @cli = Main.new(@args, @out, @err)
           @step_mother = mock('StepMother', :null_object => true)
         end
 
         it "delegates the execution to the DRB client passing the args and streams" do
-          DRbClient.should_receive(:run).with(@args, @error_stream, @out).and_return(true)
+          DRbClient.should_receive(:run).with(@args, @err, @out).and_return(true)
           @cli.execute!(@step_mother)
         end
 
@@ -121,7 +121,7 @@ module Cucumber
 
           it "alerts the user that execution will be performed locally" do
             @cli.execute!(@step_mother)
-            @out.string.should include("No DRb server is running. Running features locally:")
+            @err.string.should include("WARNING: No DRb server is running. Running features locally:")
           end
 
           it "reparses the configuration since the --drb flag causes the initial parsing to short circuit" do

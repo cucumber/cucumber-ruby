@@ -1,25 +1,44 @@
-== 0.3.10 (In Git - The Spork Release!)
+== 0.3.12 (In Git)
+
+=== Bugfixes
+* Make sure script/generate cucumber --spork uses the cucumber Rails environment (Philippe Lafoucrière)
+
+=== Changed Features
+* The data returned from Table#hashes and similar methods are frozen. Dup if you need to modify. (Aslak Hellesøy)
+
+== 0.3.11 2009-06-05
+
+This release just fixes a tiny bug in the formatter to fix an incompatibility
+with the latest RedMine release. It should have been included in 0.3.10, but
+was forgotten.
+
+=== Bugfixes
+* Formatter API was broken in 0.3.9 (Roman Chernyatchik)
+
+== 0.3.10 2009-06-05
+
+The Spork Release!
 
 This release has an exciting new feature - a new --drb switch! This magic switch lets you run your
 features much faster than before, because you can eliminate the startup time for your code. This is
 thanks to a brand new gem called Spork by Tim Harper and Ben Mabey. (You can find out more about Spork 
 here: http://github.com/timcharper/spork/tree/master). You can start Spork and have it preload your 
 application in a separate process. Spork listens for DRb connections, and when you run cucumber with 
---drb they will run inside the Spork server instead. Spork provides two simple hooks for preloading your 
-application - one for framework/stable code (Spork.prefork) and one for the code that *you* write and 
+--drb the features will run inside the Spork server instead. Spork provides two simple hooks for preloading 
+your application - one for framework/stable code (Spork.prefork) and one for the code that *you* write and 
 change often (Spork.each_run). Keep in mind that all World, Before, and other Cucumber hooks need to be
 in the Spork.each_run block.  Using Spork works great for Ruby on Rails, which can take a while to load, 
-but Spork isn't tied to Rails. The new --drb switch also works great alongside autotest (just add --drb 
-to your autotest profile in cucumber.yml), so now you can get even faster feedback.
+but --drb and Spork aren't tied to Rails at all. The new --drb switch also works great alongside autotest 
+(just add --drb to your autotest profile in cucumber.yml), so now you can get even faster feedback.
 
 Cucumber's built-in cucumber generator now has a new --spork switch, so when you bootstrap your Rails
 application for cucumber, you can have spork configuration set up out of the box. (It's just a
 slightly different env.rb.)
 
-Although Spork was in mind when this feature was added it is important to realize that all that was added
-to Cucumber was a DRb client.  Any DRb server that adheres to this protocol can interop with Cucumber.
-While Spork is geared towards removing the load time to give you a faster feedback loop you could just as
-easily use this client with a server that distributes your features to run in parallel. Someone just
+Although Spork was in mind when the --drb switch was added it is important to realize that all that was added
+to Cucumber was a DRb client.  Any DRb server that adheres to this protocol can be used with Cucumber's --drb
+switch. While Spork is geared towards removing the load time to give you a faster feedback loop you could 
+just as easily use this client with a server that distributes your features to run in parallel. Someone just
 needs to write such a server. ;)
 
 This release also has some minor bugfixes related to RSpec and Rails interop.
@@ -31,7 +50,7 @@ This release also has some minor bugfixes related to RSpec and Rails interop.
 
 === New features
 * Spork support via --drb. (Ben Mabey)
-* Added a Ast::Feature#name method for convenience
+* Added a Ast::Feature#name method for convenience. (Aslak Hellesøy)
 
 === Changed features
 * The HTML formatter wraps examples in a div, and distinguishes between Scenario and Scenario Outline. (Aslak Hellesøy)

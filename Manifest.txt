@@ -272,6 +272,7 @@ gem_tasks/fix_cr_lf.rake
 gem_tasks/flog.rake
 gem_tasks/gemspec.rake
 gem_tasks/rspec.rake
+gem_tasks/sass.rake
 gem_tasks/yard.rake
 lib/autotest/cucumber.rb
 lib/autotest/cucumber_mixin.rb
@@ -373,11 +374,6 @@ spec/cucumber/core_ext/string_spec.rb
 spec/cucumber/formatter/ansicolor_spec.rb
 spec/cucumber/formatter/color_io_spec.rb
 spec/cucumber/formatter/duration_spec.rb
-spec/cucumber/formatter/html/cucumber.css
-spec/cucumber/formatter/html/cucumber.js
-spec/cucumber/formatter/html/index.html
-spec/cucumber/formatter/html/jquery-1.3.min.js
-spec/cucumber/formatter/html/jquery.uitableedit.js
 spec/cucumber/formatter/progress_spec.rb
 spec/cucumber/parser/feature_parser_spec.rb
 spec/cucumber/parser/table_parser_spec.rb
