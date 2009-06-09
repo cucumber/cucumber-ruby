@@ -196,6 +196,9 @@ Feature: backgrounds
           features/background/failing_background_after_success.feature:5:in `And '10' global cukes'
         Then I should have '10' global cukes
 
+    Failing Scenarios:
+    features/background/failing_background_after_success.feature:10
+
     2 scenarios (1 failed, 1 passed)
     6 steps (1 failed, 1 skipped, 4 passed)
 

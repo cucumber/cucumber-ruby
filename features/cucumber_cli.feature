@@ -141,6 +141,9 @@ Feature: Cucumber command line
       ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
       features/sample.feature:18:in `Given failing'
 
+      Failing Scenarios:
+      features/sample.feature:17
+
       3 scenarios (1 failed, 1 undefined, 1 passed)
       3 steps (1 failed, 1 undefined, 1 passed)
 
@@ -451,6 +454,9 @@ Feature: Cucumber command line
             ./features/step_definitions/sample_steps.rb:2:in `flunker'
             ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
             features/sample.feature:18:in `Given failing'
+
+      Failing Scenarios:
+      features/sample.feature:17
 
       3 scenarios (1 failed, 1 undefined, 1 passed)
       3 steps (1 failed, 1 undefined, 1 passed)

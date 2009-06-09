@@ -4,8 +4,8 @@ Feature: DRb Server Integration
   loads up the environment only once.
 
   Background: App with Spork support
-              Spork is a gem that has a DRb server and the scenarios below use illustarate how to use it.
-              However, any DRb server that adheres to the protocol that the client expects would work.
+    Spork is a gem that has a DRb server and the scenarios below illustrate how to use it.
+    However, any DRb server that adheres to the protocol that the client expects would work.
 
     Given a standard Cucumber project directory structure
     And a file named "features/support/env.rb" with:
