@@ -81,7 +81,10 @@ Feature: Cucumber command line
             ./features/step_definitions/sample_steps.rb:2:in `flunker'
             ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
             features/sample.feature:18:in `Given failing'
-
+      
+      Failing Scenarios:
+      features/sample.feature:17
+      
       2 scenarios (1 failed, 1 undefined)
       2 steps (1 failed, 1 undefined)
 

@@ -62,6 +62,9 @@ Feature: Cucumber --work-in-progress switch
             I fail (RuntimeError)
             ./features/step_definitions/steps.rb:2:in `/^a failing step$/'
             features/wip.feature:4:in `Given a failing step'
+      
+      Failing Scenarios:
+      features/wip.feature:3
 
       1 scenario (1 failed)
       1 step (1 failed)

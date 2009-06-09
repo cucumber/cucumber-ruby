@@ -48,7 +48,10 @@ Feature: After Block Exceptions
 
         Scenario: Success       # features/naughty_step_in_scenario.feature:6
           Given this step works # features/step_definitions/steps.rb:5
-    
+      
+      Failing Scenarios:
+      features/naughty_step_in_scenario.feature:3
+      
       2 scenarios (1 failed, 1 passed)
       2 steps (2 passed)
       

@@ -112,6 +112,9 @@ Feature: backgrounds
       Scenario: another failing background
         Then I should have '10' cukes
 
+    Failing Scenarios:
+    features/background/failing_background.feature:8
+    
     2 scenarios (1 failed, 1 skipped)
     6 steps (1 failed, 5 skipped)
 

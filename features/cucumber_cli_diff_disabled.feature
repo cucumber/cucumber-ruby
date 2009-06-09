@@ -20,7 +20,10 @@ Feature: Cucumber command line
              (Spec::Expectations::ExpectationNotMetError)
             ./features/step_definitions/sample_steps.rb:63:in `/^failing expectation$/'
             features/failing_expectation.feature:4:in `Given failing expectation'
-
+      
+      Failing Scenarios:
+      features/failing_expectation.feature:3
+      
       1 scenario (1 failed)
       1 step (1 failed)
 
@@ -40,6 +43,9 @@ Feature: Cucumber command line
             ./features/step_definitions/sample_steps.rb:63:in `/^failing expectation$/'
             features/failing_expectation.feature:4:in `Given failing expectation'
 
+      Failing Scenarios:
+      features/failing_expectation.feature:3
+      
       1 scenario (1 failed)
       1 step (1 failed)
 

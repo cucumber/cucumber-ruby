@@ -59,6 +59,17 @@ module Cucumber
       end
 
       def print_stats(features)
+        
+        @failures = step_mother.scenarios(:failed).select { |s| s.is_a?(Cucumber::Ast::Scenario) }
+        
+        if !@failures.empty?
+          @io.puts(format_string("Failing Scenarios:", :failed))
+          @failures.each do |failure|
+            @io.puts format_string(failure.file_colon_line, :failed)
+          end
+          @io.puts
+        end
+        
         @io.print dump_count(step_mother.scenarios.length, "scenario")
         print_status_counts{|status| step_mother.scenarios(status)}
 
