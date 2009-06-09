@@ -65,7 +65,7 @@ module Cucumber
         if !@failures.empty?
           @io.puts(format_string("Failing Scenarios:", :failed))
           @failures.each do |failure|
-            @io.puts format_string(failure.file_colon_line, :failed)
+            @io.puts(format_string(failure.file_colon_line, :failed))
           end
           @io.puts
         end
