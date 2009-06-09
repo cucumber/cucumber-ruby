@@ -4,6 +4,9 @@
 * CLI issues correct exit code when using --drb. Requires Spork version >= 0.5.1. (#355 Ben Mabey)
 * Make sure script/generate cucumber --spork uses the cucumber Rails environment (Philippe Lafoucrière)
 
+=== New Features
+* Display failing scenarios at the end of pretty format to make it easier for people to play them back (#360 Ryan Bigg)
+
 === Changed Features
 * The data returned from Table#hashes and similar methods are frozen. Dup if you need to modify. (Aslak Hellesøy)
 
