@@ -31,8 +31,8 @@ Given /^the following profiles? (?:are|is) defined:$/ do |profiles|
   create_file('cucumber.yml', profiles)
 end
 
-Given /^I am running "([^\"]*)" in the background$/ do |command|
-  run_in_background command
+Given /^I am running spork in the background$/ do
+  run_spork_in_background
 end
 
 Given /^I am not running (?:.*) in the background$/ do

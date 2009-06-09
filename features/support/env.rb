@@ -75,15 +75,17 @@ class CucumberWorld
     @last_stderr = IO.read(stderr_file.path)
   end
 
-  def run_in_background(command)
+  def run_spork_in_background
     pid = fork
     in_current_dir do
       if pid
         background_jobs << pid
       else
-        #STDOUT.close
-        #STDERR.close
-        exec command
+        # STDOUT.close
+        # STDERR.close
+        spork = `which spork`.strip
+        cmd = "#{Cucumber::RUBY_BINARY} -I #{Cucumber::LIBDIR} #{spork} cuc"
+        exec cmd
       end
     end
   end

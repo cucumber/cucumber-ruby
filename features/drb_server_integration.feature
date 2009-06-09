@@ -35,10 +35,11 @@ Feature: DRb Server Integration
     """
 
   Scenario: Feature Passing with --drb flag
-    Given I am running "spork cuc" in the background
+    Given I am running spork in the background
 
     When I run cucumber features/sample.feature --drb
     Then it should pass
+    And STDERR should be empty
     And the output should contain
       """
       1 step (1 passed)
@@ -59,7 +60,7 @@ Feature: DRb Server Integration
       raise "Oh noes!"
     end
     """
-    And I am running "spork cuc" in the background
+    And I am running spork in the background
 
     When I run cucumber features/sample.feature --drb
     Then it should fail
