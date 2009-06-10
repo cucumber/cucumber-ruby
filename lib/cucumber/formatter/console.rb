@@ -63,9 +63,10 @@ module Cucumber
         @failures = step_mother.scenarios(:failed).select { |s| s.is_a?(Cucumber::Ast::Scenario) }
         
         if !@failures.empty?
-          @io.puts(format_string("Failing Scenarios:", :failed))
+          @io.puts format_string("Failing Scenarios:", :failed)
           @failures.each do |failure|
-            @io.puts(format_string(failure.file_colon_line, :failed))
+            @io.puts format_string("cucumber " + failure.file_colon_line, :failed) +
+            format_string(" # Scenario: " + failure.name, :comment)
           end
           @io.puts
         end
