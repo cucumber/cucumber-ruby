@@ -35,6 +35,13 @@ module Cucumber
         expand_profiles_into_args
         return if parse_drb
 
+        @args.each do |arg|
+          if arg =~ /^(\w+)=(.*)$/
+            ENV[$1] = $2
+            @args.delete(arg)
+          end
+        end
+
         @args.extend(::OptionParser::Arguable)
 
         @args.options do |opts|

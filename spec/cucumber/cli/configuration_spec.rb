@@ -358,6 +358,21 @@ END_OF_MESSAGE
       config.feature_files.should == ["cucumber.feature"]
     end
 
+    it "should allow specifying environment variables on the command line" do
+      config = Configuration.new
+      config.parse!(["foo=bar"])
+      ENV["foo"].should == "bar"
+      config.feature_files.should == []
+    end
+    
+    it "should allow specifying environment variables in profiles" do
+      given_cucumber_yml_defined_as({'selenium' => 'RAILS_ENV=selenium'})
+      config = Configuration.new
+      config.parse!(["--profile", "selenium"])
+      ENV["RAILS_ENV"].should == "selenium"
+      config.feature_files.should == []
+    end
+
   end
 end
 end
