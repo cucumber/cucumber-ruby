@@ -31,13 +31,14 @@ module Cucumber
           @testsuite << @builder.target!
         end
 
-        File.open(@feature_filename, 'w') { |file| file.write(@testsuite.target!) }
+        basename = File.basename(feature.file)[0...-File.extname(feature.file).length]
+        feature_filename = File.join(@reportdir, "TEST-#{basename}.xml")
+        File.open(feature_filename, 'w') { |file| file.write(@testsuite.target!) }
       end
 
       def visit_feature_name(name)
         lines = name.split(/\r?\n/)
         @feature_name = lines[0].sub(/Feature\:/, '').strip
-        @feature_filename = convert_to_file_name(@feature_name)
       end
 
       def visit_scenario_name(keyword, name, file_colon_line, source_indent)
@@ -64,10 +65,6 @@ module Cucumber
       end
 
       private
-
-      def convert_to_file_name(feature_name)
-        File.join(@reportdir, "TEST-" + feature_name.gsub(/[^\w_\.]/, '_') + ".xml")
-      end
 
       def format_exception(exception)
         (["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n")

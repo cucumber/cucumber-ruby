@@ -13,7 +13,7 @@ Feature: JUnit output formatter
       """
 
       """
-    And "examples/junit/tmp/TEST-One_passing_scenario__one_failing_scenario.xml" should contain XML
+    And "examples/junit/tmp/TEST-one_passing_one_failing.xml" should contain XML
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite errors="0" tests="2" name="One passing scenario, one failing scenario" failures="1">
@@ -36,7 +36,7 @@ Feature: JUnit output formatter
       """
       
       """
-    And "examples/junit/tmp/TEST-Pending_step.xml" should contain XML
+    And "examples/junit/tmp/TEST-pending.xml" should contain XML
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite errors="0" tests="1" name="Pending step" failures="1">
@@ -56,8 +56,8 @@ Feature: JUnit output formatter
       """
       
       """
-    And "examples/junit/tmp/TEST-One_passing_scenario__one_failing_scenario.xml" should exist
-    And "examples/junit/tmp/TEST-Pending_step.xml" should exist
+    And "examples/junit/tmp/TEST-one_passing_one_failing.xml" should exist
+    And "examples/junit/tmp/TEST-pending.xml" should exist
   
   Scenario: show correct error message if no --out is passed
     When I run cucumber --format junit features
