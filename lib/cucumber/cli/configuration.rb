@@ -10,7 +10,8 @@ module Cucumber
         'progress' => 'Cucumber::Formatter::Progress',
         'rerun'    => 'Cucumber::Formatter::Rerun',
         'usage'    => 'Cucumber::Formatter::Usage',
-        'junit'    => 'Cucumber::Formatter::Junit'
+        'junit'    => 'Cucumber::Formatter::Junit',
+        'steps'    => 'Cucumber::Formatter::Steps'
       }
       DEFAULT_FORMAT = 'pretty'
       DRB_FLAG = '--drb'
