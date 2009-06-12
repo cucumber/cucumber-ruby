@@ -138,6 +138,16 @@ module Cli
 
     end
 
+    context '--drb in the default profile and no arguments specified' do
+      it "expands the profile's arguments into the args excpet for --drb" do
+        given_cucumber_yml_defined_as({'default' => '--drb features --format pretty'})
+        config = Configuration.new(StringIO.new)
+        args = []
+        config.parse!(args)
+        args.should == %w{features --format pretty}
+      end
+    end
+
     it "should expand args from YAML file" do
       given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})
 
