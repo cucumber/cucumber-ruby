@@ -54,7 +54,8 @@ module Cucumber
       end
 
       def visit_comment_line(comment_line)
-        @builder.text!(comment_line.strip + "\n")
+        @builder.text!(comment_line)
+        @builder.br
       end
 
       def visit_feature(feature)

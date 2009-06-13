@@ -25,7 +25,7 @@ module Cucumber
           parse(%{# My comment
 Feature: hi
 }).to_sexp.should ==
-          [:feature, nil, "Feature: hi\n",
+          [:feature, nil, "Feature: hi",
             [:comment, "# My comment\n"]]
         end
 
@@ -34,13 +34,13 @@ Feature: hi
 # World
 Feature: hi
 }).to_sexp.should ==
-          [:feature, nil, "Feature: hi\n",
+          [:feature, nil, "Feature: hi",
             [:comment, "# Hello\n# World\n"]]
         end
 
         it "should parse a file with no comments" do
           parse("Feature: hi\n").to_sexp.should ==
-          [:feature, nil, "Feature: hi\n"]
+          [:feature, nil, "Feature: hi"]
         end
 
         it "should parse a file with only a multiline comment with newlines" do
@@ -61,7 +61,7 @@ Feature: hi
       describe "Tags" do
         it "should parse a file with tags on a feature" do
           parse("# My comment\n@hello @world Feature: hi\n").to_sexp.should ==
-          [:feature, nil, "Feature: hi\n",
+          [:feature, nil, "Feature: hi",
             [:comment, "# My comment\n"],
             [:tag, "hello"],
             [:tag, "world"]]
