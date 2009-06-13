@@ -6,26 +6,39 @@ module Cucumber
         super(step_mother)
         @io = io
         @options = options
-        @steps = step_mother.step_definitions.inject({}) do |steps, step|
-          regexp = step.regexp
-          source = source_file(step)
-          steps[source] ||= []
-          steps[source] << regexp.to_s[8..-3]
-          steps
-        end
+        @steps = collect_steps(step_mother)
       end
 
       def visit_features(features)
+        print_summary
+      end
+
+      private
+
+      def print_summary
         count = 0
         @steps.keys.sort.each do |source|
-          @io.puts "Source: #{source}"
-          @steps[source].sort.each do |step|
-            @io.puts step.indent(2)
+          @io.puts "#{source}"
+          source_indent = source_indent(@steps[source])
+          @steps[source].sort.each do |file_name, line_number, step|
+            @io.print "#{step}".indent(2)
+            @io.print " # #{file_name}#{line_number}".indent(source_indent - step.size)
+            @io.puts
           end
           @io.puts
           count += @steps[source].size
         end
         @io.puts "#{count} step(s) defined in #{@steps.keys.size} source file(s)."
+      end
+
+      def collect_steps(step_mother)
+        step_mother.step_definitions.inject({}) do |steps, step|
+          regexp = step.regexp
+          file_name, line_number = source_file(step)
+          steps[file_name] ||= []
+          steps[file_name] << [ file_name, line_number, regexp.to_s[8..-3] ]
+          steps
+        end
       end
 
       # a little trick to catch the source file of a step definition
@@ -35,10 +48,18 @@ module Cucumber
         begin
           eval "raise 'Dummy Exception'", binding
         rescue => ex
-          return File.basename(ex.backtrace[0]) # we caught the source!
+          return parse_backtrace(ex.backtrace[0]) # we caught the source!
         end
       end
 
+      def parse_backtrace(backtrace)
+        backtrace =~ /.*\/(.+)(:.*)/
+        [ $1, $2 ]
+      end
+
+      def source_indent(steps)
+        steps.map { |file_name, line_number, step| step.size }.max + 1
+      end
     end
   end
 end
