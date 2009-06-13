@@ -74,7 +74,7 @@ module Cucumber
         @builder.h2 do |h2|
           @builder.span(lines[0], :class => 'val')
         end
-        @builder.p do
+        @builder.p(:class => 'narrative') do
           lines[1..-1].each do |line|
             @builder.text!(line.strip)
             @builder.br
