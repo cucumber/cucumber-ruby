@@ -6,7 +6,7 @@ Feature: --formatter steps option - Steps Formatter
   Background:
     Given I am in steps_library
 
-  Scenario: Expand the outline
+  Scenario: Printing steps
     When I run cucumber -f steps features
     Then it should pass with
     """
