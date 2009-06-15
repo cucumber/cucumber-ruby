@@ -22,7 +22,7 @@ Feature: Cucumber command line
             features/failing_expectation.feature:4:in `Given failing expectation'
       
       Failing Scenarios:
-      features/failing_expectation.feature:3
+      cucumber features/failing_expectation.feature:3 # Scenario: Failing expectation
       
       1 scenario (1 failed)
       1 step (1 failed)
@@ -44,7 +44,7 @@ Feature: Cucumber command line
             features/failing_expectation.feature:4:in `Given failing expectation'
 
       Failing Scenarios:
-      features/failing_expectation.feature:3
+      cucumber features/failing_expectation.feature:3 # Scenario: Failing expectation
       
       1 scenario (1 failed)
       1 step (1 failed)

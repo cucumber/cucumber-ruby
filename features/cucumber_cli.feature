@@ -83,7 +83,7 @@ Feature: Cucumber command line
             features/sample.feature:18:in `Given failing'
       
       Failing Scenarios:
-      features/sample.feature:17
+      cucumber features/sample.feature:17 # Scenario: Failing
       
       2 scenarios (1 failed, 1 undefined)
       2 steps (1 failed, 1 undefined)
@@ -142,7 +142,7 @@ Feature: Cucumber command line
       features/sample.feature:18:in `Given failing'
 
       Failing Scenarios:
-      features/sample.feature:17
+      cucumber features/sample.feature:17 # Scenario: Failing
 
       3 scenarios (1 failed, 1 undefined, 1 passed)
       3 steps (1 failed, 1 undefined, 1 passed)
@@ -457,7 +457,7 @@ Feature: Cucumber command line
             features/sample.feature:18:in `Given failing'
 
       Failing Scenarios:
-      features/sample.feature:17
+      cucumber features/sample.feature:17 # Scenario: Failing
 
       3 scenarios (1 failed, 1 undefined, 1 passed)
       3 steps (1 failed, 1 undefined, 1 passed)
