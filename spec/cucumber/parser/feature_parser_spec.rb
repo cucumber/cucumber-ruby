@@ -5,8 +5,7 @@ module Cucumber
   module Parser
     describe Feature do
       before do
-        @language = I18n::Language['en']
-        @parser = @language.parser
+        @parser = I18n::Language['en'].parser
       end
 
       def parse(text)
@@ -14,11 +13,11 @@ module Cucumber
       end
 
       def parse_file(file)
-        @language.parse_file(File.dirname(__FILE__) + "/../treetop_parser/" + file, Filter.new([], {}))
+        FeatureFile.new(File.dirname(__FILE__) + "/../treetop_parser/" + file).parse
       end
 
       def parse_example_file(file)
-        @language.parse_file(File.dirname(__FILE__) + "/../../../examples/" + file, Filter.new([], {}))
+        FeatureFile.new(File.dirname(__FILE__) + "/../../../examples/" + file).parse
       end
 
       describe "Comments" do
@@ -353,7 +352,8 @@ Given I am a step
 
       describe "Filtering" do
         it "should filter outline tables" do
-          ff = FeatureFile.new(File.dirname(__FILE__) + '/../../../examples/self_test/features/outline_sample.feature:12')
+          ff = FeatureFile.new(
+            File.dirname(__FILE__) + '/../../../examples/self_test/features/outline_sample.feature:12')
           f = ff.parse({:lang => 'en'})
           f.to_sexp.should ==
           [:feature,

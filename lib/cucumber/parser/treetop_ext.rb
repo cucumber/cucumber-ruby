@@ -23,8 +23,8 @@ module Cucumber
     end
     
     module TreetopExt
-      def parse_or_fail(string, filter=nil, file=nil, line_offset=0)
-        parse_tree = parse(string)
+      def parse_or_fail(source, file=nil, filter=nil, line_offset=0)
+        parse_tree = parse(source)
         if parse_tree.nil?
           raise Cucumber::Parser::SyntaxError.new(self, file, line_offset)
         else

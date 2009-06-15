@@ -36,6 +36,7 @@ module Cucumber
 
         def initialize(lang)
           @keywords = Cucumber::LANGUAGES[lang]
+          raise "Language not supported: #{lang.inspect}" if @keywords.nil?
           @keywords['grammar_name'] = @keywords['name'].gsub(/\s/, '')
           i18n_tt = File.expand_path(File.dirname(__FILE__) + '/../i18n.tt')
           template = File.open(i18n_tt, Cucumber.file_mode('r')).read
@@ -46,15 +47,8 @@ module Cucumber
           self.class.alias_step_definitions(@keywords)
         end
 
-        # Parses a file and returns a Cucumber::Ast
-        def parse_file(path, filter)
-          loader = lambda { |io| @parser.parse_or_fail(io.read, filter, path) }
-          feature = if path =~ /^http/
-            require 'open-uri'
-            open(path, &loader)
-          else
-            File.open(path, Cucumber.file_mode('r'), &loader) 
-          end
+        def parse(source, path, filter)
+          feature = @parser.parse_or_fail(source, path, filter)
           feature.language = self if feature
           feature
         end

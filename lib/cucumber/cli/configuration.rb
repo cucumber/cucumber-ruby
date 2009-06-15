@@ -400,7 +400,7 @@ Defined profiles in cucumber.yml:
         {
           :strict       => false,
           :require      => nil,
-          :lang         => 'en',
+          :lang         => nil,
           :dry_run      => false,
           :formats      => {},
           :excludes     => [],
