@@ -14,7 +14,11 @@ or default to English if no --language option was specified. A nice side effect 
 have features in several languages side by side and run them in the same cucumber. (Not recommended unless 
 you want to take polyglot programming to an extreme level).
 
+This release also has several bugfixes related to --format and Before/Adter hooks
+
 === Bugfixes
+* Before and After hooks run after everything is finished whn there are 2+ --format options (#371 Aslak Hellesøy)
+* When using --out and two --format the first is not delivered inline with execution of features (#361 Aslak Hellesøy)
 * Profile Formatter broken (#370 Aslak Hellesøy)
 * Default profile usage with --drb flag degrades gracefully with no server. (#367 Ben Mabey)
 * JUnit formatter uses original file name instead of narrative to avoid accidental duplicate XML files (Aslak Hellesøy)
