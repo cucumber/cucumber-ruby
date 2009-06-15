@@ -13,7 +13,6 @@ module Cucumber
         'junit'     => 'Cucumber::Formatter::Junit',
         'tag_cloud' => 'Cucumber::Formatter::TagCloud'
       }
-      DEFAULT_FORMAT = 'pretty'
       DRB_FLAG = '--drb'
       PROFILE_SHORT_FLAG = '-p'
       PROFILE_LONG_FLAG = '--profile'
@@ -27,8 +26,6 @@ module Cucumber
 
         @paths          = []
         @options        = default_options
-
-        @active_format  = DEFAULT_FORMAT
       end
 
       def parse!(args)
@@ -78,7 +75,7 @@ module Cucumber
             end
           end
           opts.on("-f FORMAT", "--format FORMAT",
-            "How to format features (Default: #{DEFAULT_FORMAT})",
+            "How to format features (Default: pretty)",
             "Available formats: #{BUILTIN_FORMATS.keys.sort.join(", ")}",
             "FORMAT can also be the fully qualified class name of",
             "your own custom formatter. If the class isn't loaded,",
@@ -88,7 +85,7 @@ module Cucumber
             "foo/bar_zap.rb. You can place the file with this relative",
             "path underneath your features/support directory or anywhere",
             "on Ruby's LOAD_PATH, for example in a Ruby gem.") do |v|
-            @options[:formats][v] = @out_stream
+            @options[:formats] << [v, @out_stream]
             @active_format = v
           end
           opts.on("-o", "--out [FILE|DIR]",
@@ -96,7 +93,8 @@ module Cucumber
             "applies to the previously specified --format, or the",
             "default format if no format is specified. Check the specific",
             "formatter's docs to see whether to pass a file or a dir.") do |v|
-            @options[:formats][@active_format] = v
+            @options[:formats] << ['pretty', nil] if @options[:formats].empty?
+            @options[:formats][-1][1] = v
           end
           opts.on("-t TAGS", "--tags TAGS",
             "Only execute the features or scenarios with the specified tags.",
@@ -185,7 +183,7 @@ module Cucumber
           end
         end.parse!
 
-        @options[:formats]['pretty'] = @out_stream if @options[:formats].empty?
+        arrange_formats
 
         @options[:snippets] = true if !@quiet && @options[:snippets].nil?
         @options[:source]   = true if !@quiet && @options[:source].nil?
@@ -233,7 +231,9 @@ module Cucumber
 
       def build_formatter_broadcaster(step_mother)
         return Formatter::Pretty.new(step_mother, nil, @options) if @options[:autoformat]
-        formatters = @options[:formats].map do |format, out|
+        formatters = @options[:formats].map do |format_and_out|
+          format = format_and_out[0]
+          out    = format_and_out[1]
           if String === out # file name
             unless File.directory?(out)
               out = File.open(out, Cucumber.file_mode('w'))
@@ -292,6 +292,14 @@ module Cucumber
       end
 
     protected
+
+      def arrange_formats
+        @options[:formats] << ['pretty', @out_stream] if @options[:formats].empty?
+        @options[:formats] = @options[:formats].sort_by{|f| f[1] == @out_stream ? -1 : 1}
+        if @options[:formats].length > 1 && @options[:formats][1][1] == @out_stream
+          raise "All but one formatter must use --out, only one can print to STDOUT"
+        end
+      end
 
       def remove_excluded_files_from(files)
         files.reject! {|path| @options[:excludes].detect {|pattern| path =~ pattern } }
@@ -402,7 +410,7 @@ Defined profiles in cucumber.yml:
           :require      => nil,
           :lang         => nil,
           :dry_run      => false,
-          :formats      => {},
+          :formats      => [],
           :excludes     => [],
           :include_tags => [],
           :exclude_tags => [],
