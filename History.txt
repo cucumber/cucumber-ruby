@@ -15,6 +15,7 @@ have features in several languages side by side and run them in the same cucumbe
 you want to take polyglot programming to an extreme level).
 
 === Bugfixes
+* Default profile usage with --drb flag degrades gracefully with no server. (#367 Ben Mabey)
 * JUnit formatter uses original file name instead of narrative to avoid accidental duplicate XML files (Aslak Hellesøy)
 * rake gems no longer lists cucumber as a [F]ramework gem (David Chelimsky)
 * CLI issues correct exit code when using --drb. Requires Spork version >= 0.5.1. (#355 Ben Mabey)

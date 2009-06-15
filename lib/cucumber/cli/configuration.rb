@@ -32,7 +32,8 @@ module Cucumber
       end
 
       def parse!(args)
-        @args = args.empty? ? args_from_profile('default') : args
+        args.concat(%w{--profile default}) if args.empty?
+        @args = args
         expand_profiles_into_args
         return if parse_drb
 
