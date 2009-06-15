@@ -1,5 +1,19 @@
 == 0.3.12 (In Git)
 
+The Egality release
+
+English is not the world's most spoken language, so why should Cucumber force non-English speakers to use the
+--language flag? As of this release you're no longer forced to do that. Instead, you can add a comment header 
+to your .feature files:
+
+  # language: fr
+  Fonctionnalité: Trou de boulette
+
+If you don't have that header, Cucumber will work as before - using whatever you specified with --language,
+or default to English if no --language option was specified. A nice side effect of this is that you can now
+have features in several languages side by side and run them in the same cucumber. (Not recommended unless 
+you want to take polyglot programming to an extreme level).
+
 === Bugfixes
 * JUnit formatter uses original file name instead of narrative to avoid accidental duplicate XML files (Aslak Hellesøy)
 * rake gems no longer lists cucumber as a [F]ramework gem (David Chelimsky)
@@ -7,6 +21,7 @@
 * Make sure script/generate cucumber --spork uses the cucumber Rails environment (Philippe Lafoucrière)
 
 === New Features
+* Possibility to specify scenario language as part of the .feature file (#345 Aslak Hellesøy)
 * Support specifying environment variables using foo=bar syntax on command line or in profiles (#362 Bryan Helmkamp)
 * Display failing scenarios at the end of pretty format to make it easier for people to play them back (#360 Ryan Bigg)
 

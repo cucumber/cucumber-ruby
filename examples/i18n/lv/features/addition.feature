@@ -1,3 +1,4 @@
+# language: lv
 Funkcionalitāte: Saskaitīšana
   Lai izvairītos no muļķīgām kļūdām
   Kā matemātikas idiots

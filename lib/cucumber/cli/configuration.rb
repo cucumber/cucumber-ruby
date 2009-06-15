@@ -4,13 +4,14 @@ module Cucumber
 
     class Configuration
       BUILTIN_FORMATS = {
-        'html'     => 'Cucumber::Formatter::Html',
-        'pretty'   => 'Cucumber::Formatter::Pretty',
-        'profile'  => 'Cucumber::Formatter::Profile',
-        'progress' => 'Cucumber::Formatter::Progress',
-        'rerun'    => 'Cucumber::Formatter::Rerun',
-        'usage'    => 'Cucumber::Formatter::Usage',
-        'junit'    => 'Cucumber::Formatter::Junit'
+        'html'      => 'Cucumber::Formatter::Html',
+        'pretty'    => 'Cucumber::Formatter::Pretty',
+        'profile'   => 'Cucumber::Formatter::Profile',
+        'progress'  => 'Cucumber::Formatter::Progress',
+        'rerun'     => 'Cucumber::Formatter::Rerun',
+        'usage'     => 'Cucumber::Formatter::Usage',
+        'junit'     => 'Cucumber::Formatter::Junit',
+        'tag_cloud' => 'Cucumber::Formatter::TagCloud'
       }
       DEFAULT_FORMAT = 'pretty'
       DRB_FLAG = '--drb'
@@ -218,13 +219,13 @@ module Cucumber
         @drb
       end
 
-      def load_language
-        if Cucumber.language_incomplete?(@options[:lang])
-          list_keywords_and_exit(@options[:lang])
-        else
-          Cucumber.load_language(@options[:lang])
-        end
-      end
+      # def load_language
+      #   if Cucumber.language_incomplete?(@options[:lang])
+      #     list_keywords_and_exit(@options[:lang])
+      #   else
+      #     Cucumber.load_language(@options[:lang])
+      #   end
+      # end
 
       def parse_tags(tag_string)
         tag_names = tag_string.split(",")
@@ -384,6 +385,7 @@ Defined profiles in cucumber.yml:
         return @cucumber_yml
       end
 
+      # TODO: Move to Language
       def list_keywords_and_exit(lang)
         unless Cucumber::LANGUAGES[lang]
           raise("No language with key #{lang}")

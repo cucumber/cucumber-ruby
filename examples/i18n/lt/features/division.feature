@@ -1,3 +1,4 @@
+# language: lt
 Feature: Dalyba
   Norint išvengti klaidų
   Kasininkai privalo mokėti skaičiuoti trupmenas

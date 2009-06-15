@@ -1,3 +1,4 @@
+# language: de
 Funktionalität: Division
   Um dumme Fehler zu vermeiden
   müssen Kassierer in der Lage sein einen Bruchteil zu berechnen

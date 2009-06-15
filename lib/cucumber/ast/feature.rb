@@ -2,7 +2,7 @@ module Cucumber
   module Ast
     # Represents the root node of a parsed feature.
     class Feature
-      attr_accessor :file
+      attr_accessor :file, :language
       attr_writer :features
       attr_reader :name
 

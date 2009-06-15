@@ -154,6 +154,7 @@ Feature: Cucumber command line
     When I run cucumber -q --language no features
     Then it should pass with
       """
+      # language: no
       Egenskap: Summering
         For å slippe å gjøre dumme feil
         Som en regnskapsfører

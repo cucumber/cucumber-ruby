@@ -1,3 +1,4 @@
+# language: lt
 Sąvybė: Sudėtis
   Norint išvengti kvailų klaidų
   Kaip matematinis idiotas

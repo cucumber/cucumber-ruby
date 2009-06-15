@@ -1,3 +1,4 @@
+# language: et
 Omadus: Liitmine
   Selleks et vältida rumalaid vigu
   Olles matemaatika-puupea

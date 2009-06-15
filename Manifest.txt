@@ -256,6 +256,7 @@ features/expand.feature
 features/html_formatter.feature
 features/html_formatter/a.html
 features/junit_formatter.feature
+features/language_from_header.feature
 features/multiline_names.feature
 features/rake_task.feature
 features/report_called_undefined_steps.feature
@@ -307,6 +308,8 @@ lib/cucumber/core_ext/exception.rb
 lib/cucumber/core_ext/instance_exec.rb
 lib/cucumber/core_ext/proc.rb
 lib/cucumber/core_ext/string.rb
+lib/cucumber/feature_file.rb
+lib/cucumber/filter.rb
 lib/cucumber/formatter/ansicolor.rb
 lib/cucumber/formatter/color_io.rb
 lib/cucumber/formatter/console.rb
@@ -328,6 +331,7 @@ lib/cucumber/parser.rb
 lib/cucumber/parser/feature.rb
 lib/cucumber/parser/feature.tt
 lib/cucumber/parser/i18n.tt
+lib/cucumber/parser/i18n/language.rb
 lib/cucumber/parser/table.rb
 lib/cucumber/parser/table.tt
 lib/cucumber/parser/treetop_ext.rb

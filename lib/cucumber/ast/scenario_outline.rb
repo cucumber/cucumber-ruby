@@ -69,7 +69,12 @@ module Cucumber
       end
 
       def visit_scenario_name(visitor, row)
-        visitor.visit_scenario_name(Cucumber.scenario_keyword, row.name, file_colon_line(row.line), source_indent(first_line_length))
+        visitor.visit_scenario_name(
+          @feature.language.scenario_keyword,
+          row.name, 
+          file_colon_line(row.line), 
+          source_indent(first_line_length)
+        )
       end
 
       def to_sexp

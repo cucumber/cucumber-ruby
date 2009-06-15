@@ -35,7 +35,7 @@ module Cucumber
           @cli = Main.new(%w{--verbose example.feature}, @out)
           @cli.stub!(:require)
 
-          Parser::FeatureParser.stub!(:new).and_return(mock("feature parser", :parse_file => @empty_feature))
+          FeatureFile.stub!(:new).and_return(mock("feature file", :parse => @empty_feature))
 
           @cli.execute!(Object.new.extend(StepMother))
 
@@ -134,15 +134,8 @@ module Cucumber
             @configuration.should_receive(:parse!).exactly(:twice)
             @cli.execute!(@step_mother)
           end
-
-          it "proceeds with the execution locally" do
-            @configuration.should_receive(:load_language)
-            @cli.execute!(@step_mother)
-          end
         end
-
       end
-
     end
   end
 end

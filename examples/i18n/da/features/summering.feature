@@ -1,3 +1,4 @@
+# language: da
 Egenskab: Summering
   For at slippe for at lave dumme fejl
   Som en regnskabsfører

@@ -1,3 +1,4 @@
+# language: lv
 Funkcionalitāte: Dalīšana
   Lai izvairītos no muļķīgām kļūdām
   Kasieriem ir jāprot aprēķināt daļas

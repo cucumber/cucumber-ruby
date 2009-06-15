@@ -49,5 +49,9 @@ module Cucumber
     def accept_hook?(hook)
       @tags.accept_hook?(hook) || @feature.accept_hook?(hook)
     end
+    
+    def language
+      @feature.language
+    end
   end
 end
