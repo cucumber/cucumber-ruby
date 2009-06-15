@@ -17,7 +17,7 @@ module Cucumber
         super
       end
 
-      def visit_step_name(keyword, step_match, status, source_indent, background)
+      def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         duration = Time.now - @step_duration
         super
 
