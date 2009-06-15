@@ -115,10 +115,9 @@ module Cucumber
           @cli.execute!(@step_mother).should == 'foo'
         end
 
-
         it "ceases execution if the DrbClient is able to perform the execution" do
           DRbClient.stub!(:run).and_return(true)
-          @configuration.should_not_receive(:load_language)
+          @configuration.should_not_receive(:build_formatter_broadcaster)
           @cli.execute!(@step_mother)
         end
 

@@ -220,14 +220,6 @@ module Cucumber
         @drb
       end
 
-      # def load_language
-      #   if Cucumber.language_incomplete?(@options[:lang])
-      #     list_keywords_and_exit(@options[:lang])
-      #   else
-      #     Cucumber.load_language(@options[:lang])
-      #   end
-      # end
-
       def parse_tags(tag_string)
         tag_names = tag_string.split(",")
         excludes, includes = tag_names.partition{|tag| tag =~ /^~/}
