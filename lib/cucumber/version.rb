@@ -3,7 +3,7 @@ module Cucumber #:nodoc:
     MAJOR = 0
     MINOR = 3
     TINY  = 11
-    PATCH = 6 # Set to nil for official release
+    PATCH = 200906161540 # Set to nil for official release
 
     STRING = [MAJOR, MINOR, TINY, PATCH].compact.join('.')
   end
