@@ -1,3 +1,4 @@
+# language: id
 Fitur: Addition
   Untuk menghindari kesalahan konyol 
   Sebagai orang yang gak bisa matematika

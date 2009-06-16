@@ -254,12 +254,12 @@ module Cucumber
       @snippet_generator.snippet_text(step_keyword, step_name, multiline_arg_class)
     end
 
-    def before_and_after(scenario, skip=false)
-      before(scenario) unless skip
+    def before_and_after(scenario, skip_hooks=false)
+      before(scenario) unless skip_hooks
       @current_scenario = scenario
       yield scenario
       @current_scenario = nil
-      after(scenario) unless skip
+      after(scenario) unless skip_hooks
       scenario_visited(scenario)
     end
     

@@ -54,7 +54,8 @@ module Cucumber
       end
 
       def visit_comment_line(comment_line)
-        @builder.text!(comment_line.strip + "\n")
+        @builder.text!(comment_line)
+        @builder.br
       end
 
       def visit_feature(feature)
@@ -73,7 +74,7 @@ module Cucumber
         @builder.h2 do |h2|
           @builder.span(lines[0], :class => 'val')
         end
-        @builder.p do
+        @builder.p(:class => 'narrative') do
           lines[1..-1].each do |line|
             @builder.text!(line.strip)
             @builder.br

@@ -1,3 +1,4 @@
+# language: sk
 Požiadavka: Sčítavanie
   Aby som sa vyhol hlúpym chybám
   Ako matematický idiot

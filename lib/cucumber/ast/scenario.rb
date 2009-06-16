@@ -25,12 +25,14 @@ module Cucumber
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
 
-        skip = @background && @background.failed?
-        skip_invoke! if skip
-        visitor.step_mother.before_and_after(self, skip) do
+        background_failed = @background && @background.failed?
+        skip_invoke! if background_failed
+        skip_hooks = background_failed || @executed
+        visitor.step_mother.before_and_after(self, skip_hooks) do
           visitor.visit_steps(@steps)
         end
         visitor.visit_exception(@exception, :failed) if @exception
+        @executed = true
       end
 
       # Returns true if one or more steps failed

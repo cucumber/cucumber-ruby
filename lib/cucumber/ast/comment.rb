@@ -17,7 +17,7 @@ module Cucumber
       end
 
       def accept(visitor)
-        @value.split("\n").each do |line|
+        @value.strip.split("\n").each do |line|
           visitor.visit_comment_line(line.strip)
         end
       end

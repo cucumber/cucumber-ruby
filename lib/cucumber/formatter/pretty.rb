@@ -48,10 +48,8 @@ module Cucumber
       end
 
       def visit_comment_line(comment_line)
-        unless comment_line.blank?
-          @io.puts(comment_line.indent(@indent)) 
-          @io.flush
-        end
+        @io.puts(comment_line.indent(@indent)) 
+        @io.flush
       end
 
       def visit_tags(tags)

@@ -7,10 +7,8 @@ module Cucumber
     # Treetop will then generate the parser in-memory. When you're happy, just generate
     # the rb file with tt feature.tt
     grammar Feature
-      include I18n
-      include Table
 
-      rule feature
+      rule feature_sub
         white 
         comment 
         white 

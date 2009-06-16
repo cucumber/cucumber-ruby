@@ -1,3 +1,4 @@
+# language: id
 Fitur: Division
   Untuk hindari kesalahan konyol
   Kasir harus dapat menghitung pembagian

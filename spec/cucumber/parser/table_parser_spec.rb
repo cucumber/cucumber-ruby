@@ -6,7 +6,7 @@ module Cucumber
   module Parser
     describe 'Tables' do
       before do
-        @parser = FeatureParser.new
+        @parser = I18n::EnglishParser.new
       end
       
       def parse(text)

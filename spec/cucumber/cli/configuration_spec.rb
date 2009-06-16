@@ -138,12 +138,22 @@ module Cli
 
     end
 
+    context '--drb in the default profile and no arguments specified' do
+      it "expands the profile's arguments into the args excpet for --drb" do
+        given_cucumber_yml_defined_as({'default' => '--drb features --format pretty'})
+        config = Configuration.new(StringIO.new)
+        args = []
+        config.parse!(args)
+        args.should == %w{features --format pretty}
+      end
+    end
+
     it "should expand args from YAML file" do
       given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})
 
       config = Configuration.new
       config.parse!(%w{--format progress --profile bongo})
-      config.options[:formats].should == {'progress' => STDOUT}
+      config.options[:formats].should == [['progress', STDOUT]]
       config.options[:require].should == ['from/yml']
     end
 
@@ -255,26 +265,34 @@ END_OF_MESSAGE
     it "should accept --out option" do
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--out jalla.txt})
-      config.options[:formats]['pretty'].should == 'jalla.txt'
+      config.options[:formats].should == [['pretty', 'jalla.txt']]
     end
 
     it "should accept multiple --out options" do
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--format progress --out file1 --out file2})
-      config.options[:formats].should == {'progress' => 'file2'}
+      config.options[:formats].should == [['progress', 'file2']]
     end
 
-    it "should accept multiple --format options" do
-      config = Configuration.new(StringIO.new)
-      config.parse!(%w{--format pretty --format progress})
-      config.options[:formats].should have_key('pretty')
-      config.options[:formats].should have_key('progress')
+    it "should accept multiple --format options and put the STDOUT one first so progress is seen" do
+      io = StringIO.new
+      config = Configuration.new(io)
+      config.parse!(%w{--format pretty --out pretty.txt --format progress})
+      config.options[:formats].should == [['progress', io], ['pretty', 'pretty.txt']]
+    end
+
+    it "should not accept multiple --format options when both use implicit STDOUT" do
+      io = StringIO.new
+      config = Configuration.new(io)
+      lambda do
+        config.parse!(%w{--format pretty --format progress})
+      end.should raise_error("All but one formatter must use --out, only one can print to STDOUT")
     end
 
     it "should associate --out to previous --format" do
       config = Configuration.new(StringIO.new)
       config.parse!(%w{--format progress --out file1 --format profile --out file2})
-      config.options[:formats].should == {"profile"=>"file2", "progress"=>"file1"}
+      config.options[:formats].should == [["progress", "file1"], ["profile" ,"file2"]]
     end
 
     it "should accept --color option" do

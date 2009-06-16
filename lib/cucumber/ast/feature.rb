@@ -2,12 +2,12 @@ module Cucumber
   module Ast
     # Represents the root node of a parsed feature.
     class Feature
-      attr_accessor :file
+      attr_accessor :file, :language
       attr_writer :features
       attr_reader :name
 
       def initialize(background, comment, tags, name, feature_elements)
-        @background, @comment, @tags, @name, @feature_elements = background, comment, tags, name, feature_elements
+        @background, @comment, @tags, @name, @feature_elements = background, comment, tags, name.strip, feature_elements
 
         background.feature = self if background
         @feature_elements.each do |feature_element|

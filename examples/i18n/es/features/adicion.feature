@@ -1,3 +1,4 @@
+# language: es
 Característica: adición
   Para evitar hacer errores tontos
   Como un matemático idiota

@@ -88,6 +88,7 @@ class CucumberWorld
         exec cmd
       end
     end
+    sleep 0.2
   end
 
   def terminate_background_jobs
