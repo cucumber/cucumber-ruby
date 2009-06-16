@@ -7,6 +7,7 @@
 * Make sure script/generate cucumber --spork uses the cucumber Rails environment (Philippe Lafoucrière)
 
 === New Features
+* New --format steps formatter. Variant of the usage formatter that lists available step definitions (Demetrius Nunes)
 * Support specifying environment variables using foo=bar syntax on command line or in profiles (#362 Bryan Helmkamp)
 * Display failing scenarios at the end of pretty format to make it easier for people to play them back (#360 Ryan Bigg)
 

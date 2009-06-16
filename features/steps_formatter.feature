@@ -10,16 +10,16 @@ Feature: --formatter steps option - Steps Formatter
     When I run cucumber -f steps features
     Then it should pass with
     """
-    steps_lib1.rb
-      I defined a first step           # steps_lib1.rb:1
-      I define a second step           # steps_lib1.rb:4
-      I should also have a third step  # steps_lib1.rb:7
-
-    steps_lib2.rb
-      I defined a step 4                # steps_lib2.rb:1
-      I create a step 5                 # steps_lib2.rb:4
-      I should be too tired for step 6  # steps_lib2.rb:7
-
-    6 step(s) defined in 2 source file(s).
+    features/step_definitions/steps_lib1.rb
+      /^I defined a first step$/           # features/step_definitions/steps_lib1.rb:1
+      /^I define a second step$/           # features/step_definitions/steps_lib1.rb:4
+      /^I should also have a third step$/  # features/step_definitions/steps_lib1.rb:7
+    
+    features/step_definitions/steps_lib2.rb
+      /^I defined a step 4$/                # features/step_definitions/steps_lib2.rb:1
+      /^I create a step 5$/                 # features/step_definitions/steps_lib2.rb:4
+      /^I should be too tired for step 6$/  # features/step_definitions/steps_lib2.rb:7
+    
+    6 step_definition(s) defined in 2 source file(s).
 
     """

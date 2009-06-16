@@ -6,7 +6,7 @@ module Cucumber
         super(step_mother)
         @io = io
         @options = options
-        @steps = collect_steps(step_mother)
+        @step_definition_files = collect_steps(step_mother)
       end
 
       def visit_features(features)
@@ -17,48 +17,32 @@ module Cucumber
 
       def print_summary
         count = 0
-        @steps.keys.sort.each do |source|
-          @io.puts "#{source}"
-          source_indent = source_indent(@steps[source])
-          @steps[source].sort.each do |file_name, line_number, step|
-            @io.print "#{step}".indent(2)
-            @io.print " # #{file_name}#{line_number}".indent(source_indent - step.size)
+        @step_definition_files.keys.sort.each do |step_definition_file|
+          @io.puts step_definition_file
+          
+          sources = @step_definition_files[step_definition_file]
+          source_indent = source_indent(sources)
+          sources.sort.each do |file_colon_line, regexp|
+            @io.print "#{regexp}".indent(2)
+            @io.print " # #{file_colon_line}".indent(source_indent - regexp.size)
             @io.puts
           end
           @io.puts
-          count += @steps[source].size
+          count += sources.size
         end
-        @io.puts "#{count} step(s) defined in #{@steps.keys.size} source file(s)."
+        @io.puts "#{count} step_definition(s) defined in #{@step_definition_files.size} source file(s)."
       end
 
       def collect_steps(step_mother)
-        step_mother.step_definitions.inject({}) do |steps, step|
-          regexp = step.regexp
-          file_name, line_number = source_file(step)
-          steps[file_name] ||= []
-          steps[file_name] << [ file_name, line_number, regexp.to_s[8..-3] ]
-          steps
+        step_mother.step_definitions.inject({}) do |step_definitions, step_definition|
+          step_definitions[step_definition.file] ||= []
+          step_definitions[step_definition.file] << [ step_definition.file_colon_line, step_definition.regexp.inspect ]
+          step_definitions
         end
       end
 
-      # a little trick to catch the source file of a step definition
-      # by raising a dummy exception using the step's proc binding
-      def source_file(step)
-        binding = step.proc.binding
-        begin
-          eval "raise 'Dummy Exception'", binding
-        rescue => ex
-          return parse_backtrace(ex.backtrace[0]) # we caught the source!
-        end
-      end
-
-      def parse_backtrace(backtrace)
-        backtrace =~ /.*\/(.+)(:.*)/
-        [ $1, $2 ]
-      end
-
-      def source_indent(steps)
-        steps.map { |file_name, line_number, step| step.size }.max + 1
+      def source_indent(sources)
+        sources.map { |file_colon_line, regexp| regexp.size }.max + 1
       end
     end
   end
