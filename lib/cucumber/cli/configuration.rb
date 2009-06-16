@@ -102,7 +102,9 @@ module Cucumber
             "TAGS must be comma-separated without spaces. Prefix tags with ~ to",
             "exclude features or scenarios having that tag. Tags can be specified",
             "with or without the @ prefix.") do |v|
-            @options[:include_tags], @options[:exclude_tags] = *parse_tags(v)
+            include_tags, exclude_tags = *parse_tags(v)
+            @options[:include_tags] += include_tags
+            @options[:exclude_tags] += exclude_tags
           end
           opts.on("-n NAME", "--name NAME",
             "Only execute the feature elements which match part of the given name.",
