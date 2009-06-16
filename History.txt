@@ -14,7 +14,15 @@ or default to English if no --language option was specified. A nice side effect 
 have features in several languages side by side and run them in the same cucumber. (Not recommended unless 
 you want to take polyglot programming to an extreme level).
 
-This release also has several bugfixes related to --format and Before/Adter hooks
+Another useful new feature is the ability to define environment variables on Cucumber's command line (just
+like you can with Rake). Example:
+
+  cucumber FOO=BAR --format progress features
+
+You can now pick up ENV['FOO'] in ruby (for example in env.rb) and take actions according to the value,
+for example enabling your super hack that validates all HTTP responses for XHTML validity.
+
+This release also has several bugfixes related to --format and Before/Adter hooks.
 
 === Bugfixes
 * Before and After hooks run after everything is finished whn there are 2+ --format options (#371 Aslak Hellesøy)
