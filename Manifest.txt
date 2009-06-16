@@ -205,6 +205,8 @@ examples/sinatra/features/step_definitions/add_steps.rb
 examples/sinatra/features/support/env.rb
 examples/sinatra/views/add.erb
 examples/sinatra/views/layout.erb
+examples/steps_library/features/step_definitions/steps_lib1.rb
+examples/steps_library/features/step_definitions/steps_lib2.rb
 examples/test_unit/Rakefile
 examples/test_unit/features/step_definitions/test_unit_steps.rb
 examples/test_unit/features/test_unit.feature
@@ -264,6 +266,7 @@ features/report_called_undefined_steps.feature
 features/snippet.feature
 features/step_definitions/cucumber_steps.rb
 features/step_definitions/extra_steps.rb
+features/steps_formatter.feature
 features/support/env.rb
 features/usage.feature
 features/work_in_progress.feature
@@ -323,6 +326,7 @@ lib/cucumber/formatter/pretty.rb
 lib/cucumber/formatter/profile.rb
 lib/cucumber/formatter/progress.rb
 lib/cucumber/formatter/rerun.rb
+lib/cucumber/formatter/steps.rb
 lib/cucumber/formatter/tag_cloud.rb
 lib/cucumber/formatter/unicode.rb
 lib/cucumber/formatter/usage.rb
