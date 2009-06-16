@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
-  s.version = "0.3.11.200906161540"
+  s.version = "0.3.11.200906161550"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
