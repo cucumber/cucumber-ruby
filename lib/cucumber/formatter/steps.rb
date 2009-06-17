@@ -30,7 +30,7 @@ module Cucumber
           @io.puts
           count += sources.size
         end
-        @io.puts "#{count} step_definition(s) defined in #{@step_definition_files.size} source file(s)."
+        @io.puts "#{count} step definition(s) in #{@step_definition_files.size} source file(s)."
       end
 
       def collect_steps(step_mother)
