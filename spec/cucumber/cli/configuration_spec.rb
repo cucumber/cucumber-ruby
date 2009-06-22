@@ -199,6 +199,20 @@ END_OF_MESSAGE
         out.string.should =~ /Using the foo profile...\n/
       end
 
+      it "notifies the user when multiple profiles are being used" do
+        given_cucumber_yml_defined_as({'foo' => [1,2,3], 'bar' => ['v'], 'dog' => ['v']})
+
+        config = Configuration.new(out = StringIO.new, error = StringIO.new)
+        config.parse!(%w{--profile foo --profile bar})
+        out.string.should =~ /Using the foo and bar profiles...\n/
+
+        config = Configuration.new(out = StringIO.new, error = StringIO.new)
+        config.parse!(%w{--profile foo --profile bar --profile dog})
+        out.string.should =~ /Using the foo, bar and dog profiles...\n/
+      end
+
+
+
 
       it "issues a helpful error message when a specified profile exists but is nil or blank" do
         [nil, '   '].each do |bad_input|

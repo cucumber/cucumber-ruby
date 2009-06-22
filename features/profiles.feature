@@ -29,3 +29,11 @@ Feature: Profiles
       Using the super profile...
       """
     And exactly these files should be loaded: support/super_env.rb
+
+  Scenario: Defining multiple profiles to run
+    When I run cucumber features/sample.feature --profile default --profile super
+    Then the output should contain
+      """
+      Using the default and super profiles...
+      """
+    And exactly these files should be loaded: support/env.rb, support/super_env.rb

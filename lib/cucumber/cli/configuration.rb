@@ -336,13 +336,24 @@ module Cucumber
       end
 
       def expand_profiles_into_args
+        profiles_being_used = []
         while (profile_index = @args.index(PROFILE_SHORT_FLAG) || @args.index(PROFILE_LONG_FLAG)) do
           @args.delete_at(profile_index) # the flag itself
-          profile_name = @args[profile_index]
+          profiles_being_used.push(profile_name = @args[profile_index])
           @args[profile_index] = args_from_profile(profile_name)
-          @out_stream.puts "Using the #{profile_name} profile..."
           @args.flatten!
         end
+
+        case profiles_being_used.size
+        when 0
+          profiles_sentence = nil
+        when 1
+          profiles_sentence = profiles_being_used.first
+        else
+          profiles_sentence = "#{profiles_being_used[0...-1].join(', ')} and #{profiles_being_used.last}"
+        end
+
+        @out_stream.puts "Using the #{profiles_sentence} profile#{'s' if profiles_being_used.size > 1}..." if profiles_sentence
       end
 
       def args_from_profile(profile)
