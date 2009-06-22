@@ -37,3 +37,9 @@ Feature: Profiles
       Using the default and super profiles...
       """
     And exactly these files should be loaded: support/env.rb, support/super_env.rb
+
+  Scenario: no profile declared with a default profile passed in
+    When I run cucumber -v
+    Then the default profile should be used
+    And exactly these files should be loaded: support/env.rb
+

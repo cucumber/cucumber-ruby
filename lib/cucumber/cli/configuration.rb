@@ -1,6 +1,7 @@
 module Cucumber
   module Cli
     class YmlLoadError < StandardError; end
+    class ProfilesNotDefinedError < YmlLoadError; end
 
     class Configuration
       BUILTIN_FORMATS = {
@@ -29,10 +30,12 @@ module Cucumber
         @options        = default_options
       end
 
+
       def parse!(args)
-        args.concat(%w{--profile default}) if args.empty?
         @args = args
+        setup_default_profile
         expand_profiles_into_args
+
         return if parse_drb
 
         @args.each do |arg|
@@ -292,7 +295,16 @@ module Cucumber
         potential_feature_files
       end
 
-    protected
+    private
+
+      def setup_default_profile
+        @args.concat(%w{--profile default}) if @args.empty?
+
+        profile_being_used = !(@args.index(PROFILE_SHORT_FLAG) || @args.index(PROFILE_LONG_FLAG))
+        if profile_being_used && File.exist?('cucumber.yml') && cucumber_yml.has_key?('default')
+          @args.concat(%w{--profile default})
+        end
+      end
 
       def arrange_formats
         @options[:formats] << ['pretty', @out_stream] if @options[:formats].empty?
@@ -383,7 +395,7 @@ Defined profiles in cucumber.yml:
       def cucumber_yml
         return @cucumber_yml if @cucumber_yml
         unless File.exist?('cucumber.yml')
-          raise(YmlLoadError,"cucumber.yml was not found.  Please refer to cucumber's documentation on defining profiles in cucumber.yml.  You must define a 'default' profile to use the cucumber command without any arguments.\nType 'cucumber --help' for usage.\n")
+          raise(ProfilesNotDefinedError,"cucumber.yml was not found.  Please refer to cucumber's documentation on defining profiles in cucumber.yml.  You must define a 'default' profile to use the cucumber command without any arguments.\nType 'cucumber --help' for usage.\n")
         end
 
         require 'yaml'

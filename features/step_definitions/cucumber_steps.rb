@@ -129,6 +129,11 @@ Then /^"([^\"]*)" should be required$/ do |file_name|
 end
 
 Then /^exactly these files should be loaded:\s*(.*)$/ do |files|
-  last_stdout.scan(/^  \* (.*)$/).flatten.should == files.split(/,\s+/)
+  last_stdout.scan(/^  \* (.*\.rb)$/).flatten.should == files.split(/,\s+/)
 end
+
+Then /^the (.*) profile should be used$/ do |profile|
+  last_stdout.should =~ /Using the #{profile} profile/
+end
+
 

@@ -13,6 +13,7 @@ module Cucumber
         @out = StringIO.new
         @err = StringIO.new
         Kernel.stub!(:exit).and_return(nil)
+        File.stub!(:exist?).and_return(false) # When Configuration checks for cucumber.yml
       end
 
       describe "verbose mode" do

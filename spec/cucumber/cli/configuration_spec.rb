@@ -17,6 +17,8 @@ module Cli
     end
 
     before(:each) do
+      #given_cucumber_yml_defined_as({'default' => '-q'})
+      File.stub!(:exist?).and_return(false) # Meaning, no cucumber.yml exists
       Kernel.stub!(:exit).and_return(nil)
     end
 
@@ -149,6 +151,17 @@ module Cli
     end
 
 
+
+    it "uses the default profile when no profile is defined" do
+      given_cucumber_yml_defined_as({'default' => '--require some_file'})
+
+      config = Configuration.new(out = StringIO.new, StringIO.new)
+      config.parse!(%w{--format progress})
+      config.options[:require].should include('some_file')
+    end
+
+
+
     context '--profile' do
 
       it "expands args from profiles in the cucumber.yml file" do
@@ -210,9 +223,6 @@ END_OF_MESSAGE
         config.parse!(%w{--profile foo --profile bar --profile dog})
         out.string.should =~ /Using the foo, bar and dog profiles...\n/
       end
-
-
-
 
       it "issues a helpful error message when a specified profile exists but is nil or blank" do
         [nil, '   '].each do |bad_input|
