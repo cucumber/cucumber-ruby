@@ -2,6 +2,7 @@ require 'optparse'
 require 'cucumber'
 require 'ostruct'
 require 'cucumber/parser'
+require 'cucumber/feature_file'
 require 'cucumber/formatter/color_io'
 require 'cucumber/cli/language_help_formatter'
 require 'cucumber/cli/configuration'
@@ -41,13 +42,11 @@ module Cucumber
             configuration.parse!(@args)
           end
         end
-        configuration.load_language
         step_mother.options = configuration.options
 
+        features = load_plain_text_features
         require_files
         enable_diffing
-      
-        features = load_plain_text_features
 
         visitor = configuration.build_formatter_broadcaster(step_mother)
         step_mother.visitor = visitor # Needed to support World#announce
@@ -63,11 +62,11 @@ module Cucumber
 
       def load_plain_text_features
         features = Ast::Features.new
-        parser = Parser::FeatureParser.new
 
         verbose_log("Features:")
         configuration.feature_files.each do |f|
-          feature = parser.parse_file(f, configuration.options)
+          feature_file = FeatureFile.new(f)
+          feature = feature_file.parse(configuration.options)
           if feature
             features.add_feature(feature)
             verbose_log("  * #{f}")

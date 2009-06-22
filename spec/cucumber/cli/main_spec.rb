@@ -35,7 +35,7 @@ module Cucumber
           @cli = Main.new(%w{--verbose example.feature}, @out)
           @cli.stub!(:require)
 
-          Parser::FeatureParser.stub!(:new).and_return(mock("feature parser", :parse_file => @empty_feature))
+          FeatureFile.stub!(:new).and_return(mock("feature file", :parse => @empty_feature))
 
           @cli.execute!(Object.new.extend(StepMother))
 
@@ -115,10 +115,9 @@ module Cucumber
           @cli.execute!(@step_mother).should == 'foo'
         end
 
-
         it "ceases execution if the DrbClient is able to perform the execution" do
           DRbClient.stub!(:run).and_return(true)
-          @configuration.should_not_receive(:load_language)
+          @configuration.should_not_receive(:build_formatter_broadcaster)
           @cli.execute!(@step_mother)
         end
 
@@ -134,15 +133,8 @@ module Cucumber
             @configuration.should_receive(:parse!).exactly(:twice)
             @cli.execute!(@step_mother)
           end
-
-          it "proceeds with the execution locally" do
-            @configuration.should_receive(:load_language)
-            @cli.execute!(@step_mother)
-          end
         end
-
       end
-
     end
   end
 end

@@ -1,7 +1,8 @@
+# language: fr
 Fonctionnalité: Addition
   Afin de gagner du temps lors du calcul de la facture
   En tant que commerçant
-  Je souhaite pouvoir faire une additionn
+  Je souhaite pouvoir faire une addition
 
   Plan du Scénario: Addition de deux nombres
     Soit une calculatrice

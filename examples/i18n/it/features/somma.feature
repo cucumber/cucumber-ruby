@@ -1,3 +1,4 @@
+# language: it
 Funzionalità: somma
   Per evitare di fare errori stupidi
   Come utente

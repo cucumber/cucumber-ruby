@@ -1,3 +1,4 @@
+# language: hu
 Jellemző: Osztás
   Azért, hogy elkerüljem a buta hibákat
   a számológépeknek tudniuk kell osztani.

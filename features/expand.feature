@@ -21,7 +21,8 @@ Feature: --expand option
 
   Scenario: Expand the outline
     When I run cucumber -i -q --expand features/expand_me.feature
-    Then it should pass with
+    Then STDERR should be empty
+    And it should pass with
       """
       Feature: submit guess
 

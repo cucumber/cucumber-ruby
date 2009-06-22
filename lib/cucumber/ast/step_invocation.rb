@@ -88,7 +88,8 @@ module Cucumber
       end
 
       def actual_keyword
-        if [Cucumber.keyword_hash['and'], Cucumber.keyword_hash['but']].index(@step.keyword) && previous
+        repeat_keywords = [language.but_keywords, language.and_keywords].flatten
+        if repeat_keywords.index(@step.keyword) && previous
           previous.actual_keyword
         else
           keyword
@@ -121,6 +122,10 @@ module Cucumber
 
       def backtrace_line
         @step.backtrace_line
+      end
+
+      def language
+        @step.language
       end
 
       def to_sexp

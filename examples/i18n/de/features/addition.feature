@@ -1,3 +1,4 @@
+# language: de
 Funktionalität: Addition
   Um dumme Fehler zu vermeiden
   möchte ich als Matheidiot

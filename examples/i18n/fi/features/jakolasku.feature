@@ -1,3 +1,4 @@
+# language: fi
 Ominaisuus: Jakolasku
   Välttyäkseen hölmöiltä virheiltä
   Kassanhoitajan on voitava laskea osamäärä

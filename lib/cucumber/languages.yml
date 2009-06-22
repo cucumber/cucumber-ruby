@@ -91,14 +91,14 @@
   native: Česky
   encoding: UTF-8
   feature: Požadavek
-  background: Pozadí
+  background: Pozadí|Kontext
   scenario: Scénář
-  scenario_outline: Náčrt Scénáře
+  scenario_outline: Náčrt Scénáře|Osnova scénáře
   examples: Příklady
   given: Pokud
   when: Když
   then: Pak
-  and: A
+  and: A|A také
   but: Ale
   space_after_keyword: true
 "da":

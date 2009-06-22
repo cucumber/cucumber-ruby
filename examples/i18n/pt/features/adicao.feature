@@ -1,3 +1,4 @@
+# language: pt
 Funcionalidade: Adição
   Para evitar erros bobos
   Como um péssimo matemático

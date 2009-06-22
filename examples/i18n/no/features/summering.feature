@@ -1,3 +1,4 @@
+# language: no
 Egenskap: Summering
   For å slippe å gjøre dumme feil
   Som en regnskapsfører

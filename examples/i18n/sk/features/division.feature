@@ -1,3 +1,4 @@
+# language: sk
 Požiadavka: Delenie
   Aby som sa vyhol hlúpym chybám
   Pokladníci musia vedieť vypočítať podiel

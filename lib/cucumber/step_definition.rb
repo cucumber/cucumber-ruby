@@ -86,6 +86,8 @@ module Cucumber
 
     include StepDefinitionMethods
 
+    attr_reader :regexp, :proc
+
     def initialize(pattern, &proc)
       raise MissingProc if proc.nil?
       if String === pattern
@@ -111,6 +113,10 @@ module Cucumber
 
     def file_colon_line
       @proc.file_colon_line
+    end
+    
+    def file
+      @file ||= file_colon_line.split(':')[0]
     end
   end
 end

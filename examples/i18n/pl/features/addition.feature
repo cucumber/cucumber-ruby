@@ -1,3 +1,4 @@
+# language: pl
 Właściwość: Dodawanie
   W celu uniknięcia głupich błędów
   Jako matematyczny idiota

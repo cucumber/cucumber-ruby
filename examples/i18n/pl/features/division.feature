@@ -1,3 +1,4 @@
+# language: pl
 Właściwość: Dzielenie
   W celu uniknięcia głupich błędów
   Kasjer musi znać się na ułamkach

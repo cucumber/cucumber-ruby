@@ -1,3 +1,4 @@
+# language: et
 Omadus: Jagamine
   Rumalate vigade vältimiseks
   Peavad kassapidajad saama arvutada murdudes

@@ -1,3 +1,4 @@
+# language: ro
 Functionalitate: suma
   Pentru a nu face erori stupide
   Ca utilizator

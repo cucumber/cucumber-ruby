@@ -64,7 +64,7 @@ Feature: Cucumber --work-in-progress switch
             features/wip.feature:4:in `Given a failing step'
       
       Failing Scenarios:
-      features/wip.feature:3
+      cucumber features/wip.feature:3 # Scenario: Failing
 
       1 scenario (1 failed)
       1 step (1 failed)

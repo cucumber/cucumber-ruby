@@ -10,17 +10,13 @@ module Cucumber
       include Treetop::Runtime
 
       def root
-        @root || :feature
+        @root || :feature_sub
       end
 
-      include I18n
-
-      include Table
-
-      module Feature0
+      module FeatureSub0
       end
 
-      module Feature1
+      module FeatureSub1
         def white
           elements[0]
         end
@@ -55,7 +51,7 @@ module Cucumber
 
       end
 
-      module Feature2
+      module FeatureSub2
         def has_tags?(tag_names)
           tags.has_tags?(tag_names)
         end
@@ -74,10 +70,10 @@ module Cucumber
         end
       end
 
-      def _nt_feature
+      def _nt_feature_sub
         start_index = index
-        if node_cache[:feature].has_key?(index)
-          cached = node_cache[:feature][index]
+        if node_cache[:feature_sub].has_key?(index)
+          cached = node_cache[:feature_sub][index]
           @index = cached.interval.end if cached
           return cached
         end
@@ -139,7 +135,7 @@ module Cucumber
                     end
                     if s7.last
                       r7 = instantiate_node(SyntaxNode,input, i7...index, s7)
-                      r7.extend(Feature0)
+                      r7.extend(FeatureSub0)
                     else
                       self.index = i7
                       r7 = nil
@@ -181,14 +177,14 @@ module Cucumber
         end
         if s0.last
           r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
-          r0.extend(Feature1)
-          r0.extend(Feature2)
+          r0.extend(FeatureSub1)
+          r0.extend(FeatureSub2)
         else
           self.index = i0
           r0 = nil
         end
 
-        node_cache[:feature][start_index] = r0
+        node_cache[:feature_sub][start_index] = r0
 
         return r0
       end
@@ -1346,7 +1342,7 @@ module Cucumber
 
       module LinesToKeyword2
         def build
-          self.text_value.split("\n").map{|s| s.strip }.join("\n")
+          self.text_value.split("\n").map{|s| s.strip}.join("\n")
         end
       end
 
