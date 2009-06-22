@@ -1,4 +1,3 @@
-@in-progress
 Feature: Profiles
   In order to save time and prevent carpal tunnel syndrome
   Cucumber users can save and reuse commonly used cucumber flags in a 'cucumber.yml' file.
@@ -19,8 +18,8 @@ Feature: Profiles
     And a file named "features/support/super_env.rb"
     And the following profiles are defined:
       """
-      default: features/sample.feature --require support/env.rb"
-      super: features/sample.feature --require support/super_env.rb"
+      default: features/sample.feature --require support/env.rb -v
+      super: features/sample.feature --require support/super_env.rb -v
       """
 
   Scenario: Explicitly defining a profile to run
@@ -29,4 +28,4 @@ Feature: Profiles
       """
       Using the super profile...
       """
-    And exactly these files should be loaded: support/support/super_env.rb
+    And exactly these files should be loaded: support/super_env.rb

@@ -154,16 +154,16 @@ module Cli
       it "expands args from profiles in the cucumber.yml file" do
         given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})
 
-        config = Configuration.new
+        config = Configuration.new(out = StringIO.new, StringIO.new)
         config.parse!(%w{--format progress --profile bongo})
-        config.options[:formats].should == {'progress' => STDOUT}
+        config.options[:formats].should == {'progress' => out}
         config.options[:require].should == ['from/yml']
       end
 
       it "expands args from the default profile when no flags are provided" do
         given_cucumber_yml_defined_as({'default' => '--require from/yml'})
 
-        config = Configuration.new
+        config = Configuration.new(StringIO.new)
         config.parse!([])
         config.options[:require].should == ['from/yml']
       end
@@ -190,6 +190,15 @@ END_OF_MESSAGE
         config.parse!(%w{--profile foo})
         config.paths.should == [1,2,3]
       end
+
+      it "notifies the user that an individual profile is being used" do
+        given_cucumber_yml_defined_as({'foo' => [1,2,3]})
+
+        config = Configuration.new(out = StringIO.new, error = StringIO.new)
+        config.parse!(%w{--profile foo})
+        out.string.should =~ /Using the foo profile...\n/
+      end
+
 
       it "issues a helpful error message when a specified profile exists but is nil or blank" do
         [nil, '   '].each do |bad_input|
@@ -238,21 +247,21 @@ END_OF_MESSAGE
     end
 
     it "should accept --no-source option" do
-      config = Configuration.new
+      config = Configuration.new(StringIO.new)
       config.parse!(%w{--no-source})
 
       config.options[:source].should be_false
     end
 
     it "should accept --no-snippets option" do
-      config = Configuration.new
+      config = Configuration.new(StringIO.new)
       config.parse!(%w{--no-snippets})
 
       config.options[:snippets].should be_false
     end
 
     it "should set snippets and source to false with --quiet option" do
-      config = Configuration.new
+      config = Configuration.new(StringIO.new)
       config.parse!(%w{--quiet})
 
       config.options[:snippets].should be_nil
@@ -260,7 +269,7 @@ END_OF_MESSAGE
     end
 
     it "should accept --verbose option" do
-      config = Configuration.new
+      config = Configuration.new(StringIO.new)
       config.parse!(%w{--verbose})
 
       config.options[:verbose].should be_true
@@ -304,7 +313,7 @@ END_OF_MESSAGE
     end
 
     it "should parse tags" do
-      config = Configuration.new(nil)
+      config = Configuration.new(StringIO.new)
       includes, excludes = config.parse_tags("one,~two,@three,~@four")
       includes.should == ['one', 'three']
       excludes.should == ['two', 'four']
@@ -332,12 +341,12 @@ END_OF_MESSAGE
     describe "diff output" do
 
       it "is enabled by default" do
-        config = Configuration.new
+        config = Configuration.new(StringIO.new)
         config.diff_enabled?.should be_true
       end
 
       it "is disabled when the --no-diff option is supplied" do
-        config = Configuration.new
+        config = Configuration.new(StringIO.new)
         config.parse!(%w{--no-diff})
 
         config.diff_enabled?.should be_false
@@ -346,7 +355,7 @@ END_OF_MESSAGE
     end
 
     it "should accept multiple --name options" do
-      config = Configuration.new
+      config = Configuration.new(StringIO.new)
       config.parse!(['--name', "User logs in", '--name', "User signs up"])
 
       config.options[:name_regexps].should include(/User logs in/)
@@ -354,7 +363,7 @@ END_OF_MESSAGE
     end
 
     it "should accept multiple -n options" do
-      config = Configuration.new
+      config = Configuration.new(StringIO.new)
       config.parse!(['-n', "User logs in", '-n', "User signs up"])
 
       config.options[:name_regexps].should include(/User logs in/)
@@ -366,14 +375,14 @@ END_OF_MESSAGE
       Dir.should_receive(:[]).with("feature_directory/**/*.feature").
         any_number_of_times.and_return(["cucumber.feature"])
 
-      config = Configuration.new(StringIO)
+      config = Configuration.new(StringIO.new)
       config.parse!(%w{feature_directory/})
 
       config.feature_files.should == ["cucumber.feature"]
     end
 
     it "should allow specifying environment variables on the command line" do
-      config = Configuration.new
+      config = Configuration.new(StringIO.new)
       config.parse!(["foo=bar"])
       ENV["foo"].should == "bar"
       config.feature_files.should == []
@@ -381,7 +390,7 @@ END_OF_MESSAGE
     
     it "should allow specifying environment variables in profiles" do
       given_cucumber_yml_defined_as({'selenium' => 'RAILS_ENV=selenium'})
-      config = Configuration.new
+      config = Configuration.new(StringIO.new)
       config.parse!(["--profile", "selenium"])
       ENV["RAILS_ENV"].should == "selenium"
       config.feature_files.should == []

@@ -335,8 +335,10 @@ module Cucumber
 
       def expand_profiles_into_args
         while (profile_index = @args.index(PROFILE_SHORT_FLAG) || @args.index(PROFILE_LONG_FLAG)) do
-          @args.delete_at(profile_index)
-          @args[profile_index] = args_from_profile(@args[profile_index])
+          @args.delete_at(profile_index) # the flag itself
+          profile_name = @args[profile_index]
+          @args[profile_index] = args_from_profile(profile_name)
+          @out_stream.puts "Using the #{profile_name} profile..."
           @args.flatten!
         end
       end

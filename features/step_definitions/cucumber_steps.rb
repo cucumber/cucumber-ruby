@@ -128,3 +128,7 @@ Then /^"([^\"]*)" should be required$/ do |file_name|
   last_stdout.should include("* #{file_name}")
 end
 
+Then /^exactly these files should be loaded:\s*(.*)$/ do |files|
+  last_stdout.scan(/^  \* (.*)$/).flatten.should == files.split(/,\s+/)
+end
+
