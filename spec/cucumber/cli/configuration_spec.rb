@@ -148,28 +148,31 @@ module Cli
       end
     end
 
-    it "should expand args from YAML file" do
-      given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})
 
-      config = Configuration.new
-      config.parse!(%w{--format progress --profile bongo})
-      config.options[:formats].should == {'progress' => STDOUT}
-      config.options[:require].should == ['from/yml']
-    end
+    context '--profile' do
 
-    it "should expand args from YAML file's default if there are no args" do
-      given_cucumber_yml_defined_as({'default' => '--require from/yml'})
+      it "expands args from profiles in the cucumber.yml file" do
+        given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})
 
-      config = Configuration.new
-      config.parse!([])
-      config.options[:require].should == ['from/yml']
-    end
+        config = Configuration.new
+        config.parse!(%w{--format progress --profile bongo})
+        config.options[:formats].should == {'progress' => STDOUT}
+        config.options[:require].should == ['from/yml']
+      end
 
-    it "should provide a helpful error message when a specified profile does not exists in YAML file" do
-      given_cucumber_yml_defined_as({'default' => '--require from/yml', 'html_report' =>  '--format html'})
+      it "expands args from the default profile when no flags are provided" do
+        given_cucumber_yml_defined_as({'default' => '--require from/yml'})
 
-      config = Configuration.new(StringIO.new, error = StringIO.new)
-      expected_message = <<-END_OF_MESSAGE
+        config = Configuration.new
+        config.parse!([])
+        config.options[:require].should == ['from/yml']
+      end
+
+      it "provides a helpful error message when a specified profile does not exists in cucumber.yml" do
+        given_cucumber_yml_defined_as({'default' => '--require from/yml', 'html_report' =>  '--format html'})
+
+        config = Configuration.new(StringIO.new, error = StringIO.new)
+        expected_message = <<-END_OF_MESSAGE
 Could not find profile: 'i_do_not_exist'
 
 Defined profiles in cucumber.yml:
@@ -177,54 +180,55 @@ Defined profiles in cucumber.yml:
   * html_report
 END_OF_MESSAGE
 
-      lambda{config.parse!(%w{--profile i_do_not_exist})}.should raise_error(expected_message)
-    end
+        lambda{config.parse!(%w{--profile i_do_not_exist})}.should raise_error(expected_message)
+      end
 
-    it "should allow array as profile" do
-      given_cucumber_yml_defined_as({'foo' => [1,2,3]})
-
-      config = Configuration.new(StringIO.new, error = StringIO.new)
-      config.parse!(%w{--profile foo})
-      config.paths.should == [1,2,3]
-    end
-
-    it "should provide a helpful error message when a specified profile exists but is nil or blank" do
-      [nil, '   '].each do |bad_input|
-        given_cucumber_yml_defined_as({'foo' => bad_input})
+      it "allows profiles to be defined in arrays" do
+        given_cucumber_yml_defined_as({'foo' => [1,2,3]})
 
         config = Configuration.new(StringIO.new, error = StringIO.new)
-        expected_error = /The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml./
-        lambda{config.parse!(%w{--profile foo})}.should raise_error(expected_error)
+        config.parse!(%w{--profile foo})
+        config.paths.should == [1,2,3]
       end
-    end
 
-    it "should provide a helpful error message when no YAML file exists and a profile is specified" do
-      File.should_receive(:exist?).with('cucumber.yml').and_return(false)
+      it "issues a helpful error message when a specified profile exists but is nil or blank" do
+        [nil, '   '].each do |bad_input|
+          given_cucumber_yml_defined_as({'foo' => bad_input})
 
-      config = Configuration.new(StringIO.new, error = StringIO.new)
-      expected_error = /cucumber.yml was not found.  Please refer to cucumber's documentation on defining profiles in cucumber.yml./
-      lambda{config.parse!(%w{--profile i_do_not_exist})}.should raise_error(expected_error)
-    end
+          config = Configuration.new(StringIO.new, error = StringIO.new)
+          expected_error = /The 'foo' profile in cucumber.yml was blank.  Please define the command line arguments for the 'foo' profile in cucumber.yml./
+          lambda{config.parse!(%w{--profile foo})}.should raise_error(expected_error)
+        end
+      end
 
-    it "should provide a helpful error message when cucumber.yml is blank or malformed" do
-        expected_error_message = /cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentation on correct profile usage./
+      it "issues a helpful error message when no YAML file exists and a profile is specified" do
+        File.should_receive(:exist?).with('cucumber.yml').and_return(false)
 
-      ['', 'sfsadfs', "--- \n- an\n- array\n", "---dddfd"].each do |bad_input|
-        given_cucumber_yml_defined_as(bad_input)
+        config = Configuration.new(StringIO.new, error = StringIO.new)
+        expected_error = /cucumber.yml was not found.  Please refer to cucumber's documentation on defining profiles in cucumber.yml./
+        lambda{config.parse!(%w{--profile i_do_not_exist})}.should raise_error(expected_error)
+      end
+
+      it "issues a helpful error message when cucumber.yml is blank or malformed" do
+          expected_error_message = /cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentation on correct profile usage./
+
+        ['', 'sfsadfs', "--- \n- an\n- array\n", "---dddfd"].each do |bad_input|
+          given_cucumber_yml_defined_as(bad_input)
+
+          config = Configuration.new(StringIO.new, error = StringIO.new)
+          lambda{config.parse!([])}.should raise_error(expected_error_message)
+        end
+      end
+
+      it "issues a helpful error message when cucumber.yml can not be parsed" do
+        expected_error_message = /cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage./
+
+        given_cucumber_yml_defined_as("input that causes an exception in YAML loading")
+        YAML.should_receive(:load).and_raise ArgumentError
 
         config = Configuration.new(StringIO.new, error = StringIO.new)
         lambda{config.parse!([])}.should raise_error(expected_error_message)
       end
-    end
-
-    it "should procide a helpful error message when the YAML can not be parsed" do
-      expected_error_message = /cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage./
-
-      given_cucumber_yml_defined_as("input that causes an exception in YAML loading")
-      YAML.should_receive(:load).and_raise ArgumentError
-
-      config = Configuration.new(StringIO.new, error = StringIO.new)
-      lambda{config.parse!([])}.should raise_error(expected_error_message)
     end
 
     it "should accept --dry-run option" do
