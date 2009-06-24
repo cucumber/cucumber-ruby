@@ -193,7 +193,7 @@ Defined profiles in cucumber.yml:
   * html_report
 END_OF_MESSAGE
 
-        lambda{config.parse!(%w{--profile i_do_not_exist})}.should raise_error(expected_message)
+        lambda{config.parse!(%w{--profile i_do_not_exist})}.should raise_error(ProfileNotFound, expected_message)
       end
 
       it "allows profiles to be defined in arrays" do

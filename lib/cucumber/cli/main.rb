@@ -58,6 +58,9 @@ module Cucumber
           step_mother.scenarios(:failed).any? || 
           (configuration.strict? && step_mother.steps(:undefined).any?)
         end
+      rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
+        @error_stream.puts e.message
+        true
       end
 
       def load_plain_text_features

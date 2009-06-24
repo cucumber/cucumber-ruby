@@ -2,6 +2,7 @@ module Cucumber
   module Cli
     class YmlLoadError < StandardError; end
     class ProfilesNotDefinedError < YmlLoadError; end
+    class ProfileNotFound < StandardError; end
 
     class Configuration
       BUILTIN_FORMATS = {
@@ -370,7 +371,7 @@ module Cucumber
 
       def args_from_profile(profile)
         unless cucumber_yml.has_key?(profile)
-          raise(<<-END_OF_ERROR)
+          raise(ProfileNotFound, <<-END_OF_ERROR)
 Could not find profile: '#{profile}'
 
 Defined profiles in cucumber.yml:
@@ -382,12 +383,12 @@ Defined profiles in cucumber.yml:
 
         case(args_from_yml)
           when String
-            raise "The '#{profile}' profile in cucumber.yml was blank.  Please define the command line arguments for the '#{profile}' profile in cucumber.yml.\n" if args_from_yml =~ /^\s*$/
+            raise YmlLoadError, "The '#{profile}' profile in cucumber.yml was blank.  Please define the command line arguments for the '#{profile}' profile in cucumber.yml.\n" if args_from_yml =~ /^\s*$/
             args_from_yml = args_from_yml.split(' ')
           when Array
-            raise "The '#{profile}' profile in cucumber.yml was empty.  Please define the command line arguments for the '#{profile}' profile in cucumber.yml.\n" if args_from_yml.empty?
+            raise YmlLoadError, "The '#{profile}' profile in cucumber.yml was empty.  Please define the command line arguments for the '#{profile}' profile in cucumber.yml.\n" if args_from_yml.empty?
           else
-            raise "The '#{profile}' profile in cucumber.yml was a #{args_from_yml.class}. It must be a String or Array"
+            raise YmlLoadError, "The '#{profile}' profile in cucumber.yml was a #{args_from_yml.class}. It must be a String or Array"
         end
         args_from_yml
       end

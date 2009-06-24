@@ -95,6 +95,19 @@ module Cucumber
         end
       end
 
+    [ProfilesNotDefinedError, YmlLoadError, ProfileNotFound].each do |exception_klass|
+
+      it "rescues #{exception_klass}, prints the message to the error stream and returns true" do
+        Configuration.stub!(:new).and_return(configuration = mock('configuration'))
+        configuration.stub!(:parse!).and_raise(exception_klass.new("error message"))
+
+        main = Main.new('', out = StringIO.new, error = StringIO.new)
+        main.execute!(Object.new.extend(StepMother)).should be_true
+        error.string.should == "error message\n"
+      end
+    end
+
+
       context "--drb" do
         before(:each) do
           @configuration = mock('Configuration', :drb? => true, :null_object => true)
