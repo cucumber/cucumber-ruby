@@ -43,3 +43,14 @@ Feature: Profiles
     Then the default profile should be used
     And exactly these files should be loaded: support/env.rb
 
+  @in-progress
+  Scenario: missing profile
+    When I run cucumber -p foo
+    Then STDERR should be
+      """
+      Could not find profile: 'foo'
+
+      Defined profiles in cucumber.yml:
+        * default
+        * wip
+      """
