@@ -168,6 +168,74 @@ module Cucumber
 
       end
       
+      describe "diff!" do
+        it "should be added to end" do
+          expected = Table.new([
+            ['a', 'b'],
+            ['c', 'd']
+          ])
+          actual = Table.new([
+            ['a', 'b'],
+            ['c', 'd'],
+            ['e', 'f']
+          ])
+          expected.diff!(actual)
+          expected.to_sexp.should == 
+            [:table,
+              [:row, -1, 
+                [:cell, "a"], [:cell, "b"]],
+              [:row, -1, 
+                [:cell, "c"], [:cell, "d"]],
+              [:row, -1, 
+                [:plus_cell, "e"], [:plus_cell, "f"]]
+            ]
+        end
+
+        it "should be added to middle" do
+          expected = Table.new([
+            ['a', 'b'],
+            ['c', 'd']
+          ])
+          actual = Table.new([
+            ['a', 'b'],
+            ['e', 'f'],
+            ['c', 'd'],
+          ])
+          expected.diff!(actual)
+          expected.to_sexp.should == 
+            [:table,
+              [:row, -1, 
+                [:cell, "a"], [:cell, "b"]],
+              [:row, -1, 
+                [:plus_cell, "e"], [:plus_cell, "f"]],
+              [:row, -1, 
+                [:cell, "c"], [:cell, "d"]],
+            ]
+        end
+
+        it "should be removed from top" do
+          expected = Table.new([
+            ['a', 'b'],
+            ['c', 'd'],
+            ['e', 'f'],
+          ])
+          actual = Table.new([
+            ['c', 'd'],
+            ['e', 'f']
+          ])
+          expected.diff!(actual)
+          expected.to_sexp.should == 
+            [:table,
+              [:row, -1, 
+                [:minus_cell, "a"], [:minus_cell, "b"]],
+              [:row, -1, 
+                [:cell, "c"], [:cell, "d"]],
+              [:row, -1, 
+                [:cell, "e"], [:cell, "f"]],
+            ]
+        end
+      end
+      
       it "should convert to sexp" do
         @table.to_sexp.should == 
           [:table, 

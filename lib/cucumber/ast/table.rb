@@ -153,6 +153,38 @@ module Cucumber
         @conversion_procs[column_name] = conversion_proc
       end
 
+      def diff!(table)
+        require 'diff/lcs'
+        self.extend(Diff::LCS)
+        all_changes = self.diff(table)
+        all_changes.each do |changes|
+          changes.each do |change|
+            if(change.action == '+')
+              cells = change.element.map do |raw_cell|
+                new_cell(raw_cell, change.position, 0, -1, :plus_cell)
+              end
+              surplus_row = @cells_class.new(self, cells)
+              cells_rows.insert(change.position, surplus_row)
+            elsif(change.action == '-')
+              missing_row = cells_rows[change.position]
+              change.element.length.times do |n|
+                missing_row[n].kind = :minus_cell
+              end
+            else
+              raise "Unknown change: #{change.action}"
+            end
+          end
+        end
+      end
+
+      def size
+        @raw.length
+      end
+
+      def [](i)
+        @raw[i]
+      end
+
       def to_hash(cells) #:nodoc:
         hash = Hash.new do |hash, key|
           hash[key.to_s] if key.is_a?(Symbol)
@@ -198,7 +230,7 @@ module Cucumber
       def cells_rows
         @rows ||= cell_matrix.map do |cell_row|
           @cells_class.new(self, cell_row)
-        end.freeze
+        end
       end
 
       def headers
@@ -241,9 +273,13 @@ module Cucumber
           col = -1
           raw_row.map do |raw_cell|
             col += 1
-            @cell_class.new(raw_cell, self, row, col, line)
+            new_cell(raw_cell, row, col, line, :cell)
           end
         end.freeze
+      end
+
+      def new_cell(raw_cell, row, col, line, kind)
+        @cell_class.new(raw_cell, self, row, col, line, kind)
       end
 
       # Represents a row of cells or columns of cells
@@ -304,10 +340,10 @@ module Cucumber
 
       class Cell
         attr_reader :value, :line
-        attr_writer :status
+        attr_writer :status, :kind
 
-        def initialize(value, table, row, col, line)
-          @value, @table, @row, @col, @line = value, table, row, col, line
+        def initialize(value, table, row, col, line, kind)
+          @value, @table, @row, @col, @line, @kind = value, table, row, col, line, kind
         end
 
         def accept(visitor)
@@ -320,7 +356,7 @@ module Cucumber
 
         # For testing only
         def to_sexp #:nodoc:
-          [:cell, @value]
+          [@kind, @value]
         end
 
         private
