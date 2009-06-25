@@ -20,6 +20,6 @@ Feature: --formatter steps option - Steps Formatter
       /^I create a step 5$/                 # features/step_definitions/steps_lib2.rb:4
       /^I should be too tired for step 6$/  # features/step_definitions/steps_lib2.rb:7
     
-    6 step_definition(s) defined in 2 source file(s).
+    6 step_definition(s) in 2 source file(s).
 
     """
