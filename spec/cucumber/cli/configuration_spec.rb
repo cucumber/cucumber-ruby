@@ -224,6 +224,16 @@ END_OF_MESSAGE
         out.string.should =~ /Using the foo, bar and dog profiles...\n/
       end
 
+      it "disregards paths in profiles when other paths are passed in" do
+        pending "input"
+        given_cucumber_yml_defined_as({'foo' => %w[-v features]})
+
+        config = Configuration.new(StringIO.new, error = StringIO.new)
+        config.parse!(%w{--profile foo features/specific.feature})
+        config.paths.should == ['features/specific.feature']
+      end
+
+
       context 'when none is specified' do
 
         it "disables profiles" do
