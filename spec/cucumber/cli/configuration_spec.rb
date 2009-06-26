@@ -224,6 +224,28 @@ END_OF_MESSAGE
         out.string.should =~ /Using the foo, bar and dog profiles...\n/
       end
 
+      context 'when none is specified' do
+
+        it "disables profiles" do
+          given_cucumber_yml_defined_as({'default' => '-v --require file_specified_in_default_profile.rb'})
+
+          config = Configuration.new(out = StringIO.new, error = StringIO.new)
+          config.parse!(%w{--profile none --require some_file.rb})
+          config.options[:require].should == ['some_file.rb']
+        end
+
+        it "notifies the user that the profiles are being disabled" do
+          given_cucumber_yml_defined_as({'default' => '-v'})
+
+          config = Configuration.new(out = StringIO.new, error = StringIO.new)
+          config.parse!(%w{--profile none --require some_file.rb})
+          out.string.should =~ /Disabling profiles.../
+        end
+
+      end
+
+
+
       it "issues a helpful error message when a specified profile exists but is nil or blank" do
         [nil, '   '].each do |bad_input|
           given_cucumber_yml_defined_as({'foo' => bad_input})
@@ -263,6 +285,7 @@ END_OF_MESSAGE
         lambda{config.parse!([])}.should raise_error(expected_error_message)
       end
     end
+
 
     it "should accept --dry-run option" do
       config = Configuration.new(StringIO.new)

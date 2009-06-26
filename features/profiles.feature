@@ -18,8 +18,8 @@ Feature: Profiles
     And a file named "features/support/super_env.rb"
     And the following profiles are defined:
       """
-      default: features/sample.feature --require support/env.rb -v
-      super: features/sample.feature --require support/super_env.rb -v
+      default: features/sample.feature --require features/support/env.rb -v
+      super: features/sample.feature --require features/support/super_env.rb -v
       """
 
   Scenario: Explicitly defining a profile to run
@@ -28,7 +28,7 @@ Feature: Profiles
       """
       Using the super profile...
       """
-    And exactly these files should be loaded: support/super_env.rb
+    And exactly these files should be loaded: features/support/super_env.rb
 
   Scenario: Defining multiple profiles to run
     When I run cucumber features/sample.feature --profile default --profile super
@@ -36,12 +36,12 @@ Feature: Profiles
       """
       Using the default and super profiles...
       """
-    And exactly these files should be loaded: support/env.rb, support/super_env.rb
+    And exactly these files should be loaded: features/support/env.rb, features/support/super_env.rb
 
   Scenario: Arguments passed in but no profile specified
     When I run cucumber -v
     Then the default profile should be used
-    And exactly these files should be loaded: support/env.rb
+    And exactly these files should be loaded: features/support/env.rb
 
   Scenario: Trying to use a missing profile
     When I run cucumber -p foo
@@ -55,13 +55,14 @@ Feature: Profiles
 
       """
 
-  @in-progress
   Scenario: Disabling the default profile
-    When I run cucumber -v features --profile none
+    When I run cucumber -v features/ --profile none
     Then the output should contain
       """
       Disabling profiles...
       """
-    And exactly these files should be loaded: support/env.rb, support/super_env.rb
+    And exactly these files should be loaded: features/support/env.rb, features/support/super_env.rb
 
 
+
+ 

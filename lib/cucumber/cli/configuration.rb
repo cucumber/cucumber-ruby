@@ -34,8 +34,7 @@ module Cucumber
 
       def parse!(args)
         @args = args
-        setup_default_profile
-        expand_profiles_into_args
+        setup_profiles
 
         return if parse_drb
 
@@ -297,6 +296,19 @@ module Cucumber
       end
 
     private
+
+      def setup_profiles
+        if disable_profiles?
+          @out_stream.puts "Disabling profiles..."
+        else
+          setup_default_profile
+          expand_profiles_into_args
+        end
+      end
+
+      def disable_profiles?
+        (none_index = @args.index('none')) && [PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG].include?(@args[none_index - 1])
+      end
 
       def setup_default_profile
         @args.concat(%w{--profile default}) if @args.empty?
