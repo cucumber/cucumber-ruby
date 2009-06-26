@@ -38,12 +38,12 @@ Feature: Profiles
       """
     And exactly these files should be loaded: support/env.rb, support/super_env.rb
 
-  Scenario: no profile declared with a default profile passed in
+  Scenario: Arguments passed in but no profile specified
     When I run cucumber -v
     Then the default profile should be used
     And exactly these files should be loaded: support/env.rb
 
-  Scenario: missing profile
+  Scenario: Trying to use a missing profile
     When I run cucumber -p foo
     Then STDERR should be
       """
@@ -54,3 +54,14 @@ Feature: Profiles
         * super
 
       """
+
+  @in-progress
+  Scenario: Disabling the default profile
+    When I run cucumber -v features --profile none
+    Then the output should contain
+      """
+      Disabling profiles...
+      """
+    And exactly these files should be loaded: support/env.rb, support/super_env.rb
+
+
