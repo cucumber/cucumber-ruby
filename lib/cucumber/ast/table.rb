@@ -18,11 +18,16 @@ module Cucumber
 
       def initialize(raw, conversions = NULL_CONVERSIONS.dup)
         # Verify that it's square
-        raw.transpose
+        transposed = raw.transpose
         @raw = raw
         @cells_class = Cells
         @cell_class = Cell
         @conversion_procs = conversions
+      end
+
+      def hashes_to_array(hashes)
+        header = hashes[0].keys
+        [header] + hashes.map{|hash| header.map{|key| hash[key]}}
       end
 
       # Creates a copy of this table, inheriting the column mappings.
@@ -78,8 +83,9 @@ module Cucumber
       # The table must be exactly two columns wide 
       #
       def rows_hash
+        return @rows_hash if @rows_hash
         verify_table_width(2)
-        @rows_hash = self.transpose.hashes[0]
+        @rows_hash = self.transpose.hashes[0].freeze
       end
 
       # Gets the raw data of this table. For example, a Table built from
@@ -153,36 +159,105 @@ module Cucumber
         @conversion_procs[column_name] = conversion_proc
       end
 
-      def diff!(table)
+      module Plus
+        def kind
+          :plus_cell
+        end
+      end
+
+      module Minus
+        def kind
+          :minus_cell
+        end
+      end
+
+      # Compares +table+ to self and stores the diff internally in new rows.
+      # If +table+ has different content than self, an exception is raised
+      # (unless you pass :raise => false in +options+).
+      #
+      # The +table+ argument can be another Table, an Array of Array or
+      # an Array of Hash (similar to the structure returned by #hashes).
+      #
+      # Calling this method is particularly useful in Then steps that take
+      # a Table argument. Simply calling <tt>#diff!(actual_table)</tt> will 
+      # cause your step to fail if the contents are different, and also
+      # display the differences in the output.
+      #
+      # This method will attempt to identify surplus rows in certain situations.
+      # Such columns will be added to the end (right) of the original table (self).
+      # Surplus column detection will happen in the following conditions:
+      #
+      #   * +table+ is an Array of Hash
+      #   * <tt>:coldiff => true</tt> is passed to +options+
+      def diff!(table, options={})
+        array_of_hashes = Array === table && Hash === table[0]
+        table = hashes_to_array(table) if array_of_hashes
+        table = table.raw if Table === table
+
+        default_options = {:raise => true}
+        default_options[:coldiff] = true if array_of_hashes
+        options = default_options.merge(options)
+
+        table, surplus_cols = *raw_and_surplus(table, options[:coldiff])
+        empty_surplus_row = Array.new(surplus_cols.length, nil)
+
         require 'diff/lcs'
-        self.extend(Diff::LCS)
-        all_changes = self.diff(table)
+        @raw.extend(Diff::LCS)
+
+        clear_cache!
+
+        offset = 0
+        all_changes = @raw.diff(table)
         all_changes.each do |changes|
           changes.each do |change|
             if(change.action == '+')
-              cells = change.element.map do |raw_cell|
-                new_cell(raw_cell, change.position, 0, -1, :plus_cell)
+              raw_row = change.element.map do |raw_cell|
+                raw_cell = raw_cell.dup.extend(Plus)
+                raw_cell
               end
-              surplus_row = @cells_class.new(self, cells)
-              cells_rows.insert(change.position, surplus_row)
+              pos = change.position + offset
+              @raw.insert(pos, raw_row)
+              surplus_cols.insert(pos, empty_surplus_row) if surplus_cols.any?
             elsif(change.action == '-')
-              missing_row = cells_rows[change.position]
+              missing_row = @raw[change.position]
               change.element.length.times do |n|
-                missing_row[n].kind = :minus_cell
+                missing_row[n].extend(Minus)
               end
             else
               raise "Unknown change: #{change.action}"
             end
+            offset += 1
           end
         end
+
+        if surplus_cols.any?
+          @raw = (@raw.transpose + surplus_cols).transpose
+        end
+
+        raise "Tables were not identical" if all_changes.any? && options[:raise]
       end
 
-      def size
-        @raw.length
-      end
+      def raw_and_surplus(raw, coldiff)
+        return [raw, []] unless coldiff
 
-      def [](i)
-        @raw[i]
+        transposed_raw = raw.transpose
+        headers = @raw[0]
+
+        transposed_raw, surplus_columns = transposed_raw.partition do |col|
+          headers.index(col[0])
+        end
+        
+        transposed_raw.sort! do |col_a, col_b|
+          headers.index(col_a[0]) <=> headers.index(col_b[0])
+        end
+        
+        surplus_columns = surplus_columns.map do |surplus_column|
+          surplus_column.map do |cell|
+            cell.dup.extend(Plus)
+          end
+        end
+
+        [transposed_raw.transpose, surplus_columns]
       end
 
       def to_hash(cells) #:nodoc:
@@ -255,6 +330,10 @@ module Cucumber
 
       private
 
+      def clear_cache!
+        @hashes = @rows_hash = @rows = @cell_matrix = nil
+      end
+
       def col_width(col)
         columns[col].__send__(:width)
       end
@@ -273,13 +352,13 @@ module Cucumber
           col = -1
           raw_row.map do |raw_cell|
             col += 1
-            new_cell(raw_cell, row, col, line, :cell)
+            new_cell(raw_cell, row, col, line)
           end
         end.freeze
       end
 
-      def new_cell(raw_cell, row, col, line, kind)
-        @cell_class.new(raw_cell, self, row, col, line, kind)
+      def new_cell(raw_cell, row, col, line)
+        @cell_class.new(raw_cell, self, row, col, line)
       end
 
       # Represents a row of cells or columns of cells
@@ -319,6 +398,10 @@ module Cucumber
           @cells[0].line
         end
 
+        def kind
+          @cells[0].kind
+        end
+
         def dom_id
           "row_#{line}"
         end
@@ -340,13 +423,15 @@ module Cucumber
 
       class Cell
         attr_reader :value, :line
-        attr_writer :status, :kind
+        attr_writer :status
 
-        def initialize(value, table, row, col, line, kind)
-          @value, @table, @row, @col, @line, @kind = value, table, row, col, line, kind
+        def initialize(value, table, row, col, line)
+          @value, @table, @row, @col, @line = value, table, row, col, line
         end
 
         def accept(visitor)
+          @status = :undefined if kind == :minus_cell
+          @status = :comment   if kind == :plus_cell
           visitor.visit_table_cell_value(@value, col_width, @status)
         end
 
@@ -356,13 +441,17 @@ module Cucumber
 
         # For testing only
         def to_sexp #:nodoc:
-          [@kind, @value]
+          [kind, @value]
+        end
+
+        def kind
+          @value.respond_to?(:kind) ? @value.kind : :cell
         end
 
         private
 
         def col_width
-          @col_width ||= @table.__send__(:col_width, @col).freeze
+          @table.__send__(:col_width, @col)
         end
       end
     end

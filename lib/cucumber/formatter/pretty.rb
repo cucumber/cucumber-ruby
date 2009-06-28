@@ -13,11 +13,10 @@ module Cucumber
       include Console
       attr_writer :indent
 
-      def initialize(step_mother, io, options, delim='|')
+      def initialize(step_mother, io, options)
         super(step_mother)
         @io = io
         @options = options
-        @delim = delim
         @exceptions = []
         @indent = 0
       end
@@ -153,8 +152,15 @@ module Cucumber
         @io.flush
       end
 
+      ROW_STARTS = {
+        :cell       => '  |',
+        :plus_cell  => '+ |',
+        :minus_cell => '- |'
+      }
+
       def visit_table_row(table_row)
-        @io.print @delim.indent(@indent)
+        row_start = ROW_STARTS[table_row.kind]
+        @io.print row_start.indent(@indent-2)
         super
         @io.puts
         if table_row.exception && !@exceptions.index(table_row.exception)
@@ -171,7 +177,7 @@ module Cucumber
 
       def visit_table_cell_value(value, width, status)
         status ||= @status || :passed
-        @io.print(' ' + format_string((value.to_s || '').ljust(width), status) + ::Term::ANSIColor.reset(" #{@delim}"))
+        @io.print(' ' + format_string((value.to_s || '').ljust(width), status) + ::Term::ANSIColor.reset(" |"))
         @io.flush
       end
 

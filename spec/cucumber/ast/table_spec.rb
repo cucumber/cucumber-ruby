@@ -179,7 +179,7 @@ module Cucumber
             ['c', 'd'],
             ['e', 'f']
           ])
-          expected.diff!(actual)
+          expected.diff!(actual, :raise => false)
           expected.to_sexp.should == 
             [:table,
               [:row, -1, 
@@ -201,7 +201,7 @@ module Cucumber
             ['e', 'f'],
             ['c', 'd'],
           ])
-          expected.diff!(actual)
+          expected.diff!(actual, :raise => false)
           expected.to_sexp.should == 
             [:table,
               [:row, -1, 
@@ -219,11 +219,11 @@ module Cucumber
             ['c', 'd'],
             ['e', 'f'],
           ])
-          actual = Table.new([
+          actual = [
             ['c', 'd'],
             ['e', 'f']
-          ])
-          expected.diff!(actual)
+          ]
+          expected.diff!(actual, :raise => false)
           expected.to_sexp.should == 
             [:table,
               [:row, -1, 
@@ -233,6 +233,75 @@ module Cucumber
               [:row, -1, 
                 [:cell, "e"], [:cell, "f"]],
             ]
+        end
+
+        it "should add and remove" do
+          expected = Table.new([
+            ['a', 'b'],
+            ['c', 'd'],
+            ['e', 'f'],
+          ])
+          actual = Table.new([
+            ['a', 'b'],
+            ['X', 'Y'],
+            ['e', 'f'],
+          ])
+          expected.diff!(actual, :raise => false)
+          expected.to_sexp.should == 
+            [:table,
+              [:row, -1, 
+                [:cell, "a"], [:cell, "b"]],
+              [:row, -1, 
+                [:minus_cell, "c"], [:minus_cell, "d"]],
+              [:row, -1, 
+                [:plus_cell, "X"], [:plus_cell, "Y"]],
+              [:row, -1, 
+                [:cell, "e"], [:cell, "f"]],
+            ]
+        end
+        
+        it "should compute correct coldiff" do
+          t1 = Table.new([
+            ['name',  'town'],
+            ['aslak', 'oslo'],
+            ['joe',   'london']
+          ])
+          t2 = Table.new([
+            ['town',   'name'],
+            ['oslo',   'aslak'],
+            ['london', 'joe']
+          ])
+
+          diff_with = Table.new([
+            ['town',   'name',  'country', 'lisp'],
+            ['oslo',   'aslak', 'no',     'false'],
+            ['london', 'joe',   'uk',      'true']
+          ]).hashes
+
+          t1.diff!(diff_with, :raise => false, :coldiff => true)
+          t1.to_sexp.should == [:table, 
+            [:row, -1, [:cell, "name"],   [:cell, "town"],   [:plus_cell, "country"], [:plus_cell, "lisp"]], 
+            [:row, -1, [:cell, "aslak"],  [:cell, "oslo"],   [:plus_cell, "no"],      [:plus_cell, "false"]], 
+            [:row, -1, [:cell, "joe"],    [:cell, "london"], [:plus_cell, "uk"],      [:plus_cell, "true"]]
+          ]
+
+          t2.diff!(diff_with, :raise => false, :coldiff => true)
+          t2.to_sexp.should == [:table, 
+            [:row, -1, [:cell, "town"],   [:cell, "name"],   [:plus_cell, "country"], [:plus_cell, "lisp"]], 
+            [:row, -1, [:cell, "oslo"],   [:cell, "aslak"],  [:plus_cell, "no"],      [:plus_cell, "false"]], 
+            [:row, -1, [:cell, "london"], [:cell, "joe"],    [:plus_cell, "uk"],      [:plus_cell, "true"]]
+          ]
+        end
+
+        it "should be diffable with array of hash" do
+          t = Table.new([
+            %w{a b},
+            %w{c d},
+            %w{e f}
+          ]).diff!([
+            {'a' => 'c', 'b' => 'd'},
+            {'a' => 'e', 'b' => 'f'}
+          ])
         end
       end
       
