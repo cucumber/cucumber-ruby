@@ -257,7 +257,7 @@ module Cucumber
         
         surplus_columns = surplus_columns.map do |surplus_column|
           surplus_column.map do |cell|
-            cell.dup.extend(Plus)
+            cell.to_s.dup.extend(Plus)
           end
         end
 

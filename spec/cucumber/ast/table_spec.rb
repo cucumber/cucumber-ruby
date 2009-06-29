@@ -372,6 +372,44 @@ module Cucumber
           }
         end
 
+        it "should keep track of even more complex offsets" do
+          t1 = table(%{
+            | 1 |
+            | 2 |
+            | 3 |
+            | 4 |
+            | 5 |
+            | 6 |
+            | 7 |
+            | 8 |
+            | 9 |
+          })
+          t2 = table(%{
+            | A |
+            | B |
+            | 2 |
+            | C |
+            | 4 |
+            | 6 |
+            | 8 |
+          })
+          t1.diff!(t2, :raise => false)
+          pretty(t1).should == %{
+          - | 1 |
+          + | A |
+          + | B |
+            | 2 |
+          - | 3 |
+          + | C |
+            | 4 |
+          - | 5 |
+            | 6 |
+          - | 7 |
+            | 8 |
+          - | 9 |
+          }
+        end
+
         def table(text, file=nil, line_offset=0)
           @table_parser ||= Parser::TableParser.new
           @table_parser.parse_or_fail(text.strip, file, line_offset)

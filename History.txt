@@ -1,18 +1,58 @@
 == 0.3.12 (In Git)
 
-The Egality release
+The Hot summer release
+
+This is a hot summer in Norway, and Cucumbers are growing in abundance. To celebrate this we give you
+a new release with some hot new features:
+
+=== Egality
 
 English is not the world's most spoken language, so why should Cucumber force non-English speakers to use the
 --language flag? As of this release you're no longer forced to do that. Instead, you can add a comment header 
 to your .feature files:
 
   # language: fr
+  # Cucumber understands that this is French
   Fonctionnalité: Trou de boulette
 
 If you don't have that header, Cucumber will work as before - using whatever you specified with --language,
 or default to English if no --language option was specified. A nice side effect of this is that you can now
 have features in several languages side by side and run them in the same cucumber. (Not recommended unless 
 you want to take polyglot programming to an extreme level).
+
+=== Table diffing
+
+When you pass a table as an argument to your Then steps you often want to compare that table
+to some actual values. In previous releases you had to iterate over the table's values and manually
+compare each row using cell.should equal('foo') or assert_equal('foo', cell). If a discrepancy was found
+you'd get an error and then you were done.
+
+With this release you have a much more powerful way to compare expected tables with actual data. An
+Ast::Table object now has a new #diff!(table) method that you can invoke in your step definitions
+that take table arguments. If the table you pass in is different from the expected table (from your
+plain text step), Cucumber will print the difference for each of the row or column and fail your step.
+
+The Table#diff! method expects an Array of Array, Array of Hash (similar to what you'd get from table#hashes)
+or simply another Ast::Table object.
+
+As an extra bonus we provide you with a new Webrat method that you can use to transform the data from
+an HTML table into an Array of Array, so that you can easily compare the contents of your HTML table to
+some expected data in an HTML table:
+
+  Then /^I should see the following cukes:$/ do |expected_cukes|
+    expected_cukes.diff!(table_at('#cuke_table').to_a)
+  end
+
+You can do the same trick to compare data from a Rails ActiveRecord table (although this is not a
+recommended practice - your Then steps should compare against what users *see*, not what's in the 
+database):
+
+  # This requires that you use the column names in the header of the plain text expected table
+  Then /^I should have the following cukes in the database:$/ do |expected_cukes|
+    expected_cukes.diff!(Cuke.find(:all).map(&attributes), :coldiff => false) # Don't care about extra columns
+  end
+
+=== Environment variables
 
 Another useful new feature is the ability to define environment variables on Cucumber's command line (just
 like you can with Rake). Example:
