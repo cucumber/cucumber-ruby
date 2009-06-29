@@ -10,17 +10,24 @@ Feature: Table diffing
       Feature: Tables
         Scenario: Extra row
           Then the table should be:
-            | a     | b    |
-            | one   | two  |
-            | three | four |
+            | x | y |
+            | a | b |
+            | c | d |
+            | e | f |
+            | g | h |
+            | i | j |
+            | k | l |
       """
     And a file named "features/step_definitions/table_steps.rb" with:
       """
       Then /the table should be:/ do |expected|
         expected.diff!(table(%{
-          | a     | b     |
-          | BOOYA | KASHA |
-          | three | four  |
+          | x | y |
+          | 1 | 2 |
+          | a | b |
+          | i | j |
+          | 3 | 4 |
+          | k | l |
         }))
       end
       """
@@ -31,10 +38,15 @@ Feature: Table diffing
       
         Scenario: Extra row         # features/tables.feature:2
           Then the table should be: # features/step_definitions/table_steps.rb:1
-            | a     | b     |
-          - | one   | two   |
-          + | BOOYA | KASHA |
-            | three | four  |
+            | x | y |
+          + | 1 | 2 |
+            | a | b |
+          - | c | d |
+          - | e | f |
+          - | g | h |
+            | i | j |
+          + | 3 | 4 |
+            | k | l |
             Tables were not identical (RuntimeError)
             ./features/step_definitions/table_steps.rb:2:in `/the table should be:/'
             features/tables.feature:3:in `Then the table should be:'

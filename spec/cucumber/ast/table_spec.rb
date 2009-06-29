@@ -303,6 +303,94 @@ module Cucumber
             {'a' => 'e', 'b' => 'f'}
           ])
         end
+        
+        it "should keep track of offsets" do
+          t1 = table(%{
+            | x | y |
+            | a | b |
+            | c | d |
+            | e | f |
+            | g | h |
+            | i | j |
+            | k | l |
+          })
+          t2 = table(%{
+            | x | y |
+            | a | b |
+            | 1 | 2 |
+            | g | h |
+            | i | j |
+            | 3 | 4 |
+            | k | l |
+          })
+          t1.diff!(t2, :raise => false)
+          pretty(t1).should == %{
+            | x | y |
+            | a | b |
+          - | c | d |
+          - | e | f |
+          + | 1 | 2 |
+            | g | h |
+            | i | j |
+          + | 3 | 4 |
+            | k | l |
+          }
+        end
+
+        it "should keep track of more complex offsets" do
+          t1 = table(%{
+            | x | y |
+            | a | b |
+            | c | d |
+            | e | f |
+            | g | h |
+            | i | j |
+            | k | l |
+          })
+          t2 = table(%{
+            | x | y |
+            | 1 | 2 |
+            | 3 | 4 |
+            | a | b |
+            | g | h |
+            | 5 | 6 |
+            | i | j |
+            | k | l |
+          })
+          t1.diff!(t2, :raise => false)
+          pretty(t1).should == %{
+            | x | y |
+          + | 1 | 2 |
+          + | 3 | 4 |
+            | a | b |
+          - | c | d |
+          - | e | f |
+            | g | h |
+          + | 5 | 6 |
+            | i | j |
+            | k | l |
+          }
+        end
+
+        def table(text, file=nil, line_offset=0)
+          @table_parser ||= Parser::TableParser.new
+          @table_parser.parse_or_fail(text.strip, file, line_offset)
+        end
+        
+        def pretty(table)
+          io = StringIO.new
+
+          c = Term::ANSIColor.coloring?
+          Term::ANSIColor.coloring = false
+          f = Formatter::Pretty.new(nil, io, {})
+          f.instance_variable_set('@indent', 12)
+          table.accept(f)
+          Term::ANSIColor.coloring = c
+
+          io.rewind
+          s = "\n" + io.read + ("          ")
+          s
+        end
       end
       
       it "should convert to sexp" do

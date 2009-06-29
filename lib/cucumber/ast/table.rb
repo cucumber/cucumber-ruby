@@ -206,27 +206,31 @@ module Cucumber
 
         clear_cache!
 
-        offset = 0
+        inserted = 0
+        removed  = 0
+
         all_changes = @raw.diff(table)
         all_changes.each do |changes|
           changes.each do |change|
             if(change.action == '+')
+              pos = change.position + removed
               raw_row = change.element.map do |raw_cell|
                 raw_cell = raw_cell.dup.extend(Plus)
                 raw_cell
               end
-              pos = change.position + offset
               @raw.insert(pos, raw_row)
               surplus_cols.insert(pos, empty_surplus_row) if surplus_cols.any?
+              inserted += 1
             elsif(change.action == '-')
-              missing_row = @raw[change.position]
+              pos = change.position + inserted
+              missing_row = @raw[pos]
               change.element.length.times do |n|
                 missing_row[n].extend(Minus)
               end
+              removed += 1
             else
               raise "Unknown change: #{change.action}"
             end
-            offset += 1
           end
         end
 
