@@ -239,6 +239,7 @@ examples/tickets/features/step_definitons/246_steps.rb
 examples/tickets/features/step_definitons/248_steps.rb
 examples/tickets/features/step_definitons/scenario_outline_steps.rb
 examples/tickets/features/step_definitons/tickets_steps.rb
+examples/tickets/features/table_diffing.feature
 examples/tickets/features/tickets.feature
 examples/watir/README.textile
 examples/watir/Rakefile
@@ -268,6 +269,7 @@ features/step_definitions/cucumber_steps.rb
 features/step_definitions/extra_steps.rb
 features/steps_formatter.feature
 features/support/env.rb
+features/table_diffing.feature
 features/usage.feature
 features/work_in_progress.feature
 gem_tasks/deployment.rake
@@ -349,6 +351,7 @@ lib/cucumber/step_definition.rb
 lib/cucumber/step_match.rb
 lib/cucumber/step_mother.rb
 lib/cucumber/version.rb
+lib/cucumber/webrat/table_locator.rb
 lib/cucumber/world.rb
 rails_generators/cucumber/USAGE
 rails_generators/cucumber/cucumber_generator.rb
