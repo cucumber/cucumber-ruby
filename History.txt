@@ -37,10 +37,10 @@ or simply another Ast::Table object.
 
 As an extra bonus we provide you with a new Webrat method that you can use to transform the data from
 an HTML table into an Array of Array, so that you can easily compare the contents of your HTML table to
-some expected data in an HTML table:
+expected data passed to a step:
 
-  Then /^I should see the following cukes:$/ do |expected_cukes|
-    expected_cukes.diff!(table_at('#cuke_table').to_a)
+  Then /^I should see the following cukes:$/ do |expected_cukes_table|
+    expected_cukes_table.diff!(table_at('#cuke_table').to_a)
   end
 
 You can do the same trick to compare data from a Rails ActiveRecord table (although this is not a
@@ -48,8 +48,8 @@ recommended practice - your Then steps should compare against what users *see*, 
 database):
 
   # This requires that you use the column names in the header of the plain text expected table
-  Then /^I should have the following cukes in the database:$/ do |expected_cukes|
-    expected_cukes.diff!(Cuke.find(:all).map(&attributes), :coldiff => false) # Don't care about extra columns
+  Then /^I should have the following cukes in the database:$/ do |expected_cukes_table|
+    expected_cukes_table.diff!(Cuke.find(:all).map(&attributes), :coldiff => false) # Don't care about extra columns
   end
 
 === Environment variables
