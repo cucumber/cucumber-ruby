@@ -431,7 +431,7 @@ module Cucumber
           }
         end
 
-        xit "should not add surplus columns when coldiff is false" do
+        it "should not add surplus columns when coldiff is false" do
           t1 = table(%{
             | a     | b    |
             | one   | two  |
@@ -439,9 +439,9 @@ module Cucumber
           })
           
           t2 = table(%{
-            | b     | c    | a     | d |
-            | KASHA | AIIT | BOOYA | X |
-            | four  | five | three | Y |
+            | a     | b     | c    | d |
+            | BOOYA | KASHA | AIIT | X |
+            | three | four  | five | Y |
           })
           t1.diff!(t2, :raise => false, :coldiff => false)
           pretty(t1).should == %{

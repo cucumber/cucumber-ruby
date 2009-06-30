@@ -280,7 +280,7 @@ module Cucumber
 
       def columns_partitioned_by_position(columns)
         pos = @raw[0].length
-        [columns[0..pos], columns[pos..-1]]
+        [columns[0..pos-1], columns[pos..-1]]
       end
 
       def to_hash(cells) #:nodoc:
