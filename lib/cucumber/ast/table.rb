@@ -185,9 +185,10 @@ module Cucumber
       #
       # This method will attempt to identify surplus rows in certain situations.
       # Such columns will be added to the end (right) of the original table (self).
-      # Surplus column detection will happen in the following conditions:
+      # Surplus column detection will happen if one of the following conditions are true:
       #
       #   * +table+ is an Array of Hash
+      #   * +table+ has a different number of columns than self
       #   * <tt>:coldiff => true</tt> is passed to +options+
       def diff!(table, options={})
         array_of_hashes = Array === table && Hash === table[0]
@@ -198,8 +199,16 @@ module Cucumber
         default_options[:coldiff] = true if array_of_hashes
         options = default_options.merge(options)
 
-        table, surplus_cols = *raw_and_surplus(table, options[:coldiff])
-        empty_surplus_row = Array.new(surplus_cols.length, nil)
+        if options[:coldiff]
+          diff_columns, surplus_columns = columns_partitioned_by_header(table.transpose)
+        else
+          diff_columns, surplus_columns = columns_partitioned_by_position(table.transpose)
+        end
+        empty_surplus_row = Array.new(surplus_columns.length, nil) if surplus_columns
+        surplus_columns = plusify(surplus_columns)
+
+        diff_table    = diff_columns.transpose
+        surplus_table = surplus_columns.transpose
 
         require 'diff/lcs'
         @raw.extend(Diff::LCS)
@@ -209,7 +218,7 @@ module Cucumber
         inserted = 0
         removed  = 0
 
-        all_changes = @raw.diff(table)
+        all_changes = @raw.diff(diff_table)
         all_changes.each do |changes|
           changes.each do |change|
             if(change.action == '+')
@@ -219,14 +228,20 @@ module Cucumber
                 raw_cell
               end
               @raw.insert(pos, raw_row)
-              surplus_cols.insert(pos, empty_surplus_row) if surplus_cols.any?
               inserted += 1
             elsif(change.action == '-')
               pos = change.position + inserted
               missing_row = @raw[pos]
+
+              # if empty_surplus_row
+              #   missing_row += empty_surplus_row
+              #   @raw[pos] = missing_row
+              # end
+
               change.element.length.times do |n|
                 missing_row[n].extend(Minus)
               end
+              surplus_table.insert(pos, empty_surplus_row) if empty_surplus_row
               removed += 1
             else
               raise "Unknown change: #{change.action}"
@@ -234,34 +249,38 @@ module Cucumber
           end
         end
 
-        if surplus_cols.any?
-          @raw = (@raw.transpose + surplus_cols).transpose
+        if surplus_columns.any?
+          @raw = (@raw.transpose + surplus_table.transpose).transpose
         end
 
         raise "Tables were not identical" if all_changes.any? && options[:raise]
       end
 
-      def raw_and_surplus(raw, coldiff)
-        return [raw, []] unless coldiff
-
-        transposed_raw = raw.transpose
-        headers = @raw[0]
-
-        transposed_raw, surplus_columns = transposed_raw.partition do |col|
-          headers.index(col[0])
-        end
-        
-        transposed_raw.sort! do |col_a, col_b|
-          headers.index(col_a[0]) <=> headers.index(col_b[0])
-        end
-        
-        surplus_columns = surplus_columns.map do |surplus_column|
-          surplus_column.map do |cell|
+      def plusify(data)
+        data.map do |row|
+          row.map do |cell|
             cell.to_s.dup.extend(Plus)
           end
         end
+      end
 
-        [transposed_raw.transpose, surplus_columns]
+      def columns_partitioned_by_header(columns)
+        headers = @raw[0]
+
+        columns, surplus_columns = columns.partition do |col|
+          headers.index(col[0])
+        end
+
+        columns.sort! do |col_a, col_b|
+          headers.index(col_a[0]) <=> headers.index(col_b[0])
+        end
+
+        [columns, surplus_columns]
+      end
+
+      def columns_partitioned_by_position(columns)
+        pos = @raw[0].length
+        [columns[0..pos], columns[pos..-1]]
       end
 
       def to_hash(cells) #:nodoc:

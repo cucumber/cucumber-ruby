@@ -294,7 +294,7 @@ module Cucumber
         end
 
         it "should be diffable with array of hash" do
-          t = Table.new([
+          Table.new([
             %w{a b},
             %w{c d},
             %w{e f}
@@ -407,6 +407,48 @@ module Cucumber
           - | 7 |
             | 8 |
           - | 9 |
+          }
+        end
+
+        it "should add surplus columns when coldiff is true" do
+          t1 = table(%{
+            | a     | b    |
+            | one   | two  |
+            | three | four |
+          })
+          
+          t2 = table(%{
+            | b     | c    | a     | d |
+            | KASHA | AIIT | BOOYA | X |
+            | four  | five | three | Y |
+          })
+          t1.diff!(t2, :raise => false, :coldiff => true)
+          pretty(t1).should == %{
+            | a     | b     | c    | d |
+          - | one   | two   |      |   |
+          + | BOOYA | KASHA | AIIT | X |
+            | three | four  | five | Y |
+          }
+        end
+
+        xit "should not add surplus columns when coldiff is false" do
+          t1 = table(%{
+            | a     | b    |
+            | one   | two  |
+            | three | four |
+          })
+          
+          t2 = table(%{
+            | b     | c    | a     | d |
+            | KASHA | AIIT | BOOYA | X |
+            | four  | five | three | Y |
+          })
+          t1.diff!(t2, :raise => false, :coldiff => false)
+          pretty(t1).should == %{
+            | a     | b     | c    | d |
+          - | one   | two   |      |   |
+          + | BOOYA | KASHA | AIIT | X |
+            | three | four  | five | Y |
           }
         end
 

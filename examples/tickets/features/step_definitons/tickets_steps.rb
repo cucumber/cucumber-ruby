@@ -70,7 +70,7 @@ Then /the table should be different with table:/ do |expected|
     | b     | c    | a     | d |
     | KASHA | AIIT | BOOYA | X |
     | four  | five | three | Y |
-  }))
+  }), :coldiff => true)
 end
 
 Then /the table should be different with array:/ do |expected|

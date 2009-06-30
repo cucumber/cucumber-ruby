@@ -22,12 +22,12 @@ Feature: Table diffing
       """
       Then /the table should be:/ do |expected|
         expected.diff!(table(%{
-          | x | y |
-          | 1 | 2 |
-          | a | b |
-          | i | j |
-          | 3 | 4 |
-          | k | l |
+          | x | y | z |
+          | 1 | 2 | A |
+          | a | b | B |
+          | i | j | C |
+          | 3 | 4 | D |
+          | k | l | E |
         }))
       end
       """
@@ -38,15 +38,15 @@ Feature: Table diffing
       
         Scenario: Extra row         # features/tables.feature:2
           Then the table should be: # features/step_definitions/table_steps.rb:1
-            | x | y |
-          + | 1 | 2 |
-            | a | b |
-          - | c | d |
-          - | e | f |
-          - | g | h |
-            | i | j |
-          + | 3 | 4 |
-            | k | l |
+            | x | y | z |
+          + | 1 | 2 | A |
+            | a | b | B |
+          - | c | d |   |
+          - | e | f |   |
+          - | g | h |   |
+            | i | j | C |
+          + | 3 | 4 | D |
+            | k | l | E |
             Tables were not identical (RuntimeError)
             ./features/step_definitions/table_steps.rb:2:in `/the table should be:/'
             features/tables.feature:3:in `Then the table should be:'
