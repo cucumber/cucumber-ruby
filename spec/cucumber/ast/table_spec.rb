@@ -452,6 +452,27 @@ module Cucumber
           }
         end
 
+        it "should detect missing columns" do
+          t1 = table(%{
+            | a     | b     | c    | d |
+            | BOOYA | KASHA | AIIT | X |
+            | three | four  | five | Y |
+          })
+          
+          t2 = table(%{
+            | a     | b    |
+            | one   | two  |
+            | three | four |
+          })
+          t1.diff!(t2, :raise => false, :coldiff => false)
+          pretty(t1).should == %{
+            | a     | b     | c    | d |
+          - | one   | two   |      |   |
+          + | BOOYA | KASHA | AIIT | X |
+            | three | four  | five | Y |
+          }
+        end
+
         def table(text, file=nil, line_offset=0)
           @table_parser ||= Parser::TableParser.new
           @table_parser.parse_or_fail(text.strip, file, line_offset)
