@@ -69,6 +69,29 @@ module Cucumber
           | stone   | grass |  |  |
         }).raw
       end
+
+      it "should add missing columns to both tables" do
+        t1 = t(%{
+          | mineral | plant | colour |
+          | stone   | grass | brown  |
+        })
+        t2 = t(%{
+          | animal | plant | mineral |
+          | dog    | grass | stone   | 
+        })
+
+        t2_sorted, t2_surplus = @td.sort(t1.raw, t2.raw)
+
+        t2_sorted.should == t(%{
+          | mineral | plant |
+          | stone   | grass |
+        }).raw
+
+        t2_surplus.should == t(%{
+          | animal |
+          | dog    |
+        }).raw
+      end
       
       it "should consider rows with anything equal" do
         r1 = [[1, 2, TableDiffer::Anything]]
