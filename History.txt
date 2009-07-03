@@ -33,6 +33,7 @@ This release also has several bugfixes related to --format and Before/Adter hook
 * rake gems no longer lists cucumber as a [F]ramework gem (David Chelimsky)
 * CLI issues correct exit code when using --drb. Requires Spork version >= 0.5.1. (#355 Ben Mabey)
 * Make sure script/generate cucumber --spork uses the cucumber Rails environment (Philippe Lafoucrière)
+* Fixed bug with rake task raising errors with feature files with spaces (#380 Joseph Wilk)
 
 === New Features
 * New --format steps formatter. Variant of the usage formatter that lists available step definitions (Demetrius Nunes)

@@ -148,3 +148,31 @@ Feature: Rake task
       """
         * features/support/dont_require_me.rb
       """
+
+  Scenario: feature files with spaces
+    Given a file named "features/spaces are nasty.feature" with:
+       """
+       Feature: The futures green
+
+         Scenario: Orange
+           Given this is missing
+       """
+    And a file named "Rakefile" with:
+       """
+       $LOAD_PATH.unshift(CUCUMBER_LIB)
+       require 'cucumber/rake/task'
+
+       Cucumber::Rake::Task.new(:features) do |t|
+         t.cucumber_opts = %w{--quiet --no-color}
+       end
+       """
+    When I run rake features
+    Then it should pass
+    And the output should contain
+       """
+       Feature: The futures green
+
+         Scenario: Orange
+           Given this is missing
+
+       """
