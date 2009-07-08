@@ -145,6 +145,7 @@ module Cucumber
 
       def visit_multiline_arg(multiline_arg)
         return if @options[:no_multiline]
+        @table = multiline_arg
         super
       end
 
@@ -154,6 +155,7 @@ module Cucumber
       end
 
       def visit_table_row(table_row)
+        @col_index = 0
         @io.print '  |'.indent(@indent-2)
         super
         @io.puts
@@ -169,11 +171,17 @@ module Cucumber
         @io.flush
       end
 
-      def visit_table_cell_value(value, width, status)
+      def visit_table_cell(cell)
+        super
+        @col_index += 1
+      end
+
+      def visit_table_cell_value(value, status)
         status ||= @status || :passed
+        width = @table.col_width(@col_index)
         cell = (value.to_s || '').ljust(width)
         prefix = cell_prefix(status)
-        @io.print(' ' + format_string("#{prefix}#{cell}", status) + ::Term::ANSIColor.reset(" |"))
+        @io.print(' ' + format_string("#{@__col}#{prefix}#{cell}", status) + ::Term::ANSIColor.reset(" |"))
         @io.flush
       end
 

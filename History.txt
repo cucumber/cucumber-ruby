@@ -82,6 +82,7 @@ This release also has several bugfixes related to --format and Before/Adter hook
 
 === Changed Features
 * The data returned from Table#hashes and similar methods are frozen. Dup if you need to modify. (Aslak Hellesøy)
+* Visitor.visit_table_cell_value(value, col_width, status) is now visitor.visit_table_cell_value(value, status)
 
 == 0.3.11 2009-06-05
 

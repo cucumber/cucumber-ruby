@@ -181,12 +181,14 @@ module Cucumber
       #   * +table+ has a different number of columns than self
       #   * <tt>:coldiff => true</tt> is passed to +options+
       def diff!(other_table)
+        original_width = @raw[0].length
         other_table_cell_matrix = pad!(other_table.cell_matrix)
+        padded_width = @raw[0].length
 
-puts self.to_s
-ot = Table.new([])
-ot.instance_variable_set('@cell_matrix', other_table_cell_matrix)
-puts ot.to_s
+# puts self.to_s
+# ot = Table.new([])
+# ot.instance_variable_set('@cell_matrix', other_table_cell_matrix)
+# puts ot.to_s
 
         require 'diff/lcs'
         cell_matrix.extend(Diff::LCS)
@@ -195,21 +197,36 @@ puts ot.to_s
         inserted = 0
         removed  = 0
 
+        row_pos = Array.new(other_table_cell_matrix.length) {|n| n}
+
         changes.each do |change|
           if(change.action == '+')
             pos = change.position + removed
             new_row = change.element
-            new_row.each{|cell| cell.status = :comment} # TODO: cell.col is wrong (only bad for indent)
+            new_row.each{|cell| cell.status = :comment}
             cell_matrix.insert(pos, new_row)
             inserted += 1
+            row_pos[pos] = nil
           else # '-'
             pos = change.position + inserted
             cell_matrix[pos].each{|cell| cell.status = :undefined}
             removed += 1
+            row_pos.insert(pos, nil)
           end
         end
+
+        other_table_cell_matrix.each_with_index do |other_row, i|
+          row_index = row_pos.index(i)
+          row = cell_matrix[row_index] if row_index
+          if row
+            (original_width..padded_width).each do |col_index|
+              surplus_cell = other_row[col_index]
+              row[col_index].value = surplus_cell.value
+            end
+          end
+        end
+        
         clear_cache!
-puts self.to_s
       end
 
       TO_S_PREFIXES = Hash.new('    ')
@@ -224,7 +241,7 @@ puts self.to_s
         Term::ANSIColor.coloring = options[:color]
         f = Formatter::Pretty.new(nil, io, options)
         f.instance_variable_set('@indent', options[:indent])
-        self.accept(f)
+        f.visit_multiline_arg(self)
         Term::ANSIColor.coloring = c
 
         io.rewind
@@ -289,16 +306,16 @@ puts self.to_s
       end
 
       def cell_matrix
-        row = -1
         @cell_matrix ||= @raw.map do |raw_row|
           line = raw_row.line rescue -1
-          row += 1
-          col = -1
           raw_row.map do |raw_cell|
-            col += 1
-            new_cell(raw_cell, row, col, line)
+            new_cell(raw_cell, line)
           end
         end.freeze
+      end
+
+      def col_width(col)
+        columns[col].__send__(:width)
       end
 
       protected
@@ -319,18 +336,14 @@ puts self.to_s
         @hashes = @rows_hash = @rows = @columns = nil
       end
 
-      def col_width(col)
-        columns[col].__send__(:width)
-      end
-
       def columns
         @columns ||= cell_matrix.transpose.map do |cell_row|
           @cells_class.new(self, cell_row)
         end.freeze
       end
 
-      def new_cell(raw_cell, row, col, line)
-        @cell_class.new(raw_cell, self, row, col, line)
+      def new_cell(raw_cell, line)
+        @cell_class.new(raw_cell, self, line)
       end
 
       # Pads our own cell_matrix and returns a cell matrix of same
@@ -356,18 +369,15 @@ puts self.to_s
             mark_as_missing(cols[col_index])
             (0...other_cell_matrix.length).map do |row|
               val = row == 0 ? header.value : nil
-              SurplusCell.new(val, self, row, col_index, -1)
+              SurplusCell.new(val, self, -1)
             end
           end
           mapped_cols.insert(col_index, other_padded_col)
         end
 
-        offset = cols.length
         unmapped_cols.each_with_index do |col, col_index|
-          header = col[0]
           empty_col = (0...cell_matrix.length).map do |row| 
-            val = row == 0 ? header.value : nil
-            SurplusCell.new(val, self, row, col_index + offset, -1)
+            SurplusCell.new(nil, self, -1)
           end
           cols << empty_col
         end
@@ -447,23 +457,15 @@ puts self.to_s
       end
 
       class Cell
-        attr_reader :line, :col
-        attr_accessor :status
+        attr_reader :line, :table
+        attr_accessor :status, :value
 
-        def initialize(value, table, row, col, line)
-          @value, @table, @row, @col, @line = value, table, row, col, line
-        end
-
-        def value
-          @value
+        def initialize(value, table, line)
+          @value, @table, @line = value, table, line
         end
 
         def accept(visitor)
-          visitor.visit_table_cell_value(value, col_width, status)
-        end
-
-        def header_cell
-          @table.header_cell(@col)
+          visitor.visit_table_cell_value(value, status)
         end
 
         def ==(o)
@@ -473,12 +475,6 @@ puts self.to_s
         # For testing only
         def to_sexp #:nodoc:
           [:cell, @value]
-        end
-
-        private
-
-        def col_width
-          @table.__send__(:col_width, @col)
         end
       end
       

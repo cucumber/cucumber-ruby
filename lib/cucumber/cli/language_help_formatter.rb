@@ -41,7 +41,7 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
         super
       end
 
-      def visit_table_cell_value(value, width, status)
+      def visit_table_cell_value(value, status)
         if @col == 1
           if(@options[:check_lang])
             @incomplete = Cucumber.language_incomplete?(value)
@@ -52,7 +52,7 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
         end
         
         @col += 1
-        super(value, width, status)
+        super(value, status)
       end
     end
   end

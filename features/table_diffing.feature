@@ -39,13 +39,13 @@ Feature: Table diffing
         Scenario: Extra row         # features/tables.feature:2
           Then the table should be: # features/step_definitions/table_steps.rb:1
             | x | y | z |
-          + | 1 | 2 | A |
+            | 1 | 2 | A |
             | a | b | B |
-          - | c | d |   |
-          - | e | f |   |
-          - | g | h |   |
+            | c | d |   |
+            | e | f |   |
+            | g | h |   |
             | i | j | C |
-          + | 3 | 4 | D |
+            | 3 | 4 | D |
             | k | l | E |
             Tables were not identical (RuntimeError)
             ./features/step_definitions/table_steps.rb:2:in `/the table should be:/'
