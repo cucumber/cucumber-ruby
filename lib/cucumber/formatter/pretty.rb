@@ -19,6 +19,7 @@ module Cucumber
         @options = options
         @exceptions = []
         @indent = 0
+        @prefixes = options[:prefixes] || {}
       end
 
       def visit_features(features)
@@ -152,15 +153,8 @@ module Cucumber
         @io.flush
       end
 
-      ROW_STARTS = {
-        :cell       => '  |',
-        :plus_cell  => '+ |',
-        :minus_cell => '- |'
-      }
-
       def visit_table_row(table_row)
-        row_start = ROW_STARTS[table_row.kind]
-        @io.print row_start.indent(@indent-2)
+        @io.print '  |'.indent(@indent-2)
         super
         @io.puts
         if table_row.exception && !@exceptions.index(table_row.exception)
@@ -177,11 +171,17 @@ module Cucumber
 
       def visit_table_cell_value(value, width, status)
         status ||= @status || :passed
-        @io.print(' ' + format_string((value.to_s || '').ljust(width), status) + ::Term::ANSIColor.reset(" |"))
+        cell = (value.to_s || '').ljust(width)
+        prefix = cell_prefix(status)
+        @io.print(' ' + format_string("#{prefix}#{cell}", status) + ::Term::ANSIColor.reset(" |"))
         @io.flush
       end
 
       private
+      
+      def cell_prefix(status)
+        @prefixes[status]
+      end
 
       def print_summary(features)
         print_stats(features)

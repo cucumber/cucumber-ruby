@@ -7,7 +7,9 @@ module Cucumber
     #
     # This gets parsed into a Table holding the values <tt>[['a', 'b'], ['c', 'd']]</tt>
     #
-    class Table      
+    class Table
+      include Enumerable
+      
       NULL_CONVERSIONS = Hash.new(lambda{ |cell_value| cell_value }).freeze
 
       attr_accessor :file
@@ -159,18 +161,6 @@ module Cucumber
         @conversion_procs[column_name] = conversion_proc
       end
 
-      module Plus
-        def kind
-          :plus_cell
-        end
-      end
-
-      module Minus
-        def kind
-          :minus_cell
-        end
-      end
-
       # Compares +table+ to self and stores the diff internally in new rows.
       # If +table+ has different content than self, an exception is raised
       # (unless you pass :raise => false in +options+).
@@ -190,97 +180,56 @@ module Cucumber
       #   * +table+ is an Array of Hash
       #   * +table+ has a different number of columns than self
       #   * <tt>:coldiff => true</tt> is passed to +options+
-      def diff!(table, options={})
-        array_of_hashes = Array === table && Hash === table[0]
-        table = hashes_to_array(table) if array_of_hashes
-        table = table.raw if Table === table
+      def diff!(other_table)
+        other_table_cell_matrix = pad!(other_table.cell_matrix)
 
-        default_options = {:raise => true}
-        default_options[:coldiff] = true if array_of_hashes
-        options = default_options.merge(options)
-
-        if options[:coldiff]
-          diff_columns, surplus_columns = columns_partitioned_by_header(table.transpose)
-        else
-          diff_columns, surplus_columns = columns_partitioned_by_position(table.transpose)
-        end
-        empty_surplus_row = Array.new(surplus_columns.length, nil) if surplus_columns
-        surplus_columns = plusify(surplus_columns)
-
-        diff_table    = diff_columns.transpose
-        surplus_table = surplus_columns.transpose
+puts self.to_s
+ot = Table.new([])
+ot.instance_variable_set('@cell_matrix', other_table_cell_matrix)
+puts ot.to_s
 
         require 'diff/lcs'
-        @raw.extend(Diff::LCS)
-
-        clear_cache!
+        cell_matrix.extend(Diff::LCS)
+        changes = cell_matrix.diff(other_table_cell_matrix).flatten
 
         inserted = 0
         removed  = 0
 
-        all_changes = @raw.diff(diff_table)
-        all_changes.each do |changes|
-          changes.each do |change|
-            if(change.action == '+')
-              pos = change.position + removed
-              raw_row = change.element.map do |raw_cell|
-                raw_cell = raw_cell.dup.extend(Plus)
-                raw_cell
-              end
-              @raw.insert(pos, raw_row)
-              inserted += 1
-            elsif(change.action == '-')
-              pos = change.position + inserted
-              missing_row = @raw[pos]
-
-              # if empty_surplus_row
-              #   missing_row += empty_surplus_row
-              #   @raw[pos] = missing_row
-              # end
-
-              change.element.length.times do |n|
-                missing_row[n].extend(Minus)
-              end
-              surplus_table.insert(pos, empty_surplus_row) if empty_surplus_row
-              removed += 1
-            else
-              raise "Unknown change: #{change.action}"
-            end
+        changes.each do |change|
+          if(change.action == '+')
+            pos = change.position + removed
+            new_row = change.element
+            new_row.each{|cell| cell.status = :comment} # TODO: cell.col is wrong (only bad for indent)
+            cell_matrix.insert(pos, new_row)
+            inserted += 1
+          else # '-'
+            pos = change.position + inserted
+            cell_matrix[pos].each{|cell| cell.status = :undefined}
+            removed += 1
           end
         end
-
-        if surplus_columns.any?
-          @raw = (@raw.transpose + surplus_table.transpose).transpose
-        end
-
-        raise "Tables were not identical" if all_changes.any? && options[:raise]
+        clear_cache!
+puts self.to_s
       end
 
-      def plusify(data)
-        data.map do |row|
-          row.map do |cell|
-            cell.to_s.dup.extend(Plus)
-          end
-        end
-      end
+      TO_S_PREFIXES = Hash.new('    ')
+      TO_S_PREFIXES[:comment]   = ['(+) ']
+      TO_S_PREFIXES[:undefined] = ['(-) ']
 
-      def columns_partitioned_by_header(columns)
-        headers = @raw[0]
+      def to_s(options = {})
+        options = {:color => true, :indent => 2, :prefixes => TO_S_PREFIXES}.merge(options)
+        io = StringIO.new
 
-        columns, surplus_columns = columns.partition do |col|
-          headers.index(col[0])
-        end
+        c = Term::ANSIColor.coloring?
+        Term::ANSIColor.coloring = options[:color]
+        f = Formatter::Pretty.new(nil, io, options)
+        f.instance_variable_set('@indent', options[:indent])
+        self.accept(f)
+        Term::ANSIColor.coloring = c
 
-        columns.sort! do |col_a, col_b|
-          headers.index(col_a[0]) <=> headers.index(col_b[0])
-        end
-
-        [columns, surplus_columns]
-      end
-
-      def columns_partitioned_by_position(columns)
-        pos = @raw[0].length
-        [columns[0..pos-1], columns[pos..-1]]
+        io.rewind
+        s = "\n" + io.read + (" " * (options[:indent] - 2))
+        s
       end
 
       def to_hash(cells) #:nodoc:
@@ -339,6 +288,19 @@ module Cucumber
         cells_rows[0][col]
       end
 
+      def cell_matrix
+        row = -1
+        @cell_matrix ||= @raw.map do |raw_row|
+          line = raw_row.line rescue -1
+          row += 1
+          col = -1
+          raw_row.map do |raw_cell|
+            col += 1
+            new_cell(raw_cell, row, col, line)
+          end
+        end.freeze
+      end
+
       protected
 
       def map_headers!(mappings)
@@ -354,7 +316,7 @@ module Cucumber
       private
 
       def clear_cache!
-        @hashes = @rows_hash = @rows = @cell_matrix = nil
+        @hashes = @rows_hash = @rows = @columns = nil
       end
 
       def col_width(col)
@@ -367,21 +329,65 @@ module Cucumber
         end.freeze
       end
 
-      def cell_matrix
-        row = -1
-        @cell_matrix ||= @raw.map do |raw_row|
-          line = raw_row.line rescue -1
-          row += 1
-          col = -1
-          raw_row.map do |raw_cell|
-            col += 1
-            new_cell(raw_cell, row, col, line)
-          end
-        end.freeze
-      end
-
       def new_cell(raw_cell, row, col, line)
         @cell_class.new(raw_cell, self, row, col, line)
+      end
+
+      # Pads our own cell_matrix and returns a cell matrix of same
+      # column width that can be used for diffing
+      def pad!(other_cell_matrix)
+        clear_cache!
+        cols = cell_matrix.transpose
+        unmapped_cols = other_cell_matrix.transpose
+
+        mapped_cols = []
+
+        cols.each_with_index do |col, col_index|
+          header = col[0]
+          candidate_cols, unmapped_cols = unmapped_cols.partition do |other_col|
+            other_col[0] == header
+          end
+          raise "More than one column has the header #{header}" if candidate_cols.size > 2
+
+          other_padded_col = if candidate_cols.size == 1
+            # Found a matching column
+            candidate_cols[0]
+          else
+            mark_as_missing(cols[col_index])
+            (0...other_cell_matrix.length).map do |row|
+              val = row == 0 ? header.value : nil
+              SurplusCell.new(val, self, row, col_index, -1)
+            end
+          end
+          mapped_cols.insert(col_index, other_padded_col)
+        end
+
+        offset = cols.length
+        unmapped_cols.each_with_index do |col, col_index|
+          header = col[0]
+          empty_col = (0...cell_matrix.length).map do |row| 
+            val = row == 0 ? header.value : nil
+            SurplusCell.new(val, self, row, col_index + offset, -1)
+          end
+          cols << empty_col
+        end
+
+        @cell_matrix = cols.transpose
+        (mapped_cols + unmapped_cols).transpose
+      end
+
+      def r(cm)
+        cm.map do |cr|
+          cr.map do |c|
+            "#{c.value} (#{c.status})"
+          end
+        end
+      end
+
+      def mark_as_missing(col)
+        col.each do |cell|
+          cell.status = :undefined
+        end
       end
 
       # Represents a row of cells or columns of cells
@@ -421,10 +427,6 @@ module Cucumber
           @cells[0].line
         end
 
-        def kind
-          @cells[0].kind
-        end
-
         def dom_id
           "row_#{line}"
         end
@@ -445,36 +447,48 @@ module Cucumber
       end
 
       class Cell
-        attr_reader :value, :line
-        attr_writer :status
+        attr_reader :line, :col
+        attr_accessor :status
 
         def initialize(value, table, row, col, line)
           @value, @table, @row, @col, @line = value, table, row, col, line
         end
 
+        def value
+          @value
+        end
+
         def accept(visitor)
-          @status = :undefined if kind == :minus_cell
-          @status = :comment   if kind == :plus_cell
-          visitor.visit_table_cell_value(@value, col_width, @status)
+          visitor.visit_table_cell_value(value, col_width, status)
         end
 
         def header_cell
           @table.header_cell(@col)
         end
 
-        # For testing only
-        def to_sexp #:nodoc:
-          [kind, @value]
+        def ==(o)
+          SurplusCell === o || value == o.value
         end
 
-        def kind
-          @value.respond_to?(:kind) ? @value.kind : :cell
+        # For testing only
+        def to_sexp #:nodoc:
+          [:cell, @value]
         end
 
         private
 
         def col_width
           @table.__send__(:col_width, @col)
+        end
+      end
+      
+      class SurplusCell < Cell
+        def status
+          :comment
+        end
+
+        def ==(o)
+          true
         end
       end
     end
