@@ -195,6 +195,54 @@ module Cucumber
           }
         end
 
+        it "should not change table when diffed with identical" do
+          t = table(%{
+            |a|b|c|
+            |d|e|f|
+            |g|h|i|
+          })
+          t.diff!(t.dup)
+          t.to_s(:indent => 12, :color => false).should == %{
+            |     a |     b |     c |
+            |     d |     e |     f |
+            |     g |     h |     i |
+          }
+        end
+
+        it "should inspect missing and surplus cells" do
+          t1 = Table.new([
+            ['name',  'male', 'lastname', 'swedish'],
+            ['aslak', 'true', 'hellesøy', 'false']
+          ])
+          t2 = Table.new([
+            ['name',  'male', 'lastname', 'swedish'],
+            ['aslak', true,   'hellesøy', false]
+          ])
+          t1.diff!(t2)
+          t1.to_s(:indent => 12, :color => false).should == %{
+            |     name  |     male   |     lastname |     swedish |
+            | (-) aslak | (-) "true" | (-) hellesøy | (-) "false" |
+            | (+) aslak | (+) true   | (+) hellesøy | (+) false   |
+          }
+        end
+
+        it "should allow column mapping before diffing" do
+          t1 = Table.new([
+            ['name',  'male'],
+            ['aslak', 'true']
+          ])
+          t1.map_column!('male') { |m| m == 'true' }
+          t2 = Table.new([
+            ['name',  'male'],
+            ['aslak', true]
+          ])
+          t1.diff!(t2)
+          t1.to_s(:indent => 12, :color => false).should == %{
+            |     name  |     male |
+            |     aslak |     true |
+          }
+        end
+
         def table(text, file=nil, line_offset=0)
           @table_parser ||= Parser::TableParser.new
           @table_parser.parse_or_fail(text.strip, file, line_offset)

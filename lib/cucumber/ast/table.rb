@@ -27,11 +27,6 @@ module Cucumber
         @conversion_procs = conversions
       end
 
-      def hashes_to_array(hashes)
-        header = hashes[0].keys
-        [header] + hashes.map{|hash| header.map{|key| hash[key]}}
-      end
-
       # Creates a copy of this table, inheriting the column mappings.
       def dup
         self.class.new(@raw.dup, @conversion_procs.dup)
@@ -125,7 +120,7 @@ module Cucumber
         [:table, *cells_rows.map{|row| row.to_sexp}]
       end
 
-      # Returns a new Table where the headers are redefined. This makes it
+      # Redefines the table headers. This makes it
       # possible to use prettier header names in the features. Example:
       #
       #   | Phone Number | Address |
@@ -138,6 +133,17 @@ module Cucumber
       #   hashes = mapped_table.hashes
       #   # => [{:phone => '123456', :address => 'xyz'}, {:phone => '345678', :address => 'abc'}]
       #
+      def map_headers!(mappings)
+        headers = @raw[0]
+        mappings.each_pair do |pre, post|
+          headers[headers.index(pre)] = post
+          if @conversion_procs.has_key?(pre)
+            @conversion_procs[post] = @conversion_procs.delete(pre)
+          end
+        end
+      end
+
+      # Returns a new Table where the headers are redefined. See #map_headers!
       def map_headers(mappings)
         table = self.dup
         table.map_headers!(mappings)
@@ -161,72 +167,94 @@ module Cucumber
         @conversion_procs[column_name] = conversion_proc
       end
 
-      # Compares +table+ to self and stores the diff internally in new rows.
-      # If +table+ has different content than self, an exception is raised
-      # (unless you pass :raise => false in +options+).
+      # Compares +other_table+ to self. If +other_table+ contains columns
+      # and/or rows that are not in self, new columns/rows are added at the
+      # relevant positions, marking the cells in those rows/columns as
+      # <tt>surplus</tt>. Likewise, if +other_table+ lacks columns and/or 
+      # rows that are present in self, these are marked as <tt>missing</tt>.
       #
-      # The +table+ argument can be another Table, an Array of Array or
+      # <tt>surplus</tt> and <tt>missing</tt> cells are recognised by formatters
+      # and displayed so that it's easy to read the differences.
+      #
+      # Cells that are different, but <em>look</em> identical (for example the
+      # boolean true and the string "true") are converted to their Object#inspect
+      # representation and preceded with (*) - to make it easier to identify
+      # where the difference actually is.
+      #
+      # Since all tables that are passed to StepDefinitions always have String
+      # objects in their cells, you may want to use #map_column! before calling
+      # #diff!
+      #
+      # If +other_table+ has different content than self, an exception 
+      # is also raised (unless you pass :raise => false in +options+).
+      #
+      # The +other_table+ argument can be another Table, an Array of Array or
       # an Array of Hash (similar to the structure returned by #hashes).
       #
-      # Calling this method is particularly useful in Then steps that take
-      # a Table argument. Simply calling <tt>#diff!(actual_table)</tt> will 
-      # cause your step to fail if the contents are different, and also
-      # display the differences in the output.
+      # Calling this method is particularly useful in <tt>Then</tt> steps that take
+      # a Table argument, if you want to compare that table to some actual values. 
       #
-      # This method will attempt to identify surplus rows in certain situations.
-      # Such columns will be added to the end (right) of the original table (self).
-      # Surplus column detection will happen if one of the following conditions are true:
-      #
-      #   * +table+ is an Array of Hash
-      #   * +table+ has a different number of columns than self
-      #   * <tt>:coldiff => true</tt> is passed to +options+
       def diff!(other_table)
-        original_width = @raw[0].length
+        other_table = ensure_table(other_table)
+
+        original_width = cell_matrix[0].length
         other_table_cell_matrix = pad!(other_table.cell_matrix)
-        padded_width = @raw[0].length
+        padded_width = cell_matrix[0].length
 
-# puts self.to_s
-# ot = Table.new([])
-# ot.instance_variable_set('@cell_matrix', other_table_cell_matrix)
-# puts ot.to_s
-
-        require 'diff/lcs'
+        require_diff_lcs
         cell_matrix.extend(Diff::LCS)
+        convert_columns!
         changes = cell_matrix.diff(other_table_cell_matrix).flatten
 
         inserted = 0
-        removed  = 0
+        missing  = 0
 
-        row_pos = Array.new(other_table_cell_matrix.length) {|n| n}
+        row_indices = Array.new(other_table_cell_matrix.length) {|n| n}
 
+        last_change = nil
+        missing_pos = nil
+        
         changes.each do |change|
-          if(change.action == '+')
-            pos = change.position + removed
-            new_row = change.element
-            new_row.each{|cell| cell.status = :comment}
-            cell_matrix.insert(pos, new_row)
+          if(change.action == '-')
+            missing_pos = change.position + inserted
+            cell_matrix[missing_pos].each{|cell| cell.status = :undefined}
+            row_indices.insert(missing_pos, nil)
+            missing += 1
+          else # '+'
+            insert_pos = change.position + missing
+            inserted_row = change.element
+            inserted_row.each{|cell| cell.status = :comment}
+            cell_matrix.insert(insert_pos, inserted_row)
+            row_indices[insert_pos] = nil
+            inspect_rows(cell_matrix[missing_pos], inserted_row) if last_change.action == '-'
             inserted += 1
-            row_pos[pos] = nil
-          else # '-'
-            pos = change.position + inserted
-            cell_matrix[pos].each{|cell| cell.status = :undefined}
-            removed += 1
-            row_pos.insert(pos, nil)
           end
+          last_change = change
         end
 
         other_table_cell_matrix.each_with_index do |other_row, i|
-          row_index = row_pos.index(i)
+          row_index = row_indices.index(i)
           row = cell_matrix[row_index] if row_index
           if row
             (original_width..padded_width).each do |col_index|
               surplus_cell = other_row[col_index]
-              row[col_index].value = surplus_cell.value
+              row[col_index].value = surplus_cell.value if row[col_index]
             end
           end
         end
         
         clear_cache!
+        nil
+      end
+
+      def inspect_rows(missing_row, inserted_row)
+        missing_row.each_with_index do |missing_cell, col|
+          inserted_cell = inserted_row[col]
+          if(missing_cell.value != inserted_cell.value && (missing_cell.value.to_s == inserted_cell.value.to_s))
+            missing_cell.inspect!
+            inserted_cell.inspect!
+          end
+        end
       end
 
       TO_S_PREFIXES = Hash.new('    ')
@@ -320,17 +348,23 @@ module Cucumber
 
       protected
 
-      def map_headers!(mappings)
-        headers = @raw[0]
-        mappings.each_pair do |pre, post|
-          headers[headers.index(pre)] = post
-          if @conversion_procs.has_key?(pre)
-            @conversion_procs[post] = @conversion_procs.delete(pre)
+      def convert_columns!
+        cell_matrix.transpose.each do |col|
+          conversion_proc = @conversion_procs[col[0].value]
+          col[1..-1].each do |cell|
+            cell.value = conversion_proc.call(cell.value)
           end
         end
       end
 
-      private
+      def require_diff_lcs
+        begin
+          require 'diff/lcs'
+        rescue LoadError => e
+          e.message << "\n Please gem install diff-lcs\n"
+          raise e
+        end
+      end
 
       def clear_cache!
         @hashes = @rows_hash = @rows = @columns = nil
@@ -386,12 +420,15 @@ module Cucumber
         (mapped_cols + unmapped_cols).transpose
       end
 
-      def r(cm)
-        cm.map do |cr|
-          cr.map do |c|
-            "#{c.value} (#{c.status})"
-          end
-        end
+      def ensure_table(table_or_array)
+        return table_or_array if Table === table_or_array
+        table_or_array = hashes_to_array(table_or_array) if Hash === table_or_array[0]
+        Table.new(table_or_array)
+      end
+
+      def hashes_to_array(hashes)
+        header = hashes[0].keys
+        [header] + hashes.map{|hash| header.map{|key| hash[key]}}
       end
 
       def mark_as_missing(col)
@@ -466,6 +503,10 @@ module Cucumber
 
         def accept(visitor)
           visitor.visit_table_cell_value(value, status)
+        end
+
+        def inspect!
+          @value = value.inspect
         end
 
         def ==(o)

@@ -12,19 +12,13 @@ Feature: Table diffing
           Then the table should be:
             | x | y |
             | a | b |
-            | c | d |
-            | e | f |
-            | g | h |
-            | i | j |
-            | k | l |
       """
     And a file named "features/step_definitions/table_steps.rb" with:
       """
       Then /the table should be:/ do |expected|
         expected.diff!(table(%{
-          | x | y | z |
-          | 1 | 2 | A |
-          | a | b | B |
+          | x | y | 
+          | a | b |
           | i | j | C |
           | 3 | 4 | D |
           | k | l | E |
