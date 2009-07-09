@@ -32,7 +32,7 @@ module Cucumber
     end
 
     def included_by_tags?(syntax_node)
-      @include_tags.empty? || syntax_node.has_tags?(@include_tags)
+      @include_tags.empty? || syntax_node.has_all_tags?(@include_tags)
     end
 
     def excluded_by_tags?(syntax_node)
