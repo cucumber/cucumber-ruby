@@ -243,6 +243,24 @@ module Cucumber
           }
         end
 
+        it "should allow header mapping before diffing" do
+          t1 = Table.new([
+            ['Name',  'Male'],
+            ['aslak', 'true']
+          ])
+          t1.map_headers!('Name' => 'name', 'Male' => 'male')
+          t1.map_column!('male') { |m| m == 'true' }
+          t2 = Table.new([
+            ['name',  'male'],
+            ['aslak', true]
+          ])
+          t1.diff!(t2)
+          t1.to_s(:indent => 12, :color => false).should == %{
+            |     name  |     male |
+            |     aslak |     true |
+          }
+        end
+
         def table(text, file=nil, line_offset=0)
           @table_parser ||= Parser::TableParser.new
           @table_parser.parse_or_fail(text.strip, file, line_offset)

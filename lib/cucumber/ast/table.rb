@@ -18,18 +18,19 @@ module Cucumber
         "table"
       end
 
-      def initialize(raw, conversions = NULL_CONVERSIONS.dup)
-        # Verify that it's square
-        transposed = raw.transpose
-        @raw = raw
+      def initialize(raw, conversion_procs = NULL_CONVERSIONS.dup)
         @cells_class = Cells
         @cell_class = Cell
-        @conversion_procs = conversions
+
+        # Verify that it's square
+        transposed = raw.transpose
+        create_cell_matrix(raw)
+        @conversion_procs = conversion_procs
       end
 
       # Creates a copy of this table, inheriting the column mappings.
       def dup
-        self.class.new(@raw.dup, @conversion_procs.dup)
+        self.class.new(raw.dup, @conversion_procs.dup)
       end
 
       # Returns a new, transposed table. Example:
@@ -44,7 +45,7 @@ module Cucumber
       # | 4 | 2 |
       #
       def transpose
-        self.class.new(@raw.transpose, @conversion_procs.dup)
+        self.class.new(raw.transpose, @conversion_procs.dup)
       end
 
       # Converts this table into an Array of Hash where the keys of each
@@ -91,17 +92,21 @@ module Cucumber
       #   | a | b |
       #   | c | d |
       #
-      # Get converted into the following:
+      # gets converted into the following:
       #
       #   [['a', 'b], ['c', 'd']]
       #
       def raw
-        @raw
+        cell_matrix.map do |row|
+          row.map do |cell|
+            cell.value
+          end
+        end
       end
 
       # Same as #raw, but skips the first (header) row
       def rows
-        @raw[1..-1]
+        raw[1..-1]
       end
 
       def each_cells_row(&proc)
@@ -134,9 +139,10 @@ module Cucumber
       #   # => [{:phone => '123456', :address => 'xyz'}, {:phone => '345678', :address => 'abc'}]
       #
       def map_headers!(mappings)
-        headers = @raw[0]
+        header_cells = cell_matrix[0]
         mappings.each_pair do |pre, post|
-          headers[headers.index(pre)] = post
+          header_cell = header_cells.detect{|cell| cell.value == pre}
+          header_cell.value = post
           if @conversion_procs.has_key?(pre)
             @conversion_procs[post] = @conversion_procs.delete(pre)
           end
@@ -281,7 +287,7 @@ module Cucumber
         hash = Hash.new do |hash, key|
           hash[key.to_s] if key.is_a?(Symbol)
         end
-        @raw[0].each_with_index do |column_name, column_index|
+        raw[0].each_with_index do |column_name, column_index|
           value = @conversion_procs[column_name].call(cells.value(column_index))
           hash[column_name] = value
         end
@@ -293,11 +299,11 @@ module Cucumber
       end
 
       def verify_column(column_name)
-        raise %{The column named "#{column_name}" does not exist} unless @raw[0].include?(column_name)
+        raise %{The column named "#{column_name}" does not exist} unless raw[0].include?(column_name)
       end
       
       def verify_table_width(width)
-        raise %{The table must have exactly #{width} columns} unless @raw[0].size == width
+        raise %{The table must have exactly #{width} columns} unless raw[0].size == width
       end
 
       def arguments_replaced(arguments) #:nodoc:
@@ -326,7 +332,7 @@ module Cucumber
       end
 
       def headers
-        @raw.first
+        raw.first
       end
 
       def header_cell(col)
@@ -334,12 +340,7 @@ module Cucumber
       end
 
       def cell_matrix
-        @cell_matrix ||= @raw.map do |raw_row|
-          line = raw_row.line rescue -1
-          raw_row.map do |raw_cell|
-            new_cell(raw_cell, line)
-          end
-        end.freeze
+        @cell_matrix
       end
 
       def col_width(col)
@@ -347,6 +348,15 @@ module Cucumber
       end
 
       protected
+
+      def create_cell_matrix(raw)
+        @cell_matrix = raw.map do |raw_row|
+          line = raw_row.line rescue -1
+          raw_row.map do |raw_cell|
+            new_cell(raw_cell, line)
+          end
+        end
+      end
 
       def convert_columns!
         cell_matrix.transpose.each do |col|
