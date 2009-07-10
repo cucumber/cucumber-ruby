@@ -191,8 +191,15 @@ module Cucumber
       # objects in their cells, you may want to use #map_column! before calling
       # #diff!
       #
-      # If +other_table+ has different content than self, an exception 
-      # is also raised (unless you pass :raise => false in +options+).
+      # An exception is raised if there are missing rows or columns, or
+      # surplus rows. An error is <em>not</em> raised for surplus columns.
+      # Whether to raise or not raise can be changed by setting values in
+      # +options+ to true or false:
+      #
+      #   * <tt>missing_row</tt>: Raise on missing rows (defaults to true)
+      #   * <tt>surplus_row</tt>: Raise on surplus rows (defaults to true)
+      #   * <tt>missing_col</tt>: Raise on missing columns (defaults to true)
+      #   * <tt>surplus_col</tt>: Raise on surplus columns (defaults to false)
       #
       # The +other_table+ argument can be another Table, an Array of Array or
       # an Array of Hash (similar to the structure returned by #hashes).
@@ -200,12 +207,17 @@ module Cucumber
       # Calling this method is particularly useful in <tt>Then</tt> steps that take
       # a Table argument, if you want to compare that table to some actual values. 
       #
-      def diff!(other_table)
+      def diff!(other_table, options={})
+        options = {:missing_row => true, :surplus_row => true, :missing_col => true, :surplus_col => false}.merge(options)
+
         other_table = ensure_table(other_table)
 
         original_width = cell_matrix[0].length
         other_table_cell_matrix = pad!(other_table.cell_matrix)
         padded_width = cell_matrix[0].length
+
+        missing_col = cell_matrix[0].detect{|cell| cell.status == :undefined}
+        surplus_col = padded_width > original_width
 
         require_diff_lcs
         cell_matrix.extend(Diff::LCS)
@@ -218,21 +230,22 @@ module Cucumber
         row_indices = Array.new(other_table_cell_matrix.length) {|n| n}
 
         last_change = nil
-        missing_pos = nil
+        missing_row_pos = nil
+        insert_row_pos  = nil
         
         changes.each do |change|
           if(change.action == '-')
-            missing_pos = change.position + inserted
-            cell_matrix[missing_pos].each{|cell| cell.status = :undefined}
-            row_indices.insert(missing_pos, nil)
+            missing_row_pos = change.position + inserted
+            cell_matrix[missing_row_pos].each{|cell| cell.status = :undefined}
+            row_indices.insert(missing_row_pos, nil)
             missing += 1
           else # '+'
-            insert_pos = change.position + missing
+            insert_row_pos = change.position + missing
             inserted_row = change.element
             inserted_row.each{|cell| cell.status = :comment}
-            cell_matrix.insert(insert_pos, inserted_row)
-            row_indices[insert_pos] = nil
-            inspect_rows(cell_matrix[missing_pos], inserted_row) if last_change.action == '-'
+            cell_matrix.insert(insert_row_pos, inserted_row)
+            row_indices[insert_row_pos] = nil
+            inspect_rows(cell_matrix[missing_row_pos], inserted_row) if last_change && last_change.action == '-'
             inserted += 1
           end
           last_change = change
@@ -250,37 +263,13 @@ module Cucumber
         end
         
         clear_cache!
-        nil
-      end
-
-      def inspect_rows(missing_row, inserted_row)
-        missing_row.each_with_index do |missing_cell, col|
-          inserted_cell = inserted_row[col]
-          if(missing_cell.value != inserted_cell.value && (missing_cell.value.to_s == inserted_cell.value.to_s))
-            missing_cell.inspect!
-            inserted_cell.inspect!
-          end
-        end
-      end
-
-      TO_S_PREFIXES = Hash.new('    ')
-      TO_S_PREFIXES[:comment]   = ['(+) ']
-      TO_S_PREFIXES[:undefined] = ['(-) ']
-
-      def to_s(options = {})
-        options = {:color => true, :indent => 2, :prefixes => TO_S_PREFIXES}.merge(options)
-        io = StringIO.new
-
-        c = Term::ANSIColor.coloring?
-        Term::ANSIColor.coloring = options[:color]
-        f = Formatter::Pretty.new(nil, io, options)
-        f.instance_variable_set('@indent', options[:indent])
-        f.visit_multiline_arg(self)
-        Term::ANSIColor.coloring = c
-
-        io.rewind
-        s = "\n" + io.read + (" " * (options[:indent] - 2))
-        s
+        
+        should_raise = 
+          missing_row_pos && options[:missing_row] ||
+          insert_row_pos  && options[:surplus_row] ||
+          missing_col     && options[:missing_col] ||
+          surplus_col     && options[:surplus_col]
+        raise 'Tables were not identical' if should_raise
       end
 
       def to_hash(cells) #:nodoc:
@@ -347,7 +336,39 @@ module Cucumber
         columns[col].__send__(:width)
       end
 
+      def to_s(options = {})
+        options = {:color => true, :indent => 2, :prefixes => TO_S_PREFIXES}.merge(options)
+        io = StringIO.new
+
+        c = Term::ANSIColor.coloring?
+        Term::ANSIColor.coloring = options[:color]
+        f = Formatter::Pretty.new(nil, io, options)
+        f.instance_variable_set('@indent', options[:indent])
+        f.visit_multiline_arg(self)
+        Term::ANSIColor.coloring = c
+
+        io.rewind
+        s = "\n" + io.read + (" " * (options[:indent] - 2))
+        s
+      end
+
+      private
+
+      TO_S_PREFIXES = Hash.new('    ')
+      TO_S_PREFIXES[:comment]   = ['(+) ']
+      TO_S_PREFIXES[:undefined] = ['(-) ']
+
       protected
+
+      def inspect_rows(missing_row, inserted_row)
+        missing_row.each_with_index do |missing_cell, col|
+          inserted_cell = inserted_row[col]
+          if(missing_cell.value != inserted_cell.value && (missing_cell.value.to_s == inserted_cell.value.to_s))
+            missing_cell.inspect!
+            inserted_cell.inspect!
+          end
+        end
+      end
 
       def create_cell_matrix(raw)
         @cell_matrix = raw.map do |raw_row|

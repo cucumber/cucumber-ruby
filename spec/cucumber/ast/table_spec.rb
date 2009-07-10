@@ -184,7 +184,7 @@ module Cucumber
             | dddd  | 4000     | 300       |
             | e     | 50000    | 4000      |
           })
-          t1.diff!(t2)
+          lambda{t1.diff!(t2)}.should raise_error
           t1.to_s(:indent => 12, :color => false).should == %{
             |     1         | (-) 22         | (-) 333         |     4444         | (+) a    |
             |     55555     | (-) 666666     | (-) 7777777     |     88888888     | (+) bb   |
@@ -218,7 +218,7 @@ module Cucumber
             ['name',  'male', 'lastname', 'swedish'],
             ['aslak', true,   'hellesøy', false]
           ])
-          t1.diff!(t2)
+          lambda{t1.diff!(t2)}.should raise_error
           t1.to_s(:indent => 12, :color => false).should == %{
             |     name  |     male       |     lastname |     swedish     |
             | (-) aslak | (-) (i) "true" | (-) hellesøy | (-) (i) "false" |
@@ -259,6 +259,51 @@ module Cucumber
             |     name  |     male |
             |     aslak |     true |
           }
+        end
+        
+        describe "raising" do
+          before do
+            @t = table(%{
+              | a | b |
+              | c | d |
+            })
+          end
+          
+          it "should raise on missing rows" do
+            t = table(%{
+              | a | b |
+            })
+            lambda { @t.dup.diff!(t) }.should raise_error
+            lambda { @t.dup.diff!(t, :missing_row => false) }.should_not raise_error
+          end
+
+          it "should raise on surplus rows" do
+            t = table(%{
+              | a | b |
+              | c | d |
+              | e | f |
+            })
+            lambda { @t.dup.diff!(t) }.should raise_error
+            lambda { @t.dup.diff!(t, :surplus_row => false) }.should_not raise_error
+          end
+
+          it "should raise on missing columns" do
+            t = table(%{
+              | a |
+              | c |
+            })
+            lambda { @t.dup.diff!(t) }.should raise_error
+            lambda { @t.dup.diff!(t, :missing_col => false) }.should_not raise_error
+          end
+
+          it "should not raise on surplus columns" do
+            t = table(%{
+              | a | b | x |
+              | c | d | y |
+            })
+            lambda { @t.dup.diff!(t) }.should_not raise_error
+            lambda { @t.dup.diff!(t, :surplus_col => true) }.should raise_error
+          end
         end
 
         def table(text, file=nil, line_offset=0)
