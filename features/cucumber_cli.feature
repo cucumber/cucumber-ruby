@@ -516,7 +516,24 @@ Feature: Cucumber command line
 
 
       """
+  Scenario: Run a table that contains unicode
+    When I run cucumber -q features/unicode.feature:3
+    Then it should pass with
+      """
+      Feature: Featuring unicode
 
+        Scenario: Passing
+          Given passing
+            | a longer text | shortér       |
+            | shørtér       | a longer text |
+
+      1 scenario (1 passed)
+      1 step (1 passed)
+
+      """
+
+            #| loñger text | shörtér     |
+            #| shørtér     | loñger text |
   Scenario: Run feature elements which match a name using -n
     When I run cucumber -n Pisang -q features/
     Then it should pass with

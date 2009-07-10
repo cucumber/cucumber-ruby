@@ -171,7 +171,9 @@ module Cucumber
 
       def visit_table_cell_value(value, width, status)
         status ||= @status || :passed
-        @io.print(' ' + format_string((value.to_s || '').ljust(width), status) + ::Term::ANSIColor.reset(" #{@delim}"))
+        cell_text = value.to_s || ''
+        padded = cell_text + (' ' * (width - cell_text.jlength))
+        @io.print(' ' + format_string(padded, status) + ::Term::ANSIColor.reset(" #{@delim}"))
         @io.flush
       end
 
