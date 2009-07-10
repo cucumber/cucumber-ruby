@@ -178,7 +178,7 @@ module Cucumber
       #
       # Cells that are different, but <em>look</em> identical (for example the
       # boolean true and the string "true") are converted to their Object#inspect
-      # representation and preceded with (*) - to make it easier to identify
+      # representation and preceded with (i) - to make it easier to identify
       # where the difference actually is.
       #
       # Since all tables that are passed to StepDefinitions always have String
@@ -506,7 +506,7 @@ module Cucumber
         end
 
         def inspect!
-          @value = value.inspect
+          @value = "(i) #{value.inspect}"
         end
 
         def ==(o)

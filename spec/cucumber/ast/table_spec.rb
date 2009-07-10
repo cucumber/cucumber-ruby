@@ -220,9 +220,9 @@ module Cucumber
           ])
           t1.diff!(t2)
           t1.to_s(:indent => 12, :color => false).should == %{
-            |     name  |     male   |     lastname |     swedish |
-            | (-) aslak | (-) "true" | (-) hellesøy | (-) "false" |
-            | (+) aslak | (+) true   | (+) hellesøy | (+) false   |
+            |     name  |     male       |     lastname |     swedish     |
+            | (-) aslak | (-) (i) "true" | (-) hellesøy | (-) (i) "false" |
+            | (+) aslak | (+) (i) true   | (+) hellesøy | (+) (i) false   |
           }
         end
 
