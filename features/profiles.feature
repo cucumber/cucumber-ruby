@@ -63,11 +63,10 @@ Feature: Profiles
       """
     And exactly these files should be loaded: features/support/env.rb, features/support/super_env.rb
 
-  @in-progress
   Scenario: Overriding the profile's features to run
     Given a file named "features/another.feature" with:
       """
       Feature: Just this one should be ran
       """
-      When I run cucumber -p default feature/another.feature
+      When I run cucumber -p default features/another.feature
       Then exactly these features should be ran: features/another.feature

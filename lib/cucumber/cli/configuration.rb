@@ -34,6 +34,7 @@ module Cucumber
 
       def parse!(args)
         @args = args
+        args_from_command_line = args.dup
         setup_profiles
 
         return if parse_drb
@@ -189,8 +190,9 @@ module Cucumber
 
         raise("You can't use both --strict and --wip") if @options[:strict] && @options[:wip]
 
-        # Whatever is left after option parsing is the FILE arguments
-        @paths += @args
+        paths_from_command_line_and_profiles = @args
+        paths_from_command_line = args_from_command_line & @args
+        @paths += paths_from_command_line.empty? ? paths_from_command_line_and_profiles : paths_from_command_line
       end
 
       def verbose?

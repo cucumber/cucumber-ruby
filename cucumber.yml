@@ -1,2 +1,2 @@
-default: --format progress --tags ~@proposed,~@in-progress
+default: --format progress --tags ~@proposed,~@in-progress features
 wip: --tags @in-progress --wip features

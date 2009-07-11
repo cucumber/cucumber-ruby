@@ -225,7 +225,6 @@ END_OF_MESSAGE
       end
 
       it "disregards paths in profiles when other paths are passed in" do
-        pending "input"
         given_cucumber_yml_defined_as({'foo' => %w[-v features]})
 
         config = Configuration.new(StringIO.new, error = StringIO.new)
