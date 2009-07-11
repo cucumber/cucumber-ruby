@@ -35,13 +35,15 @@ This release also has several bugfixes related to --format and Before/Adter hook
 * Make sure script/generate cucumber --spork uses the cucumber Rails environment (Philippe Lafoucrière)
 
 === New Features
-* Cucumber now displays which profile, if any, is being used. (Ben Mabey)
+* Feature files defined on the command line override any that are present in profiles. (#344 Ben Mabey)
+* Displays which profile, if any, is being used. (Ben Mabey)
 * New --format steps formatter. Variant of the usage formatter that lists available step definitions (Demetrius Nunes)
 * Possibility to specify scenario language as part of the .feature file (#345 Aslak Hellesøy)
 * Support specifying environment variables using foo=bar syntax on command line or in profiles (#362 Bryan Helmkamp)
 * Display failing scenarios at the end of pretty format to make it easier for people to play them back (#360 Ryan Bigg)
 
 === Changed Features
+* The 'default' profile is now ALWAYS used unless you specify another profile or use the -P or --no-profile flag. (#344 Ben Mabey)
 * The data returned from Table#hashes and similar methods are frozen. Dup if you need to modify. (Aslak Hellesøy)
 
 == 0.3.11 2009-06-05
