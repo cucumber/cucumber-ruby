@@ -18,7 +18,9 @@ module Cucumber
       }
       DRB_FLAG = '--drb'
       PROFILE_SHORT_FLAG = '-p'
+      NO_PROFILE_SHORT_FLAG = '-P'
       PROFILE_LONG_FLAG = '--profile'
+      NO_PROFILE_LONG_FLAG = '--no-profile'
 
       attr_reader :paths
       attr_reader :options
@@ -112,8 +114,17 @@ module Cucumber
           opts.on("-e", "--exclude PATTERN", "Don't run feature files or require ruby files matching PATTERN") do |v|
             @options[:excludes] << Regexp.new(v)
           end
-          opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE", "Pull commandline arguments from cucumber.yml.") do |v|
+          opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE", 
+              "Pull commandline arguments from cucumber.yml which can be defined as",
+              "strings or arrays.  When a 'default' profile is defined and no profile",
+              "is specified it is always used. (Unless disabled, see -P below.)",
+              "When feature files are defined in a profile and on the command line",
+              "then only the ones from the command line are used.") do |v|
             # Processing of this is done previsouly so that the DRb flag can be detected within profiles.
+          end
+          opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG, 
+            "Disables all profile laoding to avoid using the 'default' profile.") do |v|
+            # Processing handled in profile code
           end
           opts.on("-c", "--[no-]color",
             "Whether or not to use ANSI color in the output. Cucumber decides",
@@ -304,7 +315,7 @@ module Cucumber
       end
 
       def disable_profiles?
-        (none_index = @args.index('none')) && [PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG].include?(@args[none_index - 1])
+        @args.index(NO_PROFILE_LONG_FLAG) || @args.index(NO_PROFILE_SHORT_FLAG)
       end
 
       def setup_default_profile

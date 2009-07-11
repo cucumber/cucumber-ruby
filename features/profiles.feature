@@ -55,13 +55,19 @@ Feature: Profiles
 
       """
 
-  Scenario: Disabling the default profile
-    When I run cucumber -v features/ --profile none
+  Scenario Outline: Disabling the default profile
+    When I run cucumber -v features/ <Flag>
     Then the output should contain
       """
       Disabling profiles...
       """
     And exactly these files should be loaded: features/support/env.rb, features/support/super_env.rb
+
+    Examples:
+    |   Flag          |
+    | -P              |
+    | --no-profile    |
+
 
   Scenario: Overriding the profile's features to run
     Given a file named "features/another.feature" with:

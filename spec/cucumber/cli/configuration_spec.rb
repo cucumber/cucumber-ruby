@@ -233,22 +233,26 @@ END_OF_MESSAGE
       end
 
 
-      context 'when none is specified' do
+      ["--no-profile", "-P"].each do |flag|
 
-        it "disables profiles" do
-          given_cucumber_yml_defined_as({'default' => '-v --require file_specified_in_default_profile.rb'})
+        context 'when none is specified with #{flag}' do
 
-          config = Configuration.new(out = StringIO.new, error = StringIO.new)
-          config.parse!(%w{--profile none --require some_file.rb})
-          config.options[:require].should == ['some_file.rb']
-        end
+          it "disables profiles" do
+            given_cucumber_yml_defined_as({'default' => '-v --require file_specified_in_default_profile.rb'})
 
-        it "notifies the user that the profiles are being disabled" do
-          given_cucumber_yml_defined_as({'default' => '-v'})
+            config = Configuration.new(out = StringIO.new, error = StringIO.new)
+            config.parse!("#{flag} --require some_file.rb".split(" "))
+            config.options[:require].should == ['some_file.rb']
+          end
 
-          config = Configuration.new(out = StringIO.new, error = StringIO.new)
-          config.parse!(%w{--profile none --require some_file.rb})
-          out.string.should =~ /Disabling profiles.../
+          it "notifies the user that the profiles are being disabled" do
+            given_cucumber_yml_defined_as({'default' => '-v'})
+
+            config = Configuration.new(out = StringIO.new, error = StringIO.new)
+            config.parse!("#{flag} --require some_file.rb".split(" "))
+            out.string.should =~ /Disabling profiles.../
+          end
+
         end
 
       end
