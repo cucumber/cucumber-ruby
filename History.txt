@@ -22,7 +22,7 @@ like you can with Rake). Example:
 You can now pick up ENV['FOO'] in ruby (for example in env.rb) and take actions according to the value,
 for example enabling your super hack that validates all HTTP responses for XHTML validity.
 
-This release also has several bugfixes related to --format and Before/Adter hooks.
+This release also has several bugfixes related to --format and Before/After hooks.
 
 === Bugfixes
 * Before and After hooks run after everything is finished whn there are 2+ --format options (#371 Aslak Hellesøy)
