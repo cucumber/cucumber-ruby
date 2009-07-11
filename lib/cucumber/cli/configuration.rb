@@ -38,12 +38,7 @@ module Cucumber
 
         return if parse_drb
 
-        @args.each do |arg|
-          if arg =~ /^(\w+)=(.*)$/
-            ENV[$1] = $2
-            @args.delete(arg)
-          end
-        end
+        set_environment_variables
 
         @args.extend(::OptionParser::Arguable)
 
@@ -316,6 +311,15 @@ module Cucumber
         profile_being_used = !(@args.index(PROFILE_SHORT_FLAG) || @args.index(PROFILE_LONG_FLAG))
         if profile_being_used && File.exist?('cucumber.yml') && cucumber_yml.has_key?('default')
           @args.concat(%w{--profile default})
+        end
+      end
+
+      def set_environment_variables
+        @args.each do |arg|
+          if arg =~ /^(\w+)=(.*)$/
+            ENV[$1] = $2
+            @args.delete(arg)
+          end
         end
       end
 
