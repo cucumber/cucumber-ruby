@@ -211,6 +211,7 @@ module Cucumber
         options = {:missing_row => true, :surplus_row => true, :missing_col => true, :surplus_col => false}.merge(options)
 
         other_table = ensure_table(other_table)
+        ensure_green!
 
         original_width = cell_matrix[0].length
         other_table_cell_matrix = pad!(other_table.cell_matrix)
@@ -263,7 +264,6 @@ module Cucumber
         end
         
         clear_cache!
-        
         should_raise = 
           missing_row_pos && options[:missing_row] ||
           insert_row_pos  && options[:surplus_row] ||
@@ -460,6 +460,14 @@ module Cucumber
       def hashes_to_array(hashes)
         header = hashes[0].keys
         [header] + hashes.map{|hash| header.map{|key| hash[key]}}
+      end
+
+      def ensure_green!
+        each_cell{|cell| cell.status = :passed}
+      end
+
+      def each_cell(&proc)
+        cell_matrix.each{|row| row.each(&proc)}
       end
 
       def mark_as_missing(col)
