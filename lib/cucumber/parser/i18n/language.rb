@@ -38,6 +38,10 @@ module Cucumber
           @keywords = Cucumber::LANGUAGES[lang]
           raise "Language not supported: #{lang.inspect}" if @keywords.nil?
           @keywords['grammar_name'] = @keywords['name'].gsub(/\s/, '')
+        end
+        
+        def load!
+          return if @parser
           i18n_tt = File.expand_path(File.dirname(__FILE__) + '/../i18n.tt')
           template = File.open(i18n_tt, Cucumber.file_mode('r')).read
           erb = ERB.new(template)
@@ -48,6 +52,7 @@ module Cucumber
         end
 
         def parse(source, path, filter)
+          load!
           feature = @parser.parse_or_fail(source, path, filter)
           feature.language = self if feature
           feature
@@ -55,11 +60,12 @@ module Cucumber
 
         def keywords(key, raw=false)
           return @keywords[key] if raw
+          return nil unless @keywords[key]
           values = @keywords[key].split('|')
           values.map{|value| "'#{value}'"}.join(" / ")
         end
 
-        def language_incomplete?
+        def incomplete?
           KEYWORD_KEYS.detect{|key| @keywords[key].nil?}
         end
 
