@@ -194,6 +194,7 @@ module Cucumber
           result = []
           result += feature_list.to_a if feature_list
           result += FileList[feature_pattern].to_a if feature_pattern
+          result = make_command_line_safe(result)
           FileList[result]
         end
       end
@@ -207,6 +208,11 @@ module Cucumber
           result += Array(FileList[step_pattern]) if step_pattern
           FileList[result]
         end
+      end
+
+      private
+      def make_command_line_safe(list)
+        list.map{|string| string.gsub(' ', '\ ')}
       end
     end
 
