@@ -44,6 +44,14 @@ module Cucumber
         "#{@file}:#{line}"
       end
 
+      def tag_count(tag)
+        count = 0
+        @feature_elements.each do |feature_element|
+          count += feature_element.tag_count(tag)
+        end
+        count + @tags.count(tag)
+      end
+
       def to_sexp
         sexp = [:feature, @file, @name]
         comment = @comment.to_sexp

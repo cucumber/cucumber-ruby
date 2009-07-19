@@ -6,7 +6,7 @@ module Cucumber
     module Console
       extend ANSIColor
       include Duration
-      
+
       FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
 
       def format_step(keyword, step_match, status, source_indent)
@@ -59,9 +59,9 @@ module Cucumber
       end
 
       def print_stats(features)
-        
+
         @failures = step_mother.scenarios(:failed).select { |s| s.is_a?(Cucumber::Ast::Scenario) }
-        
+
         if !@failures.empty?
           @io.puts format_string("Failing Scenarios:", :failed)
           @failures.each do |failure|
@@ -70,7 +70,7 @@ module Cucumber
           end
           @io.puts
         end
-        
+
         @io.print dump_count(step_mother.scenarios.length, "scenario")
         print_status_counts{|status| step_mother.scenarios(status)}
 
@@ -81,7 +81,7 @@ module Cucumber
 
         @io.flush
       end
-      
+
       def print_exception(e, status, indent)
         @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
       end
@@ -111,6 +111,17 @@ module Cucumber
         if passed.any?
           @io.puts "\nThe --wip switch was used, so I didn't expect anything to pass. These scenarios passed:"
           print_elements(passed, :passed, "scenarios")
+        end
+      end
+
+      def print_tag_limit_warnings(options, tag_frequencies)
+        @io.puts
+        @io.puts format_string("Aborted due to exceeding the tag limit", :failed)
+        options[:include_tags].each do |tag_name, limit|
+          if limit && tag_frequencies[tag_name] > limit
+            @io.puts format_string("@#{tag_name} occurred:#{@tag_frequencies[tag_name]} limit:#{limit}", :failed)
+            @io.flush
+          end
         end
       end
 

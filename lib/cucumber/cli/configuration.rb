@@ -229,7 +229,16 @@ module Cucumber
         # Strip @
         includes = includes.map{|tag| Ast::Tags.strip_prefix(tag)}
         excludes = excludes.map{|tag| Ast::Tags.strip_prefix(tag)}
-        [includes, excludes]
+        [parse_tag_limits(includes), parse_tag_limits(excludes)]
+      end
+
+      def parse_tag_limits(includes)
+        dict = {}
+        includes.each do |tag|
+          tag, limit = tag.split(':')
+          dict[tag] = limit.nil? ? limit : limit.to_i
+        end
+        dict
       end
 
       def build_formatter_broadcaster(step_mother)
@@ -419,8 +428,8 @@ Defined profiles in cucumber.yml:
           :dry_run      => false,
           :formats      => [],
           :excludes     => [],
-          :include_tags => [],
-          :exclude_tags => [],
+          :include_tags => {},
+          :exclude_tags => {},
           :name_regexps => [],
           :diff_enabled => true
         }

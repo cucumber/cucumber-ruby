@@ -24,7 +24,7 @@ module Cucumber
       if @name.empty?
         [@keyword.jlength]
       else
-        @name.split("\n").enum_for(:each_with_index).map do |line, line_number| 
+        @name.split("\n").enum_for(:each_with_index).map do |line, line_number|
           line_number == 0 ? @keyword.jlength + line.jlength : line.jlength + Ast::Step::INDENT - 1 # We -1 as names which are not keyword lines are missing a space between keyword and name
         end
       end
@@ -32,7 +32,7 @@ module Cucumber
 
     def matches_scenario_names?(scenario_name_regexps)
       scenario_name_regexps.detect{|name| name =~ @name}
-    end 
+    end
 
     def backtrace_line(name = "#{@keyword} #{@name}", line = @line)
       @feature.backtrace_line(name, line) if @feature
@@ -52,6 +52,10 @@ module Cucumber
     
     def language
       @feature.language
+    end
+
+    def tag_count(tag)
+      @tags.count(tag) if @tags
     end
   end
 end

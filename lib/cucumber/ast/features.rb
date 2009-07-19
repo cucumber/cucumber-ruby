@@ -26,6 +26,11 @@ module Cucumber
         end
         @duration = Time.now - start
       end
+
+      def tag_count(tag)
+        @features.inject(0){|count, feature| count += feature.tag_count(tag)}
+      end
+
     end
   end
 end

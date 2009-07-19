@@ -323,8 +323,14 @@ END_OF_MESSAGE
     it "should parse tags" do
       config = Configuration.new(nil)
       includes, excludes = config.parse_tags("one,~two,@three,~@four")
-      includes.should == ['one', 'three']
-      excludes.should == ['two', 'four']
+      includes.should == {'one' => nil, 'three' => nil}
+      excludes.should == {'two' => nil, 'four' => nil}
+    end
+
+    it "should parse tags with tag limits" do
+      config = Configuration.new(nil)
+      includes, excludes = config.parse_tags("@one:5")
+      includes.should == {'one' => 5}
     end
 
     describe "--backtrace" do
@@ -395,7 +401,7 @@ END_OF_MESSAGE
       ENV["foo"].should == "bar"
       config.feature_files.should == []
     end
-    
+
     it "should allow specifying environment variables in profiles" do
       given_cucumber_yml_defined_as({'selenium' => 'RAILS_ENV=selenium'})
       config = Configuration.new

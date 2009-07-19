@@ -44,7 +44,7 @@ module Cucumber
           end
         end
         step_mother.options = configuration.options
-
+    
         features = load_plain_text_features
         require_files
         enable_diffing
@@ -53,12 +53,28 @@ module Cucumber
         step_mother.visitor = visitor # Needed to support World#announce
         visitor.visit_features(features)
 
-        failure = if configuration.wip?
-          step_mother.scenarios(:passed).any?
-        else
-          step_mother.scenarios(:failed).any? || 
-          (configuration.strict? && step_mother.steps(:undefined).any?)
+        failure = if excuded_tag_limts?(features)
+            1
+          elsif configuration.wip?
+            step_mother.scenarios(:passed).any?
+          else
+            step_mother.scenarios(:failed).any? ||
+            (configuration.strict? && step_mother.steps(:undefined).any?)
+          end
+      end
+
+      def excuded_tag_limts?(features)
+        exceeded = false
+        configuration.options[:include_tags].each do |tag, limit|
+          unless limit.nil?
+            tag_count = features.tag_count(tag)
+            if tag_count > limit.to_i
+#              @error_stream.puts "Found #{tag_count} @#{tag} tags which exceeds the limit of #{limit}"
+              exceeded = true
+            end
+          end
         end
+        exceeded
       end
 
       def load_plain_text_features

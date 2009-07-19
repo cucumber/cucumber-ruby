@@ -20,6 +20,7 @@ module Cucumber
         @exceptions = []
         @indent = 0
         @prefixes = options[:prefixes] || {}
+        @tag_frequencies = Hash.new{|k,v| k[v] = 0}
       end
 
       def visit_features(features)
@@ -48,14 +49,14 @@ module Cucumber
       end
 
       def visit_comment_line(comment_line)
-        @io.puts(comment_line.indent(@indent)) 
+        @io.puts(comment_line.indent(@indent))
         @io.flush
       end
 
       def visit_tags(tags)
         tags.accept(self)
         if @indent == 1
-          @io.puts 
+          @io.puts
           @io.flush
         end
       end
@@ -74,11 +75,18 @@ module Cucumber
       end
 
       def visit_feature_element(feature_element)
-        @indent = 2
-        @scenario_indent = 2
-        super
-        @io.puts
-        @io.flush
+        options[:include_tags].each do |tag_name, limit|
+          @tag_frequencies[tag_name] += feature_element.tag_count(tag_name)
+          @tag_limit_breached ||= limit && @tag_frequencies[tag_name] > limit
+        end
+
+        unless @tag_limit_breached
+          @indent = 2
+          @scenario_indent = 2
+          super
+          @io.puts
+          @io.flush
+        end
       end
 
       def visit_background(background)
@@ -160,7 +168,7 @@ module Cucumber
         super
         @io.puts
         if table_row.exception && !@exceptions.index(table_row.exception)
-          print_exception(table_row.exception, :failed, @indent) 
+          print_exception(table_row.exception, :failed, @indent)
         end
       end
 
@@ -187,7 +195,7 @@ module Cucumber
       end
 
       private
-      
+
       def cell_prefix(status)
         @prefixes[status]
       end
@@ -196,6 +204,7 @@ module Cucumber
         print_stats(features)
         print_snippets(@options)
         print_passing_wip(@options)
+        print_tag_limit_warnings(@options, @tag_frequencies) if @tag_limit_breached
       end
 
     end

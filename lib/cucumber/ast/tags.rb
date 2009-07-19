@@ -26,6 +26,10 @@ module Cucumber
         hook.matches_tag_names?(@tag_names)
       end
 
+      def count(tag)
+        @tag_names.count tag
+      end
+
       def to_sexp
         @tag_names.map{|tag_name| [:tag, tag_name]}
       end
