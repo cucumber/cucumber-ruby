@@ -65,7 +65,8 @@ for example enabling your super hack that validates all HTTP responses for XHTML
 This release also has several bugfixes related to --format and Before/Adter hooks.
 
 === Bugfixes
-* Improved alignment of table cells in pretty formatter (Stefan Kanev)
+* Make it possible to write non-localized step definitions (#377 Aslak Hellesøy)
+* Table cells containing unicode are rendered incorrectly (#386 Stefan Kanev)
 * Before and After hooks run after everything is finished whn there are 2+ --format options (#371 Aslak Hellesøy)
 * When using --out and two --format the first is not delivered inline with execution of features (#361 Aslak Hellesøy)
 * Profile Formatter broken (#370 Aslak Hellesøy)
@@ -77,13 +78,16 @@ This release also has several bugfixes related to --format and Before/Adter hook
 * Fixed bug with rake task raising errors with feature files with spaces (#380 Joseph Wilk)
 
 === New Features
-* Load step definitions from vendored gems and plugins (Mike Burns)
+* Access to scenario outline name from After hook scenario parameter (#342 Aslak Hellesøy)
+* Allow multiple --tags switches to be passed 
+* Load step definitions from vendored gems and plugins (#388 Mike Burns)
 * New --format steps formatter. Variant of the usage formatter that lists available step definitions (Demetrius Nunes)
 * Possibility to specify scenario language as part of the .feature file (#345 Aslak Hellesøy)
 * Support specifying environment variables using foo=bar syntax on command line or in profiles (#362 Bryan Helmkamp)
 * Display failing scenarios at the end of pretty format to make it easier for people to play them back (#360 Ryan Bigg)
 
 === Changed Features
+* With --tags, positive tags are &&'ed while negative tags are ||'ed (John Wilger)
 * The data returned from Table#hashes and similar methods are frozen. Dup if you need to modify. (Aslak Hellesøy)
 * Visitor.visit_table_cell_value(value, col_width, status) is now visitor.visit_table_cell_value(value, status)
 
