@@ -20,3 +20,7 @@ end
 #
 # You may keep the page classes along your steps, or even better, put them in separate files, e.g.
 # support/pages/google_search.rb
+#
+# This technique is called "Page Objects", and you can read more about it here:
+# http://github.com/marekj/watirloo/tree/master
+# We're not using this technique here, since we want to illustrate the basics only.
