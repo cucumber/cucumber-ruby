@@ -1,4 +1,5 @@
 require 'spec/expectations'
+$KCODE = 'u' unless Cucumber::RUBY_1_9
 
 Before('@not_used') do
   raise "Should never run"

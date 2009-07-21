@@ -70,6 +70,11 @@ class CucumberWorld
     stderr_file.close
     in_current_dir do
       @last_stdout = `#{command} 2> #{stderr_file.path}`
+      mode = Cucumber::RUBY_1_9 ? {:external_encoding=>"UTF-8"} : 'r'
+      IO.popen("#{command} 2> #{stderr_file.path}", mode) do |io|
+        @last_stdout = io.read
+      end
+
       @last_exit_status = $?.exitstatus
     end
     @last_stderr = IO.read(stderr_file.path)

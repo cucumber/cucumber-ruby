@@ -179,9 +179,10 @@ module Cucumber
       def visit_table_cell_value(value, status)
         status ||= @status || :passed
         width = @table.col_width(@col_index)
-        cell = (value.to_s || '').ljust(width)
+        cell_text = value.to_s || ''
+        padded = cell_text + (' ' * (width - cell_text.jlength))
         prefix = cell_prefix(status)
-        @io.print(' ' + format_string("#{@__col}#{prefix}#{cell}", status) + ::Term::ANSIColor.reset(" |"))
+        @io.print(' ' + format_string("#{prefix}#{padded}", status) + ::Term::ANSIColor.reset(" |"))
         @io.flush
       end
 

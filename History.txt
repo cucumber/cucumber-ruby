@@ -65,6 +65,7 @@ for example enabling your super hack that validates all HTTP responses for XHTML
 This release also has several bugfixes related to --format and Before/Adter hooks.
 
 === Bugfixes
+* Improved alignment of table cells in pretty formatter (Stefan Kanev)
 * Before and After hooks run after everything is finished whn there are 2+ --format options (#371 Aslak Hellesøy)
 * When using --out and two --format the first is not delivered inline with execution of features (#361 Aslak Hellesøy)
 * Profile Formatter broken (#370 Aslak Hellesøy)
