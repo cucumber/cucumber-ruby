@@ -9,12 +9,6 @@ When /^I delete the (\d+)(?:st|nd|rd|th) <%= singular_name %>$/ do |pos|
   end
 end
 
-Then /^I should see the following <%= plural_name %>:$/ do |<%= plural_name %>|
-  <%= plural_name %>.rows.each_with_index do |row, i|
-    row.each_with_index do |cell, j|
-      response.should have_selector("table > tr:nth-child(#{i+2}) > td:nth-child(#{j+1})") { |td|
-        td.inner_text.should == cell
-      }
-    end
-  end
+Then /^I should see the following <%= plural_name %>:$/ do |expected_<%= plural_name %>_table|
+  expected_<%= plural_name %>_table.diff!(table_at('table').to_a)
 end

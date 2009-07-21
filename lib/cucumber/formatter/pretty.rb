@@ -13,13 +13,13 @@ module Cucumber
       include Console
       attr_writer :indent
 
-      def initialize(step_mother, io, options, delim='|')
+      def initialize(step_mother, io, options)
         super(step_mother)
         @io = io
         @options = options
-        @delim = delim
         @exceptions = []
         @indent = 0
+        @prefixes = options[:prefixes] || {}
       end
 
       def visit_features(features)
@@ -145,6 +145,7 @@ module Cucumber
 
       def visit_multiline_arg(multiline_arg)
         return if @options[:no_multiline]
+        @table = multiline_arg
         super
       end
 
@@ -154,7 +155,8 @@ module Cucumber
       end
 
       def visit_table_row(table_row)
-        @io.print @delim.indent(@indent)
+        @col_index = 0
+        @io.print '  |'.indent(@indent-2)
         super
         @io.puts
         if table_row.exception && !@exceptions.index(table_row.exception)
@@ -169,13 +171,26 @@ module Cucumber
         @io.flush
       end
 
-      def visit_table_cell_value(value, width, status)
+      def visit_table_cell(cell)
+        super
+        @col_index += 1
+      end
+
+      def visit_table_cell_value(value, status)
         status ||= @status || :passed
-        @io.print(' ' + format_string((value.to_s || '').ljust(width), status) + ::Term::ANSIColor.reset(" #{@delim}"))
+        width = @table.col_width(@col_index)
+        cell_text = value.to_s || ''
+        padded = cell_text + (' ' * (width - cell_text.jlength))
+        prefix = cell_prefix(status)
+        @io.print(' ' + format_string("#{prefix}#{padded}", status) + ::Term::ANSIColor.reset(" |"))
         @io.flush
       end
 
       private
+      
+      def cell_prefix(status)
+        @prefixes[status]
+      end
 
       def print_summary(features)
         print_stats(features)

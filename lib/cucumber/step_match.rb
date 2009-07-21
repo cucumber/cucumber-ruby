@@ -34,7 +34,7 @@ module Cucumber
   end
   
   class NoStepMatch
-    attr_reader :step_definition
+    attr_reader :step_definition, :name
 
     def initialize(step, name)
       @step = step

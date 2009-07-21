@@ -32,34 +32,37 @@ module Cucumber
 
         alias_step_definitions(Cucumber::LANGUAGES['en'])
 
-        attr_reader :parser
-
         def initialize(lang)
           @keywords = Cucumber::LANGUAGES[lang]
           raise "Language not supported: #{lang.inspect}" if @keywords.nil?
           @keywords['grammar_name'] = @keywords['name'].gsub(/\s/, '')
+        end
+        
+        def parser
+          return @parser if @parser
           i18n_tt = File.expand_path(File.dirname(__FILE__) + '/../i18n.tt')
           template = File.open(i18n_tt, Cucumber.file_mode('r')).read
           erb = ERB.new(template)
           grammar = erb.result(binding)
           Treetop.load_from_string(grammar)
-          @parser = Parser::I18n.const_get("#{@keywords['grammar_name']}Parser").new
           self.class.alias_step_definitions(@keywords)
+          @parser = Parser::I18n.const_get("#{@keywords['grammar_name']}Parser").new
         end
 
         def parse(source, path, filter)
-          feature = @parser.parse_or_fail(source, path, filter)
+          feature = parser.parse_or_fail(source, path, filter)
           feature.language = self if feature
           feature
         end
 
         def keywords(key, raw=false)
           return @keywords[key] if raw
+          return nil unless @keywords[key]
           values = @keywords[key].split('|')
           values.map{|value| "'#{value}'"}.join(" / ")
         end
 
-        def language_incomplete?
+        def incomplete?
           KEYWORD_KEYS.detect{|key| @keywords[key].nil?}
         end
 

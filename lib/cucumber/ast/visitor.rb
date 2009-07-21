@@ -64,6 +64,7 @@ module Cucumber
       end
 
       def visit_outline_table(outline_table)
+        @table = outline_table
         outline_table.accept(self)
       end
 
@@ -105,7 +106,7 @@ module Cucumber
         table_cell.accept(self)
       end
 
-      def visit_table_cell_value(value, width, status)
+      def visit_table_cell_value(value, status)
       end
 
       def announce(announcement)

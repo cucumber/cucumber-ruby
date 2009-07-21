@@ -31,7 +31,13 @@ module Cucumber
         require 'open-uri'
         open(@path).read
       else
-        File.open(@path, Cucumber.file_mode('r')).read 
+        begin
+          File.open(@path, Cucumber.file_mode('r')).read 
+        rescue Errno::EACCES => e
+          p = File.expand_path(@path)
+          e.message << "\nCouldn't open #{p}"
+          raise e
+        end
       end
     end
     
