@@ -1,4 +1,5 @@
 require 'cucumber/formatter/pretty'
+require 'cucumber/parser/i18n/language'
 
 module Cucumber
   module Cli
@@ -18,15 +19,16 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
           [lang, Cucumber::LANGUAGES[lang]['name'], Cucumber::LANGUAGES[lang]['native']]
         end
         table = Ast::Table.new(raw)
-        new(nil, io, {:check_lang=>true}, '').visit_multiline_arg(table)
+        new(nil, io, {:check_lang=>true}).visit_multiline_arg(table)
       end
 
       def self.list_keywords(io, lang)
-        raw = Cucumber::KEYWORD_KEYS.map do |key|
-          [key, Cucumber::LANGUAGES[lang][key]]
+        language = Parser::I18n::Language[lang]
+        raw = Parser::I18n::Language::KEYWORD_KEYS.map do |key|
+          [key, language.keywords(key)]
         end
         table = Ast::Table.new(raw)
-        new(nil, io, {:incomplete => Cucumber.language_incomplete?(lang)}, '').visit_multiline_arg(table)
+        new(nil, io, {:incomplete => language.incomplete?}).visit_multiline_arg(table)
       end
 
       def visit_multiline_arg(table)
@@ -41,10 +43,10 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
         super
       end
 
-      def visit_table_cell_value(value, width, status)
+      def visit_table_cell_value(value, status)
         if @col == 1
           if(@options[:check_lang])
-            @incomplete = Cucumber.language_incomplete?(value)
+            @incomplete = Parser::I18n::Language[value].incomplete?
           end
           status = :comment 
         elsif @incomplete
@@ -52,7 +54,7 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
         end
         
         @col += 1
-        super(value, width, status)
+        super(value, status)
       end
     end
   end

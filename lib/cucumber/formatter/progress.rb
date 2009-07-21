@@ -23,7 +23,7 @@ module Cucumber
         @status = status
       end
 
-      def visit_table_cell_value(value, width, status)
+      def visit_table_cell_value(value, status)
         status ||= @status
         progress(status) unless table_header_cell?(status)
       end

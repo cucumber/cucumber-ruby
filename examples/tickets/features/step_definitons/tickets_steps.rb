@@ -64,3 +64,18 @@ end
 Then /^I should get a no method error for 'backtrace_line'$/ do
   pending
 end
+
+Then /the table should be different with table:/ do |expected|
+  expected.diff!(table(%{
+    | b     | c    | a     | d |
+    | KASHA | AIIT | BOOYA | X |
+    | four  | five | three | Y |
+  }), :coldiff => true)
+end
+
+Then /the table should be different with array:/ do |expected|
+  expected.diff!([
+    {'a' => 'BOOYA', 'b' => 'KASHA'},
+    {'a' => 'three', 'b' => 'four'},
+  ])
+end

@@ -25,7 +25,7 @@ Feature: Manage <%= plural_name %>
 <% end -%>
     When I delete the 3rd <%= singular_name %>
     Then I should see the following <%= plural_name %>:
-      |<%= named_args.map(&:name).join('|') %>|
+      |<%= named_args.map{|arg| arg.name.humanize}.join('|') %>|
 <% [1,2,4].each do |n| -%>
       |<%= named_args.map{|arg| arg.value(n)}.join('|') %>|
 <% end -%>
