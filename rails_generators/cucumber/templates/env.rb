@@ -15,6 +15,7 @@ Cucumber::Rails.use_transactional_fixtures
 Cucumber::Rails.bypass_rescue
 
 require 'webrat'
+require 'cucumber/webrat/table_locator' # Lets you do table.diff!(table_at('#my_table').to_a)
 
 Webrat.configure do |config|
   config.mode = :rails
@@ -23,5 +24,4 @@ end
 
 require 'cucumber/rails/rspec'
 require 'webrat/core/matchers'
-require 'cucumber/webrat/table_locator' # Lets you do table.diff!(table_at('#my_table').to_a)
 <% end -%>

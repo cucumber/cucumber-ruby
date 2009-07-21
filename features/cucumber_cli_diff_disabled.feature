@@ -13,7 +13,8 @@ Feature: Cucumber command line
           Given failing expectation
             expected: "that",
                  got: "this" (using ==)
-            Diff:
+            
+             Diff:
             @@ -1,2 +1,2 @@
             -that
             +this

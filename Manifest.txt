@@ -270,6 +270,7 @@ features/step_definitions/extra_steps.rb
 features/steps_formatter.feature
 features/support/env.rb
 features/table_diffing.feature
+features/unicode_table.feature
 features/usage.feature
 features/work_in_progress.feature
 gem_tasks/deployment.rake
