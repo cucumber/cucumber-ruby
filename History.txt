@@ -77,6 +77,7 @@ This release also has several bugfixes related to --format and Before/Adter hook
 * Fixed bug with rake task raising errors with feature files with spaces (#380 Joseph Wilk)
 
 === New Features
+* Load step definitions from vendored gems and plugins (Mike Burns)
 * New --format steps formatter. Variant of the usage formatter that lists available step definitions (Demetrius Nunes)
 * Possibility to specify scenario language as part of the .feature file (#345 Aslak Hellesøy)
 * Support specifying environment variables using foo=bar syntax on command line or in profiles (#362 Bryan Helmkamp)
