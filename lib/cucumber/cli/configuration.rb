@@ -268,7 +268,7 @@ module Cucumber
       end
 
       def files_to_require
-        requires = @options[:require] || feature_dirs
+        requires = @options[:require] || require_dirs
         files = requires.map do |path|
           path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
           path = path.gsub(/\/$/, '') # Strip trailing slash.
@@ -308,6 +308,10 @@ module Cucumber
 
       def feature_dirs
         @paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq
+      end
+
+      def require_dirs
+        feature_dirs+Dir['vendor/{gems,plugins}/*/cucumber']
       end
 
       def constantize(camel_cased_word)
