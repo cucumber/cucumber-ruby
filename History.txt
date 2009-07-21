@@ -65,6 +65,7 @@ for example enabling your super hack that validates all HTTP responses for XHTML
 This release also has several bugfixes related to --format and Before/Adter hooks.
 
 === Bugfixes
+* Fix some misspellings which affect test fail for Korean example (Dongju Kim)
 * Make it possible to write non-localized step definitions (#377 Aslak Hellesøy)
 * Table cells containing unicode are rendered incorrectly (#386 Stefan Kanev)
 * Before and After hooks run after everything is finished whn there are 2+ --format options (#371 Aslak Hellesøy)
