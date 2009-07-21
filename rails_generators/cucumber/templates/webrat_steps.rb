@@ -98,7 +98,24 @@ Then /^I should see "([^\"]*)"$/ do |text|
 <% end -%>
 end
 
+Then /^I should see \/([^\/]*)\/$/ do |regexp|
+  regexp = Regexp.new(regexp)
+<% if framework == :rspec -%>
+  response.should contain(regexp)
+<% else -%>
+  assert_contain regexp
+<% end -%>
+end
+
 Then /^I should not see "([^\"]*)"$/ do |text|
+<% if framework == :rspec -%>
+  response.should_not contain(text)
+<% else -%>
+  assert_not_contain text
+<% end -%>
+end
+
+Then /^I should not see \/([^\/]*)\/$/ do |regexp|
 <% if framework == :rspec -%>
   response.should_not contain(text)
 <% else -%>

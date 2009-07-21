@@ -65,7 +65,7 @@ for example enabling your super hack that validates all HTTP responses for XHTML
 This release also has several bugfixes related to --format and Before/Adter hooks.
 
 === Bugfixes
-* Fix some misspellings which affect test fail for Korean example (Dongju Kim)
+* Fix some misspellings which affect test fail for Korean example (#373 Dongju Kim)
 * Make it possible to write non-localized step definitions (#377 Aslak Hellesøy)
 * Table cells containing unicode are rendered incorrectly (#386 Stefan Kanev)
 * Before and After hooks run after everything is finished whn there are 2+ --format options (#371 Aslak Hellesøy)
@@ -79,6 +79,7 @@ This release also has several bugfixes related to --format and Before/Adter hook
 * Fixed bug with rake task raising errors with feature files with spaces (#380 Joseph Wilk)
 
 === New Features
+* I should see should suport regexes (#382 John Ferlito)
 * Access to scenario outline name from After hook scenario parameter (#342 Aslak Hellesøy)
 * Allow multiple --tags switches to be passed 
 * Load step definitions from vendored gems and plugins (#388 Mike Burns)
