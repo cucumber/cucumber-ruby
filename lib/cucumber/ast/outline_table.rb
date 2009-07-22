@@ -44,7 +44,8 @@ module Cucumber
       end
 
       class ExampleRow < Cells
-        
+        attr_reader :scenario_outline # https://rspec.lighthouseapp.com/projects/16211/tickets/342
+
         def create_step_invocations!(scenario_outline)
           @scenario_outline = scenario_outline
           @step_invocations = scenario_outline.step_invocations(self)

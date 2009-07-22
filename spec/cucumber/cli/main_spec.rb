@@ -20,7 +20,6 @@ module Cucumber
 
         before(:each) do
           @empty_feature = Ast::Feature.new(nil, Ast::Comment.new(''), Ast::Tags.new(2, []), "Feature", [])
-          Dir.stub!(:[])
         end
 
         it "should show ruby files required" do

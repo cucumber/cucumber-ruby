@@ -214,7 +214,7 @@ module Cucumber
         @outline_row += 1 if @outline_row
       end
 
-      def visit_table_cell_value(value, width, status)
+      def visit_table_cell_value(value, status)
         cell_type = @outline_row == 0 ? :th : :td
         attributes = {:id => "#{@row_id}_#{@col_index}", :class => 'val'}
         attributes[:class] += " #{status}" if status

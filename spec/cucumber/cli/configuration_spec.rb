@@ -57,6 +57,19 @@ module Cli
       ]
     end
 
+    it "should require files in vendor/{plugins,gems}/*/cucumber/*.rb" do
+      given_the_following_files("/vendor/plugins/plugin_a/cucumber/foo.rb",
+                                "/vendor/gems/gem_a/cucumber/bar.rb")
+
+      config = Configuration.new(StringIO.new)
+      config.parse!(%w{--require /features})
+
+      config.files_to_require.should == [
+        "/vendor/plugins/plugin_a/cucumber/foo.rb",
+        "/vendor/gems/gem_a/cucumber/bar.rb"
+      ]
+    end
+
     describe "--exclude" do
 
       it "excludes a ruby file from requiring when the name matches exactly" do

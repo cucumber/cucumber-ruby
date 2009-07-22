@@ -4,7 +4,7 @@ Before do
   @calc = Kalkulator.new
 end
 
-Gitt /at jeg har tastet inn (\d+)/ do |n|
+Given /at jeg har tastet inn (\d+)/ do |n|
   @calc.push n.to_i
 end
 

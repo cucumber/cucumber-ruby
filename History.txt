@@ -1,18 +1,73 @@
-== 0.3.12 (In Git)
+== 0.3.91 (In Git)
 
-The Egality release
+=== New Features
+* Feature files defined on the command line override any that are present in profiles. (#344 Ben Mabey)
+* Displays which profile, if any, is being used. (Ben Mabey)
+
+=== Changed Features
+* The 'default' profile is now ALWAYS used unless you specify another profile or use the -P or --no-profile flag. (#344 Ben Mabey)
+
+== 0.3.90 2009-07-22
+
+The Hot summer release
+
+This is a hot summer in Norway, and Cucumbers are growing in abundance. To celebrate this we give you
+a new release with lots of new features and bugfixes. This is also one of the last releases in the 0.3 series
+(hence the 0.3.90 number), so 0.4 (or maybe 1.0!) will be coming up soon. The highlights of this release are:
+
+=== Egality
 
 English is not the world's most spoken language, so why should Cucumber force non-English speakers to use the
 --language flag? As of this release you're no longer forced to do that. Instead, you can add a comment header 
 to your .feature files:
 
   # language: fr
+  # Cucumber understands that this is French
   Fonctionnalité: Trou de boulette
 
 If you don't have that header, Cucumber will work as before - using whatever you specified with --language,
 or default to English if no --language option was specified. A nice side effect of this is that you can now
 have features in several languages side by side and run them in the same cucumber. (Not recommended unless 
 you want to take polyglot programming to an extreme level).
+
+=== Table diffing (experimental)
+
+When you pass a table as an argument to your Then steps you often want to compare that table
+to some actual values. In previous releases you had to iterate over the table's values and manually
+compare each row using cell.should equal('foo') or assert_equal('foo', cell). If a discrepancy was found
+you'd get an error, but it was hard to see how the entire expected data set was different from the actual one.
+
+With this release you have a much more powerful way to compare expected tables with actual data. An
+Ast::Table object now has a new #diff!(table) method that you can invoke in your step definitions
+that take table arguments. If the table you pass in is different from the expected table (from your
+plain text step), Cucumber will print the difference for each of the row or column and fail your step.
+
+The Table#diff! method expects an Array of Array, Array of Hash (similar to what you'd get from table#hashes)
+or simply another Ast::Table object. Here is a simple example:
+
+  Then /^I should see the following cukes:$/ do |expected_cukes_table|
+    actual_table = ... # For example [['Latin', 'English'], ['Cucumis sativus', 'Cucumber'], ['Cucumis anguria', 'Burr Gherkin']]
+    expected_cukes_table.diff!(actual_table)
+  end
+
+As an extra bonus we provide Webrat users with a new #table_at(selector) method that you can use to transform 
+an HTML table into an Array of Array, so that you can easily compare the contents of your HTML table to
+expected data passed to a step. Here is an example:
+
+  Then /^I should see the following cukes:$/ do |expected_cukes_table|
+    expected_cukes_table.diff!(table_at('#cuke_table').to_a)
+  end
+
+You can do the same trick to compare data from a Rails ActiveRecord table (although this is not a
+recommended practice - your Then steps should compare against what users *see*, not what's in the 
+database):
+
+  # This requires that you use the column names in the header of the plain text expected table
+  Then /^I should have the following cukes in the database:$/ do |expected_cukes_table|
+    expected_cukes_table.diff!(Cuke.find(:all).map(&attributes))
+  end
+
+=== Environment variables
 
 Another useful new feature is the ability to define environment variables on Cucumber's command line (just
 like you can with Rake). Example:
@@ -25,7 +80,10 @@ for example enabling your super hack that validates all HTTP responses for XHTML
 This release also has several bugfixes related to --format and Before/After hooks.
 
 === Bugfixes
-* Before and After hooks run after everything is finished whn there are 2+ --format options (#371 Aslak Hellesøy)
+* Fix some misspellings which affect test fail for Korean example (#373 Dongju Kim)
+* Make it possible to write non-localized step definitions (#377 Aslak Hellesøy)
+* Table cells containing unicode are rendered incorrectly (#386 Stefan Kanev)
+* Before and After hooks run after everything is finished when there are 2+ --format options (#371 Aslak Hellesøy)
 * When using --out and two --format the first is not delivered inline with execution of features (#361 Aslak Hellesøy)
 * Profile Formatter broken (#370 Aslak Hellesøy)
 * Default profile usage with --drb flag degrades gracefully with no server. (#367 Ben Mabey)
@@ -33,18 +91,22 @@ This release also has several bugfixes related to --format and Before/After hook
 * rake gems no longer lists cucumber as a [F]ramework gem (David Chelimsky)
 * CLI issues correct exit code when using --drb. Requires Spork version >= 0.5.1. (#355 Ben Mabey)
 * Make sure script/generate cucumber --spork uses the cucumber Rails environment (Philippe Lafoucrière)
+* Fixed bug with rake task raising errors with feature files with spaces (#380 Joseph Wilk)
 
 === New Features
-* Feature files defined on the command line override any that are present in profiles. (#344 Ben Mabey)
-* Displays which profile, if any, is being used. (Ben Mabey)
+* I should see should support regexes (#382 John Ferlito)
+* Access to scenario outline name from After hook scenario parameter (#342 Aslak Hellesøy)
+* Allow multiple --tags switches to be passed 
+* Load step definitions from vendored gems and plugins (#388 Mike Burns)
 * New --format steps formatter. Variant of the usage formatter that lists available step definitions (Demetrius Nunes)
 * Possibility to specify scenario language as part of the .feature file (#345 Aslak Hellesøy)
 * Support specifying environment variables using foo=bar syntax on command line or in profiles (#362 Bryan Helmkamp)
 * Display failing scenarios at the end of pretty format to make it easier for people to play them back (#360 Ryan Bigg)
 
 === Changed Features
-* The 'default' profile is now ALWAYS used unless you specify another profile or use the -P or --no-profile flag. (#344 Ben Mabey)
+* When using --tags, positive tags are &&'ed while negative tags are ||'ed (John Wilger)
 * The data returned from Table#hashes and similar methods are frozen. Dup if you need to modify. (Aslak Hellesøy)
+* Visitor.visit_table_cell_value(value, col_width, status) is now visitor.visit_table_cell_value(value, status)
 
 == 0.3.11 2009-06-05
 

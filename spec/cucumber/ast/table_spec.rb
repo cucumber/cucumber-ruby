@@ -1,3 +1,4 @@
+# encoding: utf-8
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'cucumber/ast/table'
 
@@ -166,6 +167,150 @@ module Cucumber
           }.should_not raise_error
         end
 
+      end
+      
+      describe "diff!" do
+        it "should detect a complex diff" do
+          t1 = table(%{
+            | 1         | 22          | 333         | 4444         |
+            | 55555     | 666666      | 7777777     | 88888888     |
+            | 999999999 | 0000000000  | 01010101010 | 121212121212 |
+            | 4000      | ABC         | DEF         | 50000        |
+          })
+          
+          t2 = table(%{
+            | a     | 4444     | 1         | 
+            | bb    | 88888888 | 55555     | 
+            | ccc   | xxxxxxxx | 999999999 | 
+            | dddd  | 4000     | 300       |
+            | e     | 50000    | 4000      |
+          })
+          lambda{t1.diff!(t2)}.should raise_error
+          t1.to_s(:indent => 12, :color => false).should == %{
+            |     1         | (-) 22         | (-) 333         |     4444         | (+) a    |
+            |     55555     | (-) 666666     | (-) 7777777     |     88888888     | (+) bb   |
+            | (-) 999999999 | (-) 0000000000 | (-) 01010101010 | (-) 121212121212 | (+)      |
+            | (+) 999999999 | (+)            | (+)             | (+) xxxxxxxx     | (+) ccc  |
+            | (+) 300       | (+)            | (+)             | (+) 4000         | (+) dddd |
+            |     4000      | (-) ABC        | (-) DEF         |     50000        | (+) e    |
+          }
+        end
+
+        it "should not change table when diffed with identical" do
+          t = table(%{
+            |a|b|c|
+            |d|e|f|
+            |g|h|i|
+          })
+          t.diff!(t.dup)
+          t.to_s(:indent => 12, :color => false).should == %{
+            |     a |     b |     c |
+            |     d |     e |     f |
+            |     g |     h |     i |
+          }
+        end
+
+        it "should inspect missing and surplus cells" do
+          t1 = Table.new([
+            ['name',  'male', 'lastname', 'swedish'],
+            ['aslak', 'true', 'hellesøy', 'false']
+          ])
+          t2 = Table.new([
+            ['name',  'male', 'lastname', 'swedish'],
+            ['aslak', true,   'hellesøy', false]
+          ])
+          lambda{t1.diff!(t2)}.should raise_error
+          t1.to_s(:indent => 12, :color => false).should == %{
+            |     name  |     male       |     lastname |     swedish     |
+            | (-) aslak | (-) (i) "true" | (-) hellesøy | (-) (i) "false" |
+            | (+) aslak | (+) (i) true   | (+) hellesøy | (+) (i) false   |
+          }
+        end
+
+        it "should allow column mapping before diffing" do
+          t1 = Table.new([
+            ['name',  'male'],
+            ['aslak', 'true']
+          ])
+          t1.map_column!('male') { |m| m == 'true' }
+          t2 = Table.new([
+            ['name',  'male'],
+            ['aslak', true]
+          ])
+          t1.diff!(t2)
+          t1.to_s(:indent => 12, :color => false).should == %{
+            |     name  |     male |
+            |     aslak |     true |
+          }
+        end
+
+        it "should allow header mapping before diffing" do
+          t1 = Table.new([
+            ['Name',  'Male'],
+            ['aslak', 'true']
+          ])
+          t1.map_headers!('Name' => 'name', 'Male' => 'male')
+          t1.map_column!('male') { |m| m == 'true' }
+          t2 = Table.new([
+            ['name',  'male'],
+            ['aslak', true]
+          ])
+          t1.diff!(t2)
+          t1.to_s(:indent => 12, :color => false).should == %{
+            |     name  |     male |
+            |     aslak |     true |
+          }
+        end
+        
+        describe "raising" do
+          before do
+            @t = table(%{
+              | a | b |
+              | c | d |
+            })
+          end
+          
+          it "should raise on missing rows" do
+            t = table(%{
+              | a | b |
+            })
+            lambda { @t.dup.diff!(t) }.should raise_error
+            lambda { @t.dup.diff!(t, :missing_row => false) }.should_not raise_error
+          end
+
+          it "should raise on surplus rows" do
+            t = table(%{
+              | a | b |
+              | c | d |
+              | e | f |
+            })
+            lambda { @t.dup.diff!(t) }.should raise_error
+            lambda { @t.dup.diff!(t, :surplus_row => false) }.should_not raise_error
+          end
+
+          it "should raise on missing columns" do
+            t = table(%{
+              | a |
+              | c |
+            })
+            lambda { @t.dup.diff!(t) }.should raise_error
+            lambda { @t.dup.diff!(t, :missing_col => false) }.should_not raise_error
+          end
+
+          it "should not raise on surplus columns" do
+            t = table(%{
+              | a | b | x |
+              | c | d | y |
+            })
+            lambda { @t.dup.diff!(t) }.should_not raise_error
+            lambda { @t.dup.diff!(t, :surplus_col => true) }.should raise_error
+          end
+        end
+
+        def table(text, file=nil, line_offset=0)
+          @table_parser ||= Parser::TableParser.new
+          @table_parser.parse_or_fail(text.strip, file, line_offset)
+        end
       end
       
       it "should convert to sexp" do

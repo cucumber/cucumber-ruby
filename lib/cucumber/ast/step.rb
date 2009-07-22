@@ -85,8 +85,11 @@ module Cucumber
       private
 
       def matched_cells(cells)
+        col_index = 0
         cells.select do |cell|
-          delimited = delimited(cell.header_cell.value)
+          header_cell = cell.table.header_cell(col_index)
+          col_index += 1
+          delimited = delimited(header_cell.value)
           @name.index(delimited) || (@multiline_arg && @multiline_arg.has_text?(delimited))
         end
       end

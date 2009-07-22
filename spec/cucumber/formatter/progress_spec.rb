@@ -17,7 +17,7 @@ module Cucumber
       describe "visiting a table cell value without a status" do
         it "should take the status from the last run step" do
           @progress.visit_step_result('', '', nil, :failed, nil, 10, nil)
-          @progress.visit_table_cell_value('value', 10, nil)
+          @progress.visit_table_cell_value('value', nil)
 
           @out.string.should == "FF"
         end
@@ -25,7 +25,7 @@ module Cucumber
 
       describe "visiting a table cell which is a table header" do
         it "should not output anything" do
-          @progress.visit_table_cell_value('value', 10, :skipped_param)
+          @progress.visit_table_cell_value('value', :skipped_param)
 
           @out.string.should == ""
         end
