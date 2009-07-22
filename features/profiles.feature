@@ -76,3 +76,24 @@ Feature: Profiles
       """
       When I run cucumber -p default features/another.feature
       Then exactly these features should be ran: features/another.feature
+
+  Scenario: Overriding the profile's formatter
+    You will most likely want to define a formatter in your default formatter.
+    However, you often want to run your features with a different formatter
+    yet still use the other the other arguments in the profile. Cucumber will
+    allow you to do this by giving precedence to the formatter specified on the
+    command line and override the one in the profile.
+
+    Given the following profiles are defined:
+      """
+      default: features/sample.feature --require features/support/env.rb -v --format profile
+      """
+    When I run cucumber features --format pretty
+    And the output should contain
+      """
+      Feature: Sample
+      """
+
+
+
+

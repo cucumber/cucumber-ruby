@@ -142,10 +142,6 @@ module Cucumber
             @err.string.should include("WARNING: error message. Running features locally:")
           end
 
-          it "reparses the configuration since the --drb flag causes the initial parsing to short circuit" do
-            @configuration.should_receive(:parse!).exactly(:twice)
-            @cli.execute!(@step_mother)
-          end
         end
       end
     end

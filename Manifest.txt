@@ -308,6 +308,7 @@ lib/cucumber/ast/tags.rb
 lib/cucumber/ast/visitor.rb
 lib/cucumber/broadcaster.rb
 lib/cucumber/cli/configuration.rb
+lib/cucumber/cli/options.rb
 lib/cucumber/cli/drb_client.rb
 lib/cucumber/cli/language_help_formatter.rb
 lib/cucumber/cli/main.rb

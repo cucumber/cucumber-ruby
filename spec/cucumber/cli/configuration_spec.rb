@@ -106,11 +106,11 @@ module Cli
     describe '#drb?' do
       it "indicates whether the --drb flag was passed in or not" do
         config.parse!(%w{features})
-        config.drb?.should == false
+        config.should_not be_drb
 
 
         config.parse!(%w{features --drb})
-        config.drb?.should == true
+        config.should be_drb
       end
     end
 
@@ -144,7 +144,7 @@ module Cli
 
         args = %w{--profile server --format profile}
         config.parse!(args)
-        args.should == %w{features --verbose --format profile}
+        args.should == %w{--format profile features --verbose}
       end
 
     end
@@ -222,12 +222,19 @@ END_OF_MESSAGE
         out.string.should =~ /Using the foo, bar and dog profiles...\n/
       end
 
-      it "disregards paths in profiles when other paths are passed in" do
+      it "disregards paths in profiles when other paths are passed in (via cmd line)" do
         given_cucumber_yml_defined_as({'foo' => %w[-v features]})
 
-        config.parse!(%w{--profile foo features/specific.feature})
+        config.parse!(%w{--profile foo features/specific.feature --format pretty})
         config.paths.should == ['features/specific.feature']
       end
+
+      xit "disregards default STDOUT formatter defined in profile when another is passed in (via cmd line)" do
+        given_cucumber_yml_defined_as({'foo' => %w[--format pretty]})
+        config.parse!(%w{--format progress --profile foo})
+        config.options[:formats].should == [['progress', out]]#, ['pretty', 'pretty.txt']]
+      end
+
 
 
       ["--no-profile", "-P"].each do |flag|
@@ -311,8 +318,8 @@ END_OF_MESSAGE
     it "should set snippets and source to false with --quiet option" do
       config.parse!(%w{--quiet})
 
-      config.options[:snippets].should be_nil
-      config.options[:source].should be_nil
+      config.options[:snippets].should be_false
+      config.options[:source].should be_false
     end
 
     it "should accept --verbose option" do
@@ -354,13 +361,7 @@ END_OF_MESSAGE
 
     it "should accept --no-color option" do
       Term::ANSIColor.should_receive(:coloring=).with(false)
-      config.parse!(['--no-color'])
-    end
-
-    it "should parse tags" do
-      includes, excludes = config.parse_tags("one,~two,@three,~@four")
-      includes.should == ['one', 'three']
-      excludes.should == ['two', 'four']
+      config.parse!(%w[--no-color])
     end
 
     describe "--backtrace" do
