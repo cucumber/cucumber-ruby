@@ -19,8 +19,9 @@ module Cucumber
       end
 
       def accept(visitor)
+        return if $cucumber_interrupted
         start = Time.now
-        @features.each do |feature|
+        self.each do |feature|
           visitor.visit_feature(feature)
         end
         @duration = Time.now - start

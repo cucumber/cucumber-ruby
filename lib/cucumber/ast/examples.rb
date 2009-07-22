@@ -6,6 +6,7 @@ module Cucumber
       end
 
       def accept(visitor)
+        return if $cucumber_interrupted
         visitor.visit_examples_name(@keyword, @name)
         visitor.visit_outline_table(@outline_table)
       end

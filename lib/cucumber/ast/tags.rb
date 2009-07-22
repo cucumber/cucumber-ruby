@@ -16,6 +16,7 @@ module Cucumber
       end
 
       def accept(visitor)
+        return if $cucumber_interrupted
         @tag_names.each do |tag_name|
           visitor.visit_tag_name(tag_name)
         end

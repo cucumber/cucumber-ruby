@@ -34,6 +34,7 @@ module Cucumber
       end
       
       def execute!(step_mother)
+        trap_interrupt
         if configuration.drb?
           begin
             return DRbClient.run(@args, @error_stream, @out_stream)
@@ -128,7 +129,12 @@ module Cucumber
           end
         end
       end
-    
+
+      def trap_interrupt
+        trap('INT') do
+          $cucumber_interrupted = true
+        end
+      end
     end
   end
 end

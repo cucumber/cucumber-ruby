@@ -114,6 +114,7 @@ module Cucumber
       end
 
       def accept(visitor)
+        return if $cucumber_interrupted
         cells_rows.each do |row|
           visitor.visit_table_row(row)
         end
@@ -486,6 +487,7 @@ module Cucumber
         end
 
         def accept(visitor)
+          return if $cucumber_interrupted
           each do |cell|
             visitor.visit_table_cell(cell)
           end
@@ -541,6 +543,7 @@ module Cucumber
         end
 
         def accept(visitor)
+          return if $cucumber_interrupted
           visitor.visit_table_cell_value(value, status)
         end
 

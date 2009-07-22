@@ -19,6 +19,7 @@ module Cucumber
       end
 
       def accept(visitor)
+        return if $cucumber_interrupted
         invoke(visitor.step_mother, visitor.options)
         visit_step_result(visitor)
       end
