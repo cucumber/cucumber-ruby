@@ -192,7 +192,7 @@ module Cucumber
 
       def visit_py_string(string)
         @builder.pre(:class => 'val') do |pre|
-          @builder.text!('  ' + string)
+          @builder << string.gsub("\n", '&#x000A;')
         end
       end
 
