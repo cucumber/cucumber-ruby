@@ -32,7 +32,7 @@ module Cucumber
         @out_stream   = out_stream == STDOUT ? Formatter::ColorIO.new : out_stream
         @error_stream = error_stream
       end
-      
+
       def execute!(step_mother)
         trap_interrupt
         if configuration.drb?
@@ -44,7 +44,7 @@ module Cucumber
           end
         end
         step_mother.options = configuration.options
-    
+
         features = load_plain_text_features
         require_files
         enable_diffing
@@ -95,7 +95,7 @@ module Cucumber
 
       def configuration
         return @configuration if @configuration
-      
+
         @configuration = Configuration.new(@out_stream, @error_stream)
         @configuration.parse!(@args)
         @configuration

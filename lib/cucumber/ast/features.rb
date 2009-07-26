@@ -28,7 +28,7 @@ module Cucumber
       end
 
       def tag_count(tag)
-        @features.inject(0){|count, feature| count += feature.tag_count(tag)}
+        @features.inject(0){|count, feature| count += feature.feature_and_children_tag_count(tag)}
       end
 
     end

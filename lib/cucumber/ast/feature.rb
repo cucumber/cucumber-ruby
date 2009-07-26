@@ -45,11 +45,12 @@ module Cucumber
       end
 
       def tag_count(tag)
-        count = 0
-        @feature_elements.each do |feature_element|
-          count += feature_element.tag_count(tag)
-        end
-        count + @tags.count(tag)
+        @tags.count(tag)
+      end
+
+      def feature_and_children_tag_count(tag)
+        children_tag_count = @feature_elements.inject(0){|count, feature_element| count += feature_element.tag_count(tag)}
+        children_tag_count + tag_count(tag)
       end
 
       def to_sexp

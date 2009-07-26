@@ -21,6 +21,7 @@ module Cucumber
         @indent = 0
         @prefixes = options[:prefixes] || {}
         @tag_frequencies = Hash.new{|k,v| k[v] = 0}
+        @feature_tagged = {}
       end
 
       def visit_features(features)
@@ -40,6 +41,10 @@ module Cucumber
             super
           end
         else
+          @feature_tagged = {}
+          options[:include_tags].each do |tag_name, limit|
+            @feature_tagged[tag_name] = feature.tag_count(tag_name)
+          end
           super
         end
       end
@@ -76,7 +81,11 @@ module Cucumber
 
       def visit_feature_element(feature_element)
         options[:include_tags].each do |tag_name, limit|
-          @tag_frequencies[tag_name] += feature_element.tag_count(tag_name)
+          if @feature_tagged[tag_name] != 0
+            @tag_frequencies[tag_name] += 1
+          else
+            @tag_frequencies[tag_name] += feature_element.tag_count(tag_name)
+          end
           @tag_limit_breached ||= limit && @tag_frequencies[tag_name] > limit
         end
 

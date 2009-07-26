@@ -535,6 +535,25 @@ Feature: Cucumber command line
 
     """
 
+  Scenario: Running with a feature tag with a limit
+    When I run cucumber -q features/tags_sample.feature --dry-run -t sample_one:1
+    Then it should fail with
+    """
+    @sample_one
+    Feature: Tag samples
+
+      @sample_two @sample_four
+      Scenario: Passing
+        Given missing
+
+    1 scenario (1 undefined)
+    1 step (1 undefined)
+
+    Aborted due to exceeding the tag limit
+    @sample_one occurred:3 limit:1
+
+    """
+
   Scenario: Reformat files with --autoformat
     When I run cucumber --autoformat tmp/formatted features
     Then "examples/self_test/tmp/formatted/features/sample.feature" should contain
