@@ -535,7 +535,7 @@ Feature: Cucumber command line
 
     """
 
-  Scenario: Running with a feature tag with a limit
+  Scenario: Run with a feature tag which has a limit
     When I run cucumber -q features/tags_sample.feature --dry-run -t sample_one:1
     Then it should fail with
     """

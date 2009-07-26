@@ -49,13 +49,13 @@ module Cucumber
     def accept_hook?(hook)
       @tags.accept_hook?(hook) || @feature.accept_hook?(hook)
     end
-    
+
+    def tag_count(tag)
+      @feature.tag_count(tag) == 0 ? @tags.count(tag) : @feature.tag_count(tag)
+    end
+
     def language
       @feature.language
     end
-
-    def tag_count(tag)
-      @tags.count(tag) if @tags
-    end
-  end
+   end
 end

@@ -41,10 +41,6 @@ module Cucumber
             super
           end
         else
-          @feature_tagged = {}
-          options[:include_tags].each do |tag_name, limit|
-            @feature_tagged[tag_name] = feature.tag_count(tag_name)
-          end
           super
         end
       end
@@ -74,18 +70,16 @@ module Cucumber
       end
 
       def visit_feature_name(name)
-        @io.puts(name)
-        @io.puts
-        @io.flush
+        unless @tag_limit_breached
+          @io.puts(name)
+          @io.puts
+          @io.flush
+        end
       end
 
       def visit_feature_element(feature_element)
         options[:include_tags].each do |tag_name, limit|
-          if @feature_tagged[tag_name] != 0
-            @tag_frequencies[tag_name] += 1
-          else
-            @tag_frequencies[tag_name] += feature_element.tag_count(tag_name)
-          end
+          @tag_frequencies[tag_name] += feature_element.tag_count(tag_name)
           @tag_limit_breached ||= limit && @tag_frequencies[tag_name] > limit
         end
 
@@ -99,13 +93,15 @@ module Cucumber
       end
 
       def visit_background(background)
-        @indent = 2
-        @scenario_indent = 2
-        @in_background = true
-        super
-        @in_background = nil
-        @io.puts
-        @io.flush
+        unless @tag_limit_breached
+          @indent = 2
+          @scenario_indent = 2
+          @in_background = true
+          super
+          @in_background = nil
+          @io.puts
+          @io.flush
+        end
       end
 
       def visit_background_name(keyword, name, file_colon_line, source_indent)
