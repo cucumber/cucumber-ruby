@@ -20,8 +20,7 @@ module Cucumber
         @exceptions = []
         @indent = 0
         @prefixes = options[:prefixes] || {}
-        @tag_frequencies = Hash.new{|k,v| k[v] = 0}
-        @feature_tagged = {}
+        @tag_occurences = Hash.new{|k,v| k[v] = []}
       end
 
       def visit_features(features)
@@ -79,8 +78,10 @@ module Cucumber
 
       def visit_feature_element(feature_element)
         options[:include_tags].each do |tag_name, limit|
-          @tag_frequencies[tag_name] += feature_element.tag_count(tag_name)
-          @tag_limit_breached ||= limit && @tag_frequencies[tag_name] > limit
+          if feature_element.tag_count(tag_name) > 0
+            @tag_occurences[tag_name] << feature_element.file_colon_line
+          end
+          @tag_limit_breached ||= limit && (@tag_occurences[tag_name].size > limit)
         end
 
         unless @tag_limit_breached
@@ -209,7 +210,7 @@ module Cucumber
         print_stats(features)
         print_snippets(@options)
         print_passing_wip(@options)
-        print_tag_limit_warnings(@options, @tag_frequencies) if @tag_limit_breached
+        print_tag_limit_warnings(@options, @tag_occurences) if @tag_limit_breached
       end
 
     end

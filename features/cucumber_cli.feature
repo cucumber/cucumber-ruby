@@ -531,7 +531,11 @@ Feature: Cucumber command line
 
     Aborted due to exceeding the tag limit
     @sample_four occurred:2 limit:1
+      features/tags_sample.feature:5
+      features/tags_sample.feature:16
     @sample_three occurred:2 limit:1
+      features/tags_sample.feature:9
+      features/tags_sample.feature:16
 
     """
 
@@ -551,6 +555,9 @@ Feature: Cucumber command line
 
     Aborted due to exceeding the tag limit
     @sample_one occurred:3 limit:1
+      features/tags_sample.feature:5
+      features/tags_sample.feature:9
+      features/tags_sample.feature:16
 
     """
 

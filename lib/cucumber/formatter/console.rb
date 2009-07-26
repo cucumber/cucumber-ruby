@@ -114,12 +114,14 @@ module Cucumber
         end
       end
 
-      def print_tag_limit_warnings(options, tag_frequencies)
+      def print_tag_limit_warnings(options, tag_occurences)
         @io.puts
         @io.puts format_string("Aborted due to exceeding the tag limit", :failed)
         options[:include_tags].each do |tag_name, limit|
-          if limit && tag_frequencies[tag_name] > limit
-            @io.puts format_string("@#{tag_name} occurred:#{@tag_frequencies[tag_name]} limit:#{limit}", :failed)
+          tag_frequnecy = tag_occurences[tag_name].size
+          if limit && tag_frequnecy > limit
+            @io.puts format_string("@#{tag_name} occurred:#{tag_frequnecy} limit:#{limit}", :failed)
+            tag_occurences[tag_name].each {|location| @io.puts format_string("  #{location}", :failed)}
             @io.flush
           end
         end
