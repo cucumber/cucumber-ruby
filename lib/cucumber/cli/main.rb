@@ -45,6 +45,10 @@ module Cucumber
         end
         step_mother.options = configuration.options
 
+        # Feature files must be loaded before files are required.
+        # This is because i18n step methods are only aliased when
+        # features are loaded. If we swap the order, the requires
+        # will fail.
         features = load_plain_text_features
         require_files
         enable_diffing

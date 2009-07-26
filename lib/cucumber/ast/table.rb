@@ -455,12 +455,17 @@ module Cucumber
       def ensure_table(table_or_array)
         return table_or_array if Table === table_or_array
         table_or_array = hashes_to_array(table_or_array) if Hash === table_or_array[0]
+        table_or_array = enumerable_to_array(table_or_array) unless Array == table_or_array[0]
         Table.new(table_or_array)
       end
 
       def hashes_to_array(hashes)
         header = hashes[0].keys
         [header] + hashes.map{|hash| header.map{|key| hash[key]}}
+      end
+
+      def enumerable_to_array(rows)
+        rows.map{|row| row.map{|cell| cell}}
       end
 
       def ensure_green!
