@@ -1,3 +1,11 @@
+== (In Git)
+
+=== New features
+* Allow Step Definitions to accept mix of required & optional args (Nielsomat)
+
+=== Bugfixes
+* Upgrade Sinatra example to work with rack-test 0.3.0 and aslakhellesoy-webrat 0.4.4.1 (Aslak Hellesøy)
+
 == 0.3.91 2009-07-27
 
 === New Features
