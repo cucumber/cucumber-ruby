@@ -65,7 +65,14 @@ module Cucumber
         end
       end
 
+      def visit_tags(tags)
+        super
+        @tag_spacer = nil
+      end
+
       def visit_tag_name(tag_name)
+        @builder.text!(@tag_spacer) if @tag_spacer
+        @tag_spacer = ' '
         @builder.span("@#{tag_name}", :class => 'tag')
       end
 
