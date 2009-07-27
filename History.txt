@@ -1,7 +1,7 @@
 == (In Git)
 
 === New features
-* Allow Step Definitions to accept mix of required & optional args (Nielsomat)
+* Allow Step Definitions to accept mix of required & optional args (Niels Ganser)
 
 === Bugfixes
 * Upgrade Sinatra example to work with rack-test 0.3.0 and aslakhellesoy-webrat 0.4.4.1 (Aslak Hellesøy)
