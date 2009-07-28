@@ -508,58 +508,74 @@ Feature: Cucumber command line
       """
 
   Scenario: Run with limited tag number
-    When I run cucumber -q features/tags_sample.feature --dry-run -t sample_two:1,sample_three:1,sample_four:1
-    Then it should fail with
-    """
-    @sample_one
-    Feature: Tag samples
+     When I run cucumber -q features/tags_sample.feature --dry-run -t sample_two:1,sample_three:1,sample_four:1
+     Then it should fail with      
+     """
+     @sample_one
+     Feature: Tag samples
 
-      @sample_two @sample_four
-      Scenario: Passing
-        Given missing
+       @sample_two @sample_four
+       Scenario: Passing
+         Given missing
 
-      @sample_three
-      Scenario Outline: 
-        Given <state>
+       @sample_three
+       Scenario Outline: 
+         Given <state>
 
-        Examples: 
-          | state   |
-          | missing |
+         Examples: 
+           | state   |
+           | missing |
 
-    2 scenarios (2 undefined)
-    2 steps (2 undefined)
+       @sample_three @sample_four
+       Scenario: Skipped
+         Given missing
 
-    Aborted due to exceeding the tag limit
-    @sample_four occurred:2 limit:1
-      features/tags_sample.feature:5
-      features/tags_sample.feature:16
-    @sample_three occurred:2 limit:1
-      features/tags_sample.feature:9
-      features/tags_sample.feature:16
+     3 scenarios (3 undefined)
+     3 steps (3 undefined)
 
-    """
+     Failed due to exceeding the tag limit
+     @sample_four occurred:2 limit:1
+       features/tags_sample.feature:5
+       features/tags_sample.feature:16
+     @sample_three occurred:2 limit:1
+       features/tags_sample.feature:9
+       features/tags_sample.feature:16
 
-  Scenario: Run with a feature tag which has a limit
-    When I run cucumber -q features/tags_sample.feature --dry-run -t sample_one:1
-    Then it should fail with
-    """
-    @sample_one
-    Feature: Tag samples
+     """
 
-      @sample_two @sample_four
-      Scenario: Passing
-        Given missing
+   Scenario: Run with a feature tag which has a limit
+     When I run cucumber -q features/tags_sample.feature --dry-run -t sample_one:1
+     Then it should fail with
+     """
+     @sample_one
+     Feature: Tag samples
 
-    1 scenario (1 undefined)
-    1 step (1 undefined)
+       @sample_two @sample_four
+       Scenario: Passing
+         Given missing
 
-    Aborted due to exceeding the tag limit
-    @sample_one occurred:3 limit:1
-      features/tags_sample.feature:5
-      features/tags_sample.feature:9
-      features/tags_sample.feature:16
+       @sample_three
+       Scenario Outline: 
+         Given <state>
 
-    """
+         Examples: 
+           | state   |
+           | missing |
+
+       @sample_three @sample_four
+       Scenario: Skipped
+         Given missing
+
+     3 scenarios (3 undefined)
+     3 steps (3 undefined)
+
+     Failed due to exceeding the tag limit
+     @sample_one occurred:3 limit:1
+       features/tags_sample.feature:5
+       features/tags_sample.feature:9
+       features/tags_sample.feature:16
+
+     """
 
   Scenario: Reformat files with --autoformat
     When I run cucumber --autoformat tmp/formatted features

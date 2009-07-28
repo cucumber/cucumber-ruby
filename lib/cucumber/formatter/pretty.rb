@@ -20,7 +20,6 @@ module Cucumber
         @exceptions = []
         @indent = 0
         @prefixes = options[:prefixes] || {}
-        @tag_occurences = Hash.new{|k,v| k[v] = []}
       end
 
       def visit_features(features)
@@ -69,40 +68,28 @@ module Cucumber
       end
 
       def visit_feature_name(name)
-        unless @tag_limit_breached
-          @io.puts(name)
-          @io.puts
-          @io.flush
-        end
+        @io.puts(name)
+        @io.puts
+        @io.flush
       end
 
       def visit_feature_element(feature_element)
-        options[:include_tags].each do |tag_name, limit|
-          if feature_element.tag_count(tag_name) > 0
-            @tag_occurences[tag_name] << feature_element.file_colon_line
-          end
-          @tag_limit_breached ||= limit && (@tag_occurences[tag_name].size > limit)
-        end
-
-        unless @tag_limit_breached
-          @indent = 2
-          @scenario_indent = 2
-          super
-          @io.puts
-          @io.flush
-        end
+        record_tag_occurrences(feature_element, @options)
+        @indent = 2
+        @scenario_indent = 2
+        super
+        @io.puts
+        @io.flush
       end
 
       def visit_background(background)
-        unless @tag_limit_breached
-          @indent = 2
-          @scenario_indent = 2
-          @in_background = true
-          super
-          @in_background = nil
-          @io.puts
-          @io.flush
-        end
+        @indent = 2
+        @scenario_indent = 2
+        @in_background = true
+        super
+        @in_background = nil
+        @io.puts
+        @io.flush
       end
 
       def visit_background_name(keyword, name, file_colon_line, source_indent)
@@ -201,6 +188,9 @@ module Cucumber
       end
 
       private
+      def cell_prefix(status)
+        @prefixes[status]
+      end
 
       def cell_prefix(status)
         @prefixes[status]
@@ -210,7 +200,7 @@ module Cucumber
         print_stats(features)
         print_snippets(@options)
         print_passing_wip(@options)
-        print_tag_limit_warnings(@options, @tag_occurences) if @tag_limit_breached
+        print_tag_limit_warnings(@options)
       end
 
     end
