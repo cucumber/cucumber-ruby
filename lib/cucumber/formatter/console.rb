@@ -115,7 +115,7 @@ module Cucumber
       end
 
       def print_tag_limit_warnings(options)
-        return unless limit_breached?(options, @tag_occurences)
+        return unless tag_limit_breached?(options, @tag_occurences)
         @io.puts
         @io.puts format_string("Failed due to exceeding the tag limit", :failed)
         options[:include_tags].each do |tag_name, limit|
@@ -168,7 +168,7 @@ module Cucumber
         fmt
       end
 
-      def limit_breached?(options, tag_occurences)
+      def tag_limit_breached?(options, tag_occurences)
         return if tag_occurences.nil?
         tag_limit_breached = false
         options[:include_tags].each do |tag_name, limit|
