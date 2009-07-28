@@ -60,12 +60,37 @@ module Cucumber
     module ANSIColor
       include Term::ANSIColor
 
-      # Not supported in Term::ANSIColor
-      def grey(m)
-        if ::Term::ANSIColor.coloring?
-          "\e[90m#{m}\e[0m"
+      begin
+        gem 'genki-terminfo'
+      rescue LoadError
+      end
+      begin
+        require 'terminfo'
+        case TermInfo.default_object.tigetnum("colors")
+        when 0
+          raise "There is no color to display with"
+        when 1
+          ::Term::ANSIColor.coloring = false
+          color_restricted = true
+        when 2..8
+          color_restricted = true
         else
-          m
+          color_restricted = false
+        end
+      rescue
+        color_restricted = false
+      end
+
+      if color_restricted
+        def grey(m) m end
+      else
+        # Not supported in Term::ANSIColor
+        def grey(m)
+          if ::Term::ANSIColor.coloring?
+          "\e[90m#{m}\e[0m"
+          else
+            m
+          end
         end
       end
 
