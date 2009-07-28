@@ -69,7 +69,6 @@ module Cucumber
           unless limit.nil?
             tag_count = features.tag_count(tag)
             if tag_count > limit.to_i
-#              @error_stream.puts "Found #{tag_count} @#{tag} tags which exceeds the limit of #{limit}"
               exceeded = true
             end
           end
