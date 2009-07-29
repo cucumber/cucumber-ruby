@@ -48,7 +48,8 @@ end
 
 # Generate all the Rake tasks
 # Run 'rake -T' to see list of generated tasks (from gem root directory)
-$hoe = Hoe.new(GEM_NAME, VERS) do |p|
+$hoe = Hoe.spec(GEM_NAME) do |p|
+  p.version = VERS
   p.developer(AUTHOR, EMAIL)
   p.description = DESCRIPTION
   p.summary = DESCRIPTION
