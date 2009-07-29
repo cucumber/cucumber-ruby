@@ -3,6 +3,7 @@
 === New Features
 * CTRL-C will exit immediately instead of carrying on until all features are run. (Aslak Hellesøy)
 * Run can be stopped programmatically by setting $cucumber_interrupted = true, for example in an After block. (Aslak Hellesøy)
+* Support limiting the number of feature elements with certain tags (#353 Joseph Wilk)
 
 == 0.3.90 2009-07-22
 
@@ -99,7 +100,6 @@ This release also has several bugfixes related to --format and Before/After hook
 * Possibility to specify scenario language as part of the .feature file (#345 Aslak Hellesøy)
 * Support specifying environment variables using foo=bar syntax on command line or in profiles (#362 Bryan Helmkamp)
 * Display failing scenarios at the end of pretty format to make it easier for people to play them back (#360 Ryan Bigg)
-* Support limiting the number of feature elements with certain tags (#353 Joseph Wilk)
 
 === Changed Features
 * When using --tags, positive tags are &&'ed while negative tags are ||'ed (John Wilger)
