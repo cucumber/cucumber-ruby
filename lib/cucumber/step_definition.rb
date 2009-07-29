@@ -86,7 +86,7 @@ module Cucumber
 
     include StepDefinitionMethods
 
-    attr_reader :regexp, :proc
+    attr_reader :proc
 
     def initialize(pattern, &proc)
       raise MissingProc if proc.nil?

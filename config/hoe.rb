@@ -61,7 +61,7 @@ $hoe = Hoe.new(GEM_NAME, VERS) do |p|
   #p.extra_deps = []     # An array of rubygem dependencies [name, version], e.g. [ ['active_support', '>= 1.3.1'] ]
   p.extra_deps = [ 
     ['term-ansicolor', '>= 1.0.3'], 
-    ['treetop', '>= 1.2.6'], 
+    ['treetop', '>= 1.3.0'], 
     ['diff-lcs', '>= 1.1.2'],
     ['builder', '>= 2.1.2']
   ]

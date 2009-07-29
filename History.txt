@@ -1,7 +1,17 @@
 == (In Git)
 
+This release has some minor improvements to the new Table.diff! functionality. For example,
+if you're using Webrat and you want to compare a feature table with a HTML table containing
+links in one of the columns, you can do:
+
+  actual = Cucumber::Ast::Table.new(table_at('table').to_a)
+  actual.map_column!('Name') { |text| text.strip.match(/>(.*)</)[1] }
+  table.diff!(actual)
+  
+
 === New features
 * Allow Step Definitions to accept mix of required & optional args (Niels Ganser)
+* table_a.diff!(table_b) now uses column conversions from both tables (Table#map_column!) (Aslak Hellesøy)
 
 === Bugfixes
 * Upgrade Sinatra example to work with rack-test 0.3.0 and aslakhellesoy-webrat 0.4.4.1 (Aslak Hellesøy)

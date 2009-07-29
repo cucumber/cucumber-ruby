@@ -137,6 +137,12 @@ module Cucumber
       def trap_interrupt
         trap('INT') do
           $cucumber_interrupted = true
+          STDERR.puts "Interrupted. Waiting for current step to finish."
+          STDERR.puts "Will suicide in 5 seconds if current step doesn't finish gracefully."
+          Thread.new do
+            sleep(5)
+            exit!(1)
+          end
         end
       end
     end

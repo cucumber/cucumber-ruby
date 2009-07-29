@@ -190,7 +190,7 @@ module Cucumber
       #
       # Since all tables that are passed to StepDefinitions always have String
       # objects in their cells, you may want to use #map_column! before calling
-      # #diff!
+      # #diff!. You can use #map_column! on either of the tables.
       #
       # An exception is raised if there are missing rows or columns, or
       # surplus rows. An error is <em>not</em> raised for surplus columns.
@@ -212,6 +212,7 @@ module Cucumber
         options = {:missing_row => true, :surplus_row => true, :missing_col => true, :surplus_col => false}.merge(options)
 
         other_table = ensure_table(other_table)
+        other_table.convert_columns!
         ensure_green!
 
         original_width = cell_matrix[0].length
