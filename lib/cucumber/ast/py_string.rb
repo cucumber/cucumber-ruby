@@ -31,6 +31,7 @@ module Cucumber
       end
 
       def accept(visitor)
+        return if $cucumber_interrupted
         visitor.visit_py_string(to_s)
       end
       

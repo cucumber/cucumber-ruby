@@ -34,6 +34,7 @@ module Cucumber
       end
       
       def execute!(step_mother)
+        trap_interrupt
         if configuration.drb?
           begin
             return DRbClient.run(@args, @error_stream, @out_stream)
@@ -44,6 +45,10 @@ module Cucumber
         end
         step_mother.options = configuration.options
 
+        # Feature files must be loaded before files are required.
+        # This is because i18n step methods are only aliased when
+        # features are loaded. If we swap the order, the requires
+        # will fail.
         features = load_plain_text_features
         require_files
         enable_diffing
@@ -131,7 +136,18 @@ module Cucumber
           end
         end
       end
-    
+
+      def trap_interrupt
+        trap('INT') do
+          $cucumber_interrupted = true
+          STDERR.puts "Interrupted. Waiting for current step to finish."
+          STDERR.puts "Will suicide in 5 seconds if current step doesn't finish gracefully."
+          Thread.new do
+            sleep(5)
+            exit!(1)
+          end
+        end
+      end
     end
   end
 end

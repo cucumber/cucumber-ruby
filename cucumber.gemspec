@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
-  s.version = "0.3.90"
+  s.version = "0.3.92"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2009-07-22}
+  s.date = %q{2009-07-29}
   s.default_executable = %q{cucumber}
   s.description = %q{Executable Feature scenarios}
   s.email = ["aslak.hellesoy@gmail.com"]
@@ -26,18 +26,18 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<term-ansicolor>, [">= 1.0.3"])
-      s.add_runtime_dependency(%q<treetop>, [">= 1.2.6"])
+      s.add_runtime_dependency(%q<treetop>, [">= 1.3.0"])
       s.add_runtime_dependency(%q<diff-lcs>, [">= 1.1.2"])
       s.add_runtime_dependency(%q<builder>, [">= 2.1.2"])
     else
       s.add_dependency(%q<term-ansicolor>, [">= 1.0.3"])
-      s.add_dependency(%q<treetop>, [">= 1.2.6"])
+      s.add_dependency(%q<treetop>, [">= 1.3.0"])
       s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
       s.add_dependency(%q<builder>, [">= 2.1.2"])
     end
   else
     s.add_dependency(%q<term-ansicolor>, [">= 1.0.3"])
-    s.add_dependency(%q<treetop>, [">= 1.2.6"])
+    s.add_dependency(%q<treetop>, [">= 1.3.0"])
     s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
     s.add_dependency(%q<builder>, [">= 2.1.2"])
   end

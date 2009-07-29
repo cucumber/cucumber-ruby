@@ -16,6 +16,7 @@ module Cucumber
       end
 
       def accept(visitor)
+        return if $cucumber_interrupted
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@name)
@@ -41,6 +42,15 @@ module Cucumber
 
       def file_colon_line(line)
         "#{@file}:#{line}"
+      end
+
+      def short_name
+        first_line = name.split(/\n/)[0]
+        if first_line =~ /#{language.keywords('feature', true)}:(.*)/
+          $1.strip
+        else
+          first_line
+        end
       end
 
       def to_sexp

@@ -116,10 +116,11 @@ Then /^I should not see "([^\"]*)"$/ do |text|
 end
 
 Then /^I should not see \/([^\/]*)\/$/ do |regexp|
+  regexp = Regexp.new(regexp)
 <% if framework == :rspec -%>
-  response.should_not contain(text)
+  response.should_not contain(regexp)
 <% else -%>
-  assert_not_contain text
+  assert_not_contain regexp
 <% end -%>
 end
 

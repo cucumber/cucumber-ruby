@@ -114,6 +114,7 @@ module Cucumber
       end
 
       def accept(visitor)
+        return if $cucumber_interrupted
         cells_rows.each do |row|
           visitor.visit_table_row(row)
         end
@@ -189,7 +190,7 @@ module Cucumber
       #
       # Since all tables that are passed to StepDefinitions always have String
       # objects in their cells, you may want to use #map_column! before calling
-      # #diff!
+      # #diff!. You can use #map_column! on either of the tables.
       #
       # An exception is raised if there are missing rows or columns, or
       # surplus rows. An error is <em>not</em> raised for surplus columns.
@@ -211,6 +212,7 @@ module Cucumber
         options = {:missing_row => true, :surplus_row => true, :missing_col => true, :surplus_col => false}.merge(options)
 
         other_table = ensure_table(other_table)
+        other_table.convert_columns!
         ensure_green!
 
         original_width = cell_matrix[0].length
@@ -454,12 +456,17 @@ module Cucumber
       def ensure_table(table_or_array)
         return table_or_array if Table === table_or_array
         table_or_array = hashes_to_array(table_or_array) if Hash === table_or_array[0]
+        table_or_array = enumerable_to_array(table_or_array) unless Array == table_or_array[0]
         Table.new(table_or_array)
       end
 
       def hashes_to_array(hashes)
         header = hashes[0].keys
         [header] + hashes.map{|hash| header.map{|key| hash[key]}}
+      end
+
+      def enumerable_to_array(rows)
+        rows.map{|row| row.map{|cell| cell}}
       end
 
       def ensure_green!
@@ -486,6 +493,7 @@ module Cucumber
         end
 
         def accept(visitor)
+          return if $cucumber_interrupted
           each do |cell|
             visitor.visit_table_cell(cell)
           end
@@ -541,6 +549,7 @@ module Cucumber
         end
 
         def accept(visitor)
+          return if $cucumber_interrupted
           visitor.visit_table_cell_value(value, status)
         end
 

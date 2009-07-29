@@ -9,6 +9,7 @@ module Cucumber
       end
 
       def accept(visitor)
+        return if $cucumber_interrupted
         cells_rows.each_with_index do |row, n|
           if(visitor.options[:expand])
             row.accept(visitor)
@@ -58,6 +59,7 @@ module Cucumber
         end
 
         def accept(visitor)
+          return if $cucumber_interrupted
           visitor.options[:expand] ? accept_expand(visitor) : accept_plain(visitor)
         end
 
