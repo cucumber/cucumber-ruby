@@ -7,7 +7,6 @@ links in one of the columns, you can do:
   actual = Cucumber::Ast::Table.new(table_at('table').to_a)
   actual.map_column!('Name') { |text| text.strip.match(/>(.*)</)[1] }
   table.diff!(actual)
-  
 
 === New features
 * Allow Step Definitions to accept mix of required & optional args (Niels Ganser)
@@ -15,6 +14,7 @@ links in one of the columns, you can do:
 
 === Bugfixes
 * Upgrade Sinatra example to work with rack-test 0.3.0 and aslakhellesoy-webrat 0.4.4.1 (Aslak Hellesøy)
+* require 'cucumber/webrat/table_locator' added to Spork environment for Rails (Anders Furseth)
 
 == 0.3.91 2009-07-27
 
