@@ -508,15 +508,11 @@ Feature: Cucumber command line
       """
 
   Scenario: Run with limited tag number
-     When I run cucumber -q features/tags_sample.feature --dry-run -t sample_two:1,sample_three:1,sample_four:1
+     When I run cucumber -q features/tags_sample.feature --dry-run -t sample_three:1
      Then it should fail with      
      """
      @sample_one
      Feature: Tag samples
-
-       @sample_two @sample_four
-       Scenario: Passing
-         Given missing
 
        @sample_three
        Scenario Outline: 
@@ -530,13 +526,10 @@ Feature: Cucumber command line
        Scenario: Skipped
          Given missing
 
-     3 scenarios (3 undefined)
-     3 steps (3 undefined)
+     2 scenarios (2 undefined)
+     2 steps (2 undefined)
 
      Failed due to exceeding the tag limit
-     @sample_four occurred:2 limit:1
-       features/tags_sample.feature:5
-       features/tags_sample.feature:16
      @sample_three occurred:2 limit:1
        features/tags_sample.feature:9
        features/tags_sample.feature:16
