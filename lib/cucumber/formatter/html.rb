@@ -78,6 +78,7 @@ module Cucumber
 
       def visit_feature_name(name)
         lines = name.split(/\r?\n/)
+        return if lines.empty?
         @builder.h2 do |h2|
           @builder.span(lines[0], :class => 'val')
         end
