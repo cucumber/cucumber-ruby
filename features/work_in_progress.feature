@@ -52,6 +52,7 @@ Feature: Cucumber --work-in-progress switch
   @mri186
   Scenario: Pass with Failing Scenarios
     When I run cucumber -q -w -t @failing features/wip.feature
+    Then STDERR should be empty
     Then it should pass with
       """
       Feature: WIP
