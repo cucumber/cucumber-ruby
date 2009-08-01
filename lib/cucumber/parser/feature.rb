@@ -55,10 +55,6 @@ module Cucumber
         def has_tags?(tag_names)
           tags.has_tags?(tag_names)
         end
-
-        def has_all_tags?(tag_names)
-          tags.has_all_tags?(tag_names)
-        end
         
         def build(filter)
           if(filter.nil? || feature_elements.accept?(filter) || (!bg.empty? && filter.accept?(bg)))
@@ -115,7 +111,7 @@ module Cucumber
                         if r12
                           r9 = r12
                         else
-                          self.index = i9
+                          @index = i9
                           r9 = nil
                         end
                       end
@@ -123,7 +119,7 @@ module Cucumber
                     if r9
                       r8 = nil
                     else
-                      self.index = i8
+                      @index = i8
                       r8 = instantiate_node(SyntaxNode,input, index...index)
                     end
                     s7 << r8
@@ -141,7 +137,7 @@ module Cucumber
                       r7 = instantiate_node(SyntaxNode,input, i7...index, s7)
                       r7.extend(FeatureSub0)
                     else
-                      self.index = i7
+                      @index = i7
                       r7 = nil
                     end
                     if r7
@@ -184,13 +180,13 @@ module Cucumber
           r0.extend(FeatureSub1)
           r0.extend(FeatureSub2)
         else
-          self.index = i0
+          @index = i0
           r0 = nil
         end
 
         node_cache[:feature_sub][start_index] = r0
 
-        return r0
+        r0
       end
 
       module Tags0
@@ -213,10 +209,6 @@ module Cucumber
       module Tags2
         def at_line?(line)
           ts.elements.detect{|e| e.tag.line == line}
-        end
-
-        def has_all_tags?(tags)
-          (tags & tag_names) == tags
         end
 
         def has_tags?(tags)
@@ -261,7 +253,7 @@ module Cucumber
                   if r8
                     r6 = r8
                   else
-                    self.index = i6
+                    @index = i6
                     r6 = nil
                   end
                 end
@@ -272,7 +264,7 @@ module Cucumber
                 end
               end
               if s5.empty?
-                self.index = i5
+                @index = i5
                 r5 = nil
               else
                 r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
@@ -283,7 +275,7 @@ module Cucumber
               r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
               r3.extend(Tags0)
             else
-              self.index = i3
+              @index = i3
               r3 = nil
             end
             if r3
@@ -300,13 +292,13 @@ module Cucumber
           r0.extend(Tags1)
           r0.extend(Tags2)
         else
-          self.index = i0
+          @index = i0
           r0 = nil
         end
 
         node_cache[:tags][start_index] = r0
 
-        return r0
+        r0
       end
 
       module Tag0
@@ -324,7 +316,7 @@ module Cucumber
         end
 
         i0, s0 = index, []
-        if input.index('@', index) == index
+        if has_terminal?('@', false, index)
           r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
           @index += 1
         else
@@ -335,7 +327,7 @@ module Cucumber
         if r1
           s2, i2 = [], index
           loop do
-            if input.index(Regexp.new('[^@\\r\\n\\t ]'), index) == index
+            if has_terminal?('\G[^@\\r\\n\\t ]', true, index)
               r3 = instantiate_node(SyntaxNode,input, index...(index + 1))
               @index += 1
             else
@@ -348,7 +340,7 @@ module Cucumber
             end
           end
           if s2.empty?
-            self.index = i2
+            @index = i2
             r2 = nil
           else
             r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
@@ -359,13 +351,13 @@ module Cucumber
           r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
           r0.extend(Tag0)
         else
-          self.index = i0
+          @index = i0
           r0 = nil
         end
 
         node_cache[:tag][start_index] = r0
 
-        return r0
+        r0
       end
 
       module Comment0
@@ -405,7 +397,7 @@ module Cucumber
             r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
             r1.extend(Comment0)
           else
-            self.index = i1
+            @index = i1
             r1 = nil
           end
           if r1
@@ -419,7 +411,7 @@ module Cucumber
 
         node_cache[:comment][start_index] = r0
 
-        return r0
+        r0
       end
 
       module CommentLine0
@@ -437,7 +429,7 @@ module Cucumber
         end
 
         i0, s0 = index, []
-        if input.index('#', index) == index
+        if has_terminal?('#', false, index)
           r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
           @index += 1
         else
@@ -453,13 +445,13 @@ module Cucumber
           r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
           r0.extend(CommentLine0)
         else
-          self.index = i0
+          @index = i0
           r0 = nil
         end
 
         node_cache[:comment_line][start_index] = r0
 
-        return r0
+        r0
       end
 
       module Background0
@@ -497,11 +489,6 @@ module Cucumber
         def has_tags?(tag_names)
           feature_tags = self.parent.tags
           feature_tags.has_tags?(tag_names)
-        end
-
-        def has_all_tags?(tag_names)
-          feature_tags = self.parent.tags
-          feature_tags.has_all_tags?(tag_names)
         end
 
         def build
@@ -564,7 +551,7 @@ module Cucumber
                     end
                   end
                   if s9.empty?
-                    self.index = i9
+                    @index = i9
                     r9 = nil
                   else
                     r9 = instantiate_node(SyntaxNode,input, i9...index, s9)
@@ -576,7 +563,7 @@ module Cucumber
                     if r11
                       r8 = r11
                     else
-                      self.index = i8
+                      @index = i8
                       r8 = nil
                     end
                   end
@@ -595,13 +582,13 @@ module Cucumber
           r0.extend(Background0)
           r0.extend(Background1)
         else
-          self.index = i0
+          @index = i0
           r0 = nil
         end
 
         node_cache[:background][start_index] = r0
 
-        return r0
+        r0
       end
 
       module FeatureElements0
@@ -637,7 +624,7 @@ module Cucumber
             if r3
               r1 = r3
             else
-              self.index = i1
+              @index = i1
               r1 = nil
             end
           end
@@ -652,7 +639,7 @@ module Cucumber
 
         node_cache[:feature_elements][start_index] = r0
 
-        return r0
+        r0
       end
 
       module Scenario0
@@ -699,11 +686,6 @@ module Cucumber
         def has_tags?(tag_names)
           feature_tags = self.parent.parent.tags
           tags.has_tags?(tag_names) || feature_tags.has_tags?(tag_names)
-        end
-
-        def has_all_tags?(tag_names)
-          feature_tags = self.parent.parent.tags
-          tags.has_all_tags?(tag_names) || feature_tags.has_all_tags?(tag_names)
         end
 
         def matches_name?(regexp_to_match)
@@ -780,13 +762,13 @@ module Cucumber
           r0.extend(Scenario0)
           r0.extend(Scenario1)
         else
-          self.index = i0
+          @index = i0
           r0 = nil
         end
 
         node_cache[:scenario][start_index] = r0
 
-        return r0
+        r0
       end
 
       module ScenarioOutline0
@@ -842,11 +824,6 @@ module Cucumber
         def has_tags?(tag_names)
           feature_tags = self.parent.parent.tags
           tags.has_tags?(tag_names) || feature_tags.has_tags?(tag_names)
-        end
-
-        def has_all_tags?(tag_names)
-          feature_tags = self.parent.parent.tags
-          tags.has_all_tags?(tag_names) || feature_tags.has_all_tags?(tag_names)
         end
 
         def matches_name?(regexp_to_match)
@@ -932,13 +909,13 @@ module Cucumber
           r0.extend(ScenarioOutline0)
           r0.extend(ScenarioOutline1)
         else
-          self.index = i0
+          @index = i0
           r0 = nil
         end
 
         node_cache[:scenario_outline][start_index] = r0
 
-        return r0
+        r0
       end
 
       module Steps0
@@ -973,7 +950,7 @@ module Cucumber
 
         node_cache[:steps][start_index] = r0
 
-        return r0
+        r0
       end
 
       module Step0
@@ -1061,7 +1038,7 @@ module Cucumber
                     end
                   end
                   if s8.empty?
-                    self.index = i8
+                    @index = i8
                     r8 = nil
                   else
                     r8 = instantiate_node(SyntaxNode,input, i8...index, s8)
@@ -1073,7 +1050,7 @@ module Cucumber
                     if r10
                       r7 = r10
                     else
-                      self.index = i7
+                      @index = i7
                       r7 = nil
                     end
                   end
@@ -1101,13 +1078,13 @@ module Cucumber
           r0.extend(Step0)
           r0.extend(Step1)
         else
-          self.index = i0
+          @index = i0
           r0 = nil
         end
 
         node_cache[:step][start_index] = r0
 
-        return r0
+        r0
       end
 
       module ExamplesSections0
@@ -1150,7 +1127,7 @@ module Cucumber
 
         node_cache[:examples_sections][start_index] = r0
 
-        return r0
+        r0
       end
 
       module Examples0
@@ -1182,10 +1159,6 @@ module Cucumber
         end
 
         def has_tags?(tag_names)
-          true
-        end
-
-        def has_all_tags?(tag_names)
           true
         end
 
@@ -1265,13 +1238,13 @@ module Cucumber
           r0.extend(Examples0)
           r0.extend(Examples1)
         else
-          self.index = i0
+          @index = i0
           r0 = nil
         end
 
         node_cache[:examples][start_index] = r0
 
-        return r0
+        r0
       end
 
       def _nt_multiline_arg
@@ -1291,14 +1264,14 @@ module Cucumber
           if r2
             r0 = r2
           else
-            self.index = i0
+            @index = i0
             r0 = nil
           end
         end
 
         node_cache[:multiline_arg][start_index] = r0
 
-        return r0
+        r0
       end
 
       module LineToEol0
@@ -1320,7 +1293,7 @@ module Cucumber
           if r3
             r2 = nil
           else
-            self.index = i2
+            @index = i2
             r2 = instantiate_node(SyntaxNode,input, index...index)
           end
           s1 << r2
@@ -1338,7 +1311,7 @@ module Cucumber
             r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
             r1.extend(LineToEol0)
           else
-            self.index = i1
+            @index = i1
             r1 = nil
           end
           if r1
@@ -1351,7 +1324,7 @@ module Cucumber
 
         node_cache[:line_to_eol][start_index] = r0
 
-        return r0
+        r0
       end
 
       module LinesToKeyword0
@@ -1409,13 +1382,13 @@ module Cucumber
             r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
             r3.extend(LinesToKeyword0)
           else
-            self.index = i3
+            @index = i3
             r3 = nil
           end
           if r3
             r2 = nil
           else
-            self.index = i2
+            @index = i2
             r2 = instantiate_node(SyntaxNode,input, index...index)
           end
           s1 << r2
@@ -1433,7 +1406,7 @@ module Cucumber
             r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
             r1.extend(LinesToKeyword1)
           else
-            self.index = i1
+            @index = i1
             r1 = nil
           end
           if r1
@@ -1447,7 +1420,7 @@ module Cucumber
 
         node_cache[:lines_to_keyword][start_index] = r0
 
-        return r0
+        r0
       end
 
       module ReservedWordsAndSymbols0
@@ -1480,7 +1453,7 @@ module Cucumber
           r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
           r1.extend(ReservedWordsAndSymbols0)
         else
-          self.index = i1
+          @index = i1
           r1 = nil
         end
         if r1
@@ -1506,7 +1479,7 @@ module Cucumber
                   if r8
                     r0 = r8
                   else
-                    self.index = i0
+                    @index = i0
                     r0 = nil
                   end
                 end
@@ -1517,7 +1490,7 @@ module Cucumber
 
         node_cache[:reserved_words_and_symbols][start_index] = r0
 
-        return r0
+        r0
       end
 
       module PyString0
@@ -1567,7 +1540,7 @@ module Cucumber
             if r5
               r4 = nil
             else
-              self.index = i4
+              @index = i4
               r4 = instantiate_node(SyntaxNode,input, index...index)
             end
             s3 << r4
@@ -1585,7 +1558,7 @@ module Cucumber
               r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
               r3.extend(PyString0)
             else
-              self.index = i3
+              @index = i3
               r3 = nil
             end
             if r3
@@ -1606,13 +1579,13 @@ module Cucumber
           r0.extend(PyString1)
           r0.extend(PyString2)
         else
-          self.index = i0
+          @index = i0
           r0 = nil
         end
 
         node_cache[:py_string][start_index] = r0
 
-        return r0
+        r0
       end
 
       module OpenPyString0
@@ -1656,7 +1629,7 @@ module Cucumber
         r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
         s0 << r1
         if r1
-          if input.index('"""', index) == index
+          if has_terminal?('"""', false, index)
             r3 = instantiate_node(SyntaxNode,input, index...(index + 3))
             @index += 3
           else
@@ -1687,13 +1660,13 @@ module Cucumber
           r0.extend(OpenPyString0)
           r0.extend(OpenPyString1)
         else
-          self.index = i0
+          @index = i0
           r0 = nil
         end
 
         node_cache[:open_py_string][start_index] = r0
 
-        return r0
+        r0
       end
 
       module ClosePyString0
@@ -1740,7 +1713,7 @@ module Cucumber
           r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
           s0 << r2
           if r2
-            if input.index('"""', index) == index
+            if has_terminal?('"""', false, index)
               r4 = instantiate_node(SyntaxNode,input, index...(index + 3))
               @index += 3
             else
@@ -1759,13 +1732,13 @@ module Cucumber
           r0.extend(ClosePyString0)
           r0.extend(ClosePyString1)
         else
-          self.index = i0
+          @index = i0
           r0 = nil
         end
 
         node_cache[:close_py_string][start_index] = r0
 
-        return r0
+        r0
       end
 
       def _nt_white
@@ -1787,7 +1760,7 @@ module Cucumber
             if r3
               r1 = r3
             else
-              self.index = i1
+              @index = i1
               r1 = nil
             end
           end
@@ -1801,7 +1774,7 @@ module Cucumber
 
         node_cache[:white][start_index] = r0
 
-        return r0
+        r0
       end
 
     end
