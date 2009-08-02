@@ -14,6 +14,7 @@ links in one of the columns, you can do:
 * table_a.diff!(table_b) now uses column conversions from both tables (Table#map_column!) (Aslak Hellesøy)
 
 === Bugfixes
+* script/cucumber correctly loads the gem's binary if the plugin isn't installed. 
 * Cucumber hangs waiting for Ctrl+C if an Error is raised (#374 Aslak Hellesøy) 
 * Upgrade Sinatra example to work with rack-test 0.3.0 and aslakhellesoy-webrat 0.4.4.1 (Aslak Hellesøy)
 * require 'cucumber/webrat/table_locator' added to Spork environment for Rails (Anders Furseth)
