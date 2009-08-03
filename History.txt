@@ -9,6 +9,7 @@ links in one of the columns, you can do:
   table.diff!(actual)
 
 === New features
+* script/generate cucumber --spork now sets up a spork gem dependency in the cucumber.rb environment. (Aslak Hellesøy)
 * click_link_within(parent, link) webrat step (Joakim Kolsjö)
 * Allow Step Definitions to accept mix of required & optional args (Niels Ganser)
 * table_a.diff!(table_b) now uses column conversions from both tables (Table#map_column!) (Aslak Hellesøy)
