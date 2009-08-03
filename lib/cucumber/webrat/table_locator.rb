@@ -4,7 +4,7 @@ module Webrat
       ".//table"
     end
 
-    # Converts this Table element into a 2-dimensional array of String where each cell
+    # Converts this Table element into an Array of Array of String where each cell
     # represents the inner_html of the <td> and <th> elements. The number of columns is
     # determined by the number of cells in the first row.
     def to_a
