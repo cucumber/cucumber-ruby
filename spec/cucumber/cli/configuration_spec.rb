@@ -229,7 +229,7 @@ END_OF_MESSAGE
         config.paths.should == ['features/specific.feature']
       end
 
-      xit "disregards default STDOUT formatter defined in profile when another is passed in (via cmd line)" do
+      it "disregards default STDOUT formatter defined in profile when another is passed in (via cmd line)" do
         given_cucumber_yml_defined_as({'foo' => %w[--format pretty]})
         config.parse!(%w{--format progress --profile foo})
         config.options[:formats].should == [['progress', out]]#, ['pretty', 'pretty.txt']]
