@@ -10,6 +10,9 @@ links in one of the columns, you can do:
 
 === New features
 * script/generate cucumber --spork now sets up a spork gem dependency in the cucumber.rb environment. (Aslak Hellesøy)
+* Feature files defined on the command line override any that are present in profiles. (#344 Ben Mabey)
+* Default (STDOUT) formatter defined in profile can be overridden from the command line. (#344 Ben Mabey)
+* Displays which profile, if any, is being used. (Ben Mabey)
 * click_link_within(parent, link) webrat step (Joakim Kolsjö)
 * Allow Step Definitions to accept mix of required & optional args (Niels Ganser)
 * table_a.diff!(table_b) now uses column conversions from both tables (Table#map_column!) (Aslak Hellesøy)
@@ -20,12 +23,16 @@ links in one of the columns, you can do:
 * Upgrade Sinatra example to work with rack-test 0.3.0 and aslakhellesoy-webrat 0.4.4.1 (Aslak Hellesøy)
 * require 'cucumber/webrat/table_locator' added to Spork environment for Rails (Anders Furseth)
 
+=== Changed Features
+* The 'default' profile is now ALWAYS used unless you specify another profile or use the -P or --no-profile flag. (#344 Ben Mabey)
+
 == 0.3.91 2009-07-27
 
 === New Features
 * CTRL-C will exit immediately instead of carrying on until all features are run. (Aslak Hellesøy)
 * Run can be stopped programmatically by setting $cucumber_interrupted = true, for example in an After block. (Aslak Hellesøy)
 * Table support for cuke4duke
+
 
 == 0.3.90 2009-07-22
 

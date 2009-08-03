@@ -13,6 +13,7 @@ module Cucumber
         @out = StringIO.new
         @err = StringIO.new
         Kernel.stub!(:exit).and_return(nil)
+        File.stub!(:exist?).and_return(false) # When Configuration checks for cucumber.yml
       end
 
       describe "verbose mode" do
@@ -93,6 +94,19 @@ module Cucumber
         end
       end
 
+    [ProfilesNotDefinedError, YmlLoadError, ProfileNotFound].each do |exception_klass|
+
+      it "rescues #{exception_klass}, prints the message to the error stream and returns true" do
+        Configuration.stub!(:new).and_return(configuration = mock('configuration'))
+        configuration.stub!(:parse!).and_raise(exception_klass.new("error message"))
+
+        main = Main.new('', out = StringIO.new, error = StringIO.new)
+        main.execute!(Object.new.extend(StepMother)).should be_true
+        error.string.should == "error message\n"
+      end
+    end
+
+
       context "--drb" do
         before(:each) do
           @configuration = mock('Configuration', :drb? => true, :null_object => true)
@@ -128,10 +142,6 @@ module Cucumber
             @err.string.should include("WARNING: error message. Running features locally:")
           end
 
-          it "reparses the configuration since the --drb flag causes the initial parsing to short circuit" do
-            @configuration.should_receive(:parse!).exactly(:twice)
-            @cli.execute!(@step_mother)
-          end
         end
       end
     end

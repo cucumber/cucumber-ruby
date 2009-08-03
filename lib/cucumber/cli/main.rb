@@ -40,7 +40,6 @@ module Cucumber
             return DRbClient.run(@args, @error_stream, @out_stream)
           rescue DRbClientError => e
             @error_stream.puts "WARNING: #{e.message} Running features locally:"
-            configuration.parse!(@args)
           end
         end
         step_mother.options = configuration.options
@@ -63,6 +62,9 @@ module Cucumber
           step_mother.scenarios(:failed).any? || 
           (configuration.strict? && step_mother.steps(:undefined).any?)
         end
+      rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
+        @error_stream.puts e.message
+        true
       end
 
       def load_plain_text_features

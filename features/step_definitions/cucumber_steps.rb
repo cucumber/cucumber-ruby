@@ -111,6 +111,10 @@ Then /^STDERR should not match$/ do |text|
   last_stderr.should_not =~ /#{text}/
 end
 
+Then /^STDERR should be$/ do |text|
+  last_stderr.should == text
+end
+
 Then /^STDERR should be empty$/ do
   last_stderr.should == ""
 end
@@ -126,5 +130,21 @@ end
 
 Then /^"([^\"]*)" should be required$/ do |file_name|
   last_stdout.should include("* #{file_name}")
+end
+
+Then /^exactly these files should be loaded:\s*(.*)$/ do |files|
+  last_stdout.scan(/^  \* (.*\.rb)$/).flatten.should == files.split(/,\s+/)
+end
+
+Then /^exactly these features should be ran:\s*(.*)$/ do |files|
+  last_stdout.scan(/^  \* (.*\.feature)$/).flatten.should == files.split(/,\s+/)
+end
+
+Then /^the (.*) profile should be used$/ do |profile|
+  last_stdout.should =~ /Using the #{profile} profile/
+end
+
+Then /^print output$/ do
+  puts last_stdout
 end
 
