@@ -1,4 +1,19 @@
-== (In Git)
+== 0.3.93 2009-08-03
+
+Highlights in this release: Improved profile handling (cucumber.yml) and a fix for cucumber hanging.
+
+=== New features
+* script/generate cucumber --spork now sets up a spork gem dependency in the cucumber.rb environment. (Aslak Hellesøy)
+* Feature files defined on the command line override any that are present in profiles. (#344 Ben Mabey)
+* Default (STDOUT) formatter defined in profile can be overridden from the command line. (#344 Ben Mabey)
+* Displays which profile, if any, is being used. (Ben Mabey)
+* click_link_within(parent, link) webrat step (Joakim Kolsjö)
+
+=== Bugfixes
+* script/cucumber correctly loads the gem's binary if the plugin isn't installed. 
+* Cucumber hangs waiting for Ctrl+C if an Error is raised (#374 Aslak Hellesøy) 
+
+== 0.3.92 2009-07-29
 
 This release has some minor improvements to the new Table.diff! functionality. For example,
 if you're using Webrat and you want to compare a feature table with a HTML table containing
@@ -9,17 +24,10 @@ links in one of the columns, you can do:
   table.diff!(actual)
 
 === New features
-* script/generate cucumber --spork now sets up a spork gem dependency in the cucumber.rb environment. (Aslak Hellesøy)
-* Feature files defined on the command line override any that are present in profiles. (#344 Ben Mabey)
-* Default (STDOUT) formatter defined in profile can be overridden from the command line. (#344 Ben Mabey)
-* Displays which profile, if any, is being used. (Ben Mabey)
-* click_link_within(parent, link) webrat step (Joakim Kolsjö)
 * Allow Step Definitions to accept mix of required & optional args (Niels Ganser)
 * table_a.diff!(table_b) now uses column conversions from both tables (Table#map_column!) (Aslak Hellesøy)
 
 === Bugfixes
-* script/cucumber correctly loads the gem's binary if the plugin isn't installed. 
-* Cucumber hangs waiting for Ctrl+C if an Error is raised (#374 Aslak Hellesøy) 
 * Upgrade Sinatra example to work with rack-test 0.3.0 and aslakhellesoy-webrat 0.4.4.1 (Aslak Hellesøy)
 * require 'cucumber/webrat/table_locator' added to Spork environment for Rails (Anders Furseth)
 

@@ -262,6 +262,7 @@ features/html_formatter/a.html
 features/junit_formatter.feature
 features/language_from_header.feature
 features/multiline_names.feature
+features/profiles.feature
 features/rake_task.feature
 features/report_called_undefined_steps.feature
 features/snippet.feature
@@ -308,11 +309,11 @@ lib/cucumber/ast/tags.rb
 lib/cucumber/ast/visitor.rb
 lib/cucumber/broadcaster.rb
 lib/cucumber/cli/configuration.rb
-lib/cucumber/cli/options.rb
-lib/cucumber/cli/profile_loader.rb
 lib/cucumber/cli/drb_client.rb
 lib/cucumber/cli/language_help_formatter.rb
 lib/cucumber/cli/main.rb
+lib/cucumber/cli/options.rb
+lib/cucumber/cli/profile_loader.rb
 lib/cucumber/core_ext/exception.rb
 lib/cucumber/core_ext/instance_exec.rb
 lib/cucumber/core_ext/proc.rb
@@ -384,11 +385,14 @@ spec/cucumber/broadcaster_spec.rb
 spec/cucumber/cli/configuration_spec.rb
 spec/cucumber/cli/drb_client_spec.rb
 spec/cucumber/cli/main_spec.rb
+spec/cucumber/cli/options_spec.rb
+spec/cucumber/cli/profile_loader_spec.rb
 spec/cucumber/core_ext/proc_spec.rb
 spec/cucumber/core_ext/string_spec.rb
 spec/cucumber/formatter/ansicolor_spec.rb
 spec/cucumber/formatter/color_io_spec.rb
 spec/cucumber/formatter/duration_spec.rb
+spec/cucumber/formatter/html_spec.rb
 spec/cucumber/formatter/progress_spec.rb
 spec/cucumber/parser/feature_parser_spec.rb
 spec/cucumber/parser/table_parser_spec.rb
