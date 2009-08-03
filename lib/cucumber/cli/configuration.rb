@@ -7,18 +7,6 @@ module Cucumber
     class ProfileNotFound < StandardError; end
 
     class Configuration
-      BUILTIN_FORMATS = {
-        'html'      => 'Cucumber::Formatter::Html',
-        'pretty'    => 'Cucumber::Formatter::Pretty',
-        'profile'   => 'Cucumber::Formatter::Profile',
-        'progress'  => 'Cucumber::Formatter::Progress',
-        'rerun'     => 'Cucumber::Formatter::Rerun',
-        'usage'     => 'Cucumber::Formatter::Usage',
-        'junit'     => 'Cucumber::Formatter::Junit',
-        'tag_cloud' => 'Cucumber::Formatter::TagCloud',
-        'steps'     => 'Cucumber::Formatter::Steps'
-      }
-
       attr_reader :options
 
       def initialize(out_stream = STDOUT, error_stream = STDERR)
@@ -96,8 +84,8 @@ module Cucumber
       end
 
       def formatter_class(format)
-        if(builtin = BUILTIN_FORMATS[format])
-          constantize(builtin)
+        if(builtin = Options::BUILTIN_FORMATS[format])
+          constantize(builtin[0])
         else
           constantize(format)
         end

@@ -4,16 +4,28 @@ module Cucumber
 
     class Options
       BUILTIN_FORMATS = {
-        'html'      => 'Cucumber::Formatter::Html',
-        'pretty'    => 'Cucumber::Formatter::Pretty',
-        'profile'   => 'Cucumber::Formatter::Profile',
-        'progress'  => 'Cucumber::Formatter::Progress',
-        'rerun'     => 'Cucumber::Formatter::Rerun',
-        'usage'     => 'Cucumber::Formatter::Usage',
-        'junit'     => 'Cucumber::Formatter::Junit',
-        'tag_cloud' => 'Cucumber::Formatter::TagCloud',
-        'steps'     => 'Cucumber::Formatter::Steps'
+        'html'      => ['Cucumber::Formatter::Html',     'Generates a nice looking HTML report.'],
+        'pretty'    => ['Cucumber::Formatter::Pretty',   'Prints the feature as is - in colours.'],
+        'profile'   => ['Cucumber::Formatter::Profile',  'Prints the 10 slowest steps at the end.'],
+        'progress'  => ['Cucumber::Formatter::Progress', 'Prints one character per scenario.'],
+        'rerun'     => ['Cucumber::Formatter::Rerun',    'Prints failing files with line numbers.'],
+        'usage'     => ['Cucumber::Formatter::Usage',    'Prints where step definitions are used.'],
+        'junit'     => ['Cucumber::Formatter::Junit',    'Generates a report similar to Ant+JUnit.'],
+        'tag_cloud' => ['Cucumber::Formatter::TagCloud', 'Prints a tag cloud of tag usage.'],
+        'steps'     => ['Cucumber::Formatter::Steps',    'Prints location of step definitions.']
       }
+      max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
+      FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
+        "  #{key}#{' ' * (max - key.length)} : #{BUILTIN_FORMATS[key][1]}"
+      end) + ["FORMAT can also be the fully qualified class name of",
+        "your own custom formatter. If the class isn't loaded,",
+        "Cucumber will attempt to require a file with a relative",
+        "file name that is the underscore name of the class name.",
+        "Example: --format Foo::BarZap -> Cucumber will look for",
+        "foo/bar_zap.rb. You can place the file with this relative",
+        "path underneath your features/support directory or anywhere",
+        "on Ruby's LOAD_PATH, for example in a Ruby gem."
+      ]
       DRB_FLAG = '--drb'
       PROFILE_SHORT_FLAG = '-p'
       PROFILE_LONG_FLAG = '--profile'
@@ -96,16 +108,8 @@ module Cucumber
             end
           end
           opts.on("-f FORMAT", "--format FORMAT",
-            "How to format features (Default: pretty)",
-            "Available formats: #{BUILTIN_FORMATS.keys.sort.join(", ")}",
-            "FORMAT can also be the fully qualified class name of",
-            "your own custom formatter. If the class isn't loaded,",
-            "Cucumber will attempt to require a file with a relative",
-            "file name that is the underscore name of the class name.",
-            "Example: --format Foo::BarZap -> Cucumber will look for",
-            "foo/bar_zap.rb. You can place the file with this relative",
-            "path underneath your features/support directory or anywhere",
-            "on Ruby's LOAD_PATH, for example in a Ruby gem.") do |v|
+            "How to format features (Default: pretty). Available formats:",
+            *FORMAT_HELP) do |v|
             @options[:formats] << [v, @out_stream]
           end
           opts.on("-o", "--out [FILE|DIR]",

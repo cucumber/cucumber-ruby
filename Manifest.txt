@@ -274,6 +274,7 @@ features/table_diffing.feature
 features/unicode_table.feature
 features/usage.feature
 features/work_in_progress.feature
+gem_tasks/contributors.rake
 gem_tasks/deployment.rake
 gem_tasks/environment.rake
 gem_tasks/features.rake
