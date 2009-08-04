@@ -135,8 +135,8 @@ module Cucumber
       #
       # A StepDefinition receiving this table can then map the columns:
       #
-      #   mapped_table = table.map_columns('Phone Number' => :phone, 'Address' => :address)
-      #   hashes = mapped_table.hashes
+      #   table.map_headers!('Phone Number' => :phone, 'Address' => :address)
+      #   table.hashes
       #   # => [{:phone => '123456', :address => 'xyz'}, {:phone => '345678', :address => 'abc'}]
       #
       def map_headers!(mappings)
