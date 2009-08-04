@@ -269,8 +269,6 @@ module Cli
           options[:paths].should == ['my_feature.feature']
         end
       end
-
-
     end
 
     describe '#expanded_args_without_drb' do
@@ -294,6 +292,13 @@ module Cli
         options.parse!(%w[features FOO=bar])
         options.expanded_args_without_drb.should == %w[features FOO=bar]
       end
+
+      it "ignores the paths from the profiles if one was specified on the command line" do
+        given_cucumber_yml_defined_as('foo' => 'features --drb')
+        options.parse!(%w[some_feature.feature -p foo])
+        options.expanded_args_without_drb.should == %w[some_feature.feature]
+      end
+
 
 
 
