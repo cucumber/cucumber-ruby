@@ -1,6 +1,7 @@
 == (In Git)
 
 === New features
+* Added examples/python that uses rubypython. (Aslak Hellesøy)
 * Document builtin formatters with --help. (#406 Aslak Hellesøy)
 
 == 0.3.93 2009-08-03
