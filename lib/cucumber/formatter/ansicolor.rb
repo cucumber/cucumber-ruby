@@ -61,7 +61,7 @@ module Cucumber
       include Term::ANSIColor
 
       begin
-        gem 'genki-terminfo'
+        gem 'genki-ruby-terminfo'
       rescue LoadError
       end
       begin

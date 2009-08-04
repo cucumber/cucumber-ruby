@@ -1,6 +1,10 @@
 == (In Git)
 
 === New features
+* Checks the number of available colors on the terminal with ruby-terminfo if ruby-terminfo is installed.
+  This prevents Apple's Terminal.app from stalling (Yugui - Yuki Sonoda).
+  * Set 'xterm-256color' to TERM if your terminal supports grey.
+  * ruby-terminfo is available as genki-ruby-terminfo gem from github.
 * Document builtin formatters with --help. (#406 Aslak Hellesøy)
 
 == 0.3.93 2009-08-03
