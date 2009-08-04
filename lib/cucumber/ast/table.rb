@@ -126,8 +126,9 @@ module Cucumber
         [:table, *cells_rows.map{|row| row.to_sexp}]
       end
 
-      # Redefines the table headers. This makes it
-      # possible to use prettier header names in the features. Example:
+      # Redefines the table headers. This makes it possible to use
+      # prettier and more flexible header names in the
+      # features. Example:
       #
       #   | Phone Number | Address |
       #   | 123456       | xyz     |
@@ -135,14 +136,14 @@ module Cucumber
       #
       # A StepDefinition receiving this table can then map the columns:
       #
-      #   table.map_headers!('Phone Number' => :phone, 'Address' => :address)
+      #   table.map_headers!(/phone( number)?/i => :phone, 'Address' => :address)
       #   table.hashes
       #   # => [{:phone => '123456', :address => 'xyz'}, {:phone => '345678', :address => 'abc'}]
       #
       def map_headers!(mappings)
         header_cells = cell_matrix[0]
         mappings.each_pair do |pre, post|
-          header_cell = header_cells.detect{|cell| cell.value == pre}
+          header_cell = header_cells.detect{|cell| pre === cell.value}
           header_cell.value = post
           if @conversion_procs.has_key?(pre)
             @conversion_procs[post] = @conversion_procs.delete(pre)
