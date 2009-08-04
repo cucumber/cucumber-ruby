@@ -96,7 +96,7 @@ module Cucumber
         end
       end
         
-       it "should allow renaming columns" do
+      it "should allow renaming columns" do
         table2 = @table.map_headers('one' => :three)
         table2.hashes.first[:three].should == '4444'
       end

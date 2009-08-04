@@ -127,8 +127,13 @@ module Cucumber
       end
 
       # Redefines the table headers. This makes it possible to use
-      # prettier and more flexible header names in the
-      # features. Example:
+      # prettier and more flexible header names in the features.  The
+      # keys of `mappings` are Strings or regular expressions
+      # (anything that responds to `#===` will work) that may match
+      # column headings in the table.  The values of `mappings` are
+      # desired names for the columns.
+      #
+      # Example:
       #
       #   | Phone Number | Address |
       #   | 123456       | xyz     |
