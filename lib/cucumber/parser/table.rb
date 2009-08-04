@@ -49,7 +49,7 @@ module Cucumber
           end
         end
         if s0.empty?
-          self.index = i0
+          @index = i0
           r0 = nil
         else
           r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
@@ -58,7 +58,7 @@ module Cucumber
 
         node_cache[:table][start_index] = r0
 
-        return r0
+        r0
       end
 
       module TableRow0
@@ -116,7 +116,7 @@ module Cucumber
         r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
         s0 << r1
         if r1
-          if input.index('|', index) == index
+          if has_terminal?('|', false, index)
             r3 = instantiate_node(SyntaxNode,input, index...(index + 1))
             @index += 1
           else
@@ -131,7 +131,7 @@ module Cucumber
               r6 = _nt_cell
               s5 << r6
               if r6
-                if input.index('|', index) == index
+                if has_terminal?('|', false, index)
                   r7 = instantiate_node(SyntaxNode,input, index...(index + 1))
                   @index += 1
                 else
@@ -144,7 +144,7 @@ module Cucumber
                 r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
                 r5.extend(TableRow0)
               else
-                self.index = i5
+                @index = i5
                 r5 = nil
               end
               if r5
@@ -154,7 +154,7 @@ module Cucumber
               end
             end
             if s4.empty?
-              self.index = i4
+              @index = i4
               r4 = nil
             else
               r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
@@ -184,7 +184,7 @@ module Cucumber
                   end
                 end
                 if s11.empty?
-                  self.index = i11
+                  @index = i11
                   r11 = nil
                 else
                   r11 = instantiate_node(SyntaxNode,input, i11...index, s11)
@@ -196,7 +196,7 @@ module Cucumber
                   if r13
                     r10 = r13
                   else
-                    self.index = i10
+                    @index = i10
                     r10 = nil
                   end
                 end
@@ -210,13 +210,13 @@ module Cucumber
           r0.extend(TableRow1)
           r0.extend(TableRow2)
         else
-          self.index = i0
+          @index = i0
           r0 = nil
         end
 
         node_cache[:table_row][start_index] = r0
 
-        return r0
+        r0
       end
 
       module Cell0
@@ -235,7 +235,7 @@ module Cucumber
           i1, s1 = index, []
           i2 = index
           i3 = index
-          if input.index('|', index) == index
+          if has_terminal?('|', false, index)
             r4 = instantiate_node(SyntaxNode,input, index...(index + 1))
             @index += 1
           else
@@ -249,14 +249,14 @@ module Cucumber
             if r5
               r3 = r5
             else
-              self.index = i3
+              @index = i3
               r3 = nil
             end
           end
           if r3
             r2 = nil
           else
-            self.index = i2
+            @index = i2
             r2 = instantiate_node(SyntaxNode,input, index...index)
           end
           s1 << r2
@@ -274,7 +274,7 @@ module Cucumber
             r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
             r1.extend(Cell0)
           else
-            self.index = i1
+            @index = i1
             r1 = nil
           end
           if r1
@@ -287,7 +287,7 @@ module Cucumber
 
         node_cache[:cell][start_index] = r0
 
-        return r0
+        r0
       end
 
       def _nt_space
@@ -298,7 +298,7 @@ module Cucumber
           return cached
         end
 
-        if input.index(Regexp.new('[ \\t]'), index) == index
+        if has_terminal?('\G[ \\t]', true, index)
           r0 = instantiate_node(SyntaxNode,input, index...(index + 1))
           @index += 1
         else
@@ -307,7 +307,7 @@ module Cucumber
 
         node_cache[:space][start_index] = r0
 
-        return r0
+        r0
       end
 
       module Eol0
@@ -322,7 +322,7 @@ module Cucumber
         end
 
         i0 = index
-        if input.index("\n", index) == index
+        if has_terminal?("\n", false, index)
           r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
           @index += 1
         else
@@ -333,7 +333,7 @@ module Cucumber
           r0 = r1
         else
           i2, s2 = index, []
-          if input.index("\r", index) == index
+          if has_terminal?("\r", false, index)
             r3 = instantiate_node(SyntaxNode,input, index...(index + 1))
             @index += 1
           else
@@ -342,7 +342,7 @@ module Cucumber
           end
           s2 << r3
           if r3
-            if input.index("\n", index) == index
+            if has_terminal?("\n", false, index)
               r5 = instantiate_node(SyntaxNode,input, index...(index + 1))
               @index += 1
             else
@@ -360,20 +360,20 @@ module Cucumber
             r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
             r2.extend(Eol0)
           else
-            self.index = i2
+            @index = i2
             r2 = nil
           end
           if r2
             r0 = r2
           else
-            self.index = i0
+            @index = i0
             r0 = nil
           end
         end
 
         node_cache[:eol][start_index] = r0
 
-        return r0
+        r0
       end
 
       def _nt_eof
@@ -395,13 +395,13 @@ module Cucumber
         if r1
           r0 = nil
         else
-          self.index = i0
+          @index = i0
           r0 = instantiate_node(SyntaxNode,input, index...index)
         end
 
         node_cache[:eof][start_index] = r0
 
-        return r0
+        r0
       end
 
     end

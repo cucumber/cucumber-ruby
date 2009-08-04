@@ -47,6 +47,10 @@ module Cucumber
           Treetop.load_from_string(grammar)
           self.class.alias_step_definitions(@keywords)
           @parser = Parser::I18n.const_get("#{@keywords['grammar_name']}Parser").new
+          def @parser.inspect
+            "#<#{self.class.name}>"
+          end
+          @parser
         end
 
         def parse(source, path, filter)
