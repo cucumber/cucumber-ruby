@@ -128,9 +128,9 @@ module Cucumber
 
       # Redefines the table headers. This makes it possible to use
       # prettier and more flexible header names in the features.  The
-      # keys of `mappings` are Strings or regular expressions
-      # (anything that responds to `#===` will work) that may match
-      # column headings in the table.  The values of `mappings` are
+      # keys of +mappings+ are Strings or regular expressions
+      # (anything that responds to #=== will work) that may match
+      # column headings in the table.  The values of +mappings+ are
       # desired names for the columns.
       #
       # Example:
@@ -139,7 +139,8 @@ module Cucumber
       #   | 123456       | xyz     |
       #   | 345678       | abc     |
       #
-      # A StepDefinition receiving this table can then map the columns:
+      # A StepDefinition receiving this table can then map the columns 
+      # with both Regexp and String:
       #
       #   table.map_headers!(/phone( number)?/i => :phone, 'Address' => :address)
       #   table.hashes
