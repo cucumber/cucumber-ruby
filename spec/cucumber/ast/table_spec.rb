@@ -101,6 +101,11 @@ module Cucumber
         table2.hashes.first[:three].should == '4444'
       end
 
+      it "should allow renaming columns using regexp" do
+        table2 = @table.map_headers(/one|uno/ => :three)
+        table2.hashes.first[:three].should == '4444'
+      end
+
       it "should copy column mappings when mapping headers" do
         @table.map_column!('one') { |v| v.to_i }
         table2 = @table.map_headers('one' => 'three')
