@@ -11,6 +11,8 @@ require 'cucumber/cli/drb_client'
 module Cucumber
   module Cli
     class Main
+      FAILURE = 1
+
       class << self
         def step_mother
           @step_mother
@@ -53,8 +55,8 @@ module Cucumber
         step_mother.visitor = visitor # Needed to support World#announce
         visitor.visit_features(features)
 
-        failure = if excuded_tag_limts?(features)
-            1
+        failure = if exceeded_tag_limts?(features)
+            FAILURE
           elsif configuration.wip?
             step_mother.scenarios(:passed).any?
           else
@@ -63,7 +65,7 @@ module Cucumber
           end
       end
 
-      def excuded_tag_limts?(features)
+      def exceeded_tag_limts?(features)
         exceeded = false
         configuration.options[:include_tags].each do |tag, limit|
           unless limit.nil?
