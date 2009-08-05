@@ -43,6 +43,7 @@ module Cucumber
         @default_profile = options[:default_profile]
         @skip_profile_information = options[:skip_profile_information]
         @profiles = []
+        @overridden_paths = []
         @options        = default_options
       end
 
@@ -66,7 +67,7 @@ module Cucumber
               previous_flag_was_profile = true
               next true
             end
-            arg == DRB_FLAG
+            arg == DRB_FLAG || @overridden_paths.include?(arg)
           end
         )
       end
@@ -305,7 +306,11 @@ module Cucumber
         @options[:include_tags] += other_options[:include_tags]
         @options[:exclude_tags] += other_options[:exclude_tags]
         @options[:env_vars] = other_options[:env_vars].merge(@options[:env_vars])
-        @options[:paths] = other_options[:paths] if @options[:paths].empty?
+        if @options[:paths].empty?
+          @options[:paths] = other_options[:paths]
+        else
+          @overridden_paths += (other_options[:paths] - @options[:paths])
+        end
         @options[:source] &= other_options[:source]
         @options[:snippets] &= other_options[:snippets]
 
