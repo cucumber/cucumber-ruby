@@ -11,7 +11,10 @@ module Cucumber
     class OrderedXmlMarkup < Builder::XmlMarkup
       def _insert_attributes(attrs, order=[])
         return if attrs.nil?
-        attrs.keys.map{|k| k.to_s}.sort.each do |k|
+        no_sort = (attrs.keys - [:version, :encoding] == []) #HACK to ensure the 'version' attribute is first in xml declaration.
+        keys = attrs.keys.map{|k| k.to_s}
+        keys.sort! unless no_sort
+        keys.each do |k|
           v = attrs[k.to_sym] || attrs[k]
           @target << %{ #{k}="#{_attr_value(v)}"} if v
         end

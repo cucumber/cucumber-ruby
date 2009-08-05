@@ -23,7 +23,7 @@ module Cucumber
           :failures => @failures,
           :errors => @errors,
           :tests => @tests,
-          :time => @time,
+          :time => "%.6f" % @time,
         :name => @feature_name ) do
           @testsuite << @builder.target!
         end
@@ -44,7 +44,7 @@ module Cucumber
         @feature_name = lines[0].sub(/Feature\:/, '').strip
       end
 
-      def visit_scenario_name(keyword, name, file_colon_line, source_indent)   
+      def visit_scenario_name(keyword, name, file_colon_line, source_indent)
         scenario_name = name.strip
         scenario_name = "Unnamed scenario" if name == ""
         @scenario = scenario_name
@@ -72,16 +72,20 @@ module Cucumber
       end
 
       def visit_table_row(table_row)
-        start = Time.now
-        super(table_row)
-        duration = Time.now - start
-        unless @header_row
-          name_suffix = " (outline example : #{table_row.name})"
-          if table_row.failed?
-            @output += "Example row: #{table_row.name}\n"
-            @output += "\nMessage:\n"
+        if @outline
+          start = Time.now
+          super(table_row)
+          duration = Time.now - start
+          unless @header_row
+            name_suffix = " (outline example : #{table_row.name})"
+            if table_row.failed?
+              @output += "Example row: #{table_row.name}\n"
+              @output += "\nMessage:\n"
+            end
+            build_testcase(duration, table_row.status, table_row.exception,  name_suffix)
           end
-          build_testcase(duration, table_row.status, table_row.exception,  name_suffix)
+        else
+          super(table_row)
         end
         @header_row = false
       end
@@ -92,7 +96,7 @@ module Cucumber
           @time += duration
           classname = "#{@feature_name}.#{@scenario}"
           name = "#{@scenario}#{suffix}"
-          @builder.testcase(:classname => classname, :name => name, :time => duration) do
+          @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
             if status != :passed
               @builder.failure(:message => "#{status.to_s} #{name}", :type => status.to_s) do
                 @builder.text! @output
