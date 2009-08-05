@@ -8,8 +8,8 @@ module Cucumber
     #
     #   Cucumber::Rake::Task.new
     #
-    # This will create a task named 'features' described as 'Run Features with 
-    # Cucumber'. It will use steps from 'features/**/*.rb' and features in 'features/**/*.feature'.
+    # This will create a task named 'cucumber' described as 'Run Cucumber features'. 
+    # It will use steps from 'features/**/*.rb' and features in 'features/**/*.feature'.
     #
     # To further configure the task, you can pass a block:
     #
@@ -148,7 +148,7 @@ module Cucumber
       end
 
       # Define Cucumber Rake task
-      def initialize(task_name = "features", desc = "Run Features with Cucumber")
+      def initialize(task_name = "cucumber", desc = "Run Cucumber features")
         @task_name, @desc = task_name, desc
         @fork = true
         @libs = ['lib']

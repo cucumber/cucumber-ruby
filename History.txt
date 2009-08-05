@@ -1,6 +1,7 @@
 == (In Git)
 
 === New features
+* script/generate cucumber sets up 'cucumber:ok' and 'cucumber:wip' tasks and deprecates 'features'. More Kanban love. (#344 Aslak Hellesøy)
 * Added examples/python that uses rubypython. (Aslak Hellesøy)
 * Document builtin formatters with --help. (#406 Aslak Hellesøy)
 
