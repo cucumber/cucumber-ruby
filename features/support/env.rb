@@ -50,6 +50,10 @@ class CucumberWorld
     s.gsub(/\d+m\d+\.\d+s/m, replacement)
   end
 
+  def replace_junit_duration(s, replacement)
+    s.gsub(/\d+\.\d\d+/m, replacement)
+  end
+
   def create_file(file_name, file_content)
     file_content.gsub!("CUCUMBER_LIB", "'#{cucumber_lib_dir}'") # Some files, such as Rakefiles need to use the lib dir
     in_current_dir do
@@ -117,9 +121,4 @@ end
 
 After do
   terminate_background_jobs
-end
-
-Before('@diffxml') do
-  `diffxml --version`
-  raise "Please install diffxml from http://diffxml.sourceforge.net/" if $? != 0
 end

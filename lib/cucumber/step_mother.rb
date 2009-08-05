@@ -127,7 +127,9 @@ module Cucumber
     end
 
     # Registers a new StepDefinition. This method is aliased
-    # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>.
+    # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>, and
+    # also to the i18n translations whenever a feature of a
+    # new language is loaded.
     #
     # See Cucumber#alias_steps for details on how to
     # create your own aliases.

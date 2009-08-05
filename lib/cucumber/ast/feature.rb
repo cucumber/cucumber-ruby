@@ -53,6 +53,15 @@ module Cucumber
         children_tag_count + tag_count(tag)
       end
 
+      def short_name
+        first_line = name.split(/\n/)[0]
+        if first_line =~ /#{language.keywords('feature', true)}:(.*)/
+          $1.strip
+        else
+          first_line
+        end
+      end
+
       def to_sexp
         sexp = [:feature, @file, @name]
         comment = @comment.to_sexp

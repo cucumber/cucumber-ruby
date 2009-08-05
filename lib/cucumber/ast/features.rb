@@ -9,6 +9,10 @@ module Cucumber
         @features = []
       end
 
+      def [](index)
+        @features[index]
+      end
+
       def each(&proc)
         @features.each(&proc)
       end

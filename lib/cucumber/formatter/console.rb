@@ -77,7 +77,7 @@ module Cucumber
         @io.print dump_count(step_mother.steps.length, "step")
         print_status_counts{|status| step_mother.steps(status)}
 
-        @io.puts(format_duration(features.duration)) if features
+        @io.puts(format_duration(features.duration)) if features && features.duration
 
         @io.flush
       end

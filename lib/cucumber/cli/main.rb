@@ -42,11 +42,14 @@ module Cucumber
             return DRbClient.run(@args, @error_stream, @out_stream)
           rescue DRbClientError => e
             @error_stream.puts "WARNING: #{e.message} Running features locally:"
-            configuration.parse!(@args)
           end
         end
         step_mother.options = configuration.options
 
+        # Feature files must be loaded before files are required.
+        # This is because i18n step methods are only aliased when
+        # features are loaded. If we swap the order, the requires
+        # will fail.
         features = load_plain_text_features
         require_files
         enable_diffing
@@ -63,6 +66,9 @@ module Cucumber
             step_mother.scenarios(:failed).any? ||
             (configuration.strict? && step_mother.steps(:undefined).any?)
           end
+      rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
+        @error_stream.puts e.message
+        true
       end
 
       def exceeded_tag_limts?(features)
@@ -149,7 +155,9 @@ module Cucumber
 
       def trap_interrupt
         trap('INT') do
+          exit!(1) if $cucumber_interrupted
           $cucumber_interrupted = true
+          STDERR.puts "\nExiting... Interrupt again to exit immediately."
         end
       end
     end

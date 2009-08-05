@@ -1,9 +1,4 @@
-begin
-  require 'builder'
-rescue LoadError
-  gem 'builder'
-  require 'builder'
-end
+require 'cucumber/formatter/ordered_xml_markup'
 
 module Cucumber
   module Formatter
@@ -18,16 +13,18 @@ module Cucumber
 
       def visit_feature(feature)
         @failures = @errors = @tests = 0
-        @builder = Builder::XmlMarkup.new( :indent => 2 )
+        @builder = OrderedXmlMarkup.new( :indent => 2 )
+        @time = 0
         super
 
-        @testsuite = Builder::XmlMarkup.new( :indent => 2 )
+        @testsuite = OrderedXmlMarkup.new( :indent => 2 )
         @testsuite.instruct!
         @testsuite.testsuite(
           :failures => @failures,
           :errors => @errors,
           :tests => @tests,
-          :name => @feature_name ) do
+          :time => @time,
+        :name => @feature_name ) do
           @testsuite << @builder.target!
         end
 
@@ -36,40 +33,80 @@ module Cucumber
         File.open(feature_filename, 'w') { |file| file.write(@testsuite.target!) }
       end
 
+      def visit_background(name)
+        @in_background = true
+        super
+        @in_background = false
+      end
+
       def visit_feature_name(name)
         lines = name.split(/\r?\n/)
         @feature_name = lines[0].sub(/Feature\:/, '').strip
       end
 
-      def visit_scenario_name(keyword, name, file_colon_line, source_indent)
-        @scenario = name
+      def visit_scenario_name(keyword, name, file_colon_line, source_indent)   
+        scenario_name = name.strip
+        scenario_name = "Unnamed scenario" if name == ""
+        @scenario = scenario_name
+        @outline = keyword.include?('Scenario Outline')
+        @output = "Scenario#{ " outline" if @outline}: #{@scenario}\n\n"
       end
 
       def visit_steps(steps)
-        @steps_failed = false
+        return if @in_background
+        start = Time.now
         super
-        @failures += 1 if @steps_failed
-        @tests += 1
+        duration = Time.now - start
+        unless @outline
+          if steps.failed?
+            steps.each { |step| @output += "#{step.keyword} #{step.name}\n" }
+            @output += "\nMessage:\n"
+          end
+          build_testcase(duration, steps.status, steps.exception)
+        end
       end
 
-      def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
-        step_name = keyword + " " + step_match.format_args(lambda{|param| "*#{param}*"})
-        @builder.testcase(:classname => "#{@feature_name}.#{@scenario}", :name => step_name) do
-          if status != :passed
-            @builder.failure(:message => step_name) do
-              @builder.text!(format_exception(exception)) if exception
-            end
-            @steps_failed = true
+      def visit_outline_table(outline_table)
+        @header_row = true
+        super(outline_table)
+      end
+
+      def visit_table_row(table_row)
+        start = Time.now
+        super(table_row)
+        duration = Time.now - start
+        unless @header_row
+          name_suffix = " (outline example : #{table_row.name})"
+          if table_row.failed?
+            @output += "Example row: #{table_row.name}\n"
+            @output += "\nMessage:\n"
           end
+          build_testcase(duration, table_row.status, table_row.exception,  name_suffix)
         end
+        @header_row = false
       end
 
       private
 
-      def format_exception(exception)
-        (["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n")
-      end
-    end
+        def build_testcase(duration, status, exception = nil, suffix = "")
+          @time += duration
+          classname = "#{@feature_name}.#{@scenario}"
+          name = "#{@scenario}#{suffix}"
+          @builder.testcase(:classname => classname, :name => name, :time => duration) do
+            if status != :passed
+              @builder.failure(:message => "#{status.to_s} #{name}", :type => status.to_s) do
+                @builder.text! @output
+                @builder.text!(format_exception(exception)) if exception
+              end
+              @failures += 1
+            end
+          end
+          @tests += 1
+        end
 
+        def format_exception(exception)
+          (["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n")
+        end
+    end
   end
 end

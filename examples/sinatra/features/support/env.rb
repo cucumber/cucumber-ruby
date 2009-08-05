@@ -1,6 +1,10 @@
 # See http://wiki.github.com/aslakhellesoy/cucumber/sinatra
 # for more details about Sinatra with Cucumber
 
+gem 'rack-test', '=0.3.0'
+gem 'aslakhellesoy-webrat', '=0.4.4.1'
+gem 'sinatra', '=0.9.4'
+
 # Sinatra
 app_file = File.join(File.dirname(__FILE__), *%w[.. .. app.rb])
 require app_file
@@ -8,13 +12,15 @@ require app_file
 Sinatra::Application.app_file = app_file
 
 require 'spec/expectations'
-
+require 'rack/test'
 require 'webrat'
+
 Webrat.configure do |config|
   config.mode = :rack
 end
 
 class MyWorld
+  include Rack::Test::Methods
   include Webrat::Methods
   include Webrat::Matchers
 

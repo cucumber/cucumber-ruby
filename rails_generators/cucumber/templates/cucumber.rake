@@ -4,15 +4,27 @@ unless ARGV.any? {|a| a =~ /^gems/}
 
 begin
   require 'cucumber/rake/task'
+  namespace :cucumber do
+    Cucumber::Rake::Task.new({:ok => 'db:test:prepare'}, 'Run features that should pass (no @wip tag)') do |t|
+      t.fork = true # You may get faster startup if you set this to false
+      t.cucumber_opts = "--tags ~@wip --strict --format #{ENV['CUCUMBER_FORMAT'] || 'pretty'}<%= spork? ? ' --drb' : '' %>"
+    end
 
-  Cucumber::Rake::Task.new(:features) do |t|
-    t.fork = true
-    t.cucumber_opts = [<%= options[:spork] ? "'--drb', " : "" %>'--format', (ENV['CUCUMBER_FORMAT'] || 'pretty')]
+    Cucumber::Rake::Task.new({:wip => 'db:test:prepare'}, 'Run @wip features (not passing yet)') do |t|
+      t.fork = true # You may get faster startup if you set this to false
+      t.cucumber_opts = "--tags @wip --wip --format #{ENV['CUCUMBER_FORMAT'] || 'pretty'}<%= spork? ? ' --drb' : '' %>"
+    end
+
+    desc 'Run all features'
+    task :all => [:ok, :wip]
   end
-  task :features => 'db:test:prepare'
+
+  task :features => 'cucumber:ok' do
+    STDERR.puts "*** The 'features' task is deprecated. See rake -T cucumber ***"
+  end
 rescue LoadError
-  desc 'Cucumber rake task not available'
-  task :features do
+  desc 'cucumber rake task not available (cucumber not installed)'
+  task :cucumber do
     abort 'Cucumber rake task is not available. Be sure to install cucumber as a gem or plugin'
   end
 end

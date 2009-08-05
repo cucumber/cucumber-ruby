@@ -101,6 +101,11 @@ module Cucumber
         table2.hashes.first[:three].should == '4444'
       end
 
+      it "should allow renaming columns using regexp" do
+        table2 = @table.map_headers(/one|uno/ => :three)
+        table2.hashes.first[:three].should == '4444'
+      end
+
       it "should copy column mappings when mapping headers" do
         @table.map_column!('one') { |v| v.to_i }
         table2 = @table.map_headers('one' => 'three')
@@ -227,7 +232,7 @@ module Cucumber
           }
         end
 
-        it "should allow column mapping before diffing" do
+        it "should allow column mapping of target before diffing" do
           t1 = Table.new([
             ['name',  'male'],
             ['aslak', 'true']
@@ -238,6 +243,25 @@ module Cucumber
             ['aslak', true]
           ])
           t1.diff!(t2)
+          t1.to_s(:indent => 12, :color => false).should == %{
+            |     name  |     male |
+            |     aslak |     true |
+          }
+        end
+
+        it "should allow column mapping of argument before diffing" do
+          t1 = Table.new([
+            ['name',  'male'],
+            ['aslak', true]
+          ])
+          t1.map_column!('male') { 
+            'true'
+          }
+          t2 = Table.new([
+            ['name',  'male'],
+            ['aslak', 'true']
+          ])
+          t2.diff!(t1)
           t1.to_s(:indent => 12, :color => false).should == %{
             |     name  |     male |
             |     aslak |     true |

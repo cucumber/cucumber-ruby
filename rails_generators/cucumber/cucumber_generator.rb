@@ -20,7 +20,7 @@ class CucumberGenerator < Rails::Generator::Base
 
       m.directory 'features/support'
 
-      if options[:spork]
+      if spork?
         m.template  'spork_env.rb',     'features/support/env.rb'
       else
         m.template  'env.rb',           'features/support/env.rb'
@@ -39,6 +39,10 @@ class CucumberGenerator < Rails::Generator::Base
 
   def framework
     options[:framework] || :rspec
+  end
+  
+  def spork?
+    options[:spork]
   end
 
 protected

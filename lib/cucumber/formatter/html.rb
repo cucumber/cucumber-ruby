@@ -1,10 +1,4 @@
-require 'erb'
-begin
-  require 'builder'
-rescue LoadError
-  gem 'builder'
-  require 'builder'
-end
+require 'cucumber/formatter/ordered_xml_markup'
 require 'cucumber/formatter/duration'
 
 module Cucumber
@@ -20,7 +14,7 @@ module Cucumber
       end
       
       def create_builder(io)
-        Builder::XmlMarkup.new(:target => io, :indent => 0)
+        OrderedXmlMarkup.new(:target => io, :indent => 0)
       end
       
       def visit_features(features)
@@ -65,12 +59,20 @@ module Cucumber
         end
       end
 
+      def visit_tags(tags)
+        super
+        @tag_spacer = nil
+      end
+
       def visit_tag_name(tag_name)
+        @builder.text!(@tag_spacer) if @tag_spacer
+        @tag_spacer = ' '
         @builder.span("@#{tag_name}", :class => 'tag')
       end
 
       def visit_feature_name(name)
         lines = name.split(/\r?\n/)
+        return if lines.empty?
         @builder.h2 do |h2|
           @builder.span(lines[0], :class => 'val')
         end
@@ -192,7 +194,7 @@ module Cucumber
 
       def visit_py_string(string)
         @builder.pre(:class => 'val') do |pre|
-          @builder.text!('  ' + string)
+          @builder << string.gsub("\n", '&#x000A;')
         end
       end
 

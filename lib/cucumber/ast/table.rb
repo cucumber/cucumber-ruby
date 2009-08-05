@@ -126,23 +126,30 @@ module Cucumber
         [:table, *cells_rows.map{|row| row.to_sexp}]
       end
 
-      # Redefines the table headers. This makes it
-      # possible to use prettier header names in the features. Example:
+      # Redefines the table headers. This makes it possible to use
+      # prettier and more flexible header names in the features.  The
+      # keys of +mappings+ are Strings or regular expressions
+      # (anything that responds to #=== will work) that may match
+      # column headings in the table.  The values of +mappings+ are
+      # desired names for the columns.
+      #
+      # Example:
       #
       #   | Phone Number | Address |
       #   | 123456       | xyz     |
       #   | 345678       | abc     |
       #
-      # A StepDefinition receiving this table can then map the columns:
+      # A StepDefinition receiving this table can then map the columns 
+      # with both Regexp and String:
       #
-      #   mapped_table = table.map_columns('Phone Number' => :phone, 'Address' => :address)
-      #   hashes = mapped_table.hashes
+      #   table.map_headers!(/phone( number)?/i => :phone, 'Address' => :address)
+      #   table.hashes
       #   # => [{:phone => '123456', :address => 'xyz'}, {:phone => '345678', :address => 'abc'}]
       #
       def map_headers!(mappings)
         header_cells = cell_matrix[0]
         mappings.each_pair do |pre, post|
-          header_cell = header_cells.detect{|cell| cell.value == pre}
+          header_cell = header_cells.detect{|cell| pre === cell.value}
           header_cell.value = post
           if @conversion_procs.has_key?(pre)
             @conversion_procs[post] = @conversion_procs.delete(pre)
@@ -190,7 +197,7 @@ module Cucumber
       #
       # Since all tables that are passed to StepDefinitions always have String
       # objects in their cells, you may want to use #map_column! before calling
-      # #diff!
+      # #diff!. You can use #map_column! on either of the tables.
       #
       # An exception is raised if there are missing rows or columns, or
       # surplus rows. An error is <em>not</em> raised for surplus columns.
@@ -212,6 +219,7 @@ module Cucumber
         options = {:missing_row => true, :surplus_row => true, :missing_col => true, :surplus_col => false}.merge(options)
 
         other_table = ensure_table(other_table)
+        other_table.convert_columns!
         ensure_green!
 
         original_width = cell_matrix[0].length
@@ -455,12 +463,17 @@ module Cucumber
       def ensure_table(table_or_array)
         return table_or_array if Table === table_or_array
         table_or_array = hashes_to_array(table_or_array) if Hash === table_or_array[0]
+        table_or_array = enumerable_to_array(table_or_array) unless Array == table_or_array[0]
         Table.new(table_or_array)
       end
 
       def hashes_to_array(hashes)
         header = hashes[0].keys
         [header] + hashes.map{|hash| header.map{|key| hash[key]}}
+      end
+
+      def enumerable_to_array(rows)
+        rows.map{|row| row.map{|cell| cell}}
       end
 
       def ensure_green!
