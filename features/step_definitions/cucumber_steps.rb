@@ -39,7 +39,6 @@ Given /^I am not running (?:.*) in the background$/ do
   # no-op
 end
 
-
 When /^I run cucumber (.*)$/ do |cucumber_opts|
   run "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} --no-color #{cucumber_opts}"
 end
@@ -75,23 +74,17 @@ Then /^the output should be$/ do |text|
   last_stdout.should == text
 end
 
-Then /^"(.*)" should contain XML$/ do |file, xml|
-  t = Tempfile.new('cucumber-junit')
-  t.write(xml)
-  t.flush
-  t.close
-  cmd = "diffxml #{t.path} #{file}"
-  diff = `#{cmd}`
-  if diff =~ /<delta>/m
-    raise diff + "\nXML WAS:\n" + IO.read(file)
-  end
-end
-
-Then /^"(.*)" should contain$/ do |file, text|
+Then /^"([^\"]*)" should contain$/ do |file, text|
   strip_duration(IO.read(file)).should == text
 end
 
-Then /^"(.*)" should match$/ do |file, text|
+Then /^"([^\"]*)" with junit duration "([^\"]*)" should contain$/ do |actual_file, duration_replacement, text|
+  actual = IO.read(actual_file)
+  actual = replace_junit_duration(actual, duration_replacement)
+  actual.should == text
+end
+
+Then /^"([^\"]*)" should match$/ do |file, text|
   IO.read(file).should =~ Regexp.new(text)
 end
 
@@ -119,7 +112,7 @@ Then /^STDERR should be empty$/ do
   last_stderr.should == ""
 end
 
-Then /^"(.*)" should exist$/ do |file|
+Then /^"([^\"]*)" should exist$/ do |file|
   File.exists?(file).should be_true
   FileUtils.rm(file)
 end

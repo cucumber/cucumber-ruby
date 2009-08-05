@@ -2,6 +2,7 @@
 
 === New features
 * script/generate cucumber sets up 'cucumber:ok' and 'cucumber:wip' tasks and deprecates 'features'. More Kanban love. (#344 Aslak Hellesøy)
+* Better JUnit formatter: feature->testsuite, scenario->testcase. Better timing and support for background and scenario outline. (Mads Buus Westmark)
 * Added examples/python that uses rubypython. (Aslak Hellesøy)
 * Document builtin formatters with --help. (#406 Aslak Hellesøy)
 
