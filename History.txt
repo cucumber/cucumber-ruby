@@ -1,6 +1,7 @@
 == (In Git)
 
 === New features
+* Better JUnit formatter: feature->testsuite, scenario->testcase. Better timing and support for background and scenario outline. (Mads Buus Westmark)
 * Added examples/python that uses rubypython. (Aslak Hellesøy)
 * Document builtin formatters with --help. (#406 Aslak Hellesøy)
 
