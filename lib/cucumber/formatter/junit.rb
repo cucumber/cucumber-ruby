@@ -49,8 +49,10 @@ module Cucumber
         @feature_name = lines[0].sub(/Feature\:/, '').strip
       end
 
-      def visit_scenario_name(keyword, name, file_colon_line, source_indent)
-        @scenario = name #unless keyword.include?('Scenario Outline')
+      def visit_scenario_name(keyword, name, file_colon_line, source_indent)   
+        scenario_name = name.strip.delete('.\r\n')
+        scenario_name = "Unnamed scenario" if name == ""
+        @scenario = scenario_name
         @outline = keyword.include?('Scenario Outline')
         @output = "Scenario#{ " outline" if @outline}: #{@scenario}\n\n"
       end
@@ -111,6 +113,5 @@ module Cucumber
           (["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n")
         end
     end
-
   end
 end
