@@ -1,9 +1,4 @@
-begin
-  require 'builder'
-rescue LoadError
-  gem 'builder'
-  require 'builder'
-end
+require 'cucumber/formatter/ordered_xml_markup'
 
 module Cucumber
   module Formatter
@@ -18,11 +13,11 @@ module Cucumber
 
       def visit_feature(feature)
         @failures = @errors = @tests = 0
-        @builder = Builder::XmlMarkup.new( :indent => 2 )
+        @builder = OrderedXmlMarkup.new( :indent => 2 )
         @time = 0
         super
 
-        @testsuite = Builder::XmlMarkup.new( :indent => 2 )
+        @testsuite = OrderedXmlMarkup.new( :indent => 2 )
         @testsuite.instruct!
         @testsuite.testsuite(
           :failures => @failures,

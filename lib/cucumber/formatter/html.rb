@@ -1,10 +1,4 @@
-require 'erb'
-begin
-  require 'builder'
-rescue LoadError
-  gem 'builder'
-  require 'builder'
-end
+require 'cucumber/formatter/ordered_xml_markup'
 require 'cucumber/formatter/duration'
 
 module Cucumber
@@ -20,7 +14,7 @@ module Cucumber
       end
       
       def create_builder(io)
-        Builder::XmlMarkup.new(:target => io, :indent => 0)
+        OrderedXmlMarkup.new(:target => io, :indent => 0)
       end
       
       def visit_features(features)

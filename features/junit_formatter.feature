@@ -15,12 +15,12 @@ Feature: JUnit output formatter
       """
     And "examples/junit/tmp/TEST-one_passing_one_failing.xml" with junit duration "0.005" should contain
       """
-      <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite tests="2" name="One passing scenario, one failing scenario" failures="1" time="0.005" errors="0">
-      <testcase name="Passing" time="0.005" classname="One passing scenario, one failing scenario.Passing">
+      <?xml encoding="UTF-8" version="1.0"?>
+      <testsuite errors="0" failures="1" name="One passing scenario, one failing scenario" tests="2" time="0.005">
+      <testcase classname="One passing scenario, one failing scenario.Passing" name="Passing" time="0.005">
       </testcase>
-      <testcase name="Failing" time="0.005" classname="One passing scenario, one failing scenario.Failing">
-        <failure type="failed" message="failed Failing">
+      <testcase classname="One passing scenario, one failing scenario.Failing" name="Failing" time="0.005">
+        <failure message="failed Failing" type="failed">
       Scenario: Failing
 
       Given a failing scenario
@@ -43,10 +43,10 @@ Feature: JUnit output formatter
       """
     And "examples/junit/tmp/TEST-pending.xml" with junit duration "0.009" should contain
       """
-      <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite tests="1" name="Pending step" failures="1" time="0.009" errors="0">
-      <testcase name="Pending" time="0.009" classname="Pending step.Pending">
-        <failure type="pending" message="pending Pending">
+      <?xml encoding="UTF-8" version="1.0"?>
+      <testsuite errors="0" failures="1" name="Pending step" tests="1" time="0.009">
+      <testcase classname="Pending step.Pending" name="Pending" time="0.009">
+        <failure message="pending Pending" type="pending">
       Scenario: Pending
 
       TODO (Cucumber::Pending)
