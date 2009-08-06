@@ -109,8 +109,10 @@ module Cucumber
         return unless options[:wip]
         passed = step_mother.scenarios(:passed)
         if passed.any?
-          @io.puts "\nThe --wip switch was used, so I didn't expect anything to pass. These scenarios passed:"
+          @io.puts format_string("\nThe --wip switch was used, so I didn't expect anything to pass. These scenarios passed:", :failed)
           print_elements(passed, :passed, "scenarios")
+        else
+          @io.puts format_string("\nThe --wip switch was used, so the failures were expected. All is good.\n", :passed)
         end
       end
 

@@ -1,6 +1,7 @@
 == (In Git)
 
 === New Features
+* An explanation of why failures are ok is printed when --wip is used. (Aslak Hellesøy)
 * Added cucumber alias for cucumber:ok in Rails Rake tasks. (Aslak Hellesøy)
 
 == 0.3.94 2009-08-06
