@@ -230,7 +230,6 @@ module Cucumber
           @options[:source]   = true if @options[:source].nil?
         end
 
-
         extract_environment_variables
         @options[:paths] = @args.dup #whatver is left over
 
@@ -239,8 +238,6 @@ module Cucumber
 
         self
       end
-
-
 
     protected
 
@@ -354,12 +351,12 @@ module Cucumber
       end
 
       def print_profile_information
-      return if @skip_profile_information || @profiles.empty?
-      profiles_sentence = ''
-      profiles_sentence = @profiles.size == 1 ? @profiles.first :
-        "#{@profiles[0...-1].join(', ')} and #{@profiles.last}"
+        return if @skip_profile_information || @profiles.empty?
+        profiles_sentence = ''
+        profiles_sentence = @profiles.size == 1 ? @profiles.first :
+          "#{@profiles[0...-1].join(', ')} and #{@profiles.last}"
 
-      @out_stream.puts "Using the #{profiles_sentence} profile#{'s' if @profiles.size> 1}..."
+        @out_stream.puts "Using the #{profiles_sentence} profile#{'s' if @profiles.size> 1}..."
       end
 
       def default_options

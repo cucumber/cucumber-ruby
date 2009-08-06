@@ -57,8 +57,6 @@ Defined profiles in cucumber.yml:
         return @cucumber_yml
       end
 
-     
-
     end
   end
 end
