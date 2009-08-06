@@ -18,8 +18,10 @@ begin
     desc 'Run all features'
     task :all => [:ok, :wip]
   end
+  desc 'Alias for cucumber:ok'
+  task :cucumber => 'cucumber:ok'
 
-  task :features => 'cucumber:ok' do
+  task :features => :cucumber do
     STDERR.puts "*** The 'features' task is deprecated. See rake -T cucumber ***"
   end
 rescue LoadError
