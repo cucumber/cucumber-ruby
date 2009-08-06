@@ -45,7 +45,11 @@ module Cucumber
       end
 
       def tag_count(tag)
-        @tags.count(tag)
+        if @tags.respond_to?(:count)
+          @tags.count(tag) # 1.9
+        else
+          @tags.select{|t| t == tag}.length  # 1.8
+        end
       end
 
       def feature_and_children_tag_count(tag)
