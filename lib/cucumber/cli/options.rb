@@ -369,7 +369,6 @@ module Cucumber
         {
           :strict       => false,
           :require      => [],
-          :lang         => nil,
           :dry_run      => false,
           :formats      => [],
           :excludes     => [],

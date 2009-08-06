@@ -209,6 +209,10 @@ module Cli
           options[:source].should be_false
         end
 
+        it "uses the language from profile when none is specified on the command line" do
+          given_cucumber_yml_defined_as({'foo' => '--language fr'})
+          after_parsing('-p foo') {options[:lang].should == 'fr'}
+        end
       end
 
       context '-P or --no-profile' do

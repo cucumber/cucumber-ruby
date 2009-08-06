@@ -6,6 +6,7 @@
 
 === Bug Fixes
 * Resolved infinite loop problem when --drb was defined in a profile. (#408 Ben Mabey)
+* --langauge picked up from profiles again. (#409 Ben Mabey)
 
 == 0.3.94 2009-08-06
 
