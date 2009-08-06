@@ -27,6 +27,7 @@ Feature: JUnit output formatter
 
       Message:
        (RuntimeError)
+      ./features/step_definitions/steps.rb:6:in `/a failing scenario/'
       features/one_passing_one_failing.feature:7:in `Given a failing scenario'  </failure>
       </testcase>
       </testsuite>
@@ -49,6 +50,7 @@ Feature: JUnit output formatter
       Scenario: Pending
 
       TODO (Cucumber::Pending)
+      ./features/step_definitions/steps.rb:10:in `/a pending step/'
       features/pending.feature:4:in `Given a pending step'  </failure>
       </testcase>
       </testsuite>

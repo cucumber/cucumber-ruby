@@ -18,6 +18,11 @@ module Cucumber
         print_summary(features)
       end
 
+      def visit_feature_element(feature_element)
+        record_tag_occurrences(feature_element, @options)
+        super
+      end
+
       def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         progress(status)
         @status = status
@@ -36,6 +41,7 @@ module Cucumber
         print_stats(features)
         print_snippets(@options)
         print_passing_wip(@options)
+        print_tag_limit_warnings(@options)
       end
 
       CHARS = {
@@ -51,7 +57,7 @@ module Cucumber
         @io.print(format_string(char, status))
         @io.flush
       end
-      
+
       def table_header_cell?(status)
         status == :skipped_param
       end

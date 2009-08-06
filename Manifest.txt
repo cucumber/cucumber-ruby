@@ -167,6 +167,10 @@ examples/junit/features/one_passing_one_failing.feature
 examples/junit/features/pending.feature
 examples/junit/features/step_definitions/steps.rb
 examples/pure_java/README.textile
+examples/python/features/fibonacci.feature
+examples/python/features/step_definitions/fib_steps.rb
+examples/python/features/support/env.rb
+examples/python/lib/fib.py
 examples/selenium/Rakefile
 examples/selenium/features/search.feature
 examples/selenium/features/step_definitons/search_steps.rb
@@ -196,8 +200,10 @@ examples/self_test/features/sample.feature
 examples/self_test/features/search_sample.feature
 examples/self_test/features/step_definitions/sample_steps.rb
 examples/self_test/features/support/env.rb
+examples/self_test/features/tags_sample.feature
 examples/self_test/features/tons_of_cukes.feature
 examples/self_test/features/undefined_multiline_args.feature
+examples/sinatra/README.textile
 examples/sinatra/Rakefile
 examples/sinatra/app.rb
 examples/sinatra/features/add.feature
@@ -329,6 +335,7 @@ lib/cucumber/formatter/cucumber.sass
 lib/cucumber/formatter/duration.rb
 lib/cucumber/formatter/html.rb
 lib/cucumber/formatter/junit.rb
+lib/cucumber/formatter/ordered_xml_markup.rb
 lib/cucumber/formatter/pretty.rb
 lib/cucumber/formatter/profile.rb
 lib/cucumber/formatter/progress.rb
