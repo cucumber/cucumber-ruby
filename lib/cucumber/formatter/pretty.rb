@@ -96,9 +96,10 @@ module Cucumber
       end
 
       def visit_examples_name(keyword, name)
-        names = name.empty? ? [name] : name.split("\n")
+        names = name.strip.empty? ? [name.strip] : name.split("\n") 
+        
         @io.puts("\n    #{keyword} #{names[0]}")
-        names[1..-1].each {|s| @io.puts "      #{s}" }
+        names[1..-1].each {|s| @io.puts "      #{s}" } unless names.empty?
         @io.flush
         @indent = 6
         @scenario_indent = 6
