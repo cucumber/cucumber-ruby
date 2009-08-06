@@ -14,6 +14,7 @@ module Cucumber
         @err = StringIO.new
         Kernel.stub!(:exit).and_return(nil)
         File.stub!(:exist?).and_return(false) # When Configuration checks for cucumber.yml
+        Dir.stub!(:[]).and_return([]) # to prevent cucumber's features dir to being laoded
       end
 
       describe "verbose mode" do

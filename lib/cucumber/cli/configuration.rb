@@ -50,10 +50,6 @@ module Cucumber
         @options[:drb]
       end
 
-      def paths
-        @options[:paths]
-      end
-
       def build_formatter_broadcaster(step_mother)
         return Formatter::Pretty.new(step_mother, nil, @options) if @options[:autoformat]
         formatters = @options[:formats].map do |format_and_out|
@@ -107,7 +103,7 @@ module Cucumber
       end
 
       def feature_files
-        potential_feature_files = @options[:paths].map do |path|
+        potential_feature_files = paths.map do |path|
           path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
           path = path.chomp('/')
           File.directory?(path) ? Dir["#{path}/**/*.feature"] : path
@@ -117,6 +113,10 @@ module Cucumber
       end
 
     private
+
+      def paths
+        @options[:paths].empty? ? ['features'] : @options[:paths]
+      end
 
       def set_environment_variables
         @options[:env_vars].each do |var, value|

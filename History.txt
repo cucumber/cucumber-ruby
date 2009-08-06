@@ -5,9 +5,10 @@
 * Added cucumber alias for cucumber:ok in Rails Rake tasks. (Aslak Hellesøy)
 
 === Bug Fixes
-* Resolved infinite loop problem when --drb was defined in a profile. (#408 Ben Mabey)
-* --langauge picked up from profiles again. (#409 Ben Mabey)
+* Restore 'features' as the default feature running path. (#412 Ben Mabey)
 * --drb degrades gracefuly when no drb server is running and no formatter is provided. (#410 Ben Mabey)
+* --langauge picked up from profiles again. (#409 Ben Mabey)
+* Resolved infinite loop problem when --drb was defined in a profile. (#408 Ben Mabey)
 
 == 0.3.94 2009-08-06
 

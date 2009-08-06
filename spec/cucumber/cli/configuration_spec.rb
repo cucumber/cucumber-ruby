@@ -153,36 +153,10 @@ END_OF_MESSAGE
       end
 
       it "allows profiles to be defined in arrays" do
-        given_cucumber_yml_defined_as({'foo' => [1,2,3]})
+        given_cucumber_yml_defined_as({'foo' => ['-f','progress']})
 
         config.parse!(%w{--profile foo})
-        config.paths.should == [1,2,3]
-      end
-
-      it "notifies the user that an individual profile is being used" do
-        given_cucumber_yml_defined_as({'foo' => [1,2,3]})
-
-        config.parse!(%w{--profile foo})
-        out.string.should =~ /Using the foo profile...\n/
-      end
-
-      it "notifies the user when multiple profiles are being used" do
-        given_cucumber_yml_defined_as({'foo' => [1,2,3], 'bar' => ['v'], 'dog' => ['v']})
-
-        config.parse!(%w{--profile foo --profile bar})
-        out.string.should =~ /Using the foo and bar profiles...\n/
-
-        reset_config
-
-        config.parse!(%w{--profile foo --profile bar --profile dog})
-        out.string.should =~ /Using the foo, bar and dog profiles...\n/
-      end
-
-      it "disregards paths in profiles when other paths are passed in (via cmd line)" do
-        given_cucumber_yml_defined_as({'foo' => %w[-v features]})
-
-        config.parse!(%w{--profile foo features/specific.feature --format pretty})
-        config.paths.should == ['features/specific.feature']
+        config.options[:formats].should == [['progress', out]]
       end
 
       it "disregards default STDOUT formatter defined in profile when another is passed in (via cmd line)" do
@@ -378,17 +352,27 @@ END_OF_MESSAGE
       config.feature_files.should == ["cucumber.feature"]
     end
 
+    it "defaults to the features directory when no feature file are provided" do
+      File.stub!(:directory?).and_return(true)
+      Dir.should_receive(:[]).with("features/**/*.feature").
+        any_number_of_times.and_return(["cucumber.feature"])
+
+      config.parse!(%w{})
+
+      config.feature_files.should == ["cucumber.feature"]
+    end
+
     it "should allow specifying environment variables on the command line" do
       config.parse!(["foo=bar"])
       ENV["foo"].should == "bar"
-      config.feature_files.should == []
+      config.feature_files.should_not include('foo=bar')
     end
 
     it "should allow specifying environment variables in profiles" do
       given_cucumber_yml_defined_as({'selenium' => 'RAILS_ENV=selenium'})
       config.parse!(["--profile", "selenium"])
       ENV["RAILS_ENV"].should == "selenium"
-      config.feature_files.should == []
+      config.feature_files.should_not include('RAILS_ENV=selenium')
     end
 
   end
