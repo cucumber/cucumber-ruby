@@ -101,7 +101,6 @@ module Cucumber
         begin
           gem 'genki-ruby-terminfo'
           require 'terminfo'
-          puts TermInfo.default_object.tigetnum("colors")
           case TermInfo.default_object.tigetnum("colors")
           when 0
             raise "Your terminal doesn't support colours"
