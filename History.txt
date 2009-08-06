@@ -4,6 +4,9 @@
 * An explanation of why failures are ok is printed when --wip is used. (Aslak Hellesøy)
 * Added cucumber alias for cucumber:ok in Rails Rake tasks. (Aslak Hellesøy)
 
+=== Bug Fixes
+* Resolved infinite loop problem when --drb was defined in a profile. (#408 Ben Mabey)
+
 == 0.3.94 2009-08-06
 
 Kanban take II.

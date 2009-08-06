@@ -28,7 +28,9 @@ module Cucumber
       ]
       DRB_FLAG = '--drb'
       PROFILE_SHORT_FLAG = '-p'
+      NO_PROFILE_SHORT_FLAG = '-P'
       PROFILE_LONG_FLAG = '--profile'
+      NO_PROFILE_LONG_FLAG = '--no-profile'
 
       attr_reader :paths
 
@@ -56,7 +58,8 @@ module Cucumber
       end
 
       def expanded_args_without_drb
-        @expanded_args_without_drb ||= (
+        return @expanded_args_without_drb  if @expanded_args_without_drb
+        @expanded_args_without_drb = (
           previous_flag_was_profile = false
           @expanded_args.reject do |arg|
             if previous_flag_was_profile
@@ -70,6 +73,9 @@ module Cucumber
             arg == DRB_FLAG || @overridden_paths.include?(arg)
           end
         )
+
+        @expanded_args_without_drb.push("--no-profile") unless @expanded_args_without_drb.include?(NO_PROFILE_LONG_FLAG) || @expanded_args_without_drb.include?(NO_PROFILE_SHORT_FLAG)
+        @expanded_args_without_drb
       end
 
       def parse!(args)
@@ -151,7 +157,7 @@ module Cucumber
               "then only the ones from the command line are used.") do |v|
             @profiles << v
           end
-          opts.on('-P', '--no-profile',
+          opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG,
             "Disables all profile laoding to avoid using the 'default' profile.") do |v|
             @disable_profile_loading = true
           end

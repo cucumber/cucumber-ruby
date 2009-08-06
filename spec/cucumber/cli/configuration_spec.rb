@@ -114,50 +114,6 @@ module Cli
       end
     end
 
-    context '--drb' do
-      it "removes the --drb flag from the args" do
-        args = %w{features --drb}
-        config.parse!(args)
-        args.should == %w{features}
-      end
-
-      it "keeps all other flags intact" do
-        args = %w{features --drb --format profile}
-        config.parse!(args)
-        args.should == %w{features --format profile}
-      end
-
-    end
-
-    context '--drb in a profile' do
-      it "removes the --drb flag from the args" do
-        given_cucumber_yml_defined_as({'server' => '--drb features'})
-
-        args = %w{--profile server}
-        config.parse!(args)
-        args.should == %w{features}
-      end
-
-      it "keeps all other flags intact from all profiles involved" do
-        given_cucumber_yml_defined_as({'server' => '--drb features --profile nested',
-                                       'nested' => '--verbose'})
-
-        args = %w{--profile server --format profile}
-        config.parse!(args)
-        args.should == %w{--format profile features --verbose}
-      end
-
-    end
-
-    context '--drb in the default profile and no arguments specified' do
-      it "expands the profile's arguments into the args excpet for --drb" do
-        given_cucumber_yml_defined_as({'default' => '--drb features --format pretty'})
-        args = []
-        config.parse!(args)
-        args.should == %w{features --format pretty}
-      end
-    end
-
     it "uses the default profile when no profile is defined" do
       given_cucumber_yml_defined_as({'default' => '--require some_file'})
 
