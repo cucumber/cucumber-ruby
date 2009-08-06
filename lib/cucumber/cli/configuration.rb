@@ -18,12 +18,12 @@ module Cucumber
       def parse!(args)
         @args = args
         @options.parse!(args)
+        arrange_formats
         raise("You can't use both --strict and --wip") if strict? && wip?
 
         return @args.replace(@options.expanded_args_without_drb) if drb?
 
         set_environment_variables
-        arrange_formats
       end
 
       def verbose?
