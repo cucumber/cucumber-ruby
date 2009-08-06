@@ -96,16 +96,18 @@ module Cucumber
           @time += duration
           classname = "#{@feature_name}.#{@scenario}"
           name = "#{@scenario}#{suffix}"
-          @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
-            if status != :passed
-              @builder.failure(:message => "#{status.to_s} #{name}", :type => status.to_s) do
-                @builder.text! @output
-                @builder.text!(format_exception(exception)) if exception
+          if status == :passed || status == :failed
+            @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
+              if status == :failed
+                @builder.failure(:message => "#{status.to_s} #{name}", :type => status.to_s) do
+                  @builder.text! @output
+                  @builder.text!(format_exception(exception)) if exception
+                end
+                @failures += 1
               end
-              @failures += 1
             end
+            @tests += 1
           end
-          @tests += 1
         end
 
         def format_exception(exception)
