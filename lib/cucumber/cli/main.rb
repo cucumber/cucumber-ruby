@@ -11,6 +11,8 @@ require 'cucumber/cli/drb_client'
 module Cucumber
   module Cli
     class Main
+      FAILURE = 1
+
       class << self
         def step_mother
           @step_mother
@@ -32,7 +34,7 @@ module Cucumber
         @out_stream   = out_stream == STDOUT ? Formatter::ColorIO.new : out_stream
         @error_stream = error_stream
       end
-      
+
       def execute!(step_mother)
         trap_interrupt
         if configuration.drb?
@@ -56,15 +58,30 @@ module Cucumber
         step_mother.visitor = visitor # Needed to support World#announce
         visitor.visit_features(features)
 
-        failure = if configuration.wip?
-          step_mother.scenarios(:passed).any?
-        else
-          step_mother.scenarios(:failed).any? || 
-          (configuration.strict? && step_mother.steps(:undefined).any?)
-        end
+        failure = if exceeded_tag_limts?(features)
+            FAILURE
+          elsif configuration.wip?
+            step_mother.scenarios(:passed).any?
+          else
+            step_mother.scenarios(:failed).any? ||
+            (configuration.strict? && step_mother.steps(:undefined).any?)
+          end
       rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
         @error_stream.puts e.message
         true
+      end
+
+      def exceeded_tag_limts?(features)
+        exceeded = false
+        configuration.options[:include_tags].each do |tag, limit|
+          unless limit.nil?
+            tag_count = features.tag_count(tag)
+            if tag_count > limit.to_i
+              exceeded = true
+            end
+          end
+        end
+        exceeded
       end
 
       def load_plain_text_features
@@ -85,7 +102,7 @@ module Cucumber
 
       def configuration
         return @configuration if @configuration
-      
+
         @configuration = Configuration.new(@out_stream, @error_stream)
         @configuration.parse!(@args)
         @configuration

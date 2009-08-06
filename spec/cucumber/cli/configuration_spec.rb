@@ -361,7 +361,8 @@ END_OF_MESSAGE
 
     it "should accept --no-color option" do
       Term::ANSIColor.should_receive(:coloring=).with(false)
-      config.parse!(%w[--no-color])
+      config = Configuration.new(StringIO.new)
+      config.parse!(['--no-color'])
     end
 
     describe "--backtrace" do

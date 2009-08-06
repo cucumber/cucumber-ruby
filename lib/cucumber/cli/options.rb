@@ -127,8 +127,8 @@ module Cucumber
             "exclude features or scenarios having that tag. Tags can be specified",
             "with or without the @ prefix.") do |v|
             include_tags, exclude_tags = *parse_tags(v)
-            @options[:include_tags] += include_tags
-            @options[:exclude_tags] += exclude_tags
+            @options[:include_tags].merge!(include_tags)
+            @options[:exclude_tags].merge!(exclude_tags)
           end
           opts.on("-n NAME", "--name NAME",
             "Only execute the feature elements which match part of the given name.",
@@ -266,7 +266,16 @@ module Cucumber
         # Strip @
         includes = includes.map{|tag| Ast::Tags.strip_prefix(tag)}
         excludes = excludes.map{|tag| Ast::Tags.strip_prefix(tag)}
-        [includes, excludes]
+        [parse_tag_limits(includes), parse_tag_limits(excludes)]
+      end
+ 
+      def parse_tag_limits(includes)
+        dict = {}
+        includes.each do |tag|
+          tag, limit = tag.split(':')
+          dict[tag] = limit.nil? ? limit : limit.to_i
+        end
+        dict
       end
 
       def disable_profile_loading?
@@ -303,8 +312,8 @@ module Cucumber
       def reverse_merge(other_options)
         @options = other_options.options.merge(@options)
         @options[:require] += other_options[:require]
-        @options[:include_tags] += other_options[:include_tags]
-        @options[:exclude_tags] += other_options[:exclude_tags]
+        @options[:include_tags].merge! other_options[:include_tags]
+        @options[:exclude_tags].merge! other_options[:exclude_tags]
         @options[:env_vars] = other_options[:env_vars].merge(@options[:env_vars])
         if @options[:paths].empty?
           @options[:paths] = other_options[:paths]
@@ -357,8 +366,8 @@ module Cucumber
           :dry_run      => false,
           :formats      => [],
           :excludes     => [],
-          :include_tags => [],
-          :exclude_tags => [],
+          :include_tags => {},
+          :exclude_tags => {},
           :name_regexps => [],
           :env_vars     => {},
           :diff_enabled => true

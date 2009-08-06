@@ -10,7 +10,7 @@ module Cucumber
       def self.strip_prefix(tag_name)
         tag_name =~ /^@(.*)/ ? $1 : tag_name
       end
-    
+
       def initialize(line, tag_names)
         @line, @tag_names = line, tag_names
       end
@@ -24,6 +24,14 @@ module Cucumber
 
       def accept_hook?(hook)
         hook.matches_tag_names?(@tag_names)
+      end
+
+      def count(tag)
+        if @tag_names.respond_to?(:count)
+          @tag_names.count(tag) # 1.9
+        else
+          @tag_names.select{|t| t == tag}.length  # 1.8
+        end
       end
 
       def to_sexp

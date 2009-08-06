@@ -2,8 +2,9 @@ module Cucumber
   class Filter
     def initialize(lines, options)
       @lines = lines
-      @include_tags = options[:include_tags] || []
-      @exclude_tags = options[:exclude_tags] || []
+
+      @include_tags = options[:include_tags] ? options[:include_tags].keys : []
+      @exclude_tags = options[:exclude_tags] ? options[:exclude_tags].keys : []
       @name_regexps = options[:name_regexps] || []
     end
 
@@ -14,7 +15,7 @@ module Cucumber
     end
 
     def accept_example?(syntax_node, outline)
-      (at_line?(syntax_node) || outline_at_line?(outline)) && 
+      (at_line?(syntax_node) || outline_at_line?(outline)) &&
       (matches_names?(syntax_node) || outline_matches_names?(outline))
     end
     

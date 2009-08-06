@@ -44,6 +44,19 @@ module Cucumber
         "#{@file}:#{line}"
       end
 
+      def tag_count(tag)
+        if @tags.respond_to?(:count)
+          @tags.count(tag) # 1.9
+        else
+          @tags.select{|t| t == tag}.length  # 1.8
+        end
+      end
+
+      def feature_and_children_tag_count(tag)
+        children_tag_count = @feature_elements.inject(0){|count, feature_element| count += feature_element.tag_count(tag)}
+        children_tag_count + tag_count(tag)
+      end
+
       def short_name
         first_line = name.split(/\n/)[0]
         if first_line =~ /#{language.keywords('feature', true)}:(.*)/
