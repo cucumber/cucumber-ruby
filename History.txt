@@ -1,6 +1,22 @@
-== (In Git)
+== 0.3.94 2009-08-06
+
+Kanban take II.
+
+Release 0.3.6 introduced a new --wip switch that can be used to limit work in progress
+(WIP). Limiting WIP is central for Kanban Software Development (http://www.infoq.com/articles/hiranabe-lean-agile-kanban).
+
+However, this feature went mostly unnoticed, and because we think it's so great we have decided
+to make it the default for Rails projects. When you bootstrap your Rails project for Cucumber
+you will now get 2 Cucumber Rake tasks for Kanban development:
+
+  cucumber:ok  : Run features that should pass. This runs your "good,old" features
+  cucumber:wip : Run the features you're working on that don't pass yet. Tag them with @wip. Max 2!
+
+So upgrade today and get into the habit of tagging new features with @wip (or invent your own tags).
+You'll achieve better flow this way.
 
 === New features
+* Support limiting the number of feature elements with certain tags (#353 Joseph Wilk) 
 * script/generate cucumber sets up 'cucumber:ok' and 'cucumber:wip' tasks and deprecates 'features'. More Kanban love. (#344 Aslak Hellesøy)
 * Better JUnit formatter: feature->testsuite, scenario->testcase. Better timing and support for background and scenario outline. (Mads Buus Westmark)
 * Added examples/python that uses rubypython. (Aslak Hellesøy)
@@ -10,7 +26,6 @@
   * ruby-terminfo is available as genki-ruby-terminfo gem from github.
 * Document builtin formatters with --help. (#406 Aslak Hellesøy)
 * Added support for using regular expressions when mapping table headers.  (Peter Williams)
-* Support limiting the number of feature elements with certain tags (#353 Joseph Wilk) 
 
 == 0.3.93 2009-08-03
 

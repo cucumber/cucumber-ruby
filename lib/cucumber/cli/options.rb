@@ -123,9 +123,13 @@ module Cucumber
           end
           opts.on("-t TAGS", "--tags TAGS",
             "Only execute the features or scenarios with the specified tags.",
-            "TAGS must be comma-separated without spaces. Prefix tags with ~ to",
-            "exclude features or scenarios having that tag. Tags can be specified",
-            "with or without the @ prefix.") do |v|
+            "TAGS must be comma-separated without spaces. They can be",
+            "specified with or without the @ prefix. Example: --tags dev\n",
+            "Negative tags: Prefix tags with ~ to exclude features or scenarios",
+            "having that tag.\n",
+            "Limit WIP: Positive tags can be given a threshold to limit the",
+            "number of occurrences. Example: --tags qa:3 will fail if there",
+            "are more than 3 occurrences of the @qa tag.") do |v|
             include_tags, exclude_tags = *parse_tags(v)
             @options[:include_tags].merge!(include_tags)
             @options[:exclude_tags].merge!(exclude_tags)
