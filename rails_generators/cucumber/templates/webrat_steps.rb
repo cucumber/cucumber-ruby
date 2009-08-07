@@ -167,3 +167,7 @@ Then /^I should be on (.+)$/ do |page_name|
   assert_equal path_to(page_name), URI.parse(current_url).path
 <% end -%>
 end
+
+Then /^show me the page$/ do
+  save_and_open_page
+end

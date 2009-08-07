@@ -1,8 +1,17 @@
 == (In Git)
 
+This release improves Webrat support for table-like HTML markup. This means that you can easily get the
+2-dimensional data from HTML table, dl, ol and ul elements. This is particularly useful for comparing
+data in your HTML with a Cucumber table using Cucumber::Ast::Table#diff!
+
 === New Features
+* The object returned by element_at (Webrat::Element) has a #to_table that works for table, dl, ol and ul. (Aslak Hellesøy)
 * An explanation of why failures are ok is printed when --wip is used. (Aslak Hellesøy)
 * Added cucumber alias for cucumber:ok in Rails Rake tasks. (Aslak Hellesøy)
+
+=== Changed features
+* element_at('table').to_table should be used instead of table_at('table').to_a. The old way is deprecated but still works. (Aslak Hellesøy)
+* element_at (and the depracated table_at) no longer takes a DOM id, only CSS selectors. Change "my_id" to "#my_id". (Aslak Hellesøy)
 
 == 0.3.94 2009-08-06
 
