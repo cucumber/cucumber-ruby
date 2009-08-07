@@ -4,6 +4,9 @@ This release improves Webrat support for table-like HTML markup. This means that
 2-dimensional data from HTML table, dl, ol and ul elements. This is particularly useful for comparing
 data in your HTML with a Cucumber table using Cucumber::Ast::Table#diff!
 
+=== Bugfixes
+* Prevent delays if a NoMethodError is raise in a step definition. Define a light #inspect in World. (#374 Aslak Hellesøy)
+
 === New Features
 * The object returned by element_at (Webrat::Element) has a #to_table that works for table, dl, ol and ul. (Aslak Hellesøy)
 * An explanation of why failures are ok is printed when --wip is used. (Aslak Hellesøy)
@@ -55,7 +58,7 @@ Highlights in this release: Improved profile handling (cucumber.yml) and a fix f
 
 === Bugfixes
 * script/cucumber correctly loads the gem's binary if the plugin isn't installed. 
-* Cucumber hangs waiting for Ctrl+C if an Error is raised (#374 Aslak Hellesøy) 
+* Cucumber hangs waiting for Ctrl+C if an Error is raised. (#374 Aslak Hellesøy) 
 
 == 0.3.92 2009-07-29
 

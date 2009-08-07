@@ -49,5 +49,21 @@ module Cucumber
         raise Pending.new(message)
       end
     end
+
+    # The default implementation of Object#inspect recursively
+    # traverses all instance variables and invokes inspect. 
+    # This can be time consuming if the object graph is large.
+    #
+    # This can cause unnecessary delays when certain exceptions 
+    # occur. For example, MRI internally invokes #inspect on an 
+    # object that raises a NoMethodError. (JRuby does not do this).
+    #
+    # A World object can have many references created by the user
+    # or frameworks (Rails), so to avoid long waiting times on
+    # such errors in World we define it to just return a simple String.
+    #
+    def inspect
+      sprintf("#<%s:0x%x>", self.class, self.object_id)
+    end
   end
 end
