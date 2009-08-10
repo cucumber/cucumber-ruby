@@ -45,8 +45,8 @@ module Cucumber
       end
 
       def visit_scenario_name(keyword, name, file_colon_line, source_indent)
-        scenario_name = name.strip
-        scenario_name = "Unnamed scenario" if name == ""
+        scenario_name = name.strip.delete('.\n')
+        scenario_name = "Unnamed scenario" if name.blank?
         @scenario = scenario_name
         @outline = keyword.include?('Scenario Outline')
         @output = "Scenario#{ " outline" if @outline}: #{@scenario}\n\n"
