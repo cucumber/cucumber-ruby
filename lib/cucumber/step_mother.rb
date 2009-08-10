@@ -230,10 +230,14 @@ module Cucumber
     end
 
     def best_matches(step_name, step_matches)
+      no_groups      = step_matches.select {|step_match| step_match.args.length == 0}
       max_arg_length = step_matches.map {|step_match| step_match.args.length }.max
       top_groups     = step_matches.select {|step_match| step_match.args.length == max_arg_length }
 
-      if top_groups.length > 1
+      if no_groups.any?
+        longest_regexp_length = no_groups.map {|step_match| step_match.text_length }.max
+        no_groups.select {|step_match| step_match.text_length == longest_regexp_length }
+      elsif top_groups.any?
         shortest_capture_length = top_groups.map {|step_match| step_match.args.inject(0) {|sum, c| sum + c.length } }.min
         top_groups.select {|step_match| step_match.args.inject(0) {|sum, c| sum + c.length } == shortest_capture_length }
       else

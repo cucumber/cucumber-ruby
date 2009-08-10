@@ -363,6 +363,7 @@ lib/cucumber/step_definition.rb
 lib/cucumber/step_match.rb
 lib/cucumber/step_mother.rb
 lib/cucumber/version.rb
+lib/cucumber/webrat/element_locator.rb
 lib/cucumber/webrat/table_locator.rb
 lib/cucumber/world.rb
 rails_generators/cucumber/USAGE

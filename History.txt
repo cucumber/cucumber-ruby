@@ -7,6 +7,7 @@ data in your HTML with a Cucumber table using Cucumber::Ast::Table#diff!
 This release also fixes several bugs related to --drb (Spork) and profiles (cucumber.yml)
 
 === Bug Fixes
+* --guess will always prefer the longest regexp with no groups if they exist. 
 * Prevent delays if a NoMethodError is raise in a step definition. Define a light #inspect in World. (#374 Aslak Hellesøy)
 * Restore 'features' as the default feature running path. (#412 Ben Mabey)
 * --drb degrades gracefully when no drb server is running and no formatter is provided. (#410 Ben Mabey)
