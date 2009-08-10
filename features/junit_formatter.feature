@@ -44,15 +44,7 @@ Feature: JUnit output formatter
     And "examples/junit/tmp/TEST-pending.xml" with junit duration "0.009" should contain
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite errors="0" failures="1" name="Pending step" tests="1" time="0.009">
-      <testcase classname="Pending step.Pending" name="Pending" time="0.009">
-        <failure message="pending Pending" type="pending">
-      Scenario: Pending
-
-      TODO (Cucumber::Pending)
-      ./features/step_definitions/steps.rb:10:in `/a pending step/'
-      features/pending.feature:4:in `Given a pending step'  </failure>
-      </testcase>
+      <testsuite errors="0" failures="0" name="Pending step" tests="0" time="0.009">
       </testsuite>
       
       """
