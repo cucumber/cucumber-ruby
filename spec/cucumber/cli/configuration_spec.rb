@@ -38,7 +38,7 @@ module Cli
 
       config.parse!(%w{--require /features})
 
-      config.files_to_require.should == [
+      config.step_defs_to_load.should == [
         "/features/support/bar.rb",
         "/features/step_definitions/foo.rb"
       ]
@@ -49,7 +49,7 @@ module Cli
 
       config.parse!(%w{--require /features})
 
-      config.files_to_require.should == [
+      config.step_defs_to_load.should == [
         "/features/support/env.rb",
         "/features/support/a_file.rb"
       ]
@@ -60,7 +60,7 @@ module Cli
 
       config.parse!(%w{--require /features --dry-run})
 
-      config.files_to_require.should == [
+      config.step_defs_to_load.should == [
         "/features/support/a_file.rb"
       ]
     end
@@ -71,7 +71,7 @@ module Cli
 
       config.parse!(%w{--require /features})
 
-      config.files_to_require.should == [
+      config.step_defs_to_load.should == [
         "/vendor/plugins/plugin_a/cucumber/foo.rb",
         "/vendor/gems/gem_a/cucumber/bar.rb"
       ]
@@ -84,7 +84,7 @@ module Cli
 
         config.parse!(%w{--require /features --exclude a_file.rb})
 
-        config.files_to_require.should == [
+        config.step_defs_to_load.should == [
           "/features/support/env.rb"
         ]
       end
@@ -96,7 +96,7 @@ module Cli
 
         config.parse!(%w{--require /features --exclude foo[df] --exclude blah})
 
-        config.files_to_require.should == [
+        config.step_defs_to_load.should == [
           "/features/support/bar.rb",
           "/features/support/fooz.rb"
         ]

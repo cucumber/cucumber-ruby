@@ -87,18 +87,18 @@ module Cucumber
         end
       end
 
-      def files_to_require
+      def step_defs_to_load
         requires = @options[:require].empty? ? require_dirs : @options[:require]
         files = requires.map do |path|
           path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
           path = path.gsub(/\/$/, '') # Strip trailing slash.
-          File.directory?(path) ? Dir["#{path}/**/*.rb"] : path
+          File.directory?(path) ? Dir["#{path}/**/*"] : path
         end.flatten.uniq
-        sorted_files = files.sort { |a,b| (b =~ %r{/support/} || -1) <=>  (a =~ %r{/support/} || -1) }.reject{|f| f =~ /^http/}
-        env_files = sorted_files.select {|f| f =~ %r{/support/env.rb} }
-        files = env_files + sorted_files.reject {|f| f =~ %r{/support/env.rb} }
+        sorted_files = files.sort { |a,b| (b =~ %r{/support/} || -1) <=> (a =~ %r{/support/} || -1) }.reject{|f| f =~ /^http/}
+        env_files = sorted_files.select {|f| f =~ %r{/support/env\..*} }
+        files = env_files + sorted_files.reject {|f| f =~ %r{/support/env\..*} }
         remove_excluded_files_from(files)
-        files.reject! {|f| f =~ %r{/support/env.rb} } if @options[:dry_run]
+        files.reject! {|f| f =~ %r{/support/env\..*} } if @options[:dry_run]
         files
       end
 
@@ -110,6 +110,22 @@ module Cucumber
         end.flatten.uniq
         remove_excluded_files_from(potential_feature_files)
         potential_feature_files
+      end
+
+      def constantize(camel_cased_word)
+        begin
+          names = camel_cased_word.split('::')
+          names.shift if names.empty? || names.first.empty?
+
+          constant = Object
+          names.each do |name|
+            constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
+          end
+          constant
+        rescue NameError
+          require underscore(camel_cased_word)
+          retry
+        end
       end
 
     private
@@ -142,22 +158,6 @@ module Cucumber
 
       def require_dirs
         feature_dirs + Dir['vendor/{gems,plugins}/*/cucumber']
-      end
-
-      def constantize(camel_cased_word)
-        begin
-          names = camel_cased_word.split('::')
-          names.shift if names.empty? || names.first.empty?
-
-          constant = Object
-          names.each do |name|
-            constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
-          end
-          constant
-        rescue NameError
-          require underscore(camel_cased_word)
-          retry
-        end
       end
 
       # Snagged from active_support

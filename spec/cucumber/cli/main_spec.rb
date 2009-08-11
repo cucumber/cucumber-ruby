@@ -23,15 +23,6 @@ module Cucumber
           @empty_feature = Ast::Feature.new(nil, Ast::Comment.new(''), Ast::Tags.new(2, []), "Feature", [])
         end
 
-        it "should show ruby files required" do
-          @cli = Main.new(%w{--verbose --require example.rb}, @out)
-          @cli.stub!(:require)
-
-          @cli.execute!(Object.new.extend(StepMother))
-
-          @out.string.should include('example.rb')
-        end
-
         it "should show feature files parsed" do
           @cli = Main.new(%w{--verbose example.feature}, @out)
           @cli.stub!(:require)
