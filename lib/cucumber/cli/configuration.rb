@@ -1,4 +1,5 @@
 require 'cucumber/cli/options'
+require 'cucumber/constantize'
 
 module Cucumber
   module Cli
@@ -7,6 +8,8 @@ module Cucumber
     class ProfileNotFound < StandardError; end
 
     class Configuration
+      include Constantize
+      
       attr_reader :options
 
       def initialize(out_stream = STDOUT, error_stream = STDERR)
@@ -98,6 +101,7 @@ module Cucumber
         env_files = sorted_files.select {|f| f =~ %r{/support/env\..*} }
         files = env_files + sorted_files.reject {|f| f =~ %r{/support/env\..*} }
         remove_excluded_files_from(files)
+        files.reject! {|f| File.extname(f) == '.feature' }
         files.reject! {|f| f =~ %r{/support/env\..*} } if @options[:dry_run]
         files
       end
@@ -110,22 +114,6 @@ module Cucumber
         end.flatten.uniq
         remove_excluded_files_from(potential_feature_files)
         potential_feature_files
-      end
-
-      def constantize(camel_cased_word)
-        begin
-          names = camel_cased_word.split('::')
-          names.shift if names.empty? || names.first.empty?
-
-          constant = Object
-          names.each do |name|
-            constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
-          end
-          constant
-        rescue NameError
-          require underscore(camel_cased_word)
-          retry
-        end
       end
 
     private
@@ -158,15 +146,6 @@ module Cucumber
 
       def require_dirs
         feature_dirs + Dir['vendor/{gems,plugins}/*/cucumber']
-      end
-
-      # Snagged from active_support
-      def underscore(camel_cased_word)
-        camel_cased_word.to_s.gsub(/::/, '/').
-          gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
-          gsub(/([a-z\d])([A-Z])/,'\1_\2').
-          tr("-", "_").
-          downcase
       end
       
     end

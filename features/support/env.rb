@@ -93,6 +93,7 @@ class CucumberWorld
         # STDOUT.close
         # STDERR.close
         spork = `which spork`.strip
+        raise "Couldn't find an executable spork" if spork == ""
         cmd = "#{Cucumber::RUBY_BINARY} -I #{Cucumber::LIBDIR} #{spork} cuc"
         exec cmd
       end

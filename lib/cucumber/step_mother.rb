@@ -1,3 +1,7 @@
+require 'cucumber/constantize'
+require 'cucumber/hook_methods'
+require 'cucumber/step_definition_methods'
+require 'cucumber/language_methods'
 require 'cucumber/step_definition'
 require 'cucumber/world'
 require 'cucumber/core_ext/instance_exec'
@@ -45,60 +49,18 @@ module Cucumber
     end
   end
 
-  class NilWorld < StandardError
-    def initialize
-      super("World procs should never return nil")
-    end
-  end
-
-  class MultipleWorld < StandardError
-    def initialize(first_proc, second_proc)
-      message = "You can only pass a proc to #World once, but it's happening\n"
-      message << "in 2 places:\n\n"
-      message << first_proc.backtrace_line('World') << "\n"
-      message << second_proc.backtrace_line('World') << "\n\n"
-      message << "Use Ruby modules instead to extend your worlds. See the Cucumber::StepMother#World RDoc\n"
-      message << "or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.\n\n"
-      super(message)
-    end
-  end
-
   # This is the main interface for registering step definitions, which is done
   # from <tt>*_steps.rb</tt> files. This module is included right at the top-level
   # so #register_step_definition (and more interestingly - its aliases) are
   # available from the top-level.
-  module StepMother
-    class Hook
-      def initialize(tag_names, proc)
-        @tag_names = tag_names.map{|tag| Ast::Tags.strip_prefix(tag)}
-        @proc = proc
-      end
+  class StepMother
+    include Constantize
+    
+    attr_writer :options, :visitor
 
-      def matches_tag_names?(tag_names)
-        @tag_names.empty? || (@tag_names & tag_names).any?
-      end
-
-      def execute_in(world, scenario, location, exception_fails_scenario = true)
-        begin
-          world.cucumber_instance_exec(false, location, scenario, &@proc)
-        rescue Exception => exception
-          if exception_fails_scenario
-            scenario.fail!(exception)
-          else
-            raise
-          end
-        end
-      end
+    def initialize
+      @programming_languages = []
     end
-
-    class << self
-      def alias_adverb(adverb)
-        adverb = adverb.gsub(/\s/, '')
-        alias_method adverb, :register_step_definition
-      end
-    end
-
-    attr_writer :snippet_generator, :options, :visitor
 
     def options
       @options ||= {}
@@ -126,44 +88,19 @@ module Cucumber
       end
     end
 
-    # Registers a new StepDefinition. This method is aliased
-    # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>, and
-    # also to the i18n translations whenever a feature of a
-    # new language is loaded.
-    #
-    # See Cucumber#alias_steps for details on how to
-    # create your own aliases.
-    #
-    # The +&proc+ gets executed in the context of a <tt>world</tt>
-    # object, which is defined by #World. A new <tt>world</tt>
-    # object is created for each scenario and is shared across
-    # step definitions within that scenario.
-    def register_step_definition(regexp, &proc)
-      step_definition = StepDefinition.new(regexp, &proc)
+    # Registers a StepDefinition. This can be a Ruby StepDefintion,
+    # or any other kind of object that implements the StepDefintion
+    # contract (API)
+    def register_step_definition(step_definition)
       step_definitions.each do |already|
-        raise Redundant.new(already, step_definition) if already.match(regexp)
+        raise Redundant.new(already, step_definition) if already.match(step_definition.regexp)
       end
       step_definitions << step_definition
       step_definition
     end
 
-    # Registers a Before proc. You can call this method as many times as you
-    # want (typically from ruby scripts under <tt>support</tt>).
-    def Before(*tag_names, &proc)
-      register_hook(:before, tag_names, proc)
-    end
-
-    def After(*tag_names, &proc)
-      register_hook(:after, tag_names, proc)
-    end
-
-    def AfterStep(*tag_names, &proc)
-      register_hook(:after_step, tag_names, proc)
-    end
-
-    def register_hook(phase, tags, proc)
-      hook = Hook.new(tags, proc)
-      hooks[phase] << hook
+    def register_hook(phase, hook)
+      hooks[phase.to_sym] << hook
       hook
     end
 
@@ -172,53 +109,7 @@ module Cucumber
     end
 
     def hooks_for(phase, scenario)
-      hooks[phase].select{|hook| scenario.accept_hook?(hook)}
-    end
-
-    # Registers any number of +world_modules+ (Ruby Modules) and/or a Proc.
-    # The +proc+ will be executed once before each scenario to create an
-    # Object that the scenario's steps will run within. Any +world_modules+
-    # will be mixed into this Object (via Object#extend).
-    #
-    # This method is typically called from one or more Ruby scripts under 
-    # <tt>features/support</tt>. You can call this method as many times as you 
-    # like (to register more modules), but if you try to register more than 
-    # one Proc you will get an error.
-    #
-    # Cucumber will not yield anything to the +proc+ (like it used to do before v0.3).
-    #
-    # In earlier versions of Cucumber (before 0.3) you could not register
-    # any +world_modules+. Instead you would register several Proc objects (by 
-    # calling the method several times). The result of each +proc+ would be yielded 
-    # to the next +proc+. Example:
-    #
-    #   World do |world| # NOT SUPPORTED FROM 0.3
-    #     MyClass.new
-    #   end
-    #
-    #   World do |world| # NOT SUPPORTED FROM 0.3
-    #     world.extend(MyModule)
-    #   end
-    #
-    # From Cucumber 0.3 the recommended way to do this is:
-    #
-    #    World do
-    #      MyClass.new
-    #    end
-    #
-    #    World(MyModule)
-    #
-    def World(*world_modules, &proc)
-      if(proc)
-        raise MultipleWorld.new(@world_proc, proc) if @world_proc
-        @world_proc = proc
-      end
-      @world_modules ||= []
-      @world_modules += world_modules
-    end
-
-    def current_world
-      @current_world
+      hooks[phase.to_sym].select{|hook| scenario.accept_hook?(hook)}
     end
 
     def step_match(step_name, formatted_step_name=nil)
@@ -256,109 +147,84 @@ module Cucumber
       @step_definitions ||= []
     end
 
+    def programming_language_for(step_def_file)
+      @language_map ||= {}
+      if ext = File.extname(step_def_file)[1..-1]
+        programming_language = @language_map[ext]
+        return nil if programming_language == :missing
+        return programming_language if programming_language
+        begin
+          programming_language_class = constantize("Cucumber::#{ext.capitalize}Support::#{ext.capitalize}Language")
+          programming_language = programming_language_class.new(self)
+          @programming_languages << programming_language
+          return @language_map[ext] = programming_language
+        rescue LoadError => e
+          @language_map[ext] = :missing
+          nil
+        rescue Exception => e
+          STDERR.puts "#{e.message} (#{e.class})"
+          STDERR.puts e.backtrace
+          exit 1
+        end
+      end
+      nil
+    end
+
     def snippet_text(step_keyword, step_name, multiline_arg_class)
-      @snippet_generator.snippet_text(step_keyword, step_name, multiline_arg_class)
+      programming_language_for('whatever.rb') if @programming_languages.empty?
+      @programming_languages.map do |programming_language|
+        programming_language.snippet_text(step_keyword, step_name, multiline_arg_class)
+      end.join("\n")
     end
 
     def before_and_after(scenario, skip_hooks=false)
       before(scenario) unless skip_hooks
-      @current_scenario = scenario
       yield scenario
-      @current_scenario = nil
       after(scenario) unless skip_hooks
       scenario_visited(scenario)
     end
+
+    def new_world
+      return if options[:dry_run]
+      @programming_languages.each do |programming_language|
+        programming_language.new_world
+      end
+    end
+
+    def nil_world
+      return if options[:dry_run]
+      @programming_languages.each do |programming_language|
+        programming_language.nil_world
+      end
+    end
     
     def before(scenario)
-      unless current_world
-        new_world!
-        execute_before(scenario)
+      return if options[:dry_run] || @current_scenario
+      @current_scenario = scenario
+      @programming_languages.each do |programming_language|
+        programming_language.before(scenario)
       end
     end
     
     def after(scenario)
-      execute_after(scenario)
-      nil_world!
+      @current_scenario = nil
+      return if options[:dry_run]
+      @programming_languages.each do |programming_language|
+        programming_language.after(scenario)
+      end
     end
     
     def after_step
-      execute_after_step(@current_scenario)
+      return if options[:dry_run]
+      @programming_languages.each do |programming_language|
+        programming_language.execute_after_step(@current_scenario)
+      end
     end
     
     private
 
     def max_step_definition_length
       @max_step_definition_length ||= step_definitions.map{|step_definition| step_definition.text_length}.max
-    end
-
-    # Creates a new world instance
-    def new_world!
-      return if options[:dry_run]
-      create_world!
-      extend_world
-      connect_world
-      @current_world
-    end
-
-    def create_world!
-      if(@world_proc)
-        @current_world = @world_proc.call
-        check_nil(@current_world, @world_proc)
-      else
-        @current_world = Object.new
-      end
-    end
-
-    def extend_world
-      @current_world.extend(World)
-      @current_world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
-      (@world_modules || []).each do |mod|
-        @current_world.extend(mod)
-      end
-    end
-
-    def connect_world
-      @current_world.__cucumber_step_mother = self
-      @current_world.__cucumber_visitor = @visitor
-    end
-
-    def check_nil(o, proc)
-      if o.nil?
-        begin
-          raise NilWorld.new
-        rescue NilWorld => e
-          e.backtrace.clear
-          e.backtrace.push(proc.backtrace_line("World"))
-          raise e
-        end
-      else
-        o
-      end
-    end
-
-    def nil_world!
-      @current_world = nil
-    end
-
-    def execute_before(scenario)
-      return if options[:dry_run]
-      hooks_for(:before, scenario).each do |hook|
-        hook.execute_in(@current_world, scenario, 'Before')
-      end
-    end
-
-    def execute_after(scenario)
-      return if options[:dry_run]
-      hooks_for(:after, scenario).each do |hook|
-        hook.execute_in(@current_world, scenario, 'After')
-      end
-    end
-
-    def execute_after_step(scenario)
-      return if options[:dry_run]
-      hooks_for(:after_step, scenario).each do |hook|
-        hook.execute_in(@current_world, scenario, 'AfterStep', false)
-      end
     end
 
     def scenario_visited(scenario)

@@ -152,6 +152,7 @@ Feature: Cucumber command line
   Scenario: Run Norwegian
     Given I am in i18n/no
     When I run cucumber -q --language no features
+    Then STDERR should be empty
     Then it should pass with
       """
       # language: no

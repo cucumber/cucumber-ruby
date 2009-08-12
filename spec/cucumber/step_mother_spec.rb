@@ -1,34 +1,37 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-require 'cucumber/step_mother'
+require 'cucumber'
+require 'cucumber/rb_support/rb_language'
 
 module Cucumber
   describe StepMother do
     before do
-      @step_mother = Object.new
-      @step_mother.extend(StepMother)
+      @step_mother = StepMother.new
+      @dsl = Object.new
+      @dsl.extend(RbSupport::RbDsl)
+      RbSupport::RbLanguage.new(@step_mother)
       @visitor = mock('Visitor')
     end
 
     it "should format step names" do
-      @step_mother.Given(/it (.*) in (.*)/) do |what, month|
+      @dsl.Given(/it (.*) in (.*)/) do |what, month|
       end
-      @step_mother.Given(/nope something else/) do |what, month|
+      @dsl.Given(/nope something else/) do |what, month|
       end
       format = @step_mother.step_match("it snows in april").format_args("[%s]")
       format.should == "it [snows] in [april]"
     end
 
     it "should raise Ambiguous error with guess hint when multiple step definitions match" do
-      @step_mother.Given(/Three (.*) mice/) {|disability|}
-      @step_mother.Given(/Three blind (.*)/) {|animal|}
+      @dsl.Given(/Three (.*) mice/) {|disability|}
+      @dsl.Given(/Three blind (.*)/) {|animal|}
 
       lambda do
         @step_mother.step_match("Three blind mice")
       end.should raise_error(Ambiguous, %{Ambiguous match of "Three blind mice":
 
-spec/cucumber/step_mother_spec.rb:23:in `/Three (.*) mice/'
-spec/cucumber/step_mother_spec.rb:24:in `/Three blind (.*)/'
+spec/cucumber/step_mother_spec.rb:26:in `/Three (.*) mice/'
+spec/cucumber/step_mother_spec.rb:27:in `/Three blind (.*)/'
 
 You can run again with --guess to make Cucumber be more smart about it
 })
@@ -36,23 +39,23 @@ You can run again with --guess to make Cucumber be more smart about it
 
     it "should not show --guess hint when --guess is used" do
       @step_mother.options = {:guess => true}
-      @step_mother.Given(/Three (.*) mice/) {|disability|}
-      @step_mother.Given(/Three cute (.*)/) {|animal|}
+      @dsl.Given(/Three (.*) mice/) {|disability|}
+      @dsl.Given(/Three cute (.*)/) {|animal|}
 
       lambda do
         @step_mother.step_match("Three cute mice")
       end.should raise_error(Ambiguous, %{Ambiguous match of "Three cute mice":
 
-spec/cucumber/step_mother_spec.rb:39:in `/Three (.*) mice/'
-spec/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
+spec/cucumber/step_mother_spec.rb:42:in `/Three (.*) mice/'
+spec/cucumber/step_mother_spec.rb:43:in `/Three cute (.*)/'
 
 })
     end
 
     it "should not raise Ambiguous error when multiple step definitions match, but --guess is enabled" do
       @step_mother.options = {:guess => true}
-      @step_mother.Given(/Three (.*) mice/) {|disability|}
-      @step_mother.Given(/Three (.*)/) {|animal|}
+      @dsl.Given(/Three (.*) mice/) {|disability|}
+      @dsl.Given(/Three (.*)/) {|animal|}
 
       lambda do
         @step_mother.step_match("Three blind mice")
@@ -61,23 +64,23 @@ spec/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
     
     it "should pick right step definition when --guess is enabled and equal number of capture groups" do
       @step_mother.options = {:guess => true}
-      right = @step_mother.Given(/Three (.*) mice/) {|disability|}
-      wrong = @step_mother.Given(/Three (.*)/) {|animal|}
+      right = @dsl.Given(/Three (.*) mice/) {|disability|}
+      wrong = @dsl.Given(/Three (.*)/) {|animal|}
       @step_mother.step_match("Three blind mice").step_definition.should == right
     end
     
     it "should pick right step definition when --guess is enabled and unequal number of capture groups" do
       @step_mother.options = {:guess => true}
-      right = @step_mother.Given(/Three (.*) mice ran (.*)/) {|disability|}
-      wrong = @step_mother.Given(/Three (.*)/) {|animal|}
+      right = @dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
+      wrong = @dsl.Given(/Three (.*)/) {|animal|}
       @step_mother.step_match("Three blind mice ran far").step_definition.should == right
     end
 
     it "should pick most specific step definition when --guess is enabled and unequal number of capture groups" do
       @step_mother.options = {:guess => true}
-      general       = @step_mother.Given(/Three (.*) mice ran (.*)/) {|disability|}
-      specific      = @step_mother.Given(/Three blind mice ran far/) {}
-      more_specific = @step_mother.Given(/^Three blind mice ran far$/) {}
+      general       = @dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
+      specific      = @dsl.Given(/Three blind mice ran far/) {}
+      more_specific = @dsl.Given(/^Three blind mice ran far$/) {}
       @step_mother.step_match("Three blind mice ran far").step_definition.should == more_specific
     end
     
@@ -88,26 +91,26 @@ spec/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
     end
 
     it "should raise Redundant error when same regexp is registered twice" do
-      @step_mother.Given(/Three (.*) mice/) {|disability|}
+      @dsl.Given(/Three (.*) mice/) {|disability|}
       lambda do
-        @step_mother.Given(/Three (.*) mice/) {|disability|}
+        @dsl.Given(/Three (.*) mice/) {|disability|}
       end.should raise_error(Redundant)
     end
 
     # http://railsforum.com/viewtopic.php?pid=93881
     it "should not raise Redundant unless it's really redundant" do
-      @step_mother.Given(/^(.*) (.*) user named '(.*)'$/) {|a,b,c|}
-      @step_mother.Given(/^there is no (.*) user named '(.*)'$/) {|a,b|}
+      @dsl.Given(/^(.*) (.*) user named '(.*)'$/) {|a,b,c|}
+      @dsl.Given(/^there is no (.*) user named '(.*)'$/) {|a,b|}
     end
 
     it "should raise an error if the world is nil" do
-      @step_mother.World do
+      @dsl.World do
       end
 
       begin
         @step_mother.before_and_after(nil) {}
         raise "Should fail"
-      rescue NilWorld => e
+      rescue RbSupport::NilWorld => e
         e.message.should == "World procs should never return nil"
         e.backtrace.should == ["spec/cucumber/step_mother_spec.rb:104:in `World'"]
       end
@@ -125,7 +128,7 @@ spec/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
     it "should implicitly extend world with modules" do
       @step_mother.World(ModuleOne, ModuleTwo)
 
-      w = @step_mother.__send__(:new_world!)
+      w = @step_mother.__send__(:new_world)
       class << w
         included_modules.index(ModuleOne).should_not == nil
         included_modules.index(ModuleTwo).should_not == nil

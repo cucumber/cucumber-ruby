@@ -15,17 +15,11 @@ module Cucumber
 
       class << self
         def step_mother
-          @step_mother
-        end
-
-        def step_mother=(step_mother)
-          @step_mother = step_mother
-          @step_mother.extend(StepMother)
-          @step_mother.snippet_generator = StepDefinition
+          @step_mother ||= StepMother.new
         end
 
         def execute(args)
-          new(args).execute!(@step_mother)
+          new(args).execute!(step_mother)
         end
       end
 
@@ -51,7 +45,7 @@ module Cucumber
         # features are loaded. If we swap the order, the requires
         # will fail.
         features = load_plain_text_features
-        load_step_defs
+        load_step_defs(step_mother)
         enable_diffing
 
         visitor = configuration.build_formatter_broadcaster(step_mother)
@@ -96,7 +90,7 @@ module Cucumber
             verbose_log("  * #{f}")
           end
         end
-        verbose_log("\n"*2)
+        verbose_log("\n")
         features
       end
 
@@ -114,50 +108,20 @@ module Cucumber
 
       private
 
-      def load_step_defs
+      def load_step_defs(step_mother)
         step_def_files = configuration.step_defs_to_load
-        verbose_log("Step Definitions Files:")
+        verbose_log("Step Definitions:")
         step_def_files.each do |step_def_file|
-          load_step_def(step_def_file)
+          load_step_def(step_mother, step_def_file)
         end
+        verbose_log("\n")
       end
 
-      def load_step_def(step_def_file)
-        if loader = step_def_loader_for(step_def_file)
+      def load_step_def(step_mother, step_def_file)
+        if programming_language = step_mother.programming_language_for(step_def_file)
           verbose_log("  * #{step_def_file}")
-          loader.load_step_def_file(self, step_def_file)
+          programming_language.load_step_def_file(step_def_file)
         end
-      end
-
-      def step_def_loader_for(step_def_file)
-        @sted_def_loaders ||= {}
-        if ext = File.extname(step_def_file)[1..-1]
-          loader = @sted_def_loaders[ext]
-          return nil if loader == :missing
-          return loader if loader
-          begin
-            loader_class = configuration.constantize("Cucumber::Cli::#{ext.capitalize}StepDefLoader")
-            return @sted_def_loaders[ext] = loader_class.new
-          rescue LoadError
-            @sted_def_loaders[ext] = :missing
-            nil
-          end
-        end
-        nil
-      end
-
-      def step_def_files
-        main.verbose_log("Ruby files required:")
-        main.verbose_log(requires.map{|lib| "  * #{lib}"}.join("\n"))
-        requires.each do |lib|
-          begin
-            require lib
-          rescue LoadError => e
-            e.message << "\nFailed to load #{lib}"
-            raise e
-          end
-        end
-        main.verbose_log("\n")
       end
 
       def enable_diffing
@@ -186,5 +150,3 @@ module Cucumber
     end
   end
 end
-
-Cucumber::Cli::Main.step_mother = self

@@ -1,13 +1,11 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
+require 'cucumber/rb_support/rb_language'
 
 module Cucumber
-  module StepMother
     describe 'Pending' do
 
       before(:each) do
-        @step_mom = Object.new
-        @step_mom.extend(StepMother)
-        @world = @step_mom.__send__(:new_world!)
+        @world = RbSupport::RbLanguage.new(StepMother.new).new_world
       end
 
       it 'should raise a Pending if no block is supplied' do
@@ -43,5 +41,4 @@ module Cucumber
       end
 
     end
-  end
 end
