@@ -45,7 +45,7 @@ module Cucumber
       end
 
       def visit_scenario_name(keyword, name, file_colon_line, source_indent)
-        scenario_name = name.strip.delete('.\n')
+        scenario_name = name.strip.delete(".\r\n")
         scenario_name = "Unnamed scenario" if name.blank?
         @scenario = scenario_name
         @outline = keyword.include?('Scenario Outline')
@@ -96,9 +96,11 @@ module Cucumber
           @time += duration
           classname = "#{@feature_name}.#{@scenario}"
           name = "#{@scenario}#{suffix}"
-          if status == :passed || status == :failed
+          failed = (status == :failed || (status == :pending && @options[:strict]))
+          #puts "FAILED:!!#{failed}"
+          if status == :passed || failed
             @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
-              if status == :failed
+              if failed
                 @builder.failure(:message => "#{status.to_s} #{name}", :type => status.to_s) do
                   @builder.text! @output
                   @builder.text!(format_exception(exception)) if exception
