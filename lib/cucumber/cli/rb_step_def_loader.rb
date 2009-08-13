@@ -5,7 +5,7 @@ module Cucumber
         begin
           require step_def_file
         rescue LoadError => e
-          e.message << "\nFailed to load #{lib}"
+          e.message << "\nFailed to load #{step_def_file}"
           raise e
         end
       end
