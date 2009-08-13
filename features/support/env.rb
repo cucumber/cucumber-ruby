@@ -55,7 +55,7 @@ class CucumberWorld
   end
 
   def strip_ruby186_extra_trace(s)  
-    a.gsub(/^.*\.\/features\/step_definitions(.*)\n/, "")
+    s.gsub(/^.*\.\/features\/step_definitions(.*)\n/, "")
   end
 
   def create_file(file_name, file_content)

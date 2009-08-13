@@ -80,7 +80,8 @@ end
 
 Then /^"([^\"]*)" with junit duration "([^\"]*)" should contain$/ do |actual_file, duration_replacement, text|
   actual = IO.read(actual_file)
-  actual = replace_junit_duration(actual, duration_replacement)
+  actual = replace_junit_duration(actual, duration_replacement) 
+  actual = strip_ruby186_extra_trace(actual)
   actual.should == text
 end
 
