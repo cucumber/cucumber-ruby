@@ -1,3 +1,8 @@
+== (In Git)
+
+=== New Features
+* Upgrade Sinatra example to work with rack-test 0.4.1 and webrat 0.5.0 (Aslak Hellesøy)
+
 == 0.3.95 2009-08-13
 
 This release improves Webrat support for table-like HTML markup. Now you can easily turn the HTML
