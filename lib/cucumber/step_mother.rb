@@ -151,6 +151,10 @@ module Cucumber
       @step_definitions ||= []
     end
 
+    def load_rb_language
+      programming_language_for('foaming_cuke.rb')
+    end
+
     def programming_language_for(step_def_file)
       @language_map ||= {}
       if ext = File.extname(step_def_file)[1..-1]
@@ -175,7 +179,7 @@ module Cucumber
     end
 
     def snippet_text(step_keyword, step_name, multiline_arg_class)
-      programming_language_for('whatever.rb') if @programming_languages.empty?
+      load_rb_language if @programming_languages.empty?
       @programming_languages.map do |programming_language|
         programming_language.snippet_text(step_keyword, step_name, multiline_arg_class)
       end.join("\n")

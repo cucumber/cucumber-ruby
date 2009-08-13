@@ -4,9 +4,9 @@ require 'spec/expectations'
 require 'fileutils'
 require 'forwardable'
 begin
-  gem "spork", ">= 0.5.1" # Ensure correct spork version number to avoid false-negatives.
+  require 'spork'
 rescue Gem::LoadError => ex
-  warn "WARNING: #{ex.message} You need to have the spork gem installed to run the DRb feature properly!"
+  gem 'spork', '>= 0.5.7' # Ensure correct spork version number to avoid false-negatives.
 end
 
 class CucumberWorld
