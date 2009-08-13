@@ -93,6 +93,11 @@ Feature: DRb Server Integration
       I'm loading all the heavy stuff...
       I'm loading the stuff just for this run...
       """
+    And the output should contain
+      """
+      1 step (1 passed)
+      """
+
 
   Scenario: Feature Run with --drb flag *defined in a profile* with no DRb server running
 

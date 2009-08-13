@@ -7,7 +7,7 @@ Spork.prefork do
   require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
  
   require 'webrat'
-  require 'cucumber/webrat/table_locator' # Lets you do table.diff!(table_at('#my_table').to_a)
+  require 'cucumber/webrat/element_locator' # Lets you do table.diff!(element_at('#my_table_or_dl_or_ul_or_ol').to_table)
  
   Webrat.configure do |config|
     config.mode = :rails

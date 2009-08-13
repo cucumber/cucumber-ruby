@@ -321,6 +321,7 @@ lib/cucumber/cli/language_help_formatter.rb
 lib/cucumber/cli/main.rb
 lib/cucumber/cli/options.rb
 lib/cucumber/cli/profile_loader.rb
+lib/cucumber/cli/rb_step_def_loader.rb
 lib/cucumber/core_ext/exception.rb
 lib/cucumber/core_ext/instance_exec.rb
 lib/cucumber/core_ext/proc.rb
@@ -363,6 +364,7 @@ lib/cucumber/step_definition.rb
 lib/cucumber/step_match.rb
 lib/cucumber/step_mother.rb
 lib/cucumber/version.rb
+lib/cucumber/webrat/element_locator.rb
 lib/cucumber/webrat/table_locator.rb
 lib/cucumber/world.rb
 rails_generators/cucumber/USAGE

@@ -14,21 +14,13 @@ module Cucumber
         @err = StringIO.new
         Kernel.stub!(:exit).and_return(nil)
         File.stub!(:exist?).and_return(false) # When Configuration checks for cucumber.yml
+        Dir.stub!(:[]).and_return([]) # to prevent cucumber's features dir to being laoded
       end
 
       describe "verbose mode" do
 
         before(:each) do
           @empty_feature = Ast::Feature.new(nil, Ast::Comment.new(''), Ast::Tags.new(2, []), "Feature", [])
-        end
-
-        it "should show ruby files required" do
-          @cli = Main.new(%w{--verbose --require example.rb}, @out)
-          @cli.stub!(:require)
-
-          @cli.execute!(Object.new.extend(StepMother))
-
-          @out.string.should include('example.rb')
         end
 
         it "should show feature files parsed" do

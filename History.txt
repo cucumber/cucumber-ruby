@@ -1,8 +1,27 @@
-== (In Git)
+== 0.3.95 2009-08-13
+
+This release improves Webrat support for table-like HTML markup. Now you can easily turn the HTML
+elements table, dl, ol and ul elements into a 2D array. This is particularly useful for comparing
+data in your HTML with a Cucumber table using Cucumber::Ast::Table#diff!
+
+This release also fixes several bugs related to --drb (Spork) and profiles (cucumber.yml)
+
+=== Bug Fixes
+* --guess will always prefer the longest regexp with no groups if they exist. 
+* Prevent delays if a NoMethodError is raise in a step definition. Define a light #inspect in World. (#374 Aslak Hellesøy)
+* Restore 'features' as the default feature running path. (#412 Ben Mabey)
+* --drb degrades gracefully when no drb server is running and no formatter is provided. (#410 Ben Mabey)
+* --language picked up from profiles again. (#409 Ben Mabey)
+* Resolved infinite loop problem when --drb was defined in a profile. (#408 Ben Mabey)
 
 === New Features
+* The object returned by element_at (Webrat::Element) has a #to_table that works for table, dl, ol and ul. (Aslak Hellesøy)
 * An explanation of why failures are ok is printed when --wip is used. (Aslak Hellesøy)
 * Added cucumber alias for cucumber:ok in Rails Rake tasks. (Aslak Hellesøy)
+
+=== Changed features
+* element_at('table').to_table should be used instead of table_at('table').to_a. The old way is deprecated but still works. (Aslak Hellesøy)
+* element_at (and the depracated table_at) no longer takes a DOM id, only CSS selectors. Change "my_id" to "#my_id". (Aslak Hellesøy)
 
 == 0.3.94 2009-08-06
 
@@ -46,7 +65,7 @@ Highlights in this release: Improved profile handling (cucumber.yml) and a fix f
 
 === Bugfixes
 * script/cucumber correctly loads the gem's binary if the plugin isn't installed. 
-* Cucumber hangs waiting for Ctrl+C if an Error is raised (#374 Aslak Hellesøy) 
+* Cucumber hangs waiting for Ctrl+C if an Error is raised. (#374 Aslak Hellesøy) 
 
 == 0.3.92 2009-07-29
 

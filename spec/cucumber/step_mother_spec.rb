@@ -72,6 +72,14 @@ spec/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
       wrong = @step_mother.Given(/Three (.*)/) {|animal|}
       @step_mother.step_match("Three blind mice ran far").step_definition.should == right
     end
+
+    it "should pick most specific step definition when --guess is enabled and unequal number of capture groups" do
+      @step_mother.options = {:guess => true}
+      general       = @step_mother.Given(/Three (.*) mice ran (.*)/) {|disability|}
+      specific      = @step_mother.Given(/Three blind mice ran far/) {}
+      more_specific = @step_mother.Given(/^Three blind mice ran far$/) {}
+      @step_mother.step_match("Three blind mice ran far").step_definition.should == more_specific
+    end
     
     it "should raise Undefined error when no step definitions match" do
       lambda do
@@ -101,7 +109,7 @@ spec/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
         raise "Should fail"
       rescue NilWorld => e
         e.message.should == "World procs should never return nil"
-        e.backtrace.should == ["spec/cucumber/step_mother_spec.rb:96:in `World'"]
+        e.backtrace.should == ["spec/cucumber/step_mother_spec.rb:104:in `World'"]
       end
     end
 
@@ -132,8 +140,8 @@ spec/cucumber/step_mother_spec.rb:40:in `/Three cute (.*)/'
       end.should raise_error(MultipleWorld, %{You can only pass a proc to #World once, but it's happening
 in 2 places:
 
-spec/cucumber/step_mother_spec.rb:129:in `World'
-spec/cucumber/step_mother_spec.rb:131:in `World'
+spec/cucumber/step_mother_spec.rb:137:in `World'
+spec/cucumber/step_mother_spec.rb:139:in `World'
 
 Use Ruby modules instead to extend your worlds. See the Cucumber::StepMother#World RDoc
 or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.

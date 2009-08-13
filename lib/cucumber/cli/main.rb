@@ -51,7 +51,7 @@ module Cucumber
         # features are loaded. If we swap the order, the requires
         # will fail.
         features = load_plain_text_features
-        require_files
+        load_step_defs
         enable_diffing
 
         visitor = configuration.build_formatter_broadcaster(step_mother)
@@ -108,33 +108,56 @@ module Cucumber
         @configuration
       end
 
-      def load_files
-        each_lib{|lib| load(lib)}
+      def verbose_log(string)
+        @out_stream.puts(string) if configuration.verbose?
       end
 
       private
 
-      def require_files
-        each_lib{|lib| require lib}
+      def load_step_defs
+        step_def_files = configuration.step_defs_to_load
+        verbose_log("Step Definitions Files:")
+        step_def_files.each do |step_def_file|
+          load_step_def(step_def_file)
+        end
       end
 
-      def each_lib
-        requires = configuration.files_to_require
-        verbose_log("Ruby files required:")
-        verbose_log(requires.map{|lib| "  * #{lib}"}.join("\n"))
+      def load_step_def(step_def_file)
+        if loader = step_def_loader_for(step_def_file)
+          verbose_log("  * #{step_def_file}")
+          loader.load_step_def_file(self, step_def_file)
+        end
+      end
+
+      def step_def_loader_for(step_def_file)
+        @sted_def_loaders ||= {}
+        if ext = File.extname(step_def_file)[1..-1]
+          loader = @sted_def_loaders[ext]
+          return nil if loader == :missing
+          return loader if loader
+          begin
+            loader_class = configuration.constantize("Cucumber::Cli::#{ext.capitalize}StepDefLoader")
+            return @sted_def_loaders[ext] = loader_class.new
+          rescue LoadError
+            @sted_def_loaders[ext] = :missing
+            nil
+          end
+        end
+        nil
+      end
+
+      def step_def_files
+        main.verbose_log("Ruby files required:")
+        main.verbose_log(requires.map{|lib| "  * #{lib}"}.join("\n"))
         requires.each do |lib|
           begin
-            yield lib
+            require lib
           rescue LoadError => e
             e.message << "\nFailed to load #{lib}"
             raise e
           end
         end
-        verbose_log("\n")
-      end
-
-      def verbose_log(string)
-        @out_stream.puts(string) if configuration.verbose?
+        main.verbose_log("\n")
       end
 
       def enable_diffing
