@@ -121,6 +121,8 @@ module Cucumber
         if programming_language = step_mother.programming_language_for(step_def_file)
           verbose_log("  * #{step_def_file}")
           programming_language.load_step_def_file(step_def_file)
+        else
+          verbose_log("  * #{step_def_file} [NOT SUPPORTED]")
         end
       end
 

@@ -79,6 +79,10 @@ module Cucumber
       end
     end
 
+    def announce(msg)
+      visitor.announce(msg)
+    end
+
     def scenarios(status = nil)
       @scenarios ||= []
       if(status)
@@ -93,7 +97,7 @@ module Cucumber
     # contract (API)
     def register_step_definition(step_definition)
       step_definitions.each do |already|
-        raise Redundant.new(already, step_definition) if already.match(step_definition.regexp)
+        raise Redundant.new(already, step_definition) if already.same_regexp?(step_definition.regexp)
       end
       step_definitions << step_definition
       step_definition
@@ -187,7 +191,7 @@ module Cucumber
     def new_world
       return if options[:dry_run]
       @programming_languages.each do |programming_language|
-        programming_language.new_world
+        programming_language.new_world(self)
       end
     end
 
@@ -202,7 +206,7 @@ module Cucumber
       return if options[:dry_run] || @current_scenario
       @current_scenario = scenario
       @programming_languages.each do |programming_language|
-        programming_language.before(scenario)
+        programming_language.before(self, scenario)
       end
     end
     
@@ -210,14 +214,14 @@ module Cucumber
       @current_scenario = nil
       return if options[:dry_run]
       @programming_languages.each do |programming_language|
-        programming_language.after(scenario)
+        programming_language.after(self, scenario)
       end
     end
     
     def after_step
       return if options[:dry_run]
       @programming_languages.each do |programming_language|
-        programming_language.execute_after_step(@current_scenario)
+        programming_language.execute_after_step(self, @current_scenario)
       end
     end
     

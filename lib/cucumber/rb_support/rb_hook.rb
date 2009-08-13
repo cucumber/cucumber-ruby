@@ -9,12 +9,12 @@ module Cucumber
       
       def initialize(rb_language, tag_names, proc)
         @rb_language = rb_language
-        @tag_names = tag_names.map{|tag| Ast::Tags.strip_prefix(tag)}
+        @tag_names = tag_names
         @proc = proc
       end
 
-      def invoke(args)
-        @rb_language.current_world.cucumber_instance_exec(false, *args, &@proc)
+      def invoke(location, scenario)
+        @rb_language.current_world.cucumber_instance_exec(false, location, scenario, &@proc)
       end
     end
   end

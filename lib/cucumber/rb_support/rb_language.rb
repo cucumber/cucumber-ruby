@@ -10,10 +10,9 @@ module Cucumber
 
     class RbLanguage
       include LanguageMethods
-      attr_reader :current_world, :step_mother
+      attr_reader :current_world
       
       def initialize(step_mother)
-        @step_mother = step_mother
         RbDsl.step_mother = step_mother
         RbDsl.rb_language = self
       end
@@ -22,7 +21,7 @@ module Cucumber
         begin
           require step_def_file
         rescue LoadError => e
-          e.message << "\nFailed to load #{lib}"
+          e.message << "\nFailed to load #{step_def_file}"
           raise e
         end
       end
@@ -36,10 +35,10 @@ module Cucumber
         @world_modules += world_modules
       end
 
-      def new_world
+      def new_world(step_mother)
         create_world
         extend_world
-        connect_world
+        connect_world(step_mother)
       end
 
       def nil_world
@@ -87,9 +86,8 @@ module Cucumber
         end
       end
 
-      def connect_world
-        @current_world.__cucumber_step_mother = @step_mother
-        @current_world.__cucumber_visitor = @visitor
+      def connect_world(step_mother)
+        @current_world.__cucumber_step_mother = step_mother
       end
 
       def check_nil(o, proc)

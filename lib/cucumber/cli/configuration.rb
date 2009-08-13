@@ -101,6 +101,7 @@ module Cucumber
         env_files = sorted_files.select {|f| f =~ %r{/support/env\..*} }
         files = env_files + sorted_files.reject {|f| f =~ %r{/support/env\..*} }
         remove_excluded_files_from(files)
+        files.reject! {|f| File.directory?(f)}
         files.reject! {|f| File.extname(f) == '.feature' }
         files.reject! {|f| f =~ %r{/support/env\..*} } if @options[:dry_run]
         files

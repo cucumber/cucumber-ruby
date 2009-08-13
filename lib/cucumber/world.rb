@@ -7,7 +7,7 @@ module Cucumber
       end
     end
     
-    attr_writer :__cucumber_step_mother, :__cucumber_visitor, :__cucumber_current_step
+    attr_writer :__cucumber_step_mother, :__cucumber_current_step
 
     # Call a step from within a step definition
     def __cucumber_invoke(name, multiline_argument=nil) #:nodoc:
@@ -34,7 +34,7 @@ module Cucumber
     # step. This is because the step itself will not be printed until
     # after it has run, so it can be coloured according to its status.
     def announce(announcement)
-      @__cucumber_visitor.announce(announcement)
+      @__cucumber_step_mother.announce(announcement)
     end
 
     def pending(message = "TODO")

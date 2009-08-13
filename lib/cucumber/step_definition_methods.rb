@@ -1,7 +1,7 @@
 module Cucumber
   module StepDefinitionMethods
     def step_match(name_to_match, name_to_report)
-      if(match = name_to_match.match(regexp))
+      if(match = regexp.match(name_to_match))
         StepMatch.new(self, name_to_match, name_to_report, match.captures)
       else
         nil
@@ -27,11 +27,8 @@ module Cucumber
       step_name.gzub(regexp, format)
     end
 
-    def match(step_name)
-      case step_name
-      when String then regexp.match(step_name)
-      when Regexp then regexp == step_name
-      end
+    def same_regexp?(regexp)
+      self.regexp == regexp
     end
 
     def backtrace_line
