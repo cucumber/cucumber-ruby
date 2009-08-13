@@ -1,5 +1,5 @@
 require 'spec/expectations'
-$:.unshift(File.dirname(__FILE__) + '/../../lib') # This line is not needed in your own project
+$:.unshift(File.dirname(__FILE__) + '/../../') # This line is not needed in your own project
 require 'Calculator' # Calculator.dll
 
 Before do
