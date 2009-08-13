@@ -1,15 +1,15 @@
 module Webrat
   class Element
-    # Returns an Array of Array of String where each String is the
-    # a "cell" in the table-like structure represented by this Element.
+    # Returns an Array of Array of String where each String is a
+    # "cell" in the table-like structure represented by this Element.
     #
-    # Supported elements are table, dl, ol and ul. The return value depends
-    # on the type of the element:
+    # Supported elements are table, dl, ol and ul. Different conversion
+    # strategies are used depending on the kind of element:
     #
-    # * table    : Each tr is a row. The innerHTML of each tr or th becomes cells. The number 
+    # * table    : Each tr becomes a row. The innerHTML of each td or th inside becomes a cell. The number 
     #              of columns is determined by the number of cells in the first row.
-    # * dl       : Each dt creates a row with 2 cells. The innerHTML of the dt itself and the next dd become cells.
-    # * ul or ol : Each ul creates a row with one cell, the innerHTML of the ul.
+    # * dl       : Each dt becomes a row with 2 cells. The innerHTML of the dt itself and the next dd become cells.
+    # * ul or ol : Each li becomes a row with one cell, the innerHTML of the li.
     #
     def to_table
       case element.name
