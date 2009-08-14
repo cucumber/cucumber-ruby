@@ -15,6 +15,7 @@ This release also fixes several bugs related to --drb (Spork) and profiles (cucu
 * Resolved infinite loop problem when --drb was defined in a profile. (#408 Ben Mabey)
 
 === New Features
+* New When /^I fill in the following:$/ step definition for Webrat. Useful for filling out a form with a Table. (Aslak Hellesøy)
 * The object returned by element_at (Webrat::Element) has a #to_table that works for table, dl, ol and ul. (Aslak Hellesøy)
 * An explanation of why failures are ok is printed when --wip is used. (Aslak Hellesøy)
 * Added cucumber alias for cucumber:ok in Rails Rake tasks. (Aslak Hellesøy)
