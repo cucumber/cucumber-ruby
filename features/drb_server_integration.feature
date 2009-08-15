@@ -118,3 +118,44 @@ Feature: DRb Server Integration
       I'm loading all the heavy stuff...
       I'm loading the stuff just for this run...
       """
+
+  Scenario: Feature Run with --drb specifying a non-standard port
+
+    Given I am running spork in the background on port 9000
+
+    When I run cucumber features/sample.feature --drb --port 9000
+    Then it should pass
+    And STDERR should be empty
+    And the output should contain
+      """
+      1 step (1 passed)
+      """
+    And the output should contain
+      """
+      I'm loading the stuff just for this run...
+      """
+    And the output should not contain
+      """
+      I'm loading all the heavy stuff...
+      """
+
+  Scenario: Feature Run with $CUCUMBER_DRB environment variable
+
+    Given I have environment variable CUCUMBER_DRB set to "9000"
+    And I am running spork in the background on port 9000
+
+    When I run cucumber features/sample.feature --drb
+    Then it should pass
+    And STDERR should be empty
+    And the output should contain
+      """
+      1 step (1 passed)
+      """
+    And the output should contain
+      """
+      I'm loading the stuff just for this run...
+      """
+    And the output should not contain
+      """
+      I'm loading all the heavy stuff...
+      """

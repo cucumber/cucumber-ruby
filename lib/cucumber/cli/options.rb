@@ -218,6 +218,9 @@ module Cucumber
           opts.on(DRB_FLAG, "Run features against a DRb server. (i.e. with the spork gem)") do
             @options[:drb] = true
           end
+          opts.on("--port PORT", "Specify DRb port.  Ignored without --drb") do |port|
+            @options[:drb_port] = port
+          end
           opts.on_tail("--version", "Show version.") do
             @out_stream.puts VERSION::STRING
             Kernel.exit

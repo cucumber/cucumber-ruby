@@ -68,6 +68,12 @@ module Cli
         end
       end
 
+      context "--port PORT" do
+        it "sets the drb_port to the provided option" do
+          after_parsing('--port 4500') { options[:drb_port].should == '4500' }
+        end
+      end
+
       context '-f FORMAT or --format FORMAT' do
         it "defaults the output for the formatter to the output stream (STDOUT)" do
           after_parsing('-f pretty') { options[:formats].should == [['pretty', output_stream]] }

@@ -35,8 +35,16 @@ Given /^I am running spork in the background$/ do
   run_spork_in_background
 end
 
+Given /^I am running spork in the background on port (\d+)$/ do |port|
+  run_spork_in_background(port.to_i)
+end
+
 Given /^I am not running (?:.*) in the background$/ do
   # no-op
+end
+
+Given /^I have environment variable (\w+) set to "([^\"]*)"$/ do |variable, value|
+  set_env_var(variable, value)
 end
 
 When /^I run cucumber (.*)$/ do |cucumber_opts|
@@ -73,6 +81,7 @@ end
 Then /^the output should be$/ do |text|
   last_stdout.should == text
 end
+
 
 Then /^"([^\"]*)" should contain$/ do |file, text|
   strip_duration(IO.read(file)).should == text
@@ -141,4 +150,5 @@ end
 Then /^print output$/ do
   puts last_stdout
 end
+
 

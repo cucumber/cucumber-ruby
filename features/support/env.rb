@@ -65,6 +65,12 @@ class CucumberWorld
     end
   end
 
+  def set_env_var(variable, value)
+    @original_env_vars ||= {}
+    @original_env_vars[variable] = ENV[variable] 
+    ENV[variable]  = value
+  end
+
   def background_jobs
     @background_jobs ||= []
   end
@@ -88,7 +94,7 @@ class CucumberWorld
     @last_stderr = IO.read(stderr_file.path)
   end
 
-  def run_spork_in_background
+  def run_spork_in_background(port = nil)
     pid = fork
     in_current_dir do
       if pid
@@ -96,7 +102,8 @@ class CucumberWorld
       else
         # STDOUT.close
         # STDERR.close
-        cmd = "#{Cucumber::RUBY_BINARY} -I #{Cucumber::LIBDIR} #{Spork::BINARY} cuc"
+        port_arg = port ? "-p #{port}" : ''
+        cmd = "#{Cucumber::RUBY_BINARY} -I #{Cucumber::LIBDIR} #{Spork::BINARY} cuc #{port_arg}"
         exec cmd
       end
     end
@@ -109,6 +116,10 @@ class CucumberWorld
         Process.kill(Signal.list['TERM'], pid)
       end
     end
+  end
+
+  def restore_original_env_vars
+    @original_env_vars.each { |variable, value| ENV[variable] = value } if @original_env_vars
   end
 
 end
@@ -124,4 +135,5 @@ end
 
 After do
   terminate_background_jobs
+  restore_original_env_vars
 end
