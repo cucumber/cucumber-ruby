@@ -1,4 +1,11 @@
-== (In Git)
+== 0.3.96 2009-08-15
+
+This release doesn't have any directly visible new features or bug fixes. But there are big
+internal changes. This release has a new API for plugging in other programming languages.
+You can read more about that here: http://groups.google.com/group/cukes/browse_thread/thread/b9db8bf1f3ec9708
+
+This might break other tools that are using Cucumber's internal APIs. For example Spork broke and had to
+be patched. Please upgrade to Spork 0.5.9 if you are using Spork.
 
 === New Features
 * Upgrade Rails generator to use webrat 0.5.0. (Aslak Hellesøy)
