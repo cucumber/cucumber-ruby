@@ -116,7 +116,7 @@ module Cucumber
     end
 
     def announce(msg)
-      visitor.announce(msg)
+      @visitor.announce(msg)
     end
 
     def scenarios(status = nil)

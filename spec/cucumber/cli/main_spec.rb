@@ -29,7 +29,7 @@ module Cucumber
 
           FeatureFile.stub!(:new).and_return(mock("feature file", :parse => @empty_feature))
 
-          @cli.execute!(Object.new.extend(StepMother))
+          @cli.execute!(StepMother.new)
 
           @out.string.should include('example.feature')
         end
@@ -80,7 +80,7 @@ module Cucumber
             Object.should_receive(:const_get).with('ZooModule').and_return(mock_module)
             mock_module.should_receive(:const_get).with('MonkeyFormatterClass').and_return(mock('formatter class', :new => f))
 
-            cli.execute!(Object.new.extend(StepMother))
+            cli.execute!(StepMother.new)
           end
 
         end
@@ -93,7 +93,7 @@ module Cucumber
         configuration.stub!(:parse!).and_raise(exception_klass.new("error message"))
 
         main = Main.new('', out = StringIO.new, error = StringIO.new)
-        main.execute!(Object.new.extend(StepMother)).should be_true
+        main.execute!(StepMother.new).should be_true
         error.string.should == "error message\n"
       end
     end

@@ -46,7 +46,7 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
       def visit_table_cell_value(value, status)
         if @col == 1
           if(@options[:check_lang])
-            @incomplete = Parser::I18n::Language[value].incomplete?
+            @incomplete = Parser::I18n::Language.get(nil, value).incomplete?
           end
           status = :comment 
         elsif @incomplete

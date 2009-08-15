@@ -13,6 +13,7 @@ module Cli
 
     def given_the_following_files(*files)
       File.stub!(:directory?).and_return(true)
+      File.stub!(:file?).and_return(true)
       Dir.stub!(:[]).and_return(files)
     end
 

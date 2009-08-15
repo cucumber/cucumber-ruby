@@ -1,18 +1,22 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'cucumber/ast'
+require 'cucumber/rb_support/rb_language'
 
 module Cucumber
   module Ast
     describe Background do
 
       before do
-        @step_mother = Object.new
-        @step_mother.extend(StepMother)
+        extend(RbSupport::RbDsl)
+        @step_mother = StepMother.new
+        @step_mother.load_natural_language('en')
+        @step_mother.load_programming_language('rb')
+
         $x = $y = nil
-        @step_mother.Before do
+        Before do
           $x = 2
         end
-        @step_mother.Given /y is (\d+)/ do |n|
+        Given /y is (\d+)/ do |n|
           $y = $x * n.to_i
         end
         @visitor = Visitor.new(@step_mother)
@@ -40,7 +44,6 @@ module Cucumber
           name="", 
           steps=[])
         background.feature = @feature
-        
         @visitor.visit_background(background)
         $x.should == 2
         $y.should == 10

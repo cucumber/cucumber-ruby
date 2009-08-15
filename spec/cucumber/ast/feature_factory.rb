@@ -10,14 +10,13 @@ module Cucumber
         end
       end
       
-      def create_feature(step_mother)
-        step_mother.extend(StepMother)
-        step_mother.Given /^a (.*) step with an inline arg:$/ do |what, table|
+      def create_feature(dsl)
+        dsl.Given /^a (.*) step with an inline arg:$/ do |what, table|
         end
-        step_mother.Given /^a (.*) step$/ do |what|
+        dsl.Given /^a (.*) step$/ do |what|
           flunk if what == 'failing'
         end
-        step_mother.World do
+        dsl.World do
           MyWorld.new
         end
 

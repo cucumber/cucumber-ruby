@@ -1,15 +1,19 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 require 'cucumber/step_mother'
 require 'cucumber/ast'
+require 'cucumber/rb_support/rb_language'
 
 module Cucumber
   module Ast
     describe Scenario do
       before do
-        @step_mother = Object.new
-        @step_mother.extend(StepMother)
+        @step_mother = StepMother.new
+        @dsl = Object.new
+        @dsl.extend(RbSupport::RbDsl)
+        RbSupport::RbLanguage.new(@step_mother, %w{Given When Then})
+
         $x = $y = nil
-        @step_mother.Given /y is (\d+)/ do |n|
+        @dsl.Given /y is (\d+)/ do |n|
           $y = n.to_i
         end
         @visitor = Visitor.new(@step_mother)

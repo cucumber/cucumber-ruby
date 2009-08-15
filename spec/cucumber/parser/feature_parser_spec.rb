@@ -5,7 +5,8 @@ module Cucumber
   module Parser
     describe Feature do
       before do
-        @parser = I18n::Language['en'].parser
+        @step_mother = StepMother.new
+        @parser = I18n::Language.get(@step_mother, 'en').parser
       end
 
       def parse(text)
@@ -13,11 +14,11 @@ module Cucumber
       end
 
       def parse_file(file)
-        FeatureFile.new(File.dirname(__FILE__) + "/../treetop_parser/" + file).parse
+        FeatureFile.new(File.dirname(__FILE__) + "/../treetop_parser/" + file).parse(@step_mother, {})
       end
 
       def parse_example_file(file)
-        FeatureFile.new(File.dirname(__FILE__) + "/../../../examples/" + file).parse
+        FeatureFile.new(File.dirname(__FILE__) + "/../../../examples/" + file).parse(@step_mother, {})
       end
 
       describe "Comments" do
@@ -354,7 +355,7 @@ Given I am a step
         it "should filter outline tables" do
           ff = FeatureFile.new(
             File.dirname(__FILE__) + '/../../../examples/self_test/features/outline_sample.feature:12')
-          f = ff.parse({:lang => 'en'})
+          f = ff.parse(@step_mother, {:lang => 'en'})
           f.to_sexp.should ==
           [:feature,
            "./spec/cucumber/parser/../../../examples/self_test/features/outline_sample.feature",

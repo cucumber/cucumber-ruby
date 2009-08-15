@@ -2,24 +2,27 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 require 'cucumber/step_mother'
 require 'cucumber/ast'
 require 'cucumber/core_ext/string'
+require 'cucumber/rb_support/rb_language'
 
 module Cucumber
   module Ast
     describe ScenarioOutline do
       before do
-        @step_mother = Object.new
-        @step_mother.extend(StepMother)
+        @step_mother = StepMother.new
+        @dsl = Object.new
+        @dsl.extend(RbSupport::RbDsl)
+        RbSupport::RbLanguage.new(@step_mother, %w{Given When Then})
 
-        @step_mother.Given(/^there are (\d+) cucumbers$/) do |n|
+        @dsl.Given(/^there are (\d+) cucumbers$/) do |n|
           @initial = n.to_i
         end
-        @step_mother.When(/^I eat (\d+) cucumbers$/) do |n|
+        @dsl.When(/^I eat (\d+) cucumbers$/) do |n|
           @eaten = n.to_i
         end
-        @step_mother.Then(/^I should have (\d+) cucumbers$/) do |n|
+        @dsl.Then(/^I should have (\d+) cucumbers$/) do |n|
           (@initial - @eaten).should == n.to_i
         end
-        @step_mother.Then(/^I should have (\d+) cucumbers in my belly$/) do |n|
+        @dsl.Then(/^I should have (\d+) cucumbers in my belly$/) do |n|
           @eaten.should == n.to_i
         end
 

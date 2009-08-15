@@ -8,6 +8,18 @@ module Cucumber
       end
     end
 
+    class MultipleWorld < StandardError
+      def initialize(first_proc, second_proc)
+        message = "You can only pass a proc to #World once, but it's happening\n"
+        message << "in 2 places:\n\n"
+        message << first_proc.backtrace_line('World') << "\n"
+        message << second_proc.backtrace_line('World') << "\n\n"
+        message << "Use Ruby modules instead to extend your worlds. See the Cucumber::StepMother#World RDoc\n"
+        message << "or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.\n\n"
+        super(message)
+      end
+    end
+
     class RbLanguage
       include LanguageMethods
       attr_reader :current_world, :step_mother

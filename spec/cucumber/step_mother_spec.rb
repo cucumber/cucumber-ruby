@@ -6,10 +6,13 @@ require 'cucumber/rb_support/rb_language'
 module Cucumber
   describe StepMother do
     before do
-      @step_mother = StepMother.new
       @dsl = Object.new
       @dsl.extend(RbSupport::RbDsl)
-      RbSupport::RbLanguage.new(@step_mother)
+
+      @step_mother = StepMother.new
+      @step_mother.load_natural_language('en')
+      @rb = @step_mother.load_programming_language('rb')
+
       @visitor = mock('Visitor')
     end
 
@@ -30,8 +33,8 @@ module Cucumber
         @step_mother.step_match("Three blind mice")
       end.should raise_error(Ambiguous, %{Ambiguous match of "Three blind mice":
 
-spec/cucumber/step_mother_spec.rb:26:in `/Three (.*) mice/'
-spec/cucumber/step_mother_spec.rb:27:in `/Three blind (.*)/'
+spec/cucumber/step_mother_spec.rb:29:in `/Three (.*) mice/'
+spec/cucumber/step_mother_spec.rb:30:in `/Three blind (.*)/'
 
 You can run again with --guess to make Cucumber be more smart about it
 })
@@ -46,8 +49,8 @@ You can run again with --guess to make Cucumber be more smart about it
         @step_mother.step_match("Three cute mice")
       end.should raise_error(Ambiguous, %{Ambiguous match of "Three cute mice":
 
-spec/cucumber/step_mother_spec.rb:42:in `/Three (.*) mice/'
-spec/cucumber/step_mother_spec.rb:43:in `/Three cute (.*)/'
+spec/cucumber/step_mother_spec.rb:45:in `/Three (.*) mice/'
+spec/cucumber/step_mother_spec.rb:46:in `/Three cute (.*)/'
 
 })
     end
@@ -112,7 +115,7 @@ spec/cucumber/step_mother_spec.rb:43:in `/Three cute (.*)/'
         raise "Should fail"
       rescue RbSupport::NilWorld => e
         e.message.should == "World procs should never return nil"
-        e.backtrace.should == ["spec/cucumber/step_mother_spec.rb:104:in `World'"]
+        e.backtrace.should == ["spec/cucumber/step_mother_spec.rb:110:in `World'"]
       end
     end
 
@@ -126,25 +129,24 @@ spec/cucumber/step_mother_spec.rb:43:in `/Three cute (.*)/'
     end
 
     it "should implicitly extend world with modules" do
-      @step_mother.World(ModuleOne, ModuleTwo)
-
-      w = @step_mother.__send__(:begin_scenario)
-      class << w
+      @dsl.World(ModuleOne, ModuleTwo)
+      @step_mother.begin_scenario
+      class << @rb.current_world
         included_modules.index(ModuleOne).should_not == nil
         included_modules.index(ModuleTwo).should_not == nil
       end
-      w.class.should == Object
+      @rb.current_world.class.should == Object
     end
 
     it "should raise error when we try to register more than one World proc" do
-      @step_mother.World { Hash.new }
+      @dsl.World { Hash.new }
       lambda do
-        @step_mother.World { Array.new }
-      end.should raise_error(MultipleWorld, %{You can only pass a proc to #World once, but it's happening
+        @dsl.World { Array.new }
+      end.should raise_error(RbSupport::MultipleWorld, %{You can only pass a proc to #World once, but it's happening
 in 2 places:
 
-spec/cucumber/step_mother_spec.rb:137:in `World'
-spec/cucumber/step_mother_spec.rb:139:in `World'
+spec/cucumber/step_mother_spec.rb:142:in `World'
+spec/cucumber/step_mother_spec.rb:144:in `World'
 
 Use Ruby modules instead to extend your worlds. See the Cucumber::StepMother#World RDoc
 or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
@@ -153,8 +155,8 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
     end
 
     it "should find before hooks" do
-      fish = @step_mother.Before('@fish'){}
-      meat = @step_mother.Before('@meat'){}
+      fish = @dsl.Before('@fish'){}
+      meat = @dsl.Before('@meat'){}
       
       scenario = mock('Scenario')
       scenario.should_receive(:accept_hook?).with(fish).and_return(true)

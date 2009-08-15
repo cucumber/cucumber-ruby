@@ -7,7 +7,13 @@ module Cucumber
       include FeatureFactory
 
       it "should convert to sexp" do
-        feature = create_feature(Object.new)
+        step_mother = StepMother.new
+        step_mother.load_natural_language('en')
+        step_mother.load_programming_language('rb')
+        dsl = Object.new 
+        dsl.extend RbSupport::RbDsl
+
+        feature = create_feature(dsl)
         feature.to_sexp.should == 
         [:feature,
           "features/pretty_printing.feature",

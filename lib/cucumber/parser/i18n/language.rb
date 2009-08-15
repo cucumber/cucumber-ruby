@@ -20,7 +20,7 @@ module Cucumber
           @keywords = Cucumber::LANGUAGES[lang]
           raise "Language not supported: #{lang.inspect}" if @keywords.nil?
           @keywords['grammar_name'] = @keywords['name'].gsub(/\s/, '')
-          register_adverbs(step_mother)
+          register_adverbs(step_mother) if step_mother
         end
 
         def register_adverbs(step_mother)
