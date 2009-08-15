@@ -43,12 +43,13 @@ Given /^I am not running (?:.*) in the background$/ do
   # no-op
 end
 
-Given /^I have environment variable CUCUMBER_DRB set to "([^\"]*)"$/ do |port|
-  @original_cucumber_drb = ENV['CUCUMBER_DRB'] 
-  ENV['CUCUMBER_DRB']  = port
+Given /^I have environment variable (\w+) set to "([^\"]*)"$/ do |var, port|
+  @original_env_vars||={}
+  @original_env_vars[var] = ENV[var] 
+  ENV[var]  = port
 end
 After do
-  ENV['CUCUMBER_DRB'] = @original_cucumber_drb
+  @original_env_vars.each {|var, val| ENV[var] = val } if @original_env_vars
 end
 
 
@@ -86,6 +87,7 @@ end
 Then /^the output should be$/ do |text|
   last_stdout.should == text
 end
+
 
 Then /^"([^\"]*)" should contain$/ do |file, text|
   strip_duration(IO.read(file)).should == text

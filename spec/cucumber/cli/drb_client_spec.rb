@@ -38,6 +38,20 @@ module Cucumber
         DRbClient.run(@args, @error_stream, @out_stream).should == 'foo'
       end
 
+      context "with $CUCUMBER_DRB set" do
+        before do 
+          @original_env = ENV['CUCUMBER_DRB']
+          ENV['CUCUMBER_DRB'] = '90000'
+        end
+        after do
+          ENV['CUCUMBER_DRB'] = @original_env
+        end
+        it "connects to specified DRb server" do
+          DRbObject.should_receive(:new_with_uri).with("druby://127.0.0.1:90000")
+          DRbClient.run(@args, @error_stream, @out_stream)
+        end
+      end
+
     end
   end
 end
