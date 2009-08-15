@@ -120,14 +120,14 @@ Feature: DRb Server Integration
       """
 
   Scenario: Feature Run with --drb specifying a non-standard port
-    
+
     Given I am running spork in the background on port 9000
 
     When I run cucumber features/sample.feature --drb --port 9000
     Then it should pass
     And STDERR should be empty
     And the output should contain
-      """ 
+      """
       1 step (1 passed)
       """
     And the output should contain
