@@ -194,17 +194,17 @@ module Cucumber
       @adverbs << adverb
     end
 
-    def new_world
+    def begin_scenario
       return if options[:dry_run]
       @programming_languages.each do |programming_language|
-        programming_language.new_world(self)
+        programming_language.begin_scenario
       end
     end
 
-    def nil_world
+    def end_scenario
       return if options[:dry_run]
       @programming_languages.each do |programming_language|
-        programming_language.nil_world
+        programming_language.end_scenario
       end
     end
     
@@ -212,7 +212,7 @@ module Cucumber
       return if options[:dry_run] || @current_scenario
       @current_scenario = scenario
       @programming_languages.each do |programming_language|
-        programming_language.before(self, scenario)
+        programming_language.before(scenario)
       end
     end
     
@@ -220,14 +220,14 @@ module Cucumber
       @current_scenario = nil
       return if options[:dry_run]
       @programming_languages.each do |programming_language|
-        programming_language.after(self, scenario)
+        programming_language.after(scenario)
       end
     end
     
     def after_step
       return if options[:dry_run]
       @programming_languages.each do |programming_language|
-        programming_language.execute_after_step(self, @current_scenario)
+        programming_language.execute_after_step(@current_scenario)
       end
     end
     

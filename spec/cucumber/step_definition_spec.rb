@@ -8,7 +8,7 @@ module Cucumber
   describe StepDefinition do
     before do
       extend StepMother
-      @world = new_world
+      @world = begin_scenario
       $inside = nil
     end
 
@@ -63,7 +63,7 @@ module Cucumber
       v = mock('visitor')
       v.should_receive(:announce).with('wasup')
       self.visitor = v
-      world = new_world
+      world = begin_scenario
       Given /Loud/ do
         announce 'wasup'
       end

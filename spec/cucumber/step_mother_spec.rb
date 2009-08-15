@@ -128,7 +128,7 @@ spec/cucumber/step_mother_spec.rb:43:in `/Three cute (.*)/'
     it "should implicitly extend world with modules" do
       @step_mother.World(ModuleOne, ModuleTwo)
 
-      w = @step_mother.__send__(:new_world)
+      w = @step_mother.__send__(:begin_scenario)
       class << w
         included_modules.index(ModuleOne).should_not == nil
         included_modules.index(ModuleTwo).should_not == nil

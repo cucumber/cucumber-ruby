@@ -10,9 +10,10 @@ module Cucumber
 
     class RbLanguage
       include LanguageMethods
-      attr_reader :current_world
+      attr_reader :current_world, :step_mother
       
       def initialize(step_mother, adverbs)
+        @step_mother = step_mother
         RbDsl.step_mother = step_mother
         RbDsl.rb_language = self
         alias_adverbs(adverbs)
@@ -36,13 +37,13 @@ module Cucumber
         @world_modules += world_modules
       end
 
-      def new_world(step_mother)
+      def begin_scenario
         create_world
         extend_world
-        connect_world(step_mother)
+        connect_world(@step_mother)
       end
 
-      def nil_world
+      def end_scenario
         @current_world = nil
       end
 

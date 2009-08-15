@@ -1,28 +1,28 @@
 module Cucumber
   module LanguageMethods
-    def before(step_mother, scenario)
-      step_mother.new_world
-      execute_before(step_mother, scenario)
+    def before(scenario)
+      step_mother.begin_scenario
+      execute_before(scenario)
     end
     
-    def after(step_mother, scenario)
-      execute_after(step_mother, scenario)
-      step_mother.nil_world
+    def after(scenario)
+      execute_after(scenario)
+      step_mother.end_scenario
     end
 
-    def execute_before(step_mother, scenario)
+    def execute_before(scenario)
       step_mother.hooks_for(:before, scenario).each do |hook|
         invoke(hook, 'Before', scenario, true)
       end
     end
 
-    def execute_after(step_mother, scenario)
+    def execute_after(scenario)
       step_mother.hooks_for(:after, scenario).each do |hook|
         invoke(hook, 'After', scenario, true)
       end
     end
 
-    def execute_after_step(step_mother, scenario)
+    def execute_after_step(scenario)
       step_mother.hooks_for(:after_step, scenario).each do |hook|
         invoke(hook, 'AfterStep', scenario, false)
       end

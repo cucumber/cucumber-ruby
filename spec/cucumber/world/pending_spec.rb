@@ -5,7 +5,7 @@ module Cucumber
     describe 'Pending' do
 
       before(:each) do
-        @world = RbSupport::RbLanguage.new(StepMother.new).new_world
+        @world = RbSupport::RbLanguage.new(StepMother.new, []).begin_scenario
       end
 
       it 'should raise a Pending if no block is supplied' do
