@@ -50,6 +50,10 @@ module Cucumber
         @options[:drb]
       end
 
+      def drb_port
+        @options[:drb_port].to_i if @options[:drb_port]
+      end
+
       def build_formatter_broadcaster(step_mother)
         return Formatter::Pretty.new(step_mother, nil, @options) if @options[:autoformat]
         formatters = @options[:formats].map do |format_and_out|

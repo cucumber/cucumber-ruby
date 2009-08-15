@@ -119,7 +119,6 @@ Feature: DRb Server Integration
       I'm loading the stuff just for this run...
       """
 
-  @wip
   Scenario: Feature Run with --drb specifying a non-standard port
     
     Given I am running spork in the background on port 9000

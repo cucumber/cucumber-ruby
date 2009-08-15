@@ -111,7 +111,8 @@ module Cucumber
         end
 
         it "delegates the execution to the DRB client passing the args and streams" do
-          DRbClient.should_receive(:run).with(@args, @err, @out).and_return(true)
+          @configuration.stub :drb_port => 1450
+          DRbClient.should_receive(:run).with(@args, @err, @out, 1450).and_return(true)
           @cli.execute!(@step_mother)
         end
 

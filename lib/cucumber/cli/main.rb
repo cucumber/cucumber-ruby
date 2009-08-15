@@ -39,7 +39,7 @@ module Cucumber
         trap_interrupt
         if configuration.drb?
           begin
-            return DRbClient.run(@args, @error_stream, @out_stream)
+            return DRbClient.run(@args, @error_stream, @out_stream, configuration.drb_port)
           rescue DRbClientError => e
             @error_stream.puts "WARNING: #{e.message} Running features locally:"
           end

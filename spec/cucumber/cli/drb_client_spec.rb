@@ -23,7 +23,7 @@ module Cucumber
         DRbClient.run(@args, @error_stream, @out_stream)
       end
 
-      it "runs the fearures on the DRb server" do
+      it "runs the features on the DRb server" do
         @drb_object.should_receive(:run).with(@args, @error_stream, @out_stream)
         DRbClient.run(@args, @error_stream, @out_stream)
       end
@@ -49,6 +49,26 @@ module Cucumber
         it "connects to specified DRb server" do
           DRbObject.should_receive(:new_with_uri).with("druby://127.0.0.1:90000")
           DRbClient.run(@args, @error_stream, @out_stream)
+        end
+      end
+
+      context "with provided drb_port" do
+        before do
+          @args = @args + ['--port', '8000']
+        end
+        it "connects to specified drb port" do
+          DRbObject.should_receive(:new_with_uri).with("druby://127.0.0.1:8000")
+          DRbClient.run(@args, @error_stream, @out_stream, 8000)
+        end
+        it "prefers configuration to environment"  do
+          original = ENV['CUCUMBER_DRB'] = original
+          begin
+            ENV['CUCUMBER_DRB'] = "4000"
+            DRbObject.should_receive(:new_with_uri).with("druby://127.0.0.1:8000")
+            DRbClient.run(@args, @error_stream, @out_stream, 8000)
+          ensure
+            ENV['CUCUMBER_DRB'] = original
+          end
         end
       end
 
