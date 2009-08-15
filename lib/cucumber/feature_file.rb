@@ -1,4 +1,4 @@
-require 'cucumber/parser/i18n/language'
+require 'cucumber/parser/natural_language'
 require 'cucumber/filter'
 
 module Cucumber
@@ -22,8 +22,7 @@ module Cucumber
     # be filtered.
     def parse(step_mother, options)
       filter = Filter.new(@lines, options)
-      language = Parser::I18n::Language.get(step_mother, (lang || options[:lang] || 'en'))
-      
+      language = Parser::NaturalLanguage.get(step_mother, (lang || options[:lang] || 'en'))
       language.parse(source, @path, filter)
     end
     

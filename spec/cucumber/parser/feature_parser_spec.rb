@@ -1,12 +1,12 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
-require 'cucumber/parser/i18n/language'
+require 'cucumber/parser/natural_language'
 
 module Cucumber
   module Parser
     describe Feature do
       before do
         @step_mother = StepMother.new
-        @parser = I18n::Language.get(@step_mother, 'en').parser
+        @parser = NaturalLanguage.get(@step_mother, 'en').parser
       end
 
       def parse(text)

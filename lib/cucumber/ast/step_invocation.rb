@@ -1,3 +1,5 @@
+require 'cucumber/step_match'
+
 module Cucumber
   module Ast
     class StepInvocation
@@ -33,7 +35,6 @@ module Cucumber
         unless @skip_invoke || options[:dry_run] || @exception || @step_collection.exception
           @skip_invoke = true
           begin
-            # step_mother.current_world.__cucumber_current_step = self if step_mother.current_world # Nil in Pure Java
             @step_match.invoke(@multiline_arg)
             step_mother.after_step
             status!(:passed)

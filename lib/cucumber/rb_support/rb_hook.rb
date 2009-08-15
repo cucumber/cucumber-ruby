@@ -1,9 +1,7 @@
-require 'cucumber/hook_methods'
-
 module Cucumber
   module RbSupport
     class RbHook
-      include HookMethods
+      include LanguageSupport::HookMethods
 
       attr_reader :tag_names
       

@@ -1,4 +1,5 @@
 require 'cucumber/core_ext/string'
+require 'cucumber/step_match'
 
 module Cucumber
   module Ast

@@ -1,10 +1,10 @@
 require 'cucumber/constantize'
-require 'cucumber/hook_methods'
-require 'cucumber/step_definition_methods'
-require 'cucumber/language_methods'
 require 'cucumber/world'
 require 'cucumber/core_ext/instance_exec'
-require 'cucumber/parser/i18n/language'
+require 'cucumber/parser/natural_language'
+require 'cucumber/language_support/hook_methods'
+require 'cucumber/language_support/language_methods'
+require 'cucumber/language_support/step_definition_methods'
 
 module Cucumber
   class Undefined < StandardError
@@ -83,7 +83,7 @@ module Cucumber
     # languages (if they support aliasing). See #load_programming_language
     #
     def load_natural_language(lang)
-      Parser::I18n::Language.get(self, lang)
+      Parser::NaturalLanguage.get(self, lang)
     end
 
     # Registers a StepDefinition. This can be a Ruby StepDefintion,

@@ -7,7 +7,7 @@ module Cucumber
       end
     end
     
-    attr_writer :__cucumber_step_mother, :__cucumber_current_step
+    attr_writer :__cucumber_step_mother
 
     # Call a step from within a step definition
     def __cucumber_invoke(name, multiline_argument=nil) #:nodoc:
@@ -16,7 +16,6 @@ module Cucumber
         step_match.invoke(multiline_argument)
       rescue Exception => e
         e.nested! if Undefined === e
-        @__cucumber_current_step.exception = e if @__cucumber_current_step
         raise e
       end
     end

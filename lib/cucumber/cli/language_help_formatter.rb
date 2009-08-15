@@ -1,5 +1,5 @@
 require 'cucumber/formatter/pretty'
-require 'cucumber/parser/i18n/language'
+require 'cucumber/parser/natural_language'
 
 module Cucumber
   module Cli
@@ -23,8 +23,8 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
       end
 
       def self.list_keywords(io, lang)
-        language = Parser::I18n::Language[lang]
-        raw = Parser::I18n::Language::KEYWORD_KEYS.map do |key|
+        language = Parser::NaturalLanguage[lang]
+        raw = Parser::NaturalLanguage::KEYWORD_KEYS.map do |key|
           [key, language.keywords(key)]
         end
         table = Ast::Table.new(raw)
@@ -46,7 +46,7 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
       def visit_table_cell_value(value, status)
         if @col == 1
           if(@options[:check_lang])
-            @incomplete = Parser::I18n::Language.get(nil, value).incomplete?
+            @incomplete = Parser::NaturalLanguage.get(nil, value).incomplete?
           end
           status = :comment 
         elsif @incomplete

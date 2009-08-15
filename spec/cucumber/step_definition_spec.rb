@@ -46,10 +46,7 @@ module Cucumber
         Given 'Inside'
       end
 
-      step = mock('Step')
-      step.should_receive(:exception=)
       lambda do
-        @rb.current_world.__cucumber_current_step = step
         @step_mother.step_match('Outside').invoke(nil)
       end.should raise_error(Undefined, 'Undefined step: "Inside"')
     end

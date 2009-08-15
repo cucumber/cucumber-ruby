@@ -6,7 +6,7 @@ module Cucumber
   module Parser
     describe 'Tables' do
       before do
-        @parser = I18n::Language.get(StepMother.new, 'en').parser
+        @parser = NaturalLanguage.get(StepMother.new, 'en').parser
       end
       
       def parse(text)

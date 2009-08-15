@@ -1,5 +1,4 @@
 require 'cucumber/step_match'
-require 'cucumber/step_definition_methods'
 require 'cucumber/core_ext/string'
 require 'cucumber/core_ext/proc'
 
@@ -13,7 +12,7 @@ module Cucumber
   #   end
   #
   class RbStepDefinition
-    include StepDefinitionMethods
+    include LanguageSupport::StepDefinitionMethods
 
     class MissingProc < StandardError
       def message

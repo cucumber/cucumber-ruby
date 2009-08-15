@@ -22,7 +22,7 @@ module Cucumber
     end
 
     class RbLanguage
-      include LanguageMethods
+      include LanguageSupport::LanguageMethods
       attr_reader :current_world, :step_mother
       
       def initialize(step_mother, adverbs)
