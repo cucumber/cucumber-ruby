@@ -21,6 +21,9 @@ Spork.prefork do
 
   require 'spec/rails'
   require 'cucumber/rails/rspec'
+
+  # Comment out and change the next language if you're using a different language than English
+  # Spork::Server::Cucumber.step_mother.load_natural_language('no')
 end
  
 Spork.each_run do

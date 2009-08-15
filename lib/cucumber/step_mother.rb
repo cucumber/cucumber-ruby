@@ -61,6 +61,7 @@ module Cucumber
     def initialize
       @programming_languages = []
       @language_map = {}
+      load_natural_language('en')
     end
 
     # Loads and registers programming language implementation.

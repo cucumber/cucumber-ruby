@@ -111,7 +111,6 @@ module Cucumber
       private
 
       def load_step_defs(step_mother)
-        step_mother.load_natural_language('en')
         step_def_files = configuration.step_defs_to_load
         verbose_log("Step Definitions:")
         step_def_files.each do |step_def_file|

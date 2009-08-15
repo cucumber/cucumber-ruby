@@ -8,6 +8,7 @@ This might break other tools that are using Cucumber's internal APIs. For exampl
 be patched. Please upgrade to Spork 0.5.9 if you are using Spork.
 
 === New Features
+* Ability to preload natural language in Spork's prefork. Rerun script/generate cucumber --spork to see how. (Aslak Hellesøy)
 * Ability to control which DRb port is used via the --port flag or by setting CUCUMBER_DRB environment variable. (Chris Flipse)
 * Upgrade Rails generator to use webrat 0.5.0. (Aslak Hellesøy)
 * Upgrade Sinatra example to work with rack-test 0.4.1 and webrat 0.5.0. (Aslak Hellesøy)
