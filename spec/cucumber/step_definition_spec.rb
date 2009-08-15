@@ -2,11 +2,10 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 require 'cucumber/ast'
 require 'cucumber/step_mother'
-require 'cucumber/step_definition'
 require 'cucumber/rb_support/rb_language'
 
 module Cucumber
-  describe StepDefinition do
+  describe RbStepDefinition do
     before do      
       @step_mother = StepMother.new
       @step_mother.load_natural_language('en')

@@ -1,4 +1,5 @@
 require 'cucumber/rb_support/rb_dsl'
+require 'cucumber/rb_support/rb_step_definition'
 
 module Cucumber
   module RbSupport

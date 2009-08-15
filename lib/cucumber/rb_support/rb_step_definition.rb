@@ -12,7 +12,7 @@ module Cucumber
   #     # some code here
   #   end
   #
-  class StepDefinition
+  class RbStepDefinition
     include StepDefinitionMethods
 
     class MissingProc < StandardError

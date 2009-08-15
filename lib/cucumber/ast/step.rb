@@ -1,4 +1,3 @@
-require 'cucumber/step_definition'
 require 'cucumber/core_ext/string'
 
 module Cucumber

@@ -64,7 +64,7 @@ module Cucumber
       # object is created for each scenario and is shared across
       # step definitions within that scenario.
       def register_rb_step_definition(regexp, &proc)
-        RbDsl.step_mother.register_step_definition(StepDefinition.new(RbDsl.rb_language, regexp, &proc))
+        RbDsl.step_mother.register_step_definition(RbStepDefinition.new(RbDsl.rb_language, regexp, &proc))
       end
     end
   end
