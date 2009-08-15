@@ -43,15 +43,9 @@ Given /^I am not running (?:.*) in the background$/ do
   # no-op
 end
 
-Given /^I have environment variable (\w+) set to "([^\"]*)"$/ do |var, port|
-  @original_env_vars||={}
-  @original_env_vars[var] = ENV[var] 
-  ENV[var]  = port
+Given /^I have environment variable (\w+) set to "([^\"]*)"$/ do |variable, value|
+  set_env_var(variable, value)
 end
-After do
-  @original_env_vars.each {|var, val| ENV[var] = val } if @original_env_vars
-end
-
 
 When /^I run cucumber (.*)$/ do |cucumber_opts|
   run "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} --no-color #{cucumber_opts}"

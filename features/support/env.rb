@@ -61,6 +61,12 @@ class CucumberWorld
     end
   end
 
+  def set_env_var(variable, value)
+    @original_env_vars ||= {}
+    @original_env_vars[variable] = ENV[variable] 
+    ENV[variable]  = value
+  end
+
   def background_jobs
     @background_jobs ||= []
   end
@@ -108,6 +114,10 @@ class CucumberWorld
     end
   end
 
+  def restore_original_env_vars
+    @original_env_vars.each { |variable, value| ENV[variable] = value } if @original_env_vars
+  end
+
 end
 
 World do
@@ -121,4 +131,5 @@ end
 
 After do
   terminate_background_jobs
+  restore_original_env_vars
 end
