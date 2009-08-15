@@ -1,6 +1,7 @@
 == (In Git)
 
 === New Features
+* Ability to control which DRb port is used via the --port flag or by setting CUCUMBER_DRB environment variable. (Chris Flipse)
 * Upgrade Rails generator to use webrat 0.5.0. (Aslak Hellesøy)
 * Upgrade Sinatra example to work with rack-test 0.4.1 and webrat 0.5.0. (Aslak Hellesøy)
 
