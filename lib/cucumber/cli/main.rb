@@ -46,7 +46,6 @@ module Cucumber
         # features are loaded. If we swap the order, the requires
         # will fail.
         features = load_plain_text_features(step_mother)
-        
         load_step_defs(step_mother)
         enable_diffing
 

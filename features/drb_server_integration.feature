@@ -23,13 +23,25 @@ Feature: DRb Server Integration
       """
     And a file named "features/sample.feature" with:
       """
+      # language: en
       Feature: Sample
         Scenario: this is a test
           Given I am just testing stuff
       """
+    And a file named "features/essai.feature" with:
+      """
+      # language: fr
+      Fonction: Essai
+        Scenario: ceci est un test
+          Soit je teste
+      """
     And a file named "features/step_definitions/all_your_steps_are_belong_to_us.rb" with:
     """
     Given /^I am just testing stuff$/ do
+      # no-op
+    end
+
+    Soit /^je teste$/ do
       # no-op
     end
     """
@@ -37,7 +49,7 @@ Feature: DRb Server Integration
   Scenario: Feature Passing with --drb flag
     Given I am running spork in the background
 
-    When I run cucumber features/sample.feature --drb
+    When I run cucumber features --drb
     Then it should pass
     And STDERR should be empty
     And the output should contain
@@ -62,7 +74,7 @@ Feature: DRb Server Integration
     """
     And I am running spork in the background
 
-    When I run cucumber features/sample.feature --drb
+    When I run cucumber features --drb
     Then it should fail
     And the output should contain
       """
@@ -82,7 +94,7 @@ Feature: DRb Server Integration
 
     Given I am not running a DRb server in the background
 
-    When I run cucumber features/sample.feature --drb
+    When I run cucumber features --drb
     Then it should pass
     And STDERR should match
       """
@@ -123,7 +135,7 @@ Feature: DRb Server Integration
 
     Given I am running spork in the background on port 9000
 
-    When I run cucumber features/sample.feature --drb --port 9000
+    When I run cucumber features --drb --port 9000
     Then it should pass
     And STDERR should be empty
     And the output should contain
@@ -144,7 +156,7 @@ Feature: DRb Server Integration
     Given I have environment variable CUCUMBER_DRB set to "9000"
     And I am running spork in the background on port 9000
 
-    When I run cucumber features/sample.feature --drb
+    When I run cucumber features/ --drb
     Then it should pass
     And STDERR should be empty
     And the output should contain
