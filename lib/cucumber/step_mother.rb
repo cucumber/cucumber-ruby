@@ -5,6 +5,7 @@ require 'cucumber/language_methods'
 require 'cucumber/step_definition'
 require 'cucumber/world'
 require 'cucumber/core_ext/instance_exec'
+require 'cucumber/parser/i18n/language'
 
 module Cucumber
   class Undefined < StandardError
@@ -60,6 +61,41 @@ module Cucumber
 
     def initialize
       @programming_languages = []
+      @language_map = {}
+    end
+
+    # Loads and registers programming language implementation.
+    # Instances are cached, so calling with the same argument
+    # twice will return the same instance.
+    #
+    # Raises an exception if the language can't be loaded.
+    #
+    def load_programming_language(ext)
+      return @language_map[ext] if @language_map[ext]
+      programming_language_class = constantize("Cucumber::#{ext.capitalize}Support::#{ext.capitalize}Language")
+      programming_language = programming_language_class.new(self, @adverbs || [])
+      @programming_languages << programming_language
+      @language_map[ext] = programming_language
+      programming_language
+    end
+
+    # Loads a natural language. This has the effect of aliasing 
+    # Step Definition keywords for all of the registered programming 
+    # languages (if they support aliasing). See #load_programming_language
+    #
+    def load_natural_language(lang)
+      Parser::I18n::Language.get(self, lang)
+    end
+
+    # Registers a StepDefinition. This can be a Ruby StepDefintion,
+    # or any other kind of object that implements the StepDefintion
+    # contract (API).
+    def register_step_definition(step_definition)
+      step_definitions.each do |already|
+        raise Redundant.new(already, step_definition) if already.same_regexp?(step_definition.regexp)
+      end
+      step_definitions << step_definition
+      step_definition
     end
 
     def options
@@ -90,17 +126,6 @@ module Cucumber
       else
         @scenarios
       end
-    end
-
-    # Registers a StepDefinition. This can be a Ruby StepDefintion,
-    # or any other kind of object that implements the StepDefintion
-    # contract (API)
-    def register_step_definition(step_definition)
-      step_definitions.each do |already|
-        raise Redundant.new(already, step_definition) if already.same_regexp?(step_definition.regexp)
-      end
-      step_definitions << step_definition
-      step_definition
     end
 
     def register_hook(phase, hook)
@@ -151,35 +176,7 @@ module Cucumber
       @step_definitions ||= []
     end
 
-    def load_rb_language
-      programming_language_for('foaming_cuke.rb')
-    end
-
-    def programming_language_for(step_def_file)
-      @language_map ||= {}
-      if ext = File.extname(step_def_file)[1..-1]
-        programming_language = @language_map[ext]
-        return nil if programming_language == :missing
-        return programming_language if programming_language
-        begin
-          programming_language_class = constantize("Cucumber::#{ext.capitalize}Support::#{ext.capitalize}Language")
-          programming_language = programming_language_class.new(self)
-          @programming_languages << programming_language
-          return @language_map[ext] = programming_language
-        rescue LoadError => e
-          @language_map[ext] = :missing
-          nil
-        rescue Exception => e
-          STDERR.puts "#{e.message} (#{e.class})"
-          STDERR.puts e.backtrace
-          exit 1
-        end
-      end
-      nil
-    end
-
     def snippet_text(step_keyword, step_name, multiline_arg_class)
-      load_rb_language if @programming_languages.empty?
       @programming_languages.map do |programming_language|
         programming_language.snippet_text(step_keyword, step_name, multiline_arg_class)
       end.join("\n")
@@ -190,6 +187,11 @@ module Cucumber
       yield scenario
       after(scenario) unless skip_hooks
       scenario_visited(scenario)
+    end
+
+    def register_adverb(adverb)
+      @adverbs ||= []
+      @adverbs << adverb
     end
 
     def new_world

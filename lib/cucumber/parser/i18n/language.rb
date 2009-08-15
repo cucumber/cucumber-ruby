@@ -1,40 +1,33 @@
+require 'cucumber/rb_support/rb_dsl'
+
 module Cucumber
   module Parser
     module I18n
       class Language
         KEYWORD_KEYS = %w{name native encoding feature background scenario scenario_outline examples given when then but}
-        ADVERBS = []
 
         class << self
-          LANGUAGES = Hash.new{|h,k| h[k] = Language.new(k)}
-          
-          def [](key)
-            LANGUAGES[key]
+          def get(step_mother, lang)
+            languages[lang] ||= Language.new(step_mother, lang)
+          end
+
+          def languages
+            @languages ||= {}
           end
         end
 
-        def initialize(lang)
+        def initialize(step_mother, lang)
           @keywords = Cucumber::LANGUAGES[lang]
           raise "Language not supported: #{lang.inspect}" if @keywords.nil?
           @keywords['grammar_name'] = @keywords['name'].gsub(/\s/, '')
-          @step_adverbs = []
+          register_adverbs(step_mother)
         end
 
-        def alias_step_definitions(keywords) #:nodoc:
-          all_keywords = %w{given when then and but}.map{|keyword| keywords[keyword].split('|').map{|w| w.gsub(/\s/, '')}}.flatten
-          alias_steps(all_keywords)
-        end
+        def register_adverbs(step_mother)
+          adverbs = %w{given when then and but}.map{|keyword| @keywords[keyword].split('|').map{|w| w.gsub(/\s/, '')}}.flatten
 
-        # Sets up additional method aliases for Given, When and Then.
-        # This does *not* affect how feature files are parsed. If you
-        # want to create aliases in the parser, you have to do this in
-        # languages.yml. For example:
-        #
-        # and: And|With
-        def alias_steps(keywords)
-          keywords.each do |adverb|
-            Language::ADVERBS << adverb
-            World.alias_adverb(adverb)
+          adverbs.each do |adverb|
+            step_mother.register_adverb(adverb)
           end
         end
 
@@ -45,16 +38,11 @@ module Cucumber
           erb = ERB.new(template)
           grammar = erb.result(binding)
           Treetop.load_from_string(grammar)
-          alias!
           @parser = Parser::I18n.const_get("#{@keywords['grammar_name']}Parser").new
           def @parser.inspect
             "#<#{self.class.name}>"
           end
           @parser
-        end
-
-        def alias!
-          alias_step_definitions(@keywords)
         end
 
         def parse(source, path, filter)
@@ -85,9 +73,6 @@ module Cucumber
         def and_keywords
           @keywords['and'].split('|')
         end
-
-        # Make sure the English methods are always aliased. For convenience.
-        Language['en'].alias!
       end
     end
   end

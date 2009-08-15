@@ -20,6 +20,10 @@ module Cucumber
 
       class << self
         attr_accessor :step_mother, :rb_language
+        
+        def alias_adverb(adverb)
+          alias_method adverb, :register_rb_step_definition
+        end
       end
 
       # Registers any number of +world_modules+ (Ruby Modules) and/or a Proc.
@@ -73,9 +77,6 @@ module Cucumber
       # step definitions within that scenario.
       def register_rb_step_definition(regexp, &proc)
         RbDsl.step_mother.register_step_definition(StepDefinition.new(RbDsl.rb_language, regexp, &proc))
-      end
-      Parser::I18n::Language::ADVERBS.each do |adverb|
-        alias_method adverb, :register_rb_step_definition
       end
     end
   end

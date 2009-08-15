@@ -43,7 +43,7 @@ module Cucumber
         Ast::Table.new(text_or_table)
       else
         @table_parser ||= Parser::TableParser.new
-        @table_parser.parse_or_fail(text.strip, file, line_offset)
+        @table_parser.parse_or_fail(text_or_table.strip, file, line_offset)
       end
     end
 

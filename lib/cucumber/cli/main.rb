@@ -27,6 +27,7 @@ module Cucumber
         @args         = args
         @out_stream   = out_stream == STDOUT ? Formatter::ColorIO.new : out_stream
         @error_stream = error_stream
+        @unsupported_programming_languages = []
       end
 
       def execute!(step_mother)
@@ -44,7 +45,8 @@ module Cucumber
         # This is because i18n step methods are only aliased when
         # features are loaded. If we swap the order, the requires
         # will fail.
-        features = load_plain_text_features
+        features = load_plain_text_features(step_mother)
+        
         load_step_defs(step_mother)
         enable_diffing
 
@@ -78,13 +80,13 @@ module Cucumber
         exceeded
       end
 
-      def load_plain_text_features
+      def load_plain_text_features(step_mother)
         features = Ast::Features.new
 
         verbose_log("Features:")
         configuration.feature_files.each do |f|
           feature_file = FeatureFile.new(f)
-          feature = feature_file.parse(configuration.options)
+          feature = feature_file.parse(step_mother, configuration.options)
           if feature
             features.add_feature(feature)
             verbose_log("  * #{f}")
@@ -109,6 +111,7 @@ module Cucumber
       private
 
       def load_step_defs(step_mother)
+        step_mother.load_natural_language('en')
         step_def_files = configuration.step_defs_to_load
         verbose_log("Step Definitions:")
         step_def_files.each do |step_def_file|
@@ -118,11 +121,25 @@ module Cucumber
       end
 
       def load_step_def(step_mother, step_def_file)
-        if programming_language = step_mother.programming_language_for(step_def_file)
+        if programming_language = programming_language_for(step_mother, step_def_file)
           verbose_log("  * #{step_def_file}")
           programming_language.load_step_def_file(step_def_file)
         else
           verbose_log("  * #{step_def_file} [NOT SUPPORTED]")
+        end
+      end
+
+      def programming_language_for(step_mother, step_def_file) # :nodoc:
+        if ext = File.extname(step_def_file)[1..-1]
+          return nil if @unsupported_programming_languages.index(ext)
+          begin
+            step_mother.load_programming_language(ext)
+          rescue LoadError
+            @unsupported_programming_languages << ext
+            nil
+          end
+        else
+          nil
         end
       end
 
