@@ -60,7 +60,7 @@ module Cucumber
             step_mother.scenarios(:passed).any?
           else
             step_mother.scenarios(:failed).any? ||
-            (configuration.strict? && step_mother.steps(:undefined).any?)
+            (configuration.strict? && (step_mother.steps(:undefined).any? || step_mother.steps(:pending).any?))
           end
       rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
         @error_stream.puts e.message

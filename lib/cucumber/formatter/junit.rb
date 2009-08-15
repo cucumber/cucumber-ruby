@@ -45,8 +45,8 @@ module Cucumber
       end
 
       def visit_scenario_name(keyword, name, file_colon_line, source_indent)
-        scenario_name = name.strip
-        scenario_name = "Unnamed scenario" if name == ""
+        scenario_name = name.strip.delete(".\r\n")
+        scenario_name = "Unnamed scenario" if name.blank?
         @scenario = scenario_name
         @outline = keyword.include?('Scenario Outline')
         @output = "Scenario#{ " outline" if @outline}: #{@scenario}\n\n"
@@ -96,16 +96,20 @@ module Cucumber
           @time += duration
           classname = "#{@feature_name}.#{@scenario}"
           name = "#{@scenario}#{suffix}"
-          @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
-            if status != :passed
-              @builder.failure(:message => "#{status.to_s} #{name}", :type => status.to_s) do
-                @builder.text! @output
-                @builder.text!(format_exception(exception)) if exception
+          failed = (status == :failed || (status == :pending && @options[:strict]))
+          #puts "FAILED:!!#{failed}"
+          if status == :passed || failed
+            @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
+              if failed
+                @builder.failure(:message => "#{status.to_s} #{name}", :type => status.to_s) do
+                  @builder.text! @output
+                  @builder.text!(format_exception(exception)) if exception
+                end
+                @failures += 1
               end
-              @failures += 1
             end
+            @tests += 1
           end
-          @tests += 1
         end
 
         def format_exception(exception)

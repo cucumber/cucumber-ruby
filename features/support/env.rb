@@ -54,6 +54,10 @@ class CucumberWorld
     s.gsub(/\d+\.\d\d+/m, replacement)
   end
 
+  def strip_ruby186_extra_trace(s)  
+    s.gsub(/^.*\.\/features\/step_definitions(.*)\n/, "")
+  end
+
   def create_file(file_name, file_content)
     file_content.gsub!("CUCUMBER_LIB", "'#{cucumber_lib_dir}'") # Some files, such as Rakefiles need to use the lib dir
     in_current_dir do

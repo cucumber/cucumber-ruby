@@ -21,7 +21,7 @@ module Cucumber
     end
 
     def name_line_lengths
-      if @name.empty?
+      if @name.strip.empty?
         [@keyword.jlength]
       else
         @name.split("\n").enum_for(:each_with_index).map do |line, line_number|
