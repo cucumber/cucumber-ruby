@@ -35,9 +35,22 @@ Given /^I am running spork in the background$/ do
   run_spork_in_background
 end
 
+Given /^I am running spork in the background on port (\d+)$/ do |port|
+  run_spork_in_background(port.to_i)
+end
+
 Given /^I am not running (?:.*) in the background$/ do
   # no-op
 end
+
+Given /^I have environment variable CUCUMBER_DRB set to "([^\"]*)"$/ do |port|
+  @original_cucumber_drb = ENV['CUCUMBER_DRB'] 
+  ENV['CUCUMBER_DRB']  = port
+end
+After do
+  ENV['CUCUMBER_DRB'] = @original_cucumber_drb
+end
+
 
 When /^I run cucumber (.*)$/ do |cucumber_opts|
   run "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} --no-color #{cucumber_opts}"
@@ -140,4 +153,5 @@ end
 Then /^print output$/ do
   puts last_stdout
 end
+
 

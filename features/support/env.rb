@@ -84,7 +84,7 @@ class CucumberWorld
     @last_stderr = IO.read(stderr_file.path)
   end
 
-  def run_spork_in_background
+  def run_spork_in_background(port = nil)
     pid = fork
     in_current_dir do
       if pid
@@ -92,7 +92,8 @@ class CucumberWorld
       else
         # STDOUT.close
         # STDERR.close
-        cmd = "#{Cucumber::RUBY_BINARY} -I #{Cucumber::LIBDIR} #{Spork::BINARY} cuc"
+        port_arg = port ? "-p #{port}" : ''
+        cmd = "#{Cucumber::RUBY_BINARY} -I #{Cucumber::LIBDIR} #{Spork::BINARY} cuc #{port_arg}"
         exec cmd
       end
     end
