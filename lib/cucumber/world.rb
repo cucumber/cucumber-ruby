@@ -20,10 +20,31 @@ module Cucumber
         raise e
       end
     end
-    
-    def table(text, file=nil, line_offset=0)
-      @table_parser ||= Parser::TableParser.new
-      @table_parser.parse_or_fail(text.strip, file, line_offset)
+
+    # Returns a Cucumber::Ast::Table for +text_or_table+, which can either
+    # be a String:
+    #
+    #   table(%{
+    #     | account | description | amount |
+    #     | INT-100 | Taxi        | 114    |
+    #     | CUC-101 | Peeler      | 22     |
+    #   })
+    #
+    # or a 2D Array:
+    #
+    #   table([
+    #     %w{ account description amount },
+    #     %w{ INT-100 Taxi        114    },
+    #     %w{ CUC-101 Peeler      22     }
+    #   ])
+    #
+    def table(text_or_table, file=nil, line_offset=0)
+      if Array === text_or_table
+        Ast::Table.new(text_or_table)
+      else
+        @table_parser ||= Parser::TableParser.new
+        @table_parser.parse_or_fail(text.strip, file, line_offset)
+      end
     end
 
     # Output +announcement+ alongside the formatted output.
