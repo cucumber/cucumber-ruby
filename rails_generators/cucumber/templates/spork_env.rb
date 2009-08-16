@@ -19,7 +19,6 @@ Spork.prefork do
   # Comment out the next line if you don't want Cucumber Unicode support
   require 'cucumber/formatter/unicode'
   require 'spec/rails'
-  Spork::Server::Cucumber.step_mother.load_programming_language('rb') if defined?(Spork::Server)
   require 'cucumber/rails/rspec'
 end
  

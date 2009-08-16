@@ -8,9 +8,10 @@ module Cucumber
     describe Scenario do
       before do
         @step_mother = StepMother.new
+        @step_mother.load_natural_language('en')
+        @step_mother.load_programming_language('rb')
         @dsl = Object.new
         @dsl.extend(RbSupport::RbDsl)
-        RbSupport::RbLanguage.new(@step_mother, %w{Given When Then})
 
         $x = $y = nil
         @dsl.Given /y is (\d+)/ do |n|

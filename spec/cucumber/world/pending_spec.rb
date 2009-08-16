@@ -5,7 +5,7 @@ module Cucumber
     describe 'Pending' do
 
       before(:each) do
-        l = RbSupport::RbLanguage.new(StepMother.new, [])
+        l = RbSupport::RbLanguage.new(StepMother.new)
         l.begin_scenario
         @world = l.current_world
       end

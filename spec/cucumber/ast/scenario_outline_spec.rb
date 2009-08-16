@@ -9,9 +9,10 @@ module Cucumber
     describe ScenarioOutline do
       before do
         @step_mother = StepMother.new
+        @step_mother.load_programming_language('rb')
+        @step_mother.load_natural_language('en')
         @dsl = Object.new
         @dsl.extend(RbSupport::RbDsl)
-        RbSupport::RbLanguage.new(@step_mother, %w{Given When Then})
 
         @dsl.Given(/^there are (\d+) cucumbers$/) do |n|
           @initial = n.to_i
