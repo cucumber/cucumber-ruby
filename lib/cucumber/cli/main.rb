@@ -27,6 +27,7 @@ module Cucumber
         @args         = args
         @out_stream   = out_stream == STDOUT ? Formatter::ColorIO.new : out_stream
         @error_stream = error_stream
+        $err = error_stream
         @unsupported_programming_languages = []
       end
 

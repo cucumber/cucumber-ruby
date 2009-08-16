@@ -73,7 +73,8 @@ module Cucumber
     def load_programming_language(ext)
       return @language_map[ext] if @language_map[ext]
       programming_language_class = constantize("Cucumber::#{ext.capitalize}Support::#{ext.capitalize}Language")
-      programming_language = programming_language_class.new(self, @adverbs || [])
+      programming_language = programming_language_class.new(self)
+      programming_language.alias_adverbs(@adverbs || [])
       @programming_languages << programming_language
       @language_map[ext] = programming_language
       programming_language
@@ -189,9 +190,13 @@ module Cucumber
       scenario_visited(scenario)
     end
 
-    def register_adverb(adverb)
+    def register_adverbs(adverbs)
       @adverbs ||= []
-      @adverbs << adverb
+      @adverbs += adverbs
+      @adverbs.uniq!
+      @programming_languages.each do |programming_language|
+        programming_language.alias_adverbs(@adverbs)
+      end
     end
 
     def begin_scenario

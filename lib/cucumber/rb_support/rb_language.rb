@@ -25,11 +25,10 @@ module Cucumber
       include LanguageSupport::LanguageMethods
       attr_reader :current_world, :step_mother
       
-      def initialize(step_mother, adverbs)
+      def initialize(step_mother)
         @step_mother = step_mother
         RbDsl.step_mother = step_mother
         RbDsl.rb_language = self
-        alias_adverbs(adverbs)
       end
       
       def load_step_def_file(step_def_file)
@@ -79,6 +78,13 @@ module Cucumber
         "#{step_keyword} /^#{escaped}$/ do#{block_arg_string}\n  #{multiline_class_comment}pending\nend"
       end
 
+      def alias_adverbs(adverbs)
+        adverbs.each do |adverb|
+          RbDsl.alias_adverb(adverb)
+          World.alias_adverb(adverb)
+        end
+      end
+
       private
 
       PARAM_PATTERN = /"([^\"]*)"/
@@ -118,14 +124,6 @@ module Cucumber
           o
         end
       end
-
-      def alias_adverbs(adverbs)
-        adverbs.each do |adverb|
-          RbDsl.alias_adverb(adverb)
-          World.alias_adverb(adverb)
-        end
-      end
-
     end
   end
 end

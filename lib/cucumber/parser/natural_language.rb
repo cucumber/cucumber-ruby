@@ -22,10 +22,7 @@ module Cucumber
 
       def register_adverbs(step_mother)
         adverbs = %w{given when then and but}.map{|keyword| @keywords[keyword].split('|').map{|w| w.gsub(/\s/, '')}}.flatten
-
-        adverbs.each do |adverb|
-          step_mother.register_adverb(adverb)
-        end
+        step_mother.register_adverbs(adverbs)
       end
 
       def parser
