@@ -27,7 +27,6 @@ module Cucumber
         @args         = args
         @out_stream   = out_stream == STDOUT ? Formatter::ColorIO.new : out_stream
         @error_stream = error_stream
-        $err = error_stream
         @unsupported_programming_languages = []
       end
 
@@ -108,8 +107,6 @@ module Cucumber
         @out_stream.puts(string) if configuration.verbose?
       end
 
-      private
-
       def load_step_defs(step_mother)
         step_def_files = configuration.step_defs_to_load
         verbose_log("Step Definitions:")
@@ -118,6 +115,8 @@ module Cucumber
         end
         verbose_log("\n")
       end
+
+      private
 
       def load_step_def(step_mother, step_def_file)
         if programming_language = programming_language_for(step_mother, step_def_file)
