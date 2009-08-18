@@ -149,8 +149,10 @@ module Cucumber
       def map_headers!(mappings)
         header_cells = cell_matrix[0]
         mappings.each_pair do |pre, post|
-          header_cell = header_cells.detect{|cell| pre === cell.value}
-          header_cell.value = post
+          mapped_cells = header_cells.select{|cell| pre === cell.value}
+          raise "No headers matched #{pre.inspect}" if mapped_cells.empty?
+          raise "#{mapped_cells.length} headers matched #{pre.inspect}: #{mapped_cells.map{|c| c.value}.inspect}" if mapped_cells.length > 1
+          mapped_cells[0].value = post
           if @conversion_procs.has_key?(pre)
             @conversion_procs[post] = @conversion_procs.delete(pre)
           end

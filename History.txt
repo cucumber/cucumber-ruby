@@ -1,3 +1,12 @@
+== (In Git)
+
+=== Bugfixes
+* Table.map_headers! will fail with a decent error message when 0 or 2+ headers are matched. (Aslak Hellesøy)
+
+=== New Features
+* Add :default => :cucumber when setting up Rake tasks for Cucumber in Rails (Aslak Hellesøy)
+* New When /^I fill in "([^\"]*)" for "([^\"]*)"$/ Webrat step for Rails (Aslak Hellesøy)
+
 == 0.3.96 2009-08-15
 
 This release doesn't have any directly visible new features or bug fixes. But there are big

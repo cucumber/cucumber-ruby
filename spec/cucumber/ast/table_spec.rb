@@ -285,6 +285,16 @@ module Cucumber
             |     aslak |     true |
           }
         end
+
+        it "should not allow mappings that match more than 1 column" do
+          t1 = Table.new([
+            ['Cuke',  'Duke'],
+            ['Foo', 'Bar']
+          ])
+          lambda do
+            t1.map_headers!(/uk/ => 'u')
+          end.should raise_error(%{2 headers matched /uk/: ["Cuke", "Duke"]})
+        end
         
         describe "raising" do
           before do
