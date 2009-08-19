@@ -424,7 +424,7 @@ module Cucumber
 
       module CommentLine0
         def line_to_eol
-          elements[1]
+          elements[2]
         end
       end
 
@@ -437,17 +437,30 @@ module Cucumber
         end
 
         i0, s0 = index, []
-        if has_terminal?('#', false, index)
-          r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
-          @index += 1
-        else
-          terminal_parse_failure('#')
-          r1 = nil
+        s1, i1 = [], index
+        loop do
+          r2 = _nt_space
+          if r2
+            s1 << r2
+          else
+            break
+          end
         end
+        r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
         s0 << r1
         if r1
-          r2 = _nt_line_to_eol
-          s0 << r2
+          if has_terminal?('#', false, index)
+            r3 = instantiate_node(SyntaxNode,input, index...(index + 1))
+            @index += 1
+          else
+            terminal_parse_failure('#')
+            r3 = nil
+          end
+          s0 << r3
+          if r3
+            r4 = _nt_line_to_eol
+            s0 << r4
+          end
         end
         if s0.last
           r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
