@@ -1,5 +1,4 @@
 require 'cucumber/constantize'
-require 'cucumber/world'
 require 'cucumber/core_ext/instance_exec'
 require 'cucumber/parser/natural_language'
 require 'cucumber/language_support/hook_methods'

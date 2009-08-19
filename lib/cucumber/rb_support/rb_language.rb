@@ -1,4 +1,5 @@
 require 'cucumber/rb_support/rb_dsl'
+require 'cucumber/rb_support/rb_world'
 require 'cucumber/rb_support/rb_step_definition'
 
 module Cucumber
@@ -84,7 +85,7 @@ module Cucumber
       def alias_adverbs(adverbs)
         adverbs.each do |adverb|
           RbDsl.alias_adverb(adverb)
-          World.alias_adverb(adverb)
+          RbWorld.alias_adverb(adverb)
         end
       end
 
@@ -103,7 +104,7 @@ module Cucumber
       end
 
       def extend_world
-        @current_world.extend(World)
+        @current_world.extend(RbWorld)
         @current_world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
         (@world_modules || []).each do |mod|
           @current_world.extend(mod)
