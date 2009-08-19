@@ -3,7 +3,7 @@ require 'cucumber/step_match'
 
 module Cucumber
   module Ast
-    class Step
+    class Step #:nodoc:
       attr_reader :line, :keyword, :name, :multiline_arg
       attr_writer :step_collection, :options
       attr_accessor :feature_element, :exception

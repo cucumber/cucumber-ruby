@@ -3,6 +3,8 @@ require 'fileutils'
 
 module Cucumber
   module Formatter
+    # The formatter used for <tt>--format pretty</tt> (the default formatter).
+    #
     # This formatter prints features to plain text - exactly how they were parsed,
     # just prettier. That means with proper indentation and alignment of table columns.
     #

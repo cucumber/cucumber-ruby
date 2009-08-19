@@ -6,7 +6,7 @@ module Cucumber
     #
     # This gets stored internally as <tt>["invoice", "release_2"]</tt>
     #
-    class Tags
+    class Tags #:nodoc:
       def self.strip_prefix(tag_name)
         tag_name =~ /^@(.*)/ ? $1 : tag_name
       end

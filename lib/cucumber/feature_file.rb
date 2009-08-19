@@ -3,10 +3,11 @@ require 'cucumber/filter'
 
 module Cucumber
   class FeatureFile
-    FILE_COLON_LINE_PATTERN = /^([\w\W]*?):([\d:]+)$/
-    LANGUAGE_PATTERN = /language:\s*(.*)/
+    FILE_COLON_LINE_PATTERN = /^([\w\W]*?):([\d:]+)$/ #:nodoc:
+    LANGUAGE_PATTERN = /language:\s*(.*)/ #:nodoc:
 
-    # The +uri+ argument can ba a path or a path:line1:line2 etc.
+    # The +uri+ argument is the location of the source. It can ba a path 
+    # or a path:line1:line2 etc. If +source+ is passed, +uri+ is ignored.
     def initialize(uri, source=nil)
       @source = source
       _, @path, @lines = *FILE_COLON_LINE_PATTERN.match(uri)

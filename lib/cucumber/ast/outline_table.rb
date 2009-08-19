@@ -1,6 +1,6 @@
 module Cucumber
   module Ast
-    class OutlineTable < Table
+    class OutlineTable < Table #:nodoc:
       def initialize(raw, scenario_outline)
         super(raw)
         @scenario_outline = scenario_outline
@@ -44,7 +44,7 @@ module Cucumber
         @scenario_outline.visit_scenario_name(visitor, row)
       end
 
-      class ExampleRow < Cells
+      class ExampleRow < Cells #:nodoc:
         attr_reader :scenario_outline # https://rspec.lighthouseapp.com/projects/16211/tickets/342
 
         def create_step_invocations!(scenario_outline)

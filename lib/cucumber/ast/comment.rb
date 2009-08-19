@@ -7,7 +7,7 @@ module Cucumber
     #
     # This gets parsed into a Comment with value <tt>"# Lorem ipsum\n# dolor sit amet\n"</tt>
     #
-    class Comment
+    class Comment #:nodoc:
       def initialize(value)
         @value = value
       end

@@ -7,6 +7,7 @@ require 'cucumber/language_support/language_methods'
 require 'cucumber/language_support/step_definition_methods'
 
 module Cucumber
+  # Raised when there is no matching StepDefinition for a step.
   class Undefined < StandardError
     attr_reader :step_name
 
@@ -28,7 +29,7 @@ module Cucumber
   class Pending < StandardError
   end
 
-  # Raised when a step matches 2 or more StepDefinition
+  # Raised when a step matches 2 or more StepDefinitions
   class Ambiguous < StandardError
     def initialize(step_name, step_definitions, used_guess)
       message = "Ambiguous match of \"#{step_name}\":\n\n"
@@ -49,10 +50,7 @@ module Cucumber
     end
   end
 
-  # This is the main interface for registering step definitions, which is done
-  # from <tt>*_steps.rb</tt> files. This module is included right at the top-level
-  # so #register_step_definition (and more interestingly - its aliases) are
-  # available from the top-level.
+  # This is the meaty part of Cucumber that ties everything together.
   class StepMother
     include Constantize
     
@@ -67,8 +65,6 @@ module Cucumber
     # Loads and registers programming language implementation.
     # Instances are cached, so calling with the same argument
     # twice will return the same instance.
-    #
-    # Raises an exception if the language can't be loaded.
     #
     def load_programming_language(ext)
       return @language_map[ext] if @language_map[ext]
@@ -99,15 +95,16 @@ module Cucumber
       step_definition
     end
 
+    # Returns the options passed on the command line.
     def options
       @options ||= {}
     end
 
-    def step_visited(step)
+    def step_visited(step) #:nodoc:
       steps << step unless steps.index(step)
     end
-    
-    def steps(status = nil)
+
+    def steps(status = nil) #:nodoc:
       @steps ||= []
       if(status)
         @steps.select{|step| step.status == status}
@@ -116,11 +113,11 @@ module Cucumber
       end
     end
 
-    def announce(msg)
+    def announce(msg) #:nodoc:
       @visitor.announce(msg)
     end
 
-    def scenarios(status = nil)
+    def scenarios(status = nil) #:nodoc:
       @scenarios ||= []
       if(status)
         @scenarios.select{|scenario| scenario.status == status}
@@ -129,20 +126,20 @@ module Cucumber
       end
     end
 
-    def register_hook(phase, hook)
+    def register_hook(phase, hook) #:nodoc:
       hooks[phase.to_sym] << hook
       hook
     end
 
-    def hooks
+    def hooks #:nodoc:
       @hooks ||= Hash.new {|hash, phase| hash[phase] = []}
     end
 
-    def hooks_for(phase, scenario)
+    def hooks_for(phase, scenario) #:nodoc:
       hooks[phase.to_sym].select{|hook| scenario.accept_hook?(hook)}
     end
 
-    def step_match(step_name, formatted_step_name=nil)
+    def step_match(step_name, formatted_step_name=nil) #:nodoc:
       matches = step_definitions.map { |d| d.step_match(step_name, formatted_step_name) }.compact
       raise Undefined.new(step_name) if matches.empty?
       matches = best_matches(step_name, matches) if matches.size > 1 && options[:guess]
@@ -150,7 +147,7 @@ module Cucumber
       matches[0]
     end
 
-    def best_matches(step_name, step_matches)
+    def best_matches(step_name, step_matches) #:nodoc:
       no_groups      = step_matches.select {|step_match| step_match.args.length == 0}
       max_arg_length = step_matches.map {|step_match| step_match.args.length }.max
       top_groups     = step_matches.select {|step_match| step_match.args.length == max_arg_length }
@@ -166,31 +163,31 @@ module Cucumber
       end
     end
     
-    def clear!
+    def clear! #:nodoc:
       step_definitions.clear
       hooks.clear
       steps.clear
       scenarios.clear
     end
 
-    def step_definitions
+    def step_definitions #:nodoc:
       @step_definitions ||= []
     end
 
-    def snippet_text(step_keyword, step_name, multiline_arg_class)
+    def snippet_text(step_keyword, step_name, multiline_arg_class) #:nodoc:
       @programming_languages.map do |programming_language|
         programming_language.snippet_text(step_keyword, step_name, multiline_arg_class)
       end.join("\n")
     end
 
-    def before_and_after(scenario, skip_hooks=false)
+    def before_and_after(scenario, skip_hooks=false) #:nodoc:
       before(scenario) unless skip_hooks
       yield scenario
       after(scenario) unless skip_hooks
       scenario_visited(scenario)
     end
 
-    def register_adverbs(adverbs)
+    def register_adverbs(adverbs) #:nodoc:
       @adverbs ||= []
       @adverbs += adverbs
       @adverbs.uniq!
@@ -199,21 +196,21 @@ module Cucumber
       end
     end
 
-    def begin_scenario
+    def begin_scenario #:nodoc:
       return if options[:dry_run]
       @programming_languages.each do |programming_language|
         programming_language.begin_scenario
       end
     end
 
-    def end_scenario
+    def end_scenario #:nodoc:
       return if options[:dry_run]
       @programming_languages.each do |programming_language|
         programming_language.end_scenario
       end
     end
     
-    def before(scenario)
+    def before(scenario) #:nodoc:
       return if options[:dry_run] || @current_scenario
       @current_scenario = scenario
       @programming_languages.each do |programming_language|
@@ -221,7 +218,7 @@ module Cucumber
       end
     end
     
-    def after(scenario)
+    def after(scenario) #:nodoc:
       @current_scenario = nil
       return if options[:dry_run]
       @programming_languages.each do |programming_language|
@@ -229,7 +226,7 @@ module Cucumber
       end
     end
     
-    def after_step
+    def after_step #:nodoc:
       return if options[:dry_run]
       @programming_languages.each do |programming_language|
         programming_language.execute_after_step(@current_scenario)
@@ -238,11 +235,11 @@ module Cucumber
     
     private
 
-    def max_step_definition_length
+    def max_step_definition_length #:nodoc:
       @max_step_definition_length ||= step_definitions.map{|step_definition| step_definition.text_length}.max
     end
 
-    def scenario_visited(scenario)
+    def scenario_visited(scenario) #:nodoc:
       scenarios << scenario unless scenarios.index(scenario)
     end
   end

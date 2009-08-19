@@ -2,7 +2,7 @@ require 'cucumber/step_match'
 
 module Cucumber
   module Ast
-    class StepInvocation
+    class StepInvocation #:nodoc:
       attr_writer :step_collection, :background
       attr_reader :name, :matched_cells, :status, :reported_exception
       attr_accessor :exception

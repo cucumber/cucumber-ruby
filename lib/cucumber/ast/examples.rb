@@ -1,6 +1,6 @@
 module Cucumber
   module Ast
-    class Examples
+    class Examples #:nodoc:
       def initialize(line, keyword, name, outline_table)
         @keyword, @name, @outline_table = keyword, name, outline_table
       end

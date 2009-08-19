@@ -23,7 +23,8 @@ $__cucumber_toplevel = self
 
 module Cucumber #:nodoc:
   module Rails
-    # All scenarios will execute in the context of a new instance of World.
+    # All scenarios will execute in the context of a new instance of Cucumber::Rails:World if this file 
+    # is loaded. This gives Step Definitions access to all the methods from Rails' ActionController::IntegrationTest
     class World < ActionController::IntegrationTest
       if defined?(ActiveRecord::Base)
         self.use_transactional_fixtures = false

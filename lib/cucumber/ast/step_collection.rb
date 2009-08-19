@@ -1,7 +1,7 @@
 module Cucumber
   module Ast
     # Holds an Array of Step or StepDefinition
-    class StepCollection
+    class StepCollection #:nodoc:
       include Enumerable
       
       def initialize(steps)

@@ -1,5 +1,6 @@
 module Cucumber
   module RbSupport
+    # Wrapper for Before, After and AfterStep hooks
     class RbHook
       include LanguageSupport::HookMethods
 

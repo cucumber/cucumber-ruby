@@ -1,5 +1,5 @@
 module Cucumber
-  # All steps are run in the context of an object that extends this module
+  # All steps are run in the context of an object that extends this module.
   module World
     class << self
       def alias_adverb(adverb)
@@ -9,7 +9,8 @@ module Cucumber
     
     attr_writer :__cucumber_step_mother
 
-    # Call a step from within a step definition
+    # Call a step from within a step definition. This method is aliased to
+    # the same i18n as RbDsl.
     def __cucumber_invoke(name, multiline_argument=nil) #:nodoc:
       begin
         step_match = @__cucumber_step_mother.step_match(name)
@@ -57,6 +58,7 @@ module Cucumber
       @__cucumber_step_mother.announce(announcement)
     end
 
+    # Mark the matched step as pending.
     def pending(message = "TODO")
       if block_given?
         begin
@@ -82,7 +84,7 @@ module Cucumber
     # or frameworks (Rails), so to avoid long waiting times on
     # such errors in World we define it to just return a simple String.
     #
-    def inspect
+    def inspect #:nodoc:
       sprintf("#<%s:0x%x>", self.class, self.object_id)
     end
   end

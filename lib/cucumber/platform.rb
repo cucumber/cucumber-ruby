@@ -4,7 +4,6 @@ require 'rbconfig'
 require 'yaml'
 
 module Cucumber
-  # TODO: Move these constants and the file to Language. Update wiki
   LANGUAGE_FILE = File.expand_path(File.dirname(__FILE__) + '/languages.yml')
   LANGUAGES     = YAML.load_file(LANGUAGE_FILE)
   BINARY        = File.expand_path(File.dirname(__FILE__) + '/../../bin/cucumber')
@@ -17,7 +16,7 @@ module Cucumber
   RUBY_BINARY   = File.join(Config::CONFIG['bindir'], Config::CONFIG['ruby_install_name'])
   RUBY_1_9      = RUBY_VERSION =~ /^1\.9/
   
-  def self.file_mode(m)
+  def self.file_mode(m) #:nodoc:
     RUBY_1_9 ? "#{m}:UTF-8" : m
   end
 end

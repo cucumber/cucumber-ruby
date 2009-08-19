@@ -1,7 +1,7 @@
 require 'enumerator'
 
 module Cucumber
-  module FeatureElement
+  module FeatureElement #:nodoc:
     attr_writer :feature
 
     def attach_steps(steps)

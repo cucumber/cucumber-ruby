@@ -1,6 +1,6 @@
 module Cucumber
   module Ast
-    class Features
+    class Features #:nodoc:
       include Enumerable
 
       attr_reader :duration

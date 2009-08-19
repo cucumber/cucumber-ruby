@@ -4,6 +4,7 @@
 * Table.map_headers! will fail with a decent error message when 0 or 2+ headers are matched. (Aslak Hellesøy)
 
 === New Features
+* The public API is documented and there is a new :sdoc task to generate nice searchable API docs.
 * Add :default => :cucumber when setting up Rake tasks for Cucumber in Rails (Aslak Hellesøy)
 * New When /^I fill in "([^\"]*)" for "([^\"]*)"$/ Webrat step for Rails (Aslak Hellesøy)
 

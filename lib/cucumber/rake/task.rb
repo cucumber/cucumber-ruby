@@ -8,7 +8,7 @@ module Cucumber
     #
     #   Cucumber::Rake::Task.new
     #
-    # This will create a task named 'cucumber' described as 'Run Cucumber features'. 
+    # This will define a task named <tt>cucumber</tt> described as 'Run Cucumber features'. 
     # It will use steps from 'features/**/*.rb' and features in 'features/**/*.feature'.
     #
     # To further configure the task, you can pass a block:
@@ -82,10 +82,10 @@ module Cucumber
         end
       end
 
-      LIB = File.expand_path(File.dirname(__FILE__) + '/../..') # :nodoc:
+      LIB = File.expand_path(File.dirname(__FILE__) + '/../..') #:nodoc:
 
       # TODO: remove depreated accessors for 0.4.0
-      def self.deprecate_accessor(attribute) # :nodoc:
+      def self.deprecate_accessor(attribute) #:nodoc:
         attr_reader attribute
         class_eval <<-EOF, __FILE__, __LINE__ + 1
           def #{attribute}=(value)
@@ -133,7 +133,9 @@ module Cucumber
         @rcov_opts = String === opts ? opts.split(' ') : opts
       end
 
-      # Whether or not to fork a new ruby interpreter. Defaults to true.
+      # Whether or not to fork a new ruby interpreter. Defaults to true. You may gain
+      # some startup speed if you set it to false, but this may also cause issues with
+      # your load path and gems.
       attr_accessor :fork
 
       # Define what profile to be used.  When used with cucumber_opts it is simply appended to it. Will be ignored when CUCUMBER_OPTS is used.
@@ -165,14 +167,14 @@ module Cucumber
         define_task
       end
 
-      def define_task # :nodoc:
+      def define_task #:nodoc:
         desc @desc
         task @task_name do
           runner.run
         end
       end
 
-      def runner(task_args = nil) # :nodoc:
+      def runner(task_args = nil) #:nodoc:
         cucumber_opts = [(ENV['CUCUMBER_OPTS'] ? ENV['CUCUMBER_OPTS'].split(/\s+/) : nil) || cucumber_opts_with_profile]
         if(@rcov)
           RCovCucumberRunner.new(libs, binary, cucumber_opts, feature_files(task_args), rcov_opts)
@@ -183,11 +185,11 @@ module Cucumber
         end
       end
 
-      def cucumber_opts_with_profile # :nodoc:
+      def cucumber_opts_with_profile #:nodoc:
         @profile ? [cucumber_opts, '--profile', @profile] : cucumber_opts
       end
 
-      def feature_files(task_args = nil) # :nodoc:
+      def feature_files(task_args = nil) #:nodoc:
         if ENV['FEATURE']
           FileList[ ENV['FEATURE'] ]
         else
@@ -199,7 +201,7 @@ module Cucumber
         end
       end
 
-      def step_files(task_args = nil) # :nodoc:
+      def step_files(task_args = nil) #:nodoc:
         if ENV['STEPS']
           FileList[ ENV['STEPS'] ]
         else
@@ -222,14 +224,14 @@ module Cucumber
         super(task_name, desc)
       end
 
-      def define_task # :nodoc:
+      def define_task #:nodoc:
         desc @desc
         task @task_name, :feature_name do |t, args|
           runner(args).run
         end
       end
 
-      def feature_files(task_arguments) # :nodoc:
+      def feature_files(task_arguments) #:nodoc:
         FileList[File.join("features", "**", "#{task_arguments[:feature_name]}.feature")]
       end
 

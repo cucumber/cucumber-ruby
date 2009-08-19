@@ -3,9 +3,11 @@ require 'cucumber/core_ext/string'
 require 'cucumber/core_ext/proc'
 
 module Cucumber
-  # A Step Definition holds a Regexp and a Proc, and is created
+  # A Ruby Step Definition holds a Regexp and a Proc, and is created
   # by calling <tt>Given</tt>, <tt>When</tt> or <tt>Then</tt>
-  # in the <tt>step_definitions</tt> ruby files - for example:
+  # in the <tt>step_definitions</tt> ruby files. See also RbDsl.
+  #
+  # Example:
   #
   #   Given /I have (\d+) cucumbers in my belly/ do
   #     # some code here

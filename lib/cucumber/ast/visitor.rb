@@ -1,18 +1,15 @@
 module Cucumber
   module Ast
-    # A dumb visitor that implements the whole Visitor API and just walks the tree.
+    # Base class for formatters. This class just walks the tree depth first.
+    # Just override the methods you care about. Remember to call super if you
+    # override a method.
     class Visitor
-      attr_accessor :options
-      attr_reader :step_mother
+      attr_accessor :options #:nodoc:
+      attr_reader :step_mother #:nodoc:
 
       def initialize(step_mother)
         @options = {}
         @step_mother = step_mother
-      end
-
-      def matches_scenario_names?(node)
-        scenario_name_regexps = options[:name_regexps] || []
-        scenario_name_regexps.empty? || node.matches_scenario_names?(scenario_name_regexps)
       end
 
       def visit_features(features)
@@ -109,6 +106,7 @@ module Cucumber
       def visit_table_cell_value(value, status)
       end
 
+      # Print +announcement+. This method can be called from within StepDefinitions.
       def announce(announcement)
       end
 

@@ -3,12 +3,14 @@ require 'cucumber/rb_support/rb_step_definition'
 
 module Cucumber
   module RbSupport
+    # Raised if a World block returns Nil.
     class NilWorld < StandardError
       def initialize
         super("World procs should never return nil")
       end
     end
 
+    # Raised if there are 2 or more World blocks.
     class MultipleWorld < StandardError
       def initialize(first_proc, second_proc)
         message = "You can only pass a proc to #World once, but it's happening\n"
@@ -21,6 +23,7 @@ module Cucumber
       end
     end
 
+    # The Ruby implementation of the programming language API.
     class RbLanguage
       include LanguageSupport::LanguageMethods
       attr_reader :current_world, :step_mother

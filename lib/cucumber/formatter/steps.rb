@@ -1,5 +1,6 @@
 module Cucumber
   module Formatter
+    # The formatter used for <tt>--format steps</tt>
     class Steps < Ast::Visitor
 
       def initialize(step_mother, io, options)
