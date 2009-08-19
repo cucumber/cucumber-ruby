@@ -2,6 +2,10 @@
 # Two lines
 Feature: Some header  
 
+  Background:
+  # comment
+  Given whatever
+
   # Scenario header
   # on two lines
   Scenario: Some scenario

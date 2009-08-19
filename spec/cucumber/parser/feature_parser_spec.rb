@@ -349,6 +349,10 @@ Given I am a step
         it "should parse scenario_outline" do
           parse_file("scenario_outline.feature")
         end
+
+        it "should parse comments" do
+          parse_file("with_comments.feature")
+        end
       end
 
       describe "Filtering" do

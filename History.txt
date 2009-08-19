@@ -1,3 +1,8 @@
+== 0.3.x (In Git)
+
+=== Bug Fixes
+Fixed an issue with comments with preceding spaces after a background causing a parse error (#401 Joseph Wilk)
+
 == 0.3.96 2009-08-15
 
 This release doesn't have any directly visible new features or bug fixes. But there are big

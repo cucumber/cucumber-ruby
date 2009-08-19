@@ -78,7 +78,7 @@ module Cucumber
       end
 
       rule comment_line
-        '#' line_to_eol
+        space* '#' line_to_eol
       end
 
       rule background
