@@ -1,9 +1,9 @@
 module Cucumber
   module Ast
-    class ScenarioOutline
+    class ScenarioOutline #:nodoc:
       include FeatureElement
 
-      module ExamplesArray
+      module ExamplesArray #:nodoc:
         def accept(visitor)
           return if $cucumber_interrupted
           each do |examples|

@@ -46,7 +46,7 @@ module Cli
 
       context '-r or --require' do
         it "collects all specified files into an array" do
-          after_parsing ('--require some_file.rb -r another_file.rb') do
+          after_parsing('--require some_file.rb -r another_file.rb') do
             options[:require].should == ['some_file.rb', 'another_file.rb']
           end
         end

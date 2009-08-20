@@ -1,5 +1,5 @@
 module Cucumber
-  class StepMatch
+  class StepMatch #:nodoc:
     attr_reader :step_definition, :args
 
     def initialize(step_definition, step_name, formatted_step_name, args)
@@ -33,7 +33,7 @@ module Cucumber
     end
   end
   
-  class NoStepMatch
+  class NoStepMatch #:nodoc:
     attr_reader :step_definition, :name
 
     def initialize(step, name)

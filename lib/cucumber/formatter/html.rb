@@ -3,6 +3,7 @@ require 'cucumber/formatter/duration'
 
 module Cucumber
   module Formatter
+    # The formatter used for <tt>--format html</tt>
     class Html < Ast::Visitor
       include ERB::Util # for the #h method
       include Duration

@@ -36,31 +36,31 @@ module Cucumber
         RbDsl.rb_language.build_world_factory(*world_modules, &proc)
       end
 
-      # Registers a Before proc. You can call this method as many times as you
-      # want (typically from ruby scripts under <tt>support</tt>).
+      # Registers a proc that will run before each Scenario. You can register as 
+      # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
       def Before(*tag_names, &proc)
         RbDsl.step_mother.register_hook(:before, RbHook.new(RbDsl.rb_language, tag_names, proc))
       end
 
+      # Registers a proc that will run after each Scenario. You can register as 
+      # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
       def After(*tag_names, &proc)
         RbDsl.step_mother.register_hook(:after, RbHook.new(RbDsl.rb_language, tag_names, proc))
       end
 
+      # Registers a proc that will run after each Step. You can register as 
+      # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
       def AfterStep(*tag_names, &proc)
         RbDsl.step_mother.register_hook(:after_step, RbHook.new(RbDsl.rb_language, tag_names, proc))
       end
 
-      # Registers a new Ruby StepDefinition.
-      # This method is aliased
+      # Registers a new Ruby StepDefinition. This method is aliased
       # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>, and
       # also to the i18n translations whenever a feature of a
       # new language is loaded.
       #
-      # See Cucumber#alias_steps for details on how to
-      # create your own aliases.
-      #
-      # The +&proc+ gets executed in the context of a <tt>world</tt>
-      # object, which is defined by #World. A new <tt>world</tt>
+      # The +&proc+ gets executed in the context of a <tt>World</tt>
+      # object, which is defined by #World. A new <tt>World</tt>
       # object is created for each scenario and is shared across
       # step definitions within that scenario.
       def register_rb_step_definition(regexp, &proc)

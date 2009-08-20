@@ -1,5 +1,5 @@
 module Cucumber
-  class Broadcaster
+  class Broadcaster #:nodoc:
     def initialize(receivers = [])
       @receivers = receivers
     end

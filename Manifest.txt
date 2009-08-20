@@ -289,7 +289,8 @@ gem_tasks/flog.rake
 gem_tasks/gemspec.rake
 gem_tasks/rspec.rake
 gem_tasks/sass.rake
-gem_tasks/yard.rake
+gem_tasks/sdoc.rake
+lib/README.rdoc
 lib/autotest/cucumber.rb
 lib/autotest/cucumber_mixin.rb
 lib/autotest/cucumber_rails.rb
@@ -366,13 +367,13 @@ lib/cucumber/rb_support/rb_dsl.rb
 lib/cucumber/rb_support/rb_hook.rb
 lib/cucumber/rb_support/rb_language.rb
 lib/cucumber/rb_support/rb_step_definition.rb
+lib/cucumber/rb_support/rb_world.rb
 lib/cucumber/rspec_neuter.rb
 lib/cucumber/step_match.rb
 lib/cucumber/step_mother.rb
 lib/cucumber/version.rb
 lib/cucumber/webrat/element_locator.rb
 lib/cucumber/webrat/table_locator.rb
-lib/cucumber/world.rb
 rails_generators/cucumber/USAGE
 rails_generators/cucumber/cucumber_generator.rb
 rails_generators/cucumber/templates/cucumber
@@ -396,7 +397,6 @@ spec/cucumber/ast/scenario_spec.rb
 spec/cucumber/ast/step_collection_spec.rb
 spec/cucumber/ast/step_spec.rb
 spec/cucumber/ast/table_spec.rb
-spec/cucumber/ast/visitor_spec.rb
 spec/cucumber/broadcaster_spec.rb
 spec/cucumber/cli/configuration_spec.rb
 spec/cucumber/cli/drb_client_spec.rb
@@ -415,8 +415,8 @@ spec/cucumber/parser/table_parser_spec.rb
 spec/cucumber/rails/stubs/mini_rails.rb
 spec/cucumber/rails/stubs/test_help.rb
 spec/cucumber/rails/world_spec.rb
+spec/cucumber/rb_support/rb_step_definition_spec.rb
 spec/cucumber/sell_cucumbers.feature
-spec/cucumber/step_definition_spec.rb
 spec/cucumber/step_mother_spec.rb
 spec/cucumber/treetop_parser/empty_feature.feature
 spec/cucumber/treetop_parser/empty_scenario.feature

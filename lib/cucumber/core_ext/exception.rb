@@ -18,7 +18,7 @@
 #
 # All backtrace munging can be turned off with the <tt>--backtrace</tt> switch
 #
-class Exception
+class Exception #:nodoc:
   CUCUMBER_FILTER_PATTERNS = [
     /vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\//
   ]

@@ -1,5 +1,5 @@
 # Proc extension to get more location info out of a proc
-class Proc
+class Proc #:nodoc:
   PROC_PATTERN = /[\d\w]+@(.*):(.*)>/
   
   def to_comment_line

@@ -1,11 +1,13 @@
 require 'cucumber/platform'
 
 module Cucumber
+  # Raised if the number of a StepDefinition's Regexp match groups
+  # is different from the number of Proc arguments.
   class ArityMismatchError < StandardError
   end
 end
 
-class Object
+class Object #:nodoc:
   def cucumber_instance_exec(check_arity, pseudo_method, *args, &block)
     cucumber_run_with_backtrace_filtering(pseudo_method) do
       if check_arity && !cucumber_compatible_arity?(args, block)
@@ -23,7 +25,9 @@ class Object
       end
     end
   end
-  
+
+  private
+
   def cucumber_arity(block)
     a = block.arity
     Cucumber::RUBY_1_9 ? a : (a == -1 ? 0 : a)
@@ -48,7 +52,8 @@ class Object
   
   unless defined? instance_exec # 1.9
     # http://eigenclass.org/hiki/bounded+space+instance_exec
-    module InstanceExecHelper; end
+    module InstanceExecHelper #:nodoc:
+    end
     include InstanceExecHelper
     def instance_exec(*args, &block)
       begin

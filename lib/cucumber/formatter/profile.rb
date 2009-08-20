@@ -2,6 +2,7 @@ require 'cucumber/formatter/progress'
 
 module Cucumber
   module Formatter
+    # The formatter used for <tt>--format profile</tt>
     class Profile < Progress
       NUMBER_OF_STEP_DEFINITONS_TO_SHOW = 10
       NUMBER_OF_STEP_INVOCATIONS_TO_SHOW = 5

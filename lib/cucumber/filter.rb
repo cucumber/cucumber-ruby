@@ -1,5 +1,6 @@
 module Cucumber
-  class Filter
+  # Filters the AST based on --tags and --name
+  class Filter #:nodoc:
     def initialize(lines, options)
       @lines = lines
 

@@ -63,6 +63,7 @@ $hoe = Hoe.spec(GEM_NAME) do |p|
   p.extra_deps = [ 
     ['term-ansicolor', '>= 1.0.3'], 
     ['treetop', '>= 1.3.0'], 
+    ['polyglot', '>= 0.2.8'], # Don't really want polyglot, but it keeps breaking so we'll make people use something that works ok'ish 
     ['diff-lcs', '>= 1.1.2'],
     ['builder', '>= 2.1.2']
   ]

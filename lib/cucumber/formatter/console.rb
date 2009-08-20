@@ -3,6 +3,8 @@ require 'cucumber/formatter/duration'
 
 module Cucumber
   module Formatter
+    # This module contains helper methods that are used by formatters
+    # that print output to the terminal.
     module Console
       extend ANSIColor
       include Duration

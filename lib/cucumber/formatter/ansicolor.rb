@@ -23,8 +23,9 @@ Term::ANSIColor.coloring = false if !STDOUT.tty? and not ENV.has_key?("AUTOTEST"
 
 module Cucumber
   module Formatter
-    # Defines aliases for coloured output. You can tweak the colours by defining
-    # a <tt>CUCUMBER_COLORS</tt> variable in your shell, very much like you can
+    # Defines aliases for coloured output. You don't invoke any methods from this
+    # module directly, but you can change the output colours by defining
+    # a <tt>CUCUMBER_COLORS</tt> variable in your shell, very much like how you can
     # tweak the familiar POSIX command <tt>ls</tt> with
     # <a href="http://mipsisrisc.com/rambling/2008/06/27/lscolorsls_colors-now-with-linux-support/">$LSCOLORS/$LS_COLORS</a>
     #
@@ -97,7 +98,7 @@ module Cucumber
         end
       end
       
-      def self.define_grey
+      def self.define_grey #:nodoc:
         begin
           gem 'genki-ruby-terminfo'
           require 'terminfo'
@@ -125,8 +126,8 @@ module Cucumber
         end
       end
       
-      def self.define_real_grey
-        def grey(m)
+      def self.define_real_grey #:nodoc:
+        def grey(m) #:nodoc:
           if ::Term::ANSIColor.coloring?
             "\e[90m#{m}\e[0m"
           else

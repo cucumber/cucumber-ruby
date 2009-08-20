@@ -1,6 +1,7 @@
 module Cucumber
   module Formatter
-    # Custom formatter that prints a tag cloud
+    # The formatter used for <tt>--format tag_cloud</tt>
+    # Custom formatter that prints a tag cloud as a table.
     class TagCloud < Cucumber::Ast::Visitor
       def initialize(step_mother, io, options)
         super(step_mother)

@@ -2,7 +2,7 @@ require 'cucumber/ast/feature_element'
 
 module Cucumber
   module Ast
-    class Scenario
+    class Scenario #:nodoc:
       include FeatureElement
       
       attr_reader :name, :line

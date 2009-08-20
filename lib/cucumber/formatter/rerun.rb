@@ -1,5 +1,7 @@
 module Cucumber
   module Formatter
+    # The formatter used for <tt>--format rerun</tt>
+    #
     # This formatter keeps track of all failing features and print out their location.
     # Example:
     #

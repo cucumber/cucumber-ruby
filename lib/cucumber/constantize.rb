@@ -1,5 +1,5 @@
 module Cucumber
-  module Constantize
+  module Constantize #:nodoc:
     def constantize(camel_cased_word)
       begin
         names = camel_cased_word.split('::')

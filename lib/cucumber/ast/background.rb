@@ -2,7 +2,7 @@ require 'cucumber/ast/feature_element'
 
 module Cucumber
   module Ast
-    class Background
+    class Background #:nodoc:
       include FeatureElement
       attr_reader :feature_elements
 

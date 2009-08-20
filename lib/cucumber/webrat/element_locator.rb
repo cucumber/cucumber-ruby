@@ -55,7 +55,7 @@ module Webrat
   end
   
   module Locators
-    class ElementLocator < Locator
+    class ElementLocator < Locator #:nodoc:
       def locate
         Element.load(@session, table_element)
       end
@@ -77,11 +77,11 @@ module Webrat
     alias table_at element_at # Backwards compatibility with Cucumber
   end
   
-  module Methods
+  module Methods #:nodoc:
     delegate_to_session :element_at, :table_at
   end
   
-  class Session
+  class Session #:nodoc:
     def_delegators :current_scope, :element_at, :table_at
   end
 end

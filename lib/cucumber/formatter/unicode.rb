@@ -12,7 +12,7 @@ if Cucumber::WINDOWS_MRI && `chcp` =~ /(\d+)/
     Cucumber::CODEPAGE = "cp#{codepage}"
   
     require 'iconv'
-    module Kernel
+    module Kernel #:nodoc:
       alias cucumber_print print
       def print(*a)
         begin

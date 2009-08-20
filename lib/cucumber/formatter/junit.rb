@@ -2,6 +2,7 @@ require 'cucumber/formatter/ordered_xml_markup'
 
 module Cucumber
   module Formatter
+    # The formatter used for <tt>--format junit</tt>
     class Junit < Cucumber::Ast::Visitor
 
       def initialize(step_mother, io, options)

@@ -127,7 +127,7 @@ module Cucumber
         end
       end
 
-      def programming_language_for(step_mother, step_def_file) # :nodoc:
+      def programming_language_for(step_mother, step_def_file) #:nodoc:
         if ext = File.extname(step_def_file)[1..-1]
           return nil if @unsupported_programming_languages.index(ext)
           begin

@@ -2,6 +2,7 @@ require 'cucumber/formatter/console'
 
 module Cucumber
   module Formatter
+    # The formatter used for <tt>--format progress</tt>
     class Progress < Ast::Visitor
       include Console
 

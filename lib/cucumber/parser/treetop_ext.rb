@@ -12,6 +12,7 @@ end
 
 module Cucumber
   module Parser
+    # Raised if Cucumber fails to parse a feature file
     class SyntaxError < StandardError
       def initialize(parser, file, line_offset)
         tf = parser.terminal_failures
@@ -22,7 +23,7 @@ module Cucumber
       end
     end
     
-    module TreetopExt
+    module TreetopExt #:nodoc:
       def parse_or_fail(source, file=nil, filter=nil, line_offset=0)
         parse_tree = parse(source)
         if parse_tree.nil?
@@ -37,15 +38,15 @@ module Cucumber
   end
 end
 
-module Treetop
-  module Runtime
-    class SyntaxNode
+module Treetop #:nodoc:
+  module Runtime #:nodoc:
+    class SyntaxNode #:nodoc:
       def line
         input.line_of(interval.first)
       end
     end
 
-    class CompiledParser
+    class CompiledParser #:nodoc:
       include Cucumber::Parser::TreetopExt
     end
   end
