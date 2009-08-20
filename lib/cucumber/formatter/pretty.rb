@@ -190,9 +190,6 @@ module Cucumber
       end
 
       private
-      def cell_prefix(status)
-        @prefixes[status]
-      end
 
       def cell_prefix(status)
         @prefixes[status]
