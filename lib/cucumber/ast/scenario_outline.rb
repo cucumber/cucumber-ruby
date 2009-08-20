@@ -24,13 +24,14 @@ module Cucumber
         @steps = StepCollection.new(steps)
 
         @examples_array = example_sections.map do |example_section|
-          examples_line       = example_section[0]
-          examples_keyword    = example_section[1]
-          examples_name       = example_section[2]
-          examples_matrix     = example_section[3]
+          examples_comment    = example_section[0]
+          examples_line       = example_section[1]
+          examples_keyword    = example_section[2]
+          examples_name       = example_section[3]
+          examples_matrix     = example_section[4]
 
           examples_table = OutlineTable.new(examples_matrix, self)
-          Examples.new(examples_line, examples_keyword, examples_name, examples_table)
+          Examples.new(examples_comment, examples_line, examples_keyword, examples_name, examples_table)
         end
         @examples_array.extend(ExamplesArray)
 

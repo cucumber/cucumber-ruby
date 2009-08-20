@@ -12,3 +12,12 @@ Feature: Some header
     Given one
 #    When two
     Then three
+    
+  Scenario Outline: Some outline
+    Given <one>
+    Then <two>
+  
+  # Examples group comment  
+  Examples:
+  | one | two |
+  | a   | b   |

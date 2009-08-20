@@ -262,7 +262,7 @@ module Cucumber
       end
 
       rule examples
-        space* examples_keyword space* name:lines_to_keyword? eol table white {
+        comment space* examples_keyword space* name:lines_to_keyword? eol table white {
           def at_line?(line)
             examples_keyword.line == line ||
             table.at_line?(line)
@@ -285,7 +285,7 @@ module Cucumber
           end
 
           def build(filter, scenario_outline)
-            [examples_keyword.line, examples_keyword.text_value, name.build, table.raw(filter, scenario_outline)]
+            [comment.build, examples_keyword.line, examples_keyword.text_value, name.build, table.raw(filter, scenario_outline)]
           end
         }
       end

@@ -41,6 +41,7 @@ module Cucumber
           ],
           [
             [
+              Comment.new("#Mmmm... cucumbers\n"),
               24,
               'Examples:',
               'First table',
