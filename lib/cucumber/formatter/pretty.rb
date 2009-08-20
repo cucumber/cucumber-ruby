@@ -98,15 +98,30 @@ module Cucumber
         visit_feature_element_name(keyword, name, file_colon_line, source_indent)
       end
 
+      def visit_examples_array(examples_array)
+        @indent = 4
+        @io.puts
+        examples_array[0..-2].each { |ea| super(ea) }
+        @last_example = true
+        super(examples_array.last)
+        @last_example = nil
+      end
+      
       def visit_examples_name(keyword, name)
         names = name.strip.empty? ? [name.strip] : name.split("\n")        
-        @io.puts("\n    #{keyword} #{names[0]}")
+        @io.puts("    #{keyword} #{names[0]}")
         names[1..-1].each {|s| @io.puts "      #{s}" } unless names.empty?
         @io.flush
         @indent = 6
         @scenario_indent = 6
       end
 
+      def visit_outline_table(outline_table)
+        super
+        @indent = 4
+        @io.puts unless @last_example
+      end
+      
       def visit_scenario_name(keyword, name, file_colon_line, source_indent)
         visit_feature_element_name(keyword, name, file_colon_line, source_indent)
       end
