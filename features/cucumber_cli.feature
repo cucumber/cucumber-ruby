@@ -600,6 +600,10 @@ Feature: Cucumber command line
 
       """
 
+  Scenario: Generate PDF with --pdf FILENAME
+		When I run cucumber --pdf tmp/sample.pdf features/sample.feature
+		Then "examples/self_test/tmp/sample.pdf" should match "Pages 2"
+
   Scenario: Run feature elements which match a name using -n
     When I run cucumber -n Pisang -q features/
     Then it should pass with

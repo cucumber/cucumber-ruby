@@ -21,7 +21,7 @@ module Cucumber
       def parse!(args)
         @args = args
         @options.parse!(args)
-        arrange_formats
+        arrange_formats 
         raise("You can't use both --strict and --wip") if strict? && wip?
 
         return @args.replace(@options.expanded_args_without_drb) if drb?
@@ -59,8 +59,8 @@ module Cucumber
 
       def build_formatter_broadcaster(step_mother)
         return Formatter::Pretty.new(step_mother, nil, @options) if @options[:autoformat]
-        formatters = @options[:formats].map do |format_and_out|
-          format = format_and_out[0]
+        formatters = @options[:formats].map do |format_and_out|                             
+          format = format_and_out[0] 
           out    = format_and_out[1]
           if String === out # file name
             unless File.directory?(out)
@@ -135,7 +135,7 @@ module Cucumber
 
       def arrange_formats
         @options[:formats] << ['pretty', @out_stream] if @options[:formats].empty?
-        @options[:formats] = @options[:formats].sort_by{|f| f[1] == @out_stream ? -1 : 1}
+        @options[:formats] = @options[:formats].sort_by{|f| f[1] == @out_stream ? -1 : 1} 
         if @options[:formats].length > 1 && @options[:formats][1][1] == @out_stream
           raise "All but one formatter must use --out, only one can print to STDOUT"
         end
