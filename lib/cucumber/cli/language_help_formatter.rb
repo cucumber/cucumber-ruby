@@ -23,7 +23,7 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
       end
 
       def self.list_keywords(io, lang)
-        language = Parser::NaturalLanguage[lang]
+        language = Parser::NaturalLanguage.get(nil, lang)
         raw = Parser::NaturalLanguage::KEYWORD_KEYS.map do |key|
           [key, language.keywords(key)]
         end

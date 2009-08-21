@@ -885,8 +885,8 @@ spaces removed too.
 == 0.1.8 2008-10-18
 
 This release extends the support for tables. PLEASE NOTE THAT TABLES ARE STILL EXPERIMENTAL.
-In previous releases it has been possible to use tables to define "more examples" of a scenario i
-n a FIT-style column fixture kind of way. Now you can also use tables as arguments to steps.
+In previous releases it has been possible to use tables to define "more examples" of a scenario in 
+a FIT-style column fixture kind of way. Now you can also use tables as arguments to steps.
 
 Tables used to define more examples after a scenario must now be prefixed. In English it looks like this:
 
