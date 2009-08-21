@@ -347,7 +347,6 @@ lib/cucumber/formatter/tag_cloud.rb
 lib/cucumber/formatter/unicode.rb
 lib/cucumber/formatter/usage.rb
 lib/cucumber/formatters/unicode.rb
-lib/cucumber/language_support/hook_methods.rb
 lib/cucumber/language_support/language_methods.rb
 lib/cucumber/language_support/step_definition_methods.rb
 lib/cucumber/languages.yml

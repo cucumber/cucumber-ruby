@@ -2,7 +2,6 @@ require 'logger'
 require 'cucumber/constantize'
 require 'cucumber/core_ext/instance_exec'
 require 'cucumber/parser/natural_language'
-require 'cucumber/language_support/hook_methods'
 require 'cucumber/language_support/language_methods'
 require 'cucumber/language_support/step_definition_methods'
 
@@ -79,15 +78,15 @@ module Cucumber
       features
     end
 
-    def load_step_defs(step_def_files)
-      log.debug("Step Definitions:\n")
+    def load_code_files(step_def_files)
+      log.debug("Code:\n")
       step_def_files.each do |step_def_file|
-        load(step_def_file)
+        load_code_file(step_def_file)
       end
       log.debug("\n")
     end
 
-    def load(step_def_file)
+    def load_code_file(step_def_file)
       if programming_language = programming_language_for(step_def_file)
         log.debug("  * #{step_def_file}\n")
         invokables = programming_language.load(step_def_file)
