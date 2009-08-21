@@ -10,7 +10,7 @@ module Cucumber
         extend(RbSupport::RbDsl)
         @step_mother = StepMother.new
         @step_mother.load_natural_language('en')
-        @step_mother.load_programming_language('rb')
+        @rb = @step_mother.load_programming_language('rb')
 
         $x = $y = nil
         Before do
@@ -19,6 +19,9 @@ module Cucumber
         Given /y is (\d+)/ do |n|
           $y = $x * n.to_i
         end
+
+        @step_mother.register_invokables(@rb.invokables)
+
         @visitor = Visitor.new(@step_mother)
         @visitor.options = {}
 

@@ -1,13 +1,14 @@
+# language: fi
 Ominaisuus: Yhteenlasku
   Välttyäkseni hölmöiltä virheiltä
   Koska olen laskutaidoton
   Haluan että yhteenlaskut lasketaan puolestani
 
   Tapausaihio: Kahden luvun summa
-    Oletetaan että olen syöttänyt laskimeen luvun 50
-    Ja että olen syöttänyt laskimeen luvun 70
-    Kun painan "summaa"
-    Niin laskimen ruudulla pitäisi näkyä tulos 120
+    Oletetaan että olen syöttänyt laskimeen luvun <luku_1>
+    Ja että olen syöttänyt laskimeen luvun <luku_2>
+    Kun painan "<nappi>"
+    Niin laskimen ruudulla pitäisi näkyä tulos <tulos>
 
   Tapaukset:
     | luku_1  | luku_2  | nappi  | tulos  |

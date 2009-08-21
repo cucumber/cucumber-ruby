@@ -25,7 +25,7 @@ module Cucumber
 
       attr_reader :proc
 
-      def initialize(rb_language, pattern, &proc)
+      def initialize(rb_language, pattern, proc)
         raise MissingProc if proc.nil?
         if String === pattern
           p = pattern.gsub(/\$\w+/, '(.*)') # Replace $var with (.*)

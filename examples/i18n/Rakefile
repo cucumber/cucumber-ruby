@@ -6,7 +6,7 @@ task :i18n do
       lang = f[dir.length+1..-1]
       if examples_working?(lang)
         Dir.chdir(f) do
-          rake("features")
+          rake("cucumber")
         end
       else
         STDERR.puts %{
@@ -21,10 +21,12 @@ task :i18n do
   end
 end
 
+task :default => :i18n
+
 def examples_working?(lang)
-  !%w{ro ko li lt}.index(lang)
+  !%w{ro}.index(lang)
 end
 
 def rake(args)
-  ruby($0, args) rescue nil
+  ruby($0, args)
 end

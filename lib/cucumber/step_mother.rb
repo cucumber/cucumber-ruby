@@ -1,3 +1,4 @@
+require 'logger'
 require 'cucumber/constantize'
 require 'cucumber/core_ext/instance_exec'
 require 'cucumber/parser/natural_language'
@@ -53,12 +54,47 @@ module Cucumber
   class StepMother
     include Constantize
     
-    attr_writer :options, :visitor
+    attr_writer :options, :visitor, :log
 
     def initialize
+      @unsupported_programming_languages = []
       @programming_languages = []
       @language_map = {}
       load_natural_language('en')
+    end
+
+    def load_plain_text_features(feature_files)
+      features = Ast::Features.new
+
+      log.debug("Features:\n")
+      feature_files.each do |f|
+        feature_file = FeatureFile.new(f)
+        feature = feature_file.parse(self, options)
+        if feature
+          features.add_feature(feature)
+          log.debug("  * #{f}\n")
+        end
+      end
+      log.debug("\n")
+      features
+    end
+
+    def load_step_defs(step_def_files)
+      log.debug("Step Definitions:\n")
+      step_def_files.each do |step_def_file|
+        load(step_def_file)
+      end
+      log.debug("\n")
+    end
+
+    def load(step_def_file)
+      if programming_language = programming_language_for(step_def_file)
+        log.debug("  * #{step_def_file}\n")
+        invokables = programming_language.load(step_def_file)
+        register_invokables(invokables)
+      else
+        log.debug("  * #{step_def_file} [NOT SUPPORTED]\n")
+      end
     end
 
     # Loads and registers programming language implementation.
@@ -81,17 +117,6 @@ module Cucumber
     #
     def load_natural_language(lang)
       Parser::NaturalLanguage.get(self, lang)
-    end
-
-    # Registers a StepDefinition. This can be a Ruby StepDefintion,
-    # or any other kind of object that implements the StepDefintion
-    # contract (API).
-    def register_step_definition(step_definition)
-      step_definitions.each do |already|
-        raise Redundant.new(already, step_definition) if already.same_regexp?(step_definition.regexp)
-      end
-      step_definitions << step_definition
-      step_definition
     end
 
     # Returns the options passed on the command line.
@@ -232,7 +257,46 @@ module Cucumber
       end
     end
     
+    # Registers hooks and step definitions. +invokables+ must be a Hash
+    # of String=>Array with the following keys:
+    #
+    # * <tt>step_definition</tt>
+    # * <tt>before</tt>
+    # * <tt>after</tt>
+    # * <tt>after_step</tt>
+    def register_invokables(invokables)
+      (invokables['step_definition'] || []).each{|step_definition| register_step_definition(step_definition)}
+      %w{before after after_step}.each do |phase|
+        (invokables[phase] || []).each{|hook| register_hook(phase, hook)}
+      end
+    end
+
     private
+
+    # Registers a StepDefinition. This can be a Ruby StepDefintion,
+    # or any other kind of object that implements the StepDefintion
+    # contract (API).
+    def register_step_definition(step_definition)
+      step_definitions.each do |already|
+        raise Redundant.new(already, step_definition) if already.same_regexp?(step_definition.regexp)
+      end
+      step_definitions << step_definition
+      step_definition
+    end
+
+    def programming_language_for(step_def_file) #:nodoc:
+      if ext = File.extname(step_def_file)[1..-1]
+        return nil if @unsupported_programming_languages.index(ext)
+        begin
+          load_programming_language(ext)
+        rescue LoadError
+          @unsupported_programming_languages << ext
+          nil
+        end
+      else
+        nil
+      end
+    end
 
     def max_step_definition_length #:nodoc:
       @max_step_definition_length ||= step_definitions.map{|step_definition| step_definition.text_length}.max
@@ -240,6 +304,10 @@ module Cucumber
 
     def scenario_visited(scenario) #:nodoc:
       scenarios << scenario unless scenarios.index(scenario)
+    end
+
+    def log
+      @log ||= Logger.new(STDOUT)
     end
   end
 end

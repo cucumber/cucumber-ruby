@@ -18,7 +18,7 @@ module Cucumber
         message << "in 2 places:\n\n"
         message << first_proc.backtrace_line('World') << "\n"
         message << second_proc.backtrace_line('World') << "\n\n"
-        message << "Use Ruby modules instead to extend your worlds. See the Cucumber::StepMother#World RDoc\n"
+        message << "Use Ruby modules instead to extend your worlds. See the Cucumber::RbSupport::RbDsl#World RDoc\n"
         message << "or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.\n\n"
         super(message)
       end
@@ -31,20 +31,22 @@ module Cucumber
       
       def initialize(step_mother)
         @step_mother = step_mother
-        RbDsl.step_mother = step_mother
         RbDsl.rb_language = self
       end
       
-      def load_step_def_file(step_def_file)
+      def load(step_def_file)
         begin
           require step_def_file
+          invokables
         rescue LoadError => e
           e.message << "\nFailed to load #{step_def_file}"
           raise e
+        ensure
+          @invokables = nil
         end
       end
       
-      def build_world_factory(*world_modules, &proc)
+      def build_world_factory(world_modules, proc)
         if(proc)
           raise MultipleWorld.new(@world_proc, proc) if @world_proc
           @world_proc = proc
@@ -89,7 +91,24 @@ module Cucumber
         end
       end
 
+      def register_hook(what, tag_names, proc)
+        register(what, RbHook.new(self, tag_names, proc))
+      end
+
+      def register_step_definition(regexp, proc)
+        register('step_definition', RbStepDefinition.new(self, regexp, proc))
+      end
+
+      def invokables
+        @invokables ||= Hash.new{|h,k| h[k] = []}
+      end
+
       private
+
+      def register(what, invokable)
+        invokables[what] << invokable
+        invokable
+      end
 
       PARAM_PATTERN = /"([^\"]*)"/
       ESCAPED_PARAM_PATTERN = '"([^\\"]*)"'
