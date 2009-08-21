@@ -1,6 +1,7 @@
 == (In Git)
 
 === Bugfixes
+* Allow comments on examples sections underneath scenario outlines (#420 Mike Sassak)
 * Table.map_headers! will fail with a decent error message when 0 or 2+ headers are matched. (Aslak Hellesøy)
 * Fixed an issue with comments with preceding spaces after a background causing a parse error (#401 Joseph Wilk)
 
