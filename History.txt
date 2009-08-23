@@ -1,4 +1,7 @@
-== (In Git)
+== 0.3.97 2009-08-23
+
+The AA-FTT release. Creating a release for the AA-FTT meeting in Chicago so that we can play
+with the new language API and maybe knock out some better .NET support.
 
 === Bugfixes
 * Allow comments on examples sections underneath scenario outlines (#420 Mike Sassak)
@@ -11,7 +14,8 @@
 * New When /^I fill in "([^\"]*)" for "([^\"]*)"$/ Webrat step for Rails (Aslak Hellesøy)
 
 === Changed Features
-* Changed the Natural Language API to support languages without "bleed through" (e.g. rubypython can't invoke ruby objs) (Aslak Hellesøy)
+* Changed the Programming Language API to support languages without "bleed through" (e.g. rubypython can't invoke ruby objs) (Aslak Hellesøy)
+* The Programming Language API manages hooks on the language level instead of on the step mother level (Aslak Hellesøy)
 
 == 0.3.96 2009-08-15
 

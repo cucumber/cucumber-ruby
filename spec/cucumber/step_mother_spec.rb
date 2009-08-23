@@ -17,7 +17,7 @@ module Cucumber
     end
 
     def register
-      @step_mother.register_invokables(@rb.invokables)
+      @step_mother.register_step_definitions(@rb.step_definitions)
     end
 
     it "should format step names" do
@@ -148,7 +148,7 @@ spec/cucumber/step_mother_spec.rb:54:in `/Three cute (.*)/'
 
     it "should implicitly extend world with modules" do
       @dsl.World(ModuleOne, ModuleTwo)
-      @step_mother.begin_scenario
+      @step_mother.before(nil)
       class << @rb.current_world
         included_modules.index(ModuleOne).should_not == nil
         included_modules.index(ModuleTwo).should_not == nil
@@ -181,7 +181,7 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
       scenario.should_receive(:accept_hook?).with(fish).and_return(true)
       scenario.should_receive(:accept_hook?).with(meat).and_return(false)
       
-      @step_mother.hooks_for(:before, scenario).should == [fish]
+      @rb.hooks_for(:before, scenario).should == [fish]
     end
   end
 end

@@ -27,42 +27,30 @@ module Cucumber
     # The Ruby implementation of the programming language API.
     class RbLanguage
       include LanguageSupport::LanguageMethods
-      attr_reader :current_world, :step_mother
+      attr_reader :current_world
       
       def initialize(step_mother)
         @step_mother = step_mother
         RbDsl.rb_language = self
       end
-      
-      def load(step_def_file)
+
+      def alias_adverbs(adverbs)
+        adverbs.each do |adverb|
+          RbDsl.alias_adverb(adverb)
+          RbWorld.alias_adverb(adverb)
+        end
+      end
+
+      def step_definitions_for(code_file)
         begin
-          require step_def_file
-          invokables
+          load_code_file(code_file)
+          step_definitions
         rescue LoadError => e
-          e.message << "\nFailed to load #{step_def_file}"
+          e.message << "\nFailed to load #{code_filr}"
           raise e
         ensure
-          @invokables = nil
+          @step_definitions = nil
         end
-      end
-      
-      def build_world_factory(world_modules, proc)
-        if(proc)
-          raise MultipleWorld.new(@world_proc, proc) if @world_proc
-          @world_proc = proc
-        end
-        @world_modules ||= []
-        @world_modules += world_modules
-      end
-
-      def begin_scenario
-        create_world
-        extend_world
-        connect_world(@step_mother)
-      end
-
-      def end_scenario
-        @current_world = nil
       end
 
       def snippet_text(step_keyword, step_name, multiline_arg_class = nil)
@@ -84,31 +72,44 @@ module Cucumber
         "#{step_keyword} /^#{escaped}$/ do#{block_arg_string}\n  #{multiline_class_comment}pending\nend"
       end
 
-      def alias_adverbs(adverbs)
-        adverbs.each do |adverb|
-          RbDsl.alias_adverb(adverb)
-          RbWorld.alias_adverb(adverb)
+      def begin_rb_scenario
+        create_world
+        extend_world
+        connect_world
+      end
+
+      def register_rb_hook(phase, tag_names, proc)
+        add_hook(phase, RbHook.new(self, tag_names, proc))
+      end
+
+      def register_rb_step_definition(regexp, proc)
+        add_step_definition(RbStepDefinition.new(self, regexp, proc))
+      end
+
+      def build_rb_world_factory(world_modules, proc)
+        if(proc)
+          raise MultipleWorld.new(@world_proc, proc) if @world_proc
+          @world_proc = proc
         end
+        @world_modules ||= []
+        @world_modules += world_modules
       end
 
-      def register_hook(what, tag_names, proc)
-        register(what, RbHook.new(self, tag_names, proc))
+      protected
+
+      def load_code_file(code_file)
+        require code_file # This will cause self.add_step_definition and self.add_hook to be called from RbDsl
       end
 
-      def register_step_definition(regexp, proc)
-        register('step_definition', RbStepDefinition.new(self, regexp, proc))
+      def begin_scenario
+        begin_rb_scenario
       end
-
-      def invokables
-        @invokables ||= Hash.new{|h,k| h[k] = []}
+      
+      def end_scenario
+        @current_world = nil
       end
 
       private
-
-      def register(what, invokable)
-        invokables[what] << invokable
-        invokable
-      end
 
       PARAM_PATTERN = /"([^\"]*)"/
       ESCAPED_PARAM_PATTERN = '"([^\\"]*)"'
@@ -130,8 +131,8 @@ module Cucumber
         end
       end
 
-      def connect_world(step_mother)
-        @current_world.__cucumber_step_mother = step_mother
+      def connect_world
+        @current_world.__cucumber_step_mother = @step_mother
       end
 
       def check_nil(o, proc)

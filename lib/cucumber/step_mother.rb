@@ -89,11 +89,15 @@ module Cucumber
     def load_code_file(step_def_file)
       if programming_language = programming_language_for(step_def_file)
         log.debug("  * #{step_def_file}\n")
-        invokables = programming_language.load(step_def_file)
-        register_invokables(invokables)
+        step_definitions = programming_language.step_definitions_for(step_def_file)
+        register_step_definitions(step_definitions)
       else
         log.debug("  * #{step_def_file} [NOT SUPPORTED]\n")
       end
+    end
+
+    def register_step_definitions(step_definitions)
+      step_definitions.each{|step_definition| register_step_definition(step_definition)}
     end
 
     # Loads and registers programming language implementation.
@@ -147,19 +151,6 @@ module Cucumber
       else
         @scenarios
       end
-    end
-
-    def register_hook(phase, hook) #:nodoc:
-      hooks[phase.to_sym] << hook
-      hook
-    end
-
-    def hooks #:nodoc:
-      @hooks ||= Hash.new {|hash, phase| hash[phase] = []}
-    end
-
-    def hooks_for(phase, scenario) #:nodoc:
-      hooks[phase.to_sym].select{|hook| scenario.accept_hook?(hook)}
     end
 
     def step_match(step_name, formatted_step_name=nil) #:nodoc:
@@ -218,20 +209,6 @@ module Cucumber
         programming_language.alias_adverbs(@adverbs)
       end
     end
-
-    def begin_scenario #:nodoc:
-      return if options[:dry_run]
-      @programming_languages.each do |programming_language|
-        programming_language.begin_scenario
-      end
-    end
-
-    def end_scenario #:nodoc:
-      return if options[:dry_run]
-      @programming_languages.each do |programming_language|
-        programming_language.end_scenario
-      end
-    end
     
     def before(scenario) #:nodoc:
       return if options[:dry_run] || @current_scenario
@@ -256,20 +233,6 @@ module Cucumber
       end
     end
     
-    # Registers hooks and step definitions. +invokables+ must be a Hash
-    # of String=>Array with the following keys:
-    #
-    # * <tt>step_definition</tt>
-    # * <tt>before</tt>
-    # * <tt>after</tt>
-    # * <tt>after_step</tt>
-    def register_invokables(invokables)
-      (invokables['step_definition'] || []).each{|step_definition| register_step_definition(step_definition)}
-      %w{before after after_step}.each do |phase|
-        (invokables[phase] || []).each{|hook| register_hook(phase, hook)}
-      end
-    end
-
     private
 
     # Registers a StepDefinition. This can be a Ruby StepDefintion,

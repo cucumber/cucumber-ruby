@@ -20,12 +20,16 @@ module Cucumber
           $y = $x * n.to_i
         end
 
-        @step_mother.register_invokables(@rb.invokables)
+        register
 
         @visitor = Visitor.new(@step_mother)
         @visitor.options = {}
 
         @feature = mock('feature', :visit? => true).as_null_object
+      end
+
+      def register
+        @step_mother.register_step_definitions(@rb.step_definitions)
       end
 
       it "should execute Before blocks before background steps" do

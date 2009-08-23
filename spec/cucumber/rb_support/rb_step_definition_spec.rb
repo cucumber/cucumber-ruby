@@ -13,13 +13,13 @@ module Cucumber
         @rb = @step_mother.load_programming_language('rb')
         @dsl = Object.new 
         @dsl.extend RbSupport::RbDsl
-        @step_mother.begin_scenario
+        @step_mother.before(nil)
 
         $inside = nil
       end
       
       def register
-        @step_mother.register_invokables(@rb.invokables)
+        @step_mother.register_step_definitions(@rb.step_definitions)
       end
 
       it "should allow calling of other steps" do
