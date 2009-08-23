@@ -46,7 +46,7 @@ module Cucumber
           load_code_file(code_file)
           step_definitions
         rescue LoadError => e
-          e.message << "\nFailed to load #{code_filr}"
+          e.message << "\nFailed to load #{code_file}"
           raise e
         ensure
           @step_definitions = nil
