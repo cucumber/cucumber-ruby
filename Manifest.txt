@@ -168,6 +168,7 @@ examples/junit/features/pending.feature
 examples/junit/features/step_definitions/steps.rb
 examples/pure_java/README.textile
 examples/python/features/fibonacci.feature
+examples/python/features/step_definitions/fib_steps.py
 examples/python/features/step_definitions/fib_steps.rb
 examples/python/features/support/env.rb
 examples/python/lib/fib.py
@@ -347,6 +348,7 @@ lib/cucumber/formatter/tag_cloud.rb
 lib/cucumber/formatter/unicode.rb
 lib/cucumber/formatter/usage.rb
 lib/cucumber/formatters/unicode.rb
+lib/cucumber/language_support.rb
 lib/cucumber/language_support/language_methods.rb
 lib/cucumber/language_support/step_definition_methods.rb
 lib/cucumber/languages.yml
@@ -359,6 +361,9 @@ lib/cucumber/parser/table.rb
 lib/cucumber/parser/table.tt
 lib/cucumber/parser/treetop_ext.rb
 lib/cucumber/platform.rb
+lib/cucumber/py_support/py_dsl.py
+lib/cucumber/py_support/py_language.py
+lib/cucumber/py_support/py_language.rb
 lib/cucumber/rails/rspec.rb
 lib/cucumber/rails/world.rb
 lib/cucumber/rake/task.rb
