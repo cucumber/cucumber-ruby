@@ -3,6 +3,11 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 module Cucumber
   module Ast
     describe StepCollection do
+
+      after do
+        Parser::NaturalLanguage.instance_variable_set(:@languages, nil)
+      end
+
       it "should convert And to Given in snippets" do
         s1 = Step.new(1, 'Given', 'cukes')
         s2 = Step.new(2, 'And', 'turnips')

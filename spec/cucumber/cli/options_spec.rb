@@ -16,6 +16,10 @@ module Cli
       Kernel.stub!(:exit).and_return(nil)
     end
 
+    after do
+      Parser::NaturalLanguage.instance_variable_set(:@languages, nil)
+    end
+
     def output_stream
       @output_stream ||= StringIO.new
     end
