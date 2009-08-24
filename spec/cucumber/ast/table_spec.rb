@@ -84,7 +84,7 @@ module Cucumber
           ])
           table.rows_hash.should == {'one' => '1111', 'two' => '22222'}
         end
-        
+
         it "should fail if the table doesn't have two columns" do
           faulty_table = Table.new([
             %w{one 1111 abc},
@@ -95,21 +95,50 @@ module Cucumber
           }.should raise_error('The table must have exactly 2 columns')
         end
       end
-        
-      it "should allow renaming columns" do
-        table2 = @table.map_headers('one' => :three)
-        table2.hashes.first[:three].should == '4444'
-      end
 
-      it "should allow renaming columns using regexp" do
-        table2 = @table.map_headers(/one|uno/ => :three)
-        table2.hashes.first[:three].should == '4444'
-      end
+      describe '#map_headers' do
+        it "renames the columns to the specified values in the provided hash" do
+          table2 = @table.map_headers('one' => :three)
+          table2.hashes.first[:three].should == '4444'
+        end
 
-      it "should copy column mappings when mapping headers" do
-        @table.map_column!('one') { |v| v.to_i }
-        table2 = @table.map_headers('one' => 'three')
-        table2.hashes.first['three'].should == 4444
+        it "allows renaming columns using regexp" do
+          table2 = @table.map_headers(/one|uno/ => :three)
+          table2.hashes.first[:three].should == '4444'
+        end
+
+        it "copies column mappings" do
+          @table.map_column!('one') { |v| v.to_i }
+          table2 = @table.map_headers('one' => 'three')
+          table2.hashes.first['three'].should == 4444
+        end
+
+        it "takes a block and operates on all the headers with it" do
+          table = Table.new([
+          ['HELLO', 'WORLD'],
+          %w{4444 55555}
+          ])
+
+          table.map_headers! do |header|
+            header.downcase
+          end
+
+          table.hashes.first.keys.should =~ %w[hello world]
+        end
+
+        it "treats the mappings in the provided hash as overrides when used with a block" do
+          table = Table.new([
+          ['HELLO', 'WORLD'],
+          %w{4444 55555}
+          ])
+
+          table.map_headers!('WORLD' => 'foo') do |header|
+            header.downcase
+          end
+
+          table.hashes.first.keys.should =~ %w[hello foo]
+        end
+
       end
 
       describe "replacing arguments" do

@@ -1,3 +1,8 @@
+== 0.3.98 (Git)
+
+=== New Features
+* Cucumber::Ast::Table#map_headers now allows for a block that will convert all the headers. See docs for details. (Ben Mabey)
+
 == 0.3.97 2009-08-23
 
 The AA-FTT release. Creating a release for the AA-FTT meeting in Chicago so that we can play
