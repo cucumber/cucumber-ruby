@@ -9,6 +9,10 @@ module Cucumber
         @parser = NaturalLanguage.get(@step_mother, 'en').parser
       end
 
+      after do
+        NaturalLanguage.instance_variable_set(:@languages, nil) # So that new StepMothers can be created and have adverbs registered
+      end
+
       def parse(text)
         feature = @parser.parse_or_fail(text)
       end
