@@ -13,6 +13,10 @@ module Cucumber
         @out = StringIO.new
         @progress = Progress.new(mock("step mother"), @out, {})
       end
+ 
+      after do
+        Term::ANSIColor.coloring = true
+      end
 
       describe "visiting a table cell value without a status" do
         it "should take the status from the last run step" do
