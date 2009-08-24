@@ -1,43 +1,31 @@
 require 'eventmachine'
 require 'socket'
 require 'timeout'
+require 'json'
 
 module FakeWireServer
-  def post_init
-    # puts "-- someone connected to the wire server"
-  end
-
   def receive_data data
-    if data == 'get_steps'
-      send_data '/I am here/'
-      return
+    case data 
+    when /^list_step_definitions/
+      send_data [{'id' => '1', 'regexp' => 'wired'}].to_json
+    when /^invoke:(.*)/
+      invocation = JSON.parse($1)
+      # invocation is a Hash with id and args. TODO: encode Table too....
+      send_data "OK"
     end
-    close_connection if data =~ /quit/i
-    puts ">>>you sent: #{data}"
-  end
-
-  def unbind
-    # puts "-- someone disconnected from the wire server!"
   end
   
-  def close_connection
-    super
-    EM.stop
-  end
-end
-
-module WireClient
-  def receive_data(data)
-    puts "Client received>> #{data}"
+  def send_data(data)
+    super(data + "\n")
   end
 end
 
 Given /^the wire server is in a process that has defined the following step:$/ do |string|
-  in_current_dir do
-    File.open("./features/step_definitions/foo.rb", "w") do |file|
-      file.puts string
-    end
-  end
+  # in_current_dir do
+  #   File.open("./features/step_definitions/foo.rb", "w") do |file|
+  #     file.puts string
+  #   end
+  # end
 end
 
 Given /^a wire server listening on localhost:98989$/ do
@@ -46,22 +34,8 @@ Given /^a wire server listening on localhost:98989$/ do
       EventMachine::start_server "127.0.0.1", 98989, FakeWireServer
     }
   end
-  at_exit do
-    Process.kill('KILL', @pid)
-  end
-
-  Thread.abort_on_exception = true
-  Thread.new do
-    EM.run do
-      @wire_client = EM.connect '127.0.0.1', 98989, WireClient
-    end
-  end
-  sleep 5
-  @wire_client.send_data 'get_steps'
-  sleep 5
 end
 
-After do
-  EM.stop
+After('@wire') do
   Process.kill('KILL', @pid)
 end

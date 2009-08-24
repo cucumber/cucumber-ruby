@@ -1,3 +1,4 @@
+@wire
 Feature: Wire Protocol
   In order to be allow Cucumber to touch my app in intimate places
   As a developer on platform which doesn't support ruby
@@ -5,24 +6,35 @@ Feature: Wire Protocol
 
   Scenario: Check for the existence of a step definition
     Given a standard Cucumber project directory structure
-    And a file named "cucumber.wire" with:
+    And a file named "features/cucumber.feature" with:
     """
-    localhost:98989
+    Feature: Over the wire
+
+      Scenario: Wired
+        Given we're all wired
+    
+    """
+    And a file named "features/step_definitions/cucumber.wire" with:
+    """
+    host: localhost
+    port: 98989
     """
     And a wire server listening on localhost:98989
     And the wire server is in a process that has defined the following step:
     """
-    Given /I am here/ do
-      pending
+    Given /wired/ do
     end
     """
-    When I run cucumber -q -f steps
-    Then it should pass with
+    When I run cucumber -q features
+    Then STDERR should be empty
+    And it should pass with
     """
-    features/step_definitions/foo.rb
-      /I am here/  # features/step_definitions/foo.rb:1
+    Feature: Over the wire
 
-    1 step definition(s) in 1 source file(s).
+      Scenario: Wired
+        Given we're all wired
+    
+    1 scenario (1 passed)
+    1 step (1 passed)
     
     """
-  
