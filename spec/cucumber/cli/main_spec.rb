@@ -16,10 +16,6 @@ module Cucumber
         File.stub!(:exist?).and_return(false) # When Configuration checks for cucumber.yml
         Dir.stub!(:[]).and_return([]) # to prevent cucumber's features dir to being laoded
       end
-   
-      after do
-        Parser::NaturalLanguage.instance_variable_set(:@languages, nil)
-      end
 
       describe "verbose mode" do
 

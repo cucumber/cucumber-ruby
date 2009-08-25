@@ -10,10 +10,6 @@ module Cucumber
         @world = l.current_world
       end
 
-      after do
-        Parser::NaturalLanguage.instance_variable_set(:@languages, nil)
-      end
-
       it 'should raise a Pending if no block is supplied' do
         lambda {
           @world.pending "TODO"

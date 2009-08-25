@@ -5,19 +5,12 @@ module Cucumber
   module Formatter
     describe Progress do
 
-      before(:all) do
-        Term::ANSIColor.coloring = false
-      end
-
       before(:each) do
+        Term::ANSIColor.coloring = false
         @out = StringIO.new
         @progress = Progress.new(mock("step mother"), @out, {})
       end
  
-      after do
-        Term::ANSIColor.coloring = true
-      end
-
       describe "visiting a table cell value without a status" do
         it "should take the status from the last run step" do
           @progress.visit_step_result('', '', nil, :failed, nil, 10, nil)
