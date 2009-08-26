@@ -1,6 +1,10 @@
-== 0.3.98 (Git)
+== 0.3.98 2009-08-25
+
+Just a small release to help Cuke4Duke, which will be presented at Agile2009
+in 2 days.
 
 === New Features
+* Backtrace filtering now happens in StepInvocation class, meaning other languages (Cuke4Duke) can get backtraces stripped. (Aslak Hellesøy)
 * Cucumber::Ast::Table#map_headers now allows for a block that will convert all the headers. See docs for details. (Ben Mabey)
 
 == 0.3.97 2009-08-23
