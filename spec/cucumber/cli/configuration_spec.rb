@@ -312,7 +312,7 @@ END_OF_MESSAGE
 
     describe "--backtrace" do
       before do
-        Exception.cucumber_full_backtrace = false
+        Cucumber.use_full_backtrace = false
       end
 
       it "should show full backtrace when --backtrace is present" do
@@ -325,7 +325,7 @@ END_OF_MESSAGE
       end
 
       after do
-        Exception.cucumber_full_backtrace = false
+        Cucumber.use_full_backtrace = false
       end
     end
 

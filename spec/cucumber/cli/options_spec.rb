@@ -244,7 +244,7 @@ module Cli
       context '-b or --backtrace' do
         it "turns on cucumber's full backtrace" do
           when_parsing("-b") do
-            Exception.should_receive(:cucumber_full_backtrace=).with(true)
+            Cucumber.should_receive(:use_full_backtrace=).with(true)
           end
         end
       end
