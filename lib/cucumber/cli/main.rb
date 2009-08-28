@@ -53,12 +53,8 @@ module Cucumber
         logger.level = Logger::DEBUG if configuration.verbose?
         step_mother.log = logger
 
-        # Feature files must be loaded before files are required.
-        # This is because i18n step methods are only aliased when
-        # features are loaded. If we swap the order, the requires
-        # will fail.
-        features = step_mother.load_plain_text_features(configuration.feature_files)
         step_mother.load_code_files(configuration.support_to_load)
+        features = step_mother.load_plain_text_features(configuration.feature_files)
         step_mother.load_code_files(configuration.step_defs_to_load)
         enable_diffing
 
