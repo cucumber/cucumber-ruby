@@ -152,6 +152,13 @@ module Cli
         config.parse!([])
         config.options[:require].should == ['from/yml']
       end
+      
+      it "parses ERB syntax in the cucumber.yml file" do
+        given_cucumber_yml_defined_as({'default' => '<%="--require some_file"%>'})
+
+        config.parse!([])
+        config.options[:require].should include('some_file')
+      end
 
       it "provides a helpful error message when a specified profile does not exists in cucumber.yml" do
         given_cucumber_yml_defined_as({'default' => '--require from/yml', 'html_report' =>  '--format html'})
@@ -237,6 +244,13 @@ END_OF_MESSAGE
 
         given_cucumber_yml_defined_as("input that causes an exception in YAML loading")
         YAML.should_receive(:load).and_raise ArgumentError
+
+        lambda{config.parse!([])}.should raise_error(expected_error_message)
+      end
+
+      it "issues a helpful error message when cucumber.yml can not be parsed by ERB" do
+        expected_error_message = /cucumber.yml was found, but could not be parsed with ERB.  Please refer to cucumber's documentation on correct profile usage./
+        given_cucumber_yml_defined_as("<% input that causes an exception in YAML loading %>")
 
         lambda{config.parse!([])}.should raise_error(expected_error_message)
       end
