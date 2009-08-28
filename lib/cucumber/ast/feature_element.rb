@@ -2,7 +2,7 @@ require 'enumerator'
 
 module Cucumber
   module FeatureElement #:nodoc:
-    attr_writer :feature
+    attr_accessor :feature
 
     def attach_steps(steps)
       steps.each {|step| step.feature_element = self}

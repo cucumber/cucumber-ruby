@@ -1,3 +1,8 @@
+== In Git
+
+=== New Features
+* Make #feature available from scenario so you can do: Before{|scenario| scenario.feature}. (Aslak Hellesøy)
+
 == 0.3.98 2009-08-25
 
 Just a small release to help Cuke4Duke, which will be presented at Agile2009
