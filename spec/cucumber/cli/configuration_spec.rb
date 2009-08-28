@@ -33,24 +33,12 @@ module Cli
 
     attr_reader :out, :error
 
-
-    it "should require files in support paths first" do
-      given_the_following_files("/features/step_definitions/foo.rb","/features/support/bar.rb")
-
-      config.parse!(%w{--require /features})
-
-      config.all_files_to_load.should == [
-        "/features/support/bar.rb",
-        "/features/step_definitions/foo.rb"
-      ]
-    end
-
     it "should require env.rb files first" do
       given_the_following_files("/features/support/a_file.rb","/features/support/env.rb")
 
       config.parse!(%w{--require /features})
 
-      config.all_files_to_load.should == [
+      config.support_to_load.should == [
         "/features/support/env.rb",
         "/features/support/a_file.rb"
       ]
@@ -61,7 +49,7 @@ module Cli
 
       config.parse!(%w{--require /features --dry-run})
 
-      config.all_files_to_load.should == [
+      config.support_to_load.should == [
         "/features/support/a_file.rb"
       ]
     end
@@ -72,7 +60,7 @@ module Cli
 
       config.parse!(%w{--require /features})
 
-      config.all_files_to_load.should == [
+      config.step_defs_to_load.should == [
         "/vendor/plugins/plugin_a/cucumber/foo.rb",
         "/vendor/gems/gem_a/cucumber/bar.rb"
       ]

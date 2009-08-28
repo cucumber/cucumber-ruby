@@ -94,18 +94,7 @@ module Cucumber
         end
       end
 
-      def step_defs_to_load
-        all_files.reject {|f| f =~ %r{/support/} }
-      end
-      
-      def support_to_load
-        support_files = all_files.select {|f| f =~ %r{/support/} }
-        env_files = support_files.select {|f| f =~ %r{/support/env\..*} }
-        other_files = support_files - env_files
-        @options[:dry_run] ? other_files : env_files + other_files
-      end
-      
-      def all_files
+      def all_files_to_load
         requires = @options[:require].empty? ? require_dirs : @options[:require]
         files = requires.map do |path|
           path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
@@ -119,8 +108,15 @@ module Cucumber
         files      
       end
       
-      def all_files_to_load
-        support_to_load + step_defs_to_load
+      def step_defs_to_load
+        all_files_to_load.reject {|f| f =~ %r{/support/} }
+      end
+      
+      def support_to_load
+        support_files = all_files_to_load.select {|f| f =~ %r{/support/} }
+        env_files = support_files.select {|f| f =~ %r{/support/env\..*} }
+        other_files = support_files - env_files
+        @options[:dry_run] ? other_files : env_files + other_files
       end
 
       def feature_files
