@@ -164,8 +164,26 @@ module Cucumber
       #   table.hashes
       #   # => [{:phone => '123456', :address => 'xyz'}, {:phone => '345678', :address => 'abc'}]
       #
-      def map_headers!(mappings)
+      # You may also pass in a block if you wish to convert all of the headers:
+      #
+      #   table.map_headers! { |header| header.downcase }
+      #   table.hashes.keys
+      #   # => ['phone number', 'address']
+      #
+      # When a block is passed in along with a hash then the mappings in the hash take precendence:
+      #
+      #   table.map_headers!('Address' => 'ADDRESS') { |header| header.downcase }
+      #   table.hashes.keys
+      #   # => ['phone number', 'ADDRESS']
+      #
+      def map_headers!(mappings={}, &block)
         header_cells = cell_matrix[0]
+
+        if block_given?
+          header_values = header_cells.map { |cell| cell.value } - mappings.keys
+          mappings = mappings.merge(Hash[*header_values.zip(header_values.map(&block)).flatten])
+        end
+
         mappings.each_pair do |pre, post|
           mapped_cells = header_cells.select{|cell| pre === cell.value}
           raise "No headers matched #{pre.inspect}" if mapped_cells.empty?
@@ -178,7 +196,7 @@ module Cucumber
       end
 
       # Returns a new Table where the headers are redefined. See #map_headers!
-      def map_headers(mappings)
+      def map_headers(mappings={})
         table = self.dup
         table.map_headers!(mappings)
         table

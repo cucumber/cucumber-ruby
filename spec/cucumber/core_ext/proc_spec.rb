@@ -1,5 +1,5 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
-require 'cucumber/core_ext/instance_exec'
+require 'cucumber/core_ext/proc'
 
 describe Proc do
   it "should remove extraneous path info for file" do

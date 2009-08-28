@@ -324,7 +324,6 @@ lib/cucumber/cli/main.rb
 lib/cucumber/cli/options.rb
 lib/cucumber/cli/profile_loader.rb
 lib/cucumber/constantize.rb
-lib/cucumber/core_ext/exception.rb
 lib/cucumber/core_ext/instance_exec.rb
 lib/cucumber/core_ext/proc.rb
 lib/cucumber/core_ext/string.rb
