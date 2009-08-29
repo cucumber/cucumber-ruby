@@ -2,6 +2,7 @@
 
 === New Features
 * Make #feature available from scenario so you can do: Before{|scenario| scenario.feature}. (Aslak Hellesøy)
+* cucumber.yml parsing supports ERB syntax (#427 Gregory Hnatiuk)
 
 == 0.3.98 2009-08-25
 
