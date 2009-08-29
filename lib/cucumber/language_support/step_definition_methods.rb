@@ -1,3 +1,5 @@
+require 'cucumber/core_ext/string'
+
 module Cucumber
   module LanguageSupport
     module StepDefinitionMethods
