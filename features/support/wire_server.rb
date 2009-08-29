@@ -78,7 +78,8 @@ module Cucumber
           step_def.invoke(instructions['args'])
           'OK'
         rescue Exception => exception
-          serialized_exception = { :message => exception.message, :backtrace => exception.backtrace }
+          clean_backtrace = exception.backtrace.reject{ |l| l =~ /lib\/cucumber/ || l =~ /wire_server/ }
+          serialized_exception = { :message => exception.message, :backtrace => clean_backtrace }
           "FAIL:#{serialized_exception.to_json}"
         end
       end

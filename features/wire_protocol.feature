@@ -57,8 +57,17 @@ Feature: Wire Protocol
 
         Scenario: Wired
           Given we're all wired
-    
-      1 scenario (1 passed)
-      1 step (1 passed)
-    
+            the wires are down (Cucumber::WireSupport::WireException)
+            (eval):2:in `parse!'
+            (irb):1:in `irb_binding'
+            /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/irb/workspace.rb:52:in `irb_binding'
+            /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/irb/workspace.rb:52
+            features/cucumber.feature:4:in `Given we're all wired'
+
+      Failing Scenarios:
+      cucumber features/cucumber.feature:3 # Scenario: Wired
+
+      1 scenario (1 failed)
+      1 step (1 failed)
+      
       """
