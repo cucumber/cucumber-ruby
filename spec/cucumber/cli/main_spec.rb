@@ -86,9 +86,9 @@ module Cucumber
         end
       end
 
-      describe "file loading" do
+      describe "setup step sequence" do
         
-        it "should load support, features and then steps" do
+        it "should load files and execute hooks in order" do
           Configuration.stub!(:new).and_return(configuration = mock('configuration', :null_object => true))
           step_mother = mock('step mother', :null_object => true)
           configuration.stub!(:drb?).and_return false

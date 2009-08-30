@@ -10,12 +10,11 @@ Feature: Post Configuration Hook [#423]
     And a file named "features/support/env.rb" with:
       """
       AfterConfiguration do |config|
-        config.options[:formats]['Cucumber::Formatter::Html'] = config.output_stream
+        config.options[:formats] << ['html', config.out_stream]
       end
       """
     When I run cucumber features
-    Then I am pending for the moment
-    And STDERR should be empty
+    Then STDERR should be empty
     And the output should contain
       """
       html
