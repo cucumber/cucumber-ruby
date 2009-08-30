@@ -30,6 +30,19 @@ Feature: Profiles
       """
     And exactly these files should be loaded: features/support/super_env.rb
 
+  Scenario: Explicitly defining a profile defined in an ERB formatted file
+    Given the following profiles are defined:
+      """
+      <% requires = "--require features/support/super_env.rb" %>
+      super: <%= "features/sample.feature #{requires} -v" %>
+      """
+    When I run cucumber features/sample.feature --profile super
+    Then the output should contain
+      """
+      Using the super profile...
+      """
+    And exactly these files should be loaded: features/support/super_env.rb
+
   Scenario: Defining multiple profiles to run
     When I run cucumber features/sample.feature --profile default --profile super
     Then the output should contain

@@ -43,9 +43,16 @@ Defined profiles in cucumber.yml:
           raise(ProfilesNotDefinedError,"cucumber.yml was not found.  Please refer to cucumber's documentation on defining profiles in cucumber.yml.  You must define a 'default' profile to use the cucumber command without any arguments.\nType 'cucumber --help' for usage.\n")
         end
 
+        require 'erb'
         require 'yaml'
+        begin 
+          @cucumber_erb = ERB.new(IO.read('cucumber.yml')).result
+        rescue Exception => e 
+          raise(YmlLoadError,"cucumber.yml was found, but could not be parsed with ERB.  Please refer to cucumber's documentation on correct profile usage.\n#{$!.inspect}")
+        end
+
         begin
-          @cucumber_yml = YAML::load(IO.read('cucumber.yml'))
+          @cucumber_yml = YAML::load(@cucumber_erb)
         rescue StandardError => e
           raise(YmlLoadError,"cucumber.yml was found, but could not be parsed. Please refer to cucumber's documentation on correct profile usage.\n")
         end
