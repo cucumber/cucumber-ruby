@@ -3,6 +3,8 @@
 === New Features
 * Make #feature available from scenario so you can do: Before{|scenario| scenario.feature}. (Aslak Hellesøy)
 * cucumber.yml parsing supports ERB syntax (#427 Gregory Hnatiuk)
+* New AfterConfiguration hook added; a block can be specified that takes Cucumber::Cli::Configuration (#423 Brent Snook)
+* Cucumber::Cli::Configuration#feature_dirs and #out_stream exposed as public attributes so that they may be used in AfterConfiguration hook (#423 Brent Snook)
 
 == 0.3.98 2009-08-25
 

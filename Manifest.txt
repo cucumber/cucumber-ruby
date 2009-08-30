@@ -269,6 +269,7 @@ features/html_formatter/a.html
 features/junit_formatter.feature
 features/language_from_header.feature
 features/multiline_names.feature
+features/post_configuration_hook.feature
 features/profiles.feature
 features/rake_task.feature
 features/report_called_undefined_steps.feature
