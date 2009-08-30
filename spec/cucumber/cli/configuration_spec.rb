@@ -305,7 +305,13 @@ END_OF_MESSAGE
     it "should not accept multiple --format options when both use implicit STDOUT" do
       lambda do
         config.parse!(%w{--format pretty --format progress})
-      end.should raise_error("All but one formatter must use --out, only one can print to STDOUT")
+      end.should raise_error("All but one formatter must use --out, only one can print to each stream (or STDOUT)")
+    end
+
+    it "should not accept multiple --out streams pointing to the same place" do
+      lambda do
+        config.parse!(%w{--format pretty --out file1 --format progress --out file1})
+      end.should raise_error("All but one formatter must use --out, only one can print to each stream (or STDOUT)")
     end
 
     it "should associate --out to previous --format" do
