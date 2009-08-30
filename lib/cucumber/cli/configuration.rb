@@ -128,6 +128,10 @@ module Cucumber
         remove_excluded_files_from(potential_feature_files)
         potential_feature_files
       end
+      
+      def feature_dirs
+        paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq
+      end
 
     private
 
@@ -151,10 +155,6 @@ module Cucumber
 
       def remove_excluded_files_from(files)
         files.reject! {|path| @options[:excludes].detect {|pattern| path =~ pattern } }
-      end
-
-      def feature_dirs
-        paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq
       end
 
       def require_dirs

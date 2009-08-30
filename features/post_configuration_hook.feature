@@ -19,5 +19,19 @@ Feature: Post Configuration Hook [#423]
       """
       html
       """
-    
-    
+
+  Scenario: feature directories read from configuration
+
+    Given a standard Cucumber project directory structure
+    And a file named "features/support/env.rb" with:
+      """
+      AfterConfiguration do |config|
+        config.out_stream << "AfterConfiguration hook read feature directories: #{config.feature_dirs}" 
+      end
+      """
+    When I run cucumber features
+    Then STDERR should be empty
+    And the output should contain
+      """
+      AfterConfiguration hook read feature directories: features
+      """
