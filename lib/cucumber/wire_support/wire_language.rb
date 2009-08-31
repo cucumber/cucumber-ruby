@@ -35,7 +35,6 @@ module Cucumber
 
     class WireStepDefinition
       include LanguageSupport::StepDefinitionMethods
-      attr_reader :invoker
 
       def initialize(wire_language, json_data, invoker)
         @wire_language, @data, @invoker = wire_language, json_data, invoker
@@ -51,7 +50,7 @@ module Cucumber
       end
       
       def invoke(args)
-        result = invoker.call(invoke_message(args)).strip
+        result = @invoker.call(invoke_message(args)).strip
         raise make_error(result) unless result =~ /^OK/
       end
       
