@@ -51,18 +51,29 @@ module Cucumber
       
       def invoke(args)
         result = @invoker.call(invoke_message(args)).strip
-        raise make_error(result) unless result =~ /^OK/
+        case(result)
+        when /^OK/
+          return
+        when /^DIFF:(.*)/
+          other_table = JSON.parse($1)
+          table = args[-1] # That's a safe assumption
+          begin
+            table.diff!(other_table)
+            @invoker.call("DIFFOK")
+          rescue Ast::Table::Different => e
+            @invoker.call("DIFFKO")
+            # TODO: fill in server trace
+            raise e
+          end
+        when /^FAIL:(.*)/
+          raise WireException.new($1)
+        end
       end
       
       private
       
       def invoke_message(args)
         "invoke:" + { :id => id, :args => args }.to_json
-      end
-      
-      def make_error(result)
-        json = result.match(/^FAIL:(.*)/)[1]
-        WireException.new(json)
       end
     end
 

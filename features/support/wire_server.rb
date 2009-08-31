@@ -16,14 +16,24 @@ module Cucumber
       end
       
       def invoke(args)
-        @block.call(args)
+        @block.call(*args)
       end
-      
+
       def to_json(*args)
         { :id => id, :regexp => @regexp }.to_json(*args)
       end
     end
-    
+
+    class Table
+      def initialize(session, raw)
+        @session, @raw = session, raw
+      end
+
+      def diff!(other)
+        @session.diff!(other)
+      end
+    end
+
     class StepDefinitionParser
       attr_reader :step_defs
 
@@ -58,6 +68,10 @@ module Cucumber
         end
       end
 
+      def diff!(table)
+        send_response("DIFF:" +  JSON.unparse(table))
+      end
+
       private
 
       def handle(data)
@@ -75,7 +89,10 @@ module Cucumber
           unless step_def = step_definitions[instructions['id']]
             raise "Unable to find a step definition with id '#{instructions['id']}' amongst #{step_definitions.keys.join(',')}"
           end
-          step_def.invoke(instructions['args'])
+          
+          raw_args = instructions['args']
+          args = wrap(raw_args)
+          step_def.invoke(args)
           'OK'
         rescue Exception => exception
           clean_backtrace = exception.backtrace.reject do |l| 
@@ -93,6 +110,10 @@ module Cucumber
 
       def step_definitions
         @step_definitions ||= @parser.parse!.step_defs
+      end
+
+      def wrap(args)
+        args.map{|arg| Array === arg ? Table.new(self, arg) : arg}
       end
 
       def log

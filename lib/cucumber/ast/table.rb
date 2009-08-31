@@ -20,6 +20,10 @@ module Cucumber
     # This will store <tt>[['a', 'b'], ['c', 'd']]</tt> in the <tt>data</tt> variable.
     #
     class Table
+      # Raised when Table#diff! is called whith a different table.
+      class Different < StandardError
+      end
+
       include Enumerable
       
       NULL_CONVERSIONS = Hash.new(lambda{ |cell_value| cell_value }).freeze
@@ -42,6 +46,11 @@ module Cucumber
         transposed = raw.transpose
         create_cell_matrix(raw)
         @conversion_procs = conversion_procs
+      end
+
+      # JSON representation
+      def to_json
+        raw.to_json
       end
 
       # Creates a copy of this table, inheriting any column mappings.
@@ -237,7 +246,7 @@ module Cucumber
       # objects in their cells, you may want to use #map_column! before calling
       # #diff!. You can use #map_column! on either of the tables.
       #
-      # An exception is raised if there are missing rows or columns, or
+      # A Different error is raised if there are missing rows or columns, or
       # surplus rows. An error is <em>not</em> raised for surplus columns.
       # Whether to raise or not raise can be changed by setting values in
       # +options+ to true or false:
@@ -316,7 +325,7 @@ module Cucumber
           insert_row_pos  && options[:surplus_row] ||
           missing_col     && options[:missing_col] ||
           surplus_col     && options[:surplus_col]
-        raise 'Tables were not identical' if should_raise
+        raise Different.new('Tables were not identical') if should_raise
       end
 
       def to_hash(cells) #:nodoc:
