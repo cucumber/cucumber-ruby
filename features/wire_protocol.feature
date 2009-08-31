@@ -58,7 +58,7 @@ Feature: Wire Protocol
         Scenario: Wired
           Given we're all wired
             the wires are down (Cucumber::WireSupport::WireException)
-            (eval):2:in `parse!'
+            remote/stepdefs.rb:2:in `parse!'
             features/cucumber.feature:4:in `Given we're all wired'
 
       Failing Scenarios:

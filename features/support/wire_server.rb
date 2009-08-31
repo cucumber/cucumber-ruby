@@ -34,7 +34,7 @@ module Cucumber
 
       def parse!
         @dir.children.each do |file|
-          eval(file.read) unless file.directory?
+          eval(file.read, binding, file.to_s, 1) unless file.directory?
         end
         self
       end
@@ -78,7 +78,9 @@ module Cucumber
           step_def.invoke(instructions['args'])
           'OK'
         rescue Exception => exception
-          clean_backtrace = exception.backtrace.reject{ |l| l =~ /bin\/cucumber|lib\/cucumber|wire_server|instance_exec|wire_steps/ }
+          clean_backtrace = exception.backtrace.reject do |l| 
+            l =~ /bin\/cucumber|lib\/cucumber|wire_server|instance_exec|wire_steps|support\/env.rb/
+          end
           serialized_exception = { :message => exception.message, :backtrace => clean_backtrace }
           "FAIL:#{serialized_exception.to_json}"
         end
@@ -101,7 +103,7 @@ module Cucumber
 
     class WireServer
       def initialize(port, dir)
-        @port, @dir = port, File.expand_path(dir)
+        @port, @dir = port, dir
       end
 
       def run
