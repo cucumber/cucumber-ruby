@@ -92,8 +92,7 @@ module Cucumber
       end
 
       def step_definitions
-        return @step_definitions if @step_definitions
-        @step_definitions = @parser.parse!.step_defs
+        @step_definitions ||= @parser.parse!.step_defs
       end
 
       def log
