@@ -24,6 +24,10 @@ module Cucumber
       end
     end
 
+    # Raised when Table#diff! is called with a different table.
+    class DiffKo < StandardError
+    end
+
     class Table
       def initialize(session, raw)
         @session, @raw = session, raw
@@ -53,6 +57,10 @@ module Cucumber
         step_def = StepDefinition.new(regexp, &block)
         @step_defs[step_def.id] = step_def
       end
+
+      def log
+        Logging::Logger[self]
+      end
     end
 
     class SocketSession
@@ -70,6 +78,12 @@ module Cucumber
 
       def diff!(table)
         send_response("DIFF:" +  JSON.unparse(table))
+        diffresult = @socket.gets
+        case(diffresult)
+          when /^DIFFOK/
+          when /^DIFFKO/
+            raise DiffKo
+        end
       end
 
       private
@@ -81,6 +95,8 @@ module Cucumber
         when /^invoke:(.*)/
           invocation_instruction = JSON.parse($1)
           send_response invoke_step_definition(invocation_instruction)
+        else
+          raise "Didn't understand: #{data}"
         end
       end
       
@@ -160,6 +176,6 @@ module Cucumber
 end
 
 Logging::Logger[Cucumber::WireSupport].add_appenders(
-  Logging::Appenders::File.new('/cucumber.log')
+  Logging::Appenders::File.new('cucumber.log')
 )
 Logging::Logger[Cucumber::WireSupport].level = :debug

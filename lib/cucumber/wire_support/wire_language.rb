@@ -61,8 +61,11 @@ module Cucumber
             table.diff!(other_table)
             @invoker.call("DIFFOK")
           rescue Ast::Table::Different => e
-            @invoker.call("DIFFKO")
-            # TODO: fill in server trace
+            result = @invoker.call("DIFFKO")
+            if result =~  /^FAIL:(.*)/
+              e.backtrace.insert(1, JSON.parse($1)['backtrace'])
+              e.backtrace.flatten!
+            end
             raise e
           end
         when /^FAIL:(.*)/

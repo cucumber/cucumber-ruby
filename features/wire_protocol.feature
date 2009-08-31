@@ -84,6 +84,7 @@ Feature: Wire Protocol
       """
       Given /^we're all wired on:$/ do |what|
         what.diff!([['drug'], ['life']])
+        log.error "shouldn't get here"
       end
       """
     And a local wire server listening on port 98989 reading step definitions from "remote"
@@ -99,6 +100,7 @@ Feature: Wire Protocol
             | love |
             | life |
             Tables were not identical (Cucumber::Ast::Table::Different)
+            remote/stepdefs.rb:2:in `parse!'
             features/wired_table.feature:4:in `Given we're all wired on:'
 
       Failing Scenarios:
