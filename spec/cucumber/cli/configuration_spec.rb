@@ -18,7 +18,6 @@ module Cli
     end
 
     before(:each) do
-      #given_cucumber_yml_defined_as({'default' => '-q'})
       File.stub!(:exist?).and_return(false) # Meaning, no cucumber.yml exists
       Kernel.stub!(:exit).and_return(nil)
     end
@@ -178,9 +177,7 @@ END_OF_MESSAGE
 
 
       ["--no-profile", "-P"].each do |flag|
-
         context 'when none is specified with #{flag}' do
-
           it "disables profiles" do
             given_cucumber_yml_defined_as({'default' => '-v --require file_specified_in_default_profile.rb'})
 
@@ -194,12 +191,8 @@ END_OF_MESSAGE
             config.parse!("#{flag} --require some_file.rb".split(" "))
             out.string.should =~ /Disabling profiles.../
           end
-
         end
-
       end
-
-
 
       it "issues a helpful error message when a specified profile exists but is nil or blank" do
         [nil, '   '].each do |bad_input|
@@ -293,7 +286,7 @@ END_OF_MESSAGE
     it "should not accept multiple --format options when both use implicit STDOUT" do
       lambda do
         config.parse!(%w{--format pretty --format progress})
-      end.should raise_error("All but one formatter must use --out, only one can print to STDOUT")
+      end.should raise_error("All but one formatter must use --out, only one can print to each stream (or STDOUT)")
     end
 
     it "should associate --out to previous --format" do
