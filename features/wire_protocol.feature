@@ -59,9 +59,6 @@ Feature: Wire Protocol
           Given we're all wired
             the wires are down (Cucumber::WireSupport::WireException)
             (eval):2:in `parse!'
-            (irb):1:in `irb_binding'
-            /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/irb/workspace.rb:52:in `irb_binding'
-            /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/lib/ruby/1.8/irb/workspace.rb:52
             features/cucumber.feature:4:in `Given we're all wired'
 
       Failing Scenarios:

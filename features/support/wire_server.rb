@@ -78,7 +78,7 @@ module Cucumber
           step_def.invoke(instructions['args'])
           'OK'
         rescue Exception => exception
-          clean_backtrace = exception.backtrace.reject{ |l| l =~ /lib\/cucumber/ || l =~ /wire_server/ }
+          clean_backtrace = exception.backtrace.reject{ |l| l =~ /bin\/cucumber|lib\/cucumber|wire_server|instance_exec|wire_steps/ }
           serialized_exception = { :message => exception.message, :backtrace => clean_backtrace }
           "FAIL:#{serialized_exception.to_json}"
         end
@@ -121,9 +121,11 @@ module Cucumber
         begin
           SocketSession.new(socket, @dir).start
           log.debug "Closing connection"
-          socket.close
         rescue Exception => e
           log.error e
+          raise e
+        ensure
+          socket.close
         end
       end
 
