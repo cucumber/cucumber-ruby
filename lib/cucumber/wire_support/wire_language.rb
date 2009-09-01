@@ -2,37 +2,15 @@ require 'socket'
 require 'json'
 require 'logging'
 
-# * read up on sockets
 # * better logging
-# * make it work with JSON on one line
-#   * list step defs
-#   * invoke step def
-#     * return pass
-#     * fail result
-#       * backtrace
-#       * exception message
-#   * snippet text
-#   * implement wire server in .net
+# * snippet text
+# * implement wire server in .net
 # * Send message to server:
 #   2 bytes: len, command, data
 # * alias
 module Cucumber
   module WireSupport
     
-    class WireException < StandardError
-      def initialize(json)
-        @data = JSON.parse(json)
-      end
-      
-      def message
-        @data['message']
-      end
-      
-      def backtrace
-        @data['backtrace']
-      end
-    end
-
     class WireStepDefinition
       include LanguageSupport::StepDefinitionMethods
 
@@ -139,6 +117,7 @@ module Cucumber
       end
 
       def snippet_text(step_keyword, step_name, multiline_arg_class = nil)
+        # TODO: call remote end and ask for a formatted snippet
       end
 
       def register_wire_step_definition(id, step_definition)
@@ -165,6 +144,8 @@ module Cucumber
     end
   end
 end
+
+require 'cucumber/wire_support/wire_exception'
 
 Logging::Logger[Cucumber::WireSupport].add_appenders(
   Logging::Appenders::File.new('/cucumber.log')
