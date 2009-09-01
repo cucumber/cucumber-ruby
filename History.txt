@@ -1,6 +1,7 @@
 == In Git
 
 === New Features
+* Support for Croatian (Bkrsta)
 * Make #feature available from scenario so you can do: Before{|scenario| scenario.feature}. (Aslak Hellesøy)
 * cucumber.yml parsing supports ERB syntax (#427 Gregory Hnatiuk)
 * New AfterConfiguration hook added; a block can be specified that takes Cucumber::Cli::Configuration (#423 Brent Snook)
