@@ -1,4 +1,25 @@
-== (In Git)
+== In Git
+
+=== New Features
+* Support for Croatian (Bkrsta)
+* Make #feature available from scenario so you can do: Before{|scenario| scenario.feature}. (Aslak Hellesøy)
+* cucumber.yml parsing supports ERB syntax (#427 Gregory Hnatiuk)
+* New AfterConfiguration hook added; a block can be specified that takes Cucumber::Cli::Configuration (#423 Brent Snook)
+* Cucumber::Cli::Configuration#feature_dirs and #out_stream exposed as public attributes so that they may be used in AfterConfiguration hook (#423 Brent Snook)
+
+== 0.3.98 2009-08-25
+
+Just a small release to help Cuke4Duke, which will be presented at Agile2009
+in 2 days.
+
+=== New Features
+* Backtrace filtering now happens in StepInvocation class, meaning other languages (Cuke4Duke) can get backtraces stripped. (Aslak Hellesøy)
+* Cucumber::Ast::Table#map_headers now allows for a block that will convert all the headers. See docs for details. (Ben Mabey)
+
+== 0.3.97 2009-08-23
+
+The AA-FTT release. Creating a release for the AA-FTT meeting in Chicago so that we can play
+with the new language API and maybe knock out some better .NET support.
 
 === Bugfixes
 * Allow comments on examples sections underneath scenario outlines (#420 Mike Sassak)
@@ -10,9 +31,13 @@
 * Add :default => :cucumber when setting up Rake tasks for Cucumber in Rails (Aslak Hellesøy)
 * New When /^I fill in "([^\"]*)" for "([^\"]*)"$/ Webrat step for Rails (Aslak Hellesøy)
 
+=== Changed Features
+* Changed the Programming Language API to support languages without "bleed through" (e.g. rubypython can't invoke ruby objs) (Aslak Hellesøy)
+* The Programming Language API manages hooks on the language level instead of on the step mother level (Aslak Hellesøy)
+
 == 0.3.96 2009-08-15
 
-This release doesn't have any directly visible new features or bug fixes. But there are big
+This release doesn't have any significant new features or bug fixes, but there are big
 internal changes. This release has a new API for plugging in other programming languages.
 You can read more about that here: http://groups.google.com/group/cukes/browse_thread/thread/b9db8bf1f3ec9708
 
@@ -882,8 +907,8 @@ spaces removed too.
 == 0.1.8 2008-10-18
 
 This release extends the support for tables. PLEASE NOTE THAT TABLES ARE STILL EXPERIMENTAL.
-In previous releases it has been possible to use tables to define "more examples" of a scenario i
-n a FIT-style column fixture kind of way. Now you can also use tables as arguments to steps.
+In previous releases it has been possible to use tables to define "more examples" of a scenario in 
+a FIT-style column fixture kind of way. Now you can also use tables as arguments to steps.
 
 Tables used to define more examples after a scenario must now be prefixed. In English it looks like this:
 

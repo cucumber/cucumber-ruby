@@ -6,7 +6,7 @@ module Cucumber
     class ColorIO #:nodoc:
       extend Forwardable
       def_delegators :@kernel, :puts, :print # win32console colours only work when sent to Kernel
-      def_delegators :@stdout, :flush, :tty?, :write
+      def_delegators :@stdout, :flush, :tty?, :write, :close
 
       def initialize
         @kernel = Kernel

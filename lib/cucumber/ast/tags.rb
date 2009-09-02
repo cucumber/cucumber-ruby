@@ -23,7 +23,7 @@ module Cucumber
       end
 
       def accept_hook?(hook)
-        hook.matches_tag_names?(@tag_names)
+        hook.tag_names.empty? || (hook.tag_names.map{|tag| Ast::Tags.strip_prefix(tag)} & @tag_names).any?
       end
 
       def count(tag)

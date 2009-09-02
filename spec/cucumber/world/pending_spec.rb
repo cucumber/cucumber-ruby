@@ -6,7 +6,7 @@ module Cucumber
 
       before(:each) do
         l = RbSupport::RbLanguage.new(StepMother.new)
-        l.begin_scenario
+        l.begin_rb_scenario
         @world = l.current_world
       end
 

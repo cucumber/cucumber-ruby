@@ -45,11 +45,29 @@ class Object #:nodoc:
       yield
     rescue Exception => e
       instance_exec_invocation_line = "#{__FILE__}:#{__LINE__ - 2}:in `cucumber_run_with_backtrace_filtering'"
-      Exception.cucumber_strip_backtrace!((e.backtrace || []), instance_exec_invocation_line, pseudo_method)
+      replace_instance_exec_invocation_line!((e.backtrace || []), instance_exec_invocation_line, pseudo_method)
       raise e
     end
   end
-  
+
+  INSTANCE_EXEC_OFFSET = (Cucumber::RUBY_1_9 || Cucumber::JRUBY) ? -3 : -4
+
+  def replace_instance_exec_invocation_line!(backtrace, instance_exec_invocation_line, pseudo_method)
+    return if Cucumber.use_full_backtrace
+
+    instance_exec_pos = backtrace.index(instance_exec_invocation_line)
+    if instance_exec_pos
+      replacement_line = instance_exec_pos + INSTANCE_EXEC_OFFSET
+      backtrace[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'") if pseudo_method
+      backtrace[replacement_line+1..-1] = nil
+
+      backtrace.compact!
+    else
+      # This happens with rails, because they screw up the backtrace
+      # before we get here (injecting erb stacktrace and such)
+    end
+  end
+
   unless defined? instance_exec # 1.9
     # http://eigenclass.org/hiki/bounded+space+instance_exec
     module InstanceExecHelper #:nodoc:

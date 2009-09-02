@@ -9,6 +9,10 @@ module Cucumber
         @parser = NaturalLanguage.get(StepMother.new, 'en').parser
       end
       
+      after do
+        NaturalLanguage.instance_variable_set(:@languages, nil)
+      end
+
       def parse(text)
         @parser.__send__(:prepare_to_parse, text)
         @parser.root = :table

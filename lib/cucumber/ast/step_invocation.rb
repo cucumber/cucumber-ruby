@@ -3,6 +3,10 @@ require 'cucumber/step_match'
 module Cucumber
   module Ast
     class StepInvocation #:nodoc:
+      BACKTRACE_FILTER_PATTERNS = [
+        /vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\//
+      ]
+
       attr_writer :step_collection, :background
       attr_reader :name, :matched_cells, :status, :reported_exception
       attr_accessor :exception
@@ -68,6 +72,7 @@ module Cucumber
       end
 
       def failed(options, e, clear_backtrace)
+        e = filter_backtrace(e)
         e.set_backtrace([]) if clear_backtrace
         e.backtrace << @step.backtrace_line unless @step.backtrace_line.nil?
         @exception = e
@@ -76,6 +81,23 @@ module Cucumber
         else
           @reported_exception = nil
         end
+      end
+
+      def filter_backtrace(e)
+        return e if Cucumber.use_full_backtrace
+        filtered = (e.backtrace || []).reject do |line|
+          BACKTRACE_FILTER_PATTERNS.detect { |p| line =~ p }
+        end
+        
+        if Cucumber::JRUBY
+          # In order to filter backtraces properly on JRuby, we need to
+          # create a new Exception - otherwise the backtrace is *not*
+          # filtered. The rescue is for org.jruby.NativeException, which
+          # cannot be new'ed.
+          e = e.class.new(e.message) rescue Exception.new(e.message)
+        end
+        e.set_backtrace(filtered)
+        e
       end
 
       def status!(status)

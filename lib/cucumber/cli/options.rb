@@ -206,7 +206,7 @@ module Cucumber
             @quiet = true
           end
           opts.on("-b", "--backtrace", "Show full backtrace for all errors.") do
-            Exception.cucumber_full_backtrace = true
+            Cucumber.use_full_backtrace = true
           end
           opts.on("-S", "--strict", "Fail if there are any undefined steps.") do
             @options[:strict] = true

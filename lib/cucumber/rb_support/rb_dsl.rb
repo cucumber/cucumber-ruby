@@ -7,10 +7,22 @@ module Cucumber
     # object.
     module RbDsl
       class << self
-        attr_accessor :step_mother, :rb_language
+        attr_writer :rb_language
         
         def alias_adverb(adverb)
           alias_method adverb, :register_rb_step_definition
+        end
+
+        def build_rb_world_factory(world_modules, proc)
+          @rb_language.build_rb_world_factory(world_modules, proc)
+        end
+
+        def register_rb_hook(phase, tag_names, proc)
+          @rb_language.register_rb_hook(phase, tag_names, proc)
+        end
+
+        def register_rb_step_definition(regexp, proc)
+          @rb_language.register_rb_step_definition(regexp, proc)
         end
       end
 
@@ -33,26 +45,32 @@ module Cucumber
       #    World(MyModule)
       #
       def World(*world_modules, &proc)
-        RbDsl.rb_language.build_world_factory(*world_modules, &proc)
+        RbDsl.build_rb_world_factory(world_modules, proc)
       end
 
       # Registers a proc that will run before each Scenario. You can register as 
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
       def Before(*tag_names, &proc)
-        RbDsl.step_mother.register_hook(:before, RbHook.new(RbDsl.rb_language, tag_names, proc))
+        RbDsl.register_rb_hook('before', tag_names, proc)
       end
 
       # Registers a proc that will run after each Scenario. You can register as 
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
       def After(*tag_names, &proc)
-        RbDsl.step_mother.register_hook(:after, RbHook.new(RbDsl.rb_language, tag_names, proc))
+        RbDsl.register_rb_hook('after', tag_names, proc)
       end
 
       # Registers a proc that will run after each Step. You can register as 
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
       def AfterStep(*tag_names, &proc)
-        RbDsl.step_mother.register_hook(:after_step, RbHook.new(RbDsl.rb_language, tag_names, proc))
+        RbDsl.register_rb_hook('after_step', tag_names, proc)
       end
+      
+      # Registers a proc that will run after Cucumber is configured. You can register as 
+      # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
+      def AfterConfiguration(&proc)
+        RbDsl.register_rb_hook('after_configuration', [], proc)
+      end      
 
       # Registers a new Ruby StepDefinition. This method is aliased
       # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>, and
@@ -64,7 +82,7 @@ module Cucumber
       # object is created for each scenario and is shared across
       # step definitions within that scenario.
       def register_rb_step_definition(regexp, &proc)
-        RbDsl.step_mother.register_step_definition(RbStepDefinition.new(RbDsl.rb_language, regexp, &proc))
+        RbDsl.register_rb_step_definition(regexp, proc)
       end
     end
   end

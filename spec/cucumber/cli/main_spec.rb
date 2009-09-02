@@ -86,6 +86,36 @@ module Cucumber
         end
       end
 
+      describe "setup step sequence" do
+        
+        it "should load files and execute hooks in order" do
+          Configuration.stub!(:new).and_return(configuration = mock('configuration', :null_object => true))
+          step_mother = mock('step mother', :null_object => true)
+          configuration.stub!(:drb?).and_return false
+          cli = Main.new(%w{--verbose example.feature}, @out)
+          cli.stub!(:require)
+          
+          configuration.stub!(:support_to_load).and_return(['support'])
+          configuration.stub!(:step_defs_to_load).and_return(['step defs'])
+          
+          # Support must be loaded first to ensure post configuration hook can
+          # run before anything else.
+          step_mother.should_receive(:load_code_files).with(['support']).ordered
+          # The post configuration hook/s (if any) need to be run next to enable
+          # extensions to do their thing before features are loaded
+          step_mother.should_receive(:after_configuration).with(configuration).ordered
+          # Feature files must be loaded before step definitions are required.
+          # This is because i18n step methods are only aliased when
+          # features are loaded. If we swap the order, the requires
+          # will fail.
+          step_mother.should_receive(:load_plain_text_features).ordered
+          step_mother.should_receive(:load_code_files).with(['step defs']).ordered
+
+          cli.execute!(step_mother)
+        end
+        
+      end
+      
     [ProfilesNotDefinedError, YmlLoadError, ProfileNotFound].each do |exception_klass|
 
       it "rescues #{exception_klass}, prints the message to the error stream and returns true" do

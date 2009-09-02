@@ -6,10 +6,6 @@ module Cucumber
     describe ANSIColor do
       include ANSIColor
       
-      after do
-        ::Term::ANSIColor.coloring = true
-      end
-      
       it "should wrap passed_param with bold green and reset to green" do
         passed_param("foo").should == "\e[32m\e[1mfoo\e[0m\e[0m\e[32m"
       end
