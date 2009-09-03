@@ -123,7 +123,14 @@ module Cucumber
         potential_feature_files = paths.map do |path|
           path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
           path = path.chomp('/')
-          File.directory?(path) ? Dir["#{path}/**/*.feature"] : path
+          if File.directory?(path)
+            Dir["#{path}/**/*.feature"]
+          elsif path[0..0] == '@' and # @listfile.txt
+              File.file?(path[1..-1]) # listfile.txt is a file
+            IO.readlines(path[1..-1]).map(&:strip)
+          else 
+            path
+          end
         end.flatten.uniq
         remove_excluded_files_from(potential_feature_files)
         potential_feature_files

@@ -127,6 +127,26 @@ Feature: Cucumber command line
 
       """
 
+  Scenario: Use @-notation to specify a file containing feature file list
+    When I run cucumber -q @list-of-features.txt
+    Then it should pass with
+      """
+      # Feature comment
+      @one
+      Feature: Sample
+
+        # Scenario comment
+        @three
+        Scenario: Passing
+          Given passing
+            | a | b |
+            | c | d |
+
+      1 scenario (1 passed)
+      1 step (1 passed)
+
+      """
+
   @mri186
   Scenario: Run all with progress formatter
     When I run cucumber -q --format progress features/sample.feature
