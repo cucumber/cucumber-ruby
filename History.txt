@@ -3,6 +3,9 @@
 === New Features
 * The file argument on the cucumber command line will replace contents of file on cli if file is prefixed with @ (Tero Tilus)
 
+=== Bugfixes
+* Backtraces on JRuby are handled in a cleaner way when the exception comes from Java (NativeException). (Aslak Hellesøy)
+
 == 0.3.99 2009-09-03
 
 === New Features
