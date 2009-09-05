@@ -233,6 +233,12 @@ module Cucumber
       end
     end
     
+    def after_configuration(configuration) #:nodoc
+      @programming_languages.each do |programming_language|
+        programming_language.after_configuration(configuration)
+      end
+    end  
+    
     private
 
     # Registers a StepDefinition. This can be a Ruby StepDefintion,

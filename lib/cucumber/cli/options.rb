@@ -17,7 +17,9 @@ module Cucumber
       max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
       FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
         "  #{key}#{' ' * (max - key.length)} : #{BUILTIN_FORMATS[key][1]}"
-      end) + ["FORMAT can also be the fully qualified class name of",
+      end) + ["Use --format rerun --out features.txt to rerun failing",
+        "failing features in a new run with cucumber @features.txt.",
+        "FORMAT can also be the fully qualified class name of",
         "your own custom formatter. If the class isn't loaded,",
         "Cucumber will attempt to require a file with a relative",
         "file name that is the underscore name of the class name.",
@@ -87,6 +89,7 @@ module Cucumber
           opts.banner = ["Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+", "",
             "Examples:",
             "cucumber examples/i18n/en/features",
+            "cucumber @features.txt (See --format rerun)",
             "cucumber --language it examples/i18n/it/features/somma.feature:6:98:113",
             "cucumber -s -i http://rubyurl.com/eeCl", "", "",
           ].join("\n")
