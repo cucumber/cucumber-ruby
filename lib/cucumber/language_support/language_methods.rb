@@ -10,6 +10,12 @@ module Cucumber
         execute_after(scenario)
         end_scenario
       end
+      
+      def after_configuration(configuration)
+        hooks[:after_configuration].each do |hook|
+          hook.invoke('AfterConfiguration', configuration)
+        end
+      end
 
       def execute_after_step(scenario)
         hooks_for(:after_step, scenario).each do |hook|

@@ -251,6 +251,21 @@
   and: וגם
   but: אבל
   space_after_keyword: true
+"hr":
+  name: Croatian
+  native: hrvatski
+  encoding: UTF-8
+  feature: Osobina|Mogućnost|Mogucnost
+  background: Pozadina
+  scenario: Scenarij
+  scenario_outline: Skica|Koncept
+  examples: Primjeri|Scenariji
+  given: Zadan|Zadani|Zadano
+  when: Kada|Kad
+  then: Onda
+  and: I
+  but: Ali
+  space_after_keyword: true
 "hu":
   name: Hungarian
   native: magyar

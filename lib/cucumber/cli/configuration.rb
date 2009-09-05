@@ -10,7 +10,7 @@ module Cucumber
     class Configuration
       include Constantize
       
-      attr_reader :options
+      attr_reader :options, :out_stream
 
       def initialize(out_stream = STDOUT, error_stream = STDERR)
         @out_stream   = out_stream
@@ -94,31 +94,50 @@ module Cucumber
         end
       end
 
-      def step_defs_to_load
+      def all_files_to_load
         requires = @options[:require].empty? ? require_dirs : @options[:require]
         files = requires.map do |path|
           path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
           path = path.gsub(/\/$/, '') # Strip trailing slash.
           File.directory?(path) ? Dir["#{path}/**/*"] : path
         end.flatten.uniq
-        sorted_files = files.sort { |a,b| (b =~ %r{/support/} || -1) <=> (a =~ %r{/support/} || -1) }.reject{|f| f =~ /^http/}
-        env_files = sorted_files.select {|f| f =~ %r{/support/env\..*} }
-        files = env_files + sorted_files.reject {|f| f =~ %r{/support/env\..*} }
         remove_excluded_files_from(files)
         files.reject! {|f| !File.file?(f)}
         files.reject! {|f| File.extname(f) == '.feature' }
-        files.reject! {|f| f =~ %r{/support/env\..*} } if @options[:dry_run]
-        files
+        files.reject! {|f| f =~ /^http/}
+        files      
+      end
+      
+      def step_defs_to_load
+        all_files_to_load.reject {|f| f =~ %r{/support/} }
+      end
+      
+      def support_to_load
+        support_files = all_files_to_load.select {|f| f =~ %r{/support/} }
+        env_files = support_files.select {|f| f =~ %r{/support/env\..*} }
+        other_files = support_files - env_files
+        @options[:dry_run] ? other_files : env_files + other_files
       end
 
       def feature_files
         potential_feature_files = paths.map do |path|
           path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
           path = path.chomp('/')
-          File.directory?(path) ? Dir["#{path}/**/*.feature"] : path
+          if File.directory?(path)
+            Dir["#{path}/**/*.feature"]
+          elsif path[0..0] == '@' and # @listfile.txt
+              File.file?(path[1..-1]) # listfile.txt is a file
+            IO.read(path[1..-1]).split
+          else 
+            path
+          end
         end.flatten.uniq
         remove_excluded_files_from(potential_feature_files)
         potential_feature_files
+      end
+      
+      def feature_dirs
+        paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq
       end
 
     private
@@ -136,17 +155,14 @@ module Cucumber
       def arrange_formats
         @options[:formats] << ['pretty', @out_stream] if @options[:formats].empty?
         @options[:formats] = @options[:formats].sort_by{|f| f[1] == @out_stream ? -1 : 1}
-        if @options[:formats].length > 1 && @options[:formats][1][1] == @out_stream
-          raise "All but one formatter must use --out, only one can print to STDOUT"
+        streams = @options[:formats].map { |(_, stream)| stream }
+        if streams != streams.uniq
+          raise "All but one formatter must use --out, only one can print to each stream (or STDOUT)"
         end
       end
 
       def remove_excluded_files_from(files)
         files.reject! {|path| @options[:excludes].detect {|pattern| path =~ pattern } }
-      end
-
-      def feature_dirs
-        paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq
       end
 
       def require_dirs
