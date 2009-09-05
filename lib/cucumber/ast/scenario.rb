@@ -7,7 +7,7 @@ module Cucumber
       
       attr_reader :name, :line
       
-      class EmptyBackground
+      class EmptyBackground 
         def failed?
           false
         end
@@ -33,22 +33,19 @@ module Cucumber
 
       def accept(visitor)
         return if $cucumber_interrupted
-        visitor.visit_comment(@comment) unless @comment.empty?
-        visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
+        
+        with_visitor(visitor) do
+          visitor.visit_comment(@comment) unless @comment.empty?
+          visitor.visit_tags(@tags)
+          visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
 
-        skip_invoke! if @background.failed?
-        skip_hooks = @background.failed? || @executed
-        visitor.step_mother.before_and_after(self, skip_hooks) do
-          send_any_exceptions_to(visitor)
-          if failed?
-            @skip_steps = true
-            skip_invoke!
+          skip_invoke! if @background.failed?
+          visitor.step_mother.before_and_after(self, skip_hooks?) do
+            skip_invoke! if failed?
+            visitor.visit_steps(@steps)
           end
-          visitor.visit_steps(@steps)
+          @executed = true
         end
-        send_any_exceptions_to(visitor) unless @skip_steps
-        @executed = true
       end
 
       # Returns true if one or more steps failed
@@ -58,6 +55,7 @@ module Cucumber
       
       def fail!(exception)
         @exception = exception
+        @current_visitor.visit_exception(@exception, :failed)
       end
 
       # Returns true if all steps passed
@@ -96,9 +94,14 @@ module Cucumber
       
       private
       
-      def send_any_exceptions_to(visitor)
-        return unless @exception
-        visitor.visit_exception(@exception, :failed)
+      def with_visitor(visitor)
+        @current_visitor = visitor
+        yield
+        @current_visitor = nil
+      end
+      
+      def skip_hooks?
+        @background.failed? || @executed
       end
     end
   end
