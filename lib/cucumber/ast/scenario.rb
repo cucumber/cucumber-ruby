@@ -30,9 +30,14 @@ module Cucumber
         skip_invoke! if background_failed
         skip_hooks = background_failed || @executed
         visitor.step_mother.before_and_after(self, skip_hooks) do
+          send_any_exceptions_to(visitor)
+          if failed?
+            @skip_steps = true
+            skip_invoke!
+          end
           visitor.visit_steps(@steps)
         end
-        visitor.visit_exception(@exception, :failed) if @exception
+        send_any_exceptions_to(visitor) unless @skip_steps
         @executed = true
       end
 
@@ -78,7 +83,13 @@ module Cucumber
         sexp += steps if steps.any?
         sexp
       end
-
+      
+      private
+      
+      def send_any_exceptions_to(visitor)
+        return unless @exception
+        visitor.visit_exception(@exception, :failed)
+      end
     end
   end
 end

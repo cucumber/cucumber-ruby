@@ -1,8 +1,8 @@
-Feature: AfterStep Block Exceptions
+Feature: Exception in AfterStep Block
   In order to use custom assertions at the end of each step
   As a developer
   I want exceptions raised in AfterStep blocks to be handled gracefully and reported by the formatters
-  
+
   Background:
     Given a standard Cucumber project directory structure
     And a file named "features/step_definitions/steps.rb" with:
@@ -11,7 +11,7 @@ Feature: AfterStep Block Exceptions
         @naughty = true
       end
 
-      Given /^this step works$/ do        
+      Given /^this step works$/ do
       end
       """
     And a file named "features/support/env.rb" with:
@@ -37,10 +37,10 @@ Feature: AfterStep Block Exceptions
           Given this step works
       """
     When I run cucumber features
-    Then it should fail with 
+    Then it should fail with
       """
       Feature: Sample
-      
+
         Scenario: Naughty Step                   # features/naughty_step_in_scenario.feature:3
           Given this step does something naughty # features/step_definitions/steps.rb:1
             This step has been very very naughty (NaughtyStepException)
@@ -49,13 +49,13 @@ Feature: AfterStep Block Exceptions
 
         Scenario: Success       # features/naughty_step_in_scenario.feature:6
           Given this step works # features/step_definitions/steps.rb:5
-      
+
       Failing Scenarios:
       cucumber features/naughty_step_in_scenario.feature:3 # Scenario: Naughty Step
-      
+
       2 scenarios (1 failed, 1 passed)
       2 steps (1 failed, 1 passed)
-      
+
       """
 
   @mri186
@@ -78,7 +78,7 @@ Feature: AfterStep Block Exceptions
 
       """
     When I run cucumber features
-    Then it should fail with 
+    Then it should fail with
       """
       Feature: Sample
 
