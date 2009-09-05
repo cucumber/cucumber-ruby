@@ -5,6 +5,7 @@
 
 === Bugfixes
 * Backtraces on JRuby are handled in a cleaner way when the exception comes from Java (NativeException). (Aslak Hellesøy)
+* When exceptions occur in a Before block the rest of the scenario is now skipped (#331 Matt Wynne)
 
 == 0.3.99 2009-09-03
 
@@ -71,7 +72,7 @@ data in your HTML with a Cucumber table using Cucumber::Ast::Table#diff!
 This release also fixes several bugs related to --drb (Spork) and profiles (cucumber.yml)
 
 === Bug Fixes
-* --guess will always prefer the longest regexp with no groups if they exist. 
+* --guess will always prefer the longest regexp with no groups if they exist.
 * Prevent delays if a NoMethodError is raise in a step definition. Define a light #inspect in World. (#374 Aslak Hellesøy)
 * Restore 'features' as the default feature running path. (#412 Ben Mabey)
 * --drb degrades gracefully when no drb server is running and no formatter is provided. (#410 Ben Mabey)
@@ -79,7 +80,7 @@ This release also fixes several bugs related to --drb (Spork) and profiles (cucu
 * Resolved infinite loop problem when --drb was defined in a profile. (#408 Ben Mabey)
 
 === New Features
-* Cucumber::World#table has been overloaded to work with 2D Array in addition to a table String to be parsed. 
+* Cucumber::World#table has been overloaded to work with 2D Array in addition to a table String to be parsed.
 * New When /^I fill in the following:$/ step definition for Webrat. Useful for filling out a form with a Table. (Aslak Hellesøy)
 * The object returned by element_at (Webrat::Element) has a #to_table that works for table, dl, ol and ul. (Aslak Hellesøy)
 * An explanation of why failures are ok is printed when --wip is used. (Aslak Hellesøy)
@@ -107,7 +108,7 @@ So upgrade today and get into the habit of tagging new features with @wip (or in
 You'll achieve better flow this way.
 
 === New features
-* Support limiting the number of feature elements with certain tags (#353 Joseph Wilk) 
+* Support limiting the number of feature elements with certain tags (#353 Joseph Wilk)
 * script/generate cucumber sets up 'cucumber:ok' and 'cucumber:wip' tasks and deprecates 'features'. More Kanban love. (#344 Aslak Hellesøy)
 * Better JUnit formatter: feature->testsuite, scenario->testcase. Better timing and support for background and scenario outline. (Mads Buus Westmark)
 * Added examples/python that uses rubypython. (Aslak Hellesøy)
@@ -130,8 +131,8 @@ Highlights in this release: Improved profile handling (cucumber.yml) and a fix f
 * click_link_within(parent, link) webrat step (Joakim Kolsjö)
 
 === Bugfixes
-* script/cucumber correctly loads the gem's binary if the plugin isn't installed. 
-* Cucumber hangs waiting for Ctrl+C if an Error is raised. (#374 Aslak Hellesøy) 
+* script/cucumber correctly loads the gem's binary if the plugin isn't installed.
+* Cucumber hangs waiting for Ctrl+C if an Error is raised. (#374 Aslak Hellesøy)
 
 == 0.3.92 2009-07-29
 
@@ -205,7 +206,7 @@ or simply another Ast::Table object. Here is a simple example:
     expected_cukes_table.diff!(actual_table)
   end
 
-As an extra bonus we provide Webrat users with a new #table_at(selector) method that you can use to transform 
+As an extra bonus we provide Webrat users with a new #table_at(selector) method that you can use to transform
 an HTML table into an Array of Array, so that you can easily compare the contents of your HTML table to
 expected data passed to a step. Here is an example:
 
@@ -214,7 +215,7 @@ expected data passed to a step. Here is an example:
   end
 
 You can do the same trick to compare data from a Rails ActiveRecord table (although this is not a
-recommended practice - your Then steps should compare against what users *see*, not what's in the 
+recommended practice - your Then steps should compare against what users *see*, not what's in the
 database):
 
   # This requires that you use the column names in the header of the plain text expected table
@@ -251,7 +252,7 @@ This release also has several bugfixes related to --format and Before/After hook
 === New Features
 * I should see should support regexes (#382 John Ferlito)
 * Access to scenario outline name from After hook scenario parameter (#342 Aslak Hellesøy)
-* Allow multiple --tags switches to be passed 
+* Allow multiple --tags switches to be passed
 * Load step definitions from vendored gems and plugins (#388 Mike Burns)
 * New --format steps formatter. Variant of the usage formatter that lists available step definitions (Demetrius Nunes)
 * Possibility to specify scenario language as part of the .feature file (#345 Aslak Hellesøy)
@@ -915,7 +916,7 @@ spaces removed too.
 == 0.1.8 2008-10-18
 
 This release extends the support for tables. PLEASE NOTE THAT TABLES ARE STILL EXPERIMENTAL.
-In previous releases it has been possible to use tables to define "more examples" of a scenario in 
+In previous releases it has been possible to use tables to define "more examples" of a scenario in
 a FIT-style column fixture kind of way. Now you can also use tables as arguments to steps.
 
 Tables used to define more examples after a scenario must now be prefixed. In English it looks like this:
