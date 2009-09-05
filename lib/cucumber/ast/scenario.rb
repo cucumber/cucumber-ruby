@@ -7,17 +7,28 @@ module Cucumber
       
       attr_reader :name, :line
       
+      class EmptyBackground
+        def failed?
+          false
+        end
+        
+        def feature_elements
+          []
+        end
+        
+        def step_collection(step_invocations)
+          StepCollection.new(step_invocations)
+        end
+      end
+      
       def initialize(background, comment, tags, line, keyword, name, steps)
-        @background, @comment, @tags, @line, @keyword, @name = background, comment, tags, line, keyword, name
+        @background = background || EmptyBackground.new
+        @comment, @tags, @line, @keyword, @name = comment, tags, line, keyword, name
         attach_steps(steps)
 
         step_invocations = steps.map{|step| step.step_invocation}
-        if @background
-          @steps = @background.step_collection(step_invocations)
-          @background.feature_elements << self
-        else
-          @steps = StepCollection.new(step_invocations)
-        end
+        @steps = @background.step_collection(step_invocations)
+        @background.feature_elements << self
       end
 
       def accept(visitor)
@@ -26,9 +37,8 @@ module Cucumber
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
 
-        background_failed = @background && @background.failed?
-        skip_invoke! if background_failed
-        skip_hooks = background_failed || @executed
+        skip_invoke! if @background.failed?
+        skip_hooks = @background.failed? || @executed
         visitor.step_mother.before_and_after(self, skip_hooks) do
           send_any_exceptions_to(visitor)
           if failed?
