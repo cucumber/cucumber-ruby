@@ -508,7 +508,7 @@
   background: Тарих
   scenario: Сценарий
   scenario_outline: Сценарий структураси
-  examples: Мисолар
+  examples: Мисоллар
   given: Агар
   when: Агар
   then: Унда

@@ -1,6 +1,7 @@
 == (In Git)
 
 === New Features
+* Added support for Uzbek (msarvar)
 * The file argument on the cucumber command line will replace contents of file on cli if file is prefixed with @ (Tero Tilus)
 
 === Bugfixes
