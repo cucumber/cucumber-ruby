@@ -11,6 +11,24 @@ require 'logging'
 module Cucumber
   module WireSupport
     
+    module SpeaksToWireServer
+      def list_step_definitions
+        call('list_step_definitions')
+      end
+      
+      def invoke(id, args)
+        call('invoke:' + { :id => id, :args => args }.to_json)
+      end
+      
+      def table_diff_ok
+        call("DIFFOK")
+      end
+      
+      def table_diff_ko
+        call("DIFFKO")        
+      end
+    end
+    
     class WireStepDefinition
       include LanguageSupport::StepDefinitionMethods
 
@@ -28,7 +46,7 @@ module Cucumber
       end
       
       def invoke(args)
-        result = @invoker.call(invoke_message(args)).strip
+        result = @invoker.invoke(id, args).strip
         case(result)
         when /^OK/
           return
@@ -37,9 +55,9 @@ module Cucumber
           table = args[-1] # That's a safe assumption
           begin
             table.diff!(other_table)
-            @invoker.call("DIFFOK")
+            @invoker.table_diff_ok
           rescue Ast::Table::Different => e
-            result = @invoker.call("DIFFKO")
+            result = @invoker.table_diff_ko
             if result =~  /^FAIL:(.*)/
               e.backtrace.insert(1, JSON.parse($1)['backtrace'])
               e.backtrace.flatten!
@@ -51,17 +69,16 @@ module Cucumber
         end
       end
       
-      private
-      
-      def invoke_message(args)
-        "invoke:" + { :id => id, :args => args }.to_json
-      end
     end
 
     class RemoteInvoker
+      include SpeaksToWireServer
+      
       def initialize(filename)
         @wire_file = filename
       end
+      
+      private
       
       def call(message, timeout = 5)
         begin
@@ -76,8 +93,6 @@ module Cucumber
           raise "Timed out calling server with message #{message}"
         end
       end
-      
-      private
       
       def fetch_data_from_socket(timeout)
         log.debug("Waiting #{timeout} secs for response...")
@@ -110,7 +125,7 @@ module Cucumber
 
       def step_definitions_for(wire_file)
         invoker_proxy = RemoteInvoker.new(wire_file)
-        response = invoker_proxy.call('list_step_definitions')
+        response = invoker_proxy.list_step_definitions
         JSON.parse(response).map do |step_def_data| 
           WireStepDefinition.new(self, step_def_data, invoker_proxy)
         end
