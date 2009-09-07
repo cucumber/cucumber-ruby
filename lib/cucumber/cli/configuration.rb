@@ -66,7 +66,7 @@ module Cucumber
         @options[:drb_port].to_i if @options[:drb_port]
       end
 
-      def build_formatter_broadcaster(step_mother)
+      def build_runner(step_mother)
         return Formatter::Pretty.new(step_mother, nil, @options) if @options[:autoformat]
         formatters = @options[:formats].map do |format_and_out|
           format = format_and_out[0]
@@ -90,9 +90,7 @@ module Cucumber
           end
         end
 
-        broadcaster = Broadcaster.new(formatters)
-        broadcaster.options = @options
-        return broadcaster
+        return Ast::Runner.new(step_mother, formatters, @options)
       end
 
       def formatter_class(format)

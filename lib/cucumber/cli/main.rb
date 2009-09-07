@@ -40,9 +40,9 @@ module Cucumber
         step_mother.load_code_files(configuration.step_defs_to_load)
         enable_diffing
 
-        visitor = configuration.build_formatter_broadcaster(step_mother)
-        step_mother.visitor = visitor # Needed to support World#announce
-        visitor.visit_features(features)
+        runner = configuration.build_runner(step_mother)
+        step_mother.visitor = runner # Needed to support World#announce
+        runner.visit_features(features)
 
         failure = if exceeded_tag_limts?(features)
             FAILURE
