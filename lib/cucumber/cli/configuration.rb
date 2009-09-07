@@ -1,3 +1,4 @@
+require 'logger'
 require 'cucumber/cli/options'
 require 'cucumber/constantize'
 
@@ -140,7 +141,21 @@ module Cucumber
         paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq
       end
 
+      def log
+        logger = Logger.new(@out_stream)
+        logger.formatter = LogFormatter.new
+        logger.level = Logger::INFO
+        logger.level = Logger::DEBUG if self.verbose?
+        logger
+      end
+
     private
+
+      class LogFormatter < ::Logger::Formatter
+        def call(severity, time, progname, msg)
+          msg
+        end
+      end
 
       def paths
         @options[:paths].empty? ? ['features'] : @options[:paths]

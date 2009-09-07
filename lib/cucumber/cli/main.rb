@@ -14,12 +14,6 @@ module Cucumber
     class Main
       FAILURE = 1
 
-      class LogFormatter < ::Logger::Formatter
-        def call(severity, time, progname, msg)
-          msg
-        end
-      end
-
       class << self
         def step_mother
           @step_mother ||= StepMother.new
@@ -46,12 +40,7 @@ module Cucumber
           end
         end
         step_mother.options = configuration.options
-        
-        logger = Logger.new(@out_stream)
-        logger.formatter = LogFormatter.new
-        logger.level = Logger::INFO
-        logger.level = Logger::DEBUG if configuration.verbose?
-        step_mother.log = logger
+        step_mother.log = configuration.log
 
         step_mother.load_code_files(configuration.support_to_load)
         step_mother.after_configuration(configuration)
@@ -95,10 +84,6 @@ module Cucumber
         @configuration = Configuration.new(@out_stream, @error_stream)
         @configuration.parse!(@args)
         @configuration
-      end
-
-      def verbose_log(string)
-        @out_stream.puts(string) if configuration.verbose?
       end
 
       private

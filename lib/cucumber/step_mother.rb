@@ -1,4 +1,3 @@
-require 'logger'
 require 'cucumber/constantize'
 require 'cucumber/core_ext/instance_exec'
 require 'cucumber/parser/natural_language'
