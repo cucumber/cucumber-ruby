@@ -126,14 +126,13 @@ module Cucumber
         @before_threads << Thread.new do
           self.send(method, *args)
         end
-        sleep 0.1 until @before_threads.last.status == "sleep" or !@before_threads.last.status
+        sleep 0.1 until @before_threads.last.status == "sleep" or !@before_threads.last.alive?
       end
       
       def run_after
         thread = @before_threads.pop
-        thread.run if thread.status
-        until !thread.status
-          sleep 0.1
+        thread.run if thread.alive?
+        until !thread.alive?
           thread.run if thread.status == 'sleep'
         end
       end
