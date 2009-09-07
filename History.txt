@@ -1,8 +1,12 @@
 == (In Git)
 
+
 === New Features
 * Added support for Uzbek (msarvar)
 * The file argument on the cucumber command line will replace contents of file on cli if file is prefixed with @ (Tero Tilus)
+
+=== Changed Features
+* Cucumber::Cli::Main.execute(argv) has been replaced with Cucumber::Cli::Main.new(argv).execute! (Aslak Hellesøy)
 
 === Bugfixes
 * Backtraces on JRuby are handled in a cleaner way when the exception comes from Java (NativeException). (Aslak Hellesøy)

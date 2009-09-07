@@ -14,23 +14,17 @@ module Cucumber
     class Main
       FAILURE = 1
 
-      class << self
-        def step_mother
-          @step_mother ||= StepMother.new
-        end
-
-        def execute(args)
-          new(args).execute!(step_mother)
-        end
-      end
-
       def initialize(args, out_stream = STDOUT, error_stream = STDERR)
         @args         = args
         @out_stream   = out_stream == STDOUT ? Formatter::ColorIO.new : out_stream
         @error_stream = error_stream
       end
 
-      def execute!(step_mother)
+      def step_mother
+        configuration.step_mother
+      end
+
+      def execute!
         trap_interrupt
         if configuration.drb?
           begin
@@ -39,8 +33,6 @@ module Cucumber
             @error_stream.puts "WARNING: #{e.message} Running features locally:"
           end
         end
-        step_mother.options = configuration.options
-        step_mother.log = configuration.log
 
         step_mother.load_code_files(configuration.support_to_load)
         step_mother.after_configuration(configuration)

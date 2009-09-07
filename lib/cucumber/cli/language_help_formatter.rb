@@ -23,7 +23,7 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
       end
 
       def self.list_keywords(io, lang)
-        language = Parser::NaturalLanguage.get(nil, lang)
+        language = Parser::NaturalLanguage.get(StepMother.new, lang)
         raw = Parser::NaturalLanguage::KEYWORD_KEYS.map do |key|
           [key, language.keywords(key)]
         end
@@ -46,7 +46,7 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
       def visit_table_cell_value(value, status)
         if @col == 1
           if(@options[:check_lang])
-            @incomplete = Parser::NaturalLanguage.get(nil, value).incomplete?
+            @incomplete = Parser::NaturalLanguage.get(StepMother.new, value).incomplete?
           end
           status = :comment 
         elsif @incomplete

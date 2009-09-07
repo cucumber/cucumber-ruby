@@ -29,7 +29,7 @@ module Cucumber
 
           FeatureFile.stub!(:new).and_return(mock("feature file", :parse => @empty_feature))
 
-          @cli.execute!(StepMother.new)
+          @cli.execute!
 
           @out.string.should include('example.feature')
         end
@@ -52,7 +52,7 @@ module Cucumber
 
           ::Spec::Expectations::Differs::Default.should_receive(:new)
 
-          @cli.execute!(@step_mother)
+          @cli.execute!
         end
 
         it "does not use Spec Differ::Default when diff is disabled" do
@@ -60,7 +60,7 @@ module Cucumber
 
           ::Spec::Expectations::Differs::Default.should_not_receive(:new)
 
-          @cli.execute!(@step_mother)
+          @cli.execute!
         end
 
       end
@@ -80,7 +80,7 @@ module Cucumber
             Object.should_receive(:const_get).with('ZooModule').and_return(mock_module)
             mock_module.should_receive(:const_get).with('MonkeyFormatterClass').and_return(mock('formatter class', :new => f))
 
-            cli.execute!(StepMother.new)
+            cli.execute!
           end
 
         end
@@ -90,7 +90,7 @@ module Cucumber
         
         it "should load files and execute hooks in order" do
           Configuration.stub!(:new).and_return(configuration = mock('configuration', :null_object => true))
-          step_mother = mock('step mother', :null_object => true)
+          step_mother = configuration.step_mother
           configuration.stub!(:drb?).and_return false
           cli = Main.new(%w{--verbose example.feature}, @out)
           cli.stub!(:require)
@@ -111,7 +111,7 @@ module Cucumber
           step_mother.should_receive(:load_plain_text_features).ordered
           step_mother.should_receive(:load_code_files).with(['step defs']).ordered
 
-          cli.execute!(step_mother)
+          cli.execute!
         end
         
       end
@@ -123,7 +123,7 @@ module Cucumber
         configuration.stub!(:parse!).and_raise(exception_klass.new("error message"))
 
         main = Main.new('', out = StringIO.new, error = StringIO.new)
-        main.execute!(StepMother.new).should be_true
+        main.execute!.should be_true
         error.string.should == "error message\n"
       end
     end
@@ -137,31 +137,30 @@ module Cucumber
           @args = ['features']
 
           @cli = Main.new(@args, @out, @err)
-          @step_mother = mock('StepMother', :null_object => true)
         end
 
         it "delegates the execution to the DRB client passing the args and streams" do
           @configuration.stub :drb_port => 1450
           DRbClient.should_receive(:run).with(@args, @err, @out, 1450).and_return(true)
-          @cli.execute!(@step_mother)
+          @cli.execute!
         end
 
         it "returns the result from the DRbClient" do
           DRbClient.stub!(:run).and_return('foo')
-          @cli.execute!(@step_mother).should == 'foo'
+          @cli.execute!.should == 'foo'
         end
 
         it "ceases execution if the DrbClient is able to perform the execution" do
           DRbClient.stub!(:run).and_return(true)
           @configuration.should_not_receive(:build_formatter_broadcaster)
-          @cli.execute!(@step_mother)
+          @cli.execute!
         end
 
         context "when the DrbClient is unable to perfrom the execution" do
           before { DRbClient.stub!(:run).and_raise(DRbClientError.new('error message.')) }
 
           it "alerts the user that execution will be performed locally" do
-            @cli.execute!(@step_mother)
+            @cli.execute!
             @err.string.should include("WARNING: error message. Running features locally:")
           end
 

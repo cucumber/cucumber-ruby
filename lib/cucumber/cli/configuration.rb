@@ -30,6 +30,14 @@ module Cucumber
         set_environment_variables
       end
 
+      def step_mother
+        return @step_mother if @step_mother
+        @step_mother = StepMother.new
+        @step_mother.options = self.options
+        @step_mother.log = self.log
+        @step_mother
+      end
+
       def verbose?
         @options[:verbose]
       end
