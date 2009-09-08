@@ -10,7 +10,6 @@ module Cucumber
       DEPRECATION_WARNING = "Cucumber::Ast::Visitor is deprecated and will be removed. You no longer need to inherit from this class."
 
       def initialize(step_mother)
-        warn(DEPRECATION_WARNING)
         @step_mother = step_mother
         @options = {}
       end
@@ -122,7 +121,10 @@ module Cucumber
       end
       
       def run_before(method, *args)
+        # puts "before #{method}"
+        Thread.abort_on_exception = true
         thread = Thread.new do
+          Thread.current[:method] = method
           self.send(method, *args)
         end
         
@@ -131,19 +133,25 @@ module Cucumber
         
         # first half of method run through, either to paused state or to end
         sleep 0.1 until thread.stop?
+        puts "end of before: #{thread[:method]} thread #{thread.status}" if thread.status
       end
       
       def run_after
         thread = @before_threads.pop
+        return unless thread.status
+        
+        puts "un-pausing #{thread[:method]} thread"
         thread.run if thread.alive?
         until !thread.alive?
           thread.run if thread.status == 'sleep'
         end
+        puts "end of after: #{thread[:method]} thread #{thread.status}"
       end
 
       private
       
       def pause_until_visited
+        # warn(DEPRECATION_WARNING) unless @options[:quiet]
         sleep
       end
     end

@@ -188,7 +188,8 @@ module Cucumber
       module NullAcceptor
         def accept(visitor)
           unless visitor.instance_of?(Cucumber::Ast::Runner)
-            warn("Deprecated: stop visiting things like #{self.class} from #{caller[0]}")
+            # warn("Deprecated: stop visiting things like #{self.class} from #{caller[0]}") unless @options[:quiet]
+            # puts "pausing #{Thread.current[:method]} thread as it as called #accept"
             sleep
             return
           end
