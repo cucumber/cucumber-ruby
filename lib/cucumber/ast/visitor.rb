@@ -122,11 +122,15 @@ module Cucumber
       end
       
       def run_before(method, *args)
-        @before_threads ||= []
-        @before_threads << Thread.new do
+        thread = Thread.new do
           self.send(method, *args)
         end
-        sleep 0.1 until @before_threads.last.status == "sleep" or !@before_threads.last.alive?
+        
+        @before_threads ||= []
+        @before_threads << thread
+        
+        # first half of method run through, either to paused state or to end
+        sleep 0.1 until thread.stop?
       end
       
       def run_after
