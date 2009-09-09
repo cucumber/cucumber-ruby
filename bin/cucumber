@@ -6,7 +6,7 @@ require 'cucumber/rspec_neuter'
 require 'cucumber/cli/main'
 begin
   # The dup is to keep ARGV intact, so that tools like ruby-debug can respawn.
-  failure = Cucumber::Cli::Main.new(ARGV.dup).execute!
+  failure = Cucumber::Cli::Main.execute(ARGV.dup)
   Kernel.exit(failure ? 1 : 0)
 rescue SystemExit => e
   Kernel.exit(e.status)

@@ -17,12 +17,12 @@ module Cucumber
         @keywords = Cucumber::LANGUAGES[lang]
         raise "Language not supported: #{lang.inspect}" if @keywords.nil?
         @keywords['grammar_name'] = @keywords['name'].gsub(/\s/, '')
-        register_adverbs(step_mother)
+        register_adverbs(step_mother) if step_mother
       end
 
       def register_adverbs(step_mother)
         adverbs = %w{given when then and but}.map{|keyword| @keywords[keyword].split('|').map{|w| w.gsub(/\s/, '')}}.flatten
-        step_mother.register_adverbs(adverbs)
+        step_mother.register_adverbs(adverbs) if step_mother
       end
 
       def parser
