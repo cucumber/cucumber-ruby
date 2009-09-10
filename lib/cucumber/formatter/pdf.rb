@@ -13,18 +13,24 @@ module Cucumber
       attr_writer :indent
 
       def initialize(step_mother, io, options)
-        puts "no file! please specify --pdf FILENAME" and exit if options[:outfile].blank?
-
         super(step_mother)
+        raise "You *must* specify --out FILE for the pdf formatter" unless File === io
+
+        if(options[:dry_run])
+          @status_colors = { :passed => '000000', :skipped => '000000', :undefined => '000000', :failed => '000000'}
+        else
+          @status_colors = { :passed => '338800', :skipped => '999999', :undefined => '996600', :failed => '882222'}
+        end
+
         @pdf = Prawn::Document.new
         @scrap = Prawn::Document.new
+        @doc = @scrap
         @io = io
         @options = options
         @exceptions = []
         @indent = 0
-        @prefixes = options[:prefixes] || {}
         @buffer = []
-        @rowbuffer = []
+        puts "writing to #{io.path}"
         begin
           @pdf.image open("features/support/logo.png"), :position => :center, :width => 500
         rescue
@@ -34,36 +40,40 @@ module Cucumber
         @pdf.text "Command: <code>cucumber #{ARGV.join(" ")}</code>", :size => 10, :at => [0,10]
       end
 
+      def buffer(&block)
+        @buffer << block
+      end
+
+      def render(doc)
+        @doc = doc
+        @buffer.each do |proc|
+          proc.call
+        end
+      end
+
+      # This method does a 'test' rendering on a blank page, to see the rendered height of the buffer
+      # if that too high for the space left on the age in the real document, we do a page break.
+      # This obviously doesn't work if a scenario is longer than a whole page (God forbid)
+      def flush
+        @scrap.start_new_page
+        oldy = @scrap.y
+        render @scrap
+        height = (oldy - @scrap.y) + 36 # whops magic number
+        if ((@pdf.y - height) < @pdf.bounds.bottom)
+          @pdf.start_new_page
+        end
+        render @pdf
+        @pdf.move_down(20)
+        @buffer = []
+      end
+
+      # regular visitor entries
       def visit_features(features)
         super
-        @pdf.render_file(options[:outfile])
-        @io.puts "\ndone"
+        @pdf.render_file(@io.path)
+        puts "\ndone"
       end
 
-      def visit_feature_element(feature_element)
-        record_tag_occurrences(feature_element, @options)
-        super 
-        flush_buffer
-      end
-
-      def visit_feature(feature)
-        super  
-        flush_buffer
-      end
-
-      def visit_comment(comment)
-        comment.accept(self)
-      end
-
-      def visit_comment_line(comment_line)
-        #@io.puts(comment_line.indent(@indent))
-        #@io.flush
-      end
-
-      def visit_tag_name(tag_name)
-        tag = format_string("@#{tag_name}", :tag).indent(@indent)
-        # TODO should we render tags at all?
-      end
 
       def visit_feature_name(name)
         @pdf.start_new_page
@@ -84,58 +94,31 @@ module Cucumber
         @pdf.move_down(30)
       end
 
-      def visit_background_name(keyword, name, file_colon_line, source_indent)
-        visit_feature_element_name(keyword, name)
+      def visit_feature_element(feature_element)
+        record_tag_occurrences(feature_element, @options)
+        super
+        flush
       end
 
-      def visit_examples_name(keyword, name)
-        visit_feature_element_name(keyword, name)
-        
-      end
-
-      def visit_scenario_name(keyword, name, file_colon_line, source_indent)
-        visit_feature_element_name(keyword, name)
-      end
-
-      def render_buffer(doc)
-        @buffer.each do |lineinfo|
-          object, o = lineinfo
-          options = { :plain => true }
-          options.merge! o if o 
-          if object.kind_of? Hash   #this is an example table 
-            doc.table(object[:tabledata], :headers => object[:headers])
-            @rowbuffer = []
-          else(options)
-            @pdf.fill_color options[:color] if options[:color]
-            doc.text(object, options)
-            @pdf.fill_color '000000'
-          end
-        end
-      end
-
-      def flush_buffer
-        @scrap.start_new_page
-        oldy = @scrap.y
-        render_buffer @scrap
-        height = (oldy - @scrap.y) + 36 #TODO remember page breaks in long entries, this is probably a bug
-        #@pdf.text("PAGEBREAK (rows: #{@buffer.size}, box height: #{height}, y was #{@pdf.y}, bottom: #{@pdf.bounds.bottom} )")
-        if ((@pdf.y - height) < @pdf.bounds.bottom)
-          @pdf.start_new_page
-        end
-        render_buffer @pdf
-
-        @pdf.move_down(20)
-        @buffer = []
+      def visit_feature(feature)
+        super
+        flush
       end
 
       def visit_feature_element_name(keyword, name)
         names = name.empty? ? [name] : name.split("\n")
-        @io.print "."
-        @io.flush
-        @buffer << ["#{keyword}" , { :size => 10, :color => "999999" } ]
-        @buffer << ["#{names[0]}", { :size => 16 } ]
-        @buffer << "\n"
-        names[1..-1].each {|s| @buffer << [s, { :size => 12 }] }
+        print "."
+        STDOUT.flush
+
+        buffer do
+          @doc.move_down(20)
+          @doc.fill_color '999999'
+          @doc.text("#{keyword}", :size => 8)
+          @doc.fill_color '000000'
+          @doc.text("#{names[0]}", :size => 16)
+          names[1..-1].each { |s| @doc.text(s, :size => 12) }
+          @doc.text("\n")
+        end
       end
 
       def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
@@ -148,22 +131,17 @@ module Cucumber
         super
       end
 
-      def visit_step_name(keyword, step_match, status, source_indent, background)
-        source_indent = nil unless @options[:source]
-        line = format_step(keyword, step_match, status, source_indent)
-        line.gsub!('<', '&lt;')
-        line.gsub!('>', '&gt;')
-        %w(Given When Then).each do |keyword|
-          line.gsub!(keyword, "<b>#{keyword}</b>")
+      def colorize(text, status)
+        buffer do
+          @doc.fill_color(@status_colors[status] || '000000')
+          @doc.text(text)
+          @doc.fill_color('000000')
         end
-        @buffer << [line, { :plain => false }]
       end
 
-      #TODO handle this?
-      def visit_multiline_arg(multiline_arg)
-        return if @options[:no_multiline]
-        @table = multiline_arg
-        super
+      def visit_step_name(keyword, step_match, status, source_indent, background)
+        line = "<b>#{keyword}</b> #{step_match.format_args("%s").gsub('<', '&lt;').gsub('>', '&gt;')}"
+        colorize(line, status)
       end
 
       def visit_background(background)
@@ -172,16 +150,22 @@ module Cucumber
         @in_background = nil
       end
 
-      def visit_table_row(table_row)        
-        @buffer << { :tabledata => [], :headers => [] }  unless @buffer[-1].is_a? Hash
-        headers = @buffer[-1][:headers]
-        super
-        if(headers.empty?)    
-          @buffer[-1][:headers] = @rowbuffer unless @rowbuffer.empty?
-        else
-          @buffer[-1][:tabledata] << @rowbuffer unless @rowbuffer.empty?
+      def visit_multiline_arg(table)
+        if(table.kind_of? Cucumber::Ast::Table)
+          buffer do
+            @doc.table(table.rows, :headers => table.headers, :position => :center, :row_colors => ['ffffff', 'f0f0f0'])
+          end
         end
-        @rowbuffer = []
+        super
+      end
+
+      #using row_color hack to highlight each row correctly
+      def visit_outline_table(table)
+        row_colors = table.example_rows.map { |r| @status_colors[r.status] unless r.status == :skipped}
+
+        buffer do
+          @doc.table(table.rows, :headers => table.headers, :position => :center, :row_colors => row_colors)
+        end
       end
 
       def visit_py_string(string)
@@ -190,12 +174,32 @@ module Cucumber
         s.each do |line|
           line.gsub!('<', '&lt;')
           line.gsub!('>', '&gt;')
-          @buffer << [line, { :size => 8 }]
+          buffer { @doc.text line, :size => 8 }
         end
       end
 
-      def visit_table_cell_value(value, status)  
-        @rowbuffer << value.to_s || ' '
+      def visit_comment(comment)
+        comment.accept(self)
+      end
+
+      def visit_comment_line(comment_line)
+      end
+
+      def visit_tag_name(tag_name)
+        tag = format_string("@#{tag_name}", :tag).indent(@indent)
+        # TODO should we render tags at all? skipped for now. difficult to place due to page breaks
+      end
+
+      def visit_background_name(keyword, name, file_colon_line, source_indent)
+        visit_feature_element_name(keyword, name)
+      end
+
+      def visit_examples_name(keyword, name)
+        visit_feature_element_name(keyword, name)
+      end
+
+      def visit_scenario_name(keyword, name, file_colon_line, source_indent)
+        visit_feature_element_name(keyword, name)
       end
     end
   end

@@ -184,15 +184,6 @@ module Cucumber
             @options[:dry_run] = true
             @quiet = true
           end
-          opts.on("-A", "--pdf FILENAME",
-            "Generates feature PDF using prawn gem. You can put your logo in features/support/logo.png",
-            "Implies --dry-run --no-color --formatter pdf.") do |outfile|
-            Term::ANSIColor.coloring = false
-            @options[:dry_run] = true
-            @quiet = true       
-            @options[:outfile] = outfile
-            @options[:formats] << ['pdf', @out_stream] 
-          end 
 
           opts.on("-m", "--no-multiline",
             "Don't print multiline strings and tables under steps.") do
