@@ -147,6 +147,14 @@ examples/i18n/sk/features/addition.feature
 examples/i18n/sk/features/division.feature
 examples/i18n/sk/features/step_definitons/calculator_steps.rb
 examples/i18n/sk/lib/calculator.rb
+examples/i18n/uz/Rakefile
+examples/i18n/uz/features/addition.feature
+examples/i18n/uz/features/consecutive_calculations.feature
+examples/i18n/uz/features/division.feature
+examples/i18n/uz/features/step_definitons/calculator_steps.rb
+examples/i18n/uz/features/support/env.rb
+examples/i18n/uz/features/support/world.rb
+examples/i18n/uz/lib/calculator.rb
 examples/i18n/zh-CN/Rakefile
 examples/i18n/zh-CN/features/addition.feature
 examples/i18n/zh-CN/features/step_definitons/calculator_steps.rb
@@ -204,6 +212,7 @@ examples/self_test/features/support/env.rb
 examples/self_test/features/tags_sample.feature
 examples/self_test/features/tons_of_cukes.feature
 examples/self_test/features/undefined_multiline_args.feature
+examples/self_test/list-of-features.txt
 examples/sinatra/README.textile
 examples/sinatra/Rakefile
 examples/sinatra/app.rb
@@ -253,8 +262,6 @@ examples/watir/Rakefile
 examples/watir/features/search.feature
 examples/watir/features/step_definitons/search_steps.rb
 examples/watir/features/support/env.rb
-features/after_block_exceptions.feature
-features/after_step_block_exceptions.feature
 features/background.feature
 features/bug_371.feature
 features/cucumber_cli.feature
@@ -262,6 +269,9 @@ features/cucumber_cli_diff_disabled.feature
 features/cucumber_cli_outlines.feature
 features/custom_formatter.feature
 features/drb_server_integration.feature
+features/exception_in_after_block.feature
+features/exception_in_after_step_block.feature
+features/exception_in_before_block.feature
 features/exclude_files.feature
 features/expand.feature
 features/html_formatter.feature

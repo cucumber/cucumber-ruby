@@ -1,3 +1,4 @@
+require 'logger'
 require 'cucumber/cli/options'
 require 'cucumber/constantize'
 
@@ -115,13 +116,34 @@ module Cucumber
         potential_feature_files = paths.map do |path|
           path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
           path = path.chomp('/')
-          File.directory?(path) ? Dir["#{path}/**/*.feature"] : path
+          if File.directory?(path)
+            Dir["#{path}/**/*.feature"]
+          elsif path[0..0] == '@' and # @listfile.txt
+              File.file?(path[1..-1]) # listfile.txt is a file
+            IO.read(path[1..-1]).split
+          else 
+            path
+          end
         end.flatten.uniq
         remove_excluded_files_from(potential_feature_files)
         potential_feature_files
       end
 
+      def log
+        logger = Logger.new(@out_stream)
+        logger.formatter = LogFormatter.new
+        logger.level = Logger::INFO
+        logger.level = Logger::DEBUG if self.verbose?
+        logger
+      end
+
     private
+
+      class LogFormatter < ::Logger::Formatter
+        def call(severity, time, progname, msg)
+          msg
+        end
+      end
 
       def paths
         @options[:paths].empty? ? ['features'] : @options[:paths]

@@ -109,6 +109,15 @@ module Cucumber
           end
         })
       end
+
+      it "should be helpful with tables" do
+        @rb.snippet_text('Given', 'A "first" arg', Cucumber::Ast::Table).should == unindented(%{
+          Given /^A "([^\\"]*)" arg$/ do |arg1, table|
+            # table is a Cucumber::Ast::Table
+            pending
+          end
+        })
+      end
     end
   end
 end

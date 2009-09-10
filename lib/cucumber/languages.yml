@@ -500,6 +500,20 @@
   and: A
   but: Ale
   space_after_keyword: true
+"uz":
+  name: Uzbek
+  native: Узбекча
+  encoding: UTF-8
+  feature: Функционал
+  background: Тарих
+  scenario: Сценарий
+  scenario_outline: Сценарий структураси
+  examples: Мисоллар
+  given: Агар
+  when: Агар
+  then: Унда
+  and: Ва
+  but: Лекин|Бирок|Аммо
 "vi":
   name: Vietnamese
   native: Tiếng Việt
