@@ -65,6 +65,13 @@ module Cucumber
       def AfterStep(*tag_names, &proc)
         RbDsl.register_rb_hook('after_step', tag_names, proc)
       end
+
+      # Registers a proc that will be called with a step definition argument if it 
+      # matches the pattern passed as the first argument to Transform. The return
+      # value of the proc is consequently yielded to the step definition.
+      def Transform(*args, &proc)
+        StepMother.register_transform(*args, &proc)
+      end
       
       # Registers a proc that will run after Cucumber is configured. You can register as 
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).

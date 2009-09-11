@@ -17,9 +17,6 @@ After('@background_tagged_before_on_outline') do
   @cukes.should == '888'
 end
 
-Cucumber.configure do |config|
-  config.register_transform /'\d+' to an Integer/ do |group|
-    /'(\d+)' to an Integer/.match(group)[0].to_i
-  end
+Transform /'\d+' to an Integer/ do |step_arg|
+  /'(\d+)' to an Integer/.match(step_arg)[0].to_i
 end
-
