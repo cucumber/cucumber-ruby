@@ -16,3 +16,7 @@ end
 After('@background_tagged_before_on_outline') do
   @cukes.should == '888'
 end
+
+Cucumber::StepMother.register_transform /'\d+' to an Integer/ do |group|
+  /'(\d+)' to an Integer/.match(group)[0].to_i
+end

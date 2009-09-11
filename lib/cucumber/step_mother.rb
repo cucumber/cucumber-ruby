@@ -50,8 +50,8 @@ module Cucumber
 
   # This is the meaty part of Cucumber that ties everything together.
   class StepMother
-    include Constantize
-    
+    include Constantize    
+    @@transforms = {}
     attr_writer :options, :visitor, :log
 
     def initialize
@@ -59,6 +59,21 @@ module Cucumber
       @programming_languages = []
       @language_map = {}
       load_natural_language('en')
+    end
+    
+    def self.register_transform(pattern, &transform)
+      raise 'Transform must be registered with a block' unless block_given?
+      @@transforms[pattern] = transform.to_proc
+    end
+
+    def self.transform_arguments(args)
+      args.map do |arg|
+        if pattern = @@transforms.keys.detect {|pattern| arg =~ pattern }
+          @@transforms[pattern].call(arg)
+        else
+          arg
+        end
+      end
     end
 
     def load_plain_text_features(feature_files)
