@@ -116,6 +116,10 @@ Feature: Cucumber command line
        Given passing # features/sample.feature:12
       /^failing expectation$/    # features/step_definitions/sample_steps.rb:62
        Given failing expectation # features/failing_expectation.feature:4
+      /^I should transform ('\d+' to an Integer)$/   # features/step_definitions/sample_steps.rb:83
+       Then I should transform '10' to an Integer    # features/transform_sample.feature:4
+      /^I should not transform ('\d+') to an Integer$/   # features/step_definitions/sample_steps.rb:87
+       Then I should not transform '10' to an Integer    # features/transform_sample.feature:7
       /^failing$/    # features/step_definitions/sample_steps.rb:8
        Given failing # features/sample.feature:18
       (::) UNUSED (::)

@@ -28,7 +28,6 @@ Given /^'(.+)' cukes$/ do |cukes|
   raise "We already have #{@cukes} cukes!" if @cukes
   @cukes = cukes
 end
-
 Then /^I should have '(.+)' cukes$/ do |cukes|
   @cukes.should == cukes
 end
@@ -81,10 +80,10 @@ After('@after_file') do
   FileUtils.touch(after_file)
 end
 
-Then /^I should not transform ('\d+') to an Integer$/ do |string|
-  string.should be_kind_of(String)
-end
-
 Then /^I should transform ('\d+' to an Integer)$/ do |integer|
   integer.should be_kind_of(Integer)
+end
+
+Then /^I should not transform ('\d+') to an Integer$/ do |string|
+  string.should be_kind_of(String)
 end
