@@ -51,7 +51,8 @@ module Cucumber
   # This is the meaty part of Cucumber that ties everything together.
   class StepMother
     include Constantize    
-    @@transforms = {}
+    @@transforms = []
+    StepArgumentTransform = Struct.new(:pattern, :transformer)
     attr_writer :options, :visitor, :log
 
     def initialize
@@ -61,17 +62,17 @@ module Cucumber
       load_natural_language('en')
     end
     
-    def self.register_transform(pattern, &transform)
-      raise 'Transform must be registered with a one-argument block' if !block_given? || transform.arity != 1
-      @@transforms[Regexp.new(pattern)] = transform.to_proc
+    def self.register_transform(pattern, &transformer)
+      raise 'Transform must be registered with a one-argument block' if !block_given? || transformer.arity != 1
+      @@transforms.unshift StepArgumentTransform.new(Regexp.new(pattern), transformer.to_proc)
     end
 
-    def self.transform_arguments(args)
-      args.map do |arg|
-        if pattern = @@transforms.keys.detect {|pattern| arg =~ pattern }
-          @@transforms[pattern].call(arg)
+    def self.transform_arguments(step_args)
+      step_args.map do |step_arg|
+        if transform = @@transforms.detect {|t| step_arg =~ t.pattern }
+          transform.transformer.call(step_arg)
         else
-          arg
+          step_arg
         end
       end
     end
