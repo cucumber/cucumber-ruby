@@ -62,8 +62,8 @@ module Cucumber
     end
     
     def self.register_transform(pattern, &transform)
-      raise 'Transform must be registered with a block' unless block_given?
-      @@transforms[pattern] = transform.to_proc
+      raise 'Transform must be registered with a one-argument block' if !block_given? || transform.arity != 1
+      @@transforms[Regexp.new(pattern)] = transform.to_proc
     end
 
     def self.transform_arguments(args)
