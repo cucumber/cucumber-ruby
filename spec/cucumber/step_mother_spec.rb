@@ -186,6 +186,12 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
   end
 
   describe StepMother, "step argument transformations" do
+    after(:each) do
+      # generally transforms are global, but state should be 
+      # cleared when testing them here at the unit level
+      class StepMother; @@transforms = [] end
+    end
+    
     it "doesn't complain in the happy case" do
       lambda do
         StepMother.register_transform('^abc$') {|arg| 42}
