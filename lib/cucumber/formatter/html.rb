@@ -253,7 +253,7 @@ module Cucumber
       end
 
       def format_exception(exception)
-        (["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n")
+        h((["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n"))
       end
       
     end
