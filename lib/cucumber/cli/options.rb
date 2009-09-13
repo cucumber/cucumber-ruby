@@ -6,7 +6,7 @@ module Cucumber
       BUILTIN_FORMATS = {
         'html'      => ['Cucumber::Formatter::Html',     'Generates a nice looking HTML report.'],
         'pretty'    => ['Cucumber::Formatter::Pretty',   'Prints the feature as is - in colours.'],
-        'pdf'       => ['Cucumber::Formatter::Pdf',   'Generates PDF (tests are NOT run).'],
+        'pdf'       => ['Cucumber::Formatter::Pdf',   'Generates a PDF report. You need to have the \'prawn\' gem installed. Put a \'logo.png\' in the support folder for frontpage logo.'],
         'profile'   => ['Cucumber::Formatter::Profile',  'Prints the 10 slowest steps at the end.'],
         'progress'  => ['Cucumber::Formatter::Progress', 'Prints one character per scenario.'],
         'rerun'     => ['Cucumber::Formatter::Rerun',    'Prints failing files with line numbers.'],

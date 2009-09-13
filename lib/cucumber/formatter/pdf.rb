@@ -7,6 +7,9 @@ require "prawn/format"
 module Cucumber
   module Formatter
 
+    BLACK = '000000'
+    GREY = '999999'
+
     class Pdf < Ast::Visitor
       include FileUtils
       include Console
@@ -17,9 +20,9 @@ module Cucumber
         raise "You *must* specify --out FILE for the pdf formatter" unless File === io
 
         if(options[:dry_run])
-          @status_colors = { :passed => '000000', :skipped => '000000', :undefined => '000000', :failed => '000000'}
+          @status_colors = { :passed => BLACK, :skipped => BLACK, :undefined => BLACK, :failed => BLACK}
         else
-          @status_colors = { :passed => '338800', :skipped => '999999', :undefined => '996600', :failed => '882222'}
+          @status_colors = { :passed => '055902', :skipped => GREY, :undefined => 'F27405', :failed => '730202'}
         end
 
         @pdf = Prawn::Document.new
@@ -38,9 +41,19 @@ module Cucumber
         @pdf.text "\n\n\nCucumber features", :align => :center, :size => 32
         @pdf.text "Generated: #{Time.now.strftime("%Y-%m-%d %H:%M")}", :size => 10, :at => [0, 24]
         @pdf.text "Command: <code>cucumber #{ARGV.join(" ")}</code>", :size => 10, :at => [0,10]
+        unless options[:dry_run]
+          @pdf.bounding_box [450,100] , :width => 100 do  
+            @pdf.text 'Legend', :size => 10
+            @status_colors.each do |k,v|
+              @pdf.fill_color v
+              @pdf.text k.to_s, :size => 10
+              @pdf.fill_color BLACK
+            end
+          end
+        end
       end
 
-      def buffer(&block)
+      def keep_with(&block)
         @buffer << block
       end
 
@@ -74,14 +87,13 @@ module Cucumber
         puts "\ndone"
       end
 
-
       def visit_feature_name(name)
         @pdf.start_new_page
         name["Feature:"] = "" if name["Feature:"]
         names = name.split("\n")
-        @pdf.fill_color '999999'
+        @pdf.fill_color GREY
         @pdf.text('Feature', :align => :center)
-        @pdf.fill_color '000000'
+        @pdf.fill_color BLACK
         names.each_with_index do |nameline, i|
           case i
           when 0
@@ -110,11 +122,11 @@ module Cucumber
         print "."
         STDOUT.flush
 
-        buffer do
+        keep_with do
           @doc.move_down(20)
-          @doc.fill_color '999999'
+          @doc.fill_color GREY
           @doc.text("#{keyword}", :size => 8)
-          @doc.fill_color '000000'
+          @doc.fill_color BLACK
           @doc.text("#{names[0]}", :size => 16)
           names[1..-1].each { |s| @doc.text(s, :size => 12) }
           @doc.text("\n")
@@ -132,10 +144,10 @@ module Cucumber
       end
 
       def colorize(text, status)
-        buffer do
-          @doc.fill_color(@status_colors[status] || '000000')
+        keep_with do
+          @doc.fill_color(@status_colors[status] || BLACK)
           @doc.text(text)
-          @doc.fill_color('000000')
+          @doc.fill_color(BLACK)
         end
       end
 
@@ -152,8 +164,8 @@ module Cucumber
 
       def visit_multiline_arg(table)
         if(table.kind_of? Cucumber::Ast::Table)
-          buffer do
-            @doc.table(table.rows, :headers => table.headers, :position => :center, :row_colors => ['ffffff', 'f0f0f0'])
+          keep_with do
+            @doc.table(table.rows << table.headers , :position => :center, :row_colors => ['ffffff', 'f0f0f0'])
           end
         end
         super
@@ -162,8 +174,7 @@ module Cucumber
       #using row_color hack to highlight each row correctly
       def visit_outline_table(table)
         row_colors = table.example_rows.map { |r| @status_colors[r.status] unless r.status == :skipped}
-
-        buffer do
+        keep_with do
           @doc.table(table.rows, :headers => table.headers, :position => :center, :row_colors => row_colors)
         end
       end
@@ -174,7 +185,7 @@ module Cucumber
         s.each do |line|
           line.gsub!('<', '&lt;')
           line.gsub!('>', '&gt;')
-          buffer { @doc.text line, :size => 8 }
+          keep_with { @doc.text line, :size => 8 }
         end
       end
 
