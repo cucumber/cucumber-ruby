@@ -12,6 +12,7 @@ Step Argument Transforms
 The JavaZone release!
 
 === New Features
+* New pdf formatter (#425 Mads Buus)
 * Added support for Uzbek (msarvar)
 * The file argument on the cucumber command line will replace contents of file on cli if file is prefixed with @ (Tero Tilus)
 

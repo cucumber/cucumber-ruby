@@ -628,6 +628,10 @@ Feature: Cucumber command line
 
       """
 
+  Scenario: Generate PDF with pdf formatter
+		When I run cucumber --format pdf --out tmp/sample.pdf --dry-run features/sample.feature
+		Then "examples/self_test/tmp/sample.pdf" should match "Pages 2"
+
   Scenario: Run feature elements which match a name using -n
     When I run cucumber -n Pisang -q features/
     Then it should pass with
