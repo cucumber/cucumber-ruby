@@ -27,6 +27,8 @@ module Cucumber
       end
 
       def count(tag)
+        # See discussion:
+        # http://github.com/weplay/cucumber/commit/2dc592acdf3f7c1a0c333a8164649936bb82d983
         if @tag_names.respond_to?(:count) && @tag_names.method(:count).arity > 0
           @tag_names.count(tag) # 1.9
         else
