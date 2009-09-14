@@ -4,12 +4,11 @@ require 'cucumber/formatter/duration'
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format html</tt>
-    class Html < Ast::Visitor
+    class Html
       include ERB::Util # for the #h method
       include Duration
 
       def initialize(step_mother, io, options)
-        super(step_mother)
         @options = options
         @builder = create_builder(io)
       end

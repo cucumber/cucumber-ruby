@@ -10,43 +10,36 @@ module Cucumber
     #
     # If the output is STDOUT (and not a file), there are bright colours to watch too.
     #
-    class Pretty < Ast::Visitor
+    class Pretty
       include FileUtils
       include Console
       attr_writer :indent
+      attr_reader :step_mother
 
       def initialize(step_mother, io, options)
-        super(step_mother)
-        @io = io
-        @options = options
+        @step_mother, @io, @options = step_mother, io, options
         @exceptions = []
         @indent = 0
         @prefixes = options[:prefixes] || {}
       end
 
-      def visit_features(features)
-        super
+      def after_visit_features(features)
         print_summary(features) unless @options[:autoformat]
       end
 
-      def visit_feature(feature)
+      def before_visit_feature(feature)
         @exceptions = []
         @indent = 0
         if @options[:autoformat]
           file = File.join(@options[:autoformat], feature.file)
           dir = File.dirname(file)
           mkdir_p(dir) unless File.directory?(dir)
-          File.open(file, Cucumber.file_mode('w')) do |io|
-            @io = io
-            super
-          end
-        else
-          super
+          @io = File.open(file, Cucumber.file_mode('w'))
         end
       end
-
-      def visit_comment(comment)
-        comment.accept(self)
+      
+      def after_visit_feature(*args)
+        @io.close if @options[:autoformat]
       end
 
       def visit_comment_line(comment_line)
@@ -54,8 +47,7 @@ module Cucumber
         @io.flush
       end
 
-      def visit_tags(tags)
-        tags.accept(self)
+      def after_visit_tags(tags)
         if @indent == 1
           @io.puts
           @io.flush
@@ -75,38 +67,42 @@ module Cucumber
         @io.flush
       end
 
-      def visit_feature_element(feature_element)
+      def before_visit_feature_element(feature_element)
         record_tag_occurrences(feature_element, @options)
         @indent = 2
         @scenario_indent = 2
-        super
+      end
+      
+      def after_visit_feature_element(*args)
         @io.puts
         @io.flush
       end
 
-      def visit_background(background)
+      def before_visit_background(background)
         @indent = 2
         @scenario_indent = 2
         @in_background = true
-        super
+      end
+
+      def after_visit_background(background)
         @in_background = nil
         @io.puts
         @io.flush
       end
 
-      def visit_background_name(keyword, name, file_colon_line, source_indent)
-        visit_feature_element_name(keyword, name, file_colon_line, source_indent)
+      def visit_background_name(keyword, name, file_colon_line, source_indent)        
+        print_feature_element_name(keyword, name, file_colon_line, source_indent)
       end
 
-      def visit_examples_array(examples_array)
+      def before_visit_examples_array(examples_array)
         @indent = 4
         @io.puts
-        examples_array[0..-2].each { |ea| super(ea) }
-        @last_example = true
-        super(examples_array.last)
-        @last_example = nil
       end
       
+      def after_visit_examples_array(*args)
+        @io.puts
+      end
+
       def visit_examples_name(keyword, name)
         names = name.strip.empty? ? [name.strip] : name.split("\n")        
         @io.puts("    #{keyword} #{names[0]}")
@@ -115,56 +111,43 @@ module Cucumber
         @indent = 6
         @scenario_indent = 6
       end
+      
+      def before_visit_outline_table(outline_table)
+        @table = outline_table
+      end
 
-      def visit_outline_table(outline_table)
-        super
+      def after_visit_outline_table(outline_table)
         @indent = 4
-        @io.puts unless @last_example
       end
       
       def visit_scenario_name(keyword, name, file_colon_line, source_indent)
-        visit_feature_element_name(keyword, name, file_colon_line, source_indent)
+        print_feature_element_name keyword, name, file_colon_line, source_indent
       end
 
-      def visit_feature_element_name(keyword, name, file_colon_line, source_indent)
-        @io.puts if @scenario_indent == 6
-        names = name.empty? ? [name] : name.split("\n")
-        line = "#{keyword} #{names[0]}".indent(@scenario_indent)
-        @io.print(line)
-        if @options[:source]
-          line_comment = " # #{file_colon_line}".indent(source_indent)
-          @io.print(format_string(line_comment, :comment))
-        end
-        @io.puts
-        names[1..-1].each {|s| @io.puts "    #{s}"}
-        @io.flush
-      end
-
-      def visit_step(step)
+      def before_visit_step(step)
+        @current_step = step
         @indent = 6
-        super
       end
 
-      def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+      def after_visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         if exception
           return if @exceptions.index(exception)
           @exceptions << exception
         end
         return if status != :failed && @in_background ^ background
         @status = status
-        super
       end
 
       def visit_step_name(keyword, step_match, status, source_indent, background)
+        return if @current_step.background? and !@in_background
         source_indent = nil unless @options[:source]
         formatted_step_name = format_step(keyword, step_match, status, source_indent)
         @io.puts(formatted_step_name.indent(@scenario_indent + 2))
       end
 
-      def visit_multiline_arg(multiline_arg)
+      def before_visit_multiline_arg(multiline_arg)
         return if @options[:no_multiline]
         @table = multiline_arg
-        super
       end
 
       def visit_exception(exception, status)
@@ -172,10 +155,12 @@ module Cucumber
         @io.flush
       end
 
-      def visit_table_row(table_row)
+      def before_visit_table_row(table_row)
         @col_index = 0
         @io.print '  |'.indent(@indent-2)
-        super
+      end
+
+      def after_visit_table_row(table_row)
         @io.puts
         if table_row.exception && !@exceptions.index(table_row.exception)
           print_exception(table_row.exception, :failed, @indent)
@@ -185,12 +170,11 @@ module Cucumber
       def visit_py_string(string)
         s = %{"""\n#{string}\n"""}.indent(@indent)
         s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}.join("\n")
-        @io.puts(format_string(s, @status))
+        @io.puts(format_string(s, @current_step.status))
         @io.flush
       end
 
-      def visit_table_cell(cell)
-        super
+      def after_visit_table_cell(cell)
         @col_index += 1
       end
 
@@ -205,6 +189,20 @@ module Cucumber
       end
 
       private
+      
+      def print_feature_element_name(keyword, name, file_colon_line, source_indent)
+        @io.puts if @scenario_indent == 6
+        names = name.empty? ? [name] : name.split("\n")
+        line = "#{keyword} #{names[0]}".indent(@scenario_indent)
+        @io.print(line)
+        if @options[:source]
+          line_comment = " # #{file_colon_line}".indent(source_indent)
+          @io.print(format_string(line_comment, :comment))
+        end
+        @io.puts
+        names[1..-1].each {|s| @io.puts "    #{s}"}
+        @io.flush        
+      end
 
       def cell_prefix(status)
         @prefixes[status]

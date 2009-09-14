@@ -90,7 +90,7 @@ module Cucumber
           end
         end
 
-        return Ast::Runner.new(step_mother, formatters, @options)
+        return Ast::TreeWalker.new(step_mother, formatters, @options)
       end
 
       def formatter_class(format)

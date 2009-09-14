@@ -3,10 +3,9 @@ require 'cucumber/formatter/ordered_xml_markup'
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format junit</tt>
-    class Junit < Cucumber::Ast::Visitor
+    class Junit
 
       def initialize(step_mother, io, options)
-        super(step_mother)
         raise "You *must* specify --out DIR for the junit formatter" unless String === io && File.directory?(io)
         @reportdir = io
         @options = options

@@ -1,9 +1,9 @@
 module Cucumber
   module Ast
     # Walks the AST, executing steps and notifying listeners
-    class Runner
+    class TreeWalker
       attr_accessor :options #:nodoc:
-      attr_reader :step_mother #:nodoc:
+      attr_reader   :step_mother #:nodoc:
 
       def initialize(step_mother, listeners, options)
         @step_mother, @listeners, @options = step_mother, listeners, options
@@ -69,8 +69,9 @@ module Cucumber
       end
 
       def visit_examples(examples)
-        broadcast(examples)
-        examples.accept(self)
+        broadcast(examples) do
+          examples.accept(self)
+        end
       end
 
       def visit_examples_name(keyword, name)
@@ -79,7 +80,6 @@ module Cucumber
 
       def visit_outline_table(outline_table)
         broadcast(outline_table) do
-          @table = outline_table # TODO: remove? who needs this?
           outline_table.accept(self)
         end
       end
@@ -150,41 +150,35 @@ module Cucumber
       private
       
       def broadcast(*args, &block)
-        message = caller[0].match(/in `(.*)'/).captures[0]
+        message = extract_method_name_from(caller)
         
-        # send_to_all "before_#{message}", *args
-        run_before_on_legacy_listeners message, *args
-
+        unless block_given?
+          send_to_all(message, *args)
+          return
+        end
+        
+        @indent ||= 0
+        send_to_all("before_#{message}", *args)
+        @indent += 1
         yield if block_given?
-
-        # send_to_all "after_#{message}", *args
-        run_after_on_legacy_listeners(message)
+        @indent -= 1
+        send_to_all("after_#{message}", *args)
       end
       
-      # def send_to_all(message, *args)
-      #   @listeners.each do |listener|
-      #     if listener.respond_to?(message)
-      #       listener.__send__(message, *args)
-      #     end
-      #   end
-      # end
-      
-      def legacy_listeners
-        @listeners.select{ |l| l.is_a?(Cucumber::Ast::Visitor)}
-      end
-      
-      def run_after_on_legacy_listeners(message)
-        legacy_listeners.each do |listener| 
-          listener.run_after
+      def send_to_all(message, *args)
+        # puts(' ' * @indent + message)
+        @listeners.each do |listener|
+          if listener.respond_to?(message)
+            listener.__send__(message, *args)
+          end
         end
       end
       
-      def run_before_on_legacy_listeners(message, *args)
-        *the_args = *args.dup
-        the_args[0].extend(NullAcceptor)
-        legacy_listeners.each { |l| l.run_before(message, *the_args) }
+      def extract_method_name_from(call_stack)
+        call_stack[0].match(/in `(.*)'/).captures[0]
       end
       
+<<<<<<< HEAD:lib/cucumber/ast/runner.rb
       module NullAcceptor
         def accept(visitor)
           unless visitor.instance_of?(Cucumber::Ast::Runner)
@@ -196,6 +190,8 @@ module Cucumber
           super
         end
       end
+=======
+>>>>>>> Working on moving the formatters over to using the listeners.:lib/cucumber/ast/tree_walker.rb
     end
   end
 end

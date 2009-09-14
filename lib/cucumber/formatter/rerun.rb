@@ -10,9 +10,8 @@ module Cucumber
     # This formatter is used by AutoTest - it will use the output to decide what
     # to run the next time, simply passing the output string on the command line.
     #
-    class Rerun < Ast::Visitor
+    class Rerun
       def initialize(step_mother, io, options)
-        super(step_mother)
         @io = io
         @options = options
         @file_names = []

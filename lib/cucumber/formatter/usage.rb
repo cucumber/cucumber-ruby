@@ -3,11 +3,10 @@ require 'cucumber/formatter/progress'
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format usage</tt>
-    class Usage < Ast::Visitor
+    class Usage
       include Console
 
       def initialize(step_mother, io, options)
-        super(step_mother)
         @io = io
         @options = options
         @step_definitions = Hash.new { |h,step_definition| h[step_definition] = [] }

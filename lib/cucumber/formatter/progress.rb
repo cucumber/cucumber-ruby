@@ -3,36 +3,33 @@ require 'cucumber/formatter/console'
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format progress</tt>
-    class Progress < Ast::Visitor
+    class Progress
       include Console
+      attr_reader :step_mother
 
       def initialize(step_mother, io, options)
-        super(step_mother)
-        @io = io
-        @options = options
+        @step_mother, @io, @options = step_mother, io, options
       end
 
-      def visit_features(features)
-        super
+      def after_visit_features(features)
         @io.puts
         @io.puts
         print_summary(features)
       end
 
-      def visit_feature_element(feature_element)
+      def before_visit_feature_element(feature_element)
         record_tag_occurrences(feature_element, @options)
-        super
       end
 
-      def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+      def after_visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         progress(status)
         @status = status
       end
 
-      def visit_table_cell_value(value, status)
-        status ||= @status
-        progress(status) unless table_header_cell?(status)
-      end
+      # def after_visit_table_cell_value(value, status)
+      #   status ||= @status
+      #   progress(status) unless table_header_cell?(status)
+      # end
 
       private
 
