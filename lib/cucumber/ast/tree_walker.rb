@@ -178,20 +178,6 @@ module Cucumber
         call_stack[0].match(/in `(.*)'/).captures[0]
       end
       
-<<<<<<< HEAD:lib/cucumber/ast/runner.rb
-      module NullAcceptor
-        def accept(visitor)
-          unless visitor.instance_of?(Cucumber::Ast::Runner)
-            # warn("Deprecated: stop visiting things like #{self.class} from #{caller[0]}") unless @options[:quiet]
-            # puts "pausing #{Thread.current[:method]} thread as it as called #accept"
-            sleep
-            return
-          end
-          super
-        end
-      end
-=======
->>>>>>> Working on moving the formatters over to using the listeners.:lib/cucumber/ast/tree_walker.rb
     end
   end
 end

@@ -97,14 +97,13 @@ module Cucumber
       def before_visit_examples_array(examples_array)
         @indent = 4
         @io.puts
+        @first_example_name = true
       end
       
-      def after_visit_examples_array(*args)
-        @io.puts
-      end
-
       def visit_examples_name(keyword, name)
-        names = name.strip.empty? ? [name.strip] : name.split("\n")        
+        puts unless @first_example_name
+        @first_example_name = false
+        names = name.strip.empty? ? [name.strip] : name.split("\n")
         @io.puts("    #{keyword} #{names[0]}")
         names[1..-1].each {|s| @io.puts "      #{s}" } unless names.empty?
         @io.flush
