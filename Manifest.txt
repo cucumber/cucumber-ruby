@@ -211,6 +211,7 @@ examples/self_test/features/step_definitions/sample_steps.rb
 examples/self_test/features/support/env.rb
 examples/self_test/features/tags_sample.feature
 examples/self_test/features/tons_of_cukes.feature
+examples/self_test/features/transform_sample.feature
 examples/self_test/features/undefined_multiline_args.feature
 examples/self_test/list-of-features.txt
 examples/sinatra/README.textile
@@ -289,6 +290,7 @@ features/step_definitions/extra_steps.rb
 features/steps_formatter.feature
 features/support/env.rb
 features/table_diffing.feature
+features/transform.feature
 features/unicode_table.feature
 features/usage.feature
 features/work_in_progress.feature
@@ -349,6 +351,7 @@ lib/cucumber/formatter/duration.rb
 lib/cucumber/formatter/html.rb
 lib/cucumber/formatter/junit.rb
 lib/cucumber/formatter/ordered_xml_markup.rb
+lib/cucumber/formatter/pdf.rb
 lib/cucumber/formatter/pretty.rb
 lib/cucumber/formatter/profile.rb
 lib/cucumber/formatter/progress.rb

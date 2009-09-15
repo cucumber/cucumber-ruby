@@ -196,26 +196,26 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
       it "complains when registering with a with no transform block" do
         lambda do
           StepMother.register_transform('^abc$')
-        end.should raise_error Cucumber::ArityMismatchError
+        end.should raise_error(Cucumber::ArityMismatchError)
       end
       
       it "complains when registering with a zero-arg transform block" do
         lambda do
           StepMother.register_transform('^abc$') {42}
-        end.should raise_error Cucumber::ArityMismatchError
+        end.should raise_error(Cucumber::ArityMismatchError)
       end
 
       it "complains when registering with a splat-arg transform block" do
         lambda do
           StepMother.register_transform('^abc$') {|*splat| 42 }
-        end.should raise_error Cucumber::ArityMismatchError
+        end.should raise_error(Cucumber::ArityMismatchError)
       end
 
       it "complains when transforming with an arity mismatch" do
         lambda do
           StepMother.register_transform('^abc$') {|one, two| 42 }
           StepMother.transform_arguments(['abc'])
-        end.should raise_error Cucumber::ArityMismatchError
+        end.should raise_error(Cucumber::ArityMismatchError)
       end
 
       it "allows registering a regexp pattern that yields the step_arg matched" do
@@ -231,26 +231,26 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
       it "complains when registering with a with no transform block" do
         lambda do
           StepMother.register_transform('^a(.)c$')
-        end.should raise_error Cucumber::ArityMismatchError
+        end.should raise_error(Cucumber::ArityMismatchError)
       end
       
       it "complains when registering with a zero-arg transform block" do
         lambda do
           StepMother.register_transform('^a(.)c$') { 42 }
-        end.should raise_error Cucumber::ArityMismatchError
+        end.should raise_error(Cucumber::ArityMismatchError)
       end
 
       it "complains when registering with a splat-arg transform block" do
         lambda do
           StepMother.register_transform('^a(.)c$') {|*splat| 42 }
-        end.should raise_error Cucumber::ArityMismatchError
+        end.should raise_error(Cucumber::ArityMismatchError)
       end
 
       it "complains when transforming with an arity mismatch" do
         lambda do
           StepMother.register_transform('^a(.)c$') {|one, two| 42 }
           StepMother.transform_arguments(['abc'])
-        end.should raise_error Cucumber::ArityMismatchError
+        end.should raise_error(Cucumber::ArityMismatchError)
       end
       
       it "allows registering a regexp pattern that yields capture groups" do
