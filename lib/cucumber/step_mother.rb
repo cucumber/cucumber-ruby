@@ -63,14 +63,25 @@ module Cucumber
     end
     
     def self.register_transform(pattern, &transformer)
-      raise 'Transform must be registered with a one-argument block' if !block_given? || transformer.arity != 1
+      raise Cucumber::ArityMismatchError.new('Transform must be registered with at least a one-argument block') if !block_given? || transformer.arity < 1
       @@transforms.unshift StepArgumentTransform.new(Regexp.new(pattern), transformer.to_proc)
     end
 
     def self.transform_arguments(step_args)
+      matched = nil
       step_args.map do |step_arg|
-        if transform = @@transforms.detect {|t| step_arg =~ t.pattern }
-          transform.transformer.call(step_arg)
+        if transform = @@transforms.detect {|t| matched = t.pattern.match(step_arg) if step_arg.is_a?(String) }          
+          if matched.captures.empty?
+            unless transform.transformer.arity == 1
+              raise Cucumber::ArityMismatchError.new("Transforms without Regexp captures only accept a single argument (the step argument)")
+            end
+            transform.transformer.call(step_arg)
+          else
+            if transform.transformer.arity != matched.captures.size
+              raise Cucumber::ArityMismatchError.new("Number of arguments in Transform (#{transform.transformer.arity}) does not match number of Regexp captures (#{matched.captures.size})")
+            end
+            transform.transformer.call(*matched.captures)
+          end
         else
           step_arg
         end

@@ -191,41 +191,80 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
       # cleared when testing them here at the unit level
       class StepMother; @@transforms = [] end
     end
-    
-    it "doesn't complain in the happy case" do
-      lambda do
-        StepMother.register_transform('^abc$') {|arg| 42}
-      end.should_not raise_error
+
+    describe "without capture groups" do
+      it "complains when registering with a with no transform block" do
+        lambda do
+          StepMother.register_transform('^abc$')
+        end.should raise_error Cucumber::ArityMismatchError
+      end
+      
+      it "complains when registering with a zero-arg transform block" do
+        lambda do
+          StepMother.register_transform('^abc$') {42}
+        end.should raise_error Cucumber::ArityMismatchError
+      end
+
+      it "complains when registering with a splat-arg transform block" do
+        lambda do
+          StepMother.register_transform('^abc$') {|*splat| 42 }
+        end.should raise_error Cucumber::ArityMismatchError
+      end
+
+      it "complains when transforming with an arity mismatch" do
+        lambda do
+          StepMother.register_transform('^abc$') {|one, two| 42 }
+          StepMother.transform_arguments(['abc'])
+        end.should raise_error Cucumber::ArityMismatchError
+      end
+
+      it "allows registering a regexp pattern that yields the step_arg matched" do
+        StepMother.register_transform(/^ab*c$/) {|arg| 42}
+        StepMother.transform_arguments(['ab']).should == ['ab']
+        StepMother.transform_arguments(['ac']).should == [42]
+        StepMother.transform_arguments(['abc']).should == [42]
+        StepMother.transform_arguments(['abbc']).should == [42]
+      end
     end
-    
-    it "complains with no transform block" do
-      lambda do
-        StepMother.register_transform('^abc$')
-      end.should raise_error
-    end
-    
-    it "complains with a zero-arg transform block" do
-      lambda do
-        StepMother.register_transform('^abc$') {42}
-      end.should raise_error
-    end
-    
-    it "complains with a multi-arg transform block" do
-      lambda do
-        StepMother.register_transform('^abc$') {|a, b| 42}
-      end.should raise_error
+
+    describe "with capture groups" do
+      it "complains when registering with a with no transform block" do
+        lambda do
+          StepMother.register_transform('^a(.)c$')
+        end.should raise_error Cucumber::ArityMismatchError
+      end
+      
+      it "complains when registering with a zero-arg transform block" do
+        lambda do
+          StepMother.register_transform('^a(.)c$') { 42 }
+        end.should raise_error Cucumber::ArityMismatchError
+      end
+
+      it "complains when registering with a splat-arg transform block" do
+        lambda do
+          StepMother.register_transform('^a(.)c$') {|*splat| 42 }
+        end.should raise_error Cucumber::ArityMismatchError
+      end
+
+      it "complains when transforming with an arity mismatch" do
+        lambda do
+          StepMother.register_transform('^a(.)c$') {|one, two| 42 }
+          StepMother.transform_arguments(['abc'])
+        end.should raise_error Cucumber::ArityMismatchError
+      end
+      
+      it "allows registering a regexp pattern that yields capture groups" do
+        StepMother.register_transform(/^shape: (.+), color: (.+)$/) do |shape, color|
+          {shape.to_sym => color.to_sym}
+        end
+        StepMother.transform_arguments(['shape: circle, color: blue']).should == [{:circle => :blue}]
+        StepMother.transform_arguments(['shape: square, color: red']).should == [{:square => :red}]      
+        StepMother.transform_arguments(['not shape: square, not color: red']).should == ['not shape: square, not color: red']
+      end
     end
     
     it "allows registering a string pattern" do
       StepMother.register_transform('^ab*c$') {|arg| 42}
-      StepMother.transform_arguments(['ab']).should == ['ab']
-      StepMother.transform_arguments(['ac']).should == [42]
-      StepMother.transform_arguments(['abc']).should == [42]
-      StepMother.transform_arguments(['abbc']).should == [42]
-    end
-    
-    it "allows registering a regexp pattern" do
-      StepMother.register_transform(/^ab*c$/) {|arg| 42}
       StepMother.transform_arguments(['ab']).should == ['ab']
       StepMother.transform_arguments(['ac']).should == [42]
       StepMother.transform_arguments(['abc']).should == [42]

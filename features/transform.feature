@@ -12,10 +12,13 @@ Feature: transform
       Scenario: transform with matches
         Then I should transform '10' to an Integer
 
+      Scenario: transform with matches that capture
+        Then I should transform 'abc' to a Symbol
+
       Scenario: transform without matches
         Then I should not transform '10' to an Integer
 
-    2 scenarios (2 passed)
-    2 steps (2 passed)
+    3 scenarios (3 passed)
+    3 steps (3 passed)
     
     """

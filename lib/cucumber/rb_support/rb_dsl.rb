@@ -67,8 +67,10 @@ module Cucumber
       end
 
       # Registers a proc that will be called with a step definition argument if it 
-      # matches the pattern passed as the first argument to Transform. The return
-      # value of the proc is consequently yielded to the step definition.
+      # matches the pattern passed as the first argument to Transform. Alternatively, if
+      # the pattern contains captures then they will be yielded as arguments to the
+      # provided proc. The return value of the proc is consequently yielded to the
+      # step definition.
       def Transform(*args, &proc)
         StepMother.register_transform(*args, &proc)
       end
