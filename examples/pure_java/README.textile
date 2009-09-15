@@ -1,5 +1,5 @@
 h1. Cucumber with pure Java
 
-You can use Cucumber with step definitions in pure Java.
+Nothing here in the Cucumber codebase, but check out "Cuke4Duke":http://wiki.github.com/aslakhellesoy/cuke4duke
 
-See http://github.com/aslakhellesoy/cucumber_java/tree/master
+Cuke4Duke lets you write step definitions in Java, Groovy and an increasing number of languages that run on the JVM.
