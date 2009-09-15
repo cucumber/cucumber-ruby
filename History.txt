@@ -1,6 +1,7 @@
-== In Git
+== 0.3.101 2009-09-15
 
-Step Argument Transforms
+Two exciting things in this release. Step Argument Transforms and a PDF formatter you can use to send
+your features to your customer for review!
 
 === New Features
 * New pdf formatter (#425 Mads Buus)
