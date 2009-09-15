@@ -2,6 +2,8 @@
 
 === New Features
 
+* Execute "After" hooks in reverse order of declaration for better behavior with dependent blocks and to mimic the behavior of at_exit (David Waite)
+
 === Bugfixes
 
 == 0.3.101 2009-09-15

@@ -54,7 +54,7 @@ module Cucumber
       end
 
       def execute_after(scenario)
-        hooks_for(:after, scenario).each do |hook|
+        hooks_for(:after, scenario).reverse_each do |hook|
           invoke(hook, 'After', scenario, true)
         end
       end
