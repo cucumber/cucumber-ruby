@@ -356,6 +356,9 @@ Feature: Cucumber command line
         Scenario: transform with matches
           Then I should transform '10' to an Integer
       
+        Scenario: transform with matches that capture
+          Then I should transform 'abc' to a Symbol
+
         Scenario: transform without matches
           Then I should not transform '10' to an Integer
 
@@ -372,8 +375,8 @@ Feature: Cucumber command line
             | table   |
             | example |
 
-      28 scenarios (19 skipped, 8 undefined, 1 passed)
-      44 steps (32 skipped, 12 undefined)
+      29 scenarios (20 skipped, 8 undefined, 1 passed)
+      45 steps (33 skipped, 12 undefined)
 
       """
 
