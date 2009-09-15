@@ -7,6 +7,8 @@ Step Argument Transforms
 * Step Argument Transforms: These let you use the Transform method to register regular expressions
   to catch and transform/coerce arguments before they are yielded to step definitions:
   http://wiki.github.com/aslakhellesoy/cucumber/step-argument-transforms (Larry Diehl & Dave Astels)
+* Adding webrat steps for asserting content does or does not exist within a particular element
+  (using webrat's within method)  (Kieran Pilkington)
 
 == 0.3.100 2009-09-09
 
