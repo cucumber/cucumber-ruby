@@ -1,7 +1,7 @@
 module Cucumber
   module Parser
     class NaturalLanguage
-      KEYWORD_KEYS = %w{name native encoding feature background scenario scenario_outline examples given when then but}
+      KEYWORD_KEYS = %w{name native encoding space_after_keyword feature background scenario scenario_outline examples given when then and but}
 
       class << self
         def get(step_mother, lang)
