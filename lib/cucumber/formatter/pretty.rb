@@ -73,7 +73,7 @@ module Cucumber
         @scenario_indent = 2
       end
       
-      def after_visit_feature_element(*args)
+      def after_visit_feature_element(feature_element)
         @io.puts
         @io.flush
       end
@@ -97,12 +97,12 @@ module Cucumber
       def before_visit_examples_array(examples_array)
         @indent = 4
         @io.puts
-        @first_example_name = true
+        @visiting_first_example_name = true
       end
       
       def visit_examples_name(keyword, name)
-        puts unless @first_example_name
-        @first_example_name = false
+        puts unless @visiting_first_example_name
+        @visiting_first_example_name = false
         names = name.strip.empty? ? [name.strip] : name.split("\n")
         @io.puts("    #{keyword} #{names[0]}")
         names[1..-1].each {|s| @io.puts "      #{s}" } unless names.empty?
@@ -128,28 +128,36 @@ module Cucumber
         @indent = 6
       end
 
-      def after_visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+      def before_visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+        @hide_this_step = false
         if exception
-          return if @exceptions.index(exception)
+          if @exceptions.include?(exception)
+            @hide_this_step = true
+            return
+          end
           @exceptions << exception
         end
-        return if status != :failed && @in_background ^ background
+        if status != :failed && @in_background ^ background
+          @hide_this_step = true
+          return
+        end
         @status = status
       end
 
       def visit_step_name(keyword, step_match, status, source_indent, background)
-        return if @current_step.background? and !@in_background
+        return if @hide_this_step
         source_indent = nil unless @options[:source]
         formatted_step_name = format_step(keyword, step_match, status, source_indent)
         @io.puts(formatted_step_name.indent(@scenario_indent + 2))
       end
 
       def before_visit_multiline_arg(multiline_arg)
-        return if @options[:no_multiline]
+        return if @options[:no_multiline] or @hide_this_step
         @table = multiline_arg
       end
 
       def visit_exception(exception, status)
+        return if @hide_this_step
         print_exception(exception, status, @indent)
         @io.flush
       end
@@ -161,7 +169,7 @@ module Cucumber
 
       def after_visit_table_row(table_row)
         @io.puts
-        if table_row.exception && !@exceptions.index(table_row.exception)
+        if table_row.exception && !@exceptions.include?(table_row.exception)
           print_exception(table_row.exception, :failed, @indent)
         end
       end
@@ -188,6 +196,10 @@ module Cucumber
       end
 
       private
+      
+      def success?(status)
+        status != :failed
+      end
       
       def print_feature_element_name(keyword, name, file_colon_line, source_indent)
         @io.puts if @scenario_indent == 6
