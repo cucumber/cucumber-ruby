@@ -116,6 +116,7 @@ module Cucumber
       end
 
       def after_visit_outline_table(outline_table)
+        @table = nil
         @indent = 4
       end
       
@@ -151,9 +152,12 @@ module Cucumber
         @io.puts(formatted_step_name.indent(@scenario_indent + 2))
       end
 
-      def before_visit_multiline_arg(multiline_arg)
-        return if @options[:no_multiline] or @hide_this_step
-        @table = multiline_arg
+      def visit_py_string(string)
+        return if @hide_this_step
+        s = %{"""\n#{string}\n"""}.indent(@indent)
+        s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}.join("\n")
+        @io.puts(format_string(s, @current_step.status))
+        @io.flush
       end
 
       def visit_exception(exception, status)
@@ -162,30 +166,36 @@ module Cucumber
         @io.flush
       end
 
+      def before_visit_multiline_arg(multiline_arg)
+        return if @options[:no_multiline] || @hide_this_step
+        @table = multiline_arg
+      end
+      
+      def after_visit_multiline_arg(multiline_arg)
+        @table = nil
+      end
+
       def before_visit_table_row(table_row)
+        return unless @table
         @col_index = 0
         @io.print '  |'.indent(@indent-2)
       end
 
       def after_visit_table_row(table_row)
+        return unless @table
         @io.puts
         if table_row.exception && !@exceptions.include?(table_row.exception)
           print_exception(table_row.exception, :failed, @indent)
         end
       end
 
-      def visit_py_string(string)
-        s = %{"""\n#{string}\n"""}.indent(@indent)
-        s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}.join("\n")
-        @io.puts(format_string(s, @current_step.status))
-        @io.flush
-      end
-
       def after_visit_table_cell(cell)
+        return unless @table
         @col_index += 1
       end
 
       def visit_table_cell_value(value, status)
+        return unless @table
         status ||= @status || :passed
         width = @table.col_width(@col_index)
         cell_text = value.to_s || ''
@@ -196,10 +206,6 @@ module Cucumber
       end
 
       private
-      
-      def success?(status)
-        status != :failed
-      end
       
       def print_feature_element_name(keyword, name, file_colon_line, source_indent)
         @io.puts if @scenario_indent == 6
