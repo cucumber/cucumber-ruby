@@ -13,7 +13,7 @@ module Cucumber
         print_summary(features)
       end
 
-      def before_visit_tag_name(tag_name)
+      def visit_tag_name(tag_name)
         @counts[tag_name] += 1
       end
       
@@ -22,7 +22,8 @@ module Cucumber
       def print_summary(features)
         matrix = @counts.to_a.sort{|paira, pairb| paira[0] <=> pairb[0]}.transpose
         table = Cucumber::Ast::Table.new(matrix)
-        Cucumber::Formatter::Pretty.new(@step_mother, @io, {}).visit_multiline_arg(table)
+        formatter = Cucumber::Formatter::Pretty.new(@step_mother, @io, {})
+        Cucumber::Ast::TreeWalker.new(@step_mother, [formatter], {}).visit_multiline_arg(table)
       end
     end
   end
