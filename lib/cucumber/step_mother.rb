@@ -67,20 +67,14 @@ module Cucumber
       @@transforms.unshift StepArgumentTransform.new(Regexp.new(pattern), transformer.to_proc)
     end
 
-    def self.transform_arguments(step_args)
+    def self.transform_arguments(step_args, current_world=nil)
       matched = nil
       step_args.map do |step_arg|
-        if transform = @@transforms.detect {|t| matched = t.pattern.match(step_arg) if step_arg.is_a?(String) }          
+        if transform = @@transforms.detect {|t| matched = t.pattern.match(step_arg) }
           if matched.captures.empty?
-            unless transform.transformer.arity == 1
-              raise Cucumber::ArityMismatchError.new("Transforms without Regexp captures only accept a single argument (the step argument)")
-            end
-            transform.transformer.call(step_arg)
+            current_world.cucumber_instance_exec true, transform.pattern.inspect, step_arg, &transform.transformer
           else
-            if transform.transformer.arity != matched.captures.size
-              raise Cucumber::ArityMismatchError.new("Number of arguments in Transform (#{transform.transformer.arity}) does not match number of Regexp captures (#{matched.captures.size})")
-            end
-            transform.transformer.call(*matched.captures)
+            current_world.cucumber_instance_exec true, transform.pattern.inspect, *matched.captures, &transform.transformer
           end
         else
           step_arg

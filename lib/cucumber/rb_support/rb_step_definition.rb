@@ -41,7 +41,8 @@ module Cucumber
       def invoke(args)
         args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
         begin
-          @rb_language.current_world.cucumber_instance_exec(true, regexp.inspect, *args, &@proc)
+          transformed_args = StepMother.transform_arguments(args, @rb_language.current_world)
+          @rb_language.current_world.cucumber_instance_exec(true, regexp.inspect, *transformed_args, &@proc)
         rescue Cucumber::ArityMismatchError => e
           e.backtrace.unshift(self.backtrace_line)
           raise e
