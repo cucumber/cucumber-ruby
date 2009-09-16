@@ -25,11 +25,20 @@ module Cucumber
         progress(status)
         @status = status
       end
+      
+      def before_visit_outline_table(outline_table)
+        @outline_table = outline_table
+      end
+      
+      def after_visit_outline_table(outline_table)
+        @outline_table = nil
+      end
 
-      # def after_visit_table_cell_value(value, status)
-      #   status ||= @status
-      #   progress(status) unless table_header_cell?(status)
-      # end
+      def visit_table_cell_value(value, status)
+        return unless @outline_table
+        status ||= @status
+        progress(status) unless table_header_cell?(status)
+      end
 
       private
 
