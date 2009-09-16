@@ -166,7 +166,7 @@ module Cucumber
       end
       
       def send_to_all(message, *args)
-        # puts(' ' * @indent + message)
+        puts(' ' * @indent + message) if @options[:verbose]
         @listeners.each do |listener|
           if listener.respond_to?(message)
             listener.__send__(message, *args)
