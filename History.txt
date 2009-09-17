@@ -3,6 +3,8 @@
 === New Features
 
   * Transform has current "World" scope
+  * Other Transforms can be reused by calling Transform with a string
+    inside of another Transform definition
 
 === Bugfixes
 

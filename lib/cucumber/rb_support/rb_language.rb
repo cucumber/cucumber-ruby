@@ -1,6 +1,8 @@
 require 'cucumber/rb_support/rb_dsl'
 require 'cucumber/rb_support/rb_world'
 require 'cucumber/rb_support/rb_step_definition'
+require 'cucumber/rb_support/rb_hook'
+require 'cucumber/rb_support/rb_transform'
 
 module Cucumber
   module RbSupport
@@ -82,6 +84,10 @@ module Cucumber
         add_hook(phase, RbHook.new(self, tag_names, proc))
       end
 
+      def register_rb_transform(regexp, proc)
+        add_transform(RbTransform.new(self, regexp, proc))
+      end
+
       def register_rb_step_definition(regexp, proc)
         add_step_definition(RbStepDefinition.new(self, regexp, proc))
       end
@@ -98,7 +104,7 @@ module Cucumber
       protected
 
       def load_code_file(code_file)
-        require code_file # This will cause self.add_step_definition and self.add_hook to be called from RbDsl
+        require code_file # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from RbDsl
       end
 
       def begin_scenario

@@ -15,6 +15,10 @@ Feature: transform
         symbol.should be_kind_of(Symbol)
       end
 
+      Then /^I should transform ('\d+' to a Float)$/ do |float|
+        float.should be_kind_of(Float)
+      end
+
       Then /^I should transform ('\w+' to an Array)$/ do |array|
         array.should be_kind_of(Array)
       end
@@ -26,7 +30,11 @@ Feature: transform
     And a file named "features/support/env.rb" with:
       """
       Transform /^'\d+' to an Integer$/ do |step_arg|
-        /'(\d+)' to an Integer/.match(step_arg)[0].to_i
+        /'(\d+)' to an Integer/.match(step_arg).captures[0].to_i
+      end
+
+      Transform /^'(\d+)' to a Float$/ do |integer_string|
+        Float.induced_from Transform("'#{integer_string}' to an Integer")
       end
 
       Transform(/^('\w+') to a Symbol$/) {|str| str.to_sym }
@@ -57,6 +65,9 @@ Feature: transform
         Scenario: transform with matches that capture
           Then I should transform 'abc' to a Symbol
 
+        Scenario: transform with matches that reuse transforms
+          Then I should transform '10' to a Float
+
         Scenario: transform with matches that use current world
           Then I should transform 'abc' to an Array
 
@@ -74,13 +85,16 @@ Feature: transform
         Scenario: transform with matches that capture
           Then I should transform 'abc' to a Symbol
 
+        Scenario: transform with matches that reuse transforms
+          Then I should transform '10' to a Float
+
         Scenario: transform with matches that use current world
           Then I should transform 'abc' to an Array
 
         Scenario: transform without matches
           Then I should not transform '10' to an Integer
 
-      4 scenarios (4 passed)
-      4 steps (4 passed)
+      5 scenarios (5 passed)
+      5 steps (5 passed)
     
       """
