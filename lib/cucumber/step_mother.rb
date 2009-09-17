@@ -50,8 +50,9 @@ module Cucumber
 
   # This is the meaty part of Cucumber that ties everything together.
   class StepMother
-    include Constantize
-    
+    include Constantize    
+    @@transforms = []
+    StepArgumentTransform = Struct.new(:pattern, :transformer)
     attr_writer :options, :visitor, :log
 
     def initialize
@@ -59,6 +60,32 @@ module Cucumber
       @programming_languages = []
       @language_map = {}
       load_natural_language('en')
+    end
+    
+    def self.register_transform(pattern, &transformer)
+      raise Cucumber::ArityMismatchError.new('Transform must be registered with at least a one-argument block') if !block_given? || transformer.arity < 1
+      @@transforms.unshift StepArgumentTransform.new(Regexp.new(pattern), transformer.to_proc)
+    end
+
+    def self.transform_arguments(step_args)
+      matched = nil
+      step_args.map do |step_arg|
+        if transform = @@transforms.detect {|t| matched = t.pattern.match(step_arg) if step_arg.is_a?(String) }          
+          if matched.captures.empty?
+            unless transform.transformer.arity == 1
+              raise Cucumber::ArityMismatchError.new("Transforms without Regexp captures only accept a single argument (the step argument)")
+            end
+            transform.transformer.call(step_arg)
+          else
+            if transform.transformer.arity != matched.captures.size
+              raise Cucumber::ArityMismatchError.new("Number of arguments in Transform (#{transform.transformer.arity}) does not match number of Regexp captures (#{matched.captures.size})")
+            end
+            transform.transformer.call(*matched.captures)
+          end
+        else
+          step_arg
+        end
+      end
     end
 
     def load_plain_text_features(feature_files)

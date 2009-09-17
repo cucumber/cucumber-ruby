@@ -1,12 +1,29 @@
 == (In Git)
 
+=== New Features
+
+=== Bugfixes
+
+== 0.3.101 2009-09-15
+
+Two exciting things in this release. Step Argument Transforms and a PDF formatter you can use to send
+your features to your customer for review!
+
+=== New Features
+* New pdf formatter (#425 Mads Buus)
+* Step Argument Transforms: These let you use the Transform method to register regular expressions
+  to catch and transform/coerce arguments before they are yielded to step definitions:
+  http://wiki.github.com/aslakhellesoy/cucumber/step-argument-transforms (Larry Diehl & Dave Astels)
+* Adding webrat steps for asserting content does or does not exist within a particular element
+  (using webrat's within method)  (Kieran Pilkington)
+
+== 0.3.100 2009-09-09
+
+The JavaZone release!
 
 === New Features
 * Added support for Uzbek (msarvar)
 * The file argument on the cucumber command line will replace contents of file on cli if file is prefixed with @ (Tero Tilus)
-
-=== Changed Features
-* Cucumber::Cli::Main.execute(argv) has been replaced with Cucumber::Cli::Main.new(argv).execute! (Aslak Hellesøy)
 
 === Bugfixes
 * Backtraces on JRuby are handled in a cleaner way when the exception comes from Java (NativeException). (Aslak Hellesøy)

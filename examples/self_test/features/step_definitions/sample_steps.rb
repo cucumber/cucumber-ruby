@@ -79,3 +79,15 @@ After('@after_file') do
   FileUtils.mkdir_p(File.dirname(after_file))
   FileUtils.touch(after_file)
 end
+
+Then /^I should transform ('\d+' to an Integer)$/ do |integer|
+  integer.should be_kind_of(Integer)
+end
+
+Then /^I should transform ('\w+' to a Symbol)$/ do |symbol|
+  symbol.should be_kind_of(Symbol)
+end
+
+Then /^I should not transform ('\d+') to an Integer$/ do |string|
+  string.should be_kind_of(String)
+end

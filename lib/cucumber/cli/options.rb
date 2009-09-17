@@ -6,6 +6,9 @@ module Cucumber
       BUILTIN_FORMATS = {
         'html'      => ['Cucumber::Formatter::Html',     'Generates a nice looking HTML report.'],
         'pretty'    => ['Cucumber::Formatter::Pretty',   'Prints the feature as is - in colours.'],
+        'pdf'       => ['Cucumber::Formatter::Pdf',      "Generates a PDF report. You need to have the\n" + 
+                                                         "#{' ' * 51}prawn gem installed. Will pick up logo from\n" + 
+                                                         "#{' ' * 51}features/support/logo.png if present."],
         'profile'   => ['Cucumber::Formatter::Profile',  'Prints the 10 slowest steps at the end.'],
         'progress'  => ['Cucumber::Formatter::Progress', 'Prints one character per scenario.'],
         'rerun'     => ['Cucumber::Formatter::Rerun',    'Prints failing files with line numbers.'],
@@ -183,6 +186,7 @@ module Cucumber
             @options[:dry_run] = true
             @quiet = true
           end
+
           opts.on("-m", "--no-multiline",
             "Don't print multiline strings and tables under steps.") do
             @options[:no_multiline] = true
@@ -233,7 +237,7 @@ module Cucumber
             Kernel.exit
           end
         end.parse!
-
+ 
         if @quiet
           @options[:snippets] = @options[:source] = false
         else
