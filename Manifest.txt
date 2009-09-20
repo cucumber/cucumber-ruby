@@ -379,6 +379,7 @@ lib/cucumber/py_support/py_dsl.py
 lib/cucumber/py_support/py_language.py
 lib/cucumber/py_support/py_language.rb
 lib/cucumber/rails/action_controller.rb
+lib/cucumber/rails/active_record.rb
 lib/cucumber/rails/rspec.rb
 lib/cucumber/rails/test_unit.rb
 lib/cucumber/rails/world.rb
