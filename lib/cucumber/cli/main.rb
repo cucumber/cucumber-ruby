@@ -70,7 +70,7 @@ module Cucumber
         exceeded = false
         configuration.options[:tag_names].each do |tag_name, limit|
           if !Ast::Tags.exclude_tag?(tag_name) && limit
-            tag_count = features.tag_count(tag)
+            tag_count = features.tag_count(tag_name)
             if tag_count > limit.to_i
               exceeded = true
             end
