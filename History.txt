@@ -1,13 +1,13 @@
 == (In Git)
 
 === New Features
-
-  * Transform has current "World" scope
-  * Other Transforms can be reused by calling Transform with a string
-    inside of another Transform definition
-  * Execute "After" hooks in reverse order of declaration for better behavior with dependent blocks and to mimic the behavior of at_exit (David Waite)
+* Transform has current "World" scope (Larry Diehl)
+* Other Transforms can be reused by calling Transform with a string inside of another Transform definition (Larry Diehl)
+* Execute "After" hooks in reverse order of declaration for better behavior with dependent blocks and to mimic the behavior of at_exit (David Waite)
 
 === Bugfixes
+* rspec-rails, :lib => false (#447 David Chelimsky)
+* Cucumber with Spork breaks on OS X Snow Leopard (#431 David Chelimsky)
 
 == 0.3.101 2009-09-15
 
