@@ -265,9 +265,8 @@ module Cucumber
           s1 << r2
           if r2
             if index < input_length
-              next_character = index + input[index..-1].match(/\A(.)/um).end(1)
-              r6 = instantiate_node(SyntaxNode,input, index...next_character)
-              @index = next_character
+              r6 = instantiate_node(SyntaxNode,input, index...(index + 1))
+              @index += 1
             else
               terminal_parse_failure("any character")
               r6 = nil
@@ -303,9 +302,8 @@ module Cucumber
         end
 
         if has_terminal?('\G[ \\t]', true, index)
-          next_character = index + input[index..-1].match(/\A(.)/um).end(1)
-          r0 = instantiate_node(SyntaxNode, input, index...next_character)
-          @index = next_character
+          r0 = instantiate_node(SyntaxNode,input, index...(index + 1))
+          @index += 1
         else
           r0 = nil
         end
@@ -391,9 +389,8 @@ module Cucumber
 
         i0 = index
         if index < input_length
-          next_character = index + input[index..-1].match(/\A(.)/um).end(1)
-          r1 = instantiate_node(SyntaxNode,input, index...next_character)
-          @index = next_character
+          r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
+          @index += 1
         else
           terminal_parse_failure("any character")
           r1 = nil
