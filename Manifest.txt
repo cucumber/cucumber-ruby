@@ -211,7 +211,6 @@ examples/self_test/features/step_definitions/sample_steps.rb
 examples/self_test/features/support/env.rb
 examples/self_test/features/tags_sample.feature
 examples/self_test/features/tons_of_cukes.feature
-examples/self_test/features/transform_sample.feature
 examples/self_test/features/undefined_multiline_args.feature
 examples/self_test/list-of-features.txt
 examples/sinatra/README.textile
@@ -384,6 +383,7 @@ lib/cucumber/rb_support/rb_dsl.rb
 lib/cucumber/rb_support/rb_hook.rb
 lib/cucumber/rb_support/rb_language.rb
 lib/cucumber/rb_support/rb_step_definition.rb
+lib/cucumber/rb_support/rb_transform.rb
 lib/cucumber/rb_support/rb_world.rb
 lib/cucumber/rspec_neuter.rb
 lib/cucumber/step_match.rb
