@@ -126,23 +126,25 @@ module Cucumber
       end
 
       def print_tag_limit_warnings(options)
-        return unless tag_limit_breached?(options, @tag_occurences)
-        @io.puts
-        @io.puts format_string("Failed due to exceeding the tag limit", :failed)
-        options[:include_tags].each do |tag_name, limit|
-          tag_frequnecy = @tag_occurences[tag_name].size
-          if limit && tag_frequnecy > limit
-            @io.puts format_string("@#{tag_name} occurred:#{tag_frequnecy} limit:#{limit}", :failed)
-            @tag_occurences[tag_name].each {|location| @io.puts format_string("  #{location}", :failed)}
-            @io.flush
+        first_tag = true
+        options[:tag_names].each do |tag_name, limit|
+          unless Ast::Tags.exclude_tag?(tag_name)
+            tag_frequnecy = @tag_occurences[tag_name].size
+            if limit && tag_frequnecy > limit
+              @io.puts if first_tag
+              first_tag = false
+              @io.puts format_string("#{tag_name} occurred #{tag_frequnecy} times, but the limit was set to #{limit}", :failed)
+              @tag_occurences[tag_name].each {|location| @io.puts format_string("  #{location}", :failed)}
+              @io.flush
+            end
           end
         end
       end
 
       def record_tag_occurrences(feature_element, options)
         @tag_occurences ||= Hash.new{|k,v| k[v] = []}
-        options[:include_tags].each do |tag_name, limit|
-          if feature_element.tag_count(tag_name) > 0
+        options[:tag_names].each do |tag_name, limit|
+          if !Ast::Tags.exclude_tag?(tag_name) && feature_element.tag_count(tag_name) > 0
             @tag_occurences[tag_name] << feature_element.file_colon_line
           end
         end
@@ -177,15 +179,6 @@ module Cucumber
         fmt = FORMATS[key]
         raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
         fmt
-      end
-
-      def tag_limit_breached?(options, tag_occurences)
-        return if tag_occurences.nil?
-        tag_limit_breached = false
-        options[:include_tags].each do |tag_name, limit|
-          tag_limit_breached ||= limit && (tag_occurences[tag_name].size > limit)
-        end
-        tag_limit_breached
       end
     end
   end

@@ -268,6 +268,7 @@ features/cucumber_cli.feature
 features/cucumber_cli_diff_disabled.feature
 features/cucumber_cli_outlines.feature
 features/custom_formatter.feature
+features/default_snippets.feature
 features/drb_server_integration.feature
 features/exception_in_after_block.feature
 features/exception_in_after_step_block.feature
@@ -279,6 +280,7 @@ features/html_formatter/a.html
 features/junit_formatter.feature
 features/language_from_header.feature
 features/multiline_names.feature
+features/negative_tagged_hooks.feature
 features/post_configuration_hook.feature
 features/profiles.feature
 features/rake_task.feature
@@ -365,7 +367,6 @@ lib/cucumber/language_support/language_methods.rb
 lib/cucumber/language_support/step_definition_methods.rb
 lib/cucumber/languages.yml
 lib/cucumber/parser.rb
-lib/cucumber/parser/feature.rb
 lib/cucumber/parser/feature.tt
 lib/cucumber/parser/i18n.tt
 lib/cucumber/parser/natural_language.rb

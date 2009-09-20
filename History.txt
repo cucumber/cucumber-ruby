@@ -1,6 +1,7 @@
 == (In Git)
 
 === New Features
+* Negative tags can now be used in hooks, just like the command line's --tags option: Before('~@yarr') - will run for all scenarios that *don't* have the @yarr tag. (Aslak Hellesøy)
 * Transform has current "World" scope (Larry Diehl)
 * Other Transforms can be reused by calling Transform with a string inside of another Transform definition (Larry Diehl)
 * Execute "After" hooks in reverse order of declaration for better behavior with dependent blocks and to mimic the behavior of at_exit (David Waite)
@@ -9,6 +10,9 @@
 * Missing step_definition snippets not properly displayed (#433 Aslak Hellesøy)
 * rspec-rails, :lib => false (#447 David Chelimsky)
 * Cucumber with Spork breaks on OS X Snow Leopard (#431 David Chelimsky)
+
+=== Changed Features
+* Tag names passed on the command line *always* have to use the @ sign. --tags foo or --tags ~bar won't work. Use --tags @foo or --tags ~@bar (Aslak Hellesøy)
 
 == 0.3.101 2009-09-15
 

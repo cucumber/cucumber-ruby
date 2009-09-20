@@ -4,8 +4,7 @@ module Cucumber
     def initialize(lines, options)
       @lines = lines
 
-      @include_tags = options[:include_tags] ? options[:include_tags].keys : []
-      @exclude_tags = options[:exclude_tags] ? options[:exclude_tags].keys : []
+      @tag_names = options[:tag_names] ? options[:tag_names].keys : []
       @name_regexps = options[:name_regexps] || []
     end
 
@@ -29,18 +28,9 @@ module Cucumber
     end
 
     def matches_tags?(syntax_node)
-      !excluded_by_tags?(syntax_node) &&
-      included_by_tags?(syntax_node)
+      syntax_node.matches_tags?(@tag_names)
     end
 
-    def included_by_tags?(syntax_node)
-      @include_tags.empty? || syntax_node.has_all_tags?(@include_tags)
-    end
-
-    def excluded_by_tags?(syntax_node)
-      @exclude_tags.any? && syntax_node.has_tags?(@exclude_tags)
-    end
-    
     def outline_matches_names?(syntax_node)
       @name_regexps.nil? || @name_regexps.empty? || @name_regexps.detect{|name_regexp| syntax_node.outline_matches_name?(name_regexp)}
     end

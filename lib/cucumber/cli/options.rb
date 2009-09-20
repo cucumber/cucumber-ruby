@@ -134,16 +134,14 @@ module Cucumber
           end
           opts.on("-t TAGS", "--tags TAGS",
             "Only execute the features or scenarios with the specified tags.",
-            "TAGS must be comma-separated without spaces. They can be",
-            "specified with or without the @ prefix. Example: --tags dev\n",
+            "TAGS must be comma-separated without spaces. Example: --tags @dev\n",
             "Negative tags: Prefix tags with ~ to exclude features or scenarios",
-            "having that tag.\n",
+            "having that tag. Example: --tags ~@slow\n",
             "Limit WIP: Positive tags can be given a threshold to limit the",
-            "number of occurrences. Example: --tags qa:3 will fail if there",
+            "number of occurrences. Example: --tags @qa:3 will fail if there",
             "are more than 3 occurrences of the @qa tag.") do |v|
-            include_tags, exclude_tags = *parse_tags(v)
-            @options[:include_tags].merge!(include_tags)
-            @options[:exclude_tags].merge!(exclude_tags)
+            tag_names = parse_tags(v)
+            @options[:tag_names].merge!(tag_names)
           end
           opts.on("-n NAME", "--name NAME",
             "Only execute the feature elements which match part of the given name.",
@@ -276,22 +274,15 @@ module Cucumber
 
       def parse_tags(tag_string)
         tag_names = tag_string.split(",")
-        excludes, includes = tag_names.partition{|tag| tag =~ /^~/}
-        excludes = excludes.map{|tag| tag[1..-1]}
-
-        # Strip @
-        includes = includes.map{|tag| Ast::Tags.strip_prefix(tag)}
-        excludes = excludes.map{|tag| Ast::Tags.strip_prefix(tag)}
-        [parse_tag_limits(includes), parse_tag_limits(excludes)]
+        parse_tag_limits(tag_names)
       end
  
-      def parse_tag_limits(includes)
-        dict = {}
-        includes.each do |tag|
+      def parse_tag_limits(tag_names)
+        tag_names.inject({}) do |dict, tag|
           tag, limit = tag.split(':')
           dict[tag] = limit.nil? ? limit : limit.to_i
+          dict
         end
-        dict
       end
 
       def disable_profile_loading?
@@ -328,8 +319,7 @@ module Cucumber
       def reverse_merge(other_options)
         @options = other_options.options.merge(@options)
         @options[:require] += other_options[:require]
-        @options[:include_tags].merge! other_options[:include_tags]
-        @options[:exclude_tags].merge! other_options[:exclude_tags]
+        @options[:tag_names].merge! other_options[:tag_names]
         @options[:env_vars] = other_options[:env_vars].merge(@options[:env_vars])
         if @options[:paths].empty?
           @options[:paths] = other_options[:paths]
@@ -381,8 +371,7 @@ module Cucumber
           :dry_run      => false,
           :formats      => [],
           :excludes     => [],
-          :include_tags => {},
-          :exclude_tags => {},
+          :tag_names    => {},
           :name_regexps => [],
           :env_vars     => {},
           :diff_enabled => true
