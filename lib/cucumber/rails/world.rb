@@ -1,6 +1,3 @@
-# Based on code from Brian Takita, Yurii Rashkovskii and Ben Mabey
-# Adapted by Aslak Hellesøy
-
 if defined?(ActiveRecord::Base)
   require 'test_help' 
 else
@@ -8,16 +5,8 @@ else
   require 'action_controller/integration'
 end
 
-begin
-  require 'test/unit/testresult'
-rescue LoadError => e
-  e.message << "\nYou must gem install test-unit. For more info see https://rspec.lighthouseapp.com/projects/16211/tickets/292"
-  e.message << "\nAlso make sure you have rack 1.0.0 or higher."
-  raise e
-end
-
-# So that Test::Unit doesn't launch at the end - makes it think it has already been run.
-Test::Unit.run = true if Test::Unit.respond_to?(:run=)
+require 'cucumber/rails/test_unit'
+require 'cucumber/rails/action_controller'
 
 $__cucumber_toplevel = self
 
@@ -62,32 +51,6 @@ module Cucumber #:nodoc:
             @__cucumber_ar_connection.decrement_open_transactions
           else
             ActiveRecord::Base.__send__(:decrement_open_transactions)
-          end
-        end
-      end
-    end
-
-    def self.bypass_rescue
-      ActionController::Base.class_eval do
-        alias_method :rescue_action_without_bypass, :rescue_action
-
-        def rescue_action(exception)
-          raise exception
-        end
-      end
-
-      begin
-        ActionController::Failsafe.class_eval do
-          alias_method :failsafe_response_without_bypass, :failsafe_response
-        
-          def failsafe_response(exception)
-            raise exception
-          end
-        end
-      rescue NameError # Failsafe was introduced in Rails 2.3.2
-        ActionController::Dispatcher.class_eval do
-          def self.failsafe_response(output, status, exception = nil)
-            raise exception
           end
         end
       end

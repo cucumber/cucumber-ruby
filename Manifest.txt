@@ -367,6 +367,7 @@ lib/cucumber/language_support/language_methods.rb
 lib/cucumber/language_support/step_definition_methods.rb
 lib/cucumber/languages.yml
 lib/cucumber/parser.rb
+lib/cucumber/parser/feature.rb
 lib/cucumber/parser/feature.tt
 lib/cucumber/parser/i18n.tt
 lib/cucumber/parser/natural_language.rb
@@ -377,7 +378,9 @@ lib/cucumber/platform.rb
 lib/cucumber/py_support/py_dsl.py
 lib/cucumber/py_support/py_language.py
 lib/cucumber/py_support/py_language.rb
+lib/cucumber/rails/action_controller.rb
 lib/cucumber/rails/rspec.rb
+lib/cucumber/rails/test_unit.rb
 lib/cucumber/rails/world.rb
 lib/cucumber/rake/task.rb
 lib/cucumber/rb_support/rb_dsl.rb
