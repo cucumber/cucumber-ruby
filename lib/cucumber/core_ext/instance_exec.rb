@@ -22,7 +22,7 @@ class Object #:nodoc:
           )
         end
       else
-        instance_exec(*Cucumber::StepMother.transform_arguments(args), &block)
+        instance_exec(*args, &block)
       end
     end
   end

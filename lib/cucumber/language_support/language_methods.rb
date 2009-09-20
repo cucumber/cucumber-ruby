@@ -23,9 +23,22 @@ module Cucumber
         end
       end
 
+      def execute_transforms(args)
+        transformed = nil
+        args.map do |arg|
+          transforms.detect {|t| transformed = t.invoke arg }
+          transformed || arg
+        end
+      end
+
       def add_hook(phase, hook)
         hooks[phase.to_sym] << hook
         hook
+      end
+
+      def add_transform(transform)
+        transforms.unshift transform
+        transform
       end
 
       def add_step_definition(step_definition)
@@ -45,6 +58,10 @@ module Cucumber
 
       def hooks
         @hooks ||= Hash.new{|h,k| h[k] = []}
+      end
+
+      def transforms
+        @transforms ||= []
       end
 
       def execute_before(scenario)

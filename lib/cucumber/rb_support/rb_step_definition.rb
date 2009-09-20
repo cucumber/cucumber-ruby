@@ -23,7 +23,7 @@ module Cucumber
         end
       end
 
-      attr_reader :proc
+      attr_reader :proc, :regexp
 
       def initialize(rb_language, pattern, proc)
         raise MissingProc if proc.nil?
@@ -34,13 +34,10 @@ module Cucumber
         @rb_language, @regexp, @proc = rb_language, pattern, proc
       end
 
-      def regexp
-        @regexp
-      end
-
       def invoke(args)
         args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
         begin
+          args = @rb_language.execute_transforms(args)
           @rb_language.current_world.cucumber_instance_exec(true, regexp.inspect, *args, &@proc)
         rescue Cucumber::ArityMismatchError => e
           e.backtrace.unshift(self.backtrace_line)
