@@ -20,8 +20,8 @@ module Cucumber
       max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
       FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
         "  #{key}#{' ' * (max - key.length)} : #{BUILTIN_FORMATS[key][1]}"
-      end) + ["Use --format rerun --out features.txt to rerun failing",
-        "failing features in a new run with cucumber @features.txt.",
+      end) + ["Use --format rerun --out features.txt to write out failing",
+        "features. You can rerun them with cucumber @features.txt.",
         "FORMAT can also be the fully qualified class name of",
         "your own custom formatter. If the class isn't loaded,",
         "Cucumber will attempt to require a file with a relative",
