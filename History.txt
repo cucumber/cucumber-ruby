@@ -5,6 +5,7 @@
   * Transform has current "World" scope
   * Other Transforms can be reused by calling Transform with a string
     inside of another Transform definition
+  * Execute "After" hooks in reverse order of declaration for better behavior with dependent blocks and to mimic the behavior of at_exit (David Waite)
 
 === Bugfixes
 
