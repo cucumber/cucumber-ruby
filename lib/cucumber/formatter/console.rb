@@ -92,6 +92,8 @@ module Cucumber
         return unless options[:snippets]
         undefined = step_mother.steps(:undefined)
         return if undefined.empty?
+        
+        unknown_programming_language = step_mother.unknown_programming_language?
         snippets = undefined.map do |step|
           step_name = Undefined === step.exception ? step.exception.step_name : step.name
           step_multiline_class = step.multiline_arg ? step.multiline_arg.class : nil
@@ -101,8 +103,13 @@ module Cucumber
 
         text = "\nYou can implement step definitions for undefined steps with these snippets:\n\n"
         text += snippets.join("\n\n")
-
         @io.puts format_string(text, :undefined)
+
+        if unknown_programming_language
+          @io.puts format_string("\nIf you want snippets in a different programming language, just make sure a file\n" +
+                  "with the appropriate file extension exists where cucumber looks for step definitions.", :failed)
+        end
+
         @io.puts
         @io.flush
       end

@@ -187,9 +187,14 @@ module Cucumber
     end
 
     def snippet_text(step_keyword, step_name, multiline_arg_class) #:nodoc:
+      load_programming_language('rb') if unknown_programming_language?
       @programming_languages.map do |programming_language|
         programming_language.snippet_text(step_keyword, step_name, multiline_arg_class)
       end.join("\n")
+    end
+
+    def unknown_programming_language?
+      @programming_languages.empty?
     end
 
     def before_and_after(scenario, skip_hooks=false) #:nodoc:
