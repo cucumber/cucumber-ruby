@@ -434,9 +434,6 @@ spec/cucumber/formatter/html_spec.rb
 spec/cucumber/formatter/progress_spec.rb
 spec/cucumber/parser/feature_parser_spec.rb
 spec/cucumber/parser/table_parser_spec.rb
-spec/cucumber/rails/stubs/mini_rails.rb
-spec/cucumber/rails/stubs/test_help.rb
-spec/cucumber/rails/world_spec.rb
 spec/cucumber/rb_support/rb_step_definition_spec.rb
 spec/cucumber/sell_cucumbers.feature
 spec/cucumber/step_mother_spec.rb
