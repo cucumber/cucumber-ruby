@@ -48,11 +48,11 @@ module Cucumber
       
       def before_visit_feature(feature)
         start_buffering :feature
+        @exceptions = []
       end
       
       def after_visit_feature(feature)
         stop_buffering :feature
-        @exceptions = []
         builder.div(:class => 'feature') do
           builder << buffer(:feature)
         end
