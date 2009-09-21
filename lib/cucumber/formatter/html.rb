@@ -251,6 +251,7 @@ module Cucumber
       end
 
       def visit_py_string(string)
+        return if @hide_this_step
         builder.pre(:class => 'val') do |pre|
           builder << string.gsub("\n", '&#x000A;')
         end

@@ -182,6 +182,24 @@ module Cucumber
           it { @doc.css('td').length.should == 8 }
         end
         
+        describe "with a py string in the background and the scenario" do
+          define_feature <<-FEATURE
+            Background:
+              Given stuff:
+                """
+                foo
+                """
+            Scenario:
+              Given more stuff:
+                """
+                bar
+                """
+          FEATURE
+
+          it { @doc.css('.feature .background pre.val').length.should == 1 }
+          it { @doc.css('.feature .scenario pre.val').length.should == 1 }
+        end
+        
         describe "with a step that fails in the scenario" do
           define_steps do
             Given(/boo/) { raise 'eek' }
