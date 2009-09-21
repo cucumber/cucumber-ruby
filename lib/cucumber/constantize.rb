@@ -1,7 +1,9 @@
 module Cucumber
   module Constantize #:nodoc:
     def constantize(camel_cased_word)
+      try = 0
       begin
+        try += 1
         names = camel_cased_word.split('::')
         names.shift if names.empty? || names.first.empty?
 
@@ -10,9 +12,13 @@ module Cucumber
           constant = constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
         end
         constant
-      rescue NameError
+      rescue NameError => e
         require underscore(camel_cased_word)
-        retry
+        if try < 2
+          retry
+        else
+          raise e
+        end
       end
     end
 

@@ -61,6 +61,7 @@ class CucumberWorld
   def create_file(file_name, file_content)
     file_content.gsub!("CUCUMBER_LIB", "'#{cucumber_lib_dir}'") # Some files, such as Rakefiles need to use the lib dir
     in_current_dir do
+      FileUtils.mkdir_p(File.dirname(file_name)) unless File.directory?(File.dirname(file_name))
       File.open(file_name, 'w') { |f| f << file_content }
     end
   end
