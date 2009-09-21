@@ -389,11 +389,11 @@ module Cucumber
 
         c = Term::ANSIColor.coloring?
         Term::ANSIColor.coloring = options[:color]
-        f = Formatter::Pretty.new(nil, io, options)
-        f.instance_variable_set('@indent', options[:indent])
-        f.visit_multiline_arg(self)
+        formatter = Formatter::Pretty.new(nil, io, options)
+        formatter.instance_variable_set('@indent', options[:indent])
+        TreeWalker.new(nil, [formatter]).visit_multiline_arg(self)
+        
         Term::ANSIColor.coloring = c
-
         io.rewind
         s = "\n" + io.read + (" " * (options[:indent] - 2))
         s

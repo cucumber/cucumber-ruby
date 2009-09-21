@@ -4,7 +4,7 @@ module Cucumber
       DEPRECATION_WARNING = "Cucumber::Ast::Visitor is deprecated and will be removed. You no longer need to inherit from this class."
 
       def initialize(step_mother)
-        warn(DEPRECATION_WARNING)
+        raise(DEPRECATION_WARNING)
       end
     end
   end

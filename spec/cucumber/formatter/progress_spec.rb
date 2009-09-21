@@ -8,13 +8,14 @@ module Cucumber
       before(:each) do
         Term::ANSIColor.coloring = false
         @out = StringIO.new
-        @progress = Progress.new(mock("step mother"), @out, {})
+        progress = Progress.new(mock("step mother"), @out, {})
+        @visitor = Ast::TreeWalker.new(nil, [progress])
       end
  
       describe "visiting a table cell value without a status" do
         it "should take the status from the last run step" do
-          @progress.visit_step_result('', '', nil, :failed, nil, 10, nil)
-          @progress.visit_table_cell_value('value', nil)
+          @visitor.visit_step_result('', '', nil, :failed, nil, 10, nil)
+          @visitor.visit_table_cell_value('value', nil)
 
           @out.string.should == "FF"
         end
@@ -22,7 +23,7 @@ module Cucumber
 
       describe "visiting a table cell which is a table header" do
         it "should not output anything" do
-          @progress.visit_table_cell_value('value', :skipped_param)
+          @visitor.visit_table_cell_value('value', :skipped_param)
 
           @out.string.should == ""
         end

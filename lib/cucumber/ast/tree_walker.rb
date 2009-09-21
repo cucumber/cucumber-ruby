@@ -5,7 +5,7 @@ module Cucumber
       attr_accessor :options #:nodoc:
       attr_reader   :step_mother #:nodoc:
 
-      def initialize(step_mother, listeners, options, io = STDOUT)
+      def initialize(step_mother, listeners = [], options = {}, io = STDOUT)
         @step_mother, @listeners, @options, @io = step_mother, listeners, options, io
         @debug_indent = 0
       end

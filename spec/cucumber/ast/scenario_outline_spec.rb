@@ -57,14 +57,15 @@ module Cucumber
       end
 
       it "should replace all variables and call outline once for each table row" do
-        visitor = Visitor.new(@step_mother)
+        visitor = TreeWalker.new(@step_mother)
         visitor.should_receive(:visit_table_row).exactly(3).times
         visitor.visit_feature_element(@scenario_outline)
       end
 
       it "should pretty print" do
         require 'cucumber/formatter/pretty'
-        visitor = Formatter::Pretty.new(@step_mother, STDOUT, {:comment => true, :include_tags => {}, :exclude_tags => {}})
+        formatter = Formatter::Pretty.new(@step_mother, STDOUT, {:comment => true, :include_tags => {}, :exclude_tags => {}})
+        visitor = TreeWalker.new(@step_mother, [formatter])
         visitor.visit_feature_element(@scenario_outline)
       end
     end

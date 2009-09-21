@@ -17,7 +17,7 @@ module Cucumber
         @dsl.Given /y is (\d+)/ do |n|
           $y = n.to_i
         end
-        @visitor = Visitor.new(@step_mother)
+        @visitor = TreeWalker.new(@step_mother)
         @visitor.options = {}
       end
 
