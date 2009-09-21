@@ -14,14 +14,12 @@ module Cucumber
         @locations = []
       end
 
-      def visit_features(features)
-        super
+      def after_visit_features(features)
         print_summary(features)
       end
 
-      def visit_step(step)
+      def before_visit_step(step)
         @step = step
-        super
       end
 
       def visit_step_name(keyword, step_match, status, source_indent, background)
