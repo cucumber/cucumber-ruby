@@ -122,7 +122,6 @@ module Cucumber
 
       def before_visit_feature_element(feature_element)
         start_buffering :feature_element
-        @exceptions = []
       end
       
       def after_visit_feature_element(feature_element)
@@ -198,9 +197,11 @@ module Cucumber
         start_buffering :step_result
         @hide_this_step = false
         if exception
-          @hide_this_step = true if @exceptions.index(exception)
+          if @exceptions.include?(exception)
+            @hide_this_step = true
+            return
+          end
           @exceptions << exception
-          return
         end
         if status != :failed && @in_background ^ background
           @hide_this_step = true
@@ -229,6 +230,7 @@ module Cucumber
       end
 
       def visit_exception(exception, status)
+        return if @hide_this_step
         builder.pre(format_exception(exception), :class => status)
       end
       

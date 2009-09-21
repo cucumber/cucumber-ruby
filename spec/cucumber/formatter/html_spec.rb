@@ -167,20 +167,36 @@ module Cucumber
           it { @doc.should have_css_node('.feature .scenario table td', /foo/) }
         end
         
-        describe "with a step that fails" do
+        describe "with a step that fails in the scenario" do
           define_steps do
-            Given /boo/ do
-              raise 'eek'
-            end
+            Given(/boo/) { raise 'eek' }
           end
           
           define_feature(<<-FEATURE)
-            Scenario: Monkey get a fright
+            Scenario: Monkey gets a fright
               Given boo
             FEATURE
-          
+        
           it { @doc.should have_css_node('.feature .scenario .step.failed', /eek/) }
         end
+        
+        describe "with a step that fails in the backgound" do
+          define_steps do
+            Given(/boo/) { raise 'eek' }
+          end
+          
+          define_feature(<<-FEATURE)
+            Background:
+              Given boo
+            Scenario:
+              Given yay
+            FEATURE
+          
+          it { @doc.should have_css_node('.feature .background .step.failed', /eek/) }
+          it { @doc.should_not have_css_node('.feature .scenario .step.failed', //) }
+          it { @doc.should have_css_node('.feature .scenario .step.undefined', /yay/) }
+        end
+        
       end
     end
   end
