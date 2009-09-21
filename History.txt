@@ -10,6 +10,7 @@ This release has some changes in the Rails support, so make sure you run "script
 * Execute "After" hooks in reverse order of declaration for better behavior with dependent blocks and to mimic the behavior of at_exit (David Waite)
 
 === Bugfixes
+* Some options set in cucumber.yml profiles are ignored (#446 Leonard CHIN)
 * Missing step_definition snippets not properly displayed (#433 Aslak Hellesøy)
 * rspec-rails, :lib => false (#447 David Chelimsky)
 * Cucumber with Spork breaks on OS X Snow Leopard (#431 David Chelimsky)

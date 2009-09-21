@@ -319,6 +319,8 @@ module Cucumber
       def reverse_merge(other_options)
         @options = other_options.options.merge(@options)
         @options[:require] += other_options[:require]
+        @options[:excludes] += other_options[:excludes]
+        @options[:name_regexps] += other_options[:name_regexps]
         @options[:tag_names].merge! other_options[:tag_names]
         @options[:env_vars] = other_options[:env_vars].merge(@options[:env_vars])
         if @options[:paths].empty?
