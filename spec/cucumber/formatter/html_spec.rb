@@ -25,7 +25,7 @@ module Cucumber
       end
       
       def run(features)
-        # options = { :verbose => true }
+        options = { :verbose => true }
         options = {}
         tree_walker = Cucumber::Ast::TreeWalker.new(@step_mother, [@formatter], options, STDOUT)
         tree_walker.visit_features(features)
@@ -64,7 +64,7 @@ module Cucumber
       
       describe "given a single feature" do
         before(:each) do
-          features = load_features(self.class.feature_content || feature_file_content)
+          features = load_features(self.class.feature_content || raise("No feature content defined!"))
           define_steps
           run(features)
           @doc = Nokogiri.HTML(@out.string)
@@ -165,6 +165,21 @@ module Cucumber
           FEATURE
           
           it { @doc.should have_css_node('.feature .scenario table td', /foo/) }
+        end
+        
+        describe "with a table in the background and the scenario" do
+          define_feature <<-FEATURE
+            Background:
+              Given table:
+                | a | b |
+                | c | d |
+            Scenario:
+              Given another table:
+               | e | f |
+               | g | h |
+          FEATURE
+          
+          it { @doc.css('td').length.should == 8 }
         end
         
         describe "with a step that fails in the scenario" do

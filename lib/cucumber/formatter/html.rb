@@ -240,7 +240,7 @@ module Cucumber
 
       def after_visit_multiline_arg(multiline_arg)
         stop_buffering :multiline_arg
-        return if @skip_step
+        return if @hide_this_step || @skip_step
         if Ast::Table === multiline_arg
           builder.table do
             builder << buffer(:multiline_arg)
@@ -264,6 +264,7 @@ module Cucumber
       
       def after_visit_table_row(table_row)
         stop_buffering :table_row
+        return if @hide_this_step
         builder.tr(:id => @row_id) do
           builder << buffer(:table_row)
         end
@@ -280,6 +281,8 @@ module Cucumber
       end
 
       def visit_table_cell_value(value, status)
+        return if @hide_this_step
+        
         cell_type = @outline_row == 0 ? :th : :td
         attributes = {:id => "#{@row_id}_#{@col_index}", :class => 'val'}
         attributes[:class] += " #{status}" if status
