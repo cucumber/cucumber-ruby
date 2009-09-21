@@ -1,6 +1,7 @@
 require 'cucumber/formatter/ordered_xml_markup'
 require 'cucumber/formatter/duration'
 require 'xml'
+require 'ruby-debug'
 
 module Cucumber
   module Formatter
@@ -13,7 +14,7 @@ module Cucumber
         @io = io
         @options = options
         @buffer = {}
-        @builder = create_builder(@io)
+        @current_builder = create_builder(@io)
       end
       
       def before_visit_features(features)
@@ -34,11 +35,11 @@ module Cucumber
           builder.head do
             builder.meta(:content => 'text/html;charset=utf-8')
             builder.title 'Cucumber'
-            # inline_css
+            inline_css
           end
           builder.body do
             builder.div(:class => 'cucumber') do
-              builder << buffer[:features]
+              builder << buffer(:features)
               builder.div(format_duration(features.duration), :class => 'duration')
             end
           end
@@ -53,7 +54,7 @@ module Cucumber
         stop_buffering :feature
         @exceptions = []
         builder.div(:class => 'feature') do
-          builder << buffer[:feature]
+          builder << buffer(:feature)
         end
       end
 
@@ -64,7 +65,7 @@ module Cucumber
       def after_visit_comment(comment)
         stop_buffering :comment
         builder.pre(:class => 'comment') do
-          builder << buffer[:comment]
+          builder << buffer(:comment)
         end
       end
 
@@ -106,7 +107,7 @@ module Cucumber
         stop_buffering :background
         @in_background = nil
         builder.div(:class => 'background') do
-          builder << buffer[:background]
+          builder << buffer(:background)
         end
       end
 
@@ -121,6 +122,7 @@ module Cucumber
 
       def before_visit_feature_element(feature_element)
         start_buffering :feature_element
+        @exceptions = []
       end
       
       def after_visit_feature_element(feature_element)
@@ -131,7 +133,7 @@ module Cucumber
         }[feature_element.class]
 
         builder.div(:class => css_class) do
-          builder << buffer[:feature_element]
+          builder << buffer(:feature_element)
         end
         @open_step_list = true
       end
@@ -153,7 +155,7 @@ module Cucumber
       def after_visit_outline_table(outline_table)
         stop_buffering :outline_table
         builder.table do
-          builder << buffer[:outline_table]
+          builder << buffer(:outline_table)
         end
         @outline_row = nil
       end
@@ -165,7 +167,7 @@ module Cucumber
       def after_visit_examples(examples)
         stop_buffering :examples
         builder.div(:class => 'examples') do
-          builder << buffer[:examples]
+          builder << buffer(:examples)
         end
       end
 
@@ -176,30 +178,45 @@ module Cucumber
           builder.span(name, :class => 'val')
         end
       end
-      # # 
-      # # def visit_steps(steps)
-      # #   @builder.ol do
-      # #     super
-      # #   end
-      # # end
-      # # 
-      # # def visit_step(step)
-      # #   @step_id = step.dom_id
-      # #   super
-      # # end
-      # # 
-      # # def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
-      # #   if exception
-      # #     return if @exceptions.index(exception)
-      # #     @exceptions << exception
-      # #   end
-      # #   return if status != :failed && @in_background ^ background
-      # #   @status = status
-      # #   @builder.li(:id => @step_id, :class => "step #{status}") do
-      # #     super(keyword, step_match, multiline_arg, status, exception, source_indent, background)
-      # #   end
-      # # end
-      # # 
+
+      def before_visit_steps(steps)
+        start_buffering :steps
+      end
+      
+      def after_visit_steps(steps)
+        stop_buffering :steps
+        builder.ol do
+          builder << buffer(:steps)
+        end
+      end
+      
+      def before_visit_step(step)
+        @step_id = step.dom_id
+      end
+
+      def before_visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+        start_buffering :step_result
+        @hide_this_step = false
+        if exception
+          @hide_this_step = true if @exceptions.index(exception)
+          @exceptions << exception
+          return
+        end
+        if status != :failed && @in_background ^ background
+          @hide_this_step = true
+          return
+        end
+        @status = status
+      end
+      
+      def after_visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+        stop_buffering :step_result
+        return if @hide_this_step
+        builder.li(:id => @step_id, :class => "step #{status}") do
+          builder << buffer(:step_result)
+        end
+      end
+
       def visit_step_name(keyword, step_match, status, source_indent, background)
         @step_matches ||= []
         background_in_scenario = background && !@listing_background
@@ -210,60 +227,67 @@ module Cucumber
           build_step(keyword, step_match, status)
         end
       end
-      # # 
-      # # def visit_exception(exception, status)
-      # #   @builder.pre(format_exception(exception), :class => status)
-      # # end
-      # # 
-      # # def visit_multiline_arg(multiline_arg)
-      # #   return if @skip_step
-      # #   if Ast::Table === multiline_arg
-      # #     @builder.table do
-      # #       super
-      # #     end
-      # #   else
-      # #     super
-      # #   end
-      # # end
-      # # 
-      # # def visit_py_string(string)
-      # #   @builder.pre(:class => 'val') do |pre|
-      # #     @builder << string.gsub("\n", '&#x000A;')
-      # #   end
-      # # end
-      # # 
-      # # def visit_table_row(table_row)
-      # #   @row_id = table_row.dom_id
-      # #   @col_index = 0
-      # #   @builder.tr(:id => @row_id) do
-      # #     super
-      # #   end
-      # #   if table_row.exception
-      # #     @builder.tr do
-      # #       @builder.td(:colspan => @col_index.to_s, :class => 'failed') do
-      # #         @builder.pre do |pre|
-      # #           pre << format_exception(table_row.exception)
-      # #         end
-      # #       end
-      # #     end
-      # #   end
-      # #   @outline_row += 1 if @outline_row
-      # # end
-      # # 
-      # # def visit_table_cell_value(value, status)
-      # #   cell_type = @outline_row == 0 ? :th : :td
-      # #   attributes = {:id => "#{@row_id}_#{@col_index}", :class => 'val'}
-      # #   attributes[:class] += " #{status}" if status
-      # #   build_cell(cell_type, value, attributes)
-      # #   @col_index += 1
-      # # end
-      # # 
-      # # def announce(announcement)
-      # #   @builder.pre(announcement, :class => 'announcement')
-      # # end
-      # # 
-      # # protected
-      # # 
+
+      def visit_exception(exception, status)
+        builder.pre(format_exception(exception), :class => status)
+      end
+      
+      def before_visit_multiline_arg(multiline_arg)
+        start_buffering :multiline_arg
+      end
+
+      def after_visit_multiline_arg(multiline_arg)
+        stop_buffering :multiline_arg
+        return if @skip_step
+        if Ast::Table === multiline_arg
+          builder.table do
+            builder << buffer(:multiline_arg)
+          end
+        else
+          builder << buffer(:multiline_arg)
+        end
+      end
+
+      def visit_py_string(string)
+        builder.pre(:class => 'val') do |pre|
+          builder << string.gsub("\n", '&#x000A;')
+        end
+      end
+
+      def before_visit_table_row(table_row)
+        @row_id = table_row.dom_id
+        @col_index = 0
+        start_buffering :table_row
+      end
+      
+      def after_visit_table_row(table_row)
+        stop_buffering :table_row
+        builder.tr(:id => @row_id) do
+          builder << buffer(:table_row)
+        end
+        if table_row.exception
+          builder.tr do
+            builder.td(:colspan => @col_index.to_s, :class => 'failed') do
+              builder.pre do |pre|
+                pre << format_exception(table_row.exception)
+              end
+            end
+          end
+        end
+        @outline_row += 1 if @outline_row
+      end
+
+      def visit_table_cell_value(value, status)
+        cell_type = @outline_row == 0 ? :th : :td
+        attributes = {:id => "#{@row_id}_#{@col_index}", :class => 'val'}
+        attributes[:class] += " #{status}" if status
+        build_cell(cell_type, value, attributes)
+        @col_index += 1
+      end
+
+      def announce(announcement)
+        builder.pre(announcement, :class => 'announcement')
+      end
       
       private
       
@@ -277,44 +301,45 @@ module Cucumber
           end
         end
       end
-      # # 
-      # # def build_cell(cell_type, value, attributes)
-      # #   @builder.__send__(cell_type, value, attributes)
-      # # end
-      # # 
-      # # def inline_css
-      # #   @builder.style(:type => 'text/css') do
-      # #     @builder.text!(File.read(File.dirname(__FILE__) + '/cucumber.css'))
-      # #   end
-      # # end
-      # # 
-      # # def format_exception(exception)
-      # #   h((["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n"))
-      # # end
-      # #
+
+      def build_cell(cell_type, value, attributes)
+        builder.__send__(cell_type, value, attributes)
+      end
+      
+      def inline_css
+        builder.style(:type => 'text/css') do
+          builder.text!(File.read(File.dirname(__FILE__) + '/cucumber.css'))
+        end
+      end
+      
+      def format_exception(exception)
+        h((["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n"))
+      end
       
       def builder
-        @builder
+        @current_builder
       end
       
-      def buffer
-        @buffer
+      def buffer(label)
+        result = @buffer[label]
+        @buffer[label] = ''
+        result
       end
-
+      
       def start_buffering(label)
         @buffer[label] ||= ''
         @parent_builder ||= {}
-        @parent_builder[label] = @builder
-        @builder = create_builder(@buffer[label])
+        @parent_builder[label] = @current_builder
+        @current_builder = create_builder(@buffer[label])
       end
       
       def stop_buffering(label)
-        @builder = @parent_builder[label]
+        @current_builder = @parent_builder[label]
       end
       
       def create_builder(io)
-        OrderedXmlMarkup.new(:target => io, :indent => 2)
-      end
+        OrderedXmlMarkup.new(:target => io, :indent => 0)
+      end      
     end
   end
 end

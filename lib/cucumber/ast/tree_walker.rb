@@ -5,8 +5,8 @@ module Cucumber
       attr_accessor :options #:nodoc:
       attr_reader   :step_mother #:nodoc:
 
-      def initialize(step_mother, listeners, options)
-        @step_mother, @listeners, @options = step_mother, listeners, options
+      def initialize(step_mother, listeners, options, io)
+        @step_mother, @listeners, @options, @io = step_mother, listeners, options, io
         @debug_indent = 0
       end
 
@@ -166,7 +166,7 @@ module Cucumber
       end
       
       def send_to_all(message, *args)
-        puts(' ' * @debug_indent + message) if @options[:verbose]
+        @io.puts(' ' * @debug_indent + message) if @options[:verbose]
         @listeners.each do |listener|
           if listener.respond_to?(message)
             listener.__send__(message, *args)

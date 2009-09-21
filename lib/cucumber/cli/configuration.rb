@@ -58,8 +58,8 @@ module Cucumber
         @options[:drb_port].to_i if @options[:drb_port]
       end
       
-      def build_runner(step_mother)
-        Ast::TreeWalker.new(step_mother, formatters(step_mother), @options)
+      def build_runner(step_mother, io)
+        Ast::TreeWalker.new(step_mother, formatters(step_mother), @options, io)
       end
 
       def formatter_class(format)

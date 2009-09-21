@@ -23,15 +23,15 @@ module Cucumber
           
           # options = { :verbose => true }
           options = {}
-          tree_walker = Cucumber::Ast::TreeWalker.new(@step_mother, [@formatter], options)
+          tree_walker = Cucumber::Ast::TreeWalker.new(@step_mother, [@formatter], options, STDOUT)
           tree_walker.visit_features(features)
           @doc = Nokogiri.HTML(@out.string)
         end
         
         Spec::Matchers.define :have_css_node do |css, regexp|
           match do |doc|
-            node = doc.at(css)
-            node && node.text =~ regexp
+            nodes = doc.css(css)
+            nodes.detect{ |node| node.text =~ regexp }
           end
         end
         
@@ -100,18 +100,54 @@ module Cucumber
           def feature_file_content
             <<-FEATURE
             Scenario Outline: Monkey eats a balanced diet
-              Given there are <fruit>
+              Given there are <Things>
             
               Examples: Fruit
-               | fruit   |
+               | Things  |
                | apples  |
                | bananas |
+              Examples: Vegetables
+               | Things   |
+               | broccoli |
+               | carrots  |
             FEATURE
           end
-
+          
           it { @doc.should have_css_node('.feature .scenario.outline h4', /Fruit/) }
+          it { @doc.should have_css_node('.feature .scenario.outline h4', /Vegetables/) }
+          it { @doc.css('.feature .scenario.outline h4').length.should == 2}
           it { @doc.should have_css_node('.feature .scenario.outline table', //) }
+          it { @doc.should have_css_node('.feature .scenario.outline table td', /carrots/) }
         end
+        
+        describe "with a step with a py string" do
+          def feature_file_content
+            <<-FEATURE
+            Scenario: Monkey goes to town
+              Given there is a monkey called:
+               """
+               foo
+               """
+            FEATURE
+          end
+          
+          it { @doc.should have_css_node('.feature .scenario .val', /foo/) }
+        end
+
+        describe "with a multiline step arg" do
+          def feature_file_content
+            <<-FEATURE
+            Scenario: Monkey goes to town
+              Given there are monkeys:
+               | name |
+               | foo  |
+               | bar  |
+            FEATURE
+          end
+          
+          it { @doc.should have_css_node('.feature .scenario table td', /foo/) }
+        end
+
         
       end
     end

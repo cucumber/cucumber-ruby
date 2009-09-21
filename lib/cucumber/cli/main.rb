@@ -48,7 +48,7 @@ module Cucumber
         step_mother.load_code_files(configuration.step_defs_to_load)
         enable_diffing
 
-        runner = configuration.build_runner(step_mother)
+        runner = configuration.build_runner(step_mother, @out_stream)
         step_mother.visitor = runner # Needed to support World#announce
         runner.visit_features(features)
 
