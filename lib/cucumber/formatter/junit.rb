@@ -1,22 +1,23 @@
 require 'cucumber/formatter/ordered_xml_markup'
+require 'ruby-debug'
 
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format junit</tt>
     class Junit
-
       def initialize(step_mother, io, options)
         raise "You *must* specify --out DIR for the junit formatter" unless String === io && File.directory?(io)
         @reportdir = io
         @options = options
       end
 
-      def visit_feature(feature)
+      def before_visit_feature(feature)
         @failures = @errors = @tests = 0
         @builder = OrderedXmlMarkup.new( :indent => 2 )
         @time = 0
-        super
-
+      end
+      
+      def after_visit_feature(feature)
         @testsuite = OrderedXmlMarkup.new( :indent => 2 )
         @testsuite.instruct!
         @testsuite.testsuite(
@@ -24,7 +25,7 @@ module Cucumber
           :errors => @errors,
           :tests => @tests,
           :time => "%.6f" % @time,
-        :name => @feature_name ) do
+          :name => @feature_name ) do
           @testsuite << @builder.target!
         end
 
@@ -33,9 +34,11 @@ module Cucumber
         File.open(feature_filename, 'w') { |file| file.write(@testsuite.target!) }
       end
 
-      def visit_background(name)
+      def before_visit_background(*args)
         @in_background = true
-        super
+      end
+      
+      def after_visit_background(*args)
         @in_background = false
       end
 
@@ -52,11 +55,13 @@ module Cucumber
         @output = "Scenario#{ " outline" if @outline}: #{@scenario}\n\n"
       end
 
-      def visit_steps(steps)
+      def before_visit_steps(steps)
+        @steps_start = Time.now
+      end
+      
+      def after_visit_steps(steps)
         return if @in_background
-        start = Time.now
-        super
-        duration = Time.now - start
+        duration = Time.now - @steps_start
         unless @outline
           if steps.failed?
             steps.each { |step| @output += "#{step.keyword} #{step.name}\n" }
@@ -66,16 +71,21 @@ module Cucumber
         end
       end
 
-      def visit_outline_table(outline_table)
+      def before_visit_outline_table(outline_table)
         @header_row = true
-        super(outline_table)
       end
 
-      def visit_table_row(table_row)
+      def before_visit_table_row(table_row)
         if @outline
-          start = Time.now
-          super(table_row)
-          duration = Time.now - start
+          @table_start = Time.now
+        end
+        
+        @header_row = false
+      end
+
+      def after_visit_table_row(table_row)
+        if @outline
+          duration = Time.now - @table_start
           unless @header_row
             name_suffix = " (outline example : #{table_row.name})"
             if table_row.failed?
@@ -84,8 +94,6 @@ module Cucumber
             end
             build_testcase(duration, table_row.status, table_row.exception,  name_suffix)
           end
-        else
-          super(table_row)
         end
         @header_row = false
       end
