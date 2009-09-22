@@ -17,7 +17,7 @@ module Cucumber
           @visitor.visit_step_result('', '', nil, :failed, nil, 10, nil)
           @visitor.visit_table_cell_value('value', nil)
 
-          @out.string.should == "FF"
+          @out.string.should == "F"
         end
       end
 

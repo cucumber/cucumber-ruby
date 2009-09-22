@@ -8,6 +8,7 @@ require 'cucumber/formatter/color_io'
 require 'cucumber/cli/language_help_formatter'
 require 'cucumber/cli/configuration'
 require 'cucumber/cli/drb_client'
+require 'cucumber/ast/tags'
 
 module Cucumber
   module Cli
@@ -46,6 +47,7 @@ module Cucumber
         step_mother.after_configuration(configuration)
         features = step_mother.load_plain_text_features(configuration.feature_files)
         step_mother.load_code_files(configuration.step_defs_to_load)
+
         enable_diffing
 
         runner = configuration.build_runner(step_mother, @out_stream)
@@ -67,9 +69,9 @@ module Cucumber
 
       def exceeded_tag_limts?(features)
         exceeded = false
-        configuration.options[:include_tags].each do |tag, limit|
-          unless limit.nil?
-            tag_count = features.tag_count(tag)
+        configuration.options[:tag_names].each do |tag_name, limit|
+          if !Ast::Tags.exclude_tag?(tag_name) && limit
+            tag_count = features.tag_count(tag_name)
             if tag_count > limit.to_i
               exceeded = true
             end

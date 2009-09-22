@@ -55,14 +55,6 @@ module Cucumber
       end
 
       module FeatureSub2
-        def has_tags?(tag_names)
-          tags.has_tags?(tag_names)
-        end
-
-        def has_all_tags?(tag_names)
-          tags.has_all_tags?(tag_names)
-        end
-
         def build(filter)
           if(filter.nil? || feature_elements.accept?(filter) || (!bg.empty? && filter.accept?(bg)))
             background = bg.respond_to?(:build) ? bg.build : nil      
@@ -218,20 +210,12 @@ module Cucumber
           ts.elements.detect{|e| e.tag.line == line}
         end
 
-        def has_tags?(tags)
-          (tag_names & tags).any?
-        end
-
-        def has_all_tags?(tags)
-          (tags & tag_names) == tags
-        end
-
         def build
           Ast::Tags.new(ts.line, tag_names)
         end
         
         def tag_names
-          @tag_names ||= ts.elements.map{|e| e.tag.tag_name.text_value}
+          @tag_names ||= ts.elements.map{|e| e.tag.text_value}
         end
       end
 
@@ -313,9 +297,6 @@ module Cucumber
       end
 
       module Tag0
-        def tag_name
-          elements[1]
-        end
       end
 
       def _nt_tag
@@ -339,7 +320,7 @@ module Cucumber
           s2, i2 = [], index
           loop do
             if has_terminal?('\G[^@\\r\\n\\t ]', true, index)
-              r3 = instantiate_node(SyntaxNode,input, index...(index + 1))
+              r3 = true
               @index += 1
             else
               r3 = nil
@@ -510,14 +491,8 @@ module Cucumber
           steps.at_line?(line)
         end
 
-        def has_tags?(tag_names)
-          feature_tags = self.parent.tags
-          feature_tags.has_tags?(tag_names)
-        end
-
-        def has_all_tags?(tag_names)
-          feature_tags = self.parent.tags
-          feature_tags.has_all_tags?(tag_names)
+        def matches_tags?(tag_names)
+          Ast::Tags.matches?(self.parent.tags.tag_names, tag_names)
         end
 
         def build
@@ -712,14 +687,10 @@ module Cucumber
           tags.at_line?(line)
         end
 
-        def has_tags?(tag_names)
-          feature_tags = self.parent.parent.tags
-          tags.has_tags?(tag_names) || feature_tags.has_tags?(tag_names)
-        end
-
-        def has_all_tags?(tag_names)
-          feature_tags = self.parent.parent.tags
-          tags.has_all_tags?(tag_names) || feature_tags.has_all_tags?(tag_names)
+        def matches_tags?(tag_names)
+          feature_tag_names = self.parent.parent.tags.tag_names
+          source_tag_names = (feature_tag_names + tags.tag_names).uniq
+          Ast::Tags.matches?(source_tag_names, tag_names)
         end
 
         def matches_name?(regexp_to_match)
@@ -855,14 +826,10 @@ module Cucumber
           steps.at_line?(line)
         end
 
-        def has_tags?(tag_names)
-          feature_tags = self.parent.parent.tags
-          tags.has_tags?(tag_names) || feature_tags.has_tags?(tag_names)
-        end
-
-        def has_all_tags?(tag_names)
-          feature_tags = self.parent.parent.tags
-          tags.has_all_tags?(tag_names) || feature_tags.has_all_tags?(tag_names)
+        def matches_tags?(tag_names)
+          feature_tag_names = self.parent.parent.tags.tag_names
+          source_tag_names = (feature_tag_names + tags.tag_names).uniq
+          Ast::Tags.matches?(source_tag_names, tag_names)
         end
 
         def matches_name?(regexp_to_match)
@@ -1201,11 +1168,7 @@ module Cucumber
           table.at_line?(line)
         end
 
-        def has_tags?(tag_names)
-          true
-        end
-
-        def has_all_tags?(tag_names)
+        def matches_tags?(tag_names)
           true
         end
 

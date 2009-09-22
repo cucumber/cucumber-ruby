@@ -1,8 +1,30 @@
-== (In Git)
+== 2009-09-22
+
+This release has some changes in the Rails support, so make sure you run "script/generate cucumber" after you upgrade.
+Other noteworthy new features are improved Hook, tags and Transform support, and as always - several smaler bug fixes.
 
 === New Features
+* Added new internal API for Regexp and groups, allowing other programming languages to leverage native regexps. (Aslak Hellesøy)
+* New @allow_rescue tag for Rails scenarios. Causes exceptions raised in actions to be caught by rails and not bubble up to Cucumber (Aslak Hellesøy)
+* Negative tags can now be used in hooks, just like the command line's --tags option: Before('~@yarr') - will run for all scenarios that *don't* have the @yarr tag. (Aslak Hellesøy)
+* Transform has current "World" scope (Larry Diehl)
+* Other Transforms can be reused by calling Transform with a string inside of another Transform definition (Larry Diehl)
+* Execute "After" hooks in reverse order of declaration for better behavior with dependent blocks and to mimic the behavior of at_exit (David Waite)
 
 === Bugfixes
+* features/support/env.rb runs commands twice (bugfix cuts total time by almost 50% w00t) (#452 Jim Meyer)
+* Problems adding custom formatters to features/support. (features/support is added to $LOAD_PATH) (#449 Aslak Hellesøy)
+* Some options set in cucumber.yml profiles are ignored (#446 Leonard CHIN)
+* Missing step_definition snippets not properly displayed (#433 Aslak Hellesøy)
+* rspec-rails, :lib => false (#447 David Chelimsky)
+* Cucumber with Spork breaks on OS X Snow Leopard (#431 David Chelimsky)
+
+=== Changed Features
+* Tag names passed on the command line *always* have to use the @ sign. --tags foo or --tags ~bar won't work. Use --tags @foo or --tags ~@bar (Aslak Hellesøy)
+
+=== Removed features
+* The Cucumber::Rails.bypass_rescue no longer exists. Errors will always bubble up, unless you use the new @allow_rescue tag. (Aslak Hellesøy)
+* The Cucumber::Rails.use_transactional_fixtures no longer exists. Transactional fixtures are always enabled for the cucumber environment. (Aslak Hellesøy)
 
 == 0.3.101 2009-09-15
 

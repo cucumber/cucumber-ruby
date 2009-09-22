@@ -81,7 +81,7 @@ module Cucumber
       def visit_tag_name(tag_name)
         builder.text!(@tag_spacer) if @tag_spacer
         @tag_spacer = ' '
-        builder.span("@#{tag_name}", :class => 'tag')
+        builder.span(tag_name, :class => 'tag')
       end
 
       def visit_feature_name(name)

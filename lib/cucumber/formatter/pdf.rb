@@ -165,7 +165,7 @@ module Cucumber
 
       def visit_tag_name(tag_name)
         return if @hide_this_step
-        tag = format_string("@#{tag_name}", :tag).indent(@indent)
+        tag = format_string(tag_name, :tag).indent(@indent)
         # TODO should we render tags at all? skipped for now. difficult to place due to page breaks
       end
 
