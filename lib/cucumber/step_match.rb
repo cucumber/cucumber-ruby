@@ -1,9 +1,13 @@
 module Cucumber
   class StepMatch #:nodoc:
-    attr_reader :step_definition, :args
+    attr_reader :step_definition
 
-    def initialize(step_definition, step_name, formatted_step_name, args)
-      @step_definition, @step_name, @formatted_step_name, @args = step_definition, step_name, formatted_step_name, args
+    def initialize(step_definition, step_name, formatted_step_name, groups)
+      @step_definition, @step_name, @formatted_step_name, @groups = step_definition, step_name, formatted_step_name, groups
+    end
+
+    def args
+      @groups.map{|g| g.val}
     end
 
     def name
@@ -11,13 +15,28 @@ module Cucumber
     end
 
     def invoke(multiline_arg)
-      all_args = @args.dup
+      all_args = args
       all_args << multiline_arg if multiline_arg
       @step_definition.invoke(all_args)
     end
 
+    # Formats the matched arguments of the associated Step. This method
+    # is usually called from visitors, which render output.
+    #
+    # The +format+ can either be a String or a Proc.
+    #
+    # If it is a String it should be a format string according to
+    # <tt>Kernel#sprinf</tt>, for example:
+    #
+    #   '<span class="param">%s</span></tt>'
+    #
+    # If it is a Proc, it should take one argument and return the formatted
+    # argument, for example:
+    #
+    #   lambda { |param| "[#{param}]" }
+    #
     def format_args(format = lambda{|a| a})
-      @formatted_step_name || @step_definition.format_args(@step_name, format)
+      @formatted_step_name || @step_name.gzub(@groups, format)
     end
     
     def file_colon_line

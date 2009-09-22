@@ -1,6 +1,7 @@
 require 'cucumber/step_match'
 require 'cucumber/core_ext/string'
 require 'cucumber/core_ext/proc'
+require 'cucumber/rb_support/rb_group'
 
 module Cucumber
   module RbSupport
@@ -25,31 +26,30 @@ module Cucumber
 
       attr_reader :proc, :regexp
 
-      def initialize(rb_language, pattern, proc)
+      def initialize(rb_language, regexp, proc)
         raise MissingProc if proc.nil?
-        if String === pattern
-          p = pattern.gsub(/\$\w+/, '(.*)') # Replace $var with (.*)
-          pattern = Regexp.new("^#{p}$") 
+        if String === regexp
+          p = regexp.gsub(/\$\w+/, '(.*)') # Replace $var with (.*)
+          regexp = Regexp.new("^#{p}$") 
         end
-        @rb_language, @regexp, @proc = rb_language, pattern, proc
+        @rb_language, @regexp, @proc = rb_language, regexp, proc
       end
 
       def ==(step_definition)
         self.regexp == step_definition.regexp
       end
 
-      def captures(step_name)
-        match = @regexp.match(step_name)
-        match ? match.captures : nil
-      end
-
-      def starts(step_name)
-        starts = []
-        match = @regexp.match(step_name)
-        match.captures.length.times do |n|
-          starts << match.offset(n+1)[0]
+      def groups(step_name)
+        match = regexp.match(step_name)
+        if match
+          n = 0
+          match.captures.map do |val|
+            n += 1
+            RbGroup.new(val, match.offset(n)[0])
+          end
+        else
+          nil
         end
-        starts
       end
 
       def invoke(args)
