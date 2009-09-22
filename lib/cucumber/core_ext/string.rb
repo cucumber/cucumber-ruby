@@ -16,13 +16,10 @@ class String #:nodoc:
   end
 
   # TODO: Use subs instead...
-  def gzub(regexp, format=nil, &proc)
-    md = match(regexp)
-    raise "#{self.inspect} doesn't match #{regexp.inspect}" if md.nil?
-    
+  def gzub(captures, starts, format=nil, &proc)
     s = dup
     pos = 0
-    md.captures.each_with_index do |m, n|
+    captures.each_with_index do |m, n|
       replacement = if block_given?
         proc.call(m)
       elsif Proc === format
@@ -31,8 +28,8 @@ class String #:nodoc:
         format % m
       end
       
-      if md.offset(n+1)[0]
-        s[md.offset(n+1)[0] + pos, m.length] = replacement
+      if starts[n]
+        s[starts[n] + pos, m.length] = replacement
         pos += replacement.length - m.length
       end
     end

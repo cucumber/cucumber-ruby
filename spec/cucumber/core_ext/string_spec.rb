@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../../../lib/cucumber/core_ext/string'
 
 describe String, "#gzub" do
   it "should format groups with format string" do
-    "I ate 1 egg this morning".gzub(/I (\w+) (\d+) (\w+) this (\w+)/, "<span>%s</span>").should ==
+    "I ate 1 egg this morning".gzub(%w{ate 1 egg morning}, [2, 6, 8, 17], "<span>%s</span>").should ==
     "I <span>ate</span> <span>1</span> <span>egg</span> this <span>morning</span>"
   end
 

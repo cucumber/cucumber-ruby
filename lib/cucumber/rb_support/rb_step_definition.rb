@@ -34,6 +34,24 @@ module Cucumber
         @rb_language, @regexp, @proc = rb_language, pattern, proc
       end
 
+      def ==(step_definition)
+        self.regexp == step_definition.regexp
+      end
+
+      def captures(step_name)
+        match = @regexp.match(step_name)
+        match ? match.captures : nil
+      end
+
+      def starts(step_name)
+        starts = []
+        match = @regexp.match(step_name)
+        match.captures.length.times do |n|
+          starts << match.offset(n+1)[0]
+        end
+        starts
+      end
+
       def invoke(args)
         args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
         begin

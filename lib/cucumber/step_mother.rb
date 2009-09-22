@@ -249,7 +249,7 @@ module Cucumber
     # contract (API).
     def register_step_definition(step_definition)
       step_definitions.each do |already|
-        raise Redundant.new(already, step_definition) if already.same_regexp?(step_definition.regexp)
+        raise Redundant.new(already, step_definition) if already == step_definition
       end
       step_definitions << step_definition
       step_definition

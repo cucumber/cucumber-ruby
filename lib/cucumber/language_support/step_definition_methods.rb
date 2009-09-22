@@ -4,8 +4,8 @@ module Cucumber
   module LanguageSupport
     module StepDefinitionMethods
       def step_match(name_to_match, name_to_report)
-        if(match = regexp.match(name_to_match))
-          StepMatch.new(self, name_to_match, name_to_report, match.captures)
+        if(captures = captures(name_to_match))
+          StepMatch.new(self, name_to_match, name_to_report, captures)
         else
           nil
         end
@@ -27,11 +27,7 @@ module Cucumber
       #   lambda { |param| "[#{param}]" }
       #
       def format_args(step_name, format)
-        step_name.gzub(regexp, format)
-      end
-
-      def same_regexp?(regexp)
-        self.regexp == regexp
+        step_name.gzub(captures(step_name), starts(step_name), format)
       end
 
       def backtrace_line
