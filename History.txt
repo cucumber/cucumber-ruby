@@ -1,6 +1,7 @@
-== (In Git)
+== 2009-09-22
 
 This release has some changes in the Rails support, so make sure you run "script/generate cucumber" after you upgrade.
+Other noteworthy new features are improved Hook, tags and Transform support, and as always - several smaler bug fixes.
 
 === New Features
 * Added new internal API for Regexp and groups, allowing other programming languages to leverage native regexps. (Aslak Hellesøy)
