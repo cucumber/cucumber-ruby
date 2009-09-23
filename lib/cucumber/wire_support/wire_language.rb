@@ -19,7 +19,11 @@ module Cucumber
       def invoke(id, args)
         call('invoke:' + { :id => id, :args => args }.to_json)
       end
-      
+
+      def groups_for_step_name(stepdef_id, step_name)
+        call('GROUPS_FOR_STEP_NAME:' + { :id => stepdef_id, :step_name => step_name }.to_json)
+      end
+
       def table_diff_ok
         call("DIFFOK")
       end
@@ -36,8 +40,12 @@ module Cucumber
         @wire_language, @data, @invoker = wire_language, json_data, invoker
         @wire_language.register_wire_step_definition(id, self)
       end
-      
-      def regexp
+
+      def groups(step_name)
+        WireGroup.groups_from(@invoker, id, step_name)
+      end
+
+      def regexp_source
         Regexp.new @data['regexp']
       end
 
@@ -68,7 +76,29 @@ module Cucumber
           raise WireException.new($1)
         end
       end
+
+    end
+
+    class WireGroup
+      def self.groups_from(invoker, stepdef_id, step_name)
+        result = invoker.groups_for_step_name(stepdef_id, step_name)
+        case(result)
+        when /^GROUPS:(.*)/
+          return build_groups(JSON.parse($1))
+        when /^FAIL:(.*)/
+          raise WireException.new($1)
+        end
+      end
       
+      def self.build_groups(groups)
+        groups.map{|group| new(group['val'], group['start'])}
+      end
+      
+      attr_reader :val, :start
+
+      def initialize(val, start)
+        @val, @start = val, start
+      end
     end
 
     class RemoteInvoker
