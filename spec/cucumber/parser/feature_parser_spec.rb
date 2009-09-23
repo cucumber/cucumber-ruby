@@ -361,34 +361,38 @@ Given I am a step
 
       describe "Filtering" do
         it "should filter outline tables" do
-          ff = FeatureFile.new(
-            File.dirname(__FILE__) + '/../../../examples/self_test/features/outline_sample.feature:12')
-          f = ff.parse(@step_mother, {:lang => 'en'})
-          f.to_sexp.should ==
+          path = '/self_test/features/outline_sample.feature'
+          f = parse_example_file("#{path}:12")
+          actual_sexp = f.to_sexp
+          
+          # check path is equivalent, if not same
+          File.expand_path(actual_sexp[1]).should == File.expand_path(File.dirname(__FILE__) + "/../../../examples#{path}")
+          actual_sexp[1] = 'made/up/path.feature'
+          actual_sexp.should ==
           [:feature,
-           "./spec/cucumber/parser/../../../examples/self_test/features/outline_sample.feature",
-           "Feature: Outline Sample",
-           [:scenario_outline,
-            "Scenario Outline:",
-            "Test state",
-            [:step, 6, "Given", "<state> without a table"],
-            [:step, 7, "Given", "<other_state> without a table"],
-            [:examples,
-             "Examples:",
-             "Rainbow colours",
-             [:table,
-              [:row, 9, [:cell, "state"], [:cell, "other_state"]],
-#              [:row, 10, [:cell, "missing"], [:cell, "passing"]],
-#              [:row, 11, [:cell, "passing"], [:cell, "passing"]],
-              [:row, 12, [:cell, "failing"], [:cell, "passing"]]]]
-            # ,
-            # [:examples,
-            #  "Examples:",
-            #  "Only passing",
-            #  [:table,
-            #   [:row, 14, [:cell, "state"], [:cell, "other_state"]],
-            #   [:row, 15, [:cell, "passing"], [:cell, "passing"]]]]]
-              ]]
+            'made/up/path.feature',
+            "Feature: Outline Sample",
+            [:scenario_outline,
+              "Scenario Outline:",
+              "Test state",
+              [:step, 6, "Given", "<state> without a table"],
+              [:step, 7, "Given", "<other_state> without a table"],
+              [:examples,
+                "Examples:",
+                "Rainbow colours",
+                [:table,
+                  [:row, 9, 
+                    [:cell, "state"], 
+                    [:cell, "other_state"]
+                  ],
+                  [:row, 12, 
+                    [:cell, "failing"], 
+                    [:cell, "passing"]
+                  ]
+                ]
+              ]
+            ]
+          ]
         end
       end
     end
