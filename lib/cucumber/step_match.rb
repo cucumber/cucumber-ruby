@@ -55,6 +55,7 @@ module Cucumber
       s = string.dup
       offset = 0
       step_arguments.each do |step_argument|
+        next if step_argument.pos.nil?
         replacement = if block_given?
           proc.call(step_argument.val)
         elsif Proc === format

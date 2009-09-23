@@ -31,5 +31,10 @@ module Cucumber
       m = stepdef(/I (\w+) (\d+) (\w+) this (\w+)/).step_match("I ate 1 egg this morning", nil)
       m.format_args(lambda{|m| "<span>#{m}</span>"}).should == "I <span>ate</span> <span>1</span> <span>egg</span> this <span>morning</span>"
     end
+
+    it "should format groups even when first group is optional and not matched" do
+      m = stepdef(/should( not)? be flashed '([^']*?)'$/).step_match("I should be flashed 'Login failed.'", nil)
+      m.format_args("<span>%s</span>").should == "I should be flashed '<span>Login failed.</span>'"
+    end
   end
 end
