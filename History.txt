@@ -1,3 +1,15 @@
+== (In Git)
+
+This release gives you back some of the control over the Rails environment that was accidentally taken away from you in the 
+previous release.
+
+Using this release on a Rails project requires a rerun of script/generate cucumber.
+
+=== New Features
+* Added a new @no-txn tag to selectively turn off transactions for a particluar scenario.
+* Added back a way to globally turn off transactions.
+* Renamed @allow_rescue tag to @allow-rescue.
+
 == 2009-09-22
 
 This release has some changes in the Rails support, so make sure you run "script/generate cucumber" after you upgrade.
