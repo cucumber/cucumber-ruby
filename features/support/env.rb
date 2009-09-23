@@ -61,6 +61,7 @@ class CucumberWorld
   def create_file(file_name, file_content)
     file_content.gsub!("CUCUMBER_LIB", "'#{cucumber_lib_dir}'") # Some files, such as Rakefiles need to use the lib dir
     in_current_dir do
+      FileUtils.mkdir_p(File.dirname(file_name)) unless File.directory?(File.dirname(file_name))
       File.open(file_name, 'w') { |f| f << file_content }
     end
   end
@@ -83,7 +84,6 @@ class CucumberWorld
     stderr_file = Tempfile.new('cucumber')
     stderr_file.close
     in_current_dir do
-      @last_stdout = `#{command} 2> #{stderr_file.path}`
       mode = Cucumber::RUBY_1_9 ? {:external_encoding=>"UTF-8"} : 'r'
       IO.popen("#{command} 2> #{stderr_file.path}", mode) do |io|
         @last_stdout = io.read

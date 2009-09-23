@@ -351,17 +351,6 @@ Feature: Cucumber command line
         Scenario: Skipped
           Given missing
 
-      Feature: Step argument transformations
-      
-        Scenario: transform with matches
-          Then I should transform '10' to an Integer
-      
-        Scenario: transform with matches that capture
-          Then I should transform 'abc' to a Symbol
-
-        Scenario: transform without matches
-          Then I should not transform '10' to an Integer
-
       Feature: undefined multiline args
       
         Scenario: pystring
@@ -375,8 +364,8 @@ Feature: Cucumber command line
             | table   |
             | example |
 
-      29 scenarios (20 skipped, 8 undefined, 1 passed)
-      45 steps (33 skipped, 12 undefined)
+      26 scenarios (17 skipped, 8 undefined, 1 passed)
+      42 steps (30 skipped, 12 undefined)
 
       """
 
@@ -453,7 +442,7 @@ Feature: Cucumber command line
 
 
   Scenario: Run with a tag that exists on 2 scenarios
-    When I run cucumber -q features --tags three
+    When I run cucumber -q features --tags @three
     Then it should pass with
       """
       # Feature comment
@@ -478,7 +467,7 @@ Feature: Cucumber command line
 
   @mri186
   Scenario: Run with a tag that exists on 1 feature
-    When I run cucumber -q features --tags one
+    When I run cucumber -q features --tags @one
     Then it should fail with
       """
       # Feature comment
@@ -516,7 +505,7 @@ Feature: Cucumber command line
       """
 
   Scenario: Run with a negative tag
-    When I run cucumber -q features/sample.feature --dry-run -t ~four
+    When I run cucumber -q features/sample.feature --dry-run --tags ~@four
     Then it should pass with
       """
       # Feature comment
@@ -539,8 +528,8 @@ Feature: Cucumber command line
 
       """
 
-  Scenario: Run with limited tag number
-     When I run cucumber -q features/tags_sample.feature --dry-run -t sample_three:1
+  Scenario: Run with limited tag count, blowing it on scenario
+     When I run cucumber -q features/tags_sample.feature --dry-run --tags @sample_three:1
      Then it should fail with      
      """
      @sample_one
@@ -561,15 +550,14 @@ Feature: Cucumber command line
      2 scenarios (2 undefined)
      2 steps (2 undefined)
 
-     Failed due to exceeding the tag limit
-     @sample_three occurred:2 limit:1
+     @sample_three occurred 2 times, but the limit was set to 1
        features/tags_sample.feature:9
        features/tags_sample.feature:16
 
      """
 
-   Scenario: Run with a feature tag which has a limit
-     When I run cucumber -q features/tags_sample.feature --dry-run -t sample_one:1
+   Scenario: Run with limited tag count, blowing it via feature inheritance
+     When I run cucumber -q features/tags_sample.feature --dry-run --tags @sample_one:1
      Then it should fail with
      """
      @sample_one
@@ -594,8 +582,7 @@ Feature: Cucumber command line
      3 scenarios (3 undefined)
      3 steps (3 undefined)
 
-     Failed due to exceeding the tag limit
-     @sample_one occurred:3 limit:1
+     @sample_one occurred 3 times, but the limit was set to 1
        features/tags_sample.feature:5
        features/tags_sample.feature:9
        features/tags_sample.feature:16

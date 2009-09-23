@@ -7,34 +7,24 @@ class String #:nodoc:
     end
   end
   
-  # re.source.gsub(/\([^)]*\)/, '$var')
-  # Cumulative #sub
-  def subs(re, *args)
-    args.inject(self) do |s,arg|
-      s.sub(re, arg)
-    end
-  end
-
-  # TODO: Use subs instead...
-  def gzub(regexp, format=nil, &proc)
-    md = match(regexp)
-    raise "#{self.inspect} doesn't match #{regexp.inspect}" if md.nil?
-    
+  # TODO: Move to StepMatch
+  # +groups+ is an array of 2-element arrays, where
+  # the 1st element is the value of a regexp match group,
+  # and the 2nd element is its start index.
+  def gzub(groups, format=nil, &proc)
     s = dup
-    pos = 0
-    md.captures.each_with_index do |m, n|
+    offset = 0
+    groups.each do |group|
       replacement = if block_given?
-        proc.call(m)
+        proc.call(group.val)
       elsif Proc === format
-        format.call(m)
+        format.call(group.val)
       else
-        format % m
+        format % group.val
       end
       
-      if md.offset(n+1)[0]
-        s[md.offset(n+1)[0] + pos, m.length] = replacement
-        pos += replacement.length - m.length
-      end
+      s[group.start + offset, group.val.length] = replacement
+      offset += replacement.length - group.val.length
     end
     s
   end

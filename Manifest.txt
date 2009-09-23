@@ -211,7 +211,6 @@ examples/self_test/features/step_definitions/sample_steps.rb
 examples/self_test/features/support/env.rb
 examples/self_test/features/tags_sample.feature
 examples/self_test/features/tons_of_cukes.feature
-examples/self_test/features/transform_sample.feature
 examples/self_test/features/undefined_multiline_args.feature
 examples/self_test/list-of-features.txt
 examples/sinatra/README.textile
@@ -269,6 +268,7 @@ features/cucumber_cli.feature
 features/cucumber_cli_diff_disabled.feature
 features/cucumber_cli_outlines.feature
 features/custom_formatter.feature
+features/default_snippets.feature
 features/drb_server_integration.feature
 features/exception_in_after_block.feature
 features/exception_in_after_step_block.feature
@@ -280,6 +280,7 @@ features/html_formatter/a.html
 features/junit_formatter.feature
 features/language_from_header.feature
 features/multiline_names.feature
+features/negative_tagged_hooks.feature
 features/post_configuration_hook.feature
 features/profiles.feature
 features/rake_task.feature
@@ -377,13 +378,18 @@ lib/cucumber/platform.rb
 lib/cucumber/py_support/py_dsl.py
 lib/cucumber/py_support/py_language.py
 lib/cucumber/py_support/py_language.rb
+lib/cucumber/rails/action_controller.rb
+lib/cucumber/rails/active_record.rb
 lib/cucumber/rails/rspec.rb
+lib/cucumber/rails/test_unit.rb
 lib/cucumber/rails/world.rb
 lib/cucumber/rake/task.rb
 lib/cucumber/rb_support/rb_dsl.rb
+lib/cucumber/rb_support/rb_group.rb
 lib/cucumber/rb_support/rb_hook.rb
 lib/cucumber/rb_support/rb_language.rb
 lib/cucumber/rb_support/rb_step_definition.rb
+lib/cucumber/rb_support/rb_transform.rb
 lib/cucumber/rb_support/rb_world.rb
 lib/cucumber/rspec_neuter.rb
 lib/cucumber/step_match.rb
@@ -429,9 +435,6 @@ spec/cucumber/formatter/html_spec.rb
 spec/cucumber/formatter/progress_spec.rb
 spec/cucumber/parser/feature_parser_spec.rb
 spec/cucumber/parser/table_parser_spec.rb
-spec/cucumber/rails/stubs/mini_rails.rb
-spec/cucumber/rails/stubs/test_help.rb
-spec/cucumber/rails/world_spec.rb
 spec/cucumber/rb_support/rb_step_definition_spec.rb
 spec/cucumber/sell_cucumbers.feature
 spec/cucumber/step_mother_spec.rb

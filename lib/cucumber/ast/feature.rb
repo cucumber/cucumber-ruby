@@ -26,6 +26,10 @@ module Cucumber
         end
       end
 
+      def source_tag_names
+        @tags.tag_names
+      end
+
       def accept_hook?(hook)
         @tags.accept_hook?(hook)
       end
