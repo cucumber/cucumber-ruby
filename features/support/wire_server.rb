@@ -94,9 +94,9 @@ module Cucumber
 
       def handle(data)
         case data
-        when /^list_step_definitions/
+        when /^LIST_STEP_DEFINITIONS/
           send_response JSON.unparse(step_definitions.values)
-        when /^invoke:(.*)/
+        when /^INVOKE:(.*)/
           invocation_instruction = JSON.parse($1)
           send_response invoke_step_definition(invocation_instruction)
         when /^GROUPS_FOR_STEP_NAME:(.*)/

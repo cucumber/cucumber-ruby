@@ -13,15 +13,15 @@ module Cucumber
     
     module SpeaksToWireServer
       def list_step_definitions
-        call('list_step_definitions')
+        call('LIST_STEP_DEFINITIONS')
       end
       
       def invoke(id, args)
-        call('invoke:' + { :id => id, :args => args }.to_json)
+        call('INVOKE', { :id => id, :args => args })
       end
 
       def groups_for_step_name(stepdef_id, step_name)
-        call('GROUPS_FOR_STEP_NAME:' + { :id => stepdef_id, :step_name => step_name }.to_json)
+        call('GROUPS_FOR_STEP_NAME', { :id => stepdef_id, :step_name => step_name })
       end
 
       def table_diff_ok
@@ -110,11 +110,15 @@ module Cucumber
       
       private
       
-      def call(message, timeout = 5)
+      def call(message, args = nil)
+        timeout = 5
+        packet = message
+        packet << ":#{args.to_json}" if args
+        
         begin
-          log.debug("Calling server with message #{message}")
+          log.debug("Calling server with message #{packet}")
           s = socket
-          Timeout.timeout(timeout) { s.puts(message) }
+          Timeout.timeout(timeout) { s.puts(packet) }
           log.debug("Message sent")
           response = fetch_data_from_socket(timeout)
           log.debug("Received response: #{response.strip}")
