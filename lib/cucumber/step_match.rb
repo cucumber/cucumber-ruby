@@ -2,12 +2,12 @@ module Cucumber
   class StepMatch #:nodoc:
     attr_reader :step_definition
 
-    def initialize(step_definition, step_name, formatted_step_name, groups)
-      @step_definition, @step_name, @formatted_step_name, @groups = step_definition, step_name, formatted_step_name, groups
+    def initialize(step_definition, step_name, formatted_step_name, step_arguments)
+      @step_definition, @step_name, @formatted_step_name, @step_arguments = step_definition, step_name, formatted_step_name, step_arguments
     end
 
     def args
-      @groups.map{|g| g.val}
+      @step_arguments.map{|g| g.val}
     end
 
     def name
@@ -35,8 +35,8 @@ module Cucumber
     #
     #   lambda { |param| "[#{param}]" }
     #
-    def format_args(format = lambda{|a| a})
-      @formatted_step_name || @step_name.gzub(@groups, format)
+    def format_args(format = lambda{|a| a}, &proc)
+      @formatted_step_name || replace_arguments(@step_name, @step_arguments, format, &proc)
     end
     
     def file_colon_line
@@ -49,6 +49,24 @@ module Cucumber
 
     def text_length
       @step_definition.text_length
+    end
+
+    def replace_arguments(string, step_arguments, format, &proc)
+      s = string.dup
+      offset = 0
+      step_arguments.each do |step_argument|
+        replacement = if block_given?
+          proc.call(step_argument.val)
+        elsif Proc === format
+          format.call(step_argument.val)
+        else
+          format % step_argument.val
+        end
+
+        s[step_argument.pos + offset, step_argument.val.jlength] = replacement
+        offset += replacement.length - step_argument.val.jlength
+      end
+      s
     end
   end
   

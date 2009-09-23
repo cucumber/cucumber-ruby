@@ -1,7 +1,7 @@
 require 'cucumber/step_match'
 require 'cucumber/core_ext/string'
 require 'cucumber/core_ext/proc'
-require 'cucumber/rb_support/rb_group'
+require 'cucumber/rb_support/regexp_argument_matcher'
 
 module Cucumber
   module RbSupport
@@ -24,8 +24,6 @@ module Cucumber
         end
       end
 
-      attr_reader :proc, :regexp
-
       def initialize(rb_language, regexp, proc)
         raise MissingProc if proc.nil?
         if String === regexp
@@ -35,28 +33,23 @@ module Cucumber
         @rb_language, @regexp, @proc = rb_language, regexp, proc
       end
 
-      def ==(step_definition)
-        self.regexp == step_definition.regexp
+      def regexp_source
+        @regexp.inspect
       end
 
-      def groups(step_name)
-        match = regexp.match(step_name)
-        if match
-          n = 0
-          match.captures.map do |val|
-            n += 1
-            RbGroup.new(val, match.offset(n)[0])
-          end
-        else
-          nil
-        end
+      def ==(step_definition)
+        regexp_source == step_definition.regexp_source
+      end
+
+      def arguments_from(step_name)
+        RegexpArgumentMatcher.arguments_from(@regexp, step_name)
       end
 
       def invoke(args)
         args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
         begin
           args = @rb_language.execute_transforms(args)
-          @rb_language.current_world.cucumber_instance_exec(true, regexp.inspect, *args, &@proc)
+          @rb_language.current_world.cucumber_instance_exec(true, regexp_source, *args, &@proc)
         rescue Cucumber::ArityMismatchError => e
           e.backtrace.unshift(self.backtrace_line)
           raise e

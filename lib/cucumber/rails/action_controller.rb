@@ -28,6 +28,6 @@ rescue NameError # Failsafe was introduced in Rails 2.3.2
   end
 end
 
-Before('@allow_rescue') do
+Before('@allow-rescue') do
   ActionController::Base.allow_rescue = true
 end
