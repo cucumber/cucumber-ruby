@@ -9,7 +9,7 @@ module Cucumber
         @step_definition_files = collect_steps(step_mother)
       end
 
-      def after_visit_features(features)
+      def after_features(features)
         print_summary
       end
 

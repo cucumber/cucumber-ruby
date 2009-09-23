@@ -17,11 +17,11 @@ module Cucumber
         @current_builder = create_builder(@io)
       end
       
-      def before_visit_features(features)
+      def before_features(features)
         start_buffering :features
       end
       
-      def after_visit_features(features)
+      def after_features(features)
         stop_buffering :features
         # <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
         builder.declare!(
@@ -46,45 +46,45 @@ module Cucumber
         end
       end
       
-      def before_visit_feature(feature)
+      def before_feature(feature)
         start_buffering :feature
         @exceptions = []
       end
       
-      def after_visit_feature(feature)
+      def after_feature(feature)
         stop_buffering :feature
         builder.div(:class => 'feature') do
           builder << buffer(:feature)
         end
       end
 
-      def before_visit_comment(comment)
+      def before_comment(comment)
         start_buffering :comment
       end
 
-      def after_visit_comment(comment)
+      def after_comment(comment)
         stop_buffering :comment
         builder.pre(:class => 'comment') do
           builder << buffer(:comment)
         end
       end
 
-      def visit_comment_line(comment_line)
+      def comment_line(comment_line)
         builder.text!(comment_line)
         builder.br
       end
       
-      def after_visit_tags(tags)
+      def after_tags(tags)
         @tag_spacer = nil
       end
       
-      def visit_tag_name(tag_name)
+      def tag_name(tag_name)
         builder.text!(@tag_spacer) if @tag_spacer
         @tag_spacer = ' '
         builder.span(tag_name, :class => 'tag')
       end
 
-      def visit_feature_name(name)
+      def feature_name(name)
         lines = name.split(/\r?\n/)
         return if lines.empty?
         builder.h2 do |h2|
@@ -98,12 +98,12 @@ module Cucumber
         end
       end
 
-      def before_visit_background(background)
+      def before_background(background)
         @in_background = true
         start_buffering :background
       end
       
-      def after_visit_background(background)
+      def after_background(background)
         stop_buffering :background
         @in_background = nil
         builder.div(:class => 'background') do
@@ -111,7 +111,7 @@ module Cucumber
         end
       end
 
-      def visit_background_name(keyword, name, file_colon_line, source_indent)
+      def background_name(keyword, name, file_colon_line, source_indent)
         @listing_background = true
         builder.h3 do |h3|
           builder.span(keyword, :class => 'keyword')
@@ -120,11 +120,11 @@ module Cucumber
         end
       end
 
-      def before_visit_feature_element(feature_element)
+      def before_feature_element(feature_element)
         start_buffering :feature_element
       end
       
-      def after_visit_feature_element(feature_element)
+      def after_feature_element(feature_element)
         stop_buffering :feature_element
         css_class = {
           Ast::Scenario        => 'scenario',
@@ -137,7 +137,7 @@ module Cucumber
         @open_step_list = true
       end
 
-      def visit_scenario_name(keyword, name, file_colon_line, source_indent)
+      def scenario_name(keyword, name, file_colon_line, source_indent)
         @listing_background = false
         builder.h3 do
           builder.span(keyword, :class => 'keyword')
@@ -146,12 +146,12 @@ module Cucumber
         end
       end
       
-      def before_visit_outline_table(outline_table)
+      def before_outline_table(outline_table)
         @outline_row = 0
         start_buffering :outline_table
       end
       
-      def after_visit_outline_table(outline_table)
+      def after_outline_table(outline_table)
         stop_buffering :outline_table
         builder.table do
           builder << buffer(:outline_table)
@@ -159,18 +159,18 @@ module Cucumber
         @outline_row = nil
       end
 
-      def before_visit_examples(examples)
+      def before_examples(examples)
         start_buffering :examples
       end
       
-      def after_visit_examples(examples)
+      def after_examples(examples)
         stop_buffering :examples
         builder.div(:class => 'examples') do
           builder << buffer(:examples)
         end
       end
 
-      def visit_examples_name(keyword, name)
+      def examples_name(keyword, name)
         builder.h4 do
           builder.span(keyword, :class => 'keyword')
           builder.text!(' ')
@@ -178,22 +178,22 @@ module Cucumber
         end
       end
 
-      def before_visit_steps(steps)
+      def before_steps(steps)
         start_buffering :steps
       end
       
-      def after_visit_steps(steps)
+      def after_steps(steps)
         stop_buffering :steps
         builder.ol do
           builder << buffer(:steps)
         end
       end
       
-      def before_visit_step(step)
+      def before_step(step)
         @step_id = step.dom_id
       end
 
-      def before_visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+      def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         start_buffering :step_result
         @hide_this_step = false
         if exception
@@ -210,7 +210,7 @@ module Cucumber
         @status = status
       end
       
-      def after_visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+      def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         stop_buffering :step_result
         return if @hide_this_step
         builder.li(:id => @step_id, :class => "step #{status}") do
@@ -218,7 +218,7 @@ module Cucumber
         end
       end
 
-      def visit_step_name(keyword, step_match, status, source_indent, background)
+      def step_name(keyword, step_match, status, source_indent, background)
         @step_matches ||= []
         background_in_scenario = background && !@listing_background
         @skip_step = @step_matches.index(step_match) || background_in_scenario
@@ -229,16 +229,16 @@ module Cucumber
         end
       end
 
-      def visit_exception(exception, status)
+      def exception(exception, status)
         return if @hide_this_step
         builder.pre(format_exception(exception), :class => status)
       end
       
-      def before_visit_multiline_arg(multiline_arg)
+      def before_multiline_arg(multiline_arg)
         start_buffering :multiline_arg
       end
 
-      def after_visit_multiline_arg(multiline_arg)
+      def after_multiline_arg(multiline_arg)
         stop_buffering :multiline_arg
         return if @hide_this_step || @skip_step
         if Ast::Table === multiline_arg
@@ -250,20 +250,20 @@ module Cucumber
         end
       end
 
-      def visit_py_string(string)
+      def py_string(string)
         return if @hide_this_step
         builder.pre(:class => 'val') do |pre|
           builder << string.gsub("\n", '&#x000A;')
         end
       end
 
-      def before_visit_table_row(table_row)
+      def before_table_row(table_row)
         @row_id = table_row.dom_id
         @col_index = 0
         start_buffering :table_row
       end
       
-      def after_visit_table_row(table_row)
+      def after_table_row(table_row)
         stop_buffering :table_row
         return if @hide_this_step
         builder.tr(:id => @row_id) do
@@ -281,7 +281,7 @@ module Cucumber
         @outline_row += 1 if @outline_row
       end
 
-      def visit_table_cell_value(value, status)
+      def table_cell_value(value, status)
         return if @hide_this_step
         
         cell_type = @outline_row == 0 ? :th : :td

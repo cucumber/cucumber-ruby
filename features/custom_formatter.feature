@@ -8,7 +8,7 @@ Feature: Custom Formatter
       | 1           | 1                                    | 1     | 1     | 1    | 2            | 1           | 2             | 1           | 2      | 1    |
 
       """
-  
+
     Scenario: my own formatter
       Given a standard Cucumber project directory structure
       And a file named "features/f.feature" with:
@@ -31,7 +31,7 @@ Feature: Custom Formatter
               @io = io
             end
 
-            def visit_scenario_name(keyword, name, file_colon_line, source_indent)
+            def scenario_name(keyword, name, file_colon_line, source_indent)
               @io.puts "$ #{name.upcase}"
             end
           end

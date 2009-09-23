@@ -14,15 +14,15 @@ module Cucumber
         @locations = []
       end
 
-      def after_visit_features(features)
+      def after_features(features)
         print_summary(features)
       end
 
-      def before_visit_step(step)
+      def before_step(step)
         @step = step
       end
 
-      def visit_step_name(keyword, step_match, status, source_indent, background)
+      def step_name(keyword, step_match, status, source_indent, background)
         if step_match.step_definition
           location = @step.file_colon_line
           return if @locations.index(location)

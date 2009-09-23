@@ -12,13 +12,13 @@ module Cucumber
         @step_definition_durations = Hash.new { |h,step_definition| h[step_definition] = [] }
       end
 
-      def visit_step(step)
+      def step(step)
         @step_duration = Time.now
         @step = step
         super
       end
 
-      def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+      def step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         duration = Time.now - @step_duration
         super
 

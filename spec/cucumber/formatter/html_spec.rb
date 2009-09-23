@@ -25,7 +25,7 @@ module Cucumber
       end
       
       def run(features)
-        options = { :verbose => true }
+        # options = { :verbose => true }
         options = {}
         tree_walker = Cucumber::Ast::TreeWalker.new(@step_mother, [@formatter], options, STDOUT)
         tree_walker.visit_features(features)
@@ -59,7 +59,7 @@ module Cucumber
       include SpecHelper
 
       it "should not raise an error when visiting a blank feature name" do
-        lambda { @formatter.visit_feature_name("") }.should_not raise_error
+        lambda { @formatter.feature_name("") }.should_not raise_error
       end
       
       describe "given a single feature" do
