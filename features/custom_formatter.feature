@@ -8,7 +8,7 @@ Feature: Custom Formatter
       | 1           | 1                                    | 1     | 1     | 1    | 2            | 1           | 2             | 1           | 2      | 1    |
 
       """
-  
+
     Scenario: my own formatter
       Given a standard Cucumber project directory structure
       And a file named "features/f.feature" with:
@@ -25,9 +25,8 @@ Feature: Custom Formatter
       And a file named "features/support/ze/formator.rb" with:
         """
         module Ze
-          class Formator < Cucumber::Ast::Visitor
+          class Formator
             def initialize(step_mother, io, options)
-              super(step_mother)
               @io = io
             end
 
