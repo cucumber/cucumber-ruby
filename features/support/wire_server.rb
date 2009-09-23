@@ -84,8 +84,8 @@ module Cucumber
         send_response("DIFF:" +  JSON.unparse(table))
         diffresult = @socket.gets
         case(diffresult)
-          when /^DIFFOK/
-          when /^DIFFKO/
+          when /^TABLE_DIFF_OK/
+          when /^TABLE_DIFF_KO/
             raise DiffKo
         end
       end

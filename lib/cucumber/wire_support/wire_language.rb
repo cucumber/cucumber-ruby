@@ -25,11 +25,11 @@ module Cucumber
       end
 
       def table_diff_ok
-        call("DIFFOK")
+        call("TABLE_DIFF_OK")
       end
       
       def table_diff_ko
-        call("DIFFKO")        
+        call("TABLE_DIFF_KO")
       end
     end
     
