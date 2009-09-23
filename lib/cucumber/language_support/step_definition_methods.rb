@@ -4,8 +4,8 @@ module Cucumber
   module LanguageSupport
     module StepDefinitionMethods
       def step_match(name_to_match, name_to_report)
-        if(groups = groups(name_to_match))
-          StepMatch.new(self, name_to_match, name_to_report, groups)
+        if(arguments = arguments_from(name_to_match))
+          StepMatch.new(self, name_to_match, name_to_report, arguments)
         else
           nil
         end
