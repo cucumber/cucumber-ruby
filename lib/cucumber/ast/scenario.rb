@@ -7,33 +7,45 @@ module Cucumber
       
       attr_reader :name, :line
       
+      class EmptyBackground 
+        def failed?
+          false
+        end
+        
+        def feature_elements
+          []
+        end
+        
+        def step_collection(step_invocations)
+          StepCollection.new(step_invocations)
+        end
+      end
+      
       def initialize(background, comment, tags, line, keyword, name, steps)
-        @background, @comment, @tags, @line, @keyword, @name = background, comment, tags, line, keyword, name
+        @background = background || EmptyBackground.new
+        @comment, @tags, @line, @keyword, @name = comment, tags, line, keyword, name
         attach_steps(steps)
 
         step_invocations = steps.map{|step| step.step_invocation}
-        if @background
-          @steps = @background.step_collection(step_invocations)
-          @background.feature_elements << self
-        else
-          @steps = StepCollection.new(step_invocations)
-        end
+        @steps = @background.step_collection(step_invocations)
+        @background.feature_elements << self
       end
 
       def accept(visitor)
         return if $cucumber_interrupted
-        visitor.visit_comment(@comment) unless @comment.empty?
-        visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
+        
+        with_visitor(visitor) do
+          visitor.visit_comment(@comment) unless @comment.empty?
+          visitor.visit_tags(@tags)
+          visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
 
-        background_failed = @background && @background.failed?
-        skip_invoke! if background_failed
-        skip_hooks = background_failed || @executed
-        visitor.step_mother.before_and_after(self, skip_hooks) do
-          visitor.visit_steps(@steps)
+          skip_invoke! if @background.failed?
+          visitor.step_mother.before_and_after(self, skip_hooks?) do
+            skip_invoke! if failed?
+            visitor.visit_steps(@steps)
+          end
+          @executed = true
         end
-        visitor.visit_exception(@exception, :failed) if @exception
-        @executed = true
       end
 
       # Returns true if one or more steps failed
@@ -43,6 +55,7 @@ module Cucumber
       
       def fail!(exception)
         @exception = exception
+        @current_visitor.visit_exception(@exception, :failed)
       end
 
       # Returns true if all steps passed
@@ -78,7 +91,18 @@ module Cucumber
         sexp += steps if steps.any?
         sexp
       end
-
+      
+      private
+      
+      def with_visitor(visitor)
+        @current_visitor = visitor
+        yield
+        @current_visitor = nil
+      end
+      
+      def skip_hooks?
+        @background.failed? || @executed
+      end
     end
   end
 end

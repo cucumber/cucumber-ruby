@@ -6,6 +6,9 @@ module Cucumber
       BUILTIN_FORMATS = {
         'html'      => ['Cucumber::Formatter::Html',     'Generates a nice looking HTML report.'],
         'pretty'    => ['Cucumber::Formatter::Pretty',   'Prints the feature as is - in colours.'],
+        'pdf'       => ['Cucumber::Formatter::Pdf',      "Generates a PDF report. You need to have the\n" + 
+                                                         "#{' ' * 51}prawn gem installed. Will pick up logo from\n" + 
+                                                         "#{' ' * 51}features/support/logo.png if present."],
         'profile'   => ['Cucumber::Formatter::Profile',  'Prints the 10 slowest steps at the end.'],
         'progress'  => ['Cucumber::Formatter::Progress', 'Prints one character per scenario.'],
         'rerun'     => ['Cucumber::Formatter::Rerun',    'Prints failing files with line numbers.'],
@@ -17,7 +20,9 @@ module Cucumber
       max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
       FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
         "  #{key}#{' ' * (max - key.length)} : #{BUILTIN_FORMATS[key][1]}"
-      end) + ["FORMAT can also be the fully qualified class name of",
+      end) + ["Use --format rerun --out features.txt to write out failing",
+        "features. You can rerun them with cucumber @features.txt.",
+        "FORMAT can also be the fully qualified class name of",
         "your own custom formatter. If the class isn't loaded,",
         "Cucumber will attempt to require a file with a relative",
         "file name that is the underscore name of the class name.",
@@ -87,6 +92,7 @@ module Cucumber
           opts.banner = ["Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+", "",
             "Examples:",
             "cucumber examples/i18n/en/features",
+            "cucumber @features.txt (See --format rerun)",
             "cucumber --language it examples/i18n/it/features/somma.feature:6:98:113",
             "cucumber -s -i http://rubyurl.com/eeCl", "", "",
           ].join("\n")
@@ -128,16 +134,14 @@ module Cucumber
           end
           opts.on("-t TAGS", "--tags TAGS",
             "Only execute the features or scenarios with the specified tags.",
-            "TAGS must be comma-separated without spaces. They can be",
-            "specified with or without the @ prefix. Example: --tags dev\n",
+            "TAGS must be comma-separated without spaces. Example: --tags @dev\n",
             "Negative tags: Prefix tags with ~ to exclude features or scenarios",
-            "having that tag.\n",
+            "having that tag. Example: --tags ~@slow\n",
             "Limit WIP: Positive tags can be given a threshold to limit the",
-            "number of occurrences. Example: --tags qa:3 will fail if there",
+            "number of occurrences. Example: --tags @qa:3 will fail if there",
             "are more than 3 occurrences of the @qa tag.") do |v|
-            include_tags, exclude_tags = *parse_tags(v)
-            @options[:include_tags].merge!(include_tags)
-            @options[:exclude_tags].merge!(exclude_tags)
+            tag_names = parse_tags(v)
+            @options[:tag_names].merge!(tag_names)
           end
           opts.on("-n NAME", "--name NAME",
             "Only execute the feature elements which match part of the given name.",
@@ -180,6 +184,7 @@ module Cucumber
             @options[:dry_run] = true
             @quiet = true
           end
+
           opts.on("-m", "--no-multiline",
             "Don't print multiline strings and tables under steps.") do
             @options[:no_multiline] = true
@@ -230,7 +235,7 @@ module Cucumber
             Kernel.exit
           end
         end.parse!
-
+ 
         if @quiet
           @options[:snippets] = @options[:source] = false
         else
@@ -269,22 +274,15 @@ module Cucumber
 
       def parse_tags(tag_string)
         tag_names = tag_string.split(",")
-        excludes, includes = tag_names.partition{|tag| tag =~ /^~/}
-        excludes = excludes.map{|tag| tag[1..-1]}
-
-        # Strip @
-        includes = includes.map{|tag| Ast::Tags.strip_prefix(tag)}
-        excludes = excludes.map{|tag| Ast::Tags.strip_prefix(tag)}
-        [parse_tag_limits(includes), parse_tag_limits(excludes)]
+        parse_tag_limits(tag_names)
       end
  
-      def parse_tag_limits(includes)
-        dict = {}
-        includes.each do |tag|
+      def parse_tag_limits(tag_names)
+        tag_names.inject({}) do |dict, tag|
           tag, limit = tag.split(':')
           dict[tag] = limit.nil? ? limit : limit.to_i
+          dict
         end
-        dict
       end
 
       def disable_profile_loading?
@@ -321,8 +319,9 @@ module Cucumber
       def reverse_merge(other_options)
         @options = other_options.options.merge(@options)
         @options[:require] += other_options[:require]
-        @options[:include_tags].merge! other_options[:include_tags]
-        @options[:exclude_tags].merge! other_options[:exclude_tags]
+        @options[:excludes] += other_options[:excludes]
+        @options[:name_regexps] += other_options[:name_regexps]
+        @options[:tag_names].merge! other_options[:tag_names]
         @options[:env_vars] = other_options[:env_vars].merge(@options[:env_vars])
         if @options[:paths].empty?
           @options[:paths] = other_options[:paths]
@@ -374,8 +373,7 @@ module Cucumber
           :dry_run      => false,
           :formats      => [],
           :excludes     => [],
-          :include_tags => {},
-          :exclude_tags => {},
+          :tag_names    => {},
           :name_regexps => [],
           :env_vars     => {},
           :diff_enabled => true

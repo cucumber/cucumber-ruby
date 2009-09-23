@@ -68,8 +68,8 @@ Feature: hi
           parse("# My comment\n@hello @world Feature: hi\n").to_sexp.should ==
           [:feature, nil, "Feature: hi",
             [:comment, "# My comment\n"],
-            [:tag, "hello"],
-            [:tag, "world"]]
+            [:tag, "@hello"],
+            [:tag, "@world"]]
         end
 
         it "should not take the tags as part of a multiline name feature element" do
@@ -77,7 +77,7 @@ Feature: hi
           [:feature, nil, "Feature: hi",
            [:scenario, 2, "Scenario:", "test"], 
            [:scenario, 4, "Scenario:", "another", 
-             [:tag, "hello"]]]
+             [:tag, "@hello"]]]
         end
 
         it "should parse a file with tags on a scenario" do
@@ -94,13 +94,13 @@ Feature: hi
   Scenario: Second}).to_sexp.should ==
           [:feature, nil, "Feature: hi",
             [:comment, "# FC\n  "],
-            [:tag, "ft"],
+            [:tag, "@ft"],
             [:scenario, 6, 'Scenario:', 'First',
-              [:tag, "st1"], [:tag, "st2"],
+              [:tag, "@st1"], [:tag, "@st2"],
               [:step_invocation, 7, "Given", "Pepper"]
             ],
             [:scenario, 11, 'Scenario:', 'Second',
-              [:tag, "st3"], [:tag, "st4"], [:tag, "ST5"], [:tag, "#^%&ST6**!"]]]
+              [:tag, "@st3"], [:tag, "@st4"], [:tag, "@ST5"], [:tag, "@#^%&ST6**!"]]]
         end
       end
       

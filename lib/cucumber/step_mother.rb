@@ -1,4 +1,3 @@
-require 'logger'
 require 'cucumber/constantize'
 require 'cucumber/core_ext/instance_exec'
 require 'cucumber/parser/natural_language'
@@ -52,7 +51,6 @@ module Cucumber
   # This is the meaty part of Cucumber that ties everything together.
   class StepMother
     include Constantize
-    
     attr_writer :options, :visitor, :log
 
     def initialize
@@ -189,9 +187,14 @@ module Cucumber
     end
 
     def snippet_text(step_keyword, step_name, multiline_arg_class) #:nodoc:
+      load_programming_language('rb') if unknown_programming_language?
       @programming_languages.map do |programming_language|
         programming_language.snippet_text(step_keyword, step_name, multiline_arg_class)
       end.join("\n")
+    end
+
+    def unknown_programming_language?
+      @programming_languages.empty?
     end
 
     def before_and_after(scenario, skip_hooks=false) #:nodoc:
@@ -233,6 +236,12 @@ module Cucumber
       end
     end
     
+    def after_configuration(configuration) #:nodoc
+      @programming_languages.each do |programming_language|
+        programming_language.after_configuration(configuration)
+      end
+    end
+
     private
 
     # Registers a StepDefinition. This can be a Ruby StepDefintion,
@@ -240,7 +249,7 @@ module Cucumber
     # contract (API).
     def register_step_definition(step_definition)
       step_definitions.each do |already|
-        raise Redundant.new(already, step_definition) if already.same_regexp?(step_definition.regexp)
+        raise Redundant.new(already, step_definition) if already == step_definition
       end
       step_definitions << step_definition
       step_definition

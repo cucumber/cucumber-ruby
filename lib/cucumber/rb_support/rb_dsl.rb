@@ -1,5 +1,3 @@
-require 'cucumber/rb_support/rb_hook'
-
 module Cucumber
   module RbSupport
     # This module defines the methods you can use to define pure Ruby
@@ -19,6 +17,10 @@ module Cucumber
 
         def register_rb_hook(phase, tag_names, proc)
           @rb_language.register_rb_hook(phase, tag_names, proc)
+        end
+
+        def register_rb_transform(regexp, proc)
+          @rb_language.register_rb_transform(regexp, proc)          
         end
 
         def register_rb_step_definition(regexp, proc)
@@ -65,6 +67,21 @@ module Cucumber
       def AfterStep(*tag_names, &proc)
         RbDsl.register_rb_hook('after_step', tag_names, proc)
       end
+
+      # Registers a proc that will be called with a step definition argument if it 
+      # matches the pattern passed as the first argument to Transform. Alternatively, if
+      # the pattern contains captures then they will be yielded as arguments to the
+      # provided proc. The return value of the proc is consequently yielded to the
+      # step definition.
+      def Transform(regexp, &proc)
+        RbDsl.register_rb_transform(regexp, proc)
+      end
+      
+      # Registers a proc that will run after Cucumber is configured. You can register as 
+      # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
+      def AfterConfiguration(&proc)
+        RbDsl.register_rb_hook('after_configuration', [], proc)
+      end      
 
       # Registers a new Ruby StepDefinition. This method is aliased
       # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>, and

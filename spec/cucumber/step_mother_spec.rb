@@ -184,4 +184,102 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
       @rb.hooks_for(:before, scenario).should == [fish]
     end
   end
+
+  describe StepMother, "step argument transformations" do
+    before do
+      @dsl = Object.new
+      @dsl.extend(RbSupport::RbDsl)
+
+      @step_mother = StepMother.new
+      @step_mother.load_natural_language('en')
+      @rb = @step_mother.load_programming_language('rb')
+    end
+
+    describe "without capture groups" do
+      it "complains when registering with a with no transform block" do
+        lambda do
+          @dsl.Transform('^abc$')
+        end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
+      end
+      
+      it "complains when registering with a zero-arg transform block" do
+        lambda do
+          @dsl.Transform('^abc$') {42}
+        end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
+      end
+
+      it "complains when registering with a splat-arg transform block" do
+        lambda do
+          @dsl.Transform('^abc$') {|*splat| 42 }
+        end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
+      end
+
+      it "complains when transforming with an arity mismatch" do
+        lambda do
+          @dsl.Transform('^abc$') {|one, two| 42 }
+          @rb.execute_transforms(['abc'])
+        end.should raise_error(Cucumber::ArityMismatchError)
+      end
+
+      it "allows registering a regexp pattern that yields the step_arg matched" do
+        @dsl.Transform(/^ab*c$/) {|arg| 42}
+        @rb.execute_transforms(['ab']).should == ['ab']
+        @rb.execute_transforms(['ac']).should == [42]
+        @rb.execute_transforms(['abc']).should == [42]
+        @rb.execute_transforms(['abbc']).should == [42]
+      end
+    end
+
+    describe "with capture groups" do
+      it "complains when registering with a with no transform block" do
+        lambda do
+          @dsl.Transform('^a(.)c$')
+        end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
+      end
+      
+      it "complains when registering with a zero-arg transform block" do
+        lambda do
+          @dsl.Transform('^a(.)c$') { 42 }
+        end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
+      end
+
+      it "complains when registering with a splat-arg transform block" do
+        lambda do
+          @dsl.Transform('^a(.)c$') {|*splat| 42 }
+        end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
+      end
+
+      it "complains when transforming with an arity mismatch" do
+        lambda do
+          @dsl.Transform('^a(.)c$') {|one, two| 42 }
+          @rb.execute_transforms(['abc'])
+        end.should raise_error(Cucumber::ArityMismatchError)
+      end
+      
+      it "allows registering a regexp pattern that yields capture groups" do
+        @dsl.Transform(/^shape: (.+), color: (.+)$/) do |shape, color|
+          {shape.to_sym => color.to_sym}
+        end
+        @rb.execute_transforms(['shape: circle, color: blue']).should == [{:circle => :blue}]
+        @rb.execute_transforms(['shape: square, color: red']).should == [{:square => :red}]
+        @rb.execute_transforms(['not shape: square, not color: red']).should == ['not shape: square, not color: red']
+      end
+    end
+    
+    it "allows registering a string pattern" do
+      @dsl.Transform('^ab*c$') {|arg| 42}
+      @rb.execute_transforms(['ab']).should == ['ab']
+      @rb.execute_transforms(['ac']).should == [42]
+      @rb.execute_transforms(['abc']).should == [42]
+      @rb.execute_transforms(['abbc']).should == [42]
+    end
+
+    it "gives match priority to transforms defined last" do
+      @dsl.Transform(/^transform_me$/) {|arg| :foo }
+      @dsl.Transform(/^transform_me$/) {|arg| :bar }
+      @dsl.Transform(/^transform_me$/) {|arg| :baz }
+      @rb.execute_transforms(['transform_me']).should == [:baz]
+    end
+  end
+
 end

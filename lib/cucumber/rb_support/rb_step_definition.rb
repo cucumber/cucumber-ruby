@@ -1,6 +1,7 @@
 require 'cucumber/step_match'
 require 'cucumber/core_ext/string'
 require 'cucumber/core_ext/proc'
+require 'cucumber/rb_support/rb_group'
 
 module Cucumber
   module RbSupport
@@ -23,25 +24,32 @@ module Cucumber
         end
       end
 
-      attr_reader :proc
-
-      def initialize(rb_language, pattern, proc)
+      def initialize(rb_language, regexp, proc)
         raise MissingProc if proc.nil?
-        if String === pattern
-          p = pattern.gsub(/\$\w+/, '(.*)') # Replace $var with (.*)
-          pattern = Regexp.new("^#{p}$") 
+        if String === regexp
+          p = regexp.gsub(/\$\w+/, '(.*)') # Replace $var with (.*)
+          regexp = Regexp.new("^#{p}$") 
         end
-        @rb_language, @regexp, @proc = rb_language, pattern, proc
+        @rb_language, @regexp, @proc = rb_language, regexp, proc
       end
 
-      def regexp
-        @regexp
+      def regexp_source
+        @regexp.inspect
+      end
+
+      def ==(step_definition)
+        regexp_source == step_definition.regexp_source
+      end
+
+      def groups(step_name)
+        RbGroup.groups_from(@regexp, step_name)
       end
 
       def invoke(args)
         args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
         begin
-          @rb_language.current_world.cucumber_instance_exec(true, regexp.inspect, *args, &@proc)
+          args = @rb_language.execute_transforms(args)
+          @rb_language.current_world.cucumber_instance_exec(true, regexp_source, *args, &@proc)
         rescue Cucumber::ArityMismatchError => e
           e.backtrace.unshift(self.backtrace_line)
           raise e

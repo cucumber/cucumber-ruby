@@ -89,12 +89,18 @@ module Cucumber
           BACKTRACE_FILTER_PATTERNS.detect { |p| line =~ p }
         end
         
-        if Cucumber::JRUBY
-          # In order to filter backtraces properly on JRuby, we need to
-          # create a new Exception - otherwise the backtrace is *not*
-          # filtered. The rescue is for org.jruby.NativeException, which
-          # cannot be new'ed.
-          e = e.class.new(e.message) rescue Exception.new(e.message)
+        if Cucumber::JRUBY && e.class.name == 'NativeException'
+          # JRuby's NativeException ignores #set_backtrace.
+          # We're fixing it.
+          e.instance_eval do
+            def set_backtrace(backtrace)
+              @backtrace = backtrace
+            end
+
+            def backtrace
+              @backtrace
+            end
+          end
         end
         e.set_backtrace(filtered)
         e

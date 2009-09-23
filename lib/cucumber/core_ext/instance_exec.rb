@@ -8,6 +8,7 @@ module Cucumber
 end
 
 class Object #:nodoc:
+  # TODO: Move most of this stuff out to an InstanceExecutor class.
   def cucumber_instance_exec(check_arity, pseudo_method, *args, &block)
     cucumber_run_with_backtrace_filtering(pseudo_method) do
       if check_arity && !cucumber_compatible_arity?(args, block)

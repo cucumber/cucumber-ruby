@@ -64,7 +64,7 @@ module Cucumber
 
       it "should pretty print" do
         require 'cucumber/formatter/pretty'
-        visitor = Formatter::Pretty.new(@step_mother, STDOUT, {:comment => true, :include_tags => {}, :exclude_tags => {}})
+        visitor = Formatter::Pretty.new(@step_mother, STDOUT, {:comment => true, :tag_names => {}})
         visitor.visit_feature_element(@scenario_outline)
       end
     end

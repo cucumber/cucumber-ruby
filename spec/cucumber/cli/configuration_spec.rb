@@ -18,7 +18,6 @@ module Cli
     end
 
     before(:each) do
-      #given_cucumber_yml_defined_as({'default' => '-q'})
       File.stub!(:exist?).and_return(false) # Meaning, no cucumber.yml exists
       Kernel.stub!(:exit).and_return(nil)
     end
@@ -33,24 +32,12 @@ module Cli
 
     attr_reader :out, :error
 
-
-    it "should require files in support paths first" do
-      given_the_following_files("/features/step_definitions/foo.rb","/features/support/bar.rb")
-
-      config.parse!(%w{--require /features})
-
-      config.step_defs_to_load.should == [
-        "/features/support/bar.rb",
-        "/features/step_definitions/foo.rb"
-      ]
-    end
-
     it "should require env.rb files first" do
       given_the_following_files("/features/support/a_file.rb","/features/support/env.rb")
 
       config.parse!(%w{--require /features})
 
-      config.step_defs_to_load.should == [
+      config.support_to_load.should == [
         "/features/support/env.rb",
         "/features/support/a_file.rb"
       ]
@@ -61,7 +48,7 @@ module Cli
 
       config.parse!(%w{--require /features --dry-run})
 
-      config.step_defs_to_load.should == [
+      config.support_to_load.should == [
         "/features/support/a_file.rb"
       ]
     end
@@ -85,7 +72,7 @@ module Cli
 
         config.parse!(%w{--require /features --exclude a_file.rb})
 
-        config.step_defs_to_load.should == [
+        config.all_files_to_load.should == [
           "/features/support/env.rb"
         ]
       end
@@ -97,7 +84,7 @@ module Cli
 
         config.parse!(%w{--require /features --exclude foo[df] --exclude blah})
 
-        config.step_defs_to_load.should == [
+        config.all_files_to_load.should == [
           "/features/support/bar.rb",
           "/features/support/fooz.rb"
         ]
@@ -190,9 +177,7 @@ END_OF_MESSAGE
 
 
       ["--no-profile", "-P"].each do |flag|
-
         context 'when none is specified with #{flag}' do
-
           it "disables profiles" do
             given_cucumber_yml_defined_as({'default' => '-v --require file_specified_in_default_profile.rb'})
 
@@ -206,12 +191,8 @@ END_OF_MESSAGE
             config.parse!("#{flag} --require some_file.rb".split(" "))
             out.string.should =~ /Disabling profiles.../
           end
-
         end
-
       end
-
-
 
       it "issues a helpful error message when a specified profile exists but is nil or blank" do
         [nil, '   '].each do |bad_input|
@@ -305,7 +286,13 @@ END_OF_MESSAGE
     it "should not accept multiple --format options when both use implicit STDOUT" do
       lambda do
         config.parse!(%w{--format pretty --format progress})
-      end.should raise_error("All but one formatter must use --out, only one can print to STDOUT")
+      end.should raise_error("All but one formatter must use --out, only one can print to each stream (or STDOUT)")
+    end
+
+    it "should not accept multiple --out streams pointing to the same place" do
+      lambda do
+        config.parse!(%w{--format pretty --out file1 --format progress --out file1})
+      end.should raise_error("All but one formatter must use --out, only one can print to each stream (or STDOUT)")
     end
 
     it "should associate --out to previous --format" do

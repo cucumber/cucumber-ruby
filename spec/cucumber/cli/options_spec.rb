@@ -92,11 +92,8 @@ module Cli
       end
 
       context '-t TAGS --tags TAGS' do
-        it "removes the @ prefix" do
-          after_parsing('-t @foo,bar') { options[:include_tags].should == {'foo' => nil, 'bar' => nil} }
-        end
         it "designates tags prefixed with ~ as tags to be excluded" do
-          after_parsing('--tags ~@foo,bar') { options[:exclude_tags].should == {'foo' => nil} }
+          after_parsing('--tags ~@foo,@bar') { options[:tag_names].should == {'~@foo' => nil, '@bar' => nil} }
         end
       end
 
@@ -160,16 +157,10 @@ module Cli
           options[:require].should == %w[foo.rb features dog.rb]
         end
 
-        it "combines the include_tags of both" do
-          given_cucumber_yml_defined_as('baz' => %w[-t bar])
-          options.parse!(%w[--tags foo -p baz])
-          options[:include_tags].should == {'foo' => nil, 'bar' => nil}
-        end
-
-        it "combines the exclude_tags of both" do
-          given_cucumber_yml_defined_as('baz' => %w[-t ~bar])
-          options.parse!(%w[--tags ~foo -p baz])
-          options[:exclude_tags].should == {'foo' => nil, 'bar' => nil}
+        it "combines the tag names of both" do
+          given_cucumber_yml_defined_as('baz' => %w[-t @bar])
+          options.parse!(%w[--tags @foo -p baz])
+          options[:tag_names].should == {'@foo' => nil, '@bar' => nil}
         end
 
         it "only takes the paths from the original options, and disgregards the profiles" do

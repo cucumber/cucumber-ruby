@@ -48,7 +48,7 @@ Given /^I have environment variable (\w+) set to "([^\"]*)"$/ do |variable, valu
 end
 
 When /^I run cucumber (.*)$/ do |cucumber_opts|
-  run "#{Cucumber::RUBY_BINARY} -I #{Spork::LIBDIR} #{Cucumber::BINARY} --no-color #{cucumber_opts}"
+  run "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} --no-color #{cucumber_opts}"
 end
 
 When /^I run rake (.*)$/ do |rake_opts|
@@ -94,14 +94,14 @@ Then /^"([^\"]*)" with junit duration "([^\"]*)" should contain$/ do |actual_fil
   actual.should == text
 end
 
-Then /^"([^\"]*)" should match$/ do |file, text|
+Then /^"([^\"]*)" should match "([^\"]*)"$/ do |file, text|
   IO.read(file).should =~ Regexp.new(text)
 end
 
 Then /^"([^\"]*)" should have the same contents as "([^\"]*)"$/ do |actual_file, expected_file|
   actual = IO.read(actual_file)
   actual = replace_duration(actual, '0m30.005s')
-  # Comment out to replace expected file. Use with care! Remember to update duration afterwards.
+  # Comment out to replace expected file. Use with care!
   # File.open(expected_file, "w") {|io| io.write(actual)}
   actual.should == IO.read(expected_file)
 end

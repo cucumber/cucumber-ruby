@@ -7,6 +7,12 @@ module Cucumber
           alias_method adverb, :__cucumber_invoke
         end
       end
+
+      # Call a Transform with a string from another Transform definition
+      def Transform(arg)
+        rb = @__cucumber_step_mother.load_programming_language('rb')
+        rb.execute_transforms([arg]).first
+      end
     
       attr_writer :__cucumber_step_mother
 

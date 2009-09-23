@@ -8,17 +8,12 @@ require 'cucumber/formatter/color_io'
 require 'cucumber/cli/language_help_formatter'
 require 'cucumber/cli/configuration'
 require 'cucumber/cli/drb_client'
+require 'cucumber/ast/tags'
 
 module Cucumber
   module Cli
     class Main
       FAILURE = 1
-
-      class LogFormatter < ::Logger::Formatter
-        def call(severity, time, progname, msg)
-          msg
-        end
-      end
 
       class << self
         def step_mother
@@ -46,19 +41,13 @@ module Cucumber
           end
         end
         step_mother.options = configuration.options
-        
-        logger = Logger.new(@out_stream)
-        logger.formatter = LogFormatter.new
-        logger.level = Logger::INFO
-        logger.level = Logger::DEBUG if configuration.verbose?
-        step_mother.log = logger
+        step_mother.log = configuration.log
 
-        # Feature files must be loaded before files are required.
-        # This is because i18n step methods are only aliased when
-        # features are loaded. If we swap the order, the requires
-        # will fail.
+        step_mother.load_code_files(configuration.support_to_load)
+        step_mother.after_configuration(configuration)
         features = step_mother.load_plain_text_features(configuration.feature_files)
         step_mother.load_code_files(configuration.step_defs_to_load)
+
         enable_diffing
 
         visitor = configuration.build_formatter_broadcaster(step_mother)
@@ -80,9 +69,9 @@ module Cucumber
 
       def exceeded_tag_limts?(features)
         exceeded = false
-        configuration.options[:include_tags].each do |tag, limit|
-          unless limit.nil?
-            tag_count = features.tag_count(tag)
+        configuration.options[:tag_names].each do |tag_name, limit|
+          if !Ast::Tags.exclude_tag?(tag_name) && limit
+            tag_count = features.tag_count(tag_name)
             if tag_count > limit.to_i
               exceeded = true
             end
@@ -97,10 +86,6 @@ module Cucumber
         @configuration = Configuration.new(@out_stream, @error_stream)
         @configuration.parse!(@args)
         @configuration
-      end
-
-      def verbose_log(string)
-        @out_stream.puts(string) if configuration.verbose?
       end
 
       private
