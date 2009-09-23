@@ -1,5 +1,4 @@
 require 'cucumber/formatter/ordered_xml_markup'
-require 'ruby-debug'
 
 module Cucumber
   module Formatter
