@@ -1,5 +1,13 @@
 module Cucumber
   module RbSupport
+    # A Group encapsulates data from a regexp match.
+    # A Group instance has to attributes:
+    #
+    # * The value of the group
+    # * The start index from the matched string where the group value starts
+    #
+    # See rb_group_spec.rb for examples
+    #
     class RbGroup
       attr_reader :val, :start
 
