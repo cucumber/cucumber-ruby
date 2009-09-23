@@ -12,11 +12,11 @@ module Cucumber
       end
 
       def backtrace_line
-        "#{file_colon_line}:in `#{regexp.inspect}'"
+        "#{file_colon_line}:in `#{regexp_source}'"
       end
 
       def text_length
-        regexp.inspect.jlength
+        regexp_source.jlength
       end
     end
   end
