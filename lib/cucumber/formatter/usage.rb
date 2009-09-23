@@ -44,7 +44,7 @@ module Cucumber
         sorted_defs.each do |step_definition|          
           step_matches_and_descriptions = @step_definitions[step_definition].sort_by do |step_match_and_description|
             step_match = step_match_and_description[0]
-            step_match.step_definition.regexp.inspect
+            step_match.step_definition.regexp_source
           end
 
           step_matches = step_matches_and_descriptions.map{|step_match_and_description| step_match_and_description[0]}
@@ -55,7 +55,7 @@ module Cucumber
           lengths << step_definition.text_length
           max_length = lengths.max
 
-          @io.print step_definition.regexp.inspect
+          @io.print step_definition.regexp_source
           @io.puts format_string("   # #{step_definition.file_colon_line}".indent(max_length - step_definition.text_length), :comment)
           da = step_matches_and_descriptions.map do |step_match_and_description|
             step_match      = step_match_and_description[0]
@@ -76,7 +76,7 @@ module Cucumber
 
           @io.puts format_string("(::) UNUSED (::)", :failed)
           @all_step_definitions.each do |step_definition|
-            @io.print format_string(step_definition.regexp.inspect, :failed)
+            @io.print format_string(step_definition.regexp_source, :failed)
             @io.puts format_string("  # #{step_definition.file_colon_line}".indent(max_length - step_definition.text_length), :comment)
           end
         end

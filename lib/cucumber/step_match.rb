@@ -35,8 +35,8 @@ module Cucumber
     #
     #   lambda { |param| "[#{param}]" }
     #
-    def format_args(format = lambda{|a| a})
-      @formatted_step_name || @step_name.gzub(@groups, format)
+    def format_args(format = lambda{|a| a}, &proc)
+      @formatted_step_name || gzub(@step_name, @groups, format, &proc)
     end
     
     def file_colon_line
@@ -49,6 +49,27 @@ module Cucumber
 
     def text_length
       @step_definition.text_length
+    end
+
+    # +groups+ is an array of 2-element arrays, where
+    # the 1st element is the value of a regexp match group,
+    # and the 2nd element is its start index.
+    def gzub(string, groups, format=nil, &proc)
+      s = string.dup
+      offset = 0
+      groups.each do |group|
+        replacement = if block_given?
+          proc.call(group.val)
+        elsif Proc === format
+          format.call(group.val)
+        else
+          format % group.val
+        end
+
+        s[group.start + offset, group.val.length] = replacement
+        offset += replacement.length - group.val.length
+      end
+      s
     end
   end
   

@@ -8,7 +8,8 @@ Feature: --formatter steps option - Steps Formatter
 
   Scenario: Printing steps
     When I run cucumber -f steps features
-    Then it should pass with
+    Then STDERR should be empty
+    And it should pass with
     """
     features/step_definitions/steps_lib1.rb
       /^I defined a first step$/           # features/step_definitions/steps_lib1.rb:1
