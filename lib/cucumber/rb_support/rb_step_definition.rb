@@ -42,7 +42,7 @@ module Cucumber
       end
 
       def arguments_from(step_name)
-        @rb_language.arguments_from(@regexp, step_name)
+        RegexpArgumentMatcher.arguments_from(@regexp, step_name)
       end
 
       def invoke(args)

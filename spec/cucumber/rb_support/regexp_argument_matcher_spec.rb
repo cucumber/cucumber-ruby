@@ -5,7 +5,7 @@ module Cucumber
   module RbSupport
     describe RegexpArgumentMatcher do
       it "should create 2 arguments" do
-        arguments = RegexpArgumentMatcher.new.arguments_from(/I (\w+) (\w+)/, "I like fish")
+        arguments = RegexpArgumentMatcher.arguments_from(/I (\w+) (\w+)/, "I like fish")
         arguments.map{|argument| [argument.val, argument.pos]}.should == [["like", 2], ["fish", 7]]
       end
     end

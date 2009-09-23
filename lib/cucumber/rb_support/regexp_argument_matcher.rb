@@ -3,7 +3,7 @@ require 'cucumber/step_argument'
 module Cucumber
   module RbSupport
     class RegexpArgumentMatcher
-      def arguments_from(regexp, step_name)
+      def self.arguments_from(regexp, step_name)
         match = regexp.match(step_name)
         if match
           n = 0

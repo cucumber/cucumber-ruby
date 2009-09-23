@@ -34,7 +34,6 @@ module Cucumber
       
       def initialize(step_mother)
         @step_mother = step_mother
-        @regexp_argument_matcher = RegexpArgumentMatcher.new
         RbDsl.rb_language = self
       end
 
