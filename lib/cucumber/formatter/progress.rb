@@ -11,30 +11,30 @@ module Cucumber
         @step_mother, @io, @options = step_mother, io, options
       end
 
-      def after_visit_features(features)
+      def after_features(features)
         @io.puts
         @io.puts
         print_summary(features)
       end
 
-      def before_visit_feature_element(feature_element)
+      def before_feature_element(feature_element)
         record_tag_occurrences(feature_element, @options)
       end
 
-      def after_visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+      def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         progress(status)
         @status = status
       end
       
-      def before_visit_outline_table(outline_table)
+      def before_outline_table(outline_table)
         @outline_table = outline_table
       end
       
-      def after_visit_outline_table(outline_table)
+      def after_outline_table(outline_table)
         @outline_table = nil
       end
 
-      def visit_table_cell_value(value, status)
+      def table_cell_value(value, status)
         return unless @outline_table
         status ||= @status
         progress(status) unless table_header_cell?(status)

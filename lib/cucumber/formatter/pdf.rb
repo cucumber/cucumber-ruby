@@ -53,12 +53,12 @@ module Cucumber
         end
       end
 
-      def after_visit_features(features)
+      def after_features(features)
         @pdf.render_file(@io.path)
         puts "\ndone"
       end
 
-      def visit_feature_name(name)
+      def feature_name(name)
         @pdf.start_new_page
         name["Feature:"] = "" if name["Feature:"]
         names = name.split("\n")
@@ -77,19 +77,19 @@ module Cucumber
         @pdf.move_down(30)
       end
 
-      def before_visit_feature_element(feature_element)
+      def before_feature_element(feature_element)
         record_tag_occurrences(feature_element, @options)
       end
       
-      def after_visit_feature_element(feature_element)
+      def after_feature_element(feature_element)
         flush
       end
 
-      def after_visit_feature(feature)
+      def after_feature(feature)
         flush
       end
 
-      def visit_feature_element_name(keyword, name)
+      def feature_element_name(keyword, name)
         names = name.empty? ? [name] : name.split("\n")
         print "."
         STDOUT.flush
@@ -105,7 +105,7 @@ module Cucumber
         end
       end
 
-      def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+      def step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         @hide_this_step = false
         if exception
           if @exceptions.include?(exception)
@@ -120,21 +120,21 @@ module Cucumber
         end
       end
 
-      def visit_step_name(keyword, step_match, status, source_indent, background)
+      def step_name(keyword, step_match, status, source_indent, background)
         return if @hide_this_step
         line = "<b>#{keyword}</b> #{step_match.format_args("%s").gsub('<', '&lt;').gsub('>', '&gt;')}"
         colorize(line, status)
       end
 
-      def before_visit_background(background)
+      def before_background(background)
         @in_background = true
       end
 
-      def after_visit_background(background)
+      def after_background(background)
         @in_background = nil
       end
 
-      def before_visit_multiline_arg(table)
+      def before_multiline_arg(table)
         return if @hide_this_step
         if(table.kind_of? Cucumber::Ast::Table)
           keep_with do
@@ -144,7 +144,7 @@ module Cucumber
       end
 
       #using row_color hack to highlight each row correctly
-      def before_visit_outline_table(table)
+      def before_outline_table(table)
         return if @hide_this_step
         row_colors = table.example_rows.map { |r| @status_colors[r.status] unless r.status == :skipped}
         keep_with do
@@ -152,7 +152,7 @@ module Cucumber
         end
       end
 
-      def before_visit_py_string(string)
+      def before_py_string(string)
         return if @hide_this_step
         s = %{"""\n#{string}\n"""}.indent(10)
         s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}
@@ -163,22 +163,22 @@ module Cucumber
         end
       end
 
-      def visit_tag_name(tag_name)
+      def tag_name(tag_name)
         return if @hide_this_step
         tag = format_string(tag_name, :tag).indent(@indent)
         # TODO should we render tags at all? skipped for now. difficult to place due to page breaks
       end
 
-      def visit_background_name(keyword, name, file_colon_line, source_indent)
-        visit_feature_element_name(keyword, name)
+      def background_name(keyword, name, file_colon_line, source_indent)
+        feature_element_name(keyword, name)
       end
 
-      def visit_examples_name(keyword, name)
-        visit_feature_element_name(keyword, name)
+      def examples_name(keyword, name)
+        feature_element_name(keyword, name)
       end
 
-      def visit_scenario_name(keyword, name, file_colon_line, source_indent)
-        visit_feature_element_name(keyword, name)
+      def scenario_name(keyword, name, file_colon_line, source_indent)
+        feature_element_name(keyword, name)
       end
       
       private

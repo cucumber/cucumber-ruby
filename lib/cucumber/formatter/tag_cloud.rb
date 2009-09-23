@@ -9,11 +9,11 @@ module Cucumber
         @counts = Hash.new{|h,k| h[k] = 0}
       end
 
-      def after_visit_features(features)
+      def after_features(features)
         print_summary(features)
       end
 
-      def visit_tag_name(tag_name)
+      def tag_name(tag_name)
         @counts[tag_name] += 1
       end
       

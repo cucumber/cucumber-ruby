@@ -30,7 +30,7 @@ Feature: Custom Formatter
               @io = io
             end
 
-            def visit_scenario_name(keyword, name, file_colon_line, source_indent)
+            def scenario_name(keyword, name, file_colon_line, source_indent)
               @io.puts "$ #{name.upcase}"
             end
           end

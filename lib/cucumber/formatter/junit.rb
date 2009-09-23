@@ -11,13 +11,13 @@ module Cucumber
         @options = options
       end
 
-      def before_visit_feature(feature)
+      def before_feature(feature)
         @failures = @errors = @tests = 0
         @builder = OrderedXmlMarkup.new( :indent => 2 )
         @time = 0
       end
       
-      def after_visit_feature(feature)
+      def after_feature(feature)
         @testsuite = OrderedXmlMarkup.new( :indent => 2 )
         @testsuite.instruct!
         @testsuite.testsuite(
@@ -34,20 +34,20 @@ module Cucumber
         File.open(feature_filename, 'w') { |file| file.write(@testsuite.target!) }
       end
 
-      def before_visit_background(*args)
+      def before_background(*args)
         @in_background = true
       end
       
-      def after_visit_background(*args)
+      def after_background(*args)
         @in_background = false
       end
 
-      def visit_feature_name(name)
+      def feature_name(name)
         lines = name.split(/\r?\n/)
         @feature_name = lines[0].sub(/Feature\:/, '').strip
       end
 
-      def visit_scenario_name(keyword, name, file_colon_line, source_indent)
+      def scenario_name(keyword, name, file_colon_line, source_indent)
         scenario_name = name.strip.delete(".\r\n")
         scenario_name = "Unnamed scenario" if name.blank?
         @scenario = scenario_name
@@ -55,11 +55,11 @@ module Cucumber
         @output = "Scenario#{ " outline" if @outline}: #{@scenario}\n\n"
       end
 
-      def before_visit_steps(steps)
+      def before_steps(steps)
         @steps_start = Time.now
       end
       
-      def after_visit_steps(steps)
+      def after_steps(steps)
         return if @in_background
         duration = Time.now - @steps_start
         unless @outline
@@ -71,11 +71,11 @@ module Cucumber
         end
       end
 
-      def before_visit_outline_table(outline_table)
+      def before_outline_table(outline_table)
         @header_row = true
       end
 
-      def before_visit_table_row(table_row)
+      def before_table_row(table_row)
         if @outline
           @table_start = Time.now
         end
@@ -83,7 +83,7 @@ module Cucumber
         @header_row = false
       end
 
-      def after_visit_table_row(table_row)
+      def after_table_row(table_row)
         if @outline
           duration = Time.now - @table_start
           unless @header_row
