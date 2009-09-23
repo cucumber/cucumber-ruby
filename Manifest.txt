@@ -385,13 +385,14 @@ lib/cucumber/rails/test_unit.rb
 lib/cucumber/rails/world.rb
 lib/cucumber/rake/task.rb
 lib/cucumber/rb_support/rb_dsl.rb
-lib/cucumber/rb_support/rb_group.rb
 lib/cucumber/rb_support/rb_hook.rb
 lib/cucumber/rb_support/rb_language.rb
 lib/cucumber/rb_support/rb_step_definition.rb
 lib/cucumber/rb_support/rb_transform.rb
 lib/cucumber/rb_support/rb_world.rb
+lib/cucumber/rb_support/regexp_argument_matcher.rb
 lib/cucumber/rspec_neuter.rb
+lib/cucumber/step_argument.rb
 lib/cucumber/step_match.rb
 lib/cucumber/step_mother.rb
 lib/cucumber/version.rb
@@ -427,7 +428,6 @@ spec/cucumber/cli/main_spec.rb
 spec/cucumber/cli/options_spec.rb
 spec/cucumber/cli/profile_loader_spec.rb
 spec/cucumber/core_ext/proc_spec.rb
-spec/cucumber/core_ext/string_spec.rb
 spec/cucumber/formatter/ansicolor_spec.rb
 spec/cucumber/formatter/color_io_spec.rb
 spec/cucumber/formatter/duration_spec.rb
@@ -436,7 +436,9 @@ spec/cucumber/formatter/progress_spec.rb
 spec/cucumber/parser/feature_parser_spec.rb
 spec/cucumber/parser/table_parser_spec.rb
 spec/cucumber/rb_support/rb_step_definition_spec.rb
+spec/cucumber/rb_support/regexp_argument_matcher_spec.rb
 spec/cucumber/sell_cucumbers.feature
+spec/cucumber/step_match_spec.rb
 spec/cucumber/step_mother_spec.rb
 spec/cucumber/treetop_parser/empty_feature.feature
 spec/cucumber/treetop_parser/empty_scenario.feature

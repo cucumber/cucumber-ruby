@@ -9,7 +9,8 @@ module Cucumber
           n = 0
           match.captures.map do |val|
             n += 1
-            StepArgument.new(val, match.offset(n)[0])
+            start = match.offset(n)[0]
+            StepArgument.new(val, start)
           end
         else
           nil
