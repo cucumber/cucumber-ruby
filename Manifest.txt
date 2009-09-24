@@ -329,6 +329,7 @@ lib/cucumber/ast/step_collection.rb
 lib/cucumber/ast/step_invocation.rb
 lib/cucumber/ast/table.rb
 lib/cucumber/ast/tags.rb
+lib/cucumber/ast/tree_walker.rb
 lib/cucumber/ast/visitor.rb
 lib/cucumber/broadcaster.rb
 lib/cucumber/cli/configuration.rb
@@ -421,6 +422,7 @@ spec/cucumber/ast/scenario_spec.rb
 spec/cucumber/ast/step_collection_spec.rb
 spec/cucumber/ast/step_spec.rb
 spec/cucumber/ast/table_spec.rb
+spec/cucumber/ast/tree_walker_spec.rb
 spec/cucumber/broadcaster_spec.rb
 spec/cucumber/cli/configuration_spec.rb
 spec/cucumber/cli/drb_client_spec.rb
