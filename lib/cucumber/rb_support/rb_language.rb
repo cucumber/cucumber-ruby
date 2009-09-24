@@ -56,6 +56,12 @@ module Cucumber
         end
       end
 
+      def step_matches(step_name, formatted_step_name)
+        step_definitions.map do |step_definition|
+          step_definition.step_match(step_name, formatted_step_name)
+        end.compact
+      end
+
       def arguments_from(regexp, step_name)
         @regexp_argument_matcher.arguments_from(regexp, step_name)
       end
@@ -106,11 +112,11 @@ module Cucumber
         @world_modules += world_modules
       end
 
-      protected
-
       def load_code_file(code_file)
         require code_file # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from RbDsl
       end
+
+      protected
 
       def begin_scenario
         begin_rb_scenario
