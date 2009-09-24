@@ -1,7 +1,6 @@
 require 'cucumber/formatter/ordered_xml_markup'
 require 'cucumber/formatter/duration'
 require 'xml'
-require 'ruby-debug'
 
 module Cucumber
   module Formatter
