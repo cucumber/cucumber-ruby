@@ -87,15 +87,10 @@ module Cucumber
     def load_code_file(step_def_file)
       if programming_language = programming_language_for(step_def_file)
         log.debug("  * #{step_def_file}\n")
-        step_definitions = programming_language.step_definitions_for(step_def_file)
-        register_step_definitions(step_definitions)
+        programming_language.load_code_file(step_def_file)
       else
         log.debug("  * #{step_def_file} [NOT SUPPORTED]\n")
       end
-    end
-
-    def register_step_definitions(step_definitions)
-      step_definitions.each{|step_definition| register_step_definition(step_definition)}
     end
 
     # Loads and registers programming language implementation.
@@ -152,7 +147,9 @@ module Cucumber
     end
 
     def step_match(step_name, formatted_step_name=nil) #:nodoc:
-      matches = step_definitions.map { |d| d.step_match(step_name, formatted_step_name) }.compact
+      matches = @programming_languages.map do |programming_language| 
+        programming_language.step_matches(step_name, formatted_step_name)
+      end.flatten
       raise Undefined.new(step_name) if matches.empty?
       matches = best_matches(step_name, matches) if matches.size > 1 && options[:guess]
       raise Ambiguous.new(step_name, matches, options[:guess]) if matches.size > 1
