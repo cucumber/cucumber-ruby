@@ -7,7 +7,6 @@ module Cucumber
 
       def initialize(step_mother, listeners = [], options = {}, io = STDOUT)
         @step_mother, @listeners, @options, @io = step_mother, listeners, options, io
-        @debug_indent = 0
       end
 
       def visit_features(features)
@@ -161,14 +160,11 @@ module Cucumber
         end
         
         send_to_all("before_#{message}", *args)
-        @debug_indent += 1
         yield if block_given?
-        @debug_indent -= 1
         send_to_all("after_#{message}", *args)
       end
       
       def send_to_all(message, *args)
-        @io.puts(' ' * @debug_indent + message) if @options[:verbose]
         @listeners.each do |listener|
           if listener.respond_to?(message)
             listener.__send__(message, *args)
