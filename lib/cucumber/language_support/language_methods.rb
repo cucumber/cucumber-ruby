@@ -1,6 +1,12 @@
+require 'cucumber/step_match'
+
 module Cucumber
   module LanguageSupport
     module LanguageMethods
+      def create_step_match(step_definition, step_name, formatted_step_name, step_arguments)
+        StepMatch.new(step_definition, step_name, formatted_step_name, step_arguments)
+      end
+      
       def before(scenario)
         begin_scenario
         execute_before(scenario)
