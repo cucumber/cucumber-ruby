@@ -3,6 +3,7 @@ require 'cucumber/rb_support/rb_world'
 require 'cucumber/rb_support/rb_step_definition'
 require 'cucumber/rb_support/rb_hook'
 require 'cucumber/rb_support/rb_transform'
+require 'cucumber/rb_support/regexp_argument_matcher'
 
 module Cucumber
   module RbSupport
@@ -53,6 +54,10 @@ module Cucumber
         ensure
           @step_definitions = nil
         end
+      end
+
+      def arguments_from(regexp, step_name)
+        @regexp_argument_matcher.arguments_from(regexp, step_name)
       end
 
       def snippet_text(step_keyword, step_name, multiline_arg_class = nil)

@@ -10,191 +10,192 @@ module Cucumber
     #
     # If the output is STDOUT (and not a file), there are bright colours to watch too.
     #
-    class Pretty < Ast::Visitor
+    class Pretty
       include FileUtils
       include Console
       attr_writer :indent
+      attr_reader :step_mother
 
       def initialize(step_mother, io, options)
-        super(step_mother)
-        @io = io
-        @options = options
+        @step_mother, @io, @options = step_mother, io, options
         @exceptions = []
         @indent = 0
         @prefixes = options[:prefixes] || {}
       end
 
-      def visit_features(features)
-        super
+      def after_features(features)
         print_summary(features) unless @options[:autoformat]
       end
 
-      def visit_feature(feature)
+      def before_feature(feature)
         @exceptions = []
         @indent = 0
         if @options[:autoformat]
           file = File.join(@options[:autoformat], feature.file)
           dir = File.dirname(file)
           mkdir_p(dir) unless File.directory?(dir)
-          File.open(file, Cucumber.file_mode('w')) do |io|
-            @io = io
-            super
-          end
-        else
-          super
+          @io = File.open(file, Cucumber.file_mode('w'))
         end
       end
-
-      def visit_comment(comment)
-        comment.accept(self)
+      
+      def after_feature(*args)
+        @io.close if @options[:autoformat]
       end
 
-      def visit_comment_line(comment_line)
+      def comment_line(comment_line)
         @io.puts(comment_line.indent(@indent))
         @io.flush
       end
 
-      def visit_tags(tags)
-        tags.accept(self)
+      def after_tags(tags)
         if @indent == 1
           @io.puts
           @io.flush
         end
       end
 
-      def visit_tag_name(tag_name)
+      def tag_name(tag_name)
         tag = format_string(tag_name, :tag).indent(@indent)
         @io.print(tag)
         @io.flush
         @indent = 1
       end
 
-      def visit_feature_name(name)
+      def feature_name(name)
         @io.puts(name)
         @io.puts
         @io.flush
       end
 
-      def visit_feature_element(feature_element)
+      def before_feature_element(feature_element)
         record_tag_occurrences(feature_element, @options)
         @indent = 2
         @scenario_indent = 2
-        super
+      end
+      
+      def after_feature_element(feature_element)
         @io.puts
         @io.flush
       end
 
-      def visit_background(background)
+      def before_background(background)
         @indent = 2
         @scenario_indent = 2
         @in_background = true
-        super
+      end
+
+      def after_background(background)
         @in_background = nil
         @io.puts
         @io.flush
       end
 
-      def visit_background_name(keyword, name, file_colon_line, source_indent)
-        visit_feature_element_name(keyword, name, file_colon_line, source_indent)
+      def background_name(keyword, name, file_colon_line, source_indent)        
+        print_feature_element_name(keyword, name, file_colon_line, source_indent)
       end
 
-      def visit_examples_array(examples_array)
+      def before_examples_array(examples_array)
         @indent = 4
         @io.puts
-        examples_array[0..-2].each { |ea| super(ea) }
-        @last_example = true
-        super(examples_array.last)
-        @last_example = nil
+        @visiting_first_example_name = true
       end
       
-      def visit_examples_name(keyword, name)
-        names = name.strip.empty? ? [name.strip] : name.split("\n")        
+      def examples_name(keyword, name)
+        puts unless @visiting_first_example_name
+        @visiting_first_example_name = false
+        names = name.strip.empty? ? [name.strip] : name.split("\n")
         @io.puts("    #{keyword} #{names[0]}")
         names[1..-1].each {|s| @io.puts "      #{s}" } unless names.empty?
         @io.flush
         @indent = 6
         @scenario_indent = 6
       end
+      
+      def before_outline_table(outline_table)
+        @table = outline_table
+      end
 
-      def visit_outline_table(outline_table)
-        super
+      def after_outline_table(outline_table)
+        @table = nil
         @indent = 4
-        @io.puts unless @last_example
       end
       
-      def visit_scenario_name(keyword, name, file_colon_line, source_indent)
-        visit_feature_element_name(keyword, name, file_colon_line, source_indent)
+      def scenario_name(keyword, name, file_colon_line, source_indent)
+        print_feature_element_name keyword, name, file_colon_line, source_indent
       end
 
-      def visit_feature_element_name(keyword, name, file_colon_line, source_indent)
-        @io.puts if @scenario_indent == 6
-        names = name.empty? ? [name] : name.split("\n")
-        line = "#{keyword} #{names[0]}".indent(@scenario_indent)
-        @io.print(line)
-        if @options[:source]
-          line_comment = " # #{file_colon_line}".indent(source_indent)
-          @io.print(format_string(line_comment, :comment))
-        end
-        @io.puts
-        names[1..-1].each {|s| @io.puts "    #{s}"}
-        @io.flush
-      end
-
-      def visit_step(step)
+      def before_step(step)
+        @current_step = step
         @indent = 6
-        super
       end
 
-      def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+      def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+        @hide_this_step = false
         if exception
-          return if @exceptions.index(exception)
+          if @exceptions.include?(exception)
+            @hide_this_step = true
+            return
+          end
           @exceptions << exception
         end
-        return if status != :failed && @in_background ^ background
+        if status != :failed && @in_background ^ background
+          @hide_this_step = true
+          return
+        end
         @status = status
-        super
       end
 
-      def visit_step_name(keyword, step_match, status, source_indent, background)
+      def step_name(keyword, step_match, status, source_indent, background)
+        return if @hide_this_step
         source_indent = nil unless @options[:source]
         formatted_step_name = format_step(keyword, step_match, status, source_indent)
         @io.puts(formatted_step_name.indent(@scenario_indent + 2))
       end
 
-      def visit_multiline_arg(multiline_arg)
-        return if @options[:no_multiline]
-        @table = multiline_arg
-        super
+      def py_string(string)
+        return if @hide_this_step
+        s = %{"""\n#{string}\n"""}.indent(@indent)
+        s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}.join("\n")
+        @io.puts(format_string(s, @current_step.status))
+        @io.flush
       end
 
-      def visit_exception(exception, status)
+      def exception(exception, status)
+        return if @hide_this_step
         print_exception(exception, status, @indent)
         @io.flush
       end
 
-      def visit_table_row(table_row)
+      def before_multiline_arg(multiline_arg)
+        return if @options[:no_multiline] || @hide_this_step
+        @table = multiline_arg
+      end
+      
+      def after_multiline_arg(multiline_arg)
+        @table = nil
+      end
+
+      def before_table_row(table_row)
+        return unless @table
         @col_index = 0
         @io.print '  |'.indent(@indent-2)
-        super
+      end
+
+      def after_table_row(table_row)
+        return unless @table
         @io.puts
-        if table_row.exception && !@exceptions.index(table_row.exception)
+        if table_row.exception && !@exceptions.include?(table_row.exception)
           print_exception(table_row.exception, :failed, @indent)
         end
       end
 
-      def visit_py_string(string)
-        s = %{"""\n#{string}\n"""}.indent(@indent)
-        s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}.join("\n")
-        @io.puts(format_string(s, @status))
-        @io.flush
-      end
-
-      def visit_table_cell(cell)
-        super
+      def after_table_cell(cell)
+        return unless @table
         @col_index += 1
       end
 
-      def visit_table_cell_value(value, status)
+      def table_cell_value(value, status)
+        return unless @table
         status ||= @status || :passed
         width = @table.col_width(@col_index)
         cell_text = value.to_s || ''
@@ -205,6 +206,20 @@ module Cucumber
       end
 
       private
+      
+      def print_feature_element_name(keyword, name, file_colon_line, source_indent)
+        @io.puts if @scenario_indent == 6
+        names = name.empty? ? [name] : name.split("\n")
+        line = "#{keyword} #{names[0]}".indent(@scenario_indent)
+        @io.print(line)
+        if @options[:source]
+          line_comment = " # #{file_colon_line}".indent(source_indent)
+          @io.print(format_string(line_comment, :comment))
+        end
+        @io.puts
+        names[1..-1].each {|s| @io.puts "    #{s}"}
+        @io.flush        
+      end
 
       def cell_prefix(status)
         @prefixes[status]

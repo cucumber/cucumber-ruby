@@ -22,8 +22,7 @@ module Cucumber
 
         register
 
-        @visitor = Visitor.new(@step_mother)
-        @visitor.options = {}
+        @visitor = TreeWalker.new(@step_mother)
 
         @feature = mock('feature', :visit? => true).as_null_object
       end

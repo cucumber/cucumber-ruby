@@ -3,11 +3,10 @@ require 'cucumber/formatter/progress'
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format usage</tt>
-    class Usage < Ast::Visitor
+    class Usage
       include Console
 
       def initialize(step_mother, io, options)
-        super(step_mother)
         @io = io
         @options = options
         @step_definitions = Hash.new { |h,step_definition| h[step_definition] = [] }
@@ -15,17 +14,15 @@ module Cucumber
         @locations = []
       end
 
-      def visit_features(features)
-        super
+      def after_features(features)
         print_summary(features)
       end
 
-      def visit_step(step)
+      def before_step(step)
         @step = step
-        super
       end
 
-      def visit_step_name(keyword, step_match, status, source_indent, background)
+      def step_name(keyword, step_match, status, source_indent, background)
         if step_match.step_definition
           location = @step.file_colon_line
           return if @locations.index(location)

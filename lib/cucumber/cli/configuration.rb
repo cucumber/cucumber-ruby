@@ -57,34 +57,9 @@ module Cucumber
       def drb_port
         @options[:drb_port].to_i if @options[:drb_port]
       end
-
-      def build_formatter_broadcaster(step_mother)
-        return Formatter::Pretty.new(step_mother, nil, @options) if @options[:autoformat]
-        formatters = @options[:formats].map do |format_and_out|
-          format = format_and_out[0]
-          out    = format_and_out[1]
-          if String === out # file name
-            unless File.directory?(out)
-              out = File.open(out, Cucumber.file_mode('w'))
-              at_exit do
-                out.flush
-                out.close
-              end
-            end
-          end
-
-          begin
-            formatter_class = formatter_class(format)
-            formatter_class.new(step_mother, out, @options)
-          rescue Exception => e
-            e.message << "\nError creating formatter: #{format}"
-            raise e
-          end
-        end
-
-        broadcaster = Broadcaster.new(formatters)
-        broadcaster.options = @options
-        return broadcaster
+      
+      def build_runner(step_mother, io)
+        Ast::TreeWalker.new(step_mother, formatters(step_mother), @options, io)
       end
 
       def formatter_class(format)
@@ -150,6 +125,31 @@ module Cucumber
       end
 
     private
+    
+      def formatters(step_mother)
+        return [Formatter::Pretty.new(step_mother, nil, @options)] if @options[:autoformat]
+        @options[:formats].map do |format_and_out|
+          format = format_and_out[0]
+          out    = format_and_out[1]
+          if String === out # file name
+            unless File.directory?(out)
+              out = File.open(out, Cucumber.file_mode('w'))
+              at_exit do
+                out.flush
+                out.close
+              end
+            end
+          end
+
+          begin
+            formatter_class = formatter_class(format)
+            formatter_class.new(step_mother, out, @options)
+          rescue Exception => e
+            e.message << "\nError creating formatter: #{format}"
+            raise e
+          end
+        end
+      end
 
       class LogFormatter < ::Logger::Formatter
         def call(severity, time, progname, msg)

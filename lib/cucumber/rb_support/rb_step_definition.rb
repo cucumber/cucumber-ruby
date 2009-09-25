@@ -1,7 +1,7 @@
 require 'cucumber/step_match'
 require 'cucumber/core_ext/string'
 require 'cucumber/core_ext/proc'
-require 'cucumber/rb_support/rb_group'
+require 'cucumber/rb_support/regexp_argument_matcher'
 
 module Cucumber
   module RbSupport
@@ -41,8 +41,8 @@ module Cucumber
         regexp_source == step_definition.regexp_source
       end
 
-      def groups(step_name)
-        RbGroup.groups_from(@regexp, step_name)
+      def arguments_from(step_name)
+        RegexpArgumentMatcher.arguments_from(@regexp, step_name)
       end
 
       def invoke(args)

@@ -19,7 +19,8 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
           [lang, Cucumber::LANGUAGES[lang]['name'], Cucumber::LANGUAGES[lang]['native']]
         end
         table = Ast::Table.new(raw)
-        new(nil, io, {:check_lang=>true}).visit_multiline_arg(table)
+        formatter = new(nil, io, {:check_lang=>true})
+        Ast::TreeWalker.new(nil, [formatter]).visit_multiline_arg(table)
       end
 
       def self.list_keywords(io, lang)
@@ -31,19 +32,17 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
         new(nil, io, {:incomplete => language.incomplete?}).visit_multiline_arg(table)
       end
 
-      def visit_multiline_arg(table)
+      def before_visit_multiline_arg(table)
         if @options[:incomplete]
           @io.puts(format_string(INCOMPLETE, :failed))
         end
-        super
       end
 
-      def visit_table_row(table_row)
+      def before_visit_table_row(table_row)
         @col = 1
-        super
       end
 
-      def visit_table_cell_value(value, status)
+      def before_visit_table_cell_value(value, status)
         if @col == 1
           if(@options[:check_lang])
             @incomplete = Parser::NaturalLanguage.get(nil, value).incomplete?
@@ -54,7 +53,6 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
         end
         
         @col += 1
-        super(value, status)
       end
     end
   end

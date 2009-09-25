@@ -1,3 +1,21 @@
+== 2009-09-24
+
+This release gives you back some of the control over the Rails environment that was accidentally taken away from you in the 
+previous release.
+
+Using this release on a Rails project requires a rerun of script/generate cucumber.
+
+=== New Features
+* Added a new @no-txn tag to selectively turn off transactions for a particlular scenario.
+* Added back a way to globally turn off transactions.
+* Renamed @allow_rescue tag to @allow-rescue.
+
+=== Bugfixes
+* Gracefully handle cases when optional regexp groups are not matched. Ex: /should( not)? be flashed '([^']*?)'$/ (Aslak Hellesøy)
+
+=== Changed Features
+* The Formatter API has completely changed. Formatters are no longer a double-dispacth visitor - just a single-dispatch listener (#438 Matt Wynne)
+
 == 2009-09-22
 
 This release has some changes in the Rails support, so make sure you run "script/generate cucumber" after you upgrade.

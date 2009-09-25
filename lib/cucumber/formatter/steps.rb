@@ -1,16 +1,15 @@
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format steps</tt>
-    class Steps < Ast::Visitor
+    class Steps
 
       def initialize(step_mother, io, options)
-        super(step_mother)
         @io = io
         @options = options
         @step_definition_files = collect_steps(step_mother)
       end
 
-      def visit_features(features)
+      def after_features(features)
         print_summary
       end
 

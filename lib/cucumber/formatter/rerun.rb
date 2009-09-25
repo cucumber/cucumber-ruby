@@ -10,16 +10,15 @@ module Cucumber
     # This formatter is used by AutoTest - it will use the output to decide what
     # to run the next time, simply passing the output string on the command line.
     #
-    class Rerun < Ast::Visitor
+    class Rerun
       def initialize(step_mother, io, options)
-        super(step_mother)
         @io = io
         @options = options
         @file_names = []
         @file_colon_lines = Hash.new{|h,k| h[k] = []}
       end
 
-      def visit_features(features)
+      def features(features)
         super
         files = @file_names.uniq.map do |file|
           lines = @file_colon_lines[file]
@@ -28,7 +27,7 @@ module Cucumber
         @io.puts files.join(' ')
       end
 
-      def visit_feature_element(feature_element)
+      def feature_element(feature_element)
         @rerun = false
         super
         if @rerun
@@ -38,7 +37,7 @@ module Cucumber
         end
       end
 
-      def visit_step_name(keyword, step_match, status, source_indent, background)
+      def step_name(keyword, step_match, status, source_indent, background)
         @rerun = true if [:failed].index(status)
       end
     end
