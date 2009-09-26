@@ -172,17 +172,6 @@ module Cucumber
       end
     end
     
-    def clear! #:nodoc:
-      step_definitions.clear
-      hooks.clear
-      steps.clear
-      scenarios.clear
-    end
-
-    def step_definitions #:nodoc:
-      @step_definitions ||= []
-    end
-
     def snippet_text(step_keyword, step_name, multiline_arg_class) #:nodoc:
       load_programming_language('rb') if unknown_programming_language?
       @programming_languages.map do |programming_language|
@@ -240,17 +229,6 @@ module Cucumber
     end
 
     private
-
-    # Registers a StepDefinition. This can be a Ruby StepDefintion,
-    # or any other kind of object that implements the StepDefintion
-    # contract (API).
-    def register_step_definition(step_definition)
-      step_definitions.each do |already|
-        raise Redundant.new(already, step_definition) if already == step_definition
-      end
-      step_definitions << step_definition
-      step_definition
-    end
 
     def programming_language_for(step_def_file) #:nodoc:
       if ext = File.extname(step_def_file)[1..-1]
