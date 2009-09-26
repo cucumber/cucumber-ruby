@@ -1,6 +1,7 @@
 == In Git
 
 === Bugfixes
+* Raise a proper error message if someone forgets @ for tags, example: --tags ~foo or --tags bar. (Aslak Hellesøy)
 * lib/cucumber/formatter/html.rb requires ruby-debug (#455 Assaf Arkin)
 
 == 0.3.103 2009-09-24
