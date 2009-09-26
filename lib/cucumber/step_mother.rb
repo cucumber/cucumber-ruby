@@ -38,16 +38,6 @@ module Cucumber
     end
   end
 
-  # Raised when 2 or more StepDefinition have the same Regexp
-  class Redundant < StandardError
-    def initialize(step_def_1, step_def_2)
-      message = "Multiple step definitions have the same Regexp:\n\n"
-      message << step_def_1.backtrace_line << "\n"
-      message << step_def_2.backtrace_line << "\n\n"
-      super(message)
-    end
-  end
-
   # This is the meaty part of Cucumber that ties everything together.
   class StepMother
     include Constantize

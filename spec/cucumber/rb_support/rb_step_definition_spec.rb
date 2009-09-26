@@ -18,10 +18,6 @@ module Cucumber
         $inside = nil
       end
       
-      def register
-        @step_mother.register_step_definitions(@rb.step_definitions)
-      end
-
       it "should allow calling of other steps" do
         @dsl.Given /Outside/ do
           Given "Inside"
@@ -29,7 +25,6 @@ module Cucumber
         @dsl.Given /Inside/ do
           $inside = true
         end
-        register
 
         @step_mother.step_match("Outside").invoke(nil)
         $inside.should == true
@@ -42,7 +37,6 @@ module Cucumber
         @dsl.Given /Inside/ do |table|
           $inside = table.raw[0][0]
         end
-        register
 
         @step_mother.step_match("Outside").invoke(nil)
         $inside.should == 'inside'
@@ -52,7 +46,6 @@ module Cucumber
         @dsl.Given /Outside/ do
           Given 'Inside'
         end
-        register
 
         lambda do
           @step_mother.step_match('Outside').invoke(nil)
@@ -63,7 +56,6 @@ module Cucumber
         @dsl.Given /Outside/ do
           pending("Do me!")
         end
-        register
 
         lambda do
           @step_mother.step_match("Outside").invoke(nil)
@@ -77,7 +69,6 @@ module Cucumber
         @dsl.Given /Loud/ do
           announce 'wasup'
         end
-        register
         
         @step_mother.step_match("Loud").invoke(nil)
       end

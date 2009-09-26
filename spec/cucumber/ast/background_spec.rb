@@ -20,15 +20,9 @@ module Cucumber
           $y = $x * n.to_i
         end
 
-        register
-
         @visitor = TreeWalker.new(@step_mother)
 
         @feature = mock('feature', :visit? => true).as_null_object
-      end
-
-      def register
-        @step_mother.register_step_definitions(@rb.step_definitions)
       end
 
       it "should execute Before blocks before background steps" do

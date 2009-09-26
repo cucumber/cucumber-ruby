@@ -37,7 +37,6 @@ module Cucumber
         dsl = Object.new 
         dsl.extend RbSupport::RbDsl
         dsl.instance_exec &step_defs
-        @step_mother.register_step_definitions(rb.step_definitions)
       end
       
       Spec::Matchers.define :have_css_node do |css, regexp|

@@ -59,7 +59,7 @@ module Cucumber
 
       def print_step_definition(step_definition, mean_duration)
         duration = sprintf("%.7f",  mean_duration)
-        @io.puts format_string("#{duration} #{step_definition.backtrace_line}", :failed)
+        @io.puts format_string("#{duration} #{step_definition.regexp_source}", :failed)
       end
 
       def print_step_definitions(duration_description_location, step_definition)

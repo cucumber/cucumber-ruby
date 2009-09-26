@@ -10,7 +10,6 @@ module Cucumber
       end
 
       def visit_features(features)
-        warn "The listener(s) (#{deprecated_listeners.map{ |l| l.class }}) appear to support the legacy Ast::Visitor interface, which is no longer supported." if deprecated_listeners.any?
         broadcast(features) do
           features.accept(self)
         end
@@ -154,14 +153,13 @@ module Cucumber
         message = extract_method_name_from(caller)
         message.gsub!('visit_', '')
         
-        unless block_given?
+        if block_given?
+          send_to_all("before_#{message}", *args)
+          yield if block_given?
+          send_to_all("after_#{message}", *args)
+        else
           send_to_all(message, *args)
-          return
         end
-        
-        send_to_all("before_#{message}", *args)
-        yield if block_given?
-        send_to_all("after_#{message}", *args)
       end
       
       def send_to_all(message, *args)
@@ -174,10 +172,6 @@ module Cucumber
       
       def extract_method_name_from(call_stack)
         call_stack[0].match(/in `(.*)'/).captures[0]
-      end
-      
-      def deprecated_listeners
-        @listeners.select{ |l| l.respond_to?(:visit_features) }
       end
       
     end
