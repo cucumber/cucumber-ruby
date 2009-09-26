@@ -12,19 +12,17 @@ module Cucumber
         @step_definition_durations = Hash.new { |h,step_definition| h[step_definition] = [] }
       end
 
-      def step(step)
+      def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         @step_duration = Time.now
-        @step = step
-        super
       end
 
-      def step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+      def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         duration = Time.now - @step_duration
         super
 
         if step_match.step_definition
           description = format_step(keyword, step_match, status, nil)
-          @step_definition_durations[step_match.step_definition] << [duration, description, @step.file_colon_line]
+          @step_definition_durations[step_match.step_definition] << [duration, description, step_match.file_colon_line]
         end
       end
 

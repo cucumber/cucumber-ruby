@@ -13,6 +13,7 @@ module Cucumber
         def matches?(source_tag_names, tag_names)
           exclude_tag_names, include_tag_names = tag_names.partition{|tag_name| exclude_tag?(tag_name)}
           exclude_tag_names.map!{|name| name[1..-1]}
+          check_at_sign_prefix(exclude_tag_names + include_tag_names)
           !excluded?(source_tag_names, exclude_tag_names) && included?(source_tag_names, include_tag_names)
         end
 
@@ -21,7 +22,11 @@ module Cucumber
         end
         
         private
-        
+
+        def check_at_sign_prefix(tag_names)
+          tag_names.each{|tag_name| raise "Tag names must start with an @ sign. The following tag name didn't: #{tag_name}" unless tag_name[0..0] == '@'}
+        end
+
         def excluded?(source_tag_names, query_tag_names)
           source_tag_names.any? && (source_tag_names & query_tag_names).any?
         end

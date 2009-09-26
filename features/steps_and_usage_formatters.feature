@@ -124,3 +124,47 @@ Feature: Cucumber command line
 
       """
 
+    @mri186
+    Scenario: --format steps
+      When I run cucumber features --format steps --dry-run
+      Then it should pass with
+        """
+        features/step_definitions/sample_steps.rb
+          /^passing without a table$/                         # features/step_definitions/sample_steps.rb:12
+          /^failing without a table$/                         # features/step_definitions/sample_steps.rb:15
+          /^a step definition that calls an undefined step$/  # features/step_definitions/sample_steps.rb:19
+          /^call step "(.*)"$/                                # features/step_definitions/sample_steps.rb:23
+          /^'(.+)' cukes$/                                    # features/step_definitions/sample_steps.rb:27
+          /^I should have '(.+)' cukes$/                      # features/step_definitions/sample_steps.rb:31
+          /^'(.+)' global cukes$/                             # features/step_definitions/sample_steps.rb:35
+          /^I should have '(.+)' global cukes$/               # features/step_definitions/sample_steps.rb:42
+          /^table$/                                           # features/step_definitions/sample_steps.rb:46
+          /^passing$/                                         # features/step_definitions/sample_steps.rb:5
+          /^multiline string$/                                # features/step_definitions/sample_steps.rb:50
+          /^the table should be$/                             # features/step_definitions/sample_steps.rb:54
+          /^the multiline string should be$/                  # features/step_definitions/sample_steps.rb:58
+          /^failing expectation$/                             # features/step_definitions/sample_steps.rb:62
+          /^unused$/                                          # features/step_definitions/sample_steps.rb:66
+          /^another unused$/                                  # features/step_definitions/sample_steps.rb:69
+          /^failing$/                                         # features/step_definitions/sample_steps.rb:8
+        
+        17 step definition(s) in 1 source file(s).
+        
+        """
+
+    @mri186
+    Scenario: --format profile
+      When I run cucumber features --format profile
+      Then it should fail
+      And the output should contain
+        """
+        features/step_definitions/sample_steps.rb:54:in `/^the table should be$/'
+        """
+      And the output should contain
+        """
+        Then the table should be
+        """
+      And the output should contain
+        """
+        features/step_definitions/sample_steps.rb:54
+        """
