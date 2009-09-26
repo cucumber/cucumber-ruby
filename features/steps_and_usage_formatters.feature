@@ -152,3 +152,19 @@ Feature: Cucumber command line
         
         """
 
+    @mri186
+    Scenario: --format profile
+      When I run cucumber features --format profile
+      Then it should fail
+      And the output should contain
+        """
+        features/step_definitions/sample_steps.rb:54:in `/^the table should be$/'
+        """
+      And the output should contain
+        """
+        Then the table should be
+        """
+      And the output should contain
+        """
+        features/step_definitions/sample_steps.rb:54
+        """

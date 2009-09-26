@@ -4,6 +4,7 @@
 * Added example for Ramaze. (Yutaka HARA)
 
 === Bugfixes
+* Fixed regression in profile formatter from 0.3.102. (Aslak Hellesøy)
 * Raise a proper error message if someone forgets @ for tags, example: --tags ~foo or --tags bar. (Aslak Hellesøy)
 * lib/cucumber/formatter/html.rb requires ruby-debug (#455 Assaf Arkin)
 
