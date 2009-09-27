@@ -7,6 +7,7 @@
 * Fixed regression in profile formatter from 0.3.102. (Aslak Hellesøy)
 * Raise a proper error message if someone forgets @ for tags, example: --tags ~foo or --tags bar. (Aslak Hellesøy)
 * lib/cucumber/formatter/html.rb requires ruby-debug (#455 Assaf Arkin)
+* Allow for STDOUT formatters to be defined in profiles.  Addresses an Autotest plugin issue. (#375 Gabriel Medina)
 
 == 0.3.103 2009-09-24
 
