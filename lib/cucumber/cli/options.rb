@@ -261,11 +261,15 @@ module Cucumber
       attr_reader :options, :profiles, :expanded_args
       protected :options, :profiles, :expanded_args
 
-      def non_stdout_formats
-        @options[:formats].select {|format, output| output != @out_stream }
-      end
-
     private
+
+    def non_stdout_formats
+      @options[:formats].select {|format, output| output != @out_stream }
+    end
+
+    def stdout_formats
+      @options[:formats].select {|format, output| output == @out_stream }
+    end
 
      def extract_environment_variables
         @args.delete_if do |arg|
@@ -341,7 +345,8 @@ module Cucumber
         if @options[:formats].empty?
           @options[:formats] = other_options[:formats]
         else
-          @options[:formats] += other_options.non_stdout_formats
+          @options[:formats] += other_options[:formats]
+          @options[:formats] = stdout_formats[0..0] + non_stdout_formats
         end
 
         self
