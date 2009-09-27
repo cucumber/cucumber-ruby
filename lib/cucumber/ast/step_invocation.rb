@@ -11,6 +11,13 @@ module Cucumber
       attr_reader :name, :matched_cells, :status, :reported_exception
       attr_accessor :exception
 
+      class << self
+        SEVERITY = [:passed, :undefined, :pending, :skipped, :failed]
+        def worst_status(statuses)
+          SEVERITY[statuses.map{|status| SEVERITY.index(status)}.max]
+        end
+      end
+
       def initialize(step, name, multiline_arg, matched_cells)
         @step, @name, @multiline_arg, @matched_cells = step, name, multiline_arg, matched_cells
         status!(:skipped)

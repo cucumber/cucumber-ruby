@@ -2,80 +2,136 @@ require 'cucumber/formatter/progress'
 
 module Cucumber
   module Formatter
-    # The formatter used for <tt>--format usage</tt>
-    class Usage
+    class Usage < Progress
       include Console
 
-      def initialize(step_mother, io, options)
-        @io = io
-        @options = options
-        @step_definitions = Hash.new { |h,step_definition| h[step_definition] = [] }
-        @all_step_definitions = step_mother.step_definitions.dup
-        @locations = []
+      class StepDefKey
+        attr_reader :regexp_source, :file_colon_line
+        attr_accessor :mean_duration, :status
+        
+        def initialize(regexp_source, file_colon_line)
+          @regexp_source, @file_colon_line = regexp_source, file_colon_line
+        end
+        
+        def eql?(o)
+          regexp_source == o.regexp_source && file_colon_line == o.file_colon_line
+        end
+        
+        def hash
+          regexp_source.hash + 17*file_colon_line.hash
+        end
       end
 
-      def after_features(features)
-        print_summary(features)
+      def initialize(step_mother, io, options)
+        @step_mother = step_mother
+        @io = io
+        @options = options
+        @stepdef_to_match = Hash.new{|h,stepdef_key| h[stepdef_key] = []}
       end
 
       def before_step(step)
         @step = step
       end
 
-      def step_name(keyword, step_match, status, source_indent, background)
-        if step_match.step_definition
-          location = @step.file_colon_line
-          return if @locations.index(location)
-          @locations << location
-          
-          description = format_step(keyword, step_match, status, nil)
-          length = (keyword + step_match.format_args).jlength
-          @step_definitions[step_match.step_definition] << [step_match, description, length, location]
-          @all_step_definitions.delete(step_match.step_definition)
+      def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+        @step_duration = Time.now
+      end
+
+      def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+        duration = Time.now - @step_duration
+        if step_match.name.nil? # nil if it's from a scenario outline
+          stepdef_key = StepDefKey.new(step_match.step_definition.regexp_source, step_match.step_definition.file_colon_line)
+
+          @stepdef_to_match[stepdef_key] << {
+            :keyword => keyword, 
+            :step_match => step_match, 
+            :status => status, 
+            :file_colon_line => @step.file_colon_line,
+            :duration => duration
+          }
         end
+        super
       end
 
       def print_summary(features)
-        sorted_defs = @step_definitions.keys.sort_by{|step_definition| step_definition.backtrace_line}
-        
-        sorted_defs.each do |step_definition|          
-          step_matches_and_descriptions = @step_definitions[step_definition].sort_by do |step_match_and_description|
-            step_match = step_match_and_description[0]
-            step_match.step_definition.regexp_source
-          end
+        add_unused_stepdefs
+        aggregate_info
 
-          step_matches = step_matches_and_descriptions.map{|step_match_and_description| step_match_and_description[0]}
-
-          lengths = step_matches_and_descriptions.map do |step_match_and_description| 
-            step_match_and_description[2]
-          end
-          lengths << step_definition.text_length
-          max_length = lengths.max
-
-          @io.print step_definition.regexp_source
-          @io.puts format_string("   # #{step_definition.file_colon_line}".indent(max_length - step_definition.text_length), :comment)
-          da = step_matches_and_descriptions.map do |step_match_and_description|
-            step_match      = step_match_and_description[0]
-            description     = step_match_and_description[1]
-            length          = step_match_and_description[2]
-            file_colon_line = step_match_and_description[3]
-            " #{description}" + format_string(" # #{file_colon_line}".indent(max_length - length), :comment)
-          end
-          da.sort.each{|d| puts d}
+        if @options[:dry_run]
+          keys = @stepdef_to_match.keys.sort {|a,b| a.regexp_source <=> b.regexp_source}
+        else
+          keys = @stepdef_to_match.keys.sort {|a,b| a.mean_duration <=> b.mean_duration}.reverse
         end
 
-        print_unused_step_definitions
+        keys.each do |stepdef_key|
+          print_step_definition(stepdef_key)
+
+          if @stepdef_to_match[stepdef_key].any?
+            print_steps(stepdef_key)
+          else
+            @io.puts("  " + format_string("NOT MATCHED BY ANY STEPS", :failed))
+          end
+        end
+        @io.puts
+        super
       end
 
-      def print_unused_step_definitions
-        if @all_step_definitions.any?
-          max_length = @all_step_definitions.map{|step_definition| step_definition.text_length}.max
+      def print_step_definition(stepdef_key)
+        @io.print format_string(sprintf("%.7f", stepdef_key.mean_duration), :skipped) + " " unless @options[:dry_run]
+        @io.print format_string(stepdef_key.regexp_source, stepdef_key.status)
+        if @options[:source]
+          indent = max_length - stepdef_key.regexp_source.jlength
+          line_comment = "    # #{stepdef_key.file_colon_line}".indent(indent)
+          @io.print(format_string(line_comment, :comment))
+        end
+        @io.puts
+      end
 
-          @io.puts format_string("(::) UNUSED (::)", :failed)
-          @all_step_definitions.each do |step_definition|
-            @io.print format_string(step_definition.regexp_source, :failed)
-            @io.puts format_string("  # #{step_definition.file_colon_line}".indent(max_length - step_definition.text_length), :comment)
+      def print_steps(stepdef_key)
+        @stepdef_to_match[stepdef_key].each do |step|
+          @io.print "  "
+          @io.print format_string(sprintf("%.7f", step[:duration]), :skipped) + " " unless @options[:dry_run]
+          @io.print format_step(step[:keyword], step[:step_match], step[:status], nil)
+          if @options[:source]
+            indent = max_length - (step[:keyword].jlength + step[:step_match].format_args.jlength)
+            line_comment = " # #{step[:file_colon_line]}".indent(indent)
+            @io.print(format_string(line_comment, :comment))
           end
+          @io.puts
+        end
+      end
+
+      def max_length
+        [max_stepdef_length, max_step_length].compact.max
+      end
+
+      def max_stepdef_length
+        @stepdef_to_match.keys.flatten.map{|key| key.regexp_source.jlength}.max
+      end
+
+      def max_step_length
+        @stepdef_to_match.values.flatten.map do |step|
+          step[:keyword].jlength + step[:step_match].format_args.jlength
+        end.max
+      end
+
+      def aggregate_info
+        @stepdef_to_match.each do |key, steps|
+          if steps.empty?
+            key.status = :skipped
+            key.mean_duration = 0
+          else
+            key.status = Ast::StepInvocation.worst_status(steps.map{|step| step[:status]})
+            total_duration = steps.inject(0) {|sum, step| step[:duration] + sum}
+            key.mean_duration = total_duration / steps.length
+          end
+        end
+      end
+
+      def add_unused_stepdefs
+        @step_mother.unmatched_step_definitions.each do |step_definition|
+          stepdef_key = StepDefKey.new(step_definition.regexp_source, step_definition.file_colon_line)
+          @stepdef_to_match[stepdef_key] = []
         end
       end
     end

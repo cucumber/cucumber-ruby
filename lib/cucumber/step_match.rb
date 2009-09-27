@@ -69,6 +69,10 @@ module Cucumber
       end
       s
     end
+
+    def inspect #:nodoc:
+      sprintf("#<%s:0x%x>", self.class, self.object_id)
+    end
   end
   
   class NoStepMatch #:nodoc:

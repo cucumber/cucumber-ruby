@@ -1,6 +1,12 @@
+require 'cucumber/step_match'
+
 module Cucumber
   module LanguageSupport
     module LanguageMethods
+      def create_step_match(step_definition, step_name, formatted_step_name, step_arguments)
+        StepMatch.new(step_definition, step_name, formatted_step_name, step_arguments)
+      end
+      
       def before(scenario)
         begin_scenario
         execute_before(scenario)
@@ -39,15 +45,6 @@ module Cucumber
       def add_transform(transform)
         transforms.unshift transform
         transform
-      end
-
-      def add_step_definition(step_definition)
-        step_definitions << step_definition
-        step_definition
-      end
-
-      def step_definitions
-        @step_definitions ||= []
       end
 
       def hooks_for(phase, scenario) #:nodoc:
