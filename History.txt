@@ -1,6 +1,11 @@
-== In Git
+== 0.3.104 2009-09-27
+
+This release has some minor changes to the command line and formatters. The biggest change is internally, paving
+the way for more programming language support in Cuke4Duke, which now supports step definitions written in Java, Scala, 
+Groovy, Clojure and Javascript!
 
 === New Features
+* "usage" formatter should display progress (#437 Aslak Hellesøy)
 * Added example for Ramaze. (Yutaka HARA)
 
 === Bugfixes
@@ -11,9 +16,12 @@
 * Allow for STDOUT formatters to be defined in profiles.  Addresses an Autotest plugin issue. (#375 Gabriel Medina)
 
 === Removed features
+* The --dry-run option no longer implies --no-source and --no-snippets. It only implies --no-snippets. (Aslak Hellesøy)
+
+=== Changed features
 * The profile and usage formatters have been combined to the usage formatter. Use it eith or without --dry-run. See --help for more. (Aslak Hellesøy)
 * The steps formatter has been renamed to stepdefs formatter. (Aslak Hellesøy)
-* The --dry-run option no longer implies --no-source and --no-snippets. It only implies --no-snippets. (Aslak Hellesøy)
+* The internal programming language API has changed, giving more power to the implementation. See #428. (Aslak Hellesøy)
 
 == 0.3.103 2009-09-24
 
