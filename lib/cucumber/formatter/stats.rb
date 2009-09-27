@@ -5,7 +5,20 @@ module Cucumber
     class Stats
       include Console
 
+      class StepDefKey
+        attr_reader :regexp_source, :file_colon_line
+        
+        def initialize(regexp_source, file_colon_line)
+          @regexp_source, @file_colon_line = regexp_source, file_colon_line
+        end
+        
+        def eql?(step_def_key)
+          regexp_source.eql?(step_def_key) && file_colon_line.eql?(file_colon_line)
+        end
+      end
+
       def initialize(step_mother, io, options)
+        @step_mother = step_mother
         @io = io
         @options = options
         @stepdef_to_match = Hash.new{|h,stepdef_key| h[stepdef_key] = []}
@@ -21,12 +34,9 @@ module Cucumber
 
       def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         duration = Time.now - @step_duration
-        
-        stepdef_key = [ # Would be nicer with a Hash, but they can't be used as keys on Ruby 1.8
-          step_match.step_definition.regexp_source, 
-          step_match.step_definition.file_colon_line
-        ]
         if step_match.name.nil? # nil if it's from a scenario outline
+          stepdef_key = StepDefKey.new(step_match.step_definition.regexp_source, step_match.step_definition.file_colon_line)
+
           @stepdef_to_match[stepdef_key] << {
             :keyword => keyword, 
             :step_match => step_match, 
@@ -39,43 +49,49 @@ module Cucumber
 
       def after_features(features)
         add_unused_stepdefs
-        stepdef_keys = @stepdef_to_match.keys
         
-        max_stepdef_length = stepdef_keys.map{|key| key[0].jlength}.max
-        max_stepdef_length += 2 if max_stepdef_length
-        max_step_length    = @stepdef_to_match.values.flatten.map do |step|
-          step ? step[:keyword].jlength + step[:step_match].format_args.jlength : nil
-        end.compact.max
-        max_length = [max_stepdef_length, max_step_length].compact.max
-        
-        stepdef_keys.each do |stepdef_key|
+        @stepdef_to_match.keys.each do |stepdef_key|
           @io.print format_string(sprintf("%.7f", 0.5), :skipped) + " " unless @options[:dry_run]
-          @io.print format_string(stepdef_key[0], :failed)
+          @io.print format_string(stepdef_key.regexp_source, :failed)
           if @options[:source]
-            indent = max_length - stepdef_key[0].jlength
-            line_comment = "    # #{stepdef_key[1]}".indent(indent)
+            indent = max_length - stepdef_key.regexp_source.jlength
+            line_comment = "    # #{stepdef_key.file_colon_line}".indent(indent)
             @io.print(format_string(line_comment, :comment))
           end
           @io.puts
 
-          @stepdef_to_match[stepdef_key].each do |step|
-            next if step.nil?
-            @io.print "  "
-            @io.print format_string(sprintf("%.7f", step[:duration]), :skipped) + " " unless @options[:dry_run]
-            @io.print format_step(step[:keyword], step[:step_match], step[:status], nil)
-            if @options[:source]
-              indent = max_length - (step[:keyword].jlength + step[:step_match].format_args.jlength)
-              line_comment = " # #{step[:file_colon_line]}".indent(indent)
-              @io.print(format_string(line_comment, :comment))
+          if @stepdef_to_match[stepdef_key].any?
+            @stepdef_to_match[stepdef_key].each do |step|
+              @io.print "  "
+              @io.print format_string(sprintf("%.7f", step[:duration]), :skipped) + " " unless @options[:dry_run]
+              @io.print format_step(step[:keyword], step[:step_match], step[:status], nil)
+              if @options[:source]
+                indent = max_length - (step[:keyword].jlength + step[:step_match].format_args.jlength)
+                line_comment = " # #{step[:file_colon_line]}".indent(indent)
+                @io.print(format_string(line_comment, :comment))
+              end
+              @io.puts
             end
-            @io.puts
+          else
+            @io.puts("  " + format_string("NOT MATCHED BY ANY STEPS", :failed))
           end
         end
       end
-      
+
+      def max_length
+        max_stepdef_length = @stepdef_to_match.keys.flatten.map{|key| key.regexp_source.jlength}.max
+        max_stepdef_length += 2 if max_stepdef_length
+        max_step_length    = @stepdef_to_match.values.flatten.map do |step|
+          step[:keyword].jlength + step[:step_match].format_args.jlength
+        end.max
+        [max_stepdef_length, max_step_length].compact.max
+      end
+
       def add_unused_stepdefs
-        stepdef_key = ['/JALLA MY IOKE REGEXP/', 'foo/kl.ioke:99']
-        @stepdef_to_match[stepdef_key] << nil
+        @step_mother.unmatched_step_definitions.each do |step_definition|
+          stepdef_key = StepDefKey.new(step_definition.regexp_source, step_definition.file_colon_line)
+          @stepdef_to_match[stepdef_key] = []
+        end
       end
     end
   end

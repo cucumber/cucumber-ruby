@@ -47,15 +47,6 @@ module Cucumber
         transform
       end
 
-      def add_step_definition(step_definition)
-        step_definitions << step_definition
-        step_definition
-      end
-
-      def step_definitions
-        @step_definitions ||= []
-      end
-
       def hooks_for(phase, scenario) #:nodoc:
         hooks[phase.to_sym].select{|hook| scenario.accept_hook?(hook)}
       end

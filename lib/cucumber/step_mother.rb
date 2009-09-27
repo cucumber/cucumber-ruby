@@ -161,7 +161,13 @@ module Cucumber
         top_groups
       end
     end
-    
+
+    def unmatched_step_definitions
+      @programming_languages.map do |programming_language| 
+        programming_language.unmatched_step_definitions
+      end.flatten
+    end
+
     def snippet_text(step_keyword, step_name, multiline_arg_class) #:nodoc:
       load_programming_language('rb') if unknown_programming_language?
       @programming_languages.map do |programming_language|

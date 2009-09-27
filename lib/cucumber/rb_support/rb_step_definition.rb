@@ -42,7 +42,9 @@ module Cucumber
       end
 
       def arguments_from(step_name)
-        RegexpArgumentMatcher.arguments_from(@regexp, step_name)
+        args = RegexpArgumentMatcher.arguments_from(@regexp, step_name)
+        @matched = true if args
+        args
       end
 
       def invoke(args)
@@ -54,6 +56,10 @@ module Cucumber
           e.backtrace.unshift(self.backtrace_line)
           raise e
         end
+      end
+
+      def matched?
+        @matched
       end
 
       def file_colon_line
