@@ -105,7 +105,9 @@ module Cucumber
       end
 
       def register_rb_step_definition(regexp, proc)
-        @step_definitions << RbStepDefinition.new(self, regexp, proc)
+        step_definition = RbStepDefinition.new(self, regexp, proc)
+        @step_definitions << step_definition
+        step_definition
       end
 
       def build_rb_world_factory(world_modules, proc)

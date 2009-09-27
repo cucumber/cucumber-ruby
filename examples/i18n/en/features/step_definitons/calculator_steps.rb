@@ -22,6 +22,3 @@ end
 Then /the result should be (.*) on the screen/ do |result|
   @result.should == result.to_f
 end
-
-Then /some unused stepdef/ do
-end

@@ -9,13 +9,17 @@ module Cucumber
         'pdf'       => ['Cucumber::Formatter::Pdf',      "Generates a PDF report. You need to have the\n" + 
                                                          "#{' ' * 51}prawn gem installed. Will pick up logo from\n" + 
                                                          "#{' ' * 51}features/support/logo.png if present."],
-        'profile'   => ['Cucumber::Formatter::Profile',  'Prints the 10 slowest steps at the end.'],
         'progress'  => ['Cucumber::Formatter::Progress', 'Prints one character per scenario.'],
         'rerun'     => ['Cucumber::Formatter::Rerun',    'Prints failing files with line numbers.'],
-        'usage'     => ['Cucumber::Formatter::Usage',    'Prints where step definitions are used.'],
+        'usage'     => ['Cucumber::Formatter::Usage',    "Prints where step definitions are used.\n" +
+                                                         "#{' ' * 51}The slowest step definitions (with duration) are\n" + 
+                                                         "#{' ' * 51}listed first. If --dry-run is used the duration\n" +
+                                                         "#{' ' * 51}is not shown, and step definitions are sorted by\n" +
+                                                         "#{' ' * 51}filename instead."],
+        'stepdefs'  => ['Cucumber::Formatter::Stepdefs', "Prints All step definitions with their locations. Same as\n" +
+                                                         "the usage formatter, except that steps are not printed."],
         'junit'     => ['Cucumber::Formatter::Junit',    'Generates a report similar to Ant+JUnit.'],
-        'tag_cloud' => ['Cucumber::Formatter::TagCloud', 'Prints a tag cloud of tag usage.'],
-        'steps'     => ['Cucumber::Formatter::Steps',    'Prints location of step definitions.']
+        'tag_cloud' => ['Cucumber::Formatter::TagCloud', 'Prints a tag cloud of tag usage.']
       }
       max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
       FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
