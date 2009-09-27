@@ -261,6 +261,10 @@ module Cucumber
         @options[:formats].select {|format, output| output != @out_stream }
       end
 
+      def stdout_formats
+        @options[:formats].select {|format, output| output == @out_stream }
+      end
+
     private
 
      def extract_environment_variables
@@ -337,7 +341,8 @@ module Cucumber
         if @options[:formats].empty?
           @options[:formats] = other_options[:formats]
         else
-          @options[:formats] += other_options.non_stdout_formats
+          @options[:formats] += other_options[:formats]
+          @options[:formats] = stdout_formats[0..0] + non_stdout_formats  
         end
 
         self
