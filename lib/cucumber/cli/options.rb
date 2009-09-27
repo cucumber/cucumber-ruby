@@ -171,9 +171,9 @@ module Cucumber
           end
           opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.",
             "This also omits the loading of your support/env.rb file if it exists.",
-            "Implies --quiet.") do
+            "Implies --no-snippets.") do
             @options[:dry_run] = true
-            @quiet = true
+            @options[:snippets] = false
           end
           opts.on("-a", "--autoformat DIRECTORY",
             "Reformats (pretty prints) feature files and write them to DIRECTORY.",
