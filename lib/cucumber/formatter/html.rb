@@ -1,6 +1,5 @@
 require 'cucumber/formatter/ordered_xml_markup'
 require 'cucumber/formatter/duration'
-require 'xml'
 
 module Cucumber
   module Formatter
