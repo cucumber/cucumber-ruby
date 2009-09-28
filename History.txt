@@ -1,3 +1,8 @@
+== In Git
+
+=== New Features
+* Installation via rubygems will print a message telling people to read this file. (Aslak Hellesøy)
+
 == 0.3.104 2009-09-27
 
 This release has some minor changes to the command line and formatters. The biggest change is internally, paving
