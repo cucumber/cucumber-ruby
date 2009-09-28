@@ -400,6 +400,7 @@ lib/cucumber/rb_support/rb_world.rb
 lib/cucumber/rb_support/regexp_argument_matcher.rb
 lib/cucumber/rspec_neuter.rb
 lib/cucumber/step_argument.rb
+lib/cucumber/step_definition_light.rb
 lib/cucumber/step_match.rb
 lib/cucumber/step_mother.rb
 lib/cucumber/version.rb
@@ -413,6 +414,7 @@ rails_generators/cucumber/templates/cucumber_environment.rb
 rails_generators/cucumber/templates/env.rb
 rails_generators/cucumber/templates/paths.rb
 rails_generators/cucumber/templates/spork_env.rb
+rails_generators/cucumber/templates/version_check.rb
 rails_generators/cucumber/templates/webrat_steps.rb
 rails_generators/feature/USAGE
 rails_generators/feature/feature_generator.rb
