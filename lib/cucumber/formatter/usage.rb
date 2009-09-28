@@ -1,25 +1,13 @@
 require 'cucumber/formatter/progress'
+require 'cucumber/step_definition_light'
 
 module Cucumber
   module Formatter
     class Usage < Progress
       include Console
 
-      class StepDefKey
-        attr_reader :regexp_source, :file_colon_line
+      class StepDefKey < StepDefinitionLight
         attr_accessor :mean_duration, :status
-        
-        def initialize(regexp_source, file_colon_line)
-          @regexp_source, @file_colon_line = regexp_source, file_colon_line
-        end
-        
-        def eql?(o)
-          regexp_source == o.regexp_source && file_colon_line == o.file_colon_line
-        end
-        
-        def hash
-          regexp_source.hash + 17*file_colon_line.hash
-        end
       end
 
       def initialize(step_mother, io, options)

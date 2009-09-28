@@ -31,6 +31,7 @@ module Cucumber
           regexp = Regexp.new("^#{p}$") 
         end
         @rb_language, @regexp, @proc = rb_language, regexp, proc
+        @rb_language.available_step_definition(regexp_source, file_colon_line)
       end
 
       def regexp_source
@@ -43,7 +44,7 @@ module Cucumber
 
       def arguments_from(step_name)
         args = RegexpArgumentMatcher.arguments_from(@regexp, step_name)
-        @matched = true if args
+        @rb_language.invoked_step_definition(regexp_source, file_colon_line) if args
         args
       end
 
@@ -56,10 +57,6 @@ module Cucumber
           e.backtrace.unshift(self.backtrace_line)
           raise e
         end
-      end
-
-      def matched?
-        @matched
       end
 
       def file_colon_line

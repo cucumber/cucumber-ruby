@@ -6,7 +6,8 @@ Feature: Cucumber command line
   @mri186
   Scenario: List usage of step definitions
     When I run cucumber features --format usage --dry-run
-    Then it should pass with
+    Then STDERR should be empty
+    And it should pass with
       """
       -------------------------------------UU-U--------------UUUUU---------U-------U--------------U-UU-------------------------------------------------UU
       
@@ -139,7 +140,8 @@ Feature: Cucumber command line
     @mri186
     Scenario: --format steps
       When I run cucumber features --format stepdefs --dry-run
-      Then it should pass with
+      Then STDERR should be empty
+      And it should pass with
         """
         -------------------------------------UU-U--------------UUUUU---------U-------U--------------U-UU-------------------------------------------------UU
         

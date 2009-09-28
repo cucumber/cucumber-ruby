@@ -67,10 +67,6 @@ module Cucumber
         @regexp_argument_matcher.arguments_from(regexp, step_name)
       end
 
-      def unmatched_step_definitions
-        @step_definitions.select{|step_definition| !step_definition.matched?}
-      end
-
       def snippet_text(step_keyword, step_name, multiline_arg_class = nil)
         escaped = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
         escaped = escaped.gsub(PARAM_PATTERN, ESCAPED_PARAM_PATTERN)

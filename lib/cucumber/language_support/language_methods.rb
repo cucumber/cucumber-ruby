@@ -1,4 +1,5 @@
 require 'cucumber/step_match'
+require 'cucumber/step_definition_light'
 
 module Cucumber
   module LanguageSupport
@@ -51,7 +52,27 @@ module Cucumber
         hooks[phase.to_sym].select{|hook| scenario.accept_hook?(hook)}
       end
 
+      def unmatched_step_definitions
+        available_step_definition_hash.keys - invoked_step_definition_hash.keys
+      end
+
+      def available_step_definition(regexp_source, file_colon_line)
+        available_step_definition_hash[StepDefinitionLight.new(regexp_source, file_colon_line)] = nil
+      end
+
+      def invoked_step_definition(regexp_source, file_colon_line)
+        invoked_step_definition_hash[StepDefinitionLight.new(regexp_source, file_colon_line)] = nil
+      end
+
       private
+
+      def available_step_definition_hash
+        @available_step_definition_hash ||= {}
+      end
+
+      def invoked_step_definition_hash
+        @invoked_step_definition_hash ||= {}
+      end
 
       def hooks
         @hooks ||= Hash.new{|h,k| h[k] = []}
