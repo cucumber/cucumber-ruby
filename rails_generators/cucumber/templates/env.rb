@@ -1,3 +1,5 @@
+# This file was generated with Cucumber <%= Cucumber::VERSION::STRING %>
+
 # Sets up the Rails environment for Cucumber
 ENV["RAILS_ENV"] ||= "cucumber"
 require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')

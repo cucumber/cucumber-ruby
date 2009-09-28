@@ -2,6 +2,7 @@
 
 === New Features
 * Installation via rubygems will print a message telling people to read this file. (Aslak Hellesøy)
+* Rotten cucumber alert on Rails if you upgrade your gem without regenerating with script/generate cucumber. (Aslak Hellesøy)
 
 === Bugfixes
 * Before('~@no-txn') is run on all scenarios without @no-txn causing Cucumber::Rails::World.use_transactional_fixtures to always be true. (#457 Aslak Hellesøy)
