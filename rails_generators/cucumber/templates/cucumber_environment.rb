@@ -22,5 +22,5 @@ config.gem 'rspec',       :lib => false,        :version => '>=1.2.8' unless Fil
 config.gem 'rspec-rails', :lib => false,        :version => '>=1.2.7.1' unless File.directory?(File.join(Rails.root, 'vendor/plugins/rspec-rails'))
 <% end %>
 <% if spork? -%>
-config.gem 'spork',       :lib => false,        :version => '>=0.5.9' unless File.directory?(File.join(Rails.root, 'vendor/plugins/spork'))
+config.gem 'spork',       :lib => false,        :version => '>=0.7.2' unless File.directory?(File.join(Rails.root, 'vendor/plugins/spork'))
 <% end %>
