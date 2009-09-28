@@ -3,6 +3,9 @@
 === New Features
 * Installation via rubygems will print a message telling people to read this file. (Aslak Hellesøy)
 
+=== Bugfixes
+* Before('~@no-txn') is run on all scenarios without @no-txn causing Cucumber::Rails::World.use_transactional_fixtures to always be true. (#457 Aslak Hellesøy)
+
 == 0.3.104 2009-09-27
 
 This release has some minor changes to the command line and formatters. The biggest change is internally, paving
