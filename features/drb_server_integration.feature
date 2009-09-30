@@ -66,6 +66,7 @@ Feature: DRb Server Integration
       I'm loading all the heavy stuff...
       """
 
+  @run-code-fail
   Scenario: Feature Failing with --drb flag
     Given a file named "features/step_definitions/all_your_steps_are_belong_to_us.rb" with:
     """
