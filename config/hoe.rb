@@ -72,8 +72,8 @@ $hoe = Hoe.spec(GEM_NAME) do |p|
   p.post_install_message = <<-POST_INSTALL_MESSAGE
 *******************************************************************************
  Thank you for installing cucumber-#{Cucumber::VERSION::STRING}
- Please be sure to read History.txt for useful information about this release.
- Using Ruby on Rails? Run script/generate cucumber to bring your app uptodate.
+ Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
+ for important information about this release.
 *******************************************************************************
 POST_INSTALL_MESSAGE
 end
