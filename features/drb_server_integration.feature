@@ -46,6 +46,7 @@ Feature: DRb Server Integration
     end
     """
 
+  @run-code-fail
   Scenario: Feature Passing with --drb flag
     Given I am running spork in the background
 
@@ -131,6 +132,7 @@ Feature: DRb Server Integration
       I'm loading the stuff just for this run...
       """
 
+  @run-code-fail
   Scenario: Feature Run with --drb specifying a non-standard port
 
     Given I am running spork in the background on port 9000
@@ -151,6 +153,7 @@ Feature: DRb Server Integration
       I'm loading all the heavy stuff...
       """
 
+  @run-code-fail
   Scenario: Feature Run with $CUCUMBER_DRB environment variable
 
     Given I have environment variable CUCUMBER_DRB set to "9000"

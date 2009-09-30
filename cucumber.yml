@@ -1,2 +1,2 @@
-default: --format progress --tags ~@proposed,~@wip --strict features
+default: --format progress --tags ~@proposed,~@wip,~@run-code-fail --strict features
 wip: --tags @wip --wip features
