@@ -3,7 +3,6 @@ require 'cucumber/rake/task'
 
 Cucumber::Rake::Task.new do |t|
   t.cucumber_opts = %w{--format progress}
-  t.cucumber_opts += %w{--profile runcoderun} if File.expand_path(__FILE__) =~ /^\/mnt\/repos/
   t.rcov = ENV['RCOV']
 end
 
