@@ -8,7 +8,7 @@ Feature: Print snippets
       """
       Feature: X
         Scenario: Y
-          Given Hello from Run Code Run
+          Given Z
           Given Q
       """
     When I run cucumber features
