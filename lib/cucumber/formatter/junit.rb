@@ -79,7 +79,9 @@ module Cucumber
       def after_table_row(table_row)
         if @outline
           duration = Time.now - @table_start
-          unless table_row.header?
+          if table_row.respond_to?("header?") && table_row.header?
+            # skip outline headers
+          else
             name_suffix = " (outline example : #{table_row.name})"
             if table_row.failed?
               @output += "Example row: #{table_row.name}\n"
