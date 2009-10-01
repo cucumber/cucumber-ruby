@@ -70,22 +70,16 @@ module Cucumber
         end
       end
 
-      def before_outline_table(outline_table)
-        @header_row = true
-      end
-
       def before_table_row(table_row)
         if @outline
           @table_start = Time.now
         end
-        
-        @header_row = false
       end
 
       def after_table_row(table_row)
         if @outline
           duration = Time.now - @table_start
-          unless @header_row
+          unless table_row.header?
             name_suffix = " (outline example : #{table_row.name})"
             if table_row.failed?
               @output += "Example row: #{table_row.name}\n"
@@ -94,7 +88,6 @@ module Cucumber
             build_testcase(duration, table_row.status, table_row.exception,  name_suffix)
           end
         end
-        @header_row = false
       end
 
       private

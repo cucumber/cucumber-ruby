@@ -135,8 +135,6 @@ module Cucumber
           "| #{@cells.collect{|c| c.value }.join(' | ')} |"
         end
 
-        private
-
         def header?
           index == 0
         end
