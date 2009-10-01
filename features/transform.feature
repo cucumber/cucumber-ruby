@@ -23,6 +23,10 @@ Feature: transform
         array.should be_kind_of(Array)
       end
 
+      Then /^I should transform ('\w+' to Nil)$/ do |string|
+        string.should be_nil
+      end
+
       Then /^I should not transform ('\d+') to an Integer$/ do |string|
         string.should be_kind_of(String)
       end
@@ -36,6 +40,8 @@ Feature: transform
       Transform /^'(\d+)' to a Float$/ do |integer_string|
         Float.induced_from Transform("'#{integer_string}' to an Integer")
       end
+
+      Transform(/^('\w+') to Nil$/) {|str| nil }
 
       Transform(/^('\w+') to a Symbol$/) {|str| str.to_sym }
 
@@ -71,6 +77,9 @@ Feature: transform
         Scenario: transform with matches that use current world
           Then I should transform 'abc' to an Array
 
+        Scenario: transform with matches that return nil
+          Then I should transform 'nil' to Nil
+
         Scenario: transform without matches
           Then I should not transform '10' to an Integer
       """
@@ -91,10 +100,13 @@ Feature: transform
         Scenario: transform with matches that use current world
           Then I should transform 'abc' to an Array
 
+        Scenario: transform with matches that return nil
+          Then I should transform 'nil' to Nil
+
         Scenario: transform without matches
           Then I should not transform '10' to an Integer
 
-      5 scenarios (5 passed)
-      5 steps (5 passed)
+      6 scenarios (6 passed)
+      6 steps (6 passed)
     
       """

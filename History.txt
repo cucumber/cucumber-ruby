@@ -8,6 +8,7 @@
 * Rotten Cucumber alert on Rails if you upgrade your gem without regenerating with script/generate cucumber. (Aslak Hellesøy)
 
 === Bugfixes
+* Transforms can return nil. (Thomas Marek)
 * Feature files are now sorted before they are executed, because different operating systems may list files differently. (Aslak Hellesøy)
 * Fixed image loading for Windows. Allow use of both png and jpg. (#461 Declan Whelan)
 * Before('~@no-txn') is run on all scenarios without @no-txn causing Cucumber::Rails::World.use_transactional_fixtures to always be true. (#457 Aslak Hellesøy)
