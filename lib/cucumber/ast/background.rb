@@ -26,12 +26,24 @@ module Cucumber
         return if $cucumber_interrupted
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_background_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
-        visitor.step_mother.before(hook_context)
-        visitor.visit_steps(@step_invocations)
-        @failed = @step_invocations.detect{|step_invocation| step_invocation.exception}
-        visitor.step_mother.after(hook_context) if @failed || @feature_elements.empty?
+        with_visitor(hook_context, visitor) do
+          visitor.step_mother.before(hook_context)
+          visitor.visit_steps(@step_invocations)
+          @failed = @step_invocations.detect{|step_invocation| step_invocation.exception}
+          visitor.step_mother.after(hook_context) if @failed || @feature_elements.empty?
+        end
       end
-
+      
+      def with_visitor(scenario, visitor)
+        if self == scenario
+          yield
+        else
+          scenario.with_visitor(visitor) do
+            yield
+          end
+        end
+      end
+      
       def accept_hook?(hook)
         if hook_context != self
           hook_context.accept_hook?(hook)
