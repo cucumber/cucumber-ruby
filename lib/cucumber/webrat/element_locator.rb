@@ -1,3 +1,5 @@
+require 'webrat'
+
 module Webrat
   class Element
     # Returns an Array of Array of String where each String is a

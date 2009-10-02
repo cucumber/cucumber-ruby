@@ -3,6 +3,7 @@ require 'cucumber/rb_support/rb_world'
 require 'cucumber/rb_support/rb_step_definition'
 require 'cucumber/rb_support/rb_hook'
 require 'cucumber/rb_support/rb_transform'
+require 'cucumber/rb_support/regexp_argument_matcher'
 
 module Cucumber
   module RbSupport
@@ -33,6 +34,7 @@ module Cucumber
       
       def initialize(step_mother)
         @step_mother = step_mother
+        @step_definitions = []
         RbDsl.rb_language = self
       end
 
@@ -58,6 +60,16 @@ module Cucumber
         ensure
           @step_definitions = nil
         end
+      end
+
+      def step_matches(step_name, formatted_step_name)
+        @step_definitions.map do |step_definition|
+          step_definition.step_match(step_name, formatted_step_name)
+        end.compact
+      end
+
+      def arguments_from(regexp, step_name)
+        @regexp_argument_matcher.arguments_from(regexp, step_name)
       end
 
       def snippet_text(step_keyword, step_name, multiline_arg_class = nil)
@@ -94,7 +106,9 @@ module Cucumber
       end
 
       def register_rb_step_definition(regexp, proc)
-        add_step_definition(RbStepDefinition.new(self, regexp, proc))
+        step_definition = RbStepDefinition.new(self, regexp, proc)
+        @step_definitions << step_definition
+        step_definition
       end
 
       def build_rb_world_factory(world_modules, proc)
@@ -106,11 +120,11 @@ module Cucumber
         @world_modules += world_modules
       end
 
-      protected
-
       def load_code_file(code_file)
         require code_file # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from RbDsl
       end
+
+      protected
 
       def begin_scenario
         begin_rb_scenario

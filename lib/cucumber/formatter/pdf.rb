@@ -10,13 +10,13 @@ module Cucumber
     BLACK = '000000'
     GREY = '999999'
 
-    class Pdf < Ast::Visitor
+    class Pdf
       include FileUtils
       include Console
       attr_writer :indent
 
       def initialize(step_mother, io, options)
-        super(step_mother)
+        @step_mother = step_mother
         raise "You *must* specify --out FILE for the pdf formatter" unless File === io
 
         if(options[:dry_run])
@@ -34,10 +34,7 @@ module Cucumber
         @indent = 0
         @buffer = []
         puts "writing to #{io.path}"
-        begin
-          @pdf.image open("features/support/logo.png"), :position => :center, :width => 500
-        rescue
-        end
+        load_cover_page_image
         @pdf.text "\n\n\nCucumber features", :align => :center, :size => 32
         @pdf.text "Generated: #{Time.now.strftime("%Y-%m-%d %H:%M")}", :size => 10, :at => [0, 24]
         @pdf.text "Command: <code>cucumber #{ARGV.join(" ")}</code>", :size => 10, :at => [0,10]
@@ -53,6 +50,159 @@ module Cucumber
         end
       end
 
+      def load_cover_page_image()
+        if (!load_image("features/support/logo.png"))
+          load_image("features/support/logo.jpg")
+        end
+      end
+
+      def load_image(image_path)
+        begin
+          @pdf.image open(image_path, "rb"), :position => :center, :width => 500
+          true
+        rescue Errno::ENOENT
+          false
+        end
+      end
+
+      def after_features(features)
+        @pdf.render_file(@io.path)
+        puts "\ndone"
+      end
+
+      def feature_name(name)
+        @pdf.start_new_page
+        name["Feature:"] = "" if name["Feature:"]
+        names = name.split("\n")
+        @pdf.fill_color GREY
+        @pdf.text('Feature', :align => :center)
+        @pdf.fill_color BLACK
+        names.each_with_index do |nameline, i|
+          case i
+          when 0
+            @pdf.text(nameline.strip, :size => 30, :align => :center )
+            @pdf.text("\n")
+          else
+            @pdf.text(nameline.strip, :size => 12)
+          end
+        end
+        @pdf.move_down(30)
+      end
+
+      def before_feature_element(feature_element)
+        record_tag_occurrences(feature_element, @options)
+      end
+      
+      def after_feature_element(feature_element)
+        flush
+      end
+
+      def after_feature(feature)
+        flush
+      end
+
+      def feature_element_name(keyword, name)
+        names = name.empty? ? [name] : name.split("\n")
+        print "."
+        STDOUT.flush
+
+        keep_with do
+          @doc.move_down(20)
+          @doc.fill_color GREY
+          @doc.text("#{keyword}", :size => 8)
+          @doc.fill_color BLACK
+          @doc.text("#{names[0]}", :size => 16)
+          names[1..-1].each { |s| @doc.text(s, :size => 12) }
+          @doc.text("\n")
+        end
+      end
+
+      def step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+        @hide_this_step = false
+        if exception
+          if @exceptions.include?(exception)
+            @hide_this_step = true
+            return
+          end
+          @exceptions << exception
+        end
+        if status != :failed && @in_background ^ background
+          @hide_this_step = true
+          return
+        end
+      end
+
+      def step_name(keyword, step_match, status, source_indent, background)
+        return if @hide_this_step
+        line = "<b>#{keyword}</b> #{step_match.format_args("%s").gsub('<', '&lt;').gsub('>', '&gt;')}"
+        colorize(line, status)
+      end
+
+      def before_background(background)
+        @in_background = true
+      end
+
+      def after_background(background)
+        @in_background = nil
+      end
+
+      def before_multiline_arg(table)
+        return if @hide_this_step
+        if(table.kind_of? Cucumber::Ast::Table)
+          keep_with do
+            @doc.table(table.rows << table.headers , :position => :center, :row_colors => ['ffffff', 'f0f0f0'])
+          end
+        end
+      end
+
+      #using row_color hack to highlight each row correctly
+      def before_outline_table(table)
+        return if @hide_this_step
+        row_colors = table.example_rows.map { |r| @status_colors[r.status] unless r.status == :skipped}
+        keep_with do
+          @doc.table(table.rows, :headers => table.headers, :position => :center, :row_colors => row_colors)
+        end
+      end
+
+      def before_py_string(string)
+        return if @hide_this_step
+        s = %{"""\n#{string}\n"""}.indent(10)
+        s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}
+        s.each do |line|
+          line.gsub!('<', '&lt;')
+          line.gsub!('>', '&gt;')
+          keep_with { @doc.text line, :size => 8 }
+        end
+      end
+
+      def tag_name(tag_name)
+        return if @hide_this_step
+        tag = format_string(tag_name, :tag).indent(@indent)
+        # TODO should we render tags at all? skipped for now. difficult to place due to page breaks
+      end
+
+      def background_name(keyword, name, file_colon_line, source_indent)
+        feature_element_name(keyword, name)
+      end
+
+      def examples_name(keyword, name)
+        feature_element_name(keyword, name)
+      end
+
+      def scenario_name(keyword, name, file_colon_line, source_indent)
+        feature_element_name(keyword, name)
+      end
+      
+      private
+      
+      def colorize(text, status)
+        keep_with do
+          @doc.fill_color(@status_colors[status] || BLACK)
+          @doc.text(text)
+          @doc.fill_color(BLACK)
+        end
+      end
+      
       def keep_with(&block)
         @buffer << block
       end
@@ -78,139 +228,6 @@ module Cucumber
         render @pdf
         @pdf.move_down(20)
         @buffer = []
-      end
-
-      # regular visitor entries
-      def visit_features(features)
-        super
-        @pdf.render_file(@io.path)
-        puts "\ndone"
-      end
-
-      def visit_feature_name(name)
-        @pdf.start_new_page
-        name["Feature:"] = "" if name["Feature:"]
-        names = name.split("\n")
-        @pdf.fill_color GREY
-        @pdf.text('Feature', :align => :center)
-        @pdf.fill_color BLACK
-        names.each_with_index do |nameline, i|
-          case i
-          when 0
-            @pdf.text(nameline.strip, :size => 30, :align => :center )
-            @pdf.text("\n")
-          else
-            @pdf.text(nameline.strip, :size => 12)
-          end
-        end
-        @pdf.move_down(30)
-      end
-
-      def visit_feature_element(feature_element)
-        record_tag_occurrences(feature_element, @options)
-        super
-        flush
-      end
-
-      def visit_feature(feature)
-        super
-        flush
-      end
-
-      def visit_feature_element_name(keyword, name)
-        names = name.empty? ? [name] : name.split("\n")
-        print "."
-        STDOUT.flush
-
-        keep_with do
-          @doc.move_down(20)
-          @doc.fill_color GREY
-          @doc.text("#{keyword}", :size => 8)
-          @doc.fill_color BLACK
-          @doc.text("#{names[0]}", :size => 16)
-          names[1..-1].each { |s| @doc.text(s, :size => 12) }
-          @doc.text("\n")
-        end
-      end
-
-      def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
-        if exception
-          return if @exceptions.index(exception)
-          @exceptions << exception
-        end
-        return if status != :failed && @in_background ^ background
-        @status = status
-        super
-      end
-
-      def colorize(text, status)
-        keep_with do
-          @doc.fill_color(@status_colors[status] || BLACK)
-          @doc.text(text)
-          @doc.fill_color(BLACK)
-        end
-      end
-
-      def visit_step_name(keyword, step_match, status, source_indent, background)
-        line = "<b>#{keyword}</b> #{step_match.format_args("%s").gsub('<', '&lt;').gsub('>', '&gt;')}"
-        colorize(line, status)
-      end
-
-      def visit_background(background)
-        @in_background = true
-        super
-        @in_background = nil
-      end
-
-      def visit_multiline_arg(table)
-        if(table.kind_of? Cucumber::Ast::Table)
-          keep_with do
-            @doc.table(table.rows << table.headers , :position => :center, :row_colors => ['ffffff', 'f0f0f0'])
-          end
-        end
-        super
-      end
-
-      #using row_color hack to highlight each row correctly
-      def visit_outline_table(table)
-        row_colors = table.example_rows.map { |r| @status_colors[r.status] unless r.status == :skipped}
-        keep_with do
-          @doc.table(table.rows, :headers => table.headers, :position => :center, :row_colors => row_colors)
-        end
-      end
-
-      def visit_py_string(string)
-        s = %{"""\n#{string}\n"""}.indent(10)
-        s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}
-        s.each do |line|
-          line.gsub!('<', '&lt;')
-          line.gsub!('>', '&gt;')
-          keep_with { @doc.text line, :size => 8 }
-        end
-      end
-
-      def visit_comment(comment)
-        comment.accept(self)
-      end
-
-      def visit_comment_line(comment_line)
-      end
-
-      def visit_tag_name(tag_name)
-        tag = format_string(tag_name, :tag).indent(@indent)
-        # TODO should we render tags at all? skipped for now. difficult to place due to page breaks
-      end
-
-      def visit_background_name(keyword, name, file_colon_line, source_indent)
-        visit_feature_element_name(keyword, name)
-      end
-
-      def visit_examples_name(keyword, name)
-        visit_feature_element_name(keyword, name)
-      end
-
-      def visit_scenario_name(keyword, name, file_colon_line, source_indent)
-        visit_feature_element_name(keyword, name)
       end
     end
   end

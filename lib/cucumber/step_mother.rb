@@ -38,16 +38,6 @@ module Cucumber
     end
   end
 
-  # Raised when 2 or more StepDefinition have the same Regexp
-  class Redundant < StandardError
-    def initialize(step_def_1, step_def_2)
-      message = "Multiple step definitions have the same Regexp:\n\n"
-      message << step_def_1.backtrace_line << "\n"
-      message << step_def_2.backtrace_line << "\n\n"
-      super(message)
-    end
-  end
-
   # This is the meaty part of Cucumber that ties everything together.
   class StepMother
     include Constantize
@@ -87,15 +77,10 @@ module Cucumber
     def load_code_file(step_def_file)
       if programming_language = programming_language_for(step_def_file)
         log.debug("  * #{step_def_file}\n")
-        step_definitions = programming_language.step_definitions_for(step_def_file)
-        register_step_definitions(step_definitions)
+        programming_language.load_code_file(step_def_file)
       else
         log.debug("  * #{step_def_file} [NOT SUPPORTED]\n")
       end
-    end
-
-    def register_step_definitions(step_definitions)
-      step_definitions.each{|step_definition| register_step_definition(step_definition)}
     end
 
     # Loads and registers programming language implementation.
@@ -152,7 +137,9 @@ module Cucumber
     end
 
     def step_match(step_name, formatted_step_name=nil) #:nodoc:
-      matches = step_definitions.map { |d| d.step_match(step_name, formatted_step_name) }.compact
+      matches = @programming_languages.map do |programming_language| 
+        programming_language.step_matches(step_name, formatted_step_name)
+      end.flatten
       raise Undefined.new(step_name) if matches.empty?
       matches = best_matches(step_name, matches) if matches.size > 1 && options[:guess]
       raise Ambiguous.new(step_name, matches, options[:guess]) if matches.size > 1
@@ -174,16 +161,11 @@ module Cucumber
         top_groups
       end
     end
-    
-    def clear! #:nodoc:
-      step_definitions.clear
-      hooks.clear
-      steps.clear
-      scenarios.clear
-    end
 
-    def step_definitions #:nodoc:
-      @step_definitions ||= []
+    def unmatched_step_definitions
+      @programming_languages.map do |programming_language| 
+        programming_language.unmatched_step_definitions
+      end.flatten
     end
 
     def snippet_text(step_keyword, step_name, multiline_arg_class) #:nodoc:
@@ -243,17 +225,6 @@ module Cucumber
     end
 
     private
-
-    # Registers a StepDefinition. This can be a Ruby StepDefintion,
-    # or any other kind of object that implements the StepDefintion
-    # contract (API).
-    def register_step_definition(step_definition)
-      step_definitions.each do |already|
-        raise Redundant.new(already, step_definition) if already == step_definition
-      end
-      step_definitions << step_definition
-      step_definition
-    end
 
     def programming_language_for(step_def_file) #:nodoc:
       if ext = File.extname(step_def_file)[1..-1]

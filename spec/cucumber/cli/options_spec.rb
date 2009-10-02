@@ -193,6 +193,18 @@ module Cli
           options[:formats].should == [['progress', output_stream], ['html', 'features.html']]
         end
 
+        it "does not include STDOUT formatters from the profile if there is a STDOUT formatter in command line" do
+          given_cucumber_yml_defined_as({'html' => %w[--format html -o features.html --format pretty]})
+          options.parse!(%w{--format progress --profile html})
+          options[:formats].should == [['progress', output_stream], ['html', 'features.html']]
+        end
+
+        it "includes any STDOUT formatters from the profile if no STDOUT formatter was specified in command line" do
+          given_cucumber_yml_defined_as({'html' => %w[--format html]})
+          options.parse!(%w{--format rerun -o rerun.txt --profile html})
+          options[:formats].should == [['html', output_stream], ['rerun', 'rerun.txt']]
+        end
+
         it "assumes all of the formatters defined in the profile when none are specified on cmd line" do
           given_cucumber_yml_defined_as({'html' => %w[--format progress --format html -o features.html]})
           options.parse!(%w{--profile html})

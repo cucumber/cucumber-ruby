@@ -69,7 +69,13 @@ $hoe = Hoe.spec(GEM_NAME) do |p|
   ]
 
   #p.spec_extras = {}    # A hash of extra values to set in the gemspec.
-  
+  p.post_install_message = <<-POST_INSTALL_MESSAGE
+*******************************************************************************
+ Thank you for installing cucumber-#{Cucumber::VERSION::STRING}
+ Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
+ for important information about this release.
+*******************************************************************************
+POST_INSTALL_MESSAGE
 end
 
 CHANGES = $hoe.paragraphs_of('History.txt', 0..1).join("\\n\\n")

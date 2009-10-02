@@ -2,12 +2,12 @@ module Cucumber
   class StepMatch #:nodoc:
     attr_reader :step_definition
 
-    def initialize(step_definition, step_name, formatted_step_name, groups)
-      @step_definition, @step_name, @formatted_step_name, @groups = step_definition, step_name, formatted_step_name, groups
+    def initialize(step_definition, step_name, formatted_step_name, step_arguments)
+      @step_definition, @step_name, @formatted_step_name, @step_arguments = step_definition, step_name, formatted_step_name, step_arguments
     end
 
     def args
-      @groups.map{|g| g.val}
+      @step_arguments.map{|g| g.val}
     end
 
     def name
@@ -36,7 +36,7 @@ module Cucumber
     #   lambda { |param| "[#{param}]" }
     #
     def format_args(format = lambda{|a| a}, &proc)
-      @formatted_step_name || gzub(@step_name, @groups, format, &proc)
+      @formatted_step_name || replace_arguments(@step_name, @step_arguments, format, &proc)
     end
     
     def file_colon_line
@@ -51,25 +51,27 @@ module Cucumber
       @step_definition.text_length
     end
 
-    # +groups+ is an array of 2-element arrays, where
-    # the 1st element is the value of a regexp match group,
-    # and the 2nd element is its start index.
-    def gzub(string, groups, format=nil, &proc)
+    def replace_arguments(string, step_arguments, format, &proc)
       s = string.dup
       offset = 0
-      groups.each do |group|
+      step_arguments.each do |step_argument|
+        next if step_argument.pos.nil?
         replacement = if block_given?
-          proc.call(group.val)
+          proc.call(step_argument.val)
         elsif Proc === format
-          format.call(group.val)
+          format.call(step_argument.val)
         else
-          format % group.val
+          format % step_argument.val
         end
 
-        s[group.start + offset, group.val.length] = replacement
-        offset += replacement.length - group.val.length
+        s[step_argument.pos + offset, step_argument.val.jlength] = replacement
+        offset += replacement.length - step_argument.val.jlength
       end
       s
+    end
+
+    def inspect #:nodoc:
+      sprintf("#<%s:0x%x>", self.class, self.object_id)
     end
   end
   

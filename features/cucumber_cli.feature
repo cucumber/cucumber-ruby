@@ -201,7 +201,7 @@ Feature: Cucumber command line
       """
 
   Scenario: --dry-run
-    When I run cucumber --dry-run --no-snippets features/*.feature --tags ~@lots
+    When I run cucumber --dry-run --no-source features/*.feature --tags ~@lots
     Then it should pass with
       """
       Feature: Calling undefined step
@@ -370,7 +370,7 @@ Feature: Cucumber command line
       """
 
   Scenario: Multiple formatters and outputs
-    When I run cucumber --format progress --out tmp/progress.txt --format pretty --out tmp/pretty.txt  --dry-run features/lots_of_undefined.feature
+    When I run cucumber --format progress --out tmp/progress.txt --format pretty --out tmp/pretty.txt --no-source --dry-run features/lots_of_undefined.feature
     And "examples/self_test/tmp/progress.txt" should contain
       """
       UUUUU
@@ -505,7 +505,7 @@ Feature: Cucumber command line
       """
 
   Scenario: Run with a negative tag
-    When I run cucumber -q features/sample.feature --dry-run --tags ~@four
+    When I run cucumber -q features/sample.feature --no-source --dry-run --tags ~@four
     Then it should pass with
       """
       # Feature comment
@@ -529,7 +529,7 @@ Feature: Cucumber command line
       """
 
   Scenario: Run with limited tag count, blowing it on scenario
-     When I run cucumber -q features/tags_sample.feature --dry-run --tags @sample_three:1
+     When I run cucumber -q features/tags_sample.feature --no-source --dry-run --tags @sample_three:1
      Then it should fail with      
      """
      @sample_one
@@ -557,7 +557,7 @@ Feature: Cucumber command line
      """
 
    Scenario: Run with limited tag count, blowing it via feature inheritance
-     When I run cucumber -q features/tags_sample.feature --dry-run --tags @sample_one:1
+     When I run cucumber -q features/tags_sample.feature --no-source --dry-run --tags @sample_one:1
      Then it should fail with
      """
      @sample_one

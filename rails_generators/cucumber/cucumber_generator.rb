@@ -11,27 +11,26 @@ class CucumberGenerator < Rails::Generator::Base
   def manifest
     record do |m|
       m.directory 'features/step_definitions'
-      m.template  'webrat_steps.rb', 'features/step_definitions/webrat_steps.rb'
-      m.template  'cucumber_environment.rb', 'config/environments/cucumber.rb',
+      m.template 'webrat_steps.rb', 'features/step_definitions/webrat_steps.rb'
+      m.template'cucumber_environment.rb', 'config/environments/cucumber.rb',
         :assigns => { :cucumber_version => ::Cucumber::VERSION::STRING }
 
       m.gsub_file 'config/database.yml', /test:.*\n/, "test: &TEST\n"
       m.gsub_file 'config/database.yml', /\z/, "\ncucumber:\n  <<: *TEST"
 
       m.directory 'features/support'
-
       if spork?
-        m.template  'spork_env.rb',     'features/support/env.rb'
+        m.template'spork_env.rb', 'features/support/env.rb'
       else
-        m.template  'env.rb',           'features/support/env.rb'
+        m.template 'env.rb', 'features/support/env.rb'
       end
-
-      m.file      'paths.rb',         'features/support/paths.rb'
+      m.template 'paths.rb', 'features/support/paths.rb'
+      m.template 'version_check.rb', 'features/support/version_check.rb'
 
       m.directory 'lib/tasks'
-      m.template  'cucumber.rake',    'lib/tasks/cucumber.rake'
+      m.template'cucumber.rake', 'lib/tasks/cucumber.rake'
 
-      m.file      'cucumber',         'script/cucumber', {
+      m.file 'cucumber', 'script/cucumber', {
         :chmod => 0755, :shebang => options[:shebang] == DEFAULT_SHEBANG ? nil : options[:shebang]
       }
     end

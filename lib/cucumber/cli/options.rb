@@ -8,14 +8,19 @@ module Cucumber
         'pretty'    => ['Cucumber::Formatter::Pretty',   'Prints the feature as is - in colours.'],
         'pdf'       => ['Cucumber::Formatter::Pdf',      "Generates a PDF report. You need to have the\n" + 
                                                          "#{' ' * 51}prawn gem installed. Will pick up logo from\n" + 
-                                                         "#{' ' * 51}features/support/logo.png if present."],
-        'profile'   => ['Cucumber::Formatter::Profile',  'Prints the 10 slowest steps at the end.'],
+                                                         "#{' ' * 51}features/support/logo.png or\n" +
+                                                         "#{' ' * 51}features/support/logo.jpg if present."],
         'progress'  => ['Cucumber::Formatter::Progress', 'Prints one character per scenario.'],
         'rerun'     => ['Cucumber::Formatter::Rerun',    'Prints failing files with line numbers.'],
-        'usage'     => ['Cucumber::Formatter::Usage',    'Prints where step definitions are used.'],
+        'usage'     => ['Cucumber::Formatter::Usage',    "Prints where step definitions are used.\n" +
+                                                         "#{' ' * 51}The slowest step definitions (with duration) are\n" + 
+                                                         "#{' ' * 51}listed first. If --dry-run is used the duration\n" +
+                                                         "#{' ' * 51}is not shown, and step definitions are sorted by\n" +
+                                                         "#{' ' * 51}filename instead."],
+        'stepdefs'  => ['Cucumber::Formatter::Stepdefs', "Prints All step definitions with their locations. Same as\n" +
+                                                         "the usage formatter, except that steps are not printed."],
         'junit'     => ['Cucumber::Formatter::Junit',    'Generates a report similar to Ant+JUnit.'],
-        'tag_cloud' => ['Cucumber::Formatter::TagCloud', 'Prints a tag cloud of tag usage.'],
-        'steps'     => ['Cucumber::Formatter::Steps',    'Prints location of step definitions.']
+        'tag_cloud' => ['Cucumber::Formatter::TagCloud', 'Prints a tag cloud of tag usage.']
       }
       max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
       FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
@@ -171,9 +176,9 @@ module Cucumber
           end
           opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.",
             "This also omits the loading of your support/env.rb file if it exists.",
-            "Implies --quiet.") do
+            "Implies --no-snippets.") do
             @options[:dry_run] = true
-            @quiet = true
+            @options[:snippets] = false
           end
           opts.on("-a", "--autoformat DIRECTORY",
             "Reformats (pretty prints) feature files and write them to DIRECTORY.",
@@ -257,11 +262,15 @@ module Cucumber
       attr_reader :options, :profiles, :expanded_args
       protected :options, :profiles, :expanded_args
 
-      def non_stdout_formats
-        @options[:formats].select {|format, output| output != @out_stream }
-      end
-
     private
+
+    def non_stdout_formats
+      @options[:formats].select {|format, output| output != @out_stream }
+    end
+
+    def stdout_formats
+      @options[:formats].select {|format, output| output == @out_stream }
+    end
 
      def extract_environment_variables
         @args.delete_if do |arg|
@@ -337,7 +346,8 @@ module Cucumber
         if @options[:formats].empty?
           @options[:formats] = other_options[:formats]
         else
-          @options[:formats] += other_options.non_stdout_formats
+          @options[:formats] += other_options[:formats]
+          @options[:formats] = stdout_formats[0..0] + non_stdout_formats
         end
 
         self

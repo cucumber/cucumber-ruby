@@ -1,6 +1,13 @@
+require 'cucumber/step_match'
+require 'cucumber/step_definition_light'
+
 module Cucumber
   module LanguageSupport
     module LanguageMethods
+      def create_step_match(step_definition, step_name, formatted_step_name, step_arguments)
+        StepMatch.new(step_definition, step_name, formatted_step_name, step_arguments)
+      end
+      
       def before(scenario)
         begin_scenario
         execute_before(scenario)
@@ -41,20 +48,31 @@ module Cucumber
         transform
       end
 
-      def add_step_definition(step_definition)
-        step_definitions << step_definition
-        step_definition
-      end
-
-      def step_definitions
-        @step_definitions ||= []
-      end
-
       def hooks_for(phase, scenario) #:nodoc:
         hooks[phase.to_sym].select{|hook| scenario.accept_hook?(hook)}
       end
 
+      def unmatched_step_definitions
+        available_step_definition_hash.keys - invoked_step_definition_hash.keys
+      end
+
+      def available_step_definition(regexp_source, file_colon_line)
+        available_step_definition_hash[StepDefinitionLight.new(regexp_source, file_colon_line)] = nil
+      end
+
+      def invoked_step_definition(regexp_source, file_colon_line)
+        invoked_step_definition_hash[StepDefinitionLight.new(regexp_source, file_colon_line)] = nil
+      end
+
       private
+
+      def available_step_definition_hash
+        @available_step_definition_hash ||= {}
+      end
+
+      def invoked_step_definition_hash
+        @invoked_step_definition_hash ||= {}
+      end
 
       def hooks
         @hooks ||= Hash.new{|h,k| h[k] = []}

@@ -1,11 +1,13 @@
 if defined?(ActiveRecord::Base)
+  Before do
+    $__cucumber_global_use_txn = !!Cucumber::Rails::World.use_transactional_fixtures if $__cucumber_global_use_txn.nil?
+  end
+
   Before('~@no-txn') do
-    @__cucumber_use_txn = Cucumber::Rails::World.use_transactional_fixtures
-    Cucumber::Rails::World.use_transactional_fixtures = true
+    Cucumber::Rails::World.use_transactional_fixtures = $__cucumber_global_use_txn
   end
 
   Before('@no-txn') do
-    @__cucumber_use_txn = Cucumber::Rails::World.use_transactional_fixtures
     Cucumber::Rails::World.use_transactional_fixtures = false
   end
 
@@ -31,7 +33,6 @@ if defined?(ActiveRecord::Base)
         ActiveRecord::Base.__send__(:decrement_open_transactions)
       end
     end
-    Cucumber::Rails::World.use_transactional_fixtures = @__cucumber_use_txn
   end
 else
   module Cucumber::Rails
