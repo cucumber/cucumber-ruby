@@ -15,6 +15,7 @@ module Cucumber
   RAILS         = defined?(Rails)
   RUBY_BINARY   = File.join(Config::CONFIG['bindir'], Config::CONFIG['ruby_install_name'])
   RUBY_1_9      = RUBY_VERSION =~ /^1\.9/
+  RUBY_1_8_7    = RUBY_VERSION =~ /^1\.8\.7/
 
   class << self
     attr_accessor :use_full_backtrace
