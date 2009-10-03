@@ -75,11 +75,10 @@ module Cucumber
       
       it "should recognize $arg style captures" do
         @dsl.Given "capture this: $arg" do |arg|
-          $arg = arg
+          arg.should == 'this'
         end
-        
+
        @step_mother.step_match('capture this: this').invoke(nil)
-       $arg.should == 'this'
       end
       
     
