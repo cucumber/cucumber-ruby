@@ -11,6 +11,7 @@
 * Feature files are now sorted before they are executed, because different operating systems may list files differently. (Aslak Hellesøy)
 * Fixed image loading for Windows. Allow use of both png and jpg. (#461 Declan Whelan)
 * Before('~@no-txn') is run on all scenarios without @no-txn causing Cucumber::Rails::World.use_transactional_fixtures to always be true. (#457 Aslak Hellesøy)
+* Fix a backtrace for 1.8.7. (Jakob Skov-Pedersen)
 
 == 0.3.104 2009-09-27
 
