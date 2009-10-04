@@ -12,6 +12,7 @@
 * Fixed image loading for Windows. Allow use of both png and jpg. (#461 Declan Whelan)
 * Before('~@no-txn') is run on all scenarios without @no-txn causing Cucumber::Rails::World.use_transactional_fixtures to always be true. (#457 Aslak Hellesøy)
 * JUnit formatter not handling scenario outline tables (#472 Matt Wynne)
+* Language help broken (#467 Matt Wynne)
 
 == 0.3.104 2009-09-27
 
