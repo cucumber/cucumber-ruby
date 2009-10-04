@@ -45,6 +45,12 @@ module Cucumber
       end
 
       class ExampleRow < Cells #:nodoc:
+        class InvalidForHeaderRowError < NoMethodError
+          def initialize(*args)
+            super 'This is a header row and cannot pass or fail'
+          end
+        end
+        
         attr_reader :scenario_outline # https://rspec.lighthouseapp.com/projects/16211/tickets/342
 
         def create_step_invocations!(scenario_outline)
@@ -113,6 +119,7 @@ module Cucumber
         
         # Returns true if one or more steps failed
         def failed?
+          raise InvalidForHeaderRowError if header?
           @step_invocations.failed? || !!@scenario_exception
         end
 
@@ -134,8 +141,6 @@ module Cucumber
         def name
           "| #{@cells.collect{|c| c.value }.join(' | ')} |"
         end
-
-        private
 
         def header?
           index == 0

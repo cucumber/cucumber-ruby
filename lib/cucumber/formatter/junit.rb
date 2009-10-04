@@ -57,42 +57,34 @@ module Cucumber
       end
       
       def after_steps(steps)
-        return if @in_background
+        return if @in_background || @outline
+        
         duration = Time.now - @steps_start
-        unless @outline
-          if steps.failed?
-            steps.each { |step| @output += "#{step.keyword} #{step.name}\n" }
-            @output += "\nMessage:\n"
-          end
-          build_testcase(duration, steps.status, steps.exception)
+        if steps.failed?
+          steps.each { |step| @output += "#{step.keyword} #{step.name}\n" }
+          @output += "\nMessage:\n"
         end
-      end
-
-      def before_outline_table(outline_table)
-        @header_row = true
+        build_testcase(duration, steps.status, steps.exception)
       end
 
       def before_table_row(table_row)
-        if @outline
-          @table_start = Time.now
-        end
-        
-        @header_row = false
+        return unless @outline
+
+        @table_start = Time.now
       end
 
       def after_table_row(table_row)
-        if @outline
-          duration = Time.now - @table_start
-          unless @header_row
-            name_suffix = " (outline example : #{table_row.name})"
-            if table_row.failed?
-              @output += "Example row: #{table_row.name}\n"
-              @output += "\nMessage:\n"
-            end
-            build_testcase(duration, table_row.status, table_row.exception,  name_suffix)
+        return unless @outline
+
+        duration = Time.now - @table_start
+        unless table_row.header?
+          name_suffix = " (outline example : #{table_row.name})"
+          if table_row.failed?
+            @output += "Example row: #{table_row.name}\n"
+            @output += "\nMessage:\n"
           end
+          build_testcase(duration, table_row.status, table_row.exception, name_suffix)
         end
-        @header_row = false
       end
 
       private
