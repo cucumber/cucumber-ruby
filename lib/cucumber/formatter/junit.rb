@@ -28,9 +28,7 @@ module Cucumber
           @testsuite << @builder.target!
         end
 
-        basename = File.basename(feature.file)[0...-File.extname(feature.file).length]
-        feature_filename = File.join(@reportdir, "TEST-#{basename}.xml")
-        File.open(feature_filename, 'w') { |file| file.write(@testsuite.target!) }
+        write_file(feature_result_filename(feature.file), @testsuite.target!)
       end
 
       def before_background(*args)
@@ -99,29 +97,39 @@ module Cucumber
 
       private
 
-        def build_testcase(duration, status, exception = nil, suffix = "")
-          @time += duration
-          classname = "#{@feature_name}.#{@scenario}"
-          name = "#{@scenario}#{suffix}"
-          failed = (status == :failed || (status == :pending && @options[:strict]))
-          #puts "FAILED:!!#{failed}"
-          if status == :passed || failed
-            @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
-              if failed
-                @builder.failure(:message => "#{status.to_s} #{name}", :type => status.to_s) do
-                  @builder.text! @output
-                  @builder.text!(format_exception(exception)) if exception
-                end
-                @failures += 1
+      def build_testcase(duration, status, exception = nil, suffix = "")
+        @time += duration
+        classname = "#{@feature_name}.#{@scenario}"
+        name = "#{@scenario}#{suffix}"
+        failed = (status == :failed || (status == :pending && @options[:strict]))
+        #puts "FAILED:!!#{failed}"
+        if status == :passed || failed
+          @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
+            if failed
+              @builder.failure(:message => "#{status.to_s} #{name}", :type => status.to_s) do
+                @builder.text! @output
+                @builder.text!(format_exception(exception)) if exception
               end
+              @failures += 1
             end
-            @tests += 1
           end
+          @tests += 1
         end
+      end
 
-        def format_exception(exception)
-          (["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n")
-        end
+      def format_exception(exception)
+        (["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n")
+      end
+      
+      def feature_result_filename(feature_file)
+        ext_length = File.extname(feature_file).length
+        basename = File.basename(feature_file)[0...-ext_length]
+        File.join(@reportdir, "TEST-#{basename}.xml")
+      end
+      
+      def write_file(feature_filename, data)
+        File.open(feature_filename, 'w') { |file| file.write(data) }
+      end
     end
   end
 end
