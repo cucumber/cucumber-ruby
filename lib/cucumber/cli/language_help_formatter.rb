@@ -29,7 +29,10 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
           [key, language.keywords(key)]
         end
         table = Ast::Table.new(raw)
-        new(nil, io, {:incomplete => language.incomplete?}).visit_multiline_arg(table)
+        
+        formatter = new(nil, io, {:incomplete => language.incomplete?})
+        visitor = Ast::TreeWalker.new(@step_mother, [formatter])
+        visitor.visit_multiline_arg(table)
       end
 
       def before_visit_multiline_arg(table)

@@ -6,5 +6,19 @@ Feature: Language help
     When I run cucumber -l en help
     Then it should pass with
       """
+      | name                | 'English'                |
+      | native              | 'English'                |
+      | encoding            | 'UTF-8'                  |
+      | space_after_keyword | 'true'                   |
+      | feature             | 'Feature'                |
+      | background          | 'Background'             |
+      | scenario            | 'Scenario'               |
+      | scenario_outline    | 'Scenario Outline'       |
+      | examples            | 'Examples' / 'Scenarios' |
+      | given               | 'Given'                  |
+      | when                | 'When'                   |
+      | then                | 'Then'                   |
+      | and                 | 'And'                    |
+      | but                 | 'But'                    |
 
       """
