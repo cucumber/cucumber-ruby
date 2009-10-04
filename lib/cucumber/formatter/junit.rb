@@ -66,6 +66,10 @@ module Cucumber
         end
         build_testcase(duration, steps.status, steps.exception)
       end
+      
+      def before_examples(*args)
+        @header_row = true
+      end
 
       def before_table_row(table_row)
         return unless @outline
@@ -75,9 +79,8 @@ module Cucumber
 
       def after_table_row(table_row)
         return unless @outline
-
         duration = Time.now - @table_start
-        unless table_row.header?
+        unless @header_row
           name_suffix = " (outline example : #{table_row.name})"
           if table_row.failed?
             @output += "Example row: #{table_row.name}\n"
@@ -85,6 +88,8 @@ module Cucumber
           end
           build_testcase(duration, table_row.status, table_row.exception, name_suffix)
         end
+        
+        @header_row = false if @header_row
       end
 
       private
