@@ -186,7 +186,8 @@ module Cucumber
   end
 end
 
+logfile = File.expand_path(File.dirname(__FILE__) + '/../../cucumber.log')
 Logging::Logger[Cucumber::WireSupport].add_appenders(
-  Logging::Appenders::File.new('cucumber.log')
+  Logging::Appenders::File.new(logfile)
 )
 Logging::Logger[Cucumber::WireSupport].level = :debug

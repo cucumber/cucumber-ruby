@@ -10,7 +10,6 @@ require 'logging'
 # * alias
 module Cucumber
   module WireSupport
-    
     module SpeaksToWireServer
       def list_step_definitions
         call('LIST_STEP_DEFINITIONS')
@@ -40,8 +39,8 @@ module Cucumber
         @wire_language, @data, @invoker = wire_language, json_data, invoker
         @wire_language.register_wire_step_definition(id, self)
       end
-
-      def groups(step_name)
+      
+      def arguments_from(step_name)
         WireGroup.groups_from(@invoker, id, step_name)
       end
 
@@ -150,6 +149,22 @@ module Cucumber
     # The wire-protocol lanugage independent implementation of the programming language API.
     class WireLanguage
       include LanguageSupport::LanguageMethods
+      
+      def load_code_file(wire_file)
+        log.debug wire_file
+
+        invoker_proxy = RemoteInvoker.new(wire_file)
+        response = invoker_proxy.list_step_definitions
+        @step_definitions = JSON.parse(response).map do |step_def_data| 
+          WireStepDefinition.new(self, step_def_data, invoker_proxy)
+        end
+      end
+      
+      def step_matches(step_name, formatted_step_name)
+        @step_definitions.map do |step_definition|
+          step_definition.step_match(step_name, formatted_step_name)
+        end.compact
+      end
 
       def initialize(step_mother)
       end
@@ -158,11 +173,6 @@ module Cucumber
       end
 
       def step_definitions_for(wire_file)
-        invoker_proxy = RemoteInvoker.new(wire_file)
-        response = invoker_proxy.list_step_definitions
-        JSON.parse(response).map do |step_def_data| 
-          WireStepDefinition.new(self, step_def_data, invoker_proxy)
-        end
       end
 
       def snippet_text(step_keyword, step_name, multiline_arg_class = nil)
@@ -196,7 +206,8 @@ end
 
 require 'cucumber/wire_support/wire_exception'
 
+logfile = File.expand_path(File.dirname(__FILE__) + '/../../../cucumber.log')
 Logging::Logger[Cucumber::WireSupport].add_appenders(
-  Logging::Appenders::File.new('/cucumber.log')
+  Logging::Appenders::File.new(logfile)
 )
 Logging::Logger[Cucumber::WireSupport].level = :debug
