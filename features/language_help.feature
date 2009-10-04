@@ -22,3 +22,10 @@ Feature: Language help
       | but                 | 'But'                    |
 
       """
+  Scenario: List languages
+    When I run cucumber -l help
+    Then it should pass
+    And the output should contain
+      """
+      | en     | English                | English
+      """
