@@ -1,6 +1,9 @@
 require 'socket'
 require 'json'
 require 'logging'
+require 'cucumber/wire_support/remote_steps'
+require 'cucumber/wire_support/wire_packet'
+require 'cucumber/wire_support/wire_exception'
 
 # * better logging
 # * snippet text
@@ -100,83 +103,32 @@ module Cucumber
       end
     end
 
-    class RemoteInvoker
-      include SpeaksToWireServer
-      
-      def initialize(filename)
-        @wire_file = filename
-      end
-      
-      private
-      
-      def call(message, args = nil)
-        timeout = 5
-        packet = message
-        packet << ":#{args.to_json}" if args
-        
-        begin
-          log.debug("Calling server with message #{packet}")
-          s = socket
-          Timeout.timeout(timeout) { s.puts(packet) }
-          log.debug("Message sent")
-          response = fetch_data_from_socket(timeout)
-          log.debug("Received response: #{response.strip}")
-          response
-        rescue Timeout::Error
-          raise "Timed out calling server with message #{message}"
-        end
-      end
-      
-      def fetch_data_from_socket(timeout)
-        log.debug("Waiting #{timeout} secs for response...")
-        Timeout.timeout(timeout) { socket.gets }
-      end
-      
-      def socket
-        log.debug("opening socket to #{config.inspect}") unless @socket
-        @socket ||= TCPSocket.new(config['host'], config['port'])
-      end
-
-      def config
-        @config ||= YAML.load_file(@wire_file)
-      end
-
-      def log
-        Logging::Logger[self]
-      end      
-    end
-
     # The wire-protocol lanugage independent implementation of the programming language API.
     class WireLanguage
       include LanguageSupport::LanguageMethods
       
       def load_code_file(wire_file)
         log.debug wire_file
-
-        invoker_proxy = RemoteInvoker.new(wire_file)
-        response = invoker_proxy.list_step_definitions
-        @step_definitions = JSON.parse(response).map do |step_def_data| 
-          WireStepDefinition.new(self, step_def_data, invoker_proxy)
-        end
+        
+        config = YAML.load_file(wire_file)
+        @remotes << RemoteSteps.new(config)
+        # 
+        # invoker_proxy = RemoteInvoker.new(wire_file)
+        # response = invoker_proxy.list_step_definitions
+        # @step_definitions = JSON.parse(response).map do |step_def_data| 
+        #   WireStepDefinition.new(self, step_def_data, invoker_proxy)
+        # end
       end
       
-      def step_matches(step_name, formatted_step_name)
-        @step_definitions.map do |step_definition|
-          step_definition.step_match(step_name, formatted_step_name)
-        end.compact
+      def step_matches(step_name, formatted_step_name)\
+        @remotes.map{ |remote| remote.step_matches(step_name, formatted_step_name)}.flatten
       end
 
       def initialize(step_mother)
+        @remotes = []
       end
 
       def alias_adverbs(adverbs)
-      end
-
-      def step_definitions_for(wire_file)
-      end
-
-      def snippet_text(step_keyword, step_name, multiline_arg_class = nil)
-        # TODO: call remote end and ask for a formatted snippet
       end
 
       def register_wire_step_definition(id, step_definition)
@@ -191,11 +143,11 @@ module Cucumber
       def end_scenario
       end
       
+      private
+      
       def log
         Logging::Logger[self]
       end      
-      
-      private
       
       def step_definitions
         @step_definitions ||= {}

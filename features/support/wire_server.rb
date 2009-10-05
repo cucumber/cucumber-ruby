@@ -18,6 +18,10 @@ module Cucumber
       def invoke(args)
         @block.call(*args)
       end
+      
+      def matches?(name_to_match, name_to_report)
+        
+      end
 
       def groups(step_name)
         []
@@ -55,6 +59,10 @@ module Cucumber
           eval(file.read, binding, file.to_s, 1) unless file.directory?
         end
         self
+      end
+      
+      def matching(match_parameters)
+        @step_defs.select{ |s| s.matches?(match_parameters) }
       end
 
       def Given(regexp, &block)
@@ -94,6 +102,9 @@ module Cucumber
 
       def handle(data)
         case data
+        when /^step_matches:(.*)/
+          match_parameters = JSON.parse($1)
+          send_response "step_definitions:#{step_definitions.matching(match_parameters).to_json}"
         when /^LIST_STEP_DEFINITIONS/
           send_response JSON.unparse(step_definitions.values)
         when /^INVOKE:(.*)/
