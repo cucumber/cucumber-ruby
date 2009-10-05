@@ -41,6 +41,6 @@ Feature: Custom Formatter
       Then STDERR should be empty
       Then it should pass with
         """
-        $ RUNCODERUN WAS HERE
+        $ JUST PRINT ME
 
         """
