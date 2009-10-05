@@ -72,6 +72,15 @@ module Cucumber
         
         @step_mother.step_match("Loud").invoke(nil)
       end
+      
+      it "should recognize $arg style captures" do
+        @dsl.Given "capture this: $arg" do |arg|
+          arg.should == 'this'
+        end
+
+       @step_mother.step_match('capture this: this').invoke(nil)
+      end
+      
     
       def unindented(s)
         s.split("\n")[1..-2].join("\n").indent(-10)
@@ -92,7 +101,7 @@ module Cucumber
           end
         })
       end
-
+      
       it "should not use quote group when there are no quotes" do
         @rb.snippet_text('Given', 'A first arg').should == unindented(%{
           Given /^A first arg$/ do
