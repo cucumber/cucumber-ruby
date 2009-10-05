@@ -24,7 +24,7 @@ class CucumberGenerator < Rails::Generator::Base
       else
         m.template 'env.rb', 'features/support/env.rb'
       end
-      m.file 'paths.rb', 'features/support/paths.rb'
+      m.template 'paths.rb', 'features/support/paths.rb'
       m.template 'version_check.rb', 'features/support/version_check.rb'
 
       m.directory 'lib/tasks'

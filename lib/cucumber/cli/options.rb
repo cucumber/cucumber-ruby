@@ -8,7 +8,8 @@ module Cucumber
         'pretty'    => ['Cucumber::Formatter::Pretty',   'Prints the feature as is - in colours.'],
         'pdf'       => ['Cucumber::Formatter::Pdf',      "Generates a PDF report. You need to have the\n" + 
                                                          "#{' ' * 51}prawn gem installed. Will pick up logo from\n" + 
-                                                         "#{' ' * 51}features/support/logo.png if present."],
+                                                         "#{' ' * 51}features/support/logo.png or\n" +
+                                                         "#{' ' * 51}features/support/logo.jpg if present."],
         'progress'  => ['Cucumber::Formatter::Progress', 'Prints one character per scenario.'],
         'rerun'     => ['Cucumber::Formatter::Rerun',    'Prints failing files with line numbers.'],
         'usage'     => ['Cucumber::Formatter::Usage',    "Prints where step definitions are used.\n" +

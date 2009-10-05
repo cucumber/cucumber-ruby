@@ -34,10 +34,7 @@ module Cucumber
         @indent = 0
         @buffer = []
         puts "writing to #{io.path}"
-        begin
-          @pdf.image open("features/support/logo.png"), :position => :center, :width => 500
-        rescue
-        end
+        load_cover_page_image
         @pdf.text "\n\n\nCucumber features", :align => :center, :size => 32
         @pdf.text "Generated: #{Time.now.strftime("%Y-%m-%d %H:%M")}", :size => 10, :at => [0, 24]
         @pdf.text "Command: <code>cucumber #{ARGV.join(" ")}</code>", :size => 10, :at => [0,10]
@@ -50,6 +47,21 @@ module Cucumber
               @pdf.fill_color BLACK
             end
           end
+        end
+      end
+
+      def load_cover_page_image()
+        if (!load_image("features/support/logo.png"))
+          load_image("features/support/logo.jpg")
+        end
+      end
+
+      def load_image(image_path)
+        begin
+          @pdf.image open(image_path, "rb"), :position => :center, :width => 500
+          true
+        rescue Errno::ENOENT
+          false
         end
       end
 

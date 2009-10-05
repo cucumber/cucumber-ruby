@@ -109,7 +109,7 @@ module Cucumber
           end
         end.flatten.uniq
         remove_excluded_files_from(potential_feature_files)
-        potential_feature_files
+        potential_feature_files.sort
       end
       
       def feature_dirs

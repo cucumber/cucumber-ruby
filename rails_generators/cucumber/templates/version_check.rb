@@ -15,7 +15,7 @@ version than #{Cucumber::VERSION::STRING} you should:
 
      ruby script/generate cucumber
 
-If you get prompted to replace the file, hit 'd' to see the difference.
+If you get prompted to replace a file, hit 'd' to see the difference.
 When you're sure you have captured any personal edits, confirm that you
 want to overwrite #{__FILE__.gsub(/version_check.rb$/, 'env.rb')} by pressing 'y'. Then reapply any
 personal changes that may have been overwritten. 
