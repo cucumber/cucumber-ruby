@@ -177,8 +177,6 @@ examples/junit/features/step_definitions/steps.rb
 examples/pure_java/README.textile
 examples/python/features/fibonacci.feature
 examples/python/features/step_definitions/fib_steps.py
-examples/python/features/step_definitions/fib_steps.rb
-examples/python/features/support/env.rb
 examples/python/lib/fib.py
 examples/ramaze/README.textile
 examples/ramaze/Rakefile
