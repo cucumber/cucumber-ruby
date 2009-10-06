@@ -35,12 +35,12 @@ module Cucumber
       end
       
       def with_visitor(scenario, visitor)
-        if self == scenario
-          yield
-        else
+        if self != scenario && scenario.respond_to?(:with_visitor)
           scenario.with_visitor(visitor) do
             yield
           end
+        else
+          yield
         end
       end
       
