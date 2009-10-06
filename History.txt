@@ -9,6 +9,7 @@
 * Stop the confusion between "homepage" and "home page" by allowing both (Ryan Bigg & Bodaniel Jeanes)
 
 === Bugfixes
+* Incorrect diagnostics in case when Before raises in presence of Background (#465 Fedor Kocherga)
 * Error on pystring in scenario outline with pretty formatter (#475 Aslak Hellesøy)
 * Adding After('@allow-rescue') to set allow_rescue back to its former value. (Alf Mikula)
 * Feature files are now sorted before they are executed, because different operating systems may list files differently. (Aslak Hellesøy)
