@@ -500,6 +500,20 @@
   and: A
   but: Ale
   space_after_keyword: true
+"tr":
+  name: Turkish
+  native: Türkçe
+  encoding: UTF-8
+  feature: Özellik
+  background: Geçmiş
+  scenario: Senaryo
+  scenario_outline: Senaryo taslağı
+  examples: Örnekler
+  given: Diyelim ki
+  when: Eğer ki
+  then: O zaman
+  and: Ve
+  but: Fakat|Ama
 "uz":
   name: Uzbek
   native: Узбекча

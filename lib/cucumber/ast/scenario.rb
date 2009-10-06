@@ -92,13 +92,14 @@ module Cucumber
         sexp
       end
       
-      private
       
       def with_visitor(visitor)
         @current_visitor = visitor
         yield
         @current_visitor = nil
       end
+      
+      private
       
       def skip_hooks?
         @background.failed? || @executed

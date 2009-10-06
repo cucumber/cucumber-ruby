@@ -23,11 +23,11 @@ module Cucumber
       end
 
       def match(arg)
-        @regexp.match(arg)      
+        arg.kind_of?(String) ? @regexp.match(arg) : nil
       end
 
       def invoke(arg)
-        if matched = @regexp.match(arg)
+        if matched = match(arg)
           args = Array(matched.captures.empty? ? arg : matched.captures)
           @rb_language.current_world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
         end

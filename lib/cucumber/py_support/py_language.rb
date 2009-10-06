@@ -3,16 +3,22 @@ require 'rubypython'
 module Cucumber
   module PySupport
     class PyLanguage
-#      include LanguageSupport::LanguageMethods
+      include LanguageSupport::LanguageMethods
 
       def initialize(step_mother)
-        @python_path = ENV['PYTHONPATH'] ? ENV['PYTHONPATH'].split(':') : []
-        add_to_python_path(File.dirname(__FILE__))
+        @step_def_files = []
+        # 
+        # @python_path = ENV['PYTHONPATH'] ? ENV['PYTHONPATH'].split(':') : []
+        # add_to_python_path(File.dirname(__FILE__))
+        # 
+        # RubyPython.start
+        # at_exit{RubyPython.stop}
+        # 
+        # import(File.dirname(__FILE__) + '/py_language.py')
+      end
 
-        RubyPython.start
-        at_exit{RubyPython.stop}
-
-        import(File.dirname(__FILE__) + '/py_language.py')
+      def load_code_file(py_file)
+        @step_def_files << py_file
       end
 
       def alias_adverbs(adverbs)
@@ -26,12 +32,19 @@ module Cucumber
         "python snippet: #{step_keyword}, #{step_name}"
       end
 
-      protected
-
       def begin_scenario
+        @python_path = []
+        add_to_python_path(File.dirname(__FILE__))
+        @step_def_files.each{|f| add_to_python_path(File.dirname(f))}
+        
+        RubyPython.start
+
+        @delegate = import(File.dirname(__FILE__) + '/py_language.py')
+        @step_def_files.each{|f| import(f)}
       end
 
-      def end_scenario
+      def step_matches(step_name, formatted_step_name)
+        @delegate.step_matches(step_name, formatted_step_name)
       end
 
       private
@@ -41,7 +54,7 @@ module Cucumber
         begin
           mod = RubyPython.import(modname)
         rescue PythonError => e
-          e.message << "Couldn't load #{path}\nConsider adding #{File.expand_path(File.dirname(path))} to your PYTHONPATH"
+#          e.message << "Couldn't load #{path}\nConsider adding #{File.expand_path(File.dirname(path))} to your PYTHONPATH"
           raise e
         end
       end
