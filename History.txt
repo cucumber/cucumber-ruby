@@ -9,6 +9,7 @@
 * Stop the confusion between "homepage" and "home page" by allowing both (Ryan Bigg & Bodaniel Jeanes)
 
 === Bugfixes
+* Adding After('@allow-rescue') to set allow_rescue back to its former value. (Alf Mikula)
 * Feature files are now sorted before they are executed, because different operating systems may list files differently. (Aslak Hellesøy)
 * Fixed image loading for Windows. Allow use of both png and jpg. (#461 Declan Whelan)
 * Before('~@no-txn') is run on all scenarios without @no-txn causing Cucumber::Rails::World.use_transactional_fixtures to always be true. (#457 Aslak Hellesøy)
