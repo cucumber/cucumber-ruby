@@ -20,6 +20,7 @@
 * JUnit formatter not handling scenario outline tables (#472 Matt Wynne)
 * Language help broken (#467 Matt Wynne)
 * Fix a backtrace for 1.8.7. (Jakob Skov-Pedersen)
+* String step definitions ( Given 'I have $number cucumbers' ) will be escaped before being turned into regular expressions. (David Waite) 
 
 == 0.3.104 2009-09-27
 
