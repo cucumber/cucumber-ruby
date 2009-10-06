@@ -18,6 +18,11 @@ module Cucumber
         false
       end
 
+      def status
+        # Step always has status skipped, because Step is always in a ScenarioOutline
+        :skipped
+      end
+
       def step_invocation
         StepInvocation.new(self, @name, @multiline_arg, [])
       end
