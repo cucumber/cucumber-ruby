@@ -32,7 +32,7 @@ Defined profiles in cucumber.yml:
       end
 
       def cucumber_yml_defined?
-        @defined ||= File.exist?('cucumber.yml')
+        @defined ||= File.exist?(cucumber_file)
       end
 
     private
@@ -45,9 +45,9 @@ Defined profiles in cucumber.yml:
 
         require 'erb'
         require 'yaml'
-        begin 
-          @cucumber_erb = ERB.new(IO.read('cucumber.yml')).result
-        rescue Exception => e 
+        begin
+          @cucumber_erb = ERB.new(IO.read(cucumber_file)).result
+        rescue Exception => e
           raise(YmlLoadError,"cucumber.yml was found, but could not be parsed with ERB.  Please refer to cucumber's documentation on correct profile usage.\n#{$!.inspect}")
         end
 
@@ -62,6 +62,13 @@ Defined profiles in cucumber.yml:
         end
 
         return @cucumber_yml
+      end
+
+      # Locates cucumber.yml file. The file can end in .yml or .yaml,
+      # and be located in the current directory (eg. project root) or
+      # in a .config/ or config/ subdirectory of the current directory.
+      def cucumber_file
+        @cucumber_file ||= Dir.glob('{,.config/,config/}cucumber{.yml,.yaml}').first
       end
 
     end
