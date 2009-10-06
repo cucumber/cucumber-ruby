@@ -33,12 +33,7 @@ module Cucumber
       def execute_transforms(args)
         args.map do |arg|
           matching_transform = transforms.detect {|transform| transform.match(arg) }
-
-          unless matching_transform.nil?
-            matching_transform.invoke(arg)
-          else
-            arg
-          end
+          matching_transform ? matching_transform.invoke(arg) : arg
         end
       end
 
