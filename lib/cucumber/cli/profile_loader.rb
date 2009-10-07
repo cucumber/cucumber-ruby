@@ -32,7 +32,7 @@ Defined profiles in cucumber.yml:
       end
 
       def cucumber_yml_defined?
-        @defined ||= File.exist?(cucumber_file)
+        cucumber_file && File.exist?(cucumber_file)
       end
 
     private
