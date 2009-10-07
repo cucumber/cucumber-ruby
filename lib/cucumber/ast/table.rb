@@ -139,6 +139,21 @@ module Cucumber
         nil
       end
 
+      # Matches +pattern+ against the header row of the table.
+      # This is used especially for argument transforms.
+      #
+      # Example:
+      #  | column_1_name | column_2_name |
+      #  | x             | y             |
+      #
+      #  table.match(/table:column_1_name,column_2_name/) #=> non-nil
+      #  
+      # Note: must use 'table:' prefix on match
+      def match(pattern)
+        header_to_match = "table:#{headers.join(',')}"
+        pattern.match(header_to_match)
+      end
+
       # For testing only
       def to_sexp #:nodoc:
         [:table, *cells_rows.map{|row| row.to_sexp}]
@@ -370,7 +385,7 @@ module Cucumber
       def headers #:nodoc:
         raw.first
       end
-
+      
       def header_cell(col) #:nodoc:
         cells_rows[0][col]
       end

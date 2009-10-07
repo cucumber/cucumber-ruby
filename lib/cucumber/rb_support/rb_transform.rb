@@ -17,18 +17,20 @@ module Cucumber
         end
       end
 
-      attr_reader :proc, :regexp
-      
       def initialize(rb_language, pattern, proc)
         raise MissingProc if proc.nil? || proc.arity < 1
-        @rb_language, @regexp, @proc = rb_language, Regexp.new(pattern), proc        
+        @rb_language, @regexp, @proc = rb_language, Regexp.new(pattern), proc
+      end
+
+      def match(arg)
+        arg.match(@regexp)
       end
 
       def invoke(arg)
-        if arg.kind_of?(String) && matched = regexp.match(arg)
-          args = Array(matched.captures.empty? ? arg : matched.captures)
-          @rb_language.current_world.cucumber_instance_exec(true, regexp.inspect, *args, &@proc)
-        end        
+        if matched = match(arg)
+          args = matched.captures.empty? ? [arg] : matched.captures
+          @rb_language.current_world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
+        end
       end
     end
   end
