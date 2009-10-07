@@ -37,6 +37,7 @@ Defined profiles in cucumber.yml:
 
     private
 
+      # Loads the profile, processing it through ERB and YAML, and returns it as a hash.
       def cucumber_yml
         return @cucumber_yml if @cucumber_yml
         unless cucumber_yml_defined?
