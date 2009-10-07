@@ -32,7 +32,7 @@ Feature: Table diffing
             | x | y |
             | a | b |
             | a | c |
-            Tables were not identical (RuntimeError)
+            Tables were not identical (Cucumber::Ast::Table::Different)
             ./features/step_definitions/table_steps.rb:2:in `/the table should be:/'
             features/tables.feature:3:in `Then the table should be:'
       

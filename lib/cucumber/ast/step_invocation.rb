@@ -1,4 +1,5 @@
 require 'cucumber/step_match'
+require 'cucumber/ast/table'
 
 module Cucumber
   module Ast
@@ -38,7 +39,15 @@ module Cucumber
       end
 
       def visit_step_result(visitor)
-        visitor.visit_step_result(keyword, @step_match, @multiline_arg, @status, @reported_exception, source_indent, @background)
+        visitor.visit_step_result(
+          keyword,
+          @step_match,
+          (@different_table || @multiline_arg),
+          @status,
+          @reported_exception,
+          source_indent,
+          @background
+        )
       end
 
       def invoke(step_mother, options)
@@ -55,6 +64,10 @@ module Cucumber
           rescue Undefined => e
             failed(options, e, false)
             status!(:undefined)
+          rescue Cucumber::Ast::Table::Different => e
+            @different_table = e.table
+            failed(options, e, false)
+            status!(:failed)
           rescue Exception => e
             failed(options, e, false)
             status!(:failed)

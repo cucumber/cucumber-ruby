@@ -16,7 +16,7 @@ module Cucumber
 
     def invoke(multiline_arg)
       all_args = args
-      all_args << multiline_arg if multiline_arg
+      all_args << multiline_arg.dup if multiline_arg
       @step_definition.invoke(all_args)
     end
 

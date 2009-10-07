@@ -1,6 +1,7 @@
 == In Git
 
 === New Features
+* Tables yielded to step definitions are no longer frozen, so you can edit their data without #dup'ing (Aslak Hellesøy)
 * Transform can now transform tables, using /table:col1,col2,col3/ (#478 Corey Haines)
 * cucumber.yml can also end in .yaml and be located in .config/ or config/ dirs (#447 trans)
 * Turkish support. (Hakan Şenol Ensari)
