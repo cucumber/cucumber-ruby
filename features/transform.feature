@@ -113,10 +113,92 @@ Feature: transform
       """
     And a file named "features/support/table.rb" with:
       """
+      Transform /^table:number,number_plus_a$/ do |table|
+        :not_what_you_were_expecting
+      end
+
       Then "I should check the following table:" do |table|
         table.hashes.each do |hash|
           hash['letter_plus_a'].should == (hash['letter'] + 'a')
         end
+      end
+      """
+    When I run cucumber -s features
+    Then it should pass with
+      """
+      Feature: Step argument transformations
+
+        Scenario: A table
+          Then I should check the following table:
+            | letter | letter_plus_a |
+            | r      | ra            |
+            | m      | ma            |
+            | p      | pa            |
+
+      1 scenario (1 passed)
+      1 step (1 passed)
+
+      """
+
+  Scenario: run a table scenario with an related registered transform not using table
+    Given a file named "features/transform_sample.feature" with:
+      """
+      Feature: Step argument transformations
+
+        Scenario: A table
+          Then I should check the following table:
+            | letter | letter_plus_a |
+            |      r |            ra |
+            |      m |            ma |
+            |      p |            pa |
+      """
+    And a file named "features/support/table.rb" with:
+      """
+      Transform /^table:letter,letter_plus_a$/ do |table|
+        1
+      end
+
+      Then "I should check the following table:" do |columns|
+        columns.should == 1
+      end
+      """
+    When I run cucumber -s features
+    Then it should pass with
+      """
+      Feature: Step argument transformations
+
+        Scenario: A table
+          Then I should check the following table:
+            | letter | letter_plus_a |
+            | r      | ra            |
+            | m      | ma            |
+            | p      | pa            |
+
+      1 scenario (1 passed)
+      1 step (1 passed)
+
+      """
+
+  Scenario: run a table scenario with an related registered transform using table
+    Given a file named "features/transform_sample.feature" with:
+      """
+      Feature: Step argument transformations
+
+        Scenario: A table
+          Then I should check the following table:
+            | letter | letter_plus_a |
+            |      r |            ra |
+            |      m |            ma |
+            |      p |            pa |
+      """
+    And a file named "features/support/table.rb" with:
+      """
+      Transform /^table:letter,letter_plus_a$/ do |table|
+        table.rows.map { |row| row.join(',') }
+      end
+
+      Then "I should check the following table:" do |rows_in_table|
+        rows_in_table.should == ['r,ra','m,ma','p,pa']
       end
       """
     When I run cucumber -s features

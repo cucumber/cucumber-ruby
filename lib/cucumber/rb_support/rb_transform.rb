@@ -25,8 +25,8 @@ module Cucumber
       end
 
       def invoke(arg)
-        if arg.kind_of?(String) && matched = regexp.match(arg)
-          args = Array(matched.captures.empty? ? arg : matched.captures)
+        if matched = arg.match(regexp)
+          args = matched.captures.empty? ? [arg] : matched.captures
           @rb_language.current_world.cucumber_instance_exec(true, regexp.inspect, *args, &@proc)
         end        
       end
