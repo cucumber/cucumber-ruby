@@ -48,7 +48,7 @@ module Cucumber
       def keywords(key, raw=false)
         return @keywords[key] if raw
         return nil unless @keywords[key]
-        values = @keywords[key].split('|')
+        values = @keywords[key].to_s.split('|')
         values.map{|value| "'#{value}'"}.join(" / ")
       end
 

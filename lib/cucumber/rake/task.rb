@@ -101,13 +101,6 @@ module Cucumber
       # Name of the cucumber binary to use for running features. Defaults to Cucumber::BINARY
       attr_accessor :binary
 
-      # Array of paths to specific step definition files to use
-      deprecate_accessor :step_list
-
-      # File pattern for finding step definitions. Defaults to 
-      # 'features/**/*.rb'.
-      deprecate_accessor :step_pattern
-
       # Array of paths to specific features to run. 
       deprecate_accessor :feature_list
 
@@ -144,7 +137,6 @@ module Cucumber
         @profile = profile
         unless feature_list
           # TODO: remove once we completely remove these from the rake task.
-          @step_list = []
           @feature_list = [] # Don't use accessor to avoid deprecation warning.
         end
       end
@@ -159,7 +151,6 @@ module Cucumber
         yield self if block_given?
 
         @feature_pattern = "features/**/*.feature" if feature_pattern.nil? && feature_list.nil?
-        @step_pattern    = "features/**/*.rb"      if step_pattern.nil? && step_list.nil?
 
         @binary = binary.nil? ? Cucumber::BINARY : File.expand_path(binary)
         @libs.insert(0, LIB) if binary == Cucumber::BINARY
@@ -197,17 +188,6 @@ module Cucumber
           result += feature_list.to_a if feature_list
           result += FileList[feature_pattern].to_a if feature_pattern
           result = make_command_line_safe(result)
-          FileList[result]
-        end
-      end
-
-      def step_files(task_args = nil) #:nodoc:
-        if ENV['STEPS']
-          FileList[ ENV['STEPS'] ]
-        else
-          result = []
-          result += Array(step_list) if step_list
-          result += Array(FileList[step_pattern]) if step_pattern
           FileList[result]
         end
       end

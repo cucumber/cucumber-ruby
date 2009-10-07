@@ -1,8 +1,10 @@
-def Given(s):
-  register_rb_step_definition(s)
+import py_language
+
+class Given(object):
+  def __init__(self, regexp):
+    self.regexp = regexp
+    
+  def __call__(self, f):
+    py_language.register_step_def(self.regexp, f)
+    return f
   
-def register_rb_step_definition(s):
-  print "REGGED"
-  
-def set_py_language(py_language):
-  print "YAY"
