@@ -1,6 +1,7 @@
 == In Git
 
 === New Features
+* Transform can now transform tables, using /table:col1,col2,col3/ (#478 Corey Haines)
 * cucumber.yml can also end in .yaml and be located in .config/ or config/ dirs (#447 trans)
 * Turkish support. (Hakan Şenol Ensari)
 * Upgrade Rails generator to set a dependency to Spork 0.7.2. (Aslak Hellesøy)
