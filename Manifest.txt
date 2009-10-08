@@ -302,11 +302,15 @@ features/post_configuration_hook.feature
 features/profiles.feature
 features/rake_task.feature
 features/report_called_undefined_steps.feature
+features/simplest.feature
 features/snippet.feature
 features/step_definitions/cucumber_steps.rb
 features/step_definitions/extra_steps.rb
+features/step_definitions/simplest_steps.rb
 features/support/env.rb
+features/support/env.rb.simplest
 features/table_diffing.feature
+features/table_mapping.feature
 features/transform.feature
 features/unicode_table.feature
 features/usage_and_stepdefs_formatter.feature
