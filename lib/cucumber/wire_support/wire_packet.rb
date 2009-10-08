@@ -1,12 +1,14 @@
 module Cucumber
   module WireSupport
+    # Represents the packet of data sent over the wire as JSON data, containing
+    # a message and a hash of arguments
     class WirePacket
       class << self
-        PACKET_PATTERN = /^([^:]+):(.*)$/
-        
         def parse(raw)
-          _, message, raw_args = *PACKET_PATTERN.match(raw)
-          new message, JSON.parse(raw_args)
+          attributes = JSON.parse(raw.strip)
+          message = attributes.keys.first
+          args = attributes[message]
+          new(message, args)
         end
       end
       
@@ -16,8 +18,14 @@ module Cucumber
         @message, @args = message, args
       end
       
+      def to_json
+        {
+          @message => @args
+        }.to_json
+      end
+      
       def raise_if_bad
-        raise WireException.new(@args) if @message == 'FAIL'
+        raise WireException.new(@args) if @message == 'fail'
       end
     end
   end
