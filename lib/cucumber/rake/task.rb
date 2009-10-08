@@ -168,11 +168,11 @@ module Cucumber
       def runner(task_args = nil) #:nodoc:
         cucumber_opts = [(ENV['CUCUMBER_OPTS'] ? ENV['CUCUMBER_OPTS'].split(/\s+/) : nil) || cucumber_opts_with_profile]
         if(@rcov)
-          RCovCucumberRunner.new(libs, binary, cucumber_opts, feature_files(task_args), rcov_opts)
+          RCovCucumberRunner.new(libs, binary, cucumber_opts, feature_files, rcov_opts)
         elsif(@fork)
-          ForkedCucumberRunner.new(libs, binary, cucumber_opts, feature_files(task_args))
+          ForkedCucumberRunner.new(libs, binary, cucumber_opts, feature_files)
         else
-          InProcessCucumberRunner.new(libs, cucumber_opts, feature_files(task_args))
+          InProcessCucumberRunner.new(libs, cucumber_opts, feature_files)
         end
       end
 
@@ -180,7 +180,7 @@ module Cucumber
         @profile ? [cucumber_opts, '--profile', @profile] : cucumber_opts
       end
 
-      def feature_files(task_args = nil) #:nodoc:
+      def feature_files #:nodoc:
         if ENV['FEATURE']
           FileList[ ENV['FEATURE'] ]
         else
@@ -196,25 +196,6 @@ module Cucumber
       def make_command_line_safe(list)
         list.map{|string| string.gsub(' ', '\ ')}
       end
-    end
-
-    class FeatureTask < Task
-
-      def initialize(task_name = "feature", desc = "Run a specified feature with Cucumber.  #{task_name}[feature_name]")
-        super(task_name, desc)
-      end
-
-      def define_task #:nodoc:
-        desc @desc
-        task @task_name, :feature_name do |t, args|
-          runner(args).run
-        end
-      end
-
-      def feature_files(task_arguments) #:nodoc:
-        FileList[File.join("features", "**", "#{task_arguments[:feature_name]}.feature")]
-      end
-
     end
 
   end
