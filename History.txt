@@ -29,6 +29,10 @@
 * Better backtraces for Ruby 1.8.7. (Jakob Skov-Pedersen)
 * String step definitions ( Given 'I have $number cucumbers' ) are escaped before being turned into regular expressions. (David Waite) 
 
+=== Removed Features
+* The feature_list, feature_pattern, step_list and step_pattern properties are removed from the Rake task. Use profiles instead. (Aslak Hellesøy)
+* The FeatureTask is removed. Use profiles instead.
+
 == 0.3.104 2009-09-27
 
 This release has some minor changes to the command line and formatters. The biggest change is internally, paving
@@ -520,7 +524,7 @@ versions). In lib/tasks/cucumber.rake:
 (If you run script/generate cucumber this will be done for you).
 Alternatively you can omit forking and run features like this:
 
-  RAILS_ENV=test rake features
+  RAILS_ENV=test rake cucumber
 
 However, setting the RAILS_ENV is easy to forget, so I don't recommend relying on this.
 
