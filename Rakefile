@@ -8,3 +8,6 @@ Dir['gem_tasks/**/*.rake'].each { |rake| load rake }
 Rake::Task[:default].clear_prerequisites rescue nil # For some super weird reason this fails for some...
 Rake.application.options.trace = true
 task :default => [:spec, :cucumber]
+
+require 'rake/clean'
+CLEAN.include %w(**/*.{log,pyc})

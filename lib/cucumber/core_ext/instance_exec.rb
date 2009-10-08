@@ -8,6 +8,29 @@ module Cucumber
 end
 
 class Object #:nodoc:
+  unless defined? instance_exec # 1.9
+    # http://eigenclass.org/hiki/bounded+space+instance_exec
+    module InstanceExecHelper #:nodoc:
+    end
+    include InstanceExecHelper
+    def instance_exec(*args, &block)
+      begin
+        old_critical, Thread.critical = Thread.critical, true
+        n = 0
+        n += 1 while respond_to?(mname="__instance_exec#{n}")
+        InstanceExecHelper.module_eval{ define_method(mname, &block) }
+      ensure
+        Thread.critical = old_critical
+      end
+      begin
+        ret = send(mname, *args)
+      ensure
+        InstanceExecHelper.module_eval{ remove_method(mname) } rescue nil
+      end
+      ret
+    end
+  end
+
   # TODO: Move most of this stuff out to an InstanceExecutor class.
   def cucumber_instance_exec(check_arity, pseudo_method, *args, &block)
     cucumber_run_with_backtrace_filtering(pseudo_method) do
@@ -51,7 +74,7 @@ class Object #:nodoc:
     end
   end
 
-  INSTANCE_EXEC_OFFSET = (Cucumber::RUBY_1_9 || Cucumber::JRUBY) ? -3 : -4
+  INSTANCE_EXEC_OFFSET = (Cucumber::RUBY_1_9 || Cucumber::RUBY_1_8_7 || Cucumber::JRUBY) ? -3 : -4
 
   def replace_instance_exec_invocation_line!(backtrace, instance_exec_invocation_line, pseudo_method)
     return if Cucumber.use_full_backtrace
@@ -59,36 +82,17 @@ class Object #:nodoc:
     instance_exec_pos = backtrace.index(instance_exec_invocation_line)
     if instance_exec_pos
       replacement_line = instance_exec_pos + INSTANCE_EXEC_OFFSET
-      backtrace[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'") if pseudo_method
+      if Cucumber::RUBY_1_8_7
+        backtrace[replacement_line] += ":in `#{pseudo_method}'" if pseudo_method
+      else
+        backtrace[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'") if pseudo_method
+      end
       backtrace[replacement_line+1..-1] = nil
 
       backtrace.compact!
     else
       # This happens with rails, because they screw up the backtrace
       # before we get here (injecting erb stacktrace and such)
-    end
-  end
-
-  unless defined? instance_exec # 1.9
-    # http://eigenclass.org/hiki/bounded+space+instance_exec
-    module InstanceExecHelper #:nodoc:
-    end
-    include InstanceExecHelper
-    def instance_exec(*args, &block)
-      begin
-        old_critical, Thread.critical = Thread.critical, true
-        n = 0
-        n += 1 while respond_to?(mname="__instance_exec#{n}")
-        InstanceExecHelper.module_eval{ define_method(mname, &block) }
-      ensure
-        Thread.critical = old_critical
-      end
-      begin
-        ret = send(mname, *args)
-      ensure
-        InstanceExecHelper.module_eval{ remove_method(mname) } rescue nil
-      end
-      ret
     end
   end
 end

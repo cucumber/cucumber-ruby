@@ -20,10 +20,15 @@ module Cucumber
     # This will store <tt>[['a', 'b'], ['c', 'd']]</tt> in the <tt>data</tt> variable.
     #
     class Table
-      # Raised when Table#diff! is called whith a different table.
       class Different < StandardError
+        attr_reader :table
+        
+        def initialize(table)
+          super('Tables were not identical')
+          @table = table
+        end
       end
-
+      
       include Enumerable
       
       NULL_CONVERSIONS = Hash.new(lambda{ |cell_value| cell_value }).freeze
@@ -92,7 +97,7 @@ module Cucumber
       def hashes
         @hashes ||= cells_rows[1..-1].map do |row|
           row.to_hash
-        end.freeze
+        end
       end
       
       # Converts this table into a Hash where the first column is
@@ -110,7 +115,7 @@ module Cucumber
       def rows_hash
         return @rows_hash if @rows_hash
         verify_table_width(2)
-        @rows_hash = self.transpose.hashes[0].freeze
+        @rows_hash = self.transpose.hashes[0]
       end
 
       # Gets the raw data of this table. For example, a Table built from
@@ -146,6 +151,21 @@ module Cucumber
           visitor.visit_table_row(row)
         end
         nil
+      end
+
+      # Matches +pattern+ against the header row of the table.
+      # This is used especially for argument transforms.
+      #
+      # Example:
+      #  | column_1_name | column_2_name |
+      #  | x             | y             |
+      #
+      #  table.match(/table:column_1_name,column_2_name/) #=> non-nil
+      #  
+      # Note: must use 'table:' prefix on match
+      def match(pattern)
+        header_to_match = "table:#{headers.join(',')}"
+        pattern.match(header_to_match)
       end
 
       # For testing only
@@ -325,7 +345,7 @@ module Cucumber
           insert_row_pos  && options[:surplus_row] ||
           missing_col     && options[:missing_col] ||
           surplus_col     && options[:surplus_col]
-        raise Different.new('Tables were not identical') if should_raise
+        raise Different.new(self) if should_raise
       end
 
       def to_hash(cells) #:nodoc:
@@ -379,7 +399,7 @@ module Cucumber
       def headers #:nodoc:
         raw.first
       end
-
+      
       def header_cell(col) #:nodoc:
         cells_rows[0][col]
       end
@@ -460,7 +480,7 @@ module Cucumber
       def columns #:nodoc:
         @columns ||= cell_matrix.transpose.map do |cell_row|
           @cells_class.new(self, cell_row)
-        end.freeze
+        end
       end
 
       def new_cell(raw_cell, line) #:nodoc:
@@ -560,7 +580,7 @@ module Cucumber
         end
 
         def to_hash #:nodoc:
-          @to_hash ||= @table.to_hash(self).freeze
+          @to_hash ||= @table.to_hash(self)
         end
 
         def value(n) #:nodoc:

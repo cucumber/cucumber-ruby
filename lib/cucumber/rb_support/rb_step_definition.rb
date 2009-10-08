@@ -27,7 +27,8 @@ module Cucumber
       def initialize(rb_language, regexp, proc)
         raise MissingProc if proc.nil?
         if String === regexp
-          p = regexp.gsub(/\$\w+/, '(.*)') # Replace $var with (.*)
+          p = Regexp.escape(regexp)
+          p = p.gsub(/\\\$\w+/, '(.*)') # Replace $var with (.*)
           regexp = Regexp.new("^#{p}$") 
         end
         @rb_language, @regexp, @proc = rb_language, regexp, proc

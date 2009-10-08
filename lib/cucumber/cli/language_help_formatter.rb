@@ -1,5 +1,6 @@
 require 'cucumber/formatter/pretty'
 require 'cucumber/parser/natural_language'
+require 'cucumber/formatter/unicode'
 
 module Cucumber
   module Cli
@@ -13,25 +14,37 @@ Please help us complete the translation by translating the missing words in
 Then contribute back to the Cucumber project. Details here:
 http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
 }
+      
+      class << self
+        def list_languages(io)
+          raw = Cucumber::LANGUAGES.keys.sort.map do |lang|
+            [
+              lang, 
+              Cucumber::LANGUAGES[lang]['name'], 
+              Cucumber::LANGUAGES[lang]['native']
+            ]
+          end
 
-      def self.list_languages(io)
-        raw = Cucumber::LANGUAGES.keys.sort.map do |lang|
-          [lang, Cucumber::LANGUAGES[lang]['name'], Cucumber::LANGUAGES[lang]['native']]
+          print_table io, raw, :check_lang => true
         end
-        table = Ast::Table.new(raw)
-        formatter = new(nil, io, {:check_lang=>true})
-        Ast::TreeWalker.new(nil, [formatter]).visit_multiline_arg(table)
-      end
 
-      def self.list_keywords(io, lang)
-        language = Parser::NaturalLanguage.get(nil, lang)
-        raw = Parser::NaturalLanguage::KEYWORD_KEYS.map do |key|
-          [key, language.keywords(key)]
+        def list_keywords(io, lang)
+          language = Parser::NaturalLanguage.get(nil, lang)
+          raw = Parser::NaturalLanguage::KEYWORD_KEYS.map do |key|
+            [key, language.keywords(key)]
+          end
+          
+          print_table io, raw, :incomplete => language.incomplete?
         end
-        table = Ast::Table.new(raw)
-        new(nil, io, {:incomplete => language.incomplete?}).visit_multiline_arg(table)
+      
+        private
+          def print_table(io, raw, options)
+            table = Ast::Table.new(raw)
+            formatter = new(nil, io, options)
+            Ast::TreeWalker.new(nil, [formatter]).visit_multiline_arg(table)
+          end
       end
-
+      
       def before_visit_multiline_arg(table)
         if @options[:incomplete]
           @io.puts(format_string(INCOMPLETE, :failed))

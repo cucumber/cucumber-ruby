@@ -3,6 +3,7 @@ require 'cucumber/core_ext/instance_exec'
 require 'cucumber/parser/natural_language'
 require 'cucumber/language_support/language_methods'
 require 'cucumber/language_support/step_definition_methods'
+require 'cucumber/formatter/duration'
 
 module Cucumber
   # Raised when there is no matching StepDefinition for a step.
@@ -41,6 +42,7 @@ module Cucumber
   # This is the meaty part of Cucumber that ties everything together.
   class StepMother
     include Constantize
+    include Formatter::Duration
     attr_writer :options, :visitor, :log
 
     def initialize
@@ -53,6 +55,7 @@ module Cucumber
     def load_plain_text_features(feature_files)
       features = Ast::Features.new
 
+      start = Time.new
       log.debug("Features:\n")
       feature_files.each do |f|
         feature_file = FeatureFile.new(f)
@@ -62,7 +65,8 @@ module Cucumber
           log.debug("  * #{f}\n")
         end
       end
-      log.debug("\n")
+      duration = Time.now - start
+      log.debug("Parsing feature files took #{format_duration(duration)}\n\n")
       features
     end
 
