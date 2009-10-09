@@ -277,6 +277,9 @@ examples/watir/Rakefile
 examples/watir/features/search.feature
 examples/watir/features/step_definitons/search_steps.rb
 examples/watir/features/support/env.rb
+examples/webrat/features/search.feature
+examples/webrat/features/step_definitions/kvasir_steps.rb
+examples/webrat/features/support/env.rb
 features/background.feature
 features/bug_371.feature
 features/bug_475.feature
