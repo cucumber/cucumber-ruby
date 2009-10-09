@@ -28,7 +28,7 @@ module Cucumber
         mod = import(py_file)
       end
 
-      def snippet_text(step_keyword, step_name, multiline_arg_class = nil)
+      def snippet_text(step_keyword, step_name, multiline_arg_class)
         "python snippet: #{step_keyword}, #{step_name}"
       end
 
