@@ -87,7 +87,7 @@ module Cucumber
       end
     
       it "should recognise quotes in name and make according regexp" do
-        @rb.snippet_text('Given', 'A "first" arg').should == unindented(%{
+        @rb.snippet_text('Given', 'A "first" arg', nil).should == unindented(%{
           Given /^A "([^\\"]*)" arg$/ do |arg1|
             pending
           end
@@ -95,7 +95,7 @@ module Cucumber
       end
 
       it "should recognise several quoted words in name and make according regexp and args" do
-        @rb.snippet_text('Given', 'A "first" and "second" arg').should == unindented(%{
+        @rb.snippet_text('Given', 'A "first" and "second" arg', nil).should == unindented(%{
           Given /^A "([^\\"]*)" and "([^\\"]*)" arg$/ do |arg1, arg2|
             pending
           end
@@ -103,7 +103,7 @@ module Cucumber
       end
       
       it "should not use quote group when there are no quotes" do
-        @rb.snippet_text('Given', 'A first arg').should == unindented(%{
+        @rb.snippet_text('Given', 'A first arg', nil).should == unindented(%{
           Given /^A first arg$/ do
             pending
           end

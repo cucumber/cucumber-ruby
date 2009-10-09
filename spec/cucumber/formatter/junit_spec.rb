@@ -67,7 +67,30 @@ module Cucumber::Formatter
         it { @doc.to_s.should_not =~ /Things/ }
         it { @doc.to_s.should_not =~ /Good|Evil/ }
       end
-    end
+  
+      describe "with a regular data table scenario" do
+        define_steps do
+          Given(/the following items on a shortlist/) { |table| }  
+          When(/I go.*/) {  }
+          Then(/I should have visited at least/) { |table| } 
+        end
+        
+        define_feature <<-FEATURE
+          Feature: Shortlist
 
+            Scenario: Procure items 
+              Given the following items on a shortlist:
+                | item    |       
+                | milk    |       
+                | cookies |
+              When I get some..
+              Then I'll eat 'em
+           
+        FEATURE
+        # these type of tables shouldn't crash (or generate test cases)
+        it { @doc.to_s.should_not =~ /milk/ }
+        it { @doc.to_s.should_not =~ /cookies/ }
+      end
+    end
   end
 end

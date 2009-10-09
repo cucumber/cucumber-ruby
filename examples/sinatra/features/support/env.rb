@@ -22,8 +22,6 @@ class MyWorld
   include Webrat::Methods
   include Webrat::Matchers
 
-  Webrat::Methods.delegate_to_session :response_code, :response_body
-
   def app
     Sinatra::Application
   end
