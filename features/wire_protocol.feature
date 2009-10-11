@@ -60,10 +60,12 @@ Feature: Wire Protocol
   #
   # invoke
   #
-  # When a step_match was returned for a given step name, Cucumber will send an invoke message
-  # with the ID of the step definition which was supplied in the earlier step_match when it's time
-  # to execute the step.
-  # The wire end will reply with either a step_failed or a step_succeeded message.
+  # Assuming a step_match was returned for a given step name, when it's time to invoke that
+  # step definition, Cucumber will send an invoke message.
+  # The message contains the ID of the step definition, as returned by the wire end from the
+  # step_matches call, along with the arguments that were parsed from the step name during the
+  # same step_matches call.
+  # The wire end will reply with either a step_failed or a success message.
 
   Scenario: Invoke a step definition which passes
     Given there is a wire server running on port 98989 which understands the following protocol:
@@ -82,11 +84,10 @@ Feature: Wire Protocol
 
   Scenario: Invoke a step definition which fails
     Given there is a wire server running on port 98989 which understands the following protocol:
-      | request                                                                     | response                                  |
-      | {"step_matches":{"step_name":"we're all wired","formatted_step_name":null}} | {"step_match":[{"id":"1"}]}               |
-      | {"invoke":{"id":"1","args":[]}}                                             | {"fail":{"message":"The wires are down"}} |
+      | request                                                                     | response                                         |
+      | {"step_matches":{"step_name":"we're all wired","formatted_step_name":null}} | {"step_match":[{"id":"1"}]}                      |
+      | {"invoke":{"id":"1","args":[]}}                                             | {"step_failed":{"message":"The wires are down"}} |
     When I run cucumber -f progress features
-    Then STDERR should be empty
     And it should fail with
       """
       F
@@ -103,7 +104,6 @@ Feature: Wire Protocol
       1 step (1 failed)
 
       """
-
 
 
   # Scenario: Invoke a Step Definition which fails
