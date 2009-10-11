@@ -56,6 +56,7 @@ Feature: Wire Protocol
 
       """
 
+
   #
   # invoke
   #
@@ -63,6 +64,45 @@ Feature: Wire Protocol
   # with the ID of the step definition which was supplied in the earlier step_match when it's time
   # to execute the step.
   # The wire end will reply with either a step_failed or a step_succeeded message.
+
+  Scenario: Invoke a step definition which passes
+    Given there is a wire server running on port 98989 which understands the following protocol:
+      | request                                                                     | response                    |
+      | {"step_matches":{"step_name":"we're all wired","formatted_step_name":null}} | {"step_match":[{"id":"1"}]} |
+      | {"invoke":{"id":"1"}}                                                       | {"success":null}            |
+    When I run cucumber -f progress features
+    And it should pass with
+      """
+      .
+
+      1 scenario (1 passed)
+      1 step (1 passed)
+
+      """
+
+  Scenario: Invoke a step definition which fails
+    Given there is a wire server running on port 98989 which understands the following protocol:
+      | request                                                                     | response                    |
+      | {"step_matches":{"step_name":"we're all wired","formatted_step_name":null}} | {"step_match":[{"id":"1"}]} |
+      | {"invoke":{"id":"1"}}                                                       | {"fail":null}               |
+    When I run cucumber -f progress features
+    Then STDERR should be empty
+    And it should fail with
+      """
+      F
+
+      (::) failed steps (::)
+
+      The wires are down (Cucumber::WireSupport::WireException)
+      features/wired.feature:2:in `Given we're all wired'
+
+      Failing Scenarios:
+      cucumber features/wired.feature:1 # Scenario: Wired
+
+      1 scenario (1 failed)
+      1 step (1 failed)
+
+      """
 
 
 
