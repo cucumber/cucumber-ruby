@@ -1,3 +1,5 @@
+require 'cucumber/step_argument'
+
 module Cucumber
   module WireSupport
     class Connection
@@ -11,7 +13,10 @@ module Cucumber
           
         raw_response.args.map do |raw_step_match|
           step_definition = WireStepDefinition.new(raw_step_match['id'], self)
-          StepMatch.new(step_definition, step_name, formatted_step_name, raw_step_match['args'])
+          args = raw_step_match['args'].map do |raw_arg|
+            StepArgument.new(raw_arg['val'], raw_arg['pos'])
+          end
+          StepMatch.new(step_definition, step_name, formatted_step_name, args)
         end
       end
       
