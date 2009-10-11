@@ -42,6 +42,12 @@ Feature: Wire Protocol
 
       """
 
+  # When a step match is returned, it contains an identifier for the step definition to be used
+  # later when referring to this step definition again if it needs to be invoked. The identifier
+  # can take any form (as long as it's within a string) and is simply used for the wire end's own
+  # reference.
+  # The step match also contains any argument values as parsed out by the wire end's own regular
+  # expression or other argument matching process.
   Scenario: Dry run finds a step match
     Given there is a wire server running on port 98989 which understands the following protocol:
       | request                                          | response                               |
@@ -105,26 +111,7 @@ Feature: Wire Protocol
 
       """
 
-
-  # Scenario: Invoke a Step Definition which fails
-  #   And it should fail with
-  #     """
-  #     Feature: Over the wire
-  #
-  #       Scenario: Wired
-  #         Given we're all wired
-  #           the wires are down (Cucumber::WireSupport::WireException)
-  #           remote/stepdefs.rb:2:in `parse!'
-  #           features/wired.feature:4:in `Given we're all wired'
-  #
-  #     Failing Scenarios:
-  #     cucumber features/wired.feature:3 # Scenario: Wired
-  #
-  #     1 scenario (1 failed)
-  #     1 step (1 failed)
-  #
-  #     """
-  #
+  # TODO
   # Scenario: Invoke a Step Definition with a table that fails on diff!
   #   And it should fail with
   #     """
