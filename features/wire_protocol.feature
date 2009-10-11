@@ -111,6 +111,9 @@ Feature: Wire Protocol
 
       """
 
+    # Imagine we have a step definition like
+    # Given /we're all (.*)/ do |what_we_are|
+    # end
     Scenario: Invoke a step definition which takes arguments (and passes)
       Given there is a wire server running on port 98989 which understands the following protocol:
         | request                                          | response                                                        |
