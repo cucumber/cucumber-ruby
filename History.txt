@@ -1,3 +1,8 @@
+== 0.4.x
+
+=== Bugfixes
+* Ensure no errors are raised when limiting with tags which are not in the feature set (#464 Joseph Wilk)
+
 == 0.4.0 2009-10-09
 
 The back to stable release. When we went from 0.3.11 to 0.3.90 we thought we were close to a 0.4.0 release. Then the community

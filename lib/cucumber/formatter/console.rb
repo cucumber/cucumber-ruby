@@ -126,16 +126,18 @@ module Cucumber
       end
 
       def print_tag_limit_warnings(options)
-        first_tag = true
-        options[:tag_names].each do |tag_name, limit|
-          unless Ast::Tags.exclude_tag?(tag_name)
-            tag_frequnecy = @tag_occurences[tag_name].size
-            if limit && tag_frequnecy > limit
-              @io.puts if first_tag
-              first_tag = false
-              @io.puts format_string("#{tag_name} occurred #{tag_frequnecy} times, but the limit was set to #{limit}", :failed)
-              @tag_occurences[tag_name].each {|location| @io.puts format_string("  #{location}", :failed)}
-              @io.flush
+        if @tag_occurences
+          first_tag = true
+          options[:tag_names].each do |tag_name, limit|
+            unless Ast::Tags.exclude_tag?(tag_name)
+              tag_frequency = @tag_occurences[tag_name].size
+              if limit && tag_frequency > limit
+                @io.puts if first_tag
+                first_tag = false
+                @io.puts format_string("#{tag_name} occurred #{tag_frequency} times, but the limit was set to #{limit}", :failed)
+                @tag_occurences[tag_name].each {|location| @io.puts format_string("  #{location}", :failed)}
+                @io.flush
+              end
             end
           end
         end
