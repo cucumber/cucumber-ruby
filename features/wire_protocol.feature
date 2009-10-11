@@ -24,7 +24,7 @@ Feature: Wire Protocol
 
   Scenario: Dry run finds one step
     Given there is a wire server running on port 98989 which understands the following protocol:
-      | request                                     | response                    |
+      | request                                                                     | response                    |
       | {"step_matches":{"step_name":"we're all wired","formatted_step_name":null}} | {"step_match":[{"id":"1"}]} |
       | {"step_matches":{"step_name":"we like it","formatted_step_name":null}}      | {"step_match":[]}           |
     When I run cucumber --dry-run -q features/wired.feature
