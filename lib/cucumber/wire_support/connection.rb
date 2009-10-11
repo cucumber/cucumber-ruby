@@ -7,12 +7,11 @@ module Cucumber
       
       def step_matches(step_name, formatted_step_name)
         raw_response = call_remote(:step_matches, 
-          :step_name           => step_name, 
-          :formatted_step_name => formatted_step_name)
+          :step_name           => step_name)
           
         raw_response.args.map do |raw_step_match|
           step_definition = WireStepDefinition.new(raw_step_match['id'], self)
-          StepMatch.new(step_definition, step_name, formatted_step_name, [])
+          StepMatch.new(step_definition, step_name, formatted_step_name, raw_step_match['args'])
         end
       end
       
@@ -20,6 +19,7 @@ module Cucumber
         raw_response = call_remote(:invoke, 
           :id   => step_definition_id, 
           :args => args)
+        
         return if raw_response.message == 'success'
         raise WireException.new(raw_response.args)
       end

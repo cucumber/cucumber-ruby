@@ -30,8 +30,8 @@ Feature: Wire Protocol
 
   Scenario: Dry run finds no step match
     Given there is a wire server running on port 98989 which understands the following protocol:
-      | request                                                                     | response          |
-      | {"step_matches":{"step_name":"we're all wired","formatted_step_name":null}} | {"step_match":[]} |
+      | request                                          | response          |
+      | {"step_matches":{"step_name":"we're all wired"}} | {"step_match":[]} |
     When I run cucumber --dry-run -f progress features
     And it should pass with
       """
@@ -44,8 +44,8 @@ Feature: Wire Protocol
 
   Scenario: Dry run finds a step match
     Given there is a wire server running on port 98989 which understands the following protocol:
-      | request                                                                     | response                    |
-      | {"step_matches":{"step_name":"we're all wired","formatted_step_name":null}} | {"step_match":[{"id":"1"}]} |
+      | request                                          | response                               |
+      | {"step_matches":{"step_name":"we're all wired"}} | {"step_match":[{"id":"1", "args":[]}]} |
     When I run cucumber --dry-run -f progress features
     And it should pass with
       """
@@ -69,9 +69,9 @@ Feature: Wire Protocol
 
   Scenario: Invoke a step definition which passes
     Given there is a wire server running on port 98989 which understands the following protocol:
-      | request                                                                     | response                    |
-      | {"step_matches":{"step_name":"we're all wired","formatted_step_name":null}} | {"step_match":[{"id":"1"}]} |
-      | {"invoke":{"id":"1","args":[]}}                                             | {"success":null}            |
+      | request                                          | response                               |
+      | {"step_matches":{"step_name":"we're all wired"}} | {"step_match":[{"id":"1", "args":[]}]} |
+      | {"invoke":{"id":"1","args":[]}}                  | {"success":null}                       |
     When I run cucumber -f progress features
     And it should pass with
       """
@@ -84,9 +84,9 @@ Feature: Wire Protocol
 
   Scenario: Invoke a step definition which fails
     Given there is a wire server running on port 98989 which understands the following protocol:
-      | request                                                                     | response                                         |
-      | {"step_matches":{"step_name":"we're all wired","formatted_step_name":null}} | {"step_match":[{"id":"1"}]}                      |
-      | {"invoke":{"id":"1","args":[]}}                                             | {"step_failed":{"message":"The wires are down"}} |
+      | request                                          | response                                         |
+      | {"step_matches":{"step_name":"we're all wired"}} | {"step_match":[{"id":"1", "args":[]}]}           |
+      | {"invoke":{"id":"1","args":[]}}                  | {"step_failed":{"message":"The wires are down"}} |
     When I run cucumber -f progress features
     And it should fail with
       """
