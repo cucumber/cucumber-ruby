@@ -2,12 +2,12 @@ module Cucumber
   module WireSupport
     class WireStepDefinition
       def initialize(id, connection)
-        @id = id
+        @id, @connection = id, connection
       end
       
-      def invoke(*args)
+      def invoke(args)
         log.debug "WireStepDefinition id #{@id} invoked with args: #{args.inspect}"
-        # raise WireException.new({'message' => 'The wires are down'})
+        @connection.invoke(@id, args)
       end
       
       private

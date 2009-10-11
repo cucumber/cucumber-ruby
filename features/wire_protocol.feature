@@ -69,7 +69,7 @@ Feature: Wire Protocol
     Given there is a wire server running on port 98989 which understands the following protocol:
       | request                                                                     | response                    |
       | {"step_matches":{"step_name":"we're all wired","formatted_step_name":null}} | {"step_match":[{"id":"1"}]} |
-      | {"invoke":{"id":"1"}}                                                       | {"success":null}            |
+      | {"invoke":{"id":"1","args":[]}}                                             | {"success":null}            |
     When I run cucumber -f progress features
     And it should pass with
       """
@@ -82,9 +82,9 @@ Feature: Wire Protocol
 
   Scenario: Invoke a step definition which fails
     Given there is a wire server running on port 98989 which understands the following protocol:
-      | request                                                                     | response                    |
-      | {"step_matches":{"step_name":"we're all wired","formatted_step_name":null}} | {"step_match":[{"id":"1"}]} |
-      | {"invoke":{"id":"1"}}                                                       | {"fail":null}               |
+      | request                                                                     | response                                  |
+      | {"step_matches":{"step_name":"we're all wired","formatted_step_name":null}} | {"step_match":[{"id":"1"}]}               |
+      | {"invoke":{"id":"1","args":[]}}                                             | {"fail":{"message":"The wires are down"}} |
     When I run cucumber -f progress features
     Then STDERR should be empty
     And it should fail with

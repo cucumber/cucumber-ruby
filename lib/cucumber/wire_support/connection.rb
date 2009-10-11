@@ -16,6 +16,14 @@ module Cucumber
         end
       end
       
+      def invoke(step_definition_id, args)
+        raw_response = call_remote(:invoke, 
+          :id   => step_definition_id, 
+          :args => args)
+        return if raw_response.message == 'success'
+        raise WireException.new(raw_response.args)
+      end
+      
       private
 
       def call_remote(message, args = nil)
