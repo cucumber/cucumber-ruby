@@ -1,0 +1,25 @@
+defaults:
+  install_options: "--no-ri --no-rdoc"
+gems:
+- name: builder
+  version: '2.1.2'
+- name: diff-lcs
+  version: '1.1.2'
+- name: hoe
+  version: '2.3.3'
+- name: hoe
+  version: '2.3.3'
+- name: nokogiri
+  version: '1.3.3'
+- name: prawn
+  version: '0.5.1'
+- name: rspec
+  version: '1.2.9'
+- name: sdoc
+  version: '0.2.14.1'
+- name: spork
+  version: '0.7.2'
+- name: term-ansicolor
+  version: '1.0.4'
+- name: treetop
+  version: '1.4.2'
