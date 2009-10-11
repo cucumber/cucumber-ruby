@@ -8,11 +8,8 @@ Feature: Wire Protocol
     Given a standard Cucumber project directory structure
     And a file named "features/wired.feature" with:
       """
-      Feature: Over the wire
-
         Scenario: Wired
           Given we're all wired
-          And we like it
 
       """
     And a file named "features/step_definitions/some_remote_place.wire" with:
@@ -22,25 +19,52 @@ Feature: Wire Protocol
 
       """
 
-  Scenario: Dry run finds one step
+
+  #
+  # step_matches
+  #
+  # When the features have been parsed, Cucumber will send a step_matches message to ask the wire end
+  # if it can match a step name. This happens for each of the steps in each of the features.
+  # The wire end replies with a step_match array, containing the IDs of any step definitions that could
+  # be invoked for the given step name.
+
+  Scenario: Dry run finds no step match
+    Given there is a wire server running on port 98989 which understands the following protocol:
+      | request                                                                     | response          |
+      | {"step_matches":{"step_name":"we're all wired","formatted_step_name":null}} | {"step_match":[]} |
+    When I run cucumber --dry-run -f progress features
+    And it should pass with
+      """
+      U
+
+      1 scenario (1 undefined)
+      1 step (1 undefined)
+
+      """
+
+  Scenario: Dry run finds a step match
     Given there is a wire server running on port 98989 which understands the following protocol:
       | request                                                                     | response                    |
       | {"step_matches":{"step_name":"we're all wired","formatted_step_name":null}} | {"step_match":[{"id":"1"}]} |
-      | {"step_matches":{"step_name":"we like it","formatted_step_name":null}}      | {"step_match":[]}           |
-    When I run cucumber --dry-run -q features/wired.feature
-    Then STDERR should be empty
+    When I run cucumber --dry-run -f progress features
     And it should pass with
       """
-      Feature: Over the wire
-
-        Scenario: Wired
-          Given we're all wired
-          And we like it
+      -
 
       1 scenario (1 skipped)
-      2 steps (1 skipped, 1 undefined)
+      1 step (1 skipped)
 
       """
+
+  #
+  # invoke
+  #
+  # When a step_match was returned for a given step name, Cucumber will send an invoke message
+  # with the ID of the step definition which was supplied in the earlier step_match when it's time
+  # to execute the step.
+  # The wire end will reply with either a step_failed or a step_succeeded message.
+
+
 
   # Scenario: Invoke a Step Definition which fails
   #   And it should fail with
