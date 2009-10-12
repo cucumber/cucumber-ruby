@@ -2,7 +2,6 @@ Feature: Cucumber command line
   In order to find out what step definitions need to be implemented
   Developers should always see what step definition is missing
 
-  @mri186
   Scenario: Get info at arbitrary levels of nesting
     When I run cucumber features/call_undefined_step_from_step_def.feature
     Then it should pass with

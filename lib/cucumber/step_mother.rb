@@ -2,7 +2,6 @@ require 'cucumber/constantize'
 require 'cucumber/core_ext/instance_exec'
 require 'cucumber/parser/natural_language'
 require 'cucumber/language_support/language_methods'
-require 'cucumber/language_support/step_definition_methods'
 require 'cucumber/formatter/duration'
 
 module Cucumber
@@ -140,9 +139,9 @@ module Cucumber
       end
     end
 
-    def step_match(step_name, formatted_step_name=nil) #:nodoc:
+    def step_match(step_name, name_to_report=nil) #:nodoc:
       matches = @programming_languages.map do |programming_language| 
-        programming_language.step_matches(step_name, formatted_step_name)
+        programming_language.step_matches(step_name, name_to_report)
       end.flatten
       raise Undefined.new(step_name) if matches.empty?
       matches = best_matches(step_name, matches) if matches.size > 1 && options[:guess]

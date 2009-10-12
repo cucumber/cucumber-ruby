@@ -148,8 +148,8 @@ module Cucumber
       def step_name(keyword, step_match, status, source_indent, background)
         return if @hide_this_step
         source_indent = nil unless @options[:source]
-        formatted_step_name = format_step(keyword, step_match, status, source_indent)
-        @io.puts(formatted_step_name.indent(@scenario_indent + 2))
+        name_to_report = format_step(keyword, step_match, status, source_indent)
+        @io.puts(name_to_report.indent(@scenario_indent + 2))
       end
 
       def py_string(string)

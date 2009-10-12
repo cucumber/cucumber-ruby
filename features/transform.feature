@@ -38,7 +38,7 @@ Feature: transform
       end
 
       Transform /^'(\d+)' to a Float$/ do |integer_string|
-        Float.induced_from Transform("'#{integer_string}' to an Integer")
+        Transform("'#{integer_string}' to an Integer").to_f
       end
 
       Transform(/^('\w+') to Nil$/) {|str| nil }

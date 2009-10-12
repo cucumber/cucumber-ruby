@@ -3,7 +3,6 @@ Feature: Cucumber command line
   steps and step definitions, Cucumber must provide a way to
   display how they are related.
 
-  @mri186
   Scenario: List usage of step definitions
     When I run cucumber features --format usage --dry-run
     Then STDERR should be empty
@@ -137,8 +136,7 @@ Feature: Cucumber command line
 
       """
 
-    @mri186
-    Scenario: --format steps
+      Scenario: --format steps
       When I run cucumber features --format stepdefs --dry-run
       Then STDERR should be empty
       And it should pass with

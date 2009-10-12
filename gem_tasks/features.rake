@@ -1,8 +1,13 @@
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'cucumber/rake/task'
+require 'cucumber/platform'
 
 Cucumber::Rake::Task.new do |t|
-  t.cucumber_opts = %w{--format progress}
+  if(Cucumber::JRUBY)
+    t.profile = 'jruby'
+  else
+    t.profile = 'default'
+  end
   t.rcov = ENV['RCOV']
 end
 
