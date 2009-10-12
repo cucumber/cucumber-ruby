@@ -435,8 +435,11 @@
   name: Romanian
   native: română
   encoding: UTF-8
+  background: Conditii
   feature: Functionalitate
   scenario: Scenariu
+  scenario_outline: Scenariul de sablon
+  examples: Exemplele
   given: Daca
   when: Cand
   then: Atunci
@@ -447,8 +450,11 @@
   name: Romanian (diacritical)
   native: română (diacritical)
   encoding: UTF-8
+  background: Condiţii
   feature: Funcționalitate
   scenario: Scenariu
+  scenario_outline: Scenariul de şablon
+  examples: Exemplele
   given: Dacă
   when: Când
   then: Atunci

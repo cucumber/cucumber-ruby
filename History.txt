@@ -3,8 +3,10 @@
 === Bugfixes
 * Cucumber's features now pass on 1.8.6, 1.8.7 and 1.9.1. (Aslak Hellesøy)
 * Ensure no errors are raised when limiting with tags which are not in the feature set (#464 Joseph Wilk)
+* Missing Romanian keywords added for Examples, Scenario Outline and Background (to my best google translate knowledge) (Aslak Hellesøy)
 
 === New Features
+* Added support for Serbian language, both Cyrillic and Latin with usage examples. (Dejan Dimic)
 * Add new 'debug' formatter for debugging and visualising the calls to listeners. (Matt Wynne)
 
 === Changed features
