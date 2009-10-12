@@ -500,6 +500,36 @@
   and: A
   but: Ale
   space_after_keyword: true
+"sr-Latn":
+  name: Serbian_latin
+  native: Srpski_latinica
+  encoding: UTF-8
+  feature: Funkcionalnost|Mogućnost|Mogucnost|Osobina
+  background: Kontekst|Osnova|Pozadina
+  scenario: Scenario|Primer
+  scenario_outline: Struktura scenarija|Skica|Koncept
+  examples: Primeri|Scenariji
+  given: Zadato|Zadate|Zatati
+  when: Kada|Kad
+  then: Onda
+  and: I
+  but: Ali
+  space_after_keyword: true
+"sr":
+  name: Serbian
+  native: Српски
+  encoding: UTF-8
+  feature: Функционалност|Могућност|Особина
+  background: Контекст|Основа|Позадина
+  scenario: Сценарио|Пример
+  scenario_outline: Структура сценарија|Скица|Концепт
+  examples: Примери|Сценарији
+  given: Задато|Задате|Задати
+  when: Када|Кад
+  then: Онда
+  and: И
+  but: Али
+  space_after_keyword: true
 "tr":
   name: Turkish
   native: Türkçe
