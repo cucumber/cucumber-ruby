@@ -26,7 +26,7 @@ Feature: Post Configuration Hook [#423]
     And a file named "features/support/env.rb" with:
       """
       AfterConfiguration do |config|
-        config.out_stream << "AfterConfiguration hook read feature directories: #{config.feature_dirs}" 
+        config.out_stream << "AfterConfiguration hook read feature directories: #{config.feature_dirs.join(', ')}" 
       end
       """
     When I run cucumber features

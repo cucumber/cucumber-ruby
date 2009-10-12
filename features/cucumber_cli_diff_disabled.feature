@@ -2,7 +2,6 @@ Feature: Cucumber command line
   In order to write better software
   Developers should be able to execute requirements as tests
 
-  @mri186
   Scenario: Run single failing scenario with default diff enabled
     When I run cucumber -q features/failing_expectation.feature
     Then it should fail with
@@ -30,7 +29,6 @@ Feature: Cucumber command line
 
       """
 
-  @mri186
   Scenario: Run single failing scenario with diff output disabled
     When I run cucumber -q --no-diff features/failing_expectation.feature
     Then it should fail with

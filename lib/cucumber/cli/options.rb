@@ -18,7 +18,7 @@ module Cucumber
                                                          "#{' ' * 51}is not shown, and step definitions are sorted by\n" +
                                                          "#{' ' * 51}filename instead."],
         'stepdefs'  => ['Cucumber::Formatter::Stepdefs', "Prints All step definitions with their locations. Same as\n" +
-                                                         "the usage formatter, except that steps are not printed."],
+                                                         "#{' ' * 51}the usage formatter, except that steps are not printed."],
         'junit'     => ['Cucumber::Formatter::Junit',    'Generates a report similar to Ant+JUnit.'],
         'tag_cloud' => ['Cucumber::Formatter::TagCloud', 'Prints a tag cloud of tag usage.'],
         'debug'     => ['Cucumber::Formatter::Debug',    'For developing formatters - prints the calls made to the listeners.']
@@ -234,11 +234,11 @@ module Cucumber
           end
           opts.on_tail("--version", "Show version.") do
             @out_stream.puts VERSION::STRING
-            Kernel.exit
+            Kernel.exit(0)
           end
           opts.on_tail("-h", "--help", "You're looking at it.") do
             @out_stream.puts opts.help
-            Kernel.exit
+            Kernel.exit(0)
           end
         end.parse!
  
@@ -360,12 +360,12 @@ module Cucumber
           raise("No language with key #{lang}")
         end
         LanguageHelpFormatter.list_keywords(@out_stream, lang)
-        Kernel.exit
+        Kernel.exit(0)
       end
 
       def list_languages_and_exit
         LanguageHelpFormatter.list_languages(@out_stream)
-        Kernel.exit
+        Kernel.exit(0)
       end
 
       def print_profile_information

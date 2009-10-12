@@ -27,11 +27,11 @@ Feature: Rake task
       $LOAD_PATH.unshift(CUCUMBER_LIB)
       require 'cucumber/rake/task'
 
-      Cucumber::Rake::Task.new(:features) do |t|
+      Cucumber::Rake::Task.new do |t|
         t.profile = "foo"
       end
       """
-    When I run rake features
+    When I run rake cucumber
     Then it should pass
     And the output should contain
       """
@@ -43,6 +43,32 @@ Feature: Rake task
       1 scenario (1 undefined)
       1 step (1 undefined)
       """
+
+    Scenario: rake task without a profile
+      Given a file named "Rakefile" with:
+        """
+        $LOAD_PATH.unshift(CUCUMBER_LIB)
+        require 'cucumber/rake/task'
+
+        Cucumber::Rake::Task.new do |t|
+          t.cucumber_opts = %w{--quiet --no-color}
+        end
+        """
+      When I run rake cucumber
+      Then it should pass
+      And the output should contain
+        """
+        Feature: Sample
+
+          Scenario: Wanted
+            Given I want to run this
+
+          Scenario: Unwanted
+            Given I don't want this ran
+
+        2 scenarios (2 undefined)
+        2 steps (2 undefined)
+        """
 
   Scenario: rake task with a defined profile and cucumber_opts
     Given the following profile is defined:
@@ -54,12 +80,12 @@ Feature: Rake task
       $LOAD_PATH.unshift(CUCUMBER_LIB)
       require 'cucumber/rake/task'
 
-      Cucumber::Rake::Task.new(:features) do |t|
+      Cucumber::Rake::Task.new do |t|
         t.profile = "bar"
         t.cucumber_opts = %w{--quiet --no-color}
       end
       """
-    When I run rake features
+    When I run rake cucumber
     Then it should pass
     And the output should contain
       """
@@ -70,58 +96,6 @@ Feature: Rake task
 
       1 scenario (1 undefined)
       1 step (1 undefined)
-      """
-
-  Scenario: rake task with a defined profile and feature list
-    Given a file named "features/the_one_i_want_to_run.feature" with:
-      """
-      Feature: Desired
-
-        Scenario: Something
-          Given this is missing
-      """
-    Given the following profile is defined:
-      """
-      baz: ['--quiet', '--no-color']
-      """
-    And a file named "Rakefile" with:
-      """
-      $LOAD_PATH.unshift(CUCUMBER_LIB)
-      require 'cucumber/rake/task'
-
-      Cucumber::Rake::Task.new(:features) do |t|
-        t.profile = "baz"
-        t.feature_list = ['features/the_one_i_want_to_run.feature']
-      end
-      """
-    When I run rake features
-    Then it should pass
-    And the output should contain
-      """
-      Feature: Desired
-
-        Scenario: Something
-          Given this is missing
-
-      1 scenario (1 undefined)
-      1 step (1 undefined)
-      """
-
-  Scenario: deprecation warnings
-    Given a file named "Rakefile" with:
-      """
-      $LOAD_PATH.unshift(CUCUMBER_LIB)
-      require 'cucumber/rake/task'
-
-      Cucumber::Rake::Task.new(:features) do |t|
-        t.feature_list = ['features/missing_step_definitions.feature']
-      end
-      """
-    When I run rake features
-    Then it should pass
-    And STDERR should match
-      """
-      Cucumber::Rake::Task#feature_list is deprecated and will be removed in 0.4.0.  Please use profiles for complex settings: http://wiki.github.com/aslakhellesoy/cucumber/using-rake#profiles
       """
 
   Scenario: respect requires
@@ -136,13 +110,13 @@ Feature: Rake task
       $LOAD_PATH.unshift(CUCUMBER_LIB)
       require 'cucumber/rake/task'
 
-      Cucumber::Rake::Task.new(:features) do |t|
+      Cucumber::Rake::Task.new do |t|
         t.profile = "no_bomb"
         t.cucumber_opts = %w{--quiet --no-color}
       end
       """
 
-    When I run rake features
+    When I run rake cucumber
     Then it should pass
     And the output should not contain
       """
@@ -162,11 +136,11 @@ Feature: Rake task
        $LOAD_PATH.unshift(CUCUMBER_LIB)
        require 'cucumber/rake/task'
 
-       Cucumber::Rake::Task.new(:features) do |t|
+       Cucumber::Rake::Task.new do |t|
          t.cucumber_opts = %w{--quiet --no-color}
        end
        """
-    When I run rake features
+    When I run rake cucumber
     Then it should pass
     And the output should contain
        """

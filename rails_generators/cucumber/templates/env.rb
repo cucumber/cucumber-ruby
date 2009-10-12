@@ -29,7 +29,7 @@ Cucumber::Rails::World.use_transactional_fixtures = true
 # If you set this to true, Rails will rescue all errors and render error
 # pages, more or less in the same way your application would behave in the
 # default production environment. It's not recommended to do this for all
-# of your scenarions, as this makes it hard to discover errors in your application.
+# of your scenarios, as this makes it hard to discover errors in your application.
 ActionController::Base.allow_rescue = false
 
 require 'cucumber'

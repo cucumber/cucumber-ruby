@@ -19,7 +19,6 @@ Feature: Exception in Before Block
       end
       """
 
-  @mri186
   Scenario: Handle Exception in standard scenario step and carry on
     Given a file named "features/naughty_step_in_scenario.feature" with:
       """
@@ -43,5 +42,37 @@ Feature: Exception in Before Block
 
       1 scenario (1 failed)
       1 step (1 skipped)
+
+      """
+
+  Scenario: Handle Exception in Before hook for Scenario with Background
+    Given a file named "features/naughty_step_in_before.feature" with:
+      """
+      Feature: Sample
+
+        Background:
+          Given this step works
+
+        Scenario: Run a good step
+          Given this step works
+      """
+    When I run cucumber features
+    Then it should fail with
+      """
+      Feature: Sample
+      
+        Background:             # features/naughty_step_in_before.feature:3
+        I cannot even start this scenario (SomeSetupException)
+        ./features/support/env.rb:4:in `Before'
+          Given this step works # features/step_definitions/steps.rb:1
+      
+        Scenario: Run a good step # features/naughty_step_in_before.feature:6
+          Given this step works   # features/step_definitions/steps.rb:1
+
+      Failing Scenarios:
+      cucumber features/naughty_step_in_before.feature:6 # Scenario: Run a good step
+
+      1 scenario (1 failed)
+      2 steps (1 skipped, 1 passed)
 
       """

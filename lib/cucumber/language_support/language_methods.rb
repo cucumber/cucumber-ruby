@@ -4,8 +4,8 @@ require 'cucumber/step_definition_light'
 module Cucumber
   module LanguageSupport
     module LanguageMethods
-      def create_step_match(step_definition, step_name, formatted_step_name, step_arguments)
-        StepMatch.new(step_definition, step_name, formatted_step_name, step_arguments)
+      def create_step_match(step_definition, step_name, name_to_report, step_arguments)
+        StepMatch.new(step_definition, step_name, name_to_report, step_arguments)
       end
       
       def before(scenario)
@@ -31,10 +31,9 @@ module Cucumber
       end
 
       def execute_transforms(args)
-        transformed = nil
         args.map do |arg|
-          transforms.detect {|t| transformed = t.invoke arg }
-          transformed || arg
+          matching_transform = transforms.detect {|transform| transform.match(arg) }
+          matching_transform ? matching_transform.invoke(arg) : arg
         end
       end
 

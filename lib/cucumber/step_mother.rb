@@ -2,7 +2,7 @@ require 'cucumber/constantize'
 require 'cucumber/core_ext/instance_exec'
 require 'cucumber/parser/natural_language'
 require 'cucumber/language_support/language_methods'
-require 'cucumber/language_support/step_definition_methods'
+require 'cucumber/formatter/duration'
 
 module Cucumber
   # Raised when there is no matching StepDefinition for a step.
@@ -41,6 +41,7 @@ module Cucumber
   # This is the meaty part of Cucumber that ties everything together.
   class StepMother
     include Constantize
+    include Formatter::Duration
     attr_writer :options, :visitor, :log
 
     def initialize
@@ -53,6 +54,7 @@ module Cucumber
     def load_plain_text_features(feature_files)
       features = Ast::Features.new
 
+      start = Time.new
       log.debug("Features:\n")
       feature_files.each do |f|
         feature_file = FeatureFile.new(f)
@@ -62,7 +64,8 @@ module Cucumber
           log.debug("  * #{f}\n")
         end
       end
-      log.debug("\n")
+      duration = Time.now - start
+      log.debug("Parsing feature files took #{format_duration(duration)}\n\n")
       features
     end
 
@@ -136,9 +139,13 @@ module Cucumber
       end
     end
 
-    def step_match(step_name, formatted_step_name=nil) #:nodoc:
+    def invoke(step_name, multiline_argument=nil)
+      step_match(step_name).invoke(multiline_argument)
+    end
+
+    def step_match(step_name, name_to_report=nil) #:nodoc:
       matches = @programming_languages.map do |programming_language| 
-        programming_language.step_matches(step_name, formatted_step_name)
+        programming_language.step_matches(step_name, name_to_report)
       end.flatten
       raise Undefined.new(step_name) if matches.empty?
       matches = best_matches(step_name, matches) if matches.size > 1 && options[:guess]

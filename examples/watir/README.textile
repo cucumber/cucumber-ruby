@@ -4,7 +4,7 @@ work with all of them.
 
 Just run with:
 
-  rake features
+  rake cucumber
   
 This will use Watir/IE if you're on Windows, and SafariWatir/Safari if you're on OS X.
 You can force the use of FireWatir/Firefox on any platform like this:
@@ -13,4 +13,4 @@ You can force the use of FireWatir/Firefox on any platform like this:
   
 And finally, you can use Celerity by running in JRuby:
 
-  jruby -S rake features
+  jruby -S rake cucumber

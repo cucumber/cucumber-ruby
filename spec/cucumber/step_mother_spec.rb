@@ -259,6 +259,12 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
       @dsl.Transform(/^transform_me$/) {|arg| :baz }
       @rb.execute_transforms(['transform_me']).should == [:baz]
     end
+    
+    it "allows registering a transform which returns nil" do
+      @dsl.Transform('^ac$') {|arg| nil}
+      @rb.execute_transforms(['ab']).should == ['ab']
+      @rb.execute_transforms(['ac']).should == [nil]
+    end
   end
 
 end

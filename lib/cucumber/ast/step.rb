@@ -18,6 +18,11 @@ module Cucumber
         false
       end
 
+      def status
+        # Step always has status skipped, because Step is always in a ScenarioOutline
+        :skipped
+      end
+
       def step_invocation
         StepInvocation.new(self, @name, @multiline_arg, [])
       end
@@ -107,7 +112,7 @@ module Cucumber
         name_with_arguments_replaced = @name
         argument_hash.each do |name, value|
           value ||= ''
-          name_with_arguments_replaced = name_with_arguments_replaced.gsub(name, value) if value
+          name_with_arguments_replaced = name_with_arguments_replaced.gsub(name, value)
         end
         name_with_arguments_replaced
       end

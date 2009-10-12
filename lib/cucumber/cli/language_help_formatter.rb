@@ -1,5 +1,6 @@
 require 'cucumber/formatter/pretty'
 require 'cucumber/parser/natural_language'
+require 'cucumber/formatter/unicode'
 
 module Cucumber
   module Cli

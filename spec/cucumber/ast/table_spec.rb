@@ -62,6 +62,24 @@ module Cucumber
         }.should raise_error('The column named "two" does not exist')
       end
 
+      describe "#match" do
+        before(:each) do
+          @table = Table.new([
+            %w{one four seven},
+            %w{4444 55555 666666}
+          ])
+        end
+          
+        it "returns nil if headers do not match" do
+          @table.match('does,not,match').should be_nil
+        end
+        it "requires a table: prefix on match" do
+          @table.match('table:one,four,seven').should_not be_nil
+        end
+        it "does not match if no table: prefix on match" do
+          @table.match('one,four,seven').should be_nil
+        end
+      end
       describe "#transpose" do
         before(:each) do
           @table = Table.new([

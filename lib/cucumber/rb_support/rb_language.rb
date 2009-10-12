@@ -3,7 +3,6 @@ require 'cucumber/rb_support/rb_world'
 require 'cucumber/rb_support/rb_step_definition'
 require 'cucumber/rb_support/rb_hook'
 require 'cucumber/rb_support/rb_transform'
-require 'cucumber/rb_support/regexp_argument_matcher'
 
 module Cucumber
   module RbSupport
@@ -57,17 +56,17 @@ module Cucumber
         end
       end
 
-      def step_matches(step_name, formatted_step_name)
+      def step_matches(name_to_match, name_to_format)
         @step_definitions.map do |step_definition|
-          step_definition.step_match(step_name, formatted_step_name)
+          if(arguments = step_definition.arguments_from(name_to_match))
+            StepMatch.new(step_definition, name_to_match, name_to_format, arguments)
+          else
+            nil
+          end
         end.compact
       end
 
-      def arguments_from(regexp, step_name)
-        @regexp_argument_matcher.arguments_from(regexp, step_name)
-      end
-
-      def snippet_text(step_keyword, step_name, multiline_arg_class = nil)
+      def snippet_text(step_keyword, step_name, multiline_arg_class)
         escaped = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
         escaped = escaped.gsub(PARAM_PATTERN, ESCAPED_PARAM_PATTERN)
 
