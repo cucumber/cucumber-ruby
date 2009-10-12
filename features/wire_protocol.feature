@@ -4,6 +4,22 @@ Feature: Wire Protocol
   As a developer on platform which doesn't support Ruby
   I want a low-level protocol which Cucumber can use to run steps within my app
 
+  #
+  # Cucumber's wire protocol is an implementation of Cucumber's internal 'programming language' abstraction,
+  # and allows step definitions to be implemented and invoked on any platform.
+  #
+  # Communication is over a TCP socket, which Cucumber connects to when it finds a definition file with the
+  # .wire extension in the step_definitions folder (or other load path).
+  #
+  # There are currently two messages which Cucumber sends over the wire:
+  #
+  #   * step_matches : this is used to find out whether the wire end has a definition for a given step
+  #   * invoke       : this is used to ask for a step definition to be invoked
+  #
+  # Message packets are formatted as JSON-encoded strings, with a newline character signalling the end of a
+  # packet. These messages are described below, with examples.
+  #
+
   Background:
     Given a standard Cucumber project directory structure
     And a file named "features/wired.feature" with:
@@ -88,6 +104,9 @@ Feature: Wire Protocol
 
       """
 
+  # When a step definition fails, it can return details of the exception in the reply to invoke. These
+  # will then be passed by Cucumber to the formatters for display to the user.
+  #
   Scenario: Invoke a step definition which fails
     Given there is a wire server running on port 98989 which understands the following protocol:
       | request                                              | response                                         |
@@ -111,27 +130,42 @@ Feature: Wire Protocol
 
       """
 
-    # Imagine we have a step definition like
-    # Given /we're all (.*)/ do |what_we_are|
-    # end
-    Scenario: Invoke a step definition which takes arguments (and passes)
-      Given there is a wire server running on port 98989 which understands the following protocol:
-        | request                                              | response                                                        |
-        | {"step_matches":{"name_to_match":"we're all wired"}} | {"step_match":[{"id":"1", "args":[{"val":"wired", "pos":10}]}]} |
-        | {"invoke":{"id":"1","args":["wired"]}}               | {"success":null}                                                |
-      When I run cucumber -f progress --backtrace features
-      Then STDERR should be empty
-      And it should pass with
-        """
-        .
+  # Imagine we have a step definition like:
+  #
+  #     Given /we're all (.*)/ do |what_we_are|
+  #     end
+  #
+  # When this step definition matches the step name in our feature, the word 'wired' will be parsed as an
+  # argument.
+  #
+  # Cucumber expects this StepArgument to be returned in the StepMatch. The keys have the following meanings:
+  #   * val : the value of the string captured for that argument from the step name passed in step_matches
+  #   * pos : the position within the step name that the argument was matched (used for formatter highlighting)
+  #
+  Scenario: Invoke a step definition which takes arguments (and passes)
+    Given there is a wire server running on port 98989 which understands the following protocol:
+      | request                                              | response                                                        |
+      | {"step_matches":{"name_to_match":"we're all wired"}} | {"step_match":[{"id":"1", "args":[{"val":"wired", "pos":10}]}]} |
+      | {"invoke":{"id":"1","args":["wired"]}}               | {"success":null}                                                |
+    When I run cucumber -f progress --backtrace features
+    Then STDERR should be empty
+    And it should pass with
+      """
+      .
 
-        1 scenario (1 passed)
-        1 step (1 passed)
+      1 scenario (1 passed)
+      1 step (1 passed)
 
-        """
+      """
 
 
   # TODO
+  #   * table diffing
+  #   * multiple wire servers
+  #   * failure message from the server
+  #   * generally more non-happy path stuff (e.g. dealing with non-JSON parseable strings etc)
+  #
+  # table diffing example:
   # Scenario: Invoke a Step Definition with a table that fails on diff!
   #   And it should fail with
   #     """
