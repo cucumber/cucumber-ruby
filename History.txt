@@ -1,8 +1,15 @@
-== 0.4.x
+== In Git
 
 === Bugfixes
 * Cucumber's features now pass on 1.8.6, 1.8.7 and 1.9.1. (Aslak Hellesøy)
 * Ensure no errors are raised when limiting with tags which are not in the feature set (#464 Joseph Wilk)
+
+=== Changed features
+* Use http://github.com/aslakhellesoy/wac instead of http://github.com/aslakhellesoy/ansicolor on Windows/JRuby (#456 Aslak Hellesøy)
+
+=== Internal changes
+* Added StepMother#invoke(step_name, multiline_argument=nil) - needed by cuke4duke ticket #26 (Aslak Hellesøy)
+* StepDefinitionMethods is gone.
 
 == 0.4.0 2009-10-09
 

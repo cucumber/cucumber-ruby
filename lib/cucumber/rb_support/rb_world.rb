@@ -20,8 +20,7 @@ module Cucumber
       # the same i18n as RbDsl.
       def __cucumber_invoke(name, multiline_argument=nil) #:nodoc:
         begin
-          step_match = @__cucumber_step_mother.step_match(name)
-          step_match.invoke(multiline_argument)
+          @__cucumber_step_mother.invoke(name, multiline_argument)
         rescue Exception => e
           e.nested! if Undefined === e
           raise e

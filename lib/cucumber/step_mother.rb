@@ -139,6 +139,10 @@ module Cucumber
       end
     end
 
+    def invoke(step_name, multiline_argument=nil)
+      step_match(step_name).invoke(multiline_argument)
+    end
+
     def step_match(step_name, name_to_report=nil) #:nodoc:
       matches = @programming_languages.map do |programming_language| 
         programming_language.step_matches(step_name, name_to_report)

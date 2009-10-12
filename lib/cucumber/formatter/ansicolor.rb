@@ -9,14 +9,6 @@ if Cucumber::WINDOWS_MRI
     STDERR.puts %{*** WARNING: You must "gem install win32console" (1.2.0 or higher) to get coloured output on MRI/Windows}
     Term::ANSIColor.coloring = false
   end
-elsif Cucumber::WINDOWS && Cucumber::JRUBY
-  begin
-    gem 'aslakhellesoy-ansicolor', '>= 1.0'
-    require 'ansicolor'
-  rescue LoadError
-    STDERR.puts %{*** WARNING: You must "gem install aslakhellesoy-ansicolor --source http://gems.github.com" (1.0 or higher) to get coloured output on JRuby/Windows}
-    Term::ANSIColor.coloring = false
-  end
 end
 
 Term::ANSIColor.coloring = false if !STDOUT.tty? and not ENV.has_key?("AUTOTEST")
