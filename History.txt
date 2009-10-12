@@ -6,6 +6,7 @@
 * Missing Romanian keywords added for Examples, Scenario Outline and Background (to my best google translate knowledge) (Aslak Hellesøy)
 
 === New Features
+* README.txt explains people how to run all tests. Install gems with geminstaller. (Aslak Hellesøy)
 * Added support for Serbian language, both Cyrillic and Latin with usage examples. (Dejan Dimic)
 * Add new 'debug' formatter for debugging and visualising the calls to listeners. (Matt Wynne)
 
