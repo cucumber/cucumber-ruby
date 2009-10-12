@@ -3,16 +3,16 @@ require 'cucumber/step_argument'
 module Cucumber
   module WireSupport
     module WireProtocol
-      def step_matches(step_name, formatted_step_name)
+      def step_matches(name_to_match, name_to_report)
         raw_response = call_remote(:step_matches, 
-          :step_name           => step_name)
+          :name_to_match => name_to_match)
           
         raw_response.args.map do |raw_step_match|
           step_definition = WireStepDefinition.new(raw_step_match['id'], self)
-          args = raw_step_match['args'].map do |raw_arg|
+          step_args = raw_step_match['args'].map do |raw_arg|
             StepArgument.new(raw_arg['val'], raw_arg['pos'])
           end
-          StepMatch.new(step_definition, step_name, formatted_step_name, args)
+          StepMatch.new(step_definition, name_to_match, name_to_report, step_args)
         end
       end
       
@@ -21,8 +21,7 @@ module Cucumber
           :id   => step_definition_id, 
           :args => args)
         
-        return if raw_response.message == 'success'
-        raise WireException.new(raw_response.args)
+        raw_response.raise_if_bad
       end
 
     end

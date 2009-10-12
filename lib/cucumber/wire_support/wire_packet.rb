@@ -25,7 +25,7 @@ module Cucumber
       end
       
       def raise_if_bad
-        raise WireException.new(@args) if @message == 'fail'
+        raise WireException.new(@args) if @message == 'fail' || @message == 'step_failed'
       end
     end
   end
