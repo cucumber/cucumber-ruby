@@ -13,8 +13,6 @@ gems:
   version: '0.5.1'
 - name: rspec
   version: '1.2.9'
-- name: sdoc
-  version: '0.2.14.1'
 - name: spork
   version: '0.7.2'
 - name: term-ansicolor
