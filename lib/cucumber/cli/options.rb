@@ -18,7 +18,7 @@ module Cucumber
                                                          "#{' ' * 51}is not shown, and step definitions are sorted by\n" +
                                                          "#{' ' * 51}filename instead."],
         'stepdefs'  => ['Cucumber::Formatter::Stepdefs', "Prints All step definitions with their locations. Same as\n" +
-                                                         "the usage formatter, except that steps are not printed."],
+                                                         "#{' ' * 51}the usage formatter, except that steps are not printed."],
         'junit'     => ['Cucumber::Formatter::Junit',    'Generates a report similar to Ant+JUnit.'],
         'tag_cloud' => ['Cucumber::Formatter::TagCloud', 'Prints a tag cloud of tag usage.']
       }
