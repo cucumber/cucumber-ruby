@@ -56,9 +56,13 @@ module Cucumber
         end
       end
 
-      def step_matches(step_name, formatted_step_name)
+      def step_matches(name_to_match, name_to_format)
         @step_definitions.map do |step_definition|
-          step_definition.step_match(step_name, formatted_step_name)
+          if(arguments = step_definition.arguments_from(name_to_match))
+            StepMatch.new(step_definition, name_to_match, name_to_format, arguments)
+          else
+            nil
+          end
         end.compact
       end
 
