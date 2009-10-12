@@ -16,7 +16,6 @@ module Cucumber
     #   end
     #
     class RbStepDefinition
-      include LanguageSupport::StepDefinitionMethods
 
       class MissingProc < StandardError
         def message

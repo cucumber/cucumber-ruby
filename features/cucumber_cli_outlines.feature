@@ -2,7 +2,6 @@ Feature: Cucumber command line
   In order to write better software
   Developers should be able to execute requirements as tests
 
-  @mri186
   Scenario: Run scenario outline with filtering on outline name
     When I run cucumber -q features --name "Test state"
     Then it should fail with
@@ -32,7 +31,6 @@ Feature: Cucumber command line
 
       """
 
-  @mri186
   Scenario: Run scenario outline steps only
     When I run cucumber -q features/outline_sample.feature:7
     Then it should fail with
@@ -62,7 +60,6 @@ Feature: Cucumber command line
 
       """
 
-  @mri186
   Scenario: Run single failing scenario outline table row
     When I run cucumber features/outline_sample.feature:12
     Then it should fail with
@@ -88,7 +85,6 @@ Feature: Cucumber command line
 
   # There are 10 characters in the progress, but only 8 reported steps. Needs investigation.
   # Looks like we're outputting too many characters.
-  @mri186
   Scenario: Run all with progress formatter
     When I run cucumber -q --format progress features/outline_sample.feature
     Then it should fail with

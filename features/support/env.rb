@@ -39,11 +39,15 @@ class CucumberWorld
 
   # The last standard out, with the duration line taken out (unpredictable)
   def last_stdout
-    strip_duration(@last_stdout)
+    strip_1_9_paths(strip_duration(@last_stdout))
   end
 
   def strip_duration(s)
     s.gsub(/^\d+m\d+\.\d+s\n/m, "")
+  end
+
+  def strip_1_9_paths(s)
+    s.gsub(/#{Dir.pwd}\/examples\/self_test\/tmp/m, ".").gsub(/#{Dir.pwd}\/examples\/self_test/m, ".")
   end
 
   def replace_duration(s, replacement)

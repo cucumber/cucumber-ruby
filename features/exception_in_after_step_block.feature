@@ -24,7 +24,6 @@ Feature: Exception in AfterStep Block
       end
       """
 
-  @mri186
   Scenario: Handle Exception in standard scenario step and carry on
     Given a file named "features/naughty_step_in_scenario.feature" with:
       """
@@ -58,7 +57,6 @@ Feature: Exception in AfterStep Block
 
       """
 
-  @mri186
   Scenario: Handle Exception in scenario outline table row and carry on
     Given a file named "features/naughty_step_in_scenario_outline.feature" with:
       """

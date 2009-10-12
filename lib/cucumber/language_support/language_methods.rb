@@ -4,8 +4,8 @@ require 'cucumber/step_definition_light'
 module Cucumber
   module LanguageSupport
     module LanguageMethods
-      def create_step_match(step_definition, step_name, formatted_step_name, step_arguments)
-        StepMatch.new(step_definition, step_name, formatted_step_name, step_arguments)
+      def create_step_match(step_definition, step_name, name_to_report, step_arguments)
+        StepMatch.new(step_definition, step_name, name_to_report, step_arguments)
       end
       
       def before(scenario)

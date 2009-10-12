@@ -43,8 +43,8 @@ module Cucumber
         @step_def_files.each{|f| import(f)}
       end
 
-      def step_matches(step_name, formatted_step_name)
-        @delegate.step_matches(step_name, formatted_step_name)
+      def step_matches(step_name, name_to_report)
+        @delegate.step_matches(step_name, name_to_report)
       end
 
       private

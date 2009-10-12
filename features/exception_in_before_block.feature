@@ -19,7 +19,6 @@ Feature: Exception in Before Block
       end
       """
 
-  @mri186
   Scenario: Handle Exception in standard scenario step and carry on
     Given a file named "features/naughty_step_in_scenario.feature" with:
       """
@@ -46,7 +45,6 @@ Feature: Exception in Before Block
 
       """
 
-  @mri186
   Scenario: Handle Exception in Before hook for Scenario with Background
     Given a file named "features/naughty_step_in_before.feature" with:
       """
