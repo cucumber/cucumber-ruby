@@ -18,19 +18,22 @@ module Cucumber
         @file_colon_lines = Hash.new{|h,k| h[k] = []}
       end
 
-      def features(features)
-        super
+      # features() is never executed at all... ?
+      def after_features(features)
         files = @file_names.uniq.map do |file|
           lines = @file_colon_lines[file]
           "#{file}:#{lines.join(':')}"
         end
         @io.puts files.join(' ')
+        
+        # Flusing output to rerun tempfile here...
+        @io.flush
+        @io.close
       end
 
-      def feature_element(feature_element)
-        @rerun = false
-        super
-        if @rerun
+      # feature_element() is never executed at all, either... ?
+      def after_feature_element(feature_element)
+        if feature_element.failed?
           file, line = *feature_element.file_colon_line.split(':')
           @file_colon_lines[file] << line
           @file_names << file
