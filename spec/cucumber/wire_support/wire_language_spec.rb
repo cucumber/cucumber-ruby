@@ -14,14 +14,14 @@ module Cucumber
         end
       
         it "creates a RemoteSteps object" do
-          RemoteSteps.should_receive(:new).with(:config)
+          Connection.should_receive(:new).with(:config)
           WireLanguage.new(nil).load_code_file('foo.wire')
         end
       end
 
       describe "#step_matches" do
         def stub_remote_steps!(config, attributes)
-          RemoteSteps.should_receive(:new).
+          Connection.should_receive(:new).
             with(config).
             and_return( mock('remote_steps', attributes) )
         end
