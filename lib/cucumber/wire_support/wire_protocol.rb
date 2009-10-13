@@ -6,8 +6,8 @@ module Cucumber
       def step_matches(name_to_match, name_to_report)
         raw_response = call_remote(:step_matches, 
           :name_to_match => name_to_match)
-          
-        raw_response.args.map do |raw_step_match|
+        
+        raw_response.params.map do |raw_step_match|
           step_definition = WireStepDefinition.new(raw_step_match['id'], self)
           step_args = raw_step_match['args'].map do |raw_arg|
             StepArgument.new(raw_arg['val'], raw_arg['pos'])
