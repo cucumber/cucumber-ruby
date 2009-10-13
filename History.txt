@@ -4,6 +4,7 @@
 * Cucumber's features now pass on 1.8.6, 1.8.7 and 1.9.1. (Aslak Hellesøy)
 * Ensure no errors are raised when limiting with tags which are not in the feature set (#464 Joseph Wilk)
 * Missing Romanian keywords added for Examples, Scenario Outline and Background (to my best google translate knowledge) (Aslak Hellesøy)
+* Make rerun and --drb work together again after formatter API changes (#485 Erik Hansson, John Ferlito)
 
 === New Features
 * Added support for Serbian language, both Cyrillic and Latin with usage examples. (Dejan Dimic)
