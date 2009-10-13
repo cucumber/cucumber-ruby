@@ -73,6 +73,16 @@ module Cucumber
           @io.puts
         end
 
+        undefined = step_mother.steps(:undefined)
+        if !undefined.empty?
+          @io.puts format_string("Scenarios with pending steps:", :pending)
+          undefined.each do |u|
+            @io.puts format_string("cucumber " + u.file_colon_line, :pending) +
+            format_string(" # Scenario: " + u.name, :comment)
+          end
+          @io.puts
+        end
+
         @io.print dump_count(step_mother.scenarios.length, "scenario")
         print_status_counts{|status| step_mother.scenarios(status)}
 
