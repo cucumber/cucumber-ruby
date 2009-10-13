@@ -1,8 +1,19 @@
-== In Git
+== 0.4.1 2009-10-13
+
+This is mostly a bugfix release. Some of Cucumber's own features have been fixed so they pass on more platforms,
+making it easier for people to contribute. The README.txt also describes how to get up and running with the
+development environment.
 
 === Bugfixes
-* Cucumber's features now pass on 1.8.6, 1.8.7 and 1.9.1. (Aslak Hellesøy)
+* Cucumber's features verified passing on MRI 1.8.6 (OSX), 1.8.7 (OSX), 1.9.1 (OSX/Win) and JRuby 1.4.0RC1 (OSX). (Aslak Hellesøy)
 * Ensure no errors are raised when limiting with tags which are not in the feature set (#464 Joseph Wilk)
+* Missing Romanian keywords added for Examples, Scenario Outline and Background (to my best google translate knowledge) (Aslak Hellesøy)
+* Make rerun and --drb work together again after formatter API changes (#485 Erik Hansson, John Ferlito)
+
+=== New Features
+* README.txt explains people how to run all tests. Install gems with geminstaller. (Aslak Hellesøy)
+* Added support for Serbian language, both Cyrillic and Latin with usage examples. (Dejan Dimic)
+* Add new 'debug' formatter for debugging and visualising the calls to listeners. (Matt Wynne)
 
 === Changed features
 * Use http://github.com/aslakhellesoy/wac instead of http://github.com/aslakhellesoy/ansicolor on Windows/JRuby (#456 Aslak Hellesøy)

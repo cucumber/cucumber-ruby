@@ -135,8 +135,13 @@ module Cucumber
             unless File.directory?(out)
               out = File.open(out, Cucumber.file_mode('w'))
               at_exit do
-                out.flush
-                out.close
+                
+                # Since Spork "never" actually exits, I want to flush and close earlier...
+                unless out.closed?
+                  out.flush
+                  out.close
+                end
+                
               end
             end
           end

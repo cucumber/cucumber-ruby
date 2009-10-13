@@ -5,8 +5,8 @@ require 'cucumber/platform'
 Cucumber::Rake::Task.new do |t|
   if(Cucumber::JRUBY)
     t.profile = 'jruby'
-  else
-    t.profile = 'default'
+  elsif(Cucumber::WINDOWS_MRI)
+    t.profile = 'windows_mri'
   end
   t.rcov = ENV['RCOV']
 end

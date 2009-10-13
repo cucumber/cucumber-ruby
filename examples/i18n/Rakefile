@@ -24,7 +24,7 @@ end
 task :default => :i18n
 
 def examples_working?(lang)
-  !%w{ro}.index(lang)
+  !%w{}.index(lang)
 end
 
 def rake(args)
