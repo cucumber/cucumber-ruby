@@ -1,7 +1,11 @@
-== In Git
+== 0.4.1 2009-10-13
+
+This is mostly a bugfix release. Some of Cucumber's own features have been fixed so they pass on more platforms,
+making it easier for people to contribute. The README.txt also describes how to get up and running with the
+development environment.
 
 === Bugfixes
-* Cucumber's features now pass on 1.8.6, 1.8.7 and 1.9.1. (Aslak Hellesøy)
+* Cucumber's features verified passing on MRI 1.8.6 (OSX), 1.8.7 (OSX), 1.9.1 (OSX/Win) and JRuby 1.4.0RC1 (OSX). (Aslak Hellesøy)
 * Ensure no errors are raised when limiting with tags which are not in the feature set (#464 Joseph Wilk)
 * Missing Romanian keywords added for Examples, Scenario Outline and Background (to my best google translate knowledge) (Aslak Hellesøy)
 
