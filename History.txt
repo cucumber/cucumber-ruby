@@ -8,6 +8,7 @@ development environment.
 * Cucumber's features verified passing on MRI 1.8.6 (OSX), 1.8.7 (OSX), 1.9.1 (OSX/Win) and JRuby 1.4.0RC1 (OSX). (Aslak Hellesøy)
 * Ensure no errors are raised when limiting with tags which are not in the feature set (#464 Joseph Wilk)
 * Missing Romanian keywords added for Examples, Scenario Outline and Background (to my best google translate knowledge) (Aslak Hellesøy)
+* Make rerun and --drb work together again after formatter API changes (#485 Erik Hansson, John Ferlito)
 
 === New Features
 * README.txt explains people how to run all tests. Install gems with geminstaller. (Aslak Hellesøy)
