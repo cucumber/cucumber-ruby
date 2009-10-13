@@ -25,7 +25,7 @@ module Cucumber
         @protocol.detect do |entry| 
           log.debug "#{entry['request']}"
           log.debug "#{data}"
-          result = entry['request'] == data
+          result = JSON.parse(entry['request']) == JSON.parse(data)
           result
         end
       end
