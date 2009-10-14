@@ -21,6 +21,7 @@ development environment.
 * Use http://github.com/aslakhellesoy/wac instead of http://github.com/aslakhellesoy/ansicolor on Windows/JRuby (#456 Aslak Hellesøy)
 
 === Internal changes
+* Ditched Hoe for Jeweler (Aslak Hellesøy)
 * Added StepMother#invoke(step_name, multiline_argument=nil) - needed by cuke4duke ticket #26 (Aslak Hellesøy)
 * StepDefinitionMethods is gone.
 
