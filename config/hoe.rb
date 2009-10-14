@@ -61,7 +61,7 @@ $hoe = Hoe.spec(GEM_NAME) do
   @changes = paragraphs_of("History.txt", 0..1).join("\n\n")
   # @extra_deps = []     # An array of rubygem dependencies [name, version], e.g. [ ['active_support', '>= 1.3.1'] ]
   @extra_deps = [ 
-    ['term-ansicolor', '>= 1.0.3'], 
+    ['term-ansicolor', '>= 1.0.4'], 
     ['treetop', '>= 1.4.2'], 
     ['polyglot', '>= 0.2.9'], # Don't really want polyglot, but it keeps breaking so we'll make people use something that works ok'ish 
     ['diff-lcs', '>= 1.1.2'],
@@ -70,11 +70,17 @@ $hoe = Hoe.spec(GEM_NAME) do
 
   #@spec_extras = {}    # A hash of extra values to set in the gemspec.
   @post_install_message = <<-POST_INSTALL_MESSAGE
-*******************************************************************************
- Thank you for installing cucumber-#{Cucumber::VERSION::STRING}
- Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
- for important information about this release.
-*******************************************************************************
+
+(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) 
+
+                     (::)   U P G R A D I N G    (::)
+
+Thank you for installing cucumber-#{Cucumber::VERSION::STRING}
+Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
+for important information about this release.
+
+(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) 
+
 POST_INSTALL_MESSAGE
 end
 

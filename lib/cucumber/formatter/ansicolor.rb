@@ -1,4 +1,3 @@
-gem 'term-ansicolor'
 require 'term/ansicolor'
 
 if Cucumber::WINDOWS_MRI
