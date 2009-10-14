@@ -324,7 +324,7 @@
   when: もし
   then: ならば
   and: かつ
-  but: しかし|但し
+  but: しかし|但し|ただし
   space_after_keyword: false
 "ko":
   name: Korean
