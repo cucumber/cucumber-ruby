@@ -1,4 +1,8 @@
-== 0.4.1 2009-10-13
+== 0.4.2 2009-10-14
+
+Bugfix release. The 0.4.1 release was hosed when switching from Hoe to Jeweler.
+
+== 0.4.1 2009-10-14
 
 This is mostly a bugfix release. Some of Cucumber's own features have been fixed so they pass on more platforms,
 making it easier for people to contribute. The README.txt also describes how to get up and running with the

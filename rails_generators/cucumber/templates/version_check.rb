@@ -1,13 +1,13 @@
-if Cucumber::VERSION::STRING != '<%= Cucumber::VERSION::STRING %>'
+if Cucumber::VERSION != '<%= Cucumber::VERSION %>'
 warning = <<-WARNING
 (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) 
 
          (::)   R O T T E N   C U C U M B E R   A L E R T    (::)
 
-Your #{__FILE__.gsub(/version_check.rb$/, 'env.rb')} file was generated with Cucumber <%= Cucumber::VERSION::STRING %>,
-but you seem to be running Cucumber #{Cucumber::VERSION::STRING}. If you're running an older 
-version than #{Cucumber::VERSION::STRING}, just upgrade your gem. If you're running a newer 
-version than #{Cucumber::VERSION::STRING} you should:
+Your #{__FILE__.gsub(/version_check.rb$/, 'env.rb')} file was generated with Cucumber <%= Cucumber::VERSION %>,
+but you seem to be running Cucumber #{Cucumber::VERSION}. If you're running an older 
+version than #{Cucumber::VERSION}, just upgrade your gem. If you're running a newer 
+version than #{Cucumber::VERSION} you should:
 
   1) Read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
   
