@@ -551,7 +551,7 @@ for important information about this release.
 }
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{cucumber}
+  s.rubyforge_project = %q{rspec}
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{Behaviour Driven Development with elegance and joy}
   s.test_files = [

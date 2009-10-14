@@ -12,7 +12,7 @@ begin
     gem.email = "cukes@googlegroups.com"
     gem.homepage = "http://cukes.info"
     gem.authors = ["Aslak Hellesøy"]
-    gem.rubyforge_project = "cucumber"
+    gem.rubyforge_project = "rspec"
 
     gem.add_dependency 'term-ansicolor', '1.0.4'
     gem.add_dependency 'treetop', '1.4.2'
