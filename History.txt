@@ -11,6 +11,7 @@ development environment.
 * Make rerun and --drb work together again after formatter API changes (#485 Erik Hansson, John Ferlito)
 
 === New Features
+* Added 'but' variants to Japanese. (Kakutani Shintaro)
 * README.txt explains people how to run all tests. Install gems with geminstaller. (Aslak Hellesøy)
 * Added support for Serbian language, both Cyrillic and Latin with usage examples. (Dejan Dimic)
 * Add new 'debug' formatter for debugging and visualising the calls to listeners. (Matt Wynne)
