@@ -1,3 +1,5 @@
+== 0.4.3 (In Git)
+
 == 0.4.2 2009-10-14
 
 Bugfix release. The 0.4.1 release was hosed when switching from Hoe to Jeweler.
