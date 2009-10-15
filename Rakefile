@@ -1,7 +1,8 @@
 require 'rubygems'
+require 'term/ansicolor'
 require 'rake'
 $:.unshift(File.dirname(__FILE__) + '/lib')
-require 'cucumber/platform'
+require 'cucumber/formatter/ansicolor'
 
 begin
   require 'jeweler'
@@ -25,17 +26,18 @@ begin
     gem.add_development_dependency 'rspec', '1.2.9'
     gem.add_development_dependency 'spork', '0.7.2'
     
+    extend Cucumber::Formatter::ANSIColor
     gem.post_install_message = <<-POST_INSTALL_MESSAGE
 
-(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) 
+#{cukes(15)}
 
-                     (::)   U P G R A D I N G    (::)
+                     #{cukes(1)}   U P G R A D I N G    #{cukes(1)}
 
-Thank you for installing cucumber-#{Cucumber::VERSION}
+Thank you for installing cucumber-#{Cucumber::VERSION}.
 Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
-for important information about this release.
+for important information about this release. Happy cuking!
 
-(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) 
+#{cukes(15)}
 
 POST_INSTALL_MESSAGE
   end

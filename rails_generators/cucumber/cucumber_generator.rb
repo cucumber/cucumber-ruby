@@ -76,18 +76,21 @@ protected
   end
 
   def after_generate
+    require 'cucumber/formatter/ansicolor'
+    extend Cucumber::Formatter::ANSIColor
+
     if @default_framework
       puts <<-WARNING
 
-(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) 
+#{yellow_cukes(15)} 
 
-          (::)   T E S T   F R A M E W O R K   A L E R T    (::)
+          #{yellow_cukes(1)}   T E S T   F R A M E W O R K   A L E R T    #{yellow_cukes(1)}
 
 You didn't explicitly generate with --rspec or --testunit, so I looked at
-your gems and saw that you had #{@default_framework} installed, so I went with that. 
+your gems and saw that you had #{green(@default_framework.to_s)} installed, so I went with that. 
 If you want something else, be specific about it. Otherwise, relax.
 
-(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) 
+#{yellow_cukes(15)} 
 
 WARNING
     end

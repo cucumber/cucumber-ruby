@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2009-10-14}
+  s.date = %q{2009-10-15}
   s.default_executable = %q{cucumber}
   s.description = %q{A BDD tool written in Ruby}
   s.email = %q{cukes@googlegroups.com}
@@ -538,15 +538,15 @@ Gem::Specification.new do |s|
   ]
   s.homepage = %q{http://cukes.info}
   s.post_install_message = %q{
-(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) 
+[5m[32m(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)[0m[0m
 
-                     (::)   U P G R A D I N G    (::)
+                     [5m[32m(::)[0m[0m   U P G R A D I N G    [5m[32m(::)[0m[0m
 
-Thank you for installing cucumber-0.4.2
+Thank you for installing cucumber-0.4.2.
 Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
-for important information about this release.
+for important information about this release. Happy cuking!
 
-(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) 
+[5m[32m(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)[0m[0m
 
 }
   s.rdoc_options = ["--charset=UTF-8"]
@@ -680,6 +680,7 @@ for important information about this release.
      "examples/selenium_webrat/features/support/env.rb",
      "examples/self_test/features/step_definitions/sample_steps.rb",
      "examples/self_test/features/support/env.rb",
+     "examples/self_test/tmp/features/step_definitions/steps.rb",
      "examples/sinatra/app.rb",
      "examples/sinatra/features/step_definitions/add_steps.rb",
      "examples/sinatra/features/support/env.rb",

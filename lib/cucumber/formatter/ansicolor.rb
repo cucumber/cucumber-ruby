@@ -1,4 +1,5 @@
 require 'term/ansicolor'
+require 'cucumber/platform'
 
 if Cucumber::WINDOWS_MRI
   begin
@@ -128,7 +129,18 @@ module Cucumber
       end
       
       define_grey
-      
+
+      def cukes(n)
+        blink(green(("(::) " * n).strip))
+      end
+
+      def red_cukes(n)
+        blink(red(("(::) " * n).strip))
+      end
+
+      def yellow_cukes(n)
+        blink(yellow(("(::) " * n).strip))
+      end
     end
   end
 end
