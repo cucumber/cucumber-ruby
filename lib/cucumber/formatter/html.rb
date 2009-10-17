@@ -1,5 +1,6 @@
 require 'cucumber/formatter/ordered_xml_markup'
 require 'cucumber/formatter/duration'
+require 'cucumber/formatter/summary'
 
 module Cucumber
   module Formatter
@@ -7,11 +8,13 @@ module Cucumber
     class Html
       include ERB::Util # for the #h method
       include Duration
+      include Summary
 
       def initialize(step_mother, io, options)
         @io = io
         @options = options
         @buffer = {}
+        @step_mother = step_mother
         @current_builder = create_builder(@io)
       end
       
@@ -38,6 +41,8 @@ module Cucumber
           builder.body do
             builder.div(:class => 'cucumber') do
               builder << buffer(:features)
+              builder.div(scenario_summary(@step_mother) {|status_count, _| status_count}, :class => 'summary')
+              builder.div(step_summary(@step_mother) {|status_count, _| status_count}, :class => 'summary')
               builder.div(format_duration(features.duration), :class => 'duration')
             end
           end

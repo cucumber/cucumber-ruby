@@ -75,8 +75,8 @@ module Cucumber
           @io.puts
         end
 
-        @io.puts scenarios_summary(step_mother) {|status_count, status| format_string(status_count, status)}
-        @io.puts steps_summary(step_mother) {|status_count, status| format_string(status_count, status)}
+        @io.puts scenario_summary(step_mother) {|status_count, status| format_string(status_count, status)}
+        @io.puts step_summary(step_mother) {|status_count, status| format_string(status_count, status)}
 
         @io.puts(format_duration(features.duration)) if features && features.duration
 
