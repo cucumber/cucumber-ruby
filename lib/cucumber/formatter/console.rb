@@ -1,5 +1,6 @@
 require 'cucumber/formatter/ansicolor'
 require 'cucumber/formatter/duration'
+require 'cucumber/formatter/summary'
 
 module Cucumber
   module Formatter
@@ -8,6 +9,7 @@ module Cucumber
     module Console
       extend ANSIColor
       include Duration
+      include Summary
 
       FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
 
@@ -73,11 +75,8 @@ module Cucumber
           @io.puts
         end
 
-        @io.print dump_count(step_mother.scenarios.length, "scenario")
-        print_status_counts{|status| step_mother.scenarios(status)}
-
-        @io.print dump_count(step_mother.steps.length, "step")
-        print_status_counts{|status| step_mother.steps(status)}
+        @io.puts scenarios_summary(step_mother) {|status_count, status| format_string(status_count, status)}
+        @io.puts steps_summary(step_mother) {|status_count, status| format_string(status_count, status)}
 
         @io.puts(format_duration(features.duration)) if features && features.duration
 
@@ -159,22 +158,6 @@ module Cucumber
       end
 
     private
-
-      def print_status_counts
-        counts = [:failed, :skipped, :undefined, :pending, :passed].map do |status|
-          elements = yield status
-          elements.any? ? format_string("#{elements.length} #{status.to_s}", status) : nil
-        end.compact
-        if counts.any?
-          @io.puts(" (#{counts.join(', ')})")
-        else
-          @io.puts
-        end
-      end
-
-      def dump_count(count, what, state=nil)
-        [count, state, "#{what}#{count == 1 ? '' : 's'}"].compact.join(" ")
-      end
 
       def format_for(*keys)
         key = keys.join('_').to_sym
