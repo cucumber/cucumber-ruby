@@ -393,7 +393,17 @@ module Cucumber
           @table_parser.parse_or_fail(text.strip, file, line_offset)
         end
       end
-      
+
+      describe "#new" do
+        it "should allow Array of Hash" do
+          t1 = Table.new([{'name' => 'aslak', 'male' => 'true'}])
+          t1.to_s(:indent => 12, :color => false).should == %{
+            |     name  |     male |
+            |     aslak |     true |
+          }
+        end
+      end
+
       it "should convert to sexp" do
         @table.to_sexp.should == 
           [:table, 

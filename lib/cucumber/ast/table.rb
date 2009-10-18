@@ -39,7 +39,8 @@ module Cucumber
         "table"
       end
 
-      # Creates a new instance. +raw+ should be an Array of Array of String.
+      # Creates a new instance. +raw+ should be an Array of Array of String
+      # or an Array of Hash (similar to what #hashes returns).
       # You don't typically create your own Table objects - Cucumber will do
       # it internally and pass them to your Step Definitions.
       #
@@ -47,6 +48,7 @@ module Cucumber
         @cells_class = Cells
         @cell_class = Cell
 
+        raw = ensure_array_of_array(raw)
         # Verify that it's square
         transposed = raw.transpose
         create_cell_matrix(raw)
@@ -524,9 +526,13 @@ module Cucumber
 
       def ensure_table(table_or_array) #:nodoc:
         return table_or_array if Table === table_or_array
-        table_or_array = hashes_to_array(table_or_array) if Hash === table_or_array[0]
-        table_or_array = enumerable_to_array(table_or_array) unless Array == table_or_array[0]
         Table.new(table_or_array)
+      end
+
+      def ensure_array_of_array(array)
+        return hashes_to_array(array) if Hash === array[0]
+        return enumerable_to_array(array) unless Array == array[0]
+        array
       end
 
       def hashes_to_array(hashes) #:nodoc:
