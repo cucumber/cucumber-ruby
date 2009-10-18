@@ -233,7 +233,7 @@ module Cucumber
             @options[:drb_port] = port
           end
           opts.on_tail("--version", "Show version.") do
-            @out_stream.puts VERSION::STRING
+            @out_stream.puts Cucumber::VERSION
             Kernel.exit(0)
           end
           opts.on_tail("-h", "--help", "You're looking at it.") do

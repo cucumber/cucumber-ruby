@@ -255,7 +255,7 @@ module Cli
       context '--version' do
         it "displays Cucumber's version" do
           after_parsing('--version') do
-            output_stream.string.should =~ /#{VERSION::STRING}/
+            output_stream.string.should =~ /#{Cucumber::VERSION}/
           end
         end
         it "exits the program" do
