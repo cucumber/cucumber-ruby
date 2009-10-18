@@ -530,18 +530,12 @@ module Cucumber
       end
 
       def ensure_array_of_array(array)
-        return hashes_to_array(array) if Hash === array[0]
-        return enumerable_to_array(array) unless Array == array[0]
-        array
+        Hash === array[0] ? hashes_to_array(array) : array
       end
 
       def hashes_to_array(hashes) #:nodoc:
         header = hashes[0].keys
         [header] + hashes.map{|hash| header.map{|key| hash[key]}}
-      end
-
-      def enumerable_to_array(rows) #:nodoc:
-        rows.map{|row| row.map{|cell| cell}}
       end
 
       def ensure_green! #:nodoc:
