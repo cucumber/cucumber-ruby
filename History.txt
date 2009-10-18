@@ -1,5 +1,8 @@
 == 0.4.3 (In Git)
 
+=== Bugfixes
+* Usage formatter is not reporting time correctly. (Elliot Crosby-McCullough)
+
 === New Features
 * Ast::Table can now be constructed with an Array of Hash. (Aslak Hellesøy)
 
