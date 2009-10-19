@@ -12,6 +12,7 @@
 * The #announce method will no longer escape HTML if the html formatter is used. Escaping must be done manually. (Aslak Hellesøy)
 
 === Bugfixes
+* "--format rerun", with a Scenario Outline, kills cucumber (#492 Aslak Hellesøy)
 * Usage formatter is not reporting time correctly. (Elliot Crosby-McCullough)
 
 == 0.4.2 2009-10-14

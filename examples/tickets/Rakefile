@@ -13,4 +13,8 @@ Cucumber::Rake::Task.new(:progress) do |t|
   t.cucumber_opts = %w{--tags ~@intentional_failure --format progress -i -s}
 end
 
-task :default => [:pretty, :html, :progress]
+Cucumber::Rake::Task.new(:rerun) do |t|
+  t.cucumber_opts = %w{--tags ~@intentional_failure --format rerun -i -s}
+end
+
+task :default => [:pretty, :html, :progress, :rerun]
