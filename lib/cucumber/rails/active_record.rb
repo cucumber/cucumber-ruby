@@ -13,24 +13,29 @@ if defined?(ActiveRecord::Base)
 
   Before do
     if Cucumber::Rails::World.use_transactional_fixtures
-      @__cucumber_ar_connection = ActiveRecord::Base.connection
-      if @__cucumber_ar_connection.respond_to?(:increment_open_transactions)
-        @__cucumber_ar_connection.increment_open_transactions
-      else
-        ActiveRecord::Base.__send__(:increment_open_transactions)
+      @__cucumber_ar_connections = ActiveRecord::Base.connection_handler.connection_pools.values.map {|pool| pool.connection}
+      @__cucumber_ar_connections.each do |__cucumber_ar_connection|
+        if __cucumber_ar_connection.respond_to?(:increment_open_transactions)
+          __cucumber_ar_connection.increment_open_transactions
+        else
+          ActiveRecord::Base.__send__(:increment_open_transactions)
+        end
+        __cucumber_ar_connection.transaction_joinable = true
+        __cucumber_ar_connection.begin_db_transaction
       end
-      @__cucumber_ar_connection.begin_db_transaction
     end
     ActionMailer::Base.deliveries = [] if defined?(ActionMailer::Base)
   end
 
   After do
     if Cucumber::Rails::World.use_transactional_fixtures
-      @__cucumber_ar_connection.rollback_db_transaction
-      if @__cucumber_ar_connection.respond_to?(:decrement_open_transactions)
-        @__cucumber_ar_connection.decrement_open_transactions
-      else
-        ActiveRecord::Base.__send__(:decrement_open_transactions)
+      @__cucumber_ar_connections.each do |__cucumber_ar_connection|
+        __cucumber_ar_connection.rollback_db_transaction
+        if __cucumber_ar_connection.respond_to?(:decrement_open_transactions)
+          __cucumber_ar_connection.decrement_open_transactions
+        else
+          ActiveRecord::Base.__send__(:decrement_open_transactions)
+        end
       end
     end
   end
