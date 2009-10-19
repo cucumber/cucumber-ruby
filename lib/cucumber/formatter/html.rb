@@ -295,7 +295,9 @@ module Cucumber
       end
 
       def announce(announcement)
-        builder.pre(announcement, :class => 'announcement')
+        builder.pre(:class => 'announcement') do |pre|
+          pre << announcement
+        end
       end
       
       private
