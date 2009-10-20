@@ -12,6 +12,7 @@
 * The #announce method will no longer escape HTML if the html formatter is used. Escaping must be done manually. (Aslak Hellesøy)
 
 === Bugfixes
+* Fixed incorrect rendering of step arguments with UTF8 characters (Aslak Hellesøy)
 * "--format rerun", with a Scenario Outline, kills cucumber (#492 Aslak Hellesøy)
 * Usage formatter is not reporting time correctly. (Elliot Crosby-McCullough)
 
@@ -139,7 +140,7 @@ Using this release on a Rails project requires a rerun of script/generate cucumb
 == 0.3.102 2009-09-22
 
 This release has some changes in the Rails support, so make sure you run "script/generate cucumber" after you upgrade.
-Other noteworthy new features are improved Hook, tags and Transform support, and as always - several smaler bug fixes.
+Other noteworthy new features are improved Hook, tags and Transform support, and as always - several smaller bug fixes.
 
 === New Features
 * Added new internal API for Regexp and groups, allowing other programming languages to leverage native regexps. (Aslak Hellesøy)

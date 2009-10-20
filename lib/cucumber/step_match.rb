@@ -67,8 +67,8 @@ module Cucumber
           format % step_argument.val
         end
 
-        s[step_argument.pos + offset, step_argument.val.jlength] = replacement
-        offset += replacement.length - step_argument.val.jlength
+        s[step_argument.pos + offset, step_argument.val.length] = replacement
+        offset += replacement.jlength - step_argument.val.jlength
       end
       s
     end
