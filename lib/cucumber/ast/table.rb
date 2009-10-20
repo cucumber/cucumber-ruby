@@ -55,6 +55,11 @@ module Cucumber
         @conversion_procs = conversion_procs
       end
 
+      # JSON representation
+      def to_json
+        raw.to_json
+      end
+
       # Creates a copy of this table, inheriting any column mappings.
       # registered with #map_headers!
       #
@@ -263,7 +268,7 @@ module Cucumber
       # objects in their cells, you may want to use #map_column! before calling
       # #diff!. You can use #map_column! on either of the tables.
       #
-      # An exception is raised if there are missing rows or columns, or
+      # A Different error is raised if there are missing rows or columns, or
       # surplus rows. An error is <em>not</em> raised for surplus columns.
       # Whether to raise or not raise can be changed by setting values in
       # +options+ to true or false:

@@ -238,7 +238,8 @@ module Cucumber
         return nil if @unsupported_programming_languages.index(ext)
         begin
           load_programming_language(ext)
-        rescue LoadError
+        rescue LoadError => e
+          log.debug("Failed to load '#{ext}' programming language for file #{step_def_file}: #{e.message}\n")
           @unsupported_programming_languages << ext
           nil
         end
