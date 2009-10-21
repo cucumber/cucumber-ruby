@@ -145,9 +145,9 @@ Feature: Wire Protocol
   #
   Scenario: Invoke a step definition which takes arguments (and passes)
     Given there is a wire server running on port 98989 which understands the following protocol:
-      | request                                              | response                                                        |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_match",[{"id":"1", "args":[{"val":"wired", "pos":10}]}]] |
-      | ["invoke",{"id":"1","args":["wired"]}]               | ["success",null]                                                |
+      | request                                              | response                                                          |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[{"val":"wired", "pos":10}]}]] |
+      | ["invoke",{"id":"1","args":["wired"]}]               | ["success",null]                                                  |
     When I run cucumber -f progress --backtrace features
     Then STDERR should be empty
     And it should pass with

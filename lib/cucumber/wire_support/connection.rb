@@ -12,7 +12,7 @@ module Cucumber
       private
 
       def call_remote(message, args = nil)
-        timeout = 5
+        timeout = 3
         packet = WirePacket.new(message, args)
 
         begin
