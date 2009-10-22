@@ -20,10 +20,15 @@ module Cucumber
         raw_response = call_remote(:invoke, 
           :id   => step_definition_id, 
           :args => args)
-        
-        raw_response.raise_if_bad
+      end
+      
+      def begin_scenario
+        raw_response = call_remote(:begin_scenario)
       end
 
+      def end_scenario
+        raw_response = call_remote(:end_scenario)
+      end
     end
   end
 end
