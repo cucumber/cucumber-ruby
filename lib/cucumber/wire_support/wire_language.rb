@@ -1,6 +1,5 @@
 require 'socket'
 require 'json'
-require 'logging'
 require 'cucumber/wire_support/connection'
 require 'cucumber/wire_support/wire_packet'
 require 'cucumber/wire_support/wire_exception'
@@ -14,8 +13,6 @@ module Cucumber
       include LanguageSupport::LanguageMethods
       
       def load_code_file(wire_file)
-        log.debug wire_file
-        
         config = YAML.load_file(wire_file)
         @connections << Connection.new(config)
       end
@@ -43,19 +40,9 @@ module Cucumber
       
       private
       
-      def log
-        Logging::Logger[self]
-      end      
-      
       def step_definitions
         @step_definitions ||= {}
       end
     end
   end
 end
-
-logfile = File.expand_path(File.dirname(__FILE__) + '/../../../cucumber.log')
-Logging::Logger[Cucumber::WireSupport].add_appenders(
-  Logging::Appenders::File.new(logfile)
-)
-Logging::Logger[Cucumber::WireSupport].level = :debug

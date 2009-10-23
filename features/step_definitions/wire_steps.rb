@@ -2,7 +2,7 @@ Given /^there is a wire server running on port (\d+) which understands the follo
   protocol = table.hashes
   in_current_dir do
     @wire_pid = fork do
-      @server = Cucumber::WireSupport::FakeWireServer.new(port.to_i, protocol)
+      @server = FakeWireServer.new(port.to_i, protocol)
       @server.run
     end
   end
