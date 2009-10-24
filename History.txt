@@ -1,6 +1,7 @@
 == 0.4.3 (In Git)
 
 === New Features
+* New Wire Protocol - allowing out of process execution of Cucumber scenarios. (#428 Matt Wynne)
 * Added an example illustrating how to get screenshots in HTML reports (examples/watir) (Aslak Hellesøy)
 * The #announce method available from Ruby Step Definitions will print *after* the step is executed. (#487 Zoltan Penzeli)
 * Add support for rolling back transaction for all open database connections. (John Ferlito)
