@@ -26,25 +26,16 @@ module Cucumber
       end
       
       def send_data_to_socket(data, timeout)
-        log.debug("Calling server with message #{data}")
         Timeout.timeout(timeout) { socket.puts(data) }
-        log.debug("Message sent")
       end
 
       def fetch_data_from_socket(timeout)
-        log.debug("Waiting #{timeout} secs for response...")
         raw_response = Timeout.timeout(timeout) { socket.gets }
-        log.debug("Received response: #{raw_response.inspect}")
         WirePacket.parse(raw_response)
       end
 
       def socket
-        log.debug("opening socket to #{@host}:#{@port}") unless @socket
         @socket ||= TCPSocket.new(@host, @port)
-      end
-
-      def log
-        Logging::Logger[self]
       end
     end
   end

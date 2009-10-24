@@ -22,6 +22,17 @@ module Cucumber::Formatter
       File.stub!(:directory?).and_return(true)
       @formatter = TestDoubleJunitFormatter.new(step_mother, '', {})
     end
+    
+    describe "a feature with no name" do
+      define_feature <<-FEATURE
+          Scenario: Passing
+            Given a passing scenario
+      FEATURE
+      
+      it "should raise an exception" do
+        lambda { run_defined_feature }.should raise_error(Junit::UnNamedFeatureError)
+      end
+    end
 
     describe "given a single feature" do
       before(:each) do

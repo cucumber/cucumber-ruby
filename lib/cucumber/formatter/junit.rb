@@ -4,6 +4,12 @@ module Cucumber
   module Formatter
     # The formatter used for <tt>--format junit</tt>
     class Junit
+      class UnNamedFeatureError < StandardError
+        def initialize(feature_file)
+          super("The feature in '#{feature_file}' does not have a name. The JUnit XML format requires a name for the testsuite element.")
+        end
+      end
+      
       def initialize(step_mother, io, options)
         raise "You *must* specify --out DIR for the junit formatter" unless String === io && File.directory?(io)
         @reportdir = io
@@ -11,6 +17,7 @@ module Cucumber
       end
 
       def before_feature(feature)
+        @current_feature = feature
         @failures = @errors = @tests = 0
         @builder = OrderedXmlMarkup.new( :indent => 2 )
         @time = 0
@@ -40,6 +47,7 @@ module Cucumber
       end
 
       def feature_name(name)
+        raise UnNamedFeatureError.new(@current_feature.file) if name.empty?
         lines = name.split(/\r?\n/)
         @feature_name = lines[0].sub(/Feature\:/, '').strip
       end
