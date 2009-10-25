@@ -6,14 +6,14 @@ module Cucumber
       BUILTIN_FORMATS = {
         'html'      => ['Cucumber::Formatter::Html',     'Generates a nice looking HTML report.'],
         'pretty'    => ['Cucumber::Formatter::Pretty',   'Prints the feature as is - in colours.'],
-        'pdf'       => ['Cucumber::Formatter::Pdf',      "Generates a PDF report. You need to have the\n" + 
-                                                         "#{' ' * 51}prawn gem installed. Will pick up logo from\n" + 
+        'pdf'       => ['Cucumber::Formatter::Pdf',      "Generates a PDF report. You need to have the\n" +
+                                                         "#{' ' * 51}prawn gem installed. Will pick up logo from\n" +
                                                          "#{' ' * 51}features/support/logo.png or\n" +
                                                          "#{' ' * 51}features/support/logo.jpg if present."],
         'progress'  => ['Cucumber::Formatter::Progress', 'Prints one character per scenario.'],
         'rerun'     => ['Cucumber::Formatter::Rerun',    'Prints failing files with line numbers.'],
         'usage'     => ['Cucumber::Formatter::Usage',    "Prints where step definitions are used.\n" +
-                                                         "#{' ' * 51}The slowest step definitions (with duration) are\n" + 
+                                                         "#{' ' * 51}The slowest step definitions (with duration) are\n" +
                                                          "#{' ' * 51}listed first. If --dry-run is used the duration\n" +
                                                          "#{' ' * 51}is not shown, and step definitions are sorted by\n" +
                                                          "#{' ' * 51}filename instead."],
@@ -141,13 +141,18 @@ module Cucumber
           opts.on("-t TAGS", "--tags TAGS",
             "Only execute the features or scenarios with the specified tags.",
             "TAGS must be comma-separated without spaces. Example: --tags @dev\n",
+            "You can select tags using logical AND or logical OR:",
+            "To execute anything that is tagged with both @dev AND @prod\n",
+            "Example: --tags @dev,@prod",
+            "To execute anything that is tagged with @dev OR @prod\n",
+            "Example: --tags @dev --tags @prod\n",
             "Negative tags: Prefix tags with ~ to exclude features or scenarios",
             "having that tag. Example: --tags ~@slow\n",
             "Limit WIP: Positive tags can be given a threshold to limit the",
             "number of occurrences. Example: --tags @qa:3 will fail if there",
             "are more than 3 occurrences of the @qa tag.") do |v|
             tag_names = parse_tags(v)
-            @options[:tag_names].merge!(tag_names)
+            @options[:tag_names] << tag_names
           end
           opts.on("-n NAME", "--name NAME",
             "Only execute the feature elements which match part of the given name.",
@@ -158,7 +163,7 @@ module Cucumber
           opts.on("-e", "--exclude PATTERN", "Don't run feature files or require ruby files matching PATTERN") do |v|
             @options[:excludes] << Regexp.new(v)
           end
-          opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE", 
+          opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE",
               "Pull commandline arguments from cucumber.yml which can be defined as",
               "strings or arrays.  When a 'default' profile is defined and no profile",
               "is specified it is always used. (Unless disabled, see -P below.)",
@@ -241,7 +246,7 @@ module Cucumber
             Kernel.exit(0)
           end
         end.parse!
- 
+
         if @quiet
           @options[:snippets] = @options[:source] = false
         else
@@ -286,7 +291,7 @@ module Cucumber
         tag_names = tag_string.split(",")
         parse_tag_limits(tag_names)
       end
- 
+
       def parse_tag_limits(tag_names)
         tag_names.inject({}) do |dict, tag|
           tag, limit = tag.split(':')
@@ -331,7 +336,7 @@ module Cucumber
         @options[:require] += other_options[:require]
         @options[:excludes] += other_options[:excludes]
         @options[:name_regexps] += other_options[:name_regexps]
-        @options[:tag_names].merge! other_options[:tag_names]
+        @options[:tag_names] += other_options[:tag_names]
         @options[:env_vars] = other_options[:env_vars].merge(@options[:env_vars])
         if @options[:paths].empty?
           @options[:paths] = other_options[:paths]
@@ -384,7 +389,7 @@ module Cucumber
           :dry_run      => false,
           :formats      => [],
           :excludes     => [],
-          :tag_names    => {},
+          :tag_names    => [],
           :name_regexps => [],
           :env_vars     => {},
           :diff_enabled => true

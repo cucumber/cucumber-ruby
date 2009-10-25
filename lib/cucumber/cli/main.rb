@@ -69,11 +69,13 @@ module Cucumber
 
       def exceeded_tag_limts?(features)
         exceeded = false
-        configuration.options[:tag_names].each do |tag_name, limit|
-          if !Ast::Tags.exclude_tag?(tag_name) && limit
-            tag_count = features.tag_count(tag_name)
-            if tag_count > limit.to_i
-              exceeded = true
+        configuration.options[:tag_names].each do |tag_list|
+          tag_list.each do |tag_name, limit|
+            if !Ast::Tags.exclude_tag?(tag_name) && limit
+              tag_count = features.tag_count(tag_name)
+              if tag_count > limit.to_i
+                exceeded = true
+              end
             end
           end
         end

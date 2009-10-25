@@ -2,6 +2,7 @@
 
 === New Features
 * Show scenario and step summary in HTML formatter (#285 Joseph Wilk)
+* Add support for ORing tags which are passed in with seperate --tag arguments. Make comma seperated tags use AND (#368 Joseph Wilk)
 
 == 0.4.2 2009-10-14
 
