@@ -10,4 +10,5 @@ end
 
 After('@wire') do
   Process.kill('KILL', @wire_pid)
+  Process.wait
 end
