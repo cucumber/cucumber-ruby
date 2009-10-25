@@ -1,7 +1,5 @@
 require 'socket'
-require 'timeout'
 require 'json'
-require 'pathname'
 
 class FakeWireServer
   def initialize(port, protocol_table)
