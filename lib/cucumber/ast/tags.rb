@@ -40,7 +40,7 @@ module Cucumber
         end
 
         def matches?(tag_names)
-          @exp.reduce(false){|matches, tag_exp| matches || tag_exp.matches?(tag_names)}
+          @exp.inject(false){|matches, tag_exp| matches || tag_exp.matches?(tag_names)}
         end
       end
 
