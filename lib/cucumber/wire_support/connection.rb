@@ -1,3 +1,4 @@
+require 'timeout'
 require 'cucumber/wire_support/wire_protocol'
 
 module Cucumber
@@ -9,21 +10,20 @@ module Cucumber
         @host, @port = config['host'], config['port']
       end
       
-      private
-
-      def call_remote(message, args = nil)
+      def call_remote(response_handler, message, params)
         timeout = 3
-        packet = WirePacket.new(message, args)
+        packet = WirePacket.new(message, params)
 
         begin
           send_data_to_socket(packet.to_json, timeout)
           response = fetch_data_from_socket(timeout)
-          response.raise_if_bad
-          response
+          response.handle_with(response_handler)
         rescue Timeout::Error
           raise "Timed out calling server with message #{message}"
         end
       end
+
+      private
       
       def send_data_to_socket(data, timeout)
         Timeout.timeout(timeout) { socket.puts(data) }
