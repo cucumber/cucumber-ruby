@@ -25,6 +25,10 @@ module Cucumber
       def raise_if_bad
         raise WireException.new(@params) if @message == 'fail' || @message == 'step_failed'
       end
+      
+      def handle_with(handler)
+        handler.send("handle_#{@message}", @params)
+      end
     end
   end
 end
