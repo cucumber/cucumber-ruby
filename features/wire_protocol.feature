@@ -46,8 +46,8 @@ Feature: Wire Protocol
 
   Scenario: Dry run finds no step match
     Given there is a wire server running on port 98989 which understands the following protocol:
-      | request                                              | response          |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_match",[]] |
+      | request                                              | response            |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[]] |
     When I run cucumber --dry-run -f progress features
     And it should pass with
       """
@@ -66,8 +66,8 @@ Feature: Wire Protocol
   # expression or other argument matching process.
   Scenario: Dry run finds a step match
     Given there is a wire server running on port 98989 which understands the following protocol:
-      | request                                              | response                               |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_match",[{"id":"1", "args":[]}]] |
+      | request                                              | response                                 |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]] |
     When I run cucumber --dry-run -f progress features
     And it should pass with
       """
@@ -91,11 +91,11 @@ Feature: Wire Protocol
 
   Scenario: Invoke a step definition which passes
     Given there is a wire server running on port 98989 which understands the following protocol:
-      | request                                              | response                               |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_match",[{"id":"1", "args":[]}]] |
-      | ["begin_scenario",null]                              | ["success",null]                       |
-      | ["invoke",{"id":"1","args":[]}]                      | ["success",null]                       |
-      | ["end_scenario",null]                                | ["success",null]                       |
+      | request                                              | response                                 |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]] |
+      | ["begin_scenario",null]                              | ["success",null]                         |
+      | ["invoke",{"id":"1","args":[]}]                      | ["success",null]                         |
+      | ["end_scenario",null]                                | ["success",null]                         |
     When I run cucumber -f progress --backtrace features
     And it should pass with
       """
@@ -112,10 +112,10 @@ Feature: Wire Protocol
   Scenario: Invoke a step definition which fails
     Given there is a wire server running on port 98989 which understands the following protocol:
       | request                                              | response                                         |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_match",[{"id":"1", "args":[]}]]           |
-      | ["begin_scenario",null]                              | ["success",null]                       |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]]         |
+      | ["begin_scenario",null]                              | ["success",null]                                 |
       | ["invoke",{"id":"1","args":[]}]                      | ["step_failed",{"message":"The wires are down"}] |
-      | ["end_scenario",null]                                | ["success",null]                       |
+      | ["end_scenario",null]                                | ["success",null]                                 |
     When I run cucumber -f progress features
     Then STDERR should be empty
     And it should fail with
@@ -150,10 +150,10 @@ Feature: Wire Protocol
   Scenario: Invoke a step definition which takes arguments (and passes)
     Given there is a wire server running on port 98989 which understands the following protocol:
       | request                                              | response                                                          |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_match",[{"id":"1", "args":[{"val":"wired", "pos":10}]}]] |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[{"val":"wired", "pos":10}]}]] |
       | ["begin_scenario",null]                              | ["success",null]                                                  |
       | ["invoke",{"id":"1","args":["wired"]}]               | ["success",null]                                                  |
-      | ["end_scenario",null]                                | ["success",null]                       |
+      | ["end_scenario",null]                                | ["success",null]                                                  |
     When I run cucumber -f progress --backtrace features
     Then STDERR should be empty
     And it should pass with
