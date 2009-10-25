@@ -1,3 +1,4 @@
+# encoding: utf-8
 require File.dirname(__FILE__) + '/../spec_helper'
 require 'cucumber/rb_support/rb_step_definition'
 require 'cucumber/rb_support/rb_language'
@@ -15,6 +16,16 @@ module Cucumber
     def step_match(regexp, name)
       stepdef = stepdef(regexp)
       StepMatch.new(stepdef, name, nil, stepdef.arguments_from(name))
+    end
+
+    it "should format one groups when we use Unicode" do
+      m = step_match(/I (\w+) ok/, "I æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ ok")
+      m.format_args("<span>%s</span>").should == "I <span>æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ</span> ok"
+    end
+
+    it "should format several groups when we use Unicode" do
+      m = step_match(/I (\w+) (\w+) (\w+) this (\w+)/, "I ate æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ egg this morning")
+      m.format_args("<span>%s</span>").should == "I <span>ate</span> <span>æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ</span> <span>egg</span> this <span>morning</span>"
     end
 
     it "should format groups with format string" do

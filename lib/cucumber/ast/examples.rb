@@ -20,6 +20,10 @@ module Cucumber
         @outline_table.cells_rows[1..-1].each(&proc)
       end
 
+      def failed?
+        @outline_table.cells_rows[1..-1].select{|row| row.failed?}.any?
+      end
+
       def to_sexp
         sexp = [:examples, @keyword, @name]
         comment = @comment.to_sexp

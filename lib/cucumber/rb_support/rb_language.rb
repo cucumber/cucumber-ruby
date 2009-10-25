@@ -37,6 +37,9 @@ module Cucumber
         RbDsl.rb_language = self
       end
 
+      # Tell the language about other i18n translations so that
+      # they can alias Given, When Then etc. Only useful if the language
+      # has a mechanism for this - typically a dynamic language.
       def alias_adverbs(adverbs)
         adverbs.each do |adverb|
           RbDsl.alias_adverb(adverb)
@@ -44,9 +47,11 @@ module Cucumber
         end
       end
 
-      def step_definitions_for(code_file)
+      # Gets called for each file under features (or whatever is overridden
+      # with --require).
+      def step_definitions_for(rb_file)
         begin
-          load_code_file(code_file)
+          require rb_file # This will cause self.add_step_definition and self.add_hook to be called from RbDsl
           step_definitions
         rescue LoadError => e
           e.message << "\nFailed to load #{code_file}"

@@ -155,10 +155,37 @@ module Cucumber
         end
       end
 
+      #define @delayed_announcements = [] in your Formatter if you want to
+      #activate this feature
       def announce(announcement)
-        @io.puts
-        @io.puts(format_string(announcement, :tag))
+        if @delayed_announcements
+          @delayed_announcements << announcement
+        else
+          @io.puts
+          @io.puts(format_string(announcement, :tag))
+          @io.flush
+        end
+      end
+
+      def print_announcements()
+        @delayed_announcements.each {|ann| print_announcement(ann)}
+        empty_announcements
+      end
+
+      def print_table_row_announcements
+        return if @delayed_announcements.empty?
+        @io.print(format_string(@delayed_announcements.join(', '), :tag).indent(2))
         @io.flush
+        empty_announcements
+      end
+
+      def print_announcement(announcement)
+        @io.puts(format_string(announcement, :tag).indent(@indent))
+        @io.flush
+      end
+
+      def empty_announcements
+        @delayed_announcements = []
       end
 
     private

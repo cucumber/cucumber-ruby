@@ -39,7 +39,8 @@ module Cucumber
         "table"
       end
 
-      # Creates a new instance. +raw+ should be an Array of Array of String.
+      # Creates a new instance. +raw+ should be an Array of Array of String
+      # or an Array of Hash (similar to what #hashes returns).
       # You don't typically create your own Table objects - Cucumber will do
       # it internally and pass them to your Step Definitions.
       #
@@ -47,10 +48,16 @@ module Cucumber
         @cells_class = Cells
         @cell_class = Cell
 
+        raw = ensure_array_of_array(raw)
         # Verify that it's square
         transposed = raw.transpose
         create_cell_matrix(raw)
         @conversion_procs = conversion_procs
+      end
+
+      # JSON representation
+      def to_json
+        raw.to_json
       end
 
       # Creates a copy of this table, inheriting any column mappings.
@@ -261,7 +268,7 @@ module Cucumber
       # objects in their cells, you may want to use #map_column! before calling
       # #diff!. You can use #map_column! on either of the tables.
       #
-      # An exception is raised if there are missing rows or columns, or
+      # A Different error is raised if there are missing rows or columns, or
       # surplus rows. An error is <em>not</em> raised for surplus columns.
       # Whether to raise or not raise can be changed by setting values in
       # +options+ to true or false:
@@ -524,18 +531,16 @@ module Cucumber
 
       def ensure_table(table_or_array) #:nodoc:
         return table_or_array if Table === table_or_array
-        table_or_array = hashes_to_array(table_or_array) if Hash === table_or_array[0]
-        table_or_array = enumerable_to_array(table_or_array) unless Array == table_or_array[0]
         Table.new(table_or_array)
+      end
+
+      def ensure_array_of_array(array)
+        Hash === array[0] ? hashes_to_array(array) : array
       end
 
       def hashes_to_array(hashes) #:nodoc:
         header = hashes[0].keys
         [header] + hashes.map{|hash| header.map{|key| hash[key]}}
-      end
-
-      def enumerable_to_array(rows) #:nodoc:
-        rows.map{|row| row.map{|cell| cell}}
       end
 
       def ensure_green! #:nodoc:
