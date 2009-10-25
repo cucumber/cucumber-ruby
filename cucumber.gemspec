@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2009-10-15}
+  s.date = %q{2009-10-26}
   s.default_executable = %q{cucumber}
   s.description = %q{A BDD tool written in Ruby}
   s.email = %q{cukes@googlegroups.com}
@@ -292,6 +292,7 @@ Gem::Specification.new do |s|
      "examples/test_unit/features/step_definitions/test_unit_steps.rb",
      "examples/test_unit/features/test_unit.feature",
      "examples/tickets/Rakefile",
+     "examples/tickets/features.html",
      "examples/tickets/features/172.feature",
      "examples/tickets/features/177/1.feature",
      "examples/tickets/features/177/2.feature",
@@ -325,11 +326,13 @@ Gem::Specification.new do |s|
      "examples/watir/README.textile",
      "examples/watir/Rakefile",
      "examples/watir/features/search.feature",
-     "examples/watir/features/step_definitons/search_steps.rb",
+     "examples/watir/features/step_definitions/search_steps.rb",
      "examples/watir/features/support/env.rb",
+     "examples/watir/features/support/screenshots.rb",
      "examples/webrat/features/search.feature",
      "examples/webrat/features/step_definitions/kvasir_steps.rb",
      "examples/webrat/features/support/env.rb",
+     "features/announce.feature",
      "features/background.feature",
      "features/bug_371.feature",
      "features/bug_464.feature",
@@ -362,13 +365,16 @@ Gem::Specification.new do |s|
      "features/step_definitions/cucumber_steps.rb",
      "features/step_definitions/extra_steps.rb",
      "features/step_definitions/simplest_steps.rb",
+     "features/step_definitions/wire_steps.rb",
      "features/support/env.rb",
      "features/support/env.rb.simplest",
+     "features/support/fake_wire_server.rb",
      "features/table_diffing.feature",
      "features/table_mapping.feature",
      "features/transform.feature",
      "features/unicode_table.feature",
      "features/usage_and_stepdefs_formatter.feature",
+     "features/wire_protocol.feature",
      "features/work_in_progress.feature",
      "gem_tasks/contributors.rake",
      "gem_tasks/environment.rake",
@@ -433,6 +439,7 @@ Gem::Specification.new do |s|
      "lib/cucumber/formatter/rerun.rb",
      "lib/cucumber/formatter/stepdefs.rb",
      "lib/cucumber/formatter/steps.rb",
+     "lib/cucumber/formatter/summary.rb",
      "lib/cucumber/formatter/tag_cloud.rb",
      "lib/cucumber/formatter/unicode.rb",
      "lib/cucumber/formatter/usage.rb",
@@ -471,6 +478,13 @@ Gem::Specification.new do |s|
      "lib/cucumber/step_mother.rb",
      "lib/cucumber/webrat/element_locator.rb",
      "lib/cucumber/webrat/table_locator.rb",
+     "lib/cucumber/wire_support/connection.rb",
+     "lib/cucumber/wire_support/request_handler.rb",
+     "lib/cucumber/wire_support/wire_exception.rb",
+     "lib/cucumber/wire_support/wire_language.rb",
+     "lib/cucumber/wire_support/wire_packet.rb",
+     "lib/cucumber/wire_support/wire_protocol.rb",
+     "lib/cucumber/wire_support/wire_step_definition.rb",
      "rails_generators/cucumber/USAGE",
      "rails_generators/cucumber/cucumber_generator.rb",
      "rails_generators/cucumber/templates/cucumber",
@@ -532,6 +546,8 @@ Gem::Specification.new do |s|
      "spec/cucumber/treetop_parser/test_dos.feature",
      "spec/cucumber/treetop_parser/with_comments.feature",
      "spec/cucumber/treetop_parser/with_tags.feature",
+     "spec/cucumber/wire_support/wire_language_spec.rb",
+     "spec/cucumber/wire_support/wire_packet_spec.rb",
      "spec/cucumber/world/pending_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb"
@@ -588,6 +604,8 @@ for important information about this release. Happy cuking!
      "spec/cucumber/rb_support/regexp_argument_matcher_spec.rb",
      "spec/cucumber/step_match_spec.rb",
      "spec/cucumber/step_mother_spec.rb",
+     "spec/cucumber/wire_support/wire_language_spec.rb",
+     "spec/cucumber/wire_support/wire_packet_spec.rb",
      "spec/cucumber/world/pending_spec.rb",
      "spec/spec_helper.rb",
      "examples/cs/features/step_definitons/calculator_steps.rb",
@@ -698,8 +716,9 @@ for important information about this release. Happy cuking!
      "examples/tickets/features/step_definitons/248_steps.rb",
      "examples/tickets/features/step_definitons/scenario_outline_steps.rb",
      "examples/tickets/features/step_definitons/tickets_steps.rb",
-     "examples/watir/features/step_definitons/search_steps.rb",
+     "examples/watir/features/step_definitions/search_steps.rb",
      "examples/watir/features/support/env.rb",
+     "examples/watir/features/support/screenshots.rb",
      "examples/webrat/features/step_definitions/kvasir_steps.rb",
      "examples/webrat/features/support/env.rb"
   ]
