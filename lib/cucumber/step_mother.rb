@@ -130,6 +130,10 @@ module Cucumber
       @visitor.announce(msg)
     end
 
+    def embed(file, mime_type)
+      @visitor.embed(file, mime_type)
+    end
+
     def scenarios(status = nil) #:nodoc:
       @scenarios ||= []
       if(status)

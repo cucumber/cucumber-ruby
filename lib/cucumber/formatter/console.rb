@@ -151,6 +151,10 @@ module Cucumber
         end
       end
 
+      def embed(file, mime_type)
+        # no-op
+      end
+
       #define @delayed_announcements = [] in your Formatter if you want to
       #activate this feature
       def announce(announcement)
