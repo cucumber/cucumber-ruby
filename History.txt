@@ -9,6 +9,7 @@
 * Ast::Table can now be constructed with an Array of Hash. (Aslak Hellesøy)
 
 === Changed features
+* Examples keyword without a colon is deprecated loudly. Gherkin will not recognize it at all. (Gherkin #30 Mike Sassak)
 * The #announce method will no longer escape HTML if the html formatter is used. Escaping must be done manually. (Aslak Hellesøy)
 
 === Bugfixes
