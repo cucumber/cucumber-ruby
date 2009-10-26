@@ -16,6 +16,7 @@
 * "--format rerun", with a Scenario Outline, kills cucumber (#492 Aslak Hellesøy)
 * Usage formatter is not reporting time correctly. (Elliot Crosby-McCullough)
 * JUnit formatter raises a more helpful error when run on a feature with no name. (#493 Matt Wynne)
+* Better Danish translation (Thorbjørn Ravn Andersen)
 
 == 0.4.2 2009-10-14
 
