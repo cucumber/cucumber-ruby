@@ -2,10 +2,10 @@
 require 'spec/expectations'
 $:.unshift(File.dirname(__FILE__) + '/../../lib') # This line is not needed in your own project
 require 'cucumber/formatter/unicode'
-require 'kalkulator'
+require 'lommeregner'
 
 Before do
-  @calc = Kalkulator.new
+  @calc = Lommeregner.new
 end
 
 After do
@@ -15,7 +15,7 @@ Given /at jeg har indtastet (\d+)/ do |n|
   @calc.push n.to_i
 end
 
-When 'jeg summerer' do
+When 'jeg lægger sammen' do
   @result = @calc.add
 end
 
