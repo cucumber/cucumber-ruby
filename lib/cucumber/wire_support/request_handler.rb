@@ -6,13 +6,11 @@ module Cucumber
         @message = message
         instance_eval(&block) if block
       end
-      
-      def execute(request_params = nil)
-        @connection.call_remote(self, 
-          @message, 
-          request_params)
+
+      def execute(request_params)
+        @connection.call_remote(self, @message, request_params)
       end
-      
+
       def handle_fail(params)
         raise WireException.new(params)
       end

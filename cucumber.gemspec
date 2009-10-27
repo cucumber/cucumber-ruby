@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2009-10-26}
+  s.date = %q{2009-10-27}
   s.default_executable = %q{cucumber}
   s.description = %q{A BDD tool written in Ruby}
   s.email = %q{cukes@googlegroups.com}
@@ -292,6 +292,7 @@ Gem::Specification.new do |s|
      "examples/test_unit/features/step_definitions/test_unit_steps.rb",
      "examples/test_unit/features/test_unit.feature",
      "examples/tickets/Rakefile",
+     "examples/tickets/features.html",
      "examples/tickets/features/172.feature",
      "examples/tickets/features/177/1.feature",
      "examples/tickets/features/177/2.feature",
@@ -697,6 +698,7 @@ for important information about this release. Happy cuking!
      "examples/selenium_webrat/features/support/env.rb",
      "examples/self_test/features/step_definitions/sample_steps.rb",
      "examples/self_test/features/support/env.rb",
+     "examples/self_test/tmp/features/step_definitions/steps.rb",
      "examples/sinatra/app.rb",
      "examples/sinatra/features/step_definitions/add_steps.rb",
      "examples/sinatra/features/support/env.rb",
@@ -734,7 +736,7 @@ for important information about this release. Happy cuking!
       s.add_development_dependency(%q<nokogiri>, ["= 1.3.3"])
       s.add_development_dependency(%q<prawn>, ["= 0.5.1"])
       s.add_development_dependency(%q<rspec>, ["= 1.2.9"])
-      s.add_development_dependency(%q<spork>, ["= 0.7.2"])
+      s.add_development_dependency(%q<spork>, ["= 0.7.3"])
     else
       s.add_dependency(%q<term-ansicolor>, ["= 1.0.4"])
       s.add_dependency(%q<treetop>, ["= 1.4.2"])
@@ -744,7 +746,7 @@ for important information about this release. Happy cuking!
       s.add_dependency(%q<nokogiri>, ["= 1.3.3"])
       s.add_dependency(%q<prawn>, ["= 0.5.1"])
       s.add_dependency(%q<rspec>, ["= 1.2.9"])
-      s.add_dependency(%q<spork>, ["= 0.7.2"])
+      s.add_dependency(%q<spork>, ["= 0.7.3"])
     end
   else
     s.add_dependency(%q<term-ansicolor>, ["= 1.0.4"])
@@ -755,6 +757,6 @@ for important information about this release. Happy cuking!
     s.add_dependency(%q<nokogiri>, ["= 1.3.3"])
     s.add_dependency(%q<prawn>, ["= 0.5.1"])
     s.add_dependency(%q<rspec>, ["= 1.2.9"])
-    s.add_dependency(%q<spork>, ["= 0.7.2"])
+    s.add_dependency(%q<spork>, ["= 0.7.3"])
   end
 end

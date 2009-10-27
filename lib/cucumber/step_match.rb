@@ -6,6 +6,7 @@ module Cucumber
     # in which case +name_to_report+ is used instead.
     # 
     def initialize(step_definition, name_to_match, name_to_report, step_arguments)
+      raise "name_to_match can't be nil" if name_to_match.nil?
       @step_definition, @name_to_match, @name_to_report, @step_arguments = step_definition, name_to_match, name_to_report, step_arguments
     end
 

@@ -1,4 +1,10 @@
-== 0.4.3 (In Git)
+== 0.4.3 2009-10-28
+
+The exciting thing about this release is that the wire protocol is starting to take shape. This means you can
+now use Cucumber with .NET - writing step definitions in C#. And this is without having to use IronRuby at all!
+See Cuke4Nuke (http://wiki.github.com/richardlawrence/Cuke4Nuke) for more information.
+
+As usual there are several small features and bug fixes.
 
 === New Features
 * New Wire Protocol - allowing out of process execution of Cucumber scenarios. (#428 Matt Wynne)
