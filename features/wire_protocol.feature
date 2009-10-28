@@ -31,7 +31,7 @@ Feature: Wire Protocol
     And a file named "features/step_definitions/some_remote_place.wire" with:
       """
       host: localhost
-      port: 98989
+      port: 54321
 
       """
 
@@ -45,7 +45,7 @@ Feature: Wire Protocol
   # be invoked for the given step name.
 
   Scenario: Dry run finds no step match
-    Given there is a wire server running on port 98989 which understands the following protocol:
+    Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response            |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[]] |
     When I run cucumber --dry-run -f progress features
@@ -65,7 +65,7 @@ Feature: Wire Protocol
   # The step match also contains any argument values as parsed out by the wire end's own regular
   # expression or other argument matching process.
   Scenario: Dry run finds a step match
-    Given there is a wire server running on port 98989 which understands the following protocol:
+    Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                 |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]] |
     When I run cucumber --dry-run -f progress features
@@ -90,7 +90,7 @@ Feature: Wire Protocol
   # The wire end will reply with either a step_failed or a success message.
 
   Scenario: Invoke a step definition which passes
-    Given there is a wire server running on port 98989 which understands the following protocol:
+    Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                 |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]] |
       | ["begin_scenario",null]                              | ["success",null]                         |
@@ -110,7 +110,7 @@ Feature: Wire Protocol
   # will then be passed by Cucumber to the formatters for display to the user.
   #
   Scenario: Invoke a step definition which fails
-    Given there is a wire server running on port 98989 which understands the following protocol:
+    Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                         |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]]         |
       | ["begin_scenario",null]                              | ["success",null]                                 |
@@ -148,7 +148,7 @@ Feature: Wire Protocol
   #   * pos : the position within the step name that the argument was matched (used for formatter highlighting)
   #
   Scenario: Invoke a step definition which takes arguments (and passes)
-    Given there is a wire server running on port 98989 which understands the following protocol:
+    Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                                          |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[{"val":"wired", "pos":10}]}]] |
       | ["begin_scenario",null]                              | ["success",null]                                                  |
@@ -167,7 +167,7 @@ Feature: Wire Protocol
 
 
   Scenario: Unexpected response
-    Given there is a wire server running on port 98989 which understands the following protocol:
+    Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response   |
       | ["begin_scenario",null]                              | ["yikes"]  |
     When I run cucumber -f progress features
