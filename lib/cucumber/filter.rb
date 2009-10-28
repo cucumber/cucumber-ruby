@@ -3,8 +3,7 @@ module Cucumber
   class Filter #:nodoc:
     def initialize(lines, options)
       @lines = lines
-
-      @tag_names = options[:tag_names] ? options[:tag_names].keys : []
+      @tag_names = options[:tag_names] ? options[:tag_names].map{|tags_with_limit| tags_with_limit.keys } : []
       @name_regexps = options[:name_regexps] || []
     end
 

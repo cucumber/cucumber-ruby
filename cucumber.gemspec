@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
-  s.version = "0.4.2"
+  s.version = "0.4.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2009-10-26}
+  s.date = %q{2009-10-28}
   s.default_executable = %q{cucumber}
   s.description = %q{A BDD tool written in Ruby}
   s.email = %q{cukes@googlegroups.com}
@@ -30,13 +30,6 @@ Gem::Specification.new do |s|
      "bin/cucumber",
      "cucumber.gemspec",
      "cucumber.yml",
-     "examples/cs/.gitignore",
-     "examples/cs/README.textile",
-     "examples/cs/Rakefile",
-     "examples/cs/compile.bat",
-     "examples/cs/features/addition.feature",
-     "examples/cs/features/step_definitons/calculator_steps.rb",
-     "examples/cs/src/demo/Calculator.cs",
      "examples/dos_line_endings/Rakefile",
      "examples/dos_line_endings/features/dos_line_endings.feature",
      "examples/i18n/README.textile",
@@ -213,20 +206,9 @@ Gem::Specification.new do |s|
      "examples/i18n/zh-TW/features/division.feature",
      "examples/i18n/zh-TW/features/step_definitons/calculator_steps.rb",
      "examples/i18n/zh-TW/lib/calculator.rb",
-     "examples/java/.gitignore",
-     "examples/java/README.textile",
-     "examples/java/build.xml",
-     "examples/java/features/hello.feature",
-     "examples/java/features/step_definitons/hello_steps.rb",
-     "examples/java/features/step_definitons/tree_steps.rb",
-     "examples/java/features/tree.feature",
-     "examples/java/src/.gitignore",
-     "examples/java/src/cucumber/demo/.gitignore",
-     "examples/java/src/cucumber/demo/Hello.java",
      "examples/junit/features/one_passing_one_failing.feature",
      "examples/junit/features/pending.feature",
      "examples/junit/features/step_definitions/steps.rb",
-     "examples/pure_java/README.textile",
      "examples/python/features/fibonacci.feature",
      "examples/python/features/step_definitions/fib_steps.py",
      "examples/python/lib/.gitignore",
@@ -292,6 +274,7 @@ Gem::Specification.new do |s|
      "examples/test_unit/features/step_definitions/test_unit_steps.rb",
      "examples/test_unit/features/test_unit.feature",
      "examples/tickets/Rakefile",
+     "examples/tickets/features.html",
      "examples/tickets/features/172.feature",
      "examples/tickets/features/177/1.feature",
      "examples/tickets/features/177/2.feature",
@@ -370,6 +353,7 @@ Gem::Specification.new do |s|
      "features/support/fake_wire_server.rb",
      "features/table_diffing.feature",
      "features/table_mapping.feature",
+     "features/tag_logic.feature",
      "features/transform.feature",
      "features/unicode_table.feature",
      "features/usage_and_stepdefs_formatter.feature",
@@ -509,6 +493,7 @@ Gem::Specification.new do |s|
      "spec/cucumber/ast/step_collection_spec.rb",
      "spec/cucumber/ast/step_spec.rb",
      "spec/cucumber/ast/table_spec.rb",
+     "spec/cucumber/ast/tags_spec.rb",
      "spec/cucumber/ast/tree_walker_spec.rb",
      "spec/cucumber/broadcaster_spec.rb",
      "spec/cucumber/cli/configuration_spec.rb",
@@ -553,15 +538,15 @@ Gem::Specification.new do |s|
   ]
   s.homepage = %q{http://cukes.info}
   s.post_install_message = %q{
-[5m[32m(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)[0m[0m
+(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)
 
-                     [5m[32m(::)[0m[0m   U P G R A D I N G    [5m[32m(::)[0m[0m
+                     (::)   U P G R A D I N G    (::)
 
-Thank you for installing cucumber-0.4.2.
+Thank you for installing cucumber-0.4.3.
 Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
 for important information about this release. Happy cuking!
 
-[5m[32m(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)[0m[0m
+(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)
 
 }
   s.rdoc_options = ["--charset=UTF-8"]
@@ -581,6 +566,7 @@ for important information about this release. Happy cuking!
      "spec/cucumber/ast/step_collection_spec.rb",
      "spec/cucumber/ast/step_spec.rb",
      "spec/cucumber/ast/table_spec.rb",
+     "spec/cucumber/ast/tags_spec.rb",
      "spec/cucumber/ast/tree_walker_spec.rb",
      "spec/cucumber/broadcaster_spec.rb",
      "spec/cucumber/cli/configuration_spec.rb",
@@ -607,7 +593,6 @@ for important information about this release. Happy cuking!
      "spec/cucumber/wire_support/wire_packet_spec.rb",
      "spec/cucumber/world/pending_spec.rb",
      "spec/spec_helper.rb",
-     "examples/cs/features/step_definitons/calculator_steps.rb",
      "examples/i18n/ar/features/step_definitons/calculator_steps.rb",
      "examples/i18n/ar/lib/calculator.rb",
      "examples/i18n/bg/features/step_definitons/calculator_steps.rb",
@@ -683,8 +668,6 @@ for important information about this release. Happy cuking!
      "examples/i18n/zh-CN/lib/calculator.rb",
      "examples/i18n/zh-TW/features/step_definitons/calculator_steps.rb",
      "examples/i18n/zh-TW/lib/calculator.rb",
-     "examples/java/features/step_definitons/hello_steps.rb",
-     "examples/java/features/step_definitons/tree_steps.rb",
      "examples/junit/features/step_definitions/steps.rb",
      "examples/ramaze/app.rb",
      "examples/ramaze/features/step_definitions/add_steps.rb",
@@ -697,6 +680,7 @@ for important information about this release. Happy cuking!
      "examples/selenium_webrat/features/support/env.rb",
      "examples/self_test/features/step_definitions/sample_steps.rb",
      "examples/self_test/features/support/env.rb",
+     "examples/self_test/tmp/features/step_definitions/steps.rb",
      "examples/sinatra/app.rb",
      "examples/sinatra/features/step_definitions/add_steps.rb",
      "examples/sinatra/features/support/env.rb",
@@ -734,7 +718,7 @@ for important information about this release. Happy cuking!
       s.add_development_dependency(%q<nokogiri>, ["= 1.3.3"])
       s.add_development_dependency(%q<prawn>, ["= 0.5.1"])
       s.add_development_dependency(%q<rspec>, ["= 1.2.9"])
-      s.add_development_dependency(%q<spork>, ["= 0.7.2"])
+      s.add_development_dependency(%q<spork>, ["= 0.7.3"])
     else
       s.add_dependency(%q<term-ansicolor>, ["= 1.0.4"])
       s.add_dependency(%q<treetop>, ["= 1.4.2"])
@@ -744,7 +728,7 @@ for important information about this release. Happy cuking!
       s.add_dependency(%q<nokogiri>, ["= 1.3.3"])
       s.add_dependency(%q<prawn>, ["= 0.5.1"])
       s.add_dependency(%q<rspec>, ["= 1.2.9"])
-      s.add_dependency(%q<spork>, ["= 0.7.2"])
+      s.add_dependency(%q<spork>, ["= 0.7.3"])
     end
   else
     s.add_dependency(%q<term-ansicolor>, ["= 1.0.4"])
@@ -755,6 +739,6 @@ for important information about this release. Happy cuking!
     s.add_dependency(%q<nokogiri>, ["= 1.3.3"])
     s.add_dependency(%q<prawn>, ["= 0.5.1"])
     s.add_dependency(%q<rspec>, ["= 1.2.9"])
-    s.add_dependency(%q<spork>, ["= 0.7.2"])
+    s.add_dependency(%q<spork>, ["= 0.7.3"])
   end
 end

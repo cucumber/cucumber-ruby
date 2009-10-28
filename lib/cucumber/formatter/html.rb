@@ -295,13 +295,26 @@ module Cucumber
       end
 
       def announce(announcement)
-        builder.pre(:class => 'announcement') do |pre|
-          pre << announcement
+        builder.pre(announcement, :class => 'announcement')
+      end
+
+      def embed(file, mime_type)
+        case(mime_type)
+        when /^image\/(png|gif|jpg)/
+          embed_image(file)
         end
       end
-      
+
       private
       
+      def embed_image(file)
+        id = file.hash
+        builder.pre(:class => 'embed') do |pre|
+          pre << %{<a href="#" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');">Screenshot</a>
+          <img id="#{id}" style="display: none" src="#{file}" />}
+        end
+      end
+
       def build_step(keyword, step_match, status)
         step_name = step_match.format_args(lambda{|param| %{<span class="param">#{param}</span>}})
         builder.div do |div|

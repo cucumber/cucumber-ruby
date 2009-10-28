@@ -27,6 +27,10 @@ module Cucumber
       
       def alias_adverbs(adverbs)
       end
+
+      def snippet_text(step_keyword, step_name, multiline_arg_class)
+        "Snippets are not implemented for the wire yet"
+      end
       
       protected
       

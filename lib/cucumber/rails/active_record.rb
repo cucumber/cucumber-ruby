@@ -13,7 +13,11 @@ if defined?(ActiveRecord::Base)
 
   Before do
     if Cucumber::Rails::World.use_transactional_fixtures
-      @__cucumber_ar_connections = ActiveRecord::Base.connection_handler.connection_pools.values.map {|pool| pool.connection}
+      @__cucumber_ar_connections = if ActiveRecord::Base.respond_to?(:connection_handler)
+        ActiveRecord::Base.connection_handler.connection_pools.values.map {|pool| pool.connection}
+      else
+        [ActiveRecord::Base.connection] # Rails <= 2.1.2
+      end
       @__cucumber_ar_connections.each do |__cucumber_ar_connection|
         if __cucumber_ar_connection.respond_to?(:increment_open_transactions)
           __cucumber_ar_connection.increment_open_transactions

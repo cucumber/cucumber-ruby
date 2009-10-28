@@ -64,6 +64,10 @@ module Cucumber
         @__cucumber_step_mother.announce(announcement)
       end
 
+      def embed(file, mime_type)
+        @__cucumber_step_mother.embed(file, mime_type)
+      end
+
       # Mark the matched step as pending.
       def pending(message = "TODO")
         if block_given?

@@ -3,7 +3,6 @@ require 'cucumber/platform'
 
 if Cucumber::WINDOWS_MRI
   begin
-    gem 'win32console', '>= 1.2.0'
     require 'Win32/Console/ANSI'
   rescue LoadError
     STDERR.puts %{*** WARNING: You must "gem install win32console" (1.2.0 or higher) to get coloured output on MRI/Windows}
@@ -131,15 +130,19 @@ module Cucumber
       define_grey
 
       def cukes(n)
-        blink(green(("(::) " * n).strip))
+        ("(::) " * n).strip
+      end
+
+      def green_cukes(n)
+        blink(green(cukes(n)))
       end
 
       def red_cukes(n)
-        blink(red(("(::) " * n).strip))
+        blink(red(cukes(n)))
       end
 
       def yellow_cukes(n)
-        blink(yellow(("(::) " * n).strip))
+        blink(yellow(cukes(n)))
       end
     end
   end

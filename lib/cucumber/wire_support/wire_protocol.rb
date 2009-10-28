@@ -5,6 +5,7 @@ module Cucumber
   module WireSupport
     module WireProtocol
       def step_matches(name_to_match, name_to_report)
+        @name_to_match, @name_to_report = name_to_match, name_to_report
         make_request(:step_matches, :name_to_match => name_to_match) do
           def handle_step_matches(params)
             params.map do |raw_step_match|
@@ -12,10 +13,14 @@ module Cucumber
               step_args = raw_step_match['args'].map do |raw_arg|
                 StepArgument.new(raw_arg['val'], raw_arg['pos'])
               end
-              StepMatch.new(step_definition, @name_to_match, @name_to_report, step_args)
+              @connection.step_match(step_definition, step_args) # convoluted!
             end
           end
         end
+      end
+
+      def step_match(step_definition, step_args)
+        StepMatch.new(step_definition, @name_to_match, @name_to_report, step_args)
       end
       
       def invoke(step_definition_id, args)

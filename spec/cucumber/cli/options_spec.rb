@@ -85,7 +85,7 @@ module Cli
           after_parsing('-o file.txt') { options[:formats].should == [['pretty', 'file.txt']] }
         end
         it "sets the output for the formatter defined immediatly before it" do
-          after_parsing('-f profile --out file.txt -f pretty -o file2.txt') do 
+          after_parsing('-f profile --out file.txt -f pretty -o file2.txt') do
             options[:formats].should == [['profile', 'file.txt'], ['pretty', 'file2.txt']]
           end
         end
@@ -93,7 +93,11 @@ module Cli
 
       context '-t TAGS --tags TAGS' do
         it "designates tags prefixed with ~ as tags to be excluded" do
-          after_parsing('--tags ~@foo,@bar') { options[:tag_names].should == {'~@foo' => nil, '@bar' => nil} }
+          after_parsing('--tags ~@foo,@bar') { options[:tag_names].should == [{'~@foo' => nil, '@bar' => nil}] }
+        end
+
+        it "stores tags passed with different --tags seperately" do
+          after_parsing('--tags @foo --tags @bar') { options[:tag_names].should == [{'@foo' => nil}, {'@bar' => nil}] }
         end
       end
 
@@ -160,7 +164,7 @@ module Cli
         it "combines the tag names of both" do
           given_cucumber_yml_defined_as('baz' => %w[-t @bar])
           options.parse!(%w[--tags @foo -p baz])
-          options[:tag_names].should == {'@foo' => nil, '@bar' => nil}
+          options[:tag_names].should == [{'@foo' => nil}, {'@bar' => nil}]
         end
 
         it "only takes the paths from the original options, and disgregards the profiles" do
@@ -286,7 +290,7 @@ module Cli
 
     describe '#expanded_args_without_drb' do
       it "returns the orginal args in additon to the args from any profiles" do
-        given_cucumber_yml_defined_as('foo' => '-v', 
+        given_cucumber_yml_defined_as('foo' => '-v',
                                       'bar' => '--wip -p baz',
                                       'baz' => '-r some_file.rb')
         options.parse!(%w[features -p foo --profile bar])
