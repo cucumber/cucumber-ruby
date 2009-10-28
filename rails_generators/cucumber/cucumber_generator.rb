@@ -16,7 +16,9 @@ class CucumberGenerator < Rails::Generator::Base
         :assigns => { :cucumber_version => ::Cucumber::VERSION }
 
       m.gsub_file 'config/database.yml', /test:.*\n/, "test: &TEST\n"
-      m.gsub_file 'config/database.yml', /\z/, "\ncucumber:\n  <<: *TEST"
+      unless File.read('config/database.yml').include? 'cucumber:'
+        m.gsub_file 'config/database.yml', /\z/, "\ncucumber:\n  <<: *TEST"
+      end
 
       m.directory 'features/support'
       if spork?
