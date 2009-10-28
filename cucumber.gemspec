@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
-  s.version = "0.4.2"
+  s.version = "0.4.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
@@ -353,6 +353,7 @@ Gem::Specification.new do |s|
      "features/support/fake_wire_server.rb",
      "features/table_diffing.feature",
      "features/table_mapping.feature",
+     "features/tag_logic.feature",
      "features/transform.feature",
      "features/unicode_table.feature",
      "features/usage_and_stepdefs_formatter.feature",
@@ -492,6 +493,7 @@ Gem::Specification.new do |s|
      "spec/cucumber/ast/step_collection_spec.rb",
      "spec/cucumber/ast/step_spec.rb",
      "spec/cucumber/ast/table_spec.rb",
+     "spec/cucumber/ast/tags_spec.rb",
      "spec/cucumber/ast/tree_walker_spec.rb",
      "spec/cucumber/broadcaster_spec.rb",
      "spec/cucumber/cli/configuration_spec.rb",
@@ -536,15 +538,15 @@ Gem::Specification.new do |s|
   ]
   s.homepage = %q{http://cukes.info}
   s.post_install_message = %q{
-[5m[32m(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)[0m[0m
+(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)
 
-                     [5m[32m(::)[0m[0m   U P G R A D I N G    [5m[32m(::)[0m[0m
+                     (::)   U P G R A D I N G    (::)
 
-Thank you for installing cucumber-0.4.2.
+Thank you for installing cucumber-0.4.3.
 Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
 for important information about this release. Happy cuking!
 
-[5m[32m(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)[0m[0m
+(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)
 
 }
   s.rdoc_options = ["--charset=UTF-8"]
@@ -564,6 +566,7 @@ for important information about this release. Happy cuking!
      "spec/cucumber/ast/step_collection_spec.rb",
      "spec/cucumber/ast/step_spec.rb",
      "spec/cucumber/ast/table_spec.rb",
+     "spec/cucumber/ast/tags_spec.rb",
      "spec/cucumber/ast/tree_walker_spec.rb",
      "spec/cucumber/broadcaster_spec.rb",
      "spec/cucumber/cli/configuration_spec.rb",
@@ -715,7 +718,7 @@ for important information about this release. Happy cuking!
       s.add_development_dependency(%q<nokogiri>, ["= 1.3.3"])
       s.add_development_dependency(%q<prawn>, ["= 0.5.1"])
       s.add_development_dependency(%q<rspec>, ["= 1.2.9"])
-      s.add_development_dependency(%q<spork>, ["= 0.7.3"])
+      s.add_development_dependency(%q<spork>, ["= 0.7.2"])
     else
       s.add_dependency(%q<term-ansicolor>, ["= 1.0.4"])
       s.add_dependency(%q<treetop>, ["= 1.4.2"])
@@ -725,7 +728,7 @@ for important information about this release. Happy cuking!
       s.add_dependency(%q<nokogiri>, ["= 1.3.3"])
       s.add_dependency(%q<prawn>, ["= 0.5.1"])
       s.add_dependency(%q<rspec>, ["= 1.2.9"])
-      s.add_dependency(%q<spork>, ["= 0.7.3"])
+      s.add_dependency(%q<spork>, ["= 0.7.2"])
     end
   else
     s.add_dependency(%q<term-ansicolor>, ["= 1.0.4"])
@@ -736,6 +739,6 @@ for important information about this release. Happy cuking!
     s.add_dependency(%q<nokogiri>, ["= 1.3.3"])
     s.add_dependency(%q<prawn>, ["= 0.5.1"])
     s.add_dependency(%q<rspec>, ["= 1.2.9"])
-    s.add_dependency(%q<spork>, ["= 0.7.3"])
+    s.add_dependency(%q<spork>, ["= 0.7.2"])
   end
 end

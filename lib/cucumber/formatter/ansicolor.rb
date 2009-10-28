@@ -130,15 +130,19 @@ module Cucumber
       define_grey
 
       def cukes(n)
-        blink(green(("(::) " * n).strip))
+        ("(::) " * n).strip
+      end
+
+      def green_cukes(n)
+        blink(green(cukes(n)))
       end
 
       def red_cukes(n)
-        blink(red(("(::) " * n).strip))
+        blink(red(cukes(n)))
       end
 
       def yellow_cukes(n)
-        blink(yellow(("(::) " * n).strip))
+        blink(yellow(cukes(n)))
       end
     end
   end
