@@ -8,8 +8,7 @@ module Screenshots
   def add_screenshot
     id = "screenshot-#{Time.new.to_i}"
     take_screenshot(id)
-    announce(%{<a href="#" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');">Screenshot</a>
-    <img id="#{id}" style="display: none" src="#{id}.png" />})
+    embed("#{id}.png", "image/png")
   end
 
   if `which screencapture` =~ /screencapture/

@@ -1,1 +1,0 @@
-See "IronRuby and .NET":http://github.com/aslakhellesoy/cucumber/wikis/ironruby-and-net

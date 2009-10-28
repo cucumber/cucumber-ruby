@@ -1,1 +1,0 @@
-csc /target:library /out:Calculator.dll src\demo\Calculator.cs

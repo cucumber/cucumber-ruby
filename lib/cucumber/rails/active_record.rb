@@ -20,7 +20,6 @@ if defined?(ActiveRecord::Base)
         else
           ActiveRecord::Base.__send__(:increment_open_transactions)
         end
-        __cucumber_ar_connection.transaction_joinable = true
         __cucumber_ar_connection.begin_db_transaction
       end
     end

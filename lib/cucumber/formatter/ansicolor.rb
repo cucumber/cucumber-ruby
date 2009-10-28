@@ -3,7 +3,6 @@ require 'cucumber/platform'
 
 if Cucumber::WINDOWS_MRI
   begin
-    gem 'win32console', '>= 1.2.0'
     require 'Win32/Console/ANSI'
   rescue LoadError
     STDERR.puts %{*** WARNING: You must "gem install win32console" (1.2.0 or higher) to get coloured output on MRI/Windows}

@@ -1,4 +1,4 @@
-class Kalkulator
+class Lommeregner
   def push(n)
     @args ||= []
     @args << n

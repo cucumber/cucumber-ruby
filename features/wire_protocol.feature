@@ -46,8 +46,8 @@ Feature: Wire Protocol
 
   Scenario: Dry run finds no step match
     Given there is a wire server running on port 98989 which understands the following protocol:
-      | request                                              | response          |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_match",[]] |
+      | request                                              | response            |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[]] |
     When I run cucumber --dry-run -f progress features
     And it should pass with
       """
@@ -66,8 +66,8 @@ Feature: Wire Protocol
   # expression or other argument matching process.
   Scenario: Dry run finds a step match
     Given there is a wire server running on port 98989 which understands the following protocol:
-      | request                                              | response                               |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_match",[{"id":"1", "args":[]}]] |
+      | request                                              | response                                 |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]] |
     When I run cucumber --dry-run -f progress features
     And it should pass with
       """
@@ -91,12 +91,12 @@ Feature: Wire Protocol
 
   Scenario: Invoke a step definition which passes
     Given there is a wire server running on port 98989 which understands the following protocol:
-      | request                                              | response                               |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_match",[{"id":"1", "args":[]}]] |
-      | ["begin_scenario",null]                              | ["success",null]                       |
-      | ["invoke",{"id":"1","args":[]}]                      | ["success",null]                       |
-      | ["end_scenario",null]                                | ["success",null]                       |
-    When I run cucumber -f progress features
+      | request                                              | response                                 |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]] |
+      | ["begin_scenario",null]                              | ["success",null]                         |
+      | ["invoke",{"id":"1","args":[]}]                      | ["success",null]                         |
+      | ["end_scenario",null]                                | ["success",null]                         |
+    When I run cucumber -f progress --backtrace features
     And it should pass with
       """
       .
@@ -112,10 +112,10 @@ Feature: Wire Protocol
   Scenario: Invoke a step definition which fails
     Given there is a wire server running on port 98989 which understands the following protocol:
       | request                                              | response                                         |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_match",[{"id":"1", "args":[]}]]           |
-      | ["begin_scenario",null]                              | ["success",null]                       |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]]         |
+      | ["begin_scenario",null]                              | ["success",null]                                 |
       | ["invoke",{"id":"1","args":[]}]                      | ["step_failed",{"message":"The wires are down"}] |
-      | ["end_scenario",null]                                | ["success",null]                       |
+      | ["end_scenario",null]                                | ["success",null]                                 |
     When I run cucumber -f progress features
     Then STDERR should be empty
     And it should fail with
@@ -153,7 +153,7 @@ Feature: Wire Protocol
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[{"val":"wired", "pos":10}]}]] |
       | ["begin_scenario",null]                              | ["success",null]                                                  |
       | ["invoke",{"id":"1","args":["wired"]}]               | ["success",null]                                                  |
-      | ["end_scenario",null]                                | ["success",null]                       |
+      | ["end_scenario",null]                                | ["success",null]                                                  |
     When I run cucumber -f progress --backtrace features
     Then STDERR should be empty
     And it should pass with
@@ -166,31 +166,12 @@ Feature: Wire Protocol
       """
 
 
-  # TODO
-  #   * table diffing
-  #   * multiple wire servers
-  #   * failure message from the server
-  #   * generally more non-happy path stuff (e.g. dealing with non-JSON parseable strings etc)
-  #
-  # table diffing example:
-  # Scenario: Invoke a Step Definition with a table that fails on diff!
-  #   And it should fail with
-  #     """
-  #     Feature: Over the wire
-  #
-  #       Scenario: Wired
-  #         Given we're all wired on:
-  #           | drug |
-  #           | love |
-  #           | life |
-  #           Tables were not identical (Cucumber::Ast::Table::Different)
-  #           remote/stepdefs.rb:2:in `parse!'
-  #           features/wired_table.feature:4:in `Given we're all wired on:'
-  #
-  #     Failing Scenarios:
-  #     cucumber features/wired_table.feature:3 # Scenario: Wired
-  #
-  #     1 scenario (1 failed)
-  #     1 step (1 failed)
-  #
-  #     """
+  Scenario: Unexpected response
+    Given there is a wire server running on port 98989 which understands the following protocol:
+      | request                                              | response   |
+      | ["begin_scenario",null]                              | ["yikes"]  |
+    When I run cucumber -f progress features
+    Then STDERR should match
+      """
+      undefined method `handle_yikes'
+      """

@@ -6,7 +6,7 @@ require 'forwardable'
 begin
   require 'spork'
 rescue Gem::LoadError => ex
-  gem 'spork', '>= 0.5.9' # Ensure correct spork version number to avoid false-negatives.
+  gem 'spork', '>= 0.7.3' # Ensure correct spork version number to avoid false-negatives.
 end
 
 class CucumberWorld
