@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2009-10-27}
+  s.date = %q{2009-10-28}
   s.default_executable = %q{cucumber}
   s.description = %q{A BDD tool written in Ruby}
   s.email = %q{cukes@googlegroups.com}
@@ -30,13 +30,6 @@ Gem::Specification.new do |s|
      "bin/cucumber",
      "cucumber.gemspec",
      "cucumber.yml",
-     "examples/cs/.gitignore",
-     "examples/cs/README.textile",
-     "examples/cs/Rakefile",
-     "examples/cs/compile.bat",
-     "examples/cs/features/addition.feature",
-     "examples/cs/features/step_definitons/calculator_steps.rb",
-     "examples/cs/src/demo/Calculator.cs",
      "examples/dos_line_endings/Rakefile",
      "examples/dos_line_endings/features/dos_line_endings.feature",
      "examples/i18n/README.textile",
@@ -608,7 +601,6 @@ for important information about this release. Happy cuking!
      "spec/cucumber/wire_support/wire_packet_spec.rb",
      "spec/cucumber/world/pending_spec.rb",
      "spec/spec_helper.rb",
-     "examples/cs/features/step_definitons/calculator_steps.rb",
      "examples/i18n/ar/features/step_definitons/calculator_steps.rb",
      "examples/i18n/ar/lib/calculator.rb",
      "examples/i18n/bg/features/step_definitons/calculator_steps.rb",
