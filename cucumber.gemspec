@@ -718,7 +718,7 @@ for important information about this release. Happy cuking!
       s.add_development_dependency(%q<nokogiri>, ["= 1.3.3"])
       s.add_development_dependency(%q<prawn>, ["= 0.5.1"])
       s.add_development_dependency(%q<rspec>, ["= 1.2.9"])
-      s.add_development_dependency(%q<spork>, ["= 0.7.2"])
+      s.add_development_dependency(%q<spork>, ["= 0.7.3"])
     else
       s.add_dependency(%q<term-ansicolor>, ["= 1.0.4"])
       s.add_dependency(%q<treetop>, ["= 1.4.2"])
@@ -728,7 +728,7 @@ for important information about this release. Happy cuking!
       s.add_dependency(%q<nokogiri>, ["= 1.3.3"])
       s.add_dependency(%q<prawn>, ["= 0.5.1"])
       s.add_dependency(%q<rspec>, ["= 1.2.9"])
-      s.add_dependency(%q<spork>, ["= 0.7.2"])
+      s.add_dependency(%q<spork>, ["= 0.7.3"])
     end
   else
     s.add_dependency(%q<term-ansicolor>, ["= 1.0.4"])
@@ -739,6 +739,6 @@ for important information about this release. Happy cuking!
     s.add_dependency(%q<nokogiri>, ["= 1.3.3"])
     s.add_dependency(%q<prawn>, ["= 0.5.1"])
     s.add_dependency(%q<rspec>, ["= 1.2.9"])
-    s.add_dependency(%q<spork>, ["= 0.7.2"])
+    s.add_dependency(%q<spork>, ["= 0.7.3"])
   end
 end
