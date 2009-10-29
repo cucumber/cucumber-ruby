@@ -1,6 +1,7 @@
 == In Git
 
 === Bugfixes
+* RbStepDefinition#invoke calls #backtrace_line on self rather than @proc (#503 Mike Sassak)
 * Avoid duplicate cucumber entries in database.yml (Daniel Hofstetter)
 
 === Changed Features
