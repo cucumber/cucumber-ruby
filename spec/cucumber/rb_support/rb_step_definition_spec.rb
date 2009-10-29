@@ -62,6 +62,15 @@ module Cucumber
         end.should raise_error(Pending, "Do me!")
       end
 
+      it "should raise ArityMismatchError when the number of capture groups differs from the number of step arguments" do
+        @dsl.Given /No group: \w+/ do |arg|
+        end
+
+        lambda do
+          @step_mother.step_match("No group: arg").invoke(nil)
+        end.should raise_error(ArityMismatchError)
+      end
+
       it "should allow announce" do
         v = mock('visitor')
         v.should_receive(:announce).with('wasup')

@@ -59,6 +59,10 @@ module Cucumber
         end
       end
 
+      def backtrace_line
+        @proc.backtrace_line(regexp_source)
+      end
+
       def file_colon_line
         @proc.file_colon_line
       end
