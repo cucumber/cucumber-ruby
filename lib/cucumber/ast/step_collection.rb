@@ -10,7 +10,7 @@ module Cucumber
       end
 
       def accept(visitor, &proc)
-        return if $cucumber_interrupted
+        return if Cucumber.wants_to_quit
         @steps.each do |step|
           visitor.visit_step(step) if proc.nil? || proc.call(step)
         end

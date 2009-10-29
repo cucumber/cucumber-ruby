@@ -148,7 +148,7 @@ module Cucumber
       end
 
       def accept(visitor) #:nodoc:
-        return if $cucumber_interrupted
+        return if Cucumber.wants_to_quit
         cells_rows.each do |row|
           visitor.visit_table_row(row)
         end
@@ -567,7 +567,7 @@ module Cucumber
         end
 
         def accept(visitor)
-          return if $cucumber_interrupted
+          return if Cucumber.wants_to_quit
           each do |cell|
             visitor.visit_table_cell(cell)
           end
@@ -623,7 +623,7 @@ module Cucumber
         end
 
         def accept(visitor)
-          return if $cucumber_interrupted
+          return if Cucumber.wants_to_quit
           visitor.visit_table_cell_value(value, status)
         end
 

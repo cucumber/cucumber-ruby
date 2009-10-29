@@ -60,7 +60,9 @@ module Cucumber
         @skip_profile_information = options[:skip_profile_information]
         @profiles = []
         @overridden_paths = []
-        @options        = default_options
+        @options = default_options
+        
+        @quiet = @disable_profile_loading = nil
       end
 
       def [](key)

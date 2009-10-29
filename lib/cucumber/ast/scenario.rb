@@ -29,10 +29,12 @@ module Cucumber
         step_invocations = steps.map{|step| step.step_invocation}
         @steps = @background.step_collection(step_invocations)
         @background.feature_elements << self
+        
+        @exception = @executed = nil
       end
 
       def accept(visitor)
-        return if $cucumber_interrupted
+        return if Cucumber.wants_to_quit
         
         with_visitor(visitor) do
           visitor.visit_comment(@comment) unless @comment.empty?

@@ -3,6 +3,10 @@ module Cucumber
 
     class ProfileLoader
 
+      def initialize
+        @cucumber_yml = nil
+      end
+
       def args_from(profile)
         unless cucumber_yml.has_key?(profile)
           raise(ProfileNotFound, <<-END_OF_ERROR)

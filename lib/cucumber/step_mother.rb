@@ -49,6 +49,7 @@ module Cucumber
       @programming_languages = []
       @language_map = {}
       load_natural_language('en')
+      @current_scenario = nil
     end
 
     def load_plain_text_features(feature_files)

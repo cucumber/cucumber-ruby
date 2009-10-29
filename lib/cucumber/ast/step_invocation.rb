@@ -22,6 +22,7 @@ module Cucumber
       def initialize(step, name, multiline_arg, matched_cells)
         @step, @name, @multiline_arg, @matched_cells = step, name, multiline_arg, matched_cells
         status!(:skipped)
+        @skip_invoke = @exception = @step_match = @different_table = @reported_exception = @background = nil
       end
 
       def background?
@@ -33,7 +34,7 @@ module Cucumber
       end
 
       def accept(visitor)
-        return if $cucumber_interrupted
+        return if Cucumber.wants_to_quit
         invoke(visitor.step_mother, visitor.options)
         visit_step_result(visitor)
       end

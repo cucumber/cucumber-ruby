@@ -17,7 +17,7 @@ module Cucumber
       end
 
       def accept(visitor)
-        return if $cucumber_interrupted
+        return if Cucumber.wants_to_quit
         @value.strip.split("\n").each do |line|
           visitor.visit_comment_line(line.strip)
         end

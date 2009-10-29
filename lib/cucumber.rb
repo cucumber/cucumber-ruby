@@ -7,3 +7,9 @@ require 'cucumber/parser'
 require 'cucumber/step_mother'
 require 'cucumber/cli/main'
 require 'cucumber/broadcaster'
+
+module Cucumber
+  class << self
+    attr_accessor :wants_to_quit
+  end
+end

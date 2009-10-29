@@ -35,6 +35,7 @@ module Cucumber
         @step_mother = step_mother
         @step_definitions = []
         RbDsl.rb_language = self
+        @world_proc = @world_modules = nil
       end
 
       # Tell the language about other i18n translations so that

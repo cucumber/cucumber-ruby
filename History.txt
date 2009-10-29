@@ -5,6 +5,7 @@
 * Avoid duplicate cucumber entries in database.yml (Daniel Hofstetter)
 
 === Changed Features
+* $cucumber_interrupted is now Cucumber.wants_to_quit - avoid global variable, which gives warnings. (Aslak Hellesøy)
 * Examples keyword without a colon is deprecated loudly. Gherkin will not recognize it at all. (Gherkin #30 Mike Sassak)
 
 == 0.4.3 2009-10-28
