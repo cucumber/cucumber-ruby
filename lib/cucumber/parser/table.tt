@@ -1,12 +1,13 @@
 module Cucumber
   module Parser
-    # TIP: When you hack on the grammar, just delete feature.rb in this directory.
+    # TIP: When you hack on the grammar, just delete table.rb in this directory.
     # Also make sure you have uninstalled all cucumber gems (don't forget xxx-cucumber
     # github gems).
     #
     # Treetop will then generate the parser in-memory. When you're happy, just generate
     # the rb file with tt feature.tt
     grammar Table
+      include Common
 
       rule table
         table_row+ {
@@ -52,18 +53,6 @@ module Cucumber
 
       rule cell
         (!('|' / eol) .)*
-      end
-
-      rule space
-        [ \t]
-      end
-
-      rule eol
-        "\n" / ("\r" "\n"?)
-      end
-
-      rule eof
-        !.
       end
 
     end

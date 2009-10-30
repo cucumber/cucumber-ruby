@@ -2,8 +2,10 @@ module Cucumber
   module Parser
     module I18n
       grammar <%= keywords('grammar_name', true) %>
+        include Common
         include Feature
         include Table
+        include PyString
 
         rule feature
           feature_sub

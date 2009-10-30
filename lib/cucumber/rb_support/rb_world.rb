@@ -27,6 +27,21 @@ module Cucumber
         end
       end
 
+      def steps(steps)
+        steps.strip.split(/(?=^\s*(?:When|Then|Given|And|But))/).map { |step| step.strip }.each do |step|
+          output = step.match(/^\s*(When|Then|Given|And|But) ([^\n]+)(\n.*)?$/m)
+
+          action, step, table_or_string = output[1], output[2], output[3]
+          if table_or_string.to_s.strip =~ /^\|/
+            table_or_string = table(table_or_string) 
+          elsif table_or_string.to_s.strip =~ /^"""/
+            table_or_string = py_string(table_or_string.gsub(/^\n/, ""))
+          end
+          args = [step, table_or_string].compact
+          send(action, *args)
+        end
+      end
+
       # Returns a Cucumber::Ast::Table for +text_or_table+, which can either
       # be a String:
       #
@@ -51,6 +66,11 @@ module Cucumber
           @table_parser ||= Parser::TableParser.new
           @table_parser.parse_or_fail(text_or_table.strip, file, line_offset)
         end
+      end
+
+      def py_string(string_with_triple_quotes, file=nil, line_offset=0)
+        @py_string_parser ||= Parser::PyStringParser.new
+        @py_string_parser.parse_or_fail(string_with_triple_quotes, file, line_offset).to_s
       end
 
       # Output +announcement+ alongside the formatted output.

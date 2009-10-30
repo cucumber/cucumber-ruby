@@ -3,7 +3,7 @@
 
 module Cucumber
   module Parser
-    # TIP: When you hack on the grammar, just delete feature.rb in this directory.
+    # TIP: When you hack on the grammar, just delete table.rb in this directory.
     # Also make sure you have uninstalled all cucumber gems (don't forget xxx-cucumber
     # github gems).
     #
@@ -15,6 +15,8 @@ module Cucumber
       def root
         @root || :table
       end
+
+      include Common
 
       module Table0
         def at_line?(line)
@@ -265,9 +267,8 @@ module Cucumber
           s1 << r2
           if r2
             if index < input_length
-              next_character = index + input[index..-1].match(/\A(.)/um).end(1)
-              r6 = instantiate_node(SyntaxNode,input, index...next_character)
-              @index = next_character
+              r6 = instantiate_node(SyntaxNode,input, index...(index + 1))
+              @index += 1
             else
               terminal_parse_failure("any character")
               r6 = nil
@@ -290,122 +291,6 @@ module Cucumber
         r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
 
         node_cache[:cell][start_index] = r0
-
-        r0
-      end
-
-      def _nt_space
-        start_index = index
-        if node_cache[:space].has_key?(index)
-          cached = node_cache[:space][index]
-          @index = cached.interval.end if cached
-          return cached
-        end
-
-        if has_terminal?('\G[ \\t]', true, index)
-          next_character = index + input[index..-1].match(/\A(.)/um).end(1)
-          r0 = instantiate_node(SyntaxNode, input, index...next_character)
-          @index = next_character
-        else
-          r0 = nil
-        end
-
-        node_cache[:space][start_index] = r0
-
-        r0
-      end
-
-      module Eol0
-      end
-
-      def _nt_eol
-        start_index = index
-        if node_cache[:eol].has_key?(index)
-          cached = node_cache[:eol][index]
-          @index = cached.interval.end if cached
-          return cached
-        end
-
-        i0 = index
-        if has_terminal?("\n", false, index)
-          r1 = instantiate_node(SyntaxNode,input, index...(index + 1))
-          @index += 1
-        else
-          terminal_parse_failure("\n")
-          r1 = nil
-        end
-        if r1
-          r0 = r1
-        else
-          i2, s2 = index, []
-          if has_terminal?("\r", false, index)
-            r3 = instantiate_node(SyntaxNode,input, index...(index + 1))
-            @index += 1
-          else
-            terminal_parse_failure("\r")
-            r3 = nil
-          end
-          s2 << r3
-          if r3
-            if has_terminal?("\n", false, index)
-              r5 = instantiate_node(SyntaxNode,input, index...(index + 1))
-              @index += 1
-            else
-              terminal_parse_failure("\n")
-              r5 = nil
-            end
-            if r5
-              r4 = r5
-            else
-              r4 = instantiate_node(SyntaxNode,input, index...index)
-            end
-            s2 << r4
-          end
-          if s2.last
-            r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
-            r2.extend(Eol0)
-          else
-            @index = i2
-            r2 = nil
-          end
-          if r2
-            r0 = r2
-          else
-            @index = i0
-            r0 = nil
-          end
-        end
-
-        node_cache[:eol][start_index] = r0
-
-        r0
-      end
-
-      def _nt_eof
-        start_index = index
-        if node_cache[:eof].has_key?(index)
-          cached = node_cache[:eof][index]
-          @index = cached.interval.end if cached
-          return cached
-        end
-
-        i0 = index
-        if index < input_length
-          next_character = index + input[index..-1].match(/\A(.)/um).end(1)
-          r1 = instantiate_node(SyntaxNode,input, index...next_character)
-          @index = next_character
-        else
-          terminal_parse_failure("any character")
-          r1 = nil
-        end
-        if r1
-          r0 = nil
-        else
-          @index = i0
-          r0 = instantiate_node(SyntaxNode,input, index...index)
-        end
-
-        node_cache[:eof][start_index] = r0
 
         r0
       end

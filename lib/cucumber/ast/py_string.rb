@@ -17,6 +17,8 @@ module Cucumber
     # Note how the indentation from the source is stripped away.
     #
     class PyString #:nodoc:
+      attr_accessor :file
+
       def self.default_arg_name
         "string"
       end

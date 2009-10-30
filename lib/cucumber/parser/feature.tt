@@ -276,42 +276,6 @@ module Cucumber
         (step_keyword keyword_space) / scenario_keyword / scenario_outline_keyword / table / tag / comment_line
       end
 
-      rule py_string
-        open_py_string s:(!close_py_string .)* close_py_string {
-          def at_line?(line)
-            line >= open_py_string.line && line <= close_py_string.line
-          end
-
-          def build
-            Ast::PyString.new(open_py_string.line, close_py_string.line, s.text_value, open_py_string.indentation)
-          end
-        }
-      end
-
-      rule open_py_string
-        indent:space* '"""' space* eol {
-          def indentation
-            indent.text_value.length
-          end
-
-          def line
-            indent.line
-          end
-        }
-      end
-
-      rule close_py_string
-        eol space* quotes:'"""' white {
-          def line
-            quotes.line
-          end
-        }
-      end
-
-      rule white
-        (space / eol)*
-      end
-
     end
   end
 end

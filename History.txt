@@ -1,5 +1,8 @@
 == In Git
 
+=== New features
+* Call a bunch of steps from step definitions - also with tables or pystrings. Copy-paste friendly (Bodaniel Jeanes, Aslak Hellesøy)
+
 === Bugfixes
 * RbStepDefinition#invoke calls #backtrace_line on self rather than @proc (#503 Mike Sassak)
 * Avoid duplicate cucumber entries in database.yml (Daniel Hofstetter)
