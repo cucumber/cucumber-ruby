@@ -42,7 +42,8 @@ module Cucumber
           line=99,
           keyword="", 
           name="", 
-          steps=[])
+          steps=[]
+        )
         background.feature = @feature
         @visitor.visit_background(background)
         $x.should == 2

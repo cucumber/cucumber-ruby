@@ -91,10 +91,10 @@ module Cucumber
         "#{step_keyword} /^#{escaped}$/ do#{block_arg_string}\n  #{multiline_class_comment}pending\nend"
       end
 
-      def begin_rb_scenario
+      def begin_rb_scenario(scenario)
         create_world
         extend_world
-        connect_world
+        connect_world(scenario)
       end
 
       def register_rb_hook(phase, tag_names, proc)
@@ -126,8 +126,8 @@ module Cucumber
 
       protected
 
-      def begin_scenario
-        begin_rb_scenario
+      def begin_scenario(scenario)
+        begin_rb_scenario(scenario)
       end
       
       def end_scenario
@@ -156,8 +156,9 @@ module Cucumber
         end
       end
 
-      def connect_world
+      def connect_world(scenario)
         @current_world.__cucumber_step_mother = @step_mother
+        @current_world.__natural_language = scenario.language
       end
 
       def check_nil(o, proc)

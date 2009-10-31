@@ -6,7 +6,7 @@ module Cucumber
 
       before(:each) do
         l = RbSupport::RbLanguage.new(StepMother.new)
-        l.begin_rb_scenario
+        l.begin_rb_scenario(mock('scenario', :null_object => true))
         @world = l.current_world
       end
 

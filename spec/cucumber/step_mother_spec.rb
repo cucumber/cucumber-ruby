@@ -128,7 +128,7 @@ spec/cucumber/step_mother_spec.rb:48:in `/Three cute (.*)/'
 
     it "should implicitly extend world with modules" do
       @dsl.World(ModuleOne, ModuleTwo)
-      @step_mother.before(nil)
+      @step_mother.before(mock('scenario', :null_object => true))
       class << @rb.current_world
         included_modules.index(ModuleOne).should_not == nil
         included_modules.index(ModuleTwo).should_not == nil

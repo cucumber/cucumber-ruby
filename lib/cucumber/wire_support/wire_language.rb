@@ -34,8 +34,8 @@ module Cucumber
       
       protected
       
-      def begin_scenario
-        @connections.each { |remote| remote.begin_scenario }
+      def begin_scenario(scenario)
+        @connections.each { |remote| remote.begin_scenario(scenario) }
       end
       
       def end_scenario

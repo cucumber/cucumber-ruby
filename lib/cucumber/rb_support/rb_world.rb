@@ -14,7 +14,7 @@ module Cucumber
         rb.execute_transforms([arg]).first
       end
     
-      attr_writer :__cucumber_step_mother
+      attr_writer :__cucumber_step_mother, :__natural_language
 
       # Call a step from within a step definition. This method is aliased to
       # the same i18n as RbDsl.
@@ -24,7 +24,7 @@ module Cucumber
 
       # See StepMother#invoke_steps
       def steps(steps_text)
-        @__cucumber_step_mother.invoke_steps(steps_text)
+        @__cucumber_step_mother.invoke_steps(steps_text, @__natural_language)
       end
 
       # See StepMother#table

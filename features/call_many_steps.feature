@@ -1,6 +1,3 @@
-# TODO:
-# * Support i18n - and only the keywords from the calling feature.
-# * Let the gherkin dudes know about this :-)
 Feature: http://gist.github.com/221223
   In order to make it easier to extract several steps from
   a feature file to a step definition I want to be able to

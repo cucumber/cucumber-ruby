@@ -7,9 +7,9 @@ module Cucumber
       def create_step_match(step_definition, step_name, name_to_report, step_arguments)
         StepMatch.new(step_definition, step_name, name_to_report, step_arguments)
       end
-      
+
       def before(scenario)
-        begin_scenario
+        begin_scenario(scenario)
         execute_before(scenario)
       end
 
@@ -17,7 +17,7 @@ module Cucumber
         execute_after(scenario)
         end_scenario
       end
-      
+
       def after_configuration(configuration)
         hooks[:after_configuration].each do |hook|
           hook.invoke('AfterConfiguration', configuration)

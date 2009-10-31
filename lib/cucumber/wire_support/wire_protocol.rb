@@ -36,7 +36,7 @@ module Cucumber
         end
       end
       
-      def begin_scenario
+      def begin_scenario(scenario)
         make_request(:begin_scenario) do
           def handle_success(params)
           end

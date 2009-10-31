@@ -62,7 +62,7 @@ module Cucumber
       end
 
       def language
-        @feature.language
+        @feature.language if @feature
       end
     end
   end

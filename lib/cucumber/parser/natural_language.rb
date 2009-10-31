@@ -68,6 +68,14 @@ module Cucumber
       def and_keywords
         @keywords['and'].split('|')
       end
+
+      def step_keywords
+        %w{given when then and but}.map{|key| @keywords[key].split('|')}.flatten.uniq
+      end
+
+      def space_after_keyword
+        @keywords['space_after_keyword']
+      end
     end
   end
 end

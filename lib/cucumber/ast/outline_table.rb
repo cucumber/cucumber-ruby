@@ -44,6 +44,10 @@ module Cucumber
         @scenario_outline.visit_scenario_name(visitor, row)
       end
 
+      def language
+        @scenario_outline.language
+      end
+
       class ExampleRow < Cells #:nodoc:        
         class InvalidForHeaderRowError < NoMethodError
           def initialize(*args)
@@ -146,7 +150,11 @@ module Cucumber
         def name
           "| #{@cells.collect{|c| c.value }.join(' | ')} |"
         end
-        
+
+        def language
+          @table.language
+        end
+
         private
 
         def header?
