@@ -1,6 +1,5 @@
 # TODO:
 # * Support i18n - and only the keywords from the calling feature.
-# * Move logic out of rb_world so other backends (programming languages) can use this too.
 # * Let the gherkin dudes know about this :-)
 Feature: http://gist.github.com/221223
   In order to make it easier to extract several steps from

@@ -19,71 +19,30 @@ module Cucumber
       # Call a step from within a step definition. This method is aliased to
       # the same i18n as RbDsl.
       def __cucumber_invoke(name, multiline_argument=nil) #:nodoc:
-        begin
-          @__cucumber_step_mother.invoke(name, multiline_argument)
-        rescue Exception => e
-          e.nested! if Undefined === e
-          raise e
-        end
+        @__cucumber_step_mother.invoke(name, multiline_argument)
       end
 
-      def steps(steps)
-        steps.strip.split(/(?=^\s*(?:When|Then|Given|And|But))/).map { |step| step.strip }.each do |step|
-          output = step.match(/^\s*(When|Then|Given|And|But) ([^\n]+)(\n.*)?$/m)
-
-          action, step, table_or_string = output[1], output[2], output[3]
-          if table_or_string.to_s.strip =~ /^\|/
-            table_or_string = table(table_or_string) 
-          elsif table_or_string.to_s.strip =~ /^"""/
-            table_or_string = py_string(table_or_string.gsub(/^\n/, ""))
-          end
-          args = [step, table_or_string].compact
-          send(action, *args)
-        end
+      # See StepMother#invoke_steps
+      def steps(steps_text)
+        @__cucumber_step_mother.invoke_steps(steps_text)
       end
 
-      # Returns a Cucumber::Ast::Table for +text_or_table+, which can either
-      # be a String:
-      #
-      #   table(%{
-      #     | account | description | amount |
-      #     | INT-100 | Taxi        | 114    |
-      #     | CUC-101 | Peeler      | 22     |
-      #   })
-      #
-      # or a 2D Array:
-      #
-      #   table([
-      #     %w{ account description amount },
-      #     %w{ INT-100 Taxi        114    },
-      #     %w{ CUC-101 Peeler      22     }
-      #   ])
-      #
+      # See StepMother#table
       def table(text_or_table, file=nil, line_offset=0)
-        if Array === text_or_table
-          Ast::Table.new(text_or_table)
-        else
-          @table_parser ||= Parser::TableParser.new
-          @table_parser.parse_or_fail(text_or_table.strip, file, line_offset)
-        end
+        @__cucumber_step_mother.table(text_or_table, file, line_offset)
       end
 
+      # See StepMother#py_string
       def py_string(string_with_triple_quotes, file=nil, line_offset=0)
-        @py_string_parser ||= Parser::PyStringParser.new
-        @py_string_parser.parse_or_fail(string_with_triple_quotes, file, line_offset).to_s
+        @__cucumber_step_mother.py_string(text_or_table, file, line_offset)
       end
 
-      # Output +announcement+ alongside the formatted output.
-      # This is an alternative to using Kernel#puts - it will display
-      # nicer, and in all outputs (in case you use several formatters)
-      #
-      # Beware that the output will be printed *before* the corresponding
-      # step. This is because the step itself will not be printed until
-      # after it has run, so it can be coloured according to its status.
+      # See StepMother#announce
       def announce(announcement)
         @__cucumber_step_mother.announce(announcement)
       end
 
+      # See StepMother#embed
       def embed(file, mime_type)
         @__cucumber_step_mother.embed(file, mime_type)
       end

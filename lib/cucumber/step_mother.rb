@@ -127,10 +127,21 @@ module Cucumber
       end
     end
 
-    def announce(msg) #:nodoc:
+    # Output +announcement+ alongside the formatted output.
+    # This is an alternative to using Kernel#puts - it will display
+    # nicer, and in all outputs (in case you use several formatters)
+    #
+    # Beware that the output will be printed *before* the corresponding
+    # step. This is because the step itself will not be printed until
+    # after it has run, so it can be coloured according to its status.
+    #
+    def announce(msg)
       @visitor.announce(msg)
     end
 
+    # Embed +file+ of MIME type +mime_type+ into the output. This may or may
+    # not be ignored, depending on what kind of formatter(s) are active.
+    #
     def embed(file, mime_type)
       @visitor.embed(file, mime_type)
     end
@@ -145,7 +156,73 @@ module Cucumber
     end
 
     def invoke(step_name, multiline_argument=nil)
-      step_match(step_name).invoke(multiline_argument)
+      begin
+        step_match(step_name).invoke(multiline_argument)
+      rescue Exception => e
+        e.nested! if Undefined === e
+        raise e
+      end
+    end
+
+    # Invokes a series of steps +steps_text+. Example:
+    #
+    #   invoke(%Q{
+    #     Given I have 8 cukes in my belly
+    #     Then I should not be thirsty
+    #   })
+    def invoke_steps(steps_text)
+      steps_text.strip.split(/(?=^\s*(?:When|Then|Given|And|But))/).map { |step| step.strip }.each do |step|
+        output = step.match(/^\s*(When|Then|Given|And|But) ([^\n]+)(\n.*)?$/m)
+
+        action, step_name, table_or_string = output[1], output[2], output[3]
+        if table_or_string.to_s.strip =~ /^\|/
+          table_or_string = table(table_or_string) 
+        elsif table_or_string.to_s.strip =~ /^"""/
+          table_or_string = py_string(table_or_string.gsub(/^\n/, ""))
+        end
+        args = [step_name, table_or_string].compact
+        invoke(*args)
+      end
+    end
+
+    # Returns a Cucumber::Ast::Table for +text_or_table+, which can either
+    # be a String:
+    #
+    #   table(%{
+    #     | account | description | amount |
+    #     | INT-100 | Taxi        | 114    |
+    #     | CUC-101 | Peeler      | 22     |
+    #   })
+    #
+    # or a 2D Array:
+    #
+    #   table([
+    #     %w{ account description amount },
+    #     %w{ INT-100 Taxi        114    },
+    #     %w{ CUC-101 Peeler      22     }
+    #   ])
+    #
+    def table(text_or_table, file=nil, line_offset=0)
+      if Array === text_or_table
+        Ast::Table.new(text_or_table)
+      else
+        @table_parser ||= Parser::TableParser.new
+        @table_parser.parse_or_fail(text_or_table.strip, file, line_offset)
+      end
+    end
+
+    # Returns a regular String for +string_with_triple_quotes+. Example:
+    #
+    #   """
+    #    hello
+    #   world
+    #   """
+    #
+    # Is retured as: " hello\nworld"
+    #
+    def py_string(string_with_triple_quotes, file=nil, line_offset=0)
+      @py_string_parser ||= Parser::PyStringParser.new
+      @py_string_parser.parse_or_fail(string_with_triple_quotes, file, line_offset).to_s
     end
 
     def step_match(step_name, name_to_report=nil) #:nodoc:
