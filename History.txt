@@ -6,6 +6,7 @@
 === Bugfixes
 * RbStepDefinition#invoke calls #backtrace_line on self rather than @proc (#503 Mike Sassak)
 * Avoid duplicate cucumber entries in database.yml (Daniel Hofstetter)
+* Added respond_to? when checking config.cache_classes for older Rails versions (Jeremy Durham)
 
 === Changed Features
 * $cucumber_interrupted is now Cucumber.wants_to_quit - avoid global variable, which gives warnings. (Aslak Hellesøy)
