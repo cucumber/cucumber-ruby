@@ -1,6 +1,9 @@
 == In Git
 
 === New features
+* Make 'I' optional in all webrat steps. (Gavin Hughes)
+* Make generated cucumber.rake work with a vendored gem (Alex Rothenberg)
+* Native support for ANSIColor on IronRuby via the iron-term-ansicolor gem (Will Green)
 * Call a bunch of steps from step definitions - also with tables or pystrings. Copy-paste friendly (Bodaniel Jeanes, Jack Chen, Aslak Hellesøy) TODO - WIKI DOCUMENTATION BEFORE RELEASE
 
 === Bugfixes
