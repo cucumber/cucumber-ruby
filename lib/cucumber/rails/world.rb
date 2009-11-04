@@ -8,7 +8,7 @@ end
 require 'cucumber/rails/test_unit'
 require 'cucumber/rails/action_controller'
 
-unless ::Rails.configuration.cache_classes
+if ::Rails.respond_to?(:configuration) && !(::Rails.configuration.cache_classes)
   warn "WARNING: You have set Rails' config.cache_classes to false (most likely in config/environments/cucumber.rb).  This setting is known to break Cucumber's use_transactional_fixtures method. Set config.cache_classes to true if you want to use transactional fixtures.  For more information see https://rspec.lighthouseapp.com/projects/16211/tickets/165."
 end
 
