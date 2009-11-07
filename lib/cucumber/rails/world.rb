@@ -15,6 +15,7 @@ end
 module Cucumber #:nodoc:
   module Rails
     class World < ActionController::IntegrationTest
+      include ActiveSupport::Testing::SetupAndTeardown
       def initialize #:nodoc:
         @_result = Test::Unit::TestResult.new
       end
