@@ -1,6 +1,7 @@
 == In Git
 
 === New features
+* Cucumber should use ActiveSupport::Callbacks for fixtures (#516 Adam Salter)
 * Make 'I' optional in all webrat steps. (Gavin Hughes)
 * Make generated cucumber.rake work with a vendored gem (Alex Rothenberg)
 * Native support for ANSIColor on IronRuby via the iron-term-ansicolor gem (Will Green)
