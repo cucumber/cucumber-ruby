@@ -11,7 +11,7 @@ module Cucumber
   BINARY        = File.expand_path(File.dirname(__FILE__) + '/../../bin/cucumber')
   LIBDIR        = File.expand_path(File.dirname(__FILE__) + '/../../lib')
   JRUBY         = defined?(JRUBY_VERSION)
-  IRONRUBY      = defined? RUBY_ENGINE and RUBY_ENGINE == "ironruby"
+  IRONRUBY      = defined?(RUBY_ENGINE) && RUBY_ENGINE == "ironruby"
   WINDOWS       = Config::CONFIG['host_os'] =~ /mswin|mingw/
   WINDOWS_MRI   = WINDOWS && !JRUBY && !IRONRUBY
   RAILS         = defined?(Rails)
