@@ -8,6 +8,7 @@
 * Call a bunch of steps from step definitions - also with tables or pystrings. Copy-paste friendly (Bodaniel Jeanes, Jack Chen, Aslak Hellesøy) TODO - WIKI DOCUMENTATION BEFORE RELEASE
 
 === Bugfixes
+* Define IRONRUBY correctly on Ruby 1.9 (Joe Van Dyk)
 * RbStepDefinition#invoke calls #backtrace_line on self rather than @proc (#503 Mike Sassak)
 * Avoid duplicate cucumber entries in database.yml (Daniel Hofstetter)
 * Added respond_to? when checking config.cache_classes for older Rails versions (Jeremy Durham)
