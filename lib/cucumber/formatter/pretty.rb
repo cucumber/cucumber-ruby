@@ -178,13 +178,13 @@ module Cucumber
       end
 
       def before_table_row(table_row)
-        return unless @table
+        return if !@table || @hide_this_step
         @col_index = 0
         @io.print '  |'.indent(@indent-2)
       end
 
       def after_table_row(table_row)
-        return unless @table
+        return if !@table || @hide_this_step
         print_table_row_announcements
         @io.puts
         if table_row.exception && !@exceptions.include?(table_row.exception)
@@ -198,7 +198,7 @@ module Cucumber
       end
 
       def table_cell_value(value, status)
-        return unless @table
+        return if !@table || @hide_this_step
         status ||= @status || :passed
         width = @table.col_width(@col_index)
         cell_text = value.to_s || ''
@@ -234,7 +234,6 @@ module Cucumber
         print_passing_wip(@options)
         print_tag_limit_warnings(@options)
       end
-
     end
   end
 end

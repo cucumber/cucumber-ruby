@@ -13,6 +13,7 @@ module Cucumber
   JRUBY         = defined?(JRUBY_VERSION)
   IRONRUBY      = defined?(RUBY_ENGINE) && RUBY_ENGINE == "ironruby"
   WINDOWS       = Config::CONFIG['host_os'] =~ /mswin|mingw/
+  OS_X          = Config::CONFIG['host_os'] =~ /darwin/
   WINDOWS_MRI   = WINDOWS && !JRUBY && !IRONRUBY
   RAILS         = defined?(Rails)
   RUBY_BINARY   = File.join(Config::CONFIG['bindir'], Config::CONFIG['ruby_install_name'])
