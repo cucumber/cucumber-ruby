@@ -11,8 +11,7 @@ module Screenshots
     embed("#{id}.png", "image/png")
   end
 
-  if `which screencapture` =~ /screencapture/
-    # OS X
+  if Cucumber::OS_X
     def take_screenshot(id)
       `screencapture -t png #{id}.png`
     end
