@@ -15,6 +15,7 @@
 * Added respond_to? when checking config.cache_classes for older Rails versions (Jeremy Durham)
 
 === Changed Features
+* Rails support has been moved to the cucumber-rails gem (Dennis Blöte, Aslak Hellesøy) TODO - WIKI DOCUMENTATION BEFORE RELEASE
 * $cucumber_interrupted is now Cucumber.wants_to_quit - avoid global variable, which gives warnings. (Aslak Hellesøy)
 * Examples keyword without a colon is deprecated loudly. Gherkin will not recognize it at all. (Gherkin #30 Mike Sassak)
 

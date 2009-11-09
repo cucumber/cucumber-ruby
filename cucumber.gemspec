@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2009-10-28}
+  s.date = %q{2009-11-09}
   s.default_executable = %q{cucumber}
   s.description = %q{A BDD tool written in Ruby}
   s.email = %q{cukes@googlegroups.com}
@@ -319,6 +319,7 @@ Gem::Specification.new do |s|
      "features/bug_371.feature",
      "features/bug_464.feature",
      "features/bug_475.feature",
+     "features/call_many_steps.feature",
      "features/cucumber_cli.feature",
      "features/cucumber_cli_diff_disabled.feature",
      "features/cucumber_cli_outlines.feature",
@@ -430,10 +431,14 @@ Gem::Specification.new do |s|
      "lib/cucumber/language_support/language_methods.rb",
      "lib/cucumber/languages.yml",
      "lib/cucumber/parser.rb",
+     "lib/cucumber/parser/common.rb",
+     "lib/cucumber/parser/common.tt",
      "lib/cucumber/parser/feature.rb",
      "lib/cucumber/parser/feature.tt",
      "lib/cucumber/parser/i18n.tt",
      "lib/cucumber/parser/natural_language.rb",
+     "lib/cucumber/parser/py_string.rb",
+     "lib/cucumber/parser/py_string.tt",
      "lib/cucumber/parser/table.rb",
      "lib/cucumber/parser/table.tt",
      "lib/cucumber/parser/treetop_ext.rb",
@@ -441,11 +446,6 @@ Gem::Specification.new do |s|
      "lib/cucumber/py_support/py_dsl.py",
      "lib/cucumber/py_support/py_language.py",
      "lib/cucumber/py_support/py_language.rb",
-     "lib/cucumber/rails/action_controller.rb",
-     "lib/cucumber/rails/active_record.rb",
-     "lib/cucumber/rails/rspec.rb",
-     "lib/cucumber/rails/test_unit.rb",
-     "lib/cucumber/rails/world.rb",
      "lib/cucumber/rake/task.rb",
      "lib/cucumber/rb_support/rb_dsl.rb",
      "lib/cucumber/rb_support/rb_hook.rb",
@@ -468,20 +468,6 @@ Gem::Specification.new do |s|
      "lib/cucumber/wire_support/wire_packet.rb",
      "lib/cucumber/wire_support/wire_protocol.rb",
      "lib/cucumber/wire_support/wire_step_definition.rb",
-     "rails_generators/cucumber/USAGE",
-     "rails_generators/cucumber/cucumber_generator.rb",
-     "rails_generators/cucumber/templates/cucumber",
-     "rails_generators/cucumber/templates/cucumber.rake",
-     "rails_generators/cucumber/templates/cucumber_environment.rb",
-     "rails_generators/cucumber/templates/env.rb",
-     "rails_generators/cucumber/templates/paths.rb",
-     "rails_generators/cucumber/templates/spork_env.rb",
-     "rails_generators/cucumber/templates/version_check.rb",
-     "rails_generators/cucumber/templates/webrat_steps.rb",
-     "rails_generators/feature/USAGE",
-     "rails_generators/feature/feature_generator.rb",
-     "rails_generators/feature/templates/feature.erb",
-     "rails_generators/feature/templates/steps.erb",
      "spec/cucumber/ast/background_spec.rb",
      "spec/cucumber/ast/feature_element_spec.rb",
      "spec/cucumber/ast/feature_factory.rb",
