@@ -61,6 +61,10 @@ module Cucumber
           tag_names.map{|name| name[1..-1]}
         end
 
+        def parse_tags(tags_string)
+          tags_string.split(',')
+        end
+
         private
 
         def validate_tags(tag_name_list)
