@@ -9,6 +9,7 @@
 
 === Bugfixes
 * Pretty printer fails when expanding scenario outlines with -x when the background includes a table (#515 Mike Sassak)
+* Ensure tags used with Before/After hooks always get parsed (#520 Joseph Wilk)
 * Define IRONRUBY correctly on Ruby 1.9 (Joe Van Dyk)
 * RbStepDefinition#invoke calls #backtrace_line on self rather than @proc (#503 Mike Sassak)
 * Avoid duplicate cucumber entries in database.yml (Daniel Hofstetter)

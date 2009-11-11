@@ -13,7 +13,7 @@ module Cucumber
       it "should not raise an error when there are no tags" do
         @tag_occurrences = nil
 
-        lambda{print_tag_limit_warnings(:tag_names => {'@wip', 2})}.should_not raise_error
+        lambda{print_tag_limit_warnings(:tag_names => {'@wip' => 2})}.should_not raise_error
       end
     end
   end

@@ -48,10 +48,6 @@ module Cucumber
         new(out_stream, error_stream, options).parse!(args)
       end
 
-      def self.parse_tag_arguments(tags_string)
-        tags_string.split(',')
-      end
-
       def initialize(out_stream = STDOUT, error_stream = STDERR, options = {})
         @out_stream   = out_stream
         @error_stream = error_stream
@@ -294,7 +290,7 @@ module Cucumber
       end
 
       def parse_tags(tag_string)
-        tag_names = Options.parse_tag_arguments(tag_string)
+        tag_names = Ast::Tags.parse_tags(tag_string)
         parse_tag_limits(tag_names)
       end
 
