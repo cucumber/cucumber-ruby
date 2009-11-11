@@ -491,8 +491,8 @@ module Cucumber
           steps.at_line?(line)
         end
 
-        def matches_tags?(tag_names)
-          Ast::Tags.matches?(self.parent.tags.tag_names, tag_names)
+        def matches_tags?(tag_name_lists)
+          Ast::Tags.matches?(self.parent.tags.tag_names, tag_name_lists)
         end
 
         def build
@@ -687,10 +687,10 @@ module Cucumber
           tags.at_line?(line)
         end
 
-        def matches_tags?(tag_names)
+        def matches_tags?(tag_name_lists)
           feature_tag_names = self.parent.parent.tags.tag_names
           source_tag_names = (feature_tag_names + tags.tag_names).uniq
-          Ast::Tags.matches?(source_tag_names, tag_names)
+          Ast::Tags.matches?(source_tag_names, tag_name_lists)
         end
 
         def matches_name?(regexp_to_match)
@@ -826,10 +826,10 @@ module Cucumber
           steps.at_line?(line)
         end
 
-        def matches_tags?(tag_names)
+        def matches_tags?(tag_name_lists)
           feature_tag_names = self.parent.parent.tags.tag_names
           source_tag_names = (feature_tag_names + tags.tag_names).uniq
-          Ast::Tags.matches?(source_tag_names, tag_names)
+          Ast::Tags.matches?(source_tag_names, tag_name_lists)
         end
 
         def matches_name?(regexp_to_match)
@@ -1168,7 +1168,7 @@ module Cucumber
           table.at_line?(line)
         end
 
-        def matches_tags?(tag_names)
+        def matches_tags?(tag_name_lists)
           true
         end
 
