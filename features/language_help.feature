@@ -30,7 +30,7 @@ Feature: Language help
       | bg      | Bulgarian              | български            |
       | cat     | Catalan                | català               |
       | cy      | Welsh                  | Cymraeg              |
-      | cz      | Czech                  | Česky                |
+      | cs      | Czech                  | Česky                |
       | da      | Danish                 | dansk                |
       | de      | German                 | Deutsch              |
       | en      | English                | English              |
