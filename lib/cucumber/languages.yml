@@ -86,7 +86,7 @@
   and: A
   but: Ond
   space_after_keyword: true
-"cz":
+"cs":
   name: Czech
   native: Česky
   encoding: UTF-8
