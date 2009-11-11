@@ -50,9 +50,9 @@ module Cucumber
       class << self
         EXCLUDE_PATTERN = /^~/
 
-        def matches?(source_tag_names, tag_names)
-          validate_tags(tag_names)
-          tag_names.empty? ? true : check_if_tags_match(source_tag_names, tag_names)
+        def matches?(source_tag_names, tag_name_lists)
+          validate_tags(tag_name_lists)
+          tag_name_lists.empty? ? true : check_if_tags_match(source_tag_names, tag_name_lists)
         end
 
         def exclude_tag?(tag_name)
@@ -69,15 +69,15 @@ module Cucumber
 
         private
 
-        def validate_tags(tag_name_list)
-          all_tag_names = tag_name_list.flatten
+        def validate_tags(tag_name_lists)
+          all_tag_names = tag_name_lists.flatten
           exclude_tag_names, include_tag_names = all_tag_names.partition{|tag_name| exclude_tag?(tag_name)}
           exclude_tag_names = strip_negative_char(exclude_tag_names)
           check_at_sign_prefix(exclude_tag_names + include_tag_names)
         end
 
-        def check_if_tags_match(source_tag_names, tag_names)
-          tag_exp = Or.new(tag_names.map{|tag_name_list| And.new(tag_name_list) })
+        def check_if_tags_match(source_tag_names, tag_name_lists)
+          tag_exp = Or.new(tag_name_lists.map{|tag_name_list| And.new(tag_name_list) })
           tag_exp.matches?(source_tag_names)
         end
 
