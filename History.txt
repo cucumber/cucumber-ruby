@@ -16,6 +16,7 @@
 * Added respond_to? when checking config.cache_classes for older Rails versions (Jeremy Durham)
 
 === Changed Features
+* The code for Czech has changed from cz to cs. (deepj)
 * $cucumber_interrupted is now Cucumber.wants_to_quit - avoid global variable, which gives warnings. (Aslak Hellesøy)
 * Examples keyword without a colon is deprecated loudly. Gherkin will not recognize it at all. (Gherkin #30 Mike Sassak)
 
