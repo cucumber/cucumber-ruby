@@ -10,10 +10,12 @@ module Cucumber
     # This gets stored internally as <tt>["invoice", "release_2"]</tt>
     #
     class Tags #:nodoc:
-
       class And #:nodoc:
         def initialize(tag_names)
-          raise "tag_names was #{tag_names.inspect} (#{tag_names.class}) - expected it to be Array" unless Array === tag_names
+          if String === tag_names # They still come in as single strings on cuke4duke some times. Not sure why...
+            raise "Commas in tags??? #{tag_names.inspect}" if tag_names =~ /,/ # just in case...
+            tag_names = [tag_names] 
+          end
           @negative_tags, @positive_tags = tag_names.partition{|tag_name| Tags.exclude_tag?(tag_name)}
           @negative_tags = Tags.strip_negative_char(@negative_tags)
         end
@@ -80,7 +82,7 @@ module Cucumber
         end
 
         def check_at_sign_prefix(tag_names)
-          tag_names.each{|tag_name| raise "Tag names must start with an @ sign. The following tag name didn't: #{tag_name}" unless tag_name[0..0] == '@'}
+          tag_names.each{|tag_name| raise "Tag names must start with an @ sign. The following tag name didn't: #{tag_name.inspect}" unless tag_name[0..0] == '@'}
         end
 
       end
