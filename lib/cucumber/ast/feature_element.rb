@@ -49,8 +49,7 @@ module Cucumber
       end
 
       def accept_hook?(hook)
-        parsed_hook_tag_names = hook.tag_names.map {|tag_string| Cli::Options.parse_tag_arguments(tag_string)}
-        Tags.matches?(source_tag_names, parsed_hook_tag_names)
+        Tags.matches?(source_tag_names, hook.tag_names)
       end
 
       def source_tag_names

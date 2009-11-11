@@ -13,6 +13,7 @@ module Cucumber
 
       class And #:nodoc:
         def initialize(tag_names)
+          raise "tag_names was #{tag_names.inspect} (#{tag_names.class}) - expected it to be Array" unless Array === tag_names
           @negative_tags, @positive_tags = tag_names.partition{|tag_name| Tags.exclude_tag?(tag_name)}
           @negative_tags = Tags.strip_negative_char(@negative_tags)
         end
@@ -58,6 +59,10 @@ module Cucumber
 
         def strip_negative_char(tag_names)
           tag_names.map{|name| name[1..-1]}
+        end
+
+        def parse_tags(tags_string)
+          tags_string.split(',')
         end
 
         private
