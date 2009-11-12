@@ -101,7 +101,7 @@ module Cucumber
       end
 
       def accept_hook?(hook)
-        self.class.matches?(@tag_names, hook.tag_names)
+        self.class.matches?(@tag_names, hook.tag_name_lists)
       end
 
       def count(tag)

@@ -38,7 +38,7 @@ module Cucumber
       end
 
       def add_hook(phase, hook)
-        hook.tag_names = hook.tag_names.map {|tag_string| Ast::Tags.parse_tags(tag_string)}
+        hook.tag_name_lists = hook.tag_names.map {|tag_string| Ast::Tags.parse_tags(tag_string)}
         hooks[phase.to_sym] << hook
         hook
       end
