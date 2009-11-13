@@ -1,4 +1,6 @@
-== In Git
+== 0.4.4 2009-11-13
+
+What a bad day to make a release, but here goes.
 
 === New features
 * Cucumber should use ActiveSupport::Callbacks for fixtures (#516 Adam Salter)
