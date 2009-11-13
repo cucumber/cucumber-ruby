@@ -27,11 +27,11 @@ Feature: Print snippets
       You can implement step definitions for undefined steps with these snippets:
       
       Given /^Z$/ do
-        pending
+        pending # express the regexp above with the code you wish you had
       end
 
       Given /^Q$/ do
-        pending
+        pending # express the regexp above with the code you wish you had
       end
 
       If you want snippets in a different programming language, just make sure a file
