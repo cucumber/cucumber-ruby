@@ -1,3 +1,5 @@
+== In Git
+
 == 0.4.4 2009-11-13
 
 What a bad day to make a release, but here goes.
@@ -7,7 +9,7 @@ What a bad day to make a release, but here goes.
 * Make 'I' optional in all webrat steps. (Gavin Hughes)
 * Make generated cucumber.rake work with a vendored gem (Alex Rothenberg)
 * Native support for ANSIColor on IronRuby via the iron-term-ansicolor gem (Will Green)
-* Call a bunch of steps from step definitions - also with tables or pystrings. Copy-paste friendly (Bodaniel Jeanes, Jack Chen, Aslak Hellesøy) TODO - WIKI DOCUMENTATION BEFORE RELEASE
+* Call a bunch of steps from step definitions - also with tables or pystrings. Copy-paste friendly (Bodaniel Jeanes, Jack Chen, Aslak Hellesøy)
 
 === Bugfixes
 * Pretty printer fails when expanding scenario outlines with -x when the background includes a table (#515 Mike Sassak)
