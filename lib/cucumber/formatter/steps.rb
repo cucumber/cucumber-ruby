@@ -3,8 +3,8 @@ module Cucumber
     # The formatter used for <tt>--format steps</tt>
     class Steps
 
-      def initialize(step_mother, io, options)
-        @io = io
+      def initialize(step_mother, path_or_io, options)
+        @io = ensure_io(path_or_io, "steps")
         @options = options
         @step_definition_files = collect_steps(step_mother)
       end

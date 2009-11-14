@@ -189,7 +189,7 @@ module Cucumber
             @options[:dry_run] = true
             @options[:snippets] = false
           end
-          opts.on("-a", "--autoformat DIRECTORY",
+          opts.on("-a", "--autoformat DIR",
             "Reformats (pretty prints) feature files and write them to DIRECTORY.",
             "Be careful if you choose to overwrite the originals.",
             "Implies --dry-run --formatter pretty.") do |directory|

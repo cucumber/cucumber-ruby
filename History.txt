@@ -2,6 +2,7 @@
 
 === Changed Features
 * --language is deprecated and will be removed in 0.5.0: http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages (Aslak Hellesøy)
+* Formatters will no longer be passed File objects. They must use ensure_io, ensure_file or ensure_dir. (Aslak Hellesøy)
 
 == 0.4.4 2009-11-13
 

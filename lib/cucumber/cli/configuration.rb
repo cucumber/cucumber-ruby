@@ -130,25 +130,10 @@ module Cucumber
         return [Formatter::Pretty.new(step_mother, nil, @options)] if @options[:autoformat]
         @options[:formats].map do |format_and_out|
           format = format_and_out[0]
-          out    = format_and_out[1]
-          if String === out # file name
-            unless File.directory?(out)
-              out = File.open(out, Cucumber.file_mode('w'))
-              at_exit do
-                
-                # Since Spork "never" actually exits, I want to flush and close earlier...
-                unless out.closed?
-                  out.flush
-                  out.close
-                end
-                
-              end
-            end
-          end
-
+          path_or_io = format_and_out[1]
           begin
             formatter_class = formatter_class(format)
-            formatter_class.new(step_mother, out, @options)
+            formatter_class.new(step_mother, path_or_io, @options)
           rescue Exception => e
             e.message << "\nError creating formatter: #{format}"
             raise e
