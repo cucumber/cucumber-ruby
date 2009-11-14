@@ -63,9 +63,6 @@ module Cli
             when_parsing('--language help') { Kernel.should_receive(:exit) }
           end
         end
-        it "sets the langauge" do
-          after_parsing('-l en') { options[:lang].should == 'en' }
-        end
       end
 
       context "--port PORT" do

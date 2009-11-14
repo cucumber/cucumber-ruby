@@ -1,5 +1,8 @@
 == In Git
 
+=== Changed Features
+* --language is deprecated and will be removed in 0.5.0: http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages (Aslak Hellesøy)
+
 == 0.4.4 2009-11-13
 
 What a bad day to make a release, but here goes.
