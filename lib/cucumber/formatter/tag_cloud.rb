@@ -1,10 +1,14 @@
+require 'cucumber/formatter/io'
+
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format tag_cloud</tt>
     # Custom formatter that prints a tag cloud as a table.
     class TagCloud
-      def initialize(step_mother, io, options)
-        @io = io
+      include Io
+
+      def initialize(step_mother, path_or_io, options)
+        @io = ensure_io(path_or_io, "tag_cloud")
         @options = options
         @counts = Hash.new{|h,k| h[k] = 0}
       end

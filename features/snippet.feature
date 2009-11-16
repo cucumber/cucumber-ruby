@@ -8,7 +8,7 @@ Feature: Snippets
     Then the output should contain
       """
       Given /^a pystring$/ do |string|
-        pending
+        pending # express the regexp above with the code you wish you had
       end
       """
   Scenario: Snippet for undefined step with a step table
@@ -17,6 +17,6 @@ Feature: Snippets
       """
       Given /^a table$/ do |table|
         # table is a Cucumber::Ast::Table
-        pending
+        pending # express the regexp above with the code you wish you had
       end
       """

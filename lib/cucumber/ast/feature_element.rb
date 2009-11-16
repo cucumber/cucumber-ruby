@@ -49,7 +49,7 @@ module Cucumber
       end
 
       def accept_hook?(hook)
-        Tags.matches?(source_tag_names, hook.tag_names)
+        Tags.matches?(source_tag_names, hook.tag_name_lists)
       end
 
       def source_tag_names

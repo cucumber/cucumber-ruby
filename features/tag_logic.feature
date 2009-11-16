@@ -145,6 +145,38 @@ Feature: Tag logic
 
       """
 
+  Scenario: Before hooks ANDing with a bad hook matching nothing
+    Given a file named "features/support/hooks.rb" with:
+      """
+      Before('@one,@notused') do
+        raise 'boom'
+      end
+      """
+    When I run cucumber -q features/tagulicious.feature
+    Then it should pass with
+      """
+      Feature: Sample
+
+        @one @three
+        Scenario: Example
+          Given passing
+
+        @one
+        Scenario: Another Example
+          Given passing
+
+        @three
+        Scenario: Yet another Example
+          Given passing
+
+        @ignore
+        Scenario: And yet another Example
+
+      4 scenarios (3 undefined, 1 passed)
+      3 steps (3 undefined)
+
+      """
+
   Scenario: After hooks ORing
     Given a file named "features/support/hooks.rb" with:
       """

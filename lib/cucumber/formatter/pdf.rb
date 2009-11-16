@@ -1,4 +1,5 @@
 require 'cucumber/formatter/console'
+require 'cucumber/formatter/io'
 require 'fileutils'
 require 'prawn'
 require "prawn/layout"
@@ -13,11 +14,12 @@ module Cucumber
     class Pdf
       include FileUtils
       include Console
+      include Io
       attr_writer :indent
 
-      def initialize(step_mother, io, options)
+      def initialize(step_mother, path_or_io, options)
         @step_mother = step_mother
-        raise "You *must* specify --out FILE for the pdf formatter" unless File === io
+        @file = ensure_file(path_or_io, "pdf")
 
         if(options[:dry_run])
           @status_colors = { :passed => BLACK, :skipped => BLACK, :undefined => BLACK, :failed => BLACK}
@@ -28,12 +30,10 @@ module Cucumber
         @pdf = Prawn::Document.new
         @scrap = Prawn::Document.new
         @doc = @scrap
-        @io = io
         @options = options
         @exceptions = []
         @indent = 0
         @buffer = []
-        puts "writing to #{io.path}"
         load_cover_page_image
         @pdf.text "\n\n\nCucumber features", :align => :center, :size => 32
         @pdf.text "Generated: #{Time.now.strftime("%Y-%m-%d %H:%M")}", :size => 10, :at => [0, 24]
@@ -66,7 +66,7 @@ module Cucumber
       end
 
       def after_features(features)
-        @pdf.render_file(@io.path)
+        @pdf.render_file(@file.path)
         puts "\ndone"
       end
 

@@ -1,11 +1,20 @@
 == In Git
 
+=== Changed Features
+* --language is deprecated and will be removed in 0.5.0: http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages (Aslak Hellesøy)
+* Formatters will no longer be passed File objects. They must use ensure_io, ensure_file or ensure_dir. (Aslak Hellesøy)
+* Webrat step "Then I should be on" should use request_uri instead of path for missing query string parameters (ZhangJinzhu)
+
+== 0.4.4 2009-11-13
+
+What a bad day to make a release, but here goes.
+
 === New features
 * Cucumber should use ActiveSupport::Callbacks for fixtures (#516 Adam Salter)
 * Make 'I' optional in all webrat steps. (Gavin Hughes)
 * Make generated cucumber.rake work with a vendored gem (Alex Rothenberg)
 * Native support for ANSIColor on IronRuby via the iron-term-ansicolor gem (Will Green)
-* Call a bunch of steps from step definitions - also with tables or pystrings. Copy-paste friendly (Bodaniel Jeanes, Jack Chen, Aslak Hellesøy) TODO - WIKI DOCUMENTATION BEFORE RELEASE
+* Call a bunch of steps from step definitions - also with tables or pystrings. Copy-paste friendly (Bodaniel Jeanes, Jack Chen, Aslak Hellesøy)
 
 === Bugfixes
 * Pretty printer fails when expanding scenario outlines with -x when the background includes a table (#515 Mike Sassak)

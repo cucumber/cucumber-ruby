@@ -111,14 +111,12 @@ class CucumberWorld
         exec cmd
       end
     end
-    sleep 1.0
+    sleep (ENV["RUN_CODE_RUN"] ? 5.0 : 1.0)
   end
 
   def terminate_background_jobs
-    if @background_jobs
-      @background_jobs.each do |pid|
-        Process.kill(Signal.list['TERM'], pid)
-      end
+    background_jobs.each do |pid|
+      Process.kill(Signal.list['TERM'], pid)
     end
   end
 

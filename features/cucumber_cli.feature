@@ -169,7 +169,7 @@ Feature: Cucumber command line
 
   Scenario: Run Norwegian
     Given I am in i18n/no
-    When I run cucumber -q --language no features
+    When I run cucumber -q features
     Then STDERR should be empty
     Then it should pass with
       """
@@ -369,7 +369,8 @@ Feature: Cucumber command line
 
   Scenario: Multiple formatters and outputs
     When I run cucumber --format progress --out tmp/progress.txt --format pretty --out tmp/pretty.txt --no-source --dry-run features/lots_of_undefined.feature
-    And "examples/self_test/tmp/progress.txt" should contain
+    Then STDERR should be empty
+    Then "examples/self_test/tmp/progress.txt" should contain
       """
       UUUUU
 
@@ -588,6 +589,7 @@ Feature: Cucumber command line
 
   Scenario: Reformat files with --autoformat
     When I run cucumber --autoformat tmp/formatted features
+    Then STDERR should be empty
     Then "examples/self_test/tmp/formatted/features/sample.feature" should contain
       """
       # Feature comment
