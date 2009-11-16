@@ -27,9 +27,9 @@ module Cucumber
           <% if !@step_keywords                        %>
           <%   @step_keywords = ''                     %>
           <%   %w{given when then and}.each do |kw|    %>
-          <%     @step_keywords += "(" + keywords(kw).split('|').map{|x| x =~/</ ? "#{x.delete('<')} space*" : "#{x} space+" }.join(') | (')  + " ) /" %>
+          <%     @step_keywords += "(" + keywords(kw).split('|').map{|x| x =~/</ ? "#{x.delete('<')} space*" : "#{x} space+" }.join(') / (')  + " ) /" %>
           <%   end                                     %>
-          <%   @step_keywords += "(" +  keywords('but').split('|').map{|x| x =~/</ ? "#{x.delete('<')} space*" : "#{x} space+" }.join(') | (')  + ")" %>
+          <%   @step_keywords += "(" +  keywords('but').split('|').map{|x| x =~/</ ? "#{x.delete('<')} space*" : "#{x} space+" }.join(') / (')  + ")" %>
           <% end                                       %>
           <%= @step_keywords %>
         end
