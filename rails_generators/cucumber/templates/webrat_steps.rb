@@ -230,9 +230,9 @@ end
 
 Then /^(?:|I )should be on (.+)$/ do |page_name|
 <% if framework == :rspec -%>
-  URI.parse(current_url).path.should == path_to(page_name)
+  URI.parse(current_url).request_uri.should == path_to(page_name)
 <% else -%>
-  assert_equal path_to(page_name), URI.parse(current_url).path
+  assert_equal path_to(page_name), URI.parse(current_url).request_uri
 <% end -%>
 end
 
