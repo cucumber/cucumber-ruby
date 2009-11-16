@@ -964,38 +964,34 @@ module Cucumber
           elements[0]
         end
 
-        def step_keyword
+        def step_keyword_space
           elements[2]
         end
 
-        def keyword_space
+        def name
           elements[3]
         end
 
-        def name
-          elements[4]
-        end
-
         def multi
-          elements[6]
+          elements[5]
         end
 
         def white
-          elements[7]
+          elements[6]
         end
       end
 
       module Step1
         def at_line?(line)
-          step_keyword.line == line ||
+          step_keyword_space.line == line ||
           (multi.respond_to?(:at_line?) && multi.at_line?(line))
         end
 
         def build
           if multi.respond_to?(:build)
-            Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value.strip, multi.build)
+            Ast::Step.new(step_keyword_space.line, step_keyword_space.text_value.strip, name.text_value.strip, multi.build)
           else
-            Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value.strip)
+            Ast::Step.new(step_keyword_space.line, step_keyword_space.text_value.strip, name.text_value.strip)
           end
         end
       end
@@ -1024,55 +1020,51 @@ module Cucumber
           r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
           s0 << r2
           if r2
-            r4 = _nt_step_keyword
+            r4 = _nt_step_keyword_space
             s0 << r4
             if r4
-              r5 = _nt_keyword_space
+              r5 = _nt_line_to_eol
               s0 << r5
               if r5
-                r6 = _nt_line_to_eol
+                i6 = index
+                s7, i7 = [], index
+                loop do
+                  r8 = _nt_eol
+                  if r8
+                    s7 << r8
+                  else
+                    break
+                  end
+                end
+                if s7.empty?
+                  @index = i7
+                  r7 = nil
+                else
+                  r7 = instantiate_node(SyntaxNode,input, i7...index, s7)
+                end
+                if r7
+                  r6 = r7
+                else
+                  r9 = _nt_eof
+                  if r9
+                    r6 = r9
+                  else
+                    @index = i6
+                    r6 = nil
+                  end
+                end
                 s0 << r6
                 if r6
-                  i7 = index
-                  s8, i8 = [], index
-                  loop do
-                    r9 = _nt_eol
-                    if r9
-                      s8 << r9
-                    else
-                      break
-                    end
-                  end
-                  if s8.empty?
-                    @index = i8
-                    r8 = nil
+                  r11 = _nt_multiline_arg
+                  if r11
+                    r10 = r11
                   else
-                    r8 = instantiate_node(SyntaxNode,input, i8...index, s8)
+                    r10 = instantiate_node(SyntaxNode,input, index...index)
                   end
-                  if r8
-                    r7 = r8
-                  else
-                    r10 = _nt_eof
-                    if r10
-                      r7 = r10
-                    else
-                      @index = i7
-                      r7 = nil
-                    end
-                  end
-                  s0 << r7
-                  if r7
-                    r12 = _nt_multiline_arg
-                    if r12
-                      r11 = r12
-                    else
-                      r11 = instantiate_node(SyntaxNode,input, index...index)
-                    end
-                    s0 << r11
-                    if r11
-                      r13 = _nt_white
-                      s0 << r13
-                    end
+                  s0 << r10
+                  if r10
+                    r12 = _nt_white
+                    s0 << r12
                   end
                 end
               end
@@ -1437,16 +1429,6 @@ module Cucumber
         r0
       end
 
-      module ReservedWordsAndSymbols0
-        def step_keyword
-          elements[0]
-        end
-
-        def keyword_space
-          elements[1]
-        end
-      end
-
       def _nt_reserved_words_and_symbols
         start_index = index
         if node_cache[:reserved_words_and_symbols].has_key?(index)
@@ -1456,42 +1438,29 @@ module Cucumber
         end
 
         i0 = index
-        i1, s1 = index, []
-        r2 = _nt_step_keyword
-        s1 << r2
-        if r2
-          r3 = _nt_keyword_space
-          s1 << r3
-        end
-        if s1.last
-          r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
-          r1.extend(ReservedWordsAndSymbols0)
-        else
-          @index = i1
-          r1 = nil
-        end
+        r1 = _nt_step_keyword_space
         if r1
           r0 = r1
         else
-          r4 = _nt_scenario_keyword
-          if r4
-            r0 = r4
+          r2 = _nt_scenario_keyword
+          if r2
+            r0 = r2
           else
-            r5 = _nt_scenario_outline_keyword
-            if r5
-              r0 = r5
+            r3 = _nt_scenario_outline_keyword
+            if r3
+              r0 = r3
             else
-              r6 = _nt_table
-              if r6
-                r0 = r6
+              r4 = _nt_table
+              if r4
+                r0 = r4
               else
-                r7 = _nt_tag
-                if r7
-                  r0 = r7
+                r5 = _nt_tag
+                if r5
+                  r0 = r5
                 else
-                  r8 = _nt_comment_line
-                  if r8
-                    r0 = r8
+                  r6 = _nt_comment_line
+                  if r6
+                    r0 = r6
                   else
                     @index = i0
                     r0 = nil

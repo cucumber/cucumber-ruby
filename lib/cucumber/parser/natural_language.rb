@@ -1,7 +1,7 @@
 module Cucumber
   module Parser
     class NaturalLanguage
-      KEYWORD_KEYS = %w{name native encoding space_after_keyword feature background scenario scenario_outline examples given when then and but}
+      KEYWORD_KEYS = %w{name native feature background scenario scenario_outline examples given when then and but}
 
       class << self
         def get(step_mother, lang)
@@ -22,7 +22,7 @@ module Cucumber
       end
 
       def register_adverbs(step_mother)
-        adverbs = %w{given when then and but}.map{|keyword| @keywords[keyword].split('|').map{|w| w.gsub(/\s/, '')}}.flatten
+        adverbs = %w{given when then and but}.map{|keyword| @keywords[keyword].split('|').map{|w| w.gsub(/\s/, '').delete("<")}}.flatten
         step_mother.register_adverbs(adverbs) if step_mother
       end
 
@@ -71,10 +71,6 @@ module Cucumber
 
       def step_keywords
         %w{given when then and but}.map{|key| @keywords[key].split('|')}.flatten.uniq
-      end
-
-      def space_after_keyword
-        @keywords['space_after_keyword']
       end
     end
   end

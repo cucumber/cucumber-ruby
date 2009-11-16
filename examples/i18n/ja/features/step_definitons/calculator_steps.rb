@@ -11,14 +11,14 @@ end
 After do
 end
 
-Given "$n を入力" do |n|
+前提 "$n を入力" do |n|
   @calc.push n.to_i
 end
 
-When /(\w+) を押した/ do |op|
+もし /(\w+) を押した/ do |op|
   @result = @calc.send op
 end
 
-Then /(.*) を表示/ do |result|
+ならば /(.*) を表示/ do |result|
   @result.should == result.to_f
 end

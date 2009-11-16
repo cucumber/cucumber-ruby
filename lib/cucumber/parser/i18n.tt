@@ -23,16 +23,15 @@ module Cucumber
           (<%= keywords('scenario_outline') %>) ':'
         end
 
-        rule step_keyword
-          (<%= keywords('given') %>) /
-          (<%= keywords('when') %>) /
-          (<%= keywords('then') %>) /
-          (<%= keywords('and') %>) /
-          (<%= keywords('but') %>)
-        end
-
-        rule keyword_space
-          <%= keywords('space_after_keyword', true) ? 'space+' : 'space*' %>
+        rule step_keyword_space
+          <% if !@step_keywords                        %>
+          <%   @step_keywords = ''                     %>
+          <%   %w{given when then and}.each do |kw|    %>
+          <%     @step_keywords += "(" + keywords(kw).split('|').map{|x| x =~/</ ? "#{x.delete('<')} space*" : "#{x} space+" }.join(') | (')  + " ) /" %>
+          <%   end                                     %>
+          <%   @step_keywords += "(" +  keywords('but').split('|').map{|x| x =~/</ ? "#{x.delete('<')} space*" : "#{x} space+" }.join(') | (')  + ")" %>
+          <% end                                       %>
+          <%= @step_keywords %>
         end
 
         rule examples_keyword
