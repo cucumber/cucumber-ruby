@@ -70,7 +70,7 @@ module Cucumber
       end
 
       def step_keywords
-        %w{given when then and but}.map{|key| @keywords[key].split('|')}.flatten.uniq
+        %w{given when then and but}.map{|key| @keywords[key].split('|').map{|kw| (kw + ' ').sub(/< $/,'')}}.flatten.uniq
       end
     end
   end
