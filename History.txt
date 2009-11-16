@@ -2,6 +2,7 @@
 
 === Changed Features
 * --language is deprecated and will be removed in 0.5.0: http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages (Aslak Hellesøy)
+* Webrat step "Then I should be on" should use request_uri instead of path for missing query string parameters (ZhangJinzhu)
 
 == 0.4.4 2009-11-13
 
