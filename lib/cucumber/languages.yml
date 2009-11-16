@@ -283,7 +283,7 @@
   when: もし<
   then: ならば<
   and: かつ<
-  but: しかし<|但し|ただし<
+  but: しかし<|但し<|ただし<
 "ko":
   name: Korean
   native: 한국어
