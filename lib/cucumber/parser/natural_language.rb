@@ -22,7 +22,7 @@ module Cucumber
       end
 
       def register_adverbs(step_mother)
-        adverbs = %w{given when then and but}.map{|keyword| @keywords[keyword].split('|').map{|w| w.gsub(/\s/, '').delete("<")}}.flatten
+        adverbs = %w{given when then and but}.map{|keyword| @keywords[keyword].split('|').map{|w| w.gsub(/\s/, '').delete("<'")}}.flatten
         step_mother.register_adverbs(adverbs) if step_mother
       end
 
@@ -70,7 +70,7 @@ module Cucumber
       end
 
       def step_keywords
-        %w{given when then and but}.map{|key| @keywords[key].split('|').map{|kw| (kw + ' ').sub(/< $/,'')}}.flatten.uniq
+        %w{given when then and but}.map{|key| @keywords[key].split('|').map{|kw| (kw + ' ').sub(/< $/,'').delete("'")}}.flatten.uniq
       end
     end
   end
