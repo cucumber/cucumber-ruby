@@ -51,9 +51,9 @@ module Cucumber
         return nil unless @keywords[key]
         values = @keywords[key].to_s.split('|')
         if ['given', 'when', 'and', 'then', 'but'].include? key
-          values.map{|value| "\"#{keyword_space(value)}\""}.join(" / ")
+          values.map{|value| %Q{"#{keyword_space(value)}"}}.join(" / ")
         else
-          values.map{|value| "\"#{(value)}\""}.join(" / ")
+          values.map{|value| %Q{"#{(value)}"}}.join(" / ")
         end 
       end
 
