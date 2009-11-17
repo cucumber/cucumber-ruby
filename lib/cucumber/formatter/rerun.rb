@@ -11,8 +11,8 @@ module Cucumber
     # to run the next time, simply passing the output string on the command line.
     #
     class Rerun
-      def initialize(step_mother, io, options)
-        @io = io
+      def initialize(step_mother, path_or_io, options)
+        @io = ensure_io(path_or_io, "rerun")
         @options = options
         @file_names = []
         @file_colon_lines = Hash.new{|h,k| h[k] = []}

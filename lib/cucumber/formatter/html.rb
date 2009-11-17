@@ -1,6 +1,7 @@
 require 'cucumber/formatter/ordered_xml_markup'
 require 'cucumber/formatter/duration'
 require 'cucumber/formatter/summary'
+require 'cucumber/formatter/io'
 
 module Cucumber
   module Formatter
@@ -8,10 +9,11 @@ module Cucumber
     class Html
       include ERB::Util # for the #h method
       include Duration
+      include Io
       include Summary
 
-      def initialize(step_mother, io, options)
-        @io = io
+      def initialize(step_mother, path_or_io, options)
+        @io = ensure_io(path_or_io, "html")
         @options = options
         @buffer = {}
         @step_mother = step_mother

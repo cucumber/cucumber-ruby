@@ -1,9 +1,13 @@
 require 'cucumber/formatter/ordered_xml_markup'
+require 'cucumber/formatter/io'
+require 'fileutils'
 
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format junit</tt>
     class Junit
+      include Io
+      
       class UnNamedFeatureError < StandardError
         def initialize(feature_file)
           super("The feature in '#{feature_file}' does not have a name. The JUnit XML format requires a name for the testsuite element.")
@@ -11,8 +15,7 @@ module Cucumber
       end
       
       def initialize(step_mother, io, options)
-        raise "You *must* specify --out DIR for the junit formatter" unless String === io && File.directory?(io)
-        @reportdir = io
+        @reportdir = ensure_dir(io, "junit")
         @options = options
       end
 

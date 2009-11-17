@@ -1,4 +1,5 @@
 require 'cucumber/formatter/console'
+require 'cucumber/formatter/io'
 require 'fileutils'
 
 module Cucumber
@@ -13,11 +14,12 @@ module Cucumber
     class Pretty
       include FileUtils
       include Console
+      include Io
       attr_writer :indent
       attr_reader :step_mother
 
-      def initialize(step_mother, io, options)
-        @step_mother, @io, @options = step_mother, io, options
+      def initialize(step_mother, path_or_io, options)
+        @step_mother, @io, @options = step_mother, ensure_io(path_or_io, "pretty"), options
         @exceptions = []
         @indent = 0
         @prefixes = options[:prefixes] || {}
@@ -35,14 +37,10 @@ module Cucumber
           file = File.join(@options[:autoformat], feature.file)
           dir = File.dirname(file)
           mkdir_p(dir) unless File.directory?(dir)
-          @io = File.open(file, Cucumber.file_mode('w'))
+          @io = ensure_file(file, "pretty")
         end
       end
       
-      def after_feature(*args)
-        @io.close if @options[:autoformat]
-      end
-
       def comment_line(comment_line)
         @io.puts(comment_line.indent(@indent))
         @io.flush
