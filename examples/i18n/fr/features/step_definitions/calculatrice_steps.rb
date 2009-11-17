@@ -8,7 +8,7 @@ Soit /^une calculatrice$/ do
   @calc = Calculatrice.new
 end
 
-Etant /^donné qu'on tape (.*)$/ do |n|
+Etantdonné /^qu'on tape (.*)$/ do |n|
   @calc.push n.to_i
 end
 

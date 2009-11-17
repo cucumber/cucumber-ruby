@@ -201,7 +201,7 @@
   scenario: Scénario
   scenario_outline: Plan du scénario|Plan du Scénario
   examples: Exemples
-  given: Soit|Etant
+  given: Soit|Etant donné
   when: Quand|Lorsque|Lorsqu'<
   then: Alors
   and: Et
