@@ -1,6 +1,7 @@
 == In Git
 
 === Changed Features
+* Per-word trailing-space setting for step keywords using '<'.  See 'fr' in languages.yml for example. (#525 Gregory Hnatiuk)
 * --language is deprecated and will be removed in 0.5.0: http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages (Aslak Hellesøy)
 * Formatters will no longer be passed File objects. They must use ensure_io, ensure_file or ensure_dir. (Aslak Hellesøy)
 * Webrat step "Then I should be on" should use request_uri instead of path for missing query string parameters (ZhangJinzhu)
