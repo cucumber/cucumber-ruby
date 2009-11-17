@@ -199,10 +199,10 @@
   feature: Fonctionnalité
   background: Contexte
   scenario: Scénario
-  scenario_outline: Plan du Scénario
+  scenario_outline: Plan du scénario|Plan du Scénario
   examples: Exemples
   given: Soit|Etant
-  when: Lorsque|Lorsqu'<
+  when: Quand|Lorsque|Lorsqu'<
   then: Alors
   and: Et
   but: Mais
