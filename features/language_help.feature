@@ -6,18 +6,18 @@ Feature: Language help
     When I run cucumber -l pt help
     Then it should pass with
       """
-      | name             | 'Portuguese'                                |
-      | native           | 'português'                                 |
-      | feature          | 'Funcionalidade'                            |
-      | background       | 'Contexto'                                  |
-      | scenario         | 'Cenário' / 'Cenario'                       |
-      | scenario_outline | 'Esquema do Cenário' / 'Esquema do Cenario' |
-      | examples         | 'Exemplos'                                  |
-      | given            | 'Dado'                                      |
-      | when             | 'Quando'                                    |
-      | then             | 'Então' / 'Entao'                           |
-      | and              | 'E'                                         |
-      | but              | 'Mas'                                       |
+      | name             | "Portuguese"                                |
+      | native           | "português"                                 |
+      | feature          | "Funcionalidade"                            |
+      | background       | "Contexto"                                  |
+      | scenario         | "Cenário" / "Cenario"                       |
+      | scenario_outline | "Esquema do Cenário" / "Esquema do Cenario" |
+      | examples         | "Exemplos"                                  |
+      | given            | "Dado "                                     |
+      | when             | "Quando "                                   |
+      | then             | "Então " / "Entao "                         |
+      | and              | "E "                                        |
+      | but              | "Mas "                                      |
 
       """
   Scenario: List languages

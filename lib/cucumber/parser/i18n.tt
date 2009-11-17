@@ -2,10 +2,8 @@ module Cucumber
   module Parser
     module I18n
       grammar <%= keywords('grammar_name', true) %>
-        include Common
         include Feature
         include Table
-        include PyString
 
         rule feature
           feature_sub
@@ -23,15 +21,12 @@ module Cucumber
           (<%= keywords('scenario_outline') %>) ':'
         end
 
-        rule step_keyword_space
-          <% if !@step_keywords                            %>
-          <%   @step_keywords = ''                         %>
-          <%   %w{given when then and but}.each do |kw|    %>
-          <%     @step_keywords += "(" + keywords(kw, true).split('|').map{|x| x =~/</ ? "\"#{x.delete('<')}\" space*" : "\"#{x}\" space+" }.join(') / (')  + ") /" %>
-          <%   end                                         %>
-          <%   @step_keywords.chop!                        %>
-          <% end                                           %>
-          <%= @step_keywords %>
+        rule step_keyword
+          (<%= keywords('given') %>) /
+          (<%= keywords('when') %>) /
+          (<%= keywords('then') %>) /
+          (<%= keywords('and') %>) /
+          (<%= keywords('but') %>)
         end
 
         rule examples_keyword

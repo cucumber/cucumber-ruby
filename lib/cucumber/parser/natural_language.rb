@@ -22,7 +22,7 @@ module Cucumber
       end
 
       def register_adverbs(step_mother)
-        adverbs = %w{given when then and but}.map{|keyword| @keywords[keyword].split('|').map{|w| w.gsub(/\s/, '').delete("<'")}}.flatten
+        adverbs = %w{given when then and but}.map{|keyword| @keywords[keyword].split('|').map{|w| w.gsub(/[\s<']/, '')}}.flatten
         step_mother.register_adverbs(adverbs) if step_mother
       end
 
@@ -50,7 +50,11 @@ module Cucumber
         return @keywords[key] if raw
         return nil unless @keywords[key]
         values = @keywords[key].to_s.split('|')
-        values.map{|value| "'#{value}'"}.join(" / ")
+        if ['given', 'when', 'and', 'then', 'but'].include? key
+          values.map{|value| "\"#{keyword_space(value)}\""}.join(" / ")
+        else
+          values.map{|value| "\"#{(value)}\""}.join(" / ")
+        end 
       end
 
       def incomplete?
@@ -70,7 +74,13 @@ module Cucumber
       end
 
       def step_keywords
-        %w{given when then and but}.map{|key| @keywords[key].split('|').map{|kw| (kw + ' ').sub(/< $/,'').delete("'")}}.flatten.uniq
+        %w{given when then and but}.map{|key| @keywords[key].split('|').map{|kw| keyword_space(kw).delete("'")}}.flatten.uniq
+      end
+
+      private
+ 
+      def keyword_space(val)
+        (val + ' ').sub(/< $/,'')
       end
     end
   end

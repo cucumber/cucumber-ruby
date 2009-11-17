@@ -58,7 +58,7 @@
   background: Rerefons|Antecedents
   feature: Característica
   scenario: Escenari
-  scenario_outline: Esquema de l\'escenari
+  scenario_outline: Esquema de l'escenari
   examples: Exemples
   given: Donat|Donada
   when: Quan
@@ -147,13 +147,13 @@
   feature: Feature
   background: Background
   scenario: Scenario
-  scenario_outline: All y\'all
+  scenario_outline: All y'all
   examples: Examples
-  given: Given y\'all
-  when: When y\'all
-  then: Then y\'all
-  and: And y\'all
-  but: But y\'all
+  given: Given y'all
+  when: When y'all
+  then: Then y'all
+  and: And y'all
+  but: But y'all
 "es":
   name: Spanish
   native: español
