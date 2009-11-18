@@ -1,7 +1,7 @@
 module Cucumber
   module Parser
     module I18n
-      grammar <%= keywords('grammar_name', true) %>
+      grammar <%= keywords('grammar_name')[0] %>
         include Feature
         include Table
 
@@ -10,27 +10,23 @@ module Cucumber
         end
 
         rule background_keyword
-          (<%= keywords('background') %>) ':'
+          <%= treetop_keywords(background_keywords) %> ':'
         end
 
         rule scenario_keyword
-          (<%= keywords('scenario') %>) ':'
+          <%= treetop_keywords(scenario_keywords) %> ':'
         end
 
         rule scenario_outline_keyword
-          (<%= keywords('scenario_outline') %>) ':'
+          <%= treetop_keywords(scenario_outline_keywords) %> ':'
         end
 
         rule step_keyword
-          (<%= keywords('given') %>) /
-          (<%= keywords('when') %>) /
-          (<%= keywords('then') %>) /
-          (<%= keywords('and') %>) /
-          (<%= keywords('but') %>)
+          <%= treetop_keywords(step_keywords) %>
         end
 
         rule examples_keyword
-          (<%= keywords('examples') %>) ':'?
+          <%= treetop_keywords(examples_keywords) %> ':'?
         end
       end
     end

@@ -11,6 +11,11 @@ module Cucumber
         def languages
           @languages ||= {}
         end
+
+        # Used by code generators for other lexer tools like pygments lexer and textmate bundle
+        def all(step_mother=nil)
+          Cucumber::LANGUAGES.keys.sort.map{|lang| get(step_mother, lang)}
+        end
       end
 
       def initialize(step_mother, lang)
@@ -46,39 +51,53 @@ module Cucumber
         feature
       end
 
-      def keywords(key, raw=false)
-        return @keywords[key] if raw
-        return nil unless @keywords[key]
-        values = @keywords[key].to_s.split('|')
-        if ['given', 'when', 'and', 'then', 'but'].include? key
-          values.map{|value| %Q{"#{keyword_space(value)}"}}.join(" / ")
-        else
-          values.map{|value| %Q{"#{(value)}"}}.join(" / ")
-        end 
-      end
-
       def incomplete?
         KEYWORD_KEYS.detect{|key| @keywords[key].nil?}
       end
 
-      def scenario_keyword
-        @keywords['scenario'].split('|')[0] + ':'
+      def feature_keywords
+        keywords('feature')
       end
 
-      def but_keywords
-        @keywords['but'].split('|')
+      def scenario_keywords
+        keywords('scenario')
       end
 
-      def and_keywords
-        @keywords['and'].split('|')
+      def scenario_outline_keywords
+        keywords('scenario_outline')
+      end
+
+      def background_keywords
+        keywords('background')
+      end
+
+      def examples_keywords
+        keywords('examples')
+      end
+
+      def but_keywords(space=true)
+        keywords('but', space)
+      end
+
+      def and_keywords(space=true)
+        keywords('and', space)
       end
 
       def step_keywords
-        %w{given when then and but}.map{|key| @keywords[key].split('|').map{|kw| keyword_space(kw).delete("'")}}.flatten.uniq
+        %w{given when then and but}.map{|key| keywords(key, true)}.flatten.uniq
+      end
+
+      def keywords(key, space=false)
+        raise "No #{key} in #{@keywords.inspect}" if @keywords[key].nil?
+        @keywords[key].split('|').map{|kw| space ? keyword_space(kw) : kw}
       end
 
       private
- 
+
+      def treetop_keywords(keywords)
+        "(" + keywords.map{|k| %{"#{k}"}}.join(" / ") + ")"
+      end
+
       def keyword_space(val)
         (val + ' ').sub(/< $/,'')
       end
