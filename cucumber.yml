@@ -1,4 +1,5 @@
 default: --format progress --strict features
 jruby: --format progress --tags ~@spork --strict features
+run_code_run: --format progress --tags ~@spork --strict features
 windows_mri: --format progress --tags ~@spork --strict features
 wip: --tags @wip --wip features
