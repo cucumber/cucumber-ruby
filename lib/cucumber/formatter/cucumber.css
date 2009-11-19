@@ -1,107 +1,156 @@
+body {
+  font-size:0px;
+  color:#fff;
+  margin:0;
+  padding:0;
+}
 
-
-.cucumber {
-  font-family: "Lucida Grande", Helvetica, sans-serif;
-  font-size: 0.7em;
+.cucumber,th,td {
+  font: normal 11px "Lucida Grande", Helvetica, sans-serif;
   background: white;
-  padding: 1em;
+  color:#000;
 }
-.cucumber h1, .cucumber h2, .cucumber h3, .cucumber h4, .cucumber ol, .cucumber li, .cucumber pre, .cucumber p {
-  font-size: 1em;
-  padding: 0px;
-  margin: 0px;
+
+#cucumber-header {
+background: #65C400; color: #fff; height: 5em;
 }
+
+.cucumber h1 {
+  margin: 0px 10px 0px 10px;
+  padding: 10px;
+  font-family: "Lucida Grande", Helvetica, sans-serif;
+  font-size: 1.8em;
+  position: absolute;
+}
+
+.scenario h3 {
+  font-size:11px;
+  padding: 3px;
+  margin:0;
+  background: #65C400;
+  color: #fff;
+  font-weight: bold;
+}
+
+h4 {
+  margin-bottom:2px;
+}
+
+.cucumber .comment {
+  padding:3px 3px 3px 18px;
+  border-left: 5px solid #FAF834;
+  border-bottom: 1px solid #FAF834;
+  background: #FCFB98;
+  color: #131313;
+}
+
 .cucumber div.feature {
-  border: 1px solid;
   padding: 2px;
-  margin: 4px;
+  margin:0px 10px 5px 10px;
 }
-.cucumber div.feature div.background, .cucumber div.feature div.scenario, .cucumber div.feature p {
-  padding: 0em 0em 0em 1em;
-}
-.cucumber div.feature div.background div.examples, .cucumber div.feature div.scenario div.examples, .cucumber div.feature p div.examples {
-  padding: 0em 0em 0em 1em;
-}
+
 .cucumber .stats {
   margin: 2em;
 }
 .cucumber .summary ul.features li {
   display: inline;
 }
-.cucumber .backtrace {
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-left: 1em;
+
+.cucumber .tag {
+  font-weight:bold;
+  color:#246AC1;
 }
-.cucumber a {
-  text-decoration: none;
-  color: inherit;
+
+.backtrace {
+  color: #000;
+  font-size: 12px;
 }
-.cucumber a:hover {
-  text-decoration: underline;
+
+a {
+  color: #BE5C00;
 }
-.cucumber a:visited {
-  font-weight: normal;
-}
-.cucumber a div.examples {
-  border: 1px solid;
-  padding: 2px;
-  margin: 4px;
+
+div.examples {
+  margin: 5px 0px 5px 15px;
+  color:#000;
 }
 .cucumber table {
   border-collapse: collapse;
 }
-.cucumber table td, .cucumber table th {
-  font-size: 0.7em;
-  border: 1px solid #AAAAAA;
+
+.cucumber .outline table {
+ margin:0px 0px 5px 5px; 
 }
+
+.cucumber table td, .cucumber table th {
+  border: 1px solid #AAAAAA;
+  color:#000;
+}
+.cucumber table td {
+  padding:3px 3px 3px 18px;
+}
+
 .cucumber table td.failed {
-  background: #FFC0CB;
-  color: #8B0000;
+  border-left: 5px solid #C20000;
+  border-bottom: 1px solid #C20000;
+  color: #C20000;
+  background: #FFFBD3;
 }
 .cucumber table td.passed {
-  background: #98FB98;
-  color: #001111;
+  border-left: 5px solid #65C400;
+  border-bottom: 1px solid #65C400;
+  background: #DBFFB4;
+  color: #3D7700;
 }
 .cucumber table td.skipped {
+  border-left: 5px solid #00ffff;
+  border-bottom: 1px solid #00ffff;
+  background: #e0ffff;
+  color: #001111;
+}
+.cucumber table th.skipped_param {
+  border-left: 5px solid #00ffff;
+  border-bottom: 1px solid #00ffff;
+  font-weight:bold;
   background: #e0ffff;
   color: #001111;
 }
 .cucumber table td.pending {
-  background: #FFFFE0;
-  color: #111100;
+  border-left: 5px solid #FAF834;
+  border-bottom: 1px solid #FAF834;
+  background: #FCFB98;
+  color: #131313;
 }
 .cucumber table td.undefined {
-  background: #FFFFE0;
-  color: #111100;
+  border-left: 5px solid #FAF834;
+  border-bottom: 1px solid #FAF834;
+  background: #FCFB98;
+  color: #131313;
 }
 .cucumber ol {
   list-style: none;
+  margin:0;
+  padding:0;
 }
-.cucumber ol li {
-  margin: 0em 0em 0em 1em;
-  padding: 0em 0em 0em 0.2em;
+
+.cucumber ol li.step {
+  padding:3px 3px 3px 18px;
+  margin:5px 0px 5px 5px;
 }
 .cucumber ol li span.param {
   font-weight: bold;
 }
 .cucumber ol li.failed {
-  border-left: 5px solid #ff0000;
-  border-bottom: 1px solid #ff0000;
-  background: #ffc0cb;
-  color: #8b0000;
-}
-.cucumber ol li.failed span.param {
-  background: !failed_dark;
+  border-left: 5px solid #C20000;
+  border-bottom: 1px solid #C20000;
+  color: #C20000;
+  background: #FFFBD3;
 }
 .cucumber ol li.passed {
-  border-left: 5px solid #00ff00;
-  border-bottom: 1px solid #00ff00;
-  background: #98fb98;
-  color: #001111;
-}
-.cucumber ol li.passed span.param {
-  background: #00ff00;
+  border-left: 5px solid #65C400;
+  border-bottom: 1px solid #65C400;
+  background: #DBFFB4;
+  color: #3D7700;
 }
 .cucumber ol li.skipped {
   border-left: 5px solid #00ffff;
@@ -109,24 +158,69 @@
   background: #e0ffff;
   color: #001111;
 }
-.cucumber ol li.skipped span.param {
-  background: #00ffff;
-}
 .cucumber ol li.pending {
-  border-left: 5px solid #ff8000;
-  border-bottom: 1px solid #ff8000;
-  background: #ffff00;
-  color: #2a1b0a;
-}
-.cucumber ol li.pending span.param {
-  background: #ff8000;
+  border-left: 5px solid #FAF834;
+  border-bottom: 1px solid #FAF834;
+  background: #FCFB98;
+  color: #131313;
 }
 .cucumber ol li.undefined {
-  border-left: 5px solid #ff8000;
-  border-bottom: 1px solid #ff8000;
-  background: #ffff00;
-  color: #2a1b0a;
+  border-left: 5px solid #FAF834;
+  border-bottom: 1px solid #FAF834;
+  background: #FCFB98;
+  color: #131313;
 }
-.cucumber ol li.undefined span.param {
-  background: #ff8000;
+
+#summary {
+margin: 0; padding: 5px 10px;
+font-family: "Lucida Grande", Helvetica, sans-serif;
+text-align: right;
+top: 0px;
+right: 0px;
+float:right;
+}
+ 
+#summary p {
+margin: 0 0 0 2px;
+}
+ 
+#summary #totals {
+font-size: 1.2em;
+}
+
+
+/* Ruby code, style similar to vibrant ink */
+.ruby {
+  font-size: 12px;
+  font-family: monospace;
+  color: white;
+  background-color: black;
+  padding: 0.1em 0 0.2em 0;
+}
+ 
+.ruby .keyword { color: #FF6600; }
+.ruby .constant { color: #339999; }
+.ruby .attribute { color: white; }
+.ruby .global { color: white; }
+.ruby .module { color: white; }
+.ruby .class { color: white; }
+.ruby .string { color: #66FF00; }
+.ruby .ident { color: white; }
+.ruby .method { color: #FFCC00; }
+.ruby .number { color: white; }
+.ruby .char { color: white; }
+.ruby .comment { color: #9933CC; }
+.ruby .symbol { color: white; }
+.ruby .regex { color: #44B4CC; }
+.ruby .punct { color: white; }
+.ruby .escape { color: white; }
+.ruby .interp { color: white; }
+.ruby .expr { color: white; }
+ 
+.ruby .offending { background-color: #333; }
+.ruby .linenum {
+  width: 75px;
+  padding: 0.1em 1em 0.2em 0;
+  color: #000000;
+  background-color: #FFFBD3;
 }
