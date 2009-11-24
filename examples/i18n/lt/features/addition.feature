@@ -1,5 +1,5 @@
 # language: lt
-Sąvybė: Sudėtis
+Savybė: Sudėtis
   Norint išvengti kvailų klaidų
   Kaip matematinis idiotas
   Aš noriu, kad man pasakytų dviejų skaičių sumą

@@ -1,5 +1,5 @@
 # language: lt
-Feature: Dalyba
+Savybė: Dalyba
   Norint išvengti klaidų
   Kasininkai privalo mokėti skaičiuoti trupmenas
 
