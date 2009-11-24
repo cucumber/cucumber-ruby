@@ -491,8 +491,8 @@ module Cucumber
           steps.at_line?(line)
         end
 
-        def matches_tags?(tag_name_lists)
-          Ast::Tags.matches?(self.parent.tags.tag_names, tag_name_lists)
+        def matches_tags?(tag_names)
+          Ast::Tags.matches?(self.parent.tags.tag_names, tag_names)
         end
 
         def build
@@ -687,10 +687,10 @@ module Cucumber
           tags.at_line?(line)
         end
 
-        def matches_tags?(tag_name_lists)
+        def matches_tags?(tag_names)
           feature_tag_names = self.parent.parent.tags.tag_names
           source_tag_names = (feature_tag_names + tags.tag_names).uniq
-          Ast::Tags.matches?(source_tag_names, tag_name_lists)
+          Ast::Tags.matches?(source_tag_names, tag_names)
         end
 
         def matches_name?(regexp_to_match)
@@ -826,10 +826,10 @@ module Cucumber
           steps.at_line?(line)
         end
 
-        def matches_tags?(tag_name_lists)
+        def matches_tags?(tag_names)
           feature_tag_names = self.parent.parent.tags.tag_names
           source_tag_names = (feature_tag_names + tags.tag_names).uniq
-          Ast::Tags.matches?(source_tag_names, tag_name_lists)
+          Ast::Tags.matches?(source_tag_names, tag_names)
         end
 
         def matches_name?(regexp_to_match)
@@ -968,10 +968,6 @@ module Cucumber
           elements[2]
         end
 
-        def keyword_space
-          elements[3]
-        end
-
         def name
           elements[4]
         end
@@ -993,9 +989,9 @@ module Cucumber
 
         def build
           if multi.respond_to?(:build)
-            Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value.strip, multi.build)
+            Ast::Step.new(step_keyword.line, step_keyword.text_value.strip, name.text_value.strip, multi.build)
           else
-            Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value.strip)
+            Ast::Step.new(step_keyword.line, step_keyword.text_value.strip, name.text_value.strip)
           end
         end
       end
@@ -1027,51 +1023,60 @@ module Cucumber
             r4 = _nt_step_keyword
             s0 << r4
             if r4
-              r5 = _nt_keyword_space
+              s5, i5 = [], index
+              loop do
+                r6 = _nt_space
+                if r6
+                  s5 << r6
+                else
+                  break
+                end
+              end
+              r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
               s0 << r5
               if r5
-                r6 = _nt_line_to_eol
-                s0 << r6
-                if r6
-                  i7 = index
-                  s8, i8 = [], index
+                r7 = _nt_line_to_eol
+                s0 << r7
+                if r7
+                  i8 = index
+                  s9, i9 = [], index
                   loop do
-                    r9 = _nt_eol
-                    if r9
-                      s8 << r9
+                    r10 = _nt_eol
+                    if r10
+                      s9 << r10
                     else
                       break
                     end
                   end
-                  if s8.empty?
-                    @index = i8
-                    r8 = nil
+                  if s9.empty?
+                    @index = i9
+                    r9 = nil
                   else
-                    r8 = instantiate_node(SyntaxNode,input, i8...index, s8)
+                    r9 = instantiate_node(SyntaxNode,input, i9...index, s9)
                   end
-                  if r8
-                    r7 = r8
+                  if r9
+                    r8 = r9
                   else
-                    r10 = _nt_eof
-                    if r10
-                      r7 = r10
-                    else
-                      @index = i7
-                      r7 = nil
-                    end
-                  end
-                  s0 << r7
-                  if r7
-                    r12 = _nt_multiline_arg
-                    if r12
-                      r11 = r12
-                    else
-                      r11 = instantiate_node(SyntaxNode,input, index...index)
-                    end
-                    s0 << r11
+                    r11 = _nt_eof
                     if r11
-                      r13 = _nt_white
-                      s0 << r13
+                      r8 = r11
+                    else
+                      @index = i8
+                      r8 = nil
+                    end
+                  end
+                  s0 << r8
+                  if r8
+                    r13 = _nt_multiline_arg
+                    if r13
+                      r12 = r13
+                    else
+                      r12 = instantiate_node(SyntaxNode,input, index...index)
+                    end
+                    s0 << r12
+                    if r12
+                      r14 = _nt_white
+                      s0 << r14
                     end
                   end
                 end
@@ -1168,7 +1173,7 @@ module Cucumber
           table.at_line?(line)
         end
 
-        def matches_tags?(tag_name_lists)
+        def matches_tags?(tag_names)
           true
         end
 
@@ -1437,16 +1442,6 @@ module Cucumber
         r0
       end
 
-      module ReservedWordsAndSymbols0
-        def step_keyword
-          elements[0]
-        end
-
-        def keyword_space
-          elements[1]
-        end
-      end
-
       def _nt_reserved_words_and_symbols
         start_index = index
         if node_cache[:reserved_words_and_symbols].has_key?(index)
@@ -1456,42 +1451,29 @@ module Cucumber
         end
 
         i0 = index
-        i1, s1 = index, []
-        r2 = _nt_step_keyword
-        s1 << r2
-        if r2
-          r3 = _nt_keyword_space
-          s1 << r3
-        end
-        if s1.last
-          r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
-          r1.extend(ReservedWordsAndSymbols0)
-        else
-          @index = i1
-          r1 = nil
-        end
+        r1 = _nt_step_keyword
         if r1
           r0 = r1
         else
-          r4 = _nt_scenario_keyword
-          if r4
-            r0 = r4
+          r2 = _nt_scenario_keyword
+          if r2
+            r0 = r2
           else
-            r5 = _nt_scenario_outline_keyword
-            if r5
-              r0 = r5
+            r3 = _nt_scenario_outline_keyword
+            if r3
+              r0 = r3
             else
-              r6 = _nt_table
-              if r6
-                r0 = r6
+              r4 = _nt_table
+              if r4
+                r0 = r4
               else
-                r7 = _nt_tag
-                if r7
-                  r0 = r7
+                r5 = _nt_tag
+                if r5
+                  r0 = r5
                 else
-                  r8 = _nt_comment_line
-                  if r8
-                    r0 = r8
+                  r6 = _nt_comment_line
+                  if r6
+                    r0 = r6
                   else
                     @index = i0
                     r0 = nil
@@ -1503,6 +1485,290 @@ module Cucumber
         end
 
         node_cache[:reserved_words_and_symbols][start_index] = r0
+
+        r0
+      end
+
+      module PyString0
+      end
+
+      module PyString1
+        def open_py_string
+          elements[0]
+        end
+
+        def s
+          elements[1]
+        end
+
+        def close_py_string
+          elements[2]
+        end
+      end
+
+      module PyString2
+        def at_line?(line)
+          line >= open_py_string.line && line <= close_py_string.line
+        end
+
+        def build
+          Ast::PyString.new(open_py_string.line, close_py_string.line, s.text_value, open_py_string.indentation)
+        end
+      end
+
+      def _nt_py_string
+        start_index = index
+        if node_cache[:py_string].has_key?(index)
+          cached = node_cache[:py_string][index]
+          @index = cached.interval.end if cached
+          return cached
+        end
+
+        i0, s0 = index, []
+        r1 = _nt_open_py_string
+        s0 << r1
+        if r1
+          s2, i2 = [], index
+          loop do
+            i3, s3 = index, []
+            i4 = index
+            r5 = _nt_close_py_string
+            if r5
+              r4 = nil
+            else
+              @index = i4
+              r4 = instantiate_node(SyntaxNode,input, index...index)
+            end
+            s3 << r4
+            if r4
+              if index < input_length
+                r6 = instantiate_node(SyntaxNode,input, index...(index + 1))
+                @index += 1
+              else
+                terminal_parse_failure("any character")
+                r6 = nil
+              end
+              s3 << r6
+            end
+            if s3.last
+              r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
+              r3.extend(PyString0)
+            else
+              @index = i3
+              r3 = nil
+            end
+            if r3
+              s2 << r3
+            else
+              break
+            end
+          end
+          r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
+          s0 << r2
+          if r2
+            r7 = _nt_close_py_string
+            s0 << r7
+          end
+        end
+        if s0.last
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
+          r0.extend(PyString1)
+          r0.extend(PyString2)
+        else
+          @index = i0
+          r0 = nil
+        end
+
+        node_cache[:py_string][start_index] = r0
+
+        r0
+      end
+
+      module OpenPyString0
+        def indent
+          elements[0]
+        end
+
+        def eol
+          elements[3]
+        end
+      end
+
+      module OpenPyString1
+        def indentation
+          indent.text_value.length
+        end
+
+        def line
+          indent.line
+        end
+      end
+
+      def _nt_open_py_string
+        start_index = index
+        if node_cache[:open_py_string].has_key?(index)
+          cached = node_cache[:open_py_string][index]
+          @index = cached.interval.end if cached
+          return cached
+        end
+
+        i0, s0 = index, []
+        s1, i1 = [], index
+        loop do
+          r2 = _nt_space
+          if r2
+            s1 << r2
+          else
+            break
+          end
+        end
+        r1 = instantiate_node(SyntaxNode,input, i1...index, s1)
+        s0 << r1
+        if r1
+          if has_terminal?('"""', false, index)
+            r3 = instantiate_node(SyntaxNode,input, index...(index + 3))
+            @index += 3
+          else
+            terminal_parse_failure('"""')
+            r3 = nil
+          end
+          s0 << r3
+          if r3
+            s4, i4 = [], index
+            loop do
+              r5 = _nt_space
+              if r5
+                s4 << r5
+              else
+                break
+              end
+            end
+            r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
+            s0 << r4
+            if r4
+              r6 = _nt_eol
+              s0 << r6
+            end
+          end
+        end
+        if s0.last
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
+          r0.extend(OpenPyString0)
+          r0.extend(OpenPyString1)
+        else
+          @index = i0
+          r0 = nil
+        end
+
+        node_cache[:open_py_string][start_index] = r0
+
+        r0
+      end
+
+      module ClosePyString0
+        def eol
+          elements[0]
+        end
+
+        def quotes
+          elements[2]
+        end
+
+        def white
+          elements[3]
+        end
+      end
+
+      module ClosePyString1
+        def line
+          quotes.line
+        end
+      end
+
+      def _nt_close_py_string
+        start_index = index
+        if node_cache[:close_py_string].has_key?(index)
+          cached = node_cache[:close_py_string][index]
+          @index = cached.interval.end if cached
+          return cached
+        end
+
+        i0, s0 = index, []
+        r1 = _nt_eol
+        s0 << r1
+        if r1
+          s2, i2 = [], index
+          loop do
+            r3 = _nt_space
+            if r3
+              s2 << r3
+            else
+              break
+            end
+          end
+          r2 = instantiate_node(SyntaxNode,input, i2...index, s2)
+          s0 << r2
+          if r2
+            if has_terminal?('"""', false, index)
+              r4 = instantiate_node(SyntaxNode,input, index...(index + 3))
+              @index += 3
+            else
+              terminal_parse_failure('"""')
+              r4 = nil
+            end
+            s0 << r4
+            if r4
+              r5 = _nt_white
+              s0 << r5
+            end
+          end
+        end
+        if s0.last
+          r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
+          r0.extend(ClosePyString0)
+          r0.extend(ClosePyString1)
+        else
+          @index = i0
+          r0 = nil
+        end
+
+        node_cache[:close_py_string][start_index] = r0
+
+        r0
+      end
+
+      def _nt_white
+        start_index = index
+        if node_cache[:white].has_key?(index)
+          cached = node_cache[:white][index]
+          @index = cached.interval.end if cached
+          return cached
+        end
+
+        s0, i0 = [], index
+        loop do
+          i1 = index
+          r2 = _nt_space
+          if r2
+            r1 = r2
+          else
+            r3 = _nt_eol
+            if r3
+              r1 = r3
+            else
+              @index = i1
+              r1 = nil
+            end
+          end
+          if r1
+            s0 << r1
+          else
+            break
+          end
+        end
+        r0 = instantiate_node(SyntaxNode,input, i0...index, s0)
+
+        node_cache[:white][start_index] = r0
 
         r0
       end

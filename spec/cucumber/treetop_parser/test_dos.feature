@@ -8,7 +8,7 @@ Feature: Search
     When the string is reversed
     Then the string should be "cba"
     
-  More Examples:
+  Examples:
     |input |output|
     |a     |a     |
     |ab    |ba    |    

@@ -111,7 +111,7 @@ class CucumberWorld
         exec cmd
       end
     end
-    sleep (ENV["RUN_CODE_RUN"] ? 5.0 : 1.0)
+    sleep 1.0
   end
 
   def terminate_background_jobs

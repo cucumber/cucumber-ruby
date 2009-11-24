@@ -76,8 +76,8 @@ module Cucumber
             steps.at_line?(line)
           end
 
-          def matches_tags?(tag_name_lists)
-            Ast::Tags.matches?(self.parent.tags.tag_names, tag_name_lists)
+          def matches_tags?(tag_names)
+            Ast::Tags.matches?(self.parent.tags.tag_names, tag_names)
           end
 
           def build
@@ -116,10 +116,10 @@ module Cucumber
             tags.at_line?(line)
           end
 
-          def matches_tags?(tag_name_lists)
+          def matches_tags?(tag_names)
             feature_tag_names = self.parent.parent.tags.tag_names
             source_tag_names = (feature_tag_names + tags.tag_names).uniq
-            Ast::Tags.matches?(source_tag_names, tag_name_lists)
+            Ast::Tags.matches?(source_tag_names, tag_names)
           end
 
           def matches_name?(regexp_to_match)
@@ -153,10 +153,10 @@ module Cucumber
             steps.at_line?(line)
           end
 
-          def matches_tags?(tag_name_lists)
+          def matches_tags?(tag_names)
             feature_tag_names = self.parent.parent.tags.tag_names
             source_tag_names = (feature_tag_names + tags.tag_names).uniq
-            Ast::Tags.matches?(source_tag_names, tag_name_lists)
+            Ast::Tags.matches?(source_tag_names, tag_names)
           end
 
           def matches_name?(regexp_to_match)
@@ -195,7 +195,7 @@ module Cucumber
       end
 
       rule step
-        comment space* step_keyword keyword_space name:line_to_eol (eol+ / eof) multi:multiline_arg? white {
+        comment space* step_keyword space* name:line_to_eol (eol+ / eof) multi:multiline_arg? white {
           def at_line?(line)
             step_keyword.line == line ||
             (multi.respond_to?(:at_line?) && multi.at_line?(line))
@@ -203,9 +203,9 @@ module Cucumber
 
           def build
             if multi.respond_to?(:build)
-              Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value.strip, multi.build)
+              Ast::Step.new(step_keyword.line, step_keyword.text_value.strip, name.text_value.strip, multi.build)
             else
-              Ast::Step.new(step_keyword.line, step_keyword.text_value, name.text_value.strip)
+              Ast::Step.new(step_keyword.line, step_keyword.text_value.strip, name.text_value.strip)
             end
           end
         }
@@ -238,7 +238,7 @@ module Cucumber
             table.at_line?(line)
           end
 
-          def matches_tags?(tag_name_lists)
+          def matches_tags?(tag_names)
             true
           end
 
@@ -273,7 +273,43 @@ module Cucumber
       end
 
       rule reserved_words_and_symbols
-        (step_keyword keyword_space) / scenario_keyword / scenario_outline_keyword / table / tag / comment_line
+        (step_keyword) / scenario_keyword / scenario_outline_keyword / table / tag / comment_line
+      end
+
+      rule py_string
+        open_py_string s:(!close_py_string .)* close_py_string {
+          def at_line?(line)
+            line >= open_py_string.line && line <= close_py_string.line
+          end
+
+          def build
+            Ast::PyString.new(open_py_string.line, close_py_string.line, s.text_value, open_py_string.indentation)
+          end
+        }
+      end
+
+      rule open_py_string
+        indent:space* '"""' space* eol {
+          def indentation
+            indent.text_value.length
+          end
+
+          def line
+            indent.line
+          end
+        }
+      end
+
+      rule close_py_string
+        eol space* quotes:'"""' white {
+          def line
+            quotes.line
+          end
+        }
+      end
+
+      rule white
+        (space / eol)*
       end
 
     end

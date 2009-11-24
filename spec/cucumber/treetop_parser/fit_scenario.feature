@@ -1,8 +1,8 @@
-Some title  
+Feature: Some title  
 
   Scenario: second  
     Given 'bind me please'
   
-  More Examples:
+  Examples:
   |c|
   |I can have spaces|

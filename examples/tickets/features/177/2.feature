@@ -1,6 +1,5 @@
-Visitors may create an account, but for those who are not already in the 
-system an someone must activate the account for them before it can be used.
-
+# Visitors may create an account, but for those who are not already in the 
+# system an someone must activate the account for them before it can be used.
 Feature: Activating an account
   As a registered, but not yet activated, user
   I want to be able to activate my account

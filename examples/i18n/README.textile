@@ -15,4 +15,4 @@ h2. Running examples for a specific language
 
 Open a shell in the directory for the specific language and run
 
-<pre>rake features</pre>
+<pre>rake cucumber</pre>

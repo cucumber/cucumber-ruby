@@ -1,4 +1,4 @@
-Some title  
+Feature: Some title  
 
   Scenario: first     
     Given a
