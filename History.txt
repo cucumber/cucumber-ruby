@@ -1,6 +1,7 @@
 == In Git
 
 === New features
+* Added * as a synonym for Given/When/Then/And/But (for all i18n languages). (#462 Aslak Hellesøy)
 * The HTML formatter produces a much nicer report, with TextMate link integration. (Rob Aldred)
 
 === Changed Features

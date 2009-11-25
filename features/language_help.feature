@@ -13,11 +13,11 @@ Feature: Language help
       | scenario         | Cenário / Cenario                       |
       | scenario_outline | Esquema do Cenário / Esquema do Cenario |
       | examples         | Exemplos                                |
-      | given            | Dado                                    |
-      | when             | Quando                                  |
-      | then             | Então / Entao                           |
-      | and              | E                                       |
-      | but              | Mas                                     |
+      | given            | * / Dado                                |
+      | when             | * / Quando                              |
+      | then             | * / Então / Entao                       |
+      | and              | * / E                                   |
+      | but              | * / Mas                                 |
 
       """
   Scenario: List languages
