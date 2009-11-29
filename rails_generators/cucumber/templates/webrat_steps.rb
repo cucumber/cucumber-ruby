@@ -116,8 +116,24 @@ When /^(?:|I )choose "([^\"]*)"$/ do |field|
   choose(field)
 end
 
-When /^(?:|I )attach the file at "([^\"]*)" to "([^\"]*)"$/ do |path, field|
-  attach_file(field, path)
+# Adds support for validates_attachment_content_type. Without the mime-type getting
+# passed to attach_file() you will get a "Photo file is not one of the allowed file types."
+# error message 
+When /^(?:|I )attach the file "([^\"]*)" to "([^\"]*)"$/ do |path, field|
+  type = path.split(".")[1]  
+  
+  case type
+  when "jpg"
+    type = "image/jpg" 
+  when "jpeg"
+    type = "image/jpeg" 
+  when "png"
+    type = "image/png" 
+  when "gif"
+    type = "image/gif"
+  end
+  
+  attach_file field, File.join(RAILS_ROOT,path), type
 end
 
 Then /^(?:|I )should see "([^\"]*)"$/ do |text|
