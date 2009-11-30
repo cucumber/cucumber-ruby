@@ -124,7 +124,7 @@ Feature: Wire Protocol
       | request                                              | response                                         |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]]         |
       | ["begin_scenario",null]                              | ["success",null]                                 |
-      | ["invoke",{"id":"1","args":[]}]                      | ["step_failed",{"message":"The wires are down"}] |
+      | ["invoke",{"id":"1","args":[]}]                      | ["step_failed",{"message":"The wires are down", "exception":"Some.Foreign.ExceptionType"}] |
       | ["end_scenario",null]                                | ["success",null]                                 |
     When I run cucumber -f progress features
     Then STDERR should be empty
@@ -134,7 +134,7 @@ Feature: Wire Protocol
 
       (::) failed steps (::)
 
-      The wires are down (Cucumber::WireSupport::WireException)
+      The wires are down (Some.Foreign.ExceptionType from localhost:54321)
       features/wired.feature:2:in `Given we're all wired'
 
       Failing Scenarios:

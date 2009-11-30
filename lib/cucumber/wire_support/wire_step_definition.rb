@@ -6,6 +6,8 @@ module Cucumber
       end
       
       def invoke(args)
+        # p [:invoking, @id]
+        # p [:args, args]
         @connection.invoke(@id, args)
       end
 
