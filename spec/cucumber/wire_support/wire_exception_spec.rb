@@ -30,6 +30,15 @@ module Cucumber
           exception.class.to_s.should == 'Bar from localhost:54321'
         end
       end
+      
+      describe "with a custom backtrace" do
+        before(:each) do
+          @data = {'message' => 'foo', 'backtrace' => ['foo', 'bar', 'baz']}
+        end
+        it "#backrace should return the custom backtrace" do
+          exception.backtrace.should == ['foo', 'bar', 'baz']
+        end
+      end
     end
   end
 end

@@ -15,6 +15,13 @@ module Cucumber
           self.class.extend(CanSetName)
           self.class.exception_name = "#{args['exception']} from #{host}:#{port}"
         end
+        if args['backtrace']
+          @backtrace = args['backtrace']
+        end
+      end
+      
+      def backtrace
+        @backtrace || super
       end
     end
   end
