@@ -4,7 +4,7 @@ h2. Prerequisites
 
 Install the ruby-tcl bindings:
 
-  [sudo] gem install tcl --source http://gemcutter.org/
+  [sudo] gem install --source http://gemcutter.org/ tcl
 
 h2. Run the example:
 
