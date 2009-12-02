@@ -26,13 +26,26 @@ module Cucumber
       it "should not raise an error when visiting a blank feature name" do
         lambda { @formatter.feature_name("") }.should_not raise_error
       end
-    
+      
       describe "given a single feature" do
         before(:each) do
           run_defined_feature
           @doc = Nokogiri.HTML(@out.string)
         end
-      
+        
+        describe "basic feature" do
+          define_feature <<-FEATURE
+            Feature: Bananas
+              In order to find my inner monkey
+              As a human
+              I must eat bananas
+          FEATURE
+                
+          it "should output a main container div" do
+            @out.string.should =~ /\<div class="cucumber"\>/
+          end
+        end
+        
         describe "with a comment" do
           define_feature <<-FEATURE
             # Healthy
