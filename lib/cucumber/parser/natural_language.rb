@@ -1,3 +1,5 @@
+# TODO: REMOVE ME
+# Most of this class now lives in Gherkin's i18n.rb
 module Cucumber
   module Parser
     class NaturalLanguage
