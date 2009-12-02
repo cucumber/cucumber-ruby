@@ -1,49 +1,70 @@
-# cucumber.css is generated from cucumber.sass
-# Regenerate with rake sass
+/* cucumber.css is generated from cucumber.sass */
+/* Regenerate with rake sass */
 
-!step_left   = 5px solid
-!step_bottom = 1px solid
+!step_left        = 5px "solid"
+!step_bottom      = 1px "solid"
 
-!failed         = #FFC0CB
-!failed_dark    = #FF0000
-!failed_text    = #8B0000
+!failed           = #FFFBD3
+!failed_border    = #C20000
+!failed_text      = #C20000
 
-!passed         = #98FB98
-!passed_dark    = #00FF00
-!passed_text    = #001111
+!passed           = #DBFFB4
+!passed_border    = #65C400
+!passed_text      = #3D7700
 
-!skipped        = #E0FFFF
-!skipped_dark   = #00FFFF
-!skipped_text   = #001111
+!skipped          = #E0FFFF
+!skipped_border   = #00FFFF
+!skipped_text     = #001111
 
-!pending        = #FFFF00
-!pending_dark   = #FF8000
-!pending_text   = #2A1B0A
+!pending          = #FCFB98
+!pending_border   = #FAF834
+!pending_text     = #131313
 
-!undefined      = #FFFF00
-!undefined_dark = #FF8000
-!undefined_text = #2A1B0A
+!undefined        = #FCFB98
+!undefined_border = #FAF834
+!undefined_text   = #131313
 
-.cucumber
-  :font-family "Lucida Grande", Helvetica, sans-serif
-  :font-size 0.7em
+body
+  :font-size 0px
+  :color #FFFFFF
+  :margin 0px
+  :padding 0px
+
+.cucumber,td,th
+  :font normal 11px "Lucida Grande", Helvetica, sans-serif
   :background white
-  :padding 1em
+  :color #000000
   
-  h1, h2, h3, h4, ol, li, pre, p
-    :font-size 1em
-    :padding 0px
-    :margin 0px
+  #cucumber-header
+    :background #65C400
+    :color #FFFFFF
+    :height 5em
+    
+  .scenario
+    h3
+      :font-size 11px
+      :padding 3px
+      :margin 0
+      :background #65C400
+      :color #FFFFFF
+      :font-weight bold
+  
+  h1
+    :margin 0px 10px 0px 10px
+    :padding 10px
+    :font-family "Lucida Grande", Helvetica, sans-serif
+    :font-size 1.8em
+    :position absolute
+  
+  h4
+    :margin-bottom 2px
 
   div.feature
-    :border 1px solid 
     :padding 2px
-    :margin 4px
+    :margin 0px 10px 5px 10px
 
-    div.background, div.scenario, p
-      :padding 0em 0em 0em 1em
-      div.examples
-        :padding 0em 0em 0em 1em
+  div.examples
+    :padding 0em 0em 0em 1em
 
   .stats
     :margin 2em
@@ -53,14 +74,19 @@
       li
         :display inline
 
+  .tag
+    :font-weight bold
+    :color #246AC1
+    
   .backtrace
     :margin-top 0
     :margin-bottom 0
     :margin-left 1em
+    :color #000000
 
   a
     :text-decoration none
-    :color inherit
+    :color #BE5C00
 
     &:hover
       :text-decoration underline
@@ -68,72 +94,148 @@
       :font-weight normal
 
     div.examples
-      :border 1px solid 
-      :padding 2px
-      :margin 4px
+      :margin 5px 0px 5px 15px
+      :color #000000
+      
+  .outline
+    table
+      :margin 0px 0px 5px 10px
 
   table
     :border-collapse collapse
-    
-    td, th
-      :font-size 0.7em
-      :border 1px solid #AAAAAA
+    td
+      :padding 3px 3px 3px 5px
+    td.failed, td.passed, td.skipped, td.pending, td.undefined
+      :padding-left 18px
+      :padding-right 10px
     td.failed
-      :background #FFC0CB
-      :color #8B0000
+      :border-left= !step_left !failed_border
+      :border-bottom= !step_bottom !failed_border
+      :background= !failed
+      :color= !failed_text
     td.passed
-      :background #98FB98
+      :border-left= !step_left !passed_border
+      :border-bottom= !step_bottom !passed_border
+      :background= !passed
       :color= !passed_text
     td.skipped
+      :border-left= !step_left !skipped_border
+      :border-bottom= !step_bottom !skipped_border
       :background= !skipped
       :color= !skipped_text
     td.pending
-      :background #FFFFE0
-      :color #111100
+      :border-left= !step_left !pending_border
+      :border-bottom= !step_bottom !pending_border
+      :background= !pending
+      :color= !pending_text
     td.undefined
-      :background #FFFFE0
-      :color #111100
+      :border-left= !step_left !undefined_border
+      :border-bottom= !step_bottom !undefined_border
+      :background= !undefined
+      :color= !undefined_text
 
   ol
     :list-style none
-  
+    :margin 0px
+    :padding 0px
+    
+    li.step
+      :padding 3px 3px 3px 18px
+      :margin 5px 0px 5px 5px
     li
       :margin 0em 0em 0em 1em
-      :padding 0em 0em 0em 0.2em
+      :padding 0em 0em 0em 0.2em        
       span.param
-        :font-weight bold
+        :font-weight bold      
     li.failed
-      :border-left= !step_left !failed_dark
-      :border-bottom= !step_bottom !failed_dark
+      :border-left= !step_left !failed_border
+      :border-bottom= !step_bottom !failed_border
       :background= !failed
       :color= !failed_text
-      span.param
-        :background !failed_dark
     li.passed
-      :border-left= !step_left !passed_dark
-      :border-bottom= !step_bottom !passed_dark
+      :border-left= !step_left !passed_border
+      :border-bottom= !step_bottom !passed_border
       :background= !passed
       :color= !passed_text
-      span.param
-        :background= !passed_dark
     li.skipped
-      :border-left= !step_left !skipped_dark
-      :border-bottom= !step_bottom !skipped_dark
+      :border-left= !step_left !skipped_border
+      :border-bottom= !step_bottom !skipped_border
       :background= !skipped
       :color= !skipped_text
-      span.param
-        :background= !skipped_dark
     li.pending
-      :border-left= !step_left !pending_dark
-      :border-bottom= !step_bottom !pending_dark
+      :border-left= !step_left !pending_border
+      :border-bottom= !step_bottom !pending_border
       :background= !pending
       :color= !pending_text
-      span.param
-        :background= !pending_dark
     li.undefined
-      :border-left= !step_left !undefined_dark
-      :border-bottom= !step_bottom !undefined_dark
+      :border-left= !step_left !undefined_border
+      :border-bottom= !step_bottom !undefined_border
       :background= !undefined
       :color= !undefined_text
-      span.param
-        :background= !undefined_dark
+            
+  #summary
+    :margin 0px
+    :padding 5px 10px
+    :text-align right
+    :top 0px
+    :right 0px
+    :float right
+
+    p
+      :margin 0 0 0 2px
+
+    #totals
+      :font-size 1.2em      
+      
+.ruby
+  :font-size 12px
+  :font-family monospace
+  :color white
+  :background black
+  :padding 0.1em 0 0.2em 0
+
+  .keyword 
+    :color #FF6600
+  .constant
+    :color #339999
+  .attribute
+    :color white
+  .global
+    :color white
+  .module
+    :color white
+  .class
+    :color white
+  .string
+    :color #66FF00
+  .ident
+    :color white
+  .method
+    :color #FFCC00
+  .number
+    :color white
+  .char
+    :color white
+  .comment
+    :color #9933CC
+  .symbol
+    :color white
+  .regex
+    :color #44B4CC
+  .punct
+    :color white
+  .escape
+    :color white
+  .interp 
+    :color white
+  .expr 
+    :color white
+
+  .offending
+    :background #333333
+  .linenum
+    :width 75px
+    :padding 0.1em 1em 0.2em 0
+    :color #000000
+    :background #FFFBD3
+
