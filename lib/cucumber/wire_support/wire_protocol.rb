@@ -25,7 +25,7 @@ module Cucumber
       
       def invoke(step_definition_id, args)
         request_params = { :id => step_definition_id, :args => args }
-        
+
         make_request(:invoke, request_params) do
           def handle_success(params)
           end

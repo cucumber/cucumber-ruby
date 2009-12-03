@@ -6,8 +6,13 @@ module Cucumber
       end
       
       def invoke(args)
-        # p [:invoking, @id]
-        # p [:args, args]
+        args = args.map do |arg|
+          if arg.is_a?(Cucumber::Ast::Table)
+            arg.raw
+          else
+            arg
+          end
+        end
         @connection.invoke(@id, args)
       end
 

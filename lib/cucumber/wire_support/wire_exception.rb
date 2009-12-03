@@ -16,7 +16,11 @@ module Cucumber
           self.class.exception_name = "#{args['exception']} from #{host}:#{port}"
         end
         if args['backtrace']
-          @backtrace = args['backtrace'].split("\n") # TODO: change cuke4nuke to pass an array instead of a big string
+          @backtrace = if args['backtrace'].is_a?(String)
+              args['backtrace'].split("\n") # TODO: change cuke4nuke to pass an array instead of a big string
+            else
+              args['backtrace']
+            end
         end
       end
       
