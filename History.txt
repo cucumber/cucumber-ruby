@@ -12,6 +12,7 @@
 * Move to cucumber-rails. Webrat step "Then I should be on" should use request_uri instead of path for missing query string parameters (ZhangJinzhu)
 
 === Bugfixes
+* Regex escape the path when filtering the backtrace (Corey Donohoe & Simon Rozet)
 * Added check when including ActiveSupport::Testing::SetupAndTeardown for older Rails versions (Jeremy Durham)
 
 == 0.4.4 2009-11-13
