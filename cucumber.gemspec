@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2009-11-16}
+  s.date = %q{2009-12-06}
   s.default_executable = %q{cucumber}
   s.description = %q{A BDD tool written in Ruby}
   s.email = %q{cukes@googlegroups.com}
@@ -89,6 +89,7 @@ Gem::Specification.new do |s|
      "examples/i18n/fi/lib/laskin.rb",
      "examples/i18n/fr/Rakefile",
      "examples/i18n/fr/features/addition.feature",
+     "examples/i18n/fr/features/addition2.feature",
      "examples/i18n/fr/features/step_definitions/calculatrice_steps.rb",
      "examples/i18n/fr/lib/calculatrice.rb",
      "examples/i18n/he/Rakefile",
@@ -270,6 +271,12 @@ Gem::Specification.new do |s|
      "examples/sinatra/views/layout.erb",
      "examples/steps_library/features/step_definitions/steps_lib1.rb",
      "examples/steps_library/features/step_definitions/steps_lib2.rb",
+     "examples/tcl/README.textile",
+     "examples/tcl/Rakefile",
+     "examples/tcl/features/fibonnacci.feature",
+     "examples/tcl/features/step_definitions/fib_steps.rb",
+     "examples/tcl/features/support/env.rb",
+     "examples/tcl/src/fib.tcl",
      "examples/test_unit/Rakefile",
      "examples/test_unit/features/step_definitions/test_unit_steps.rb",
      "examples/test_unit/features/test_unit.feature",
@@ -673,6 +680,8 @@ for important information about this release. Happy cuking!
      "examples/sinatra/features/support/env.rb",
      "examples/steps_library/features/step_definitions/steps_lib1.rb",
      "examples/steps_library/features/step_definitions/steps_lib2.rb",
+     "examples/tcl/features/step_definitions/fib_steps.rb",
+     "examples/tcl/features/support/env.rb",
      "examples/test_unit/features/step_definitions/test_unit_steps.rb",
      "examples/tickets/features/229/tagged_hooks.rb",
      "examples/tickets/features/270/back.steps.rb",
@@ -702,7 +711,7 @@ for important information about this release. Happy cuking!
       s.add_runtime_dependency(%q<polyglot>, ["= 0.2.9"])
       s.add_runtime_dependency(%q<builder>, ["= 2.1.2"])
       s.add_runtime_dependency(%q<diff-lcs>, ["= 1.1.2"])
-      s.add_development_dependency(%q<nokogiri>, ["= 1.3.3"])
+      s.add_development_dependency(%q<nokogiri>, ["= 1.4.0"])
       s.add_development_dependency(%q<prawn>, ["= 0.5.1"])
       s.add_development_dependency(%q<rspec>, ["= 1.2.9"])
       s.add_development_dependency(%q<spork>, ["= 0.7.3"])
@@ -712,7 +721,7 @@ for important information about this release. Happy cuking!
       s.add_dependency(%q<polyglot>, ["= 0.2.9"])
       s.add_dependency(%q<builder>, ["= 2.1.2"])
       s.add_dependency(%q<diff-lcs>, ["= 1.1.2"])
-      s.add_dependency(%q<nokogiri>, ["= 1.3.3"])
+      s.add_dependency(%q<nokogiri>, ["= 1.4.0"])
       s.add_dependency(%q<prawn>, ["= 0.5.1"])
       s.add_dependency(%q<rspec>, ["= 1.2.9"])
       s.add_dependency(%q<spork>, ["= 0.7.3"])
@@ -723,7 +732,7 @@ for important information about this release. Happy cuking!
     s.add_dependency(%q<polyglot>, ["= 0.2.9"])
     s.add_dependency(%q<builder>, ["= 2.1.2"])
     s.add_dependency(%q<diff-lcs>, ["= 1.1.2"])
-    s.add_dependency(%q<nokogiri>, ["= 1.3.3"])
+    s.add_dependency(%q<nokogiri>, ["= 1.4.0"])
     s.add_dependency(%q<prawn>, ["= 0.5.1"])
     s.add_dependency(%q<rspec>, ["= 1.2.9"])
     s.add_dependency(%q<spork>, ["= 0.7.3"])
