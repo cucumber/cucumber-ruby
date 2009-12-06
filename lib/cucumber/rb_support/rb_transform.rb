@@ -23,7 +23,7 @@ module Cucumber
       end
 
       def match(arg)
-        arg.match(@regexp)
+        arg ? arg.match(@regexp) : nil
       end
 
       def invoke(arg)
