@@ -61,6 +61,9 @@ module Cucumber::Formatter
 
             Scenario Outline: Eat things
               Given <Things>
+              And stuff:
+                | foo |
+                | bar |
             
             Examples: Good
               | Things   |
