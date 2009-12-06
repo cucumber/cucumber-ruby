@@ -59,8 +59,9 @@ module Cucumber
         scenario_name = name.strip.delete(".\r\n")
         scenario_name = "Unnamed scenario" if name.blank?
         @scenario = scenario_name
-        @outline = keyword.include?('Scenario Outline')
-        @output = "Scenario#{ " outline" if @outline}: #{@scenario}\n\n"
+        description = "Scenario"
+        description << " outline" if keyword.include?('Scenario Outline')
+        @output = "#{description}: #{@scenario}\n\n"
       end
 
       def before_steps(steps)
@@ -68,7 +69,7 @@ module Cucumber
       end
       
       def after_steps(steps)
-        return if @in_background || @outline
+        return if @in_background || @in_examples
         
         duration = Time.now - @steps_start
         if steps.failed?
@@ -80,16 +81,21 @@ module Cucumber
       
       def before_examples(*args)
         @header_row = true
+        @in_examples = true
+      end
+      
+      def after_examples(*args)
+        @in_examples = false
       end
 
       def before_table_row(table_row)
-        return unless @outline
+        return unless @in_examples
 
         @table_start = Time.now
       end
 
       def after_table_row(table_row)
-        return unless @outline
+        return unless @in_examples
         duration = Time.now - @table_start
         unless @header_row
           name_suffix = " (outline example : #{table_row.name})"
