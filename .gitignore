@@ -14,4 +14,4 @@ target
 *.tmproj
 examples/self_test/tmp
 .#*
-.idea
+.idearerun.txt
