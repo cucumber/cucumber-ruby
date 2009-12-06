@@ -171,7 +171,7 @@ module Cucumber
     #     Then I should not be thirsty
     #   })
     def invoke_steps(steps_text, natural_language)
-      ored_keywords = natural_language.step_keywords.join("|")
+      ored_keywords = natural_language.step_keywords.map{|kw| Regexp.escape(kw)}.join("|")
       # TODO Gherkin:
       # This a bit hacky and fragile. When we move to Gherkin we should replace this entire method body
       # with a call to the parser - parsing the body of a scenario. We may need to put the parser/policy in the

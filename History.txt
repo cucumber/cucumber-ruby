@@ -1,13 +1,20 @@
 == In Git
 
 === New features
+* Added a Tcl example using Sam Stephenson's ruby-tcl (Aslak Hellesøy)
+* Added * as a synonym for Given/When/Then/And/But (for all i18n languages). (#462 Aslak Hellesøy)
 * The HTML formatter produces a much nicer report, with TextMate link integration. (Rob Aldred)
 
 === Changed Features
 * Per-word trailing-space setting for step keywords using '<'.  See 'fr' in languages.yml for example. (#525 Gregory Hnatiuk)
 * --language is deprecated and will be removed in 0.5.0: http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages (Aslak Hellesøy)
 * Formatters will no longer be passed File objects. They must use ensure_io, ensure_file or ensure_dir. (Aslak Hellesøy)
-* TODO: Move to cucumber-rails. Webrat step "Then I should be on" should use request_uri instead of path for missing query string parameters (ZhangJinzhu)
+* Move to cucumber-rails. Webrat step "Then I should be on" should use request_uri instead of path for missing query string parameters (ZhangJinzhu)
+
+=== Bugfixes
+* Allow optional step arguments to play happily with step transforms (Rob Holland)
+* Regex escape the path when filtering the backtrace (Corey Donohoe & Simon Rozet)
+* Added check when including ActiveSupport::Testing::SetupAndTeardown for older Rails versions (Jeremy Durham)
 
 == 0.4.4 2009-11-13
 

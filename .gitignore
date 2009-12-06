@@ -15,3 +15,4 @@ target
 examples/self_test/tmp
 .#*
 .idea
+rerun.txt

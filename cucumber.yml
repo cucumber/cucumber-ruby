@@ -1,6 +1,10 @@
-<% nowip = 'features --format progress --strict --tags ~@wip' %>
-default: <%= nowip %>
-jruby: <%= nowip %>,~@spork
-run_code_run: <%= nowip %>,~@spork
-windows_mri: <%= nowip %>,~@spork
+<% 
+rerun = File.file?('rerun.txt') ? IO.read('rerun.txt') : ""
+rerun_opts = rerun.to_s.strip.empty? ? "--format progress features" : "--format pretty #{rerun}"
+std_opts = "#{rerun_opts} --format rerun --out rerun.txt --strict --tags ~@wip"
+%>
+default: <%= std_opts %>
+jruby: <%= std_opts %>,~@spork
+run_code_run: <%= std_opts %>,~@spork
+windows_mri: <%= std_opts %>,~@spork
 wip: --tags @wip:3 --wip features

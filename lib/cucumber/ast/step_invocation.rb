@@ -106,7 +106,7 @@ module Cucumber
 
       def filter_backtrace(e)
         return e if Cucumber.use_full_backtrace
-        pwd = /#{Dir.pwd}\//m
+        pwd = /#{Regexp.escape(Dir.pwd)}\//m
         (e.backtrace || []).each{|line| line.gsub!(pwd, "./")}
         
         filtered = (e.backtrace || []).reject do |line|

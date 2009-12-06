@@ -30,11 +30,19 @@ Feature: transform
       Then /^I should not transform ('\d+') to an Integer$/ do |string|
         string.should be_kind_of(String)
       end
+
+      Then /^I should transform ((?:nothing|'\d+') to an optional Integer)$/ do |integer|
+        integer.should be_nil
+      end
       """
     And a file named "features/support/env.rb" with:
       """
       Transform /^'\d+' to an Integer$/ do |step_arg|
         /'(\d+)' to an Integer/.match(step_arg).captures[0].to_i
+      end
+
+      Transform /^(?:nothing|'(\d+)') to an optional Integer$/ do |str|
+        str ? str.to_i : nil
       end
 
       Transform /^'(\d+)' to a Float$/ do |integer_string|
@@ -82,8 +90,11 @@ Feature: transform
 
         Scenario: transform without matches
           Then I should not transform '10' to an Integer
+
+        Scenario: transform with optional arguments not given
+          Then I should transform nothing to an optional Integer
       """
-    When I run cucumber -s features
+    When I run cucumber --backtrace -s features
     Then it should pass with
       """
       Feature: Step argument transformations
@@ -106,8 +117,11 @@ Feature: transform
         Scenario: transform without matches
           Then I should not transform '10' to an Integer
 
-      6 scenarios (6 passed)
-      6 steps (6 passed)
+        Scenario: transform with optional arguments not given
+          Then I should transform nothing to an optional Integer
+
+      7 scenarios (7 passed)
+      7 steps (7 passed)
     
       """
 
