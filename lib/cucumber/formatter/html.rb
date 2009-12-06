@@ -42,7 +42,7 @@ module Cucumber
         end
         @builder << '<body>'
         @builder << "<!-- Step count #{@step_count}-->"
-        @builder << '<div class="cucumber"'
+        @builder << '<div class="cucumber">'
         @builder.div(:id => 'cucumber-header') do
           @builder.div(:id => 'label') do
             @builder.h1('Cucumber Features')
