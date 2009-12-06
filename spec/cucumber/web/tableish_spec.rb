@@ -25,7 +25,7 @@ module Cucumber
             </table>
           HTML
 
-          _tableish(html, :parent => 'table', :row => ['tr th, tr td']).should == [
+          _tableish(html, 'table tr', 'td,th').should == [
             %w{tool dude},
             %w{webrat bryan},
             %w{cucumber aslak}
@@ -42,7 +42,7 @@ module Cucumber
             </dl>
           HTML
 
-          _tableish(html, :columns => ["dl dt:nth-child(%s)", "dl dd:nth-child(%s+1)"]).should == [
+          _tableish(html, 'dl dt', lambda{|dt| [dt, dt.next.next]}).should == [
             %w{webrat bryan},
             %w{cucumber aslak}
           ]
@@ -50,7 +50,11 @@ module Cucumber
 
         it "should convert a ul" do
           html = <<-HTML
-            <ul>
+            <ul id="phony">
+              <li>nope</li>
+            </ul>
+
+            <ul id="yes">
               <li>webrat</li>
               <li>bryan</li>
               <li>cucumber</li>
@@ -58,7 +62,7 @@ module Cucumber
             </ul>
           HTML
 
-          _tableish(html, :rows => 'ul li').should == [
+          _tableish(html, 'ul#yes li', lambda{|li| [li]}).should == [
             %w{webrat},
             %w{bryan},
             %w{cucumber},

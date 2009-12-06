@@ -2,17 +2,21 @@ require 'nokogiri'
 
 module Cucumber
   module Tableish
-    # http://reference.sitepoint.com/css/understandingnthchildexpressions
-    def tableish(options)
-      _tableish(response_body, options)
+    def tableish(row_selector, column_selectors)
+      _tableish(response_body, row_selector, column_selectors)
     end
 
-    def _tableish(html, options)
+    def _tableish(html, row_selector, column_selectors)
       doc = Nokogiri::HTML(html)
-      parent = doc.css(options[:parent])[0]
-      parent.css(options[:row]) do |row|
-        row.map do |element|
-          element
+      doc.search(row_selector).map do |row|
+        cells = case(column_selectors)
+        when String
+          row.search(column_selectors)
+        when Proc
+          column_selectors.call(row)
+        end
+        cells.map do |cell|
+          cell.text.strip
         end
       end
     end
