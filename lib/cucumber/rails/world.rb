@@ -15,7 +15,7 @@ end
 module Cucumber #:nodoc:
   module Rails
     class World < ActionController::IntegrationTest
-      include ActiveSupport::Testing::SetupAndTeardown
+      include ActiveSupport::Testing::SetupAndTeardown if ActiveSupport::Testing.const_defined?("SetupAndTeardown")
       def initialize #:nodoc:
         @_result = Test::Unit::TestResult.new
       end

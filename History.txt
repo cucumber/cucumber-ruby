@@ -11,6 +11,9 @@
 * Formatters will no longer be passed File objects. They must use ensure_io, ensure_file or ensure_dir. (Aslak Hellesøy)
 * Move to cucumber-rails. Webrat step "Then I should be on" should use request_uri instead of path for missing query string parameters (ZhangJinzhu)
 
+=== Bugfixes
+* Added check when including ActiveSupport::Testing::SetupAndTeardown for older Rails versions (Jeremy Durham)
+
 == 0.4.4 2009-11-13
 
 What a bad day to make a release, but here goes.
