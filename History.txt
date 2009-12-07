@@ -18,7 +18,7 @@
 * Regex escape the path when filtering the backtrace (Corey Donohoe & Simon Rozet)
 
 === Removed Features
-* All Rails-related code is in a separate gem: cucumber-rails. Install that if you're working with Rails. (Aslak Hellesøy)
+* All Rails-related code is in a separate gem: cucumber-rails. Install that if you're working with Rails. (#483 Aslak Hellesøy)
 
 == 0.4.4 2009-11-13
 
