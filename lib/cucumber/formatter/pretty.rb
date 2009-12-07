@@ -186,7 +186,7 @@ module Cucumber
         print_table_row_announcements
         @io.puts
         if table_row.exception && !@exceptions.include?(table_row.exception)
-          print_exception(table_row.exception, :failed, @indent)
+          print_exception(table_row.exception, table_row.status, @indent)
         end
       end
 
