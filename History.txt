@@ -11,6 +11,8 @@
 * Formatters will no longer be passed File objects. They must use ensure_io, ensure_file or ensure_dir. (Aslak Hellesøy)
 
 === Bugfixes
+* JUnit formatter not handling multiline table steps inside Scenario Outlines  (#538 Matt Wynne)
+* Pending in scenario outline is red (#399 Matt Wynne)
 * Allow optional step arguments to play happily with step transforms (Rob Holland)
 * Regex escape the path when filtering the backtrace (Corey Donohoe & Simon Rozet)
 
