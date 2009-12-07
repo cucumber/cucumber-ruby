@@ -11,7 +11,6 @@
 * Formatters will no longer be passed File objects. They must use ensure_io, ensure_file or ensure_dir. (Aslak Hellesøy)
 
 === Bugfixes
-* Make #table_at work on Webrat 0.6.0.
 * Allow optional step arguments to play happily with step transforms (Rob Holland)
 * Regex escape the path when filtering the backtrace (Corey Donohoe & Simon Rozet)
 
