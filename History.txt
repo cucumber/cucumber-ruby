@@ -9,12 +9,16 @@
 * Per-word trailing-space setting for step keywords using '<'.  See 'fr' in languages.yml for example. (#525 Gregory Hnatiuk)
 * --language is deprecated and will be removed in 0.5.0: http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages (Aslak Hellesøy)
 * Formatters will no longer be passed File objects. They must use ensure_io, ensure_file or ensure_dir. (Aslak Hellesøy)
-* Move to cucumber-rails. Webrat step "Then I should be on" should use request_uri instead of path for missing query string parameters (ZhangJinzhu)
 
 === Bugfixes
+* Make #element_at / #table_at work on Webrat 0.6.0. This is now deprecated it in favour of #tableish from the cucumber-rails gem. (Aslak Hellesøy)
+* JUnit formatter not handling multiline table steps inside Scenario Outlines (#538 Matt Wynne)
+* Pending in scenario outline is red (#399 Matt Wynne)
 * Allow optional step arguments to play happily with step transforms (Rob Holland)
 * Regex escape the path when filtering the backtrace (Corey Donohoe & Simon Rozet)
-* Added check when including ActiveSupport::Testing::SetupAndTeardown for older Rails versions (Jeremy Durham)
+
+=== Removed Features
+* All Rails-related code is in a separate gem: cucumber-rails. Install that if you're working with Rails. (#483 Aslak Hellesøy)
 
 == 0.4.4 2009-11-13
 
@@ -36,6 +40,7 @@ What a bad day to make a release, but here goes.
 * Added respond_to? when checking config.cache_classes for older Rails versions (Jeremy Durham)
 
 === Changed Features
+* Rails support has been moved to the cucumber-rails gem (Dennis Blöte, Aslak Hellesøy) TODO - WIKI DOCUMENTATION BEFORE RELEASE
 * The code for Czech has changed from cz to cs. (deepj)
 * $cucumber_interrupted is now Cucumber.wants_to_quit - avoid global variable, which gives warnings. (Aslak Hellesøy)
 * Examples keyword without a colon is deprecated loudly. Gherkin will not recognize it at all. (Gherkin #30 Mike Sassak)

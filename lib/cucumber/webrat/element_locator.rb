@@ -1,3 +1,7 @@
+warning = "\nWARNING: #{caller.detect{|l| l =~ /features/}}: cucumber/webrat/element_locator.rb is deprecated and will be removed in Cucumber 0.5.0.\nUse cucumber/web/tableish instead.\n"
+at_exit do
+  warn warning
+end
 require 'webrat'
 
 module Webrat
@@ -28,8 +32,8 @@ module Webrat
     
     def table_from_table #:nodoc:
       col_count = nil
-      Webrat::XML.css_search(element, 'tr').map do |row|
-        cols = Webrat::XML.css_search(row, 'th,td')
+      element.css('tr').map do |row|
+        cols = row.css('th,td')
         col_count ||= cols.length
         cols[0...col_count].map do |col|
           col.inner_html
@@ -38,7 +42,7 @@ module Webrat
     end
 
     def table_from_dl #:nodoc:
-      Webrat::XML.css_search(@element, 'dt').map do |dt|
+      element.css('dt').map do |dt|
         next_node = dt.next_sibling
         while next_node.name != 'dd'
           next_node = next_node.next_sibling
@@ -48,7 +52,7 @@ module Webrat
     end
 
     def table_from_list #:nodoc:
-      Webrat::XML.css_search(@element, 'li').map do |li|
+      element.css('li').map do |li|
         [li.inner_html]
       end
     end
@@ -63,7 +67,7 @@ module Webrat
       end
 
       def table_element
-        Webrat::XML.css_search(@dom, @value)[0]
+        @dom.css(@value)[0]
       end
 
       def error_message
