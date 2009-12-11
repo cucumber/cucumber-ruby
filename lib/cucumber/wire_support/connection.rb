@@ -22,6 +22,10 @@ module Cucumber
           raise "Timed out calling server with message #{message}"
         end
       end
+      
+      def exception(params)
+        WireException.new(params, @host, @port)
+      end
 
       private
       

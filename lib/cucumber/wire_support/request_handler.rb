@@ -12,7 +12,7 @@ module Cucumber
       end
 
       def handle_fail(params)
-        raise WireException.new(params)
+        raise @connection.exception(params)
       end
     end
   end
