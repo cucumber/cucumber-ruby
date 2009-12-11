@@ -18,7 +18,7 @@ module Cucumber
       StepMatch.new(stepdef, name, nil, stepdef.arguments_from(name))
     end
 
-    it "should format one groups when we use Unicode" do
+    it "should format one group when we use Unicode" do
       m = step_match(/I (\w+) ok/, "I æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ ok")
       m.format_args("<span>%s</span>").should == "I <span>æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ</span> ok"
     end
@@ -26,6 +26,11 @@ module Cucumber
     it "should format several groups when we use Unicode" do
       m = step_match(/I (\w+) (\w+) (\w+) this (\w+)/, "I ate æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ egg this morning")
       m.format_args("<span>%s</span>").should == "I <span>ate</span> <span>æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ</span> <span>egg</span> this <span>morning</span>"
+    end
+
+    it "should deal with Unicode both inside and outside arguments" do
+      m = step_match(/Jæ (\w+) ålsker (\w+) løndet/, "Jæ vø ålsker døtte løndet")
+      m.format_args("<span>%s</span>").should == "Jæ <span>vø</span> ålsker <span>døtte</span> løndet"
     end
 
     it "should format groups with format string" do
