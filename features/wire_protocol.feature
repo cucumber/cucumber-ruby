@@ -56,7 +56,7 @@ Feature: Wire Protocol
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response            |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[]] |
-    When I run cucumber --dry-run -f progress features
+    When I run cucumber --dry-run -f progress
     And it should pass with
       """
       U
@@ -77,7 +77,7 @@ Feature: Wire Protocol
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                 |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]] |
-    When I run cucumber --dry-run -f progress features
+    When I run cucumber --dry-run -f progress
     And it should pass with
       """
       -
@@ -107,7 +107,7 @@ Feature: Wire Protocol
       | ["begin_scenario",null]                              | ["success",null]                         |
       | ["invoke",{"id":"1","args":[]}]                      | ["success",null]                         |
       | ["end_scenario",null]                                | ["success",null]                         |
-    When I run cucumber -f progress --backtrace features
+    When I run cucumber -f progress
     And it should pass with
       """
       .
@@ -128,7 +128,7 @@ Feature: Wire Protocol
       | ["begin_scenario",null]                              | ["success",null]                                                                           |
       | ["invoke",{"id":"1","args":[]}]                      | ["step_failed",{"message":"The wires are down", "exception":"Some.Foreign.ExceptionType"}] |
       | ["end_scenario",null]                                | ["success",null]                                                                           |
-    When I run cucumber -f progress features
+    When I run cucumber -f progress
     Then STDERR should be empty
     And it should fail with
       """
@@ -169,7 +169,7 @@ Feature: Wire Protocol
       | ["begin_scenario",null]                              | ["success",null]                                                  |
       | ["invoke",{"id":"1","args":["wired"]}]               | ["success",null]                                                  |
       | ["end_scenario",null]                                | ["success",null]                                                  |
-    When I run cucumber -f progress --backtrace features
+    When I run cucumber -f progress
     Then STDERR should be empty
     And it should pass with
       """
@@ -199,20 +199,31 @@ Feature: Wire Protocol
       | ["begin_scenario",null]                                                       | ["success",null]                                                 |
       | ["invoke",{"id":"1","args":["we're","[[\"wired\"],[\"high\"],[\"happy\"]]"]}] | ["success",null]                                                 |
       | ["end_scenario",null]                                                         | ["success",null]                                                 |
-    When I run cucumber -f pretty --backtrace features/wired_on_tables.feature
+    When I run cucumber -f progress features/wired_on_tables.feature
     Then STDERR should be empty
     And it should pass with
       """
-
-
-        Scenario: Wired and more # features/wired_on_tables.feature:1
-          Given we're all:       # FIXME:0
-            | wired |
-            | high  |
-            | happy |
+      .
 
       1 scenario (1 passed)
       1 step (1 passed)
+
+      """
+
+  Scenario: Step matches returns details about the remote step definition
+    Given there is a wire server running on port 54321 which understands the following protocol:
+      | request                                              | response                                 |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[], "source":"MyApp.MyClass:123", "regexp":"we.*"}]] |
+    When I run cucumber -f stepdefs --dry-run
+    Then STDERR should be empty
+    And it should pass with
+      """
+      -
+
+      we.*    # MyApp.MyClass:123
+
+      1 scenario (1 skipped)
+      1 step (1 skipped)
 
       """
 
@@ -220,7 +231,7 @@ Feature: Wire Protocol
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                 | response  |
       | ["begin_scenario",null] | ["yikes"] |
-    When I run cucumber -f progress features
+    When I run cucumber -f progress
     Then STDERR should match
       """
       undefined method `handle_yikes'

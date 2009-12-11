@@ -9,7 +9,7 @@ module Cucumber
         make_request(:step_matches, :name_to_match => name_to_match) do
           def handle_step_matches(params)
             params.map do |raw_step_match|
-              step_definition = WireStepDefinition.new(raw_step_match['id'], @connection)
+              step_definition = WireStepDefinition.new(@connection, raw_step_match)
               step_args = raw_step_match['args'].map do |raw_arg|
                 StepArgument.new(raw_arg['val'], raw_arg['pos'])
               end

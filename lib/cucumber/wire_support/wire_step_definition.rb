@@ -1,25 +1,20 @@
 module Cucumber
   module WireSupport
     class WireStepDefinition
-      def initialize(id, connection)
-        @id, @connection = id, connection
+      attr_reader :regexp_source, :file_colon_line
+      
+      def initialize(connection, data)
+        @connection = connection
+        @id              = data['id']
+        @regexp_source   = data['regexp'] || "Unknown"
+        @file_colon_line = data['source'] || "Unknown"
       end
       
       def invoke(args)
-        args = args.map do |arg|
-          prepare(arg)
-        end
-        @connection.invoke(@id, args)
+        prepared_args = args.map{ |arg| prepare(arg) }
+        @connection.invoke(@id, prepared_args)
       end
 
-      def regexp_source
-        "/FIXME/"
-      end
-
-      def file_colon_line
-        "FIXME:0"
-      end
-      
       private
       
       def prepare(arg)
