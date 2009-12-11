@@ -13,11 +13,13 @@ Feature: Wire Protocol
   # a definition file with the .wire extension in the step_definitions folder
   # (or other load path).
   #
-  # There are currently two messages which Cucumber sends over the wire:
+  # Cucumber currently sends the following messages over the wire:
   #
-  #   * step_matches : this is used to find out whether the wire end has a
-  #                    definition for a given step
-  #   * invoke       : this is used to ask for a step definition to be invoked
+  #   * step_matches   : this is used to find out whether the wire end has a
+  #                      definition for a given step
+  #   * invoke         : this is used to ask for a step definition to be invoked
+  #   * begin_scenario : signals that cucumber is about to execute a scenario
+  #   * end_scenario   : signals that cucumber has finished executing a scenario
   #
   # Message packets are formatted as JSON-encoded strings, with a newline
   # character signalling the end of a packet. These messages are described
@@ -115,17 +117,17 @@ Feature: Wire Protocol
 
       """
 
-  # When a step definition fails, it can return details of the exception in the
-  # reply to invoke. These will then be passed by Cucumber to the formatters for
-  # display to the user.
+  # When an invoked step definition fails, it can return details of the exception
+  # in the reply to invoke. These will then be passed by Cucumber to the formatters
+  # for display to the user.
   #
   Scenario: Invoke a step definition which fails
     Given there is a wire server running on port 54321 which understands the following protocol:
-      | request                                              | response                                         |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]]         |
-      | ["begin_scenario",null]                              | ["success",null]                                 |
+      | request                                              | response                                                                                   |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]]                                                   |
+      | ["begin_scenario",null]                              | ["success",null]                                                                           |
       | ["invoke",{"id":"1","args":[]}]                      | ["step_failed",{"message":"The wires are down", "exception":"Some.Foreign.ExceptionType"}] |
-      | ["end_scenario",null]                                | ["success",null]                                 |
+      | ["end_scenario",null]                                | ["success",null]                                                                           |
     When I run cucumber -f progress features
     Then STDERR should be empty
     And it should fail with
@@ -147,7 +149,7 @@ Feature: Wire Protocol
 
   # Imagine we have a step definition like:
   #
-  #     Given /we're all (.*)/ do |what_we_are|
+  #     Given /we're all (.*)/ do | what_we_are |
   #     end
   #
   # When this step definition matches the step name in our feature, the word
@@ -160,7 +162,7 @@ Feature: Wire Protocol
   #   * pos : the position within the step name that the argument was matched
   #           (used for formatter highlighting)
   #
-  Scenario: Invoke a step definition which takes arguments (and passes)
+  Scenario: Invoke a step definition which takes string arguments (and passes)
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                                          |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[{"val":"wired", "pos":10}]}]] |
@@ -178,11 +180,46 @@ Feature: Wire Protocol
 
       """
 
+  # When the step has a multiline table argument, it will be passed with the
+  # invoke message as a string - a serialized JSON array of array of strings.
+  # In the following scenario our step definition takes two arguments - one
+  # captures the "we're" and the other takes the table.
+  Scenario: Invoke a step definition which takes table arguments (and passes)
+    Given a file named "features/wired_on_tables.feature" with:
+      """
+        Scenario: Wired and more
+          Given we're all:
+            | wired |
+            | high  |
+            | happy |
+      """
+    And there is a wire server running on port 54321 which understands the following protocol:
+      | request                                                                       | response                                                         |
+      | ["step_matches",{"name_to_match":"we're all:"}]                               | ["step_matches",[{"id":"1", "args":[{"val":"we're", "pos":0}]}]] |
+      | ["begin_scenario",null]                                                       | ["success",null]                                                 |
+      | ["invoke",{"id":"1","args":["we're","[[\"wired\"],[\"high\"],[\"happy\"]]"]}] | ["success",null]                                                 |
+      | ["end_scenario",null]                                                         | ["success",null]                                                 |
+    When I run cucumber -f pretty --backtrace features/wired_on_tables.feature
+    Then STDERR should be empty
+    And it should pass with
+      """
+
+
+        Scenario: Wired and more # features/wired_on_tables.feature:1
+          Given we're all:       # FIXME:0
+            | wired |
+            | high  |
+            | happy |
+
+      1 scenario (1 passed)
+      1 step (1 passed)
+
+      """
 
   Scenario: Unexpected response
     Given there is a wire server running on port 54321 which understands the following protocol:
-      | request                                              | response   |
-      | ["begin_scenario",null]                              | ["yikes"]  |
+      | request                 | response  |
+      | ["begin_scenario",null] | ["yikes"] |
     When I run cucumber -f progress features
     Then STDERR should match
       """
