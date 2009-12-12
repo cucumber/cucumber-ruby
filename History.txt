@@ -4,7 +4,7 @@
 * Added a Tcl example using Sam Stephenson's ruby-tcl (Aslak Hellesøy)
 * Added * as a synonym for Given/When/Then/And/But (for all i18n languages). (#462 Aslak Hellesøy)
 * The HTML formatter produces a much nicer report, with TextMate link integration. (Rob Aldred)
-* Wire protocol now supports table arguments, step definition source & regexp, snippets, pending (Matt Wynne)
+* Wire protocol now supports table arguments, step definition source & regexp, snippets, pending, table diffing (Matt Wynne)
 
 === Changed Features
 * Per-word trailing-space setting for step keywords using '<'.  See 'fr' in languages.yml for example. (#525 Gregory Hnatiuk)
