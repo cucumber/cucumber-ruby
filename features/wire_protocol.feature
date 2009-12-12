@@ -259,11 +259,11 @@ Feature: Wire Protocol
   #
   Scenario: Wire server returns snippets for a step that didn't match
     Given there is a wire server running on port 54321 which understands the following protocol:
-      | request                                              | response            |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[]] |
+      | request                                                                                          | response                              |
+      | ["step_matches",{"name_to_match":"we're all wired"}]                                             | ["step_matches",[]]                   |
       | ["snippet_text",{"step_keyword":"Given","multiline_arg_class":"","step_name":"we're all wired"}] | ["snippet_text","foo()\n  bar;\nbaz"] |
-      | ["begin_scenario",null]                              | ["success",null]    |
-      | ["end_scenario",null]                                | ["success",null]    |
+      | ["begin_scenario",null]                                                                          | ["success",null]                      |
+      | ["end_scenario",null]                                                                            | ["success",null]                      |
     When I run cucumber -f pretty
     And it should pass with
       """
