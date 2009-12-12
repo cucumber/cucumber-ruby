@@ -43,7 +43,40 @@ module Cucumber
           def handle_pending(message)
             raise Pending, message || "TODO"
           end
+          
+          def handle_diff(tables)
+            table1 = Ast::Table.new(tables[0])
+            table2 = Ast::Table.new(tables[1])
+            begin
+              table1.diff!(table2)
+            rescue Cucumber::Ast::Table::Different
+              @connection.diff_failed
+            end
+            @connection.diff_ok
+          end
         
+          def handle_step_failed(params)
+            handle_fail(params)
+          end
+        end
+      end
+      
+      def diff_failed
+        make_request(:diff_failed) do
+          def handle_success(params)
+          end
+          
+          def handle_step_failed(params)
+            handle_fail(params)
+          end
+        end
+      end
+      
+      def diff_ok
+        make_request(:diff_ok) do
+          def handle_success(params)
+          end
+          
           def handle_step_failed(params)
             handle_fail(params)
           end
@@ -66,12 +99,9 @@ module Cucumber
       
       private
       
-      def handler(request_message, &block)
-        RequestHandler.new(self, request_message, &block)
-      end
-      
       def make_request(request_message, params = nil, &block)
-        handler(request_message, &block).execute(params)
+        handler = RequestHandler.new(self, request_message, &block)
+        handler.execute(params)
       end
     end
   end
