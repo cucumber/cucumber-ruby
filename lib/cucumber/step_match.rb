@@ -59,7 +59,7 @@ module Cucumber
       s = string.dup
       offset = 0
       step_arguments.each do |step_argument|
-        next if step_argument.pos.nil?
+        next if step_argument.byte_offset.nil?
         replacement = if block_given?
           proc.call(step_argument.val)
         elsif Proc === format
@@ -68,7 +68,7 @@ module Cucumber
           format % step_argument.val
         end
 
-        s[step_argument.pos + offset, step_argument.val.length] = replacement
+        s[step_argument.byte_offset + offset, step_argument.val.length] = replacement
         offset += replacement.jlength - step_argument.val.jlength
       end
       s
