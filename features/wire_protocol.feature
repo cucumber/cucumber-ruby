@@ -20,6 +20,7 @@ Feature: Wire Protocol
   #   * invoke         : this is used to ask for a step definition to be invoked
   #   * begin_scenario : signals that cucumber is about to execute a scenario
   #   * end_scenario   : signals that cucumber has finished executing a scenario
+  #   * snippet_text   : requests a snippet for an undefined step
   #
   # Message packets are formatted as JSON-encoded strings, with a newline
   # character signalling the end of a packet. These messages are described
@@ -81,6 +82,25 @@ Feature: Wire Protocol
     And it should pass with
       """
       -
+
+      1 scenario (1 skipped)
+      1 step (1 skipped)
+
+      """
+
+  # Optionally, the step match can also contain the a source reference, and a
+  # native regexp string which will be used by some formatters
+  Scenario: Step matches returns details about the remote step definition
+    Given there is a wire server running on port 54321 which understands the following protocol:
+      | request                                              | response                                 |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[], "source":"MyApp.MyClass:123", "regexp":"we.*"}]] |
+    When I run cucumber -f stepdefs --dry-run
+    Then STDERR should be empty
+    And it should pass with
+      """
+      -
+
+      we.*    # MyApp.MyClass:123
 
       1 scenario (1 skipped)
       1 step (1 skipped)
@@ -210,22 +230,37 @@ Feature: Wire Protocol
 
       """
 
-  Scenario: Step matches returns details about the remote step definition
+
+  #
+  # snippets
+  #
+  Scenario: Wire server returns snippets for a step that didn't match
     Given there is a wire server running on port 54321 which understands the following protocol:
-      | request                                              | response                                 |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[], "source":"MyApp.MyClass:123", "regexp":"we.*"}]] |
-    When I run cucumber -f stepdefs --dry-run
-    Then STDERR should be empty
+      | request                                              | response            |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[]] |
+      | ["snippet_text",{"step_keyword":"Given","multiline_arg_class":"","step_name":"we're all wired"}] | ["snippet_text","foo()\n  bar;\nbaz"] |
+      | ["begin_scenario",null]                              | ["success",null]    |
+      | ["end_scenario",null]                                | ["success",null]    |
+    When I run cucumber -f pretty
     And it should pass with
       """
-      -
 
-      we.*    # MyApp.MyClass:123
 
-      1 scenario (1 skipped)
-      1 step (1 skipped)
+        Scenario: Wired         # features/wired.feature:1
+          Given we're all wired # features/wired.feature:2
+
+      1 scenario (1 undefined)
+      1 step (1 undefined)
+
+      You can implement step definitions for undefined steps with these snippets:
+
+      foo()
+        bar;
+      baz
+
 
       """
+
 
   Scenario: Unexpected response
     Given there is a wire server running on port 54321 which understands the following protocol:

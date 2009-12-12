@@ -29,7 +29,10 @@ module Cucumber
       end
 
       def snippet_text(step_keyword, step_name, multiline_arg_class)
-        "Snippets are not implemented for the wire yet"
+        snippets = @connections.map do |remote| 
+          remote.snippet_text(step_keyword, step_name, multiline_arg_class.to_s)
+        end
+        snippets.flatten.join("\n")
       end
       
       protected

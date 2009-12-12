@@ -23,6 +23,16 @@ module Cucumber
         StepMatch.new(step_definition, @name_to_match, @name_to_report, step_args)
       end
       
+      def snippet_text(step_keyword, step_name, multiline_arg_class_name)
+        request_params = { :step_keyword => step_keyword, :step_name => step_name, :multiline_arg_class => multiline_arg_class_name }
+
+        make_request(:snippet_text, request_params) do
+          def handle_snippet_text(text)
+            text
+          end
+        end
+      end
+      
       def invoke(step_definition_id, args)
         request_params = { :id => step_definition_id, :args => args }
 
