@@ -118,7 +118,30 @@ Feature: Wire Protocol
   # end from the step_matches call, along with the arguments that were parsed
   # from the step name during the same step_matches call.
   #
-  # The wire end will reply with either a step_failed or a success message.
+  # The wire end will reply with either a step_failed, success, or pending message.
+
+  # The message argument which accompanies the pending message is optional
+  Scenario: Invoke a step definition which is pending
+    Given there is a wire server running on port 54321 which understands the following protocol:
+      | request                                              | response                                 |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]] |
+      | ["begin_scenario",null]                              | ["success", null]                        |
+      | ["invoke",{"id":"1","args":[]}]                      | ["pending", "I'll do it later"]          |
+      | ["end_scenario",null]                                | ["success", null]                        |
+    When I run cucumber -f pretty -q
+    And it should pass with
+      """
+
+
+        Scenario: Wired
+          Given we're all wired
+            I'll do it later (Cucumber::Pending)
+            features/wired.feature:2:in `Given we're all wired'
+
+      1 scenario (1 pending)
+      1 step (1 pending)
+
+      """
 
   Scenario: Invoke a step definition which passes
     Given there is a wire server running on port 54321 which understands the following protocol:

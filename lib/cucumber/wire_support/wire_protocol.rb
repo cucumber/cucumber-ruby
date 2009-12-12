@@ -39,6 +39,10 @@ module Cucumber
         make_request(:invoke, request_params) do
           def handle_success(params)
           end
+          
+          def handle_pending(message)
+            raise Pending, message || "TODO"
+          end
         
           def handle_step_failed(params)
             handle_fail(params)
