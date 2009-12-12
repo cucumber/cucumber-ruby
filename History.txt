@@ -17,6 +17,7 @@
 * Pending in scenario outline is red (#399 Matt Wynne)
 * Allow optional step arguments to play happily with step transforms (Rob Holland)
 * Regex escape the path when filtering the backtrace (Corey Donohoe & Simon Rozet)
+* Add gem dependency on JSON gem, required by wire protocol (#533 Matt Wynne)
 
 === Removed Features
 * All Rails-related code is in a separate gem: cucumber-rails. Install that if you're working with Rails. (#483 Aslak Hellesøy)
