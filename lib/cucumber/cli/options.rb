@@ -1,4 +1,6 @@
 require 'cucumber/cli/profile_loader'
+require 'cucumber/formatter/ansicolor'
+
 module Cucumber
   module Cli
 
@@ -367,11 +369,13 @@ module Cucumber
         unless Cucumber::LANGUAGES[lang]
           raise("No language with key #{lang}")
         end
+        require 'cucumber/cli/language_help_formatter'
         LanguageHelpFormatter.list_keywords(@out_stream, lang)
         Kernel.exit(0)
       end
 
       def list_languages_and_exit
+        require 'cucumber/cli/language_help_formatter'
         LanguageHelpFormatter.list_languages(@out_stream)
         Kernel.exit(0)
       end

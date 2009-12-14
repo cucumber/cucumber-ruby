@@ -127,7 +127,13 @@ module Cucumber
     private
     
       def formatters(step_mother)
-        return [Formatter::Pretty.new(step_mother, nil, @options)] if @options[:autoformat]
+        # TODO: We should remove the autoformat functionality. That
+        # can be done with the gherkin CLI.
+        if @options[:autoformat]
+          require 'cucumber/formatter/pretty'
+          return [Formatter::Pretty.new(step_mother, nil, @options)]
+        end
+
         @options[:formats].map do |format_and_out|
           format = format_and_out[0]
           path_or_io = format_and_out[1]

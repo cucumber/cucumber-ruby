@@ -5,7 +5,6 @@ require 'logger'
 require 'cucumber/parser'
 require 'cucumber/feature_file'
 require 'cucumber/formatter/color_io'
-require 'cucumber/cli/language_help_formatter'
 require 'cucumber/cli/configuration'
 require 'cucumber/cli/drb_client'
 require 'cucumber/ast/tags'
@@ -27,7 +26,12 @@ module Cucumber
 
       def initialize(args, out_stream = STDOUT, error_stream = STDERR)
         @args         = args
-        @out_stream   = out_stream == STDOUT ? Formatter::ColorIO.new : out_stream
+        if Cucumber::WINDOWS_MRI
+          @out_stream   = out_stream == STDOUT ? Formatter::ColorIO.new(Kernel, STDOUT) : out_stream
+        else
+          @out_stream   = out_stream
+        end
+
         @error_stream = error_stream
         @configuration = nil
       end

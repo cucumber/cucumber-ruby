@@ -6,18 +6,20 @@ module Cucumber
     describe ColorIO do
       describe "<<" do
         it "should convert to a print using kernel" do
-          color_io = ColorIO.new
+          kernel = mock('Kernel')
+          color_io = ColorIO.new(kernel, nil)
           
-          Kernel.should_receive(:print).with("monkeys")
+          kernel.should_receive(:print).with("monkeys")
           
           color_io << "monkeys"
         end
         
         it "should allow chained <<" do
-          color_io = ColorIO.new
+          kernel = mock('Kernel')
+          color_io = ColorIO.new(kernel, nil)
 
-          Kernel.should_receive(:print).with("monkeys")
-          Kernel.should_receive(:print).with(" are tasty")
+          kernel.should_receive(:print).with("monkeys")
+          kernel.should_receive(:print).with(" are tasty")
           
           color_io << "monkeys" <<  " are tasty"
         end
