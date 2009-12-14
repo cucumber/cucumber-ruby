@@ -1,4 +1,5 @@
 require 'cucumber/formatter/io'
+require 'cucumber/formatter/pretty'
 
 module Cucumber
   module Formatter
