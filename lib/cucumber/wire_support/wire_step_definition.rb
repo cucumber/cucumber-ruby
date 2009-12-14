@@ -19,7 +19,7 @@ module Cucumber
       
       def prepare(arg)
         return arg unless arg.is_a?(Cucumber::Ast::Table)
-        arg.to_json
+        arg.raw
       end
     end
   end

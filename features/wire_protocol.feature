@@ -237,11 +237,11 @@ Feature: Wire Protocol
             | happy |
       """
     And there is a wire server running on port 54321 which understands the following protocol:
-      | request                                                                       | response                                                         |
-      | ["step_matches",{"name_to_match":"we're all:"}]                               | ["step_matches",[{"id":"1", "args":[{"val":"we're", "pos":0}]}]] |
-      | ["begin_scenario",null]                                                       | ["success",null]                                                 |
-      | ["invoke",{"id":"1","args":["we're","[[\"wired\"],[\"high\"],[\"happy\"]]"]}] | ["success",null]                                                 |
-      | ["end_scenario",null]                                                         | ["success",null]                                                 |
+      | request                                                               | response                                                         |
+      | ["step_matches",{"name_to_match":"we're all:"}]                       | ["step_matches",[{"id":"1", "args":[{"val":"we're", "pos":0}]}]] |
+      | ["begin_scenario",null]                                               | ["success",null]                                                 |
+      | ["invoke",{"id":"1","args":["we're",[["wired"],["high"],["happy"]]]}] | ["success",null]                                                 |
+      | ["end_scenario",null]                                                 | ["success",null]                                                 |
     When I run cucumber -f progress features/wired_on_tables.feature
     Then STDERR should be empty
     And it should pass with
