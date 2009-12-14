@@ -26,7 +26,7 @@ begin
     gem.add_development_dependency 'nokogiri', '>= 1.4.0'
     gem.add_development_dependency 'prawn', '>= 0.5.1'
     gem.add_development_dependency 'rspec', '>= 1.2.9'
-    gem.add_development_dependency 'spork', '>= 0.7.3'
+    gem.add_development_dependency 'spork', '>= 0.7.4'
 
     extend Cucumber::Formatter::ANSIColor
     gem.post_install_message = <<-POST_INSTALL_MESSAGE
