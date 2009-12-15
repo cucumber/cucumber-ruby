@@ -679,6 +679,7 @@ for important information about this release. Happy cuking!
      "examples/selenium_webrat/features/support/env.rb",
      "examples/self_test/features/step_definitions/sample_steps.rb",
      "examples/self_test/features/support/env.rb",
+     "examples/self_test/tmp/features/step_definitions/steps.rb",
      "examples/sinatra/app.rb",
      "examples/sinatra/features/step_definitions/add_steps.rb",
      "examples/sinatra/features/support/env.rb",
