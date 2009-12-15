@@ -4,7 +4,7 @@ rerun_opts = rerun.to_s.strip.empty? ? "--format progress features" : "--format 
 std_opts = "#{rerun_opts} --format rerun --out rerun.txt --strict --tags ~@wip"
 %>
 default: <%= std_opts %>
-jruby: <%= std_opts %>,~@spork
+jruby: <%= std_opts %>,~@spork,~@wire
 run_code_run: <%= std_opts %>,~@spork
 windows_mri: <%= std_opts %>,~@spork
 wip: --tags @wip:3 --wip features
