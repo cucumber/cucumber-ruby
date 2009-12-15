@@ -1,6 +1,7 @@
 == In Git
 
 === New features
+* "Given" in Dutch is now aliased to "Gegeven" or "Stel". (Iain Hecker)
 * New --i18n option to list keywords in various languages. (Aslak Hellesøy)
 * Added a Tcl example using Sam Stephenson's ruby-tcl (Aslak Hellesøy)
 * Added * as a synonym for Given/When/Then/And/But (for all i18n languages). (#462 Aslak Hellesøy)
