@@ -315,16 +315,17 @@ module Cucumber
           backtrace = Array.new
           @builder.div(:class => 'message') do
             message = exception.message
-            if message.include?('Exception caught')
+            if defined?(RAILS_ROOT) && message.include?('Exception caught')
               matches = message.match(/Showing <i>(.+)<\/i>(?:.+)#(\d+)/)
               backtrace += ["#{RAILS_ROOT}/#{matches[1]}:#{matches[2]}"]
               message = message.match(/<code>([^(\/)]+)<\//m)[1]
             end
-            @builder << "<pre>#{message}</pre>"
+            @builder.pre do 
+              @builder.text!(message)
+            end
           end
           @builder.div(:class => 'backtrace') do
             @builder.pre do
-              # backtrace += (exception.backtrace.size == 1 || exception.backtrace[0].include?('(eval):')) ? ["#{RAILS_ROOT}/#{@step_match.file_colon_line}"] + exception.backtrace : exception.backtrace
               backtrace = exception.backtrace
               backtrace.delete_if { |x| x =~ /\/gems\/(cucumber|rspec)/ }
               @builder << backtrace_line(backtrace.join("\n"))
