@@ -1,4 +1,7 @@
-== In Git
+== 0.5.0 2009-12-15
+
+We're bumping to 0.5.0 for this release since all of the Rails code has now moved to a new gem - cucumber-rails.
+Please see History.txt in cucumber-rails for details about what's new on the Rails side.
 
 === New features
 * "Given" in Dutch is now aliased to "Gegeven" or "Stel". (Iain Hecker)
