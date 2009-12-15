@@ -333,7 +333,7 @@
   scenario: Scenario
   scenario_outline: Abstract Scenario
   examples: Voorbeelden
-  given: *|Gegeven
+  given: *|Stel
   when: *|Als
   then: *|Dan
   and: *|En
