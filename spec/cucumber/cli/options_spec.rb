@@ -52,16 +52,16 @@ module Cli
         end
       end
 
-      context '-l LANG or --language LANG' do
+      context '--i18n' do
         context "with LANG specified as 'help'" do
           it "lists all known langues" do
-            when_parsing '-l help' do
+            when_parsing '--i18n help' do
               require 'cucumber/cli/language_help_formatter'
               LanguageHelpFormatter.should_receive(:list_languages).with(output_stream)
             end
           end
           it "exits the program" do
-            when_parsing('--language help') { Kernel.should_receive(:exit) }
+            when_parsing('--i18n help') { Kernel.should_receive(:exit) }
           end
         end
       end
@@ -218,11 +218,6 @@ module Cli
           options.parse!(%w[-p foo])
           options[:snippets].should be_false
           options[:source].should be_false
-        end
-
-        it "uses the language from profile when none is specified on the command line" do
-          given_cucumber_yml_defined_as({'foo' => '--language fr'})
-          after_parsing('-p foo') {options[:lang].should == 'fr'}
         end
       end
 

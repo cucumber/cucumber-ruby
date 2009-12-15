@@ -3,7 +3,7 @@ Feature: Language help
   I want to be able to get help on the language from the CLI
 
   Scenario: Get help for Portuguese language
-    When I run cucumber -l pt help
+    When I run cucumber --i18n pt help
     Then it should pass with
       """
       | name             | Portuguese                              |
@@ -21,7 +21,7 @@ Feature: Language help
 
       """
   Scenario: List languages
-    When I run cucumber -l help
+    When I run cucumber --i18n help
     Then it should pass with
       """
       | ar      | Arabic                 | العربية              |

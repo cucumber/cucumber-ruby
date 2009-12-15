@@ -117,17 +117,13 @@ module Cucumber
             "This option can be specified multiple times.") do |v|
             @options[:require] << v
           end
-          opts.on("-l LANG", "--language LANG (DEPRECATED)",
-            "Specify language for features (Default: #{@options[:lang]})",
-            %{Run with "--language help" to see all languages},
-            %{Run with "--language LANG help" to list keywords for LANG}) do |v|
-            if v == 'help'
+          opts.on("--i18n LANG",
+            "List keywords for in a particular language",
+            %{Run with "--i18n help" to see all languages}) do |lang|
+            if lang == 'help'
               list_languages_and_exit
-            elsif args==['help']
-              list_keywords_and_exit(v)
             else
-              warn("\nWARNING: --language is deprecated and will be removed in version 0.5.\nSee http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages")
-              @options[:lang] = v
+              list_keywords_and_exit(lang)
             end
           end
           opts.on("-f FORMAT", "--format FORMAT",

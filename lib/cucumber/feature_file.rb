@@ -23,7 +23,7 @@ module Cucumber
     # be filtered.
     def parse(step_mother, options)
       filter = Filter.new(@lines, options)
-      language = Parser::NaturalLanguage.get(step_mother, (lang || options[:lang] || 'en'))
+      language = Parser::NaturalLanguage.get(step_mother, (lang || 'en'))
       language.parse(source, @path, filter)
     end
     
