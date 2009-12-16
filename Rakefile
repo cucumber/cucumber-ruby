@@ -21,7 +21,6 @@ begin
     gem.add_dependency 'polyglot', '>= 0.2.9'
     gem.add_dependency 'builder', '>= 2.1.2'
     gem.add_dependency 'diff-lcs', '>= 1.1.2'
-    gem.add_dependency defined?(JRUBY_VERSION) ? 'json_pure' : 'json', '>= 1.2.0'
 
     gem.add_development_dependency 'nokogiri', '>= 1.4.0'
     gem.add_development_dependency 'prawn', '>= 0.5.1'

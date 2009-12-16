@@ -1,3 +1,10 @@
+== 0.5.1 2009-12-16
+
+Small bugfix release.
+
+=== Bugfixes
+* Replaced dependency on json gem with an error message, so that the cucumber gem installs on JRuby. (Aslak Hellesøy)
+
 == 0.5.0 2009-12-15
 
 We're bumping to 0.5.0 for this release since all of the Rails code has now moved to a new gem - cucumber-rails.
