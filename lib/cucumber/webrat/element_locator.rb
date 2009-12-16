@@ -1,4 +1,4 @@
-warning = "\nWARNING: #{caller.detect{|l| l =~ /features/}}: cucumber/webrat/element_locator.rb is deprecated and will be removed in Cucumber 0.5.0.\nUse cucumber/web/tableish instead.\n"
+warning = "\nWARNING: #{caller.detect{|l| l =~ /features/}}: cucumber/webrat/element_locator.rb is deprecated and will be removed in Cucumber 0.6.0.\nUse cucumber/web/tableish instead.\n"
 at_exit do
   warn warning
 end
