@@ -6,11 +6,6 @@ module Cucumber
     module WireProtocol
       module Requests
         class StepMatches < RequestHandler
-          def initialize(connection)
-            @connection = connection
-            super(connection, :step_matches)
-          end
-          
           def execute(params)
             @name_to_match = params[:name_to_match]
             @name_to_report = params.delete(:name_to_report) # not part of the protocol message
@@ -33,27 +28,14 @@ module Cucumber
             StepMatch.new(step_definition, @name_to_match, @name_to_report, step_args)
           end
         end
-      end
-      
-      def step_matches(name_to_match, name_to_report)
-        handler = Requests::StepMatches.new(self)
-        handler.execute :name_to_match => name_to_match, :name_to_report => name_to_report
-      end
 
-      def snippet_text(step_keyword, step_name, multiline_arg_class_name)
-        request_params = { :step_keyword => step_keyword, :step_name => step_name, :multiline_arg_class => multiline_arg_class_name }
-
-        make_request(:snippet_text, request_params) do
+        class SnippetText < RequestHandler
           def handle_snippet_text(text)
             text
           end
         end
-      end
-      
-      def invoke(step_definition_id, args)
-        request_params = { :id => step_definition_id, :args => args }
 
-        make_request(:invoke, request_params) do
+        class Invoke < RequestHandler
           def handle_success(params)
           end
           
@@ -76,42 +58,72 @@ module Cucumber
             handle_fail(params)
           end
         end
+
+        class DiffFailed < RequestHandler
+          def handle_success(params)
+          end
+          
+          def handle_step_failed(params)
+            handle_fail(params)
+          end
+        end
+        
+        class DiffOk < RequestHandler
+          def handle_success(params)
+          end
+          
+          def handle_step_failed(params)
+            handle_fail(params)
+          end
+        end
+        
+        class BeginScenario < RequestHandler
+          def handle_success(params)
+          end
+        end
+
+        class EndScenario < RequestHandler
+          def handle_success(params)
+          end
+        end
+      end
+      
+      def step_matches(name_to_match, name_to_report)
+        request_params = { :name_to_match => name_to_match, :name_to_report => name_to_report } 
+        handler = Requests::StepMatches.new(self)
+        handler.execute request_params
+      end
+
+      def snippet_text(step_keyword, step_name, multiline_arg_class_name)
+        request_params = { :step_keyword => step_keyword, :step_name => step_name, :multiline_arg_class => multiline_arg_class_name }
+        handler = Requests::SnippetText.new(self)
+        handler.execute request_params
+      end
+      
+      def invoke(step_definition_id, args)
+        request_params = { :id => step_definition_id, :args => args }
+        handler = Requests::Invoke.new(self)
+        handler.execute request_params
       end
       
       def diff_failed
-        make_request(:diff_failed) do
-          def handle_success(params)
-          end
-          
-          def handle_step_failed(params)
-            handle_fail(params)
-          end
-        end
+        handler = Requests::DiffFailed.new(self)
+        handler.execute
       end
       
       def diff_ok
-        make_request(:diff_ok) do
-          def handle_success(params)
-          end
-          
-          def handle_step_failed(params)
-            handle_fail(params)
-          end
-        end
+        handler = Requests::DiffOk.new(self)
+        handler.execute
       end
       
       def begin_scenario(scenario)
-        make_request(:begin_scenario) do
-          def handle_success(params)
-          end
-        end
+        handler = Requests::BeginScenario.new(self)
+        handler.execute
       end
 
       def end_scenario
-        make_request(:end_scenario) do
-          def handle_success(params)
-          end
-        end
+        handler = Requests::EndScenario.new(self)
+        handler.execute
       end
       
       private
