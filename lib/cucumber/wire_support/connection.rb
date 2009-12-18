@@ -6,17 +6,19 @@ module Cucumber
     class Connection
       include WireProtocol
       
+      attr_reader :default_timeout
+      
       def initialize(config)
         @host, @port = config['host'], config['port']
+        @default_timeout = 3
       end
       
       def call_remote(request_handler, message, params)
-        timeout = 3
         packet = WirePacket.new(message, params)
 
         begin
-          send_data_to_socket(packet.to_json, timeout)
-          response = fetch_data_from_socket(timeout)
+          send_data_to_socket(packet.to_json, default_timeout)
+          response = fetch_data_from_socket(request_handler.timeout)
           response.handle_with(request_handler)
         rescue Timeout::Error
           raise "Timed out calling server with message #{message}"

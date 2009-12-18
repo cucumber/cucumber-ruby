@@ -1,9 +1,12 @@
 module Cucumber
   module WireSupport
     class RequestHandler
+      attr_reader :timeout
+      
       def initialize(connection)
         @connection = connection
         @message = underscore(self.class.name.split('::').last)
+        @timeout = connection.default_timeout
       end
 
       def execute(request_params = nil)
