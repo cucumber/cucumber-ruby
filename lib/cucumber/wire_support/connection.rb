@@ -10,14 +10,14 @@ module Cucumber
         @host, @port = config['host'], config['port']
       end
       
-      def call_remote(response_handler, message, params)
+      def call_remote(request_handler, message, params)
         timeout = 3
         packet = WirePacket.new(message, params)
 
         begin
           send_data_to_socket(packet.to_json, timeout)
           response = fetch_data_from_socket(timeout)
-          response.handle_with(response_handler)
+          response.handle_with(request_handler)
         rescue Timeout::Error
           raise "Timed out calling server with message #{message}"
         end
