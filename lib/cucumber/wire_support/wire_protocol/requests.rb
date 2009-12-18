@@ -18,7 +18,7 @@ module Cucumber
               step_args = raw_step_match['args'].map do |raw_arg|
                 StepArgument.new(raw_arg['val'], raw_arg['pos'])
               end
-              step_match(step_definition, step_args) # convoluted!
+              step_match(step_definition, step_args)
             end
           end
         
