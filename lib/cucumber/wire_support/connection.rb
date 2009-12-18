@@ -9,8 +9,8 @@ module Cucumber
       attr_reader :default_timeout
       
       def initialize(config)
-        @host, @port = config['host'], config['port']
-        @default_timeout = 3
+        @host, @port = config.host, config.port
+        @default_timeout = config.timeout
       end
       
       def call_remote(request_handler, message, params)

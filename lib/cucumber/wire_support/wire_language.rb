@@ -1,6 +1,7 @@
 require 'socket'
 require 'json'
 require 'cucumber/wire_support/connection'
+require 'cucumber/wire_support/configuration'
 require 'cucumber/wire_support/wire_packet'
 require 'cucumber/wire_support/wire_exception'
 require 'cucumber/wire_support/wire_step_definition'
@@ -13,7 +14,7 @@ module Cucumber
       include LanguageSupport::LanguageMethods
       
       def load_code_file(wire_file)
-        config = YAML.load_file(wire_file)
+        config = Configuration.new(wire_file)
         @connections << Connection.new(config)
       end
       
