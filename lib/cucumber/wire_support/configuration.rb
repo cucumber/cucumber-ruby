@@ -7,11 +7,11 @@ module Cucumber
         params = YAML.load_file(wire_file)
         @host = params['host']
         @port = params['port']
-        @timeout = 3
+        @timeouts = params['timeout'] || {}
       end
       
       def timeout(message = nil)
-        return @timeout
+        return @timeouts[message.to_s] || 3
       end
     end
   end

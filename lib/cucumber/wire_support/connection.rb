@@ -4,6 +4,8 @@ require 'cucumber/wire_support/wire_protocol'
 module Cucumber
   module WireSupport
     class Connection
+      class ConnectionError < StandardError; end
+        
       include WireProtocol
       
       def initialize(config)
@@ -39,6 +41,8 @@ module Cucumber
 
       def socket
         @socket ||= TCPSocket.new(@config.host, @config.port)
+      rescue Errno::ECONNREFUSED => exception
+        raise(ConnectionError, "Unable to contact the wire server at #{@config.host}:#{@config.port}. Is it up?")
       end
     end
   end
