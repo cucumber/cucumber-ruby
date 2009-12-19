@@ -1,3 +1,7 @@
+== In git
+* Refactored wire protocol code and added configurable timeout to allow for long
+running step definitions. (#546 Matt Wynne)
+
 == 0.5.1 2009-12-16
 
 Small bugfix release.

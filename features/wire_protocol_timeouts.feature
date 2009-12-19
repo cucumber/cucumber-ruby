@@ -50,7 +50,7 @@ Feature: Wire protocol timeouts
 
         Scenario: Wired         # features/wired.feature:1
           Given we're all wired # Unknown
-            Timed out calling server with message invoke (RuntimeError)
+            Timed out calling wire server with message 'invoke' (Timeout::Error)
             features/wired.feature:2:in `Given we're all wired'
 
       Failing Scenarios:
