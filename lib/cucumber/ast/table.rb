@@ -55,11 +55,6 @@ module Cucumber
         @conversion_procs = conversion_procs
       end
 
-      # JSON representation
-      def to_json
-        raw.to_json
-      end
-
       # Creates a copy of this table, inheriting any column mappings.
       # registered with #map_headers!
       #
