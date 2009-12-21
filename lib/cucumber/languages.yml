@@ -14,11 +14,11 @@
   scenario: Scenario
   scenario_outline: Scenario Outline
   examples: Examples|Scenarios
-  given: *|Given
-  when: *|When
-  then: *|Then
-  and: *|And
-  but: *|But
+  given: "*|Given"
+  when: "*|When"
+  then: "*|Then"
+  and: "*|And"
+  but: "*|But"
 
 # Please help us keeping the languages below uptodate. The parsers for a language
 # that is missing a keyword will expect the English word until the missing word(s)
@@ -34,11 +34,11 @@
   scenario: سيناريو
   scenario_outline: سيناريو مخطط
   examples: امثلة
-  given: *|بفرض
-  when: *|متى|عندما
-  then: *|اذاً|ثم
-  and: *|و
-  but: *|لكن
+  given: "*|بفرض"
+  when: "*|متى|عندما"
+  then: "*|اذاً|ثم"
+  and: "*|و"
+  but: "*|لكن"
 "bg":
   name: Bulgarian
   native: български
@@ -47,11 +47,11 @@
   scenario: Сценарий
   scenario_outline: Рамка на сценарий
   examples: Примери
-  given: *|Дадено
-  when: *|Когато
-  then: *|То
-  and: *|И
-  but: *|Но
+  given: "*|Дадено"
+  when: "*|Когато"
+  then: "*|То"
+  and: "*|И"
+  but: "*|Но"
 "cat":
   name: Catalan
   native: català
@@ -60,11 +60,11 @@
   scenario: Escenari
   scenario_outline: Esquema de l'escenari
   examples: Exemples
-  given: *|Donat|Donada
-  when: *|Quan
-  then: *|Aleshores
-  and: *|I
-  but: *|Però
+  given: "*|Donat|Donada"
+  when: "*|Quan"
+  then: "*|Aleshores"
+  and: "*|I"
+  but: "*|Però"
 "cy":
   name: Welsh
   native: Cymraeg
@@ -73,11 +73,11 @@
   scenario: Scenario
   scenario_outline: Scenario Amlinellol
   examples: Enghreifftiau
-  given: *|anrhegedig a
-  when: *|Pryd
-  then: *|Yna
-  and: *|A
-  but: *|Ond
+  given: "*|anrhegedig a"
+  when: "*|Pryd"
+  then: "*|Yna"
+  and: "*|A"
+  but: "*|Ond"
 "cs":
   name: Czech
   native: Česky
@@ -86,11 +86,11 @@
   scenario: Scénář
   scenario_outline: Náčrt Scénáře|Osnova scénáře
   examples: Příklady
-  given: *|Pokud
-  when: *|Když
-  then: *|Pak
-  and: *|A|A také
-  but: *|Ale
+  given: "*|Pokud"
+  when: "*|Když"
+  then: "*|Pak"
+  and: "*|A|A také"
+  but: "*|Ale"
 "da":
   name: Danish
   native: dansk
@@ -99,11 +99,11 @@
   scenario: Scenarie
   scenario_outline: Abstrakt Scenario
   examples: Eksempler
-  given: *|Givet
-  when: *|Når
-  then: *|Så
-  and: *|Og
-  but: *|Men
+  given: "*|Givet"
+  when: "*|Når"
+  then: "*|Så"
+  and: "*|Og"
+  but: "*|Men"
 "de":
   name: German
   native: Deutsch
@@ -112,11 +112,11 @@
   scenario: Szenario
   scenario_outline: Szenariogrundriss
   examples: Beispiele
-  given: *|Gegeben sei
-  when: *|Wenn
-  then: *|Dann
-  and: *|Und
-  but: *|Aber
+  given: "*|Gegeben sei"
+  when: "*|Wenn"
+  then: "*|Dann"
+  and: "*|Und"
+  but: "*|Aber"
 "en-au":
   name: Australian
   native: Australian
@@ -125,11 +125,11 @@
   scenario: Mate
   scenario_outline: Blokes
   examples: Cobber
-  given: *|Ya know how
-  when: *|When
-  then: *|Ya gotta
-  and: *|N
-  but: *|Cept
+  given: "*|Ya know how"
+  when: "*|When"
+  then: "*|Ya gotta"
+  and: "*|N"
+  but: "*|Cept"
 "en-lol":
   name: LOLCAT
   native: LOLCAT
@@ -138,11 +138,11 @@
   scenario: MISHUN
   scenario_outline: MISHUN SRSLY
   examples: EXAMPLZ
-  given: *|I CAN HAZ
-  when: *|WEN
-  then: *|DEN
-  and: *|AN
-  but: *|BUT
+  given: "*|I CAN HAZ"
+  when: "*|WEN"
+  then: "*|DEN"
+  and: "*|AN"
+  but: "*|BUT"
 "en-tx":
   name: Texan
   native: Texan
@@ -151,11 +151,11 @@
   scenario: Scenario
   scenario_outline: All y'all
   examples: Examples
-  given: *|Given y'all
-  when: *|When y'all
-  then: *|Then y'all
-  and: *|And y'all
-  but: *|But y'all
+  given: "*|Given y'all"
+  when: "*|When y'all"
+  then: "*|Then y'all"
+  and: "*|And y'all"
+  but: "*|But y'all"
 "es":
   name: Spanish
   native: español
@@ -164,11 +164,11 @@
   scenario: Escenario
   scenario_outline: Esquema del escenario
   examples: Ejemplos
-  given: *|Dado
-  when: *|Cuando
-  then: *|Entonces
-  and: *|Y
-  but: *|Pero
+  given: "*|Dado"
+  when: "*|Cuando"
+  then: "*|Entonces"
+  and: "*|Y"
+  but: "*|Pero"
 "et":
   name: Estonian
   native: eesti keel
@@ -177,11 +177,11 @@
   scenario: Stsenaarium
   scenario_outline: Raamstsenaarium
   examples: Juhtumid
-  given: *|Eeldades
-  when: *|Kui
-  then: *|Siis
-  and: *|Ja
-  but: *|Kuid
+  given: "*|Eeldades"
+  when: "*|Kui"
+  then: "*|Siis"
+  and: "*|Ja"
+  but: "*|Kuid"
 "fi":
   name: Finnish
   native: suomi
@@ -190,11 +190,11 @@
   scenario: Tapaus
   scenario_outline: Tapausaihio
   examples: Tapaukset
-  given: *|Oletetaan
-  when: *|Kun
-  then: *|Niin
-  and: *|Ja
-  but: *|Mutta
+  given: "*|Oletetaan"
+  when: "*|Kun"
+  then: "*|Niin"
+  and: "*|Ja"
+  but: "*|Mutta"
 "fr":
   name: French
   native: français
@@ -203,11 +203,11 @@
   scenario: Scénario
   scenario_outline: Plan du scénario|Plan du Scénario
   examples: Exemples
-  given: *|Soit|Etant donné
-  when: *|Quand|Lorsque|Lorsqu'<
-  then: *|Alors
-  and: *|Et
-  but: *|Mais
+  given: "*|Soit|Etant donné"
+  when: "*|Quand|Lorsque|Lorsqu'<"
+  then: "*|Alors"
+  and: "*|Et"
+  but: "*|Mais"
 "he":
   name: Hebrew
   native: עברית
@@ -216,11 +216,11 @@
   scenario: תרחיש
   scenario_outline: תבנית תרחיש
   examples: דוגמאות
-  given: *|בהינתן
-  when: *|כאשר
-  then: *|אז|אזי
-  and: *|וגם
-  but: *|אבל
+  given: "*|בהינתן"
+  when: "*|כאשר"
+  then: "*|אז|אזי"
+  and: "*|וגם"
+  but: "*|אבל"
 "hr":
   name: Croatian
   native: hrvatski
@@ -229,11 +229,11 @@
   scenario: Scenarij
   scenario_outline: Skica|Koncept
   examples: Primjeri|Scenariji
-  given: *|Zadan|Zadani|Zadano
-  when: *|Kada|Kad
-  then: *|Onda
-  and: *|I
-  but: *|Ali
+  given: "*|Zadan|Zadani|Zadano"
+  when: "*|Kada|Kad"
+  then: "*|Onda"
+  and: "*|I"
+  but: "*|Ali"
 "hu":
   name: Hungarian
   native: magyar
@@ -242,11 +242,11 @@
   scenario: Forgatókönyv
   scenario_outline: Forgatókönyv vázlat
   examples: Példák
-  given: *|Ha
-  when: *|Majd
-  then: *|Akkor
-  and: *|És
-  but: *|De
+  given: "*|Ha"
+  when: "*|Majd"
+  then: "*|Akkor"
+  and: "*|És"
+  but: "*|De"
 "id":
   name: Indonesian
   native: Bahasa Indonesia
@@ -255,11 +255,11 @@
   scenario: Skenario
   scenario_outline: Skenario konsep
   examples: Contoh
-  given: *|Dengan
-  when: *|Ketika
-  then: *|Maka
-  and: *|Dan
-  but: *|Tapi
+  given: "*|Dengan"
+  when: "*|Ketika"
+  then: "*|Maka"
+  and: "*|Dan"
+  but: "*|Tapi"
 "it":
   name: Italian
   native: italiano
@@ -268,11 +268,11 @@
   scenario: Scenario
   scenario_outline: Schema dello scenario
   examples: Esempi
-  given: *|Dato
-  when: *|Quando
-  then: *|Allora
-  and: *|E
-  but: *|Ma
+  given: "*|Dato"
+  when: "*|Quando"
+  then: "*|Allora"
+  and: "*|E"
+  but: "*|Ma"
 "ja":
   name: Japanese
   native: 日本語
@@ -281,11 +281,11 @@
   scenario: シナリオ
   scenario_outline: シナリオアウトライン|シナリオテンプレート|テンプレ|シナリオテンプレ
   examples: 例|サンプル
-  given: *|前提<
-  when: *|もし<
-  then: *|ならば<
-  and: *|かつ<
-  but: *|しかし<|但し<|ただし<
+  given: "*|前提<"
+  when: "*|もし<"
+  then: "*|ならば<"
+  and: "*|かつ<"
+  but: "*|しかし<|但し<|ただし<"
 "ko":
   name: Korean
   native: 한국어
@@ -294,11 +294,11 @@
   scenario: 시나리오
   scenario_outline: 시나리오 개요
   examples: 예
-  given: *|조건<
-  when: *|만일<
-  then: *|그러면<
-  and: *|그리고<
-  but: *|하지만<
+  given: "*|조건<"
+  when: "*|만일<"
+  then: "*|그러면<"
+  and: "*|그리고<"
+  but: "*|하지만<"
 "lt":
   name: Lithuanian
   native: lietuvių kalba
@@ -307,11 +307,11 @@
   scenario: Scenarijus
   scenario_outline: Scenarijaus šablonas
   examples: Pavyzdžiai|Scenarijai|Variantai
-  given: *|Duota
-  when: *|Kai
-  then: *|Tada
-  and: *|Ir
-  but: *|Bet
+  given: "*|Duota"
+  when: "*|Kai"
+  then: "*|Tada"
+  and: "*|Ir"
+  but: "*|Bet"
 "lv":
   name: Latvian
   native: latviešu
@@ -320,11 +320,11 @@
   scenario: Scenārijs
   scenario_outline: Scenārijs pēc parauga
   examples: Piemēri|Paraugs
-  given: *|Kad
-  when: *|Ja
-  then: *|Tad
-  and: *|Un
-  but: *|Bet
+  given: "*|Kad"
+  when: "*|Ja"
+  then: "*|Tad"
+  and: "*|Un"
+  but: "*|Bet"
 "nl":
   name: Dutch
   native: Nederlands
@@ -333,11 +333,11 @@
   scenario: Scenario
   scenario_outline: Abstract Scenario
   examples: Voorbeelden
-  given: *|Gegeven|Stel
-  when: *|Als
-  then: *|Dan
-  and: *|En
-  but: *|Maar
+  given: "*|Gegeven|Stel"
+  when: "*|Als"
+  then: "*|Dan"
+  and: "*|En"
+  but: "*|Maar"
 "no":
   name: Norwegian
   native: norsk
@@ -346,11 +346,11 @@
   scenario: Scenario
   scenario_outline: Abstrakt Scenario
   examples: Eksempler
-  given: *|Gitt
-  when: *|Når
-  then: *|Så
-  and: *|Og
-  but: *|Men
+  given: "*|Gitt"
+  when: "*|Når"
+  then: "*|Så"
+  and: "*|Og"
+  but: "*|Men"
 "pl":
   name: Polish
   native: polski
@@ -359,11 +359,11 @@
   scenario: Scenariusz
   scenario_outline: Szablon scenariusza
   examples: Przykłady
-  given: *|Zakładając
-  when: *|Jeżeli
-  then: *|Wtedy
-  and: *|Oraz
-  but: *|Ale
+  given: "*|Zakładając"
+  when: "*|Jeżeli"
+  then: "*|Wtedy"
+  and: "*|Oraz"
+  but: "*|Ale"
 "pt":
   name: Portuguese
   native: português
@@ -372,11 +372,11 @@
   scenario: Cenário|Cenario
   scenario_outline: Esquema do Cenário|Esquema do Cenario
   examples: Exemplos
-  given: *|Dado
-  when: *|Quando
-  then: *|Então|Entao
-  and: *|E
-  but: *|Mas
+  given: "*|Dado"
+  when: "*|Quando"
+  then: "*|Então|Entao"
+  and: "*|E"
+  but: "*|Mas"
 "ro":
   name: Romanian
   native: română
@@ -385,11 +385,11 @@
   scenario: Scenariu
   scenario_outline: Scenariul de sablon
   examples: Exemplele
-  given: *|Daca
-  when: *|Cand
-  then: *|Atunci
-  and: *|Si
-  but: *|Dar
+  given: "*|Daca"
+  when: "*|Cand"
+  then: "*|Atunci"
+  and: "*|Si"
+  but: "*|Dar"
 "ro2":
   name: Romanian (diacritical)
   native: română (diacritical)
@@ -398,11 +398,11 @@
   scenario: Scenariu
   scenario_outline: Scenariul de şablon
   examples: Exemplele
-  given: *|Dacă
-  when: *|Când
-  then: *|Atunci
-  and: *|Și
-  but: *|Dar
+  given: "*|Dacă"
+  when: "*|Când"
+  then: "*|Atunci"
+  and: "*|Și"
+  but: "*|Dar"
 "ru":
   name: Russian
   native: русский
@@ -411,11 +411,11 @@
   scenario: Сценарий
   scenario_outline: Структура сценария
   examples: Значения
-  given: *|Допустим
-  when: *|Если
-  then: *|То
-  and: *|И|К тому же
-  but: *|Но|А
+  given: "*|Допустим"
+  when: "*|Если"
+  then: "*|То"
+  and: "*|И|К тому же"
+  but: "*|Но|А"
 "se":
   name: Swedish
   native: Svenska
@@ -424,11 +424,11 @@
   scenario: Scenario
   scenario_outline: Abstrakt Scenario
   examples: Exempel
-  given: *|Givet
-  when: *|När
-  then: *|Så
-  and: *|Och
-  but: *|Men
+  given: "*|Givet"
+  when: "*|När"
+  then: "*|Så"
+  and: "*|Och"
+  but: "*|Men"
 "sk":
   name: Slovak
   native: Slovensky
@@ -437,11 +437,11 @@
   scenario: Scenár
   scenario_outline: Náčrt Scenáru
   examples: Príklady
-  given: *|Pokiaľ
-  when: *|Keď
-  then: *|Tak
-  and: *|A
-  but: *|Ale
+  given: "*|Pokiaľ"
+  when: "*|Keď"
+  then: "*|Tak"
+  and: "*|A"
+  but: "*|Ale"
 "sr-Latn":
   name: Serbian_latin
   native: Srpski_latinica
@@ -450,11 +450,11 @@
   scenario: Scenario|Primer
   scenario_outline: Struktura scenarija|Skica|Koncept
   examples: Primeri|Scenariji
-  given: *|Zadato|Zadate|Zatati
-  when: *|Kada|Kad
-  then: *|Onda
-  and: *|I
-  but: *|Ali
+  given: "*|Zadato|Zadate|Zatati"
+  when: "*|Kada|Kad"
+  then: "*|Onda"
+  and: "*|I"
+  but: "*|Ali"
 "sr":
   name: Serbian
   native: Српски
@@ -463,11 +463,11 @@
   scenario: Сценарио|Пример
   scenario_outline: Структура сценарија|Скица|Концепт
   examples: Примери|Сценарији
-  given: *|Задато|Задате|Задати
-  when: *|Када|Кад
-  then: *|Онда
-  and: *|И
-  but: *|Али
+  given: "*|Задато|Задате|Задати"
+  when: "*|Када|Кад"
+  then: "*|Онда"
+  and: "*|И"
+  but: "*|Али"
 "tr":
   name: Turkish
   native: Türkçe
@@ -476,11 +476,11 @@
   scenario: Senaryo
   scenario_outline: Senaryo taslağı
   examples: Örnekler
-  given: *|Diyelim ki
-  when: *|Eğer ki
-  then: *|O zaman
-  and: *|Ve
-  but: *|Fakat|Ama
+  given: "*|Diyelim ki"
+  when: "*|Eğer ki"
+  then: "*|O zaman"
+  and: "*|Ve"
+  but: "*|Fakat|Ama"
 "uz":
   name: Uzbek
   native: Узбекча
@@ -489,11 +489,11 @@
   scenario: Сценарий
   scenario_outline: Сценарий структураси
   examples: Мисоллар
-  given: *|Агар
-  when: *|Агар
-  then: *|Унда
-  and: *|Ва
-  but: *|Лекин|Бирок|Аммо
+  given: "*|Агар"
+  when: "*|Агар"
+  then: "*|Унда"
+  and: "*|Ва"
+  but: "*|Лекин|Бирок|Аммо"
 "vi":
   name: Vietnamese
   native: Tiếng Việt
@@ -502,11 +502,11 @@
   scenario: Tình huống|Kịch bản
   scenario_outline: Khung tình huống|Khung kịch bản
   examples: Dữ liệu
-  given: *|Biết|Cho
-  when: *|Khi
-  then: *|Thì
-  and: *|Và
-  but: *|Nhưng
+  given: "*|Biết|Cho"
+  when: "*|Khi"
+  then: "*|Thì"
+  and: "*|Và"
+  but: "*|Nhưng"
 "zh-CN":
   name: Chinese simplified
   native: 简体中文
@@ -515,11 +515,11 @@
   scenario: 场景
   scenario_outline: 场景大纲
   examples: 例子
-  given: *|假如<
-  when: *|当<
-  then: *|那么<
-  and: *|而且<
-  but: *|但是<
+  given: "*|假如<"
+  when: "*|当<"
+  then: "*|那么<"
+  and: "*|而且<"
+  but: "*|但是<"
 "zh-TW":
   name: Chinese traditional
   native: 繁體中文
@@ -528,8 +528,8 @@
   scenario: 場景|劇本
   scenario_outline: 場景大綱|劇本大綱
   examples: 例子
-  given: *|假設<
-  when: *|當<
-  then: *|那麼<
-  and: *|而且<|並且<
-  but: *|但是<
+  given: "*|假設<"
+  when: "*|當<"
+  then: "*|那麼<"
+  and: "*|而且<|並且<"
+  but: "*|但是<"
