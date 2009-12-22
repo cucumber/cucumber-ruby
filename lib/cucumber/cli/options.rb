@@ -116,7 +116,18 @@ module Cucumber
             "loaded first.",
             "This option can be specified multiple times.") do |v|
             @options[:require] << v
+            if(Cucumber::JRUBY && File.directory?(v))
+              $CLASSPATH << v
+            end
           end
+
+          if(Cucumber::JRUBY)
+            opts.on("-j DIR", "--jars DIR",
+            "Load all the jars under DIR") do |jars|
+              Dir["#{jars}/**/*.jar"].each {|jar| require jar}
+            end
+          end
+
           opts.on("--i18n LANG",
             "List keywords for in a particular language",
             %{Run with "--i18n help" to see all languages}) do |lang|

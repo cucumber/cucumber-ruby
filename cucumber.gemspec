@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
-  s.version = "0.5.1"
+  s.version = "0.5.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2009-12-16}
+  s.date = %q{2009-12-22}
   s.default_executable = %q{cucumber}
   s.description = %q{A BDD tool written in Ruby}
   s.email = %q{cukes@googlegroups.com}
@@ -314,6 +314,7 @@ Gem::Specification.new do |s|
      "examples/tickets/features/tickets.feature",
      "examples/watir/README.textile",
      "examples/watir/Rakefile",
+     "examples/watir/cucumber.yml",
      "examples/watir/features/search.feature",
      "examples/watir/features/step_definitions/search_steps.rb",
      "examples/watir/features/support/env.rb",
@@ -367,6 +368,7 @@ Gem::Specification.new do |s|
      "features/usage_and_stepdefs_formatter.feature",
      "features/wire_protocol.feature",
      "features/wire_protocol_table_diffing.feature",
+     "features/wire_protocol_timeouts.feature",
      "features/work_in_progress.feature",
      "gem_tasks/contributors.rake",
      "gem_tasks/environment.rake",
@@ -470,12 +472,14 @@ Gem::Specification.new do |s|
      "lib/cucumber/step_mother.rb",
      "lib/cucumber/webrat/element_locator.rb",
      "lib/cucumber/webrat/table_locator.rb",
+     "lib/cucumber/wire_support/configuration.rb",
      "lib/cucumber/wire_support/connection.rb",
      "lib/cucumber/wire_support/request_handler.rb",
      "lib/cucumber/wire_support/wire_exception.rb",
      "lib/cucumber/wire_support/wire_language.rb",
      "lib/cucumber/wire_support/wire_packet.rb",
      "lib/cucumber/wire_support/wire_protocol.rb",
+     "lib/cucumber/wire_support/wire_protocol/requests.rb",
      "lib/cucumber/wire_support/wire_step_definition.rb",
      "spec/cucumber/ast/background_spec.rb",
      "spec/cucumber/ast/feature_element_spec.rb",
@@ -525,6 +529,7 @@ Gem::Specification.new do |s|
      "spec/cucumber/treetop_parser/test_dos.feature",
      "spec/cucumber/treetop_parser/with_comments.feature",
      "spec/cucumber/treetop_parser/with_tags.feature",
+     "spec/cucumber/wire_support/configuration_spec.rb",
      "spec/cucumber/wire_support/wire_exception_spec.rb",
      "spec/cucumber/wire_support/wire_language_spec.rb",
      "spec/cucumber/wire_support/wire_packet_spec.rb",
@@ -539,7 +544,7 @@ Gem::Specification.new do |s|
 
                      (::)   U P G R A D I N G    (::)
 
-Thank you for installing cucumber-0.5.1.
+Thank you for installing cucumber-0.5.2.
 Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
 for important information about this release. Happy cuking!
 
@@ -586,6 +591,7 @@ for important information about this release. Happy cuking!
      "spec/cucumber/rb_support/regexp_argument_matcher_spec.rb",
      "spec/cucumber/step_match_spec.rb",
      "spec/cucumber/step_mother_spec.rb",
+     "spec/cucumber/wire_support/configuration_spec.rb",
      "spec/cucumber/wire_support/wire_exception_spec.rb",
      "spec/cucumber/wire_support/wire_language_spec.rb",
      "spec/cucumber/wire_support/wire_packet_spec.rb",
@@ -716,6 +722,7 @@ for important information about this release. Happy cuking!
       s.add_runtime_dependency(%q<polyglot>, [">= 0.2.9"])
       s.add_runtime_dependency(%q<builder>, [">= 2.1.2"])
       s.add_runtime_dependency(%q<diff-lcs>, [">= 1.1.2"])
+      s.add_runtime_dependency(%q<json_pure>, [">= 1.2.0"])
       s.add_development_dependency(%q<nokogiri>, [">= 1.4.0"])
       s.add_development_dependency(%q<prawn>, [">= 0.5.1"])
       s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
@@ -726,6 +733,7 @@ for important information about this release. Happy cuking!
       s.add_dependency(%q<polyglot>, [">= 0.2.9"])
       s.add_dependency(%q<builder>, [">= 2.1.2"])
       s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
+      s.add_dependency(%q<json_pure>, [">= 1.2.0"])
       s.add_dependency(%q<nokogiri>, [">= 1.4.0"])
       s.add_dependency(%q<prawn>, [">= 0.5.1"])
       s.add_dependency(%q<rspec>, [">= 1.2.9"])
@@ -737,6 +745,7 @@ for important information about this release. Happy cuking!
     s.add_dependency(%q<polyglot>, [">= 0.2.9"])
     s.add_dependency(%q<builder>, [">= 2.1.2"])
     s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
+    s.add_dependency(%q<json_pure>, [">= 1.2.0"])
     s.add_dependency(%q<nokogiri>, [">= 1.4.0"])
     s.add_dependency(%q<prawn>, [">= 0.5.1"])
     s.add_dependency(%q<rspec>, [">= 1.2.9"])

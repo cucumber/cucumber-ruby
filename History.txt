@@ -1,4 +1,8 @@
-== In git
+== 0.5.2 2009-12-22
+
+=== New Features
+* On JRuby/Cuke4Duke, --require DIR will put DIR on the $CLASSPATH, making it easier to load step def classes (Aslak Hellesøy)
+* New --jars option that will load jar files. Only available on JRuby. Practical for Cuke4Duke. (Aslak Hellesøy)
 
 === Bugfixes
 * Add #embed back to html formatter (#547 Brandon Faloona)
