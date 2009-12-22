@@ -1,4 +1,6 @@
-== In Git
+== 0.5.3 2009-12-22
+
+Another small release today to please a sister project. This time Cuke4Nuke.
 
 === New Features
 * Simplified wire protocol to mostly use success / fail responses (Matt Wynne)
