@@ -21,6 +21,7 @@ module Cucumber
       before(:each) do
         @out = StringIO.new
         @formatter = Html.new(step_mother, @out, {})
+        step_mother.visitor = @formatter
       end
     
       it "should not raise an error when visiting a blank feature name" do
@@ -208,9 +209,7 @@ module Cucumber
 
         describe "with a step that embeds a snapshot" do
           define_steps do
-            Given(/snap/) {
-              require 'ruby-debug';debugger
-              embed('snapshot.jpeg', 'image/jpeg') }
+            Given(/snap/) { embed('snapshot.jpeg', 'image/jpeg') }
           end
 
           define_feature(<<-FEATURE)
@@ -218,7 +217,7 @@ module Cucumber
               Given snap
             FEATURE
 
-          it { @doc.should have_css_node('.embed', /snap/) }
+          it { @doc.css('.embed img').first.attributes['src'].to_s.should == "snapshot.jpeg" }
         end
       
       end
