@@ -23,10 +23,10 @@ Feature: Wire protocol table diffing
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                                                                             |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[{"id":"1", "args":[]}]]                                                                  |
-      | ["begin_scenario",null]                              | ["success",null]                                                                                     |
+      | ["begin_scenario",null]                              | ["success"]                                                                                          |
       | ["invoke",{"id":"1","args":[]}]                      | ["diff",[[["a","b"],["c","d"]],[["x","y"],["z","z"]]]]                                               |
       | ["diff_failed",null]                                 | ["fail",{"message":"Not same", "exception":"DifferentException", "backtrace":["a.cs:12","b.cs:34"]}] |
-      | ["end_scenario",null]                                | ["success",null]                                                                                     |
+      | ["end_scenario",null]                                | ["success"]                                                                                          |
     When I run cucumber -f progress --backtrace
     And it should fail with
       """
@@ -51,10 +51,10 @@ Feature: Wire protocol table diffing
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                               |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[{"id":"1", "args":[]}]]    |
-      | ["begin_scenario",null]                              | ["success",null]                       |
+      | ["begin_scenario",null]                              | ["success"]                            |
       | ["invoke",{"id":"1","args":[]}]                      | ["diff",[[["a"],["b"]],[["a"],["b"]]]] |
-      | ["diff_ok",null]                                     | ["success",null]                       |
-      | ["end_scenario",null]                                | ["success",null]                       |
+      | ["diff_ok",null]                                     | ["success"]                            |
+      | ["end_scenario",null]                                | ["success"]                            |
     When I run cucumber -f progress
     And it should pass with
       """
@@ -69,10 +69,10 @@ Feature: Wire protocol table diffing
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                                      |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[{"id":"1", "args":[]}]]                           |
-      | ["begin_scenario",null]                              | ["success",null]                                              |
+      | ["begin_scenario",null]                              | ["success"]                                                   |
       | ["invoke",{"id":"1","args":[]}]                      | ["diff",[[["a"],["b"]],[["a"],["b"]]]]                        |
       | ["diff_ok",null]                                     | ["fail",{"message":"I wanted things to be different for us"}] |
-      | ["end_scenario",null]                                | ["success",null]                                              |
+      | ["end_scenario",null]                                | ["success"]                                                   |
     When I run cucumber -f progress
     And it should fail with
       """
@@ -90,6 +90,3 @@ Feature: Wire protocol table diffing
       1 step (1 failed)
 
       """
-
-
-
