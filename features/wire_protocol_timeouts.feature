@@ -36,11 +36,11 @@ Feature: Wire protocol timeouts
 
       """
     And there is a wire server on port 54321 which understands the following protocol:
-      | request                                              | response                                                          |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[{"val":"wired", "pos":10}]}]] |
-      | ["begin_scenario",null]                              | ["success",null]                                                  |
-      | ["invoke",{"id":"1","args":["wired"]}]               | ["success",null]                                                  |
-      | ["end_scenario",null]                                | ["success",null]                                                  |
+      | request                                              | response                                                     |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[{"id":"1", "args":[{"val":"wired", "pos":10}]}]] |
+      | ["begin_scenario"]                                   | ["success"]                                                  |
+      | ["invoke",{"id":"1","args":["wired"]}]               | ["success"]                                                  |
+      | ["end_scenario"]                                     | ["success"]                                                  |
     And the wire server takes 0.2 seconds to respond to the invoke message
     When I run cucumber -f pretty
     Then STDERR should be empty

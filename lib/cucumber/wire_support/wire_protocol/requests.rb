@@ -12,17 +12,23 @@ module Cucumber
             super(request_params)
           end
 
-          def handle_step_matches(params)
+          def handle_success(params)
             params.map do |raw_step_match|
-              step_definition = WireStepDefinition.new(@connection, raw_step_match)
-              step_args = raw_step_match['args'].map do |raw_arg|
-                StepArgument.new(raw_arg['val'], raw_arg['pos'])
-              end
-              step_match(step_definition, step_args)
+              create_step_match(raw_step_match)
             end
           end
+          
+          alias :handle_step_matches :handle_success
         
           private
+          
+          def create_step_match(raw_step_match)
+            step_definition = WireStepDefinition.new(@connection, raw_step_match)
+            step_args = raw_step_match['args'].map do |raw_arg|
+              StepArgument.new(raw_arg['val'], raw_arg['pos'])
+            end
+            step_match(step_definition, step_args)
+          end
         
           def step_match(step_definition, step_args)
             StepMatch.new(step_definition, @name_to_match, @name_to_report, step_args)
@@ -38,10 +44,12 @@ module Cucumber
             }
             super(request_params)
           end
-        
-          def handle_snippet_text(text)
-            text
+          
+          def handle_success(snippet_text)
+            snippet_text
           end
+          
+          alias :handle_snippet_text :handle_success
         end
 
         class Invoke < RequestHandler
@@ -53,9 +61,6 @@ module Cucumber
             super(request_params)
           end
 
-          def handle_success(params)
-          end
-        
           def handle_pending(message)
             raise Pending, message || "TODO"
           end
@@ -70,42 +75,25 @@ module Cucumber
             end
             @connection.diff_ok
           end
-      
-          def handle_step_failed(params)
-            handle_fail(params)
-          end
+          
+          alias :handle_step_failed :handle_fail
         end
 
         class DiffFailed < RequestHandler
-          def handle_success(params)
-          end
-        
-          def handle_step_failed(params)
-            handle_fail(params)
-          end
+          alias :handle_step_failed :handle_fail
         end
       
         class DiffOk < RequestHandler
-          def handle_success(params)
-          end
-        
-          def handle_step_failed(params)
-            handle_fail(params)
-          end
+          alias :handle_step_failed :handle_fail
         end
       
         class BeginScenario < RequestHandler
           def execute(scenario)
             super(nil) # not passing the scenario yet
           end
-
-          def handle_success(params)
-          end
         end
 
         class EndScenario < RequestHandler
-          def handle_success(params)
-          end
         end
       end
     end

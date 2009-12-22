@@ -21,12 +21,12 @@ Feature: Wire protocol table diffing
 
   Scenario: Invoke a step definition tries to diff the table and fails
     Given there is a wire server running on port 54321 which understands the following protocol:
-      | request                                              | response                                                                                                                                                   |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]]                                                                                                                   |
-      | ["begin_scenario",null]                              | ["success",null]                                                                                                                                           |
-      | ["invoke",{"id":"1","args":[]}]                      | ["diff",[[["a","b"],["c","d"]],[["x","y"],["z","z"]]]]                                                                                                     |
-      | ["diff_failed",null]                                 | ["step_failed",{"message":"Not same", "exception":"DifferentException", "backtrace":["a.cs:12","b.cs:34"]}] |
-      | ["end_scenario",null]                                | ["success",null]                                                                                                                                           |
+      | request                                              | response                                                                                             |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[{"id":"1", "args":[]}]]                                                                  |
+      | ["begin_scenario"]                                   | ["success"]                                                                                          |
+      | ["invoke",{"id":"1","args":[]}]                      | ["diff",[[["a","b"],["c","d"]],[["x","y"],["z","z"]]]]                                               |
+      | ["diff_failed"]                                      | ["fail",{"message":"Not same", "exception":"DifferentException", "backtrace":["a.cs:12","b.cs:34"]}] |
+      | ["end_scenario"]                                     | ["success"]                                                                                          |
     When I run cucumber -f progress --backtrace
     And it should fail with
       """
@@ -49,12 +49,12 @@ Feature: Wire protocol table diffing
 
   Scenario: Invoke a step definition tries to diff the table and passes
     Given there is a wire server running on port 54321 which understands the following protocol:
-      | request                                              | response                                 |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]] |
-      | ["begin_scenario",null]                              | ["success",null]                         |
-      | ["invoke",{"id":"1","args":[]}]                      | ["diff",[[["a"],["b"]],[["a"],["b"]]]]   |
-      | ["diff_ok",null]                                     | ["success",null]                         |
-      | ["end_scenario",null]                                | ["success",null]                         |
+      | request                                              | response                               |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[{"id":"1", "args":[]}]]    |
+      | ["begin_scenario"]                                   | ["success"]                            |
+      | ["invoke",{"id":"1","args":[]}]                      | ["diff",[[["a"],["b"]],[["a"],["b"]]]] |
+      | ["diff_ok"]                                          | ["success"]                            |
+      | ["end_scenario"]                                     | ["success"]                            |
     When I run cucumber -f progress
     And it should pass with
       """
@@ -67,12 +67,12 @@ Feature: Wire protocol table diffing
 
   Scenario: Invoke a step definition which successfully diffs a table but then fails
     Given there is a wire server running on port 54321 which understands the following protocol:
-      | request                                              | response                                                             |
-      | ["step_matches",{"name_to_match":"we're all wired"}] | ["step_matches",[{"id":"1", "args":[]}]]                             |
-      | ["begin_scenario",null]                              | ["success",null]                                                     |
-      | ["invoke",{"id":"1","args":[]}]                      | ["diff",[[["a"],["b"]],[["a"],["b"]]]]                               |
-      | ["diff_ok",null]                                     | ["step_failed",{"message":"I wanted things to be different for us"}] |
-      | ["end_scenario",null]                                | ["success",null]                                                     |
+      | request                                              | response                                                      |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[{"id":"1", "args":[]}]]                           |
+      | ["begin_scenario"]                                   | ["success"]                                                   |
+      | ["invoke",{"id":"1","args":[]}]                      | ["diff",[[["a"],["b"]],[["a"],["b"]]]]                        |
+      | ["diff_ok"]                                          | ["fail",{"message":"I wanted things to be different for us"}] |
+      | ["end_scenario"]                                     | ["success"]                                                   |
     When I run cucumber -f progress
     And it should fail with
       """
@@ -90,6 +90,3 @@ Feature: Wire protocol table diffing
       1 step (1 failed)
 
       """
-
-
-
