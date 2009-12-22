@@ -4,9 +4,17 @@ require 'cucumber/wire_support/wire_language'
 module Cucumber
   module WireSupport
     describe WirePacket do
-      it "should convert to JSON" do
-        packet = WirePacket.new('test_message', :foo => :bar)
-        packet.to_json.should == "[\"test_message\",{\"foo\":\"bar\"}]"
+
+      describe "#to_json" do
+        it "should convert params to a JSON hash" do
+          packet = WirePacket.new('test_message', :foo => :bar)
+          packet.to_json.should == "[\"test_message\",{\"foo\":\"bar\"}]"
+        end
+        
+        it "should not pass blank params" do
+          packet = WirePacket.new('test_message')
+          packet.to_json.should == "[\"test_message\"]"
+        end
       end
       
       describe ".parse" do
