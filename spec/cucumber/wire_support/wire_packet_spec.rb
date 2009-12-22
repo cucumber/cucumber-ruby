@@ -10,13 +10,19 @@ module Cucumber
       end
       
       describe ".parse" do
-        it "should understand a raw packet containing no arguments" do
+        it "should understand a raw packet containing null parameters" do
           packet = WirePacket.parse("[\"test_message\",null]")
           packet.message.should == 'test_message'
           packet.params.should be_nil
         end
+
+        it "should understand a raw packet containing no parameters" do
+          packet = WirePacket.parse("[\"test_message\"]")
+          packet.message.should == 'test_message'
+          packet.params.should be_nil
+        end
         
-        it "should understand a raw packet containging arguments data" do
+        it "should understand a raw packet containging parameters data" do
           packet = WirePacket.parse("[\"test_message\",{\"foo\":\"bar\"}]")
           packet.params['foo'].should == 'bar'
         end
