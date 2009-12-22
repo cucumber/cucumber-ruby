@@ -13,7 +13,7 @@ Feature: Wire Protocol
   # a definition file with the .wire extension in the step_definitions folder
   # (or other load path).
   #
-  # Cucumber currently sends the following messages over the wire:
+  # Cucumber sends the following request messages out over the wire:
   #
   #   * step_matches   : this is used to find out whether the wire server has a
   #                      definition for a given step
@@ -22,9 +22,19 @@ Feature: Wire Protocol
   #   * end_scenario   : signals that cucumber has finished executing a scenario
   #   * snippet_text   : requests a snippet for an undefined step
   #
-  # Message packets are formatted as JSON-encoded strings, with a newline
-  # character signalling the end of a packet. These messages are described
-  # below, with examples.
+  # Every message supports two standard responses:
+  #   * success        : which expects different arguments (sometimes none at
+  #                      depending on the request.
+  #   * fail           : causes a Cucumber::WireSupport::WireException to be
+  #                      raised.
+  #
+  # Some messages support more responses - see below for details.
+  #
+  # A WirePacket flowing in either direction is formatted as a JSON-encoded
+  # string, with a newline character signalling the end of a packet. See the
+  # specs for Cucumber::WireSupport::WirePacket for more details.
+  #
+  # These messages are described in detail below, with examples.
   #
 
   Background:
@@ -44,14 +54,13 @@ Feature: Wire Protocol
 
 
   #
-  # step_matches
+  # # Request: 'step_matches'
   #
   # When the features have been parsed, Cucumber will send a step_matches
   # message to ask the wire server if it can match a step name. This happens for
   # each of the steps in each of the features.
   #
-  # The wire server replies with a step_match array, containing the IDs of any step
-  # definitions that could be invoked for the given step name.
+  # The wire server replies with an array of StepMatch objects.
 
   Scenario: Dry run finds no step match
     Given there is a wire server running on port 54321 which understands the following protocol:
@@ -67,13 +76,12 @@ Feature: Wire Protocol
 
       """
 
-  # When a step match is returned, it contains an identifier for the step
-  # definition to be used later when referring to this step definition again if
-  # it needs to be invoked. The identifier can take any form (as long as it's
-  # within a string) and is simply used for the wire server's own reference.
-  #
-  # The step match also contains any argument values as parsed out by the wire
-  # end's own regular expression or other argument matching process.
+  # When each StepMatch is returned, it contains the following data:
+  #   * id   - identifier for the step definition to be used later when if it
+  #            needs to be invoked. The identifier can be any string value and
+  #            is simply used for the wire server's own reference.
+  #   * args - any argument values as captured by the wire end's own regular
+  #            expression (or other argument matching) process.
   Scenario: Dry run finds a step match
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                            |
@@ -88,8 +96,8 @@ Feature: Wire Protocol
 
       """
 
-  # Optionally, the step match can also contain the a source reference, and a
-  # native regexp string which will be used by some formatters
+  # Optionally, the StepMatch can also contain a source reference, and a native
+  # regexp string which will be used by some formatters.
   Scenario: Step matches returns details about the remote step definition
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                                                           |
@@ -109,21 +117,26 @@ Feature: Wire Protocol
 
 
   #
-  # invoke
+  # # Request: 'invoke'
   #
-  # Assuming a step_match was returned for a given step name, when it's time to
+  # Assuming a StepMatch was returned for a given step name, when it's time to
   # invoke that step definition, Cucumber will send an invoke message.
   #
-  # The message contains the ID of the step definition, as returned by the wire
-  # end from the step_matches call, along with the arguments that were parsed
-  # from the step name during the same step_matches call.
+  # The invoke message contains the ID of the step definition, as returned by
+  # the wire server in response to the the step_matches call, along with the
+  # arguments that were parsed from the step name during the same step_matches
+  # call.
   #
-  # The wire server will normally[1] reply with either a 'success', 'fail', or
-  # 'pending' message.
+  # The wire server will normally[1] reply one of the following:
+  #   * success
+  #   * fail
+  #   * pending : optionally takes a message argument
   #
-  # [1] See also wire_protocol_table_diffing.feature
+  # [1] This isn't the whole story: see also wire_protocol_table_diffing.feature
+  #
 
-  # The message argument which accompanies the pending message is optional
+  # ## Pending Steps
+  #
   Scenario: Invoke a step definition which is pending
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                            |
@@ -146,6 +159,8 @@ Feature: Wire Protocol
 
       """
 
+  # ## Passing Steps
+  #
   Scenario: Invoke a step definition which passes
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                            |
@@ -163,9 +178,18 @@ Feature: Wire Protocol
 
       """
 
+  # ## Failing Steps
+  #
   # When an invoked step definition fails, it can return details of the exception
-  # in the reply to invoke. These will then be passed by Cucumber to the formatters
-  # for display to the user.
+  # in the reply to invoke. This causes a Cucumber::WireSupport::WireException to be
+  # raised.
+  #
+  # Valid arguments are:
+  #   * message (mandatory)
+  #   * exception
+  #   * backtrace
+  #
+  # See the specs for Cucumber::WireSupport::WireException for more details
   #
   Scenario: Invoke a step definition which fails
     Given there is a wire server running on port 54321 which understands the following protocol:
@@ -193,13 +217,15 @@ Feature: Wire Protocol
 
       """
 
+  # ## Step Arguments
+  #
   # Imagine we have a step definition like:
   #
   #     Given /we're all (.*)/ do | what_we_are |
   #     end
   #
   # When this step definition matches the step name in our feature, the word
-  # 'wired' will be parsed as an argument.
+  # 'wired' will be captured as an argument.
   #
   # Cucumber expects this StepArgument to be returned in the StepMatch. The keys
   # have the following meanings:
@@ -226,6 +252,8 @@ Feature: Wire Protocol
 
       """
 
+  # ## Multiline Table Arguments
+  #
   # When the step has a multiline table argument, it will be passed with the
   # invoke message as a string - a serialized JSON array of array of strings.
   # In the following scenario our step definition takes two arguments - one
@@ -258,7 +286,7 @@ Feature: Wire Protocol
 
 
   #
-  # snippets
+  # # Request: 'snippets'
   #
   Scenario: Wire server returns snippets for a step that didn't match
     Given there is a wire server running on port 54321 which understands the following protocol:
@@ -287,7 +315,9 @@ Feature: Wire Protocol
 
       """
 
-
+  #
+  # # Bad Response
+  #
   Scenario: Unexpected response
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request            | response  |
