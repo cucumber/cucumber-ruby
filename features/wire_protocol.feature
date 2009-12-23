@@ -24,7 +24,7 @@ Feature: Wire Protocol
   #
   # Every message supports two standard responses:
   #   * success        : which expects different arguments (sometimes none at
-  #                      depending on the request.
+  #                      all) depending on the request.
   #   * fail           : causes a Cucumber::WireSupport::WireException to be
   #                      raised.
   #
