@@ -1,3 +1,5 @@
+require 'cucumber/formatter/io'
+
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format rerun</tt>
