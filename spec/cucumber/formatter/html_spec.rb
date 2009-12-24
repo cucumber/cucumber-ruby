@@ -219,6 +219,16 @@ module Cucumber
 
           it { @doc.css('.embed img').first.attributes['src'].to_s.should == "snapshot.jpeg" }
         end
+        
+        describe "with an undefined Given step then an undefined And step" do
+          define_feature(<<-FEATURE)
+            Scenario:
+              Given some undefined step
+              And another undefined step
+            FEATURE
+            
+          it { @doc.css('pre').map { |pre| /^(Given|And)/.match(pre.text)[1] }.should == ["Given", "Given"] }
+        end
       
       end
     end
