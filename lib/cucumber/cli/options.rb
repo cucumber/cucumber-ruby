@@ -184,7 +184,7 @@ module Cucumber
             @profiles << v
           end
           opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG,
-            "Disables all profile laoding to avoid using the 'default' profile.") do |v|
+            "Disables all profile loading to avoid using the 'default' profile.") do |v|
             @disable_profile_loading = true
           end
           opts.on("-c", "--[no-]color",
