@@ -236,7 +236,7 @@ module Cucumber
         if status == :undefined
           step_multiline_class = @step.multiline_arg ? @step.multiline_arg.class : nil
           @builder.pre do |pre|
-            pre << @step_mother.snippet_text(keyword,step_match.instance_variable_get("@name") || '',step_multiline_class)
+            pre << @step_mother.snippet_text(@step.actual_keyword,step_match.instance_variable_get("@name") || '',step_multiline_class)
           end
         end
         @builder << '</li>'
