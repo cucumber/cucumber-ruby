@@ -1,3 +1,8 @@
+== In Git
+
+=== Bugfixes
+* Add missing require statement in rerun formatter which broke RubyMine (Noah Sussman)
+
 == 0.5.3 2009-12-22
 
 Another small release today to please a sister project. This time Cuke4Nuke.
