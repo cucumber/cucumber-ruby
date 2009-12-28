@@ -16,7 +16,6 @@ module Screenshots
     require 'watir/screen_capture'
     include Watir::ScreenCapture
     def embed_screenshot(id)
-      puts "TAKING #{id}"
       screen_capture("#{id}.jpg", true)
       embed("#{id}.jpg", "image/jpeg")
     end
