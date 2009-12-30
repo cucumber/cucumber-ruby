@@ -44,6 +44,22 @@ module Cucumber
               [:py_string, "\n I like\nCucumber sandwich\n"]], 
             [:step_invocation, 12, "Given", "a failing step"]]]          
       end
+
+      it "should store OS specific file paths" do
+        step_mother = StepMother.new
+        step_mother.load_natural_language('en')
+        step_mother.load_programming_language('rb')
+        dsl = Object.new 
+        dsl.extend RbSupport::RbDsl
+        feature = create_feature(dsl)
+
+        if Cucumber::WINDOWS
+          feature.file.should == 'features\pretty_printing.feature'
+        else
+          feature.file.should == 'features/pretty_printing.feature'
+        end                
+      end
+
     end
   end
 end

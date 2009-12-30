@@ -2,8 +2,9 @@ module Cucumber
   module Ast
     # Represents the root node of a parsed feature.
     class Feature #:nodoc:
-      attr_accessor :file, :language
+      attr_accessor :language
       attr_writer :features
+      attr_reader :file
       attr_reader :name
 
       def initialize(background, comment, tags, name, feature_elements)
@@ -44,6 +45,16 @@ module Cucumber
         "#{file_colon_line(line)}:in `#{step_name}'"
       end
 
+      def file=(file)
+        if file
+          if Cucumber::WINDOWS
+            @file = file.gsub(/\//, '\\')
+          else
+            @file = file
+          end  
+        end
+      end
+      
       def file_colon_line(line)
         "#{@file}:#{line}"
       end
