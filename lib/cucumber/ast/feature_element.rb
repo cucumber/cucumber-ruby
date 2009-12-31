@@ -1,5 +1,5 @@
 require 'enumerator'
-require 'cucumber/ast/tags'
+require 'cucumber/tag_expression'
 
 module Cucumber
   module Ast
@@ -49,15 +49,15 @@ module Cucumber
       end
 
       def accept_hook?(hook)
-        Tags.matches?(source_tag_names, hook.tag_name_lists)
+        TagExpression.parse(hook.tag_expressions).eval(source_tag_names)
       end
 
       def source_tag_names
         (@tags.tag_names + (@feature ? @feature.source_tag_names : [])).uniq
       end
 
-      def tag_count(tag)
-        @feature.tag_count(tag) == 0 ? @tags.count(tag) : @feature.tag_count(tag)
+      def tagged_with?(tag)
+        source_tag_names.index(tag)
       end
 
       def language

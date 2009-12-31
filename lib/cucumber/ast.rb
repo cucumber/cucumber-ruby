@@ -1,5 +1,4 @@
 require 'cucumber/ast/comment'
-require 'cucumber/ast/tags'
 require 'cucumber/ast/features'
 require 'cucumber/ast/feature'
 require 'cucumber/ast/background'

@@ -52,20 +52,20 @@ module Cucumber
 
       # Registers a proc that will run before each Scenario. You can register as 
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
-      def Before(*tag_names, &proc)
-        RbDsl.register_rb_hook('before', tag_names, proc)
+      def Before(*tag_expressions, &proc)
+        RbDsl.register_rb_hook('before', tag_expressions, proc)
       end
 
       # Registers a proc that will run after each Scenario. You can register as 
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
-      def After(*tag_names, &proc)
-        RbDsl.register_rb_hook('after', tag_names, proc)
+      def After(*tag_expressions, &proc)
+        RbDsl.register_rb_hook('after', tag_expressions, proc)
       end
 
       # Registers a proc that will run after each Step. You can register as 
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
-      def AfterStep(*tag_names, &proc)
-        RbDsl.register_rb_hook('after_step', tag_names, proc)
+      def AfterStep(*tag_expressions, &proc)
+        RbDsl.register_rb_hook('after_step', tag_expressions, proc)
       end
 
       # Registers a proc that will be called with a step definition argument if it 

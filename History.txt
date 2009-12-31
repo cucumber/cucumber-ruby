@@ -1,5 +1,19 @@
 == In Git
 
+=== Changed Features
+* Tag boolean logic is inverted. (#504 Aslak Hellesøy)
+
+  In previous versions the following command line:
+  
+    --tags @foo,~@bar --tags @zap (on the command line)
+  
+  or the following Hook:
+  
+    Before("@foo,~@bar", "@zap") (for Hooks)
+  
+  would be equivalent to the boolean expression:       (@foo && !@bar) || @zap
+  Starting with this release it will be equivalent to: (@foo || !@bar) && @zap
+
 === Bugfixes
 * Add missing require statement in rerun formatter which broke RubyMine (Noah Sussman)
 

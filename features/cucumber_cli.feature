@@ -556,6 +556,7 @@ Feature: Cucumber command line
 
    Scenario: Run with limited tag count, blowing it via feature inheritance
      When I run cucumber -q features/tags_sample.feature --no-source --dry-run --tags @sample_one:1
+     Then STDERR should be empty
      Then it should fail with
      """
      @sample_one

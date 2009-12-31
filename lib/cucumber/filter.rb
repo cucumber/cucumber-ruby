@@ -1,9 +1,11 @@
+require 'cucumber/tag_expression'
+
 module Cucumber
   # Filters the AST based on --tags and --name
   class Filter #:nodoc:
     def initialize(lines, options)
       @lines = lines
-      @tag_name_lists = options[:tag_names] ? options[:tag_names].map{|tags_with_limit| tags_with_limit.keys } : []
+      @tag_expression = options[:tag_expression] || TagExpression.new
       @name_regexps = options[:name_regexps] || []
     end
 
@@ -27,7 +29,7 @@ module Cucumber
     end
 
     def matches_tags?(syntax_node)
-      syntax_node.matches_tags?(@tag_name_lists)
+      syntax_node.matches_tags?(@tag_expression)
     end
 
     def outline_matches_names?(syntax_node)

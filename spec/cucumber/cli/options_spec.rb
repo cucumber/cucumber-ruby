@@ -91,11 +91,11 @@ module Cli
 
       context '-t TAGS --tags TAGS' do
         it "designates tags prefixed with ~ as tags to be excluded" do
-          after_parsing('--tags ~@foo,@bar') { options[:tag_names].should == [{'~@foo' => nil, '@bar' => nil}] }
+          after_parsing('--tags ~@foo,@bar') { options[:tag_expressions].should == ['~@foo,@bar'] }
         end
 
         it "stores tags passed with different --tags seperately" do
-          after_parsing('--tags @foo --tags @bar') { options[:tag_names].should == [{'@foo' => nil}, {'@bar' => nil}] }
+          after_parsing('--tags @foo --tags @bar') { options[:tag_expressions].should == ['@foo', '@bar'] }
         end
       end
 
@@ -162,7 +162,7 @@ module Cli
         it "combines the tag names of both" do
           given_cucumber_yml_defined_as('baz' => %w[-t @bar])
           options.parse!(%w[--tags @foo -p baz])
-          options[:tag_names].should == [{'@foo' => nil}, {'@bar' => nil}]
+          options[:tag_expressions].should == ["@foo", "@bar"]
         end
 
         it "only takes the paths from the original options, and disgregards the profiles" do

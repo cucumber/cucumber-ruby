@@ -1,3 +1,5 @@
+require 'cucumber/ast/tags'
+
 module Cucumber
   module Parser
     # TIP: When you hack on the grammar, just delete feature.rb in this directory.
@@ -76,8 +78,8 @@ module Cucumber
             steps.at_line?(line)
           end
 
-          def matches_tags?(tag_names)
-            Ast::Tags.matches?(self.parent.tags.tag_names, tag_names)
+          def matches_tags?(tag_expression)
+            tag_expression.eval(self.parent.tags.tag_names)
           end
 
           def build
@@ -116,10 +118,10 @@ module Cucumber
             tags.at_line?(line)
           end
 
-          def matches_tags?(tag_names)
+          def matches_tags?(tag_expression)
             feature_tag_names = self.parent.parent.tags.tag_names
             source_tag_names = (feature_tag_names + tags.tag_names).uniq
-            Ast::Tags.matches?(source_tag_names, tag_names)
+            tag_expression.eval(source_tag_names)
           end
 
           def matches_name?(regexp_to_match)
@@ -153,10 +155,10 @@ module Cucumber
             steps.at_line?(line)
           end
 
-          def matches_tags?(tag_names)
+          def matches_tags?(tag_expression)
             feature_tag_names = self.parent.parent.tags.tag_names
             source_tag_names = (feature_tag_names + tags.tag_names).uniq
-            Ast::Tags.matches?(source_tag_names, tag_names)
+            tag_expression.eval(source_tag_names)
           end
 
           def matches_name?(regexp_to_match)

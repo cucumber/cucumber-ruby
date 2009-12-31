@@ -89,10 +89,6 @@ module Cucumber
         @pdf.move_down(30)
       end
 
-      def before_feature_element(feature_element)
-        record_tag_occurrences(feature_element, @options)
-      end
-      
       def after_feature_element(feature_element)
         flush
       end

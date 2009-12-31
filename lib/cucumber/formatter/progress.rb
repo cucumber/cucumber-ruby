@@ -19,10 +19,6 @@ module Cucumber
         print_summary(features)
       end
 
-      def before_feature_element(feature_element)
-        record_tag_occurrences(feature_element, @options)
-      end
-
       def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         progress(status)
         @status = status
@@ -50,7 +46,7 @@ module Cucumber
         print_stats(features)
         print_snippets(@options)
         print_passing_wip(@options)
-        print_tag_limit_warnings(@options)
+        print_tag_limit_warnings(features)
       end
 
       CHARS = {

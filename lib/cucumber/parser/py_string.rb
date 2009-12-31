@@ -49,7 +49,10 @@ module Cucumber
         start_index = index
         if node_cache[:py_string].has_key?(index)
           cached = node_cache[:py_string][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -137,7 +140,10 @@ module Cucumber
         start_index = index
         if node_cache[:open_py_string].has_key?(index)
           cached = node_cache[:open_py_string][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -218,7 +224,10 @@ module Cucumber
         start_index = index
         if node_cache[:close_py_string].has_key?(index)
           cached = node_cache[:close_py_string][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 

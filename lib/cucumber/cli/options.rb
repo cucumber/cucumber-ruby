@@ -1,5 +1,6 @@
 require 'cucumber/cli/profile_loader'
 require 'cucumber/formatter/ansicolor'
+require 'cucumber/tag_expression'
 
 module Cucumber
   module Cli
@@ -163,8 +164,7 @@ module Cucumber
             "Limit WIP: Positive tags can be given a threshold to limit the",
             "number of occurrences. Example: --tags @qa:3 will fail if there",
             "are more than 3 occurrences of the @qa tag.") do |v|
-            tag_names = parse_tags(v)
-            @options[:tag_names] << tag_names
+            @options[:tag_expressions] << v
           end
           opts.on("-n NAME", "--name NAME",
             "Only execute the feature elements which match part of the given name.",
@@ -299,17 +299,8 @@ module Cucumber
         end
       end
 
-      def parse_tags(tag_string)
-        tag_names = Ast::Tags.parse_tags(tag_string)
-        parse_tag_limits(tag_names)
-      end
-
-      def parse_tag_limits(tag_names)
-        tag_names.inject({}) do |dict, tag|
-          tag, limit = tag.split(':')
-          dict[tag] = limit.nil? ? limit : limit.to_i
-          dict
-        end
+      def tag_filter(tag_string)
+        tags = TagExpression.parse(tag_string)
       end
 
       def disable_profile_loading?
@@ -348,7 +339,7 @@ module Cucumber
         @options[:require] += other_options[:require]
         @options[:excludes] += other_options[:excludes]
         @options[:name_regexps] += other_options[:name_regexps]
-        @options[:tag_names] += other_options[:tag_names]
+        @options[:tag_expressions] += other_options[:tag_expressions]
         @options[:env_vars] = other_options[:env_vars].merge(@options[:env_vars])
         if @options[:paths].empty?
           @options[:paths] = other_options[:paths]
@@ -403,7 +394,7 @@ module Cucumber
           :dry_run      => false,
           :formats      => [],
           :excludes     => [],
-          :tag_names    => [],
+          :tag_expressions  => [],
           :name_regexps => [],
           :env_vars     => {},
           :diff_enabled => true

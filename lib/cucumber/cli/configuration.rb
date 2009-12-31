@@ -1,6 +1,7 @@
 require 'logger'
 require 'cucumber/cli/options'
 require 'cucumber/constantize'
+require 'cucumber/tag_expression'
 
 module Cucumber
   module Cli
@@ -25,6 +26,7 @@ module Cucumber
         arrange_formats
         raise("You can't use both --strict and --wip") if strict? && wip?
 
+        @options[:tag_expression] = TagExpression.parse(@options[:tag_expressions])
         return @args.replace(@options.expanded_args_without_drb) if drb?
 
         set_environment_variables
@@ -57,7 +59,7 @@ module Cucumber
       def drb_port
         @options[:drb_port].to_i if @options[:drb_port]
       end
-      
+
       def build_runner(step_mother, io)
         Ast::TreeWalker.new(step_mother, formatters(step_mother), @options, io)
       end

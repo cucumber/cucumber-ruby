@@ -410,6 +410,7 @@ module Cucumber
       end
 
       def to_s(options = {}) #:nodoc:
+        require 'cucumber/formatter/pretty'
         options = {:color => true, :indent => 2, :prefixes => TO_S_PREFIXES}.merge(options)
         io = StringIO.new
 

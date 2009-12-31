@@ -61,13 +61,6 @@ module Cucumber
         visitor.should_receive(:visit_table_row).exactly(3).times
         visitor.visit_feature_element(@scenario_outline)
       end
-
-      it "should pretty print" do
-        require 'cucumber/formatter/pretty'
-        formatter = Formatter::Pretty.new(@step_mother, STDOUT, {:comment => true, :tag_names => {}})
-        visitor = TreeWalker.new(@step_mother, [formatter])
-        visitor.visit_feature_element(@scenario_outline)
-      end
     end
   end
 end
