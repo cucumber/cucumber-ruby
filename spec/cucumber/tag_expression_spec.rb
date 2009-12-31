@@ -112,6 +112,16 @@ module Cucumber
           @e.limits.should == {"@zap"=>5, "@foo"=>3}
         end
       end
+
+      context "Parsing ''" do
+        before(:each) do
+          @e = TagExpression.parse([''])
+        end
+
+        it "should ignore empty tags" do
+          @e.eval("@foo").should == true
+        end
+      end
     end
   end
 end

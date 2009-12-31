@@ -2,6 +2,7 @@
 
 === Changed Features
 * Tag boolean logic is inverted. (#504 Aslak Hellesøy)
+  This makes it more practical in most cases to mix tags from profiles and the command line
 
   In previous versions the following command line:
   

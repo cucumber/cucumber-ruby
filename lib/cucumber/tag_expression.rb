@@ -19,7 +19,7 @@ module Cucumber
     end
 
     def eval(tags)
-      return true if @ands.empty?
+      return true if @ands.flatten.empty?
       vars = Hash[*tags.map{|tag| [tag, true]}.flatten]
       !!Kernel.eval(ruby_expression)
     end
