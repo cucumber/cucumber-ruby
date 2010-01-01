@@ -16,6 +16,7 @@
   Starting with this release it will be equivalent to: (@foo || !@bar) && @zap
 
 === Bugfixes
+* Make Cucumber run on Ruby 1.9.2 (Aslak Hellesøy)
 * Add missing require statement in rerun formatter which broke RubyMine (Noah Sussman)
 
 == 0.5.3 2009-12-22
