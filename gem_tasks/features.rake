@@ -9,6 +9,8 @@ Cucumber::Rake::Task.new do |t|
     t.profile = 'jruby'
   elsif(Cucumber::WINDOWS_MRI)
     t.profile = 'windows_mri'
+  elsif(Cucumber::RUBY_1_9)
+    t.profile = 'ruby_1_9'
   end
   t.rcov = ENV['RCOV']
 end

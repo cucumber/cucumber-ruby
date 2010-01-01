@@ -69,6 +69,8 @@ end
 Given /^another unused$/ do
 end
 
+require 'fileutils'
+
 after_file = File.expand_path(File.dirname(__FILE__) + '/../../tmp/after.txt')
 
 Before do

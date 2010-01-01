@@ -78,6 +78,7 @@ Feature: http://gist.github.com/221223
 
       """
 
+  @fails_on_1_9
   Scenario: Call multiline string
     When I run cucumber features/f.feature:10
     Then STDERR should be empty
@@ -101,6 +102,7 @@ Feature: http://gist.github.com/221223
 
       """
 
+  @fails_on_1_9
   Scenario: Call table
     When I run cucumber features/f.feature:13
     Then STDERR should be empty
