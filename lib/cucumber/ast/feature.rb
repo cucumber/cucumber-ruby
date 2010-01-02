@@ -46,13 +46,8 @@ module Cucumber
       end
 
       def file=(file)
-        if file
-          if Cucumber::WINDOWS
-            @file = file.gsub(/\//, '\\')
-          else
-            @file = file
-          end  
-        end
+        file = file.gsub(/\//, '\\') if Cucumber::WINDOWS && file
+        @file = file
       end
       
       def file_colon_line(line)
