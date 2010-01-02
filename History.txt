@@ -16,7 +16,8 @@
   Starting with this release it will be equivalent to: (@foo || !@bar) && @zap
 
 === Bugfixes
-* Cucumber not loading the correct settings using autospec (#523 Aslak Hellesøy, Andrzej Śliwa)
+* Cucumber not loading the correct settings using autospec (#496, #523 Aslak Hellesøy, Andrzej Śliwa)
+* Ruby 1.9.2 fails to load features/support/env.rb (#549 Aslak Hellesøy)
 * All features (except 4) pass on 1.9.2 (but not on 1.9.1) (Aslak Hellesøy)
 * Add missing require statement in rerun formatter which broke RubyMine (Noah Sussman)
 
