@@ -4,9 +4,15 @@ require 'cucumber/formatter/ansicolor'
 $KCODE='u' unless Cucumber::RUBY_1_9
 
 if Cucumber::WINDOWS
+  if Cucumber::WINDOWS_MRI
+    Cucumber::CODEPAGE = "cp#{Win32::Console::OutputCP()}"
+  elsif `cmd /c chcp` =~ /(\d+)/
+    Cucumber::CODEPAGE = "cp#{$1.to_i}"
+  else
+    raise "Cucumber couldn't detect the output codepage"
+  end
+
   require 'iconv'
-  require 'Win32/Console/ANSI'
-  Cucumber::CODEPAGE = "cp#{Win32::Console::OutputCP()}"
 
   module Cucumber
     module WindowsOutput #:nodoc:
@@ -32,9 +38,9 @@ if Cucumber::WINDOWS
         end
       end
 
-      Kernel.extend(self) if STDOUT.tty?
-      STDOUT.extend(self) if STDOUT.tty?
-      STDERR.extend(self) if STDERR.tty?
+      Kernel.extend(self)
+      STDOUT.extend(self)
+      STDERR.extend(self)
     end
   end
 end

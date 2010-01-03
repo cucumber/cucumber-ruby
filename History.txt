@@ -1,3 +1,8 @@
+== 0.6.1 2010-01-03
+
+=== Bugfixes
+* Fixed broken console handling on Windows/JRuby that was introduced in 0.6.0. (Aslak Hellesøy)
+
 == 0.6.0 2010-01-03
 
 Bumping to 0.6.0 for this release since we're breaking backwards compatibility with tags.
