@@ -3,11 +3,7 @@ require 'tempfile'
 require 'spec/expectations'
 require 'fileutils'
 require 'forwardable'
-begin
-  require 'spork'
-rescue Gem::LoadError => ex
-  gem 'spork', '>= 0.7.3' # Ensure correct spork version number to avoid false-negatives.
-end
+require 'cucumber/formatter/unicode'
 
 class CucumberWorld
   extend Forwardable
@@ -99,6 +95,12 @@ class CucumberWorld
   end
 
   def run_spork_in_background(port = nil)
+    begin
+      require 'spork'
+    rescue Gem::LoadError => ex
+      gem 'spork', '>= 0.7.3' # Ensure correct spork version number to avoid false-negatives.
+    end
+
     pid = fork
     in_current_dir do
       if pid

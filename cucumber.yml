@@ -6,7 +6,7 @@ std_opts = "#{rerun_opts} --format rerun --out rerun.txt --strict --tags ~@wip"
 default: <%= std_opts %>
 jruby: <%= std_opts %> --tags ~@spork --tags ~@wire
 run_code_run: <%= std_opts %> --tags ~@spork
-windows_mri: <%= std_opts %> --tags ~@spork
+windows_mri: <%= std_opts %> --tags ~@spork --tags ~@wire --tags ~@needs-many-fonts CUCUMBER_FORWARD_SLASH_PATHS=true
 ruby_1_9: <%= std_opts %> --tags ~@fails_on_1_9
 wip: --tags @wip:3 --wip features
 none: --format pretty

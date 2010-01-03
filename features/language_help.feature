@@ -1,3 +1,4 @@
+@needs-many-fonts
 Feature: Language help
   In order to figure out the keywords to use for a language
   I want to be able to get help on the language from the CLI

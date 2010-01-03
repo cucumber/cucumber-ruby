@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Calculator
   def push(n)
     @args ||= []

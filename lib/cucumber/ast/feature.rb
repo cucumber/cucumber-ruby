@@ -46,7 +46,7 @@ module Cucumber
       end
 
       def file=(file)
-        file = file.gsub(/\//, '\\') if Cucumber::WINDOWS && file
+        file = file.gsub(/\//, '\\') if Cucumber::WINDOWS && file && !ENV['CUCUMBER_FORWARD_SLASH_PATHS']
         @file = file
       end
       

@@ -1,9 +1,4 @@
 # encoding: utf-8
-require 'spec/expectations'
-$:.unshift(File.dirname(__FILE__) + '/../../lib') # This line is not needed in your own project
-require 'cucumber/formatter/unicode'
-require 'calculatrice'
-
 Soit /^une calculatrice$/ do
   @calc = Calculatrice.new
 end
@@ -31,7 +26,6 @@ end
 Alors /le résultat doit être (\d*)/ do |result|
   result.to_i.should == @expected_result
 end
-
 
 Soit /^que je tape sur la touche "\+"$/ do
   # noop
