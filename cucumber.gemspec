@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
-  s.version = "0.5.3"
+  s.version = "0.6.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2009-12-22}
+  s.date = %q{2010-01-03}
   s.default_executable = %q{cucumber}
   s.description = %q{A BDD tool written in Ruby}
   s.email = %q{cukes@googlegroups.com}
@@ -91,6 +91,7 @@ Gem::Specification.new do |s|
      "examples/i18n/fr/features/addition.feature",
      "examples/i18n/fr/features/addition2.feature",
      "examples/i18n/fr/features/step_definitions/calculatrice_steps.rb",
+     "examples/i18n/fr/features/support/env.rb",
      "examples/i18n/fr/lib/calculatrice.rb",
      "examples/i18n/he/Rakefile",
      "examples/i18n/he/features/addition.feature",
@@ -118,6 +119,7 @@ Gem::Specification.new do |s|
      "examples/i18n/ja/features/addition.feature",
      "examples/i18n/ja/features/division.feature",
      "examples/i18n/ja/features/step_definitons/calculator_steps.rb",
+     "examples/i18n/ja/features/support/env.rb",
      "examples/i18n/ja/lib/calculator.rb",
      "examples/i18n/ko/.gitignore",
      "examples/i18n/ko/Rakefile",
@@ -182,6 +184,7 @@ Gem::Specification.new do |s|
      "examples/i18n/sr/Rakefile",
      "examples/i18n/sr/features/sabiranje.feature",
      "examples/i18n/sr/features/step_definitons/calculator_steps.rb",
+     "examples/i18n/sr/features/support/env.rb",
      "examples/i18n/sr/lib/calculator.rb",
      "examples/i18n/tr/.gitignore",
      "examples/i18n/tr/Rakefile",
@@ -470,6 +473,7 @@ Gem::Specification.new do |s|
      "lib/cucumber/step_definition_light.rb",
      "lib/cucumber/step_match.rb",
      "lib/cucumber/step_mother.rb",
+     "lib/cucumber/tag_expression.rb",
      "lib/cucumber/webrat/element_locator.rb",
      "lib/cucumber/webrat/table_locator.rb",
      "lib/cucumber/wire_support/configuration.rb",
@@ -492,7 +496,6 @@ Gem::Specification.new do |s|
      "spec/cucumber/ast/step_collection_spec.rb",
      "spec/cucumber/ast/step_spec.rb",
      "spec/cucumber/ast/table_spec.rb",
-     "spec/cucumber/ast/tags_spec.rb",
      "spec/cucumber/ast/tree_walker_spec.rb",
      "spec/cucumber/broadcaster_spec.rb",
      "spec/cucumber/cli/configuration_spec.rb",
@@ -503,7 +506,6 @@ Gem::Specification.new do |s|
      "spec/cucumber/core_ext/proc_spec.rb",
      "spec/cucumber/formatter/ansicolor_spec.rb",
      "spec/cucumber/formatter/color_io_spec.rb",
-     "spec/cucumber/formatter/console_spec.rb",
      "spec/cucumber/formatter/duration_spec.rb",
      "spec/cucumber/formatter/html_spec.rb",
      "spec/cucumber/formatter/junit_spec.rb",
@@ -516,6 +518,7 @@ Gem::Specification.new do |s|
      "spec/cucumber/sell_cucumbers.feature",
      "spec/cucumber/step_match_spec.rb",
      "spec/cucumber/step_mother_spec.rb",
+     "spec/cucumber/tag_expression_spec.rb",
      "spec/cucumber/treetop_parser/empty_feature.feature",
      "spec/cucumber/treetop_parser/empty_scenario.feature",
      "spec/cucumber/treetop_parser/empty_scenario_outline.feature",
@@ -544,7 +547,7 @@ Gem::Specification.new do |s|
 
                      (::)   U P G R A D I N G    (::)
 
-Thank you for installing cucumber-0.5.3.
+Thank you for installing cucumber-0.6.0.
 Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
 for important information about this release. Happy cuking!
 
@@ -568,7 +571,6 @@ for important information about this release. Happy cuking!
      "spec/cucumber/ast/step_collection_spec.rb",
      "spec/cucumber/ast/step_spec.rb",
      "spec/cucumber/ast/table_spec.rb",
-     "spec/cucumber/ast/tags_spec.rb",
      "spec/cucumber/ast/tree_walker_spec.rb",
      "spec/cucumber/broadcaster_spec.rb",
      "spec/cucumber/cli/configuration_spec.rb",
@@ -579,7 +581,6 @@ for important information about this release. Happy cuking!
      "spec/cucumber/core_ext/proc_spec.rb",
      "spec/cucumber/formatter/ansicolor_spec.rb",
      "spec/cucumber/formatter/color_io_spec.rb",
-     "spec/cucumber/formatter/console_spec.rb",
      "spec/cucumber/formatter/duration_spec.rb",
      "spec/cucumber/formatter/html_spec.rb",
      "spec/cucumber/formatter/junit_spec.rb",
@@ -591,6 +592,7 @@ for important information about this release. Happy cuking!
      "spec/cucumber/rb_support/regexp_argument_matcher_spec.rb",
      "spec/cucumber/step_match_spec.rb",
      "spec/cucumber/step_mother_spec.rb",
+     "spec/cucumber/tag_expression_spec.rb",
      "spec/cucumber/wire_support/configuration_spec.rb",
      "spec/cucumber/wire_support/wire_exception_spec.rb",
      "spec/cucumber/wire_support/wire_language_spec.rb",
@@ -623,6 +625,7 @@ for important information about this release. Happy cuking!
      "examples/i18n/fi/features/step_definitons/laskin_steps.rb",
      "examples/i18n/fi/lib/laskin.rb",
      "examples/i18n/fr/features/step_definitions/calculatrice_steps.rb",
+     "examples/i18n/fr/features/support/env.rb",
      "examples/i18n/fr/lib/calculatrice.rb",
      "examples/i18n/he/features/step_definitons/calculator_steps.rb",
      "examples/i18n/he/lib/calculator.rb",
@@ -633,6 +636,7 @@ for important information about this release. Happy cuking!
      "examples/i18n/it/features/step_definitons/calcolatrice_steps.rb",
      "examples/i18n/it/lib/calcolatrice.rb",
      "examples/i18n/ja/features/step_definitons/calculator_steps.rb",
+     "examples/i18n/ja/features/support/env.rb",
      "examples/i18n/ja/lib/calculator.rb",
      "examples/i18n/ko/features/step_definitons/calculator_steps.rb",
      "examples/i18n/ko/lib/calculator.rb",
@@ -660,6 +664,7 @@ for important information about this release. Happy cuking!
      "examples/i18n/sk/features/step_definitons/calculator_steps.rb",
      "examples/i18n/sk/lib/calculator.rb",
      "examples/i18n/sr/features/step_definitons/calculator_steps.rb",
+     "examples/i18n/sr/features/support/env.rb",
      "examples/i18n/sr/lib/calculator.rb",
      "examples/i18n/sr-latn/features/step_definitons/calculator_steps.rb",
      "examples/i18n/sr-latn/lib/calculator.rb",
@@ -723,10 +728,10 @@ for important information about this release. Happy cuking!
       s.add_runtime_dependency(%q<builder>, [">= 2.1.2"])
       s.add_runtime_dependency(%q<diff-lcs>, [">= 1.1.2"])
       s.add_runtime_dependency(%q<json_pure>, [">= 1.2.0"])
-      s.add_development_dependency(%q<nokogiri>, [">= 1.4.0"])
-      s.add_development_dependency(%q<prawn>, [">= 0.5.1"])
+      s.add_development_dependency(%q<nokogiri>, [">= 1.4.1"])
+      s.add_development_dependency(%q<prawn>, [">= 0.6.3"])
       s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
-      s.add_development_dependency(%q<spork>, [">= 0.7.4"])
+      s.add_development_dependency(%q<spork>, [">= 0.7.5"])
     else
       s.add_dependency(%q<term-ansicolor>, [">= 1.0.4"])
       s.add_dependency(%q<treetop>, [">= 1.4.2"])
@@ -734,10 +739,10 @@ for important information about this release. Happy cuking!
       s.add_dependency(%q<builder>, [">= 2.1.2"])
       s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
       s.add_dependency(%q<json_pure>, [">= 1.2.0"])
-      s.add_dependency(%q<nokogiri>, [">= 1.4.0"])
-      s.add_dependency(%q<prawn>, [">= 0.5.1"])
+      s.add_dependency(%q<nokogiri>, [">= 1.4.1"])
+      s.add_dependency(%q<prawn>, [">= 0.6.3"])
       s.add_dependency(%q<rspec>, [">= 1.2.9"])
-      s.add_dependency(%q<spork>, [">= 0.7.4"])
+      s.add_dependency(%q<spork>, [">= 0.7.5"])
     end
   else
     s.add_dependency(%q<term-ansicolor>, [">= 1.0.4"])
@@ -746,10 +751,10 @@ for important information about this release. Happy cuking!
     s.add_dependency(%q<builder>, [">= 2.1.2"])
     s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
     s.add_dependency(%q<json_pure>, [">= 1.2.0"])
-    s.add_dependency(%q<nokogiri>, [">= 1.4.0"])
-    s.add_dependency(%q<prawn>, [">= 0.5.1"])
+    s.add_dependency(%q<nokogiri>, [">= 1.4.1"])
+    s.add_dependency(%q<prawn>, [">= 0.6.3"])
     s.add_dependency(%q<rspec>, [">= 1.2.9"])
-    s.add_dependency(%q<spork>, [">= 0.7.4"])
+    s.add_dependency(%q<spork>, [">= 0.7.5"])
   end
 end
 
