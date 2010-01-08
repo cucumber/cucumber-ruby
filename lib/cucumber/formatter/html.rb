@@ -302,6 +302,7 @@ module Cucumber
               end
             end
           end
+          set_scenario_color_failed
         end
         if @outline_row
           @outline_row += 1
@@ -353,19 +354,27 @@ module Cucumber
 
         def set_scenario_color(status)
           if status == :undefined
-            @builder.script do
-              @builder.text!("makeYellow('cucumber-header');") unless @header_red
-              @builder.text!("makeYellow('scenario_#{@scenario_number}');") unless @scenario_red
-            end 
+            set_scenario_color_pending
           end
           if status == :failed
-            @builder.script do
-              @builder.text!("makeRed('cucumber-header');") unless @header_red
-              @header_red = true
-              @builder.text!("makeRed('scenario_#{@scenario_number}');") unless @scenario_red
-              @scenario_red = true
-            end
+            set_scenario_color_failed
           end
+        end
+        
+        def set_scenario_color_failed
+          @builder.script do
+            @builder.text!("makeRed('cucumber-header');") unless @header_red
+            @header_red = true
+            @builder.text!("makeRed('scenario_#{@scenario_number}');") unless @scenario_red
+            @scenario_red = true
+          end
+        end
+        
+        def set_scenario_color_pending
+          @builder.script do
+            @builder.text!("makeYellow('cucumber-header');") unless @header_red
+            @builder.text!("makeYellow('scenario_#{@scenario_number}');") unless @scenario_red
+          end         
         end
 
         def get_step_count(features)
