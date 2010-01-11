@@ -146,7 +146,7 @@ module Cucumber
         return if @hide_this_step
         if(table.kind_of? Cucumber::Ast::Table)
           keep_with do
-            @doc.table(table.rows << table.headers , :position => :center, :row_colors => ['ffffff', 'f0f0f0'])
+            @doc.table(table.rows, :headers => table.headers, :position => :center, :row_colors => ['ffffff', 'f0f0f0'])
           end
         end
       end
