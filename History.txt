@@ -1,6 +1,8 @@
 == In Git
 
-.........
+=== Bugfixes
+* PDF formatter renders tables incorrectly (#553 Andy Waite)
+* Better colouring in HTML report (Rob Aldred)
 
 == 0.6.1 2010-01-03
 
