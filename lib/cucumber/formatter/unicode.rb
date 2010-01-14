@@ -3,6 +3,7 @@ require 'cucumber/platform'
 require 'cucumber/formatter/ansicolor'
 $KCODE='u' unless Cucumber::RUBY_1_9
 
+# Tips for improvement - esp. ruby 1.9: http://www.ruby-forum.com/topic/184730
 if Cucumber::WINDOWS
   if Cucumber::WINDOWS_MRI
     Cucumber::CODEPAGE = "cp#{Win32::Console::OutputCP()}"

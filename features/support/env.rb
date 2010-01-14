@@ -98,7 +98,7 @@ class CucumberWorld
     begin
       require 'spork'
     rescue Gem::LoadError => ex
-      gem 'spork', '>= 0.7.3' # Ensure correct spork version number to avoid false-negatives.
+      gem 'spork', '>= 0.7.5' # Ensure correct spork version number to avoid false-negatives.
     end
 
     pid = fork
