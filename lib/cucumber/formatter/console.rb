@@ -62,14 +62,14 @@ module Cucumber
         print_stats(nil)
       end
 
-      def print_stats(features)
-
+      def print_stats(features, profiles = [])
         @failures = step_mother.scenarios(:failed).select { |s| s.is_a?(Cucumber::Ast::Scenario) }
 
         if !@failures.empty?
           @io.puts format_string("Failing Scenarios:", :failed)
           @failures.each do |failure|
-            @io.puts format_string("cucumber " + failure.file_colon_line, :failed) +
+            profiles_string = (profiles.map{|profile| "-p #{profile} " }).flatten unless profiles.empty?
+            @io.puts format_string("cucumber #{profiles_string}" + failure.file_colon_line, :failed) +
             format_string(" # Scenario: " + failure.name, :comment)
           end
           @io.puts

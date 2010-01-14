@@ -226,7 +226,7 @@ module Cucumber
       end
 
       def print_summary(features)
-        print_stats(features)
+        print_stats(features, @options.custom_profiles)
         print_snippets(@options)
         print_passing_wip(@options)
         print_tag_limit_warnings(features)

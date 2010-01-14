@@ -4,6 +4,9 @@
 * PDF formatter renders tables incorrectly (#553 Andy Waite)
 * Better colouring in HTML report (Rob Aldred)
 
+=== New features
+* Show profiles in error scenario summary. (#550 Joseph Wilk)
+
 == 0.6.1 2010-01-03
 
 === Bugfixes
