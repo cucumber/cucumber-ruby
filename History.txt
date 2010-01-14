@@ -3,6 +3,9 @@
 === Bugfixes
 * PDF formatter renders tables incorrectly (#553 Andy Waite)
 * Better colouring in HTML report (Rob Aldred)
+* Detect output encoding properly on JRuby+Windows (Aslak Hellesøy)
+* Added option to override output encoding on Windows with an CUCUMBER_OUTPUT_ENCODING env var (Aslak Hellesøy)
+* PDF generation requires 'prawn-format' (#558 Aslak Hellesøy)
 
 == 0.6.1 2010-01-03
 

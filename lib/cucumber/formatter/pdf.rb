@@ -1,9 +1,14 @@
 require 'cucumber/formatter/console'
 require 'cucumber/formatter/io'
 require 'fileutils'
-require 'prawn'
-require "prawn/layout"
-require "prawn/format"
+begin
+  require 'prawn'
+  require "prawn/layout"
+  require "prawn/format"
+rescue LoadError => e
+  e.message >> "\nPlease gem install prawn prawn-format"
+  raise e
+end
 
 module Cucumber
   module Formatter

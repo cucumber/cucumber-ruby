@@ -49,7 +49,7 @@ Given /^I have environment variable (\w+) set to "([^\"]*)"$/ do |variable, valu
 end
 
 When /^I run cucumber (.*)$/ do |cucumber_opts|
-  run "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} --no-color #{cucumber_opts}"
+  run "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} --no-color #{cucumber_opts} CUCUMBER_OUTPUT_ENCODING=UTF-8"
 end
 
 When /^I run rake (.*)$/ do |rake_opts|
