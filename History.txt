@@ -7,6 +7,9 @@
 * Added option to override output encoding on Windows with an CUCUMBER_OUTPUT_ENCODING env var (Aslak Hellesøy)
 * PDF generation requires 'prawn-format' (#558 Aslak Hellesøy)
 
+=== New features
+* Show profiles in error scenario summary. (#550 Joseph Wilk)
+
 == 0.6.1 2010-01-03
 
 === Bugfixes
