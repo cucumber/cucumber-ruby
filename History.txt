@@ -2,6 +2,7 @@
 
 === Bugfixes
 * Update --help for --tags which was out of date. (Aslak Hellesøy)
+* Explicitly use Prawn 0.6.3 for pdf formatter since 0.7.1 is broken (Aslak Hellesøy)
 * PDF formatter renders tables incorrectly (#553 Andy Waite)
 * Better colouring in HTML report (Rob Aldred)
 * Detect output encoding properly on JRuby+Windows (Aslak Hellesøy)

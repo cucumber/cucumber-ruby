@@ -95,11 +95,7 @@ class CucumberWorld
   end
 
   def run_spork_in_background(port = nil)
-    begin
-      require 'spork'
-    rescue Gem::LoadError => ex
-      gem 'spork', '>= 0.7.5' # Ensure correct spork version number to avoid false-negatives.
-    end
+    require 'spork'
 
     pid = fork
     in_current_dir do
