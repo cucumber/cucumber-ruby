@@ -36,10 +36,15 @@ module Cucumber
       end
 
       def fetch_data_from_socket(timeout)
-        raw_response = Timeout.timeout(timeout) { socket.gets }
+        raw_response = 
+          if timeout == :never
+            socket.gets
+          else
+            Timeout.timeout(timeout) { socket.gets }
+          end
         WirePacket.parse(raw_response)
       end
-
+      
       def socket
         @socket ||= TCPSocket.new(@config.host, @config.port)
       rescue Errno::ECONNREFUSED => exception
