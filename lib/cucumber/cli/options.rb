@@ -151,19 +151,19 @@ module Cucumber
             @options[:formats] << ['pretty', nil] if @options[:formats].empty?
             @options[:formats][-1][1] = v
           end
-          opts.on("-t TAGS", "--tags TAGS",
-            "Only execute the features or scenarios with the specified tags.",
-            "TAGS must be comma-separated without spaces. Example: --tags @dev\n",
-            "You can select tags using logical AND or logical OR:",
-            "To execute anything that is tagged with both @dev AND @prod\n",
-            "Example: --tags @dev,@prod",
-            "To execute anything that is tagged with @dev OR @prod\n",
-            "Example: --tags @dev --tags @prod\n",
-            "Negative tags: Prefix tags with ~ to exclude features or scenarios",
-            "having that tag. Example: --tags ~@slow\n",
-            "Limit WIP: Positive tags can be given a threshold to limit the",
-            "number of occurrences. Example: --tags @qa:3 will fail if there",
-            "are more than 3 occurrences of the @qa tag.") do |v|
+          opts.on("-t TAG_EXPRESSION", "--tags TAG_EXPRESSION",
+            "Only execute the features or scenarios with tags matching TAG_EXPRESSION.",
+            "Scenarios inherit tags declared on the Feature level. The simplest",
+            "TAG_EXPRESSION is simply a tag. Example: --tags @dev. When a tag in a tag",
+            "expression starts with a ~, this represents boolean NOT. Example: --tags ~@dev.",
+            "A tag expression can have several tags separated by a comma, which represents",
+            "logical OR. Example: --tags @dev,@wip. The --tags option can be specified",
+            "several times, and this represents logical AND. Example: --tags @foo,~@bar --tags @zap.",
+            "This represents the boolean expression (@foo || !@bar) && @zap.",
+            "\n",
+            "Positive tags can be given a threshold to limit the number of occurrences.", 
+            "Example: --tags @qa:3 will fail if there are more than 3 occurrences of the @qa tag.",
+            "This can be practical if you are practicing Kanban or CONWIP.") do |v|
             @options[:tag_expressions] << v
           end
           opts.on("-n NAME", "--name NAME",
