@@ -1,4 +1,4 @@
-== In Git
+== 0.6.2 2010-01-18
 
 === Bugfixes
 * Update --help for --tags which was out of date. (Aslak Hellesøy)
@@ -11,6 +11,9 @@
 
 === New features
 * Show profiles in error scenario summary. (#550 Joseph Wilk)
+
+=== Removed features
+* element_at and table_at have been removed. Use tableish in cucumber-rails instead. (Aslak Hellesœy)
 
 == 0.6.1 2010-01-03
 
