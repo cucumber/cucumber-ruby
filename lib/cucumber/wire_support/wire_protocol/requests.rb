@@ -64,12 +64,16 @@ module Cucumber
           def handle_pending(message)
             raise Pending, message || "TODO"
           end
-        
-          def handle_diff(tables)
+          
+          def handle_diff!(tables)
             table1 = Ast::Table.new(tables[0])
             table2 = Ast::Table.new(tables[1])
+            table1.diff!(table2)
+          end
+        
+          def handle_diff(tables)
             begin
-              table1.diff!(table2)
+              handle_diff!(tables)
             rescue Cucumber::Ast::Table::Different
               @connection.diff_failed
             end
