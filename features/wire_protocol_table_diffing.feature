@@ -90,3 +90,28 @@ Feature: Wire protocol table diffing
       1 step (1 failed)
 
       """
+
+  Scenario: Invoke a step definition which asks for an immediate diff that fails
+    Given there is a wire server running on port 54321 which understands the following protocol:
+      | request                                              | response                            |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[{"id":"1", "args":[]}]] |
+      | ["begin_scenario"]                                   | ["success"]                         |
+      | ["invoke",{"id":"1","args":[]}]                      | ["diff!",[[["a"]],[["b"]]]]         |
+      | ["end_scenario"]                                     | ["success"]                         |
+    When I run cucumber -f progress
+    And it should fail with
+      """
+      F
+
+      (::) failed steps (::)
+
+      Tables were not identical (Cucumber::Ast::Table::Different)
+      features/wired.feature:2:in `Given we're all wired'
+      
+      Failing Scenarios:
+      cucumber features/wired.feature:1 # Scenario: Wired
+
+      1 scenario (1 failed)
+      1 step (1 failed)
+
+      """
