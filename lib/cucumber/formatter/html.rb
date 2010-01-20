@@ -540,7 +540,6 @@ class SnippetExtractor #:nodoc:
       line = $2.to_i
       [lines_around(file, line), line]
     else
-      return snippet_for()
       ["# Couldn't get snippet for #{error_line}", 1]
     end
   end
