@@ -7,12 +7,11 @@ Feature: Exception in After Block
     Given a standard Cucumber project directory structure
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given /^this step does something naughty$/ do
+      Given /^this step does something naughty$/ do x=1
         @naughty = true
       end
 
-      Given /^this step works$/ do
-      end
+      Given(/^this step works$/) do; end
       """
     And a file named "features/support/env.rb" with:
       """

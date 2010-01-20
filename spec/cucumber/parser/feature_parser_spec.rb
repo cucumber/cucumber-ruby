@@ -1,12 +1,12 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'cucumber/parser/natural_language'
 
 module Cucumber
   module Parser
     describe Feature do
       before do
-        @step_mother = StepMother.new
-        @parser = NaturalLanguage.get(@step_mother, 'en').parser
+        @step_mother = Cucumber::StepMother.new
+        @parser = Cucumber::Parser::NaturalLanguage.get(@step_mother, 'en').parser
       end
 
       after do
@@ -18,11 +18,11 @@ module Cucumber
       end
 
       def parse_file(file)
-        FeatureFile.new(File.dirname(__FILE__) + "/../treetop_parser/" + file).parse(@step_mother, {})
+        Cucumber::FeatureFile.new(File.dirname(__FILE__) + "/../treetop_parser/" + file).parse(@step_mother, {})
       end
 
       def parse_example_file(file)
-        FeatureFile.new(File.dirname(__FILE__) + "/../../../examples/" + file).parse(@step_mother, {})
+        Cucumber::FeatureFile.new(File.dirname(__FILE__) + "/../../../examples/" + file).parse(@step_mother, {})
       end
 
       describe "Comments" do

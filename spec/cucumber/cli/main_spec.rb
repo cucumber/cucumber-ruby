@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'yaml'
 begin
   require 'spec/runner/differs/default' # RSpec >=1.2.4
@@ -20,16 +20,16 @@ module Cucumber
       describe "verbose mode" do
 
         before(:each) do
-          @empty_feature = Ast::Feature.new(nil, Ast::Comment.new(''), Ast::Tags.new(2, []), "Feature", [])
+          @empty_feature = Cucumber::Ast::Feature.new(nil, Cucumber::Ast::Comment.new(''), Cucumber::Ast::Tags.new(2, []), "Feature", [])
         end
 
         it "should show feature files parsed" do
           @cli = Main.new(%w{--verbose example.feature}, @out)
           @cli.stub!(:require)
 
-          FeatureFile.stub!(:new).and_return(mock("feature file", :parse => @empty_feature))
+          Cucumber::FeatureFile.stub!(:new).and_return(mock("feature file", :parse => @empty_feature))
 
-          @cli.execute!(StepMother.new)
+          @cli.execute!(Cucumber::StepMother.new)
 
           @out.string.should include('example.feature')
         end
@@ -80,7 +80,7 @@ module Cucumber
             Object.should_receive(:const_get).with('ZooModule').and_return(mock_module)
             mock_module.should_receive(:const_get).with('MonkeyFormatterClass').and_return(mock('formatter class', :new => f))
 
-            cli.execute!(StepMother.new)
+            cli.execute!(Cucumber::StepMother.new)
           end
 
         end
@@ -116,18 +116,17 @@ module Cucumber
         
       end
       
-    [ProfilesNotDefinedError, YmlLoadError, ProfileNotFound].each do |exception_klass|
+      [ProfilesNotDefinedError, YmlLoadError, ProfileNotFound].each do |exception_klass|
 
-      it "rescues #{exception_klass}, prints the message to the error stream and returns true" do
-        Configuration.stub!(:new).and_return(configuration = mock('configuration'))
-        configuration.stub!(:parse!).and_raise(exception_klass.new("error message"))
+        it "rescues #{exception_klass}, prints the message to the error stream and returns true" do
+          Configuration.stub!(:new).and_return(configuration = mock('configuration'))
+          configuration.stub!(:parse!).and_raise(exception_klass.new("error message"))
 
-        main = Main.new('', out = StringIO.new, error = StringIO.new)
-        main.execute!(StepMother.new).should be_true
-        error.string.should == "error message\n"
+          main = Main.new('', out = StringIO.new, error = StringIO.new)
+          main.execute!(Cucumber::StepMother.new).should be_true
+          error.string.should == "error message\n"
+        end
       end
-    end
-
 
       context "--drb" do
         before(:each) do

@@ -1,5 +1,5 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
-require File.dirname(__FILE__) + '/spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 require 'cucumber/formatter/html'
 require 'nokogiri'
 require 'cucumber/rb_support/rb_language'

@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'cucumber/step_mother'
 require 'cucumber/ast'
 
@@ -11,7 +11,7 @@ module Cucumber
         it "should select the longest line as the text length" do
           @keyword = "key"  
           @name = "short\nvery longer\ntiny"
-          text_length.should == 11 + Ast::Step::INDENT - 1
+          text_length.should == 11 + Step::INDENT - 1
         end
       
         it "should add keyword to first lines length" do

@@ -16,8 +16,7 @@ Feature: https://rspec.lighthouseapp.com/projects/16211/tickets/475
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given /a multiline string:/ do |s|
-        s.should =~ /hello (\w+)/
+      Given /a multiline string:/ do |s| s.should =~ /hello (\w+)/
       end
       """
     When I run cucumber features/f.feature

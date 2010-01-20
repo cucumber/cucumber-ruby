@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'cucumber/ast'
 require 'cucumber/rb_support/rb_language'
 
@@ -7,8 +7,8 @@ module Cucumber
     describe Background do
 
       before do
-        extend(RbSupport::RbDsl)
-        @step_mother = StepMother.new
+        extend(Cucumber::RbSupport::RbDsl)
+        @step_mother = Cucumber::StepMother.new
         @step_mother.load_natural_language('en')
         @rb = @step_mother.load_programming_language('rb')
 

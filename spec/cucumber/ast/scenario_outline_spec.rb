@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'cucumber/step_mother'
 require 'cucumber/ast'
 require 'cucumber/core_ext/string'
@@ -8,11 +8,11 @@ module Cucumber
   module Ast
     describe ScenarioOutline do
       before do
-        @step_mother = StepMother.new
+        @step_mother = Cucumber::StepMother.new
         @step_mother.load_programming_language('rb')
         @step_mother.load_natural_language('en')
         @dsl = Object.new
-        @dsl.extend(RbSupport::RbDsl)
+        @dsl.extend(Cucumber::RbSupport::RbDsl)
 
         @dsl.Given(/^there are (\d+) cucumbers$/) do |n|
           @initial = n.to_i

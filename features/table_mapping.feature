@@ -11,12 +11,11 @@ Feature: Table mapping
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given /a table:/ do |table|
-        table.map_headers!(/who/i => 'Who')
+      Given(/a table:/) { |table| table.map_headers!(/who/i => 'Who')
         table.map_column!('Who') { |who| "Cuke" }
         table.hashes[0]['Who'] = "Joe"
         table.hashes.should == [{"Who"=>"Joe"}]
-      end
+      }
       """
     When I run cucumber features/f.feature
     Then STDERR should be empty

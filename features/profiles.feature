@@ -111,12 +111,12 @@ Feature: Profiles
     Given a file named "features/step_definitions/steps.rb" with:
       """
       Given /^I am just testing stuff$/ do
-        fail
+        raise 'BANG'
       end
       """
     When I run cucumber -q -p super -p default -f <format> features/sample.feature --require features/step_definitions/steps.rb
     Then it should fail
-    Then the output should contain
+    And the output should contain
        """
        cucumber -p super features/sample.feature:2 # Scenario: this is a test
        """

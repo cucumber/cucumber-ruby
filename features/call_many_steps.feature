@@ -24,15 +24,15 @@ Feature: http://gist.github.com/221223
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given /^a multiline string:$/ do |s|
+      Given /^a multiline string:$/ do |s| x=1
         raise "I got multiline:\n#{s}"
       end
 
-      Given /^a table:$/ do |t|
+      Given /^a table:$/ do |t| x=1
         raise "I got table:\n#{t.raw.inspect}"
       end
 
-      Given /^I call a multiline string with (.*)$/ do |s|
+      Given /^I call a multiline string with (.*)$/ do |s| x=1
         steps %Q{
           Given a multiline string:
             \"\"\"
@@ -42,7 +42,7 @@ Feature: http://gist.github.com/221223
         }
       end
 
-      Given /^I call a table with (.*)$/ do |s|
+      Given /^I call a table with (.*)$/ do |s| x=1
         steps %Q{
           Given a table:
             |a|b|

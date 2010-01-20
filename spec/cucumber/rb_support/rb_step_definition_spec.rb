@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 require 'cucumber/ast'
 require 'cucumber/step_mother'
@@ -8,11 +8,11 @@ module Cucumber
   module RbSupport
     describe RbStepDefinition do
       before do      
-        @step_mother = StepMother.new
+        @step_mother = Cucumber::StepMother.new
         @step_mother.load_natural_language('en')
         @rb = @step_mother.load_programming_language('rb')
         @dsl = Object.new 
-        @dsl.extend RbSupport::RbDsl
+        @dsl.extend Cucumber::RbSupport::RbDsl
         @step_mother.before(mock('scenario', :null_object => true))
 
         $inside = nil
@@ -32,7 +32,7 @@ module Cucumber
 
       it "should allow calling of other steps with inline arg" do
         @dsl.Given /Outside/ do
-          Given "Inside", Ast::Table.new([['inside']])
+          Given "Inside", Cucumber::Ast::Table.new([['inside']])
         end
         @dsl.Given /Inside/ do |table|
           $inside = table.raw[0][0]
@@ -49,7 +49,7 @@ module Cucumber
 
         lambda do
           @step_mother.step_match('Outside').invoke(nil)
-        end.should raise_error(Undefined, 'Undefined step: "Inside"')
+        end.should raise_error(Cucumber::Undefined, 'Undefined step: "Inside"')
       end
 
       it "should allow forced pending" do
@@ -59,7 +59,7 @@ module Cucumber
 
         lambda do
           @step_mother.step_match("Outside").invoke(nil)
-        end.should raise_error(Pending, "Do me!")
+        end.should raise_error(Cucumber::Pending, "Do me!")
       end
 
       it "should raise ArityMismatchError when the number of capture groups differs from the number of step arguments" do
@@ -68,7 +68,7 @@ module Cucumber
 
         lambda do
           @step_mother.step_match("No group: arg").invoke(nil)
-        end.should raise_error(ArityMismatchError)
+        end.should raise_error(Cucumber::ArityMismatchError)
       end
 
       it "should allow announce" do

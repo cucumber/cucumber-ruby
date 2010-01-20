@@ -281,10 +281,7 @@ Feature: backgrounds
         $after = true
       end
 
-      Given /^whatever$/ do
-        $before.should == true
-        $step = true
-      end
+      Given(/^whatever$/) { $before.should == true; $step = true }
 
       at_exit do
         $before.should == true

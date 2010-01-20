@@ -47,6 +47,7 @@ module Treetop #:nodoc:
     end
 
     class CompiledParser #:nodoc:
+      public :prepare_to_parse
       include Cucumber::Parser::TreetopExt
     end
   end

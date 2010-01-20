@@ -1,5 +1,5 @@
 # encoding: utf-8
-require File.dirname(__FILE__) + '/../../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'cucumber/ast/table'
 
 module Cucumber
@@ -389,7 +389,7 @@ module Cucumber
         end
 
         def table(text, file=nil, line_offset=0)
-          @table_parser ||= Parser::TableParser.new
+          @table_parser ||= Cucumber::Parser::TableParser.new
           @table_parser.parse_or_fail(text.strip, file, line_offset)
         end
       end

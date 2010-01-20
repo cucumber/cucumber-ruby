@@ -429,8 +429,8 @@ module Cucumber
       private
 
       TO_S_PREFIXES = Hash.new('    ')
-      TO_S_PREFIXES[:comment]   = ['(+) ']
-      TO_S_PREFIXES[:undefined] = ['(-) ']
+      TO_S_PREFIXES[:comment]   = '(+) '
+      TO_S_PREFIXES[:undefined] = '(-) '
 
       protected
 

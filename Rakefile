@@ -54,11 +54,7 @@ end
 
 Dir['gem_tasks/**/*.rake'].each { |rake| load rake }
 
-if(Cucumber::RUBY_1_9)
-  task :default => [:check_dependencies, :cucumber] # RSpec doesn't run on 1.9 yet.
-else
-  task :default => [:check_dependencies, :spec, :cucumber]
-end
+task :default => [:check_dependencies, :spec, :cucumber]
 
 require 'rake/clean'
 CLEAN.include %w(**/*.{log,pyc})
