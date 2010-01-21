@@ -141,7 +141,7 @@ module Cucumber
 
       def step_name(keyword, step_match, status, source_indent, background)
         return if @hide_this_step
-        line = "<b>#{keyword}</b> #{step_match.format_args("%s").gsub('<', '&lt;').gsub('>', '&gt;')}"
+        line = "<b>#{keyword}</b> #{encode(step_match.format_args("%s"))}"
         colorize(line, status)
       end
 
@@ -207,7 +207,7 @@ module Cucumber
       def colorize(text, status)
         keep_with do
           @doc.fill_color(@status_colors[status] || BLACK)
-          @doc.text(encode(text))
+          @doc.text(text)
           @doc.fill_color(BLACK)
         end
       end

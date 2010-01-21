@@ -145,9 +145,11 @@ module Cucumber
         if @delayed_announcements
           @delayed_announcements << announcement
         else
-          @io.puts
-          @io.puts(format_string(announcement, :tag))
-          @io.flush
+          if @io
+            @io.puts
+            @io.puts(format_string(announcement, :tag))
+            @io.flush
+          end
         end
       end
 
