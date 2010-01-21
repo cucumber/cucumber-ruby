@@ -1,6 +1,8 @@
 require 'cucumber/formatter/console'
 require 'cucumber/formatter/io'
 require 'fileutils'
+require 'htmlentities'
+
 begin
   gem 'prawn', '=0.6.3'
   require 'prawn'
@@ -28,6 +30,7 @@ module Cucumber
       def initialize(step_mother, path_or_io, options)
         @step_mother = step_mother
         @file = ensure_file(path_or_io, "pdf")
+        @coder = HTMLEntities.new
 
         if(options[:dry_run])
           @status_colors = { :passed => BLACK, :skipped => BLACK, :undefined => BLACK, :failed => BLACK}
@@ -154,7 +157,7 @@ module Cucumber
         return if @hide_this_step
         if(table.kind_of? Cucumber::Ast::Table)
           keep_with do
-            @doc.table(table.rows, :headers => table.headers, :position => :center, :row_colors => ['ffffff', 'f0f0f0'])
+            print_table(table, ['ffffff', 'f0f0f0'])
           end
         end
       end
@@ -164,7 +167,7 @@ module Cucumber
         return if @hide_this_step
         row_colors = table.example_rows.map { |r| @status_colors[r.status] unless r.status == :skipped}
         keep_with do
-          @doc.table(table.rows, :headers => table.headers, :position => :center, :row_colors => row_colors)
+          print_table(table, row_colors)
         end
       end
 
@@ -173,9 +176,7 @@ module Cucumber
         s = %{"""\n#{string}\n"""}.indent(10)
         s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}
         s.each do |line|
-          line.gsub!('<', '&lt;')
-          line.gsub!('>', '&gt;')
-          keep_with { @doc.text line, :size => 8 }
+          keep_with { @doc.text(encode(line)), :size => 8 }
         end
       end
 
@@ -199,10 +200,14 @@ module Cucumber
       
       private
       
+      def encode(text)
+        @coder.encode(text, :decimal)
+      end
+      
       def colorize(text, status)
         keep_with do
           @doc.fill_color(@status_colors[status] || BLACK)
-          @doc.text(text)
+          @doc.text(encode(text))
           @doc.fill_color(BLACK)
         end
       end
@@ -232,6 +237,12 @@ module Cucumber
         render @pdf
         @pdf.move_down(20)
         @buffer = []
+      end
+      
+      def print_table(table, row_colors)
+        rows = table.rows.map { |row| row.map{ |cell| encode(cell) }}
+        headers = table.headers.map { |text| encode(text) }
+        @doc.table(rows, :headers => headers, :position => :center, :row_colors => row_colors)
       end
     end
   end
