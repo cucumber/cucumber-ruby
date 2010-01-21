@@ -176,7 +176,7 @@ module Cucumber
         s = %{"""\n#{string}\n"""}.indent(10)
         s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}
         s.each do |line|
-          keep_with { @doc.text(encode(line)), :size => 8 }
+          keep_with { @doc.text(encode(line), :size => 8) }
         end
       end
 
