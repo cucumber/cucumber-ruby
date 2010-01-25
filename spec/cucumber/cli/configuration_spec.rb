@@ -54,14 +54,14 @@ module Cli
     end
 
     it "should require files in vendor/{plugins,gems}/*/cucumber/*.rb" do
-      given_the_following_files("/vendor/plugins/plugin_a/cucumber/foo.rb",
-                                "/vendor/gems/gem_a/cucumber/bar.rb")
+      given_the_following_files("/vendor/gems/gem_a/cucumber/bar.rb", 
+                                "/vendor/plugins/plugin_a/cucumber/foo.rb")
 
       config.parse!(%w{--require /features})
 
       config.step_defs_to_load.should == [
-        "/vendor/plugins/plugin_a/cucumber/foo.rb",
-        "/vendor/gems/gem_a/cucumber/bar.rb"
+        "/vendor/gems/gem_a/cucumber/bar.rb",
+        "/vendor/plugins/plugin_a/cucumber/foo.rb"
       ]
     end
 

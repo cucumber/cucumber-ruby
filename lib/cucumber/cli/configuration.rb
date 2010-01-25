@@ -83,7 +83,7 @@ module Cucumber
         files.reject! {|f| !File.file?(f)}
         files.reject! {|f| File.extname(f) == '.feature' }
         files.reject! {|f| f =~ /^http/}
-        files      
+        files.sort
       end
       
       def step_defs_to_load
