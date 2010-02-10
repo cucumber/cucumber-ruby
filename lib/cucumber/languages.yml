@@ -56,13 +56,13 @@
   name: Catalan
   native: català
   background: Rerefons|Antecedents
-  feature: Característica
+  feature: Característica|Funcionalitat
   scenario: Escenari
   scenario_outline: Esquema de l'escenari
   examples: Exemples
-  given: "*|Donat|Donada"
+  given: "*|Donat|Donada|Atès|Atesa"
   when: "*|Quan"
-  then: "*|Aleshores"
+  then: "*|Aleshores|Cal"
   and: "*|I"
   but: "*|Però"
 "cy":
