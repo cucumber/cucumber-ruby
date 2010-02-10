@@ -415,11 +415,24 @@ module Cucumber
 
         def build_step(keyword, step_match, status)
           step_name = step_match.format_args(lambda{|param| %{<span class="param">#{param}</span>}})
-          @builder.div do |div|
+          @builder.div(:class => 'step_name') do |div|
             @builder.span(keyword, :class => 'keyword')
             @builder.text!(' ')
             @builder.span(:class => 'step val') do |name|
               name << h(step_name).gsub(/&lt;span class=&quot;(.*?)&quot;&gt;/, '<span class="\1">').gsub(/&lt;\/span&gt;/, '</span>')
+            end            
+          end
+          
+          step_file = step_match.file_colon_line
+          step_file.gsub(/^([^:]*\.rb):(\d*)/) do
+            if ENV['TM_PROJECT_DIRECTORY']
+              step_file = "<a href=\"txmt://open?url=file://#{File.expand_path($1)}&line=#{$2}\">#{$1}:#{$2}</a> "
+            end
+          end
+          
+          @builder.div(:class => 'step_file') do |div|
+            @builder.span do
+              @builder << step_file
             end
           end
         end

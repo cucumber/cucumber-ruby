@@ -48,6 +48,16 @@ body {
 .cucumber .summary ul.features li, td .summary ul.features li, th .summary ul.features li {
   display: inline;
 }
+.cucumber .step_name, td .step_name, th .step_name {
+  float: left;
+}
+.cucumber .step_file, td .step_file, th .step_file {
+  text-align: right;
+  color: #999999;
+}
+.cucumber .step_file a, td .step_file a, th .step_file a {
+  color: #999999;
+}
 .cucumber .tag, td .tag, th .tag {
   font-weight: bold;
   color: #246AC1;
