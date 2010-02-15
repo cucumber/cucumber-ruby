@@ -1,7 +1,13 @@
 require 'cucumber/formatter/console'
 require 'cucumber/formatter/io'
 require 'fileutils'
-require 'htmlentities'
+
+begin
+  require 'htmlentities'
+rescue LoadError => e
+  e.message << "\nPlease gem install htmlentities"
+  raise e
+end
 
 begin
   gem 'prawn', '=0.6.3'
@@ -11,7 +17,7 @@ begin
   gem 'prawn-format', '=0.2.3'
   require "prawn/format"
 rescue LoadError => e
-  e.message << "\nPlease gem install prawn --version 0.6.3 && gem install prawn-format --version 0.2.3"
+  e.message << "\nPlease gem install prawn --version 0.6.3 && gem install prawn-format --version 0.2.3. Newer versions are not known to work."
   raise e
 end
 
