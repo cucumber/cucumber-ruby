@@ -1,6 +1,7 @@
 == In Git
 
 === Bugfixes
+* Ensure consistent load order of support files (#564 Mike Sassak)
 * Fix various places in PDF formatter where HTML entities could break prawn (Matt Wynne)
 * The rerun formatter outputs failed, pending and undefined scenarios (before: only failing) (Aslak Hellesøy)
 
