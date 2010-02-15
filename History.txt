@@ -5,6 +5,7 @@
 * The rerun formatter outputs failed, pending and undefined scenarios (before: only failing) (Aslak Hellesøy)
 
 === New features
+* Links to step definitions are now clickable in TextMate's HTML report (Rob Aldred)
 * Add diff! message to wire protocol to allow for immediate diff response to invokes (Matt Wynne)
 
 == 0.6.2 2010-01-18
