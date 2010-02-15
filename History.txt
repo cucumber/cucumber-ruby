@@ -1,6 +1,7 @@
 == In Git
 
 === Bugfixes
+* Fix various places in PDF formatter where HTML entities could break prawn (Matt Wynne)
 * The rerun formatter outputs failed, pending and undefined scenarios (before: only failing) (Aslak Hellesøy)
 
 === New features
