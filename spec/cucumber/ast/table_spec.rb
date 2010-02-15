@@ -359,7 +359,7 @@ module Cucumber
             lambda { @t.dup.diff!(t, :missing_row => false) }.should_not raise_error
           end
 
-          it "should raise on surplus rows" do
+          it "should not raise on surplus rows when surplus is at the end" do
             t = table(%{
               | a | b |
               | c | d |
@@ -367,6 +367,26 @@ module Cucumber
             })
             lambda { @t.dup.diff!(t) }.should raise_error
             lambda { @t.dup.diff!(t, :surplus_row => false) }.should_not raise_error
+          end
+
+          it "should not raise on surplus rows when surplus is interleaved" do
+            t1 = table(%{
+              | row_1 | row_2 |
+              | four  | 4     |
+            })
+            t2 = table(%{
+              | row_1 | row_2 |
+              | one   | 1     |
+              | two   | 2     |
+              | three | 3     |
+              | four  | 4     |
+              | five  | 5     |
+            })
+            lambda { t1.dup.diff!(t2) }.should raise_error
+
+            pending "http://groups.google.com/group/cukes/browse_thread/thread/5d96431c8245f05f" do
+              lambda { t1.dup.diff!(t2, :surplus_row => false) }.should_not raise_error
+            end
           end
 
           it "should raise on missing columns" do
