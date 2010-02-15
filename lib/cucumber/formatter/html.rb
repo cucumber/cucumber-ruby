@@ -328,137 +328,137 @@ module Cucumber
 
       protected
 
-        def build_exception_detail(exception)
-          backtrace = Array.new
-          @builder.div(:class => 'message') do
-            message = exception.message
-            if defined?(RAILS_ROOT) && message.include?('Exception caught')
-              matches = message.match(/Showing <i>(.+)<\/i>(?:.+)#(\d+)/)
-              backtrace += ["#{RAILS_ROOT}/#{matches[1]}:#{matches[2]}"]
-              message = message.match(/<code>([^(\/)]+)<\//m)[1]
-            end
-            @builder.pre do 
-              @builder.text!(message)
-            end
+      def build_exception_detail(exception)
+        backtrace = Array.new
+        @builder.div(:class => 'message') do
+          message = exception.message
+          if defined?(RAILS_ROOT) && message.include?('Exception caught')
+            matches = message.match(/Showing <i>(.+)<\/i>(?:.+)#(\d+)/)
+            backtrace += ["#{RAILS_ROOT}/#{matches[1]}:#{matches[2]}"]
+            message = message.match(/<code>([^(\/)]+)<\//m)[1]
           end
-          @builder.div(:class => 'backtrace') do
-            @builder.pre do
-              backtrace = exception.backtrace
-              backtrace.delete_if { |x| x =~ /\/gems\/(cucumber|rspec)/ }
-              @builder << backtrace_line(backtrace.join("\n"))
-            end
+          @builder.pre do 
+            @builder.text!(message)
           end
-          extra = extra_failure_content(backtrace)
-          @builder << extra unless extra == ""
         end
-
-        def set_scenario_color(status)
-          if status == :undefined
-            set_scenario_color_pending
+        @builder.div(:class => 'backtrace') do
+          @builder.pre do
+            backtrace = exception.backtrace
+            backtrace.delete_if { |x| x =~ /\/gems\/(cucumber|rspec)/ }
+            @builder << backtrace_line(backtrace.join("\n"))
           end
-          if status == :failed
-            set_scenario_color_failed
+        end
+        extra = extra_failure_content(backtrace)
+        @builder << extra unless extra == ""
+      end
+
+      def set_scenario_color(status)
+        if status == :undefined
+          set_scenario_color_pending
+        end
+        if status == :failed
+          set_scenario_color_failed
+        end
+      end
+      
+      def set_scenario_color_failed
+        @builder.script do
+          @builder.text!("makeRed('cucumber-header');") unless @header_red
+          @header_red = true
+          @builder.text!("makeRed('scenario_#{@scenario_number}');") unless @scenario_red
+          @scenario_red = true
+        end
+      end
+      
+      def set_scenario_color_pending
+        @builder.script do
+          @builder.text!("makeYellow('cucumber-header');") unless @header_red
+          @builder.text!("makeYellow('scenario_#{@scenario_number}');") unless @scenario_red
+        end         
+      end
+
+      def get_step_count(features)
+        count = 0
+        features = features.instance_variable_get("@features")
+        features.each do |feature|
+          #get background steps
+          if feature.instance_variable_get("@background")
+            background = feature.instance_variable_get("@background").instance_variable_get("@steps").instance_variable_get("@steps")
+            count += background.size
+          end
+          #get scenarios
+          feature.instance_variable_get("@feature_elements").each do |scenario|
+            #get steps
+            steps = scenario.instance_variable_get("@steps").instance_variable_get("@steps")
+            count += steps.size
+
+            #get example table
+            examples = scenario.instance_variable_get("@examples_array")
+            unless examples.nil?
+              examples.each do |example|
+                example_matrix = example.instance_variable_get("@outline_table").instance_variable_get("@cell_matrix")
+                count += example_matrix.size
+              end
+            end
+
+            #get multiline step tables
+            steps.each do |step|
+              multi_arg = step.instance_variable_get("@multiline_arg")
+              next if multi_arg.nil?
+              matrix = multi_arg.instance_variable_get("@cell_matrix")
+              count += matrix.size unless matrix.nil?
+            end
+          end
+        end
+        return count
+      end
+
+      def build_step(keyword, step_match, status)
+        step_name = step_match.format_args(lambda{|param| %{<span class="param">#{param}</span>}})
+        @builder.div(:class => 'step_name') do |div|
+          @builder.span(keyword, :class => 'keyword')
+          @builder.text!(' ')
+          @builder.span(:class => 'step val') do |name|
+            name << h(step_name).gsub(/&lt;span class=&quot;(.*?)&quot;&gt;/, '<span class="\1">').gsub(/&lt;\/span&gt;/, '</span>')
+          end            
+        end
+        
+        step_file = step_match.file_colon_line
+        step_file.gsub(/^([^:]*\.rb):(\d*)/) do
+          if ENV['TM_PROJECT_DIRECTORY']
+            step_file = "<a href=\"txmt://open?url=file://#{File.expand_path($1)}&line=#{$2}\">#{$1}:#{$2}</a> "
           end
         end
         
-        def set_scenario_color_failed
-          @builder.script do
-            @builder.text!("makeRed('cucumber-header');") unless @header_red
-            @header_red = true
-            @builder.text!("makeRed('scenario_#{@scenario_number}');") unless @scenario_red
-            @scenario_red = true
+        @builder.div(:class => 'step_file') do |div|
+          @builder.span do
+            @builder << step_file
           end
         end
-        
-        def set_scenario_color_pending
-          @builder.script do
-            @builder.text!("makeYellow('cucumber-header');") unless @header_red
-            @builder.text!("makeYellow('scenario_#{@scenario_number}');") unless @scenario_red
-          end         
-        end
+      end
 
-        def get_step_count(features)
-          count = 0
-          features = features.instance_variable_get("@features")
-          features.each do |feature|
-            #get background steps
-            if feature.instance_variable_get("@background")
-              background = feature.instance_variable_get("@background").instance_variable_get("@steps").instance_variable_get("@steps")
-              count += background.size
-            end
-            #get scenarios
-            feature.instance_variable_get("@feature_elements").each do |scenario|
-              #get steps
-              steps = scenario.instance_variable_get("@steps").instance_variable_get("@steps")
-              count += steps.size
-
-              #get example table
-              examples = scenario.instance_variable_get("@examples_array")
-              unless examples.nil?
-                examples.each do |example|
-                  example_matrix = example.instance_variable_get("@outline_table").instance_variable_get("@cell_matrix")
-                  count += example_matrix.size
-                end
-              end
-
-              #get multiline step tables
-              steps.each do |step|
-                multi_arg = step.instance_variable_get("@multiline_arg")
-                next if multi_arg.nil?
-                matrix = multi_arg.instance_variable_get("@cell_matrix")
-                count += matrix.size unless matrix.nil?
-              end
-            end
-          end
-          return count
-        end
-
-        def build_step(keyword, step_match, status)
-          step_name = step_match.format_args(lambda{|param| %{<span class="param">#{param}</span>}})
-          @builder.div(:class => 'step_name') do |div|
-            @builder.span(keyword, :class => 'keyword')
-            @builder.text!(' ')
-            @builder.span(:class => 'step val') do |name|
-              name << h(step_name).gsub(/&lt;span class=&quot;(.*?)&quot;&gt;/, '<span class="\1">').gsub(/&lt;\/span&gt;/, '</span>')
-            end            
-          end
-          
-          step_file = step_match.file_colon_line
-          step_file.gsub(/^([^:]*\.rb):(\d*)/) do
-            if ENV['TM_PROJECT_DIRECTORY']
-              step_file = "<a href=\"txmt://open?url=file://#{File.expand_path($1)}&line=#{$2}\">#{$1}:#{$2}</a> "
-            end
-          end
-          
-          @builder.div(:class => 'step_file') do |div|
-            @builder.span do
-              @builder << step_file
-            end
+      def build_cell(cell_type, value, attributes)
+        @builder.__send__(cell_type, attributes) do
+          @builder.div do
+            @builder.span(value,:class => 'step param')
           end
         end
+      end
 
-        def build_cell(cell_type, value, attributes)
-          @builder.__send__(cell_type, attributes) do
-            @builder.div do
-              @builder.span(value,:class => 'step param')
-            end
-          end
+      def inline_css
+        @builder.style(:type => 'text/css') do
+          @builder << File.read(File.dirname(__FILE__) + '/cucumber.css')
         end
+      end
 
-        def inline_css
-          @builder.style(:type => 'text/css') do
-            @builder << File.read(File.dirname(__FILE__) + '/cucumber.css')
-          end
+      def inline_js
+        @builder.script(:type => 'text/javascript') do
+          @builder << inline_js_content
         end
+      end
 
-        def inline_js
-          @builder.script(:type => 'text/javascript') do
-            @builder << inline_js_content
-          end
-        end
-
-        def inline_js_content
-          <<-EOF
+      def inline_js_content
+        <<-EOF
       function moveProgressBar(percentDone) {
       document.getElementById("cucumber-header").style.width = percentDone +"%";
       }
@@ -472,112 +472,111 @@ module Cucumber
       document.getElementById(element_id).style.color = '#000000';
       }
       EOF
-        end
+      end
 
-        def move_progress
-          @builder << " <script type=\"text/javascript\">moveProgressBar('#{percent_done}');</script>"
-        end
+      def move_progress
+        @builder << " <script type=\"text/javascript\">moveProgressBar('#{percent_done}');</script>"
+      end
 
-        def percent_done
-          result = 100.0
-          if @step_count != 0
-            result = ((@step_number).to_f / @step_count.to_f * 1000).to_i / 10.0
+      def percent_done
+        result = 100.0
+        if @step_count != 0
+          result = ((@step_number).to_f / @step_count.to_f * 1000).to_i / 10.0
+        end
+        result
+      end
+
+      def format_exception(exception)
+        (["#{exception.message}"] + exception.backtrace).join("\n")
+      end
+
+      def backtrace_line(line)
+        line.gsub(/^([^:]*\.(?:rb|feature|haml)):(\d*)/) do
+          if ENV['TM_PROJECT_DIRECTORY']
+            "<a href=\"txmt://open?url=file://#{File.expand_path($1)}&line=#{$2}\">#{$1}:#{$2}</a> "
+          else
+            line
           end
-          result
+        end
+      end
+
+      def print_stats(features)
+        @builder <<  "<script type=\"text/javascript\">document.getElementById('duration').innerHTML = \"Finished in <strong>#{format_duration(features.duration)} seconds</strong>\";</script>"
+        @builder <<  "<script type=\"text/javascript\">document.getElementById('totals').innerHTML = \"#{print_stat_string(features)}\";</script>"
+      end
+
+      def print_stat_string(features)
+        string = String.new
+        string << dump_count(@step_mother.scenarios.length, "scenario")
+        scenario_count = print_status_counts{|status| @step_mother.scenarios(status)}
+        string << scenario_count if scenario_count
+        string << "<br />"
+        string << dump_count(@step_mother.steps.length, "step")
+        step_count = print_status_counts{|status| @step_mother.steps(status)}
+        string << step_count if step_count
+      end
+
+      def print_status_counts
+        counts = [:failed, :skipped, :undefined, :pending, :passed].map do |status|
+          elements = yield status
+          elements.any? ? "#{elements.length} #{status.to_s}" : nil
+        end.compact
+        return " (#{counts.join(', ')})" if counts.any?
+      end
+
+      def dump_count(count, what, state=nil)
+        [count, state, "#{what}#{count == 1 ? '' : 's'}"].compact.join(" ")
+      end
+
+      def create_builder(io)
+        OrderedXmlMarkup.new(:target => io, :indent => 0)
+      end
+
+      class SnippetExtractor #:nodoc:
+        class NullConverter; def convert(code, pre); code; end; end #:nodoc:
+        begin; require 'syntax/convertors/html'; @@converter = Syntax::Convertors::HTML.for_syntax "ruby"; rescue LoadError => e; @@converter = NullConverter.new; end
+
+        def snippet(error)
+          raw_code, line = snippet_for(error[0])
+          highlighted = @@converter.convert(raw_code, false)
+          highlighted << "\n<span class=\"comment\"># gem install syntax to get syntax highlighting</span>" if @@converter.is_a?(NullConverter)
+          post_process(highlighted, line)
         end
 
-        def format_exception(exception)
-          (["#{exception.message}"] + exception.backtrace).join("\n")
-        end
-
-        def backtrace_line(line)
-          line.gsub(/^([^:]*\.(?:rb|feature|haml)):(\d*)/) do
-            if ENV['TM_PROJECT_DIRECTORY']
-              "<a href=\"txmt://open?url=file://#{File.expand_path($1)}&line=#{$2}\">#{$1}:#{$2}</a> "
-            else
-              line
-            end
+        def snippet_for(error_line)
+          if error_line =~ /(.*):(\d+)/
+            file = $1
+            line = $2.to_i
+            [lines_around(file, line), line]
+          else
+            ["# Couldn't get snippet for #{error_line}", 1]
           end
         end
 
-        def print_stats(features)
-          @builder <<  "<script type=\"text/javascript\">document.getElementById('duration').innerHTML = \"Finished in <strong>#{format_duration(features.duration)} seconds</strong>\";</script>"
-          @builder <<  "<script type=\"text/javascript\">document.getElementById('totals').innerHTML = \"#{print_stat_string(features)}\";</script>"
+        def lines_around(file, line)
+          if File.file?(file)
+            lines = File.open(file).read.split("\n")
+            min = [0, line-3].max
+            max = [line+1, lines.length-1].min
+            selected_lines = []
+            selected_lines.join("\n")
+            lines[min..max].join("\n")
+          else
+            "# Couldn't get snippet for #{file}"
+          end
         end
 
-        def print_stat_string(features)
-          string = String.new
-          string << dump_count(@step_mother.scenarios.length, "scenario")
-          scenario_count = print_status_counts{|status| @step_mother.scenarios(status)}
-          string << scenario_count if scenario_count
-          string << "<br />"
-          string << dump_count(@step_mother.steps.length, "step")
-          step_count = print_status_counts{|status| @step_mother.steps(status)}
-          string << step_count if step_count
+        def post_process(highlighted, offending_line)
+          new_lines = []
+          highlighted.split("\n").each_with_index do |line, i|
+            new_line = "<span class=\"linenum\">#{offending_line+i-2}</span>#{line}"
+            new_line = "<span class=\"offending\">#{new_line}</span>" if i == 2
+            new_lines << new_line
+          end
+          new_lines.join("\n")
         end
 
-        def print_status_counts
-          counts = [:failed, :skipped, :undefined, :pending, :passed].map do |status|
-            elements = yield status
-            elements.any? ? "#{elements.length} #{status.to_s}" : nil
-          end.compact
-          return " (#{counts.join(', ')})" if counts.any?
-        end
-
-        def dump_count(count, what, state=nil)
-          [count, state, "#{what}#{count == 1 ? '' : 's'}"].compact.join(" ")
-        end
-
-        def create_builder(io)
-          OrderedXmlMarkup.new(:target => io, :indent => 0)
-        end
+      end
     end
   end
-end
-
-
-class SnippetExtractor #:nodoc:
-  class NullConverter; def convert(code, pre); code; end; end #:nodoc:
-  begin; require 'syntax/convertors/html'; @@converter = Syntax::Convertors::HTML.for_syntax "ruby"; rescue LoadError => e; @@converter = NullConverter.new; end
-
-  def snippet(error)
-    raw_code, line = snippet_for(error[0])
-    highlighted = @@converter.convert(raw_code, false)
-    highlighted << "\n<span class=\"comment\"># gem install syntax to get syntax highlighting</span>" if @@converter.is_a?(NullConverter)
-    post_process(highlighted, line)
-  end
-
-  def snippet_for(error_line)
-    if error_line =~ /(.*):(\d+)/
-      file = $1
-      line = $2.to_i
-      [lines_around(file, line), line]
-    else
-      ["# Couldn't get snippet for #{error_line}", 1]
-    end
-  end
-
-  def lines_around(file, line)
-    if File.file?(file)
-      lines = File.open(file).read.split("\n")
-      min = [0, line-3].max
-      max = [line+1, lines.length-1].min
-      selected_lines = []
-      selected_lines.join("\n")
-      lines[min..max].join("\n")
-    else
-      "# Couldn't get snippet for #{file}"
-    end
-  end
-
-  def post_process(highlighted, offending_line)
-    new_lines = []
-    highlighted.split("\n").each_with_index do |line, i|
-      new_line = "<span class=\"linenum\">#{offending_line+i-2}</span>#{line}"
-      new_line = "<span class=\"offending\">#{new_line}</span>" if i == 2
-      new_lines << new_line
-    end
-    new_lines.join("\n")
-  end
-
 end
