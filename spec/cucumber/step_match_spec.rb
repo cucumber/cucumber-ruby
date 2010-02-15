@@ -57,5 +57,10 @@ module Cucumber
       m = step_match(/should( not)? be flashed '([^']*?)'$/, "I should be flashed 'Login failed.'")
       m.format_args("<span>%s</span>").should == "I should be flashed '<span>Login failed.</span>'"
     end
+
+    it "should format embedded groups" do
+      m = step_match(/running( (\d+) times)? (\d+) meters/, "running 5 times 10 meters")
+      m.format_args("<span>%s</span>").should == "running<span> 5 times</span> <span>10</span> meters"
+    end
   end
 end
