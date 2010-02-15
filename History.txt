@@ -1,6 +1,7 @@
 == In Git
 
 === Bugfixes
+* uninitialized constant Cucumber::CODEPAGE (NameError) (#561 Aslak Hellesøy)
 * HTML Formatter is broken in cucumber 0.6.2 and cuke4duke 0.2.3 (#567 Dan Fitch)
 * Ensure consistent load order of support files (#564 Mike Sassak)
 * Fix various places in PDF formatter where HTML entities could break prawn (Matt Wynne)
