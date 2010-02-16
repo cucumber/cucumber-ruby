@@ -34,9 +34,9 @@ module Cucumber
         handler.execute(scenario)
       end
 
-      def end_scenario
+      def end_scenario(scenario)
         handler = Requests::EndScenario.new(self)
-        handler.execute
+        handler.execute(scenario)
       end
       
     end

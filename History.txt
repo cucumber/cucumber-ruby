@@ -10,6 +10,7 @@
 === New features
 * Links to step definitions are now clickable in TextMate's HTML report (Rob Aldred)
 * Add diff! message to wire protocol to allow for immediate diff response to invokes (Matt Wynne)
+* Add tags to begin/end scenario messages on wire protocol to support tagged hooks (#571 Matt Wynne)
 
 == 0.6.2 2010-01-18
 
