@@ -41,17 +41,20 @@ module Cucumber
       end
       
       def step_matches(step_name, formatted_step_name)
-        @connections.map{ |remote| remote.step_matches(step_name, formatted_step_name)}.flatten
+        @connections.map{ |c| c.step_matches(step_name, formatted_step_name)}.flatten
       end
       
       protected
       
       def begin_scenario(scenario)
-        @connections.each { |remote| remote.begin_scenario(scenario) }
+        @connections.each { |c| c.begin_scenario(scenario) }
+        @current_scenario = scenario
       end
       
       def end_scenario
-        @connections.each { |remote| remote.end_scenario }
+        scenario = @current_scenario
+        @connections.each { |c| c.end_scenario(scenario) }
+        @current_scenario = nil
       end
     end
   end

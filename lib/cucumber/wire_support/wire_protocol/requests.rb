@@ -91,13 +91,31 @@ module Cucumber
           alias :handle_step_failed :handle_fail
         end
       
+        module Tags
+          def clean_tags(scenario)
+            scenario.source_tag_names.map { |tag| tag.gsub(/^@/, '') }.sort
+          end
+          
+          def request_params(scenario)
+            return nil unless scenario.source_tag_names.any?
+            { "tags" => clean_tags(scenario) }
+          end
+        end
+      
         class BeginScenario < RequestHandler
+          include Tags
+
           def execute(scenario)
-            super(nil) # not passing the scenario yet
+            super(request_params(scenario))
           end
         end
 
         class EndScenario < RequestHandler
+          include Tags
+
+          def execute(scenario)
+            super(request_params(scenario))
+          end
         end
       end
     end

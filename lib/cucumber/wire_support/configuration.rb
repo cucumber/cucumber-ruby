@@ -7,11 +7,21 @@ module Cucumber
         params = YAML.load_file(wire_file)
         @host = params['host']
         @port = params['port']
-        @timeouts = params['timeout'] || {}
+        @timeouts = default_timeouts.merge(params['timeout'] || {})
       end
       
       def timeout(message = nil)
         return @timeouts[message.to_s] || 3
+      end
+      
+      private
+      
+      def default_timeouts
+        {
+          'invoke' => 120,
+          'begin_scenario' => 120,
+          'end_scenario' => 120
+        }
       end
     end
   end
