@@ -42,6 +42,11 @@ module Cucumber
         @__cucumber_step_mother.announce(announcement)
       end
 
+      # See StepMother#ask
+      def ask(question, timeout_seconds=60)
+        @__cucumber_step_mother.ask(question, timeout_seconds)
+      end
+
       # See StepMother#embed
       def embed(file, mime_type)
         @__cucumber_step_mother.embed(file, mime_type)

@@ -3,6 +3,7 @@ require 'cucumber/core_ext/instance_exec'
 require 'cucumber/parser/natural_language'
 require 'cucumber/language_support/language_methods'
 require 'cucumber/formatter/duration'
+require 'timeout'
 
 module Cucumber
   # Raised when there is no matching StepDefinition for a step.
@@ -137,6 +138,30 @@ module Cucumber
     #
     def announce(msg)
       @visitor.announce(msg)
+    end
+
+    # Halts execution and prompts +question+ to the console (STDOUT).
+    # An operator (manual tester) can then enter a line of text and hit
+    # <ENTER>. The entered text is returned, and both +question+ and
+    # the result is added to the output using #announce.
+    #
+    def ask(question, timeout_seconds)
+      STDOUT.puts(question)
+      STDOUT.flush
+      announce(question)
+
+      if(Cucumber::JRUBY)
+        answer = jruby_gets(timeout_seconds)
+      else
+        answer = mri_gets(timeout_seconds)
+      end
+      
+      if(answer)
+        announce(answer)
+        answer
+      else
+        raise("Waited for input for #{timeout_seconds} seconds, then timed out.")
+      end
     end
 
     # Embed +file+ of MIME type +mime_type+ into the output. This may or may
@@ -345,6 +370,26 @@ module Cucumber
 
     def log
       @log ||= Logger.new(STDOUT)
+    end
+
+    def mri_gets(timeout_seconds)
+      begin
+        Timeout.timeout(timeout_seconds) do
+          STDIN.gets
+        end
+      rescue Timeout::Error => e
+        nil
+      end
+    end
+
+    def jruby_gets(timeout_seconds)
+      answer = nil
+      t = java.lang.Thread.new do
+        answer = STDIN.gets
+      end
+      t.start
+      t.join(timeout_seconds * 1000)
+      answer
     end
   end
 end
