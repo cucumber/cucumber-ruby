@@ -132,15 +132,11 @@ module Cucumber
     # This is an alternative to using Kernel#puts - it will display
     # nicer, and in all outputs (in case you use several formatters)
     #
-    # Beware that the output will be printed *before* the corresponding
-    # step. This is because the step itself will not be printed until
-    # after it has run, so it can be coloured according to its status.
-    #
     def announce(msg)
       @visitor.announce(msg)
     end
 
-    # Halts execution and prompts +question+ to the console (STDOUT).
+    # Suspends execution and prompts +question+ to the console (STDOUT).
     # An operator (manual tester) can then enter a line of text and hit
     # <ENTER>. The entered text is returned, and both +question+ and
     # the result is added to the output using #announce.
