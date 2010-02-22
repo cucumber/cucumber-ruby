@@ -22,7 +22,8 @@ Defined profiles in cucumber.yml:
         case(args_from_yml)
           when String
             raise YmlLoadError, "The '#{profile}' profile in cucumber.yml was blank.  Please define the command line arguments for the '#{profile}' profile in cucumber.yml.\n" if args_from_yml =~ /^\s*$/
-            args_from_yml = args_from_yml.split(' ')
+            require 'shellwords'
+            args_from_yml = args_from_yml.shellsplit
           when Array
             raise YmlLoadError, "The '#{profile}' profile in cucumber.yml was empty.  Please define the command line arguments for the '#{profile}' profile in cucumber.yml.\n" if args_from_yml.empty?
           else
