@@ -1,6 +1,7 @@
 == In Git
 
 === Bugfixes
+* Breakage in Rails 2-3-stable after html_safe is added to the repo. (#577 Aslak Hellesøy)
 * uninitialized constant Cucumber::CODEPAGE (NameError) (#561 Aslak Hellesøy)
 * HTML Formatter is broken in cucumber 0.6.2 and cuke4duke 0.2.3 (#567 Dan Fitch)
 * Ensure consistent load order of support files (#564 Mike Sassak)
