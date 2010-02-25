@@ -294,11 +294,11 @@
   scenario: 시나리오
   scenario_outline: 시나리오 개요
   examples: 예
-  given: "*|조건<"
-  when: "*|만일<"
+  given: "*|조건|먼저<"
+  when: "*|만일|만약<"
   then: "*|그러면<"
   and: "*|그리고<"
-  but: "*|하지만<"
+  but: "*|하지만|단<"
 "lt":
   name: Lithuanian
   native: lietuvių kalba
