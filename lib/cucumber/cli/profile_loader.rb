@@ -51,7 +51,7 @@ Defined profiles in cucumber.yml:
         require 'erb'
         require 'yaml'
         begin
-          @cucumber_erb = ERB.new(IO.read(cucumber_file)).result
+          @cucumber_erb = ERB.new(IO.read(cucumber_file)).result(binding)
         rescue Exception => e
           raise(YmlLoadError,"cucumber.yml was found, but could not be parsed with ERB.  Please refer to cucumber's documentation on correct profile usage.\n#{$!.inspect}")
         end

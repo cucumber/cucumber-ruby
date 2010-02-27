@@ -147,6 +147,15 @@ module Cli
         config.options[:require].should include('some_file')
       end
 
+      it "parses ERB in cucumber.yml that makes uses nested ERB sessions" do
+        given_cucumber_yml_defined_as(<<ERB_YML)
+<%= ERB.new({'standard' => '--require some_file'}.to_yaml).result %>
+<%= ERB.new({'enhanced' => '--require other_file'}.to_yaml).result %>
+ERB_YML
+
+        config.parse!(%w(-p standard))
+      end
+
       it "provides a helpful error message when a specified profile does not exists in cucumber.yml" do
         given_cucumber_yml_defined_as({'default' => '--require from/yml', 'html_report' =>  '--format html'})
 
