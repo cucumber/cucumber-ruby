@@ -139,7 +139,7 @@ module Cli
         config.parse!([])
         config.options[:require].should == ['from/yml']
       end
-      
+
       it "parses ERB syntax in the cucumber.yml file" do
         given_cucumber_yml_defined_as({'default' => '<%="--require some_file"%>'})
 
@@ -154,6 +154,7 @@ module Cli
 ERB_YML
 
         config.parse!(%w(-p standard))
+        config.options[:require].should include('some_file')
       end
 
       it "provides a helpful error message when a specified profile does not exists in cucumber.yml" do
