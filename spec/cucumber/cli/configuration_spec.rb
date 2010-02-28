@@ -139,11 +139,21 @@ module Cli
         config.parse!([])
         config.options[:require].should == ['from/yml']
       end
-      
+
       it "parses ERB syntax in the cucumber.yml file" do
         given_cucumber_yml_defined_as({'default' => '<%="--require some_file"%>'})
 
         config.parse!([])
+        config.options[:require].should include('some_file')
+      end
+
+      it "parses ERB in cucumber.yml that makes uses nested ERB sessions" do
+        given_cucumber_yml_defined_as(<<ERB_YML)
+<%= ERB.new({'standard' => '--require some_file'}.to_yaml).result %>
+<%= ERB.new({'enhanced' => '--require other_file'}.to_yaml).result %>
+ERB_YML
+
+        config.parse!(%w(-p standard))
         config.options[:require].should include('some_file')
       end
 
