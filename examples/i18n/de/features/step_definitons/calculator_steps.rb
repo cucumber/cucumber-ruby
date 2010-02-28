@@ -11,7 +11,7 @@ end
 After do
 end
 
-Gegebensei /ich habe (\d+) in den Taschenrechner eingegeben/ do |n|
+Angenommen /ich habe (\d+) in den Taschenrechner eingegeben/ do |n|
   @calc.push n.to_i
 end
 

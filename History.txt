@@ -9,6 +9,7 @@
 * The rerun formatter outputs failed, pending and undefined scenarios (before: only failing) (Aslak Hellesøy)
 
 === New features
+* Added "Angenommen" as German synonym for Given (Sven Fuchs, Aslak Hellesøy)
 * New #ask(question, timeout_seconds=60) method available to stepdefs. Asks for input and #announce-s question and answer. (Aslak Hellesøy)
 * Links to step definitions are now clickable in TextMate's HTML report (Rob Aldred)
 * Add diff! message to wire protocol to allow for immediate diff response to invokes (Matt Wynne)

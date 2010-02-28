@@ -112,7 +112,7 @@
   scenario: Szenario
   scenario_outline: Szenariogrundriss
   examples: Beispiele
-  given: "*|Gegeben sei"
+  given: "*|Angenommen|Gegeben sei"
   when: "*|Wenn"
   then: "*|Dann"
   and: "*|Und"
