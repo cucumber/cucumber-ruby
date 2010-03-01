@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2010-01-18}
+  s.date = %q{2010-03-01}
   s.default_executable = %q{cucumber}
   s.description = %q{A BDD tool written in Ruby}
   s.email = %q{cukes@googlegroups.com}
@@ -306,11 +306,13 @@ Gem::Specification.new do |s|
      "examples/tickets/features/301/filter_background_tagged_hooks.feature",
      "examples/tickets/features/301/filter_background_tagged_hooks_steps.rb",
      "examples/tickets/features/306/only_background.feature",
+     "examples/tickets/features/half_manual.feature",
      "examples/tickets/features/lib/eatting_machine.rb",
      "examples/tickets/features/lib/pantry.rb",
      "examples/tickets/features/scenario_outline.feature",
      "examples/tickets/features/step_definitons/246_steps.rb",
      "examples/tickets/features/step_definitons/248_steps.rb",
+     "examples/tickets/features/step_definitons/half_manual_steps.rb",
      "examples/tickets/features/step_definitons/scenario_outline_steps.rb",
      "examples/tickets/features/step_definitons/tickets_steps.rb",
      "examples/tickets/features/table_diffing.feature",
@@ -354,6 +356,7 @@ Gem::Specification.new do |s|
      "features/profiles.feature",
      "features/rake_task.feature",
      "features/report_called_undefined_steps.feature",
+     "features/rerun_formatter.feature",
      "features/simplest.feature",
      "features/snippet.feature",
      "features/step_definitions/cucumber_steps.rb",
@@ -371,6 +374,7 @@ Gem::Specification.new do |s|
      "features/usage_and_stepdefs_formatter.feature",
      "features/wire_protocol.feature",
      "features/wire_protocol_table_diffing.feature",
+     "features/wire_protocol_tags.feature",
      "features/wire_protocol_timeouts.feature",
      "features/work_in_progress.feature",
      "gem_tasks/contributors.rake",
@@ -556,7 +560,7 @@ for important information about this release. Happy cuking!
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{rspec}
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Behaviour Driven Development with elegance and joy}
   s.test_files = [
     "spec/cucumber/ast/background_spec.rb",
@@ -708,6 +712,7 @@ for important information about this release. Happy cuking!
      "examples/tickets/features/lib/pantry.rb",
      "examples/tickets/features/step_definitons/246_steps.rb",
      "examples/tickets/features/step_definitons/248_steps.rb",
+     "examples/tickets/features/step_definitons/half_manual_steps.rb",
      "examples/tickets/features/step_definitons/scenario_outline_steps.rb",
      "examples/tickets/features/step_definitons/tickets_steps.rb",
      "examples/watir/features/step_definitions/search_steps.rb",
@@ -731,6 +736,7 @@ for important information about this release. Happy cuking!
       s.add_development_dependency(%q<nokogiri>, [">= 1.4.1"])
       s.add_development_dependency(%q<prawn>, ["= 0.6.3"])
       s.add_development_dependency(%q<prawn-format>, ["= 0.2.3"])
+      s.add_development_dependency(%q<htmlentities>, [">= 4.2.0"])
       s.add_development_dependency(%q<rspec>, [">= 1.3.0"])
       s.add_development_dependency(%q<syntax>, [">= 1.0.0"])
       s.add_development_dependency(%q<spork>, [">= 0.7.5"])
@@ -744,6 +750,7 @@ for important information about this release. Happy cuking!
       s.add_dependency(%q<nokogiri>, [">= 1.4.1"])
       s.add_dependency(%q<prawn>, ["= 0.6.3"])
       s.add_dependency(%q<prawn-format>, ["= 0.2.3"])
+      s.add_dependency(%q<htmlentities>, [">= 4.2.0"])
       s.add_dependency(%q<rspec>, [">= 1.3.0"])
       s.add_dependency(%q<syntax>, [">= 1.0.0"])
       s.add_dependency(%q<spork>, [">= 0.7.5"])
@@ -758,6 +765,7 @@ for important information about this release. Happy cuking!
     s.add_dependency(%q<nokogiri>, [">= 1.4.1"])
     s.add_dependency(%q<prawn>, ["= 0.6.3"])
     s.add_dependency(%q<prawn-format>, ["= 0.2.3"])
+    s.add_dependency(%q<htmlentities>, [">= 4.2.0"])
     s.add_dependency(%q<rspec>, [">= 1.3.0"])
     s.add_dependency(%q<syntax>, [">= 1.0.0"])
     s.add_dependency(%q<spork>, [">= 0.7.5"])
