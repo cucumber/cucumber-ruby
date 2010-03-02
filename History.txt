@@ -1,4 +1,4 @@
-== In Git
+== 0.6.3 2010-03-02
 
 === Bugfixes
 * Split arguments in cucumber.yml with shellwords. Example: myprofile: --out="Features report.html" (Nathaniel Haas)
