@@ -141,6 +141,14 @@ module Cucumber
     # <ENTER>. The entered text is returned, and both +question+ and
     # the result is added to the output using #announce.
     #
+    # If you want a beep to happen (to grab the manual tester's attention),
+    # just prepend ASCII character 7 to the question:
+    #
+    #   ask("#{7.chr}How many cukes are in the external system?")
+    #
+    # If that doesn't issue a beep, you can shell out to something else
+    # that makes a sound before invoking #ask.
+    #
     def ask(question, timeout_seconds)
       STDOUT.puts(question)
       STDOUT.flush
