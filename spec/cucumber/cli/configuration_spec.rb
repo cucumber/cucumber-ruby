@@ -140,6 +140,13 @@ module Cli
         config.options[:require].should == ['from/yml']
       end
 
+      it "allows --strict to be set by a profile" do
+        given_cucumber_yml_defined_as({'bongo' => '--strict'})
+        
+        config.parse!(%w{--profile bongo})
+        config.options[:strict].should be_true
+      end
+
       it "parses ERB syntax in the cucumber.yml file" do
         given_cucumber_yml_defined_as({'default' => '<%="--require some_file"%>'})
 
