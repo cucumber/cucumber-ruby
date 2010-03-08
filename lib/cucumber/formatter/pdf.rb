@@ -20,9 +20,9 @@ module Cucumber
         raise "You *must* specify --out FILE for the pdf formatter" unless File === io
 
         if(options[:dry_run])
-          @status_colors = { :passed => BLACK, :skipped => BLACK, :undefined => BLACK, :failed => BLACK}
+          @status_colors = { :passed => BLACK, :skipped => BLACK, :undefined => BLACK, :failed => BLACK, :announced => GREY}
         else
-          @status_colors = { :passed => '055902', :skipped => GREY, :undefined => 'F27405', :failed => '730202'}
+          @status_colors = { :passed => '055902', :skipped => GREY, :undefined => 'F27405', :failed => '730202', :announced => GREY}
         end
 
         @pdf = Prawn::Document.new
@@ -64,6 +64,13 @@ module Cucumber
           false
         end
       end
+
+      def announce(announcement)
+        @pdf.fill_color(@status_colors[:announced])  
+        @pdf.text announcement, :size => 10
+        @pdf.fill_color BLACK
+      end
+
 
       def after_features(features)
         @pdf.render_file(@io.path)
