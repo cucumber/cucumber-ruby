@@ -76,10 +76,10 @@ Feature: Wire protocol tags
       @baz
       Scenario Outline: Everybody's Wired
         Given we're all <something>
-        
-      Examples:
-        | something |
-        | wired     |
+
+        Examples: 
+          | something |
+          | wired     |
 
     1 scenario (1 passed)
     1 step (1 passed)
