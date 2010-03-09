@@ -169,7 +169,7 @@ Feature: Cucumber command line
 
   Scenario: Run Norwegian
     Given I am in i18n/no
-    When I run cucumber -q --language no features
+    When I run cucumber -q features
     Then STDERR should be empty
     Then it should pass with
       """
@@ -369,7 +369,8 @@ Feature: Cucumber command line
 
   Scenario: Multiple formatters and outputs
     When I run cucumber --format progress --out tmp/progress.txt --format pretty --out tmp/pretty.txt --no-source --dry-run features/lots_of_undefined.feature
-    And "examples/self_test/tmp/progress.txt" should contain
+    Then STDERR should be empty
+    Then "examples/self_test/tmp/progress.txt" should contain
       """
       UUUUU
 
@@ -555,6 +556,7 @@ Feature: Cucumber command line
 
    Scenario: Run with limited tag count, blowing it via feature inheritance
      When I run cucumber -q features/tags_sample.feature --no-source --dry-run --tags @sample_one:1
+     Then STDERR should be empty
      Then it should fail with
      """
      @sample_one
@@ -588,6 +590,7 @@ Feature: Cucumber command line
 
   Scenario: Reformat files with --autoformat
     When I run cucumber --autoformat tmp/formatted features
+    Then STDERR should be empty
     Then "examples/self_test/tmp/formatted/features/sample.feature" should contain
       """
       # Feature comment
@@ -615,14 +618,16 @@ Feature: Cucumber command line
 
       """
 
+  # Fails on 1.9 because of encoding issues.
+  @fails_on_1_9
   Scenario: Generate PDF with pdf formatter
-	When I run cucumber --format pdf --out tmp/sample.pdf --dry-run features/sample.feature
-	Then STDERR should be empty
-	Then "examples/self_test/tmp/sample.pdf" should match "Pages 2"
+    When I run cucumber --format pdf --out tmp/sample.pdf --dry-run features/sample.feature
+    Then STDERR should be empty
+    Then "examples/self_test/tmp/sample.pdf" should match "Pages 2"
 
   Scenario: Run feature elements which match a name using -n
     When I run cucumber -n Pisang -q features/
-	Then it should pass with
+    Then it should pass with
       """
       Feature: search examples
 

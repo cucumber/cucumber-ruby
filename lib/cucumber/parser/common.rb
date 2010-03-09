@@ -14,7 +14,10 @@ module Cucumber
         start_index = index
         if node_cache[:white].has_key?(index)
           cached = node_cache[:white][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -50,7 +53,10 @@ module Cucumber
         start_index = index
         if node_cache[:space].has_key?(index)
           cached = node_cache[:space][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -73,7 +79,10 @@ module Cucumber
         start_index = index
         if node_cache[:eol].has_key?(index)
           cached = node_cache[:eol][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 
@@ -136,7 +145,10 @@ module Cucumber
         start_index = index
         if node_cache[:eof].has_key?(index)
           cached = node_cache[:eof][index]
-          @index = cached.interval.end if cached
+          if cached
+            cached = SyntaxNode.new(input, index...(index + 1)) if cached == true
+            @index = cached.interval.end
+          end
           return cached
         end
 

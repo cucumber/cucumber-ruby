@@ -1,9 +1,13 @@
 require 'cucumber/formatter/ordered_xml_markup'
+require 'cucumber/formatter/io'
+require 'fileutils'
 
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format junit</tt>
     class Junit
+      include Io
+      
       class UnNamedFeatureError < StandardError
         def initialize(feature_file)
           super("The feature in '#{feature_file}' does not have a name. The JUnit XML format requires a name for the testsuite element.")
@@ -11,8 +15,7 @@ module Cucumber
       end
       
       def initialize(step_mother, io, options)
-        raise "You *must* specify --out DIR for the junit formatter" unless String === io && File.directory?(io)
-        @reportdir = io
+        @reportdir = ensure_dir(io, "junit")
         @options = options
       end
 
@@ -56,8 +59,9 @@ module Cucumber
         scenario_name = name.strip.delete(".\r\n")
         scenario_name = "Unnamed scenario" if name.blank?
         @scenario = scenario_name
-        @outline = keyword.include?('Scenario Outline')
-        @output = "Scenario#{ " outline" if @outline}: #{@scenario}\n\n"
+        description = "Scenario"
+        description << " outline" if keyword.include?('Scenario Outline')
+        @output = "#{description}: #{@scenario}\n\n"
       end
 
       def before_steps(steps)
@@ -65,7 +69,7 @@ module Cucumber
       end
       
       def after_steps(steps)
-        return if @in_background || @outline
+        return if @in_background || @in_examples
         
         duration = Time.now - @steps_start
         if steps.failed?
@@ -77,16 +81,21 @@ module Cucumber
       
       def before_examples(*args)
         @header_row = true
+        @in_examples = true
+      end
+      
+      def after_examples(*args)
+        @in_examples = false
       end
 
       def before_table_row(table_row)
-        return unless @outline
+        return unless @in_examples
 
         @table_start = Time.now
       end
 
       def after_table_row(table_row)
-        return unless @outline
+        return unless @in_examples
         duration = Time.now - @table_start
         unless @header_row
           name_suffix = " (outline example : #{table_row.name})"

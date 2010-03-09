@@ -107,6 +107,20 @@ Feature: Profiles
       Feature: Sample
       """
 
-
-
-
+  Scenario Outline: Showing profiles when listing failing scenarios
+    Given a file named "features/step_definitions/steps.rb" with:
+      """
+      Given /^I am just testing stuff$/ do
+        raise 'BANG'
+      end
+      """
+    When I run cucumber -q -p super -p default -f <format> features/sample.feature --require features/step_definitions/steps.rb
+    Then it should fail
+    And the output should contain
+       """
+       cucumber -p super features/sample.feature:2 # Scenario: this is a test
+       """
+    Examples:
+      | format  |
+      | pretty  |
+      | progress|

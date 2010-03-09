@@ -106,7 +106,7 @@ module Cucumber
 
       def filter_backtrace(e)
         return e if Cucumber.use_full_backtrace
-        pwd = /#{Dir.pwd}\//m
+        pwd = /#{Regexp.escape(Dir.pwd)}\//m
         (e.backtrace || []).each{|line| line.gsub!(pwd, "./")}
         
         filtered = (e.backtrace || []).reject do |line|
@@ -142,11 +142,11 @@ module Cucumber
       end
 
       def actual_keyword
-        repeat_keywords = [language.but_keywords, language.and_keywords].flatten
+        repeat_keywords = [language.but_keywords(false), language.and_keywords(false)].flatten.uniq.reject{|kw| kw == '*'}
         if repeat_keywords.index(@step.keyword) && previous
           previous.actual_keyword
         else
-          keyword
+          keyword == '*' ? language.given_keyword : keyword
         end
       end
 

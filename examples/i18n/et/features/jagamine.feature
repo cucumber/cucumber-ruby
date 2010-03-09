@@ -3,7 +3,7 @@ Omadus: Jagamine
   Rumalate vigade vältimiseks
   Peavad kassapidajad saama arvutada murdudes
 
-  Stsenaarium: Tavalised numrbid
+  Stsenaarium: Tavalised numbrid
     Eeldades et olen sisestanud kalkulaatorisse numbri 3
     Ja olen sisestanud kalkulaatorisse numbri 2
     Kui ma vajutan jaga

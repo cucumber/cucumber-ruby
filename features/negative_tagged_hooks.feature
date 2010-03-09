@@ -4,12 +4,11 @@ Feature: Tagged hooks
     Given a standard Cucumber project directory structure
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given /^this step works$/ do
-      end
+      Given /^this step works$/ do; end
       """
     And a file named "features/support/hooks.rb" with:
       """
-      Before('~@no-boom') do
+      Before('~@no-boom') do 
         raise 'boom'
       end
       """

@@ -22,7 +22,8 @@ Defined profiles in cucumber.yml:
         case(args_from_yml)
           when String
             raise YmlLoadError, "The '#{profile}' profile in cucumber.yml was blank.  Please define the command line arguments for the '#{profile}' profile in cucumber.yml.\n" if args_from_yml =~ /^\s*$/
-            args_from_yml = args_from_yml.split(' ')
+            require 'shellwords'
+            args_from_yml = Shellwords.shellwords(args_from_yml)
           when Array
             raise YmlLoadError, "The '#{profile}' profile in cucumber.yml was empty.  Please define the command line arguments for the '#{profile}' profile in cucumber.yml.\n" if args_from_yml.empty?
           else
@@ -51,7 +52,7 @@ Defined profiles in cucumber.yml:
         require 'erb'
         require 'yaml'
         begin
-          @cucumber_erb = ERB.new(IO.read(cucumber_file)).result
+          @cucumber_erb = ERB.new(IO.read(cucumber_file)).result(binding)
         rescue Exception => e
           raise(YmlLoadError,"cucumber.yml was found, but could not be parsed with ERB.  Please refer to cucumber's documentation on correct profile usage.\n#{$!.inspect}")
         end

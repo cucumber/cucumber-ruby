@@ -3,6 +3,7 @@ require 'cucumber/core_ext/instance_exec'
 require 'cucumber/parser/natural_language'
 require 'cucumber/language_support/language_methods'
 require 'cucumber/formatter/duration'
+require 'timeout'
 
 module Cucumber
   # Raised when there is no matching StepDefinition for a step.
@@ -131,12 +132,40 @@ module Cucumber
     # This is an alternative to using Kernel#puts - it will display
     # nicer, and in all outputs (in case you use several formatters)
     #
-    # Beware that the output will be printed *before* the corresponding
-    # step. This is because the step itself will not be printed until
-    # after it has run, so it can be coloured according to its status.
-    #
     def announce(msg)
       @visitor.announce(msg)
+    end
+
+    # Suspends execution and prompts +question+ to the console (STDOUT).
+    # An operator (manual tester) can then enter a line of text and hit
+    # <ENTER>. The entered text is returned, and both +question+ and
+    # the result is added to the output using #announce.
+    #
+    # If you want a beep to happen (to grab the manual tester's attention),
+    # just prepend ASCII character 7 to the question:
+    #
+    #   ask("#{7.chr}How many cukes are in the external system?")
+    #
+    # If that doesn't issue a beep, you can shell out to something else
+    # that makes a sound before invoking #ask.
+    #
+    def ask(question, timeout_seconds)
+      STDOUT.puts(question)
+      STDOUT.flush
+      announce(question)
+
+      if(Cucumber::JRUBY)
+        answer = jruby_gets(timeout_seconds)
+      else
+        answer = mri_gets(timeout_seconds)
+      end
+      
+      if(answer)
+        announce(answer)
+        answer
+      else
+        raise("Waited for input for #{timeout_seconds} seconds, then timed out.")
+      end
     end
 
     # Embed +file+ of MIME type +mime_type+ into the output. This may or may
@@ -171,14 +200,13 @@ module Cucumber
     #     Then I should not be thirsty
     #   })
     def invoke_steps(steps_text, natural_language)
-      ored_keywords = natural_language.step_keywords.join("|")
-      after_keyword = natural_language.space_after_keyword ? ' ' : ''
+      ored_keywords = natural_language.step_keywords.map{|kw| Regexp.escape(kw)}.join("|")
       # TODO Gherkin:
       # This a bit hacky and fragile. When we move to Gherkin we should replace this entire method body
       # with a call to the parser - parsing the body of a scenario. We may need to put the parser/policy in the
       # appropriate state (the same state it's in after parsing a Scenario: line).
       steps_text.strip.split(/(?=^\s*(?:#{ored_keywords}))/).map { |step| step.strip }.each do |step|
-        output = step.match(/^\s*(#{ored_keywords})#{after_keyword}([^\n]+)(\n.*)?$/m)
+        output = step.match(/^\s*(#{ored_keywords})([^\n]+)(\n.*)?$/m)
 
         action, step_name, table_or_string = output[1], output[2], output[3]
         if table_or_string.to_s.strip =~ /^\|/
@@ -346,6 +374,26 @@ module Cucumber
 
     def log
       @log ||= Logger.new(STDOUT)
+    end
+
+    def mri_gets(timeout_seconds)
+      begin
+        Timeout.timeout(timeout_seconds) do
+          STDIN.gets
+        end
+      rescue Timeout::Error => e
+        nil
+      end
+    end
+
+    def jruby_gets(timeout_seconds)
+      answer = nil
+      t = java.lang.Thread.new do
+        answer = STDIN.gets
+      end
+      t.start
+      t.join(timeout_seconds * 1000)
+      answer
     end
   end
 end

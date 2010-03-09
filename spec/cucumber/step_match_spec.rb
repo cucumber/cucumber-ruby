@@ -1,5 +1,5 @@
 # encoding: utf-8
-require File.dirname(__FILE__) + '/../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'cucumber/rb_support/rb_step_definition'
 require 'cucumber/rb_support/rb_language'
 
@@ -18,7 +18,7 @@ module Cucumber
       StepMatch.new(stepdef, name, nil, stepdef.arguments_from(name))
     end
 
-    it "should format one groups when we use Unicode" do
+    it "should format one group when we use Unicode" do
       m = step_match(/I (\w+) ok/, "I æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ ok")
       m.format_args("<span>%s</span>").should == "I <span>æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ</span> ok"
     end
@@ -26,6 +26,11 @@ module Cucumber
     it "should format several groups when we use Unicode" do
       m = step_match(/I (\w+) (\w+) (\w+) this (\w+)/, "I ate æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ egg this morning")
       m.format_args("<span>%s</span>").should == "I <span>ate</span> <span>æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ</span> <span>egg</span> this <span>morning</span>"
+    end
+
+    it "should deal with Unicode both inside and outside arguments" do
+      m = step_match(/Jæ (\w+) ålsker (\w+) løndet/, "Jæ vø ålsker døtte løndet")
+      m.format_args("<span>%s</span>").should == "Jæ <span>vø</span> ålsker <span>døtte</span> løndet"
     end
 
     it "should format groups with format string" do
@@ -51,6 +56,11 @@ module Cucumber
     it "should format groups even when first group is optional and not matched" do
       m = step_match(/should( not)? be flashed '([^']*?)'$/, "I should be flashed 'Login failed.'")
       m.format_args("<span>%s</span>").should == "I should be flashed '<span>Login failed.</span>'"
+    end
+
+    it "should format embedded groups" do
+      m = step_match(/running( (\d+) times)? (\d+) meters/, "running 5 times 10 meters")
+      m.format_args("<span>%s</span>").should == "running<span> 5 times</span> <span>10</span> meters"
     end
   end
 end

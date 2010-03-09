@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'yaml'
 
 module Cucumber
@@ -52,19 +52,17 @@ module Cli
         end
       end
 
-      context '-l LANG or --language LANG' do
+      context '--i18n' do
         context "with LANG specified as 'help'" do
           it "lists all known langues" do
-            when_parsing '-l help' do
+            when_parsing '--i18n help' do
+              require 'cucumber/cli/language_help_formatter'
               LanguageHelpFormatter.should_receive(:list_languages).with(output_stream)
             end
           end
           it "exits the program" do
-            when_parsing('--language help') { Kernel.should_receive(:exit) }
+            when_parsing('--i18n help') { Kernel.should_receive(:exit) }
           end
-        end
-        it "sets the langauge" do
-          after_parsing('-l en') { options[:lang].should == 'en' }
         end
       end
 
@@ -93,11 +91,11 @@ module Cli
 
       context '-t TAGS --tags TAGS' do
         it "designates tags prefixed with ~ as tags to be excluded" do
-          after_parsing('--tags ~@foo,@bar') { options[:tag_names].should == [{'~@foo' => nil, '@bar' => nil}] }
+          after_parsing('--tags ~@foo,@bar') { options[:tag_expressions].should == ['~@foo,@bar'] }
         end
 
         it "stores tags passed with different --tags seperately" do
-          after_parsing('--tags @foo --tags @bar') { options[:tag_names].should == [{'@foo' => nil}, {'@bar' => nil}] }
+          after_parsing('--tags @foo --tags @bar') { options[:tag_expressions].should == ['@foo', '@bar'] }
         end
       end
 
@@ -164,7 +162,7 @@ module Cli
         it "combines the tag names of both" do
           given_cucumber_yml_defined_as('baz' => %w[-t @bar])
           options.parse!(%w[--tags @foo -p baz])
-          options[:tag_names].should == [{'@foo' => nil}, {'@bar' => nil}]
+          options[:tag_expressions].should == ["@foo", "@bar"]
         end
 
         it "only takes the paths from the original options, and disgregards the profiles" do
@@ -220,11 +218,6 @@ module Cli
           options.parse!(%w[-p foo])
           options[:snippets].should be_false
           options[:source].should be_false
-        end
-
-        it "uses the language from profile when none is specified on the command line" do
-          given_cucumber_yml_defined_as({'foo' => '--language fr'})
-          after_parsing('-p foo') {options[:lang].should == 'fr'}
         end
       end
 

@@ -23,6 +23,10 @@ module Cucumber
       def accept_hook?(hook)
         @scenario_outline.accept_hook?(hook)
       end
+      
+      def source_tag_names
+        @scenario_outline.source_tag_names
+      end
 
       def skip_invoke!
         example_rows.each do |cells|
@@ -60,6 +64,10 @@ module Cucumber
         def initialize(table, cells)
           super
           @scenario_exception = nil
+        end
+        
+        def source_tag_names
+          @table.source_tag_names
         end
 
         def create_step_invocations!(scenario_outline)

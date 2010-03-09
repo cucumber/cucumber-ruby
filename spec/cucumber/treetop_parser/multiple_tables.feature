@@ -9,7 +9,7 @@ Feature: Addition
     When I press add
     Then the result should be 120 on the screen
 
-  More Examples:
+  Examples:
     | input_1 | input_2 | button | output |
     | 20      | 30      | add    | 50     |
     | 2       | 5       | add    | 7      |
@@ -22,6 +22,6 @@ Feature: Addition
     When I press add
     Then the result should be 50 on the screen
 
-  More Examples:
+  Examples:
     | input_1 | input_2 | input_3 | button | output |
     | 1       | 2       | 3       | add    | 6      |

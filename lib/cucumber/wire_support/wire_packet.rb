@@ -14,16 +14,14 @@ module Cucumber
       
       attr_reader :message, :params
       
-      def initialize(message, params)
+      def initialize(message, params = nil)
         @message, @params = message, params
       end
       
       def to_json
-        [@message, @params].to_json
-      end
-      
-      def raise_if_bad
-        raise WireException.new(@params) if @message == 'fail' || @message == 'step_failed'
+        packet = [@message]
+        packet << @params if @params
+        packet.to_json
       end
       
       def handle_with(handler)

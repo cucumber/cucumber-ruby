@@ -4,11 +4,16 @@ require 'json'
 class FakeWireServer
   def initialize(port, protocol_table)
     @port, @protocol_table = port, protocol_table
+    @delays = {}
   end
 
   def run
     @server = TCPServer.open(@port)
     loop { handle_connections }
+  end
+  
+  def delay_response(message, delay)
+    @delays[message] = delay
   end
 
   private
@@ -19,7 +24,7 @@ class FakeWireServer
 
   def open_session_on(socket)
     begin
-      SocketSession.new(socket, @protocol_table).start
+      SocketSession.new(socket, @protocol_table, @delays).start
     rescue Exception => e
       raise e
     ensure
@@ -28,9 +33,10 @@ class FakeWireServer
   end
   
   class SocketSession
-    def initialize(socket, protocol)
+    def initialize(socket, protocol, delays)
       @socket = socket
       @protocol = protocol
+      @delays = delays
     end
 
     def start
@@ -43,11 +49,14 @@ class FakeWireServer
     
     def handle(data)
       if protocol_entry = response_to(data.strip)
+        sleep delay(data)
         send_response(protocol_entry['response'])
       else
         serialized_exception = { :message => "Not understood: #{data}", :backtrace => [] }
         send_response(['fail', serialized_exception ].to_json)
       end
+    rescue => e
+      send_response(['fail', { :message => e.message, :backtrace => e.backtrace, :exception => e.class } ].to_json)
     end
 
     def response_to(data)
@@ -58,6 +67,11 @@ class FakeWireServer
 
     def send_response(response)
       @socket.puts response + "\n"
+    end
+    
+    def delay(data)
+      message = JSON.parse(data.strip)[0]
+      @delays[message.to_sym] || 0
     end
   end
 end

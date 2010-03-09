@@ -3,11 +3,7 @@ require 'tempfile'
 require 'spec/expectations'
 require 'fileutils'
 require 'forwardable'
-begin
-  require 'spork'
-rescue Gem::LoadError => ex
-  gem 'spork', '>= 0.7.3' # Ensure correct spork version number to avoid false-negatives.
-end
+require 'cucumber/formatter/unicode'
 
 class CucumberWorld
   extend Forwardable
@@ -99,6 +95,8 @@ class CucumberWorld
   end
 
   def run_spork_in_background(port = nil)
+    require 'spork'
+
     pid = fork
     in_current_dir do
       if pid
@@ -115,10 +113,8 @@ class CucumberWorld
   end
 
   def terminate_background_jobs
-    if @background_jobs
-      @background_jobs.each do |pid|
-        Process.kill(Signal.list['TERM'], pid)
-      end
+    background_jobs.each do |pid|
+      Process.kill(Signal.list['TERM'], pid)
     end
   end
 

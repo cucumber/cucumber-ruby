@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'cucumber/step_mother'
 require 'cucumber/ast'
 require 'cucumber/rb_support/rb_language'
@@ -7,11 +7,11 @@ module Cucumber
   module Ast
     describe Scenario do
       before do
-        @step_mother = StepMother.new
+        @step_mother = Cucumber::StepMother.new
         @step_mother.load_natural_language('en')
         @step_mother.load_programming_language('rb')
         @dsl = Object.new
-        @dsl.extend(RbSupport::RbDsl)
+        @dsl.extend(Cucumber::RbSupport::RbDsl)
 
         $x = $y = nil
         @dsl.Given /y is (\d+)/ do |n|

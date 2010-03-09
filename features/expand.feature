@@ -8,6 +8,12 @@ Feature: --expand option
     And a file named "features/expand_me.feature" with:
       """
       Feature: submit guess
+
+        Background: 
+          Given the players' names:
+            | maker    | breaker   |
+            | Moriarty | Holmes    |
+ 
         Scenario Outline: submit guess
           Given the secret code is <code>
           When I guess <guess>
@@ -25,6 +31,11 @@ Feature: --expand option
     And it should pass with
       """
       Feature: submit guess
+
+        Background: 
+          Given the players' names:
+            | maker    | breaker |
+            | Moriarty | Holmes  |
 
         Scenario Outline: submit guess
           Given the secret code is <code>
@@ -44,6 +55,6 @@ Feature: --expand option
               Then the mark should be bbww
 
       2 scenarios (2 undefined)
-      6 steps (6 undefined)
+      8 steps (8 undefined)
       
       """

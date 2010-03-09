@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'cucumber/formatter/progress'
 
 module Cucumber
@@ -8,8 +8,8 @@ module Cucumber
       before(:each) do
         Term::ANSIColor.coloring = false
         @out = StringIO.new
-        progress = Progress.new(mock("step mother"), @out, {})
-        @visitor = Ast::TreeWalker.new(nil, [progress])
+        progress = Cucumber::Formatter::Progress.new(mock("step mother"), @out, {})
+        @visitor = Cucumber::Ast::TreeWalker.new(nil, [progress])
       end
  
       describe "visiting a table cell value without a status" do

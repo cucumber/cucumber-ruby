@@ -1,4 +1,7 @@
 require 'cucumber/cli/profile_loader'
+require 'cucumber/formatter/ansicolor'
+require 'cucumber/tag_expression'
+
 module Cucumber
   module Cli
 
@@ -27,7 +30,7 @@ module Cucumber
       FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
         "  #{key}#{' ' * (max - key.length)} : #{BUILTIN_FORMATS[key][1]}"
       end) + ["Use --format rerun --out features.txt to write out failing",
-        "features. You can rerun them with cucumber @features.txt.",
+        "features. You can rerun them with cucumber @rerun.txt.",
         "FORMAT can also be the fully qualified class name of",
         "your own custom formatter. If the class isn't loaded,",
         "Cucumber will attempt to require a file with a relative",
@@ -46,10 +49,6 @@ module Cucumber
 
       def self.parse(args, out_stream, error_stream, options = {})
         new(out_stream, error_stream, options).parse!(args)
-      end
-
-      def self.parse_tag_arguments(tags_string)
-        tags_string.split(',')
       end
 
       def initialize(out_stream = STDOUT, error_stream = STDERR, options = {})
@@ -104,8 +103,8 @@ module Cucumber
           opts.banner = ["Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+", "",
             "Examples:",
             "cucumber examples/i18n/en/features",
-            "cucumber @features.txt (See --format rerun)",
-            "cucumber --language it examples/i18n/it/features/somma.feature:6:98:113",
+            "cucumber @rerun.txt (See --format rerun)",
+            "cucumber examples/i18n/it/features/somma.feature:6:98:113",
             "cucumber -s -i http://rubyurl.com/eeCl", "", "",
           ].join("\n")
           opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR",
@@ -118,17 +117,25 @@ module Cucumber
             "loaded first.",
             "This option can be specified multiple times.") do |v|
             @options[:require] << v
+            if(Cucumber::JRUBY && File.directory?(v))
+              $CLASSPATH << v
+            end
           end
-          opts.on("-l LANG", "--language LANG",
-            "Specify language for features (Default: #{@options[:lang]})",
-            %{Run with "--language help" to see all languages},
-            %{Run with "--language LANG help" to list keywords for LANG}) do |v|
-            if v == 'help'
+
+          if(Cucumber::JRUBY)
+            opts.on("-j DIR", "--jars DIR",
+            "Load all the jars under DIR") do |jars|
+              Dir["#{jars}/**/*.jar"].each {|jar| require jar}
+            end
+          end
+
+          opts.on("--i18n LANG",
+            "List keywords for in a particular language",
+            %{Run with "--i18n help" to see all languages}) do |lang|
+            if lang == 'help'
               list_languages_and_exit
-            elsif args==['help'] # I think this conditional is just cruft and can be removed
-              list_keywords_and_exit(v)
             else
-              @options[:lang] = v
+              list_keywords_and_exit(lang)
             end
           end
           opts.on("-f FORMAT", "--format FORMAT",
@@ -144,21 +151,20 @@ module Cucumber
             @options[:formats] << ['pretty', nil] if @options[:formats].empty?
             @options[:formats][-1][1] = v
           end
-          opts.on("-t TAGS", "--tags TAGS",
-            "Only execute the features or scenarios with the specified tags.",
-            "TAGS must be comma-separated without spaces. Example: --tags @dev\n",
-            "You can select tags using logical AND or logical OR:",
-            "To execute anything that is tagged with both @dev AND @prod\n",
-            "Example: --tags @dev,@prod",
-            "To execute anything that is tagged with @dev OR @prod\n",
-            "Example: --tags @dev --tags @prod\n",
-            "Negative tags: Prefix tags with ~ to exclude features or scenarios",
-            "having that tag. Example: --tags ~@slow\n",
-            "Limit WIP: Positive tags can be given a threshold to limit the",
-            "number of occurrences. Example: --tags @qa:3 will fail if there",
-            "are more than 3 occurrences of the @qa tag.") do |v|
-            tag_names = parse_tags(v)
-            @options[:tag_names] << tag_names
+          opts.on("-t TAG_EXPRESSION", "--tags TAG_EXPRESSION",
+            "Only execute the features or scenarios with tags matching TAG_EXPRESSION.",
+            "Scenarios inherit tags declared on the Feature level. The simplest",
+            "TAG_EXPRESSION is simply a tag. Example: --tags @dev. When a tag in a tag",
+            "expression starts with a ~, this represents boolean NOT. Example: --tags ~@dev.",
+            "A tag expression can have several tags separated by a comma, which represents",
+            "logical OR. Example: --tags @dev,@wip. The --tags option can be specified",
+            "several times, and this represents logical AND. Example: --tags @foo,~@bar --tags @zap.",
+            "This represents the boolean expression (@foo || !@bar) && @zap.",
+            "\n",
+            "Positive tags can be given a threshold to limit the number of occurrences.", 
+            "Example: --tags @qa:3 will fail if there are more than 3 occurrences of the @qa tag.",
+            "This can be practical if you are practicing Kanban or CONWIP.") do |v|
+            @options[:tag_expressions] << v
           end
           opts.on("-n NAME", "--name NAME",
             "Only execute the feature elements which match part of the given name.",
@@ -178,7 +184,7 @@ module Cucumber
             @profiles << v
           end
           opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG,
-            "Disables all profile laoding to avoid using the 'default' profile.") do |v|
+            "Disables all profile loading to avoid using the 'default' profile.") do |v|
             @disable_profile_loading = true
           end
           opts.on("-c", "--[no-]color",
@@ -192,7 +198,7 @@ module Cucumber
             @options[:dry_run] = true
             @options[:snippets] = false
           end
-          opts.on("-a", "--autoformat DIRECTORY",
+          opts.on("-a", "--autoformat DIR",
             "Reformats (pretty prints) feature files and write them to DIRECTORY.",
             "Be careful if you choose to overwrite the originals.",
             "Implies --dry-run --formatter pretty.") do |directory|
@@ -269,6 +275,10 @@ module Cucumber
         self
       end
 
+      def custom_profiles
+        @profiles - [@default_profile]
+      end
+
     protected
 
       attr_reader :options, :profiles, :expanded_args
@@ -293,17 +303,8 @@ module Cucumber
         end
       end
 
-      def parse_tags(tag_string)
-        tag_names = Options.parse_tag_arguments(tag_string)
-        parse_tag_limits(tag_names)
-      end
-
-      def parse_tag_limits(tag_names)
-        tag_names.inject({}) do |dict, tag|
-          tag, limit = tag.split(':')
-          dict[tag] = limit.nil? ? limit : limit.to_i
-          dict
-        end
+      def tag_filter(tag_string)
+        tags = TagExpression.parse(tag_string)
       end
 
       def disable_profile_loading?
@@ -342,7 +343,7 @@ module Cucumber
         @options[:require] += other_options[:require]
         @options[:excludes] += other_options[:excludes]
         @options[:name_regexps] += other_options[:name_regexps]
-        @options[:tag_names] += other_options[:tag_names]
+        @options[:tag_expressions] += other_options[:tag_expressions]
         @options[:env_vars] = other_options[:env_vars].merge(@options[:env_vars])
         if @options[:paths].empty?
           @options[:paths] = other_options[:paths]
@@ -351,6 +352,7 @@ module Cucumber
         end
         @options[:source] &= other_options[:source]
         @options[:snippets] &= other_options[:snippets]
+        @options[:strict] |= other_options[:strict]
 
         @profiles += other_options.profiles
         @expanded_args += other_options.expanded_args
@@ -370,11 +372,13 @@ module Cucumber
         unless Cucumber::LANGUAGES[lang]
           raise("No language with key #{lang}")
         end
+        require 'cucumber/cli/language_help_formatter'
         LanguageHelpFormatter.list_keywords(@out_stream, lang)
         Kernel.exit(0)
       end
 
       def list_languages_and_exit
+        require 'cucumber/cli/language_help_formatter'
         LanguageHelpFormatter.list_languages(@out_stream)
         Kernel.exit(0)
       end
@@ -395,7 +399,7 @@ module Cucumber
           :dry_run      => false,
           :formats      => [],
           :excludes     => [],
-          :tag_names    => [],
+          :tag_expressions  => [],
           :name_regexps => [],
           :env_vars     => {},
           :diff_enabled => true

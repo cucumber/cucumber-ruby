@@ -31,7 +31,7 @@ http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages
         def list_keywords(io, lang)
           language = Parser::NaturalLanguage.get(nil, lang)
           raw = Parser::NaturalLanguage::KEYWORD_KEYS.map do |key|
-            [key, language.keywords(key)]
+            [key, language.keywords(key).join(" / ")]
           end
           
           print_table io, raw, :incomplete => language.incomplete?

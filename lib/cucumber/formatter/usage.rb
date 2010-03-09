@@ -10,9 +10,9 @@ module Cucumber
         attr_accessor :mean_duration, :status
       end
 
-      def initialize(step_mother, io, options)
+      def initialize(step_mother, path_or_io, options)
         @step_mother = step_mother
-        @io = io
+        @io = ensure_io(path_or_io, "usage")
         @options = options
         @stepdef_to_match = Hash.new{|h,stepdef_key| h[stepdef_key] = []}
       end

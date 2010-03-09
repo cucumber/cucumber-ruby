@@ -1,5 +1,5 @@
 # language: lt
-Sąvybė: Sudėtis
+Savybė: Sudėtis
   Norint išvengti kvailų klaidų
   Kaip matematinis idiotas
   Aš noriu, kad man pasakytų dviejų skaičių sumą
@@ -10,7 +10,7 @@ Sąvybė: Sudėtis
     Kai aš paspaudžiu "<mygtukas>"
     Tada rezultatas ekrane turi būti <išvestis>
 
-  Pavyzdžiai
+  Pavyzdžiai:
     | įvestis_1 | įvestis_2 | mygtukas | išvestis |
     | 20        | 30        | add      | 50       |
     | 2         | 5         | add      | 7        |

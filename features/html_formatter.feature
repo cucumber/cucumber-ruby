@@ -1,3 +1,4 @@
+@fails_on_1_9
 Feature: HTML formatter
   In order to make it easy to read Cucumber results
   there should be a HTML formatter with an awesome CSS

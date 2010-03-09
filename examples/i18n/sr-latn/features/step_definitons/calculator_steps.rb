@@ -1,7 +1,7 @@
 # encoding: utf-8
-# require 'spec/expectations'
-$:.unshift(File.dirname(__FILE__) + '/../../lib') # This line is not needed in your own project
+require 'spec/expectations'
 require 'cucumber/formatter/unicode'
+$:.unshift(File.dirname(__FILE__) + '/../../lib') 
 require 'calculator'
 
 Before do
@@ -20,5 +20,5 @@ Kada /pritisnem (\w+)/ do |op|
 end
 
 Onda /bi trebalo da bude (.*) prikazano na ekranu/ do |result|
-  @result.to_f == result.to_f
+  @result.should == result.to_f
 end

@@ -5,14 +5,15 @@ require 'yaml'
 
 module Cucumber
   version       = YAML.load_file(File.dirname(__FILE__) + '/../../VERSION.yml')
-  VERSION       = "#{version[:major]}.#{version[:minor]}.#{version[:patch]}"
+  VERSION       = [version[:major], version[:minor], version[:patch], version[:build]].compact.join('.')
   LANGUAGE_FILE = File.expand_path(File.dirname(__FILE__) + '/languages.yml')
   LANGUAGES     = YAML.load_file(LANGUAGE_FILE)
   BINARY        = File.expand_path(File.dirname(__FILE__) + '/../../bin/cucumber')
   LIBDIR        = File.expand_path(File.dirname(__FILE__) + '/../../lib')
   JRUBY         = defined?(JRUBY_VERSION)
-  IRONRUBY      = Config::CONFIG['sitedir'] =~ /IronRuby/i
+  IRONRUBY      = defined?(RUBY_ENGINE) && RUBY_ENGINE == "ironruby"
   WINDOWS       = Config::CONFIG['host_os'] =~ /mswin|mingw/
+  OS_X          = Config::CONFIG['host_os'] =~ /darwin/
   WINDOWS_MRI   = WINDOWS && !JRUBY && !IRONRUBY
   RAILS         = defined?(Rails)
   RUBY_BINARY   = File.join(Config::CONFIG['bindir'], Config::CONFIG['ruby_install_name'])

@@ -1,7 +1,7 @@
 require 'autotest'
 require 'tempfile'
-require 'yaml'
 require 'cucumber'
+require 'cucumber/cli/profile_loader'
 
 module Autotest::CucumberMixin
   def self.included(receiver)
@@ -104,10 +104,10 @@ module Autotest::CucumberMixin
   def make_cucumber_cmd(features_to_run, dirty_features_filename)
     return '' if features_to_run == ''
     
-    profiles = YAML.load_file("cucumber.yml").keys rescue []
+    profile_loader = Cucumber::Cli::ProfileLoader.new
     
-    profile ||= "autotest-all" if profiles.include?("autotest-all") and features_to_run == :all
-    profile ||= "autotest"     if profiles.include?("autotest")
+    profile ||= "autotest-all" if profile_loader.has_profile?("autotest-all") && features_to_run == :all
+    profile ||= "autotest"     if profile_loader.has_profile?("autotest")
     profile ||= nil
     
     if profile

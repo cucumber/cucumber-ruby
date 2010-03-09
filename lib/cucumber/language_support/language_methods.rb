@@ -42,6 +42,10 @@ module Cucumber
         hook
       end
 
+      def clear_hooks
+        @hooks = nil
+      end
+
       def add_transform(transform)
         transforms.unshift transform
         transform

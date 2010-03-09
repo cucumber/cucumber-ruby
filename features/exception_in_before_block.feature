@@ -7,8 +7,7 @@ Feature: Exception in Before Block
     Given a standard Cucumber project directory structure
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given /^this step works$/ do
-      end
+      Given(/^this step works$/) do; end
       """
     And a file named "features/support/env.rb" with:
       """

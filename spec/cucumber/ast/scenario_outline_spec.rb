@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'cucumber/step_mother'
 require 'cucumber/ast'
 require 'cucumber/core_ext/string'
@@ -8,11 +8,11 @@ module Cucumber
   module Ast
     describe ScenarioOutline do
       before do
-        @step_mother = StepMother.new
+        @step_mother = Cucumber::StepMother.new
         @step_mother.load_programming_language('rb')
         @step_mother.load_natural_language('en')
         @dsl = Object.new
-        @dsl.extend(RbSupport::RbDsl)
+        @dsl.extend(Cucumber::RbSupport::RbDsl)
 
         @dsl.Given(/^there are (\d+) cucumbers$/) do |n|
           @initial = n.to_i
@@ -59,13 +59,6 @@ module Cucumber
       it "should replace all variables and call outline once for each table row" do
         visitor = TreeWalker.new(@step_mother)
         visitor.should_receive(:visit_table_row).exactly(3).times
-        visitor.visit_feature_element(@scenario_outline)
-      end
-
-      it "should pretty print" do
-        require 'cucumber/formatter/pretty'
-        formatter = Formatter::Pretty.new(@step_mother, STDOUT, {:comment => true, :tag_names => {}})
-        visitor = TreeWalker.new(@step_mother, [formatter])
         visitor.visit_feature_element(@scenario_outline)
       end
     end

@@ -1,14 +1,14 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'cucumber/wire_support/wire_language'
 
 module Cucumber
   module WireSupport
     describe WireLanguage do
       def stub_wire_file!(filename, config)
-        YAML.should_receive(:load_file).with(filename).and_return config
+        Configuration.stub!(:new).with(filename).and_return config
       end
       
-      describe "#load_code_file" do        
+      describe "#load_code_file" do
         before(:each) do
           stub_wire_file! 'foo.wire', :config
         end

@@ -62,14 +62,14 @@ module Cucumber
         print_stats(nil)
       end
 
-      def print_stats(features)
-
+      def print_stats(features, profiles = [])
         @failures = step_mother.scenarios(:failed).select { |s| s.is_a?(Cucumber::Ast::Scenario) }
 
         if !@failures.empty?
           @io.puts format_string("Failing Scenarios:", :failed)
           @failures.each do |failure|
-            @io.puts format_string("cucumber " + failure.file_colon_line, :failed) +
+            profiles_string = profiles.empty? ? '' : (profiles.map{|profile| "-p #{profile}" }).join(' ') + ' '
+            @io.puts format_string("cucumber #{profiles_string}" + failure.file_colon_line, :failed) +
             format_string(" # Scenario: " + failure.name, :comment)
           end
           @io.puts
@@ -124,34 +124,14 @@ module Cucumber
         end
       end
 
-      def print_tag_limit_warnings(options)
-        if @tag_occurrences
-          first_tag = true
-          options[:tag_names].each do |tag_list|
-            tag_list.each do |tag_name, limit|
-              unless Ast::Tags.exclude_tag?(tag_name)
-                tag_frequency = @tag_occurrences[tag_name].size
-                if limit && tag_frequency > limit
-                  @io.puts if first_tag
-                  first_tag = false
-                  @io.puts format_string("#{tag_name} occurred #{tag_frequency} times, but the limit was set to #{limit}", :failed)
-                  @tag_occurrences[tag_name].each {|location| @io.puts format_string("  #{location}", :failed)}
-                  @io.flush
-                end
-              end
-            end
-          end
-        end
-      end
-
-      def record_tag_occurrences(feature_element, options)
-        @tag_occurrences ||= Hash.new{|k,v| k[v] = []}
-        options[:tag_names].each do |tag_list|
-          tag_list.each do |tag_name, limit|
-            if !Ast::Tags.exclude_tag?(tag_name) && feature_element.tag_count(tag_name) > 0
-              @tag_occurrences[tag_name] << feature_element.file_colon_line
-            end
-          end
+      def print_tag_limit_warnings(features)
+        first_tag = true
+        @options[:tag_excess].each do |tag_name, tag_limit, tag_locations|
+          @io.puts if first_tag
+          first_tag = false
+          @io.puts format_string("#{tag_name} occurred #{tag_locations.length} times, but the limit was set to #{tag_limit}", :failed)
+          tag_locations.each {|tag_location| @io.puts format_string("  #{tag_location.file_colon_line}", :failed)}
+          @io.flush
         end
       end
 
@@ -165,9 +145,11 @@ module Cucumber
         if @delayed_announcements
           @delayed_announcements << announcement
         else
-          @io.puts
-          @io.puts(format_string(announcement, :tag))
-          @io.flush
+          if @io
+            @io.puts
+            @io.puts(format_string(announcement, :tag))
+            @io.flush
+          end
         end
       end
 

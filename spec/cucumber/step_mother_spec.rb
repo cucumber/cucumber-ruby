@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 require 'cucumber'
 require 'cucumber/rb_support/rb_language'
@@ -86,8 +86,8 @@ spec/cucumber/step_mother_spec.rb:48:in `/Three cute (.*)/'
     it "should pick most specific step definition when --guess is enabled and unequal number of capture groups" do
       @step_mother.options = {:guess => true}
       general       = @dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
-      specific      = @dsl.Given(/Three blind mice ran far/) {}
-      more_specific = @dsl.Given(/^Three blind mice ran far$/) {}
+      specific      = @dsl.Given(/Three blind mice ran far/) do; end
+      more_specific = @dsl.Given(/^Three blind mice ran far$/) do; end
       
       @step_mother.step_match("Three blind mice ran far").step_definition.should == more_specific
     end
@@ -105,11 +105,10 @@ spec/cucumber/step_mother_spec.rb:48:in `/Three cute (.*)/'
     end
 
     it "should raise an error if the world is nil" do
-      @dsl.World do
-      end
+      @dsl.World {}
 
       begin
-        @step_mother.before_and_after(nil) {}
+        @step_mother.before_and_after(nil) do; end
         raise "Should fail"
       rescue RbSupport::NilWorld => e
         e.message.should == "World procs should never return nil"
@@ -130,8 +129,8 @@ spec/cucumber/step_mother_spec.rb:48:in `/Three cute (.*)/'
       @dsl.World(ModuleOne, ModuleTwo)
       @step_mother.before(mock('scenario', :null_object => true))
       class << @rb.current_world
-        included_modules.index(ModuleOne).should_not == nil
-        included_modules.index(ModuleTwo).should_not == nil
+        included_modules.inspect.should =~ /ModuleOne/ # Workaround for RSpec/Ruby 1.9 issue with namespaces
+        included_modules.inspect.should =~ /ModuleTwo/
       end
       @rb.current_world.class.should == Object
     end
@@ -143,8 +142,8 @@ spec/cucumber/step_mother_spec.rb:48:in `/Three cute (.*)/'
       end.should raise_error(RbSupport::MultipleWorld, %{You can only pass a proc to #World once, but it's happening
 in 2 places:
 
-spec/cucumber/step_mother_spec.rb:140:in `World'
-spec/cucumber/step_mother_spec.rb:142:in `World'
+spec/cucumber/step_mother_spec.rb:139:in `World'
+spec/cucumber/step_mother_spec.rb:141:in `World'
 
 Use Ruby modules instead to extend your worlds. See the Cucumber::RbSupport::RbDsl#World RDoc
 or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
@@ -267,4 +266,13 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
     end
   end
 
+end
+
+module ModuleOne
+end
+
+module ModuleTwo
+end
+
+class ClassOne
 end

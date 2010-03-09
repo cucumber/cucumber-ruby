@@ -1,24 +1,22 @@
 require 'cucumber/formatter/console'
+require 'cucumber/formatter/io'
 
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format progress</tt>
     class Progress
       include Console
+      include Io
       attr_reader :step_mother
 
-      def initialize(step_mother, io, options)
-        @step_mother, @io, @options = step_mother, io, options
+      def initialize(step_mother, path_or_io, options)
+        @step_mother, @io, @options = step_mother, ensure_io(path_or_io, "progress"), options
       end
 
       def after_features(features)
         @io.puts
         @io.puts
         print_summary(features)
-      end
-
-      def before_feature_element(feature_element)
-        record_tag_occurrences(feature_element, @options)
       end
 
       def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
@@ -45,10 +43,10 @@ module Cucumber
       def print_summary(features)
         print_steps(:pending)
         print_steps(:failed)
-        print_stats(features)
+        print_stats(features, @options.custom_profiles)
         print_snippets(@options)
         print_passing_wip(@options)
-        print_tag_limit_warnings(@options)
+        print_tag_limit_warnings(features)
       end
 
       CHARS = {

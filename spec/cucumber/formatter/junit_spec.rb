@@ -1,5 +1,5 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
-require File.dirname(__FILE__) + '/spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 require 'cucumber/formatter/junit'
 require 'nokogiri'
@@ -61,6 +61,9 @@ module Cucumber::Formatter
 
             Scenario Outline: Eat things
               Given <Things>
+              And stuff:
+                | foo |
+                | bar |
             
             Examples: Good
               | Things   |

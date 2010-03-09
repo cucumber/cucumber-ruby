@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'yaml'
 
 module Cucumber
@@ -54,14 +54,14 @@ module Cli
     end
 
     it "should require files in vendor/{plugins,gems}/*/cucumber/*.rb" do
-      given_the_following_files("/vendor/plugins/plugin_a/cucumber/foo.rb",
-                                "/vendor/gems/gem_a/cucumber/bar.rb")
+      given_the_following_files("/vendor/gems/gem_a/cucumber/bar.rb", 
+                                "/vendor/plugins/plugin_a/cucumber/foo.rb")
 
       config.parse!(%w{--require /features})
 
       config.step_defs_to_load.should == [
-        "/vendor/plugins/plugin_a/cucumber/foo.rb",
-        "/vendor/gems/gem_a/cucumber/bar.rb"
+        "/vendor/gems/gem_a/cucumber/bar.rb",
+        "/vendor/plugins/plugin_a/cucumber/foo.rb"
       ]
     end
 
@@ -139,11 +139,28 @@ module Cli
         config.parse!([])
         config.options[:require].should == ['from/yml']
       end
-      
+
+      it "allows --strict to be set by a profile" do
+        given_cucumber_yml_defined_as({'bongo' => '--strict'})
+        
+        config.parse!(%w{--profile bongo})
+        config.options[:strict].should be_true
+      end
+
       it "parses ERB syntax in the cucumber.yml file" do
         given_cucumber_yml_defined_as({'default' => '<%="--require some_file"%>'})
 
         config.parse!([])
+        config.options[:require].should include('some_file')
+      end
+
+      it "parses ERB in cucumber.yml that makes uses nested ERB sessions" do
+        given_cucumber_yml_defined_as(<<ERB_YML)
+<%= ERB.new({'standard' => '--require some_file'}.to_yaml).result %>
+<%= ERB.new({'enhanced' => '--require other_file'}.to_yaml).result %>
+ERB_YML
+
+        config.parse!(%w(-p standard))
         config.options[:require].should include('some_file')
       end
 

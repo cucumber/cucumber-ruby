@@ -55,11 +55,6 @@ module Cucumber
         @conversion_procs = conversion_procs
       end
 
-      # JSON representation
-      def to_json
-        raw.to_json
-      end
-
       # Creates a copy of this table, inheriting any column mappings.
       # registered with #map_headers!
       #
@@ -415,6 +410,7 @@ module Cucumber
       end
 
       def to_s(options = {}) #:nodoc:
+        require 'cucumber/formatter/pretty'
         options = {:color => true, :indent => 2, :prefixes => TO_S_PREFIXES}.merge(options)
         io = StringIO.new
 
@@ -433,8 +429,8 @@ module Cucumber
       private
 
       TO_S_PREFIXES = Hash.new('    ')
-      TO_S_PREFIXES[:comment]   = ['(+) ']
-      TO_S_PREFIXES[:undefined] = ['(-) ']
+      TO_S_PREFIXES[:comment]   = '(+) '
+      TO_S_PREFIXES[:undefined] = '(-) '
 
       protected
 

@@ -5,7 +5,7 @@ Funktionalität: Addition
   die Summe zweier Zahlen gesagt bekommen
 
   Szenariogrundriss: Zwei Zahlen hinzufügen
-    Gegeben sei ich habe <Eingabe_1> in den Taschenrechner eingegeben
+    Angenommen ich habe <Eingabe_1> in den Taschenrechner eingegeben
     Und ich habe <Eingabe_2> in den Taschenrechner eingegeben
     Wenn ich <Knopf> drücke
     Dann sollte das Ergebniss auf dem Bildschirm <Ausgabe> sein

@@ -27,7 +27,8 @@ module Cucumber
       def load_features(content)
         feature_file = FeatureFile.new('spec.feature', content)
         features = Ast::Features.new
-        features.add_feature feature_file.parse(@step_mother, {})
+        feature = feature_file.parse(@step_mother, {})
+        features.add_feature(feature)
         features
       end
     

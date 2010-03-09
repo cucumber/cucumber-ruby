@@ -1,7 +1,9 @@
+# TODO: REMOVE ME
+# Most of this class now lives in Gherkin's i18n.rb
 module Cucumber
   module Parser
     class NaturalLanguage
-      KEYWORD_KEYS = %w{name native encoding space_after_keyword feature background scenario scenario_outline examples given when then and but}
+      KEYWORD_KEYS = %w{name native feature background scenario scenario_outline examples given when then and but}
 
       class << self
         def get(step_mother, lang)
@@ -10,6 +12,11 @@ module Cucumber
 
         def languages
           @languages ||= {}
+        end
+
+        # Used by code generators for other lexer tools like pygments lexer and textmate bundle
+        def all(step_mother=nil)
+          Cucumber::LANGUAGES.keys.sort.map{|lang| get(step_mother, lang)}
         end
       end
 
@@ -22,7 +29,7 @@ module Cucumber
       end
 
       def register_adverbs(step_mother)
-        adverbs = %w{given when then and but}.map{|keyword| @keywords[keyword].split('|').map{|w| w.gsub(/\s/, '')}}.flatten
+        adverbs = %w{given when then and but}.map{|keyword| @keywords[keyword].split('|').map{|w| w.gsub(/[\s<']/, '')}}.flatten
         step_mother.register_adverbs(adverbs) if step_mother
       end
 
@@ -32,6 +39,13 @@ module Cucumber
         template = File.open(i18n_tt, Cucumber.file_mode('r')).read
         erb = ERB.new(template)
         grammar = erb.result(binding)
+
+        # The Rails 2-3-stable branch has decided to monkey-patch ERB so that ERB#result
+        # returns a subclass of String (SafeBuffer). This class will escape '&',  '>',  '<' and '"',
+        # effectively breaking any other library that relies on ERB behavig the way it _should_.
+        # This is a workaround hack until this has been fixed in Rails.
+        grammar = "" + grammar # Make SafeBuffer a String again.
+
         Treetop.load_from_string(grammar)
         @parser = Parser::I18n.const_get("#{@keywords['grammar_name']}Parser").new
         def @parser.inspect
@@ -46,35 +60,59 @@ module Cucumber
         feature
       end
 
-      def keywords(key, raw=false)
-        return @keywords[key] if raw
-        return nil unless @keywords[key]
-        values = @keywords[key].to_s.split('|')
-        values.map{|value| "'#{value}'"}.join(" / ")
-      end
-
       def incomplete?
         KEYWORD_KEYS.detect{|key| @keywords[key].nil?}
       end
 
-      def scenario_keyword
-        @keywords['scenario'].split('|')[0] + ':'
+      def feature_keywords
+        keywords('feature')
       end
 
-      def but_keywords
-        @keywords['but'].split('|')
+      def scenario_keywords
+        keywords('scenario')
       end
 
-      def and_keywords
-        @keywords['and'].split('|')
+      def scenario_outline_keywords
+        keywords('scenario_outline')
+      end
+
+      def background_keywords
+        keywords('background')
+      end
+
+      def examples_keywords
+        keywords('examples')
+      end
+
+      def but_keywords(space=true)
+        keywords('but', space)
+      end
+
+      def and_keywords(space=true)
+        keywords('and', space)
+      end
+
+      def given_keyword
+        keywords('given', false)[1] # The 0th one is a '*', which we don't want
       end
 
       def step_keywords
-        %w{given when then and but}.map{|key| @keywords[key].split('|')}.flatten.uniq
+        %w{given when then and but}.map{|key| keywords(key, true)}.flatten.uniq
       end
 
-      def space_after_keyword
-        @keywords['space_after_keyword']
+      def keywords(key, space=false)
+        raise "No #{key} in #{@keywords.inspect}" if @keywords[key].nil?
+        @keywords[key].split('|').map{|kw| space ? keyword_space(kw) : kw}.uniq
+      end
+
+      private
+
+      def treetop_keywords(keywords)
+        "(" + keywords.map{|k| %{"#{k}"}}.join(" / ") + ")"
+      end
+
+      def keyword_space(val)
+        (val + ' ').sub(/< $/,'')
       end
     end
   end

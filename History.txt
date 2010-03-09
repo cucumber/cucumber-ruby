@@ -1,13 +1,151 @@
 == In Git
 
-=== New features
-* Call a bunch of steps from step definitions - also with tables or pystrings. Copy-paste friendly (Bodaniel Jeanes, Jack Chen, Aslak Hellesøy) TODO - WIKI DOCUMENTATION BEFORE RELEASE
+=== Bugfixes
+* Snippets are properly printed when using '*' as step keyword. (Used to cause infinite recursion). (Aslak Hellesøy)
+
+== 0.6.3 2010-03-02
 
 === Bugfixes
-* RbStepDefinition#invoke calls #backtrace_line on self rather than @proc (#503 Mike Sassak)
-* Avoid duplicate cucumber entries in database.yml (Daniel Hofstetter)
+* Split arguments in cucumber.yml with shellwords. Example: myprofile: --out="Features report.html" (Nathaniel Haas)
+* Breakage in Rails 2-3-stable after html_safe is added to the repo. (#577 Aslak Hellesøy)
+* uninitialized constant Cucumber::CODEPAGE (NameError) (#561 Aslak Hellesøy)
+* HTML Formatter is broken in cucumber 0.6.2 and cuke4duke 0.2.3 (#567 Dan Fitch)
+* Ensure consistent load order of support files (#564 Mike Sassak)
+* Fix various places in PDF formatter where HTML entities could break prawn (Matt Wynne)
+* The rerun formatter outputs failed, pending and undefined scenarios (before: only failing) (Aslak Hellesøy)
+
+=== New features
+* Added "Angenommen" as German synonym for Given (Sven Fuchs, Aslak Hellesøy)
+* New #ask(question, timeout_seconds=60) method available to stepdefs. Asks for input and #announce-s question and answer. (Aslak Hellesøy)
+* Links to step definitions are now clickable in TextMate's HTML report (Rob Aldred)
+* Add diff! message to wire protocol to allow for immediate diff response to invokes (Matt Wynne)
+* Add tags to begin/end scenario messages on wire protocol to support tagged hooks (#571 Matt Wynne)
+* Default timeouts to 120s for invoke, begin_scenario and end_scenario messages in wire protocol (#572 Matt Wynne)
+
+== 0.6.2 2010-01-18
+
+=== Bugfixes
+* Update --help for --tags which was out of date. (Aslak Hellesøy)
+* Explicitly use Prawn 0.6.3 for pdf formatter since 0.7.1 is broken (Aslak Hellesøy)
+* PDF formatter renders tables incorrectly (#553 Andy Waite)
+* Better colouring in HTML report (Rob Aldred)
+* Detect output encoding properly on JRuby+Windows (Aslak Hellesøy)
+* Added option to override output encoding on Windows with an CUCUMBER_OUTPUT_ENCODING env var (Aslak Hellesøy)
+* PDF generation requires 'prawn-format' (#558 Aslak Hellesøy)
+
+=== New features
+* Show profiles in error scenario summary. (#550 Joseph Wilk)
+
+=== Removed features
+* element_at and table_at have been removed. Use tableish in cucumber-rails instead. (Aslak Hellesœy)
+
+== 0.6.1 2010-01-03
+
+=== Bugfixes
+* Fixed broken console handling on Windows/JRuby that was introduced in 0.6.0. (Aslak Hellesøy)
+
+== 0.6.0 2010-01-03
+
+Bumping to 0.6.0 for this release since we're breaking backwards compatibility with tags.
 
 === Changed Features
+* Tag boolean logic is inverted. What was ORed before is now ANDed and vice versa. (#504 Aslak Hellesøy)
+  This makes it more practical in most cases to mix tags from profiles and the command line
+
+  In previous versions the following command line:
+  
+    --tags @foo,~@bar --tags @zap (on the command line)
+  
+  or the following Hook:
+  
+    Before("@foo,~@bar", "@zap") (for Hooks)
+  
+  would be equivalent to the boolean expression:       (@foo && !@bar) || @zap
+  Starting with this release it will be equivalent to: (@foo || !@bar) && @zap
+
+=== Bugfixes
+* Cucumber not loading the correct settings using autospec (#496, #523 Aslak Hellesøy, Andrzej Śliwa)
+* Ruby 1.9.2 fails to load features/support/env.rb (#549 Aslak Hellesøy)
+* All features (except 4) pass on 1.9.2 (but not on 1.9.1) (Aslak Hellesøy)
+* Add missing require statement in rerun formatter which broke RubyMine (Noah Sussman)
+
+== 0.5.3 2009-12-22
+
+Another small release today to please a sister project. This time Cuke4Nuke.
+
+=== New Features
+* Simplified wire protocol to mostly use success / fail responses (Matt Wynne)
+
+== 0.5.2 2009-12-22
+
+=== New Features
+* On JRuby/Cuke4Duke, --require DIR will put DIR on the $CLASSPATH, making it easier to load step def classes (Aslak Hellesøy)
+* New --jars option that will load jar files. Only available on JRuby. Practical for Cuke4Duke. (Aslak Hellesøy)
+
+=== Bugfixes
+* Add #embed back to html formatter (#547 Brandon Faloona)
+* Refactored wire protocol code and added configurable timeout to allow for long running step definitions. (#546 Matt Wynne)
+
+== 0.5.1 2009-12-16
+
+Small bugfix release.
+
+=== Bugfixes
+* Replaced dependency on json gem with an error message, so that the cucumber gem installs on JRuby. (Aslak Hellesøy)
+
+== 0.5.0 2009-12-15
+
+We're bumping to 0.5.0 for this release since all of the Rails code has now moved to a new gem - cucumber-rails.
+Please see History.txt in cucumber-rails for details about what's new on the Rails side.
+
+=== New features
+* "Given" in Dutch is now aliased to "Gegeven" or "Stel". (Iain Hecker)
+* New --i18n option to list keywords in various languages. (Aslak Hellesøy)
+* Added a Tcl example using Sam Stephenson's ruby-tcl (Aslak Hellesøy)
+* Added * as a synonym for Given/When/Then/And/But (for all i18n languages). (#462 Aslak Hellesøy)
+* The HTML formatter produces a much nicer report, with TextMate link integration. (Rob Aldred)
+* Wire protocol now supports table arguments, step definition source & regexp, snippets, pending, table diffing (Matt Wynne)
+
+=== Changed Features
+* Per-word trailing-space setting for step keywords using '<'.  See 'fr' in languages.yml for example. (#525 Gregory Hnatiuk)
+* Formatters will no longer be passed File objects. They must use ensure_io, ensure_file or ensure_dir. (Aslak Hellesøy)
+
+=== Bugfixes
+* Exception messages are properly escaped in the HTML report. (Aslak Hellesøy)
+* Improved UTF-8 support for Windows. (Aslak Hellesøy)
+* Make #element_at / #table_at work on Webrat 0.6.0. This is now deprecated it in favour of #tableish from the cucumber-rails gem. (Aslak Hellesøy)
+* JUnit formatter not handling multiline table steps inside Scenario Outlines (#538 Matt Wynne)
+* Pending in scenario outline is red (#399 Matt Wynne)
+* Allow optional step arguments to play happily with step transforms (Rob Holland)
+* Regex escape the path when filtering the backtrace (Corey Donohoe & Simon Rozet)
+* Add gem dependency on JSON gem, required by wire protocol (#533 Matt Wynne)
+
+=== Removed Features
+* All Rails-related code is in a separate gem: cucumber-rails. Install that if you're working with Rails. (#483 Aslak Hellesøy)
+* --language is removed: http://wiki.github.com/aslakhellesoy/cucumber/spoken-languages (Aslak Hellesøy)
+
+== 0.4.4 2009-11-13
+
+What a bad day to make a release, but here goes.
+
+=== New features
+* Cucumber should use ActiveSupport::Callbacks for fixtures (#516 Adam Salter)
+* Make 'I' optional in all webrat steps. (Gavin Hughes)
+* Make generated cucumber.rake work with a vendored gem (Alex Rothenberg)
+* Native support for ANSIColor on IronRuby via the iron-term-ansicolor gem (Will Green)
+* Call a bunch of steps from step definitions - also with tables or pystrings. Copy-paste friendly (Bodaniel Jeanes, Jack Chen, Aslak Hellesøy)
+
+=== Bugfixes
+* Pretty printer fails when expanding scenario outlines with -x when the background includes a table (#515 Mike Sassak)
+* Ensure tags used with Before/After hooks always get parsed (#520 Joseph Wilk)
+* Define IRONRUBY correctly on Ruby 1.9 (Joe Van Dyk)
+* RbStepDefinition#invoke calls #backtrace_line on self rather than @proc (#503 Mike Sassak)
+* Avoid duplicate cucumber entries in database.yml (Daniel Hofstetter)
+* Added respond_to? when checking config.cache_classes for older Rails versions (Jeremy Durham)
+
+=== Changed Features
+* Rails support has been moved to the cucumber-rails gem (Dennis Blöte, Aslak Hellesøy) TODO - WIKI DOCUMENTATION BEFORE RELEASE
+* The code for Czech has changed from cz to cs. (deepj)
 * $cucumber_interrupted is now Cucumber.wants_to_quit - avoid global variable, which gives warnings. (Aslak Hellesøy)
 * Examples keyword without a colon is deprecated loudly. Gherkin will not recognize it at all. (Gherkin #30 Mike Sassak)
 

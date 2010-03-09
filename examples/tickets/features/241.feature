@@ -1,6 +1,5 @@
-Users want to use cucumber, so tests are necessary to verify
-it is all working as expected
-
+# Users want to use cucumber, so tests are necessary to verify
+# it is all working as expected
 Feature: Using the Console Formatter
   In order to verify this error
   I want to run this feature using the progress format

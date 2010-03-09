@@ -1,36 +1,35 @@
+@needs-many-fonts
 Feature: Language help
   In order to figure out the keywords to use for a language
   I want to be able to get help on the language from the CLI
 
   Scenario: Get help for Portuguese language
-    When I run cucumber -l pt help
+    When I run cucumber --i18n pt help
     Then it should pass with
       """
-      | name                | 'Portuguese'                                |
-      | native              | 'português'                                 |
-      | encoding            | 'UTF-8'                                     |
-      | space_after_keyword | 'true'                                      |
-      | feature             | 'Funcionalidade'                            |
-      | background          | 'Contexto'                                  |
-      | scenario            | 'Cenário' / 'Cenario'                       |
-      | scenario_outline    | 'Esquema do Cenário' / 'Esquema do Cenario' |
-      | examples            | 'Exemplos'                                  |
-      | given               | 'Dado'                                      |
-      | when                | 'Quando'                                    |
-      | then                | 'Então' / 'Entao'                           |
-      | and                 | 'E'                                         |
-      | but                 | 'Mas'                                       |
+      | name             | Portuguese                              |
+      | native           | português                               |
+      | feature          | Funcionalidade                          |
+      | background       | Contexto                                |
+      | scenario         | Cenário / Cenario                       |
+      | scenario_outline | Esquema do Cenário / Esquema do Cenario |
+      | examples         | Exemplos                                |
+      | given            | * / Dado                                |
+      | when             | * / Quando                              |
+      | then             | * / Então / Entao                       |
+      | and              | * / E                                   |
+      | but              | * / Mas                                 |
 
       """
   Scenario: List languages
-    When I run cucumber -l help
+    When I run cucumber --i18n help
     Then it should pass with
       """
       | ar      | Arabic                 | العربية              |
       | bg      | Bulgarian              | български            |
       | cat     | Catalan                | català               |
+      | cs      | Czech                  | Česky                |
       | cy      | Welsh                  | Cymraeg              |
-      | cz      | Czech                  | Česky                |
       | da      | Danish                 | dansk                |
       | de      | German                 | Deutsch              |
       | en      | English                | English              |

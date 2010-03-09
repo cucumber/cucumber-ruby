@@ -1,6 +1,7 @@
 require 'logger'
 require 'cucumber/cli/options'
 require 'cucumber/constantize'
+require 'cucumber/tag_expression'
 
 module Cucumber
   module Cli
@@ -25,6 +26,7 @@ module Cucumber
         arrange_formats
         raise("You can't use both --strict and --wip") if strict? && wip?
 
+        @options[:tag_expression] = TagExpression.parse(@options[:tag_expressions])
         return @args.replace(@options.expanded_args_without_drb) if drb?
 
         set_environment_variables
@@ -57,7 +59,7 @@ module Cucumber
       def drb_port
         @options[:drb_port].to_i if @options[:drb_port]
       end
-      
+
       def build_runner(step_mother, io)
         Ast::TreeWalker.new(step_mother, formatters(step_mother), @options, io)
       end
@@ -81,7 +83,7 @@ module Cucumber
         files.reject! {|f| !File.file?(f)}
         files.reject! {|f| File.extname(f) == '.feature' }
         files.reject! {|f| f =~ /^http/}
-        files      
+        files.sort
       end
       
       def step_defs_to_load
@@ -127,28 +129,19 @@ module Cucumber
     private
     
       def formatters(step_mother)
-        return [Formatter::Pretty.new(step_mother, nil, @options)] if @options[:autoformat]
+        # TODO: We should remove the autoformat functionality. That
+        # can be done with the gherkin CLI.
+        if @options[:autoformat]
+          require 'cucumber/formatter/pretty'
+          return [Formatter::Pretty.new(step_mother, nil, @options)]
+        end
+
         @options[:formats].map do |format_and_out|
           format = format_and_out[0]
-          out    = format_and_out[1]
-          if String === out # file name
-            unless File.directory?(out)
-              out = File.open(out, Cucumber.file_mode('w'))
-              at_exit do
-                
-                # Since Spork "never" actually exits, I want to flush and close earlier...
-                unless out.closed?
-                  out.flush
-                  out.close
-                end
-                
-              end
-            end
-          end
-
+          path_or_io = format_and_out[1]
           begin
             formatter_class = formatter_class(format)
-            formatter_class.new(step_mother, out, @options)
+            formatter_class.new(step_mother, path_or_io, @options)
           rescue Exception => e
             e.message << "\nError creating formatter: #{format}"
             raise e

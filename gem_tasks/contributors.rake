@@ -1,7 +1,9 @@
 # encoding: utf-8
+desc 'List contributors'
 task :contributors do
-  contributors = `git log --pretty=short --no-merges | git shortlog -ne | egrep -ve '^ +' | egrep -ve '^$'`
-  puts contributors.split("\n").length
+  contributors = `git log --pretty=short --no-merges | git shortlog -ne | egrep -ve '^ +' | egrep -ve '^$'`.split("\n")
+  puts contributors
+  puts "Total: #{contributors.length}"
 end
 
 task :codeswarm do

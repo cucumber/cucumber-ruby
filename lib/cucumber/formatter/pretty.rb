@@ -1,4 +1,5 @@
 require 'cucumber/formatter/console'
+require 'cucumber/formatter/io'
 require 'fileutils'
 
 module Cucumber
@@ -13,11 +14,12 @@ module Cucumber
     class Pretty
       include FileUtils
       include Console
+      include Io
       attr_writer :indent
       attr_reader :step_mother
 
-      def initialize(step_mother, io, options)
-        @step_mother, @io, @options = step_mother, io, options
+      def initialize(step_mother, path_or_io, options)
+        @step_mother, @io, @options = step_mother, ensure_io(path_or_io, "pretty"), options
         @exceptions = []
         @indent = 0
         @prefixes = options[:prefixes] || {}
@@ -35,14 +37,10 @@ module Cucumber
           file = File.join(@options[:autoformat], feature.file)
           dir = File.dirname(file)
           mkdir_p(dir) unless File.directory?(dir)
-          @io = File.open(file, Cucumber.file_mode('w'))
+          @io = ensure_file(file, "pretty")
         end
       end
       
-      def after_feature(*args)
-        @io.close if @options[:autoformat]
-      end
-
       def comment_line(comment_line)
         @io.puts(comment_line.indent(@indent))
         @io.flush
@@ -69,7 +67,6 @@ module Cucumber
       end
 
       def before_feature_element(feature_element)
-        record_tag_occurrences(feature_element, @options)
         @indent = 2
         @scenario_indent = 2
       end
@@ -178,17 +175,17 @@ module Cucumber
       end
 
       def before_table_row(table_row)
-        return unless @table
+        return if !@table || @hide_this_step
         @col_index = 0
         @io.print '  |'.indent(@indent-2)
       end
 
       def after_table_row(table_row)
-        return unless @table
+        return if !@table || @hide_this_step
         print_table_row_announcements
         @io.puts
         if table_row.exception && !@exceptions.include?(table_row.exception)
-          print_exception(table_row.exception, :failed, @indent)
+          print_exception(table_row.exception, table_row.status, @indent)
         end
       end
 
@@ -198,7 +195,7 @@ module Cucumber
       end
 
       def table_cell_value(value, status)
-        return unless @table
+        return if !@table || @hide_this_step
         status ||= @status || :passed
         width = @table.col_width(@col_index)
         cell_text = value.to_s || ''
@@ -229,12 +226,11 @@ module Cucumber
       end
 
       def print_summary(features)
-        print_stats(features)
+        print_stats(features, @options.custom_profiles)
         print_snippets(@options)
         print_passing_wip(@options)
-        print_tag_limit_warnings(@options)
+        print_tag_limit_warnings(features)
       end
-
     end
   end
 end
