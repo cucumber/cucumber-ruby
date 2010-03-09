@@ -352,6 +352,7 @@ module Cucumber
         end
         @options[:source] &= other_options[:source]
         @options[:snippets] &= other_options[:snippets]
+        @options[:strict] |= other_options[:strict]
 
         @profiles += other_options.profiles
         @expanded_args += other_options.expanded_args
