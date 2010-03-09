@@ -1,6 +1,11 @@
 == In Git
 
+=== New features
+* Added #announce to the PDF formatter (Nicolas Bessi)
+
 === Bugfixes
+* Properly pass tags over the wire protocol (Matt Wynne)
+* Profile loading should honour the --strict option (#580 Rob Holland)
 * Snippets are properly printed when using '*' as step keyword. (Used to cause infinite recursion). (Aslak Hellesøy)
 
 == 0.6.3 2010-03-02
