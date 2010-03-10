@@ -1,6 +1,6 @@
 Feature: Delayed announcement
 
-    Background:
+  Background:
     Given a standard Cucumber project directory structure
     And a file named "features/step_definitions/steps.rb" with:
       """
@@ -25,6 +25,10 @@ Feature: Delayed announcement
       end
 
       Given /^this step works$/ do x=1
+      end
+
+      Given /^I announce the world$/ do x=1
+		announce_world
       end
       """
     And a file named "features/f.feature" with:
@@ -57,7 +61,14 @@ Feature: Delayed announcement
           | line | ann | result |
           | 1 | anno1 | fail |
           | 2 | anno2 | pass |
-    """
+      """
+
+    And a file named "features/announce_world.feature" with:
+      """
+      Feature: announce_world
+        Scenario: announce_world
+          Given I announce the world
+      """
 
     Scenario: Delayed announcements feature
       When I run cucumber --format pretty features/f.feature
@@ -101,7 +112,7 @@ Feature: Delayed announcement
             ./features/step_definitions/steps.rb:13:in `/^I use announcement (.+) in line (.+) (?:with result (.+))$/'
             features/f.feature:23:in `Given I use announcement <ann> in line <line> with result <result>'
             | 2    | anno2 | pass   |  Line: 2: anno2
-        """
+      """
 
     Scenario: Non-delayed announcements feature (progress formatter)
       When I run cucumber --format progress features/f.feature
@@ -120,3 +131,14 @@ Feature: Delayed announcement
         Line: 2: anno2
         ...
         """
+
+    Scenario: announce world
+      When I run cucumber --format progress features/announce_world.feature
+      Then the output should contain
+      """
+      WORLD:
+        Object
+
+        Spec::Matchers
+        Cucumber::RbSupport::RbWorld
+      """

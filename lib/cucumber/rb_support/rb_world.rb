@@ -52,6 +52,15 @@ module Cucumber
         @__cucumber_step_mother.embed(file, mime_type)
       end
 
+      # Prints out the world class, followed by all included modules.
+      def announce_world
+        announce "WORLD:\n  #{self.class}"
+        world = self
+        (class << self; self; end).instance_eval do
+          world.announce "  #{included_modules.join("\n  ")}"
+        end
+      end
+
       # Mark the matched step as pending.
       def pending(message = "TODO")
         if block_given?

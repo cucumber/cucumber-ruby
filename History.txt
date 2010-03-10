@@ -1,6 +1,7 @@
 == In Git
 
 === New features
+* Added #announce_world method, printing the World class and all included modules (Ruby only). (Aslak Hellesøy)
 * Added #announce to the PDF formatter (Nicolas Bessi)
 
 === Bugfixes
