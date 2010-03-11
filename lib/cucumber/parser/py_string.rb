@@ -128,7 +128,7 @@ module Cucumber
 
       module OpenPyString1
         def indentation
-          indent.text_value.length
+          indent.text_value
         end
 
         def line

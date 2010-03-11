@@ -293,7 +293,7 @@ module Cucumber
       rule open_py_string
         indent:space* '"""' space* eol {
           def indentation
-            indent.text_value.length
+            indent.text_value
           end
 
           def line

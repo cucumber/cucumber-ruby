@@ -1,6 +1,7 @@
 == In Git
 
 === New features
+* Tab indentation causes multiline step arguments to fail (#585 Aslak Hellesøy)
 * Added #announce_world method, printing the World class and all included modules (Ruby only). (Aslak Hellesøy)
 * Added #announce to the PDF formatter (Nicolas Bessi)
 

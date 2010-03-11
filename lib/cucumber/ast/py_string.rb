@@ -29,7 +29,11 @@ module Cucumber
       end
 
       def to_s
-        @string.indent(-@quotes_indent)
+        # Assume all whitespace before the first triple quote is the same.
+        # Also assume the contents of the pystring is indented with the same prefix.
+        # This allows indentation with both " " and "\t" characters.
+        return @string if @quotes_indent == ""
+        @string.gsub(/^#{@quotes_indent[0..0]}{0,#{@quotes_indent.length}}/, "")
       end
 
       def accept(visitor)

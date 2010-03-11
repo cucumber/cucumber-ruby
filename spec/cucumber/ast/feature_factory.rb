@@ -27,7 +27,7 @@ module Cucumber
         py_string = Ast::PyString.new(21, 22, %{
            I like
           Cucumber sandwich
-        }, 10)
+        }, ' '*10)
         
         background = Ast::Background.new(Ast::Comment.new(""), 2, "Background:", "",
           [
