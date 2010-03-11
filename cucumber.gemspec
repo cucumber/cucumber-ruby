@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2010-03-02}
+  s.date = %q{2010-03-11}
   s.default_executable = %q{cucumber}
   s.description = %q{A BDD tool written in Ruby}
   s.email = %q{cukes@googlegroups.com}
@@ -332,6 +332,7 @@ Gem::Specification.new do |s|
      "features/bug_371.feature",
      "features/bug_464.feature",
      "features/bug_475.feature",
+     "features/bug_585_tab_indentation.feature",
      "features/call_many_steps.feature",
      "features/cucumber_cli.feature",
      "features/cucumber_cli_diff_disabled.feature",
@@ -359,6 +360,7 @@ Gem::Specification.new do |s|
      "features/rerun_formatter.feature",
      "features/simplest.feature",
      "features/snippet.feature",
+     "features/snippets_when_using_star_keyword.feature",
      "features/step_definitions/cucumber_steps.rb",
      "features/step_definitions/extra_steps.rb",
      "features/step_definitions/simplest_steps.rb",

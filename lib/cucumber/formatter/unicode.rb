@@ -7,6 +7,17 @@ $KCODE='u' unless Cucumber::RUBY_1_9
 if Cucumber::WINDOWS
   require 'iconv'
 
+  if ENV['CUCUMBER_OUTPUT_ENCODING']
+    Cucumber::CODEPAGE = ENV['CUCUMBER_OUTPUT_ENCODING']
+  elsif Cucumber::WINDOWS_MRI
+    Cucumber::CODEPAGE = "cp#{Win32::Console::OutputCP()}"
+  elsif `cmd /c chcp` =~ /(\d+)/
+    Cucumber::CODEPAGE = "cp#{$1.to_i}"
+  else
+    Cucumber::CODEPAGE = "cp1252"
+    STDERR.puts("WARNING: Couldn't detect your output codepage. Assuming it is 1252. You may have to chcp 1252 or SET CUCUMBER_OUTPUT_ENCODING=cp1252.")
+  end
+
   module Cucumber
     module WindowsOutput #:nodoc:
       def self.extended(o)
@@ -43,16 +54,5 @@ if Cucumber::WINDOWS
       STDOUT.extend(self)
       STDERR.extend(self)
     end
-  end
-
-  if ENV['CUCUMBER_OUTPUT_ENCODING']
-    Cucumber::CODEPAGE = ENV['CUCUMBER_OUTPUT_ENCODING']
-  elsif Cucumber::WINDOWS_MRI
-    Cucumber::CODEPAGE = "cp#{Win32::Console::OutputCP()}"
-  elsif `cmd /c chcp` =~ /(\d+)/
-    Cucumber::CODEPAGE = "cp#{$1.to_i}"
-  else
-    Cucumber::CODEPAGE = "cp1252"
-    STDERR.cucumber_puts("WARNING: Couldn't detect your output codepage. Assuming it is 1252. You may have to chcp 1252 or SET CUCUMBER_OUTPUT_ENCODING=cp1252.")
   end
 end
