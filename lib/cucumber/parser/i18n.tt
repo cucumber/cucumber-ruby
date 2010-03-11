@@ -4,6 +4,7 @@ module Cucumber
       grammar <%= keywords('grammar_name')[0] %>
         include Feature
         include Table
+        include PyString
 
         rule feature
           feature_sub

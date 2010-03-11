@@ -40,7 +40,7 @@ module Cucumber
           line >= open_py_string.line && line <= close_py_string.line
         end
 
-        def build(filter=nil)
+        def build(ignored_filter=nil)
           Ast::PyString.new(open_py_string.line, close_py_string.line, s.text_value, open_py_string.indentation)
         end
       end
