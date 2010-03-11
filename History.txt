@@ -1,14 +1,16 @@
 == In Git
 
-=== New features
-* Tab indentation causes multiline step arguments to fail (#585 Aslak Hellesøy)
-* Added #announce_world method, printing the World class and all included modules (Ruby only). (Aslak Hellesøy)
-* Added #announce to the PDF formatter (Nicolas Bessi)
-
 === Bugfixes
+* #announce can now take non-String arguments just like Kernel#puts - #to_s is done implicitly. (Aslak Hellesøy)
+* Attempt to fix Cucumber::CODEPAGE error again for Windows (#561 Aslak Hellesøy)
+* Tab indentation causes multiline step arguments to fail (#585 Aslak Hellesøy)
 * Properly pass tags over the wire protocol (Matt Wynne)
 * Profile loading should honour the --strict option (#580 Rob Holland)
 * Snippets are properly printed when using '*' as step keyword. (Used to cause infinite recursion). (Aslak Hellesøy)
+
+=== New features
+* Added #announce_world method, printing the World class and all included modules (Ruby only). (Aslak Hellesøy)
+* Added #announce to the PDF formatter (Nicolas Bessi)
 
 == 0.6.3 2010-03-02
 

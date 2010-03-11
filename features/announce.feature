@@ -10,7 +10,7 @@ Feature: Delayed announcement
 
       Given /^I use multiple announces$/ do x=1
         announce("Multiple")
-        announce("Announce")
+        announce(["Announce"])
       end
 
       Given /^I use announcement (.+) in line (.+) (?:with result (.+))$/ do |ann, line, result| x=1
