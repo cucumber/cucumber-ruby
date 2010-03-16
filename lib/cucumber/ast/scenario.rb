@@ -21,19 +21,19 @@ module Cucumber
         end
       end
       
-      def initialize(background, comment, tags, line, keyword, name, steps)
+      def initialize(background, comment, tags, line, keyword, name, raw_steps)
         @background = background || EmptyBackground.new
-        @comment, @tags, @line, @keyword, @name = comment, tags, line, keyword, name
-        attach_steps(steps)
-
-        step_invocations = steps.map{|step| step.step_invocation}
-        @steps = @background.step_collection(step_invocations)
+        @comment, @tags, @line, @keyword, @name, @raw_steps = comment, tags, line, keyword, name, raw_steps
+        attach_steps(raw_steps)
         @background.feature_elements << self
-        
         @exception = @executed = nil
+        init
       end
 
       def init
+        return if @steps
+        step_invocations = @raw_steps.map{|step| step.step_invocation}
+        @steps = @background.step_collection(step_invocations)
       end
 
       def accept(visitor)
