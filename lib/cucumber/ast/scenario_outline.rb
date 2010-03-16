@@ -18,12 +18,17 @@ module Cucumber
       # * Examples keyword
       # * Examples section name
       # * Raw matrix
-      def initialize(background, comment, tags, line, keyword, name, steps, example_sections)
-        @background, @comment, @tags, @line, @keyword, @name = background, comment, tags, line, keyword, name
-        attach_steps(steps)
-        @steps = StepCollection.new(steps)
+      def initialize(background, comment, tags, line, keyword, name, raw_steps, example_sections)
+        @background, @comment, @tags, @line, @keyword, @name, @raw_steps, @example_sections = background, comment, tags, line, keyword, name, raw_steps, example_sections
+        init
+      end
 
-        @examples_array = example_sections.map do |example_section|
+      def init
+        return if @steps
+        attach_steps(@raw_steps)
+        @steps = StepCollection.new(@raw_steps)
+
+        @examples_array = @example_sections.map do |example_section|
           examples_comment    = example_section[0]
           examples_line       = example_section[1]
           examples_keyword    = example_section[2]
@@ -36,9 +41,6 @@ module Cucumber
         @examples_array.extend(ExamplesArray)
 
         @background.feature_elements << self if @background
-      end
-
-      def init
       end
 
       def accept(visitor)
