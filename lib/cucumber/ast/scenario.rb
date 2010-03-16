@@ -19,17 +19,20 @@ module Cucumber
         def step_collection(step_invocations)
           StepCollection.new(step_invocations)
         end
+        
+        def init
+        end
       end
       
       def initialize(background, comment, tags, line, keyword, name, raw_steps)
         @background = background || EmptyBackground.new
         @comment, @tags, @line, @keyword, @name, @raw_steps = comment, tags, line, keyword, name, raw_steps
         @exception = @executed = nil
-        init
       end
 
       def init
         return if @steps
+        @background.init
         @background.feature_elements << self
         attach_steps(@raw_steps)
         step_invocations = @raw_steps.map{|step| step.step_invocation}

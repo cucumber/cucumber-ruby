@@ -9,15 +9,19 @@ module Cucumber
 
       def initialize(background, comment, tags, name, feature_elements)
         @background, @comment, @tags, @name, @feature_elements = background, comment, tags, name.strip, feature_elements
+      end
 
-        background.feature = self if background
+      def init
+        @background.feature = self if @background
         @feature_elements.each do |feature_element|
+          feature_element.init
           feature_element.feature = self
         end
       end
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
+        init
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@name)
@@ -36,6 +40,7 @@ module Cucumber
       end
 
       def next_feature_element(feature_element, &proc)
+        init
         index = @feature_elements.index(feature_element)
         next_one = @feature_elements[index+1]
         proc.call(next_one) if next_one
@@ -55,6 +60,7 @@ module Cucumber
       end
 
       def tag_locations(tag)
+        init
         @feature_elements.select{|feature_element| feature_element.tagged_with?(tag)}
       end
 
@@ -68,6 +74,7 @@ module Cucumber
       end
 
       def to_sexp
+        init
         sexp = [:feature, @file, @name]
         comment = @comment.to_sexp
         sexp += [comment] if comment
