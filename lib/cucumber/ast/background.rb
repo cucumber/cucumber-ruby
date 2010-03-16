@@ -8,12 +8,12 @@ module Cucumber
 
       def initialize(comment, line, keyword, name, raw_steps)
         @comment, @line, @keyword, @name, @raw_steps = comment, line, keyword, name, raw_steps
-        attach_steps(raw_steps)
         @feature_elements = []
       end
 
       def init
         return if @steps
+        attach_steps(@raw_steps)
         @steps = StepCollection.new(@raw_steps)
         @step_invocations = @steps.step_invocations(true)
       end

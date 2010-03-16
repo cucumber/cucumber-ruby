@@ -24,7 +24,6 @@ module Cucumber
       def initialize(background, comment, tags, line, keyword, name, raw_steps)
         @background = background || EmptyBackground.new
         @comment, @tags, @line, @keyword, @name, @raw_steps = comment, tags, line, keyword, name, raw_steps
-        attach_steps(raw_steps)
         @background.feature_elements << self
         @exception = @executed = nil
         init
@@ -32,6 +31,7 @@ module Cucumber
 
       def init
         return if @steps
+        attach_steps(@raw_steps)
         step_invocations = @raw_steps.map{|step| step.step_invocation}
         @steps = @background.step_collection(step_invocations)
       end
