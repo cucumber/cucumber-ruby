@@ -33,6 +33,9 @@ module Cucumber
         @exception = @executed = nil
       end
 
+      def init
+      end
+
       def accept(visitor)
         return if Cucumber.wants_to_quit
         

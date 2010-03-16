@@ -45,6 +45,7 @@ module Cucumber
       end
 
       def max_line_length
+        init
         @steps.max_line_length(self)
       end
 

@@ -6,14 +6,20 @@ module Cucumber
       include FeatureElement
       attr_reader :feature_elements
 
-      def initialize(comment, line, keyword, name, steps)
-        @comment, @line, @keyword, @name, @steps = comment, line, keyword, name, StepCollection.new(steps)
-        attach_steps(steps)
-        @step_invocations = @steps.step_invocations(true)
+      def initialize(comment, line, keyword, name, raw_steps)
+        @comment, @line, @keyword, @name, @raw_steps = comment, line, keyword, name, raw_steps
+        attach_steps(raw_steps)
         @feature_elements = []
       end
 
+      def init
+        return if @steps
+        @steps = StepCollection.new(@raw_steps)
+        @step_invocations = @steps.step_invocations(true)
+      end
+
       def step_collection(step_invocations)
+        init
         unless(@first_collection_created)
           @first_collection_created = true
           @step_invocations.dup(step_invocations)
@@ -24,6 +30,7 @@ module Cucumber
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
+        init
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_background_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
         with_visitor(hook_context, visitor) do
@@ -35,6 +42,7 @@ module Cucumber
       end
       
       def with_visitor(scenario, visitor)
+        init
         if self != scenario && scenario.respond_to?(:with_visitor)
           scenario.with_visitor(visitor) do
             yield
@@ -45,6 +53,7 @@ module Cucumber
       end
       
       def accept_hook?(hook)
+        init
         if hook_context != self
           hook_context.accept_hook?(hook)
         else
@@ -62,6 +71,7 @@ module Cucumber
       end
 
       def to_sexp
+        init
         sexp = [:background, @line, @keyword]
         sexp += [@name] unless @name.empty?
         comment = @comment.to_sexp

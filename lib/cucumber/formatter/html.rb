@@ -383,11 +383,14 @@ module Cucumber
         features.each do |feature|
           #get background steps
           if feature.instance_variable_get("@background")
-            background = feature.instance_variable_get("@background").instance_variable_get("@steps").instance_variable_get("@steps")
-            count += background.size
+            background = feature.instance_variable_get("@background")
+            background.init
+            background_steps = background.instance_variable_get("@steps").instance_variable_get("@steps")
+            count += background_steps.size
           end
           #get scenarios
           feature.instance_variable_get("@feature_elements").each do |scenario|
+            scenario.init
             #get steps
             steps = scenario.instance_variable_get("@steps").instance_variable_get("@steps")
             count += steps.size

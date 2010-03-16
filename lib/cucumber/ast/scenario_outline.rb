@@ -38,6 +38,9 @@ module Cucumber
         @background.feature_elements << self if @background
       end
 
+      def init
+      end
+
       def accept(visitor)
         return if Cucumber.wants_to_quit
         visitor.visit_comment(@comment) unless @comment.empty?
