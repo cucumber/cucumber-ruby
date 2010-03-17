@@ -21,7 +21,6 @@ module Cucumber
                 builder.row(table_row.build, table_row.line)
               end
             end
-            builder.last_row
           end
 
           def raw(filter=nil, scenario_outline=nil)

@@ -42,6 +42,7 @@ module Cucumber
       end
 
       def scenario(keyword, name, line)
+        grab_table!
         scenario = Ast::Scenario.new(
           @background, 
           Ast::Comment.new(grab_comments!('')), 
@@ -57,6 +58,7 @@ module Cucumber
       end
 
       def scenario_outline(keyword, name, line)
+        grab_table!
         scenario_outline = Ast::ScenarioOutline.new(
           @background, 
           Ast::Comment.new(grab_comments!('')), 
@@ -73,10 +75,12 @@ module Cucumber
       end
 
       def examples(keyword, name, line)
+        grab_table!
         @examples_fields = [Ast::Comment.new(grab_comments!('')), line, keyword, name]
       end
 
       def step(keyword, name, line)
+        grab_table!
         @table_owner = Ast::Step.new(line, keyword, name)
         @step_container.add_step(@table_owner)
       end
@@ -86,20 +90,13 @@ module Cucumber
         @rows << row
       end
 
-      def last_row
-        if @examples_fields
-          @examples_fields << @rows
-          @step_container.add_examples(@examples_fields)
-        else
-          @multiline_arg = Ast::Table.new(@rows)
-          @table_owner.multiline_arg = @multiline_arg if @table_owner
-        end
-        @rows = nil
-      end
-
       def py_string(string, line)
         @multiline_arg = Ast::PyString.new(string)
         @table_owner.multiline_arg = @multiline_arg if @table_owner
+      end
+
+      def eof
+        grab_table!
       end
 
       def syntax_error(state, event, legal_events, line)
@@ -107,6 +104,19 @@ module Cucumber
       end
 
     private
+
+      def grab_table!
+        return if @rows.nil? 
+        if @examples_fields
+          @examples_fields << @rows
+          @step_container.add_examples(@examples_fields)
+          @examples_fields = nil
+        else
+          @multiline_arg = Ast::Table.new(@rows)
+          @table_owner.multiline_arg = @multiline_arg if @table_owner
+        end
+        @rows = nil
+      end
 
       def grab_tags!(indent)
         tags = @tags ? @tags : []

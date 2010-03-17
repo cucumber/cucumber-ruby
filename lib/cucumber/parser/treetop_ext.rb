@@ -32,6 +32,7 @@ module Cucumber
         else
           builder = Cucumber::Parser::GherkinBuilder.new
           parse_tree.emit(builder, filter)
+          builder.eof
           ast = builder.ast
           ast.file = file unless ast.nil?
           ast
