@@ -15,10 +15,6 @@ module Cucumber
             line >= open_py_string.line && line <= close_py_string.line
           end
 
-          def build(ignored_filter=nil)
-            Ast::PyString.new(value)
-          end
-  
           def value
             quotes_indent = open_py_string.indentation
             body = s.text_value.gsub(/\\"/, '"')

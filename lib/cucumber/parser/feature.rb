@@ -57,25 +57,12 @@ module Cucumber
       end
 
       module FeatureSub2
-        def build(filter)
-          if(filter.nil? || feature_elements.accept?(filter) || (!bg.empty? && filter.accept?(bg)))
-            background = bg.respond_to?(:build) ? bg.build : nil      
-            Ast::Feature.new(
-              background, 
-              comment.build, 
-              tags.build, 
-              header.text_value, 
-              feature_elements.build(background, filter)
-            )
-          end
-        end
-
         def emit(builder, filter)
           if(filter.nil? || feature_elements.accept?(filter) || (!bg.empty? && filter.accept?(bg)))
             comment.emit(builder)
             tags.emit(builder)
             builder.feature('', header.text_value, header.line)
-            bg.emit(builder, filter) if bg.respond_to?(:build)
+            bg.emit(builder, filter) if bg.respond_to?(:emit)
             feature_elements.emit(builder, filter)
           end
         end
@@ -225,10 +212,6 @@ module Cucumber
           ts.elements.detect{|e| e.tag.line == line}
         end
 
-        def build
-          Ast::Tags.new(ts.line, tag_names)
-        end
-        
         def tag_names
           @tag_names ||= ts.elements.map{|e| e.tag.text_value}
         end
@@ -388,10 +371,6 @@ module Cucumber
       end
 
       module Comment1
-        def build
-          Ast::Comment.new(text_value)
-        end
-
         def emit(builder)
           builder.comment(text_value, line)
         end
@@ -530,16 +509,6 @@ module Cucumber
           tag_expression.eval(self.parent.tags.tag_names)
         end
 
-        def build
-          Ast::Background.new(
-            comment.build, 
-            background_keyword.line,
-            background_keyword.text_value,
-            name.build, 
-            steps.build
-          )
-        end
-
         def emit(builder, filter)
           builder.background(background_keyword.text_value, name.build, background_keyword.line)
           steps.emit(builder)
@@ -643,14 +612,6 @@ module Cucumber
           filter.nil? || elements.empty? || elements.detect{|feature_element| filter.accept?(feature_element)}
         end
         
-        def build(background, filter)
-          elements.map do |feature_element|
-            if filter.nil? || filter.accept?(feature_element)
-              feature_element.build(background, filter)
-            end
-          end.compact
-        end
-
         def emit(builder, filter)
           elements.each do |feature_element|
             if filter.nil? || filter.accept?(feature_element)
@@ -749,18 +710,6 @@ module Cucumber
 
         def matches_name?(regexp_to_match)
           name.build =~ regexp_to_match
-        end
-
-        def build(background, filter)
-          Ast::Scenario.new(
-            background,
-            comment.build, 
-            tags.build,
-            scenario_keyword.line,
-            scenario_keyword.text_value, 
-            name.build, 
-            steps.build
-          )
         end
 
         def emit(builder, filter)
@@ -904,19 +853,6 @@ module Cucumber
           name.build =~ regexp_to_match
         end
 
-        def build(background, filter)
-          Ast::ScenarioOutline.new(
-            background,
-            comment.build, 
-            tags.build,
-            scenario_outline_keyword.line, 
-            scenario_outline_keyword.text_value, 
-            name.build, 
-            steps.build, 
-            examples_sections.build(filter, self)
-          )  
-        end
-
         def emit(builder, filter)
           comment.emit(builder)
           tags.emit(builder)
@@ -1004,10 +940,6 @@ module Cucumber
           elements.detect{|e| e.at_line?(line)}
         end
 
-        def build
-          elements.map{|e| e.build}
-        end
-
         def emit(builder)
           elements.each{|e| e.emit(builder)}
         end
@@ -1069,17 +1001,9 @@ module Cucumber
           (multi.respond_to?(:at_line?) && multi.at_line?(line))
         end
 
-        def build
-          if multi.respond_to?(:build)
-            Ast::Step.new(step_keyword.line, step_keyword.text_value.strip, name.text_value.strip, multi.build)
-          else
-            Ast::Step.new(step_keyword.line, step_keyword.text_value.strip, name.text_value.strip)
-          end
-        end
-
         def emit(builder)
           builder.step(step_keyword.text_value.strip, name.text_value.strip, step_keyword.line)
-          multi.emit(builder) if multi.respond_to?(:build)
+          multi.emit(builder) if multi.respond_to?(:emit)
         end
       end
 
@@ -1197,14 +1121,6 @@ module Cucumber
           elements.detect { |e| e.matches_name?(regexp_to_match) }
         end
 
-        def build(filter, scenario_outline)
-          elements.map do |e|
-            if(filter.nil? || filter.accept_example?(e, scenario_outline))
-              e.build(filter, scenario_outline)
-            end
-          end.compact
-        end
-
         def emit(builder, filter, scenario_outline)
           elements.each do |e|
             if(filter.nil? || filter.accept_example?(e, scenario_outline))
@@ -1284,10 +1200,6 @@ module Cucumber
 
         def matches_name?(regexp_to_match)
           name.build =~ regexp_to_match
-        end
-
-        def build(filter, scenario_outline)
-          [comment.build, examples_keyword.line, examples_keyword.text_value, name.build, table.raw(filter, scenario_outline)]
         end
 
         def emit(builder, filter, scenario_outline)

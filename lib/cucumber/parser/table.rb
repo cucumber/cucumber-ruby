@@ -23,10 +23,6 @@ module Cucumber
           elements.detect{|table_row| table_row.at_line?(line)}
         end
 
-        def build(filter=nil)
-          Ast::Table.new(raw)
-        end
-
         def emit(builder, filter=nil, scenario_outline=nil)
           elements.each do |table_row|
             if(filter.nil? || table_row == elements[0] || filter.at_line?(table_row) || (scenario_outline && filter.outline_at_line?(scenario_outline)))

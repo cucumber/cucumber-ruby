@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2010-03-11}
+  s.date = %q{2010-03-17}
   s.default_executable = %q{cucumber}
   s.description = %q{A BDD tool written in Ruby}
   s.email = %q{cukes@googlegroups.com}
@@ -387,6 +387,7 @@ Gem::Specification.new do |s|
      "gem_tasks/rspec.rake",
      "gem_tasks/sass.rake",
      "gem_tasks/sdoc.rake",
+     "gem_tasks/treetop.rake",
      "lib/README.rdoc",
      "lib/autotest/cucumber.rb",
      "lib/autotest/cucumber_mixin.rb",
@@ -455,6 +456,7 @@ Gem::Specification.new do |s|
      "lib/cucumber/parser/common.tt",
      "lib/cucumber/parser/feature.rb",
      "lib/cucumber/parser/feature.tt",
+     "lib/cucumber/parser/gherkin_builder.rb",
      "lib/cucumber/parser/i18n.tt",
      "lib/cucumber/parser/natural_language.rb",
      "lib/cucumber/parser/py_string.rb",
@@ -526,7 +528,6 @@ Gem::Specification.new do |s|
      "spec/cucumber/treetop_parser/empty_feature.feature",
      "spec/cucumber/treetop_parser/empty_scenario.feature",
      "spec/cucumber/treetop_parser/empty_scenario_outline.feature",
-     "spec/cucumber/treetop_parser/fit_scenario.feature",
      "spec/cucumber/treetop_parser/given_scenario.feature",
      "spec/cucumber/treetop_parser/invalid_scenario_outlines.feature",
      "spec/cucumber/treetop_parser/multiline_steps.feature",
