@@ -23,17 +23,12 @@ module Cucumber
         "string"
       end
 
-      def initialize(start_line, end_line, string, quotes_indent)
-        @start_line, @end_line = start_line, end_line
-        @string, @quotes_indent = string.gsub(/\\"/, '"'), quotes_indent
+      def initialize(string)
+        @string = string
       end
 
       def to_s
-        # Assume all whitespace before the first triple quote is the same.
-        # Also assume the contents of the pystring is indented with the same prefix.
-        # This allows indentation with both " " and "\t" characters.
-        return @string if @quotes_indent == ""
-        @string.gsub(/^#{@quotes_indent[0..0]}{0,#{@quotes_indent.length}}/, "")
+        @string
       end
 
       def accept(visitor)
@@ -47,7 +42,7 @@ module Cucumber
           value ||= ''
           string = string.gsub(name, value)
         end
-        PyString.new(@start_line, @end_line, string, @quotes_indent)
+        PyString.new(string)
       end
 
       def has_text?(text)

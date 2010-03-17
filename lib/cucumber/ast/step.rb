@@ -4,9 +4,9 @@ require 'cucumber/step_match'
 module Cucumber
   module Ast
     class Step #:nodoc:
-      attr_reader :line, :keyword, :name, :multiline_arg
+      attr_reader :line, :keyword, :name
       attr_writer :step_collection, :options
-      attr_accessor :feature_element, :exception
+      attr_accessor :feature_element, :exception, :multiline_arg
 
       INDENT = 2
       

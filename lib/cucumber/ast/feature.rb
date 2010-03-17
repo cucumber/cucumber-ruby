@@ -3,7 +3,7 @@ module Cucumber
     # Represents the root node of a parsed feature.
     class Feature #:nodoc:
       attr_accessor :language
-      attr_writer :features
+      attr_writer :features, :background
       attr_reader :file
       attr_reader :name
 
@@ -13,10 +13,15 @@ module Cucumber
 
       def init
         @background.feature = self if @background
+        @background.init if @background
         @feature_elements.each do |feature_element|
           feature_element.init
           feature_element.feature = self
         end
+      end
+
+      def add_feature_element(feature_element)
+        @feature_elements << feature_element
       end
 
       def accept(visitor)

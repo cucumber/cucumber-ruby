@@ -20,7 +20,10 @@ module Cucumber
       # * Raw matrix
       def initialize(background, comment, tags, line, keyword, name, raw_steps, example_sections)
         @background, @comment, @tags, @line, @keyword, @name, @raw_steps, @example_sections = background, comment, tags, line, keyword, name, raw_steps, example_sections
-        init
+      end
+
+      def add_examples(example_section)
+        @example_sections << example_section
       end
 
       def init
@@ -38,6 +41,7 @@ module Cucumber
           examples_table = OutlineTable.new(examples_matrix, self)
           Examples.new(examples_comment, examples_line, examples_keyword, examples_name, examples_table)
         end
+
         @examples_array.extend(ExamplesArray)
 
         @background.feature_elements << self if @background
@@ -90,6 +94,7 @@ module Cucumber
       end
 
       def to_sexp
+        init
         sexp = [:scenario_outline, @keyword, @name]
         comment = @comment.to_sexp
         sexp += [comment] if comment

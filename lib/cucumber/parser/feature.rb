@@ -69,6 +69,16 @@ module Cucumber
             )
           end
         end
+
+        def emit(builder, filter)
+          if(filter.nil? || feature_elements.accept?(filter) || (!bg.empty? && filter.accept?(bg)))
+            comment.emit(builder)
+            tags.emit(builder)
+            builder.feature('', header.text_value, header.line)
+            bg.emit(builder, filter) if bg.respond_to?(:build)
+            feature_elements.emit(builder, filter)
+          end
+        end
       end
 
       def _nt_feature_sub
@@ -221,6 +231,10 @@ module Cucumber
         
         def tag_names
           @tag_names ||= ts.elements.map{|e| e.tag.text_value}
+        end
+
+        def emit(builder)
+          ts.elements.each{|e| builder.tag(e.tag.text_value, e.tag.line)}
         end
       end
 
@@ -377,6 +391,10 @@ module Cucumber
         def build
           Ast::Comment.new(text_value)
         end
+
+        def emit(builder)
+          builder.comment(text_value, line)
+        end
       end
 
       def _nt_comment
@@ -521,6 +539,11 @@ module Cucumber
             steps.build
           )
         end
+
+        def emit(builder, filter)
+          builder.background(background_keyword.text_value, name.build, background_keyword.line)
+          steps.emit(builder)
+        end
       end
 
       def _nt_background
@@ -627,6 +650,14 @@ module Cucumber
             end
           end.compact
         end
+
+        def emit(builder, filter)
+          elements.each do |feature_element|
+            if filter.nil? || filter.accept?(feature_element)
+              feature_element.emit(builder, filter)
+            end
+          end
+        end
       end
 
       def _nt_feature_elements
@@ -730,6 +761,13 @@ module Cucumber
             name.build, 
             steps.build
           )
+        end
+
+        def emit(builder, filter)
+          comment.emit(builder)
+          tags.emit(builder)
+          builder.scenario(scenario_keyword.text_value, name.build, scenario_keyword.line)
+          steps.emit(builder)
         end
       end
 
@@ -876,7 +914,15 @@ module Cucumber
             name.build, 
             steps.build, 
             examples_sections.build(filter, self)
-          )
+          )  
+        end
+
+        def emit(builder, filter)
+          comment.emit(builder)
+          tags.emit(builder)
+          builder.scenario_outline(scenario_outline_keyword.text_value, name.build, scenario_outline_keyword.line)
+          steps.emit(builder)
+          examples_sections.emit(builder, filter, self)
         end
       end
 
@@ -961,6 +1007,10 @@ module Cucumber
         def build
           elements.map{|e| e.build}
         end
+
+        def emit(builder)
+          elements.each{|e| e.emit(builder)}
+        end
       end
 
       def _nt_steps
@@ -1025,6 +1075,11 @@ module Cucumber
           else
             Ast::Step.new(step_keyword.line, step_keyword.text_value.strip, name.text_value.strip)
           end
+        end
+
+        def emit(builder)
+          builder.step(step_keyword.text_value.strip, name.text_value.strip, step_keyword.line)
+          multi.emit(builder) if multi.respond_to?(:build)
         end
       end
 
@@ -1149,6 +1204,14 @@ module Cucumber
             end
           end.compact
         end
+
+        def emit(builder, filter, scenario_outline)
+          elements.each do |e|
+            if(filter.nil? || filter.accept_example?(e, scenario_outline))
+              e.emit(builder, filter, scenario_outline)
+            end
+          end
+        end
       end
 
       def _nt_examples_sections
@@ -1225,6 +1288,11 @@ module Cucumber
 
         def build(filter, scenario_outline)
           [comment.build, examples_keyword.line, examples_keyword.text_value, name.build, table.raw(filter, scenario_outline)]
+        end
+
+        def emit(builder, filter, scenario_outline)
+          builder.examples(examples_keyword.text_value, name.build, examples_keyword.line)
+          table.emit(builder, filter, scenario_outline)
         end
       end
 

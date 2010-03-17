@@ -241,7 +241,7 @@ module Cucumber
         Ast::Table.new(text_or_table)
       else
         @table_parser ||= Parser::TableParser.new
-        @table_parser.parse_or_fail(text_or_table.strip, file, line_offset)
+        @table_parser.parse_or_fail(text_or_table.strip, file, nil, line_offset)
       end
     end
 
@@ -256,7 +256,7 @@ module Cucumber
     #
     def py_string(string_with_triple_quotes, file=nil, line_offset=0)
       @py_string_parser ||= Parser::PyStringParser.new
-      @py_string_parser.parse_or_fail(string_with_triple_quotes, file, line_offset).to_s
+      @py_string_parser.parse_or_fail(string_with_triple_quotes, file, nil, line_offset).to_s
     end
 
     def step_match(step_name, name_to_report=nil) #:nodoc:

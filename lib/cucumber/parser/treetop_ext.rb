@@ -29,7 +29,14 @@ module Cucumber
         if parse_tree.nil?
           raise Cucumber::Parser::SyntaxError.new(self, file, line_offset)
         else
-          ast = parse_tree.build(filter) # may return nil if it doesn't match filter.
+          if ENV['GHERKIN_API']
+            require 'cucumber/parser/gherkin_builder'
+            builder = Cucumber::Parser::GherkinBuilder.new
+            parse_tree.emit(builder, filter)
+            ast = builder.ast
+          else
+            ast = parse_tree.build(filter) # may return nil if it doesn't match filter.
+          end
           ast.file = file unless ast.nil?
           ast
         end

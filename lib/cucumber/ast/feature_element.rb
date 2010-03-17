@@ -6,6 +6,10 @@ module Cucumber
     module FeatureElement #:nodoc:
       attr_accessor :feature
 
+      def add_step(step)
+        @raw_steps << step
+      end
+
       def attach_steps(steps)
         steps.each {|step| step.feature_element = self}
       end

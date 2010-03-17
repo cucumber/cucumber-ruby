@@ -346,7 +346,7 @@ Given I am a step
           parse_file("empty_scenario_outline.feature")
         end
 
-        it "should parse fit_scenario" do
+        it "should parse multiline_steps" do
           parse_file("multiline_steps.feature")
         end
 

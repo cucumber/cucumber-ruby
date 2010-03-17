@@ -349,6 +349,7 @@ module Cucumber
               | a | b |
               | c | d |
             })
+            @t.should_not == nil
           end
           
           it "should raise on missing rows" do
@@ -410,7 +411,7 @@ module Cucumber
 
         def table(text, file=nil, line_offset=0)
           @table_parser ||= Cucumber::Parser::TableParser.new
-          @table_parser.parse_or_fail(text.strip, file, line_offset)
+          @table_parser.parse_or_fail(text.strip, file, nil, line_offset)
         end
       end
 

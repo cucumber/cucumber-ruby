@@ -16,7 +16,21 @@ module Cucumber
           end
 
           def build(ignored_filter=nil)
-            Ast::PyString.new(open_py_string.line, close_py_string.line, s.text_value, open_py_string.indentation)
+            Ast::PyString.new(value)
+          end
+  
+          def value
+            quotes_indent = open_py_string.indentation
+            body = s.text_value.gsub(/\\"/, '"')
+            # Assume all whitespace before the first triple quote is the same.
+            # Also assume the contents of the pystring is indented with the same prefix.
+            # This allows indentation with both " " and "\t" characters.
+            return body if quotes_indent == ""
+            body.gsub(/^#{quotes_indent[0..0]}{0,#{quotes_indent.length}}/, "")
+          end
+  
+          def emit(builder, filter=nil)
+            builder.py_string(value, open_py_string.line)
           end
         }
       end

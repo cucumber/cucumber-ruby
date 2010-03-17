@@ -48,7 +48,7 @@ module Cucumber
       end
 
       it "should replace arguments in py string arg" do
-        py_string = PyString.new(1, 2, 'taste_<taste> color_<color>', '')
+        py_string = PyString.new('taste_<taste> color_<color>')
 
         step = Step.new(1, 'Given', 'a <color> cucumber', py_string)
 

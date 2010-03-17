@@ -27,6 +27,15 @@ module Cucumber
           Ast::Table.new(raw)
         end
 
+        def emit(builder, filter=nil, scenario_outline=nil)
+          elements.each do |table_row|
+            if(filter.nil? || table_row == elements[0] || filter.at_line?(table_row) || (scenario_outline && filter.outline_at_line?(scenario_outline)))
+              builder.row(table_row.build, table_row.line)
+            end
+          end
+          builder.last_row
+        end
+
         def raw(filter=nil, scenario_outline=nil)
           elements.map do |table_row|
             if(filter.nil? || table_row == elements[0] || filter.at_line?(table_row) || (scenario_outline && filter.outline_at_line?(scenario_outline)))
