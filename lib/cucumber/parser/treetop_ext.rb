@@ -30,7 +30,7 @@ module Cucumber
         if parse_tree.nil?
           raise Cucumber::Parser::SyntaxError.new(self, file, line_offset)
         else
-          builder = Cucumber::Parser::GherkinBuilder.new
+          builder = Cucumber::Parser::GherkinBuilder.new(filter)
           parse_tree.emit(builder, filter)
           builder.eof
           ast = builder.ast

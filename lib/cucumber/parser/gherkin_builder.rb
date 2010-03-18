@@ -4,6 +4,10 @@ module Cucumber
     # "legacy" AST. It will be replaced later when we have a new "clean"
     # AST.
     class GherkinBuilder
+      def initialize(filter)
+        @filter = filter if GherkinFilter === filter
+      end
+      
       def ast
         @feature || @multiline_arg
       end
@@ -86,8 +90,10 @@ module Cucumber
       end
 
       def row(row, line)
-        @rows ||= []
-        @rows << row
+        if(@filter.good_line?(line))
+          @rows ||= []
+          @rows << row
+        end
       end
 
       def py_string(string, line)

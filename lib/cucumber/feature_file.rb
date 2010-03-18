@@ -23,6 +23,10 @@ module Cucumber
     # be filtered.
     def parse(step_mother, options)
       filter = Filter.new(@lines, options)
+      if ENV['GHERKIN']
+        require 'cucumber/gherkin_filter'
+        filter = GherkinFilter.new(@lines, options)
+      end
       language = Parser::NaturalLanguage.get(step_mother, (lang || 'en'))
       language.parse(source, @path, filter)
     end
