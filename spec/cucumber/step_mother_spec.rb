@@ -59,7 +59,7 @@ spec/cucumber/step_mother_spec.rb:48:in `/Three cute (.*)/'
 
     it "should not raise Ambiguous error when multiple step definitions match, but --guess is enabled" do
       @step_mother.options = {:guess => true}
-      @dsl.Given(/Three (.*) mice( cannot find food)?/) {|disability, is_disastrous|}
+      @dsl.Given(/Three (.*) mice/) {|disability|}
       @dsl.Given(/Three (.*)/) {|animal|}
       
       lambda do
