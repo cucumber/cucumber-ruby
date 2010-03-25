@@ -278,8 +278,8 @@ module Cucumber
         longest_regexp_length = no_groups.map {|step_match| step_match.text_length }.max
         no_groups.select {|step_match| step_match.text_length == longest_regexp_length }
       elsif top_groups.any?
-        shortest_capture_length = top_groups.map {|step_match| step_match.args.inject(0) {|sum, c| sum + c.length } }.min
-        top_groups.select {|step_match| step_match.args.inject(0) {|sum, c| sum + c.length } == shortest_capture_length }
+        shortest_capture_length = top_groups.map {|step_match| step_match.args.inject(0) {|sum, c| sum + c.to_s.length } }.min
+        top_groups.select {|step_match| step_match.args.inject(0) {|sum, c| sum + c.to_s.length } == shortest_capture_length }
       else
         top_groups
       end
