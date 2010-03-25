@@ -54,8 +54,8 @@ module Cucumber
         @parser
       end
 
-      def parse(source, path, filter)
-        feature = parser.parse_or_fail(source, path, filter)
+      def parse(source, path, lines, name_regexen, tag_expression)
+        feature = parser.parse_or_fail(source, path, lines, name_regexen, tag_expression, 0)
         feature.language = self if feature
         feature
       end

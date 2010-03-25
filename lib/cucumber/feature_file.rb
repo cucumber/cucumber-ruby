@@ -1,5 +1,4 @@
 require 'cucumber/parser/natural_language'
-require 'cucumber/filter'
 
 module Cucumber
   class FeatureFile
@@ -22,13 +21,8 @@ module Cucumber
     # If +options+ contains tags, the result will
     # be filtered.
     def parse(step_mother, options)
-      filter = Filter.new(@lines, options)
-      if ENV['GHERKIN']
-        require 'cucumber/gherkin_filter'
-        filter = GherkinFilter.new(@lines, options)
-      end
       language = Parser::NaturalLanguage.get(step_mother, (lang || 'en'))
-      language.parse(source, @path, filter)
+      language.parse(source, @path, @lines || [], options[:name_regexps] || [], options[:tag_expression] || Gherkin::Tools::TagExpression.new)
     end
     
     def source

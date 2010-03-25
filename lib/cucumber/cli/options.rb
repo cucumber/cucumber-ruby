@@ -1,6 +1,6 @@
 require 'cucumber/cli/profile_loader'
 require 'cucumber/formatter/ansicolor'
-require 'cucumber/tag_expression'
+require 'gherkin/tools/tag_expression'
 
 module Cucumber
   module Cli
@@ -304,7 +304,7 @@ module Cucumber
       end
 
       def tag_filter(tag_string)
-        tags = TagExpression.parse(tag_string)
+        tags = Gherkin::Tools::TagExpression.new(tag_string)
       end
 
       def disable_profile_loading?

@@ -36,10 +36,6 @@ module Cucumber
       end
 
       module PyString2
-        def at_line?(line)
-          line >= open_py_string.line && line <= close_py_string.line
-        end
-
         def value
           quotes_indent = open_py_string.indentation
           body = s.text_value.gsub(/\\"/, '"')
@@ -50,7 +46,7 @@ module Cucumber
           body.gsub(/^#{quotes_indent[0..0]}{0,#{quotes_indent.length}}/, "")
         end
 
-        def emit(builder, filter=nil)
+        def emit(builder)
           builder.py_string(value, open_py_string.line)
         end
       end

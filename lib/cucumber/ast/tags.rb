@@ -1,3 +1,5 @@
+require 'gherkin/tools/tag_expression'
+
 module Cucumber
   module Ast
     class Tags #:nodoc:
@@ -15,7 +17,7 @@ module Cucumber
       end
 
       def accept_hook?(hook)
-        TagExpression.parse(hook.tag_expressions).eval(@tag_names)
+        Gherkin::Tools::TagExpression.new(hook.tag_expressions).eval(@tag_names)
       end
 
       def to_sexp

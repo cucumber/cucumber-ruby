@@ -57,14 +57,12 @@ module Cucumber
       end
 
       module FeatureSub2
-        def emit(builder, filter)
-          if(filter.nil? || feature_elements.accept?(filter) || (!bg.empty? && filter.accept?(bg)))
-            comment.emit(builder)
-            tags.emit(builder)
-            builder.feature('', header.text_value, header.line)
-            bg.emit(builder, filter) if bg.respond_to?(:emit)
-            feature_elements.emit(builder, filter)
-          end
+        def emit(listener)
+          comment.emit(listener)
+          tags.emit(listener)
+          listener.feature('', header.text_value, header.line)
+          bg.emit(listener) if bg.respond_to?(:emit)
+          feature_elements.emit(listener)
         end
       end
 
@@ -208,16 +206,12 @@ module Cucumber
       end
 
       module Tags2
-        def at_line?(line)
-          ts.elements.detect{|e| e.tag.line == line}
-        end
-
         def tag_names
           @tag_names ||= ts.elements.map{|e| e.tag.text_value}
         end
 
-        def emit(builder)
-          ts.elements.each{|e| builder.tag(e.tag.text_value, e.tag.line)}
+        def emit(listener)
+          ts.elements.each{|e| listener.tag(e.tag.text_value, e.tag.line)}
         end
       end
 
@@ -371,8 +365,8 @@ module Cucumber
       end
 
       module Comment1
-        def emit(builder)
-          builder.comment(text_value, line)
+        def emit(listener)
+          listener.comment(text_value, line)
         end
       end
 
@@ -496,22 +490,9 @@ module Cucumber
       end
 
       module Background1
-        def matches_name?(regexp_to_match)
-          name.build =~ regexp_to_match
-        end
-
-        def at_line?(line)
-          background_keyword.line == line ||
-          steps.at_line?(line)
-        end
-
-        def matches_tags?(tag_expression)
-          tag_expression.eval(self.parent.tags.tag_names)
-        end
-
-        def emit(builder, filter)
-          builder.background(background_keyword.text_value, name.build, background_keyword.line)
-          steps.emit(builder)
+        def emit(listener)
+          listener.background(background_keyword.text_value, name.build, background_keyword.line)
+          steps.emit(listener)
         end
       end
 
@@ -608,15 +589,9 @@ module Cucumber
       end
 
       module FeatureElements0
-        def accept?(filter)
-          filter.nil? || elements.empty? || elements.detect{|feature_element| filter.accept?(feature_element)}
-        end
-        
-        def emit(builder, filter)
+        def emit(listener)
           elements.each do |feature_element|
-            if filter.nil? || filter.accept?(feature_element)
-              feature_element.emit(builder, filter)
-            end
+            feature_element.emit(listener)
           end
         end
       end
@@ -696,27 +671,11 @@ module Cucumber
       end
 
       module Scenario1
-        def at_line?(line)
-          scenario_keyword.line == line ||
-          steps.at_line?(line) ||
-          tags.at_line?(line)
-        end
-
-        def matches_tags?(tag_expression)
-          feature_tag_names = self.parent.parent.tags.tag_names
-          source_tag_names = (feature_tag_names + tags.tag_names).uniq
-          tag_expression.eval(source_tag_names)
-        end
-
-        def matches_name?(regexp_to_match)
-          name.build =~ regexp_to_match
-        end
-
-        def emit(builder, filter)
-          comment.emit(builder)
-          tags.emit(builder)
-          builder.scenario(scenario_keyword.text_value, name.build, scenario_keyword.line)
-          steps.emit(builder)
+        def emit(listener)
+          comment.emit(listener)
+          tags.emit(listener)
+          listener.scenario(scenario_keyword.text_value, name.build, scenario_keyword.line)
+          steps.emit(listener)
         end
       end
 
@@ -828,37 +787,12 @@ module Cucumber
       end
 
       module ScenarioOutline1
-        def at_line?(line)
-          outline_at_line?(line) ||
-          examples_sections.at_line?(line) ||
-          tags.at_line?(line)
-        end
-
-        def outline_at_line?(line)
-          scenario_outline_keyword.line == line ||
-          steps.at_line?(line)
-        end
-
-        def matches_tags?(tag_expression)
-          feature_tag_names = self.parent.parent.tags.tag_names
-          source_tag_names = (feature_tag_names + tags.tag_names).uniq
-          tag_expression.eval(source_tag_names)
-        end
-
-        def matches_name?(regexp_to_match)
-          outline_matches_name?(regexp_to_match) || examples_sections.matches_name?(regexp_to_match)
-        end
-
-        def outline_matches_name?(regexp_to_match)
-          name.build =~ regexp_to_match
-        end
-
-        def emit(builder, filter)
-          comment.emit(builder)
-          tags.emit(builder)
-          builder.scenario_outline(scenario_outline_keyword.text_value, name.build, scenario_outline_keyword.line)
-          steps.emit(builder)
-          examples_sections.emit(builder, filter, self)
+        def emit(listener)
+          comment.emit(listener)
+          tags.emit(listener)
+          listener.scenario_outline(scenario_outline_keyword.text_value, name.build, scenario_outline_keyword.line)
+          steps.emit(listener)
+          examples_sections.emit(listener, self)
         end
       end
 
@@ -936,12 +870,8 @@ module Cucumber
       end
 
       module Steps0
-        def at_line?(line)
-          elements.detect{|e| e.at_line?(line)}
-        end
-
-        def emit(builder)
-          elements.each{|e| e.emit(builder)}
+        def emit(listener)
+          elements.each{|e| e.emit(listener)}
         end
       end
 
@@ -996,14 +926,9 @@ module Cucumber
       end
 
       module Step1
-        def at_line?(line)
-          step_keyword.line == line ||
-          (multi.respond_to?(:at_line?) && multi.at_line?(line))
-        end
-
-        def emit(builder)
-          builder.step(step_keyword.text_value.strip, name.text_value.strip, step_keyword.line)
-          multi.emit(builder) if multi.respond_to?(:emit)
+        def emit(listener)
+          listener.step(step_keyword.text_value.strip, name.text_value.strip, step_keyword.line)
+          multi.emit(listener) if multi.respond_to?(:emit)
         end
       end
 
@@ -1113,19 +1038,9 @@ module Cucumber
       end
 
       module ExamplesSections0
-        def at_line?(line)
-          elements.detect { |e| e.at_line?(line) }
-        end
-
-        def matches_name?(regexp_to_match)
-          elements.detect { |e| e.matches_name?(regexp_to_match) }
-        end
-
-        def emit(builder, filter, scenario_outline)
+        def emit(listener, scenario_outline)
           elements.each do |e|
-            if(filter.nil? || filter.accept_example?(e, scenario_outline))
-              e.emit(builder, filter, scenario_outline)
-            end
+            e.emit(listener, scenario_outline)
           end
         end
       end
@@ -1185,26 +1100,9 @@ module Cucumber
       end
 
       module Examples1
-        def at_line?(line)
-          examples_keyword.line == line ||
-          table.at_line?(line)
-        end
-
-        def matches_tags?(tag_names)
-          true
-        end
-
-        def outline_at_line?(line)
-          true
-        end
-
-        def matches_name?(regexp_to_match)
-          name.build =~ regexp_to_match
-        end
-
-        def emit(builder, filter, scenario_outline)
-          builder.examples(examples_keyword.text_value, name.build, examples_keyword.line)
-          table.emit(builder, filter, scenario_outline)
+        def emit(listener, scenario_outline)
+          listener.examples(examples_keyword.text_value, name.build, examples_keyword.line)
+          table.emit(listener, scenario_outline)
         end
       end
 

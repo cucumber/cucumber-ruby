@@ -19,23 +19,15 @@ module Cucumber
       include Common
 
       module Table0
-        def at_line?(line)
-          elements.detect{|table_row| table_row.at_line?(line)}
-        end
-
-        def emit(builder, filter=nil, scenario_outline=nil)
+        def emit(listener, scenario_outline=nil)
           elements.each do |table_row|
-            if(filter.nil? || table_row == elements[0] || filter.at_line?(table_row) || (scenario_outline && filter.outline_at_line?(scenario_outline)))
-              builder.row(table_row.build, table_row.line)
-            end
+            listener.row(table_row.build, table_row.line)
           end
         end
 
-        def raw(filter=nil, scenario_outline=nil)
+        def raw(scenario_outline=nil)
           elements.map do |table_row|
-            if(filter.nil? || table_row == elements[0] || filter.at_line?(table_row) || (scenario_outline && filter.outline_at_line?(scenario_outline)))
-              table_row.build
-            end
+            table_row.build
           end.compact
         end
       end
@@ -88,10 +80,6 @@ module Cucumber
       end
 
       module TableRow2
-        def at_line?(line)
-          cells.line == line
-        end
-
         def build
           row = cells.elements.map do |elt| 
             value = elt.cell.text_value.strip

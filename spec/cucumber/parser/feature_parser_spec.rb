@@ -14,7 +14,7 @@ module Cucumber
       end
 
       def parse(text)
-        feature = @parser.parse_or_fail(text)
+        feature = @parser.parse_or_fail(text, nil, [], [], Gherkin::Tools::TagExpression.new, 0)
       end
 
       def parse_file(file)
