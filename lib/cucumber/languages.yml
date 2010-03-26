@@ -1,10 +1,15 @@
 # encoding: UTF-8
-# We use the codes here (prefer 2 letters when possible)
-# http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes
+#
+# We use ISO 639-1 (language) and ISO 3166 alpha-2 (region - if appliccable):
+# http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+# http://en.wikipedia.org/wiki/ISO_3166-1
 #
 # If you want several aliases for a keyword, just separate them
 # with a | character. Make sure there are no ambiguities in the
 # keywords.
+#
+# If you do *not* want a trailing space after a keyword, end it with a < character.
+# (See Chinese for examples).
 #
 "en":
   name: English
@@ -20,10 +25,6 @@
   and: "*|And"
   but: "*|But"
 
-# Please help us keeping the languages below uptodate. The parsers for a language
-# that is missing a keyword will expect the English word until the missing word(s)
-# are added.
-#
 # Please keep the grammars in alphabetical order by name from here and down.
 
 "ar":
@@ -52,7 +53,7 @@
   then: "*|То"
   and: "*|И"
   but: "*|Но"
-"cat":
+"ca":
   name: Catalan
   native: català
   background: Rerefons|Antecedents
@@ -65,7 +66,7 @@
   then: "*|Aleshores|Cal"
   and: "*|I"
   but: "*|Però"
-"cy":
+"cy-GB":
   name: Welsh
   native: Cymraeg
   background: Cefndir
@@ -390,7 +391,7 @@
   then: "*|Atunci"
   and: "*|Si"
   but: "*|Dar"
-"ro2":
+"ro-RO":
   name: Romanian (diacritical)
   native: română (diacritical)
   background: Condiţii
@@ -416,7 +417,7 @@
   then: "*|То"
   and: "*|И|К тому же"
   but: "*|Но|А"
-"se":
+"sv":
   name: Swedish
   native: Svenska
   feature: Egenskap
@@ -443,8 +444,8 @@
   and: "*|A"
   but: "*|Ale"
 "sr-Latn":
-  name: Serbian_latin
-  native: Srpski_latinica
+  name: Serbian (Latin)
+  native: Srpski (Latinica)
   feature: Funkcionalnost|Mogućnost|Mogucnost|Osobina
   background: Kontekst|Osnova|Pozadina
   scenario: Scenario|Primer
@@ -455,7 +456,7 @@
   then: "*|Onda"
   and: "*|I"
   but: "*|Ali"
-"sr":
+"sr-Cyrl":
   name: Serbian
   native: Српски
   feature: Функционалност|Могућност|Особина

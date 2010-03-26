@@ -27,9 +27,9 @@ Feature: Language help
       """
       | ar      | Arabic                 | العربية              |
       | bg      | Bulgarian              | български            |
-      | cat     | Catalan                | català               |
+      | ca      | Catalan                | català               |
       | cs      | Czech                  | Česky                |
-      | cy      | Welsh                  | Cymraeg              |
+      | cy-GB   | Welsh                  | Cymraeg              |
       | da      | Danish                 | dansk                |
       | de      | German                 | Deutsch              |
       | en      | English                | English              |
@@ -54,12 +54,12 @@ Feature: Language help
       | pl      | Polish                 | polski               |
       | pt      | Portuguese             | português            |
       | ro      | Romanian               | română               |
-      | ro2     | Romanian (diacritical) | română (diacritical) |
+      | ro-RO   | Romanian (diacritical) | română (diacritical) |
       | ru      | Russian                | русский              |
-      | se      | Swedish                | Svenska              |
       | sk      | Slovak                 | Slovensky            |
-      | sr      | Serbian                | Српски               |
-      | sr-Latn | Serbian_latin          | Srpski_latinica      |
+      | sr-Cyrl | Serbian                | Српски               |
+      | sr-Latn | Serbian (Latin)        | Srpski (Latinica)    |
+      | sv      | Swedish                | Svenska              |
       | tr      | Turkish                | Türkçe               |
       | uz      | Uzbek                  | Узбекча              |
       | vi      | Vietnamese             | Tiếng Việt           |

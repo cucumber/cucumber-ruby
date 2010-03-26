@@ -12,6 +12,10 @@
 * Added #announce_world method, printing the World class and all included modules (Ruby only). (Aslak Hellesøy)
 * Added #announce to the PDF formatter (Nicolas Bessi)
 
+== Changed features
+* Switced to ISO 639-1 (language) and ISO 3166 alpha-2 (region - if applicable). Applies to Catalan,
+  Swedish, Welsh, Romanian and Serbian. (Aslak Hellesøy)
+
 == 0.6.3 2010-03-02
 
 === Bugfixes
