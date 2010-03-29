@@ -97,3 +97,28 @@ Feature: Exception in After Block
 
       """
 
+  Scenario: Handle Exception using the progress format
+    Given a file named "features/naughty_step_in_scenario.feature" with:
+      """
+      Feature: Sample
+
+        Scenario: Naughty Step
+          Given this step does something naughty
+
+        Scenario: Success
+          Given this step works
+      """
+    When I run cucumber features --format progress
+    Then it should fail with
+      """
+      .F.
+
+      Failing Scenarios:
+      cucumber features/naughty_step_in_scenario.feature:3 # Scenario: Naughty Step
+
+      2 scenarios (1 failed, 1 passed)
+      2 steps (2 passed)
+
+      """
+
+

@@ -11,6 +11,7 @@
 === New features
 * Added #announce_world method, printing the World class and all included modules (Ruby only). (Aslak Hellesøy)
 * Added #announce to the PDF formatter (Nicolas Bessi)
+* Show fails for After/Before hooks in the progress formatter (#584 Joseph Wilk)
 
 == Changed features
 * Switced to ISO 639-1 (language) and ISO 3166 alpha-2 (region - if applicable). Applies to Catalan,
@@ -66,13 +67,13 @@ Bumping to 0.6.0 for this release since we're breaking backwards compatibility w
   This makes it more practical in most cases to mix tags from profiles and the command line
 
   In previous versions the following command line:
-  
+
     --tags @foo,~@bar --tags @zap (on the command line)
-  
+
   or the following Hook:
-  
+
     Before("@foo,~@bar", "@zap") (for Hooks)
-  
+
   would be equivalent to the boolean expression:       (@foo && !@bar) || @zap
   Starting with this release it will be equivalent to: (@foo || !@bar) && @zap
 
