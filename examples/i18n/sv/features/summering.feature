@@ -1,4 +1,4 @@
-# language: se
+# language: sv
 Egenskap: Summering
   För att slippa att göra dumma fel
   Som räknare

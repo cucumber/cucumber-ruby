@@ -75,3 +75,24 @@ Feature: Exception in Before Block
       2 steps (1 skipped, 1 passed)
 
       """
+
+  Scenario: Handle Exception using the progress format
+    Given a file named "features/naughty_step_in_scenario.feature" with:
+      """
+      Feature: Sample
+
+        Scenario: Run a good step
+          Given this step works
+      """
+    When I run cucumber features --format progress
+    Then it should fail with
+      """
+      F-
+
+      Failing Scenarios:
+      cucumber features/naughty_step_in_scenario.feature:3 # Scenario: Run a good step
+
+      1 scenario (1 failed)
+      1 step (1 skipped)
+
+      """
