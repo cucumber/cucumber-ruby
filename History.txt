@@ -1,4 +1,4 @@
-== In Git
+== 0.6.4 2010-03-30
 
 === Bugfixes
 * Better handling of --guess with optional capture groups (Tim Felgentreff)

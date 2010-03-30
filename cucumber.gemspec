@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
-  s.version = "0.6.3"
+  s.version = "0.6.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2010-03-26}
+  s.date = %q{2010-03-30}
   s.default_executable = %q{cucumber}
   s.description = %q{A BDD tool written in Ruby}
   s.email = %q{cukes@googlegroups.com}
@@ -392,7 +392,9 @@ Gem::Specification.new do |s|
      "lib/autotest/cucumber_mixin.rb",
      "lib/autotest/cucumber_rails.rb",
      "lib/autotest/cucumber_rails_rspec.rb",
+     "lib/autotest/cucumber_rails_rspec2.rb",
      "lib/autotest/cucumber_rspec.rb",
+     "lib/autotest/cucumber_rspec2.rb",
      "lib/autotest/discover.rb",
      "lib/cucumber.rb",
      "lib/cucumber/ast.rb",
@@ -552,7 +554,7 @@ Gem::Specification.new do |s|
 
                      (::)   U P G R A D I N G    (::)
 
-Thank you for installing cucumber-0.6.3.
+Thank you for installing cucumber-0.6.4.
 Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
 for important information about this release. Happy cuking!
 
