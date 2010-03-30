@@ -1,6 +1,7 @@
 == In Git
 
 === Bugfixes
+* Better handling of --guess with optional capture groups (Tim Felgentreff)
 * #announce can now take non-String arguments just like Kernel#puts - #to_s is done implicitly. (Aslak Hellesøy)
 * Attempt to fix Cucumber::CODEPAGE error again for Windows (#561 Aslak Hellesøy)
 * Tab indentation causes multiline step arguments to fail (#585 Aslak Hellesøy)
