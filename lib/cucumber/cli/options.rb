@@ -1,6 +1,6 @@
 require 'cucumber/cli/profile_loader'
 require 'cucumber/formatter/ansicolor'
-require 'gherkin/tools/tag_expression'
+require 'gherkin/parser/tag_expression'
 
 module Cucumber
   module Cli
@@ -286,15 +286,15 @@ module Cucumber
 
     private
 
-    def non_stdout_formats
-      @options[:formats].select {|format, output| output != @out_stream }
-    end
+      def non_stdout_formats
+        @options[:formats].select {|format, output| output != @out_stream }
+      end
 
-    def stdout_formats
-      @options[:formats].select {|format, output| output == @out_stream }
-    end
+      def stdout_formats
+        @options[:formats].select {|format, output| output == @out_stream }
+      end
 
-     def extract_environment_variables
+      def extract_environment_variables
         @args.delete_if do |arg|
           if arg =~ /^(\w+)=(.*)$/
             @options[:env_vars][$1] = $2
@@ -304,7 +304,7 @@ module Cucumber
       end
 
       def tag_filter(tag_string)
-        tags = Gherkin::Tools::TagExpression.new(tag_string)
+        tags = Gherkin::Parser::TagExpression.new(tag_string)
       end
 
       def disable_profile_loading?
@@ -325,7 +325,6 @@ module Cucumber
             Options.parse(profile_args, @out_stream, @error_stream, :skip_profile_information  => true)
           )
         end
-
       end
 
       def default_profile_should_be_used?

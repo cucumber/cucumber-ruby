@@ -10,7 +10,7 @@ rescue LoadError
   require 'treetop/ruby_extensions'
 end
 require 'cucumber/parser/gherkin_builder'
-require 'gherkin/tools/filter_listener'
+require 'gherkin/parser/filter_listener'
 
 module Cucumber
   module Parser
@@ -26,13 +26,13 @@ module Cucumber
     end
     
     module TreetopExt #:nodoc:
-      def parse_or_fail(source, file, lines, name_regexen, tag_expression, line_offset)
+      def parse_or_fail(source, file, line_offset, filters)
         parse_tree = parse(source)
         if parse_tree.nil?
           raise Cucumber::Parser::SyntaxError.new(self, file, line_offset)
         else
           builder = Cucumber::Parser::GherkinBuilder.new
-          filter = Gherkin::Tools::FilterListener.new(builder, lines, name_regexen, tag_expression)
+          filter = Gherkin::Parser::FilterListener.new(builder, filters)
           parse_tree.emit(filter)
           filter.eof
           ast = builder.ast

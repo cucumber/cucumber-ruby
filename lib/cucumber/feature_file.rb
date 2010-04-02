@@ -22,7 +22,12 @@ module Cucumber
     # be filtered.
     def parse(step_mother, options)
       language = Parser::NaturalLanguage.get(step_mother, (lang || 'en'))
-      language.parse(source, @path, @lines || [], options[:name_regexps] || [], options[:tag_expression] || Gherkin::Tools::TagExpression.new)
+      filter = {
+        :lines => @lines,
+        :name_regexen => options[:name_regexen],
+        :tag_expression => options[:tag_expression]
+      }
+      language.parse(source, @path, filter)
     end
     
     def source

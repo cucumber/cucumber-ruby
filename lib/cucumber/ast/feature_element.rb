@@ -1,5 +1,5 @@
 require 'enumerator'
-require 'gherkin/tools/tag_expression'
+require 'gherkin/parser/tag_expression'
 
 module Cucumber
   module Ast
@@ -54,7 +54,7 @@ module Cucumber
       end
 
       def accept_hook?(hook)
-        Gherkin::Tools::TagExpression.new(hook.tag_expressions).eval(source_tag_names)
+        Gherkin::Parser::TagExpression.new(*hook.tag_expressions).eval(*source_tag_names)
       end
 
       def source_tag_names
