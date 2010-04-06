@@ -482,6 +482,19 @@
   then: "*|O zaman"
   and: "*|Ve"
   but: "*|Fakat|Ama"
+"uk":
+  name: Ukrainian
+  native: українська
+  feature: Функціонал
+  background: Передумова
+  scenario: Сценарій
+  scenario_outline: Структура сценарію
+  examples: Приклади
+  given: "*|Припустимо|Припустимо, що|Нехай"
+  when: "*|Якщо"
+  then: "*|То"
+  and: "*|І"
+  but: "*|Але"
 "uz":
   name: Uzbek
   native: Узбекча
