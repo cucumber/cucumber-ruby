@@ -261,7 +261,7 @@ module Cucumber
 
     def step_match(step_name, name_to_report=nil) #:nodoc:
       matches = @programming_languages.map do |programming_language| 
-        programming_language.step_matches(step_name, name_to_report)
+        programming_language.step_matches(step_name, name_to_report).to_a
       end.flatten
       raise Undefined.new(step_name) if matches.empty?
       matches = best_matches(step_name, matches) if matches.size > 1 && options[:guess]
