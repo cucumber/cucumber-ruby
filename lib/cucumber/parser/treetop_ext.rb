@@ -32,8 +32,8 @@ module Cucumber
           raise Cucumber::Parser::SyntaxError.new(self, file, line_offset)
         else
           builder = Cucumber::Parser::GherkinBuilder.new
-          filter = Gherkin::Parser::FilterListener.new(builder, filters)
-          parse_tree.emit(filter)
+          filter_listener = Gherkin::Parser::FilterListener.new(builder, filters)
+          parse_tree.emit(filter_listener)
           filter.eof
           ast = builder.ast
           ast.file = file unless ast.nil?
