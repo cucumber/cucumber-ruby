@@ -23,7 +23,7 @@ module Cucumber
       def initialize(step_mother, lang)
         @keywords = Cucumber::LANGUAGES[lang]
         raise "Language not supported: #{lang.inspect}" if @keywords.nil?
-        @keywords['grammar_name'] = @keywords['name'].gsub(/\s/, '')
+        @grammar_name = lang.gsub(/[\s-]/, '').upcase
         register_adverbs(step_mother) if step_mother
         @parser = nil
       end
@@ -45,9 +45,8 @@ module Cucumber
         # effectively breaking any other library that relies on ERB behavig the way it _should_.
         # This is a workaround hack until this has been fixed in Rails.
         grammar = "" + grammar # Make SafeBuffer a String again.
-
         Treetop.load_from_string(grammar)
-        @parser = Parser::I18n.const_get("#{@keywords['grammar_name']}Parser").new
+        @parser = Parser::I18n.const_get("#{@grammar_name}Parser").new
         def @parser.inspect
           "#<#{self.class.name}>"
         end

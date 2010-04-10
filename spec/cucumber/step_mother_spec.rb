@@ -67,6 +67,16 @@ spec/cucumber/step_mother_spec.rb:48:in `/Three cute (.*)/'
       end.should_not raise_error
     end
     
+    it "should not raise NoMethodError when guessing from multiple step definitions with nil fields" do
+      @step_mother.options = {:guess => true}
+      @dsl.Given(/Three (.*) mice( cannot find food)?/) {|disability, is_disastrous|}
+      @dsl.Given(/Three (.*)?/) {|animal|}
+      
+      lambda do
+        @step_mother.step_match("Three blind mice")
+      end.should_not raise_error
+    end
+    
     it "should pick right step definition when --guess is enabled and equal number of capture groups" do
       @step_mother.options = {:guess => true}
       right = @dsl.Given(/Three (.*) mice/) {|disability|}
@@ -112,7 +122,7 @@ spec/cucumber/step_mother_spec.rb:48:in `/Three cute (.*)/'
         raise "Should fail"
       rescue RbSupport::NilWorld => e
         e.message.should == "World procs should never return nil"
-        e.backtrace.should == ["spec/cucumber/step_mother_spec.rb:108:in `World'"]
+        e.backtrace.should == ["spec/cucumber/step_mother_spec.rb:118:in `World'"]
       end
     end
 
@@ -142,8 +152,8 @@ spec/cucumber/step_mother_spec.rb:48:in `/Three cute (.*)/'
       end.should raise_error(RbSupport::MultipleWorld, %{You can only pass a proc to #World once, but it's happening
 in 2 places:
 
-spec/cucumber/step_mother_spec.rb:139:in `World'
-spec/cucumber/step_mother_spec.rb:141:in `World'
+spec/cucumber/step_mother_spec.rb:149:in `World'
+spec/cucumber/step_mother_spec.rb:151:in `World'
 
 Use Ruby modules instead to extend your worlds. See the Cucumber::RbSupport::RbDsl#World RDoc
 or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.

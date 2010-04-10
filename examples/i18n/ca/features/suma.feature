@@ -1,4 +1,4 @@
-# language: cat
+# language: ca
 Característica: Suma
   Per evitar fer errors tontos
   Com un matemàtic idiota

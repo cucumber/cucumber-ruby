@@ -19,15 +19,33 @@ module Cucumber
         print_summary(features)
       end
 
+      def before_feature_element(*args)
+        @exception_raised = false
+      end
+
+      def after_feature_element(*args)
+        progress(:failed) if @exception_raised
+        @exception_raised = false
+      end
+
+      def before_steps(*args)
+        progress(:failed) if @exception_raised
+        @exception_raised = false
+      end
+
+      def after_steps(*args)
+        @exception_raised = false
+      end
+
       def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         progress(status)
         @status = status
       end
-      
+
       def before_outline_table(outline_table)
         @outline_table = outline_table
       end
-      
+
       def after_outline_table(outline_table)
         @outline_table = nil
       end
@@ -36,6 +54,10 @@ module Cucumber
         return unless @outline_table
         status ||= @status
         progress(status) unless table_header_cell?(status)
+      end
+
+      def exception(*args)
+        @exception_raised = true
       end
 
       private

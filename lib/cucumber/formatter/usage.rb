@@ -98,7 +98,7 @@ module Cucumber
       end
 
       def max_step_length
-        @stepdef_to_match.values.flatten.map do |step|
+        @stepdef_to_match.values.to_a.flatten.map do |step|
           step[:keyword].jlength + step[:step_match].format_args.jlength
         end.max
       end
