@@ -61,6 +61,7 @@ Feature: Language help
       | sr-Latn | Serbian (Latin)        | Srpski (Latinica)    |
       | sv      | Swedish                | Svenska              |
       | tr      | Turkish                | Türkçe               |
+      | uk      | Ukrainian              | Українська           |
       | uz      | Uzbek                  | Узбекча              |
       | vi      | Vietnamese             | Tiếng Việt           |
       | zh-CN   | Chinese simplified     | 简体中文                 |
