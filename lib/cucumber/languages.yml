@@ -144,6 +144,19 @@
   then: "*|DEN"
   and: "*|AN"
   but: "*|BUT"
+"en-Scouse":
+  name: Scouse
+  native: Scouse
+  feature: Feature
+  background: "Dis is what went down"
+  scenario: "The thing of it is"
+  scenario_outline: "Wharrimean is"
+  examples: Examples
+  given: "*|Givun|Youse know when youse got"
+  when: "*|Wun|Youse know like when"
+  then: "*|Dun|Den youse gotta"
+  and: "*|An"
+  but: "*|Buh"
 "en-tx":
   name: Texan
   native: Texan
