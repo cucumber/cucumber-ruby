@@ -43,6 +43,9 @@ module Cucumber
         @step_def_files.each{|f| import(f)}
       end
 
+      def end_scenario
+      end
+
       def step_matches(step_name, name_to_report)
         @delegate.step_matches(step_name, name_to_report)
       end
