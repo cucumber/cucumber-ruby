@@ -7,13 +7,13 @@ module Cucumber
 
       def initialize(step_mother)
         @step_def_files = []
-        # 
+        #
         # @python_path = ENV['PYTHONPATH'] ? ENV['PYTHONPATH'].split(':') : []
         # add_to_python_path(File.dirname(__FILE__))
-        # 
+        #
         # RubyPython.start
         # at_exit{RubyPython.stop}
-        # 
+        #
         # import(File.dirname(__FILE__) + '/py_language.py')
       end
 
@@ -32,11 +32,11 @@ module Cucumber
         "python snippet: #{step_keyword}, #{step_name}"
       end
 
-      def begin_scenario
+      def begin_scenario(scenario)
         @python_path = []
         add_to_python_path(File.dirname(__FILE__))
         @step_def_files.each{|f| add_to_python_path(File.dirname(f))}
-        
+
         RubyPython.start
 
         @delegate = import(File.dirname(__FILE__) + '/py_language.py')
@@ -75,7 +75,7 @@ class String #:nodoc:
     def end_with?(str) #:nodoc:
       str = str.to_str
       tail = self[-str.length, str.length]
-      tail == str      
+      tail == str
     end
   end
 end
