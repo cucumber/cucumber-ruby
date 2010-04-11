@@ -24,8 +24,10 @@ module Cucumber
         @js_language.current_world.eval("var block = #{@proc.ToString}; block(#{args});")
       end
 
-      def match?(step_name)
-        eval_js "#{@regexp}.exec('#{step_name}')"
+      # TODO: Handle complex/multi args
+      def arguments_from(step_name)
+        matches = eval_js "#{@regexp}.exec('#{step_name}')"
+        [JsArg.new(matches[1])] if matches
       end
     end
 
@@ -67,11 +69,10 @@ module Cucumber
       def end_scenario
       end
 
-      def step_matches(step_name, name_to_report)
+      def step_matches(name_to_match, name_to_format)
         @step_definitions.map do |step_definition|
-          if(argument = step_definition.match?(step_name))
-            args = [JsArg.new(argument[1])] # TODO: Handle complex args
-            StepMatch.new(step_definition, step_name, name_to_report, args)
+          if(arguments = step_definition.arguments_from(name_to_match))
+            StepMatch.new(step_definition, name_to_match, name_to_format, arguments)
           else
             nil
           end
