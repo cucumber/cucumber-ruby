@@ -6,6 +6,6 @@ Feature: Addition
   Scenario: Add two numbers
     Given I visit the calculator page
     And I fill in '50' for 'first'
-    And I fill in '70' for 'second'
+    And I fill in '70' for 'Second'
     When I press 'Add'
     Then I should see 'Answer: 120'

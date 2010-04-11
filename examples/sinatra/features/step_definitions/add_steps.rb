@@ -11,5 +11,5 @@ When /^I press '(.*)'$/ do |name|
 end
 
 Then /^I should see '(.*)'$/ do |text|
-  response_body.should contain(/#{text}/m)
+  body.should match(/#{text}/m)
 end
