@@ -22,31 +22,43 @@ module Cucumber
     # If +options+ contains tags, the result will
     # be filtered.
     def parse(step_mother, options)
-      filters = {
+      filter_hash = {
         :lines => @lines,
         :name_regexen => options[:name_regexen],
-        :tag_expression => options[:tag_expression]
+        :tag_expression => options[:tag_expression], # TODO: Remove
+        :tag_expressions => options[:tag_expressions]
       }
-      return gherkin_parse(filters) if ENV['GHERKIN']
+      return gherkin_parse(step_mother, filter_hash) if ENV['GHERKIN']
 
       language = Parser::NaturalLanguage.get(step_mother, (lang || 'en'))
-      language.parse(source, @path, filters)
+      language.parse(source, @path, filter_hash)
     end
 
-    def gherkin_parse(filters)
+    def gherkin_parse(step_mother, filter_hash)
       require 'gherkin/parser/filter_listener'
       require 'gherkin/parser/parser'
       require 'gherkin/i18n_lexer'
+
+      filters = filter_hash[:lines] || filter_hash[:name_regexen] || filter_hash[:tag_expressions]
 
       builder         = Cucumber::Parser::GherkinBuilder.new
       filter_listener = Gherkin::Parser::FilterListener.new(builder, filters)
       parser          = Gherkin::Parser::Parser.new(filter_listener, true, "root")
       lexer           = Gherkin::I18nLexer.new(parser, false)
-      lexer.scan(source)
-      ast = builder.ast
-      ast.language = lexer.i18n_language
-      ast.file = @path
-      ast
+
+      begin
+        lexer.scan(source)
+        adverbs = lexer.i18n_language.code_keywords
+        step_mother.register_adverbs(adverbs)
+
+        ast = builder.ast
+        ast.language = lexer.i18n_language
+        ast.file = @path
+        ast
+      rescue Gherkin::LexingError => e
+        e.message.insert(0, "#{@path}: ")
+        raise e
+      end
     end
 
     def source
