@@ -3,6 +3,18 @@ require 'v8'
 module Cucumber
   module JsSupport
 
+    class World
+      def initialize
+        V8::Context.open do |context|
+          @world = context
+        end
+      end
+
+      def method_missing(method_name, *args)
+        @world.send(method_name, *args)
+      end
+    end
+
     class JsSteps
       def initialize
         @steps = []
@@ -10,7 +22,7 @@ module Cucumber
 
       def addStepDefinition(this, argumentsFrom, regexp, func)
         @steps << {:regexp => regexp.ToString,
-                   :block  => func}
+        :block  => func}
       end
 
       def match(step_name)
@@ -31,14 +43,13 @@ module Cucumber
 
       def initialize(step_mother)
         @steps = JsSteps.new
-        @step_def_files = []
+        @world = World.new
+
+        @world["jsLanguage"] = @steps
       end
 
       def load_code_file(js_file)
-        V8::Context.open do |context|
-          context["jsLanguage"] = @steps
-          context.load(js_file)
-        end
+        @world.load(js_file)
       end
 
       def alias_adverbs(adverbs)
@@ -55,11 +66,10 @@ module Cucumber
       end
 
       def step_matches(step_name, name_to_report)
-        V8::Context.open do |context|
-           step_block = @steps.match(step_name)
-           args = 1
-           context.eval("var block = #{step_block.ToString}; block(#{args});")
-        end
+        step_block = @steps.match(step_name)
+        args = 2
+        puts @world.eval("var block = #{step_block.ToString}; block(#{args});")
+        []
       end
 
     end
