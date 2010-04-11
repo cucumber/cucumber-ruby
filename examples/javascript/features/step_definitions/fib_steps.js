@@ -2,11 +2,11 @@ function fibanacci(n){
   return n<2?n:fibanacci(n-1)+fibanacci(n-2);
 }
 
-var fibonacciSeries = function(topFibonacci) {
+var fibonacciSeries = function(fibonacciLimit) {
   var result = Array();
   var currentFibanacciValue = fibanacci(1);
   var i = 2;
-  while(currentFibanacciValue < topFibonacci) {
+  while(currentFibanacciValue < fibonacciLimit) {
     result.push(currentFibanacciValue);
     currentFibanacciValue  = fibanacci(i);
     i++;
@@ -14,15 +14,15 @@ var fibonacciSeries = function(topFibonacci) {
   return result;
 }
 
-var fib_result;
+var fibResult;
 
 When(/^I ask Javascript to calculate fibonacci up to (\d+)$/, function(n){
-  fib_result = fibonacciSeries(n);
+  fibResult = fibonacciSeries(n);
 });
 
-Then(/^it should give me (\[.*\])$/, function(expected_result){
-  fib_result = fib_result.join(",");
-  if(fib_result != expected_result){
-    throw 'Expected <' + expected_result + "> but got <" + fib_result + ">";
+Then(/^it should give me (\[.*\])$/, function(expectedResult){
+  fibResult = fibResult.join(",");
+  if(fibResult != expectedResult){
+    throw 'Expected <' + expectedResult + "> but got <" + fibResult + ">";
   }
 });
