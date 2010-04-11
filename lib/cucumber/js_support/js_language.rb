@@ -21,13 +21,18 @@ module Cucumber
       end
 
       def invoke(args)
-        @js_language.current_world.eval("var block = #{@proc.ToString}; block(#{args});")
+        args.map! { |arg| "'#{arg}'"  }
+        @js_language.current_world.eval("var block = #{@proc.ToString}; block(#{args.join(',')});")
       end
 
-      # TODO: Handle complex/multi args
+      # TODO: Handle complex args
       def arguments_from(step_name)
         matches = eval_js "#{@regexp}.exec('#{step_name}')"
-        [JsArg.new(matches[1])] if matches
+        if matches
+          matches[1..-1].map do |match|
+            JsArg.new(match)
+          end
+        end
       end
     end
 

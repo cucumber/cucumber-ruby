@@ -11,17 +11,16 @@ var fibonacciSeries = function(fibonacciLimit) {
     currentFibanacciValue  = fibanacci(i);
     i++;
   }
-  return result;
+  return "[" + result.join(", ") + "]";
 }
 
 var fibResult;
 
 When(/^I ask Javascript to calculate fibonacci up to (\d+)$/, function(n){
-  fibResult = fibonacciSeries(n);
+  fibResult = fibonacciSeries(parseInt(n));
 });
 
 Then(/^it should give me (\[.*\])$/, function(expectedResult){
-  fibResult = fibResult.join(",");
   if(fibResult != expectedResult){
     throw 'Expected <' + expectedResult + "> but got <" + fibResult + ">";
   }
