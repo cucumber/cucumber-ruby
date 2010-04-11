@@ -16,12 +16,16 @@ module Cucumber
     end
 
     class JsStepDefinition
-      def initialize(js_language, proc) #(rb_language, regexp, proc)
-        @js_language, @proc = js_language, proc
+      def initialize(js_language, regexp, proc)
+        @js_language, @regexp, @proc = js_language, regexp.ToString, proc
       end
 
       def invoke(args)
         puts @js_language.current_world.eval("var block = #{@proc.ToString}; block(#{args});")
+      end
+
+      def match?(step_name)
+        eval_js "#{@regexp}.exec('#{step_name}')"
       end
     end
 
@@ -39,7 +43,7 @@ module Cucumber
       include LanguageSupport::LanguageMethods
 
       def initialize(step_mother)
-        @steps = []
+        @step_definitions = []
         @world = JsWorld.new
 
         @world["jsLanguage"] = self
@@ -64,34 +68,22 @@ module Cucumber
       end
 
       def step_matches(step_name, name_to_report)
-        step_definition = match(step_name)
-        args = [JsArg.new(6)]
-        if step_definition
-          [StepMatch.new(step_definition, step_name, name_to_report, args)]
-        else
-          nil
-        end
+        @step_definitions.map do |step_definition|
+          if(arguments = step_definition.match?(step_name))
+            args = [JsArg.new(6)] # TODO: Get the real arguments
+            StepMatch.new(step_definition, step_name, name_to_report, args)
+          else
+            nil
+          end
+        end.compact
       end
 
       def addStepDefinition(this, argumentsFrom, regexp, func)
-        @steps << {:regexp => regexp.ToString,
-        :block  => JsStepDefinition.new(self, func)}
-      end
-
-      def match(step_name)
-        matching_step = @steps.select do |step|
-          match?(step[:regexp], step_name)
-        end
-        matching_step[0][:block]
+        @step_definitions << JsStepDefinition.new(self, regexp, func)
       end
 
       def current_world
         @world
-      end
-
-      private
-      def match?(regexp, step_name)
-        eval_js "#{regexp}.exec('#{step_name}')"
       end
 
     end
