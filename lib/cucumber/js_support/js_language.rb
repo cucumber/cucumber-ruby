@@ -69,8 +69,8 @@ module Cucumber
 
       def step_matches(step_name, name_to_report)
         @step_definitions.map do |step_definition|
-          if(arguments = step_definition.match?(step_name))
-            args = [JsArg.new(6)] # TODO: Get the real arguments
+          if(argument = step_definition.match?(step_name))
+            args = [JsArg.new(argument[1])] # TODO: Handle complex args
             StepMatch.new(step_definition, step_name, name_to_report, args)
           else
             nil
