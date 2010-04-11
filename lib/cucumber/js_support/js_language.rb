@@ -9,14 +9,20 @@ module Cucumber
       end
 
       def addStepDefinition(this, argumentsFrom, regexp, func)
-        @steps << regexp.ToString
+        @steps << {:regexp => regexp.ToString,
+                   :block  => func}
       end
 
-      def match(step)
-        @steps.find do |regexp|
-          puts "#{step} =~ #{Regexp.new(regexp)}"
-          step =~ Regexp.new(regexp)
+      def match(step_name)
+        matching_step = @steps.select do |step|
+          match?(step[:regexp], step_name)
         end
+        matching_step[0][:block]
+      end
+
+      private
+      def match?(regexp, step_name)
+        eval_js "#{regexp}.exec('#{step_name}')"
       end
     end
 
@@ -49,12 +55,11 @@ module Cucumber
       end
 
       def step_matches(step_name, name_to_report)
-        puts @steps.match(step_name)
-
-        # V8::Context.open do |context|
-        #   step_block = @steps.match(step_name)
-        #   context.eval(step_block.ToString)
-        # end
+        V8::Context.open do |context|
+           step_block = @steps.match(step_name)
+           args = 1
+           context.eval("var block = #{step_block.ToString}; block(#{args});")
+        end
       end
 
     end

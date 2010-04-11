@@ -9,11 +9,9 @@ var registerStepDefinition = function(regexp, func) {
         var charOffset = s.indexOf(arg, charOffset);
 
         //arguments.add(new StepArgument(arg, charOffset, stepName));
-
       }
 
       stepDefinition.addArguments(arguments);
-
     }
   };
   jsLanguage.addStepDefinition(this, argumentsFrom, regexp, func);
@@ -24,9 +22,9 @@ var When = registerStepDefinition;
 var Then = registerStepDefinition;
 
 When(/^I ask Javascript to calculate fibonacci up to (\d+)$/, function(n){
-  fib_result = fibonacci(n)
+  fib_result = fibonacci(n);
 });
 
 Then(/^it should give me (\[.*\])$/, function(n){
-  fib_result = fibonacci(n)
+  fib_result == fibonacci(n);
 });
