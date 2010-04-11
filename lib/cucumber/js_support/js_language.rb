@@ -3,7 +3,7 @@ require 'v8'
 module Cucumber
   module JsSupport
 
-    class World
+    class JsWorld
       def initialize
         V8::Context.open do |context|
           @world = context
@@ -15,26 +15,23 @@ module Cucumber
       end
     end
 
-    class JsSteps
-      def initialize
-        @steps = []
+    class JsStepDefinition
+      def initialize(js_language, proc) #(rb_language, regexp, proc)
+        @js_language, @proc = js_language, proc
       end
 
-      def addStepDefinition(this, argumentsFrom, regexp, func)
-        @steps << {:regexp => regexp.ToString,
-        :block  => func}
+      def invoke(args)
+        puts @js_language.current_world.eval("var block = #{@proc.ToString}; block(#{args});")
+      end
+    end
+
+    class JsArg
+      def initialize(arg)
+        @arg = arg
       end
 
-      def match(step_name)
-        matching_step = @steps.select do |step|
-          match?(step[:regexp], step_name)
-        end
-        matching_step[0][:block]
-      end
-
-      private
-      def match?(regexp, step_name)
-        eval_js "#{regexp}.exec('#{step_name}')"
+      def val
+        @arg
       end
     end
 
@@ -42,10 +39,10 @@ module Cucumber
       include LanguageSupport::LanguageMethods
 
       def initialize(step_mother)
-        @steps = JsSteps.new
-        @world = World.new
+        @steps = []
+        @world = JsWorld.new
 
-        @world["jsLanguage"] = @steps
+        @world["jsLanguage"] = self
       end
 
       def load_code_file(js_file)
@@ -66,10 +63,34 @@ module Cucumber
       end
 
       def step_matches(step_name, name_to_report)
-        step_block = @steps.match(step_name)
-        args = 2
-        puts @world.eval("var block = #{step_block.ToString}; block(#{args});")
-        []
+        step_definition = match(step_name)
+        args = [JsArg.new(2)]
+        if step_definition
+          [StepMatch.new(step_definition, step_name, name_to_report, args)]
+        else
+          nil
+        end
+      end
+
+      def addStepDefinition(this, argumentsFrom, regexp, func)
+        @steps << {:regexp => regexp.ToString,
+        :block  => JsStepDefinition.new(self, func)}
+      end
+
+      def match(step_name)
+        matching_step = @steps.select do |step|
+          match?(step[:regexp], step_name)
+        end
+        matching_step[0][:block]
+      end
+
+      def current_world
+        @world
+      end
+
+      private
+      def match?(regexp, step_name)
+        eval_js "#{regexp}.exec('#{step_name}')"
       end
 
     end
