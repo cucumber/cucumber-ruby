@@ -21,7 +21,7 @@ module Cucumber
       end
 
       def invoke(args)
-        puts @js_language.current_world.eval("var block = #{@proc.ToString}; block(#{args});")
+        @js_language.current_world.eval("var block = #{@proc.ToString}; block(#{args});")
       end
 
       def match?(step_name)

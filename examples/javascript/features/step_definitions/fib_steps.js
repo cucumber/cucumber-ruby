@@ -9,10 +9,8 @@ When(/^I ask Javascript to calculate fibonacci up to (\d+)$/, function(n){
 });
 
 Then(/^it should give me (\[.*\])$/, function(n){
-  if(fib_result == fibonacci(n)){
-    return fib_result + "==" + fibonacci(n)
-  }
-  else{
-    return fib_result + "!=" + fibonacci(n)
+  expected_result = fibonacci(n)
+  if(fib_result != expected_result){
+    throw fib_result + " is not equal to " + expected_result;
   }
 });
