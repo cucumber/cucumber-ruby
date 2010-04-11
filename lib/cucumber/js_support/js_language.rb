@@ -43,6 +43,7 @@ module Cucumber
         @world = JsWorld.new
 
         @world["jsLanguage"] = self
+        @world.load(File.dirname(__FILE__) + '/js_dsl.js')
       end
 
       def load_code_file(js_file)
@@ -64,7 +65,7 @@ module Cucumber
 
       def step_matches(step_name, name_to_report)
         step_definition = match(step_name)
-        args = [JsArg.new(2)]
+        args = [JsArg.new(6)]
         if step_definition
           [StepMatch.new(step_definition, step_name, name_to_report, args)]
         else
