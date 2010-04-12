@@ -1,3 +1,8 @@
+== In Git
+
+=== New Features
+* Upgraded Sinatra example to use Snatra 1.0 and Capybara. (Aslak Hellesøy)
+
 == 0.6.4 2010-03-30
 
 === Bugfixes
