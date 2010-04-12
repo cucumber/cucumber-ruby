@@ -1,4 +1,7 @@
 require 'cucumber/parser/gherkin_builder'
+require 'gherkin/parser/filter_listener'
+require 'gherkin/parser/parser'
+require 'gherkin/i18n_lexer'
 
 module Cucumber
   class FeatureFile
@@ -22,18 +25,6 @@ module Cucumber
     # be filtered.
     def parse(step_mother, options)
       filters = @lines || options[:name_regexen] || options[:tag_expressions] || []
-
-      return gherkin_parse(step_mother, filters)
-
-      # Old Treetop stuff
-      language = Parser::NaturalLanguage.get(step_mother, (lang || 'en'))
-      language.parse(source, @path, filters)
-    end
-
-    def gherkin_parse(step_mother, filters)
-      require 'gherkin/parser/filter_listener'
-      require 'gherkin/parser/parser'
-      require 'gherkin/i18n_lexer'
 
       builder         = Cucumber::Parser::GherkinBuilder.new
       filter_listener = Gherkin::Parser::FilterListener.new(builder, filters)
