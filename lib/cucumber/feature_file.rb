@@ -1,4 +1,3 @@
-require 'cucumber/parser/natural_language'
 require 'cucumber/parser/gherkin_builder'
 
 module Cucumber
@@ -22,24 +21,19 @@ module Cucumber
     # If +options+ contains tags, the result will
     # be filtered.
     def parse(step_mother, options)
-      filter_hash = {
-        :lines => @lines,
-        :name_regexen => options[:name_regexen],
-        :tag_expression => options[:tag_expression], # TODO: Remove
-        :tag_expressions => options[:tag_expressions]
-      }
-      return gherkin_parse(step_mother, filter_hash) if ENV['GHERKIN']
+      filters = @lines || options[:name_regexen] || options[:tag_expressions] || []
 
+      return gherkin_parse(step_mother, filters)
+
+      # Old Treetop stuff
       language = Parser::NaturalLanguage.get(step_mother, (lang || 'en'))
-      language.parse(source, @path, filter_hash)
+      language.parse(source, @path, filters)
     end
 
-    def gherkin_parse(step_mother, filter_hash)
+    def gherkin_parse(step_mother, filters)
       require 'gherkin/parser/filter_listener'
       require 'gherkin/parser/parser'
       require 'gherkin/i18n_lexer'
-
-      filters = filter_hash[:lines] || filter_hash[:name_regexen] || filter_hash[:tag_expressions]
 
       builder         = Cucumber::Parser::GherkinBuilder.new
       filter_listener = Gherkin::Parser::FilterListener.new(builder, filters)
@@ -52,6 +46,7 @@ module Cucumber
         step_mother.register_adverbs(adverbs)
 
         ast = builder.ast
+        return nil if ast.nil? # Filter caused nothing to match
         ast.language = lexer.i18n_language
         ast.file = @path
         ast

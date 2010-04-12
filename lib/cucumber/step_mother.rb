@@ -1,6 +1,5 @@
 require 'cucumber/constantize'
 require 'cucumber/core_ext/instance_exec'
-require 'cucumber/parser/natural_language'
 require 'cucumber/language_support/language_methods'
 require 'cucumber/formatter/duration'
 require 'timeout'
@@ -49,7 +48,6 @@ module Cucumber
       @unsupported_programming_languages = []
       @programming_languages = []
       @language_map = {}
-      load_natural_language('en')
       @current_scenario = nil
     end
 
@@ -100,14 +98,6 @@ module Cucumber
       @programming_languages << programming_language
       @language_map[ext] = programming_language
       programming_language
-    end
-
-    # Loads a natural language. This has the effect of aliasing 
-    # Step Definition keywords for all of the registered programming 
-    # languages (if they support aliasing). See #load_programming_language
-    #
-    def load_natural_language(lang)
-      Parser::NaturalLanguage.get(self, lang)
     end
 
     # Returns the options passed on the command line.

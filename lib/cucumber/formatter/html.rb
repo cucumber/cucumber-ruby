@@ -109,11 +109,11 @@ module Cucumber
         @builder.span(tag_name, :class => 'tag')
       end
   
-      def feature_name(name)
+      def feature_name(keyword, name)
         lines = name.split(/\r?\n/)
         return if lines.empty?
         @builder.h2 do |h2|
-          @builder.span(lines[0], :class => 'val')
+          @builder.span(keyword + ': ' + lines[0], :class => 'val')
         end
         @builder.p(:class => 'narrative') do
           lines[1..-1].each do |line|

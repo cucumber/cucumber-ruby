@@ -28,7 +28,7 @@ Feature: Delayed announcement
       end
 
       Given /^I announce the world$/ do x=1
-		announce_world
+        announce_world
       end
       """
     And a file named "features/f.feature" with:
@@ -72,7 +72,8 @@ Feature: Delayed announcement
 
     Scenario: Delayed announcements feature
       When I run cucumber --format pretty features/f.feature
-      Then the output should contain
+      Then STDERR should be empty
+      And the output should contain
       """
         Scenario: S                            # features/f.feature:1
           Given I use announce with text "Ann" # features/step_definitions/steps.rb:1

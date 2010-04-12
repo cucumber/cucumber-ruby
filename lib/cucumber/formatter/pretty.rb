@@ -60,8 +60,8 @@ module Cucumber
         @indent = 1
       end
 
-      def feature_name(name)
-        @io.puts(name)
+      def feature_name(keyword, name)
+        @io.puts("#{keyword}: #{name}")
         @io.puts
         @io.flush
       end
@@ -102,7 +102,7 @@ module Cucumber
         puts unless @visiting_first_example_name
         @visiting_first_example_name = false
         names = name.strip.empty? ? [name.strip] : name.split("\n")
-        @io.puts("    #{keyword} #{names[0]}")
+        @io.puts("    #{keyword}: #{names[0]}")
         names[1..-1].each {|s| @io.puts "      #{s}" } unless names.empty?
         @io.flush
         @indent = 6
@@ -119,7 +119,7 @@ module Cucumber
       end
       
       def scenario_name(keyword, name, file_colon_line, source_indent)
-        print_feature_element_name keyword, name, file_colon_line, source_indent
+        print_feature_element_name(keyword, name, file_colon_line, source_indent)
       end
 
       def before_step(step)
@@ -210,10 +210,10 @@ module Cucumber
       def print_feature_element_name(keyword, name, file_colon_line, source_indent)
         @io.puts if @scenario_indent == 6
         names = name.empty? ? [name] : name.split("\n")
-        line = "#{keyword} #{names[0]}".indent(@scenario_indent)
+        line = "#{keyword}: #{names[0]}".indent(@scenario_indent)
         @io.print(line)
         if @options[:source]
-          line_comment = " # #{file_colon_line}".indent(source_indent)
+          line_comment = " # #{file_colon_line}".indent(source_indent-2)
           @io.print(format_string(line_comment, :comment))
         end
         @io.puts

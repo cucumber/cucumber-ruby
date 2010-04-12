@@ -1,3 +1,5 @@
+require 'cucumber/ast'
+
 module Cucumber
   module Parser
     # This class conforms to the Gherkin event API and builds the
@@ -22,7 +24,8 @@ module Cucumber
         @feature = Ast::Feature.new(
           nil, 
           Ast::Comment.new(grab_comments!('')), 
-          Ast::Tags.new(nil, grab_tags!('')), 
+          Ast::Tags.new(nil, grab_tags!('')),
+          keyword,
           name,
           []
         )

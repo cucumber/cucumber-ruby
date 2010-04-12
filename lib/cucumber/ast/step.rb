@@ -73,7 +73,7 @@ module Cucumber
       end
 
       def backtrace_line
-        @backtrace_line ||= @feature_element.backtrace_line("#{@keyword} #{@name}", @line) unless @feature_element.nil?
+        @backtrace_line ||= @feature_element.backtrace_line("#{@keyword}#{@name}", @line) unless @feature_element.nil?
       end
 
       def file_colon_line

@@ -36,6 +36,7 @@ module Cucumber
           background,
           Ast::Comment.new("# My feature comment\n"),
           Ast::Tags.new(6, ['one', 'two']),
+          "Feature",
           "Pretty printing",
           [Ast::Scenario.new(
             background,

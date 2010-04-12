@@ -22,7 +22,7 @@ module Cucumber
         end
 
         format = format_for(status, :param)
-        line = keyword + " " + step_match.format_args(format) + comment
+        line = keyword + step_match.format_args(format) + comment
         format_string(line, status)
       end
 

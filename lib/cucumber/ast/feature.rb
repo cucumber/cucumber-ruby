@@ -7,8 +7,8 @@ module Cucumber
       attr_reader :file
       attr_reader :name
 
-      def initialize(background, comment, tags, name, feature_elements)
-        @background, @comment, @tags, @name, @feature_elements = background, comment, tags, name.strip, feature_elements
+      def initialize(background, comment, tags, keyword, name, feature_elements)
+        @background, @comment, @tags, @keyword, @name, @feature_elements = background, comment, tags, keyword, name.strip, feature_elements
       end
 
       def init
@@ -29,7 +29,7 @@ module Cucumber
         init
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
-        visitor.visit_feature_name(@name)
+        visitor.visit_feature_name(@keyword, @name)
         visitor.visit_background(@background) if @background
         @feature_elements.each do |feature_element|
           visitor.visit_feature_element(feature_element)

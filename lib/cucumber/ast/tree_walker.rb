@@ -41,8 +41,8 @@ module Cucumber
         broadcast(tag_name)
       end
 
-      def visit_feature_name(name)
-        broadcast(name)
+      def visit_feature_name(keyword, name)
+        broadcast(keyword, name)
       end
 
       # +feature_element+ is either Scenario or ScenarioOutline
@@ -75,22 +75,6 @@ module Cucumber
       end
 
       def visit_examples_name(keyword, name)
-        unless keyword =~ /:$/
-          message = <<EOS
-
-
-(::)(::)(::)(::)(::)(::)(::)(::)(::)(::)(::)(::)(::)(::)(::)
-
-                    DEPRECATION WARNING
-                    
-Future versions of Cucumber will not recognize #{keyword} 
-unless it is followed by a colon. Make this change in
-your features now to prevent this warning from appearing.
-
-(::)(::)(::)(::)(::)(::)(::)(::)(::)(::)(::)(::)(::)(::)(::)
-EOS
-          announce(message)
-        end
         broadcast(keyword, name)
       end
 

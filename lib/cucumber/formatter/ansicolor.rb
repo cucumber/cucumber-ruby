@@ -1,4 +1,9 @@
-require 'term/ansicolor'
+begin
+  require 'term/ansicolor'
+rescue LoadError
+  require 'rubygems'
+  require 'term/ansicolor'
+end
 require 'cucumber/platform'
 
 if Cucumber::IRONRUBY
