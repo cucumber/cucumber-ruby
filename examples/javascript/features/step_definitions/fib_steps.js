@@ -1,14 +1,14 @@
-function fibanacci(n){
-  return n<2?n:fibanacci(n-1)+fibanacci(n-2);
+function fibonacci(n){
+  return n<2?n:fibonacci(n-1)+fibonacci(n-2);
 }
 
 var fibonacciSeries = function(fibonacciLimit) {
   var result = Array();
-  var currentFibanacciValue = fibanacci(1);
+  var currentfibonacciValue = fibonacci(1);
   var i = 2;
-  while(currentFibanacciValue < fibonacciLimit) {
-    result.push(currentFibanacciValue);
-    currentFibanacciValue  = fibanacci(i);
+  while(currentfibonacciValue < fibonacciLimit) {
+    result.push(currentfibonacciValue);
+    currentfibonacciValue  = fibonacci(i);
     i++;
   }
   return "[" + result.join(", ") + "]";
