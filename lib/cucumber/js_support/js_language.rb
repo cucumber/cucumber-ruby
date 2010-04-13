@@ -12,7 +12,8 @@ module Cucumber
 
       def execute(js_function, args=[])
         args.map! { |arg| "'#{arg}'"  }
-        @world.eval("var js_function = #{js_function.ToString}; js_function(#{args.join(',')});")
+
+        @world.eval("var __cucumber_js_function = #{js_function.ToString}; __cucumber_js_function(#{args.join(',')});")
       end
 
       def method_missing(method_name, *args)
