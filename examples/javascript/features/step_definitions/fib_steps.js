@@ -14,14 +14,21 @@ var fibonacciSeries = function(fibonacciLimit) {
   return "[" + result.join(", ") + "]";
 }
 
-var fibResult;
+function assert(expected, actual){
+  if(expected != actual){
+    throw 'Expected <' + expected + "> but got <" + actual + ">";
+  }
+}
+
+Before(function(n){
+  fibResult = 0;
+});
 
 When(/^I ask Javascript to calculate fibonacci up to (\d+)$/, function(n){
+  assert(0, fibResult)
   fibResult = fibonacciSeries(parseInt(n));
 });
 
 Then(/^it should give me (\[.*\])$/, function(expectedResult){
-  if(fibResult != expectedResult){
-    throw 'Expected <' + expectedResult + "> but got <" + fibResult + ">";
-  }
+  assert(expectedResult, fibResult)
 });

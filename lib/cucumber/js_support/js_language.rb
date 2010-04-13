@@ -36,6 +36,20 @@ module Cucumber
       end
     end
 
+    class JsHook
+      def initialize(js_language, tag_names, proc)
+        @js_language, @tag_names, @proc = js_language, tag_names, proc
+      end
+
+      def tag_expressions
+        @tag_names
+      end
+
+      def invoke(location, scenario)
+        @js_language.current_world.eval("var block = #{@proc.ToString}; block();")
+      end
+    end
+
     class JsArg
       def initialize(arg)
         @arg = arg
@@ -86,6 +100,12 @@ module Cucumber
 
       def addStepDefinition(this, argumentsFrom, regexp, func)
         @step_definitions << JsStepDefinition.new(self, regexp, func)
+      end
+
+      #TODO support tag_names
+      def registerJsHook(phase, proc)
+        tag_names = []
+        add_hook(phase, JsHook.new(self, tag_names, proc))
       end
 
       def current_world
