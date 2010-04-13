@@ -33,9 +33,6 @@ module Cucumber
 
       begin
         lexer.scan(source)
-        adverbs = lexer.i18n_language.code_keywords
-        step_mother.register_adverbs(adverbs)
-
         ast = builder.ast
         return nil if ast.nil? # Filter caused nothing to match
         ast.language = lexer.i18n_language

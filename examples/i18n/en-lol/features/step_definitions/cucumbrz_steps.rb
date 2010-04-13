@@ -11,6 +11,6 @@ DEN /^I HAS (\d+) CUCUMBERZ IN MAH BELLY$/ do |n|
   @belly.cukes.should == n.to_i
 end
 
-AN /^IN TEH END (\d+) CUCUMBRZ KTHXBAI$/ do |n|
+DEN /^IN TEH END (\d+) CUCUMBRZ KTHXBAI$/ do |n|
   @basket.cukes.should == n.to_i
 end
