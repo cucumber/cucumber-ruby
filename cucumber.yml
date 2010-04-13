@@ -1,7 +1,7 @@
 <% 
 rerun = File.file?('rerun.txt') ? IO.read('rerun.txt') : ""
 rerun_opts = rerun.to_s.strip.empty? ? "--format progress features" : "--format pretty #{rerun}"
-std_opts = "#{rerun_opts} --format rerun --out rerun.txt --strict --tags ~@wip"
+std_opts = "--format progress features --strict --tags ~@wip"
 %>
 default: <%= std_opts %>
 jruby: <%= std_opts %> --tags ~@spork --tags ~@wire
@@ -11,3 +11,4 @@ windows_mri: <%= std_opts %> --tags ~@spork --tags ~@wire --tags ~@needs-many-fo
 ruby_1_9: <%= std_opts %> --tags ~@fails_on_1_9
 wip: --tags @wip:3 --wip features
 none: --format pretty
+rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip
