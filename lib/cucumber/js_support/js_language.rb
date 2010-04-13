@@ -10,9 +10,9 @@ module Cucumber
         end
       end
 
-      def execute(proc, args=[])
+      def execute(js_function, args=[])
         args.map! { |arg| "'#{arg}'"  }
-        @world.eval("var proc = #{proc.ToString}; proc(#{args.join(',')});")
+        @world.eval("var js_function = #{js_function.ToString}; js_function(#{args.join(',')});")
       end
 
       def method_missing(method_name, *args)
@@ -21,12 +21,12 @@ module Cucumber
     end
 
     class JsStepDefinition
-      def initialize(js_language, regexp, proc)
-        @js_language, @regexp, @proc = js_language, regexp.ToString, proc
+      def initialize(js_language, regexp, js_function)
+        @js_language, @regexp, @js_function = js_language, regexp.ToString, js_function
       end
 
       def invoke(args)
-        @js_language.current_world.execute(@proc, args)
+        @js_language.current_world.execute(@js_function, args)
       end
 
       # TODO: Handle complex args
@@ -41,8 +41,8 @@ module Cucumber
     end
 
     class JsHook
-      def initialize(js_language, tag_names, proc)
-        @js_language, @tag_names, @proc = js_language, tag_names, proc
+      def initialize(js_language, tag_names, js_function)
+        @js_language, @tag_names, @js_function = js_language, tag_names, js_function
       end
 
       def tag_expressions
@@ -50,7 +50,7 @@ module Cucumber
       end
 
       def invoke(location, scenario)
-        @js_language.current_world.execute(@proc)
+        @js_language.current_world.execute(@js_function)
       end
     end
 
@@ -102,14 +102,14 @@ module Cucumber
         end.compact
       end
 
-      def addStepDefinition(this, argumentsFrom, regexp, func)
-        @step_definitions << JsStepDefinition.new(self, regexp, func)
+      def addStepDefinition(this, argumentsFrom, regexp, js_function)
+        @step_definitions << JsStepDefinition.new(self, regexp, js_function)
       end
 
       #TODO support tag_names
-      def registerJsHook(phase, proc)
+      def registerJsHook(phase, js_function)
         tag_names = []
-        add_hook(phase, JsHook.new(self, tag_names, proc))
+        add_hook(phase, JsHook.new(self, tag_names, js_function))
       end
 
       def current_world
