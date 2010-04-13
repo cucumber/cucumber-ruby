@@ -12,7 +12,6 @@ module Cucumber
 
       def execute(js_function, args=[])
         args.map! { |arg| "'#{arg}'"  }
-
         @world.eval("var __cucumber_js_function = #{js_function.ToString}; __cucumber_js_function(#{args.join(',')});")
       end
 
@@ -38,6 +37,11 @@ module Cucumber
             JsArg.new(match)
           end
         end
+      end
+
+      def file_colon_line
+        # Not possible yet to get file/line of js function with V8/therubyracer
+        ""
       end
     end
 
