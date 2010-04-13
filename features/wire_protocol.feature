@@ -262,6 +262,7 @@ Feature: Wire Protocol
   Scenario: Invoke a step definition which takes table arguments (and passes)
     Given a file named "features/wired_on_tables.feature" with:
       """
+      Feature: High strung
         Scenario: Wired and more
           Given we're all:
             | wired |
