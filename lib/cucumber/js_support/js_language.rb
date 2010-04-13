@@ -10,6 +10,11 @@ module Cucumber
         end
       end
 
+      def execute(proc, args=[])
+        args.map! { |arg| "'#{arg}'"  }
+        @world.eval("var proc = #{proc.ToString}; proc(#{args.join(',')});")
+      end
+
       def method_missing(method_name, *args)
         @world.send(method_name, *args)
       end
@@ -21,8 +26,7 @@ module Cucumber
       end
 
       def invoke(args)
-        args.map! { |arg| "'#{arg}'"  }
-        @js_language.current_world.eval("var block = #{@proc.ToString}; block(#{args.join(',')});")
+        @js_language.current_world.execute(@proc, args)
       end
 
       # TODO: Handle complex args
@@ -46,7 +50,7 @@ module Cucumber
       end
 
       def invoke(location, scenario)
-        @js_language.current_world.eval("var block = #{@proc.ToString}; block();")
+        @js_language.current_world.execute(@proc)
       end
     end
 
