@@ -29,11 +29,20 @@ module Cucumber
         init
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
-        visitor.visit_feature_name(@keyword, @name)
+        visitor.visit_feature_name(@keyword, indented_name)
         visitor.visit_background(@background) if @background
         @feature_elements.each do |feature_element|
           visitor.visit_feature_element(feature_element)
         end
+      end
+
+      def indented_name
+        indent = ""
+        @name.split("\n").map do |l|
+          s = "#{indent}#{l}"
+          indent = "  "
+          s
+        end.join("\n")
       end
 
       def source_tag_names
