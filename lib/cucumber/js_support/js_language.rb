@@ -5,9 +5,7 @@ module Cucumber
 
     class JsWorld
       def initialize
-        V8::Context.open do |context|
-          @world = context
-        end
+        @world = V8::Context.new
       end
 
       def execute(js_function, args=[])
