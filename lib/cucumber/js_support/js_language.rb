@@ -107,7 +107,7 @@ module Cucumber
         end.compact
       end
 
-      def addStepDefinition(this, argumentsFrom, regexp, js_function)
+      def addStepDefinition(regexp, js_function)
         @step_definitions << JsStepDefinition.new(self, regexp, js_function)
       end
 
