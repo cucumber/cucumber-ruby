@@ -26,7 +26,7 @@ module Cucumber
         arrange_formats
         raise("You can't use both --strict and --wip") if strict? && wip?
 
-        @options[:tag_expression] = Gherkin::Parser::TagExpression.new(*@options[:tag_expressions])
+        @options[:tag_expression] = Gherkin::Parser::TagExpression.new(@options[:tag_expressions])
         return @args.replace(@options.expanded_args_without_drb) if drb?
 
         set_environment_variables

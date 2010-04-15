@@ -303,10 +303,6 @@ module Cucumber
         end
       end
 
-      def tag_filter(tag_string)
-        tags = Gherkin::Parser::TagExpression.new(tag_string)
-      end
-
       def disable_profile_loading?
         @disable_profile_loading
       end
