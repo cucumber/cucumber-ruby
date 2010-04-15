@@ -170,6 +170,19 @@
   then: "*|Then y'all"
   and: "*|And y'all"
   but: "*|But y'all"
+"eo":
+  name: Esperanto
+  native: Esperanto
+  feature: Trajto
+  background: Fono
+  scenario: Scenaro
+  scenario_outline: Konturo de la scenaro
+  examples: Ekzemploj
+  given: "*|Donitaĵo"
+  when: "*|Se"
+  then: "*|Do"
+  and: "*|Kaj"
+  but: "*|Sed"
 "es":
   name: Spanish
   native: español
