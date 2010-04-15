@@ -17,10 +17,10 @@ module Cucumber
         block_arg_string = block_args.empty? ? "" : "#{block_args.join(", ")}"
         multiline_class_comment = ""
         if(multiline_arg_class == Ast::Table)
-          multiline_class_comment = "// #{multiline_arg_class.default_arg_name} is a #{multiline_arg_class.to_s}\n  "
+          multiline_class_comment = "//#{multiline_arg_class.default_arg_name} is a #{multiline_arg_class.to_s}\n"
         end
 
-        "#{step_keyword}(/^#{escaped}$/, function(#{block_arg_string}){\n  #{multiline_class_comment} //express the regexp above with the code you wish you had\n});"
+        "#{step_keyword}(/^#{escaped}$/, function(#{block_arg_string}){\n  #{multiline_class_comment}  //express the regexp above with the code you wish you had\n});"
       end
     end
   end
