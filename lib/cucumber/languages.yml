@@ -443,6 +443,19 @@
   then: "*|То"
   and: "*|И|К тому же"
   but: "*|Но|А"
+"ru-jargon":
+  name: Russian
+  native: русский
+  feature: Фича
+  background: Предыстория
+  scenario: Сценарий
+  scenario_outline: Структура сценария
+  examples: Значения
+  given: "*|Допустим"
+  when: "*|Если"
+  then: "*|То"
+  and: "*|И|К тому же"
+  but: "*|Но|А"
 "sv":
   name: Swedish
   native: Svenska
