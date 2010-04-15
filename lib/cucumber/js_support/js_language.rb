@@ -68,6 +68,8 @@ module Cucumber
         @arg
       end
 
+      def byte_offset
+      end
     end
 
     class JsLanguage

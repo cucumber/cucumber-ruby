@@ -14,7 +14,7 @@ var fibonacciSeries = function(fibonacciLimit) {
   return "[" + result.join(", ") + "]";
 }
 
-function assert(expected, actual){
+function assertEqual(expected, actual){
   if(expected != actual){
     throw 'Expected <' + expected + "> but got <" + actual + ">";
   }
@@ -25,10 +25,15 @@ Before(function(n){
 });
 
 When(/^I ask Javascript to calculate fibonacci up to (\d+)$/, function(n){
-  assert(0, fibResult)
+  assertEqual(0, fibResult)
   fibResult = fibonacciSeries(parseInt(n));
 });
 
 Then(/^it should give me (\[.*\])$/, function(expectedResult){
-  assert(expectedResult, fibResult)
+  assertEqual(expectedResult, fibResult)
 });
+
+Then(/^it should give me:$/, function(string){
+  assertEqual(string, fibResult)
+});
+

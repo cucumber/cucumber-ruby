@@ -17,3 +17,9 @@ Feature: Fibonacci
       | 9   | [1, 1, 2, 3, 5, 8]                     |
       | 100 | [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89] |
 
+  Scenario: Single series
+    When I ask Javascript to calculate fibonacci up to 2
+    Then it should give me:
+    """
+    [1, 1]
+    """
