@@ -23,3 +23,9 @@ Feature: Fibonacci
     """
     [1, 1]
     """
+
+  Scenario:
+    When I ask Javascript to calculate fibonacci up to 2
+    Then it should contain:
+    | cell 1 | cell 2 |
+    |   1    |   1    |

@@ -34,6 +34,10 @@ Then(/^it should give me (\[.*\])$/, function(expectedResult){
 });
 
 Then(/^it should give me:$/, function(string){
-  assertEqual(string, fibResult)
+  assertEqual(string, fibResult);
 });
 
+Then(/^it should contain:$/, function(table){
+  var cell_1 = table.hashes[0]['cell 1'];
+  assertEqual(true, (fibResult.indexOf(cell_1) != -1));
+});
