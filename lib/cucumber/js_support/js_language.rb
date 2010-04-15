@@ -1,5 +1,7 @@
 require 'v8'
 
+require 'cucumber/js_support/js_snippets'
+
 module Cucumber
   module JsSupport
 
@@ -65,10 +67,12 @@ module Cucumber
       def val
         @arg
       end
+
     end
 
     class JsLanguage
       include LanguageSupport::LanguageMethods
+      include JsSnippets
 
       def initialize(step_mother)
         @step_definitions = []
@@ -83,10 +87,6 @@ module Cucumber
       end
 
       def alias_adverbs(adverbs)
-      end
-
-      def snippet_text(step_keyword, step_name, multiline_arg_class)
-        puts "We don't need no stinking snippets"
       end
 
       def begin_scenario(scenario)
