@@ -74,7 +74,7 @@
   scenario: Scenario
   scenario_outline: Scenario Amlinellol
   examples: Enghreifftiau
-  given: "*|anrhegedig a"
+  given: "*|Anrhegedig a"
   when: "*|Pryd"
   then: "*|Yna"
   and: "*|A"
@@ -433,20 +433,7 @@
 "ru":
   name: Russian
   native: русский
-  feature: Функционал
-  background: Предыстория
-  scenario: Сценарий
-  scenario_outline: Структура сценария
-  examples: Значения
-  given: "*|Допустим"
-  when: "*|Если"
-  then: "*|То"
-  and: "*|И|К тому же"
-  but: "*|Но|А"
-"ru-jargon":
-  name: Russian
-  native: русский
-  feature: Фича
+  feature: Функционал|Фича
   background: Предыстория
   scenario: Сценарий
   scenario_outline: Структура сценария
@@ -529,7 +516,7 @@
   scenario: Сценарій
   scenario_outline: Структура сценарію
   examples: Приклади
-  given: "*|Припустимо|Припустимо що|Нехай"
+  given: "*|Припустимо|Припустимо, що|Нехай"
   when: "*|Якщо"
   then: "*|То"
   and: "*|І"
