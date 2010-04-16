@@ -8,6 +8,7 @@ Feature: Wire protocol timeouts
     Given a standard Cucumber project directory structure
     And a file named "features/wired.feature" with:
       """
+      Feature: Telegraphy
         Scenario: Wired
           Given we're all wired
 
@@ -46,15 +47,15 @@ Feature: Wire protocol timeouts
     Then STDERR should be empty
     And it should fail with
       """
+      Feature: Telegraphy
 
-
-        Scenario: Wired         # features/wired.feature:1
+        Scenario: Wired         # features/wired.feature:2
           Given we're all wired # Unknown
             Timed out calling wire server with message 'invoke' (Timeout::Error)
-            features/wired.feature:2:in `Given we're all wired'
+            features/wired.feature:3:in `Given we're all wired'
 
       Failing Scenarios:
-      cucumber features/wired.feature:1 # Scenario: Wired
+      cucumber features/wired.feature:2 # Scenario: Wired
 
       1 scenario (1 failed)
       1 step (1 failed)
