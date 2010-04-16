@@ -20,6 +20,12 @@ function assertEqual(expected, actual){
   }
 }
 
+function assertMatches(expected, actual){
+  if(actual.indexOf(expected) == -1){
+    throw 'Expected <' + expected + "> to contain <" + actual + "> but it did not";
+  }
+}
+
 Before(function(n){
   fibResult = 0;
 });
@@ -38,6 +44,8 @@ Then(/^it should give me:$/, function(string){
 });
 
 Then(/^it should contain:$/, function(table){
-  var cell_1 = table.hashes[0]['cell 1'];
-  assertEqual(true, (fibResult.indexOf(cell_1) != -1));
+  var cell_1 = table[0][0];
+  var cell_2 = table[0][1];
+  assertMatches(cell_1, fibResult);
+  assertMatches(cell_2, fibResult);
 });

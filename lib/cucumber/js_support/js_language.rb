@@ -1,4 +1,5 @@
 require 'v8'
+require 'json'
 
 require 'cucumber/js_support/js_snippets'
 
@@ -11,7 +12,14 @@ module Cucumber
       end
 
       def execute(js_function, args=[])
-        args.map! { |arg| "'#{arg}'"  }
+        args.map! do |arg|
+          if arg.is_a?(Ast::Table)
+            arg.rows.inspect
+          else
+            "'#{arg}'"
+          end
+        end
+
         @world.eval("(#{js_function.ToString})(#{args.join(',')});")
       end
 
@@ -29,7 +37,6 @@ module Cucumber
         @js_language.current_world.execute(@js_function, args)
       end
 
-      # TODO: Handle complex args
       def arguments_from(step_name)
         matches = eval_js "#{@regexp}.exec('#{step_name}')"
         if matches
