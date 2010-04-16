@@ -2,6 +2,8 @@ module Cucumber
   module Ast
     class ScenarioOutline #:nodoc:
       include FeatureElement
+      
+      attr_reader :name
 
       module ExamplesArray #:nodoc:
         def accept(visitor)

@@ -92,6 +92,9 @@ Feature: Exception in After Block
         Scenario: Success       # features/naughty_step_in_scenario_outline.feature:12
           Given this step works # features/step_definitions/steps.rb:5
 
+      Failing Scenarios:
+      cucumber features/naughty_step_in_scenario_outline.feature:3 # Scenario: Naughty Step
+
       4 scenarios (1 failed, 3 passed)
       4 steps (4 passed)
 

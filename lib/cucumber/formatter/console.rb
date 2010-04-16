@@ -1,6 +1,7 @@
 require 'cucumber/formatter/ansicolor'
 require 'cucumber/formatter/duration'
 require 'cucumber/formatter/summary'
+require 'ruby-debug'
 
 module Cucumber
   module Formatter
@@ -63,9 +64,10 @@ module Cucumber
       end
 
       def print_stats(features, profiles = [])
-        @failures = step_mother.scenarios(:failed).select { |s| s.is_a?(Cucumber::Ast::Scenario) }
+        @failures = step_mother.scenarios(:failed).select { |s| s.is_a?(Cucumber::Ast::Scenario) or s.is_a?(Cucumber::Ast::OutlineTable::ExampleRow) }
+        @failures.collect! { |s| (s.is_a?(Cucumber::Ast::OutlineTable::ExampleRow)) ? s.scenario_outline : s }
 
-        if !@failures.empty?
+        if !@failures.empty?          
           @io.puts format_string("Failing Scenarios:", :failed)
           @failures.each do |failure|
             profiles_string = profiles.empty? ? '' : (profiles.map{|profile| "-p #{profile}" }).join(' ') + ' '
