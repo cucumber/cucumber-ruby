@@ -1,5 +1,4 @@
 require 'v8'
-require 'json'
 
 require 'cucumber/js_support/js_snippets'
 
