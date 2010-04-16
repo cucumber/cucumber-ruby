@@ -9,7 +9,6 @@ module Cucumber
       before do
         extend(Cucumber::RbSupport::RbDsl)
         @step_mother = Cucumber::StepMother.new
-        @step_mother.load_natural_language('en')
         @rb = @step_mother.load_programming_language('rb')
 
         $x = $y = nil

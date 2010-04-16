@@ -11,7 +11,6 @@ $:.unshift(File.dirname(__FILE__))
 Spec::Runner.configure do |config|
   config.before(:each) do
     ::Term::ANSIColor.coloring = true
-    Cucumber::Parser::NaturalLanguage.instance_variable_set(:@languages, nil)
   end
 end
 

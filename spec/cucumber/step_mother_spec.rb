@@ -10,7 +10,7 @@ module Cucumber
       @dsl.extend(RbSupport::RbDsl)
 
       @step_mother = StepMother.new
-      @step_mother.load_natural_language('en')
+
       @rb = @step_mother.load_programming_language('rb')
 
       @visitor = mock('Visitor')
@@ -179,7 +179,7 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
       @dsl.extend(RbSupport::RbDsl)
 
       @step_mother = StepMother.new
-      @step_mother.load_natural_language('en')
+
       @rb = @step_mother.load_programming_language('rb')
     end
 

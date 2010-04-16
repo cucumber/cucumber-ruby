@@ -142,11 +142,11 @@ module Cucumber
       end
 
       def actual_keyword
-        repeat_keywords = [language.but_keywords(false), language.and_keywords(false)].flatten.uniq.reject{|kw| kw == '*'}
+        repeat_keywords = [language.but_keywords(false), language.and_keywords(false)].flatten.uniq.reject{|kw| kw == '* '}
         if repeat_keywords.index(@step.keyword) && previous
           previous.actual_keyword
         else
-          keyword == '*' ? language.given_keyword : keyword
+          keyword == '* ' ? language.code_keywords.first : keyword
         end
       end
 
