@@ -261,8 +261,25 @@ module Cucumber
     # Is retured as: " hello\nworld"
     #
     def py_string(string_with_triple_quotes, file=nil, line_offset=0)
-      @py_string_parser ||= Parser::PyStringParser.new
-      @py_string_parser.parse_or_fail(string_with_triple_quotes, file, nil, line_offset).to_s
+      py_string_builder = PyStringBuilder.new
+      lexer = Gherkin::I18n.new('en').lexer(py_string_builder)
+      lexer.scan(string_with_triple_quotes)
+      Ast::PyString.new(py_string_builder.string)
+    end
+
+    class PyStringBuilder
+      attr_reader :string
+
+      def initialize
+        @string = ''
+      end
+
+      def py_string(string, line_number)
+        @string = string
+      end
+
+      def eof
+      end
     end
 
     def step_match(step_name, name_to_report=nil) #:nodoc:
