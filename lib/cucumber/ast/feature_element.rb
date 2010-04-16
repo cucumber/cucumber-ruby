@@ -40,7 +40,7 @@ module Cucumber
         scenario_name_regexps.detect{|name| name =~ @name}
       end
 
-      def backtrace_line(name = "#{@keyword} #{@name}", line = @line)
+      def backtrace_line(name = "#{@keyword}: #{@name}", line = @line)
         @feature.backtrace_line(name, line) if @feature
       end
 

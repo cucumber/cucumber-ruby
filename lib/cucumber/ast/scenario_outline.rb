@@ -82,7 +82,7 @@ module Cucumber
 
       def visit_scenario_name(visitor, row)
         visitor.visit_scenario_name(
-          @feature.language.scenario_keywords[0] + ":",
+          @feature.language.scenario_keywords[0],
           row.name, 
           file_colon_line(row.line), 
           source_indent(first_line_length)
