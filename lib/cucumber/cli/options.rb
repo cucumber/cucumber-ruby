@@ -279,6 +279,10 @@ module Cucumber
         @profiles - [@default_profile]
       end
 
+      def filters
+        @options.values_at(:name_regexps, :tag_expressions).select{|v| !v.empty?}.first || []
+      end
+
     protected
 
       attr_reader :options, :profiles, :expanded_args
