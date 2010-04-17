@@ -26,8 +26,18 @@ function assertMatches(expected, actual){
   }
 }
 
-Before(function(n){
+function assertNotEqual(expected, actual){
+  if(expected == actual){
+    throw 'Did not Expected <' + expected + "> but got <" + actual + ">";
+  }
+}
+
+Before(function(){
   fibResult = 0;
+});
+
+After(function(){
+  //throw 'Sabotage scenario'
 });
 
 When(/^I ask Javascript to calculate fibonacci up to (\d+)$/, function(n){
