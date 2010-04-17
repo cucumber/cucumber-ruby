@@ -26,12 +26,6 @@ function assertMatches(expected, actual){
   }
 }
 
-function assertNotEqual(expected, actual){
-  if(expected == actual){
-    throw 'Did not Expected <' + expected + "> but got <" + actual + ">";
-  }
-}
-
 Before(function(){
   fibResult = 0;
 });
