@@ -36,6 +36,10 @@ Before(function(){
   fibResult = 0;
 });
 
+Before('@do-fibonnacci-in-before-hook', function(){
+  fibResult = fibonacciSeries(3);
+});
+
 After(function(){
   //throw 'Sabotage scenario'
 });

@@ -29,3 +29,8 @@ Feature: Fibonacci
     Then it should contain:
     | cell 1 | cell 2 |
     |   1    |   1    |
+
+
+  @do-fibonnacci-in-before-hook
+  Scenario: Single series
+    Then it should give me [1, 1, 2]
