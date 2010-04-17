@@ -117,9 +117,9 @@ module Cucumber
         @step_definitions << JsStepDefinition.new(self, regexp, js_function)
       end
 
-      #TODO support tag_names
-      def register_js_hook(phase, js_function)
-        tag_names = []
+      #TODO: support multiple tag_names
+      def register_js_hook(phase, js_function, tag_name = nil)
+        tag_names = tag_name ? [tag_name] : []
         add_hook(phase, JsHook.new(self, tag_names, js_function))
       end
 

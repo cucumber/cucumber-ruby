@@ -17,14 +17,14 @@ Feature: Fibonacci
       | 9   | [1, 1, 2, 3, 5, 8]                     |
       | 100 | [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89] |
 
-  Scenario: Single series
+  Scenario: Single series tested via a PyString
     When I ask Javascript to calculate fibonacci up to 2
     Then it should give me:
     """
     [1, 1]
     """
 
-  Scenario:
+  Scenario: Single series tested via a Step Table
     When I ask Javascript to calculate fibonacci up to 2
     Then it should contain:
     | cell 1 | cell 2 |
@@ -32,5 +32,5 @@ Feature: Fibonacci
 
 
   @do-fibonnacci-in-before-hook
-  Scenario: Single series
+  Scenario: Single series with Before hook with a tag label
     Then it should give me [1, 1, 2]
