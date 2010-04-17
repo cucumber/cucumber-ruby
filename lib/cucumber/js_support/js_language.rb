@@ -11,15 +11,15 @@ module Cucumber
       end
 
       def execute(js_function, args=[])
-        args.map! do |arg|
+        js_args = args.map do |arg|
           if arg.is_a?(Ast::Table)
-            arg.rows.inspect
+            "new CucumberJsDsl.Table(#{arg.raw.inspect})"
           else
             "'#{arg}'"
           end
         end
 
-        @world.eval("(#{js_function.ToString})(#{args.join(',')});")
+        @world.eval("(#{js_function.ToString})(#{js_args.join(',')});")
       end
 
       def method_missing(method_name, *args)
@@ -113,12 +113,12 @@ module Cucumber
         end.compact
       end
 
-      def addStepDefinition(regexp, js_function)
+      def add_step_definition(regexp, js_function)
         @step_definitions << JsStepDefinition.new(self, regexp, js_function)
       end
 
       #TODO support tag_names
-      def registerJsHook(phase, js_function)
+      def register_js_hook(phase, js_function)
         tag_names = []
         add_hook(phase, JsHook.new(self, tag_names, js_function))
       end

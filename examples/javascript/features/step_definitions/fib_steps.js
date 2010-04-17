@@ -44,8 +44,7 @@ Then(/^it should give me:$/, function(string){
 });
 
 Then(/^it should contain:$/, function(table){
-  var cell_1 = table[0][0];
-  var cell_2 = table[0][1];
-  assertMatches(cell_1, fibResult);
-  assertMatches(cell_2, fibResult);
+  var hashes = table.hashes();
+  assertMatches(hashes[0]['cell 1'], fibResult);
+  assertMatches(hashes[0]['cell 2'], fibResult);
 });
