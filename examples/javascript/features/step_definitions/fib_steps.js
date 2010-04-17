@@ -14,18 +14,6 @@ var fibonacciSeries = function(fibonacciLimit) {
   return "[" + result.join(", ") + "]";
 }
 
-function assertEqual(expected, actual){
-  if(expected != actual){
-    throw 'Expected <' + expected + "> but got <" + actual + ">";
-  }
-}
-
-function assertMatches(expected, actual){
-  if(actual.indexOf(expected) == -1){
-    throw 'Expected <' + expected + "> to contain <" + actual + "> but it did not";
-  }
-}
-
 Before(function(){
   fibResult = 0;
 });
@@ -35,7 +23,7 @@ Before('@do-fibonnacci-in-before-hook', function(){
 });
 
 After(function(){
-  //throw 'Sabotage scenario'
+  //throw 'Sabotage scenario';
 });
 
 When(/^I ask Javascript to calculate fibonacci up to (\d+)$/, function(n){
