@@ -52,7 +52,7 @@ Feature: http://gist.github.com/221223
       """
 
   Scenario: Multiline string
-    When I run cucumber features/f.feature:6
+    When I run cucumber features/f.feature:3
     Then STDERR should be empty
     And it should fail with
       """

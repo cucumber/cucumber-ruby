@@ -27,14 +27,12 @@ module Cucumber
       def load_features(content)
         feature_file = FeatureFile.new('spec.feature', content)
         features = Ast::Features.new
-        feature = feature_file.parse(@step_mother, {})
+        feature = feature_file.parse(@step_mother, options)
         features.add_feature(feature)
         features
       end
     
       def run(features)
-        # options = { :verbose => true }
-        options = {}
         tree_walker = Cucumber::Ast::TreeWalker.new(@step_mother, [@formatter], options, STDOUT)
         tree_walker.visit_features(features)
       end
@@ -46,6 +44,10 @@ module Cucumber
         dsl.extend RbSupport::RbDsl
         dsl.instance_exec &step_defs
       end 
+
+      def options
+        @options ||= mock(Cucumber::Cli::Options, :filters => [], :[] => nil)
+      end
     end
   end
 end

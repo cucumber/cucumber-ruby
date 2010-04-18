@@ -24,7 +24,7 @@ module Cucumber
     # If +options+ contains tags, the result will
     # be filtered.
     def parse(step_mother, options)
-      filters = @lines || options[:name_regexen] || options[:tag_expressions] || []
+      filters = @lines || options.filters
 
       builder         = Cucumber::Parser::GherkinBuilder.new
       filter_listener = Gherkin::Parser::FilterListener.new(builder, filters)
