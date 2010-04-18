@@ -5,6 +5,10 @@ require 'cucumber/js_support/js_snippets'
 module Cucumber
   module JsSupport
 
+    def self.argument_safe_string(string)
+      "'#{string.to_s.gsub("\n", '\n')}'"
+    end
+
     class JsWorld
       def initialize
         @world = V8::Context.new
@@ -14,10 +18,13 @@ module Cucumber
         js_args = args.map do |arg|
           if arg.is_a?(Ast::Table)
             "new CucumberJsDsl.Table(#{arg.raw.inspect})"
+          elsif arg.is_a?(Ast::PyString)
+            JsSupport.argument_safe_string(arg)
           else
             "'#{arg}'"
           end
         end
+
         @world.eval("(#{js_function.ToString})(#{js_args.join(',')});")
       end
 
@@ -67,14 +74,12 @@ module Cucumber
 
     class JsTransform
       def initialize(js_language, regexp, js_function)
-        @js_language, @regexp, @js_function = js_language, regexp, js_function
+        @js_language, @regexp, @js_function = js_language, regexp.ToString, js_function
       end
 
       def match(arg)
-        #TODO: Tables get matched as multiline strings which makes the regexp
-        # match a syntax error. Ignoring table args for the moment
-        return if arg.is_a? Ast::Table
-        matches = eval_js "#{@regexp.ToString}.exec('#{arg}');"
+        arg = JsSupport.argument_safe_string(arg)
+        matches = eval_js "#{@regexp}.exec(#{arg});"
         matches ? matches[1..-1] : nil
       end
 

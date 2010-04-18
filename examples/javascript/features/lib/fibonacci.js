@@ -13,3 +13,7 @@ var fibonacciSeries = function(fibonacciLimit) {
   }
   return "[" + result.join(", ") + "]";
 }
+
+var fibonacciSeriesFormatted = function(fibonacciLimit){
+  return "\n" + fibonacciSeries(fibonacciLimit) + "\n"
+}

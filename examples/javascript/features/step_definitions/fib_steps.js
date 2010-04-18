@@ -19,6 +19,11 @@ When(/^I ask Javascript to calculate fibonacci up to (\d+)$/, function(n){
   fibResult = fibonacciSeries(n);
 });
 
+When(/^I ask Javascript to calculate fibonacci up to (\d+) with formatting$/, function(n){
+  assertEqual(0, fibResult)
+  fibResult = fibonacciSeriesFormatted(n);
+});
+
 Then(/^it should give me (\[.*\])$/, function(expectedResult){
   assertEqual(expectedResult, fibResult)
 });
