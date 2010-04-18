@@ -36,3 +36,6 @@ Feature: Fibonacci
   @do-fibonnacci-in-before-hook
   Scenario: Single series with Before hook with a tag label
     Then it should give me [1, 1, 2]
+
+  Scenario: Single series by calling a step from within a step
+    Then it should give me [1, 1] via calling another step definition
