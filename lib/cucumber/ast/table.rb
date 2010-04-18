@@ -29,6 +29,21 @@ module Cucumber
         end
       end
       
+      class TableBuilder
+        attr_reader :rows
+
+        def initialize
+          @rows = []
+        end
+
+        def row(row, line_number)
+          @rows << row
+        end
+
+        def eof
+        end
+      end
+
       include Enumerable
       
       NULL_CONVERSIONS = Hash.new(lambda{ |cell_value| cell_value }).freeze
@@ -37,6 +52,13 @@ module Cucumber
 
       def self.default_arg_name #:nodoc:
         "table"
+      end
+
+      def self.parse(text)
+        table_builder = TableBuilder.new
+        lexer = Gherkin::I18n.new('en').lexer(table_builder)
+        lexer.scan(text)
+        new(table_builder.rows)
       end
 
       # Creates a new instance. +raw+ should be an Array of Array of String

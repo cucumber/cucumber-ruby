@@ -229,25 +229,7 @@ module Cucumber
       if Array === text_or_table
         Ast::Table.new(text_or_table)
       else
-        table_builder = TableBuilder.new
-        lexer = Gherkin::I18n.new('en').lexer(table_builder)
-        lexer.scan(text_or_table)
-        Ast::Table.new(table_builder.rows)
-      end
-    end
-
-    class TableBuilder
-      attr_reader :rows
-
-      def initialize
-        @rows = []
-      end
-
-      def row(row, line_number)
-        @rows << row
-      end
-
-      def eof
+        Ast::Table.parse(text_or_table)
       end
     end
 
