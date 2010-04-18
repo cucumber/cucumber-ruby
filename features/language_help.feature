@@ -7,19 +7,19 @@ Feature: Language help
     When I run cucumber --i18n pt help
     Then it should pass with
       """
-            | feature          | "Funcionalidade "                            |
-            | background       | "Contexto "                                  |
-            | scenario         | "Cenário ", "Cenario "                       |
-            | scenario_outline | "Esquema do Cenário ", "Esquema do Cenario " |
-            | examples         | "Exemplos "                                  |
-            | given            | "* ", "Dado "                                |
-            | when             | "* ", "Quando "                              |
-            | then             | "* ", "Então ", "Entao "                     |
-            | and              | "* ", "E "                                   |
-            | but              | "* ", "Mas "                                 |
-            | given (code)     | "Dado"                                       |
-            | when (code)      | "Quando"                                     |
-            | then (code)      | "Então", "Entao"                             |
+            | feature          | "Funcionalidade"                           |
+            | background       | "Contexto"                                 |
+            | scenario         | "Cenário", "Cenario"                       |
+            | scenario_outline | "Esquema do Cenário", "Esquema do Cenario" |
+            | examples         | "Exemplos"                                 |
+            | given            | "* ", "Dado "                              |
+            | when             | "* ", "Quando "                            |
+            | then             | "* ", "Então ", "Entao "                   |
+            | and              | "* ", "E "                                 |
+            | but              | "* ", "Mas "                               |
+            | given (code)     | "Dado"                                     |
+            | when (code)      | "Quando"                                   |
+            | then (code)      | "Então", "Entao"                           |
 
       """
   Scenario: List languages
