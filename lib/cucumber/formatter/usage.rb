@@ -69,7 +69,7 @@ module Cucumber
         @io.print format_string(stepdef_key.regexp_source, stepdef_key.status)
         if @options[:source]
           indent = max_length - stepdef_key.regexp_source.jlength
-          line_comment = "    # #{stepdef_key.file_colon_line}".indent(indent)
+          line_comment = "   # #{stepdef_key.file_colon_line}".indent(indent)
           @io.print(format_string(line_comment, :comment))
         end
         @io.puts

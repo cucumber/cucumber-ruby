@@ -136,34 +136,34 @@ Feature: Cucumber command line
 
       """
 
-      Scenario: --format steps
-      When I run cucumber features --format stepdefs --dry-run
-      Then STDERR should be empty
-      And it should pass with
-        """
-        -------------------------------------UU-U--------------UUUUU---------U-------U--------------U-UU-------------------------------------------------UU
-        
-        /^'(.+)' cukes$/                                      # features/step_definitions/sample_steps.rb:27
-        /^'(.+)' global cukes$/                               # features/step_definitions/sample_steps.rb:35
-        /^I should have '(.+)' cukes$/                        # features/step_definitions/sample_steps.rb:31
-        /^I should have '(.+)' global cukes$/                 # features/step_definitions/sample_steps.rb:42
-        /^a step definition that calls an undefined step$/    # features/step_definitions/sample_steps.rb:19
-        /^another unused$/                                    # features/step_definitions/sample_steps.rb:69
-          NOT MATCHED BY ANY STEPS
-        /^call step "(.*)"$/                                  # features/step_definitions/sample_steps.rb:23
-        /^failing expectation$/                               # features/step_definitions/sample_steps.rb:62
-        /^failing without a table$/                           # features/step_definitions/sample_steps.rb:15
-        /^failing$/                                           # features/step_definitions/sample_steps.rb:8
-        /^multiline string$/                                  # features/step_definitions/sample_steps.rb:50
-        /^passing without a table$/                           # features/step_definitions/sample_steps.rb:12
-        /^passing$/                                           # features/step_definitions/sample_steps.rb:5
-        /^table$/                                             # features/step_definitions/sample_steps.rb:46
-        /^the multiline string should be$/                    # features/step_definitions/sample_steps.rb:58
-        /^the table should be$/                               # features/step_definitions/sample_steps.rb:54
-        /^unused$/                                            # features/step_definitions/sample_steps.rb:66
-          NOT MATCHED BY ANY STEPS
-        
-        43 scenarios (32 skipped, 10 undefined, 1 passed)
-        131 steps (117 skipped, 14 undefined)
+  Scenario: --format stepdefs
+    When I run cucumber features --format stepdefs --dry-run
+    Then STDERR should be empty
+    And it should pass with
+      """
+      -------------------------------------UU-U--------------UUUUU---------U-------U--------------U-UU-------------------------------------------------UU
+      
+      /^'(.+)' cukes$/                                     # features/step_definitions/sample_steps.rb:27
+      /^'(.+)' global cukes$/                              # features/step_definitions/sample_steps.rb:35
+      /^I should have '(.+)' cukes$/                       # features/step_definitions/sample_steps.rb:31
+      /^I should have '(.+)' global cukes$/                # features/step_definitions/sample_steps.rb:42
+      /^a step definition that calls an undefined step$/   # features/step_definitions/sample_steps.rb:19
+      /^another unused$/                                   # features/step_definitions/sample_steps.rb:69
+        NOT MATCHED BY ANY STEPS
+      /^call step "(.*)"$/                                 # features/step_definitions/sample_steps.rb:23
+      /^failing expectation$/                              # features/step_definitions/sample_steps.rb:62
+      /^failing without a table$/                          # features/step_definitions/sample_steps.rb:15
+      /^failing$/                                          # features/step_definitions/sample_steps.rb:8
+      /^multiline string$/                                 # features/step_definitions/sample_steps.rb:50
+      /^passing without a table$/                          # features/step_definitions/sample_steps.rb:12
+      /^passing$/                                          # features/step_definitions/sample_steps.rb:5
+      /^table$/                                            # features/step_definitions/sample_steps.rb:46
+      /^the multiline string should be$/                   # features/step_definitions/sample_steps.rb:58
+      /^the table should be$/                              # features/step_definitions/sample_steps.rb:54
+      /^unused$/                                           # features/step_definitions/sample_steps.rb:66
+        NOT MATCHED BY ANY STEPS
+      
+      43 scenarios (32 skipped, 10 undefined, 1 passed)
+      131 steps (117 skipped, 14 undefined)
 
-        """
+      """
