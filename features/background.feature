@@ -147,6 +147,9 @@ Feature: backgrounds
           | count |
           | 10    |
 
+    Failing Scenarios:
+    cucumber features/background/scenario_outline_failing_background.feature:6 # Scenario: failing background
+
     2 scenarios (1 failed, 1 skipped)
     4 steps (1 failed, 3 skipped)
 
