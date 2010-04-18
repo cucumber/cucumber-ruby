@@ -29,7 +29,7 @@ module Cucumber
         end
       end
       
-      class TableBuilder
+      class Builder
         attr_reader :rows
 
         def initialize
@@ -55,10 +55,10 @@ module Cucumber
       end
 
       def self.parse(text)
-        table_builder = TableBuilder.new
-        lexer = Gherkin::I18n.new('en').lexer(table_builder)
+        builder = Builder.new
+        lexer = Gherkin::I18n.new('en').lexer(builder)
         lexer.scan(text)
-        new(table_builder.rows)
+        new(builder.rows)
       end
 
       # Creates a new instance. +raw+ should be an Array of Array of String

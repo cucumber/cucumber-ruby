@@ -17,10 +17,32 @@ module Cucumber
     # Note how the indentation from the source is stripped away.
     #
     class PyString #:nodoc:
+      class Builder
+        attr_reader :string
+
+        def initialize
+          @string = ''
+        end
+
+        def py_string(string, line_number)
+          @string = string
+        end
+
+        def eof
+        end
+      end
+
       attr_accessor :file
 
       def self.default_arg_name
         "string"
+      end
+
+      def self.parse(text)
+        builder = Builder.new
+        lexer = Gherkin::I18n.new('en').lexer(builder)
+        lexer.scan(text)
+        new(builder.string)
       end
 
       def initialize(string)

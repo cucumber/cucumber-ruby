@@ -91,6 +91,10 @@ module Cucumber
       def row(row, line)
         @rows ||= []
         @rows << row
+        class << row
+          attr_accessor :line
+        end
+        row.line = line
       end
 
       def py_string(string, line)
