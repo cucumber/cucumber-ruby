@@ -10,9 +10,13 @@ After(function(){
   //throw 'Sabotage scenario';
 });
 
+Transform(/^(\d+)$/, function(n){
+  return parseInt(n);
+});
+
 When(/^I ask Javascript to calculate fibonacci up to (\d+)$/, function(n){
   assertEqual(0, fibResult)
-  fibResult = fibonacciSeries(parseInt(n));
+  fibResult = fibonacciSeries(n);
 });
 
 Then(/^it should give me (\[.*\])$/, function(expectedResult){

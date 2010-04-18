@@ -18,7 +18,6 @@ module Cucumber
             "'#{arg}'"
           end
         end
-
         @world.eval("(#{js_function.ToString})(#{js_args.join(',')});")
       end
 
@@ -33,6 +32,7 @@ module Cucumber
       end
 
       def invoke(args)
+        args = @js_language.execute_transforms(args)
         @js_language.current_world.execute(@js_function, args)
       end
 
@@ -62,6 +62,24 @@ module Cucumber
 
       def invoke(location, scenario)
         @js_language.current_world.execute(@js_function)
+      end
+    end
+
+    class JsTransform
+      def initialize(js_language, regexp, js_function)
+        @js_language, @regexp, @js_function = js_language, regexp, js_function
+      end
+
+      def match(arg)
+        #TODO: Tables get matched as multiline strings which makes the regexp
+        # match a syntax error. Ignoring table args for the moment
+        return if arg.is_a? Ast::Table
+        matches = eval_js "#{@regexp.ToString}.exec('#{arg}');"
+        matches ? matches[1..-1] : nil
+      end
+
+      def invoke(arg)
+        @js_language.current_world.execute(@js_function, [arg])
       end
     end
 
@@ -121,6 +139,10 @@ module Cucumber
       def register_js_hook(phase, js_function, tag_name = nil)
         tag_names = tag_name ? [tag_name] : []
         add_hook(phase, JsHook.new(self, tag_names, js_function))
+      end
+
+      def register_js_transform(regexp, js_function)
+        add_transform(JsTransform.new(self, regexp, js_function))
       end
 
       def current_world
