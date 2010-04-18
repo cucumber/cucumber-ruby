@@ -366,19 +366,15 @@ module Cucumber
         self
       end
 
-      # TODO: Move to Language
       def list_keywords_and_exit(lang)
-        unless Cucumber::LANGUAGES[lang]
-          raise("No language with key #{lang}")
-        end
-        require 'cucumber/cli/language_help_formatter'
-        LanguageHelpFormatter.list_keywords(@out_stream, lang)
+        require 'gherkin/i18n'
+        @out_stream.write(Gherkin::I18n.get(lang).keyword_table)
         Kernel.exit(0)
       end
 
       def list_languages_and_exit
-        require 'cucumber/cli/language_help_formatter'
-        LanguageHelpFormatter.list_languages(@out_stream)
+        require 'gherkin/i18n'
+        @out_stream.write(Gherkin::I18n.language_table)
         Kernel.exit(0)
       end
 
