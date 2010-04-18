@@ -20,7 +20,7 @@ module Cucumber
       describe "verbose mode" do
 
         before(:each) do
-          @empty_feature = Cucumber::Ast::Feature.new(nil, Cucumber::Ast::Comment.new(''), Cucumber::Ast::Tags.new(2, []), "Feature", [])
+          @empty_feature = Cucumber::Ast::Feature.new(nil, Cucumber::Ast::Comment.new(''), Cucumber::Ast::Tags.new(2, []), "Feature", "Foo", [])
         end
 
         it "should show feature files parsed" do
