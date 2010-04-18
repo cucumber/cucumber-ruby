@@ -74,7 +74,7 @@ module Cucumber
         
         duration = Time.now - @steps_start
         if steps.failed?
-          steps.each { |step| @output += "#{step.keyword} #{step.name}\n" }
+          steps.each { |step| @output += "#{step.keyword}#{step.name}\n" }
           @output += "\nMessage:\n"
         end
         build_testcase(duration, steps.status, steps.exception)
