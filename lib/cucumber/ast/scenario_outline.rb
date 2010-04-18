@@ -53,7 +53,7 @@ module Cucumber
         return if Cucumber.wants_to_quit
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(text_length))
+        visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
         visitor.visit_steps(@steps)
 
         skip_invoke! if @background && @background.failed?
@@ -87,7 +87,7 @@ module Cucumber
           @feature.language.scenario_keywords[0],
           row.name, 
           file_colon_line(row.line), 
-          source_indent(text_length)
+          source_indent(first_line_length)
         )
       end
 

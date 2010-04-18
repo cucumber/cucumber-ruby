@@ -18,6 +18,10 @@ module Cucumber
         @feature.file_colon_line(line) if @feature
       end
 
+      def first_line_length
+        name_line_lengths[0]
+      end
+
       def text_length
         name_line_lengths.max
       end
