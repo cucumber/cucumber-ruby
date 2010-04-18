@@ -18,7 +18,7 @@ module Cucumber
           @keyword = "key"  
           @name = "short\nvery longer\ntiny"
         
-          first_line_length.should == (@keyword.jlength) + (first_line_name_length = 5)
+          text_length.should == (@keyword.jlength) + (first_line_name_length = 5)
         end
       end
     

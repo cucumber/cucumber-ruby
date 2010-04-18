@@ -45,7 +45,7 @@ module Cucumber
         with_visitor(visitor) do
           visitor.visit_comment(@comment) unless @comment.empty?
           visitor.visit_tags(@tags)
-          visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
+          visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(text_length))
 
           skip_invoke! if @background.failed?
           visitor.step_mother.before_and_after(self, skip_hooks?) do

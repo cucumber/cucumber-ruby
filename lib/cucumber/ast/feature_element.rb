@@ -22,16 +22,16 @@ module Cucumber
         name_line_lengths.max
       end
 
-      def first_line_length
-        name_line_lengths[0]
-      end
-
       def name_line_lengths
         if @name.strip.empty?
-          [@keyword.jlength]
+          [Ast::Step::INDENT + @keyword.jlength + ': '.jlength]
         else
           @name.split("\n").enum_for(:each_with_index).map do |line, line_number|
-            line_number == 0 ? @keyword.jlength + line.jlength : line.jlength + Ast::Step::INDENT - 1 # We -1 as names which are not keyword lines are missing a space between keyword and name
+            if line_number == 0
+              Ast::Step::INDENT + @keyword.jlength + ': '.jlength + line.jlength
+            else
+              Ast::Step::INDENT + Ast::Step::INDENT + line.jlength
+            end
           end
         end
       end

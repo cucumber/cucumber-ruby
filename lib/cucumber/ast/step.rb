@@ -69,7 +69,7 @@ module Cucumber
       end
 
       def text_length(name=@name)
-        @keyword.jlength + name.jlength # + INDENT # Add indent as steps get indented more than scenarios
+        INDENT + INDENT + @keyword.jlength + name.jlength
       end
 
       def backtrace_line
