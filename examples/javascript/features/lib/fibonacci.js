@@ -15,5 +15,5 @@ var fibonacciSeries = function(fibonacciLimit) {
 }
 
 var fibonacciSeriesFormatted = function(fibonacciLimit){
-  return "\n" + fibonacciSeries(fibonacciLimit) + "\n"
+  return "\n'" + fibonacciSeries(fibonacciLimit) + "'\n"
 }

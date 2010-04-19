@@ -22,7 +22,7 @@ Feature: Fibonacci
     Then it should give me:
     """
 
-    [1, 1]
+    '[1, 1]'
 
     """
 

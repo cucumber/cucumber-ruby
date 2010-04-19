@@ -6,7 +6,8 @@ module Cucumber
   module JsSupport
 
     def self.argument_safe_string(string)
-      "'#{string.to_s.gsub("\n", '\n')}'"
+      arg_string = string.to_s.gsub(/[']/, '\\\\\'')
+      "'#{arg_string.gsub("\n", '\n')}'"
     end
 
     class JsWorld
@@ -18,10 +19,8 @@ module Cucumber
         js_args = args.map do |arg|
           if arg.is_a?(Ast::Table)
             "new CucumberJsDsl.Table(#{arg.raw.inspect})"
-          elsif arg.is_a?(Ast::PyString)
-            JsSupport.argument_safe_string(arg)
           else
-            "'#{arg}'"
+            JsSupport.argument_safe_string(arg)
           end
         end
 
