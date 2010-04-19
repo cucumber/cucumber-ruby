@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
-  s.version = "0.6.4"
+  s.version = "0.7.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2010-04-10}
+  s.date = %q{2010-04-19}
   s.default_executable = %q{cucumber}
   s.description = %q{A BDD tool written in Ruby}
   s.email = %q{cukes@googlegroups.com}
@@ -72,6 +72,12 @@ Gem::Specification.new do |s|
      "examples/i18n/en/features/division.feature",
      "examples/i18n/en/features/step_definitons/calculator_steps.rb",
      "examples/i18n/en/lib/calculator.rb",
+     "examples/i18n/eo/.gitignore",
+     "examples/i18n/eo/Rakefile",
+     "examples/i18n/eo/features/adicio.feature",
+     "examples/i18n/eo/features/divido.feature",
+     "examples/i18n/eo/features/step_definitons/calculator_steps.rb",
+     "examples/i18n/eo/lib/calculator.rb",
      "examples/i18n/es/Rakefile",
      "examples/i18n/es/features/adicion.feature",
      "examples/i18n/es/features/step_definitons/calculador_steps.rb",
@@ -178,6 +184,10 @@ Gem::Specification.new do |s|
      "examples/i18n/sr-Cyrl/features/step_definitons/calculator_steps.rb",
      "examples/i18n/sr-Cyrl/features/support/env.rb",
      "examples/i18n/sr-Cyrl/lib/calculator.rb",
+     "examples/i18n/sr-Latn/Rakefile",
+     "examples/i18n/sr-Latn/features/sabiranje.feature",
+     "examples/i18n/sr-Latn/features/step_definitons/calculator_steps.rb",
+     "examples/i18n/sr-Latn/lib/calculator.rb",
      "examples/i18n/sv/Rakefile",
      "examples/i18n/sv/features/step_definitons/kalkulator_steps.rb",
      "examples/i18n/sv/features/summering.feature",
@@ -423,7 +433,6 @@ Gem::Specification.new do |s|
      "lib/cucumber/broadcaster.rb",
      "lib/cucumber/cli/configuration.rb",
      "lib/cucumber/cli/drb_client.rb",
-     "lib/cucumber/cli/language_help_formatter.rb",
      "lib/cucumber/cli/main.rb",
      "lib/cucumber/cli/options.rb",
      "lib/cucumber/cli/profile_loader.rb",
@@ -455,20 +464,8 @@ Gem::Specification.new do |s|
      "lib/cucumber/formatter/usage.rb",
      "lib/cucumber/language_support.rb",
      "lib/cucumber/language_support/language_methods.rb",
-     "lib/cucumber/languages.yml",
      "lib/cucumber/parser.rb",
-     "lib/cucumber/parser/common.rb",
-     "lib/cucumber/parser/common.tt",
-     "lib/cucumber/parser/feature.rb",
-     "lib/cucumber/parser/feature.tt",
      "lib/cucumber/parser/gherkin_builder.rb",
-     "lib/cucumber/parser/i18n.tt",
-     "lib/cucumber/parser/natural_language.rb",
-     "lib/cucumber/parser/py_string.rb",
-     "lib/cucumber/parser/py_string.tt",
-     "lib/cucumber/parser/table.rb",
-     "lib/cucumber/parser/table.tt",
-     "lib/cucumber/parser/treetop_ext.rb",
      "lib/cucumber/platform.rb",
      "lib/cucumber/py_support/py_dsl.py",
      "lib/cucumber/py_support/py_language.py",
@@ -496,14 +493,12 @@ Gem::Specification.new do |s|
      "lib/cucumber/wire_support/wire_protocol/requests.rb",
      "lib/cucumber/wire_support/wire_step_definition.rb",
      "spec/cucumber/ast/background_spec.rb",
-     "spec/cucumber/ast/feature_element_spec.rb",
      "spec/cucumber/ast/feature_factory.rb",
      "spec/cucumber/ast/feature_spec.rb",
      "spec/cucumber/ast/outline_table_spec.rb",
      "spec/cucumber/ast/py_string_spec.rb",
      "spec/cucumber/ast/scenario_outline_spec.rb",
      "spec/cucumber/ast/scenario_spec.rb",
-     "spec/cucumber/ast/step_collection_spec.rb",
      "spec/cucumber/ast/step_spec.rb",
      "spec/cucumber/ast/table_spec.rb",
      "spec/cucumber/ast/tree_walker_spec.rb",
@@ -521,8 +516,6 @@ Gem::Specification.new do |s|
      "spec/cucumber/formatter/junit_spec.rb",
      "spec/cucumber/formatter/progress_spec.rb",
      "spec/cucumber/formatter/spec_helper.rb",
-     "spec/cucumber/parser/feature_parser_spec.rb",
-     "spec/cucumber/parser/table_parser_spec.rb",
      "spec/cucumber/rb_support/rb_step_definition_spec.rb",
      "spec/cucumber/rb_support/regexp_argument_matcher_spec.rb",
      "spec/cucumber/sell_cucumbers.feature",
@@ -556,7 +549,7 @@ Gem::Specification.new do |s|
 
                      (::)   U P G R A D I N G    (::)
 
-Thank you for installing cucumber-0.6.4.
+Thank you for installing cucumber-0.7.0.
 Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
 for important information about this release. Happy cuking!
 
@@ -570,14 +563,12 @@ for important information about this release. Happy cuking!
   s.summary = %q{Behaviour Driven Development with elegance and joy}
   s.test_files = [
     "spec/cucumber/ast/background_spec.rb",
-     "spec/cucumber/ast/feature_element_spec.rb",
      "spec/cucumber/ast/feature_factory.rb",
      "spec/cucumber/ast/feature_spec.rb",
      "spec/cucumber/ast/outline_table_spec.rb",
      "spec/cucumber/ast/py_string_spec.rb",
      "spec/cucumber/ast/scenario_outline_spec.rb",
      "spec/cucumber/ast/scenario_spec.rb",
-     "spec/cucumber/ast/step_collection_spec.rb",
      "spec/cucumber/ast/step_spec.rb",
      "spec/cucumber/ast/table_spec.rb",
      "spec/cucumber/ast/tree_walker_spec.rb",
@@ -595,8 +586,6 @@ for important information about this release. Happy cuking!
      "spec/cucumber/formatter/junit_spec.rb",
      "spec/cucumber/formatter/progress_spec.rb",
      "spec/cucumber/formatter/spec_helper.rb",
-     "spec/cucumber/parser/feature_parser_spec.rb",
-     "spec/cucumber/parser/table_parser_spec.rb",
      "spec/cucumber/rb_support/rb_step_definition_spec.rb",
      "spec/cucumber/rb_support/regexp_argument_matcher_spec.rb",
      "spec/cucumber/step_match_spec.rb",
@@ -627,6 +616,8 @@ for important information about this release. Happy cuking!
      "examples/i18n/en-lol/features/support/env.rb",
      "examples/i18n/en-lol/lib/basket.rb",
      "examples/i18n/en-lol/lib/belly.rb",
+     "examples/i18n/eo/features/step_definitons/calculator_steps.rb",
+     "examples/i18n/eo/lib/calculator.rb",
      "examples/i18n/es/features/step_definitons/calculador_steps.rb",
      "examples/i18n/es/lib/calculador.rb",
      "examples/i18n/et/features/step_definitions/kalkulaator_steps.rb",
@@ -673,6 +664,8 @@ for important information about this release. Happy cuking!
      "examples/i18n/sr-Cyrl/features/step_definitons/calculator_steps.rb",
      "examples/i18n/sr-Cyrl/features/support/env.rb",
      "examples/i18n/sr-Cyrl/lib/calculator.rb",
+     "examples/i18n/sr-Latn/features/step_definitons/calculator_steps.rb",
+     "examples/i18n/sr-Latn/lib/calculator.rb",
      "examples/i18n/sv/features/step_definitons/kalkulator_steps.rb",
      "examples/i18n/sv/lib/kalkulator.rb",
      "examples/i18n/tr/features/step_definitons/hesap_makinesi_adimlari.rb",
@@ -735,8 +728,6 @@ for important information about this release. Happy cuking!
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<term-ansicolor>, [">= 1.0.4"])
-      s.add_runtime_dependency(%q<treetop>, [">= 1.4.2"])
-      s.add_runtime_dependency(%q<polyglot>, [">= 0.2.9"])
       s.add_runtime_dependency(%q<builder>, [">= 2.1.2"])
       s.add_runtime_dependency(%q<diff-lcs>, [">= 1.1.2"])
       s.add_runtime_dependency(%q<json_pure>, [">= 1.2.0"])
@@ -749,8 +740,6 @@ for important information about this release. Happy cuking!
       s.add_development_dependency(%q<spork>, [">= 0.7.5"])
     else
       s.add_dependency(%q<term-ansicolor>, [">= 1.0.4"])
-      s.add_dependency(%q<treetop>, [">= 1.4.2"])
-      s.add_dependency(%q<polyglot>, [">= 0.2.9"])
       s.add_dependency(%q<builder>, [">= 2.1.2"])
       s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
       s.add_dependency(%q<json_pure>, [">= 1.2.0"])
@@ -764,8 +753,6 @@ for important information about this release. Happy cuking!
     end
   else
     s.add_dependency(%q<term-ansicolor>, [">= 1.0.4"])
-    s.add_dependency(%q<treetop>, [">= 1.4.2"])
-    s.add_dependency(%q<polyglot>, [">= 0.2.9"])
     s.add_dependency(%q<builder>, [">= 2.1.2"])
     s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
     s.add_dependency(%q<json_pure>, [">= 1.2.0"])
