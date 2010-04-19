@@ -122,7 +122,7 @@ module Cucumber
     # nicer, and in all outputs (in case you use several formatters)
     #
     def announce(msg)
-      msg.respond_to?(:join) ? @visitor.announce(msg.join) : @visitor.announce(msg)
+      msg.respond_to?(:join) ? @visitor.announce(msg.join("\n")) : @visitor.announce(msg.to_s)
     end
 
     # Suspends execution and prompts +question+ to the console (STDOUT).
