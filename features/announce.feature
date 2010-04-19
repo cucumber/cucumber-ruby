@@ -10,7 +10,7 @@ Feature: Delayed announcement
 
       Given /^I use multiple announces$/ do x=1
         announce("Multiple")
-        announce(["Announce"])
+        announce(["Announce","Me"])
       end
 
       Given /^I use announcement (.+) in line (.+) (?:with result (.+))$/ do |ann, line, result| x=1
@@ -88,6 +88,7 @@ Feature: Delayed announcement
           Given I use multiple announces # features/step_definitions/steps.rb:5
             Multiple
             Announce
+            Me
           And this step works            # features/step_definitions/steps.rb:21
 
         Scenario Outline: S3                            # features/f.feature:11
@@ -128,6 +129,7 @@ Feature: Delayed announcement
         Multiple
 
         Announce
+        Me
         ..-UUUUUU
         Announce with fail
         F--
