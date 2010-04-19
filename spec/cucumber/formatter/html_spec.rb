@@ -25,7 +25,7 @@ module Cucumber
       end
     
       it "should not raise an error when visiting a blank feature name" do
-        lambda { @formatter.feature_name("") }.should_not raise_error
+        lambda { @formatter.feature_name("Feature", "") }.should_not raise_error
       end
       
       describe "given a single feature" do
@@ -50,6 +50,7 @@ module Cucumber
         describe "with a comment" do
           define_feature <<-FEATURE
             # Healthy
+            Feature: Foo
           FEATURE
         
           it { @out.string.should =~ /^\<!DOCTYPE/ }

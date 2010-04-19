@@ -28,7 +28,7 @@ module Cucumber
         feature_file = FeatureFile.new('spec.feature', content)
         features = Ast::Features.new
         feature = feature_file.parse(@step_mother, options)
-        features.add_feature(feature)
+        features.add_feature(feature) if feature
         features
       end
     

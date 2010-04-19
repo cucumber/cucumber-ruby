@@ -18,8 +18,6 @@ begin
     gem.rubyforge_project = "rspec"
 
     gem.add_dependency 'term-ansicolor', '>= 1.0.4'
-    gem.add_dependency 'treetop', '>= 1.4.2'
-    gem.add_dependency 'polyglot', '>= 0.2.9'
     gem.add_dependency 'builder', '>= 2.1.2'
     gem.add_dependency 'diff-lcs', '>= 1.1.2'
     gem.add_dependency 'json_pure', '>= 1.2.0'
