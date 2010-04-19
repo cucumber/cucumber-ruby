@@ -107,6 +107,7 @@ module Cucumber
       def initialize(step_mother)
         @step_definitions = []
         @world = JsWorld.new
+        @step_mother = step_mother
 
         @world["jsLanguage"] = self
         @world.load(File.dirname(__FILE__) + '/js_dsl.js')
@@ -137,6 +138,10 @@ module Cucumber
 
       def add_step_definition(regexp, js_function)
         @step_definitions << JsStepDefinition.new(self, regexp, js_function)
+      end
+
+      def execute_step_definition(name, multiline_argument = nil)
+        @step_mother.step_match(name).invoke(multiline_argument)
       end
 
       #TODO: support multiple tag_names
