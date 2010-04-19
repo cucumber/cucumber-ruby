@@ -521,18 +521,6 @@ Gem::Specification.new do |s|
      "spec/cucumber/sell_cucumbers.feature",
      "spec/cucumber/step_match_spec.rb",
      "spec/cucumber/step_mother_spec.rb",
-     "spec/cucumber/treetop_parser/empty_feature.feature",
-     "spec/cucumber/treetop_parser/empty_scenario.feature",
-     "spec/cucumber/treetop_parser/empty_scenario_outline.feature",
-     "spec/cucumber/treetop_parser/given_scenario.feature",
-     "spec/cucumber/treetop_parser/invalid_scenario_outlines.feature",
-     "spec/cucumber/treetop_parser/multiline_steps.feature",
-     "spec/cucumber/treetop_parser/multiple_tables.feature",
-     "spec/cucumber/treetop_parser/scenario_outline.feature",
-     "spec/cucumber/treetop_parser/spaces.feature",
-     "spec/cucumber/treetop_parser/test_dos.feature",
-     "spec/cucumber/treetop_parser/with_comments.feature",
-     "spec/cucumber/treetop_parser/with_tags.feature",
      "spec/cucumber/wire_support/configuration_spec.rb",
      "spec/cucumber/wire_support/connection_spec.rb",
      "spec/cucumber/wire_support/wire_exception_spec.rb",
@@ -558,7 +546,6 @@ for important information about this release. Happy cuking!
 }
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{rspec}
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{Behaviour Driven Development with elegance and joy}
   s.test_files = [
@@ -727,10 +714,11 @@ for important information about this release. Happy cuking!
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<gherkin>, ["= 1.0.14"])
       s.add_runtime_dependency(%q<term-ansicolor>, [">= 1.0.4"])
       s.add_runtime_dependency(%q<builder>, [">= 2.1.2"])
       s.add_runtime_dependency(%q<diff-lcs>, [">= 1.1.2"])
-      s.add_runtime_dependency(%q<json_pure>, [">= 1.2.0"])
+      s.add_runtime_dependency(%q<json_pure>, [">= 1.2.4"])
       s.add_development_dependency(%q<nokogiri>, [">= 1.4.1"])
       s.add_development_dependency(%q<prawn>, ["= 0.6.3"])
       s.add_development_dependency(%q<prawn-format>, ["= 0.2.3"])
@@ -739,10 +727,11 @@ for important information about this release. Happy cuking!
       s.add_development_dependency(%q<syntax>, [">= 1.0.0"])
       s.add_development_dependency(%q<spork>, [">= 0.7.5"])
     else
+      s.add_dependency(%q<gherkin>, ["= 1.0.14"])
       s.add_dependency(%q<term-ansicolor>, [">= 1.0.4"])
       s.add_dependency(%q<builder>, [">= 2.1.2"])
       s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
-      s.add_dependency(%q<json_pure>, [">= 1.2.0"])
+      s.add_dependency(%q<json_pure>, [">= 1.2.4"])
       s.add_dependency(%q<nokogiri>, [">= 1.4.1"])
       s.add_dependency(%q<prawn>, ["= 0.6.3"])
       s.add_dependency(%q<prawn-format>, ["= 0.2.3"])
@@ -752,10 +741,11 @@ for important information about this release. Happy cuking!
       s.add_dependency(%q<spork>, [">= 0.7.5"])
     end
   else
+    s.add_dependency(%q<gherkin>, ["= 1.0.14"])
     s.add_dependency(%q<term-ansicolor>, [">= 1.0.4"])
     s.add_dependency(%q<builder>, [">= 2.1.2"])
     s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
-    s.add_dependency(%q<json_pure>, [">= 1.2.0"])
+    s.add_dependency(%q<json_pure>, [">= 1.2.4"])
     s.add_dependency(%q<nokogiri>, [">= 1.4.1"])
     s.add_dependency(%q<prawn>, ["= 0.6.3"])
     s.add_dependency(%q<prawn-format>, ["= 0.2.3"])
