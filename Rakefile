@@ -25,7 +25,7 @@ begin
     gem.add_development_dependency 'nokogiri', '>= 1.4.1'
     gem.add_development_dependency 'prawn', '= 0.6.3'
     gem.add_development_dependency 'prawn-format', '= 0.2.3'
-    gem.add_development_dependency 'htmlentities', '>= 4.2.0'
+    gem.add_development_dependency 'htmlentities', '>= 4.2.1'
     gem.add_development_dependency 'rspec', '>= 1.3.0'
     gem.add_development_dependency 'syntax', '>= 1.0.0'
     gem.add_development_dependency 'spork', '>= 0.7.5' unless Cucumber::JRUBY || Cucumber::WINDOWS

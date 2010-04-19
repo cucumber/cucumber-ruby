@@ -6,6 +6,7 @@ module Cucumber
     # "legacy" AST. It will be replaced later when we have a new "clean"
     # AST.
     class GherkinBuilder
+
       def ast
         @feature || @multiline_arg
       end

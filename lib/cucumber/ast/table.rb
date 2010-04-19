@@ -1,3 +1,5 @@
+require 'cucumber/rubify'
+
 module Cucumber
   module Ast
     # Step Definitions that match a plain text Step with a multiline argument table
@@ -45,6 +47,7 @@ module Cucumber
       end
 
       include Enumerable
+      include Rubify
       
       NULL_CONVERSIONS = Hash.new(lambda{ |cell_value| cell_value }).freeze
 
@@ -70,7 +73,7 @@ module Cucumber
         @cells_class = Cells
         @cell_class = Cell
 
-        raw = ensure_array_of_array(raw)
+        raw = ensure_array_of_array(rubify(raw))
         # Verify that it's square
         transposed = raw.transpose
         create_cell_matrix(raw)
