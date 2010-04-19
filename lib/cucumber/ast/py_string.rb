@@ -40,7 +40,7 @@ module Cucumber
 
       def self.parse(text)
         builder = Builder.new
-        lexer = Gherkin::I18n.new('en').lexer(builder)
+        lexer = Gherkin::I18nLexer.new(builder)
         lexer.scan(text)
         new(builder.string)
       end

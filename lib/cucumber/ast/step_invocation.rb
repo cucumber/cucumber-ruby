@@ -1,9 +1,12 @@
 require 'cucumber/step_match'
 require 'cucumber/ast/table'
+require 'gherkin/rubify'
 
 module Cucumber
   module Ast
     class StepInvocation #:nodoc:
+      include Gherkin::Rubify
+
       BACKTRACE_FILTER_PATTERNS = [
         /vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\//
       ]
@@ -142,7 +145,7 @@ module Cucumber
       end
 
       def actual_keyword
-        repeat_keywords = [language.but_keywords, language.and_keywords].flatten.uniq.reject{|kw| kw == '* '}
+        repeat_keywords = rubify([language.keywords('but'), language.keywords('and')]).flatten.uniq.reject{|kw| kw == '* '}
         if repeat_keywords.index(@step.keyword) && previous
           previous.actual_keyword
         else

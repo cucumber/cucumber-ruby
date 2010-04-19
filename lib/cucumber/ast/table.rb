@@ -1,4 +1,4 @@
-require 'cucumber/rubify'
+require 'gherkin/rubify'
 
 module Cucumber
   module Ast
@@ -47,7 +47,7 @@ module Cucumber
       end
 
       include Enumerable
-      include Rubify
+      include Gherkin::Rubify
       
       NULL_CONVERSIONS = Hash.new(lambda{ |cell_value| cell_value }).freeze
 
@@ -59,7 +59,7 @@ module Cucumber
 
       def self.parse(text)
         builder = Builder.new
-        lexer = Gherkin::I18n.new('en').lexer(builder)
+        lexer = Gherkin::I18nLexer.new(builder)
         lexer.scan(text)
         new(builder.rows)
       end
