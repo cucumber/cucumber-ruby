@@ -1,7 +1,13 @@
-== In Git
+== 0.7.0.beta.1 (2010-04-20)
+
+Treetop is gone and replaced with Ragel. The new Ragel parser lives in the gherkin gem.
+Parse times are up to 100 times faster.
 
 === New Features
 * Upgraded Sinatra example to use Snatra 1.0 and Capybara. (Aslak Hellesøy)
+
+=== Changed Features
+* New i18n translations now have to be contributed to the gherkin project.
 
 == 0.6.4 2010-03-30
 
