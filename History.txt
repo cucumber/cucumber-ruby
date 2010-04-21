@@ -1,3 +1,8 @@
+== 0.7.0.beta.2 (2010-04-21)
+
+=== New Features
+* Depend on Gherkin 1.0.18, which has some bugfixes. (Aslak Hellesøy)
+
 == 0.7.0.beta.1 (2010-04-20)
 
 Treetop is gone and replaced with Ragel. The new Ragel parser lives in the gherkin gem.
