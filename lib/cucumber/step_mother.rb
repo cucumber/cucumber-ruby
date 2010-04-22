@@ -188,23 +188,44 @@ module Cucumber
     #     Given I have 8 cukes in my belly
     #     Then I should not be thirsty
     #   })
-    def invoke_steps(steps_text, natural_language)
-      ored_keywords = natural_language.step_keywords.map{|kw| Regexp.escape(kw)}.join("|")
-      # TODO Gherkin:
-      # This a bit hacky and fragile. When we move to Gherkin we should replace this entire method body
-      # with a call to the parser - parsing the body of a scenario. We may need to put the parser/policy in the
-      # appropriate state (the same state it's in after parsing a Scenario: line).
-      steps_text.strip.split(/(?=^\s*(?:#{ored_keywords}))/).map { |step| step.strip }.each do |step|
-        output = step.match(/^\s*(#{ored_keywords})([^\n]+)(\n.*)?$/m)
+    def invoke_steps(steps_text, i18n)
+      lexer = i18n.lexer(Gherkin::Parser::Parser.new(StepInvoker.new(self), true, 'steps'))
+      lexer.scan(steps_text)
+    end
 
-        action, step_name, table_or_string = output[1], output[2], output[3]
-        if table_or_string.to_s.strip =~ /^\|/
-          table_or_string = table(table_or_string) 
-        elsif table_or_string.to_s.strip =~ /^"""/
-          table_or_string = py_string(table_or_string.gsub(/^\n/, ""))
+    class StepInvoker
+      def initialize(step_mother)
+        @step_mother = step_mother
+      end
+
+      def step(keyword, name, line)
+        invoke
+        @name = name
+      end
+
+      def py_string(string, line)
+        @multiline = string
+      end
+
+      def row(row, line)
+        @rows ||= []
+        @rows << row
+      end
+
+      def eof
+        invoke
+      end
+
+      private
+      
+      def invoke
+        if @name
+          @multiline = Ast::Table.new(@rows) if @multiline.nil? && @rows
+          @step_mother.invoke(*[@name, @multiline].compact) 
+          @name = nil
+          @multiline = nil
+          @rows = nil
         end
-        args = [step_name, table_or_string].compact
-        invoke(*args)
       end
     end
 
