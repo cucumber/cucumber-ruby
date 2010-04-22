@@ -161,6 +161,9 @@ module Cucumber
             "several times, and this represents logical AND. Example: --tags @foo,~@bar --tags @zap.",
             "This represents the boolean expression (@foo || !@bar) && @zap.",
             "\n",
+            "Beware that if you want to use several negative tags to exclude several tags",
+            "you have to use logical AND: --tags ~@fixme --tags @buggy.",
+            "\n",
             "Positive tags can be given a threshold to limit the number of occurrences.", 
             "Example: --tags @qa:3 will fail if there are more than 3 occurrences of the @qa tag.",
             "This can be practical if you are practicing Kanban or CONWIP.") do |v|
