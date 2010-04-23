@@ -20,6 +20,8 @@ Feature: Language help
             | given (code)     | "Dado"                                     |
             | when (code)      | "Quando"                                   |
             | then (code)      | "Então", "Entao"                           |
+            | and (code)       | "E"                                        |
+            | but (code)       | "Mas"                                      |
 
       """
   Scenario: List languages

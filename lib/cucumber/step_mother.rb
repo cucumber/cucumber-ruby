@@ -204,7 +204,7 @@ module Cucumber
       end
 
       def py_string(string, line)
-        @multiline = string
+        @multiline = Ast::PyString.new(string)
       end
 
       def row(row, line)

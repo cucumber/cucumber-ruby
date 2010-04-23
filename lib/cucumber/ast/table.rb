@@ -80,6 +80,10 @@ module Cucumber
         @conversion_procs = conversion_procs
       end
 
+      def to_step_definition_arg
+        dup
+      end
+
       # Creates a copy of this table, inheriting any column mappings.
       # registered with #map_headers!
       #

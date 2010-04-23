@@ -49,13 +49,13 @@ module Cucumber
         @string = string
       end
 
-      def to_s
+      def to_step_definition_arg
         @string
       end
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        visitor.visit_py_string(to_s)
+        visitor.visit_py_string(@string)
       end
       
       def arguments_replaced(arguments) #:nodoc:
@@ -73,7 +73,7 @@ module Cucumber
 
       # For testing only
       def to_sexp #:nodoc:
-        [:py_string, to_s]
+        [:py_string, to_step_definition_arg]
       end
     end
   end

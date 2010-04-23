@@ -13,7 +13,7 @@ module Cucumber
         it "should return a new py_string with arguments replaced with values" do
           py_string_with_replaced_arg = @ps.arguments_replaced({'<book>' => 'Life is elsewhere', '<qty>' => '5'})
                 
-          py_string_with_replaced_arg.to_s.should == "Life is elsewhere\n5\n"
+          py_string_with_replaced_arg.to_step_definition_arg.should == "Life is elsewhere\n5\n"
         end
         
         it "should not change the original py_string" do
@@ -26,7 +26,7 @@ module Cucumber
           ps = PyString.new("'<book>'")
           py_string_with_replaced_arg = ps.arguments_replaced({'<book>' => nil}) 
           
-          py_string_with_replaced_arg.to_s.should == "''"
+          py_string_with_replaced_arg.to_step_definition_arg.should == "''"
         end
 
         it "should recognise when just a subset of a cell is delimited" do
