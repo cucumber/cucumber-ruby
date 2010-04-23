@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
-  s.version = "0.7.0.beta.3"
+  s.version = "0.7.0.beta.4"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2010-04-23}
+  s.date = %q{2010-04-24}
   s.default_executable = %q{cucumber}
   s.description = %q{A BDD tool written in Ruby}
   s.email = %q{cukes@googlegroups.com}
@@ -224,9 +224,15 @@ Gem::Specification.new do |s|
      "examples/i18n/zh-TW/features/division.feature",
      "examples/i18n/zh-TW/features/step_definitons/calculator_steps.rb",
      "examples/i18n/zh-TW/lib/calculator.rb",
+     "examples/javascript/Rakefile",
+     "examples/javascript/features/fibonacci.feature",
+     "examples/javascript/features/lib/fibonacci.js",
+     "examples/javascript/features/step_definitions/fib_steps.js",
+     "examples/javascript/features/support/env.js",
      "examples/junit/features/one_passing_one_failing.feature",
      "examples/junit/features/pending.feature",
      "examples/junit/features/step_definitions/steps.rb",
+     "examples/python/Rakefile",
      "examples/python/features/fibonacci.feature",
      "examples/python/features/step_definitions/fib_steps.py",
      "examples/python/lib/.gitignore",
@@ -239,20 +245,12 @@ Gem::Specification.new do |s|
      "examples/ramaze/features/support/env.rb",
      "examples/ramaze/layout/default.html.erb",
      "examples/ramaze/view/index.html.erb",
+     "examples/ruby2python/Rakefile",
      "examples/ruby2python/features/fibonacci.feature",
      "examples/ruby2python/features/step_definitions/fib_steps.rb",
      "examples/ruby2python/features/support/env.rb",
      "examples/ruby2python/lib/.gitignore",
      "examples/ruby2python/lib/fib.py",
-     "examples/selenium/Rakefile",
-     "examples/selenium/features/search.feature",
-     "examples/selenium/features/step_definitons/search_steps.rb",
-     "examples/selenium/features/support/env.rb",
-     "examples/selenium_webrat/Rakefile",
-     "examples/selenium_webrat/config.ru",
-     "examples/selenium_webrat/features/search.feature",
-     "examples/selenium_webrat/features/step_definitons/search_steps.rb",
-     "examples/selenium_webrat/features/support/env.rb",
      "examples/self_test/.gitignore",
      "examples/self_test/README.textile",
      "examples/self_test/Rakefile",
@@ -331,6 +329,7 @@ Gem::Specification.new do |s|
      "examples/tickets/features/step_definitons/tickets_steps.rb",
      "examples/tickets/features/table_diffing.feature",
      "examples/tickets/features/tickets.feature",
+     "examples/watir/.gitignore",
      "examples/watir/README.textile",
      "examples/watir/Rakefile",
      "examples/watir/cucumber.yml",
@@ -338,6 +337,7 @@ Gem::Specification.new do |s|
      "examples/watir/features/step_definitions/search_steps.rb",
      "examples/watir/features/support/env.rb",
      "examples/watir/features/support/screenshots.rb",
+     "examples/webrat/Rakefile",
      "examples/webrat/features/search.feature",
      "examples/webrat/features/step_definitions/kvasir_steps.rb",
      "examples/webrat/features/support/env.rb",
@@ -395,6 +395,7 @@ Gem::Specification.new do |s|
      "features/work_in_progress.feature",
      "gem_tasks/contributors.rake",
      "gem_tasks/environment.rake",
+     "gem_tasks/examples.rake",
      "gem_tasks/features.rake",
      "gem_tasks/fix_cr_lf.rake",
      "gem_tasks/flog.rake",
@@ -462,6 +463,9 @@ Gem::Specification.new do |s|
      "lib/cucumber/formatter/tag_cloud.rb",
      "lib/cucumber/formatter/unicode.rb",
      "lib/cucumber/formatter/usage.rb",
+     "lib/cucumber/js_support/js_dsl.js",
+     "lib/cucumber/js_support/js_language.rb",
+     "lib/cucumber/js_support/js_snippets.rb",
      "lib/cucumber/language_support.rb",
      "lib/cucumber/language_support/language_methods.rb",
      "lib/cucumber/parser.rb",
@@ -537,7 +541,7 @@ Gem::Specification.new do |s|
 
                      (::)   U P G R A D I N G    (::)
 
-Thank you for installing cucumber-0.7.0.beta.3.
+Thank you for installing cucumber-0.7.0.beta.4.
 Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
 for important information about this release. Happy cuking!
 
@@ -675,10 +679,6 @@ for important information about this release. Happy cuking!
      "examples/ramaze/features/support/env.rb",
      "examples/ruby2python/features/step_definitions/fib_steps.rb",
      "examples/ruby2python/features/support/env.rb",
-     "examples/selenium/features/step_definitons/search_steps.rb",
-     "examples/selenium/features/support/env.rb",
-     "examples/selenium_webrat/features/step_definitons/search_steps.rb",
-     "examples/selenium_webrat/features/support/env.rb",
      "examples/self_test/features/step_definitions/sample_steps.rb",
      "examples/self_test/features/support/env.rb",
      "examples/self_test/tmp/features/step_definitions/steps.rb",
