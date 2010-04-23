@@ -1,3 +1,9 @@
+begin
+  require 'gherkin'
+rescue LoadError
+  require 'rubygems'
+  require 'gherkin'
+end
 require 'optparse'
 require 'cucumber'
 require 'ostruct'

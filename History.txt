@@ -1,7 +1,10 @@
-== 0.7.0.beta.4 (2010-04-23)
+== 0.7.0.beta.4 (2010-04-24)
 
 === New Features
 * New, experimental V8 javascript support - step definitions in Javascript! (Joseph Wilk)
+
+=== Bugfixes
+* Gherkin is loaded via rubygems if it can't be found on the $LOAD_PATH. (Aslak Hellesøy)
 
 == 0.7.0.beta.3 (2010-04-23)
 
