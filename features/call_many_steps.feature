@@ -24,7 +24,7 @@ Feature: http://gist.github.com/221223
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given /^a multiline string:$/ do |s| x=1
+      And /^a multiline string:$/ do |s| x=1
         raise "I got multiline:\n#{s}"
       end
 
@@ -34,7 +34,7 @@ Feature: http://gist.github.com/221223
 
       Given /^I call a multiline string with (.*)$/ do |s| x=1
         steps %Q{
-          Given a multiline string:
+          And a multiline string:
             \"\"\"
             hello
             #{s}
@@ -52,7 +52,7 @@ Feature: http://gist.github.com/221223
       """
 
   Scenario: Multiline string
-    When I run cucumber features/f.feature:6
+    When I run cucumber features/f.feature:3
     Then STDERR should be empty
     And it should fail with
       """

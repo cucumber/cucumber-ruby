@@ -1,10 +1,14 @@
 require 'enumerator'
-require 'cucumber/tag_expression'
+require 'gherkin/parser/tag_expression'
 
 module Cucumber
   module Ast
     module FeatureElement #:nodoc:
       attr_accessor :feature
+
+      def add_step(step)
+        @raw_steps << step
+      end
 
       def attach_steps(steps)
         steps.each {|step| step.feature_element = self}
@@ -14,20 +18,24 @@ module Cucumber
         @feature.file_colon_line(line) if @feature
       end
 
-      def text_length
-        name_line_lengths.max
-      end
-
       def first_line_length
         name_line_lengths[0]
       end
 
+      def text_length
+        name_line_lengths.max
+      end
+
       def name_line_lengths
         if @name.strip.empty?
-          [@keyword.jlength]
+          [Ast::Step::INDENT + @keyword.jlength + ': '.jlength]
         else
           @name.split("\n").enum_for(:each_with_index).map do |line, line_number|
-            line_number == 0 ? @keyword.jlength + line.jlength : line.jlength + Ast::Step::INDENT - 1 # We -1 as names which are not keyword lines are missing a space between keyword and name
+            if line_number == 0
+              Ast::Step::INDENT + @keyword.jlength + ': '.jlength + line.jlength
+            else
+              Ast::Step::INDENT + Ast::Step::INDENT + line.jlength
+            end
           end
         end
       end
@@ -36,7 +44,7 @@ module Cucumber
         scenario_name_regexps.detect{|name| name =~ @name}
       end
 
-      def backtrace_line(name = "#{@keyword} #{@name}", line = @line)
+      def backtrace_line(name = "#{@keyword}: #{@name}", line = @line)
         @feature.backtrace_line(name, line) if @feature
       end
 
@@ -45,11 +53,12 @@ module Cucumber
       end
 
       def max_line_length
+        init
         @steps.max_line_length(self)
       end
 
       def accept_hook?(hook)
-        TagExpression.parse(hook.tag_expressions).eval(source_tag_names)
+        Gherkin::Parser::TagExpression.new(hook.tag_expressions).eval(source_tag_names)
       end
 
       def source_tag_names

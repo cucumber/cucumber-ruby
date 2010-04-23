@@ -1,3 +1,5 @@
+require 'gherkin/rubify'
+
 module Cucumber
   module Ast
     # Step Definitions that match a plain text Step with a multiline argument table
@@ -29,7 +31,23 @@ module Cucumber
         end
       end
       
+      class Builder
+        attr_reader :rows
+
+        def initialize
+          @rows = []
+        end
+
+        def row(row, line_number)
+          @rows << row
+        end
+
+        def eof
+        end
+      end
+
       include Enumerable
+      include Gherkin::Rubify
       
       NULL_CONVERSIONS = Hash.new(lambda{ |cell_value| cell_value }).freeze
 
@@ -37,6 +55,13 @@ module Cucumber
 
       def self.default_arg_name #:nodoc:
         "table"
+      end
+
+      def self.parse(text)
+        builder = Builder.new
+        lexer = Gherkin::I18nLexer.new(builder)
+        lexer.scan(text)
+        new(builder.rows)
       end
 
       # Creates a new instance. +raw+ should be an Array of Array of String
@@ -48,11 +73,15 @@ module Cucumber
         @cells_class = Cells
         @cell_class = Cell
 
-        raw = ensure_array_of_array(raw)
+        raw = ensure_array_of_array(rubify(raw))
         # Verify that it's square
         transposed = raw.transpose
         create_cell_matrix(raw)
         @conversion_procs = conversion_procs
+      end
+
+      def to_step_definition_arg
+        dup
       end
 
       # Creates a copy of this table, inheriting any column mappings.

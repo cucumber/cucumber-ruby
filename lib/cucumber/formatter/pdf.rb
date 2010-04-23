@@ -94,12 +94,11 @@ module Cucumber
         puts "\ndone"
       end
 
-      def feature_name(name)
+      def feature_name(keyword, name)
         @pdf.start_new_page
-        name["Feature:"] = "" if name["Feature:"]
         names = name.split("\n")
         @pdf.fill_color GREY
-        @pdf.text('Feature', :align => :center)
+        @pdf.text(keyword, :align => :center)
         @pdf.fill_color BLACK
         names.each_with_index do |nameline, i|
           case i

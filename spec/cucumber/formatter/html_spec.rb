@@ -25,7 +25,7 @@ module Cucumber
       end
     
       it "should not raise an error when visiting a blank feature name" do
-        lambda { @formatter.feature_name("") }.should_not raise_error
+        lambda { @formatter.feature_name("Feature", "") }.should_not raise_error
       end
       
       describe "given a single feature" do
@@ -50,6 +50,7 @@ module Cucumber
         describe "with a comment" do
           define_feature <<-FEATURE
             # Healthy
+            Feature: Foo
           FEATURE
         
           it { @out.string.should =~ /^\<!DOCTYPE/ }
@@ -60,6 +61,7 @@ module Cucumber
         describe "with a tag" do
           define_feature <<-FEATURE
             @foo
+            Feature: can't have standalone tag :)
           FEATURE
 
           it { @doc.should have_css_node('.feature .tag', /foo/) }
@@ -90,6 +92,8 @@ module Cucumber
       
         describe "with a scenario" do
           define_feature <<-FEATURE
+          Feature: Banana party
+
             Scenario: Monkey eats banana
               Given there are bananas
           FEATURE
@@ -100,6 +104,8 @@ module Cucumber
       
         describe "with a scenario outline" do
           define_feature <<-FEATURE
+          Feature: Fud Pyramid
+
             Scenario Outline: Monkey eats a balanced diet
               Given there are <Things>
           
@@ -122,6 +128,8 @@ module Cucumber
       
         describe "with a step with a py string" do
           define_feature <<-FEATURE
+          Feature: Traveling circus
+
             Scenario: Monkey goes to town
               Given there is a monkey called:
                """
@@ -134,6 +142,8 @@ module Cucumber
 
         describe "with a multiline step arg" do
           define_feature <<-FEATURE
+          Feature: Traveling circus
+
             Scenario: Monkey goes to town
               Given there are monkeys:
                | name |
@@ -146,6 +156,8 @@ module Cucumber
       
         describe "with a table in the background and the scenario" do
           define_feature <<-FEATURE
+          Feature: accountant monkey
+
             Background:
               Given table:
                 | a | b |
@@ -161,6 +173,8 @@ module Cucumber
       
         describe "with a py string in the background and the scenario" do
           define_feature <<-FEATURE
+          Feature: py strings
+
             Background:
               Given stuff:
                 """
@@ -183,6 +197,8 @@ module Cucumber
           end
         
           define_feature(<<-FEATURE)
+          Feature: Animal Cruelty
+
             Scenario: Monkey gets a fright
               Given boo
             FEATURE
@@ -196,6 +212,7 @@ module Cucumber
           end
         
           define_feature(<<-FEATURE)
+          Feature: shouting
             Background:
               Given boo
             Scenario:
@@ -213,6 +230,7 @@ module Cucumber
           end
 
           define_feature(<<-FEATURE)
+          Feature: 
             Scenario:
               Given snap
             FEATURE
@@ -222,6 +240,7 @@ module Cucumber
         
         describe "with an undefined Given step then an undefined And step" do
           define_feature(<<-FEATURE)
+          Feature: 
             Scenario:
               Given some undefined step
               And another undefined step

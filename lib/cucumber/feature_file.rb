@@ -1,5 +1,7 @@
-require 'cucumber/parser/natural_language'
-require 'cucumber/filter'
+require 'cucumber/parser/gherkin_builder'
+require 'gherkin/parser/filter_listener'
+require 'gherkin/parser/parser'
+require 'gherkin/i18n_lexer'
 
 module Cucumber
   class FeatureFile
@@ -22,11 +24,26 @@ module Cucumber
     # If +options+ contains tags, the result will
     # be filtered.
     def parse(step_mother, options)
-      filter = Filter.new(@lines, options)
-      language = Parser::NaturalLanguage.get(step_mother, (lang || 'en'))
-      language.parse(source, @path, filter)
+      filters = @lines || options.filters
+
+      builder         = Cucumber::Parser::GherkinBuilder.new
+      filter_listener = Gherkin::Parser::FilterListener.new(builder, filters)
+      parser          = Gherkin::Parser::Parser.new(filter_listener, true, "root")
+      lexer           = Gherkin::I18nLexer.new(parser, false)
+
+      begin
+        lexer.scan(source)
+        ast = builder.ast
+        return nil if ast.nil? # Filter caused nothing to match
+        ast.language = lexer.i18n_language
+        ast.file = @path
+        ast
+      rescue Gherkin::LexingError => e
+        e.message.insert(0, "#{@path}: ")
+        raise e
+      end
     end
-    
+
     def source
       @source ||= if @path =~ /^http/
         require 'open-uri'
@@ -43,6 +60,7 @@ module Cucumber
     end
     
     def lang
+      # TODO: Gherkin has logic for this. Remove.
       line_one = source.split(/\n/)[0]
       if line_one =~ LANGUAGE_PATTERN
         $1.strip

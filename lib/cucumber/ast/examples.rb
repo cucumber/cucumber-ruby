@@ -1,6 +1,8 @@
 module Cucumber
   module Ast
     class Examples #:nodoc:
+      attr_writer :outline_table
+      
       def initialize(comment, line, keyword, name, outline_table)
         @comment, @keyword, @name, @outline_table = comment, keyword, name, outline_table
       end

@@ -10,7 +10,7 @@ Feature: Delayed announcement
 
       Given /^I use multiple announces$/ do x=1
         announce("Multiple")
-        announce(["Announce"])
+        announce(["Announce","Me"])
       end
 
       Given /^I use announcement (.+) in line (.+) (?:with result (.+))$/ do |ann, line, result| x=1
@@ -28,39 +28,41 @@ Feature: Delayed announcement
       end
 
       Given /^I announce the world$/ do x=1
-		announce_world
+        announce_world
       end
       """
     And a file named "features/f.feature" with:
       """
-      Scenario: S
-        Given I use announce with text "Ann"
-        And this step works
+      Feature: F
 
-      Scenario: S2
-        Given I use multiple announces
-        And this step works
+        Scenario: S
+          Given I use announce with text "Ann"
+          And this step works
 
-      Scenario Outline: S3
-        Given I use announcement <ann> in line <line>
+        Scenario: S2
+          Given I use multiple announces
+          And this step works
 
-        Examples:
-          | line | ann |
-          | 1 | anno1 |
-          | 2 | anno2 |
-          | 3 | anno3 |
+        Scenario Outline: S3
+          Given I use announcement <ann> in line <line>
 
-      Scenario: S4
-        Given I use announce and step fails
-        And this step works
+          Examples:
+            | line | ann |
+            | 1 | anno1 |
+            | 2 | anno2 |
+            | 3 | anno3 |
 
-      Scenario Outline: s5
-        Given I use announcement <ann> in line <line> with result <result>
+        Scenario: S4
+          Given I use announce and step fails
+          And this step works
 
-        Examples:
-          | line | ann | result |
-          | 1 | anno1 | fail |
-          | 2 | anno2 | pass |
+        Scenario Outline: s5
+          Given I use announcement <ann> in line <line> with result <result>
+
+          Examples:
+            | line | ann | result |
+            | 1 | anno1 | fail |
+            | 2 | anno2 | pass |
       """
 
     And a file named "features/announce_world.feature" with:
@@ -72,21 +74,25 @@ Feature: Delayed announcement
 
     Scenario: Delayed announcements feature
       When I run cucumber --format pretty features/f.feature
-      Then the output should contain
+      Then STDERR should be empty
+      And the output should contain
       """
-        Scenario: S                            # features/f.feature:1
+      Feature: F
+
+        Scenario: S                            # features/f.feature:3
           Given I use announce with text "Ann" # features/step_definitions/steps.rb:1
             Ann
           And this step works                  # features/step_definitions/steps.rb:21
 
-        Scenario: S2                     # features/f.feature:5
+        Scenario: S2                     # features/f.feature:7
           Given I use multiple announces # features/step_definitions/steps.rb:5
             Multiple
             Announce
+            Me
           And this step works            # features/step_definitions/steps.rb:21
 
-        Scenario Outline: S3                            # features/f.feature:9
-          Given I use announcement <ann> in line <line> # features/f.feature:10
+        Scenario Outline: S3                            # features/f.feature:11
+          Given I use announcement <ann> in line <line> # features/f.feature:12
 
           Examples: 
             | line | ann   |
@@ -94,15 +100,15 @@ Feature: Delayed announcement
             | 2    | anno2 |
             | 3    | anno3 |
 
-        Scenario: S4                          # features/f.feature:18
+        Scenario: S4                          # features/f.feature:20
           Given I use announce and step fails # features/step_definitions/steps.rb:16
             Announce with fail
              (RuntimeError)
             ./features/step_definitions/steps.rb:18:in `/^I use announce and step fails$/'
-            features/f.feature:19:in `Given I use announce and step fails'
+            features/f.feature:21:in `Given I use announce and step fails'
           And this step works                 # features/step_definitions/steps.rb:21
 
-        Scenario Outline: s5                                                 # features/f.feature:22
+        Scenario Outline: s5                                                 # features/f.feature:24
           Given I use announcement <ann> in line <line> with result <result> # features/step_definitions/steps.rb:10
 
           Examples: 
@@ -110,7 +116,7 @@ Feature: Delayed announcement
             | 1    | anno1 | fail   |  Line: 1: anno1
              (RuntimeError)
             ./features/step_definitions/steps.rb:13:in `/^I use announcement (.+) in line (.+) (?:with result (.+))$/'
-            features/f.feature:23:in `Given I use announcement <ann> in line <line> with result <result>'
+            features/f.feature:25:in `Given I use announcement <ann> in line <line> with result <result>'
             | 2    | anno2 | pass   |  Line: 2: anno2
       """
 
@@ -123,6 +129,7 @@ Feature: Delayed announcement
         Multiple
 
         Announce
+        Me
         ..-UUUUUU
         Announce with fail
         F--

@@ -48,7 +48,7 @@ module Cucumber
       end
 
       it "should replace arguments in py string arg" do
-        py_string = PyString.new(1, 2, 'taste_<taste> color_<color>', '')
+        py_string = PyString.new('taste_<taste> color_<color>')
 
         step = Step.new(1, 'Given', 'a <color> cucumber', py_string)
 
@@ -59,7 +59,7 @@ module Cucumber
         cells = invocation_table.cells_rows[1]
         step_invocation = step.step_invocation_from_cells(cells)
         
-        step_invocation.instance_variable_get('@multiline_arg').to_s.should == 'taste_juicy color_green'
+        step_invocation.instance_variable_get('@multiline_arg').to_step_definition_arg.should == 'taste_juicy color_green'
       end
     end
   end

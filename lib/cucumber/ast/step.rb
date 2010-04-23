@@ -4,9 +4,9 @@ require 'cucumber/step_match'
 module Cucumber
   module Ast
     class Step #:nodoc:
-      attr_reader :line, :keyword, :name, :multiline_arg
+      attr_reader :line, :keyword, :name
       attr_writer :step_collection, :options
-      attr_accessor :feature_element, :exception
+      attr_accessor :feature_element, :exception, :multiline_arg
 
       INDENT = 2
       
@@ -69,11 +69,11 @@ module Cucumber
       end
 
       def text_length(name=@name)
-        @keyword.jlength + name.jlength + INDENT # Add indent as steps get indented more than scenarios
+        INDENT + INDENT + @keyword.jlength + name.jlength
       end
 
       def backtrace_line
-        @backtrace_line ||= @feature_element.backtrace_line("#{@keyword} #{@name}", @line) unless @feature_element.nil?
+        @backtrace_line ||= @feature_element.backtrace_line("#{@keyword}#{@name}", @line) unless @feature_element.nil?
       end
 
       def file_colon_line

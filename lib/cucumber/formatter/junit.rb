@@ -49,15 +49,16 @@ module Cucumber
         @in_background = false
       end
 
-      def feature_name(name)
+      def feature_name(keyword, name)
         raise UnNamedFeatureError.new(@current_feature.file) if name.empty?
         lines = name.split(/\r?\n/)
-        @feature_name = lines[0].sub(/Feature\:/, '').strip
+        @feature_name = lines[0]
       end
 
       def scenario_name(keyword, name, file_colon_line, source_indent)
+        # TODO: What's all this ugly weird code doing? Why not just use keyword and name????
         scenario_name = name.strip.delete(".\r\n")
-        scenario_name = "Unnamed scenario" if name.blank?
+        scenario_name = "Unnamed scenario" if name == ""
         @scenario = scenario_name
         description = "Scenario"
         description << " outline" if keyword.include?('Scenario Outline')
@@ -73,7 +74,7 @@ module Cucumber
         
         duration = Time.now - @steps_start
         if steps.failed?
-          steps.each { |step| @output += "#{step.keyword} #{step.name}\n" }
+          steps.each { |step| @output += "#{step.keyword}#{step.name}\n" }
           @output += "\nMessage:\n"
         end
         build_testcase(duration, steps.status, steps.exception)

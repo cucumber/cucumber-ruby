@@ -20,12 +20,20 @@ module Cucumber
       # * Examples keyword
       # * Examples section name
       # * Raw matrix
-      def initialize(background, comment, tags, line, keyword, name, steps, example_sections)
-        @background, @comment, @tags, @line, @keyword, @name = background, comment, tags, line, keyword, name
-        attach_steps(steps)
-        @steps = StepCollection.new(steps)
+      def initialize(background, comment, tags, line, keyword, name, raw_steps, example_sections)
+        @background, @comment, @tags, @line, @keyword, @name, @raw_steps, @example_sections = background, comment, tags, line, keyword, name, raw_steps, example_sections
+      end
 
-        @examples_array = example_sections.map do |example_section|
+      def add_examples(example_section)
+        @example_sections << example_section
+      end
+
+      def init
+        return if @steps
+        attach_steps(@raw_steps)
+        @steps = StepCollection.new(@raw_steps)
+
+        @examples_array = @example_sections.map do |example_section|
           examples_comment    = example_section[0]
           examples_line       = example_section[1]
           examples_keyword    = example_section[2]
@@ -35,6 +43,7 @@ module Cucumber
           examples_table = OutlineTable.new(examples_matrix, self)
           Examples.new(examples_comment, examples_line, examples_keyword, examples_name, examples_table)
         end
+
         @examples_array.extend(ExamplesArray)
 
         @background.feature_elements << self if @background
@@ -75,7 +84,7 @@ module Cucumber
 
       def visit_scenario_name(visitor, row)
         visitor.visit_scenario_name(
-          @feature.language.scenario_keywords[0] + ":",
+          @feature.language.keywords('scenario')[0],
           row.name, 
           file_colon_line(row.line), 
           source_indent(first_line_length)
@@ -87,6 +96,7 @@ module Cucumber
       end
 
       def to_sexp
+        init
         sexp = [:scenario_outline, @keyword, @name]
         comment = @comment.to_sexp
         sexp += [comment] if comment

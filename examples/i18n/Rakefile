@@ -6,6 +6,7 @@ task :i18n do
       lang = f[dir.length+1..-1]
       if examples_working?(lang)
         Dir.chdir(f) do
+          puts "DIR: #{f}"
           rake("cucumber")
         end
       else

@@ -15,19 +15,17 @@ begin
     gem.email = "cukes@googlegroups.com"
     gem.homepage = "http://cukes.info"
     gem.authors = ["Aslak Hellesøy"]
-    gem.rubyforge_project = "rspec"
 
+    gem.add_dependency 'gherkin', '= 1.0.20'
     gem.add_dependency 'term-ansicolor', '>= 1.0.4'
-    gem.add_dependency 'treetop', '>= 1.4.2'
-    gem.add_dependency 'polyglot', '>= 0.2.9'
     gem.add_dependency 'builder', '>= 2.1.2'
     gem.add_dependency 'diff-lcs', '>= 1.1.2'
-    gem.add_dependency 'json_pure', '>= 1.2.0'
+    gem.add_dependency 'json_pure', '>= 1.2.4'
 
     gem.add_development_dependency 'nokogiri', '>= 1.4.1'
     gem.add_development_dependency 'prawn', '= 0.6.3'
     gem.add_development_dependency 'prawn-format', '= 0.2.3'
-    gem.add_development_dependency 'htmlentities', '>= 4.2.0'
+    gem.add_development_dependency 'htmlentities', '>= 4.2.1'
     gem.add_development_dependency 'rspec', '>= 1.3.0'
     gem.add_development_dependency 'syntax', '>= 1.0.0'
     gem.add_development_dependency 'spork', '>= 0.7.5' unless Cucumber::JRUBY || Cucumber::WINDOWS
