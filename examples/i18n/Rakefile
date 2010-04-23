@@ -1,5 +1,5 @@
 desc 'Run features for all languages'
-task :i18n do
+task :cucumber do
   dir = File.dirname(__FILE__)
   Dir["#{dir}/*"].each do |f|
     if File.directory?(f)
@@ -22,7 +22,7 @@ task :i18n do
   end
 end
 
-task :default => :i18n
+task :default => :cucumber
 
 def examples_working?(lang)
   !%w{}.index(lang)

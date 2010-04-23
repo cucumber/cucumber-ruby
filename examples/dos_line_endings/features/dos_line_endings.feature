@@ -6,4 +6,4 @@ Feature: DOS line endings
   Scenario: Just lots of DOS
     Given I am on DOS
     And Any version of Windows is really just DOS
-    Then Windows still sucks
+    Then line endings are CRLF

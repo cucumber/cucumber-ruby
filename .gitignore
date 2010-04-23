@@ -15,5 +15,6 @@ target
 examples/self_test/tmp
 .#*
 .idea
+*.pyc
 rerun.txt
 ._*
