@@ -5,6 +5,11 @@ require 'cucumber/js_support/js_snippets'
 module Cucumber
   module JsSupport
 
+    def self.argument_safe_string(string)
+      arg_string = string.to_s.gsub(/[']/, '\\\\\'')
+      "'#{arg_string.gsub("\n", '\n')}'"
+    end
+
     class JsWorld
       def initialize
         @world = V8::Context.new
@@ -15,7 +20,7 @@ module Cucumber
           if arg.is_a?(Ast::Table)
             "new CucumberJsDsl.Table(#{arg.raw.inspect})"
           else
-            "'#{arg}'"
+            JsSupport.argument_safe_string(arg)
           end
         end
 
@@ -33,6 +38,7 @@ module Cucumber
       end
 
       def invoke(args)
+        args = @js_language.execute_transforms(args)
         @js_language.current_world.execute(@js_function, args)
       end
 
@@ -65,6 +71,22 @@ module Cucumber
       end
     end
 
+    class JsTransform
+      def initialize(js_language, regexp, js_function)
+        @js_language, @regexp, @js_function = js_language, regexp.ToString, js_function
+      end
+
+      def match(arg)
+        arg = JsSupport.argument_safe_string(arg)
+        matches = eval_js "#{@regexp}.exec(#{arg});"
+        matches ? matches[1..-1] : nil
+      end
+
+      def invoke(arg)
+        @js_language.current_world.execute(@js_function, [arg])
+      end
+    end
+
     class JsArg
       def initialize(arg)
         @arg = arg
@@ -85,6 +107,7 @@ module Cucumber
       def initialize(step_mother)
         @step_definitions = []
         @world = JsWorld.new
+        @step_mother = step_mother
 
         @world["jsLanguage"] = self
         @world.load(File.dirname(__FILE__) + '/js_dsl.js')
@@ -117,10 +140,19 @@ module Cucumber
         @step_definitions << JsStepDefinition.new(self, regexp, js_function)
       end
 
+      #TODO: support multiline arguments when calling steps from within steps
+      def execute_step_definition(name, multiline_argument = nil)
+        @step_mother.step_match(name).invoke(multiline_argument)
+      end
+
       #TODO: support multiple tag_names
       def register_js_hook(phase, js_function, tag_name = nil)
         tag_names = tag_name ? [tag_name] : []
         add_hook(phase, JsHook.new(self, tag_names, js_function))
+      end
+
+      def register_js_transform(regexp, js_function)
+        add_transform(JsTransform.new(self, regexp, js_function))
       end
 
       def current_world

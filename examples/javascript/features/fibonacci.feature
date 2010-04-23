@@ -18,10 +18,12 @@ Feature: Fibonacci
       | 100 | [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89] |
 
   Scenario: Single series tested via a PyString
-    When I ask Javascript to calculate fibonacci up to 2
+    When I ask Javascript to calculate fibonacci up to 2 with formatting
     Then it should give me:
     """
-    [1, 1]
+
+    '[1, 1]'
+
     """
 
   Scenario: Single series tested via a Step Table
@@ -34,3 +36,6 @@ Feature: Fibonacci
   @do-fibonnacci-in-before-hook
   Scenario: Single series with Before hook with a tag label
     Then it should give me [1, 1, 2]
+
+  Scenario: Single series by calling a step from within a step
+    Then it should give me [1, 1] via calling another step definition
