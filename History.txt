@@ -1,3 +1,8 @@
+== In Git
+
+=== Changed Features
+* Step Definitions and calling steps from step definitions can again use And and But (was removed in 0.7.0.beta.2) (Aslak Hellesøy)
+
 == 0.7.0.beta.2 (2010-04-21)
 
 === New Features
