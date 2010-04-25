@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2010-04-24}
+  s.date = %q{2010-04-25}
   s.default_executable = %q{cucumber}
   s.description = %q{A BDD tool written in Ruby}
   s.email = %q{cukes@googlegroups.com}
@@ -402,7 +402,6 @@ Gem::Specification.new do |s|
      "gem_tasks/rspec.rake",
      "gem_tasks/sass.rake",
      "gem_tasks/sdoc.rake",
-     "gem_tasks/treetop.rake",
      "lib/README.rdoc",
      "lib/autotest/cucumber.rb",
      "lib/autotest/cucumber_mixin.rb",
@@ -681,7 +680,8 @@ for important information about this release. Happy cuking!
      "examples/ruby2python/features/support/env.rb",
      "examples/self_test/features/step_definitions/sample_steps.rb",
      "examples/self_test/features/support/env.rb",
-     "examples/self_test/tmp/features/step_definitions/steps.rb",
+     "examples/self_test/tmp/features/step_definitions/all_your_steps_are_belong_to_us.rb",
+     "examples/self_test/tmp/features/support/env.rb",
      "examples/sinatra/app.rb",
      "examples/sinatra/features/step_definitions/add_steps.rb",
      "examples/sinatra/features/support/env.rb",

@@ -18,3 +18,4 @@ examples/self_test/tmp
 *.pyc
 rerun.txt
 ._*
+examples/self_test/tmp

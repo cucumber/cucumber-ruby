@@ -2,6 +2,7 @@ require 'cucumber/constantize'
 require 'cucumber/core_ext/instance_exec'
 require 'cucumber/language_support/language_methods'
 require 'cucumber/formatter/duration'
+require 'cucumber/cli/options'
 require 'timeout'
 
 module Cucumber
@@ -101,7 +102,7 @@ module Cucumber
 
     # Returns the options passed on the command line.
     def options
-      @options ||= {}
+      @options ||= Cli::Options.new
     end
 
     def step_visited(step) #:nodoc:
