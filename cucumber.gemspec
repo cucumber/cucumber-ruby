@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.authors = ["Aslak Helles\303\270y"]
   s.date = %q{2010-04-25}
   s.default_executable = %q{cucumber}
-  s.description = %q{A BDD tool written in Ruby}
+  s.description = %q{Behaviour Driven Development with elegance and joy}
   s.email = %q{cukes@googlegroups.com}
   s.executables = ["cucumber"]
   s.extra_rdoc_files = [
@@ -481,7 +481,8 @@ Gem::Specification.new do |s|
      "lib/cucumber/rb_support/rb_transform.rb",
      "lib/cucumber/rb_support/rb_world.rb",
      "lib/cucumber/rb_support/regexp_argument_matcher.rb",
-     "lib/cucumber/rspec_neuter.rb",
+     "lib/cucumber/rspec/diffing.rb",
+     "lib/cucumber/rspec/disable_option_parser.rb",
      "lib/cucumber/step_argument.rb",
      "lib/cucumber/step_definition_light.rb",
      "lib/cucumber/step_match.rb",
@@ -531,7 +532,6 @@ Gem::Specification.new do |s|
      "spec/cucumber/wire_support/wire_packet_spec.rb",
      "spec/cucumber/wire_support/wire_step_definition_spec.rb",
      "spec/cucumber/world/pending_spec.rb",
-     "spec/spec.opts",
      "spec/spec_helper.rb"
   ]
   s.homepage = %q{http://cukes.info}
