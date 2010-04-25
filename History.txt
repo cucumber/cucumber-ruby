@@ -1,3 +1,11 @@
+== In Git
+
+=== New Features
+* Support RSpec 2. (RSpec >= 1.2.4 is still supported). (Aslak Hellesøy, Ryan Bigg)
+
+=== Removed features
+* No more support for RSpec <= 1.2.3. (Aslak Hellesøy)
+
 == 0.7.0.beta.4 (2010-04-24)
 
 === New Features

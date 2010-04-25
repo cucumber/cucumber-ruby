@@ -139,6 +139,19 @@ Feature: Delayed announcement
         ...
         """
 
+    @rspec2
+    Scenario: announce world
+      When I run cucumber --format progress features/announce_world.feature
+      Then the output should contain
+      """
+      WORLD:
+        Object
+
+        Rspec::Matchers
+        Cucumber::RbSupport::RbWorld
+      """
+
+    @rspec1
     Scenario: announce world
       When I run cucumber --format progress features/announce_world.feature
       Then the output should contain

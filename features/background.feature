@@ -5,6 +5,7 @@ Feature: backgrounds
 
   Scenario: run a specific scenario with a background
     When I run cucumber -q features/background/passing_background.feature:9 --require features
+    Then STDERR should be empty
     Then it should pass with
     """
     Feature: Passing background sample
@@ -274,7 +275,7 @@ Feature: backgrounds
       """
     And a file named "features/only_background_and_hooks_steps.rb" with:
       """
-      require 'spec/expectations'
+      begin require 'rspec/expectations'; rescue LoadError; require 'spec/expectations'; end
 
       Before do
         $before = true

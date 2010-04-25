@@ -6,7 +6,6 @@ rescue LoadError
 end
 require 'optparse'
 require 'cucumber'
-require 'ostruct'
 require 'logger'
 require 'cucumber/parser'
 require 'cucumber/feature_file'
@@ -102,17 +101,7 @@ module Cucumber
 
       def enable_diffing
         if configuration.diff_enabled?
-          begin
-            require 'spec/expectations'
-            begin
-              require 'spec/runner/differs/default' # RSpec >=1.2.4
-            rescue ::LoadError
-              require 'spec/expectations/differs/default' # RSpec <=1.2.3
-            end
-            options = OpenStruct.new(:diff_format => :unified, :context_lines => 3)
-            ::Spec::Expectations.differ = ::Spec::Expectations::Differs::Default.new(options)
-          rescue ::LoadError => ignore
-          end
+          require 'cucumber/rspec/diffing'
         end
       end
 

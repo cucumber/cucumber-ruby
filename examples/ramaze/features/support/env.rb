@@ -9,7 +9,7 @@ require 'ramaze'
 Ramaze.options.started = true
 require __DIR__("../../app.rb")
 
-require 'spec/expectations'
+begin require 'rspec/expectations'; rescue LoadError; require 'spec/expectations'; end
 require 'rack/test'
 require 'webrat'
 

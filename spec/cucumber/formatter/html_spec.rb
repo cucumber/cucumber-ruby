@@ -10,8 +10,10 @@ module Cucumber
     describe Html do
       extend SpecHelperDsl
       include SpecHelper
-    
-      Spec::Matchers.define :have_css_node do |css, regexp|
+
+      matcher = defined?(Spec::Matchers) ? Spec::Matchers : Rspec::Matchers
+
+      matcher.define :have_css_node do |css, regexp|
         match do |doc|
           nodes = doc.css(css)
           nodes.detect{ |node| node.text =~ regexp }

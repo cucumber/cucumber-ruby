@@ -1,4 +1,4 @@
-require 'spec/expectations'
+begin require 'rspec/expectations'; rescue LoadError; require 'spec/expectations'; end
 
 Before('@i_am_so_special') do
   @something_special = 10
