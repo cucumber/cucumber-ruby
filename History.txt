@@ -1,4 +1,4 @@
-== In Git
+== 0.7.0.beta.5 (2010-04-27)
 
 === New Features
 * Support RSpec 2. (RSpec >= 1.2.4 is still supported). (Aslak Hellesøy, Ryan Bigg)

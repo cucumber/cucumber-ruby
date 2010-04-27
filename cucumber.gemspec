@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
-  s.version = "0.7.0.beta.4"
+  s.version = "0.7.0.beta.5"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2010-04-25}
+  s.authors = ["Aslak Hellesøy"]
+  s.date = %q{2010-04-27}
   s.default_executable = %q{cucumber}
   s.description = %q{Behaviour Driven Development with elegance and joy}
   s.email = %q{cukes@googlegroups.com}
@@ -540,7 +540,7 @@ Gem::Specification.new do |s|
 
                      (::)   U P G R A D I N G    (::)
 
-Thank you for installing cucumber-0.7.0.beta.4.
+Thank you for installing cucumber-0.7.0.beta.5.
 Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
 for important information about this release. Happy cuking!
 
@@ -712,7 +712,7 @@ for important information about this release. Happy cuking!
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<gherkin>, ["= 1.0.20"])
+      s.add_runtime_dependency(%q<gherkin>, ["= 1.0.21"])
       s.add_runtime_dependency(%q<term-ansicolor>, [">= 1.0.4"])
       s.add_runtime_dependency(%q<builder>, [">= 2.1.2"])
       s.add_runtime_dependency(%q<diff-lcs>, [">= 1.1.2"])
@@ -725,7 +725,7 @@ for important information about this release. Happy cuking!
       s.add_development_dependency(%q<syntax>, [">= 1.0.0"])
       s.add_development_dependency(%q<spork>, [">= 0.7.5"])
     else
-      s.add_dependency(%q<gherkin>, ["= 1.0.20"])
+      s.add_dependency(%q<gherkin>, ["= 1.0.21"])
       s.add_dependency(%q<term-ansicolor>, [">= 1.0.4"])
       s.add_dependency(%q<builder>, [">= 2.1.2"])
       s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
@@ -739,7 +739,7 @@ for important information about this release. Happy cuking!
       s.add_dependency(%q<spork>, [">= 0.7.5"])
     end
   else
-    s.add_dependency(%q<gherkin>, ["= 1.0.20"])
+    s.add_dependency(%q<gherkin>, ["= 1.0.21"])
     s.add_dependency(%q<term-ansicolor>, [">= 1.0.4"])
     s.add_dependency(%q<builder>, [">= 2.1.2"])
     s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
