@@ -1,3 +1,8 @@
+== 0.7.0.beta.7 (2010-04-28)
+
+=== Bugfixes
+* Depend on gherkin-1.0.22, which should now make things work on Windows and Ruby 1.8.x-1.9.x. (Aslak Hellesøy)
+
 == 0.7.0.beta.6 (2010-04-28)
 
 === Bugfixes
