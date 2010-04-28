@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Hellesøy"]
-  s.date = %q{2010-04-27}
+  s.date = %q{2010-04-28}
   s.default_executable = %q{cucumber}
   s.description = %q{Behaviour Driven Development with elegance and joy}
   s.email = %q{cukes@googlegroups.com}
@@ -347,7 +347,7 @@ Gem::Specification.new do |s|
      "features/bug_464.feature",
      "features/bug_475.feature",
      "features/bug_585_tab_indentation.feature",
-     "features/call_many_steps.feature",
+     "features/call_steps_from_stepdefs.feature",
      "features/cucumber_cli.feature",
      "features/cucumber_cli_diff_disabled.feature",
      "features/cucumber_cli_outlines.feature",
