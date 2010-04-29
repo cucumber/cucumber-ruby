@@ -21,6 +21,9 @@ Feature: http://gist.github.com/221223
 
         Scenario: Call a table
           Given I call a table with MAMA
+
+        Scenario: Call a multiline string using keyword
+          Given I use keyword to call a multiline string with BANG
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
@@ -40,6 +43,10 @@ Feature: http://gist.github.com/221223
             #{s}
             \"\"\"
         }
+      end
+
+      Given /^I use keyword to call a multiline string with (.*)$/ do |s| x=1
+        Given 'a multiline string:', "Hello\n#{s}"
       end
 
       Given /^I call a table with (.*)$/ do |s| x=1
@@ -109,7 +116,7 @@ Feature: http://gist.github.com/221223
       Feature: Test
 
         Scenario: Call a table           # features/f.feature:13
-          Given I call a table with MAMA # features/step_definitions/steps.rb:19
+          Given I call a table with MAMA # features/step_definitions/steps.rb:23
             I got table:
             [["a", "b"], ["c", "MAMA"]] (RuntimeError)
             ./features/step_definitions/steps.rb:6:in `/^a table:$/'
@@ -117,6 +124,29 @@ Feature: http://gist.github.com/221223
 
       Failing Scenarios:
       cucumber features/f.feature:13 # Scenario: Call a table
+
+      1 scenario (1 failed)
+      1 step (1 failed)
+
+      """
+
+  Scenario: Call multiline string with keyword
+    When I run cucumber features/f.feature:16
+    Then STDERR should be empty
+    And it should fail with
+      """
+      Feature: Test
+
+        Scenario: Call a multiline string using keyword            # features/f.feature:16
+          Given I use keyword to call a multiline string with BANG # features/step_definitions/steps.rb:19
+            I got multiline:
+            Hello
+            BANG (RuntimeError)
+            ./features/step_definitions/steps.rb:2:in `/^a multiline string:$/'
+            features/f.feature:17:in `Given I use keyword to call a multiline string with BANG'
+
+      Failing Scenarios:
+      cucumber features/f.feature:16 # Scenario: Call a multiline string using keyword
 
       1 scenario (1 failed)
       1 step (1 failed)

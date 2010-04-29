@@ -1,4 +1,14 @@
-== In Git
+== 0.7.0.beta.7 (2010-04-28)
+
+=== Bugfixes
+* Depend on gherkin-1.0.22, which should now make things work on Windows and Ruby 1.8.x-1.9.x. (Aslak Hellesøy)
+
+== 0.7.0.beta.6 (2010-04-28)
+
+=== Bugfixes
+* Fixed a small regression with pystrings and calling steps from stepdefs, introduced in a previous beta. (Aslak Hellesøy)
+
+== 0.7.0.beta.5 (2010-04-27)
 
 === New Features
 * Support RSpec 2. (RSpec >= 1.2.4 is still supported). (Aslak Hellesøy, Ryan Bigg)
