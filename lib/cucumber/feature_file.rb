@@ -38,7 +38,7 @@ module Cucumber
         ast.language = lexer.i18n_language
         ast.file = @path
         ast
-      rescue Gherkin::LexingError => e
+      rescue Gherkin::LexingError, Gherkin::Parser::ParseError => e
         e.message.insert(0, "#{@path}: ")
         raise e
       end
