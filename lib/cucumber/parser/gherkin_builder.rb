@@ -74,7 +74,10 @@ module Cucumber
           example_sections=[]
         )
         @feature.add_feature_element(scenario_outline)
-        @background.feature_elements << scenario_outline if @background
+        if @background
+          @background = @background.dup
+          @background.feature_elements << scenario_outline
+        end
         @step_container = scenario_outline
       end
 
