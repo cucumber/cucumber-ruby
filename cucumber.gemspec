@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
-  s.version = "0.7.0.beta.7"
+  s.version = "0.7.0.beta.8"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2010-04-28}
+  s.date = %q{2010-04-29}
   s.default_executable = %q{cucumber}
   s.description = %q{Behaviour Driven Development with elegance and joy}
   s.email = %q{cukes@googlegroups.com}
@@ -347,6 +347,7 @@ Gem::Specification.new do |s|
      "features/bug_464.feature",
      "features/bug_475.feature",
      "features/bug_585_tab_indentation.feature",
+     "features/bug_600.feature",
      "features/call_steps_from_stepdefs.feature",
      "features/cucumber_cli.feature",
      "features/cucumber_cli_diff_disabled.feature",
@@ -540,7 +541,7 @@ Gem::Specification.new do |s|
 
                      (::)   U P G R A D I N G    (::)
 
-Thank you for installing cucumber-0.7.0.beta.7.
+Thank you for installing cucumber-0.7.0.beta.8.
 Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
 for important information about this release. Happy cuking!
 
