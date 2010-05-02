@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
-  s.version = "0.7.0.beta.8"
+  s.version = "0.7.0"
 
-  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2010-04-29}
+  s.date = %q{2010-05-02}
   s.default_executable = %q{cucumber}
   s.description = %q{Behaviour Driven Development with elegance and joy}
   s.email = %q{cukes@googlegroups.com}
@@ -541,7 +541,7 @@ Gem::Specification.new do |s|
 
                      (::)   U P G R A D I N G    (::)
 
-Thank you for installing cucumber-0.7.0.beta.8.
+Thank you for installing cucumber-0.7.0.
 Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
 for important information about this release. Happy cuking!
 
@@ -713,7 +713,7 @@ for important information about this release. Happy cuking!
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<gherkin>, [">= 1.0.22"])
+      s.add_runtime_dependency(%q<gherkin>, [">= 1.0.24"])
       s.add_runtime_dependency(%q<term-ansicolor>, [">= 1.0.4"])
       s.add_runtime_dependency(%q<builder>, [">= 2.1.2"])
       s.add_runtime_dependency(%q<diff-lcs>, [">= 1.1.2"])
@@ -724,9 +724,9 @@ for important information about this release. Happy cuking!
       s.add_development_dependency(%q<htmlentities>, [">= 4.2.1"])
       s.add_development_dependency(%q<rspec>, [">= 1.3.0"])
       s.add_development_dependency(%q<syntax>, [">= 1.0.0"])
-      s.add_development_dependency(%q<spork>, [">= 0.7.5"])
+      s.add_development_dependency(%q<spork>, [">= 0.8.3"])
     else
-      s.add_dependency(%q<gherkin>, [">= 1.0.22"])
+      s.add_dependency(%q<gherkin>, [">= 1.0.24"])
       s.add_dependency(%q<term-ansicolor>, [">= 1.0.4"])
       s.add_dependency(%q<builder>, [">= 2.1.2"])
       s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
@@ -737,10 +737,10 @@ for important information about this release. Happy cuking!
       s.add_dependency(%q<htmlentities>, [">= 4.2.1"])
       s.add_dependency(%q<rspec>, [">= 1.3.0"])
       s.add_dependency(%q<syntax>, [">= 1.0.0"])
-      s.add_dependency(%q<spork>, [">= 0.7.5"])
+      s.add_dependency(%q<spork>, [">= 0.8.3"])
     end
   else
-    s.add_dependency(%q<gherkin>, [">= 1.0.22"])
+    s.add_dependency(%q<gherkin>, [">= 1.0.24"])
     s.add_dependency(%q<term-ansicolor>, [">= 1.0.4"])
     s.add_dependency(%q<builder>, [">= 2.1.2"])
     s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
@@ -751,7 +751,7 @@ for important information about this release. Happy cuking!
     s.add_dependency(%q<htmlentities>, [">= 4.2.1"])
     s.add_dependency(%q<rspec>, [">= 1.3.0"])
     s.add_dependency(%q<syntax>, [">= 1.0.0"])
-    s.add_dependency(%q<spork>, [">= 0.7.5"])
+    s.add_dependency(%q<spork>, [">= 0.8.3"])
   end
 end
 

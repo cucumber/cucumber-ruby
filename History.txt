@@ -1,3 +1,9 @@
+== 0.7.0 (2010-05-02)
+
+This release is an important milestone for Cucumber. A new parser (the gherkin gem) parses feature
+files 50-100 times faster than with 0.6.x and previous releases. Make sure you read the upgrade
+instructions! http://wiki.github.com/aslakhellesoy/cucumber/upgrading
+
 == 0.7.0.beta.8 (2010-04-29)
 
 === Bugfixes
