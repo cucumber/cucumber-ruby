@@ -311,6 +311,20 @@ module Cucumber
       @programming_languages.empty?
     end
 
+    def around(scenario, skip_hooks=false, &block) #:nodoc:
+      unless skip_hooks
+        @programming_languages.reverse.inject(block) do |blk, programming_language|
+          proc do
+            programming_language.around(scenario) do
+              blk.call(scenario)
+            end
+          end
+        end.call
+      else
+        yield
+      end
+    end
+
     def before_and_after(scenario, skip_hooks=false) #:nodoc:
       before(scenario) unless skip_hooks
       yield scenario
