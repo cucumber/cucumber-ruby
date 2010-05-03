@@ -4,7 +4,7 @@ Given /^I am on the Kvasir search page$/ do
   visit('http://www.kvasir.no/')
 end
 
-When /^I search for "([^\"]*)"$/ do |query|
+When /^I search for "([^"]*)"$/ do |query|
   fill_in('q', :with => query)
   click_button('sokeKnapp')
 end

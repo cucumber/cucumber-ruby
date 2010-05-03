@@ -171,7 +171,23 @@ module Cucumber
       def send_to_all(message, *args)
         @listeners.each do |listener|
           if listener.respond_to?(message)
-            listener.__send__(message, *args)
+            if listener.respond_to?(:feature_name) && 
+              (listener.method(:feature_name) rescue false) && 
+              listener.method(:feature_name).arity == 1
+              # Legacy
+              case message.to_sym
+              when :feature_name
+                warn("#{listener.class} is using a deprecated formatter API. The signature has changed to :feature_name(keyword, name) # no trailing : in keyword")
+                listener.feature_name("#{args[0]}: #{args[1]}")
+              when :scenario_name, :examples_name
+                warn("#{listener.class} is using a deprecated formatter API. The :scenario_name method does not receive trailing : in keyword")
+                listener.__send__(message, "#{args[0]}:", args[1], args[2], args[3])
+              else
+                listener.__send__(message, *args)
+              end
+            else
+              listener.__send__(message, *args)
+            end
           end
         end
       end

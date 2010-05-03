@@ -1,3 +1,11 @@
+== In Git
+
+=== Bugfixes
+* Add backwards compatibility fix (with deprecation warning) for legacy 0.6.4 formatters. (Aslak Hellesøy)
+
+=== Changed Features
+* Ruby and Javascript snippets will use "([^"]*)" instead of "([^\"]*)"$/ (Aslak Hellesøy)
+
 == 0.7.0 (2010-05-02)
 
 This release is an important milestone for Cucumber. A new parser (the gherkin gem) parses feature
