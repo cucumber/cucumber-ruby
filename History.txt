@@ -1,4 +1,4 @@
-== In Git
+== 0.7.1 (2010-05-03)
 
 === Bugfixes
 * Add backwards compatibility fix (with deprecation warning) for legacy 0.6.4 formatters. (Aslak Hellesøy)
