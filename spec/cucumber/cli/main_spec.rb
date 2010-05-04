@@ -1,10 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'yaml'
-begin
-  require 'spec/runner/differs/default' # RSpec >=1.2.4
-rescue ::LoadError
-  require 'spec/expectations/differs/default' # RSpec <=1.2.3
-end
 
 module Cucumber
   module Cli
@@ -20,7 +15,7 @@ module Cucumber
       describe "verbose mode" do
 
         before(:each) do
-          @empty_feature = Cucumber::Ast::Feature.new(nil, Cucumber::Ast::Comment.new(''), Cucumber::Ast::Tags.new(2, []), "Feature", [])
+          @empty_feature = Cucumber::Ast::Feature.new(nil, Cucumber::Ast::Comment.new(''), Cucumber::Ast::Tags.new(2, []), "Feature", "Foo", [])
         end
 
         it "should show feature files parsed" do
@@ -32,35 +27,6 @@ module Cucumber
           @cli.execute!(Cucumber::StepMother.new)
 
           @out.string.should include('example.feature')
-        end
-
-      end
-
-      describe "diffing" do
-
-        before :each do
-          @configuration = mock('Configuration', :null_object => true, :drb? => false)
-          Configuration.should_receive(:new).and_return(@configuration)
-
-          @step_mother = mock('StepMother', :null_object => true)
-
-          @cli = Main.new(nil, @out)
-        end
-
-        it "uses Spec Differ::Default when diff is enabled" do
-          @configuration.should_receive(:diff_enabled?).and_return(true)
-
-          ::Spec::Expectations::Differs::Default.should_receive(:new)
-
-          @cli.execute!(@step_mother)
-        end
-
-        it "does not use Spec Differ::Default when diff is disabled" do
-          @configuration.should_receive(:diff_enabled?).and_return(false)
-
-          ::Spec::Expectations::Differs::Default.should_not_receive(:new)
-
-          @cli.execute!(@step_mother)
         end
 
       end

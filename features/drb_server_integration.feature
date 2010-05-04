@@ -32,7 +32,7 @@ Feature: DRb Server Integration
     And a file named "features/essai.feature" with:
       """
       # language: fr
-      Fonction: Essai
+      Fonctionnalité: Essai
         Scenario: ceci est un test
           Soit je teste
       """

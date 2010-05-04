@@ -1,6 +1,6 @@
 require 'cucumber/cli/profile_loader'
 require 'cucumber/formatter/ansicolor'
-require 'cucumber/tag_expression'
+require 'gherkin/parser/tag_expression'
 
 module Cucumber
   module Cli
@@ -161,6 +161,9 @@ module Cucumber
             "several times, and this represents logical AND. Example: --tags @foo,~@bar --tags @zap.",
             "This represents the boolean expression (@foo || !@bar) && @zap.",
             "\n",
+            "Beware that if you want to use several negative tags to exclude several tags",
+            "you have to use logical AND: --tags ~@fixme --tags @buggy.",
+            "\n",
             "Positive tags can be given a threshold to limit the number of occurrences.", 
             "Example: --tags @qa:3 will fail if there are more than 3 occurrences of the @qa tag.",
             "This can be practical if you are practicing Kanban or CONWIP.") do |v|
@@ -279,6 +282,10 @@ module Cucumber
         @profiles - [@default_profile]
       end
 
+      def filters
+        @options.values_at(:name_regexps, :tag_expressions).select{|v| !v.empty?}.first || []
+      end
+
     protected
 
       attr_reader :options, :profiles, :expanded_args
@@ -286,25 +293,21 @@ module Cucumber
 
     private
 
-    def non_stdout_formats
-      @options[:formats].select {|format, output| output != @out_stream }
-    end
+      def non_stdout_formats
+        @options[:formats].select {|format, output| output != @out_stream }
+      end
 
-    def stdout_formats
-      @options[:formats].select {|format, output| output == @out_stream }
-    end
+      def stdout_formats
+        @options[:formats].select {|format, output| output == @out_stream }
+      end
 
-     def extract_environment_variables
+      def extract_environment_variables
         @args.delete_if do |arg|
           if arg =~ /^(\w+)=(.*)$/
             @options[:env_vars][$1] = $2
             true
           end
         end
-      end
-
-      def tag_filter(tag_string)
-        tags = TagExpression.parse(tag_string)
       end
 
       def disable_profile_loading?
@@ -325,7 +328,6 @@ module Cucumber
             Options.parse(profile_args, @out_stream, @error_stream, :skip_profile_information  => true)
           )
         end
-
       end
 
       def default_profile_should_be_used?
@@ -367,19 +369,15 @@ module Cucumber
         self
       end
 
-      # TODO: Move to Language
       def list_keywords_and_exit(lang)
-        unless Cucumber::LANGUAGES[lang]
-          raise("No language with key #{lang}")
-        end
-        require 'cucumber/cli/language_help_formatter'
-        LanguageHelpFormatter.list_keywords(@out_stream, lang)
+        require 'gherkin/i18n'
+        @out_stream.write(Gherkin::I18n.get(lang).keyword_table)
         Kernel.exit(0)
       end
 
       def list_languages_and_exit
-        require 'cucumber/cli/language_help_formatter'
-        LanguageHelpFormatter.list_languages(@out_stream)
+        require 'gherkin/i18n'
+        @out_stream.write(Gherkin::I18n.language_table)
         Kernel.exit(0)
       end
 

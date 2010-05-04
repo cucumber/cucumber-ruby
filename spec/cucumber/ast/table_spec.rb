@@ -80,6 +80,7 @@ module Cucumber
           @table.match('one,four,seven').should be_nil
         end
       end
+
       describe "#transpose" do
         before(:each) do
           @table = Table.new([
@@ -272,6 +273,7 @@ module Cucumber
             ['aslak', true,   'hellesøy', false]
           ])
           lambda{t1.diff!(t2)}.should raise_error
+
           t1.to_s(:indent => 12, :color => false).should == %{
             |     name  |     male       |     lastname |     swedish     |
             | (-) aslak | (-) (i) "true" | (-) hellesøy | (-) (i) "false" |
@@ -349,6 +351,7 @@ module Cucumber
               | a | b |
               | c | d |
             })
+            @t.should_not == nil
           end
           
           it "should raise on missing rows" do
@@ -384,8 +387,12 @@ module Cucumber
             })
             lambda { t1.dup.diff!(t2) }.should raise_error
 
-            pending "http://groups.google.com/group/cukes/browse_thread/thread/5d96431c8245f05f" do
-              lambda { t1.dup.diff!(t2, :surplus_row => false) }.should_not raise_error
+            begin
+              pending "http://groups.google.com/group/cukes/browse_thread/thread/5d96431c8245f05f" do
+                lambda { t1.dup.diff!(t2, :surplus_row => false) }.should_not raise_error
+              end
+            rescue => e
+              warn(e.message + " - see http://www.ruby-forum.com/topic/208508")
             end
           end
 
@@ -409,8 +416,7 @@ module Cucumber
         end
 
         def table(text, file=nil, line_offset=0)
-          @table_parser ||= Cucumber::Parser::TableParser.new
-          @table_parser.parse_or_fail(text.strip, file, line_offset)
+          Table.parse(text)
         end
       end
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 $:.unshift(File.dirname(__FILE__) + '/../lib') unless $:.include?(File.dirname(__FILE__) + '/../lib')
 
-require 'cucumber/rspec_neuter'
+require 'cucumber/rspec/disable_option_parser'
 require 'cucumber/cli/main'
 begin
   # The dup is to keep ARGV intact, so that tools like ruby-debug can respawn.

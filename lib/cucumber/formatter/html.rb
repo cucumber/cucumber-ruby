@@ -1,3 +1,4 @@
+require 'erb'
 require 'cucumber/formatter/ordered_xml_markup'
 require 'cucumber/formatter/duration'
 require 'cucumber/formatter/io'
@@ -109,11 +110,11 @@ module Cucumber
         @builder.span(tag_name, :class => 'tag')
       end
   
-      def feature_name(name)
+      def feature_name(keyword, name)
         lines = name.split(/\r?\n/)
         return if lines.empty?
         @builder.h2 do |h2|
-          @builder.span(lines[0], :class => 'val')
+          @builder.span(keyword + ': ' + lines[0], :class => 'val')
         end
         @builder.p(:class => 'narrative') do
           lines[1..-1].each do |line|
@@ -383,11 +384,14 @@ module Cucumber
         features.each do |feature|
           #get background steps
           if feature.instance_variable_get("@background")
-            background = feature.instance_variable_get("@background").instance_variable_get("@steps").instance_variable_get("@steps")
-            count += background.size
+            background = feature.instance_variable_get("@background")
+            background.init
+            background_steps = background.instance_variable_get("@steps").instance_variable_get("@steps")
+            count += background_steps.size
           end
           #get scenarios
           feature.instance_variable_get("@feature_elements").each do |scenario|
+            scenario.init
             #get steps
             steps = scenario.instance_variable_get("@steps").instance_variable_get("@steps")
             count += steps.size
@@ -417,7 +421,6 @@ module Cucumber
         step_name = step_match.format_args(lambda{|param| %{<span class="param">#{param}</span>}})
         @builder.div(:class => 'step_name') do |div|
           @builder.span(keyword, :class => 'keyword')
-          @builder.text!(' ')
           @builder.span(:class => 'step val') do |name|
             name << h(step_name).gsub(/&lt;span class=&quot;(.*?)&quot;&gt;/, '<span class="\1">').gsub(/&lt;\/span&gt;/, '</span>')
           end            

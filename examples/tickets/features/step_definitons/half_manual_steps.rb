@@ -6,6 +6,6 @@ When /^I check my mailbox$/ do
   @answer = ask("What's in your mailbox? ", 3)
 end
 
-Then /^I should have an email containing "([^\"]*)"$/ do |content|
+Then /^I should have an email containing "([^"]*)"$/ do |content|
   @answer.should =~ Regexp.new(content)
 end

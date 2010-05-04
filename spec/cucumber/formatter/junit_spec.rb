@@ -25,6 +25,7 @@ module Cucumber::Formatter
     
     describe "a feature with no name" do
       define_feature <<-FEATURE
+        Feature:
           Scenario: Passing
             Given a passing scenario
       FEATURE

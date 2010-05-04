@@ -41,6 +41,7 @@ Feature: Wire Protocol
     Given a standard Cucumber project directory structure
     And a file named "features/wired.feature" with:
       """
+      Feature: High strung
         Scenario: Wired
           Given we're all wired
 
@@ -108,7 +109,7 @@ Feature: Wire Protocol
       """
       -
 
-      we.*    # MyApp.MyClass:123
+      we.*   # MyApp.MyClass:123
 
       1 scenario (1 skipped)
       1 step (1 skipped)
@@ -147,12 +148,12 @@ Feature: Wire Protocol
     When I run cucumber -f pretty -q
     And it should pass with
       """
-
+      Feature: High strung
 
         Scenario: Wired
           Given we're all wired
             I'll do it later (Cucumber::Pending)
-            features/wired.feature:2:in `Given we're all wired'
+            features/wired.feature:3:in `Given we're all wired'
 
       1 scenario (1 pending)
       1 step (1 pending)
@@ -207,10 +208,10 @@ Feature: Wire Protocol
       (::) failed steps (::)
 
       The wires are down (Some.Foreign.ExceptionType from localhost:54321)
-      features/wired.feature:2:in `Given we're all wired'
+      features/wired.feature:3:in `Given we're all wired'
 
       Failing Scenarios:
-      cucumber features/wired.feature:1 # Scenario: Wired
+      cucumber features/wired.feature:2 # Scenario: Wired
 
       1 scenario (1 failed)
       1 step (1 failed)
@@ -261,6 +262,7 @@ Feature: Wire Protocol
   Scenario: Invoke a step definition which takes table arguments (and passes)
     Given a file named "features/wired_on_tables.feature" with:
       """
+      Feature: High strung
         Scenario: Wired and more
           Given we're all:
             | wired |
@@ -292,16 +294,17 @@ Feature: Wire Protocol
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                                                                          | response                         |
       | ["step_matches",{"name_to_match":"we're all wired"}]                                             | ["success",[]]                   |
-      | ["snippet_text",{"step_keyword":"Given","multiline_arg_class":"","step_name":"we're all wired"}] | ["success","foo()\n  bar;\nbaz"] |
+      | ["snippet_text",{"step_keyword":"Given ","multiline_arg_class":"","step_name":"we're all wired"}] | ["success","foo()\n  bar;\nbaz"] |
       | ["begin_scenario"]                                                                               | ["success"]                      |
       | ["end_scenario"]                                                                                 | ["success"]                      |
     When I run cucumber -f pretty
+    Then STDERR should be empty
     And it should pass with
       """
+      Feature: High strung
 
-
-        Scenario: Wired         # features/wired.feature:1
-          Given we're all wired # features/wired.feature:2
+        Scenario: Wired         # features/wired.feature:2
+          Given we're all wired # features/wired.feature:3
 
       1 scenario (1 undefined)
       1 step (1 undefined)

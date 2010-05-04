@@ -1,6 +1,10 @@
 require 'rubygems'
 require 'tempfile'
-require 'spec/expectations'
+begin
+  require 'rspec/expectations'
+rescue LoadError
+  require 'spec/expectations'
+end
 require 'fileutils'
 require 'forwardable'
 require 'cucumber/formatter/unicode'

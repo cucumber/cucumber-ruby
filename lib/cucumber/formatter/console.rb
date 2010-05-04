@@ -22,7 +22,7 @@ module Cucumber
         end
 
         format = format_for(status, :param)
-        line = keyword + " " + step_match.format_args(format) + comment
+        line = keyword + step_match.format_args(format) + comment
         format_string(line, status)
       end
 
@@ -63,9 +63,10 @@ module Cucumber
       end
 
       def print_stats(features, profiles = [])
-        @failures = step_mother.scenarios(:failed).select { |s| s.is_a?(Cucumber::Ast::Scenario) }
+        @failures = step_mother.scenarios(:failed).select { |s| s.is_a?(Cucumber::Ast::Scenario) || s.is_a?(Cucumber::Ast::OutlineTable::ExampleRow) }
+        @failures.collect! { |s| (s.is_a?(Cucumber::Ast::OutlineTable::ExampleRow)) ? s.scenario_outline : s }
 
-        if !@failures.empty?
+        if !@failures.empty?          
           @io.puts format_string("Failing Scenarios:", :failed)
           @failures.each do |failure|
             profiles_string = profiles.empty? ? '' : (profiles.map{|profile| "-p #{profile}" }).join(' ') + ' '

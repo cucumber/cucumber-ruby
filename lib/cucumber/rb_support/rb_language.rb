@@ -30,22 +30,17 @@ module Cucumber
     class RbLanguage
       include LanguageSupport::LanguageMethods
       attr_reader :current_world
-      
+
+      Gherkin::I18n.code_keywords.each do |adverb|
+        RbDsl.alias_adverb(adverb)
+        RbWorld.alias_adverb(adverb)
+      end
+
       def initialize(step_mother)
         @step_mother = step_mother
         @step_definitions = []
         RbDsl.rb_language = self
         @world_proc = @world_modules = nil
-      end
-
-      # Tell the language about other i18n translations so that
-      # they can alias Given, When Then etc. Only useful if the language
-      # has a mechanism for this - typically a dynamic language.
-      def alias_adverbs(adverbs)
-        adverbs.each do |adverb|
-          RbDsl.alias_adverb(adverb)
-          RbWorld.alias_adverb(adverb)
-        end
       end
 
       # Gets called for each file under features (or whatever is overridden
@@ -88,7 +83,7 @@ module Cucumber
           multiline_class_comment = "# #{multiline_arg_class.default_arg_name} is a #{multiline_arg_class.to_s}\n  "
         end
 
-        "#{step_keyword} /^#{escaped}$/ do#{block_arg_string}\n  #{multiline_class_comment}pending # express the regexp above with the code you wish you had\nend"
+        "#{Gherkin::I18n.code_keyword_for(step_keyword)} /^#{escaped}$/ do#{block_arg_string}\n  #{multiline_class_comment}pending # express the regexp above with the code you wish you had\nend"
       end
 
       def begin_rb_scenario(scenario)
@@ -136,7 +131,7 @@ module Cucumber
 
       private
 
-      PARAM_PATTERN = /"([^\"]*)"/
+      PARAM_PATTERN = /"([^"]*)"/
       ESCAPED_PARAM_PATTERN = '"([^\\"]*)"'
 
       def create_world
@@ -150,7 +145,8 @@ module Cucumber
 
       def extend_world
         @current_world.extend(RbWorld)
-        @current_world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)
+        @current_world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)   # RSpec 1.x
+        @current_world.extend(::Rspec::Matchers) if defined?(::Rspec::Matchers) # RSpec 2.x
         (@world_modules || []).each do |mod|
           @current_world.extend(mod)
         end

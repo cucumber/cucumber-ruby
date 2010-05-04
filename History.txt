@@ -1,7 +1,74 @@
-== In Git
+== 0.7.2 (2010-05-03)
+
+=== Bugfixes
+* REALLY add backwards compatibility fix (with deprecation warning) for legacy 0.6.4 formatters. (Aslak Hellesøy)
+
+== 0.7.1 (2010-05-03)
+
+=== Bugfixes
+* Add backwards compatibility fix (with deprecation warning) for legacy 0.6.4 formatters. (Aslak Hellesøy)
+
+=== Changed Features
+* Ruby and Javascript snippets will use "([^"]*)" instead of "([^\"]*)"$/ (Aslak Hellesøy)
+
+== 0.7.0 (2010-05-02)
+
+This release is an important milestone for Cucumber. A new parser (the gherkin gem) parses feature
+files 50-100 times faster than with 0.6.x and previous releases. Make sure you read the upgrade
+instructions! http://wiki.github.com/aslakhellesoy/cucumber/upgrading
+
+== 0.7.0.beta.8 (2010-04-29)
+
+=== Bugfixes
+* Inconsistent order of execution Background and Before in 0.7.0.beta.2 (#600 Mike Sassak)
+* Make sure both lexing and parsing errors are captured and reported with line number (Gregory Hnatiuk)
+
+== 0.7.0.beta.7 (2010-04-28)
+
+=== Bugfixes
+* Depend on gherkin-1.0.22, which should now make things work on Windows and Ruby 1.8.x-1.9.x. (Aslak Hellesøy)
+
+== 0.7.0.beta.6 (2010-04-28)
+
+=== Bugfixes
+* Fixed a small regression with pystrings and calling steps from stepdefs, introduced in a previous beta. (Aslak Hellesøy)
+
+== 0.7.0.beta.5 (2010-04-27)
 
 === New Features
-* Upgraded Sinatra example to use Snatra 1.0 and Capybara. (Aslak Hellesøy)
+* Support RSpec 2. (RSpec >= 1.2.4 is still supported). (Aslak Hellesøy, Ryan Bigg)
+
+=== Removed features
+* No more support for RSpec <= 1.2.3. (Aslak Hellesøy)
+
+== 0.7.0.beta.4 (2010-04-24)
+
+=== New Features
+* New, experimental V8 javascript support - step definitions in Javascript! (Joseph Wilk)
+
+=== Bugfixes
+* Gherkin is loaded via rubygems if it can't be found on the $LOAD_PATH. (Aslak Hellesøy)
+
+== 0.7.0.beta.3 (2010-04-23)
+
+=== Changed Features
+* Step Definitions and calling steps from step definitions can again use And and But (was removed in 0.7.0.beta.2) (Aslak Hellesøy)
+
+== 0.7.0.beta.2 (2010-04-21)
+
+=== New Features
+* Depend on Gherkin 1.0.18, which has some bugfixes. (Aslak Hellesøy)
+
+== 0.7.0.beta.1 (2010-04-20)
+
+Treetop is gone and replaced with Ragel. The new Ragel parser lives in the gherkin gem.
+Parse times are up to 100 times faster.
+
+=== New Features
+* Upgraded Sinatra example to use Sinatra 1.0 and Capybara. (Aslak Hellesøy)
+
+=== Changed Features
+* New i18n translations now have to be contributed to the gherkin project.
 
 == 0.6.4 2010-03-30
 

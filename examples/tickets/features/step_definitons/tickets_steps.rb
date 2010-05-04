@@ -1,4 +1,4 @@
-require 'spec/expectations'
+begin require 'rspec/expectations'; rescue LoadError; require 'spec/expectations'; end
 
 Given "be_empty" do
   [1,2].should_not be_empty

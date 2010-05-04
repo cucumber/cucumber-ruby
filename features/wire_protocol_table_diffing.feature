@@ -8,6 +8,7 @@ Feature: Wire protocol table diffing
     Given a standard Cucumber project directory structure
     And a file named "features/wired.feature" with:
       """
+      Feature: Hello
         Scenario: Wired
           Given we're all wired
 
@@ -28,6 +29,7 @@ Feature: Wire protocol table diffing
       | ["diff_failed"]                                      | ["fail",{"message":"Not same", "exception":"DifferentException", "backtrace":["a.cs:12","b.cs:34"]}] |
       | ["end_scenario"]                                     | ["success"]                                                                                          |
     When I run cucumber -f progress --backtrace
+    Then STDERR should be empty
     And it should fail with
       """
       F
@@ -37,10 +39,10 @@ Feature: Wire protocol table diffing
       Not same (DifferentException from localhost:54321)
       a.cs:12
       b.cs:34
-      features/wired.feature:2:in `Given we're all wired'
+      features/wired.feature:3:in `Given we're all wired'
 
       Failing Scenarios:
-      cucumber features/wired.feature:1 # Scenario: Wired
+      cucumber features/wired.feature:2 # Scenario: Wired
 
       1 scenario (1 failed)
       1 step (1 failed)
@@ -81,10 +83,10 @@ Feature: Wire protocol table diffing
       (::) failed steps (::)
 
       I wanted things to be different for us (Cucumber::WireSupport::WireException)
-      features/wired.feature:2:in `Given we're all wired'
+      features/wired.feature:3:in `Given we're all wired'
 
       Failing Scenarios:
-      cucumber features/wired.feature:1 # Scenario: Wired
+      cucumber features/wired.feature:2 # Scenario: Wired
 
       1 scenario (1 failed)
       1 step (1 failed)
@@ -106,10 +108,10 @@ Feature: Wire protocol table diffing
       (::) failed steps (::)
 
       Tables were not identical (Cucumber::Ast::Table::Different)
-      features/wired.feature:2:in `Given we're all wired'
+      features/wired.feature:3:in `Given we're all wired'
       
       Failing Scenarios:
-      cucumber features/wired.feature:1 # Scenario: Wired
+      cucumber features/wired.feature:2 # Scenario: Wired
 
       1 scenario (1 failed)
       1 step (1 failed)

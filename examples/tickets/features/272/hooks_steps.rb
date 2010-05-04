@@ -1,4 +1,4 @@
-require 'spec/expectations'
+begin require 'rspec/expectations'; rescue LoadError; require 'spec/expectations'; end
 
 Given /^I fail$/ do
   raise "BOOM (this is expected)"

@@ -8,6 +8,7 @@ end
 Given /^a standard Cucumber project directory structure$/ do
   @current_dir = working_dir
   in_current_dir do
+    FileUtils.rm_rf 'features' if File.directory?('features')
     FileUtils.mkdir_p 'features/support'
     FileUtils.mkdir 'features/step_definitions'
   end
@@ -20,11 +21,11 @@ Given /^the (.*) directory is empty$/ do |directory|
   end
 end
 
-Given /^a file named "([^\"]*)"$/ do |file_name|
+Given /^a file named "([^"]*)"$/ do |file_name|
   create_file(file_name, '')
 end
 
-Given /^a file named "([^\"]*)" with:$/ do |file_name, file_content|
+Given /^a file named "([^"]*)" with:$/ do |file_name, file_content|
   create_file(file_name, file_content)
 end
 
@@ -44,12 +45,12 @@ Given /^I am not running (?:.*) in the background$/ do
   # no-op
 end
 
-Given /^I have environment variable (\w+) set to "([^\"]*)"$/ do |variable, value|
+Given /^I have environment variable (\w+) set to "([^"]*)"$/ do |variable, value|
   set_env_var(variable, value)
 end
 
 When /^I run cucumber (.*)$/ do |cucumber_opts|
-  run "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} --no-color #{cucumber_opts} CUCUMBER_OUTPUT_ENCODING=UTF-8"
+  run "#{Cucumber::RUBY_BINARY} -r rubygems #{Cucumber::BINARY} --no-color #{cucumber_opts} CUCUMBER_OUTPUT_ENCODING=UTF-8"
 end
 
 When /^I run rake (.*)$/ do |rake_opts|
@@ -83,22 +84,22 @@ Then /^the output should be$/ do |text|
   last_stdout.should == text
 end
 
-Then /^"([^\"]*)" should contain$/ do |file, text|
+Then /^"([^"]*)" should contain$/ do |file, text|
   strip_duration(IO.read(file)).should == text
 end
 
-Then /^"([^\"]*)" with junit duration "([^\"]*)" should contain$/ do |actual_file, duration_replacement, text|
+Then /^"([^"]*)" with junit duration "([^"]*)" should contain$/ do |actual_file, duration_replacement, text|
   actual = IO.read(actual_file)
   actual = replace_junit_duration(actual, duration_replacement) 
   actual = strip_ruby186_extra_trace(actual)
   actual.should == text
 end
 
-Then /^"([^\"]*)" should match "([^\"]*)"$/ do |file, text|
+Then /^"([^"]*)" should match "([^"]*)"$/ do |file, text|
   File.open(file, Cucumber.file_mode('r')).read.should =~ Regexp.new(text)
 end
 
-Then /^"([^\"]*)" should have the same contents as "([^\"]*)"$/ do |actual_file, expected_file|
+Then /^"([^"]*)" should have the same contents as "([^"]*)"$/ do |actual_file, expected_file|
   actual = IO.read(actual_file)
   actual = replace_duration(actual, '0m30.005s')
   # Comment out to replace expected file. Use with care!
@@ -122,16 +123,16 @@ Then /^STDERR should be empty$/ do
   last_stderr.should == ""
 end
 
-Then /^"([^\"]*)" should exist$/ do |file|
+Then /^"([^"]*)" should exist$/ do |file|
   File.exists?(file).should be_true
   FileUtils.rm(file)
 end
 
-Then /^"([^\"]*)" should not be required$/ do |file_name|
+Then /^"([^"]*)" should not be required$/ do |file_name|
   last_stdout.should_not include("* #{file_name}")
 end
 
-Then /^"([^\"]*)" should be required$/ do |file_name|
+Then /^"([^"]*)" should be required$/ do |file_name|
   last_stdout.should include("* #{file_name}")
 end
 

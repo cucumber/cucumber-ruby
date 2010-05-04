@@ -5,6 +5,7 @@ Feature: Multiline description names
 
   Scenario: multiline scenario
     When I run cucumber features/multiline_name.feature --no-snippets
+    Then STDERR should be empty
     Then it should pass with
     """
     Feature: multiline

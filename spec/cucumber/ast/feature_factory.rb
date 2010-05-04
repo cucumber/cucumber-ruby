@@ -24,10 +24,7 @@ module Cucumber
           %w{1 22 333},
           %w{4444 55555 666666}
         ])
-        py_string = Ast::PyString.new(21, 22, %{
-           I like
-          Cucumber sandwich
-        }, ' '*10)
+        py_string = Ast::PyString.new(%{\n I like\nCucumber sandwich\n})
         
         background = Ast::Background.new(Ast::Comment.new(""), 2, "Background:", "",
           [
@@ -39,6 +36,7 @@ module Cucumber
           background,
           Ast::Comment.new("# My feature comment\n"),
           Ast::Tags.new(6, ['one', 'two']),
+          "Feature",
           "Pretty printing",
           [Ast::Scenario.new(
             background,

@@ -6,7 +6,7 @@ require app_file
 # Force the application name because polyglot breaks the auto-detection logic.
 Sinatra::Application.app_file = app_file
 
-require 'spec/expectations'
+begin require 'rspec/expectations'; rescue LoadError; require 'spec/expectations'; end
 require 'rack/test'
 require 'capybara/cucumber'
 

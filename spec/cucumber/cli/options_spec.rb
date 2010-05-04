@@ -56,10 +56,10 @@ module Cli
         context "with LANG specified as 'help'" do
           it "lists all known langues" do
             when_parsing '--i18n help' do
-              require 'cucumber/cli/language_help_formatter'
-              LanguageHelpFormatter.should_receive(:list_languages).with(output_stream)
+              Kernel.should_receive(:exit)
             end
           end
+
           it "exits the program" do
             when_parsing('--i18n help') { Kernel.should_receive(:exit) }
           end

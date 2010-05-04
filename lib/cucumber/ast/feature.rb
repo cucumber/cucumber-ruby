@@ -3,28 +3,46 @@ module Cucumber
     # Represents the root node of a parsed feature.
     class Feature #:nodoc:
       attr_accessor :language
-      attr_writer :features
+      attr_writer :features, :background
       attr_reader :file
       attr_reader :name
 
-      def initialize(background, comment, tags, name, feature_elements)
-        @background, @comment, @tags, @name, @feature_elements = background, comment, tags, name.strip, feature_elements
+      def initialize(background, comment, tags, keyword, name, feature_elements)
+        @background, @comment, @tags, @keyword, @name, @feature_elements = background, comment, tags, keyword, name.strip, feature_elements
+      end
 
-        background.feature = self if background
+      def init
+        @background.feature = self if @background
+        @background.init if @background
         @feature_elements.each do |feature_element|
+          feature_element.init
           feature_element.feature = self
         end
       end
 
+      def add_feature_element(feature_element)
+        @feature_elements << feature_element
+      end
+
       def accept(visitor)
         return if Cucumber.wants_to_quit
+        init
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
-        visitor.visit_feature_name(@name)
+        visitor.visit_feature_name(@keyword, indented_name)
         visitor.visit_background(@background) if @background
         @feature_elements.each do |feature_element|
           visitor.visit_feature_element(feature_element)
         end
+      end
+
+      def indented_name
+        indent = ""
+        @name.split("\n").map do |l|
+          s = "#{indent}#{l}"
+          indent = "  "
+          s
+        end.join("\n")
       end
 
       def source_tag_names
@@ -36,6 +54,7 @@ module Cucumber
       end
 
       def next_feature_element(feature_element, &proc)
+        init
         index = @feature_elements.index(feature_element)
         next_one = @feature_elements[index+1]
         proc.call(next_one) if next_one
@@ -55,6 +74,7 @@ module Cucumber
       end
 
       def tag_locations(tag)
+        init
         @feature_elements.select{|feature_element| feature_element.tagged_with?(tag)}
       end
 
@@ -68,6 +88,7 @@ module Cucumber
       end
 
       def to_sexp
+        init
         sexp = [:feature, @file, @name]
         comment = @comment.to_sexp
         sexp += [comment] if comment

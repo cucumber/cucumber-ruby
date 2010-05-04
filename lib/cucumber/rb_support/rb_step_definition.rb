@@ -49,7 +49,6 @@ module Cucumber
       end
 
       def invoke(args)
-        args = args.map{|arg| Ast::PyString === arg ? arg.to_s : arg}
         begin
           args = @rb_language.execute_transforms(args)
           @rb_language.current_world.cucumber_instance_exec(true, regexp_source, *args, &@proc)

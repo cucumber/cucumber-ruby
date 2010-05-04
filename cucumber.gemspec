@@ -5,13 +5,13 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
-  s.version = "0.6.4"
+  s.version = "0.7.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2010-03-30}
+  s.date = %q{2010-05-04}
   s.default_executable = %q{cucumber}
-  s.description = %q{A BDD tool written in Ruby}
+  s.description = %q{Behaviour Driven Development with elegance and joy}
   s.email = %q{cukes@googlegroups.com}
   s.executables = ["cucumber"]
   s.extra_rdoc_files = [
@@ -72,6 +72,12 @@ Gem::Specification.new do |s|
      "examples/i18n/en/features/division.feature",
      "examples/i18n/en/features/step_definitons/calculator_steps.rb",
      "examples/i18n/en/lib/calculator.rb",
+     "examples/i18n/eo/.gitignore",
+     "examples/i18n/eo/Rakefile",
+     "examples/i18n/eo/features/adicio.feature",
+     "examples/i18n/eo/features/divido.feature",
+     "examples/i18n/eo/features/step_definitons/calculator_steps.rb",
+     "examples/i18n/eo/lib/calculator.rb",
      "examples/i18n/es/Rakefile",
      "examples/i18n/es/features/adicion.feature",
      "examples/i18n/es/features/step_definitons/calculador_steps.rb",
@@ -192,6 +198,14 @@ Gem::Specification.new do |s|
      "examples/i18n/tr/features/step_definitons/hesap_makinesi_adimlari.rb",
      "examples/i18n/tr/features/toplama.feature",
      "examples/i18n/tr/lib/hesap_makinesi.rb",
+     "examples/i18n/uk/Rakefile",
+     "examples/i18n/uk/features/addition.feature",
+     "examples/i18n/uk/features/consecutive_calculations.feature",
+     "examples/i18n/uk/features/division.feature",
+     "examples/i18n/uk/features/step_definitons/calculator_steps.rb",
+     "examples/i18n/uk/features/support/env.rb",
+     "examples/i18n/uk/features/support/world.rb",
+     "examples/i18n/uk/lib/calculator.rb",
      "examples/i18n/uz/Rakefile",
      "examples/i18n/uz/features/addition.feature",
      "examples/i18n/uz/features/consecutive_calculations.feature",
@@ -210,9 +224,15 @@ Gem::Specification.new do |s|
      "examples/i18n/zh-TW/features/division.feature",
      "examples/i18n/zh-TW/features/step_definitons/calculator_steps.rb",
      "examples/i18n/zh-TW/lib/calculator.rb",
+     "examples/javascript/Rakefile",
+     "examples/javascript/features/fibonacci.feature",
+     "examples/javascript/features/lib/fibonacci.js",
+     "examples/javascript/features/step_definitions/fib_steps.js",
+     "examples/javascript/features/support/env.js",
      "examples/junit/features/one_passing_one_failing.feature",
      "examples/junit/features/pending.feature",
      "examples/junit/features/step_definitions/steps.rb",
+     "examples/python/Rakefile",
      "examples/python/features/fibonacci.feature",
      "examples/python/features/step_definitions/fib_steps.py",
      "examples/python/lib/.gitignore",
@@ -225,20 +245,12 @@ Gem::Specification.new do |s|
      "examples/ramaze/features/support/env.rb",
      "examples/ramaze/layout/default.html.erb",
      "examples/ramaze/view/index.html.erb",
+     "examples/ruby2python/Rakefile",
      "examples/ruby2python/features/fibonacci.feature",
      "examples/ruby2python/features/step_definitions/fib_steps.rb",
      "examples/ruby2python/features/support/env.rb",
      "examples/ruby2python/lib/.gitignore",
      "examples/ruby2python/lib/fib.py",
-     "examples/selenium/Rakefile",
-     "examples/selenium/features/search.feature",
-     "examples/selenium/features/step_definitons/search_steps.rb",
-     "examples/selenium/features/support/env.rb",
-     "examples/selenium_webrat/Rakefile",
-     "examples/selenium_webrat/config.ru",
-     "examples/selenium_webrat/features/search.feature",
-     "examples/selenium_webrat/features/step_definitons/search_steps.rb",
-     "examples/selenium_webrat/features/support/env.rb",
      "examples/self_test/.gitignore",
      "examples/self_test/README.textile",
      "examples/self_test/Rakefile",
@@ -317,6 +329,7 @@ Gem::Specification.new do |s|
      "examples/tickets/features/step_definitons/tickets_steps.rb",
      "examples/tickets/features/table_diffing.feature",
      "examples/tickets/features/tickets.feature",
+     "examples/watir/.gitignore",
      "examples/watir/README.textile",
      "examples/watir/Rakefile",
      "examples/watir/cucumber.yml",
@@ -324,6 +337,7 @@ Gem::Specification.new do |s|
      "examples/watir/features/step_definitions/search_steps.rb",
      "examples/watir/features/support/env.rb",
      "examples/watir/features/support/screenshots.rb",
+     "examples/webrat/Rakefile",
      "examples/webrat/features/search.feature",
      "examples/webrat/features/step_definitions/kvasir_steps.rb",
      "examples/webrat/features/support/env.rb",
@@ -333,7 +347,8 @@ Gem::Specification.new do |s|
      "features/bug_464.feature",
      "features/bug_475.feature",
      "features/bug_585_tab_indentation.feature",
-     "features/call_many_steps.feature",
+     "features/bug_600.feature",
+     "features/call_steps_from_stepdefs.feature",
      "features/cucumber_cli.feature",
      "features/cucumber_cli_diff_disabled.feature",
      "features/cucumber_cli_outlines.feature",
@@ -381,6 +396,7 @@ Gem::Specification.new do |s|
      "features/work_in_progress.feature",
      "gem_tasks/contributors.rake",
      "gem_tasks/environment.rake",
+     "gem_tasks/examples.rake",
      "gem_tasks/features.rake",
      "gem_tasks/fix_cr_lf.rake",
      "gem_tasks/flog.rake",
@@ -418,7 +434,6 @@ Gem::Specification.new do |s|
      "lib/cucumber/broadcaster.rb",
      "lib/cucumber/cli/configuration.rb",
      "lib/cucumber/cli/drb_client.rb",
-     "lib/cucumber/cli/language_help_formatter.rb",
      "lib/cucumber/cli/main.rb",
      "lib/cucumber/cli/options.rb",
      "lib/cucumber/cli/profile_loader.rb",
@@ -427,7 +442,6 @@ Gem::Specification.new do |s|
      "lib/cucumber/core_ext/proc.rb",
      "lib/cucumber/core_ext/string.rb",
      "lib/cucumber/feature_file.rb",
-     "lib/cucumber/filter.rb",
      "lib/cucumber/formatter/ansicolor.rb",
      "lib/cucumber/formatter/color_io.rb",
      "lib/cucumber/formatter/console.rb",
@@ -449,21 +463,13 @@ Gem::Specification.new do |s|
      "lib/cucumber/formatter/tag_cloud.rb",
      "lib/cucumber/formatter/unicode.rb",
      "lib/cucumber/formatter/usage.rb",
+     "lib/cucumber/js_support/js_dsl.js",
+     "lib/cucumber/js_support/js_language.rb",
+     "lib/cucumber/js_support/js_snippets.rb",
      "lib/cucumber/language_support.rb",
      "lib/cucumber/language_support/language_methods.rb",
-     "lib/cucumber/languages.yml",
      "lib/cucumber/parser.rb",
-     "lib/cucumber/parser/common.rb",
-     "lib/cucumber/parser/common.tt",
-     "lib/cucumber/parser/feature.rb",
-     "lib/cucumber/parser/feature.tt",
-     "lib/cucumber/parser/i18n.tt",
-     "lib/cucumber/parser/natural_language.rb",
-     "lib/cucumber/parser/py_string.rb",
-     "lib/cucumber/parser/py_string.tt",
-     "lib/cucumber/parser/table.rb",
-     "lib/cucumber/parser/table.tt",
-     "lib/cucumber/parser/treetop_ext.rb",
+     "lib/cucumber/parser/gherkin_builder.rb",
      "lib/cucumber/platform.rb",
      "lib/cucumber/py_support/py_dsl.py",
      "lib/cucumber/py_support/py_language.py",
@@ -476,12 +482,12 @@ Gem::Specification.new do |s|
      "lib/cucumber/rb_support/rb_transform.rb",
      "lib/cucumber/rb_support/rb_world.rb",
      "lib/cucumber/rb_support/regexp_argument_matcher.rb",
-     "lib/cucumber/rspec_neuter.rb",
+     "lib/cucumber/rspec/diffing.rb",
+     "lib/cucumber/rspec/disable_option_parser.rb",
      "lib/cucumber/step_argument.rb",
      "lib/cucumber/step_definition_light.rb",
      "lib/cucumber/step_match.rb",
      "lib/cucumber/step_mother.rb",
-     "lib/cucumber/tag_expression.rb",
      "lib/cucumber/wire_support/configuration.rb",
      "lib/cucumber/wire_support/connection.rb",
      "lib/cucumber/wire_support/request_handler.rb",
@@ -492,14 +498,12 @@ Gem::Specification.new do |s|
      "lib/cucumber/wire_support/wire_protocol/requests.rb",
      "lib/cucumber/wire_support/wire_step_definition.rb",
      "spec/cucumber/ast/background_spec.rb",
-     "spec/cucumber/ast/feature_element_spec.rb",
      "spec/cucumber/ast/feature_factory.rb",
      "spec/cucumber/ast/feature_spec.rb",
      "spec/cucumber/ast/outline_table_spec.rb",
      "spec/cucumber/ast/py_string_spec.rb",
      "spec/cucumber/ast/scenario_outline_spec.rb",
      "spec/cucumber/ast/scenario_spec.rb",
-     "spec/cucumber/ast/step_collection_spec.rb",
      "spec/cucumber/ast/step_spec.rb",
      "spec/cucumber/ast/table_spec.rb",
      "spec/cucumber/ast/tree_walker_spec.rb",
@@ -517,27 +521,11 @@ Gem::Specification.new do |s|
      "spec/cucumber/formatter/junit_spec.rb",
      "spec/cucumber/formatter/progress_spec.rb",
      "spec/cucumber/formatter/spec_helper.rb",
-     "spec/cucumber/parser/feature_parser_spec.rb",
-     "spec/cucumber/parser/table_parser_spec.rb",
      "spec/cucumber/rb_support/rb_step_definition_spec.rb",
      "spec/cucumber/rb_support/regexp_argument_matcher_spec.rb",
      "spec/cucumber/sell_cucumbers.feature",
      "spec/cucumber/step_match_spec.rb",
      "spec/cucumber/step_mother_spec.rb",
-     "spec/cucumber/tag_expression_spec.rb",
-     "spec/cucumber/treetop_parser/empty_feature.feature",
-     "spec/cucumber/treetop_parser/empty_scenario.feature",
-     "spec/cucumber/treetop_parser/empty_scenario_outline.feature",
-     "spec/cucumber/treetop_parser/fit_scenario.feature",
-     "spec/cucumber/treetop_parser/given_scenario.feature",
-     "spec/cucumber/treetop_parser/invalid_scenario_outlines.feature",
-     "spec/cucumber/treetop_parser/multiline_steps.feature",
-     "spec/cucumber/treetop_parser/multiple_tables.feature",
-     "spec/cucumber/treetop_parser/scenario_outline.feature",
-     "spec/cucumber/treetop_parser/spaces.feature",
-     "spec/cucumber/treetop_parser/test_dos.feature",
-     "spec/cucumber/treetop_parser/with_comments.feature",
-     "spec/cucumber/treetop_parser/with_tags.feature",
      "spec/cucumber/wire_support/configuration_spec.rb",
      "spec/cucumber/wire_support/connection_spec.rb",
      "spec/cucumber/wire_support/wire_exception_spec.rb",
@@ -545,7 +533,6 @@ Gem::Specification.new do |s|
      "spec/cucumber/wire_support/wire_packet_spec.rb",
      "spec/cucumber/wire_support/wire_step_definition_spec.rb",
      "spec/cucumber/world/pending_spec.rb",
-     "spec/spec.opts",
      "spec/spec_helper.rb"
   ]
   s.homepage = %q{http://cukes.info}
@@ -554,7 +541,7 @@ Gem::Specification.new do |s|
 
                      (::)   U P G R A D I N G    (::)
 
-Thank you for installing cucumber-0.6.4.
+Thank you for installing cucumber-0.7.2.
 Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
 for important information about this release. Happy cuking!
 
@@ -563,19 +550,16 @@ for important information about this release. Happy cuking!
 }
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{rspec}
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{Behaviour Driven Development with elegance and joy}
   s.test_files = [
     "spec/cucumber/ast/background_spec.rb",
-     "spec/cucumber/ast/feature_element_spec.rb",
      "spec/cucumber/ast/feature_factory.rb",
      "spec/cucumber/ast/feature_spec.rb",
      "spec/cucumber/ast/outline_table_spec.rb",
      "spec/cucumber/ast/py_string_spec.rb",
      "spec/cucumber/ast/scenario_outline_spec.rb",
      "spec/cucumber/ast/scenario_spec.rb",
-     "spec/cucumber/ast/step_collection_spec.rb",
      "spec/cucumber/ast/step_spec.rb",
      "spec/cucumber/ast/table_spec.rb",
      "spec/cucumber/ast/tree_walker_spec.rb",
@@ -593,13 +577,10 @@ for important information about this release. Happy cuking!
      "spec/cucumber/formatter/junit_spec.rb",
      "spec/cucumber/formatter/progress_spec.rb",
      "spec/cucumber/formatter/spec_helper.rb",
-     "spec/cucumber/parser/feature_parser_spec.rb",
-     "spec/cucumber/parser/table_parser_spec.rb",
      "spec/cucumber/rb_support/rb_step_definition_spec.rb",
      "spec/cucumber/rb_support/regexp_argument_matcher_spec.rb",
      "spec/cucumber/step_match_spec.rb",
      "spec/cucumber/step_mother_spec.rb",
-     "spec/cucumber/tag_expression_spec.rb",
      "spec/cucumber/wire_support/configuration_spec.rb",
      "spec/cucumber/wire_support/connection_spec.rb",
      "spec/cucumber/wire_support/wire_exception_spec.rb",
@@ -626,6 +607,8 @@ for important information about this release. Happy cuking!
      "examples/i18n/en-lol/features/support/env.rb",
      "examples/i18n/en-lol/lib/basket.rb",
      "examples/i18n/en-lol/lib/belly.rb",
+     "examples/i18n/eo/features/step_definitons/calculator_steps.rb",
+     "examples/i18n/eo/lib/calculator.rb",
      "examples/i18n/es/features/step_definitons/calculador_steps.rb",
      "examples/i18n/es/lib/calculador.rb",
      "examples/i18n/et/features/step_definitions/kalkulaator_steps.rb",
@@ -678,6 +661,10 @@ for important information about this release. Happy cuking!
      "examples/i18n/sv/lib/kalkulator.rb",
      "examples/i18n/tr/features/step_definitons/hesap_makinesi_adimlari.rb",
      "examples/i18n/tr/lib/hesap_makinesi.rb",
+     "examples/i18n/uk/features/step_definitons/calculator_steps.rb",
+     "examples/i18n/uk/features/support/env.rb",
+     "examples/i18n/uk/features/support/world.rb",
+     "examples/i18n/uk/lib/calculator.rb",
      "examples/i18n/uz/features/step_definitons/calculator_steps.rb",
      "examples/i18n/uz/features/support/env.rb",
      "examples/i18n/uz/features/support/world.rb",
@@ -692,13 +679,8 @@ for important information about this release. Happy cuking!
      "examples/ramaze/features/support/env.rb",
      "examples/ruby2python/features/step_definitions/fib_steps.rb",
      "examples/ruby2python/features/support/env.rb",
-     "examples/selenium/features/step_definitons/search_steps.rb",
-     "examples/selenium/features/support/env.rb",
-     "examples/selenium_webrat/features/step_definitons/search_steps.rb",
-     "examples/selenium_webrat/features/support/env.rb",
      "examples/self_test/features/step_definitions/sample_steps.rb",
      "examples/self_test/features/support/env.rb",
-     "examples/self_test/tmp/features/step_definitions/steps.rb",
      "examples/sinatra/app.rb",
      "examples/sinatra/features/step_definitions/add_steps.rb",
      "examples/sinatra/features/support/env.rb",
@@ -731,48 +713,45 @@ for important information about this release. Happy cuking!
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<gherkin>, [">= 1.0.24"])
       s.add_runtime_dependency(%q<term-ansicolor>, [">= 1.0.4"])
-      s.add_runtime_dependency(%q<treetop>, [">= 1.4.2"])
-      s.add_runtime_dependency(%q<polyglot>, [">= 0.2.9"])
       s.add_runtime_dependency(%q<builder>, [">= 2.1.2"])
       s.add_runtime_dependency(%q<diff-lcs>, [">= 1.1.2"])
-      s.add_runtime_dependency(%q<json_pure>, [">= 1.2.0"])
+      s.add_runtime_dependency(%q<json_pure>, [">= 1.2.4"])
       s.add_development_dependency(%q<nokogiri>, [">= 1.4.1"])
       s.add_development_dependency(%q<prawn>, ["= 0.6.3"])
       s.add_development_dependency(%q<prawn-format>, ["= 0.2.3"])
-      s.add_development_dependency(%q<htmlentities>, [">= 4.2.0"])
+      s.add_development_dependency(%q<htmlentities>, [">= 4.2.1"])
       s.add_development_dependency(%q<rspec>, [">= 1.3.0"])
       s.add_development_dependency(%q<syntax>, [">= 1.0.0"])
-      s.add_development_dependency(%q<spork>, [">= 0.7.5"])
+      s.add_development_dependency(%q<spork>, [">= 0.8.3"])
     else
+      s.add_dependency(%q<gherkin>, [">= 1.0.24"])
       s.add_dependency(%q<term-ansicolor>, [">= 1.0.4"])
-      s.add_dependency(%q<treetop>, [">= 1.4.2"])
-      s.add_dependency(%q<polyglot>, [">= 0.2.9"])
       s.add_dependency(%q<builder>, [">= 2.1.2"])
       s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
-      s.add_dependency(%q<json_pure>, [">= 1.2.0"])
+      s.add_dependency(%q<json_pure>, [">= 1.2.4"])
       s.add_dependency(%q<nokogiri>, [">= 1.4.1"])
       s.add_dependency(%q<prawn>, ["= 0.6.3"])
       s.add_dependency(%q<prawn-format>, ["= 0.2.3"])
-      s.add_dependency(%q<htmlentities>, [">= 4.2.0"])
+      s.add_dependency(%q<htmlentities>, [">= 4.2.1"])
       s.add_dependency(%q<rspec>, [">= 1.3.0"])
       s.add_dependency(%q<syntax>, [">= 1.0.0"])
-      s.add_dependency(%q<spork>, [">= 0.7.5"])
+      s.add_dependency(%q<spork>, [">= 0.8.3"])
     end
   else
+    s.add_dependency(%q<gherkin>, [">= 1.0.24"])
     s.add_dependency(%q<term-ansicolor>, [">= 1.0.4"])
-    s.add_dependency(%q<treetop>, [">= 1.4.2"])
-    s.add_dependency(%q<polyglot>, [">= 0.2.9"])
     s.add_dependency(%q<builder>, [">= 2.1.2"])
     s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
-    s.add_dependency(%q<json_pure>, [">= 1.2.0"])
+    s.add_dependency(%q<json_pure>, [">= 1.2.4"])
     s.add_dependency(%q<nokogiri>, [">= 1.4.1"])
     s.add_dependency(%q<prawn>, ["= 0.6.3"])
     s.add_dependency(%q<prawn-format>, ["= 0.2.3"])
-    s.add_dependency(%q<htmlentities>, [">= 4.2.0"])
+    s.add_dependency(%q<htmlentities>, [">= 4.2.1"])
     s.add_dependency(%q<rspec>, [">= 1.3.0"])
     s.add_dependency(%q<syntax>, [">= 1.0.0"])
-    s.add_dependency(%q<spork>, [">= 0.7.5"])
+    s.add_dependency(%q<spork>, [">= 0.8.3"])
   end
 end
 

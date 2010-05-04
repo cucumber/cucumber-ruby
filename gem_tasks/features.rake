@@ -3,9 +3,7 @@ require 'cucumber/rake/task'
 require 'cucumber/platform'
 
 Cucumber::Rake::Task.new do |t|
-  if(ENV["RUN_CODE_RUN"])
-    t.profile = 'run_code_run'
-  elsif(Cucumber::JRUBY)
+  if(Cucumber::JRUBY)
     t.profile = Cucumber::WINDOWS ? 'jruby_win' : 'jruby'
   elsif(Cucumber::WINDOWS_MRI)
     t.profile = 'windows_mri'

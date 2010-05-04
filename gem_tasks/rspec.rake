@@ -1,15 +1,20 @@
 begin
-  require 'spec/expectations'
-  require 'spec/rake/spectask'
+  require 'rspec/core/rake_task'
 
   desc "Run RSpec"
-  Spec::Rake::SpecTask.new do |t|
-    t.spec_opts = ['--options', "spec/spec.opts"]
-    t.spec_files = FileList['spec/**/*_spec.rb']
+  Rspec::Core::RakeTask.new do |t|
     t.rcov = ENV['RCOV']
     t.rcov_opts = %w{--exclude osx\/objc,gems\/,spec\/}
     t.verbose = true
   end
-rescue LoadError
-  task :spec
+rescue LoadError => e
+  require 'spec/rake/spectask'
+
+  desc "Run RSpec"
+  Spec::Rake::SpecTask.new do |t|
+    t.spec_opts = %w{--color --diff}
+    t.rcov = ENV['RCOV']
+    t.rcov_opts = %w{--exclude osx\/objc,gems\/,spec\/}
+    t.verbose = true
+  end
 end

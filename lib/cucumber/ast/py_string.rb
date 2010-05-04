@@ -17,28 +17,45 @@ module Cucumber
     # Note how the indentation from the source is stripped away.
     #
     class PyString #:nodoc:
+      class Builder
+        attr_reader :string
+
+        def initialize
+          @string = ''
+        end
+
+        def py_string(string, line_number)
+          @string = string
+        end
+
+        def eof
+        end
+      end
+
       attr_accessor :file
 
       def self.default_arg_name
         "string"
       end
 
-      def initialize(start_line, end_line, string, quotes_indent)
-        @start_line, @end_line = start_line, end_line
-        @string, @quotes_indent = string.gsub(/\\"/, '"'), quotes_indent
+      def self.parse(text)
+        builder = Builder.new
+        lexer = Gherkin::I18nLexer.new(builder)
+        lexer.scan(text)
+        new(builder.string)
       end
 
-      def to_s
-        # Assume all whitespace before the first triple quote is the same.
-        # Also assume the contents of the pystring is indented with the same prefix.
-        # This allows indentation with both " " and "\t" characters.
-        return @string if @quotes_indent == ""
-        @string.gsub(/^#{@quotes_indent[0..0]}{0,#{@quotes_indent.length}}/, "")
+      def initialize(string)
+        @string = string
+      end
+
+      def to_step_definition_arg
+        @string
       end
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        visitor.visit_py_string(to_s)
+        visitor.visit_py_string(@string)
       end
       
       def arguments_replaced(arguments) #:nodoc:
@@ -47,7 +64,7 @@ module Cucumber
           value ||= ''
           string = string.gsub(name, value)
         end
-        PyString.new(@start_line, @end_line, string, @quotes_indent)
+        PyString.new(string)
       end
 
       def has_text?(text)
@@ -56,7 +73,7 @@ module Cucumber
 
       # For testing only
       def to_sexp #:nodoc:
-        [:py_string, to_s]
+        [:py_string, to_step_definition_arg]
       end
     end
   end

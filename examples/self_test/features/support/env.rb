@@ -1,4 +1,4 @@
-require 'spec/expectations'
+begin require 'rspec/expectations'; rescue LoadError; require 'spec/expectations'; end
 $KCODE = 'u' unless Cucumber::RUBY_1_9
 
 Before('@not_used') do

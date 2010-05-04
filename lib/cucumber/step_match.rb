@@ -7,6 +7,7 @@ module Cucumber
     # 
     def initialize(step_definition, name_to_match, name_to_report, step_arguments)
       raise "name_to_match can't be nil" if name_to_match.nil?
+      raise "step_arguments can't be nil (but it can be an empty array)" if step_arguments.nil?
       @step_definition, @name_to_match, @name_to_report, @step_arguments = step_definition, name_to_match, name_to_report, step_arguments
     end
 
@@ -19,8 +20,9 @@ module Cucumber
     end
 
     def invoke(multiline_arg)
+      multiline_arg = Ast::PyString.new(multiline_arg) if String === multiline_arg
       all_args = args
-      all_args << multiline_arg.dup if multiline_arg
+      all_args << multiline_arg.to_step_definition_arg if multiline_arg
       @step_definition.invoke(all_args)
     end
 
