@@ -145,9 +145,7 @@ module Cucumber
         @step_mother.step_match(name).invoke(multiline_argument)
       end
 
-      #TODO: support multiple tag_names
-      def register_js_hook(phase, js_function, tag_name = nil)
-        tag_names = tag_name ? [tag_name] : []
+      def register_js_hook(phase, js_function, tag_names = [])
         add_hook(phase, JsHook.new(self, tag_names, js_function))
       end
 

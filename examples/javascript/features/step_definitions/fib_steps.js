@@ -2,7 +2,7 @@ Before(function(){
   fibResult = 0;
 });
 
-Before('@do-fibonnacci-in-before-hook', function(){
+Before(['@another-do-fibonnacci-in-before-hook,@do-fibonnacci-in-before-hook'], function(){
   fibResult = fibonacciSeries(3);
 });
 
@@ -37,7 +37,6 @@ Then(/^it should contain:$/, function(table){
   assertMatches(hashes[0]['cell 1'], fibResult);
   assertMatches(hashes[0]['cell 2'], fibResult);
 });
-
 
 Then(/^it should give me (\[.*\]) via calling another step definition$/, function(expectedResult){
   Given("I ask Javascript to calculate fibonacci up to 2");
