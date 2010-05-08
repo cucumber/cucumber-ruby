@@ -32,7 +32,8 @@ module Cucumber
       lexer           = Gherkin::I18nLexer.new(parser, false)
 
       begin
-        lexer.scan(source)
+        s = ENV['FILTER_PML_CALLOUT'] ? source.gsub(C_CALLOUT, '') : source
+        lexer.scan(s)
         ast = builder.ast
         return nil if ast.nil? # Filter caused nothing to match
         ast.language = lexer.i18n_language
@@ -59,14 +60,10 @@ module Cucumber
       end
     end
     
-    def lang
-      # TODO: Gherkin has logic for this. Remove.
-      line_one = source.split(/\n/)[0]
-      if line_one =~ LANGUAGE_PATTERN
-        $1.strip
-      else
-        nil
-      end
-    end
+    private
+    
+    # Special PML markup that we want to filter out.
+    CO = %{\\s*<(label|callout)\s+id=".*?"\s*/>\\s*}
+    C_CALLOUT = %r{/\*#{CO}\*/|//#{CO}}o
   end
 end
