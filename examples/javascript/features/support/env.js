@@ -1,3 +1,6 @@
+//The path is relative to the folder which contains the features folder
+World(['lib/fibonacci.js']);
+
 function assertEqual(expected, actual){
   if(expected != actual){
     throw 'Expected <' + expected + "> but got <" + actual + ">";

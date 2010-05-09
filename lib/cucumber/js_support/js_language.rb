@@ -117,6 +117,12 @@ module Cucumber
         @world.load(js_file)
       end
 
+      def world(js_files)
+        js_files.each do |js_file|
+          load_code_file("#{path_to_load_js_from}#{js_file}")
+        end
+      end
+
       def alias_adverbs(adverbs)
       end
 
@@ -161,6 +167,18 @@ module Cucumber
 
       def steps(steps_text)
         @step_mother.invoke_steps(steps_text, @language)
+      end
+
+      private
+      def path_to_load_js_from
+        paths = @step_mother.options[:paths]
+        #paths = paths.select{|path| path =~ /^.*\/features/}
+        if paths.empty?
+          '' # Using rake
+        else
+          path = paths[0][/(^.*\/?features)/, 0]
+          path ? "#{path}/../" : '../'
+        end
       end
 
     end
