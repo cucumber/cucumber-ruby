@@ -121,6 +121,7 @@ module Cucumber
       end
 
       def begin_scenario(scenario)
+        @language = scenario.language
       end
 
       def end_scenario
@@ -157,6 +158,10 @@ module Cucumber
 
       def current_world
         @world
+      end
+
+      def steps(steps_text)
+        @step_mother.invoke_steps(steps_text, @language)
       end
 
     end

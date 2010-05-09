@@ -39,3 +39,6 @@ Feature: Fibonacci
 
   Scenario: Single series by calling a step from within a step
     Then it should give me [1, 1] via calling another step definition
+
+  Scenario: Single series by calling multiple steps from within a step
+    Then it should calculate fibonacci up to 2 giving me [1, 1]

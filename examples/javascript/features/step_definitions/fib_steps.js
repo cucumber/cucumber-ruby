@@ -38,9 +38,12 @@ Then(/^it should contain:$/, function(table){
   assertMatches(hashes[0]['cell 2'], fibResult);
 });
 
-
 Then(/^it should give me (\[.*\]) via calling another step definition$/, function(expectedResult){
   Given("I ask Javascript to calculate fibonacci up to 2");
   assertEqual(expectedResult, fibResult);
 });
 
+Then(/^it should calculate fibonacci up to (\d+) giving me (\[.*\])/, function(n, expectedResult){
+  steps("Given I ask Javascript to calculate fibonacci up to "+ n + "\n" +
+        "Then it should give me "+ expectedResult);
+});
