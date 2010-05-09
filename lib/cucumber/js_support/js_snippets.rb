@@ -1,7 +1,7 @@
 module Cucumber
   module JsSupport
     module JsSnippets
-      PARAM_PATTERN = /"([^\"]*)"/
+      PARAM_PATTERN = /"([^"]*)"/
       ESCAPED_PARAM_PATTERN = '"([^\\"]*)"'
 
       def snippet_text(step_keyword, step_name, multiline_arg_class)

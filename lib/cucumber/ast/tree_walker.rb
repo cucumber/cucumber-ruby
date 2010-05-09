@@ -171,11 +171,48 @@ module Cucumber
       def send_to_all(message, *args)
         @listeners.each do |listener|
           if listener.respond_to?(message)
-            listener.__send__(message, *args)
+            if legacy_listener?(listener)
+              warn_legacy(listener)
+              legacy_invoke(listener, message, *args)
+            else
+              listener.__send__(message, *args)
+            end
           end
         end
       end
-      
+
+      def legacy_listener?(listener)
+        listener.respond_to?(:feature_name) && 
+        (listener.method(:feature_name) rescue false) && 
+        listener.method(:feature_name).arity == 1
+      end
+
+      def warn_legacy(listener)
+        @warned_listeners ||= []
+        unless @warned_listeners.index(listener)
+          warn("#{listener.class} is using a deprecated formatter API. Starting with Cucumber 0.7.0 the signatures\n" + 
+          "that have changed are:\n" +
+          "  feature_name(keyword, name)  # Two arguments. The keyword argument will not contain a colon.\n" +
+          "  scenario_name(keyword, name, file_colon_line, source_indent)  # The keyword argument will not contain a colon.\n" +
+          "  examples_name(keyword, name)  # The keyword argument will not contain a colon.\n"
+          )
+        end
+        @warned_listeners << listener
+      end
+
+      def legacy_invoke(listener, message, *args)
+        case message.to_sym
+        when :feature_name
+          listener.feature_name("#{args[0]}: #{args[1]}")
+        when :scenario_name, :examples_name
+          args_with_colon = args.dup
+          args_with_colon[0] += ':'
+          listener.__send__(message, *args_with_colon)
+        else
+          listener.__send__(message, *args)
+        end
+      end
+
       def extract_method_name_from(call_stack)
         call_stack[0].match(/in `(.*)'/).captures[0]
       end

@@ -16,6 +16,7 @@ Feature: Listener Debugger
 
       """
     When I run cucumber -f debug features/sample.feature
+    Then STDERR should be empty
     Then it should pass with
       """
       before_features

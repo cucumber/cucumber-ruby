@@ -12,10 +12,8 @@ doc
 *.swp
 target
 *.tmproj
-examples/self_test/tmp
 .#*
 .idea
 *.pyc
 rerun.txt
 ._*
-examples/self_test/tmp

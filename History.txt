@@ -1,3 +1,16 @@
+== 0.7.2 (2010-05-03)
+
+=== Bugfixes
+* REALLY add backwards compatibility fix (with deprecation warning) for legacy 0.6.4 formatters. (Aslak Hellesøy)
+
+== 0.7.1 (2010-05-03)
+
+=== Bugfixes
+* Add backwards compatibility fix (with deprecation warning) for legacy 0.6.4 formatters. (Aslak Hellesøy)
+
+=== Changed Features
+* Ruby and Javascript snippets will use "([^"]*)" instead of "([^\"]*)"$/ (Aslak Hellesøy)
+
 == 0.7.0 (2010-05-02)
 
 This release is an important milestone for Cucumber. A new parser (the gherkin gem) parses feature
@@ -52,7 +65,7 @@ Treetop is gone and replaced with Ragel. The new Ragel parser lives in the gherk
 Parse times are up to 100 times faster.
 
 === New Features
-* Upgraded Sinatra example to use Snatra 1.0 and Capybara. (Aslak Hellesøy)
+* Upgraded Sinatra example to use Sinatra 1.0 and Capybara. (Aslak Hellesøy)
 
 === Changed Features
 * New i18n translations now have to be contributed to the gherkin project.
