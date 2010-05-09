@@ -1,3 +1,8 @@
+== In Git
+
+=== New Features
+* Added support for Around hooks. (#605 John Firebaugh)
+
 == 0.7.2 (2010-05-03)
 
 === Bugfixes
