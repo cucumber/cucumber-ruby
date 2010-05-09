@@ -2,7 +2,7 @@ Before(function(){
   fibResult = 0;
 });
 
-Before('@do-fibonnacci-in-before-hook', function(){
+Before(['@do-fibonnacci-in-before-hook', '@reviewed'], function(){
   fibResult = fibonacciSeries(3);
 });
 

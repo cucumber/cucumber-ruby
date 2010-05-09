@@ -32,8 +32,7 @@ Feature: Fibonacci
     | cell 1 | cell 2 |
     |   1    |   1    |
 
-
-  @do-fibonnacci-in-before-hook
+  @do-fibonnacci-in-before-hook @reviewed
   Scenario: Single series with Before hook with a tag label
     Then it should give me [1, 1, 2]
 
