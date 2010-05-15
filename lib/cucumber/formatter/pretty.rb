@@ -198,7 +198,7 @@ module Cucumber
         return if !@table || @hide_this_step
         status ||= @status || :passed
         width = @table.col_width(@col_index)
-        cell_text = value.to_s || ''
+        cell_text = (value.to_s || '').gsub(/\|/, "\\|")
         padded = cell_text + (' ' * (width - cell_text.jlength))
         prefix = cell_prefix(status)
         @io.print(' ' + format_string("#{prefix}#{padded}", status) + ::Term::ANSIColor.reset(" |"))

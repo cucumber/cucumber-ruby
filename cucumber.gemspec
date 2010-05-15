@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2010-05-04}
+  s.date = %q{2010-05-15}
   s.default_executable = %q{cucumber}
   s.description = %q{Behaviour Driven Development with elegance and joy}
   s.email = %q{cukes@googlegroups.com}
@@ -342,6 +342,7 @@ Gem::Specification.new do |s|
      "examples/webrat/features/step_definitions/kvasir_steps.rb",
      "examples/webrat/features/support/env.rb",
      "features/announce.feature",
+     "features/around_hooks.feature",
      "features/background.feature",
      "features/bug_371.feature",
      "features/bug_464.feature",
@@ -681,6 +682,7 @@ for important information about this release. Happy cuking!
      "examples/ruby2python/features/support/env.rb",
      "examples/self_test/features/step_definitions/sample_steps.rb",
      "examples/self_test/features/support/env.rb",
+     "examples/self_test/tmp/features/step_definitions/steps.rb",
      "examples/sinatra/app.rb",
      "examples/sinatra/features/step_definitions/add_steps.rb",
      "examples/sinatra/features/support/env.rb",
