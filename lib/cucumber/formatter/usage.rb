@@ -68,7 +68,7 @@ module Cucumber
         @io.print format_string(sprintf("%.7f", stepdef_key.mean_duration), :skipped) + " " unless @options[:dry_run]
         @io.print format_string(stepdef_key.regexp_source, stepdef_key.status)
         if @options[:source]
-          indent = max_length - stepdef_key.regexp_source.jlength
+          indent = max_length - stepdef_key.regexp_source.unpack('U*').length
           line_comment = "   # #{stepdef_key.file_colon_line}".indent(indent)
           @io.print(format_string(line_comment, :comment))
         end
@@ -81,7 +81,7 @@ module Cucumber
           @io.print format_string(sprintf("%.7f", step[:duration]), :skipped) + " " unless @options[:dry_run]
           @io.print format_step(step[:keyword], step[:step_match], step[:status], nil)
           if @options[:source]
-            indent = max_length - (step[:keyword].jlength + step[:step_match].format_args.jlength)
+            indent = max_length - (step[:keyword].unpack('U*').length + step[:step_match].format_args.unpack('U*').length)
             line_comment = " # #{step[:file_colon_line]}".indent(indent)
             @io.print(format_string(line_comment, :comment))
           end
@@ -94,12 +94,12 @@ module Cucumber
       end
 
       def max_stepdef_length
-        @stepdef_to_match.keys.flatten.map{|key| key.regexp_source.jlength}.max
+        @stepdef_to_match.keys.flatten.map{|key| key.regexp_source.unpack('U*').length}.max
       end
 
       def max_step_length
         @stepdef_to_match.values.to_a.flatten.map do |step|
-          step[:keyword].jlength + step[:step_match].format_args.jlength
+          step[:keyword].unpack('U*').length + step[:step_match].format_args.unpack('U*').length
         end.max
       end
 

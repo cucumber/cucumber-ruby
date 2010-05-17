@@ -24,7 +24,7 @@ module Cucumber
           source_indent = source_indent(sources)
           sources.sort.each do |file_colon_line, regexp_source|
             @io.print regexp_source.indent(2)
-            @io.print " # #{file_colon_line}".indent(source_indent - regexp_source.jlength)
+            @io.print " # #{file_colon_line}".indent(source_indent - regexp_source.unpack('U*').length)
             @io.puts
           end
           @io.puts

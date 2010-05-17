@@ -16,7 +16,7 @@ begin
     gem.homepage = "http://cukes.info"
     gem.authors = ["Aslak Hellesøy"]
 
-    gem.add_dependency 'gherkin', '>= 1.0.24'
+    gem.add_dependency 'gherkin', '>= 1.0.27'
     gem.add_dependency 'term-ansicolor', '>= 1.0.4'
     gem.add_dependency 'builder', '>= 2.1.2'
     gem.add_dependency 'diff-lcs', '>= 1.1.2'

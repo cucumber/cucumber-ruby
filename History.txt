@@ -1,6 +1,7 @@
-== In Git
+== 0.7.3
 
 === New Features
+* Table cells can now contain escaped bars - \| and escaped backslashes - \\. (Gregory Hnatiuk, Aslak Hellesøy)
 * Added support for Around hooks. (#605 John Firebaugh)
 
 == 0.7.2 (2010-05-03)

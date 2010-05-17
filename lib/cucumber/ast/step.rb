@@ -69,7 +69,7 @@ module Cucumber
       end
 
       def text_length(name=@name)
-        INDENT + INDENT + @keyword.jlength + name.jlength
+        INDENT + INDENT + @keyword.unpack('U*').length + name.unpack('U*').length
       end
 
       def backtrace_line
