@@ -3,21 +3,10 @@ require 'cucumber/formatter/io'
 require 'fileutils'
 
 begin
-  require 'htmlentities'
-rescue LoadError => e
-  e.message << "\nPlease gem install htmlentities"
-  raise e
-end
-
-begin
-  gem 'prawn', '=0.6.3'
   require 'prawn'
   require "prawn/layout"
-
-  gem 'prawn-format', '=0.2.3'
-  require "prawn/format"
 rescue LoadError => e
-  e.message << "\nPlease gem install prawn --version 0.6.3 && gem install prawn-format --version 0.2.3. Newer versions are not known to work."
+  e.message << "\nYou need htmlentities and prawn gems. Please do 'gem install htmlentities prawn'"
   raise e
 end
 
@@ -36,7 +25,6 @@ module Cucumber
       def initialize(step_mother, path_or_io, options)
         @step_mother = step_mother
         @file = ensure_file(path_or_io, "pdf")
-        @coder = HTMLEntities.new
 
         if(options[:dry_run])
           @status_colors = { :passed => BLACK, :skipped => BLACK, :undefined => BLACK, :failed => BLACK, :announced => GREY}
@@ -53,8 +41,8 @@ module Cucumber
         @buffer = []
         load_cover_page_image
         @pdf.text "\n\n\nCucumber features", :align => :center, :size => 32
-        @pdf.text "Generated: #{Time.now.strftime("%Y-%m-%d %H:%M")}", :size => 10, :at => [0, 24]
-        @pdf.text "Command: <code>cucumber #{ARGV.join(" ")}</code>", :size => 10, :at => [0,10]
+        @pdf.draw_text "Generated: #{Time.now.strftime("%Y-%m-%d %H:%M")}", :size => 10, :at => [0, 24]
+        @pdf.draw_text "$ cucumber #{ARGV.join(" ")}", :size => 10, :at => [0,10]
         unless options[:dry_run]
           @pdf.bounding_box [450,100] , :width => 100 do  
             @pdf.text 'Legend', :size => 10
@@ -153,7 +141,7 @@ module Cucumber
 
       def step_name(keyword, step_match, status, source_indent, background)
         return if @hide_this_step
-        line = "<b>#{keyword}</b> #{encode(step_match.format_args("%s"))}"
+        line = "#{keyword} #{encode(step_match.format_args("%s"))}"
         colorize(line, status)
       end
 
@@ -211,9 +199,9 @@ module Cucumber
       end
       
       private
-      
-      def encode(text)
-        @coder.encode(text, :decimal)
+
+      def encode(text) 
+        text #Obsoleted by recent cucumber and prawn
       end
       
       def colorize(text, status)
