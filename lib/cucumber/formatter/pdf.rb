@@ -6,7 +6,7 @@ begin
   require 'prawn'
   require "prawn/layout"
 rescue LoadError => e
-  e.message << "\nYou need htmlentities and prawn gems. Please do 'gem install htmlentities prawn'"
+  e.message << "\nYou need the prawn gem. Please do 'gem install prawn'"
   raise e
 end
 
