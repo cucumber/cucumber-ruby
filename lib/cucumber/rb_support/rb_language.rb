@@ -132,7 +132,7 @@ module Cucumber
       private
 
       PARAM_PATTERN = /"([^"]*)"/
-      ESCAPED_PARAM_PATTERN = '"([^\\"]*)"'
+      ESCAPED_PARAM_PATTERN = '"([^"]*)"'
 
       def create_world
         if(@world_proc)
