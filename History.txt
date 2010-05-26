@@ -1,3 +1,14 @@
+== In Git
+
+=== Changed Features
+* Ruby snippets will use "([^"]*)" instead of "([^\"]*)"$/ - wasn't properly fixed in 0.7.1. (Aslak Hellesøy)
+
+== 0.7.3 (2010-05-17)
+
+=== New Features
+* Table cells can now contain escaped bars - \| and escaped backslashes - \\. (Gregory Hnatiuk, Aslak Hellesøy)
+* Added support for Around hooks. (#605 John Firebaugh)
+
 == 0.7.2 (2010-05-03)
 
 === Bugfixes

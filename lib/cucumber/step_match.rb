@@ -54,7 +54,7 @@ module Cucumber
     end
 
     def text_length
-      @step_definition.regexp_source.jlength
+      @step_definition.regexp_source.unpack('U*').length
     end
 
     def replace_arguments(string, step_arguments, format, &proc)
@@ -72,7 +72,7 @@ module Cucumber
         end
 
         s[step_argument.byte_offset + offset, step_argument.val.length] = replacement
-        offset += replacement.jlength - step_argument.val.jlength
+        offset += replacement.unpack('U*').length - step_argument.val.unpack('U*').length
         past_offset = step_argument.byte_offset + step_argument.val.length
       end
       s

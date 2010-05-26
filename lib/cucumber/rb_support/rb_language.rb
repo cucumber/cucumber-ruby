@@ -92,8 +92,8 @@ module Cucumber
         connect_world(scenario)
       end
 
-      def register_rb_hook(phase, tag_names, proc)
-        add_hook(phase, RbHook.new(self, tag_names, proc))
+      def register_rb_hook(phase, tag_expressions, proc)
+        add_hook(phase, RbHook.new(self, tag_expressions, proc))
       end
 
       def register_rb_transform(regexp, proc)
@@ -132,7 +132,7 @@ module Cucumber
       private
 
       PARAM_PATTERN = /"([^"]*)"/
-      ESCAPED_PARAM_PATTERN = '"([^\\"]*)"'
+      ESCAPED_PARAM_PATTERN = '"([^"]*)"'
 
       def create_world
         if(@world_proc)

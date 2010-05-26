@@ -28,13 +28,13 @@ module Cucumber
 
       def name_line_lengths
         if @name.strip.empty?
-          [Ast::Step::INDENT + @keyword.jlength + ': '.jlength]
+          [Ast::Step::INDENT + @keyword.unpack('U*').length + ': '.length]
         else
           @name.split("\n").enum_for(:each_with_index).map do |line, line_number|
             if line_number == 0
-              Ast::Step::INDENT + @keyword.jlength + ': '.jlength + line.jlength
+              Ast::Step::INDENT + @keyword.unpack('U*').length + ': '.length + line.unpack('U*').length
             else
-              Ast::Step::INDENT + Ast::Step::INDENT + line.jlength
+              Ast::Step::INDENT + Ast::Step::INDENT + line.unpack('U*').length
             end
           end
         end

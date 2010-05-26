@@ -10,8 +10,8 @@ module Cucumber
         @proc = proc
       end
 
-      def invoke(location, argument)
-        @rb_language.current_world.cucumber_instance_exec(false, location, argument, &@proc)
+      def invoke(location, argument, &block)
+        @rb_language.current_world.cucumber_instance_exec(false, location, *[argument, block].compact, &@proc)
       end
     end
   end

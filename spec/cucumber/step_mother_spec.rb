@@ -171,6 +171,20 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
       
       @rb.hooks_for(:before, scenario).should == [fish]
     end
+
+    it "should find around hooks" do
+      a = @dsl.Around do |scenario, block|
+      end
+
+      b = @dsl.Around('@tag') do |scenario, block|
+      end
+
+      scenario = mock('Scenario')
+      scenario.should_receive(:accept_hook?).with(a).and_return(true)
+      scenario.should_receive(:accept_hook?).with(b).and_return(false)
+
+      @rb.hooks_for(:around, scenario).should == [a]
+    end
   end
 
   describe StepMother, "step argument transformations" do

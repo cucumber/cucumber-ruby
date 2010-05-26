@@ -1,4 +1,5 @@
 require 'gherkin/rubify'
+require 'gherkin/formatter/escaping'
 
 module Cucumber
   module Ast
@@ -585,6 +586,8 @@ module Cucumber
       # Represents a row of cells or columns of cells
       class Cells #:nodoc:
         include Enumerable
+        include Gherkin::Formatter::Escaping
+
         attr_reader :exception
 
         def initialize(table, cells)
@@ -631,7 +634,7 @@ module Cucumber
         end
 
         def width
-          map{|cell| cell.value ? cell.value.to_s.jlength : 0}.max
+          map{|cell| cell.value ? escape_cell(cell.value.to_s).unpack('U*').length : 0}.max
         end
 
         def each(&proc)

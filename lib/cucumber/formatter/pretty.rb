@@ -1,6 +1,7 @@
+require 'fileutils'
 require 'cucumber/formatter/console'
 require 'cucumber/formatter/io'
-require 'fileutils'
+require 'gherkin/formatter/escaping'
 
 module Cucumber
   module Formatter
@@ -15,6 +16,7 @@ module Cucumber
       include FileUtils
       include Console
       include Io
+      include Gherkin::Formatter::Escaping
       attr_writer :indent
       attr_reader :step_mother
 
@@ -198,8 +200,8 @@ module Cucumber
         return if !@table || @hide_this_step
         status ||= @status || :passed
         width = @table.col_width(@col_index)
-        cell_text = value.to_s || ''
-        padded = cell_text + (' ' * (width - cell_text.jlength))
+        cell_text = escape_cell(value.to_s || '')
+        padded = cell_text + (' ' * (width - cell_text.unpack('U*').length))
         prefix = cell_prefix(status)
         @io.print(' ' + format_string("#{prefix}#{padded}", status) + ::Term::ANSIColor.reset(" |"))
         @io.flush

@@ -8,6 +8,12 @@ module Cucumber
         StepMatch.new(step_definition, step_name, name_to_report, step_arguments)
       end
 
+      def around(scenario)
+        execute_around(scenario) do
+          yield
+        end
+      end
+
       def before(scenario)
         begin_scenario(scenario)
         execute_before(scenario)
@@ -85,6 +91,16 @@ module Cucumber
         @transforms ||= []
       end
 
+      def execute_around(scenario, &block)
+        hooks_for(:around, scenario).reverse.inject(block) do |blk, hook|
+          proc do
+            invoke(hook, 'Around', scenario, true) do
+              blk.call(scenario)
+            end
+          end
+        end.call
+      end
+
       def execute_before(scenario)
         hooks_for(:before, scenario).each do |hook|
           invoke(hook, 'Before', scenario, true)
@@ -97,9 +113,9 @@ module Cucumber
         end
       end
 
-      def invoke(hook, location, scenario, exception_fails_scenario)
+      def invoke(hook, location, scenario, exception_fails_scenario, &block)
         begin
-          hook.invoke(location, scenario)
+          hook.invoke(location, scenario, &block)
         rescue Exception => exception
           if exception_fails_scenario
             scenario.fail!(exception)
