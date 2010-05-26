@@ -23,8 +23,7 @@ module Cucumber
             JsSupport.argument_safe_string(arg)
           end
         end
-
-        @world.eval("(#{js_function.ToString})(#{js_args.join(',')});")
+        js_function.call(@world.scope, *js_args)
       end
 
       def method_missing(method_name, *args)
@@ -34,7 +33,7 @@ module Cucumber
 
     class JsStepDefinition
       def initialize(js_language, regexp, js_function)
-        @js_language, @regexp, @js_function = js_language, regexp.ToString, js_function
+        @js_language, @regexp, @js_function = js_language, regexp.to_s, js_function
       end
 
       def invoke(args)
@@ -45,7 +44,7 @@ module Cucumber
       def arguments_from(step_name)
         matches = eval_js "#{@regexp}.exec('#{step_name}')"
         if matches
-          matches[1..-1].map do |match|
+          matches.to_a[1..-1].map do |match|
             JsArg.new(match)
           end
         end
