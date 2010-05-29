@@ -7,7 +7,7 @@ module Cucumber
 
     def self.argument_safe_string(string)
       arg_string = string.to_s.gsub(/[']/, '\\\\\'')
-      "'#{arg_string.gsub("\n", '\n')}'"
+      arg_string.gsub("\n", '\n')
     end
 
     class JsWorld
@@ -72,17 +72,17 @@ module Cucumber
 
     class JsTransform
       def initialize(js_language, regexp, js_function)
-        @js_language, @regexp, @js_function = js_language, regexp.ToString, js_function
+        @js_language, @regexp, @js_function = js_language, regexp.to_s, js_function
       end
 
       def match(arg)
         arg = JsSupport.argument_safe_string(arg)
-        matches = eval_js "#{@regexp}.exec(#{arg});"
-        matches ? matches[1..-1] : nil
+        matches = eval_js "#{@regexp}.exec('#{arg}');"
+        matches.to_a.empty? ? nil : matches.to_a[1..-1]
       end
 
       def invoke(arg)
-        @js_language.current_world.execute(@js_function, [arg])
+        @js_function.call(@js_language.current_world.scope, [arg])
       end
     end
 

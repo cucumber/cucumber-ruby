@@ -15,7 +15,7 @@ Transform(/^(\d+)$/, function(n){
 });
 
 When(/^I ask Javascript to calculate fibonacci up to (\d+)$/, function(n){
-  assertEqual(0, fibResult)
+  assertEqual(fibResult, 0);
   fibResult = fibonacciSeries(n);
 });
 
