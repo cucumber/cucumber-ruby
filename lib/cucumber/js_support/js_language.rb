@@ -18,7 +18,7 @@ module Cucumber
       def execute(js_function, args=[])
         js_args = args.map do |arg|
           if arg.is_a?(Ast::Table)
-            "new CucumberJsDsl.Table(#{arg.raw.inspect})"
+            arg #{}"new CucumberJsDsl.Table(#{arg.raw.inspect})"
           else
             JsSupport.argument_safe_string(arg)
           end

@@ -33,7 +33,7 @@ Then(/^it should give me:$/, function(string){
 });
 
 Then(/^it should contain:$/, function(table){
-  var hashes = table.hashes();
+  var hashes = table.hashes;
   assertMatches(hashes[0]['cell 1'], fibResult);
   assertMatches(hashes[0]['cell 2'], fibResult);
 });
