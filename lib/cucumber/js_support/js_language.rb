@@ -16,14 +16,7 @@ module Cucumber
       end
 
       def execute(js_function, args=[])
-        js_args = args.map do |arg|
-          if arg.is_a?(Ast::Table)
-            arg #{}"new CucumberJsDsl.Table(#{arg.raw.inspect})"
-          else
-            JsSupport.argument_safe_string(arg)
-          end
-        end
-        js_function.call(@world.scope, *js_args)
+        js_function.call(@world.scope, *args)
       end
 
       def method_missing(method_name, *args)
@@ -77,8 +70,8 @@ module Cucumber
 
       def match(arg)
         arg = JsSupport.argument_safe_string(arg)
-        matches = eval_js "#{@regexp}.exec('#{arg}');"
-        matches.to_a.empty? ? nil : matches.to_a[1..-1]
+        matches = (eval_js "#{@regexp}.exec('#{arg}');").to_a
+        matches.empty? ? nil : matches[1..-1]
       end
 
       def invoke(arg)
