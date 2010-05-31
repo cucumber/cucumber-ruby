@@ -54,7 +54,7 @@ module Cli
     end
 
     it "should require files in vendor/{plugins,gems}/*/cucumber/*.rb" do
-      given_the_following_files("/vendor/gems/gem_a/cucumber/bar.rb", 
+      given_the_following_files("/vendor/gems/gem_a/cucumber/bar.rb",
                                 "/vendor/plugins/plugin_a/cucumber/foo.rb")
 
       config.parse!(%w{--require /features})
@@ -142,7 +142,7 @@ module Cli
 
       it "allows --strict to be set by a profile" do
         given_cucumber_yml_defined_as({'bongo' => '--strict'})
-        
+
         config.parse!(%w{--profile bongo})
         config.options[:strict].should be_true
       end
@@ -373,6 +373,12 @@ END_OF_MESSAGE
 
       config.options[:name_regexps].should include(/User logs in/)
       config.options[:name_regexps].should include(/User signs up/)
+    end
+
+    it "should preserve the order of the feature files" do
+      config.parse!(%w{b.feature c.feature a.feature})
+
+      config.feature_files.should == ["b.feature", "c.feature", "a.feature"]
     end
 
     it "should search for all features in the specified directory" do

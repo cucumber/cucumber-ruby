@@ -2,6 +2,7 @@
 
 === Changed Features
 * Ruby snippets will use "([^"]*)" instead of "([^\"]*)"$/ - wasn't properly fixed in 0.7.1. (Aslak Hellesøy)
+* Preserve the order features files are passed and use this for execution order (#617 Joseph Wilk)
 
 == 0.7.3 (2010-05-17)
 
