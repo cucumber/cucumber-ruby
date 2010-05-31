@@ -1,3 +1,4 @@
+gem 'therubyracer', '>=0.7.0'
 require 'v8'
 
 require 'cucumber/js_support/js_snippets'
