@@ -22,6 +22,7 @@ Feature: JSON output formatter
                   "@b"
                 ],
                 "name": "Passing",
+                "file_colon_line": "features/one_passing_one_failing.feature:5",
                 "steps": [
                   {
                     "status": "passed",
@@ -35,6 +36,7 @@ Feature: JSON output formatter
                   "@c"
                 ],
                 "name": "Failing",
+                "file_colon_line": "features/one_passing_one_failing.feature:9",
                 "steps": [
                   {
                     "exception": {

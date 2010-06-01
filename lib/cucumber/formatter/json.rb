@@ -33,6 +33,7 @@ module Cucumber
 
       def scenario_name(keyword, name, file_colon_line, source_indent)
         @current_object[:name] = name
+        @current_object[:file_colon_line] = file_colon_line
       end
 
       def before_steps(steps)
