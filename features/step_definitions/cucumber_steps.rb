@@ -84,6 +84,11 @@ Then /^the output should be$/ do |text|
   last_stdout.should == text
 end
 
+Then /^it should (fail|pass) with JSON$/ do |success, text|
+  JSON.parse(last_stdout).should == JSON.parse(text)
+  Then("it should #{success}")
+end
+
 Then /^"([^"]*)" should contain$/ do |file, text|
   strip_duration(IO.read(file)).should == text
 end

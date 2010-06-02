@@ -15,7 +15,7 @@ Feature: JSON output formatter
   Scenario: one feature, one passing scenario, one failing scenario
     Given I am in json
     When I run cucumber --format json_pretty features/one_passing_one_failing.feature
-    Then it should fail with
+    Then it should fail with JSON
       """
       {
         "features": [
