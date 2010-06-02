@@ -30,6 +30,7 @@ Feature: JSON output formatter
                 "tags": [
                   "@b"
                 ],
+                "keyword": "Scenario",
                 "name": "Passing",
                 "file_colon_line": "features/one_passing_one_failing.feature:5",
                 "steps": [
@@ -44,6 +45,7 @@ Feature: JSON output formatter
                 "tags": [
                   "@c"
                 ],
+                "keyword": "Scenario",
                 "name": "Failing",
                 "file_colon_line": "features/one_passing_one_failing.feature:9",
                 "steps": [
