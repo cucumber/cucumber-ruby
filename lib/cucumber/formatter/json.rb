@@ -1,12 +1,14 @@
 require "json"
+require "cucumber/formatter/io"
 
 module Cucumber
   module Formatter
     # The formatter used for <tt>--format json</tt>
     class Json
+      include Io
 
       def initialize(step_mother, io, options)
-        @io      = io
+        @io      = ensure_io(io, "json")
         @options = options
       end
 
@@ -71,7 +73,7 @@ module Cucumber
       end
 
       def after_features(features)
-        @io.print json_string
+        @io.write json_string
         @io.flush
       end
 

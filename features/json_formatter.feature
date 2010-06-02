@@ -5,6 +5,15 @@ Feature: JSON output formatter
 
   Scenario: one feature, one passing scenario, one failing scenario
     Given I am in json
+    And the tmp directory is empty
+    When I run cucumber --format json --out tmp/out.json features/one_passing_one_failing.feature
+    Then it should fail with
+      """
+      """
+    And "examples/json/tmp/out.json" should match "^\{\"features\":\["
+
+  Scenario: one feature, one passing scenario, one failing scenario
+    Given I am in json
     When I run cucumber --format json_pretty features/one_passing_one_failing.feature
     Then it should fail with
       """

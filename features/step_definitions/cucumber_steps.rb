@@ -95,7 +95,7 @@ Then /^"([^"]*)" with junit duration "([^"]*)" should contain$/ do |actual_file,
   actual.should == text
 end
 
-Then /^"([^"]*)" should match "([^"]*)"$/ do |file, text|
+Then /^"([^"]*)" should match "(.+?)"$/ do |file, text|
   File.open(file, Cucumber.file_mode('r')).read.should =~ Regexp.new(text)
 end
 
