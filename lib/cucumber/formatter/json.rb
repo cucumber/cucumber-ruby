@@ -25,6 +25,16 @@ module Cucumber
         @current_object[:tags] = tags.tag_names
       end
 
+      def before_background(background)
+        background = {}
+        @current_object[:background] = background
+        @current_object = background
+      end
+
+      def after_background(background)
+        @current_object = last_feature
+      end
+
       def before_feature_element(feature_element)
         elements = @current_object[:elements] ||= []
 
@@ -98,7 +108,7 @@ module Cucumber
 
       def after_feature_element(feature_element)
         # change current object back to the last feature
-        @current_object = @json[:features].last
+        @current_object = last_feature
       end
 
       def after_features(features)
@@ -110,6 +120,10 @@ module Cucumber
 
       def json_string
         @json.to_json
+      end
+
+      def last_feature
+        @json[:features].last
       end
 
       def exception_hash_for(e)

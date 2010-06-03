@@ -1,8 +1,8 @@
-Given /a passing scenario/ do
+Given /a passing step/ do
   #does nothing
 end
 
-Given /a failing scenario/ do
+Given /a failing step/ do
   fail
 end
 

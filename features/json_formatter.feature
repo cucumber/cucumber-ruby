@@ -37,7 +37,7 @@ Feature: JSON output formatter
                 "steps": [
                   {
                     "status": "passed",
-                    "name": "Given a passing scenario",
+                    "name": "Given a passing step",
                     "file_colon_line": "features/step_definitions/steps.rb:1"
                   }
                 ]
@@ -55,12 +55,12 @@ Feature: JSON output formatter
                       "class": "RuntimeError",
                       "message": "",
                       "backtrace": [
-                        "./features/step_definitions/steps.rb:6:in `/a failing scenario/'",
-                        "features/one_passing_one_failing.feature:10:in `Given a failing scenario'"
+                        "./features/step_definitions/steps.rb:6:in `/a failing step/'",
+                        "features/one_passing_one_failing.feature:10:in `Given a failing step'"
                       ]
                     },
                     "status": "failed",
-                    "name": "Given a failing scenario",
+                    "name": "Given a failing step",
                     "file_colon_line": "features/step_definitions/steps.rb:5"
                   }
                 ]
@@ -170,6 +170,7 @@ Feature: JSON output formatter
         ]
       }
       """
+
   Scenario: pystring
     When I run cucumber --format json_pretty features/pystring.feature
     Then it should pass with JSON
@@ -203,4 +204,60 @@ Feature: JSON output formatter
           }
         ]
       }
+    """
+
+  Scenario: background
+    When I run cucumber --format json_pretty features/background.feature
+    Then it should fail with JSON
+    """
+    {
+      "features": [
+        {
+          "file": "features/background.feature",
+          "name": "Feature with background",
+          "tags": [
+
+          ],
+          "background": {
+            "steps": [
+              {
+                "status": "passed",
+                "name": "Given a passing step",
+                "file_colon_line": "features/step_definitions/steps.rb:1"
+              }
+            ]
+          },
+          "elements": [
+            {
+              "tags": [
+
+              ],
+              "keyword": "Scenario",
+              "name": "",
+              "file_colon_line": "features/background.feature:6",
+              "steps": [
+                {
+                  "status": "passed",
+                  "name": "Given a passing step",
+                  "file_colon_line": "features/step_definitions/steps.rb:1"
+                },
+                {
+                  "exception": {
+                    "class": "RuntimeError",
+                    "message": "",
+                    "backtrace": [
+                      "./features/step_definitions/steps.rb:6:in `/a failing step/'",
+                      "features/background.feature:7:in `Given a failing step'"
+                    ]
+                  },
+                  "status": "failed",
+                  "name": "Given a failing step",
+                  "file_colon_line": "features/step_definitions/steps.rb:5"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
     """
