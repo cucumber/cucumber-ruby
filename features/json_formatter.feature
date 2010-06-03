@@ -3,8 +3,10 @@ Feature: JSON output formatter
   As a developer
   Cucumber should be able to output JSON
 
-  Scenario: one feature, one passing scenario, one failing scenario
+  Background:
     Given I am in json
+
+  Scenario: one feature, one passing scenario, one failing scenario
     And the tmp directory is empty
     When I run cucumber --format json --out tmp/out.json features/one_passing_one_failing.feature
     Then it should fail with
@@ -13,7 +15,6 @@ Feature: JSON output formatter
     And "examples/json/tmp/out.json" should match "^\{\"features\":\["
 
   Scenario: one feature, one passing scenario, one failing scenario
-    Given I am in json
     When I run cucumber --format json_pretty features/one_passing_one_failing.feature
     Then it should fail with JSON
       """
@@ -71,7 +72,6 @@ Feature: JSON output formatter
       """
 
   Scenario: Scenario Outline
-    Given I am in json
     When I run cucumber --format json_pretty features/outline.feature
     Then it should fail with JSON
       """
@@ -170,3 +170,37 @@ Feature: JSON output formatter
         ]
       }
       """
+  Scenario: pystring
+    When I run cucumber --format json_pretty features/pystring.feature
+    Then it should pass with JSON
+    """
+      {
+        "features": [
+          {
+            "file": "features/pystring.feature",
+            "name": "A py string feature",
+            "tags": [
+
+            ],
+            "elements": [
+              {
+                "tags": [
+
+                ],
+                "keyword": "Scenario",
+                "name": "",
+                "file_colon_line": "features/pystring.feature:3",
+                "steps": [
+                  {
+                    "status": "passed",
+                    "name": "Then I should see",
+                    "file_colon_line": "features/step_definitions/steps.rb:21",
+                    "py_string": "a string"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    """

@@ -18,3 +18,7 @@ Then /^I the result should be (\d+)$/ do |c|
   @result.should == c.to_i
 end
 
+Then /^I should see/ do |string|
+
+end
+

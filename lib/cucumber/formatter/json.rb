@@ -92,6 +92,10 @@ module Cucumber
         @current_row = nil
       end
 
+      def py_string(string)
+        @current_step[:py_string] = string
+      end
+
       def after_feature_element(feature_element)
         # change current object back to the last feature
         @current_object = @json[:features].last
