@@ -9,6 +9,7 @@ Feature: JSON output formatter
   Scenario: one feature, one passing scenario, one failing scenario
     And the tmp directory is empty
     When I run cucumber --format json --out tmp/out.json features/one_passing_one_failing.feature
+    Then STDERR should be empty
     Then it should fail with
       """
       """
