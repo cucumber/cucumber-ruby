@@ -1,5 +1,8 @@
 == In Git
 
+=== Bugfixes
+* Cucumber 0.7.3 not compatible with Gherkin 1.0.30. (#618 Aslak Hellesøy)
+
 === Changed Features
 * Ruby snippets will use "([^"]*)" instead of "([^\"]*)"$/ - wasn't properly fixed in 0.7.1. (Aslak Hellesøy)
 
