@@ -1,4 +1,4 @@
-gem 'therubyracer', '>=0.7.0'
+gem 'therubyracer', '>=0.7.1'
 require 'v8'
 
 require 'cucumber/js_support/js_snippets'
@@ -76,7 +76,7 @@ module Cucumber
       end
 
       def invoke(arg)
-        @js_function.call(@js_language.current_world.scope, [arg])
+        @js_function.call([arg])
       end
     end
 
