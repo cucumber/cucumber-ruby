@@ -17,7 +17,7 @@ module Cucumber
       end
 
       def execute(js_function, args=[])
-        js_function.call(@world.scope, *args)
+        js_function.call(*args)
       end
 
       def method_missing(method_name, *args)
