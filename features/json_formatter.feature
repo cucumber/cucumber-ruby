@@ -69,3 +69,104 @@ Feature: JSON output formatter
         ]
       }
       """
+
+  Scenario: Scenario Outline
+    Given I am in json
+    When I run cucumber --format json_pretty features/outline.feature
+    Then it should fail with JSON
+      """
+      {
+        "features": [
+          {
+            "file": "features/outline.feature",
+            "name": "A scenario outline",
+            "tags": [
+
+            ],
+            "elements": [
+              {
+                "tags": [
+
+                ],
+                "keyword": "Scenario Outline",
+                "name": "",
+                "file_colon_line": "features/outline.feature:3",
+                "steps": [
+                  {
+                    "status": "skipped",
+                    "name": "Given I add <a> and <b>",
+                    "file_colon_line": "features/step_definitions/steps.rb:13"
+                  },
+                  {
+                    "status": "skipped",
+                    "name": "Then I the result should be <c>",
+                    "file_colon_line": "features/step_definitions/steps.rb:17"
+                  }
+                ],
+                "examples": {
+                  "name": "Examples ",
+                  "table": [
+                    {
+                      "values": [
+                        {
+                          "value": "a",
+                          "status": "skipped_param"
+                        },
+                        {
+                          "value": "b",
+                          "status": "skipped_param"
+                        },
+                        {
+                          "value": "c",
+                          "status": "skipped_param"
+                        }
+                      ]
+                    },
+                    {
+                      "values": [
+                        {
+                          "value": "1",
+                          "status": "passed"
+                        },
+                        {
+                          "value": "2",
+                          "status": "passed"
+                        },
+                        {
+                          "value": "3",
+                          "status": "passed"
+                        }
+                      ]
+                    },
+                    {
+                      "values": [
+                        {
+                          "value": "2",
+                          "status": "passed"
+                        },
+                        {
+                          "value": "3",
+                          "status": "passed"
+                        },
+                        {
+                          "value": "4",
+                          "status": "failed"
+                        }
+                      ],
+                      "exception": {
+                        "class": "Spec::Expectations::ExpectationNotMetError",
+                        "message": "expected: 4,\n     got: 5 (using ==)\n\n Diff:\n@@ -1,2 +1,2 @@\n-4\n+5\n",
+                        "backtrace": [
+                          "./features/step_definitions/steps.rb:18:in `/^I the result should be (\\d+)$/'",
+                          "features/outline.feature:5:in `Then I the result should be <c>'"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+      """

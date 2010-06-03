@@ -50,11 +50,7 @@ module Cucumber
 
       def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
         if exception
-          @current_step[:exception] = {
-            :class     => exception.class.name,
-            :message   => exception.message,
-            :backtrace => exception.backtrace
-          }
+          @current_step[:exception] = exception_hash_for(exception)
         end
       end
 
@@ -68,6 +64,34 @@ module Cucumber
         @current_step = nil
       end
 
+      def before_examples(examples)
+        @current_object[:examples] = {}
+      end
+
+      def examples_name(keyword, name)
+        @current_object[:examples][:name] = "#{keyword} #{name}"
+      end
+
+      def before_outline_table(*args)
+        @current_object[:examples][:table] = []
+      end
+
+      def before_table_row(row)
+        @current_row = {:values => []}
+        @current_object[:examples][:table] << @current_row
+      end
+
+      def table_cell_value(value, status)
+        @current_row[:values] << {:value => value, :status => status}
+      end
+
+      def after_table_row(row)
+        if row.exception
+          @current_row[:exception] = exception_hash_for(row.exception)
+        end
+        @current_row = nil
+      end
+
       def after_feature_element(feature_element)
         # change current object back to the last feature
         @current_object = @json[:features].last
@@ -78,10 +102,21 @@ module Cucumber
         @io.flush
       end
 
+      private
+
       def json_string
         @json.to_json
+      end
+
+      def exception_hash_for(e)
+        {
+          :class     => e.class.name,
+          :message   => e.message,
+          :backtrace => e.backtrace
+        }
       end
 
     end # Json
   end # Formatter
 end # Cucumber
+
