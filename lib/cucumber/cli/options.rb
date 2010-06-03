@@ -118,6 +118,7 @@ module Cucumber
             "This option can be specified multiple times.") do |v|
             @options[:require] << v
             if(Cucumber::JRUBY && File.directory?(v))
+              require 'java'
               $CLASSPATH << v
             end
           end
