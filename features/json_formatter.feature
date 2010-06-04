@@ -10,14 +10,15 @@ Feature: JSON output formatter
     And the tmp directory is empty
     When I run cucumber --format json --out tmp/out.json features/one_passing_one_failing.feature
     Then STDERR should be empty
-    Then it should fail with
+    And it should fail with
       """
       """
     And "examples/json/tmp/out.json" should match "^\{\"features\":\["
 
   Scenario: one feature, one passing scenario, one failing scenario
     When I run cucumber --format json_pretty features/one_passing_one_failing.feature
-    Then it should fail with JSON
+    Then STDERR should be empty
+    And it should fail with JSON
       """
       {
         "features": [
@@ -74,7 +75,8 @@ Feature: JSON output formatter
 
   Scenario: Scenario Outline
     When I run cucumber --format json_pretty features/outline.feature
-    Then it should fail with JSON
+    Then STDERR should be empty
+    And it should fail with JSON
       """
       {
         "features": [
@@ -174,7 +176,8 @@ Feature: JSON output formatter
 
   Scenario: pystring
     When I run cucumber --format json_pretty features/pystring.feature
-    Then it should pass with JSON
+    Then STDERR should be empty
+    And it should pass with JSON
     """
       {
         "features": [
@@ -209,7 +212,8 @@ Feature: JSON output formatter
 
   Scenario: background
     When I run cucumber --format json_pretty features/background.feature
-    Then it should fail with JSON
+    Then STDERR should be empty
+    And it should fail with JSON
     """
     {
       "features": [
