@@ -90,7 +90,7 @@ module Cucumber
       end
 
       def before_table_row(row)
-        @current_row = {:values => []}
+        @current_row = {:cells => []}
 
         if @current_object.member? :examples
           @current_object[:examples][:table] << @current_row
@@ -102,7 +102,7 @@ module Cucumber
       end
 
       def table_cell_value(value, status)
-        @current_row[:values] << {:value => value, :status => status}
+        @current_row[:cells] << {:text => value, :status => status}
       end
 
       def after_table_row(row)

@@ -105,65 +105,67 @@ Feature: JSON output formatter
                     "name": "When I pass a table argument",
                     "file_colon_line": "features/step_definitions/steps.rb:25",
                     "table": [
-                      {"values":
-                        [{"value":"foo", "status": null},
-                         {"value":"bar", "status": null}]},
-                      {"values":
-                        [{"value": "bar", "status": null},
-                         {"value": "baz", "status": null}]}]},
-                    {"status": "skipped",
-                    "name": "Then I the result should be <c>",
-                    "file_colon_line": "features/step_definitions/steps.rb:17"
+                      {"cells":
+                        [{"text":"foo", "status": null},
+                         {"text":"bar", "status": null}]},
+                      {"cells":
+                        [{"text": "bar", "status": null},
+                         {"text": "baz", "status": null}]}
+                    ]
+                  },
+                  {
+                     "status": "skipped",
+                     "name": "Then I the result should be <c>",
+                     "file_colon_line": "features/step_definitions/steps.rb:17"
                   }
-
                 ],
                 "examples": {
                   "name": "Examples ",
                   "table": [
                     {
-                      "values": [
+                      "cells": [
                         {
-                          "value": "a",
+                          "text": "a",
                           "status": "skipped_param"
                         },
                         {
-                          "value": "b",
+                          "text": "b",
                           "status": "skipped_param"
                         },
                         {
-                          "value": "c",
+                          "text": "c",
                           "status": "skipped_param"
                         }
                       ]
                     },
                     {
-                      "values": [
+                      "cells": [
                         {
-                          "value": "1",
+                          "text": "1",
                           "status": "passed"
                         },
                         {
-                          "value": "2",
+                          "text": "2",
                           "status": "passed"
                         },
                         {
-                          "value": "3",
+                          "text": "3",
                           "status": "passed"
                         }
                       ]
                     },
                     {
-                      "values": [
+                      "cells": [
                         {
-                          "value": "2",
+                          "text": "2",
                           "status": "passed"
                         },
                         {
-                          "value": "3",
+                          "text": "3",
                           "status": "passed"
                         },
                         {
-                          "value": "4",
+                          "text": "4",
                           "status": "failed"
                         }
                       ],
