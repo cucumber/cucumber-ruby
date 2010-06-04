@@ -22,3 +22,6 @@ Then /^I should see/ do |string|
 
 end
 
+Given /^I pass a table argument/ do |table|
+
+end

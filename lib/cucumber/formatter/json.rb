@@ -5,6 +5,9 @@ module Cucumber
   module Formatter
     # The formatter used for <tt>--format json</tt>
     class Json
+      class Error < StandardError
+      end
+
       include Io
 
       def initialize(step_mother, io, options)
@@ -88,7 +91,14 @@ module Cucumber
 
       def before_table_row(row)
         @current_row = {:values => []}
-        @current_object[:examples][:table] << @current_row
+
+        if @current_object.member? :examples
+          @current_object[:examples][:table] << @current_row
+        elsif @current_step
+          (@current_step[:table] ||= []) << @current_row
+        else
+          internal_error
+        end
       end
 
       def table_cell_value(value, status)
@@ -132,6 +142,10 @@ module Cucumber
           :message   => e.message,
           :backtrace => e.backtrace
         }
+      end
+
+      def internal_error
+        raise Error, "you've found a bug in the JSON formatter!"
       end
 
     end # Json

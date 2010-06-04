@@ -73,15 +73,15 @@ Feature: JSON output formatter
       }
       """
 
-  Scenario: Scenario Outline
-    When I run cucumber --format json_pretty features/outline.feature
+  Scenario: Tables
+    When I run cucumber --format json_pretty features/tables.feature
     Then STDERR should be empty
     And it should fail with JSON
       """
       {
         "features": [
           {
-            "file": "features/outline.feature",
+            "file": "features/tables.feature",
             "name": "A scenario outline",
             "tags": [
 
@@ -93,7 +93,7 @@ Feature: JSON output formatter
                 ],
                 "keyword": "Scenario Outline",
                 "name": "",
-                "file_colon_line": "features/outline.feature:3",
+                "file_colon_line": "features/tables.feature:3",
                 "steps": [
                   {
                     "status": "skipped",
@@ -102,9 +102,20 @@ Feature: JSON output formatter
                   },
                   {
                     "status": "skipped",
+                    "name": "When I pass a table argument",
+                    "file_colon_line": "features/step_definitions/steps.rb:25",
+                    "table": [
+                      {"values":
+                        [{"value":"foo", "status": null},
+                         {"value":"bar", "status": null}]},
+                      {"values":
+                        [{"value": "bar", "status": null},
+                         {"value": "baz", "status": null}]}]},
+                    {"status": "skipped",
                     "name": "Then I the result should be <c>",
                     "file_colon_line": "features/step_definitions/steps.rb:17"
                   }
+
                 ],
                 "examples": {
                   "name": "Examples ",
@@ -161,7 +172,7 @@ Feature: JSON output formatter
                         "message": "expected: 4,\n     got: 5 (using ==)\n\n Diff:\n@@ -1,2 +1,2 @@\n-4\n+5\n",
                         "backtrace": [
                           "./features/step_definitions/steps.rb:18:in `/^I the result should be (\\d+)$/'",
-                          "features/outline.feature:5:in `Then I the result should be <c>'"
+                          "features/tables.feature:8:in `Then I the result should be <c>'"
                         ]
                       }
                     }
