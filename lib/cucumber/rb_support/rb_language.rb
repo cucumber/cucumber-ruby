@@ -53,6 +53,8 @@ module Cucumber
           begin
             require 'spec/expectations'
             require 'spec/runner/differs/default'
+            require 'ostruct'
+            options = OpenStruct.new(:diff_format => :unified, :context_lines => 3)
             Spec::Expectations.differ = Spec::Expectations::Differs::Default.new(options)
             @rspec_matchers = ::Spec::Matchers
           rescue LoadError => give_up
