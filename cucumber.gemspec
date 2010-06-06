@@ -683,7 +683,6 @@ for important information about this release. Happy cuking!
      "examples/ruby2python/features/support/env.rb",
      "examples/self_test/features/step_definitions/sample_steps.rb",
      "examples/self_test/features/support/env.rb",
-     "examples/self_test/tmp/features/step_definitions/steps.rb",
      "examples/sinatra/app.rb",
      "examples/sinatra/features/step_definitions/add_steps.rb",
      "examples/sinatra/features/support/env.rb",
@@ -717,12 +716,12 @@ for important information about this release. Happy cuking!
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<gherkin>, [">= 1.0.27"])
+      s.add_runtime_dependency(%q<gherkin>, [">= 1.0.30"])
       s.add_runtime_dependency(%q<term-ansicolor>, [">= 1.0.4"])
       s.add_runtime_dependency(%q<builder>, [">= 2.1.2"])
       s.add_runtime_dependency(%q<diff-lcs>, [">= 1.1.2"])
-      s.add_runtime_dependency(%q<json_pure>, [">= 1.2.4"])
-      s.add_development_dependency(%q<nokogiri>, [">= 1.4.1"])
+      s.add_runtime_dependency(%q<json_pure>, [">= 1.4.3"])
+      s.add_development_dependency(%q<nokogiri>, [">= 1.4.2"])
       s.add_development_dependency(%q<prawn>, ["= 0.6.3"])
       s.add_development_dependency(%q<prawn-format>, ["= 0.2.3"])
       s.add_development_dependency(%q<htmlentities>, [">= 4.2.1"])
@@ -730,12 +729,12 @@ for important information about this release. Happy cuking!
       s.add_development_dependency(%q<syntax>, [">= 1.0.0"])
       s.add_development_dependency(%q<spork>, [">= 0.8.3"])
     else
-      s.add_dependency(%q<gherkin>, [">= 1.0.27"])
+      s.add_dependency(%q<gherkin>, [">= 1.0.30"])
       s.add_dependency(%q<term-ansicolor>, [">= 1.0.4"])
       s.add_dependency(%q<builder>, [">= 2.1.2"])
       s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
-      s.add_dependency(%q<json_pure>, [">= 1.2.4"])
-      s.add_dependency(%q<nokogiri>, [">= 1.4.1"])
+      s.add_dependency(%q<json_pure>, [">= 1.4.3"])
+      s.add_dependency(%q<nokogiri>, [">= 1.4.2"])
       s.add_dependency(%q<prawn>, ["= 0.6.3"])
       s.add_dependency(%q<prawn-format>, ["= 0.2.3"])
       s.add_dependency(%q<htmlentities>, [">= 4.2.1"])
@@ -744,12 +743,12 @@ for important information about this release. Happy cuking!
       s.add_dependency(%q<spork>, [">= 0.8.3"])
     end
   else
-    s.add_dependency(%q<gherkin>, [">= 1.0.27"])
+    s.add_dependency(%q<gherkin>, [">= 1.0.30"])
     s.add_dependency(%q<term-ansicolor>, [">= 1.0.4"])
     s.add_dependency(%q<builder>, [">= 2.1.2"])
     s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
-    s.add_dependency(%q<json_pure>, [">= 1.2.4"])
-    s.add_dependency(%q<nokogiri>, [">= 1.4.1"])
+    s.add_dependency(%q<json_pure>, [">= 1.4.3"])
+    s.add_dependency(%q<nokogiri>, [">= 1.4.2"])
     s.add_dependency(%q<prawn>, ["= 0.6.3"])
     s.add_dependency(%q<prawn-format>, ["= 0.2.3"])
     s.add_dependency(%q<htmlentities>, [">= 4.2.1"])
