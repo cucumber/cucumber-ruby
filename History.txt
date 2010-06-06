@@ -1,6 +1,8 @@
 == In Git
 
 === Bugfixes
+* Require profile option causes a NoMethodError for Cucumber with JRuby (#601 John Firebaugh)
+* Deprecations warnings with Spork + Cucumber + RSpec 2.0. (#619 Brian Cardarella)
 * Cucumber 0.7.3 not compatible with Gherkin 1.0.30. (#618 Aslak Hellesøy)
 
 === Changed Features
