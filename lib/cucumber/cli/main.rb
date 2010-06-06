@@ -55,8 +55,6 @@ module Cucumber
         features = step_mother.load_plain_text_features(configuration.feature_files)
         step_mother.load_code_files(configuration.step_defs_to_load)
 
-        enable_diffing
-
         tag_excess = tag_excess(features)
         configuration.options[:tag_excess] = tag_excess # Hack to make it available in console.rb - later: stick on Run instance.
 
@@ -98,12 +96,6 @@ module Cucumber
       end
 
       private
-
-      def enable_diffing
-        if configuration.diff_enabled?
-          require 'cucumber/rspec/diffing'
-        end
-      end
 
       def trap_interrupt
         trap('INT') do

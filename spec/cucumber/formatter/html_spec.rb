@@ -11,7 +11,7 @@ module Cucumber
       extend SpecHelperDsl
       include SpecHelper
 
-      matcher = defined?(Spec::Matchers) ? Spec::Matchers : Rspec::Matchers
+      matcher = defined?(Spec::Matchers) ? Spec::Matchers : RSpec::Matchers
 
       matcher.define :have_css_node do |css, regexp|
         match do |doc|

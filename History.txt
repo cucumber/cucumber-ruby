@@ -5,7 +5,11 @@
 * Deprecations warnings with Spork + Cucumber + RSpec 2.0. (#619 Brian Cardarella)
 * Cucumber 0.7.3 not compatible with Gherkin 1.0.30. (#618 Aslak Hellesøy)
 
+=== Removed features
+* The --no-diff option is removed. If you're using RSpec you will *always* get diffs. (Aslak Hellesøy)
+
 === Changed Features
+* Upgraded to be compatible with rspec 2.0.0.beta.10 (Aslak Hellesøy)
 * Ruby snippets will use "([^"]*)" instead of "([^\"]*)"$/ - wasn't properly fixed in 0.7.1. (Aslak Hellesøy)
 
 == 0.7.3 (2010-05-17)

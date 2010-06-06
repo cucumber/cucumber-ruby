@@ -244,9 +244,6 @@ module Cucumber
           opts.on("-x", "--expand", "Expand Scenario Outline Tables in output.") do
             @options[:expand] = true
           end
-          opts.on("--no-diff", "Disable diff output on failing expectations.") do
-            @options[:diff_enabled] = false
-          end
           opts.on(DRB_FLAG, "Run features against a DRb server. (i.e. with the spork gem)") do
             @options[:drb] = true
           end

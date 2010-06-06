@@ -41,7 +41,7 @@ module Cucumber
             Object.stub!(:const_defined?).and_return(true)
             mock_module.stub!(:const_defined?).and_return(true)
 
-            f = stub('formatter', :null_object => true)
+            f = stub('formatter').as_null_object
 
             Object.should_receive(:const_get).with('ZooModule').and_return(mock_module)
             mock_module.should_receive(:const_get).with('MonkeyFormatterClass').and_return(mock('formatter class', :new => f))
@@ -55,8 +55,8 @@ module Cucumber
       describe "setup step sequence" do
         
         it "should load files and execute hooks in order" do
-          Configuration.stub!(:new).and_return(configuration = mock('configuration', :null_object => true))
-          step_mother = mock('step mother', :null_object => true)
+          Configuration.stub!(:new).and_return(configuration = mock('configuration').as_null_object)
+          step_mother = mock('step mother').as_null_object
           configuration.stub!(:drb?).and_return false
           cli = Main.new(%w{--verbose example.feature}, @out)
           cli.stub!(:require)
@@ -96,13 +96,13 @@ module Cucumber
 
       context "--drb" do
         before(:each) do
-          @configuration = mock('Configuration', :drb? => true, :null_object => true)
+          @configuration = mock('Configuration', :drb? => true).as_null_object
           Configuration.stub!(:new).and_return(@configuration)
 
           @args = ['features']
 
           @cli = Main.new(@args, @out, @err)
-          @step_mother = mock('StepMother', :null_object => true)
+          @step_mother = mock('StepMother').as_null_object
         end
 
         it "delegates the execution to the DRB client passing the args and streams" do
