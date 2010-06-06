@@ -145,8 +145,11 @@ module Cucumber
 
       def extend_world
         @current_world.extend(RbWorld)
-        @current_world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)   # RSpec 1.x
-        @current_world.extend(::Rspec::Matchers) if defined?(::Rspec::Matchers) # RSpec 2.x
+        if defined?(::RSpec::Matchers) # RSpec. 2.x
+          @current_world.extend(::Rspec::Matchers)
+        elsif defined?(::Spec::Matchers) # RSpec 1.x
+          @current_world.extend(::Spec::Matchers)
+        end
         (@world_modules || []).each do |mod|
           @current_world.extend(mod)
         end
