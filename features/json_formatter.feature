@@ -170,8 +170,8 @@ Feature: JSON output formatter
                         }
                       ],
                       "exception": {
-                        "class": "Spec::Expectations::ExpectationNotMetError",
-                        "message": "expected: 4,\n     got: 5 (using ==)\n\n Diff:\n@@ -1,2 +1,2 @@\n-4\n+5\n",
+                        "class": "RSpec::Expectations::ExpectationNotMetError",
+                        "message": "expected: 4,\n     got: 5 (using ==)\nDiff:\n@@ -1,2 +1,2 @@\n-4\n+5\n",
                         "backtrace": [
                           "./features/step_definitions/steps.rb:18:in `/^I the result should be (\\d+)$/'",
                           "features/tables.feature:8:in `Then I the result should be <c>'"
