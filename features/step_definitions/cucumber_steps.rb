@@ -84,6 +84,11 @@ Then /^the output should be$/ do |text|
   last_stdout.should == text
 end
 
+Then /^it should (fail|pass) with JSON$/ do |success, text|
+  JSON.parse(last_stdout).should == JSON.parse(text)
+  Then("it should #{success}")
+end
+
 Then /^"([^"]*)" should contain$/ do |file, text|
   strip_duration(IO.read(file)).should == text
 end
@@ -95,7 +100,7 @@ Then /^"([^"]*)" with junit duration "([^"]*)" should contain$/ do |actual_file,
   actual.should == text
 end
 
-Then /^"([^"]*)" should match "([^"]*)"$/ do |file, text|
+Then /^"([^"]*)" should match "(.+?)"$/ do |file, text|
   File.open(file, Cucumber.file_mode('r')).read.should =~ Regexp.new(text)
 end
 

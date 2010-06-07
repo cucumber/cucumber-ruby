@@ -137,7 +137,7 @@ spec/cucumber/step_mother_spec.rb:48:in `/Three cute (.*)/'
 
     it "should implicitly extend world with modules" do
       @dsl.World(ModuleOne, ModuleTwo)
-      @step_mother.before(mock('scenario', :null_object => true))
+      @step_mother.before(mock('scenario').as_null_object)
       class << @rb.current_world
         included_modules.inspect.should =~ /ModuleOne/ # Workaround for RSpec/Ruby 1.9 issue with namespaces
         included_modules.inspect.should =~ /ModuleTwo/

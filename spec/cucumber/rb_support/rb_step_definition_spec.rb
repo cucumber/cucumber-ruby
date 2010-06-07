@@ -12,7 +12,7 @@ module Cucumber
         @rb = @step_mother.load_programming_language('rb')
         @dsl = Object.new 
         @dsl.extend Cucumber::RbSupport::RbDsl
-        @step_mother.before(mock('scenario', :null_object => true))
+        @step_mother.before(mock('scenario').as_null_object)
 
         $inside = nil
       end

@@ -347,20 +347,6 @@ END_OF_MESSAGE
       end
     end
 
-    describe "diff output" do
-
-      it "is enabled by default" do
-        config.diff_enabled?.should be_true
-      end
-
-      it "is disabled when the --no-diff option is supplied" do
-        config.parse!(%w{--no-diff})
-
-        config.diff_enabled?.should be_false
-      end
-
-    end
-
     it "should accept multiple --name options" do
       config.parse!(['--name', "User logs in", '--name', "User signs up"])
 

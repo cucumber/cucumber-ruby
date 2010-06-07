@@ -6,25 +6,28 @@ module Cucumber
   module Cli
 
     class Options
+      INDENT = ' ' * 53
       BUILTIN_FORMATS = {
-        'html'      => ['Cucumber::Formatter::Html',     'Generates a nice looking HTML report.'],
-        'pretty'    => ['Cucumber::Formatter::Pretty',   'Prints the feature as is - in colours.'],
-        'pdf'       => ['Cucumber::Formatter::Pdf',      "Generates a PDF report. You need to have the\n" +
-                                                         "#{' ' * 51}prawn gem installed. Will pick up logo from\n" +
-                                                         "#{' ' * 51}features/support/logo.png or\n" +
-                                                         "#{' ' * 51}features/support/logo.jpg if present."],
-        'progress'  => ['Cucumber::Formatter::Progress', 'Prints one character per scenario.'],
-        'rerun'     => ['Cucumber::Formatter::Rerun',    'Prints failing files with line numbers.'],
-        'usage'     => ['Cucumber::Formatter::Usage',    "Prints where step definitions are used.\n" +
-                                                         "#{' ' * 51}The slowest step definitions (with duration) are\n" +
-                                                         "#{' ' * 51}listed first. If --dry-run is used the duration\n" +
-                                                         "#{' ' * 51}is not shown, and step definitions are sorted by\n" +
-                                                         "#{' ' * 51}filename instead."],
-        'stepdefs'  => ['Cucumber::Formatter::Stepdefs', "Prints All step definitions with their locations. Same as\n" +
-                                                         "#{' ' * 51}the usage formatter, except that steps are not printed."],
-        'junit'     => ['Cucumber::Formatter::Junit',    'Generates a report similar to Ant+JUnit.'],
-        'tag_cloud' => ['Cucumber::Formatter::TagCloud', 'Prints a tag cloud of tag usage.'],
-        'debug'     => ['Cucumber::Formatter::Debug',    'For developing formatters - prints the calls made to the listeners.']
+        'html'        => ['Cucumber::Formatter::Html',        'Generates a nice looking HTML report.'],
+        'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
+        'pdf'         => ['Cucumber::Formatter::Pdf',         "Generates a PDF report. You need to have the\n" +
+                                                              "#{INDENT}prawn gem installed. Will pick up logo from\n" +
+                                                              "#{INDENT}features/support/logo.png or\n" +
+                                                              "#{INDENT}features/support/logo.jpg if present."],
+        'progress'    => ['Cucumber::Formatter::Progress',    'Prints one character per scenario.'],
+        'rerun'       => ['Cucumber::Formatter::Rerun',       'Prints failing files with line numbers.'],
+        'usage'       => ['Cucumber::Formatter::Usage',       "Prints where step definitions are used.\n" +
+                                                              "#{INDENT}The slowest step definitions (with duration) are\n" +
+                                                              "#{INDENT}listed first. If --dry-run is used the duration\n" +
+                                                              "#{INDENT}is not shown, and step definitions are sorted by\n" +
+                                                              "#{INDENT}filename instead."],
+        'stepdefs'    => ['Cucumber::Formatter::Stepdefs',    "Prints All step definitions with their locations. Same as\n" +
+                                                              "#{INDENT}the usage formatter, except that steps are not printed."],
+        'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
+        'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
+        'json_pretty' => ['Cucumber::Formatter::JsonPretty',  'Prints the feature as pretty JSON'],
+        'tag_cloud'   => ['Cucumber::Formatter::TagCloud',    'Prints a tag cloud of tag usage.'],
+        'debug'       => ['Cucumber::Formatter::Debug',       'For developing formatters - prints the calls made to the listeners.']
       }
       max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
       FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
@@ -118,6 +121,7 @@ module Cucumber
             "This option can be specified multiple times.") do |v|
             @options[:require] << v
             if(Cucumber::JRUBY && File.directory?(v))
+              require 'java'
               $CLASSPATH << v
             end
           end
@@ -242,9 +246,6 @@ module Cucumber
           end
           opts.on("-x", "--expand", "Expand Scenario Outline Tables in output.") do
             @options[:expand] = true
-          end
-          opts.on("--no-diff", "Disable diff output on failing expectations.") do
-            @options[:diff_enabled] = false
           end
           opts.on(DRB_FLAG, "Run features against a DRb server. (i.e. with the spork gem)") do
             @options[:drb] = true
