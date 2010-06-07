@@ -147,7 +147,7 @@ Feature: Delayed announcement
       WORLD:
         Object
 
-        Rspec::Matchers
+        RSpec::Matchers
         Cucumber::RbSupport::RbWorld
       """
 

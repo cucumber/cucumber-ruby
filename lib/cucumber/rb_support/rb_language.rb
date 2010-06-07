@@ -41,6 +41,26 @@ module Cucumber
         @step_definitions = []
         RbDsl.rb_language = self
         @world_proc = @world_modules = nil
+        enable_rspec_expectations_if_available
+      end
+
+      def enable_rspec_expectations_if_available
+        begin
+          # RSpec >=2.0
+          require 'rspec/expectations'
+          @rspec_matchers = ::RSpec::Matchers
+        rescue LoadError => try_rspec_1_2_4_or_higher
+          begin
+            require 'spec/expectations'
+            require 'spec/runner/differs/default'
+            require 'ostruct'
+            options = OpenStruct.new(:diff_format => :unified, :context_lines => 3)
+            Spec::Expectations.differ = Spec::Expectations::Differs::Default.new(options)
+            @rspec_matchers = ::Spec::Matchers
+          rescue LoadError => give_up
+            @rspec_matchers = Module.new{}
+          end
+        end
       end
 
       # Gets called for each file under features (or whatever is overridden
@@ -145,8 +165,7 @@ module Cucumber
 
       def extend_world
         @current_world.extend(RbWorld)
-        @current_world.extend(::Spec::Matchers) if defined?(::Spec::Matchers)   # RSpec 1.x
-        @current_world.extend(::Rspec::Matchers) if defined?(::Rspec::Matchers) # RSpec 2.x
+        @current_world.extend(@rspec_matchers)
         (@world_modules || []).each do |mod|
           @current_world.extend(mod)
         end

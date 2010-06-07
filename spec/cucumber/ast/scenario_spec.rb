@@ -33,7 +33,7 @@ module Cucumber
             Step.new(8, "Given", "y is 5")
           ]
         )
-        scenario.feature = mock('feature', :null_object => true)
+        scenario.feature = mock('feature').as_null_object
         @visitor.visit_feature_element(scenario)
 
         $y.should == nil

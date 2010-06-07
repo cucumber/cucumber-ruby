@@ -48,10 +48,6 @@ module Cucumber
         @options[:guess]
       end
 
-      def diff_enabled?
-        @options[:diff_enabled]
-      end
-
       def drb?
         @options[:drb]
       end

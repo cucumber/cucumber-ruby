@@ -120,6 +120,7 @@ module Cucumber
             "This option can be specified multiple times.") do |v|
             @options[:require] << v
             if(Cucumber::JRUBY && File.directory?(v))
+              require 'java'
               $CLASSPATH << v
             end
           end
@@ -244,9 +245,6 @@ module Cucumber
           end
           opts.on("-x", "--expand", "Expand Scenario Outline Tables in output.") do
             @options[:expand] = true
-          end
-          opts.on("--no-diff", "Disable diff output on failing expectations.") do
-            @options[:diff_enabled] = false
           end
           opts.on(DRB_FLAG, "Run features against a DRb server. (i.e. with the spork gem)") do
             @options[:drb] = true
