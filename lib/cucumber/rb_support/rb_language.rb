@@ -87,28 +87,17 @@ module Cucumber
         end.compact
       end
 
-      QUOTED = '"([^"]*)"'
-      QUOTED_PATTERN = Regexp.new(QUOTED)
-
-      INT = '(\d+)'
-      INT_PATTERN = Regexp.new(INT)
+      ARGUMENT_PATTERNS = ['"([^"]*)"', '(\d+)']
 
       def snippet_text(step_keyword, step_name, multiline_arg_class)
-        escaped = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
-        n = 0
-
-        escaped = escaped.gsub(QUOTED_PATTERN, QUOTED)
-        block_args = escaped.scan(QUOTED).map do |a|
-          n += 1
-          "arg#{n}"
-        end
-        
-        escaped = escaped.gsub(INT_PATTERN, INT)
-        block_args += escaped.scan(INT).map do |a|
-          n += 1
-          "arg#{n}"
+        snippet_pattern = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
+        arg_count = 0
+        ARGUMENT_PATTERNS.each do |pattern|
+          snippet_pattern = snippet_pattern.gsub(Regexp.new(pattern), pattern)
+          arg_count += snippet_pattern.scan(pattern).length
         end
 
+        block_args = (0...arg_count).map {|n| "arg#{n+1}"}
         block_args << multiline_arg_class.default_arg_name unless multiline_arg_class.nil?
         block_arg_string = block_args.empty? ? "" : " |#{block_args.join(", ")}|"
         multiline_class_comment = ""
@@ -116,7 +105,7 @@ module Cucumber
           multiline_class_comment = "# #{multiline_arg_class.default_arg_name} is a #{multiline_arg_class.to_s}\n  "
         end
 
-        "#{Gherkin::I18n.code_keyword_for(step_keyword)} /^#{escaped}$/ do#{block_arg_string}\n  #{multiline_class_comment}pending # express the regexp above with the code you wish you had\nend"
+        "#{Gherkin::I18n.code_keyword_for(step_keyword)} /^#{snippet_pattern}$/ do#{block_arg_string}\n  #{multiline_class_comment}pending # express the regexp above with the code you wish you had\nend"
       end
 
       def begin_rb_scenario(scenario)
