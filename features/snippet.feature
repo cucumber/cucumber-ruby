@@ -11,6 +11,7 @@ Feature: Snippets
         pending # express the regexp above with the code you wish you had
       end
       """
+
   Scenario: Snippet for undefined step with a step table
     When I run cucumber features/undefined_multiline_args.feature:9 -s
     Then the output should contain

@@ -87,15 +87,28 @@ module Cucumber
         end.compact
       end
 
+      QUOTED = '"([^"]*)"'
+      QUOTED_PATTERN = Regexp.new(QUOTED)
+
+      INT = '(\d+)'
+      INT_PATTERN = Regexp.new(INT)
+
       def snippet_text(step_keyword, step_name, multiline_arg_class)
         escaped = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
-        escaped = escaped.gsub(PARAM_PATTERN, ESCAPED_PARAM_PATTERN)
-
         n = 0
-        block_args = escaped.scan(ESCAPED_PARAM_PATTERN).map do |a|
+
+        escaped = escaped.gsub(QUOTED_PATTERN, QUOTED)
+        block_args = escaped.scan(QUOTED).map do |a|
           n += 1
           "arg#{n}"
         end
+        
+        escaped = escaped.gsub(INT_PATTERN, INT)
+        block_args += escaped.scan(INT).map do |a|
+          n += 1
+          "arg#{n}"
+        end
+
         block_args << multiline_arg_class.default_arg_name unless multiline_arg_class.nil?
         block_arg_string = block_args.empty? ? "" : " |#{block_args.join(", ")}|"
         multiline_class_comment = ""
@@ -150,9 +163,6 @@ module Cucumber
       end
 
       private
-
-      PARAM_PATTERN = /"([^"]*)"/
-      ESCAPED_PARAM_PATTERN = '"([^"]*)"'
 
       def create_world
         if(@world_proc)
