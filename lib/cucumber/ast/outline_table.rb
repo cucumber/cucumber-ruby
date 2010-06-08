@@ -5,6 +5,7 @@ module Cucumber
         super(raw)
         @scenario_outline = scenario_outline
         @cells_class = ExampleRow
+        init
       end
 
       def init

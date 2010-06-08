@@ -3,7 +3,8 @@ require 'cucumber/formatter/io'
 require 'fileutils'
 
 begin
-  require 'prawn'
+  require 'rubygems'
+  require 'prawn/core'
   require "prawn/layout"
 rescue LoadError => e
   e.message << "\nYou need the prawn gem. Please do 'gem install prawn'"
@@ -141,7 +142,7 @@ module Cucumber
 
       def step_name(keyword, step_match, status, source_indent, background)
         return if @hide_this_step
-        line = "#{keyword} #{encode(step_match.format_args("%s"))}"
+        line = "#{keyword} #{step_match.format_args("%s")}"
         colorize(line, status)
       end
 
@@ -176,7 +177,7 @@ module Cucumber
         s = %{"""\n#{string}\n"""}.indent(10)
         s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}
         s.each do |line|
-          keep_with { @doc.text(encode(line), :size => 8) }
+          keep_with { @doc.text(line, :size => 8) }
         end
       end
 
@@ -200,10 +201,6 @@ module Cucumber
       
       private
 
-      def encode(text) 
-        text #Obsoleted by recent cucumber and prawn
-      end
-      
       def colorize(text, status)
         keep_with do
           @doc.fill_color(@status_colors[status] || BLACK)
@@ -240,9 +237,7 @@ module Cucumber
       end
       
       def print_table(table, row_colors)
-        rows = table.rows.map { |row| row.map{ |cell| encode(cell) }}
-        headers = table.headers.map { |text| encode(text) }
-        @doc.table(rows, :headers => headers, :position => :center, :row_colors => row_colors)
+        @doc.table(table.rows, :headers => table.headers, :position => :center, :row_colors => row_colors)
       end
     end
   end

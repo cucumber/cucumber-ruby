@@ -1,5 +1,8 @@
 == In Git
 
+=== Bufixes
+* generate test report fails: ast/outline_table.rb fails in status() (#615 Aslak Hellesøy)
+
 === New Features
 * Undefined steps with integers (Given 3 cukes) will generate snippets like (Given /(\d+) cukes/). (Aslak Hellesøy)
 
