@@ -5,7 +5,7 @@ Jellemző: Összeadás
   két szám összegét szeretném kiszámoltatni.
 
   Forgatókönyv vázlat: Két szám összeadása
-    Ha beütök a számológépbe egy <be_1>-est
+    Amennyiben beütök a számológépbe egy <be_1>-est
     És beütök a számológépbe egy <be_2>-est
     Majd megnyomom az <gomb> gombot
     Akkor eredményül <ki>-t kell kapnom
