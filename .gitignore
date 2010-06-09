@@ -2,6 +2,7 @@ nbproject
 coverage
 pkg
 doc
+tmp
 .yardoc
 *.log
 *.pid

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2010-06-06}
+  s.date = %q{2010-06-08}
   s.default_executable = %q{cucumber}
   s.description = %q{Behaviour Driven Development with elegance and joy}
   s.email = %q{cukes@googlegroups.com}
@@ -106,8 +106,8 @@ Gem::Specification.new do |s|
      "examples/i18n/he/lib/calculator.rb",
      "examples/i18n/hu/.gitignore",
      "examples/i18n/hu/Rakefile",
-     "examples/i18n/hu/features/addition.feature",
-     "examples/i18n/hu/features/division.feature",
+     "examples/i18n/hu/features/osszeadas.feature",
+     "examples/i18n/hu/features/osztas.feature",
      "examples/i18n/hu/features/step_definitons/calculator_steps.rb",
      "examples/i18n/hu/lib/calculator.rb",
      "examples/i18n/id/.gitignore",
@@ -229,7 +229,6 @@ Gem::Specification.new do |s|
      "examples/json/features/pystring.feature",
      "examples/json/features/step_definitions/steps.rb",
      "examples/json/features/tables.feature",
-     "examples/json/tmp/out.json",
      "examples/junit/features/one_passing_one_failing.feature",
      "examples/junit/features/pending.feature",
      "examples/junit/features/step_definitions/steps.rb",
@@ -532,6 +531,7 @@ Gem::Specification.new do |s|
      "spec/cucumber/formatter/junit_spec.rb",
      "spec/cucumber/formatter/progress_spec.rb",
      "spec/cucumber/formatter/spec_helper.rb",
+     "spec/cucumber/rb_support/rb_language_spec.rb",
      "spec/cucumber/rb_support/rb_step_definition_spec.rb",
      "spec/cucumber/rb_support/regexp_argument_matcher_spec.rb",
      "spec/cucumber/sell_cucumbers.feature",
@@ -588,6 +588,7 @@ for important information about this release. Happy cuking!
      "spec/cucumber/formatter/junit_spec.rb",
      "spec/cucumber/formatter/progress_spec.rb",
      "spec/cucumber/formatter/spec_helper.rb",
+     "spec/cucumber/rb_support/rb_language_spec.rb",
      "spec/cucumber/rb_support/rb_step_definition_spec.rb",
      "spec/cucumber/rb_support/regexp_argument_matcher_spec.rb",
      "spec/cucumber/step_match_spec.rb",
@@ -693,7 +694,6 @@ for important information about this release. Happy cuking!
      "examples/ruby2python/features/support/env.rb",
      "examples/self_test/features/step_definitions/sample_steps.rb",
      "examples/self_test/features/support/env.rb",
-     "examples/self_test/tmp/features/step_definitions/steps.rb",
      "examples/sinatra/app.rb",
      "examples/sinatra/features/step_definitions/add_steps.rb",
      "examples/sinatra/features/support/env.rb",
@@ -733,10 +733,9 @@ for important information about this release. Happy cuking!
       s.add_runtime_dependency(%q<diff-lcs>, [">= 1.1.2"])
       s.add_runtime_dependency(%q<json_pure>, [">= 1.4.3"])
       s.add_development_dependency(%q<nokogiri>, [">= 1.4.2"])
-      s.add_development_dependency(%q<prawn>, ["= 0.6.3"])
-      s.add_development_dependency(%q<prawn-format>, ["= 0.2.3"])
-      s.add_development_dependency(%q<htmlentities>, [">= 4.2.1"])
-      s.add_development_dependency(%q<rspec>, [">= 2.0.0.beta.10"])
+      s.add_development_dependency(%q<prawn>, ["= 0.8.4"])
+      s.add_development_dependency(%q<prawn-layout>, ["= 0.8.4"])
+      s.add_development_dependency(%q<rspec>, [">= 2.0.0.beta.11"])
       s.add_development_dependency(%q<syntax>, [">= 1.0.0"])
       s.add_development_dependency(%q<spork>, [">= 0.8.3"])
     else
@@ -746,10 +745,9 @@ for important information about this release. Happy cuking!
       s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
       s.add_dependency(%q<json_pure>, [">= 1.4.3"])
       s.add_dependency(%q<nokogiri>, [">= 1.4.2"])
-      s.add_dependency(%q<prawn>, ["= 0.6.3"])
-      s.add_dependency(%q<prawn-format>, ["= 0.2.3"])
-      s.add_dependency(%q<htmlentities>, [">= 4.2.1"])
-      s.add_dependency(%q<rspec>, [">= 2.0.0.beta.10"])
+      s.add_dependency(%q<prawn>, ["= 0.8.4"])
+      s.add_dependency(%q<prawn-layout>, ["= 0.8.4"])
+      s.add_dependency(%q<rspec>, [">= 2.0.0.beta.11"])
       s.add_dependency(%q<syntax>, [">= 1.0.0"])
       s.add_dependency(%q<spork>, [">= 0.8.3"])
     end
@@ -760,10 +758,9 @@ for important information about this release. Happy cuking!
     s.add_dependency(%q<diff-lcs>, [">= 1.1.2"])
     s.add_dependency(%q<json_pure>, [">= 1.4.3"])
     s.add_dependency(%q<nokogiri>, [">= 1.4.2"])
-    s.add_dependency(%q<prawn>, ["= 0.6.3"])
-    s.add_dependency(%q<prawn-format>, ["= 0.2.3"])
-    s.add_dependency(%q<htmlentities>, [">= 4.2.1"])
-    s.add_dependency(%q<rspec>, [">= 2.0.0.beta.10"])
+    s.add_dependency(%q<prawn>, ["= 0.8.4"])
+    s.add_dependency(%q<prawn-layout>, ["= 0.8.4"])
+    s.add_dependency(%q<rspec>, [">= 2.0.0.beta.11"])
     s.add_dependency(%q<syntax>, [">= 1.0.0"])
     s.add_dependency(%q<spork>, [">= 0.8.3"])
   end
