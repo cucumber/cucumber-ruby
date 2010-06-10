@@ -69,7 +69,7 @@ module Cucumber
 
       def step_name(keyword, step_match, status, source_indent, background)
         @current_step[:status]          = status
-        @current_step[:keyword]         = "#{keyword}"
+        @current_step[:keyword]         = keyword
         @current_step[:name]            = "#{step_match.name || step_match.format_args}"
         @current_step[:file_colon_line] = step_match.file_colon_line
       end
