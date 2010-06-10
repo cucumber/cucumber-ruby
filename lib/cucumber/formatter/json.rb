@@ -127,6 +127,17 @@ module Cucumber
         @io.flush
       end
 
+      def embed(file, mime_type)
+        obj = @current_step || @current_object
+        obj[:embedded] ||= []
+
+        obj[:embedded] << {
+          :file      => file,
+          :mime_type => mime_type,
+          :data      => [File.read(file)].pack("m*") # base64
+        }
+      end
+
       private
 
       def json_string

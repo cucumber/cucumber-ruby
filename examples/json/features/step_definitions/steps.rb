@@ -25,3 +25,8 @@ end
 Given /^I pass a table argument/ do |table|
 
 end
+
+Given /^I embed a screenshot/ do
+  File.open("tmp/screenshot.png", "w") { |file| file << "foo" }
+  embed "tmp/screenshot.png", "image/png"
+end

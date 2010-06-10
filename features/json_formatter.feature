@@ -288,3 +288,46 @@ Feature: JSON output formatter
       ]
     }
     """
+
+  Scenario: embedding screenshot
+    When I run cucumber --format json_pretty features/embed.feature
+    Then STDERR should be empty
+    And it should pass with JSON
+    """
+    {
+      "features": [
+        {
+          "file": "features/embed.feature",
+          "name": "A screenshot feature",
+          "tags": [
+
+          ],
+          "elements": [
+            {
+              "tags": [
+
+              ],
+              "keyword": "Scenario",
+              "name": "",
+              "file_colon_line": "features/embed.feature:3",
+              "steps": [
+                {
+                  "status": "passed",
+                  "keyword": "Given ",
+                  "name": "I embed a screenshot",
+                  "file_colon_line": "features/step_definitions/steps.rb:29",
+                  "embedded": [
+                    {
+                      "file": "tmp/screenshot.png",
+                      "mime_type": "image/png",
+                      "data": "Zm9v\n"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+    """
