@@ -40,8 +40,7 @@ Feature: JSON output formatter
                   {
                     "status": "passed",
                     "keyword": "Given ",
-                    "step": "a passing step",
-                    "name": "Given a passing step",
+                    "name": "a passing step",
                     "file_colon_line": "features/step_definitions/steps.rb:1"
                   }
                 ]
@@ -65,8 +64,7 @@ Feature: JSON output formatter
                     },
                     "status": "failed",
                     "keyword": "Given ",
-                    "step": "a failing step",
-                    "name": "Given a failing step",
+                    "name": "a failing step",
                     "file_colon_line": "features/step_definitions/steps.rb:5"
                   }
                 ]
@@ -102,15 +100,13 @@ Feature: JSON output formatter
                   {
                     "status": "skipped",
                     "keyword": "Given ",
-                    "step": "I add <a> and <b>",
-                    "name": "Given I add <a> and <b>",
+                    "name": "I add <a> and <b>",
                     "file_colon_line": "features/step_definitions/steps.rb:13"
                   },
                   {
                     "status": "skipped",
                     "keyword": "When ",
-                    "step": "I pass a table argument",
-                    "name": "When I pass a table argument",
+                    "name": "I pass a table argument",
                     "file_colon_line": "features/step_definitions/steps.rb:25",
                     "table": [
                       {"cells":
@@ -124,8 +120,7 @@ Feature: JSON output formatter
                   {
                      "status": "skipped",
                      "keyword": "Then ",
-                     "step": "I the result should be <c>",
-                     "name": "Then I the result should be <c>",
+                     "name": "I the result should be <c>",
                      "file_colon_line": "features/step_definitions/steps.rb:17"
                   }
                 ],
@@ -222,8 +217,7 @@ Feature: JSON output formatter
                   {
                     "status": "passed",
                     "keyword": "Then ",
-                    "step": "I should see",
-                    "name": "Then I should see",
+                    "name": "I should see",
                     "file_colon_line": "features/step_definitions/steps.rb:21",
                     "py_string": "a string"
                   }
@@ -253,8 +247,7 @@ Feature: JSON output formatter
               {
                 "status": "passed",
                 "keyword": "Given ",
-                "step": "a passing step",
-                "name": "Given a passing step",
+                "name": "a passing step",
                 "file_colon_line": "features/step_definitions/steps.rb:1"
               }
             ]
@@ -271,8 +264,7 @@ Feature: JSON output formatter
                 {
                   "status": "passed",
                   "keyword": "Given ",
-                  "step": "a passing step",
-                  "name": "Given a passing step",
+                  "name": "a passing step",
                   "file_colon_line": "features/step_definitions/steps.rb:1"
                 },
                 {
@@ -286,8 +278,7 @@ Feature: JSON output formatter
                   },
                   "status": "failed",
                   "keyword": "Given ",
-                  "step": "a failing step",
-                  "name": "Given a failing step",
+                  "name": "a failing step",
                   "file_colon_line": "features/step_definitions/steps.rb:5"
                 }
               ]
