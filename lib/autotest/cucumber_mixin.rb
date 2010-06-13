@@ -79,7 +79,7 @@ module Autotest::CucumberMixin
       begin
         open("| #{cmd}", "r") do |f|
           until f.eof? do
-            c = f.getc
+            c = f.getc or break
             if RUBY_VERSION >= "1.9" then
               print c
             else
