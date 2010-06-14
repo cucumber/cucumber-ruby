@@ -39,7 +39,7 @@ module Cucumber
           @rows = []
         end
 
-        def uri(uri)
+        def location(uri, offset)
         end
 
         def row(row, line_number)
@@ -61,10 +61,10 @@ module Cucumber
         "table"
       end
 
-      def self.parse(text, uri)
+      def self.parse(text, uri, offset)
         builder = Builder.new
         lexer = Gherkin::I18nLexer.new(builder)
-        lexer.scan(text, uri)
+        lexer.scan(text, uri, offset)
         new(builder.rows)
       end
 

@@ -229,7 +229,7 @@ module Cucumber
             | 55555     | 666666      | 7777777     | 88888888     |
             | 999999999 | 0000000000  | 01010101010 | 121212121212 |
             | 4000      | ABC         | DEF         | 50000        |
-          })
+          }, __FILE__, __LINE__)
           
           t2 = table(%{
             | a     | 4444     | 1         | 
@@ -237,7 +237,7 @@ module Cucumber
             | ccc   | xxxxxxxx | 999999999 | 
             | dddd  | 4000     | 300       |
             | e     | 50000    | 4000      |
-          })
+          }, __FILE__, __LINE__)
           lambda{t1.diff!(t2)}.should raise_error
           t1.to_s(:indent => 12, :color => false).should == %{
             |     1         | (-) 22         | (-) 333         |     4444         | (+) a    |
@@ -254,7 +254,7 @@ module Cucumber
             |a|b|c|
             |d|e|f|
             |g|h|i|
-          })
+          }, __FILE__, __LINE__)
           t.diff!(t.dup)
           t.to_s(:indent => 12, :color => false).should == %{
             |     a |     b |     c |
@@ -350,14 +350,14 @@ module Cucumber
             @t = table(%{
               | a | b |
               | c | d |
-            })
+            }, __FILE__, __LINE__)
             @t.should_not == nil
           end
           
           it "should raise on missing rows" do
             t = table(%{
               | a | b |
-            })
+            }, __FILE__, __LINE__)
             lambda { @t.dup.diff!(t) }.should raise_error
             lambda { @t.dup.diff!(t, :missing_row => false) }.should_not raise_error
           end
@@ -367,7 +367,7 @@ module Cucumber
               | a | b |
               | c | d |
               | e | f |
-            })
+            }, __FILE__, __LINE__)
             lambda { @t.dup.diff!(t) }.should raise_error
             lambda { @t.dup.diff!(t, :surplus_row => false) }.should_not raise_error
           end
@@ -376,7 +376,7 @@ module Cucumber
             t1 = table(%{
               | row_1 | row_2 |
               | four  | 4     |
-            })
+            }, __FILE__, __LINE__)
             t2 = table(%{
               | row_1 | row_2 |
               | one   | 1     |
@@ -384,7 +384,7 @@ module Cucumber
               | three | 3     |
               | four  | 4     |
               | five  | 5     |
-            })
+            }, __FILE__, __LINE__)
             lambda { t1.dup.diff!(t2) }.should raise_error
 
             begin
@@ -400,7 +400,7 @@ module Cucumber
             t = table(%{
               | a |
               | c |
-            })
+            }, __FILE__, __LINE__)
             lambda { @t.dup.diff!(t) }.should raise_error
             lambda { @t.dup.diff!(t, :missing_col => false) }.should_not raise_error
           end
@@ -409,14 +409,14 @@ module Cucumber
             t = table(%{
               | a | b | x |
               | c | d | y |
-            })
+            }, __FILE__, __LINE__)
             lambda { @t.dup.diff!(t) }.should_not raise_error
             lambda { @t.dup.diff!(t, :surplus_col => true) }.should raise_error
           end
         end
 
-        def table(text, file=nil, line_offset=0)
-          Table.parse(text, __FILE__)
+        def table(text, file, offset)
+          Table.parse(text, file, offset)
         end
       end
 

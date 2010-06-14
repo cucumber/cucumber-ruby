@@ -192,7 +192,7 @@ module Cucumber
     def invoke_steps(steps_text, i18n, file_colon_line)
       file, line = file_colon_line.split(':')
       lexer = i18n.lexer(Gherkin::Parser::Parser.new(StepInvoker.new(self), true, 'steps'))
-      lexer.scan(steps_text, file)
+      lexer.scan(steps_text, file, line)
     end
 
     class StepInvoker
@@ -200,7 +200,7 @@ module Cucumber
         @step_mother = step_mother
       end
 
-      def uri(uri)
+      def location(uri, offset)
       end
 
       def step(keyword, name, line)
@@ -255,7 +255,7 @@ module Cucumber
       if Array === text_or_table
         Ast::Table.new(text_or_table)
       else
-        Ast::Table.parse(text_or_table, file)
+        Ast::Table.parse(text_or_table, file, line_offset)
       end
     end
 

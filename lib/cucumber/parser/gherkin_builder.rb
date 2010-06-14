@@ -102,11 +102,11 @@ module Cucumber
 
       def matrix(gherkin_table)
         gherkin_table.map do |gherkin_row|
-          row = gherkin_row["cells"]
+          row = gherkin_row.cells
           class << row
             attr_accessor :line
           end
-          row.line = gherkin_row["line"]
+          row.line = gherkin_row.line
           row
         end
       end

@@ -35,7 +35,7 @@ module Cucumber
 
       begin
         s = ENV['FILTER_PML_CALLOUT'] ? source.gsub(C_CALLOUT, '') : source
-        lexer.scan(s, @path)
+        lexer.scan(s, @path, 0)
         ast = builder.ast
         return nil if ast.nil? # Filter caused nothing to match
         ast.language = lexer.i18n_language
