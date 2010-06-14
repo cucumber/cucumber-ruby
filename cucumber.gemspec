@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.version = "0.8.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Aslak Helles\303\270y"]
+  s.authors = ["Aslak Hellesøy"]
   s.date = %q{2010-06-14}
   s.default_executable = %q{cucumber}
   s.description = %q{Behaviour Driven Development with elegance and joy}

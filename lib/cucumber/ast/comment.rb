@@ -9,7 +9,6 @@ module Cucumber
     #
     class Comment #:nodoc:
       def initialize(value)
-        raise "?????" if Array === value
         @value = value
       end
 

@@ -1,4 +1,5 @@
 require 'cucumber/ast'
+require 'gherkin/rubify'
 
 module Cucumber
   module Parser
@@ -6,6 +7,7 @@ module Cucumber
     # "legacy" AST. It will be replaced later when we have a new "clean"
     # AST.
     class GherkinBuilder
+      include Gherkin::Rubify
 
       def ast
         @feature || @multiline_arg
@@ -76,6 +78,7 @@ module Cucumber
 
       def step(comments, keyword, name, line, multiline_arg, status, exception, arguments, stepdef_location)
         @table_owner = Ast::Step.new(line, keyword, name)
+        multiline_arg = rubify(multiline_arg)
         case(multiline_arg)
         when String
           @table_owner.multiline_arg = Ast::PyString.new(multiline_arg)
