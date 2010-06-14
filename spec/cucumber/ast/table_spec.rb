@@ -416,7 +416,7 @@ module Cucumber
         end
 
         def table(text, file=nil, line_offset=0)
-          Table.parse(text)
+          Table.parse(text, __FILE__)
         end
       end
 

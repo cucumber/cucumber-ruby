@@ -11,33 +11,23 @@ module Cucumber
         @feature || @multiline_arg
       end
 
-      def tag(name, line)
-        @tags ||= []
-        @tags << name
-      end
-
-      def comment(content, line)
-        @comments ||= []
-        @comments << content
-      end
-
-      def feature(keyword, name, line)
+      def feature(comments, tags, keyword, name, description, uri)
         @feature = Ast::Feature.new(
           nil, 
-          Ast::Comment.new(grab_comments!('')), 
-          Ast::Tags.new(nil, grab_tags!('')),
+          Ast::Comment.new(comments.join("\n")), 
+          Ast::Tags.new(nil, tags),
           keyword,
-          name,
+          legacy_name_for(name, description),
           []
         )
       end
 
-      def background(keyword, name, line)
+      def background(comments, keyword, name, description, line)
         @background = Ast::Background.new(
-          Ast::Comment.new(grab_comments!('')), 
+          Ast::Comment.new(comments.join("\n")), 
           line, 
           keyword, 
-          name, 
+          legacy_name_for(name, description), 
           steps=[]
         )
         @feature.background = @background
@@ -45,15 +35,14 @@ module Cucumber
         @step_container = @background
       end
 
-      def scenario(keyword, name, line)
-        grab_table!
+      def scenario(comments, tags, keyword, name, description, line)
         scenario = Ast::Scenario.new(
           @background, 
-          Ast::Comment.new(grab_comments!('')), 
-          Ast::Tags.new(nil, grab_tags!('')), 
+          Ast::Comment.new(comments.join("\n")), 
+          Ast::Tags.new(nil, tags), 
           line, 
           keyword, 
-          name, 
+          legacy_name_for(name, description), 
           steps=[]
         )
         @feature.add_feature_element(scenario)
@@ -61,15 +50,14 @@ module Cucumber
         @step_container = scenario
       end
 
-      def scenario_outline(keyword, name, line)
-        grab_table!
+      def scenario_outline(comments, tags, keyword, name, description, line)
         scenario_outline = Ast::ScenarioOutline.new(
           @background, 
-          Ast::Comment.new(grab_comments!('')), 
-          Ast::Tags.new(nil, grab_tags!('')), 
+          Ast::Comment.new(comments.join("\n")), 
+          Ast::Tags.new(nil, tags), 
           line, 
           keyword, 
-          name, 
+          legacy_name_for(name, description), 
           steps=[],
           example_sections=[]
         )
@@ -81,64 +69,35 @@ module Cucumber
         @step_container = scenario_outline
       end
 
-      def examples(keyword, name, line)
-        grab_table!
-        @examples_fields = [Ast::Comment.new(grab_comments!('')), line, keyword, name]
+      def examples(comments, tags, keyword, name, description, line, examples_table)
+        examples_fields = [Ast::Comment.new(comments.join("\n")), line, keyword, name, examples_table]
+        @step_container.add_examples(examples_fields)
       end
 
-      def step(keyword, name, line)
-        grab_table!
+      def step(comments, keyword, name, line, multiline_arg, status, exception, arguments, stepdef_location)
         @table_owner = Ast::Step.new(line, keyword, name)
+        case(multiline_arg)
+        when String
+          @table_owner.multiline_arg = Ast::PyString.new(multiline_arg)
+        when Array
+          @table_owner.multiline_arg = Ast::Table.new(multiline_arg)
+        end
         @step_container.add_step(@table_owner)
       end
 
-      def row(row, line)
-        @rows ||= []
-        @rows << row
-        class << row
-          attr_accessor :line
-        end
-        row.line = line
-      end
-
-      def py_string(string, line)
-        @multiline_arg = Ast::PyString.new(string)
-        @table_owner.multiline_arg = @multiline_arg if @table_owner
-      end
-
       def eof
-        grab_table!
       end
 
       def syntax_error(state, event, legal_events, line)
         # raise "SYNTAX ERROR"
       end
-
+      
     private
-
-      def grab_table!
-        return if @rows.nil? 
-        if @examples_fields
-          @examples_fields << @rows
-          @step_container.add_examples(@examples_fields)
-          @examples_fields = nil
-        else
-          @multiline_arg = Ast::Table.new(@rows)
-          @table_owner.multiline_arg = @multiline_arg if @table_owner
-        end
-        @rows = nil
-      end
-
-      def grab_tags!(indent)
-        tags = @tags ? @tags : []
-        @tags = nil
-        tags
-      end
-
-      def grab_comments!(indent)
-        comments = @comments ? indent + @comments.join("\n#{indent}") : ''
-        @comments = nil
-        comments
+    
+      def legacy_name_for(name, description)
+        s = name
+        s += "\n#{description}" if description != ""
+        s
       end
     end
   end

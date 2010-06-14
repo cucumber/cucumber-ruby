@@ -1,5 +1,6 @@
 require 'cucumber/parser/gherkin_builder'
 require 'gherkin/parser/filter_listener'
+require 'gherkin/parser/formatter_listener'
 require 'gherkin/parser/parser'
 require 'gherkin/i18n_lexer'
 
@@ -26,14 +27,15 @@ module Cucumber
     def parse(step_mother, options)
       filters = @lines || options.filters
 
-      builder         = Cucumber::Parser::GherkinBuilder.new
-      filter_listener = Gherkin::Parser::FilterListener.new(builder, filters)
-      parser          = Gherkin::Parser::Parser.new(filter_listener, true, "root")
-      lexer           = Gherkin::I18nLexer.new(parser, false)
+      builder            = Cucumber::Parser::GherkinBuilder.new
+      formatter_listener = Gherkin::Parser::FormatterListener.new(builder)
+      filter_listener    = Gherkin::Parser::FilterListener.new(formatter_listener, filters)
+      parser             = Gherkin::Parser::Parser.new(filter_listener, true, "root")
+      lexer              = Gherkin::I18nLexer.new(parser, false)
 
       begin
         s = ENV['FILTER_PML_CALLOUT'] ? source.gsub(C_CALLOUT, '') : source
-        lexer.scan(s)
+        lexer.scan(s, @path)
         ast = builder.ast
         return nil if ast.nil? # Filter caused nothing to match
         ast.language = lexer.i18n_language
