@@ -24,7 +24,7 @@ module Cucumber
 
       # See StepMother#invoke_steps
       def steps(steps_text)
-        @__cucumber_step_mother.invoke_steps(steps_text, @__natural_language)
+        @__cucumber_step_mother.invoke_steps(steps_text, @__natural_language, caller[0])
       end
 
       # See StepMother#table

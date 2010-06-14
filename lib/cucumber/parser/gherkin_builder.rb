@@ -70,7 +70,7 @@ module Cucumber
       end
 
       def examples(comments, tags, keyword, name, description, line, examples_table)
-        examples_fields = [Ast::Comment.new(comments.join("\n")), line, keyword, name, examples_table]
+        examples_fields = [Ast::Comment.new(comments.join("\n")), line, keyword, legacy_name_for(name, description), matrix(examples_table)]
         @step_container.add_examples(examples_fields)
       end
 
@@ -80,7 +80,7 @@ module Cucumber
         when String
           @table_owner.multiline_arg = Ast::PyString.new(multiline_arg)
         when Array
-          @table_owner.multiline_arg = Ast::Table.new(multiline_arg)
+          @table_owner.multiline_arg = Ast::Table.new(matrix(multiline_arg))
         end
         @step_container.add_step(@table_owner)
       end
@@ -98,6 +98,17 @@ module Cucumber
         s = name
         s += "\n#{description}" if description != ""
         s
+      end
+
+      def matrix(gherkin_table)
+        gherkin_table.map do |gherkin_row|
+          row = gherkin_row["cells"]
+          class << row
+            attr_accessor :line
+          end
+          row.line = gherkin_row["line"]
+          row
+        end
       end
     end
   end

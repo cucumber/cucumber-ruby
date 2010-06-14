@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2010-06-08}
+  s.date = %q{2010-06-14}
   s.default_executable = %q{cucumber}
   s.description = %q{Behaviour Driven Development with elegance and joy}
   s.email = %q{cukes@googlegroups.com}
@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.files = [
     ".gitattributes",
      ".gitignore",
+     ".rspec",
      "Caliper.yml",
      "History.txt",
      "LICENSE",
@@ -225,6 +226,7 @@ Gem::Specification.new do |s|
      "examples/i18n/zh-TW/features/step_definitons/calculator_steps.rb",
      "examples/i18n/zh-TW/lib/calculator.rb",
      "examples/json/features/background.feature",
+     "examples/json/features/embed.feature",
      "examples/json/features/one_passing_one_failing.feature",
      "examples/json/features/pystring.feature",
      "examples/json/features/step_definitions/steps.rb",
@@ -694,6 +696,7 @@ for important information about this release. Happy cuking!
      "examples/ruby2python/features/support/env.rb",
      "examples/self_test/features/step_definitions/sample_steps.rb",
      "examples/self_test/features/support/env.rb",
+     "examples/self_test/tmp/features/step_definitions/steps.rb",
      "examples/sinatra/app.rb",
      "examples/sinatra/features/step_definitions/add_steps.rb",
      "examples/sinatra/features/support/env.rb",
