@@ -15,7 +15,11 @@ body {
 .cucumber #cucumber-header, td #cucumber-header, th #cucumber-header {
   background: #65C400;
   color: #FFFFFF;
-  height: 5em;
+  height: 6em;
+}
+.cucumber #cucumber-header #expand-collapse p, td #cucumber-header #expand-collapse p, th #cucumber-header #expand-collapse p {
+  float: right;
+  margin: 0 0 0 10px;
 }
 .cucumber .scenario h3, td .scenario h3, th .scenario h3 {
   font-size: 11px;
@@ -29,7 +33,7 @@ body {
   margin: 0px 10px 0px 10px;
   padding: 10px;
   font-family: "Lucida Grande", Helvetica, sans-serif;
-  font-size: 1.8em;
+  font-size: 2em;
   position: absolute;
 }
 .cucumber h4, td h4, th h4 {

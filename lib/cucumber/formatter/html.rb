@@ -67,6 +67,10 @@ module Cucumber
           @builder.div(:id => 'summary') do
             @builder.p('',:id => 'totals')
             @builder.p('',:id => 'duration')
+            @builder.div(:id => 'expand-collapse') do
+              @builder.p('Expand All', :id => 'expander')
+              @builder.p('Collapse All', :id => 'collapser')
+            end
           end
         end
       end
@@ -161,7 +165,7 @@ module Cucumber
       def scenario_name(keyword, name, file_colon_line, source_indent)
         @listing_background = false
         @builder.h3(:id => "scenario_#{@scenario_number}") do
-          @builder.span(keyword, :class => 'keyword')
+          @builder.span(keyword + ':', :class => 'keyword')
           @builder.text!(' ')
           @builder.span(name, :class => 'val')
         end
@@ -456,25 +460,50 @@ module Cucumber
 
       def inline_js
         @builder.script(:type => 'text/javascript') do
+          @builder << inline_jquery
           @builder << inline_js_content
         end
       end
 
+      def inline_jquery
+        File.read(File.dirname(__FILE__) + '/jquery-min.js')
+      end
+      
       def inline_js_content
         <<-EOF
-      function moveProgressBar(percentDone) {
-      document.getElementById("cucumber-header").style.width = percentDone +"%";
-      }
-      function makeRed(element_id) {
-      document.getElementById(element_id).style.background = '#C40D0D';
-      document.getElementById(element_id).style.color = '#FFFFFF';
-      }
 
-      function makeYellow(element_id) {
-      document.getElementById(element_id).style.background = '#FAF834';
-      document.getElementById(element_id).style.color = '#000000';
-      }
-      EOF
+  SCENARIOS = "h3[id^='scenario_']";
+  
+  $(document).ready(function() {
+    $(SCENARIOS).css('cursor', 'pointer');
+    $(SCENARIOS).click(function() {
+      $(this).siblings().toggle(250);
+    });
+    
+    $("#collapser").css('cursor', 'pointer');
+    $("#collapser").click(function() {
+      $(SCENARIOS).siblings().hide();
+    });
+    
+    $("#expander").css('cursor', 'pointer');
+    $("#expander").click(function() {
+      $(SCENARIOS).siblings().show();
+    });
+  })
+  
+  function moveProgressBar(percentDone) {
+    $("cucumber-header").css('width', percentDone +"%");
+  }
+  function makeRed(element_id) {
+    $('#'+element_id).css('background', '#C40D0D');
+    $('#'+element_id).css('color', '#FFFFFF');
+  }
+  function makeYellow(element_id) {
+    $('#'+element_id).css('background', '#FAF834');
+    $('#'+element_id).css('color', '#000000');
+  }
+  
+        EOF
       end
 
       def move_progress
