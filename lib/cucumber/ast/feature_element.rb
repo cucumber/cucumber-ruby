@@ -62,7 +62,7 @@ module Cucumber
       end
 
       def source_tag_names
-        (@tags.tag_names + (@feature ? @feature.source_tag_names : [])).uniq
+        (@tags.tag_names.to_a + (@feature ? @feature.source_tag_names.to_a : [])).uniq
       end
 
       def tagged_with?(tag)

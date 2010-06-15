@@ -192,7 +192,7 @@ module Cucumber
     def invoke_steps(steps_text, i18n, file_colon_line)
       file, line = file_colon_line.split(':')
       lexer = i18n.lexer(Gherkin::Parser::Parser.new(StepInvoker.new(self), true, 'steps'))
-      lexer.scan(steps_text, file, line)
+      lexer.scan(steps_text, file, line.to_i)
     end
 
     class StepInvoker

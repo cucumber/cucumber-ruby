@@ -627,6 +627,7 @@ Feature: Cucumber command line
 
   Scenario: Run feature elements which match a name using -n
     When I run cucumber -n Pisang -q features/
+    Then STDERR should be empty
     Then it should pass with
       """
       Feature: search examples
