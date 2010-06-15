@@ -48,11 +48,9 @@ module Cucumber
           visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
 
           skip_invoke! if @background.failed?
-          visitor.step_mother.around(self, skip_hooks?) do
-            visitor.step_mother.before_and_after(self, skip_hooks?) do
-              skip_invoke! if failed?
-              visitor.visit_steps(@steps)
-            end
+          visitor.step_mother.with_hooks(self, skip_hooks?) do
+            skip_invoke! if failed?
+            visitor.visit_steps(@steps)
           end
           @executed = true
         end
