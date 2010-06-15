@@ -186,3 +186,47 @@ Feature: Around hooks
       1 step (1 passed)
 
       """
+
+  Scenario: Around hooks with scenario outlines
+    Given a standard Cucumber project directory structure
+    And a file named "features/step_definitions/steps.rb" with:
+      """
+      Then /^the hook is called$/ do
+        $hook_called.should == true
+      end
+      """
+    And a file named "features/support/hooks.rb" with:
+      """
+      Around do |scenario, block|
+        $hook_called = true
+        block.call
+      end
+      """
+    And a file named "features/f.feature" with:
+      """
+      Feature: Around hooks with scenario outlines
+        Scenario Outline: using hook
+          Then the hook is called
+
+          Examples:
+            | Number |
+            | one    |
+            | two    |
+      """
+    When I run cucumber features/f.feature
+    Then it should pass with
+      """
+      Feature: Around hooks with scenario outlines
+
+        Scenario Outline: using hook # features/f.feature:2
+          Then the hook is called    # features/step_definitions/steps.rb:1
+
+          Examples: 
+            | Number |
+            | one    |
+            | two    |
+
+      2 scenarios (2 passed)
+      2 steps (2 passed)
+
+      """
