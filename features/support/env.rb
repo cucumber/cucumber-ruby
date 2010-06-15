@@ -138,6 +138,7 @@ Before do
 end
 
 After do
+  FileUtils.rm_rf CucumberWorld.working_dir unless ENV['KEEP_FILES']
   terminate_background_jobs
   restore_original_env_vars
 end
