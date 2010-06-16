@@ -730,7 +730,7 @@ for important information about this release. Happy cuking!
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<gherkin>, ["~> 2.0.0"])
+      s.add_runtime_dependency(%q<gherkin>, ["~> 2.0.2"])
       s.add_runtime_dependency(%q<term-ansicolor>, ["~> 1.0.4"])
       s.add_runtime_dependency(%q<builder>, ["~> 2.1.2"])
       s.add_runtime_dependency(%q<diff-lcs>, ["~> 1.1.2"])
@@ -742,7 +742,7 @@ for important information about this release. Happy cuking!
       s.add_development_dependency(%q<syntax>, ["~> 1.0.0"])
       s.add_development_dependency(%q<spork>, ["~> 0.8.3"])
     else
-      s.add_dependency(%q<gherkin>, ["~> 2.0.0"])
+      s.add_dependency(%q<gherkin>, ["~> 2.0.2"])
       s.add_dependency(%q<term-ansicolor>, ["~> 1.0.4"])
       s.add_dependency(%q<builder>, ["~> 2.1.2"])
       s.add_dependency(%q<diff-lcs>, ["~> 1.1.2"])
@@ -755,7 +755,7 @@ for important information about this release. Happy cuking!
       s.add_dependency(%q<spork>, ["~> 0.8.3"])
     end
   else
-    s.add_dependency(%q<gherkin>, ["~> 2.0.0"])
+    s.add_dependency(%q<gherkin>, ["~> 2.0.2"])
     s.add_dependency(%q<term-ansicolor>, ["~> 1.0.4"])
     s.add_dependency(%q<builder>, ["~> 2.1.2"])
     s.add_dependency(%q<diff-lcs>, ["~> 1.1.2"])
