@@ -60,6 +60,11 @@ module Cucumber
         visitor.visit_examples_array(@examples_array) unless @examples_array.empty?
       end
 
+      def fail!(exception)
+        # Just a hack for https://rspec.lighthouseapp.com/projects/16211/tickets/413-scenario-outlines-that-fail-with-exception-exit-process
+        # Also see http://groups.google.com/group/cukes/browse_thread/thread/41cd567cb9df4bc3
+      end
+
       def skip_invoke!
         @examples_array.each{|examples| examples.skip_invoke!}
         @feature.next_feature_element(self) do |next_one|

@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
-  s.version = "0.8.2"
+  s.version = "0.8.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
@@ -555,7 +555,7 @@ Gem::Specification.new do |s|
 
                      (::)   U P G R A D I N G    (::)
 
-Thank you for installing cucumber-0.8.2.
+Thank you for installing cucumber-0.8.3.
 Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
 for important information about this release. Happy cuking!
 
