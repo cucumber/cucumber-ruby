@@ -25,7 +25,7 @@ module Cucumber
       end
 
       def before_tags(tags)
-        @current_object[:tags] = tags.tag_names
+        @current_object[:tags] = tags.tag_names.to_a
       end
 
       def before_background(background)
