@@ -1,8 +1,10 @@
 == 0.8.2 (2010-06-16)
 
+A quick release after 0.8.1 which most importantly fixes an issue with the gem's gemspec.
+
 === Bufixes
 * Call Around hooks for each example in scenario outlines. (John Firebaugh)
-* Remove extraneous tmp file from the gemspec. (Fernando Brito, Aslak Hellesøy)
+* Remove extraneous tmp file from the gemspec, which broke installation in some environments. (Fernando Brito, Aslak Hellesøy)
 * 0.8.1 fails on JRuby (#627 Aslak Hellesøy)
 
 === New Features
