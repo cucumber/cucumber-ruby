@@ -1,5 +1,9 @@
-gem 'therubyracer', '>=0.7.1'
-require 'v8'
+begin
+  require 'v8'
+rescue LoadError
+  gem 'therubyracer', '~> 0.7.1'
+  require 'v8'
+end
 
 require 'cucumber/js_support/js_snippets'
 
@@ -157,8 +161,8 @@ module Cucumber
         @world
       end
 
-      def steps(steps_text)
-        @step_mother.invoke_steps(steps_text, @language)
+      def steps(steps_text, file_colon_line)
+        @step_mother.invoke_steps(steps_text, @language, file_colon_line)
       end
 
       private
