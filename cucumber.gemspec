@@ -462,6 +462,7 @@ Gem::Specification.new do |s|
      "lib/cucumber/formatter/duration.rb",
      "lib/cucumber/formatter/html.rb",
      "lib/cucumber/formatter/io.rb",
+     "lib/cucumber/formatter/jquery-min.js",
      "lib/cucumber/formatter/json.rb",
      "lib/cucumber/formatter/json_pretty.rb",
      "lib/cucumber/formatter/junit.rb",
