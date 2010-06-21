@@ -223,12 +223,12 @@ END_OF_MESSAGE
       it "issues a helpful error message when no YAML file exists and a profile is specified" do
         File.should_receive(:exist?).with('cucumber.yml').and_return(false)
 
-        expected_error = /cucumber.yml was not found.  Please refer to cucumber's documentation on defining profiles in cucumber.yml./
+        expected_error = /cucumber\.yml was not found/
         lambda{config.parse!(%w{--profile i_do_not_exist})}.should raise_error(expected_error)
       end
 
       it "issues a helpful error message when cucumber.yml is blank or malformed" do
-          expected_error_message = /cucumber.yml was found, but was blank or malformed. Please refer to cucumber's documentation on correct profile usage./
+          expected_error_message = /cucumber\.yml was found, but was blank or malformed. Please refer to cucumber's documentation on correct profile usage./
 
         ['', 'sfsadfs', "--- \n- an\n- array\n", "---dddfd"].each do |bad_input|
           given_cucumber_yml_defined_as(bad_input)

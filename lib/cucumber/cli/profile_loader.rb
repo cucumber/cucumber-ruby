@@ -52,7 +52,7 @@ Defined profiles in cucumber.yml:
       def cucumber_yml
         return @cucumber_yml if @cucumber_yml
         unless cucumber_yml_defined?
-          raise(ProfilesNotDefinedError,"cucumber.yml was not found.  Please refer to cucumber's documentation on defining profiles in cucumber.yml.  You must define a 'default' profile to use the cucumber command without any arguments.\nType 'cucumber --help' for usage.\n")
+          raise(ProfilesNotDefinedError,"cucumber.yml was not found.  Current directory is #{Dir.pwd}.  Please refer to cucumber's documentation on defining profiles in cucumber.yml.  You must define a 'default' profile to use the cucumber command without any arguments.\nType 'cucumber --help' for usage.\n")
         end
 
         require 'erb'
