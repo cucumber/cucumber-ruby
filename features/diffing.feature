@@ -12,12 +12,7 @@ Feature: Cucumber command line
         Scenario: Failing expectation
           Given failing expectation
             expected: "that",
-                 got: "this" (using ==)
-            Diff:
-            @@ -1,2 +1,2 @@
-            -that
-            +this
-             (RSpec::Expectations::ExpectationNotMetError)
+                 got: "this" (using ==) (RSpec::Expectations::ExpectationNotMetError)
             ./features/step_definitions/sample_steps.rb:63:in `/^failing expectation$/'
             features/failing_expectation.feature:4:in `Given failing expectation'
       
