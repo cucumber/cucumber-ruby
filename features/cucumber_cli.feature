@@ -588,6 +588,21 @@ Feature: Cucumber command line
 
        """
 
+   Scenario: Run with limited tag count using negative tag, blowing it via a tag that is not run
+     When I run cucumber -q features/tags_sample.feature --no-source --dry-run --tags ~@sample_one:1
+     Then STDERR should be empty
+     Then it should fail with
+       """
+       0 scenarios
+       0 steps
+
+       @sample_one occurred 3 times, but the limit was set to 1
+         features/tags_sample.feature:5
+         features/tags_sample.feature:9
+         features/tags_sample.feature:16
+
+       """
+
   Scenario: Reformat files with --autoformat
     When I run cucumber --autoformat tmp/formatted features
     Then STDERR should be empty
