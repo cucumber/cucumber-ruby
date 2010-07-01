@@ -119,7 +119,7 @@ Feature: backgrounds
     6 steps (1 failed, 5 skipped)
 
     """
-    And "examples/self_test/tmp/after.txt" should exist
+    And "fixtures/self_test/tmp/after.txt" should exist
 
   Scenario: run a feature with scenario outlines that has a background that fails
     When I run cucumber -q features/background/scenario_outline_failing_background.feature --require features

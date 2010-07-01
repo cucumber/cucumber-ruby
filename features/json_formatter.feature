@@ -13,7 +13,7 @@ Feature: JSON output formatter
     And it should fail with
       """
       """
-    And "examples/json/tmp/out.json" should match "^\{\"features\":\["
+    And "fixtures/json/tmp/out.json" should match "^\{\"features\":\["
 
   Scenario: one feature, one passing scenario, one failing scenario
     When I run cucumber --format json_pretty features/one_passing_one_failing.feature

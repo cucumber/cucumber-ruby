@@ -2,7 +2,7 @@
 require 'tempfile'
 
 Given /^I am in (.*)$/ do |example_dir_relative_path|
-  @current_dir = examples_dir(example_dir_relative_path)
+  @current_dir = fixtures_dir(example_dir_relative_path)
 end
 
 Given /^a standard Cucumber project directory structure$/ do

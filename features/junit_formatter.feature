@@ -12,7 +12,7 @@ Feature: JUnit output formatter
       """
 
       """
-    And "examples/junit/tmp/TEST-one_passing_one_failing.xml" with junit duration "0.005" should contain
+    And "fixtures/junit/tmp/TEST-one_passing_one_failing.xml" with junit duration "0.005" should contain
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite errors="0" failures="1" name="One passing scenario, one failing scenario" tests="2" time="0.005">
@@ -38,7 +38,7 @@ Feature: JUnit output formatter
       """
       
       """
-    And "examples/junit/tmp/TEST-pending.xml" with junit duration "0.009" should contain
+    And "fixtures/junit/tmp/TEST-pending.xml" with junit duration "0.009" should contain
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite errors="0" failures="0" name="Pending step" tests="0" time="0.009">
@@ -52,7 +52,7 @@ Feature: JUnit output formatter
       """
 
       """
-    And "examples/junit/tmp/TEST-pending.xml" with junit duration "0.000160" should contain
+    And "fixtures/junit/tmp/TEST-pending.xml" with junit duration "0.000160" should contain
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite errors="0" failures="1" name="Pending step" tests="1" time="0.000160">
@@ -73,8 +73,8 @@ Feature: JUnit output formatter
       """
       
       """
-    And "examples/junit/tmp/TEST-one_passing_one_failing.xml" should exist
-    And "examples/junit/tmp/TEST-pending.xml" should exist
+    And "fixtures/junit/tmp/TEST-one_passing_one_failing.xml" should exist
+    And "fixtures/junit/tmp/TEST-pending.xml" should exist
   
   Scenario: show correct error message if no --out is passed
     When I run cucumber --format junit features
