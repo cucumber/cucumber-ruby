@@ -8,5 +8,5 @@ Feature: Search
     When I search for "cucumber github"
     Then I should see
       """
-      written in Ruby
+      GitHub
       """
