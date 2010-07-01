@@ -1,3 +1,8 @@
+== In Git
+
+=== New features
+* Support for RSpec 2 doubles (mocks and stubs) (Aslak Hellesøy)
+
 == 0.8.3 (2010-06-16)
 
 Just a quick bugfix release.
