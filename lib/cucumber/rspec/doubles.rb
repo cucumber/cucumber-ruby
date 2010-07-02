@@ -8,6 +8,9 @@ Before do
 end
 
 After do
-  _verify_mocks
-  _teardown_mocks
+  begin
+    _verify_mocks
+  ensure
+    _teardown_mocks
+  end
 end
