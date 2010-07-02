@@ -3,10 +3,10 @@
 #
 # require 'rspec/core'
 # RSpec.configure do |c|
-#  c.mock_framework :rspec
-#  c.mock_framework :mocha
+#  c.mock_framework = :rspec
+#  c.mock_framework = :mocha
 #  c.mock_framework = :rr
-#  c.mock_framework :flexmock
+#  c.mock_framework = :flexmock
 # end
 
 require 'cucumber/rspec/doubles'
