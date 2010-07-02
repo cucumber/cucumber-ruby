@@ -1,6 +1,6 @@
 Feature: Mocking
   In order to test external stuff
-  I want to stub
+  I want to mock
 
   Scenario: Mock a transmogrifier
     Given I have a cardboard box
