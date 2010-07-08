@@ -1,6 +1,5 @@
 require 'cucumber/cli/profile_loader'
 require 'cucumber/formatter/ansicolor'
-require 'gherkin/parser/tag_expression'
 
 module Cucumber
   module Cli

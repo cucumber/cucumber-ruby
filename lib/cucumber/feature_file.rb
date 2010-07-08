@@ -1,6 +1,6 @@
 require 'cucumber/parser/gherkin_builder'
-require 'gherkin/parser/filter_listener'
-require 'gherkin/parser/formatter_listener'
+require 'gherkin/formatter/filter_formatter'
+require 'gherkin/listener/formatter_listener'
 require 'gherkin/parser/parser'
 require 'gherkin/i18n_lexer'
 
@@ -28,9 +28,9 @@ module Cucumber
       filters = @lines || options.filters
 
       builder            = Cucumber::Parser::GherkinBuilder.new
-      formatter_listener = Gherkin::Parser::FormatterListener.new(builder)
-      filter_listener    = Gherkin::Parser::FilterListener.new(formatter_listener, filters)
-      parser             = Gherkin::Parser::Parser.new(filter_listener, true, "root")
+      filter_formatter   = filters.empty? ? builder : Gherkin::Formatter::FilterFormatter.new(builder, filters)
+      formatter_listener = Gherkin::Listener::FormatterListener.new(filter_formatter)
+      parser             = Gherkin::Parser::Parser.new(formatter_listener, true, "root")
       lexer              = Gherkin::I18nLexer.new(parser, false)
 
       begin
