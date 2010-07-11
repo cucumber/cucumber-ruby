@@ -29,16 +29,13 @@ module Cucumber
 
       builder            = Cucumber::Parser::GherkinBuilder.new
       filter_formatter   = filters.empty? ? builder : Gherkin::Formatter::FilterFormatter.new(builder, filters)
-      formatter_listener = Gherkin::Listener::FormatterListener.new(filter_formatter)
-      parser             = Gherkin::Parser::Parser.new(formatter_listener, true, "root")
-      lexer              = Gherkin::I18nLexer.new(parser, false)
+      parser             = Gherkin::Parser::Parser.new(filter_formatter, true, "root", false)
 
       begin
-        s = ENV['FILTER_PML_CALLOUT'] ? source.gsub(C_CALLOUT, '') : source
-        lexer.scan(s, @path, 0)
+        parser.parse(source, @path, 0)
         ast = builder.ast
         return nil if ast.nil? # Filter caused nothing to match
-        ast.language = lexer.i18n_language
+        ast.language = parser.i18n_language
         ast.file = @path
         ast
       rescue Gherkin::LexingError, Gherkin::Parser::ParseError => e

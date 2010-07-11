@@ -86,8 +86,8 @@ module Cucumber
         @table_owner = Ast::Step.new(statement.line, statement.keyword, statement.name)
         multiline_arg = rubify(multiline_arg)
         case(multiline_arg)
-        when String
-          @table_owner.multiline_arg = Ast::PyString.new(multiline_arg)
+        when Gherkin::Formatter::Model::PyString
+          @table_owner.multiline_arg = Ast::PyString.new(multiline_arg.value)
         when Array
           @table_owner.multiline_arg = Ast::Table.new(matrix(multiline_arg))
         end
