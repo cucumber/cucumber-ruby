@@ -167,37 +167,6 @@ Feature: Cucumber command line
 
       """
 
-  Scenario: Run Norwegian
-    Given I am in i18n/no
-    When I run cucumber -q features
-    Then STDERR should be empty
-    Then it should pass with
-      """
-      # language: no
-      Egenskap: Summering
-        For å slippe å gjøre dumme feil
-        Som en regnskapsfører
-        Vil jeg kunne legge sammen
-
-        Scenario: to tall
-          Gitt at jeg har tastet inn 5
-          Og at jeg har tastet inn 7
-          Når jeg summerer
-          Så skal resultatet være 12
-
-        @iterasjon3
-        Scenario: tre tall
-          Gitt at jeg har tastet inn 5
-          Og at jeg har tastet inn 7
-          Og at jeg har tastet inn 1
-          Når jeg summerer
-          Så skal resultatet være 13
-
-      2 scenarios (2 passed)
-      9 steps (9 passed)
-
-      """
-
   Scenario: --dry-run
     When I run cucumber --dry-run --no-source features/*.feature --tags ~@lots
     Then it should pass with
@@ -370,7 +339,7 @@ Feature: Cucumber command line
   Scenario: Multiple formatters and outputs
     When I run cucumber --format progress --out tmp/progress.txt --format pretty --out tmp/pretty.txt --no-source --dry-run features/lots_of_undefined.feature
     Then STDERR should be empty
-    Then "examples/self_test/tmp/progress.txt" should contain
+    Then "fixtures/self_test/tmp/progress.txt" should contain
       """
       UUUUU
 
@@ -378,7 +347,7 @@ Feature: Cucumber command line
       5 steps (5 undefined)
 
       """
-    And "examples/self_test/tmp/pretty.txt" should contain
+    And "fixtures/self_test/tmp/pretty.txt" should contain
       """
       Feature: Lots of undefined
 
@@ -606,7 +575,7 @@ Feature: Cucumber command line
   Scenario: Reformat files with --autoformat
     When I run cucumber --autoformat tmp/formatted features
     Then STDERR should be empty
-    Then "examples/self_test/tmp/formatted/features/sample.feature" should contain
+    Then "fixtures/self_test/tmp/formatted/features/sample.feature" should contain
       """
       # Feature comment
       @one
@@ -638,7 +607,7 @@ Feature: Cucumber command line
   Scenario: Generate PDF with pdf formatter
     When I run cucumber --format pdf --out tmp/sample.pdf --dry-run features/sample.feature
     Then STDERR should be empty
-    Then "examples/self_test/tmp/sample.pdf" should match "Pages 2"
+    Then "fixtures/self_test/tmp/sample.pdf" should match "Pages 2"
 
   Scenario: Run feature elements which match a name using -n
     When I run cucumber -n Pisang -q features/

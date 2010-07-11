@@ -13,23 +13,23 @@ module Cucumber
         @feature || @multiline_arg
       end
 
-      def feature(comments, tags, keyword, name, description, uri)
+      def feature(statement, uri)
         @feature = Ast::Feature.new(
           nil, 
-          Ast::Comment.new(comments.join("\n")), 
-          Ast::Tags.new(nil, tags),
-          keyword,
-          legacy_name_for(name, description),
+          Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")), 
+          Ast::Tags.new(nil, statement.tags.map{|tag| tag.name}),
+          statement.keyword,
+          legacy_name_for(statement.name, statement.description),
           []
         )
       end
 
-      def background(comments, keyword, name, description, line)
+      def background(statement)
         @background = Ast::Background.new(
-          Ast::Comment.new(comments.join("\n")), 
-          line, 
-          keyword, 
-          legacy_name_for(name, description), 
+          Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")), 
+          statement.line, 
+          statement.keyword, 
+          legacy_name_for(statement.name, statement.description), 
           steps=[]
         )
         @feature.background = @background
@@ -37,14 +37,14 @@ module Cucumber
         @step_container = @background
       end
 
-      def scenario(comments, tags, keyword, name, description, line)
+      def scenario(statement)
         scenario = Ast::Scenario.new(
           @background, 
-          Ast::Comment.new(comments.join("\n")), 
-          Ast::Tags.new(nil, tags), 
-          line, 
-          keyword, 
-          legacy_name_for(name, description), 
+          Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")), 
+          Ast::Tags.new(nil, statement.tags.map{|tag| tag.name}), 
+          statement.line, 
+          statement.keyword, 
+          legacy_name_for(statement.name, statement.description), 
           steps=[]
         )
         @feature.add_feature_element(scenario)
@@ -52,14 +52,14 @@ module Cucumber
         @step_container = scenario
       end
 
-      def scenario_outline(comments, tags, keyword, name, description, line)
+      def scenario_outline(statement)
         scenario_outline = Ast::ScenarioOutline.new(
           @background, 
-          Ast::Comment.new(comments.join("\n")), 
-          Ast::Tags.new(nil, tags), 
-          line, 
-          keyword, 
-          legacy_name_for(name, description), 
+          Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")), 
+          Ast::Tags.new(nil, statement.tags.map{|tag| tag.name}), 
+          statement.line, 
+          statement.keyword, 
+          legacy_name_for(statement.name, statement.description), 
           steps=[],
           example_sections=[]
         )
@@ -71,17 +71,23 @@ module Cucumber
         @step_container = scenario_outline
       end
 
-      def examples(comments, tags, keyword, name, description, line, examples_table)
-        examples_fields = [Ast::Comment.new(comments.join("\n")), line, keyword, legacy_name_for(name, description), matrix(examples_table)]
+      def examples(statement, examples_rows)
+        examples_fields = [
+          Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")), 
+          statement.line, 
+          statement.keyword, 
+          legacy_name_for(statement.name, statement.description), 
+          matrix(examples_rows)
+        ]
         @step_container.add_examples(examples_fields)
       end
 
-      def step(comments, keyword, name, line, multiline_arg, status, exception, arguments, stepdef_location)
-        @table_owner = Ast::Step.new(line, keyword, name)
+      def step(statement, multiline_arg, result)
+        @table_owner = Ast::Step.new(statement.line, statement.keyword, statement.name)
         multiline_arg = rubify(multiline_arg)
         case(multiline_arg)
-        when String
-          @table_owner.multiline_arg = Ast::PyString.new(multiline_arg)
+        when Gherkin::Formatter::Model::PyString
+          @table_owner.multiline_arg = Ast::PyString.new(multiline_arg.value)
         when Array
           @table_owner.multiline_arg = Ast::Table.new(matrix(multiline_arg))
         end

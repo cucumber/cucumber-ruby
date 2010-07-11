@@ -191,8 +191,8 @@ module Cucumber
     #   })
     def invoke_steps(steps_text, i18n, file_colon_line)
       file, line = file_colon_line.split(':')
-      lexer = i18n.lexer(Gherkin::Parser::Parser.new(StepInvoker.new(self), true, 'steps'))
-      lexer.scan(steps_text, file, line.to_i)
+      parser = Gherkin::Parser::Parser.new(StepInvoker.new(self), true, 'steps')
+      parser.parse(steps_text, file, line.to_i)
     end
 
     class StepInvoker
@@ -200,37 +200,19 @@ module Cucumber
         @step_mother = step_mother
       end
 
-      def location(uri, offset)
-      end
-
-      def step(keyword, name, line)
-        invoke
-        @name = name
-      end
-
-      def py_string(string, line)
-        @multiline = Ast::PyString.new(string)
-      end
-
-      def row(row, line)
-        @rows ||= []
-        @rows << row
+      def step(statement, multiline_arg, result)
+        cucumber_multiline_arg = case(multiline_arg)
+        when Gherkin::Formatter::Model::PyString
+          multiline_arg.value
+        when Array
+          Ast::Table.new(multiline_arg.map{|row| row.cells})
+        else
+          nil
+        end
+        @step_mother.invoke(*[statement.name, cucumber_multiline_arg].compact) 
       end
 
       def eof
-        invoke
-      end
-
-      private
-      
-      def invoke
-        if @name
-          @multiline = Ast::Table.new(@rows) if @multiline.nil? && @rows
-          @step_mother.invoke(*[@name, @multiline].compact) 
-          @name = nil
-          @multiline = nil
-          @rows = nil
-        end
       end
     end
 
