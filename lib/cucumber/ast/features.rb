@@ -30,11 +30,6 @@ module Cucumber
         end
         @duration = Time.now - start
       end
-
-      def tag_locations(tag)
-        @features.map{|feature| feature.tag_locations(tag)}.flatten
-      end
-
     end
   end
 end

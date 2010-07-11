@@ -73,11 +73,6 @@ module Cucumber
         "#{@file}:#{line}"
       end
 
-      def tag_locations(tag)
-        init
-        @feature_elements.select{|feature_element| feature_element.tagged_with?(tag)}
-      end
-
       def short_name
         first_line = name.split(/\n/)[0]
         if first_line =~ /#{language.keywords('feature')}:(.*)/

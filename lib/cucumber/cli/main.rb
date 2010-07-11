@@ -55,17 +55,12 @@ module Cucumber
         features = step_mother.load_plain_text_features(configuration.feature_files)
         step_mother.load_code_files(configuration.step_defs_to_load)
 
-        tag_excess = tag_excess(features)
-        configuration.options[:tag_excess] = tag_excess # Hack to make it available in console.rb - later: stick on Run instance.
-
         runner = configuration.build_runner(step_mother, @out_stream)
         step_mother.visitor = runner # Needed to support World#announce
         
         runner.visit_features(features)
 
-        failure = if tag_excess.any?
-          true
-        elsif configuration.wip?
+        failure = if configuration.wip?
           step_mother.scenarios(:passed).any?
         else
           step_mother.scenarios(:failed).any? ||
@@ -74,17 +69,6 @@ module Cucumber
       rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
         @error_stream.puts e.message
         true
-      end
-
-      def tag_excess(features)
-        configuration.options[:tag_expression].limits.map do |tag_name, tag_limit|
-          tag_locations = features.tag_locations(tag_name)
-          if tag_limit && (tag_locations.length > tag_limit)
-            [tag_name, tag_limit, tag_locations]
-          else
-            nil
-          end
-        end.compact
       end
 
       def configuration

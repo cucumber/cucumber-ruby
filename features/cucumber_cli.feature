@@ -499,77 +499,26 @@ Feature: Cucumber command line
      When I run cucumber -q features/tags_sample.feature --no-source --dry-run --tags @sample_three:1
      Then it should fail with
        """
-       @sample_one
-       Feature: Tag samples
-
-         @sample_three
-         Scenario Outline: 
-           Given <state>
-
-           Examples: 
-             | state   |
-             | missing |
-
-         @sample_three @sample_four
-         Scenario: Skipped
-           Given missing
-
-       2 scenarios (2 undefined)
-       2 steps (2 undefined)
-
        @sample_three occurred 2 times, but the limit was set to 1
-         features/tags_sample.feature:9
+         features/tags_sample.feature:11
          features/tags_sample.feature:16
-
        """
 
    Scenario: Run with limited tag count, blowing it via feature inheritance
      When I run cucumber -q features/tags_sample.feature --no-source --dry-run --tags @sample_one:1
-     Then STDERR should be empty
      Then it should fail with
        """
-       @sample_one
-       Feature: Tag samples
-
-         @sample_two @sample_four
-         Scenario: Passing
-           Given missing
-
-         @sample_three
-         Scenario Outline: 
-           Given <state>
-
-           Examples: 
-             | state   |
-             | missing |
-
-         @sample_three @sample_four
-         Scenario: Skipped
-           Given missing
-
-       3 scenarios (3 undefined)
-       3 steps (3 undefined)
-
        @sample_one occurred 3 times, but the limit was set to 1
          features/tags_sample.feature:5
-         features/tags_sample.feature:9
+         features/tags_sample.feature:11
          features/tags_sample.feature:16
-
        """
 
    Scenario: Run with limited tag count using negative tag, blowing it via a tag that is not run
      When I run cucumber -q features/tags_sample.feature --no-source --dry-run --tags ~@sample_one:1
-     Then STDERR should be empty
      Then it should fail with
        """
-       0 scenarios
-       0 steps
-
        @sample_one occurred 3 times, but the limit was set to 1
-         features/tags_sample.feature:5
-         features/tags_sample.feature:9
-         features/tags_sample.feature:16
-
        """
 
   Scenario: Reformat files with --autoformat

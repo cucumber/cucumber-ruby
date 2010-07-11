@@ -65,10 +65,6 @@ module Cucumber
         (@tags.tag_names.to_a + (@feature ? @feature.source_tag_names.to_a : [])).uniq
       end
 
-      def tagged_with?(tag)
-        source_tag_names.index(tag)
-      end
-
       def language
         @feature.language if @feature
       end

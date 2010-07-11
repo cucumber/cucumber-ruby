@@ -125,17 +125,6 @@ module Cucumber
         end
       end
 
-      def print_tag_limit_warnings(features)
-        first_tag = true
-        @options[:tag_excess].each do |tag_name, tag_limit, tag_locations|
-          @io.puts if first_tag
-          first_tag = false
-          @io.puts format_string("#{tag_name} occurred #{tag_locations.length} times, but the limit was set to #{tag_limit}", :failed)
-          tag_locations.each {|tag_location| @io.puts format_string("  #{tag_location.file_colon_line}", :failed)}
-          @io.flush
-        end
-      end
-
       def embed(file, mime_type)
         # no-op
       end

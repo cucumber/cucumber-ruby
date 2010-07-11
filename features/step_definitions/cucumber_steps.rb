@@ -68,7 +68,7 @@ Then /^it should (fail|pass)$/ do |success|
 end
 
 Then /^it should (fail|pass) with$/ do |success, output|
-  last_stdout.should == output
+  combined_output.should =~ Regexp.compile(Regexp.escape(output))
   Then("it should #{success}")
 end
 

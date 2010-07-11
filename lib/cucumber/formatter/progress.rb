@@ -68,7 +68,6 @@ module Cucumber
         print_stats(features, @options.custom_profiles)
         print_snippets(@options)
         print_passing_wip(@options)
-        print_tag_limit_warnings(features)
       end
 
       CHARS = {

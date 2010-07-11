@@ -1,6 +1,6 @@
 require 'cucumber/parser/gherkin_builder'
 require 'gherkin/formatter/filter_formatter'
-require 'gherkin/listener/formatter_listener'
+require 'gherkin/formatter/tag_count_formatter'
 require 'gherkin/parser/parser'
 require 'gherkin/i18n_lexer'
 
@@ -24,12 +24,13 @@ module Cucumber
     # Parses a file and returns a Cucumber::Ast
     # If +options+ contains tags, the result will
     # be filtered.
-    def parse(step_mother, options)
+    def parse(options, tag_counts)
       filters = @lines || options.filters
 
-      builder            = Cucumber::Parser::GherkinBuilder.new
-      filter_formatter   = filters.empty? ? builder : Gherkin::Formatter::FilterFormatter.new(builder, filters)
-      parser             = Gherkin::Parser::Parser.new(filter_formatter, true, "root", false)
+      builder             = Cucumber::Parser::GherkinBuilder.new
+      filter_formatter    = filters.empty? ? builder : Gherkin::Formatter::FilterFormatter.new(builder, filters)
+      tag_count_formatter = Gherkin::Formatter::TagCountFormatter.new(filter_formatter, tag_counts)
+      parser              = Gherkin::Parser::Parser.new(tag_count_formatter, true, "root", false)
 
       begin
         parser.parse(source, @path, 0)

@@ -42,6 +42,10 @@ class CucumberWorld
     strip_1_9_paths(strip_duration(@last_stdout))
   end
 
+  def combined_output
+    last_stdout + "\n" + last_stderr
+  end
+
   def strip_duration(s)
     s.gsub(/^\d+m\d+\.\d+s\n/m, "")
   end
