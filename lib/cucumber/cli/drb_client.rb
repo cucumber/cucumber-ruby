@@ -29,7 +29,7 @@ module Cucumber
           # See http://redmine.ruby-lang.org/issues/show/496 as to why we specify localhost:0
           begin
             DRb.start_service("druby://localhost:0")
-          rescue SocketError
+          rescue SocketError, Errno::EADDRNOTAVAIL
             # Ruby-1.8.7 on snow leopard doesn't like localhost:0 - but just :0
             # seems to work just fine
             DRb.start_service("druby://:0")
