@@ -1,5 +1,8 @@
 == 0.8.4 (2010-07-12)
 
+=== Bugfixes
+* Fix "Errno::EADDRNOTAVAIL" errors that may be received with spork on Snow Leopard. (Lucas Mundim)
+
 === New features
 * Detect limit for negative tags (#636 Aslak Hellesøy)
 * Support for RSpec 2 doubles (mocks and stubs) (Aslak Hellesøy)
