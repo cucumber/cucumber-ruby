@@ -1,4 +1,4 @@
-== In Git
+== 0.8.4 (2010-07-12)
 
 === New features
 * Detect limit for negative tags (#636 Aslak Hellesøy)

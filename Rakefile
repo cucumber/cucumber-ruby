@@ -16,7 +16,7 @@ begin
     gem.homepage = "http://cukes.info"
     gem.authors = ["Aslak Hellesøy"]
 
-    gem.add_dependency 'gherkin', '~> 2.0.2'
+    gem.add_dependency 'gherkin', '~> 2.1.0'
     gem.add_dependency 'term-ansicolor', '~> 1.0.4'
     gem.add_dependency 'builder', '~> 2.1.2'
     gem.add_dependency 'diff-lcs', '~> 1.1.2'
@@ -27,7 +27,7 @@ begin
     gem.add_development_dependency 'prawn-layout', '= 0.8.4'
     gem.add_development_dependency 'rspec', '~> 2.0.0.beta.15'
     gem.add_development_dependency 'syntax', '~> 1.0.0'
-    gem.add_development_dependency 'spork', '~> 0.8.3' unless Cucumber::JRUBY || Cucumber::WINDOWS
+    gem.add_development_dependency 'spork', '~> 0.8.4' unless Cucumber::JRUBY || Cucumber::WINDOWS
 
     extend Cucumber::Formatter::ANSIColor
     gem.post_install_message = <<-POST_INSTALL_MESSAGE

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2010-07-02}
+  s.date = %q{2010-07-12}
   s.default_executable = %q{cucumber}
   s.description = %q{Behaviour Driven Development with elegance and joy}
   s.email = %q{cukes@googlegroups.com}
@@ -237,8 +237,8 @@ Gem::Specification.new do |s|
      "examples/ramaze/features/support/env.rb",
      "examples/ramaze/layout/default.html.erb",
      "examples/ramaze/view/index.html.erb",
+     "examples/rspec_doubles/features/mocking.feature",
      "examples/rspec_doubles/features/step_definitions/calvin_steps.rb",
-     "examples/rspec_doubles/features/stubbing.feature",
      "examples/rspec_doubles/features/support/env.rb",
      "examples/ruby2python/README.textile",
      "examples/ruby2python/Rakefile",
