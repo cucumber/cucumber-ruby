@@ -237,6 +237,7 @@ Gem::Specification.new do |s|
      "examples/ramaze/features/support/env.rb",
      "examples/ramaze/layout/default.html.erb",
      "examples/ramaze/view/index.html.erb",
+     "examples/rspec_doubles/Rakefile",
      "examples/rspec_doubles/features/mocking.feature",
      "examples/rspec_doubles/features/step_definitions/calvin_steps.rb",
      "examples/rspec_doubles/features/support/env.rb",
@@ -277,10 +278,6 @@ Gem::Specification.new do |s|
      "examples/watir/features/step_definitions/search_steps.rb",
      "examples/watir/features/support/env.rb",
      "examples/watir/features/support/screenshots.rb",
-     "examples/webrat/Rakefile",
-     "examples/webrat/features/search.feature",
-     "examples/webrat/features/step_definitions/kvasir_steps.rb",
-     "examples/webrat/features/support/env.rb",
      "features/announce.feature",
      "features/around_hooks.feature",
      "features/background.feature",
@@ -707,9 +704,7 @@ for important information about this release. Happy cuking!
      "examples/test_unit/features/step_definitions/test_unit_steps.rb",
      "examples/watir/features/step_definitions/search_steps.rb",
      "examples/watir/features/support/env.rb",
-     "examples/watir/features/support/screenshots.rb",
-     "examples/webrat/features/step_definitions/kvasir_steps.rb",
-     "examples/webrat/features/support/env.rb"
+     "examples/watir/features/support/screenshots.rb"
   ]
 
   if s.respond_to? :specification_version then
