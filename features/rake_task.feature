@@ -150,3 +150,37 @@ Feature: Rake task
            Given this is missing
 
        """
+
+  Scenario: using bundler
+    Given a file named "Gemfile" with:
+       """
+       source "http://rubygems.org"
+       gem "cucumber", :path => File.expand_path('../..', CUCUMBER_LIB)
+       """
+     And a file named "Rakefile" with:
+       """
+       require "rubygems"
+       require "bundler"
+       Bundler.setup
+
+       require 'cucumber/rake/task'
+
+       Cucumber::Rake::Task.new do |t|
+         t.cucumber_opts = %w{--quiet --no-color}
+       end
+       """
+     When I run rake cucumber
+     Then it should pass
+     And the output should contain
+       """
+       Feature: Sample
+
+         Scenario: Wanted
+           Given I want to run this
+
+         Scenario: Unwanted
+           Given I don't want this ran
+
+       2 scenarios (2 undefined)
+       2 steps (2 undefined)
+       """

@@ -64,8 +64,12 @@ module Cucumber
           ['"%s"' % cucumber_bin]
         end
 
+        def runner
+          File.exist?("./Gemfile") ? ["bundle", "exec", RUBY] : [RUBY]
+        end
+
         def run
-          ruby(args.join(" ")) # ruby(*args) is broken on Windows
+          sh((runner + args).join(" "))
         end
       end
 
