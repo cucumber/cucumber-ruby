@@ -2,6 +2,7 @@
 
 === Bugfixes
 * Location of stepdefs outside the project (in gems) are reported incorrectly. (#583 Aslak Hellesøy)
+* Cucumber::Rake::Task uses 'bundle exec' when using bundler (#626 John Firebaugh)
 
 == 0.8.4 (2010-07-12)
 
