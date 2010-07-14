@@ -39,6 +39,10 @@ module Cucumber
         @js_language.current_world.execute(@js_function, args)
       end
 
+      def regexp_source
+        @regexp.inspect
+      end
+
       def arguments_from(step_name)
         matches = eval_js "#{@regexp}.exec('#{step_name}')"
         if matches
