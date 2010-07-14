@@ -14,8 +14,12 @@ class Proc #:nodoc:
     def file_colon_line
       path, line = *to_s.match(PROC_PATTERN)[1..2]
       path = File.expand_path(path)
-      pwd = Dir.pwd
-      path = path[pwd.length+1..-1]
+      pwd = File.expand_path(Dir.pwd)
+      if path.index(pwd)
+        path = path[pwd.length+1..-1]
+      elsif path =~ /.*\/gems\/(.*\.rb)$/
+        path = $1
+      end
       "#{path}:#{line}"
     end
   else
