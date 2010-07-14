@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{cucumber}
-  s.version = "0.8.4"
+  s.version = "0.8.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aslak Helles\303\270y"]
@@ -393,6 +393,8 @@ Gem::Specification.new do |s|
      "fixtures/tickets/features/301/filter_background_tagged_hooks_steps.rb",
      "fixtures/tickets/features/306/only_background.feature",
      "fixtures/tickets/features/around_timeout.feature",
+     "fixtures/tickets/features/gherkin_67.feature",
+     "fixtures/tickets/features/gherkin_68.feature",
      "fixtures/tickets/features/half_manual.feature",
      "fixtures/tickets/features/lib/eatting_machine.rb",
      "fixtures/tickets/features/lib/pantry.rb",
@@ -556,7 +558,7 @@ Gem::Specification.new do |s|
 
                      (::)   U P G R A D I N G    (::)
 
-Thank you for installing cucumber-0.8.4.
+Thank you for installing cucumber-0.8.5.
 Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
 for important information about this release. Happy cuking!
 
@@ -712,7 +714,7 @@ for important information about this release. Happy cuking!
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<gherkin>, ["~> 2.1.1"])
+      s.add_runtime_dependency(%q<gherkin>, ["~> 2.1.4"])
       s.add_runtime_dependency(%q<term-ansicolor>, ["~> 1.0.4"])
       s.add_runtime_dependency(%q<builder>, ["~> 2.1.2"])
       s.add_runtime_dependency(%q<diff-lcs>, ["~> 1.1.2"])
@@ -724,7 +726,7 @@ for important information about this release. Happy cuking!
       s.add_development_dependency(%q<syntax>, ["~> 1.0.0"])
       s.add_development_dependency(%q<spork>, ["~> 0.8.4"])
     else
-      s.add_dependency(%q<gherkin>, ["~> 2.1.1"])
+      s.add_dependency(%q<gherkin>, ["~> 2.1.4"])
       s.add_dependency(%q<term-ansicolor>, ["~> 1.0.4"])
       s.add_dependency(%q<builder>, ["~> 2.1.2"])
       s.add_dependency(%q<diff-lcs>, ["~> 1.1.2"])
@@ -737,7 +739,7 @@ for important information about this release. Happy cuking!
       s.add_dependency(%q<spork>, ["~> 0.8.4"])
     end
   else
-    s.add_dependency(%q<gherkin>, ["~> 2.1.1"])
+    s.add_dependency(%q<gherkin>, ["~> 2.1.4"])
     s.add_dependency(%q<term-ansicolor>, ["~> 1.0.4"])
     s.add_dependency(%q<builder>, ["~> 2.1.2"])
     s.add_dependency(%q<diff-lcs>, ["~> 1.1.2"])

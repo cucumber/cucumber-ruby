@@ -1,4 +1,4 @@
-== In Git
+== 0.8.5 (2010-07-14)
 
 === Bugfixes
 * Location of stepdefs outside the project (in gems) are reported incorrectly. (#583 Aslak Hellesøy)
