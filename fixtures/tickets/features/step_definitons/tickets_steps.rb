@@ -57,6 +57,13 @@ Given /^I have a pending step$/ do
   pending
 end
 
+Given /^I have (\d+) cukes in my belly$/ do |arg1|
+end
+
+Given /^I call empty steps$/ do
+  steps ""
+end
+
 When /^I run this feature with the progress format$/ do
   pending
 end
