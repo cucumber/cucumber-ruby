@@ -20,13 +20,15 @@ Feature: JUnit output formatter
       </testcase>
       <testcase classname="One passing scenario, one failing scenario.Failing" name="Failing" time="0.005">
         <failure message="failed Failing" type="failed">
-      Scenario: Failing
+          <![CDATA[Scenario: Failing
 
       Given a failing scenario
 
       Message:
-       (RuntimeError)
-      features/one_passing_one_failing.feature:7:in `Given a failing scenario'  </failure>
+	]]>
+          <![CDATA[ (RuntimeError)
+	features/one_passing_one_failing.feature:7:in `Given a failing scenario']]>
+        </failure>
       </testcase>
       </testsuite>
 

@@ -122,10 +122,8 @@ module Cucumber
           @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
             if failed
               @builder.failure(:message => "#{status.to_s} #{name}", :type => status.to_s) do
-                @builder.text! "<![CDATA["
-                @builder.text! @output
-                @builder.text!(format_exception(exception)) if exception
-                @builder.text! "]]>"
+                @builder.cdata! @output
+                @builder.cdata!(format_exception(exception)) if exception
               end
               @failures += 1
             end
