@@ -60,10 +60,12 @@ Feature: JUnit output formatter
       <testsuite errors="0" failures="1" name="Pending step" tests="1" time="0.000160">
       <testcase classname="Pending step.Pending" name="Pending" time="0.000160">
         <failure message="pending Pending" type="pending">
-      Scenario: Pending
+          <![CDATA[Scenario: Pending
 
-      TODO (Cucumber::Pending)
-      features/pending.feature:4:in `Given a pending step'  </failure>
+      ]]>
+          <![CDATA[TODO (Cucumber::Pending)
+      features/pending.feature:4:in `Given a pending step']]>
+        </failure>
       </testcase>
       </testsuite>
 
