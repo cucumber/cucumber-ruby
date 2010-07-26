@@ -71,13 +71,13 @@ module Cucumber
         @step_container = scenario_outline
       end
 
-      def examples(statement, examples_rows)
+      def examples(examples)
         examples_fields = [
-          Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")), 
-          statement.line, 
-          statement.keyword, 
-          legacy_name_for(statement.name, statement.description), 
-          matrix(examples_rows)
+          Ast::Comment.new(examples.comments.map{|comment| comment.value}.join("\n")), 
+          examples.line, 
+          examples.keyword, 
+          legacy_name_for(examples.name, examples.description), 
+          matrix(examples.rows)
         ]
         @step_container.add_examples(examples_fields)
       end

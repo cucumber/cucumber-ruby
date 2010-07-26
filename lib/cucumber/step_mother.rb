@@ -224,16 +224,19 @@ module Cucumber
         @step_mother = step_mother
       end
 
-      def step(statement, multiline_arg, result)
-        cucumber_multiline_arg = case(multiline_arg)
+      def uri(uri)
+      end
+
+      def step(step)
+        cucumber_multiline_arg = case(step.multiline_arg)
         when Gherkin::Formatter::Model::PyString
-          multiline_arg.value
+          step.multiline_arg.value
         when Array
-          Ast::Table.new(multiline_arg.map{|row| row.cells})
+          Ast::Table.new(step.multiline_arg.map{|row| row.cells})
         else
           nil
         end
-        @step_mother.invoke(*[statement.name, cucumber_multiline_arg].compact) 
+        @step_mother.invoke(step.name, cucumber_multiline_arg) 
       end
 
       def eof
