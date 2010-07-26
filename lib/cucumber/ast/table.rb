@@ -1,4 +1,5 @@
 require 'gherkin/rubify'
+require 'gherkin/lexer/i18n_lexer'
 require 'gherkin/formatter/escaping'
 
 module Cucumber
@@ -60,7 +61,7 @@ module Cucumber
 
       def self.parse(text, uri, offset)
         builder = Builder.new
-        lexer = Gherkin::I18nLexer.new(builder)
+        lexer = Gherkin::Lexer::I18nLexer.new(builder)
         lexer.scan(text)
         new(builder.rows)
       end
