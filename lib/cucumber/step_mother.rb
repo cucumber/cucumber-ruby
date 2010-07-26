@@ -3,6 +3,7 @@ require 'cucumber/core_ext/instance_exec'
 require 'cucumber/language_support/language_methods'
 require 'cucumber/formatter/duration'
 require 'cucumber/cli/options'
+require 'gherkin/rubify'
 require 'timeout'
 
 module Cucumber
@@ -220,6 +221,8 @@ module Cucumber
     end
 
     class StepInvoker
+      include Gherkin::Rubify
+
       def initialize(step_mother)
         @step_mother = step_mother
       end
@@ -228,7 +231,7 @@ module Cucumber
       end
 
       def step(step)
-        cucumber_multiline_arg = case(step.multiline_arg)
+        cucumber_multiline_arg = case(rubify(step.multiline_arg))
         when Gherkin::Formatter::Model::PyString
           step.multiline_arg.value
         when Array

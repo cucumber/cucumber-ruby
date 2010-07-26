@@ -2,7 +2,6 @@ require 'cucumber/parser/gherkin_builder'
 require 'gherkin/formatter/filter_formatter'
 require 'gherkin/formatter/tag_count_formatter'
 require 'gherkin/parser/parser'
-require 'gherkin/i18n_lexer'
 
 module Cucumber
   class FeatureFile

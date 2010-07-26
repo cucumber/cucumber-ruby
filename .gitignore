@@ -16,5 +16,6 @@ target
 .#*
 .idea
 *.pyc
+*.rbc
 rerun.txt
 ._*
