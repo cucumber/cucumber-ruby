@@ -1,5 +1,5 @@
 module Cucumber
-  # This module defines the API for programming panguage support in Cucumber.
+  # This module defines the API for programming language support in Cucumber.
   # While Cucumber itself is written in Ruby, any programming language can
   # be supported by implementing this API.
   #
