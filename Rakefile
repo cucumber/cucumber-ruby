@@ -1,5 +1,8 @@
 # encoding: utf-8
 require 'rubygems'
+require 'bundler'
+Bundler.setup
+
 require 'term/ansicolor'
 require 'rake'
 $:.unshift(File.dirname(__FILE__) + '/lib')
