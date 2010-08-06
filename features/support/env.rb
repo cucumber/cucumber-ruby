@@ -1,10 +1,9 @@
 require 'rubygems'
+require 'bundler'
+Bundler.setup
+
 require 'tempfile'
-begin
-  require 'rspec/expectations'
-rescue LoadError
-  require 'spec/expectations'
-end
+require 'rspec/expectations'
 require 'fileutils'
 require 'forwardable'
 require 'cucumber/formatter/unicode'
