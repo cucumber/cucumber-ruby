@@ -3,6 +3,7 @@
 Maintenance release for the new release of Gherkin 2.2.0.
 
 === Bugfixes
+* Compatibility with rspec-2.0.0.beta.19 mocks (Aslak Hellesøy)
 * JUnit formatter now puts output in CDATA sections. (Dmitry Amelchenko)
 
 == 0.8.5 (2010-07-14)

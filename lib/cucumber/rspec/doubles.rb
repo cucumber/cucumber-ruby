@@ -4,13 +4,13 @@ RSpec.configuration.configure_mock_framework
 World(RSpec::Core::MockFrameworkAdapter)
 
 Before do
-  _setup_mocks
+  RSpec::Mocks::setup(self)
 end
 
 After do
   begin
-    _verify_mocks
+    RSpec::Mocks::verify
   ensure
-    _teardown_mocks
+    RSpec::Mocks::teardown
   end
 end
