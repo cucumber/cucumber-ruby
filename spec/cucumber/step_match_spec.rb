@@ -29,8 +29,8 @@ module Cucumber
     end
 
     it "should deal with Unicode both inside and outside arguments" do
-      "Jæ vø ålsker døtte løndet".should =~ /Jæ (\w+) ålsker (\w+) løndet/
-      m = step_match(/Jæ (\w+) ålsker (\w+) løndet/, "Jæ vø ålsker døtte løndet")
+      "Jæ vø ålsker døtte løndet".should =~ /Jæ (.+) ålsker (.+) løndet/
+      m = step_match(/Jæ (.+) ålsker (.+) løndet/, "Jæ vø ålsker døtte løndet")
       m.format_args("<span>%s</span>").should == "Jæ <span>vø</span> ålsker <span>døtte</span> løndet"
     end
 
