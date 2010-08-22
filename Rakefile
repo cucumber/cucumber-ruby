@@ -1,5 +1,8 @@
 # encoding: utf-8
 require 'rubygems'
+require 'bundler'
+Bundler.setup
+
 require 'term/ansicolor'
 require 'rake'
 $:.unshift(File.dirname(__FILE__) + '/lib')
@@ -16,19 +19,8 @@ begin
     gem.homepage = "http://cukes.info"
     gem.authors = ["Aslak Hellesøy"]
 
-    gem.add_dependency 'gherkin', '~> 2.1.4'
-    gem.add_dependency 'term-ansicolor', '~> 1.0.4'
-    gem.add_dependency 'builder', '~> 2.1.2'
-    gem.add_dependency 'diff-lcs', '~> 1.1.2'
-    gem.add_dependency 'json_pure', '~> 1.4.3'
-
-    gem.add_development_dependency 'nokogiri', '~> 1.4.2'
-    gem.add_development_dependency 'prawn', '= 0.8.4'
-    gem.add_development_dependency 'prawn-layout', '= 0.8.4'
-    gem.add_development_dependency 'rspec', '~> 2.0.0.beta.15'
-    gem.add_development_dependency 'syntax', '~> 1.0.0'
-    gem.add_development_dependency 'spork', '~> 0.8.4' unless Cucumber::JRUBY || Cucumber::WINDOWS
-
+    gem.add_bundler_dependencies
+    
     extend Cucumber::Formatter::ANSIColor
     gem.post_install_message = <<-POST_INSTALL_MESSAGE
 

@@ -2,14 +2,13 @@ require 'cucumber/parser/gherkin_builder'
 require 'gherkin/formatter/filter_formatter'
 require 'gherkin/formatter/tag_count_formatter'
 require 'gherkin/parser/parser'
-require 'gherkin/i18n_lexer'
 
 module Cucumber
   class FeatureFile
     FILE_COLON_LINE_PATTERN = /^([\w\W]*?):([\d:]+)$/ #:nodoc:
     LANGUAGE_PATTERN = /language:\s*(.*)/ #:nodoc:
 
-    # The +uri+ argument is the location of the source. It can ba a path 
+    # The +uri+ argument is the location of the source. It can be a path 
     # or a path:line1:line2 etc. If +source+ is passed, +uri+ is ignored.
     def initialize(uri, source=nil)
       @source = source

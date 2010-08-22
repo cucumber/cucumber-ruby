@@ -1,3 +1,14 @@
+== In Git
+
+Maintenance release for the new release of Gherkin 2.2.0.
+
+=== Bugfixes
+* Compatibility with rspec-2.0.0.beta.19 mocks (Aslak Hellesøy)
+* JUnit formatter now puts output in CDATA sections. (Dmitry Amelchenko)
+
+=== New features
+* Use Bundler for dependency management. (Aslak Hellesøy, Rob Hunter)
+
 == 0.8.5 (2010-07-14)
 
 === Bugfixes
