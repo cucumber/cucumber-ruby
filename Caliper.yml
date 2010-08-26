@@ -1,4 +1,0 @@
----
-# Config for https://devver.net/caliper
-file_globs_to_ignore:
-- lib/rubygems/**/*

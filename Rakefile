@@ -5,24 +5,25 @@ Bundler.setup
 
 require 'term/ansicolor'
 require 'rake'
+
 $:.unshift(File.dirname(__FILE__) + '/lib')
 require 'cucumber/formatter/ansicolor'
 require 'cucumber/platform'
 
 begin
   require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "cucumber"
-    gem.summary = %Q{Behaviour Driven Development with elegance and joy}
-    gem.description = %Q{Behaviour Driven Development with elegance and joy}
-    gem.email = "cukes@googlegroups.com"
-    gem.homepage = "http://cukes.info"
-    gem.authors = ["Aslak Hellesøy"]
+  Jeweler::Tasks.new do |gemspec|
+    gemspec.name = "cucumber"
+    gemspec.summary = %Q{Behaviour Driven Development with elegance and joy}
+    gemspec.description = %Q{Behaviour Driven Development with elegance and joy}
+    gemspec.email = "cukes@googlegroups.com"
+    gemspec.homepage = "http://cukes.info"
+    gemspec.authors = ["Aslak Hellesøy"]
 
-    gem.add_bundler_dependencies
+    gemspec.add_bundler_dependencies
     
     extend Cucumber::Formatter::ANSIColor
-    gem.post_install_message = <<-POST_INSTALL_MESSAGE
+    gemspec.post_install_message = <<-POST_INSTALL_MESSAGE
 
 #{cukes(15)}
 

@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.version = "0.9.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Aslak Helles\303\270y"]
-  s.date = %q{2010-08-07}
+  s.authors = ["Aslak Hellesøy"]
+  s.date = %q{2010-08-26}
   s.default_executable = %q{cucumber}
   s.description = %q{Behaviour Driven Development with elegance and joy}
   s.email = %q{cukes@googlegroups.com}
@@ -22,8 +22,8 @@ Gem::Specification.new do |s|
     ".gitattributes",
      ".gitignore",
      ".rspec",
-     "Caliper.yml",
      "Gemfile",
+     "Gemfile.lock",
      "History.txt",
      "LICENSE",
      "README.rdoc",
@@ -719,10 +719,10 @@ for important information about this release. Happy cuking!
       s.add_runtime_dependency(%q<term-ansicolor>, ["~> 1.0.5"])
       s.add_runtime_dependency(%q<builder>, ["~> 2.1.2"])
       s.add_runtime_dependency(%q<diff-lcs>, ["~> 1.1.2"])
-      s.add_runtime_dependency(%q<json_pure>, ["~> 1.4.3"])
+      s.add_runtime_dependency(%q<json_pure>, ["~> 1.4.6"])
       s.add_development_dependency(%q<rake>, ["~> 0.8.7"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.4.0"])
-      s.add_development_dependency(%q<nokogiri>, ["~> 1.4.2"])
+      s.add_development_dependency(%q<nokogiri>, ["~> 1.4.3"])
       s.add_development_dependency(%q<prawn>, ["= 0.8.4"])
       s.add_development_dependency(%q<prawn-layout>, ["= 0.8.4"])
       s.add_development_dependency(%q<rspec>, ["~> 2.0.0.beta.19"])
@@ -733,10 +733,10 @@ for important information about this release. Happy cuking!
       s.add_dependency(%q<term-ansicolor>, ["~> 1.0.5"])
       s.add_dependency(%q<builder>, ["~> 2.1.2"])
       s.add_dependency(%q<diff-lcs>, ["~> 1.1.2"])
-      s.add_dependency(%q<json_pure>, ["~> 1.4.3"])
+      s.add_dependency(%q<json_pure>, ["~> 1.4.6"])
       s.add_dependency(%q<rake>, ["~> 0.8.7"])
       s.add_dependency(%q<jeweler>, ["~> 1.4.0"])
-      s.add_dependency(%q<nokogiri>, ["~> 1.4.2"])
+      s.add_dependency(%q<nokogiri>, ["~> 1.4.3"])
       s.add_dependency(%q<prawn>, ["= 0.8.4"])
       s.add_dependency(%q<prawn-layout>, ["= 0.8.4"])
       s.add_dependency(%q<rspec>, ["~> 2.0.0.beta.19"])
@@ -748,10 +748,10 @@ for important information about this release. Happy cuking!
     s.add_dependency(%q<term-ansicolor>, ["~> 1.0.5"])
     s.add_dependency(%q<builder>, ["~> 2.1.2"])
     s.add_dependency(%q<diff-lcs>, ["~> 1.1.2"])
-    s.add_dependency(%q<json_pure>, ["~> 1.4.3"])
+    s.add_dependency(%q<json_pure>, ["~> 1.4.6"])
     s.add_dependency(%q<rake>, ["~> 0.8.7"])
     s.add_dependency(%q<jeweler>, ["~> 1.4.0"])
-    s.add_dependency(%q<nokogiri>, ["~> 1.4.2"])
+    s.add_dependency(%q<nokogiri>, ["~> 1.4.3"])
     s.add_dependency(%q<prawn>, ["= 0.8.4"])
     s.add_dependency(%q<prawn-layout>, ["= 0.8.4"])
     s.add_dependency(%q<rspec>, ["~> 2.0.0.beta.19"])
