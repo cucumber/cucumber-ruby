@@ -202,7 +202,6 @@ module Cucumber
             "This also omits the loading of your support/env.rb file if it exists.",
             "Implies --no-snippets.") do
             @options[:dry_run] = true
-            @options[:snippets] = false
           end
           opts.on("-a", "--autoformat DIR",
             "Reformats (pretty prints) feature files and write them to DIRECTORY.",
