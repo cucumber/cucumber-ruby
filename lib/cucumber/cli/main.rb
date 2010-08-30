@@ -40,13 +40,7 @@ module Cucumber
 
       def execute!(step_mother)
         trap_interrupt
-        if configuration.drb?
-          begin
-            return DRbClient.run(@args, @error_stream, @out_stream, configuration.drb_port)
-          rescue DRbClientError => e
-            @error_stream.puts "WARNING: #{e.message} Running features locally:"
-          end
-        end
+        return run_drb_client if configuration.drb?
         step_mother.options = configuration.options
         Cucumber.logger = configuration.log
 
@@ -80,6 +74,12 @@ module Cucumber
       end
 
       private
+      
+      def run_drb_client
+        DRbClient.run(@args, @error_stream, @out_stream, configuration.drb_port)
+      rescue DRbClientError => e
+        @error_stream.puts "WARNING: #{e.message} Running features locally:"
+      end
 
       def trap_interrupt
         trap('INT') do
