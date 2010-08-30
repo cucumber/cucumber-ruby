@@ -13,16 +13,20 @@ require 'cucumber/formatter/color_io'
 require 'cucumber/cli/configuration'
 require 'cucumber/cli/drb_client'
 
+if defined?(Spork::TestFramework::Cucumber)
+  class Spork::TestFramework::Cucumber < Spork::TestFramework
+    def run_tests(argv, stderr, stdout)
+      ::Cucumber::Cli::Main.new(argv, stdout, stderr).execute!
+    end
+  end
+end
+
 module Cucumber
   module Cli
     class Main
       class << self
-        def step_mother
-          @step_mother ||= StepMother.new
-        end
-
         def execute(args)
-          new(args).execute!(step_mother)
+          new(args).execute!
         end
       end
 
@@ -38,12 +42,15 @@ module Cucumber
         @configuration = nil
       end
 
-      def execute!(step_mother)
-        trap_interrupt
-        return run_drb_client if configuration.drb?
-        step_mother.options = configuration.options
-        Cucumber.logger = configuration.log
+      def execute!(legacy_step_mother = nil)
+        if legacy_step_mother
+          warn("Passing a step_mother to #execute! is deprecated, and has been ignored: #{caller[0]}")
+        end
 
+        trap_interrupt
+        return @drb_output if run_drb_client
+        
+        step_mother = StepMother.new(configuration.options)
         step_mother.load_code_files(configuration.support_to_load)
         step_mother.after_configuration(configuration)
         features = step_mother.load_plain_text_features(configuration.feature_files)
@@ -70,13 +77,16 @@ module Cucumber
 
         @configuration = Configuration.new(@out_stream, @error_stream)
         @configuration.parse!(@args)
+        Cucumber.logger = @configuration.log
         @configuration
       end
 
       private
       
       def run_drb_client
-        DRbClient.run(@args, @error_stream, @out_stream, configuration.drb_port)
+        return false unless configuration.drb?
+        @drb_output = DRbClient.run(@args, @error_stream, @out_stream, configuration.drb_port)
+        true
       rescue DRbClientError => e
         @error_stream.puts "WARNING: #{e.message} Running features locally:"
       end

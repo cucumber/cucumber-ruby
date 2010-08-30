@@ -13,10 +13,16 @@ module Cucumber
   # This is the meaty part of Cucumber that ties everything together.
   class StepMother
     include Formatter::Duration
-    attr_writer :options, :visitor
+    attr_writer :visitor
 
-    def initialize
+    def initialize(options = Cli::Options.new)
       @current_scenario = nil
+      @options = options
+    end
+    
+    def options=(options)
+      warn("Setting StepMother#options is deprecated. Please pass options into the constructor instead: #{caller[0]}")
+      @options = options
     end
     
     def load_plain_text_features(feature_files)
@@ -69,7 +75,7 @@ module Cucumber
 
     # Returns the options passed on the command line.
     def options
-      @options ||= Cli::Options.new
+      @options
     end
 
     def step_visited(step) #:nodoc:
