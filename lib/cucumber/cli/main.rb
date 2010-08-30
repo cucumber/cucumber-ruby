@@ -48,7 +48,7 @@ module Cucumber
           end
         end
         step_mother.options = configuration.options
-        step_mother.log = configuration.log
+        Cucumber.logger = configuration.log
 
         step_mother.load_code_files(configuration.support_to_load)
         step_mother.after_configuration(configuration)

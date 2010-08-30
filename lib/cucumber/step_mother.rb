@@ -4,23 +4,21 @@ require 'cucumber/language_support/language_methods'
 require 'cucumber/formatter/duration'
 require 'cucumber/cli/options'
 require 'cucumber/errors'
+require 'cucumber/support_code'
 require 'gherkin/rubify'
 require 'timeout'
 
 module Cucumber
+  
   # This is the meaty part of Cucumber that ties everything together.
   class StepMother
-    include Constantize
     include Formatter::Duration
-    attr_writer :options, :visitor, :log
+    attr_writer :options, :visitor
 
     def initialize
-      @unsupported_programming_languages = []
-      @programming_languages = []
-      @language_map = {}
       @current_scenario = nil
     end
-
+    
     def load_plain_text_features(feature_files)
       features = Ast::Features.new
 
@@ -56,22 +54,9 @@ module Cucumber
       end
       raise TagExcess.new(error_messages) if error_messages.any?
     end
-
+    
     def load_code_files(step_def_files)
-      log.debug("Code:\n")
-      step_def_files.each do |step_def_file|
-        load_code_file(step_def_file)
-      end
-      log.debug("\n")
-    end
-
-    def load_code_file(step_def_file)
-      if programming_language = programming_language_for(step_def_file)
-        log.debug("  * #{step_def_file}\n")
-        programming_language.load_code_file(step_def_file)
-      else
-        log.debug("  * #{step_def_file} [NOT SUPPORTED]\n")
-      end
+      support_code.load_files!(step_def_files)
     end
 
     # Loads and registers programming language implementation.
@@ -79,12 +64,7 @@ module Cucumber
     # twice will return the same instance.
     #
     def load_programming_language(ext)
-      return @language_map[ext] if @language_map[ext]
-      programming_language_class = constantize("Cucumber::#{ext.capitalize}Support::#{ext.capitalize}Language")
-      programming_language = programming_language_class.new(self)
-      @programming_languages << programming_language
-      @language_map[ext] = programming_language
-      programming_language
+      support_code.load_programming_language!(ext)
     end
 
     # Returns the options passed on the command line.
@@ -161,13 +141,8 @@ module Cucumber
       end
     end
 
-    def invoke(step_name, multiline_argument=nil)
-      begin
-        step_match(step_name).invoke(multiline_argument)
-      rescue Exception => e
-        e.nested! if Undefined === e
-        raise e
-      end
+    def invoke(step_name, multiline_argument)
+      support_code.invoke(step_name, multiline_argument)
     end
 
     # Invokes a series of steps +steps_text+. Example:
@@ -247,46 +222,15 @@ module Cucumber
     end
 
     def step_match(step_name, name_to_report=nil) #:nodoc:
-      matches = @programming_languages.map do |programming_language| 
-        programming_language.step_matches(step_name, name_to_report).to_a
-      end.flatten
-      raise Undefined.new(step_name) if matches.empty?
-      matches = best_matches(step_name, matches) if matches.size > 1 && options[:guess]
-      raise Ambiguous.new(step_name, matches, options[:guess]) if matches.size > 1
-      matches[0]
-    end
-
-    def best_matches(step_name, step_matches) #:nodoc:
-      no_groups      = step_matches.select {|step_match| step_match.args.length == 0}
-      max_arg_length = step_matches.map {|step_match| step_match.args.length }.max
-      top_groups     = step_matches.select {|step_match| step_match.args.length == max_arg_length }
-
-      if no_groups.any?
-        longest_regexp_length = no_groups.map {|step_match| step_match.text_length }.max
-        no_groups.select {|step_match| step_match.text_length == longest_regexp_length }
-      elsif top_groups.any?
-        shortest_capture_length = top_groups.map {|step_match| step_match.args.inject(0) {|sum, c| sum + c.to_s.length } }.min
-        top_groups.select {|step_match| step_match.args.inject(0) {|sum, c| sum + c.to_s.length } == shortest_capture_length }
-      else
-        top_groups
-      end
+      support_code.step_match(step_name, name_to_report)
     end
 
     def unmatched_step_definitions
-      @programming_languages.map do |programming_language| 
-        programming_language.unmatched_step_definitions
-      end.flatten
+      support_code.unmatched_step_definitions
     end
 
     def snippet_text(step_keyword, step_name, multiline_arg_class) #:nodoc:
-      load_programming_language('rb') if unknown_programming_language?
-      @programming_languages.map do |programming_language|
-        programming_language.snippet_text(step_keyword, step_name, multiline_arg_class)
-      end.join("\n")
-    end
-
-    def unknown_programming_language?
-      @programming_languages.empty?
+      support_code.snippet_text(step_keyword, step_name, multiline_arg_class)
     end
 
     def with_hooks(scenario, skip_hooks=false)
@@ -298,17 +242,12 @@ module Cucumber
     end
 
     def around(scenario, skip_hooks=false, &block) #:nodoc:
-      unless skip_hooks
-        @programming_languages.reverse.inject(block) do |blk, programming_language|
-          proc do
-            programming_language.around(scenario) do
-              blk.call(scenario)
-            end
-          end
-        end.call
-      else
+      if skip_hooks
         yield
+        return
       end
+      
+      support_code.around(scenario, block)
     end
 
     def before_and_after(scenario, skip_hooks=false) #:nodoc:
@@ -321,51 +260,32 @@ module Cucumber
     def before(scenario) #:nodoc:
       return if options[:dry_run] || @current_scenario
       @current_scenario = scenario
-      @programming_languages.each do |programming_language|
-        programming_language.before(scenario)
-      end
+      support_code.fire_hook(:before, scenario)
     end
     
     def after(scenario) #:nodoc:
       @current_scenario = nil
       return if options[:dry_run]
-      @programming_languages.each do |programming_language|
-        programming_language.after(scenario)
-      end
+      support_code.fire_hook(:after, scenario)
     end
     
     def after_step #:nodoc:
       return if options[:dry_run]
-      @programming_languages.each do |programming_language|
-        programming_language.execute_after_step(@current_scenario)
-      end
+      support_code.fire_hook(:execute_after_step, @current_scenario)
     end
     
     def after_configuration(configuration) #:nodoc
-      @programming_languages.each do |programming_language|
-        programming_language.after_configuration(configuration)
-      end
+      support_code.fire_hook(:after_configuration, configuration)
+    end
+    
+    def unknown_programming_language?
+      support_code.unknown_programming_language?
     end
 
-    private
-
-    def programming_language_for(step_def_file) #:nodoc:
-      if ext = File.extname(step_def_file)[1..-1]
-        return nil if @unsupported_programming_languages.index(ext)
-        begin
-          load_programming_language(ext)
-        rescue LoadError => e
-          log.debug("Failed to load '#{ext}' programming language for file #{step_def_file}: #{e.message}\n")
-          @unsupported_programming_languages << ext
-          nil
-        end
-      else
-        nil
-      end
-    end
-
-    def max_step_definition_length #:nodoc:
-      @max_step_definition_length ||= step_definitions.map{|step_definition| step_definition.text_length}.max
+  private
+  
+    def support_code
+      @support_code ||= SupportCode.new(self)
     end
 
     def scenario_visited(scenario) #:nodoc:
@@ -373,7 +293,7 @@ module Cucumber
     end
 
     def log
-      @log ||= Logger.new(STDOUT)
+      Cucumber.logger
     end
 
     def mri_gets(timeout_seconds)
