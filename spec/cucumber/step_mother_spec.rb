@@ -4,125 +4,123 @@ require 'cucumber'
 require 'cucumber/rb_support/rb_language'
 
 module Cucumber
+  
   describe StepMother do
+    let(:options)     { {} }
+    let(:step_mother) { StepMother.new(options) }
+    let(:dsl) do
+      @rb = step_mother.load_programming_language('rb')
+      Object.new.extend(RbSupport::RbDsl)
+    end
+    
     before do
-      @dsl = Object.new
-      @dsl.extend(RbSupport::RbDsl)
-
-      @step_mother = StepMother.new
-
-      @rb = @step_mother.load_programming_language('rb')
-
       @visitor = mock('Visitor')
     end
 
     it "should format step names" do
-      @dsl.Given(/it (.*) in (.*)/) do |what, month|
+      dsl.Given(/it (.*) in (.*)/) do |what, month|
       end
-      @dsl.Given(/nope something else/) do |what, month|
+      dsl.Given(/nope something else/) do |what, month|
       end
       
-      format = @step_mother.step_match("it snows in april").format_args("[%s]")
+      format = step_mother.step_match("it snows in april").format_args("[%s]")
       format.should == "it [snows] in [april]"
     end
 
     it "should raise Ambiguous error with guess hint when multiple step definitions match" do
-      @dsl.Given(/Three (.*) mice/) {|disability|}
-      @dsl.Given(/Three blind (.*)/) {|animal|}
+      dsl.Given(/Three (.*) mice/) {|disability|}
+      dsl.Given(/Three blind (.*)/) {|animal|}
 
       lambda do
-        @step_mother.step_match("Three blind mice")
+        step_mother.step_match("Three blind mice")
       end.should raise_error(Ambiguous, %{Ambiguous match of "Three blind mice":
 
-spec/cucumber/step_mother_spec.rb:30:in `/Three (.*) mice/'
-spec/cucumber/step_mother_spec.rb:31:in `/Three blind (.*)/'
+spec/cucumber/step_mother_spec.rb:31:in `/Three (.*) mice/'
+spec/cucumber/step_mother_spec.rb:32:in `/Three blind (.*)/'
 
 You can run again with --guess to make Cucumber be more smart about it
 })
     end
-
-    it "should not show --guess hint when --guess is used" do
-      @step_mother.options = {:guess => true}
-
-      @dsl.Given(/Three (.*) mice/) {|disability|}
-      @dsl.Given(/Three cute (.*)/) {|animal|}
+    
+    describe "when --guess is used" do
+      let(:options) { {:guess => true} }
       
-      lambda do
-        @step_mother.step_match("Three cute mice")
-      end.should raise_error(Ambiguous, %{Ambiguous match of "Three cute mice":
+      it "should not show --guess hint" do
+        dsl.Given(/Three (.*) mice/) {|disability|}
+        dsl.Given(/Three cute (.*)/) {|animal|}
+      
+        lambda do
+          step_mother.step_match("Three cute mice")
+        end.should raise_error(Ambiguous, %{Ambiguous match of "Three cute mice":
 
-spec/cucumber/step_mother_spec.rb:47:in `/Three (.*) mice/'
-spec/cucumber/step_mother_spec.rb:48:in `/Three cute (.*)/'
+spec/cucumber/step_mother_spec.rb:49:in `/Three (.*) mice/'
+spec/cucumber/step_mother_spec.rb:50:in `/Three cute (.*)/'
 
 })
-    end
+      end
 
-    it "should not raise Ambiguous error when multiple step definitions match, but --guess is enabled" do
-      @step_mother.options = {:guess => true}
-      @dsl.Given(/Three (.*) mice/) {|disability|}
-      @dsl.Given(/Three (.*)/) {|animal|}
+      it "should not raise Ambiguous error when multiple step definitions match" do
+        dsl.Given(/Three (.*) mice/) {|disability|}
+        dsl.Given(/Three (.*)/) {|animal|}
       
-      lambda do
-        @step_mother.step_match("Three blind mice")
-      end.should_not raise_error
-    end
-    
-    it "should not raise NoMethodError when guessing from multiple step definitions with nil fields" do
-      @step_mother.options = {:guess => true}
-      @dsl.Given(/Three (.*) mice( cannot find food)?/) {|disability, is_disastrous|}
-      @dsl.Given(/Three (.*)?/) {|animal|}
-      
-      lambda do
-        @step_mother.step_match("Three blind mice")
-      end.should_not raise_error
-    end
-    
-    it "should pick right step definition when --guess is enabled and equal number of capture groups" do
-      @step_mother.options = {:guess => true}
-      right = @dsl.Given(/Three (.*) mice/) {|disability|}
-      wrong = @dsl.Given(/Three (.*)/) {|animal|}
-      
-      @step_mother.step_match("Three blind mice").step_definition.should == right
-    end
-    
-    it "should pick right step definition when --guess is enabled and unequal number of capture groups" do
-      @step_mother.options = {:guess => true}
-      right = @dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
-      wrong = @dsl.Given(/Three (.*)/) {|animal|}
-      
-      @step_mother.step_match("Three blind mice ran far").step_definition.should == right
-    end
+        lambda do
+          step_mother.step_match("Three blind mice")
+        end.should_not raise_error
+      end
 
-    it "should pick most specific step definition when --guess is enabled and unequal number of capture groups" do
-      @step_mother.options = {:guess => true}
-      general       = @dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
-      specific      = @dsl.Given(/Three blind mice ran far/) do; end
-      more_specific = @dsl.Given(/^Three blind mice ran far$/) do; end
+      it "should not raise NoMethodError when guessing from multiple step definitions with nil fields" do
+        dsl.Given(/Three (.*) mice( cannot find food)?/) {|disability, is_disastrous|}
+        dsl.Given(/Three (.*)?/) {|animal|}
       
-      @step_mother.step_match("Three blind mice ran far").step_definition.should == more_specific
+        lambda do
+          step_mother.step_match("Three blind mice")
+        end.should_not raise_error
+      end
+
+      it "should pick right step definition when an equal number of capture groups" do
+        right = dsl.Given(/Three (.*) mice/) {|disability|}
+        wrong = dsl.Given(/Three (.*)/) {|animal|}
+      
+        step_mother.step_match("Three blind mice").step_definition.should == right
+      end
+
+      it "should pick right step definition when an unequal number of capture groups" do
+        right = dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
+        wrong = dsl.Given(/Three (.*)/) {|animal|}
+      
+        step_mother.step_match("Three blind mice ran far").step_definition.should == right
+      end
+      
+      it "should pick most specific step definition when an unequal number of capture groups" do
+        general       = dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
+        specific      = dsl.Given(/Three blind mice ran far/) do; end
+        more_specific = dsl.Given(/^Three blind mice ran far$/) do; end
+      
+        step_mother.step_match("Three blind mice ran far").step_definition.should == more_specific
+      end
     end
     
     it "should raise Undefined error when no step definitions match" do
       lambda do
-        @step_mother.step_match("Three blind mice")
+        step_mother.step_match("Three blind mice")
       end.should raise_error(Undefined)
     end
 
     # http://railsforum.com/viewtopic.php?pid=93881
     it "should not raise Redundant unless it's really redundant" do
-      @dsl.Given(/^(.*) (.*) user named '(.*)'$/) {|a,b,c|}
-      @dsl.Given(/^there is no (.*) user named '(.*)'$/) {|a,b|}
+      dsl.Given(/^(.*) (.*) user named '(.*)'$/) {|a,b,c|}
+      dsl.Given(/^there is no (.*) user named '(.*)'$/) {|a,b|}
     end
 
     it "should raise an error if the world is nil" do
-      @dsl.World {}
+      dsl.World {}
 
       begin
-        @step_mother.before_and_after(nil) do; end
+        step_mother.before_and_after(nil) do; end
         raise "Should fail"
       rescue RbSupport::NilWorld => e
         e.message.should == "World procs should never return nil"
-        e.backtrace.should == ["spec/cucumber/step_mother_spec.rb:118:in `World'"]
+        e.backtrace.should == ["spec/cucumber/step_mother_spec.rb:116:in `World'"]
       end
     end
 
@@ -136,8 +134,8 @@ spec/cucumber/step_mother_spec.rb:48:in `/Three cute (.*)/'
     end
 
     it "should implicitly extend world with modules" do
-      @dsl.World(ModuleOne, ModuleTwo)
-      @step_mother.before(mock('scenario').as_null_object)
+      dsl.World(ModuleOne, ModuleTwo)
+      step_mother.before(mock('scenario').as_null_object)
       class << @rb.current_world
         included_modules.inspect.should =~ /ModuleOne/ # Workaround for RSpec/Ruby 1.9 issue with namespaces
         included_modules.inspect.should =~ /ModuleTwo/
@@ -146,24 +144,26 @@ spec/cucumber/step_mother_spec.rb:48:in `/Three cute (.*)/'
     end
 
     it "should raise error when we try to register more than one World proc" do
-      @dsl.World { Hash.new }
-      lambda do
-        @dsl.World { Array.new }
-      end.should raise_error(RbSupport::MultipleWorld, %{You can only pass a proc to #World once, but it's happening
+      expected_error = %{You can only pass a proc to #World once, but it's happening
 in 2 places:
 
-spec/cucumber/step_mother_spec.rb:149:in `World'
-spec/cucumber/step_mother_spec.rb:151:in `World'
+spec/cucumber/step_mother_spec.rb:\\d+:in `World'
+spec/cucumber/step_mother_spec.rb:\\d+:in `World'
 
 Use Ruby modules instead to extend your worlds. See the Cucumber::RbSupport::RbDsl#World RDoc
 or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
 
-})
+}
+      dsl.World { Hash.new }
+      lambda do
+        dsl.World { Array.new }
+      end.should raise_error(RbSupport::MultipleWorld, /#{expected_error}/)
+      
     end
 
     it "should find before hooks" do
-      fish = @dsl.Before('@fish'){}
-      meat = @dsl.Before('@meat'){}
+      fish = dsl.Before('@fish'){}
+      meat = dsl.Before('@meat'){}
             
       scenario = mock('Scenario')
       scenario.should_receive(:accept_hook?).with(fish).and_return(true)
@@ -173,10 +173,10 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
     end
 
     it "should find around hooks" do
-      a = @dsl.Around do |scenario, block|
+      a = dsl.Around do |scenario, block|
       end
 
-      b = @dsl.Around('@tag') do |scenario, block|
+      b = dsl.Around('@tag') do |scenario, block|
       end
 
       scenario = mock('Scenario')
@@ -188,43 +188,41 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
   end
 
   describe StepMother, "step argument transformations" do
-    before do
-      @dsl = Object.new
-      @dsl.extend(RbSupport::RbDsl)
-
-      @step_mother = StepMother.new
-
-      @rb = @step_mother.load_programming_language('rb')
+    let(:options)     { {} }
+    let(:step_mother) { StepMother.new(options) }
+    let(:dsl) do
+      @rb = step_mother.load_programming_language('rb')
+      Object.new.extend(RbSupport::RbDsl)
     end
-
+    
     describe "without capture groups" do
       it "complains when registering with a with no transform block" do
         lambda do
-          @dsl.Transform('^abc$')
+          dsl.Transform('^abc$')
         end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
       end
       
       it "complains when registering with a zero-arg transform block" do
         lambda do
-          @dsl.Transform('^abc$') {42}
+          dsl.Transform('^abc$') {42}
         end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
       end
 
       it "complains when registering with a splat-arg transform block" do
         lambda do
-          @dsl.Transform('^abc$') {|*splat| 42 }
+          dsl.Transform('^abc$') {|*splat| 42 }
         end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
       end
 
       it "complains when transforming with an arity mismatch" do
         lambda do
-          @dsl.Transform('^abc$') {|one, two| 42 }
+          dsl.Transform('^abc$') {|one, two| 42 }
           @rb.execute_transforms(['abc'])
         end.should raise_error(Cucumber::ArityMismatchError)
       end
 
       it "allows registering a regexp pattern that yields the step_arg matched" do
-        @dsl.Transform(/^ab*c$/) {|arg| 42}
+        dsl.Transform(/^ab*c$/) {|arg| 42}
         @rb.execute_transforms(['ab']).should == ['ab']
         @rb.execute_transforms(['ac']).should == [42]
         @rb.execute_transforms(['abc']).should == [42]
@@ -235,31 +233,31 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
     describe "with capture groups" do
       it "complains when registering with a with no transform block" do
         lambda do
-          @dsl.Transform('^a(.)c$')
+          dsl.Transform('^a(.)c$')
         end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
       end
       
       it "complains when registering with a zero-arg transform block" do
         lambda do
-          @dsl.Transform('^a(.)c$') { 42 }
+          dsl.Transform('^a(.)c$') { 42 }
         end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
       end
 
       it "complains when registering with a splat-arg transform block" do
         lambda do
-          @dsl.Transform('^a(.)c$') {|*splat| 42 }
+          dsl.Transform('^a(.)c$') {|*splat| 42 }
         end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
       end
 
       it "complains when transforming with an arity mismatch" do
         lambda do
-          @dsl.Transform('^a(.)c$') {|one, two| 42 }
+          dsl.Transform('^a(.)c$') {|one, two| 42 }
           @rb.execute_transforms(['abc'])
         end.should raise_error(Cucumber::ArityMismatchError)
       end
       
       it "allows registering a regexp pattern that yields capture groups" do
-        @dsl.Transform(/^shape: (.+), color: (.+)$/) do |shape, color|
+        dsl.Transform(/^shape: (.+), color: (.+)$/) do |shape, color|
           {shape.to_sym => color.to_sym}
         end
         @rb.execute_transforms(['shape: circle, color: blue']).should == [{:circle => :blue}]
@@ -269,7 +267,7 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
     end
     
     it "allows registering a string pattern" do
-      @dsl.Transform('^ab*c$') {|arg| 42}
+      dsl.Transform('^ab*c$') {|arg| 42}
       @rb.execute_transforms(['ab']).should == ['ab']
       @rb.execute_transforms(['ac']).should == [42]
       @rb.execute_transforms(['abc']).should == [42]
@@ -277,14 +275,14 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
     end
 
     it "gives match priority to transforms defined last" do
-      @dsl.Transform(/^transform_me$/) {|arg| :foo }
-      @dsl.Transform(/^transform_me$/) {|arg| :bar }
-      @dsl.Transform(/^transform_me$/) {|arg| :baz }
+      dsl.Transform(/^transform_me$/) {|arg| :foo }
+      dsl.Transform(/^transform_me$/) {|arg| :bar }
+      dsl.Transform(/^transform_me$/) {|arg| :baz }
       @rb.execute_transforms(['transform_me']).should == [:baz]
     end
     
     it "allows registering a transform which returns nil" do
-      @dsl.Transform('^ac$') {|arg| nil}
+      dsl.Transform('^ac$') {|arg| nil}
       @rb.execute_transforms(['ab']).should == ['ab']
       @rb.execute_transforms(['ac']).should == [nil]
     end
