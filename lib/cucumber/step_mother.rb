@@ -21,8 +21,12 @@ module Cucumber
     end
     
     def options=(options)
-      warn("Setting StepMother#options is deprecated. Please pass options into the constructor instead: #{caller[0]}")
-      @options = options
+      warn("Setting StepMother#options is deprecated, and has been ignored. Please pass options into the constructor instead: #{caller[0]}")
+    end
+    
+    # Returns the options passed on the command line.
+    def options
+      @options
     end
     
     def load_plain_text_features(feature_files)
@@ -71,11 +75,6 @@ module Cucumber
     #
     def load_programming_language(ext)
       support_code.load_programming_language!(ext)
-    end
-
-    # Returns the options passed on the command line.
-    def options
-      @options
     end
 
     def step_visited(step) #:nodoc:
