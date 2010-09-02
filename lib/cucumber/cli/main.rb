@@ -22,6 +22,43 @@ if defined?(Spork::TestFramework::Cucumber)
 end
 
 module Cucumber
+  class Runtime
+    class Result
+      def initialize(failure)
+        @failure = failure
+      end
+      def failure?
+        @failure
+      end
+    end
+    
+    def initialize(configuration)
+      @configuration = configuration
+    end
+    
+    def run
+      step_mother = StepMother.new(@configuration.options)
+      step_mother.load_code_files(@configuration.support_to_load)
+      step_mother.after_configuration(@configuration)
+      features = step_mother.load_plain_text_features(@configuration.feature_files)
+      step_mother.load_code_files(@configuration.step_defs_to_load)
+
+      runner = @configuration.build_runner(step_mother, @out_stream)
+      step_mother.visitor = runner # Needed to support World#announce
+      
+      runner.visit_features(features)
+
+      failure = if @configuration.wip?
+        step_mother.scenarios(:passed).any?
+      else
+        step_mother.scenarios(:failed).any? ||
+        (@configuration.strict? && (step_mother.steps(:undefined).any? || step_mother.steps(:pending).any?))
+      end
+      
+      Result.new(failure)
+    end
+  end
+  
   module Cli
     class Main
       class << self
@@ -50,23 +87,9 @@ module Cucumber
         trap_interrupt
         return @drb_output if run_drb_client
         
-        step_mother = StepMother.new(configuration.options)
-        step_mother.load_code_files(configuration.support_to_load)
-        step_mother.after_configuration(configuration)
-        features = step_mother.load_plain_text_features(configuration.feature_files)
-        step_mother.load_code_files(configuration.step_defs_to_load)
-
-        runner = configuration.build_runner(step_mother, @out_stream)
-        step_mother.visitor = runner # Needed to support World#announce
-        
-        runner.visit_features(features)
-
-        failure = if configuration.wip?
-          step_mother.scenarios(:passed).any?
-        else
-          step_mother.scenarios(:failed).any? ||
-          (configuration.strict? && (step_mother.steps(:undefined).any? || step_mother.steps(:pending).any?))
-        end
+        runtime = Runtime.new(configuration)
+        result = runtime.run
+        result.failure?
       rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
         @error_stream.puts e.message
         true
