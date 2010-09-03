@@ -411,6 +411,18 @@ END_OF_MESSAGE
         config.tag_expression.should_not be_empty
       end
     end
+    
+    describe "#dry_run?" do
+      it "returns true when --dry-run was specified on in the arguments" do
+        config.parse!(['--dry-run'])
+        config.dry_run?.should be_true
+      end
+      
+      it "returns false by default" do
+        config.parse!([])
+        config.dry_run?.should be_false
+      end
+    end
   end
 end
 end

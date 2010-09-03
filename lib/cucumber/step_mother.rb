@@ -27,6 +27,7 @@ module Cucumber
     
     # Returns the options passed on the command line.
     def options
+      # warn("accessing options is deprecated: #{caller[0]}")
       @options
     end
     
@@ -38,7 +39,7 @@ module Cucumber
       log.debug("Features:\n")
       feature_files.each do |f|
         feature_file = FeatureFile.new(f)
-        feature = feature_file.parse(options, tag_counts)
+        feature = feature_file.parse(@configuration, tag_counts)
         if feature
           features.add_feature(feature)
           log.debug("  * #{f}\n")
@@ -264,19 +265,19 @@ module Cucumber
     end
 
     def before(scenario) #:nodoc:
-      return if options[:dry_run] || @current_scenario
+      return if @configuration.dry_run? || @current_scenario
       @current_scenario = scenario
       support_code.fire_hook(:before, scenario)
     end
     
     def after(scenario) #:nodoc:
       @current_scenario = nil
-      return if options[:dry_run]
+      return if @configuration.dry_run?
       support_code.fire_hook(:after, scenario)
     end
     
     def after_step #:nodoc:
-      return if options[:dry_run]
+      return if @configuration.dry_run?
       support_code.fire_hook(:execute_after_step, @current_scenario)
     end
     

@@ -56,6 +56,10 @@ module Cucumber
         @options[:drb_port].to_i if @options[:drb_port]
       end
 
+      def dry_run?
+        options[:dry_run]
+      end
+
       def build_runner(step_mother, io)
         Ast::TreeWalker.new(step_mother, formatters(step_mother), @options, io)
       end
@@ -124,6 +128,10 @@ module Cucumber
       
       def tag_expression
         Gherkin::TagExpression.new(@options[:tag_expressions])
+      end
+      
+      def filters
+        @options.filters
       end
 
     private
