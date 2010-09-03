@@ -37,7 +37,7 @@ module Cucumber
     end
     
     def run
-      step_mother = StepMother.new(@configuration.options)
+      step_mother = StepMother.new(@configuration)
       step_mother.load_code_files(@configuration.support_to_load)
       step_mother.after_configuration(@configuration)
       features = step_mother.load_plain_text_features(@configuration.feature_files)

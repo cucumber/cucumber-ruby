@@ -15,9 +15,10 @@ module Cucumber
     include Formatter::Duration
     attr_writer :visitor
 
-    def initialize(options = Cli::Options.new)
+    def initialize(configuration = nil)
       @current_scenario = nil
-      @options = options
+      @configuration = configuration
+      @options = configuration.options
     end
     
     def options=(options)
