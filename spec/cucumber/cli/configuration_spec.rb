@@ -399,7 +399,18 @@ END_OF_MESSAGE
       ENV["RAILS_ENV"].should == "selenium"
       config.feature_files.should_not include('RAILS_ENV=selenium')
     end
+    
+    describe "#tag_expression" do
+      it "returns an empty expression when no tags are specified" do
+        config.parse!([])
+        config.tag_expression.should be_empty
+      end
 
+      it "returns an expression when tags are specified" do
+        config.parse!(['--tags','@foo'])
+        config.tag_expression.should_not be_empty
+      end
+    end
   end
 end
 end

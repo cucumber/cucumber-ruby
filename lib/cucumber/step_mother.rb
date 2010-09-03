@@ -54,7 +54,7 @@ module Cucumber
 
     def check_tag_limits(tag_counts)
       error_messages = []
-      options[:tag_expression].limits.each do |tag_name, tag_limit|
+      @configuration.tag_expression.limits.each do |tag_name, tag_limit|
         tag_locations = (tag_counts[tag_name] || [])
         tag_count = tag_locations.length
         if tag_count > tag_limit

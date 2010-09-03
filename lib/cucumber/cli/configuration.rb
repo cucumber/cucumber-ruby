@@ -121,6 +121,10 @@ module Cucumber
         logger.level = Logger::DEBUG if self.verbose?
         logger
       end
+      
+      def tag_expression
+        Gherkin::TagExpression.new(@options[:tag_expressions])
+      end
 
     private
 
