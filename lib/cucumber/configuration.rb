@@ -12,6 +12,10 @@ module Cucumber
       @options[:dry_run]
     end
     
+    def guess?
+      @options[:guess]
+    end
+    
     def options
       warn("#options is deprecated. Please use the configuration object instead. #{caller[1]}")
       @options

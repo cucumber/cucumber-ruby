@@ -2,8 +2,9 @@ module Cucumber
   class SupportCode
     include Constantize
 
-    def initialize(step_mother)
+    def initialize(step_mother, in_guess_mode)
       @step_mother = step_mother
+      @guess_step_matches = in_guess_mode
       @unsupported_programming_languages = []
       @programming_languages = []
       @language_map = {}
@@ -79,7 +80,7 @@ module Cucumber
   private
   
     def guess_step_matches?
-      @step_mother.options[:guess]
+      @guess_step_matches
     end
     
     def matches(step_name, name_to_report)

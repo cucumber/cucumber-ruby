@@ -215,7 +215,7 @@ module Cucumber
   private
   
     def support_code
-      @support_code ||= SupportCode.new(self)
+      @support_code ||= SupportCode.new(self, @configuration.guess?)
     end
 
     def scenario_visited(scenario) #:nodoc:
@@ -226,10 +226,15 @@ module Cucumber
       Cucumber.logger
     end
     
-    def parse_configuration(configuration)
-      return configuration if configuration.is_a?(Configuration)
-      return Configuration.new(configuration) if configuration.is_a?(Hash)
-      raise(ArgumentError, "Unknown configuration: #{configuration.inspect}")
+    def parse_configuration(configuration_argument)
+      case configuration_argument
+      when Hash
+        Configuration.new(configuration_argument)
+      when Configuration, Cucumber::Cli::Configuration
+        configuration_argument
+      else
+        raise(ArgumentError, "Unknown configuration: #{configuration_argument.inspect}")
+      end
     end
   end
 end
