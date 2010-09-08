@@ -1,3 +1,4 @@
+require 'cucumber/configuration'
 require 'cucumber/constantize'
 require 'cucumber/core_ext/instance_exec'
 require 'cucumber/language_support/language_methods'
@@ -20,7 +21,6 @@ module Cucumber
     def initialize(configuration = Configuration.default)
       @current_scenario = nil
       @configuration = configuration
-      @options = configuration.options
     end
     
     def options=(options)
@@ -30,7 +30,7 @@ module Cucumber
     # Returns the options passed on the command line.
     def options
       # warn("accessing options is deprecated: #{caller[0]}")
-      @options
+      @configuration.options
     end
     
     def load_plain_text_features(feature_files)
