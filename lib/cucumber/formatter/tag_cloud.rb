@@ -28,7 +28,7 @@ module Cucumber
         matrix = @counts.to_a.sort{|paira, pairb| paira[0] <=> pairb[0]}.transpose
         table = Cucumber::Ast::Table.new(matrix)
         formatter = Cucumber::Formatter::Pretty.new(@step_mother, @io, {})
-        Cucumber::Ast::TreeWalker.new(@step_mother, [formatter], {}).visit_multiline_arg(table)
+        Cucumber::Ast::TreeWalker.new(@step_mother, [formatter]).visit_multiline_arg(table)
       end
     end
   end

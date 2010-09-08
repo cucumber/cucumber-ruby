@@ -60,8 +60,12 @@ module Cucumber
         options[:dry_run]
       end
 
+      def expand?
+        @options[:expand]
+      end
+
       def build_runner(step_mother, io)
-        Ast::TreeWalker.new(step_mother, formatters(step_mother), @options, io)
+        Ast::TreeWalker.new(step_mother, formatters(step_mother), self, io)
       end
 
       def formatter_class(format)

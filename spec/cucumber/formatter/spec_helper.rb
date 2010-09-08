@@ -34,8 +34,8 @@ module Cucumber
       end
     
       def run(features)
-        options = mock(Cucumber::Cli::Options, :[] => nil)
-        tree_walker = Cucumber::Ast::TreeWalker.new(@step_mother, [@formatter], options, STDOUT)
+        configuration = Cucumber::Configuration.default
+        tree_walker = Cucumber::Ast::TreeWalker.new(@step_mother, [@formatter], configuration, STDOUT)
         tree_walker.visit_features(features)
       end
     

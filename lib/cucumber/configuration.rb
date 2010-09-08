@@ -16,6 +16,14 @@ module Cucumber
       @options[:guess]
     end
     
+    def strict?
+      @options[:strict]
+    end
+    
+    def expand? 
+      @options[:expand]
+    end
+    
     def options
       warn("#options is deprecated. Please use the configuration object instead. #{caller[1]}")
       @options

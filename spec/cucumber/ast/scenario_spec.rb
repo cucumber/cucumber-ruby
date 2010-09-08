@@ -17,7 +17,6 @@ module Cucumber
           $y = n.to_i
         end
         @visitor = TreeWalker.new(@step_mother)
-        @visitor.options = {}
       end
 
       it "should skip steps when previous is not passed" do
