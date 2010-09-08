@@ -24,7 +24,10 @@ module Cucumber
     end
     
     def load_plain_text_features(feature_files)
-      FeaturesLoader.new(feature_files, @configuration.filters, @configuration.tag_expression).features
+      loader = FeaturesLoader.new(feature_files, 
+        @configuration.filters, 
+        @configuration.tag_expression)
+      loader.features
     end
 
     def load_code_files(step_def_files)
