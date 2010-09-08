@@ -20,7 +20,7 @@ module Cucumber
 
     def initialize(configuration = Configuration.default)
       @current_scenario = nil
-      @configuration = configuration
+      @configuration = parse_configuration(configuration)
     end
     
     def options=(options)
@@ -224,6 +224,12 @@ module Cucumber
 
     def log
       Cucumber.logger
+    end
+    
+    def parse_configuration(configuration)
+      return configuration if configuration.is_a?(Configuration)
+      return Configuration.new(configuration) if configuration.is_a?(Hash)
+      raise(ArgumentError, "Unknown configuration: #{configuration.inspect}")
     end
   end
 end
