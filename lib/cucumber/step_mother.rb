@@ -23,16 +23,6 @@ module Cucumber
       @configuration = parse_configuration(configuration)
     end
     
-    def options=(options)
-      warn("Setting StepMother#options is deprecated, and has been ignored. Please pass options into the constructor instead: #{caller[0]}")
-    end
-    
-    # Returns the options passed on the command line.
-    def options
-      # warn("accessing options is deprecated: #{caller[0]}")
-      @configuration.options
-    end
-    
     def load_plain_text_features(feature_files)
       FeaturesLoader.new(feature_files, @configuration.filters, @configuration.tag_expression).features
     end

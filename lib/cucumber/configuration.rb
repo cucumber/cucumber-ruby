@@ -1,4 +1,5 @@
 module Cucumber
+  # The base class for configuring settings for a Cucumber run.
   class Configuration
     def self.default
       new
@@ -22,11 +23,6 @@ module Cucumber
     
     def expand? 
       @options[:expand]
-    end
-    
-    def options
-      warn("#options is deprecated. Please use the configuration object instead. #{caller[1]}")
-      @options
     end
   end
 end

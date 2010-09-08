@@ -12,7 +12,7 @@ module Cucumber
     class Configuration
       include Constantize
 
-      attr_reader :options, :out_stream
+      attr_reader :out_stream
 
       def initialize(out_stream = STDOUT, error_stream = STDERR)
         @out_stream   = out_stream
@@ -57,7 +57,7 @@ module Cucumber
       end
 
       def dry_run?
-        options[:dry_run]
+        @options[:dry_run]
       end
 
       def expand?
@@ -136,6 +136,15 @@ module Cucumber
       
       def filters
         @options.filters
+      end
+      
+      def formats
+        @options[:formats]
+      end
+      
+      def options
+        warn("Deprecated: Configuration#options will be removed from the next release of Cucumber. Please use the configuration object directly instead.")
+        @options
       end
 
     private
