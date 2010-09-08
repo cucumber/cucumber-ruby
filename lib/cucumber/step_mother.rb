@@ -17,11 +17,52 @@ module Cucumber
   class StepMother
     include Formatter::Duration
     include UserInterface
+    
+    class Results
+      def step_visited(step) #:nodoc:
+        steps << step unless steps.index(step)
+      end
+      
+      def scenario_visited(scenario) #:nodoc:
+        scenarios << scenario unless scenarios.index(scenario)
+      end
+      
+      def steps(status = nil) #:nodoc:
+        @steps ||= []
+        if(status)
+          @steps.select{|step| step.status == status}
+        else
+          @steps
+        end
+      end
+      
+      def scenarios(status = nil) #:nodoc:
+        @scenarios ||= []
+        if(status)
+          @scenarios.select{|scenario| scenario.status == status}
+        else
+          @scenarios
+        end
+      end
+    end
 
     def initialize(configuration = Configuration.default)
       @current_scenario = nil
       @configuration = parse_configuration(configuration)
       @support_code = SupportCode.new(self, @configuration.guess?)
+      @results = Results.new
+    end
+    
+    def step_visited(step) #:nodoc:
+      @results.step_visited(step)
+    end
+    
+    def scenarios(status = nil)
+      @results.scenarios(status)
+    end
+    
+    def steps(status = nil)
+      @results.steps(status)
     end
     
     def load_plain_text_features(feature_files)
@@ -41,28 +82,6 @@ module Cucumber
     #
     def load_programming_language(ext)
       @support_code.load_programming_language!(ext)
-    end
-
-    def step_visited(step) #:nodoc:
-      steps << step unless steps.index(step)
-    end
-
-    def steps(status = nil) #:nodoc:
-      @steps ||= []
-      if(status)
-        @steps.select{|step| step.status == status}
-      else
-        @steps
-      end
-    end
-
-    def scenarios(status = nil) #:nodoc:
-      @scenarios ||= []
-      if(status)
-        @scenarios.select{|scenario| scenario.status == status}
-      else
-        @scenarios
-      end
     end
 
     def invoke(step_name, multiline_argument)
@@ -150,7 +169,7 @@ module Cucumber
       before(scenario) unless skip_hooks
       yield scenario
       after(scenario) unless skip_hooks
-      scenario_visited(scenario)
+      @results.scenario_visited(scenario)
     end
 
     def before(scenario) #:nodoc:
@@ -180,10 +199,6 @@ module Cucumber
 
   private
   
-    def scenario_visited(scenario) #:nodoc:
-      scenarios << scenario unless scenarios.index(scenario)
-    end
-
     def log
       Cucumber.logger
     end
