@@ -7,69 +7,17 @@ require 'cucumber/errors'
 require 'cucumber/support_code'
 require 'gherkin/rubify'
 require 'timeout'
+require 'cucumber/step_mother/user_interface'
+require 'cucumber/step_mother/features_loader'
 
 module Cucumber
   
   # This is the meaty part of Cucumber that ties everything together.
   class StepMother
-    class FeaturesLoader
-      include Formatter::Duration
-
-      def initialize(feature_files, filters, tag_expression)
-        @feature_files, @filters, @tag_expression = feature_files, filters, tag_expression
-      end
-      
-      def features
-        load unless @features
-        @features
-      end
-      
-    private
-    
-      def load
-        features = Ast::Features.new
-
-        tag_counts = {}
-        start = Time.new
-        log.debug("Features:\n")
-        @feature_files.each do |f|
-          feature_file = FeatureFile.new(f)
-          feature = feature_file.parse(@filters, tag_counts)
-          if feature
-            features.add_feature(feature)
-            log.debug("  * #{f}\n")
-          end
-        end
-        duration = Time.now - start
-        log.debug("Parsing feature files took #{format_duration(duration)}\n\n")
-
-        check_tag_limits(tag_counts)
-
-        @features = features
-      end
-
-      def check_tag_limits(tag_counts)
-        error_messages = []
-        @tag_expression.limits.each do |tag_name, tag_limit|
-          tag_locations = (tag_counts[tag_name] || [])
-          tag_count = tag_locations.length
-          if tag_count > tag_limit
-            error = "#{tag_name} occurred #{tag_count} times, but the limit was set to #{tag_limit}\n  " +
-              tag_locations.join("\n  ")
-            error_messages << error
-          end
-        end
-        raise TagExcess.new(error_messages) if error_messages.any?
-      end
-      
-      def log
-        Cucumber.logger
-      end
-    end
     include Formatter::Duration
-    attr_writer :visitor
+    include UserInterface
 
-    def initialize(configuration = nil)
+    def initialize(configuration = Configuration.default)
       @current_scenario = nil
       @configuration = configuration
       @options = configuration.options
@@ -114,53 +62,6 @@ module Cucumber
       end
     end
 
-    # Output +announcement+ alongside the formatted output.
-    # This is an alternative to using Kernel#puts - it will display
-    # nicer, and in all outputs (in case you use several formatters)
-    #
-    def announce(msg)
-      msg.respond_to?(:join) ? @visitor.announce(msg.join("\n")) : @visitor.announce(msg.to_s)
-    end
-
-    # Suspends execution and prompts +question+ to the console (STDOUT).
-    # An operator (manual tester) can then enter a line of text and hit
-    # <ENTER>. The entered text is returned, and both +question+ and
-    # the result is added to the output using #announce.
-    #
-    # If you want a beep to happen (to grab the manual tester's attention),
-    # just prepend ASCII character 7 to the question:
-    #
-    #   ask("#{7.chr}How many cukes are in the external system?")
-    #
-    # If that doesn't issue a beep, you can shell out to something else
-    # that makes a sound before invoking #ask.
-    #
-    def ask(question, timeout_seconds)
-      STDOUT.puts(question)
-      STDOUT.flush
-      announce(question)
-
-      if(Cucumber::JRUBY)
-        answer = jruby_gets(timeout_seconds)
-      else
-        answer = mri_gets(timeout_seconds)
-      end
-      
-      if(answer)
-        announce(answer)
-        answer
-      else
-        raise("Waited for input for #{timeout_seconds} seconds, then timed out.")
-      end
-    end
-
-    # Embed +file+ of MIME type +mime_type+ into the output. This may or may
-    # not be ignored, depending on what kind of formatter(s) are active.
-    #
-    def embed(file, mime_type)
-      @visitor.embed(file, mime_type)
-    end
-
     def scenarios(status = nil) #:nodoc:
       @scenarios ||= []
       if(status)
@@ -189,8 +90,8 @@ module Cucumber
     class StepInvoker
       include Gherkin::Rubify
 
-      def initialize(step_mother)
-        @step_mother = step_mother
+      def initialize(support_code)
+        @support_code = support_code
       end
 
       def uri(uri)
@@ -205,7 +106,7 @@ module Cucumber
         else
           nil
         end
-        @step_mother.invoke(step.name, cucumber_multiline_arg) 
+        @support_code.invoke(step.name, cucumber_multiline_arg) 
       end
 
       def eof
@@ -323,26 +224,6 @@ module Cucumber
 
     def log
       Cucumber.logger
-    end
-
-    def mri_gets(timeout_seconds)
-      begin
-        Timeout.timeout(timeout_seconds) do
-          STDIN.gets
-        end
-      rescue Timeout::Error => e
-        nil
-      end
-    end
-
-    def jruby_gets(timeout_seconds)
-      answer = nil
-      t = java.lang.Thread.new do
-        answer = STDIN.gets
-      end
-      t.start
-      t.join(timeout_seconds * 1000)
-      answer
     end
   end
 end
