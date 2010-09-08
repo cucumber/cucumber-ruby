@@ -27,7 +27,8 @@ module Cucumber
       def load_features(content)
         feature_file = FeatureFile.new('spec.feature', content)
         features = Ast::Features.new
-        feature = feature_file.parse(options, {})
+        filters = []
+        feature = feature_file.parse(filters, {})
         features.add_feature(feature) if feature
         features
       end
@@ -44,9 +45,9 @@ module Cucumber
         dsl.extend RbSupport::RbDsl
         dsl.instance_exec &step_defs
       end 
-
+      
       def options
-        @options ||= mock(Cucumber::Cli::Options, :filters => [], :[] => nil)
+        @options ||= mock(Cucumber::Cli::Options, :[] => nil)
       end
     end
   end
