@@ -21,6 +21,7 @@ module Cucumber
     def initialize(configuration = Configuration.default)
       @current_scenario = nil
       @configuration = parse_configuration(configuration)
+      @support_code = SupportCode.new(self, @configuration.guess?)
     end
     
     def load_plain_text_features(feature_files)
@@ -31,7 +32,7 @@ module Cucumber
     end
 
     def load_code_files(step_def_files)
-      support_code.load_files!(step_def_files)
+      @support_code.load_files!(step_def_files)
     end
 
     # Loads and registers programming language implementation.
@@ -39,7 +40,7 @@ module Cucumber
     # twice will return the same instance.
     #
     def load_programming_language(ext)
-      support_code.load_programming_language!(ext)
+      @support_code.load_programming_language!(ext)
     end
 
     def step_visited(step) #:nodoc:
@@ -65,7 +66,7 @@ module Cucumber
     end
 
     def invoke(step_name, multiline_argument)
-      support_code.invoke(step_name, multiline_argument)
+      @support_code.invoke(step_name, multiline_argument)
     end
 
     # Invokes a series of steps +steps_text+. Example:
@@ -76,7 +77,7 @@ module Cucumber
     #   })
     def invoke_steps(steps_text, i18n, file_colon_line)
       file, line = file_colon_line.split(':')
-      parser = Gherkin::Parser::Parser.new(StepInvoker.new(support_code), true, 'steps')
+      parser = Gherkin::Parser::Parser.new(StepInvoker.new(@support_code), true, 'steps')
       parser.parse(steps_text, file, line.to_i)
     end
 
@@ -145,15 +146,15 @@ module Cucumber
     end
 
     def step_match(step_name, name_to_report=nil) #:nodoc:
-      support_code.step_match(step_name, name_to_report)
+      @support_code.step_match(step_name, name_to_report)
     end
 
     def unmatched_step_definitions
-      support_code.unmatched_step_definitions
+      @support_code.unmatched_step_definitions
     end
 
     def snippet_text(step_keyword, step_name, multiline_arg_class) #:nodoc:
-      support_code.snippet_text(step_keyword, step_name, multiline_arg_class)
+      @support_code.snippet_text(step_keyword, step_name, multiline_arg_class)
     end
 
     def with_hooks(scenario, skip_hooks=false)
@@ -170,7 +171,7 @@ module Cucumber
         return
       end
       
-      support_code.around(scenario, block)
+      @support_code.around(scenario, block)
     end
 
     def before_and_after(scenario, skip_hooks=false) #:nodoc:
@@ -183,34 +184,30 @@ module Cucumber
     def before(scenario) #:nodoc:
       return if @configuration.dry_run? || @current_scenario
       @current_scenario = scenario
-      support_code.fire_hook(:before, scenario)
+      @support_code.fire_hook(:before, scenario)
     end
     
     def after(scenario) #:nodoc:
       @current_scenario = nil
       return if @configuration.dry_run?
-      support_code.fire_hook(:after, scenario)
+      @support_code.fire_hook(:after, scenario)
     end
     
     def after_step #:nodoc:
       return if @configuration.dry_run?
-      support_code.fire_hook(:execute_after_step, @current_scenario)
+      @support_code.fire_hook(:execute_after_step, @current_scenario)
     end
     
     def after_configuration(configuration) #:nodoc
-      support_code.fire_hook(:after_configuration, configuration)
+      @support_code.fire_hook(:after_configuration, configuration)
     end
     
     def unknown_programming_language?
-      support_code.unknown_programming_language?
+      @support_code.unknown_programming_language?
     end
 
   private
   
-    def support_code
-      @support_code ||= SupportCode.new(self, @configuration.guess?)
-    end
-
     def scenario_visited(scenario) #:nodoc:
       scenarios << scenario unless scenarios.index(scenario)
     end
