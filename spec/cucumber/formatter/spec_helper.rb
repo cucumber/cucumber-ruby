@@ -34,6 +34,7 @@ module Cucumber
       end
     
       def run(features)
+        options = mock(Cucumber::Cli::Options, :[] => nil)
         tree_walker = Cucumber::Ast::TreeWalker.new(@step_mother, [@formatter], options, STDOUT)
         tree_walker.visit_features(features)
       end
@@ -45,10 +46,6 @@ module Cucumber
         dsl.extend RbSupport::RbDsl
         dsl.instance_exec &step_defs
       end 
-      
-      def options
-        @options ||= mock(Cucumber::Cli::Options, :[] => nil)
-      end
     end
   end
 end
