@@ -105,6 +105,7 @@ module Cucumber
 
           @cli = Main.new(@args, @out, @err)
           @step_mother = mock('StepMother').as_null_object
+          StepMother.stub!(:new).and_return(@step_mother)
         end
 
         it "delegates the execution to the DRB client passing the args and streams" do
