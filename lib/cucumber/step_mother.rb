@@ -76,37 +76,9 @@ module Cucumber
     #     Then I should not be thirsty
     #   })
     def invoke_steps(steps_text, i18n, file_colon_line)
-      file, line = file_colon_line.split(':')
-      parser = Gherkin::Parser::Parser.new(StepInvoker.new(@support_code), true, 'steps')
-      parser.parse(steps_text, file, line.to_i)
+      @support_code.invoke_steps(steps_text, i18n, file_colon_line)
     end
-
-    class StepInvoker
-      include Gherkin::Rubify
-
-      def initialize(support_code)
-        @support_code = support_code
-      end
-
-      def uri(uri)
-      end
-
-      def step(step)
-        cucumber_multiline_arg = case(rubify(step.multiline_arg))
-        when Gherkin::Formatter::Model::PyString
-          step.multiline_arg.value
-        when Array
-          Ast::Table.new(step.multiline_arg.map{|row| row.cells})
-        else
-          nil
-        end
-        @support_code.invoke(step.name, cucumber_multiline_arg) 
-      end
-
-      def eof
-      end
-    end
-
+    
     # Returns a Cucumber::Ast::Table for +text_or_table+, which can either
     # be a String:
     #

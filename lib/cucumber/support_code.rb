@@ -1,5 +1,31 @@
 module Cucumber
   class SupportCode
+    class StepInvoker
+      include Gherkin::Rubify
+
+      def initialize(support_code)
+        @support_code = support_code
+      end
+
+      def uri(uri)
+      end
+
+      def step(step)
+        cucumber_multiline_arg = case(rubify(step.multiline_arg))
+        when Gherkin::Formatter::Model::PyString
+          step.multiline_arg.value
+        when Array
+          Ast::Table.new(step.multiline_arg.map{|row| row.cells})
+        else
+          nil
+        end
+        @support_code.invoke(step.name, cucumber_multiline_arg) 
+      end
+
+      def eof
+      end
+    end
+    
     include Constantize
 
     def initialize(step_mother, in_guess_mode)
@@ -10,6 +36,12 @@ module Cucumber
       @language_map = {}
     end
     
+    def invoke_steps(steps_text, i18n, file_colon_line)
+      file, line = file_colon_line.split(':')
+      parser = Gherkin::Parser::Parser.new(StepInvoker.new(self), true, 'steps')
+      parser.parse(steps_text, file, line.to_i)
+    end
+
     def load_programming_language!(ext)
       return @language_map[ext] if @language_map[ext]
       programming_language_class = constantize("Cucumber::#{ext.capitalize}Support::#{ext.capitalize}Language")
