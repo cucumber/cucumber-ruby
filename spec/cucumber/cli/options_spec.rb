@@ -326,19 +326,19 @@ module Cli
 
     describe "dry-run" do 
       it "should have the default value for snippets" do
- 	given_cucumber_yml_defined_as({'foo' => %w[--dry-run]})
+        given_cucumber_yml_defined_as({'foo' => %w[--dry-run]})
         options.parse!(%w{--dry-run})
         options[:snippets].should == true
       end
 
       it "should set snippets to false when no-snippets provided after dry-run" do 
- 	given_cucumber_yml_defined_as({'foo' => %w[--dry-run --no-snippets]})
+        given_cucumber_yml_defined_as({'foo' => %w[--dry-run --no-snippets]})
         options.parse!(%w{--dry-run --no-snippets})
         options[:snippets].should == false
       end
 
       it "should set snippets to false when no-snippets provided before dry-run" do 
- 	given_cucumber_yml_defined_as({'foo' => %w[--no-snippet --dry-run]})
+        given_cucumber_yml_defined_as({'foo' => %w[--no-snippet --dry-run]})
         options.parse!(%w{--no-snippets --dry-run})
         options[:snippets].should == false
       end
