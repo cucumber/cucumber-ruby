@@ -12,7 +12,7 @@ group :development do
   gem 'nokogiri', '~> 1.4.3'
   gem 'prawn', '= 0.8.4'
   gem 'prawn-layout', '= 0.8.4'
-  gem 'rspec', '~> 2.0.0.beta.19'
+  gem 'rspec', '~> 2.0.0.beta.20'
   gem 'syntax', '~> 1.0.0'
   gem 'spork', '~> 0.8.4'
 end

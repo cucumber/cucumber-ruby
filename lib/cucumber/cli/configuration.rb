@@ -12,7 +12,7 @@ module Cucumber
     class Configuration
       include Constantize
 
-      attr_reader :options, :out_stream
+      attr_reader :out_stream
 
       def initialize(out_stream = STDOUT, error_stream = STDERR)
         @out_stream   = out_stream
@@ -56,8 +56,16 @@ module Cucumber
         @options[:drb_port].to_i if @options[:drb_port]
       end
 
+      def dry_run?
+        @options[:dry_run]
+      end
+
+      def expand?
+        @options[:expand]
+      end
+
       def build_runner(step_mother, io)
-        Ast::TreeWalker.new(step_mother, formatters(step_mother), @options, io)
+        Ast::TreeWalker.new(step_mother, formatters(step_mother), self, io)
       end
 
       def formatter_class(format)
@@ -120,6 +128,23 @@ module Cucumber
         logger.level = Logger::INFO
         logger.level = Logger::DEBUG if self.verbose?
         logger
+      end
+      
+      def tag_expression
+        Gherkin::TagExpression.new(@options[:tag_expressions])
+      end
+      
+      def filters
+        @options.filters
+      end
+      
+      def formats
+        @options[:formats]
+      end
+      
+      def options
+        warn("Deprecated: Configuration#options will be removed from the next release of Cucumber. Please use the configuration object directly instead.")
+        @options
       end
 
     private

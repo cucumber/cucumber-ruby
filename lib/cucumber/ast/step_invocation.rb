@@ -38,7 +38,7 @@ module Cucumber
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        invoke(visitor.step_mother, visitor.options)
+        invoke(visitor.step_mother, visitor.configuration)
         visit_step_result(visitor)
       end
 
@@ -54,53 +54,53 @@ module Cucumber
         )
       end
 
-      def invoke(step_mother, options)
-        find_step_match!(step_mother)
-        unless @skip_invoke || options[:dry_run] || @exception || @step_collection.exception
+      def invoke(step_mother, configuration)
+        find_step_match!(step_mother, configuration)
+        unless @skip_invoke || configuration.dry_run? || @exception || @step_collection.exception
           @skip_invoke = true
           begin
             @step_match.invoke(@multiline_arg)
             step_mother.after_step
             status!(:passed)
           rescue Pending => e
-            failed(options, e, false)
+            failed(configuration, e, false)
             status!(:pending)
           rescue Undefined => e
-            failed(options, e, false)
+            failed(configuration, e, false)
             status!(:undefined)
           rescue Cucumber::Ast::Table::Different => e
             @different_table = e.table
-            failed(options, e, false)
+            failed(configuration, e, false)
             status!(:failed)
           rescue Exception => e
-            failed(options, e, false)
+            failed(configuration, e, false)
             status!(:failed)
           end
         end
       end
 
-      def find_step_match!(step_mother)
+      def find_step_match!(step_mother, configuration)
         return if @step_match
         begin
           @step_match = step_mother.step_match(@name)
         rescue Undefined => e
-          failed(step_mother.options, e, true)
+          failed(configuration, e, true)
           status!(:undefined)
           @step_match = NoStepMatch.new(@step, @name)
         rescue Ambiguous => e
-          failed(step_mother.options, e, false)
+          failed(configuration, e, false)
           status!(:failed)
           @step_match = NoStepMatch.new(@step, @name)
         end
         step_mother.step_visited(self)
       end
 
-      def failed(options, e, clear_backtrace)
+      def failed(configuration, e, clear_backtrace)
         e = filter_backtrace(e)
         e.set_backtrace([]) if clear_backtrace
         e.backtrace << @step.backtrace_line unless @step.backtrace_line.nil?
         @exception = e
-        if(options[:strict] || !(Undefined === e) || e.nested?)
+        if(configuration.strict? || !(Undefined === e) || e.nested?)
           @reported_exception = e
         else
           @reported_exception = nil

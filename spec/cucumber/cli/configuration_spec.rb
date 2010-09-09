@@ -4,6 +4,9 @@ require 'yaml'
 module Cucumber
 module Cli
   describe Configuration do
+    module ExposesOptions
+      attr_reader :options
+    end
 
     def given_cucumber_yml_defined_as(hash_or_string)
       File.stub!(:exist?).and_return(true)
@@ -23,7 +26,7 @@ module Cli
     end
 
     def config
-      @config ||= Configuration.new(@out = StringIO.new, @error = StringIO.new)
+      @config ||= Configuration.new(@out = StringIO.new, @error = StringIO.new).extend(ExposesOptions)
     end
 
     def reset_config
@@ -287,17 +290,17 @@ END_OF_MESSAGE
 
     it "should accept --out option" do
       config.parse!(%w{--out jalla.txt})
-      config.options[:formats].should == [['pretty', 'jalla.txt']]
+      config.formats.should == [['pretty', 'jalla.txt']]
     end
 
     it "should accept multiple --out options" do
       config.parse!(%w{--format progress --out file1 --out file2})
-      config.options[:formats].should == [['progress', 'file2']]
+      config.formats.should == [['progress', 'file2']]
     end
 
     it "should accept multiple --format options and put the STDOUT one first so progress is seen" do
       config.parse!(%w{--format pretty --out pretty.txt --format progress})
-      config.options[:formats].should == [['progress', out], ['pretty', 'pretty.txt']]
+      config.formats.should == [['progress', out], ['pretty', 'pretty.txt']]
     end
 
     it "should not accept multiple --format options when both use implicit STDOUT" do
@@ -314,7 +317,7 @@ END_OF_MESSAGE
 
     it "should associate --out to previous --format" do
       config.parse!(%w{--format progress --out file1 --format profile --out file2})
-      config.options[:formats].should == [["progress", "file1"], ["profile" ,"file2"]]
+      config.formats.should == [["progress", "file1"], ["profile" ,"file2"]]
     end
 
     it "should accept --color option" do
@@ -399,7 +402,30 @@ END_OF_MESSAGE
       ENV["RAILS_ENV"].should == "selenium"
       config.feature_files.should_not include('RAILS_ENV=selenium')
     end
+    
+    describe "#tag_expression" do
+      it "returns an empty expression when no tags are specified" do
+        config.parse!([])
+        config.tag_expression.should be_empty
+      end
 
+      it "returns an expression when tags are specified" do
+        config.parse!(['--tags','@foo'])
+        config.tag_expression.should_not be_empty
+      end
+    end
+    
+    describe "#dry_run?" do
+      it "returns true when --dry-run was specified on in the arguments" do
+        config.parse!(['--dry-run'])
+        config.dry_run?.should be_true
+      end
+      
+      it "returns false by default" do
+        config.parse!([])
+        config.dry_run?.should be_false
+      end
+    end
   end
 end
 end

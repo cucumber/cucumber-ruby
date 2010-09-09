@@ -2,11 +2,11 @@ module Cucumber
   module Ast
     # Walks the AST, executing steps and notifying listeners
     class TreeWalker
-      attr_accessor :options #:nodoc:
+      attr_accessor :configuration #:nodoc:
       attr_reader   :step_mother #:nodoc:
 
-      def initialize(step_mother, listeners = [], options = {}, io = STDOUT)
-        @step_mother, @listeners, @options, @io = step_mother, listeners, options, io
+      def initialize(step_mother, listeners = [], configuration = Cucumber::Configuration.default, io = STDOUT)
+        @step_mother, @listeners, @configuration, @io = step_mother, listeners, configuration, io
       end
 
       def visit_features(features)
