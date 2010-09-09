@@ -4,13 +4,26 @@ Feature: Post Configuration Hook [#423]
   As a developer
   I want to manipulate the Cucumber configuration after it has been created
 
-  Scenario: configuration modified to use HTML formatter
+  Scenario: Using options directly gets a deprecation warning
 
     Given a standard Cucumber project directory structure
     And a file named "features/support/env.rb" with:
       """
       AfterConfiguration do |config|
-        config.options[:formats] << ['html', config.out_stream]
+        config.options[:blah]
+      end
+      """
+    When I run cucumber features
+    Then STDERR should match
+      """
+      Deprecated
+      """
+
+    Given a standard Cucumber project directory structure
+    And a file named "features/support/env.rb" with:
+      """
+      AfterConfiguration do |config|
+        config.formats << ['html', config.out_stream]
       end
       """
     When I run cucumber features

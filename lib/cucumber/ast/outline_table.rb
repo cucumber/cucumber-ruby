@@ -21,7 +21,7 @@ module Cucumber
         return if Cucumber.wants_to_quit
         init
         cells_rows.each_with_index do |row, n|
-          if(visitor.options[:expand])
+          if(visitor.configuration.expand?)
             row.accept(visitor)
           else
             visitor.visit_table_row(row)
@@ -96,7 +96,7 @@ module Cucumber
 
         def accept(visitor)
           return if Cucumber.wants_to_quit
-          visitor.options[:expand] ? accept_expand(visitor) : accept_plain(visitor)
+          visitor.configuration.expand? ? accept_expand(visitor) : accept_plain(visitor)
         end
 
         def accept_plain(visitor)
@@ -108,7 +108,7 @@ module Cucumber
           else
             visitor.step_mother.with_hooks(self) do
               @step_invocations.each do |step_invocation|
-                step_invocation.invoke(visitor.step_mother, visitor.options)
+                step_invocation.invoke(visitor.step_mother, visitor.configuration)
                 @exception ||= step_invocation.reported_exception
               end
 
@@ -127,7 +127,7 @@ module Cucumber
             visitor.step_mother.with_hooks(self) do
               @table.visit_scenario_name(visitor, self)
               @step_invocations.each do |step_invocation|
-                step_invocation.invoke(visitor.step_mother, visitor.options)
+                step_invocation.invoke(visitor.step_mother, visitor.configuration)
                 @exception ||= step_invocation.reported_exception
                 step_invocation.visit_step_result(visitor)
               end

@@ -21,10 +21,10 @@ module Cucumber
     end
     
     # Parses a file and returns a Cucumber::Ast
-    # If +options+ contains tags, the result will
+    # If +configuration_filters+ contains any filters, the result will
     # be filtered.
-    def parse(options, tag_counts)
-      filters = @lines || options.filters
+    def parse(configuration_filters, tag_counts)
+      filters = @lines || configuration_filters
 
       builder             = Cucumber::Parser::GherkinBuilder.new
       filter_formatter    = filters.empty? ? builder : Gherkin::Formatter::FilterFormatter.new(builder, filters)

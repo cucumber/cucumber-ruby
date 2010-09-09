@@ -11,5 +11,13 @@ require 'cucumber/broadcaster'
 module Cucumber
   class << self
     attr_accessor :wants_to_quit
+    
+    def logger
+      @log ||= Logger.new(STDOUT)
+    end
+    
+    def logger=(logger)
+      @log = logger
+    end
   end
 end

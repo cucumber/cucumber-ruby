@@ -67,7 +67,7 @@ Feature: Wire Protocol
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response       |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[]] |
-    When I run cucumber --dry-run -f progress
+    When I run cucumber --dry-run --no-snippets -f progress
     And it should pass with
       """
       U
