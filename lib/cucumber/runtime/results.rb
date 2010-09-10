@@ -2,6 +2,10 @@ module Cucumber
   class Runtime
     
     class Results
+      def initialize(configuration)
+        @configuration = configuration
+      end
+      
       def step_visited(step) #:nodoc:
         steps << step unless steps.index(step)
       end
@@ -25,6 +29,15 @@ module Cucumber
           @scenarios.select{|scenario| scenario.status == status}
         else
           @scenarios
+        end
+      end
+      
+      def failure?
+        if @configuration.wip?
+          scenarios(:passed).any?
+        else
+          scenarios(:failed).any? ||
+          (@configuration.strict? && (steps(:undefined).any? || steps(:pending).any?))
         end
       end
     end

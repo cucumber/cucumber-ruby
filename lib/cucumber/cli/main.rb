@@ -51,8 +51,8 @@ module Cucumber
         return @drb_output if run_drb_client
         
         runtime = Runtime.new(configuration)
-        result = runtime.run
-        result.failure?
+        runtime.run!
+        runtime.results.failure?
       rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
         @error_stream.puts e.message
         true

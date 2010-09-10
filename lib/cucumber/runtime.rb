@@ -15,14 +15,7 @@ require 'cucumber/runtime/support_code'
 module Cucumber
   # This is the meaty part of Cucumber that ties everything together.
   class Runtime
-    class Result
-      def initialize(failure)
-        @failure = failure
-      end
-      def failure?
-        @failure
-      end
-    end
+    attr_reader :results
     
     include Formatter::Duration
     include Runtime::UserInterface
@@ -31,10 +24,10 @@ module Cucumber
       @current_scenario = nil
       @configuration = parse_configuration(configuration)
       @support_code = SupportCode.new(self, @configuration.guess?)
-      @results = Results.new
+      @results = Results.new(@configuration)
     end
     
-    def run
+    def run!
       load_code_files(@configuration.support_to_load)
       after_configuration(@configuration)
       features = load_plain_text_features(@configuration.feature_files)
@@ -44,15 +37,6 @@ module Cucumber
       self.visitor = runner # Needed to support World#announce
       
       runner.visit_features(features)
-
-      failure = if @configuration.wip?
-        self.scenarios(:passed).any?
-      else
-        self.scenarios(:failed).any? ||
-        (@configuration.strict? && (self.steps(:undefined).any? || self.steps(:pending).any?))
-      end
-      
-      Result.new(failure)
     end
 
     def step_visited(step) #:nodoc:
