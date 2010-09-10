@@ -5,52 +5,25 @@ require 'cucumber/language_support/language_methods'
 require 'cucumber/formatter/duration'
 require 'cucumber/cli/options'
 require 'cucumber/errors'
-require 'cucumber/support_code'
 require 'gherkin/rubify'
 require 'timeout'
-require 'cucumber/step_mother/user_interface'
-require 'cucumber/step_mother/features_loader'
+require 'cucumber/runtime/user_interface'
+require 'cucumber/runtime/features_loader'
+require 'cucumber/runtime/results'
+require 'cucumber/runtime/support_code'
 
 module Cucumber
   
   # This is the meaty part of Cucumber that ties everything together.
   class StepMother
     include Formatter::Duration
-    include UserInterface
+    include Runtime::UserInterface
     
-    class Results
-      def step_visited(step) #:nodoc:
-        steps << step unless steps.index(step)
-      end
-      
-      def scenario_visited(scenario) #:nodoc:
-        scenarios << scenario unless scenarios.index(scenario)
-      end
-      
-      def steps(status = nil) #:nodoc:
-        @steps ||= []
-        if(status)
-          @steps.select{|step| step.status == status}
-        else
-          @steps
-        end
-      end
-      
-      def scenarios(status = nil) #:nodoc:
-        @scenarios ||= []
-        if(status)
-          @scenarios.select{|scenario| scenario.status == status}
-        else
-          @scenarios
-        end
-      end
-    end
-
     def initialize(configuration = Configuration.default)
       @current_scenario = nil
       @configuration = parse_configuration(configuration)
-      @support_code = SupportCode.new(self, @configuration.guess?)
-      @results = Results.new
+      @support_code = Runtime::SupportCode.new(self, @configuration.guess?)
+      @results = Runtime::Results.new
     end
     
     def step_visited(step) #:nodoc:
@@ -66,7 +39,7 @@ module Cucumber
     end
     
     def load_plain_text_features(feature_files)
-      loader = FeaturesLoader.new(feature_files, 
+      loader = Runtime::FeaturesLoader.new(feature_files, 
         @configuration.filters, 
         @configuration.tag_expression)
       loader.features

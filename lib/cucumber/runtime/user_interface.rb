@@ -1,5 +1,5 @@
 module Cucumber
-  class StepMother
+  class Runtime
 
     module UserInterface
       attr_writer :visitor

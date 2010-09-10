@@ -1,5 +1,5 @@
 module Cucumber
-  class StepMother
+  class Runtime
     
     class FeaturesLoader
       include Formatter::Duration
