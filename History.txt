@@ -10,6 +10,9 @@ Maintenance release for the new release of Gherkin 2.2.0.
 * --dry-run now shows snippets (Ben Hall)
 * Use Bundler for dependency management. (Aslak Hellesøy, Rob Hunter)
 
+=== Removed features
+* No more Jeweler
+
 == 0.8.5 (2010-07-14)
 
 === Bugfixes
