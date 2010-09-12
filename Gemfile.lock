@@ -1,12 +1,27 @@
+PATH
+  remote: .
+  specs:
+    cucumber (0.9.0)
+      builder (~> 2.1.2)
+      diff-lcs (~> 1.1.2)
+      json_pure (~> 1.4.6)
+      term-ansicolor (~> 1.0.5)
+
+PATH
+  remote: /Users/aslakhellesoy/scm/gherkin
+  specs:
+    gherkin (2.2.1)
+      trollop (~> 1.16.2)
+
 GEM
   remote: http://rubygems.org/
   specs:
     builder (2.1.2)
     diff-lcs (1.1.2)
-    gherkin (2.1.5)
-      trollop (~> 1.16.2)
     json_pure (1.4.6)
     nokogiri (1.4.3.1)
+    nokogiri (1.4.3.1-java)
+      weakling (>= 0.0.3)
     prawn (0.8.4)
       prawn-core (>= 0.8.4, < 0.9)
       prawn-layout (>= 0.8.4, < 0.9)
@@ -27,14 +42,17 @@ GEM
     syntax (1.0.0)
     term-ansicolor (1.0.5)
     trollop (1.16.2)
+    weakling (0.0.4-java)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES
   builder (~> 2.1.2)
+  cucumber!
   diff-lcs (~> 1.1.2)
-  gherkin (~> 2.1.5)
+  gherkin!
   json_pure (~> 1.4.6)
   nokogiri (~> 1.4.3)
   prawn (= 0.8.4)
