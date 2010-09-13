@@ -105,10 +105,10 @@ module Cucumber
       include LanguageSupport::LanguageMethods
       include JsSnippets
 
-      def initialize(step_mother)
+      def initialize(runtime)
         @step_definitions = []
         @world = JsWorld.new
-        @step_mother = step_mother
+        @runtime = runtime
 
         @world["jsLanguage"] = self
         @world.load(File.dirname(__FILE__) + '/js_dsl.js')
@@ -150,7 +150,7 @@ module Cucumber
 
       #TODO: support multiline arguments when calling steps from within steps
       def execute_step_definition(name, multiline_argument = nil)
-        @step_mother.step_match(name).invoke(multiline_argument)
+        @runtime.step_match(name).invoke(multiline_argument)
       end
 
       def register_js_hook(phase, tag_expressions, js_function)
@@ -166,12 +166,12 @@ module Cucumber
       end
 
       def steps(steps_text, file_colon_line)
-        @step_mother.invoke_steps(steps_text, @language, file_colon_line)
+        @runtime.invoke_steps(steps_text, @language, file_colon_line)
       end
 
       private
       def path_to_load_js_from
-        paths = @step_mother.options[:paths]
+        paths = @runtime.features_paths
         if paths.empty?
           '' # Using rake
         else

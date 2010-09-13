@@ -24,5 +24,9 @@ module Cucumber
     def expand? 
       @options[:expand]
     end
+    
+    def paths
+      @options[:paths]
+    end
   end
 end

@@ -8,8 +8,8 @@ module Cucumber
 
       before do
         extend(Cucumber::RbSupport::RbDsl)
-        @step_mother = Cucumber::StepMother.new
-        @rb = @step_mother.load_programming_language('rb')
+        @runtime = Cucumber::Runtime.new
+        @rb = @runtime.load_programming_language('rb')
 
         $x = $y = nil
         Before do
@@ -19,7 +19,7 @@ module Cucumber
           $y = $x * n.to_i
         end
 
-        @visitor = TreeWalker.new(@step_mother)
+        @visitor = TreeWalker.new(@runtime)
 
         @feature = mock('feature', :visit? => true).as_null_object
       end

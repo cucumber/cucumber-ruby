@@ -21,7 +21,7 @@ module Cucumber
       end
       
       def step_mother
-        @step_mother ||= StepMother.new
+        @step_mother ||= Runtime.new
       end
       
       def load_features(content)
@@ -35,7 +35,7 @@ module Cucumber
     
       def run(features)
         configuration = Cucumber::Configuration.default
-        tree_walker = Cucumber::Ast::TreeWalker.new(@step_mother, [@formatter], configuration, STDOUT)
+        tree_walker = Cucumber::Ast::TreeWalker.new(@step_mother, [@formatter], configuration)
         tree_walker.visit_features(features)
       end
     

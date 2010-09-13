@@ -20,3 +20,4 @@ target
 *.rbc
 rerun.txt
 ._*
+.rvmrc
