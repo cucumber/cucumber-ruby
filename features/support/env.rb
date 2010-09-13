@@ -1,6 +1,4 @@
 require 'rubygems'
-require 'bundler'
-Bundler.setup
 
 require 'tempfile'
 require 'rspec/expectations'
