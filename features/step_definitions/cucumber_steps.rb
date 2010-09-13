@@ -50,7 +50,9 @@ Given /^I have environment variable (\w+) set to "([^"]*)"$/ do |variable, value
 end
 
 When /^I run cucumber (.*)$/ do |cucumber_opts|
-  run "#{Cucumber::RUBY_BINARY} -r rubygems #{Cucumber::BINARY} --no-color #{cucumber_opts} CUCUMBER_OUTPUT_ENCODING=UTF-8"
+  cucumber_bin = File.expand_path(File.dirname(__FILE__) + '/../../bin/cucumber')
+  cucumber_lib = File.expand_path(File.dirname(__FILE__) + '/../../lib/cucumber')
+  run "#{Cucumber::RUBY_BINARY} -I #{cucumber_lib} -I rubygems #{cucumber_bin} --no-color #{cucumber_opts} CUCUMBER_OUTPUT_ENCODING=UTF-8"
 end
 
 When /^I run rake (.*)$/ do |rake_opts|
