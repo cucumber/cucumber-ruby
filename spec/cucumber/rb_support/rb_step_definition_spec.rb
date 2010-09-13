@@ -8,7 +8,7 @@ module Cucumber
   module RbSupport
     describe RbStepDefinition do
       before do      
-        @step_mother = Cucumber::StepMother.new
+        @step_mother = Cucumber::Runtime.new
         @rb = @step_mother.load_programming_language('rb')
         @dsl = Object.new 
         @dsl.extend Cucumber::RbSupport::RbDsl

@@ -6,9 +6,9 @@ require 'cucumber/rb_support/rb_language'
 module Cucumber
   module RbSupport
     describe RbStepDefinition do
+      let(:runtime) { Cucumber::Runtime.new }
       before do      
-        @step_mother = Cucumber::StepMother.new
-        @rb = @step_mother.load_programming_language('rb')
+        @rb = runtime.load_programming_language('rb')
       end
 
       def unindented(s)

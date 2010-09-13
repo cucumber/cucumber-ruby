@@ -7,7 +7,7 @@ module Cucumber
   module Ast
     describe Scenario do
       before do
-        @step_mother = Cucumber::StepMother.new
+        @step_mother = Cucumber::Runtime.new
         @step_mother.load_programming_language('rb')
         @dsl = Object.new
         @dsl.extend(Cucumber::RbSupport::RbDsl)

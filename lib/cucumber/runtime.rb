@@ -205,10 +205,8 @@ module Cucumber
       case configuration_argument
       when Hash
         Configuration.new(configuration_argument)
-      when Configuration, Cucumber::Cli::Configuration
-        configuration_argument
       else
-        raise(ArgumentError, "Unknown configuration: #{configuration_argument.inspect}")
+        configuration_argument
       end
     end
   end
