@@ -5,8 +5,8 @@ module Cucumber
       attr_accessor :configuration #:nodoc:
       attr_reader   :step_mother #:nodoc:
 
-      def initialize(step_mother, listeners = [], configuration = Cucumber::Configuration.default, io = STDOUT)
-        @step_mother, @listeners, @configuration, @io = step_mother, listeners, configuration, io
+      def initialize(step_mother, listeners = [], configuration = Cucumber::Configuration.default)
+        @step_mother, @listeners, @configuration = step_mother, listeners, configuration
       end
 
       def visit_features(features)

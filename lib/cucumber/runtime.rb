@@ -32,7 +32,7 @@ module Cucumber
       after_configuration(@configuration)
       load_code_files(@configuration.step_defs_to_load)
 
-      runner = @configuration.build_runner(self, @out_stream)
+      runner = @configuration.build_runner(self)
       self.visitor = runner # Needed to support World#announce
       
       features = load_plain_text_features(@configuration.feature_files)
