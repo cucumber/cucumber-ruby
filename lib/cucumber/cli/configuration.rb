@@ -146,7 +146,7 @@ module Cucumber
         warn("Deprecated: Configuration#options will be removed from the next release of Cucumber. Please use the configuration object directly instead.")
         @options
       end
-
+      
     private
 
       def formatters(step_mother)

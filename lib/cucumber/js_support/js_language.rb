@@ -167,7 +167,7 @@ module Cucumber
 
       private
       def path_to_load_js_from
-        paths = @step_mother.options[:paths]
+        paths = @step_mother.paths
         if paths.empty?
           '' # Using rake
         else

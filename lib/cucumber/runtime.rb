@@ -16,6 +16,7 @@ module Cucumber
   # This is the meaty part of Cucumber that ties everything together.
   class Runtime
     attr_reader :results
+    attr_reader :configuration
     
     include Formatter::Duration
     include Runtime::UserInterface
@@ -37,6 +38,10 @@ module Cucumber
       self.visitor = runner # Needed to support World#announce
       
       runner.visit_features(features)
+    end
+    
+    def paths
+      @configuration.send(:paths)
     end
 
     def step_visited(step) #:nodoc:
