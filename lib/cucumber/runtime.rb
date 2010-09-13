@@ -28,14 +28,13 @@ module Cucumber
     end
     
     def run!
-      load_code_files(@configuration.support_to_load)
-      after_configuration(@configuration)
-      load_code_files(@configuration.step_defs_to_load)
+      load_support
+      fire_after_configuration_hook
+      load_step_definitions
 
       runner = @configuration.build_runner(self)
-      self.visitor = runner # Needed to support World#announce
+      self.visitor = runner # Ugly circular dependency, but needed to support World#announce
       
-      features = load_plain_text_features(@configuration.feature_files)
       runner.visit_features(features)
     end
     
@@ -53,17 +52,6 @@ module Cucumber
 
     def steps(status = nil)
       @results.steps(status)
-    end
-
-    def load_plain_text_features(feature_files)
-      loader = Runtime::FeaturesLoader.new(feature_files, 
-        @configuration.filters, 
-        @configuration.tag_expression)
-      loader.features
-    end
-
-    def load_code_files(step_def_files)
-      @support_code.load_files!(step_def_files)
     end
 
     # Loads and registers programming language implementation.
@@ -179,15 +167,35 @@ module Cucumber
       @support_code.fire_hook(:execute_after_step, @current_scenario)
     end
 
-    def after_configuration(configuration) #:nodoc
-      @support_code.fire_hook(:after_configuration, configuration)
-    end
-
     def unknown_programming_language?
       @support_code.unknown_programming_language?
     end
 
   private
+
+    def fire_after_configuration_hook #:nodoc
+      @support_code.fire_hook(:after_configuration, @configuration)
+    end
+
+    def features
+      loader = Runtime::FeaturesLoader.new(
+        @configuration.feature_files, 
+        @configuration.filters, 
+        @configuration.tag_expression)
+      loader.features
+    end
+
+    def load_support
+      load_code_files(@configuration.support_to_load)
+    end
+    
+    def load_step_definitions
+      load_code_files(@configuration.step_defs_to_load)
+    end
+
+    def load_code_files(step_def_files)
+      @support_code.load_files!(step_def_files)
+    end
 
     def log
       Cucumber.logger
