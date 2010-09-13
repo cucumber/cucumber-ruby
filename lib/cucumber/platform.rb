@@ -1,11 +1,9 @@
 # Detect the platform we're running on so we can tweak behaviour
 # in various places.
-require 'rbconfig'
 require 'yaml'
 
 module Cucumber
-  version       = YAML.load_file(File.dirname(__FILE__) + '/../../VERSION.yml')
-  VERSION       = [version[:major], version[:minor], version[:patch], version[:build]].compact.join('.')
+  VERSION       = '0.9.0'
   BINARY        = File.expand_path(File.dirname(__FILE__) + '/../../bin/cucumber')
   LIBDIR        = File.expand_path(File.dirname(__FILE__) + '/../../lib')
   JRUBY         = defined?(JRUBY_VERSION)
