@@ -16,7 +16,6 @@ module Cucumber
   # This is the meaty part of Cucumber that ties everything together.
   class Runtime
     attr_reader :results
-    attr_reader :configuration
     
     include Formatter::Duration
     include Runtime::UserInterface
@@ -31,12 +30,12 @@ module Cucumber
     def run!
       load_code_files(@configuration.support_to_load)
       after_configuration(@configuration)
-      features = load_plain_text_features(@configuration.feature_files)
       load_code_files(@configuration.step_defs_to_load)
 
       runner = @configuration.build_runner(self, @out_stream)
       self.visitor = runner # Needed to support World#announce
       
+      features = load_plain_text_features(@configuration.feature_files)
       runner.visit_features(features)
     end
     
