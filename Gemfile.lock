@@ -20,8 +20,6 @@ GEM
     diff-lcs (1.1.2)
     json_pure (1.4.6)
     nokogiri (1.4.3.1)
-    nokogiri (1.4.3.1-java)
-      weakling (>= 0.0.3)
     prawn (0.8.4)
       prawn-core (>= 0.8.4, < 0.9)
       prawn-layout (>= 0.8.4, < 0.9)
@@ -31,22 +29,22 @@ GEM
     prawn-security (0.8.4)
     rake (0.8.7)
     rcov (0.9.9)
-    rspec (2.0.0.beta.20)
-      rspec-core (= 2.0.0.beta.20)
-      rspec-expectations (= 2.0.0.beta.20)
-      rspec-mocks (= 2.0.0.beta.20)
-    rspec-core (2.0.0.beta.20)
-    rspec-expectations (2.0.0.beta.20)
+    rspec (2.0.0.beta.22)
+      rspec-core (= 2.0.0.beta.22)
+      rspec-expectations (= 2.0.0.beta.22)
+      rspec-mocks (= 2.0.0.beta.22)
+    rspec-core (2.0.0.beta.22)
+    rspec-expectations (2.0.0.beta.22)
       diff-lcs (>= 1.1.2)
-    rspec-mocks (2.0.0.beta.20)
+    rspec-mocks (2.0.0.beta.22)
+      rspec-core (= 2.0.0.beta.22)
+      rspec-expectations (= 2.0.0.beta.22)
     spork (0.8.4)
     syntax (1.0.0)
     term-ansicolor (1.0.5)
     trollop (1.16.2)
-    weakling (0.0.4-java)
 
 PLATFORMS
-  java
   ruby
 
 DEPENDENCIES
