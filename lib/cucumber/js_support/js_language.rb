@@ -167,7 +167,7 @@ module Cucumber
 
       private
       def path_to_load_js_from
-        paths = @runtime.paths
+        paths = @runtime.features_paths
         if paths.empty?
           '' # Using rake
         else

@@ -147,6 +147,9 @@ module Cucumber
         @options
       end
       
+      def paths
+        @options[:paths].empty? ? ['features'] : @options[:paths]
+      end
     private
 
       def formatters(step_mother)
@@ -176,9 +179,6 @@ module Cucumber
         end
       end
 
-      def paths
-        @options[:paths].empty? ? ['features'] : @options[:paths]
-      end
 
       def set_environment_variables
         @options[:env_vars].each do |var, value|

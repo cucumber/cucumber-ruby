@@ -40,8 +40,8 @@ module Cucumber
       runner.visit_features(features)
     end
     
-    def paths
-      @configuration.send(:paths)
+    def features_paths
+      @configuration.paths
     end
 
     def step_visited(step) #:nodoc:
