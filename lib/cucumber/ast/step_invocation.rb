@@ -1,3 +1,4 @@
+require 'cucumber/errors'
 require 'cucumber/step_match'
 require 'cucumber/ast/table'
 require 'gherkin/rubify'

@@ -1,3 +1,5 @@
+require 'cucumber/errors'
+
 module Cucumber
   class Runtime
     

@@ -1,3 +1,5 @@
+require 'cucumber/constantize'
+
 module Cucumber
   class Runtime
     
