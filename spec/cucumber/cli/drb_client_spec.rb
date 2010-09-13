@@ -30,7 +30,7 @@ module Cucumber
 
       it "returns raises an error when it can't connect to the server" do
         DRbObject.stub!(:new_with_uri).and_raise(DRb::DRbConnError)
-        running { DRbClient.run(@args, @error_stream, @out_stream) }.should raise_error(DRbClientError, "No DRb server is running.")
+        lambda { DRbClient.run(@args, @error_stream, @out_stream) }.should raise_error(DRbClientError, "No DRb server is running.")
       end
 
       it "returns the result from the DRb server call" do
