@@ -32,10 +32,10 @@ module Cucumber
       fire_after_configuration_hook
       load_step_definitions
 
-      runner = @configuration.build_runner(self)
-      self.visitor = runner # Ugly circular dependency, but needed to support World#announce
+      tree_walker = @configuration.build_tree_walker(self)
+      self.visitor = tree_walker # Ugly circular dependency, but needed to support World#announce
       
-      runner.visit_features(features)
+      tree_walker.visit_features(features)
     end
     
     def features_paths
