@@ -58,11 +58,5 @@ module Cucumber
         end
       end
     end
-    
-    private
-    
-    # Special PML markup that we want to filter out.
-    CO = %{\\s*<(label|callout)\s+id=".*?"\s*/>\\s*}
-    C_CALLOUT = %r{/\*#{CO}\*/|//#{CO}}o
   end
 end

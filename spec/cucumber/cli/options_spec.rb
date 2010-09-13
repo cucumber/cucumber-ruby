@@ -1,5 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'yaml'
+require 'cucumber/cli/options'
 
 module Cucumber
 module Cli

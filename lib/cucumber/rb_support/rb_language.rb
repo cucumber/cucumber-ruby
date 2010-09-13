@@ -1,3 +1,4 @@
+require 'cucumber/core_ext/instance_exec'
 require 'cucumber/rb_support/rb_dsl'
 require 'cucumber/rb_support/rb_world'
 require 'cucumber/rb_support/rb_step_definition'
