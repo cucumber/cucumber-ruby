@@ -65,7 +65,7 @@ module Cucumber
         end
 
         def runner
-          File.exist?("./Gemfile") ? ["bundle", "exec", RUBY] : [RUBY]
+          File.exist?("./Gemfile") && Gem.available?("bundler") ? ["bundle", "exec", RUBY] : [RUBY]
         end
 
         def run

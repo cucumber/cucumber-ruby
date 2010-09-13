@@ -337,7 +337,7 @@ Feature: Cucumber command line
       """
 
   Scenario: Multiple formatters and outputs
-    When I run cucumber --format progress --out tmp/progress.txt --format pretty --out tmp/pretty.txt --no-source --dry-run features/lots_of_undefined.feature
+    When I run cucumber --format progress --out tmp/progress.txt --format pretty --out tmp/pretty.txt --no-source --dry-run --no-snippets features/lots_of_undefined.feature
     Then STDERR should be empty
     Then "fixtures/self_test/tmp/progress.txt" should contain
       """
