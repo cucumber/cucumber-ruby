@@ -21,3 +21,4 @@ target
 rerun.txt
 ._*
 .rvmrc
+Gemfile.lock
