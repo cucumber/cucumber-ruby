@@ -50,9 +50,11 @@ Given /^I have environment variable (\w+) set to "([^"]*)"$/ do |variable, value
 end
 
 When /^I run cucumber (.*)$/ do |cucumber_opts|
+  # Don't use Cucumber::BINARY (which is the binary used to start the "outer" cucumber)
+  # Instead we force the use of this codebase's cucumber bin script.
+  # This allows us to run cucumber's cukes with an older, stable cucumber.
   cucumber_bin = File.expand_path(File.dirname(__FILE__) + '/../../bin/cucumber')
-  cucumber_lib = File.expand_path(File.dirname(__FILE__) + '/../../lib/cucumber')
-  run "#{Cucumber::RUBY_BINARY} -I #{cucumber_lib} -I rubygems #{cucumber_bin} --no-color #{cucumber_opts} CUCUMBER_OUTPUT_ENCODING=UTF-8"
+  run "#{Cucumber::RUBY_BINARY} -I rubygems #{cucumber_bin} --no-color #{cucumber_opts} CUCUMBER_OUTPUT_ENCODING=UTF-8"
 end
 
 When /^I run rake (.*)$/ do |rake_opts|
