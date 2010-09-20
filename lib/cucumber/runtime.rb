@@ -23,9 +23,8 @@ module Cucumber
     end
     
     def run!
-      load_support
-      fire_after_configuration_hook
       load_step_definitions
+      fire_after_configuration_hook
 
       tree_walker = @configuration.build_tree_walker(self)
       self.visitor = tree_walker # Ugly circular dependency, but needed to support World#announce
@@ -180,16 +179,9 @@ module Cucumber
       loader.features
     end
 
-    def load_support
-      load_code_files(@configuration.support_to_load)
-    end
-    
     def load_step_definitions
-      load_code_files(@configuration.step_defs_to_load)
-    end
-
-    def load_code_files(step_def_files)
-      @support_code.load_files!(step_def_files)
+      files = @configuration.support_to_load + @configuration.step_defs_to_load
+      @support_code.load_files!(files)
     end
 
     def log
