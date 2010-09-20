@@ -17,7 +17,7 @@ module Cucumber
 
     def initialize(configuration = Configuration.default)
       @current_scenario = nil
-      @configuration = parse_configuration(configuration)
+      @configuration = Configuration.parse(configuration)
       @support_code = SupportCode.new(self, @configuration.guess?)
       @results = Results.new(@configuration)
     end
@@ -186,15 +186,6 @@ module Cucumber
 
     def log
       Cucumber.logger
-    end
-
-    def parse_configuration(configuration_argument)
-      case configuration_argument
-      when Hash
-        Configuration.new(configuration_argument)
-      else
-        configuration_argument
-      end
     end
   end
 
