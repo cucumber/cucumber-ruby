@@ -1,12 +1,5 @@
 require 'socket'
-begin
-  require 'json'
-rescue LoadError
-  STDERR.puts <<-EOM
-You must gem install #{defined?(JRUBY_VERSION) ? 'json_pure' : 'json'} before you can use the wire support.
-EOM
-  exit(1)
-end
+require 'json'
 require 'cucumber/wire_support/connection'
 require 'cucumber/wire_support/configuration'
 require 'cucumber/wire_support/wire_packet'
