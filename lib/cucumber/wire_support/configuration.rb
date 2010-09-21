@@ -1,3 +1,5 @@
+require 'yaml'
+
 module Cucumber
   module WireSupport
     class Configuration
