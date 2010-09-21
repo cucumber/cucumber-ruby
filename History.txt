@@ -13,6 +13,9 @@ Maintenance release for the new release of Gherkin 2.2.0.
 === Removed features
 * No more Jeweler
 
+=== Internal changes
+* Big refactoring of StepMother (Matt Wynne)
+
 == 0.8.5 (2010-07-14)
 
 === Bugfixes
