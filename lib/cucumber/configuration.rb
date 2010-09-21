@@ -5,6 +5,11 @@ module Cucumber
       new
     end
     
+    def self.parse(argument)
+      return new(argument) if argument.is_a?(Hash)
+      argument
+    end
+    
     def initialize(options = {})
       @options = options
     end
