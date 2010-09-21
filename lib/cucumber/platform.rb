@@ -3,6 +3,7 @@
 require 'yaml'
 
 module Cucumber
+unless defined?(Cucumber::VERSION)
   VERSION       = '0.9.0'
   BINARY        = File.expand_path(File.dirname(__FILE__) + '/../../bin/cucumber')
   LIBDIR        = File.expand_path(File.dirname(__FILE__) + '/../../lib')
@@ -24,4 +25,5 @@ module Cucumber
     end
   end
   self.use_full_backtrace = false
+end
 end
