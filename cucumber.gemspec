@@ -37,7 +37,7 @@ for important information about this release. Happy cuking!
   s.add_development_dependency 'prawn-layout', '= 0.8.4'
   s.add_development_dependency 'syntax', '~> 1.0.0'
   s.add_development_dependency 'spork', '~> 0.8.4'
-  s.add_development_dependency 'rcov', '~> 0.9.9'
+#  s.add_development_dependency 'rcov', '~> 0.9.9'
 
   s.rubygems_version   = "1.3.7"
   s.files            = `git ls-files`.split("\n")
