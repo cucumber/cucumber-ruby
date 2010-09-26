@@ -26,6 +26,13 @@ class CucumberWorld
   def cucumber_lib_dir
     @cucumber_lib_dir ||= File.expand_path(File.join(File.dirname(__FILE__), '../../lib'))
   end
+  
+  # Don't use Cucumber::BINARY (which is the binary used to start the "outer" cucumber)
+  # Instead we force the use of this codebase's cucumber bin script.
+  # This allows us to run cucumber's cukes with an older, stable cucumber.
+  def cucumber_bin
+    File.expand_path(File.dirname(__FILE__) + '/../../bin/cucumber')
+  end
 
   def initialize
     @current_dir = self_test_dir
