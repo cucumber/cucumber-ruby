@@ -1,8 +1,15 @@
 require 'json'
 module Cucumber
   class StepDefinitions
+    def initialize
+      @support_code = Runtime::SupportCode.new(nil, false)
+      @support_code.load_files_from_paths(Configuration.default.autoload_paths)
+    end
+    
     def to_json
-      { :hello => 'world' }.to_json
+      @support_code.step_definitions.map do |step_definition|
+        step_definition.regexp_source
+      end.to_json
     end
   end
 end

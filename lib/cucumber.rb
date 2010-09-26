@@ -14,7 +14,10 @@ module Cucumber
     attr_accessor :wants_to_quit
     
     def logger
-      @log ||= Logger.new(STDOUT)
+      return @log if @log
+      @log = Logger.new(STDOUT)
+      @log.level = Logger::INFO
+      @log
     end
     
     def logger=(logger)

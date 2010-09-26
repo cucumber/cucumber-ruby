@@ -66,7 +66,7 @@ module Cucumber
 
       # Gets called for each file under features (or whatever is overridden
       # with --require).
-      def step_definitions_for(rb_file)
+      def step_definitions_for(rb_file) # Looks Unused - Delete?
         begin
           require rb_file # This will cause self.add_step_definition and self.add_hook to be called from RbDsl
           step_definitions
@@ -77,7 +77,7 @@ module Cucumber
           @step_definitions = nil
         end
       end
-
+      
       def step_matches(name_to_match, name_to_format)
         @step_definitions.map do |step_definition|
           if(arguments = step_definition.arguments_from(name_to_match))
@@ -140,6 +140,10 @@ module Cucumber
 
       def load_code_file(code_file)
         require File.expand_path(code_file) # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from RbDsl
+      end
+      
+      def step_definitions
+        @step_definitions
       end
 
       protected

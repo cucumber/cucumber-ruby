@@ -95,6 +95,12 @@ module Cucumber
           end
         end.call
       end
+      
+      def step_definitions
+        @programming_languages.map do |programming_language|
+          programming_language.step_definitions
+        end.flatten
+      end
     
       def step_match(step_name, name_to_report=nil) #:nodoc:
         matches = matches(step_name, name_to_report)

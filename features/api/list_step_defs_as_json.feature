@@ -19,24 +19,6 @@ Feature: List step defs as json
     Then it should pass
     And the output should contain the following JSON:
       """
-      {
-        "step_definition": [
-          { 
-            "regexp":"foo", 
-            "programming_language":"rb",
-            "location": {
-              "file": "features/step_definitions/foo_steps.rb",
-              "line": 1
-            }
-          },
-          { 
-            "regexp":"b.r", 
-            "programming_language":"rb",
-            "location": {
-              "file": "features/step_definitions/foo_steps.rb",
-              "line": 2
-            }
-          }
-        ]
-      }
+      [ "/foo/", "/b.r/" ]
+      
       """
