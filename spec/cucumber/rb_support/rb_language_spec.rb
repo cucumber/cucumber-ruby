@@ -64,6 +64,34 @@ module Cucumber
           end
         })
       end
+      
+      describe "#load_code_file" do
+        after do
+          FileUtils.rm_rf('tmp.rb')
+        end
+        
+        def a_file_called(name)
+          File.open('tmp.rb', 'w') do |f|
+            f.puts yield
+          end
+        end
+        
+        it "re-loads the file when called multiple times" do
+          a_file_called('tmp.rb') do
+            "$foo = 1"
+          end
+          
+          @rb.load_code_file('tmp.rb')
+          $foo.should == 1
+          
+          a_file_called('tmp.rb') do
+            "$foo = 2"
+          end
+          
+          @rb.load_code_file('tmp.rb')
+          $foo.should == 2
+        end
+      end
     end
   end
 end

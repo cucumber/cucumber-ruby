@@ -30,7 +30,8 @@ module Cucumber
     # The Ruby implementation of the programming language API.
     class RbLanguage
       include LanguageSupport::LanguageMethods
-      attr_reader :current_world
+      attr_reader :current_world,
+                  :step_definitions
 
       Gherkin::I18n.code_keywords.each do |adverb|
         RbDsl.alias_adverb(adverb)
@@ -139,13 +140,9 @@ module Cucumber
       end
 
       def load_code_file(code_file)
-        require File.expand_path(code_file) # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from RbDsl
+        load File.expand_path(code_file) # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from RbDsl
       end
       
-      def step_definitions
-        @step_definitions
-      end
-
       protected
 
       def begin_scenario(scenario)
