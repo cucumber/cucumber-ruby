@@ -10,5 +10,14 @@ module Cucumber
         subject.autoload_code_paths.should include('features/step_definitions')
       end
     end
+    
+    describe "with custom user options" do
+      let(:user_options) { { :autoload_code_paths => ['foo/bar/baz'] } }
+      subject { Configuration.new(user_options) }
+      
+      it "allows you to override the defaults" do
+        subject.autoload_code_paths.should == ['foo/bar/baz']
+      end
+    end
   end
 end

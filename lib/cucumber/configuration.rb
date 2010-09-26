@@ -11,7 +11,7 @@ module Cucumber
     end
     
     def initialize(user_options = {})
-      @options = user_options
+      @options = default_options.merge(user_options)
     end
     
     def dry_run?
@@ -35,7 +35,15 @@ module Cucumber
     end
     
     def autoload_code_paths
-      ['features/support', 'features/step_definitions']
+      @options[:autoload_code_paths]
+    end
+  
+  private
+  
+    def default_options
+      {
+        :autoload_code_paths => ['features/support', 'features/step_definitions']
+      }
     end
   end
 end
