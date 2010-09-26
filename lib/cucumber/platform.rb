@@ -1,5 +1,6 @@
 # Detect the platform we're running on so we can tweak behaviour
 # in various places.
+require 'rbconfig'
 
 module Cucumber
 unless defined?(Cucumber::VERSION)
