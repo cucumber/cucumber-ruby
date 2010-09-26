@@ -1,9 +1,9 @@
 require 'json'
 module Cucumber
   class StepDefinitions
-    def initialize
+    def initialize(configuration = Configuration.default)
       @support_code = Runtime::SupportCode.new(nil, false)
-      @support_code.load_files_from_paths(Configuration.default.autoload_paths)
+      @support_code.load_files_from_paths(configuration.autoload_code_paths)
     end
     
     def to_json

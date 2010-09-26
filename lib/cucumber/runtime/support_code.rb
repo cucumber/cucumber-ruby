@@ -62,6 +62,11 @@ module Cucumber
         end
         log.debug("\n")
       end
+      
+      def load_files_from_paths(paths)
+        files = paths.map { |path| Dir["#{path}/**/*"] }.flatten
+        load_files! files
+      end
     
       def unmatched_step_definitions
         @programming_languages.map do |programming_language| 

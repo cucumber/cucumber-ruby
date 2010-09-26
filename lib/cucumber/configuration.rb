@@ -10,8 +10,8 @@ module Cucumber
       argument
     end
     
-    def initialize(options = {})
-      @options = options
+    def initialize(user_options = {})
+      @options = user_options
     end
     
     def dry_run?
@@ -32,6 +32,10 @@ module Cucumber
     
     def paths
       @options[:paths]
+    end
+    
+    def autoload_code_paths
+      ['features/support', 'features/step_definitions']
     end
   end
 end
