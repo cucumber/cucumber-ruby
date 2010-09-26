@@ -58,7 +58,7 @@ When /^I run rake (.*)$/ do |rake_opts|
 end
 
 When /^I run the following Ruby code:$/ do |code|
-  run %{#{Cucumber::RUBY_BINARY} -I rubygems -I #{cucumber_lib_dir} -e "#{code}"}
+  run %{#{Cucumber::RUBY_BINARY} -r rubygems -I #{cucumber_lib_dir} -e "#{code}"}
 end
 
 
@@ -162,4 +162,6 @@ Then /^print output$/ do
   puts last_stdout
 end
 
-
+Then /^the output should contain the following JSON:$/ do |json_string|
+  JSON.parse(last_stdout).should == JSON.parse(json_string)
+end

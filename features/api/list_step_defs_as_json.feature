@@ -13,8 +13,8 @@ Feature: List step defs as json
     When I run the following Ruby code:
       """
       require 'cucumber'
-      support_code = Cucumber::SupportCode.new
-      p support_code.step_definitions.to_json
+      puts Cucumber::StepDefinitions.new.to_json
+      
       """
     Then it should pass
     And the output should contain the following JSON:
@@ -28,7 +28,7 @@ Feature: List step defs as json
               "file": "features/step_definitions/foo_steps.rb",
               "line": 1
             }
-          }
+          },
           { 
             "regexp":"b.r", 
             "programming_language":"rb",
