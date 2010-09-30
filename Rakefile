@@ -9,4 +9,4 @@ Dir['gem_tasks/**/*.rake'].each { |rake| load rake }
 task :default => [:spec, :cucumber]
 
 require 'rake/clean'
-CLEAN.include %w(**/*.{log,pyc})
+CLEAN.include %w(**/*.{log,pyc,rbc})
