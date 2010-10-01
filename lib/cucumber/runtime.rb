@@ -56,7 +56,8 @@ module Cucumber
       @support_code.load_programming_language!(ext)
     end
 
-    def invoke(step_name, multiline_argument)
+    def invoke(step_name, multiline_argument=nil)
+      # It is very important to leave multiline_argument=nil as a vararg. Cuke4Duke needs it that way. 
       @support_code.invoke(step_name, multiline_argument)
     end
 
