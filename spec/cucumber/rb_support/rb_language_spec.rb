@@ -6,8 +6,11 @@ require 'cucumber/rb_support/rb_language'
 module Cucumber
   module RbSupport
     describe RbStepDefinition do
-      let(:runtime) { Cucumber::Runtime::SupportCode.new({}) }
-      let(:rb)      { runtime.load_programming_language('rb')}
+      let(:user_interface) { double('user interface') }
+      let(:rb)             { support_code.load_programming_language('rb')}
+      let(:support_code) do
+        Cucumber::Runtime::SupportCode.new(user_interface, {})
+      end
       let(:dsl) do 
         rb
         Object.new.extend(RbSupport::RbDsl)
@@ -21,51 +24,51 @@ module Cucumber
     
         it "should recognise numbers in name and make according regexp" do
           rb.snippet_text('Given', 'Cloud 9 yeah', nil).should == unindented(%{
-            Given /^Cloud (\\d+) yeah$/ do |arg1|
-              pending # express the regexp above with the code you wish you had
-            end
+          Given /^Cloud (\\d+) yeah$/ do |arg1|
+            pending # express the regexp above with the code you wish you had
+          end
           })
         end
 
         it "should recognise a mix of ints, strings and why not a table too" do
           rb.snippet_text('Given', 'I have 9 "awesome" cukes in 37 "boxes"', Cucumber::Ast::Table).should == unindented(%{
-            Given /^I have (\\d+) "([^"]*)" cukes in (\\d+) "([^"]*)"$/ do |arg1, arg2, arg3, arg4, table|
-              # table is a Cucumber::Ast::Table
-              pending # express the regexp above with the code you wish you had
-            end
+          Given /^I have (\\d+) "([^"]*)" cukes in (\\d+) "([^"]*)"$/ do |arg1, arg2, arg3, arg4, table|
+            # table is a Cucumber::Ast::Table
+            pending # express the regexp above with the code you wish you had
+          end
           })
         end
 
         it "should recognise quotes in name and make according regexp" do
           rb.snippet_text('Given', 'A "first" arg', nil).should == unindented(%{
-            Given /^A "([^"]*)" arg$/ do |arg1|
-              pending # express the regexp above with the code you wish you had
-            end
+          Given /^A "([^"]*)" arg$/ do |arg1|
+            pending # express the regexp above with the code you wish you had
+          end
           })
         end
 
         it "should recognise several quoted words in name and make according regexp and args" do
           rb.snippet_text('Given', 'A "first" and "second" arg', nil).should == unindented(%{
-            Given /^A "([^"]*)" and "([^"]*)" arg$/ do |arg1, arg2|
-              pending # express the regexp above with the code you wish you had
-            end
+          Given /^A "([^"]*)" and "([^"]*)" arg$/ do |arg1, arg2|
+            pending # express the regexp above with the code you wish you had
+          end
           })
         end
       
         it "should not use quote group when there are no quotes" do
           rb.snippet_text('Given', 'A first arg', nil).should == unindented(%{
-            Given /^A first arg$/ do
-              pending # express the regexp above with the code you wish you had
-            end
+          Given /^A first arg$/ do
+            pending # express the regexp above with the code you wish you had
+          end
           })
         end
 
         it "should be helpful with tables" do
           rb.snippet_text('Given', 'A "first" arg', Cucumber::Ast::Table).should == unindented(%{
-            Given /^A "([^"]*)" arg$/ do |arg1, table|
-              # table is a Cucumber::Ast::Table
-              pending # express the regexp above with the code you wish you had
-            end
+          Given /^A "([^"]*)" arg$/ do |arg1, table|
+            # table is a Cucumber::Ast::Table
+            pending # express the regexp above with the code you wish you had
+          end
           })
         end
       
@@ -176,16 +179,16 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
           it "complains when transforming with an arity mismatch" do
             lambda do
               dsl.Transform('^abc$') {|one, two| 42 }
-              @rb.execute_transforms(['abc'])
+              rb.execute_transforms(['abc'])
             end.should raise_error(Cucumber::ArityMismatchError)
           end
 
           it "allows registering a regexp pattern that yields the step_arg matched" do
             dsl.Transform(/^ab*c$/) {|arg| 42}
-            @rb.execute_transforms(['ab']).should == ['ab']
-            @rb.execute_transforms(['ac']).should == [42]
-            @rb.execute_transforms(['abc']).should == [42]
-            @rb.execute_transforms(['abbc']).should == [42]
+            rb.execute_transforms(['ab']).should == ['ab']
+            rb.execute_transforms(['ac']).should == [42]
+            rb.execute_transforms(['abc']).should == [42]
+            rb.execute_transforms(['abbc']).should == [42]
           end
         end
 
@@ -211,7 +214,7 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
           it "complains when transforming with an arity mismatch" do
             lambda do
               dsl.Transform('^a(.)c$') {|one, two| 42 }
-              @rb.execute_transforms(['abc'])
+              rb.execute_transforms(['abc'])
             end.should raise_error(Cucumber::ArityMismatchError)
           end
 
@@ -219,31 +222,31 @@ or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
             dsl.Transform(/^shape: (.+), color: (.+)$/) do |shape, color|
               {shape.to_sym => color.to_sym}
             end
-            @rb.execute_transforms(['shape: circle, color: blue']).should == [{:circle => :blue}]
-            @rb.execute_transforms(['shape: square, color: red']).should == [{:square => :red}]
-            @rb.execute_transforms(['not shape: square, not color: red']).should == ['not shape: square, not color: red']
+            rb.execute_transforms(['shape: circle, color: blue']).should == [{:circle => :blue}]
+            rb.execute_transforms(['shape: square, color: red']).should == [{:square => :red}]
+            rb.execute_transforms(['not shape: square, not color: red']).should == ['not shape: square, not color: red']
           end
         end
 
         it "allows registering a string pattern" do
           dsl.Transform('^ab*c$') {|arg| 42}
-          @rb.execute_transforms(['ab']).should == ['ab']
-          @rb.execute_transforms(['ac']).should == [42]
-          @rb.execute_transforms(['abc']).should == [42]
-          @rb.execute_transforms(['abbc']).should == [42]
+          rb.execute_transforms(['ab']).should == ['ab']
+          rb.execute_transforms(['ac']).should == [42]
+          rb.execute_transforms(['abc']).should == [42]
+          rb.execute_transforms(['abbc']).should == [42]
         end
 
         it "gives match priority to transforms defined last" do
           dsl.Transform(/^transform_me$/) {|arg| :foo }
           dsl.Transform(/^transform_me$/) {|arg| :bar }
           dsl.Transform(/^transform_me$/) {|arg| :baz }
-          @rb.execute_transforms(['transform_me']).should == [:baz]
+          rb.execute_transforms(['transform_me']).should == [:baz]
         end
 
         it "allows registering a transform which returns nil" do
           dsl.Transform('^ac$') {|arg| nil}
-          @rb.execute_transforms(['ab']).should == ['ab']
-          @rb.execute_transforms(['ac']).should == [nil]
+          rb.execute_transforms(['ab']).should == ['ab']
+          rb.execute_transforms(['ac']).should == [nil]
         end
       end
 

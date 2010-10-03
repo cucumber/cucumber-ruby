@@ -24,6 +24,10 @@ module Cucumber
         @step_mother ||= Runtime.new
       end
       
+      def support_code
+        @support_code ||= Runtime::SupportCode.new(step_mother)
+      end
+      
       def load_features(content)
         feature_file = FeatureFile.new('spec.feature', content)
         features = Ast::Features.new
@@ -41,7 +45,7 @@ module Cucumber
     
       def define_steps
         return unless step_defs = self.class.step_defs
-        rb = @step_mother.load_programming_language('rb')
+        # rb = support_code.load_programming_language('rb')
         dsl = Object.new 
         dsl.extend RbSupport::RbDsl
         dsl.instance_exec &step_defs
