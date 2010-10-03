@@ -18,7 +18,7 @@ module Cucumber
     def initialize(configuration = Configuration.default)
       @current_scenario = nil
       @configuration = Configuration.parse(configuration)
-      @support_code = SupportCode.new(self, @configuration.guess?)
+      @support_code = SupportCode.new(self, @configuration)
       @results = Results.new(@configuration)
     end
     

@@ -35,9 +35,9 @@ module Cucumber
     
       include Constantize
       
-      def initialize(runtime, in_guess_mode)
-        @runtime_facade = Runtime::ForProgrammingLanguages.new(self, runtime)
-        @guess_step_matches = in_guess_mode
+      def initialize(user_interface, configuration={})
+        @configuration = Configuration.parse(configuration)
+        @runtime_facade = Runtime::ForProgrammingLanguages.new(self, user_interface)
         @unsupported_programming_languages = []
         @programming_languages = []
         @language_map = {}
@@ -141,7 +141,7 @@ module Cucumber
     private
   
       def guess_step_matches?
-        @guess_step_matches
+        @configuration.guess?
       end
     
       def matches(step_name, name_to_report)

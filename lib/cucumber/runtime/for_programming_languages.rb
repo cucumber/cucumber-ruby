@@ -9,11 +9,11 @@ module Cucumber
     class ForProgrammingLanguages
       extend Forwardable
     
-      def initialize(support_code, runtime)
-        @support_code, @runtime = support_code, runtime
+      def initialize(support_code, user_interface)
+        @support_code, @user_interface = support_code, user_interface
       end
 
-      def_delegators :@runtime,
+      def_delegators :@user_interface,
         :embed,
         :ask,
         :announce
