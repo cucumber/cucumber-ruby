@@ -22,6 +22,10 @@ module Cucumber
       @results = Results.new(@configuration)
     end
     
+    def load_programming_language(language)
+      @support_code.load_programming_language(language)
+    end
+    
     def run!
       load_step_definitions
       fire_after_configuration_hook
