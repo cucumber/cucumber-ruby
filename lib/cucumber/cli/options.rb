@@ -229,7 +229,7 @@ module Cucumber
           opts.on("-b", "--backtrace", "Show full backtrace for all errors.") do
             Cucumber.use_full_backtrace = true
           end
-          opts.on("-S", "--strict", "Fail if there are any undefined steps.") do
+          opts.on("-S", "--strict", "Fail if there are any undefined or pending steps.") do
             @options[:strict] = true
           end
           opts.on("-w", "--wip", "Fail if there are any passing scenarios.") do
