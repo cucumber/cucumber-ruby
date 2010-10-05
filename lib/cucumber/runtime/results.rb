@@ -6,6 +6,10 @@ module Cucumber
         @configuration = configuration
       end
       
+      def configure(new_configuration)
+        @configuration = Configuration.parse(new_configuration)
+      end
+      
       def step_visited(step) #:nodoc:
         steps << step unless steps.index(step)
       end

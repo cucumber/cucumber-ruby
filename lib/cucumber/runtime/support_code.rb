@@ -42,6 +42,10 @@ module Cucumber
         @programming_languages = []
         @language_map = {}
       end
+      
+      def configure(new_configuration)
+        @configuration = Configuration.parse(new_configuration)
+      end
     
       # Invokes a series of steps +steps_text+. Example:
       #

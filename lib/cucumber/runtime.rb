@@ -22,6 +22,13 @@ module Cucumber
       @results = Results.new(@configuration)
     end
     
+    # Allows you to take an existing runtime and change it's configuration
+    def configure(new_configuration)
+      @configuration = Configuration.parse(new_configuration)
+      @support_code.configure(@configuration)
+      @results.configure(@configuration)
+    end
+    
     def load_programming_language(language)
       @support_code.load_programming_language(language)
     end

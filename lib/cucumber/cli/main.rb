@@ -42,15 +42,17 @@ module Cucumber
         @configuration = nil
       end
 
-      def execute!(legacy_step_mother = nil)
-        if legacy_step_mother
-          warn("Passing a step_mother to #execute! is deprecated, and has been ignored: #{caller[0]}")
-        end
-
+      def execute!(existing_runtime = nil)
         trap_interrupt
         return @drb_output if run_drb_client
         
-        runtime = Runtime.new(configuration)
+        runtime = if existing_runtime
+          existing_runtime.configure(configuration)
+          existing_runtime
+        else
+          Runtime.new(configuration)
+        end
+
         runtime.run!
         runtime.results.failure?
       rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
