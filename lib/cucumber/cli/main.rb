@@ -13,14 +13,6 @@ require 'cucumber/formatter/color_io'
 require 'cucumber/cli/configuration'
 require 'cucumber/cli/drb_client'
 
-if defined?(Spork::TestFramework::Cucumber)
-  class Spork::TestFramework::Cucumber < Spork::TestFramework
-    def run_tests(argv, stderr, stdout)
-      ::Cucumber::Cli::Main.new(argv, stdout, stderr).execute!
-    end
-  end
-end
-
 module Cucumber
   module Cli
     class Main
