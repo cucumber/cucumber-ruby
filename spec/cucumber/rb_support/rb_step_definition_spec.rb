@@ -86,7 +86,11 @@ module Cucumber
           arg.should == 'this'
         end
 
-       @step_mother.step_match('capture this: this').invoke(nil)
+        @step_mother.step_match('capture this: this').invoke(nil)
+      end
+
+      it "should have a JSON representation of the signature" do
+        RbStepDefinition.new(@rb, /I CAN HAS (\d+) CUKES/i, lambda{}).to_hash.should == {'source' => "I CAN HAS (\\d+) CUKES", 'flags' => 'i'}
       end
     end
   end
