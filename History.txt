@@ -1,3 +1,13 @@
+== In Git
+
+=== Bugfixes
+* Fixed incorect --help for --strict. It fails on both pending and undefined. (Aslak Hellesøy)
+
+== 0.9.2 (2010-10-04)
+
+=== Bugfixes
+* Too many open files - getcwd (#666 Aslak Hellesøy)
+
 == 0.9.1 (2010-10-02)
 
 === Bugfixes
