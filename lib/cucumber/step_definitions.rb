@@ -8,9 +8,7 @@ module Cucumber
     end
     
     def to_json
-      @support_code.step_definitions.map do |step_definition|
-        step_definition.regexp_source
-      end.to_json
+      @support_code.step_definitions.map{|stepdef| stepdef.to_hash}.to_json
     end
   end
 end

@@ -38,6 +38,14 @@ module Cucumber
         @regexp.inspect
       end
 
+      def to_hash
+        flags = ''
+        flags += 'm' if (@regexp.options & Regexp::MULTILINE) != 0
+        flags += 'i' if (@regexp.options & Regexp::IGNORECASE) != 0
+        flags += 'x' if (@regexp.options & Regexp::EXTENDED) != 0
+        {'source' => @regexp.source, 'flags' => flags}
+      end
+
       def ==(step_definition)
         regexp_source == step_definition.regexp_source
       end

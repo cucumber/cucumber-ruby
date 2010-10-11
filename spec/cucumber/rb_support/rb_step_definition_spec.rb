@@ -90,6 +90,10 @@ module Cucumber
 
        support_code.step_match('capture this: this').invoke(nil)
       end
+
+      it "should have a JSON representation of the signature" do
+        RbStepDefinition.new(rb, /I CAN HAZ (\d+) CUKES/i, lambda{}).to_hash.should == {'source' => "I CAN HAZ (\\d+) CUKES", 'flags' => 'i'}
+      end
     end
   end
 end
