@@ -1,6 +1,7 @@
 == In Git
 
 === Bugfixes
+* Prevent MiniTest::Unit#autorun from running in at_exit hook. (Aslak Hellesøy) 
 * Fixed incorect --help for --strict. It fails on both pending and undefined. (Aslak Hellesøy)
 
 == 0.9.2 (2010-10-04)
