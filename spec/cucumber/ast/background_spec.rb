@@ -49,7 +49,7 @@ module Cucumber
         $y.should == 10
       end
 
-      context "should respond to #name" do
+      describe "should respond to #name" do
         it "with a value" do
           background = Background.new(
             comment=Comment.new(''),
@@ -71,7 +71,7 @@ module Cucumber
         end
       end
 
-      describe 'Failures' do
+      describe "failures in a Before hook" do
 
         before do
           Before do
@@ -79,7 +79,7 @@ module Cucumber
           end
         end
 
-        it "should update @failed?" do
+        it "should state that the background has failed" do
           # Assign
           background = Background.new(
             comment=Comment.new(''),
