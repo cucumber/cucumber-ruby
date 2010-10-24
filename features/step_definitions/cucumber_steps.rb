@@ -61,7 +61,6 @@ When /^I run the following Ruby code:$/ do |code|
   run %{#{Cucumber::RUBY_BINARY} -r rubygems -I #{cucumber_lib_dir} -e "#{code}"}
 end
 
-
 Then /^it should (fail|pass)$/ do |success|
   if success == 'fail'
     last_exit_status.should_not == 0

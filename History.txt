@@ -1,6 +1,8 @@
-== In Git
+== 0.9.3 (2010-10-24)
 
 === Bugfixes
+* Better JSON representation of Regexps (Aslak Hellesøy)
+* Update to work with latest spork (Matt Wynne)
 * Prevent MiniTest::Unit#autorun from running in at_exit hook. (Aslak Hellesøy) 
 * Fixed incorect --help for --strict. It fails on both pending and undefined. (Aslak Hellesøy)
 
