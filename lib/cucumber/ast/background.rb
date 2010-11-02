@@ -4,7 +4,7 @@ module Cucumber
   module Ast
     class Background #:nodoc:
       include FeatureElement
-      attr_reader :feature_elements
+      attr_reader :feature_elements, :name
 
       def initialize(comment, line, keyword, name, raw_steps)
         @comment, @line, @keyword, @name, @raw_steps = comment, line, keyword, name, raw_steps
@@ -35,13 +35,15 @@ module Cucumber
         visitor.visit_background_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
         with_visitor(hook_context, visitor) do
           visitor.step_mother.before(hook_context)
+          skip_invoke! if failed?
           visitor.visit_steps(@step_invocations)
-          @failed = @step_invocations.detect{|step_invocation| step_invocation.exception}
+          @failed = @step_invocations.detect{|step_invocation| step_invocation.exception || step_invocation.status != :passed }
           visitor.step_mother.after(hook_context) if @failed || @feature_elements.empty?
         end
       end
       
       def with_visitor(scenario, visitor)
+        @current_visitor = visitor
         init
         if self != scenario && scenario.respond_to?(:with_visitor)
           scenario.with_visitor(visitor) do
@@ -62,6 +64,10 @@ module Cucumber
         end
       end
 
+      def skip_invoke!
+        @step_invocations.each{|step_invocation| step_invocation.skip_invoke!}
+      end
+
       def failed?
         @failed
       end
@@ -80,6 +86,14 @@ module Cucumber
         sexp += steps if steps.any?
         sexp
       end
+
+      def fail!(exception)
+        @failed = true
+        @exception = exception
+        @current_visitor.visit_exception(@exception, :failed)        
+      end
+
+
     end
   end
 end
