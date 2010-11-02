@@ -165,7 +165,7 @@ module Cucumber
             "This represents the boolean expression (@foo || !@bar) && @zap.",
             "\n",
             "Beware that if you want to use several negative tags to exclude several tags",
-            "you have to use logical AND: --tags ~@fixme --tags @buggy.",
+            "you have to use logical AND: --tags ~@fixme --tags ~@buggy.",
             "\n",
             "Positive tags can be given a threshold to limit the number of occurrences.", 
             "Example: --tags @qa:3 will fail if there are more than 3 occurrences of the @qa tag.",
