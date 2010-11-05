@@ -91,7 +91,7 @@ module Cucumber
 
       ARGUMENT_PATTERNS = ['"([^"]*)"', '(\d+)']
 
-      def snippet_text(step_keyword, step_name, multiline_arg_class)
+      def snippet_text(code_keyword, step_name, multiline_arg_class)
         snippet_pattern = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
         arg_count = 0
         ARGUMENT_PATTERNS.each do |pattern|
@@ -107,7 +107,7 @@ module Cucumber
           multiline_class_comment = "# #{multiline_arg_class.default_arg_name} is a #{multiline_arg_class.to_s}\n  "
         end
 
-        "#{Gherkin::I18n.code_keyword_for(step_keyword)} /^#{snippet_pattern}$/ do#{block_arg_string}\n  #{multiline_class_comment}pending # express the regexp above with the code you wish you had\nend"
+        "#{code_keyword} /^#{snippet_pattern}$/ do#{block_arg_string}\n  #{multiline_class_comment}pending # express the regexp above with the code you wish you had\nend"
       end
 
       def begin_rb_scenario(scenario)

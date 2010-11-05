@@ -1,7 +1,8 @@
+require 'gherkin/rubify'
+require 'gherkin/i18n'
 require 'cucumber/configuration'
 require 'cucumber/language_support/language_methods'
 require 'cucumber/formatter/duration'
-require 'gherkin/rubify'
 require 'cucumber/runtime/user_interface'
 require 'cucumber/runtime/features_loader'
 require 'cucumber/runtime/results'
@@ -68,7 +69,7 @@ module Cucumber
     end
 
     def snippet_text(step_keyword, step_name, multiline_arg_class) #:nodoc:
-      @support_code.snippet_text(step_keyword, step_name, multiline_arg_class)
+      @support_code.snippet_text(Gherkin::I18n.code_keyword_for(step_keyword), step_name, multiline_arg_class)
     end
 
     def with_hooks(scenario, skip_hooks=false)

@@ -4,7 +4,7 @@ module Cucumber
       PARAM_PATTERN = /"([^"]*)"/
       ESCAPED_PARAM_PATTERN = '"([^\\"]*)"'
 
-      def snippet_text(step_keyword, step_name, multiline_arg_class)
+      def snippet_text(code_keyword, step_name, multiline_arg_class)
         escaped = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
         escaped = escaped.gsub(PARAM_PATTERN, ESCAPED_PARAM_PATTERN)
 
@@ -20,7 +20,7 @@ module Cucumber
           multiline_class_comment = "//#{multiline_arg_class.default_arg_name} is a #{multiline_arg_class.to_s}\n"
         end
 
-        "#{step_keyword}(/^#{escaped}$/, function(#{block_arg_string}){\n  #{multiline_class_comment}  //express the regexp above with the code you wish you had\n});"
+        "#{code_keyword}(/^#{escaped}$/, function(#{block_arg_string}){\n  #{multiline_class_comment}  //express the regexp above with the code you wish you had\n});"
       end
     end
   end

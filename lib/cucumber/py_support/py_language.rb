@@ -28,8 +28,8 @@ module Cucumber
         mod = import(py_file)
       end
 
-      def snippet_text(step_keyword, step_name, multiline_arg_class)
-        "python snippet: #{step_keyword}, #{step_name}"
+      def snippet_text(code_keyword, step_name, multiline_arg_class)
+        "python snippet: #{code_keyword}, #{step_name}"
       end
 
       def begin_scenario(scenario)

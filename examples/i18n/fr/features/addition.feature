@@ -5,7 +5,7 @@ Fonctionnalité: Addition
   Je souhaite pouvoir faire une addition
 
   Plan du Scénario: Addition de deux nombres
-    Soit une calculatrice
+    Etant donné ucne calculatrice
     Et que j'entre <a> pour le premier nombre
     Et que je tape sur la touche "+"
     Et que j'entre <b> pour le second nombre
