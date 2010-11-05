@@ -1,7 +1,7 @@
 <% 
 rerun = File.file?('rerun.txt') ? IO.read('rerun.txt') : ""
 rerun_opts = rerun.to_s.strip.empty? ? "--format progress features" : "--format pretty #{rerun}"
-std_opts = "--format progress features --strict --tags ~@wip"
+std_opts = "--format pretty features --strict --tags ~@wip"
 begin
   require 'rspec/expectations'
   std_opts << ' --tags ~@rspec1'
