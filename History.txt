@@ -4,6 +4,9 @@
 * Superfluous space after step_keyword value in snippet_text message (#679 Aslak Hellesøy)
 * Better Handling for "announce" in HTML formatter (#676 Stephen Kennedy)
 
+=== New Features
+* Performance degradation when running feature files with over 1000 steps (#675 Dimitri Geshef)
+
 == 0.9.3 (2010-10-24)
 
 === Bugfixes
