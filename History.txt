@@ -1,7 +1,8 @@
 == In Git
 
 === Bugfixes
-* Superflous space after step_keyword value in snippet_text message (#679 Aslak Hellesøy)
+* Superfluous space after step_keyword value in snippet_text message (#679 Aslak Hellesøy)
+* Better Handling for "announce" in HTML formatter (#676 Stephen Kennedy)
 
 == 0.9.3 (2010-10-24)
 
