@@ -4,6 +4,7 @@
 * Superfluous space after step_keyword value in snippet_text message (#679 Aslak Hellesøy)
 * Better Handling for "announce" in HTML formatter (#676 Stephen Kennedy)
 * Too many open files - getcwd (#666 Aslak Hellesøy)
+* Cucumber 0.9.3 prevents Test::Unit from running (#677 Aslak Hellesøy)
 
 === New Features
 * Performance degradation when running feature files with over 1000 steps (#675 Dimitri Geshef)

@@ -17,6 +17,7 @@ module Cucumber
     include Runtime::UserInterface
 
     def initialize(configuration = Configuration.default)
+      require 'cucumber/core_ext/disable_mini_unit_autorun'
       @current_scenario = nil
       @configuration = Configuration.parse(configuration)
       @support_code = SupportCode.new(self, @configuration)

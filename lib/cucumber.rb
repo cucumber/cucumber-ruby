@@ -8,7 +8,6 @@ require 'cucumber/step_mother'
 require 'cucumber/cli/main'
 require 'cucumber/broadcaster'
 require 'cucumber/step_definitions'
-require 'cucumber/core_ext/disable_mini_unit_autorun'
 
 module Cucumber
   class << self

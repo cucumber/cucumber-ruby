@@ -5,6 +5,11 @@ require 'rspec/expectations'
 require 'fileutils'
 require 'forwardable'
 require 'cucumber/formatter/unicode'
+# This is to force miniunit to be loaded on 1.9.2, and verify that we can still run with --profile. See:
+# * disable_mini_test_autorun.rb and 
+# * http://groups.google.com/group/cukes/browse_thread/thread/5682d41436e235d7
+# * https://rspec.lighthouseapp.com/projects/16211/tickets/677-cucumber-093-prevents-testunit-from-running
+require 'test/unit'
 
 class CucumberWorld
   extend Forwardable

@@ -5,6 +5,10 @@ begin
     class << self
       @@installed_at_exit = true
     end
+
+    def run(*)
+      0
+    end
   end
 rescue LoadError => ignore
 end
