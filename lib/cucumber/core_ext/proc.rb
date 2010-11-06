@@ -1,6 +1,7 @@
 # Proc extension to get more location info out of a proc
 class Proc #:nodoc:
   PROC_PATTERN = /[\d\w]+@(.+):(\d+).*>/
+  PWD = Dir.pwd
   
   def to_comment_line
     "# #{file_colon_line}"
@@ -14,7 +15,7 @@ class Proc #:nodoc:
     def file_colon_line
       path, line = *to_s.match(PROC_PATTERN)[1..2]
       path = File.expand_path(path)
-      pwd = File.expand_path(Dir.pwd)
+      pwd = File.expand_path(PWD)
       if path.index(pwd)
         path = path[pwd.length+1..-1]
       elsif path =~ /.*\/gems\/(.*\.rb)$/
