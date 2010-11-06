@@ -335,6 +335,23 @@ module Cucumber
           }
         end
 
+        it "should detect seemingly identical tables as different" do
+          t1 = Table.new([
+            ['X',  'Y'],
+            ['2', '1']
+          ])
+          t2 = Table.new([
+            ['X',  'Y'],
+            [2, 1]
+          ])
+          lambda{t1.diff!(t2)}.should raise_error
+          t1.to_s(:indent => 12, :color => false).should == %{
+            |     X       |     Y       |
+            | (-) (i) "2" | (-) (i) "1" |
+            | (+) (i) 2   | (+) (i) 1   |
+          }
+        end
+
         it "should not allow mappings that match more than 1 column" do
           t1 = Table.new([
             ['Cuke',  'Duke'],
