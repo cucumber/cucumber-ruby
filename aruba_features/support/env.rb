@@ -1,6 +1,8 @@
 require 'aruba'
 
-Before do
+Before do |scenario|
+  @scenario = scenario
+
   # Make sure bin/cucumber runs with SimpleCov enabled
   set_env('SIMPLECOV', 'true')
 end
