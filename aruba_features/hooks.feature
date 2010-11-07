@@ -1,4 +1,3 @@
-@announce
 Feature: Tagged hooks
 
   Background:
