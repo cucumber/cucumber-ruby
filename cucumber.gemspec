@@ -31,7 +31,7 @@ for important information about this release. Happy cuking!
   s.add_dependency 'json', '~> 1.4.6'
   
   s.add_development_dependency 'rake', '~> 0.8.7'
-  s.add_development_dependency 'rspec', '~> 2.0.0.beta.20'
+  s.add_development_dependency 'rspec', '~> 2.0.1'
   s.add_development_dependency 'nokogiri', '~> 1.4.3'
   s.add_development_dependency 'prawn', '= 0.8.4'
   s.add_development_dependency 'prawn-layout', '= 0.8.4'
