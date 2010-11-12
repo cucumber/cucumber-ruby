@@ -11,6 +11,11 @@ end
 World(FeatureSerializer)
 
 When /^I run cucumber "([^"]*)"$/ do |cmd|
-  serialize_feature(cmd)
+  #serialize_feature(cmd)
   run(unescape("cucumber #{cmd}"), false)
+end
+
+Then /^it should (pass|fail) with JSON:$/ do |pass_fail, json|
+  JSON.pretty_generate(JSON.parse(@last_stdout)).should == JSON.pretty_generate(JSON.parse(json))
+  assert_exiting_with(pass_fail == 'pass')
 end

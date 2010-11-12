@@ -40,15 +40,18 @@ module Cucumber
           ],
           [
             [
-              Comment.new("#Mmmm... cucumbers\n"),
-              24,
-              'Examples:',
-              'First table',
               [
-                %w{start eat left},
-                %w{12 5 7},
-                %w{20 6 14}
-              ]
+                Comment.new("#Mmmm... cucumbers\n"),
+                24,
+                'Examples:',
+                'First table',
+                [
+                  %w{start eat left},
+                  %w{12 5 7},
+                  %w{20 6 14}
+                ]
+              ],
+              Gherkin::Formatter::Model::Examples.new(nil, nil, nil, nil, nil, nil)
             ]
           ]
 

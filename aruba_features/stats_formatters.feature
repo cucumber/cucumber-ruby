@@ -49,7 +49,6 @@ Feature: Usage formatter
       7 steps (7 skipped)
       0m0.012s
 
-
       """
 
     Scenario: Run with --format stepdefs
@@ -67,6 +66,5 @@ Feature: Usage formatter
         3 scenarios (3 skipped)
         7 steps (7 skipped)
         0m0.012s
-
 
         """

@@ -203,7 +203,6 @@ Feature: backgrounds
     2 steps (2 passed)
     0m0.012s
 
-
     """
   
   Scenario: run a feature with a background that passes
@@ -224,7 +223,6 @@ Feature: backgrounds
     2 scenarios (2 passed)
     4 steps (4 passed)
     0m0.012s
-
 
     """
 
@@ -255,7 +253,6 @@ Feature: backgrounds
     4 steps (4 passed)
     0m0.012s
 
-
     """
 
   Scenario: run a feature with scenario outlines that has a background that passes
@@ -278,7 +275,6 @@ Feature: backgrounds
     1 scenario (1 passed)
     2 steps (2 passed)
     0m0.012s
-
 
     """
 
@@ -308,7 +304,6 @@ Feature: backgrounds
     2 scenarios (1 failed, 1 skipped)
     6 steps (1 failed, 5 skipped)
     0m0.012s
-    
     
     """
 
@@ -346,7 +341,6 @@ Feature: backgrounds
     4 steps (1 failed, 3 skipped)
     0m0.012s
     
-    
     """
 
   Scenario: run a feature with a background that is pending
@@ -367,7 +361,6 @@ Feature: backgrounds
     2 scenarios (2 undefined)
     4 steps (2 skipped, 2 undefined)
     0m0.012s
-    
     
     """
 
@@ -398,7 +391,6 @@ Feature: backgrounds
     2 scenarios (1 failed, 1 passed)
     6 steps (1 failed, 1 skipped, 4 passed)
     0m0.012s
-    
     
     """
 
@@ -460,7 +452,6 @@ Feature: backgrounds
       8 steps (8 passed)
       0m0.012s
     
-    
       """
 
   Scenario: https://rspec.lighthouseapp.com/projects/16211/tickets/329
@@ -503,6 +494,5 @@ Feature: backgrounds
       0 scenarios
       1 step (1 passed)
       0m0.012s
-
 
       """

@@ -38,5 +38,4 @@ Feature: Custom Formatter
       I'LL USE MY OWN
         JUST PRINT ME
 
-
       """

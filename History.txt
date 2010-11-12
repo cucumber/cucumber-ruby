@@ -1,3 +1,14 @@
+== In Git
+
+=== Changed Features
+* New "schema" for JSON output. See New Features. (Aslak Hellesøy)
+
+=== New Features
+* JSON output now contains optional "match", "result" and "embeddings" elements underneath each step. (Aslak Hellesøy)
+
+=== Removed Features
+* Removed json_pretty formatter. If you really need the pretty, indented output - prettify it yourself. (Aslak Hellesøy)
+
 == 0.9.3 (2010-10-24)
 
 === Bugfixes
