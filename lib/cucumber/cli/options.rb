@@ -9,6 +9,7 @@ module Cucumber
       BUILTIN_FORMATS = {
         'html'        => ['Cucumber::Formatter::Html',        'Generates a nice looking HTML report.'],
         'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
+        'gpretty'     => ['Cucumber::Formatter::Gpretty',     'Prints the feature as is - in colours. (Using experimental Gherkin Formatter)'],
         'pdf'         => ['Cucumber::Formatter::Pdf',         "Generates a PDF report. You need to have the\n" +
                                                               "#{INDENT}prawn gem installed. Will pick up logo from\n" +
                                                               "#{INDENT}features/support/logo.png or\n" +

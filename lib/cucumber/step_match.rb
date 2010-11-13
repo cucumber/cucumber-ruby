@@ -1,6 +1,6 @@
 module Cucumber
   class StepMatch #:nodoc:
-    attr_reader :step_definition
+    attr_reader :step_definition, :step_arguments
 
     # Creates a new StepMatch. The +name_to_report+ argument is what's reported, unless it's is,
     # in which case +name_to_report+ is used instead.
@@ -106,6 +106,10 @@ module Cucumber
 
     def text_length
       @step.text_length
+    end
+
+    def step_arguments
+      []
     end
   end
 end

@@ -23,6 +23,7 @@ module Cucumber
           []
         )
         @feature.gherkin_statement(feature)
+        @feature
       end
 
       def background(background)

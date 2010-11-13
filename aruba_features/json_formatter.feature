@@ -142,25 +142,32 @@ Feature: JSON output formatter
 
       """
 
+  @announce
   Scenario: pystring
     Given a file named "features/pystring.feature" with:
       """
-      Feature: A py string feature
+      Feature: A pystring feature
 
         Scenario: 
-          Then I should see
-          \"\"\"
-          a string
-          \"\"\"
+          Then I should fail with
+            \"\"\"
+            a string
+            \"\"\"
+      """
+    And a file named "features/step_definitions/pystring_steps.rb" with:
+      """
+      Then /I should fail with/ do |s|
+        raise s
+      end
       """
     When I run cucumber "--format json features/pystring.feature"
-    Then it should pass with JSON:
+    Then it should fail with JSON:
       """
       {
         "features": [
           {
             "keyword": "Feature",
-            "name": "A py string feature",
+            "name": "A pystring feature",
             "line": 1,
             "description": "",
             "elements": [
@@ -173,7 +180,7 @@ Feature: JSON output formatter
                 "steps": [
                   {
                     "keyword": "Then ",
-                    "name": "I should see",
+                    "name": "I should fail with",
                     "line": 4,
                     "multiline_arg": {
                       "value": "a string",
@@ -181,10 +188,11 @@ Feature: JSON output formatter
                       "type": "py_string"
                     },
                     "match": {
-                      "location": "features/step_definitions/steps.rb:21"
+                      "location": "features/step_definitions/pystring_steps.rb:1"
                     },
                     "result": {
-                      "status": "passed"
+                      "status": "failed",
+                      "error_message": "a string (RuntimeError)\n./features/step_definitions/pystring_steps.rb:2:in `/I should fail with/'\nfeatures/pystring.feature:4:in `Then I should fail with'"
                     }
                   }
                 ]

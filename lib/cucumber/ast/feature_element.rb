@@ -6,7 +6,7 @@ module Cucumber
     module FeatureElement #:nodoc:
       attr_accessor :feature
 
-      attr_reader :gherkin_statement
+      attr_reader :gherkin_statement, :raw_steps
       def gherkin_statement(statement=nil)
         @gherkin_statement ||= statement
       end
