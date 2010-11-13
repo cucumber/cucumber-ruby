@@ -5,9 +5,6 @@ We're bumping the minor number in this release because there are some incompatib
 === Changed Features
 * JSON output now contains optional "match", "result" and "embeddings" elements underneath each step. (Aslak Hellesøy)
 
-=== Removed Features
-* Removed json_pretty formatter. If you really need the pretty, indented output - prettify it yourself. (Aslak Hellesøy)
-
 == 0.9.4 (2010-11-07)
 
 === Bugfixes
