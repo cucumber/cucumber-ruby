@@ -9,6 +9,7 @@ module Cucumber
       BUILTIN_FORMATS = {
         'html'        => ['Cucumber::Formatter::Html',        'Generates a nice looking HTML report.'],
         'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
+        'gpretty'     => ['Cucumber::Formatter::Gpretty',     'Prints the feature as is - in colours. (Using experimental Gherkin Formatter)'],
         'pdf'         => ['Cucumber::Formatter::Pdf',         "Generates a PDF report. You need to have the\n" +
                                                               "#{INDENT}prawn gem installed. Will pick up logo from\n" +
                                                               "#{INDENT}features/support/logo.png or\n" +
@@ -24,8 +25,6 @@ module Cucumber
                                                               "#{INDENT}the usage formatter, except that steps are not printed."],
         'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
         'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
-        'json_pretty' => ['Cucumber::Formatter::JsonPretty',  'Prints the feature as pretty JSON'],
-        'tag_cloud'   => ['Cucumber::Formatter::TagCloud',    'Prints a tag cloud of tag usage.'],
         'debug'       => ['Cucumber::Formatter::Debug',       'For developing formatters - prints the calls made to the listeners.']
       }
       max = BUILTIN_FORMATS.keys.map{|s| s.length}.max

@@ -1,5 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'yaml'
+require 'cucumber/parser/gherkin_builder'
+require 'gherkin/formatter/model'
 
 module Cucumber
   module Cli
@@ -44,7 +46,8 @@ module Cucumber
       describe "verbose mode" do
 
         before(:each) do
-          @empty_feature = Cucumber::Ast::Feature.new(nil, Cucumber::Ast::Comment.new(''), Cucumber::Ast::Tags.new(2, []), "Feature", "Foo", [])
+          b = Cucumber::Parser::GherkinBuilder.new
+          @empty_feature = b.feature(Gherkin::Formatter::Model::Feature.new([], [], "Feature", "Foo", "", 99))
         end
 
         it "should show feature files parsed" do

@@ -187,6 +187,10 @@ module Cucumber
         @step.language
       end
 
+      def gherkin_statement
+        @step.gherkin_statement
+      end
+
       def to_sexp
         [:step_invocation, @step.line, @step.keyword, @name, (@multiline_arg.nil? ? nil : @multiline_arg.to_sexp)].compact
       end

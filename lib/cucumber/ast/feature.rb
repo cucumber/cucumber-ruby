@@ -11,6 +11,11 @@ module Cucumber
         @background, @comment, @tags, @keyword, @name, @feature_elements = background, comment, tags, keyword, name.strip, feature_elements
       end
 
+      attr_reader :gherkin_statement
+      def gherkin_statement(statement=nil)
+        @gherkin_statement ||= statement
+      end
+
       def init
         @background.feature = self if @background
         @background.init if @background
