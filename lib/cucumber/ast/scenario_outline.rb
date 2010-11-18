@@ -2,8 +2,10 @@ module Cucumber
   module Ast
     class ScenarioOutline #:nodoc:
       include FeatureElement
-      
+
       attr_reader :name
+
+      @@missing_examples = []
 
       module ExamplesArray #:nodoc:
         def accept(visitor)
@@ -33,10 +35,29 @@ module Cucumber
         attach_steps(@raw_steps)
         @steps = StepCollection.new(@raw_steps)
 
-        @examples_array = @example_sections.map do |example_section_and_gherkin_examples|
+        init_examples_array(@example_sections)
+
+        # If there are no examples, remember this outline so the examples can
+        # potentially be filled in by a later Examples block
+        if @example_sections.empty?
+          @@missing_examples << self
+        # Got some examples--backfill any previous Scenario Outlines that
+        # did not specify any Examples, and reset @@missing_examples
+        else
+          @@missing_examples.each do |outline|
+            outline.init_examples_array(@example_sections)
+          end
+          @@missing_examples = []
+        end
+
+        @background.feature_elements << self if @background
+      end
+
+      def init_examples_array(example_sections)
+        @examples_array = example_sections.map do |example_section_and_gherkin_examples|
           example_section = example_section_and_gherkin_examples[0]
           gherkin_examples = example_section_and_gherkin_examples[1]
-          
+
           examples_comment    = example_section[0]
           examples_line       = example_section[1]
           examples_keyword    = example_section[2]
@@ -50,8 +71,6 @@ module Cucumber
         end
 
         @examples_array.extend(ExamplesArray)
-
-        @background.feature_elements << self if @background
       end
 
       def accept(visitor)
@@ -95,8 +114,8 @@ module Cucumber
       def visit_scenario_name(visitor, row)
         visitor.visit_scenario_name(
           @feature.language.keywords('scenario')[0],
-          row.name, 
-          file_colon_line(row.line), 
+          row.name,
+          file_colon_line(row.line),
           source_indent(first_line_length)
         )
       end
