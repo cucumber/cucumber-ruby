@@ -1,11 +1,9 @@
-require 'cucumber/formatter/color_io'
-
 module Cucumber
   module Formatter
     module Io
       def ensure_io(path_or_io, name)
         return nil if path_or_io.nil?
-        return path_or_io if ColorIO === path_or_io || path_or_io.respond_to?(:write)
+        return path_or_io if path_or_io.respond_to?(:write)
         file = File.open(path_or_io, Cucumber.file_mode('w'))
         at_exit do
           unless file.closed?

@@ -15,10 +15,8 @@ if Cucumber::IRONRUBY
 end
 
 if Cucumber::WINDOWS_MRI
-  begin
-    require 'Win32/Console/ANSI'
-  rescue LoadError
-    STDERR.puts %{*** WARNING: You must "gem install win32console" (1.2.0 or higher) to get coloured output on MRI/Windows}
+  unless ENV['ANSICON']
+    STDERR.puts %{*** WARNING: You must use ANSICON 1.31 or higher (http://adoxa.110mb.com/ansicon) to get coloured output on Windows}
     Term::ANSIColor.coloring = false
   end
 end
