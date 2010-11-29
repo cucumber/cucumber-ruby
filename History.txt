@@ -2,6 +2,9 @@
 
 We're bumping the minor number in this release because there are some incompatible changes in the JSON support.
 
+=== New Features
+* Update to builder to v 3.0.0. (bUg., David Trasbo)
+
 === Changed Features
 * JSON output now contains optional "match", "result" and "embeddings" elements underneath each step. (Aslak Hellesøy)
 
