@@ -26,12 +26,12 @@ for important information about this release. Happy cuking!
 
   s.add_dependency 'gherkin', '~> 2.3.0'
   s.add_dependency 'term-ansicolor', '~> 1.0.5'
-  s.add_dependency 'builder', '~> 2.1.2'
+  s.add_dependency 'builder', '~> 3.0.0'
   s.add_dependency 'diff-lcs', '~> 1.1.2'
   s.add_dependency 'json', '~> 1.4.6'
   
   s.add_development_dependency 'rake', '~> 0.8.7'
-  s.add_development_dependency 'rspec', '~> 2.0.1'
+  s.add_development_dependency 'rspec', '~> 2.2.0'
   s.add_development_dependency 'nokogiri', '~> 1.4.3'
   s.add_development_dependency 'prawn', '= 0.8.4'
   s.add_development_dependency 'prawn-layout', '= 0.8.4'
