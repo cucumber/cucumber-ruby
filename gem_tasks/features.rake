@@ -17,4 +17,4 @@ Cucumber::Rake::Task.new(:aruba_features) do |t|
   t.cucumber_opts = %w{aruba_features}
 end
 
-task :cucumber => [:aruba_features]
+task :cucumber => [:aruba_features, :features]
