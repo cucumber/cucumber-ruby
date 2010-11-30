@@ -276,8 +276,8 @@ module Cucumber
       #   end
       #
       def map_column!(column_name, strict=true, &conversion_proc)
-        verify_column(column_name) if strict
-        @conversion_procs[column_name] = conversion_proc
+        verify_column(column_name.to_s) if strict
+        @conversion_procs[column_name.to_s] = conversion_proc
       end
 
       # Compares +other_table+ to self. If +other_table+ contains columns
