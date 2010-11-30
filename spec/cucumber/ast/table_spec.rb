@@ -45,8 +45,13 @@ module Cucumber
         @table.hashes.first[:one].should == '4444'
       end
 
-      it "should allow map'ing columns" do
+      it "should allow mapping columns" do
         @table.map_column!('one') { |v| v.to_i }
+        @table.hashes.first['one'].should == 4444
+      end
+
+      it "should allow mapping columns and take a symbol as the column name" do
+        @table.map_column!(:one) { |v| v.to_i }
         @table.hashes.first['one'].should == 4444
       end
 
