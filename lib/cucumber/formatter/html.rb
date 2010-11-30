@@ -388,7 +388,7 @@ module Cucumber
       end
 
       def set_scenario_color(status)
-        if status == :undefined
+        if status == :undefined or status == :pending
           set_scenario_color_pending
         end
         if status == :failed
