@@ -1,13 +1,12 @@
-== 0.10.0 (In Git)
+== 0.10.0 (2010-12-07)
 
 We're bumping the minor number in this release because there are some incompatible changes in the JSON support.
-This should not affect users. There is also a major bump on the builder dependency to make Cucumber
-compatible with Rails 3.0.3.
+This should not affect users. The major new feature in this release is ANSICON support for Windows users.
 
 === New Features
 * #map_column! should allow a string or symbol as the column name passed in (Ed Schmalzle)
 * Deprecate win32console and use ANSICON instead (Boško Ivanišević)
-* Update to builder to v 3.0.0. (bUg., David Trasbo)
+* Set builder dependency to >= 2.1.2, which will work with both Rails 2 and 3. (bUg., David Trasbo, Matt Wynne)
 
 === Bugfixes
 * Changed the HTML formatter to show Scenarios with 'Pending' steps to be yellow rather than green (Arti)
