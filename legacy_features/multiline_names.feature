@@ -10,20 +10,20 @@ Feature: Multiline description names
     """
     Feature: multiline
 
-      Background: I'm a multiline name              # features/multiline_name.feature:3
-        which goes on and on and on for three lines
-        yawn
-        Given passing without a table               # features/step_definitions/sample_steps.rb:12
+      Background: I'm a multiline name                        # features/multiline_name.feature:3
+                  which goes on and on and on for three lines
+                  yawn
+        Given passing without a table                         # features/step_definitions/sample_steps.rb:12
 
-      Scenario: I'm a multiline name                # features/multiline_name.feature:8
-        which goes on and on and on for three lines
-        yawn
-        Given passing without a table               # features/step_definitions/sample_steps.rb:12
+      Scenario: I'm a multiline name                        # features/multiline_name.feature:8
+                which goes on and on and on for three lines
+                yawn
+        Given passing without a table                       # features/step_definitions/sample_steps.rb:12
 
-      Scenario Outline: I'm a multiline name        # features/multiline_name.feature:13
-        which goes on and on and on for three lines
-        yawn
-        Given <state> without a table               # features/step_definitions/sample_steps.rb:12
+      Scenario Outline: I'm a multiline name                        # features/multiline_name.feature:13
+                        which goes on and on and on for three lines
+                        yawn
+        Given <state> without a table                               # features/step_definitions/sample_steps.rb:12
 
         Examples: 
           | state   |
@@ -33,8 +33,8 @@ Feature: Multiline description names
         Given <state> without a table # features/step_definitions/sample_steps.rb:12
 
         Examples: I'm a multiline name
-          which goes on and on and on for three lines
-          yawn
+                  which goes on and on and on for three lines
+                  yawn
           | state   |
           | passing |
 

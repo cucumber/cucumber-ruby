@@ -24,7 +24,7 @@ for important information about this release. Happy cuking!
 
 }
 
-  s.add_dependency 'gherkin', '~> 2.3.1'
+  s.add_dependency 'gherkin', '~> 2.3.2'
   s.add_dependency 'term-ansicolor', '~> 1.0.5'
   s.add_dependency 'builder', '~> 3.0.0'
   s.add_dependency 'diff-lcs', '~> 1.1.2'

@@ -1,6 +1,8 @@
 == 0.10.0 (In Git)
 
 We're bumping the minor number in this release because there are some incompatible changes in the JSON support.
+This should not affect users. There is also a major bump on the builder dependency to make Cucumber
+compatible with Rails 3.0.3.
 
 === New Features
 * #map_column! should allow a string or symbol as the column name passed in (Ed Schmalzle)

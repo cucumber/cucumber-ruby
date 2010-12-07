@@ -72,7 +72,9 @@ Then /^it should (fail|pass)$/ do |success|
 end
 
 Then /^it should (fail|pass) with$/ do |success, output|
-  combined_output.should =~ Regexp.compile(Regexp.escape(output))
+  unless combined_output.index(output)
+    combined_output.should == output
+  end
   Then("it should #{success}")
 end
 

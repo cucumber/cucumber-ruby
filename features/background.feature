@@ -1,4 +1,4 @@
-Feature: backgrounds
+Feature: Background
   In order to provide a context to my scenarios within a feature
   As a feature editor
   I want to write a background section in my features.
