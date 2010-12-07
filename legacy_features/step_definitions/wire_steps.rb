@@ -1,4 +1,5 @@
 Given /^there is a wire server (running |)on port (\d+) which understands the following protocol:$/ do |running, port, table|
+  table.map_column!('response') {|cell| cell.gsub(/\n/, '\n')}
   protocol = table.hashes
   @server = FakeWireServer.new(port.to_i, protocol)
   start_wire_server if running.strip == "running"
