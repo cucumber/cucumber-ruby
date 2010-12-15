@@ -168,9 +168,8 @@ module Cucumber
         @col_names ||= cell_matrix[0].map { |cell| cell.value }
       end
 
-      # Same as #raw, but skips the first (header) row
       def rows
-        raw[1..-1]
+        hashes.map(&:values)
       end
 
       def each_cells_row(&proc) #:nodoc:
