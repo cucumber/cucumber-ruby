@@ -64,7 +64,7 @@ module Cucumber
 
         error_message = exception ? "#{exception.message} (#{exception.class})\n#{exception.backtrace.join("\n")}" : nil
         unless @outline
-          @gf.result(Gherkin::Formatter::Model::Result.new(status, error_message))
+          @gf.result(Gherkin::Formatter::Model::Result.new(status, nil, error_message))
         end
       end
 
