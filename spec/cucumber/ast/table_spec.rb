@@ -67,6 +67,10 @@ module Cucumber
         }.should raise_error('The column named "two" does not exist')
       end
 
+      it "should return the table" do
+        (@table.map_column!(:one) { |v| v.to_i }).should == @table
+      end
+
       describe "#match" do
         before(:each) do
           @table = Table.new([
