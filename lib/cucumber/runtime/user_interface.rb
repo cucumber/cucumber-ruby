@@ -49,8 +49,8 @@ module Cucumber
       # Embed +file+ of MIME type +mime_type+ into the output. This may or may
       # not be ignored, depending on what kind of formatter(s) are active.
       #
-      def embed(file, mime_type)
-        @visitor.embed(file, mime_type)
+      def embed(file, mime_type, label='Screenshot')
+        @visitor.embed(file, mime_type, label)
       end
 
     private
