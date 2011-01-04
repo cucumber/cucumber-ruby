@@ -26,7 +26,7 @@ module Cucumber
       def embed(file, mime_type, label)
         case(mime_type)
         when /^image\/(png|gif|jpg|jpeg)/
-          embed_image(file)
+          embed_image(file, label)
         end
       end
 
