@@ -48,8 +48,8 @@ module Cucumber
       end
 
       # See StepMother#embed
-      def embed(file, mime_type)
-        @__cucumber_step_mother.embed(file, mime_type)
+      def embed(file, mime_type, label)
+        @__cucumber_step_mother.embed(file, mime_type, label)
       end
 
       # Prints out the world class, followed by all included modules.
