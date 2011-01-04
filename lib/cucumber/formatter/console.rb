@@ -125,7 +125,7 @@ module Cucumber
         end
       end
 
-      def embed(file, mime_type)
+      def embed(file, mime_type, label)
         # no-op
       end
 
