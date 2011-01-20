@@ -109,6 +109,18 @@ module Cucumber
         
         @header_row = false if @header_row
       end
+      
+      protected
+
+      def format_exception(exception)
+        (["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n")
+      end
+                  
+      def feature_result_filename(feature_file)
+        ext_length = File.extname(feature_file).length
+        basename = File.basename(feature_file)[0...-ext_length]
+        File.join(@reportdir, "TEST-#{basename}.xml")
+      end
 
       private
 
@@ -130,17 +142,7 @@ module Cucumber
           end
           @tests += 1
         end
-      end
-
-      def format_exception(exception)
-        (["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n")
-      end
-      
-      def feature_result_filename(feature_file)
-        ext_length = File.extname(feature_file).length
-        basename = File.basename(feature_file)[0...-ext_length]
-        File.join(@reportdir, "TEST-#{basename}.xml")
-      end
+      end      
       
       def write_file(feature_filename, data)
         File.open(feature_filename, 'w') { |file| file.write(data) }
