@@ -161,46 +161,23 @@ module Cucumber
       end
 
       def after_steps(steps)
-        return if @in_background || @in_examples
-
-        duration = Time.now - @steps_start
-        testcase = @test_suite.get_testcase classname, @scenario
-        testcase.failure = nil
-        if steps.failed?
+        return if @in_background || @in_examples        
+        update_testcase(@steps_start, @scenatio, steps) do
           steps.each { |step| @output += "#{step.keyword}#{step.name}\n" }
           @output += "\nMessage:\n"
-          failure = Failure.new(step.status, "#{step.status.to_s} #{@scenario}")
-          failure.data << @output
-          failure.data << format_exception(steps.exception) if step.exception
-          testcase.failure = failure
         end
-        testcase.time = duration
-        @test_suite.set testcase
       end
 
       def after_table_row(table_row)
         return unless @in_examples
-
-        duration = Time.now - @table_start
+        
         unless @header_row
-          name_suffix = " (outline example : #{table_row.name})"
-          testcase    = @test_suite.get_testcase classname, name = "#{@scenario}#{name_suffix}"
-          testcase.failure = nil
-          if table_row.failed?
+          suffix = " (OUTLINE example : #{table_row.name})"
+          update_testcase(@table_start, "#{@scenario}#{suffix}", table_row) do
             @output += "Example row: #{table_row.name}\n"
             @output += "\nMessage:\n"
-            failure = Failure.new(table_row.status, "#{table_row.status.to_s} #{name}")
-            failure.data << @output
-            failure.data << format_exception(table_row.exception) if table_row.exception
-            testcase.failure = failure
           end
-          testcase.time = duration
-          @test_suite.set testcase
-        else
-          key = TestSuite.build_id(classname, @scenario)
-          @test_suite.test_cases.delete(key) if @test_suite.test_cases.has_key? key
         end
-
 
         @header_row = false if @header_row
       end
@@ -212,25 +189,39 @@ module Cucumber
       private
 
       def report_filename
-        feature_basename = File.basename(@current_feature.file, '.feature')
-        File.join(@reportdir, "TEST-#{feature_basename}.xml")
+        feature_result_filename(@current_feature.file)
       end
-
-      def format_exception(exception)
-        (["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n")
-      end
-
-      private
+      
       def read_report
         File.open(report_filename, 'r') do |report|
           @doc = Hpricot.XML(report)
         end
       end
 
-      def write_report(report_filname, testsuie)
+      def write_report(report_filname, test_suite)
         File.open(report_filename, 'w') do |report|
           report.write test_suite.build_document
         end        
+      end
+      
+      def update_testcase(time_start, name, steps_or_row, &block)
+        duration = Time.now - time_start
+        testcase = @test_suite.get_testcase classname, name
+        if steps_or_row.failed?
+          
+          yield
+          
+          failure = Failure.new(steps_or_row.status, "#{steps_or_row.status.to_s} #{name}")
+          failure.data << @output
+          failure.data << format_exception(steps_or_row.exception) if steps_or_row.exception
+          testcase.failure = failure
+        else
+          testcase.failure = nil
+        end
+        testcase.time = duration
+        status = steps_or_row.status
+        failed = (status == :failed || (status == :pending && @options[:strict]))
+        @test_suite.set testcase if status == :passed || failed
       end
     end
   end

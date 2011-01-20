@@ -12,6 +12,7 @@ module Cucumber::Formatter
     class TestDoubleJunitAggegateFormatter < JunitAggregate
       attr_reader :written_files
       attr_accessor :original_report
+
       def read_report
         raise if @original_report.nil?
         @doc = @original_report
@@ -112,6 +113,6 @@ module Cucumber::Formatter
         it { @doc.to_s.should_not =~ /milk/ }
         it { @doc.to_s.should_not =~ /cookies/ }
       end      
-    end  
-  end
+    end
+  end  
 end
