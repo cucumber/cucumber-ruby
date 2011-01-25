@@ -106,7 +106,7 @@ module Cucumber
           path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
           path = path.chomp('/')
           if File.directory?(path)
-            Dir["#{path}/**/*.feature"]
+            Dir["#{path}/**/*.feature"].sort
           elsif path[0..0] == '@' and # @listfile.txt
               File.file?(path[1..-1]) # listfile.txt is a file
             IO.read(path[1..-1]).split
