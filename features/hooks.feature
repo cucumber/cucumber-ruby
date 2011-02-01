@@ -1,8 +1,7 @@
 Feature: Tagged hooks
 
   Background:
-    Given a standard Cucumber project directory structure
-    And a file named "features/step_definitions/steps.rb" with:
+    Given a file named "features/step_definitions/steps.rb" with:
       """
       Given /^this step works$/ do; end
       """
@@ -24,8 +23,8 @@ Feature: Tagged hooks
       """
 
   Scenario: omit tagged hook
-    When I run cucumber features/f.feature:2
-    Then it should fail with
+    When I run "cucumber features/f.feature:2"
+    Then it should fail with:
       """
       Feature: With and without hooks
       
@@ -43,8 +42,8 @@ Feature: Tagged hooks
       """
 
     Scenario: omit tagged hook
-      When I run cucumber features/f.feature:6
-      Then it should pass with
+      When I run "cucumber features/f.feature:6"
+      Then it should pass with:
         """
         Feature: With and without hooks
 

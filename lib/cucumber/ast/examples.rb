@@ -7,6 +7,11 @@ module Cucumber
         @comment, @keyword, @name, @outline_table = comment, keyword, name, outline_table
       end
 
+      attr_reader :gherkin_statement
+      def gherkin_statement(statement=nil)
+        @gherkin_statement ||= statement
+      end
+
       def accept(visitor)
         return if Cucumber.wants_to_quit
         visitor.visit_comment(@comment) unless @comment.empty?

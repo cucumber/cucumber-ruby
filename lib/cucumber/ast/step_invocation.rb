@@ -108,10 +108,11 @@ module Cucumber
         end
       end
 
+      PWD_PATTERN = /#{Regexp.escape(Dir.pwd)}\//m
+
       def filter_backtrace(e)
         return e if Cucumber.use_full_backtrace
-        pwd = /#{Regexp.escape(Dir.pwd)}\//m
-        (e.backtrace || []).each{|line| line.gsub!(pwd, "./")}
+        (e.backtrace || []).each{|line| line.gsub!(PWD_PATTERN, "./")}
         
         filtered = (e.backtrace || []).reject do |line|
           BACKTRACE_FILTER_PATTERNS.detect { |p| line =~ p }
@@ -184,6 +185,10 @@ module Cucumber
 
       def language
         @step.language
+      end
+
+      def gherkin_statement
+        @step.gherkin_statement
       end
 
       def to_sexp

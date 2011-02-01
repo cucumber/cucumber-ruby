@@ -154,7 +154,7 @@ module Cucumber
       #
       # gets converted into the following:
       #
-      #   [['a', 'b], ['c', 'd']]
+      #   [['a', 'b'], ['c', 'd']]
       #
       def raw
         cell_matrix.map do |row|
@@ -162,6 +162,10 @@ module Cucumber
             cell.value
           end
         end
+      end
+
+      def column_names	#:nodoc:
+        @col_names ||= cell_matrix[0].map { |cell| cell.value }
       end
 
       # Same as #raw, but skips the first (header) row
@@ -272,8 +276,9 @@ module Cucumber
       #   end
       #
       def map_column!(column_name, strict=true, &conversion_proc)
-        verify_column(column_name) if strict
-        @conversion_procs[column_name] = conversion_proc
+        verify_column(column_name.to_s) if strict
+        @conversion_procs[column_name.to_s] = conversion_proc
+        self
       end
 
       # Compares +other_table+ to self. If +other_table+ contains columns
@@ -380,7 +385,7 @@ module Cucumber
         hash = Hash.new do |hash, key|
           hash[key.to_s] if key.is_a?(Symbol)
         end
-        raw[0].each_with_index do |column_name, column_index|
+        column_names.each_with_index do |column_name, column_index|
           value = @conversion_procs[column_name].call(cells.value(column_index))
           hash[column_name] = value
         end

@@ -1,9 +1,12 @@
 require 'cucumber/constantize'
+require 'cucumber/runtime/for_programming_languages'
 
 module Cucumber
   class Runtime
     
     class SupportCode
+      
+      require 'forwardable'
       class StepInvoker
         include Gherkin::Rubify
 
@@ -31,25 +34,39 @@ module Cucumber
       end
     
       include Constantize
-
-      def initialize(step_mother, in_guess_mode)
-        @step_mother = step_mother
-        @guess_step_matches = in_guess_mode
+      
+      def initialize(user_interface, configuration={})
+        @configuration = Configuration.parse(configuration)
+        @runtime_facade = Runtime::ForProgrammingLanguages.new(self, user_interface)
         @unsupported_programming_languages = []
         @programming_languages = []
         @language_map = {}
       end
+      
+      def configure(new_configuration)
+        @configuration = Configuration.parse(new_configuration)
+      end
     
+      # Invokes a series of steps +steps_text+. Example:
+      #
+      #   invoke(%Q{
+      #     Given I have 8 cukes in my belly
+      #     Then I should not be thirsty
+      #   })
       def invoke_steps(steps_text, i18n, file_colon_line)
         file, line = file_colon_line.split(':')
         parser = Gherkin::Parser::Parser.new(StepInvoker.new(self), true, 'steps')
         parser.parse(steps_text, file, line.to_i)
       end
-
-      def load_programming_language!(ext)
+      
+      # Loads and registers programming language implementation.
+      # Instances are cached, so calling with the same argument
+      # twice will return the same instance.
+      #
+      def load_programming_language(ext)
         return @language_map[ext] if @language_map[ext]
         programming_language_class = constantize("Cucumber::#{ext.capitalize}Support::#{ext.capitalize}Language")
-        programming_language = programming_language_class.new(@step_mother)
+        programming_language = programming_language_class.new(@runtime_facade)
         @programming_languages << programming_language
         @language_map[ext] = programming_language
         programming_language
@@ -62,6 +79,11 @@ module Cucumber
         end
         log.debug("\n")
       end
+      
+      def load_files_from_paths(paths)
+        files = paths.map { |path| Dir["#{path}/**/*"] }.flatten
+        load_files! files
+      end
     
       def unmatched_step_definitions
         @programming_languages.map do |programming_language| 
@@ -70,7 +92,7 @@ module Cucumber
       end
 
       def snippet_text(step_keyword, step_name, multiline_arg_class) #:nodoc:
-        load_programming_language!('rb') if unknown_programming_language?
+        load_programming_language('rb') if unknown_programming_language?
         @programming_languages.map do |programming_language|
           programming_language.snippet_text(step_keyword, step_name, multiline_arg_class)
         end.join("\n")
@@ -95,6 +117,12 @@ module Cucumber
           end
         end.call
       end
+      
+      def step_definitions
+        @programming_languages.map do |programming_language|
+          programming_language.step_definitions
+        end.flatten
+      end
     
       def step_match(step_name, name_to_report=nil) #:nodoc:
         matches = matches(step_name, name_to_report)
@@ -105,6 +133,7 @@ module Cucumber
       end
     
       def invoke(step_name, multiline_argument=nil)
+        # It is very important to leave multiline_argument=nil as a vararg. Cuke4Duke needs it that way. 
         begin
           step_match(step_name).invoke(multiline_argument)
         rescue Exception => e
@@ -116,7 +145,7 @@ module Cucumber
     private
   
       def guess_step_matches?
-        @guess_step_matches
+        @configuration.guess?
       end
     
       def matches(step_name, name_to_report)
@@ -154,11 +183,11 @@ module Cucumber
         Cucumber.logger
       end
     
-      def programming_language_for(step_def_file) #:nodoc:
+      def programming_language_for(step_def_file)
         if ext = File.extname(step_def_file)[1..-1]
           return nil if @unsupported_programming_languages.index(ext)
           begin
-            load_programming_language!(ext)
+            load_programming_language(ext)
           rescue LoadError => e
             log.debug("Failed to load '#{ext}' programming language for file #{step_def_file}: #{e.message}\n")
             @unsupported_programming_languages << ext

@@ -90,7 +90,7 @@ Feature: Cucumber command line
       """
 
   Scenario: Require missing step definition from elsewhere
-    When I run cucumber -q -r ../../features/step_definitions/extra_steps.rb features/sample.feature:5
+    When I run cucumber -q -r ../../legacy_features/step_definitions/extra_steps.rb features/sample.feature:5
     Then it should pass with
       """
       # Feature comment
@@ -196,18 +196,18 @@ Feature: Cucumber command line
       Feature: multiline
 
         Background: I'm a multiline name
-          which goes on and on and on for three lines
-          yawn
+                    which goes on and on and on for three lines
+                    yawn
           Given passing without a table
 
         Scenario: I'm a multiline name
-          which goes on and on and on for three lines
-          yawn
+                  which goes on and on and on for three lines
+                  yawn
           Given passing without a table
 
         Scenario Outline: I'm a multiline name
-          which goes on and on and on for three lines
-          yawn
+                          which goes on and on and on for three lines
+                          yawn
           Given <state> without a table
 
           Examples: 
@@ -218,8 +218,8 @@ Feature: Cucumber command line
           Given <state> without a table
 
           Examples: I'm a multiline name
-            which goes on and on and on for three lines
-            yawn
+                    which goes on and on and on for three lines
+                    yawn
             | state   |
             | passing |
 

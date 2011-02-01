@@ -22,6 +22,8 @@ module Cucumber
           legacy_name_for(feature.name, feature.description),
           []
         )
+        @feature.gherkin_statement(feature)
+        @feature
       end
 
       def background(background)
@@ -35,6 +37,7 @@ module Cucumber
         @feature.background = @background
         @background.feature = @feature
         @step_container = @background
+        @background.gherkin_statement(background)
       end
 
       def scenario(statement)
@@ -50,6 +53,7 @@ module Cucumber
         @feature.add_feature_element(scenario)
         @background.feature_elements << scenario if @background
         @step_container = scenario
+        scenario.gherkin_statement(statement)
       end
 
       def scenario_outline(statement)
@@ -69,6 +73,7 @@ module Cucumber
           @background.feature_elements << scenario_outline
         end
         @step_container = scenario_outline
+        scenario_outline.gherkin_statement(statement)
       end
 
       def examples(examples)
@@ -79,11 +84,12 @@ module Cucumber
           legacy_name_for(examples.name, examples.description), 
           matrix(examples.rows)
         ]
-        @step_container.add_examples(examples_fields)
+        @step_container.add_examples(examples_fields, examples)
       end
 
       def step(step)
         @table_owner = Ast::Step.new(step.line, step.keyword, step.name)
+        @table_owner.gherkin_statement(step)
         multiline_arg = rubify(step.multiline_arg)
         case(multiline_arg)
         when Gherkin::Formatter::Model::PyString

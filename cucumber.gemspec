@@ -24,20 +24,21 @@ for important information about this release. Happy cuking!
 
 }
 
-  s.add_dependency 'gherkin', '~> 2.2.2'
+  s.add_dependency 'gherkin', '~> 2.3.3'
   s.add_dependency 'term-ansicolor', '~> 1.0.5'
-  s.add_dependency 'builder', '~> 2.1.2'
+  s.add_dependency 'builder', '>= 2.1.2'
   s.add_dependency 'diff-lcs', '~> 1.1.2'
   s.add_dependency 'json', '~> 1.4.6'
   
   s.add_development_dependency 'rake', '~> 0.8.7'
-  s.add_development_dependency 'rspec', '~> 2.0.0.beta.20'
-  s.add_development_dependency 'nokogiri', '~> 1.4.3'
+  s.add_development_dependency 'rspec', '~> 2.3.0'
+  s.add_development_dependency 'nokogiri', '~> 1.4.4'
   s.add_development_dependency 'prawn', '= 0.8.4'
   s.add_development_dependency 'prawn-layout', '= 0.8.4'
   s.add_development_dependency 'syntax', '~> 1.0.0'
   s.add_development_dependency 'spork', '~> 0.8.4'
-  s.add_development_dependency 'rcov', '~> 0.9.9'
+  s.add_development_dependency 'aruba', '~> 0.2.8'
+  s.add_development_dependency 'simplecov', '~> 0.3.7'
 
   s.rubygems_version   = "1.3.7"
   s.files            = `git ls-files`.split("\n")

@@ -1,5 +1,7 @@
 source "http://rubygems.org"
-gemspec
 
-@dependencies.reject!{|dep| dep.name == 'gherkin'}
-gem 'gherkin', :path => '../gherkin'
+group :development do
+  gem 'bundler', '~> 1.0.7'
+end
+
+gemspec

@@ -1,5 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 require 'yaml'
+require 'cucumber/parser/gherkin_builder'
+require 'gherkin/formatter/model'
 
 module Cucumber
   module Cli
@@ -11,11 +13,41 @@ module Cucumber
         File.stub!(:exist?).and_return(false) # When Configuration checks for cucumber.yml
         Dir.stub!(:[]).and_return([]) # to prevent cucumber's features dir to being laoded
       end
+      
+      let(:args)       { [] }
+      let(:out_stream) { nil }
+      let(:err_stream) { nil }
+      subject { Main.new(args, out_stream, err_stream)}
+      
+      describe "#execute!" do
+        context "passed an existing runtime" do
+          let(:existing_runtime) { double('runtime').as_null_object }
+          
+          def do_execute
+            subject.execute!(existing_runtime)
+          end
+          
+          it "configures that runtime" do
+            expected_configuration = double('Configuration', :drb? => false).as_null_object
+            Configuration.stub!(:new => expected_configuration)
+            existing_runtime.should_receive(:configure).with(expected_configuration)
+            do_execute
+          end
+          
+          it "uses that runtime for running and reporting results" do
+            expected_results = double('results', :failure? => true)
+            existing_runtime.should_receive(:run!)
+            existing_runtime.stub!(:results).and_return(expected_results)
+            do_execute.should == expected_results.failure?
+          end
+        end
+      end
 
       describe "verbose mode" do
 
         before(:each) do
-          @empty_feature = Cucumber::Ast::Feature.new(nil, Cucumber::Ast::Comment.new(''), Cucumber::Ast::Tags.new(2, []), "Feature", "Foo", [])
+          b = Cucumber::Parser::GherkinBuilder.new
+          @empty_feature = b.feature(Gherkin::Formatter::Model::Feature.new([], [], "Feature", "Foo", "", 99))
         end
 
         it "should show feature files parsed" do
@@ -32,9 +64,7 @@ module Cucumber
       end
 
       describe "--format with class" do
-
-       describe "in module" do
-
+        describe "in module" do
           it "should resolve each module until it gets Formatter class" do
             cli = Main.new(%w{--format ZooModule::MonkeyFormatterClass}, nil)
             mock_module = mock('module')
@@ -48,7 +78,6 @@ module Cucumber
 
             cli.execute!
           end
-
         end
       end
 

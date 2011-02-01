@@ -1,3 +1,46 @@
+== 0.10.0 (2010-12-07)
+
+We're bumping the minor number in this release because there are some incompatible changes in the JSON support.
+This should not affect users. The major new feature in this release is ANSICON support for Windows users.
+
+=== New Features
+* #map_column! should allow a string or symbol as the column name passed in (Ed Schmalzle)
+* Deprecate win32console and use ANSICON instead (Boško Ivanišević)
+* Set builder dependency to >= 2.1.2, which will work with both Rails 2 and 3. (bUg., David Trasbo, Matt Wynne)
+
+=== Bugfixes
+* Changed the HTML formatter to show Scenarios with 'Pending' steps to be yellow rather than green (Arti)
+
+=== Changed Features
+* JSON output now contains optional "match", "result" and "embeddings" elements underneath each step. (Aslak Hellesøy)
+
+== 0.9.4 (2010-11-07)
+
+=== Bugfixes
+* Superfluous space after step_keyword value in snippet_text message (#679 Aslak Hellesøy)
+* Better Handling for "announce" in HTML formatter (#676 Stephen Kennedy)
+* Too many open files - getcwd (#666 Aslak Hellesøy)
+* Cucumber 0.9.3 prevents Test::Unit from running (#677 Aslak Hellesøy)
+* Performance degradation when running feature files with over 1000 steps (#675 Dimitri Geshef)
+
+== 0.9.3 (2010-10-24)
+
+=== Bugfixes
+* Better JSON representation of Regexps (Aslak Hellesøy)
+* Update to work with latest spork (Matt Wynne)
+* Prevent MiniTest::Unit#autorun from running in at_exit hook. (Aslak Hellesøy) 
+* Fixed incorect --help for --strict. It fails on both pending and undefined. (Aslak Hellesøy)
+
+== 0.9.2 (2010-10-04)
+
+=== Bugfixes
+* Too many open files - getcwd (#666 Aslak Hellesøy)
+
+== 0.9.1 (2010-10-02)
+
+=== Bugfixes
+* Just a minor internal change to make Cuke4Duke happy. (Aslak Hellesøy)
+
 == 0.9.0 (2010-09-21)
 
 Maintenance release for the new release of Gherkin 2.2.3.

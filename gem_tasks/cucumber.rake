@@ -2,7 +2,10 @@ $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'cucumber/rake/task'
 require 'cucumber/platform'
 
-Cucumber::Rake::Task.new do |t|
+Cucumber::Rake::Task.new(:features)
+
+Cucumber::Rake::Task.new(:legacy_features) do |t|
+  t.cucumber_opts = %w{legacy_features}
   if(Cucumber::JRUBY)
     t.profile = Cucumber::WINDOWS ? 'jruby_win' : 'jruby'
   elsif(Cucumber::WINDOWS_MRI)
@@ -12,3 +15,5 @@ Cucumber::Rake::Task.new do |t|
   end
   t.rcov = ENV['RCOV']
 end
+
+task :cucumber => [:features, :legacy_features]

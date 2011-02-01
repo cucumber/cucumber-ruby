@@ -1,7 +1,8 @@
+require 'gherkin/rubify'
+require 'gherkin/i18n'
 require 'cucumber/configuration'
 require 'cucumber/language_support/language_methods'
 require 'cucumber/formatter/duration'
-require 'gherkin/rubify'
 require 'cucumber/runtime/user_interface'
 require 'cucumber/runtime/features_loader'
 require 'cucumber/runtime/results'
@@ -16,10 +17,22 @@ module Cucumber
     include Runtime::UserInterface
 
     def initialize(configuration = Configuration.default)
+      require 'cucumber/core_ext/disable_mini_unit_autorun'
       @current_scenario = nil
       @configuration = Configuration.parse(configuration)
-      @support_code = SupportCode.new(self, @configuration.guess?)
+      @support_code = SupportCode.new(self, @configuration)
       @results = Results.new(@configuration)
+    end
+    
+    # Allows you to take an existing runtime and change it's configuration
+    def configure(new_configuration)
+      @configuration = Configuration.parse(new_configuration)
+      @support_code.configure(@configuration)
+      @results.configure(@configuration)
+    end
+    
+    def load_programming_language(language)
+      @support_code.load_programming_language(language)
     end
     
     def run!
@@ -48,66 +61,6 @@ module Cucumber
       @results.steps(status)
     end
 
-    # Loads and registers programming language implementation.
-    # Instances are cached, so calling with the same argument
-    # twice will return the same instance.
-    #
-    def load_programming_language(ext)
-      @support_code.load_programming_language!(ext)
-    end
-
-    def invoke(step_name, multiline_argument)
-      @support_code.invoke(step_name, multiline_argument)
-    end
-
-    # Invokes a series of steps +steps_text+. Example:
-    #
-    #   invoke(%Q{
-    #     Given I have 8 cukes in my belly
-    #     Then I should not be thirsty
-    #   })
-    def invoke_steps(steps_text, i18n, file_colon_line)
-      @support_code.invoke_steps(steps_text, i18n, file_colon_line)
-    end
-
-    # Returns a Cucumber::Ast::Table for +text_or_table+, which can either
-    # be a String:
-    #
-    #   table(%{
-    #     | account | description | amount |
-    #     | INT-100 | Taxi        | 114    |
-    #     | CUC-101 | Peeler      | 22     |
-    #   })
-    #
-    # or a 2D Array:
-    #
-    #   table([
-    #     %w{ account description amount },
-    #     %w{ INT-100 Taxi        114    },
-    #     %w{ CUC-101 Peeler      22     }
-    #   ])
-    #
-    def table(text_or_table, file=nil, line_offset=0)
-      if Array === text_or_table
-        Ast::Table.new(text_or_table)
-      else
-        Ast::Table.parse(text_or_table, file, line_offset)
-      end
-    end
-
-    # Returns a regular String for +string_with_triple_quotes+. Example:
-    #
-    #   """
-    #    hello
-    #   world
-    #   """
-    #
-    # Is retured as: " hello\nworld"
-    #
-    def py_string(string_with_triple_quotes, file=nil, line_offset=0)
-      Ast::PyString.parse(string_with_triple_quotes)
-    end
-
     def step_match(step_name, name_to_report=nil) #:nodoc:
       @support_code.step_match(step_name, name_to_report)
     end
@@ -117,7 +70,7 @@ module Cucumber
     end
 
     def snippet_text(step_keyword, step_name, multiline_arg_class) #:nodoc:
-      @support_code.snippet_text(step_keyword, step_name, multiline_arg_class)
+      @support_code.snippet_text(Gherkin::I18n.code_keyword_for(step_keyword), step_name, multiline_arg_class)
     end
 
     def with_hooks(scenario, skip_hooks=false)

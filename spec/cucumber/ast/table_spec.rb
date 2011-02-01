@@ -45,8 +45,13 @@ module Cucumber
         @table.hashes.first[:one].should == '4444'
       end
 
-      it "should allow map'ing columns" do
+      it "should allow mapping columns" do
         @table.map_column!('one') { |v| v.to_i }
+        @table.hashes.first['one'].should == 4444
+      end
+
+      it "should allow mapping columns and take a symbol as the column name" do
+        @table.map_column!(:one) { |v| v.to_i }
         @table.hashes.first['one'].should == 4444
       end
 
@@ -60,6 +65,10 @@ module Cucumber
         lambda {
           @table.map_column!('two', true) { |v| v.to_i }
         }.should raise_error('The column named "two" does not exist')
+      end
+
+      it "should return the table" do
+        (@table.map_column!(:one) { |v| v.to_i }).should == @table
       end
 
       describe "#match" do
@@ -332,6 +341,23 @@ module Cucumber
           t1.to_s(:indent => 12, :color => false).should == %{
             |     name  |     male |
             |     aslak |     true |
+          }
+        end
+
+        it "should detect seemingly identical tables as different" do
+          t1 = Table.new([
+            ['X',  'Y'],
+            ['2', '1']
+          ])
+          t2 = Table.new([
+            ['X',  'Y'],
+            [2, 1]
+          ])
+          lambda{t1.diff!(t2)}.should raise_error
+          t1.to_s(:indent => 12, :color => false).should == %{
+            |     X       |     Y       |
+            | (-) (i) "2" | (-) (i) "1" |
+            | (+) (i) 2   | (+) (i) 1   |
           }
         end
 

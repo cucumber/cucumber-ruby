@@ -14,6 +14,11 @@ module Cucumber
         @line, @keyword, @name, @multiline_arg = line, keyword, name, multiline_arg
       end
 
+      attr_reader :gherkin_statement
+      def gherkin_statement(statement=nil)
+        @gherkin_statement ||= statement
+      end
+
       def background?
         false
       end

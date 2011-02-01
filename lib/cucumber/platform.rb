@@ -1,9 +1,10 @@
 # Detect the platform we're running on so we can tweak behaviour
 # in various places.
+require 'rbconfig'
 
 module Cucumber
 unless defined?(Cucumber::VERSION)
-  VERSION       = '0.9.0'
+  VERSION       = '0.10.0'
   BINARY        = File.expand_path(File.dirname(__FILE__) + '/../../bin/cucumber')
   LIBDIR        = File.expand_path(File.dirname(__FILE__) + '/../../lib')
   JRUBY         = defined?(JRUBY_VERSION)

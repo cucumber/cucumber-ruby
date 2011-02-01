@@ -48,6 +48,63 @@ module Cucumber
         $x.should == 2
         $y.should == 10
       end
+
+      describe "should respond to #name" do
+        it "with a value" do
+          background = Background.new(
+            comment=Comment.new(''),
+            line=2,
+            keyword="",
+            name="background name",
+            steps=[])
+          lambda{ background.name }.should_not raise_error
+          background.name.should == 'background name'
+        end
+        it "without a value" do
+          background = Background.new(
+            comment=Comment.new(''),
+            line=2,
+            keyword="",
+            name=nil,
+            steps=[])
+        lambda{ background.name }.should_not raise_error
+        end
+      end
+
+      describe "failures in a Before hook" do
+
+        before do
+          Before do
+            raise Exception, "Exception from Before hook"
+          end
+        end
+
+        it "should state that the background has failed" do
+          # Assign
+          background = Background.new(
+            comment=Comment.new(''),
+            line=2,
+            keyword="",
+            name="",
+            steps=[
+              Step.new(7, "Given", "y is 5")
+            ])
+          background.feature = @feature
+
+          # Expect
+          @visitor.should_receive( :visit_exception ) do |exception, status|
+            exception.should be_instance_of( Exception )
+            exception.message.should == "Exception from Before hook"
+            status.should == :failed
+           end
+
+          # Assert
+          lambda{ @visitor.visit_background(background) }.should_not raise_error
+          background.should be_failed
+        end
+
+      end
     end
+    
   end
 end

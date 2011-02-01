@@ -30,7 +30,8 @@ module Cucumber
     # The Ruby implementation of the programming language API.
     class RbLanguage
       include LanguageSupport::LanguageMethods
-      attr_reader :current_world
+      attr_reader :current_world,
+                  :step_definitions
 
       Gherkin::I18n.code_keywords.each do |adverb|
         RbDsl.alias_adverb(adverb)
@@ -66,7 +67,7 @@ module Cucumber
 
       # Gets called for each file under features (or whatever is overridden
       # with --require).
-      def step_definitions_for(rb_file)
+      def step_definitions_for(rb_file) # Looks Unused - Delete?
         begin
           require rb_file # This will cause self.add_step_definition and self.add_hook to be called from RbDsl
           step_definitions
@@ -77,7 +78,7 @@ module Cucumber
           @step_definitions = nil
         end
       end
-
+      
       def step_matches(name_to_match, name_to_format)
         @step_definitions.map do |step_definition|
           if(arguments = step_definition.arguments_from(name_to_match))
@@ -90,7 +91,7 @@ module Cucumber
 
       ARGUMENT_PATTERNS = ['"([^"]*)"', '(\d+)']
 
-      def snippet_text(step_keyword, step_name, multiline_arg_class)
+      def snippet_text(code_keyword, step_name, multiline_arg_class)
         snippet_pattern = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
         arg_count = 0
         ARGUMENT_PATTERNS.each do |pattern|
@@ -106,7 +107,7 @@ module Cucumber
           multiline_class_comment = "# #{multiline_arg_class.default_arg_name} is a #{multiline_arg_class.to_s}\n  "
         end
 
-        "#{Gherkin::I18n.code_keyword_for(step_keyword)} /^#{snippet_pattern}$/ do#{block_arg_string}\n  #{multiline_class_comment}pending # express the regexp above with the code you wish you had\nend"
+        "#{code_keyword} /^#{snippet_pattern}$/ do#{block_arg_string}\n  #{multiline_class_comment}pending # express the regexp above with the code you wish you had\nend"
       end
 
       def begin_rb_scenario(scenario)
@@ -139,9 +140,9 @@ module Cucumber
       end
 
       def load_code_file(code_file)
-        require File.expand_path(code_file) # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from RbDsl
+        load File.expand_path(code_file) # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from RbDsl
       end
-
+      
       protected
 
       def begin_scenario(scenario)

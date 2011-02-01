@@ -9,17 +9,8 @@ require 'cucumber'
 require 'logger'
 require 'cucumber/parser'
 require 'cucumber/feature_file'
-require 'cucumber/formatter/color_io'
 require 'cucumber/cli/configuration'
 require 'cucumber/cli/drb_client'
-
-if defined?(Spork::TestFramework::Cucumber)
-  class Spork::TestFramework::Cucumber < Spork::TestFramework
-    def run_tests(argv, stderr, stdout)
-      ::Cucumber::Cli::Main.new(argv, stdout, stderr).execute!
-    end
-  end
-end
 
 module Cucumber
   module Cli
@@ -32,25 +23,23 @@ module Cucumber
 
       def initialize(args, out_stream = STDOUT, error_stream = STDERR)
         @args         = args
-        if Cucumber::WINDOWS_MRI
-          @out_stream   = out_stream == STDOUT ? Formatter::ColorIO.new(Kernel, STDOUT) : out_stream
-        else
-          @out_stream   = out_stream
-        end
+        @out_stream   = out_stream
 
         @error_stream = error_stream
         @configuration = nil
       end
 
-      def execute!(legacy_step_mother = nil)
-        if legacy_step_mother
-          warn("Passing a step_mother to #execute! is deprecated, and has been ignored: #{caller[0]}")
-        end
-
+      def execute!(existing_runtime = nil)
         trap_interrupt
         return @drb_output if run_drb_client
         
-        runtime = Runtime.new(configuration)
+        runtime = if existing_runtime
+          existing_runtime.configure(configuration)
+          existing_runtime
+        else
+          Runtime.new(configuration)
+        end
+
         runtime.run!
         runtime.results.failure?
       rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e

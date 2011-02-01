@@ -24,8 +24,7 @@ module Cucumber
                                                               "#{INDENT}the usage formatter, except that steps are not printed."],
         'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
         'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
-        'json_pretty' => ['Cucumber::Formatter::JsonPretty',  'Prints the feature as pretty JSON'],
-        'tag_cloud'   => ['Cucumber::Formatter::TagCloud',    'Prints a tag cloud of tag usage.'],
+        'json_pretty' => ['Cucumber::Formatter::JsonPretty',  'Prints the feature as prettified JSON'],
         'debug'       => ['Cucumber::Formatter::Debug',       'For developing formatters - prints the calls made to the listeners.']
       }
       max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
@@ -165,7 +164,7 @@ module Cucumber
             "This represents the boolean expression (@foo || !@bar) && @zap.",
             "\n",
             "Beware that if you want to use several negative tags to exclude several tags",
-            "you have to use logical AND: --tags ~@fixme --tags @buggy.",
+            "you have to use logical AND: --tags ~@fixme --tags ~@buggy.",
             "\n",
             "Positive tags can be given a threshold to limit the number of occurrences.", 
             "Example: --tags @qa:3 will fail if there are more than 3 occurrences of the @qa tag.",
@@ -229,7 +228,7 @@ module Cucumber
           opts.on("-b", "--backtrace", "Show full backtrace for all errors.") do
             Cucumber.use_full_backtrace = true
           end
-          opts.on("-S", "--strict", "Fail if there are any undefined steps.") do
+          opts.on("-S", "--strict", "Fail if there are any undefined or pending steps.") do
             @options[:strict] = true
           end
           opts.on("-w", "--wip", "Fail if there are any passing scenarios.") do

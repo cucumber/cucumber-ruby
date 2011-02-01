@@ -24,8 +24,8 @@ module Cucumber
         @background, @comment, @tags, @line, @keyword, @name, @raw_steps, @example_sections = background, comment, tags, line, keyword, name, raw_steps, example_sections
       end
 
-      def add_examples(example_section)
-        @example_sections << example_section
+      def add_examples(example_section, gherkin_examples)
+        @example_sections << [example_section, gherkin_examples]
       end
 
       def init
@@ -33,7 +33,10 @@ module Cucumber
         attach_steps(@raw_steps)
         @steps = StepCollection.new(@raw_steps)
 
-        @examples_array = @example_sections.map do |example_section|
+        @examples_array = @example_sections.map do |example_section_and_gherkin_examples|
+          example_section = example_section_and_gherkin_examples[0]
+          gherkin_examples = example_section_and_gherkin_examples[1]
+          
           examples_comment    = example_section[0]
           examples_line       = example_section[1]
           examples_keyword    = example_section[2]
@@ -41,7 +44,9 @@ module Cucumber
           examples_matrix     = example_section[4]
 
           examples_table = OutlineTable.new(examples_matrix, self)
-          Examples.new(examples_comment, examples_line, examples_keyword, examples_name, examples_table)
+          ex = Examples.new(examples_comment, examples_line, examples_keyword, examples_name, examples_table)
+          ex.gherkin_statement(gherkin_examples)
+          ex
         end
 
         @examples_array.extend(ExamplesArray)
