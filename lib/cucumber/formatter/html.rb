@@ -164,6 +164,9 @@ module Cucumber
       end
 
       def scenario_name(keyword, name, file_colon_line, source_indent)
+        @builder.span(:class => 'scenario_file') do
+          @builder << file_colon_line
+        end
         @listing_background = false
         @builder.h3(:id => "scenario_#{@scenario_number}") do
           @builder.span(keyword + ':', :class => 'keyword')
