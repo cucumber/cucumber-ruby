@@ -16,7 +16,9 @@ module Cucumber
       def_delegators :@user_interface,
         :embed,
         :ask,
-        :announce
+        :announce,
+        :features_paths,
+        :step_match
     
       def_delegators :@support_code,
         :invoke_steps,
