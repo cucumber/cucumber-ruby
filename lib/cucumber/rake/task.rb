@@ -8,7 +8,7 @@ module Cucumber
     #
     #   Cucumber::Rake::Task.new
     #
-    # This will define a task named <tt>cucumber</tt> described as 'Run Cucumber features'. 
+    # This will define a task named <tt>cucumber</tt> described as 'Run Cucumber features'.
     # It will use steps from 'features/**/*.rb' and features in 'features/**/*.feature'.
     #
     # To further configure the task, you can pass a block:
@@ -22,36 +22,36 @@ module Cucumber
     #   Cucumber::Rake::Task.new do |t|
     #     t.rcov = true
     #   end
-    # 
+    #
     # See the attributes for additional configuration possibilities.
     class Task
       class InProcessCucumberRunner #:nodoc:
         attr_reader :args
-        
+
         def initialize(libs, cucumber_opts, feature_files)
           raise "libs must be an Array when running in-process" unless Array === libs
           libs.reverse.each{|lib| $LOAD_PATH.unshift(lib)}
           @args = (
-            cucumber_opts + 
+            cucumber_opts +
             feature_files
           ).flatten.compact
         end
-        
+
         def run
           require 'cucumber/cli/main'
           failure = Cucumber::Cli::Main.execute(args)
           raise "Cucumber failed" if failure
         end
       end
-      
+
       class ForkedCucumberRunner #:nodoc:
         attr_reader :args
-        
+
         def initialize(libs, cucumber_bin, cucumber_opts, feature_files)
           @args = (
-            ['-I'] + load_path(libs) + 
-            quoted_binary(cucumber_bin) + 
-            cucumber_opts + 
+            ['-I'] + load_path(libs) +
+            quoted_binary(cucumber_bin) +
+            cucumber_opts +
             feature_files
           ).flatten
         end
@@ -76,11 +76,11 @@ module Cucumber
       class RCovCucumberRunner < ForkedCucumberRunner #:nodoc:
         def initialize(libs, cucumber_bin, cucumber_opts, feature_files, rcov_opts)
           @args = (
-            ['-I'] + load_path(libs) + 
+            ['-I'] + load_path(libs) +
             ['-S', 'rcov'] + rcov_opts +
-            quoted_binary(cucumber_bin) + 
-            ['--'] + 
-            cucumber_opts + 
+            quoted_binary(cucumber_bin) +
+            ['--'] +
+            cucumber_opts +
             feature_files
           ).flatten
         end
@@ -117,7 +117,7 @@ module Cucumber
       # your load path and gems.
       attr_accessor :fork
 
-      # Define what profile to be used.  When used with cucumber_opts it is simply appended 
+      # Define what profile to be used.  When used with cucumber_opts it is simply appended
       # to it. Will be ignored when CUCUMBER_OPTS is used.
       attr_accessor :profile
 
