@@ -240,6 +240,9 @@ module Cucumber
           opts.on("-g", "--guess", "Guess best match for Ambiguous steps.") do
             @options[:guess] = true
           end
+          opts.on("-l", "--lines LINES", "Run given line numbers. Equivalent to FILE:LINE syntax") do |lines|
+            @options[:lines] = lines
+          end
           opts.on("-x", "--expand", "Expand Scenario Outline Tables in output.") do
             @options[:expand] = true
           end
@@ -265,6 +268,7 @@ module Cucumber
           @options[:snippets] = true if @options[:snippets].nil?
           @options[:source]   = true if @options[:source].nil?
         end
+        @args.map! { |a| "#{a}:#{@options[:lines]}" } if @options[:lines]
 
         extract_environment_variables
         @options[:paths] = @args.dup #whatver is left over
