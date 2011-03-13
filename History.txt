@@ -1,5 +1,8 @@
 == In Git
 
+=== New Features
+* Better error message if there is no features directory (David Lindes)
+
 === Bugfixes
 * Remove duplicate lines in backtraces in the HTML report (Jari Bakken) 
 
