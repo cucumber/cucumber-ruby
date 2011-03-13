@@ -2,6 +2,7 @@
 
 === New Features
 * Better error message if there is no features directory (David Lindes)
+* Include scenario file reference in html formatter output (Brandon Faloona)
 
 === Bugfixes
 * Remove duplicate lines in backtraces in the HTML report (Jari Bakken) 
