@@ -4,21 +4,18 @@ require 'cucumber/formatter/unicode'
 $:.unshift(File.dirname(__FILE__) + '/../../lib') 
 require 'calculator'
 
-Before do
+Datfiind /un calculator/ do
   @calc = Calculator.new
 end
 
-After do
-end
-
-Given /introduc (\d+)/ do |n|
+Cand /introduc (\d+)/ do |n|
   @calc.push n.to_i
 end
 
-When 'apas suma' do
+Cand 'apăs tasta Egal' do
   @result = @calc.add
 end
 
-Then /rezultatul trebuie sa fie (\d*)/ do |result|
+Atunci /ecranul trebuie să afişeze (\d*)/ do |result|
   @result.should == result.to_i
 end
