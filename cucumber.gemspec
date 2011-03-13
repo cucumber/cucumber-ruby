@@ -39,6 +39,13 @@ for important information about this release. Happy cuking!
   s.add_development_dependency 'spork', '~> 0.8.4'
   s.add_development_dependency 'aruba', '~> 0.3.3'
   s.add_development_dependency 'simplecov', '~> 0.4.1'
+  
+  # Needed for examples (rake examples)
+  s.add_development_dependency 'ramaze'
+  s.add_development_dependency 'rack-test', '~> 0.5.7'
+  s.add_development_dependency 'webrat', '~> 0.7.3'
+  s.add_development_dependency 'sinatra', '~> 1.2.0'
+  s.add_development_dependency 'capybara', '~> 0.4.1'
 
   s.rubygems_version   = "1.3.7"
   s.files            = `git ls-files`.split("\n")
