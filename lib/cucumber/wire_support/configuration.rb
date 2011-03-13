@@ -1,4 +1,5 @@
 require 'yaml'
+require 'erb'
 
 module Cucumber
   module WireSupport
@@ -6,7 +7,7 @@ module Cucumber
       attr_reader :host, :port
       
       def initialize(wire_file)
-        params = YAML.load_file(wire_file)
+        params = YAML.load(ERB.new(File.read(wire_file)).result)
         @host = params['host']
         @port = params['port']
         @timeouts = default_timeouts.merge(params['timeout'] || {})
