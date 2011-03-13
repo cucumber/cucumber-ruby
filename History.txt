@@ -1,6 +1,7 @@
 == In Git
 
 === New Features
+* Render .wire files through ERB (Kevin Olbrich)
 * Better error message if there is no features directory (David Lindes)
 * Include scenario file reference in html formatter output (Brandon Faloona)
 
