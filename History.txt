@@ -1,3 +1,5 @@
+== In Git
+
 == 0.10.0 (2010-12-07)
 
 We're bumping the minor number in this release because there are some incompatible changes in the JSON support.
