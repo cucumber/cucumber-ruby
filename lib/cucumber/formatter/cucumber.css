@@ -2,7 +2,7 @@
 /* Regenerate with rake sass */
 body {
   font-size: 0px;
-  color: #FFFFFF;
+  color: white;
   margin: 0px;
   padding: 0px;
 }
@@ -10,11 +10,11 @@ body {
 .cucumber, td, th {
   font: normal 11px "Lucida Grande", Helvetica, sans-serif;
   background: white;
-  color: #000000;
+  color: black;
 }
 .cucumber #cucumber-header, td #cucumber-header, th #cucumber-header {
-  background: #65C400;
-  color: #FFFFFF;
+  background: #65c400;
+  color: white;
   height: 6em;
 }
 .cucumber #cucumber-header #expand-collapse p, td #cucumber-header #expand-collapse p, th #cucumber-header #expand-collapse p {
@@ -25,8 +25,8 @@ body {
   font-size: 11px;
   padding: 3px;
   margin: 0;
-  background: #65C400;
-  color: #FFFFFF;
+  background: #65c400;
+  color: white;
   font-weight: bold;
 }
 .cucumber h1, td h1, th h1 {
@@ -62,19 +62,23 @@ body {
 .cucumber .step_file a, td .step_file a, th .step_file a {
   color: #999999;
 }
+.cucumber .scenario_file, td .scenario_file, th .scenario_file {
+  float: right;
+  color: #999999;
+}
 .cucumber .tag, td .tag, th .tag {
   font-weight: bold;
-  color: #246AC1;
+  color: #246ac1;
 }
 .cucumber .backtrace, td .backtrace, th .backtrace {
   margin-top: 0;
   margin-bottom: 0;
   margin-left: 1em;
-  color: #000000;
+  color: black;
 }
 .cucumber a, td a, th a {
   text-decoration: none;
-  color: #BE5C00;
+  color: #be5c00;
 }
 .cucumber a:hover, td a:hover, th a:hover {
   text-decoration: underline;
@@ -84,7 +88,7 @@ body {
 }
 .cucumber a div.examples, td a div.examples, th a div.examples {
   margin: 5px 0px 5px 15px;
-  color: #000000;
+  color: black;
 }
 .cucumber .outline table, td .outline table, th .outline table {
   margin: 0px 0px 5px 10px;
@@ -211,7 +215,7 @@ body {
   padding: 0.1em 0 0.2em 0;
 }
 .ruby .keyword {
-  color: #FF6600;
+  color: #ff6600;
 }
 .ruby .constant {
   color: #339999;
@@ -229,13 +233,13 @@ body {
   color: white;
 }
 .ruby .string {
-  color: #66FF00;
+  color: #66ff00;
 }
 .ruby .ident {
   color: white;
 }
 .ruby .method {
-  color: #FFCC00;
+  color: #ffcc00;
 }
 .ruby .number {
   color: white;
@@ -244,13 +248,13 @@ body {
   color: white;
 }
 .ruby .comment {
-  color: #9933CC;
+  color: #9933cc;
 }
 .ruby .symbol {
   color: white;
 }
 .ruby .regex {
-  color: #44B4CC;
+  color: #44b4cc;
 }
 .ruby .punct {
   color: white;
@@ -270,6 +274,6 @@ body {
 .ruby .linenum {
   width: 75px;
   padding: 0.1em 1em 0.2em 0;
-  color: #000000;
-  background: #FFFBD3;
+  color: black;
+  background: #fffbd3;
 }
