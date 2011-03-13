@@ -15,7 +15,7 @@ Given "كتابة $n في الآلة الحاسبة" do |n|
   @calc.push n.to_i
 end
 
-When /يتم الضغط على (\w+)/ do |op|
+When /يتم الضغط على (.+)/ do |op|
   @result = @calc.send op
 end
 
