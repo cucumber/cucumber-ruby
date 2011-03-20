@@ -149,8 +149,8 @@ module Cucumber
 
       # Embed +file+ of +mime_type+ in the formatter. This method can be called from within StepDefinitions.
       # For most formatters this is a no-op.
-      def embed(file, mime_type)
-        broadcast(file, mime_type)
+      def embed(file, mime_type, label)
+        broadcast(file, mime_type, label)
       end
       
       private
