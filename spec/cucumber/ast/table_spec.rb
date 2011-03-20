@@ -55,6 +55,12 @@ module Cucumber
         @table.hashes.first['one'].should == 4444
       end
 
+      it "should allow mapping columns and modify the rows as well" do
+        @table.map_column!(:one) { |v| v.to_i }
+        @table.rows.first.should include(4444)
+        @table.rows.first.should_not include('4444')
+      end
+
       it "should pass silently if a mapped column does not exist in non-strict mode" do
         lambda {
           @table.map_column!('two', false) { |v| v.to_i }
