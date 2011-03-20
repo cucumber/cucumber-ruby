@@ -1,4 +1,4 @@
-== In Git
+== 0.10.1 (2011-03-20)
 
 === New Features
 * The #embed method can take a 3rd optional label argument. In the HTML report that's used for the link title. (Pat Leamon)
@@ -14,6 +14,7 @@
 * Relax gem dependencies to use >= instead of ~> (Rob Slifka, Aslak Hellesøy)
 
 === Bugfixes
+* Missing methods in Runtime::ForProgrammingLanguages - make v8 example run again (Chris Mytton)
 * Features files are sorted before they are executed, giving consistent results accross different OSes (Guewen Baconnier)
 * Remove duplicate lines in backtraces in the HTML report (Jari Bakken) 
 
