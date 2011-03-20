@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
 group :development do
-  gem 'bundler', '~> 1.0.7'
+  # gem 'gherkin', :path => '../gherkin'
 end
 
 gemspec

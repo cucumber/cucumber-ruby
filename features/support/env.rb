@@ -12,7 +12,7 @@ module Aruba::Api
     # Make duration predictable
     out.gsub!(/^\d+m\d+\.\d+s$/, '0m0.012s')
     # Remove SimpleCov message
-    out.gsub!(/Coverage report generated for Cucumber Features to #{Dir.pwd}\/coverage\n$/, '')
+    out.gsub!(/Coverage report generated for Cucumber Features to #{Dir.pwd}\/coverage.*\n$/, '')
     
     out
   end
@@ -24,7 +24,7 @@ Before do |scenario|
   @scenario = scenario
 
   # Make sure bin/cucumber runs with SimpleCov enabled
-  set_env('SIMPLECOV', 'true')
+  # set_env('SIMPLECOV', 'true')
   
   # Set a longer timeout for aruba
   @aruba_timeout_seconds = 5

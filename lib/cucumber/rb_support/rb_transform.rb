@@ -32,6 +32,23 @@ module Cucumber
           @rb_language.current_world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
         end
       end
+    
+      def to_s
+        strip_captures(strip_anchors(@regexp.source))
+      end
+    
+    private
+
+      def strip_captures(regexp_source)
+        regexp_source.
+          gsub(/(\()/, '').
+          gsub(/(\))/, '')
+      end
+
+      def strip_anchors(regexp_source)
+        regexp_source.
+          gsub(/(^\^|\$$)/, '')
+      end
     end
   end
 end

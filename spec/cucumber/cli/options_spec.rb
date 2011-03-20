@@ -112,6 +112,13 @@ module Cli
         end
       end
 
+      context '-l LINES or --lines LINES' do
+        it "adds line numbers to args" do
+          options.parse!(%w{-l24 FILE})
+          options.instance_variable_get(:@args).should == ['FILE:24']
+        end
+      end
+
       context '-p PROFILE or --profile PROFILE' do
 
         it "notifies the user that an individual profile is being used" do

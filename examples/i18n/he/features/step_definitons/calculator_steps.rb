@@ -15,7 +15,7 @@ Given /שהזנתי (\d+) למחשבון/ do |n|
   @calc.push n.to_i
 end
 
-When /אני לוחץ על (\w+)/ do |op|
+When /אני לוחץ על (.+)/ do |op|
   @result = @calc.send op
 end
 

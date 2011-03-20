@@ -20,8 +20,8 @@ unless defined?(Cucumber::VERSION)
   class << self
     attr_accessor :use_full_backtrace
 
-    def file_mode(m) #:nodoc:
-      RUBY_1_9 ? "#{m}:UTF-8" : m
+    def file_mode(m, encoding="UTF-8") #:nodoc:
+      RUBY_1_9 ? "#{m}:#{encoding}" : m
     end
   end
   self.use_full_backtrace = false
