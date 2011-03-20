@@ -6,7 +6,6 @@ require 'gherkin/parser/parser'
 module Cucumber
   class FeatureFile
     FILE_COLON_LINE_PATTERN = /^([\w\W]*?):([\d:]+)$/ #:nodoc:
-    LANGUAGE_PATTERN = /language:\s*(.*)/ #:nodoc:
 
     # The +uri+ argument is the location of the source. It can be a path
     # or a path:line1:line2 etc. If +source+ is passed, +uri+ is ignored.
