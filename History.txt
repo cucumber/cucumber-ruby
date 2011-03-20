@@ -1,6 +1,7 @@
 == In Git
 
 === New Features
+* Happy coexistence with Rake 0.9 (Cezary Baginski)
 * Add -l, --lines option just like rspec's (Gabriel Horner)
 * Support for named transforms. See features/transforms.feature (Matt Wynne)
 * Experimental support for non-UTF-8 encoding in feature files. A "# encoding=iso-8859-1" header (or any other encoding)
