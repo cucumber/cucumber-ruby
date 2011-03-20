@@ -188,7 +188,7 @@ Feature: Background
       """
 
   Scenario: run a specific scenario with a background
-    When I run "cucumber -q features/passing_background.feature:9"
+    When I run `cucumber -q features/passing_background.feature:9`
     Then it should pass with exactly:
     """
     Feature: Passing background sample
@@ -206,7 +206,7 @@ Feature: Background
     """
   
   Scenario: run a feature with a background that passes
-    When I run "cucumber -q features/passing_background.feature"
+    When I run `cucumber -q features/passing_background.feature`
     Then it should pass with exactly:
     """
     Feature: Passing background sample
@@ -227,7 +227,7 @@ Feature: Background
     """
 
   Scenario: run a feature with scenario outlines that has a background that passes
-    When I run "cucumber -q features/scenario_outline_passing_background.feature"
+    When I run `cucumber -q features/scenario_outline_passing_background.feature`
     Then it should pass with exactly:
     """
     Feature: Passing background with scenario outlines sample
@@ -256,7 +256,7 @@ Feature: Background
     """
 
   Scenario: run a feature with scenario outlines that has a background that passes
-    When I run "cucumber -q features/background_tagged_before_on_outline.feature"
+    When I run `cucumber -q features/background_tagged_before_on_outline.feature`
     Then it should pass with exactly:
     """
     @background_tagged_before_on_outline
@@ -279,7 +279,7 @@ Feature: Background
     """
 
   Scenario: run a feature with a background that fails
-    When I run "cucumber -q features/failing_background.feature"
+    When I run `cucumber -q features/failing_background.feature`
     Then it should fail with exactly:
     """
     Feature: Failing background sample
@@ -308,7 +308,7 @@ Feature: Background
     """
 
   Scenario: run a feature with scenario outlines that has a background that fails
-    When I run "cucumber -q features/scenario_outline_failing_background.feature"
+    When I run `cucumber -q features/scenario_outline_failing_background.feature`
     Then it should fail with exactly:
     """
     Feature: Failing background with scenario outlines sample
@@ -344,7 +344,7 @@ Feature: Background
     """
 
   Scenario: run a feature with a background that is pending
-    When I run "cucumber -q features/pending_background.feature"
+    When I run `cucumber -q features/pending_background.feature`
     Then it should pass with exactly:
     """
     Feature: Pending background sample
@@ -365,7 +365,7 @@ Feature: Background
     """
 
   Scenario: background passes with first scenario but fails with second
-    When I run "cucumber -q features/failing_background_after_success.feature"
+    When I run `cucumber -q features/failing_background_after_success.feature`
     Then it should fail with exactly:
     """
     Feature: Failing background after previously successful background sample
@@ -413,7 +413,7 @@ Feature: Background
         @multiline.should == string
       end
       """
-    When I run "cucumber -q features/multiline_args_background.feature"
+    When I run `cucumber -q features/multiline_args_background.feature`
     Then it should pass with exactly:
       """
       Feature: Passing background with multiline args
@@ -483,7 +483,7 @@ Feature: Background
         $after.should == true
       end
       """
-    When I run "cucumber features/only_background_and_hooks.feature"
+    When I run `cucumber features/only_background_and_hooks.feature`
     Then it should pass with exactly:
       """
       Feature: woo yeah

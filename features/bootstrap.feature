@@ -5,7 +5,7 @@ Feature: Bootstrapping a new project
 
  Scenario: running cucumber against a non-existing feature file
   Given a directory without standard Cucumber project directory structure
-    When I run "cucumber"
+    When I run `cucumber`
     Then it should fail with:
       """
       You don't have a 'features' directory.  Please create one to get started.

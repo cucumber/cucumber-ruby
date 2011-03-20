@@ -25,7 +25,7 @@ Feature: Tag logic
       """
 
   Scenario: ANDing tags
-    When I run "cucumber -q -t @one -t @three features/tagulicious.feature"
+    When I run `cucumber -q -t @one -t @three features/tagulicious.feature`
     Then it should pass with:
       """
       Feature: Sample
@@ -40,7 +40,7 @@ Feature: Tag logic
       """
 
   Scenario: ORing tags
-    When I run "cucumber -q -t @one,@three features/tagulicious.feature"
+    When I run `cucumber -q -t @one,@three features/tagulicious.feature`
     Then it should pass with:
       """
       Feature: Sample

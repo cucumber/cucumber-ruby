@@ -31,7 +31,7 @@ Feature: Tag logic
         raise 'boom'
       end
       """
-    When I run "cucumber -q features/tagulicious.feature"
+    When I run `cucumber -q features/tagulicious.feature`
     Then it should fail with:
       """
       Feature: Sample
@@ -74,7 +74,7 @@ Feature: Tag logic
         raise 'boom'
       end
       """
-    When I run "cucumber -q features/tagulicious.feature"
+    When I run `cucumber -q features/tagulicious.feature`
     Then it should fail with:
       """
       Feature: Sample
@@ -111,7 +111,7 @@ Feature: Tag logic
         raise 'boom'
       end
       """
-    When I run "cucumber -q features/tagulicious.feature"
+    When I run `cucumber -q features/tagulicious.feature`
     Then it should pass with:
       """
       Feature: Sample
@@ -143,7 +143,7 @@ Feature: Tag logic
         raise 'boom'
       end
       """
-    When I run "cucumber -q features/tagulicious.feature"
+    When I run `cucumber -q features/tagulicious.feature`
     Then it should fail with:
       """
       Feature: Sample
@@ -186,7 +186,7 @@ Feature: Tag logic
         raise 'boom'
       end
       """
-    When I run "cucumber -q features/tagulicious.feature"
+    When I run `cucumber -q features/tagulicious.feature`
     Then it should fail with:
       """
       Feature: Sample

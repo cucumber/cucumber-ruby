@@ -23,7 +23,7 @@ Feature: Tagged hooks
       """
 
   Scenario: omit tagged hook
-    When I run "cucumber features/f.feature:2"
+    When I run `cucumber features/f.feature:2`
     Then it should fail with:
       """
       Feature: With and without hooks
@@ -42,7 +42,7 @@ Feature: Tagged hooks
       """
 
     Scenario: omit tagged hook
-      When I run "cucumber features/f.feature:6"
+      When I run `cucumber features/f.feature:6`
       Then it should pass with:
         """
         Feature: With and without hooks

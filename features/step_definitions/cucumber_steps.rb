@@ -1,4 +1,4 @@
-When /^I run cucumber "([^\"]*)"$/ do |cmd|
+When /^I run cucumber "(.+)"$/ do |cmd|
   run_simple(unescape("cucumber #{cmd}"), false)
 end
 
