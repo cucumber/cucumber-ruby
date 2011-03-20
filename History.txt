@@ -11,6 +11,7 @@
 * Relax gem dependencies to use >= instead of ~> (Rob Slifka, Aslak Hellesøy)
 
 === Bugfixes
+* Features files are sorted before they are executed, giving consistent results accross different OSes (Guewen Baconnier)
 * Remove duplicate lines in backtraces in the HTML report (Jari Bakken) 
 
 == 0.10.0 (2010-12-07)
