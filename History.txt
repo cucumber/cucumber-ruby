@@ -6,6 +6,7 @@
   Step definition arguments will be passed in UTF-8 encoded strings regardless of the encoding in the feature file.
 * Better error message if there is no features directory (David Lindes)
 * Include scenario file reference in html formatter output (Brandon Faloona)
+* Relax gem dependencies to use >= instead of ~> (Rob Slifka, Aslak Hellesøy)
 
 === Bugfixes
 * Remove duplicate lines in backtraces in the HTML report (Jari Bakken) 
