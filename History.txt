@@ -1,6 +1,7 @@
 == In Git
 
 === New Features
+* Support for named transforms. See features/transforms.feature (Matt Wynne)
 * Experimental support for non-UTF-8 encoding in feature files. A "# encoding=iso-8859-1" header (or any other encoding)
   in the file will read the file in with that encoding and convert it to UTF-8 before it's parsed with gherkin.
   Step definition arguments will be passed in UTF-8 encoded strings regardless of the encoding in the feature file.
