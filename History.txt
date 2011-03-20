@@ -1,6 +1,7 @@
 == In Git
 
 === New Features
+* The #embed method can take a 3rd optional label argument. In the HTML report that's used for the link title. (Pat Leamon)
 * Render .wire files through ERB (Kevin Olbrich)
 * Happy coexistence with Rake 0.9 (Cezary Baginski)
 * Add -l, --lines option just like rspec's (Gabriel Horner)
