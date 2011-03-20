@@ -76,7 +76,7 @@ module Cucumber
         @gf.eof
       end
 
-      def embed(file, mime_type)
+      def embed(file, mime_type, label)
         @gf.embedding(mime_type, File.read(file))
       end
     end

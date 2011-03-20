@@ -48,7 +48,7 @@ module Cucumber
       end
 
       # See StepMother#embed
-      def embed(file, mime_type, label)
+      def embed(file, mime_type, label='Screenshot')
         @__cucumber_step_mother.embed(file, mime_type, label)
       end
 
