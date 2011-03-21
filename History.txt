@@ -20,7 +20,7 @@
 
 === Bugfixes
 * Missing methods in Runtime::ForProgrammingLanguages - make v8 example run again (Chris Mytton)
-* Features files are sorted before they are executed, giving consistent results accross different OSes (Guewen Baconnier)
+* Features files are sorted before they are executed, giving consistent results across different OSes (Guewen Baconnier)
 * Remove duplicate lines in backtraces in the HTML report (Jari Bakken) 
 
 == 0.10.0 (2010-12-07)
