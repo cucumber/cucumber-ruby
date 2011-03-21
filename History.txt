@@ -1,3 +1,8 @@
+== 0.10.2 (2011-03-21)
+
+=== Bugfixes
+* Neuter both MiniTest::Unit and Test::Unit's overzealous test runners. (Aslak Hellesøy)
+
 == 0.10.1 (2011-03-20)
 
 === New Features
