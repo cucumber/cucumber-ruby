@@ -321,12 +321,12 @@ END_OF_MESSAGE
     end
 
     it "should accept --color option" do
-      Term::ANSIColor.should_receive(:coloring=).with(true)
+      Cucumber::Term::ANSIColor.should_receive(:coloring=).with(true)
       config.parse!(['--color'])
     end
 
     it "should accept --no-color option" do
-      Term::ANSIColor.should_receive(:coloring=).with(false)
+      Cucumber::Term::ANSIColor.should_receive(:coloring=).with(false)
       config = Configuration.new(StringIO.new)
       config.parse!(['--no-color'])
     end

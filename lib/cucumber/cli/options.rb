@@ -195,7 +195,7 @@ module Cucumber
           opts.on("-c", "--[no-]color",
             "Whether or not to use ANSI color in the output. Cucumber decides",
             "based on your platform and the output destination if not specified.") do |v|
-            Term::ANSIColor.coloring = v
+            Cucumber::Term::ANSIColor.coloring = v
           end
           opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.",
             "This also omits the loading of your support/env.rb file if it exists.") do
@@ -206,7 +206,7 @@ module Cucumber
             "Be careful if you choose to overwrite the originals.",
             "Implies --dry-run --formatter pretty.") do |directory|
             @options[:autoformat] = directory
-            Term::ANSIColor.coloring = false
+            Cucumber::Term::ANSIColor.coloring = false
             @options[:dry_run] = true
             @quiet = true
           end

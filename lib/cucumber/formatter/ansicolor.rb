@@ -1,10 +1,5 @@
-begin
-  require 'term/ansicolor'
-rescue LoadError
-  require 'rubygems'
-  require 'term/ansicolor'
-end
 require 'cucumber/platform'
+require 'cucumber/term/ansicolor'
 
 if Cucumber::IRONRUBY
 	begin
@@ -17,11 +12,11 @@ end
 if Cucumber::WINDOWS_MRI
   unless ENV['ANSICON']
     STDERR.puts %{*** WARNING: You must use ANSICON 1.31 or higher (http://adoxa.110mb.com/ansicon) to get coloured output on Windows}
-    Term::ANSIColor.coloring = false
+    Cucumber::Term::ANSIColor.coloring = false
   end
 end
 
-Term::ANSIColor.coloring = false if !STDOUT.tty? && !ENV.has_key?("AUTOTEST")
+Cucumber::Term::ANSIColor.coloring = false if !STDOUT.tty? && !ENV.has_key?("AUTOTEST")
 
 module Cucumber
   module Formatter
@@ -57,11 +52,11 @@ module Cucumber
     # (If you're on Windows, use SET instead of export).
     # To see what colours and effects are available, just run this in your shell:
     #
-    #   ruby -e "require 'rubygems'; require 'term/ansicolor'; puts Term::ANSIColor.attributes"
+    #   ruby -e "require 'rubygems'; require 'term/ansicolor'; puts Cucumber::Term::ANSIColor.attributes"
     #
     # Although not listed, you can also use <tt>grey</tt>
     module ANSIColor
-      include Term::ANSIColor
+      include Cucumber::Term::ANSIColor
 
       ALIASES = Hash.new do |h,k|
         if k.to_s =~ /(.*)_param/
@@ -108,7 +103,7 @@ module Cucumber
           when 0
             raise "Your terminal doesn't support colours"
           when 1
-            ::Term::ANSIColor.coloring = false
+            ::Cucumber::Term::ANSIColor.coloring = false
             alias grey white
           when 2..8
             alias grey white
@@ -130,7 +125,7 @@ module Cucumber
       
       def self.define_real_grey #:nodoc:
         def grey(m) #:nodoc:
-          if ::Term::ANSIColor.coloring?
+          if ::Cucumber::Term::ANSIColor.coloring?
             "\e[90m#{m}\e[0m"
           else
             m

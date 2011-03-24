@@ -8,6 +8,7 @@ require 'cucumber/step_mother'
 require 'cucumber/cli/main'
 require 'cucumber/broadcaster'
 require 'cucumber/step_definitions'
+require 'cucumber/term/ansicolor'
 
 module Cucumber
   class << self
