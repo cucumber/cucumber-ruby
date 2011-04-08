@@ -21,7 +21,7 @@ module Cucumber
 
       def before_feature(feature)
         @current_feature = feature
-        @failures = @errors = @tests = 0
+        @failures = @errors = @tests = @skipped = 0
         @builder = OrderedXmlMarkup.new( :indent => 2 )
         @time = 0
       end
@@ -32,6 +32,7 @@ module Cucumber
         @testsuite.testsuite(
           :failures => @failures,
           :errors => @errors,
+          :skipped => @skipped,
           :tests => @tests,
           :time => "%.6f" % @time,
           :name => @feature_name ) do
@@ -116,20 +117,23 @@ module Cucumber
         @time += duration
         classname = "#{@feature_name}.#{@scenario}"
         name = "#{@scenario}#{suffix}"
-        failed = (status == :failed || (status == :pending && @options[:strict]))
-        #puts "FAILED:!!#{failed}"
-        if status == :passed || failed
-          @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
-            if failed
-              @builder.failure(:message => "#{status.to_s} #{name}", :type => status.to_s) do
-                @builder.cdata! @output
-                @builder.cdata!(format_exception(exception)) if exception
-              end
-              @failures += 1
+        pending = [:pending, :undefined].include?(status)
+        passed = (status == :passed || (pending && !@options[:strict]))
+
+        @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
+          unless passed
+            @builder.failure(:message => "#{status.to_s} #{name}", :type => status.to_s) do
+              @builder.cdata! @output
+              @builder.cdata!(format_exception(exception)) if exception
             end
+            @failures += 1
           end
-          @tests += 1
+          if passed and (status == :skipped || pending)
+            @builder.skipped
+            @skipped += 1
+          end
         end
+        @tests += 1
       end
 
       def format_exception(exception)
