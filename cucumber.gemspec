@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
   s.homepage    = "http://cukes.info"
 
   s.platform    = Gem::Platform::RUBY
-  s.default_executable = "cucumber"
   s.post_install_message = %{
 (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)
 
