@@ -61,6 +61,10 @@ module Cucumber
         @table.rows.first.should_not include('4444')
       end
 
+      it "should return the row values in order" do
+        @table.rows.first.should == %w{4444 55555 666666}
+      end
+
       it "should pass silently if a mapped column does not exist in non-strict mode" do
         lambda {
           @table.map_column!('two', false) { |v| v.to_i }
