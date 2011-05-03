@@ -169,7 +169,9 @@ module Cucumber
       end
 
       def rows
-        hashes.map(&:values)
+        hashes.map do |hash|
+          hash.values_at *headers
+        end
       end
 
       def each_cells_row(&proc) #:nodoc:
