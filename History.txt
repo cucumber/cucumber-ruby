@@ -1,3 +1,8 @@
+== In Git
+
+=== New Features
+* Fix Table#rows cell ordering in ruby 1.8. (#47_github Brian Dunn)
+
 == 0.10.2 (2011-03-21)
 
 === Bugfixes
