@@ -2,9 +2,12 @@ $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'cucumber/rake/task'
 require 'cucumber/platform'
 
-Cucumber::Rake::Task.new(:features)
+Cucumber::Rake::Task.new(:features) do |t|
+  t.fork = false
+end
 
 Cucumber::Rake::Task.new(:legacy_features) do |t|
+  t.fork = false
   t.cucumber_opts = %w{legacy_features}
   if(Cucumber::JRUBY)
     t.profile = Cucumber::WINDOWS ? 'jruby_win' : 'jruby'

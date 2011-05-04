@@ -54,7 +54,8 @@ module Cucumber
       class ForkedCucumberRunner #:nodoc:
         attr_reader :args
 
-        def initialize(libs, cucumber_bin, cucumber_opts, feature_files)
+        def initialize(libs, cucumber_bin, cucumber_opts, bundler, feature_files)
+          @bundler = bundler
           @args = (
             ['-I'] + load_path(libs) +
             quoted_binary(cucumber_bin) +
@@ -72,7 +73,8 @@ module Cucumber
         end
 
         def runner
-          File.exist?("./Gemfile") && Gem.available?("bundler") ? ["bundle", "exec", RUBY] : [RUBY]
+          use_bundler = @bundler.nil? ? File.exist?("./Gemfile") && Gem.available?("bundler") : @bundler
+          use_bundler ? ["bundle", "exec", RUBY] : [RUBY]
         end
 
         def run
@@ -81,7 +83,8 @@ module Cucumber
       end
 
       class RCovCucumberRunner < ForkedCucumberRunner #:nodoc:
-        def initialize(libs, cucumber_bin, cucumber_opts, feature_files, rcov_opts)
+        def initialize(libs, cucumber_bin, cucumber_opts, bundler, feature_files, rcov_opts)
+          @bundler = bundler
           @args = (
             ['-I'] + load_path(libs) +
             ['-S', 'rcov'] + rcov_opts +
@@ -128,6 +131,13 @@ module Cucumber
       # to it. Will be ignored when CUCUMBER_OPTS is used.
       attr_accessor :profile
 
+      # Whether or not to run with bundler (bundle exec). Setting this to false may speed
+      # up the execution. The default value is true if Bundler is installed and you have
+      # a Gemfile, false otherwise.
+      #
+      # Note that this attribute has no effect if you don't run in forked mode.
+      attr_accessor :bundler
+
       # Define Cucumber Rake task
       def initialize(task_name = "cucumber", desc = "Run Cucumber features")
         @task_name, @desc = task_name, desc
@@ -153,9 +163,9 @@ module Cucumber
       def runner(task_args = nil) #:nodoc:
         cucumber_opts = [(ENV['CUCUMBER_OPTS'] ? ENV['CUCUMBER_OPTS'].split(/\s+/) : nil) || cucumber_opts_with_profile]
         if(@rcov)
-          RCovCucumberRunner.new(libs, binary, cucumber_opts, feature_files, rcov_opts)
+          RCovCucumberRunner.new(libs, binary, cucumber_opts, feature_files, bundler, rcov_opts)
         elsif(@fork)
-          ForkedCucumberRunner.new(libs, binary, cucumber_opts, feature_files)
+          ForkedCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files)
         else
           InProcessCucumberRunner.new(libs, cucumber_opts, feature_files)
         end
