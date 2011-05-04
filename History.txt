@@ -3,6 +3,7 @@
 === New Features
 * New bundler attribute on the Rake task, allowing faster execution. (Aslak Hellesøy)
 * Fix Table#rows cell ordering in ruby 1.8. (#47_github Brian Dunn)
+* JUnit Formatter: record skipped/pending/undefined scenario results (#655 meeee)
 
 == 0.10.2 (2011-03-21)
 
