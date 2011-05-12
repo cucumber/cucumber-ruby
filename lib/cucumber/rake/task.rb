@@ -167,7 +167,7 @@ module Cucumber
       def runner(task_args = nil) #:nodoc:
         cucumber_opts = [(ENV['CUCUMBER_OPTS'] ? ENV['CUCUMBER_OPTS'].split(/\s+/) : nil) || cucumber_opts_with_profile]
         if(@rcov)
-          RCovCucumberRunner.new(libs, binary, cucumber_opts, feature_files, bundler, rcov_opts)
+          RCovCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files, rcov_opts)
         elsif(@fork)
           ForkedCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files)
         else
