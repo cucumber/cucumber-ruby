@@ -72,8 +72,11 @@ module Cucumber
           ['"%s"' % cucumber_bin]
         end
 
+        def use_bundler
+          @bundler.nil? ? File.exist?("./Gemfile") && Gem.available?("bundler") : @bundler
+        end
+
         def runner
-          use_bundler = @bundler.nil? ? File.exist?("./Gemfile") && Gem.available?("bundler") : @bundler
           use_bundler ? ["bundle", "exec", RUBY] : [RUBY]
         end
 
@@ -87,7 +90,8 @@ module Cucumber
           @bundler = bundler
           @args = (
             ['-I'] + load_path(libs) +
-            ['-S', 'rcov'] + rcov_opts +
+            ( use_bundler ? [] : [ '-S' ] ) +
+            ['rcov'] + rcov_opts +
             quoted_binary(cucumber_bin) +
             ['--'] +
             cucumber_opts +
