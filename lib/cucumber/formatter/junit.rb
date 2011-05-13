@@ -142,7 +142,7 @@ module Cucumber
       
       def feature_result_filename(feature_file)
         ext_length = File.extname(feature_file).length
-        basename = File.basename(feature_file)[0...-ext_length]
+        basename = feature_file.gsub(File::SEPARATOR, '_')[0...-ext_length]
         File.join(@reportdir, "TEST-#{basename}.xml")
       end
       

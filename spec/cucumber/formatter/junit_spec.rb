@@ -51,6 +51,19 @@ module Cucumber::Formatter
         
         it { @doc.to_s.should =~ /One passing scenario, one failing scenario/ }
       end
+
+      describe "with a scenario in a subdirectory" do
+        define_feature %{
+          Feature: One passing scenario, one failing scenario
+
+            Scenario: Passing
+              Given a passing scenario
+        }, File.join('some', 'path', 'spec.feature')
+
+        it 'writes the filename including the subdirectory' do
+          @formatter.written_files.keys.first.should == File.join('', 'TEST-some_path_spec.xml')
+        end
+      end
       
       describe "with a scenario outline table" do
         define_steps do
