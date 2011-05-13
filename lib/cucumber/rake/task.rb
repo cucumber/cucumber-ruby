@@ -52,20 +52,17 @@ module Cucumber
       end
 
       class ForkedCucumberRunner #:nodoc:
-        attr_reader :args
 
         def initialize(libs, cucumber_bin, cucumber_opts, bundler, feature_files)
-          @bundler = bundler
-          @args = (
-            ['-I'] + load_path(libs) +
-            quoted_binary(cucumber_bin) +
-            cucumber_opts +
-            feature_files
-          ).flatten
+          @libs          = libs
+          @cucumber_bin  = cucumber_bin
+          @cucumber_opts = cucumber_opts
+          @bundler       = bundler
+          @feature_files = feature_files
         end
 
         def load_path(libs)
-          ['"%s"' % libs.join(File::PATH_SEPARATOR)]
+          ['"%s"' % @libs.join(File::PATH_SEPARATOR)]
         end
 
         def quoted_binary(cucumber_bin)
@@ -76,28 +73,38 @@ module Cucumber
           @bundler.nil? ? File.exist?("./Gemfile") && Gem.available?("bundler") : @bundler
         end
 
-        def runner
-          use_bundler ? ["bundle", "exec", RUBY] : [RUBY]
+        def cmd
+          if use_bundler
+            [ RUBY, '-S', 'bundle', 'exec', 'cucumber', @cucumber_opts,
+            @feature_files ].flatten
+          else
+            [ RUBY, '-I', load_path(@libs), quoted_binary(@cucumber_bin),
+            @cucumber_opts, @feature_files ].flatten
+          end
         end
 
         def run
-          sh((runner + args).join(" "))
+          sh(cmd.join(" "))
         end
       end
 
       class RCovCucumberRunner < ForkedCucumberRunner #:nodoc:
+
         def initialize(libs, cucumber_bin, cucumber_opts, bundler, feature_files, rcov_opts)
-          @bundler = bundler
-          @args = (
-            ['-I'] + load_path(libs) +
-            ( use_bundler ? [] : [ '-S' ] ) +
-            ['rcov'] + rcov_opts +
-            quoted_binary(cucumber_bin) +
-            ['--'] +
-            cucumber_opts +
-            feature_files
-          ).flatten
+          super(       libs, cucumber_bin, cucumber_opts, bundler, feature_files )
+          @rcov_opts = rcov_opts
         end
+
+        def cmd
+          if use_bundler
+            [RUBY, '-S', 'bundle', 'exec', 'rcov', @rcov_opts,
+             quoted_binary(@cucumber_bin), '--', @cucumber_opts, @feature_files].flatten
+          else
+            [RUBY, '-I', load_path(@libs), '-S', 'rcov', @rcov_opts,
+             quoted_binary(@cucumber_bin), '--', @cucumber_opts, @feature_files].flatten
+          end
+        end
+        
       end
 
       LIB = File.expand_path(File.dirname(__FILE__) + '/../..') #:nodoc:

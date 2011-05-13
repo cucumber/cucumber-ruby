@@ -5,21 +5,19 @@ require 'rake'
 module Cucumber
   module Rake
 
-    describe Task::RCovCucumberRunner do
+    describe Task::ForkedCucumberRunner do
 
       let(:libs) { ['lib'] }
       let(:binary) { Cucumber::BINARY }
       let(:cucumber_opts) { ['--cuke-option'] }
-      let(:feature_files) { [] }
-      let(:rcov_opts) { ['--rcov-option'] }
-
+      let(:feature_files) { ['./some.feature'] }
 
       context "when running with bundler" do
 
         let(:bundler) { true }
 
-        subject { Task::RCovCucumberRunner.new(
-            libs, binary, cucumber_opts, bundler, feature_files, rcov_opts) }
+        subject { Task::ForkedCucumberRunner.new(
+            libs, binary, cucumber_opts, bundler, feature_files) }
 
         it "does use bundler if bundler is set to true" do
           subject.use_bundler.should be_true
@@ -30,10 +28,7 @@ module Cucumber
                                  '-S',
                                  'bundle',
                                  'exec',
-                                 'rcov',
-                                 '--rcov-option',
-                                 "\"#{Cucumber::BINARY }\"",
-                                 '--',
+                                 'cucumber',
                                  '--cuke-option'] + feature_files
         end
 
@@ -43,8 +38,8 @@ module Cucumber
 
         let(:bundler) { false }
 
-        subject { Task::RCovCucumberRunner.new(
-            libs, binary, cucumber_opts, bundler, feature_files, rcov_opts) }
+        subject { Task::ForkedCucumberRunner.new(
+            libs, binary, cucumber_opts, bundler, feature_files) }
 
         it "does not use bundler if bundler is set to false" do
           subject.use_bundler.should be_false
@@ -52,16 +47,12 @@ module Cucumber
 
         it "uses well known cucumber location and specified libraries" do
           subject.cmd.should == [RUBY,
-                                 '-I',
-                                 '"lib"',
-                                 '-S',
-                                 'rcov',
-                                 '--rcov-option',
+                                 "-I",
+                                 "\"lib\"",
                                  "\"#{Cucumber::BINARY }\"",
-                                 '--',
-                                 '--cuke-option'] + feature_files
+                                 "--cuke-option"] + feature_files
         end
-        
+
       end
 
 
