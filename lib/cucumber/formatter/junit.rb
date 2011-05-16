@@ -85,33 +85,23 @@ module Cucumber
       end
       
       def before_examples(*args)
-      @io.puts 'before_examples'
-      @io.flush
         @header_row = true
         @in_examples = true
       end
       
       def after_examples(*args)
-        @io.puts 'after_examples'
-        @io.flush
         @in_examples = false
       end
 
       def before_table_row(table_row)
-       @io.puts "before_table_row"
-       @io.flush
         return unless @in_examples
 
         @table_start = Time.now
       end
 
       def after_table_row(table_row)
-        @io.puts 'after_table_row'
         return unless @in_examples
         duration = Time.now - @table_start
-        @io.puts table_row.name
-        @io.puts "|#{@header_row}|"
-        @io.flush
         unless @header_row
           name_suffix = " (outline example : #{table_row.name})"
           if table_row.failed?
@@ -127,7 +117,6 @@ module Cucumber
       private
 
       def build_testcase(duration, status, exception = nil, suffix = "")
-      @io.puts 'build_testcase'
         @time += duration
         classname = "#{@feature_name}.#{@scenario}"
         name = "#{@scenario}#{suffix}"
