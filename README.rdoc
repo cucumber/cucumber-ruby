@@ -1,7 +1,7 @@
 = Cucumber
 
 The main website is at http://cukes.info/
-The documentation is at http://wiki.github.com/aslakhellesoy/cucumber/
+The documentation is at https://wiki.github.com/cucumber/cucumber/
 
 == Note on Patches/Pull Requests
  
