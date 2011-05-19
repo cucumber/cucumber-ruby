@@ -62,7 +62,10 @@ module Cucumber
         scenario_name = "Unnamed scenario" if name == ""
         @scenario = scenario_name
         description = "Scenario"
-        description << " outline" if keyword.include?('Scenario Outline')
+        if keyword.include?('Scenario Outline')
+          description << " outline" 
+          @in_examples = true
+        end
         @output = "#{description}: #{@scenario}\n\n"
       end
 
