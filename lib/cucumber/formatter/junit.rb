@@ -62,7 +62,10 @@ module Cucumber
         scenario_name = "Unnamed scenario" if name == ""
         @scenario = scenario_name
         description = "Scenario"
-        description << " outline" if keyword.include?('Scenario Outline')
+        if keyword.include?('Scenario Outline')
+          description << " outline" 
+          @in_examples = true
+        end
         @output = "#{description}: #{@scenario}\n\n"
       end
 
@@ -142,7 +145,7 @@ module Cucumber
       
       def feature_result_filename(feature_file)
         ext_length = File.extname(feature_file).length
-        basename = File.basename(feature_file)[0...-ext_length]
+        basename = feature_file.gsub(File::SEPARATOR, '_')[0...-ext_length]
         File.join(@reportdir, "TEST-#{basename}.xml")
       end
       
