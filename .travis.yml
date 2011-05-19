@@ -1,0 +1,4 @@
+script: "rake"
+rvm:
+  - 1.9.2
+
