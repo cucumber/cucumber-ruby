@@ -1,4 +1,4 @@
-== In Git
+== In Git 
 
 === New Features
 * New bundler attribute on the Rake task, allowing faster execution. (Aslak Hellesøy)
