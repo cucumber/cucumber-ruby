@@ -57,13 +57,8 @@ module Cucumber
       end
 
       def scenario_name(keyword, name, file_colon_line, source_indent)
-        # TODO: What's all this ugly weird code doing? Why not just use keyword and name????
-        scenario_name = name.strip.delete(".\r\n")
-        scenario_name = "Unnamed scenario" if name == ""
-        @scenario = scenario_name
-        description = "Scenario"
-        description << " outline" if keyword.include?('Scenario Outline')
-        @output = "#{description}: #{@scenario}\n\n"
+        @scenario = (name.nil? || name == "") ? "Unnamed scenario" : name.split("\n")[0]
+        @output = "#{keyword}: #{@scenario}\n\n"
       end
 
       def before_steps(steps)
