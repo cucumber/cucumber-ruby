@@ -28,11 +28,13 @@ module Cucumber
 
       def format_string(string, status)
         fmt = format_for(status)
-        if Proc === fmt
-          fmt.call(string)
-        else
-          fmt % string
-        end
+        string.split("\n").map do |line|
+          if Proc === fmt
+            fmt.call(line)
+          else
+            fmt % line
+          end
+        end.join("\n")
       end
 
       def print_steps(status)
