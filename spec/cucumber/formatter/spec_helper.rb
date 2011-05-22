@@ -2,10 +2,11 @@ module Cucumber
   module Formatter
 
     module SpecHelperDsl
-      attr_reader :feature_content, :step_defs
+      attr_reader :feature_content, :step_defs, :feature_filename
     
-      def define_feature(string)
+      def define_feature(string, feature_file = 'spec.feature')
         @feature_content = string
+        @feature_filename = feature_file
       end
     
       def define_steps(&block)
@@ -25,7 +26,7 @@ module Cucumber
       end
       
       def load_features(content)
-        feature_file = FeatureFile.new('spec.feature', content)
+        feature_file = FeatureFile.new(self.class.feature_filename, content)
         features = Ast::Features.new
         filters = []
         feature = feature_file.parse(filters, {})
