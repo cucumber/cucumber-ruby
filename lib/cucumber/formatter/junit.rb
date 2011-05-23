@@ -96,7 +96,7 @@ module Cucumber
       end
 
       def after_table_row(table_row)
-        return unless @in_examples
+        return unless @in_examples and table_row.class == Cucumber::Ast::OutlineTable::ExampleRow
         duration = Time.now - @table_start
         unless @header_row
           name_suffix = " (outline example : #{table_row.name})"
