@@ -1,4 +1,4 @@
-== In Git 
+== 0.10.3 (2011-05-23)
 
 === New Features
 * Better JUnit formatter support for sub directories and scenario outlines (#59 Matt Simpson)
