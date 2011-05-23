@@ -26,6 +26,10 @@ module Cucumber
         @time = 0
       end
       
+      def before_feature_element(feature_element)
+        @in_examples = feature_element.class == Ast::ScenarioOutline
+      end
+      
       def after_feature(feature)
         @testsuite = OrderedXmlMarkup.new( :indent => 2 )
         @testsuite.instruct!
