@@ -1,4 +1,4 @@
-# See http://wiki.github.com/aslakhellesoy/cucumber/sinatra
+# See http://wiki.github.com/cucumber/cucumber/sinatra
 # for more details about Sinatra with Cucumber
 
 require File.dirname(__FILE__) + '/../../app'
