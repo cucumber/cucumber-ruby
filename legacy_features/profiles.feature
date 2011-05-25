@@ -4,7 +4,7 @@ Feature: Profiles
   These named arguments are called profiles and the yml file should be in the root of your project.
   Any cucumber argument is valid in a profile.  To see all the available flags type 'cucumber --help'
   For more information about profiles please see the wiki:
-  http://wiki.github.com/aslakhellesoy/cucumber/cucumberyml
+  http://wiki.github.com/cucumber/cucumber/cucumber.yml
 
   Background: Basic App
     Given a standard Cucumber project directory structure
