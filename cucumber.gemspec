@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
 (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)
 
 Thank you for installing cucumber-#{Cucumber::VERSION}.
-Please be sure to read http://wiki.github.com/aslakhellesoy/cucumber/upgrading
+Please be sure to read http://wiki.github.com/cucumber/cucumber/upgrading
 for important information about this release. Happy cuking!
 
 (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)

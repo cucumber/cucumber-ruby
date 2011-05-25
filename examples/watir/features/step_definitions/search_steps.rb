@@ -16,7 +16,7 @@ end
 
 # To avoid step definitions that are tightly coupled to your user interface,
 # consider creating classes for your pages - such as this:
-# http://github.com/aslakhellesoy/cucumber/tree/v0.1.15/examples/watir/features/step_definitons/search_steps.rb
+# http://github.com/cucumber/cucumber/tree/v0.1.15/examples/watir/features/step_definitons/search_steps.rb
 #
 # You may keep the page classes along your steps, or even better, put them in separate files, e.g.
 # support/pages/google_search.rb
