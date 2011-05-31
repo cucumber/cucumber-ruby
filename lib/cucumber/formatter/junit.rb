@@ -26,6 +26,10 @@ module Cucumber
         @time = 0
       end
       
+      def before_feature_element(feature_element)
+        @in_examples = feature_element.class == Ast::ScenarioOutline
+      end
+      
       def after_feature(feature)
         @testsuite = OrderedXmlMarkup.new( :indent => 2 )
         @testsuite.instruct!
@@ -92,7 +96,7 @@ module Cucumber
       end
 
       def after_table_row(table_row)
-        return unless @in_examples
+        return unless @in_examples and table_row.class == Cucumber::Ast::OutlineTable::ExampleRow
         duration = Time.now - @table_start
         unless @header_row
           name_suffix = " (outline example : #{table_row.name})"
