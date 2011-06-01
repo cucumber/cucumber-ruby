@@ -94,6 +94,7 @@ module Cucumber::Formatter
         it { @doc.to_s.should =~ /Big Mac/ }
         it { @doc.to_s.should_not =~ /Things/ }
         it { @doc.to_s.should_not =~ /Good|Evil/ }
+        it { @doc.to_s.should_not =~ /type="skipped"/}
       end
   
       describe "with a regular data table scenario" do
