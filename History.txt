@@ -1,9 +1,9 @@
-== In Git
+== 0.10.4 (2011-06-01)
 
 === New Features
 * Better JUnit formatter support for sub directories and scenario outlines (#59, #61, #62 Matt Simpson, Kenny Ortmann)
 
-== Bugfixes
+=== Bugfixes
 * Update URLs to reflect Cucumber's new location on Github (Jake Benilov)
 
 == 0.10.3 (2011-05-23)
