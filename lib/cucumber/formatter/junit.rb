@@ -27,7 +27,7 @@ module Cucumber
       end
       
       def before_feature_element(feature_element)
-        @in_examples = feature_element.class == Ast::ScenarioOutline
+        @in_examples = Ast::ScenarioOutline === feature_element
       end
       
       def after_feature(feature)
@@ -96,7 +96,7 @@ module Cucumber
       end
 
       def after_table_row(table_row)
-        return unless @in_examples and table_row.class == Cucumber::Ast::OutlineTable::ExampleRow
+        return unless @in_examples and Cucumber::Ast::OutlineTable::ExampleRow === table_row
         duration = Time.now - @table_start
         unless @header_row
           name_suffix = " (outline example : #{table_row.name})"
