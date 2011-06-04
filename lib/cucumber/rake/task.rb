@@ -70,7 +70,19 @@ module Cucumber
         end
 
         def use_bundler
-          @bundler.nil? ? File.exist?("./Gemfile") && Gem.available?("bundler") : @bundler
+          @bundler.nil? ? File.exist?("./Gemfile") && gem_available?("bundler") : @bundler
+        end
+
+        def gem_available?(gemname)
+          gem_available_new_rubygems?(gemname) or gem_available_old_rubygems?(gemname)
+        end
+
+        def gem_available_old_rubygems?(gemname)
+          Gem.available?(gemname)
+        end
+
+        def gem_available_new_rubygems?(gemname)
+          Gem::Specification.methods.include?(:find_all_by_name) and not Gem::Specification.find_all_by_name(gemname).empty?
         end
 
         def cmd
