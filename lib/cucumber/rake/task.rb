@@ -74,7 +74,7 @@ module Cucumber
         end
 
         def gem_available?(gemname)
-          gem_available_new_rubygems?(gemname) or gem_available_old_rubygems?(gemname)
+          gem_available_new_rubygems?(gemname) || gem_available_old_rubygems?(gemname)
         end
 
         def gem_available_old_rubygems?(gemname)
@@ -82,7 +82,7 @@ module Cucumber
         end
 
         def gem_available_new_rubygems?(gemname)
-          Gem::Specification.methods.include?(:find_all_by_name) and not Gem::Specification.find_all_by_name(gemname).empty?
+          Gem::Specification.respond_to?(:find_all_by_name) && Gem::Specification.find_all_by_name(gemname).any?
         end
 
         def cmd

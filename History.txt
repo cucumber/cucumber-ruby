@@ -4,6 +4,7 @@
 * Better JUnit formatter support for sub directories and scenario outlines (#59, #61, #62 Matt Simpson, Kenny Ortmann)
 
 === Bugfixes
+* Fix for Gem.available? deprecation warning (#75 Jake Benilov)
 * Update URLs to reflect Cucumber's new location on Github (Jake Benilov)
 
 == 0.10.3 (2011-05-23)
