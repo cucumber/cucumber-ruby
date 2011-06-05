@@ -40,7 +40,7 @@ module Cucumber
       fire_after_configuration_hook
 
       tree_walker = @configuration.build_tree_walker(self)
-      self.visitor = tree_walker # Ugly circular dependency, but needed to support World#announce
+      self.visitor = tree_walker # Ugly circular dependency, but needed to support World#puts
       
       tree_walker.visit_features(features)
     end

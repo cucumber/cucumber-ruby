@@ -37,9 +37,9 @@ module Cucumber
         @__cucumber_step_mother.doc_string(string_with_triple_quotes, file, line_offset)
       end
 
-      # See StepMother#announce
-      def announce(announcement)
-        @__cucumber_step_mother.announce(announcement)
+      # See StepMother#puts
+      def puts(*messages)
+        @__cucumber_step_mother.puts(*messages)
       end
 
       # See StepMother#ask
@@ -50,15 +50,6 @@ module Cucumber
       # See StepMother#embed
       def embed(file, mime_type, label='Screenshot')
         @__cucumber_step_mother.embed(file, mime_type, label)
-      end
-
-      # Prints out the world class, followed by all included modules.
-      def announce_world
-        announce "WORLD:\n  #{self.class}"
-        world = self
-        (class << self; self; end).instance_eval do
-          world.announce "  #{included_modules.join("\n  ")}"
-        end
       end
 
       # Mark the matched step as pending.
@@ -88,7 +79,15 @@ module Cucumber
       # such errors in World we define it to just return a simple String.
       #
       def inspect #:nodoc:
-        sprintf("#<%s:0x%x>", self.class, self.object_id)
+        modules = [self.class]
+        (class << self; self; end).instance_eval do
+          modules += included_modules
+        end
+        sprintf("#<%s:0x%x>", modules.join('+'), self.object_id)
+      end
+
+      def to_s
+        inspect
       end
     end
   end

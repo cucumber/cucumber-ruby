@@ -142,9 +142,9 @@ module Cucumber
         broadcast(value, status)
       end
 
-      # Print +announcement+. This method can be called from within StepDefinitions.
-      def announce(announcement)
-        broadcast(announcement)
+      # Print +messages+. This method can be called from within StepDefinitions.
+      def puts(*messages)
+        broadcast(*messages)
       end
 
       # Embed +file+ of +mime_type+ in the formatter. This method can be called from within StepDefinitions.

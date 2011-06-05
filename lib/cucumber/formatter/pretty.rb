@@ -25,7 +25,7 @@ module Cucumber
         @exceptions = []
         @indent = 0
         @prefixes = options[:prefixes] || {}
-        @delayed_announcements = []
+        @delayed_messages = []
       end
 
       def after_features(features)
@@ -150,7 +150,7 @@ module Cucumber
         source_indent = nil unless @options[:source]
         name_to_report = format_step(keyword, step_match, status, source_indent)
         @io.puts(name_to_report.indent(@scenario_indent + 2))
-        print_announcements
+        print_messages
       end
 
       def doc_string(string)
@@ -184,7 +184,7 @@ module Cucumber
 
       def after_table_row(table_row)
         return if !@table || @hide_this_step
-        print_table_row_announcements
+        print_table_row_messages
         @io.puts
         if table_row.exception && !@exceptions.include?(table_row.exception)
           print_exception(table_row.exception, table_row.status, @indent)

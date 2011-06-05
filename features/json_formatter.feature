@@ -142,7 +142,6 @@ Feature: JSON output formatter
 
       """
 
-  @announce
   Scenario: pystring
     Given a file named "features/pystring.feature" with:
       """

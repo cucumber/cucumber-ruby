@@ -20,7 +20,7 @@ module Cucumber
         @scenario_number = 0
         @step_number = 0
         @header_red = nil
-        @delayed_announcements = []
+        @delayed_messages = []
       end
 
       def embed(src, mime_type, label)
@@ -249,7 +249,7 @@ module Cucumber
           end
         end
         @builder << '</li>'
-        print_announcements
+        print_messages
       end
 
       def step_name(keyword, step_match, status, source_indent, background)
@@ -303,7 +303,7 @@ module Cucumber
   
       def after_table_row(table_row)
         return if @hide_this_step
-        print_table_row_announcements
+        print_table_row_messages
         @builder << '</tr>'
         if table_row.exception
           @builder.tr do
@@ -333,35 +333,35 @@ module Cucumber
         @col_index += 1
       end
 
-      def announce(announcement)
-        @delayed_announcements << announcement
-        #@builder.pre(announcement, :class => 'announcement')
+      def puts(message)
+        @delayed_messages << message
+        #@builder.pre(message, :class => 'message')
       end
       
-      def print_announcements
-        return if @delayed_announcements.empty?
+      def print_messages
+        return if @delayed_messages.empty?
         
         #@builder.ol do
-          @delayed_announcements.each do |ann|
-            @builder.li(:class => 'step announcement') do
+          @delayed_messages.each do |ann|
+            @builder.li(:class => 'step message') do
               @builder << ann
             end
           end
         #end
-        empty_announcements
+        empty_messages
       end
       
-      def print_table_row_announcements
-        return if @delayed_announcements.empty?
+      def print_table_row_messages
+        return if @delayed_messages.empty?
         
-        @builder.td(:class => 'announcement') do
-          @builder << @delayed_announcements.join(", ")
+        @builder.td(:class => 'message') do
+          @builder << @delayed_messages.join(", ")
         end
-        empty_announcements
+        empty_messages
       end
       
-      def empty_announcements
-        @delayed_announcements = []
+      def empty_messages
+        @delayed_messages = []
       end
 
       protected

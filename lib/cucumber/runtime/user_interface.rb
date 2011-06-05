@@ -6,18 +6,23 @@ module Cucumber
     module UserInterface
       attr_writer :visitor
       
-      # Output +announcement+ alongside the formatted output.
+      def announce(*messages)
+        STDERR.puts failed("WARNING: #announce is deprecated. Use #puts instead.")
+        puts(*messages)
+      end
+
+      # Output +messages+ alongside the formatted output.
       # This is an alternative to using Kernel#puts - it will display
       # nicer, and in all outputs (in case you use several formatters)
       #
-      def announce(msg)
-        msg.respond_to?(:join) ? @visitor.announce(msg.join("\n")) : @visitor.announce(msg.to_s)
+      def puts(*messages)
+        @visitor.puts(*messages)
       end
 
       # Suspends execution and prompts +question+ to the console (STDOUT).
       # An operator (manual tester) can then enter a line of text and hit
       # <ENTER>. The entered text is returned, and both +question+ and
-      # the result is added to the output using #announce.
+      # the result is added to the output using #puts.
       #
       # If you want a beep to happen (to grab the manual tester's attention),
       # just prepend ASCII character 7 to the question:
@@ -30,7 +35,7 @@ module Cucumber
       def ask(question, timeout_seconds)
         STDOUT.puts(question)
         STDOUT.flush
-        announce(question)
+        puts(question)
 
         if(Cucumber::JRUBY)
           answer = jruby_gets(timeout_seconds)
@@ -39,7 +44,7 @@ module Cucumber
         end
 
         if(answer)
-          announce(answer)
+          puts(answer)
           answer
         else
           raise("Waited for input for #{timeout_seconds} seconds, then timed out.")

@@ -52,14 +52,20 @@ Feature: http://rspec.lighthouseapp.com/projects/16211/tickets/600-inconsistent-
     When I run cucumber -f progress features/t.feature
     Then it should pass with
       """
-      Before scenario
-      Within background
-      .--After scenario
-      Before scenario
-      Within background
-      .After scenario
 
-
+      Before scenario
+      
+      Within background
+      .--
+      After scenario
+      
+      Before scenario
+      
+      Within background
+      .
+      After scenario
+      
+      
       2 scenarios (2 passed)
       3 steps (3 passed)
 

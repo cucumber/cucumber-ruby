@@ -1,5 +1,9 @@
 == 0.10.4 (2011-06-01)
 
+=== Changed features
+* The announce method is deprecated. Use puts instead (#67 Aslak Hellesøy)
+* The announce_world method is gone. Use puts(self) instead (#67 Aslak Hellesøy)
+
 === New Features
 * Better JUnit formatter support for sub directories and scenario outlines (#59, #61, #62 Matt Simpson, Kenny Ortmann)
 
@@ -61,7 +65,7 @@ This should not affect users. The major new feature in this release is ANSICON s
 
 === Bugfixes
 * Superfluous space after step_keyword value in snippet_text message (#679 Aslak Hellesøy)
-* Better Handling for "announce" in HTML formatter (#676 Stephen Kennedy)
+* Better Handling for "puts" in HTML formatter (#676 Stephen Kennedy)
 * Too many open files - getcwd (#666 Aslak Hellesøy)
 * Cucumber 0.9.3 prevents Test::Unit from running (#677 Aslak Hellesøy)
 * Performance degradation when running feature files with over 1000 steps (#675 Dimitri Geshef)
@@ -247,7 +251,7 @@ Parse times are up to 100 times faster.
 === Bugfixes
 * Better handling of --guess with optional capture groups (Tim Felgentreff)
 * Parsing of rerun.txt can't use Shellwords on Windows (#581 David Esposito)
-* #announce can now take non-String arguments just like Kernel#puts - #to_s is done implicitly. (Aslak Hellesøy)
+* #puts can now take non-String arguments just like Kernel#puts - #to_s is done implicitly. (Aslak Hellesøy)
 * Attempt to fix Cucumber::CODEPAGE error again for Windows (#561 Aslak Hellesøy)
 * Tab indentation causes multiline step arguments to fail (#585 Aslak Hellesøy)
 * Properly pass tags over the wire protocol (Matt Wynne)
@@ -255,8 +259,8 @@ Parse times are up to 100 times faster.
 * Snippets are properly printed when using '*' as step keyword. (Used to cause infinite recursion). (Aslak Hellesøy)
 
 === New features
-* Added #announce_world method, printing the World class and all included modules (Ruby only). (Aslak Hellesøy)
-* Added #announce to the PDF formatter (Nicolas Bessi)
+* Added #puts_world method, printing the World class and all included modules (Ruby only). (Aslak Hellesøy)
+* Added #puts to the PDF formatter (Nicolas Bessi)
 * Show fails for After/Before hooks in the progress formatter (#584 Joseph Wilk)
 
 == Changed features
@@ -276,7 +280,7 @@ Parse times are up to 100 times faster.
 
 === New features
 * Added "Angenommen" as German synonym for Given (Sven Fuchs, Aslak Hellesøy)
-* New #ask(question, timeout_seconds=60) method available to stepdefs. Asks for input and #announce-s question and answer. (Aslak Hellesøy)
+* New #ask(question, timeout_seconds=60) method available to stepdefs. Asks for input and #puts-s question and answer. (Aslak Hellesøy)
 * Links to step definitions are now clickable in TextMate's HTML report (Rob Aldred)
 * Add diff! message to wire protocol to allow for immediate diff response to invokes (Matt Wynne)
 * Add tags to begin/end scenario messages on wire protocol to support tagged hooks (#571 Matt Wynne)
@@ -422,13 +426,13 @@ As usual there are several small features and bug fixes.
 * New Wire Protocol - allowing out of process execution of Cucumber scenarios. (#428 Matt Wynne)
 * Added an example illustrating how to get screenshots in HTML reports (examples/watir) (Aslak Hellesøy)
 * Added new #embed(file, mime_type) method to visitors and Ruby Worlds to make it easier to embed screenshots (Aslak Hellesøy)
-* The #announce method available from Ruby Step Definitions will print *after* the step is executed. (#487 Zoltan Penzeli)
+* The #puts method available from Ruby Step Definitions will print *after* the step is executed. (#487 Zoltan Penzeli)
 * Add support for rolling back transaction for all open database connections. (John Ferlito)
 * Show scenario and step summary in HTML formatter (#285 Joseph Wilk)
 * Ast::Table can now be constructed with an Array of Hash. (Aslak Hellesøy)
 
 === Changed features
-* The #announce method will no longer escape HTML if the html formatter is used. Escaping must be done manually. (Aslak Hellesøy)
+* The #puts method will no longer escape HTML if the html formatter is used. Escaping must be done manually. (Aslak Hellesøy)
 
 === Bugfixes
 * Fixed incorrect rendering of step arguments with UTF8 characters (Aslak Hellesøy)
@@ -1233,7 +1237,7 @@ for multiline arguments are some of the highlights.
 
 === New features
 * Australian translation (Josh Graham)
-* Added World#announce(announcment) which lets you output text to the formatted output (#222 Rob Kaufmann)
+* Added World#puts(announcment) which lets you output text to the formatted output (#222 Rob Kaufmann)
 * Added Table#transpose to to allow use of vertically aligned table keys (Torbjørn Vatn, Aslak Hellesøy)
 * Added Table#map_headers to to allow use of more readable headers (Rob Holland)
 * New -S/--step-definitions option. Useful (among other things) for tools that implement automcompletion. (#208 Aslak Hellesøy).
