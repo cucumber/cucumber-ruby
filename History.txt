@@ -1,4 +1,6 @@
-== 0.10.4 (2011-06-06)
+== 0.10.5 (2011-06-06)
+
+(0.10.4 was forgotten!)
 
 === Changed features
 * The announce method is deprecated. Use puts instead (#67 Aslak Hellesøy)
