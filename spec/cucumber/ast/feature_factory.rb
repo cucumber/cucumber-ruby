@@ -24,7 +24,7 @@ module Cucumber
           %w{1 22 333},
           %w{4444 55555 666666}
         ])
-        py_string = Ast::PyString.new(%{\n I like\nCucumber sandwich\n})
+        doc_string = Ast::DocString.new(%{\n I like\nCucumber sandwich\n})
         
         background = Ast::Background.new(Ast::Comment.new(""), 2, "Background:", "",
           [
@@ -46,7 +46,7 @@ module Cucumber
             "Scenario:", "A Scenario",
             [
               Step.new(10, "Given", "a passing step with an inline arg:", table),
-              Step.new(11, "Given", "a happy step with an inline arg:", py_string),
+              Step.new(11, "Given", "a happy step with an inline arg:", doc_string),
               Step.new(12, "Given", "a failing step")
             ]
           )]

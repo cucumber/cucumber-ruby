@@ -40,7 +40,7 @@ module Cucumber
                 [:row, -1,
                   [:cell, "4444"], [:cell, "55555"], [:cell, "666666"]]]], 
             [:step_invocation, 11, "Given", "a happy step with an inline arg:", 
-              [:py_string, "\n I like\nCucumber sandwich\n"]], 
+              [:doc_string, "\n I like\nCucumber sandwich\n"]], 
             [:step_invocation, 12, "Given", "a failing step"]]]          
       end
 

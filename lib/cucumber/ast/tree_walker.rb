@@ -122,7 +122,7 @@ module Cucumber
         broadcast(exception, status)
       end
 
-      def visit_py_string(string)
+      def visit_doc_string(string)
         broadcast(string)
       end
 

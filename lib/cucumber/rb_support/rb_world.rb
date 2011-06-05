@@ -32,9 +32,9 @@ module Cucumber
         @__cucumber_step_mother.table(text_or_table, file, line_offset)
       end
 
-      # See StepMother#py_string
-      def py_string(string_with_triple_quotes, file=nil, line_offset=0)
-        @__cucumber_step_mother.py_string(string_with_triple_quotes, file, line_offset)
+      # See StepMother#doc_string
+      def doc_string(string_with_triple_quotes, file=nil, line_offset=0)
+        @__cucumber_step_mother.doc_string(string_with_triple_quotes, file, line_offset)
       end
 
       # See StepMother#announce

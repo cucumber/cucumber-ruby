@@ -286,7 +286,7 @@ module Cucumber
         end
       end
 
-      def py_string(string)
+      def doc_string(string)
         return if @hide_this_step
         @builder.pre(:class => 'val') do |pre|
           @builder << string.gsub("\n", '&#x000A;')

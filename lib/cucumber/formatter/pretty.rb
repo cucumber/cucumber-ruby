@@ -153,7 +153,7 @@ module Cucumber
         print_announcements
       end
 
-      def py_string(string)
+      def doc_string(string)
         return if @hide_this_step
         s = %{"""\n#{string}\n"""}.indent(@indent)
         s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}.join("\n")

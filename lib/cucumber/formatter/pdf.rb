@@ -172,7 +172,7 @@ module Cucumber
         end
       end
 
-      def before_py_string(string)
+      def before_doc_string(string)
         return if @hide_this_step
         s = %{"""\n#{string}\n"""}.indent(10)
         s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}
