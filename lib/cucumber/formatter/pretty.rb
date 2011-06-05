@@ -101,7 +101,7 @@ module Cucumber
       end
       
       def examples_name(keyword, name)
-        puts unless @visiting_first_example_name
+        @io.puts unless @visiting_first_example_name
         @visiting_first_example_name = false
         names = name.strip.empty? ? [name.strip] : name.split("\n")
         @io.puts("    #{keyword}: #{names[0]}")
