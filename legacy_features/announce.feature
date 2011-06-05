@@ -9,7 +9,7 @@ Feature: Delayed message
       end
 
       Given /^I use multiple putss$/ do x=1
-        puts("Multiple")
+        announce("Multiple")
         puts("Announce","Me")
       end
 

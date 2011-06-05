@@ -1,7 +1,11 @@
+require 'gherkin/formatter/ansi_escapes'
+
 module Cucumber
   module RbSupport
     # All steps are run in the context of an object that extends this module.
     module RbWorld
+      include Gherkin::Formatter::AnsiEscapes
+
       class << self
         def alias_adverb(adverb)
           alias_method adverb, :__cucumber_invoke
@@ -35,6 +39,11 @@ module Cucumber
       # See StepMother#doc_string
       def doc_string(string_with_triple_quotes, file=nil, line_offset=0)
         @__cucumber_step_mother.doc_string(string_with_triple_quotes, file, line_offset)
+      end
+
+      def announce(*messages)
+        STDERR.puts failed + "WARNING: #announce is deprecated. Use #puts instead:" + caller[0] + reset
+        puts(*messages)
       end
 
       # See StepMother#puts

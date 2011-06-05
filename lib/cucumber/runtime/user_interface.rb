@@ -5,11 +5,6 @@ module Cucumber
 
     module UserInterface
       attr_writer :visitor
-      
-      def announce(*messages)
-        STDERR.puts failed("WARNING: #announce is deprecated. Use #puts instead.")
-        puts(*messages)
-      end
 
       # Output +messages+ alongside the formatted output.
       # This is an alternative to using Kernel#puts - it will display
