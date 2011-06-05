@@ -46,11 +46,12 @@ module Cucumber
         end
       end
 
-      # Embed +file+ of MIME type +mime_type+ into the output. This may or may
-      # not be ignored, depending on what kind of formatter(s) are active.
+      # Embed +src+ of MIME type +mime_type+ into the output. The +src+ argument may
+      # be a path to a file, or if it's an image it may also be a Base64 encoded image. 
+      # The embedded data may or may not be ignored, depending on what kind of formatter(s) are active.
       #
-      def embed(file, mime_type, label)
-        @visitor.embed(file, mime_type, label)
+      def embed(src, mime_type, label)
+        @visitor.embed(src, mime_type, label)
       end
 
     private

@@ -23,18 +23,18 @@ module Cucumber
         @delayed_announcements = []
       end
 
-      def embed(file, mime_type, label)
+      def embed(src, mime_type, label)
         case(mime_type)
         when /^image\/(png|gif|jpg|jpeg)/
-          embed_image(file, label)
+          embed_image(src, label)
         end
       end
 
-      def embed_image(file, label)
+      def embed_image(src, label)
         id = file.hash
         @builder.span(:class => 'embed') do |pre|
           pre << %{<a href="" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">#{label}</a><br>&nbsp;
-          <img id="#{id}" style="display: none" src="#{file}"/>}
+          <img id="#{id}" style="display: none" src="#{src}"/>}
         end
       end
 
