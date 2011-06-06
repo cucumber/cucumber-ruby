@@ -1,3 +1,8 @@
+== 0.10.6 (2011-06-07)
+
+=== Bugfixes
+* Fixed a regression in the HTML formatter's #embed implementation (#77 Aslak Hellesøy)
+
 == 0.10.5 (2011-06-06)
 
 (0.10.4 was forgotten!)

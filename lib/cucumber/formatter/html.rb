@@ -21,6 +21,7 @@ module Cucumber
         @step_number = 0
         @header_red = nil
         @delayed_messages = []
+        @img_id = 0
       end
 
       def embed(src, mime_type, label)
@@ -31,7 +32,8 @@ module Cucumber
       end
 
       def embed_image(src, label)
-        id = file.hash
+        id = "img_#{@img_id}"
+        @img_id += 1
         @builder.span(:class => 'embed') do |pre|
           pre << %{<a href="" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">#{label}</a><br>&nbsp;
           <img id="#{id}" style="display: none" src="#{src}"/>}
