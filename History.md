@@ -1,5 +1,8 @@
 ## [v0.10.6](https://github.com/cucumber/cucumber/compare/v0.10.5...v0.10.6)
 
+### New Features
+* API docs at http://cukes.info/cucumber/api/ruby/latest/
+
 ### Bugfixes
 * Fixed a regression in the HTML formatter's #embed implementation (#77 Aslak Hellesøy)
 

@@ -23,3 +23,5 @@ rerun.txt
 ._*
 .rvmrc
 .sass-cache
+doc/
+*.tgz

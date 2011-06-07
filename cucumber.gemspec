@@ -38,7 +38,10 @@ for important information about this release. Happy cuking!
   s.add_development_dependency 'syntax', '>= 1.0.0'
   s.add_development_dependency 'spork', '>= 0.9.0.rc7'
   s.add_development_dependency 'simplecov', '>= 0.4.2'
-  
+  # For Documentation:
+  s.add_development_dependency('yard', '= 0.7.1')
+  s.add_development_dependency('rdiscount', '= 1.6.8')
+    
   # Needed for examples (rake examples)
   s.add_development_dependency 'ramaze'
   s.add_development_dependency 'rack-test', '>= 0.5.7'
@@ -50,7 +53,6 @@ for important information about this release. Happy cuking!
   s.files            = `git ls-files`.split("\n")
   s.test_files       = `git ls-files -- {spec,features}/*`.split("\n")
   s.executables      = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.extra_rdoc_files = ["LICENSE", "README.rdoc", "History.txt"]
   s.rdoc_options     = ["--charset=UTF-8"]
   s.require_path     = "lib"
 end
