@@ -1,5 +1,4 @@
 .bundle
-Gemfile.lock
 nbproject
 coverage
 pkg
