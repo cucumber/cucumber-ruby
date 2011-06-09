@@ -22,7 +22,6 @@ module Cucumber
         @file_colon_lines = Hash.new{|h,k| h[k] = []}
       end
 
-      # features() is never executed at all... ?
       def after_features(features)
         files = @file_names.uniq.map do |file|
           lines = @file_colon_lines[file]
