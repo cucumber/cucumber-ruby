@@ -67,8 +67,13 @@ end
 
 After do |scenario|
   File.open(File.join(@_doc_dir, 'cucumber.out.html'), 'w') do |io|
-    ansi = Bcat::ANSI.new(all_stdout_with_color)
-    io.write(ansi.to_html)
+    html = Bcat::ANSI.new(all_stdout_with_color).to_html
+    html.gsub!(/style='color:#A00'/, 'class="failed"')
+    html.gsub!(/style='color:#0AA'/, 'class="skipped"')
+    html.gsub!(/style='color:#555'/, 'class="comment"')
+    html.gsub!(/style='color:#0A0'/, 'class="passed"')
+    html.gsub!(/style='color:#A50'/, 'class="undefined"')
+    io.write(html)
   end
   in_current_dir do
     Dir['**/*'].select{|f| File.file?(f)}.each do |f|
