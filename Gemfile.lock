@@ -15,6 +15,8 @@ GEM
       childprocess (>= 0.1.9)
       cucumber (>= 0.10.5)
       rspec (>= 2.6.0)
+    bcat (0.6.1)
+      rack (~> 1.0)
     builder (3.0.0)
     capybara (1.0.0.rc1)
       mime-types (>= 1.16)
@@ -86,6 +88,7 @@ PLATFORMS
 
 DEPENDENCIES
   aruba (>= 0.3.7)
+  bcat (= 0.6.1)
   capybara (>= 1.0.0.rc1)
   cucumber!
   nokogiri (>= 1.4.4)

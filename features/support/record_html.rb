@@ -8,7 +8,7 @@ Cucumber output gets syntax highlighted with a2h (http://rtomayko.github.com/bca
 
 doc/scenarios/features
 |-- hooks.feature:25
-|   |-- cucumber.out
+|   |-- cucumber.out.html
 |   `-- features
 |       |-- f.feature.html
 |       |-- step_definitions
@@ -16,7 +16,7 @@ doc/scenarios/features
 |       `-- support
 |           `-- hooks.rb.html
 `-- hooks.feature:44
-    |-- cucumber.out
+    |-- cucumber.out.html
     `-- features
         |-- f.feature.html
         |-- step_definitions
@@ -29,6 +29,9 @@ This can be post-processed to build a nice looking HTML page where users can "br
 =end
 
 require 'fileutils'
+require 'bcat/ansi'
+
+ENV['FORCE_COLOR'] = 'true'
 
 module Pygments
   def pygmentize(dir, file)
@@ -49,8 +52,9 @@ Before do |scenario|
 end
 
 After do |scenario|
-  File.open(File.join(@_doc_dir, 'cucumber.out'), 'w') do |io|
-    io.write(all_stdout) # TODO: Make Aruba output colours and pass through a2h
+  File.open(File.join(@_doc_dir, 'cucumber.out.html'), 'w') do |io|
+    ansi = Bcat::ANSI.new(all_stdout_with_color)
+    io.write(ansi.to_html)
   end
   in_current_dir do
     Dir['**/*'].select{|f| File.file?(f)}.each do |f|
