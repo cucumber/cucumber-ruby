@@ -1,3 +1,8 @@
+## [v0.10.7](https://github.com/cucumber/cucumber/compare/v0.10.6...v0.10.7) (Not released)
+
+### New Features
+* Rake task exits with an error if rcov is true and we're on Ruby 1.9.x (Aslak Hellesøy)
+
 ## [v0.10.6](https://github.com/cucumber/cucumber/compare/v0.10.5...v0.10.6)
 
 ### New Features

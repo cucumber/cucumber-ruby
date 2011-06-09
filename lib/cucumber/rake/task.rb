@@ -1,4 +1,5 @@
 require 'cucumber/platform'
+require 'gherkin/formatter/ansi_escapes'
 
 begin
   # Support Rake > 0.8.7
@@ -32,6 +33,8 @@ module Cucumber
     #
     # See the attributes for additional configuration possibilities.
     class Task
+      include Gherkin::Formatter::AnsiEscapes
+
       class InProcessCucumberRunner #:nodoc:
         attr_reader :args
 
@@ -137,6 +140,12 @@ module Cucumber
       # Run cucumber with RCov? Defaults to false. If you set this to
       # true, +fork+ is implicit.
       attr_accessor :rcov
+      def rcov=(flag)
+        if(flag && Cucumber::RUBY_1_9)
+          raise failed + "RCov only works on Ruby 1.8.x. You may want to use SimpleCov: https://github.com/colszowka/simplecov" + reset
+        end
+        @rcov = flag
+      end
 
       # Extra options to pass to rcov.
       # It's recommended to pass an Array, but if it's a String it will be #split by ' '.
