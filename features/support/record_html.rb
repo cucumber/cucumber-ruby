@@ -6,23 +6,26 @@ Builds a HTML representation of the files used in each scenario.
 Source files get syntax highlighted with Pygments (http://pygments.org/ which now bundles https://github.com/cucumber/gherkin-pygments-lexer)
 Cucumber output gets syntax highlighted with a2h (http://rtomayko.github.com/bcat/)
 
-doc/scenarios/features
-|-- hooks.feature:25
-|   |-- cucumber.out.html
-|   `-- features
-|       |-- f.feature.html
-|       |-- step_definitions
-|       |   `-- steps.rb.html
-|       `-- support
-|           `-- hooks.rb.html
-`-- hooks.feature:44
-    |-- cucumber.out.html
-    `-- features
-        |-- f.feature.html
-        |-- step_definitions
-        |   `-- steps.rb.html
-        `-- support
-            `-- hooks.rb.html
+doc/scenarios/
+└── features
+    ├── hooks.feature:25
+    │   ├── cucumber.cmd
+    │   ├── cucumber.out.html
+    │   └── features
+    │       ├── f.feature.html
+    │       ├── step_definitions
+    │       │   └── steps.rb.html
+    │       └── support
+    │           └── hooks.rb.html
+    └── hooks.feature:44
+        ├── cucumber.cmd
+        ├── cucumber.out.html
+        └── features
+            ├── f.feature.html
+            ├── step_definitions
+            │   └── steps.rb.html
+            └── support
+                └── hooks.rb.html
 
 This can be post-processed to build a nice looking HTML page where users can "browse" example cucumber features and stepdefs - and see the output.
 
@@ -42,6 +45,17 @@ module Pygments
   end
 end
 World(Pygments)
+
+require 'aruba/api'
+module Aruba::Api
+  alias _run_simple run_simple
+  def run_simple(cmd, fail_on_error=true)
+    File.open(File.join(@_doc_dir, 'cucumber.cmd'), 'w') do |io|
+      io.puts(cmd)
+    end
+    _run_simple(cmd, fail_on_error)
+  end
+end
 
 Before do |scenario|
   @_doc_dir = File.expand_path("doc/scenarios/#{scenario.feature.file}:#{scenario.line}")
