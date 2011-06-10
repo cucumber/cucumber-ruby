@@ -19,7 +19,8 @@ module Cucumber
           Ast::Comment.new(feature.comments.map{|comment| comment.value}.join("\n")), 
           Ast::Tags.new(nil, feature.tags.map{|tag| tag.name}),
           feature.keyword,
-          legacy_name_for(feature.name, feature.description),
+          feature.name.lstrip,
+          feature.description.rstrip,
           []
         )
         @feature.gherkin_statement(feature)
@@ -31,7 +32,8 @@ module Cucumber
           Ast::Comment.new(background.comments.map{|comment| comment.value}.join("\n")), 
           background.line, 
           background.keyword, 
-          legacy_name_for(background.name, background.description), 
+          background.name, 
+          background.description,
           steps=[]
         )
         @feature.background = @background
@@ -47,7 +49,8 @@ module Cucumber
           Ast::Tags.new(nil, statement.tags.map{|tag| tag.name}), 
           statement.line, 
           statement.keyword, 
-          legacy_name_for(statement.name, statement.description), 
+          statement.name,
+          statement.description, 
           steps=[]
         )
         @feature.add_feature_element(scenario)
@@ -63,7 +66,8 @@ module Cucumber
           Ast::Tags.new(nil, statement.tags.map{|tag| tag.name}), 
           statement.line, 
           statement.keyword, 
-          legacy_name_for(statement.name, statement.description), 
+          statement.name, 
+          statement.description, 
           steps=[],
           example_sections=[]
         )
@@ -81,7 +85,8 @@ module Cucumber
           Ast::Comment.new(examples.comments.map{|comment| comment.value}.join("\n")), 
           examples.line, 
           examples.keyword, 
-          legacy_name_for(examples.name, examples.description), 
+          examples.name, 
+          examples.description, 
           matrix(examples.rows)
         ]
         @step_container.add_examples(examples_fields, examples)
@@ -109,12 +114,6 @@ module Cucumber
       
     private
     
-      def legacy_name_for(name, description)
-        s = name
-        s += "\n#{description}" if description != ""
-        s
-      end
-
       def matrix(gherkin_table)
         gherkin_table.map do |gherkin_row|
           row = gherkin_row.cells

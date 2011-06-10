@@ -26,7 +26,8 @@ module Cucumber
           tags=Tags.new(98, []), 
           line=99,
           keyword="",
-          name="", 
+          title="",
+          description="",
           steps=[
             Step.new(7, "Given", "this is missing"),
             Step.new(8, "Given", "y is 5")

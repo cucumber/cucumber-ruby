@@ -29,7 +29,8 @@ module Cucumber
           comment=Comment.new(''),
           line=2,
           keyword="", 
-          name="",
+          title="",
+          description="",
           steps=[
             Step.new(7, "Given", "y is 5")
           ])
@@ -40,7 +41,8 @@ module Cucumber
           tags=Tags.new(98,[]),
           line=99,
           keyword="", 
-          name="", 
+          title="",
+          description="",
           steps=[]
         )
         background.feature = @feature
@@ -55,7 +57,8 @@ module Cucumber
             comment=Comment.new(''),
             line=2,
             keyword="",
-            name="background name",
+            title="background name",
+            description="",
             steps=[])
           lambda{ background.name }.should_not raise_error
           background.name.should == 'background name'
@@ -65,7 +68,8 @@ module Cucumber
             comment=Comment.new(''),
             line=2,
             keyword="",
-            name=nil,
+            title="",
+            description="",
             steps=[])
         lambda{ background.name }.should_not raise_error
         end
@@ -85,7 +89,8 @@ module Cucumber
             comment=Comment.new(''),
             line=2,
             keyword="",
-            name="",
+            title="",
+            description="",
             steps=[
               Step.new(7, "Given", "y is 5")
             ])

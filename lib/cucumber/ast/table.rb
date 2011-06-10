@@ -74,7 +74,6 @@ module Cucumber
       def initialize(raw, conversion_procs = NULL_CONVERSIONS.dup)
         @cells_class = Cells
         @cell_class = Cell
-
         raw = ensure_array_of_array(rubify(raw))
         # Verify that it's square
         transposed = raw.transpose
