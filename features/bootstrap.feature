@@ -3,6 +3,7 @@ Feature: Bootstrapping a new project
   As a new cucumber user
   I want cucumber to give helpful error messages in basic situations
 
+ @announce
  Scenario: running cucumber against a non-existing feature file
   Given a directory without standard Cucumber project directory structure
     When I run `cucumber`

@@ -1,15 +1,13 @@
+ENV['FORCE_COLOR'] = 'true'
 require 'aruba/api'
+require 'aruba/cucumber'
 
 # Monkey patch aruba to filter out some stuff
 module Aruba::Api
-  alias all_stdout_with_color all_stdout
+  alias __all_stdout all_stdout
   
   def all_stdout
-    unrandom(uncolor(all_stdout_with_color))
-  end
-
-  def uncolor(out)
-    out.gsub(/\e\[\d+(?>(;\d+)*)m/, '') # Remove ANSI escapes
+    unrandom(__all_stdout)
   end
 
   def unrandom(out)
@@ -20,11 +18,7 @@ module Aruba::Api
   end
 end
 
-require 'aruba/cucumber'
-
-Before do |scenario|
-  @scenario = scenario
-
+Before do
   # Make sure bin/cucumber runs with SimpleCov enabled
   # set_env('SIMPLECOV', 'true')
   

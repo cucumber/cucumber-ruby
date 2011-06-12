@@ -8,4 +8,4 @@ Bundler.setup
 
 require 'cucumber'
 $KCODE='u' unless Cucumber::RUBY_1_9
-Term::ANSIColor.coloring = true
+ENV['FORCE_COLOR'] = 'true'

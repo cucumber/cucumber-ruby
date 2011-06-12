@@ -11,7 +11,7 @@ PATH
 GEM
   remote: http://rubygems.org/
   specs:
-    aruba (0.3.7)
+    aruba (0.4.0)
       childprocess (>= 0.1.9)
       cucumber (>= 0.10.5)
       rspec (>= 2.6.0)
@@ -87,7 +87,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aruba (>= 0.3.7)
+  aruba (>= 0.4.0)
   bcat (= 0.6.1)
   capybara (>= 1.0.0.rc1)
   cucumber!
