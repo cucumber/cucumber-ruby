@@ -12,8 +12,10 @@ GEM
   remote: http://rubygems.org/
   specs:
     aruba (0.4.0)
+      bcat (>= 0.6.1)
       childprocess (>= 0.1.9)
       cucumber (>= 0.10.5)
+      rdiscount (>= 1.6.8)
       rspec (>= 2.6.0)
     bcat (0.6.1)
       rack (~> 1.0)
