@@ -16,9 +16,8 @@ The documentation is at https://wiki.github.com/cucumber/cucumber/
 
     gem install bundler
     bundle install
+    git submodule update --init --recursive
     rake
-
-If you get errors about missing gems - just install them.
 
 ## Copyright
 
