@@ -29,6 +29,7 @@ Then /^the scenario fails$/ do
   assert_exiting_with false
 end
 
-Then /^the step "([^"]*)" is not executed$/ do |step_name|
-  pending # express the regexp above with the code you wish you had
+Then /^the step "([^"]*)" is skipped$/ do |step_name|
+  @aruba_keep_ansi = true # TODO: Make it possible to pass a keep_ansi param to all_stdout in aruba
+  all_stdout.should include("\e[36m#{step_name}\e[90m")
 end
