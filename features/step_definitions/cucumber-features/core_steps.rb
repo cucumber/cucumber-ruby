@@ -21,6 +21,9 @@ When /^Cucumber executes "([^"]*)" with these step mappings:$/ do |scenario_name
 Given /<%= pattern -%>/ do
 <% if result == 'passing' -%>
   File.open("<%= step_file(pattern) %>", "w")
+<% elsif result == 'pending' -%>
+  File.open("<%= step_file(pattern) %>", "w")
+  pending
 <% else -%>
   File.open("<%= step_file(pattern) %>", "w")
   raise "bang!"
@@ -35,11 +38,18 @@ end
 end
 
 Then /^the scenario passes$/ do
+  assert_partial_output("1 scenario (1 passed)", all_stdout)
   assert_exiting_with true
 end
 
 Then /^the scenario fails$/ do
+  assert_partial_output("1 scenario (1 failed)", all_stdout)
   assert_exiting_with false
+end
+
+Then /^the scenario is pending$/ do
+  assert_partial_output("1 scenario (1 pending)", all_stdout)
+  assert_exiting_with true
 end
 
 Then /^the step "([^"]*)" is skipped$/ do |pattern|
