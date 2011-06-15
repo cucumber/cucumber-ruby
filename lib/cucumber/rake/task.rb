@@ -1,5 +1,11 @@
 require 'cucumber/platform'
 
+begin
+  # Support Rake > 0.8.7
+  require 'rake/dsl_definition'
+  include Rake::DSL
+rescue LoadError
+end
 module Cucumber
   module Rake
     # Defines a Rake task for running features.
