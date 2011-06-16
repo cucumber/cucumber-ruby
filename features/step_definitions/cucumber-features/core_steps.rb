@@ -52,6 +52,11 @@ Then /^the scenario is pending$/ do
   assert_exiting_with true
 end
 
+Then /^the scenario is undefined$/ do
+  assert_partial_output("1 scenario (1 undefined)", all_stdout)
+  assert_exiting_with true
+end
+
 Then /^the step "([^"]*)" is skipped$/ do |pattern|
   if File.exist?(File.join(current_dir, step_file(pattern)))
     raise "#{pattern} was not skipped"
