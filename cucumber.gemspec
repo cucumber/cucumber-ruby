@@ -29,7 +29,7 @@ for important information about this release. Happy cuking!
   s.add_dependency 'diff-lcs', '>= 1.1.2'
   s.add_dependency 'json', '>= 1.4.6'
   
-  s.add_development_dependency 'aruba', '>= 0.4.0'
+  s.add_development_dependency 'aruba', '>= 0.4.1'
   s.add_development_dependency 'rake', '>= 0.8.7'
   s.add_development_dependency 'rspec', '>= 2.6.0'
   s.add_development_dependency 'nokogiri', '>= 1.4.4'
@@ -49,7 +49,7 @@ for important information about this release. Happy cuking!
   s.add_development_dependency 'rack-test', '>= 0.5.7'
   s.add_development_dependency 'webrat', '>= 0.7.3'
   s.add_development_dependency 'sinatra', '>= 1.2.6'
-  s.add_development_dependency 'capybara', '>= 1.0.0.rc1'
+  s.add_development_dependency 'capybara', '>= 1.0.0'
 
   s.rubygems_version = ">= 1.6.1"
   s.files            = `git ls-files`.split("\n")

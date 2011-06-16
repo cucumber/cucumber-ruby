@@ -4,7 +4,7 @@ end
 
 Then /^it should (pass|fail) with JSON:$/ do |pass_fail, json|
   JSON.parse(all_stdout).should == JSON.parse(json)
-  assert_exiting_with(pass_fail == 'pass')
+  assert_success(pass_fail == 'pass')
 end
 
 Given /^a directory without standard Cucumber project directory structure$/ do
