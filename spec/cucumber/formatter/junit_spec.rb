@@ -1,5 +1,5 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'spec_helper'
+require 'cucumber/formatter/spec_helper'
 
 require 'cucumber/formatter/junit'
 require 'nokogiri'

@@ -1,5 +1,4 @@
 ENV['CUCUMBER_COLORS']=nil
-ENV['FORCE_COLOR'] = 'true'
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 $:.unshift(File.dirname(__FILE__))
 
@@ -9,3 +8,9 @@ Bundler.setup
 
 require 'cucumber'
 $KCODE='u' unless Cucumber::RUBY_1_9
+
+RSpec.configure do |c|
+  c.before do
+    ::Term::ANSIColor.coloring = true
+  end
+end

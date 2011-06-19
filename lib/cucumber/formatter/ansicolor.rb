@@ -21,8 +21,7 @@ if Cucumber::WINDOWS_MRI
   end
 end
 
-Term::ANSIColor.coloring = false if !STDOUT.tty? && !ENV.has_key?("AUTOTEST")
-Term::ANSIColor.coloring = true if ENV.has_key?("FORCE_COLOR")
+Term::ANSIColor.coloring = false if !STDOUT.tty? && !ENV.has_key?('AUTOTEST')
 
 module Cucumber
   module Formatter
