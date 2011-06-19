@@ -91,7 +91,7 @@ PLATFORMS
 DEPENDENCIES
   aruba (>= 0.4.1)
   bcat (= 0.6.1)
-  capybara (>= 1.0.0.rc1)
+  capybara (>= 1.0.0)
   cucumber!
   nokogiri (>= 1.4.4)
   prawn (= 0.8.4)
