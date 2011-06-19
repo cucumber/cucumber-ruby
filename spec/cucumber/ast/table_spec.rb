@@ -297,7 +297,7 @@ module Cucumber
             |     name  |     male       |     lastname |     swedish     |
             | (-) aslak | (-) (i) "true" | (-) hellesøy | (-) (i) "false" |
             | (+) aslak | (+) (i) true   | (+) hellesøy | (+) (i) false   |
-          }.force_encoding('UTF-8') # Travis-CI fails without this. Weird.
+          }
         end
 
         it "should allow column mapping of target before diffing" do
