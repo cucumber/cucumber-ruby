@@ -78,7 +78,10 @@ When /^the calculator computes PI$/ do
   @calc.PI
 end
 
-When /^the calculator adds up ([\\d\\.]+) and ([\\d\\.]+)$/ do |arg1, arg2|
+When /^the calculator adds up ([\\d\\.]+) and ([\\d\\.]+)$/ do |n1, n2|
+  @calc.push(n1.to_f)
+  @calc.push(n2.to_f)
+  @calc.push('+')
 end
 
 When /^the calculator adds up "([^"]*)" and "([^"]*)"$/ do |n1, n2|
@@ -105,13 +108,15 @@ When /^the calculator adds up the following numbers:$/ do |numbers|
 end
 
 Then /^the calculator returns PI$/ do
+  @calc.value.to_f.should be_within(0.00001).of(Math::PI)
 end
 
 Then /^the calculator returns "([^"]*)"$/ do |expected|
   @calc.value.to_f.should be_within(0.00001).of(expected.to_f)
 end
 
-Then /^the calculator does not return ([\\d\\.]+)$/ do |arg1|
+Then /^the calculator does not return ([\\d\\.]+)$/ do |unexpected|
+  @calc.value.to_f.should_not be_within(0.00001).of(unexpected.to_f)
 end
 
 EOF
