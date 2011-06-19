@@ -90,10 +90,10 @@ module Cucumber
 
         def cmd
           if use_bundler
-            [ RUBY, '-S', 'bundle', 'exec', 'cucumber', @cucumber_opts,
+            [ Cucumber::RUBY_BINARY, '-S', 'bundle', 'exec', 'cucumber', @cucumber_opts,
             @feature_files ].flatten
           else
-            [ RUBY, '-I', load_path(@libs), quoted_binary(@cucumber_bin),
+            [ Cucumber::RUBY_BINARY, '-I', load_path(@libs), quoted_binary(@cucumber_bin),
             @cucumber_opts, @feature_files ].flatten
           end
         end
@@ -112,10 +112,10 @@ module Cucumber
 
         def cmd
           if use_bundler
-            [RUBY, '-S', 'bundle', 'exec', 'rcov', @rcov_opts,
+            [Cucumber::RUBY_BINARY, '-S', 'bundle', 'exec', 'rcov', @rcov_opts,
              quoted_binary(@cucumber_bin), '--', @cucumber_opts, @feature_files].flatten
           else
-            [RUBY, '-I', load_path(@libs), '-S', 'rcov', @rcov_opts,
+            [Cucumber::RUBY_BINARY, '-I', load_path(@libs), '-S', 'rcov', @rcov_opts,
              quoted_binary(@cucumber_bin), '--', @cucumber_opts, @feature_files].flatten
           end
         end
