@@ -30,6 +30,12 @@ module Cucumber
         end
       end
 
+      def after_all(configuration)
+        hooks[:after_configuration].each do |hook|
+          hook.invoke('AfterAll', configuration)
+        end
+      end
+
       def execute_after_step(scenario)
         hooks_for(:after_step, scenario).each do |hook|
           invoke(hook, 'AfterStep', scenario, false)
