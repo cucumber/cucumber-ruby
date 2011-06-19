@@ -2,6 +2,12 @@ ENV['CUCUMBER_COLORS']=nil
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 $:.unshift(File.dirname(__FILE__))
 
+# For Travis....
+if defined? Encoding
+  Encoding.default_external = 'utf-8'
+  Encoding.default_internal = 'utf-8'
+end
+
 require 'rubygems'
 require 'bundler'
 Bundler.setup
