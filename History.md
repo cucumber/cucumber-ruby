@@ -1,6 +1,9 @@
-## [v0.10.7](https://github.com/cucumber/cucumber/compare/v0.10.6...v0.10.7)
+## [v1.0.0](https://github.com/cucumber/cucumber/compare/v0.10.6...v1.0.0)
+
+Yipeeeeeeeee!
 
 ### New Features
+* Use Rake 1.9.2 for development (Aslak Hellesøy)
 * Rake task exits with an error if rcov is true and we're on Ruby 1.9.x (Aslak Hellesøy)
 * Started implementation of cucumber-features (Mike Sassak, Julien Biezemans, Aslak Hellesøy)
 

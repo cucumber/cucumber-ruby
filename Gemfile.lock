@@ -1,17 +1,17 @@
 PATH
   remote: .
   specs:
-    cucumber (0.10.7)
+    cucumber (1.0.0)
       builder (>= 2.1.2)
       diff-lcs (>= 1.1.2)
-      gherkin (~> 2.4.0)
+      gherkin (~> 2.4.1)
       json (>= 1.4.6)
       term-ansicolor (>= 1.0.5)
 
 GEM
   remote: http://rubygems.org/
   specs:
-    aruba (0.4.1)
+    aruba (0.4.2)
       bcat (>= 0.6.1)
       childprocess (>= 0.1.9)
       cucumber (>= 0.10.7)
@@ -31,18 +31,18 @@ GEM
       ffi (~> 1.0.6)
     diff-lcs (1.1.2)
     ffi (1.0.9)
-    gherkin (2.4.0)
+    gherkin (2.4.1)
       json (>= 1.4.6)
     innate (2011.04)
       rack (>= 1.1.0)
-    json (1.5.2)
-    json_pure (1.5.2)
+    json (1.5.3)
+    json_pure (1.5.3)
     mime-types (1.16)
-    nokogiri (1.4.5)
+    nokogiri (1.4.6)
     prawn (0.8.4)
-      prawn-core (>= 0.8.4, < 0.9)
-      prawn-layout (>= 0.8.4, < 0.9)
-      prawn-security (>= 0.8.4, < 0.9)
+      prawn-core (< 0.9, >= 0.8.4)
+      prawn-layout (< 0.9, >= 0.8.4)
+      prawn-security (< 0.9, >= 0.8.4)
     prawn-core (0.8.4)
     prawn-layout (0.8.4)
     prawn-security (0.8.4)
@@ -72,7 +72,7 @@ GEM
     simplecov-html (0.4.5)
     sinatra (1.2.6)
       rack (~> 1.1)
-      tilt (>= 1.2.2, < 2.0)
+      tilt (< 2.0, >= 1.2.2)
     spork (0.9.0.rc8)
     syntax (1.0.0)
     term-ansicolor (1.0.5)
@@ -89,7 +89,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  aruba (>= 0.4.1)
+  aruba (~> 0.4.2)
   bcat (= 0.6.1)
   capybara (>= 1.0.0)
   cucumber!
