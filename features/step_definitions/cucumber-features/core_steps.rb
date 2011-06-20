@@ -16,24 +16,39 @@ EOF
     write_file("features/a_feature.feature", feature)
   end
 
-  def write_mappings(mappings)
-    mapping_code = mappings.raw.map do |pattern, result|
-      erb = ERB.new(<<-EOF, nil, '-')
-Given /<%= pattern -%>/ do
-<% if result == 'passing' -%>
-  File.open("<%= step_file(pattern) %>", "w")
-<% elsif result == 'pending' -%>
-  File.open("<%= step_file(pattern) %>", "w")
-  pending
-<% else -%>
-  File.open("<%= step_file(pattern) %>", "w")
-  raise "bang!"
-<% end -%>
-end
+  def write_passing_mapping(step_name)
+    erb = ERB.new(<<-EOF, nil, '-')
+    Given /<%= step_name -%>/ do
+      # ARUBA_IGNORE_START
+      File.open("<%= step_file(step_name) %>", "w")
+      # ARUBA_IGNORE_END
+    end
 EOF
-      erb.result(binding)
-    end.join("\n")
-    write_file("features/step_definitions/some_stepdefs.rb", mapping_code)
+    append_to_file("features/step_definitions/some_stepdefs.rb", erb.result(binding))
+  end
+
+  def write_pending_mapping(step_name)
+    erb = ERB.new(<<-EOF, nil, '-')
+    Given /<%= step_name -%>/ do
+      # ARUBA_IGNORE_START
+      File.open("<%= step_file(step_name) %>", "w")
+      # ARUBA_IGNORE_END
+      pending
+    end
+EOF
+    append_to_file("features/step_definitions/some_stepdefs.rb", erb.result(binding))
+  end
+
+  def write_failing_mapping(step_name)
+    erb = ERB.new(<<-EOF, nil, '-')
+    Given /<%= step_name -%>/ do
+      # ARUBA_IGNORE_START
+      File.open("<%= step_file(step_name) %>", "w")
+      # ARUBA_IGNORE_END
+      raise "bang!"
+    end
+EOF
+    append_to_file("features/step_definitions/some_stepdefs.rb", erb.result(binding))
   end
 
   def write_calculator_code
@@ -153,8 +168,19 @@ Given /^the following feature:$/ do |feature|
   write_feature(feature)
 end
 
-When /^Cucumber executes "([^"]*)" with these step mappings:$/ do |scenario_name, mappings|
-  write_mappings(mappings)
+Given /^the step "([^"]*)" has a passing mapping$/ do |step_name|
+  write_passing_mapping(step_name)
+end
+
+Given /^the step "([^"]*)" has a pending mapping$/ do |step_name|
+  write_pending_mapping(step_name)
+end
+
+Given /^the step "([^"]*)" has a failing mapping$/ do |step_name|
+  write_failing_mapping(step_name)
+end
+
+When /^Cucumber executes the scenario "([^"]*)"$/ do |scenario_name|
   run_scenario(scenario_name)
 end
 
