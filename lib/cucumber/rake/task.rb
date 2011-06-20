@@ -1,5 +1,10 @@
 require 'cucumber/platform'
 require 'gherkin/formatter/ansi_escapes'
+begin
+  # Support Rake > 0.8.7
+  require 'rake/dsl_definition'
+rescue LoadError
+end
 
 module Cucumber
   module Rake
@@ -27,15 +32,11 @@ module Cucumber
     # See the attributes for additional configuration possibilities.
     class Task
       include Gherkin::Formatter::AnsiEscapes
-
-      begin
-        # Support Rake > 0.8.7
-        require 'rake/dsl_definition'
-        include ::Rake::DSL if defined?(::Rake::DSL)
-      rescue LoadError
-      end
+      include ::Rake::DSL if defined?(::Rake::DSL)
 
       class InProcessCucumberRunner #:nodoc:
+        include ::Rake::DSL if defined?(::Rake::DSL)
+
         attr_reader :args
 
         def initialize(libs, cucumber_opts, feature_files)
@@ -55,6 +56,7 @@ module Cucumber
       end
 
       class ForkedCucumberRunner #:nodoc:
+        include ::Rake::DSL if defined?(::Rake::DSL)
 
         def initialize(libs, cucumber_bin, cucumber_opts, bundler, feature_files)
           @libs          = libs
