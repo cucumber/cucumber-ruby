@@ -8,7 +8,7 @@ YARD::Rake::YardocTask.new(:yard) do |t|
   t.files = %w{lib - README.md History.md LICENSE}
 end
 
-desc 'Push yardoc to http://cukes.info/gherkin/api/#{GHERKIN_VERSION}'
+desc "Push yardoc to http://cukes.info/cucumber/api/#{Cucumber::VERSION}"
 task :push_yard => :yard do
   sh("tar czf api-#{Cucumber::VERSION}.tgz -C doc .")
   sh("scp api-#{Cucumber::VERSION}.tgz cukes.info:/var/www/cucumber/api/ruby")
