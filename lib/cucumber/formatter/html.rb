@@ -373,8 +373,8 @@ module Cucumber
         @builder.div(:class => 'message') do
           message = exception.message
           if defined?(RAILS_ROOT) && message.include?('Exception caught')
-            matches = message.match(/Showing <i>(.+)<\/i>(?:.+)#(\d+)/)
-            backtrace += ["#{RAILS_ROOT}/#{matches[1]}:#{matches[2]}"]
+            matches = message.match(/Showing <i>(.+)<\/i>(?:.+) #(\d+)/)
+            backtrace += ["#{RAILS_ROOT}/#{matches[1]}:#{matches[2]}"] if matches
             message = message.match(/<code>([^(\/)]+)<\//m)[1]
           end
           @builder.pre do 
