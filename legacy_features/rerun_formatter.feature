@@ -6,6 +6,7 @@ Feature: Rerun Debugger
   Background:
     Given a standard Cucumber project directory structure
 
+  @wip
   Scenario: title
     Given a file named "features/sample.feature" with:
       """
@@ -19,6 +20,13 @@ Feature: Rerun Debugger
 
         Scenario: Pending
           Given pending
+
+        Scenario: Passing
+          Given passing
+      """
+    And a file named "features/all_good.feature" with:
+      """
+      Feature: Rerun
 
         Scenario: Passing
           Given passing
@@ -37,7 +45,7 @@ Feature: Rerun Debugger
       end
       """
 
-    When I run cucumber -f rerun features/sample.feature
+    When I run cucumber -f rerun features/sample.feature features/all_good.feature
     Then it should fail with
       """
       features/sample.feature:3:6:9

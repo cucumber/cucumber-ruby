@@ -28,11 +28,13 @@ module Cucumber
       end
       
       def after_feature(*)
-        after_first_time do
-          @io.print ' '
+        unless @lines.empty?
+          after_first_time do
+            @io.print ' '
+          end
+          @io.print "#{@file}:#{@lines.join(':')}"
+          @io.flush
         end
-        @io.print "#{@file}:#{@lines.join(':')}"
-        @io.flush
       end
 
       def after_features(features)
