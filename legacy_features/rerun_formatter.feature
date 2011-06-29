@@ -6,7 +6,6 @@ Feature: Rerun Debugger
   Background:
     Given a standard Cucumber project directory structure
 
-  @wip
   Scenario: title
     Given a file named "features/sample.feature" with:
       """
