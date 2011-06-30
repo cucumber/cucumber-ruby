@@ -23,6 +23,13 @@ Feature: Rerun Debugger
         Scenario: Passing
           Given passing
       """
+    And a file named "features/all_good.feature" with:
+      """
+      Feature: Rerun
+
+        Scenario: Passing
+          Given passing
+      """
     And a file named "features/step_definitions/steps.rb" with:
       """
       Given /failing/ do
@@ -37,7 +44,7 @@ Feature: Rerun Debugger
       end
       """
 
-    When I run cucumber -f rerun features/sample.feature
+    When I run cucumber -f rerun features/sample.feature features/all_good.feature
     Then it should fail with
       """
       features/sample.feature:3:6:9
