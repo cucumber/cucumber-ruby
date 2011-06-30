@@ -1,3 +1,8 @@
+## [v1.0.1](https://github.com/cucumber/cucumber/compare/v1.0.0...v1.0.1)
+
+### Bugfixes
+* Removed extra colons emitted by rerun formatter ([#99](https://github.com/cucumber/cucumber/pull/99) [Juan Manuel Barreneche](jbarreneche))
+
 ## [v1.0.0](https://github.com/cucumber/cucumber/compare/v0.10.6...v1.0.0)
 
 Yipeeeeeeeee!
