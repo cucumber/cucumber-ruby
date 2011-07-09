@@ -87,7 +87,8 @@ module Cucumber
       end
 
       def print_exception(e, status, indent)
-        @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
+        string = "#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent)
+        @io.puts(format_string(string, status))
       end
 
       def print_snippets(options)

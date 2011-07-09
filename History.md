@@ -3,6 +3,9 @@
 ### Bugfixes
 * Removed extra colons emitted by rerun formatter ([#99](https://github.com/cucumber/cucumber/pull/99) [Juan Manuel Barreneche](jbarreneche))
 
+### New Features
+* If the CUCUMBER_TRUNCATE_OUTPUT environment variable is set, lines will be truncated. Used by the Cucumber book. (Aslak Hellesøy)
+
 ## [v1.0.0](https://github.com/cucumber/cucumber/compare/v0.10.6...v1.0.0)
 
 Yipeeeeeeeee!
