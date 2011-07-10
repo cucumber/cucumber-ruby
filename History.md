@@ -5,6 +5,7 @@
 * cucumber 1.0.0 wrong number of arguments error when generating json format on jruby for windows ([#97](https://github.com/cucumber/cucumber/issues/97) (Aslak Hellesøy)
 * Recent change to junit.rb breaks on Windows ([#81](https://github.com/cucumber/cucumber/issues/81), [#86](https://github.com/cucumber/cucumber/pull/86) Johnlon, Aslak Hellesøy)
 * Cucumber fails on nil and does not print out failed tests ([#95](https://github.com/cucumber/cucumber/pull/95) Nikita)
+* Javascript code is not being displayed in HTML output ([#58](https://github.com/cucumber/cucumber/issues/58) Aslak Hellesøy)
 
 ### New Features
 * If the CUCUMBER_TRUNCATE_OUTPUT environment variable is set, lines will be truncated. Used by the Cucumber book. (Aslak Hellesøy)
