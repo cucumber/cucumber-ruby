@@ -1,6 +1,7 @@
 require 'cucumber/formatter/ordered_xml_markup'
 require 'cucumber/formatter/io'
 require 'fileutils'
+require 'pathname'
 
 module Cucumber
   module Formatter
@@ -145,7 +146,8 @@ module Cucumber
       
       def basename(feature_file)
         ext_length = File.extname(feature_file).length
-        feature_file.gsub('features/', '').gsub(File::SEPARATOR, '_')[0...-ext_length]
+	rel_path = Pathname.new(feature_file).relative_path_from(Pathname.new("features"))
+	(""+rel_path).gsub(/[\\\/]/, '_')[0...-ext_length]
       end
       
       def write_file(feature_filename, data)
