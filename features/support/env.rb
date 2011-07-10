@@ -22,5 +22,5 @@ Before do
   # set_env('SIMPLECOV', 'true')
   
   # Set a longer timeout for aruba
-  @aruba_timeout_seconds = 5
+  @aruba_timeout_seconds = 15
 end

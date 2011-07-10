@@ -158,7 +158,6 @@ module Cucumber
       def broadcast(*args, &block)
         message = extract_method_name_from(caller)
         message.gsub!('visit_', '')
-        
         if block_given?
           send_to_all("before_#{message}", *args)
           yield if block_given?
