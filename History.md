@@ -3,6 +3,7 @@
 ### Bugfixes
 * Removed extra colons emitted by rerun formatter ([#99](https://github.com/cucumber/cucumber/pull/99) Juan Manuel Barreneche)
 * cucumber 1.0.0 wrong number of arguments error when generating json format on jruby for windows ([#97](https://github.com/cucumber/cucumber/issues/97) (Aslak Hellesøy)
+* Recent change to junit.rb breaks on Windows ([#81](https://github.com/cucumber/cucumber/issues/81), [#86](https://github.com/cucumber/cucumber/pull/86) Johnlon, Aslak Hellesøy)
 
 ### New Features
 * If the CUCUMBER_TRUNCATE_OUTPUT environment variable is set, lines will be truncated. Used by the Cucumber book. (Aslak Hellesøy)

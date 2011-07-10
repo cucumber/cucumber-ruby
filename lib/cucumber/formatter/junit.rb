@@ -144,8 +144,7 @@ module Cucumber
       end
       
       def basename(feature_file)
-        ext_length = File.extname(feature_file).length
-        feature_file.gsub('features/', '').gsub(File::SEPARATOR, '_')[0...-ext_length]
+        File.basename(feature_file.gsub(/[\\\/]/, '-'), '.feature')
       end
       
       def write_file(feature_filename, data)
