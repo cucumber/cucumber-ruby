@@ -34,11 +34,14 @@ module Cucumber
       end
     
       def to_s
-        strip_captures(strip_anchors(@regexp.source))
+         convert_captures(strip_anchors(@regexp.source))
       end
     
     private
-
+      def convert_captures(regexp_source)
+        regexp_source.gsub(/(\()(?!\?:)/,'(?:')
+      end
+      
       def strip_captures(regexp_source)
         regexp_source.
           gsub(/(\()/, '').

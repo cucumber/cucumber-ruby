@@ -8,8 +8,12 @@ module Cucumber
         RbTransform.new(nil, regexp, lambda { |a| })
       end
       describe "#to_s" do
-        it "removes the capture group parentheses" do
-          transform(/(a)bc/).to_s.should == "abc"
+        it "converts captures groups to non-capture groups" do
+          transform(/(a|b)bc/).to_s.should == "(?:a|b)bc"
+        end
+        
+        it "leaves non capture groups alone" do
+          transform(/(?:a|b)bc/).to_s.should == "(?:a|b)bc"
         end
         
         it "strips away anchors" do
