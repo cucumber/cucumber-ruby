@@ -6,6 +6,9 @@
 ### New Features
 * Better line truncation if $CUCUMBER_TRUNCATE_OUTPUT has a max line length value. (Aslak Hellesøy)
 
+### Changes Features
+* --no-source also excludes location from the summary. (Aslak Hellesøy)
+
 ## [v1.0.1](https://github.com/cucumber/cucumber/compare/v1.0.0...v1.0.1)
 
 ### Bugfixes

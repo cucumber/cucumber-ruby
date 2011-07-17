@@ -59,21 +59,16 @@ module Cucumber
         end
       end
 
-      def print_counts
-        STDERR.puts("The #print_counts method is deprecated and will be removed in 0.4. Use #print_stats instead")
-        print_stats(nil)
-      end
-
-      def print_stats(features, profiles = [])
+      def print_stats(features, options)
         @failures = step_mother.scenarios(:failed).select { |s| s.is_a?(Cucumber::Ast::Scenario) || s.is_a?(Cucumber::Ast::OutlineTable::ExampleRow) }
         @failures.collect! { |s| (s.is_a?(Cucumber::Ast::OutlineTable::ExampleRow)) ? s.scenario_outline : s }
 
         if !@failures.empty?          
           @io.puts format_string("Failing Scenarios:", :failed)
           @failures.each do |failure|
-            profiles_string = profiles.empty? ? '' : (profiles.map{|profile| "-p #{profile}" }).join(' ') + ' '
-            @io.puts format_string("cucumber #{profiles_string}" + failure.file_colon_line, :failed) +
-            format_string(" # Scenario: " + failure.name, :comment)
+            profiles_string = options.custom_profiles.empty? ? '' : (options.custom_profiles.map{|profile| "-p #{profile}" }).join(' ') + ' '
+            source = options[:source] ? format_string(" # Scenario: " + failure.name, :comment) : ''
+            @io.puts format_string("cucumber #{profiles_string}" + failure.file_colon_line, :failed) + source
           end
           @io.puts
         end
