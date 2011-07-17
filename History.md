@@ -1,3 +1,11 @@
+## [v1.0.2](https://github.com/cucumber/cucumber/compare/v1.0.1...v1.0.2)
+
+### Bugfixes
+* Cucumber 1.0.1 breaks cuke4duke ([#104](https://github.com/cucumber/cucumber/issues/104) Aslak Hellesøy)
+
+### New Features
+* Better line truncation if $CUCUMBER_TRUNCATE_OUTPUT has a max line length value. (Aslak Hellesøy)
+
 ## [v1.0.1](https://github.com/cucumber/cucumber/compare/v1.0.0...v1.0.1)
 
 ### Bugfixes

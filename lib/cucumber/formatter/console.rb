@@ -87,8 +87,18 @@ module Cucumber
       end
 
       def print_exception(e, status, indent)
-        string = "#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent)
+        message = "#{e.message} (#{e.class})"
+        if ENV['CUCUMBER_TRUNCATE_OUTPUT']
+          message = linebreaks(message, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
+        end
+
+        string = "#{message}\n#{e.backtrace.join("\n")}".indent(indent)
         @io.puts(format_string(string, status))
+      end
+      
+      # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655 
+      def linebreaks(s, max)
+        s.gsub(/.{1,#{max}}(?:\s|\Z)/){($& + 5.chr).gsub(/\n\005/,"\n").gsub(/\005/,"\n")}.rstrip
       end
 
       def print_snippets(options)
