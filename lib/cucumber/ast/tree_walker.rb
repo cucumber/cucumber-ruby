@@ -122,7 +122,7 @@ module Cucumber
         broadcast(exception, status)
       end
 
-      def visit_py_string(string)
+      def visit_doc_string(string)
         broadcast(string)
       end
 
@@ -142,9 +142,9 @@ module Cucumber
         broadcast(value, status)
       end
 
-      # Print +announcement+. This method can be called from within StepDefinitions.
-      def announce(announcement)
-        broadcast(announcement)
+      # Print +messages+. This method can be called from within StepDefinitions.
+      def puts(*messages)
+        broadcast(*messages)
       end
 
       # Embed +file+ of +mime_type+ in the formatter. This method can be called from within StepDefinitions.
@@ -158,7 +158,6 @@ module Cucumber
       def broadcast(*args, &block)
         message = extract_method_name_from(caller)
         message.gsub!('visit_', '')
-        
         if block_given?
           send_to_all("before_#{message}", *args)
           yield if block_given?

@@ -8,10 +8,6 @@ module Cucumber
     class StepInvocation #:nodoc:
       include Gherkin::Rubify
 
-      BACKTRACE_FILTER_PATTERNS = [
-        /vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\//
-      ]
-
       attr_writer :step_collection, :background
       attr_reader :name, :matched_cells, :status, :reported_exception
       attr_accessor :exception
@@ -97,27 +93,6 @@ module Cucumber
       end
 
       def failed(configuration, e, clear_backtrace)
-        e = filter_backtrace(e)
-        e.set_backtrace([]) if clear_backtrace
-        e.backtrace << @step.backtrace_line unless @step.backtrace_line.nil?
-        @exception = e
-        if(configuration.strict? || !(Undefined === e) || e.nested?)
-          @reported_exception = e
-        else
-          @reported_exception = nil
-        end
-      end
-
-      PWD_PATTERN = /#{Regexp.escape(Dir.pwd)}\//m
-
-      def filter_backtrace(e)
-        return e if Cucumber.use_full_backtrace
-        (e.backtrace || []).each{|line| line.gsub!(PWD_PATTERN, "./")}
-        
-        filtered = (e.backtrace || []).reject do |line|
-          BACKTRACE_FILTER_PATTERNS.detect { |p| line =~ p }
-        end
-        
         if Cucumber::JRUBY && e.class.name == 'NativeException'
           # JRuby's NativeException ignores #set_backtrace.
           # We're fixing it.
@@ -131,6 +106,38 @@ module Cucumber
             end
           end
         end
+
+        e.set_backtrace([]) if e.backtrace.nil? || clear_backtrace
+        e.backtrace << @step.backtrace_line unless @step.backtrace_line.nil?
+        e = filter_backtrace(e)
+        @exception = e
+        if(configuration.strict? || !(Undefined === e) || e.nested?)
+          @reported_exception = e
+        else
+          @reported_exception = nil
+        end
+      end
+
+      # This constant is appended to by Cuke4Duke. Do not change its name
+      BACKTRACE_FILTER_PATTERNS = [/vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\/|minitest|test\/unit/]
+      PWD_PATTERN = /#{Regexp.escape(Dir.pwd)}\//m
+
+      # This is to work around double ":in " segments in JRuby backtraces. JRuby bug?
+      def filter_backtrace(e)
+        return e if Cucumber.use_full_backtrace
+        e.backtrace.each{|line| line.gsub!(PWD_PATTERN, "./")}
+        
+        filtered = (e.backtrace || []).reject do |line|
+          BACKTRACE_FILTER_PATTERNS.detect { |p| line =~ p }
+        end
+
+        if ENV['CUCUMBER_TRUNCATE_OUTPUT']
+          # Strip off file locations
+          filtered = filtered.map do |line|
+            line =~ /(.*):in `/ ? $1 : line
+          end
+        end
+
         e.set_backtrace(filtered)
         e
       end

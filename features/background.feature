@@ -299,7 +299,7 @@ Feature: Background
         Then I should have '10' cukes
 
     Failing Scenarios:
-    cucumber features/failing_background.feature:7 # Scenario: failing background
+    cucumber features/failing_background.feature:7
     
     2 scenarios (1 failed, 1 skipped)
     6 steps (1 failed, 5 skipped)
@@ -335,7 +335,7 @@ Feature: Background
           | 10    |
 
     Failing Scenarios:
-    cucumber features/scenario_outline_failing_background.feature:6 # Scenario: failing background
+    cucumber features/scenario_outline_failing_background.feature:6
 
     2 scenarios (1 failed, 1 skipped)
     4 steps (1 failed, 3 skipped)
@@ -386,7 +386,7 @@ Feature: Background
         Then I should have '10' global cukes
 
     Failing Scenarios:
-    cucumber features/failing_background_after_success.feature:10 # Scenario: failing background
+    cucumber features/failing_background_after_success.feature:10
 
     2 scenarios (1 failed, 1 passed)
     6 steps (1 failed, 1 skipped, 4 passed)

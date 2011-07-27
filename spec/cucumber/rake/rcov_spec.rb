@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require 'spec_helper'
 require 'cucumber/rake/task'
 require 'rake'
 
@@ -26,7 +26,7 @@ module Cucumber
         end
 
         it "uses bundle exec to find cucumber and libraries" do
-          subject.cmd.should == [RUBY,
+          subject.cmd.should == [Cucumber::RUBY_BINARY,
                                  '-S',
                                  'bundle',
                                  'exec',
@@ -51,7 +51,7 @@ module Cucumber
         end
 
         it "uses well known cucumber location and specified libraries" do
-          subject.cmd.should == [RUBY,
+          subject.cmd.should == [Cucumber::RUBY_BINARY,
                                  '-I',
                                  '"lib"',
                                  '-S',

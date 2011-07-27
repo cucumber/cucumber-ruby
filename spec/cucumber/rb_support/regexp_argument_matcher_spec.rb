@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require 'spec_helper'
 require 'cucumber/rb_support/regexp_argument_matcher'
 
 module Cucumber

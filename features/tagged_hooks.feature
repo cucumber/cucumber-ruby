@@ -58,9 +58,9 @@ Feature: Tag logic
         Scenario: And yet another Example
 
       Failing Scenarios:
-      cucumber features/tagulicious.feature:4 # Scenario: Example
-      cucumber features/tagulicious.feature:8 # Scenario: Another Example
-      cucumber features/tagulicious.feature:12 # Scenario: Yet another Example
+      cucumber features/tagulicious.feature:4
+      cucumber features/tagulicious.feature:8
+      cucumber features/tagulicious.feature:12
 
       4 scenarios (3 failed, 1 passed)
       3 steps (3 undefined)
@@ -97,7 +97,7 @@ Feature: Tag logic
         Scenario: And yet another Example
 
       Failing Scenarios:
-      cucumber features/tagulicious.feature:4 # Scenario: Example
+      cucumber features/tagulicious.feature:4
 
       4 scenarios (1 failed, 2 undefined, 1 passed)
       3 steps (3 undefined)
@@ -170,9 +170,9 @@ Feature: Tag logic
         Scenario: And yet another Example
 
       Failing Scenarios:
-      cucumber features/tagulicious.feature:4 # Scenario: Example
-      cucumber features/tagulicious.feature:8 # Scenario: Another Example
-      cucumber features/tagulicious.feature:12 # Scenario: Yet another Example
+      cucumber features/tagulicious.feature:4
+      cucumber features/tagulicious.feature:8
+      cucumber features/tagulicious.feature:12
 
       4 scenarios (3 failed, 1 passed)
       3 steps (3 undefined)
@@ -209,7 +209,7 @@ Feature: Tag logic
         Scenario: And yet another Example
 
       Failing Scenarios:
-      cucumber features/tagulicious.feature:4 # Scenario: Example
+      cucumber features/tagulicious.feature:4
 
       4 scenarios (1 failed, 2 undefined, 1 passed)
       3 steps (3 undefined)

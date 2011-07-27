@@ -1,9 +1,7 @@
-= Cucumber
-
 The main website is at http://cukes.info/
 The documentation is at https://wiki.github.com/cucumber/cucumber/
 
-== Note on Patches/Pull Requests
+## Note on Patches/Pull Requests
  
 * Fork the project.
 * Make your feature addition or bug fix.
@@ -14,13 +12,14 @@ The documentation is at https://wiki.github.com/cucumber/cucumber/
   bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
 
-== Running tests
+## Running tests
 
-  rake
+    gem install bundler
+    bundle install
+    git submodule update --init --recursive
+    rake
 
-If you get errors about missing gems - just install them.
+## Copyright
 
-== Copyright
-
-Copyright (c) 2008,2009 Aslak Hellesøy. See LICENSE for details.
+Copyright (c) 2008,2009,2010,2011 Aslak Hellesøy. See LICENSE for details.
 

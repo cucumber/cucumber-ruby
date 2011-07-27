@@ -1,11 +1,13 @@
 require 'cucumber/ast/feature_element'
+require 'cucumber/ast/names'
 
 module Cucumber
   module Ast
     class Scenario #:nodoc:
       include FeatureElement
+      include Names
       
-      attr_reader :name, :line
+      attr_reader :line
       
       class EmptyBackground 
         def failed?
@@ -24,9 +26,9 @@ module Cucumber
         end
       end
       
-      def initialize(background, comment, tags, line, keyword, name, raw_steps)
+      def initialize(background, comment, tags, line, keyword, title, description, raw_steps)
         @background = background || EmptyBackground.new
-        @comment, @tags, @line, @keyword, @name, @raw_steps = comment, tags, line, keyword, name, raw_steps
+        @comment, @tags, @line, @keyword, @title, @description, @raw_steps = comment, tags, line, keyword, title, description, raw_steps
         @exception = @executed = nil
       end
 
@@ -45,7 +47,7 @@ module Cucumber
         with_visitor(visitor) do
           visitor.visit_comment(@comment) unless @comment.empty?
           visitor.visit_tags(@tags)
-          visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
+          visitor.visit_scenario_name(@keyword, name, file_colon_line(@line), source_indent(first_line_length))
 
           skip_invoke! if @background.failed?
           visitor.step_mother.with_hooks(self, skip_hooks?) do
@@ -90,7 +92,7 @@ module Cucumber
       end
 
       def to_sexp
-        sexp = [:scenario, @line, @keyword, @name]
+        sexp = [:scenario, @line, @keyword, name]
         comment = @comment.to_sexp
         sexp += [comment] if comment
         tags = @tags.to_sexp

@@ -19,7 +19,7 @@ module Cucumber
 
         def step(step)
           cucumber_multiline_arg = case(rubify(step.multiline_arg))
-          when Gherkin::Formatter::Model::PyString
+          when Gherkin::Formatter::Model::DocString
             step.multiline_arg.value
           when Array
             Ast::Table.new(step.multiline_arg.map{|row| row.cells})

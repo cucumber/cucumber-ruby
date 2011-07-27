@@ -1,9 +1,8 @@
 require 'cucumber/platform'
-
+require 'gherkin/formatter/ansi_escapes'
 begin
   # Support Rake > 0.8.7
   require 'rake/dsl_definition'
-  include Rake::DSL
 rescue LoadError
 end
 
@@ -32,7 +31,12 @@ module Cucumber
     #
     # See the attributes for additional configuration possibilities.
     class Task
+      include Gherkin::Formatter::AnsiEscapes
+      include ::Rake::DSL if defined?(::Rake::DSL)
+
       class InProcessCucumberRunner #:nodoc:
+        include ::Rake::DSL if defined?(::Rake::DSL)
+
         attr_reader :args
 
         def initialize(libs, cucumber_opts, feature_files)
@@ -52,6 +56,7 @@ module Cucumber
       end
 
       class ForkedCucumberRunner #:nodoc:
+        include ::Rake::DSL if defined?(::Rake::DSL)
 
         def initialize(libs, cucumber_bin, cucumber_opts, bundler, feature_files)
           @libs          = libs
@@ -70,15 +75,27 @@ module Cucumber
         end
 
         def use_bundler
-          @bundler.nil? ? File.exist?("./Gemfile") && Gem.available?("bundler") : @bundler
+          @bundler.nil? ? File.exist?("./Gemfile") && gem_available?("bundler") : @bundler
+        end
+
+        def gem_available?(gemname)
+          gem_available_new_rubygems?(gemname) || gem_available_old_rubygems?(gemname)
+        end
+
+        def gem_available_old_rubygems?(gemname)
+          Gem.available?(gemname)
+        end
+
+        def gem_available_new_rubygems?(gemname)
+          Gem::Specification.respond_to?(:find_all_by_name) && Gem::Specification.find_all_by_name(gemname).any?
         end
 
         def cmd
           if use_bundler
-            [ RUBY, '-S', 'bundle', 'exec', 'cucumber', @cucumber_opts,
+            [ Cucumber::RUBY_BINARY, '-S', 'bundle', 'exec', 'cucumber', @cucumber_opts,
             @feature_files ].flatten
           else
-            [ RUBY, '-I', load_path(@libs), quoted_binary(@cucumber_bin),
+            [ Cucumber::RUBY_BINARY, '-I', load_path(@libs), quoted_binary(@cucumber_bin),
             @cucumber_opts, @feature_files ].flatten
           end
         end
@@ -97,10 +114,10 @@ module Cucumber
 
         def cmd
           if use_bundler
-            [RUBY, '-S', 'bundle', 'exec', 'rcov', @rcov_opts,
+            [Cucumber::RUBY_BINARY, '-S', 'bundle', 'exec', 'rcov', @rcov_opts,
              quoted_binary(@cucumber_bin), '--', @cucumber_opts, @feature_files].flatten
           else
-            [RUBY, '-I', load_path(@libs), '-S', 'rcov', @rcov_opts,
+            [Cucumber::RUBY_BINARY, '-I', load_path(@libs), '-S', 'rcov', @rcov_opts,
              quoted_binary(@cucumber_bin), '--', @cucumber_opts, @feature_files].flatten
           end
         end
@@ -125,6 +142,12 @@ module Cucumber
       # Run cucumber with RCov? Defaults to false. If you set this to
       # true, +fork+ is implicit.
       attr_accessor :rcov
+      def rcov=(flag)
+        if(flag && Cucumber::RUBY_1_9)
+          raise failed + "RCov only works on Ruby 1.8.x. You may want to use SimpleCov: https://github.com/colszowka/simplecov" + reset
+        end
+        @rcov = flag
+      end
 
       # Extra options to pass to rcov.
       # It's recommended to pass an Array, but if it's a String it will be #split by ' '.

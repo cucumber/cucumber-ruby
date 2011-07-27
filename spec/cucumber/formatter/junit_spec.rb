@@ -1,5 +1,5 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'spec_helper'
+require 'cucumber/formatter/spec_helper'
 
 require 'cucumber/formatter/junit'
 require 'nokogiri'
@@ -61,7 +61,7 @@ module Cucumber::Formatter
         }, File.join('features', 'some', 'path', 'spec.feature')
 
         it 'writes the filename including the subdirectory' do
-          @formatter.written_files.keys.first.should == File.join('', 'TEST-some_path_spec.xml')
+          @formatter.written_files.keys.first.should == File.join('', 'TEST-features-some-path-spec.xml')
         end
       end
       
@@ -94,6 +94,7 @@ module Cucumber::Formatter
         it { @doc.to_s.should =~ /Big Mac/ }
         it { @doc.to_s.should_not =~ /Things/ }
         it { @doc.to_s.should_not =~ /Good|Evil/ }
+        it { @doc.to_s.should_not =~ /type="skipped"/}
       end
   
       describe "with a regular data table scenario" do

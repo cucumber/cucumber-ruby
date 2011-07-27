@@ -8,7 +8,7 @@ module Cucumber
     #     Cucumber sandwich
     #     """
     #
-    # The text between the pair of <tt>"""</tt> is stored inside a PyString,
+    # The text between the pair of <tt>"""</tt> is stored inside a DocString,
     # which is yielded to the StepDefinition block as the last argument.
     #
     # The StepDefinition can then access the String via the #to_s method. In the
@@ -16,7 +16,7 @@ module Cucumber
     #
     # Note how the indentation from the source is stripped away.
     #
-    class PyString #:nodoc:
+    class DocString #:nodoc:
       class Builder
         attr_reader :string
 
@@ -24,7 +24,7 @@ module Cucumber
           @string = ''
         end
 
-        def py_string(string, line_number)
+        def doc_string(string, line_number)
           @string = string
         end
 
@@ -55,7 +55,7 @@ module Cucumber
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        visitor.visit_py_string(@string)
+        visitor.visit_doc_string(@string)
       end
       
       def arguments_replaced(arguments) #:nodoc:
@@ -64,7 +64,7 @@ module Cucumber
           value ||= ''
           string = string.gsub(name, value)
         end
-        PyString.new(string)
+        DocString.new(string)
       end
 
       def has_text?(text)
@@ -73,7 +73,7 @@ module Cucumber
 
       # For testing only
       def to_sexp #:nodoc:
-        [:py_string, to_step_definition_arg]
+        [:doc_string, to_step_definition_arg]
       end
     end
   end

@@ -27,7 +27,7 @@ Feature: Cucumber command line
             | passing | passing     |
 
       Failing Scenarios:
-      cucumber features/outline_sample.feature:5 # Scenario: Test state
+      cucumber features/outline_sample.feature:5
 
       4 scenarios (1 failed, 1 undefined, 2 passed)
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
@@ -59,7 +59,7 @@ Feature: Cucumber command line
             | passing | passing     |
 
       Failing Scenarios:
-      cucumber features/outline_sample.feature:5 # Scenario: Test state
+      cucumber features/outline_sample.feature:5
 
       4 scenarios (1 failed, 1 undefined, 2 passed)
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
@@ -108,7 +108,7 @@ Feature: Cucumber command line
       features/outline_sample.feature:6:in `Given <state> without a table'
 
       Failing Scenarios:
-      cucumber features/outline_sample.feature:5 # Scenario: Test state
+      cucumber features/outline_sample.feature:5
 
       5 scenarios (1 failed, 1 undefined, 3 passed)
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)

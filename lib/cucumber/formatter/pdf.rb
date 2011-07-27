@@ -28,9 +28,9 @@ module Cucumber
         @file = ensure_file(path_or_io, "pdf")
 
         if(options[:dry_run])
-          @status_colors = { :passed => BLACK, :skipped => BLACK, :undefined => BLACK, :failed => BLACK, :announced => GREY}
+          @status_colors = { :passed => BLACK, :skipped => BLACK, :undefined => BLACK, :failed => BLACK, :putsd => GREY}
         else
-          @status_colors = { :passed => '055902', :skipped => GREY, :undefined => 'F27405', :failed => '730202', :announced => GREY}
+          @status_colors = { :passed => '055902', :skipped => GREY, :undefined => 'F27405', :failed => '730202', :putsd => GREY}
         end
 
         @pdf = Prawn::Document.new
@@ -71,9 +71,9 @@ module Cucumber
         end
       end
 
-      def announce(announcement)
-        @pdf.fill_color(@status_colors[:announced])  
-        @pdf.text announcement, :size => 10
+      def puts(message)
+        @pdf.fill_color(@status_colors[:putsd])  
+        @pdf.text message, :size => 10
         @pdf.fill_color BLACK
       end
 
@@ -172,7 +172,7 @@ module Cucumber
         end
       end
 
-      def before_py_string(string)
+      def before_doc_string(string)
         return if @hide_this_step
         s = %{"""\n#{string}\n"""}.indent(10)
         s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}

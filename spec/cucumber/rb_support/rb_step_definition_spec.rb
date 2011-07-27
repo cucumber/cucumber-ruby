@@ -1,5 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
-
+require 'spec_helper'
 require 'cucumber/ast'
 require 'cucumber/step_mother'
 require 'cucumber/rb_support/rb_language'
@@ -74,10 +73,10 @@ module Cucumber
         end.should raise_error(Cucumber::ArityMismatchError)
       end
 
-      it "should allow announce" do
-        user_interface.should_receive(:announce).with('wasup')
+      it "should allow puts" do
+        user_interface.should_receive(:puts).with('wasup')
         dsl.Given /Loud/ do
-          announce 'wasup'
+          puts 'wasup'
         end
         
         support_code.step_match("Loud").invoke(nil)

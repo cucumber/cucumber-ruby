@@ -1,7 +1,11 @@
+require 'gherkin/formatter/ansi_escapes'
+
 module Cucumber
   module RbSupport
     # All steps are run in the context of an object that extends this module.
     module RbWorld
+      include Gherkin::Formatter::AnsiEscapes
+
       class << self
         def alias_adverb(adverb)
           alias_method adverb, :__cucumber_invoke
@@ -32,14 +36,19 @@ module Cucumber
         @__cucumber_step_mother.table(text_or_table, file, line_offset)
       end
 
-      # See StepMother#py_string
-      def py_string(string_with_triple_quotes, file=nil, line_offset=0)
-        @__cucumber_step_mother.py_string(string_with_triple_quotes, file, line_offset)
+      # See StepMother#doc_string
+      def doc_string(string_with_triple_quotes, file=nil, line_offset=0)
+        @__cucumber_step_mother.doc_string(string_with_triple_quotes, file, line_offset)
       end
 
-      # See StepMother#announce
-      def announce(announcement)
-        @__cucumber_step_mother.announce(announcement)
+      def announce(*messages)
+        STDERR.puts failed + "WARNING: #announce is deprecated. Use #puts instead:" + caller[0] + reset
+        puts(*messages)
+      end
+
+      # See StepMother#puts
+      def puts(*messages)
+        @__cucumber_step_mother.puts(*messages)
       end
 
       # See StepMother#ask
@@ -50,15 +59,6 @@ module Cucumber
       # See StepMother#embed
       def embed(file, mime_type, label='Screenshot')
         @__cucumber_step_mother.embed(file, mime_type, label)
-      end
-
-      # Prints out the world class, followed by all included modules.
-      def announce_world
-        announce "WORLD:\n  #{self.class}"
-        world = self
-        (class << self; self; end).instance_eval do
-          world.announce "  #{included_modules.join("\n  ")}"
-        end
       end
 
       # Mark the matched step as pending.
@@ -88,7 +88,15 @@ module Cucumber
       # such errors in World we define it to just return a simple String.
       #
       def inspect #:nodoc:
-        sprintf("#<%s:0x%x>", self.class, self.object_id)
+        modules = [self.class]
+        (class << self; self; end).instance_eval do
+          modules += included_modules
+        end
+        sprintf("#<%s:0x%x>", modules.join('+'), self.object_id)
+      end
+
+      def to_s
+        inspect
       end
     end
   end

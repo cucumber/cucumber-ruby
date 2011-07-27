@@ -16,7 +16,7 @@ module Cucumber
       def_delegators :@user_interface,
         :embed,
         :ask,
-        :announce,
+        :puts,
         :features_paths,
         :step_match
     
@@ -59,8 +59,8 @@ module Cucumber
       #
       # Is retured as: " hello\nworld"
       #
-      def py_string(string_with_triple_quotes, file=nil, line_offset=0)
-        Ast::PyString.parse(string_with_triple_quotes)
+      def doc_string(string_with_triple_quotes, file=nil, line_offset=0)
+        Ast::DocString.parse(string_with_triple_quotes)
       end
     end
   end

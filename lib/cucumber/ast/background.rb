@@ -1,13 +1,15 @@
 require 'cucumber/ast/feature_element'
+require 'cucumber/ast/names'
 
 module Cucumber
   module Ast
     class Background #:nodoc:
       include FeatureElement
-      attr_reader :feature_elements, :name
+      include Names
+      attr_reader :feature_elements
 
-      def initialize(comment, line, keyword, name, raw_steps)
-        @comment, @line, @keyword, @name, @raw_steps = comment, line, keyword, name, raw_steps
+      def initialize(comment, line, keyword, title, description, raw_steps)
+        @comment, @line, @keyword, @title, @description, @raw_steps = comment, line, keyword, title, description, raw_steps
         @feature_elements = []
       end
 
@@ -32,7 +34,7 @@ module Cucumber
         return if Cucumber.wants_to_quit
         init
         visitor.visit_comment(@comment) unless @comment.empty?
-        visitor.visit_background_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
+        visitor.visit_background_name(@keyword, name, file_colon_line(@line), source_indent(first_line_length))
         with_visitor(hook_context, visitor) do
           visitor.step_mother.before(hook_context)
           skip_invoke! if failed?
@@ -79,7 +81,7 @@ module Cucumber
       def to_sexp
         init
         sexp = [:background, @line, @keyword]
-        sexp += [@name] unless @name.empty?
+        sexp += [name] unless name.empty?
         comment = @comment.to_sexp
         sexp += [comment] if comment
         steps = @steps.to_sexp

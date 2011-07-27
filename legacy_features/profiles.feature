@@ -118,7 +118,7 @@ Feature: Profiles
     Then it should fail
     And the output should contain
        """
-       cucumber -p super features/sample.feature:2 # Scenario: this is a test
+       cucumber -p super features/sample.feature:2
        """
     Examples:
       | format  |

@@ -21,17 +21,23 @@ module Cucumber
         @file_names = []
         @file_colon_lines = Hash.new{|h,k| h[k] = []}
       end
-
-      # features() is never executed at all... ?
-      def after_features(features)
-        files = @file_names.uniq.map do |file|
-          lines = @file_colon_lines[file]
-          "#{file}:#{lines.join(':')}"
+      
+      def before_feature(*)
+        @lines = []
+        @file = nil
+      end
+      
+      def after_feature(*)
+        unless @lines.empty?
+          after_first_time do
+            @io.print ' '
+          end
+          @io.print "#{@file}:#{@lines.join(':')}"
+          @io.flush
         end
-        @io.puts files.join(' ')
-        
-        # Flusing output to rerun tempfile here...
-        @io.flush
+      end
+
+      def after_features(features)
         @io.close
       end
 
@@ -42,13 +48,20 @@ module Cucumber
       def after_feature_element(feature_element)
         if @rerun
           file, line = *feature_element.file_colon_line.split(':')
-          @file_colon_lines[file] << line
-          @file_names << file
+          @lines << line
+          @file = file
         end
       end
 
       def step_name(keyword, step_match, status, source_indent, background)
         @rerun = true if [:failed, :pending, :undefined].index(status)
+      end
+      
+    private
+    
+      def after_first_time
+        yield if @not_first_time
+        @not_first_time = true
       end
     end
   end

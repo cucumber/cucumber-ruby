@@ -78,6 +78,10 @@ Then /^it should (fail|pass) with$/ do |success, output|
   Then("it should #{success}")
 end
 
+Then /^the output should contain "([^"]*)"$/ do |text|
+  last_stdout.should include(text)
+end
+
 Then /^the output should contain:?$/ do |text|
   last_stdout.should include(text)
 end

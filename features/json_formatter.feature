@@ -142,7 +142,6 @@ Feature: JSON output formatter
 
       """
 
-  @announce
   Scenario: pystring
     Given a file named "features/pystring.feature" with:
       """
@@ -185,7 +184,7 @@ Feature: JSON output formatter
                     "multiline_arg": {
                       "value": "a string",
                       "line": 5,
-                      "type": "py_string"
+                      "type": "doc_string"
                     },
                     "match": {
                       "location": "features/step_definitions/pystring_steps.rb:1"

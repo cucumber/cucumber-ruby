@@ -20,21 +20,23 @@ module Cucumber
         @scenario_number = 0
         @step_number = 0
         @header_red = nil
-        @delayed_announcements = []
+        @delayed_messages = []
+        @img_id = 0
       end
 
-      def embed(file, mime_type, label)
+      def embed(src, mime_type, label)
         case(mime_type)
         when /^image\/(png|gif|jpg|jpeg)/
-          embed_image(file, label)
+          embed_image(src, label)
         end
       end
 
-      def embed_image(file, label)
-        id = file.hash
+      def embed_image(src, label)
+        id = "img_#{@img_id}"
+        @img_id += 1
         @builder.span(:class => 'embed') do |pre|
           pre << %{<a href="" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">#{label}</a><br>&nbsp;
-          <img id="#{id}" style="display: none" src="#{file}"/>}
+          <img id="#{id}" style="display: none" src="#{src}"/>}
         end
       end
 
@@ -249,7 +251,7 @@ module Cucumber
           end
         end
         @builder << '</li>'
-        print_announcements
+        print_messages
       end
 
       def step_name(keyword, step_match, status, source_indent, background)
@@ -286,10 +288,10 @@ module Cucumber
         end
       end
 
-      def py_string(string)
+      def doc_string(string)
         return if @hide_this_step
         @builder.pre(:class => 'val') do |pre|
-          @builder << string.gsub("\n", '&#x000A;')
+          @builder << h(string.gsub("\n", '&#x000A;'))
         end
       end
   
@@ -303,7 +305,7 @@ module Cucumber
   
       def after_table_row(table_row)
         return if @hide_this_step
-        print_table_row_announcements
+        print_table_row_messages
         @builder << '</tr>'
         if table_row.exception
           @builder.tr do
@@ -333,35 +335,35 @@ module Cucumber
         @col_index += 1
       end
 
-      def announce(announcement)
-        @delayed_announcements << announcement
-        #@builder.pre(announcement, :class => 'announcement')
+      def puts(message)
+        @delayed_messages << message
+        #@builder.pre(message, :class => 'message')
       end
       
-      def print_announcements
-        return if @delayed_announcements.empty?
+      def print_messages
+        return if @delayed_messages.empty?
         
         #@builder.ol do
-          @delayed_announcements.each do |ann|
-            @builder.li(:class => 'step announcement') do
+          @delayed_messages.each do |ann|
+            @builder.li(:class => 'step message') do
               @builder << ann
             end
           end
         #end
-        empty_announcements
+        empty_messages
       end
       
-      def print_table_row_announcements
-        return if @delayed_announcements.empty?
+      def print_table_row_messages
+        return if @delayed_messages.empty?
         
-        @builder.td(:class => 'announcement') do
-          @builder << @delayed_announcements.join(", ")
+        @builder.td(:class => 'message') do
+          @builder << @delayed_messages.join(", ")
         end
-        empty_announcements
+        empty_messages
       end
       
-      def empty_announcements
-        @delayed_announcements = []
+      def empty_messages
+        @delayed_messages = []
       end
 
       protected
@@ -371,8 +373,8 @@ module Cucumber
         @builder.div(:class => 'message') do
           message = exception.message
           if defined?(RAILS_ROOT) && message.include?('Exception caught')
-            matches = message.match(/Showing <i>(.+)<\/i>(?:.+)#(\d+)/)
-            backtrace += ["#{RAILS_ROOT}/#{matches[1]}:#{matches[2]}"]
+            matches = message.match(/Showing <i>(.+)<\/i>(?:.+) #(\d+)/)
+            backtrace += ["#{RAILS_ROOT}/#{matches[1]}:#{matches[2]}"] if matches
             message = message.match(/<code>([^(\/)]+)<\//m)[1]
           end
           @builder.pre do 
