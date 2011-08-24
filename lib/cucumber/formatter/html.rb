@@ -291,7 +291,7 @@ module Cucumber
       def doc_string(string)
         return if @hide_this_step
         @builder.pre(:class => 'val') do |pre|
-          @builder << h(string.gsub("\n", '&#x000A;'))
+          @builder << h(string).gsub("\n", '&#x000A;')
         end
       end
   
