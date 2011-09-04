@@ -43,6 +43,7 @@ module Cucumber
       self.visitor = tree_walker # Ugly circular dependency, but needed to support World#puts
       
       tree_walker.visit_features(features)
+      fire_after_all_hook
     end
     
     def features_paths
@@ -122,6 +123,10 @@ module Cucumber
 
     def fire_after_configuration_hook #:nodoc
       @support_code.fire_hook(:after_configuration, @configuration)
+    end
+
+    def fire_after_all_hook #:nodoc
+      @support_code.fire_hook(:after_all, @configuration)
     end
 
     def features
