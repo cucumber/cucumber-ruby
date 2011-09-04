@@ -1,1 +1,1 @@
-rvm @cucumber --create
+rvm 1.9.2@cucumber

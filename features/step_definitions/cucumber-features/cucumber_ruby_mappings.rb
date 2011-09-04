@@ -54,7 +54,7 @@ EOF
   end
 
   def write_calculator_code
-        code = <<-EOF
+    code = <<-EOF
 # http://en.wikipedia.org/wiki/Reverse_Polish_notation
 class RpnCalculator
   def initialize
