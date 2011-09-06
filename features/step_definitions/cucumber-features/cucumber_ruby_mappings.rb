@@ -7,8 +7,8 @@ module CucumberRubyMappings
     run_simple "#{cucumber_bin} features/a_feature.feature --name '#{scenario_name}'", false
   end
 
-  def run_feature
-    run_simple "#{cucumber_bin} features/a_feature.feature", false
+  def run_feature(filename = 'features/a_feature.feature', formatter = 'progress')
+    run_simple "#{cucumber_bin} #{filename} --format #{formatter}", false
   end
 
   def cucumber_bin
