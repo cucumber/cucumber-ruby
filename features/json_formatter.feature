@@ -142,10 +142,10 @@ Feature: JSON output formatter
 
       """
 
-  Scenario: pystring
-    Given a file named "features/pystring.feature" with:
+  Scenario: DocString
+    Given a file named "features/doc_string.feature" with:
       """
-      Feature: A pystring feature
+      Feature: A DocString feature
 
         Scenario: 
           Then I should fail with
@@ -153,20 +153,20 @@ Feature: JSON output formatter
             a string
             \"\"\"
       """
-    And a file named "features/step_definitions/pystring_steps.rb" with:
+    And a file named "features/step_definitions/doc_string_steps.rb" with:
       """
       Then /I should fail with/ do |s|
         raise s
       end
       """
-    When I run cucumber "--format json features/pystring.feature"
+    When I run cucumber "--format json features/doc_string.feature"
     Then it should fail with JSON:
       """
       {
         "features": [
           {
             "keyword": "Feature",
-            "name": "A pystring feature",
+            "name": "A DocString feature",
             "line": 1,
             "description": "",
             "elements": [
@@ -182,16 +182,17 @@ Feature: JSON output formatter
                     "name": "I should fail with",
                     "line": 4,
                     "multiline_arg": {
+                      "content_type": "",
                       "value": "a string",
                       "line": 5,
                       "type": "doc_string"
                     },
                     "match": {
-                      "location": "features/step_definitions/pystring_steps.rb:1"
+                      "location": "features/step_definitions/doc_string_steps.rb:1"
                     },
                     "result": {
                       "status": "failed",
-                      "error_message": "a string (RuntimeError)\n./features/step_definitions/pystring_steps.rb:2:in `/I should fail with/'\nfeatures/pystring.feature:4:in `Then I should fail with'"
+                      "error_message": "a string (RuntimeError)\n./features/step_definitions/doc_string_steps.rb:2:in `/I should fail with/'\nfeatures/doc_string.feature:4:in `Then I should fail with'"
                     }
                   }
                 ]
