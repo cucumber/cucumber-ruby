@@ -1,5 +1,6 @@
 require 'cucumber/ast'
 require 'gherkin/rubify'
+require 'cucumber/ast/multiline_argument'
 
 module Cucumber
   module Parser
@@ -93,15 +94,10 @@ module Cucumber
       end
 
       def step(step)
+        # TODO: why is @table_owner an instance variable? Doesn't seem to be used anywhere else.
         @table_owner = Ast::Step.new(step.line, step.keyword, step.name)
         @table_owner.gherkin_statement(step)
-        multiline_arg = rubify(step.multiline_arg)
-        case(multiline_arg)
-        when Gherkin::Formatter::Model::DocString
-          @table_owner.multiline_arg = Ast::DocString.new(multiline_arg.value)
-        when Array
-          @table_owner.multiline_arg = Ast::Table.new(matrix(multiline_arg))
-        end
+        @table_owner.multiline_arg = Ast::MultilineArgument.from(step.multiline_arg)
         @step_container.add_step(@table_owner)
       end
 
