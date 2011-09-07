@@ -93,12 +93,15 @@ module Cucumber
         @step_container.add_examples(examples_fields, examples)
       end
 
-      def step(step)
-        # TODO: why is @table_owner an instance variable? Doesn't seem to be used anywhere else.
-        @table_owner = Ast::Step.new(step.line, step.keyword, step.name)
-        @table_owner.gherkin_statement(step)
-        @table_owner.multiline_arg = Ast::MultilineArgument.from(step.multiline_arg)
-        @step_container.add_step(@table_owner)
+      def step(gherkin_step)
+        step = Ast::Step.new(
+          gherkin_step.line, 
+          gherkin_step.keyword, 
+          gherkin_step.name, 
+          Ast::MultilineArgument.from(gherkin_step.multiline_arg)
+        )
+        step.gherkin_statement(gherkin_step)
+        @step_container.add_step(step)
       end
 
       def eof
