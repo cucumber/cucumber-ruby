@@ -4,7 +4,7 @@
 * Do not escape the replaced entity ([#126](https://github.com/cucumber/cucumber/pull/126) Jonathan Tron)
 
 ### New Features
-* DocStrings now have a content_type ([#132](https://github.com/cucumber/cucumber/issues/132) Matt Wynne
+* DocStrings now have a content_type ([#132](https://github.com/cucumber/cucumber/issues/132) Matt Wynne)
 
 ## [v1.0.2](https://github.com/cucumber/cucumber/compare/v1.0.1...v1.0.2)
 
