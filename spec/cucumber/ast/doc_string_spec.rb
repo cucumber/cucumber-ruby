@@ -7,7 +7,7 @@ module Cucumber
       describe "replacing arguments" do
 
         before(:each) do
-          @ps = DocString.new("<book>\n<qty>\n")
+          @ps = DocString.new("<book>\n<qty>\n", '')
         end
       
         it "should return a new doc_string with arguments replaced with values" do
@@ -23,7 +23,7 @@ module Cucumber
         end
 
         it "should replaced nil with empty string" do
-          ps = DocString.new("'<book>'")
+          ps = DocString.new("'<book>'", '')
           doc_string_with_replaced_arg = ps.arguments_replaced({'<book>' => nil}) 
           
           doc_string_with_replaced_arg.to_step_definition_arg.should == "''"

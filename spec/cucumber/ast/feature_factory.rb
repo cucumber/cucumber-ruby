@@ -24,7 +24,7 @@ module Cucumber
           %w{1 22 333},
           %w{4444 55555 666666}
         ])
-        doc_string = Ast::DocString.new(%{\n I like\nCucumber sandwich\n})
+        doc_string = Ast::DocString.new(%{\n I like\nCucumber sandwich\n}, '')
         
         background = Ast::Background.new(Ast::Comment.new(""), 2, "Background:", "", "",
           [
