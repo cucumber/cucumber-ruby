@@ -19,7 +19,17 @@ The documentation is at https://wiki.github.com/cucumber/cucumber/
     git submodule update --init --recursive
     rake
 
+## Release Process
+
+* Bump the version number in `lib/cucumber/platform.rb`.
+* Make sure `History.md` is updated with the upcoming version number, and has entries for all fixes.
+
+    bundle update
+    rake
+    git commit -m "Release X.Y.Z"
+    rake release
+
 ## Copyright
 
-Copyright (c) 2008,2009,2010,2011 Aslak Hellesøy. See LICENSE for details.
+Copyright (c) 2008,2009,2010,2011 Aslak Hellesøy and Contributors. See LICENSE for details.
 
