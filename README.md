@@ -24,6 +24,7 @@ The documentation is at https://wiki.github.com/cucumber/cucumber/
 * Bump the version number in `lib/cucumber/platform.rb`.
 * Make sure `History.md` is updated with the upcoming version number, and has entries for all fixes.
 
+
     bundle update
     rake
     git commit -m "Release X.Y.Z"
