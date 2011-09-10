@@ -46,7 +46,10 @@ module Cucumber
       NO_PROFILE_SHORT_FLAG = '-P'
       PROFILE_LONG_FLAG = '--profile'
       NO_PROFILE_LONG_FLAG = '--no-profile'
-
+      OPTIONS_WITH_ARGS = Set.new ['-r', '--require', '--i18n', '-f', '--format', '-o', '--out',
+                                  '-t', '--tags', '-n', '--name', '-e', '--exclude',
+                                  PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG,
+                                  '-a', '--autoformat', '-l', '--lines', '--port']
 
       def self.parse(args, out_stream, error_stream, options = {})
         new(out_stream, error_stream, options).parse!(args)
@@ -77,7 +80,10 @@ module Cucumber
         return @expanded_args_without_drb  if @expanded_args_without_drb
         @expanded_args_without_drb = (
           previous_flag_was_profile = false
+          previous_flag_requires_arg = false
+
           @expanded_args.reject do |arg|
+            # ignore profiles
             if previous_flag_was_profile
               previous_flag_was_profile = false
               next true
@@ -86,6 +92,19 @@ module Cucumber
               previous_flag_was_profile = true
               next true
             end
+
+            # accept all options which requires arguments
+            # and don't try to look @overridden_paths in it's arguments!
+            if previous_flag_requires_arg
+              previous_flag_requires_arg = false
+              next false
+            end
+            if OPTIONS_WITH_ARGS.include?(arg)
+              previous_flag_requires_arg = true
+              next false
+            end
+
+            # ignore --drb flag and overridden features paths
             arg == DRB_FLAG || @overridden_paths.include?(arg)
           end
         )
