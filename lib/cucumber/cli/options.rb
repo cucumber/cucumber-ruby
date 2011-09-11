@@ -46,7 +46,7 @@ module Cucumber
       NO_PROFILE_SHORT_FLAG = '-P'
       PROFILE_LONG_FLAG = '--profile'
       NO_PROFILE_LONG_FLAG = '--no-profile'
-      OPTIONS_WITH_ARGS = Set.new ['-r', '--require', '--i18n', '-f', '--format', '-o', '--out',
+      OPTIONS_WITH_ARGS = ['-r', '--require', '--i18n', '-f', '--format', '-o', '--out',
                                   '-t', '--tags', '-n', '--name', '-e', '--exclude',
                                   PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG,
                                   '-a', '--autoformat', '-l', '--lines', '--port']
