@@ -4,6 +4,7 @@
 
 * Guard against the require succeeding, but not properly loading a module. ([#93](https://github.com/cucumber/cucumber/pull/93) Christopher Meiklejohn)
 * Cmdline arguments parsing error if --drb is enabled. ([#117](https://github.com/cucumber/cucumber/issues/117) Roman Chernyatchik)
+* Replace capturing groups with non-capturing in RbTransform#to_s ([#106](https://github.com/cucumber/cucumber/pull/106) Thomas Walpole)
 
 ## [v1.0.3](https://github.com/cucumber/cucumber/compare/v1.0.2...v1.0.3)
 
