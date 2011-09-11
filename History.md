@@ -6,6 +6,7 @@
 * Cmdline arguments parsing error if --drb is enabled. ([#117](https://github.com/cucumber/cucumber/issues/117) Roman Chernyatchik)
 * Replace capturing groups with non-capturing in RbTransform#to_s ([#106](https://github.com/cucumber/cucumber/pull/106) Thomas Walpole)
 * Patched unmatched message in HTML formatter. (Nikita)
+* Overriding a method that causes a NoMethodError when a Before hook is called on a feature run that has no scenarios. (ccthiel)
 
 ## [v1.0.3](https://github.com/cucumber/cucumber/compare/v1.0.2...v1.0.3)
 
