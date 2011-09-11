@@ -23,6 +23,7 @@ The documentation is at https://wiki.github.com/cucumber/cucumber/
 
 * Bump the version number in `lib/cucumber/platform.rb`.
 * Make sure `History.md` is updated with the upcoming version number, and has entries for all fixes.
+* No need to add a `History.md` header at this point - this should be done when a new change is made, later.
 
 Now release it
 
