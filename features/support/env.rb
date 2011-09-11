@@ -24,3 +24,7 @@ Before do
   # Set a longer timeout for aruba
   @aruba_timeout_seconds = 15
 end
+
+After do
+  terminate_background_jobs
+end
