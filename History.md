@@ -1,3 +1,8 @@
+## [v1.0.6](https://github.com/cucumber/cucumber/compare/v1.0.5...v1.0.6)
+
+### Bugfixes
+* Work around rubygems/yaml utter retardedness ([#136](https://github.com/cucumber/cucumber/issues/136) Aslak Hellesøy)
+
 ## [v1.0.5](https://github.com/cucumber/cucumber/compare/v1.0.4...v1.0.5)
 
 ### Bugfixes
