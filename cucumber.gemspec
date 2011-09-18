@@ -52,7 +52,7 @@ for important information about this release. Happy cuking!
   s.add_development_dependency 'capybara', '>= 1.1.0'
 
   s.rubygems_version = ">= 1.6.1"
-  s.files            = `git ls-files`.split("\n")
+  s.files            = `git ls-files`.split("\n").reject {|path| path =~ /\.gitignore$/ }
   s.test_files       = `git ls-files -- {spec,features}/*`.split("\n")
   s.executables      = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.rdoc_options     = ["--charset=UTF-8"]
