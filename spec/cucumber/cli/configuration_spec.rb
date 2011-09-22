@@ -78,6 +78,14 @@ module Cli
           "/features/bar.rb", "/features/baz.rb", "/features/foo.rb"
         ]
       end
+
+      it "issues a helpful error message if the specificed file does not exist" do
+        given_the_following_files("/features/foo.rb")
+
+        config.parse!(%w{--first-file /features/bar.rb})
+
+        lambda{config.all_files_to_load}.should raise_error("The --first-file option specified, '/features/bar.rb', does not exist.")
+      end
     end
 
     describe "--exclude" do

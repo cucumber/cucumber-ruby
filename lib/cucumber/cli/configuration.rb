@@ -92,7 +92,9 @@ module Cucumber
 
         if not @options[:first_file].nil?
           index = sorted_files.index(@options[:first_file])
-          return (sorted_files[index, sorted_files.length - index] + sorted_files[0, index]) unless index.nil?
+          raise "The --first-file option specified, '#{@options[:first_file]}', does not exist." if index.nil?
+
+          return sorted_files[index, sorted_files.length - index] + sorted_files[0, index]
         end
 
         sorted_files
