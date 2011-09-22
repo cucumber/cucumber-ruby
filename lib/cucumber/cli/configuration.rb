@@ -1,6 +1,7 @@
 require 'logger'
 require 'cucumber/cli/options'
 require 'cucumber/constantize'
+require 'cucumber/core_ext/array'
 require 'gherkin/tag_expression'
 
 module Cucumber

@@ -1,5 +1,5 @@
 class Array #:nodoc:
   def rotate(n)
-    [n, length - n] + [0, n]
+    self[n, length - n] + self[0, n]
   end unless method_defined? :rotate
 end
