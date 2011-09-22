@@ -351,6 +351,13 @@ module Cli
         options[:snippets].should == false
       end
     end
+
+    describe "first-file" do
+      it "should provide a first file to run if using first-file" do
+        options.parse!(%w{--first-file /features/foo.rb})
+        options[:first_file].should == '/features/foo.rb'
+      end
+    end
   end
 
 end

@@ -68,6 +68,18 @@ module Cli
       ]
     end
 
+    describe "--first-file" do
+      it "starts with a specific file, if one is specified" do
+        given_the_following_files("/features/foo.rb", "/features/bar.rb", "/features/baz.rb")
+
+        config.parse!(%w{--first-file /features/bar.rb})
+
+        config.all_files_to_load.should == [
+          "/features/bar.rb", "/features/baz.rb", "/features/foo.rb"
+        ]
+      end
+    end
+
     describe "--exclude" do
 
       it "excludes a ruby file from requiring when the name matches exactly" do

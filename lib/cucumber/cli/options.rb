@@ -271,6 +271,9 @@ module Cucumber
           opts.on("--port PORT", "Specify DRb port.  Ignored without --drb") do |port|
             @options[:drb_port] = port
           end
+          opts.on("--first-file FILE", "Specify a first file to run.") do |first_file|
+            @options[:first_file] = first_file
+          end
           opts.on_tail("--version", "Show version.") do
             @out_stream.puts Cucumber::VERSION
             Kernel.exit(0)

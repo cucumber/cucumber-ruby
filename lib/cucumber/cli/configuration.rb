@@ -87,7 +87,15 @@ module Cucumber
         files.reject! {|f| !File.file?(f)}
         files.reject! {|f| File.extname(f) == '.feature' }
         files.reject! {|f| f =~ /^http/}
-        files.sort
+        
+        sorted_files = files.sort
+
+        if not @options[:first_file].nil?
+          index = sorted_files.index(@options[:first_file])
+          return (sorted_files[index, sorted_files.length - index] + sorted_files[0, index]) unless index.nil?
+        end
+
+        sorted_files
       end
 
       def step_defs_to_load
