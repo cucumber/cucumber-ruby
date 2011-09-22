@@ -69,14 +69,29 @@ module Cli
     end
 
     describe "--first-file" do
+      def expect_output_from_first_file(first_file, expected_output)
+        config.parse!(["--first-file", first_file])
+        config.all_files_to_load.should == expected_output
+      end
+
       it "starts with a specific file, if one is specified" do
-        given_the_following_files("/features/foo.rb", "/features/bar.rb", "/features/baz.rb")
+        given_the_following_files("/features/a.rb", "/features/b.rb", "/features/c.rb")
+        expect_output_from_first_file("/features/b.rb", ["/features/b.rb", "/features/c.rb", "/features/a.rb"])
+      end
 
-        config.parse!(%w{--first-file /features/bar.rb})
+      it "does not throw up if the file specified would already come first" do
+        given_the_following_files("/features/a.rb", "/features/b.rb", "/features/c.rb")
+        expect_output_from_first_file("/features/a.rb", ["/features/a.rb", "/features/b.rb", "/features/c.rb"])
+      end
 
-        config.all_files_to_load.should == [
-          "/features/bar.rb", "/features/baz.rb", "/features/foo.rb"
-        ]
+      it "does not throw up if the file specified would come last" do
+        given_the_following_files("/features/a.rb", "/features/b.rb", "/features/c.rb")
+        expect_output_from_first_file("/features/c.rb", ["/features/c.rb", "/features/a.rb", "/features/b.rb"])
+      end
+
+      it "does not throw up if there is only one file to begin with" do
+        given_the_following_files("/features/foo.rb")
+        expect_output_from_first_file("/features/foo.rb", ["/features/foo.rb"])
       end
 
       it "issues a helpful error message if the specificed file does not exist" do
