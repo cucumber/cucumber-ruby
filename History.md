@@ -1,3 +1,8 @@
+## [v1.1.0](https://github.com/cucumber/cucumber/compare/v1.0.6...v1.1.0)
+
+### Changed features
+* The JSON formatter output has changed. See [Gherkin 2.5.0 History](https://github.com/cucumber/gherkin/blob/master/History.md) (Aslak Hellesøy)
+
 ## [v1.0.6](https://github.com/cucumber/cucumber/compare/v1.0.5...v1.0.6)
 
 ### Bugfixes

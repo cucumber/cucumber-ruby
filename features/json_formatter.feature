@@ -181,11 +181,10 @@ Feature: JSON output formatter
                     "keyword": "Then ",
                     "name": "I should fail with",
                     "line": 4,
-                    "multiline_arg": {
-                      "content_type": "",
-                      "value": "a string",
-                      "line": 5,
-                      "type": "doc_string"
+                    "doc_string": {
+                      "content_type": "", 
+                      "value": "a string", 
+                      "line": 5
                     },
                     "match": {
                       "location": "features/step_definitions/doc_string_steps.rb:1"

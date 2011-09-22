@@ -1,1 +1,1 @@
-rvm 1.9.2@cucumber
+rvm gemset use cucumber

@@ -20,7 +20,7 @@ module Cucumber
         end
 
         def step(step)
-          @support_code.invoke(step.name, Ast::MultilineArgument.from(step.multiline_arg)) 
+          @support_code.invoke(step.name, Ast::MultilineArgument.from(step.doc_string || step.rows)) 
         end
 
         def eof

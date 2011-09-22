@@ -98,7 +98,7 @@ module Cucumber
           gherkin_step.line, 
           gherkin_step.keyword, 
           gherkin_step.name, 
-          Ast::MultilineArgument.from(gherkin_step.multiline_arg)
+          Ast::MultilineArgument.from(gherkin_step.doc_string || gherkin_step.rows)
         )
         step.gherkin_statement(gherkin_step)
         @step_container.add_step(step)
