@@ -79,21 +79,6 @@ module Cli
         expect_output_from_first_file("/features/b.rb", ["/features/b.rb", "/features/c.rb", "/features/a.rb"])
       end
 
-      it "does not throw up if the file specified would already come first" do
-        given_the_following_files("/features/a.rb", "/features/b.rb", "/features/c.rb")
-        expect_output_from_first_file("/features/a.rb", ["/features/a.rb", "/features/b.rb", "/features/c.rb"])
-      end
-
-      it "does not throw up if the file specified would come last" do
-        given_the_following_files("/features/a.rb", "/features/b.rb", "/features/c.rb")
-        expect_output_from_first_file("/features/c.rb", ["/features/c.rb", "/features/a.rb", "/features/b.rb"])
-      end
-
-      it "does not throw up if there is only one file to begin with" do
-        given_the_following_files("/features/foo.rb")
-        expect_output_from_first_file("/features/foo.rb", ["/features/foo.rb"])
-      end
-
       it "understands Windows-style paths" do
         given_the_following_files("/features/foo.rb")
         expect_output_from_first_file("\\features\\foo.rb", ["/features/foo.rb"])
