@@ -10,6 +10,7 @@ describe Array do
     
     it "exhibits identical behavior to Array#rotate from Ruby > 1.9" do
       @array.rotate(1).should == [ :b, :c, :a ]
+      @array.rotate(-1).should == [ :c, :a, :b ]
     end
 
     it "returns the same array if the specified index is 0" do
