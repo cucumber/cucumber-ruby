@@ -94,6 +94,11 @@ module Cli
         expect_output_from_first_file("/features/foo.rb", ["/features/foo.rb"])
       end
 
+      it "understands Windows-style paths" do
+        given_the_following_files("/features/foo.rb")
+        expect_output_from_first_file("\\features\\foo.rb", ["/features/foo.rb"])
+      end
+
       it "issues a helpful error message if the specificed file does not exist" do
         given_the_following_files("/features/foo.rb")
 
