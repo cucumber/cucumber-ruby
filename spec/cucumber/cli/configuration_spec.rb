@@ -68,9 +68,9 @@ module Cli
       ]
     end
 
-    describe "--first-file" do
+    describe "--first-feature" do
       def expect_output_from_first_file(first_file, expected_output)
-        config.parse!(["--first-file", first_file])
+        config.parse!(["--first-feature", first_file])
         config.feature_files.should == expected_output
       end
 
@@ -97,9 +97,9 @@ module Cli
       it "issues a helpful error message if the specificed file does not exist" do
         given_the_following_files("/features/foo.rb")
 
-        config.parse!(%w{--first-file /features/bar.rb})
+        config.parse!(%w{--first-feature /features/bar.rb})
 
-        lambda{config.feature_files}.should raise_error("The --first-file option specified, '/features/bar.rb', does not exist.")
+        lambda{config.feature_files}.should raise_error("The --first-feature option specified, '/features/bar.rb', does not exist.")
       end
     end
 

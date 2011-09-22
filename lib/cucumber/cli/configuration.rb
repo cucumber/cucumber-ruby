@@ -116,10 +116,10 @@ module Cucumber
         end.flatten.uniq
         remove_excluded_files_from(potential_feature_files)
 
-        if not @options[:first_file].nil?
-          index = potential_feature_files.index(@options[:first_file])
-          raise "The --first-file option specified, '#{@options[:first_file]}', does not exist." if index.nil?
-          
+        if not @options[:first_feature].nil?
+          index = potential_feature_files.index(@options[:first_feature])
+          raise "The --first-feature option specified, '#{@options[:first_feature]}', does not exist." if index.nil?
+
           potential_feature_files.rotate(index)
         else
           potential_feature_files

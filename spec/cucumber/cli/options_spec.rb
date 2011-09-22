@@ -352,10 +352,10 @@ module Cli
       end
     end
 
-    describe "first-file" do
-      it "should provide a first file to run if using first-file" do
-        options.parse!(%w{--first-file /features/foo.rb})
-        options[:first_file].should == '/features/foo.rb'
+    describe "first-feature" do
+      it "should provide a first file to run if using first-feature" do
+        options.parse!(%w{--first-feature /features/foo.rb})
+        options[:first_feature].should == '/features/foo.rb'
       end
     end
   end
