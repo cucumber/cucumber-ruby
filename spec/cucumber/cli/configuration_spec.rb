@@ -71,7 +71,7 @@ module Cli
     describe "--first-file" do
       def expect_output_from_first_file(first_file, expected_output)
         config.parse!(["--first-file", first_file])
-        config.all_files_to_load.should == expected_output
+        config.feature_files.should == expected_output
       end
 
       it "starts with a specific file, if one is specified" do
@@ -99,7 +99,7 @@ module Cli
 
         config.parse!(%w{--first-file /features/bar.rb})
 
-        lambda{config.all_files_to_load}.should raise_error("The --first-file option specified, '/features/bar.rb', does not exist.")
+        lambda{config.feature_files}.should raise_error("The --first-file option specified, '/features/bar.rb', does not exist.")
       end
     end
 

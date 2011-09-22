@@ -87,17 +87,7 @@ module Cucumber
         files.reject! {|f| !File.file?(f)}
         files.reject! {|f| File.extname(f) == '.feature' }
         files.reject! {|f| f =~ /^http/}
-        
-        sorted_files = files.sort
-
-        if not @options[:first_file].nil?
-          index = sorted_files.index(@options[:first_file])
-          raise "The --first-file option specified, '#{@options[:first_file]}', does not exist." if index.nil?
-
-          sorted_files.rotate(index)
-        else
-          sorted_files
-        end
+        files.sort
       end
 
       def step_defs_to_load
@@ -125,7 +115,15 @@ module Cucumber
           end
         end.flatten.uniq
         remove_excluded_files_from(potential_feature_files)
-        potential_feature_files
+
+        if not @options[:first_file].nil?
+          index = potential_feature_files.index(@options[:first_file])
+          raise "The --first-file option specified, '#{@options[:first_file]}', does not exist." if index.nil?
+          
+          potential_feature_files.rotate(index)
+        else
+          potential_feature_files
+        end
       end
 
       def feature_dirs
