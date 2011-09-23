@@ -271,7 +271,9 @@ module Cucumber
           opts.on("--port PORT", "Specify DRb port.  Ignored without --drb") do |port|
             @options[:drb_port] = port
           end
-          opts.on("--first-feature FILE", "Specify a first file to run.") do |file|
+          opts.on("--first-feature FILE", "Specify a first feature file to run.",
+            "This is useful for CI if you want to restart your build from the last failing feature",
+            "and then cycle back.") do |file|
             @options[:first_feature] = file
           end
           opts.on_tail("--version", "Show version.") do
