@@ -1,3 +1,8 @@
+## In Git
+
+### Changed features
+* Deprecated i18n methods in World, and added a new #step method to use instead. ([#68](https://github.com/cucumber/cucumber/issues/68) Matt Wynne)
+
 ## [v1.1.0](https://github.com/cucumber/cucumber/compare/v1.0.6...v1.1.0)
 
 ### Changed features

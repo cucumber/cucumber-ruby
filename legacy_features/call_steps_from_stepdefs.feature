@@ -46,7 +46,7 @@ Feature: http://gist.github.com/221223
       end
 
       Given /^I use keyword to call a multiline string with (.*)$/ do |s| x=1
-        Given 'a multiline string:', "Hello\n#{s}"
+        step 'a multiline string:', "Hello\n#{s}"
       end
 
       Given /^I call a table with (.*)$/ do |s| x=1
