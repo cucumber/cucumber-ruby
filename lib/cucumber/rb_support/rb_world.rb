@@ -17,12 +17,16 @@ module Cucumber
         rb = @__cucumber_step_mother.load_programming_language('rb')
         rb.execute_transforms([arg]).first
       end
-    
+
       attr_writer :__cucumber_step_mother, :__natural_language
 
-      # Call a step from within a step definition. This method is aliased to
-      # the same i18n as RbDsl.
       def __cucumber_invoke(name, multiline_argument=nil) #:nodoc:
+        STDERR.puts failed + "WARNING: i18n methods within step definitions are deprecated. Use #step instead:" + caller[0] + reset
+        @__cucumber_step_mother.invoke(name, multiline_argument)
+      end
+
+      # Invoke a single step.
+      def step(name, multiline_argument=nil)
         @__cucumber_step_mother.invoke(name, multiline_argument)
       end
 
