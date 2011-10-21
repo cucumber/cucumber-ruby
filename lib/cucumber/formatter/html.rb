@@ -378,6 +378,11 @@ module Cucumber
             matches = message.match(/<code>([^(\/)]+)<\//m)
             message = matches ? matches[1] : ""
           end
+
+          unless exception.instance_of?(RuntimeError)
+            message << " (#{exception.class})"
+          end
+
           @builder.pre do 
             @builder.text!(message)
           end
