@@ -58,3 +58,19 @@ Feature: Nested Steps
       """
     When I run the feature with the progress formatter
     Then the output should contain "WARNING"
+
+  Scenario: Backtrace doesn't skip nested steps
+    Given a step definition that looks like this:
+      """ruby
+      Given /two turtles/ do
+        step "I have a couple turtles"
+      end
+
+      When /I have a couple turtles/ do
+        raise 'error'
+      end
+      """
+    When I run the feature with the progress formatter
+    Then the output should contain "test_feature_1.feature:3"
+    And the output should contain "test_steps2.rb:2"
+    And the output should contain "test_steps2.rb:6"
