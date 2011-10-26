@@ -132,6 +132,16 @@ module Cucumber
             faulty_table.rows_hash
           }.should raise_error('The table must have exactly 2 columns')
         end
+
+        it "should support header and column mapping" do
+          table = Table.new([
+            %w{one 1111},
+            %w{two 22222}
+          ])
+          table.map_headers!({ 'two' => 'Two' }) { |header| header.upcase }
+          table.map_column!('two') { |val| val.to_i }
+          table.rows_hash.should == { 'ONE' => '1111', 'Two' => 22222 }
+        end
       end
 
       describe '#map_headers' do

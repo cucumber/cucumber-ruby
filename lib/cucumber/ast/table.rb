@@ -238,22 +238,7 @@ module Cucumber
       #   # => ['phone number', 'ADDRESS']
       #
       def map_headers!(mappings={}, &block)
-        header_cells = cell_matrix[0]
-
-        if block_given?
-          header_values = header_cells.map { |cell| cell.value } - mappings.keys
-          mappings = mappings.merge(Hash[*header_values.zip(header_values.map(&block)).flatten])
-        end
-
-        mappings.each_pair do |pre, post|
-          mapped_cells = header_cells.select{|cell| pre === cell.value}
-          raise "No headers matched #{pre.inspect}" if mapped_cells.empty?
-          raise "#{mapped_cells.length} headers matched #{pre.inspect}: #{mapped_cells.map{|c| c.value}.inspect}" if mapped_cells.length > 1
-          mapped_cells[0].value = post
-          if @conversion_procs.has_key?(pre)
-            @conversion_procs[post] = @conversion_procs.delete(pre)
-          end
-        end
+        convert_headers!(mappings, &block)
       end
 
       # Returns a new Table where the headers are redefined. See #map_headers!
@@ -494,6 +479,25 @@ module Cucumber
           conversion_proc = @conversion_procs[col[0].value]
           col[1..-1].each do |cell|
             cell.value = conversion_proc.call(cell.value)
+          end
+        end
+      end
+
+      def convert_headers!(mappings = {}, &block)
+        header_cells = cell_matrix[0]
+
+        if block_given?
+          header_values = header_cells.map { |cell| cell.value } - mappings.keys
+          mappings = mappings.merge(Hash[*header_values.zip(header_values.map(&block)).flatten])
+        end
+
+        mappings.each_pair do |pre, post|
+          mapped_cells = header_cells.select { |cell| pre === cell.value }
+          raise "No headers matched #{pre.inspect}" if mapped_cells.empty?
+          raise "#{mapped_cells.length} headers matched #{pre.inspect}: #{mapped_cells.map { |c| c.value }.inspect}" if mapped_cells.length > 1
+          mapped_cells[0].value = post
+          if @conversion_procs.has_key?(pre)
+            @conversion_procs[post] = @conversion_procs.delete(pre)
           end
         end
       end
