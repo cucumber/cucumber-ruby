@@ -68,12 +68,14 @@ module Cucumber
       it "should pass silently if a mapped column does not exist in non-strict mode" do
         lambda {
           @table.map_column!('two', false) { |v| v.to_i }
+          @table.hashes
         }.should_not raise_error
       end
 
       it "should fail if a mapped column does not exist in strict mode" do
         lambda {
           @table.map_column!('two', true) { |v| v.to_i }
+          @table.hashes
         }.should raise_error('The column named "two" does not exist')
       end
 
@@ -139,7 +141,7 @@ module Cucumber
             %w{two 22222}
           ])
           table.map_headers!({ 'two' => 'Two' }) { |header| header.upcase }
-          table.map_column!('two') { |val| val.to_i }
+          table.map_column!('two', false) { |val| val.to_i }
           table.rows_hash.should == { 'ONE' => '1111', 'Two' => 22222 }
         end
       end
