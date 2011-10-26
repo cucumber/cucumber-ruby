@@ -390,6 +390,7 @@ module Cucumber
           ])
           lambda do
             t1.map_headers!(/uk/ => 'u')
+            t1.hashes
           end.should raise_error(%{2 headers matched /uk/: ["Cuke", "Duke"]})
         end
         
