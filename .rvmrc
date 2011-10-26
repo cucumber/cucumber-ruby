@@ -1,1 +1,1 @@
-rvm @cucumber --create
+rvm gemset use cucumber

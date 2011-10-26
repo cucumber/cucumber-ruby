@@ -7,8 +7,8 @@ module CucumberRubyMappings
     run_simple "#{cucumber_bin} features/a_feature.feature --name '#{scenario_name}'", false
   end
 
-  def run_feature
-    run_simple "#{cucumber_bin} features/a_feature.feature", false
+  def run_feature(filename = 'features/a_feature.feature', formatter = 'progress')
+    run_simple "#{cucumber_bin} #{filename} --format #{formatter}", false
   end
 
   def cucumber_bin
@@ -54,7 +54,7 @@ EOF
   end
 
   def write_calculator_code
-        code = <<-EOF
+    code = <<-EOF
 # http://en.wikipedia.org/wiki/Reverse_Polish_notation
 class RpnCalculator
   def initialize
@@ -163,6 +163,35 @@ EOF
   def failed_output
     "failed"
   end
+
+  def run_spork_in_background(port = nil)
+    require 'spork'
+
+    pid = fork
+    in_current_dir do
+      if pid
+        background_jobs << pid
+      else
+        # STDOUT.close
+        # STDERR.close
+        port_arg = port ? "-p #{port}" : ''
+        cmd = "#{Cucumber::RUBY_BINARY} -I #{Cucumber::LIBDIR} #{Spork::BINARY} cuc #{port_arg}"
+        exec cmd
+      end
+    end
+    sleep 1.0
+  end
+
+  def background_jobs
+    @background_jobs ||= []
+  end
+
+  def terminate_background_jobs
+    background_jobs.each do |pid|
+      Process.kill(Signal.list['TERM'], pid)
+    end
+  end
+
 end
 
 World(CucumberRubyMappings)

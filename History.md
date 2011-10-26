@@ -1,3 +1,42 @@
+## In Git
+
+### Changed features
+* Deprecated i18n methods in World, and added a new #step method to use instead. ([#68](https://github.com/cucumber/cucumber/issues/68) Matt Wynne)
+
+## [v1.1.0](https://github.com/cucumber/cucumber/compare/v1.0.6...v1.1.0)
+
+### Changed features
+* The JSON formatter output has changed. See [Gherkin 2.5.0 History](https://github.com/cucumber/gherkin/blob/master/History.md) (Aslak Hellesøy)
+
+## [v1.0.6](https://github.com/cucumber/cucumber/compare/v1.0.5...v1.0.6)
+
+### Bugfixes
+* Work around rubygems/yaml utter retardedness ([#136](https://github.com/cucumber/cucumber/issues/136) Aslak Hellesøy)
+
+## [v1.0.5](https://github.com/cucumber/cucumber/compare/v1.0.4...v1.0.5)
+
+### Bugfixes
+
+* Gemspec corrupted in 1.0.4 (I had to upgrade my rubygems to 1.8.10 to fix it). ([#136](https://github.com/cucumber/cucumber/issues/136) Aslak Hellesøy)
+
+## [v1.0.4](https://github.com/cucumber/cucumber/compare/v1.0.3...v1.0.4)
+
+### Bugfixes
+
+* Guard against the require succeeding, but not properly loading a module. ([#93](https://github.com/cucumber/cucumber/pull/93) Christopher Meiklejohn)
+* Cmdline arguments parsing error if --drb is enabled. ([#117](https://github.com/cucumber/cucumber/issues/117) Roman Chernyatchik)
+* Replace capturing groups with non-capturing in RbTransform#to_s ([#106](https://github.com/cucumber/cucumber/pull/106) Thomas Walpole)
+* Patched unmatched message in HTML formatter. (Nikita)
+* Overriding a method that causes a NoMethodError when a Before hook is called on a feature run that has no scenarios. (ccthiel)
+
+## [v1.0.3](https://github.com/cucumber/cucumber/compare/v1.0.2...v1.0.3)
+
+### Bugfixes
+* Do not escape the replaced entity ([#126](https://github.com/cucumber/cucumber/pull/126) Jonathan Tron)
+
+### New Features
+* DocStrings now have a content_type ([#132](https://github.com/cucumber/cucumber/issues/132) Matt Wynne)
+
 ## [v1.0.2](https://github.com/cucumber/cucumber/compare/v1.0.1...v1.0.2)
 
 ### Bugfixes

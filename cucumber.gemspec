@@ -23,33 +23,33 @@ for important information about this release. Happy cuking!
 
 }
 
-  s.add_dependency 'gherkin', '~> 2.4.5'
-  s.add_dependency 'term-ansicolor', '>= 1.0.5'
+  s.add_dependency 'gherkin', '~> 2.5.0'
+  s.add_dependency 'term-ansicolor', '>= 1.0.6'
   s.add_dependency 'builder', '>= 2.1.2'
   s.add_dependency 'diff-lcs', '>= 1.1.2'
   s.add_dependency 'json', '>= 1.4.6'
   
-  s.add_development_dependency 'aruba', '~> 0.4.2'
+  s.add_development_dependency 'aruba', '~> 0.4.6'
   s.add_development_dependency 'rake', '>= 0.9.2'
   s.add_development_dependency 'rspec', '>= 2.6.0'
-  s.add_development_dependency 'nokogiri', '>= 1.4.4'
-  s.add_development_dependency 'prawn', '= 0.8.4'
-  s.add_development_dependency 'prawn-layout', '= 0.8.4'
+  s.add_development_dependency 'nokogiri', '>= 1.5.0'
+  s.add_development_dependency 'prawn', '~> 0.8.4'
+  s.add_development_dependency 'prawn-layout', '~> 0.8.4'
   s.add_development_dependency 'syntax', '>= 1.0.0'
-  s.add_development_dependency 'spork', '>= 0.9.0.rc7'
+  s.add_development_dependency 'spork', '>= 0.9.0.rc9'
   s.add_development_dependency 'simplecov', '>= 0.4.2'
 
   # For Documentation:
-  s.add_development_dependency('yard', '= 0.7.1')
-  s.add_development_dependency('rdiscount', '= 1.6.8')
-  s.add_development_dependency('bcat', '= 0.6.1')
+  s.add_development_dependency('yard', '~> 0.7.2')
+  s.add_development_dependency('rdiscount', '~> 1.6.8')
+  s.add_development_dependency('bcat', '~> 0.6.1')
     
   # Needed for examples (rake examples)
   s.add_development_dependency 'ramaze'
   s.add_development_dependency 'rack-test', '>= 0.5.7'
   s.add_development_dependency 'webrat', '>= 0.7.3'
   s.add_development_dependency 'sinatra', '>= 1.2.6'
-  s.add_development_dependency 'capybara', '>= 1.0.0'
+  s.add_development_dependency 'capybara', '>= 1.1.0'
 
   s.rubygems_version = ">= 1.6.1"
   s.files            = `git ls-files`.split("\n")

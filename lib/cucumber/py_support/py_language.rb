@@ -35,12 +35,12 @@ module Cucumber
       def begin_scenario(scenario)
         @python_path = []
         add_to_python_path(File.dirname(__FILE__))
-        @step_def_files.each{|f| add_to_python_path(File.dirname(f))}
+        @step_def_files.each { |f| add_to_python_path(File.dirname(f)) }
 
         RubyPython.start
 
         @delegate = import(File.dirname(__FILE__) + '/py_language.py')
-        @step_def_files.each{|f| import(f)}
+        @step_def_files.each { |f| import(f) }
       end
 
       def end_scenario
@@ -56,7 +56,7 @@ module Cucumber
         modname = File.basename(path)[0...-File.extname(path).length]
         begin
           mod = RubyPython.import(modname)
-        rescue PythonError => e
+        rescue RubyPython::PythonError => e
 #          e.message << "Couldn't load #{path}\nConsider adding #{File.expand_path(File.dirname(path))} to your PYTHONPATH"
           raise e
         end

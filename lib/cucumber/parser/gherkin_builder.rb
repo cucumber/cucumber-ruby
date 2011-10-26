@@ -1,5 +1,6 @@
 require 'cucumber/ast'
 require 'gherkin/rubify'
+require 'cucumber/ast/multiline_argument'
 
 module Cucumber
   module Parser
@@ -92,17 +93,15 @@ module Cucumber
         @step_container.add_examples(examples_fields, examples)
       end
 
-      def step(step)
-        @table_owner = Ast::Step.new(step.line, step.keyword, step.name)
-        @table_owner.gherkin_statement(step)
-        multiline_arg = rubify(step.multiline_arg)
-        case(multiline_arg)
-        when Gherkin::Formatter::Model::DocString
-          @table_owner.multiline_arg = Ast::DocString.new(multiline_arg.value)
-        when Array
-          @table_owner.multiline_arg = Ast::Table.new(matrix(multiline_arg))
-        end
-        @step_container.add_step(@table_owner)
+      def step(gherkin_step)
+        step = Ast::Step.new(
+          gherkin_step.line, 
+          gherkin_step.keyword, 
+          gherkin_step.name, 
+          Ast::MultilineArgument.from(gherkin_step.doc_string || gherkin_step.rows)
+        )
+        step.gherkin_statement(gherkin_step)
+        @step_container.add_step(step)
       end
 
       def eof

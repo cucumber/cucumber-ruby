@@ -19,7 +19,22 @@ The documentation is at https://wiki.github.com/cucumber/cucumber/
     git submodule update --init --recursive
     rake
 
+## Release Process
+
+Before you even attempt to do a release, make sure you can log into cukes.info and touch a file in /var/www/cucumber/api/ruby (see gem_tasks/yard.rake). You need to be able to do this in order to upload YARD docs as part of the release.
+
+* Bump the version number in `lib/cucumber/platform.rb`.
+* Make sure `History.md` is updated with the upcoming version number, and has entries for all fixes.
+* No need to add a `History.md` header at this point - this should be done when a new change is made, later.
+
+Now release it
+
+    bundle update
+    rake
+    git commit -m "Release X.Y.Z"
+    rake release
+
 ## Copyright
 
-Copyright (c) 2008,2009,2010,2011 Aslak Hellesøy. See LICENSE for details.
+Copyright (c) 2008,2009,2010,2011 Aslak Hellesøy and Contributors. See LICENSE for details.
 
