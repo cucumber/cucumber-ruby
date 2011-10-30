@@ -11,19 +11,7 @@ module Cucumber
 
       def initialize(step_mother, io, options)
         @io = ensure_io(io, "json")
-        @io.write('{"features":[')
         super(Gherkin::Formatter::JSONFormatter.new(@io), false)
-      end
-
-      def before_feature(feature)
-        super
-        @io.write(',') if @one
-        @one = true
-      end
-
-      def after_features(features)
-        @io.write(']}')
-        @io.flush
       end
     end
   end

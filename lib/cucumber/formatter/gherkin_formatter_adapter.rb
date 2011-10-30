@@ -71,6 +71,10 @@ module Cucumber
         @gf.eof
       end
 
+      def after_features(features)
+        @gf.close
+      end
+
       def embed(file, mime_type, label)
         data = File.read(file)
         if defined?(JRUBY_VERSION)

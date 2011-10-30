@@ -12,12 +12,12 @@ Feature: Language help
             | scenario         | "Cenário", "Cenario"                       |
             | scenario_outline | "Esquema do Cenário", "Esquema do Cenario" |
             | examples         | "Exemplos"                                 |
-            | given            | "* ", "Dado "                              |
+            | given            | "* ", "Dado ", "Dada ", "Dados ", "Dadas " |
             | when             | "* ", "Quando "                            |
             | then             | "* ", "Então ", "Entao "                   |
             | and              | "* ", "E "                                 |
             | but              | "* ", "Mas "                               |
-            | given (code)     | "Dado"                                     |
+            | given (code)     | "Dado", "Dada", "Dados", "Dadas"           |
             | when (code)      | "Quando"                                   |
             | then (code)      | "Então", "Entao"                           |
             | and (code)       | "E"                                        |
