@@ -2,7 +2,8 @@
 
 ### Changed features
 
-The JSON formatter output has changed slightly. Old format:
+* Deprecated i18n methods in World, and added a new #step method to use instead. ([#68](https://github.com/cucumber/cucumber/issues/68) Matt Wynne)
+* The JSON formatter output has changed slightly. Old format:
 
     {
       features: [feature here]

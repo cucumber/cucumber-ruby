@@ -75,7 +75,7 @@ Then /^it should (fail|pass) with$/ do |success, output|
   unless combined_output.index(output)
     combined_output.should == output
   end
-  Then("it should #{success}")
+  step("it should #{success}")
 end
 
 Then /^the output should contain "([^"]*)"$/ do |text|
