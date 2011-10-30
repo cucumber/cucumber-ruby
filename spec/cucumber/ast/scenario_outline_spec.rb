@@ -52,10 +52,9 @@ module Cucumber
                   %w{20 6 14}
                 ]
               ],
-              Gherkin::Formatter::Model::Examples.new(nil, nil, nil, nil, nil, nil, nil)
+              Gherkin::Formatter::Model::Examples.new(nil, nil, nil, nil, nil, nil, nil, nil)
             ]
           ]
-
         )
       end
 

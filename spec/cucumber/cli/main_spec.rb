@@ -47,7 +47,7 @@ module Cucumber
 
         before(:each) do
           b = Cucumber::Parser::GherkinBuilder.new
-          @empty_feature = b.feature(Gherkin::Formatter::Model::Feature.new([], [], "Feature", "Foo", "", 99))
+          @empty_feature = b.feature(Gherkin::Formatter::Model::Feature.new([], [], "Feature", "Foo", "", 99, ""))
         end
 
         it "should show feature files parsed" do

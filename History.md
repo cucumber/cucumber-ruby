@@ -1,3 +1,19 @@
+## [v1.1.1](https://github.com/cucumber/cucumber/compare/v1.1.0...v1.1.1)
+
+### Changed features
+
+The JSON formatter output has changed slightly. Old format:
+
+    {
+      features: [feature here]
+    }
+
+New format:
+
+    [feature here]
+ 
+Also see [Gherkin 2.6.0 History](https://github.com/cucumber/gherkin/blob/master/History.md) for info about new `id` and `uri` elements in the JSON.
+
 ## [v1.1.0](https://github.com/cucumber/cucumber/compare/v1.0.6...v1.1.0)
 
 ### Changed features
