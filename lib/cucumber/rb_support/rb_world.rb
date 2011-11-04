@@ -21,7 +21,7 @@ module Cucumber
       attr_writer :__cucumber_step_mother, :__natural_language
 
       def __cucumber_invoke(name, multiline_argument=nil) #:nodoc:
-        STDERR.puts failed + "WARNING: i18n methods within step definitions are deprecated. Use #step instead:" + caller[0] + reset
+        STDERR.puts failed + "WARNING: Using 'Given/When/Then' in step definitions is deprecated, use 'step' to call other steps instead:" + caller[0] + reset
         @__cucumber_step_mother.invoke(name, multiline_argument)
       end
 
