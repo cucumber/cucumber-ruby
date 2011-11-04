@@ -29,8 +29,9 @@ Feature: Use * keywords and still get snippets
         pending # express the regexp above with the code you wish you had
       end
       
-      If you want snippets in a different programming language, just make sure a file
-      with the appropriate file extension exists where cucumber looks for step definitions.
+      If you want snippets in a different programming language,
+      just make sure a file with the appropriate file extension
+      exists where cucumber looks for step definitions.
 
       
       """
