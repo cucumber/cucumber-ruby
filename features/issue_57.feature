@@ -10,6 +10,7 @@ Feature: Rerun formatter: Test for Issue #57
           Given a <certain> step
         
         Examples:
+          |certain|
           |passing|
           |failing|
 
@@ -25,11 +26,11 @@ Feature: Rerun formatter: Test for Issue #57
       end
       """
 
-  Scenario: Show that it's borken 
+  Scenario: Handle examples with the rerun formatter
     When I run cucumber "features/one_passing_one_failing.feature -r features -f rerun"
     Then it should fail with:
     """
-    features/one_passing_one_failing.feature:8
+    features/one_passing_one_failing.feature:9
 
     """
 
