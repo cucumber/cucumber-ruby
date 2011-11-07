@@ -19,18 +19,25 @@ module Cucumber
 
       class MissingProc < StandardError
         def message
-          "Step definitions must always have a proc"
+          "Step definitions must always have a proc or symbol"
         end
       end
 
-      def initialize(rb_language, regexp, proc)
-        raise MissingProc if proc.nil?
+      def initialize(rb_language, regexp, proc_or_sym, options)
+        raise MissingProc if proc_or_sym.nil?
         if String === regexp
           p = Regexp.escape(regexp)
           p = p.gsub(/\\\$\w+/, '(.*)') # Replace $var with (.*)
           regexp = Regexp.new("^#{p}$") 
         end
-        @rb_language, @regexp, @proc = rb_language, regexp, proc
+        @rb_language, @regexp, @proc = rb_language, regexp, proc_or_sym
+        if @proc.kind_of? Symbol
+          @proc = lambda do |*args|
+            target = options[:on] ? instance_exec(&options[:on]) : self
+            target.send(proc_or_sym, *args)
+          end
+        end
+
         @rb_language.available_step_definition(regexp_source, file_colon_line)
       end
 
@@ -71,7 +78,12 @@ module Cucumber
       end
 
       def file_colon_line
-        @proc.file_colon_line
+        case @proc
+        when Proc
+          @proc.file_colon_line
+        when Symbol
+          ":#{@proc}"
+        end
       end
     
       def file

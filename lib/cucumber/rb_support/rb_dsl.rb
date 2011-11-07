@@ -23,8 +23,8 @@ module Cucumber
           @rb_language.register_rb_transform(regexp, proc)          
         end
 
-        def register_rb_step_definition(regexp, proc)
-          @rb_language.register_rb_step_definition(regexp, proc)
+        def register_rb_step_definition(regexp, proc_or_sym, options = {})
+          @rb_language.register_rb_step_definition(regexp, proc_or_sym, options)
         end
       end
 
@@ -98,12 +98,19 @@ module Cucumber
       # also to the i18n translations whenever a feature of a
       # new language is loaded.
       #
-      # The +&proc+ gets executed in the context of a <tt>World</tt>
-      # object, which is defined by #World. A new <tt>World</tt>
-      # object is created for each scenario and is shared across
-      # step definitions within that scenario.
-      def register_rb_step_definition(regexp, &proc)
-        RbDsl.register_rb_step_definition(regexp, proc)
+      # If provided, the +symbol+ is sent to the <tt>World</tt> object
+      # as defined by #World. A new <tt>World</tt> object is created
+      # for each scenario and is shared across step definitions within
+      # that scenario. If the +options+ hash contains an <tt>:on</tt>
+      # key, the value for this is assumed to be a proc. This proc
+      # will be executed in the context of the <tt>World</tt> object
+      # and then sent the +symbol+.
+      #
+      # If no +symbol+ if provided then the +&proc+ gets executed in
+      # the context of the <tt>World</tt> object.
+      def register_rb_step_definition(regexp, symbol = nil, options = {}, &proc)
+        proc_or_sym = symbol || proc
+        RbDsl.register_rb_step_definition(regexp, proc_or_sym, options)
       end
     end
   end

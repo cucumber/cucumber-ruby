@@ -44,6 +44,22 @@ module Cucumber
         $inside.should == 'inside'
       end
 
+      it "should call a method on the world when specified with a symbol" do
+        rb.current_world.should_receive(:with_symbol)
+        dsl.Given /With symbol/, :with_symbol
+
+        support_code.step_match("With symbol").invoke(nil)
+      end
+
+      it "should call a method on a specified object" do
+        target = double('target')
+        target.should_receive(:with_symbol)
+        rb.current_world.stub!(:target).and_return(target)
+        dsl.Given /With symbol on block/, :with_symbol, :on => lambda { target }
+
+        support_code.step_match("With symbol on block").invoke(nil)
+      end
+
       it "should raise Undefined when inside step is not defined" do
         dsl.Given /Outside/ do
           Given 'Inside'
@@ -91,7 +107,7 @@ module Cucumber
       end
 
       it "should have a JSON representation of the signature" do
-        RbStepDefinition.new(rb, /I CAN HAZ (\d+) CUKES/i, lambda{}).to_hash.should == {'source' => "I CAN HAZ (\\d+) CUKES", 'flags' => 'i'}
+        RbStepDefinition.new(rb, /I CAN HAZ (\d+) CUKES/i, lambda{}, {}).to_hash.should == {'source' => "I CAN HAZ (\\d+) CUKES", 'flags' => 'i'}
       end
     end
   end
