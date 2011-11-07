@@ -31,6 +31,5 @@ Feature: Rerun formatter: Test for Issue #57
     Then it should fail with:
     """
     features/one_passing_one_failing.feature:9
-
     """
 
