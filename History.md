@@ -1,4 +1,8 @@
-## [v1.1.1](https://github.com/cucumber/cucumber/compare/v1.1.0...v1.1.1)
+## [v1.1.2](https://github.com/cucumber/cucumber/compare/v1.1.1...v1.1.2)
+
+### Changed features
+
+* Break long lines in output. Only needed for better output formatting in the Cucumber Book! (Aslak Hellesøy)
 
 ### Changed features
 
