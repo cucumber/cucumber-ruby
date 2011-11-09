@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/cucumber/cucumber.png)](http://travis-ci.org/cucumber/cucumber)
+
 The main website is at http://cukes.info/
 The documentation is at https://wiki.github.com/cucumber/cucumber/
 
