@@ -46,7 +46,7 @@ module Cucumber
       end
 
       def after_feature_element(feature_element)
-        if @rerun
+        if @rerun || feature_element.failed?
           file, line = *feature_element.file_colon_line.split(':')
           @lines << line
           @file = file
