@@ -311,7 +311,7 @@ module Cucumber
           @builder.tr do
             @builder.td(:colspan => @col_index.to_s, :class => 'failed') do
               @builder.pre do |pre|
-                pre << format_exception(table_row.exception)
+                pre << h(format_exception(table_row.exception))
               end
             end
           end
