@@ -6,6 +6,10 @@
 * Retry when feature_element returns failed ([#172](https://github.com/cucumber/cucumber/pull/172) Charles Finkel)
 * Rerun formatter output does not include failing scenario outline examples ([#57](https://github.com/cucumber/cucumber/issues/57) Jan Brauer)
 
+### New Features
+
+* Show class name of exceptions in the HTML formatter ([#159](https://github.com/cucumber/cucumber/pull/159) Jari Bakken)
+
 ## [v1.1.2](https://github.com/cucumber/cucumber/compare/v1.1.1...v1.1.2)
 
 ### Changed features
