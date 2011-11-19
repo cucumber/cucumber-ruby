@@ -9,6 +9,7 @@
 ### New Features
 
 * Show class name of exceptions in the HTML formatter ([#159](https://github.com/cucumber/cucumber/pull/159) Jari Bakken)
+* Deferred table header and column mappings ([#163](https://github.com/cucumber/cucumber/pull/163) Richard Lawrence)
 
 ## [v1.1.2](https://github.com/cucumber/cucumber/compare/v1.1.1...v1.1.2)
 
