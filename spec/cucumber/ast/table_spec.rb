@@ -68,12 +68,14 @@ module Cucumber
       it "should pass silently if a mapped column does not exist in non-strict mode" do
         lambda {
           @table.map_column!('two', false) { |v| v.to_i }
+          @table.hashes
         }.should_not raise_error
       end
 
       it "should fail if a mapped column does not exist in strict mode" do
         lambda {
           @table.map_column!('two', true) { |v| v.to_i }
+          @table.hashes
         }.should raise_error('The column named "two" does not exist')
       end
 
@@ -131,6 +133,16 @@ module Cucumber
           lambda {
             faulty_table.rows_hash
           }.should raise_error('The table must have exactly 2 columns')
+        end
+
+        it "should support header and column mapping" do
+          table = Table.new([
+            %w{one 1111},
+            %w{two 22222}
+          ])
+          table.map_headers!({ 'two' => 'Two' }) { |header| header.upcase }
+          table.map_column!('two', false) { |val| val.to_i }
+          table.rows_hash.should == { 'ONE' => '1111', 'Two' => 22222 }
         end
       end
 
@@ -378,6 +390,7 @@ module Cucumber
           ])
           lambda do
             t1.map_headers!(/uk/ => 'u')
+            t1.hashes
           end.should raise_error(%{2 headers matched /uk/: ["Cuke", "Duke"]})
         end
         
