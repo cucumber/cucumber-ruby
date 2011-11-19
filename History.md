@@ -1,3 +1,9 @@
+## In Git
+
+### Bugfixes
+
+* Escape exceptions in HTML formatter ([#178](https://github.com/cucumber/cucumber/pull/178) leachdaniel)
+
 ## [v1.1.2](https://github.com/cucumber/cucumber/compare/v1.1.1...v1.1.2)
 
 ### Changed features
