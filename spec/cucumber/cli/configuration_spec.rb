@@ -68,6 +68,31 @@ module Cli
       ]
     end
 
+    describe "--first-feature" do
+      def expect_output_from_first_file(first_file, expected_output)
+        config.parse!(["--first-feature", first_file])
+        config.feature_files.should == expected_output
+      end
+
+      it "starts with a specific file, if one is specified" do
+        given_the_following_files("/features/a.rb", "/features/b.rb", "/features/c.rb")
+        expect_output_from_first_file("/features/b.rb", ["/features/b.rb", "/features/c.rb", "/features/a.rb"])
+      end
+
+      it "understands Windows-style paths" do
+        given_the_following_files("/features/foo.rb")
+        expect_output_from_first_file("\\features\\foo.rb", ["/features/foo.rb"])
+      end
+
+      it "issues a helpful error message if the specificed file does not exist" do
+        given_the_following_files("/features/foo.rb")
+
+        config.parse!(%w{--first-feature /features/bar.rb})
+
+        lambda{config.feature_files}.should raise_error("The --first-feature option specified, '/features/bar.rb', does not exist.")
+      end
+    end
+
     describe "--exclude" do
 
       it "excludes a ruby file from requiring when the name matches exactly" do

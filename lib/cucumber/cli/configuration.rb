@@ -1,6 +1,7 @@
 require 'logger'
 require 'cucumber/cli/options'
 require 'cucumber/constantize'
+require 'cucumber/core_ext/array'
 require 'gherkin/tag_expression'
 
 module Cucumber
@@ -115,7 +116,17 @@ module Cucumber
           end
         end.flatten.uniq
         remove_excluded_files_from(potential_feature_files)
-        potential_feature_files
+
+        first_feature_file = @options[:first_feature]
+        if not first_feature_file.nil?
+          first_feature_file = first_feature_file.gsub(/\\/, '/')
+          index = potential_feature_files.index(first_feature_file)
+          raise "The --first-feature option specified, '#{first_feature_file}', does not exist." if index.nil?
+
+          potential_feature_files.rotate(index)
+        else
+          potential_feature_files
+        end
       end
 
       def feature_dirs
