@@ -3,6 +3,7 @@
 ### Bugfixes
 
 * Escape exceptions in HTML formatter ([#178](https://github.com/cucumber/cucumber/pull/178) leachdaniel)
+* Retry when feature_element returns failed ([#172](https://github.com/cucumber/cucumber/pull/172) Charles Finkel)
 
 ## [v1.1.2](https://github.com/cucumber/cucumber/compare/v1.1.1...v1.1.2)
 
