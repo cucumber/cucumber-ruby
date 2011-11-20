@@ -1,3 +1,4 @@
+require 'fileutils'
 require 'gherkin/rubify'
 require 'gherkin/i18n'
 require 'cucumber/configuration'
@@ -118,6 +119,32 @@ module Cucumber
       @support_code.unknown_programming_language?
     end
 
+    def write_stepdefs_json
+      if(@configuration.dotcucumber)
+        stepdefs = {}
+        @support_code.step_definitions.sort{|a,b| a.to_hash['source'] <=> a.to_hash['source']}.each do |stepdef|
+          steps = []
+          features.each do |feature|
+            feature.feature_elements.each do |feature_element|
+              feature_element.raw_steps.each do |step|
+                if(stepdef.arguments_from(step.name))
+                  steps << step.name
+                end
+              end
+            end
+          end
+          regexp = stepdef.to_hash['source']
+          stepdefs[regexp] = steps.uniq.sort
+        end
+        if !File.directory?(@configuration.dotcucumber)
+          FileUtils.mkdir_p(@configuration.dotcucumber)
+        end
+        File.open(File.join(@configuration.dotcucumber, 'stepdefs.json'), 'w') do |io|
+          io.write(JSON.pretty_generate(stepdefs))
+        end
+      end
+    end
+
   private
 
     def fire_after_configuration_hook #:nodoc
@@ -125,11 +152,11 @@ module Cucumber
     end
 
     def features
-      loader = Runtime::FeaturesLoader.new(
+      @loader ||= Runtime::FeaturesLoader.new(
         @configuration.feature_files, 
         @configuration.filters, 
         @configuration.tag_expression)
-      loader.features
+      @loader.features
     end
 
     def load_step_definitions

@@ -64,6 +64,10 @@ module Cucumber
         @options[:expand]
       end
 
+      def dotcucumber
+        @options[:dotcucumber]
+      end
+
       def build_tree_walker(step_mother)
         Ast::TreeWalker.new(step_mother, formatters(step_mother), self)
       end

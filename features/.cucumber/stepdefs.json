@@ -1,0 +1,298 @@
+{
+  "^I'm using a clean gemset \"([^\"]*)\"$": [
+
+  ],
+  "^a directory named \"([^\"]*)\"$": [
+
+  ],
+  "^a file named \"([^\"]*)\" with:$": [
+    "a file named \"features/doc_string.feature\" with:",
+    "a file named \"features/f.feature\" with:",
+    "a file named \"features/only_background_and_hooks.feature\" with:",
+    "a file named \"features/only_background_and_hooks_steps.rb\" with:",
+    "a file named \"features/step_definitions/doc_string_steps.rb\" with:",
+    "a file named \"features/step_definitions/multiline_steps.rb\" with:",
+    "a file named \"features/step_definitions/steps.rb\" with:",
+    "a file named \"features/support/hooks.rb\" with:",
+    "a file named \"features/support/ze/formator.rb\" with:"
+  ],
+  "^a (\\d+) byte file named \"([^\"]*)\"$": [
+
+  ],
+  "^an empty file named \"([^\"]*)\"$": [
+
+  ],
+  "^I write to \"([^\"]*)\" with:$": [
+
+  ],
+  "^I overwrite \"([^\"]*)\" with:$": [
+
+  ],
+  "^I append to \"([^\"]*)\" with:$": [
+
+  ],
+  "^I append to \"([^\"]*)\" with \"([^\"]*)\"$": [
+
+  ],
+  "^I remove the file \"([^\"]*)\"$": [
+
+  ],
+  "^I cd to \"([^\"]*)\"$": [
+
+  ],
+  "^I run \"(.*)\"$": [
+
+  ],
+  "^I run `([^`]*)`$": [
+    "I run `cucumber -f stepdefs --dry-run`",
+    "I run `cucumber -f usage --dry-run`",
+    "I run `cucumber -q -t @one -t @three features/tagulicious.feature`",
+    "I run `cucumber -q -t @one,@three features/tagulicious.feature`",
+    "I run `cucumber -q features/background_tagged_before_on_outline.feature`",
+    "I run `cucumber -q features/failing_background.feature`",
+    "I run `cucumber -q features/failing_background_after_success.feature`",
+    "I run `cucumber -q features/multiline_args_background.feature`",
+    "I run `cucumber -q features/passing_background.feature:9`",
+    "I run `cucumber -q features/passing_background.feature`",
+    "I run `cucumber -q features/pending_background.feature`",
+    "I run `cucumber -q features/scenario_outline_failing_background.feature`",
+    "I run `cucumber -q features/scenario_outline_passing_background.feature`",
+    "I run `cucumber -q features/tagulicious.feature`",
+    "I run `cucumber features/f.feature:2`",
+    "I run `cucumber features/f.feature:6`",
+    "I run `cucumber features/only_background_and_hooks.feature`",
+    "I run `cucumber`"
+  ],
+  "^I successfully run \"(.*)\"$": [
+
+  ],
+  "^I successfully run `([^`]*)`$": [
+
+  ],
+  "^I run \"([^\"]*)\" interactively$": [
+
+  ],
+  "^I run `([^`]*)` interactively$": [
+
+  ],
+  "^I type \"([^\"]*)\"$": [
+
+  ],
+  "^the output should contain \"([^\"]*)\"$": [
+    "the output should contain \"WARNING\""
+  ],
+  "^the output from \"([^\"]*)\" should contain \"([^\"]*)\"$": [
+
+  ],
+  "^the output from \"([^\"]*)\" should not contain \"([^\"]*)\"$": [
+
+  ],
+  "^the output should not contain \"([^\"]*)\"$": [
+
+  ],
+  "^the output should contain:$": [
+    "the output should contain:"
+  ],
+  "^the output should not contain:$": [
+
+  ],
+  "^the output should contain exactly \"([^\"]*)\"$": [
+
+  ],
+  "^the output should contain exactly:$": [
+
+  ],
+  "^the output should match \\/([^\\/]*)\\/$": [
+
+  ],
+  "^the output should match:$": [
+
+  ],
+  "^the exit status should be (\\d+)$": [
+
+  ],
+  "^the exit status should not be (\\d+)$": [
+
+  ],
+  "^it should (pass|fail) with:$": [
+    "it should fail with:",
+    "it should pass with:"
+  ],
+  "^it should (pass|fail) with exactly:$": [
+    "it should fail with exactly:",
+    "it should pass with exactly:"
+  ],
+  "^it should (pass|fail) with regexp?:$": [
+
+  ],
+  "^the stderr should contain \"([^\"]*)\"$": [
+
+  ],
+  "^the stderr should contain:$": [
+
+  ],
+  "^the stderr should contain exactly:$": [
+
+  ],
+  "^the stdout should contain \"([^\"]*)\"$": [
+
+  ],
+  "^the stdout should contain:$": [
+
+  ],
+  "^the stdout should contain exactly:$": [
+
+  ],
+  "^the stderr should not contain \"([^\"]*)\"$": [
+
+  ],
+  "^the stderr should not contain:$": [
+
+  ],
+  "^the stdout should not contain \"([^\"]*)\"$": [
+
+  ],
+  "^the stdout should not contain:$": [
+
+  ],
+  "^the stdout from \"([^\"]*)\" should contain \"([^\"]*)\"$": [
+
+  ],
+  "^the stdout from \"([^\"]*)\" should not contain \"([^\"]*)\"$": [
+
+  ],
+  "^the stderr from \"([^\"]*)\" should contain \"([^\"]*)\"$": [
+
+  ],
+  "^the stderr from \"([^\"]*)\" should not contain \"([^\"]*)\"$": [
+
+  ],
+  "^the file \"([^\"]*)\" should not exist$": [
+
+  ],
+  "^the following files should exist:$": [
+
+  ],
+  "^the following files should not exist:$": [
+
+  ],
+  "^a file named \"([^\"]*)\" should exist$": [
+
+  ],
+  "^a file named \"([^\"]*)\" should not exist$": [
+
+  ],
+  "^a (\\d+) byte file named \"([^\"]*)\" should exist$": [
+
+  ],
+  "^the following directories should exist:$": [
+
+  ],
+  "^the following directories should not exist:$": [
+
+  ],
+  "^a directory named \"([^\"]*)\" should exist$": [
+
+  ],
+  "^a directory named \"([^\"]*)\" should not exist$": [
+
+  ],
+  "^the file \"([^\"]*)\" should contain \"([^\"]*)\"$": [
+
+  ],
+  "^the file \"([^\"]*)\" should not contain \"([^\"]*)\"$": [
+
+  ],
+  "^the file \"([^\"]*)\" should contain exactly:$": [
+
+  ],
+  "^the file \"([^\"]*)\" should match \\/([^\\/]*)\\/$": [
+
+  ],
+  "^the file \"([^\"]*)\" should not match \\/([^\\/]*)\\/$": [
+
+  ],
+  "^a scenario \"([^\"]*)\" with:$": [
+    "a scenario \"Add three numbers\" with:",
+    "a scenario \"Add two numbers\" with:",
+    "a scenario \"Basic Arithmetic\" with:",
+    "a scenario \"Calculate PI\" with:",
+    "a scenario \"Simple math\" with:",
+    "a scenario \"Too simple math\" with:"
+  ],
+  "^the following feature:$": [
+    "the following feature:"
+  ],
+  "^the step \"([^\"]*)\" has a passing mapping$": [
+    "the step \"I add 4 and 5\" has a passing mapping",
+    "the step \"the result is 9\" has a passing mapping"
+  ],
+  "^the step \"([^\"]*)\" has a pending mapping$": [
+    "the step \"I add 4 and 5\" has a pending mapping"
+  ],
+  "^the step \"([^\"]*)\" has a failing mapping$": [
+    "the step \"I add 4 and 5\" has a failing mapping"
+  ],
+  "^Cucumber executes the scenario \"([^\"]*)\"$": [
+    "Cucumber executes the scenario \"Basic Arithmetic\""
+  ],
+  "^Cucumber runs the feature$": [
+    "Cucumber runs the feature"
+  ],
+  "^Cucumber runs the scenario with steps for a calculator$": [
+    "Cucumber runs the scenario with steps for a calculator"
+  ],
+  "^the scenario passes$": [
+    "the scenario passes"
+  ],
+  "^the scenario fails$": [
+    "the scenario fails"
+  ],
+  "^the scenario is pending$": [
+    "the scenario is pending"
+  ],
+  "^the scenario is undefined$": [
+    "the scenario is undefined"
+  ],
+  "^the step \"([^\"]*)\" is skipped$": [
+    "the step \"the result is 9\" is skipped"
+  ],
+  "^the feature passes$": [
+    "the feature passes"
+  ],
+  "^I run cucumber \"(.+)\"$": [
+    "I run cucumber \"--format json features/doc_string.feature\"",
+    "I run cucumber \"--format json features/one_passing_one_failing.feature\"",
+    "I run cucumber \"-b --format json features/embed.feature\"",
+    "I run cucumber \"features/f.feature --format Ze::Formator\"",
+    "I run cucumber \"features/foo.feature\"",
+    "I run cucumber \"features/one_passing_one_failing.feature -r features -f rerun\"",
+    "I run cucumber \"features/sample.feature --tags ~@wip\"",
+    "I run cucumber \"features/sample.feature -r features --tags ~@wip\""
+  ],
+  "^it should (pass|fail) with JSON:$": [
+    "it should fail with JSON:",
+    "it should pass with JSON:"
+  ],
+  "^a directory without standard Cucumber project directory structure$": [
+    "a directory without standard Cucumber project directory structure"
+  ],
+  "^a scenario with a step that looks like this:$": [
+    "a scenario with a step that looks like this:"
+  ],
+  "^a step definition that looks like this:$": [
+    "a step definition that looks like this:"
+  ],
+  "^I run the feature with the (\\w+) formatter$": [
+    "I run the feature with the progress formatter"
+  ],
+  "^I am running spork in the background$": [
+    "I am running spork in the background"
+  ],
+  "^jeg drikker en \"([^\"]*)\"$": [
+    "jeg drikker en \"øl\""
+  ],
+  "^skal de andre si \"([^\"]*)\"$": [
+    "skal de andre si \"skål\""
+  ]
+}

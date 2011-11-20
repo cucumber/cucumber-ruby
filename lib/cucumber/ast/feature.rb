@@ -8,7 +8,7 @@ module Cucumber
       
       attr_accessor :language
       attr_writer :features, :background
-      attr_reader :file
+      attr_reader :file, :feature_elements
 
       def initialize(background, comment, tags, keyword, title, description, feature_elements)
         @background, @comment, @tags, @keyword, @title, @description, @feature_elements = background, comment, tags, keyword, title, description, feature_elements
