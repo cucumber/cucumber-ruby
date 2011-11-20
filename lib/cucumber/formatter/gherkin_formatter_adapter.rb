@@ -46,7 +46,7 @@ module Cucumber
         end
       end
 
-      def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+      def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
         arguments = step_match.step_arguments.map{|a| Gherkin::Formatter::Argument.new(a.byte_offset, a.val)}
         location = step_match.file_colon_line
         match = Gherkin::Formatter::Model::Match.new(arguments, location)

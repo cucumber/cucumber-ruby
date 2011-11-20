@@ -47,7 +47,8 @@ module Cucumber
           @status,
           @reported_exception,
           source_indent,
-          @background
+          @background,
+          file_colon_line
         )
       end
 

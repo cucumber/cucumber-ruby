@@ -53,7 +53,7 @@ module Cucumber
         end
       end
 
-      def step_name(keyword, step_match, status, source_indent, background)
+      def step_name(keyword, step_match, status, source_indent, background, file_colon_line)
         @rerun = true if [:failed, :pending, :undefined].index(status)
       end
       

@@ -221,7 +221,7 @@ module Cucumber
         move_progress
       end
 
-      def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+      def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
         @step_match = step_match
         @hide_this_step = false
         if exception
@@ -241,7 +241,7 @@ module Cucumber
         @builder << "<li id='#{@step_id}' class='step #{status}'>"            
       end
 
-      def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+      def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
         return if @hide_this_step
         # print snippet for undefined steps
         if status == :undefined
@@ -254,7 +254,7 @@ module Cucumber
         print_messages
       end
 
-      def step_name(keyword, step_match, status, source_indent, background)
+      def step_name(keyword, step_match, status, source_indent, background, file_colon_line)
         @step_matches ||= []
         background_in_scenario = background && !@listing_background
         @skip_step = @step_matches.index(step_match) || background_in_scenario
