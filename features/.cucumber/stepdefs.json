@@ -1,298 +1,1159 @@
-{
-  "^I'm using a clean gemset \"([^\"]*)\"$": [
+[
+  {
+    "source": "^I'm using a clean gemset \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^a directory named \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^a directory named \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^a file named \"([^\"]*)\" with:$": [
-    "a file named \"features/doc_string.feature\" with:",
-    "a file named \"features/f.feature\" with:",
-    "a file named \"features/only_background_and_hooks.feature\" with:",
-    "a file named \"features/only_background_and_hooks_steps.rb\" with:",
-    "a file named \"features/step_definitions/doc_string_steps.rb\" with:",
-    "a file named \"features/step_definitions/multiline_steps.rb\" with:",
-    "a file named \"features/step_definitions/steps.rb\" with:",
-    "a file named \"features/support/hooks.rb\" with:",
-    "a file named \"features/support/ze/formator.rb\" with:"
-  ],
-  "^a (\\d+) byte file named \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^a file named \"([^\"]*)\" with:$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "a file named \"features/doc_string.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/doc_string.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/f.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/f.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/only_background_and_hooks.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/only_background_and_hooks.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/only_background_and_hooks_steps.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/only_background_and_hooks_steps.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/step_definitions/doc_string_steps.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/step_definitions/doc_string_steps.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/step_definitions/multiline_steps.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/step_definitions/multiline_steps.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/step_definitions/steps.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/step_definitions/steps.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/support/hooks.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/support/hooks.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/support/ze/formator.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/support/ze/formator.rb"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^a (\\d+) byte file named \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^an empty file named \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^an empty file named \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^I write to \"([^\"]*)\" with:$": [
+    ]
+  },
+  {
+    "source": "^I write to \"([^\"]*)\" with:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^I overwrite \"([^\"]*)\" with:$": [
+    ]
+  },
+  {
+    "source": "^I overwrite \"([^\"]*)\" with:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^I append to \"([^\"]*)\" with:$": [
+    ]
+  },
+  {
+    "source": "^I append to \"([^\"]*)\" with:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^I append to \"([^\"]*)\" with \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^I append to \"([^\"]*)\" with \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^I remove the file \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^I remove the file \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^I cd to \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^I cd to \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^I run \"(.*)\"$": [
+    ]
+  },
+  {
+    "source": "^I run \"(.*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^I run `([^`]*)`$": [
-    "I run `cucumber -f stepdefs --dry-run`",
-    "I run `cucumber -f usage --dry-run`",
-    "I run `cucumber -q -t @one -t @three features/tagulicious.feature`",
-    "I run `cucumber -q -t @one,@three features/tagulicious.feature`",
-    "I run `cucumber -q features/background_tagged_before_on_outline.feature`",
-    "I run `cucumber -q features/failing_background.feature`",
-    "I run `cucumber -q features/failing_background_after_success.feature`",
-    "I run `cucumber -q features/multiline_args_background.feature`",
-    "I run `cucumber -q features/passing_background.feature:9`",
-    "I run `cucumber -q features/passing_background.feature`",
-    "I run `cucumber -q features/pending_background.feature`",
-    "I run `cucumber -q features/scenario_outline_failing_background.feature`",
-    "I run `cucumber -q features/scenario_outline_passing_background.feature`",
-    "I run `cucumber -q features/tagulicious.feature`",
-    "I run `cucumber features/f.feature:2`",
-    "I run `cucumber features/f.feature:6`",
-    "I run `cucumber features/only_background_and_hooks.feature`",
-    "I run `cucumber`"
-  ],
-  "^I successfully run \"(.*)\"$": [
+    ]
+  },
+  {
+    "source": "^I run `([^`]*)`$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "I run `cucumber -f stepdefs --dry-run`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber -f stepdefs --dry-run"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber -f usage --dry-run`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber -f usage --dry-run"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber -q -t @one -t @three features/tagulicious.feature`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber -q -t @one -t @three features/tagulicious.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber -q -t @one,@three features/tagulicious.feature`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber -q -t @one,@three features/tagulicious.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber -q features/background_tagged_before_on_outline.feature`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber -q features/background_tagged_before_on_outline.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber -q features/failing_background.feature`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber -q features/failing_background.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber -q features/failing_background_after_success.feature`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber -q features/failing_background_after_success.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber -q features/multiline_args_background.feature`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber -q features/multiline_args_background.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber -q features/passing_background.feature:9`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber -q features/passing_background.feature:9"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber -q features/passing_background.feature`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber -q features/passing_background.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber -q features/pending_background.feature`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber -q features/pending_background.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber -q features/scenario_outline_failing_background.feature`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber -q features/scenario_outline_failing_background.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber -q features/scenario_outline_passing_background.feature`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber -q features/scenario_outline_passing_background.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber -q features/tagulicious.feature`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber -q features/tagulicious.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber features/f.feature:2`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/f.feature:2"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber features/f.feature:6`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/f.feature:6"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber features/only_background_and_hooks.feature`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/only_background_and_hooks.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^I successfully run \"(.*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^I successfully run `([^`]*)`$": [
+    ]
+  },
+  {
+    "source": "^I successfully run `([^`]*)`$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^I run \"([^\"]*)\" interactively$": [
+    ]
+  },
+  {
+    "source": "^I run \"([^\"]*)\" interactively$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^I run `([^`]*)` interactively$": [
+    ]
+  },
+  {
+    "source": "^I run `([^`]*)` interactively$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^I type \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^I type \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the output should contain \"([^\"]*)\"$": [
-    "the output should contain \"WARNING\""
-  ],
-  "^the output from \"([^\"]*)\" should contain \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^the output should contain \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "the output should contain \"WARNING\"",
+        "args": [
+          {
+            "offset": 27,
+            "val": "WARNING"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the output from \"([^\"]*)\" should contain \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the output from \"([^\"]*)\" should not contain \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^the output from \"([^\"]*)\" should not contain \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the output should not contain \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^the output should not contain \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the output should contain:$": [
-    "the output should contain:"
-  ],
-  "^the output should not contain:$": [
+    ]
+  },
+  {
+    "source": "^the output should contain:$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "the output should contain:",
+        "args": [
 
-  ],
-  "^the output should contain exactly \"([^\"]*)\"$": [
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the output should not contain:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the output should contain exactly:$": [
+    ]
+  },
+  {
+    "source": "^the output should contain exactly \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the output should match \\/([^\\/]*)\\/$": [
+    ]
+  },
+  {
+    "source": "^the output should contain exactly:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the output should match:$": [
+    ]
+  },
+  {
+    "source": "^the output should match \\/([^\\/]*)\\/$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the exit status should be (\\d+)$": [
+    ]
+  },
+  {
+    "source": "^the output should match:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the exit status should not be (\\d+)$": [
+    ]
+  },
+  {
+    "source": "^the exit status should be (\\d+)$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^it should (pass|fail) with:$": [
-    "it should fail with:",
-    "it should pass with:"
-  ],
-  "^it should (pass|fail) with exactly:$": [
-    "it should fail with exactly:",
-    "it should pass with exactly:"
-  ],
-  "^it should (pass|fail) with regexp?:$": [
+    ]
+  },
+  {
+    "source": "^the exit status should not be (\\d+)$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the stderr should contain \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^it should (pass|fail) with:$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "it should fail with:",
+        "args": [
+          {
+            "offset": 10,
+            "val": "fail"
+          }
+        ]
+      },
+      {
+        "name": "it should pass with:",
+        "args": [
+          {
+            "offset": 10,
+            "val": "pass"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^it should (pass|fail) with exactly:$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "it should fail with exactly:",
+        "args": [
+          {
+            "offset": 10,
+            "val": "fail"
+          }
+        ]
+      },
+      {
+        "name": "it should pass with exactly:",
+        "args": [
+          {
+            "offset": 10,
+            "val": "pass"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^it should (pass|fail) with regexp?:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the stderr should contain:$": [
+    ]
+  },
+  {
+    "source": "^the stderr should contain \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the stderr should contain exactly:$": [
+    ]
+  },
+  {
+    "source": "^the stderr should contain:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the stdout should contain \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^the stderr should contain exactly:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the stdout should contain:$": [
+    ]
+  },
+  {
+    "source": "^the stdout should contain \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the stdout should contain exactly:$": [
+    ]
+  },
+  {
+    "source": "^the stdout should contain:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the stderr should not contain \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^the stdout should contain exactly:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the stderr should not contain:$": [
+    ]
+  },
+  {
+    "source": "^the stderr should not contain \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the stdout should not contain \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^the stderr should not contain:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the stdout should not contain:$": [
+    ]
+  },
+  {
+    "source": "^the stdout should not contain \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the stdout from \"([^\"]*)\" should contain \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^the stdout should not contain:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the stdout from \"([^\"]*)\" should not contain \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^the stdout from \"([^\"]*)\" should contain \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the stderr from \"([^\"]*)\" should contain \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^the stdout from \"([^\"]*)\" should not contain \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the stderr from \"([^\"]*)\" should not contain \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^the stderr from \"([^\"]*)\" should contain \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the file \"([^\"]*)\" should not exist$": [
+    ]
+  },
+  {
+    "source": "^the stderr from \"([^\"]*)\" should not contain \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the following files should exist:$": [
+    ]
+  },
+  {
+    "source": "^the file \"([^\"]*)\" should not exist$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the following files should not exist:$": [
+    ]
+  },
+  {
+    "source": "^the following files should exist:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^a file named \"([^\"]*)\" should exist$": [
+    ]
+  },
+  {
+    "source": "^the following files should not exist:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^a file named \"([^\"]*)\" should not exist$": [
+    ]
+  },
+  {
+    "source": "^a file named \"([^\"]*)\" should exist$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^a (\\d+) byte file named \"([^\"]*)\" should exist$": [
+    ]
+  },
+  {
+    "source": "^a file named \"([^\"]*)\" should not exist$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the following directories should exist:$": [
+    ]
+  },
+  {
+    "source": "^a (\\d+) byte file named \"([^\"]*)\" should exist$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the following directories should not exist:$": [
+    ]
+  },
+  {
+    "source": "^the following directories should exist:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^a directory named \"([^\"]*)\" should exist$": [
+    ]
+  },
+  {
+    "source": "^the following directories should not exist:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^a directory named \"([^\"]*)\" should not exist$": [
+    ]
+  },
+  {
+    "source": "^a directory named \"([^\"]*)\" should exist$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the file \"([^\"]*)\" should contain \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^a directory named \"([^\"]*)\" should not exist$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the file \"([^\"]*)\" should not contain \"([^\"]*)\"$": [
+    ]
+  },
+  {
+    "source": "^the file \"([^\"]*)\" should contain \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the file \"([^\"]*)\" should contain exactly:$": [
+    ]
+  },
+  {
+    "source": "^the file \"([^\"]*)\" should not contain \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the file \"([^\"]*)\" should match \\/([^\\/]*)\\/$": [
+    ]
+  },
+  {
+    "source": "^the file \"([^\"]*)\" should contain exactly:$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^the file \"([^\"]*)\" should not match \\/([^\\/]*)\\/$": [
+    ]
+  },
+  {
+    "source": "^the file \"([^\"]*)\" should match \\/([^\\/]*)\\/$",
+    "flags": "",
+    "steps": [
 
-  ],
-  "^a scenario \"([^\"]*)\" with:$": [
-    "a scenario \"Add three numbers\" with:",
-    "a scenario \"Add two numbers\" with:",
-    "a scenario \"Basic Arithmetic\" with:",
-    "a scenario \"Calculate PI\" with:",
-    "a scenario \"Simple math\" with:",
-    "a scenario \"Too simple math\" with:"
-  ],
-  "^the following feature:$": [
-    "the following feature:"
-  ],
-  "^the step \"([^\"]*)\" has a passing mapping$": [
-    "the step \"I add 4 and 5\" has a passing mapping",
-    "the step \"the result is 9\" has a passing mapping"
-  ],
-  "^the step \"([^\"]*)\" has a pending mapping$": [
-    "the step \"I add 4 and 5\" has a pending mapping"
-  ],
-  "^the step \"([^\"]*)\" has a failing mapping$": [
-    "the step \"I add 4 and 5\" has a failing mapping"
-  ],
-  "^Cucumber executes the scenario \"([^\"]*)\"$": [
-    "Cucumber executes the scenario \"Basic Arithmetic\""
-  ],
-  "^Cucumber runs the feature$": [
-    "Cucumber runs the feature"
-  ],
-  "^Cucumber runs the scenario with steps for a calculator$": [
-    "Cucumber runs the scenario with steps for a calculator"
-  ],
-  "^the scenario passes$": [
-    "the scenario passes"
-  ],
-  "^the scenario fails$": [
-    "the scenario fails"
-  ],
-  "^the scenario is pending$": [
-    "the scenario is pending"
-  ],
-  "^the scenario is undefined$": [
-    "the scenario is undefined"
-  ],
-  "^the step \"([^\"]*)\" is skipped$": [
-    "the step \"the result is 9\" is skipped"
-  ],
-  "^the feature passes$": [
-    "the feature passes"
-  ],
-  "^I run cucumber \"(.+)\"$": [
-    "I run cucumber \"--format json features/doc_string.feature\"",
-    "I run cucumber \"--format json features/one_passing_one_failing.feature\"",
-    "I run cucumber \"-b --format json features/embed.feature\"",
-    "I run cucumber \"features/f.feature --format Ze::Formator\"",
-    "I run cucumber \"features/foo.feature\"",
-    "I run cucumber \"features/one_passing_one_failing.feature -r features -f rerun\"",
-    "I run cucumber \"features/sample.feature --tags ~@wip\"",
-    "I run cucumber \"features/sample.feature -r features --tags ~@wip\""
-  ],
-  "^it should (pass|fail) with JSON:$": [
-    "it should fail with JSON:",
-    "it should pass with JSON:"
-  ],
-  "^a directory without standard Cucumber project directory structure$": [
-    "a directory without standard Cucumber project directory structure"
-  ],
-  "^a scenario with a step that looks like this:$": [
-    "a scenario with a step that looks like this:"
-  ],
-  "^a step definition that looks like this:$": [
-    "a step definition that looks like this:"
-  ],
-  "^I run the feature with the (\\w+) formatter$": [
-    "I run the feature with the progress formatter"
-  ],
-  "^I am running spork in the background$": [
-    "I am running spork in the background"
-  ],
-  "^jeg drikker en \"([^\"]*)\"$": [
-    "jeg drikker en \"øl\""
-  ],
-  "^skal de andre si \"([^\"]*)\"$": [
-    "skal de andre si \"skål\""
-  ]
-}
+    ]
+  },
+  {
+    "source": "^the file \"([^\"]*)\" should not match \\/([^\\/]*)\\/$",
+    "flags": "",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^a scenario \"([^\"]*)\" with:$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "a scenario \"Add three numbers\" with:",
+        "args": [
+          {
+            "offset": 12,
+            "val": "Add three numbers"
+          }
+        ]
+      },
+      {
+        "name": "a scenario \"Add two numbers\" with:",
+        "args": [
+          {
+            "offset": 12,
+            "val": "Add two numbers"
+          }
+        ]
+      },
+      {
+        "name": "a scenario \"Basic Arithmetic\" with:",
+        "args": [
+          {
+            "offset": 12,
+            "val": "Basic Arithmetic"
+          }
+        ]
+      },
+      {
+        "name": "a scenario \"Calculate PI\" with:",
+        "args": [
+          {
+            "offset": 12,
+            "val": "Calculate PI"
+          }
+        ]
+      },
+      {
+        "name": "a scenario \"Simple math\" with:",
+        "args": [
+          {
+            "offset": 12,
+            "val": "Simple math"
+          }
+        ]
+      },
+      {
+        "name": "a scenario \"Too simple math\" with:",
+        "args": [
+          {
+            "offset": 12,
+            "val": "Too simple math"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the following feature:$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "the following feature:",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the step \"([^\"]*)\" has a passing mapping$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "the step \"I add 4 and 5\" has a passing mapping",
+        "args": [
+          {
+            "offset": 10,
+            "val": "I add 4 and 5"
+          }
+        ]
+      },
+      {
+        "name": "the step \"the result is 9\" has a passing mapping",
+        "args": [
+          {
+            "offset": 10,
+            "val": "the result is 9"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the step \"([^\"]*)\" has a pending mapping$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "the step \"I add 4 and 5\" has a pending mapping",
+        "args": [
+          {
+            "offset": 10,
+            "val": "I add 4 and 5"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the step \"([^\"]*)\" has a failing mapping$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "the step \"I add 4 and 5\" has a failing mapping",
+        "args": [
+          {
+            "offset": 10,
+            "val": "I add 4 and 5"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^Cucumber executes the scenario \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "Cucumber executes the scenario \"Basic Arithmetic\"",
+        "args": [
+          {
+            "offset": 32,
+            "val": "Basic Arithmetic"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^Cucumber runs the feature$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "Cucumber runs the feature",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^Cucumber runs the scenario with steps for a calculator$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "Cucumber runs the scenario with steps for a calculator",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the scenario passes$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "the scenario passes",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the scenario fails$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "the scenario fails",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the scenario is pending$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "the scenario is pending",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the scenario is undefined$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "the scenario is undefined",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the step \"([^\"]*)\" is skipped$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "the step \"the result is 9\" is skipped",
+        "args": [
+          {
+            "offset": 10,
+            "val": "the result is 9"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the feature passes$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "the feature passes",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^I run cucumber \"(.+)\"$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "I run cucumber \"--format json features/doc_string.feature\"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "--format json features/doc_string.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber \"--format json features/one_passing_one_failing.feature\"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "--format json features/one_passing_one_failing.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber \"-b --format json features/embed.feature\"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "-b --format json features/embed.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber \"features/f.feature --format Ze::Formator\"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "features/f.feature --format Ze::Formator"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber \"features/foo.feature\"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "features/foo.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber \"features/one_passing_one_failing.feature -r features -f rerun\"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "features/one_passing_one_failing.feature -r features -f rerun"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber \"features/sample.feature --tags ~@wip\"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "features/sample.feature --tags ~@wip"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber \"features/sample.feature -r features --tags ~@wip\"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "features/sample.feature -r features --tags ~@wip"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^it should (pass|fail) with JSON:$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "it should fail with JSON:",
+        "args": [
+          {
+            "offset": 10,
+            "val": "fail"
+          }
+        ]
+      },
+      {
+        "name": "it should pass with JSON:",
+        "args": [
+          {
+            "offset": 10,
+            "val": "pass"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^a directory without standard Cucumber project directory structure$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "a directory without standard Cucumber project directory structure",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^a scenario with a step that looks like this:$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "a scenario with a step that looks like this:",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^a step definition that looks like this:$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "a step definition that looks like this:",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^I run the feature with the (\\w+) formatter$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "I run the feature with the progress formatter",
+        "args": [
+          {
+            "offset": 27,
+            "val": "progress"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^I am running spork in the background$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "I am running spork in the background",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^jeg drikker en \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "jeg drikker en \"øl\"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "øl"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^skal de andre si \"([^\"]*)\"$",
+    "flags": "",
+    "steps": [
+      {
+        "name": "skal de andre si \"skål\"",
+        "args": [
+          {
+            "offset": 18,
+            "val": "skål"
+          }
+        ]
+      }
+    ]
+  }
+]

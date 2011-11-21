@@ -60,7 +60,7 @@ module Cucumber
       s = string.dup
       offset = past_offset = 0
       step_arguments.each do |step_argument|
-        next if step_argument.byte_offset.nil? || step_argument.byte_offset < past_offset
+        next if step_argument.offset.nil? || step_argument.offset < past_offset
         
         replacement = if block_given?
           proc.call(step_argument.val)
@@ -70,9 +70,9 @@ module Cucumber
           format % step_argument.val
         end
 
-        s[step_argument.byte_offset + offset, step_argument.val.length] = replacement
+        s[step_argument.offset + offset, step_argument.val.length] = replacement
         offset += replacement.unpack('U*').length - step_argument.val.unpack('U*').length
-        past_offset = step_argument.byte_offset + step_argument.val.length
+        past_offset = step_argument.offset + step_argument.val.length
       end
       s
     end

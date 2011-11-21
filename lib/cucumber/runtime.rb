@@ -121,20 +121,30 @@ module Cucumber
 
     def write_stepdefs_json
       if(@configuration.dotcucumber)
-        stepdefs = {}
+        stepdefs = []
         @support_code.step_definitions.sort{|a,b| a.to_hash['source'] <=> a.to_hash['source']}.each do |stepdef|
+          stepdef_hash = stepdef.to_hash
           steps = []
           features.each do |feature|
             feature.feature_elements.each do |feature_element|
               feature_element.raw_steps.each do |step|
-                if(stepdef.arguments_from(step.name))
-                  steps << step.name
+                args = stepdef.arguments_from(step.name)
+                if(args)
+                  steps << {
+                    'name' => step.name,
+                    'args' => args.map do |arg|
+                      {
+                        'offset' => arg.offset,
+                        'val' => arg.val
+                      }
+                    end
+                  }
                 end
               end
             end
           end
-          regexp = stepdef.to_hash['source']
-          stepdefs[regexp] = steps.uniq.sort
+          stepdef_hash['steps'] = steps.uniq.sort {|a,b| a['name'] <=> b['name']}
+          stepdefs << stepdef_hash
         end
         if !File.directory?(@configuration.dotcucumber)
           FileUtils.mkdir_p(@configuration.dotcucumber)
