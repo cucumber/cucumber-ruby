@@ -1,15 +1,16 @@
-## In Git
+## [v1.1.3](https://github.com/cucumber/cucumber/compare/v1.1.2...v1.1.3)
+
+### New Features
+
+* Generate stepdef metadata with --dotcucumber. Useful for Cukepatch. (Aslak Hellesøy)
+* Show class name of exceptions in the HTML formatter ([#159](https://github.com/cucumber/cucumber/pull/159) Jari Bakken)
+* Deferred table header and column mappings ([#163](https://github.com/cucumber/cucumber/pull/163) Richard Lawrence)
 
 ### Bugfixes
 
 * Escape exceptions in HTML formatter ([#178](https://github.com/cucumber/cucumber/pull/178) leachdaniel)
 * Retry when feature_element returns failed ([#172](https://github.com/cucumber/cucumber/pull/172) Charles Finkel)
 * Rerun formatter output does not include failing scenario outline examples ([#57](https://github.com/cucumber/cucumber/issues/57) Jan Brauer)
-
-### New Features
-
-* Show class name of exceptions in the HTML formatter ([#159](https://github.com/cucumber/cucumber/pull/159) Jari Bakken)
-* Deferred table header and column mappings ([#163](https://github.com/cucumber/cucumber/pull/163) Richard Lawrence)
 
 ## [v1.1.2](https://github.com/cucumber/cucumber/compare/v1.1.1...v1.1.2)
 
