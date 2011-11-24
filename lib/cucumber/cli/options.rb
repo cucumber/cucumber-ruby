@@ -223,7 +223,7 @@ module Cucumber
           opts.on("-a", "--autoformat DIR",
             "Reformats (pretty prints) feature files and write them to DIRECTORY.",
             "Be careful if you choose to overwrite the originals.",
-            "Implies --dry-run --formatter pretty.") do |directory|
+            "Implies --dry-run --format pretty.") do |directory|
             @options[:autoformat] = directory
             Term::ANSIColor.coloring = false
             @options[:dry_run] = true
