@@ -19,7 +19,7 @@ class Proc #:nodoc:
       if path.index(pwd)
         path = path[pwd.length+1..-1]
       elsif path =~ /.*\/gems\/(.*\.rb)$/
-        path = $1
+        path = path.to_s.split("/")[-1]
       end
         path.to_s.split("/")[-1]
     end
