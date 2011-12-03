@@ -41,10 +41,7 @@ module Cucumber
       
       def arguments_replaced(arguments) #:nodoc:
         string = self
-        arguments.each do |name, value|
-          value ||= ''
-          string = string.gsub(name, value)
-        end
+        arguments.map{|name,value| value ||= '' ; string = string.gsub(name,value)}
         DocString.new(string, content_type)
       end
 

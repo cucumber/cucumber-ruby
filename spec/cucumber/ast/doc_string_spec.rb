@@ -12,7 +12,6 @@ module Cucumber
       
         it "should return a new doc_string with arguments replaced with values" do
           doc_string_with_replaced_arg = @ps.arguments_replaced({'<book>' => 'Life is elsewhere', '<qty>' => '5'})
-                
           doc_string_with_replaced_arg.to_step_definition_arg.should == "Life is elsewhere\n5\n"
         end
         
