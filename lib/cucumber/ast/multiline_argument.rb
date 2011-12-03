@@ -4,8 +4,10 @@ module Cucumber
   module Ast
     module MultilineArgument
 
+
       class << self
         include Gherkin::Rubify
+
 
         def from(argument)
           return unless argument
@@ -22,7 +24,9 @@ module Cucumber
           else
             raise ArgumentError, "Don't know how to convert #{argument} into a MultilineArgument"
           end
-        end
+      end
+
+
 
       end
     end

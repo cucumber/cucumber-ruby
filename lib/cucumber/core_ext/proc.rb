@@ -19,16 +19,13 @@ class Proc #:nodoc:
       if path.index(pwd)
         path = path[pwd.length+1..-1]
       elsif path =~ /.*\/gems\/(.*\.rb)$/
-        path = $1
+        path = path.to_s.split("/")[-1]
       end
-      "#{path}:#{line}"
+        path.to_s.split("/")[-1]
     end
   else
     # This Ruby implementation doesn't implement Proc#to_s correctly
     STDERR.puts "*** THIS RUBY IMPLEMENTATION DOESN'T REPORT FILE AND LINE FOR PROCS ***"
-    
-    def file_colon_line
-      "UNKNOWN:-1"
-    end
   end
+  
 end 

@@ -34,7 +34,7 @@ Feature: Background
           Then I should have '<count>' cukes
           Examples:
             |count|
-            | 10  |
+            | 10   |
       """
     And a file named "features/background_tagged_before_on_outline.feature" with:
       """

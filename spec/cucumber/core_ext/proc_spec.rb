@@ -1,10 +1,11 @@
 require 'spec_helper'
 require 'cucumber/core_ext/proc'
+require "cucumber/core_ext/instance_exec"
 
 describe Proc do
   it "should remove extraneous path info for file" do
     proc = lambda {|a,b|}
-    proc.file_colon_line.should =~ /^spec\/cucumber\/core_ext\/proc_spec\.rb:6/
+    proc.file_colon_line.should =~ /^proc_spec\.rb$/
   end
   
   it "should raise ArityMismatchError for too many args (expecting 0)" do
