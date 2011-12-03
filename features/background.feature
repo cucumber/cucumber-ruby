@@ -33,8 +33,8 @@ Feature: Background
         Scenario Outline: another passing background
           Then I should have '<count>' cukes
           Examples:
-            | count |
-            | 10    |
+            |count|
+            | 10   |
       """
     And a file named "features/background_tagged_before_on_outline.feature" with:
       """
