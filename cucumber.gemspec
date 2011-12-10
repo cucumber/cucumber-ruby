@@ -23,13 +23,13 @@ for important information about this release. Happy cuking!
 
 }
 
-  s.add_runtime_dependency 'gherkin', '~> 2.6.7'
+  s.add_runtime_dependency 'gherkin', '~> 2.7.1'
   s.add_runtime_dependency 'term-ansicolor', '>= 1.0.6'
   s.add_runtime_dependency 'builder', '>= 2.1.2'
   s.add_runtime_dependency 'diff-lcs', '>= 1.1.2'
   s.add_runtime_dependency 'json', '>= 1.4.6'
   
-  s.add_development_dependency 'aruba', '~> 0.4.7'
+  s.add_development_dependency 'aruba', '~> 0.4.9'
   s.add_development_dependency 'rake', '>= 0.9.2'
   s.add_development_dependency 'rspec', '>= 2.7.0'
   s.add_development_dependency 'nokogiri', '>= 1.5.0'

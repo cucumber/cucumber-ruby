@@ -72,7 +72,7 @@ module Cucumber
       end
 
       def after_features(features)
-        @gf.close
+        @gf.done
       end
 
       def embed(file, mime_type, label)

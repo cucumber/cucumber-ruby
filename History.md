@@ -1,3 +1,9 @@
+## [v1.1.4](https://github.com/cucumber/cucumber/compare/v1.1.3...v1.1.4)
+
+### New Features
+
+* Upgrade to Gherkin 2.7.1 (Aslak Hellesøy)
+
 ## [v1.1.3](https://github.com/cucumber/cucumber/compare/v1.1.2...v1.1.3)
 
 ### New Features
