@@ -380,7 +380,7 @@ module Cucumber
           end
 
           unless exception.instance_of?(RuntimeError)
-            message << " (#{exception.class})"
+            message = "#{message} (#{exception.class})"
           end
 
           @builder.pre do 
