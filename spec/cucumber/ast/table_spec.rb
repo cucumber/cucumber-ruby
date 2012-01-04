@@ -45,42 +45,44 @@ module Cucumber
         @table.hashes.first[:one].should == '4444'
       end
 
-      it "should allow mapping columns" do
-        @table.map_column!('one') { |v| v.to_i }
-        @table.hashes.first['one'].should == 4444
-      end
-
-      it "should allow mapping columns and take a symbol as the column name" do
-        @table.map_column!(:one) { |v| v.to_i }
-        @table.hashes.first['one'].should == 4444
-      end
-
-      it "should allow mapping columns and modify the rows as well" do
-        @table.map_column!(:one) { |v| v.to_i }
-        @table.rows.first.should include(4444)
-        @table.rows.first.should_not include('4444')
-      end
-
       it "should return the row values in order" do
         @table.rows.first.should == %w{4444 55555 666666}
       end
 
-      it "should pass silently if a mapped column does not exist in non-strict mode" do
-        lambda {
-          @table.map_column!('two', false) { |v| v.to_i }
-          @table.hashes
-        }.should_not raise_error
-      end
+      describe '#map_column!' do
+        it "should allow mapping columns" do
+          @table.map_column!('one') { |v| v.to_i }
+          @table.hashes.first['one'].should == 4444
+        end
 
-      it "should fail if a mapped column does not exist in strict mode" do
-        lambda {
-          @table.map_column!('two', true) { |v| v.to_i }
-          @table.hashes
-        }.should raise_error('The column named "two" does not exist')
-      end
+        it "should allow mapping columns and take a symbol as the column name" do
+          @table.map_column!(:one) { |v| v.to_i }
+          @table.hashes.first['one'].should == 4444
+        end
 
-      it "should return the table" do
-        (@table.map_column!(:one) { |v| v.to_i }).should == @table
+        it "should allow mapping columns and modify the rows as well" do
+          @table.map_column!(:one) { |v| v.to_i }
+          @table.rows.first.should include(4444)
+          @table.rows.first.should_not include('4444')
+        end
+
+        it "should pass silently if a mapped column does not exist in non-strict mode" do
+          lambda {
+            @table.map_column!('two', false) { |v| v.to_i }
+            @table.hashes
+          }.should_not raise_error
+        end
+
+        it "should fail if a mapped column does not exist in strict mode" do
+          lambda {
+            @table.map_column!('two', true) { |v| v.to_i }
+            @table.hashes
+          }.should raise_error('The column named "two" does not exist')
+        end
+
+        it "should return the table" do
+          (@table.map_column!(:one) { |v| v.to_i }).should == @table
+        end
       end
 
       describe "#match" do
