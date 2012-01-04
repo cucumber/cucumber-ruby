@@ -55,6 +55,16 @@ module Cucumber
           @table.hashes.first['one'].should == 4444
         end
 
+        it "applies the block once to each value" do
+          headers = ['header']
+          rows = ['value']
+          table = Table.new [headers, rows]
+          count = 0
+          table.map_column!('header') { |value| count +=1 }
+          table.rows
+          count.should eq rows.size
+        end
+
         it "should allow mapping columns and take a symbol as the column name" do
           @table.map_column!(:one) { |v| v.to_i }
           @table.hashes.first['one'].should == 4444
