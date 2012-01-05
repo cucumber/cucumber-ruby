@@ -54,7 +54,7 @@ module Cucumber
         if @configuration.wip?
           scenarios(:passed).any?
         else
-          scenarios(:failed).any? ||
+          scenarios(:failed).any? || steps(:failed).any? ||
           (@configuration.strict? && (steps(:undefined).any? || steps(:pending).any?))
         end
       end
