@@ -1,3 +1,8 @@
+## In Git
+
+### Bugfixes
+* Background fails, but build succeeds ([#205](https://github.com/cucumber/cucumber/issues/205) tcwitte)
+
 ## [v1.1.4](https://github.com/cucumber/cucumber/compare/v1.1.3...v1.1.4)
 
 ### New Features
