@@ -143,6 +143,7 @@ module Cucumber
               end
             end
           end
+          stepdef_hash['file_colon_line'] = stepdef.file_colon_line
           stepdef_hash['steps'] = steps.uniq.sort {|a,b| a['name'] <=> b['name']}
           stepdefs << stepdef_hash
         end
