@@ -1,6 +1,11 @@
 ## In Git
 
+### New Features
+
+* Added `file_colon_line` to `stepdefs.json` (outputted by `--dotcucumber`). ([#214](https://github.com/cucumber/cucumber/pull/214) MOROHASHI Kyosuke)
+
 ### Bugfixes
+
 * Background fails, but build succeeds ([#205](https://github.com/cucumber/cucumber/issues/205) tcwitte)
 
 ## [v1.1.4](https://github.com/cucumber/cucumber/compare/v1.1.3...v1.1.4)
