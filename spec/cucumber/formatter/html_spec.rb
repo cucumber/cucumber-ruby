@@ -193,7 +193,7 @@ module Cucumber
       
         describe "with a step that fails in the scenario" do
           define_steps do
-            Given(/boo/) { raise 'eek' }
+            Given(/boo/) { raise StandardError, 'eek'.freeze }
           end
         
           define_feature(<<-FEATURE)
@@ -202,8 +202,9 @@ module Cucumber
             Scenario: Monkey gets a fright
               Given boo
             FEATURE
-      
-          it { @doc.should have_css_node('.feature .scenario .step.failed', /eek/) }
+
+          it { @doc.should have_css_node('.feature .scenario .step.failed .message', /eek/) }
+          it { @doc.should have_css_node('.feature .scenario .step.failed .message', /StandardError/) }
         end
       
         describe "with a step that fails in the backgound" do
