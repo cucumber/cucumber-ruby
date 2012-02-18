@@ -79,6 +79,11 @@ module Cucumber
           @scenario_exception = nil
         end
 
+        def source_tag_names
+          warn("Deprecated: please use #source_tags instead.")
+          source_tags.map { |tag| tag.name }
+        end
+
         def source_tags
           @table.source_tags
         end
