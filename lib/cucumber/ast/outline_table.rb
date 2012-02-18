@@ -34,8 +34,8 @@ module Cucumber
         @scenario_outline.accept_hook?(hook)
       end
       
-      def source_tag_names
-        @scenario_outline.source_tag_names
+      def source_tags
+        @scenario_outline.source_tags
       end
 
       def skip_invoke!
@@ -79,8 +79,8 @@ module Cucumber
           @scenario_exception = nil
         end
         
-        def source_tag_names
-          @table.source_tag_names
+        def source_tags
+          @table.source_tags
         end
 
         def create_step_invocations!(scenario_outline)

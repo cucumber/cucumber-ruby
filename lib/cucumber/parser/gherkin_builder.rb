@@ -18,7 +18,7 @@ module Cucumber
         @feature = Ast::Feature.new(
           nil, 
           Ast::Comment.new(feature.comments.map{|comment| comment.value}.join("\n")), 
-          Ast::Tags.new(nil, feature.tags.map{|tag| tag.name}),
+          Ast::Tags.new(nil, feature.tags),
           feature.keyword,
           feature.name.lstrip,
           feature.description.rstrip,
@@ -47,7 +47,7 @@ module Cucumber
         scenario = Ast::Scenario.new(
           @background, 
           Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")), 
-          Ast::Tags.new(nil, statement.tags.map{|tag| tag.name}), 
+          Ast::Tags.new(nil, statement.tags), 
           statement.line, 
           statement.keyword, 
           statement.name,
@@ -64,7 +64,7 @@ module Cucumber
         scenario_outline = Ast::ScenarioOutline.new(
           @background, 
           Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")), 
-          Ast::Tags.new(nil, statement.tags.map{|tag| tag.name}), 
+          Ast::Tags.new(nil, statement.tags), 
           statement.line, 
           statement.keyword, 
           statement.name, 

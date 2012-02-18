@@ -1,5 +1,6 @@
 require 'cucumber/ast'
 require 'cucumber/step_mother'
+require 'gherkin/formatter/model'
 
 module Cucumber
   module Ast
@@ -35,14 +36,14 @@ module Cucumber
         f = Ast::Feature.new(
           background,
           Ast::Comment.new("# My feature comment\n"),
-          Ast::Tags.new(6, ['one', 'two']),
+          Ast::Tags.new(6, [Gherkin::Formatter::Model::Tag.new('one', 6), Gherkin::Formatter::Model::Tag.new('two', 6)]),
           "Feature",
           "Pretty printing",
           "",
           [Ast::Scenario.new(
             background,
             Ast::Comment.new("    # My scenario comment  \n# On two lines \n"),
-            Ast::Tags.new(8, ['three', 'four']),
+            Ast::Tags.new(8, [Gherkin::Formatter::Model::Tag.new('three', 8), Gherkin::Formatter::Model::Tag.new('four', 8)]),
             9,
             "Scenario:", "A Scenario", "",
             [

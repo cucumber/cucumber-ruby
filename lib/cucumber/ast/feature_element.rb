@@ -63,11 +63,11 @@ module Cucumber
       end
 
       def accept_hook?(hook)
-        Gherkin::TagExpression.new(hook.tag_expressions).eval(source_tag_names)
+        Gherkin::TagExpression.new(hook.tag_expressions).eval(source_tags)
       end
 
-      def source_tag_names
-        (@tags.tag_names.to_a + (@feature ? @feature.source_tag_names.to_a : [])).uniq
+      def source_tags
+        (@tags.tags.to_a + (@feature ? @feature.source_tags.to_a : [])).uniq
       end
 
       def language

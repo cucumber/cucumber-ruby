@@ -99,7 +99,7 @@ module Cucumber
       # Override this method, as there are situations where the background
       # wind up being the one called fore Before scenarios, and
       # backgrounds don't have tags.
-      def source_tag_names
+      def source_tags
         []
       end
 

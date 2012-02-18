@@ -53,8 +53,8 @@ module Cucumber
         end.join("\n")
       end
 
-      def source_tag_names
-        @tags.tag_names
+      def source_tags
+        @tags.tags
       end
 
       def accept_hook?(hook)
