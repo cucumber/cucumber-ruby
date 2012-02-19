@@ -374,9 +374,7 @@ module Cucumber
           hash[key.to_s] if key.is_a?(Symbol)
         end
         column_names.each_with_index do |column_name, column_index|
-          verify_column(column_name) if @conversion_procs[column_name][:strict]
-          value = @conversion_procs[column_name][:proc].call(cells.value(column_index))
-          hash[column_name] = value
+          hash[column_name] = cells.value(column_index)
         end
         hash
       end
