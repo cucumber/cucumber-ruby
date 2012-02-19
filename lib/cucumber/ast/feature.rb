@@ -57,6 +57,10 @@ module Cucumber
         @tags.tags
       end
 
+      def source_tag_names
+        source_tags.map{|tag| tag.name}
+      end
+
       def accept_hook?(hook)
         @tags.accept_hook?(hook)
       end

@@ -38,6 +38,10 @@ module Cucumber
         @scenario_outline.source_tags
       end
 
+      def source_tag_names
+        source_tags.map{|tag| tag.name}
+      end
+
       def skip_invoke!
         init
         example_rows.each do |cells|
@@ -81,6 +85,10 @@ module Cucumber
         
         def source_tags
           @table.source_tags
+        end
+
+        def source_tag_names
+          source_tags.map{|tag| tag.name}
         end
 
         def create_step_invocations!(scenario_outline)

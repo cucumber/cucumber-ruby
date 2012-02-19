@@ -70,6 +70,10 @@ module Cucumber
         (@tags.tags.to_a + (@feature ? @feature.source_tags.to_a : [])).uniq
       end
 
+      def source_tag_names
+        source_tags.map{|tag| tag.name}
+      end
+
       def language
         @feature.language if @feature
       end

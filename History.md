@@ -1,3 +1,12 @@
+## [v1.1.6](https://github.com/cucumber/cucumber/compare/v1.1.5...v1.1.6)
+
+### Bugfixes
+
+* Release 1.1.5 unintentionally broke backwards compatibility in some APIs we hadn't considered were used outside of cucumber.
+  Well, it was, in the popular Capybara browser automation tool, so we added back the API we removed. See the history for details. (Aslak Hellesøy)
+* After some infantile bickering about a trivial bug that any hipster startup ruby programmer could have circumvented by using a fork with a fix,
+  I finally sucked up to a horde of "people who report to more important people" and made HTML reports work again. ([]() )
+
 ## [v1.1.5](https://github.com/cucumber/cucumber/compare/v1.1.4...v1.1.5)
 
 ### New Features
