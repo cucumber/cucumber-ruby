@@ -104,7 +104,8 @@ module Cucumber
       end
 
       def source_tag_names
-        source_tags.map{|tag| tag.name}
+        warn("Deprecated: please use #source_tags instead.")
+        source_tags.map { |tag| tag.name }
       end
 
     end
