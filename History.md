@@ -1,3 +1,7 @@
+### New features
+
+* Added `file_colon_line` to `stepdefs.json` (outputted by `--dotcucumber`). ([#214](https://github.com/cucumber/cucumber/pull/214) MOROHASHI Kyosuke)
+
 ## [v1.1.6](https://github.com/cucumber/cucumber/compare/v1.1.5...v1.1.6)
 
 ### Bugfixes
@@ -11,7 +15,6 @@
 
 ### New Features
 
-* Added `file_colon_line` to `stepdefs.json` (outputted by `--dotcucumber`). ([#214](https://github.com/cucumber/cucumber/pull/214) MOROHASHI Kyosuke)
 * Upgraded to gherkin 2.3.8 (Aslak Hellesøy)
 
 ### Bugfixes
