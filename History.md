@@ -1,8 +1,13 @@
-## [v1.1.7](https://github.com/cucumber/cucumber/compare/v1.1.5...v1.1.7)
+## In Git
+
+## New Features
+* Don't pollute RbWorld with the AnsiEscapes methods ([#219](https://github.com/cucumber/cucumber/issues/219), [#221](https://github.com/cucumber/cucumber/pull/221) Ben Woosley)
+
+## [v1.1.7](https://github.com/cucumber/cucumber/compare/v1.1.6...v1.1.7)
 
 ### Bugfixes
 
-* Finish off backwards compatability fix for Capybara #229 (Cezary Baginski)
+* Finish off backwards compatability fix for Capybara ([#229](https://github.com/cucumber/cucumber/pull/229) Cezary Baginski)
 
 ## [v1.1.6](https://github.com/cucumber/cucumber/compare/v1.1.5...v1.1.6)
 
