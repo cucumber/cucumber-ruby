@@ -65,6 +65,11 @@ module Cucumber
       def accept_hook?(hook)
         Gherkin::TagExpression.new(hook.tag_expressions).eval(source_tags)
       end
+      
+      def source_tag_names
+        warn("Deprecated: please use #source_tags instead.")
+        source_tags.map { |tag| tag.name }
+      end
 
       def source_tags
         (@tags.tags.to_a + (@feature ? @feature.source_tags.to_a : [])).uniq
