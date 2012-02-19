@@ -15,4 +15,4 @@ task :push_yard => :yard do
   sh("ssh cukes.info 'cd /var/www/cucumber/api/ruby && rm -rf #{Cucumber::VERSION} && mkdir #{Cucumber::VERSION} && tar xzf api-#{Cucumber::VERSION}.tgz -C #{Cucumber::VERSION} && rm -f latest && ln -s #{Cucumber::VERSION} latest'")
 end
 
-task :release => :push_yard
+#task :release => :push_yard
