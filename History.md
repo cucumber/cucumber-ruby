@@ -1,4 +1,4 @@
-## In Git
+## [v1.1.8](https://github.com/cucumber/cucumber/compare/v1.1.7...v1.1.8)
 
 ## Bugfixes
 * Column mapping dangerously applied twice to the same cell! ([#202](https://github.com/cucumber/cucumber/issues/202), [#208](https://github.com/cucumber/cucumber/pull/208) Brian Dunn)
