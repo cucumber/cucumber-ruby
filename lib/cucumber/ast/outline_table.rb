@@ -93,10 +93,6 @@ module Cucumber
           @table.source_tags
         end
 
-        def source_tag_names
-          source_tags.map{|tag| tag.name}
-        end
-
         def create_step_invocations!(scenario_outline)
           @scenario_outline = scenario_outline
           @step_invocations = scenario_outline.step_invocations(self)
