@@ -1,5 +1,8 @@
 ## In Git
 
+## Bugfixes
+* Column mapping dangerously applied twice to the same cell! ([#202](https://github.com/cucumber/cucumber/issues/202), [#208](https://github.com/cucumber/cucumber/pull/208) Brian Dunn)
+
 ## New Features
 * Don't pollute RbWorld with the AnsiEscapes methods ([#219](https://github.com/cucumber/cucumber/issues/219), [#221](https://github.com/cucumber/cucumber/pull/221) Ben Woosley)
 
@@ -26,7 +29,7 @@
 
 ### New Features
 
-* Upgraded to gherkin 2.3.8 (Aslak Hellesøy)
+* Upgraded to gherkin 2.8.0 (Aslak Hellesøy)
 
 ### Bugfixes
 
