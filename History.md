@@ -1,3 +1,9 @@
+## [v1.1.7](https://github.com/cucumber/cucumber/compare/v1.1.5...v1.1.7)
+
+### Bugfixes
+
+* Finish off backwards compatability fix for Capybara #229 (Cezary Baginski)
+
 ## [v1.1.6](https://github.com/cucumber/cucumber/compare/v1.1.5...v1.1.6)
 
 ### New features
