@@ -1,5 +1,5 @@
-@spork @my_issues
-Feature: DRb Server Integration: Regression test for Issue #117
+@drb
+Feature: DRb Server Integration
   To prevent waiting for Rails and other large Ruby applications to load their environments
   for each feature run Cucumber ships with a DRb client that can speak to a server which
   loads up the environment only once.
