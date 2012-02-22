@@ -31,7 +31,17 @@ module Cucumber
         }
         config.timeout('invoke').should == 99
       end
-      
+
+      it "reads the timeout for a connect message" do
+        write_wire_file %q{
+          host: localhost
+          port: 54321
+          timeout:
+            connect: 99
+        }
+        config.timeout('connect').should == 99
+      end
+
       describe "a wire file with no timeouts specified" do
         before(:each) do
           write_wire_file %q{

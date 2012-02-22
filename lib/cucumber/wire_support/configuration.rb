@@ -21,6 +21,7 @@ module Cucumber
       
       def default_timeouts
         {
+          'connect' => 10,
           'invoke' => 120,
           'begin_scenario' => 120,
           'end_scenario' => 120
