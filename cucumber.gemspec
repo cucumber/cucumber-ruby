@@ -23,7 +23,7 @@ for important information about this release. Happy cuking!
 
 }
 
-  s.add_runtime_dependency 'gherkin', '~> 2.8.0'
+  s.add_runtime_dependency 'gherkin', '~> 2.9.0'
   s.add_runtime_dependency 'term-ansicolor', '>= 1.0.6'
   s.add_runtime_dependency 'builder', '>= 2.1.2'
   s.add_runtime_dependency 'diff-lcs', '>= 1.1.2'

@@ -1,3 +1,8 @@
+## [v1.1.9](https://github.com/cucumber/cucumber/compare/v1.1.8...v1.1.9)
+
+## Bugfixes
+* Removed deprecation warning for `source_tag_names`. It's not deprecated anymore. (Aslak Hellesøy)
+
 ## [v1.1.8](https://github.com/cucumber/cucumber/compare/v1.1.7...v1.1.8)
 
 ## Bugfixes
