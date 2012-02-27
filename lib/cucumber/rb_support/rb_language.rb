@@ -75,7 +75,7 @@ module Cucumber
         end.compact
       end
 
-      ARGUMENT_PATTERNS = ['"([^"]*)"', '(\d+)']
+      ARGUMENT_PATTERNS = ['"(.*?)"', '(\d+)']
 
       def snippet_text(code_keyword, step_name, multiline_arg_class)
         snippet_pattern = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
