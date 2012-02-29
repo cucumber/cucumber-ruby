@@ -1,5 +1,5 @@
-Feature: Rerun formatter: Test for Issue #57
-  details see https://github.com/cucumber/cucumber/issues/57
+Feature: Rerun formatter
+  For details see https://github.com/cucumber/cucumber/issues/57
 
   Background:
     Given a file named "features/one_passing_one_failing.feature" with:

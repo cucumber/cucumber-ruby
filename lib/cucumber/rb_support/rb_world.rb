@@ -4,7 +4,7 @@ module Cucumber
   module RbSupport
     # All steps are run in the context of an object that extends this module.
     module RbWorld
-      include Gherkin::Formatter::AnsiEscapes
+      AnsiEscapes = Gherkin::Formatter::AnsiEscapes
 
       class << self
         def alias_adverb(adverb)
@@ -21,7 +21,7 @@ module Cucumber
       attr_writer :__cucumber_step_mother, :__natural_language
 
       def __cucumber_invoke(name, multiline_argument=nil) #:nodoc:
-        STDERR.puts failed + "WARNING: Using 'Given/When/Then' in step definitions is deprecated, use 'step' to call other steps instead:" + caller[0] + reset
+        STDERR.puts AnsiEscapes.failed + "WARNING: Using 'Given/When/Then' in step definitions is deprecated, use 'step' to call other steps instead:" + caller[0] + AnsiEscapes.reset
         @__cucumber_step_mother.invoke(name, multiline_argument)
       end
 
@@ -46,7 +46,7 @@ module Cucumber
       end
 
       def announce(*messages)
-        STDERR.puts failed + "WARNING: #announce is deprecated. Use #puts instead:" + caller[0] + reset
+        STDERR.puts AnsiEscapes.failed + "WARNING: #announce is deprecated. Use #puts instead:" + caller[0] + AnsiEscapes.reset
         puts(*messages)
       end
 
