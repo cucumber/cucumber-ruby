@@ -143,7 +143,7 @@ module Cucumber
   
       def background_name(keyword, name, file_colon_line, source_indent)
         @listing_background = true
-        @builder.h3 do |h3|
+        @builder.h3(:id => "background_#{@scenario_number}") do |h3|
           @builder.span(keyword, :class => 'keyword')
           @builder.text!(' ')
           @builder.span(name, :class => 'val')
@@ -513,7 +513,7 @@ module Cucumber
       def inline_js_content
         <<-EOF
 
-  SCENARIOS = "h3[id^='scenario_']";
+  SCENARIOS = "h3[id^='scenario_'],h3[id^=background_]";
   
   $(document).ready(function() {
     $(SCENARIOS).css('cursor', 'pointer');
