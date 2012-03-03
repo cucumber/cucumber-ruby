@@ -4,6 +4,7 @@
 * Extracted the PDF formatter into a separate gem. (#241 Matt Wynne)
 * Remove dependency on term/ansicolor (#43 Joe Fiorini)
 * Methods for Step Definitions (#168 Giles Alexander)
+* Add file:line to step events in formatter API (#181 Roman Chernyatchik)
 
 ## [v1.1.9](https://github.com/cucumber/cucumber/compare/v1.1.8...v1.1.9)
 
