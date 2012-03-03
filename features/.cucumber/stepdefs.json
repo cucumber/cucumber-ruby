@@ -93,6 +93,15 @@
         ]
       },
       {
+        "name": "a file named \"features/support/jb/formatter.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/support/jb/formatter.rb"
+          }
+        ]
+      },
+      {
         "name": "a file named \"features/support/ze/formator.rb\" with:",
         "args": [
           {
@@ -812,6 +821,15 @@
           {
             "offset": 16,
             "val": "-b --format json features/embed.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber \"features/f.feature --format Jb::Formatter\"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "features/f.feature --format Jb::Formatter"
           }
         ]
       },
