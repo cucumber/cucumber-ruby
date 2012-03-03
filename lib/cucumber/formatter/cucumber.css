@@ -21,7 +21,7 @@ body {
   float: right;
   margin: 0 0 0 10px;
 }
-.cucumber .scenario h3, td .scenario h3, th .scenario h3 {
+.cucumber .scenario h3, td .scenario h3, th .scenario h3, .background h3 {
   font-size: 11px;
   padding: 3px;
   margin: 0;
@@ -29,6 +29,12 @@ body {
   color: white;
   font-weight: bold;
 }
+
+.background h3 {
+  font-size: 1.2em;
+  background: #666;
+}
+
 .cucumber h1, td h1, th h1 {
   margin: 0px 10px 0px 10px;
   padding: 10px;
