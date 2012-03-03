@@ -9,10 +9,6 @@ module Cucumber
       BUILTIN_FORMATS = {
         'html'        => ['Cucumber::Formatter::Html',        'Generates a nice looking HTML report.'],
         'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
-        'pdf'         => ['Cucumber::Formatter::Pdf',         "Generates a PDF report. You need to have the\n" +
-                                                              "#{INDENT}prawn gem installed. Will pick up logo from\n" +
-                                                              "#{INDENT}features/support/logo.png or\n" +
-                                                              "#{INDENT}features/support/logo.jpg if present."],
         'progress'    => ['Cucumber::Formatter::Progress',    'Prints one character per scenario.'],
         'rerun'       => ['Cucumber::Formatter::Rerun',       'Prints failing files with line numbers.'],
         'usage'       => ['Cucumber::Formatter::Usage',       "Prints where step definitions are used.\n" +
