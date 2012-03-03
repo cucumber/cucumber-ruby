@@ -2,6 +2,7 @@
 
 ## New Features
 * Extracted the PDF formatter into a separate gem. (#241 Matt Wynne)
+* Remove dependency on term/ansicolor (#43 Joe Fiorini)
 
 ## [v1.1.9](https://github.com/cucumber/cucumber/compare/v1.1.8...v1.1.9)
 
