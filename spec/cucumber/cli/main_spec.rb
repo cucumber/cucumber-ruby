@@ -95,7 +95,7 @@ module Cucumber
 
       context "--drb" do
         before(:each) do
-          @configuration = mock('Configuration', :drb? => true).as_null_object
+          @configuration = mock('Configuration', :drb? => true, :dotcucumber => false).as_null_object
           Configuration.stub!(:new).and_return(@configuration)
 
           @args = ['features']

@@ -24,10 +24,6 @@ module Cucumber
       def alias_adverbs(adverbs)
       end
 
-      def step_definitions_for(py_file)
-        mod = import(py_file)
-      end
-
       def snippet_text(code_keyword, step_name, multiline_arg_class)
         "python snippet: #{code_keyword}, #{step_name}"
       end

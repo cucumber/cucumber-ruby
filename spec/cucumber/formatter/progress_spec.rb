@@ -6,7 +6,7 @@ module Cucumber
     describe Progress do
 
       before(:each) do
-        Term::ANSIColor.coloring = false
+        Cucumber::Term::ANSIColor.coloring = false
         @out = StringIO.new
         progress = Cucumber::Formatter::Progress.new(mock("step mother"), @out, {})
         @visitor = Cucumber::Ast::TreeWalker.new(nil, [progress])

@@ -65,20 +65,6 @@ module Cucumber
         end
       end
 
-      # Gets called for each file under features (or whatever is overridden
-      # with --require).
-      def step_definitions_for(rb_file) # Looks Unused - Delete?
-        begin
-          require rb_file # This will cause self.add_step_definition and self.add_hook to be called from RbDsl
-          step_definitions
-        rescue LoadError => e
-          e.message << "\nFailed to load #{code_file}"
-          raise e
-        ensure
-          @step_definitions = nil
-        end
-      end
-      
       def step_matches(name_to_match, name_to_format)
         @step_definitions.map do |step_definition|
           if(arguments = step_definition.arguments_from(name_to_match))
@@ -124,8 +110,8 @@ module Cucumber
         add_transform(RbTransform.new(self, regexp, proc))
       end
 
-      def register_rb_step_definition(regexp, proc)
-        step_definition = RbStepDefinition.new(self, regexp, proc)
+      def register_rb_step_definition(regexp, proc_or_sym, options)
+        step_definition = RbStepDefinition.new(self, regexp, proc_or_sym, options)
         @step_definitions << step_definition
         step_definition
       end

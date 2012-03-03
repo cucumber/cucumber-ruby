@@ -9,10 +9,6 @@ module Cucumber
       BUILTIN_FORMATS = {
         'html'        => ['Cucumber::Formatter::Html',        'Generates a nice looking HTML report.'],
         'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
-        'pdf'         => ['Cucumber::Formatter::Pdf',         "Generates a PDF report. You need to have the\n" +
-                                                              "#{INDENT}prawn gem installed. Will pick up logo from\n" +
-                                                              "#{INDENT}features/support/logo.png or\n" +
-                                                              "#{INDENT}features/support/logo.jpg if present."],
         'progress'    => ['Cucumber::Formatter::Progress',    'Prints one character per scenario.'],
         'rerun'       => ['Cucumber::Formatter::Rerun',       'Prints failing files with line numbers.'],
         'usage'       => ['Cucumber::Formatter::Usage',       "Prints where step definitions are used.\n" +
@@ -214,7 +210,7 @@ module Cucumber
           opts.on("-c", "--[no-]color",
             "Whether or not to use ANSI color in the output. Cucumber decides",
             "based on your platform and the output destination if not specified.") do |v|
-            Term::ANSIColor.coloring = v
+            Cucumber::Term::ANSIColor.coloring = v
           end
           opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.",
             "This also omits the loading of your support/env.rb file if it exists.") do
@@ -223,9 +219,9 @@ module Cucumber
           opts.on("-a", "--autoformat DIR",
             "Reformats (pretty prints) feature files and write them to DIRECTORY.",
             "Be careful if you choose to overwrite the originals.",
-            "Implies --dry-run --formatter pretty.") do |directory|
+            "Implies --dry-run --format pretty.") do |directory|
             @options[:autoformat] = directory
-            Term::ANSIColor.coloring = false
+            Cucumber::Term::ANSIColor.coloring = false
             @options[:dry_run] = true
             @quiet = true
           end
@@ -270,6 +266,9 @@ module Cucumber
           end
           opts.on("--port PORT", "Specify DRb port.  Ignored without --drb") do |port|
             @options[:drb_port] = port
+          end
+          opts.on("--dotcucumber DIR", "Write metadata to DIR") do |dir|
+            @options[:dotcucumber] = dir
           end
           opts.on_tail("--version", "Show version.") do
             @out_stream.puts Cucumber::VERSION

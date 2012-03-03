@@ -22,9 +22,9 @@ module Cucumber
         @file_colon_lines = Hash.new{|h,k| h[k] = []}
       end
       
-      def before_feature(*)
+      def before_feature(feature_element)
         @lines = []
-        @file = nil
+        @file = feature_element.file
       end
       
       def after_feature(*)
@@ -46,17 +46,40 @@ module Cucumber
       end
 
       def after_feature_element(feature_element)
-        if @rerun
-          file, line = *feature_element.file_colon_line.split(':')
-          @lines << line
-          @file = file
+        if (@rerun || feature_element.failed?) && !(Ast::ScenarioOutline === feature_element)
+          @lines << feature_element.line
         end
+      end
+
+      def after_table_row(table_row)
+        return unless @in_examples and Cucumber::Ast::OutlineTable::ExampleRow === table_row
+        unless @header_row
+          if table_row.failed?
+            @rerun = true
+            @lines << table_row.line
+          end
+        end
+
+        @header_row = false if @header_row
+      end
+
+      def before_examples(*args)
+        @header_row = true
+        @in_examples = true
+      end
+      
+      def after_examples(*args)
+        @in_examples = false
+      end
+
+      def before_table_row(table_row)
+        return unless @in_examples
       end
 
       def step_name(keyword, step_match, status, source_indent, background, file_colon_line)
         @rerun = true if [:failed, :pending, :undefined].index(status)
       end
-      
+
     private
     
       def after_first_time

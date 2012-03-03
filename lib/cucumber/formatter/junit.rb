@@ -28,6 +28,7 @@ module Cucumber
       
       def before_feature_element(feature_element)
         @in_examples = Ast::ScenarioOutline === feature_element
+        @steps_start = Time.now
       end
       
       def after_feature(feature)
@@ -66,7 +67,6 @@ module Cucumber
       end
 
       def before_steps(steps)
-        @steps_start = Time.now
       end
       
       def after_steps(steps)

@@ -1,3 +1,72 @@
+## [v1.2.0](https://github.com/cucumber/cucumber/compare/v1.1.9...v1.2.0)
+
+## New Features
+* Extracted the PDF formatter into a separate gem. (#241 Matt Wynne)
+* Remove dependency on term/ansicolor (#43 Joe Fiorini)
+* Methods for Step Definitions (#168 Giles Alexander)
+
+## [v1.1.9](https://github.com/cucumber/cucumber/compare/v1.1.8...v1.1.9)
+
+## Bugfixes
+* Removed deprecation warning for `source_tag_names`. It's not deprecated anymore. (Aslak Hellesøy)
+
+## [v1.1.8](https://github.com/cucumber/cucumber/compare/v1.1.7...v1.1.8)
+
+## Bugfixes
+* Column mapping dangerously applied twice to the same cell! ([#202](https://github.com/cucumber/cucumber/issues/202), [#208](https://github.com/cucumber/cucumber/pull/208) Brian Dunn)
+
+## New Features
+* Don't pollute RbWorld with the AnsiEscapes methods ([#219](https://github.com/cucumber/cucumber/issues/219), [#221](https://github.com/cucumber/cucumber/pull/221) Ben Woosley)
+
+## [v1.1.7](https://github.com/cucumber/cucumber/compare/v1.1.6...v1.1.7)
+
+### Bugfixes
+
+* Finish off backwards compatability fix for Capybara ([#229](https://github.com/cucumber/cucumber/pull/229) Cezary Baginski)
+
+## [v1.1.6](https://github.com/cucumber/cucumber/compare/v1.1.5...v1.1.6)
+
+### New features
+
+* Added `file_colon_line` to `stepdefs.json` (outputted by `--dotcucumber`). ([#214](https://github.com/cucumber/cucumber/pull/214) MOROHASHI Kyosuke)
+
+### Bugfixes
+
+* Release 1.1.5 unintentionally broke backwards compatibility in some APIs we hadn't considered were used outside of cucumber.
+  Well, it was, in the popular Capybara browser automation tool, so we added back the API we removed. See the history for details. (Aslak Hellesøy)
+* After some infantile bickering about a trivial bug that any hipster startup ruby programmer could have circumvented by using a fork with a fix,
+  I finally sucked up to a horde of people and made HTML reports work again (I'm gonna rename them TPS reports). ([#203](https://github.com/cucumber/cucumber/pull/203) Jon Merrifield)
+
+## [v1.1.5](https://github.com/cucumber/cucumber/compare/v1.1.4...v1.1.5)
+
+### New Features
+
+* Upgraded to gherkin 2.8.0 (Aslak Hellesøy)
+
+### Bugfixes
+
+* Background fails, but build succeeds ([#205](https://github.com/cucumber/cucumber/issues/205) tcwitte)
+
+## [v1.1.4](https://github.com/cucumber/cucumber/compare/v1.1.3...v1.1.4)
+
+### New Features
+
+* Upgrade to Gherkin 2.7.1 (Aslak Hellesøy)
+
+## [v1.1.3](https://github.com/cucumber/cucumber/compare/v1.1.2...v1.1.3)
+
+### New Features
+
+* Generate stepdef metadata with --dotcucumber. Useful for Cukepatch. (Aslak Hellesøy)
+* Show class name of exceptions in the HTML formatter ([#159](https://github.com/cucumber/cucumber/pull/159) Jari Bakken)
+* Deferred table header and column mappings ([#163](https://github.com/cucumber/cucumber/pull/163) Richard Lawrence)
+
+### Bugfixes
+
+* Escape exceptions in HTML formatter ([#178](https://github.com/cucumber/cucumber/pull/178) leachdaniel)
+* Retry when feature_element returns failed ([#172](https://github.com/cucumber/cucumber/pull/172) Charles Finkel)
+* Rerun formatter output does not include failing scenario outline examples ([#57](https://github.com/cucumber/cucumber/issues/57) Jan Brauer)
+
 ## [v1.1.2](https://github.com/cucumber/cucumber/compare/v1.1.1...v1.1.2)
 
 ### Changed features

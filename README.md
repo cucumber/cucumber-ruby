@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/cucumber/cucumber.png)](http://travis-ci.org/cucumber/cucumber)
+[![Build Status](https://secure.travis-ci.org/cucumber/cucumber.png)](http://travis-ci.org/cucumber/cucumber) [![Dependency Status](https://gemnasium.com/cucumber/cucumber.png)](https://gemnasium.com/cucumber/cucumber)
 
 The main website is at http://cukes.info/
 The documentation is at https://wiki.github.com/cucumber/cucumber/
