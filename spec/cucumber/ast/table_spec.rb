@@ -45,40 +45,54 @@ module Cucumber
         @table.hashes.first[:one].should == '4444'
       end
 
-      it "should allow mapping columns" do
-        @table.map_column!('one') { |v| v.to_i }
-        @table.hashes.first['one'].should == 4444
-      end
-
-      it "should allow mapping columns and take a symbol as the column name" do
-        @table.map_column!(:one) { |v| v.to_i }
-        @table.hashes.first['one'].should == 4444
-      end
-
-      it "should allow mapping columns and modify the rows as well" do
-        @table.map_column!(:one) { |v| v.to_i }
-        @table.rows.first.should include(4444)
-        @table.rows.first.should_not include('4444')
-      end
-
       it "should return the row values in order" do
         @table.rows.first.should == %w{4444 55555 666666}
       end
 
-      it "should pass silently if a mapped column does not exist in non-strict mode" do
-        lambda {
-          @table.map_column!('two', false) { |v| v.to_i }
-        }.should_not raise_error
-      end
+      describe '#map_column!' do
+        it "should allow mapping columns" do
+          @table.map_column!('one') { |v| v.to_i }
+          @table.hashes.first['one'].should == 4444
+        end
 
-      it "should fail if a mapped column does not exist in strict mode" do
-        lambda {
-          @table.map_column!('two', true) { |v| v.to_i }
-        }.should raise_error('The column named "two" does not exist')
-      end
+        it "applies the block once to each value" do
+          headers = ['header']
+          rows = ['value']
+          table = Table.new [headers, rows]
+          count = 0
+          table.map_column!('header') { |value| count +=1 }
+          table.rows
+          count.should eq rows.size
+        end
 
-      it "should return the table" do
-        (@table.map_column!(:one) { |v| v.to_i }).should == @table
+        it "should allow mapping columns and take a symbol as the column name" do
+          @table.map_column!(:one) { |v| v.to_i }
+          @table.hashes.first['one'].should == 4444
+        end
+
+        it "should allow mapping columns and modify the rows as well" do
+          @table.map_column!(:one) { |v| v.to_i }
+          @table.rows.first.should include(4444)
+          @table.rows.first.should_not include('4444')
+        end
+
+        it "should pass silently if a mapped column does not exist in non-strict mode" do
+          lambda {
+            @table.map_column!('two', false) { |v| v.to_i }
+            @table.hashes
+          }.should_not raise_error
+        end
+
+        it "should fail if a mapped column does not exist in strict mode" do
+          lambda {
+            @table.map_column!('two', true) { |v| v.to_i }
+            @table.hashes
+          }.should raise_error('The column named "two" does not exist')
+        end
+
+        it "should return the table" do
+          (@table.map_column!(:one) { |v| v.to_i }).should == @table
+        end
       end
 
       describe "#match" do
@@ -131,6 +145,16 @@ module Cucumber
           lambda {
             faulty_table.rows_hash
           }.should raise_error('The table must have exactly 2 columns')
+        end
+
+        it "should support header and column mapping" do
+          table = Table.new([
+            %w{one 1111},
+            %w{two 22222}
+          ])
+          table.map_headers!({ 'two' => 'Two' }) { |header| header.upcase }
+          table.map_column!('two', false) { |val| val.to_i }
+          table.rows_hash.should == { 'ONE' => '1111', 'Two' => 22222 }
         end
       end
 
@@ -378,6 +402,7 @@ module Cucumber
           ])
           lambda do
             t1.map_headers!(/uk/ => 'u')
+            t1.hashes
           end.should raise_error(%{2 headers matched /uk/: ["Cuke", "Duke"]})
         end
         

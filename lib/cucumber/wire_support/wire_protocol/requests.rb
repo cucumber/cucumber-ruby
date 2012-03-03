@@ -1,4 +1,6 @@
 require 'cucumber/wire_support/request_handler'
+require 'gherkin/formatter/argument'
+
 module Cucumber
   module WireSupport
     module WireProtocol
@@ -25,7 +27,7 @@ module Cucumber
           def create_step_match(raw_step_match)
             step_definition = WireStepDefinition.new(@connection, raw_step_match)
             step_args = raw_step_match['args'].map do |raw_arg|
-              StepArgument.new(raw_arg['val'], raw_arg['pos'])
+              Gherkin::Formatter::Argument.new(raw_arg['pos'], raw_arg['val'])
             end
             step_match(step_definition, step_args)
           end
@@ -92,13 +94,13 @@ module Cucumber
         end
       
         module Tags
-          def clean_tags(scenario)
-            scenario.source_tag_names.map { |tag| tag.gsub(/^@/, '') }.sort
+          def clean_tag_names(scenario)
+            scenario.source_tags.map { |tag| tag.name.gsub(/^@/, '') }.sort
           end
           
           def request_params(scenario)
-            return nil unless scenario.source_tag_names.any?
-            { "tags" => clean_tags(scenario) }
+            return nil unless scenario.source_tags.any?
+            { "tags" => clean_tag_names(scenario) }
           end
         end
       

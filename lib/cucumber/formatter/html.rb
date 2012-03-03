@@ -311,7 +311,7 @@ module Cucumber
           @builder.tr do
             @builder.td(:colspan => @col_index.to_s, :class => 'failed') do
               @builder.pre do |pre|
-                pre << format_exception(table_row.exception)
+                pre << h(format_exception(table_row.exception))
               end
             end
           end
@@ -378,6 +378,11 @@ module Cucumber
             matches = message.match(/<code>([^(\/)]+)<\//m)
             message = matches ? matches[1] : ""
           end
+
+          unless exception.instance_of?(RuntimeError)
+            message = "#{message} (#{exception.class})"
+          end
+
           @builder.pre do 
             @builder.text!(message)
           end
