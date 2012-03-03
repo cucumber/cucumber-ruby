@@ -1,10 +1,12 @@
+require 'cucumber/ast/feature_element'
+require 'cucumber/ast/names'
+
 module Cucumber
   module Ast
     class ScenarioOutline #:nodoc:
       include FeatureElement
+      include Names
       
-      attr_reader :name
-
       module ExamplesArray #:nodoc:
         def accept(visitor)
           return if Cucumber.wants_to_quit
@@ -20,8 +22,8 @@ module Cucumber
       # * Examples keyword
       # * Examples section name
       # * Raw matrix
-      def initialize(background, comment, tags, line, keyword, name, raw_steps, example_sections)
-        @background, @comment, @tags, @line, @keyword, @name, @raw_steps, @example_sections = background, comment, tags, line, keyword, name, raw_steps, example_sections
+      def initialize(background, comment, tags, line, keyword, title, description, raw_steps, example_sections)
+        @background, @comment, @tags, @line, @keyword, @title, @description, @raw_steps, @example_sections = background, comment, tags, line, keyword, title, description, raw_steps, example_sections
       end
 
       def add_examples(example_section, gherkin_examples)
@@ -37,14 +39,15 @@ module Cucumber
           example_section = example_section_and_gherkin_examples[0]
           gherkin_examples = example_section_and_gherkin_examples[1]
           
-          examples_comment    = example_section[0]
-          examples_line       = example_section[1]
-          examples_keyword    = example_section[2]
-          examples_name       = example_section[3]
-          examples_matrix     = example_section[4]
+          examples_comment     = example_section[0]
+          examples_line        = example_section[1]
+          examples_keyword     = example_section[2]
+          examples_title       = example_section[3]
+          examples_description = example_section[4]
+          examples_matrix      = example_section[5]
 
           examples_table = OutlineTable.new(examples_matrix, self)
-          ex = Examples.new(examples_comment, examples_line, examples_keyword, examples_name, examples_table)
+          ex = Examples.new(examples_comment, examples_line, examples_keyword, examples_title, examples_description, examples_table)
           ex.gherkin_statement(gherkin_examples)
           ex
         end
@@ -58,7 +61,7 @@ module Cucumber
         return if Cucumber.wants_to_quit
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, @name, file_colon_line(@line), source_indent(first_line_length))
+        visitor.visit_scenario_name(@keyword, name, file_colon_line(@line), source_indent(first_line_length))
         visitor.visit_steps(@steps)
 
         skip_invoke! if @background && @background.failed?
@@ -107,7 +110,7 @@ module Cucumber
 
       def to_sexp
         init
-        sexp = [:scenario_outline, @keyword, @name]
+        sexp = [:scenario_outline, @keyword, name]
         comment = @comment.to_sexp
         sexp += [comment] if comment
         tags = @tags.to_sexp

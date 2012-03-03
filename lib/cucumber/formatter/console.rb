@@ -26,13 +26,15 @@ module Cucumber
         format_string(line, status)
       end
 
-      def format_string(string, status)
+      def format_string(o, status)
         fmt = format_for(status)
-        if Proc === fmt
-          fmt.call(string)
-        else
-          fmt % string
-        end
+        o.to_s.split("\n").map do |line|
+          if Proc === fmt
+            fmt.call(line)
+          else
+            fmt % line
+          end
+        end.join("\n")
       end
 
       def print_steps(status)
@@ -57,21 +59,16 @@ module Cucumber
         end
       end
 
-      def print_counts
-        STDERR.puts("The #print_counts method is deprecated and will be removed in 0.4. Use #print_stats instead")
-        print_stats(nil)
-      end
-
-      def print_stats(features, profiles = [])
+      def print_stats(features, options)
         @failures = step_mother.scenarios(:failed).select { |s| s.is_a?(Cucumber::Ast::Scenario) || s.is_a?(Cucumber::Ast::OutlineTable::ExampleRow) }
         @failures.collect! { |s| (s.is_a?(Cucumber::Ast::OutlineTable::ExampleRow)) ? s.scenario_outline : s }
 
         if !@failures.empty?          
           @io.puts format_string("Failing Scenarios:", :failed)
           @failures.each do |failure|
-            profiles_string = profiles.empty? ? '' : (profiles.map{|profile| "-p #{profile}" }).join(' ') + ' '
-            @io.puts format_string("cucumber #{profiles_string}" + failure.file_colon_line, :failed) +
-            format_string(" # Scenario: " + failure.name, :comment)
+            profiles_string = options.custom_profiles.empty? ? '' : (options.custom_profiles.map{|profile| "-p #{profile}" }).join(' ') + ' '
+            source = options[:source] ? format_string(" # Scenario: " + failure.name, :comment) : ''
+            @io.puts format_string("cucumber #{profiles_string}" + failure.file_colon_line, :failed) + source
           end
           @io.puts
         end
@@ -85,7 +82,18 @@ module Cucumber
       end
 
       def print_exception(e, status, indent)
-        @io.puts(format_string("#{e.message} (#{e.class})\n#{e.backtrace.join("\n")}".indent(indent), status))
+        message = "#{e.message} (#{e.class})"
+        if ENV['CUCUMBER_TRUNCATE_OUTPUT']
+          message = linebreaks(message, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
+        end
+
+        string = "#{message}\n#{e.backtrace.join("\n")}".indent(indent)
+        @io.puts(format_string(string, status))
+      end
+      
+      # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655 
+      def linebreaks(s, max)
+        s.gsub(/.{1,#{max}}(?:\s|\Z)/){($& + 5.chr).gsub(/\n\005/,"\n").gsub(/\005/,"\n")}.rstrip
       end
 
       def print_snippets(options)
@@ -106,8 +114,9 @@ module Cucumber
         @io.puts format_string(text, :undefined)
 
         if unknown_programming_language
-          @io.puts format_string("\nIf you want snippets in a different programming language, just make sure a file\n" +
-                  "with the appropriate file extension exists where cucumber looks for step definitions.", :failed)
+          @io.puts format_string("\nIf you want snippets in a different programming language,\n" +
+                  "just make sure a file with the appropriate file extension\n" +
+                  "exists where cucumber looks for step definitions.", :failed)
         end
 
         @io.puts
@@ -129,39 +138,41 @@ module Cucumber
         # no-op
       end
 
-      #define @delayed_announcements = [] in your Formatter if you want to
+      #define @delayed_messages = [] in your Formatter if you want to
       #activate this feature
-      def announce(announcement)
-        if @delayed_announcements
-          @delayed_announcements << announcement
+      def puts(*messages)
+        if @delayed_messages
+          @delayed_messages += messages
         else
           if @io
             @io.puts
-            @io.puts(format_string(announcement, :tag))
+            messages.each do |message|
+              @io.puts(format_string(message, :tag))
+            end
             @io.flush
           end
         end
       end
 
-      def print_announcements()
-        @delayed_announcements.each {|ann| print_announcement(ann)}
-        empty_announcements
+      def print_messages
+        @delayed_messages.each {|message| print_message(message)}
+        empty_messages
       end
 
-      def print_table_row_announcements
-        return if @delayed_announcements.empty?
-        @io.print(format_string(@delayed_announcements.join(', '), :tag).indent(2))
+      def print_table_row_messages
+        return if @delayed_messages.empty?
+        @io.print(format_string(@delayed_messages.join(', '), :tag).indent(2))
         @io.flush
-        empty_announcements
+        empty_messages
       end
 
-      def print_announcement(announcement)
-        @io.puts(format_string(announcement, :tag).indent(@indent))
+      def print_message(message)
+        @io.puts(format_string(message, :tag).indent(@indent))
         @io.flush
       end
 
-      def empty_announcements
-        @delayed_announcements = []
+      def empty_messages
+        @delayed_messages = []
       end
 
     private

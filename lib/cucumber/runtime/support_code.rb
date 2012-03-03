@@ -1,7 +1,9 @@
 require 'cucumber/constantize'
+require 'cucumber/ast/multiline_argument'
 require 'cucumber/runtime/for_programming_languages'
 
 module Cucumber
+
   class Runtime
     
     class SupportCode
@@ -18,15 +20,7 @@ module Cucumber
         end
 
         def step(step)
-          cucumber_multiline_arg = case(rubify(step.multiline_arg))
-          when Gherkin::Formatter::Model::PyString
-            step.multiline_arg.value
-          when Array
-            Ast::Table.new(step.multiline_arg.map{|row| row.cells})
-          else
-            nil
-          end
-          @support_code.invoke(step.name, cucumber_multiline_arg) 
+          @support_code.invoke(step.name, Ast::MultilineArgument.from(step.doc_string || step.rows)) 
         end
 
         def eof
@@ -57,6 +51,17 @@ module Cucumber
         file, line = file_colon_line.split(':')
         parser = Gherkin::Parser::Parser.new(StepInvoker.new(self), true, 'steps')
         parser.parse(steps_text, file, line.to_i)
+      end
+
+      def invoke(step_name, multiline_argument=nil)
+        multiline_argument = Cucumber::Ast::MultilineArgument.from(multiline_argument)
+        # It is very important to leave multiline_argument=nil as a vararg. Cuke4Duke needs it that way. 
+        begin
+          step_match(step_name).invoke(multiline_argument)
+        rescue Exception => e
+          e.nested! if Undefined === e
+          raise e
+        end
       end
       
       # Loads and registers programming language implementation.
@@ -132,16 +137,6 @@ module Cucumber
         matches[0]
       end
     
-      def invoke(step_name, multiline_argument=nil)
-        # It is very important to leave multiline_argument=nil as a vararg. Cuke4Duke needs it that way. 
-        begin
-          step_match(step_name).invoke(multiline_argument)
-        rescue Exception => e
-          e.nested! if Undefined === e
-          raise e
-        end
-      end
-
     private
   
       def guess_step_matches?

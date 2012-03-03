@@ -1,4 +1,3 @@
-require 'cucumber/step_argument'
 require 'cucumber/wire_support/wire_protocol/requests'
 
 module Cucumber

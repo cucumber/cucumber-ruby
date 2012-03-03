@@ -8,7 +8,7 @@ module Cucumber
     #     Cucumber sandwich
     #     """
     #
-    # The text between the pair of <tt>"""</tt> is stored inside a PyString,
+    # The text between the pair of <tt>"""</tt> is stored inside a DocString,
     # which is yielded to the StepDefinition block as the last argument.
     #
     # The StepDefinition can then access the String via the #to_s method. In the
@@ -16,64 +16,45 @@ module Cucumber
     #
     # Note how the indentation from the source is stripped away.
     #
-    class PyString #:nodoc:
-      class Builder
-        attr_reader :string
-
-        def initialize
-          @string = ''
-        end
-
-        def py_string(string, line_number)
-          @string = string
-        end
-
-        def eof
-        end
-      end
-
+    class DocString < String #:nodoc:
       attr_accessor :file
 
       def self.default_arg_name
         "string"
       end
 
-      def self.parse(text)
-        builder = Builder.new
-        lexer = Gherkin::I18nLexer.new(builder)
-        lexer.scan(text)
-        new(builder.string)
-      end
+      attr_reader :content_type
 
-      def initialize(string)
-        @string = string
+      def initialize(string, content_type)
+        @content_type = content_type
+        super string
       end
 
       def to_step_definition_arg
-        @string
+        self
       end
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        visitor.visit_py_string(@string)
+        visitor.visit_doc_string(self)
       end
       
       def arguments_replaced(arguments) #:nodoc:
-        string = @string
+        string = self
         arguments.each do |name, value|
           value ||= ''
           string = string.gsub(name, value)
         end
-        PyString.new(string)
+        DocString.new(string, content_type)
       end
 
       def has_text?(text)
-        @string.index(text)
+        index(text)
       end
 
       # For testing only
       def to_sexp #:nodoc:
-        [:py_string, to_step_definition_arg]
+        [:doc_string, to_step_definition_arg]
       end
     end
   end

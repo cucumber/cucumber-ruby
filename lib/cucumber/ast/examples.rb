@@ -1,10 +1,13 @@
+require 'cucumber/ast/names'
+
 module Cucumber
   module Ast
     class Examples #:nodoc:
+      include Names
       attr_writer :outline_table
       
-      def initialize(comment, line, keyword, name, outline_table)
-        @comment, @keyword, @name, @outline_table = comment, keyword, name, outline_table
+      def initialize(comment, line, keyword, title, description, outline_table)
+        @comment, @keyword, @title, @description, @outline_table = comment, keyword, title, description, outline_table
       end
 
       attr_reader :gherkin_statement
@@ -15,7 +18,7 @@ module Cucumber
       def accept(visitor)
         return if Cucumber.wants_to_quit
         visitor.visit_comment(@comment) unless @comment.empty?
-        visitor.visit_examples_name(@keyword, @name)
+        visitor.visit_examples_name(@keyword, name)
         visitor.visit_outline_table(@outline_table)
       end
 
@@ -32,7 +35,7 @@ module Cucumber
       end
 
       def to_sexp
-        sexp = [:examples, @keyword, @name]
+        sexp = [:examples, @keyword, name]
         comment = @comment.to_sexp
         sexp += [comment] if comment
         sexp += [@outline_table.to_sexp]

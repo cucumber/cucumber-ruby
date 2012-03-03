@@ -3,7 +3,7 @@ Feature: undefined multiline args
   Scenario: pystring
     Given a pystring
     """
-      example
+      example with <html> entities
     """
 
   Scenario: table

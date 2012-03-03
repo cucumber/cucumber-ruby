@@ -25,7 +25,7 @@ module Cucumber
         @exceptions = []
         @indent = 0
         @prefixes = options[:prefixes] || {}
-        @delayed_announcements = []
+        @delayed_messages = []
       end
 
       def after_features(features)
@@ -101,7 +101,7 @@ module Cucumber
       end
       
       def examples_name(keyword, name)
-        puts unless @visiting_first_example_name
+        @io.puts unless @visiting_first_example_name
         @visiting_first_example_name = false
         names = name.strip.empty? ? [name.strip] : name.split("\n")
         @io.puts("    #{keyword}: #{names[0]}")
@@ -150,10 +150,10 @@ module Cucumber
         source_indent = nil unless @options[:source]
         name_to_report = format_step(keyword, step_match, status, source_indent)
         @io.puts(name_to_report.indent(@scenario_indent + 2))
-        print_announcements
+        print_messages
       end
 
-      def py_string(string)
+      def doc_string(string)
         return if @hide_this_step
         s = %{"""\n#{string}\n"""}.indent(@indent)
         s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}.join("\n")
@@ -184,7 +184,7 @@ module Cucumber
 
       def after_table_row(table_row)
         return if !@table || @hide_this_step
-        print_table_row_announcements
+        print_table_row_messages
         @io.puts
         if table_row.exception && !@exceptions.include?(table_row.exception)
           print_exception(table_row.exception, table_row.status, @indent)
@@ -228,7 +228,7 @@ module Cucumber
       end
 
       def print_summary(features)
-        print_stats(features, @options.custom_profiles)
+        print_stats(features, @options)
         print_snippets(@options)
         print_passing_wip(@options)
       end

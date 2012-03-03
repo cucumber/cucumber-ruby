@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require 'spec_helper'
 require 'yaml'
 require 'cucumber/parser/gherkin_builder'
 require 'gherkin/formatter/model'
@@ -47,7 +47,7 @@ module Cucumber
 
         before(:each) do
           b = Cucumber::Parser::GherkinBuilder.new
-          @empty_feature = b.feature(Gherkin::Formatter::Model::Feature.new([], [], "Feature", "Foo", "", 99))
+          @empty_feature = b.feature(Gherkin::Formatter::Model::Feature.new([], [], "Feature", "Foo", "", 99, ""))
         end
 
         it "should show feature files parsed" do
@@ -95,7 +95,7 @@ module Cucumber
 
       context "--drb" do
         before(:each) do
-          @configuration = mock('Configuration', :drb? => true).as_null_object
+          @configuration = mock('Configuration', :drb? => true, :dotcucumber => false).as_null_object
           Configuration.stub!(:new).and_return(@configuration)
 
           @args = ['features']

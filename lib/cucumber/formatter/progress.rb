@@ -65,7 +65,7 @@ module Cucumber
       def print_summary(features)
         print_steps(:pending)
         print_steps(:failed)
-        print_stats(features, @options.custom_profiles)
+        print_stats(features, @options)
         print_snippets(@options)
         print_passing_wip(@options)
       end

@@ -1,5 +1,4 @@
 .bundle
-Gemfile.lock
 nbproject
 coverage
 pkg
@@ -23,3 +22,6 @@ rerun.txt
 ._*
 .rvmrc
 .sass-cache
+doc/
+*.tgz
+Gemfile.lock

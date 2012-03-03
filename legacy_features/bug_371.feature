@@ -22,9 +22,9 @@ Feature: https://rspec.lighthouseapp.com/projects/16211/tickets/371
       Feature: F
 
         Scenario: S
-      B
-      G
           Given G
+            B
+            G
 
       1 scenario (1 passed)
       1 step (1 passed)

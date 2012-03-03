@@ -3,25 +3,25 @@ require 'gherkin/tag_expression'
 module Cucumber
   module Ast
     class Tags #:nodoc:
-      attr_reader :tag_names
+      attr_reader :tags
 
-      def initialize(line, tag_names)
-        @line, @tag_names = line, tag_names
+      def initialize(line, tags)
+        @line, @tags = line, tags
       end
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        @tag_names.each do |tag_name|
-          visitor.visit_tag_name(tag_name)
+        @tags.each do |tag|
+          visitor.visit_tag_name(tag.name)
         end
       end
 
       def accept_hook?(hook)
-        Gherkin::TagExpression.new(hook.tag_expressions).eval(@tag_names)
+        Gherkin::TagExpression.new(hook.tag_expressions).eval(@tags)
       end
 
       def to_sexp
-        @tag_names.map{|tag_name| [:tag, tag_name]}
+        @tags.map{|tag| [:tag, tag.name]}
       end
     end
   end

@@ -51,7 +51,7 @@ module Cucumber
       include Enumerable
       include Gherkin::Rubify
       
-      NULL_CONVERSIONS = Hash.new(lambda{ |cell_value| cell_value }).freeze
+      NULL_CONVERSIONS = Hash.new({ :strict => false, :proc => lambda{ |cell_value| cell_value } }).freeze
 
       attr_accessor :file
 
@@ -71,26 +71,27 @@ module Cucumber
       # You don't typically create your own Table objects - Cucumber will do
       # it internally and pass them to your Step Definitions.
       #
-      def initialize(raw, conversion_procs = NULL_CONVERSIONS.dup)
+      def initialize(raw, conversion_procs = NULL_CONVERSIONS.dup, header_mappings = {}, header_conversion_proc = nil)
         @cells_class = Cells
         @cell_class = Cell
-
         raw = ensure_array_of_array(rubify(raw))
         # Verify that it's square
         transposed = raw.transpose
         create_cell_matrix(raw)
         @conversion_procs = conversion_procs
+        @header_mappings = header_mappings
+        @header_conversion_proc = header_conversion_proc
       end
 
       def to_step_definition_arg
         dup
       end
 
-      # Creates a copy of this table, inheriting any column mappings.
-      # registered with #map_headers!
+      # Creates a copy of this table, inheriting any column and header mappings
+      # registered with #map_column! and #map_headers!.
       #
       def dup
-        self.class.new(raw.dup, @conversion_procs.dup)
+        self.class.new(raw.dup, @conversion_procs.dup, @header_mappings.dup, @header_conversion_proc)
       end
 
       # Returns a new, transposed table. Example:
@@ -105,9 +106,9 @@ module Cucumber
       #   | 4 | 2 |
       #
       def transpose
-        self.class.new(raw.transpose, @conversion_procs.dup)
+        self.class.new(raw.transpose, @conversion_procs.dup, @header_mappings.dup, @header_conversion_proc)
       end
-
+      
       # Converts this table into an Array of Hash where the keys of each
       # Hash are the headers in the table. For example, a Table built from
       # the following plain text:
@@ -123,9 +124,7 @@ module Cucumber
       # Use #map_column! to specify how values in a column are converted.
       #
       def hashes
-        @hashes ||= cells_rows[1..-1].map do |row|
-          row.to_hash
-        end
+        @hashes ||= build_hashes
       end
       
       # Converts this table into a Hash where the first column is
@@ -169,7 +168,9 @@ module Cucumber
       end
 
       def rows
-        hashes.map(&:values)
+        hashes.map do |hash|
+          hash.values_at *headers
+        end
       end
 
       def each_cells_row(&proc) #:nodoc:
@@ -237,22 +238,8 @@ module Cucumber
       #   # => ['phone number', 'ADDRESS']
       #
       def map_headers!(mappings={}, &block)
-        header_cells = cell_matrix[0]
-
-        if block_given?
-          header_values = header_cells.map { |cell| cell.value } - mappings.keys
-          mappings = mappings.merge(Hash[*header_values.zip(header_values.map(&block)).flatten])
-        end
-
-        mappings.each_pair do |pre, post|
-          mapped_cells = header_cells.select{|cell| pre === cell.value}
-          raise "No headers matched #{pre.inspect}" if mapped_cells.empty?
-          raise "#{mapped_cells.length} headers matched #{pre.inspect}: #{mapped_cells.map{|c| c.value}.inspect}" if mapped_cells.length > 1
-          mapped_cells[0].value = post
-          if @conversion_procs.has_key?(pre)
-            @conversion_procs[post] = @conversion_procs.delete(pre)
-          end
-        end
+        @header_mappings = mappings
+        @header_conversion_proc = block
       end
 
       # Returns a new Table where the headers are redefined. See #map_headers!
@@ -275,8 +262,7 @@ module Cucumber
       #   end
       #
       def map_column!(column_name, strict=true, &conversion_proc)
-        verify_column(column_name.to_s) if strict
-        @conversion_procs[column_name.to_s] = conversion_proc
+        @conversion_procs[column_name.to_s] = { :strict => strict, :proc => conversion_proc }
         self
       end
 
@@ -318,8 +304,12 @@ module Cucumber
         options = {:missing_row => true, :surplus_row => true, :missing_col => true, :surplus_col => false}.merge(options)
 
         other_table = ensure_table(other_table)
+        other_table.convert_headers!
         other_table.convert_columns!
         ensure_green!
+                
+        convert_headers!
+        convert_columns!
 
         original_width = cell_matrix[0].length
         other_table_cell_matrix = pad!(other_table.cell_matrix)
@@ -330,7 +320,6 @@ module Cucumber
 
         require_diff_lcs
         cell_matrix.extend(Diff::LCS)
-        convert_columns!
         changes = cell_matrix.diff(other_table_cell_matrix).flatten
 
         inserted = 0
@@ -385,8 +374,7 @@ module Cucumber
           hash[key.to_s] if key.is_a?(Symbol)
         end
         column_names.each_with_index do |column_name, column_index|
-          value = @conversion_procs[column_name].call(cells.value(column_index))
-          hash[column_name] = value
+          hash[column_name] = cells.value(column_index)
         end
         hash
       end
@@ -469,6 +457,14 @@ module Cucumber
 
       protected
 
+      def build_hashes
+        convert_headers!
+        convert_columns!
+        cells_rows[1..-1].map do |row|
+          row.to_hash
+        end
+      end
+
       def inspect_rows(missing_row, inserted_row) #:nodoc:
         missing_row.each_with_index do |missing_cell, col|
           inserted_cell = inserted_row[col]
@@ -489,10 +485,34 @@ module Cucumber
       end
 
       def convert_columns! #:nodoc:
+        @conversion_procs.each do |column_name, conversion_proc|
+          verify_column(column_name) if conversion_proc[:strict]
+        end
+        
         cell_matrix.transpose.each do |col|
-          conversion_proc = @conversion_procs[col[0].value]
+          column_name = col[0].value
+          conversion_proc = @conversion_procs[column_name][:proc]
           col[1..-1].each do |cell|
             cell.value = conversion_proc.call(cell.value)
+          end
+        end
+      end
+
+      def convert_headers! #:nodoc:
+        header_cells = cell_matrix[0]
+
+        if @header_conversion_proc
+          header_values = header_cells.map { |cell| cell.value } - @header_mappings.keys
+          @header_mappings = @header_mappings.merge(Hash[*header_values.zip(header_values.map(&@header_conversion_proc)).flatten])
+        end
+
+        @header_mappings.each_pair do |pre, post|
+          mapped_cells = header_cells.select { |cell| pre === cell.value }
+          raise "No headers matched #{pre.inspect}" if mapped_cells.empty?
+          raise "#{mapped_cells.length} headers matched #{pre.inspect}: #{mapped_cells.map { |c| c.value }.inspect}" if mapped_cells.length > 1
+          mapped_cells[0].value = post
+          if @conversion_procs.has_key?(pre)
+            @conversion_procs[post] = @conversion_procs.delete(pre)
           end
         end
       end

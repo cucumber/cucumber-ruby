@@ -1,5 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
-
+require 'spec_helper'
 require 'cucumber/step_mother'
 require 'cucumber/rb_support/rb_language'
 
@@ -144,7 +143,7 @@ spec/cucumber/rb_support/rb_language_spec.rb:\\d+:in `World'
 spec/cucumber/rb_support/rb_language_spec.rb:\\d+:in `World'
 
 Use Ruby modules instead to extend your worlds. See the Cucumber::RbSupport::RbDsl#World RDoc
-or http://wiki.github.com/aslakhellesoy/cucumber/a-whole-new-world.
+or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 
 }
           dsl.World { Hash.new }

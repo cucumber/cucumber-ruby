@@ -1,14 +1,17 @@
+require 'cucumber/ast/names'
+
 module Cucumber
   module Ast
     # Represents the root node of a parsed feature.
     class Feature #:nodoc:
+      include Names
+      
       attr_accessor :language
       attr_writer :features, :background
-      attr_reader :file
-      attr_reader :name
+      attr_reader :file, :feature_elements
 
-      def initialize(background, comment, tags, keyword, name, feature_elements)
-        @background, @comment, @tags, @keyword, @name, @feature_elements = background, comment, tags, keyword, name.strip, feature_elements
+      def initialize(background, comment, tags, keyword, title, description, feature_elements)
+        @background, @comment, @tags, @keyword, @title, @description, @feature_elements = background, comment, tags, keyword, title, description, feature_elements
       end
 
       attr_reader :gherkin_statement
@@ -43,15 +46,19 @@ module Cucumber
 
       def indented_name
         indent = ""
-        @name.split("\n").map do |l|
+        name.split("\n").map do |l|
           s = "#{indent}#{l}"
           indent = "  "
           s
         end.join("\n")
       end
 
+      def source_tags
+        @tags.tags
+      end
+
       def source_tag_names
-        @tags.tag_names
+        source_tags.map { |tag| tag.name }
       end
 
       def accept_hook?(hook)
@@ -89,7 +96,7 @@ module Cucumber
 
       def to_sexp
         init
-        sexp = [:feature, @file, @name]
+        sexp = [:feature, @file, name]
         comment = @comment.to_sexp
         sexp += [comment] if comment
         tags = @tags.to_sexp

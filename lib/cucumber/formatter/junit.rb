@@ -21,9 +21,14 @@ module Cucumber
 
       def before_feature(feature)
         @current_feature = feature
-        @failures = @errors = @tests = 0
+        @failures = @errors = @tests = @skipped = 0
         @builder = OrderedXmlMarkup.new( :indent => 2 )
         @time = 0
+      end
+      
+      def before_feature_element(feature_element)
+        @in_examples = Ast::ScenarioOutline === feature_element
+        @steps_start = Time.now
       end
       
       def after_feature(feature)
@@ -32,6 +37,7 @@ module Cucumber
         @testsuite.testsuite(
           :failures => @failures,
           :errors => @errors,
+          :skipped => @skipped,
           :tests => @tests,
           :time => "%.6f" % @time,
           :name => @feature_name ) do
@@ -56,17 +62,11 @@ module Cucumber
       end
 
       def scenario_name(keyword, name, file_colon_line, source_indent)
-        # TODO: What's all this ugly weird code doing? Why not just use keyword and name????
-        scenario_name = name.strip.delete(".\r\n")
-        scenario_name = "Unnamed scenario" if name == ""
-        @scenario = scenario_name
-        description = "Scenario"
-        description << " outline" if keyword.include?('Scenario Outline')
-        @output = "#{description}: #{@scenario}\n\n"
+        @scenario = (name.nil? || name == "") ? "Unnamed scenario" : name.split("\n")[0]
+        @output = "#{keyword}: #{@scenario}\n\n"
       end
 
       def before_steps(steps)
-        @steps_start = Time.now
       end
       
       def after_steps(steps)
@@ -96,7 +96,7 @@ module Cucumber
       end
 
       def after_table_row(table_row)
-        return unless @in_examples
+        return unless @in_examples and Cucumber::Ast::OutlineTable::ExampleRow === table_row
         duration = Time.now - @table_start
         unless @header_row
           name_suffix = " (outline example : #{table_row.name})"
@@ -116,20 +116,23 @@ module Cucumber
         @time += duration
         classname = "#{@feature_name}.#{@scenario}"
         name = "#{@scenario}#{suffix}"
-        failed = (status == :failed || (status == :pending && @options[:strict]))
-        #puts "FAILED:!!#{failed}"
-        if status == :passed || failed
-          @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
-            if failed
-              @builder.failure(:message => "#{status.to_s} #{name}", :type => status.to_s) do
-                @builder.cdata! @output
-                @builder.cdata!(format_exception(exception)) if exception
-              end
-              @failures += 1
+        pending = [:pending, :undefined].include?(status)
+        passed = (status == :passed || (pending && !@options[:strict]))
+
+        @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
+          unless passed
+            @builder.failure(:message => "#{status.to_s} #{name}", :type => status.to_s) do
+              @builder.cdata! @output
+              @builder.cdata!(format_exception(exception)) if exception
             end
+            @failures += 1
           end
-          @tests += 1
+          if passed and (status == :skipped || pending)
+            @builder.skipped
+            @skipped += 1
+          end
         end
+        @tests += 1
       end
 
       def format_exception(exception)
@@ -137,9 +140,11 @@ module Cucumber
       end
       
       def feature_result_filename(feature_file)
-        ext_length = File.extname(feature_file).length
-        basename = File.basename(feature_file)[0...-ext_length]
-        File.join(@reportdir, "TEST-#{basename}.xml")
+        File.join(@reportdir, "TEST-#{basename(feature_file)}.xml")
+      end
+      
+      def basename(feature_file)
+        File.basename(feature_file.gsub(/[\\\/]/, '-'), '.feature')
       end
       
       def write_file(feature_filename, data)

@@ -11,9 +11,6 @@ module Cucumber
         @print_emtpy_match = print_emtpy_match
       end
 
-      def before_features(features)
-      end
-
       def before_feature(feature)
         @gf.uri(feature.file)
         @gf.feature(feature.gherkin_statement)
@@ -21,12 +18,10 @@ module Cucumber
 
       def before_background(background)
         @outline = false
-        @gf.steps(background.raw_steps)
         @gf.background(background.gherkin_statement)
       end
 
       def before_feature_element(feature_element)
-        @gf.steps(feature_element.raw_steps)
         case(feature_element)
         when Ast::Scenario
           @outline = false
@@ -52,7 +47,7 @@ module Cucumber
       end
 
       def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
-        arguments = step_match.step_arguments.map{|a| Gherkin::Formatter::Argument.new(a.byte_offset, a.val)}
+        arguments = step_match.step_arguments.map{|a| Gherkin::Formatter::Argument.new(a.offset, a.val)}
         location = step_match.file_colon_line
         match = Gherkin::Formatter::Model::Match.new(arguments, location)
         if @print_emtpy_match
@@ -76,8 +71,16 @@ module Cucumber
         @gf.eof
       end
 
+      def after_features(features)
+        @gf.done
+      end
+
       def embed(file, mime_type, label)
-        @gf.embedding(mime_type, File.read(file))
+        data = File.read(file)
+        if defined?(JRUBY_VERSION)
+          data = data.to_java_bytes
+        end
+        @gf.embedding(mime_type, data)
       end
     end
   end

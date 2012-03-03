@@ -1,4 +1,4 @@
-require 'cucumber/step_argument'
+require 'gherkin/formatter/argument'
 
 module Cucumber
   module RbSupport
@@ -9,8 +9,8 @@ module Cucumber
           n = 0
           match.captures.map do |val|
             n += 1
-            start = match.offset(n)[0]
-            StepArgument.new(val, start)
+            offset = match.offset(n)[0]
+            Gherkin::Formatter::Argument.new(offset, val)
           end
         else
           nil

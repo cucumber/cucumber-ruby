@@ -17,7 +17,7 @@ Feature: Fibonacci
       | 9   | [1, 1, 2, 3, 5, 8]                     |
       | 100 | [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89] |
 
-  Scenario: Single series tested via a PyString
+  Scenario: Single series tested via a DocString
     When I ask Javascript to calculate fibonacci up to 2 with formatting
     Then it should give me:
     """

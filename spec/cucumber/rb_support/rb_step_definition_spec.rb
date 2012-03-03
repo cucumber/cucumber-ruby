@@ -1,5 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
-
+require 'spec_helper'
 require 'cucumber/ast'
 require 'cucumber/step_mother'
 require 'cucumber/rb_support/rb_language'
@@ -23,7 +22,7 @@ module Cucumber
       
       it "should allow calling of other steps" do
         dsl.Given /Outside/ do
-          Given "Inside"
+          step "Inside"
         end
         dsl.Given /Inside/ do
           $inside = true
@@ -35,7 +34,7 @@ module Cucumber
 
       it "should allow calling of other steps with inline arg" do
         dsl.Given /Outside/ do
-          Given "Inside", Cucumber::Ast::Table.new([['inside']])
+          step "Inside", Cucumber::Ast::Table.new([['inside']])
         end
         dsl.Given /Inside/ do |table|
           $inside = table.raw[0][0]
@@ -47,7 +46,7 @@ module Cucumber
 
       it "should raise Undefined when inside step is not defined" do
         dsl.Given /Outside/ do
-          Given 'Inside'
+          step 'Inside'
         end
 
         lambda do
@@ -74,10 +73,10 @@ module Cucumber
         end.should raise_error(Cucumber::ArityMismatchError)
       end
 
-      it "should allow announce" do
-        user_interface.should_receive(:announce).with('wasup')
+      it "should allow puts" do
+        user_interface.should_receive(:puts).with('wasup')
         dsl.Given /Loud/ do
-          announce 'wasup'
+          puts 'wasup'
         end
         
         support_code.step_match("Loud").invoke(nil)

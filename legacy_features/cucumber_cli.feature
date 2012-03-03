@@ -82,7 +82,7 @@ Feature: Cucumber command line
             features/sample.feature:18:in `Given failing'
       
       Failing Scenarios:
-      cucumber features/sample.feature:17 # Scenario: Failing
+      cucumber features/sample.feature:17
       
       2 scenarios (1 failed, 1 undefined)
       2 steps (1 failed, 1 undefined)
@@ -160,7 +160,7 @@ Feature: Cucumber command line
       features/sample.feature:18:in `Given failing'
 
       Failing Scenarios:
-      cucumber features/sample.feature:17 # Scenario: Failing
+      cucumber features/sample.feature:17
 
       3 scenarios (1 failed, 1 undefined, 1 passed)
       3 steps (1 failed, 1 undefined, 1 passed)
@@ -323,7 +323,7 @@ Feature: Cucumber command line
         Scenario: pystring
           Given a pystring
             \"\"\"
-              example
+              example with <html> entities
             \"\"\"
       
         Scenario: table
@@ -464,7 +464,7 @@ Feature: Cucumber command line
             features/sample.feature:18:in `Given failing'
 
       Failing Scenarios:
-      cucumber features/sample.feature:17 # Scenario: Failing
+      cucumber features/sample.feature:17
 
       3 scenarios (1 failed, 1 undefined, 1 passed)
       3 steps (1 failed, 1 undefined, 1 passed)
@@ -550,13 +550,6 @@ Feature: Cucumber command line
 
 
       """
-
-  # Fails on 1.9 because of encoding issues.
-  @fails_on_1_9
-  Scenario: Generate PDF with pdf formatter
-    When I run cucumber --format pdf --out tmp/sample.pdf --dry-run features/sample.feature
-    Then STDERR should be empty
-    Then "fixtures/self_test/tmp/sample.pdf" should match "Pages 2"
 
   Scenario: Run feature elements which match a name using -n
     When I run cucumber -n Pisang -q features/

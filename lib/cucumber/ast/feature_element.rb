@@ -6,7 +6,7 @@ module Cucumber
     module FeatureElement #:nodoc:
       attr_accessor :feature
 
-      attr_reader :gherkin_statement, :raw_steps
+      attr_reader :gherkin_statement, :raw_steps, :title, :description
       def gherkin_statement(statement=nil)
         @gherkin_statement ||= statement
       end
@@ -32,10 +32,10 @@ module Cucumber
       end
 
       def name_line_lengths
-        if @name.strip.empty?
+        if name.strip.empty?
           [Ast::Step::INDENT + @keyword.unpack('U*').length + ': '.length]
         else
-          @name.split("\n").enum_for(:each_with_index).map do |line, line_number|
+          name.split("\n").enum_for(:each_with_index).map do |line, line_number|
             if line_number == 0
               Ast::Step::INDENT + @keyword.unpack('U*').length + ': '.length + line.unpack('U*').length
             else
@@ -46,10 +46,10 @@ module Cucumber
       end
 
       def matches_scenario_names?(scenario_name_regexps)
-        scenario_name_regexps.detect{|name| name =~ @name}
+        scenario_name_regexps.detect{|n| n =~ name}
       end
 
-      def backtrace_line(name = "#{@keyword}: #{@name}", line = @line)
+      def backtrace_line(name = "#{@keyword}: #{name}", line = @line)
         @feature.backtrace_line(name, line) if @feature
       end
 
@@ -63,11 +63,15 @@ module Cucumber
       end
 
       def accept_hook?(hook)
-        Gherkin::TagExpression.new(hook.tag_expressions).eval(source_tag_names)
+        Gherkin::TagExpression.new(hook.tag_expressions).eval(source_tags)
+      end
+      
+      def source_tag_names
+        source_tags.map { |tag| tag.name }
       end
 
-      def source_tag_names
-        (@tags.tag_names.to_a + (@feature ? @feature.source_tag_names.to_a : [])).uniq
+      def source_tags
+        (@tags.tags.to_a + (@feature ? @feature.source_tags.to_a : [])).uniq
       end
 
       def language

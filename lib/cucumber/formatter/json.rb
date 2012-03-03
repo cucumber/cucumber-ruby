@@ -11,17 +11,7 @@ module Cucumber
 
       def initialize(step_mother, io, options)
         @io = ensure_io(io, "json")
-        @obj = {'features' => []}
-        super(Gherkin::Formatter::JSONFormatter.new(nil), false)
-      end
-
-      def after_feature(feature)
-        super
-        @obj['features'] << @gf.gherkin_object
-      end
-
-      def after_features(features)
-        @io.write(@obj.to_json)
+        super(Gherkin::Formatter::JSONFormatter.new(@io), false)
       end
     end
   end

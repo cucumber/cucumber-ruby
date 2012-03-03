@@ -97,7 +97,7 @@ module Cucumber
         @arg
       end
 
-      def byte_offset
+      def offset
       end
     end
 

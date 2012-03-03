@@ -1,5 +1,6 @@
 require 'cucumber/ast'
 require 'gherkin/rubify'
+require 'cucumber/ast/multiline_argument'
 
 module Cucumber
   module Parser
@@ -17,9 +18,10 @@ module Cucumber
         @feature = Ast::Feature.new(
           nil, 
           Ast::Comment.new(feature.comments.map{|comment| comment.value}.join("\n")), 
-          Ast::Tags.new(nil, feature.tags.map{|tag| tag.name}),
+          Ast::Tags.new(nil, feature.tags),
           feature.keyword,
-          legacy_name_for(feature.name, feature.description),
+          feature.name.lstrip,
+          feature.description.rstrip,
           []
         )
         @feature.gherkin_statement(feature)
@@ -31,7 +33,8 @@ module Cucumber
           Ast::Comment.new(background.comments.map{|comment| comment.value}.join("\n")), 
           background.line, 
           background.keyword, 
-          legacy_name_for(background.name, background.description), 
+          background.name, 
+          background.description,
           steps=[]
         )
         @feature.background = @background
@@ -44,10 +47,11 @@ module Cucumber
         scenario = Ast::Scenario.new(
           @background, 
           Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")), 
-          Ast::Tags.new(nil, statement.tags.map{|tag| tag.name}), 
+          Ast::Tags.new(nil, statement.tags), 
           statement.line, 
           statement.keyword, 
-          legacy_name_for(statement.name, statement.description), 
+          statement.name,
+          statement.description, 
           steps=[]
         )
         @feature.add_feature_element(scenario)
@@ -60,10 +64,11 @@ module Cucumber
         scenario_outline = Ast::ScenarioOutline.new(
           @background, 
           Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")), 
-          Ast::Tags.new(nil, statement.tags.map{|tag| tag.name}), 
+          Ast::Tags.new(nil, statement.tags), 
           statement.line, 
           statement.keyword, 
-          legacy_name_for(statement.name, statement.description), 
+          statement.name, 
+          statement.description, 
           steps=[],
           example_sections=[]
         )
@@ -81,23 +86,22 @@ module Cucumber
           Ast::Comment.new(examples.comments.map{|comment| comment.value}.join("\n")), 
           examples.line, 
           examples.keyword, 
-          legacy_name_for(examples.name, examples.description), 
+          examples.name, 
+          examples.description, 
           matrix(examples.rows)
         ]
         @step_container.add_examples(examples_fields, examples)
       end
 
-      def step(step)
-        @table_owner = Ast::Step.new(step.line, step.keyword, step.name)
-        @table_owner.gherkin_statement(step)
-        multiline_arg = rubify(step.multiline_arg)
-        case(multiline_arg)
-        when Gherkin::Formatter::Model::PyString
-          @table_owner.multiline_arg = Ast::PyString.new(multiline_arg.value)
-        when Array
-          @table_owner.multiline_arg = Ast::Table.new(matrix(multiline_arg))
-        end
-        @step_container.add_step(@table_owner)
+      def step(gherkin_step)
+        step = Ast::Step.new(
+          gherkin_step.line, 
+          gherkin_step.keyword, 
+          gherkin_step.name, 
+          Ast::MultilineArgument.from(gherkin_step.doc_string || gherkin_step.rows)
+        )
+        step.gherkin_statement(gherkin_step)
+        @step_container.add_step(step)
       end
 
       def eof
@@ -109,12 +113,6 @@ module Cucumber
       
     private
     
-      def legacy_name_for(name, description)
-        s = name
-        s += "\n#{description}" if description != ""
-        s
-      end
-
       def matrix(gherkin_table)
         gherkin_table.map do |gherkin_row|
           row = gherkin_row.cells
