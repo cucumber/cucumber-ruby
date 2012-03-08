@@ -1,4 +1,4 @@
-## [v1.2.0](https://github.com/cucumber/cucumber/compare/v1.1.9...v1.2.0)
+## [v1.2.0](https://github.com/cucumber/cucumber/compare/v1.1.9...v1.2.0) (In Git)
 
 ## New Features
 * Extracted the PDF formatter into a separate gem. (#241 Matt Wynne)
