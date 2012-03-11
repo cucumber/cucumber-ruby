@@ -34,6 +34,36 @@ Feature: JUnit output formatter
 
       """
   
+  Scenario: Background failing, scenario skipped
+    When I run cucumber --format junit --out tmp/ features/background_failing_scenario_skipped.feature
+    Then it should fail with
+      """
+
+      """
+    And "fixtures/junit/tmp/TEST-features-background_failing_scenario_skipped.xml" with junit duration "0.005" should contain
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <testsuite errors="0" failures="2" name="Background failing, scenario skipped" skipped="0" tests="2" time="0.005">
+      <testcase classname="Background failing, scenario skipped.Scenario should fail" name="Scenario should fail" time="0.005">
+        <failure message="failed Scenario should fail" type="failed">
+          <![CDATA[Scenario: Scenario should fail
+
+      Given a failing scenario
+      Given a passing scenario
+
+      Message:
+      ]]>
+          <![CDATA[ (RuntimeError)
+      features/background_failing_scenario_skipped.feature:4:in `Given a failing scenario']]>
+        </failure>
+      </testcase>
+      <testcase classname="Background failing, scenario skipped.Scenario should be skipped" name="Scenario should be skipped" time="0.005">
+        <skipped message="skipped Scenario should be skipped" />
+      </testcase>
+      </testsuite>
+
+      """
+
   Scenario: one feature in a subdirectory, one passing scenario, one failing scenario
     When I run cucumber --format junit --out tmp/ features/some_subdirectory/one_passing_one_failing.feature --require features
     Then it should fail with
