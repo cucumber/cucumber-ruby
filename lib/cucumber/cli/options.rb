@@ -38,6 +38,7 @@ module Cucumber
         "on Ruby's LOAD_PATH, for example in a Ruby gem."
       ]
       DRB_FLAG = '--drb'
+      DRB_OPTIONAL_FLAG = '--[no-]drb'
       PROFILE_SHORT_FLAG = '-p'
       NO_PROFILE_SHORT_FLAG = '-P'
       PROFILE_LONG_FLAG = '--profile'
@@ -261,8 +262,8 @@ module Cucumber
           opts.on("-x", "--expand", "Expand Scenario Outline Tables in output.") do
             @options[:expand] = true
           end
-          opts.on(DRB_FLAG, "Run features against a DRb server. (i.e. with the spork gem)") do
-            @options[:drb] = true
+          opts.on(DRB_OPTIONAL_FLAG, "Run features against a DRb server. (i.e. with the spork gem)") do |drb|
+            @options[:drb] = drb
           end
           opts.on("--port PORT", "Specify DRb port.  Ignored without --drb") do |port|
             @options[:drb_port] = port
