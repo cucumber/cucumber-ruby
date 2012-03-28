@@ -7,6 +7,7 @@
 * Add file:line to step events in formatter API (#181 Roman Chernyatchik)
 * Collapsible backgrounds in HTML formatter (#182 Niklas H)
 * Slightly cleaner regexp suggestions (#237 meyering)
+* Allow for --no-drb command-line option (#252 Chase Stubblefield)
 
 ## [v1.1.9](https://github.com/cucumber/cucumber/compare/v1.1.8...v1.1.9)
 
