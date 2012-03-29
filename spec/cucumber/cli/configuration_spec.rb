@@ -421,6 +421,12 @@ END_OF_MESSAGE
         config.dry_run?.should be_true
       end
       
+      it "returns true when --dry-run was specified in yaml file" do
+        given_cucumber_yml_defined_as({'default' => '--dry-run'})
+        config.parse!([])
+        config.dry_run?.should be_true
+      end
+
       it "returns false by default" do
         config.parse!([])
         config.dry_run?.should be_false
