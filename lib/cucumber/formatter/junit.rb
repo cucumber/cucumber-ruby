@@ -1,5 +1,6 @@
 require 'cucumber/formatter/ordered_xml_markup'
 require 'cucumber/formatter/io'
+require 'cucumber/formatter/interceptor'
 require 'fileutils'
 
 module Cucumber
@@ -24,6 +25,12 @@ module Cucumber
         @failures = @errors = @tests = @skipped = 0
         @builder = OrderedXmlMarkup.new( :indent => 2 )
         @time = 0
+        # In order to fill out <system-err/> and <system-out/>, we need to
+        # intercept the $stderr and $stdout
+        @interceptedout = Interceptor::Pipe.new($stdout)
+        @interceptederr = Interceptor::Pipe.new($stderr)
+        $stdout = @interceptedout
+        $stderr = @interceptederr
       end
 
       def before_feature_element(feature_element)
@@ -42,11 +49,23 @@ module Cucumber
           :time => "%.6f" % @time,
           :name => @feature_name ) do
           @testsuite << @builder.target!
-          @testsuite.tag!('system-out')
-          @testsuite.tag!('system-err')
+          @testsuite.tag!('system-out') do
+            @testsuite.cdata! @interceptedout.buffer.join
+          end
+          @testsuite.tag!('system-err') do
+            @testsuite.cdata! @interceptederr.buffer.join
+          end
         end
 
         write_file(feature_result_filename(feature.file), @testsuite.target!)
+
+        # Clean-up and reset the global pipes back to their original state
+        unless @interceptedout.nil?
+          $stdout = @interceptedout.pipe
+        end
+        unless @interceptederr.nil?
+          $stderr = @interceptederr.pipe
+        end
       end
 
       def before_background(*args)
