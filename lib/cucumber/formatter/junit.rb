@@ -7,13 +7,13 @@ module Cucumber
     # The formatter used for <tt>--format junit</tt>
     class Junit
       include Io
-      
+
       class UnNamedFeatureError < StandardError
         def initialize(feature_file)
           super("The feature in '#{feature_file}' does not have a name. The JUnit XML format requires a name for the testsuite element.")
         end
       end
-      
+
       def initialize(step_mother, io, options)
         @reportdir = ensure_dir(io, "junit")
         @options = options
@@ -25,12 +25,12 @@ module Cucumber
         @builder = OrderedXmlMarkup.new( :indent => 2 )
         @time = 0
       end
-      
+
       def before_feature_element(feature_element)
         @in_examples = Ast::ScenarioOutline === feature_element
         @steps_start = Time.now
       end
-      
+
       def after_feature(feature)
         @testsuite = OrderedXmlMarkup.new( :indent => 2 )
         @testsuite.instruct!
@@ -50,7 +50,7 @@ module Cucumber
       def before_background(*args)
         @in_background = true
       end
-      
+
       def after_background(*args)
         @in_background = false
       end
@@ -68,10 +68,10 @@ module Cucumber
 
       def before_steps(steps)
       end
-      
+
       def after_steps(steps)
         return if @in_background || @in_examples
-        
+
         duration = Time.now - @steps_start
         if steps.failed?
           steps.each { |step| @output += "#{step.keyword}#{step.name}\n" }
@@ -79,12 +79,12 @@ module Cucumber
         end
         build_testcase(duration, steps.status, steps.exception)
       end
-      
+
       def before_examples(*args)
         @header_row = true
         @in_examples = true
       end
-      
+
       def after_examples(*args)
         @in_examples = false
       end
@@ -106,7 +106,7 @@ module Cucumber
           end
           build_testcase(duration, table_row.status, table_row.exception, name_suffix)
         end
-        
+
         @header_row = false if @header_row
       end
 
@@ -138,15 +138,15 @@ module Cucumber
       def format_exception(exception)
         (["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n")
       end
-      
+
       def feature_result_filename(feature_file)
         File.join(@reportdir, "TEST-#{basename(feature_file)}.xml")
       end
-      
+
       def basename(feature_file)
         File.basename(feature_file.gsub(/[\\\/]/, '-'), '.feature')
       end
-      
+
       def write_file(feature_filename, data)
         File.open(feature_filename, 'w') { |file| file.write(data) }
       end
