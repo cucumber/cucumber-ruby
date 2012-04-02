@@ -42,6 +42,8 @@ module Cucumber
           :time => "%.6f" % @time,
           :name => @feature_name ) do
           @testsuite << @builder.target!
+          @testsuite.tag!('system-out')
+          @testsuite.tag!('system-err')
         end
 
         write_file(feature_result_filename(feature.file), @testsuite.target!)
@@ -131,6 +133,8 @@ module Cucumber
             @builder.skipped
             @skipped += 1
           end
+          @builder.tag!('system-out')
+          @builder.tag!('system-err')
         end
         @tests += 1
       end

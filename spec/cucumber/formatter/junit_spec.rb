@@ -50,6 +50,22 @@ module Cucumber::Formatter
         FEATURE
 
         it { @doc.to_s.should =~ /One passing scenario, one failing scenario/ }
+
+        it 'should have a root system-out node' do
+          @doc.xpath('//testsuite/system-out').size.should == 1
+        end
+
+        it 'should have a root system-err node' do
+          @doc.xpath('//testsuite/system-err').size.should == 1
+        end
+
+        it 'should have a system-out node under <testcase/>' do
+          @doc.xpath('//testcase/system-out').size.should == 1
+        end
+
+        it 'should have a system-err node under <testcase/>' do
+          @doc.xpath('//testcase/system-err').size.should == 1
+        end
       end
 
       describe "with a scenario in a subdirectory" do
