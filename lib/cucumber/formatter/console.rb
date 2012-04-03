@@ -63,7 +63,7 @@ module Cucumber
         @failures = step_mother.scenarios(:failed).select { |s| s.is_a?(Cucumber::Ast::Scenario) || s.is_a?(Cucumber::Ast::OutlineTable::ExampleRow) }
         @failures.collect! { |s| (s.is_a?(Cucumber::Ast::OutlineTable::ExampleRow)) ? s.scenario_outline : s }
 
-        if !@failures.empty?          
+        if !@failures.empty?
           @io.puts format_string("Failing Scenarios:", :failed)
           @failures.each do |failure|
             profiles_string = options.custom_profiles.empty? ? '' : (options.custom_profiles.map{|profile| "-p #{profile}" }).join(' ') + ' '
@@ -90,7 +90,7 @@ module Cucumber
         string = "#{message}\n#{e.backtrace.join("\n")}".indent(indent)
         @io.puts(format_string(string, status))
       end
-      
+
       # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655 
       def linebreaks(s, max)
         s.gsub(/.{1,#{max}}(?:\s|\Z)/){($& + 5.chr).gsub(/\n\005/,"\n").gsub(/\005/,"\n")}.rstrip
@@ -100,7 +100,7 @@ module Cucumber
         return unless options[:snippets]
         undefined = step_mother.steps(:undefined)
         return if undefined.empty?
-        
+
         unknown_programming_language = step_mother.unknown_programming_language?
         snippets = undefined.map do |step|
           step_name = Undefined === step.exception ? step.exception.step_name : step.name
@@ -177,12 +177,14 @@ module Cucumber
 
     private
 
-      def format_for(*keys)
-        key = keys.join('_').to_sym
-        fmt = FORMATS[key]
-        raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
-        fmt
-      end
+
+    def format_for(*keys)
+      key = keys.join('_').to_sym
+      fmt = FORMATS[key]
+      raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
+      fmt
+    end
+
     end
   end
 end

@@ -2,11 +2,11 @@ require 'cucumber/platform'
 require 'cucumber/term/ansicolor'
 
 if Cucumber::IRONRUBY
-	begin
-		require 'iron-term-ansicolor'
-	rescue LoadError
-		STDERR.puts %{*** WARNING: You must "igem install iron-term-ansicolor" to get coloured ouput in on IronRuby}
-	end
+  begin
+    require 'iron-term-ansicolor'
+  rescue LoadError
+    STDERR.puts %{*** WARNING: You must "gem install iron-term-ansicolor" to get coloured ouput in on IronRuby}
+  end
 end
 
 if Cucumber::WINDOWS_MRI
@@ -94,7 +94,7 @@ module Cucumber
           eval(code)
         end
       end
-      
+
       def self.define_grey #:nodoc:
         begin
           gem 'genki-ruby-terminfo'
@@ -122,7 +122,7 @@ module Cucumber
           end
         end
       end
-      
+
       def self.define_real_grey #:nodoc:
         def grey(m) #:nodoc:
           if ::Cucumber::Term::ANSIColor.coloring?
@@ -132,7 +132,7 @@ module Cucumber
           end
         end
       end
-      
+
       define_grey
 
       def cukes(n)
