@@ -114,9 +114,9 @@ module Cucumber
         @io.puts format_string(text, :undefined)
 
         if unknown_programming_language
-          @io.puts format_string("\nIf you want snippets in a different programming language,\n" +
-                  "just make sure a file with the appropriate file extension\n" +
-                  "exists where cucumber looks for step definitions.", :failed)
+          @io.puts format_string("\nIf you want snippets in a different programming language," +
+                                 "\njust make sure a file with the appropriate file extension" +
+                                 "\nexists where cucumber looks for step definitions.", :failed)
         end
 
         @io.puts
