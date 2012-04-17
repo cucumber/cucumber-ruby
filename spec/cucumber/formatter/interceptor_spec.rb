@@ -9,6 +9,35 @@ module Cucumber::Formatter
       pipe
     end
 
+    describe '#unwrap!' do
+      before :each do
+        $mockpipe = subject
+      end
+
+      subject do
+        Interceptor::Pipe.new(pipe)
+      end
+
+      it 'should revert $mockpipe when #unwrap! is called' do
+        $mockpipe.should_not be pipe
+        $mockpipe = subject.unwrap!
+        $mockpipe.should be pipe
+      end
+
+      it 'should disable the pipe bypass' do
+        buffer = '(::)'
+        subject.unwrap!
+
+        pipe.should_receive(:write).with(buffer)
+        subject.buffer.should_not_receive(:<<)
+        subject.write(buffer)
+      end
+
+      after :each do
+        $mockpipe = nil
+      end
+    end
+
     describe '#write' do
       let(:buffer) { 'Some stupid buffer' }
       let(:pi) { Interceptor::Pipe.new(pipe) }

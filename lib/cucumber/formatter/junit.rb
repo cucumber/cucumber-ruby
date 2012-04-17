@@ -60,12 +60,8 @@ module Cucumber
         write_file(feature_result_filename(feature.file), @testsuite.target!)
 
         # Clean-up and reset the global pipes back to their original state
-        unless @interceptedout.nil?
-          $stdout = @interceptedout.pipe
-        end
-        unless @interceptederr.nil?
-          $stderr = @interceptederr.pipe
-        end
+        $stdout = @interceptedout.unwrap!
+        $stderr = @interceptederr.unwrap!
       end
 
       def before_background(*args)
