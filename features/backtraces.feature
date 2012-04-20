@@ -5,32 +5,32 @@ Feature: Backtraces
 
   Background:
     Given a file named "features/failing_hard.feature" with:
-    """
-Feature: Sample
-  Scenario: Example
-    Given failing
-    """
- 
+      """
+      Feature: Sample
+        Scenario: Example
+          Given failing
+      """
+
     @jruby
   Scenario: Backtraces enabled
     Given a file named "features/step_definitions/steps.rb" with:
-    """
-    require 'java'
-    java_import 'java.util.Collections'
+      """
+      require 'java'
+      java_import 'java.util.Collections'
 
-    Given /^failing$/ do
-      Collections.empty_list.add 1
-    end
-    """
+      Given /^failing$/ do
+        Collections.empty_list.add 1
+      end
+      """
     When I run `cucumber features/failing_hard.feature`
     Then it should fail with:
-    """
-  Feature: Sample
+      """
+      Feature: Sample
 
-      Scenario: Example # features/failing_hard.feature:2
-        Given failing   # features/step_definitions/steps.rb:4
-          java.lang.UnsupportedOperationException: null (NativeException)
-          java/util/AbstractList.java:131:in `add'
-          java/util/AbstractList.java:91:in `add'
-    """
+        Scenario: Example # features/failing_hard.feature:2
+          Given failing   # features/step_definitions/steps.rb:4
+            java.lang.UnsupportedOperationException: null (NativeException)
+            java/util/AbstractList.java:131:in `add'
+            java/util/AbstractList.java:91:in `add'
+      """
 
