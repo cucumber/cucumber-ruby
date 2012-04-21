@@ -334,6 +334,15 @@
         ]
       },
       {
+        "name": "I run `cucumber features/failing_hard.feature`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/failing_hard.feature"
+          }
+        ]
+      },
+      {
         "name": "I run `cucumber features/only_background_and_hooks.feature`",
         "args": [
           {
