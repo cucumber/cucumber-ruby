@@ -12,6 +12,7 @@
 * Slightly cleaner regexp suggestions (#237 meyering)
 * Allow for --no-drb command-line option (#252 Chase Stubblefield)
 * Add misplaced_col option when diffing tables (#212 Steve Richert)
+* JUnit formatter, classname contains only the feature's name (#193 @litvinok)
 
 ## [v1.1.9](https://github.com/cucumber/cucumber/compare/v1.1.8...v1.1.9)
 
