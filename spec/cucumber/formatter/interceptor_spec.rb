@@ -9,32 +9,76 @@ module Cucumber::Formatter
       pipe
     end
 
+    describe '#wrap!' do
+      it 'should raise an ArgumentError if its not passed :stderr/:stdout' do
+        expect {
+          Interceptor::Pipe.wrap(:nonsense)
+        }.to raise_error(ArgumentError)
+
+      end
+
+      context 'when passed :stderr' do
+        before :each do
+          @stderr = $stdout
+        end
+
+        it 'should wrap $stderr' do
+          wrapped = Interceptor::Pipe.wrap(:stderr)
+          $stderr.should be_instance_of Interceptor::Pipe
+          $stderr.should be wrapped
+        end
+
+        after :each do
+          $stderr = @stderr
+        end
+      end
+
+      context 'when passed :stdout' do
+        before :each do
+          @stdout = $stdout
+        end
+
+        it 'should wrap $stdout' do
+          wrapped = Interceptor::Pipe.wrap(:stdout)
+          $stdout.should be_instance_of Interceptor::Pipe
+          $stdout.should be wrapped
+        end
+
+        after :each do
+          $stdout = @stdout
+        end
+      end
+    end
+
     describe '#unwrap!' do
       before :each do
-        $mockpipe = subject
+        @stdout = $stdout
+        @wrapped = Interceptor::Pipe.wrap(:stdout)
       end
 
-      subject do
-        Interceptor::Pipe.new(pipe)
+      it 'should raise an ArgumentError if it wasn\'t passed :stderr/:stdout' do
+        expect {
+          Interceptor::Pipe.unwrap!(:nonsense)
+        }.to raise_error(ArgumentError)
       end
 
-      it 'should revert $mockpipe when #unwrap! is called' do
-        $mockpipe.should_not be pipe
-        $mockpipe = subject.unwrap!
-        $mockpipe.should be pipe
+      it 'should reset $stdout when #unwrap! is called' do
+        interceptor = Interceptor::Pipe.unwrap! :stdout
+        interceptor.should be_instance_of Interceptor::Pipe
+        $stdout.should_not be interceptor
       end
 
       it 'should disable the pipe bypass' do
         buffer = '(::)'
-        subject.unwrap!
+        Interceptor::Pipe.unwrap! :stdout
 
-        pipe.should_receive(:write).with(buffer)
-        subject.buffer.should_not_receive(:<<)
-        subject.write(buffer)
+        @wrapped.should_receive(:write).with(buffer)
+        @wrapped.buffer.should_not_receive(:<<)
+        @wrapped.write(buffer)
       end
 
       after :each do
-        $mockpipe = nil
+        $stdout = @stdout
       end
     end
 

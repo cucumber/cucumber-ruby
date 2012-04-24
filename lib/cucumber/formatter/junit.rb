@@ -27,10 +27,8 @@ module Cucumber
         @time = 0
         # In order to fill out <system-err/> and <system-out/>, we need to
         # intercept the $stderr and $stdout
-        @interceptedout = Interceptor::Pipe.new($stdout)
-        @interceptederr = Interceptor::Pipe.new($stderr)
-        $stdout = @interceptedout
-        $stderr = @interceptederr
+        @interceptedout = Interceptor::Pipe.wrap(:stdout)
+        @interceptederr = Interceptor::Pipe.wrap(:stderr)
       end
 
       def before_feature_element(feature_element)
@@ -59,9 +57,8 @@ module Cucumber
 
         write_file(feature_result_filename(feature.file), @testsuite.target!)
 
-        # Clean-up and reset the global pipes back to their original state
-        $stdout = @interceptedout.unwrap!
-        $stderr = @interceptederr.unwrap!
+        Interceptor::Pipe.unwrap! :stdout
+        Interceptor::Pipe.unwrap! :stderr
       end
 
       def before_background(*args)
