@@ -114,7 +114,7 @@ module Cucumber
 
       def build_testcase(duration, status, exception = nil, suffix = "")
         @time += duration
-        classname = "#{@feature_name}.#{@scenario}"
+        classname = @feature_name
         name = "#{@scenario}#{suffix}"
         pending = [:pending, :undefined].include?(status)
         passed = (status == :passed || (pending && !@options[:strict]))
