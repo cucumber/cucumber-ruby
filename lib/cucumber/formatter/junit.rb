@@ -7,11 +7,24 @@ module Cucumber
     # The formatter used for <tt>--format junit</tt>
     class Junit
       include Io
-      
+
       class UnNamedFeatureError < StandardError
         def initialize(feature_file)
           super("The feature in '#{feature_file}' does not have a name. The JUnit XML format requires a name for the testsuite element.")
         end
+      end
+
+      # Sets log file prefix. If you specify an empty string (or nil)
+      # then no prefix will be prepended to the name of log files.
+      # By default, Cucumber prepends "TEST" for every file name for 
+      # the created logs.
+      def self.log_prefix=(prefix)
+        @@log_prefix = prefix
+      end
+      
+      # Returns with actual log file prefix
+      def self.log_prefix
+        defined?(@@log_prefix) ? @@log_prefix : "TEST"
       end
       
       def initialize(step_mother, io, options)
@@ -139,8 +152,17 @@ module Cucumber
         (["#{exception.message} (#{exception.class})"] + exception.backtrace).join("\n")
       end
       
+      def log_prefix
+        if defined?(@@log_prefix)
+          (@@log_prefix.nil? || @@log_prefix.empty?) ? "" : "#{@@log_prefix}-"
+        else
+          # Current behavior
+          "TEST-"
+        end
+      end
+
       def feature_result_filename(feature_file)
-        File.join(@reportdir, "TEST-#{basename(feature_file)}.xml")
+        File.join(@reportdir, "#{log_prefix}#{basename(feature_file)}.xml")
       end
       
       def basename(feature_file)
