@@ -55,14 +55,20 @@ module Cli
 
       context '--i18n' do
         context "with LANG specified as 'help'" do
+          include RSpec::WorkInProgress
+
           it "lists all known langues" do
-            when_parsing '--i18n help' do
-              Kernel.should_receive(:exit)
+            pending_under :java, "require gherkin >= b5e96f13" do
+              when_parsing '--i18n help' do
+                Kernel.should_receive(:exit)
+              end
             end
           end
 
           it "exits the program" do
-            when_parsing('--i18n help') { Kernel.should_receive(:exit) }
+            pending_under :java, "require gherkin >= b5e96f13" do
+              when_parsing('--i18n help') { Kernel.should_receive(:exit) }
+            end
           end
         end
       end
