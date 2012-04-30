@@ -13,6 +13,7 @@
 * Allow for --no-drb command-line option (#252 Chase Stubblefield)
 * Add misplaced_col option when diffing tables (#212 Steve Richert)
 * JUnit formatter, classname contains only the feature's name (#193 @litvinok)
+* Include the output $stderr and $stdout in JUnit formatted XML (#259 R. Tyler Croy)
 
 ## [v1.1.9](https://github.com/cucumber/cucumber/compare/v1.1.8...v1.1.9)
 
