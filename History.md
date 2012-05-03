@@ -1,9 +1,9 @@
 ## [v1.2.0](https://github.com/cucumber/cucumber/compare/v1.1.9...v1.2.0) (In Git)
 
-## Bugfixes
+### Bugfixes
 * Fix backtraces in JRuby (#266 Andrew Kiellor)
 
-## New Features
+### New Features
 * Extracted the PDF formatter into a separate gem. (#241 Matt Wynne)
 * Remove dependency on term/ansicolor (#43 Joe Fiorini)
 * Methods for Step Definitions (#168 Giles Alexander)
@@ -17,15 +17,15 @@
 
 ## [v1.1.9](https://github.com/cucumber/cucumber/compare/v1.1.8...v1.1.9)
 
-## Bugfixes
+### Bugfixes
 * Removed deprecation warning for `source_tag_names`. It's not deprecated anymore. (Aslak Hellesøy)
 
 ## [v1.1.8](https://github.com/cucumber/cucumber/compare/v1.1.7...v1.1.8)
 
-## Bugfixes
+### Bugfixes
 * Column mapping dangerously applied twice to the same cell! ([#202](https://github.com/cucumber/cucumber/issues/202), [#208](https://github.com/cucumber/cucumber/pull/208) Brian Dunn)
 
-## New Features
+### New Features
 * Don't pollute RbWorld with the AnsiEscapes methods ([#219](https://github.com/cucumber/cucumber/issues/219), [#221](https://github.com/cucumber/cucumber/pull/221) Ben Woosley)
 
 ## [v1.1.7](https://github.com/cucumber/cucumber/compare/v1.1.6...v1.1.7)
