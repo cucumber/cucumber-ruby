@@ -211,10 +211,6 @@ module Cucumber
             header.downcase
           end
 
-
-          pp table.headers
-          pp table.hashes.first.keys
-          
           table.hashes.first.keys.should =~ %w[hello world]
         end
         
@@ -229,9 +225,6 @@ module Cucumber
           table.map_headers! do |header|
             header.downcase
           end
-
-          pp table.headers
-          pp table.hashes.first.keys
 
           table.hashes.first.keys.should =~ %w[hello world]
         end
