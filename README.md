@@ -37,5 +37,5 @@ Now release it
 
 ## Copyright
 
-Copyright (c) 2008,2009,2010,2011 Aslak Hellesøy and Contributors. See LICENSE for details.
+Copyright (c) 2008,2009,2010,2011,2012 Aslak Hellesøy and Contributors. See LICENSE for details.
 
