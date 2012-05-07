@@ -23,7 +23,7 @@ for important information about this release. Happy cuking!
 
 }
 
-  s.add_runtime_dependency 'gherkin', '~> 2.9.3'
+  s.add_runtime_dependency 'gherkin', '~> 2.10.0'
   s.add_runtime_dependency 'builder', '>= 2.1.2'
   s.add_runtime_dependency 'diff-lcs', '>= 1.1.3'
   s.add_runtime_dependency 'json', '>= 1.4.6'
@@ -38,7 +38,7 @@ for important information about this release. Happy cuking!
 
   # For Documentation:
   s.add_development_dependency('yard', '~> 0.8.0')
-  s.add_development_dependency('rdiscount', '~> 1.6.8')
+  s.add_development_dependency('rdiscount', '~> 1.6.8') unless defined?(JRUBY_VERSION)
   s.add_development_dependency('bcat', '~> 0.6.2')
     
   # Needed for examples (rake examples)

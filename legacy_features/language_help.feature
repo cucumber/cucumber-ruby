@@ -31,6 +31,7 @@ Feature: Language help
       """
             | ar        | Arabic              | العربية           |
             | bg        | Bulgarian           | български         |
+            | bm        | Malay               | Bahasa Melayu     |
             | ca        | Catalan             | català            |
             | cs        | Czech               | Česky             |
             | cy-GB     | Welsh               | Cymraeg           |
