@@ -30,7 +30,7 @@ for important information about this release. Happy cuking!
   
   s.add_development_dependency 'aruba', '~> 0.4.11'
   s.add_development_dependency 'rake', '>= 0.9.2'
-  s.add_development_dependency 'rspec', '~> 2.9.0'
+  s.add_development_dependency 'rspec', '~> 2.10.0'
   s.add_development_dependency 'nokogiri', '>= 1.5.2'
   s.add_development_dependency 'syntax', '>= 1.0.0'
   s.add_development_dependency 'spork', '>= 1.0.0.rc2'
