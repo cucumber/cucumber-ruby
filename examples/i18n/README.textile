@@ -3,7 +3,7 @@ h1. Internationalisation (i18n) examples
 Under this directory you'll find examples of Cucumber features written in
 many of the natural languages Cucumber supports. 
 
-For a full list of what languages Cucumber supports - run <pre>cucumber --language help</pre>
+For a full list of what languages Cucumber supports - run <pre>cucumber --i18n help</pre>
 
 h2. Running all the examples
 
