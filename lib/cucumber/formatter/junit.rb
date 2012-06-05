@@ -8,6 +8,7 @@ module Cucumber
     # The formatter used for <tt>--format junit</tt>
     class Junit
       include Io
+      include ::Cucumber::Term::ANSIColor
 
       class UnNamedFeatureError < StandardError
         def initialize(feature_file)
@@ -48,10 +49,10 @@ module Cucumber
           :name => @feature_name ) do
           @testsuite << @builder.target!
           @testsuite.tag!('system-out') do
-            @testsuite.cdata! @interceptedout.buffer.join
+            @testsuite.cdata! uncolored(@interceptedout.buffer.join)
           end
           @testsuite.tag!('system-err') do
-            @testsuite.cdata! @interceptederr.buffer.join
+            @testsuite.cdata! uncolored(@interceptederr.buffer.join)
           end
         end
 
