@@ -74,7 +74,7 @@ module Cucumber
 
       # Regular expression that is used to scan for ANSI-sequences while
       # uncoloring strings.
-      COLORED_REGEXP = /\e\[(?:[34][0-7]|[0-9])?m/
+      COLORED_REGEXP = /\e\[(?:[34][0-7]|[0-9])?(?:;[34][0-7])*m/
 
 
       def self.included(klass)

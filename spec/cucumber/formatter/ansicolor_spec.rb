@@ -27,5 +27,21 @@ module Cucumber
         passed("foo").should == "foo"
       end
     end
+
+    describe ANSIColor, 'uncolored' do
+      include ANSIColor
+
+      it "should uncolor bold greem and reset" do
+        uncolored("\e[32m\e[1mfoo\e[0m\e[0m\e[32m").should == 'foo'
+      end
+
+      it "should uncolor wrapped in green" do
+        uncolored("\e[32mfoo\e[0m").should == 'foo'
+      end
+
+      it "should uncolor separate foreground color" do
+        uncolored("\e[0;33mfoo").should == 'foo'
+      end
+    end
   end
 end
