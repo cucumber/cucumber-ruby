@@ -1,3 +1,8 @@
+## [v1.2.1](https://github.com/cucumber/cucumber/compare/v1.2.0...v1.2.1)
+
+### New Features
+* Updated to gherkin 2.11.0. (Aslak Hellesøy)
+
 ## [v1.2.0](https://github.com/cucumber/cucumber/compare/v1.1.9...v1.2.0)
 
 ### Bugfixes

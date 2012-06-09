@@ -12,18 +12,8 @@ Gem::Specification.new do |s|
   s.homepage    = "http://cukes.info"
 
   s.platform    = Gem::Platform::RUBY
-  s.post_install_message = %{
-(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)
 
-Thank you for installing cucumber-#{Cucumber::VERSION}.
-Please be sure to read http://wiki.github.com/cucumber/cucumber/upgrading
-for important information about this release. Happy cuking!
-
-(::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::) (::)
-
-}
-
-  s.add_runtime_dependency 'gherkin', '~> 2.10.0'
+  s.add_runtime_dependency 'gherkin', '~> 2.11.0'
   s.add_runtime_dependency 'builder', '>= 2.1.2'
   s.add_runtime_dependency 'diff-lcs', '>= 1.1.3'
   s.add_runtime_dependency 'json', '>= 1.4.6'
