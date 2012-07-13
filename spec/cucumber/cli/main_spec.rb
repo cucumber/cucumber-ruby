@@ -41,6 +41,22 @@ module Cucumber
             do_execute.should == expected_results.failure?
           end
         end
+
+        context "interrupted with ctrl-c" do
+          after do
+            Cucumber.wants_to_quit = false
+          end
+
+          it "should register as a failure" do
+            results = double('results', :failure? => false)
+            runtime = Runtime.any_instance
+            runtime.stub(:run!)
+            runtime.stub(:results).and_return(results)
+
+            Cucumber.wants_to_quit = true
+            subject.execute!.should be_true
+          end
+        end
       end
 
       describe "verbose mode" do
