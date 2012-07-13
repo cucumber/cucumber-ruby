@@ -42,7 +42,7 @@ module Cucumber
 
         runtime.run!
         runtime.write_stepdefs_json
-        runtime.results.failure?
+        runtime.results.failure? || Cucumber.wants_to_quit
       rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
         @error_stream.puts e.message
         true
