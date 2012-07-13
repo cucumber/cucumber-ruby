@@ -18,6 +18,17 @@ module Cucumber
       format.should == "it [snows] in [april]"
     end
 
+    it "should cache step match results" do
+      dsl.Given(/it (.*) in (.*)/) { |what, month| }
+
+      step_match = subject.step_match("it snows in april")
+
+      @rb.should_not_receive :step_matches
+      second_step_match = subject.step_match("it snows in april")
+
+      step_match.should equal(second_step_match)
+    end
+
     describe "resolving step defintion matches" do
 
       it "should raise Ambiguous error with guess hint when multiple step definitions match" do
