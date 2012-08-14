@@ -11,7 +11,7 @@ end
 
 if Cucumber::WINDOWS_MRI
   unless ENV['ANSICON']
-    STDERR.puts %{*** WARNING: You must use ANSICON 1.31 or higher (http://adoxa.110mb.com/ansicon) to get coloured output on Windows}
+    STDERR.puts %{*** WARNING: You must use ANSICON 1.31 or higher (https://github.com/adoxa/ansicon/) to get coloured output on Windows}
     Cucumber::Term::ANSIColor.coloring = false
   end
 end
