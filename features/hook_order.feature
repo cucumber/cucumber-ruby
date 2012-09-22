@@ -56,5 +56,5 @@ Feature: Hooks execute in defined order
     When I run `cucumber -o /dev/null features/all_hook_order.feature`
     Then the output should contain:
       """
-      Event order: around_begin background_step before scenario_step after around_end
+      Event order: around_begin before background_step scenario_step after around_end
       """
