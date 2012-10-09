@@ -46,6 +46,7 @@ Feature: Language help
             | eo        | Esperanto           | Esperanto         |
             | es        | Spanish             | español           |
             | et        | Estonian            | eesti keel        |
+            | fa        | Persian             | فارسی             |
             | fi        | Finnish             | suomi             |
             | fr        | French              | français          |
             | he        | Hebrew              | עברית             |

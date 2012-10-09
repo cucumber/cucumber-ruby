@@ -13,14 +13,14 @@ Gem::Specification.new do |s|
 
   s.platform    = Gem::Platform::RUBY
 
-  s.add_runtime_dependency 'gherkin', '~> 2.11.0'
+  s.add_runtime_dependency 'gherkin', '~> 2.11.4'
   s.add_runtime_dependency 'builder', '>= 2.1.2'
   s.add_runtime_dependency 'diff-lcs', '>= 1.1.3'
   s.add_runtime_dependency 'json', '>= 1.4.6'
   
   s.add_development_dependency 'aruba', '~> 0.4.11'
   s.add_development_dependency 'rake', '>= 0.9.2'
-  s.add_development_dependency 'rspec', '~> 2.10.0'
+  s.add_development_dependency 'rspec', '~> 2.11.0'
   s.add_development_dependency 'nokogiri', '>= 1.5.2'
   s.add_development_dependency 'syntax', '>= 1.0.0'
   s.add_development_dependency 'spork', '>= 1.0.0.rc2'
