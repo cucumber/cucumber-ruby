@@ -22,38 +22,7 @@ Feature: Formatter Callback
       Then /^that|there$/ do
       end
       """
-    And a file named "features/support/ze/formator.rb" with:
-      """
-      module Ze
-        class Formator
-          def initialize(step_mother, io, options)
-            @io = io
-            @indent = 0
-          end
-
-          def respond_to?(name, *args)
-            true
-          end
-
-          def method_missing(name, *args)
-            @indent -= 2 if name.to_s =~ /^after/
-            print(name)
-            @indent += 2 if name.to_s =~ /^before/
-          end
-
-          private
-
-          def print(text)
-            @io.puts "#{indent}#{text}"
-          end
-
-          def indent
-            (' ' * @indent)
-          end
-        end
-      end
-      """
-    When I run cucumber "features/f.feature --format Ze::Formator"
+    When I run cucumber "features/f.feature --format debug"
     Then it should pass with exactly:
       """
       before_features
@@ -148,38 +117,7 @@ Feature: Formatter Callback
       Then /^that|there$/ do
       end
       """
-    And a file named "features/support/ze/formator.rb" with:
-      """
-      module Ze
-        class Formator
-          def initialize(step_mother, io, options)
-            @io = io
-            @indent = 0
-          end
-
-          def respond_to?(name, *args)
-            true
-          end
-
-          def method_missing(name, *args)
-            @indent -= 2 if name.to_s =~ /^after/
-            print(name)
-            @indent += 2 if name.to_s =~ /^before/
-          end
-
-          private
-
-          def print(text)
-            @io.puts "#{indent}#{text}"
-          end
-
-          def indent
-            (' ' * @indent)
-          end
-        end
-      end
-      """
-    When I run cucumber "features/f.feature --format Ze::Formator --expand"
+    When I run cucumber "features/f.feature --format debug --expand"
     Then it should pass with exactly:
       """
       before_features
