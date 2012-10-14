@@ -189,6 +189,15 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
             rb.execute_transforms(['abc']).should == [42]
             rb.execute_transforms(['abbc']).should == [42]
           end
+
+          it "transforms times" do
+            require 'time'
+            dsl.Transform(/^(\d\d-\d\d-\d\d\d\d)$/) do |arg| 
+              Time.parse(arg)
+            end
+            rb.execute_transforms(['10-0E-1971']).should == ['10-0E-1971']
+            rb.execute_transforms(['10-03-1971']).should == [Time.parse('10-03-1971')]
+          end
         end
 
         describe "with capture groups" do
