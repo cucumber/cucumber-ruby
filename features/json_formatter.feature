@@ -101,7 +101,8 @@ Feature: JSON output formatter
                     "location": "features/step_definitions/steps.rb:1"
                   },
                   "result": {
-                    "status": "passed"
+                    "status": "passed",
+                    "duration": 1
                   }
                 }
               ]
@@ -129,7 +130,8 @@ Feature: JSON output formatter
                   },
                   "result": {
                     "status": "failed",
-                    "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:6:in `/a failing step/'\nfeatures/one_passing_one_failing.feature:10:in `Given a failing step'"
+                    "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:6:in `/a failing step/'\nfeatures/one_passing_one_failing.feature:10:in `Given a failing step'",
+                    "duration": 1
                   }
                 }
               ]
@@ -191,7 +193,8 @@ Feature: JSON output formatter
                   },
                   "result": {
                     "status": "failed",
-                    "error_message": "a string (RuntimeError)\n./features/step_definitions/doc_string_steps.rb:2:in `/I should fail with/'\nfeatures/doc_string.feature:4:in `Then I should fail with'"
+                    "error_message": "a string (RuntimeError)\n./features/step_definitions/doc_string_steps.rb:2:in `/I should fail with/'\nfeatures/doc_string.feature:4:in `Then I should fail with'",
+                    "duration": 1
                   }
                 }
               ]
@@ -236,7 +239,8 @@ Feature: JSON output formatter
                   "location": "features/step_definitions/steps.rb:29"
                 },
                 "result": {
-                  "status": "passed"
+                  "status": "passed",
+                  "duration": 1
                 }
               }
             ]
