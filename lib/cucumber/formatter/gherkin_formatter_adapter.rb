@@ -68,6 +68,7 @@ module Cucumber
         @gf.examples(examples.gherkin_statement)
       end
       
+      #used for capturing duration
       def after_step(step)
         step_finish = (Time.now - @step_time)
         @gf.append_duration(step_finish)
