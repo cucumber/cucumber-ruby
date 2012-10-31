@@ -50,17 +50,20 @@ module Cucumber
         begin
           # RSpec >=2.0
           require 'rspec/expectations'
-          @rspec_matchers = ::RSpec::Matchers
-        rescue LoadError # try rspec 1.2.4 or higher
+          @assertions_module = ::RSpec::Matchers
+        rescue LoadError => try_rspec_1_2_4_or_higher
           begin
             require 'spec/expectations'
             require 'spec/runner/differs/default'
             require 'ostruct'
             options = OpenStruct.new(:diff_format => :unified, :context_lines => 3)
             Spec::Expectations.differ = Spec::Expectations::Differs::Default.new(options)
-            @rspec_matchers = ::Spec::Matchers
-          rescue LoadError # give up
-            @rspec_matchers = Module.new{}
+            @assertions_module = ::Spec::Matchers
+          rescue LoadError => try_test_unit
+            require 'test/unit/assertions'
+            @assertions_module = ::Test::Unit::Assertions
+          rescue LoadError => give_up
+            @assertions_module = Module.new{}
           end
         end
       end
@@ -152,7 +155,7 @@ module Cucumber
 
       def extend_world
         @current_world.extend(RbWorld)
-        @current_world.extend(@rspec_matchers)
+        @current_world.extend(@assertions_module)
         (@world_modules || []).each do |mod|
           @current_world.extend(mod)
         end
