@@ -165,6 +165,7 @@ module Cucumber
         else
           send_to_all(message, *args)
         end
+        self
       end
       
       def send_to_all(message, *args)
