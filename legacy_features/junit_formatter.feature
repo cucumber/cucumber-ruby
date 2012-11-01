@@ -16,9 +16,11 @@ Feature: JUnit output formatter
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite errors="0" failures="1" name="One passing scenario, one failing scenario" skipped="0" tests="2" time="0.005">
-      <testcase classname="One passing scenario, one failing scenario.Passing" name="Passing" time="0.005">
+      <testcase classname="One passing scenario, one failing scenario" name="Passing" time="0.005">
+        <system-out/>
+        <system-err/>
       </testcase>
-      <testcase classname="One passing scenario, one failing scenario.Failing" name="Failing" time="0.005">
+      <testcase classname="One passing scenario, one failing scenario" name="Failing" time="0.005">
         <failure message="failed Failing" type="failed">
           <![CDATA[Scenario: Failing
 
@@ -29,7 +31,15 @@ Feature: JUnit output formatter
           <![CDATA[ (RuntimeError)
 	features/one_passing_one_failing.feature:7:in `Given a failing scenario']]>
         </failure>
+        <system-out/>
+        <system-err/>
       </testcase>
+        <system-out>
+          <![CDATA[]]>
+        </system-out>
+        <system-err>
+          <![CDATA[]]>
+        </system-err>
       </testsuite>
 
       """
@@ -44,9 +54,11 @@ Feature: JUnit output formatter
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite errors="0" failures="1" name="Subdirectory - One passing scenario, one failing scenario" skipped="0" tests="2" time="0.005">
-      <testcase classname="Subdirectory - One passing scenario, one failing scenario.Passing" name="Passing" time="0.005">
+      <testcase classname="Subdirectory - One passing scenario, one failing scenario" name="Passing" time="0.005">
+        <system-out/>
+        <system-err/>
       </testcase>
-      <testcase classname="Subdirectory - One passing scenario, one failing scenario.Failing" name="Failing" time="0.005">
+      <testcase classname="Subdirectory - One passing scenario, one failing scenario" name="Failing" time="0.005">
         <failure message="failed Failing" type="failed">
           <![CDATA[Scenario: Failing
 
@@ -57,7 +69,15 @@ Feature: JUnit output formatter
           <![CDATA[ (RuntimeError)
 	features/some_subdirectory/one_passing_one_failing.feature:7:in `Given a failing scenario']]>
         </failure>
+        <system-out/>
+        <system-err/>
       </testcase>
+        <system-out>
+          <![CDATA[]]>
+        </system-out>
+        <system-err>
+          <![CDATA[]]>
+        </system-err>
       </testsuite>
 
       """
@@ -72,12 +92,22 @@ Feature: JUnit output formatter
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite errors="0" failures="0" name="Pending step" skipped="2" tests="2" time="0.009">
-      <testcase classname="Pending step.Pending" name="Pending" time="0.009">
+      <testcase classname="Pending step" name="Pending" time="0.009">
         <skipped/>
+        <system-out/>
+        <system-err/>
       </testcase>
-      <testcase classname="Pending step.Undefined" name="Undefined" time="0.009">
+      <testcase classname="Pending step" name="Undefined" time="0.009">
         <skipped/>
+        <system-out/>
+        <system-err/>
       </testcase>
+        <system-out>
+          <![CDATA[]]>
+        </system-out>
+        <system-err>
+          <![CDATA[]]>
+        </system-err>
       </testsuite>
       
       """
@@ -92,7 +122,7 @@ Feature: JUnit output formatter
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite errors="0" failures="2" name="Pending step" skipped="0" tests="2" time="0.000160">
-      <testcase classname="Pending step.Pending" name="Pending" time="0.000160">
+      <testcase classname="Pending step" name="Pending" time="0.000160">
         <failure message="pending Pending" type="pending">
           <![CDATA[Scenario: Pending
 
@@ -100,8 +130,10 @@ Feature: JUnit output formatter
           <![CDATA[TODO (Cucumber::Pending)
       features/pending.feature:4:in `Given a pending step']]>
         </failure>
+        <system-out/>
+        <system-err/>
       </testcase>
-      <testcase classname="Pending step.Undefined" name="Undefined" time="0.000160">
+      <testcase classname="Pending step" name="Undefined" time="0.000160">
         <failure message="undefined Undefined" type="undefined">
           <![CDATA[Scenario: Undefined
       
@@ -109,7 +141,15 @@ Feature: JUnit output formatter
           <![CDATA[Undefined step: "an undefined step" (Cucumber::Undefined)
       features/pending.feature:7:in `Given an undefined step']]>
         </failure>
+        <system-out/>
+        <system-err/>
       </testcase>
+        <system-out>
+          <![CDATA[]]>
+        </system-out>
+        <system-err>
+          <![CDATA[]]>
+        </system-err>
       </testsuite>
 
       """
@@ -144,9 +184,11 @@ You \*must\* specify \-\-out DIR for the junit formatter
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite errors="0" failures="1" name="Scenario outlines" skipped="0" tests="2" time="0.005">
-      <testcase classname="Scenario outlines.Using scenario outlines" name="Using scenario outlines (outline example : | passing |)" time="0.005">
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | passing |)" time="0.005">
+        <system-out/>
+        <system-err/>
       </testcase>
-      <testcase classname="Scenario outlines.Using scenario outlines" name="Using scenario outlines (outline example : | failing |)" time="0.005">
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | failing |)" time="0.005">
         <failure message="failed Using scenario outlines (outline example : | failing |)" type="failed">
           <![CDATA[Scenario Outline: Using scenario outlines
       
@@ -157,7 +199,15 @@ You \*must\* specify \-\-out DIR for the junit formatter
           <![CDATA[ (RuntimeError)
       features/scenario_outline.feature:4:in `Given a <type> scenario']]>
         </failure>
+        <system-out/>
+        <system-err/>
       </testcase>
+        <system-out>
+          <![CDATA[]]>
+        </system-out>
+        <system-err>
+          <![CDATA[]]>
+        </system-err>
       </testsuite>
 
       """

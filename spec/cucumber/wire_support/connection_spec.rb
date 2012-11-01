@@ -17,17 +17,15 @@ module Cucumber
         
         def timeout(message = nil)
           return :default_timeout if message.nil?
-          @custom_timeout[message] || :custom_timeout
+          @custom_timeout[message] || Configuration::DEFAULT_TIMEOUTS.fetch(message)
         end
       end
       
       before(:each) do
         @config = TestConfiguration.new
         @connection = TestConnection.new(@config)
-        @connection.socket = @socket = mock('socket')
-        Timeout.stub(:timeout).with(:custom_timeout).and_raise(Timeout::Error.new(''))
+        @connection.socket = @socket = mock('socket').as_null_object
         @response = %q{["response"]}
-        Timeout.stub(:timeout).with(:default_timeout).and_return(@response)
       end
       
       it "re-raises a timeout error" do
@@ -37,7 +35,7 @@ module Cucumber
       
       it "ignores timeout errors when configured to do so" do
         @config.custom_timeout[:foo] = :never
-        @socket.should_receive(:gets).and_return(@response)
+        @socket.stub(:gets => @response)
         handler = mock(:handle_response => :response)
         @connection.call_remote(handler, :foo, []).should == :response
       end

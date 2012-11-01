@@ -31,7 +31,7 @@ module Cucumber
 
         it "should recognise a mix of ints, strings and why not a table too" do
           rb.snippet_text('Given', 'I have 9 "awesome" cukes in 37 "boxes"', Cucumber::Ast::Table).should == unindented(%{
-          Given /^I have (\\d+) "([^"]*)" cukes in (\\d+) "([^"]*)"$/ do |arg1, arg2, arg3, arg4, table|
+          Given /^I have (\\d+) "(.*?)" cukes in (\\d+) "(.*?)"$/ do |arg1, arg2, arg3, arg4, table|
             # table is a Cucumber::Ast::Table
             pending # express the regexp above with the code you wish you had
           end
@@ -40,7 +40,7 @@ module Cucumber
 
         it "should recognise quotes in name and make according regexp" do
           rb.snippet_text('Given', 'A "first" arg', nil).should == unindented(%{
-          Given /^A "([^"]*)" arg$/ do |arg1|
+          Given /^A "(.*?)" arg$/ do |arg1|
             pending # express the regexp above with the code you wish you had
           end
           })
@@ -48,7 +48,7 @@ module Cucumber
 
         it "should recognise several quoted words in name and make according regexp and args" do
           rb.snippet_text('Given', 'A "first" and "second" arg', nil).should == unindented(%{
-          Given /^A "([^"]*)" and "([^"]*)" arg$/ do |arg1, arg2|
+          Given /^A "(.*?)" and "(.*?)" arg$/ do |arg1, arg2|
             pending # express the regexp above with the code you wish you had
           end
           })
@@ -64,7 +64,7 @@ module Cucumber
 
         it "should be helpful with tables" do
           rb.snippet_text('Given', 'A "first" arg', Cucumber::Ast::Table).should == unindented(%{
-          Given /^A "([^"]*)" arg$/ do |arg1, table|
+          Given /^A "(.*?)" arg$/ do |arg1, table|
             # table is a Cucumber::Ast::Table
             pending # express the regexp above with the code you wish you had
           end
@@ -188,6 +188,15 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
             rb.execute_transforms(['ac']).should == [42]
             rb.execute_transforms(['abc']).should == [42]
             rb.execute_transforms(['abbc']).should == [42]
+          end
+
+          it "transforms times" do
+            require 'time'
+            dsl.Transform(/^(\d\d-\d\d-\d\d\d\d)$/) do |arg| 
+              Time.parse(arg)
+            end
+            rb.execute_transforms(['10-0E-1971']).should == ['10-0E-1971']
+            rb.execute_transforms(['10-03-1971']).should == [Time.parse('10-03-1971')]
           end
         end
 

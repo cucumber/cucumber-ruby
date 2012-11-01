@@ -32,7 +32,7 @@ module Cucumber
       private
       
       def send_data_to_socket(data)
-        Timeout.timeout(@config.timeout) { socket.puts(data) }
+        Timeout.timeout(@config.timeout('connect')) { socket.puts(data) }
       end
 
       def fetch_data_from_socket(timeout)

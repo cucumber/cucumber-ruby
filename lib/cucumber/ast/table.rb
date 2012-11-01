@@ -285,7 +285,8 @@ module Cucumber
       # #diff!. You can use #map_column! on either of the tables.
       #
       # A Different error is raised if there are missing rows or columns, or
-      # surplus rows. An error is <em>not</em> raised for surplus columns.
+      # surplus rows. An error is <em>not</em> raised for surplus columns. An
+      # error is <em>not</em> raised for misplaced (out of sequence) columns.
       # Whether to raise or not raise can be changed by setting values in
       # +options+ to true or false:
       #
@@ -293,6 +294,7 @@ module Cucumber
       # * <tt>surplus_row</tt> : Raise on surplus rows (defaults to true)
       # * <tt>missing_col</tt> : Raise on missing columns (defaults to true)
       # * <tt>surplus_col</tt> : Raise on surplus columns (defaults to false)
+      # * <tt>misplaced_col</tt> : Raise on misplaced columns (defaults to false)
       #
       # The +other_table+ argument can be another Table, an Array of Array or
       # an Array of Hash (similar to the structure returned by #hashes).
@@ -301,7 +303,13 @@ module Cucumber
       # a Table argument, if you want to compare that table to some actual values. 
       #
       def diff!(other_table, options={})
-        options = {:missing_row => true, :surplus_row => true, :missing_col => true, :surplus_col => false}.merge(options)
+        options = {
+          :missing_row   => true,
+          :surplus_row   => true,
+          :missing_col   => true,
+          :surplus_col   => false,
+          :misplaced_col => false
+        }.merge(options)
 
         other_table = ensure_table(other_table)
         other_table.convert_headers!
@@ -317,6 +325,7 @@ module Cucumber
 
         missing_col = cell_matrix[0].detect{|cell| cell.status == :undefined}
         surplus_col = padded_width > original_width
+        misplaced_col = cell_matrix[0] != other_table.cell_matrix[0]
 
         require_diff_lcs
         cell_matrix.extend(Diff::LCS)
@@ -365,7 +374,8 @@ module Cucumber
           missing_row_pos && options[:missing_row] ||
           insert_row_pos  && options[:surplus_row] ||
           missing_col     && options[:missing_col] ||
-          surplus_col     && options[:surplus_col]
+          surplus_col     && options[:surplus_col] ||
+          misplaced_col   && options[:misplaced_col]
         raise Different.new(self) if should_raise
       end
 
@@ -437,13 +447,13 @@ module Cucumber
         options = {:color => true, :indent => 2, :prefixes => TO_S_PREFIXES}.merge(options)
         io = StringIO.new
 
-        c = Term::ANSIColor.coloring?
-        Term::ANSIColor.coloring = options[:color]
+        c = Cucumber::Term::ANSIColor.coloring?
+        Cucumber::Term::ANSIColor.coloring = options[:color]
         formatter = Formatter::Pretty.new(nil, io, options)
         formatter.instance_variable_set('@indent', options[:indent])
         TreeWalker.new(nil, [formatter]).visit_multiline_arg(self)
         
-        Term::ANSIColor.coloring = c
+        Cucumber::Term::ANSIColor.coloring = c
         io.rewind
         s = "\n" + io.read + (" " * (options[:indent] - 2))
         s

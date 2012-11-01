@@ -129,7 +129,7 @@ module Cucumber
         @indent = 6
       end
 
-      def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+      def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
         @hide_this_step = false
         if exception
           if @exceptions.include?(exception)
@@ -145,7 +145,7 @@ module Cucumber
         @status = status
       end
 
-      def step_name(keyword, step_match, status, source_indent, background)
+      def step_name(keyword, step_match, status, source_indent, background, file_colon_line)
         return if @hide_this_step
         source_indent = nil unless @options[:source]
         name_to_report = format_step(keyword, step_match, status, source_indent)
@@ -203,7 +203,7 @@ module Cucumber
         cell_text = escape_cell(value.to_s || '')
         padded = cell_text + (' ' * (width - cell_text.unpack('U*').length))
         prefix = cell_prefix(status)
-        @io.print(' ' + format_string("#{prefix}#{padded}", status) + ::Term::ANSIColor.reset(" |"))
+        @io.print(' ' + format_string("#{prefix}#{padded}", status) + ::Cucumber::Term::ANSIColor.reset(" |"))
         @io.flush
       end
 

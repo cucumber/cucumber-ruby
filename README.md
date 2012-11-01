@@ -1,10 +1,10 @@
-[![Build Status](https://secure.travis-ci.org/cucumber/cucumber.png)](http://travis-ci.org/cucumber/cucumber) [![Dependency Status](https://gemnasium.com/cucumber/cucumber.png)](https://gemnasium.com/cucumber/cucumber)
+[![Build Status](https://secure.travis-ci.org/cucumber/cucumber.png)](http://travis-ci.org/cucumber/cucumber) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/cucumber/cucumber)
 
 The main website is at http://cukes.info/
 The documentation is at https://wiki.github.com/cucumber/cucumber/
 
 ## Note on Patches/Pull Requests
- 
+
 * Fork the project.
 * Make your feature addition or bug fix.
 * Add tests for it. This is important so I don't break it in a
@@ -18,7 +18,6 @@ The documentation is at https://wiki.github.com/cucumber/cucumber/
 
     gem install bundler
     bundle install
-    git submodule update --init --recursive
     rake
 
 ## Release Process
@@ -38,5 +37,4 @@ Now release it
 
 ## Copyright
 
-Copyright (c) 2008,2009,2010,2011 Aslak Hellesøy and Contributors. See LICENSE for details.
-
+Copyright (c) 2008,2009,2010,2011,2012 Aslak Hellesøy and Contributors. See LICENSE for details.

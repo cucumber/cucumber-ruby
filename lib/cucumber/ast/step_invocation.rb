@@ -47,7 +47,8 @@ module Cucumber
           @status,
           @reported_exception,
           source_indent,
-          @background
+          @background,
+          file_colon_line
         )
       end
 
@@ -93,20 +94,6 @@ module Cucumber
       end
 
       def failed(configuration, e, clear_backtrace)
-        if Cucumber::JRUBY && e.class.name == 'NativeException'
-          # JRuby's NativeException ignores #set_backtrace.
-          # We're fixing it.
-          e.instance_eval do
-            def set_backtrace(backtrace)
-              @backtrace = backtrace
-            end
-
-            def backtrace
-              @backtrace
-            end
-          end
-        end
-
         e.set_backtrace([]) if e.backtrace.nil? || clear_backtrace
         e.backtrace << @step.backtrace_line unless @step.backtrace_line.nil?
         e = filter_backtrace(e)

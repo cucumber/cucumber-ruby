@@ -5,6 +5,8 @@ require 'cucumber/rb_support/rb_language'
 
 module Cucumber
   describe StepMatch do
+    include RSpec::WorkInProgress
+    
     WORD = Cucumber::RUBY_1_9 ? '[[:word:]]' : '\w'
 
     before do
@@ -12,7 +14,7 @@ module Cucumber
     end
 
     def stepdef(regexp)
-      RbSupport::RbStepDefinition.new(@rb_language, regexp, lambda{})
+      RbSupport::RbStepDefinition.new(@rb_language, regexp, lambda{}, {})
     end
 
     def step_match(regexp, name)
@@ -57,8 +59,10 @@ module Cucumber
     end
 
     it "should format groups even when first group is optional and not matched" do
-      m = step_match(/should( not)? be flashed '([^']*?)'$/, "I should be flashed 'Login failed.'")
-      m.format_args("<span>%s</span>").should == "I should be flashed '<span>Login failed.</span>'"
+      pending_under :java, "requires cucumber/gherkin >= ac42f51" do
+        m = step_match(/should( not)? be flashed '([^']*?)'$/, "I should be flashed 'Login failed.'")
+        m.format_args("<span>%s</span>").should == "I should be flashed '<span>Login failed.</span>'"
+      end
     end
 
     it "should format embedded groups" do
