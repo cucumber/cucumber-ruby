@@ -8,28 +8,28 @@ module Cucumber::Formatter
   describe Junit do
     extend SpecHelperDsl
     include SpecHelper
-    
+
     class TestDoubleJunitFormatter < Junit
       attr_reader :written_files
-      
+
       def write_file(feature_filename, data)
         @written_files ||= {}
         @written_files[feature_filename] = data
       end
     end
-    
+
     before(:each) do
       File.stub!(:directory?).and_return(true)
       @formatter = TestDoubleJunitFormatter.new(step_mother, '', {})
     end
-    
+
     describe "a feature with no name" do
       define_feature <<-FEATURE
         Feature:
           Scenario: Passing
             Given a passing scenario
       FEATURE
-      
+
       it "should raise an exception" do
         lambda { run_defined_feature }.should raise_error(Junit::UnNamedFeatureError)
       end
@@ -40,7 +40,7 @@ module Cucumber::Formatter
         run_defined_feature
         @doc = Nokogiri.XML(@formatter.written_files.values.first)
       end
-      
+
       describe "with a single scenario" do
         define_feature <<-FEATURE
           Feature: One passing scenario, one failing scenario
@@ -48,8 +48,24 @@ module Cucumber::Formatter
             Scenario: Passing
               Given a passing scenario
         FEATURE
-        
+
         it { @doc.to_s.should =~ /One passing scenario, one failing scenario/ }
+
+        it 'should have a root system-out node' do
+          @doc.xpath('//testsuite/system-out').size.should == 1
+        end
+
+        it 'should have a root system-err node' do
+          @doc.xpath('//testsuite/system-err').size.should == 1
+        end
+
+        it 'should have a system-out node under <testcase/>' do
+          @doc.xpath('//testcase/system-out').size.should == 1
+        end
+
+        it 'should have a system-err node under <testcase/>' do
+          @doc.xpath('//testcase/system-err').size.should == 1
+        end
       end
 
       describe "with a scenario in a subdirectory" do
@@ -64,12 +80,12 @@ module Cucumber::Formatter
           @formatter.written_files.keys.first.should == File.join('', 'TEST-features-some-path-spec.xml')
         end
       end
-      
+
       describe "with a scenario outline table" do
         define_steps do
           Given(/.*/) {  }
         end
-        
+
         define_feature <<-FEATURE
           Feature: Eat things when hungry
 
@@ -78,7 +94,7 @@ module Cucumber::Formatter
               And stuff:
                 | foo |
                 | bar |
-            
+
             Examples: Good
               | Things   |
               | Cucumber |
@@ -87,7 +103,7 @@ module Cucumber::Formatter
               | Things   |
               | Big Mac  |
         FEATURE
-        
+
         it { @doc.to_s.should =~ /Eat things when hungry/ }
         it { @doc.to_s.should =~ /Cucumber/ }
         it { @doc.to_s.should =~ /Whisky/ }
@@ -96,25 +112,25 @@ module Cucumber::Formatter
         it { @doc.to_s.should_not =~ /Good|Evil/ }
         it { @doc.to_s.should_not =~ /type="skipped"/}
       end
-  
+
       describe "with a regular data table scenario" do
         define_steps do
-          Given(/the following items on a shortlist/) { |table| }  
+          Given(/the following items on a shortlist/) { |table| }
           When(/I go.*/) {  }
-          Then(/I should have visited at least/) { |table| } 
+          Then(/I should have visited at least/) { |table| }
         end
-        
+
         define_feature <<-FEATURE
           Feature: Shortlist
 
-            Scenario: Procure items 
+            Scenario: Procure items
               Given the following items on a shortlist:
-                | item    |       
-                | milk    |       
+                | item    |
+                | milk    |
                 | cookies |
               When I get some..
               Then I'll eat 'em
-           
+
         FEATURE
         # these type of tables shouldn't crash (or generate test cases)
         it { @doc.to_s.should_not =~ /milk/ }

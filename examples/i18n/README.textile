@@ -1,18 +1,3 @@
 h1. Internationalisation (i18n) examples
 
-Under this directory you'll find examples of Cucumber features written in
-many of the natural languages Cucumber supports. 
-
-For a full list of what languages Cucumber supports - run <pre>cucumber --language help</pre>
-
-h2. Running all the examples
-
-Open a shell in this directory and run
-
-<pre>rake i18n</pre>
-
-h2. Running examples for a specific language
-
-Open a shell in the directory for the specific language and run
-
-<pre>rake cucumber</pre>
+Visit the "wiki":https://github.com/cucumber/cucumber/wiki/Spoken-languages for instructions on how to use Cucumber on different languages.

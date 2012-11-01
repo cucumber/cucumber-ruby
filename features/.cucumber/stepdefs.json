@@ -21,83 +21,11 @@
     "file_colon_line": "aruba-0.4.11/lib/aruba/cucumber.rb:15",
     "steps": [
       {
-        "name": "a file named \"features/doc_string.feature\" with:",
+        "name": "a file named \"features/test.feature\" with:",
         "args": [
           {
             "offset": 14,
-            "val": "features/doc_string.feature"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/f.feature\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/f.feature"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/only_background_and_hooks.feature\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/only_background_and_hooks.feature"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/only_background_and_hooks_steps.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/only_background_and_hooks_steps.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/step_definitions/doc_string_steps.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/step_definitions/doc_string_steps.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/step_definitions/multiline_steps.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/step_definitions/multiline_steps.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/step_definitions/steps.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/step_definitions/steps.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/support/hooks.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/support/hooks.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/support/ze/formator.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/support/ze/formator.rb"
+            "val": "features/test.feature"
           }
         ]
       }
@@ -181,164 +109,20 @@
     "file_colon_line": "aruba-0.4.11/lib/aruba/cucumber.rb:56",
     "steps": [
       {
-        "name": "I run `cucumber -f stepdefs --dry-run`",
+        "name": "I run `cucumber features/test.feature:5 -f progress`",
         "args": [
           {
             "offset": 7,
-            "val": "cucumber -f stepdefs --dry-run"
+            "val": "cucumber features/test.feature:5 -f progress"
           }
         ]
       },
       {
-        "name": "I run `cucumber -f usage --dry-run`",
+        "name": "I run `cucumber features/test.feature:8 -f progress`",
         "args": [
           {
             "offset": 7,
-            "val": "cucumber -f usage --dry-run"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q -t @one -t @three features/tagulicious.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q -t @one -t @three features/tagulicious.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q -t @one,@three features/tagulicious.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q -t @one,@three features/tagulicious.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/background_tagged_before_on_outline.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/background_tagged_before_on_outline.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/failing_background.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/failing_background.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/failing_background_after_success.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/failing_background_after_success.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/multiline_args_background.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/multiline_args_background.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/passing_background.feature:9`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/passing_background.feature:9"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/passing_background.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/passing_background.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/pending_background.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/pending_background.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/scenario_outline_failing_background.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/scenario_outline_failing_background.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/scenario_outline_passing_background.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/scenario_outline_passing_background.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/tagulicious.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/tagulicious.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/f.feature:2`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/f.feature:2"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/f.feature:6`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/f.feature:6"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/only_background_and_hooks.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/only_background_and_hooks.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber"
+            "val": "cucumber features/test.feature:8 -f progress"
           }
         ]
       }
@@ -389,15 +173,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.4.11/lib/aruba/cucumber.rb:82",
     "steps": [
-      {
-        "name": "the output should contain \"WARNING\"",
-        "args": [
-          {
-            "offset": 27,
-            "val": "WARNING"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -429,12 +205,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.4.11/lib/aruba/cucumber.rb:98",
     "steps": [
-      {
-        "name": "the output should contain:",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -523,24 +294,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.4.11/lib/aruba/cucumber.rb:138",
     "steps": [
-      {
-        "name": "it should fail with exactly:",
-        "args": [
-          {
-            "offset": 10,
-            "val": "fail"
-          }
-        ]
-      },
-      {
-        "name": "it should pass with exactly:",
-        "args": [
-          {
-            "offset": 10,
-            "val": "pass"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -784,336 +538,11 @@
     ]
   },
   {
-    "source": "^a scenario \"([^\"]*)\" with:$",
-    "flags": "",
-    "file_colon_line": "features/cucumber-features/step_definitions/cucumber_stepdefs.rb:5",
-    "steps": [
-      {
-        "name": "a scenario \"Add three numbers\" with:",
-        "args": [
-          {
-            "offset": 12,
-            "val": "Add three numbers"
-          }
-        ]
-      },
-      {
-        "name": "a scenario \"Add two numbers\" with:",
-        "args": [
-          {
-            "offset": 12,
-            "val": "Add two numbers"
-          }
-        ]
-      },
-      {
-        "name": "a scenario \"Basic Arithmetic\" with:",
-        "args": [
-          {
-            "offset": 12,
-            "val": "Basic Arithmetic"
-          }
-        ]
-      },
-      {
-        "name": "a scenario \"Calculate PI\" with:",
-        "args": [
-          {
-            "offset": 12,
-            "val": "Calculate PI"
-          }
-        ]
-      },
-      {
-        "name": "a scenario \"Simple math\" with:",
-        "args": [
-          {
-            "offset": 12,
-            "val": "Simple math"
-          }
-        ]
-      },
-      {
-        "name": "a scenario \"Too simple math\" with:",
-        "args": [
-          {
-            "offset": 12,
-            "val": "Too simple math"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "source": "^the following feature:$",
-    "flags": "",
-    "file_colon_line": "features/cucumber-features/step_definitions/cucumber_stepdefs.rb:10",
-    "steps": [
-      {
-        "name": "the following feature:",
-        "args": [
-
-        ]
-      }
-    ]
-  },
-  {
-    "source": "^the step \"([^\"]*)\" has a passing mapping$",
-    "flags": "",
-    "file_colon_line": "features/cucumber-features/step_definitions/cucumber_stepdefs.rb:14",
-    "steps": [
-      {
-        "name": "the step \"I add 4 and 5\" has a passing mapping",
-        "args": [
-          {
-            "offset": 10,
-            "val": "I add 4 and 5"
-          }
-        ]
-      },
-      {
-        "name": "the step \"the result is 9\" has a passing mapping",
-        "args": [
-          {
-            "offset": 10,
-            "val": "the result is 9"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "source": "^the step \"([^\"]*)\" has a pending mapping$",
-    "flags": "",
-    "file_colon_line": "features/cucumber-features/step_definitions/cucumber_stepdefs.rb:18",
-    "steps": [
-      {
-        "name": "the step \"I add 4 and 5\" has a pending mapping",
-        "args": [
-          {
-            "offset": 10,
-            "val": "I add 4 and 5"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "source": "^the step \"([^\"]*)\" has a failing mapping$",
-    "flags": "",
-    "file_colon_line": "features/cucumber-features/step_definitions/cucumber_stepdefs.rb:22",
-    "steps": [
-      {
-        "name": "the step \"I add 4 and 5\" has a failing mapping",
-        "args": [
-          {
-            "offset": 10,
-            "val": "I add 4 and 5"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "source": "^Cucumber executes the scenario \"([^\"]*)\"$",
-    "flags": "",
-    "file_colon_line": "features/cucumber-features/step_definitions/cucumber_stepdefs.rb:26",
-    "steps": [
-      {
-        "name": "Cucumber executes the scenario \"Basic Arithmetic\"",
-        "args": [
-          {
-            "offset": 32,
-            "val": "Basic Arithmetic"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "source": "^Cucumber runs the feature$",
-    "flags": "",
-    "file_colon_line": "features/cucumber-features/step_definitions/cucumber_stepdefs.rb:30",
-    "steps": [
-      {
-        "name": "Cucumber runs the feature",
-        "args": [
-
-        ]
-      }
-    ]
-  },
-  {
-    "source": "^Cucumber runs the scenario with steps for a calculator$",
-    "flags": "",
-    "file_colon_line": "features/cucumber-features/step_definitions/cucumber_stepdefs.rb:34",
-    "steps": [
-      {
-        "name": "Cucumber runs the scenario with steps for a calculator",
-        "args": [
-
-        ]
-      }
-    ]
-  },
-  {
-    "source": "^the scenario passes$",
-    "flags": "",
-    "file_colon_line": "features/cucumber-features/step_definitions/cucumber_stepdefs.rb:40",
-    "steps": [
-      {
-        "name": "the scenario passes",
-        "args": [
-
-        ]
-      }
-    ]
-  },
-  {
-    "source": "^the scenario fails$",
-    "flags": "",
-    "file_colon_line": "features/cucumber-features/step_definitions/cucumber_stepdefs.rb:44",
-    "steps": [
-      {
-        "name": "the scenario fails",
-        "args": [
-
-        ]
-      }
-    ]
-  },
-  {
-    "source": "^the scenario is pending$",
-    "flags": "",
-    "file_colon_line": "features/cucumber-features/step_definitions/cucumber_stepdefs.rb:48",
-    "steps": [
-      {
-        "name": "the scenario is pending",
-        "args": [
-
-        ]
-      }
-    ]
-  },
-  {
-    "source": "^the scenario is undefined$",
-    "flags": "",
-    "file_colon_line": "features/cucumber-features/step_definitions/cucumber_stepdefs.rb:52",
-    "steps": [
-      {
-        "name": "the scenario is undefined",
-        "args": [
-
-        ]
-      }
-    ]
-  },
-  {
-    "source": "^the step \"([^\"]*)\" is skipped$",
-    "flags": "",
-    "file_colon_line": "features/cucumber-features/step_definitions/cucumber_stepdefs.rb:56",
-    "steps": [
-      {
-        "name": "the step \"the result is 9\" is skipped",
-        "args": [
-          {
-            "offset": 10,
-            "val": "the result is 9"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "source": "^the feature passes$",
-    "flags": "",
-    "file_colon_line": "features/cucumber-features/step_definitions/cucumber_stepdefs.rb:60",
-    "steps": [
-      {
-        "name": "the feature passes",
-        "args": [
-
-        ]
-      }
-    ]
-  },
-  {
     "source": "^I run cucumber \"(.+)\"$",
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:1",
     "steps": [
-      {
-        "name": "I run cucumber \"--format json features/doc_string.feature\"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "--format json features/doc_string.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run cucumber \"--format json features/one_passing_one_failing.feature\"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "--format json features/one_passing_one_failing.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run cucumber \"-b --format json features/embed.feature\"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "-b --format json features/embed.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run cucumber \"features/f.feature --format Ze::Formator\"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "features/f.feature --format Ze::Formator"
-          }
-        ]
-      },
-      {
-        "name": "I run cucumber \"features/foo.feature\"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "features/foo.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run cucumber \"features/one_passing_one_failing.feature -r features -f rerun\"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "features/one_passing_one_failing.feature -r features -f rerun"
-          }
-        ]
-      },
-      {
-        "name": "I run cucumber \"features/sample.feature --tags ~@wip\"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "features/sample.feature --tags ~@wip"
-          }
-        ]
-      },
-      {
-        "name": "I run cucumber \"features/sample.feature -r features --tags ~@wip\"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "features/sample.feature -r features --tags ~@wip"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -1121,24 +550,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:5",
     "steps": [
-      {
-        "name": "it should fail with JSON:",
-        "args": [
-          {
-            "offset": 10,
-            "val": "fail"
-          }
-        ]
-      },
-      {
-        "name": "it should pass with JSON:",
-        "args": [
-          {
-            "offset": 10,
-            "val": "pass"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -1146,12 +558,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:19",
     "steps": [
-      {
-        "name": "a directory without standard Cucumber project directory structure",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -1159,12 +566,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:25",
     "steps": [
-      {
-        "name": "a scenario with a step that looks like this:",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -1172,12 +574,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:31",
     "steps": [
-      {
-        "name": "a step definition that looks like this:",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -1185,15 +582,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:35",
     "steps": [
-      {
-        "name": "I run the feature with the progress formatter",
-        "args": [
-          {
-            "offset": 27,
-            "val": "progress"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -1201,12 +590,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/drb_steps.rb:1",
     "steps": [
-      {
-        "name": "I am running spork in the background",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -1214,15 +598,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/iso-8859-1_steps.rb:6",
     "steps": [
-      {
-        "name": "jeg drikker en \"øl\"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "øl"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -1230,15 +606,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/iso-8859-1_steps.rb:10",
     "steps": [
-      {
-        "name": "skal de andre si \"skål\"",
-        "args": [
-          {
-            "offset": 18,
-            "val": "skål"
-          }
-        ]
-      }
+
     ]
   }
 ]

@@ -75,7 +75,7 @@ module Cucumber
         end.compact
       end
 
-      ARGUMENT_PATTERNS = ['"([^"]*)"', '(\d+)']
+      ARGUMENT_PATTERNS = ['"(.*?)"', '(\d+)']
 
       def snippet_text(code_keyword, step_name, multiline_arg_class)
         snippet_pattern = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
@@ -110,8 +110,8 @@ module Cucumber
         add_transform(RbTransform.new(self, regexp, proc))
       end
 
-      def register_rb_step_definition(regexp, proc)
-        step_definition = RbStepDefinition.new(self, regexp, proc)
+      def register_rb_step_definition(regexp, proc_or_sym, options)
+        step_definition = RbStepDefinition.new(self, regexp, proc_or_sym, options)
         @step_definitions << step_definition
         step_definition
       end

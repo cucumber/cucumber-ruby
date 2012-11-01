@@ -474,6 +474,15 @@ module Cucumber
             lambda { @t.dup.diff!(t) }.should_not raise_error
             lambda { @t.dup.diff!(t, :surplus_col => true) }.should raise_error
           end
+
+          it "should not raise on misplaced columns" do
+            t = table(%{
+              | b | a |
+              | d | c |
+            }, __FILE__, __LINE__)
+            lambda { @t.dup.diff!(t) }.should_not raise_error
+            lambda { @t.dup.diff!(t, :misplaced_col => true) }.should raise_error
+          end
         end
 
         def table(text, file, offset)

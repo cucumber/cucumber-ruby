@@ -37,7 +37,7 @@ module Cucumber
         @exception_raised = false
       end
 
-      def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background)
+      def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
         progress(status)
         @status = status
       end
