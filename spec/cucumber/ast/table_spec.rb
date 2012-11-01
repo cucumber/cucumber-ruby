@@ -448,12 +448,8 @@ module Cucumber
             }, __FILE__, __LINE__)
             lambda { t1.dup.diff!(t2) }.should raise_error
 
-            begin
-              pending "http://groups.google.com/group/cukes/browse_thread/thread/5d96431c8245f05f" do
-                lambda { t1.dup.diff!(t2, :surplus_row => false) }.should_not raise_error
-              end
-            rescue => e
-              warn(e.message + " - see http://www.ruby-forum.com/topic/208508")
+            pending "https://github.com/cucumber/cucumber/issues/220" do
+              lambda { t1.dup.diff!(t2, :surplus_row => false) }.should_not raise_error
             end
           end
 
