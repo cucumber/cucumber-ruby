@@ -1,3 +1,10 @@
+## In git
+
+### New Features
+
+### Bugfixes
+* Fix --dry-run option ignored when set via profile (#248 / #255 Igor Afonov)
+
 ## [v1.2.1](https://github.com/cucumber/cucumber/compare/v1.2.0...v1.2.1)
 
 ### New Features
