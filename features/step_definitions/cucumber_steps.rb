@@ -2,6 +2,10 @@ When /^I run cucumber "(.+)"$/ do |cmd|
   run_simple(unescape("cucumber #{cmd}"), false)
 end
 
+Then 'it should pass' do
+  assert_exit_status 0
+end
+
 Then /^it should (pass|fail) with JSON:$/ do |pass_fail, json|
   # Need to store it in a variable. With JRuby we can only do this once it seems :-/
   stdout = all_stdout

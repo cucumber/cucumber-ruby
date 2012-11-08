@@ -27,6 +27,8 @@ Feature: Step Definitions
           When I do the action
           Then the action should be done
       """
+    When I run `cucumber`
+    Then it should pass
 
   Scenario: Call a method on an actor in the World directly from a step def
     Given a file named "features/step_definitions/steps.rb" with:
@@ -48,8 +50,8 @@ Feature: Step Definitions
       end
       World(Driver)
 
-      When /I do the action to the thing/, :do_action, :to => lambda { thing }
-      Then /The thing should be done/, :assert_done, :to => lambda { thing }
+      When /I do the action to the thing/, :do_action, :on => lambda { thing }
+      Then /The thing should be done/, :assert_done, :on => lambda { thing }
       """
     And a file named "features/action.feature" with:
       """
@@ -58,4 +60,6 @@ Feature: Step Definitions
           When I do the action to the thing
           Then the thing should be done
       """
+    When I run `cucumber`
+    Then it should pass
 
