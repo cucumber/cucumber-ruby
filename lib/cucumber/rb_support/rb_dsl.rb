@@ -85,13 +85,13 @@ module Cucumber
       def Transform(regexp, &proc)
         RbDsl.register_rb_transform(regexp, proc)
       end
-      
+
       # Registers a proc that will run after Cucumber is configured. You can register as 
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
       # TODO: Deprecate this
       def AfterConfiguration(&proc)
         RbDsl.register_rb_hook('after_configuration', [], proc)
-      end      
+      end
 
       # Registers a new Ruby StepDefinition. This method is aliased
       # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>, and
