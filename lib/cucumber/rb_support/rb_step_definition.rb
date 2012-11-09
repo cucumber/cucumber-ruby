@@ -23,17 +23,27 @@ module Cucumber
         end
       end
 
-      def initialize(rb_language, regexp, proc_or_sym, options)
-        raise MissingProc if proc_or_sym.nil?
-        if String === regexp
-          p = Regexp.escape(regexp)
-          p = p.gsub(/\\\$\w+/, '(.*)') # Replace $var with (.*)
-          regexp = Regexp.new("^#{p}$") 
+      class << self
+        def new(rb_language, pattern, proc_or_sym, options)
+          raise MissingProc if proc_or_sym.nil?
+          super rb_language, parse_pattern(pattern), create_proc(proc_or_sym, options)
         end
-        @rb_language, @regexp, @proc = rb_language, regexp, proc_or_sym
-        if @proc.kind_of? Symbol
+
+        private
+
+        def parse_pattern(pattern)
+          return pattern if pattern.is_a?(Regexp)
+          raise ArgumentError unless pattern.is_a?(String)
+          p = Regexp.escape(pattern)
+          p = p.gsub(/\\\$\w+/, '(.*)') # Replace $var with (.*)
+          Regexp.new("^#{p}$") 
+        end
+
+        def create_proc(proc_or_sym, options)
+          return proc_or_sym if proc_or_sym.is_a?(Proc)
+          raise ArgumentError unless proc_or_sym.is_a?(Symbol)
           message = proc_or_sym
-          @proc = lambda do |*args|
+          lambda do |*args|
             target = if options.key?(:on)
                        case options[:on]
                        when Proc
@@ -49,7 +59,10 @@ module Cucumber
             target.send(message, *args)
           end
         end
+      end
 
+      def initialize(rb_language, regexp, proc)
+        @rb_language, @regexp, @proc = rb_language, regexp, proc
         @rb_language.available_step_definition(regexp_source, file_colon_line)
       end
 
