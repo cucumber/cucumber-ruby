@@ -43,20 +43,23 @@ module Cucumber
           return proc_or_sym if proc_or_sym.is_a?(Proc)
           raise ArgumentError unless proc_or_sym.is_a?(Symbol)
           message = proc_or_sym
+          target_proc = parse_target_proc_from(options)
           lambda do |*args|
-            target = if options.key?(:on)
-                       case options[:on]
-                       when Proc
-                         instance_exec(&options[:on])
-                       when Symbol
-                         self.send(options[:on])
-                       else
-                         raise ArgumentError, "Target must be a symbol or a proc"
-                       end
-                     else
-                       self
-                     end
+            target = instance_exec(&target_proc)
             target.send(message, *args)
+          end
+        end
+
+        def parse_target_proc_from(options)
+          return lambda { self } unless options.key?(:on)
+          target = options[:on]
+          case target
+          when Proc
+            target
+          when Symbol
+            lambda { self.send(target) }
+          else
+            lambda { raise ArgumentError, "Target must be a symbol or a proc" }
           end
         end
       end
