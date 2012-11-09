@@ -32,9 +32,21 @@ module Cucumber
         end
         @rb_language, @regexp, @proc = rb_language, regexp, proc_or_sym
         if @proc.kind_of? Symbol
+          message = proc_or_sym
           @proc = lambda do |*args|
-            target = options[:on] ? instance_exec(&options[:on]) : self
-            target.send(proc_or_sym, *args)
+            target = if options.key?(:on)
+                       case options[:on]
+                       when Proc
+                         instance_exec(&options[:on])
+                       when Symbol
+                         self.send(options[:on])
+                       else
+                         raise ArgumentError, "Target must be a symbol or a proc"
+                       end
+                     else
+                       self
+                     end
+            target.send(message, *args)
           end
         end
 
