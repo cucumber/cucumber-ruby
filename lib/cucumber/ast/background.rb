@@ -71,7 +71,11 @@ module Cucumber
       end
 
       def failed?
-        @failed
+        if defined? @failed
+          return @failed
+        else
+          return nil
+        end
       end
 
       def hook_context
