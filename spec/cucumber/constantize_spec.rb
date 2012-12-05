@@ -1,16 +1,12 @@
 require 'spec_helper'
 
+module Html end
+
 module Cucumber
   describe Constantize do
     include Constantize
 
     it "loads html formatter" do
-      clazz = constantize('Cucumber::Formatter::Html')
-      clazz.name.should == 'Cucumber::Formatter::Html'
-    end
-
-    it "loads progerss formatter when a class exists" do
-      module ::Html end
       clazz = constantize('Cucumber::Formatter::Html')
       clazz.name.should == 'Cucumber::Formatter::Html'
     end
