@@ -9,6 +9,12 @@ module Cucumber
       clazz.name.should == 'Cucumber::Formatter::Html'
     end
 
+    it "loads progerss formatter when a class exists" do
+      module ::Html end
+      clazz = constantize('Cucumber::Formatter::Html')
+      clazz.name.should == 'Cucumber::Formatter::Html'
+    end
+
     it "fails to load a made up class" do
       expect { constantize('My::MadeUp::ClassName') }.to raise_error(LoadError)
     end
