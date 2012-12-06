@@ -446,11 +446,9 @@ module Cucumber
               | four  | 4     |
               | five  | 5     |
             }, __FILE__, __LINE__)
+            
             lambda { t1.dup.diff!(t2) }.should raise_error
-
-            pending "https://github.com/cucumber/cucumber/issues/220" do
-              lambda { t1.dup.diff!(t2, :surplus_row => false) }.should_not raise_error
-            end
+            lambda { t1.dup.diff!(t2, :surplus_row => false) }.should_not raise_error
           end
 
           it "should raise on missing columns" do
