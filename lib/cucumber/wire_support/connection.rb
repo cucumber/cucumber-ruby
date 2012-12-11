@@ -42,6 +42,7 @@ module Cucumber
           else
             Timeout.timeout(timeout) { socket.gets }
           end
+        raise exception({'message' => "Remote Socket with #{@config.host}:#{@config.port} closed."}) if raw_response.nil?
         WirePacket.parse(raw_response)
       end
       

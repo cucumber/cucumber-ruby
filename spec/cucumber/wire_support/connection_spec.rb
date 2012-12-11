@@ -19,6 +19,14 @@ module Cucumber
           return :default_timeout if message.nil?
           @custom_timeout[message] || Configuration::DEFAULT_TIMEOUTS.fetch(message)
         end
+
+        def host
+          'localhost'
+        end
+
+        def port
+          '3902'
+        end
       end
       
       before(:each) do
@@ -38,6 +46,14 @@ module Cucumber
         @socket.stub(:gets => @response)
         handler = mock(:handle_response => :response)
         @connection.call_remote(handler, :foo, []).should == :response
+      end
+
+      it "raises an exception on remote connection closed" do
+        @config.custom_timeout[:foo] = :never
+        @socket.stub(:gets => nil)
+        lambda { 
+          @connection.call_remote(nil, :foo, []) 
+        }.should raise_error(WireException, 'Remote Socket with localhost:3902 closed.')
       end
     end
   end
