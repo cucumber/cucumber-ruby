@@ -42,7 +42,7 @@ module Cucumber
           @io = ensure_file(file, "pretty")
         end
       end
-      
+
       def comment_line(comment_line)
         @io.puts(comment_line.indent(@indent))
         @io.flush
