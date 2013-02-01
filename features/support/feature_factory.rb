@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 module FeatureFactory
   def create_feature(name = generate_feature_name)
     gherkin = <<-GHERKIN
@@ -7,9 +8,25 @@ Feature: #{name}
     write_file filename(name), gherkin
   end
 
+  def create_feature_ja(name = generate_feature_name)
+    gherkin = <<-GHERKIN
+# language: ja
+機能: #{name}
+#{yield}
+    GHERKIN
+    write_file filename(name), gherkin
+  end
+
   def create_scenario(name = generate_scenario_name)
     <<-GHERKIN
   Scenario: #{name}
+  #{yield}
+    GHERKIN
+  end
+
+  def create_scenario_ja(name = generate_scenario_name)
+    <<-GHERKIN
+  シナリオ: #{name}
   #{yield}
     GHERKIN
   end
