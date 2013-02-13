@@ -5,6 +5,18 @@ require 'cucumber/rb_support/rb_step_definition'
 require 'cucumber/rb_support/rb_hook'
 require 'cucumber/rb_support/rb_transform'
 
+begin
+  require 'rspec/expectations'
+rescue LoadError
+  begin
+    require 'spec/expectations'
+    require 'spec/runner/differs/default'
+    require 'ostruct'
+  rescue LoadError
+    require 'test/unit/assertions'
+  end
+end
+
 module Cucumber
   module RbSupport
     # Raised if a World block returns Nil.
@@ -49,18 +61,16 @@ module Cucumber
       def enable_rspec_expectations_if_available
         begin
           # RSpec >=2.0
-          require 'rspec/expectations'
-          @rspec_matchers = ::RSpec::Matchers
-        rescue LoadError => try_rspec_1_2_4_or_higher
+          @assertions_module = ::RSpec::Matchers
+        rescue NameError
+          # RSpec >=1.2.4
           begin
-            require 'spec/expectations'
-            require 'spec/runner/differs/default'
-            require 'ostruct'
             options = OpenStruct.new(:diff_format => :unified, :context_lines => 3)
             Spec::Expectations.differ = Spec::Expectations::Differs::Default.new(options)
-            @rspec_matchers = ::Spec::Matchers
-          rescue LoadError => give_up
-            @rspec_matchers = Module.new{}
+            @assertions_module = ::Spec::Matchers
+          rescue NameError
+            # Test::Unit
+            @assertions_module = ::Test::Unit::Assertions
           end
         end
       end
@@ -152,7 +162,7 @@ module Cucumber
 
       def extend_world
         @current_world.extend(RbWorld)
-        @current_world.extend(@rspec_matchers)
+        @current_world.extend(@assertions_module)
         (@world_modules || []).each do |mod|
           @current_world.extend(mod)
         end
