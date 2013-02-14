@@ -358,6 +358,20 @@ module Cucumber
           last_change = change
         end
 
+        cell_matrix.each_with_index do |row, row_index|
+          if row.any? {|col| col.status == :undefined}
+            matching_row_index = cell_matrix.find_index {|other_row| other_row.any? {|col| col.status == :comment} && all_cols_match(other_row, row)}
+            if matching_row_index
+              missing  -= 1
+              inserted -= 1
+
+              # maybe needed for diff output?!
+              # cell_matrix.delete_at(row_index)
+              # cell_matrix.delete_at(matching_row_index)
+            end
+          end
+        end
+
         other_table_cell_matrix.each_with_index do |other_row, i|
           row_index = row_indices.index(i)
           row = cell_matrix[row_index] if row_index
@@ -371,12 +385,26 @@ module Cucumber
         
         clear_cache!
         should_raise = 
-          missing_row_pos && options[:missing_row] ||
-          insert_row_pos  && options[:surplus_row] ||
+          missing > 0     && options[:missing_row] ||
+          inserted > 0    && options[:surplus_row] ||
           missing_col     && options[:missing_col] ||
           surplus_col     && options[:surplus_col] ||
           misplaced_col   && options[:misplaced_col]
         raise Different.new(self) if should_raise
+      end
+
+      def all_cols_match(first_row, other_row)
+        first_row.inject(first_col_values = []) { |string, col|
+          first_col_values << col.value
+          first_col_values
+        }
+
+        other_row.inject(other_col_values = []) { |string, col|
+          other_col_values << col.value
+          other_col_values
+        }
+
+        first_col_values == other_col_values
       end
 
       def to_hash(cells) #:nodoc:
