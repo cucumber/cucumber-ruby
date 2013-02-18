@@ -4,14 +4,31 @@ require 'cucumber/formatter/summary'
 
 module Cucumber
   module Formatter
-    # This module contains helper methods that are used by formatters
-    # that print output to the terminal.
+
+    # This module contains helper methods that are used by formatters that
+    # print output to the terminal.
+    #
+    # FORMAT is a hash of Proc objects, keyed by step-definition types, e.g.
+    # "FORMAT[:passed]".  The Proc is called for each line of the step's
+    # output.
+    #
+    # format_step calls format_string, format_string calls format_for to obtain
+    # the formatting Proc.
+    #
+    # Example:
+    #
+    # The ANSI color console formatter defines a map of step-type to output
+    # color (e.g. "passed" to "green"), then builds methods named for the
+    # step-types (e.g. "def passed"), which themselves wrap the corresponding
+    # color-named methods provided by Term::ANSIColor (e.g. "def red").
+    #
+    # During output, each line is processed by passing it to the formatter Proc
+    # which returns the formatted (e.g. colored) string.
+
     module Console
       extend ANSIColor
       include Duration
       include Summary
-
-      FORMATS = Hash.new{|hash, format| hash[format] = method(format).to_proc}
 
       def format_step(keyword, step_match, status, source_indent)
         comment = if source_indent
@@ -90,7 +107,7 @@ module Cucumber
         string = "#{message}\n#{e.backtrace.join("\n")}".indent(indent)
         @io.puts(format_string(string, status))
       end
-      
+
       # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655 
       def linebreaks(s, max)
         s.gsub(/.{1,#{max}}(?:\s|\Z)/){($& + 5.chr).gsub(/\n\005/,"\n").gsub(/\005/,"\n")}.rstrip
@@ -100,7 +117,7 @@ module Cucumber
         return unless options[:snippets]
         undefined = step_mother.steps(:undefined)
         return if undefined.empty?
-        
+
         unknown_programming_language = step_mother.unknown_programming_language?
         snippets = undefined.map do |step|
           step_name = Undefined === step.exception ? step.exception.step_name : step.name
@@ -114,9 +131,9 @@ module Cucumber
         @io.puts format_string(text, :undefined)
 
         if unknown_programming_language
-          @io.puts format_string("\nIf you want snippets in a different programming language,\n" +
-                  "just make sure a file with the appropriate file extension\n" +
-                  "exists where cucumber looks for step definitions.", :failed)
+          @io.puts format_string("\nIf you want snippets in a different programming language," +
+                                 "\njust make sure a file with the appropriate file extension" +
+                                 "\nexists where cucumber looks for step definitions.", :failed)
         end
 
         @io.puts
@@ -177,12 +194,15 @@ module Cucumber
 
     private
 
-      def format_for(*keys)
-        key = keys.join('_').to_sym
-        fmt = FORMATS[key]
-        raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
-        fmt
-      end
+    FORMATS = Hash.new{ |hash, format| hash[format] = method(format).to_proc }
+
+    def format_for(*keys)
+      key = keys.join('_').to_sym
+      fmt = FORMATS[key]
+      raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
+      fmt
+    end
+
     end
   end
 end
