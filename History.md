@@ -1,6 +1,7 @@
 ## In git
 
 ### New Features
+Added support for Hindi (hi), although some systems may need to install fonts which support the Devanagari script.
 
 ### Bugfixes
 * Fix --dry-run option ignored when set via profile (#248 / #255 Igor Afonov)
