@@ -35,7 +35,7 @@ module Cucumber
           background.keyword, 
           background.name, 
           background.description,
-          steps=[]
+          []
         )
         @feature.background = @background
         @background.feature = @feature
@@ -52,7 +52,7 @@ module Cucumber
           statement.keyword, 
           statement.name,
           statement.description, 
-          steps=[]
+          []
         )
         @feature.add_feature_element(scenario)
         @background.feature_elements << scenario if @background
@@ -69,8 +69,8 @@ module Cucumber
           statement.keyword, 
           statement.name, 
           statement.description, 
-          steps=[],
-          example_sections=[]
+          [],
+          []
         )
         @feature.add_feature_element(scenario_outline)
         if @background

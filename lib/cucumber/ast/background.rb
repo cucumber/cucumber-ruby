@@ -22,7 +22,7 @@ module Cucumber
 
       def step_collection(step_invocations)
         init
-        unless(@first_collection_created)
+        unless((defined? @first_collection_created) and @first_collection_created)
           @first_collection_created = true
           @step_invocations.dup(step_invocations)
         else
@@ -71,7 +71,11 @@ module Cucumber
       end
 
       def failed?
-        @failed
+        if defined? @failed
+          return @failed
+        else
+          return nil
+        end
       end
 
       def hook_context
