@@ -7,7 +7,7 @@ Feature: Snippets
     When I run cucumber features/undefined_multiline_args.feature:3 -s
     Then the output should contain
       """
-      Given /^a pystring$/ do |string|
+      Given(/^a pystring$/) do |string|
         pending # express the regexp above with the code you wish you had
       end
       """
@@ -16,7 +16,7 @@ Feature: Snippets
     When I run cucumber features/undefined_multiline_args.feature:9 -s
     Then the output should contain
       """
-      Given /^a table$/ do |table|
+      Given(/^a table$/) do |table|
         # table is a Cucumber::Ast::Table
         pending # express the regexp above with the code you wish you had
       end
