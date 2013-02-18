@@ -4,6 +4,7 @@
 
 ### Bugfixes
 * Fix --dry-run option ignored when set via profile (#248 / #255 Igor Afonov)
+* More clear suggested ruby code for undefined steps (#328 / #331 @martco)
 
 ## [v1.2.1](https://github.com/cucumber/cucumber/compare/v1.2.0...v1.2.1)
 
