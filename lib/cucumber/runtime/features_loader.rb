@@ -11,11 +11,8 @@ module Cucumber
       end
       
       def features
-        if defined? @features
-          @features
-        else
-          load
-        end  
+        load unless (defined? @features) and @features
+        @features
       end
       
     private

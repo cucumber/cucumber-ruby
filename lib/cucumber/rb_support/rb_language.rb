@@ -51,7 +51,7 @@ module Cucumber
           # RSpec >=2.0
           require 'rspec/expectations'
           @rspec_matchers = ::RSpec::Matchers
-        rescue LoadError
+        rescue LoadError # try rspec 1.2.4 or higher
           begin
             require 'spec/expectations'
             require 'spec/runner/differs/default'
@@ -59,7 +59,7 @@ module Cucumber
             options = OpenStruct.new(:diff_format => :unified, :context_lines => 3)
             Spec::Expectations.differ = Spec::Expectations::Differs::Default.new(options)
             @rspec_matchers = ::Spec::Matchers
-          rescue LoadError
+          rescue LoadError # give up
             @rspec_matchers = Module.new{}
           end
         end

@@ -76,7 +76,7 @@ module Cucumber
         @cell_class = Cell
         raw = ensure_array_of_array(rubify(raw))
         # Verify that it's square
-        # transposed = raw.transpose
+        raw.transpose
         create_cell_matrix(raw)
         @conversion_procs = conversion_procs
         @header_mappings = header_mappings
