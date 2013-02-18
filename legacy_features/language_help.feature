@@ -50,6 +50,7 @@ Feature: Language help
             | fi        | Finnish             | suomi             |
             | fr        | French              | français          |
             | he        | Hebrew              | עברית             |
+            | hi        | Hindi               | हिंदी             |
             | hr        | Croatian            | hrvatski          |
             | hu        | Hungarian           | magyar            |
             | id        | Indonesian          | Bahasa Indonesia  |
@@ -70,7 +71,9 @@ Feature: Language help
             | sr-Cyrl   | Serbian             | Српски            |
             | sr-Latn   | Serbian (Latin)     | Srpski (Latinica) |
             | sv        | Swedish             | Svenska           |
+            | tl        | Telugu              | తెలుగు            |
             | tr        | Turkish             | Türkçe            |
+            | tt        | Tatar               | Татарча           |
             | uk        | Ukrainian           | Українська        |
             | uz        | Uzbek               | Узбекча           |
             | vi        | Vietnamese          | Tiếng Việt        |
