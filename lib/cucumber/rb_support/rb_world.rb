@@ -70,7 +70,7 @@ module Cucumber
         if block_given?
           begin
             yield
-          rescue Exception => e
+          rescue Exception
             raise Pending.new(message)
           end
           raise Pending.new("Expected pending '#{message}' to fail. No Error was raised. No longer pending?")

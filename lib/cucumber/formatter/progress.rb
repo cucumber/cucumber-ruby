@@ -24,12 +24,12 @@ module Cucumber
       end
 
       def after_feature_element(*args)
-        progress(:failed) if @exception_raised
+        progress(:failed) if (defined? @exception_raised) and (@exception_raised)
         @exception_raised = false
       end
 
       def before_steps(*args)
-        progress(:failed) if @exception_raised
+        progress(:failed) if (defined? @exception_raised) and (@exception_raised)
         @exception_raised = false
       end
 

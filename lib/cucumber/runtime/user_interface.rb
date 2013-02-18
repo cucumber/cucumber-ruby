@@ -61,7 +61,7 @@ module Cucumber
           Timeout.timeout(timeout_seconds) do
             STDIN.gets
           end
-        rescue Timeout::Error => e
+        rescue Timeout::Error
           nil
         end
       end

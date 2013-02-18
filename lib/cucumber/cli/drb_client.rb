@@ -20,7 +20,7 @@ module Cucumber
           cloned_args = [] # I have no idea why this is needed, but if the regular args are sent then DRb magically transforms it into a DRb object - not an array
           args.each { |arg| cloned_args << arg }
           feature_server.run(cloned_args, error_stream, out_stream)
-        rescue DRb::DRbConnError => e
+        rescue DRb::DRbConnError
           raise DRbClientError, "No DRb server is running."
         end
 
