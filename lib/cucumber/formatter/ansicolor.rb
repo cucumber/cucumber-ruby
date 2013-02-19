@@ -2,11 +2,11 @@ require 'cucumber/platform'
 require 'cucumber/term/ansicolor'
 
 if Cucumber::IRONRUBY
-	begin
-		require 'iron-term-ansicolor'
-	rescue LoadError
-		STDERR.puts %{*** WARNING: You must "igem install iron-term-ansicolor" to get coloured ouput in on IronRuby}
-	end
+  begin
+    require 'iron-term-ansicolor'
+  rescue LoadError
+    STDERR.puts %{*** WARNING: You must "igem install iron-term-ansicolor" to get coloured ouput in on IronRuby}
+  end
 end
 
 if Cucumber::WINDOWS_MRI
