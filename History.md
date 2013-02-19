@@ -109,7 +109,7 @@ Added support for Hindi (hi), although some systems may need to install fonts wh
 New format:
 
     [feature here]
- 
+
 Also see [Gherkin 2.6.0 History](https://github.com/cucumber/gherkin/blob/master/History.md) for info about new `id` and `uri` elements in the JSON.
 
 ## [v1.1.0](https://github.com/cucumber/cucumber/compare/v1.0.6...v1.1.0)
@@ -233,7 +233,7 @@ Yipeeeeeeeee!
 ### Bugfixes
 * Missing methods in Runtime::ForProgrammingLanguages - make v8 example run again (Chris Mytton)
 * Features files are sorted before they are executed, giving consistent results across different OSes (Guewen Baconnier)
-* Remove duplicate lines in backtraces in the HTML report (Jari Bakken) 
+* Remove duplicate lines in backtraces in the HTML report (Jari Bakken)
 
 ## [v0.10.0](https://github.com/cucumber/cucumber/compare/v0.9.4...v0.10.0)
 
@@ -265,7 +265,7 @@ This should not affect users. The major new feature in this release is ANSICON s
 ### Bugfixes
 * Better JSON representation of Regexps (Aslak Hellesøy)
 * Update to work with latest spork (Matt Wynne)
-* Prevent MiniTest::Unit#autorun from running in at_exit hook. (Aslak Hellesøy) 
+* Prevent MiniTest::Unit#autorun from running in at_exit hook. (Aslak Hellesøy)
 * Fixed incorect --help for --strict. It fails on both pending and undefined. (Aslak Hellesøy)
 
 ## [v0.9.2](https://github.com/cucumber/cucumber/compare/v0.9.1...v0.9.2)

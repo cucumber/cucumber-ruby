@@ -7,32 +7,32 @@ module Cucumber
       class TestConnection < Connection
         attr_accessor :socket
       end
-      
+
       class TestConfiguration
         attr_reader :custom_timeout
-        
+
         def initialize
           @custom_timeout = {}
         end
-        
+
         def timeout(message = nil)
           return :default_timeout if message.nil?
           @custom_timeout[message] || Configuration::DEFAULT_TIMEOUTS.fetch(message)
         end
       end
-      
+
       before(:each) do
         @config = TestConfiguration.new
         @connection = TestConnection.new(@config)
         @connection.socket = @socket = mock('socket').as_null_object
         @response = %q{["response"]}
       end
-      
+
       it "re-raises a timeout error" do
         Timeout.stub!(:timeout).and_raise(Timeout::Error.new(''))
         lambda { @connection.call_remote(nil, :foo, []) }.should raise_error(Timeout::Error)
       end
-      
+
       it "ignores timeout errors when configured to do so" do
         @config.custom_timeout[:foo] = :never
         @socket.stub(:gets => @response)

@@ -13,12 +13,12 @@ module Cucumber
       def handle_fail(params)
         raise @connection.exception(params)
       end
-      
+
       def handle_success(params)
       end
-      
+
       private
-      
+
       # Props to Rails
       def underscore(camel_cased_word)
         camel_cased_word.to_s.gsub(/::/, '/').

@@ -94,7 +94,7 @@ module Cucumber
           eval(code)
         end
       end
-      
+
       def self.define_grey #:nodoc:
         begin
           gem 'genki-ruby-terminfo'
@@ -122,7 +122,7 @@ module Cucumber
           end
         end
       end
-      
+
       def self.define_real_grey #:nodoc:
         def grey(m) #:nodoc:
           if ::Cucumber::Term::ANSIColor.coloring?
@@ -132,7 +132,7 @@ module Cucumber
           end
         end
       end
-      
+
       define_grey
 
       def cukes(n)

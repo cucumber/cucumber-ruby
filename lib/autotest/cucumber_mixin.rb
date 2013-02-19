@@ -7,14 +7,14 @@ module Autotest::CucumberMixin
   def self.included(receiver)
     receiver::ALL_HOOKS << [:run_features, :ran_features]
   end
-  
+
   attr_accessor :features_to_run
-  
+
   def initialize
     super
     reset_features
   end
-  
+
   def run
     hook :initialize
     reset
@@ -44,11 +44,11 @@ module Autotest::CucumberMixin
     end
     hook :quit
   end
-  
+
   def all_features_good
     features_to_run == ""
   end
-  
+
   def get_to_green
     begin
       super
@@ -56,16 +56,16 @@ module Autotest::CucumberMixin
       wait_for_changes unless all_features_good
     end until all_features_good
   end
-  
+
   def rerun_all_features
     reset_features
     run_features
   end
-  
+
   def reset_features
     self.features_to_run = :all
   end
-    
+
   def run_features
     hook :run_features
     Tempfile.open('autotest-cucumber') do |dirty_features_file|
@@ -104,16 +104,16 @@ module Autotest::CucumberMixin
     end
     hook :ran_features
   end
-  
+
   def make_cucumber_cmd(features_to_run, dirty_features_filename)
     return '' if features_to_run == ''
-    
+
     profile_loader = Cucumber::Cli::ProfileLoader.new
-    
+
     profile ||= "autotest-all" if profile_loader.has_profile?("autotest-all") && features_to_run == :all
     profile ||= "autotest"     if profile_loader.has_profile?("autotest")
     profile ||= nil
-    
+
     if profile
       args = ["--profile", profile]
     else
@@ -122,12 +122,12 @@ module Autotest::CucumberMixin
     # No --color option as some IDEs (Netbeans) don't output them very well ([31m1 failed step[0m)
     args += %w{--format rerun --out} << dirty_features_filename
     args << (features_to_run == :all ? "" : features_to_run)
-    
+
     # Unless I do this, all the steps turn up undefined during the rerun...
     unless features_to_run == :all
       args << 'features/step_definitions' << 'features/support'
     end
-    
+
     args = args.join(' ')
 
     return "#{Cucumber::RUBY_BINARY} #{Cucumber::BINARY} #{args}"

@@ -13,7 +13,7 @@ module Cucumber
   # This is the meaty part of Cucumber that ties everything together.
   class Runtime
     attr_reader :results
-    
+
     include Formatter::Duration
     include Runtime::UserInterface
 
@@ -24,28 +24,28 @@ module Cucumber
       @support_code = SupportCode.new(self, @configuration)
       @results = Results.new(@configuration)
     end
-    
+
     # Allows you to take an existing runtime and change it's configuration
     def configure(new_configuration)
       @configuration = Configuration.parse(new_configuration)
       @support_code.configure(@configuration)
       @results.configure(@configuration)
     end
-    
+
     def load_programming_language(language)
       @support_code.load_programming_language(language)
     end
-    
+
     def run!
       load_step_definitions
       fire_after_configuration_hook
 
       tree_walker = @configuration.build_tree_walker(self)
       self.visitor = tree_walker # Ugly circular dependency, but needed to support World#puts
-      
+
       tree_walker.visit_features(features)
     end
-    
+
     def features_paths
       @configuration.paths
     end
@@ -164,8 +164,8 @@ module Cucumber
 
     def features
       @loader ||= Runtime::FeaturesLoader.new(
-        @configuration.feature_files, 
-        @configuration.filters, 
+        @configuration.feature_files,
+        @configuration.filters,
         @configuration.tag_expression)
       @loader.features
     end

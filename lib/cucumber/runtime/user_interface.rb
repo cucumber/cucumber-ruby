@@ -47,7 +47,7 @@ module Cucumber
       end
 
       # Embed +src+ of MIME type +mime_type+ into the output. The +src+ argument may
-      # be a path to a file, or if it's an image it may also be a Base64 encoded image. 
+      # be a path to a file, or if it's an image it may also be a Base64 encoded image.
       # The embedded data may or may not be ignored, depending on what kind of formatter(s) are active.
       #
       def embed(src, mime_type, label)
@@ -55,7 +55,7 @@ module Cucumber
       end
 
     private
-    
+
       def mri_gets(timeout_seconds)
         begin
           Timeout.timeout(timeout_seconds) do
@@ -76,6 +76,6 @@ module Cucumber
         answer
       end
     end
-    
+
   end
 end

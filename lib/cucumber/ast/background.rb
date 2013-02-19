@@ -43,7 +43,7 @@ module Cucumber
           visitor.step_mother.after(hook_context) if @failed || @feature_elements.empty?
         end
       end
-      
+
       def with_visitor(scenario, visitor)
         @current_visitor = visitor
         init
@@ -55,7 +55,7 @@ module Cucumber
           yield
         end
       end
-      
+
       def accept_hook?(hook)
         init
         if hook_context != self
@@ -96,7 +96,7 @@ module Cucumber
       def fail!(exception)
         @failed = true
         @exception = exception
-        @current_visitor.visit_exception(@exception, :failed)        
+        @current_visitor.visit_exception(@exception, :failed)
       end
 
 

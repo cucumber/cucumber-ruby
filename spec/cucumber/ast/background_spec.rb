@@ -28,7 +28,7 @@ module Cucumber
         background = Background.new(
           comment=Comment.new(''),
           line=2,
-          keyword="", 
+          keyword="",
           title="",
           description="",
           steps=[
@@ -37,10 +37,10 @@ module Cucumber
 
         scenario = Scenario.new(
           background,
-          comment=Comment.new(""), 
+          comment=Comment.new(""),
           tags=Tags.new(98,[]),
           line=99,
-          keyword="", 
+          keyword="",
           title="",
           description="",
           steps=[]
@@ -110,6 +110,6 @@ module Cucumber
 
       end
     end
-    
+
   end
 end

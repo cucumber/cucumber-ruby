@@ -7,7 +7,7 @@ module Cucumber
       super %{Undefined step: "#{step_name}"}
       @step_name = step_name
     end
-    
+
     def nested!
       @nested = true
     end

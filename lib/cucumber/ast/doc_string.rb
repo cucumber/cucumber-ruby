@@ -38,7 +38,7 @@ module Cucumber
         return if Cucumber.wants_to_quit
         visitor.visit_doc_string(self)
       end
-      
+
       def arguments_replaced(arguments) #:nodoc:
         string = self
         arguments.each do |name, value|

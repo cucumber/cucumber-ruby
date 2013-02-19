@@ -102,7 +102,7 @@ module Cucumber
             %w{4444 55555 666666}
           ])
         end
-          
+
         it "returns nil if headers do not match" do
           @table.match('does,not,match').should be_nil
         end
@@ -121,14 +121,14 @@ module Cucumber
             %w{two 22222}
           ])
         end
-                
-        it "should be convertible in to an array where each row is a hash" do 
+
+        it "should be convertible in to an array where each row is a hash" do
           @table.transpose.hashes[0].should == {'one' => '1111', 'two' => '22222'}
         end
       end
-      
+
       describe "#rows_hash" do
-                
+
         it "should return a hash of the rows" do
           table = Table.new([
             %w{one 1111},
@@ -243,7 +243,7 @@ module Cucumber
                               %w{cat}
                             ])
           table_with_replaced_args = table.arguments_replaced({'<book>' => nil})
-          
+
           table_with_replaced_args.hashes[0]['book'].should == 'cat'
         end
 
@@ -258,13 +258,13 @@ module Cucumber
                               ['book', 'qty'],
                               ['<book>', nil],
                             ])
-          lambda{ 
+          lambda{
             table.arguments_replaced({'<book>' => nil, '<qty>' => '5'})
           }.should_not raise_error
         end
 
       end
-      
+
       describe "diff!" do
         it "should detect a complex diff" do
           t1 = table(%{
@@ -273,11 +273,11 @@ module Cucumber
             | 999999999 | 0000000000  | 01010101010 | 121212121212 |
             | 4000      | ABC         | DEF         | 50000        |
           }, __FILE__, __LINE__)
-          
+
           t2 = table(%{
-            | a     | 4444     | 1         | 
-            | bb    | 88888888 | 55555     | 
-            | ccc   | xxxxxxxx | 999999999 | 
+            | a     | 4444     | 1         |
+            | bb    | 88888888 | 55555     |
+            | ccc   | xxxxxxxx | 999999999 |
             | dddd  | 4000     | 300       |
             | e     | 50000    | 4000      |
           }, __FILE__, __LINE__)
@@ -346,7 +346,7 @@ module Cucumber
             ['name',  'male'],
             ['aslak', true]
           ])
-          t1.map_column!('male') { 
+          t1.map_column!('male') {
             'true'
           }
           t2 = Table.new([
@@ -405,7 +405,7 @@ module Cucumber
             t1.hashes
           end.should raise_error(%{2 headers matched /uk/: ["Cuke", "Duke"]})
         end
-        
+
         describe "raising" do
           before do
             @t = table(%{
@@ -414,7 +414,7 @@ module Cucumber
             }, __FILE__, __LINE__)
             @t.should_not == nil
           end
-          
+
           it "should raise on missing rows" do
             t = table(%{
               | a | b |
@@ -497,15 +497,15 @@ module Cucumber
       end
 
       it "should convert to sexp" do
-        @table.to_sexp.should == 
-          [:table, 
+        @table.to_sexp.should ==
+          [:table,
             [:row, -1,
-              [:cell, "one"], 
+              [:cell, "one"],
               [:cell, "four"],
               [:cell, "seven"]
             ],
             [:row, -1,
-              [:cell, "4444"], 
+              [:cell, "4444"],
               [:cell, "55555"],
               [:cell, "666666"]]]
       end

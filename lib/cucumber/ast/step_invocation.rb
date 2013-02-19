@@ -113,7 +113,7 @@ module Cucumber
       def filter_backtrace(e)
         return e if Cucumber.use_full_backtrace
         e.backtrace.each{|line| line.gsub!(PWD_PATTERN, "./")}
-        
+
         filtered = (e.backtrace || []).reject do |line|
           BACKTRACE_FILTER_PATTERNS.detect { |p| line =~ p }
         end

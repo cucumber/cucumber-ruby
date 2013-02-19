@@ -72,7 +72,7 @@ module Cucumber
         @indent = 2
         @scenario_indent = 2
       end
-      
+
       def after_feature_element(feature_element)
         @io.puts
         @io.flush
@@ -90,7 +90,7 @@ module Cucumber
         @io.flush
       end
 
-      def background_name(keyword, name, file_colon_line, source_indent)        
+      def background_name(keyword, name, file_colon_line, source_indent)
         print_feature_element_name(keyword, name, file_colon_line, source_indent)
       end
 
@@ -99,7 +99,7 @@ module Cucumber
         @io.puts
         @visiting_first_example_name = true
       end
-      
+
       def examples_name(keyword, name)
         @io.puts unless @visiting_first_example_name
         @visiting_first_example_name = false
@@ -110,7 +110,7 @@ module Cucumber
         @indent = 6
         @scenario_indent = 6
       end
-      
+
       def before_outline_table(outline_table)
         @table = outline_table
       end
@@ -119,7 +119,7 @@ module Cucumber
         @table = nil
         @indent = 4
       end
-      
+
       def scenario_name(keyword, name, file_colon_line, source_indent)
         print_feature_element_name(keyword, name, file_colon_line, source_indent)
       end
@@ -171,7 +171,7 @@ module Cucumber
         return if @options[:no_multiline] || @hide_this_step
         @table = multiline_arg
       end
-      
+
       def after_multiline_arg(multiline_arg)
         @table = nil
       end
@@ -208,7 +208,7 @@ module Cucumber
       end
 
       private
-      
+
       def print_feature_element_name(keyword, name, file_colon_line, source_indent)
         @io.puts if @scenario_indent == 6
         names = name.empty? ? [name] : name.split("\n")
@@ -220,7 +220,7 @@ module Cucumber
         end
         @io.puts
         names[1..-1].each {|s| @io.puts "    #{s}"}
-        @io.flush        
+        @io.flush
       end
 
       def cell_prefix(status)

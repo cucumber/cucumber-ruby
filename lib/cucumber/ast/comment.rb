@@ -22,7 +22,7 @@ module Cucumber
           visitor.visit_comment_line(line.strip)
         end
       end
-      
+
       def to_sexp
         (@value.nil? || @value == '') ? nil : [:comment, @value]
       end

@@ -8,7 +8,7 @@ module Cucumber
           @exception_name
         end
       end
-      
+
       def initialize(args, host, port)
         super args['message']
         if args['exception']
@@ -23,7 +23,7 @@ module Cucumber
             end
         end
       end
-      
+
       def backtrace
         @backtrace || super
       end

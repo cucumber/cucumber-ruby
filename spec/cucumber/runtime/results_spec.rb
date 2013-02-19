@@ -24,16 +24,16 @@ module Cucumber
           subject.scenario_visited(failed_scenario)
           subject.should be_failure
         end
-        
+
         it 'should return true if a step failed' do
           subject.step_visited(failed_step)
           subject.should be_failure
         end
-        
+
         it 'should return false if there are no scenarios' do
           subject.should_not be_failure
         end
-        
+
         it 'should return false if all scenarios passed' do
           subject.scenario_visited(passed_scenario)
           subject.scenario_visited(passed_scenario)
@@ -49,7 +49,7 @@ module Cucumber
             subject.step_visited(pending_step)
             subject.should be_failure
           end
-          
+
           it 'should return true if a step is undefined' do
             subject.step_visited(undefined_step)
             subject.should be_failure
@@ -70,7 +70,7 @@ module Cucumber
         it 'should return false if there are no scenarios' do
           subject.should_not be_failure
         end
-        
+
         it 'should return false if all scenarios fail' do
           subject.scenario_visited(failed_scenario)
           subject.should_not be_failure

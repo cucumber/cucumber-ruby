@@ -19,7 +19,7 @@ module Cucumber
         count = 0
         @step_definition_files.keys.sort.each do |step_definition_file|
           @io.puts step_definition_file
-          
+
           sources = @step_definition_files[step_definition_file]
           source_indent = source_indent(sources)
           sources.sort.each do |file_colon_line, regexp_source|

@@ -5,7 +5,7 @@ module Cucumber
     class Examples #:nodoc:
       include Names
       attr_writer :outline_table
-      
+
       def initialize(comment, line, keyword, title, description, outline_table)
         @comment, @keyword, @title, @description, @outline_table = comment, keyword, title, description, outline_table
       end
