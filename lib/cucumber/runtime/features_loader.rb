@@ -2,21 +2,21 @@ require 'cucumber/errors'
 
 module Cucumber
   class Runtime
-    
+
     class FeaturesLoader
       include Formatter::Duration
 
       def initialize(feature_files, filters, tag_expression)
         @feature_files, @filters, @tag_expression = feature_files, filters, tag_expression
       end
-      
+
       def features
         load unless (defined? @features) and @features
         @features
       end
-      
+
     private
-    
+
       def load
         features = Ast::Features.new
 
@@ -52,7 +52,7 @@ module Cucumber
         end
         raise TagExcess.new(error_messages) if error_messages.any?
       end
-      
+
       def log
         Cucumber.logger
       end

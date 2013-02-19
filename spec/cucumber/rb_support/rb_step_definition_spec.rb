@@ -9,7 +9,7 @@ module Cucumber
       let(:user_interface) { double('user interface') }
       let(:support_code)   { Cucumber::Runtime::SupportCode.new(user_interface) }
       let(:rb)             { support_code.load_programming_language('rb') }
-      let(:dsl) do 
+      let(:dsl) do
         rb
         Object.new.extend(Cucumber::RbSupport::RbDsl)
       end

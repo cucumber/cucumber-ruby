@@ -5,13 +5,13 @@ module Cucumber
   module WireSupport
     class Connection
       class ConnectionError < StandardError; end
-        
+
       include WireProtocol
-      
+
       def initialize(config)
         @config = config
       end
-      
+
       def call_remote(request_handler, message, params)
         packet = WirePacket.new(message, params)
 
@@ -24,19 +24,19 @@ module Cucumber
           raise Timeout::Error, "Timed out calling wire server with message '#{message}'", backtrace
         end
       end
-      
+
       def exception(params)
         WireException.new(params, @config.host, @config.port)
       end
 
       private
-      
+
       def send_data_to_socket(data)
         Timeout.timeout(@config.timeout('connect')) { socket.puts(data) }
       end
 
       def fetch_data_from_socket(timeout)
-        raw_response = 
+        raw_response =
           if timeout == :never
             socket.gets
           else
@@ -44,7 +44,7 @@ module Cucumber
           end
         WirePacket.parse(raw_response)
       end
-      
+
       def socket
         @socket ||= TCPSocket.new(@config.host, @config.port)
       rescue Errno::ECONNREFUSED => exception

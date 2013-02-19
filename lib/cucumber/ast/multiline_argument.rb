@@ -10,7 +10,7 @@ module Cucumber
         def from(argument)
           return unless argument
           return argument if argument.respond_to?(:to_step_definition_arg)
-          
+
           case(rubify(argument))
           when String
             # TODO: this duplicates work that gherkin does. We should really pass the string to gherkin and let it parse it.

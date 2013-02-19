@@ -6,7 +6,7 @@ describe Proc do
     proc = lambda {|a,b|}
     proc.file_colon_line.should =~ /^spec\/cucumber\/core_ext\/proc_spec\.rb:6/
   end
-  
+
   it "should raise ArityMismatchError for too many args (expecting 0)" do
     lambda {
       Object.new.cucumber_instance_exec(true, 'foo', 1) do

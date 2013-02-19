@@ -1,6 +1,6 @@
 module Cucumber
   class Runtime
-    
+
     class Results
       def initialize(configuration)
         @configuration = configuration
@@ -22,7 +22,7 @@ module Cucumber
           steps.push(step)
         end
       end
-      
+
       def scenario_visited(scenario) #:nodoc:
         scenario_id = scenario.object_id
 
@@ -31,7 +31,7 @@ module Cucumber
           scenarios.push(scenario)
         end
       end
-      
+
       def steps(status = nil) #:nodoc:
         @steps ||= []
         if(status)
@@ -40,7 +40,7 @@ module Cucumber
           @steps
         end
       end
-      
+
       def scenarios(status = nil) #:nodoc:
         @scenarios ||= []
         if(status)
@@ -49,7 +49,7 @@ module Cucumber
           @scenarios
         end
       end
-      
+
       def failure?
         if @configuration.wip?
           scenarios(:passed).any?
@@ -59,6 +59,6 @@ module Cucumber
         end
       end
     end
-    
+
   end
 end

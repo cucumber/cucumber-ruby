@@ -31,9 +31,9 @@ module Cucumber
           stepdef_key = StepDefKey.new(step_match.step_definition.regexp_source, step_match.step_definition.file_colon_line)
 
           @stepdef_to_match[stepdef_key] << {
-            :keyword => keyword, 
-            :step_match => step_match, 
-            :status => status, 
+            :keyword => keyword,
+            :step_match => step_match,
+            :status => status,
             :file_colon_line => @step.file_colon_line,
             :duration => @duration
           }

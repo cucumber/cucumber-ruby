@@ -128,13 +128,13 @@ module Cucumber
       def load_code_file(code_file)
         load File.expand_path(code_file) # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from RbDsl
       end
-      
+
       protected
 
       def begin_scenario(scenario)
         begin_rb_scenario(scenario)
       end
-      
+
       def end_scenario
         @current_world = nil
       end

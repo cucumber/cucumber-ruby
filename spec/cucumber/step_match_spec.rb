@@ -6,7 +6,7 @@ require 'cucumber/rb_support/rb_language'
 module Cucumber
   describe StepMatch do
     include RSpec::WorkInProgress
-    
+
     WORD = Cucumber::RUBY_1_9 ? '[[:word:]]' : '\w'
 
     before do

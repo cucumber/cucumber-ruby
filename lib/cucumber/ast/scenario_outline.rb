@@ -6,7 +6,7 @@ module Cucumber
     class ScenarioOutline #:nodoc:
       include FeatureElement
       include Names
-      
+
       module ExamplesArray #:nodoc:
         def accept(visitor)
           return if Cucumber.wants_to_quit
@@ -38,7 +38,7 @@ module Cucumber
         @examples_array = @example_sections.map do |example_section_and_gherkin_examples|
           example_section = example_section_and_gherkin_examples[0]
           gherkin_examples = example_section_and_gherkin_examples[1]
-          
+
           examples_comment     = example_section[0]
           examples_line        = example_section[1]
           examples_keyword     = example_section[2]
@@ -98,8 +98,8 @@ module Cucumber
       def visit_scenario_name(visitor, row)
         visitor.visit_scenario_name(
           @feature.language.keywords('scenario')[0],
-          row.name, 
-          file_colon_line(row.line), 
+          row.name,
+          file_colon_line(row.line),
           source_indent(first_line_length)
         )
       end

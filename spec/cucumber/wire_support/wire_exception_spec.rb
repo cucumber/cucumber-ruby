@@ -18,7 +18,7 @@ module Cucumber
           exception.to_s.should == "foo"
         end
       end
-      
+
       describe "with a message and an exception" do
         before(:each) do
           @data = {'message' => 'foo', 'exception' => 'Bar'}
@@ -30,7 +30,7 @@ module Cucumber
           exception.class.to_s.should == 'Bar from localhost:54321'
         end
       end
-      
+
       describe "with a custom backtrace" do
         before(:each) do
           @data = {'message' => 'foo', 'backtrace' => ['foo', 'bar', 'baz']}

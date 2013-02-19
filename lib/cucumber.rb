@@ -13,14 +13,14 @@ require 'cucumber/term/ansicolor'
 module Cucumber
   class << self
     attr_accessor :wants_to_quit
-    
+
     def logger
       return @log if @log
       @log = Logger.new(STDOUT)
       @log.level = Logger::INFO
       @log
     end
-    
+
     def logger=(logger)
       @log = logger
     end

@@ -17,7 +17,7 @@ module Cucumber
       format = subject.step_match("it snows in april").format_args("[%s]")
       format.should == "it [snows] in [april]"
     end
-    
+
     describe "resolving step defintion matches" do
 
       it "should raise Ambiguous error with guess hint when multiple step definitions match" do
