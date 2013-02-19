@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 echo 'Commits'
 git log --pretty=format:'' | wc -l
 
@@ -8,7 +10,7 @@ echo 'Resolved bugs/feature requests'
 egrep -e '^\*' History.md | wc -l
 
 echo 'Open tickets'
-curl -s http://github.com/api/v2/json/issues/list/cucumber/cucumber/open | ruby -e "require 'json'; puts JSON.parse(STDIN.read)['issues'].length"
+curl -s https://api.github.com/repos/cucumber/cucumber/issues?state=open | ruby -e "require 'multi_json'; puts MultiJson.load(STDIN.read).length"
 
 echo 'Group members'
 curl -s http://groups.google.com/group/cukes | grep Members
