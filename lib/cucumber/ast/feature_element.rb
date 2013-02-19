@@ -65,7 +65,7 @@ module Cucumber
       def accept_hook?(hook)
         Gherkin::TagExpression.new(hook.tag_expressions).eval(source_tags)
       end
-      
+
       def source_tag_names
         source_tags.map { |tag| tag.name }
       end

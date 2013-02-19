@@ -1,4 +1,4 @@
-<% 
+<%
 rerun = File.file?('rerun.txt') ? IO.read('rerun.txt') : ""
 rerun_opts = rerun.to_s.strip.empty? ? "--format progress features" : "--format pretty #{rerun}"
 std_opts = "--format progress features --tags ~@wip"

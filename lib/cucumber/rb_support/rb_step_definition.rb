@@ -36,7 +36,7 @@ module Cucumber
           raise ArgumentError unless pattern.is_a?(String)
           p = Regexp.escape(pattern)
           p = p.gsub(/\\\$\w+/, '(.*)') # Replace $var with (.*)
-          Regexp.new("^#{p}$") 
+          Regexp.new("^#{p}$")
         end
 
         def create_proc(proc_or_sym, options)
@@ -113,7 +113,7 @@ module Cucumber
           ":#{@proc}"
         end
       end
-    
+
       def file
         @file ||= file_colon_line.split(':')[0]
       end

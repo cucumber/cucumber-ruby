@@ -56,14 +56,14 @@ class Object #:nodoc:
     a = block.arity
     Cucumber::RUBY_1_9 ? a : (a == -1 ? 0 : a)
   end
-  
+
   def cucumber_compatible_arity?(args, block)
     ari = cucumber_arity(block)
     len = args.length
     return true if ari == len or ari < 0 && len >= ari.abs-1
     false
   end
-  
+
   def cucumber_run_with_backtrace_filtering(pseudo_method)
     begin
       yield

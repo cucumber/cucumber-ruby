@@ -5,7 +5,7 @@ module Cucumber
   module Formatter
     describe Duration do
       include Duration
-      
+
       it "should format ms" do
         format_duration(0.002103).should == '0m0.002s'
       end

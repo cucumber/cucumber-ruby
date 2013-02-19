@@ -10,7 +10,7 @@ module Cucumber
       let(:support_code) do
         Cucumber::Runtime::SupportCode.new(user_interface, {})
       end
-      let(:dsl) do 
+      let(:dsl) do
         rb
         Object.new.extend(RbSupport::RbDsl)
       end
@@ -18,7 +18,7 @@ module Cucumber
       def unindented(s)
         s.split("\n")[1..-2].join("\n").indent(-10)
       end
-      
+
       describe "snippets" do
 
         it "should wrap snippet patterns in parentheses" do
@@ -27,7 +27,7 @@ module Cucumber
             pending # express the regexp above with the code you wish you had
           end
           })
-        end 
+        end
 
         it "should recognise numbers in name and make according regexp" do
           rb.snippet_text('Given', 'Cloud 9 yeah', nil).should == unindented(%{
@@ -61,7 +61,7 @@ module Cucumber
           end
           })
         end
-      
+
         it "should not use quote group when there are no quotes" do
           rb.snippet_text('Given', 'A first arg', nil).should == unindented(%{
           Given(/^A first arg$/) do
@@ -78,32 +78,32 @@ module Cucumber
           end
           })
         end
-      
+
       end
-    
+
       describe "#load_code_file" do
         after do
           FileUtils.rm_rf('tmp.rb')
         end
-        
+
         def a_file_called(name)
           File.open('tmp.rb', 'w') do |f|
             f.puts yield
           end
         end
-        
+
         it "re-loads the file when called multiple times" do
           a_file_called('tmp.rb') do
             "$foo = 1"
           end
-          
+
           rb.load_code_file('tmp.rb')
           $foo.should == 1
-          
+
           a_file_called('tmp.rb') do
             "$foo = 2"
           end
-          
+
           rb.load_code_file('tmp.rb')
           $foo.should == 2
         end
@@ -200,7 +200,7 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 
           it "transforms times" do
             require 'time'
-            dsl.Transform(/^(\d\d-\d\d-\d\d\d\d)$/) do |arg| 
+            dsl.Transform(/^(\d\d-\d\d-\d\d\d\d)$/) do |arg|
               Time.parse(arg)
             end
             rb.execute_transforms(['10-0E-1971']).should == ['10-0E-1971']

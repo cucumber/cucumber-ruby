@@ -16,8 +16,8 @@ module Cucumber
 
       def feature(feature)
         @feature = Ast::Feature.new(
-          nil, 
-          Ast::Comment.new(feature.comments.map{|comment| comment.value}.join("\n")), 
+          nil,
+          Ast::Comment.new(feature.comments.map{|comment| comment.value}.join("\n")),
           Ast::Tags.new(nil, feature.tags),
           feature.keyword,
           feature.name.lstrip,
@@ -30,10 +30,10 @@ module Cucumber
 
       def background(background)
         @background = Ast::Background.new(
-          Ast::Comment.new(background.comments.map{|comment| comment.value}.join("\n")), 
-          background.line, 
-          background.keyword, 
-          background.name, 
+          Ast::Comment.new(background.comments.map{|comment| comment.value}.join("\n")),
+          background.line,
+          background.keyword,
+          background.name,
           background.description,
           []
         )
@@ -45,13 +45,13 @@ module Cucumber
 
       def scenario(statement)
         scenario = Ast::Scenario.new(
-          @background, 
-          Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")), 
-          Ast::Tags.new(nil, statement.tags), 
-          statement.line, 
-          statement.keyword, 
+          @background,
+          Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")),
+          Ast::Tags.new(nil, statement.tags),
+          statement.line,
+          statement.keyword,
           statement.name,
-          statement.description, 
+          statement.description,
           []
         )
         @feature.add_feature_element(scenario)
@@ -62,13 +62,13 @@ module Cucumber
 
       def scenario_outline(statement)
         scenario_outline = Ast::ScenarioOutline.new(
-          @background, 
-          Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")), 
-          Ast::Tags.new(nil, statement.tags), 
-          statement.line, 
-          statement.keyword, 
-          statement.name, 
-          statement.description, 
+          @background,
+          Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")),
+          Ast::Tags.new(nil, statement.tags),
+          statement.line,
+          statement.keyword,
+          statement.name,
+          statement.description,
           [],
           []
         )
@@ -83,11 +83,11 @@ module Cucumber
 
       def examples(examples)
         examples_fields = [
-          Ast::Comment.new(examples.comments.map{|comment| comment.value}.join("\n")), 
-          examples.line, 
-          examples.keyword, 
-          examples.name, 
-          examples.description, 
+          Ast::Comment.new(examples.comments.map{|comment| comment.value}.join("\n")),
+          examples.line,
+          examples.keyword,
+          examples.name,
+          examples.description,
           matrix(examples.rows)
         ]
         @step_container.add_examples(examples_fields, examples)
@@ -95,9 +95,9 @@ module Cucumber
 
       def step(gherkin_step)
         step = Ast::Step.new(
-          gherkin_step.line, 
-          gherkin_step.keyword, 
-          gherkin_step.name, 
+          gherkin_step.line,
+          gherkin_step.keyword,
+          gherkin_step.name,
           Ast::MultilineArgument.from(gherkin_step.doc_string || gherkin_step.rows)
         )
         step.gherkin_statement(gherkin_step)
@@ -110,9 +110,9 @@ module Cucumber
       def syntax_error(state, event, legal_events, line)
         # raise "SYNTAX ERROR"
       end
-      
+
     private
-    
+
       def matrix(gherkin_table)
         gherkin_table.map do |gherkin_row|
           row = gherkin_row.cells

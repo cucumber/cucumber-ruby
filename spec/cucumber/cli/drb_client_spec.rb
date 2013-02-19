@@ -38,7 +38,7 @@ module Cucumber
       end
 
       context "with $CUCUMBER_DRB set" do
-        before do 
+        before do
           @original_env = ENV['CUCUMBER_DRB']
           ENV['CUCUMBER_DRB'] = '90000'
         end

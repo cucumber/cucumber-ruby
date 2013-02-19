@@ -90,8 +90,8 @@ module Cucumber
         string = "#{message}\n#{e.backtrace.join("\n")}".indent(indent)
         @io.puts(format_string(string, status))
       end
-      
-      # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655 
+
+      # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655
       def linebreaks(s, max)
         s.gsub(/.{1,#{max}}(?:\s|\Z)/){($& + 5.chr).gsub(/\n\005/,"\n").gsub(/\005/,"\n")}.rstrip
       end
@@ -100,7 +100,7 @@ module Cucumber
         return unless options[:snippets]
         undefined = step_mother.steps(:undefined)
         return if undefined.empty?
-        
+
         unknown_programming_language = step_mother.unknown_programming_language?
         snippets = undefined.map do |step|
           step_name = Undefined === step.exception ? step.exception.step_name : step.name

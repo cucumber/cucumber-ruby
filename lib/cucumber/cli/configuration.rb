@@ -133,24 +133,24 @@ module Cucumber
         logger.level = Logger::DEBUG if self.verbose?
         logger
       end
-      
+
       def tag_expression
         Gherkin::TagExpression.new(@options[:tag_expressions])
       end
-      
+
       def filters
         @options.filters
       end
-      
+
       def formats
         @options[:formats]
       end
-      
+
       def options
         warn("Deprecated: Configuration#options will be removed from the next release of Cucumber. Please use the configuration object directly instead.")
         @options
       end
-      
+
       def paths
         @options[:paths].empty? ? ['features'] : @options[:paths]
       end
