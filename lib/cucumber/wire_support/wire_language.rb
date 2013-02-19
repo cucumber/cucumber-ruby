@@ -1,5 +1,5 @@
+require 'multi_json'
 require 'socket'
-require 'json'
 require 'cucumber/wire_support/connection'
 require 'cucumber/wire_support/configuration'
 require 'cucumber/wire_support/wire_packet'

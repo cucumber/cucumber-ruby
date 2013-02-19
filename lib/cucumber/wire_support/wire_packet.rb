@@ -5,7 +5,7 @@ module Cucumber
     class WirePacket
       class << self
         def parse(raw)
-          attributes = JSON.parse(raw.strip)
+          attributes = MultiJson.load(raw.strip)
           message = attributes[0]
           params  = attributes[1]
           new(message, params)

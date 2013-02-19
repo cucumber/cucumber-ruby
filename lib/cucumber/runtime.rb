@@ -151,7 +151,7 @@ module Cucumber
           FileUtils.mkdir_p(@configuration.dotcucumber)
         end
         File.open(File.join(@configuration.dotcucumber, 'stepdefs.json'), 'w') do |io|
-          io.write(JSON.pretty_generate(stepdefs))
+          io.write(MultiJson.dump(stepdefs, :pretty => true))
         end
       end
     end
