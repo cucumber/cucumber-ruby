@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
 
   # For Documentation:
   s.add_development_dependency('yard', '~> 0.8.0')
-  s.add_development_dependency('rdiscount', '~> 1.6.8') unless defined?(JRUBY_VERSION)
+  s.add_development_dependency('kramdown', '~> 0.14')
   s.add_development_dependency('bcat', '~> 0.6.2')
 
   # Needed for examples (rake examples)
