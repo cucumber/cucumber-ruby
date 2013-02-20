@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'multi_json'
 require 'tempfile'
 
 Given /^I am in (.*)$/ do |example_dir_relative_path|
@@ -95,7 +96,7 @@ Then /^the output should be$/ do |text|
 end
 
 Then /^it should (fail|pass) with JSON$/ do |success, text|
-  JSON.parse(last_stdout).should == JSON.parse(text)
+  MultiJson.load(last_stdout).should == MultiJson.load(text)
   Then("it should #{success}")
 end
 
@@ -105,7 +106,7 @@ end
 
 Then /^"([^"]*)" with junit duration "([^"]*)" should contain$/ do |actual_file, duration_replacement, text|
   actual = IO.read(actual_file)
-  actual = replace_junit_duration(actual, duration_replacement) 
+  actual = replace_junit_duration(actual, duration_replacement)
   actual = strip_ruby186_extra_trace(actual)
   actual.should == text
 end
@@ -168,5 +169,5 @@ Then /^print output$/ do
 end
 
 Then /^the output should contain the following JSON:$/ do |json_string|
-  JSON.parse(last_stdout).should == JSON.parse(json_string)
+  MultiJson.load(last_stdout).should == MultiJson.load(json_string)
 end
