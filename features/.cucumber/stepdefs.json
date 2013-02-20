@@ -21,11 +21,11 @@
     "file_colon_line": "aruba-0.4.11/lib/aruba/cucumber.rb:15",
     "steps": [
       {
-        "name": "a file named \"features/test.feature\" with:",
+        "name": "a file named \"features/step_definitions/steps.rb\" with:",
         "args": [
           {
             "offset": 14,
-            "val": "features/test.feature"
+            "val": "features/step_definitions/steps.rb"
           }
         ]
       }
@@ -108,24 +108,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.4.11/lib/aruba/cucumber.rb:56",
     "steps": [
-      {
-        "name": "I run `cucumber features/test.feature:5 -f progress`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/test.feature:5 -f progress"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/test.feature:8 -f progress`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/test.feature:8 -f progress"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -269,15 +252,6 @@
     "flags": "",
     "file_colon_line": "aruba-0.4.11/lib/aruba/cucumber.rb:134",
     "steps": [
-      {
-        "name": "it should fail with:",
-        "args": [
-          {
-            "offset": 10,
-            "val": "fail"
-          }
-        ]
-      },
       {
         "name": "it should pass with:",
         "args": [
@@ -542,7 +516,15 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:1",
     "steps": [
-
+      {
+        "name": "I run cucumber \"features/foo.feature\"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "features/foo.feature"
+          }
+        ]
+      }
     ]
   },
   {

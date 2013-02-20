@@ -12,6 +12,7 @@ class Object #:nodoc:
     # http://eigenclass.org/hiki/bounded+space+instance_exec
     module InstanceExecHelper #:nodoc:
     end
+
     include InstanceExecHelper
     def instance_exec(*args, &block)
       begin

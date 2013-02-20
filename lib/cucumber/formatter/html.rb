@@ -11,7 +11,7 @@ module Cucumber
       include Io
 
       def initialize(step_mother, path_or_io, options)
-        @io = ensure_io(path_or_io, "html")
+        @io = ensure_io(path_or_io, 'html')
         @step_mother = step_mother
         @options = options
         @buffer = {}

@@ -1,4 +1,4 @@
-require "drb/drb"
+require 'drb/drb'
 # This code was taken from the RSpec project and slightly modified.
 
 module Cucumber

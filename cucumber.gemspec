@@ -1,15 +1,15 @@
 # -*- encoding: utf-8 -*-
-$LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
-require "cucumber/platform"
+$LOAD_PATH.unshift File.expand_path('../lib', __FILE__)
+require 'cucumber/platform'
 
 Gem::Specification.new do |s|
   s.name        = 'cucumber'
   s.version     = Cucumber::VERSION
-  s.authors     = ["Aslak Hellesøy"]
+  s.authors     = ['Aslak Hellesøy']
   s.description = 'Behaviour Driven Development with elegance and joy'
   s.summary     = "cucumber-#{s.version}"
   s.email       = 'cukes@googlegroups.com'
-  s.homepage    = "http://cukes.info"
+  s.homepage    = 'http://cukes.info'
 
   s.platform    = Gem::Platform::RUBY
 
@@ -39,10 +39,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'capybara', '>= 1.1.2'
   s.add_development_dependency 'safariwatir'
 
-  s.rubygems_version = ">= 1.6.1"
+  s.rubygems_version = '>= 1.6.1'
   s.files            = `git ls-files`.split("\n").reject {|path| path =~ /\.gitignore$/ }
   s.test_files       = `git ls-files -- {spec,features}/*`.split("\n")
   s.executables      = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.rdoc_options     = ["--charset=UTF-8"]
-  s.require_path     = "lib"
+  s.rdoc_options     = ['--charset=UTF-8']
+  s.require_path     = 'lib'
 end
