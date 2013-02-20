@@ -37,6 +37,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'webrat', '>= 0.7.3'
   s.add_development_dependency 'sinatra', '>= 1.3.2'
   s.add_development_dependency 'capybara', '>= 1.1.2'
+  s.add_development_dependency 'safariwatir'
 
   s.rubygems_version = ">= 1.6.1"
   s.files            = `git ls-files`.split("\n").reject {|path| path =~ /\.gitignore$/ }
