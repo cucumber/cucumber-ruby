@@ -17,7 +17,8 @@ begin
       end
     end
   end
-rescue LoadError => ignore
+rescue LoadError
+# ignored
 end
 
 # Do the same for Test::Unit
@@ -36,4 +37,5 @@ begin
     end
   end
 rescue LoadError => ignore
+# ignored
 end
