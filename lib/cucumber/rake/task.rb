@@ -4,6 +4,7 @@ begin
   # Support Rake > 0.8.7
   require 'rake/dsl_definition'
 rescue LoadError
+# ignored
 end
 
 module Cucumber
@@ -40,7 +41,7 @@ module Cucumber
         attr_reader :args
 
         def initialize(libs, cucumber_opts, feature_files)
-          raise "libs must be an Array when running in-process" unless Array === libs
+          raise 'libs must be an Array when running in-process' unless Array === libs
           libs.reverse.each{|lib| $LOAD_PATH.unshift(lib)}
           @args = (
             cucumber_opts +
@@ -51,7 +52,7 @@ module Cucumber
         def run
           require 'cucumber/cli/main'
           failure = Cucumber::Cli::Main.execute(args)
-          raise "Cucumber failed" if failure
+          raise 'Cucumber failed' if failure
         end
       end
 
@@ -75,7 +76,7 @@ module Cucumber
         end
 
         def use_bundler
-          @bundler.nil? ? File.exist?("./Gemfile") && gem_available?("bundler") : @bundler
+          @bundler.nil? ? File.exist?('./Gemfile') && gem_available?('bundler') : @bundler
         end
 
         def gem_available?(gemname)
@@ -101,7 +102,7 @@ module Cucumber
         end
 
         def run
-          sh(cmd.join(" "))
+          sh(cmd.join(' '))
         end
       end
 
@@ -144,7 +145,7 @@ module Cucumber
       attr_accessor :rcov
       def rcov=(flag)
         if(flag && Cucumber::RUBY_1_9)
-          raise failed + "RCov only works on Ruby 1.8.x. You may want to use SimpleCov: https://github.com/colszowka/simplecov" + reset
+          raise failed + 'RCov only works on Ruby 1.8.x. You may want to use SimpleCov: https://github.com/colszowka/simplecov' + reset
         end
         @rcov = flag
       end
@@ -173,7 +174,7 @@ module Cucumber
       attr_accessor :bundler
 
       # Define Cucumber Rake task
-      def initialize(task_name = "cucumber", desc = "Run Cucumber features")
+      def initialize(task_name = 'cucumber', desc = 'Run Cucumber features')
         @task_name, @desc = task_name, desc
         @fork = true
         @libs = ['lib']
