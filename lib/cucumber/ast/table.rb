@@ -163,7 +163,7 @@ module Cucumber
         end
       end
 
-      def column_names	#:nodoc:
+      def column_names #:nodoc:
         @col_names ||= cell_matrix[0].map { |cell| cell.value }
       end
 
