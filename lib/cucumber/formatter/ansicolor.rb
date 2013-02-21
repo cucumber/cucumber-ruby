@@ -93,7 +93,7 @@ module Cucumber
       #   def failed_param(string=nil, &proc)
       #     red(bold(string, &proc)) + red
       #   end
-      ALIASES.each_value do |method_name|
+      ALIASES.each_key do |method_name|
         unless method_name =~ /.*_param/
           code = <<-EOF
           def #{method_name}(string=nil, &proc)
