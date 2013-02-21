@@ -1,4 +1,3 @@
-require 'json'
 module Cucumber
   class StepDefinitions
     def initialize(configuration = Configuration.default)
