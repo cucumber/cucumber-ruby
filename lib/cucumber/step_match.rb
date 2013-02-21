@@ -2,8 +2,8 @@ module Cucumber
   class StepMatch #:nodoc:
     attr_reader :step_definition, :step_arguments
 
-    # Creates a new StepMatch. The +name_to_report+ argument is what's reported, unless it's is,
-    # in which case +name_to_report+ is used instead.
+    # Creates a new StepMatch. The +name_to_report+ argument is what's
+    # reported, unless it's is, in which case +name_to_report+ is used instead.
     #
     def initialize(step_definition, name_to_match, name_to_report, step_arguments)
       raise "name_to_match can't be nil" if name_to_match.nil?

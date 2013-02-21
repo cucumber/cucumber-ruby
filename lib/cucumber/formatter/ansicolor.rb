@@ -44,17 +44,19 @@ module Cucumber
     #
     # For instance, if your shell has a black background and a green font (like the
     # "Homebrew" settings for OS X' Terminal.app), you may want to override passed
-    # steps to be white instead of green. Examples:
+    # steps to be white instead of green.
+    #
+    # Although not listed, you can also use <tt>grey</tt>.
+    #
+    # Examples: (On Windows, use SET instead of export.)
     #
     #   export CUCUMBER_COLORS="passed=white"
     #   export CUCUMBER_COLORS="passed=white,bold:passed_param=white,bold,underline"
     #
-    # (If you're on Windows, use SET instead of export).
     # To see what colours and effects are available, just run this in your shell:
     #
     #   ruby -e "require 'rubygems'; require 'term/ansicolor'; puts Cucumber::Term::ANSIColor.attributes"
     #
-    # Although not listed, you can also use <tt>grey</tt>
     module ANSIColor
       include Cucumber::Term::ANSIColor
 
@@ -80,15 +82,26 @@ module Cucumber
         end
       end
 
-      ALIASES.each do |method, color|
-        unless method =~ /.*_param/
+      # Eval to define the color-named methods required by Term::ANSIColor.
+      #
+      # Examples:
+      #
+      #   def failed(string=nil, &proc)
+      #     red(string, &proc)
+      #   end
+      #
+      #   def failed_param(string=nil, &proc)
+      #     red(bold(string, &proc)) + red
+      #   end
+      ALIASES.each_value do |method_name|
+        unless method_name =~ /.*_param/
           code = <<-EOF
-          def #{method}(string=nil, &proc)
-            #{ALIASES[method].split(",").join("(") + "(string, &proc" + ")" * ALIASES[method].split(",").length}
+          def #{method_name}(string=nil, &proc)
+            #{ALIASES[method_name].split(",").join("(") + "(string, &proc" + ")" * ALIASES[method_name].split(",").length}
           end
           # This resets the colour to the non-param colour
-          def #{method}_param(string=nil, &proc)
-            #{ALIASES[method+'_param'].split(",").join("(") + "(string, &proc" + ")" * ALIASES[method+'_param'].split(",").length} + #{ALIASES[method].split(",").join(' + ')}
+          def #{method_name}_param(string=nil, &proc)
+            #{ALIASES[method_name+'_param'].split(",").join("(") + "(string, &proc" + ")" * ALIASES[method_name+'_param'].split(",").length} + #{ALIASES[method_name].split(",").join(' + ')}
           end
           EOF
           eval(code)
@@ -101,7 +114,7 @@ module Cucumber
           require 'terminfo'
           case TermInfo.default_object.tigetnum("colors")
           when 0
-            raise "Your terminal doesn't support colours"
+            raise "Your terminal doesn't support colours."
           when 1
             ::Cucumber::Term::ANSIColor.coloring = false
             alias grey white
@@ -114,7 +127,7 @@ module Cucumber
           if e.class.name == 'TermInfo::TermInfoError'
             STDERR.puts "*** WARNING ***"
             STDERR.puts "You have the genki-ruby-terminfo gem installed, but you haven't set your TERM variable."
-            STDERR.puts "Try setting it to TERM=xterm-256color to get grey colour in output"
+            STDERR.puts "Try setting it to TERM=xterm-256color to get grey colour in output."
             STDERR.puts "\n"
             alias grey white
           else
@@ -124,11 +137,11 @@ module Cucumber
       end
 
       def self.define_real_grey #:nodoc:
-        def grey(m) #:nodoc:
+        def grey(string) #:nodoc:
           if ::Cucumber::Term::ANSIColor.coloring?
-            "\e[90m#{m}\e[0m"
+            "\e[90m#{string}\e[0m"
           else
-            m
+            string
           end
         end
       end
