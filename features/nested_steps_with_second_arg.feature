@@ -1,11 +1,13 @@
 Feature: Nested Steps with either table or doc string
 
-  Scenario: Use #step with table
+  Background:
     Given a scenario with a step that looks like this:
       """gherkin
       Given two turtles
       """
-    And a step definition that looks like this:
+
+  Scenario: Use #step with table
+    Given a step definition that looks like this:
       """ruby
       Given /turtles:/ do |table|
         table.hashes.each do |row|
@@ -33,12 +35,7 @@ Feature: Nested Steps with either table or doc string
       """
 
   Scenario: Use #step with docstring
-
-    Given a scenario with a step that looks like this:
-      """gherkin
-      Given two turtles
-      """
-    And a step definition that looks like this:
+    Given a step definition that looks like this:
       """ruby
       Given /two turtles/ do
         step %{turtles:}, "Sturm and Lioville"
@@ -57,12 +54,7 @@ Feature: Nested Steps with either table or doc string
       """
 
   Scenario: Use #step with docstring and content-type
-
-    Given a scenario with a step that looks like this:
-      """gherkin
-      Given two turtles
-      """
-    And a step definition that looks like this:
+    Given a step definition that looks like this:
       """ruby
       Given /two turtles/ do
         step %{turtles:}, doc_string('Sturm and Lioville','math')
