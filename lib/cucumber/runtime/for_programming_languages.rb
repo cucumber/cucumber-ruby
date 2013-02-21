@@ -50,17 +50,10 @@ module Cucumber
         end
       end
 
-      # Returns a regular String for +string_with_triple_quotes+. Example:
+      # Returns Ast::DocString for +string_without_triple_quotes+.
       #
-      #   """
-      #    hello
-      #   world
-      #   """
-      #
-      # Is retured as: " hello\nworld"
-      #
-      def doc_string(string_with_triple_quotes, file=nil, line_offset=0)
-        Ast::DocString.parse(string_with_triple_quotes)
+      def doc_string(string_without_triple_quotes, content_type='', line_offset=0)
+        Ast::DocString.new(string_without_triple_quotes,content_type)
       end
     end
   end

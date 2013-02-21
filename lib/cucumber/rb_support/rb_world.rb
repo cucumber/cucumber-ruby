@@ -41,8 +41,8 @@ module Cucumber
       end
 
       # See StepMother#doc_string
-      def doc_string(string_with_triple_quotes, file=nil, line_offset=0)
-        @__cucumber_step_mother.doc_string(string_with_triple_quotes, file, line_offset)
+      def doc_string(string_without_triple_quotes, content_type='', line_offset=0)
+        @__cucumber_step_mother.doc_string(string_without_triple_quotes, content_type, line_offset)
       end
 
       def announce(*messages)
