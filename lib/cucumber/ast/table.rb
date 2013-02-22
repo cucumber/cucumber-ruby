@@ -600,7 +600,7 @@ module Cucumber
       end
 
       def hashes_to_array(hashes) #:nodoc:
-        header = hashes[0].keys
+        header = hashes[0].keys.sort
         [header] + hashes.map{|hash| header.map{|key| hash[key]}}
       end
 

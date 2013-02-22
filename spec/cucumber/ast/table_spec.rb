@@ -490,8 +490,8 @@ module Cucumber
         it "should allow Array of Hash" do
           t1 = Table.new([{'name' => 'aslak', 'male' => 'true'}])
           t1.to_s(:indent => 12, :color => false).should == %{
-            |     name  |     male |
-            |     aslak |     true |
+            |     male |     name  |
+            |     true |     aslak |
           }
         end
       end
