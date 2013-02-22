@@ -15,7 +15,7 @@ module Cucumber
 Could not find profile: '#{profile}'
 
 Defined profiles in cucumber.yml:
-  * #{cucumber_yml.keys.join("\n  * ")}
+  * #{cucumber_yml.keys.sort.join("\n  * ")}
         END_OF_ERROR
         end
 
