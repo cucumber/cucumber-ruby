@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'multi_json'
 require 'gherkin/rubify'
 require 'gherkin/i18n'
 require 'cucumber/configuration'
