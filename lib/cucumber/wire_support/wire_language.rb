@@ -22,7 +22,7 @@ module Cucumber
       end
 
       def load_code_file(wire_file)
-        config = Configuration.new(wire_file)
+        config = Configuration.from_file(wire_file)
         @connections << Connection.new(config)
       end
 

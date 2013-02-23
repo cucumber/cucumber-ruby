@@ -6,7 +6,7 @@ module Cucumber
   module WireSupport
     describe Configuration do
       let(:wire_file) { Tempfile.new('wire') }
-      let(:config) { Configuration.new(wire_file.path) }
+      let(:config) { Configuration.from_file(wire_file.path) }
 
       def write_wire_file(contents)
         wire_file << contents
