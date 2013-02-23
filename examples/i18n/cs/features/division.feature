@@ -8,4 +8,4 @@ Požadavek: Dělení
     Pokud Zadám číslo 3 do kalkulačky
     A Zadám číslo 2 do kalkulačky
     Když stisknu divide
-    Tak výsledek by měl být 1.5
+    Pak výsledek by měl být 1.5
