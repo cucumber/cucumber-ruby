@@ -20,6 +20,10 @@ Then /^it should (pass|fail) with JSON:$/ do |pass_fail, json|
   assert_success(pass_fail == 'pass')
 end
 
+Then /^it should (pass|fail)$/ do |expectation|
+  assert_success(expectation == 'pass')
+end
+
 Given /^a directory without standard Cucumber project directory structure$/ do
   in_current_dir do
     FileUtils.rm_rf 'features' if File.directory?('features')
