@@ -698,6 +698,18 @@ module Cucumber
           SurplusCell === o || value == o.value
         end
 
+        def eql?(o)
+          self == o
+        end
+
+        def equal?(o)
+          self == o
+        end
+
+        def hash
+          0
+        end
+
         # For testing only
         def to_sexp #:nodoc:
           [:cell, @value]
@@ -711,6 +723,10 @@ module Cucumber
 
         def ==(o)
           true
+        end
+
+        def hash
+          0
         end
       end
     end
