@@ -35,20 +35,20 @@ describe Proc do
     }.should raise_error(Cucumber::ArityMismatchError, "Your block takes 2 arguments, but the Regexp matched 1 argument.")
   end
 
-  if Cucumber::RUBY_1_9
-    it "should allow varargs (expecting 0+)" do
-      lambda {
-        Object.new.cucumber_instance_exec(true, 'foo', 1) do |*args|
-        end
-      }.should_not raise_error(Cucumber::ArityMismatchError)
-    end
-  else
+  if Cucumber::RUBY_1_8_7
     # Ruby 1.8
     it "should not allow varargs 0+ because Ruby 1.8 reports same arity as with no args, so we can't really tell the difference." do
       lambda {
         Object.new.cucumber_instance_exec(true, 'foo', 1) do |*args|
         end
       }.should raise_error(Cucumber::ArityMismatchError, "Your block takes 0 arguments, but the Regexp matched 1 argument.")
+    end
+  else
+    it "should allow varargs (expecting 0+)" do
+      lambda {
+        Object.new.cucumber_instance_exec(true, 'foo', 1) do |*args|
+        end
+      }.should_not raise_error(Cucumber::ArityMismatchError)
     end
   end
 

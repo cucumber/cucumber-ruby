@@ -143,7 +143,7 @@ module Cucumber
       # true, +fork+ is implicit.
       attr_accessor :rcov
       def rcov=(flag)
-        if(flag && Cucumber::RUBY_1_9)
+        if flag && !Cucumber::RUBY_1_8_7
           raise failed + "RCov only works on Ruby 1.8.x. You may want to use SimpleCov: https://github.com/colszowka/simplecov" + reset
         end
         @rcov = flag
