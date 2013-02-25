@@ -702,10 +702,6 @@ module Cucumber
           self == o
         end
 
-        def equal?(o)
-          self == o
-        end
-
         def hash
           0
         end
