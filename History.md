@@ -4,6 +4,7 @@
 Added support for Hindi (hi), although some systems may need to install fonts which support the Devanagari script.
 
 ### Bugfixes
+* Raise exception when remote socket end disconnects using wire protocol (#348 @rdammkoehler)
 * Fix --dry-run option ignored when set via profile (#248 / #255 Igor Afonov)
 * More clear suggested ruby code for undefined steps (#328 / #331 @martco)
 * Fix exception in Html formatter with --expand mode and undefined steps (#336 Roberto Decurnex)
