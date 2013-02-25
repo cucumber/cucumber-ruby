@@ -200,7 +200,7 @@ module Cucumber
 
           table.hashes.first.keys.should =~ %w[hello foo]
         end
-        
+
         it "should allow mapping of headers before table.hashes has been accessed" do
           table = Table.new([
           ['HELLO', 'WORLD'],
@@ -213,7 +213,7 @@ module Cucumber
 
           table.hashes.first.keys.should =~ %w[hello world]
         end
-        
+
         it "should allow mapping of headers after table.hashes has been accessed" do
           table = Table.new([
           ['HELLO', 'WORLD'],
@@ -221,7 +221,7 @@ module Cucumber
           ])
 
           dev_null = table.hashes.size
-          
+
           table.map_headers! do |header|
             header.downcase
           end
