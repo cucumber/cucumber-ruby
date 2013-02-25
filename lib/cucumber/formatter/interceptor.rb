@@ -36,10 +36,10 @@ module Cucumber
           case pipe
           when :stdout
             wrapped = $stdout
-            $stdout = wrapped.unwrap!
+            $stdout = wrapped.unwrap! if $stdout.respond_to?(:unwrap!)
           when :stderr
             wrapped = $stderr
-            $stderr = wrapped.unwrap!
+            $stderr = wrapped.unwrap! if $stderr.respond_to?(:unwrap!)
           end
           wrapped
         end

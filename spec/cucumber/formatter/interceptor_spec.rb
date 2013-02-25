@@ -68,6 +68,16 @@ module Cucumber::Formatter
         $stdout.should_not be interceptor
       end
 
+      it 'should noop if $stdout or $stderr has been overwritten' do
+        $stdout = StringIO.new
+        pipe = Interceptor::Pipe.unwrap! :stdout
+        pipe.should == $stdout
+
+        $stderr = StringIO.new
+        pipe = Interceptor::Pipe.unwrap! :stderr
+        pipe.should == $stderr
+      end
+
       it 'should disable the pipe bypass' do
         buffer = '(::)'
         Interceptor::Pipe.unwrap! :stdout
