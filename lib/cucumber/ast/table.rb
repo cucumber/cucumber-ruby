@@ -238,6 +238,7 @@ module Cucumber
       #   # => ['phone number', 'ADDRESS']
       #
       def map_headers!(mappings={}, &block)
+        clear_cache!
         @header_mappings = mappings
         @header_conversion_proc = block
       end
@@ -537,7 +538,7 @@ module Cucumber
       end
 
       def clear_cache! #:nodoc:
-        @hashes = @rows_hash = @rows = @columns = nil
+        @hashes = @rows_hash = @col_names = @rows = @columns = nil
       end
 
       def columns #:nodoc:
