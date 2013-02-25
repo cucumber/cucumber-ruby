@@ -25,7 +25,7 @@ Feature: Use * keywords and still get snippets
       
       You can implement step definitions for undefined steps with these snippets:
       
-      Given /^I have some cukes$/ do
+      Given(/^I have some cukes$/) do
         pending # express the regexp above with the code you wish you had
       end
       

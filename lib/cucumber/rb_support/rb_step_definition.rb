@@ -23,21 +23,49 @@ module Cucumber
         end
       end
 
-      def initialize(rb_language, regexp, proc_or_sym, options)
-        raise MissingProc if proc_or_sym.nil?
-        if String === regexp
-          p = Regexp.escape(regexp)
-          p = p.gsub(/\\\$\w+/, '(.*)') # Replace $var with (.*)
-          regexp = Regexp.new("^#{p}$") 
+      class << self
+        def new(rb_language, pattern, proc_or_sym, options)
+          raise MissingProc if proc_or_sym.nil?
+          super rb_language, parse_pattern(pattern), create_proc(proc_or_sym, options)
         end
-        @rb_language, @regexp, @proc = rb_language, regexp, proc_or_sym
-        if @proc.kind_of? Symbol
-          @proc = lambda do |*args|
-            target = options[:on] ? instance_exec(&options[:on]) : self
-            target.send(proc_or_sym, *args)
+
+        private
+
+        def parse_pattern(pattern)
+          return pattern if pattern.is_a?(Regexp)
+          raise ArgumentError unless pattern.is_a?(String)
+          p = Regexp.escape(pattern)
+          p = p.gsub(/\\\$\w+/, '(.*)') # Replace $var with (.*)
+          Regexp.new("^#{p}$")
+        end
+
+        def create_proc(proc_or_sym, options)
+          return proc_or_sym if proc_or_sym.is_a?(Proc)
+          raise ArgumentError unless proc_or_sym.is_a?(Symbol)
+          message = proc_or_sym
+          target_proc = parse_target_proc_from(options)
+          lambda do |*args|
+            target = instance_exec(&target_proc)
+            target.send(message, *args)
           end
         end
 
+        def parse_target_proc_from(options)
+          return lambda { self } unless options.key?(:on)
+          target = options[:on]
+          case target
+          when Proc
+            target
+          when Symbol
+            lambda { self.send(target) }
+          else
+            lambda { raise ArgumentError, "Target must be a symbol or a proc" }
+          end
+        end
+      end
+
+      def initialize(rb_language, regexp, proc)
+        @rb_language, @regexp, @proc = rb_language, regexp, proc
         @rb_language.available_step_definition(regexp_source, file_colon_line)
       end
 
@@ -85,7 +113,7 @@ module Cucumber
           ":#{@proc}"
         end
       end
-    
+
       def file
         @file ||= file_colon_line.split(':')[0]
       end

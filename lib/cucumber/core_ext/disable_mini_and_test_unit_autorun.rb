@@ -22,7 +22,7 @@ end
 
 # Do the same for Test::Unit
 begin
-  require 'test/unit'  
+  require 'test/unit'
   # Don't attempt to monkeypatch if the require succeeded but didn't
   # define the actual module.
   #

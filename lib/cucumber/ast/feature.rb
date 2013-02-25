@@ -5,7 +5,7 @@ module Cucumber
     # Represents the root node of a parsed feature.
     class Feature #:nodoc:
       include Names
-      
+
       attr_accessor :language
       attr_writer :features, :background
       attr_reader :file, :feature_elements
@@ -80,7 +80,7 @@ module Cucumber
         file = file.gsub(/\//, '\\') if Cucumber::WINDOWS && file && !ENV['CUCUMBER_FORWARD_SLASH_PATHS']
         @file = file
       end
-      
+
       def file_colon_line(line)
         "#{@file}:#{line}"
       end

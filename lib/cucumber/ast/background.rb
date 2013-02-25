@@ -22,7 +22,7 @@ module Cucumber
 
       def step_collection(step_invocations)
         init
-        unless(@first_collection_created)
+        unless((defined? @first_collection_created) and @first_collection_created)
           @first_collection_created = true
           @step_invocations.dup(step_invocations)
         else
@@ -43,7 +43,7 @@ module Cucumber
           visitor.step_mother.after(hook_context) if @failed || @feature_elements.empty?
         end
       end
-      
+
       def with_visitor(scenario, visitor)
         @current_visitor = visitor
         init
@@ -55,7 +55,7 @@ module Cucumber
           yield
         end
       end
-      
+
       def accept_hook?(hook)
         init
         if hook_context != self
@@ -71,7 +71,11 @@ module Cucumber
       end
 
       def failed?
-        @failed
+        if defined? @failed
+          return @failed
+        else
+          return nil
+        end
       end
 
       def hook_context
@@ -92,7 +96,7 @@ module Cucumber
       def fail!(exception)
         @failed = true
         @exception = exception
-        @current_visitor.visit_exception(@exception, :failed)        
+        @current_visitor.visit_exception(@exception, :failed)
       end
 
 

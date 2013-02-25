@@ -15,7 +15,7 @@ module Cucumber
         ])
         cells = invocation_table.cells_rows[1]
         step_invocation = step.step_invocation_from_cells(cells)
-        
+
         step_invocation.name.should == 'a green cucumber'
       end
 
@@ -28,7 +28,7 @@ module Cucumber
         ])
         cells = invocation_table.cells_rows[1]
         step_invocation = step.step_invocation_from_cells(cells)
-        
+
         step_invocation.name.should == 'a cucumber'
       end
 
@@ -43,7 +43,7 @@ module Cucumber
         ])
         cells = invocation_table.cells_rows[1]
         step_invocation = step.step_invocation_from_cells(cells)
-        
+
         step_invocation.instance_variable_get('@multiline_arg').raw.should == [%w{taste_juicy color_green}]
       end
 
@@ -58,7 +58,7 @@ module Cucumber
         ])
         cells = invocation_table.cells_rows[1]
         step_invocation = step.step_invocation_from_cells(cells)
-        
+
         step_invocation.instance_variable_get('@multiline_arg').to_step_definition_arg.should == 'taste_juicy color_green'
       end
     end

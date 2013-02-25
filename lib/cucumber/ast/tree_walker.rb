@@ -152,9 +152,9 @@ module Cucumber
       def embed(file, mime_type, label)
         broadcast(file, mime_type, label)
       end
-      
+
       private
-      
+
       def broadcast(*args, &block)
         message = extract_method_name_from(caller)
         message.gsub!('visit_', '')
@@ -165,8 +165,9 @@ module Cucumber
         else
           send_to_all(message, *args)
         end
+        self
       end
-      
+
       def send_to_all(message, *args)
         @listeners.each do |listener|
           if listener.respond_to?(message)
@@ -177,7 +178,7 @@ module Cucumber
       def extract_method_name_from(call_stack)
         call_stack[0].match(/in `(.*)'/).captures[0]
       end
-      
+
     end
   end
 end

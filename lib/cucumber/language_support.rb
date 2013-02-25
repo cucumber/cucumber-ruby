@@ -23,7 +23,7 @@ module Cucumber
   #
   # Each language implementation manages its own hooks, and must execute them
   # at appropriate times.
-  #   
+  #
   #
   module LanguageSupport
   end

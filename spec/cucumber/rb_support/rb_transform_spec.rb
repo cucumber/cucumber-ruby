@@ -11,11 +11,11 @@ module Cucumber
         it "converts captures groups to non-capture groups" do
           transform(/(a|b)bc/).to_s.should == "(?:a|b)bc"
         end
-        
+
         it "leaves non capture groups alone" do
           transform(/(?:a|b)bc/).to_s.should == "(?:a|b)bc"
         end
-        
+
         it "strips away anchors" do
           transform(/^xyz$/).to_s.should == "xyz"
         end

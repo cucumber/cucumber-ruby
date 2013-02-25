@@ -402,7 +402,7 @@ END_OF_MESSAGE
       ENV["RAILS_ENV"].should == "selenium"
       config.feature_files.should_not include('RAILS_ENV=selenium')
     end
-    
+
     describe "#tag_expression" do
       include RSpec::WorkInProgress
 
@@ -420,13 +420,19 @@ END_OF_MESSAGE
         end
       end
     end
-    
+
     describe "#dry_run?" do
       it "returns true when --dry-run was specified on in the arguments" do
         config.parse!(['--dry-run'])
         config.dry_run?.should be_true
       end
-      
+
+      it "returns true when --dry-run was specified in yaml file" do
+        given_cucumber_yml_defined_as({'default' => '--dry-run'})
+        config.parse!([])
+        config.dry_run?.should be_true
+      end
+
       it "returns false by default" do
         config.parse!([])
         config.dry_run?.should be_false

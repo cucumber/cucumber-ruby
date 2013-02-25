@@ -9,7 +9,7 @@ module Cucumber
       attr_accessor :feature_element, :exception, :multiline_arg
 
       INDENT = 2
-      
+
       def initialize(line, keyword, name, multiline_arg=nil)
         @line, @keyword, @name, @multiline_arg = line, keyword, name, multiline_arg
       end
@@ -48,7 +48,7 @@ module Cucumber
         # Otherwise it's always StepInvocation that gets visited instead.
         visit_step_result(visitor, first_match(visitor), @multiline_arg, :skipped, nil, nil)
       end
-      
+
       def visit_step_result(visitor, step_match, multiline_arg, status, exception, background)
         visitor.visit_step_result(@keyword, step_match, @multiline_arg, status, exception, source_indent, background, file_colon_line)
       end

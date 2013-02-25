@@ -41,8 +41,8 @@ module Cucumber
       end
 
       # See StepMother#doc_string
-      def doc_string(string_with_triple_quotes, file=nil, line_offset=0)
-        @__cucumber_step_mother.doc_string(string_with_triple_quotes, file, line_offset)
+      def doc_string(string_without_triple_quotes, content_type='', line_offset=0)
+        @__cucumber_step_mother.doc_string(string_without_triple_quotes, content_type, line_offset)
       end
 
       def announce(*messages)
@@ -70,7 +70,7 @@ module Cucumber
         if block_given?
           begin
             yield
-          rescue Exception => e
+          rescue Exception
             raise Pending.new(message)
           end
           raise Pending.new("Expected pending '#{message}' to fail. No Error was raised. No longer pending?")
@@ -80,11 +80,11 @@ module Cucumber
       end
 
       # The default implementation of Object#inspect recursively
-      # traverses all instance variables and invokes inspect. 
+      # traverses all instance variables and invokes inspect.
       # This can be time consuming if the object graph is large.
       #
-      # This can cause unnecessary delays when certain exceptions 
-      # occur. For example, MRI internally invokes #inspect on an 
+      # This can cause unnecessary delays when certain exceptions
+      # occur. For example, MRI internally invokes #inspect on an
       # object that raises a NoMethodError. (JRuby does not do this).
       #
       # A World object can have many references created by the user

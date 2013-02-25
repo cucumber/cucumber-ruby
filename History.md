@@ -1,9 +1,27 @@
-## [v1.2.0](https://github.com/cucumber/cucumber/compare/v1.1.9...v1.2.0) (In Git)
+## In git
 
-## Bugfixes
+### New Features
+Added support for Hindi (hi), although some systems may need to install fonts which support the Devanagari script.
+
+### Bugfixes
+* (before|after)_step aren't called when scenario outline's table is processed (#284 Oleg Sukhodolsky)
+* Raise exception when remote socket end disconnects using wire protocol (#348 @rdammkoehler)
+* Fix --dry-run option ignored when set via profile (#248 / #255 Igor Afonov)
+* More clear suggested ruby code for undefined steps (#328 / #331 @martco)
+* Fix exception in Html formatter with --expand mode and undefined steps (#336 Roberto Decurnex)
+* Fix Table.diff! problem with :surplus_row => false and interleaved surplus rows (#220)
+
+## [v1.2.1](https://github.com/cucumber/cucumber/compare/v1.2.0...v1.2.1)
+
+### New Features
+* Updated to gherkin 2.11.0. (Aslak Hellesøy)
+
+## [v1.2.0](https://github.com/cucumber/cucumber/compare/v1.1.9...v1.2.0)
+
+### Bugfixes
 * Fix backtraces in JRuby (#266 Andrew Kiellor)
 
-## New Features
+### New Features
 * Extracted the PDF formatter into a separate gem. (#241 Matt Wynne)
 * Remove dependency on term/ansicolor (#43 Joe Fiorini)
 * Methods for Step Definitions (#168 Giles Alexander)
@@ -17,15 +35,15 @@
 
 ## [v1.1.9](https://github.com/cucumber/cucumber/compare/v1.1.8...v1.1.9)
 
-## Bugfixes
+### Bugfixes
 * Removed deprecation warning for `source_tag_names`. It's not deprecated anymore. (Aslak Hellesøy)
 
 ## [v1.1.8](https://github.com/cucumber/cucumber/compare/v1.1.7...v1.1.8)
 
-## Bugfixes
+### Bugfixes
 * Column mapping dangerously applied twice to the same cell! ([#202](https://github.com/cucumber/cucumber/issues/202), [#208](https://github.com/cucumber/cucumber/pull/208) Brian Dunn)
 
-## New Features
+### New Features
 * Don't pollute RbWorld with the AnsiEscapes methods ([#219](https://github.com/cucumber/cucumber/issues/219), [#221](https://github.com/cucumber/cucumber/pull/221) Ben Woosley)
 
 ## [v1.1.7](https://github.com/cucumber/cucumber/compare/v1.1.6...v1.1.7)
@@ -95,7 +113,7 @@
 New format:
 
     [feature here]
- 
+
 Also see [Gherkin 2.6.0 History](https://github.com/cucumber/gherkin/blob/master/History.md) for info about new `id` and `uri` elements in the JSON.
 
 ## [v1.1.0](https://github.com/cucumber/cucumber/compare/v1.0.6...v1.1.0)
@@ -219,7 +237,7 @@ Yipeeeeeeeee!
 ### Bugfixes
 * Missing methods in Runtime::ForProgrammingLanguages - make v8 example run again (Chris Mytton)
 * Features files are sorted before they are executed, giving consistent results across different OSes (Guewen Baconnier)
-* Remove duplicate lines in backtraces in the HTML report (Jari Bakken) 
+* Remove duplicate lines in backtraces in the HTML report (Jari Bakken)
 
 ## [v0.10.0](https://github.com/cucumber/cucumber/compare/v0.9.4...v0.10.0)
 
@@ -251,7 +269,7 @@ This should not affect users. The major new feature in this release is ANSICON s
 ### Bugfixes
 * Better JSON representation of Regexps (Aslak Hellesøy)
 * Update to work with latest spork (Matt Wynne)
-* Prevent MiniTest::Unit#autorun from running in at_exit hook. (Aslak Hellesøy) 
+* Prevent MiniTest::Unit#autorun from running in at_exit hook. (Aslak Hellesøy)
 * Fixed incorect --help for --strict. It fails on both pending and undefined. (Aslak Hellesøy)
 
 ## [v0.9.2](https://github.com/cucumber/cucumber/compare/v0.9.1...v0.9.2)

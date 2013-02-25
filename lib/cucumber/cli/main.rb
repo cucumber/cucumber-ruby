@@ -32,7 +32,7 @@ module Cucumber
       def execute!(existing_runtime = nil)
         trap_interrupt
         return @drb_output if run_drb_client
-        
+
         runtime = if existing_runtime
           existing_runtime.configure(configuration)
           existing_runtime
@@ -58,7 +58,7 @@ module Cucumber
       end
 
       private
-      
+
       def run_drb_client
         return false unless configuration.drb?
         @drb_output = DRbClient.run(@args, @error_stream, @out_stream, configuration.drb_port)

@@ -21,12 +21,12 @@ module Cucumber
         @file_names = []
         @file_colon_lines = Hash.new{|h,k| h[k] = []}
       end
-      
+
       def before_feature(feature_element)
         @lines = []
         @file = feature_element.file
       end
-      
+
       def after_feature(*)
         unless @lines.empty?
           after_first_time do
@@ -67,7 +67,7 @@ module Cucumber
         @header_row = true
         @in_examples = true
       end
-      
+
       def after_examples(*args)
         @in_examples = false
       end
@@ -81,7 +81,7 @@ module Cucumber
       end
 
     private
-    
+
       def after_first_time
         yield if @not_first_time
         @not_first_time = true

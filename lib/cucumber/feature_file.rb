@@ -76,7 +76,7 @@ module Cucumber
     end
 
     private
-    
+
     def encoding_for(source)
       encoding = DEFAULT_ENCODING
       source.each_line do |line|

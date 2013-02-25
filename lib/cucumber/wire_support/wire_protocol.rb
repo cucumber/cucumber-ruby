@@ -12,22 +12,22 @@ module Cucumber
         handler = Requests::SnippetText.new(self)
         handler.execute(step_keyword, step_name, multiline_arg_class_name)
       end
-      
+
       def invoke(step_definition_id, args)
         handler = Requests::Invoke.new(self)
         handler.execute(step_definition_id, args)
       end
-      
+
       def diff_failed
         handler = Requests::DiffFailed.new(self)
         handler.execute
       end
-      
+
       def diff_ok
         handler = Requests::DiffOk.new(self)
         handler.execute
       end
-      
+
       def begin_scenario(scenario)
         handler = Requests::BeginScenario.new(self)
         handler.execute(scenario)
@@ -37,7 +37,7 @@ module Cucumber
         handler = Requests::EndScenario.new(self)
         handler.execute(scenario)
       end
-      
+
     end
   end
 end

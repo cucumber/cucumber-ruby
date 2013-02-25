@@ -121,7 +121,7 @@ module Cucumber
              quoted_binary(@cucumber_bin), '--', @cucumber_opts, @feature_files].flatten
           end
         end
-        
+
       end
 
       LIB = File.expand_path(File.dirname(__FILE__) + '/../..') #:nodoc:

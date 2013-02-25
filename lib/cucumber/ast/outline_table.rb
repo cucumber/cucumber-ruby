@@ -135,9 +135,8 @@ module Cucumber
             visitor.step_mother.with_hooks(self) do
               @table.visit_scenario_name(visitor, self)
               @step_invocations.each do |step_invocation|
-                step_invocation.invoke(visitor.step_mother, visitor.configuration)
+                visitor.visit_step(step_invocation)
                 @exception ||= step_invocation.reported_exception
-                step_invocation.visit_step_result(visitor)
               end
             end
           end

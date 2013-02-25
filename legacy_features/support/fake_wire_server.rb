@@ -1,5 +1,5 @@
+require 'multi_json'
 require 'socket'
-require 'json'
 
 class FakeWireServer
   def initialize(port, protocol_table)
@@ -11,7 +11,7 @@ class FakeWireServer
     @server = TCPServer.open(@port)
     loop { handle_connections }
   end
-  
+
   def delay_response(message, delay)
     @delays[message] = delay
   end
@@ -31,7 +31,7 @@ class FakeWireServer
       socket.close
     end
   end
-  
+
   class SocketSession
     def initialize(socket, protocol, delays)
       @socket = socket
@@ -46,7 +46,7 @@ class FakeWireServer
     end
 
     private
-    
+
     def handle(data)
       if protocol_entry = response_to(data.strip)
         sleep delay(data)
@@ -60,17 +60,17 @@ class FakeWireServer
     end
 
     def response_to(data)
-      @protocol.detect do |entry| 
-        JSON.parse(entry['request']) == JSON.parse(data)
+      @protocol.detect do |entry|
+        MultiJson.load(entry['request']) == MultiJson.load(data)
       end
     end
 
     def send_response(response)
       @socket.puts response + "\n"
     end
-    
+
     def delay(data)
-      message = JSON.parse(data.strip)[0]
+      message = MultiJson.load(data.strip)[0]
       @delays[message.to_sym] || 0
     end
   end

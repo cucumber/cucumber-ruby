@@ -7,21 +7,21 @@ Feature: Language help
     When I run cucumber --i18n pt help
     Then it should pass with
       """
-            | feature          | "Funcionalidade"                           |
-            | background       | "Contexto"                                 |
-            | scenario         | "Cenário", "Cenario"                       |
-            | scenario_outline | "Esquema do Cenário", "Esquema do Cenario" |
-            | examples         | "Exemplos"                                 |
-            | given            | "* ", "Dado ", "Dada ", "Dados ", "Dadas " |
-            | when             | "* ", "Quando "                            |
-            | then             | "* ", "Então ", "Entao "                   |
-            | and              | "* ", "E "                                 |
-            | but              | "* ", "Mas "                               |
-            | given (code)     | "Dado", "Dada", "Dados", "Dadas"           |
-            | when (code)      | "Quando"                                   |
-            | then (code)      | "Então", "Entao"                           |
-            | and (code)       | "E"                                        |
-            | but (code)       | "Mas"                                      |
+            | feature          | "Funcionalidade", "Característica", "Caracteristica"                                         |
+            | background       | "Contexto", "Cenário de Fundo", "Cenario de Fundo", "Fundo"                                  |
+            | scenario         | "Cenário", "Cenario"                                                                         |
+            | scenario_outline | "Esquema do Cenário", "Esquema do Cenario", "Delineação do Cenário", "Delineacao do Cenario" |
+            | examples         | "Exemplos", "Cenários", "Cenarios"                                                           |
+            | given            | "* ", "Dado ", "Dada ", "Dados ", "Dadas "                                                   |
+            | when             | "* ", "Quando "                                                                              |
+            | then             | "* ", "Então ", "Entao "                                                                     |
+            | and              | "* ", "E "                                                                                   |
+            | but              | "* ", "Mas "                                                                                 |
+            | given (code)     | "Dado", "Dada", "Dados", "Dadas"                                                             |
+            | when (code)      | "Quando"                                                                                     |
+            | then (code)      | "Então", "Entao"                                                                             |
+            | and (code)       | "E"                                                                                          |
+            | but (code)       | "Mas"                                                                                        |
 
       """
   Scenario: List languages
@@ -31,6 +31,7 @@ Feature: Language help
       """
             | ar        | Arabic              | العربية           |
             | bg        | Bulgarian           | български         |
+            | bm        | Malay               | Bahasa Melayu     |
             | ca        | Catalan             | català            |
             | cs        | Czech               | Česky             |
             | cy-GB     | Welsh               | Cymraeg           |
@@ -45,9 +46,11 @@ Feature: Language help
             | eo        | Esperanto           | Esperanto         |
             | es        | Spanish             | español           |
             | et        | Estonian            | eesti keel        |
+            | fa        | Persian             | فارسی             |
             | fi        | Finnish             | suomi             |
             | fr        | French              | français          |
             | he        | Hebrew              | עברית             |
+            | hi        | Hindi               | हिंदी             |
             | hr        | Croatian            | hrvatski          |
             | hu        | Hungarian           | magyar            |
             | id        | Indonesian          | Bahasa Indonesia  |
@@ -68,7 +71,9 @@ Feature: Language help
             | sr-Cyrl   | Serbian             | Српски            |
             | sr-Latn   | Serbian (Latin)     | Srpski (Latinica) |
             | sv        | Swedish             | Svenska           |
+            | tl        | Telugu              | తెలుగు            |
             | tr        | Turkish             | Türkçe            |
+            | tt        | Tatar               | Татарча           |
             | uk        | Ukrainian           | Українська        |
             | uz        | Uzbek               | Узбекча           |
             | vi        | Vietnamese          | Tiếng Việt        |

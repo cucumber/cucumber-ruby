@@ -51,7 +51,7 @@ module Cucumber
           # RSpec >=2.0
           require 'rspec/expectations'
           @rspec_matchers = ::RSpec::Matchers
-        rescue LoadError => try_rspec_1_2_4_or_higher
+        rescue LoadError # try rspec 1.2.4 or higher
           begin
             require 'spec/expectations'
             require 'spec/runner/differs/default'
@@ -59,7 +59,7 @@ module Cucumber
             options = OpenStruct.new(:diff_format => :unified, :context_lines => 3)
             Spec::Expectations.differ = Spec::Expectations::Differs::Default.new(options)
             @rspec_matchers = ::Spec::Matchers
-          rescue LoadError => give_up
+          rescue LoadError # give up
             @rspec_matchers = Module.new{}
           end
         end
@@ -93,7 +93,7 @@ module Cucumber
           multiline_class_comment = "# #{multiline_arg_class.default_arg_name} is a #{multiline_arg_class.to_s}\n  "
         end
 
-        "#{code_keyword} /^#{snippet_pattern}$/ do#{block_arg_string}\n  #{multiline_class_comment}pending # express the regexp above with the code you wish you had\nend"
+        "#{code_keyword}(/^#{snippet_pattern}$/) do#{block_arg_string}\n  #{multiline_class_comment}pending # express the regexp above with the code you wish you had\nend"
       end
 
       def begin_rb_scenario(scenario)
@@ -128,13 +128,13 @@ module Cucumber
       def load_code_file(code_file)
         load File.expand_path(code_file) # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from RbDsl
       end
-      
+
       protected
 
       def begin_scenario(scenario)
         begin_rb_scenario(scenario)
       end
-      
+
       def end_scenario
         @current_world = nil
       end

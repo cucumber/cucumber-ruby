@@ -8,7 +8,7 @@ module Spec #:nodoc:
     class OptionParser < ::OptionParser #:nodoc:
       NEUTERED_RSPEC = Object.new
       def NEUTERED_RSPEC.method_missing(m, *args); self; end
-      
+
       def self.method_added(m)
         unless @__neutering_rspec
           @__neutering_rspec = true

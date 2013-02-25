@@ -7,19 +7,22 @@ module Cucumber
   module RbSupport
     describe RbStepDefinition do
       let(:user_interface) { double('user interface') }
-      let(:support_code) { Cucumber::Runtime::SupportCode.new(user_interface) }
-      let(:rb)      { support_code.load_programming_language('rb')}
-      let(:dsl) do 
+      let(:support_code)   { Cucumber::Runtime::SupportCode.new(user_interface) }
+      let(:rb)             { support_code.load_programming_language('rb') }
+      let(:dsl) do
         rb
         Object.new.extend(Cucumber::RbSupport::RbDsl)
       end
-      
-      before do      
-        rb.before(mock('scenario').as_null_object)
 
+      before do
+        rb.before(mock('scenario').as_null_object)
         $inside = nil
       end
-      
+
+      def run_step(text)
+        support_code.step_match(text).invoke(nil)
+      end
+
       it "should allow calling of other steps" do
         dsl.Given /Outside/ do
           step "Inside"
@@ -28,7 +31,7 @@ module Cucumber
           $inside = true
         end
 
-        support_code.step_match("Outside").invoke(nil)
+        run_step "Outside"
         $inside.should == true
       end
 
@@ -40,24 +43,35 @@ module Cucumber
           $inside = table.raw[0][0]
         end
 
-        support_code.step_match("Outside").invoke(nil)
+        run_step "Outside"
         $inside.should == 'inside'
       end
 
-      it "should call a method on the world when specified with a symbol" do
-        rb.current_world.should_receive(:with_symbol)
-        dsl.Given /With symbol/, :with_symbol
+      context "mapping to world methods" do
+        it "should call a method on the world when specified with a symbol" do
+          rb.current_world.should_receive(:with_symbol)
+          dsl.Given /With symbol/, :with_symbol
 
-        support_code.step_match("With symbol").invoke(nil)
-      end
+          run_step "With symbol"
+        end
 
-      it "should call a method on a specified object" do
-        target = double('target')
-        target.should_receive(:with_symbol)
-        rb.current_world.stub!(:target).and_return(target)
-        dsl.Given /With symbol on block/, :with_symbol, :on => lambda { target }
+        it "should call a method on a specified object" do
+          target = double('target')
+          rb.current_world.stub(:target => target)
+          dsl.Given /With symbol on block/, :with_symbol, :on => lambda { target }
 
-        support_code.step_match("With symbol on block").invoke(nil)
+          target.should_receive(:with_symbol)
+          run_step "With symbol on block"
+        end
+
+        it "should call a method on a specified world attribute" do
+          target = double('target')
+          rb.current_world.stub(:target => target)
+          dsl.Given /With symbol on symbol/, :with_symbol, :on => :target
+
+          target.should_receive(:with_symbol)
+          run_step "With symbol on symbol"
+        end
       end
 
       it "should raise Undefined when inside step is not defined" do
@@ -65,9 +79,8 @@ module Cucumber
           step 'Inside'
         end
 
-        lambda do
-          support_code.step_match('Outside').invoke(nil)
-        end.should raise_error(Cucumber::Undefined, 'Undefined step: "Inside"')
+        lambda { run_step "Outside" }.
+          should raise_error(Cucumber::Undefined, 'Undefined step: "Inside"')
       end
 
       it "should allow forced pending" do
@@ -75,18 +88,16 @@ module Cucumber
           pending("Do me!")
         end
 
-        lambda do
-          support_code.step_match("Outside").invoke(nil)
-        end.should raise_error(Cucumber::Pending, "Do me!")
+        lambda { run_step "Outside" }.
+          should raise_error(Cucumber::Pending, "Do me!")
       end
 
       it "should raise ArityMismatchError when the number of capture groups differs from the number of step arguments" do
         dsl.Given /No group: \w+/ do |arg|
         end
 
-        lambda do
-          support_code.step_match("No group: arg").invoke(nil)
-        end.should raise_error(Cucumber::ArityMismatchError)
+        lambda { run_step "No group: arg" }.
+          should raise_error(Cucumber::ArityMismatchError)
       end
 
       it "should allow puts" do
@@ -94,16 +105,15 @@ module Cucumber
         dsl.Given /Loud/ do
           puts 'wasup'
         end
-        
-        support_code.step_match("Loud").invoke(nil)
+        run_step "Loud"
       end
-      
-      it "should recognize $arg style captures" do
-        dsl.Given "capture this: $arg" do |arg|
-          arg.should == 'this'
-        end
 
-       support_code.step_match('capture this: this').invoke(nil)
+      it "should recognize $arg style captures" do
+        arg_value = "wow!"
+        dsl.Given "capture this: $arg" do |arg|
+          arg.should == arg_value
+        end
+        run_step "capture this: wow!"
       end
 
       it "should have a JSON representation of the signature" do

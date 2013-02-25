@@ -47,8 +47,8 @@ module Cucumber
         # <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
         @builder.declare!(
           :DOCTYPE,
-          :html, 
-          :PUBLIC, 
+          :html,
+          :PUBLIC,
           '-//W3C//DTD XHTML 1.0 Strict//EN',
           'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'
         )
@@ -93,7 +93,7 @@ module Cucumber
       def after_feature(feature)
         @builder << '</div>'
       end
-  
+
       def before_comment(comment)
         @builder << '<pre class="comment">'
       end
@@ -101,22 +101,22 @@ module Cucumber
       def after_comment(comment)
         @builder << '</pre>'
       end
-  
+
       def comment_line(comment_line)
         @builder.text!(comment_line)
         @builder.br
       end
-  
+
       def after_tags(tags)
         @tag_spacer = nil
       end
-  
+
       def tag_name(tag_name)
         @builder.text!(@tag_spacer) if @tag_spacer
         @tag_spacer = ' '
         @builder.span(tag_name, :class => 'tag')
       end
-  
+
       def feature_name(keyword, name)
         lines = name.split(/\r?\n/)
         return if lines.empty?
@@ -130,17 +130,17 @@ module Cucumber
           end
         end
       end
-  
+
       def before_background(background)
         @in_background = true
         @builder << '<div class="background">'
       end
-  
+
       def after_background(background)
         @in_background = nil
         @builder << '</div>'
       end
-  
+
       def background_name(keyword, name, file_colon_line, source_indent)
         @listing_background = true
         @builder.h3(:id => "background_#{@scenario_number}") do |h3|
@@ -156,7 +156,7 @@ module Cucumber
         css_class = {
           Ast::Scenario        => 'scenario',
           Ast::ScenarioOutline => 'scenario outline'
-        }[feature_element.class]      
+        }[feature_element.class]
         @builder << "<div class='#{css_class}'>"
       end
 
@@ -176,21 +176,21 @@ module Cucumber
           @builder.span(name, :class => 'val')
         end
       end
-  
+
       def before_outline_table(outline_table)
         @outline_row = 0
         @builder << '<table>'
       end
-  
+
       def after_outline_table(outline_table)
         @builder << '</table>'
         @outline_row = nil
       end
-      
+
       def before_examples(examples)
          @builder << '<div class="examples">'
       end
-      
+
       def after_examples(examples)
         @builder << '</div>'
       end
@@ -202,11 +202,11 @@ module Cucumber
           @builder.span(name, :class => 'val')
         end
       end
-  
+
       def before_steps(steps)
         @builder << '<ol>'
       end
-  
+
       def after_steps(steps)
         @builder << '</ol>'
       end
@@ -237,17 +237,18 @@ module Cucumber
         end
         @status = status
         return if @hide_this_step
-        set_scenario_color(status)      
-        @builder << "<li id='#{@step_id}' class='step #{status}'>"            
+        set_scenario_color(status)
+        @builder << "<li id='#{@step_id}' class='step #{status}'>"
       end
 
       def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
         return if @hide_this_step
         # print snippet for undefined steps
         if status == :undefined
+          keyword = @step.actual_keyword if @step.respond_to?(:actual_keyword)
           step_multiline_class = @step.multiline_arg ? @step.multiline_arg.class : nil
           @builder.pre do |pre|
-            pre << @step_mother.snippet_text(@step.actual_keyword,step_match.instance_variable_get("@name") || '',step_multiline_class)
+            pre << @step_mother.snippet_text(keyword,step_match.instance_variable_get("@name") || '',step_multiline_class)
           end
         end
         @builder << '</li>'
@@ -255,10 +256,8 @@ module Cucumber
       end
 
       def step_name(keyword, step_match, status, source_indent, background, file_colon_line)
-        @step_matches ||= []
         background_in_scenario = background && !@listing_background
-        @skip_step = @step_matches.index(step_match) || background_in_scenario
-        @step_matches << step_match
+        @skip_step = background_in_scenario
 
         unless @skip_step
           build_step(keyword, step_match, status)
@@ -280,7 +279,7 @@ module Cucumber
           @builder << '<table>'
         end
       end
-  
+
       def after_multiline_arg(multiline_arg)
         return if @hide_this_step || @skip_step
         if Ast::Table === multiline_arg
@@ -294,15 +293,15 @@ module Cucumber
           @builder << h(string).gsub("\n", '&#x000A;')
         end
       end
-  
-  
+
+
       def before_table_row(table_row)
         @row_id = table_row.dom_id
         @col_index = 0
         return if @hide_this_step
         @builder << "<tr class='step' id='#{@row_id}'>"
       end
-  
+
       def after_table_row(table_row)
         return if @hide_this_step
         print_table_row_messages
@@ -326,7 +325,7 @@ module Cucumber
 
       def table_cell_value(value, status)
         return if @hide_this_step
-        
+
         @cell_type = @outline_row == 0 ? :th : :td
         attributes = {:id => "#{@row_id}_#{@col_index}", :class => 'step'}
         attributes[:class] += " #{status}" if status
@@ -339,10 +338,10 @@ module Cucumber
         @delayed_messages << message
         #@builder.pre(message, :class => 'message')
       end
-      
+
       def print_messages
         return if @delayed_messages.empty?
-        
+
         #@builder.ol do
           @delayed_messages.each do |ann|
             @builder.li(:class => 'step message') do
@@ -352,16 +351,16 @@ module Cucumber
         #end
         empty_messages
       end
-      
+
       def print_table_row_messages
         return if @delayed_messages.empty?
-        
+
         @builder.td(:class => 'message') do
           @builder << @delayed_messages.join(", ")
         end
         empty_messages
       end
-      
+
       def empty_messages
         @delayed_messages = []
       end
@@ -383,7 +382,7 @@ module Cucumber
             message = "#{message} (#{exception.class})"
           end
 
-          @builder.pre do 
+          @builder.pre do
             @builder.text!(message)
           end
         end
@@ -406,7 +405,7 @@ module Cucumber
           set_scenario_color_failed
         end
       end
-      
+
       def set_scenario_color_failed
         @builder.script do
           @builder.text!("makeRed('cucumber-header');") unless @header_red
@@ -415,12 +414,12 @@ module Cucumber
           @scenario_red = true
         end
       end
-      
+
       def set_scenario_color_pending
         @builder.script do
           @builder.text!("makeYellow('cucumber-header');") unless @header_red
           @builder.text!("makeYellow('scenario_#{@scenario_number}');") unless @scenario_red
-        end         
+        end
       end
 
       def get_step_count(features)
@@ -468,16 +467,16 @@ module Cucumber
           @builder.span(keyword, :class => 'keyword')
           @builder.span(:class => 'step val') do |name|
             name << h(step_name).gsub(/&lt;span class=&quot;(.*?)&quot;&gt;/, '<span class="\1">').gsub(/&lt;\/span&gt;/, '</span>')
-          end            
+          end
         end
-        
+
         step_file = step_match.file_colon_line
         step_file.gsub(/^([^:]*\.rb):(\d*)/) do
           if ENV['TM_PROJECT_DIRECTORY']
             step_file = "<a href=\"txmt://open?url=file://#{File.expand_path($1)}&line=#{$2}\">#{$1}:#{$2}</a> "
           end
         end
-        
+
         @builder.div(:class => 'step_file') do |div|
           @builder.span do
             @builder << step_file
@@ -509,29 +508,29 @@ module Cucumber
       def inline_jquery
         File.read(File.dirname(__FILE__) + '/jquery-min.js')
       end
-      
+
       def inline_js_content
         <<-EOF
 
   SCENARIOS = "h3[id^='scenario_'],h3[id^=background_]";
-  
+
   $(document).ready(function() {
     $(SCENARIOS).css('cursor', 'pointer');
     $(SCENARIOS).click(function() {
       $(this).siblings().toggle(250);
     });
-    
+
     $("#collapser").css('cursor', 'pointer');
     $("#collapser").click(function() {
       $(SCENARIOS).siblings().hide();
     });
-    
+
     $("#expander").css('cursor', 'pointer');
     $("#expander").click(function() {
       $(SCENARIOS).siblings().show();
     });
   })
-  
+
   function moveProgressBar(percentDone) {
     $("cucumber-header").css('width', percentDone +"%");
   }
@@ -543,7 +542,7 @@ module Cucumber
     $('#'+element_id).css('background', '#FAF834');
     $('#'+element_id).css('color', '#000000');
   }
-  
+
         EOF
       end
 
