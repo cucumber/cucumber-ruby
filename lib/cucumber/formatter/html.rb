@@ -256,10 +256,8 @@ module Cucumber
       end
 
       def step_name(keyword, step_match, status, source_indent, background, file_colon_line)
-        @step_matches ||= []
         background_in_scenario = background && !@listing_background
-        @skip_step = @step_matches.index(step_match) || background_in_scenario
-        @step_matches << step_match
+        @skip_step = background_in_scenario
 
         unless @skip_step
           build_step(keyword, step_match, status)
