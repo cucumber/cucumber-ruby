@@ -1,9 +1,10 @@
-## In git
+## [v1.2.2](In git)
 
 ### New Features
-Added support for Hindi (hi), although some systems may need to install fonts which support the Devanagari script.
+* Added support for Hindi (hi), although some systems may need to install fonts which support the Devanagari script.
 
 ### Bugfixes
+* Exit with failure status when interrupted (#299 @aaronjensen)
 * Cannot map table headers after table hashes is referenced (#275 @chrisbloom7 / Matt Wynne)
 * (before|after)_step aren't called when scenario outline's table is processed (#284 Oleg Sukhodolsky)
 * Raise exception when remote socket end disconnects using wire protocol (#348 @rdammkoehler)
