@@ -43,6 +43,12 @@ module Cucumber
         format_string(line, status)
       end
 
+      # useful for before_step, which doesn't have access to step_match
+      def format_step_without_step_match(step)
+        line = step.keyword + step.name
+        format_string(line, step.status)
+      end
+
       def format_string(o, status)
         fmt = format_for(status)
         o.to_s.split("\n").map do |line|

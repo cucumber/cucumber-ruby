@@ -127,6 +127,15 @@ module Cucumber
       def before_step(step)
         @current_step = step
         @indent = 6
+
+        # Output the step we are *about* to execute so user can see what is *currently* executing.
+        # This causes each step to be displayed with the :skipped color initially and then for that
+        # line to be *redrawn* with the :passed or :failed color after it has finished executing.
+        # (The "\r" causes the cursor to return to the beginning of the line *without* moving to the
+        # next line ("\n"), so this output will get overwritten with the output from step_name() as
+        # soon as the step is finished.)
+        name_to_report = format_step_without_step_match(step) + "\r"
+        @io.print(name_to_report.indent(@scenario_indent + 2))
       end
 
       def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
