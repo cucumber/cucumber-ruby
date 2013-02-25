@@ -55,7 +55,7 @@ module Cucumber
 
         @builder << '<html xmlns ="http://www.w3.org/1999/xhtml">'
           @builder.head do
-          @builder.meta(:content => 'text/html;charset=utf-8')
+          @builder.meta('http-equiv' => 'Content-Type', :content => 'text/html;charset=utf-8')
           @builder.title 'Cucumber'
           inline_css
           inline_js
