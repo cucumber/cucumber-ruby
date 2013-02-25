@@ -5,7 +5,7 @@ require 'cucumber/formatter/ansicolor'
 $KCODE='u' if Cucumber::RUBY_1_8_7
 
 if Cucumber::WINDOWS
-  require 'iconv' if Cucumber::RUBY_2_0
+  require 'iconv' if Cucumber::RUBY_1_8_7
 
   if ENV['CUCUMBER_OUTPUT_ENCODING']
     Cucumber::CODEPAGE = ENV['CUCUMBER_OUTPUT_ENCODING']
