@@ -54,7 +54,7 @@ module Cucumber
           @table.map_column!('one') { |v| v.to_i }
           @table.hashes.first['one'].should == 4444
         end
-
+        
         it "applies the block once to each value" do
           headers = ['header']
           rows = ['value']
@@ -200,7 +200,34 @@ module Cucumber
 
           table.hashes.first.keys.should =~ %w[hello foo]
         end
+        
+        it "should allow mapping of headers before table.hashes has been accessed" do
+          table = Table.new([
+          ['HELLO', 'WORLD'],
+          %w{4444 55555}
+          ])
 
+          table.map_headers! do |header|
+            header.downcase
+          end
+
+          table.hashes.first.keys.should =~ %w[hello world]
+        end
+        
+        it "should allow mapping of headers after table.hashes has been accessed" do
+          table = Table.new([
+          ['HELLO', 'WORLD'],
+          %w{4444 55555}
+          ])
+
+          dev_null = table.hashes.size
+          
+          table.map_headers! do |header|
+            header.downcase
+          end
+
+          table.hashes.first.keys.should =~ %w[hello world]
+        end
       end
 
       describe "replacing arguments" do
