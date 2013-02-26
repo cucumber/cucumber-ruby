@@ -8,13 +8,9 @@ module Cli
       attr_reader :options
     end
 
-    def convert_hash_to_yaml_erb(hash)
-      ["---", *hash.map { |k,v| "#{k}: #{v}" }].join "\n"
-    end
-
     def given_cucumber_yml_defined_as(hash_or_string)
       File.stub!(:exist?).and_return(true)
-      cucumber_yml = hash_or_string.is_a?(Hash) ? convert_hash_to_yaml_erb(hash_or_string) : hash_or_string
+      cucumber_yml = hash_or_string.is_a?(Hash) ? hash_or_string.to_yaml : hash_or_string
       IO.stub!(:read).with('cucumber.yml').and_return(cucumber_yml)
     end
 
