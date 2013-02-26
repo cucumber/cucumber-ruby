@@ -187,6 +187,7 @@ Feature: Background
       end
       """
 
+  @wip-jruby
   Scenario: run a specific scenario with a background
     When I run `cucumber -q features/passing_background.feature:9`
     Then it should pass with exactly:
@@ -205,6 +206,7 @@ Feature: Background
 
     """
   
+  @wip-jruby
   Scenario: run a feature with a background that passes
     When I run `cucumber -q features/passing_background.feature`
     Then it should pass with exactly:
@@ -226,6 +228,7 @@ Feature: Background
 
     """
 
+  @wip-jruby
   Scenario: run a feature with scenario outlines that has a background that passes
     When I run `cucumber -q features/scenario_outline_passing_background.feature`
     Then it should pass with exactly:
@@ -255,6 +258,7 @@ Feature: Background
 
     """
 
+  @wip-jruby
   Scenario: run a feature with scenario outlines that has a background that passes
     When I run `cucumber -q features/background_tagged_before_on_outline.feature`
     Then it should pass with exactly:
@@ -278,6 +282,7 @@ Feature: Background
 
     """
 
+  @wip-jruby
   Scenario: run a feature with a background that fails
     When I run `cucumber -q features/failing_background.feature`
     Then it should fail with exactly:
@@ -307,6 +312,7 @@ Feature: Background
     
     """
 
+  @wip-jruby
   Scenario: run a feature with scenario outlines that has a background that fails
     When I run `cucumber -q features/scenario_outline_failing_background.feature`
     Then it should fail with exactly:
@@ -343,6 +349,7 @@ Feature: Background
     
     """
 
+  @wip-jruby
   Scenario: run a feature with a background that is pending
     When I run `cucumber -q features/pending_background.feature`
     Then it should pass with exactly:
@@ -364,6 +371,7 @@ Feature: Background
     
     """
 
+  @wip-jruby
   Scenario: background passes with first scenario but fails with second
     When I run `cucumber -q features/failing_background_after_success.feature`
     Then it should fail with exactly:
@@ -394,6 +402,7 @@ Feature: Background
     
     """
 
+  @wip-jruby
   Scenario: background with multline args
     Given a file named "features/step_definitions/multiline_steps.rb" with:
       """
@@ -454,6 +463,7 @@ Feature: Background
     
       """
 
+  @wip-jruby
   Scenario: https://rspec.lighthouseapp.com/projects/16211/tickets/329
     Given a file named "features/only_background_and_hooks.feature" with:
       """

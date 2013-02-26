@@ -12,10 +12,8 @@ module Cucumber
       end
 
       it "should create 2 arguments when first group is optional" do
-        pending_under :java, "requires cucumber/gherkin >= ac42f51" do
-          arguments = RegexpArgumentMatcher.arguments_from(/should( not)? be flashed '([^']*?)'$/, "I should be flashed 'Login failed.'")
-          arguments.map{|argument| [argument.val, argument.offset]}.should == [[nil, nil], ["Login failed.", 21]]
-        end
+        arguments = RegexpArgumentMatcher.arguments_from(/should( not)? be flashed '([^']*?)'$/, "I should be flashed 'Login failed.'")
+        arguments.map{|argument| [argument.val, argument.offset]}.should == [[nil, nil], ["Login failed.", 21]]
       end
     end
   end

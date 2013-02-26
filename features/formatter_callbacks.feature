@@ -1,5 +1,6 @@
 Feature: Formatter Callback
 
+  @wip-jruby
   Scenario: callback if not expanded
     Given a file named "features/f.feature" with:
       """
@@ -95,6 +96,7 @@ Feature: Formatter Callback
 
       """
 
+  @wip-jruby
   Scenario: callback if expanded
     Given a file named "features/f.feature" with:
       """

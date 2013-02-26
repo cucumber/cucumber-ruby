@@ -1,5 +1,6 @@
 Feature: Custom Formatter
 
+  @wip-jruby
   Scenario: my own formatter
     Given a file named "features/f.feature" with:
       """

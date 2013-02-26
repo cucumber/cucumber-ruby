@@ -109,6 +109,11 @@ class CucumberWorld
       @last_exit_status = $?.exitstatus
     end
     @last_stderr = IO.read(stderr_file.path)
+    if Cucumber::JRUBY
+      # TODO: this actually a workaround for problems in cucumber and gherkin
+      @last_stderr.gsub!(/^.*java_package_module_template.rb:15 warning: `eval' should not be aliased.*\n/, '')
+      @last_stderr.gsub!(/^.*warning: singleton on non-persistent Java type Java::JavaUtil::ArrayList.*\n/, '')
+    end
   end
 
   def run_spork_in_background(port = nil)

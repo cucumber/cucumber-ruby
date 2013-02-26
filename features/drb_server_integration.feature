@@ -46,6 +46,7 @@ Feature: DRb Server Integration
     end
     """
 
+  @wip-jruby
   Scenario: Single feature passing with '-r features' option
     Given I am running spork in the background
     When I run cucumber "features/sample.feature -r features --tags ~@wip"
@@ -54,6 +55,7 @@ Feature: DRb Server Integration
     1 step (1 passed)
     """
 
+  @wip-jruby
   Scenario: Single feature passing without '-r features' option
     Given I am running spork in the background
     When I run cucumber "features/sample.feature --tags ~@wip"
