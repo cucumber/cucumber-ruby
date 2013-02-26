@@ -1,4 +1,4 @@
-@drb
+@drb @wip-jruby
 Feature: DRb Server Integration
   To prevent waiting for Rails and other large Ruby applications to load their environments
   for each feature run Cucumber ships with a DRb client that can speak to a server which
@@ -46,7 +46,6 @@ Feature: DRb Server Integration
     end
     """
 
-  @wip-jruby
   Scenario: Single feature passing with '-r features' option
     Given I am running spork in the background
     When I run cucumber "features/sample.feature -r features --tags ~@wip"
@@ -55,7 +54,6 @@ Feature: DRb Server Integration
     1 step (1 passed)
     """
 
-  @wip-jruby
   Scenario: Single feature passing without '-r features' option
     Given I am running spork in the background
     When I run cucumber "features/sample.feature --tags ~@wip"
