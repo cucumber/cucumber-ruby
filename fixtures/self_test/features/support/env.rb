@@ -1,6 +1,6 @@
 require 'base64'
 begin require 'rspec/expectations'; rescue LoadError; require 'spec/expectations'; end
-$KCODE = 'u' unless Cucumber::RUBY_1_9
+$KCODE = 'u' if Cucumber::RUBY_1_8_7
 
 Before('@not_used') do
   raise "Should never run"

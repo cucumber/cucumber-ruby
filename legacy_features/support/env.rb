@@ -101,7 +101,7 @@ class CucumberWorld
     stderr_file = Tempfile.new('cucumber')
     stderr_file.close
     in_current_dir do
-      mode = Cucumber::RUBY_1_9 ? {:external_encoding=>"UTF-8"} : 'r'
+      mode = Cucumber::RUBY_1_8_7 ? 'r' : {:external_encoding=>"UTF-8"}
       IO.popen("#{command} 2> #{stderr_file.path}", mode) do |io|
         @last_stdout = io.read
       end

@@ -151,7 +151,7 @@ module Cli
       end
 
       it "parses ERB syntax in the cucumber.yml file" do
-        given_cucumber_yml_defined_as({'default' => '<%="--require some_file"%>'})
+        given_cucumber_yml_defined_as 'default' => "<%= '--require some_file' %>"
 
         config.parse!([])
         config.options[:require].should include('some_file')
