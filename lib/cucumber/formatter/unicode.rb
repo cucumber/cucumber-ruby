@@ -2,10 +2,10 @@
 # Tips for improvement - esp. ruby 1.9: http://www.ruby-forum.com/topic/184730
 require 'cucumber/platform'
 require 'cucumber/formatter/ansicolor'
-$KCODE='u' unless Cucumber::RUBY_1_9
+$KCODE='u' if Cucumber::RUBY_1_8_7
 
 if Cucumber::WINDOWS
-  require 'iconv' unless Cucumber::RUBY_1_9
+  require 'iconv' if Cucumber::RUBY_1_8_7
 
   if ENV['CUCUMBER_OUTPUT_ENCODING']
     Cucumber::CODEPAGE = ENV['CUCUMBER_OUTPUT_ENCODING']
@@ -27,14 +27,7 @@ if Cucumber::WINDOWS
         o.instance_eval do
           alias cucumber_print print
           def print(*a)
-            if Cucumber::RUBY_1_9
-              begin
-                cucumber_print(*a.map{|arg| arg.to_s.encode(Encoding.default_external)})
-              rescue Encoding::UndefinedConversionError => e
-                STDERR.cucumber_puts("WARNING: #{e.message}")
-                cucumber_print(*a)
-              end
-            else
+            if Cucumber::RUBY_1_8_7
               begin
                 cucumber_print(*Iconv.iconv(Cucumber::CODEPAGE, "UTF-8", *a.map{|a|a.to_s}))
               rescue Iconv::InvalidEncoding => e
@@ -44,25 +37,32 @@ if Cucumber::WINDOWS
                 STDERR.cucumber_puts("WARNING: #{e.message}")
                 cucumber_print(*a)
               end
+            else
+              begin
+                cucumber_print(*a.map{|arg| arg.to_s.encode(Encoding.default_external)})
+              rescue Encoding::UndefinedConversionError => e
+                STDERR.cucumber_puts("WARNING: #{e.message}")
+                cucumber_print(*a)
+              end
             end
           end
 
           alias cucumber_puts puts
           def puts(*a)
-            if Cucumber::RUBY_1_9
-              begin
-                cucumber_puts(*a.map{|arg| arg.to_s.encode(Encoding.default_external)})
-              rescue Encoding::UndefinedConversionError => e
-                STDERR.cucumber_puts("WARNING: #{e.message}")
-                cucumber_puts(*a)
-              end
-            else
+            if Cucumber::RUBY_1_8_7
               begin
                 cucumber_puts(*Iconv.iconv(Cucumber::CODEPAGE, "UTF-8", *a.map{|a|a.to_s}))
               rescue Iconv::InvalidEncoding => e
                 STDERR.cucumber_print("WARNING: #{e.message}")
                 cucumber_print(*a)
               rescue Iconv::IllegalSequence => e
+                STDERR.cucumber_puts("WARNING: #{e.message}")
+                cucumber_puts(*a)
+              end
+            else
+              begin
+                cucumber_puts(*a.map{|arg| arg.to_s.encode(Encoding.default_external)})
+              rescue Encoding::UndefinedConversionError => e
                 STDERR.cucumber_puts("WARNING: #{e.message}")
                 cucumber_puts(*a)
               end

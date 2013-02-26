@@ -13,7 +13,7 @@ require 'bundler'
 Bundler.setup
 
 require 'cucumber'
-$KCODE='u' unless Cucumber::RUBY_1_9
+$KCODE='u' if Cucumber::RUBY_1_8_7
 
 RSpec.configure do |c|
   c.before do
