@@ -1,6 +1,7 @@
 ## [Git master](https://github.com/cucumber/cucumber/compare/v1.2.1...master)
 
 ### New Features
+* Ruby 2.0.0 support (#377 Matt Wynne & #357 @charliesome)
 * Added support for Hindi (hi), although some systems may need to install fonts which support the Devanagari script.
 * Obey program suffix when invoking bundler (#324 Eric Hodel)
 
