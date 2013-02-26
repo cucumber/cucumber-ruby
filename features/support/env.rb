@@ -10,6 +10,16 @@ module Aruba::Api
     unrandom(__all_stdout)
   end
 
+  alias __all_stderr all_stderr
+  def all_stderr
+    err = __all_stderr
+    if Cucumber::JRUBY
+      # TODO: this actually a workaround for problems in cucumber and gherkin
+      err = err.gsub(/^.*java_package_module_template.rb:15 warning: `eval' should not be aliased.*\n/, '')
+      err = err.gsub(/^.*warning: singleton on non-persistent Java type Java::JavaUtil::ArrayList.*\n/, '')
+    end
+  end
+
   def unrandom(out)
     out = out.gsub(/#{Dir.pwd}\/tmp\/aruba/, '.') # Remove absolute paths
     out = out.gsub(/^\d+m\d+\.\d+s$/, '0m0.012s') # Make duration predictable
