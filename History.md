@@ -2,6 +2,7 @@
 
 ### New Features
 * Added support for Hindi (hi), although some systems may need to install fonts which support the Devanagari script.
+* Obey program suffix when invoking bundler (#324 Eric Hodel)
 
 ### Bugfixes
 * Exit with failure status when interrupted (#299 @aaronjensen)
