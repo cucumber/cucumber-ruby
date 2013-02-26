@@ -55,22 +55,20 @@ module Cucumber
         @step_definitions = []
         RbDsl.rb_language = self
         @world_proc = @world_modules = nil
-        enable_rspec_expectations_if_available
+        @assertions_module = find_best_assertions_module
       end
 
-      def enable_rspec_expectations_if_available
+      def find_best_assertions_module
         begin
-          # RSpec >=2.0
-          @assertions_module = ::RSpec::Matchers
+          ::RSpec::Matchers
         rescue NameError
           # RSpec >=1.2.4
           begin
             options = OpenStruct.new(:diff_format => :unified, :context_lines => 3)
             Spec::Expectations.differ = Spec::Expectations::Differs::Default.new(options)
-            @assertions_module = ::Spec::Matchers
+            ::Spec::Matchers
           rescue NameError
-            # Test::Unit
-            @assertions_module = ::Test::Unit::Assertions
+            ::Test::Unit::Assertions
           end
         end
       end
