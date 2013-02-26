@@ -1,4 +1,4 @@
-## Next release: v1.2.2 (In git)
+## [Git master](https://github.com/cucumber/cucumber/compare/v1.2.1...master)
 
 ### New Features
 * Added support for Hindi (hi), although some systems may need to install fonts which support the Devanagari script.
