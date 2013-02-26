@@ -28,15 +28,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:19",
     "steps": [
-      {
-        "name": "a file named \"features/step_definitions/assert_steps.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/step_definitions/assert_steps.rb"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -59,6 +51,7 @@
     "source": "^I write to \"([^\"]*)\" with:$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:31",
+
     "steps": [
 
     ]
@@ -116,24 +109,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:60",
     "steps": [
-      {
-        "name": "I run `cucumber`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber"
-          }
-        ]
-      },
-      {
-        "name": "I run `ruby -r./without_rspec -S cucumber`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "ruby -r./without_rspec -S cucumber"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -249,7 +225,7 @@
     ]
   },
   {
-    "source": "^the output should match /([^/]*)/$",
+    "source": "^the output should match \\/([^\\/]*)\\/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:137",
     "steps": [
@@ -265,7 +241,7 @@
     ]
   },
   {
-    "source": "^the output should not match /([^/]*)/$",
+    "source": "^the output should not match \\/([^\\/]*)\\/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:146",
     "steps": [
@@ -309,15 +285,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:166",
     "steps": [
-      {
-        "name": "it should pass with exactly:",
-        "args": [
-          {
-            "offset": 10,
-            "val": "pass"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -529,7 +497,7 @@
     ]
   },
   {
-    "source": "^the file \"([^\"]*)\" should match /([^/]*)/$",
+    "source": "^the file \"([^\"]*)\" should match \\/([^\\/]*)\\/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:308",
     "steps": [
@@ -537,7 +505,7 @@
     ]
   },
   {
-    "source": "^the file \"([^\"]*)\" should not match /([^/]*)/$",
+    "source": "^the file \"([^\"]*)\" should not match \\/([^\\/]*)\\/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:312",
     "steps": [
