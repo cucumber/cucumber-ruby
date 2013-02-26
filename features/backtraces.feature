@@ -11,7 +11,7 @@ Feature: Backtraces
           Given failing
       """
 
-  @jruby @wip-jruby
+  @jruby
   Scenario: Backtraces enabled
     Given a file named "features/step_definitions/steps.rb" with:
       """

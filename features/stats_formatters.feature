@@ -27,7 +27,6 @@ Feature: Usage formatter
       Given /D/ do;end
       """
 
-  @wip-jruby
   Scenario: Run with --format usage
     When I run `cucumber -f usage --dry-run`
     Then it should pass with exactly:
@@ -52,7 +51,6 @@ Feature: Usage formatter
 
       """
 
-    @wip-jruby
     Scenario: Run with --format stepdefs
       When I run `cucumber -f stepdefs --dry-run`
       Then it should pass with exactly:
