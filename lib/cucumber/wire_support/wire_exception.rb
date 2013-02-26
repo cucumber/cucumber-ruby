@@ -9,11 +9,11 @@ module Cucumber
         end
       end
 
-      def initialize(args, host, port)
+      def initialize(args, config)
         super args['message']
         if args['exception']
           self.class.extend(CanSetName)
-          self.class.exception_name = "#{args['exception']} from #{host}:#{port}"
+          self.class.exception_name = "#{args['exception']} from #{config}"
         end
         if args['backtrace']
           @backtrace = if args['backtrace'].is_a?(String)
