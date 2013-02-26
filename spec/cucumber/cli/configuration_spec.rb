@@ -152,12 +152,10 @@ module Cli
       end
 
       it "parses ERB syntax in the cucumber.yml file" do
-        pending_under :java, 'bug in jruby 1.7.3' do
-          given_cucumber_yml_defined_as({'default' => '<%="--require some_file"%>'})
+        given_cucumber_yml_defined_as("---\ndefault: \"<%=\"--require some_file\"%>\"\n")
 
-          config.parse!([])
-          config.options[:require].should include('some_file')
-        end
+        config.parse!([])
+        config.options[:require].should include('some_file')
       end
 
       it "parses ERB in cucumber.yml that makes uses nested ERB sessions" do
