@@ -18,6 +18,7 @@ module Aruba::Api
       err = err.gsub(/^.*java_package_module_template.rb:\d+ warning: `eval' should not be aliased.*\n/, '')
       err = err.gsub(/^.*warning: singleton on non-persistent Java type Java::JavaUtil::ArrayList.*\n/, '')
     end
+    err
   end
 
   def unrandom(out)
