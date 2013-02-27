@@ -13,6 +13,7 @@ Feature: Assertions
 
     Given a file named "without_rspec.rb" with:
     """
+    require 'rubygems' if RUBY_VERSION <= '1.8.7'
     require 'rspec/expectations'
 
     module RSpec
