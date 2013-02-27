@@ -5,7 +5,7 @@ require 'aruba/cucumber'
 # Monkey patch aruba to filter out some stuff
 module Aruba::Api
   alias __all_stdout all_stdout
-  
+
   def all_stdout
     unrandom(__all_stdout)
   end
@@ -31,7 +31,7 @@ end
 Before do
   # Make sure bin/cucumber runs with SimpleCov enabled
   # set_env('SIMPLECOV', 'true')
-  
+
   # Set a longer timeout for aruba
   @aruba_timeout_seconds = 15
 end
