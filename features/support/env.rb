@@ -15,7 +15,7 @@ module Aruba::Api
     err = __all_stderr
     if Cucumber::JRUBY
       # TODO: this actually a workaround for problems in cucumber and gherkin
-      err = err.gsub(/^.*java_package_module_template.rb:15 warning: `eval' should not be aliased.*\n/, '')
+      err = err.gsub(/^.*java_package_module_template.rb:\d+ warning: `eval' should not be aliased.*\n/, '')
       err = err.gsub(/^.*warning: singleton on non-persistent Java type Java::JavaUtil::ArrayList.*\n/, '')
     end
   end
