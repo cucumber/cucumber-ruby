@@ -44,6 +44,7 @@ module Cucumber
           end
           @gf.match(match)
         end
+        @step_time = Time.now
       end
 
       def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
@@ -65,6 +66,12 @@ module Cucumber
 
       def before_examples(examples)
         @gf.examples(examples.gherkin_statement)
+      end
+      
+      #used for capturing duration
+      def after_step(step)
+        step_finish = (Time.now - @step_time)
+        @gf.append_duration(step_finish)
       end
 
       def after_feature(feature)

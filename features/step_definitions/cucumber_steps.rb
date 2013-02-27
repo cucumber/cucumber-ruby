@@ -16,6 +16,17 @@ Then /^it should (pass|fail) with JSON:$/ do |pass_fail, json|
   actual = JSON.parse(stdout)
   expected = JSON.parse(json)
 
+  #make sure duration was captured (should be >= 0)
+  #then set it to what is "expected" since duration is dynamic
+  actual.each do |feature|
+    feature['elements'].each do |scenario|
+      scenario['steps'].each do |step|
+        step['result']['duration'].should be >= 0
+        step['result']['duration'] = 1
+      end
+    end
+  end
+
   actual.should == expected
   assert_success(pass_fail == 'pass')
 end
