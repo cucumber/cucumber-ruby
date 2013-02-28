@@ -10,9 +10,9 @@ module Cucumber
       include Duration
       include Io
 
-      def initialize(step_mother, path_or_io, options)
+      def initialize(runtime, path_or_io, options)
         @io = ensure_io(path_or_io, "html")
-        @step_mother = step_mother
+        @runtime = runtime
         @options = options
         @buffer = {}
         @builder = create_builder(@io)
@@ -248,7 +248,7 @@ module Cucumber
           keyword = @step.actual_keyword if @step.respond_to?(:actual_keyword)
           step_multiline_class = @step.multiline_arg ? @step.multiline_arg.class : nil
           @builder.pre do |pre|
-            pre << @step_mother.snippet_text(keyword,step_match.instance_variable_get("@name") || '',step_multiline_class)
+            pre << @runtime.snippet_text(keyword,step_match.instance_variable_get("@name") || '',step_multiline_class)
           end
         end
         @builder << '</li>'
@@ -579,12 +579,12 @@ module Cucumber
 
       def print_stat_string(features)
         string = String.new
-        string << dump_count(@step_mother.scenarios.length, "scenario")
-        scenario_count = print_status_counts{|status| @step_mother.scenarios(status)}
+        string << dump_count(@runtime.scenarios.length, "scenario")
+        scenario_count = print_status_counts{|status| @runtime.scenarios(status)}
         string << scenario_count if scenario_count
         string << "<br />"
-        string << dump_count(@step_mother.steps.length, "step")
-        step_count = print_status_counts{|status| @step_mother.steps(status)}
+        string << dump_count(@runtime.steps.length, "step")
+        step_count = print_status_counts{|status| @runtime.steps(status)}
         string << step_count if step_count
       end
 

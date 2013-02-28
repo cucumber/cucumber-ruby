@@ -9,7 +9,7 @@ module Cucumber
     class Gpretty < GherkinFormatterAdapter
       include Io
 
-      def initialize(step_mother, io, options)
+      def initialize(runtime, io, options)
         @io = ensure_io(io, "json")
         super(Gherkin::Formatter::PrettyFormatter.new(@io, false), true)
       end

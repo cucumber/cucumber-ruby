@@ -15,7 +15,7 @@ module Cucumber
     class Rerun
       include Io
 
-      def initialize(step_mother, path_or_io, options)
+      def initialize(runtime, path_or_io, options)
         @io = ensure_io(path_or_io, "rerun")
         @options = options
         @file_names = []

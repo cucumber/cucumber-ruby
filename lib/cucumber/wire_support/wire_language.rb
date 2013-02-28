@@ -14,7 +14,7 @@ module Cucumber
     class WireLanguage
       include LanguageSupport::LanguageMethods
 
-      def initialize(step_mother)
+      def initialize(runtime)
         @connections = []
       end
 

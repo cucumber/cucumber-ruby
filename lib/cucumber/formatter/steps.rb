@@ -3,10 +3,10 @@ module Cucumber
     # The formatter used for <tt>--format steps</tt>
     class Steps
 
-      def initialize(step_mother, path_or_io, options)
+      def initialize(runtime, path_or_io, options)
         @io = ensure_io(path_or_io, "steps")
         @options = options
-        @step_definition_files = collect_steps(step_mother)
+        @step_definition_files = collect_steps(runtime)
       end
 
       def after_features(features)
@@ -33,8 +33,8 @@ module Cucumber
         @io.puts "#{count} step definition(s) in #{@step_definition_files.size} source file(s)."
       end
 
-      def collect_steps(step_mother)
-        step_mother.step_definitions.inject({}) do |step_definitions, step_definition|
+      def collect_steps(runtime)
+        runtime.step_definitions.inject({}) do |step_definitions, step_definition|
           step_definitions[step_definition.file] ||= []
           step_definitions[step_definition.file] << [ step_definition.file_colon_line, step_definition.regexp_source ]
           step_definitions

@@ -59,7 +59,7 @@ module Cucumber
           argument_hash       = cells.to_hash
           delimited_arguments = delimit_argument_names(argument_hash)
           name                = replace_name_arguments(delimited_arguments)
-          step_match          = visitor.step_mother.step_match(name, @name) rescue nil
+          step_match          = visitor.runtime.step_match(name, @name) rescue nil
           return step_match if step_match
         end
         NoStepMatch.new(self, @name)

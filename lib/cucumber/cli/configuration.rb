@@ -68,8 +68,8 @@ module Cucumber
         @options[:dotcucumber]
       end
 
-      def build_tree_walker(step_mother)
-        Ast::TreeWalker.new(step_mother, formatters(step_mother), self)
+      def build_tree_walker(runtime)
+        Ast::TreeWalker.new(runtime, formatters(runtime), self)
       end
 
       def formatter_class(format)
@@ -156,12 +156,12 @@ module Cucumber
       end
     private
 
-      def formatters(step_mother)
+      def formatters(runtime)
         # TODO: We should remove the autoformat functionality. That
         # can be done with the gherkin CLI.
         if @options[:autoformat]
           require 'cucumber/formatter/pretty'
-          return [Formatter::Pretty.new(step_mother, nil, @options)]
+          return [Formatter::Pretty.new(runtime, nil, @options)]
         end
 
         @options[:formats].map do |format_and_out|
@@ -169,7 +169,7 @@ module Cucumber
           path_or_io = format_and_out[1]
           begin
             formatter_class = formatter_class(format)
-            formatter_class.new(step_mother, path_or_io, @options)
+            formatter_class.new(runtime, path_or_io, @options)
           rescue Exception => e
             e.message << "\nError creating formatter: #{format}"
             raise e

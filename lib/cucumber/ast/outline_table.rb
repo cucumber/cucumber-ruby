@@ -114,9 +114,9 @@ module Cucumber
               visitor.visit_table_cell(cell)
             end
           else
-            visitor.step_mother.with_hooks(self) do
+            visitor.runtime.with_hooks(self) do
               @step_invocations.each do |step_invocation|
-                step_invocation.invoke(visitor.step_mother, visitor.configuration)
+                step_invocation.invoke(visitor.runtime, visitor.configuration)
                 @exception ||= step_invocation.reported_exception
               end
 
@@ -132,7 +132,7 @@ module Cucumber
         def accept_expand(visitor)
           if header?
           else
-            visitor.step_mother.with_hooks(self) do
+            visitor.runtime.with_hooks(self) do
               @table.visit_scenario_name(visitor, self)
               @step_invocations.each do |step_invocation|
                 visitor.visit_step(step_invocation)

@@ -10,8 +10,8 @@ module Cucumber
         attr_accessor :mean_duration, :status
       end
 
-      def initialize(step_mother, path_or_io, options)
-        @step_mother = step_mother
+      def initialize(runtime, path_or_io, options)
+        @runtime = runtime
         @io = ensure_io(path_or_io, "usage")
         @options = options
         @stepdef_to_match = Hash.new{|h,stepdef_key| h[stepdef_key] = []}
@@ -117,7 +117,7 @@ module Cucumber
       end
 
       def add_unused_stepdefs
-        @step_mother.unmatched_step_definitions.each do |step_definition|
+        @runtime.unmatched_step_definitions.each do |step_definition|
           stepdef_key = StepDefKey.new(step_definition.regexp_source, step_definition.file_colon_line)
           @stepdef_to_match[stepdef_key] = []
         end

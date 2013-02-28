@@ -36,11 +36,11 @@ module Cucumber
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_background_name(@keyword, name, file_colon_line(@line), source_indent(first_line_length))
         with_visitor(hook_context, visitor) do
-          visitor.step_mother.before(hook_context)
+          visitor.runtime.before(hook_context)
           skip_invoke! if failed?
           visitor.visit_steps(@step_invocations)
           @failed = @step_invocations.detect{|step_invocation| step_invocation.exception || step_invocation.status != :passed }
-          visitor.step_mother.after(hook_context) if @failed || @feature_elements.empty?
+          visitor.runtime.after(hook_context) if @failed || @feature_elements.empty?
         end
       end
 

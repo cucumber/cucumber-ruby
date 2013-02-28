@@ -14,35 +14,35 @@ module Cucumber
 
       # Call a Transform with a string from another Transform definition
       def Transform(arg)
-        rb = @__cucumber_step_mother.load_programming_language('rb')
+        rb = @__cucumber_runtime.load_programming_language('rb')
         rb.execute_transforms([arg]).first
       end
 
-      attr_writer :__cucumber_step_mother, :__natural_language
+      attr_writer :__cucumber_runtime, :__natural_language
 
       def __cucumber_invoke(name, multiline_argument=nil) #:nodoc:
         STDERR.puts AnsiEscapes.failed + "WARNING: Using 'Given/When/Then' in step definitions is deprecated, use 'step' to call other steps instead:" + caller[0] + AnsiEscapes.reset
-        @__cucumber_step_mother.invoke(name, multiline_argument)
+        @__cucumber_runtime.invoke(name, multiline_argument)
       end
 
       # Invoke a single step.
       def step(name, multiline_argument=nil)
-        @__cucumber_step_mother.invoke(name, multiline_argument)
+        @__cucumber_runtime.invoke(name, multiline_argument)
       end
 
       # See StepMother#invoke_steps
       def steps(steps_text)
-        @__cucumber_step_mother.invoke_steps(steps_text, @__natural_language, caller[0])
+        @__cucumber_runtime.invoke_steps(steps_text, @__natural_language, caller[0])
       end
 
       # See StepMother#table
       def table(text_or_table, file=nil, line_offset=0)
-        @__cucumber_step_mother.table(text_or_table, file, line_offset)
+        @__cucumber_runtime.table(text_or_table, file, line_offset)
       end
 
       # See StepMother#doc_string
       def doc_string(string_without_triple_quotes, content_type='', line_offset=0)
-        @__cucumber_step_mother.doc_string(string_without_triple_quotes, content_type, line_offset)
+        @__cucumber_runtime.doc_string(string_without_triple_quotes, content_type, line_offset)
       end
 
       def announce(*messages)
@@ -52,17 +52,17 @@ module Cucumber
 
       # See StepMother#puts
       def puts(*messages)
-        @__cucumber_step_mother.puts(*messages)
+        @__cucumber_runtime.puts(*messages)
       end
 
       # See StepMother#ask
       def ask(question, timeout_seconds=60)
-        @__cucumber_step_mother.ask(question, timeout_seconds)
+        @__cucumber_runtime.ask(question, timeout_seconds)
       end
 
       # See StepMother#embed
       def embed(file, mime_type, label='Screenshot')
-        @__cucumber_step_mother.embed(file, mime_type, label)
+        @__cucumber_runtime.embed(file, mime_type, label)
       end
 
       # Mark the matched step as pending.

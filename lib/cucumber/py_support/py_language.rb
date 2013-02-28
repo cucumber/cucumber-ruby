@@ -5,7 +5,7 @@ module Cucumber
     class PyLanguage
       include LanguageSupport::LanguageMethods
 
-      def initialize(step_mother)
+      def initialize(runtime)
         @step_def_files = []
         #
         # @python_path = ENV['PYTHONPATH'] ? ENV['PYTHONPATH'].split(':') : []

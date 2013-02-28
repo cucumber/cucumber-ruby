@@ -35,7 +35,7 @@ module Cucumber
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        invoke(visitor.step_mother, visitor.configuration)
+        invoke(visitor.runtime, visitor.configuration)
         visit_step_result(visitor)
       end
 
@@ -52,13 +52,13 @@ module Cucumber
         )
       end
 
-      def invoke(step_mother, configuration)
-        find_step_match!(step_mother, configuration)
+      def invoke(runtime, configuration)
+        find_step_match!(runtime, configuration)
         unless @skip_invoke || configuration.dry_run? || @exception || @step_collection.exception
           @skip_invoke = true
           begin
             @step_match.invoke(@multiline_arg)
-            step_mother.after_step
+            runtime.after_step
             status!(:passed)
           rescue Pending => e
             failed(configuration, e, false)
@@ -77,10 +77,10 @@ module Cucumber
         end
       end
 
-      def find_step_match!(step_mother, configuration)
+      def find_step_match!(runtime, configuration)
         return if @step_match
         begin
-          @step_match = step_mother.step_match(@name)
+          @step_match = runtime.step_match(@name)
         rescue Undefined => e
           failed(configuration, e, true)
           status!(:undefined)
@@ -90,7 +90,7 @@ module Cucumber
           status!(:failed)
           @step_match = NoStepMatch.new(@step, @name)
         end
-        step_mother.step_visited(self)
+        runtime.step_visited(self)
       end
 
       def failed(configuration, e, clear_backtrace)

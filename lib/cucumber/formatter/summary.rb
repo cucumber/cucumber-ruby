@@ -2,14 +2,14 @@ module Cucumber
   module Formatter
     module Summary
 
-      def scenario_summary(step_mother, &block)
-        scenarios_proc = lambda{|status| step_mother.scenarios(status)}
-        dump_count(step_mother.scenarios.length, "scenario") + dump_status_counts(scenarios_proc, &block)
+      def scenario_summary(runtime, &block)
+        scenarios_proc = lambda{|status| runtime.scenarios(status)}
+        dump_count(runtime.scenarios.length, "scenario") + dump_status_counts(scenarios_proc, &block)
       end
 
-      def step_summary(step_mother, &block)
-        steps_proc = lambda{|status| step_mother.steps(status)}
-        dump_count(step_mother.steps.length, "step") + dump_status_counts(steps_proc, &block)
+      def step_summary(runtime, &block)
+        steps_proc = lambda{|status| runtime.steps(status)}
+        dump_count(runtime.steps.length, "step") + dump_status_counts(steps_proc, &block)
       end
 
       private

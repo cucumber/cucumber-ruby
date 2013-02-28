@@ -55,7 +55,7 @@ module Cucumber
       end
 
       def print_steps(status)
-        print_elements(step_mother.steps(status), status, 'steps')
+        print_elements(runtime.steps(status), status, 'steps')
       end
 
       def print_elements(elements, status, kind)
@@ -77,7 +77,7 @@ module Cucumber
       end
 
       def print_stats(features, options)
-        @failures = step_mother.scenarios(:failed).select { |s| s.is_a?(Cucumber::Ast::Scenario) || s.is_a?(Cucumber::Ast::OutlineTable::ExampleRow) }
+        @failures = runtime.scenarios(:failed).select { |s| s.is_a?(Cucumber::Ast::Scenario) || s.is_a?(Cucumber::Ast::OutlineTable::ExampleRow) }
         @failures.collect! { |s| (s.is_a?(Cucumber::Ast::OutlineTable::ExampleRow)) ? s.scenario_outline : s }
 
         if !@failures.empty?
@@ -90,8 +90,8 @@ module Cucumber
           @io.puts
         end
 
-        @io.puts scenario_summary(step_mother) {|status_count, status| format_string(status_count, status)}
-        @io.puts step_summary(step_mother) {|status_count, status| format_string(status_count, status)}
+        @io.puts scenario_summary(runtime) {|status_count, status| format_string(status_count, status)}
+        @io.puts step_summary(runtime) {|status_count, status| format_string(status_count, status)}
 
         @io.puts(format_duration(features.duration)) if features && features.duration
 
@@ -115,14 +115,14 @@ module Cucumber
 
       def print_snippets(options)
         return unless options[:snippets]
-        undefined = step_mother.steps(:undefined)
+        undefined = runtime.steps(:undefined)
         return if undefined.empty?
 
-        unknown_programming_language = step_mother.unknown_programming_language?
+        unknown_programming_language = runtime.unknown_programming_language?
         snippets = undefined.map do |step|
           step_name = Undefined === step.exception ? step.exception.step_name : step.name
           step_multiline_class = step.multiline_arg ? step.multiline_arg.class : nil
-          snippet = @step_mother.snippet_text(step.actual_keyword, step_name, step_multiline_class)
+          snippet = @runtime.snippet_text(step.actual_keyword, step_name, step_multiline_class)
           snippet
         end.compact.uniq
 
@@ -142,7 +142,7 @@ module Cucumber
 
       def print_passing_wip(options)
         return unless options[:wip]
-        passed = step_mother.scenarios(:passed)
+        passed = runtime.scenarios(:passed)
         if passed.any?
           @io.puts format_string("\nThe --wip switch was used, so I didn't expect anything to pass. These scenarios passed:", :failed)
           print_elements(passed, :passed, "scenarios")

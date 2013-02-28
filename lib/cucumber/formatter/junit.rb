@@ -15,7 +15,7 @@ module Cucumber
         end
       end
 
-      def initialize(step_mother, io, options)
+      def initialize(runtime, io, options)
         @reportdir = ensure_dir(io, "junit")
         @options = options
       end

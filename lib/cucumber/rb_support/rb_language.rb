@@ -50,8 +50,8 @@ module Cucumber
         RbWorld.alias_adverb(adverb)
       end
 
-      def initialize(step_mother)
-        @step_mother = step_mother
+      def initialize(runtime)
+        @runtime = runtime
         @step_definitions = []
         RbDsl.rb_language = self
         @world_proc = @world_modules = nil
@@ -167,7 +167,7 @@ module Cucumber
       end
 
       def connect_world(scenario)
-        @current_world.__cucumber_step_mother = @step_mother
+        @current_world.__cucumber_runtime = @runtime
         @current_world.__natural_language = scenario.language
       end
 

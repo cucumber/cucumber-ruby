@@ -4,7 +4,7 @@ require 'cucumber/step_definition_light'
 module Cucumber
   module Formatter
     class Debug
-      def initialize(step_mother, io, options)
+      def initialize(runtime, io, options)
         @io = io
         @indent = 0
       end

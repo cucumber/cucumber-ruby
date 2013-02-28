@@ -7,10 +7,10 @@ module Cucumber
     class Progress
       include Console
       include Io
-      attr_reader :step_mother
+      attr_reader :runtime
 
-      def initialize(step_mother, path_or_io, options)
-        @step_mother, @io, @options = step_mother, ensure_io(path_or_io, "progress"), options
+      def initialize(runtime, path_or_io, options)
+        @runtime, @io, @options = runtime, ensure_io(path_or_io, "progress"), options
       end
 
       def after_features(features)
