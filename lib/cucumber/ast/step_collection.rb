@@ -9,10 +9,10 @@ module Cucumber
         @steps.each{|step| step.step_collection = self}
       end
 
-      def accept(visitor, &proc)
+      def accept(visitor)
         return if Cucumber.wants_to_quit
         @steps.each do |step|
-          visitor.visit_step(step) if proc.nil? || proc.call(step)
+          visitor.visit_step(step)
         end
       end
 
