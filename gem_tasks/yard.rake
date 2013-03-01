@@ -1,18 +1,35 @@
 require 'yard'
 require 'yard/rake/yardoc_task'
-require 'cucumber/platform'
+require_relative '../lib/cucumber/platform'
 
-YARD::Templates::Engine.register_template_path(File.expand_path(File.join(File.dirname(__FILE__), 'yard')))
-YARD::Rake::YardocTask.new(:yard) do |t|
-  t.options = %w{--no-private --title Cucumber}
-  t.files = %w{lib - README.md History.md LICENSE}
+SITE_DIR = File.expand_path(File.dirname(__FILE__) + '/../../cucumber.github.com')
+API_DIR  = File.join(SITE_DIR, 'api', 'cucumber', 'ruby', 'yardoc')
+
+namespace :api do
+  file :dir do
+    unless File.directory?(SITE_DIR)
+      raise "You need to git clone git@github.com:cucumber/cucumber.github.com.git #{SITE_DIR}"
+    end
+    mkdir_p API_DIR
+  end
+
+  template_path = File.expand_path(File.join(File.dirname(__FILE__), 'yard'))
+  YARD::Templates::Engine.register_template_path(template_path)
+  YARD::Rake::YardocTask.new(:yard) do |yard|
+    dir = API_DIR
+    mkdir_p dir
+    yard.options = ["--out", dir]
+  end
+  task :yard => :dir
+
+  task :release do
+    Dir.chdir(SITE_DIR) do
+      sh('git add .')
+      sh("git commit -m 'Update API docs for Cucumber v#{Cucumber::VERSION}'")
+      sh('git push')
+    end
+  end
+
+  desc "Generate YARD docs for Cucumber's API"
+  task :doc => [:yard, :release]
 end
-
-desc "Push yardoc to http://cukes.info/cucumber/api/#{Cucumber::VERSION}"
-task :push_yard => :yard do
-  sh("tar czf api-#{Cucumber::VERSION}.tgz -C doc .")
-  sh("scp api-#{Cucumber::VERSION}.tgz cukes.info:/var/www/cucumber/api/ruby")
-  sh("ssh cukes.info 'cd /var/www/cucumber/api/ruby && rm -rf #{Cucumber::VERSION} && mkdir #{Cucumber::VERSION} && tar xzf api-#{Cucumber::VERSION}.tgz -C #{Cucumber::VERSION} && rm -f latest && ln -s #{Cucumber::VERSION} latest'")
-end
-
-#task :release => :push_yard
