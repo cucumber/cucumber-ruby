@@ -34,3 +34,37 @@ Feature: Backtraces
             java/util/AbstractList.java:91:in `add'
       """
 
+  @not-jruby
+  Scenario: Ruby backtraces
+    Given a file named "game.rb" with:
+      """
+      class Game
+        def start; end
+      end
+      """
+    And a file named "features/start.feature" with:
+      """
+      Feature:
+        Scenario:
+          When I start the game
+      """
+    And a file named "features/step_definitions/steps.rb" with:
+      """
+      require File.dirname(__FILE__) + '/../../game'
+      When /start/ do
+        Game.new.start('a spurious argument')
+      end
+      """
+    When I run `cucumber`
+    Then it should fail with:
+      """
+      Feature: 
+      
+        Scenario:               # features/start.feature:2
+          When I start the game # features/step_definitions/steps.rb:2
+            wrong number of arguments (1 for 0) (ArgumentError)
+            ./game.rb:2:in `start'
+            ./features/step_definitions/steps.rb:3:in `/start/'
+            features/start.feature:3:in `When I start the game'
+      """
+
