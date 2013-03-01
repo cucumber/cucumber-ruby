@@ -25,7 +25,7 @@ namespace :api do
   task :release do
     Dir.chdir(SITE_DIR) do
       sh('git add .')
-      sh("git commit -m 'Update API docs for Cucumber v#{Cucumber::VERSION}'")
+      sh("git commit -m 'Update API docs for Cucumber-Ruby v#{Cucumber::VERSION}'")
       sh('git push')
     end
   end
