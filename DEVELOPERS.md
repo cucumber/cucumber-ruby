@@ -33,3 +33,14 @@ Now release it
     git commit -m "Release X.Y.Z"
     rake release
 
+## Gaining Release Karma
+
+To become a release manager, create a pull request adding your name to the list below, and include your Rubygems email address in the ticket. One of the existing Release managers will then add you.
+
+Current release managers:
+  * Matt Wynne
+  * Aslak Hellesøy
+
+To grant release karma, issue the following command:
+
+    gem owner cucumber --add <NEW OWNER RUBYGEMS EMAIL>
