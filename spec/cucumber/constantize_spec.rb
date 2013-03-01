@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+module Html end
+
 module Cucumber
   describe Constantize do
     include Constantize
