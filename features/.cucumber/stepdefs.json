@@ -28,15 +28,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:19",
     "steps": [
-      {
-        "name": "a file named \"features/step_definitions/assert_steps.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/step_definitions/assert_steps.rb"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -116,24 +108,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:60",
     "steps": [
-      {
-        "name": "I run `cucumber`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber"
-          }
-        ]
-      },
-      {
-        "name": "I run `ruby -r./without_rspec -S cucumber`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "ruby -r./without_rspec -S cucumber"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -249,7 +224,7 @@
     ]
   },
   {
-    "source": "^the output should match /([^/]*)/$",
+    "source": "^the output should match \\/([^\\/]*)\\/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:137",
     "steps": [
@@ -265,7 +240,7 @@
     ]
   },
   {
-    "source": "^the output should not match /([^/]*)/$",
+    "source": "^the output should not match \\/([^\\/]*)\\/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:146",
     "steps": [
@@ -309,15 +284,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:166",
     "steps": [
-      {
-        "name": "it should pass with exactly:",
-        "args": [
-          {
-            "offset": 10,
-            "val": "pass"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -529,7 +496,7 @@
     ]
   },
   {
-    "source": "^the file \"([^\"]*)\" should match /([^/]*)/$",
+    "source": "^the file \"([^\"]*)\" should match \\/([^\\/]*)\\/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:308",
     "steps": [
@@ -537,7 +504,7 @@
     ]
   },
   {
-    "source": "^the file \"([^\"]*)\" should not match /([^/]*)/$",
+    "source": "^the file \"([^\"]*)\" should not match \\/([^\\/]*)\\/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:312",
     "steps": [
@@ -571,7 +538,7 @@
   {
     "source": "^a directory without standard Cucumber project directory structure$",
     "flags": "",
-    "file_colon_line": "features/step_definitions/cucumber_steps.rb:23",
+    "file_colon_line": "features/step_definitions/cucumber_steps.rb:34",
     "steps": [
 
     ]
@@ -579,7 +546,7 @@
   {
     "source": "^a scenario with a step that looks like this:$",
     "flags": "",
-    "file_colon_line": "features/step_definitions/cucumber_steps.rb:29",
+    "file_colon_line": "features/step_definitions/cucumber_steps.rb:40",
     "steps": [
 
     ]
@@ -587,7 +554,7 @@
   {
     "source": "^a step definition that looks like this:$",
     "flags": "",
-    "file_colon_line": "features/step_definitions/cucumber_steps.rb:35",
+    "file_colon_line": "features/step_definitions/cucumber_steps.rb:46",
     "steps": [
 
     ]
@@ -595,7 +562,7 @@
   {
     "source": "^I run the feature with the (\\w+) formatter$",
     "flags": "",
-    "file_colon_line": "features/step_definitions/cucumber_steps.rb:39",
+    "file_colon_line": "features/step_definitions/cucumber_steps.rb:50",
     "steps": [
 
     ]
