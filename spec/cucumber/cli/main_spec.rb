@@ -89,8 +89,13 @@ module Cucumber
 
             f = stub('formatter').as_null_object
 
-            Object.should_receive(:const_get).with('ZooModule', false).and_return(mock_module)
-            mock_module.should_receive(:const_get).with('MonkeyFormatterClass', false).and_return(mock('formatter class', :new => f))
+            if Cucumber::RUBY_1_8_7
+              Object.should_receive(:const_get).with('ZooModule').and_return(mock_module)
+              mock_module.should_receive(:const_get).with('MonkeyFormatterClass').and_return(mock('formatter class', :new => f))
+            else
+              Object.should_receive(:const_get).with('ZooModule', false).and_return(mock_module)
+              mock_module.should_receive(:const_get).with('MonkeyFormatterClass', false).and_return(mock('formatter class', :new => f))
+            end
 
             cli.execute!
           end

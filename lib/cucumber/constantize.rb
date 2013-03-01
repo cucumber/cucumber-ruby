@@ -9,7 +9,7 @@ module Cucumber
 
         constant = ::Object
         names.each do |name|
-          constant = constant.const_defined?(name, false) ? constant.const_get(name, false) : constant.const_missing(name)
+          constant = constantize_name(constant, name)
         end
         constant
       rescue NameError => e
@@ -30,5 +30,14 @@ module Cucumber
         tr("-", "_").
         downcase
     end
+
+    private
+      def constantize_name(constant, name)
+        if Cucumber::RUBY_1_8_7
+          constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
+        else
+          constant.const_defined?(name, false) ? constant.const_get(name, false) : constant.const_missing(name)
+        end
+      end
   end
 end
