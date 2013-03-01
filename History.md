@@ -7,6 +7,7 @@
 * Obey program suffix when invoking bundler (#324 Eric Hodel)
 
 ### Bugfixes
+* Fix class loading problems --format option had (#345, #346 @ksylvest)
 * Exit with failure status when interrupted (#299 @aaronjensen)
 * Cannot map table headers after table hashes is referenced (#275 @chrisbloom7 / Matt Wynne)
 * (before|after)_step aren't called when scenario outline's table is processed (#284 Oleg Sukhodolsky)
