@@ -25,11 +25,12 @@ Before you even attempt to do a release, make sure you can log into cukes.info a
 * Bump the version number in `lib/cucumber/platform.rb`.
 * Make sure `History.md` is updated with the upcoming version number, and has entries for all fixes.
 * No need to add a `History.md` header at this point - this should be done when a new change is made, later.
+* Make sure you have up-to-date and clean copy of cucumber/cucumber.github.com.git at the same level as cucumber repo
 
 Now release it
 
     bundle update
-    rake
+    bundle exec rake
     git commit -m "Release X.Y.Z"
     rake release
 
