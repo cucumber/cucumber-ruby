@@ -1,4 +1,4 @@
-## [Git master](https://github.com/cucumber/cucumber/compare/v1.2.1...master)
+## [1.2.2](https://github.com/cucumber/cucumber/compare/v1.2.1...v1.2.2)
 
 ### New Features
 * Ruby 2.0.0 support (#377 Matt Wynne & #357 @charliesome)
