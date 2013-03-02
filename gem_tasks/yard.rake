@@ -24,6 +24,7 @@ namespace :api do
 
   task :release do
     Dir.chdir(SITE_DIR) do
+      sh('if [ "$(git status —-porcelain)" != "" ]; then error; fi') # Make sure website working dir is clean
       sh('git add .')
       sh("git commit -m 'Update API docs for Cucumber-Ruby v#{Cucumber::VERSION}'")
       sh('git push')
