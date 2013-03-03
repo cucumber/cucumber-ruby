@@ -5,10 +5,10 @@ module Cucumber
   module WireSupport
     describe WireException do
       before(:each) do
-        @host, @port = 'localhost', '54321'
+        @config = Configuration.new('host' => 'localhost', 'port' => 54321)
       end
       def exception
-        WireException.new(@data, @host, @port)
+        WireException.new(@data, @config)
       end
       describe "with just a message" do
         before(:each) do
