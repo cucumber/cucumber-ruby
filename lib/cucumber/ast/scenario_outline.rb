@@ -1,10 +1,10 @@
-require 'cucumber/ast/feature_element'
+require 'cucumber/ast/has_steps'
 require 'cucumber/ast/names'
 
 module Cucumber
   module Ast
     class ScenarioOutline #:nodoc:
-      include FeatureElement
+      include HasSteps
       include Names
 
       module ExamplesArray #:nodoc:

@@ -3,7 +3,7 @@ require 'gherkin/tag_expression'
 
 module Cucumber
   module Ast
-    module FeatureElement #:nodoc:
+    module HasSteps #:nodoc:
       attr_accessor :feature
 
       attr_reader :gherkin_statement, :raw_steps, :title, :description

@@ -1,10 +1,10 @@
-require 'cucumber/ast/feature_element'
+require 'cucumber/ast/has_steps'
 require 'cucumber/ast/names'
 
 module Cucumber
   module Ast
     class Background #:nodoc:
-      include FeatureElement
+      include HasSteps
       include Names
       attr_reader :feature_elements
 
