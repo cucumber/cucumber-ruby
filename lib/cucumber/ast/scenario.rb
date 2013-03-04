@@ -86,9 +86,6 @@ module Cucumber
 
       def skip_invoke!
         @steps.each{|step_invocation| step_invocation.skip_invoke!}
-        @feature.next_feature_element(self) do |next_one|
-          next_one.skip_invoke!
-        end
       end
 
       def to_sexp
