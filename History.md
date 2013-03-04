@@ -1,21 +1,21 @@
 ## [1.2.2](https://github.com/cucumber/cucumber/compare/v1.2.1...v1.2.2)
 
 ### New Features
-* Ruby 2.0.0 support (#377 Matt Wynne & #357 @charliesome)
-* Capture duration value for json formatter (#329 Rick Beyer)
+* Ruby 2.0.0 support ([#377](https://github.com/cucumber/cucumber/issues/377) Matt Wynne & [#357](https://github.com/cucumber/cucumber/issues/357) @charliesome)
+* Capture duration value for json formatter ([#329](https://github.com/cucumber/cucumber/issues/329) Rick Beyer)
 * Added support for Hindi (hi), although some systems may need to install fonts which support the Devanagari script.
-* Obey program suffix when invoking bundler (#324 Eric Hodel)
+* Obey program suffix when invoking bundler ([#324](https://github.com/cucumber/cucumber/issues/324) Eric Hodel)
 
 ### Bugfixes
-* Fix class loading problems --format option had (#345, #346 @ksylvest)
-* Exit with failure status when interrupted (#299 @aaronjensen)
-* Cannot map table headers after table hashes is referenced (#275 @chrisbloom7 / Matt Wynne)
-* (before|after)_step aren't called when scenario outline's table is processed (#284 Oleg Sukhodolsky)
-* Raise exception when remote socket end disconnects using wire protocol (#348 @rdammkoehler)
-* Fix --dry-run option ignored when set via profile (#248 / #255 Igor Afonov)
-* More clear suggested ruby code for undefined steps (#328 / #331 @martco)
-* Fix exception in Html formatter with --expand mode and undefined steps (#336 Roberto Decurnex)
-* Fix Table.diff! problem with :surplus_row => false and interleaved surplus rows (#220)
+* Fix class loading problems --format option had ([#345](https://github.com/cucumber/cucumber/issues/345), [#346](https://github.com/cucumber/cucumber/issues/346) @ksylvest)
+* Exit with failure status when interrupted ([#299](https://github.com/cucumber/cucumber/issues/299) @aaronjensen)
+* Cannot map table headers after table hashes is referenced ([#275](https://github.com/cucumber/cucumber/issues/275) @chrisbloom7 / Matt Wynne)
+* (before|after)_step aren't called when scenario outline's table is processed ([#284](https://github.com/cucumber/cucumber/issues/284) Oleg Sukhodolsky)
+* Raise exception when remote socket end disconnects using wire protocol ([#348](https://github.com/cucumber/cucumber/issues/348) @rdammkoehler)
+* Fix --dry-run option ignored when set via profile ([#248](https://github.com/cucumber/cucumber/issues/248) / [#255](https://github.com/cucumber/cucumber/issues/255) Igor Afonov)
+* More clear suggested ruby code for undefined steps ([#328](https://github.com/cucumber/cucumber/issues/328) / [#331](https://github.com/cucumber/cucumber/issues/331) @martco)
+* Fix exception in Html formatter with --expand mode and undefined steps ([#336](https://github.com/cucumber/cucumber/issues/336) Roberto Decurnex)
+* Fix Table.diff! problem with :surplus_row => false and interleaved surplus rows ([#220](https://github.com/cucumber/cucumber/issues/220))
 
 ## [1.2.1](https://github.com/cucumber/cucumber/compare/v1.2.0...v1.2.1)
 
@@ -25,19 +25,19 @@
 ## [1.2.0](https://github.com/cucumber/cucumber/compare/v1.1.9...v1.2.0)
 
 ### Bugfixes
-* Fix backtraces in JRuby (#266 Andrew Kiellor)
+* Fix backtraces in JRuby ([#266](https://github.com/cucumber/cucumber/issues/266) Andrew Kiellor)
 
 ### New Features
-* Extracted the PDF formatter into a separate gem. (#241 Matt Wynne)
-* Remove dependency on term/ansicolor (#43 Joe Fiorini)
-* Methods for Step Definitions (#168 Giles Alexander)
-* Add file:line to step events in formatter API (#181 Roman Chernyatchik)
-* Collapsible backgrounds in HTML formatter (#182 Niklas H)
-* Slightly cleaner regexp suggestions (#237 meyering)
-* Allow for --no-drb command-line option (#252 Chase Stubblefield)
-* Add misplaced_col option when diffing tables (#212 Steve Richert)
-* JUnit formatter, classname contains only the feature's name (#193 @litvinok)
-* Include the output $stderr and $stdout in JUnit formatted XML (#259 R. Tyler Croy)
+* Extracted the PDF formatter into a separate gem. ([#241](https://github.com/cucumber/cucumber/issues/241) Matt Wynne)
+* Remove dependency on term/ansicolor ([#43](https://github.com/cucumber/cucumber/issues/43) Joe Fiorini)
+* Methods for Step Definitions ([#168](https://github.com/cucumber/cucumber/issues/168) Giles Alexander)
+* Add file:line to step events in formatter API ([#181](https://github.com/cucumber/cucumber/issues/181) Roman Chernyatchik)
+* Collapsible backgrounds in HTML formatter ([#182](https://github.com/cucumber/cucumber/issues/182) Niklas H)
+* Slightly cleaner regexp suggestions ([#237](https://github.com/cucumber/cucumber/issues/237) meyering)
+* Allow for --no-drb command-line option ([#252](https://github.com/cucumber/cucumber/issues/252) Chase Stubblefield)
+* Add misplaced_col option when diffing tables ([#212](https://github.com/cucumber/cucumber/issues/212) Steve Richert)
+* JUnit formatter, classname contains only the feature's name ([#193](https://github.com/cucumber/cucumber/issues/193) @litvinok)
+* Include the output $stderr and $stdout in JUnit formatted XML ([#259](https://github.com/cucumber/cucumber/issues/259) R. Tyler Croy)
 
 ## [1.1.9](https://github.com/cucumber/cucumber/compare/v1.1.8...v1.1.9)
 
