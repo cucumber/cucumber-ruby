@@ -39,7 +39,7 @@ module Cucumber
           visitor.runtime.before(hook_context)
           skip_invoke! if failed?
           visitor.visit_steps(@step_invocations)
-          @failed = @step_invocations.detect{|step_invocation| step_invocation.exception || step_invocation.status != :passed }
+          @failed = @step_invocations.any? { |step_invocation| step_invocation.exception || step_invocation.status != :passed }
           visitor.runtime.after(hook_context) if @failed || @feature_elements.empty?
         end
       end
@@ -71,11 +71,7 @@ module Cucumber
       end
 
       def failed?
-        if defined? @failed
-          return @failed
-        else
-          return nil
-        end
+        !!@failed
       end
 
       def hook_context

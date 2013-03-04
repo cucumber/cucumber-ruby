@@ -24,6 +24,10 @@ module Cucumber
         })
       end
 
+      def skip_invoke!
+        @steps.each{|step_invocation| step_invocation.skip_invoke!}
+      end
+
       def step_invocations_from_cells(cells)
         @steps.map{|step| step.step_invocation_from_cells(cells)}
       end

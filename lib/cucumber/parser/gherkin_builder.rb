@@ -73,10 +73,6 @@ module Cucumber
           []
         )
         @feature.add_feature_element(scenario_outline)
-        if @background
-          @background = @background.dup
-          @background.feature_elements << scenario_outline
-        end
         @step_container = scenario_outline
         scenario_outline.gherkin_statement(statement)
       end

@@ -1,5 +1,6 @@
 require 'cucumber/ast/has_steps'
 require 'cucumber/ast/names'
+require 'cucumber/ast/empty_background'
 
 module Cucumber
   module Ast
@@ -8,23 +9,6 @@ module Cucumber
       include Names
 
       attr_reader :line
-
-      class EmptyBackground
-        def failed?
-          false
-        end
-
-        def feature_elements
-          []
-        end
-
-        def step_collection(step_invocations)
-          StepCollection.new(step_invocations)
-        end
-
-        def init
-        end
-      end
 
       def initialize(background, comment, tags, line, keyword, title, description, raw_steps)
         @background = background || EmptyBackground.new
@@ -84,10 +68,6 @@ module Cucumber
         @steps.status
       end
 
-      def skip_invoke!
-        @steps.each{|step_invocation| step_invocation.skip_invoke!}
-      end
-
       def to_sexp
         sexp = [:scenario, @line, @keyword, name]
         comment = @comment.to_sexp
@@ -99,7 +79,6 @@ module Cucumber
         sexp
       end
 
-
       def with_visitor(visitor)
         @current_visitor = visitor
         yield
@@ -107,6 +86,10 @@ module Cucumber
       end
 
       private
+
+      def skip_invoke!
+        @steps.skip_invoke!
+      end
 
       def skip_hooks?
         @background.failed? || @executed

@@ -1,5 +1,6 @@
 require 'cucumber/ast/has_steps'
 require 'cucumber/ast/names'
+require 'cucumber/ast/empty_background'
 
 module Cucumber
   module Ast
@@ -23,7 +24,8 @@ module Cucumber
       # * Examples section name
       # * Raw matrix
       def initialize(background, comment, tags, line, keyword, title, description, raw_steps, example_sections)
-        @background, @comment, @tags, @line, @keyword, @title, @description, @raw_steps, @example_sections = background, comment, tags, line, keyword, title, description, raw_steps, example_sections
+        @background = background || EmptyBackground.new
+        @comment, @tags, @line, @keyword, @title, @description, @raw_steps, @example_sections = comment, tags, line, keyword, title, description, raw_steps, example_sections
       end
 
       def add_examples(example_section, gherkin_examples)
@@ -64,7 +66,7 @@ module Cucumber
         visitor.visit_scenario_name(@keyword, name, file_colon_line(@line), source_indent(first_line_length))
         visitor.visit_steps(@steps)
 
-        skip_invoke! if @background && @background.failed?
+        skip_invoke! if @background.failed?
         visitor.visit_examples_array(@examples_array) unless @examples_array.empty?
       end
 
@@ -74,10 +76,7 @@ module Cucumber
       end
 
       def skip_invoke!
-        @examples_array.each{|examples| examples.skip_invoke!}
-        @feature.next_feature_element(self) do |next_one|
-          next_one.skip_invoke!
-        end
+        @examples_array.each { |examples| examples.skip_invoke! }
       end
 
       def step_invocations(cells)
@@ -105,7 +104,7 @@ module Cucumber
       end
 
       def failed?
-        @examples_array.select{|examples| examples.failed?}.any?
+        @examples_array.select { |examples| examples.failed? }.any?
       end
 
       def to_sexp
