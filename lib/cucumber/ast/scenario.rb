@@ -44,7 +44,7 @@ module Cucumber
 
       # Returns true if one or more steps failed
       def failed?
-        @steps.failed? || !!@exception
+        steps.failed? || !!@exception
       end
 
       def fail!(exception)
@@ -59,13 +59,13 @@ module Cucumber
 
       # Returns the first exception (if any)
       def exception
-        @exception || @steps.exception
+        @exception || steps.exception
       end
 
       # Returns the status
       def status
         return :failed if @exception
-        @steps.status
+        steps.status
       end
 
       def to_sexp
@@ -74,8 +74,7 @@ module Cucumber
         sexp += [comment] if comment
         tags = @tags.to_sexp
         sexp += tags if tags.any?
-        steps = @steps.to_sexp
-        sexp += steps if steps.any?
+        sexp += steps.to_sexp if steps.any?
         sexp
       end
 
@@ -86,7 +85,7 @@ module Cucumber
       end
 
       def skip_invoke!
-        @steps.skip_invoke!
+        steps.skip_invoke!
       end
 
       private
