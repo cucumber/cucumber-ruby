@@ -65,13 +65,6 @@ module Cucumber
         @tags.accept_hook?(hook)
       end
 
-      def next_feature_element(feature_element, &proc)
-        init
-        index = @feature_elements.index(feature_element)
-        next_one = @feature_elements[index+1]
-        proc.call(next_one) if next_one
-      end
-
       def backtrace_line(step_name, line)
         "#{file_colon_line(line)}:in `#{step_name}'"
       end
