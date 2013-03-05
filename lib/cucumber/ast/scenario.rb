@@ -8,7 +8,7 @@ module Cucumber
       include HasSteps
       include Names
 
-      attr_reader :line
+      attr_reader :line, :steps
 
       def initialize(background, comment, tags, line, keyword, title, description, raw_steps)
         @background = background || EmptyBackground.new
@@ -28,18 +28,15 @@ module Cucumber
       def accept(visitor)
         return if Cucumber.wants_to_quit
 
-        with_visitor(visitor) do
-          visitor.visit_comment(@comment) unless @comment.empty?
-          visitor.visit_tags(@tags)
-          visitor.visit_scenario_name(@keyword, name, file_colon_line(@line), source_indent(first_line_length))
+        visitor.visit_comment(@comment) unless @comment.empty?
+        visitor.visit_tags(@tags)
+        visitor.visit_scenario_name(@keyword, name, file_colon_line(@line), source_indent(first_line_length))
 
-          skip_invoke! if @background.failed?
-          visitor.runtime.with_hooks(self, skip_hooks?) do
-            skip_invoke! if failed?
-            visitor.visit_steps(@steps)
-          end
-          @executed = true
+        skip_invoke! if @background.failed?
+        with_visitor(visitor) do
+          visitor.execute(self, skip_hooks?)
         end
+        @executed = true
       end
 
       # Returns true if one or more steps failed
@@ -85,11 +82,11 @@ module Cucumber
         @current_visitor = nil
       end
 
-      private
-
       def skip_invoke!
         @steps.skip_invoke!
       end
+
+      private
 
       def skip_hooks?
         @background.failed? || @executed
