@@ -1,3 +1,10 @@
+## [Git master](https://github.com/cucumber/cucumber/compare/v1.2.2...master)
+
+### New Features
+
+### Bugfixes
+* Fix embedding images in json ([#315](https://github.com/cucumber/cucumber/issues/315) Oleg Sukhodolsky)
+
 ## [1.2.2](https://github.com/cucumber/cucumber/compare/v1.2.1...v1.2.2)
 
 ### New Features

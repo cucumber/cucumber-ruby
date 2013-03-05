@@ -67,7 +67,7 @@ module Cucumber
       def before_examples(examples)
         @gf.examples(examples.gherkin_statement)
       end
-      
+
       #used for capturing duration
       def after_step(step)
         step_finish = (Time.now - @step_time)
@@ -83,12 +83,21 @@ module Cucumber
       end
 
       def embed(file, mime_type, label)
-        data = File.read(file)
+        data = read_as_binary(file)
         if defined?(JRUBY_VERSION)
           data = data.to_java_bytes
         end
         @gf.embedding(mime_type, data)
       end
+
+      private
+        def read_as_binary(file)
+          if (Cucumber::RUBY_1_8_7)
+            File.open(filename, 'rb') { |f| f.read }
+          else
+            File.read(file, 'rb')
+          end
+        end
     end
   end
 end
