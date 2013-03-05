@@ -37,24 +37,9 @@ module Cucumber
         return if @steps
         attach_steps(@raw_steps)
         @steps = StepCollection.new(@raw_steps)
-
-        @examples_array = @example_sections.map do |example_section_and_gherkin_examples|
-          example_section = example_section_and_gherkin_examples[0]
-          gherkin_examples = example_section_and_gherkin_examples[1]
-
-          examples_comment     = example_section[0]
-          examples_line        = example_section[1]
-          examples_keyword     = example_section[2]
-          examples_title       = example_section[3]
-          examples_description = example_section[4]
-          examples_matrix      = example_section[5]
-
-          examples_table = OutlineTable.new(examples_matrix, self)
-          ex = Examples.new(examples_comment, examples_line, examples_keyword, examples_title, examples_description, examples_table)
-          ex.gherkin_statement(gherkin_examples)
-          ex
+        @examples_array = @example_sections.map do |section|
+          create_examples_table(section)
         end
-
         @examples_array.extend(ExamplesArray)
       end
 
@@ -117,6 +102,25 @@ module Cucumber
         sexp += steps if steps.any?
         sexp += @examples_array.map{|e| e.to_sexp}
         sexp
+      end
+
+      private
+
+      def create_examples_table(example_section_and_gherkin_examples)
+        example_section = example_section_and_gherkin_examples[0]
+        gherkin_examples = example_section_and_gherkin_examples[1]
+
+        examples_comment     = example_section[0]
+        examples_line        = example_section[1]
+        examples_keyword     = example_section[2]
+        examples_title       = example_section[3]
+        examples_description = example_section[4]
+        examples_matrix      = example_section[5]
+
+        examples_table = OutlineTable.new(examples_matrix, self)
+        ex = Examples.new(examples_comment, examples_line, examples_keyword, examples_title, examples_description, examples_table)
+        ex.gherkin_statement(gherkin_examples)
+        ex
       end
     end
   end
