@@ -8,7 +8,7 @@ module Cucumber
       include HasSteps
       include Names
 
-      attr_reader :line, :steps
+      attr_reader :line
 
       def initialize(background, comment, tags, line, keyword, title, description, raw_steps)
         @background = background || EmptyBackground.new
@@ -21,8 +21,12 @@ module Cucumber
         @background.init
         @background.feature_elements << self
         attach_steps(@raw_steps)
+        steps
+      end
+
+      def steps
         step_invocations = @raw_steps.map{|step| step.step_invocation}
-        @steps = @background.step_collection(step_invocations)
+        @steps ||= @background.step_collection(step_invocations)
       end
 
       def accept(visitor)
