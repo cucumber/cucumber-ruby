@@ -82,7 +82,7 @@ module Cucumber
       end
 
       def file_colon_line
-        @file_colon_line ||= feature_element.file_colon_line(line) unless feature_element.nil?
+        @file_colon_line ||= feature_element.file_colon_line(line)
       end
 
       def language

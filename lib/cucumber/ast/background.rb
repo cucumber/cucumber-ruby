@@ -7,6 +7,7 @@ module Cucumber
       include HasSteps
       include Names
       attr_reader :feature_elements
+      attr_accessor :feature
 
       def initialize(comment, line, keyword, title, description, raw_steps)
         @comment, @line, @keyword, @title, @description, @raw_steps = comment, line, keyword, title, description, raw_steps
@@ -63,7 +64,7 @@ module Cucumber
           hook_context.accept_hook?(hook)
         else
           # We have no scenarios, just ask our feature
-          @feature.accept_hook?(hook)
+          feature.accept_hook?(hook)
         end
       end
 

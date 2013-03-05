@@ -4,8 +4,6 @@ require 'gherkin/tag_expression'
 module Cucumber
   module Ast
     module HasSteps #:nodoc:
-      attr_accessor :feature
-
       attr_reader :gherkin_statement, :raw_steps, :title, :description
       def gherkin_statement(statement=nil)
         @gherkin_statement ||= statement
@@ -20,7 +18,7 @@ module Cucumber
       end
 
       def file_colon_line(line = @line)
-        @feature.file_colon_line(line) if @feature
+        feature.file_colon_line(line)
       end
 
       def first_line_length
@@ -50,7 +48,7 @@ module Cucumber
       end
 
       def backtrace_line(name = "#{@keyword}: #{name}", line = @line)
-        @feature.backtrace_line(name, line) if @feature
+        feature.backtrace_line(name, line)
       end
 
       def source_indent(text_length)
@@ -71,12 +69,13 @@ module Cucumber
       end
 
       def source_tags
-        (@tags.tags.to_a + (@feature ? @feature.source_tags.to_a : [])).uniq
+        @tags.tags.to_a + feature.source_tags.to_a
       end
 
       def language
-        @feature.language if @feature
+        feature.language
       end
+
     end
   end
 end

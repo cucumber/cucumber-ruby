@@ -55,7 +55,6 @@ module Cucumber
           []
         )
         @feature.add_feature_element(scenario)
-        @background.feature_elements << scenario if @background
         @step_container = scenario
         scenario.gherkin_statement(statement)
       end

@@ -7,6 +7,7 @@ module Cucumber
     class ScenarioOutline #:nodoc:
       include HasSteps
       include Names
+      attr_accessor :feature
 
       module ExamplesArray #:nodoc:
         def accept(visitor)
@@ -55,8 +56,6 @@ module Cucumber
         end
 
         @examples_array.extend(ExamplesArray)
-
-        @background.feature_elements << self if @background
       end
 
       def accept(visitor)

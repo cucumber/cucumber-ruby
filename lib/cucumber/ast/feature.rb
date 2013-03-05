@@ -12,6 +12,7 @@ module Cucumber
 
       def initialize(background, comment, tags, keyword, title, description, feature_elements)
         @background, @comment, @tags, @keyword, @title, @description, @feature_elements = background, comment, tags, keyword, title, description, feature_elements
+        @background.feature = self if @background
       end
 
       attr_reader :gherkin_statement
@@ -20,16 +21,16 @@ module Cucumber
       end
 
       def init
-        @background.feature = self if @background
         @background.init if @background
         @feature_elements.each do |feature_element|
           feature_element.init
-          feature_element.feature = self
         end
       end
 
       def add_feature_element(feature_element)
         @feature_elements << feature_element
+        @background.feature_elements << feature_element if @background
+        feature_element.feature = self
       end
 
       def accept(visitor)

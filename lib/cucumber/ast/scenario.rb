@@ -9,6 +9,7 @@ module Cucumber
       include Names
 
       attr_reader :line
+      attr_accessor :feature
 
       def initialize(background, comment, tags, line, keyword, title, description, raw_steps)
         @background = background || EmptyBackground.new
