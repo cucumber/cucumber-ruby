@@ -37,10 +37,7 @@ module Cucumber
         return if @steps
         attach_steps(@raw_steps)
         @steps = StepCollection.new(@raw_steps)
-        @examples_array = @example_sections.map do |section|
-          create_examples_table(section)
-        end
-        @examples_array.extend(ExamplesArray)
+        examples_array
       end
 
       def accept(visitor)
@@ -51,7 +48,7 @@ module Cucumber
         visitor.visit_steps(@steps)
 
         skip_invoke! if @background.failed?
-        visitor.visit_examples_array(@examples_array) unless @examples_array.empty?
+        visitor.visit_examples_array(examples_array) unless examples_array.empty?
       end
 
       def fail!(exception)
@@ -60,7 +57,7 @@ module Cucumber
       end
 
       def skip_invoke!
-        @examples_array.each { |examples| examples.skip_invoke! }
+        examples_array.each { |examples| examples.skip_invoke! }
       end
 
       def step_invocations(cells)
@@ -73,7 +70,7 @@ module Cucumber
       end
 
       def each_example_row(&proc)
-        @examples_array.each do |examples|
+        examples_array.each do |examples|
           examples.each_example_row(&proc)
         end
       end
@@ -88,7 +85,7 @@ module Cucumber
       end
 
       def failed?
-        @examples_array.select { |examples| examples.failed? }.any?
+        examples_array.select { |examples| examples.failed? }.any?
       end
 
       def to_sexp
@@ -100,11 +97,20 @@ module Cucumber
         sexp += tags if tags.any?
         steps = @steps.to_sexp
         sexp += steps if steps.any?
-        sexp += @examples_array.map{|e| e.to_sexp}
+        sexp += examples_array.map{|e| e.to_sexp}
         sexp
       end
 
       private
+
+      def examples_array
+        return @examples_array if @examples_array
+        @examples_array = @example_sections.map do |section|
+          create_examples_table(section)
+        end
+        @examples_array.extend(ExamplesArray)
+        @examples_array
+      end
 
       def create_examples_table(example_section_and_gherkin_examples)
         example_section = example_section_and_gherkin_examples[0]
