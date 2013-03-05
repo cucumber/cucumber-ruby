@@ -29,7 +29,7 @@ module Cucumber
       end
 
       def step_invocation
-        StepInvocation.new(self, @name, @multiline_arg, [])
+        StepInvocation.new(self, name, @multiline_arg, [])
       end
 
       def step_invocation_from_cells(cells)
@@ -50,43 +50,43 @@ module Cucumber
       end
 
       def visit_step_result(visitor, step_match, multiline_arg, status, exception, background)
-        visitor.visit_step_result(@keyword, step_match, @multiline_arg, status, exception, source_indent, background, file_colon_line)
+        visitor.visit_step_result(keyword, step_match, @multiline_arg, status, exception, source_indent, background, file_colon_line)
       end
 
       def first_match(visitor)
-        # @feature_element is always a ScenarioOutline in this case
-        @feature_element.each_example_row do |cells|
+        # feature_element is always a ScenarioOutline in this case
+        feature_element.each_example_row do |cells|
           argument_hash       = cells.to_hash
           delimited_arguments = delimit_argument_names(argument_hash)
-          name                = replace_name_arguments(delimited_arguments)
-          step_match          = visitor.runtime.step_match(name, @name) rescue nil
+          name_to_match       = replace_name_arguments(delimited_arguments)
+          step_match          = visitor.runtime.step_match(name_to_match, name) rescue nil
           return step_match if step_match
         end
-        NoStepMatch.new(self, @name)
+        NoStepMatch.new(self, name)
       end
 
       def to_sexp
-        [:step, @line, @keyword, @name, (@multiline_arg.nil? ? nil : @multiline_arg.to_sexp)].compact
+        [:step, line, keyword, name, (@multiline_arg.nil? ? nil : @multiline_arg.to_sexp)].compact
       end
 
       def source_indent
-        @feature_element.source_indent(text_length)
+        feature_element.source_indent(text_length)
       end
 
-      def text_length(name=@name)
-        INDENT + INDENT + @keyword.unpack('U*').length + name.unpack('U*').length
+      def text_length(name=name)
+        INDENT + INDENT + keyword.unpack('U*').length + name.unpack('U*').length
       end
 
       def backtrace_line
-        @backtrace_line ||= @feature_element.backtrace_line("#{@keyword}#{@name}", @line) unless @feature_element.nil?
+        @backtrace_line ||= feature_element.backtrace_line("#{keyword}#{name}", line) unless feature_element.nil?
       end
 
       def file_colon_line
-        @file_colon_line ||= @feature_element.file_colon_line(@line) unless @feature_element.nil?
+        @file_colon_line ||= feature_element.file_colon_line(line) unless feature_element.nil?
       end
 
       def language
-        @feature_element.language
+        feature_element.language
       end
 
       def dom_id
@@ -101,7 +101,7 @@ module Cucumber
           header_cell = cell.table.header_cell(col_index)
           col_index += 1
           delimited = delimited(header_cell.value)
-          @name.index(delimited) || (@multiline_arg && @multiline_arg.has_text?(delimited))
+          name.index(delimited) || (@multiline_arg && @multiline_arg.has_text?(delimited))
         end
       end
 
@@ -114,10 +114,10 @@ module Cucumber
       end
 
       def replace_name_arguments(argument_hash)
-        name_with_arguments_replaced = @name
-        argument_hash.each do |name, value|
+        name_with_arguments_replaced = name
+        argument_hash.each do |key, value|
           value ||= ''
-          name_with_arguments_replaced = name_with_arguments_replaced.gsub(name, value)
+          name_with_arguments_replaced = name_with_arguments_replaced.gsub(key, value)
         end
         name_with_arguments_replaced
       end
