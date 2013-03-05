@@ -83,21 +83,12 @@ module Cucumber
       end
 
       def embed(file, mime_type, label)
-        data = read_as_binary(file)
+        data = File.open(file, 'rb') { |f| f.read }
         if defined?(JRUBY_VERSION)
           data = data.to_java_bytes
         end
         @gf.embedding(mime_type, data)
       end
-
-      private
-        def read_as_binary(file)
-          if (Cucumber::RUBY_1_8_7)
-            File.open(filename, 'rb') { |f| f.read }
-          else
-            File.read(file, 'rb')
-          end
-        end
     end
   end
 end
