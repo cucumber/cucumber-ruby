@@ -24,22 +24,22 @@ module Cucumber
         end
 
         it "uses bundle exec to find cucumber and libraries" do
-          bundle_cmd = Gem.default_exec_format % 'bundle'
+          Gem.stub(:bin_path).with('bundler','bundle').and_return('/path/to/bundle')
 
           subject.cmd.should == [Cucumber::RUBY_BINARY,
                                  '-S',
-                                 bundle_cmd,
+                                 '/path/to/bundle',
                                  'exec',
                                  'cucumber',
                                  '--cuke-option'] + feature_files
         end
 
         it "obeys program suffix for bundler" do
-          Gem::ConfigMap.stub(:[]).with(:ruby_install_name).and_return('XrubyY')
+          Gem.stub(:bin_path).with('bundler','bundle').and_return('/path/to/XbundleY')
 
           subject.cmd.should == [Cucumber::RUBY_BINARY,
                                  '-S',
-                                 'XbundleY',
+                                 '/path/to/XbundleY',
                                  'exec',
                                  'cucumber',
                                  '--cuke-option'] + feature_files
