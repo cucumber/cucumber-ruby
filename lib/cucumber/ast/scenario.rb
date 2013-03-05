@@ -18,7 +18,6 @@ module Cucumber
 
       def init
         return if @steps
-        @background.init
         @background.feature_elements << self
         attach_steps(@raw_steps)
         steps
