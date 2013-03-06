@@ -29,7 +29,7 @@ module Cucumber
           Gem.stub(:bin_path).with('bundler','bundle').and_return('/path/to/bundle')
           subject.cmd.should == [Cucumber::RUBY_BINARY,
                                  '-S',
-                                 '/path/to/bundle',
+                                 'bundle',
                                  'exec',
                                  'rcov',
                                  '--rcov-option',
@@ -43,7 +43,7 @@ module Cucumber
 
           subject.cmd.should == [Cucumber::RUBY_BINARY,
                                  '-S',
-                                 '/path/to/XbundleY',
+                                 'XbundleY',
                                  'exec',
                                  'rcov',
                                  '--rcov-option',

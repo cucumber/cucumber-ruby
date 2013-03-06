@@ -28,7 +28,7 @@ module Cucumber
 
           subject.cmd.should == [Cucumber::RUBY_BINARY,
                                  '-S',
-                                 '/path/to/bundle',
+                                 'bundle',
                                  'exec',
                                  'cucumber',
                                  '--cuke-option'] + feature_files
@@ -39,7 +39,7 @@ module Cucumber
 
           subject.cmd.should == [Cucumber::RUBY_BINARY,
                                  '-S',
-                                 '/path/to/XbundleY',
+                                 'XbundleY',
                                  'exec',
                                  'cucumber',
                                  '--cuke-option'] + feature_files
