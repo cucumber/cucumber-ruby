@@ -11,6 +11,7 @@ module Cucumber
       def initialize(comment, line, keyword, title, description, raw_steps)
         @comment, @line, @keyword, @title, @description, @raw_steps = comment, line, keyword, title, description, raw_steps
         @feature_elements = []
+        @failed = nil
       end
 
       def init
