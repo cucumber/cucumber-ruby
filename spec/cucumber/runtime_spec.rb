@@ -35,6 +35,10 @@ describe Runtime do
       subject.configure(new_configuration)
       subject.features_paths.should == some_new_paths
     end
+
+    it '#doc_string' do
+      subject.doc_string('Text').should == 'Text'
+    end
   end
 
 end
