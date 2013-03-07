@@ -10,7 +10,6 @@ module Cucumber
       include HasLocation
 
       attr_accessor :language
-      attr_writer :features
       attr_reader :file, :feature_elements, :line
 
       def initialize(background, comment, tags, keyword, title, description, feature_elements)

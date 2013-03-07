@@ -18,7 +18,6 @@ module Cucumber
       end
 
       def add_feature(feature)
-        feature.features = self
         @features << feature
       end
 
