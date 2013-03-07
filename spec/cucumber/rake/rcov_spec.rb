@@ -17,6 +17,8 @@ module Cucumber
       context "when running with bundler" do
 
         let(:bundler) { true }
+        let(:bundler_lib_dir) { File.join(Gem.dir, 'gems', 'bundler-1.2.3', 'lib') }
+        let(:bundler_spec) { Gem::Specification.new 'bundler', '1.2.3' }
 
         subject { Task::RCovCucumberRunner.new(
             libs, binary, cucumber_opts, bundler, feature_files, rcov_opts) }
@@ -25,11 +27,14 @@ module Cucumber
           subject.use_bundler.should be_true
         end
 
-        it "uses bundle exec to find cucumber and libraries" do
+        it "uses bundler to find cucumber and libraries" do
+          Gem::Specification.should_receive(:find_by_name).with('bundler').and_return(bundler_spec)
+
           subject.cmd.should == [Cucumber::RUBY_BINARY,
+                                 '-I',
+                                 '"%s"' % ([bundler_lib_dir]+libs).join(File::PATH_SEPARATOR),
+                                 '-rbundler/setup',
                                  '-S',
-                                 'bundle',
-                                 'exec',
                                  'rcov',
                                  '--rcov-option',
                                  "\"#{Cucumber::BINARY }\"",

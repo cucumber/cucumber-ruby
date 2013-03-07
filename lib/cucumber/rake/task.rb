@@ -67,7 +67,7 @@ module Cucumber
         end
 
         def load_path(libs)
-          ['"%s"' % @libs.join(File::PATH_SEPARATOR)]
+          ['"%s"' % libs.join(File::PATH_SEPARATOR)]
         end
 
         def quoted_binary(cucumber_bin)
@@ -76,6 +76,11 @@ module Cucumber
 
         def use_bundler
           @bundler.nil? ? File.exist?("./Gemfile") && gem_available?("bundler") : @bundler
+        end
+
+        def bundler_lib_path
+          spec = Gem::Specification.find_by_name('bundler')
+          File.join(spec.gem_dir , 'lib')
         end
 
         def gem_available?(gemname)
@@ -92,8 +97,7 @@ module Cucumber
 
         def cmd
           if use_bundler
-            bundle_cmd = Gem.default_exec_format % 'bundle'
-            [ Cucumber::RUBY_BINARY, '-S', bundle_cmd, 'exec', 'cucumber', @cucumber_opts,
+            [ Cucumber::RUBY_BINARY, '-I', load_path([bundler_lib_path] + @libs), '-rbundler/setup', quoted_binary(@cucumber_bin), @cucumber_opts,
             @feature_files ].flatten
           else
             [ Cucumber::RUBY_BINARY, '-I', load_path(@libs), quoted_binary(@cucumber_bin),
@@ -115,7 +119,7 @@ module Cucumber
 
         def cmd
           if use_bundler
-            [Cucumber::RUBY_BINARY, '-S', 'bundle', 'exec', 'rcov', @rcov_opts,
+            [Cucumber::RUBY_BINARY, '-I', load_path([bundler_lib_path] + @libs), '-rbundler/setup', '-S', 'rcov', @rcov_opts,
              quoted_binary(@cucumber_bin), '--', @cucumber_opts, @feature_files].flatten
           else
             [Cucumber::RUBY_BINARY, '-I', load_path(@libs), '-S', 'rcov', @rcov_opts,
