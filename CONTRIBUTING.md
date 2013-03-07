@@ -7,7 +7,7 @@ We appreciate that. But before you do, please learn our basic rules:
 * Reporting a bug? Please tell us:
   * which version of Cucumber you're using
   * which version of Ruby you're using.
-  * How to reproduce it. Bugs with a failing test in a [pull requests](https://help.github.com/articles/using-pull-requests) get fixed much quicker. Some bugs may never be fixed.
+  * How to reproduce it. Bugs with a failing test in a [pull request](https://help.github.com/articles/using-pull-requests) get fixed much quicker. Some bugs may never be fixed.
 * Want to paste some code or output? Put \`\`\` on a line above and below your code/output. See [GFM](https://help.github.com/articles/github-flavored-markdown)'s *Fenced Code Blocks* for details.
 * We love [pull requests](https://help.github.com/articles/using-pull-requests). But if you don't have a test to go with it we probably won't merge it.
 
