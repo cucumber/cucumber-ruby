@@ -79,6 +79,30 @@ module Cucumber
           })
         end
 
+        it "should wrap snippet patterns in parentheses for explicit regexp snippet type" do
+          rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :regexp).should == unindented(%{
+          Given(/^A "(.*?)" with (\\d+) spaces$/) do |arg1, arg2|
+            pending # express the regexp above with the code you wish you had
+          end
+          })
+        end
+
+        it "should not wrap snippet patterns in parentheses for legacy snippet type" do
+          rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :legacy).should == unindented(%{
+          Given /^A "(.*?)" with (\\d+) spaces$/ do |arg1, arg2|
+            pending # express the regexp above with the code you wish you had
+          end
+          })
+        end
+
+        it "should wrap snippet patterns in percentage regexp for percent snippet type" do
+          rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :percent).should == unindented(%{
+          Given %r{^A "(.*?)" with (\\d+) spaces$} do |arg1, arg2|
+            pending # express the regexp above with the code you wish you had
+          end
+          })
+        end
+
       end
 
       describe "#load_code_file" do

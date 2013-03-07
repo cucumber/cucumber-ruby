@@ -68,6 +68,10 @@ module Cucumber
         @options[:dotcucumber]
       end
 
+      def snippet_type
+        @options[:snippet_type] || :regexp
+      end
+
       def build_tree_walker(runtime)
         Ast::TreeWalker.new(runtime, formatters(runtime), self)
       end

@@ -38,6 +38,10 @@ module Cucumber
       @options[:autoload_code_paths]
     end
 
+    def snippet_type
+      @options[:snippet_type]
+    end
+
   private
 
     def default_options

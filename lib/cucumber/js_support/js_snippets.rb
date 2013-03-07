@@ -4,7 +4,7 @@ module Cucumber
       PARAM_PATTERN = /"(.*?)"/
       ESCAPED_PARAM_PATTERN = '"([^\\"]*)"'
 
-      def snippet_text(code_keyword, step_name, multiline_arg_class)
+      def snippet_text(code_keyword, step_name, multiline_arg_class, snippet_type)
         escaped = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
         escaped = escaped.gsub(PARAM_PATTERN, ESCAPED_PARAM_PATTERN)
 

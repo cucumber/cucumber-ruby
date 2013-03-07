@@ -438,6 +438,23 @@ END_OF_MESSAGE
         config.dry_run?.should be_false
       end
     end
+
+    describe "#snippet_type" do
+      it "returns the snippet type when it was set" do
+        config.parse!(["--snippet-type", "legacy"])
+        config.snippet_type.should eql :legacy
+      end
+
+      it "returns the snippet type when it was set with shorthand option" do
+        config.parse!(["-I", "legacy"])
+        config.snippet_type.should eql :legacy
+      end
+
+      it "returns the default snippet type if it was not set" do
+        config.parse!([])
+        config.snippet_type.should eql :regexp
+      end
+    end
   end
 end
 end
