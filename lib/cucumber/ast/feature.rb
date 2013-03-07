@@ -23,13 +23,6 @@ module Cucumber
         @gherkin_statement ||= statement
       end
 
-      def init
-        @background.init if @background
-        @feature_elements.each do |feature_element|
-          feature_element.init
-        end
-      end
-
       def step_count
         units.inject(0) { |total, unit| total += unit.step_count }
       end
@@ -108,6 +101,13 @@ module Cucumber
       private
 
       attr_reader :background
+
+      def init
+        @background.init if @background
+        @feature_elements.each do |feature_element|
+          feature_element.init
+        end
+      end
 
       def units
         @units ||= @feature_elements.map do |element| 

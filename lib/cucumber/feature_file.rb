@@ -28,18 +28,15 @@ module Cucumber
     def parse(configuration_filters, tag_counts)
       filters = @lines || configuration_filters
 
-      builder             = Cucumber::Parser::GherkinBuilder.new
+      builder             = Cucumber::Parser::GherkinBuilder.new(@path)
       filter_formatter    = filters.empty? ? builder : Gherkin::Formatter::FilterFormatter.new(builder, filters)
       tag_count_formatter = Gherkin::Formatter::TagCountFormatter.new(filter_formatter, tag_counts)
       parser              = Gherkin::Parser::Parser.new(tag_count_formatter, true, "root", false)
 
       begin
         parser.parse(source, @path, 0)
-        feature = builder.result
-        return nil if feature.nil? # Filter caused nothing to match
-        feature.language = parser.i18n_language
-        feature.file = @path
-        feature
+        builder.language = parser.i18n_language
+        builder.result
       rescue Gherkin::Lexer::LexingError, Gherkin::Parser::ParseError => e
         e.message.insert(0, "#{@path}: ")
         raise e

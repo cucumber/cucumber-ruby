@@ -62,7 +62,7 @@ module Cucumber
       describe "verbose mode" do
 
         before(:each) do
-          b = Cucumber::Parser::GherkinBuilder.new
+          b = Cucumber::Parser::GherkinBuilder.new('features/foo.feature')
           b.feature(Gherkin::Formatter::Model::Feature.new([], [], "Feature", "Foo", "", 99, ""))
           @empty_feature = b.result
         end

@@ -35,12 +35,10 @@ GHERKIN
 
       def parse_feature(gherkin)
         path    = 'features/test.feature'
-        builder = Cucumber::Parser::GherkinBuilder.new
+        builder = Cucumber::Parser::GherkinBuilder.new(path)
         parser  = Gherkin::Parser::Parser.new(builder, true, "root", false)
         parser.parse(gherkin, path, 0)
         feature = builder.result
-        feature.language = parser.i18n_language
-        feature.file = path
         features.add_feature(feature)
       end
 

@@ -10,9 +10,16 @@ module Cucumber
     # AST.
     class GherkinBuilder
       include Gherkin::Rubify
+      def initialize(path = 'UNKNOWN-FILE')
+        @path = path
+      end
 
       def result
         ast_feature || @multiline_arg
+      end
+
+      def language=(language)
+        @language = language
       end
 
       def feature(feature)
@@ -20,6 +27,7 @@ module Cucumber
       end
 
       def uri(uri)
+        @path = uri
       end
 
       def background(background)
@@ -127,6 +135,8 @@ module Cucumber
           []
         )
         @feature.gherkin_statement(@gherkin_feature)
+        @feature.file = @path
+        @feature.language = @language
         @feature
       end
 
