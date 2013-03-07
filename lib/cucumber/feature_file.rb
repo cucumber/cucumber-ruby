@@ -22,7 +22,7 @@ module Cucumber
       end
     end
 
-    # Parses a file and returns a Cucumber::Ast
+    # Parses a file and returns a Cucumber::Ast::Feature
     # If +configuration_filters+ contains any filters, the result will
     # be filtered.
     def parse(configuration_filters, tag_counts)
@@ -35,11 +35,11 @@ module Cucumber
 
       begin
         parser.parse(source, @path, 0)
-        ast = builder.ast
-        return nil if ast.nil? # Filter caused nothing to match
-        ast.language = parser.i18n_language
-        ast.file = @path
-        ast
+        feature = builder.result
+        return nil if feature.nil? # Filter caused nothing to match
+        feature.language = parser.i18n_language
+        feature.file = @path
+        feature
       rescue Gherkin::Lexer::LexingError, Gherkin::Parser::ParseError => e
         e.message.insert(0, "#{@path}: ")
         raise e

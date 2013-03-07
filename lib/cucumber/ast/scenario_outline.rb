@@ -7,7 +7,9 @@ module Cucumber
     class ScenarioOutline #:nodoc:
       include HasSteps
       include Names
-      attr_accessor :feature
+      include HasLocation
+
+      attr_accessor :feature, :file
 
       module ExamplesArray #:nodoc:
         def accept(visitor)
@@ -44,11 +46,21 @@ module Cucumber
         return if Cucumber.wants_to_quit
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, name, file_colon_line(@line), source_indent(first_line_length))
+        visitor.visit_scenario_name(@keyword, name, file_colon_line, source_indent(first_line_length))
         visitor.visit_steps(@steps)
 
         skip_invoke! if @background.failed?
         visitor.visit_examples_array(examples_array) unless examples_array.empty?
+      end
+
+      def to_units(background)
+        init
+        raise ArgumentError unless background == @background # maybe we don't need this argument, but it seems like the leaf AST nodes would be better not being aware of their parents. However step_invocations uses the ivar at the moment, so we'll just do this check to make sure its OK.
+        result = []
+        each_example_row do |row|
+          result << Unit.new(step_invocations(row))
+        end
+        result
       end
 
       def fail!(exception)
@@ -79,7 +91,7 @@ module Cucumber
         visitor.visit_scenario_name(
           @feature.language.keywords('scenario')[0],
           row.name,
-          file_colon_line(row.line),
+          Location.new(file, row.line).to_s,
           source_indent(first_line_length)
         )
       end
@@ -102,6 +114,8 @@ module Cucumber
       end
 
       private
+
+      attr_reader :line
 
       def examples_array
         return @examples_array if @examples_array

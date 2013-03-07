@@ -1,15 +1,18 @@
 require 'cucumber/ast/has_steps'
 require 'cucumber/ast/names'
 require 'cucumber/ast/empty_background'
+require 'cucumber/ast/location'
+require 'cucumber/unit'
 
 module Cucumber
   module Ast
     class Scenario #:nodoc:
       include HasSteps
       include Names
+      include HasLocation
 
       attr_reader :line
-      attr_accessor :feature
+      attr_accessor :feature, :file
 
       def initialize(background, comment, tags, line, keyword, title, description, raw_steps)
         @background = background || EmptyBackground.new
@@ -24,7 +27,6 @@ module Cucumber
       end
 
       def steps
-        step_invocations = @raw_steps.map{|step| step.step_invocation}
         @steps ||= @background.step_collection(step_invocations)
       end
 
@@ -33,13 +35,17 @@ module Cucumber
 
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, name, file_colon_line(@line), source_indent(first_line_length))
+        visitor.visit_scenario_name(@keyword, name, file_colon_line, source_indent(first_line_length))
 
         skip_invoke! if @background.failed?
         with_visitor(visitor) do
           visitor.execute(self, skip_hooks?)
         end
         @executed = true
+      end
+
+      def to_units(background)
+        [Unit.new(background.step_invocations + step_invocations)]
       end
 
       # Returns true if one or more steps failed
@@ -89,6 +95,10 @@ module Cucumber
       end
 
       private
+
+      def step_invocations
+        @raw_steps.map{|step| step.step_invocation}
+      end
 
       def skip_hooks?
         @background.failed? || @executed

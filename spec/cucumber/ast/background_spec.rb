@@ -46,6 +46,7 @@ module Cucumber
           steps=[]
         )
         background.feature = @feature
+        background.file = 'foo.feature'
         @visitor.visit_background(background)
         $x.should == 2
         $y.should == 10
@@ -95,6 +96,7 @@ module Cucumber
               Step.new(7, "Given", "y is 5")
             ])
           background.feature = @feature
+          background.file = 'foo.feature'
 
           # Expect
           @visitor.should_receive( :visit_exception ) do |exception, status|

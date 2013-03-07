@@ -1,12 +1,15 @@
 require 'cucumber/core_ext/string'
 require 'cucumber/step_match'
+require 'cucumber/ast/location'
 
 module Cucumber
   module Ast
     class Step #:nodoc:
+      include HasLocation
+
       attr_reader :line, :keyword, :name
       attr_writer :step_collection, :options
-      attr_accessor :feature_element, :exception, :multiline_arg
+      attr_accessor :feature_element, :exception, :multiline_arg, :file
 
       INDENT = 2
 
@@ -79,10 +82,6 @@ module Cucumber
 
       def backtrace_line
         @backtrace_line ||= feature_element.backtrace_line("#{keyword}#{name}", line) unless feature_element.nil?
-      end
-
-      def file_colon_line
-        @file_colon_line ||= feature_element.file_colon_line(line)
       end
 
       def language

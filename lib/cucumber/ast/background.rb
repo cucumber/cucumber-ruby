@@ -1,13 +1,15 @@
 require 'cucumber/ast/has_steps'
 require 'cucumber/ast/names'
+require 'cucumber/ast/location'
 
 module Cucumber
   module Ast
     class Background #:nodoc:
       include HasSteps
       include Names
+      include HasLocation
       attr_reader :feature_elements
-      attr_accessor :feature
+      attr_accessor :feature, :file
 
       def initialize(comment, line, keyword, title, description, raw_steps)
         @comment, @line, @keyword, @title, @description, @raw_steps = comment, line, keyword, title, description, raw_steps
@@ -20,6 +22,11 @@ module Cucumber
         attach_steps(@raw_steps)
         @steps = StepCollection.new(@raw_steps)
         @step_invocations = @steps.step_invocations(true)
+      end
+
+      def step_invocations
+        init
+        @step_invocations
       end
 
       def step_collection(step_invocations)
@@ -36,7 +43,7 @@ module Cucumber
         return if Cucumber.wants_to_quit
         init
         visitor.visit_comment(@comment) unless @comment.empty?
-        visitor.visit_background_name(@keyword, name, file_colon_line(@line), source_indent(first_line_length))
+        visitor.visit_background_name(@keyword, name, file_colon_line, source_indent(first_line_length))
         with_visitor(hook_context, visitor) do
           visitor.runtime.before(hook_context)
           skip_invoke! if failed?
@@ -108,6 +115,10 @@ module Cucumber
       def source_tag_names
         source_tags.map { |tag| tag.name }
       end
+
+      private
+
+      attr_reader :line
 
     end
   end

@@ -1,6 +1,7 @@
 require 'cucumber/ast'
 require 'gherkin/rubify'
 require 'cucumber/ast/multiline_argument'
+require 'cucumber/ast/empty_background'
 
 module Cucumber
   module Parser
@@ -10,22 +11,15 @@ module Cucumber
     class GherkinBuilder
       include Gherkin::Rubify
 
-      def ast
-        @feature || @multiline_arg
+      def result
+        ast_feature || @multiline_arg
       end
 
       def feature(feature)
-        @feature = Ast::Feature.new(
-          nil,
-          Ast::Comment.new(feature.comments.map{|comment| comment.value}.join("\n")),
-          Ast::Tags.new(nil, feature.tags),
-          feature.keyword,
-          feature.name.lstrip,
-          feature.description.rstrip,
-          []
-        )
-        @feature.gherkin_statement(feature)
-        @feature
+        @gherkin_feature = feature
+      end
+
+      def uri(uri)
       end
 
       def background(background)
@@ -37,15 +31,13 @@ module Cucumber
           background.description,
           []
         )
-        @feature.background = @background
-        @background.feature = @feature
-        @step_container = @background
         @background.gherkin_statement(background)
+        @step_container = @background
       end
 
       def scenario(statement)
         scenario = Ast::Scenario.new(
-          @background,
+          ast_background,
           Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")),
           Ast::Tags.new(nil, statement.tags),
           statement.line,
@@ -54,14 +46,14 @@ module Cucumber
           statement.description,
           []
         )
-        @feature.add_feature_element(scenario)
+        ast_feature.add_feature_element(scenario)
         @step_container = scenario
         scenario.gherkin_statement(statement)
       end
 
       def scenario_outline(statement)
         scenario_outline = Ast::ScenarioOutline.new(
-          @background,
+          ast_background,
           Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")),
           Ast::Tags.new(nil, statement.tags),
           statement.line,
@@ -71,7 +63,7 @@ module Cucumber
           [],
           []
         )
-        @feature.add_feature_element(scenario_outline)
+        ast_feature.add_feature_element(scenario_outline)
         @step_container = scenario_outline
         scenario_outline.gherkin_statement(statement)
       end
@@ -121,6 +113,25 @@ module Cucumber
           row.line = gherkin_row.line
           row
         end
+      end
+
+      def ast_feature
+        return unless @gherkin_feature
+        @feature ||= Ast::Feature.new(
+          ast_background,
+          Ast::Comment.new(@gherkin_feature.comments.map{|comment| comment.value}.join("\n")),
+          Ast::Tags.new(nil, @gherkin_feature.tags),
+          @gherkin_feature.keyword,
+          @gherkin_feature.name.lstrip,
+          @gherkin_feature.description.rstrip,
+          []
+        )
+        @feature.gherkin_statement(@gherkin_feature)
+        @feature
+      end
+
+      def ast_background
+        @background ||= Ast::EmptyBackground.new
       end
     end
   end

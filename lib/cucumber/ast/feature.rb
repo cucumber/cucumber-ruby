@@ -1,18 +1,21 @@
 require 'cucumber/ast/names'
+require 'cucumber/ast/location'
+require 'cucumber/ast/location'
 
 module Cucumber
   module Ast
     # Represents the root node of a parsed feature.
     class Feature #:nodoc:
       include Names
+      include HasLocation
 
       attr_accessor :language
-      attr_writer :features, :background
-      attr_reader :file, :feature_elements
+      attr_writer :features
+      attr_reader :file, :feature_elements, :line
 
       def initialize(background, comment, tags, keyword, title, description, feature_elements)
         @background, @comment, @tags, @keyword, @title, @description, @feature_elements = background, comment, tags, keyword, title, description, feature_elements
-        @background.feature = self if @background
+        @background.feature = self
       end
 
       attr_reader :gherkin_statement
@@ -27,6 +30,10 @@ module Cucumber
         end
       end
 
+      def step_count
+        units.inject(0) { |total, unit| total += unit.step_count }
+      end
+
       def add_feature_element(feature_element)
         @feature_elements << feature_element
         @background.feature_elements << feature_element if @background
@@ -39,7 +46,7 @@ module Cucumber
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@keyword, indented_name)
-        visitor.visit_background(@background) if @background
+        visitor.visit_background(@background) if !@background.is_a?(EmptyBackground)
         @feature_elements.each do |feature_element|
           visitor.visit_feature_element(feature_element)
         end
@@ -67,16 +74,14 @@ module Cucumber
       end
 
       def backtrace_line(step_name, line)
-        "#{file_colon_line(line)}:in `#{step_name}'"
+        "#{Location.new(file, line)}:in `#{step_name}'"
       end
 
       def file=(file)
         file = file.gsub(/\//, '\\') if Cucumber::WINDOWS && file && !ENV['CUCUMBER_FORWARD_SLASH_PATHS']
         @file = file
-      end
-
-      def file_colon_line(line)
-        "#{@file}:#{line}"
+        background.file = file
+        feature_elements.each { |e| e.file = file }
       end
 
       def short_name
@@ -98,6 +103,16 @@ module Cucumber
         sexp += [@background.to_sexp] if @background
         sexp += @feature_elements.map{|fe| fe.to_sexp}
         sexp
+      end
+
+      private
+
+      attr_reader :background
+
+      def units
+        @units ||= @feature_elements.map do |element| 
+          element.to_units(@background)
+        end.flatten
       end
     end
   end

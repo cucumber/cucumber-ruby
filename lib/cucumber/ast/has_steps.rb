@@ -14,11 +14,10 @@ module Cucumber
       end
 
       def attach_steps(steps)
-        steps.each {|step| step.feature_element = self}
-      end
-
-      def file_colon_line(line = @line)
-        feature.file_colon_line(line)
+        steps.each do |step| 
+          step.feature_element = self
+          step.file = file
+        end
       end
 
       def first_line_length

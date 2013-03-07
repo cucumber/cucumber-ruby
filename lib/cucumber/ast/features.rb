@@ -30,6 +30,10 @@ module Cucumber
         end
         @duration = Time.now - start
       end
+
+      def step_count
+        @features.inject(0) { |total, feature| total += feature.step_count }
+      end
     end
   end
 end

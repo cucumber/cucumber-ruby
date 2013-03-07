@@ -32,6 +32,10 @@ module Cucumber
         @steps.map{|step| step.step_invocation_from_cells(cells)}
       end
 
+      def +(step_invocations)
+        dup(step_invocations)
+      end
+
       # Duplicates this instance and adds +step_invocations+ to the end
       def dup(step_invocations = [])
         StepCollection.new(@steps + step_invocations)
@@ -70,6 +74,10 @@ module Cucumber
       def status
         @steps.each{|step_invocation| return step_invocation.status if step_invocation.status != :passed}
         :passed
+      end
+
+      def length
+        @steps.length
       end
 
       def to_sexp
