@@ -15,7 +15,7 @@ Where to get more info:
   * Support forum: https://groups.google.com/forum/?fromgroups#!forum/cukes
   * IRC channel: irc://irc.freenode.net/cucumber
 
-See [DEVELOPERS.md](DEVELOPERS.md) for info on contributing to Cucumber.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for info on contributing to Cucumber.
 
 ## Copyright
 
