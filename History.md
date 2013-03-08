@@ -1,8 +1,7 @@
 ## [Git master](https://github.com/cucumber/cucumber/compare/v1.2.2...master)
 
-### New Features
-
 ### Bugfixes
+* Fix problem with rake task for jruby and ruby installed from packages on Ubuntu ([#386](https://github.com/cucumber/cucumber/issues/386), [#388](https://github.com/cucumber/cucumber/issues/388) y-higuchi)
 * Fix embedding images in json ([#315](https://github.com/cucumber/cucumber/issues/315) Oleg Sukhodolsky)
 
 ## [1.2.2](https://github.com/cucumber/cucumber/compare/v1.2.1...v1.2.2)

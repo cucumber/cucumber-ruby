@@ -92,8 +92,7 @@ module Cucumber
 
         def cmd
           if use_bundler
-            bundle_cmd = Gem.default_exec_format % 'bundle'
-            [ Cucumber::RUBY_BINARY, '-S', bundle_cmd, 'exec', 'cucumber', @cucumber_opts,
+            [ Cucumber::RUBY_BINARY, '-S', 'bundle', 'exec', 'cucumber', @cucumber_opts,
             @feature_files ].flatten
           else
             [ Cucumber::RUBY_BINARY, '-I', load_path(@libs), quoted_binary(@cucumber_bin),
