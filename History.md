@@ -1,3 +1,10 @@
+## [Git master](https://github.com/cucumber/cucumber/compare/v1.2.3...master)
+
+### New Features
+
+### Bugfixes
+* Fix problem with non-ascii characters in file path ([#150](https://github.com/cucumber/cucumber/issues/150) Oleg Sukhodolsky)
+
 ## [1.2.3](https://github.com/cucumber/cucumber/compare/v1.2.2...v1.2.3)
 
 ### Bugfixes
