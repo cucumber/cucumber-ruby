@@ -2,8 +2,8 @@
 
 We appreciate that. But before you do, please learn our basic rules:
 
-* This is not a support forum. If you have a question, please go to [The Cukes Google Group](groups.google.com/group/cukes).
-* Do you have an idea for a new feature? Then don't expect it to be implemented unless you or someone else sends a [pull request](https://help.github.com/articles/using-pull-requests). You might be better to start a discussion on [the google group](groups.google.com/group/cukes).
+* This is not a support forum. If you have a question, please go to [The Cukes Google Group](http://groups.google.com/group/cukes).
+* Do you have an idea for a new feature? Then don't expect it to be implemented unless you or someone else sends a [pull request](https://help.github.com/articles/using-pull-requests). You might be better to start a discussion on [the google group](http://groups.google.com/group/cukes).
 * Reporting a bug? Please tell us:
   * which version of Cucumber you're using
   * which version of Ruby you're using.
