@@ -33,7 +33,8 @@ module Cucumber
           ]
         )
 
-        f = Ast::Feature.new(
+        Ast::Feature.new(
+          'features/pretty_printing.feature',
           background,
           Ast::Comment.new("# My feature comment\n"),
           Ast::Tags.new(6, [Gherkin::Formatter::Model::Tag.new('one', 6), Gherkin::Formatter::Model::Tag.new('two', 6)]),
@@ -53,8 +54,6 @@ module Cucumber
             ]
           )]
         )
-        f.file = 'features/pretty_printing.feature'
-        f
       end
     end
   end

@@ -126,6 +126,7 @@ module Cucumber
       def ast_feature
         return unless @gherkin_feature
         @feature ||= Ast::Feature.new(
+          @path,
           ast_background,
           Ast::Comment.new(@gherkin_feature.comments.map{|comment| comment.value}.join("\n")),
           Ast::Tags.new(nil, @gherkin_feature.tags),
@@ -135,7 +136,6 @@ module Cucumber
           []
         )
         @feature.gherkin_statement(@gherkin_feature)
-        @feature.file = @path
         @feature.language = @language
         @feature
       end
