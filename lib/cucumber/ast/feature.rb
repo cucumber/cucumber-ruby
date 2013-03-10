@@ -104,7 +104,7 @@ module Cucumber
 
       def units
         @units ||= @feature_elements.map do |element| 
-          element.to_units(@background)
+          element.to_units(background)
         end.flatten
       end
 
