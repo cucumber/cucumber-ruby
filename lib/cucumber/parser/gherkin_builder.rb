@@ -32,8 +32,8 @@ module Cucumber
 
       def background(background)
         @background = Ast::Background.new(
+          Ast::Location.new(file, background.line),
           Ast::Comment.new(background.comments.map{|comment| comment.value}.join("\n")),
-          background.line,
           background.keyword,
           background.name,
           background.description,
@@ -45,10 +45,10 @@ module Cucumber
 
       def scenario(statement)
         scenario = Ast::Scenario.new(
+          Ast::Location.new(file, statement.line),
           ast_background,
           Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")),
           Ast::Tags.new(nil, statement.tags),
-          statement.line,
           statement.keyword,
           statement.name,
           statement.description,
@@ -61,10 +61,10 @@ module Cucumber
 
       def scenario_outline(statement)
         scenario_outline = Ast::ScenarioOutline.new(
+          Ast::Location.new(file, statement.line),
           ast_background,
           Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")),
           Ast::Tags.new(nil, statement.tags),
-          statement.line,
           statement.keyword,
           statement.name,
           statement.description,
@@ -78,8 +78,8 @@ module Cucumber
 
       def examples(examples)
         examples_fields = [
+          Ast::Location.new(file, examples.line),
           Ast::Comment.new(examples.comments.map{|comment| comment.value}.join("\n")),
-          examples.line,
           examples.keyword,
           examples.name,
           examples.description,
@@ -90,7 +90,7 @@ module Cucumber
 
       def step(gherkin_step)
         step = Ast::Step.new(
-          gherkin_step.line,
+          Ast::Location.new(file, gherkin_step.line),
           gherkin_step.keyword,
           gherkin_step.name,
           Ast::MultilineArgument.from(gherkin_step.doc_string || gherkin_step.rows)
@@ -126,7 +126,7 @@ module Cucumber
       def ast_feature
         return unless @gherkin_feature
         @feature ||= Ast::Feature.new(
-          @path,
+          Ast::Location.new(file, @gherkin_feature.line),
           ast_background,
           Ast::Comment.new(@gherkin_feature.comments.map{|comment| comment.value}.join("\n")),
           Ast::Tags.new(nil, @gherkin_feature.tags),
@@ -142,6 +142,14 @@ module Cucumber
 
       def ast_background
         @background ||= Ast::EmptyBackground.new
+      end
+
+      def file
+        if Cucumber::WINDOWS && file && !ENV['CUCUMBER_FORWARD_SLASH_PATHS']
+          @path.gsub(/\//, '\\')
+        else
+          @path
+        end
       end
     end
   end

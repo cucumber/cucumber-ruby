@@ -10,12 +10,12 @@ module Cucumber
       include HasLocation
 
       attr_accessor :language
-      attr_reader :file, :feature_elements, :line
+      attr_reader :feature_elements
 
-      def initialize(file, background, comment, tags, keyword, title, description, feature_elements)
+      def initialize(location, background, comment, tags, keyword, title, description, feature_elements)
         @background, @comment, @tags, @keyword, @title, @description, @feature_elements = background, comment, tags, keyword, title, description, feature_elements
         @background.feature = self
-        self.file = file
+        @location = location
       end
 
       attr_reader :gherkin_statement
@@ -31,7 +31,6 @@ module Cucumber
         @feature_elements << feature_element
         @background.feature_elements << feature_element if @background
         feature_element.feature = self
-        feature_element.file = file
       end
 
       def accept(visitor)
@@ -68,7 +67,7 @@ module Cucumber
       end
 
       def backtrace_line(step_name, line)
-        "#{Location.new(file, line)}:in `#{step_name}'"
+        "#{location.on_line(line)}:in `#{step_name}'"
       end
 
       def short_name
@@ -82,7 +81,7 @@ module Cucumber
 
       def to_sexp
         init
-        sexp = [:feature, @file, name]
+        sexp = [:feature, file, name]
         comment = @comment.to_sexp
         sexp += [comment] if comment
         tags = @tags.to_sexp
@@ -107,13 +106,6 @@ module Cucumber
         @units ||= @feature_elements.map do |element| 
           element.to_units(@background)
         end.flatten
-      end
-
-      def file=(file)
-        file = file.gsub(/\//, '\\') if Cucumber::WINDOWS && file && !ENV['CUCUMBER_FORWARD_SLASH_PATHS']
-        @file = file
-        background.file = file
-        feature_elements.each { |e| e.file = file }
       end
 
     end

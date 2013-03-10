@@ -11,12 +11,12 @@ module Cucumber
       include Names
       include HasLocation
 
-      attr_reader :line
-      attr_accessor :feature, :file
+      attr_accessor :feature
 
-      def initialize(background, comment, tags, line, keyword, title, description, raw_steps)
+      def initialize(location, background, comment, tags, keyword, title, description, raw_steps)
         @background = background || EmptyBackground.new
-        @comment, @tags, @line, @keyword, @title, @description, @raw_steps = comment, tags, line, keyword, title, description, raw_steps
+        @comment, @tags, @keyword, @title, @description, @raw_steps = comment, tags, keyword, title, description, raw_steps
+        @location = location
         @exception = @executed = nil
       end
 
@@ -75,7 +75,7 @@ module Cucumber
       end
 
       def to_sexp
-        sexp = [:scenario, @line, @keyword, name]
+        sexp = [:scenario, line, @keyword, name]
         comment = @comment.to_sexp
         sexp += [comment] if comment
         tags = @tags.to_sexp

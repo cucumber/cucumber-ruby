@@ -9,7 +9,7 @@ module Cucumber
       include Names
       include HasLocation
 
-      attr_accessor :feature, :file
+      attr_accessor :feature
 
       module ExamplesArray #:nodoc:
         def accept(visitor)
@@ -26,9 +26,8 @@ module Cucumber
       # * Examples keyword
       # * Examples section name
       # * Raw matrix
-      def initialize(background, comment, tags, line, keyword, title, description, raw_steps, example_sections)
-        @background = background || EmptyBackground.new
-        @comment, @tags, @line, @keyword, @title, @description, @raw_steps, @example_sections = comment, tags, line, keyword, title, description, raw_steps, example_sections
+      def initialize(location, background, comment, tags, keyword, title, description, raw_steps, example_sections)
+        @location, @background, @comment, @tags, @keyword, @title, @description, @raw_steps, @example_sections = location, background, comment, tags, keyword, title, description, raw_steps, example_sections
       end
 
       def add_examples(example_section, gherkin_examples)
@@ -130,15 +129,15 @@ module Cucumber
         example_section = example_section_and_gherkin_examples[0]
         gherkin_examples = example_section_and_gherkin_examples[1]
 
-        examples_comment     = example_section[0]
-        examples_line        = example_section[1]
+        examples_location    = example_section[0]
+        examples_comment     = example_section[1]
         examples_keyword     = example_section[2]
         examples_title       = example_section[3]
         examples_description = example_section[4]
         examples_matrix      = example_section[5]
 
         examples_table = OutlineTable.new(examples_matrix, self)
-        ex = Examples.new(examples_comment, examples_line, examples_keyword, examples_title, examples_description, examples_table)
+        ex = Examples.new(examples_location, examples_comment, examples_keyword, examples_title, examples_description, examples_table)
         ex.gherkin_statement(gherkin_examples)
         ex
       end

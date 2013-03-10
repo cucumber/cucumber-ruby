@@ -7,14 +7,14 @@ module Cucumber
     class Step #:nodoc:
       include HasLocation
 
-      attr_reader :line, :keyword, :name
+      attr_reader :keyword, :name
       attr_writer :step_collection, :options
-      attr_accessor :feature_element, :exception, :multiline_arg, :file
+      attr_accessor :feature_element, :exception, :multiline_arg
 
       INDENT = 2
 
-      def initialize(line, keyword, name, multiline_arg=nil)
-        @line, @keyword, @name, @multiline_arg = line, keyword, name, multiline_arg
+      def initialize(location, keyword, name, multiline_arg=nil)
+        @location, @keyword, @name, @multiline_arg = location, keyword, name, multiline_arg
       end
 
       attr_reader :gherkin_statement

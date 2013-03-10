@@ -26,23 +26,25 @@ module Cucumber
           @eaten.should == n.to_i
         end
 
+        location = Ast::Location.new('foo.feature', 19)
+
         @scenario_outline = ScenarioOutline.new(
-          background=nil,
+          location,
+          background=Ast::EmptyBackground.new,
           Comment.new(""),
           Tags.new(18, []),
-          19,
           "Scenario:", "My outline", "",
           [
-            Step.new(20, 'Given', 'there are <start> cucumbers'),
-            Step.new(21, 'When',  'I eat <eat> cucumbers'),
-            Step.new(22, 'Then',  'I should have <left> cucumbers'),
-            Step.new(23, 'And',   'I should have <eat> cucumbers in my belly')
+            Step.new(location.on_line(20), 'Given', 'there are <start> cucumbers'),
+            Step.new(location.on_line(21), 'When',  'I eat <eat> cucumbers'),
+            Step.new(location.on_line(22), 'Then',  'I should have <left> cucumbers'),
+            Step.new(location.on_line(23), 'And',   'I should have <eat> cucumbers in my belly')
           ],
           [
             [
               [
+                location.on_line(24),
                 Comment.new("#Mmmm... cucumbers\n"),
-                24,
                 'Examples:',
                 'First table',
                 '',
@@ -62,7 +64,6 @@ module Cucumber
         visitor = TreeWalker.new(@step_mother)
         visitor.should_receive(:visit_table_row).exactly(3).times
         @scenario_outline.feature = stub.as_null_object
-        @scenario_outline.file = 'foo.feature'
         visitor.visit_feature_element(@scenario_outline)
       end
     end

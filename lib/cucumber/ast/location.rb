@@ -2,6 +2,8 @@ module Cucumber
   module Ast
 
     class Location
+      attr_reader :file, :line
+
       def initialize(file, line)
         @file = file || raise(ArgumentError, "file is mandatory")
         @line = line || raise(ArgumentError, "line is mandatory")
@@ -11,14 +13,28 @@ module Cucumber
         "#{file}:#{line}"
       end
 
-      private
-
-      attr_reader :file, :line
+      def on_line(new_line)
+        Location.new(file, new_line)
+      end
     end
 
     module HasLocation
       def file_colon_line
-        Location.new(file, line).to_s
+        location.to_s
+      end
+
+      def file
+        location.file
+      end
+
+      def line
+        location.line
+      end
+
+      def location
+        raise('Please set @location in the constructor') unless @location
+        raise("@location must be an Ast::Location but is a #{@location.class}") unless @location.is_a?(Location)
+        @location
       end
     end
   end

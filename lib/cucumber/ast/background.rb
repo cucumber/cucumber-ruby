@@ -9,10 +9,11 @@ module Cucumber
       include Names
       include HasLocation
       attr_reader :feature_elements
-      attr_accessor :feature, :file
+      attr_accessor :feature
 
-      def initialize(comment, line, keyword, title, description, raw_steps)
-        @comment, @line, @keyword, @title, @description, @raw_steps = comment, line, keyword, title, description, raw_steps
+      def initialize(location, comment, keyword, title, description, raw_steps)
+        @comment, @keyword, @title, @description, @raw_steps = comment, keyword, title, description, raw_steps
+        @location = location
         @feature_elements = []
         @failed = nil
       end
@@ -89,7 +90,7 @@ module Cucumber
 
       def to_sexp
         init
-        sexp = [:background, @line, @keyword]
+        sexp = [:background, line, @keyword]
         sexp += [name] unless name.empty?
         comment = @comment.to_sexp
         sexp += [comment] if comment
@@ -104,7 +105,6 @@ module Cucumber
         @current_visitor.visit_exception(@exception, :failed)
       end
 
-
       # Override this method, as there are situations where the background
       # wind up being the one called fore Before scenarios, and
       # backgrounds don't have tags.
@@ -115,10 +115,6 @@ module Cucumber
       def source_tag_names
         source_tags.map { |tag| tag.name }
       end
-
-      private
-
-      attr_reader :line
 
     end
   end

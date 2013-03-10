@@ -26,13 +26,13 @@ module Cucumber
 
       it "should execute Before blocks before background steps" do
         background = Background.new(
+          Location.new('foo.feature', 2),
           comment=Comment.new(''),
-          line=2,
           keyword="",
           title="",
           description="",
           steps=[
-            Step.new(7, "Given", "y is 5")
+            Step.new(Location.new('foo.feature', 7), "Given", "y is 5")
           ])
 
         scenario = Scenario.new(
@@ -46,7 +46,6 @@ module Cucumber
           steps=[]
         )
         background.feature = @feature
-        background.file = 'foo.feature'
         @visitor.visit_background(background)
         $x.should == 2
         $y.should == 10
@@ -55,8 +54,8 @@ module Cucumber
       describe "should respond to #name" do
         it "with a value" do
           background = Background.new(
+            Location.new('foo.feature', 2),
             comment=Comment.new(''),
-            line=2,
             keyword="",
             title="background name",
             description="",
@@ -87,16 +86,15 @@ module Cucumber
         it "should state that the background has failed" do
           # Assign
           background = Background.new(
+            Location.new('foo.feature', 2),
             comment=Comment.new(''),
-            line=2,
             keyword="",
             title="",
             description="",
             steps=[
-              Step.new(7, "Given", "y is 5")
+              Step.new(Location.new('foo.feature', 7), "Given", "y is 5")
             ])
           background.feature = @feature
-          background.file = 'foo.feature'
 
           # Expect
           @visitor.should_receive( :visit_exception ) do |exception, status|

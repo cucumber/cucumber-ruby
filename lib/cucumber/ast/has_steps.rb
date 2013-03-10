@@ -16,7 +16,6 @@ module Cucumber
       def attach_steps(steps)
         steps.each do |step| 
           step.feature_element = self
-          step.file = file
         end
       end
 
@@ -46,7 +45,7 @@ module Cucumber
         scenario_name_regexps.detect{|n| n =~ name}
       end
 
-      def backtrace_line(name = "#{@keyword}: #{name}", line = @line)
+      def backtrace_line(name = "#{@keyword}: #{name}", line = self.line)
         feature.backtrace_line(name, line)
       end
 
