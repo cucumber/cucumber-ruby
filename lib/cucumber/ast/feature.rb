@@ -16,6 +16,10 @@ module Cucumber
         @background, @comment, @tags, @keyword, @title, @description, @feature_elements = background, comment, tags, keyword, title, description, feature_elements
         @background.feature = self
         @location = location
+        @background.init if @background
+        @feature_elements.each do |feature_element|
+          feature_element.init
+        end
       end
 
       attr_reader :gherkin_statement
@@ -35,7 +39,6 @@ module Cucumber
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        init
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@keyword, indented_name)
@@ -80,7 +83,6 @@ module Cucumber
       end
 
       def to_sexp
-        init
         sexp = [:feature, file, name]
         comment = @comment.to_sexp
         sexp += [comment] if comment
@@ -94,13 +96,6 @@ module Cucumber
       private
 
       attr_reader :background
-
-      def init
-        @background.init if @background
-        @feature_elements.each do |feature_element|
-          feature_element.init
-        end
-      end
 
       def units
         @units ||= @feature_elements.map do |element| 

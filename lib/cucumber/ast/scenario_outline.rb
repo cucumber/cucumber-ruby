@@ -38,7 +38,6 @@ module Cucumber
         return if @steps
         attach_steps(@raw_steps)
         @steps = StepCollection.new(@raw_steps)
-        examples_array
       end
 
       def accept(visitor)
