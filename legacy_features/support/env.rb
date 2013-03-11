@@ -110,7 +110,7 @@ class CucumberWorld
     end
     @last_stderr = IO.read(stderr_file.path)
     if Cucumber::JRUBY
-      # TODO: this actually a workaround for #393 and #394
+      # TODO: this actually a workaround for #394 and cucumber/gherkin#238
       @last_stderr.gsub!(/^.*java_package_module_template.rb:\d+ warning: `eval' should not be aliased.*\n/, '')
       @last_stderr.gsub!(/^.*warning: singleton on non-persistent Java type Java::JavaUtil::ArrayList.*\n/, '')
     end
