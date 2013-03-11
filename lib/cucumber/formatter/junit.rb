@@ -169,7 +169,6 @@ module Cucumber
 
       # strip control chars from cdata, to make it safe for external parsers
       def strip_control_chars(cdata)
-#        cdata
         cdata.scan(/[[:print:]\t\n\r]/).join
       end
       
