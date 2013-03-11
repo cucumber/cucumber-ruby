@@ -15,7 +15,7 @@ module Cucumber
       end
 
       def result
-        ast_feature || @multiline_arg
+        ast_feature
       end
 
       def language=(language)
