@@ -38,7 +38,7 @@ module Cucumber::Formatter
         def before_step(step)
           if step.name.match("a passing ctrl scenario")
             Interceptor::Pipe.unwrap! :stdout
-            $stdout = File.new("test_boo","w")
+            @fake_io = $stdout = StringIO.new
             $stdout.sync = true
             @interceptedout = Interceptor::Pipe.wrap(:stdout)
           end
@@ -46,15 +46,14 @@ module Cucumber::Formatter
 
         def after_step(step)
           if step.name.match("a passing ctrl scenario")
-            @interceptedout.write("\bboo")
+            @interceptedout.write("boo\b\cx\e\a\f boo ")
             $stdout = STDOUT
-            File.unlink("test_boo")
+            @fake_io.close
           end
         end
       end
       
-      it { @doc.xpath('//testsuite/system-out').first.content.should match("boo") }
-      it { @doc.xpath('//testsuite/system-out').first.content.should_not match("\bboo") }
+      it { @doc.xpath('//testsuite/system-out').first.content.should match(/\s+boo boo\s+/) }
     end
 
     describe "a feature with no name" do
