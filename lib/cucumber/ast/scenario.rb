@@ -21,7 +21,6 @@ module Cucumber
       def init
         return if @steps
         attach_steps(@raw_steps)
-        p steps
         steps
       end
 
