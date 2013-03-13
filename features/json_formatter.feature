@@ -60,6 +60,7 @@ Feature: JSON output formatter
 
       """
 
+  @wip-jruby
   Scenario: one feature, one passing scenario, one failing scenario
     When I run cucumber "--format json features/one_passing_one_failing.feature"
     Then it should fail with JSON:
@@ -142,6 +143,7 @@ Feature: JSON output formatter
 
       """
 
+  @wip-jruby
   Scenario: DocString
     Given a file named "features/doc_string.feature" with:
       """
@@ -204,6 +206,7 @@ Feature: JSON output formatter
       ]
       """
 
+  @wip-jruby
   Scenario: embedding screenshot
     When I run cucumber "-b --format json features/embed.feature"
     Then it should pass with JSON:

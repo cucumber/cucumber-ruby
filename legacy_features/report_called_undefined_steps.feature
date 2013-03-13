@@ -1,3 +1,4 @@
+@wip-jruby
 Feature: Cucumber command line
   In order to find out what step definitions need to be implemented
   Developers should always see what step definition is missing

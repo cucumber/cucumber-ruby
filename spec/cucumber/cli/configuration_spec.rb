@@ -127,6 +127,7 @@ module Cli
     end
 
     context '--profile' do
+      include RSpec::WorkInProgress
 
       it "expands args from profiles in the cucumber.yml file" do
         given_cucumber_yml_defined_as({'bongo' => '--require from/yml'})
@@ -151,7 +152,7 @@ module Cli
       end
 
       it "parses ERB syntax in the cucumber.yml file" do
-        given_cucumber_yml_defined_as 'default' => "<%= '--require some_file' %>"
+        given_cucumber_yml_defined_as("---\ndefault: \"<%=\"--require some_file\"%>\"\n")
 
         config.parse!([])
         config.options[:require].should include('some_file')

@@ -112,6 +112,10 @@ module Cucumber
       end
 
     private
+      if defined?(JRUBY_VERSION)
+        java_import java.util.ArrayList
+        ArrayList.__persistent__ = true
+      end
 
       def matrix(gherkin_table)
         gherkin_table.map do |gherkin_row|

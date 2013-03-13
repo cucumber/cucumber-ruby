@@ -5,9 +5,19 @@ require 'aruba/cucumber'
 # Monkey patch aruba to filter out some stuff
 module Aruba::Api
   alias __all_stdout all_stdout
-  
+
   def all_stdout
     unrandom(__all_stdout)
+  end
+
+  alias __all_stderr all_stderr
+  def all_stderr
+    err = __all_stderr
+    if Cucumber::JRUBY
+      # TODO: this actually a workaround for cucumber/gherkin#238
+      err = err.gsub(/^.*java_package_module_template.rb:\d+ warning: `eval' should not be aliased.*\n/, '')
+    end
+    err
   end
 
   def unrandom(out)
@@ -20,7 +30,7 @@ end
 Before do
   # Make sure bin/cucumber runs with SimpleCov enabled
   # set_env('SIMPLECOV', 'true')
-  
+
   # Set a longer timeout for aruba
   @aruba_timeout_seconds = 15
 end
