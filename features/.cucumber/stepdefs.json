@@ -108,7 +108,15 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:60",
     "steps": [
-
+      {
+        "name": "I run `cucumber -q features/passing_background.feature:9`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber -q features/passing_background.feature:9"
+          }
+        ]
+      }
     ]
   },
   {
@@ -284,7 +292,15 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:166",
     "steps": [
-
+      {
+        "name": "it should pass with exactly:",
+        "args": [
+          {
+            "offset": 10,
+            "val": "pass"
+          }
+        ]
+      }
     ]
   },
   {
@@ -516,15 +532,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:1",
     "steps": [
-      {
-        "name": "I run cucumber \"features/scenario_outline_with_undefined_steps.feature --format html --expand \"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "features/scenario_outline_with_undefined_steps.feature --format html --expand "
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -532,12 +540,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:5",
     "steps": [
-      {
-        "name": "it should pass",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
