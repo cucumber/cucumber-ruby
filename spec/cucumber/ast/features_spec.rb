@@ -38,6 +38,7 @@ GHERKIN
         builder = Cucumber::Parser::GherkinBuilder.new(path)
         parser  = Gherkin::Parser::Parser.new(builder, true, "root", false)
         parser.parse(gherkin, path, 0)
+        builder.language = parser.i18n_language
         feature = builder.result
         features.add_feature(feature)
       end

@@ -7,14 +7,15 @@ module Cucumber
     class Step #:nodoc:
       include HasLocation
 
-      attr_reader :keyword, :name
+      attr_reader :keyword, :name, :language
       attr_writer :step_collection, :options
       attr_accessor :feature_element, :exception, :multiline_arg
 
       INDENT = 2
 
-      def initialize(location, keyword, name, multiline_arg=nil)
-        @location, @keyword, @name, @multiline_arg = location, keyword, name, multiline_arg
+      def initialize(language, location, keyword, name, multiline_arg=nil)
+        @language, @location, @keyword, @name, @multiline_arg = language, location, keyword, name, multiline_arg
+        @language || raise("Language is required!")
       end
 
       attr_reader :gherkin_statement
@@ -82,10 +83,6 @@ module Cucumber
 
       def backtrace_line
         @backtrace_line ||= feature_element.backtrace_line("#{keyword}#{name}", line) unless feature_element.nil?
-      end
-
-      def language
-        feature_element.language
       end
 
       def dom_id

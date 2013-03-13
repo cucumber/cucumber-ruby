@@ -11,11 +11,11 @@ module Cucumber
       attr_reader :feature_elements
       attr_accessor :feature
 
-      def initialize(location, comment, keyword, title, description, raw_steps)
-        @comment, @keyword, @title, @description, @raw_steps = comment, keyword, title, description, raw_steps
-        @location = location
+      def initialize(language, location, comment, keyword, title, description, raw_steps)
+        @language, @location, @comment, @keyword, @title, @description, @raw_steps = language, location, comment, keyword, title, description, raw_steps
         @feature_elements = []
         @failed = nil
+        @first_collection_created = false
       end
 
       def init
@@ -32,7 +32,7 @@ module Cucumber
 
       def step_collection(step_invocations)
         init
-        unless((defined? @first_collection_created) and @first_collection_created)
+        unless(@first_collection_created)
           @first_collection_created = true
           @step_invocations.dup(step_invocations)
         else

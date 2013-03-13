@@ -9,10 +9,6 @@ module Cucumber
         @gherkin_statement ||= statement
       end
 
-      def add_step(step)
-        @raw_steps << step
-      end
-
       def attach_steps(steps)
         steps.each do |step| 
           step.feature_element = self
@@ -45,8 +41,8 @@ module Cucumber
         scenario_name_regexps.detect{|n| n =~ name}
       end
 
-      def backtrace_line(name = "#{@keyword}: #{name}", line = self.line)
-        feature.backtrace_line(name, line)
+      def backtrace_line(step_name = "#{@keyword}: #{name}", line = self.line)
+        "#{location.on_line(line)}:in `#{step_name}'"
       end
 
       def source_indent(text_length)
@@ -67,11 +63,11 @@ module Cucumber
       end
 
       def source_tags
-        @tags.tags.to_a + feature.source_tags.to_a
+        @tags.tags.to_a + feature_tags.tags.to_a
       end
 
       def language
-        feature.language
+        @language || raise("Language is required for a #{self.class}")
       end
 
     end

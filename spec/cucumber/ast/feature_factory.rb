@@ -27,15 +27,17 @@ module Cucumber
         ])
         doc_string = Ast::DocString.new(%{\n I like\nCucumber sandwich\n}, '')
         location = Ast::Location.new('foo.feature', 2)
+        language = stub.as_null_object
 
         background = Ast::Background.new(
+          language,
           location,
           Ast::Comment.new(""), 
           "Background:", 
           "", 
           "",
           [
-            Step.new(location.on_line(3), "Given", "a passing step")
+            Step.new(language, location.on_line(3), "Given", "a passing step")
           ]
         )
 
@@ -50,15 +52,17 @@ module Cucumber
           "Pretty printing",
           "",
           [Ast::Scenario.new(
+            language,
             location.on_line(9),
             background,
             Ast::Comment.new("    # My scenario comment  \n# On two lines \n"),
             Ast::Tags.new(8, [Gherkin::Formatter::Model::Tag.new('three', 8), Gherkin::Formatter::Model::Tag.new('four', 8)]),
+            Ast::Tags.new(1, []),
             "Scenario:", "A Scenario", "",
             [
-              Step.new(location.on_line(10), "Given", "a passing step with an inline arg:", table),
-              Step.new(location.on_line(11), "Given", "a happy step with an inline arg:", doc_string),
-              Step.new(location.on_line(12), "Given", "a failing step")
+              Step.new(language, location.on_line(10), "Given", "a passing step with an inline arg:", table),
+              Step.new(language, location.on_line(11), "Given", "a happy step with an inline arg:", doc_string),
+              Step.new(language, location.on_line(12), "Given", "a failing step")
             ]
           )]
         )

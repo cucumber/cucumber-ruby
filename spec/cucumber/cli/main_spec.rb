@@ -64,6 +64,7 @@ module Cucumber
         before(:each) do
           b = Cucumber::Parser::GherkinBuilder.new('features/foo.feature')
           b.feature(Gherkin::Formatter::Model::Feature.new([], [], "Feature", "Foo", "", 99, ""))
+          b.language = stub
           @empty_feature = b.result
         end
 

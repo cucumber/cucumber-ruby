@@ -10,6 +10,7 @@ module Cucumber
       include HasLocation
 
       attr_accessor :feature
+      attr_reader :feature_tags
 
       module ExamplesArray #:nodoc:
         def accept(visitor)
@@ -26,8 +27,8 @@ module Cucumber
       # * Examples keyword
       # * Examples section name
       # * Raw matrix
-      def initialize(location, background, comment, tags, keyword, title, description, raw_steps, example_sections)
-        @location, @background, @comment, @tags, @keyword, @title, @description, @raw_steps, @example_sections = location, background, comment, tags, keyword, title, description, raw_steps, example_sections
+      def initialize(language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps, example_sections)
+        @language, @location, @background, @comment, @tags, @feature_tags, @keyword, @title, @description, @raw_steps, @example_sections = language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps, example_sections
       end
 
       def add_examples(example_section, gherkin_examples)
@@ -53,7 +54,7 @@ module Cucumber
 
       def to_units(background)
         init
-        raise ArgumentError unless background == @background # maybe we don't need this argument, but it seems like the leaf AST nodes would be better not being aware of their parents. However step_invocations uses the ivar at the moment, so we'll just do this check to make sure its OK.
+        raise ArgumentError.new("#{background} != #{@background}") unless background == @background # maybe we don't need this argument, but it seems like the leaf AST nodes would be better not being aware of their parents. However step_invocations uses the ivar at the moment, so we'll just do this check to make sure its OK.
         result = []
         each_example_row do |row|
           result << Unit.new(step_invocations(row))
@@ -87,7 +88,7 @@ module Cucumber
 
       def visit_scenario_name(visitor, row)
         visitor.visit_scenario_name(
-          @feature.language.keywords('scenario')[0],
+          language.keywords('scenario')[0],
           row.name,
           Location.new(file, row.line).to_s,
           source_indent(first_line_length)

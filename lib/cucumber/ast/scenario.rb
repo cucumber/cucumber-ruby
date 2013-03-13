@@ -11,18 +11,17 @@ module Cucumber
       include Names
       include HasLocation
 
-      attr_accessor :feature
+      attr_reader :feature_tags
 
-      def initialize(location, background, comment, tags, keyword, title, description, raw_steps)
-        @background = background || EmptyBackground.new
-        @comment, @tags, @keyword, @title, @description, @raw_steps = comment, tags, keyword, title, description, raw_steps
-        @location = location
+      def initialize(language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps)
+        @language, @location, @background, @comment, @tags, @feature_tags, @keyword, @title, @description, @raw_steps = language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps
         @exception = @executed = nil
       end
 
       def init
         return if @steps
         attach_steps(@raw_steps)
+        p steps
         steps
       end
 

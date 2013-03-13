@@ -9,6 +9,10 @@ module Cucumber
         @steps.each{|step| step.step_collection = self}
       end
 
+      def inspect
+        @steps.map { |s| [s.class, s.object_id] }.join(', ')
+      end
+
       def accept(visitor)
         return if Cucumber.wants_to_quit
         @steps.each do |step|

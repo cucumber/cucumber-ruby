@@ -6,8 +6,10 @@ require 'cucumber/core_ext/string'
 module Cucumber
   module Ast
     describe Step do
+      let(:language) { stub }
+
       it "should replace arguments in name" do
-        step = Step.new(1, 'Given', 'a <color> cucumber')
+        step = Step.new(language, 1, 'Given', 'a <color> cucumber')
 
         invocation_table = Table.new([
           %w{color taste},
@@ -20,7 +22,7 @@ module Cucumber
       end
 
       it "should use empty string for the replacement of arguments in name when replace value is nil" do
-        step = Step.new(1, 'Given', 'a <color>cucumber')
+        step = Step.new(language, 1, 'Given', 'a <color>cucumber')
 
         invocation_table = Table.new([
           ['color'],
@@ -35,7 +37,7 @@ module Cucumber
       it "should replace arguments in table arg" do
         arg_table = Table.new([%w{taste_<taste> color_<color>}])
 
-        step = Step.new(1, 'Given', 'a <color> cucumber', arg_table)
+        step = Step.new(language, 1, 'Given', 'a <color> cucumber', arg_table)
 
         invocation_table = Table.new([
           %w{color taste},
@@ -50,7 +52,7 @@ module Cucumber
       it "should replace arguments in py string arg" do
         doc_string = DocString.new('taste_<taste> color_<color>', '')
 
-        step = Step.new(1, 'Given', 'a <color> cucumber', doc_string)
+        step = Step.new(language, 1, 'Given', 'a <color> cucumber', doc_string)
 
         invocation_table = Table.new([
           %w{color taste},

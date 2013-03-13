@@ -5,6 +5,7 @@ require 'cucumber/rb_support/rb_language'
 module Cucumber
   module Ast
     describe Background do
+      let(:language) { stub.as_null_object }
 
       before do
         extend(Cucumber::RbSupport::RbDsl)
@@ -26,19 +27,22 @@ module Cucumber
 
       it "should execute Before blocks before background steps" do
         background = Background.new(
+          language,
           Location.new('foo.feature', 2),
           comment=Comment.new(''),
           keyword="",
           title="",
           description="",
           steps=[
-            Step.new(Location.new('foo.feature', 7), "Given", "y is 5")
+            Step.new(language,Location.new('foo.feature', 7), "Given", "y is 5")
           ])
 
         scenario = Scenario.new(
+          language,
           background,
           comment=Comment.new(""),
           tags=Tags.new(98,[]),
+          feature_tags=Tags.new(1,[]),
           line=99,
           keyword="",
           title="",
@@ -54,6 +58,7 @@ module Cucumber
       describe "should respond to #name" do
         it "with a value" do
           background = Background.new(
+            language,
             Location.new('foo.feature', 2),
             comment=Comment.new(''),
             keyword="",
@@ -65,6 +70,7 @@ module Cucumber
         end
         it "without a value" do
           background = Background.new(
+            language,
             comment=Comment.new(''),
             line=2,
             keyword="",
@@ -86,13 +92,14 @@ module Cucumber
         it "should state that the background has failed" do
           # Assign
           background = Background.new(
+            language,
             Location.new('foo.feature', 2),
             comment=Comment.new(''),
             keyword="",
             title="",
             description="",
             steps=[
-              Step.new(Location.new('foo.feature', 7), "Given", "y is 5")
+              Step.new(language, Location.new('foo.feature', 7), "Given", "y is 5")
             ])
           background.feature = @feature
 
