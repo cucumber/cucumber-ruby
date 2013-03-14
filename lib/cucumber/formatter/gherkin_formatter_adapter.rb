@@ -8,7 +8,7 @@ module Cucumber
     class GherkinFormatterAdapter
       def initialize(gherkin_formatter, print_empty_match)
         @gf = gherkin_formatter
-        @print_emtpy_match = print_empty_match
+        @print_empty_match = print_empty_match
       end
 
       def before_feature(feature)
