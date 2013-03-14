@@ -6,9 +6,9 @@ module Cucumber
     # Adapts Cucumber formatter events to Gherkin formatter events
     # This class will disappear when Cucumber is based on Gherkin's model.
     class GherkinFormatterAdapter
-      def initialize(gherkin_formatter, print_emtpy_match)
+      def initialize(gherkin_formatter, print_empty_match)
         @gf = gherkin_formatter
-        @print_emtpy_match = print_emtpy_match
+        @print_emtpy_match = print_empty_match
       end
 
       def before_feature(feature)
