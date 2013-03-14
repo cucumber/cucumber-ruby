@@ -22,7 +22,7 @@ module Cucumber
 
         @visitor = TreeWalker.new(@runtime)
 
-        @feature = mock('feature', :visit? => true).as_null_object
+        @feature = mock('feature', :visit? => true, :feature_elements => []).as_null_object
       end
 
       it "should execute Before blocks before background steps" do

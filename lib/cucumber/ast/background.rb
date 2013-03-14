@@ -8,14 +8,16 @@ module Cucumber
       include HasSteps
       include Names
       include HasLocation
-      attr_reader :feature_elements
       attr_accessor :feature
 
       def initialize(language, location, comment, keyword, title, description, raw_steps)
         @language, @location, @comment, @keyword, @title, @description, @raw_steps = language, location, comment, keyword, title, description, raw_steps
-        @feature_elements = []
         @failed = nil
         @first_collection_created = false
+      end
+
+      def feature_elements
+        feature.feature_elements
       end
 
       def init
@@ -50,7 +52,7 @@ module Cucumber
           skip_invoke! if failed?
           visitor.visit_steps(@step_invocations)
           @failed = @step_invocations.any? { |step_invocation| step_invocation.exception || step_invocation.status != :passed }
-          visitor.runtime.after(hook_context) if @failed || @feature_elements.empty?
+          visitor.runtime.after(hook_context) if @failed || feature_elements.empty?
         end
       end
 
@@ -85,7 +87,7 @@ module Cucumber
       end
 
       def hook_context
-        @feature_elements.first || self
+        feature_elements.first || self
       end
 
       def to_sexp
