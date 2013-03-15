@@ -16,11 +16,11 @@ module Cucumber
       def initialize(language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps)
         @language, @location, @background, @comment, @tags, @feature_tags, @keyword, @title, @description, @raw_steps = language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps
         @exception = @executed = nil
+        attach_steps(@raw_steps)
       end
 
       def init
         return if @steps
-        attach_steps(@raw_steps)
         steps
       end
 
