@@ -123,7 +123,7 @@ module Cucumber
       end
 
       def feature_dirs
-        paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq
+        paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq.reject { |p| p == '.' }
       end
 
       def log
