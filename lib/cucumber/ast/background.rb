@@ -34,11 +34,11 @@ module Cucumber
 
       def step_collection(step_invocations)
         init
-        unless(@first_collection_created)
+        if(@first_collection_created)
+          @steps.step_invocations(true).dup(step_invocations)
+        else
           @first_collection_created = true
           @step_invocations.dup(step_invocations)
-        else
-          @steps.step_invocations(true).dup(step_invocations)
         end
       end
 
