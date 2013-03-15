@@ -16,10 +16,6 @@ module Cucumber
         @background, @comment, @tags, @keyword, @title, @description, @feature_elements = background, comment, tags, keyword, title, description, feature_elements
         @background.feature = self
         @location = location
-        @background.init if @background
-        @feature_elements.each do |feature_element|
-          feature_element.init
-        end
       end
 
       attr_reader :gherkin_statement
