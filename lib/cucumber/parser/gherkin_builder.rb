@@ -16,36 +16,38 @@ module Cucumber
       end
 
       def result
-        ast_feature
+        return nil unless @feature_builder
+        @feature_builder.result(language)
       end
 
       def language=(language)
         @language = language
       end
 
-      def feature(feature)
-        @gherkin_feature = feature
-      end
-
       def uri(uri)
         @path = uri
       end
 
+      def feature(node)
+        @feature_builder = FeatureBuilder.new(file, node)
+      end
+
       def background(node)
-        @background_builder = BackgroundBuilder.new(file, node)
-        @step_container = @background_builder
+        builder = BackgroundBuilder.new(file, node)
+        @feature_builder.background_builder = builder
+        @current = builder
       end
 
       def scenario(node)
-        @scenario_builder = ScenarioBuilder.new(file, node)
-        add_child @scenario_builder
-        @step_container = @scenario_builder
+        builder = ScenarioBuilder.new(file, node)
+        @feature_builder.add_child builder
+        @current = builder
       end
 
       def scenario_outline(node)
-        @scenario_outline_builder = ScenarioOutlineBuilder.new(file, node)
-        add_child @scenario_outline_builder
-        @step_container = @scenario_outline_builder
+        builder = ScenarioOutlineBuilder.new(file, node)
+        @feature_builder.add_child builder
+        @current = builder
       end
 
       def examples(examples)
@@ -57,12 +59,12 @@ module Cucumber
           examples.description,
           matrix(examples.rows)
         ]
-        @scenario_outline_builder.add_examples(examples_fields, examples)
+        @current.add_examples examples_fields, examples
       end
 
       def step(node)
-        @step_builder = StepBuilder.new(file, node)
-        @step_container.add_child(@step_builder)
+        builder = StepBuilder.new(file, node)
+        @current.add_child builder
       end
 
       def eof
@@ -90,32 +92,8 @@ module Cucumber
         end
       end
 
-      def ast_feature
-        return unless @gherkin_feature
-        background = ast_background(language)
-        tags = Ast::Tags.new(nil, @gherkin_feature.tags)
-        feature ||= Ast::Feature.new(
-          Ast::Location.new(file, @gherkin_feature.line),
-          background,
-          Ast::Comment.new(@gherkin_feature.comments.map{|comment| comment.value}.join("\n")),
-          tags,
-          @gherkin_feature.keyword,
-          @gherkin_feature.name.lstrip,
-          @gherkin_feature.description.rstrip,
-          children.map { |builder| builder.result(background, language, tags) }
-        )
-        feature.gherkin_statement(@gherkin_feature)
-        feature.language = language
-        feature
-      end
-
       def language
         @language || raise("Language has not been set")
-      end
-
-      def ast_background(language)
-        return Ast::EmptyBackground.new unless @background_builder
-        @background_builder.result(language)
       end
 
       def file
@@ -126,43 +104,79 @@ module Cucumber
         end
       end
 
-      def add_child(child)
-        children << child
-      end
-
-      def children
-        @children ||= []
-      end
-
       class Builder
         def initialize(file, node)
           @file, @node = file, node
-          @steps = []
-        end
-
-        def add_step(step)
-          steps << step
         end
 
         private
 
-        attr_reader :file, :node, :steps
+        def tags
+          Ast::Tags.new(nil, node.tags)
+        end
+
+        def location
+          Ast::Location.new(file, node.line)
+        end
+
+        def comment
+          Ast::Comment.new(node.comments.map{ |comment| comment.value }.join("\n"))
+        end
+
+        attr_reader :file, :node
+      end
+
+      class FeatureBuilder < Builder
+        def result(language)
+          background = background(language)
+          feature = Ast::Feature.new(
+            location,
+            background,
+            comment,
+            tags,
+            node.keyword,
+            node.name.lstrip,
+            node.description.rstrip,
+            children.map { |builder| builder.result(background, language, tags) }
+          )
+          feature.gherkin_statement(node)
+          feature.language = language
+          feature
+        end
+
+        def background_builder=(builder)
+          @background_builder = builder
+        end
+
+        def add_child(child)
+          children << child
+        end
+
+        def children
+          @children ||= []
+        end
+
+        private
+
+        def background(language)
+          return Ast::EmptyBackground.new unless @background_builder
+          @background ||= @background_builder.result(language)
+        end
       end
 
       class BackgroundBuilder < Builder
         def result(language)
-          return @result if @result
           background = Ast::Background.new(
             language,
-            Ast::Location.new(file, node.line),
-            Ast::Comment.new(node.comments.map{|comment| comment.value}.join("\n")),
+            location,
+            comment,
             node.keyword,
             node.name,
             node.description,
             steps(language)
           )
           background.gherkin_statement(node)
-          @result = background
+          background
         end
 
         def steps(language)
@@ -183,10 +197,10 @@ module Cucumber
         def result(background, language, feature_tags)
           scenario = Ast::Scenario.new(
             language,
-            Ast::Location.new(file, node.line),
+            location,
             background,
-            Ast::Comment.new(node.comments.map{|comment| comment.value}.join("\n")),
-            Ast::Tags.new(nil, node.tags),
+            comment,
+            tags,
             feature_tags,
             node.keyword,
             node.name,
@@ -214,10 +228,10 @@ module Cucumber
         def result(background, language, feature_tags)
           scenario_outline = Ast::ScenarioOutline.new(
             language,
-            Ast::Location.new(file, node.line),
+            location,
             background,
-            Ast::Comment.new(node.comments.map{|comment| comment.value}.join("\n")),
-            Ast::Tags.new(nil, node.tags),
+            comment,
+            tags,
             feature_tags,
             node.keyword,
             node.name,
@@ -255,7 +269,7 @@ module Cucumber
         def result(language)
           step = Ast::Step.new(
             language,
-            Ast::Location.new(file, node.line),
+            location,
             node.keyword,
             node.name,
             Ast::MultilineArgument.from(node.doc_string || node.rows)
