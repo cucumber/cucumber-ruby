@@ -6,9 +6,9 @@ module Cucumber
     # Adapts Cucumber formatter events to Gherkin formatter events
     # This class will disappear when Cucumber is based on Gherkin's model.
     class GherkinFormatterAdapter
-      def initialize(gherkin_formatter, print_emtpy_match)
+      def initialize(gherkin_formatter, print_empty_match)
         @gf = gherkin_formatter
-        @print_emtpy_match = print_emtpy_match
+        @print_empty_match = print_empty_match
       end
 
       def before_feature(feature)
@@ -36,7 +36,7 @@ module Cucumber
 
       def before_step(step)
         @gf.step(step.gherkin_statement)
-        if @print_emtpy_match
+        if @print_empty_match
           if(@outline)
             match = Gherkin::Formatter::Model::Match.new(step.gherkin_statement.outline_args, nil)
           else
@@ -51,7 +51,7 @@ module Cucumber
         arguments = step_match.step_arguments.map{|a| Gherkin::Formatter::Argument.new(a.offset, a.val)}
         location = step_match.file_colon_line
         match = Gherkin::Formatter::Model::Match.new(arguments, location)
-        if @print_emtpy_match
+        if @print_empty_match
           # Trick the formatter to believe that's what was printed previously so we get arg highlights on #result
           @gf.instance_variable_set('@match', match)
         else
