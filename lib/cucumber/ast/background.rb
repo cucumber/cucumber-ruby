@@ -14,6 +14,7 @@ module Cucumber
         @language, @location, @comment, @keyword, @title, @description, @raw_steps = language, location, comment, keyword, title, description, raw_steps
         @failed = nil
         @first_collection_created = false
+        attach_steps(@raw_steps)
       end
 
       def feature_elements
@@ -21,10 +22,8 @@ module Cucumber
       end
 
       def init
-        return if @steps
-        attach_steps(@raw_steps)
-        @steps = StepCollection.new(@raw_steps)
-        @step_invocations = @steps.step_invocations(true)
+        return if @step_invocations
+        @step_invocations = steps.step_invocations(true)
       end
 
       def step_invocations
@@ -35,7 +34,7 @@ module Cucumber
       def step_collection(step_invocations)
         init
         if(@first_collection_created)
-          @steps.step_invocations(true).dup(step_invocations)
+          steps.step_invocations(true).dup(step_invocations)
         else
           @first_collection_created = true
           @step_invocations.dup(step_invocations)
@@ -96,8 +95,7 @@ module Cucumber
         sexp += [name] unless name.empty?
         comment = @comment.to_sexp
         sexp += [comment] if comment
-        steps = @steps.to_sexp
-        sexp += steps if steps.any?
+        sexp += steps.to_sexp if steps.any?
         sexp
       end
 
@@ -116,6 +114,12 @@ module Cucumber
 
       def source_tag_names
         source_tags.map { |tag| tag.name }
+      end
+
+      private
+
+      def steps
+        @steps ||= StepCollection.new(@raw_steps)
       end
 
     end
