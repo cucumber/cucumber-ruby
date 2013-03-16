@@ -106,7 +106,7 @@ module Cucumber
       end
 
       def feature_files
-        potential_feature_files = paths.map do |path|
+        potential_feature_files = with_default_features_path(paths).map do |path|
           path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
           path = path.chomp('/')
           if File.directory?(path)
@@ -123,7 +123,9 @@ module Cucumber
       end
 
       def feature_dirs
-        paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq
+        dirs = paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq
+        dirs.delete('.') unless paths.include?('.')
+        with_default_features_path(dirs)
       end
 
       def log
@@ -152,9 +154,14 @@ module Cucumber
       end
 
       def paths
-        @options[:paths].empty? ? ['features'] : @options[:paths]
+        @options[:paths]
       end
     private
+      def with_default_features_path(paths)
+        return ['features'] if paths.empty?
+        paths
+      end
+
 
       def formatters(runtime)
         # TODO: We should remove the autoformat functionality. That
