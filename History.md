@@ -1,6 +1,8 @@
 ## [Git master](https://github.com/cucumber/cucumber/compare/v1.2.3...master)
 
 ### New Features
+* Add lib to default load path
+  ([#162](https://github.com/cucumber/cucumber/issues/162) Steve Tooke)
 
 ### Bugfixes
 * Fix problem with non-ascii characters in file path
