@@ -9,6 +9,8 @@
   ([#150](https://github.com/cucumber/cucumber/issues/150) Oleg Sukhodolsky)
 * Fix problem loading ruby files in project root directory
   ([#269](https://github.com/cucumber/cucumber/issues/269) Steve Tooke)
+* Fix JsonPretty formatter problem
+  ([#197](https://github.com/cucumber/cucumber/issues/197) Oleg Sukhodolsky)
 
 ## [1.2.3](https://github.com/cucumber/cucumber/compare/v1.2.2...v1.2.3)
 
