@@ -106,7 +106,7 @@ module Cucumber
       end
 
       def feature_files
-        potential_feature_files = paths.map do |path|
+        potential_feature_files = default_features_path(paths).map do |path|
           path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
           path = path.chomp('/')
           if File.directory?(path)
@@ -123,7 +123,14 @@ module Cucumber
       end
 
       def feature_dirs
-        paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq.reject { |p| p == '.' }
+        dirs = paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq
+        dirs.delete('.') unless paths.include?('.')
+        default_features_path(dirs)
+      end
+
+      def default_features_path(paths)
+        return ['features'] if paths.empty?
+        paths
       end
 
       def log
@@ -152,7 +159,7 @@ module Cucumber
       end
 
       def paths
-        @options[:paths].empty? ? ['features'] : @options[:paths]
+        @options[:paths]
       end
     private
 
