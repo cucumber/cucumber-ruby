@@ -3,7 +3,10 @@
 ### New Features
 
 ### Bugfixes
-* Fix problem with non-ascii characters in file path ([#150](https://github.com/cucumber/cucumber/issues/150) Oleg Sukhodolsky)
+* Fix problem with non-ascii characters in file path
+  ([#150](https://github.com/cucumber/cucumber/issues/150) Oleg Sukhodolsky)
+* Fix problem loading ruby files in project root directory
+  ([#269](https://github.com/cucumber/cucumber/issues/269) Steve Tooke)
 
 ## [1.2.3](https://github.com/cucumber/cucumber/compare/v1.2.2...v1.2.3)
 
