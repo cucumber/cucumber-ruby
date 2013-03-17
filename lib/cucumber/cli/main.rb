@@ -11,7 +11,6 @@ require 'cucumber/parser'
 require 'cucumber/feature_file'
 require 'cucumber/cli/configuration'
 require 'cucumber/cli/drb_client'
-require 'cucumber/load_path'
 
 module Cucumber
   module Cli
