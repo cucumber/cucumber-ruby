@@ -23,6 +23,39 @@ module Cucumber::Formatter
       @formatter = TestDoubleJunitFormatter.new(step_mother, '', {})
     end
 
+    describe "should be able to strip control chars from cdata" do
+      before(:each) do
+        run_defined_feature
+        @doc = Nokogiri.XML(@formatter.written_files.values.first)
+      end
+      define_feature "
+          Feature: One passing scenario, one failing scenario
+
+            Scenario: Passing
+              Given a passing ctrl scenario
+        "
+      class Junit
+        def before_step(step)
+          if step.name.match("a passing ctrl scenario")
+            Interceptor::Pipe.unwrap! :stdout
+            @fake_io = $stdout = StringIO.new
+            $stdout.sync = true
+            @interceptedout = Interceptor::Pipe.wrap(:stdout)
+          end
+        end
+
+        def after_step(step)
+          if step.name.match("a passing ctrl scenario")
+            @interceptedout.write("boo\b\cx\e\a\f boo ")
+            $stdout = STDOUT
+            @fake_io.close
+          end
+        end
+      end
+      
+      it { @doc.xpath('//testsuite/system-out').first.content.should match(/\s+boo boo\s+/) }
+    end
+
     describe "a feature with no name" do
       define_feature <<-FEATURE
         Feature:
