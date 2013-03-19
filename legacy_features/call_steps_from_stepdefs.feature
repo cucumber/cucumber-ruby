@@ -98,6 +98,7 @@ Feature: http://gist.github.com/221223
             hello
             MAMA (RuntimeError)
             ./features/step_definitions/steps.rb:2:in `/^a multiline string:$/'
+            ./features/step_definitions/steps.rb:16:in `/^I call a multiline string with (.*)$/'
             features/f.feature:11:in `Given I call a multiline string with MAMA'
 
       Failing Scenarios:
@@ -120,6 +121,7 @@ Feature: http://gist.github.com/221223
             I got table:
             [["a", "b"], ["c", "MAMA"]] (RuntimeError)
             ./features/step_definitions/steps.rb:6:in `/^a table:$/'
+            ./features/step_definitions/steps.rb:28:in `/^I call a table with (.*)$/'
             features/f.feature:14:in `Given I call a table with MAMA'
 
       Failing Scenarios:
@@ -143,6 +145,7 @@ Feature: http://gist.github.com/221223
             Hello
             BANG (RuntimeError)
             ./features/step_definitions/steps.rb:2:in `/^a multiline string:$/'
+            ./features/step_definitions/steps.rb:20:in `/^I use keyword to call a multiline string with (.*)$/'
             features/f.feature:17:in `Given I use keyword to call a multiline string with BANG'
 
       Failing Scenarios:
