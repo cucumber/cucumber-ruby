@@ -101,7 +101,10 @@ module Cucumber
         end
 
         def run
-          sh(cmd.join(" "))
+          sh cmd.join(" ") do |ok, res|
+            # With this block, rake will not report any failures.
+            # All the reports delegated to cucumber executable itself.
+          end
         end
       end
 
