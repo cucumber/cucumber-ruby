@@ -87,8 +87,11 @@ class Object #:nodoc:
       else
         backtrace[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'") if pseudo_method
       end
-      backtrace[replacement_line+1..instance_exec_pos] = nil
 
+      depth = backtrace.count { |line| line == instance_exec_invocation_line }
+      end_pos = depth > 1 ? instance_exec_pos : -1
+
+      backtrace[replacement_line+1..end_pos] = nil
       backtrace.compact!
     else
       # This happens with rails, because they screw up the backtrace
