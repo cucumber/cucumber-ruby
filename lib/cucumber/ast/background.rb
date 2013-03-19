@@ -21,43 +21,34 @@ module Cucumber
         feature.feature_elements
       end
 
-      def init
-        return if @step_invocations
-        @step_invocations = steps.step_invocations(true)
-      end
-
       def step_invocations
-        init
-        @step_invocations
+        @step_invocations ||= steps.step_invocations(true)
       end
 
-      def step_collection(step_invocations)
-        init
+      def step_collection(scenario_step_invocations)
         if(@first_collection_created)
-          steps.step_invocations(true).dup(step_invocations)
+          steps.step_invocations(true).dup(scenario_step_invocations)
         else
           @first_collection_created = true
-          @step_invocations.dup(step_invocations)
+          step_invocations.dup(scenario_step_invocations)
         end
       end
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        init
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_background_name(@keyword, name, file_colon_line, source_indent(first_line_length))
         with_visitor(hook_context, visitor) do
           visitor.runtime.before(hook_context)
           skip_invoke! if failed?
-          visitor.visit_steps(@step_invocations)
-          @failed = @step_invocations.any? { |step_invocation| step_invocation.exception || step_invocation.status != :passed }
+          visitor.visit_steps(step_invocations)
+          @failed = step_invocations.any? { |step_invocation| step_invocation.exception || step_invocation.status != :passed }
           visitor.runtime.after(hook_context) if @failed || feature_elements.empty?
         end
       end
 
       def with_visitor(scenario, visitor)
         @current_visitor = visitor
-        init
         if self != scenario && scenario.respond_to?(:with_visitor)
           scenario.with_visitor(visitor) do
             yield
@@ -68,7 +59,6 @@ module Cucumber
       end
 
       def accept_hook?(hook)
-        init
         if hook_context != self
           hook_context.accept_hook?(hook)
         else
@@ -78,7 +68,7 @@ module Cucumber
       end
 
       def skip_invoke!
-        @step_invocations.each{|step_invocation| step_invocation.skip_invoke!}
+        step_invocations.each{|step_invocation| step_invocation.skip_invoke!}
       end
 
       def failed?
@@ -90,7 +80,6 @@ module Cucumber
       end
 
       def to_sexp
-        init
         sexp = [:background, line, @keyword]
         sexp += [name] unless name.empty?
         comment = @comment.to_sexp

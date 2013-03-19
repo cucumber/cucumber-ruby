@@ -29,16 +29,11 @@ module Cucumber
       # * Raw matrix
       def initialize(language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps, example_sections)
         @language, @location, @background, @comment, @tags, @feature_tags, @keyword, @title, @description, @raw_steps, @example_sections = language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps, example_sections
+        attach_steps(@raw_steps)
       end
 
       def add_examples(example_section, gherkin_examples)
         @example_sections << [example_section, gherkin_examples]
-      end
-
-      def init
-        return if @steps
-        attach_steps(@raw_steps)
-        @steps = StepCollection.new(@raw_steps)
       end
 
       def accept(visitor)
@@ -46,14 +41,13 @@ module Cucumber
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, name, file_colon_line, source_indent(first_line_length))
-        visitor.visit_steps(@steps)
+        visitor.visit_steps(steps)
 
         skip_invoke! if @background.failed?
         visitor.visit_examples_array(examples_array) unless examples_array.empty?
       end
 
       def to_units(background)
-        init
         raise ArgumentError.new("#{background} != #{@background}") unless background == @background # maybe we don't need this argument, but it seems like the leaf AST nodes would be better not being aware of their parents. However step_invocations uses the ivar at the moment, so we'll just do this check to make sure its OK.
         result = []
         each_example_row do |row|
@@ -72,7 +66,7 @@ module Cucumber
       end
 
       def step_invocations(cells)
-        step_invocations = @steps.step_invocations_from_cells(cells)
+        step_invocations = steps.step_invocations_from_cells(cells)
         if @background
           @background.step_collection(step_invocations)
         else
@@ -100,14 +94,12 @@ module Cucumber
       end
 
       def to_sexp
-        init
         sexp = [:scenario_outline, @keyword, name]
         comment = @comment.to_sexp
         sexp += [comment] if comment
         tags = @tags.to_sexp
         sexp += tags if tags.any?
-        steps = @steps.to_sexp
-        sexp += steps if steps.any?
+        sexp += steps.to_sexp if steps.any?
         sexp += examples_array.map{|e| e.to_sexp}
         sexp
       end
@@ -140,6 +132,10 @@ module Cucumber
         ex = Examples.new(examples_location, examples_comment, examples_keyword, examples_title, examples_description, examples_table)
         ex.gherkin_statement(gherkin_examples)
         ex
+      end
+
+      def steps
+        @steps ||= StepCollection.new(@raw_steps)
       end
     end
   end

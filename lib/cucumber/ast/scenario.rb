@@ -19,15 +19,6 @@ module Cucumber
         attach_steps(@raw_steps)
       end
 
-      def init
-        return if @steps
-        steps
-      end
-
-      def steps
-        @steps ||= @background.step_collection(step_invocations)
-      end
-
       def accept(visitor)
         return if Cucumber.wants_to_quit
 
@@ -92,6 +83,10 @@ module Cucumber
         steps.skip_invoke!
       end
 
+      def steps
+        @steps ||= @background.step_collection(step_invocations)
+      end
+
       private
 
       def step_invocations
@@ -101,6 +96,7 @@ module Cucumber
       def skip_hooks?
         @background.failed? || @executed
       end
+
     end
   end
 end
