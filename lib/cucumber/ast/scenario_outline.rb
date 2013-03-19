@@ -32,10 +32,6 @@ module Cucumber
         attach_steps(@raw_steps)
       end
 
-      def add_examples(example_section, gherkin_examples)
-        @example_sections << [example_section, gherkin_examples]
-      end
-
       def accept(visitor)
         return if Cucumber.wants_to_quit
         visitor.visit_comment(@comment) unless @comment.empty?

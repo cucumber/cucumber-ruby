@@ -27,12 +27,6 @@ module Cucumber
         units.inject(0) { |total, unit| total += unit.step_count }
       end
 
-      def add_feature_element(feature_element)
-        @feature_elements << feature_element
-        @background.feature_elements << feature_element if @background
-        feature_element.feature = self
-      end
-
       def accept(visitor)
         return if Cucumber.wants_to_quit
         visitor.visit_comment(@comment) unless @comment.empty?
