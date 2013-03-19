@@ -5,6 +5,7 @@
   ([#162](https://github.com/cucumber/cucumber/issues/162) Steve Tooke)
 
 ### Bugfixes
+* Filter out control characters from CDATA section of JUnit formatter output. ([#383](https://github.com/cucumber/cucumber/issues/383) @teacup-on-rockingchair)
 * Fix problem with non-ascii characters in file path
   ([#150](https://github.com/cucumber/cucumber/issues/150) Oleg Sukhodolsky)
 * Fix problem loading ruby files in project root directory
