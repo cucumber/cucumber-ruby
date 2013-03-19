@@ -87,7 +87,7 @@ class Object #:nodoc:
       else
         backtrace[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'") if pseudo_method
       end
-      backtrace[replacement_line+1..-1] = nil
+      backtrace[replacement_line+1..instance_exec_pos] = nil
 
       backtrace.compact!
     else
