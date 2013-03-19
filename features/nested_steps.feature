@@ -71,6 +71,16 @@ Feature: Nested Steps
       end
       """
     When I run the feature with the progress formatter
-    Then the output should contain "test_feature_1.feature:3"
-    And the output should contain "test_steps2.rb:2"
-    And the output should contain "test_steps2.rb:6"
+    Then it should fail with:
+      """
+      error (RuntimeError)
+      ./features/step_definitions/test_steps2.rb:6:in `/I have a couple turtles/'
+      ./features/step_definitions/test_steps2.rb:2:in `/two turtles/'
+      features/test_feature_1.feature:3:in `Given two turtles'
+
+      Failing Scenarios:
+      cucumber features/test_feature_1.feature:2 # Scenario: Test Scenario 1
+
+      1 scenario (1 failed)
+      1 step (1 failed)
+      """
