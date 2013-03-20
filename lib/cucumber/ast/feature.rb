@@ -14,7 +14,7 @@ module Cucumber
 
       def initialize(location, background, comment, tags, keyword, title, description, feature_elements)
         @background, @comment, @tags, @keyword, @title, @description, @feature_elements = background, comment, tags, keyword, title, description, feature_elements
-        background.feature = self
+        @background.feature = self
         @location = location
       end
 
@@ -33,8 +33,8 @@ module Cucumber
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@keyword, indented_name)
         visitor.visit_background(@background) if !@background.is_a?(EmptyBackground)
-        units.each do |unit|
-          unit.accept(visitor)
+        @feature_elements.each do |feature_element|
+          visitor.visit_feature_element(feature_element)
         end
       end
 

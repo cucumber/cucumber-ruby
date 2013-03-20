@@ -54,8 +54,6 @@ module Cucumber
 
       # +feature_element+ is either Scenario or ScenarioOutline
       def visit_feature_element(feature_element)
-        return if @last_feature_element == feature_element
-        @last_feature_element = feature_element
         broadcast(feature_element) do
           feature_element.accept(self)
         end
