@@ -11,3 +11,17 @@ Feature: Bootstrapping a new project
       You don't have a 'features' directory.  Please create one to get started.
       See http://cukes.info/ for more information.
       """
+
+ Scenario: does not load ruby files in root if features directory is missing
+  Given a directory without standard Cucumber project directory structure
+  And a file named "should_not_load.rb" with:
+    """
+    puts 'this will not be shown'
+    """
+  When I run `cucumber`
+  Then it should fail with exactly:
+    """
+    You don't have a 'features' directory.  Please create one to get started.
+    See http://cukes.info/ for more information.
+
+    """

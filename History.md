@@ -1,9 +1,17 @@
 ## [Git master](https://github.com/cucumber/cucumber/compare/v1.2.3...master)
 
 ### New Features
+* Add lib to default load path
+  ([#162](https://github.com/cucumber/cucumber/issues/162) Steve Tooke)
 
 ### Bugfixes
-* Fix problem with non-ascii characters in file path ([#150](https://github.com/cucumber/cucumber/issues/150) Oleg Sukhodolsky)
+* Filter out control characters from CDATA section of JUnit formatter output. ([#383](https://github.com/cucumber/cucumber/issues/383) @teacup-on-rockingchair)
+* Fix problem with non-ascii characters in file path
+  ([#150](https://github.com/cucumber/cucumber/issues/150) Oleg Sukhodolsky)
+* Fix problem loading ruby files in project root directory
+  ([#269](https://github.com/cucumber/cucumber/issues/269) Steve Tooke)
+* Fix JsonPretty formatter problem
+  ([#197](https://github.com/cucumber/cucumber/issues/197) Oleg Sukhodolsky)
 
 ## [1.2.3](https://github.com/cucumber/cucumber/compare/v1.2.2...v1.2.3)
 
