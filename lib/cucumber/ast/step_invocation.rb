@@ -178,7 +178,7 @@ module Cucumber
       end
 
       def language
-        @step.language
+        @step.language || raise("Language is required on #{@step}")
       end
 
       def gherkin_statement

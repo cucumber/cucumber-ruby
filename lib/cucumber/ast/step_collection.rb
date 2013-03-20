@@ -9,6 +9,10 @@ module Cucumber
         @steps.each{|step| step.step_collection = self}
       end
 
+      def inspect
+        @steps.map { |s| [s.class, s.object_id] }.join(', ')
+      end
+
       def accept(visitor)
         return if Cucumber.wants_to_quit
         @steps.each do |step|
@@ -24,8 +28,16 @@ module Cucumber
         })
       end
 
+      def skip_invoke!
+        @steps.each{|step_invocation| step_invocation.skip_invoke!}
+      end
+
       def step_invocations_from_cells(cells)
         @steps.map{|step| step.step_invocation_from_cells(cells)}
+      end
+
+      def +(step_invocations)
+        dup(step_invocations)
       end
 
       # Duplicates this instance and adds +step_invocations+ to the end
@@ -66,6 +78,10 @@ module Cucumber
       def status
         @steps.each{|step_invocation| return step_invocation.status if step_invocation.status != :passed}
         :passed
+      end
+
+      def length
+        @steps.length
       end
 
       def to_sexp
