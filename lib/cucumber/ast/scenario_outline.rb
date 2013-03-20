@@ -47,7 +47,7 @@ module Cucumber
         raise ArgumentError.new("#{background} != #{@background}") unless background == @background # maybe we don't need this argument, but it seems like the leaf AST nodes would be better not being aware of their parents. However step_invocations uses the ivar at the moment, so we'll just do this check to make sure its OK.
         result = []
         each_example_row do |row|
-          result << Unit.new(step_invocations(row))
+          result << Unit.new(self, step_invocations(row))
         end
         result
       end

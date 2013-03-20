@@ -34,7 +34,7 @@ module Cucumber
       end
 
       def to_units(background)
-        [Unit.new(background.step_invocations + step_invocations)]
+        [Unit.new(self, background.step_invocations + step_invocations)]
       end
 
       # Returns true if one or more steps failed
