@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'open3'
 require 'cucumber/rake/task'
 require 'rake'
 
@@ -55,6 +56,32 @@ module Cucumber
 
       end
 
+      describe "cucumber's rake task" do
+
+        let(:rake_cmd) { "rake --rakefile fixtures/self_test/Rakefile" }
+
+        context "when cucumber failed" do
+
+          it "should return non-zero exit status code and report should not contains rake's backtrace" do
+            Open3.popen2e("#{rake_cmd} fail") do |stdin, stdout_err, wait_thr|
+              wait_thr.value.success?.should be_false
+              stdout_err.read.should_not include("rake aborted!\nCommand failed with status (#{wait_thr.value.exitstatus}):")
+            end
+          end
+
+        end
+
+        context "when cucumber succeed" do
+
+          it "should return zero exit status code" do
+            Open3.popen2e("#{rake_cmd} pass") do |stdin, stdout_err, wait_thr|
+              wait_thr.value.success?.should be_true
+            end
+          end
+
+        end
+
+      end
 
     end
 
