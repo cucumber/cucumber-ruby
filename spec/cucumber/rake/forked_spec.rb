@@ -58,7 +58,7 @@ module Cucumber
 
       describe "cucumber's rake task" do
 
-        let(:rake_cmd) { "rake --rakefile fixtures/self_test/Rakefile" }
+        let(:rake_cmd) { "bundle exec rake --rakefile fixtures/self_test/Rakefile" }
 
         context "when cucumber failed" do
 
