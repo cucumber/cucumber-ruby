@@ -18,7 +18,6 @@ module Cucumber
       end
 
       def add_feature(feature)
-        feature.features = self
         @features << feature
       end
 
@@ -29,6 +28,10 @@ module Cucumber
           visitor.visit_feature(feature)
         end
         @duration = Time.now - start
+      end
+
+      def step_count
+        @features.inject(0) { |total, feature| total += feature.step_count }
       end
     end
   end

@@ -1,6 +1,7 @@
 require 'cucumber/ast'
 require 'gherkin/rubify'
 require 'cucumber/ast/multiline_argument'
+require 'cucumber/ast/empty_background'
 
 module Cucumber
   module Parser
@@ -10,98 +11,60 @@ module Cucumber
     class GherkinBuilder
       include Gherkin::Rubify
 
-      def ast
-        @feature || @multiline_arg
+      def initialize(path = 'UNKNOWN-FILE')
+        @path = path
       end
 
-      def feature(feature)
-        @feature = Ast::Feature.new(
-          nil,
-          Ast::Comment.new(feature.comments.map{|comment| comment.value}.join("\n")),
-          Ast::Tags.new(nil, feature.tags),
-          feature.keyword,
-          feature.name.lstrip,
-          feature.description.rstrip,
-          []
-        )
-        @feature.gherkin_statement(feature)
-        @feature
+      def result
+        return nil unless @feature_builder
+        @feature_builder.result(language)
       end
 
-      def background(background)
-        @background = Ast::Background.new(
-          Ast::Comment.new(background.comments.map{|comment| comment.value}.join("\n")),
-          background.line,
-          background.keyword,
-          background.name,
-          background.description,
-          []
-        )
-        @feature.background = @background
-        @background.feature = @feature
-        @step_container = @background
-        @background.gherkin_statement(background)
+      def language=(language)
+        @language = language
       end
 
-      def scenario(statement)
-        scenario = Ast::Scenario.new(
-          @background,
-          Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")),
-          Ast::Tags.new(nil, statement.tags),
-          statement.line,
-          statement.keyword,
-          statement.name,
-          statement.description,
-          []
-        )
-        @feature.add_feature_element(scenario)
-        @background.feature_elements << scenario if @background
-        @step_container = scenario
-        scenario.gherkin_statement(statement)
+      def uri(uri)
+        @path = uri
       end
 
-      def scenario_outline(statement)
-        scenario_outline = Ast::ScenarioOutline.new(
-          @background,
-          Ast::Comment.new(statement.comments.map{|comment| comment.value}.join("\n")),
-          Ast::Tags.new(nil, statement.tags),
-          statement.line,
-          statement.keyword,
-          statement.name,
-          statement.description,
-          [],
-          []
-        )
-        @feature.add_feature_element(scenario_outline)
-        if @background
-          @background = @background.dup
-          @background.feature_elements << scenario_outline
-        end
-        @step_container = scenario_outline
-        scenario_outline.gherkin_statement(statement)
+      def feature(node)
+        @feature_builder = FeatureBuilder.new(file, node)
+      end
+
+      def background(node)
+        builder = BackgroundBuilder.new(file, node)
+        @feature_builder.background_builder = builder
+        @current = builder
+      end
+
+      def scenario(node)
+        builder = ScenarioBuilder.new(file, node)
+        @feature_builder.add_child builder
+        @current = builder
+      end
+
+      def scenario_outline(node)
+        builder = ScenarioOutlineBuilder.new(file, node)
+        @feature_builder.add_child builder
+        @current = builder
       end
 
       def examples(examples)
         examples_fields = [
+          Ast::Location.new(file, examples.line),
           Ast::Comment.new(examples.comments.map{|comment| comment.value}.join("\n")),
-          examples.line,
           examples.keyword,
           examples.name,
           examples.description,
           matrix(examples.rows)
         ]
-        @step_container.add_examples(examples_fields, examples)
+        @current.add_examples examples_fields, examples
       end
 
-      def step(gherkin_step)
-        step = Ast::Step.new(
-          gherkin_step.line,
-          gherkin_step.keyword,
-          gherkin_step.name,
-          Ast::MultilineArgument.from(gherkin_step.doc_string || gherkin_step.rows)
-        )
-        step.gherkin_statement(gherkin_step)
-        @step_container.add_step(step)
+      def step(node)
+        builder = StepBuilder.new(file, node)
+        @current.add_child builder
       end
 
       def eof
@@ -111,7 +74,8 @@ module Cucumber
         # raise "SYNTAX ERROR"
       end
 
-    private
+      private
+
       if defined?(JRUBY_VERSION)
         java_import java.util.ArrayList
         ArrayList.__persistent__ = true
@@ -127,6 +91,194 @@ module Cucumber
           row
         end
       end
+
+      def language
+        @language || raise("Language has not been set")
+      end
+
+      def file
+        if Cucumber::WINDOWS && file && !ENV['CUCUMBER_FORWARD_SLASH_PATHS']
+          @path.gsub(/\//, '\\')
+        else
+          @path
+        end
+      end
+
+      class Builder
+        def initialize(file, node)
+          @file, @node = file, node
+        end
+
+        private
+
+        def tags
+          Ast::Tags.new(nil, node.tags)
+        end
+
+        def location
+          Ast::Location.new(file, node.line)
+        end
+
+        def comment
+          Ast::Comment.new(node.comments.map{ |comment| comment.value }.join("\n"))
+        end
+
+        attr_reader :file, :node
+      end
+
+      class FeatureBuilder < Builder
+        def result(language)
+          background = background(language)
+          feature = Ast::Feature.new(
+            location,
+            background,
+            comment,
+            tags,
+            node.keyword,
+            node.name.lstrip,
+            node.description.rstrip,
+            children.map { |builder| builder.result(background, language, tags) }
+          )
+          feature.gherkin_statement(node)
+          feature.language = language
+          feature
+        end
+
+        def background_builder=(builder)
+          @background_builder = builder
+        end
+
+        def add_child(child)
+          children << child
+        end
+
+        def children
+          @children ||= []
+        end
+
+        private
+
+        def background(language)
+          return Ast::EmptyBackground.new unless @background_builder
+          @background ||= @background_builder.result(language)
+        end
+      end
+
+      class BackgroundBuilder < Builder
+        def result(language)
+          background = Ast::Background.new(
+            language,
+            location,
+            comment,
+            node.keyword,
+            node.name,
+            node.description,
+            steps(language)
+          )
+          background.gherkin_statement(node)
+          background
+        end
+
+        def steps(language)
+          children.map { |child| child.result(language) }
+        end
+
+        def add_child(child)
+          children << child
+        end
+
+        def children
+          @children ||= []
+        end
+
+      end
+
+      class ScenarioBuilder < Builder
+        def result(background, language, feature_tags)
+          scenario = Ast::Scenario.new(
+            language,
+            location,
+            background,
+            comment,
+            tags,
+            feature_tags,
+            node.keyword,
+            node.name,
+            node.description,
+            steps(language)
+          )
+          scenario.gherkin_statement(node)
+          scenario
+        end
+
+        def steps(language)
+          children.map { |child| child.result(language) }
+        end
+
+        def add_child(child)
+          children << child
+        end
+
+        def children
+          @children ||= []
+        end
+      end
+
+      class ScenarioOutlineBuilder < Builder
+        def result(background, language, feature_tags)
+          scenario_outline = Ast::ScenarioOutline.new(
+            language,
+            location,
+            background,
+            comment,
+            tags,
+            feature_tags,
+            node.keyword,
+            node.name,
+            node.description,
+            steps(language),
+            examples_sections
+          )
+          scenario_outline.gherkin_statement(node)
+          scenario_outline
+        end
+
+        def add_examples(examples_section, node)
+          @examples_sections ||= []
+          @examples_sections << [examples_section, node]
+        end
+
+        def steps(language)
+          children.map { |child| child.result(language) }
+        end
+
+        def add_child(child)
+          children << child
+        end
+
+        def children
+          @children ||= []
+        end
+
+        private
+
+        attr_reader :examples_sections
+      end
+
+      class StepBuilder < Builder
+        def result(language)
+          step = Ast::Step.new(
+            language,
+            location,
+            node.keyword,
+            node.name,
+            Ast::MultilineArgument.from(node.doc_string || node.rows)
+          )
+          step.gherkin_statement(node)
+          step
+        end
+      end
+
     end
   end
 end

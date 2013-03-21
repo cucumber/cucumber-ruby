@@ -1,17 +1,21 @@
 require 'cucumber/ast/names'
+require 'cucumber/ast/location'
+require 'cucumber/ast/location'
 
 module Cucumber
   module Ast
     # Represents the root node of a parsed feature.
     class Feature #:nodoc:
       include Names
+      include HasLocation
 
       attr_accessor :language
-      attr_writer :features, :background
-      attr_reader :file, :feature_elements
+      attr_reader :feature_elements
 
-      def initialize(background, comment, tags, keyword, title, description, feature_elements)
+      def initialize(location, background, comment, tags, keyword, title, description, feature_elements)
         @background, @comment, @tags, @keyword, @title, @description, @feature_elements = background, comment, tags, keyword, title, description, feature_elements
+        @background.feature = self
+        @location = location
       end
 
       attr_reader :gherkin_statement
@@ -19,26 +23,16 @@ module Cucumber
         @gherkin_statement ||= statement
       end
 
-      def init
-        @background.feature = self if @background
-        @background.init if @background
-        @feature_elements.each do |feature_element|
-          feature_element.init
-          feature_element.feature = self
-        end
-      end
-
-      def add_feature_element(feature_element)
-        @feature_elements << feature_element
+      def step_count
+        units.inject(0) { |total, unit| total += unit.step_count }
       end
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        init
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
         visitor.visit_feature_name(@keyword, indented_name)
-        visitor.visit_background(@background) if @background
+        visitor.visit_background(@background) if !@background.is_a?(EmptyBackground)
         @feature_elements.each do |feature_element|
           visitor.visit_feature_element(feature_element)
         end
@@ -65,24 +59,8 @@ module Cucumber
         @tags.accept_hook?(hook)
       end
 
-      def next_feature_element(feature_element, &proc)
-        init
-        index = @feature_elements.index(feature_element)
-        next_one = @feature_elements[index+1]
-        proc.call(next_one) if next_one
-      end
-
       def backtrace_line(step_name, line)
-        "#{file_colon_line(line)}:in `#{step_name}'"
-      end
-
-      def file=(file)
-        file = file.gsub(/\//, '\\') if Cucumber::WINDOWS && file && !ENV['CUCUMBER_FORWARD_SLASH_PATHS']
-        @file = file
-      end
-
-      def file_colon_line(line)
-        "#{@file}:#{line}"
+        "#{location.on_line(line)}:in `#{step_name}'"
       end
 
       def short_name
@@ -95,8 +73,7 @@ module Cucumber
       end
 
       def to_sexp
-        init
-        sexp = [:feature, @file, name]
+        sexp = [:feature, file, name]
         comment = @comment.to_sexp
         sexp += [comment] if comment
         tags = @tags.to_sexp
@@ -105,6 +82,17 @@ module Cucumber
         sexp += @feature_elements.map{|fe| fe.to_sexp}
         sexp
       end
+
+      private
+
+      attr_reader :background
+
+      def units
+        @units ||= @feature_elements.map do |element| 
+          element.to_units(background)
+        end.flatten
+      end
+
     end
   end
 end

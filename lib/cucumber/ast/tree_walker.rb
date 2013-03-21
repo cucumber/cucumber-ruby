@@ -9,6 +9,13 @@ module Cucumber
         @runtime, @listeners, @configuration = runtime, listeners, configuration
       end
 
+      def execute(scenario, skip_hooks)
+        runtime.with_hooks(scenario, skip_hooks) do
+          scenario.skip_invoke! if scenario.failed?
+          visit_steps(scenario.steps)
+        end
+      end
+
       def visit_features(features)
         broadcast(features) do
           features.accept(self)
