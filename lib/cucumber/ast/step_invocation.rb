@@ -107,6 +107,9 @@ module Cucumber
 
       # This constant is appended to by Cuke4Duke. Do not change its name
       BACKTRACE_FILTER_PATTERNS = [/vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\/|minitest|test\/unit/]
+      if(Cucumber::JRUBY)
+        BACKTRACE_FILTER_PATTERNS << /org\/jruby/
+      end
       PWD_PATTERN = /#{Regexp.escape(Dir.pwd)}\//m
 
       # This is to work around double ":in " segments in JRuby backtraces. JRuby bug?
