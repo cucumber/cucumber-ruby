@@ -35,5 +35,9 @@ begin
       end
     end
   end
+
+  if defined?(Test::Unit::AutoRunner)
+    Test::Unit::AutoRunner.need_auto_run = false
+  end
 rescue LoadError => ignore
 end
