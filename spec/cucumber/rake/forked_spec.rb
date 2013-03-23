@@ -63,9 +63,9 @@ module Cucumber
         context "when cucumber failed" do
 
           it "should return non-zero exit status code and report should not contains rake's backtrace" do
-            Open3.popen2e("#{rake_cmd} fail") do |stdin, stdout_err, wait_thr|
-              wait_thr.value.success?.should be_false
-              stdout_err.read.should_not include("rake aborted!\nCommand failed with status (#{wait_thr.value.exitstatus}):")
+            Open3.popen2e("#{rake_cmd} fail") do |stdin, stdout_err, process_thread|
+              process_thread.value.success?.should be_false
+              stdout_err.read.should_not include("rake aborted!\nCommand failed with status (#{process_thread.value.exitstatus}):")
             end
           end
 
@@ -74,8 +74,8 @@ module Cucumber
         context "when cucumber succeed" do
 
           it "should return zero exit status code" do
-            Open3.popen2e("#{rake_cmd} pass") do |stdin, stdout_err, wait_thr|
-              wait_thr.value.success?.should be_true
+            Open3.popen2e("#{rake_cmd} pass") do |stdin, stdout_err, process_thread|
+              process_thread.value.success?.should be_true
             end
           end
 
