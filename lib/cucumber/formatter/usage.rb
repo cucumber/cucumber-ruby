@@ -27,8 +27,9 @@ module Cucumber
       end
 
       def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
-        if step_match.name.nil? # nil if it's from a scenario outline
-          stepdef_key = StepDefKey.new(step_match.step_definition.regexp_source, step_match.step_definition.file_colon_line)
+        step_definition = step_match.step_definition
+        unless step_definition.nil? # nil if it's from a scenario outline
+          stepdef_key = StepDefKey.new(step_definition.regexp_source, step_definition.file_colon_line)
 
           @stepdef_to_match[stepdef_key] << {
             :keyword => keyword,
