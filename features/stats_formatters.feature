@@ -34,18 +34,18 @@ Feature: Usage formatter
       """
       ---------
       
-      /A/       # features/step_definitions/steps.rb:1
-        Given A # features/f.feature:3
-        Given A # features/f.feature:3
-        Given A # features/f.feature:3
-        Given A # features/f.feature:13
-      /B/       # features/step_definitions/steps.rb:2
-        Given B # features/f.feature:5
-        Given B # features/f.feature:8
-      /C/       # features/step_definitions/steps.rb:3
-        Given C # features/f.feature:7
-        Given C # features/f.feature:14
-      /D/       # features/step_definitions/steps.rb:4
+      /A/         # features/step_definitions/steps.rb:1
+        Given A   # features/f.feature:3
+        Given A   # features/f.feature:3
+        Given A   # features/f.feature:3
+        Given A   # features/f.feature:13
+      /B/         # features/step_definitions/steps.rb:2
+        Given B   # features/f.feature:5
+        And B     # features/f.feature:8
+      /C/         # features/step_definitions/steps.rb:3
+        Given <x> # features/f.feature:7
+        Given C   # features/f.feature:14
+      /D/         # features/step_definitions/steps.rb:4
         NOT MATCHED BY ANY STEPS
       
       3 scenarios (3 skipped)
