@@ -19,6 +19,7 @@ Feature: Cucumber command line
           Given call step "a step definition that calls an undefined step" # features/step_definitions/sample_steps.rb:23
             Undefined step: "this does not exist" (Cucumber::Undefined)
             ./features/step_definitions/sample_steps.rb:19:in `/^a step definition that calls an undefined step$/'
+            ./features/step_definitions/sample_steps.rb:24:in `/^call step "(.*)"$/'
             features/call_undefined_step_from_step_def.feature:7:in `Given call step "a step definition that calls an undefined step"'
 
       2 scenarios (2 undefined)
