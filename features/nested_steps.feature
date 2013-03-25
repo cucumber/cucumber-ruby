@@ -49,6 +49,61 @@ Feature: Nested Steps
 
       """
 
+  Scenario: Use #steps to call a table
+    Given a step definition that looks like this:
+      """ruby
+      Given /turtles:/ do |table|
+        table.hashes.each do |row|
+          puts row[:name]
+        end
+      end
+      """
+    And a step definition that looks like this:
+      """ruby
+      Given /two turtles/ do
+        steps %{
+          Given turtles:
+            | name      |
+            | Sturm     |
+            | Liouville |
+        }
+      end
+      """
+    When I run the feature with the progress formatter
+    Then the output should contain:
+      """
+      Sturm
+
+      Liouville
+
+      """
+
+  Scenario: Use #steps to call a multi-line string
+    Given a step definition that looks like this:
+      """ruby
+        Given /two turtles/ do
+          steps %Q{
+            Given turtles:
+               \"\"\"
+               Sturm
+               Liouville
+               \"\"\"
+          }
+        end
+      """
+    And a step definition that looks like this:
+      """ruby
+      Given /turtles:/ do |string|
+        puts string
+      end
+      """
+    When I run the feature with the progress formatter
+    Then the output should contain:
+      """
+      Sturm
+      Liouville
+      """
+
   Scenario: Use deprecated i18n methods
     Given a step definition that looks like this:
       """ruby
