@@ -1,3 +1,16 @@
+## About to create a new Github Issue?
+
+We appreciate that. But before you do, please learn our basic rules:
+
+* This is not a support forum. If you have a question, please go to [The Cukes Google Group](http://groups.google.com/group/cukes).
+* Do you have an idea for a new feature? Then don't expect it to be implemented unless you or someone else sends a [pull request](https://help.github.com/articles/using-pull-requests). You might be better to start a discussion on [the google group](http://groups.google.com/group/cukes).
+* Reporting a bug? Please tell us:
+  * which version of Cucumber you're using
+  * which version of Ruby you're using.
+  * How to reproduce it. Bugs with a failing test in a [pull request](https://help.github.com/articles/using-pull-requests) get fixed much quicker. Some bugs may never be fixed.
+* Want to paste some code or output? Put \`\`\` on a line above and below your code/output. See [GFM](https://help.github.com/articles/github-flavored-markdown)'s *Fenced Code Blocks* for details.
+* We love [pull requests](https://help.github.com/articles/using-pull-requests). But if you don't have a test to go with it we probably won't merge it.
+
 # Contributing to Cucumber
 
 This document is a guide for those maintaining Cucumber, and others who would like to submit patches.
@@ -20,16 +33,15 @@ This document is a guide for those maintaining Cucumber, and others who would li
 
 ## Release Process
 
-Before you even attempt to do a release, make sure you can log into cukes.info and touch a file in /var/www/cucumber/api/ruby (see gem_tasks/yard.rake). You need to be able to do this in order to upload YARD docs as part of the release.
-
 * Bump the version number in `lib/cucumber/platform.rb`.
 * Make sure `History.md` is updated with the upcoming version number, and has entries for all fixes.
 * No need to add a `History.md` header at this point - this should be done when a new change is made, later.
+* Make sure you have up-to-date and clean copy of cucumber/cucumber.github.com.git at the same level as cucumber repo.
 
 Now release it
 
     bundle update
-    rake
+    bundle exec rake
     git commit -m "Release X.Y.Z"
     rake release
 

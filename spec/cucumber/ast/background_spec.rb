@@ -5,6 +5,7 @@ require 'cucumber/rb_support/rb_language'
 module Cucumber
   module Ast
     describe Background do
+      let(:language) { stub.as_null_object }
 
       before do
         extend(Cucumber::RbSupport::RbDsl)
@@ -21,24 +22,27 @@ module Cucumber
 
         @visitor = TreeWalker.new(@runtime)
 
-        @feature = mock('feature', :visit? => true).as_null_object
+        @feature = mock('feature', :visit? => true, :feature_elements => []).as_null_object
       end
 
       it "should execute Before blocks before background steps" do
         background = Background.new(
+          language,
+          Location.new('foo.feature', 2),
           comment=Comment.new(''),
-          line=2,
           keyword="",
           title="",
           description="",
           steps=[
-            Step.new(7, "Given", "y is 5")
+            Step.new(language,Location.new('foo.feature', 7), "Given", "y is 5")
           ])
 
         scenario = Scenario.new(
+          language,
           background,
           comment=Comment.new(""),
           tags=Tags.new(98,[]),
+          feature_tags=Tags.new(1,[]),
           line=99,
           keyword="",
           title="",
@@ -54,8 +58,9 @@ module Cucumber
       describe "should respond to #name" do
         it "with a value" do
           background = Background.new(
+            language,
+            Location.new('foo.feature', 2),
             comment=Comment.new(''),
-            line=2,
             keyword="",
             title="background name",
             description="",
@@ -65,6 +70,7 @@ module Cucumber
         end
         it "without a value" do
           background = Background.new(
+            language,
             comment=Comment.new(''),
             line=2,
             keyword="",
@@ -86,13 +92,14 @@ module Cucumber
         it "should state that the background has failed" do
           # Assign
           background = Background.new(
+            language,
+            Location.new('foo.feature', 2),
             comment=Comment.new(''),
-            line=2,
             keyword="",
             title="",
             description="",
             steps=[
-              Step.new(7, "Given", "y is 5")
+              Step.new(language, Location.new('foo.feature', 7), "Given", "y is 5")
             ])
           background.feature = @feature
 

@@ -4,10 +4,13 @@ module Cucumber
   module Ast
     class Examples #:nodoc:
       include Names
+      include HasLocation
       attr_writer :outline_table
 
-      def initialize(comment, line, keyword, title, description, outline_table)
-        @comment, @keyword, @title, @description, @outline_table = comment, keyword, title, description, outline_table
+      def initialize(location, comment, keyword, title, description, outline_table)
+        @location, @comment, @keyword, @title, @description, @outline_table = location, comment, keyword, title, description, outline_table
+        raise ArgumentError unless @location.is_a?(Location)
+        raise ArgumentError unless @comment.is_a?(Comment)
       end
 
       attr_reader :gherkin_statement

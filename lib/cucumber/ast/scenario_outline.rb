@@ -1,11 +1,16 @@
-require 'cucumber/ast/feature_element'
+require 'cucumber/ast/has_steps'
 require 'cucumber/ast/names'
+require 'cucumber/ast/empty_background'
 
 module Cucumber
   module Ast
     class ScenarioOutline #:nodoc:
-      include FeatureElement
+      include HasSteps
       include Names
+      include HasLocation
+
+      attr_accessor :feature
+      attr_reader :feature_tags
 
       module ExamplesArray #:nodoc:
         def accept(visitor)
@@ -22,50 +27,29 @@ module Cucumber
       # * Examples keyword
       # * Examples section name
       # * Raw matrix
-      def initialize(background, comment, tags, line, keyword, title, description, raw_steps, example_sections)
-        @background, @comment, @tags, @line, @keyword, @title, @description, @raw_steps, @example_sections = background, comment, tags, line, keyword, title, description, raw_steps, example_sections
-      end
-
-      def add_examples(example_section, gherkin_examples)
-        @example_sections << [example_section, gherkin_examples]
-      end
-
-      def init
-        return if @steps
+      def initialize(language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps, example_sections)
+        @language, @location, @background, @comment, @tags, @feature_tags, @keyword, @title, @description, @raw_steps, @example_sections = language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps, example_sections
         attach_steps(@raw_steps)
-        @steps = StepCollection.new(@raw_steps)
-
-        @examples_array = @example_sections.map do |example_section_and_gherkin_examples|
-          example_section = example_section_and_gherkin_examples[0]
-          gherkin_examples = example_section_and_gherkin_examples[1]
-
-          examples_comment     = example_section[0]
-          examples_line        = example_section[1]
-          examples_keyword     = example_section[2]
-          examples_title       = example_section[3]
-          examples_description = example_section[4]
-          examples_matrix      = example_section[5]
-
-          examples_table = OutlineTable.new(examples_matrix, self)
-          ex = Examples.new(examples_comment, examples_line, examples_keyword, examples_title, examples_description, examples_table)
-          ex.gherkin_statement(gherkin_examples)
-          ex
-        end
-
-        @examples_array.extend(ExamplesArray)
-
-        @background.feature_elements << self if @background
       end
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, name, file_colon_line(@line), source_indent(first_line_length))
-        visitor.visit_steps(@steps)
+        visitor.visit_scenario_name(@keyword, name, file_colon_line, source_indent(first_line_length))
+        visitor.visit_steps(steps)
 
-        skip_invoke! if @background && @background.failed?
-        visitor.visit_examples_array(@examples_array) unless @examples_array.empty?
+        skip_invoke! if @background.failed?
+        visitor.visit_examples_array(examples_array) unless examples_array.empty?
+      end
+
+      def to_units(background)
+        raise ArgumentError.new("#{background} != #{@background}") unless background == @background # maybe we don't need this argument, but it seems like the leaf AST nodes would be better not being aware of their parents. However step_invocations uses the ivar at the moment, so we'll just do this check to make sure its OK.
+        result = []
+        each_example_row do |row|
+          result << Unit.new(step_invocations(row))
+        end
+        result
       end
 
       def fail!(exception)
@@ -74,14 +58,11 @@ module Cucumber
       end
 
       def skip_invoke!
-        @examples_array.each{|examples| examples.skip_invoke!}
-        @feature.next_feature_element(self) do |next_one|
-          next_one.skip_invoke!
-        end
+        examples_array.each { |examples| examples.skip_invoke! }
       end
 
       def step_invocations(cells)
-        step_invocations = @steps.step_invocations_from_cells(cells)
+        step_invocations = steps.step_invocations_from_cells(cells)
         if @background
           @background.step_collection(step_invocations)
         else
@@ -90,35 +71,67 @@ module Cucumber
       end
 
       def each_example_row(&proc)
-        @examples_array.each do |examples|
+        examples_array.each do |examples|
           examples.each_example_row(&proc)
         end
       end
 
       def visit_scenario_name(visitor, row)
         visitor.visit_scenario_name(
-          @feature.language.keywords('scenario')[0],
+          language.keywords('scenario')[0],
           row.name,
-          file_colon_line(row.line),
+          Location.new(file, row.line).to_s,
           source_indent(first_line_length)
         )
       end
 
       def failed?
-        @examples_array.select{|examples| examples.failed?}.any?
+        examples_array.select { |examples| examples.failed? }.any?
       end
 
       def to_sexp
-        init
         sexp = [:scenario_outline, @keyword, name]
         comment = @comment.to_sexp
         sexp += [comment] if comment
         tags = @tags.to_sexp
         sexp += tags if tags.any?
-        steps = @steps.to_sexp
-        sexp += steps if steps.any?
-        sexp += @examples_array.map{|e| e.to_sexp}
+        sexp += steps.to_sexp if steps.any?
+        sexp += examples_array.map{|e| e.to_sexp}
         sexp
+      end
+
+      private
+
+      attr_reader :line
+
+      def examples_array
+        return @examples_array if @examples_array
+        @examples_array = @example_sections.map do |section|
+          create_examples_table(section)
+        end
+        @examples_array.extend(ExamplesArray)
+        @examples_array
+      end
+
+      def create_examples_table(example_section_and_gherkin_examples)
+        example_section = example_section_and_gherkin_examples[0]
+        gherkin_examples = example_section_and_gherkin_examples[1]
+
+        examples_location    = example_section[0]
+        examples_comment     = example_section[1]
+        examples_keyword     = example_section[2]
+        examples_title       = example_section[3]
+        examples_description = example_section[4]
+        examples_matrix      = example_section[5]
+
+        examples_table = OutlineTable.new(examples_matrix, self)
+        ex = Examples.new(examples_location, examples_comment, examples_keyword, examples_title, examples_description, examples_table)
+        ex.gherkin_statement(gherkin_examples)
+        ex
+      end
+
+      def steps
+        @steps ||= StepCollection.new(@raw_steps)
       end
     end
   end

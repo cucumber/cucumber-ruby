@@ -3,6 +3,7 @@ require 'multi_json'
 require 'gherkin/rubify'
 require 'gherkin/i18n'
 require 'cucumber/configuration'
+require 'cucumber/load_path'
 require 'cucumber/language_support/language_methods'
 require 'cucumber/formatter/duration'
 require 'cucumber/runtime/user_interface'
@@ -155,6 +156,12 @@ module Cucumber
           io.write(MultiJson.dump(stepdefs, :pretty => true))
         end
       end
+    end
+
+    # Returns Ast::DocString for +string_without_triple_quotes+.
+    #
+    def doc_string(string_without_triple_quotes, content_type='', line_offset=0)
+      Ast::DocString.new(string_without_triple_quotes,content_type)
     end
 
   private

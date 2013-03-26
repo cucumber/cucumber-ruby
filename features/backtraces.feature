@@ -29,9 +29,9 @@ Feature: Backtraces
 
         Scenario: Example # features/failing_hard.feature:2
           Given failing   # features/step_definitions/steps.rb:4
-            java.lang.UnsupportedOperationException: null (NativeException)
-            java/util/AbstractList.java:131:in `add'
-            java/util/AbstractList.java:91:in `add'
+             (Java::JavaLang::UnsupportedOperationException)
+            java.util.AbstractList.add(AbstractList.java:148)
+            java.util.AbstractList.add(AbstractList.java:108)
       """
 
   @not-jruby

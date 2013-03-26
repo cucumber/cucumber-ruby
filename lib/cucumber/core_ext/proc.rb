@@ -1,4 +1,5 @@
 # Proc extension to get more location info out of a proc
+require 'cucumber/platform'
 class Proc #:nodoc:
   PROC_PATTERN = /[\d\w]+@(.+):(\d+).*>/
   PWD = Dir.pwd
@@ -16,6 +17,7 @@ class Proc #:nodoc:
       path, line = *to_s.match(PROC_PATTERN)[1..2]
       path = File.expand_path(path)
       pwd = File.expand_path(PWD)
+      pwd.force_encoding(path.encoding) unless Cucumber::RUBY_1_8_7
       if path.index(pwd)
         path = path[pwd.length+1..-1]
       elsif path =~ /.*\/gems\/(.*\.rb)$/

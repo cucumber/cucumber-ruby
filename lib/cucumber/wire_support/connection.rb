@@ -26,7 +26,7 @@ module Cucumber
       end
 
       def exception(params)
-        WireException.new(params, @config.host, @config.port)
+        WireException.new(params, @config)
       end
 
       private
@@ -47,9 +47,14 @@ module Cucumber
       end
 
       def socket
-        @socket ||= TCPSocket.new(@config.host, @config.port)
+        return @socket if @socket
+        if @config.unix
+          @socket = UNIXSocket.new(@config.unix)
+        else
+          @socket = TCPSocket.new(@config.host, @config.port)
+        end
       rescue Errno::ECONNREFUSED => exception
-        raise(ConnectionError, "Unable to contact the wire server at #{@config.host}:#{@config.port}. Is it up?")
+        raise(ConnectionError, "Unable to contact the wire server at #{@config}. Is it up?")
       end
     end
   end

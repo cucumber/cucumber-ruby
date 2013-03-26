@@ -5,7 +5,7 @@ module Cucumber
   module WireSupport
     describe WireLanguage do
       def stub_wire_file!(filename, config)
-        Configuration.stub!(:new).with(filename).and_return config
+        Configuration.stub!(:from_file).with(filename).and_return config
       end
 
       describe "#load_code_file" do

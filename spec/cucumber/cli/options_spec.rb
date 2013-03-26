@@ -58,7 +58,7 @@ module Cli
           include RSpec::WorkInProgress
 
           it "lists all known langues" do
-            pending_under :java, "require gherkin >= b5e96f13" do
+            pending_under :java, 'StringIO.append is not defined???' do
               when_parsing '--i18n help' do
                 Kernel.should_receive(:exit)
               end
@@ -66,7 +66,7 @@ module Cli
           end
 
           it "exits the program" do
-            pending_under :java, "require gherkin >= b5e96f13" do
+            pending_under :java, 'StringIO.append is not defined???' do
               when_parsing('--i18n help') { Kernel.should_receive(:exit) }
             end
           end

@@ -3,24 +3,16 @@ require 'gherkin/tag_expression'
 
 module Cucumber
   module Ast
-    module FeatureElement #:nodoc:
-      attr_accessor :feature
-
+    module HasSteps #:nodoc:
       attr_reader :gherkin_statement, :raw_steps, :title, :description
       def gherkin_statement(statement=nil)
         @gherkin_statement ||= statement
       end
 
-      def add_step(step)
-        @raw_steps << step
-      end
-
       def attach_steps(steps)
-        steps.each {|step| step.feature_element = self}
-      end
-
-      def file_colon_line(line = @line)
-        @feature.file_colon_line(line) if @feature
+        steps.each do |step| 
+          step.feature_element = self
+        end
       end
 
       def first_line_length
@@ -49,8 +41,8 @@ module Cucumber
         scenario_name_regexps.detect{|n| n =~ name}
       end
 
-      def backtrace_line(name = "#{@keyword}: #{name}", line = @line)
-        @feature.backtrace_line(name, line) if @feature
+      def backtrace_line(step_name = "#{@keyword}: #{name}", line = self.line)
+        "#{location.on_line(line)}:in `#{step_name}'"
       end
 
       def source_indent(text_length)
@@ -58,8 +50,7 @@ module Cucumber
       end
 
       def max_line_length
-        init
-        @steps.max_line_length(self)
+        steps.max_line_length(self)
       end
 
       def accept_hook?(hook)
@@ -71,12 +62,13 @@ module Cucumber
       end
 
       def source_tags
-        (@tags.tags.to_a + (@feature ? @feature.source_tags.to_a : [])).uniq
+        @tags.tags.to_a + feature_tags.tags.to_a
       end
 
       def language
-        @feature.language if @feature
+        @language || raise("Language is required for a #{self.class}")
       end
+
     end
   end
 end

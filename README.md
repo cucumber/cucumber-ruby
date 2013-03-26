@@ -15,8 +15,8 @@ Where to get more info:
   * Support forum: https://groups.google.com/forum/?fromgroups#!forum/cukes
   * IRC channel: irc://irc.freenode.net/cucumber
 
-See [DEVELOPERS.md](DEVELOPERS.md) for info on contributing to Cucumber.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for info on contributing to Cucumber.
 
 ## Copyright
 
-Copyright (c) 2008,2009,2010,2011,2012 Aslak Hellesøy and Contributors. See LICENSE for details.
+Copyright (c) 2008,2009,2010,2011,2012,2013 Aslak Hellesøy and Contributors. See LICENSE for details.

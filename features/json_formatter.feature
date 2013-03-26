@@ -60,6 +60,7 @@ Feature: JSON output formatter
 
       """
 
+  @wip-jruby
   Scenario: one feature, one passing scenario, one failing scenario
     When I run cucumber "--format json features/one_passing_one_failing.feature"
     Then it should fail with JSON:
@@ -142,12 +143,96 @@ Feature: JSON output formatter
 
       """
 
+  @wip-jruby
+  Scenario: one feature, one passing scenario, one failing scenario with prettyfied json
+    When I run cucumber "--format json_pretty features/one_passing_one_failing.feature"
+    Then it should fail with JSON:
+      """
+      [
+        {
+          "uri": "features/one_passing_one_failing.feature",
+          "keyword": "Feature",
+          "id": "one-passing-scenario,-one-failing-scenario",
+          "name": "One passing scenario, one failing scenario",
+          "line": 2,
+          "description": "",
+          "tags": [
+            {
+              "name": "@a",
+              "line": 1
+            }
+          ],
+          "elements": [
+            {
+              "keyword": "Scenario",
+              "id": "one-passing-scenario,-one-failing-scenario;passing",
+              "name": "Passing",
+              "line": 5,
+              "description": "",
+              "tags": [
+                {
+                  "name": "@b",
+                  "line": 4
+                }
+              ],
+              "type": "scenario",
+              "steps": [
+                {
+                  "keyword": "Given ",
+                  "name": "a passing step",
+                  "line": 6,
+                  "match": {
+                    "location": "features/step_definitions/steps.rb:1"
+                  },
+                  "result": {
+                    "status": "passed",
+                    "duration": 1
+                  }
+                }
+              ]
+            },
+            {
+              "keyword": "Scenario",
+              "id": "one-passing-scenario,-one-failing-scenario;failing",
+              "name": "Failing",
+              "line": 9,
+              "description": "",
+              "tags": [
+                {
+                  "name": "@c",
+                  "line": 8
+                }
+              ],
+              "type": "scenario",
+              "steps": [
+                {
+                  "keyword": "Given ",
+                  "name": "a failing step",
+                  "line": 10,
+                  "match": {
+                    "location": "features/step_definitions/steps.rb:5"
+                  },
+                  "result": {
+                    "status": "failed",
+                    "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:6:in `/a failing step/'\nfeatures/one_passing_one_failing.feature:10:in `Given a failing step'",
+                    "duration": 1
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+
+      """
+
+  @wip-jruby
   Scenario: DocString
     Given a file named "features/doc_string.feature" with:
       """
       Feature: A DocString feature
 
-        Scenario: 
+        Scenario:
           Then I should fail with
             \"\"\"
             a string
@@ -184,8 +269,8 @@ Feature: JSON output formatter
                   "name": "I should fail with",
                   "line": 4,
                   "doc_string": {
-                    "content_type": "", 
-                    "value": "a string", 
+                    "content_type": "",
+                    "value": "a string",
                     "line": 5
                   },
                   "match": {
@@ -204,6 +289,7 @@ Feature: JSON output formatter
       ]
       """
 
+  @wip-jruby
   Scenario: embedding screenshot
     When I run cucumber "-b --format json features/embed.feature"
     Then it should pass with JSON:

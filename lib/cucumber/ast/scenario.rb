@@ -1,66 +1,45 @@
-require 'cucumber/ast/feature_element'
+require 'cucumber/ast/has_steps'
 require 'cucumber/ast/names'
+require 'cucumber/ast/empty_background'
+require 'cucumber/ast/location'
+require 'cucumber/unit'
 
 module Cucumber
   module Ast
     class Scenario #:nodoc:
-      include FeatureElement
+      include HasSteps
       include Names
+      include HasLocation
 
-      attr_reader :line
+      attr_reader :feature_tags
 
-      class EmptyBackground
-        def failed?
-          false
-        end
-
-        def feature_elements
-          []
-        end
-
-        def step_collection(step_invocations)
-          StepCollection.new(step_invocations)
-        end
-
-        def init
-        end
-      end
-
-      def initialize(background, comment, tags, line, keyword, title, description, raw_steps)
-        @background = background || EmptyBackground.new
-        @comment, @tags, @line, @keyword, @title, @description, @raw_steps = comment, tags, line, keyword, title, description, raw_steps
+      def initialize(language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps)
+        @language, @location, @background, @comment, @tags, @feature_tags, @keyword, @title, @description, @raw_steps = language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps
         @exception = @executed = nil
-      end
-
-      def init
-        return if @steps
-        @background.init
-        @background.feature_elements << self
         attach_steps(@raw_steps)
-        step_invocations = @raw_steps.map{|step| step.step_invocation}
-        @steps = @background.step_collection(step_invocations)
       end
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
 
-        with_visitor(visitor) do
-          visitor.visit_comment(@comment) unless @comment.empty?
-          visitor.visit_tags(@tags)
-          visitor.visit_scenario_name(@keyword, name, file_colon_line(@line), source_indent(first_line_length))
+        visitor.visit_comment(@comment) unless @comment.empty?
+        visitor.visit_tags(@tags)
+        visitor.visit_scenario_name(@keyword, name, file_colon_line, source_indent(first_line_length))
 
-          skip_invoke! if @background.failed?
-          visitor.runtime.with_hooks(self, skip_hooks?) do
-            skip_invoke! if failed?
-            visitor.visit_steps(@steps)
-          end
-          @executed = true
+        skip_invoke! if @background.failed?
+        with_visitor(visitor) do
+          visitor.execute(self, skip_hooks?)
         end
+        @executed = true
+      end
+
+      def to_units(background)
+        [Unit.new(background.step_invocations + step_invocations)]
       end
 
       # Returns true if one or more steps failed
       def failed?
-        @steps.failed? || !!@exception
+        steps.failed? || !!@exception
       end
 
       def fail!(exception)
@@ -75,33 +54,24 @@ module Cucumber
 
       # Returns the first exception (if any)
       def exception
-        @exception || @steps.exception
+        @exception || steps.exception
       end
 
       # Returns the status
       def status
         return :failed if @exception
-        @steps.status
-      end
-
-      def skip_invoke!
-        @steps.each{|step_invocation| step_invocation.skip_invoke!}
-        @feature.next_feature_element(self) do |next_one|
-          next_one.skip_invoke!
-        end
+        steps.status
       end
 
       def to_sexp
-        sexp = [:scenario, @line, @keyword, name]
+        sexp = [:scenario, line, @keyword, name]
         comment = @comment.to_sexp
         sexp += [comment] if comment
         tags = @tags.to_sexp
         sexp += tags if tags.any?
-        steps = @steps.to_sexp
-        sexp += steps if steps.any?
+        sexp += steps.to_sexp if steps.any?
         sexp
       end
-
 
       def with_visitor(visitor)
         @current_visitor = visitor
@@ -109,11 +79,24 @@ module Cucumber
         @current_visitor = nil
       end
 
+      def skip_invoke!
+        steps.skip_invoke!
+      end
+
+      def steps
+        @steps ||= @background.step_collection(step_invocations)
+      end
+
       private
+
+      def step_invocations
+        @raw_steps.map{|step| step.step_invocation}
+      end
 
       def skip_hooks?
         @background.failed? || @executed
       end
+
     end
   end
 end
