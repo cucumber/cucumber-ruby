@@ -15,92 +15,55 @@ module Cucumber
         Object.new.extend(RbSupport::RbDsl)
       end
 
-      def unindented(s)
-        s.split("\n")[1..-2].join("\n").indent(-10)
-      end
-
       describe "snippets" do
 
-        it "should wrap snippet patterns in parentheses" do
-          rb.snippet_text('Given', 'A "string" with 4 spaces', nil).should == unindented(%{
-          Given(/^A "(.*?)" with (\\d+) spaces$/) do |arg1, arg2|
-            pending # express the regexp above with the code you wish you had
-          end
-          })
+        let(:snippet) { stub.as_null_object }
+        before do
+          Snippet::Regexp.stub(:new => snippet)
         end
 
-        it "should recognise numbers in name and make according regexp" do
-          rb.snippet_text('Given', 'Cloud 9 yeah', nil).should == unindented(%{
-          Given(/^Cloud (\\d+) yeah$/) do |arg1|
-            pending # express the regexp above with the code you wish you had
-          end
-          })
+        it "creates a regexp Snippet class by default" do
+          Snippet::Regexp.should_receive(:new)
+
+          rb.snippet_text('Given', 'A "string" with 4 spaces', nil)
         end
 
-        it "should recognise a mix of ints, strings and why not a table too" do
-          rb.snippet_text('Given', 'I have 9 "awesome" cukes in 37 "boxes"', Cucumber::Ast::Table).should == unindented(%{
-          Given(/^I have (\\d+) "(.*?)" cukes in (\\d+) "(.*?)"$/) do |arg1, arg2, arg3, arg4, table|
-            # table is a Cucumber::Ast::Table
-            pending # express the regexp above with the code you wish you had
-          end
-          })
+        it "creates a regexp Snippet class explicitly" do
+          Snippet::Regexp.should_receive(:new)
+
+          rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :regexp)
         end
 
-        it "should recognise quotes in name and make according regexp" do
-          rb.snippet_text('Given', 'A "first" arg', nil).should == unindented(%{
-          Given(/^A "(.*?)" arg$/) do |arg1|
-            pending # express the regexp above with the code you wish you had
-          end
-          })
+        it "creates a legacy Snippet class" do
+          Snippet::Legacy.stub(:new => stub.as_null_object)
+          Snippet::Legacy.should_receive(:new)
+
+          rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :legacy)
         end
 
-        it "should recognise several quoted words in name and make according regexp and args" do
-          rb.snippet_text('Given', 'A "first" and "second" arg', nil).should == unindented(%{
-          Given(/^A "(.*?)" and "(.*?)" arg$/) do |arg1, arg2|
-            pending # express the regexp above with the code you wish you had
-          end
-          })
+        it "creates a percent Snippet class" do
+          Snippet::Percent.stub(:new => stub.as_null_object)
+          Snippet::Percent.should_receive(:new)
+
+          rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :percent)
         end
 
-        it "should not use quote group when there are no quotes" do
-          rb.snippet_text('Given', 'A first arg', nil).should == unindented(%{
-          Given(/^A first arg$/) do
-            pending # express the regexp above with the code you wish you had
-          end
-          })
+        it "passes all parameters to Snippet class" do
+          code_keyword = stub
+          pattern = stub
+          multiline_argument_class = stub
+
+          snippet.should_receive(:code_keyword=).with(code_keyword)
+          snippet.should_receive(:pattern=).with(pattern)
+          snippet.should_receive(:multiline_argument_class=).with(multiline_argument_class)
+
+          rb.snippet_text(code_keyword, pattern, multiline_argument_class)
         end
 
-        it "should be helpful with tables" do
-          rb.snippet_text('Given', 'A "first" arg', Cucumber::Ast::Table).should == unindented(%{
-          Given(/^A "(.*?)" arg$/) do |arg1, table|
-            # table is a Cucumber::Ast::Table
-            pending # express the regexp above with the code you wish you had
-          end
-          })
-        end
+        it "renders the snippet" do
+          snippet.should_receive(:render)
 
-        it "should wrap snippet patterns in parentheses for explicit regexp snippet type" do
-          rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :regexp).should == unindented(%{
-          Given(/^A "(.*?)" with (\\d+) spaces$/) do |arg1, arg2|
-            pending # express the regexp above with the code you wish you had
-          end
-          })
-        end
-
-        it "should not wrap snippet patterns in parentheses for legacy snippet type" do
-          rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :legacy).should == unindented(%{
-          Given /^A "(.*?)" with (\\d+) spaces$/ do |arg1, arg2|
-            pending # express the regexp above with the code you wish you had
-          end
-          })
-        end
-
-        it "should wrap snippet patterns in percentage regexp for percent snippet type" do
-          rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :percent).should == unindented(%{
-          Given %r{^A "(.*?)" with (\\d+) spaces$} do |arg1, arg2|
-            pending # express the regexp above with the code you wish you had
-          end
-          })
+          rb.snippet_text('Given', 'A "string" with 4 spaces', nil)
         end
 
       end

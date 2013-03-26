@@ -4,6 +4,7 @@ require 'cucumber/rb_support/rb_world'
 require 'cucumber/rb_support/rb_step_definition'
 require 'cucumber/rb_support/rb_hook'
 require 'cucumber/rb_support/rb_transform'
+require 'cucumber/rb_support/snippet'
 
 begin
   require 'rspec/expectations'
@@ -83,32 +84,14 @@ module Cucumber
         end.compact
       end
 
-      ARGUMENT_PATTERNS = ['"(.*?)"', '(\d+)']
-
       def snippet_text(code_keyword, step_name, multiline_arg_class, snippet_type = :regexp)
-        snippet_pattern = Regexp.escape(step_name).gsub('\ ', ' ').gsub('/', '\/')
-        arg_count = 0
-        ARGUMENT_PATTERNS.each do |pattern|
-          snippet_pattern = snippet_pattern.gsub(Regexp.new(pattern), pattern)
-          arg_count += snippet_pattern.scan(pattern).length
-        end
+        snippet = typed_snippet_class(snippet_type).new
 
-        block_args = (0...arg_count).map {|n| "arg#{n+1}"}
-        block_args << multiline_arg_class.default_arg_name unless multiline_arg_class.nil?
-        block_arg_string = block_args.empty? ? "" : " |#{block_args.join(", ")}|"
-        multiline_class_comment = ""
-        if(multiline_arg_class == Ast::Table)
-          multiline_class_comment = "# #{multiline_arg_class.default_arg_name} is a #{multiline_arg_class.to_s}\n  "
-        end
+        snippet.code_keyword = code_keyword
+        snippet.pattern = step_name
+        snippet.multiline_argument_class = multiline_arg_class
 
-        pattern = typed_snippet_pattern(snippet_pattern, snippet_type)
-
-        do_block = ""
-        do_block << "do#{block_arg_string}\n"
-        do_block << "  #{multiline_class_comment}pending # express the regexp above with the code you wish you had\n"
-        do_block << "end"
-
-        "#{code_keyword}#{pattern} #{do_block}"
+        snippet.render
       end
 
       def begin_rb_scenario(scenario)
@@ -192,15 +175,13 @@ module Cucumber
         end
       end
 
-      def typed_snippet_pattern(pattern, type)
-        case type
-        when :percent
-          " %r{^#{pattern}$}"
-        when :legacy
-          " /^#{pattern}$/"
-        else
-          "(/^#{pattern}$/)"
-        end
+      def typed_snippet_class(type)
+        type ||= :regexp
+        {
+          regexp: Snippet::Regexp,
+          legacy: Snippet::Legacy,
+          percent: Snippet::Percent
+        }.fetch(type)
       end
     end
   end
