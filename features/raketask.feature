@@ -31,10 +31,6 @@ Feature: Raketask
 
         SAMPLE_FEATURE_FILE = 'features/passing_and_failing.feature'
 
-        Cucumber::Rake::Task.new(:features)
-
-        task :default => :features
-
         Cucumber::Rake::Task.new(:pass) do |t|
           t.cucumber_opts = "#{SAMPLE_FEATURE_FILE}:3"
         end
