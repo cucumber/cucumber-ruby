@@ -101,7 +101,11 @@ module Cucumber
         end
 
         def run
-          sh(cmd.join(" "))
+          sh cmd.join(" ") do |ok, res|
+            if !ok
+              exit res.exitstatus
+            end
+          end
         end
       end
 
