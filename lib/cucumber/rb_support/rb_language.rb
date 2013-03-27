@@ -178,9 +178,9 @@ module Cucumber
       def typed_snippet_class(type)
         type ||= :regexp
         {
-          regexp: Snippet::Regexp,
-          legacy: Snippet::Legacy,
-          percent: Snippet::Percent
+          :regexp => Snippet::Regexp,
+          :legacy => Snippet::Legacy,
+          :percent => Snippet::Percent
         }.fetch(type)
       end
     end
