@@ -6,12 +6,11 @@ module Cucumber
 
       class BaseSnippet
 
-        attr_reader :code_keyword, :pattern, :multiline_argument_class
-
         def initialize(code_keyword, pattern, multiline_argument_class)
           @code_keyword = code_keyword
           @pattern = pattern
           @multiline_argument_class = multiline_argument_class
+          @number_of_arguments = 0
         end
 
         def render
@@ -21,17 +20,17 @@ module Cucumber
 
         private
 
+        attr_reader :code_keyword, :pattern, :multiline_argument_class, :number_of_arguments
+
         def replace_and_count_capturing_groups!
-          @pattern = ::Regexp.escape(pattern).gsub('\ ', ' ').gsub('/', '\/')
+          modified_pattern = ::Regexp.escape(pattern).gsub('\ ', ' ').gsub('/', '\/')
 
-          arg_count = 0
-
-          ARGUMENT_PATTERNS.each do |pattern|
-            @pattern = self.pattern.gsub(::Regexp.new(pattern), pattern)
-            arg_count += self.pattern.scan(pattern).length
+          ARGUMENT_PATTERNS.each do |argument_pattern|
+            modified_pattern.gsub!(::Regexp.new(argument_pattern), argument_pattern)
+            @number_of_arguments += modified_pattern.scan(argument_pattern).length
           end
 
-          @number_of_arguments = arg_count
+          @pattern = modified_pattern
         end
 
         def render_snippet
@@ -48,7 +47,7 @@ module Cucumber
         end
 
         def arguments
-          block_args = (0...@number_of_arguments).map {|n| "arg#{n+1}"}
+          block_args = (0...number_of_arguments).map { |n| "arg#{n+1}" }
 
           if multiline_argument_class
             block_args << multiline_argument_class.default_arg_name
