@@ -22,7 +22,7 @@ module Cucumber
 
       describe Snippet::Regexp do
         let(:snippet_class) { Snippet::Regexp }
-        let(:snippet_text) { snippet.render }
+        let(:snippet_text) { snippet.to_s }
 
         it "should wrap snippet patterns in parentheses" do
           @pattern = 'A "string" with 4 spaces'
@@ -103,7 +103,7 @@ module Cucumber
         let(:snippet_class) { Snippet::Legacy }
 
         it "renders snippet as unwrapped regular expression" do
-          snippet.render.should eql unindented(%{
+          snippet.to_s.should eql unindented(%{
           Given /^we have a missing step$/ do
             pending # express the regexp above with the code you wish you had
           end
@@ -115,7 +115,7 @@ module Cucumber
         let(:snippet_class) { Snippet::Percent }
 
         it "renders snippet as percent-style regular expression" do
-          snippet.render.should eql unindented(%{
+          snippet.to_s.should eql unindented(%{
           Given %r{^we have a missing step$} do
             pending # express the regexp above with the code you wish you had
           end

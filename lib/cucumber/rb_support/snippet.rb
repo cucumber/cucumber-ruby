@@ -7,22 +7,21 @@ module Cucumber
       class BaseSnippet
 
         def initialize(code_keyword, pattern, multiline_argument_class)
-          @code_keyword = code_keyword
-          @pattern = pattern
-          @multiline_argument_class = multiline_argument_class
           @number_of_arguments = 0
+          @code_keyword = code_keyword
+          @pattern = replace_and_count_capturing_groups(pattern)
+          @multiline_argument_class = multiline_argument_class
         end
 
-        def render
-          replace_and_count_capturing_groups!
-          render_snippet
+        def to_s
+          "#{code_keyword}#{typed_pattern} #{do_block}"
         end
 
         private
 
         attr_reader :code_keyword, :pattern, :multiline_argument_class, :number_of_arguments
 
-        def replace_and_count_capturing_groups!
+        def replace_and_count_capturing_groups(pattern)
           modified_pattern = ::Regexp.escape(pattern).gsub('\ ', ' ').gsub('/', '\/')
 
           ARGUMENT_PATTERNS.each do |argument_pattern|
@@ -30,11 +29,7 @@ module Cucumber
             @number_of_arguments += modified_pattern.scan(argument_pattern).length
           end
 
-          @pattern = modified_pattern
-        end
-
-        def render_snippet
-          "#{code_keyword}#{typed_pattern} #{do_block}"
+          modified_pattern
         end
 
         def do_block

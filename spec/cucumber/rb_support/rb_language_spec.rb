@@ -59,7 +59,7 @@ module Cucumber
         end
 
         it "renders the snippet" do
-          snippet.should_receive(:render)
+          snippet.should_receive(:to_s)
 
           rb.snippet_text('Given', 'A "string" with 4 spaces', nil)
         end
