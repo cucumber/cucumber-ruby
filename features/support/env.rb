@@ -31,8 +31,8 @@ Before do
   # Make sure bin/cucumber runs with SimpleCov enabled
   # set_env('SIMPLECOV', 'true')
 
-  # Set a longer timeout for aruba
-  @aruba_timeout_seconds = 15
+  # Set a longer timeout for aruba, and a really long one if running on JRuby
+  @aruba_timeout_seconds = Cucumber::JRUBY ? 35 : 15
 end
 
 After do
