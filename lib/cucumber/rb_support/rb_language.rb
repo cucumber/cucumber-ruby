@@ -181,7 +181,7 @@ module Cucumber
       end
 
       def self.cli_snippet_type_options
-        SNIPPET_TYPES.keys.sort.map do |type|
+        SNIPPET_TYPES.keys.sort_by(&:to_s).map do |type|
           SNIPPET_TYPES[type].cli_option_string(type)
         end
       end
