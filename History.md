@@ -3,6 +3,7 @@
 ### New Features
 * Add lib to default load path
   ([#162](https://github.com/cucumber/cucumber/issues/162) Steve Tooke)
+* Add snippet type to support different type of ruby snippets. ([#390](https://github.com/cucumber/cucumber/pull/390) Roel van Dijk)
 
 ### Bugfixes
 * Improve rake task report on failure ([#400](https://github.com/cucumber/cucumber/issues/400) Andrey Vakarev
