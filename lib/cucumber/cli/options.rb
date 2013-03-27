@@ -46,7 +46,8 @@ module Cucumber
       OPTIONS_WITH_ARGS = ['-r', '--require', '--i18n', '-f', '--format', '-o', '--out',
                                   '-t', '--tags', '-n', '--name', '-e', '--exclude',
                                   PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG,
-                                  '-a', '--autoformat', '-l', '--lines', '--port']
+                                  '-a', '--autoformat', '-l', '--lines', '--port',
+                                  '-I', '--snippet-type']
 
       def self.parse(args, out_stream, error_stream, options = {})
         new(out_stream, error_stream, options).parse!(args)
@@ -238,6 +239,14 @@ module Cucumber
           opts.on("-i", "--no-snippets", "Don't print snippets for pending steps.") do
             @options[:snippets] = false
           end
+          opts.on("-I", "--snippet-type TYPE", 
+                  "Use different snippet type (Default: regexp). Available types:",
+                  "regexp  : Snippets with parentheses,    e.g. \"When(/^missing step$/) do\"",
+                  "legacy  : Snippets without parentheses, e.g. \"When /^missing step$/ do\"",
+                  "percent : Snippets with percent regexp, e.g. \"When %r{^missing step$} do\"") do |v|
+            @options[:snippet_type] = v.to_sym
+          end
+
           opts.on("-q", "--quiet", "Alias for --no-snippets --no-source.") do
             @quiet = true
           end
