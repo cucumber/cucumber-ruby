@@ -79,7 +79,7 @@ module Cucumber
         end
 
         def self.description
-        "Snippets with parentheses"
+          "Snippets with parentheses"
         end
       end
 
