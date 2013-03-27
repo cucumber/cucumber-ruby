@@ -170,13 +170,20 @@ module Cucumber
         end
       end
 
+      SNIPPET_TYPES = {
+        :regexp => Snippet::Regexp,
+        :legacy => Snippet::Legacy,
+        :percent => Snippet::Percent
+      }
+
       def typed_snippet_class(type)
-        type ||= :regexp
-        {
-          :regexp => Snippet::Regexp,
-          :legacy => Snippet::Legacy,
-          :percent => Snippet::Percent
-        }.fetch(type)
+        SNIPPET_TYPES.fetch(type || :regexp)
+      end
+
+      def self.cli_snippet_type_options
+        SNIPPET_TYPES.keys.sort_by(&:to_s).map do |type|
+          SNIPPET_TYPES[type].cli_option_string(type)
+        end
       end
     end
   end
