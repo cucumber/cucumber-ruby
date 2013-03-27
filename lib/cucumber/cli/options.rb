@@ -1,5 +1,6 @@
 require 'cucumber/cli/profile_loader'
 require 'cucumber/formatter/ansicolor'
+require 'cucumber/rb_support/rb_language'
 
 module Cucumber
   module Cli
@@ -241,9 +242,7 @@ module Cucumber
           end
           opts.on("-I", "--snippet-type TYPE", 
                   "Use different snippet type (Default: regexp). Available types:",
-                  "regexp  : Snippets with parentheses,    e.g. \"When(/^missing step$/) do\"",
-                  "legacy  : Snippets without parentheses, e.g. \"When /^missing step$/ do\"",
-                  "percent : Snippets with percent regexp, e.g. \"When %r{^missing step$} do\"") do |v|
+                  *Cucumber::RbSupport::RbLanguage.cli_snippet_type_options) do |v|
             @options[:snippet_type] = v.to_sym
           end
 
