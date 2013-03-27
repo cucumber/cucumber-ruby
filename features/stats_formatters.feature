@@ -22,10 +22,10 @@ Feature: Usage formatter
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given /A/ do;end
-      Given /B/ do;end
-      Given /C/ do;end
-      Given /D/ do;end
+      Given /A/ do;sleep(0.012);end
+      Given /B/ do;sleep(0.012);end
+      Given /C/ do;sleep(0.012);end
+      Given /D/ do;sleep(0.012);end
       """
 
   Scenario: Run with --format usage
@@ -50,6 +50,32 @@ Feature: Usage formatter
       
       3 scenarios (3 skipped)
       8 steps (8 skipped)
+      0m0.012s
+
+      """
+
+  Scenario: Run with --format usage
+    When I run `cucumber -f usage`
+    Then it should pass with exactly:
+      """
+      ---------
+      
+      0.0100000 /A/         # features/step_definitions/steps.rb:1
+        0.0100000 Given A   # features/f.feature:3
+        0.0100000 Given A   # features/f.feature:3
+        0.0100000 Given A   # features/f.feature:3
+        0.0100000 Given A   # features/f.feature:13
+      0.0100000 /C/         # features/step_definitions/steps.rb:3
+        0.0100000 Given <x> # features/f.feature:7
+        0.0100000 Given C   # features/f.feature:14
+      0.0100000 /B/         # features/step_definitions/steps.rb:2
+        0.0100000 Given B   # features/f.feature:5
+        0.0100000 And B     # features/f.feature:8
+      0.0000000 /D/         # features/step_definitions/steps.rb:4
+        NOT MATCHED BY ANY STEPS
+      
+      3 scenarios (3 passed)
+      8 steps (8 passed)
       0m0.012s
 
       """

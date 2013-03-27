@@ -23,6 +23,7 @@ module Aruba::Api
   def unrandom(out)
     out = out.gsub(/#{Dir.pwd}\/tmp\/aruba/, '.') # Remove absolute paths
     out = out.gsub(/^\d+m\d+\.\d+s$/, '0m0.012s') # Make duration predictable
+    out = out.gsub(/^(\s*)(\d\.\d{2})\d{5}(\s)/, '\1\200000\3')
     out = out.gsub(/Coverage report generated for Cucumber Features to #{Dir.pwd}\/coverage.*\n$/, '') # Remove SimpleCov message
   end
 end
