@@ -5,6 +5,7 @@
   ([#162](https://github.com/cucumber/cucumber/issues/162) Steve Tooke)
 
 ### Bugfixes
+* Improve rake task report on failure ([#400](https://github.com/cucumber/cucumber/issues/400) Andrey Vakarev
 * Show details of nested steps in backtraces
   ([#69](https://github.com/cucumber/cucumber/issues/69)) Steve tooke
 * Filter out control characters from CDATA section of JUnit formatter output. ([#383](https://github.com/cucumber/cucumber/issues/383) @teacup-on-rockingchair)
