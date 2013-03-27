@@ -14,7 +14,15 @@ module Cucumber
         end
 
         def to_s
-          "#{code_keyword}#{typed_pattern} #{do_block}"
+          "#{step} #{do_block}"
+        end
+
+        def step
+          "#{code_keyword}#{typed_pattern}"
+        end
+
+        def self.cli_option_string(type)
+          "%-7s: %-28s e.g. %s" % [type, description, example]
         end
 
         private
@@ -59,11 +67,19 @@ module Cucumber
           multiline_argument_class == Ast::Table
         end
 
+        def self.example
+          new("Given", "missing step", nil).step
+        end
+
       end
 
       class Regexp < BaseSnippet
         def typed_pattern
           "(/^#{pattern}$/)"
+        end
+
+        def self.description
+        "Snippets with parentheses"
         end
       end
 
@@ -71,11 +87,19 @@ module Cucumber
         def typed_pattern
           " /^#{pattern}$/"
         end
+
+        def self.description
+          "Snippets without parentheses"
+        end
       end
 
       class Percent < BaseSnippet
         def typed_pattern
           " %r{^#{pattern}$}"
+        end
+
+        def self.description
+          "Snippets with percent regexp"
         end
       end
 
