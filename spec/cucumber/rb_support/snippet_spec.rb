@@ -6,17 +6,14 @@ module Cucumber
     describe Snippet do
 
       let(:code_keyword) { "Given" }
-      let(:pattern) { "we have a missing step" }
-      let(:multiline_argument_class) { nil }
+
+      before do
+        @pattern = 'we have a missing step'
+        @multiline_argument_class = nil
+      end
 
       let(:snippet) do
-        snippet = snippet_class.new
-
-        snippet.code_keyword = code_keyword
-        snippet.pattern = pattern
-        snippet.multiline_argument_class = multiline_argument_class
-
-        snippet
+        snippet_class.new(code_keyword, @pattern, @multiline_argument_class)
       end
 
       def unindented(s)
@@ -28,7 +25,7 @@ module Cucumber
         let(:snippet_text) { snippet.render }
 
         it "should wrap snippet patterns in parentheses" do
-          snippet.pattern = 'A "string" with 4 spaces'
+          @pattern = 'A "string" with 4 spaces'
 
           snippet_text.should == unindented(%{
           Given(/^A "(.*?)" with (\\d+) spaces$/) do |arg1, arg2|
@@ -38,7 +35,7 @@ module Cucumber
         end
 
         it "should recognise numbers in name and make according regexp" do
-          snippet.pattern = 'Cloud 9 yeah'
+          @pattern = 'Cloud 9 yeah'
 
           snippet_text.should == unindented(%{
           Given(/^Cloud (\\d+) yeah$/) do |arg1|
@@ -48,8 +45,8 @@ module Cucumber
         end
 
         it "should recognise a mix of ints, strings and why not a table too" do
-          snippet.pattern = 'I have 9 "awesome" cukes in 37 "boxes"'
-          snippet.multiline_argument_class = Cucumber::Ast::Table
+          @pattern = 'I have 9 "awesome" cukes in 37 "boxes"'
+          @multiline_argument_class = Cucumber::Ast::Table
 
           snippet_text.should == unindented(%{
           Given(/^I have (\\d+) "(.*?)" cukes in (\\d+) "(.*?)"$/) do |arg1, arg2, arg3, arg4, table|
@@ -60,7 +57,7 @@ module Cucumber
         end
 
         it "should recognise quotes in name and make according regexp" do
-          snippet.pattern = 'A "first" arg'
+          @pattern = 'A "first" arg'
 
           snippet_text.should == unindented(%{
           Given(/^A "(.*?)" arg$/) do |arg1|
@@ -70,7 +67,7 @@ module Cucumber
         end
 
         it "should recognise several quoted words in name and make according regexp and args" do
-          snippet.pattern = 'A "first" and "second" arg'
+          @pattern = 'A "first" and "second" arg'
 
           snippet_text.should == unindented(%{
           Given(/^A "(.*?)" and "(.*?)" arg$/) do |arg1, arg2|
@@ -80,7 +77,7 @@ module Cucumber
         end
 
         it "should not use quote group when there are no quotes" do
-          snippet.pattern = 'A first arg'
+          @pattern = 'A first arg'
 
           snippet_text.should == unindented(%{
           Given(/^A first arg$/) do
@@ -90,8 +87,8 @@ module Cucumber
         end
 
         it "should be helpful with tables" do
-          snippet.pattern = 'A "first" arg'
-          snippet.multiline_argument_class = Cucumber::Ast::Table
+          @pattern = 'A "first" arg'
+          @multiline_argument_class = Cucumber::Ast::Table
 
           snippet_text.should == unindented(%{
           Given(/^A "(.*?)" arg$/) do |arg1, table|

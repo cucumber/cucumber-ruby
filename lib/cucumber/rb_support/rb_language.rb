@@ -85,13 +85,8 @@ module Cucumber
       end
 
       def snippet_text(code_keyword, step_name, multiline_arg_class, snippet_type = :regexp)
-        snippet = typed_snippet_class(snippet_type).new
-
-        snippet.code_keyword = code_keyword
-        snippet.pattern = step_name
-        snippet.multiline_argument_class = multiline_arg_class
-
-        snippet.render
+        snippet_class = typed_snippet_class(snippet_type)
+        snippet_class.new(code_keyword, step_name, multiline_arg_class).render
       end
 
       def begin_rb_scenario(scenario)

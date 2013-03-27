@@ -48,14 +48,12 @@ module Cucumber
           rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :percent)
         end
 
-        it "passes all parameters to Snippet class" do
+        it "passes all parameters to Snippet contructor" do
           code_keyword = stub
           pattern = stub
           multiline_argument_class = stub
 
-          snippet.should_receive(:code_keyword=).with(code_keyword)
-          snippet.should_receive(:pattern=).with(pattern)
-          snippet.should_receive(:multiline_argument_class=).with(multiline_argument_class)
+          Snippet::Regexp.should_receive(:new).with(code_keyword, pattern, multiline_argument_class)
 
           rb.snippet_text(code_keyword, pattern, multiline_argument_class)
         end

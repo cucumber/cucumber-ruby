@@ -6,7 +6,13 @@ module Cucumber
 
       class BaseSnippet
 
-        attr_accessor :code_keyword, :pattern, :multiline_argument_class
+        attr_reader :code_keyword, :pattern, :multiline_argument_class
+
+        def initialize(code_keyword, pattern, multiline_argument_class)
+          @code_keyword = code_keyword
+          @pattern = pattern
+          @multiline_argument_class = multiline_argument_class
+        end
 
         def render
           replace_and_count_capturing_groups!
@@ -16,12 +22,12 @@ module Cucumber
         private
 
         def replace_and_count_capturing_groups!
-          self.pattern = ::Regexp.escape(pattern).gsub('\ ', ' ').gsub('/', '\/')
+          @pattern = ::Regexp.escape(pattern).gsub('\ ', ' ').gsub('/', '\/')
 
           arg_count = 0
 
           ARGUMENT_PATTERNS.each do |pattern|
-            self.pattern = self.pattern.gsub(::Regexp.new(pattern), pattern)
+            @pattern = self.pattern.gsub(::Regexp.new(pattern), pattern)
             arg_count += self.pattern.scan(pattern).length
           end
 
