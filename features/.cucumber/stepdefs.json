@@ -109,11 +109,20 @@
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:60",
     "steps": [
       {
-        "name": "I run `cucumber -q features/passing_background.feature:9`",
+        "name": "I run `bundle exec rake fail`",
         "args": [
           {
             "offset": 7,
-            "val": "cucumber -q features/passing_background.feature:9"
+            "val": "bundle exec rake fail"
+          }
+        ]
+      },
+      {
+        "name": "I run `bundle exec rake pass`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "bundle exec rake pass"
           }
         ]
       }
@@ -196,7 +205,15 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:109",
     "steps": [
-
+      {
+        "name": "the output should not contain \"rake aborted!\"",
+        "args": [
+          {
+            "offset": 31,
+            "val": "rake aborted!"
+          }
+        ]
+      }
     ]
   },
   {
@@ -232,7 +249,7 @@
     ]
   },
   {
-    "source": "^the output should match /([^/]*)/$",
+    "source": "^the output should match \\/([^\\/]*)\\/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:137",
     "steps": [
@@ -248,7 +265,7 @@
     ]
   },
   {
-    "source": "^the output should not match /([^/]*)/$",
+    "source": "^the output should not match \\/([^\\/]*)\\/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:146",
     "steps": [
@@ -268,7 +285,15 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:154",
     "steps": [
-
+      {
+        "name": "the exit status should be 0",
+        "args": [
+          {
+            "offset": 26,
+            "val": "0"
+          }
+        ]
+      }
     ]
   },
   {
@@ -276,7 +301,15 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:158",
     "steps": [
-
+      {
+        "name": "the exit status should not be 0",
+        "args": [
+          {
+            "offset": 30,
+            "val": "0"
+          }
+        ]
+      }
     ]
   },
   {
@@ -292,15 +325,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:166",
     "steps": [
-      {
-        "name": "it should pass with exactly:",
-        "args": [
-          {
-            "offset": 10,
-            "val": "pass"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -512,7 +537,7 @@
     ]
   },
   {
-    "source": "^the file \"([^\"]*)\" should match /([^/]*)/$",
+    "source": "^the file \"([^\"]*)\" should match \\/([^\\/]*)\\/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:308",
     "steps": [
@@ -520,7 +545,7 @@
     ]
   },
   {
-    "source": "^the file \"([^\"]*)\" should not match /([^/]*)/$",
+    "source": "^the file \"([^\"]*)\" should not match \\/([^\\/]*)\\/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:312",
     "steps": [
