@@ -293,6 +293,15 @@ module Cli
           options[:paths].should == ['my_feature.feature']
         end
       end
+
+      context '--snippet-type' do
+        it "parses the snippet type argument" do
+          after_parsing('--snippet-type legacy') do
+            options[:snippet_type].should eql :legacy
+          end
+        end
+      end
+
     end
 
     describe '#expanded_args_without_drb' do

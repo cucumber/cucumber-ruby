@@ -26,7 +26,7 @@ module Cucumber
         @connections << Connection.new(config)
       end
 
-      def snippet_text(code_keyword, step_name, multiline_arg_class)
+      def snippet_text(code_keyword, step_name, multiline_arg_class, snippet_type)
         snippets = @connections.map do |remote|
           remote.snippet_text(code_keyword, step_name, multiline_arg_class.to_s)
         end
