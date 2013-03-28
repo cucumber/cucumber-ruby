@@ -95,6 +95,15 @@
     "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:53",
     "steps": [
       {
+        "name": "I run cucumber --format <format>",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--format <format>"
+          }
+        ]
+      },
+      {
         "name": "I run cucumber --profile default --format html",
         "args": [
           {
@@ -158,7 +167,12 @@
     "flags": "",
     "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:86",
     "steps": [
+      {
+        "name": "the output should contain",
+        "args": [
 
+        ]
+      }
     ]
   },
   {

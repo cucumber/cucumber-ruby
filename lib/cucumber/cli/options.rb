@@ -240,7 +240,7 @@ module Cucumber
           opts.on("-i", "--no-snippets", "Don't print snippets for pending steps.") do
             @options[:snippets] = false
           end
-          opts.on("-I", "--snippet-type TYPE", 
+          opts.on("-I", "--snippet-type TYPE",
                   "Use different snippet type (Default: regexp). Available types:",
                   *Cucumber::RbSupport::RbLanguage.cli_snippet_type_options) do |v|
             @options[:snippet_type] = v.to_sym
@@ -416,7 +416,9 @@ module Cucumber
         profiles_sentence = @profiles.size == 1 ? @profiles.first :
           "#{@profiles[0...-1].join(', ')} and #{@profiles.last}"
 
-        @out_stream.puts "Using the #{profiles_sentence} profile#{'s' if @profiles.size> 1}..."
+        if @options[:formats].flatten.include? "pretty" or @options[:formats].flatten.include? "progress"
+          @out_stream.puts "Using the #{profiles_sentence} profile#{'s' if @profiles.size> 1}..."
+        end
       end
 
       def default_options
