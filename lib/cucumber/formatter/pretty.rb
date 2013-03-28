@@ -154,7 +154,7 @@ module Cucumber
       end
 
       def doc_string(string)
-        return if @hide_this_step
+        return if @hide_this_step || @options[:no_multiline]
         s = %{"""\n#{string}\n"""}.indent(@indent)
         s = s.split("\n").map{|l| l =~ /^\s+$/ ? '' : l}.join("\n")
         @io.puts(format_string(s, @current_step.status))
