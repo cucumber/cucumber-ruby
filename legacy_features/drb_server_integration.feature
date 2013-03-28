@@ -172,3 +172,11 @@ Feature: DRb Server Integration
       """
       I'm loading all the heavy stuff...
       """
+  Scenario: Running with drb and with a pair of formatters.
+    Given I am running spork in the background
+    And the following profile is defined:
+      """
+      formatted: --strict -r features --format progress
+      """
+    When I run cucumber --profile formatted --drb --format pretty features/
+    Then it should pass
