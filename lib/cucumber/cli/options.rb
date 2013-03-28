@@ -416,7 +416,9 @@ module Cucumber
         profiles_sentence = @profiles.size == 1 ? @profiles.first :
           "#{@profiles[0...-1].join(', ')} and #{@profiles.last}"
 
-        if @options[:formats].flatten.include? "pretty" or @options[:formats].flatten.include? "progress"
+        if @options[:formats].flatten.include? "pretty" or
+            @options[:formats].flatten.include? "progress" or
+            @options[:formats].flatten.empty?
           @out_stream.puts "Using the #{profiles_sentence} profile#{'s' if @profiles.size> 1}..."
         end
       end
