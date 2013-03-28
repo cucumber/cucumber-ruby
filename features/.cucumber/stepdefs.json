@@ -104,6 +104,15 @@
         ]
       },
       {
+        "name": "I run cucumber --profile default",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--profile default"
+          }
+        ]
+      },
+      {
         "name": "I run cucumber --profile default --format html",
         "args": [
           {
