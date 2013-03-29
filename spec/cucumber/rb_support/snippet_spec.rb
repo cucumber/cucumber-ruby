@@ -99,8 +99,8 @@ module Cucumber
         end
       end
 
-      describe Snippet::Legacy do
-        let(:snippet_class) { Snippet::Legacy }
+      describe Snippet::Classic do
+        let(:snippet_class) { Snippet::Classic }
 
         it "renders snippet as unwrapped regular expression" do
           snippet.to_s.should eql unindented(%{

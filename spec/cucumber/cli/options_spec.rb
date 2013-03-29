@@ -296,8 +296,8 @@ module Cli
 
       context '--snippet-type' do
         it "parses the snippet type argument" do
-          after_parsing('--snippet-type legacy') do
-            options[:snippet_type].should eql :legacy
+          after_parsing('--snippet-type classic') do
+            options[:snippet_type].should eql :classic
           end
         end
       end

@@ -16,51 +16,37 @@ module Cucumber
       end
 
       describe "snippets" do
-
         let(:snippet) { stub.as_null_object }
-        before do
-          Snippet::Regexp.stub(:new => snippet)
-        end
 
         it "creates a regexp Snippet class by default" do
-          Snippet::Regexp.should_receive(:new)
-
+          Snippet::Regexp.should_receive(:new).and_return(snippet)
           rb.snippet_text('Given', 'A "string" with 4 spaces', nil)
         end
 
         it "creates a regexp Snippet class explicitly" do
-          Snippet::Regexp.should_receive(:new)
-
+          Snippet::Regexp.should_receive(:new).and_return(snippet)
           rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :regexp)
         end
 
-        it "creates a legacy Snippet class" do
-          Snippet::Legacy.stub(:new => stub.as_null_object)
-          Snippet::Legacy.should_receive(:new)
-
-          rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :legacy)
+        it "creates a classic Snippet class" do
+          Snippet::Classic.should_receive(:new).and_return(snippet)
+          rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :classic)
         end
 
         it "creates a percent Snippet class" do
-          Snippet::Percent.stub(:new => stub.as_null_object)
-          Snippet::Percent.should_receive(:new)
-
+          Snippet::Percent.should_receive(:new).and_return(snippet)
           rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :percent)
         end
 
         it "passes all parameters to Snippet contructor" do
-          code_keyword = stub
-          pattern = stub
-          multiline_argument_class = stub
-
+          code_keyword, pattern, multiline_argument_class = stub, stub, stub
           Snippet::Regexp.should_receive(:new).with(code_keyword, pattern, multiline_argument_class)
-
           rb.snippet_text(code_keyword, pattern, multiline_argument_class)
         end
 
         it "renders the snippet" do
+          Snippet::Regexp.stub(:new => snippet)
           snippet.should_receive(:to_s)
-
           rb.snippet_text('Given', 'A "string" with 4 spaces', nil)
         end
 

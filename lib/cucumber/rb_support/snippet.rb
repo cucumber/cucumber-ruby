@@ -83,13 +83,13 @@ module Cucumber
         end
       end
 
-      class Legacy < BaseSnippet
+      class Classic < BaseSnippet
         def typed_pattern
           " /^#{pattern}$/"
         end
 
         def self.description
-          "Snippets without parentheses"
+          "Snippets without parentheses. Note that these cause a warning from modern versions of Ruby."
         end
       end
 

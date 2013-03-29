@@ -172,7 +172,7 @@ module Cucumber
 
       SNIPPET_TYPES = {
         :regexp => Snippet::Regexp,
-        :legacy => Snippet::Legacy,
+        :classic => Snippet::Classic,
         :percent => Snippet::Percent
       }
 
