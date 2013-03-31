@@ -63,6 +63,7 @@ module Cucumber
         @profiles = []
         @overridden_paths = []
         @options = default_options
+        @profile_loader = options[:profile_loader]
 
         @quiet = @disable_profile_loading = nil
       end
@@ -353,7 +354,9 @@ module Cucumber
         @profiles.each do |profile|
           profile_args = profile_loader.args_from(profile)
           reverse_merge(
-            Options.parse(profile_args, @out_stream, @error_stream, :skip_profile_information  => true)
+            Options.parse(profile_args, @out_stream, @error_stream,
+              :skip_profile_information => true,
+              :profile_loader => profile_loader)
           )
         end
       end

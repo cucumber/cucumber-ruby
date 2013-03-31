@@ -227,6 +227,18 @@ module Cli
           options[:formats].should == [['progress', output_stream], ['html', 'features.html']]
         end
 
+        it "only parses cucumber.yml once" do
+          $parse_count = 0
+          given_cucumber_yml_defined_as(<<-END
+          <% $parse_count += 1 %>
+          default: --format pretty
+          END
+          )
+          options = Options.new(output_stream, error_stream, :default_profile => 'default')
+          options.parse!(%w(-f progress))
+          $parse_count.should == 1
+        end
+
         it "respects --quiet when defined in the profile" do
           given_cucumber_yml_defined_as('foo' => '-q')
           options.parse!(%w[-p foo])
