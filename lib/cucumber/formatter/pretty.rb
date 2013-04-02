@@ -28,6 +28,10 @@ module Cucumber
         @delayed_messages = []
       end
 
+      def before_features(features)
+        print_profile_information
+      end
+
       def after_features(features)
         print_summary(features) unless @options[:autoformat]
       end
