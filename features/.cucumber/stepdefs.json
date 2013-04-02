@@ -28,7 +28,15 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:19",
     "steps": [
-
+      {
+        "name": "a file named \"cucumber.yml\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "cucumber.yml"
+          }
+        ]
+      }
     ]
   },
   {
@@ -108,24 +116,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:60",
     "steps": [
-      {
-        "name": "I run `bundle exec rake fail`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "bundle exec rake fail"
-          }
-        ]
-      },
-      {
-        "name": "I run `bundle exec rake pass`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "bundle exec rake pass"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -205,15 +196,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:109",
     "steps": [
-      {
-        "name": "the output should not contain \"rake aborted!\"",
-        "args": [
-          {
-            "offset": 31,
-            "val": "rake aborted!"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -221,7 +204,12 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:113",
     "steps": [
+      {
+        "name": "the output should contain:",
+        "args": [
 
+        ]
+      }
     ]
   },
   {
@@ -229,7 +217,12 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:117",
     "steps": [
+      {
+        "name": "the output should not contain:",
+        "args": [
 
+        ]
+      }
     ]
   },
   {
@@ -249,7 +242,7 @@
     ]
   },
   {
-    "source": "^the output should match \\/([^\\/]*)\\/$",
+    "source": "^the output should match /([^/]*)/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:137",
     "steps": [
@@ -265,7 +258,7 @@
     ]
   },
   {
-    "source": "^the output should not match \\/([^\\/]*)\\/$",
+    "source": "^the output should not match /([^/]*)/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:146",
     "steps": [
@@ -285,15 +278,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:154",
     "steps": [
-      {
-        "name": "the exit status should be 0",
-        "args": [
-          {
-            "offset": 26,
-            "val": "0"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -301,15 +286,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:158",
     "steps": [
-      {
-        "name": "the exit status should not be 0",
-        "args": [
-          {
-            "offset": 30,
-            "val": "0"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -537,7 +514,7 @@
     ]
   },
   {
-    "source": "^the file \"([^\"]*)\" should match \\/([^\\/]*)\\/$",
+    "source": "^the file \"([^\"]*)\" should match /([^/]*)/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:308",
     "steps": [
@@ -545,7 +522,7 @@
     ]
   },
   {
-    "source": "^the file \"([^\"]*)\" should not match \\/([^\\/]*)\\/$",
+    "source": "^the file \"([^\"]*)\" should not match /([^/]*)/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:312",
     "steps": [
@@ -557,7 +534,51 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:1",
     "steps": [
-
+      {
+        "name": "I run cucumber \"--profile default --format html\"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "--profile default --format html"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber \"--profile default --format pretty\"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "--profile default --format pretty"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber \"--profile default --format progress\"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "--profile default --format progress"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber \"features/scenario_outline_with_undefined_steps.feature --format pretty --expand \"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "features/scenario_outline_with_undefined_steps.feature --format pretty --expand "
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber \"features/scenario_outline_with_undefined_steps.feature --format progress --expand \"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "features/scenario_outline_with_undefined_steps.feature --format progress --expand "
+          }
+        ]
+      }
     ]
   },
   {
@@ -565,7 +586,12 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:5",
     "steps": [
+      {
+        "name": "it should pass",
+        "args": [
 
+        ]
+      }
     ]
   },
   {

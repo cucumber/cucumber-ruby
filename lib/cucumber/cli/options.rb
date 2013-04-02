@@ -54,6 +54,8 @@ module Cucumber
         new(out_stream, error_stream, options).parse!(args)
       end
 
+      attr_reader :profiles, :skip_profile_information
+
       def initialize(out_stream = STDOUT, error_stream = STDERR, options = {})
         @out_stream   = out_stream
         @error_stream = error_stream
@@ -240,7 +242,7 @@ module Cucumber
           opts.on("-i", "--no-snippets", "Don't print snippets for pending steps.") do
             @options[:snippets] = false
           end
-          opts.on("-I", "--snippet-type TYPE", 
+          opts.on("-I", "--snippet-type TYPE",
                   "Use different snippet type (Default: regexp). Available types:",
                   *Cucumber::RbSupport::RbLanguage.cli_snippet_type_options) do |v|
             @options[:snippet_type] = v.to_sym
@@ -301,7 +303,6 @@ module Cucumber
         @options[:paths] = @args.dup #whatver is left over
 
         merge_profiles
-        print_profile_information
 
         self
       end
@@ -316,8 +317,8 @@ module Cucumber
 
     protected
 
-      attr_reader :options, :profiles, :expanded_args
-      protected :options, :profiles, :expanded_args
+      attr_reader :options, :expanded_args
+      protected :options, :expanded_args
 
     private
 
@@ -408,15 +409,6 @@ module Cucumber
         require 'gherkin/i18n'
         @out_stream.write(Gherkin::I18n.language_table)
         Kernel.exit(0)
-      end
-
-      def print_profile_information
-        return if @skip_profile_information || @profiles.empty?
-        profiles_sentence = ''
-        profiles_sentence = @profiles.size == 1 ? @profiles.first :
-          "#{@profiles[0...-1].join(', ')} and #{@profiles.last}"
-
-        @out_stream.puts "Using the #{profiles_sentence} profile#{'s' if @profiles.size> 1}..."
       end
 
       def default_options
