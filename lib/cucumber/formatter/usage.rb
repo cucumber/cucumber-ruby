@@ -17,6 +17,10 @@ module Cucumber
         @stepdef_to_match = Hash.new{|h,stepdef_key| h[stepdef_key] = []}
       end
 
+      def before_features(features)
+        print_profile_information
+      end
+
       def before_step(step)
         @step = step
         @start_time = Time.now
