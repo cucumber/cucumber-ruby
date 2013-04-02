@@ -127,25 +127,6 @@ module Cli
 
       context '-p PROFILE or --profile PROFILE' do
 
-        it "notifies the user that an individual profile is being used" do
-          given_cucumber_yml_defined_as({'foo' => [1,2,3]})
-          options.parse!(%w{--profile foo})
-          output_stream.string.should =~ /Using the foo profile...\n/
-        end
-
-        it "notifies the user when multiple profiles are being used" do
-          given_cucumber_yml_defined_as({'foo' => [1,2,3], 'bar' => ['v'], 'dog' => ['v']})
-          options.parse!(%w{--profile foo --profile bar --profile dog})
-          output_stream.string.should =~ /Using the foo, bar and dog profiles...\n/
-        end
-
-        it "notifies the user of all profiles being used, even when they are nested" do
-          given_cucumber_yml_defined_as('foo' => '-p bar', 'bar' => 'features')
-          after_parsing('-p foo') do
-            output_stream.string.should =~ /Using the foo and bar profiles.../
-          end
-        end
-
         it "uses the default profile passed in during initialization if none are specified by the user" do
           given_cucumber_yml_defined_as({'default' => '--require some_file'})
 
