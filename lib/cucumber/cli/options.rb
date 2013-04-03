@@ -54,17 +54,15 @@ module Cucumber
         new(out_stream, error_stream, options).parse!(args)
       end
 
-      attr_reader :profiles, :skip_profile_information
-
       def initialize(out_stream = STDOUT, error_stream = STDERR, options = {})
         @out_stream   = out_stream
         @error_stream = error_stream
 
         @default_profile = options[:default_profile]
-        @skip_profile_information = options[:skip_profile_information]
         @profiles = []
         @overridden_paths = []
         @options = default_options
+        @options[:skip_profile_information] = options[:skip_profile_information]
 
         @quiet = @disable_profile_loading = nil
       end
@@ -317,8 +315,8 @@ module Cucumber
 
     protected
 
-      attr_reader :options, :expanded_args
-      protected :options, :expanded_args
+      attr_reader :options, :profiles, :expanded_args
+      protected :options, :profiles, :expanded_args
 
     private
 
@@ -357,6 +355,8 @@ module Cucumber
             Options.parse(profile_args, @out_stream, @error_stream, :skip_profile_information  => true)
           )
         end
+
+        @options[:profiles] = @profiles
       end
 
       def default_profile_should_be_used?
