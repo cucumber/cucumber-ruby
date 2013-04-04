@@ -193,8 +193,8 @@ module Cucumber
       end
 
       def print_profile_information
-        return if @options.skip_profile_information || @options.profiles.empty?
-        profiles = @options.profiles
+        return if @options[:skip_profile_information] || @options[:profiles].nil? || @options[:profiles].empty?
+        profiles = @options[:profiles]
         profiles_sentence = ''
         profiles_sentence = profiles.size == 1 ? profiles.first :
           "#{profiles[0...-1].join(', ')} and #{profiles.last}"
