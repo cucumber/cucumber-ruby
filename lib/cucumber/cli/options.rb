@@ -62,6 +62,7 @@ module Cucumber
         @profiles = []
         @overridden_paths = []
         @options = default_options
+        @profile_loader = options[:profile_loader]
         @options[:skip_profile_information] = options[:skip_profile_information]
 
         @quiet = @disable_profile_loading = nil
@@ -350,13 +351,20 @@ module Cucumber
         @profiles << @default_profile if default_profile_should_be_used?
 
         @profiles.each do |profile|
-          profile_args = profile_loader.args_from(profile)
-          reverse_merge(
-            Options.parse(profile_args, @out_stream, @error_stream, :skip_profile_information  => true)
-          )
+          merge_with_profile(profile)
         end
 
         @options[:profiles] = @profiles
+      end
+
+      def merge_with_profile(profile)
+        profile_args = profile_loader.args_from(profile)
+        profile_options = Options.parse(
+          profile_args, @out_stream, @error_stream,
+          :skip_profile_information => true,
+          :profile_loader => profile_loader
+        )
+        reverse_merge(profile_options)
       end
 
       def default_profile_should_be_used?
