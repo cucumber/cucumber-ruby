@@ -59,11 +59,11 @@ module Cucumber
         @error_stream = error_stream
 
         @default_profile = options[:default_profile]
-        @skip_profile_information = options[:skip_profile_information]
         @profiles = []
         @overridden_paths = []
         @options = default_options
         @profile_loader = options[:profile_loader]
+        @options[:skip_profile_information] = options[:skip_profile_information]
 
         @quiet = @disable_profile_loading = nil
       end
@@ -241,7 +241,7 @@ module Cucumber
           opts.on("-i", "--no-snippets", "Don't print snippets for pending steps.") do
             @options[:snippets] = false
           end
-          opts.on("-I", "--snippet-type TYPE", 
+          opts.on("-I", "--snippet-type TYPE",
                   "Use different snippet type (Default: regexp). Available types:",
                   *Cucumber::RbSupport::RbLanguage.cli_snippet_type_options) do |v|
             @options[:snippet_type] = v.to_sym
@@ -302,7 +302,6 @@ module Cucumber
         @options[:paths] = @args.dup #whatver is left over
 
         merge_profiles
-        print_profile_information
 
         self
       end
@@ -354,6 +353,8 @@ module Cucumber
         @profiles.each do |profile|
           merge_with_profile(profile)
         end
+
+        @options[:profiles] = @profiles
       end
 
       def merge_with_profile(profile)
@@ -416,15 +417,6 @@ module Cucumber
         require 'gherkin/i18n'
         @out_stream.write(Gherkin::I18n.language_table)
         Kernel.exit(0)
-      end
-
-      def print_profile_information
-        return if @skip_profile_information || @profiles.empty?
-        profiles_sentence = ''
-        profiles_sentence = @profiles.size == 1 ? @profiles.first :
-          "#{@profiles[0...-1].join(', ')} and #{@profiles.last}"
-
-        @out_stream.puts "Using the #{profiles_sentence} profile#{'s' if @profiles.size> 1}..."
       end
 
       def default_options

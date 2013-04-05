@@ -13,6 +13,10 @@ module Cucumber
         @runtime, @io, @options = runtime, ensure_io(path_or_io, "progress"), options
       end
 
+      def before_features(features)
+        print_profile_information
+      end
+
       def after_features(features)
         @io.puts
         @io.puts
