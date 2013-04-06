@@ -58,17 +58,13 @@ module Cli
           include RSpec::WorkInProgress
 
           it "lists all known langues" do
-            pending_under :java, 'StringIO.append is not defined???' do
-              when_parsing '--i18n help' do
-                Kernel.should_receive(:exit)
-              end
+            when_parsing '--i18n help' do
+              Kernel.should_receive(:exit)
             end
           end
 
           it "exits the program" do
-            pending_under :java, 'StringIO.append is not defined???' do
-              when_parsing('--i18n help') { Kernel.should_receive(:exit) }
-            end
+            when_parsing('--i18n help') { Kernel.should_receive(:exit) }
           end
         end
       end
