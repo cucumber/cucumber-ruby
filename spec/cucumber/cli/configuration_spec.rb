@@ -407,17 +407,13 @@ END_OF_MESSAGE
       include RSpec::WorkInProgress
 
       it "returns an empty expression when no tags are specified" do
-        pending_under :java, 'the java class Gherkin::TagExpression has no isEmpty method' do
-          config.parse!([])
-          config.tag_expression.should be_empty
-        end
+        config.parse!([])
+        config.tag_expression.should be_empty
       end
 
       it "returns an expression when tags are specified" do
-        pending_under :java, 'the java class Gherkin::TagExpression has no isEmpty method' do
-          config.parse!(['--tags','@foo'])
-          config.tag_expression.should_not be_empty
-        end
+        config.parse!(['--tags','@foo'])
+        config.tag_expression.should_not be_empty
       end
     end
 
