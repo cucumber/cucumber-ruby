@@ -17,7 +17,7 @@ module Cucumber
       end
 
       def accept_hook?(hook)
-        Gherkin::TagExpression.new(hook.tag_expressions).eval(@tags)
+        Gherkin::TagExpression.new(hook.tag_expressions).evaluate(@tags)
       end
 
       def to_sexp
