@@ -1,4 +1,4 @@
-## [Git master](https://github.com/cucumber/cucumber/compare/v1.2.3...master)
+## [1.2.4](https://github.com/cucumber/cucumber/compare/v1.2.3...v1.2.4)
 
 ### New Features
 * Add lib to default load path
