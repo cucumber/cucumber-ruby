@@ -17,6 +17,7 @@
   ([#269](https://github.com/cucumber/cucumber/issues/269) Steve Tooke)
 * Fix JsonPretty formatter problem
   ([#197](https://github.com/cucumber/cucumber/issues/197) Oleg Sukhodolsky)
+* Do not use TagExpression.eval() which is deprecated in Gherkin 2.11.7 ([#420](https://github.com/cucumber/cucumber/issues/420) Oleg Sukhodolsky)
 
 ## [1.2.3](https://github.com/cucumber/cucumber/compare/v1.2.2...v1.2.3)
 
