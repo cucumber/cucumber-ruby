@@ -1,4 +1,4 @@
-## [1.2.4](https://github.com/cucumber/cucumber/compare/v1.2.3...v1.2.4)
+## In Git
 
 ### New Features
 * Add lib to default load path
@@ -17,11 +17,19 @@
   ([#269](https://github.com/cucumber/cucumber/issues/269) Steve Tooke)
 * Fix JsonPretty formatter problem
   ([#197](https://github.com/cucumber/cucumber/issues/197) Oleg Sukhodolsky)
-* Do not use TagExpression.eval() which is deprecated in Gherkin 2.11.7 ([#420](https://github.com/cucumber/cucumber/issues/420) Oleg Sukhodolsky)
 * Don't display multi-line strings when --no-multiline is passed
   ([#201](https://github.com/cucumber/cucumber/issues/201) David Kowis)
 * Moved the profile information output to a callback of the formatter
   ([#175](https://github.com/cucumber/cucumber/issues/175) David Kowis)
+
+## [1.2.5](https://github.com/cucumber/cucumber/compare/v1.2.2...v1.2.3)
+
+* Upgrade Gherkin version to remove warnings when running on JRuby. ([#393](https://github.com/cucumber/cucumber/issues/393) Oleg Sukhodolsky)
+* Do not use TagExpression.eval() which is deprecated in Gherkin 2.11.7 ([#420](https://github.com/cucumber/cucumber/issues/420) Oleg Sukhodolsky)
+
+## [1.2.4]
+
+Yanked. See ([#428](https://github.com/cucumber/cucumber/issues/428)).
 
 ## [1.2.3](https://github.com/cucumber/cucumber/compare/v1.2.2...v1.2.3)
 
