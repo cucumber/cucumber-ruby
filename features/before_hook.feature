@@ -9,10 +9,11 @@ Feature: Before Hook
           Given a step
 
         Scenario Outline: Scenario Outline name
-          Given a step
+          Given a <placeholder>
 
           Examples: Examples Table name
-            | row |
+            | <placeholder> |
+            | step          |
       """
     And a file named "features/support/hook.rb" with:
       """
