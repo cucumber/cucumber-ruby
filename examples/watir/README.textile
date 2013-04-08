@@ -7,9 +7,9 @@ Just run with:
   rake cucumber
   
 This will use Watir/IE if you're on Windows, and SafariWatir/Safari if you're on OS X.
-You can force the use of FireWatir/Firefox on any platform like this:
+You can force the use of Firefox on any platform like this:
 
-  rake features FIREWATIR=true
+  rake features FIREFOX=true
   
 And finally, you can use Celerity by running in JRuby:
 

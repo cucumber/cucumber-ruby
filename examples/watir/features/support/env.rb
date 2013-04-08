@@ -1,8 +1,11 @@
 begin require 'rspec/expectations'; rescue LoadError; require 'spec/expectations'; end
 
-if ENV['FIREWATIR']
-  require 'firewatir'
-  Browser = FireWatir::Firefox
+browser = nil
+
+if ENV['FIREFOX']
+  require 'watir-webdriver'
+  Browser = Watir::Browser
+  browser = Browser.new :ff
 else
   case RUBY_PLATFORM
   when /darwin/
@@ -15,12 +18,12 @@ else
     require 'celerity'
     Browser = Celerity::Browser
   else
-    raise "This platform is not supported (#{PLATFORM})"
+    raise "This platform is not supported (#{RUBY_PLATFORM})"
   end
-end
 
-# "before all"
-browser = Browser.new
+  # "before all"
+  browser = Browser.new
+end
 
 Before do
   @browser = browser
