@@ -1,217 +1,59 @@
-Feature: Tag logic
-  In order to conveniently run subsets of features
-  As a Cuker
-  I want to select features using logical AND/OR of tags
+Feature: Tagged hooks
 
   Background:
-    Given a file named "features/tagulicious.feature" with:
+    Given a file named "features/step_definitions/steps.rb" with:
       """
-      Feature: Sample
-
-        @one @three
-        Scenario: Example
-          Given passing
-
-        @one
-        Scenario: Another Example
-          Given passing
-
-        @three
-        Scenario: Yet another Example
-          Given passing
-
-        @ignore
-        Scenario: And yet another Example
+      Given /^this step works$/ do; end
       """
-
-  Scenario: Before hooks ORing
-    Given a file named "features/support/hooks.rb" with:
+    And a file named "features/support/hooks.rb" with:
       """
-      Before('@one,@three') do
+      Before('~@no-boom') do 
         raise 'boom'
       end
       """
-    When I run `cucumber -q features/tagulicious.feature`
+    And a file named "features/f.feature" with:
+      """
+      Feature: With and without hooks
+        Scenario: using hook
+          Given this step works
+
+        @no-boom
+        Scenario: omitting hook
+          Given this step works
+      """
+
+  Scenario: omit tagged hook
+    When I run `cucumber features/f.feature:2`
     Then it should fail with:
       """
-      Feature: Sample
-
-        @one @three
-        Scenario: Example
-       boom (RuntimeError)
-       ./features/support/hooks.rb:2:in `Before'
-          Given passing
-
-        @one
-        Scenario: Another Example
-       boom (RuntimeError)
-       ./features/support/hooks.rb:2:in `Before'
-          Given passing
-
-        @three
-        Scenario: Yet another Example
-       boom (RuntimeError)
-       ./features/support/hooks.rb:2:in `Before'
-          Given passing
-
-        @ignore
-        Scenario: And yet another Example
-
+      Feature: With and without hooks
+      
+        Scenario: using hook    # features/f.feature:2
+        boom (RuntimeError)
+        ./features/support/hooks.rb:2:in `Before'
+          Given this step works # features/step_definitions/steps.rb:1
+      
       Failing Scenarios:
-      cucumber features/tagulicious.feature:4
-      cucumber features/tagulicious.feature:8
-      cucumber features/tagulicious.feature:12
-
-      4 scenarios (3 failed, 1 passed)
-      3 steps (3 undefined)
+      cucumber features/f.feature:2 # Scenario: using hook
+      
+      1 scenario (1 failed)
+      1 step (1 skipped)
 
       """
 
-  Scenario: Before hooks ANDing
-    Given a file named "features/support/hooks.rb" with:
-      """
-      Before('@one','@three') do
-        raise 'boom'
-      end
-      """
-    When I run `cucumber -q features/tagulicious.feature`
-    Then it should fail with:
-      """
-      Feature: Sample
+    Scenario: omit tagged hook
+      When I run `cucumber features/f.feature:6`
+      Then it should pass with:
+        """
+        Feature: With and without hooks
 
-        @one @three
-        Scenario: Example
-       boom (RuntimeError)
-       ./features/support/hooks.rb:2:in `Before'
-          Given passing
+          @no-boom
+          Scenario: omitting hook # features/f.feature:6
+            Given this step works # features/step_definitions/steps.rb:1
 
-        @one
-        Scenario: Another Example
-          Given passing
+        1 scenario (1 passed)
+        1 step (1 passed)
 
-        @three
-        Scenario: Yet another Example
-          Given passing
+        """
 
-        @ignore
-        Scenario: And yet another Example
 
-      Failing Scenarios:
-      cucumber features/tagulicious.feature:4
-
-      4 scenarios (1 failed, 2 undefined, 1 passed)
-      3 steps (3 undefined)
-
-      """
-
-  Scenario: Before hooks ANDing with a bad hook matching nothing
-    Given a file named "features/support/hooks.rb" with:
-      """
-      Before('@one','@notused') do
-        raise 'boom'
-      end
-      """
-    When I run `cucumber -q features/tagulicious.feature`
-    Then it should pass with:
-      """
-      Feature: Sample
-
-        @one @three
-        Scenario: Example
-          Given passing
-
-        @one
-        Scenario: Another Example
-          Given passing
-
-        @three
-        Scenario: Yet another Example
-          Given passing
-
-        @ignore
-        Scenario: And yet another Example
-
-      4 scenarios (3 undefined, 1 passed)
-      3 steps (3 undefined)
-
-      """
-
-  Scenario: After hooks ORing
-    Given a file named "features/support/hooks.rb" with:
-      """
-      After('@one,@three') do
-        raise 'boom'
-      end
-      """
-    When I run `cucumber -q features/tagulicious.feature`
-    Then it should fail with:
-      """
-      Feature: Sample
-
-        @one @three
-        Scenario: Example
-          Given passing
-            boom (RuntimeError)
-            ./features/support/hooks.rb:2:in `After'
-
-        @one
-        Scenario: Another Example
-          Given passing
-            boom (RuntimeError)
-            ./features/support/hooks.rb:2:in `After'
-
-        @three
-        Scenario: Yet another Example
-          Given passing
-            boom (RuntimeError)
-            ./features/support/hooks.rb:2:in `After'
-
-        @ignore
-        Scenario: And yet another Example
-
-      Failing Scenarios:
-      cucumber features/tagulicious.feature:4
-      cucumber features/tagulicious.feature:8
-      cucumber features/tagulicious.feature:12
-
-      4 scenarios (3 failed, 1 passed)
-      3 steps (3 undefined)
-
-      """
-
-  Scenario: After hooks ANDing
-    Given a file named "features/support/hooks.rb" with:
-      """
-      After('@one','@three') do
-        raise 'boom'
-      end
-      """
-    When I run `cucumber -q features/tagulicious.feature`
-    Then it should fail with:
-      """
-      Feature: Sample
-
-        @one @three
-        Scenario: Example
-          Given passing
-            boom (RuntimeError)
-            ./features/support/hooks.rb:2:in `After'
-
-        @one
-        Scenario: Another Example
-          Given passing
-
-        @three
-        Scenario: Yet another Example
-          Given passing
-
-        @ignore
-        Scenario: And yet another Example
-
-      Failing Scenarios:
-      cucumber features/tagulicious.feature:4
-
-      4 scenarios (1 failed, 2 undefined, 1 passed)
-      3 steps (3 undefined)
-
-      """
