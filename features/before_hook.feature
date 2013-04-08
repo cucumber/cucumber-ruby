@@ -18,13 +18,14 @@ Feature: Before Hook
       """
       names = []
       Before do |scenario|
-        names << scenario.feature_name
-        if scenario.respond_to?(:scenario_name)
-          names << scenario.scenario_name
+        unless scenario.respond_to?(:scenario_outline)
+          names << scenario.feature.name.split("\n").first
+          names << scenario.scenario.name.split("\n").first
         else
-          names << scenario.scenario_outline_name
-          names << scenario.examples_table_name
-          names << scenario.examples_table_row
+          names << scenario.scenario_outline.feature.name.split("\n").first
+          names << scenario.scenario_outline.name.split("\n").first
+          names << scenario.examples_table.name.split("\n").first
+          names << scenario.row_number
         end
       end
       at_exit { puts names.join("\n") }
