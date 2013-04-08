@@ -1,3 +1,11 @@
+## [1.2.5](https://github.com/cucumber/cucumber/compare/v1.2.2...v1.2.3)
+
+* Upgrade Gherkin version to remove warnings when running on JRuby. ([#393](https://github.com/cucumber/cucumber/issues/393) Oleg Sukhodolsky)
+
+## [1.2.4]
+
+Yanked. See ([#428](https://github.com/cucumber/cucumber/issues/428)).
+
 ## [1.2.3](https://github.com/cucumber/cucumber/compare/v1.2.2...v1.2.3)
 
 ### Bugfixes
