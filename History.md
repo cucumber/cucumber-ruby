@@ -6,6 +6,7 @@
 * Add snippet type to support different type of ruby snippets. ([#390](https://github.com/cucumber/cucumber/pull/390) Roel van Dijk)
 
 ### Bugfixes
+* Update watir example ([#427](https://github.com/cucumber/cucumber/issues/427)) Luiz Guilherme D'Abruzzo Pereira
 * Ensure that cucumber.yml is only parsed once ([#416](https://github.com/cucumber/cucumber/issues/416)) Steve Tooke
 * Improve rake task report on failure ([#400](https://github.com/cucumber/cucumber/issues/400) Andrey Vakarev
 * Show details of nested steps in backtraces
