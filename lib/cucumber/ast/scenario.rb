@@ -11,7 +11,8 @@ module Cucumber
       include Names
       include HasLocation
 
-      attr_reader :feature_tags
+      attr_reader   :feature_tags
+      attr_accessor :feature
 
       def initialize(language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps)
         @language, @location, @background, @comment, @tags, @feature_tags, @keyword, @title, @description, @raw_steps = language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps
