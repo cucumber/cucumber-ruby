@@ -97,7 +97,7 @@ module Cucumber
       end
 
       def file
-        if Cucumber::WINDOWS && file && !ENV['CUCUMBER_FORWARD_SLASH_PATHS']
+        if Cucumber::WINDOWS && !ENV['CUCUMBER_FORWARD_SLASH_PATHS']
           @path.gsub(/\//, '\\')
         else
           @path
