@@ -29,11 +29,20 @@
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:19",
     "steps": [
       {
-        "name": "a file named \"cucumber.yml\" with:",
+        "name": "a file named \"features/foo.feature\" with:",
         "args": [
           {
             "offset": 14,
-            "val": "cucumber.yml"
+            "val": "features/foo.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/support/hook.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/support/hook.rb"
           }
         ]
       }
@@ -116,7 +125,15 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:60",
     "steps": [
-
+      {
+        "name": "I run `cucumber`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber"
+          }
+        ]
+      }
     ]
   },
   {
@@ -217,12 +234,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.1/lib/aruba/cucumber.rb:117",
     "steps": [
-      {
-        "name": "the output should not contain:",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -534,51 +546,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:1",
     "steps": [
-      {
-        "name": "I run cucumber \"--profile default --format html\"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "--profile default --format html"
-          }
-        ]
-      },
-      {
-        "name": "I run cucumber \"--profile default --format pretty\"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "--profile default --format pretty"
-          }
-        ]
-      },
-      {
-        "name": "I run cucumber \"--profile default --format progress\"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "--profile default --format progress"
-          }
-        ]
-      },
-      {
-        "name": "I run cucumber \"features/scenario_outline_with_undefined_steps.feature --format pretty --expand \"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "features/scenario_outline_with_undefined_steps.feature --format pretty --expand "
-          }
-        ]
-      },
-      {
-        "name": "I run cucumber \"features/scenario_outline_with_undefined_steps.feature --format progress --expand \"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "features/scenario_outline_with_undefined_steps.feature --format progress --expand "
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -586,12 +554,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:5",
     "steps": [
-      {
-        "name": "it should pass",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
