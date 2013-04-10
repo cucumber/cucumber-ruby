@@ -1,4 +1,4 @@
-## In Git
+## [Git master] (https://github.com/cucumber/cucumber/compare/v1.2.5...master)
 
 ### New Features
 * Add lib to default load path
@@ -25,7 +25,7 @@
 * Fix html formatter to not mark skipped/unimplemented steps as failed
   ([#337](https://github.com/cucumber/cucumber/issues/337) Oleg Sukhodolsky)
 
-## [1.2.5](https://github.com/cucumber/cucumber/compare/v1.2.2...v1.2.3)
+## [1.2.5](https://github.com/cucumber/cucumber/compare/v1.2.3...v1.2.5)
 
 * Upgrade Gherkin version to remove warnings when running on JRuby. ([#393](https://github.com/cucumber/cucumber/issues/393) Oleg Sukhodolsky)
 * Do not use TagExpression.eval() which is deprecated in Gherkin 2.11.7 ([#420](https://github.com/cucumber/cucumber/issues/420) Oleg Sukhodolsky)
