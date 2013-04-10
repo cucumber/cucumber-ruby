@@ -1,3 +1,4 @@
+@fails_on_1_8_7
 Feature: Nested Steps in I18n
 
 
