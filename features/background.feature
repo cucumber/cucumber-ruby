@@ -496,3 +496,23 @@ Feature: Background
       0m0.012s
 
       """
+
+    Scenario: background shouldn't run if there were no scenarios matching requested tags
+      Given a file named "features/step_definitions/failing_steps.rb" with:
+      """
+        Given(/^this step fails$/) { raise "This step fails" }
+        Given(/^this step passes$/) {  }
+      """
+      Given a file named "features/background_and_tagged_scenario.feature" with:
+      """
+        Feature: Tagged scenario with background
+        Background:
+          Given this step fails
+
+        @tag
+        Scenario:
+          Given this step passes
+      """
+      When I run `cucumber --tags ~@tag features/background_and_tagged_scenario.feature`
+      Then it should pass
+
