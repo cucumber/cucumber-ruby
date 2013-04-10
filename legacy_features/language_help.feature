@@ -24,7 +24,7 @@ Feature: Language help
             | but (code)       | "Mas"                                                                                        |
 
       """
-  @wip-jruby
+
   Scenario: List languages
     When I run cucumber --i18n help
     Then STDERR should be empty
