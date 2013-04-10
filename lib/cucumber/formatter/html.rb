@@ -314,7 +314,11 @@ module Cucumber
               end
             end
           end
-          set_scenario_color_failed
+          if table_row.exception.is_a? ::Cucumber::Pending
+            set_scenario_color_pending
+          else
+            set_scenario_color_failed
+          end
         end
         if @outline_row
           @outline_row += 1
@@ -398,7 +402,7 @@ module Cucumber
       end
 
       def set_scenario_color(status)
-        if status == :undefined or status == :pending
+        if status.nil? or status == :undefined or status == :pending
           set_scenario_color_pending
         end
         if status == :failed

@@ -22,6 +22,8 @@
   ([#201](https://github.com/cucumber/cucumber/issues/201) David Kowis)
 * Moved the profile information output to a callback of the formatter
   ([#175](https://github.com/cucumber/cucumber/issues/175) David Kowis)
+* Fix html formatter to not mark skipped/unimplemented steps as failed
+  ([#337](https://github.com/cucumber/cucumber/issues/337) Oleg Sukhodolsky)
 
 ## [1.2.5](https://github.com/cucumber/cucumber/compare/v1.2.2...v1.2.3)
 
