@@ -321,6 +321,16 @@ END_OF_MESSAGE
       config.formats.should == [["progress", "file1"], ["profile" ,"file2"]]
     end
 
+    it "should accept same --format options with same --out streams and keep only one" do
+      config.parse!(%w{--format html --out file --format pretty --format html --out file})
+      config.formats.should == [["pretty", out], ["html", "file"]]
+    end
+
+    it "should accept same --format options with different --out streams" do
+      config.parse!(%w{--format html --out file1 --format html --out file2})
+      config.formats.should == [["html", "file1"], ["html", "file2"]]
+    end
+
     it "should accept --color option" do
       Cucumber::Term::ANSIColor.should_receive(:coloring=).with(true)
       config.parse!(['--color'])
