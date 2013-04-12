@@ -43,6 +43,12 @@ Given /^a scenario with a step that looks like this:$/ do |string|
   end
 end
 
+Given(/^a scenario with a step that looks like this in japanese:$/) do | string|
+  create_feature_ja do
+    create_scenario_ja { string }
+  end
+end
+
 Given /^a step definition that looks like this:$/ do |string|
   create_step_definition { string }
 end

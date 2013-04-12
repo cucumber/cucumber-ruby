@@ -7,6 +7,8 @@ class Cucumber::Rake::Task
       Cucumber::WINDOWS ? 'jruby_win' : 'jruby'
     elsif Cucumber::WINDOWS_MRI
       'windows_mri'
+    elsif Cucumber::RUBY_1_8_7
+      'ruby_1_8_7'
     elsif Cucumber::RUBY_1_9
       'ruby_1_9'
     elsif Cucumber::RUBY_2_0
