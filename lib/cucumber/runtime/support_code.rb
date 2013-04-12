@@ -49,7 +49,7 @@ module Cucumber
       #   })
       def invoke_steps(steps_text, i18n, file_colon_line)
         file, line = file_colon_line.split(':')
-        parser = Gherkin::Parser::Parser.new(StepInvoker.new(self), true, 'steps')
+        parser = Gherkin::Parser::Parser.new(StepInvoker.new(self), true, 'steps', false, i18n.iso_code)
         parser.parse(steps_text, file, line.to_i)
       end
 
