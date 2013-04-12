@@ -3,7 +3,8 @@
 ### New Features
 * Add lib to default load path
   ([#162](https://github.com/cucumber/cucumber/issues/162) Steve Tooke)
-* Add snippet type to support different type of ruby snippets. ([#390](https://github.com/cucumber/cucumber/pull/390) Roel van Dijk)
+* Add snippet type to support different type of ruby snippets.
+  ([#390](https://github.com/cucumber/cucumber/pull/390) Roel van Dijk)
 
 ### Bugfixes
 * Update watir example ([#427](https://github.com/cucumber/cucumber/issues/427)) Luiz Guilherme D'Abruzzo Pereira
@@ -11,7 +12,8 @@
 * Improve rake task report on failure ([#400](https://github.com/cucumber/cucumber/issues/400) Andrey Vakarev
 * Show details of nested steps in backtraces
   ([#69](https://github.com/cucumber/cucumber/issues/69)) Steve Tooke
-* Filter out control characters from CDATA section of JUnit formatter output. ([#383](https://github.com/cucumber/cucumber/issues/383) @teacup-on-rockingchair)
+* Filter out control characters from CDATA section of JUnit formatter output. 
+  ([#383](https://github.com/cucumber/cucumber/issues/383) @teacup-on-rockingchair)
 * Fix problem with non-ascii characters in file path
   ([#150](https://github.com/cucumber/cucumber/issues/150) Oleg Sukhodolsky)
 * Fix problem loading ruby files in project root directory
@@ -24,6 +26,8 @@
   ([#175](https://github.com/cucumber/cucumber/issues/175) David Kowis)
 * Fix html formatter to not mark skipped/unimplemented steps as failed
   ([#337](https://github.com/cucumber/cucumber/issues/337) Oleg Sukhodolsky)
+* Allow duplication for format+output pair in command line
+  ([#434](https://github.com/cucumber/cucumber/issues/434) David Lantos)
 
 ## [1.2.5](https://github.com/cucumber/cucumber/compare/v1.2.3...v1.2.5)
 
