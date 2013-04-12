@@ -310,6 +310,11 @@ END_OF_MESSAGE
       end.should raise_error("All but one formatter must use --out, only one can print to each stream (or STDOUT)")
     end
 
+    it "should accept same --format options with implicit STDOUT, and keep only one" do
+      config.parse!(%w{--format pretty --format pretty})
+      config.formats.should == [["pretty", out]]
+    end
+
     it "should not accept multiple --out streams pointing to the same place" do
       lambda do
         config.parse!(%w{--format pretty --out file1 --format progress --out file1})
@@ -319,6 +324,16 @@ END_OF_MESSAGE
     it "should associate --out to previous --format" do
       config.parse!(%w{--format progress --out file1 --format profile --out file2})
       config.formats.should == [["progress", "file1"], ["profile" ,"file2"]]
+    end
+
+    it "should accept same --format options with same --out streams and keep only one" do
+      config.parse!(%w{--format html --out file --format pretty --format html --out file})
+      config.formats.should == [["pretty", out], ["html", "file"]]
+    end
+
+    it "should accept same --format options with different --out streams" do
+      config.parse!(%w{--format html --out file1 --format html --out file2})
+      config.formats.should == [["html", "file1"], ["html", "file2"]]
     end
 
     it "should accept --color option" do
