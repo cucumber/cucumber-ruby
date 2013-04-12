@@ -310,6 +310,11 @@ END_OF_MESSAGE
       end.should raise_error("All but one formatter must use --out, only one can print to each stream (or STDOUT)")
     end
 
+    it "should accept same --format options with implicit STDOUT, and keep only one" do
+      config.parse!(%w{--format pretty --format pretty})
+      config.formats.should == [["pretty", out]]
+    end
+
     it "should not accept multiple --out streams pointing to the same place" do
       lambda do
         config.parse!(%w{--format pretty --out file1 --format progress --out file1})
