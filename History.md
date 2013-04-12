@@ -5,7 +5,7 @@
   ([#162](https://github.com/cucumber/cucumber/issues/162) Steve Tooke)
 * Add snippet type to support different type of ruby snippets.
   ([#390](https://github.com/cucumber/cucumber/pull/390) Roel van Dijk)
-* Call nested steps using any language keywords ([#433](https://github.com/cucumber/cucumber/pull/433)Tomohiko Himura)
+* Call nested steps using any language keywords ([#433](https://github.com/cucumber/cucumber/pull/433) Tomohiko Himura)
 
 ### Bugfixes
 * Update watir example ([#427](https://github.com/cucumber/cucumber/issues/427)) Luiz Guilherme D'Abruzzo Pereira
