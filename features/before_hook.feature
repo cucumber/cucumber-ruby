@@ -1,6 +1,6 @@
 Feature: Before Hook
 
-  Scenario: Examine names of elements
+  Background:
     Given a file named "features/foo.feature" with:
       """
       Feature: Feature name
@@ -15,19 +15,41 @@ Feature: Before Hook
             | <placeholder> |
             | step          |
       """
-    And a file named "features/support/hook.rb" with:
+
+  Scenario: Examine object passed into hook
+
+    The object yielded to the Before hook is a `Cucumber::Unit`
+    which represents a test-case executed by Cucumber. Each Unit
+    has a _source_, which could either be a regular Scenario, or
+    a row from a Scenario Outline's Examples table.
+
+    If you need to look at the source, you can send a visitor
+    to `Unit#describe_source_to` and the unit will call back
+    to different methods on the visitor depending on the type
+    of source the Unit originated from.
+
+    Given a file named "features/support/hook.rb" with:
       """
-      names = []
-      Before do |scenario|
-        unless scenario.respond_to?(:scenario_outline)
-          names << scenario.feature.name.split("\n").first
-          names << scenario.name.split("\n").first
-        else
-          names << scenario.scenario_outline.feature.name.split("\n").first
-          names << scenario.scenario_outline.name.split("\n").first
+      $names = []
+      at_exit { puts $names.join("\n") }
+
+      class UnitVisitor
+        def scenario(scenario)
+          $names << scenario.name
+        end
+
+        def scenario_outline_example(example_row)
+          $names << example_row.scenario_outline_name
+          $names << example_row.examples_table_name
+          $names << example_row.number
         end
       end
-      at_exit { puts names.join("\n") }
+
+      visitor = UnitVisitor.new
+      Before do |unit|
+        $names << unit.feature_name
+        unit.describe_source_to(visitor)
+      end
       """
     When I run `cucumber`
     Then the output should contain:
