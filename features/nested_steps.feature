@@ -104,16 +104,6 @@ Feature: Nested Steps
       Liouville
       """
 
-  Scenario: Use deprecated i18n methods
-    Given a step definition that looks like this:
-      """ruby
-      Given /two turtles/ do
-        Given "a turtle"
-      end
-      """
-    When I run the feature with the progress formatter
-    Then the output should contain "WARNING"
-
   Scenario: Backtrace doesn't skip nested steps
     Given a step definition that looks like this:
       """ruby

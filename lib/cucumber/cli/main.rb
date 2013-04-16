@@ -15,17 +15,11 @@ require 'cucumber/cli/drb_client'
 module Cucumber
   module Cli
     class Main
-      class << self
-        def execute(args)
-          new(args).execute!
-        end
-      end
-
-      def initialize(args, out_stream = STDOUT, error_stream = STDERR)
-        @args         = args
-        @out_stream   = out_stream
-
-        @error_stream = error_stream
+      def initialize(args, out, err, kernel)
+        @args   = args
+        @out    = out
+        @err    = err
+        @kernel = kernel
         @configuration = nil
       end
 
@@ -42,16 +36,25 @@ module Cucumber
 
         runtime.run!
         runtime.write_stepdefs_json
-        runtime.results.failure? || Cucumber.wants_to_quit
+        failure = runtime.results.failure? || Cucumber.wants_to_quit
+        @kernel.exit(1) if failure
       rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
-        @error_stream.puts e.message
-        true
+        @err.puts(e.message)
+      rescue SystemExit => e
+        @kernel.exit(e.status)
+      rescue Errno::EACCES, Errno::ENOENT => e
+        @err.puts("#{e.message} (#{e.class})")
+        @kernel.exit(1)
+      rescue Exception => e
+        @err.puts("#{e.message} (#{e.class})")
+        @err.puts(e.backtrace.join("\n"))
+        @kernel.exit(1)
       end
 
       def configuration
         return @configuration if @configuration
 
-        @configuration = Configuration.new(@out_stream, @error_stream)
+        @configuration = Configuration.new(@out, @err)
         @configuration.parse!(@args)
         Cucumber.logger = @configuration.log
         @configuration
@@ -61,10 +64,10 @@ module Cucumber
 
       def run_drb_client
         return false unless configuration.drb?
-        @drb_output = DRbClient.run(@args, @error_stream, @out_stream, configuration.drb_port)
+        @drb_output = DRbClient.run(@args, @err, @out, configuration.drb_port)
         true
       rescue DRbClientError => e
-        @error_stream.puts "WARNING: #{e.message} Running features locally:"
+        @err.puts "WARNING: #{e.message} Running features locally:"
       end
 
       def trap_interrupt

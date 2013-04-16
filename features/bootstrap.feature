@@ -8,8 +8,7 @@ Feature: Bootstrapping a new project
     When I run `cucumber`
     Then it should fail with:
       """
-      You don't have a 'features' directory.  Please create one to get started.
-      See http://cukes.info/ for more information.
+      No such file or directory - features. Please create a features directory to get started. (Errno::ENOENT)
       """
 
  Scenario: does not load ruby files in root if features directory is missing
@@ -21,7 +20,6 @@ Feature: Bootstrapping a new project
   When I run `cucumber`
   Then it should fail with exactly:
     """
-    You don't have a 'features' directory.  Please create one to get started.
-    See http://cukes.info/ for more information.
+    No such file or directory - features. Please create a features directory to get started. (Errno::ENOENT)
 
     """

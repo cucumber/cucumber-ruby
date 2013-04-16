@@ -26,15 +26,18 @@ Feature: Before Hook
           names << scenario.scenario_outline.feature.name.split("\n").first
           names << scenario.scenario_outline.name.split("\n").first
         end
+        if(names.size == 4)
+          raise "NAMES:\n" + names.join("\n") + "\n"
+        end
       end
-      at_exit { puts names.join("\n") }
       """
     When I run `cucumber`
     Then the output should contain:
       """
-      Feature name
-      Scenario name
-      Feature name
-      Scenario Outline name
+            NAMES:
+            Feature name
+            Scenario name
+            Feature name
+            Scenario Outline name
       """
 

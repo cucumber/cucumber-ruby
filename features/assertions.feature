@@ -26,9 +26,13 @@ Feature: Assertions
     end
     """
 
+  @spawn
   Scenario: Test::Unit
     Given a file named "features/step_definitions/assert_steps.rb" with:
       """
+      require 'test/unit/assertions'
+      World(::Test::Unit::Assertions)
+
       Then /^it should pass$/ do
         assert(2 + 2 == 4)
       end
@@ -39,7 +43,7 @@ Feature: Assertions
       Feature: Assert
 
         Scenario: Passing     # features/assert.feature:2
-          Then it should pass # features/step_definitions/assert_steps.rb:1
+          Then it should pass # features/step_definitions/assert_steps.rb:4
 
       1 scenario (1 passed)
       1 step (1 passed)

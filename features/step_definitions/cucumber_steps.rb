@@ -1,7 +1,3 @@
-When /^I run cucumber "(.+)"$/ do |cmd|
-  run_simple(unescape("cucumber #{cmd}"), false)
-end
-
 Then 'it should pass' do
   assert_exit_status 0
 end
@@ -43,7 +39,7 @@ Given /^a scenario with a step that looks like this:$/ do |string|
   end
 end
 
-Given(/^a scenario with a step that looks like this in japanese:$/) do | string|
+Given(/^a scenario with a step that looks like this in japanese:$/) do |string|
   create_feature_ja do
     create_scenario_ja { string }
   end

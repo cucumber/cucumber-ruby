@@ -62,11 +62,7 @@ module Cucumber
           raise e
         rescue Errno::ENOENT => e
           # special-case opening features, because this could be a new user:
-          if(@path == 'features')
-            STDERR.puts("You don't have a 'features' directory.  Please create one to get started.",
-                        "See http://cukes.info/ for more information.")
-            exit 1
-          end
+          e.message << ". Please create a #{@path} directory to get started."
           raise e
         end
       end
