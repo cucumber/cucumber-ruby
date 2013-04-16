@@ -117,5 +117,13 @@ module Cucumber::Formatter
         pi.tty?.should be true
       end
     end
+
+    describe '#respond_to' do
+      let(:pi) { Interceptor::Pipe.wrap(:stderr) }
+
+      it 'should respond to all methods $stderr has' do
+        $stderr.methods.each { |m| pi.respond_to?(m).should be true }
+      end
+    end
   end
 end

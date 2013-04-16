@@ -24,6 +24,10 @@ module Cucumber
           @pipe.send(method, *args, &blk)
         end
 
+        def respond_to?(method, include_private=false)
+          super || @pipe.respond_to?(method, include_private)
+        end
+
         def self.validate_pipe(pipe)
           unless [:stdout, :stderr].include? pipe
             raise ArgumentError, '#wrap only accepts :stderr or :stdout'

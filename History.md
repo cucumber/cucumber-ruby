@@ -13,7 +13,7 @@
 * Improve rake task report on failure ([#400](https://github.com/cucumber/cucumber/issues/400) Andrey Vakarev
 * Show details of nested steps in backtraces
   ([#69](https://github.com/cucumber/cucumber/issues/69)) Steve Tooke
-* Filter out control characters from CDATA section of JUnit formatter output. 
+* Filter out control characters from CDATA section of JUnit formatter output.
   ([#383](https://github.com/cucumber/cucumber/issues/383) @teacup-on-rockingchair)
 * Fix problem with non-ascii characters in file path
   ([#150](https://github.com/cucumber/cucumber/issues/150) Oleg Sukhodolsky)
@@ -29,6 +29,8 @@
   ([#337](https://github.com/cucumber/cucumber/issues/337) Oleg Sukhodolsky)
 * Allow duplication for format+output pair in command line
   ([#434](https://github.com/cucumber/cucumber/issues/434) David Lantos)
+* Better delegation to IO in Cucumber::Formatter::Interceptor::Pipe
+  ([#312](https://github.com/cucumber/cucumber/issues/312) Oleg Sukhodolsky)
 
 ## [1.2.5](https://github.com/cucumber/cucumber/compare/v1.2.3...v1.2.5)
 
