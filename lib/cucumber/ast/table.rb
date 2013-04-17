@@ -1,6 +1,7 @@
 require 'gherkin/rubify'
 require 'gherkin/lexer/i18n_lexer'
 require 'gherkin/formatter/escaping'
+require 'cucumber/hash_with_indifferent_access' unless defined? HashWithIndifferentAccess
 
 module Cucumber
   module Ast
@@ -381,9 +382,7 @@ module Cucumber
       end
 
       def to_hash(cells) #:nodoc:
-        hash = Hash.new do |hash, key|
-          hash[key.to_s] if key.is_a?(Symbol)
-        end
+        hash = HashWithIndifferentAccess.new
         column_names.each_with_index do |column_name, column_index|
           hash[column_name] = cells.value(column_index)
         end

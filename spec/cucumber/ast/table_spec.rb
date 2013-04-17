@@ -45,6 +45,11 @@ module Cucumber
         @table.hashes.first[:one].should == '4444'
       end
 
+      it "should allow deleting by symbol keys from the hashes" do
+        @table.hashes.first.delete(:one).should == '4444'
+        @table.hashes.first[:one].should be_nil
+      end
+
       it "should return the row values in order" do
         @table.rows.first.should == %w{4444 55555 666666}
       end
