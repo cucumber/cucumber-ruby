@@ -124,6 +124,25 @@ module Cucumber
         @header_row = false if @header_row
       end
 
+
+      def before_outline_table(outline_table)
+        return unless @in_examples
+        # only track the entire table run time
+        # not expanded individual row
+        @table_start = Time.now
+      end
+
+      def after_outline_table(outline_table)
+        @header_row = false
+        # for non expand mode, after_table_row is called already
+        # right after each row
+        if @options[:expand]
+          outline_table.example_rows.each_with_index do |table_row, n|
+            after_table_row(table_row)
+          end
+        end
+      end
+
       private
 
       def build_testcase(duration, status, exception = nil, suffix = "")
