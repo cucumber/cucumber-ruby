@@ -11,11 +11,12 @@ module Cucumber
         Dir.stub!(:[]).and_return([]) # to prevent cucumber's features dir to being laoded
       end
 
-      let(:args)       { [] }
-      let(:out_stream) { StringIO.new }
-      let(:err_stream) { StringIO.new }
-      let(:kernel)     { mock(:kernel) }
-      subject { Main.new(args, out_stream, err_stream, kernel)}
+      let(:args)   { [] }
+      let(:stdin)  { StringIO.new }
+      let(:stdout) { StringIO.new }
+      let(:stderr) { StringIO.new }
+      let(:kernel) { mock(:kernel) }
+      subject { Main.new(args, stdin, stdout, stderr, kernel)}
 
       describe "#execute!" do
         context "passed an existing runtime" do
@@ -70,7 +71,7 @@ module Cucumber
         end
 
         it "should show feature files parsed" do
-          cli = Main.new(%w{--verbose example.feature}, out_stream, err_stream, kernel)
+          cli = Main.new(%w{--verbose example.feature}, stdin, stdout, stderr, kernel)
           cli.stub!(:require)
 
           Cucumber::FeatureFile.stub!(:new).and_return(mock("feature file", :parse => @empty_feature))
@@ -78,7 +79,7 @@ module Cucumber
           kernel.should_receive(:exit).with(0)
           cli.execute!
 
-          out_stream.string.should include('example.feature')
+          stdout.string.should include('example.feature')
         end
 
       end
@@ -86,7 +87,7 @@ module Cucumber
       describe "--format with class" do
         describe "in module" do
           it "should resolve each module until it gets Formatter class" do
-            cli = Main.new(%w{--format ZooModule::MonkeyFormatterClass}, STDOUT, STDERR, kernel)
+            cli = Main.new(%w{--format ZooModule::MonkeyFormatterClass}, stdin, stdout, stderr, kernel)
             mock_module = mock('module')
             Object.stub!(:const_defined?).and_return(true)
             mock_module.stub!(:const_defined?).and_return(true)
@@ -114,7 +115,7 @@ module Cucumber
           configuration.stub!(:parse!).and_raise(exception_klass.new("error message"))
 
           subject.execute!
-          err_stream.string.should == "error message\n"
+          stderr.string.should == "error message\n"
         end
       end
 
@@ -128,7 +129,7 @@ module Cucumber
           step_mother = mock('StepMother').as_null_object
           StepMother.stub!(:new).and_return(step_mother)
 
-          @cli = Main.new(args, out_stream, err_stream, kernel)
+          @cli = Main.new(args, stdin, stdout, stderr, kernel)
         end
 
         it "delegates the execution to the DRB client passing the args and streams" do
@@ -157,7 +158,7 @@ module Cucumber
           it "alerts the user that execution will be performed locally" do
             kernel.should_receive(:exit).with(1)
             @cli.execute!
-            err_stream.string.should include("WARNING: error message. Running features locally:")
+            stderr.string.should include("WARNING: error message. Running features locally:")
           end
 
         end

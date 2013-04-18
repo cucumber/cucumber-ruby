@@ -21,7 +21,7 @@ module Cucumber
         end
       end
 
-      def initialize(args, out=STDOUT, err=STDERR, kernel=Kernel)
+      def initialize(args, stdin=STDIN, out=STDOUT, err=STDERR, kernel=Kernel)
         raise "args can't be nil" unless args
         raise "out can't be nil" unless out
         raise "err can't be nil" unless err

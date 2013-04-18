@@ -10,4 +10,4 @@ end
 require 'cucumber/rspec/disable_option_parser'
 require 'cucumber/cli/main'
 # The dup is to keep ARGV intact, so that tools like ruby-debug can respawn.
-Cucumber::Cli::Main.new(ARGV.dup, STDOUT, STDERR, Kernel).execute!
+Cucumber::Cli::Main.new(ARGV.dup).execute!
