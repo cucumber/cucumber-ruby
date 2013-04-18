@@ -3,7 +3,10 @@ ENV['FORCE_COLOR'] = 'true'
 require 'aruba'
 require 'aruba/api'
 require 'aruba/cucumber'
-require_relative 'cucumber_process'
+require 'aruba/in_process'
+require 'aruba/spawn_process'
+require 'cucumber/rspec/disable_option_parser'
+require 'cucumber/cli/main'
 
 # Monkey patch aruba to filter out some stuff
 module Aruba::Api
@@ -32,12 +35,13 @@ module Aruba::Api
   end
 end
 
-Before('~@spawn') do
-  Aruba.process = CucumberProcess
+Before('@spawn') do
+  Aruba.process = Aruba::SpawnProcess
 end
 
-Before('@spawn') do
-  Aruba.process = Aruba::Process
+Before('~@spawn') do
+  Aruba::InProcess.main_class = Cucumber::Cli::Main
+  Aruba.process = Aruba::InProcess
 end
 
 Before do

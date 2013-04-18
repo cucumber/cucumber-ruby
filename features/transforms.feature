@@ -15,7 +15,9 @@ Feature: Transforms
       """
     And a file named "features/support/person.rb" with:
       """
-      class Person < Struct.new(:age)
+      class Person
+        attr_accessor :age
+      
         def to_s
           "I am #{age} years old"
         end
@@ -29,18 +31,17 @@ Feature: Transforms
     And a file named "features/step_definitions/steps.rb" with:
       """
       Transform(/a Person aged (\d+)/) do |age|
-        Person.new(age.to_i)
+        person = Person.new
+        person.age = age.to_i
+        person
       end
       
       Given /^(a Person aged \d+) with blonde hair$/ do |person|
-        puts "#{person} and I have blonde hair"
+        person.age.should == 15
       end
       """
-    When I run cucumber "features/foo.feature"
-    Then it should pass with:
-      """
-      I am 15 years old and I have blonde hair
-      """
+    When I run `cucumber features/foo.feature`
+    Then it should pass
   
   Scenario: Re-use Transform's Regular Expression
     If you keep a reference to the transform, you can use it in your
@@ -49,15 +50,14 @@ Feature: Transforms
     And a file named "features/step_definitions/steps.rb" with:
       """
       A_PERSON = Transform(/a Person aged (\d+)/) do |age|
-        Person.new(age.to_i)
+        person = Person.new
+        person.age = age.to_i
+        person
       end
 
       Given /^(#{A_PERSON}) with blonde hair$/ do |person|
-        puts "#{person} and I have blonde hair"
+        person.age.should == 15
       end
       """
-    When I run cucumber "features/foo.feature"
-    Then it should pass with:
-      """
-      I am 15 years old and I have blonde hair
-      """
+    When I run `cucumber features/foo.feature`
+    Then it should pass

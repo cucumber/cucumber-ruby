@@ -37,7 +37,7 @@ Feature: Assertions
         assert(2 + 2 == 4)
       end
       """
-    When I run `ruby -r./without_rspec -S cucumber`
+    When I run `cucumber`
     Then it should pass with exactly:
       """
       Feature: Assert

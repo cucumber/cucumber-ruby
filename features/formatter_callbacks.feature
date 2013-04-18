@@ -22,7 +22,7 @@ Feature: Formatter Callback
       Then /^that|there$/ do
       end
       """
-    When I run cucumber "features/f.feature --format debug"
+    When I run `cucumber features/f.feature --format debug`
     Then it should pass with exactly:
       """
       before_features
@@ -117,7 +117,7 @@ Feature: Formatter Callback
       Then /^that|there$/ do
       end
       """
-    When I run cucumber "features/f.feature --format debug --expand"
+    When I run `cucumber features/f.feature --format debug --expand`
     Then it should pass with exactly:
       """
       before_features

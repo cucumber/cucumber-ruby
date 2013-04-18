@@ -7,17 +7,15 @@ module Cucumber
   module Cli
     describe Main do
       before(:each) do
-        @out = StringIO.new
-        @err = StringIO.new
-        Kernel.stub!(:exit).and_return(nil)
         File.stub!(:exist?).and_return(false) # When Configuration checks for cucumber.yml
         Dir.stub!(:[]).and_return([]) # to prevent cucumber's features dir to being laoded
       end
 
       let(:args)       { [] }
-      let(:out_stream) { nil }
-      let(:err_stream) { nil }
-      subject { Main.new(args, out_stream, err_stream)}
+      let(:out_stream) { StringIO.new }
+      let(:err_stream) { StringIO.new }
+      let(:kernel)     { mock(:kernel) }
+      subject { Main.new(args, out_stream, err_stream, kernel)}
 
       describe "#execute!" do
         context "passed an existing runtime" do
@@ -31,6 +29,7 @@ module Cucumber
             expected_configuration = double('Configuration', :drb? => false).as_null_object
             Configuration.stub!(:new => expected_configuration)
             existing_runtime.should_receive(:configure).with(expected_configuration)
+            kernel.should_receive(:exit).with(1)
             do_execute
           end
 
@@ -38,7 +37,8 @@ module Cucumber
             expected_results = double('results', :failure? => true)
             existing_runtime.should_receive(:run!)
             existing_runtime.stub!(:results).and_return(expected_results)
-            do_execute.should == expected_results.failure?
+            kernel.should_receive(:exit).with(1)
+            do_execute
           end
         end
 
@@ -54,7 +54,8 @@ module Cucumber
             runtime.stub(:results).and_return(results)
 
             Cucumber.wants_to_quit = true
-            subject.execute!.should be_true
+            kernel.should_receive(:exit).with(1)
+            subject.execute!
           end
         end
       end
@@ -69,14 +70,15 @@ module Cucumber
         end
 
         it "should show feature files parsed" do
-          @cli = Main.new(%w{--verbose example.feature}, @out)
-          @cli.stub!(:require)
+          cli = Main.new(%w{--verbose example.feature}, out_stream, err_stream, kernel)
+          cli.stub!(:require)
 
           Cucumber::FeatureFile.stub!(:new).and_return(mock("feature file", :parse => @empty_feature))
 
-          @cli.execute!
+          kernel.should_receive(:exit).with(0)
+          cli.execute!
 
-          @out.string.should include('example.feature')
+          out_stream.string.should include('example.feature')
         end
 
       end
@@ -84,7 +86,7 @@ module Cucumber
       describe "--format with class" do
         describe "in module" do
           it "should resolve each module until it gets Formatter class" do
-            cli = Main.new(%w{--format ZooModule::MonkeyFormatterClass}, nil)
+            cli = Main.new(%w{--format ZooModule::MonkeyFormatterClass}, STDOUT, STDERR, kernel)
             mock_module = mock('module')
             Object.stub!(:const_defined?).and_return(true)
             mock_module.stub!(:const_defined?).and_return(true)
@@ -99,6 +101,7 @@ module Cucumber
               mock_module.should_receive(:const_get).with('MonkeyFormatterClass', false).and_return(mock('formatter class', :new => f))
             end
 
+            kernel.should_receive(:exit).with(0)
             cli.execute!
           end
         end
@@ -106,13 +109,12 @@ module Cucumber
 
       [ProfilesNotDefinedError, YmlLoadError, ProfileNotFound].each do |exception_klass|
 
-        it "rescues #{exception_klass}, prints the message to the error stream and returns true" do
+        it "rescues #{exception_klass}, prints the message to the error stream" do
           Configuration.stub!(:new).and_return(configuration = mock('configuration'))
           configuration.stub!(:parse!).and_raise(exception_klass.new("error message"))
 
-          main = Main.new('', out = StringIO.new, error = StringIO.new)
-          main.execute!.should be_true
-          error.string.should == "error message\n"
+          subject.execute!
+          err_stream.string.should == "error message\n"
         end
       end
 
@@ -121,16 +123,20 @@ module Cucumber
           @configuration = mock('Configuration', :drb? => true, :dotcucumber => false).as_null_object
           Configuration.stub!(:new).and_return(@configuration)
 
-          @args = ['features']
+          args = ['features']
 
-          @cli = Main.new(@args, @out, @err)
-          @step_mother = mock('StepMother').as_null_object
-          StepMother.stub!(:new).and_return(@step_mother)
+          step_mother = mock('StepMother').as_null_object
+          StepMother.stub!(:new).and_return(step_mother)
+
+          @cli = Main.new(args, out_stream, err_stream, kernel)
         end
 
         it "delegates the execution to the DRB client passing the args and streams" do
           @configuration.stub :drb_port => 1450
-          DRbClient.should_receive(:run).with(@args, @err, @out, 1450).and_return(true)
+          DRbClient.should_receive(:run) do
+            kernel.exit(1)
+          end
+          kernel.should_receive(:exit).with(1)
           @cli.execute!
         end
 
@@ -149,8 +155,9 @@ module Cucumber
           before { DRbClient.stub!(:run).and_raise(DRbClientError.new('error message.')) }
 
           it "alerts the user that execution will be performed locally" do
+            kernel.should_receive(:exit).with(1)
             @cli.execute!
-            @err.string.should include("WARNING: error message. Running features locally:")
+            err_stream.string.should include("WARNING: error message. Running features locally:")
           end
 
         end

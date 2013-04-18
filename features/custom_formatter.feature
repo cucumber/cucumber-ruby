@@ -32,7 +32,7 @@ Feature: Custom Formatter
         end
       end
       """
-    When I run cucumber "features/f.feature --format Ze::Formator"
+    When I run `cucumber features/f.feature --format Ze::Formator`
     Then it should pass with exactly:
       """
       I'LL USE MY OWN

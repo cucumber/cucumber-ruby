@@ -14,7 +14,7 @@ Feature: Progress output formatter
       """
 
   Scenario: an scenario outline, one undefined step, one random example, expand flag on
-    When I run cucumber "features/scenario_outline_with_undefined_steps.feature --format progress --expand "
+    When I run `cucumber features/scenario_outline_with_undefined_steps.feature --format progress --expand `
     Then it should pass
 
   Scenario: when using a profile the output should include 'Using the default profile...'
@@ -22,7 +22,7 @@ Feature: Progress output formatter
     """
       default: -r features
     """
-    When I run cucumber "--profile default --format progress"
+    When I run `cucumber --profile default --format progress`
     Then it should pass
     And the output should contain:
     """

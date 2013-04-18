@@ -35,11 +35,11 @@ Feature: HTML output formatter
       """
 
   Scenario: an scenario outline, one undefined step, one random example, expand flag on
-    When I run cucumber "features/scenario_outline_with_undefined_steps.feature --format html --expand "
+    When I run `cucumber features/scenario_outline_with_undefined_steps.feature --format html --expand `
     Then it should pass
 
   Scenario Outline: an scenario outline, one pending step
-    When I run cucumber "<file> --format html <flag>"
+    When I run `cucumber <file> --format html <flag>`
     Then it should pass
     And the output should contain:
     """
@@ -61,7 +61,7 @@ Feature: HTML output formatter
     """
       default: -r features
     """
-    When I run cucumber "--profile default --format html"
+    When I run `cucumber --profile default --format html`
     Then it should pass
     And the output should not contain:
     """

@@ -15,7 +15,17 @@ require 'cucumber/cli/drb_client'
 module Cucumber
   module Cli
     class Main
-      def initialize(args, out, err, kernel)
+      class << self
+        def execute(args)
+          new(args).execute!
+        end
+      end
+
+      def initialize(args, out=STDOUT, err=STDERR, kernel=Kernel)
+        raise "args can't be nil" unless args
+        raise "out can't be nil" unless out
+        raise "err can't be nil" unless err
+        raise "kernel can't be nil" unless kernel
         @args   = args
         @out    = out
         @err    = err
@@ -37,7 +47,7 @@ module Cucumber
         runtime.run!
         runtime.write_stepdefs_json
         failure = runtime.results.failure? || Cucumber.wants_to_quit
-        @kernel.exit(1) if failure
+        @kernel.exit(failure ? 1 : 0)
       rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
         @err.puts(e.message)
       rescue SystemExit => e

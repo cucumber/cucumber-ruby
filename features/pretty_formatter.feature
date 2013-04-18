@@ -14,7 +14,7 @@ Feature: Pretty output formatter
       """
 
   Scenario: an scenario outline, one undefined step, one random example, expand flag on
-    When I run cucumber "features/scenario_outline_with_undefined_steps.feature --format pretty --expand "
+    When I run `cucumber features/scenario_outline_with_undefined_steps.feature --format pretty --expand `
     Then it should pass
 
   Scenario: when using a profile the output should include 'Using the default profile...'
@@ -22,7 +22,7 @@ Feature: Pretty output formatter
     """
       default: -r features
     """
-    When I run cucumber "--profile default --format pretty"
+    When I run `cucumber --profile default --format pretty`
     Then it should pass
     And the output should contain:
     """

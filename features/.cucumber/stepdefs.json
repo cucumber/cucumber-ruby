@@ -315,6 +315,33 @@
         ]
       },
       {
+        "name": "I run `cucumber --profile default --format html`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber --profile default --format html"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber --profile default --format pretty`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber --profile default --format pretty"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber --profile default --format progress`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber --profile default --format progress"
+          }
+        ]
+      },
+      {
         "name": "I run `cucumber -b --format json features/embed.feature`",
         "args": [
           {
@@ -441,6 +468,51 @@
         ]
       },
       {
+        "name": "I run `cucumber <file> --format html <flag>`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber <file> --format html <flag>"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber features/f.feature --format Jb::Formatter`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/f.feature --format Jb::Formatter"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber features/f.feature --format Ze::Formator`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/f.feature --format Ze::Formator"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber features/f.feature --format debug --expand`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/f.feature --format debug --expand"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber features/f.feature --format debug`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/f.feature --format debug"
+          }
+        ]
+      },
+      {
         "name": "I run `cucumber features/f.feature:2`",
         "args": [
           {
@@ -459,11 +531,74 @@
         ]
       },
       {
+        "name": "I run `cucumber features/foo.feature`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/foo.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber features/one_passing_one_failing.feature -r features -f rerun`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/one_passing_one_failing.feature -r features -f rerun"
+          }
+        ]
+      },
+      {
         "name": "I run `cucumber features/only_background_and_hooks.feature`",
         "args": [
           {
             "offset": 7,
             "val": "cucumber features/only_background_and_hooks.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber features/sample.feature --tags ~@wip`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/sample.feature --tags ~@wip"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber features/sample.feature -r features --tags ~@wip`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/sample.feature -r features --tags ~@wip"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber features/scenario_outline_with_undefined_steps.feature --format html --expand `",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/scenario_outline_with_undefined_steps.feature --format html --expand "
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber features/scenario_outline_with_undefined_steps.feature --format pretty --expand `",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/scenario_outline_with_undefined_steps.feature --format pretty --expand "
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber features/scenario_outline_with_undefined_steps.feature --format progress --expand `",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/scenario_outline_with_undefined_steps.feature --format progress --expand "
           }
         ]
       },
@@ -491,15 +626,6 @@
           {
             "offset": 7,
             "val": "cucumber"
-          }
-        ]
-      },
-      {
-        "name": "I run `ruby -r./without_rspec -S cucumber`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "ruby -r./without_rspec -S cucumber"
           }
         ]
       }
@@ -636,7 +762,7 @@
     ]
   },
   {
-    "source": "^the output should match \\/([^\\/]*)\\/$",
+    "source": "^the output should match /([^/]*)/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:137",
     "steps": [
@@ -652,7 +778,7 @@
     ]
   },
   {
-    "source": "^the output should not match \\/([^\\/]*)\\/$",
+    "source": "^the output should not match /([^/]*)/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:146",
     "steps": [
@@ -958,7 +1084,7 @@
     ]
   },
   {
-    "source": "^the file \"([^\"]*)\" should match \\/([^\\/]*)\\/$",
+    "source": "^the file \"([^\"]*)\" should match /([^/]*)/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:308",
     "steps": [
@@ -966,7 +1092,7 @@
     ]
   },
   {
-    "source": "^the file \"([^\"]*)\" should not match \\/([^\\/]*)\\/$",
+    "source": "^the file \"([^\"]*)\" should not match /([^/]*)/$",
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:312",
     "steps": [

@@ -35,7 +35,7 @@ Feature: Formatter API: Step file path and line number (Issue #179)
         end
       end
       """
-    When I run cucumber "features/f.feature --format Jb::Formatter"
+    When I run `cucumber features/f.feature --format Jb::Formatter`
     Then it should pass with exactly:
       """
       step result event: features/f.feature:4

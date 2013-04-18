@@ -27,7 +27,7 @@ Feature: Rerun formatter
       """
 
   Scenario: Handle examples with the rerun formatter
-    When I run cucumber "features/one_passing_one_failing.feature -r features -f rerun"
+    When I run `cucumber features/one_passing_one_failing.feature -r features -f rerun`
     Then it should fail with:
     """
     features/one_passing_one_failing.feature:9

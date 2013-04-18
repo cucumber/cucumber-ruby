@@ -278,6 +278,7 @@ Feature: Background
 
     """
 
+  @spawn
   Scenario: run a feature with a background that fails
     When I run `cucumber -q features/failing_background.feature`
     Then it should fail with exactly:
@@ -307,6 +308,7 @@ Feature: Background
     
     """
 
+  @spawn
   Scenario: run a feature with scenario outlines that has a background that fails
     When I run `cucumber -q features/scenario_outline_failing_background.feature`
     Then it should fail with exactly:
@@ -364,6 +366,7 @@ Feature: Background
     
     """
 
+  @spawn
   Scenario: background passes with first scenario but fails with second
     When I run `cucumber -q features/failing_background_after_success.feature`
     Then it should fail with exactly:
