@@ -21,7 +21,7 @@ Feature: Tagged hooks
         Scenario: omitting hook
           Given this step works
       """
-
+  @spawn
   Scenario: omit tagged hook
     When I run `cucumber features/f.feature:2`
     Then it should fail with:
