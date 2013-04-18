@@ -8,6 +8,7 @@ rvm:
 branches:
   only:
     - master
+    - aruba-in-process
 
 notifications:
   email:
