@@ -25,48 +25,35 @@ if Cucumber::WINDOWS
     module WindowsOutput #:nodoc:
       def self.extended(o)
         o.instance_eval do
-          alias cucumber_print print
-          def print(*a)
+          def cucumber_preprocess_output(*a)
             if Cucumber::RUBY_1_8_7
               begin
-                cucumber_print(*Iconv.iconv(Cucumber::CODEPAGE, "UTF-8", *a.map{|a|a.to_s}))
+                *Iconv.iconv(Cucumber::CODEPAGE, "UTF-8", *a.map{|a|a.to_s})
               rescue Iconv::InvalidEncoding => e
                 STDERR.cucumber_puts("WARNING: #{e.message}")
-                cucumber_print(*a)
+                *a
               rescue Iconv::IllegalSequence => e
                 STDERR.cucumber_puts("WARNING: #{e.message}")
-                cucumber_print(*a)
+                *a
               end
             else
               begin
-                cucumber_print(*a.map{|arg| arg.to_s.encode(Encoding.default_external)})
+                *a.map{|arg| arg.to_s.encode(Encoding.default_external)}
               rescue Encoding::UndefinedConversionError => e
                 STDERR.cucumber_puts("WARNING: #{e.message}")
-                cucumber_print(*a)
+                *a
               end
             end
           end
 
+          alias cucumber_print print
+          def print(*a)
+            cucumber_print(cucumber_preprocess_output(*a))
+          end
+
           alias cucumber_puts puts
           def puts(*a)
-            if Cucumber::RUBY_1_8_7
-              begin
-                cucumber_puts(*Iconv.iconv(Cucumber::CODEPAGE, "UTF-8", *a.map{|a|a.to_s}))
-              rescue Iconv::InvalidEncoding => e
-                STDERR.cucumber_print("WARNING: #{e.message}")
-                cucumber_print(*a)
-              rescue Iconv::IllegalSequence => e
-                STDERR.cucumber_puts("WARNING: #{e.message}")
-                cucumber_puts(*a)
-              end
-            else
-              begin
-                cucumber_puts(*a.map{|arg| arg.to_s.encode(Encoding.default_external)})
-              rescue Encoding::UndefinedConversionError => e
-                STDERR.cucumber_puts("WARNING: #{e.message}")
-                cucumber_puts(*a)
-              end
-            end
+            cucumber_puts(cucumber_preprocess_output(*a))
           end
         end
       end
