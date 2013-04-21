@@ -1,4 +1,4 @@
-## [Git master] (https://github.com/cucumber/cucumber/compare/v1.2.5...master)
+## [1.3.0](https://github.com/cucumber/cucumber/compare/v1.2.5...v1.3.0)
 
 ### New Features
 * Faster features, thanks to in-process Aruba. (Aslak Hellesøy)
