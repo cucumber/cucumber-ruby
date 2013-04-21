@@ -1,3 +1,8 @@
+## [1.3.1](https://github.com/cucumber/cucumber/compare/v1.3.0...v1.3.1)
+
+### Bugfixes
+* Fixed typo which breaks unicode.rb on Windows (Oleg Sukhodolsky)
+
 ## [1.3.0](https://github.com/cucumber/cucumber/compare/v1.2.5...v1.3.0)
 
 ### New Features
