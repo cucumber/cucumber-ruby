@@ -28,32 +28,32 @@ if Cucumber::WINDOWS
           def cucumber_preprocess_output(*a)
             if Cucumber::RUBY_1_8_7
               begin
-                *Iconv.iconv(Cucumber::CODEPAGE, "UTF-8", *a.map{|a|a.to_s})
+                Iconv.iconv(Cucumber::CODEPAGE, "UTF-8", *a.map{|a|a.to_s})
               rescue Iconv::InvalidEncoding => e
                 STDERR.cucumber_puts("WARNING: #{e.message}")
-                *a
+                a
               rescue Iconv::IllegalSequence => e
                 STDERR.cucumber_puts("WARNING: #{e.message}")
-                *a
+                a
               end
             else
               begin
-                *a.map{|arg| arg.to_s.encode(Encoding.default_external)}
+                a.map{|arg| arg.to_s.encode(Encoding.default_external)}
               rescue Encoding::UndefinedConversionError => e
                 STDERR.cucumber_puts("WARNING: #{e.message}")
-                *a
+                a
               end
             end
           end
 
           alias cucumber_print print
           def print(*a)
-            cucumber_print(cucumber_preprocess_output(*a))
+            cucumber_print(*cucumber_preprocess_output(*a))
           end
 
           alias cucumber_puts puts
           def puts(*a)
-            cucumber_puts(cucumber_preprocess_output(*a))
+            cucumber_puts(*cucumber_preprocess_output(*a))
           end
         end
       end
