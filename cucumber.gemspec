@@ -35,9 +35,7 @@ Gem::Specification.new do |s|
   # Needed for examples (rake examples)
   s.add_development_dependency 'capybara', '>= 1.1.2', '< 2.1'
   s.add_development_dependency 'rack-test', '>= 0.6.1'
-  s.add_development_dependency 'ramaze'
   s.add_development_dependency 'sinatra', '>= 1.3.2'
-  s.add_development_dependency 'webrat', '>= 0.7.3'
 
   s.rubygems_version = ">= 1.6.1"
   s.files            = `git ls-files`.split("\n").reject {|path| path =~ /\.gitignore$/ }
