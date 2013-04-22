@@ -20,7 +20,7 @@ module Cucumber::Formatter
 
     before(:each) do
       File.stub!(:directory?).and_return(true)
-      @formatter = TestDoubleJunitFormatter.new(step_mother, '', {})
+      @formatter = TestDoubleJunitFormatter.new(runtime, '', {})
     end
 
     describe "should be able to strip control chars from cdata" do

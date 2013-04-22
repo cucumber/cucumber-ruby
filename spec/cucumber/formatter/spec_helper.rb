@@ -21,8 +21,8 @@ module Cucumber
         run(features)
       end
 
-      def step_mother
-        @step_mother ||= Runtime.new
+      def runtime
+        @runtime ||= Runtime.new
       end
 
       def load_features(content)
@@ -36,13 +36,13 @@ module Cucumber
 
       def run(features)
         configuration = Cucumber::Configuration.default
-        tree_walker = Cucumber::Ast::TreeWalker.new(step_mother, [@formatter], configuration)
+        tree_walker = Cucumber::Ast::TreeWalker.new(runtime, [@formatter], configuration)
         tree_walker.visit_features(features)
       end
 
       def define_steps
         return unless step_defs = self.class.step_defs
-        rb = step_mother.load_programming_language('rb')
+        rb = runtime.load_programming_language('rb')
         dsl = Object.new
         dsl.extend RbSupport::RbDsl
         dsl.instance_exec &step_defs

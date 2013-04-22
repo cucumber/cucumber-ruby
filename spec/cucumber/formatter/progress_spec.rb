@@ -8,7 +8,7 @@ module Cucumber
       before(:each) do
         Cucumber::Term::ANSIColor.coloring = false
         @out = StringIO.new
-        progress = Cucumber::Formatter::Progress.new(mock("step mother"), @out, {})
+        progress = Cucumber::Formatter::Progress.new(mock("Runtime"), @out, {})
         @visitor = Cucumber::Ast::TreeWalker.new(nil, [progress])
       end
 

@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'cucumber/ast'
-require 'cucumber/step_mother'
 require 'cucumber/rb_support/rb_language'
 
 module Cucumber

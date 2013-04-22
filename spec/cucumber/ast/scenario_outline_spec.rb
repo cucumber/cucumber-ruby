@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'cucumber/step_mother'
 require 'cucumber/ast'
 require 'cucumber/core_ext/string'
 require 'cucumber/rb_support/rb_language'
@@ -8,8 +7,8 @@ module Cucumber
   module Ast
     describe ScenarioOutline do
       before do
-        @step_mother = Cucumber::Runtime.new
-        @step_mother.load_programming_language('rb')
+        @runtime = Cucumber::Runtime.new
+        @runtime.load_programming_language('rb')
         @dsl = Object.new
         @dsl.extend(Cucumber::RbSupport::RbDsl)
 
@@ -64,7 +63,7 @@ module Cucumber
       end
 
       it "should replace all variables and call outline once for each table row" do
-        visitor = TreeWalker.new(@step_mother)
+        visitor = TreeWalker.new(@runtime)
         visitor.should_receive(:visit_table_row).exactly(3).times
         @scenario_outline.feature = stub.as_null_object
         visitor.visit_feature_element(@scenario_outline)

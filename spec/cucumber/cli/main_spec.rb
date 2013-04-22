@@ -117,13 +117,9 @@ module Cucumber
       context "--drb" do
         before(:each) do
           @configuration = mock('Configuration', :drb? => true, :dotcucumber => false).as_null_object
-          Configuration.stub!(:new).and_return(@configuration)
-
+          Configuration.stub(new: @configuration)
           args = ['features']
-
-          step_mother = mock('StepMother').as_null_object
-          StepMother.stub!(:new).and_return(step_mother)
-
+          Runtime.stub(new: mock('Runtime').as_null_object)
           @cli = Main.new(args, stdin, stdout, stderr, kernel)
         end
 

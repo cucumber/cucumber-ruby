@@ -20,8 +20,7 @@ Feature: Formatter API: Step file path and line number (Issue #179)
       """
       module Jb
         class Formatter
-          def initialize(step_mother, io, options)
-            @step_mother = step_mother
+          def initialize(runtime, io, options)
             @io = io
           end
 

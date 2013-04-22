@@ -1,6 +1,4 @@
 require 'cucumber/ast'
-require 'cucumber/step_mother'
-require 'gherkin/formatter/model'
 
 module Cucumber
   module Ast

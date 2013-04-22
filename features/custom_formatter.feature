@@ -17,8 +17,7 @@ Feature: Custom Formatter
       """
       module Ze
         class Formator
-          def initialize(step_mother, io, options)
-            @step_mother = step_mother
+          def initialize(runtime, io, options)
             @io = io
           end
 

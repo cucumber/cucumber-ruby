@@ -7,8 +7,8 @@ module Cucumber
       include FeatureFactory
 
       it "should convert to sexp" do
-        step_mother = Cucumber::Runtime.new
-        step_mother.load_programming_language('rb')
+        runtime = Cucumber::Runtime.new
+        runtime.load_programming_language('rb')
         dsl = Object.new
         dsl.extend Cucumber::RbSupport::RbDsl
 
@@ -45,8 +45,8 @@ module Cucumber
       end
 
       it "should store OS specific file paths" do
-        step_mother = Cucumber::Runtime.new
-        step_mother.load_programming_language('rb')
+        runtime = Cucumber::Runtime.new
+        runtime.load_programming_language('rb')
         dsl = Object.new
         dsl.extend Cucumber::RbSupport::RbDsl
         feature = create_feature(dsl)

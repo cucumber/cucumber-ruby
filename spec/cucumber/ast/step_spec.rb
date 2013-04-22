@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'cucumber/step_mother'
 require 'cucumber/ast'
 require 'cucumber/core_ext/string'
 

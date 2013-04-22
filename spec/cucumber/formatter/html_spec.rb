@@ -20,8 +20,8 @@ module Cucumber
 
       before(:each) do
         @out = StringIO.new
-        @formatter = Html.new(step_mother, @out, {})
-        step_mother.visitor = @formatter
+        @formatter = Html.new(runtime, @out, {})
+        runtime.visitor = @formatter
       end
 
       it "should not raise an error when visiting a blank feature name" do
