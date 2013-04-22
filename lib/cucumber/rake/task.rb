@@ -143,23 +143,6 @@ module Cucumber
         @cucumber_opts = String === opts ? opts.split(' ') : opts
       end
 
-      # Run cucumber with RCov? Defaults to false. If you set this to
-      # true, +fork+ is implicit.
-      attr_accessor :rcov
-      def rcov=(flag)
-        if flag && !Cucumber::RUBY_1_8_7
-          raise failed + "RCov only works on Ruby 1.8.x. You may want to use SimpleCov: https://github.com/colszowka/simplecov" + reset
-        end
-        @rcov = flag
-      end
-
-      # Extra options to pass to rcov.
-      # It's recommended to pass an Array, but if it's a String it will be #split by ' '.
-      attr_accessor :rcov_opts
-      def rcov_opts=(opts) #:nodoc:
-        @rcov_opts = String === opts ? opts.split(' ') : opts
-      end
-
       # Whether or not to fork a new ruby interpreter. Defaults to true. You may gain
       # some startup speed if you set it to false, but this may also cause issues with
       # your load path and gems.

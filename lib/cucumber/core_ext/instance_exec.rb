@@ -53,8 +53,8 @@ class Object #:nodoc:
   private
 
   def cucumber_arity(block)
-    a = block.arity
-    Cucumber::RUBY_1_8_7 ? (a == -1 ? 0 : a) : a
+    # TODO: inline method
+    block.arity
   end
 
   def cucumber_compatible_arity?(args, block)
@@ -74,7 +74,7 @@ class Object #:nodoc:
     end
   end
 
-  INSTANCE_EXEC_OFFSET = (Cucumber::RUBY_2_0 || Cucumber::RUBY_1_9 || Cucumber::RUBY_1_8_7 || Cucumber::JRUBY) ? -3 : -4
+  INSTANCE_EXEC_OFFSET = (Cucumber::RUBY_2_0 || Cucumber::RUBY_1_9 || Cucumber::JRUBY) ? -3 : -4
 
   def replace_instance_exec_invocation_line!(backtrace, instance_exec_invocation_line, pseudo_method)
     return if Cucumber.use_full_backtrace
@@ -82,11 +82,7 @@ class Object #:nodoc:
     instance_exec_pos = backtrace.index(instance_exec_invocation_line)
     if instance_exec_pos
       replacement_line = instance_exec_pos + INSTANCE_EXEC_OFFSET
-      if Cucumber::RUBY_1_8_7
-        backtrace[replacement_line] += ":in `#{pseudo_method}'" if pseudo_method
-      else
-        backtrace[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'") if pseudo_method
-      end
+      backtrace[replacement_line].gsub!(/`.*'/, "`#{pseudo_method}'") if pseudo_method
 
       depth = backtrace.count { |line| line == instance_exec_invocation_line }
       end_pos = depth > 1 ? instance_exec_pos : -1

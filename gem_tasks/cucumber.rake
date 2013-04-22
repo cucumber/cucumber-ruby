@@ -7,8 +7,6 @@ class Cucumber::Rake::Task
       Cucumber::WINDOWS ? 'jruby_win' : 'jruby'
     elsif Cucumber::WINDOWS_MRI
       'windows_mri'
-    elsif Cucumber::RUBY_1_8_7
-      'ruby_1_8_7'
     elsif Cucumber::RUBY_1_9
       'ruby_1_9'
     elsif Cucumber::RUBY_2_0
@@ -26,7 +24,6 @@ Cucumber::Rake::Task.new(:legacy_features) do |t|
   t.fork = false
   t.cucumber_opts = %w{legacy_features}
   t.set_profile_for_current_ruby
-  t.rcov = ENV['RCOV']
 end
 
 task :cucumber => [:features, :legacy_features]

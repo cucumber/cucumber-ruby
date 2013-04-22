@@ -2,11 +2,8 @@
 # Tips for improvement - esp. ruby 1.9: http://www.ruby-forum.com/topic/184730
 require 'cucumber/platform'
 require 'cucumber/formatter/ansicolor'
-$KCODE='u' if Cucumber::RUBY_1_8_7
 
 if Cucumber::WINDOWS
-  require 'iconv' if Cucumber::RUBY_1_8_7
-
   if ENV['CUCUMBER_OUTPUT_ENCODING']
     Cucumber::CODEPAGE = ENV['CUCUMBER_OUTPUT_ENCODING']
   elsif `cmd /c chcp` =~ /(\d+)/
@@ -22,27 +19,17 @@ if Cucumber::WINDOWS
   end
 
   module Cucumber
-    module WindowsOutput #:nodoc:
+    # @private
+    module WindowsOutput
       def self.extended(o)
         o.instance_eval do
+
           def cucumber_preprocess_output(*a)
-            if Cucumber::RUBY_1_8_7
-              begin
-                Iconv.iconv(Cucumber::CODEPAGE, "UTF-8", *a.map{|a|a.to_s})
-              rescue Iconv::InvalidEncoding => e
-                STDERR.cucumber_puts("WARNING: #{e.message}")
-                a
-              rescue Iconv::IllegalSequence => e
-                STDERR.cucumber_puts("WARNING: #{e.message}")
-                a
-              end
-            else
-              begin
-                a.map{|arg| arg.to_s.encode(Encoding.default_external)}
-              rescue Encoding::UndefinedConversionError => e
-                STDERR.cucumber_puts("WARNING: #{e.message}")
-                a
-              end
+            begin
+              a.map{|arg| arg.to_s.encode(Encoding.default_external)}
+            rescue Encoding::UndefinedConversionError => e
+              STDERR.cucumber_puts("WARNING: #{e.message}")
+              a
             end
           end
 

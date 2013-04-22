@@ -8,15 +8,13 @@ describe Proc do
     proc.file_colon_line.should =~ /^spec\/cucumber\/core_ext\/proc_spec\.rb:7/
   end
 
-  unless Cucumber::RUBY_1_8_7
-    it "should work with non-English path" do
-      proc = lambda {|a,b|}
-      def proc.to_s
-        "#<Proc:0x00000003c04740@#{Dir.pwd}/å/spec/cucumber/core_ext/proc_spec.rb:12 (lambda)>".force_encoding('ASCII-8BIT')
-      end
-
-      proc.file_colon_line.force_encoding('UTF-8').should =~ /^å\/spec\/cucumber\/core_ext\/proc_spec\.rb:12/
+  it "should work with non-English path" do
+    proc = lambda {|a,b|}
+    def proc.to_s
+      "#<Proc:0x00000003c04740@#{Dir.pwd}/å/spec/cucumber/core_ext/proc_spec.rb:12 (lambda)>".force_encoding('ASCII-8BIT')
     end
+
+    proc.file_colon_line.force_encoding('UTF-8').should =~ /^å\/spec\/cucumber\/core_ext\/proc_spec\.rb:12/
   end
 
   it "should raise ArityMismatchError for too many args (expecting 0)" do
@@ -47,21 +45,11 @@ describe Proc do
     }.should raise_error(Cucumber::ArityMismatchError, "Your block takes 2 arguments, but the Regexp matched 1 argument.")
   end
 
-  if Cucumber::RUBY_1_8_7
-    # Ruby 1.8
-    it "should not allow varargs 0+ because Ruby 1.8 reports same arity as with no args, so we can't really tell the difference." do
-      lambda {
-        Object.new.cucumber_instance_exec(true, 'foo', 1) do |*args|
-        end
-      }.should raise_error(Cucumber::ArityMismatchError, "Your block takes 0 arguments, but the Regexp matched 1 argument.")
-    end
-  else
-    it "should allow varargs (expecting 0+)" do
-      lambda {
-        Object.new.cucumber_instance_exec(true, 'foo', 1) do |*args|
-        end
-      }.should_not raise_error(Cucumber::ArityMismatchError)
-    end
+  it "should allow varargs (expecting 0+)" do
+    lambda {
+      Object.new.cucumber_instance_exec(true, 'foo', 1) do |*args|
+      end
+    }.should_not raise_error(Cucumber::ArityMismatchError)
   end
 
   it "should allow varargs (expecting 1+)" do

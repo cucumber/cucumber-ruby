@@ -32,12 +32,13 @@ module Cucumber
     end
 
     private
-      def constantize_name(constant, name)
-        if Cucumber::RUBY_1_8_7
-          constant.const_defined?(name) ? constant.const_get(name) : constant.const_missing(name)
-        else
-          constant.const_defined?(name, false) ? constant.const_get(name, false) : constant.const_missing(name)
-        end
+
+    def constantize_name(constant, name)
+      if constant.const_defined?(name, false)
+        constant.const_get(name, false)
+      else
+        constant.const_missing(name)
       end
+    end
   end
 end

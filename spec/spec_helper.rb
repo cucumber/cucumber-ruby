@@ -1,5 +1,4 @@
-ENV['CUCUMBER_COLORS']=nil
-$:.unshift(File.dirname(__FILE__) + '/../lib')
+ENV['CUCUMBER_COLORS'] = nil
 $:.unshift(File.dirname(__FILE__))
 
 # For Travis....
@@ -13,7 +12,6 @@ require 'bundler'
 Bundler.setup
 
 require 'cucumber'
-$KCODE='u' if Cucumber::RUBY_1_8_7
 
 RSpec.configure do |c|
   c.before do
@@ -23,7 +21,7 @@ end
 
 module RSpec
   module WorkInProgress
-    def pending_under platforms, reason, &block
+    def pending_under(platforms, reason, &block)
       if [platforms].flatten.map(&:to_s).include? RUBY_PLATFORM
         pending "pending under #{platforms.inspect} because: #{reason}", &block
       else

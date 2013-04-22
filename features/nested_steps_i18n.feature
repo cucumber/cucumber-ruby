@@ -1,6 +1,4 @@
-@fails_on_1_8_7
 Feature: Nested Steps in I18n
-
 
   Background:
     Given a scenario with a step that looks like this in japanese:

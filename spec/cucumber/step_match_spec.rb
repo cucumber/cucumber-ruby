@@ -5,7 +5,7 @@ require 'cucumber/rb_support/rb_language'
 
 module Cucumber
   describe StepMatch do
-    WORD = Cucumber::RUBY_1_8_7 ? '\w' : '[[:word:]]'
+    WORD = '[[:word:]]'
 
     before do
       @rb_language = RbSupport::RbLanguage.new(nil)
