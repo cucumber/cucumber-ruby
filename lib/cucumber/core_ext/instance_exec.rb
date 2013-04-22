@@ -13,7 +13,7 @@ class Object #:nodoc:
     cucumber_run_with_backtrace_filtering(pseudo_method) do
       if check_arity && !cucumber_compatible_arity?(args, block)
         instance_exec do
-          ari = cucumber_arity(block)
+          ari = block.arity
           ari = ari < 0 ? (ari.abs-1).to_s+"+" : ari
           s1 = ari == 1 ? "" : "s"
           s2 = args.length == 1 ? "" : "s"
@@ -29,15 +29,11 @@ class Object #:nodoc:
 
   private
 
-  def cucumber_arity(block)
-    # TODO: inline method
-    block.arity
-  end
-
   def cucumber_compatible_arity?(args, block)
-    ari = cucumber_arity(block)
-    len = args.length
-    return true if ari == len or ari < 0 && len >= ari.abs-1
+    return true if block.arity == args.length
+    if block.arity < 0
+      return true if args.length >= (block.arity.abs - 1)
+    end
     false
   end
 
