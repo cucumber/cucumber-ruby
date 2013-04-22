@@ -11,13 +11,6 @@ module Cucumber
       # @private
       AnsiEscapes = Gherkin::Formatter::AnsiEscapes
 
-      class << self
-        # @private
-        def alias_adverb(adverb)
-          alias_method adverb, :__cucumber_invoke
-        end
-      end
-
       # Call a Transform with a string from another Transform definition
       def Transform(arg)
         rb = @__cucumber_runtime.load_programming_language('rb')
@@ -26,12 +19,6 @@ module Cucumber
 
       # @private
       attr_writer :__cucumber_runtime, :__natural_language
-
-      # @private
-      def __cucumber_invoke(name, multiline_argument=nil) #:nodoc:
-        STDERR.puts AnsiEscapes.failed + "WARNING: Using 'Given/When/Then' in step definitions is deprecated, use 'step' to call other steps instead:" + caller[0] + AnsiEscapes.reset
-        @__cucumber_runtime.invoke(name, multiline_argument)
-      end
 
       # Run a single Gherkin step
       # @example Call another step

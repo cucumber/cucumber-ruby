@@ -48,7 +48,6 @@ module Cucumber
 
       Gherkin::I18n.code_keywords.each do |adverb|
         RbDsl.alias_adverb(adverb)
-        RbWorld.alias_adverb(adverb)
       end
 
       def initialize(runtime)
