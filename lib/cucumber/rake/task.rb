@@ -103,8 +103,6 @@ module Cucumber
         end
       end
 
-      LIB = File.expand_path(File.dirname(__FILE__) + '/../..') #:nodoc:
-
       # Directories to add to the Ruby $LOAD_PATH
       attr_accessor :libs
 
@@ -142,7 +140,6 @@ module Cucumber
         @rcov_opts = %w{--rails --exclude osx\/objc,gems\/}
         yield self if block_given?
         @binary = binary.nil? ? Cucumber::BINARY : File.expand_path(binary)
-        @libs.insert(0, LIB) if binary == Cucumber::BINARY
         define_task
       end
 
