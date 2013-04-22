@@ -23,12 +23,6 @@ module Cucumber
     #     t.cucumber_opts = %w{--format progress}
     #   end
     #
-    # This task can also be configured to be run with RCov:
-    #
-    #   Cucumber::Rake::Task.new do |t|
-    #     t.rcov = true
-    #   end
-    #
     # See the attributes for additional configuration possibilities.
     class Task
       include Gherkin::Formatter::AnsiEscapes
@@ -109,25 +103,6 @@ module Cucumber
         end
       end
 
-      class RCovCucumberRunner < ForkedCucumberRunner #:nodoc:
-
-        def initialize(libs, cucumber_bin, cucumber_opts, bundler, feature_files, rcov_opts)
-          super(       libs, cucumber_bin, cucumber_opts, bundler, feature_files )
-          @rcov_opts = rcov_opts
-        end
-
-        def cmd
-          if use_bundler
-            [Cucumber::RUBY_BINARY, '-S', 'bundle', 'exec', 'rcov', @rcov_opts,
-             quoted_binary(@cucumber_bin), '--', @cucumber_opts, @feature_files].flatten
-          else
-            [Cucumber::RUBY_BINARY, '-I', load_path(@libs), '-S', 'rcov', @rcov_opts,
-             quoted_binary(@cucumber_bin), '--', @cucumber_opts, @feature_files].flatten
-          end
-        end
-
-      end
-
       LIB = File.expand_path(File.dirname(__FILE__) + '/../..') #:nodoc:
 
       # Directories to add to the Ruby $LOAD_PATH
@@ -165,12 +140,9 @@ module Cucumber
         @fork = true
         @libs = ['lib']
         @rcov_opts = %w{--rails --exclude osx\/objc,gems\/}
-
         yield self if block_given?
-
         @binary = binary.nil? ? Cucumber::BINARY : File.expand_path(binary)
         @libs.insert(0, LIB) if binary == Cucumber::BINARY
-
         define_task
       end
 
@@ -183,13 +155,10 @@ module Cucumber
 
       def runner(task_args = nil) #:nodoc:
         cucumber_opts = [(ENV['CUCUMBER_OPTS'] ? ENV['CUCUMBER_OPTS'].split(/\s+/) : nil) || cucumber_opts_with_profile]
-        if(@rcov)
-          RCovCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files, rcov_opts)
-        elsif(@fork)
-          ForkedCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files)
-        else
-          InProcessCucumberRunner.new(libs, cucumber_opts, feature_files)
+        if(@fork)
+          return ForkedCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files)
         end
+        InProcessCucumberRunner.new(libs, cucumber_opts, feature_files)
       end
 
       def cucumber_opts_with_profile #:nodoc:
