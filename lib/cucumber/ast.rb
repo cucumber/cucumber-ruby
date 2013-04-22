@@ -12,7 +12,6 @@ require 'cucumber/ast/tags'
 require 'cucumber/ast/doc_string'
 require 'cucumber/ast/outline_table'
 require 'cucumber/ast/examples'
-require 'cucumber/ast/visitor'
 require 'cucumber/ast/tree_walker'
 
 module Cucumber
