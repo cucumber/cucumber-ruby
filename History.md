@@ -1,3 +1,10 @@
+## In git
+
+### Features removed
+
+* Removed deprecated StepMother and Ast::Visitor classes (Matt Wynne)
+* Remove support for i18n nested step methods (Matt Wynne)
+
 ## [1.3.1](https://github.com/cucumber/cucumber/compare/v1.3.0...v1.3.1)
 
 ### Bugfixes
