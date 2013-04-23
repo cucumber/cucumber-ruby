@@ -3,7 +3,6 @@ Feature: Use * keywords and still get snippets
   Given/When/Then, I should not get an exception
   when I have undefined steps
 
-  @wip-jruby
   Scenario: Use some *
     Given a standard Cucumber project directory structure
     And a file named "features/f.feature" with:
