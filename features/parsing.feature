@@ -14,5 +14,5 @@ Feature: Scenario Outlines
     When I run `cucumber features/f.feature`
     Then it should fail with:
       """
-      Scenario Outline requires an Examples section (Cucumber::MissingExamples)
+      Missing Example Section for Scenario Outline at features/f.feature:2 (Cucumber::Ast::ScenarioOutline::MissingExamples)
       """

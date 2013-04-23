@@ -34,6 +34,8 @@ module Cucumber
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
+        raise_missing_examples_error unless @example_sections
+
         visitor.visit_comment(@comment) unless @comment.empty?
         visitor.visit_tags(@tags)
         visitor.visit_scenario_name(@keyword, name, file_colon_line, source_indent(first_line_length))
@@ -133,6 +135,12 @@ module Cucumber
       def steps
         @steps ||= StepCollection.new(@raw_steps)
       end
+
+      def raise_missing_examples_error
+        raise MissingExamples, "Missing Example Section for Scenario Outline at #{@location}"
+      end
+
+      MissingExamples = Class.new(StandardError)
     end
   end
 end
