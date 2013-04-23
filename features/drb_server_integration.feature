@@ -1,4 +1,4 @@
-@drb @wip-jruby @spawn
+@drb @spawn
 Feature: DRb Server Integration
   To prevent waiting for Rails and other large Ruby applications to load their environments
   for each feature run Cucumber ships with a DRb client that can speak to a server which
