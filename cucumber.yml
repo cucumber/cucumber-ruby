@@ -16,8 +16,8 @@ default: <%= std_opts %> --tags ~@jruby --dotcucumber features/.cucumber
 jruby: <%= std_opts %> --tags ~@spork --tags ~@wire
 jruby_win: <%= std_opts %> --tags ~@spork --tags ~@wire CUCUMBER_FORWARD_SLASH_PATHS=true
 windows_mri: <%= std_opts %> --tags ~@jruby --tags ~@spork --tags ~@wire --tags ~@needs-many-fonts CUCUMBER_FORWARD_SLASH_PATHS=true
-ruby_1_9: <%= std_opts %> --tags ~@jruby --tags ~@fails_on_1_9
-ruby_2_0: <%= std_opts %> --tags ~@jruby --tags ~@fails_on_1_9
+ruby_1_9: <%= std_opts %> --tags ~@jruby
+ruby_2_0: <%= std_opts %> --tags ~@jruby
 wip: --wip <%= wip_opts %> features
 none: --format pretty
 rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip
