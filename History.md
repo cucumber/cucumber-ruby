@@ -1,3 +1,10 @@
+## [1.3.x
+latest](https://github.com/cucumber/cucumber/compare/v1.3.0...v1.3.x-bugxfix)
+
+### Bugfixes
+* Fixed ugly NoMethodError when a Scenario Outline has no Examples
+  ([#438](https://github.com/cucumber/cucumber/issues/438) Steve Tooke)
+
 ## [1.3.1](https://github.com/cucumber/cucumber/compare/v1.3.0...v1.3.1)
 
 ### Bugfixes
