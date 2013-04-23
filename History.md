@@ -1,5 +1,5 @@
 ## [1.3.x
-latest](https://github.com/cucumber/cucumber/compare/v1.3.0...v1.3.x-bugxfix)
+latest](https://github.com/cucumber/cucumber/compare/v1.3.1...v1.3.x-bugfix)
 
 ### Bugfixes
 * Fixed ugly NoMethodError when a Scenario Outline has no Examples
