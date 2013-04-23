@@ -8,6 +8,7 @@ rvm:
 branches:
   only:
     - master
+    - v1.3.x-bugfix
 
 notifications:
   email:
