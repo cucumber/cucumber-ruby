@@ -89,7 +89,7 @@ module Cucumber
       #   of sending the output directly to STDOUT, Cucumber will intercept and cache
       #   the message until the current step has finished, and then display it.
       #   
-      #   If you'd prefer to see the message immediately, call {Kernel#puts} instead.
+      #   If you'd prefer to see the message immediately, call {Kernel.puts} instead.
       def puts(*messages)
         @__cucumber_runtime.puts(*messages)
       end
