@@ -32,7 +32,7 @@ module Cucumber
         return if Cucumber.wants_to_quit
         visitor.visit_feature(self) do
           visitor.visit_comment(@comment) unless @comment.empty?
-          visitor.visit_tags(@tags)
+          @tags.accept(visitor)
           visitor.visit_feature_name(@keyword, indented_name)
           @background.accept(visitor)
           @feature_elements.each do |feature_element|

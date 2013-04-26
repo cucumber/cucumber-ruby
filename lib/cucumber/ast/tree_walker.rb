@@ -36,10 +36,8 @@ module Cucumber
         broadcast(comment_line)
       end
 
-      def visit_tags(tags)
-        broadcast(tags) do
-          tags.accept(self)
-        end
+      def visit_tags(tags, &block)
+        broadcast(tags, &block)
       end
 
       def visit_tag_name(tag_name)

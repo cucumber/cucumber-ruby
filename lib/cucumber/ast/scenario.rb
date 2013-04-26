@@ -24,7 +24,7 @@ module Cucumber
         return if Cucumber.wants_to_quit
 
         visitor.visit_comment(@comment) unless @comment.empty?
-        visitor.visit_tags(@tags)
+        @tags.accept(visitor)
         visitor.visit_scenario_name(@keyword, name, file_colon_line, source_indent(first_line_length))
 
         skip_invoke! if @background.failed?

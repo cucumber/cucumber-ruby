@@ -11,8 +11,10 @@ module Cucumber
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        @tags.each do |tag|
-          visitor.visit_tag_name(tag.name)
+        visitor.visit_tags(self) do
+          @tags.each do |tag|
+            visitor.visit_tag_name(tag.name)
+          end
         end
       end
 
