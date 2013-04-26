@@ -66,7 +66,7 @@ module Cucumber
         visitor = TreeWalker.new(@runtime)
         visitor.should_receive(:visit_table_row).exactly(3).times
         @scenario_outline.feature = stub.as_null_object
-        visitor.visit_feature_element(@scenario_outline)
+        @scenario_outline.accept(visitor)
       end
     end
   end
