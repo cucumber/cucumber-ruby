@@ -23,15 +23,17 @@ module Cucumber
       def accept(visitor)
         return if Cucumber.wants_to_quit
 
-        visitor.visit_comment(@comment) unless @comment.empty?
-        @tags.accept(visitor)
-        visitor.visit_scenario_name(@keyword, name, file_colon_line, source_indent(first_line_length))
+        visitor.visit_feature_element(self) do
+          visitor.visit_comment(@comment) unless @comment.empty?
+          @tags.accept(visitor)
+          visitor.visit_scenario_name(@keyword, name, file_colon_line, source_indent(first_line_length))
 
-        skip_invoke! if @background.failed?
-        with_visitor(visitor) do
-          visitor.execute(self, skip_hooks?)
+          skip_invoke! if @background.failed?
+          with_visitor(visitor) do
+            visitor.execute(self, skip_hooks?)
+          end
+          @executed = true
         end
-        @executed = true
       end
 
       def to_units(background)

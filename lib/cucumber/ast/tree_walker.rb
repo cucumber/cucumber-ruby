@@ -47,10 +47,8 @@ module Cucumber
       end
 
       # +feature_element+ is either Scenario or ScenarioOutline
-      def visit_feature_element(feature_element)
-        broadcast(feature_element) do
-          feature_element.accept(self)
-        end
+      def visit_feature_element(feature_element, &block)
+        broadcast(feature_element, &block)
       end
 
       def visit_background(background, &block)

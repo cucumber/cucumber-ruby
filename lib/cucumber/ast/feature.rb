@@ -37,7 +37,7 @@ module Cucumber
           visitor.visit_feature_name(@keyword, indented_name)
           background.accept(visitor)
           @feature_elements.each do |feature_element|
-            visitor.visit_feature_element(feature_element)
+            feature_element.accept(visitor)
           end
         end
       end
