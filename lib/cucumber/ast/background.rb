@@ -9,6 +9,7 @@ module Cucumber
       include Names
       include HasLocation
       attr_accessor :feature
+      attr_accessor :comment
 
       def initialize(language, location, comment, keyword, title, description, raw_steps)
         @language, @location, @comment, @keyword, @title, @description, @raw_steps = language, location, comment, keyword, title, description, raw_steps
@@ -37,7 +38,7 @@ module Cucumber
       def accept(visitor)
         return if Cucumber.wants_to_quit
         visitor.visit_background(self) do
-          visitor.visit_comment(@comment) unless @comment.empty?
+          comment.accept(visitor)
           visitor.visit_background_name(@keyword, name, file_colon_line, source_indent(first_line_length))
           with_visitor(hook_context, visitor) do
             visitor.runtime.before(hook_context)

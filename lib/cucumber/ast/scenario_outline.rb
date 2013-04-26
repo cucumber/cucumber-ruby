@@ -11,6 +11,7 @@ module Cucumber
 
       attr_accessor :feature
       attr_reader :feature_tags
+      attr_reader :comment, :tags
 
       module ExamplesArray #:nodoc:
         def accept(visitor)
@@ -35,9 +36,8 @@ module Cucumber
       def accept(visitor)
         return if Cucumber.wants_to_quit
         raise_missing_examples_error unless @example_sections
-
-        visitor.visit_comment(@comment) unless @comment.empty?
-        @tags.accept(visitor)
+        comment.accept(visitor)
+        tags.accept(visitor)
         visitor.visit_scenario_name(@keyword, name, file_colon_line, source_indent(first_line_length))
         visitor.visit_steps(steps)
 

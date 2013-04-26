@@ -11,6 +11,7 @@ module Cucumber
 
       attr_accessor :language
       attr_reader :feature_elements
+      attr_reader :comment, :background, :tags
 
       def initialize(location, background, comment, tags, keyword, title, description, feature_elements)
         @background, @comment, @tags, @keyword, @title, @description, @feature_elements = background, comment, tags, keyword, title, description, feature_elements
@@ -31,10 +32,10 @@ module Cucumber
       def accept(visitor)
         return if Cucumber.wants_to_quit
         visitor.visit_feature(self) do
-          visitor.visit_comment(@comment) unless @comment.empty?
-          @tags.accept(visitor)
+          comment.accept(visitor)
+          tags.accept(visitor)
           visitor.visit_feature_name(@keyword, indented_name)
-          @background.accept(visitor)
+          background.accept(visitor)
           @feature_elements.each do |feature_element|
             visitor.visit_feature_element(feature_element)
           end

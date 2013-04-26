@@ -26,10 +26,8 @@ module Cucumber
         broadcast(feature, &block)
       end
 
-      def visit_comment(comment)
-        broadcast(comment) do
-          comment.accept(self)
-        end
+      def visit_comment(comment, &block)
+        broadcast(comment, &block)
       end
 
       def visit_comment_line(comment_line)
