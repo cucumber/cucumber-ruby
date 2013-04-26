@@ -22,10 +22,8 @@ module Cucumber
         end
       end
 
-      def visit_feature(feature)
-        broadcast(feature) do
-          feature.accept(self)
-        end
+      def visit_feature(feature, &block)
+        broadcast(feature, &block)
       end
 
       def visit_comment(comment)

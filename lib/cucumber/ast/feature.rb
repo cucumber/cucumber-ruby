@@ -30,12 +30,14 @@ module Cucumber
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        visitor.visit_comment(@comment) unless @comment.empty?
-        visitor.visit_tags(@tags)
-        visitor.visit_feature_name(@keyword, indented_name)
-        visitor.visit_background(@background) if !@background.is_a?(EmptyBackground)
-        @feature_elements.each do |feature_element|
-          visitor.visit_feature_element(feature_element)
+        visitor.visit_feature(self) do
+          visitor.visit_comment(@comment) unless @comment.empty?
+          visitor.visit_tags(@tags)
+          visitor.visit_feature_name(@keyword, indented_name)
+          visitor.visit_background(@background) if !@background.is_a?(EmptyBackground)
+          @feature_elements.each do |feature_element|
+            visitor.visit_feature_element(feature_element)
+          end
         end
       end
 

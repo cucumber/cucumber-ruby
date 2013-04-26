@@ -25,7 +25,7 @@ module Cucumber
         return if Cucumber.wants_to_quit
         start = Time.now
         self.each do |feature|
-          visitor.visit_feature(feature)
+          feature.accept(visitor)
         end
         @duration = Time.now - start
       end
