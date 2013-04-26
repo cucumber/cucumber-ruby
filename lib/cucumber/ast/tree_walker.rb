@@ -57,10 +57,8 @@ module Cucumber
         end
       end
 
-      def visit_background(background)
-        broadcast(background) do
-          background.accept(self)
-        end
+      def visit_background(background, &block)
+        broadcast(background, &block)
       end
 
       def visit_background_name(keyword, name, file_colon_line, source_indent)
