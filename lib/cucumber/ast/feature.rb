@@ -26,7 +26,7 @@ module Cucumber
       end
 
       def step_count
-        units.inject(0) { |total, unit| total += unit.step_count }
+        units.inject(0) { |total, unit| total + unit.step_count }
       end
 
       def accept(visitor)
@@ -91,7 +91,10 @@ module Cucumber
       private
 
       def units
-        [FeatureUnit.new(self)]
+        # TODO: here is a conflict between execution's implementation and step_count' implementation
+        # step_count thinks that we call background for every feature element, but in fact we call it only once
+        # per-feature
+        [background.to_units, FeatureUnit.new(self)].flatten
       end
 
       class FeatureUnit
@@ -100,11 +103,10 @@ module Cucumber
         end
 
         def step_count
-          units.inject(0) { |total, unit| total += unit.step_count }
+          units.inject(0) { |total, unit| total + unit.step_count }
         end
 
         def execute(visitor)
-          @feature.background.accept(visitor)
           @feature.feature_elements.each do |feature_element|
             feature_element.accept(visitor)
           end
