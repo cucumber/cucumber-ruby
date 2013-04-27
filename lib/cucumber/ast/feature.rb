@@ -31,8 +31,13 @@ module Cucumber
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        units.each do |unit|
-          unit.execute(visitor)
+        visitor.visit_feature(self) do
+          comment.accept(visitor)
+          tags.accept(visitor)
+          visitor.visit_feature_name(@keyword, indented_name)
+          units.each do |unit|
+            unit.execute(visitor)
+          end
         end
       end
 
@@ -83,19 +88,6 @@ module Cucumber
 
       attr_reader :background
 
-      # TODO: should be removed after complete refactoring
-      def execute(visitor)
-        visitor.visit_feature(self) do
-          comment.accept(visitor)
-          tags.accept(visitor)
-          visitor.visit_feature_name(@keyword, indented_name)
-          background.accept(visitor)
-          @feature_elements.each do |feature_element|
-            feature_element.accept(visitor)
-          end
-        end
-      end
-
       private
 
       def units
@@ -112,7 +104,10 @@ module Cucumber
         end
 
         def execute(visitor)
-          @feature.execute(visitor)
+          @feature.background.accept(visitor)
+          @feature.feature_elements.each do |feature_element|
+            feature_element.accept(visitor)
+          end
         end
 
         private
