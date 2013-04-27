@@ -31,14 +31,8 @@ module Cucumber
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        visitor.visit_feature(self) do
-          comment.accept(visitor)
-          tags.accept(visitor)
-          visitor.visit_feature_name(@keyword, indented_name)
-          background.accept(visitor)
-          @feature_elements.each do |feature_element|
-            feature_element.accept(visitor)
-          end
+        units.each do |unit|
+          unit.execute(visitor)
         end
       end
 
@@ -87,16 +81,47 @@ module Cucumber
         sexp
       end
 
-      private
-
       attr_reader :background
 
-      def units
-        @units ||= @feature_elements.map do |element| 
-          element.to_units(background)
-        end.flatten
+      # TODO: should be removed after complete refactoring
+      def execute(visitor)
+        visitor.visit_feature(self) do
+          comment.accept(visitor)
+          tags.accept(visitor)
+          visitor.visit_feature_name(@keyword, indented_name)
+          background.accept(visitor)
+          @feature_elements.each do |feature_element|
+            feature_element.accept(visitor)
+          end
+        end
       end
 
+      private
+
+      def units
+        [FeatureUnit.new(self)]
+      end
+
+      class FeatureUnit
+        def initialize(feature)
+          @feature = feature
+        end
+
+        def step_count
+          units.inject(0) { |total, unit| total += unit.step_count }
+        end
+
+        def execute(visitor)
+          @feature.execute(visitor)
+        end
+
+        private
+        def units
+          @units ||= @feature.feature_elements.flat_map do |element|
+            element.to_units(@feature.background)
+          end.flatten
+        end
+      end
     end
   end
 end
