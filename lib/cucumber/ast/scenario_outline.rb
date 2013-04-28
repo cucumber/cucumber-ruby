@@ -15,9 +15,12 @@ module Cucumber
 
       module ExamplesArray #:nodoc:
         def accept(visitor)
+          return if self.empty?
           return if Cucumber.wants_to_quit
-          each do |examples|
-            visitor.visit_examples(examples)
+          visitor.visit_examples_array(self) do
+            each do |examples|
+              visitor.visit_examples(examples)
+            end
           end
         end
       end
@@ -41,9 +44,8 @@ module Cucumber
           tags.accept(visitor)
           visitor.visit_scenario_name(keyword, name, file_colon_line, source_indent(first_line_length))
           visitor.visit_steps(steps)
-
           skip_invoke! if @background.failed?
-          visitor.visit_examples_array(examples_array) unless examples_array.empty?
+          examples_array.accept(visitor)
         end
       end
 
