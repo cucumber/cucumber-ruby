@@ -21,9 +21,11 @@ module Cucumber
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        comment.accept(visitor)
-        visitor.visit_examples_name(keyword, name)
-        visitor.visit_outline_table(@outline_table)
+        visitor.visit_examples(self) do
+          comment.accept(visitor)
+          visitor.visit_examples_name(keyword, name)
+          visitor.visit_outline_table(@outline_table)
+        end
       end
 
       def skip_invoke!

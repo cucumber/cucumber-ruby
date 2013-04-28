@@ -63,10 +63,8 @@ module Cucumber
         broadcast(examples_array, &block)
       end
 
-      def visit_examples(examples)
-        broadcast(examples) do
-          examples.accept(self)
-        end
+      def visit_examples(examples, &block)
+        broadcast(examples, &block)
       end
 
       def visit_examples_name(keyword, name)

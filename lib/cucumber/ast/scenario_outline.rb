@@ -19,7 +19,7 @@ module Cucumber
           return if Cucumber.wants_to_quit
           visitor.visit_examples_array(self) do
             each do |examples|
-              visitor.visit_examples(examples)
+              examples.accept(visitor)
             end
           end
         end
