@@ -23,11 +23,13 @@ module Cucumber
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        start = Time.now
-        self.each do |feature|
-          feature.accept(visitor)
+        visitor.visit_features(self) do
+          start = Time.now
+          self.each do |feature|
+            feature.accept(visitor)
+          end
+          @duration = Time.now - start
         end
-        @duration = Time.now - start
       end
 
       def step_count
