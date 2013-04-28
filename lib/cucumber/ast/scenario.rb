@@ -28,7 +28,6 @@ module Cucumber
           comment.accept(visitor)
           tags.accept(visitor)
           visitor.visit_scenario_name(keyword, name, file_colon_line, source_indent(first_line_length))
-
           skip_invoke! if @background.failed?
           with_visitor(visitor) do
             visitor.execute(self, skip_hooks?)
