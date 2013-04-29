@@ -5,21 +5,13 @@ module Cucumber
         super(raw)
         @scenario_outline = scenario_outline
         @cells_class = ExampleRow
-        init
-      end
-
-      def init
-        create_step_invocations_for_example_rows!(@scenario_outline)
-      end
-
-      def to_sexp
-        init
-        super
+        example_rows.each do |cells|
+          cells.create_step_invocations!(scenario_outline)
+        end
       end
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        init
         cells_rows.each_with_index do |row, n|
           if(visitor.configuration.expand?)
             row.accept(visitor)
@@ -43,17 +35,8 @@ module Cucumber
       end
 
       def skip_invoke!
-        init
         example_rows.each do |cells|
           cells.skip_invoke!
-        end
-      end
-
-      def create_step_invocations_for_example_rows!(scenario_outline)
-        return if @dunit
-        @dunit = true
-        example_rows.each do |cells|
-          cells.create_step_invocations!(scenario_outline)
         end
       end
 
