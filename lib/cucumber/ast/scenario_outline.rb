@@ -69,11 +69,7 @@ module Cucumber
 
       def step_invocations(cells)
         step_invocations = steps.step_invocations_from_cells(cells)
-        if @background
-          @background.step_collection(step_invocations)
-        else
-          StepCollection.new(step_invocations)
-        end
+        @background.step_collection(step_invocations)
       end
 
       def each_example_row(&proc)
