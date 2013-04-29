@@ -15,8 +15,10 @@ module Cucumber
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        @steps.each do |step|
-          visitor.visit_step(step)
+        visitor.visit_steps(self) do
+          @steps.each do |step|
+            visitor.visit_step(step)
+          end
         end
       end
 

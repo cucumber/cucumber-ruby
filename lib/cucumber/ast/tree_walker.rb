@@ -12,7 +12,7 @@ module Cucumber
       def execute(scenario, skip_hooks)
         runtime.with_hooks(scenario, skip_hooks) do
           scenario.skip_invoke! if scenario.failed?
-          visit_steps(scenario.steps)
+          scenario.steps.accept(self)
         end
       end
 
@@ -79,10 +79,8 @@ module Cucumber
         broadcast(keyword, name, file_colon_line, source_indent)
       end
 
-      def visit_steps(steps)
-        broadcast(steps) do
-          steps.accept(self)
-        end
+      def visit_steps(steps, &block)
+        broadcast(steps, &block)
       end
 
       def visit_step(step)

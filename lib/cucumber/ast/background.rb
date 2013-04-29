@@ -43,7 +43,7 @@ module Cucumber
           with_visitor(hook_context, visitor) do
             visitor.runtime.before(hook_context)
             skip_invoke! if failed?
-            visitor.visit_steps(step_invocations)
+            step_invocations.accept(visitor)
             @failed = step_invocations.any? { |step_invocation| step_invocation.exception || step_invocation.status != :passed }
             visitor.runtime.after(hook_context) if @failed || feature_elements.empty?
           end
