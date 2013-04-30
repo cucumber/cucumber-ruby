@@ -118,7 +118,7 @@ module Cucumber
             visitor.runtime.with_hooks(self) do
               @table.visit_scenario_name(visitor, self)
               @step_invocations.each do |step_invocation|
-                visitor.visit_step(step_invocation)
+                step_invocation.accept(visitor)
                 @exception ||= step_invocation.reported_exception
               end
             end

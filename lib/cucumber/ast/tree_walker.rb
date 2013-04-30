@@ -83,10 +83,8 @@ module Cucumber
         broadcast(steps, &block)
       end
 
-      def visit_step(step)
-        broadcast(step) do
-          step.accept(self)
-        end
+      def visit_step(step, &block)
+        broadcast(step, &block)
       end
 
       def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)

@@ -17,7 +17,7 @@ module Cucumber
         return if Cucumber.wants_to_quit
         visitor.visit_steps(self) do
           @steps.each do |step|
-            visitor.visit_step(step)
+            step.accept(visitor)
           end
         end
       end
