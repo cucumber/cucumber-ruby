@@ -162,6 +162,7 @@ module Cucumber
           end
         end
       end
+
       def extract_method_name_from(call_stack)
         call_stack[0].match(/in `(.*)'/).captures[0]
       end
