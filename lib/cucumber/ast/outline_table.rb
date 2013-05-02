@@ -12,8 +12,8 @@ module Cucumber
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        cells_rows.each_with_index do |row, n|
-          if(visitor.configuration.expand?)
+        cells_rows.each do |row|
+          if visitor.configuration.expand?
             row.accept(visitor)
           else
             visitor.visit_table_row(row)
