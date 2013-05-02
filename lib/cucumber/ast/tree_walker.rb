@@ -69,10 +69,8 @@ module Cucumber
         broadcast(keyword, name)
       end
 
-      def visit_outline_table(outline_table)
-        broadcast(outline_table) do
-          outline_table.accept(self)
-        end
+      def visit_outline_table(outline_table, &block)
+        broadcast(outline_table, &block)
       end
 
       def visit_scenario_name(keyword, name, file_colon_line, source_indent)

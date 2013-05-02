@@ -12,8 +12,10 @@ module Cucumber
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        cells_rows.each do |row|
-          row.accept(visitor)
+        visitor.visit_outline_table(self) do
+          cells_rows.each do |row|
+            row.accept(visitor)
+          end
         end
         nil
       end
