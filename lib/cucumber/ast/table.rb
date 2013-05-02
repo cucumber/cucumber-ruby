@@ -180,7 +180,7 @@ module Cucumber
       def accept(visitor) #:nodoc:
         return if Cucumber.wants_to_quit
         cells_rows.each do |row|
-          visitor.visit_table_row(row)
+          row.accept(visitor)
         end
         nil
       end
@@ -632,8 +632,10 @@ module Cucumber
 
         def accept(visitor)
           return if Cucumber.wants_to_quit
-          each do |cell|
-            cell.accept(visitor)
+          visitor.visit_table_row(self) do
+            each do |cell|
+              cell.accept(visitor)
+            end
           end
           nil
         end

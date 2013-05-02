@@ -113,10 +113,8 @@ module Cucumber
         broadcast(string)
       end
 
-      def visit_table_row(table_row)
-        broadcast(table_row) do
-          table_row.accept(self)
-        end
+      def visit_table_row(table_row, &block)
+        broadcast(table_row, &block)
       end
 
       def visit_table_cell(table_cell, &block)

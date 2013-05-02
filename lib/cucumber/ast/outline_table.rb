@@ -13,11 +13,7 @@ module Cucumber
       def accept(visitor)
         return if Cucumber.wants_to_quit
         cells_rows.each do |row|
-          if visitor.configuration.expand?
-            row.accept(visitor)
-          else
-            visitor.visit_table_row(row)
-          end
+          row.accept(visitor)
         end
         nil
       end
@@ -87,7 +83,13 @@ module Cucumber
 
         def accept(visitor)
           return if Cucumber.wants_to_quit
-          visitor.configuration.expand? ? accept_expand(visitor) : accept_plain(visitor)
+          if visitor.configuration.expand? 
+            accept_expand(visitor) 
+          else
+            visitor.visit_table_row(self) do
+              accept_plain(visitor)
+            end
+          end
         end
 
         def accept_plain(visitor)
@@ -113,14 +115,12 @@ module Cucumber
         end
 
         def accept_expand(visitor)
-          if header?
-          else
-            visitor.runtime.with_hooks(self) do
-              @table.visit_scenario_name(visitor, self)
-              @step_invocations.each do |step_invocation|
-                step_invocation.accept(visitor)
-                @exception ||= step_invocation.reported_exception
-              end
+          return if header?
+          visitor.runtime.with_hooks(self) do
+            @table.visit_scenario_name(visitor, self)
+            @step_invocations.each do |step_invocation|
+              step_invocation.accept(visitor)
+              @exception ||= step_invocation.reported_exception
             end
           end
         end
