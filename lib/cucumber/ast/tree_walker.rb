@@ -119,10 +119,8 @@ module Cucumber
         end
       end
 
-      def visit_table_cell(table_cell)
-        broadcast(table_cell) do
-          table_cell.accept(self)
-        end
+      def visit_table_cell(table_cell, &block)
+        broadcast(table_cell, &block)
       end
 
       def visit_table_cell_value(value, status)

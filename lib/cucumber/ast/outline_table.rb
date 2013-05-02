@@ -94,7 +94,7 @@ module Cucumber
           if header?
             @cells.each do |cell|
               cell.status = :skipped_param
-              visitor.visit_table_cell(cell)
+              cell.accept(visitor)
             end
           else
             visitor.runtime.with_hooks(self) do
@@ -104,7 +104,7 @@ module Cucumber
               end
 
               @cells.each do |cell|
-                visitor.visit_table_cell(cell)
+                cell.accept(visitor)
               end
 
               visitor.visit_exception(@scenario_exception, :failed) if @scenario_exception

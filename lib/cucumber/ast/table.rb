@@ -633,7 +633,7 @@ module Cucumber
         def accept(visitor)
           return if Cucumber.wants_to_quit
           each do |cell|
-            visitor.visit_table_cell(cell)
+            cell.accept(visitor)
           end
           nil
         end
@@ -688,7 +688,9 @@ module Cucumber
 
         def accept(visitor)
           return if Cucumber.wants_to_quit
-          visitor.visit_table_cell_value(value, status)
+          visitor.visit_table_cell(self) do
+            visitor.visit_table_cell_value(value, status)
+          end
         end
 
         def inspect!

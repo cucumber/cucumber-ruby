@@ -7,7 +7,7 @@ module Cucumber::Ast
         before(:each) do
           @row = OutlineTable::ExampleRow.new(
             mock('table', :index => 0),
-            [mock('cell', :status= => nil)]
+            [mock('cell', :status= => nil, :accept => nil)]
           )
         end
 
