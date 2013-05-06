@@ -1,7 +1,9 @@
+@spawn
 Feature: Assertions
-  In order to get started quickly
-  As a new Cucumber user
-  I want to use a familiar assertion library
+  
+  Assertions are how you tell Cucumber that a step has failed. The most basic
+  way to do this is by raising an exception, but you can also use Ruby's built-in
+  `Test::Unit` assertions library, or RSpec's `RSpec::Expectations` library.
 
   Background:
     Given a file named "features/assert.feature" with:
@@ -11,63 +13,36 @@ Feature: Assertions
            Then it should pass
        """
 
-    Given a file named "without_rspec.rb" with:
-    """
-    require 'rubygems' if RUBY_VERSION <= '1.8.7'
-    require 'rspec/expectations'
-
-    module RSpec
-      remove_const :Matchers rescue nil
-      remove_const :Expectations rescue nil
-    end
-
-    module Spec
-      remove_const :Expectations rescue nil
-    end
-    """
-
-  @spawn
   Scenario: Test::Unit
-    Given a file named "features/step_definitions/assert_steps.rb" with:
+    Given a Gemfile with:
       """
-      require 'test/unit/assertions'
-      World(::Test::Unit::Assertions)
+      source "https://rubygems.org"
+      gem "cucumber", path: "../.."
 
+      """
+    And I run `bundle install --local --quiet`
+    And a file named "features/step_definitions/assert_steps.rb" with:
+      """
       Then /^it should pass$/ do
         assert(2 + 2 == 4)
       end
       """
-    When I run `cucumber`
-    Then it should pass with exactly:
-      """
-      Feature: Assert
-
-        Scenario: Passing     # features/assert.feature:2
-          Then it should pass # features/step_definitions/assert_steps.rb:4
-
-      1 scenario (1 passed)
-      1 step (1 passed)
-      0m0.012s
-
-      """
+    When I run `bundle exec cucumber`
+    Then the exit status should be 0
 
   Scenario: RSpec
-    Given a file named "features/step_definitions/assert_steps.rb" with:
+    Given a Gemfile with:
+      """
+      source "https://rubygems.org"
+      gem "cucumber", path: "../.."
+      gem "rspec"
+      """
+    And I run `bundle install --local --quiet`
+    And a file named "features/step_definitions/assert_steps.rb" with:
       """
       Then /^it should pass$/ do
         (2 + 2).should == 4
       end
       """
-    When I run `cucumber`
-    Then it should pass with exactly:
-      """
-      Feature: Assert
-
-        Scenario: Passing     # features/assert.feature:2
-          Then it should pass # features/step_definitions/assert_steps.rb:1
-
-      1 scenario (1 passed)
-      1 step (1 passed)
-      0m0.012s
-
-      """
+    When I run `bundle exec cucumber`
+    Then it should pass

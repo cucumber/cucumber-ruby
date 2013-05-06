@@ -29,20 +29,11 @@
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:19",
     "steps": [
       {
-        "name": "a file named \"features/f.feature\" with:",
+        "name": "a file named \"features/step_definitions/assert_steps.rb\" with:",
         "args": [
           {
             "offset": 14,
-            "val": "features/f.feature"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/step_definitions/steps.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/step_definitions/steps.rb"
+            "val": "features/step_definitions/assert_steps.rb"
           }
         ]
       }
@@ -126,11 +117,20 @@
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:60",
     "steps": [
       {
-        "name": "I run `cucumber features/f.feature`",
+        "name": "I run `bundle exec cucumber`",
         "args": [
           {
             "offset": 7,
-            "val": "cucumber features/f.feature"
+            "val": "bundle exec cucumber"
+          }
+        ]
+      },
+      {
+        "name": "I run `bundle install --local --quiet`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "bundle install --local --quiet"
           }
         ]
       }
@@ -285,7 +285,15 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:154",
     "steps": [
-
+      {
+        "name": "the exit status should be 0",
+        "args": [
+          {
+            "offset": 26,
+            "val": "0"
+          }
+        ]
+      }
     ]
   },
   {
@@ -301,15 +309,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:162",
     "steps": [
-      {
-        "name": "it should fail with:",
-        "args": [
-          {
-            "offset": 10,
-            "val": "fail"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -545,11 +545,29 @@
     ]
   },
   {
+    "source": "^a Gemfile with:$",
+    "flags": "",
+    "file_colon_line": "features/step_definitions/aruba_steps.rb:1",
+    "steps": [
+      {
+        "name": "a Gemfile with:",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
     "source": "^it\\ should\\ pass$",
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:1",
     "steps": [
+      {
+        "name": "it should pass",
+        "args": [
 
+        ]
+      }
     ]
   },
   {
@@ -596,14 +614,6 @@
     "source": "^I run the feature with the (\\w+) formatter$",
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:52",
-    "steps": [
-
-    ]
-  },
-  {
-    "source": "^I am running spork in the background$",
-    "flags": "",
-    "file_colon_line": "features/step_definitions/drb_steps.rb:1",
     "steps": [
 
     ]
