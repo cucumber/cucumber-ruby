@@ -69,12 +69,6 @@ module Cli
         end
       end
 
-      context "--port PORT" do
-        it "sets the drb_port to the provided option" do
-          after_parsing('--port 4500') { options[:drb_port].should == '4500' }
-        end
-      end
-
       context '-f FORMAT or --format FORMAT' do
         it "defaults the output for the formatter to the output stream (STDOUT)" do
           after_parsing('-f pretty') { options[:formats].should == [['pretty', output_stream]] }
@@ -297,49 +291,6 @@ module Cli
           end
         end
       end
-
-    end
-
-    describe '#expanded_args_without_drb' do
-      it "returns the orginal args in additon to the args from any profiles" do
-        given_cucumber_yml_defined_as('foo' => '-v',
-                                      'bar' => '--wip -p baz',
-                                      'baz' => '-r some_file.rb')
-        options.parse!(%w[features -p foo --profile bar])
-
-        options.expanded_args_without_drb.should == %w[features -v --wip -r some_file.rb --no-profile]
-      end
-
-      it "removes the --drb flag so that the args can be safely passed to the drb server" do
-        given_cucumber_yml_defined_as('default' => 'features -f pretty --drb')
-        options.parse!(%w[--profile default])
-
-        options.expanded_args_without_drb.should == %w[features -f pretty --no-profile]
-      end
-
-      it "contains the environment variables" do
-        options.parse!(%w[features FOO=bar])
-        options.expanded_args_without_drb.should == %w[features FOO=bar --no-profile]
-      end
-
-      it "ignores the paths from the profiles if one was specified on the command line" do
-        given_cucumber_yml_defined_as('foo' => 'features --drb')
-        options.parse!(%w[some_feature.feature -p foo])
-        options.expanded_args_without_drb.should == %w[some_feature.feature --no-profile]
-      end
-
-
-      it "appends the --no-profile flag so that the DRb server doesn't reload the profiles" do
-        given_cucumber_yml_defined_as('foo' => 'features --drb')
-        options.parse!(%w[some_feature.feature -p foo])
-        options.expanded_args_without_drb.should == %w[some_feature.feature --no-profile]
-      end
-
-      it "does not append --no-profile if already present" do
-        options.parse!(%w[some_feature.feature -P])
-        options.expanded_args_without_drb.should == %w[some_feature.feature -P]
-      end
-
 
     end
 

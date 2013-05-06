@@ -25,10 +25,7 @@ module Cucumber
         @options.parse!(args)
         arrange_formats
         raise("You can't use both --strict and --wip") if strict? && wip?
-
         @options[:tag_expression] = Gherkin::TagExpression.new(@options[:tag_expressions])
-        return @args.replace(@options.expanded_args_without_drb) if drb?
-
         set_environment_variables
       end
 
@@ -46,14 +43,6 @@ module Cucumber
 
       def guess?
         @options[:guess]
-      end
-
-      def drb?
-        @options[:drb]
-      end
-
-      def drb_port
-        @options[:drb_port].to_i if @options[:drb_port]
       end
 
       def dry_run?

@@ -38,8 +38,6 @@ module Cucumber
         "path underneath your features/support directory or anywhere",
         "on Ruby's LOAD_PATH, for example in a Ruby gem."
       ]
-      DRB_FLAG = '--drb'
-      DRB_OPTIONAL_FLAG = '--[no-]drb'
       PROFILE_SHORT_FLAG = '-p'
       NO_PROFILE_SHORT_FLAG = '-P'
       PROFILE_LONG_FLAG = '--profile'
@@ -74,43 +72,6 @@ module Cucumber
 
       def []=(key, value)
         @options[key] = value
-      end
-
-      def expanded_args_without_drb
-        return @expanded_args_without_drb  if @expanded_args_without_drb
-        @expanded_args_without_drb = (
-          previous_flag_was_profile = false
-          previous_flag_requires_arg = false
-
-          @expanded_args.reject do |arg|
-            # ignore profiles
-            if previous_flag_was_profile
-              previous_flag_was_profile = false
-              next true
-            end
-            if [PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG].include?(arg)
-              previous_flag_was_profile = true
-              next true
-            end
-
-            # accept all options which requires arguments
-            # and don't try to look @overridden_paths in it's arguments!
-            if previous_flag_requires_arg
-              previous_flag_requires_arg = false
-              next false
-            end
-            if OPTIONS_WITH_ARGS.include?(arg)
-              previous_flag_requires_arg = true
-              next false
-            end
-
-            # ignore --drb flag and overridden features paths
-            arg == DRB_FLAG || @overridden_paths.include?(arg)
-          end
-        )
-
-        @expanded_args_without_drb.push("--no-profile") unless @expanded_args_without_drb.include?(NO_PROFILE_LONG_FLAG) || @expanded_args_without_drb.include?(NO_PROFILE_SHORT_FLAG)
-        @expanded_args_without_drb
       end
 
       def parse!(args)
@@ -270,12 +231,6 @@ module Cucumber
           end
           opts.on("-x", "--expand", "Expand Scenario Outline Tables in output.") do
             @options[:expand] = true
-          end
-          opts.on(DRB_OPTIONAL_FLAG, "Run features against a DRb server. (i.e. with the spork gem)") do |drb|
-            @options[:drb] = drb
-          end
-          opts.on("--port PORT", "Specify DRb port.  Ignored without --drb") do |port|
-            @options[:drb_port] = port
           end
           opts.on("--dotcucumber DIR", "Write metadata to DIR") do |dir|
             @options[:dotcucumber] = dir

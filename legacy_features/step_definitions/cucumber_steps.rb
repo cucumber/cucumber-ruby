@@ -34,18 +34,6 @@ Given /^the following profiles? (?:are|is) defined:$/ do |profiles|
   create_file('cucumber.yml', profiles)
 end
 
-Given /^I am running spork in the background$/ do
-  run_spork_in_background
-end
-
-Given /^I am running spork in the background on port (\d+)$/ do |port|
-  run_spork_in_background(port.to_i)
-end
-
-Given /^I am not running (?:.*) in the background$/ do
-  # no-op
-end
-
 Given /^I have environment variable (\w+) set to "([^"]*)"$/ do |variable, value|
   set_env_var(variable, value)
 end

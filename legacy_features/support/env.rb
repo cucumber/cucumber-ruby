@@ -115,24 +115,6 @@ class CucumberWorld
     end
   end
 
-  def run_spork_in_background(port = nil)
-    require 'spork'
-
-    pid = fork
-    in_current_dir do
-      if pid
-        background_jobs << pid
-      else
-        # STDOUT.close
-        # STDERR.close
-        port_arg = port ? "-p #{port}" : ''
-        cmd = "#{Cucumber::RUBY_BINARY} -I #{Cucumber::LIBDIR} #{Spork::BINARY} cuc #{port_arg}"
-        exec cmd
-      end
-    end
-    sleep 2.0
-  end
-
   def terminate_background_jobs
     background_jobs.each do |pid|
       Process.kill(Signal.list['TERM'], pid)

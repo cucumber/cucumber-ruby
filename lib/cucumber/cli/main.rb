@@ -10,7 +10,6 @@ require 'logger'
 require 'cucumber/parser'
 require 'cucumber/feature_file'
 require 'cucumber/cli/configuration'
-require 'cucumber/cli/drb_client'
 
 module Cucumber
   module Cli
@@ -35,7 +34,6 @@ module Cucumber
 
       def execute!(existing_runtime = nil)
         trap_interrupt
-        return @drb_output if run_drb_client
 
         runtime = if existing_runtime
           existing_runtime.configure(configuration)
@@ -71,14 +69,6 @@ module Cucumber
       end
 
       private
-
-      def run_drb_client
-        return false unless configuration.drb?
-        @drb_output = DRbClient.run(@args, @err, @out, configuration.drb_port)
-        true
-      rescue DRbClientError => e
-        @err.puts "WARNING: #{e.message} Running features locally:"
-      end
 
       def trap_interrupt
         trap('INT') do
