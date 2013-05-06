@@ -27,7 +27,7 @@ module Cucumber
           end
 
           it "configures that runtime" do
-            expected_configuration = double('Configuration', :drb? => false).as_null_object
+            expected_configuration = double('Configuration').as_null_object
             Configuration.stub!(:new => expected_configuration)
             existing_runtime.should_receive(:configure).with(expected_configuration)
             kernel.should_receive(:exit).with(1)
@@ -114,46 +114,6 @@ module Cucumber
         end
       end
 
-      context "--drb" do
-        before(:each) do
-          @configuration = mock('Configuration', :drb? => true, :dotcucumber => false).as_null_object
-          Configuration.stub(new: @configuration)
-          args = ['features']
-          Runtime.stub(new: mock('Runtime').as_null_object)
-          @cli = Main.new(args, stdin, stdout, stderr, kernel)
-        end
-
-        it "delegates the execution to the DRB client passing the args and streams" do
-          @configuration.stub :drb_port => 1450
-          DRbClient.should_receive(:run) do
-            kernel.exit(1)
-          end
-          kernel.should_receive(:exit).with(1)
-          @cli.execute!
-        end
-
-        it "returns the result from the DRbClient" do
-          DRbClient.stub!(:run).and_return('foo')
-          @cli.execute!.should == 'foo'
-        end
-
-        it "ceases execution if the DrbClient is able to perform the execution" do
-          DRbClient.stub!(:run).and_return(true)
-          @configuration.should_not_receive(:build_formatter_broadcaster)
-          @cli.execute!
-        end
-
-        context "when the DrbClient is unable to perfrom the execution" do
-          before { DRbClient.stub!(:run).and_raise(DRbClientError.new('error message.')) }
-
-          it "alerts the user that execution will be performed locally" do
-            kernel.should_receive(:exit).with(1)
-            @cli.execute!
-            stderr.string.should include("WARNING: error message. Running features locally:")
-          end
-
-        end
-      end
     end
   end
 end

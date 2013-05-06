@@ -94,31 +94,6 @@ module Cli
       end
     end
 
-    describe '#drb?' do
-      it "indicates whether the --drb flag was passed in or not" do
-        config.parse!(%w{features})
-        config.should_not be_drb
-
-
-        config.parse!(%w{features --drb})
-        config.should be_drb
-      end
-    end
-
-    describe "#drb_port" do
-      it "is nil when not configured" do
-        config.parse!([])
-        config.drb_port.should be_nil
-      end
-
-      it "is numeric when configured" do
-        config.parse!(%w{features --port 1000})
-        config.drb_port.should == 1000
-      end
-
-
-    end
-
     it "uses the default profile when no profile is defined" do
       given_cucumber_yml_defined_as({'default' => '--require some_file'})
 

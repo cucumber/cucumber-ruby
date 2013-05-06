@@ -101,7 +101,7 @@ class CucumberWorld
     stderr_file = Tempfile.new('cucumber')
     stderr_file.close
     in_current_dir do
-      mode = Cucumber::RUBY_1_8_7 ? 'r' : {:external_encoding=>"UTF-8"}
+      mode = { external_encoding: "UTF-8" }
       IO.popen("#{command} 2> #{stderr_file.path}", mode) do |io|
         @last_stdout = io.read
       end
@@ -113,24 +113,6 @@ class CucumberWorld
       # TODO: this actually a workaround for cucumber/gherkin#238
       @last_stderr.gsub!(/^.*java_package_module_template.rb:\d+ warning: `eval' should not be aliased.*\n/, '')
     end
-  end
-
-  def run_spork_in_background(port = nil)
-    require 'spork'
-
-    pid = fork
-    in_current_dir do
-      if pid
-        background_jobs << pid
-      else
-        # STDOUT.close
-        # STDERR.close
-        port_arg = port ? "-p #{port}" : ''
-        cmd = "#{Cucumber::RUBY_BINARY} -I #{Cucumber::LIBDIR} #{Spork::BINARY} cuc #{port_arg}"
-        exec cmd
-      end
-    end
-    sleep 2.0
   end
 
   def terminate_background_jobs
