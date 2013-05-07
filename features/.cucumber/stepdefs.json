@@ -29,11 +29,11 @@
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:19",
     "steps": [
       {
-        "name": "a file named \"features/step_definitions/assert_steps.rb\" with:",
+        "name": "a file named \"should_not_load.rb\" with:",
         "args": [
           {
             "offset": 14,
-            "val": "features/step_definitions/assert_steps.rb"
+            "val": "should_not_load.rb"
           }
         ]
       }
@@ -117,20 +117,11 @@
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:60",
     "steps": [
       {
-        "name": "I run `bundle exec cucumber`",
+        "name": "I run `cucumber`",
         "args": [
           {
             "offset": 7,
-            "val": "bundle exec cucumber"
-          }
-        ]
-      },
-      {
-        "name": "I run `bundle install --local --quiet`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "bundle install --local --quiet"
+            "val": "cucumber"
           }
         ]
       }
@@ -229,7 +220,12 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:117",
     "steps": [
+      {
+        "name": "the output should not contain:",
+        "args": [
 
+        ]
+      }
     ]
   },
   {
@@ -286,11 +282,11 @@
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:154",
     "steps": [
       {
-        "name": "the exit status should be 0",
+        "name": "the exit status should be 1",
         "args": [
           {
             "offset": 26,
-            "val": "0"
+            "val": "1"
           }
         ]
       }
@@ -309,7 +305,15 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:162",
     "steps": [
-
+      {
+        "name": "it should fail with:",
+        "args": [
+          {
+            "offset": 10,
+            "val": "fail"
+          }
+        ]
+      }
     ]
   },
   {
@@ -549,12 +553,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/aruba_steps.rb:1",
     "steps": [
-      {
-        "name": "a Gemfile with:",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -562,12 +561,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:1",
     "steps": [
-      {
-        "name": "it should pass",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -583,7 +577,12 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:30",
     "steps": [
+      {
+        "name": "a directory without standard Cucumber project directory structure",
+        "args": [
 
+        ]
+      }
     ]
   },
   {
