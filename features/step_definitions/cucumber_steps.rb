@@ -1,7 +1,3 @@
-Then 'it should pass' do
-  assert_exit_status 0
-end
-
 Then /^it should (pass|fail) with JSON:$/ do |pass_fail, json|
   # Need to store it in a variable. With JRuby we can only do this once it seems :-/
   stdout = all_stdout
@@ -53,3 +49,11 @@ When /^I run the feature with the (\w+) formatter$/ do |formatter|
   features.length.should == 1
   run_feature features.first, formatter
 end
+
+module CucumberHelper
+  def run_feature(filename = 'features/a_feature.feature', formatter = 'progress')
+    run_simple "#{Cucumber::BINARY} #{filename} --format #{formatter}", false
+  end
+end
+
+World(CucumberHelper)
