@@ -24,6 +24,7 @@ Feature: Doc strings
     """ruby
     puts "hello world"
     """
+  ```
   
   You can read the content type from the argument passed into your step definition, as shown
   in the example below.

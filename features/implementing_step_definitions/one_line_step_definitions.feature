@@ -1,4 +1,4 @@
-Feature: Step Definitions
+Feature: One line step definitions
 
   Everybody knows you can do step definitions in Cucumber
   but did you know you can do this?

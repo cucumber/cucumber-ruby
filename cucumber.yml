@@ -1,7 +1,7 @@
 <%
 rerun = File.file?('rerun.txt') ? IO.read('rerun.txt') : ""
 rerun_opts = rerun.to_s.strip.empty? ? "--format progress features" : "--format pretty #{rerun}"
-std_opts = "--format progress features --tags ~@wip"
+std_opts = "--format progress features --tags ~@wip -r features"
 std_opts << " --tags ~@drb" if defined?(JRUBY_VERSION)
 begin
   require 'rspec/expectations'
