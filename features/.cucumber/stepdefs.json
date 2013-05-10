@@ -28,42 +28,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:19",
     "steps": [
-      {
-        "name": "a file named \"features/step_definitions/foo_steps.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/step_definitions/foo_steps.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/step_definitions/success.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/step_definitions/success.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/success.feature\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/success.feature"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"my_weird/place/foo_steps.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "my_weird/place/foo_steps.rb"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -231,12 +196,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:113",
     "steps": [
-      {
-        "name": "the output should contain:",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -564,12 +524,7 @@
     "flags": "",
     "file_colon_line": "features/lib/step_definitions/aruba_steps.rb:8",
     "steps": [
-      {
-        "name": "it should pass",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -617,7 +572,15 @@
     "flags": "",
     "file_colon_line": "features/lib/step_definitions/iso-8859-1_steps.rb:6",
     "steps": [
-
+      {
+        "name": "jeg drikker en \"øl\"",
+        "args": [
+          {
+            "offset": 16,
+            "val": "øl"
+          }
+        ]
+      }
     ]
   },
   {
@@ -625,7 +588,15 @@
     "flags": "",
     "file_colon_line": "features/lib/step_definitions/iso-8859-1_steps.rb:10",
     "steps": [
-
+      {
+        "name": "skal de andre si \"skål\"",
+        "args": [
+          {
+            "offset": 18,
+            "val": "skål"
+          }
+        ]
+      }
     ]
   },
   {
@@ -641,12 +612,7 @@
     "flags": "",
     "file_colon_line": "features/lib/step_definitions/json_steps.rb:27",
     "steps": [
-      {
-        "name": "the output should contain the following JSON:",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -654,12 +620,7 @@
     "flags": "",
     "file_colon_line": "features/lib/step_definitions/ruby_steps.rb:1",
     "steps": [
-      {
-        "name": "I run the following Ruby code:",
-        "args": [
 
-        ]
-      }
     ]
   }
 ]
