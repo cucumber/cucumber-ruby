@@ -1,12 +1,10 @@
+@spawn
 Feature: Run Cli::Main with existing Runtime
 
   This is the API that Spork uses. It creates an existing runtime then
   calls load_programming_language('rb') on it to load the RbDsl.
   When the process forks, Spork them passes the runtime to Cli::Main to 
   run it.
-
-    Background: 
-      Given a standard Cucumber project directory structure
 
     Scenario: Run a single feature
       Given a file named "features/step_definitions/success.rb" with:

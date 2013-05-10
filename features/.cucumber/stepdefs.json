@@ -29,29 +29,38 @@
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:19",
     "steps": [
       {
-        "name": "a file named \"features/f.feature\" with:",
+        "name": "a file named \"features/step_definitions/foo_steps.rb\" with:",
         "args": [
           {
             "offset": 14,
-            "val": "features/f.feature"
+            "val": "features/step_definitions/foo_steps.rb"
           }
         ]
       },
       {
-        "name": "a file named \"features/step_definitions/steps.rb\" with:",
+        "name": "a file named \"features/step_definitions/success.rb\" with:",
         "args": [
           {
             "offset": 14,
-            "val": "features/step_definitions/steps.rb"
+            "val": "features/step_definitions/success.rb"
           }
         ]
       },
       {
-        "name": "a file named \"features/support/hooks.rb\" with:",
+        "name": "a file named \"features/success.feature\" with:",
         "args": [
           {
             "offset": 14,
-            "val": "features/support/hooks.rb"
+            "val": "features/success.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"my_weird/place/foo_steps.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "my_weird/place/foo_steps.rb"
           }
         ]
       }
@@ -134,24 +143,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:60",
     "steps": [
-      {
-        "name": "I run `cucumber -q -t @one features/f.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q -t @one features/f.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/f.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/f.feature"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -239,7 +231,12 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:113",
     "steps": [
+      {
+        "name": "the output should contain:",
+        "args": [
 
+        ]
+      }
     ]
   },
   {
@@ -319,15 +316,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:162",
     "steps": [
-      {
-        "name": "it should pass with:",
-        "args": [
-          {
-            "offset": 10,
-            "val": "pass"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -565,7 +554,7 @@
   {
     "source": "^a\\ Gemfile\\ with:$",
     "flags": "",
-    "file_colon_line": "features/lib/step_definitions/aruba_steps.rb:1",
+    "file_colon_line": "features/lib/step_definitions/aruba_steps.rb:2",
     "steps": [
 
     ]
@@ -573,13 +562,18 @@
   {
     "source": "^it\\ should\\ pass$",
     "flags": "",
-    "file_colon_line": "features/lib/step_definitions/aruba_steps.rb:7",
+    "file_colon_line": "features/lib/step_definitions/aruba_steps.rb:8",
     "steps": [
+      {
+        "name": "it should pass",
+        "args": [
 
+        ]
+      }
     ]
   },
   {
-    "source": "^it should (pass|fail) with JSON:$",
+    "source": "^a directory without standard Cucumber project directory structure$",
     "flags": "",
     "file_colon_line": "features/lib/step_definitions/cucumber_steps.rb:1",
     "steps": [
@@ -587,17 +581,9 @@
     ]
   },
   {
-    "source": "^a directory without standard Cucumber project directory structure$",
-    "flags": "",
-    "file_colon_line": "features/lib/step_definitions/cucumber_steps.rb:26",
-    "steps": [
-
-    ]
-  },
-  {
     "source": "^a scenario with a step that looks like this:$",
     "flags": "",
-    "file_colon_line": "features/lib/step_definitions/cucumber_steps.rb:32",
+    "file_colon_line": "features/lib/step_definitions/cucumber_steps.rb:7",
     "steps": [
 
     ]
@@ -605,7 +591,7 @@
   {
     "source": "^a scenario with a step that looks like this in japanese:$",
     "flags": "",
-    "file_colon_line": "features/lib/step_definitions/cucumber_steps.rb:38",
+    "file_colon_line": "features/lib/step_definitions/cucumber_steps.rb:13",
     "steps": [
 
     ]
@@ -613,7 +599,7 @@
   {
     "source": "^a step definition that looks like this:$",
     "flags": "",
-    "file_colon_line": "features/lib/step_definitions/cucumber_steps.rb:44",
+    "file_colon_line": "features/lib/step_definitions/cucumber_steps.rb:19",
     "steps": [
 
     ]
@@ -621,7 +607,7 @@
   {
     "source": "^I run the feature with the (\\w+) formatter$",
     "flags": "",
-    "file_colon_line": "features/lib/step_definitions/cucumber_steps.rb:48",
+    "file_colon_line": "features/lib/step_definitions/cucumber_steps.rb:23",
     "steps": [
 
     ]
@@ -640,6 +626,40 @@
     "file_colon_line": "features/lib/step_definitions/iso-8859-1_steps.rb:10",
     "steps": [
 
+    ]
+  },
+  {
+    "source": "^it should (pass|fail) with JSON:$",
+    "flags": "",
+    "file_colon_line": "features/lib/step_definitions/json_steps.rb:1",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^the output should contain the following JSON:$",
+    "flags": "",
+    "file_colon_line": "features/lib/step_definitions/json_steps.rb:27",
+    "steps": [
+      {
+        "name": "the output should contain the following JSON:",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^I run the following Ruby code:$",
+    "flags": "",
+    "file_colon_line": "features/lib/step_definitions/ruby_steps.rb:1",
+    "steps": [
+      {
+        "name": "I run the following Ruby code:",
+        "args": [
+
+        ]
+      }
     ]
   }
 ]

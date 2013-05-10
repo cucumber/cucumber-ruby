@@ -1,11 +1,13 @@
+@spawn
 Feature: List step defs as json
+
   In order to build tools on top of Cucumber
   As a tool developer
   I want to be able to query a features directory for all the step definitions it contains
-  
-  Background: 
-    Given a standard Cucumber project directory structure
-  
+
+  Background:
+    Given a directory named "features"
+
   Scenario: Two Ruby step definitions, in the same file
     Given a file named "features/step_definitions/foo_steps.rb" with:
       """
