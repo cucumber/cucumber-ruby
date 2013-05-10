@@ -28,168 +28,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:19",
     "steps": [
-      {
-        "name": "a file named \"cucumber.yml\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "cucumber.yml"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/action.feature\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/action.feature"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/doc_string.feature\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/doc_string.feature"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/f.feature\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/f.feature"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/foo.feature\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/foo.feature"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/only_background_and_hooks.feature\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/only_background_and_hooks.feature"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/only_background_and_hooks_steps.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/only_background_and_hooks_steps.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/step_definitions/assert_steps.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/step_definitions/assert_steps.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/step_definitions/doc_string_steps.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/step_definitions/doc_string_steps.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/step_definitions/multiline_steps.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/step_definitions/multiline_steps.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/step_definitions/steps.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/step_definitions/steps.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/support/env.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/support/env.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/support/hook.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/support/hook.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/support/jb/formatter.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/support/jb/formatter.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/support/ze/formator.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/support/ze/formator.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/test.feature\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/test.feature"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"lib/something.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "lib/something.rb"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"should_not_load.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "should_not_load.rb"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -270,371 +109,20 @@
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:60",
     "steps": [
       {
-        "name": "I run `bundle exec cucumber`",
+        "name": "I run `cucumber --format pretty features/f.feature`",
         "args": [
           {
             "offset": 7,
-            "val": "bundle exec cucumber"
+            "val": "cucumber --format pretty features/f.feature"
           }
         ]
       },
       {
-        "name": "I run `bundle exec rake fail`",
+        "name": "I run `cucumber --format progress features/f.feature`",
         "args": [
           {
             "offset": 7,
-            "val": "bundle exec rake fail"
-          }
-        ]
-      },
-      {
-        "name": "I run `bundle exec rake pass`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "bundle exec rake pass"
-          }
-        ]
-      },
-      {
-        "name": "I run `bundle install --local --quiet`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "bundle install --local --quiet"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber --format json features/doc_string.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber --format json features/doc_string.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber --format json features/one_passing_one_failing.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber --format json features/one_passing_one_failing.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber --format json_pretty features/one_passing_one_failing.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber --format json_pretty features/one_passing_one_failing.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber --profile default --format html`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber --profile default --format html"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber --profile default --format pretty`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber --profile default --format pretty"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber --profile default --format progress`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber --profile default --format progress"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -b --format json features/embed.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -b --format json features/embed.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -f stepdefs --dry-run`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -f stepdefs --dry-run"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -f usage --dry-run`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -f usage --dry-run"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q -t @one -t @three features/tagulicious.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q -t @one -t @three features/tagulicious.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q -t @one,@three features/tagulicious.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q -t @one,@three features/tagulicious.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/background_tagged_before_on_outline.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/background_tagged_before_on_outline.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/failing_background.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/failing_background.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/failing_background_after_success.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/failing_background_after_success.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/multiline_args_background.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/multiline_args_background.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/passing_background.feature:9`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/passing_background.feature:9"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/passing_background.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/passing_background.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/pending_background.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/pending_background.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/scenario_outline_failing_background.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/scenario_outline_failing_background.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber -q features/scenario_outline_passing_background.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber -q features/scenario_outline_passing_background.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber <file> --format html <flag>`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber <file> --format html <flag>"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/f.feature --format Jb::Formatter`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/f.feature --format Jb::Formatter"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/f.feature --format Ze::Formator`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/f.feature --format Ze::Formator"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/f.feature --format debug --expand`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/f.feature --format debug --expand"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/f.feature --format debug`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/f.feature --format debug"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/f.feature:2`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/f.feature:2"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/f.feature:6`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/f.feature:6"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/f.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/f.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/foo.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/foo.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/one_passing_one_failing.feature -r features -f rerun`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/one_passing_one_failing.feature -r features -f rerun"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/only_background_and_hooks.feature`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/only_background_and_hooks.feature"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/scenario_outline_with_undefined_steps.feature --format html --expand `",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/scenario_outline_with_undefined_steps.feature --format html --expand "
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/scenario_outline_with_undefined_steps.feature --format pretty --expand `",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/scenario_outline_with_undefined_steps.feature --format pretty --expand "
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/scenario_outline_with_undefined_steps.feature --format progress --expand `",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/scenario_outline_with_undefined_steps.feature --format progress --expand "
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/test.feature:5 -f progress`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/test.feature:5 -f progress"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber features/test.feature:8 -f progress`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber features/test.feature:8 -f progress"
-          }
-        ]
-      },
-      {
-        "name": "I run `cucumber`",
-        "args": [
-          {
-            "offset": 7,
-            "val": "cucumber"
+            "val": "cucumber --format progress features/f.feature"
           }
         ]
       }
@@ -717,15 +205,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:109",
     "steps": [
-      {
-        "name": "the output should not contain \"rake aborted!\"",
-        "args": [
-          {
-            "offset": 31,
-            "val": "rake aborted!"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -746,12 +226,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:117",
     "steps": [
-      {
-        "name": "the output should not contain:",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -807,24 +282,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:154",
     "steps": [
-      {
-        "name": "the exit status should be 0",
-        "args": [
-          {
-            "offset": 26,
-            "val": "0"
-          }
-        ]
-      },
-      {
-        "name": "the exit status should be 1",
-        "args": [
-          {
-            "offset": 26,
-            "val": "1"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -832,15 +290,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:158",
     "steps": [
-      {
-        "name": "the exit status should not be 0",
-        "args": [
-          {
-            "offset": 30,
-            "val": "0"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -848,24 +298,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:162",
     "steps": [
-      {
-        "name": "it should fail with:",
-        "args": [
-          {
-            "offset": 10,
-            "val": "fail"
-          }
-        ]
-      },
-      {
-        "name": "it should pass with:",
-        "args": [
-          {
-            "offset": 10,
-            "val": "pass"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -873,24 +306,7 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:166",
     "steps": [
-      {
-        "name": "it should fail with exactly:",
-        "args": [
-          {
-            "offset": 10,
-            "val": "fail"
-          }
-        ]
-      },
-      {
-        "name": "it should pass with exactly:",
-        "args": [
-          {
-            "offset": 10,
-            "val": "pass"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -954,7 +370,15 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:231",
     "steps": [
-
+      {
+        "name": "the stderr should not contain anything",
+        "args": [
+          {
+            "offset": 4,
+            "val": "stderr"
+          }
+        ]
+      }
     ]
   },
   {
@@ -1122,12 +546,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/aruba_steps.rb:1",
     "steps": [
-      {
-        "name": "a Gemfile with:",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -1135,12 +554,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/aruba_steps.rb:7",
     "steps": [
-      {
-        "name": "it should pass",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -1148,24 +562,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:1",
     "steps": [
-      {
-        "name": "it should fail with JSON:",
-        "args": [
-          {
-            "offset": 10,
-            "val": "fail"
-          }
-        ]
-      },
-      {
-        "name": "it should pass with JSON:",
-        "args": [
-          {
-            "offset": 10,
-            "val": "pass"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -1173,12 +570,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:26",
     "steps": [
-      {
-        "name": "a directory without standard Cucumber project directory structure",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -1186,12 +578,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:32",
     "steps": [
-      {
-        "name": "a scenario with a step that looks like this:",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -1207,12 +594,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:44",
     "steps": [
-      {
-        "name": "a step definition that looks like this:",
-        "args": [
 
-        ]
-      }
     ]
   },
   {
@@ -1220,15 +602,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:48",
     "steps": [
-      {
-        "name": "I run the feature with the progress formatter",
-        "args": [
-          {
-            "offset": 27,
-            "val": "progress"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -1236,15 +610,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/iso-8859-1_steps.rb:6",
     "steps": [
-      {
-        "name": "jeg drikker en \"øl\"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "øl"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -1252,15 +618,7 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/iso-8859-1_steps.rb:10",
     "steps": [
-      {
-        "name": "skal de andre si \"skål\"",
-        "args": [
-          {
-            "offset": 18,
-            "val": "skål"
-          }
-        ]
-      }
+
     ]
   }
 ]

@@ -1,8 +1,11 @@
-Feature: Delayed message
+Feature: Printing messages
+
+  When you want to print to Cucumber's output, just call `puts` from
+  a step definition. Cucumber will grab the output and print it via
+  the formatter that you're using.
 
   Background:
-    Given a standard Cucumber project directory structure
-    And a file named "features/step_definitions/steps.rb" with:
+    Given a file named "features/step_definitions/steps.rb" with:
       """
       Given /^I use puts with text "(.*)"$/ do |ann| x=1
         puts(ann)
@@ -73,9 +76,9 @@ Feature: Delayed message
       """
 
     Scenario: Delayed messages feature
-      When I run cucumber --format pretty features/f.feature
-      Then STDERR should be empty
-      And the output should contain
+      When I run `cucumber --format pretty features/f.feature`
+      Then the stderr should not contain anything
+      And the output should contain:
       """
       Feature: F
 
@@ -121,8 +124,8 @@ Feature: Delayed message
       """
 
     Scenario: Non-delayed messages feature (progress formatter)
-      When I run cucumber --format progress features/f.feature
-      Then the output should contain
+      When I run `cucumber --format progress features/f.feature`
+      Then the output should contain:
         """
         Ann
         ..
@@ -139,14 +142,3 @@ Feature: Delayed message
         ...
         """
 
-    @rspec2
-    Scenario: puts world
-      When I run cucumber --format progress features/puts_world.feature
-      Then the output should contain "RSpec::Matchers"
-      And the output should contain "Cucumber::RbSupport::RbWorld"
-
-    @rspec1
-    Scenario: puts world
-      When I run cucumber --format progress features/puts_world.feature
-      Then the output should contain "Spec::Matchers"
-      And the output should contain "Cucumber::RbSupport::RbWorld"
