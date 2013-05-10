@@ -28,7 +28,231 @@
     "flags": "",
     "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:19",
     "steps": [
-
+      {
+        "name": "a file named \"Rakefile\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "Rakefile"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/all_good.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/all_good.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/another.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/another.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/env.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/env.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/f.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/f.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/lolcat.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/lolcat.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/naughty_step_in_before.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/naughty_step_in_before.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/naughty_step_in_scenario.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/naughty_step_in_scenario.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/naughty_step_in_scenario_outline.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/naughty_step_in_scenario_outline.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/sample.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/sample.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/spaces are nasty.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/spaces are nasty.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/step_definitions/server.wire\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/step_definitions/server.wire"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/step_definitions/some_remote_place.wire\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/step_definitions/some_remote_place.wire"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/step_definitions/steps.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/step_definitions/steps.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/step_definitions/t_steps.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/step_definitions/t_steps.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/step_definitions/table_steps.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/step_definitions/table_steps.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/support/env.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/support/env.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/support/table.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/support/table.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/t.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/t.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/tables.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/tables.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/transform_sample.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/transform_sample.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/unicode.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/unicode.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/wired.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/wired.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/wired_on_tables.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/wired_on_tables.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/x.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/x.feature"
+          }
+        ]
+      }
     ]
   },
   {
@@ -524,7 +748,12 @@
     "flags": "",
     "file_colon_line": "features/lib/step_definitions/aruba_steps.rb:8",
     "steps": [
+      {
+        "name": "it should pass",
+        "args": [
 
+        ]
+      }
     ]
   },
   {
@@ -572,15 +801,7 @@
     "flags": "",
     "file_colon_line": "features/lib/step_definitions/iso-8859-1_steps.rb:6",
     "steps": [
-      {
-        "name": "jeg drikker en \"øl\"",
-        "args": [
-          {
-            "offset": 16,
-            "val": "øl"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -588,15 +809,7 @@
     "flags": "",
     "file_colon_line": "features/lib/step_definitions/iso-8859-1_steps.rb:10",
     "steps": [
-      {
-        "name": "skal de andre si \"skål\"",
-        "args": [
-          {
-            "offset": 18,
-            "val": "skål"
-          }
-        ]
-      }
+
     ]
   },
   {
@@ -621,6 +834,1600 @@
     "file_colon_line": "features/lib/step_definitions/ruby_steps.rb:1",
     "steps": [
 
+    ]
+  },
+  {
+    "source": "^I am in (.*)$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:5",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^a standard Cucumber project directory structure$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:9",
+    "steps": [
+      {
+        "name": "a standard Cucumber project directory structure",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the (.*) directory is empty$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:18",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^a file named \"([^\"]*)\"$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:25",
+    "steps": [
+      {
+        "name": "a file named \"features/step_definitions/foof.rb\"",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/step_definitions/foof.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/step_definitions/foot.rb\"",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/step_definitions/foot.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/step_definitions/fooz.rb\"",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/step_definitions/fooz.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/support/dont_require_me.rb\"",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/support/dont_require_me.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/support/env.rb\"",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/support/env.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/support/require_me.rb\"",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/support/require_me.rb"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^a file named \"([^\"]*)\" with:$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:29",
+    "steps": [
+      {
+        "name": "a file named \"Rakefile\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "Rakefile"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/all_good.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/all_good.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/another.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/another.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/env.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/env.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/f.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/f.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/lolcat.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/lolcat.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/naughty_step_in_before.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/naughty_step_in_before.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/naughty_step_in_scenario.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/naughty_step_in_scenario.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/naughty_step_in_scenario_outline.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/naughty_step_in_scenario_outline.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/sample.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/sample.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/spaces are nasty.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/spaces are nasty.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/step_definitions/server.wire\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/step_definitions/server.wire"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/step_definitions/some_remote_place.wire\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/step_definitions/some_remote_place.wire"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/step_definitions/steps.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/step_definitions/steps.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/step_definitions/t_steps.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/step_definitions/t_steps.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/step_definitions/table_steps.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/step_definitions/table_steps.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/support/env.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/support/env.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/support/table.rb\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/support/table.rb"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/t.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/t.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/tables.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/tables.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/transform_sample.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/transform_sample.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/unicode.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/unicode.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/wired.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/wired.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/wired_on_tables.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/wired_on_tables.feature"
+          }
+        ]
+      },
+      {
+        "name": "a file named \"features/x.feature\" with:",
+        "args": [
+          {
+            "offset": 14,
+            "val": "features/x.feature"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the following profiles? (?:are|is) defined:$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:33",
+    "steps": [
+      {
+        "name": "the following profile is defined:",
+        "args": [
+
+        ]
+      },
+      {
+        "name": "the following profiles are defined:",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^I have environment variable (\\w+) set to \"([^\"]*)\"$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:37",
+    "steps": [
+      {
+        "name": "I have environment variable PORT set to \"16816\"",
+        "args": [
+          {
+            "offset": 28,
+            "val": "PORT"
+          },
+          {
+            "offset": 41,
+            "val": "16816"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^I run cucumber (.*)$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:41",
+    "steps": [
+      {
+        "name": "I run cucumber --autoformat tmp/formatted features",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--autoformat tmp/formatted features"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber --backtrace -s features",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--backtrace -s features"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber --dry-run --no-snippets -f progress",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--dry-run --no-snippets -f progress"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber --dry-run --no-source features/*.feature --tags ~@lots",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--dry-run --no-source features/*.feature --tags ~@lots"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber --dry-run -f progress",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--dry-run -f progress"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber --format junit --out tmp/ features",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--format junit --out tmp/ features"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber --format junit --out tmp/ features/one_passing_one_failing.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--format junit --out tmp/ features/one_passing_one_failing.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber --format junit --out tmp/ features/pending.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--format junit --out tmp/ features/pending.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber --format junit --out tmp/ features/pending.feature --strict",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--format junit --out tmp/ features/pending.feature --strict"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber --format junit --out tmp/ features/scenario_outline.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--format junit --out tmp/ features/scenario_outline.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber --format junit --out tmp/ features/some_subdirectory/one_passing_one_failing.feature --require features",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--format junit --out tmp/ features/some_subdirectory/one_passing_one_failing.feature --require features"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber --format junit features",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--format junit features"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber --format progress --out tmp/progress.txt --format pretty --out tmp/pretty.txt --no-source --dry-run --no-snippets features/lots_of_undefined.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--format progress --out tmp/progress.txt --format pretty --out tmp/pretty.txt --no-source --dry-run --no-snippets features/lots_of_undefined.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber --i18n help",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--i18n help"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber --i18n pt help",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--i18n pt help"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber --name 'Hantu Pisang background' -q features/",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--name 'Hantu Pisang background' -q features/"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber --name Pisang -q features/",
+        "args": [
+          {
+            "offset": 15,
+            "val": "--name Pisang -q features/"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -b -s features",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-b -s features"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -f debug features/sample.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-f debug features/sample.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -f pretty",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-f pretty"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -f pretty -q",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-f pretty -q"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -f progress",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-f progress"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -f progress --backtrace",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-f progress --backtrace"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -f progress features/t.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-f progress features/t.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -f progress features/wired_on_tables.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-f progress features/wired_on_tables.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -f rerun features/sample.feature features/all_good.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-f rerun features/sample.feature features/all_good.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -f stepdefs --dry-run",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-f stepdefs --dry-run"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -i -q --expand features/expand_me.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-i -q --expand features/expand_me.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -i features/lolcat.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-i features/lolcat.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -i features/tables.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-i features/tables.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -n Pisang -q features/",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-n Pisang -q features/"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -p default features/another.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-p default features/another.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -p foo",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-p foo"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q --dry-run features/unicode.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q --dry-run features/unicode.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q --format progress features/outline_sample.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q --format progress features/outline_sample.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q --format progress features/sample.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q --format progress features/sample.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q -p super -p default -f <format> features/sample.feature --require features/step_definitions/steps.rb",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q -p super -p default -f <format> features/sample.feature --require features/step_definitions/steps.rb"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q -r ../../legacy_features/step_definitions/extra_steps.rb features/sample.feature:5",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q -r ../../legacy_features/step_definitions/extra_steps.rb features/sample.feature:5"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q -w -t @failing features/wip.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q -w -t @failing features/wip.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q -w -t @passing features/wip.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q -w -t @passing features/wip.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q -w -t @pending features/wip.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q -w -t @pending features/wip.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q -w -t @undefined features/wip.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q -w -t @undefined features/wip.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q -w features/passing_outline.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q -w features/passing_outline.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q @list-of-features.txt",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q @list-of-features.txt"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q features --name \"Test state\"",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q features --name \"Test state\""
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q features --tags @one",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q features --tags @one"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q features --tags @three",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q features --tags @three"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q features/f.feature --tag @i_dont_exist",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q features/f.feature --tag @i_dont_exist"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q features/failing_expectation.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q features/failing_expectation.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q features/outline_sample.feature:7",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q features/outline_sample.feature:7"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q features/sample.feature --no-source --dry-run --tags ~@four",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q features/sample.feature --no-source --dry-run --tags ~@four"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q features/sample.feature:10 --strict",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q features/sample.feature:10 --strict"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q features/sample.feature:12",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q features/sample.feature:12"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q features/sample.feature:5",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q features/sample.feature:5"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q features/sample.feature:5 --strict",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q features/sample.feature:5 --strict"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q features/sample.feature:5:16",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q features/sample.feature:5:16"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q features/tags_sample.feature --no-source --dry-run --tags @sample_one:1",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q features/tags_sample.feature --no-source --dry-run --tags @sample_one:1"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q features/tags_sample.feature --no-source --dry-run --tags @sample_three:1",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q features/tags_sample.feature --no-source --dry-run --tags @sample_three:1"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -q features/tags_sample.feature --no-source --dry-run --tags ~@sample_one:1",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-q features/tags_sample.feature --no-source --dry-run --tags ~@sample_one:1"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -s features",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-s features"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -v",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-v"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber -v features/ <Flag>",
+        "args": [
+          {
+            "offset": 15,
+            "val": "-v features/ <Flag>"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber features",
+        "args": [
+          {
+            "offset": 15,
+            "val": "features"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber features --format pretty",
+        "args": [
+          {
+            "offset": 15,
+            "val": "features --format pretty"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber features --format progress",
+        "args": [
+          {
+            "offset": 15,
+            "val": "features --format progress"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber features -q --verbose --exclude features/support/dont --exclude foo[zf]",
+        "args": [
+          {
+            "offset": 15,
+            "val": "features -q --verbose --exclude features/support/dont --exclude foo[zf]"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber features/call_undefined_step_from_step_def.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "features/call_undefined_step_from_step_def.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber features/f.feature",
+        "args": [
+          {
+            "offset": 15,
+            "val": "features/f.feature"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber features/multiline_name.feature --no-snippets",
+        "args": [
+          {
+            "offset": 15,
+            "val": "features/multiline_name.feature --no-snippets"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber features/outline_sample.feature:12",
+        "args": [
+          {
+            "offset": 15,
+            "val": "features/outline_sample.feature:12"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber features/sample.feature --profile default --profile super",
+        "args": [
+          {
+            "offset": 15,
+            "val": "features/sample.feature --profile default --profile super"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber features/sample.feature --profile super",
+        "args": [
+          {
+            "offset": 15,
+            "val": "features/sample.feature --profile super"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber features/undefined_multiline_args.feature:3 -s",
+        "args": [
+          {
+            "offset": 15,
+            "val": "features/undefined_multiline_args.feature:3 -s"
+          }
+        ]
+      },
+      {
+        "name": "I run cucumber features/undefined_multiline_args.feature:9 -s",
+        "args": [
+          {
+            "offset": 15,
+            "val": "features/undefined_multiline_args.feature:9 -s"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^I run rake (.*)$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:45",
+    "steps": [
+      {
+        "name": "I run rake cucumber",
+        "args": [
+          {
+            "offset": 11,
+            "val": "cucumber"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^I run the following Ruby code:$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:49",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^it should (fail|pass)$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:53",
+    "steps": [
+      {
+        "name": "it should fail",
+        "args": [
+          {
+            "offset": 10,
+            "val": "fail"
+          }
+        ]
+      },
+      {
+        "name": "it should pass",
+        "args": [
+          {
+            "offset": 10,
+            "val": "pass"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^it should (fail|pass) with$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:63",
+    "steps": [
+      {
+        "name": "it should fail with",
+        "args": [
+          {
+            "offset": 10,
+            "val": "fail"
+          }
+        ]
+      },
+      {
+        "name": "it should pass with",
+        "args": [
+          {
+            "offset": 10,
+            "val": "pass"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the output should contain \"([^\"]*)\"$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:70",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^the output should contain:?$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:74",
+    "steps": [
+      {
+        "name": "the output should contain",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the output should not contain$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:78",
+    "steps": [
+      {
+        "name": "the output should not contain",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the output should be$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:82",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^it should (fail|pass) with JSON$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:86",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^\"([^\"]*)\" should contain$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:91",
+    "steps": [
+      {
+        "name": "\"fixtures/self_test/tmp/formatted/features/sample.feature\" should contain",
+        "args": [
+          {
+            "offset": 1,
+            "val": "fixtures/self_test/tmp/formatted/features/sample.feature"
+          }
+        ]
+      },
+      {
+        "name": "\"fixtures/self_test/tmp/pretty.txt\" should contain",
+        "args": [
+          {
+            "offset": 1,
+            "val": "fixtures/self_test/tmp/pretty.txt"
+          }
+        ]
+      },
+      {
+        "name": "\"fixtures/self_test/tmp/progress.txt\" should contain",
+        "args": [
+          {
+            "offset": 1,
+            "val": "fixtures/self_test/tmp/progress.txt"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^\"([^\"]*)\" with junit duration \"([^\"]*)\" should contain$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:95",
+    "steps": [
+      {
+        "name": "\"fixtures/junit/tmp/TEST-features-one_passing_one_failing.xml\" with junit duration \"0.005\" should contain",
+        "args": [
+          {
+            "offset": 1,
+            "val": "fixtures/junit/tmp/TEST-features-one_passing_one_failing.xml"
+          },
+          {
+            "offset": 84,
+            "val": "0.005"
+          }
+        ]
+      },
+      {
+        "name": "\"fixtures/junit/tmp/TEST-features-pending.xml\" with junit duration \"0.000160\" should contain",
+        "args": [
+          {
+            "offset": 1,
+            "val": "fixtures/junit/tmp/TEST-features-pending.xml"
+          },
+          {
+            "offset": 68,
+            "val": "0.000160"
+          }
+        ]
+      },
+      {
+        "name": "\"fixtures/junit/tmp/TEST-features-pending.xml\" with junit duration \"0.009\" should contain",
+        "args": [
+          {
+            "offset": 1,
+            "val": "fixtures/junit/tmp/TEST-features-pending.xml"
+          },
+          {
+            "offset": 68,
+            "val": "0.009"
+          }
+        ]
+      },
+      {
+        "name": "\"fixtures/junit/tmp/TEST-features-scenario_outline.xml\" with junit duration \"0.005\" should contain",
+        "args": [
+          {
+            "offset": 1,
+            "val": "fixtures/junit/tmp/TEST-features-scenario_outline.xml"
+          },
+          {
+            "offset": 77,
+            "val": "0.005"
+          }
+        ]
+      },
+      {
+        "name": "\"fixtures/junit/tmp/TEST-features-some_subdirectory-one_passing_one_failing.xml\" with junit duration \"0.005\" should contain",
+        "args": [
+          {
+            "offset": 1,
+            "val": "fixtures/junit/tmp/TEST-features-some_subdirectory-one_passing_one_failing.xml"
+          },
+          {
+            "offset": 102,
+            "val": "0.005"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^\"([^\"]*)\" should match \"(.+?)\"$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:102",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^\"([^\"]*)\" should have the same contents as \"([^\"]*)\"$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:106",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^STDERR should match$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:114",
+    "steps": [
+      {
+        "name": "STDERR should match",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^STDERR should not match$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:118",
+    "steps": [
+      {
+        "name": "STDERR should not match",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^STDERR should be$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:122",
+    "steps": [
+      {
+        "name": "STDERR should be",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^STDERR should be empty$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:126",
+    "steps": [
+      {
+        "name": "STDERR should be empty",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^\"([^\"]*)\" should exist$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:130",
+    "steps": [
+      {
+        "name": "\"fixtures/junit/tmp/TEST-features-one_passing_one_failing.xml\" should exist",
+        "args": [
+          {
+            "offset": 1,
+            "val": "fixtures/junit/tmp/TEST-features-one_passing_one_failing.xml"
+          }
+        ]
+      },
+      {
+        "name": "\"fixtures/junit/tmp/TEST-features-pending.xml\" should exist",
+        "args": [
+          {
+            "offset": 1,
+            "val": "fixtures/junit/tmp/TEST-features-pending.xml"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^\"([^\"]*)\" should not be required$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:135",
+    "steps": [
+      {
+        "name": "\"features/step_definitions/foof.rb\" should not be required",
+        "args": [
+          {
+            "offset": 1,
+            "val": "features/step_definitions/foof.rb"
+          }
+        ]
+      },
+      {
+        "name": "\"features/step_definitions/fooz.rb\" should not be required",
+        "args": [
+          {
+            "offset": 1,
+            "val": "features/step_definitions/fooz.rb"
+          }
+        ]
+      },
+      {
+        "name": "\"features/support/dont_require_me.rb\" should not be required",
+        "args": [
+          {
+            "offset": 1,
+            "val": "features/support/dont_require_me.rb"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^\"([^\"]*)\" should be required$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:139",
+    "steps": [
+      {
+        "name": "\"features/step_definitions/foot.rb\" should be required",
+        "args": [
+          {
+            "offset": 1,
+            "val": "features/step_definitions/foot.rb"
+          }
+        ]
+      },
+      {
+        "name": "\"features/support/require_me.rb\" should be required",
+        "args": [
+          {
+            "offset": 1,
+            "val": "features/support/require_me.rb"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^exactly these files should be loaded:\\s*(.*)$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:143",
+    "steps": [
+      {
+        "name": "exactly these files should be loaded: features/support/env.rb",
+        "args": [
+          {
+            "offset": 38,
+            "val": "features/support/env.rb"
+          }
+        ]
+      },
+      {
+        "name": "exactly these files should be loaded: features/support/env.rb, features/support/super_env.rb",
+        "args": [
+          {
+            "offset": 38,
+            "val": "features/support/env.rb, features/support/super_env.rb"
+          }
+        ]
+      },
+      {
+        "name": "exactly these files should be loaded: features/support/super_env.rb",
+        "args": [
+          {
+            "offset": 38,
+            "val": "features/support/super_env.rb"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^exactly these features should be ran:\\s*(.*)$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:147",
+    "steps": [
+      {
+        "name": "exactly these features should be ran: features/another.feature",
+        "args": [
+          {
+            "offset": 38,
+            "val": "features/another.feature"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the (.*) profile should be used$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:151",
+    "steps": [
+      {
+        "name": "the default profile should be used",
+        "args": [
+          {
+            "offset": 4,
+            "val": "default"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^print output$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:155",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^the output should contain the following JSON:$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/cucumber_steps.rb:159",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^missing$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/extra_steps.rb:1",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^this step works$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/simplest_steps.rb:1",
+    "steps": [
+      {
+        "name": "this step works",
+        "args": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^there is a wire server (running |)on port (\\d+) which understands the following protocol:$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/wire_steps.rb:1",
+    "steps": [
+      {
+        "name": "there is a wire server on port 54321 which understands the following protocol:",
+        "args": [
+          {
+            "offset": 23,
+            "val": ""
+          },
+          {
+            "offset": 31,
+            "val": "54321"
+          }
+        ]
+      },
+      {
+        "name": "there is a wire server running on port 12345 which understands the following protocol:",
+        "args": [
+          {
+            "offset": 23,
+            "val": "running "
+          },
+          {
+            "offset": 39,
+            "val": "12345"
+          }
+        ]
+      },
+      {
+        "name": "there is a wire server running on port 16816 which understands the following protocol:",
+        "args": [
+          {
+            "offset": 23,
+            "val": "running "
+          },
+          {
+            "offset": 39,
+            "val": "16816"
+          }
+        ]
+      },
+      {
+        "name": "there is a wire server running on port 54321 which understands the following protocol:",
+        "args": [
+          {
+            "offset": 23,
+            "val": "running "
+          },
+          {
+            "offset": 39,
+            "val": "54321"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "^the wire server takes (.*) seconds to respond to the invoke message$",
+    "flags": "",
+    "file_colon_line": "legacy_features/step_definitions/wire_steps.rb:8",
+    "steps": [
+      {
+        "name": "the wire server takes 0.2 seconds to respond to the invoke message",
+        "args": [
+          {
+            "offset": 22,
+            "val": "0.2"
+          }
+        ]
+      }
     ]
   }
 ]
