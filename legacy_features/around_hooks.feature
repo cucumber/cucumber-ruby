@@ -1,4 +1,5 @@
 Feature: Around hooks
+
   In order to support transactional scenarios for database libraries
   that provide only a block syntax for transactions, Cucumber should
   permit definition of Around hooks.
