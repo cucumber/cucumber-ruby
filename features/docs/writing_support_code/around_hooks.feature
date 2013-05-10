@@ -1,3 +1,4 @@
+@spawn
 Feature: Around hooks
 
   In order to support transactional scenarios for database libraries
@@ -5,8 +6,7 @@ Feature: Around hooks
   permit definition of Around hooks.
 
   Scenario: A single Around hook
-    Given a standard Cucumber project directory structure
-    And a file named "features/step_definitions/steps.rb" with:
+    Given a file named "features/step_definitions/steps.rb" with:
       """
       Then /^the hook is called$/ do
         $hook_called.should == true
@@ -25,8 +25,8 @@ Feature: Around hooks
         Scenario: using hook
           Then the hook is called
       """
-    When I run cucumber features/f.feature
-    Then it should pass with
+    When I run `cucumber features/f.feature`
+    Then it should pass with:
       """
       Feature: Around hooks
 
@@ -39,8 +39,7 @@ Feature: Around hooks
       """
 
   Scenario: Multiple Around hooks
-    Given a standard Cucumber project directory structure
-    And a file named "features/step_definitions/steps.rb" with:
+    Given a file named "features/step_definitions/steps.rb" with:
       """
       Then /^the hooks are called in the correct order$/ do
         $hooks_called.should == ['A', 'B', 'C']
@@ -72,8 +71,8 @@ Feature: Around hooks
         Scenario: using multiple hooks
           Then the hooks are called in the correct order
       """
-    When I run cucumber features/f.feature
-    Then it should pass with
+    When I run `cucumber features/f.feature`
+    Then it should pass with:
       """
       Feature: Around hooks
 
@@ -86,8 +85,7 @@ Feature: Around hooks
       """
 
   Scenario: Mixing Around, Before, and After hooks
-    Given a standard Cucumber project directory structure
-    And a file named "features/step_definitions/steps.rb" with:
+    Given a file named "features/step_definitions/steps.rb" with:
       """
       Then /^the Around hook is called around Before and After hooks$/ do
         $hooks_called.should == ['Around', 'Before']
@@ -120,8 +118,8 @@ Feature: Around hooks
         Scenario: Mixing Around, Before, and After hooks
           Then the Around hook is called around Before and After hooks
       """
-    When I run cucumber features/f.feature
-    Then it should pass with
+    When I run `cucumber features/f.feature`
+    Then it should pass with:
       """
       Feature: Around hooks
 
@@ -134,8 +132,7 @@ Feature: Around hooks
       """
 
   Scenario: Around hooks with tags
-    Given a standard Cucumber project directory structure
-    And a file named "features/step_definitions/steps.rb" with:
+    Given a file named "features/step_definitions/steps.rb" with:
       """
       Then /^the Around hooks with matching tags are called$/ do
         $hooks_called.should == ['one', 'one or two']
@@ -174,8 +171,8 @@ Feature: Around hooks
         Scenario: Around hooks with tags
           Then the Around hooks with matching tags are called
       """
-    When I run cucumber -q -t @one features/f.feature
-    Then it should pass with
+    When I run `cucumber -q -t @one features/f.feature`
+    Then it should pass with:
       """
       Feature: Around hooks
 
@@ -189,8 +186,7 @@ Feature: Around hooks
       """
 
   Scenario: Around hooks with scenario outlines
-    Given a standard Cucumber project directory structure
-    And a file named "features/step_definitions/steps.rb" with:
+    Given a file named "features/step_definitions/steps.rb" with:
       """
       Then /^the hook is called$/ do
         $hook_called.should == true
@@ -214,8 +210,8 @@ Feature: Around hooks
             | one    |
             | two    |
       """
-    When I run cucumber features/f.feature
-    Then it should pass with
+    When I run `cucumber features/f.feature`
+    Then it should pass with:
       """
       Feature: Around hooks with scenario outlines
 
