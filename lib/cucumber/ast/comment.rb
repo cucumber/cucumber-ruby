@@ -18,8 +18,11 @@ module Cucumber
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        @value.strip.split("\n").each do |line|
-          visitor.visit_comment_line(line.strip)
+        return if empty?
+        visitor.visit_comment(self) do
+          @value.strip.split("\n").each do |line|
+            visitor.visit_comment_line(line.strip)
+          end
         end
       end
 

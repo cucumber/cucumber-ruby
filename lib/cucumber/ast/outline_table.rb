@@ -5,26 +5,16 @@ module Cucumber
         super(raw)
         @scenario_outline = scenario_outline
         @cells_class = ExampleRow
-        init
-      end
-
-      def init
-        create_step_invocations_for_example_rows!(@scenario_outline)
-      end
-
-      def to_sexp
-        init
-        super
+        example_rows.each do |cells|
+          cells.create_step_invocations!(scenario_outline)
+        end
       end
 
       def accept(visitor)
         return if Cucumber.wants_to_quit
-        init
-        cells_rows.each_with_index do |row, n|
-          if(visitor.configuration.expand?)
+        visitor.visit_outline_table(self) do
+          cells_rows.each do |row|
             row.accept(visitor)
-          else
-            visitor.visit_table_row(row)
           end
         end
         nil
@@ -43,17 +33,8 @@ module Cucumber
       end
 
       def skip_invoke!
-        init
         example_rows.each do |cells|
           cells.skip_invoke!
-        end
-      end
-
-      def create_step_invocations_for_example_rows!(scenario_outline)
-        return if @dunit
-        @dunit = true
-        example_rows.each do |cells|
-          cells.create_step_invocations!(scenario_outline)
         end
       end
 
@@ -104,14 +85,20 @@ module Cucumber
 
         def accept(visitor)
           return if Cucumber.wants_to_quit
-          visitor.configuration.expand? ? accept_expand(visitor) : accept_plain(visitor)
+          if visitor.configuration.expand? 
+            accept_expand(visitor) 
+          else
+            visitor.visit_table_row(self) do
+              accept_plain(visitor)
+            end
+          end
         end
 
         def accept_plain(visitor)
           if header?
             @cells.each do |cell|
               cell.status = :skipped_param
-              visitor.visit_table_cell(cell)
+              cell.accept(visitor)
             end
           else
             visitor.runtime.with_hooks(self) do
@@ -121,7 +108,7 @@ module Cucumber
               end
 
               @cells.each do |cell|
-                visitor.visit_table_cell(cell)
+                cell.accept(visitor)
               end
 
               visitor.visit_exception(@scenario_exception, :failed) if @scenario_exception
@@ -130,14 +117,12 @@ module Cucumber
         end
 
         def accept_expand(visitor)
-          if header?
-          else
-            visitor.runtime.with_hooks(self) do
-              @table.visit_scenario_name(visitor, self)
-              @step_invocations.each do |step_invocation|
-                visitor.visit_step(step_invocation)
-                @exception ||= step_invocation.reported_exception
-              end
+          return if header?
+          visitor.runtime.with_hooks(self) do
+            @table.visit_scenario_name(visitor, self)
+            @step_invocations.each do |step_invocation|
+              step_invocation.accept(visitor)
+              @exception ||= step_invocation.reported_exception
             end
           end
         end
