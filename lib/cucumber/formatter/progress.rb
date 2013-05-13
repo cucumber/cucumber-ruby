@@ -41,9 +41,9 @@ module Cucumber
         @exception_raised = false
       end
 
-      def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
-        progress(status)
-        @status = status
+      def after_step_result(step_result)
+        progress(step_result.status)
+        @status = step_result.status
       end
 
       def before_outline_table(outline_table)

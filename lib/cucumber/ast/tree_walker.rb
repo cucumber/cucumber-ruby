@@ -21,11 +21,9 @@ module Cucumber
         broadcast_message(message, *args, &block)
       end
 
-      def visit_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
-        broadcast(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line) do
-          visit_step_name(keyword, step_match, status, source_indent, background, file_colon_line)
-          visit_multiline_arg(multiline_arg) if multiline_arg
-          visit_exception(exception, status) if exception
+      def visit_step_result(step_result)
+        broadcast(step_result) do
+          step_result.accept(self)
         end
       end
 

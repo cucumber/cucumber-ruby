@@ -24,8 +24,8 @@ Feature: Formatter API: Step file path and line number (Issue #179)
             @io = io
           end
 
-          def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
-            @io.puts "step result event: #{file_colon_line}"
+          def before_step_result(step_result)
+            @io.puts "step result event: #{step_result.file_colon_line}"
           end
 
           def step_name(keyword, step_match, status, source_indent, background, file_colon_line)

@@ -133,20 +133,20 @@ module Cucumber
         @indent = 6
       end
 
-      def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
+      def before_step_result(step_result)
         @hide_this_step = false
-        if exception
-          if @exceptions.include?(exception)
+        if step_result.exception
+          if @exceptions.include?(step_result.exception)
             @hide_this_step = true
             return
           end
-          @exceptions << exception
+          @exceptions << step_result.exception
         end
-        if status != :failed && @in_background ^ background
+        if step_result.status != :failed && @in_background ^ step_result.background
           @hide_this_step = true
           return
         end
-        @status = status
+        @status = step_result.status
       end
 
       def step_name(keyword, step_match, status, source_indent, background, file_colon_line)

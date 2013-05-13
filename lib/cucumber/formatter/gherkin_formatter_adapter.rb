@@ -47,9 +47,9 @@ module Cucumber
         @step_time = Time.now
       end
 
-      def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
-        arguments = step_match.step_arguments.map{|a| Gherkin::Formatter::Argument.new(a.offset, a.val)}
-        location = step_match.file_colon_line
+      def before_step_result(step_result)
+        arguments = step_result.step_arguments.map{|a| Gherkin::Formatter::Argument.new(a.offset, a.val)}
+        location = step_result.step_match.file_colon_line
         match = Gherkin::Formatter::Model::Match.new(arguments, location)
         if @print_empty_match
           # Trick the formatter to believe that's what was printed previously so we get arg highlights on #result
@@ -58,9 +58,10 @@ module Cucumber
           @gf.match(match)
         end
 
+        exception = step_result.exception
         error_message = exception ? "#{exception.message} (#{exception.class})\n#{exception.backtrace.join("\n")}" : nil
         unless @outline
-          @gf.result(Gherkin::Formatter::Model::Result.new(status, nil, error_message))
+          @gf.result(Gherkin::Formatter::Model::Result.new(step_result.status, nil, error_message))
         end
       end
 

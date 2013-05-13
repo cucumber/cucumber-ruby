@@ -56,7 +56,9 @@ module Cucumber
       end
 
       def visit_step_result(visitor, step_match, multiline_arg, status, exception, background)
-        visitor.visit_step_result(keyword, step_match, @multiline_arg, status, exception, source_indent, background, file_colon_line)
+        visitor.visit_step_result(
+          StepResult.new(keyword, step_match, @multiline_arg, status, exception, source_indent, background, file_colon_line)
+        )
       end
 
       def first_match(visitor)
