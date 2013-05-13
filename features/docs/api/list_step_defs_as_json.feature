@@ -20,8 +20,7 @@ Feature: List step defs as json
       puts Cucumber::StepDefinitions.new.to_json
       
       """
-    Then it should pass
-    And the output should contain the following JSON:
+    Then it should pass with JSON:
       """
       [
         {"source": "foo", "flags": "i"},
@@ -41,8 +40,7 @@ Feature: List step defs as json
       puts Cucumber::StepDefinitions.new(:autoload_code_paths => ['my_weird']).to_json
       
       """
-    Then it should pass
-    And the output should contain the following JSON:
+    Then it should pass with JSON:
       """
       [
         {"source": "foo", "flags": ""},

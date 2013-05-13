@@ -11,6 +11,21 @@ module NormaliseArubaOutput
     out = out.gsub(/^\d+m\d+\.\d+s$/, '0m0.012s') # Make duration predictable
     out = out.gsub(/Coverage report generated for Cucumber Features to #{Dir.pwd}\/coverage.*\n$/, '') # Remove SimpleCov message
   end
+
+  def normalise_json(json)
+    #make sure duration was captured (should be >= 0)
+    #then set it to what is "expected" since duration is dynamic
+    json.each do |feature|
+      elements = feature.fetch('elements') { [] }
+      elements.each do |scenario|
+        scenario['steps'].each do |step|
+          step['result']['duration'].should be >= 0
+          step['result']['duration'] = 1
+        end
+      end
+    end
+  end
 end
+
 World(NormaliseArubaOutput)
 
