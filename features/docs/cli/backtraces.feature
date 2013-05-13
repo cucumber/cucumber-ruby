@@ -1,4 +1,5 @@
 Feature: Backtraces
+
   In order to discover errors quickly
   As a cuker
   I want to see backtraces for failures

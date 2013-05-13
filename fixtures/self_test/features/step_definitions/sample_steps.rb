@@ -16,12 +16,12 @@ Given /^failing without a table$/ do x=1
   flunker
 end
 
-Given /^a step definition that calls an undefined step$/ do Given 'this does not exist'
+Given /^a step definition that calls an undefined step$/ do step 'this does not exist'
 end
 
 
-Given /^call step "(.*)"$/ do |step| x=1
-  Given step
+Given /^call step "(.*)"$/ do |step_name| x=1
+  step step_name
 end
 
 Given /^'(.+)' cukes$/ do |cukes| x=1

@@ -1,8 +1,16 @@
 Feature: Background
-  In order to provide a context to my scenarios within a feature
-  As a feature editor
-  I want to write a background section in my features.
 
+  Often you find that several scenarios in the same feature start with 
+  a common context.
+  
+  Cucumber provides a mechanism for this, by providing a `Background` keyword
+  where you can specify steps that should be run before each scenario in the
+  feature. Typically these will be `Given` steps, but you can use any steps
+  that you need to.
+  
+  **Hint:** if you find that some of the scenarios don't fit the background,
+  consider splitting them into a separate feature.
+  
   Background:
     Given a file named "features/passing_background.feature" with:
       """

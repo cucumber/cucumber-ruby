@@ -1,4 +1,5 @@
 Feature: Usage formatter
+
   In order to see where step definitions are used
   Developers should be able to see a list of step definitions and their use
 

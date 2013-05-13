@@ -1,7 +1,7 @@
 <%
 rerun = File.file?('rerun.txt') ? IO.read('rerun.txt') : ""
 rerun_opts = rerun.to_s.strip.empty? ? "--format progress features" : "--format pretty #{rerun}"
-std_opts = "--format progress features --tags ~@wip"
+std_opts = "--format progress features --tags ~@wip -r features --strict"
 std_opts << " --tags ~@drb" if defined?(JRUBY_VERSION)
 begin
   require 'rspec/expectations'
@@ -21,3 +21,4 @@ ruby_2_0: <%= std_opts %> --tags ~@jruby
 wip: --wip <%= wip_opts %> features
 none: --format pretty
 rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip
+legacy: legacy_features -r legacy_features -f progress
