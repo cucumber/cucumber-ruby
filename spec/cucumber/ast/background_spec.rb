@@ -50,7 +50,7 @@ module Cucumber
           steps=[]
         )
         background.feature = @feature
-        @visitor.visit_background(background)
+        background.accept(@visitor)
         $x.should == 2
         $y.should == 10
       end
@@ -111,7 +111,7 @@ module Cucumber
            end
 
           # Assert
-          lambda{ @visitor.visit_background(background) }.should_not raise_error
+          lambda{ background.accept(@visitor) }.should_not raise_error
           background.should be_failed
         end
 

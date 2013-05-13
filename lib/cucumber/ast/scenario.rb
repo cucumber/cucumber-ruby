@@ -13,6 +13,7 @@ module Cucumber
 
       attr_reader   :feature_tags
       attr_accessor :feature
+      attr_reader   :comment, :tags, :keyword
 
       def initialize(language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps)
         @language, @location, @background, @comment, @tags, @feature_tags, @keyword, @title, @description, @raw_steps = language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps
@@ -23,15 +24,16 @@ module Cucumber
       def accept(visitor)
         return if Cucumber.wants_to_quit
 
-        visitor.visit_comment(@comment) unless @comment.empty?
-        visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, name, file_colon_line, source_indent(first_line_length))
-
-        skip_invoke! if @background.failed?
-        with_visitor(visitor) do
-          visitor.execute(self, skip_hooks?)
+        visitor.visit_feature_element(self) do
+          comment.accept(visitor)
+          tags.accept(visitor)
+          visitor.visit_scenario_name(keyword, name, file_colon_line, source_indent(first_line_length))
+          skip_invoke! if @background.failed?
+          with_visitor(visitor) do
+            visitor.execute(self, skip_hooks?)
+          end
+          @executed = true
         end
-        @executed = true
       end
 
       def to_units(background)

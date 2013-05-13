@@ -11,12 +11,16 @@ module Cucumber
 
       attr_accessor :feature
       attr_reader :feature_tags
+      attr_reader :comment, :tags, :keyword
 
       module ExamplesArray #:nodoc:
         def accept(visitor)
+          return if self.empty?
           return if Cucumber.wants_to_quit
-          each do |examples|
-            visitor.visit_examples(examples)
+          visitor.visit_examples_array(self) do
+            each do |examples|
+              examples.accept(visitor)
+            end
           end
         end
       end
@@ -35,14 +39,14 @@ module Cucumber
       def accept(visitor)
         return if Cucumber.wants_to_quit
         raise_missing_examples_error unless @example_sections
-
-        visitor.visit_comment(@comment) unless @comment.empty?
-        visitor.visit_tags(@tags)
-        visitor.visit_scenario_name(@keyword, name, file_colon_line, source_indent(first_line_length))
-        visitor.visit_steps(steps)
-
-        skip_invoke! if @background.failed?
-        visitor.visit_examples_array(examples_array) unless examples_array.empty?
+        visitor.visit_feature_element(self) do
+          comment.accept(visitor)
+          tags.accept(visitor)
+          visitor.visit_scenario_name(keyword, name, file_colon_line, source_indent(first_line_length))
+          steps.accept(visitor)
+          skip_invoke! if @background.failed?
+          examples_array.accept(visitor)
+        end
       end
 
       def to_units(background)
@@ -65,11 +69,7 @@ module Cucumber
 
       def step_invocations(cells)
         step_invocations = steps.step_invocations_from_cells(cells)
-        if @background
-          @background.step_collection(step_invocations)
-        else
-          StepCollection.new(step_invocations)
-        end
+        @background.step_collection(step_invocations)
       end
 
       def each_example_row(&proc)
