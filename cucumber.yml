@@ -11,6 +11,10 @@ rescue LoadError
   std_opts << ' --tags ~@rspec2'
 end
 wip_opts = "--color --tags @wip:3"
+
+
+legacy_opts = ''
+legacy_opts << " --tags ~@wire" if defined?(JRUBY_VERSION)
 %>
 default: <%= std_opts %> --tags ~@jruby --dotcucumber features/.cucumber
 jruby: <%= std_opts %> --tags ~@spork --tags ~@wire
@@ -21,4 +25,4 @@ ruby_2_0: <%= std_opts %> --tags ~@jruby
 wip: --wip <%= wip_opts %> features
 none: --format pretty
 rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip
-legacy: legacy_features -r legacy_features -f progress
+legacy: legacy_features -r legacy_features -f progress <%= legacy_opts %>
