@@ -121,6 +121,7 @@ module Cucumber
       @support_code.unknown_programming_language?
     end
 
+    # TODO: this code is untested
     def write_stepdefs_json
       if(@configuration.dotcucumber)
         stepdefs = []

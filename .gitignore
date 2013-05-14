@@ -27,3 +27,4 @@ doc/
 *.tgz
 Gemfile.lock
 tags
+features/.cucumber/stepdefs.json
