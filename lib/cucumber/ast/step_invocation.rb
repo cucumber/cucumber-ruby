@@ -6,8 +6,6 @@ require 'gherkin/rubify'
 module Cucumber
   module Ast
     class StepInvocation #:nodoc:
-      include Gherkin::Rubify
-
       attr_writer :step_collection, :background
       attr_reader :name, :matched_cells, :status, :reported_exception
       attr_accessor :exception
@@ -146,11 +144,36 @@ module Cucumber
       end
 
       def actual_keyword
-        repeat_keywords = rubify([language.keywords('but'), language.keywords('and')]).flatten.uniq.reject{|kw| kw == '* '}
-        if repeat_keywords.index(@step.keyword) && previous
+        keywords = Keywords.new(language)
+        if keywords.repeat_keyword?(keyword) && previous
           previous.actual_keyword
         else
-          keyword == '* ' ? language.code_keywords.first : keyword
+          keyword == '* ' ? keywords.star_code_keyword : keyword
+        end
+      end
+
+      class Keywords
+        include Gherkin::Rubify
+
+        def initialize(language)
+          @language = language
+        end
+
+        def repeat_keyword?(keyword)
+          repeat_keywords.index(keyword)
+        end
+
+        def star_code_keyword
+          # TODO: Is all of this necessary?
+          language.code_keywords.reject { |k| repeat_keywords.map(&:strip).include?(k) }.first
+        end
+
+        attr_reader :language
+        private     :language
+
+        private
+        def repeat_keywords
+          rubify([language.keywords('but'), language.keywords('and')]).flatten.uniq.reject{|kw| kw == '* '}
         end
       end
 
