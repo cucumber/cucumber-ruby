@@ -1,19 +1,19 @@
-Feature: --expand option
-  In order to make it easier to writhe certain editor plugins
-  and also for some people to understand scenarios, Cucumber
-  should expand examples in outlines.
+Feature: Scenario outlines --expand option
 
-  Background:
-    Given a standard Cucumber project directory structure
-    And a file named "features/expand_me.feature" with:
+  In order to make it easier to write certain editor plugins and also
+  for some people to understand scenarios, Cucumber will expand examples
+  in outlines if you add the `--expand` option when running them.
+
+  Scenario:
+    Given a file named "features/expand_me.feature" with:
       """
       Feature: submit guess
 
-        Background: 
+        Background:
           Given the players' names:
             | maker    | breaker   |
             | Moriarty | Holmes    |
- 
+
         Scenario Outline: submit guess
           Given the secret code is <code>
           When I guess <guess>
@@ -24,11 +24,9 @@ Feature: --expand option
           | r g y c | r g y c | bbbb |
           | r g y c | r g c y | bbww |
       """
-
-  Scenario: Expand the outline
-    When I run cucumber -i -q --expand features/expand_me.feature
-    Then STDERR should be empty
-    And it should pass with
+    When I run `cucumber -i -q --expand features/expand_me.feature`
+    Then the stderr should not contain anything
+    And it should pass with:
       """
       Feature: submit guess
 
@@ -56,5 +54,4 @@ Feature: --expand option
 
       2 scenarios (2 undefined)
       8 steps (8 undefined)
-      
       """
