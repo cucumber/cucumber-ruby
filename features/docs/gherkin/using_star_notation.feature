@@ -34,8 +34,4 @@ Feature: Using star notation instead of Given/When/Then
       Given(/^I have some cukes$/) do
         pending # express the regexp above with the code you wish you had
       end
-
-      If you want snippets in a different programming language,
-      just make sure a file with the appropriate file extension
-      exists where cucumber looks for step definitions.
       """
