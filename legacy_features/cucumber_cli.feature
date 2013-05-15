@@ -2,93 +2,6 @@ Feature: Cucumber command line
   In order to write better software
   Developers should be able to execute requirements as tests
 
-  Scenario: Run single scenario with missing step definition
-    When I run cucumber -q features/sample.feature:5
-    Then it should pass with      
-      """
-      # Feature comment
-      @one
-      Feature: Sample
-
-        @two @three
-        Scenario: Missing
-          Given missing
-
-      1 scenario (1 undefined)
-      1 step (1 undefined)
-
-      """
-
-  Scenario: Fail with --strict
-    When I run cucumber -q features/sample.feature:5 --strict
-    Then it should fail with
-      """
-      # Feature comment
-      @one
-      Feature: Sample
-
-        @two @three
-        Scenario: Missing
-          Given missing
-            Undefined step: "missing" (Cucumber::Undefined)
-            features/sample.feature:7:in `Given missing'
-
-      1 scenario (1 undefined)
-      1 step (1 undefined)
-
-      """
-
-  Scenario: Succeed with --strict
-    When I run cucumber -q features/sample.feature:10 --strict
-    Then it should pass with
-    """
-    # Feature comment
-    @one
-    Feature: Sample
-
-      # Scenario comment
-      @three
-      Scenario: Passing
-        Given passing
-          | a | b |
-          | c | d |
-
-    1 scenario (1 passed)
-    1 step (1 passed)
-
-    """
-
-  Scenario: Specify 2 line numbers where one is a tag
-    When I run cucumber -q features/sample.feature:5:16
-    Then it should fail with
-      """
-      # Feature comment
-      @one
-      Feature: Sample
-
-        @two @three
-        Scenario: Missing
-          Given missing
-
-        @four
-        Scenario: Failing
-          Given failing
-            \"\"\"
-            hello
-            \"\"\"
-            FAIL (RuntimeError)
-            ./features/step_definitions/sample_steps.rb:2:in `flunker'
-            ./features/step_definitions/sample_steps.rb:9:in `/^failing$/'
-            features/sample.feature:18:in `Given failing'
-      
-      Failing Scenarios:
-      cucumber features/sample.feature:17
-      
-      2 scenarios (1 failed, 1 undefined)
-      2 steps (1 failed, 1 undefined)
-
-      """
-
   Scenario: Require missing step definition from elsewhere
     When I run cucumber -q -r ../../legacy_features/step_definitions/extra_steps.rb features/sample.feature:5
     Then it should pass with
@@ -100,26 +13,6 @@ Feature: Cucumber command line
         @two @three
         Scenario: Missing
           Given missing
-
-      1 scenario (1 passed)
-      1 step (1 passed)
-
-      """
-
-  Scenario: Specify the line number of a row
-    When I run cucumber -q features/sample.feature:12
-    Then it should pass with
-      """
-      # Feature comment
-      @one
-      Feature: Sample
-
-        # Scenario comment
-        @three
-        Scenario: Passing
-          Given passing
-            | a | b |
-            | c | d |
 
       1 scenario (1 passed)
       1 step (1 passed)
