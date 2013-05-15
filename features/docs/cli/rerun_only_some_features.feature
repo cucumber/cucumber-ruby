@@ -1,12 +1,13 @@
-Feature: Rerun Debugger
-  In order to save time
-  I want to run *only* failed, pending and missing features from previous runs
-  (with the help of a smart cucumber.yml)
+Feature: Rerun only certain features
 
-  Background:
-    Given a standard Cucumber project directory structure
+  In order to save time, Cucumber allows you do run *only* failed,
+  pending and missing features from previous runs (with the help of a
+  smart cucumber.yml file.)
 
-  Scenario: title
+  The examples below show which features will be rerun through the use
+  of a special `rerun` formatter.
+
+  Scenario:
     Given a file named "features/sample.feature" with:
       """
       Feature: Rerun
@@ -44,9 +45,8 @@ Feature: Rerun Debugger
       end
       """
 
-    When I run cucumber -f rerun features/sample.feature features/all_good.feature
-    Then it should fail with
+    When I run `cucumber -f rerun features/sample.feature features/all_good.feature`
+    Then it should fail with:
       """
       features/sample.feature:3:6:9
-
       """
