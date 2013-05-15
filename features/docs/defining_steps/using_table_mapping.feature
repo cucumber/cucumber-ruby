@@ -1,10 +1,15 @@
 Feature: Table mapping
-  Scenario: Mapping table shouldn't change output
-    Given a standard Cucumber project directory structure
-    And a file named "features/f.feature" with:
+
+  When using the `map_headers!` and `map_column!` methods to change the
+  labels in our step definition code, the table output when cucumber is
+  run is unchanged. This ensures that readers of the feature output who
+  aren't familiar with code aren't confused by what they see.
+
+  Scenario:
+    Given a file named "features/f.feature" with:
       """
-      Feature: F
-        Scenario: S
+      Feature: with table
+        Scenario:
           Given a table:
             | who   |
             | aslak |
@@ -17,18 +22,17 @@ Feature: Table mapping
         table.hashes.should == [{"Who"=>"Joe"}]
       }
       """
-    When I run cucumber features/f.feature
-    Then STDERR should be empty
-    And it should pass with
+    When I run `cucumber features/f.feature`
+    Then the stderr should not contain anything
+    And it should pass with:
       """
-      Feature: F
+      Feature: with table
 
-        Scenario: S      # features/f.feature:2
+        Scenario:        # features/f.feature:2
           Given a table: # features/step_definitions/steps.rb:1
             | who   |
             | aslak |
 
       1 scenario (1 passed)
       1 step (1 passed)
-      
       """
