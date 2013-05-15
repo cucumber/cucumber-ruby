@@ -4,6 +4,35 @@ Feature: Snippets
   snippet suggestion, which you can then paste into a step definitions
   file of your choosing.
 
+  Scenario: Cucumber doesn't know what language, and defaults to Ruby
+    Given a file named "features/x.feature" with:
+      """
+      Feature: X
+        Scenario: Y
+          Given Z
+          Given Q
+      """
+    When I run `cucumber features`
+    Then the stderr should not contain anything
+    And it should pass with:
+      """
+      You can implement step definitions for undefined steps with these snippets:
+
+      Given(/^Z$/) do
+        pending # express the regexp above with the code you wish you had
+      end
+
+      Given(/^Q$/) do
+        pending # express the regexp above with the code you wish you had
+      end
+
+      If you want snippets in a different programming language,
+      just make sure a file with the appropriate file extension
+      exists where cucumber looks for step definitions.
+
+
+      """
+
   Scenario: Snippet for undefined step with a pystring
     Given a file named "features/undefined_steps.feature" with:
       """
