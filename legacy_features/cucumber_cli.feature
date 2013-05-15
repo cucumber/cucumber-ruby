@@ -2,26 +2,6 @@ Feature: Cucumber command line
   In order to write better software
   Developers should be able to execute requirements as tests
 
-  Scenario: Use @-notation to specify a file containing feature file list
-    When I run cucumber -q @list-of-features.txt
-    Then it should pass with
-      """
-      # Feature comment
-      @one
-      Feature: Sample
-
-        # Scenario comment
-        @three
-        Scenario: Passing
-          Given passing
-            | a | b |
-            | c | d |
-
-      1 scenario (1 passed)
-      1 step (1 passed)
-
-      """
-
   Scenario: Multiple formatters and outputs
     When I run cucumber --format progress --out tmp/progress.txt --format pretty --out tmp/pretty.txt --no-source --dry-run --no-snippets features/lots_of_undefined.feature
     Then STDERR should be empty

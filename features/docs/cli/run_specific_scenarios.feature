@@ -1,6 +1,7 @@
 Feature: Run specific scenarios
 
-  You can choose to run a specific scenario using the file:line format
+  You can choose to run a specific scenario using the file:line format,
+  or you can pass in a file with a list of scenarios using @-notation.
 
   Background:
     Given a file named "features/step_definitions/steps.rb" with:
@@ -106,4 +107,27 @@ Feature: Run specific scenarios
       1 scenario (1 passed)
       1 step (1 passed)
 
+      """
+
+  Scenario: Use @-notation to specify a file containing feature file list
+    Given a file named "features/test.feature" with:
+      """
+      Feature: Sample
+        Scenario: Passing
+          Given passing
+      """
+    And a file named "list-of-features.txt" with:
+      """
+      features/test.feature:2
+      """
+    When I run `cucumber -q @list-of-features.txt`
+    Then it should pass with:
+      """
+      Feature: Sample
+
+        Scenario: Passing
+          Given passing
+
+      1 scenario (1 passed)
+      1 step (1 passed)
       """
