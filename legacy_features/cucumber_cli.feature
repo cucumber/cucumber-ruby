@@ -2,23 +2,6 @@ Feature: Cucumber command line
   In order to write better software
   Developers should be able to execute requirements as tests
 
-  Scenario: Require missing step definition from elsewhere
-    When I run cucumber -q -r ../../legacy_features/step_definitions/extra_steps.rb features/sample.feature:5
-    Then it should pass with
-      """
-      # Feature comment
-      @one
-      Feature: Sample
-
-        @two @three
-        Scenario: Missing
-          Given missing
-
-      1 scenario (1 passed)
-      1 step (1 passed)
-
-      """
-
   Scenario: Use @-notation to specify a file containing feature file list
     When I run cucumber -q @list-of-features.txt
     Then it should pass with
