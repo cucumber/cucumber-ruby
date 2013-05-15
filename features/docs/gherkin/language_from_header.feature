@@ -1,11 +1,11 @@
-Feature: Language from header
-  In order to simplify command line and
-  settings in IDEs, Cucumber should pick
-  up parser language from a header.
-  
+Feature: Choosing the language from the feature file header
+
+  In order to simplify command line and settings in IDEs, Cucumber picks
+  up the parser language from a `# language` comment at the beginning of
+  any feature file. See the examples below for the exact syntax.
+
   Scenario: LOLCAT
-    Given a standard Cucumber project directory structure
-    And a file named "features/lolcat.feature" with:
+    Given a file named "features/lolcat.feature" with:
       """
       # language: en-lol
       OH HAI: STUFFING
@@ -13,8 +13,8 @@ Feature: Language from header
         MISHUN: CUKES
           DEN KTHXBAI
       """
-    When I run cucumber -i features/lolcat.feature
-    Then it should pass with
+    When I run `cucumber -i features/lolcat.feature`
+    Then it should pass with:
       """
       # language: en-lol
       OH HAI: STUFFING
