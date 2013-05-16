@@ -7,76 +7,83 @@ Feature: Using descriptions to give features context
   You can also write descriptions attached to individual scenarios - see
   the examples below for how this can be used.
 
-  It's possible to have your descriptions run over more than one line
-  and you can have blank lines too, as long as you don't mention a
-  word such as Given, When, Then, Background:, Scenario: or similar,
-  otherwise Gherkin will start to pay attention.
+  It's possible to have your descriptions run over more than one line,
+  and you can have blank lines too. As long as you don't start a line
+  with a Given, When, Then, Background:, Scenario: or similar, you're
+  fine: otherwise Gherkin will start to pay attention.
 
-  Scenario: Multiline scenario
-    Given a file named "features/multiline_name.feature" with:
+  Background:
+    Given a file named "features/step_definitions/steps.rb" with:
     """
-    Feature: multiline
+    Given(/passing/) { }
+    """
 
-      We can put a useful description here of the feature.
+  Scenario:
+    Given a file named "features/test.feature" with:
+    """
+    Feature: descriptions everywhere
+
+      We can put a useful description here of the feature, which can
+      span multiple lines.
 
       Background:
-        We can also put descriptions of what the background is doing...
+
+        We can also put in descriptions showing what the background is
+        doing.
+
         Given passing without a table
 
-      Scenario: I'm a multiline name
-        ...and also put descriptions in front of the scenarios.
+      Scenario: I'm a scenario with a description
+
+        You can also put descriptions in front of individual scenarios.
+
         Given passing without a table
 
-      Scenario Outline: I'm a multiline name
-        Scenario outlines can also have descriptions...
+      Scenario Outline: I'm a scenario outline with a description
+
+        Scenario outlines can have descriptions.
+
         Given <state> without a table
         Examples: Examples
-          | state |
-          |passing|
 
-      Scenario Outline: name
-        Given <state> without a table
-        Examples: I'm a multiline name
-          ...as can the specific examples for an outline.
+          Specific examples for an outline are allowed to have
+          descriptions, too.
+
           | state |
           |passing|
     """
-    And a file named "features/step_definitions/steps.rb" with:
-    """
-    Given(/^passing without a table$/) do end
-    """
-    When I run `cucumber features/multiline_name.feature --no-snippets`
+    When I run `cucumber -q`
     Then the stderr should not contain anything
     Then it should pass with:
     """
-    Feature: multiline
+    Feature: descriptions everywhere
       
-      We can put a useful description here of the feature.
+      We can put a useful description here of the feature, which can
+      span multiple lines.
 
-      Background:                                                       # features/multiline_name.feature:5
-        We can also put descriptions of what the background is doing...
-        Given passing without a table                                   # features/step_definitions/steps.rb:1
+      Background: 
+        
+        We can also put in descriptions showing what the background is
+        doing.
+        Given passing without a table
 
-      Scenario: I'm a multiline name                            # features/multiline_name.feature:9
-        ...and also put descriptions in front of the scenarios.
-        Given passing without a table                           # features/step_definitions/steps.rb:1
+      Scenario: I'm a scenario with a description
+        
+        You can also put descriptions in front of individual scenarios.
+        Given passing without a table
 
-      Scenario Outline: I'm a multiline name            # features/multiline_name.feature:13
-        Scenario outlines can also have descriptions...
-        Given <state> without a table                   # features/step_definitions/steps.rb:1
+      Scenario Outline: I'm a scenario outline with a description
+        
+        Scenario outlines can have descriptions.
+        Given <state> without a table
 
         Examples: Examples
+          
+          Specific examples for an outline are allowed to have
+          descriptions, too.
           | state   |
           | passing |
 
-      Scenario Outline: name          # features/multiline_name.feature:20
-        Given <state> without a table # features/step_definitions/steps.rb:1
-
-        Examples: I'm a multiline name
-          ...as can the specific examples for an outline.
-          | state   |
-          | passing |
-
-    3 scenarios (3 passed)
-    6 steps (6 passed)
+    2 scenarios (2 passed)
+    4 steps (4 passed)
     """
