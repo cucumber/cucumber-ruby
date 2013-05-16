@@ -6,8 +6,8 @@ Feature: Run specific scenarios
   Background:
     Given a file named "features/step_definitions/steps.rb" with:
       """
-      Given(/pass/) {}
-      Given(/fail/) { raise "Failed" }
+      Given(/failing/) { fail }
+      Given(/passing/) { }
       Given(/table/) { |t| }
       """
 
@@ -19,7 +19,7 @@ Feature: Run specific scenarios
           Given this is undefined
 
         Scenario: Hit
-          Given this passes
+          Given passing
       """
     When I run `cucumber features/test.feature:5 -f progress`
     Then it should pass with:
@@ -37,10 +37,10 @@ Feature: Run specific scenarios
           Examples:
             | something    |
             | is undefined |
-            | fails        |
+            | failing      |
 
         Scenario: Miss
-          Given this passes
+          Given passing
       """
     When I run `cucumber features/test.feature:8 -f progress`
     Then it should fail with:
@@ -73,8 +73,8 @@ Feature: Run specific scenarios
         @four
         Scenario: Failing
           Given failing
-            Failed (RuntimeError)
-            ./features/step_definitions/steps.rb:2:in `/fail/'
+             (RuntimeError)
+            ./features/step_definitions/steps.rb:1:in `/failing/'
             features/test.feature:9:in `Given failing'
 
       Failing Scenarios:
