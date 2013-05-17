@@ -5,53 +5,42 @@ Feature: Scenario outlines --expand option
   in outlines if you add the `--expand` option when running them.
 
   Scenario:
-    Given a file named "features/expand_me.feature" with:
+    Given a file named "features/test.feature" with:
       """
-      Feature: submit guess
-
-        Background:
-          Given the players' names:
-            | maker    | breaker   |
-            | Moriarty | Holmes    |
-
-        Scenario Outline: submit guess
+      Feature:
+        Scenario Outline:
           Given the secret code is <code>
           When I guess <guess>
-          Then the mark should be <mark>
+          Then I am <verdict>
 
-        Examples: all colors correct
-          | code    | guess   | mark |
-          | r g y c | r g y c | bbbb |
-          | r g y c | r g c y | bbww |
+        Examples:
+          | code | guess | verdict |
+          | blue | blue  | right   |
+          | red  | blue  | wrong   |
       """
-    When I run `cucumber -i -q --expand features/expand_me.feature`
+    When I run `cucumber -i -q --expand`
     Then the stderr should not contain anything
     And it should pass with:
       """
-      Feature: submit guess
+      Feature: 
 
-        Background: 
-          Given the players' names:
-            | maker    | breaker |
-            | Moriarty | Holmes  |
-
-        Scenario Outline: submit guess
+        Scenario Outline: 
           Given the secret code is <code>
           When I guess <guess>
-          Then the mark should be <mark>
+          Then I am <verdict>
 
-          Examples: all colors correct
+          Examples: 
 
-            Scenario: | r g y c | r g y c | bbbb |
-              Given the secret code is r g y c
-              When I guess r g y c
-              Then the mark should be bbbb
+            Scenario: | blue | blue | right |
+              Given the secret code is blue
+              When I guess blue
+              Then I am right
 
-            Scenario: | r g y c | r g c y | bbww |
-              Given the secret code is r g y c
-              When I guess r g c y
-              Then the mark should be bbww
+            Scenario: | red | blue | wrong |
+              Given the secret code is red
+              When I guess blue
+              Then I am wrong
 
       2 scenarios (2 undefined)
-      8 steps (8 undefined)
+      6 steps (6 undefined)
       """
