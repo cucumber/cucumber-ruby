@@ -48,6 +48,7 @@ Feature: Run specific scenarios
       1 scenario (1 failed)
       """
 
+  @spawn
   Scenario: Specify 2 line numbers where one is a tag
     Given a file named "features/test.feature" with:
       """
