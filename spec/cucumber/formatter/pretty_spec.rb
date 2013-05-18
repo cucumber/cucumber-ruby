@@ -93,6 +93,38 @@ module Cucumber
 
           end
 
+          # To ensure https://rspec.lighthouseapp.com/projects/16211/tickets/475 remains fixed.
+          describe "with a scenario outline with a pystring" do
+            define_feature <<-FEATURE
+          Feature:
+            Scenario Outline: Monkey eats a balanced diet
+              Given a multiline string:
+                """
+                Monkeys eat <things>
+                """
+
+              Examples:
+               | things |
+               | apples |
+            FEATURE
+
+            it "outputs the scenario outline" do
+              lines = <<-OUTPUT
+              Given a multiline string:
+                """
+                Monkeys eat <things>
+                """
+
+              Examples:
+               | things |
+               | apples |
+              OUTPUT
+              lines.split("\n").each do |line|
+                @out.string.should include line.strip
+              end
+            end
+          end
+
           describe "with a step with a py string" do
             define_feature <<-FEATURE
           Feature: Traveling circus
@@ -281,7 +313,6 @@ OUTPUT
             it "has 4 undefined steps" do
               @out.string.should include "4 steps (4 undefined)"
             end
-
           end
 
           describe "with a step with a py string" do
