@@ -61,3 +61,9 @@ Feature: Tag logic
       3 steps (3 undefined)
 
       """
+
+  Scenario: Limiting with tags which do not exist in the features
+    Originally added to check [Lighthouse bug #464](https://rspec.lighthouseapp.com/projects/16211/tickets/464).
+
+    When I run `cucumber -q -t @i_dont_exist features/tagulicious.feature`
+    Then it should pass
