@@ -1,23 +1,25 @@
-Feature: Listener Debugger
-  In order to easily visualise the listener API
-  As a developer
-  I want a formatter that prints the calls to the listener as a feature is run
+Feature: Debug formatter
+
+  In order to help you easily visualise the listener API, you can use
+  the `debug` formatter that prints the calls to the listener as a
+  feature is run.
 
   Background:
-    Given a standard Cucumber project directory structure
+    Given a file named "features/step_definitions/steps.rb" with:
+      """
+      Given(/passing/) { }
+      """
 
   Scenario: title
-    Given a file named "features/sample.feature" with:
+    Given a file named "features/test.feature" with:
       """
-      Feature: Sample
-
-        Scenario: Sample
-          Given Sample
-
+      Feature:
+        Scenario:
+          Given passing
       """
-    When I run cucumber -f debug features/sample.feature
-    Then STDERR should be empty
-    Then it should pass with
+    When I run `cucumber -f debug`
+    Then the stderr should not contain anything
+    Then it should pass with:
       """
       before_features
         before_feature
@@ -38,5 +40,4 @@ Feature: Listener Debugger
           after_feature_element
         after_feature
       after_features
-
       """
