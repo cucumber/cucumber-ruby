@@ -9,9 +9,11 @@ module Cucumber
       end
 
       def accept(visitor)
-        visitor.visit_step_name(@keyword, @step_match, @status, @source_indent, @background, @file_colon_line)
-        visitor.visit_multiline_arg(@multiline_arg) if @multiline_arg
-        visitor.visit_exception(@exception, @status) if @exception
+        visitor.step_result(self) do
+          visitor.visit_step_name(@keyword, @step_match, @status, @source_indent, @background, @file_colon_line)
+          visitor.visit_multiline_arg(@multiline_arg) if @multiline_arg
+          visitor.visit_exception(@exception, @status) if @exception
+        end
       end
 
       def args

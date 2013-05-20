@@ -21,12 +21,6 @@ module Cucumber
         broadcast_message(message, *args, &block)
       end
 
-      def visit_step_result(step_result)
-        broadcast(step_result) do
-          step_result.accept(self)
-        end
-      end
-
       def visit_multiline_arg(multiline_arg) #:nodoc:
         broadcast(multiline_arg) do
           multiline_arg.accept(self)

@@ -35,23 +35,8 @@ module Cucumber
         return if Cucumber.wants_to_quit
         visitor.visit_step(self) do # TODO: consider using visit_step_invocation here
           invoke(visitor.runtime, visitor.configuration)
-          visit_step_result(visitor)
+          step_result.accept(visitor)
         end
-      end
-
-      def visit_step_result(visitor)
-        visitor.visit_step_result(
-          StepResult.new(
-            keyword,
-            @step_match,
-            (@different_table || @multiline_arg),
-            @status,
-            @reported_exception,
-            source_indent,
-            @background,
-            file_colon_line
-          )
-        )
       end
 
       def invoke(runtime, configuration)
@@ -232,6 +217,21 @@ module Cucumber
 
       def to_sexp
         [:step_invocation, @step.line, @step.keyword, @name, (@multiline_arg.nil? ? nil : @multiline_arg.to_sexp)].compact
+      end
+
+      private
+
+      def step_result
+        StepResult.new(
+          keyword,
+          @step_match,
+          (@different_table || @multiline_arg),
+          @status,
+          @reported_exception,
+          source_indent,
+          @background,
+          file_colon_line
+        )
       end
     end
   end
