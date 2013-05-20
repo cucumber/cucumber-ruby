@@ -107,32 +107,47 @@ module Cucumber
         end
       end
 
-      # This constant is appended to by Cuke4Duke. Do not change its name
-      BACKTRACE_FILTER_PATTERNS = [/vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\/|minitest|test\/unit/]
-      if(Cucumber::JRUBY)
-        BACKTRACE_FILTER_PATTERNS << /org\/jruby/
-      end
-      PWD_PATTERN = /#{Regexp.escape(Dir.pwd)}\//m
-
-      # This is to work around double ":in " segments in JRuby backtraces. JRuby bug?
       def filter_backtrace(e)
-        return e if Cucumber.use_full_backtrace
-        e.backtrace.each{|line| line.gsub!(PWD_PATTERN, "./")}
-
-        filtered = (e.backtrace || []).reject do |line|
-          BACKTRACE_FILTER_PATTERNS.detect { |p| line =~ p }
-        end
-
-        if ENV['CUCUMBER_TRUNCATE_OUTPUT']
-          # Strip off file locations
-          filtered = filtered.map do |line|
-            line =~ /(.*):in `/ ? $1 : line
-          end
-        end
-
-        e.set_backtrace(filtered)
+				unless Cucumber.use_full_backtrace
+					e.set_backtrace(BacktraceFilter.new(e.backtrace).filtered_backtrace)
+				end
         e
       end
+
+			class BacktraceFilter
+        BACKTRACE_FILTER_PATTERNS = [/vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\/|minitest|test\/unit|\/\.gem\//]
+        if(Cucumber::JRUBY)
+          BACKTRACE_FILTER_PATTERNS << /org\/jruby/
+        end
+        PWD_PATTERN = /#{Regexp.escape(Dir.pwd)}\//m
+
+        # This is to work around double ":in " segments in JRuby backtraces. JRuby bug?
+				def initialize(original_backtrace)
+					@raw = original_backtrace
+				end
+
+				def	filtered_backtrace
+	  			@raw.each{|line| line.gsub!(PWD_PATTERN, "./")}
+
+          filtered = (@raw || []).reject do |line|
+            BACKTRACE_FILTER_PATTERNS.detect { |p| line =~ p }
+          end
+
+          if ENV['CUCUMBER_TRUNCATE_OUTPUT']
+            # Strip off file locations
+            filtered = filtered.map do |line|
+              line =~ /(.*):in `/ ? $1 : line
+            end
+          end
+
+					filtered
+				end
+
+				private
+
+				attr_reader :e
+				
+			end
 
       def status!(status)
         @status = status
