@@ -1,9 +1,8 @@
 # encoding: utf-8
 
 Then(/^cucumber lists all the supported languages$/) do
-  all_output.should include("Arabic")
-  all_output.should include("български")
-  all_output.should include("Pirate")
-  all_output.should include("English")
-  all_output.should include("日本語")
+  sample_languages = ["Arabic", "български", "Pirate", "English", "日本語"]
+  sample_languages.each do |language|
+    all_output.force_encoding('utf-8').should include(language)
+  end
 end
