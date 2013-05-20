@@ -1,4 +1,4 @@
-## In git
+## In git master
 
 ### Features removed
 
@@ -6,8 +6,7 @@
 * Remove support for i18n nested step methods (Matt Wynne)
 * Remove experimental .js and .py support (Matt Wynne)
 
-## [1.3.x
-latest](https://github.com/cucumber/cucumber/compare/v1.3.1...v1.3.x-bugfix)
+## [1.3.x latest](https://github.com/cucumber/cucumber/compare/v1.3.1...v1.3.x-bugfix)
 
 ### Bugfixes
 * Fixed ugly NoMethodError when a Scenario Outline has no Examples
