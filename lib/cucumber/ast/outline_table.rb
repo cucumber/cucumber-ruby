@@ -5,8 +5,8 @@ module Cucumber
         super(raw)
         @scenario_outline = scenario_outline
         @cells_class = ExampleRow
-        example_rows.each do |cells|
-          cells.create_step_invocations!(scenario_outline)
+        example_rows.each do |example_row|
+          example_row.create_step_invocations!(scenario_outline)
         end
       end
 
