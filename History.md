@@ -1,7 +1,6 @@
-## [1.3.x
-latest](https://github.com/cucumber/cucumber/compare/v1.3.2...v1.3.x-bugfix)
+## [1.3.x latest](https://github.com/cucumber/cucumber/compare/v1.3.2...v1.3.x-bugfix)
 
-## [1.3.1](https://github.com/cucumber/cucumber/compare/v1.3.1...v1.3.2)
+## [1.3.2](https://github.com/cucumber/cucumber/compare/v1.3.1...v1.3.2)
 
 ### Bugfixes
 * Fixed ugly NoMethodError when a Scenario Outline has no Examples
