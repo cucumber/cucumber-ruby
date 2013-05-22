@@ -1,10 +1,15 @@
-## In git master
+## [In git master](https://github.com/cucumber/cucumber/compare/v1.3.2...master)
 
 ### Features removed
 
 * Removed deprecated StepMother and Ast::Visitor classes (Matt Wynne)
 * Remove support for i18n nested step methods (Matt Wynne)
 * Remove experimental .js and .py support (Matt Wynne)
+
+### API Changes
+
+* Formatter API changed for `before_step_result` and `after_step_result`, now
+  expects an Ast::StepResult. (Steve Tooke)
 
 ## [1.3.x latest](https://github.com/cucumber/cucumber/compare/v1.3.2...v1.3.x-bugfix)
 
