@@ -22,7 +22,6 @@ module Cucumber
       end
 
       def accept(visitor)
-        return if Cucumber.wants_to_quit
         visitor.visit_features(self) do
           start = Time.now
           self.each do |feature|

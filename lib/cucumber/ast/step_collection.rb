@@ -14,7 +14,6 @@ module Cucumber
       end
 
       def accept(visitor)
-        return if Cucumber.wants_to_quit
         visitor.visit_steps(self) do
           @steps.each do |step|
             step.accept(visitor)

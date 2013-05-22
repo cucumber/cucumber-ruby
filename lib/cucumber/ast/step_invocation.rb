@@ -32,7 +32,6 @@ module Cucumber
       end
 
       def accept(visitor)
-        return if Cucumber.wants_to_quit
         visitor.visit_step(self) do # TODO: consider using visit_step_invocation here
           invoke(visitor.runtime, visitor.configuration)
           step_result.accept(visitor)

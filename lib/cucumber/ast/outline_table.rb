@@ -11,7 +11,6 @@ module Cucumber
       end
 
       def accept(visitor)
-        return if Cucumber.wants_to_quit
         visitor.visit_outline_table(self) do
           cells_rows.each do |row|
             row.accept(visitor)
@@ -84,7 +83,6 @@ module Cucumber
         end
 
         def accept(visitor)
-          return if Cucumber.wants_to_quit
           if visitor.configuration.expand? 
             accept_expand(visitor) 
           else

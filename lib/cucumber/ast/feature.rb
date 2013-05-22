@@ -30,7 +30,6 @@ module Cucumber
       end
 
       def accept(visitor)
-        return if Cucumber.wants_to_quit
         visitor.visit_feature(self) do
           comment.accept(visitor)
           tags.accept(visitor)

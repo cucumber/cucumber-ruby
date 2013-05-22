@@ -35,7 +35,6 @@ module Cucumber
       end
 
       def accept(visitor)
-        return if Cucumber.wants_to_quit
         visitor.visit_doc_string(self)
       end
 

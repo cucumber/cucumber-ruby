@@ -16,7 +16,6 @@ module Cucumber
       module ExamplesArray #:nodoc:
         def accept(visitor)
           return if self.empty?
-          return if Cucumber.wants_to_quit
           visitor.visit_examples_array(self) do
             each do |examples|
               examples.accept(visitor)
@@ -37,7 +36,6 @@ module Cucumber
       end
 
       def accept(visitor)
-        return if Cucumber.wants_to_quit
         raise_missing_examples_error unless @example_sections
         visitor.visit_feature_element(self) do
           comment.accept(visitor)

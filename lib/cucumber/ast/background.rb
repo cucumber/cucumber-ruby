@@ -36,7 +36,6 @@ module Cucumber
       end
 
       def accept(visitor)
-        return if Cucumber.wants_to_quit
         visitor.visit_background(self) do
           comment.accept(visitor)
           visitor.visit_background_name(@keyword, name, file_colon_line, source_indent(first_line_length))
