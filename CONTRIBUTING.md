@@ -53,6 +53,7 @@ Current release managers:
   * Matt Wynne
   * Aslak Hellesøy
   * Oleg Sukhodolsky
+  * Steve Tooke
 
 To grant release karma, issue the following command:
 
