@@ -22,7 +22,7 @@ module Cucumber
       end
 
       def step_invocations(background = false)
-        StepCollection.new(@steps.map{ |step|
+        StepInvocations.new(@steps.map{ |step|
           i = step.step_invocation
           i.background = background
           i
@@ -63,7 +63,7 @@ module Cucumber
         lengths = (@steps + [feature_element]).map{|e| e.text_length}
         lengths.max
       end
-
+      
       def exception
         @exception ||= ((failed = @steps.detect {|step| step.exception}) && failed.exception)
       end
