@@ -13,7 +13,7 @@ module Cucumber
 
       attr_reader   :feature_tags
       attr_accessor :feature
-      attr_reader   :comment, :tags, :keyword
+      attr_reader   :comment, :tags, :keyword, :background
 
       def initialize(language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps)
         @language, @location, @background, @comment, @tags, @feature_tags, @keyword, @title, @description, @raw_steps = language, location, background, comment, tags, feature_tags, keyword, title, description, raw_steps
@@ -26,7 +26,7 @@ module Cucumber
           comment.accept(visitor)
           tags.accept(visitor)
           visitor.visit_scenario_name(keyword, name, file_colon_line, source_indent(first_line_length))
-          skip_invoke! if @background.failed?
+          skip_invoke! if background.failed?
           with_visitor(visitor) do
             execute(visitor.runtime, visitor)
           end
@@ -36,7 +36,6 @@ module Cucumber
 
       def execute(runtime, visitor)
         runtime.with_hooks(self, skip_hooks?) do
-          skip_invoke! if failed?
           steps.accept(visitor)
         end
       end
@@ -53,6 +52,7 @@ module Cucumber
       def fail!(exception)
         @exception = exception
         @current_visitor.visit_exception(@exception, :failed)
+        skip_invoke!
       end
 
       # Returns true if all steps passed

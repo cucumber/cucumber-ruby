@@ -72,7 +72,7 @@ Feature: Exception in Before Block
       cucumber features/naughty_step_in_before.feature:6 # Scenario: Run a good step
 
       1 scenario (1 failed)
-      2 steps (1 skipped, 1 passed)
+      2 steps (2 skipped)
 
       """
 
