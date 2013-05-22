@@ -28,9 +28,16 @@ module Cucumber
           visitor.visit_scenario_name(keyword, name, file_colon_line, source_indent(first_line_length))
           skip_invoke! if @background.failed?
           with_visitor(visitor) do
-            visitor.execute(self, skip_hooks?)
+            execute(visitor.runtime, visitor)
           end
           @executed = true
+        end
+      end
+
+      def execute(runtime, visitor)
+        runtime.with_hooks(self, skip_hooks?) do
+          skip_invoke! if failed?
+          steps.accept(visitor)
         end
       end
 
