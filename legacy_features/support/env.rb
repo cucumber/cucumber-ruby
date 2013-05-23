@@ -1,3 +1,6 @@
+if ENV['SIMPLECOV']
+  ENV['SIMPLECOV'] = 'legacy features'
+end
 require 'rubygems'
 
 require 'tempfile'

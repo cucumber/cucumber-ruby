@@ -7,9 +7,12 @@ if defined? Encoding
   Encoding.default_internal = 'utf-8'
 end
 
-require 'rubygems'
-require 'bundler'
-Bundler.setup
+if ENV['SIMPLECOV']
+  require 'simplecov'
+  SimpleCov.start do
+    command_name 'rspec'
+  end
+end
 
 require 'cucumber'
 

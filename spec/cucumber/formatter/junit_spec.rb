@@ -23,6 +23,10 @@ module Cucumber::Formatter
       @formatter = TestDoubleJunitFormatter.new(runtime, '', {})
     end
 
+    after(:each) do
+      $stdout = STDOUT
+    end
+
     describe "should be able to strip control chars from cdata" do
       before(:each) do
         run_defined_feature

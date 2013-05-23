@@ -31,6 +31,8 @@ This document is a guide for those maintaining Cucumber, and others who would li
     bundle install
     bundle exec rake
 
+    To get code coverage results, run `bundle exec rake cov`
+
 ## Release Process
 
 * Bump the version number in `lib/cucumber/platform.rb`.
