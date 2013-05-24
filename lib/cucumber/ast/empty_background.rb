@@ -14,8 +14,8 @@ module Cucumber
         []
       end
 
-      def step_collection(step_invocations)
-        StepCollection.new(step_invocations)
+      def create_step_invocations(step_invocations)
+        StepInvocations.new(step_invocations)
       end
 
       def step_invocations
