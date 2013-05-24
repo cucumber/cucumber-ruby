@@ -26,7 +26,7 @@ module Cucumber
       end
 
       def step_count
-        units.inject(0) { |total, unit| total += unit.step_count }
+        units.inject(0) { |total, unit| total + unit.step_count }
       end
 
       def accept(visitor)
@@ -35,9 +35,8 @@ module Cucumber
           comment.accept(visitor)
           tags.accept(visitor)
           visitor.visit_feature_name(@keyword, indented_name)
-          background.accept(visitor)
-          @feature_elements.each do |feature_element|
-            feature_element.accept(visitor)
+          units.each do |unit|
+            unit.execute(visitor)
           end
         end
       end
@@ -87,16 +86,39 @@ module Cucumber
         sexp
       end
 
-      private
-
       attr_reader :background
 
+      private
+
       def units
-        @units ||= @feature_elements.map do |element| 
-          element.to_units(background)
-        end.flatten
+        # TODO: here is a conflict between execution's implementation and step_count' implementation
+        # step_count thinks that we call background for every feature element, but in fact we call it only once
+        # per-feature
+        [background.to_units, FeatureUnit.new(self)].flatten
       end
 
+      class FeatureUnit
+        def initialize(feature)
+          @feature = feature
+        end
+
+        def step_count
+          units.inject(0) { |total, unit| total + unit.step_count }
+        end
+
+        def execute(visitor)
+          @feature.feature_elements.each do |feature_element|
+            feature_element.accept(visitor)
+          end
+        end
+
+        private
+        def units
+          @units ||= @feature.feature_elements.flat_map do |element|
+            element.to_units(@feature.background)
+          end.flatten
+        end
+      end
     end
   end
 end

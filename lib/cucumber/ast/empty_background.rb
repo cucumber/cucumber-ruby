@@ -27,6 +27,10 @@ module Cucumber
 
       def accept(visitor)
       end
+
+      def to_units
+        []
+      end
     end
   end
 end

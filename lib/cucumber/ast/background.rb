@@ -108,10 +108,28 @@ module Cucumber
         source_tags.map { |tag| tag.name }
       end
 
+      def to_units
+        [BackgroundUnit.new(self)]
+      end
+
       private
 
       def steps
         @steps ||= StepCollection.new(@raw_steps)
+      end
+
+      class BackgroundUnit
+        def initialize(background)
+          @background = background
+        end
+
+        def step_count
+          @background.step_invocations.length
+        end
+
+        def execute(visitor)
+          @background.accept(visitor)
+        end
       end
 
     end
