@@ -18,7 +18,7 @@ Feature: Using descriptions to give features context
     Given(/passing/) { }
     """
 
-  Scenario:
+  Scenario: Everything with a description
     Given a file named "features/test.feature" with:
     """
     Feature: descriptions everywhere
