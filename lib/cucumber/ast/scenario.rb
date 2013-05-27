@@ -22,6 +22,7 @@ module Cucumber
       end
 
       def accept(visitor)
+        background.accept(visitor)
         visitor.visit_feature_element(self) do
           comment.accept(visitor)
           tags.accept(visitor)

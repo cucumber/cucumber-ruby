@@ -36,6 +36,7 @@ module Cucumber
       end
 
       def accept(visitor)
+        return if @already_visited
         visitor.visit_background(self) do
           comment.accept(visitor)
           visitor.visit_background_name(@keyword, name, file_colon_line, source_indent(first_line_length))
@@ -47,6 +48,7 @@ module Cucumber
             visitor.runtime.after(hook_context) if @failed || feature_elements.empty?
           end
         end
+        @already_visited = true
       end
 
       def with_visitor(scenario, visitor)

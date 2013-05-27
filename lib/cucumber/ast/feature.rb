@@ -34,7 +34,6 @@ module Cucumber
           comment.accept(visitor)
           tags.accept(visitor)
           visitor.visit_feature_name(@keyword, indented_name)
-          background.accept(visitor)
           @feature_elements.each do |feature_element|
             feature_element.accept(visitor)
           end

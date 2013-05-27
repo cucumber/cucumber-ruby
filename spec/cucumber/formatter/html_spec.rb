@@ -85,6 +85,9 @@ module Cucumber
 
             Background:
               Given there are bananas
+
+            Scenario:
+              When the monkey eats a banana
           FEATURE
 
           it { @doc.should have_css_node('.feature .background', /there are bananas/) }
