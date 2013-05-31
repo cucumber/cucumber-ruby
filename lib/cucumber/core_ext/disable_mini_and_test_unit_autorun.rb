@@ -1,6 +1,4 @@
 begin
-  require 'test/unit'
-
   if defined?(Test::Unit::AutoRunner.need_auto_run?)
     # For test-unit gem >= 2.4.9
     Test::Unit::AutoRunner.need_auto_run = false
