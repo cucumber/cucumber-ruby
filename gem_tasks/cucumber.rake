@@ -18,15 +18,13 @@ class Cucumber::Rake::Task
 end
 
 Cucumber::Rake::Task.new(:features) do |t|
-  t.fork = false
+  t.fork = true
   t.set_profile_for_current_ruby
 end
 
 Cucumber::Rake::Task.new(:legacy_features) do |t|
-  t.fork = false
-  t.cucumber_opts = %w{legacy_features}
-  t.set_profile_for_current_ruby
-  t.rcov = ENV['RCOV']
+  t.fork = true
+  t.profile = :legacy
 end
 
 task :cucumber => [:features, :legacy_features]
