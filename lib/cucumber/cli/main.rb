@@ -74,6 +74,7 @@ module Cucumber
 
       def run_drb_client
         return false unless configuration.drb?
+        warn("Spork is no longer supported as of Cucumber 1.3.0. Please downgrade to version 1.2.5")
         @drb_output = DRbClient.run(@args, @err, @out, configuration.drb_port)
         true
       rescue DRbClientError => e
