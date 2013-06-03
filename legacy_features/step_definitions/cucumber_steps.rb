@@ -52,7 +52,9 @@ end
 
 Then /^it should (fail|pass)$/ do |success|
   if success == 'fail'
-    last_exit_status.should_not == 0
+    if last_exit_status == 0
+      raise "Passed when expected to fail\nSTDOUT:\n#{last_stdout}\nSTDERR:\n#{last_stderr}"
+    end
   else
     if last_exit_status != 0
       raise "Failed with exit status #{last_exit_status}\nSTDOUT:\n#{last_stdout}\nSTDERR:\n#{last_stderr}"
