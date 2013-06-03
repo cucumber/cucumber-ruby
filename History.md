@@ -1,5 +1,7 @@
 ## [1.3.x latest](https://github.com/cucumber/cucumber/compare/v1.3.2...v1.3.x-bugfix)
 
+* Fix compatability with MiniTest 5.0 ([#456](https://github.com/.cucumber/cucumber/issues/456) Matt Wynne)
+
 ## [1.3.2](https://github.com/cucumber/cucumber/compare/v1.3.1...v1.3.2)
 
 ### Bugfixes
