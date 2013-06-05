@@ -60,36 +60,6 @@ Feature: Cucumber command line
 
       """
 
-  Scenario: Reformat files with --autoformat
-    When I run cucumber --autoformat tmp/formatted features
-    Then STDERR should be empty
-    Then "fixtures/self_test/tmp/formatted/features/sample.feature" should contain
-      """
-      # Feature comment
-      @one
-      Feature: Sample
-
-        @two @three
-        Scenario: Missing
-          Given missing
-
-        # Scenario comment
-        @three
-        Scenario: Passing
-          Given passing
-            | a | b |
-            | c | d |
-
-        @four
-        Scenario: Failing
-          Given failing
-            \"\"\"
-            hello
-            \"\"\"
-
-
-      """
-
   Scenario: Run feature elements which match a name using -n
     When I run cucumber -n Pisang -q features/
     Then STDERR should be empty
