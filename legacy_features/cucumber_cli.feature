@@ -2,33 +2,6 @@ Feature: Cucumber command line
   In order to write better software
   Developers should be able to execute requirements as tests
 
-  Scenario: Multiple formatters and outputs
-    When I run cucumber --format progress --out tmp/progress.txt --format pretty --out tmp/pretty.txt --no-source --dry-run --no-snippets features/lots_of_undefined.feature
-    Then STDERR should be empty
-    Then "fixtures/self_test/tmp/progress.txt" should contain
-      """
-      UUUUU
-
-      1 scenario (1 undefined)
-      5 steps (5 undefined)
-
-      """
-    And "fixtures/self_test/tmp/pretty.txt" should contain
-      """
-      Feature: Lots of undefined
-
-        Scenario: Implement me
-          Given it snows in Sahara
-          Given it's 40 degrees in Norway
-          And it's 40 degrees in Norway
-          When I stop procrastinating
-          And there is world peace
-      
-      1 scenario (1 undefined)
-      5 steps (5 undefined)
-
-      """
-
   Scenario: Run feature elements which matches a name using --name
     When I run cucumber --name Pisang -q features/
     Then it should pass with
