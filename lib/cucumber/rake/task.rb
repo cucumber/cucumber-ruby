@@ -73,7 +73,11 @@ module Cucumber
         end
 
         def gem_available?(gemname)
-          gem_available_new_rubygems?(gemname) || gem_available_old_rubygems?(gemname)
+          if Gem::VERSION[0].to_i >= 2 
+            gem_available_new_rubygems?(gemname)
+          else
+            gem_available_old_rubygems?(gemname)
+          end
         end
 
         def gem_available_old_rubygems?(gemname)
