@@ -73,7 +73,7 @@ module Cucumber
         end
 
         def gem_available?(gemname)
-          if Gem::VERSION[0].to_i >= 2 
+          if Gem::Specification.respond_to?(:find_all_by_name) 
             gem_available_new_rubygems?(gemname)
           else
             gem_available_old_rubygems?(gemname)
@@ -85,7 +85,7 @@ module Cucumber
         end
 
         def gem_available_new_rubygems?(gemname)
-          Gem::Specification.respond_to?(:find_all_by_name) && Gem::Specification.find_all_by_name(gemname).any?
+          Gem::Specification.find_all_by_name(gemname).any?
         end
 
         def cmd
