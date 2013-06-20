@@ -73,7 +73,7 @@ module Cucumber
         end
 
         def gem_available?(gemname)
-          if Gem::Specification.respond_to?(:find_all_by_name) 
+          if Gem::Specification.respond_to?(:find_all_by_name)
             gem_available_new_rubygems?(gemname)
           else
             gem_available_old_rubygems?(gemname)
