@@ -31,7 +31,6 @@ Feature: Backtraces
         Scenario: Example # features/failing_hard.feature:2
           Given failing   # features/step_definitions/steps.rb:4
              (Java::JavaLang::UnsupportedOperationException)
-            java.util.AbstractList.add(AbstractList.java:148)
-            java.util.AbstractList.add(AbstractList.java:108)
+            java.util.AbstractList.add(AbstractList.java:
       """
 
