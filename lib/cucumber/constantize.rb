@@ -1,3 +1,4 @@
+require 'cucumber/platform'
 module Cucumber
   module Constantize #:nodoc:
     def constantize(camel_cased_word)
