@@ -9,3 +9,7 @@ end
 Given /a pending step/ do
   pending
 end
+
+Given /a skipping scenario/ do
+  skipping
+end
