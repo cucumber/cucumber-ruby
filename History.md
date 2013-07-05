@@ -1,4 +1,6 @@
-## [1.3.x latest](https://github.com/cucumber/cucumber/compare/v1.3.2...v1.3.x-bugfix)
+## [1.3.x latest](https://github.com/cucumber/cucumber/compare/v1.3.3...v1.3.x-bugfix)
+
+## [1.3.3](https://github.com/cucumber/cucumber/compare/v1.3.2...v1.3.3)
 
 * Fix compatability with MiniTest 5.0 ([#456](https://github.com/.cucumber/cucumber/issues/456) Matt Wynne)
 * Warn that Spork support is broken (Steve Tooke)
