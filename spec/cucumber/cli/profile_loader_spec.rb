@@ -5,10 +5,10 @@ module Cucumber
   module Cli
     describe ProfileLoader do
       def given_cucumber_yml_defined_as(hash_or_string)
-        Dir.stub!(:glob).with('{,.config/,config/}cucumber{.yml,.yaml}').and_return(['cucumber.yml'])
-        File.stub!(:exist?).and_return(true)
+        Dir.stub(:glob).with('{,.config/,config/}cucumber{.yml,.yaml}').and_return(['cucumber.yml'])
+        File.stub(:exist?).and_return(true)
         cucumber_yml = hash_or_string.is_a?(Hash) ? hash_or_string.to_yaml : hash_or_string
-        IO.stub!(:read).with('cucumber.yml').and_return(cucumber_yml)
+        IO.stub(:read).with('cucumber.yml').and_return(cucumber_yml)
       end
 
       def loader

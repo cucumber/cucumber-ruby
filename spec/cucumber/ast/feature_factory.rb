@@ -27,7 +27,7 @@ module Cucumber
         ])
         doc_string = Ast::DocString.new(%{\n I like\nCucumber sandwich\n}, '')
         location = Ast::Location.new('foo.feature', 2)
-        language = stub.as_null_object
+        language = double.as_null_object
 
         background = Ast::Background.new(
           language,

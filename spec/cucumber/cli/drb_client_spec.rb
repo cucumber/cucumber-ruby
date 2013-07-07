@@ -8,8 +8,8 @@ module Cucumber
         @error_stream = StringIO.new
         @out_stream = StringIO.new
 
-        @drb_object = mock('DRbObject', :run => true)
-        DRbObject.stub!(:new_with_uri).and_return(@drb_object)
+        @drb_object = double('DRbObject', :run => true)
+        DRbObject.stub(:new_with_uri).and_return(@drb_object)
       end
 
       it "starts up a druby service" do
@@ -28,7 +28,7 @@ module Cucumber
       end
 
       it "returns raises an error when it can't connect to the server" do
-        DRbObject.stub!(:new_with_uri).and_raise(DRb::DRbConnError)
+        DRbObject.stub(:new_with_uri).and_raise(DRb::DRbConnError)
         lambda { DRbClient.run(@args, @error_stream, @out_stream) }.should raise_error(DRbClientError, "No DRb server is running.")
       end
 

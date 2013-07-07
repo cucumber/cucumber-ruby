@@ -19,7 +19,7 @@ module Cucumber::Formatter
     end
 
     before(:each) do
-      File.stub!(:directory?).and_return(true)
+      File.stub(:directory?).and_return(true)
       @formatter = TestDoubleJunitFormatter.new(step_mother, '', {})
     end
 

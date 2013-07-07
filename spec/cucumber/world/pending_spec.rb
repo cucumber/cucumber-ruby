@@ -6,7 +6,7 @@ module Cucumber
 
       before(:each) do
         l = RbSupport::RbLanguage.new(Runtime.new)
-        l.begin_rb_scenario(mock('scenario').as_null_object)
+        l.begin_rb_scenario(double('scenario').as_null_object)
         @world = l.current_world
       end
 
@@ -24,10 +24,10 @@ module Cucumber
         }.should raise_error(Cucumber::Pending, /TODO/)
       end
 
-      it 'should raise a Pending if a supplied block fails as expected with a mock' do
+      it 'should raise a Pending if a supplied block fails as expected with a double' do
         lambda {
           @world.pending "TODO" do
-            m = mock('thing')
+            m = double('thing')
             m.should_receive(:foo)
             m.rspec_verify
           end

@@ -15,7 +15,7 @@ module Cucumber
       end
 
       before do
-        rb.before(mock('scenario').as_null_object)
+        rb.before(double('scenario').as_null_object)
         $inside = nil
       end
 

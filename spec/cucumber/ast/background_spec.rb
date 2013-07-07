@@ -5,7 +5,7 @@ require 'cucumber/rb_support/rb_language'
 module Cucumber
   module Ast
     describe Background do
-      let(:language) { stub.as_null_object }
+      let(:language) { double.as_null_object }
 
       before do
         extend(Cucumber::RbSupport::RbDsl)
@@ -22,7 +22,7 @@ module Cucumber
 
         @visitor = TreeWalker.new(@runtime)
 
-        @feature = mock('feature', :visit? => true, :feature_elements => []).as_null_object
+        @feature = double('feature', :visit? => true, :feature_elements => []).as_null_object
       end
 
       it "should execute Before blocks before background steps" do

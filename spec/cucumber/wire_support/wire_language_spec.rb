@@ -5,7 +5,7 @@ module Cucumber
   module WireSupport
     describe WireLanguage do
       def stub_wire_file!(filename, config)
-        Configuration.stub!(:from_file).with(filename).and_return config
+        Configuration.stub(:from_file).with(filename).and_return config
       end
 
       describe "#load_code_file" do
@@ -23,7 +23,7 @@ module Cucumber
         def stub_remote_steps!(config, attributes)
           Connection.should_receive(:new).
             with(config).
-            and_return( mock('remote_steps', attributes) )
+            and_return( double('remote_steps', attributes) )
         end
 
         before(:each) do

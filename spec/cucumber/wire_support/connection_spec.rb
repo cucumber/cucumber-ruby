@@ -32,19 +32,19 @@ module Cucumber
       before(:each) do
         @config = TestConfiguration.new
         @connection = TestConnection.new(@config)
-        @connection.socket = @socket = mock('socket').as_null_object
+        @connection.socket = @socket = double('socket').as_null_object
         @response = %q{["response"]}
       end
 
       it "re-raises a timeout error" do
-        Timeout.stub!(:timeout).and_raise(Timeout::Error.new(''))
+        Timeout.stub(:timeout).and_raise(Timeout::Error.new(''))
         lambda { @connection.call_remote(nil, :foo, []) }.should raise_error(Timeout::Error)
       end
 
       it "ignores timeout errors when configured to do so" do
         @config.custom_timeout[:foo] = :never
         @socket.stub(:gets => @response)
-        handler = mock(:handle_response => :response)
+        handler = double(:handle_response => :response)
         @connection.call_remote(handler, :foo, []).should == :response
       end
 
