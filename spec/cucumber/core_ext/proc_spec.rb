@@ -49,14 +49,14 @@ describe Proc do
     lambda {
       Object.new.cucumber_instance_exec(true, 'foo', 1) do |*args|
       end
-    }.should_not raise_error(Cucumber::ArityMismatchError)
+    }.should_not raise_error
   end
 
   it "should allow varargs (expecting 1+)" do
     lambda {
       Object.new.cucumber_instance_exec(true, 'foo', 1) do |arg,*args|
       end
-    }.should_not raise_error(Cucumber::ArityMismatchError)
+    }.should_not raise_error
   end
 
   it "should raise ArityMismatchError for too few required args when using varargs (expecting 1+)" do

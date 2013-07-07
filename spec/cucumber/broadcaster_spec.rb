@@ -3,7 +3,7 @@ require 'spec_helper'
 module Cucumber
   describe Broadcaster do
     before do
-      @receiver = mock('receiver')
+      @receiver = double('receiver')
       @broadcaster = Broadcaster.new([@receiver])
     end
 

@@ -7,14 +7,14 @@ module Cli
   describe Options do
 
     def given_cucumber_yml_defined_as(hash_or_string)
-      File.stub!(:exist?).and_return(true)
+      File.stub(:exist?).and_return(true)
       cucumber_yml = hash_or_string.is_a?(Hash) ? hash_or_string.to_yaml : hash_or_string
-      IO.stub!(:read).with('cucumber.yml').and_return(cucumber_yml)
+      IO.stub(:read).with('cucumber.yml').and_return(cucumber_yml)
     end
 
     before(:each) do
-      File.stub!(:exist?).and_return(false) # Meaning, no cucumber.yml exists
-      Kernel.stub!(:exit).and_return(nil)
+      File.stub(:exist?).and_return(false) # Meaning, no cucumber.yml exists
+      Kernel.stub(:exit).and_return(nil)
     end
 
     def output_stream

@@ -26,7 +26,7 @@ module Cucumber
         end
 
         location = Ast::Location.new('foo.feature', 19)
-        language = stub
+        language = double
 
         @scenario_outline = ScenarioOutline.new(
           language,
@@ -65,7 +65,7 @@ module Cucumber
       it "should replace all variables and call outline once for each table row" do
         visitor = TreeWalker.new(@runtime)
         visitor.should_receive(:visit_table_row).exactly(3).times
-        @scenario_outline.feature = stub.as_null_object
+        @scenario_outline.feature = double.as_null_object
         @scenario_outline.accept(visitor)
       end
     end

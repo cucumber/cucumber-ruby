@@ -9,7 +9,7 @@ module Cucumber
       before(:each) do
         Cucumber::Term::ANSIColor.coloring = false
         @out = StringIO.new
-        progress = Cucumber::Formatter::Progress.new(mock("Runtime"), @out, {})
+        progress = Cucumber::Formatter::Progress.new(double("Runtime"), @out, {})
         @visitor = Cucumber::Ast::TreeWalker.new(nil, [progress])
       end
 
@@ -18,7 +18,7 @@ module Cucumber
         it "should take the status from the last run step" do
           step_result = Ast::StepResult.new('', '', nil, :failed, nil, 10, nil, nil)
           step_result.accept(@visitor)
-          @visitor.visit_outline_table(stub) do
+          @visitor.visit_outline_table(double) do
             @visitor.visit_table_cell_value('value', nil)
           end
           @out.string.should == "FF"

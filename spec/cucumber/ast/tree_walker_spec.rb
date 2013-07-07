@@ -3,9 +3,9 @@ require 'spec_helper'
 module Cucumber::Ast
   describe TreeWalker do
     let(:tree_walker) do
-      TreeWalker.new(nil, [mock('listener', :before_visit_features => nil)])
+      TreeWalker.new(nil, [double('listener', :before_visit_features => nil)])
     end
-    let(:features) { mock('features', :accept => nil) }
+    let(:features) { double('features', :accept => nil) }
 
     it "should visit features" do
       tree_walker.should_not_receive(:warn)

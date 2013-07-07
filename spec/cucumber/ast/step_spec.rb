@@ -5,7 +5,7 @@ require 'cucumber/core_ext/string'
 module Cucumber
   module Ast
     describe Step do
-      let(:language) { stub }
+      let(:language) { double }
 
       it "should replace arguments in name" do
         step = Step.new(language, 1, 'Given', 'a <color> cucumber')

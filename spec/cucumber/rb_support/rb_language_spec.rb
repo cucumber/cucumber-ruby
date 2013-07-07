@@ -15,7 +15,7 @@ module Cucumber
       end
 
       describe "snippets" do
-        let(:snippet) { stub.as_null_object }
+        let(:snippet) { double.as_null_object }
 
         it "creates a regexp Snippet class by default" do
           Snippet::Regexp.should_receive(:new).and_return(snippet)
@@ -38,7 +38,7 @@ module Cucumber
         end
 
         it "passes all parameters to Snippet contructor" do
-          code_keyword, pattern, multiline_argument_class = stub, stub, stub
+          code_keyword, pattern, multiline_argument_class = double, double, double
           Snippet::Regexp.should_receive(:new).with(code_keyword, pattern, multiline_argument_class)
           rb.snippet_text(code_keyword, pattern, multiline_argument_class)
         end
@@ -105,7 +105,7 @@ module Cucumber
 
         it "should implicitly extend world with modules" do
           dsl.World(ModuleOne, ModuleTwo)
-          rb.before(mock('scenario').as_null_object)
+          rb.before(double('scenario').as_null_object)
           class << rb.current_world
             included_modules.inspect.should =~ /ModuleOne/ # Workaround for RSpec/Ruby 1.9 issue with namespaces
             included_modules.inspect.should =~ /ModuleTwo/
@@ -242,7 +242,7 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
           fish = dsl.Before('@fish'){}
           meat = dsl.Before('@meat'){}
 
-          scenario = mock('Scenario')
+          scenario = double('Scenario')
           scenario.should_receive(:accept_hook?).with(fish).and_return(true)
           scenario.should_receive(:accept_hook?).with(meat).and_return(false)
 
@@ -256,7 +256,7 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
           b = dsl.Around('@tag') do |scenario, block|
           end
 
-          scenario = mock('Scenario')
+          scenario = double('Scenario')
           scenario.should_receive(:accept_hook?).with(a).and_return(true)
           scenario.should_receive(:accept_hook?).with(b).and_return(false)
 

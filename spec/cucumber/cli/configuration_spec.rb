@@ -9,20 +9,20 @@ module Cli
     end
 
     def given_cucumber_yml_defined_as(hash_or_string)
-      File.stub!(:exist?).and_return(true)
+      File.stub(:exist?).and_return(true)
       cucumber_yml = hash_or_string.is_a?(Hash) ? hash_or_string.to_yaml : hash_or_string
-      IO.stub!(:read).with('cucumber.yml').and_return(cucumber_yml)
+      IO.stub(:read).with('cucumber.yml').and_return(cucumber_yml)
     end
 
     def given_the_following_files(*files)
-      File.stub!(:directory?).and_return(true)
-      File.stub!(:file?).and_return(true)
-      Dir.stub!(:[]).and_return(files)
+      File.stub(:directory?).and_return(true)
+      File.stub(:file?).and_return(true)
+      Dir.stub(:[]).and_return(files)
     end
 
     before(:each) do
-      File.stub!(:exist?).and_return(false) # Meaning, no cucumber.yml exists
-      Kernel.stub!(:exit).and_return(nil)
+      File.stub(:exist?).and_return(false) # Meaning, no cucumber.yml exists
+      Kernel.stub(:exit).and_return(nil)
     end
 
     def config
@@ -362,9 +362,9 @@ END_OF_MESSAGE
     end
 
     it "should search for all features in the specified directory" do
-      File.stub!(:directory?).and_return(true)
-      Dir.should_receive(:[]).with("feature_directory/**/*.feature").
-        any_number_of_times.and_return(["cucumber.feature"])
+      File.stub(:directory?).and_return(true)
+      Dir.stub(:[]).with("feature_directory/**/*.feature").
+        and_return(["cucumber.feature"])
 
       config.parse!(%w{feature_directory/})
 
@@ -372,9 +372,9 @@ END_OF_MESSAGE
     end
 
     it "defaults to the features directory when no feature file are provided" do
-      File.stub!(:directory?).and_return(true)
-      Dir.should_receive(:[]).with("features/**/*.feature").
-        any_number_of_times.and_return(["cucumber.feature"])
+      File.stub(:directory?).and_return(true)
+      Dir.stub(:[]).with("features/**/*.feature").
+        and_return(["cucumber.feature"])
 
       config.parse!(%w{})
 

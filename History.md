@@ -11,7 +11,15 @@
 * Formatter API changed for `before_step_result` and `after_step_result`, now
   expects an Ast::StepResult. (Steve Tooke)
 
-## [1.3.x latest](https://github.com/cucumber/cucumber/compare/v1.3.2...v1.3.x-bugfix)
+## [1.3.x latest](https://github.com/cucumber/cucumber/compare/v1.3.3...v1.3.x-bugfix)
+
+## [1.3.3](https://github.com/cucumber/cucumber/compare/v1.3.2...v1.3.3)
+
+* Fix compatability with MiniTest 5.0 ([#456](https://github.com/.cucumber/cucumber/issues/456) Matt Wynne)
+* Warn that Spork support is broken (Steve Tooke)
+* Fix error with Ruby 2.0.0 and `Cucumber::RUBY_1_8_7`
+  ([#492](https://github.com/cucumber/cucumber/issues/492) Matt Wynne)
+* Use new Rubygems API to look for bundler ([#448](https://github.com/cucumber/cucumber/issues/448) Matt Wynne)
 
 ## [1.3.2](https://github.com/cucumber/cucumber/compare/v1.3.1...v1.3.2)
 
