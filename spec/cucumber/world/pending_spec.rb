@@ -29,7 +29,7 @@ module Cucumber
           @world.pending "TODO" do
             m = double('thing')
             m.should_receive(:foo)
-            m.rspec_verify
+            RSpec::Mocks.verify
           end
         }.should raise_error(Cucumber::Pending, /TODO/)
       end
