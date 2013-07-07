@@ -5,7 +5,7 @@ module Cucumber
     describe StepInvocation do
       let(:step_invocation) do
         matched_cells = []
-        StepInvocation.new(stub, stub, stub, matched_cells)
+        StepInvocation.new(double, double, double, matched_cells)
       end
 
       describe "filtering backtraces" do
@@ -13,7 +13,7 @@ module Cucumber
           before { Cucumber.stub use_full_backtrace: true }
 
           it "return the exception unmodified" do
-            exception = stub
+            exception = double
             step_invocation.filter_backtrace(exception).should == exception
            end
         end
