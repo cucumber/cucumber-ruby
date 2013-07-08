@@ -15,7 +15,7 @@
 
 ## [1.3.3](https://github.com/cucumber/cucumber/compare/v1.3.2...v1.3.3)
 
-* Fix compatability with MiniTest 5.0 ([#456](https://github.com/.cucumber/cucumber/issues/456) Matt Wynne)
+* Fix compatability with MiniTest 5.0 ([#456](https://github.com/cucumber/cucumber/issues/456) Matt Wynne)
 * Warn that Spork support is broken (Steve Tooke)
 * Fix error with Ruby 2.0.0 and `Cucumber::RUBY_1_8_7`
   ([#492](https://github.com/cucumber/cucumber/issues/492) Matt Wynne)
