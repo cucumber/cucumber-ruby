@@ -130,18 +130,18 @@ module Cucumber
         @time += duration
         classname = @feature_name
         name = "#{@scenario}#{suffix}"
-        pending = [:pending, :undefined].include?(status)
-        passed = (status == :passed || (pending && !@options[:strict]))
-
+        pending = [:pending, :undefined].include?(status) && ( !@options[:strict])
+        passed = (status == :passed || pending)
+        
         @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
-          unless passed
+          if( passed == false && status != :skipped) 
             @builder.failure(:message => "#{status.to_s} #{name}", :type => status.to_s) do
               @builder.cdata! @output
               @builder.cdata!(format_exception(exception)) if exception
             end
             @failures += 1
           end
-          if passed and (status == :skipped || pending)
+          if(status == :skipped || pending)
             @builder.skipped
             @skipped += 1
           end
