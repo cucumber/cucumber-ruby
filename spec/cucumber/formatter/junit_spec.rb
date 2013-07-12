@@ -151,12 +151,11 @@ module Cucumber::Formatter
       end
 
       describe "scenario with skipped test in junit report" do
-      
         define_feature <<-FEATURE
           Feature: junit report with skipped test
 
             Scenario Outline: skip a test and junit report of the same
-              Given a <skip> scenario 
+              Given a <skip> scenario
 
             Examples:
               | skip   |
