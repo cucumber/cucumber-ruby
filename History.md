@@ -11,6 +11,10 @@
 * Formatter API changed for `before_step_result` and `after_step_result`, now
   expects an Ast::StepResult. (Steve Tooke)
 
+### Minor changes
+
+* Greek examples added ([497](https://github.com/cucumber/cucumber/issues/497) @rousisk)
+
 ## [1.3.x latest](https://github.com/cucumber/cucumber/compare/v1.3.3...v1.3.x-bugfix)
 
 ## [1.3.3](https://github.com/cucumber/cucumber/compare/v1.3.2...v1.3.3)
