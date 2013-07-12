@@ -146,6 +146,23 @@ module Cucumber::Formatter
         it { @doc.to_s.should_not =~ /type="skipped"/}
       end
 
+      describe "scenario with skipped test in junit report" do
+      
+        define_feature <<-FEATURE
+          Feature: junit report with skipped test
+
+            Scenario Outline: skip a test and junit report of the same
+              Given a <skip> scenario 
+
+            Examples:
+              | skip   |
+              | undefined |
+              | undefined  |
+        FEATURE
+
+        it { @doc.to_s.should =~ /skipped="2"/}
+      end
+
       describe "with a regular data table scenario" do
         define_steps do
           Given(/the following items on a shortlist/) { |table| }
