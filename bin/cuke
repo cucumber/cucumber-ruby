@@ -1,0 +1,224 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+$: << File.dirname(__FILE__) + '/../lib'
+$: << File.dirname(__FILE__) + '/../../cucumber-ruby-core/lib'
+
+require 'cucumber/platform'
+require 'cucumber/ast'
+require 'cucumber/feature_file'
+require 'cucumber/formatter/ansicolor'
+
+module Cucumber
+
+  require 'ansi' # gem install ansi
+  class PrettyPrinter
+    include Cucumber::Formatter::ANSIColor
+
+    def feature(feature, *)
+      for_new(:feature, feature) do
+        print_keyword feature, 1
+      end
+    end
+
+    def background(background, *)
+      for_new(:background, background) do
+        print_keyword background, 2
+      end
+    end
+
+    def scenario(scenario, *)
+      for_new(:scenario, scenario) do
+        print_keyword scenario, 2
+      end
+    end
+
+    def scenario_outline(scenario_outline, *)
+      for_new(:scenario_outline, scenario_outline) do
+        print_keyword scenario_outline, 2
+        # TODO: print steps
+      end
+    end
+
+    def examples_table(examples_table, *)
+      for_new(:examples_table, examples_table) do
+        print_keyword examples_table, 3
+      end
+    end
+
+    def test_case(*args)
+      yield
+    end
+
+    def examples_table_row(row, *)
+      puts row.to_s
+    end
+
+    def step(step, result=nil)
+      return unless result
+      indent = "      "
+      result.describe_to(self, indent + "#{format_step(step)} #{result}")
+      print "\n"
+    end
+
+    def hook(result=nil)
+      return unless result
+      return unless result.failed?
+      indent = "      "
+      result.describe_to(self, indent + "#{result} (hook)")
+    end
+
+    def duration(duration, *)
+      # print grey(" (#{duration} ms)")
+    end
+
+    def exception(exception, *args)
+      indent = "        "
+      puts
+      puts red(indent + exception.message)
+      puts red(exception.backtrace.join("\n"))
+      puts
+    end
+
+    def unknown
+    end
+
+    def failed(text)
+      print super(text)
+    end
+
+    def skipped(text)
+      print super(text)
+    end
+
+    def passed(text)
+      print super(text)
+    end
+
+    private
+
+    def print_keyword(node, indent_size)
+      indent = ' ' * indent_size * 2
+      puts
+      puts "#{indent}#{node.keyword}: #{node.name}"
+    end
+
+    def for_new(node_type, value)
+      @current ||= {}
+      return if @current[node_type] == value
+      @current[node_type] = value
+      yield
+    end
+
+    def color(result, text)
+      result.describe_to(self, text)
+    end
+
+    def format_step(step)
+      "#{step.keyword}#{step.name}"
+    end
+
+    attr_reader :current_feature
+  end
+
+  require 'cucumber/core/test/result'
+  class PrettyConsoleReport
+    def initialize(printer)
+      @printer = printer
+      @summary = Cucumber::Core::Test::Result::Summary.new
+    end
+
+    def before_test_suite(test_suite)
+    end
+
+    def before_test_case(test_case)
+    end
+
+    def before_test_step(step)
+      step.describe_source_to(@printer)
+    end
+
+    def after_test_step(step, result)
+      step.describe_source_to(@printer, result)
+    end
+
+    def after_test_case(test_case, result)
+      result.describe_to(@summary)
+    end
+
+    def after_test_suite(test_suite, result)
+      @printer.print(@summary.to_s)
+    end
+
+  end
+
+  features_glob = ARGV[0] || 'features/**/*.feature'
+  feature_files = Dir[features_glob].reject { |f| f =~ /iso-8859-1/ }
+  #feature_files = Dir["fixtures/self_test/features/outline_sample.feature"]
+  #support_files = Dir['fixtures/self_test/features/**/*.rb']
+
+  report = PrettyConsoleReport.new(PrettyPrinter.new)
+
+  require 'cucumber/core'
+  extend Cucumber::Core
+
+  features = feature_files.map do |file|
+    File.read(file)
+  end
+
+  require 'cucumber/runtime'
+  require 'cucumber'
+  class ClassicMappings
+
+    def test_step(step, mapper)
+      step_match = runtime.step_match(step.name)
+      mapper.map { step_match.invoke(step.multiline_arg) }
+    rescue Cucumber::Undefined
+    end
+
+    def test_case(test_case, mapper)
+      scenario = Scenario.new(test_case)
+      ruby = @ruby
+      mapper.before do
+        ruby.begin_rb_scenario(scenario)
+      end
+      @ruby.hooks_for(:before, scenario).each do |hook|
+        mapper.before do
+          hook.invoke('location', scenario)
+        end
+      end
+    end
+
+    private
+
+    def support_files
+      Dir['features/**/*.rb']
+    end
+
+    def runtime
+      return @runtime if @runtime
+      result = Cucumber::Runtime.new
+      @ruby = result.load_programming_language('rb')
+      result.support_code.load_files!(support_files)
+      @runtime = result
+    end
+
+
+    # adapts our test_case to look like the Cucumber Runtime's Scenario
+    class Scenario
+      def initialize(test_case)
+        @test_case = test_case
+      end
+
+      def accept_hook?(hook)
+        true
+      end
+
+      def language
+        @test_case.language
+      end
+    end
+  end
+
+  mappings = ClassicMappings.new
+  execute(features, mappings, report)
+end

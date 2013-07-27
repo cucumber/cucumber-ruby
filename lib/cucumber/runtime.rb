@@ -14,7 +14,7 @@ require 'cucumber/runtime/support_code'
 module Cucumber
   # This is the meaty part of Cucumber that ties everything together.
   class Runtime
-    attr_reader :results
+    attr_reader :results, :support_code
 
     include Formatter::Duration
     include Runtime::UserInterface
