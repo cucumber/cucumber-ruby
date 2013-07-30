@@ -123,11 +123,7 @@ module Cucumber
       def duration(ms)
       end
 
-      def exception(exception)
-        puts
-        puts red(exception.message)
-        puts red(exception.backtrace.join("\n"))
-        puts
+      def exception(*)
       end
 
       private
