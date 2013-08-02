@@ -154,8 +154,9 @@ module Cucumber
   require 'cucumber/core'
   extend Cucumber::Core
 
+  require 'cucumber/core/gherkin/document'
   features = feature_files.map do |file|
-    File.read(file)
+    Cucumber::Core::Gherkin::Document.new(file, File.read(file))
   end
 
   require 'cucumber/runtime'
