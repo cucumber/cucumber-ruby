@@ -70,7 +70,7 @@ module Cucumber
           puts
           puts red("Failed scenarios:")
           @failed.each do |test_case|
-            puts red(test_case.name) # TODO: expose location of Test::Case
+            puts red(test_case.location)
           end
         end
       end
