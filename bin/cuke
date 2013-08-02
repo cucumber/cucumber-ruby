@@ -53,7 +53,7 @@ module Cucumber
       end
 
       def failed(test_case, result)
-        @failed << test_case
+        @failed << [test_case, result]
       end
 
       def exception(exception, test_case, result)
@@ -69,8 +69,11 @@ module Cucumber
         if @failed.any?
           puts
           puts red("Failed scenarios:")
-          @failed.each do |test_case|
-            puts red(test_case.location)
+          number = 1
+          @failed.each do |test_case, result|
+            puts red("#{number}) #{test_case.location}")
+            puts red(result.exception.message)
+            puts red(result.exception.backtrace.join("\n"))
           end
         end
       end
