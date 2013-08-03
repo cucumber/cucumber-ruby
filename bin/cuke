@@ -9,9 +9,28 @@ require 'cucumber/feature_file'
 require 'cucumber/formatter/ansicolor'
 
 module Cucumber
+  module Colors
+    private
+
+    def green(string)
+      "\e[32m#{string}\e[0m"
+    end
+
+    def red(string)
+      "\e[31m#{string}\e[0m"
+    end
+
+    def cyan(string)
+      "\e[36m#{string}\e[0m"
+    end
+
+    def gray(string)
+      "\e[1;30m#{string}\e[0m"
+    end
+  end
 
   class ProgressConsoleReport
-    include Cucumber::Formatter::ANSIColor
+    include Cucumber::Colors
 
     def before_test_case(test_case)
       test_case.describe_source_to feature_printer
@@ -71,25 +90,28 @@ module Cucumber
           puts red("Failed scenarios:")
           number = 1
           @failed.each do |test_case, result|
+            puts
             puts red("#{number}) #{test_case.location}")
+            puts
             puts red(result.exception.message)
-            puts red(result.exception.backtrace.join("\n"))
+            puts
+            puts cyan("# " + result.exception.backtrace.join("\n# "))
+            number += 1
           end
         end
       end
 
-      private
-
-      def red(string)
-        "\e[31m#{string}\e[0m"
-      end
+      include Cucumber::Colors
     end
 
     class FeaturePrinter
+      include Cucumber::Colors
+
       def feature(feature)
         return if feature == @current_feature
         @current_feature = feature
         puts
+        puts gray("# #{feature.location}")
         puts feature.title
       end
 
@@ -107,6 +129,8 @@ module Cucumber
     end
 
     class ResultPrinter
+      include Cucumber::Colors
+
       def initialize(character)
         @character = character
       end
@@ -129,19 +153,6 @@ module Cucumber
       def exception(*)
       end
 
-      private
-
-      def green(string)
-        "\e[32m#{string}\e[0m"
-      end
-
-      def red(string)
-        "\e[31m#{string}\e[0m"
-      end
-
-      def cyan(string)
-        "\e[36m#{string}\e[0m"
-      end
     end
 
   end
@@ -217,6 +228,6 @@ module Cucumber
   end
 
   mappings = ClassicMappings.new
-  execute features, mappings, report
+  execute features, mappings, report, filter: '~@jruby'
   report.after_suite
 end
