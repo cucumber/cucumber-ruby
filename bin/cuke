@@ -10,21 +10,48 @@ require 'cucumber/formatter/ansicolor'
 
 module Cucumber
   require 'cucumber/formatter/progress'
-  class LegacyProgressReport
-    def initialize(runtime)
+  require 'cucumber/formatter/pretty'
+  class LegacyFormatterReport
+    def initialize(runtime, legacy_formatter_type)
       @runtime = runtime
-      @original = Cucumber::Formatter::Progress.new(runtime, STDOUT, skip_profile_information: true)
+      @original = legacy_formatter_type.new(runtime, STDOUT, skip_profile_information: true)
     end
 
     def before_test_case(test_case)
-      @original.before_feature_element
+      @original.before_feature_element(:element)
     end
 
     def after_test_case(test_case, result)
       builder = LegacyResultBuilder.new
       result.describe_to(builder)
       @runtime.record_result(builder.scenario)
-      @original.after_feature_element
+
+      printer = ScenarioPrinter.new(@original)
+      test_case.describe_source_to(printer)
+
+      @original.after_feature_element(:element)
+    end
+
+    class ScenarioPrinter
+      def initialize(report)
+        @report = report
+      end
+
+      def hook(*)
+      end
+
+      def feature(feature)
+      end
+
+      def scenario(scenario)
+        @report.scenario_name(scenario.keyword, scenario.name, :file_colon_line, :source_indent)
+      end
+
+      def background(background)
+      end
+
+      def step(step)
+      end
     end
 
     def before_test_step(step)
@@ -35,7 +62,35 @@ module Cucumber
       result.describe_to(builder)
       step_result = builder.step_result
       @runtime.step_visited(step_result)
-      @original.after_step_result(step_result)
+      @original.before_step_result(step_result)
+      printer = StepPrinter.new(@original, @runtime, step_result)
+      step.describe_source_to(printer)
+      @original.after_step_result(step_result) if @original.respond_to?(:after_step_result)
+    end
+
+    class StepPrinter
+      def initialize(report, runtime, step_result)
+        @report = report
+        @runtime = runtime
+        @step_result = step_result
+      end
+
+      def hook(*)
+      end
+
+      def feature(feature)
+      end
+
+      def scenario(scenario)
+      end
+
+      def background(background)
+      end
+
+      def step(step)
+        step_match = @runtime.step_match(step.name)
+        @report.step_name(step.keyword, step_match, @step_result.status, :source_indent, :background, :file_colon_line)
+      end
     end
 
     def after_suite
@@ -77,6 +132,12 @@ module Cucumber
       LegacyScenario = Struct.new(:status)
     end
 
+  end
+
+
+  class LegacyPrettyReport
+    def initialize(runtime)
+    end
   end
 
   features_glob = ARGV[0] || 'features/**/*.feature'
@@ -146,7 +207,7 @@ module Cucumber
   end
 
   mappings = ClassicMappings.new
-  report = LegacyProgressReport.new mappings.runtime
+  report = LegacyFormatterReport.new mappings.runtime, Cucumber::Formatter::Pretty
 
   require 'cucumber/core/test/tag_filter'
   execute features, mappings, report, [[Cucumber::Core::Test::TagFilter, ['~@jruby']]]

@@ -150,7 +150,7 @@ module Cucumber
       end
 
       def step_name(keyword, step_match, status, source_indent, background, file_colon_line)
-        return if @hide_this_step
+        #return if @hide_this_step
         source_indent = nil unless @options[:source]
         name_to_report = format_step(keyword, step_match, status, source_indent)
         @io.puts(name_to_report.indent(@scenario_indent + 2))
