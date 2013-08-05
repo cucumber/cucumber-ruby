@@ -19,6 +19,9 @@ module Cucumber
 
     def before_test_case(test_case)
       @original.before_feature_element(:element)
+
+      printer = ScenarioPrinter.new(@original)
+      test_case.describe_source_to(printer)
     end
 
     def after_test_case(test_case, result)
@@ -26,10 +29,25 @@ module Cucumber
       result.describe_to(builder)
       @runtime.record_result(builder.scenario)
 
-      printer = ScenarioPrinter.new(@original)
-      test_case.describe_source_to(printer)
-
       @original.after_feature_element(:element)
+    end
+
+    def before_test_step(step)
+    end
+
+    def after_test_step(step, result)
+      builder = LegacyResultBuilder.new
+      result.describe_to(builder)
+      step_result = builder.step_result
+      @runtime.step_visited(step_result)
+      @original.before_step_result(step_result)
+      printer = StepPrinter.new(@original, @runtime, step_result)
+      step.describe_source_to(printer)
+      @original.after_step_result(step_result) if @original.respond_to?(:after_step_result)
+    end
+
+    def after_suite
+      @original.after_features(nil)
     end
 
     class ScenarioPrinter
@@ -47,25 +65,20 @@ module Cucumber
         @report.scenario_name(scenario.keyword, scenario.name, :file_colon_line, :source_indent)
       end
 
+      def scenario_outline(scenario_outline)
+      end
+
+      def examples_table(examples)
+      end
+
+      def examples_table_row(row)
+      end
+
       def background(background)
       end
 
       def step(step)
       end
-    end
-
-    def before_test_step(step)
-    end
-
-    def after_test_step(step, result)
-      builder = LegacyResultBuilder.new
-      result.describe_to(builder)
-      step_result = builder.step_result
-      @runtime.step_visited(step_result)
-      @original.before_step_result(step_result)
-      printer = StepPrinter.new(@original, @runtime, step_result)
-      step.describe_source_to(printer)
-      @original.after_step_result(step_result) if @original.respond_to?(:after_step_result)
     end
 
     class StepPrinter
@@ -88,13 +101,19 @@ module Cucumber
       end
 
       def step(step)
+        # TODO: How else can we get this?
         step_match = @runtime.step_match(step.name)
         @report.step_name(step.keyword, step_match, @step_result.status, :source_indent, :background, :file_colon_line)
       end
-    end
 
-    def after_suite
-      @original.after_features(nil)
+      def scenario_outline(scenario_outline)
+      end
+
+      def examples_table(examples)
+      end
+
+      def examples_table_row(row)
+      end
     end
 
     require 'cucumber/ast/step_result'
@@ -132,12 +151,6 @@ module Cucumber
       LegacyScenario = Struct.new(:status)
     end
 
-  end
-
-
-  class LegacyPrettyReport
-    def initialize(runtime)
-    end
   end
 
   features_glob = ARGV[0] || 'features/**/*.feature'
