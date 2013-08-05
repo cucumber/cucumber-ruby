@@ -97,6 +97,10 @@ module Cucumber
       before(scenario) unless skip_hooks
       yield scenario
       after(scenario) unless skip_hooks
+      record_result scenario
+    end
+
+    def record_result(scenario)
       @results.scenario_visited(scenario)
     end
 
