@@ -228,6 +228,7 @@ module Cucumber
   end
 
   mappings = ClassicMappings.new
-  execute features, mappings, report, filter: '~@jruby'
+  require 'cucumber/core/test/tag_filter'
+  execute features, mappings, report, [[Cucumber::Core::Test::TagFilter, ['~@jruby']]]
   report.after_suite
 end
