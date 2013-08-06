@@ -1,3 +1,4 @@
+@spawn
 Feature: Reformat files with --autoformat
 
   The `--autoformat DIRECTORY` flag reformats (or pretty prints)
