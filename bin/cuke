@@ -9,15 +9,17 @@ require 'cucumber/feature_file'
 require 'cucumber/formatter/ansicolor'
 
 module Cucumber
+
   require 'cucumber/formatter/progress'
   require 'cucumber/formatter/pretty'
   class LegacyFormatterReport
-    def initialize(runtime, legacy_formatter_type)
+    def initialize(runtime, legacy_formatter_type, options)
       @runtime = runtime
-      @original = legacy_formatter_type.new(runtime, STDOUT, skip_profile_information: true)
+      @formatter = legacy_formatter_type.new(runtime, STDOUT, options)
     end
 
     def before_test_case(test_case)
+<<<<<<< HEAD
       @original.before_feature_element(:element)
 
       printer = ScenarioPrinter.new(@original)
@@ -53,18 +55,38 @@ module Cucumber
     class ScenarioPrinter
       def initialize(report)
         @report = report
-      end
+=======
+      formatter.before_feature_element(:element)
+      test_case.describe_source_to(source_printer)
+    end
 
-      def hook(*)
-      end
+    def after_test_case(test_case, result)
+      record_test_case_result(result)
+      formatter.after_feature_element(:element)
+    end
 
-      def feature(feature)
-      end
+    def before_test_step(step)
+    end
 
-      def scenario(scenario)
-        @report.scenario_name(scenario.keyword, scenario.name, :file_colon_line, :source_indent)
+    def after_test_step(step, result)
+      record_step_result(result) do |step_result|
+        formatter.before_step_result(step_result)
+        step.describe_source_to(source_printer, runtime, step_result)
+        formatter.after_step_result(step_result) if formatter.respond_to?(:after_step_result)
+>>>>>>> Improving the spike formatter:
       end
+    end
 
+    def after_suite
+      formatter.after_features(nil)
+    end
+
+    private
+
+    def case_result(result)
+    end
+
+<<<<<<< HEAD
       def scenario_outline(scenario_outline)
       end
 
@@ -79,27 +101,58 @@ module Cucumber
 
       def step(step)
       end
+=======
+    def source_printer
+      @source_printer ||= SourcePrinter.new(formatter)
     end
 
-    class StepPrinter
-      def initialize(report, runtime, step_result)
-        @report = report
-        @runtime = runtime
-        @step_result = step_result
-      end
+    def record_test_case_result(result)
+      scenario = LegacyResultBuilder.new(result).scenario
+      runtime.record_result(scenario)
+      yield scenario if block_given?
+    end
 
+    def record_step_result(result)
+      step_result = LegacyResultBuilder.new(result).step_result
+      runtime.step_visited(step_result)
+      yield step_result if block_given?
+    end
+
+    def formatter
+      @formatter
+>>>>>>> Improving the spike formatter:
+    end
+
+    def runtime
+      @runtime
+    end
+
+    SourcePrinter = Struct.new(:formatter) do
       def hook(*)
       end
 
-      def feature(feature)
+      def feature(feature, *)
+        return if feature == @current_feature
+        formatter.before_feature(feature)
+        formatter.feature_name(feature.keyword, feature.name)
+        @current_feature = feature
       end
 
-      def scenario(scenario)
+      def scenario(scenario, *)
+        return if scenario == @current_scenario
+        source_indent = 1 # TODO
+        formatter.scenario_name(scenario.keyword, scenario.name, scenario.location.to_s, source_indent)
+        @current_scenario = scenario
       end
 
-      def background(background)
+      def background(background, *)
+        return if background == @current_background
+        source_indent = 1 # TODO
+        formatter.background_name(background.keyword, background.name, background.location.to_s, source_indent)
+        @current_background = background
       end
 
+<<<<<<< HEAD
       def step(step)
         # TODO: How else can we get this?
         step_match = @runtime.step_match(step.name)
@@ -113,11 +166,33 @@ module Cucumber
       end
 
       def examples_table_row(row)
+=======
+      def step(step, runtime, step_result)
+        step_match = runtime.step_match(step.name)
+        source_indent = 1 # TODO
+        formatter.step_name(step.keyword, step_match, step_result.status, source_indent, :background, step.location.to_s)
+      end
+
+      def scenario_outline(*)
+        puts "TODO: scenario outline"
+      end
+
+      def examples_table(*)
+        puts "TODO: examples table"
+      end
+
+      def examples_table_row(*)
+        puts "TODO: examples table row"
+>>>>>>> Improving the spike formatter:
       end
     end
 
     require 'cucumber/ast/step_result'
     class LegacyResultBuilder
+      def initialize(result)
+        result.describe_to(self)
+      end
+
       def passed
         @status = :passed
       end
@@ -178,12 +253,16 @@ module Cucumber
 
     def test_case(test_case, mapper)
       scenario = Scenario.new(test_case)
-      ruby = @ruby
       mapper.before do
         ruby.begin_rb_scenario(scenario)
       end
-      @ruby.hooks_for(:before, scenario).each do |hook|
+      ruby.hooks_for(:before, scenario).each do |hook|
         mapper.before do
+          hook.invoke('location', scenario)
+        end
+      end
+      ruby.hooks_for(:after, scenario).each do |hook|
+        mapper.after do
           hook.invoke('location', scenario)
         end
       end
@@ -192,12 +271,15 @@ module Cucumber
     def runtime
       return @runtime if @runtime
       result = Cucumber::Runtime.new
-      @ruby = result.load_programming_language('rb')
       result.support_code.load_files!(support_files)
       @runtime = result
     end
 
     private
+
+    def ruby
+      @ruby ||= runtime.load_programming_language('rb')
+    end
 
     def support_files
       Dir['features/**/*.rb']
@@ -220,7 +302,11 @@ module Cucumber
   end
 
   mappings = ClassicMappings.new
-  report = LegacyFormatterReport.new mappings.runtime, Cucumber::Formatter::Pretty
+  formatter_options = {
+    skip_profile_information: true,
+    source: true,
+  }
+  report = LegacyFormatterReport.new mappings.runtime, Cucumber::Formatter::Pretty, formatter_options
 
   require 'cucumber/core/test/tag_filter'
   execute features, mappings, report, [[Cucumber::Core::Test::TagFilter, ['~@jruby']]]
