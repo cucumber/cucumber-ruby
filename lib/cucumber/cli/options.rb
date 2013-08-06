@@ -45,7 +45,7 @@ module Cucumber
       OPTIONS_WITH_ARGS = ['-r', '--require', '--i18n', '-f', '--format', '-o', '--out',
                                   '-t', '--tags', '-n', '--name', '-e', '--exclude',
                                   PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG,
-                                  '-a', '--autoformat', '-l', '--lines', '--port',
+                                  '-l', '--lines', '--port',
                                   '-I', '--snippet-type']
 
       def self.parse(args, out_stream, error_stream, options = {})
@@ -181,16 +181,6 @@ module Cucumber
             "This also omits the loading of your support/env.rb file if it exists.") do
             @options[:dry_run] = true
           end
-          opts.on("-a", "--autoformat DIR",
-            "Reformats (pretty prints) feature files and write them to DIRECTORY.",
-            "Be careful if you choose to overwrite the originals.",
-            "Implies --dry-run --format pretty.") do |directory|
-            @options[:autoformat] = directory
-            Cucumber::Term::ANSIColor.coloring = false
-            @options[:dry_run] = true
-            @quiet = true
-          end
-
           opts.on("-m", "--no-multiline",
             "Don't print multiline strings and tables under steps.") do
             @options[:no_multiline] = true
