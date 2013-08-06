@@ -309,6 +309,25 @@ module Cucumber
   report = LegacyFormatterReport.new mappings.runtime, Cucumber::Formatter::Pretty, formatter_options
 
   require 'cucumber/core/test/tag_filter'
+  report = Class.new do
+    def before_test_case(test_case)
+      puts
+      puts test_case.inspect
+    end
+
+    def after_test_case(test_case, result)
+    end
+
+    def before_test_step(test_step)
+      puts '  ' + test_step.inspect
+    end
+
+    def after_test_step(test_step, result)
+    end
+
+    def after_suite
+    end
+  end.new
   execute features, mappings, report, [[Cucumber::Core::Test::TagFilter, ['~@jruby']]]
   report.after_suite
 end
