@@ -1,6 +1,7 @@
 ## [1.3.6](https://github.com/cucumber/cucumber/compare/v1.3.5...v1.3.6)
 
-* Html formatter fixed to not mark passes scenarios with tables as pending ([493](https://github.com/cucumber/cucumber/issues/493) Oleg Sukhodolsky)
+* Html formatter fixed to not mark passes scenarios with tables as pending
+  ([493](https://github.com/cucumber/cucumber/issues/493) Oleg Sukhodolsky)
 
 ## [1.3.5](https://github.com/cucumber/cucumber/compare/v1.3.4...v1.3.5)
 
