@@ -22,6 +22,7 @@ module Cucumber
         @header_red = nil
         @delayed_messages = []
         @img_id = 0
+        @inside_outline = false
       end
 
       def embed(src, mime_type, label)
@@ -178,6 +179,7 @@ module Cucumber
       end
 
       def before_outline_table(outline_table)
+        @inside_outline = true
         @outline_row = 0
         @builder << '<table>'
       end
@@ -185,6 +187,7 @@ module Cucumber
       def after_outline_table(outline_table)
         @builder << '</table>'
         @outline_row = nil
+        @inside_outline = false
       end
 
       def before_examples(examples)
@@ -334,7 +337,7 @@ module Cucumber
         attributes = {:id => "#{@row_id}_#{@col_index}", :class => 'step'}
         attributes[:class] += " #{status}" if status
         build_cell(@cell_type, value, attributes)
-        set_scenario_color(status)
+        set_scenario_color(status) if @inside_outline
         @col_index += 1
       end
 

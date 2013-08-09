@@ -141,6 +141,9 @@ module Cucumber
         end
 
         describe "with a multiline step arg" do
+          define_steps do
+            Given(/there are monkeys:/) { |table| }
+          end
           define_feature <<-FEATURE
           Feature: Traveling circus
 
@@ -152,6 +155,7 @@ module Cucumber
           FEATURE
 
           it { @doc.should have_css_node('.feature .scenario table td', /foo/) }
+          it { @out.string.include?('makeYellow(\'scenario_1\')').should be_false }
         end
 
         describe "with a table in the background and the scenario" do
