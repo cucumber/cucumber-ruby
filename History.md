@@ -15,7 +15,14 @@
 
 * Greek examples added ([497](https://github.com/cucumber/cucumber/issues/497) @rousisk)
 
-## [1.3.x latest](https://github.com/cucumber/cucumber/compare/v1.3.4...v1.3.x-bugfix)
+## [1.3.6](https://github.com/cucumber/cucumber/compare/v1.3.5...v1.3.6)
+
+* Html formatter fixed to not mark passes scenarios with tables as pending
+  ([493](https://github.com/cucumber/cucumber/issues/493) Oleg Sukhodolsky)
+
+## [1.3.5](https://github.com/cucumber/cucumber/compare/v1.3.4...v1.3.5)
+
+* Fix Rails 4 Minitest autorun problems. ([501](https://github.com/cucumber/cucumber/issues/501) @mattwynne)
 
 ## [1.3.4](https://github.com/cucumber/cucumber/compare/v1.3.3...v1.3.4)
 
