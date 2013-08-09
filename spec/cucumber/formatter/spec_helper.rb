@@ -58,6 +58,7 @@ module Cucumber
       def run_defined_feature
         #define_steps
         execute [gherkin_doc], mappings, report
+        report.after_suite # TODO: move into core
       end
 
       require 'cucumber/mappings'

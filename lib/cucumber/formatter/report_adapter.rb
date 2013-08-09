@@ -3,32 +3,147 @@ module Cucumber
     ReportAdapter = Struct.new(:runtime, :formatter) do
 
       def before_test_case(test_case)
-        formatter.before_feature_element(:element)
+        test_case.describe_source_to(before)
       end
 
       def after_test_case(test_case, result)
         record_test_case_result(result)
-        formatter.after_feature_element(:element)
+        test_case.describe_source_to(after)
       end
 
-      def before_test_step(step)
+      def before_test_step(test_step)
+        test_step.describe_source_to(before)
       end
 
-      def after_test_step(step, result)
+      def after_test_step(test_step, result)
         record_step_result(result) do |step_result|
-          formatter.before_step_result(step_result)
-          step.describe_source_to(source_printer, runtime, step_result)
-          formatter.after_step_result(step_result) if formatter.respond_to?(:after_step_result)
+          test_step.describe_source_to(after, step_result)
         end
       end
 
       def after_suite
-        formatter.after_features(nil)
+        after.after_suite
       end
 
       private
 
-      def case_result(result)
+      def before
+        @before ||= BeforeEvents.new(formatter)
+      end
+
+      def after
+        @after ||= AfterEvents.new(formatter)
+      end
+
+      class BeforeEvents < Struct.new(:formatter)
+        def hook
+        end
+
+        def feature(feature)
+          unless @started
+            formatter.before_features
+            @started = true
+          end
+          return if feature == @current_feature
+          formatter.after_feature if @current_feature
+          formatter.before_feature
+          feature.tags.accept(self)
+          formatter.feature_name
+          @current_feature = feature
+        end
+
+        def scenario(scenario)
+          return if scenario == @current_scenario
+          formatter.before_feature_element(scenario)
+          scenario.tags.accept(self)
+          formatter.scenario_name
+          @current_scenario = scenario
+          @steps_started = false
+        end
+
+        def scenario_outline(scenario_outline)
+          return if scenario_outline == @current_scenario_outline
+          formatter.before_feature_element(scenario_outline)
+          scenario_outline.tags.accept(self)
+          formatter.scenario_name
+          @current_scenario_outline = scenario_outline
+        end
+
+        def examples_table(examples_table)
+          return if examples_table == @current_examples_table
+          formatter.before_examples_table(examples_table)
+          examples_table.tags.accept(self)
+          @current_examples_table = examples_table
+        end
+
+        def examples_table_row(examples_table_row)
+        end
+
+        def step(step)
+          unless @steps_started
+            formatter.before_steps 
+            @steps_started = true
+          end
+          formatter.before_step
+        end
+
+        def visit_tags(tags)
+          formatter.before_tags(tags)
+          formatter.after_tags(tags)
+        end
+      end
+
+      class AfterEvents < Struct.new(:formatter)
+        def hook(*)
+        end
+
+        def after_suite
+          source_printer.after_suite
+        end
+
+        def feature(feature, *)
+          if @current_feature && (@current_feature != feature)
+            formatter.after_feature
+          end
+          @current_feature = feature
+        end
+
+        def scenario(scenario, *)
+          after_scenario
+          @current_scenario = scenario
+        end
+
+        def scenario_outline(scenario_outline, *)
+          
+        end
+
+        def examples_table(examples_table, *)
+        end
+
+        def examples_table_row(examples_table_row, *)
+        end
+
+        def step(step, *)
+          formatter.before_step_result
+          formatter.step_name
+          formatter.after_step_result
+          formatter.after_step
+        end
+
+        def after_suite
+          after_scenario
+          formatter.after_feature
+          formatter.after_features
+        end
+
+        private
+
+        def after_scenario
+          if @current_scenario
+            formatter.after_steps
+            formatter.after_feature_element(:element)
+          end
+        end
       end
 
       def source_printer
