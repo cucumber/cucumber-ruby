@@ -12,6 +12,7 @@ module Cucumber
         ])
         def @table.cells_rows; super; end
         def @table.columns; super; end
+        Kernel.stub(:warn)
       end
 
       it "should have rows" do
@@ -54,7 +55,7 @@ module Cucumber
           @table.map_column!('one') { |v| v.to_i }
           @table.hashes.first['one'].should == 4444
         end
-        
+
         it "applies the block once to each value" do
           headers = ['header']
           rows = ['value']
