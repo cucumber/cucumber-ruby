@@ -237,6 +237,7 @@ module Cucumber
       #   # => ['phone number', 'ADDRESS']
       #
       def map_headers!(mappings={}, &block)
+        Kernel.warn "[warning] map_headers! will be deprecated"
         clear_cache!
         @header_mappings = mappings
         @header_conversion_proc = block
@@ -257,11 +258,12 @@ module Cucumber
       #   Given /^an expense report for (.*) with the following posts:$/ do |table|
       #     posts_table.map_column!('amount') { |a| a.to_i }
       #     posts_table.hashes.each do |post|
-      #       # post['amount'] is a Fixnum, rather than a String
+      #       # post['amount'] is a Fixnum, rather than a' String
       #     end
       #   end
       #
       def map_column!(column_name, strict=true, &conversion_proc)
+        Kernel.warn "[warning] map_column! will be deprecated"
         @conversion_procs[column_name.to_s] = { :strict => strict, :proc => conversion_proc }
         self
       end
@@ -303,6 +305,7 @@ module Cucumber
       # a Table argument, if you want to compare that table to some actual values.
       #
       def diff!(other_table, options={})
+        Kernel.warn "[warning] diff! will be deprecated"
         options = {
           :missing_row   => true,
           :surplus_row   => true,
