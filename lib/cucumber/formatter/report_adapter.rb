@@ -63,9 +63,8 @@ module Cucumber
 
         def scenario_outline(scenario_outline)
           return if scenario_outline == @current_scenario_outline
-          formatter.before_feature_element(scenario_outline)
-          scenario_outline.tags.accept(self)
-          formatter.scenario_name
+          outline_printer = OutlinePrinter.new(formatter)
+          scenario_outline.describe_to(outline_printer)
           @current_scenario_outline = scenario_outline
         end
 
@@ -85,6 +84,33 @@ module Cucumber
             @steps_started = true
           end
           formatter.before_step
+        end
+
+        def visit_tags(tags)
+          formatter.before_tags(tags)
+          formatter.after_tags(tags)
+        end
+      end
+
+      class OutlinePrinter < Struct.new(:formatter)
+        def scenario_outline(scenario_outline, &descend)
+          formatter.before_feature_element(scenario_outline)
+          scenario_outline.tags.accept(self)
+          formatter.scenario_name
+          formatter.before_steps
+          descend.call
+          formatter.after_steps
+        end
+
+        def outline_step(step)
+          formatter.before_step
+          formatter.before_step_result
+          formatter.step_name
+          formatter.after_step_result
+          formatter.after_step
+        end
+
+        def examples_table(table)
         end
 
         def visit_tags(tags)
@@ -114,7 +140,6 @@ module Cucumber
         end
 
         def scenario_outline(scenario_outline, *)
-          
         end
 
         def examples_table(examples_table, *)
