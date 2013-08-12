@@ -3,176 +3,190 @@ module Cucumber
     ReportAdapter = Struct.new(:runtime, :formatter) do
 
       def before_test_case(test_case)
-        test_case.describe_source_to(before)
       end
 
       def after_test_case(test_case, result)
         record_test_case_result(result)
-        test_case.describe_source_to(after)
+        event_stack.pop
       end
 
       def before_test_step(test_step)
-        test_step.describe_source_to(before)
+        test_step.describe_source_to(event_stack)
       end
 
       def after_test_step(test_step, result)
         record_step_result(result) do |step_result|
-          test_step.describe_source_to(after, step_result)
+          test_step.describe_source_to(event_stack, step_result)
         end
       end
 
       def after_suite
-        after.after_suite
+        event_stack.empty
       end
 
       private
 
-      def before
-        @before ||= BeforeEvents.new(formatter)
+      def event_stack
+        @event_stack ||= EventStack.new(formatter)
       end
 
-      def after
-        @after ||= AfterEvents.new(formatter)
-      end
-
-      class BeforeEvents < Struct.new(:formatter)
-        def hook
-        end
-
-        def feature(feature)
-          unless @started
-            formatter.before_features
-            @started = true
-          end
-          return if feature == @current_feature
-          formatter.after_feature if @current_feature
-          formatter.before_feature
-          feature.tags.accept(self)
-          formatter.feature_name
-          @current_feature = feature
-        end
-
-        def scenario(scenario)
-          return if scenario == @current_scenario
-          formatter.before_feature_element(scenario)
-          scenario.tags.accept(self)
-          formatter.scenario_name
-          @current_scenario = scenario
-          @steps_started = false
-        end
-
-        def scenario_outline(scenario_outline)
-          return if scenario_outline == @current_scenario_outline
-          outline_printer = OutlinePrinter.new(formatter)
-          scenario_outline.describe_to(outline_printer)
-          @current_scenario_outline = scenario_outline
-        end
-
-        def examples_table(examples_table)
-          return if examples_table == @current_examples_table
-          formatter.before_examples_table(examples_table)
-          examples_table.tags.accept(self)
-          @current_examples_table = examples_table
-        end
-
-        def examples_table_row(examples_table_row)
-        end
-
-        def step(step)
-          unless @steps_started
-            formatter.before_steps 
-            @steps_started = true
-          end
-          formatter.before_step
-        end
-
-        def visit_tags(tags)
-          formatter.before_tags(tags)
-          formatter.after_tags(tags)
-        end
-      end
-
-      class OutlinePrinter < Struct.new(:formatter)
-        def scenario_outline(scenario_outline, &descend)
-          formatter.before_feature_element(scenario_outline)
-          scenario_outline.tags.accept(self)
-          formatter.scenario_name
-          formatter.before_steps
-          descend.call
-          formatter.after_steps
-        end
-
-        def outline_step(step)
-          formatter.before_step
-          formatter.before_step_result
-          formatter.step_name
-          formatter.after_step_result
-          formatter.after_step
-        end
-
-        def examples_table(table)
-        end
-
-        def visit_tags(tags)
-          formatter.before_tags(tags)
-          formatter.after_tags(tags)
-        end
-      end
-
-      class AfterEvents < Struct.new(:formatter)
-        def hook(*)
-        end
-
-        def after_suite
-          source_printer.after_suite
-        end
+      EventStack = Struct.new(:formatter) do
+        def hook(*);end
 
         def feature(feature, *)
-          if @current_feature && (@current_feature != feature)
-            formatter.after_feature
-          end
-          @current_feature = feature
+          push FeaturesPrinter.new(formatter)
+          push FeaturePrinter.new(formatter, feature)
         end
 
         def scenario(scenario, *)
-          after_scenario
-          @current_scenario = scenario
+          push ScenarioPrinter.new(formatter, scenario)
+        end
+
+        def step(step, step_result = nil)
+          return unless step_result
+          push StepsPrinter.new(formatter)
+          push StepPrinter.new(formatter, step, step_result)
         end
 
         def scenario_outline(scenario_outline, *)
+          push ScenarioOutlinePrinter.new(formatter, scenario_outline)
         end
 
         def examples_table(examples_table, *)
+          push ExamplesTablePrinter.new(formatter, examples_table)
         end
 
         def examples_table_row(examples_table_row, *)
+          push ExamplesTableRowPrinter.new(formatter, examples_table_row)
         end
 
-        def step(step, *)
-          formatter.before_step_result
-          formatter.step_name
-          formatter.after_step_result
-          formatter.after_step
+        def empty
+          pop until stack.empty?
         end
 
-        def after_suite
-          after_scenario
-          formatter.after_feature
-          formatter.after_features
+        def pop
+          printer = stack.pop
+          printer.after
+          self
+        end
+
+        def inspect
+          stack.map { |o| o.class }.inspect
         end
 
         private
 
-        def after_scenario
-          if @current_scenario
-            formatter.after_steps
-            formatter.after_feature_element(:element)
+        def push(printer)
+          return if stack.include? printer
+          stack.push(printer)
+          printer.before
+        end
+
+        def stack
+          @stack ||= []
+        end
+
+        FeaturesPrinter = Struct.new(:formatter) do
+          def before
+            formatter.before_features
+          end
+
+          def after
+            formatter.after_features
           end
         end
-      end
 
-      def source_printer
-        @source_printer ||= SourcePrinter.new(formatter)
+        FeaturePrinter = Struct.new(:formatter, :feature) do
+          def before
+            formatter.before_feature
+            feature.tags.accept TagPrinter.new(formatter)
+            formatter.feature_name
+            self
+          end
+
+          def after
+            formatter.after_feature
+            self
+          end
+        end
+
+        ScenarioPrinter = Struct.new(:formatter, :scenario) do
+          def before
+            formatter.before_feature_element(scenario)
+            scenario.tags.accept TagPrinter.new(formatter)
+            formatter.scenario_name
+            self
+          end
+
+          def after
+            formatter.after_feature_element
+            self
+          end
+        end
+
+        StepsPrinter = Struct.new(:formatter) do
+          def before
+            formatter.before_steps
+            self
+          end
+
+          def after
+            formatter.after_steps
+            self
+          end
+        end
+
+        StepPrinter = Struct.new(:formatter, :step, :step_result) do
+          def before
+            formatter.before_step
+            self
+          end
+
+          def after
+            formatter.before_step_result
+            formatter.step_name
+            formatter.after_step_result
+            formatter.after_step
+            self
+          end
+        end
+
+        ScenarioOutlinePrinter = Struct.new(:formatter, :scenario_outline) do
+          def before
+            self
+          end
+
+          def after
+            self
+          end
+        end
+
+        ExamplesTablePrinter = Struct.new(:formatter, :examples_table) do
+          def before
+            self
+          end
+
+          def after
+            self
+          end
+        end
+
+        ExamplesTableRowPrinter = Struct.new(:formatter, :examples_table) do
+          def before
+            self
+          end
+
+          def after
+            self
+          end
+        end
+
+        TagPrinter = Struct.new(:formatter) do
+          def visit_tags(tags)
+            formatter.before_tags(tags)
+            formatter.after_tags(tags)
+          end
+        end
       end
 
       def record_test_case_result(result)
