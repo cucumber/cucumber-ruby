@@ -1,13 +1,24 @@
 module Cucumber
   module Formatter
+
+    FormatterWrapper = Struct.new(:formatter) do
+      def method_missing(message, *args)
+        formatter.send(message, *args) if formatter.respond_to?(message)
+      end
+    end
+
     ReportAdapter = Struct.new(:runtime, :formatter) do
+      def initialize(runtime, formatter)
+        super runtime, FormatterWrapper.new(formatter)
+      end
 
       def before_test_case(test_case)
+        test_case.describe_source_to(event_stack)
       end
 
       def after_test_case(test_case, result)
         record_test_case_result(result)
-        event_stack.pop
+        event_stack.pop_to ScenarioPrinter
       end
 
       def before_test_step(test_step)
@@ -27,10 +38,10 @@ module Cucumber
       private
 
       def event_stack
-        @event_stack ||= EventStack.new(formatter)
+        @event_stack ||= EventStack.new(runtime, formatter)
       end
 
-      EventStack = Struct.new(:formatter) do
+      EventStack = Struct.new(:runtime, :formatter) do
         def hook(*);end
 
         def feature(feature, *)
@@ -45,7 +56,7 @@ module Cucumber
         def step(step, step_result = nil)
           return unless step_result
           push StepsPrinter.new(formatter)
-          push StepPrinter.new(formatter, step, step_result)
+          StepPrinter.new(formatter, runtime, step, step_result).before.after
         end
 
         def scenario_outline(scenario_outline, *)
@@ -74,6 +85,12 @@ module Cucumber
           stack.map { |o| o.class }.inspect
         end
 
+        def pop_to(printer_type)
+          pop until stack.last.class == printer_type
+          pop
+          self
+        end
+
         private
 
         def push(printer)
@@ -88,19 +105,19 @@ module Cucumber
 
         FeaturesPrinter = Struct.new(:formatter) do
           def before
-            formatter.before_features
+            formatter.before_features(nil)
           end
 
           def after
-            formatter.after_features
+            formatter.after_features(nil)
           end
         end
 
         FeaturePrinter = Struct.new(:formatter, :feature) do
           def before
-            formatter.before_feature
+            formatter.before_feature(feature)
             feature.tags.accept TagPrinter.new(formatter)
-            formatter.feature_name
+            formatter.feature_name(feature.keyword, feature.name)
             self
           end
 
@@ -114,12 +131,13 @@ module Cucumber
           def before
             formatter.before_feature_element(scenario)
             scenario.tags.accept TagPrinter.new(formatter)
-            formatter.scenario_name
+            source_indent = 1 # TODO
+            formatter.scenario_name(scenario.keyword, scenario.name, scenario.location.to_s, source_indent)
             self
           end
 
           def after
-            formatter.after_feature_element
+            formatter.after_feature_element(scenario)
             self
           end
         end
@@ -136,19 +154,29 @@ module Cucumber
           end
         end
 
-        StepPrinter = Struct.new(:formatter, :step, :step_result) do
+        StepPrinter = Struct.new(:formatter, :runtime, :step, :step_result) do
           def before
-            formatter.before_step
+            formatter.before_step(step)
             self
           end
 
           def after
-            formatter.before_step_result
-            formatter.step_name
+            formatter.before_step_result(step_result)
+            source_indent = 1 # TODO
+            formatter.step_name(step.keyword, step_match(step), step_result.status, source_indent, @current_background, step.location.to_s)
             formatter.after_step_result
             formatter.after_step
             self
           end
+
+          private
+
+          def step_match(step)
+            runtime.step_match(step.name)
+          rescue Cucumber::Undefined
+            NoStepMatch.new(step, step.name)
+          end
+
         end
 
         ScenarioOutlinePrinter = Struct.new(:formatter, :scenario_outline) do
@@ -183,8 +211,11 @@ module Cucumber
 
         TagPrinter = Struct.new(:formatter) do
           def visit_tags(tags)
-            formatter.before_tags(tags)
-            formatter.after_tags(tags)
+            formatter.before_tags tags
+            tags.tags.each do |tag|
+              formatter.visit_tag_name tag.name
+            end
+            formatter.after_tags tags
           end
         end
       end
@@ -203,20 +234,6 @@ module Cucumber
 
       SourcePrinter = Struct.new(:formatter) do
         def hook(*)
-        end
-
-        def feature(feature, *)
-          return if feature == @current_feature
-          formatter.before_feature(feature)
-          formatter.feature_name(feature.keyword, feature.name)
-          @current_feature = feature
-        end
-
-        def scenario(scenario, *)
-          return if scenario == @current_scenario
-          source_indent = 1 # TODO
-          formatter.scenario_name(scenario.keyword, scenario.name, scenario.location.to_s, source_indent)
-          @current_scenario = scenario
         end
 
         def background(background, *)
@@ -251,14 +268,7 @@ module Cucumber
           end
         end
 
-        private
-
-        def step_match(runtime, step)
-          runtime.step_match(step.name)
-        rescue Cucumber::Undefined
-          NoStepMatch.new(step, step.name)
-        end
-      end
+     end
 
       require 'cucumber/ast/step_result'
       class LegacyResultBuilder
