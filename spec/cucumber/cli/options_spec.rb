@@ -264,6 +264,38 @@ module Cli
         end
       end
 
+
+      context '--init' do
+        it "should fail, because 'feature' directory exist" do
+          after_parsing('--init') do
+            output_stream.string.should =~ /'features' directory or 'cucumber.yml' exists, so no structure has been build/
+          end
+        end
+        it "exits the program" do
+          when_parsing('--init') { Kernel.should_receive(:exit) }
+        end
+
+        it "should work in empty directory" do
+          require 'tmpdir' unless defined?(Dir.mktmpdir)
+          require 'FileUtils' unless defined?(FileUtils)
+          test_dir = Dir.mktmpdir
+          current_dir = FileUtils.pwd
+          FileUtils.cd(test_dir)
+          after_parsing('--init') do
+            output_stream.string.should =~ /Cucumber has build an empty folder structure/
+            File.exists?("cucumber.yml")
+            File.directory?("features")
+            FileUtils.cd("features")
+            File.directory?("step_definitions")
+            File.directory?("support")
+            FileUtils.cd("support")
+            File.exists?("env.rb")
+          end
+          FileUtils.cd(current_dir)
+          FileUtils.rm_rf(test_dir)
+        end
+      end
+
       context 'environment variables (i.e. MODE=webrat)' do
         it "places all of the environment variables into a hash" do
           after_parsing('MODE=webrat FOO=bar') do
