@@ -54,6 +54,8 @@ module Cucumber
 
         def scenario(scenario, *)
           @background = nil
+          return if scenario == @scenario
+          @scenario = scenario
           pop_to FeaturePrinter
           push ScenarioPrinter.new(formatter, scenario)
         end

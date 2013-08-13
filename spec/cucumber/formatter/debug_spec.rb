@@ -55,6 +55,45 @@ EXPECTED
             end
           end
 
+          describe "with a scenario with multiple steps" do
+            define_feature <<-FEATURE
+          Feature: Banana party
+
+            Scenario:
+              Given there are bananas
+              And there are berries
+            FEATURE
+
+            it "outputs the events as expected" do
+              @out.string.should eq(<<EXPECTED)
+before_features
+  before_feature
+    before_tags
+    after_tags
+    feature_name
+    before_feature_element
+      before_tags
+      after_tags
+      scenario_name
+      before_steps
+        before_step
+          before_step_result
+            step_name
+          after_step_result
+        after_step
+        before_step
+          before_step_result
+            step_name
+          after_step_result
+        after_step
+      after_steps
+    after_feature_element
+  after_feature
+after_features
+EXPECTED
+            end
+          end
+
           describe "with 2 scenarios" do
             define_feature <<-FEATURE
           Feature: Banana party
