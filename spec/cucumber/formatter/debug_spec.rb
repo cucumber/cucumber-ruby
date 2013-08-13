@@ -115,7 +115,7 @@ EXPECTED
             FEATURE
 
             it "outputs the events as expected" do
-              pending("original cucumber fires extra step events") unless ENV['USE_CORE']
+              pending("legacy cucumber fires extra step events") if ENV['USE_LEGACY']
               @out.string.should eq(<<EXPECTED)
 before_features
   before_feature

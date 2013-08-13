@@ -93,6 +93,6 @@ module Cucumber
       end
     end
 
-    SpecHelper = ENV['USE_CORE'] ? NewSpecHelper : OldSpecHelper
+    SpecHelper = ENV['USE_LEGACY'] ? OldSpecHelper : NewSpecHelper
   end
 end
