@@ -13,22 +13,19 @@ module Cucumber
       end
 
       def before_test_case(test_case)
-        test_case.describe_source_to(event_stack)
+      end
+
+      def before_test_step(test_step)
+        formatter.log :before_test_step
+      end
+
+      def after_test_step(test_step, result)
+        formatter.log :after_test_step
+        test_step.describe_source_to(event_stack, result)
       end
 
       def after_test_case(test_case, result)
         record_test_case_result(result)
-        event_stack.pop_to ScenarioPrinter
-      end
-
-      def before_test_step(test_step)
-        test_step.describe_source_to(event_stack)
-      end
-
-      def after_test_step(test_step, result)
-        record_step_result(result) do |step_result|
-          test_step.describe_source_to(event_stack, step_result)
-        end
       end
 
       def after_suite
@@ -45,21 +42,30 @@ module Cucumber
         def hook(*);end
 
         def feature(feature, *)
+          @background = nil
           push FeaturesPrinter.new(formatter)
           push FeaturePrinter.new(formatter, feature)
         end
 
+        def background(background, *)
+          @background = background
+          push BackgroundPrinter.new(formatter, background)
+        end
+
         def scenario(scenario, *)
+          @background = nil
+          pop_to FeaturePrinter
           push ScenarioPrinter.new(formatter, scenario)
         end
 
-        def step(step, step_result = nil)
-          return unless step_result
+        def step(step, result)
           push StepsPrinter.new(formatter)
-          StepPrinter.new(formatter, runtime, step, step_result).before.after
+          StepPrinter.new(formatter, runtime, step, result, current_background).before.after
         end
 
         def scenario_outline(scenario_outline, *)
+          @background = nil
+          pop_to FeaturePrinter
           push ScenarioOutlinePrinter.new(formatter, scenario_outline)
         end
 
@@ -87,11 +93,14 @@ module Cucumber
 
         def pop_to(printer_type)
           pop until stack.last.class == printer_type
-          pop
           self
         end
 
         private
+
+        def current_background
+          @background
+        end
 
         def push(printer)
           return if stack.include? printer
@@ -142,6 +151,20 @@ module Cucumber
           end
         end
 
+        BackgroundPrinter = Struct.new(:formatter, :background) do
+          def before
+            formatter.before_background(background)
+            source_indent = 1 # TODO
+            formatter.background_name(background.keyword, background.name, background.location.to_s, source_indent)
+            self
+          end
+
+          def after
+            formatter.after_background(background)
+            self
+          end
+        end
+
         StepsPrinter = Struct.new(:formatter) do
           def before
             formatter.before_steps
@@ -154,7 +177,7 @@ module Cucumber
           end
         end
 
-        StepPrinter = Struct.new(:formatter, :runtime, :step, :step_result) do
+        StepPrinter = Struct.new(:formatter, :runtime, :step, :result, :background) do
           def before
             formatter.before_step(step)
             self
@@ -163,7 +186,7 @@ module Cucumber
           def after
             formatter.before_step_result(step_result)
             source_indent = 1 # TODO
-            formatter.step_name(step.keyword, step_match(step), step_result.status, source_indent, @current_background, step.location.to_s)
+            formatter.step_name(step.keyword, step_match(step), step_result.status, source_indent, background, step.location.to_s)
             formatter.after_step_result
             formatter.after_step
             self
@@ -175,6 +198,13 @@ module Cucumber
             runtime.step_match(step.name)
           rescue Cucumber::Undefined
             NoStepMatch.new(step, step.name)
+          end
+
+          def step_result
+            return @step_result if @step_result
+            step_result = LegacyResultBuilder.new(result).step_result(background)
+            runtime.step_visited step_result
+            @step_result = step_result
           end
 
         end
@@ -224,12 +254,6 @@ module Cucumber
         scenario = LegacyResultBuilder.new(result).scenario
         runtime.record_result(scenario)
         yield scenario if block_given?
-      end
-
-      def record_step_result(result)
-        step_result = LegacyResultBuilder.new(result).step_result
-        runtime.step_visited(step_result)
-        yield step_result if block_given?
       end
 
       SourcePrinter = Struct.new(:formatter) do
@@ -298,8 +322,8 @@ module Cucumber
 
         def duration(*); end
 
-        def step_result
-          Ast::StepResult.new(:keyword, :step_match, :multiline_arg, @status, @exception, :source_indent, :background, :file_colon_line)
+        def step_result(background)
+          Ast::StepResult.new(:keyword, :step_match, :multiline_arg, @status, @exception, :source_indent, background, :file_colon_line)
         end
 
         def scenario

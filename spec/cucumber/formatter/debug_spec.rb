@@ -18,6 +18,8 @@ module Cucumber
         describe "given a single feature" do
           before(:each) do
             run_defined_feature
+            puts @out.string
+            puts self.class.feature_content
           end
 
           describe "with a scenario" do
@@ -35,6 +37,101 @@ before_features
     before_tags
     after_tags
     feature_name
+    before_feature_element
+      before_tags
+      after_tags
+      scenario_name
+      before_steps
+        before_step
+          before_step_result
+            step_name
+          after_step_result
+        after_step
+      after_steps
+    after_feature_element
+  after_feature
+after_features
+EXPECTED
+            end
+          end
+
+          describe "with 2 scenarios" do
+            define_feature <<-FEATURE
+          Feature: Banana party
+
+            Scenario: Monkey eats banana
+              Given there are bananas
+
+            Scenario: Monkey is hungry
+              Given there are no bananas
+            FEATURE
+
+            it "outputs the events as expected" do
+              @out.string.should eq(<<EXPECTED)
+before_features
+  before_feature
+    before_tags
+    after_tags
+    feature_name
+    before_feature_element
+      before_tags
+      after_tags
+      scenario_name
+      before_steps
+        before_step
+          before_step_result
+            step_name
+          after_step_result
+        after_step
+      after_steps
+    after_feature_element
+    before_feature_element
+      before_tags
+      after_tags
+      scenario_name
+      before_steps
+        before_step
+          before_step_result
+            step_name
+          after_step_result
+        after_step
+      after_steps
+    after_feature_element
+  after_feature
+after_features
+EXPECTED
+            end
+          end
+
+          describe "with a background" do
+            define_feature <<-FEATURE
+          Feature:
+
+            Background:
+              Given there is a tree
+
+            Scenario:
+              Given there are bananas
+            FEATURE
+
+            it "outputs the events as expected" do
+              pending("original cucumber fires extra step events") unless ENV['USE_CORE']
+              @out.string.should eq(<<EXPECTED)
+before_features
+  before_feature
+    before_tags
+    after_tags
+    feature_name
+    before_background
+      background_name
+      before_steps
+        before_step
+          before_step_result
+            step_name
+          after_step_result
+        after_step
+      after_steps
+    after_background
     before_feature_element
       before_tags
       after_tags

@@ -37,6 +37,29 @@ module Cucumber
             end
           end
 
+          describe "with a background" do
+            define_feature <<-FEATURE
+Feature: Banana party
+
+  Background: 
+    Given a tree
+
+  Scenario: Monkey eats banana
+    Given there are bananas
+            FEATURE
+
+            it "outputs the gherkin" do
+              @out.string.should include self.class.feature_content
+            end
+
+            it "outputs the scenario name" do
+              @out.string.should include "Scenario: Monkey eats banana"
+            end
+            it "outputs the step" do
+              @out.string.should include "Given there are bananas"
+            end
+          end
+
           describe "with a scenario outline" do
             define_feature <<-FEATURE
           Feature: Fud Pyramid
