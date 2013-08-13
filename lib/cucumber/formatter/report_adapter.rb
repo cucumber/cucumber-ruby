@@ -61,8 +61,7 @@ module Cucumber
         end
 
         def step(step, result)
-          push StepsPrinter.new(formatter)
-          StepPrinter.new(formatter, runtime, step, result, current_background).before.after
+          stack.last.step(step, result, runtime, @background)
         end
 
         def scenario_outline(scenario_outline, *)
@@ -147,7 +146,13 @@ module Cucumber
             self
           end
 
+          def step(step, result, runtime, background)
+            @steps_printer ||= StepsPrinter.new(formatter).before
+            @steps_printer.step(step, result, runtime, background)
+          end
+
           def after
+            @steps_printer.after if @steps_printer
             formatter.after_feature_element(scenario)
             self
           end
@@ -161,7 +166,13 @@ module Cucumber
             self
           end
 
+          def step(step, result, runtime, background)
+            @steps_printer ||= StepsPrinter.new(formatter).before
+            @steps_printer.step(step, result, runtime, background)
+          end
+
           def after
+            @steps_printer.after if @steps_printer
             formatter.after_background(background)
             self
           end
@@ -171,6 +182,10 @@ module Cucumber
           def before
             formatter.before_steps
             self
+          end
+
+          def step(step, result, runtime, background)
+            StepPrinter.new(formatter, runtime, step, result, background).before.after
           end
 
           def after
