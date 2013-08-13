@@ -233,7 +233,7 @@ module Cucumber
               FileUtils.mkdir_p 'features/support'
               FileUtils.touch 'cucumber.yml'
               FileUtils.touch 'features/support/env.rb'
-              @out_stream.puts "Cucumber has build an empty folder structure"
+              @out_stream.puts "Cucumber has built an empty folder structure"
               Kernel.exit(0)
             else
               @out_stream.puts "'features' directory or 'cucumber.yml' exists, so no structure has been build"

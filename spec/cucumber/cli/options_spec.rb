@@ -282,14 +282,14 @@ module Cli
           current_dir = FileUtils.pwd
           FileUtils.cd(test_dir)
           after_parsing('--init') do
-            output_stream.string.should =~ /Cucumber has build an empty folder structure/
-            File.exists?("cucumber.yml")
-            File.directory?("features")
+            output_stream.string.should =~ /Cucumber has built an empty folder structure/
+            File.exists?("cucumber.yml").should be_true
+            File.directory?("features").should be_true
             FileUtils.cd("features")
-            File.directory?("step_definitions")
-            File.directory?("support")
+            File.directory?("step_definitions").should be_true
+            File.directory?("support").should be_true
             FileUtils.cd("support")
-            File.exists?("env.rb")
+            File.exists?("env.rb").should be_true
           end
           FileUtils.cd(current_dir)
           FileUtils.rm_rf(test_dir)
