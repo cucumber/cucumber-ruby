@@ -42,18 +42,15 @@ module Cucumber
         def hook(*);end
 
         def feature(feature, *)
-          @background = nil
           push FeaturesPrinter.new(formatter)
           push FeaturePrinter.new(formatter, feature)
         end
 
         def background(background, *)
-          @background = background
           push BackgroundPrinter.new(formatter, background)
         end
 
         def scenario(scenario, *)
-          @background = nil
           return if scenario == @scenario
           @scenario = scenario
           pop_to FeaturePrinter
@@ -61,11 +58,10 @@ module Cucumber
         end
 
         def step(step, result)
-          stack.last.step(step, result, runtime, @background)
+          stack.last.step(step, result, runtime)
         end
 
         def scenario_outline(scenario_outline, *)
-          @background = nil
           pop_to FeaturePrinter
           push ScenarioOutlinePrinter.new(formatter, scenario_outline)
         end
@@ -98,10 +94,6 @@ module Cucumber
         end
 
         private
-
-        def current_background
-          @background
-        end
 
         def push(printer)
           return if stack.include? printer
@@ -146,9 +138,9 @@ module Cucumber
             self
           end
 
-          def step(step, result, runtime, background)
+          def step(step, result, runtime)
             @steps_printer ||= StepsPrinter.new(formatter).before
-            @steps_printer.step(step, result, runtime, background)
+            @steps_printer.step(step, result, runtime, nil)
           end
 
           def after
@@ -166,7 +158,7 @@ module Cucumber
             self
           end
 
-          def step(step, result, runtime, background)
+          def step(step, result, runtime)
             @steps_printer ||= StepsPrinter.new(formatter).before
             @steps_printer.step(step, result, runtime, background)
           end
