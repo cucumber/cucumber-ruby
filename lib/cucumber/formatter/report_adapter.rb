@@ -36,10 +36,36 @@ module Cucumber
         @printer ||= FeaturesPrinter.new(formatter, runtime).before
       end
 
-      FeaturesPrinter = Struct.new(:formatter, :runtime) do
-        def before
+      class Printer < Struct
+        def self.before(&block)
+          define_method(:before) do
+            instance_eval &block
+            self
+          end
+        end
+
+        def self.after(&block)
+          define_method(:after) do
+            @child.after if @child
+            instance_eval &block
+            self
+          end
+        end
+
+        def open(printer_type, node)
+          args = [formatter, runtime, node]
+          @child.after if @child
+          @child = printer_type.new(*args).before
+        end
+
+        def method_missing(message, *args)
+          @child.send(message, *args)
+        end
+      end
+
+      FeaturesPrinter = Printer.new(:formatter, :runtime) do
+        before do
           formatter.before_features(nil)
-          self
         end
 
         def hook(*); end
@@ -47,47 +73,32 @@ module Cucumber
         def feature(feature, *)
           return if @feature == feature
           @feature = feature
-          @child = FeaturePrinter.new(formatter, runtime, feature).before
+          open FeaturePrinter, feature
         end
 
-        def method_missing(message, *args)
-          @child.send(message, *args)
-        end
-
-        def after
-          @child.after if @child
+        after do
           formatter.after_features(nil)
-          self
         end
       end
 
-      FeaturePrinter = Struct.new(:formatter, :runtime, :feature) do
-        def before
+      FeaturePrinter = Printer.new(:formatter, :runtime, :feature) do
+        before do
           formatter.before_feature(feature)
           feature.tags.accept TagPrinter.new(formatter)
           formatter.feature_name(feature.keyword, feature.name)
-          self
         end
 
         def background(background, *)
-          @child = BackgroundPrinter.new(formatter, runtime, background).before
+          open BackgroundPrinter, background
         end
 
         def scenario(scenario, *)
-          return if scenario == @scenario
-          @scenario = scenario
-          @child.after if @child
-          @child = ScenarioPrinter.new(formatter, runtime, scenario).before
+          scenario == @scenario && return || @scenario = scenario
+          open ScenarioPrinter, scenario
         end
 
-        def step(*args)
-          @child.step(*args)
-        end
-
-        def after
-          @child.after if @child
+        after do
           formatter.after_feature
-          self
         end
       end
 
@@ -261,8 +272,7 @@ module Cucumber
             formatter.table_cell_value(value, step_result.status)
           end
         end
-
-     end
+      end
 
       require 'cucumber/ast/step_result'
       class LegacyResultBuilder
