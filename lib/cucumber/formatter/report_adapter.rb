@@ -16,12 +16,10 @@ module Cucumber
       end
 
       def before_test_step(test_step)
-        formatter.log :before_test_step
       end
 
       def after_test_step(test_step, result)
-        formatter.log :after_test_step
-        test_step.describe_source_to(event_stack, result)
+        test_step.describe_source_to(printer, result)
       end
 
       def after_test_case(test_case, result)
@@ -29,233 +27,196 @@ module Cucumber
       end
 
       def after_suite
-        event_stack.empty
+        printer.after
       end
 
       private
 
-      def event_stack
-        @event_stack ||= EventStack.new(runtime, formatter)
+      def printer
+        @printer ||= FeaturesPrinter.new(formatter, runtime).before
       end
 
-      EventStack = Struct.new(:runtime, :formatter) do
-        def hook(*);end
+      FeaturesPrinter = Struct.new(:formatter, :runtime) do
+        def before
+          formatter.before_features(nil)
+          self
+        end
+
+        def hook(*); end
 
         def feature(feature, *)
-          push FeaturesPrinter.new(formatter)
-          push FeaturePrinter.new(formatter, feature)
+          return if @feature == feature
+          @feature = feature
+          @child = FeaturePrinter.new(formatter, runtime, feature).before
+        end
+
+        def method_missing(message, *args)
+          @child.send(message, *args)
+        end
+
+        def after
+          @child.after if @child
+          formatter.after_features(nil)
+          self
+        end
+      end
+
+      FeaturePrinter = Struct.new(:formatter, :runtime, :feature) do
+        def before
+          formatter.before_feature(feature)
+          feature.tags.accept TagPrinter.new(formatter)
+          formatter.feature_name(feature.keyword, feature.name)
+          self
         end
 
         def background(background, *)
-          push BackgroundPrinter.new(formatter, background)
+          @child = BackgroundPrinter.new(formatter, runtime, background).before
         end
 
         def scenario(scenario, *)
           return if scenario == @scenario
           @scenario = scenario
-          pop_to FeaturePrinter
-          push ScenarioPrinter.new(formatter, scenario)
+          @child.after if @child
+          @child = ScenarioPrinter.new(formatter, runtime, scenario).before
         end
 
-        def step(step, result)
-          stack.last.step(step, result, runtime)
+        def step(*args)
+          @child.step(*args)
         end
 
-        def scenario_outline(scenario_outline, *)
-          pop_to FeaturePrinter
-          push ScenarioOutlinePrinter.new(formatter, scenario_outline)
+        def after
+          @child.after if @child
+          formatter.after_feature
+          self
         end
+      end
 
-        def examples_table(examples_table, *)
-          push ExamplesTablePrinter.new(formatter, examples_table)
-        end
-
-        def examples_table_row(examples_table_row, *)
-          push ExamplesTableRowPrinter.new(formatter, examples_table_row)
-        end
-
-        def empty
-          pop until stack.empty?
-        end
-
-        def pop
-          printer = stack.pop
-          printer.after
+      ScenarioPrinter = Struct.new(:formatter, :runtime, :scenario) do
+        def before
+          formatter.before_feature_element(scenario)
+          scenario.tags.accept TagPrinter.new(formatter)
+          source_indent = 1 # TODO
+          formatter.scenario_name(scenario.keyword, scenario.name, scenario.location.to_s, source_indent)
           self
         end
 
-        def inspect
-          stack.map { |o| o.class }.inspect
+        def step(step, result)
+          @steps_printer ||= StepsPrinter.new(formatter).before
+          @steps_printer.step(step, result, runtime, background = nil)
         end
 
-        def pop_to(printer_type)
-          pop until stack.last.class == printer_type
+        def after
+          @steps_printer.after if @steps_printer
+          formatter.after_feature_element(scenario)
+          self
+        end
+      end
+
+      BackgroundPrinter = Struct.new(:formatter, :runtime, :background) do
+        def before
+          formatter.before_background(background)
+          source_indent = 1 # TODO
+          formatter.background_name(background.keyword, background.name, background.location.to_s, source_indent)
+          self
+        end
+
+        def step(step, result)
+          @steps_printer ||= StepsPrinter.new(formatter).before
+          @steps_printer.step(step, result, runtime, background)
+        end
+
+        def after
+          @steps_printer.after if @steps_printer
+          formatter.after_background(background)
+          self
+        end
+      end
+
+      StepsPrinter = Struct.new(:formatter) do
+        def before
+          formatter.before_steps
+          self
+        end
+
+        def step(step, result, runtime, background)
+          StepPrinter.new(formatter, runtime, step, result, background).before.after
+        end
+
+        def after
+          formatter.after_steps
+          self
+        end
+      end
+
+      StepPrinter = Struct.new(:formatter, :runtime, :step, :result, :background) do
+        def before
+          formatter.before_step(step)
+          self
+        end
+
+        def after
+          formatter.before_step_result(step_result)
+          source_indent = 1 # TODO
+          formatter.step_name(step.keyword, step_match(step), step_result.status, source_indent, background, step.location.to_s)
+          formatter.after_step_result
+          formatter.after_step
           self
         end
 
         private
 
-        def push(printer)
-          return if stack.include? printer
-          stack.push(printer)
-          printer.before
+        def step_match(step)
+          runtime.step_match(step.name)
+        rescue Cucumber::Undefined
+          NoStepMatch.new(step, step.name)
         end
 
-        def stack
-          @stack ||= []
+        def step_result
+          return @step_result if @step_result
+          step_result = LegacyResultBuilder.new(result).step_result(background)
+          runtime.step_visited step_result
+          @step_result = step_result
         end
 
-        FeaturesPrinter = Struct.new(:formatter) do
-          def before
-            formatter.before_features(nil)
-          end
+      end
 
-          def after
-            formatter.after_features(nil)
-          end
+      ScenarioOutlinePrinter = Struct.new(:formatter, :scenario_outline) do
+        def before
+          self
         end
 
-        FeaturePrinter = Struct.new(:formatter, :feature) do
-          def before
-            formatter.before_feature(feature)
-            feature.tags.accept TagPrinter.new(formatter)
-            formatter.feature_name(feature.keyword, feature.name)
-            self
-          end
+        def after
+          self
+        end
+      end
 
-          def after
-            formatter.after_feature
-            self
-          end
+      ExamplesTablePrinter = Struct.new(:formatter, :examples_table) do
+        def before
+          self
         end
 
-        ScenarioPrinter = Struct.new(:formatter, :scenario) do
-          def before
-            formatter.before_feature_element(scenario)
-            scenario.tags.accept TagPrinter.new(formatter)
-            source_indent = 1 # TODO
-            formatter.scenario_name(scenario.keyword, scenario.name, scenario.location.to_s, source_indent)
-            self
-          end
+        def after
+          self
+        end
+      end
 
-          def step(step, result, runtime)
-            @steps_printer ||= StepsPrinter.new(formatter).before
-            @steps_printer.step(step, result, runtime, nil)
-          end
-
-          def after
-            @steps_printer.after if @steps_printer
-            formatter.after_feature_element(scenario)
-            self
-          end
+      ExamplesTableRowPrinter = Struct.new(:formatter, :examples_table) do
+        def before
+          self
         end
 
-        BackgroundPrinter = Struct.new(:formatter, :background) do
-          def before
-            formatter.before_background(background)
-            source_indent = 1 # TODO
-            formatter.background_name(background.keyword, background.name, background.location.to_s, source_indent)
-            self
-          end
-
-          def step(step, result, runtime)
-            @steps_printer ||= StepsPrinter.new(formatter).before
-            @steps_printer.step(step, result, runtime, background)
-          end
-
-          def after
-            @steps_printer.after if @steps_printer
-            formatter.after_background(background)
-            self
-          end
+        def after
+          self
         end
+      end
 
-        StepsPrinter = Struct.new(:formatter) do
-          def before
-            formatter.before_steps
-            self
+      TagPrinter = Struct.new(:formatter) do
+        def visit_tags(tags)
+          formatter.before_tags tags
+          tags.tags.each do |tag|
+            formatter.visit_tag_name tag.name
           end
-
-          def step(step, result, runtime, background)
-            StepPrinter.new(formatter, runtime, step, result, background).before.after
-          end
-
-          def after
-            formatter.after_steps
-            self
-          end
-        end
-
-        StepPrinter = Struct.new(:formatter, :runtime, :step, :result, :background) do
-          def before
-            formatter.before_step(step)
-            self
-          end
-
-          def after
-            formatter.before_step_result(step_result)
-            source_indent = 1 # TODO
-            formatter.step_name(step.keyword, step_match(step), step_result.status, source_indent, background, step.location.to_s)
-            formatter.after_step_result
-            formatter.after_step
-            self
-          end
-
-          private
-
-          def step_match(step)
-            runtime.step_match(step.name)
-          rescue Cucumber::Undefined
-            NoStepMatch.new(step, step.name)
-          end
-
-          def step_result
-            return @step_result if @step_result
-            step_result = LegacyResultBuilder.new(result).step_result(background)
-            runtime.step_visited step_result
-            @step_result = step_result
-          end
-
-        end
-
-        ScenarioOutlinePrinter = Struct.new(:formatter, :scenario_outline) do
-          def before
-            self
-          end
-
-          def after
-            self
-          end
-        end
-
-        ExamplesTablePrinter = Struct.new(:formatter, :examples_table) do
-          def before
-            self
-          end
-
-          def after
-            self
-          end
-        end
-
-        ExamplesTableRowPrinter = Struct.new(:formatter, :examples_table) do
-          def before
-            self
-          end
-
-          def after
-            self
-          end
-        end
-
-        TagPrinter = Struct.new(:formatter) do
-          def visit_tags(tags)
-            formatter.before_tags tags
-            tags.tags.each do |tag|
-              formatter.visit_tag_name tag.name
-            end
-            formatter.after_tags tags
-          end
+          formatter.after_tags tags
         end
       end
 
