@@ -268,6 +268,7 @@ module Cucumber
           formatter.before_examples(node)
           formatter.examples_name
           formatter.before_outline_table
+          ExamplesTableRowPrinter.new(formatter, runtime, node.header).before.after
         end
 
         def examples_table_row(examples_table_row, *)
@@ -291,6 +292,11 @@ module Cucumber
         end
 
         after do
+          node.values.each do |value|
+            formatter.before_table_cell
+            formatter.table_cell_value
+            formatter.after_table_cell
+          end
           formatter.after_table_row
         end
       end
