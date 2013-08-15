@@ -60,6 +60,7 @@ module Cucumber
         end
 
         def method_missing(message, *args)
+          raise "#{self.class} has no @child set" unless @child
           return super unless @child.respond_to?(message)
           @child.send(message, *args)
         end
@@ -109,6 +110,12 @@ module Cucumber
         def scenario(scenario, *)
           for_new(scenario) do
             open ScenarioPrinter, scenario
+          end
+        end
+
+        def scenario_outline(scenario_outline, *)
+          for_new(scenario_outline) do
+            open ScenarioOutlinePrinter, scenario_outline
           end
         end
 
@@ -196,33 +203,90 @@ module Cucumber
 
       end
 
-      ScenarioOutlinePrinter = Struct.new(:formatter, :scenario_outline) do
-        def before
-          self
+      ScenarioOutlinePrinter = Printer.new(:formatter, :runtime, :node) do
+        before do
+          formatter.before_feature_element(node)
+          node.tags.accept TagPrinter.new(formatter)
+          source_indent = 1 # TODO
+          formatter.scenario_name(node.keyword, node.name, node.location.to_s, source_indent)
+          outline_steps_printer = OutlineStepsPrinter.new(formatter, runtime)
+          node.describe_to outline_steps_printer
+          outline_steps_printer.after
         end
 
-        def after
-          self
+        def examples_table(examples_table, *)
+          @child ||= ExamplesArrayPrinter.new(formatter, runtime).before
+          @child.examples_table(examples_table)
+        end
+
+        after do
+          formatter.after_feature_element(node)
         end
       end
 
-      ExamplesTablePrinter = Struct.new(:formatter, :examples_table) do
-        def before
-          self
+      OutlineStepsPrinter = Struct.new(:formatter, :runtime) do
+        def scenario_outline(node, &descend)
+          descend.call # print the outline steps
         end
 
+        def outline_step(step)
+          result = Core::Test::Result::Skipped.new
+          steps_printer.step step, result, runtime, background = nil
+        end
+
+        def examples_table(*);end
+
         def after
-          self
+          steps_printer.after
+        end
+
+        private
+
+        def steps_printer
+          @steps_printer ||= StepsPrinter.new(formatter).before
         end
       end
 
-      ExamplesTableRowPrinter = Struct.new(:formatter, :examples_table) do
-        def before
-          self
+      ExamplesArrayPrinter = Printer.new(:formatter, :runtime) do
+        before do
+          formatter.before_examples_array
         end
 
-        def after
-          self
+        def examples_table(examples_table)
+          for_new(examples_table) do
+            open ExamplesTablePrinter, examples_table
+          end
+        end
+
+        after do
+          formatter.after_examples_array
+        end
+      end
+
+      ExamplesTablePrinter = Printer.new(:formatter, :runtime, :node) do
+        before do
+          formatter.before_examples(node)
+        end
+
+        def examples_table_row(examples_table_row, *)
+          for_new(examples_table_row) do
+            open ExamplesTableRowPrinter, examples_table_row
+          end
+        end
+
+        after do
+          formatter.after_examples(node)
+        end
+      end
+
+      ExamplesTableRowPrinter = Printer.new(:formatter, :runtime, :examples_table) do
+        before do
+        end
+
+        def step(step, *)
+        end
+
+        after do
         end
       end
 
