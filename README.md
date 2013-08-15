@@ -19,4 +19,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for info on contributing to Cucumber.
 
 ## Copyright
 
-Copyright (c) 2008,2009,2010,2011,2012,2013 Aslak Hellesøy and Contributors. See LICENSE for details.
+Copyright (c) 2008-2013 Aslak Hellesøy and Contributors. See LICENSE for details.

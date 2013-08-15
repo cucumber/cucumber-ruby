@@ -33,18 +33,12 @@ module Cucumber
       end
 
       def after_features(features)
-        print_summary(features) unless @options[:autoformat]
+        print_summary(features)
       end
 
       def before_feature(feature)
         @exceptions = []
         @indent = 0
-        if @options[:autoformat]
-          file = File.join(@options[:autoformat], feature.file)
-          dir = File.dirname(file)
-          mkdir_p(dir) unless File.directory?(dir)
-          @io = ensure_file(file, "pretty")
-        end
       end
 
       def comment_line(comment_line)
