@@ -266,6 +266,8 @@ module Cucumber
       ExamplesTablePrinter = Printer.new(:formatter, :runtime, :node) do
         before do
           formatter.before_examples(node)
+          formatter.examples_name
+          formatter.before_outline_table
         end
 
         def examples_table_row(examples_table_row, *)
@@ -275,18 +277,21 @@ module Cucumber
         end
 
         after do
+          formatter.after_outline_table
           formatter.after_examples(node)
         end
       end
 
-      ExamplesTableRowPrinter = Printer.new(:formatter, :runtime, :examples_table) do
+      ExamplesTableRowPrinter = Printer.new(:formatter, :runtime, :node) do
         before do
+          formatter.before_table_row
         end
 
         def step(step, *)
         end
 
         after do
+          formatter.after_table_row
         end
       end
 
