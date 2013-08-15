@@ -36,6 +36,7 @@ module Cucumber
         @printer ||= FeaturesPrinter.new(formatter, runtime).before
       end
 
+      # Provides a DSL for making the printers themselves more terse
       class Printer < Struct
         def self.before(&block)
           define_method(:before) do
@@ -66,6 +67,14 @@ module Cucumber
         def respond_to_missing?(message, include_private = false)
           @child.respond_to?(message, include_private) || super
         end
+
+        def for_new(node, &block)
+          @current_nodes ||= {}
+          if @current_nodes[node.class] != node
+            @current_nodes[node.class] = node
+            block.call
+          end
+        end
       end
 
       FeaturesPrinter = Printer.new(:formatter, :runtime) do
@@ -76,9 +85,9 @@ module Cucumber
         def hook(*); end
 
         def feature(feature, *)
-          return if @feature == feature
-          @feature = feature
-          open FeaturePrinter, feature
+          for_new(feature) do
+            open FeaturePrinter, feature
+          end
         end
 
         after do
@@ -98,8 +107,9 @@ module Cucumber
         end
 
         def scenario(scenario, *)
-          scenario == @scenario && return || @scenario = scenario
-          open ScenarioPrinter, scenario
+          for_new(scenario) do
+            open ScenarioPrinter, scenario
+          end
         end
 
         after do
@@ -107,76 +117,66 @@ module Cucumber
         end
       end
 
-      ScenarioPrinter = Struct.new(:formatter, :runtime, :scenario) do
-        def before
+      ScenarioPrinter = Printer.new(:formatter, :runtime, :scenario) do
+        before do
           formatter.before_feature_element(scenario)
           scenario.tags.accept TagPrinter.new(formatter)
           source_indent = 1 # TODO
           formatter.scenario_name(scenario.keyword, scenario.name, scenario.location.to_s, source_indent)
-          self
         end
 
         def step(step, result)
-          @steps_printer ||= StepsPrinter.new(formatter).before
-          @steps_printer.step(step, result, runtime, nil)
+          @child ||= StepsPrinter.new(formatter).before
+          super step, result, runtime, background = nil
         end
 
-        def after
-          @steps_printer.after if @steps_printer
+        after do
           formatter.after_feature_element(scenario)
-          self
         end
       end
 
-      BackgroundPrinter = Struct.new(:formatter, :runtime, :background) do
-        def before
+      BackgroundPrinter = Printer.new(:formatter, :runtime, :background) do
+        before do
           formatter.before_background(background)
           source_indent = 1 # TODO
           formatter.background_name(background.keyword, background.name, background.location.to_s, source_indent)
-          self
         end
 
         def step(step, result)
-          @steps_printer ||= StepsPrinter.new(formatter).before
-          @steps_printer.step(step, result, runtime, background)
+          @child ||= StepsPrinter.new(formatter).before
+          super step, result, runtime, background
         end
 
-        def after
-          @steps_printer.after if @steps_printer
+        after do
           formatter.after_background(background)
-          self
         end
       end
 
-      StepsPrinter = Struct.new(:formatter) do
-        def before
+      StepsPrinter = Printer.new(:formatter) do
+        before do
           formatter.before_steps
-          self
         end
 
         def step(step, result, runtime, background)
           StepPrinter.new(formatter, runtime, step, result, background).before.after
         end
 
-        def after
+        after do
           formatter.after_steps
-          self
         end
       end
 
-      StepPrinter = Struct.new(:formatter, :runtime, :step, :result, :background) do
-        def before
+      StepPrinter = Printer.new(:formatter, :runtime, :step, :result, :background) do
+        before do
           formatter.before_step(step)
-          self
         end
 
-        def after
+        after do
           formatter.before_step_result(step_result)
           source_indent = 1 # TODO
           formatter.step_name(step.keyword, step_match(step), step_result.status, source_indent, background, step.location.to_s)
           formatter.after_step_result
           formatter.after_step
-          self
         end
 
         private
