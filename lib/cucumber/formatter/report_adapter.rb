@@ -39,7 +39,7 @@ module Cucumber
       class Printer < Struct
         def self.before(&block)
           define_method(:before) do
-            instance_eval &block
+            instance_eval(&block)
             self
           end
         end
@@ -47,7 +47,7 @@ module Cucumber
         def self.after(&block)
           define_method(:after) do
             @child.after if @child
-            instance_eval &block
+            instance_eval(&block)
             self
           end
         end
@@ -113,7 +113,7 @@ module Cucumber
 
         def step(step, result)
           @steps_printer ||= StepsPrinter.new(formatter).before
-          @steps_printer.step(step, result, runtime, background = nil)
+          @steps_printer.step(step, result, runtime, nil)
         end
 
         def after
