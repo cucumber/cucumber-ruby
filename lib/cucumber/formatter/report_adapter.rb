@@ -59,7 +59,12 @@ module Cucumber
         end
 
         def method_missing(message, *args)
+          return super unless @child.respond_to?(message)
           @child.send(message, *args)
+        end
+
+        def respond_to_missing?(message, include_private = false)
+          @child.respond_to?(message, include_private) || super
         end
       end
 
