@@ -211,7 +211,7 @@ module Cucumber
           it { @doc.should have_css_node('.feature .scenario .step.failed .message', /StandardError/) }
         end
 
-        describe "with a step that fails in the backgound" do
+        describe "with a step that fails in the background" do
           define_steps do
             Given(/boo/) { raise 'eek' }
           end
@@ -225,6 +225,8 @@ module Cucumber
             FEATURE
 
           it { @doc.should have_css_node('.feature .background .step.failed', /eek/) }
+          it { @out.string.should_not include('makeRed(\'scenario_0\')') }
+          it { @out.string.should include('makeRed(\'background_0\')') }
           it { @doc.should_not have_css_node('.feature .scenario .step.failed', //) }
           it { @doc.should have_css_node('.feature .scenario .step.undefined', /yay/) }
         end
