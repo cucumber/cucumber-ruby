@@ -182,6 +182,11 @@ module Cucumber
           formatter.before_step_result(step_result)
           source_indent = 1 # TODO
           formatter.step_name(step.keyword, step_match(step), step_result.status, source_indent, background, step.location.to_s)
+          if step.multiline_arg
+            formatter.before_multiline_arg(step.multiline_arg)
+            step.multiline_arg.describe_to(formatter)
+            formatter.after_multiline_arg(step.multiline_arg)
+          end
           formatter.after_step_result
           formatter.after_step
         end
