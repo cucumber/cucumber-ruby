@@ -60,7 +60,7 @@ module Cucumber
         end
 
         def method_missing(message, *args)
-          raise "#{self.class} has no @child set" unless @child
+          raise "#{self.class} has no @child to send '#{message}' to. Perhaps you need to implement it?" unless @child
           return super unless @child.respond_to?(message)
           @child.send(message, *args)
         end
@@ -182,16 +182,19 @@ module Cucumber
           formatter.before_step_result(step_result)
           source_indent = 1 # TODO
           formatter.step_name(step.keyword, step_match(step), step_result.status, source_indent, background, step.location.to_s)
-          if step.multiline_arg
-            formatter.before_multiline_arg(step.multiline_arg)
-            step.multiline_arg.describe_to(formatter)
-            formatter.after_multiline_arg(step.multiline_arg)
-          end
+          print_multiline_arg
           formatter.after_step_result
           formatter.after_step
         end
 
         private
+
+        def print_multiline_arg
+          return unless step.multiline_arg
+          printer = MultilineArgPrinter.new(formatter, runtime, step.multiline_arg).before
+          step.describe_to printer
+          printer.after
+        end
 
         def step_match(step)
           runtime.step_match(step.name)
@@ -206,6 +209,34 @@ module Cucumber
           @step_result = step_result
         end
 
+      end
+
+      MultilineArgPrinter = Printer.new(:formatter, :runtime, :node) do
+        before do
+          formatter.before_multiline_arg node
+        end
+
+        def step(step, &descend)
+          descend.call
+        end
+
+        def outline_step(outline_step, &descend)
+          descend.call
+        end
+
+        def doc_string(doc_string)
+          formatter.doc_string(doc_string)
+        end
+
+        def table(table)
+          table.raw.each do |row|
+            TableRowPrinter.new(formatter, runtime, row).before.after
+          end
+        end
+
+        after do
+          formatter.after_multiline_arg node
+        end
       end
 
       ScenarioOutlinePrinter = Printer.new(:formatter, :runtime, :node) do
@@ -273,12 +304,12 @@ module Cucumber
           formatter.before_examples(node)
           formatter.examples_name
           formatter.before_outline_table
-          ExamplesTableRowPrinter.new(formatter, runtime, node.header).before.after
+          TableRowPrinter.new(formatter, runtime, node.header).before.after
         end
 
         def examples_table_row(examples_table_row, *)
           for_new(examples_table_row) do
-            open ExamplesTableRowPrinter, examples_table_row
+            open TableRowPrinter, examples_table_row
           end
         end
 
@@ -288,7 +319,7 @@ module Cucumber
         end
       end
 
-      ExamplesTableRowPrinter = Printer.new(:formatter, :runtime, :node) do
+      TableRowPrinter = Printer.new(:formatter, :runtime, :node) do
         before do
           formatter.before_table_row
         end
@@ -297,12 +328,23 @@ module Cucumber
         end
 
         after do
-          node.values.each do |value|
+          each_value do |value|
             formatter.before_table_cell
             formatter.table_cell_value
             formatter.after_table_cell
           end
           formatter.after_table_row
+        end
+
+        private
+
+        def each_value(&block)
+          # TODO: resolve this inconsistency between DataTable and ExamplesTable
+          if node.respond_to?(:values)
+            node.values.each(&block)
+          else
+            node.each(&block)
+          end
         end
       end
 
