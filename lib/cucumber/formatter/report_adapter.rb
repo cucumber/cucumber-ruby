@@ -104,7 +104,7 @@ module Cucumber
         before do
           formatter.before_feature(feature)
           feature.tags.accept TagPrinter.new(formatter)
-          formatter.feature_name(feature.keyword, feature.name)
+          formatter.feature_name feature.keyword, indented(feature.name) # TODO: change the core's new AST to return name and description separately instead of this lumped-together field
         end
 
         def background(background, *)
@@ -121,6 +121,17 @@ module Cucumber
 
         after do
           formatter.after_feature
+        end
+
+        private
+
+        def indented(name)
+          indent = ""
+          name.split("\n").map do |l|
+            s = "#{indent}#{l}"
+            indent = "  "
+            s
+          end.join("\n")
         end
       end
 
