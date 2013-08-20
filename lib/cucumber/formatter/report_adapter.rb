@@ -104,7 +104,9 @@ module Cucumber
         end
 
         def background(background, *)
-          open BackgroundPrinter, background
+          for_new(background) do
+            open BackgroundPrinter, background
+          end
         end
 
         def scenario(scenario, *)
