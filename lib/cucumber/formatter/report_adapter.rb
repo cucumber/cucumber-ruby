@@ -12,11 +12,8 @@ module Cucumber
         super runtime, FormatterWrapper.new(formatter)
       end
 
-      def before_test_case(test_case)
-      end
-
-      def before_test_step(test_step)
-      end
+      def before_test_case(test_case); end
+      def before_test_step(test_step); end 
 
       def after_test_step(test_step, result)
         test_step.describe_source_to(printer, result)
@@ -36,6 +33,13 @@ module Cucumber
         @printer ||= FeaturesPrinter.new(formatter, runtime).before
       end
 
+      def record_test_case_result(result)
+        scenario = LegacyResultBuilder.new(result).scenario
+        runtime.record_result(scenario)
+        yield scenario if block_given?
+      end
+
+
       # Provides a DSL for making the printers themselves more terse
       class Printer < Struct
         def self.before(&block)
@@ -53,10 +57,12 @@ module Cucumber
           end
         end
 
-        def open(printer_type, node)
-          args = [formatter, runtime, node]
-          @child.after if @child
-          @child = printer_type.new(*args).before
+        def delegate_to(printer_type, node)
+          for_new(node) do
+            args = [formatter, runtime, node]
+            @child.after if @child
+            @child = printer_type.new(*args).before
+          end
         end
 
         def method_missing(message, *args)
@@ -86,9 +92,7 @@ module Cucumber
         def hook(*); end
 
         def feature(feature, *)
-          for_new(feature) do
-            open FeaturePrinter, feature
-          end
+          delegate_to FeaturePrinter, feature
         end
 
         after do
@@ -104,21 +108,15 @@ module Cucumber
         end
 
         def background(background, *)
-          for_new(background) do
-            open BackgroundPrinter, background
-          end
+          delegate_to BackgroundPrinter, background
         end
 
         def scenario(scenario, *)
-          for_new(scenario) do
-            open ScenarioPrinter, scenario
-          end
+          delegate_to ScenarioPrinter, scenario
         end
 
         def scenario_outline(scenario_outline, *)
-          for_new(scenario_outline) do
-            open ScenarioOutlinePrinter, scenario_outline
-          end
+          delegate_to ScenarioOutlinePrinter, scenario_outline
         end
 
         after do
@@ -214,9 +212,7 @@ module Cucumber
 
         def print_multiline_arg
           return unless step.multiline_arg
-          printer = MultilineArgPrinter.new(formatter, runtime, step.multiline_arg).before
-          step.describe_to printer
-          printer.after
+          MultilineArgPrinter.new(formatter, runtime).print(step.multiline_arg)
         end
 
         def print_exception
@@ -242,9 +238,11 @@ module Cucumber
 
       end
 
-      MultilineArgPrinter = Printer.new(:formatter, :runtime, :node) do
-        before do
+      MultilineArgPrinter = Struct.new(:formatter, :runtime) do
+        def print(node)
           formatter.before_multiline_arg node
+          node.describe_to(self)
+          formatter.after_multiline_arg node
         end
 
         def step(step, &descend)
@@ -260,14 +258,12 @@ module Cucumber
         end
 
         def table(table)
-          table.raw.each do |row|
-            TableRowPrinter.new(formatter, runtime, row).before.after
+          table.raw.each do |values|
+            TableRowPrinter.new(formatter, runtime, TableRow.new(values)).before.after
           end
         end
 
-        after do
-          formatter.after_multiline_arg node
-        end
+        TableRow = Struct.new(:values)
       end
 
       ScenarioOutlinePrinter = Printer.new(:formatter, :runtime, :node) do
@@ -360,9 +356,7 @@ module Cucumber
         end
 
         def examples_table(examples_table)
-          for_new(examples_table) do
-            open ExamplesTablePrinter, examples_table
-          end
+          delegate_to ExamplesTablePrinter, examples_table
         end
 
         after do
@@ -379,9 +373,7 @@ module Cucumber
         end
 
         def examples_table_row(examples_table_row, *)
-          for_new(examples_table_row) do
-            open TableRowPrinter, examples_table_row
-          end
+          delegate_to TableRowPrinter, examples_table_row
         end
 
         after do
@@ -403,7 +395,7 @@ module Cucumber
           end
 
            require 'gherkin/formatter/escaping'
-             FindMaxWidth = Struct.new(:index) do
+           FindMaxWidth = Struct.new(:index) do
              include ::Gherkin::Formatter::Escaping
 
              def examples_table(table, &descend)
@@ -435,7 +427,7 @@ module Cucumber
         end
 
         after do
-          each_value do |value|
+          node.values.each do |value|
             formatter.before_table_cell(value)
             formatter.table_cell_value(value, @status || :skipped)
             formatter.after_table_cell(value)
@@ -449,19 +441,15 @@ module Cucumber
         private
 
         def legacy_table_row
-          LegacyTableRow.new(@exception)
-        end
-
-        def each_value(&block)
-          # TODO: resolve this inconsistency between DataTable and ExamplesTable
-          if node.respond_to?(:values)
-            node.values.each(&block)
-          else
-            node.each(&block)
-          end
+          LegacyTableRow.new(exception)
         end
 
         LegacyTableRow = Struct.new(:exception)
+
+        def exception
+          return nil unless @failed_step_result
+          @failed_step_result.exception
+        end
       end
 
       TagPrinter = Struct.new(:formatter) do
@@ -472,12 +460,6 @@ module Cucumber
           end
           formatter.after_tags tags
         end
-      end
-
-      def record_test_case_result(result)
-        scenario = LegacyResultBuilder.new(result).scenario
-        runtime.record_result(scenario)
-        yield scenario if block_given?
       end
 
       require 'cucumber/ast/step_result'
