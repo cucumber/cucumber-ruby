@@ -144,10 +144,6 @@ module Cucumber
           formatter.after_background(background)
         end
 
-        private
-
-        def step_result(result, background)
-        end
       end
 
       ScenarioPrinter = Printer.new(:formatter, :runtime, :scenario) do
@@ -197,6 +193,7 @@ module Cucumber
           formatter.before_step_result(step_result)
           print_step
           print_multiline_arg
+          print_exception
           formatter.after_step_result
           formatter.after_step(legacy_step)
         end
@@ -213,6 +210,11 @@ module Cucumber
           printer = MultilineArgPrinter.new(formatter, runtime, step.multiline_arg).before
           step.describe_to printer
           printer.after
+        end
+
+        def print_exception
+          return unless step_result.exception
+          formatter.exception(step_result.exception, step_result.status)
         end
 
         def step_match(step)
@@ -325,7 +327,7 @@ module Cucumber
         before do
           formatter.before_examples(node)
           formatter.examples_name(node.keyword, node.name)
-          formatter.before_outline_table(node)
+          formatter.before_outline_table(legacy_table)
           TableRowPrinter.new(formatter, runtime, node.header).before.after
         end
 
@@ -339,6 +341,38 @@ module Cucumber
           formatter.after_outline_table(node)
           formatter.after_examples(node)
         end
+
+        private
+
+        def legacy_table
+          LegacyTable.new(node)
+        end
+
+        LegacyTable = Struct.new(:node) do
+          def col_width(index)
+            max_width = FindMaxWidth.new(index)
+            node.describe_to max_width
+            max_width.result
+          end
+
+           require 'gherkin/formatter/escaping'
+             FindMaxWidth = Struct.new(:index) do
+             include ::Gherkin::Formatter::Escaping
+
+             def examples_table(table, &descend)
+               descend.call
+             end
+
+             def examples_table_row(row, &descend)
+               width = escape_cell(row.values[index]).unpack('U*').length
+               @result = width if width > result
+             end
+
+             def result
+               @result ||= 0
+             end
+           end
+        end
       end
 
       TableRowPrinter = Printer.new(:formatter, :runtime, :node, :background) do
@@ -349,7 +383,8 @@ module Cucumber
         def step(step, result)
           step_result = LegacyResultBuilder.new(result).step_result
           runtime.step_visited step_result
-          @status = step_result.status
+          @failed_step_result = step_result if result.failed?
+          @status = step_result.status unless @status == :failed || @status == :skipped
         end
 
         after do
@@ -359,12 +394,15 @@ module Cucumber
             formatter.after_table_cell(value)
           end
           formatter.after_table_row(legacy_table_row)
+          if @failed_step_result
+            formatter.exception @failed_step_result.exception, @failed_step_result.status
+          end
         end
 
         private
 
         def legacy_table_row
-          LegacyTableRow.new(node, @step_result)
+          LegacyTableRow.new(@exception)
         end
 
         def each_value(&block)
@@ -376,11 +414,7 @@ module Cucumber
           end
         end
 
-        LegacyTableRow = Struct.new(:node, :step_result) do
-          def exception
-            nil # TODO
-          end
-        end
+        LegacyTableRow = Struct.new(:exception)
       end
 
       TagPrinter = Struct.new(:formatter) do
