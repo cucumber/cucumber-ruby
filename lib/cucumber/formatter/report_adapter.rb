@@ -347,26 +347,21 @@ module Cucumber
         end
 
         def step(step, result)
-          record_step_result result
+          step_result = LegacyResultBuilder.new(result).step_result
+          runtime.step_visited step_result
+          @status = step_result.status
         end
 
         after do
           each_value do |value|
             formatter.before_table_cell(value)
-            formatter.table_cell_value(value, :skipped) # TODO: set the status somehow
+            formatter.table_cell_value(value, @status || :skipped)
             formatter.after_table_cell(value)
           end
           formatter.after_table_row(legacy_table_row)
         end
 
         private
-
-        def record_step_result(result)
-          return @step_result if @step_result
-          step_result = LegacyResultBuilder.new(result).step_result(background = nil)
-          runtime.step_visited step_result
-          @step_result = step_result
-        end
 
         def legacy_table_row
           LegacyTableRow.new(node, @step_result)
