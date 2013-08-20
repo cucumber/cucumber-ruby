@@ -124,6 +124,30 @@ module Cucumber
         end
       end
 
+      BackgroundPrinter = Printer.new(:formatter, :runtime, :background) do
+        before do
+          formatter.before_background(background)
+          source_indent = 1 # TODO
+          formatter.background_name(background.keyword, background.name, background.location.to_s, source_indent)
+        end
+
+        def step(step, result)
+          @child ||= StepsPrinter.new(formatter).before
+          step_result = LegacyResultBuilder.new(result).step_result(background)
+          runtime.step_visited step_result
+          @child.step step, step_result, runtime, background
+        end
+
+        after do
+          formatter.after_background(background)
+        end
+
+        private
+
+        def step_result(result, background)
+        end
+      end
+
       ScenarioPrinter = Printer.new(:formatter, :runtime, :scenario) do
         before do
           formatter.before_feature_element(scenario)
@@ -134,28 +158,19 @@ module Cucumber
 
         def step(step, result)
           @child ||= StepsPrinter.new(formatter).before
-          super step, result, runtime, background = nil
+          step_result = LegacyResultBuilder.new(result).step_result
+          runtime.step_visited step_result
+          @child.step step, step_result, runtime
         end
 
         after do
           formatter.after_feature_element(scenario)
         end
-      end
 
-      BackgroundPrinter = Printer.new(:formatter, :runtime, :background) do
-        before do
-          formatter.before_background(background)
-          source_indent = 1 # TODO
-          formatter.background_name(background.keyword, background.name, background.location.to_s, source_indent)
-        end
+        private
 
-        def step(step, result)
-          @child ||= StepsPrinter.new(formatter).before
-          super step, result, runtime, background
-        end
-
-        after do
-          formatter.after_background(background)
+        def step_result(result, background)
+          LegacyResultBuilder.new(result).step_result(background)
         end
       end
 
@@ -164,8 +179,8 @@ module Cucumber
           formatter.before_steps
         end
 
-        def step(step, result, runtime, background)
-          StepPrinter.new(formatter, runtime, step, result, background).before.after
+        def step(step, step_result, runtime, background = nil)
+          StepPrinter.new(formatter, runtime, step, step_result, background).print
         end
 
         after do
@@ -173,21 +188,23 @@ module Cucumber
         end
       end
 
-      StepPrinter = Printer.new(:formatter, :runtime, :step, :result, :background) do
-        before do
-          formatter.before_step(step)
-        end
+      StepPrinter = Struct.new(:formatter, :runtime, :step, :step_result, :background) do
 
-        after do
+        def print
+          formatter.before_step(legacy_step)
           formatter.before_step_result(step_result)
-          source_indent = 1 # TODO
-          formatter.step_name(step.keyword, step_match(step), step_result.status, source_indent, background, step.location.to_s)
+          print_step
           print_multiline_arg
           formatter.after_step_result
-          formatter.after_step
+          formatter.after_step(legacy_step)
         end
 
         private
+
+        def print_step
+          source_indent = 1 # TODO
+          formatter.step_name(step.keyword, step_match(step), step_result.status, source_indent, background, step.location.to_s)
+        end
 
         def print_multiline_arg
           return unless step.multiline_arg
@@ -202,11 +219,14 @@ module Cucumber
           NoStepMatch.new(step, step.name)
         end
 
-        def step_result
-          return @step_result if @step_result
-          step_result = LegacyResultBuilder.new(result).step_result(background)
-          runtime.step_visited step_result
-          @step_result = step_result
+        def legacy_step
+          LegacyStep.new(step_result)
+        end
+
+        LegacyStep = Struct.new(:step_result) do
+          def status
+            step_result.status
+          end
         end
 
       end
@@ -266,8 +286,8 @@ module Cucumber
         end
 
         def outline_step(step)
-          result = Core::Test::Result::Skipped.new
-          steps_printer.step step, result, runtime, background = nil
+          step_result = LegacyResultBuilder.new(Core::Test::Result::Skipped.new).step_result(background = nil)
+          steps_printer.step step, step_result, runtime, background = nil
         end
 
         def examples_table(*);end
@@ -285,7 +305,7 @@ module Cucumber
 
       ExamplesArrayPrinter = Printer.new(:formatter, :runtime) do
         before do
-          formatter.before_examples_array
+          formatter.before_examples_array(:examples_array)
         end
 
         def examples_table(examples_table)
@@ -302,8 +322,8 @@ module Cucumber
       ExamplesTablePrinter = Printer.new(:formatter, :runtime, :node) do
         before do
           formatter.before_examples(node)
-          formatter.examples_name
-          formatter.before_outline_table
+          formatter.examples_name(node.keyword, node.name)
+          formatter.before_outline_table(node)
           TableRowPrinter.new(formatter, runtime, node.header).before.after
         end
 
@@ -314,29 +334,41 @@ module Cucumber
         end
 
         after do
-          formatter.after_outline_table
+          formatter.after_outline_table(node)
           formatter.after_examples(node)
         end
       end
 
-      TableRowPrinter = Printer.new(:formatter, :runtime, :node) do
+      TableRowPrinter = Printer.new(:formatter, :runtime, :node, :background) do
         before do
-          formatter.before_table_row
+          formatter.before_table_row(node)
         end
 
-        def step(step, *)
+        def step(step, result)
+          record_step_result result
         end
 
         after do
           each_value do |value|
-            formatter.before_table_cell
-            formatter.table_cell_value
-            formatter.after_table_cell
+            formatter.before_table_cell(value)
+            formatter.table_cell_value(value, :skipped) # TODO: set the status somehow
+            formatter.after_table_cell(value)
           end
-          formatter.after_table_row
+          formatter.after_table_row(legacy_table_row)
         end
 
         private
+
+        def record_step_result(result)
+          return @step_result if @step_result
+          step_result = LegacyResultBuilder.new(result).step_result(background = nil)
+          runtime.step_visited step_result
+          @step_result = step_result
+        end
+
+        def legacy_table_row
+          LegacyTableRow.new(node, @step_result)
+        end
 
         def each_value(&block)
           # TODO: resolve this inconsistency between DataTable and ExamplesTable
@@ -344,6 +376,12 @@ module Cucumber
             node.values.each(&block)
           else
             node.each(&block)
+          end
+        end
+
+        LegacyTableRow = Struct.new(:node, :step_result) do
+          def exception
+            nil # TODO
           end
         end
       end
@@ -362,43 +400,6 @@ module Cucumber
         scenario = LegacyResultBuilder.new(result).scenario
         runtime.record_result(scenario)
         yield scenario if block_given?
-      end
-
-      SourcePrinter = Struct.new(:formatter) do
-        def hook(*)
-        end
-
-        def background(background, *)
-          return if background == @current_background
-          source_indent = 1 # TODO
-          formatter.background_name(background.keyword, background.name, background.location.to_s, source_indent)
-          @current_background = background
-        end
-
-        def step(step, runtime, step_result)
-          source_indent = 1 # TODO
-          formatter.step_name(step.keyword, step_match(runtime, step), step_result.status, source_indent, @current_background, step.location.to_s)
-        end
-
-        def scenario_outline(node, *)
-          return if node == @current_scenario_outline
-          source_indent = 1 # TODO
-          formatter.scenario_name(node.keyword, node.name, node.location.to_s, source_indent)
-          formatter.before_outline_table(node)
-          @current_scenario_outline = node
-        end
-
-        def examples_table(node, *)
-          return if node == @current_examples_table
-          formatter.examples_name(node.keyword, node.name)
-          @current_examples_table = node
-        end
-
-        def examples_table_row(row, runtime, step_result)
-          row.values.each do |value|
-            formatter.table_cell_value(value, step_result.status)
-          end
-        end
       end
 
       require 'cucumber/ast/step_result'
@@ -429,7 +430,7 @@ module Cucumber
 
         def duration(*); end
 
-        def step_result(background)
+        def step_result(background = nil)
           Ast::StepResult.new(:keyword, :step_match, :multiline_arg, @status, @exception, :source_indent, background, :file_colon_line)
         end
 
