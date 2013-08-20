@@ -5,6 +5,7 @@
 * Removed deprecated StepMother and Ast::Visitor classes (Matt Wynne)
 * Remove support for i18n nested step methods (Matt Wynne)
 * Remove experimental .js and .py support (Matt Wynne)
+* Remove Ruby 1.8.7 support, including RCov
 
 ### API Changes
 
