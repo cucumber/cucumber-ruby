@@ -84,8 +84,10 @@ module Cucumber
         end
       end
 
+      require 'cucumber/core/test/timer'
       FeaturesPrinter = Printer.new(:formatter, :runtime) do
         before do
+          timer.start
           formatter.before_features(nil)
         end
 
@@ -96,8 +98,16 @@ module Cucumber
         end
 
         after do
-          formatter.after_features(nil)
+          formatter.after_features LegacyFeatures.new(timer.sec)
         end
+
+        private
+
+        def timer
+          @timer ||= Cucumber::Core::Test::Timer.new
+        end
+
+        LegacyFeatures = Struct.new(:duration)
       end
 
       FeaturePrinter = Printer.new(:formatter, :runtime, :feature) do
