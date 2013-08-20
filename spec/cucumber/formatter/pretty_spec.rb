@@ -252,21 +252,6 @@ OUTPUT
             run_defined_feature
           end
 
-          describe "basic feature" do
-            define_feature <<-FEATURE
-            Feature: Bananas
-              In order to find my inner monkey
-              As a human
-              I must eat bananas
-            FEATURE
-
-            it "prints out the feature description" do
-              @out.string.should include "Feature: Bananas"
-              @out.string.should include "I must eat bananas"
-            end
-
-          end
-
           describe "with a scenario" do
             define_feature <<-FEATURE
           Feature: Banana party
