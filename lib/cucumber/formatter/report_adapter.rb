@@ -127,38 +127,46 @@ module Cucumber
       end
 
       BackgroundPrinter = Printer.new(:formatter, :runtime, :background) do
+
         before do
-          formatter.before_background(background)
-          source_indent = 1 # TODO
-          formatter.background_name(background.keyword, background.name, background.location.to_s, source_indent)
+          formatter.before_background background
+          formatter.background_name background.keyword, background.name, background.location.to_s, source_indent(background)
         end
 
         def step(step, result)
           @child ||= StepsPrinter.new(formatter).before
           step_result = LegacyResultBuilder.new(result).step_result(background)
           runtime.step_visited step_result
-          @child.step step, step_result, runtime, background
+          @child.step step, step_result, runtime, step_widths.max, background
         end
 
         after do
           formatter.after_background(background)
         end
 
+        private
+
+        def source_indent(node)
+          step_widths.max - node.name.length - node.keyword.length
+        end
+
+        def step_widths(node = nil)
+          @step_widths ||= StepWidths.new(background)
+        end
       end
 
       ScenarioPrinter = Printer.new(:formatter, :runtime, :scenario) do
         before do
           formatter.before_feature_element(scenario)
           scenario.tags.accept TagPrinter.new(formatter)
-          source_indent = 1 # TODO
-          formatter.scenario_name(scenario.keyword, scenario.name, scenario.location.to_s, source_indent)
+          formatter.scenario_name scenario.keyword, scenario.name, scenario.location.to_s, source_indent(scenario)
         end
 
         def step(step, result)
           @child ||= StepsPrinter.new(formatter).before
           step_result = LegacyResultBuilder.new(result).step_result
           runtime.step_visited step_result
-          @child.step step, step_result, runtime
+          @child.step step, step_result, runtime, step_widths.max
         end
 
         after do
@@ -166,6 +174,14 @@ module Cucumber
         end
 
         private
+
+        def source_indent(node)
+          step_widths.max - node.name.length - node.keyword.length
+        end
+
+        def step_widths(node = nil)
+          @step_widths ||= StepWidths.new(scenario)
+        end
 
         def step_result(result, background)
           LegacyResultBuilder.new(result).step_result(background)
@@ -177,8 +193,8 @@ module Cucumber
           formatter.before_steps
         end
 
-        def step(step, step_result, runtime, background = nil)
-          StepPrinter.new(formatter, runtime, step, step_result, background).print
+        def step(step, step_result, runtime, max_width, background = nil)
+          StepPrinter.new(formatter, runtime, max_width, step, step_result, background).print
         end
 
         after do
@@ -186,7 +202,7 @@ module Cucumber
         end
       end
 
-      StepPrinter = Struct.new(:formatter, :runtime, :step, :step_result, :background) do
+      StepPrinter = Struct.new(:formatter, :runtime, :max_width, :step, :step_result, :background) do
 
         def print
           formatter.before_step(legacy_step)
@@ -201,7 +217,7 @@ module Cucumber
         private
 
         def print_step
-          source_indent = 1 # TODO
+          source_indent = max_width - step.name.length - step.keyword.length
           formatter.step_name(step.keyword, step_match(step), step_result.status, source_indent, background, step.location.to_s)
         end
 
@@ -286,12 +302,13 @@ module Cucumber
 
       OutlineStepsPrinter = Struct.new(:formatter, :runtime) do
         def scenario_outline(node, &descend)
+          descend.call step_widths(node)
           descend.call # print the outline steps
         end
 
         def outline_step(step)
           step_result = LegacyResultBuilder.new(Core::Test::Result::Skipped.new).step_result(background = nil)
-          steps_printer.step step, step_result, runtime, background = nil
+          steps_printer.step step, step_result, runtime, step_widths.max, background = nil
         end
 
         def examples_table(*);end
@@ -304,6 +321,42 @@ module Cucumber
 
         def steps_printer
           @steps_printer ||= StepsPrinter.new(formatter).before
+        end
+
+        def step_widths(node = nil)
+          @step_widths ||= StepWidths.new(node)
+        end
+      end
+
+      class StepWidths
+        def initialize(node)
+          @widths = []
+          node.describe_to(self)
+        end
+
+        %i(background scenario scenario_outline).each do |node_name|
+          define_method(node_name) do |node, &descend|
+            record_width_of node
+            descend.call
+          end
+        end
+
+        %i(step outline_step).each do |node_name|
+          define_method(node_name) do |node|
+            record_width_of node
+          end
+        end
+
+        def examples_table(*); end
+
+        def max
+          @widths.max
+        end
+
+        private
+
+        def record_width_of(node)
+          @widths << node.keyword.length + node.name.length + 1
         end
       end
 
