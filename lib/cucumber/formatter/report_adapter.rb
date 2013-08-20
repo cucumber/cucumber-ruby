@@ -467,7 +467,7 @@ module Cucumber
         def visit_tags(tags)
           formatter.before_tags tags
           tags.tags.each do |tag|
-            formatter.visit_tag_name tag.name
+            formatter.tag_name tag.name
           end
           formatter.after_tags tags
         end
