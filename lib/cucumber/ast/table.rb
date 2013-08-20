@@ -238,6 +238,7 @@ module Cucumber
       #   # => ['phone number', 'ADDRESS']
       #
       def map_headers!(mappings={}, &block)
+        Kernel.warn "[warning] map_headers! will be deprecated"
         clear_cache!
         @header_mappings = mappings
         @header_conversion_proc = block
@@ -263,6 +264,7 @@ module Cucumber
       #   end
       #
       def map_column!(column_name, strict=true, &conversion_proc)
+        Kernel.warn "[warning] map_column! will be deprecated"
         @conversion_procs[column_name.to_s] = { :strict => strict, :proc => conversion_proc }
         self
       end
@@ -304,6 +306,7 @@ module Cucumber
       # a Table argument, if you want to compare that table to some actual values.
       #
       def diff!(other_table, options={})
+        Kernel.warn "[warning] diff! will be deprecated"
         options = {
           :missing_row   => true,
           :surplus_row   => true,

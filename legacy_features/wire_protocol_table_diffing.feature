@@ -29,7 +29,7 @@ Feature: Wire protocol table diffing
       | ["diff_failed"]                                      | ["fail",{"message":"Not same", "exception":"DifferentException", "backtrace":["a.cs:12","b.cs:34"]}] |
       | ["end_scenario"]                                     | ["success"]                                                                                          |
     When I run cucumber -f progress --backtrace
-    Then STDERR should be empty
+    Then STDERR should have warning message
     And it should fail with
       """
       F
@@ -109,7 +109,7 @@ Feature: Wire protocol table diffing
 
       Tables were not identical (Cucumber::Ast::Table::Different)
       features/wired.feature:3:in `Given we're all wired'
-      
+
       Failing Scenarios:
       cucumber features/wired.feature:2 # Scenario: Wired
 
