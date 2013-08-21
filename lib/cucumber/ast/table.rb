@@ -238,7 +238,7 @@ module Cucumber
       #   # => ['phone number', 'ADDRESS']
       #
       def map_headers!(mappings={}, &block)
-        Kernel.warn "[warning] map_headers! will be deprecated"
+        Kernel.warn "[warning] map_headers! will be deprecated, please use map_headers instead."
         clear_cache!
         @header_mappings = mappings
         @header_conversion_proc = block
