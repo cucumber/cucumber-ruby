@@ -135,9 +135,9 @@ module Cucumber
 
         private
 
-        def indented(name)
+        def indented(nasty_old_conflation_of_name_and_description)
           indent = ""
-          name.split("\n").map do |l|
+          nasty_old_conflation_of_name_and_description.split("\n").map do |l|
             s = "#{indent}#{l}"
             indent = "  "
             s
@@ -444,7 +444,7 @@ module Cucumber
           step_result = LegacyResultBuilder.new(result).step_result
           runtime.step_visited step_result
           @failed_step_result = step_result if result.failed?
-          @status = step_result.status unless @status == :failed || @status == :skipped
+          @status = step_result.status unless @status == :failed
         end
 
         after do

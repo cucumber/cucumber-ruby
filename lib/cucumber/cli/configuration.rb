@@ -149,12 +149,6 @@ module Cucumber
       def paths
         @options[:paths]
       end
-    private
-      def with_default_features_path(paths)
-        return ['features'] if paths.empty?
-        paths
-      end
-
 
       def formatters(runtime)
         @options[:formats].map do |format_and_out|
@@ -168,6 +162,12 @@ module Cucumber
             raise e
           end
         end
+      end
+
+    private
+      def with_default_features_path(paths)
+        return ['features'] if paths.empty?
+        paths
       end
 
       class LogFormatter < ::Logger::Formatter

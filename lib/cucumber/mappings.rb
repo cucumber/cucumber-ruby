@@ -4,6 +4,10 @@ require 'cucumber'
 module Cucumber
     class Mappings
 
+      def initialize(runtime = nil)
+        @runtime = runtime
+      end
+
       def test_step(step, mapper)
         step_match = runtime.step_match(step.name)
         mapper.map { step_match.invoke(step.multiline_arg) }
