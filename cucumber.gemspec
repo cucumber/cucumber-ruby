@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.description = 'Behaviour Driven Development with elegance and joy'
   s.summary     = "cucumber-#{s.version}"
   s.email       = 'cukes@googlegroups.com'
+  s.license     = 'MIT'
   s.homepage    = "http://cukes.info"
   s.platform    = Gem::Platform::RUBY
   s.required_ruby_version = ">= 1.9.3"
