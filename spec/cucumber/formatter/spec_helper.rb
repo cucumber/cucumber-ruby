@@ -37,6 +37,7 @@ module Cucumber
       def run(features)
         configuration = Cucumber::Configuration.default
         tree_walker = Cucumber::Ast::TreeWalker.new(runtime, [@formatter], configuration)
+        runtime.visitor = tree_walker
         features.accept(tree_walker)
       end
 
@@ -49,14 +50,13 @@ module Cucumber
       end
     end
 
-    load_path = File.expand_path(File.dirname(__FILE__) + '/../../../../cucumber-ruby-core/lib')
-    $: << load_path
     require 'cucumber/core'
     module NewSpecHelper
       include Core
 
       def run_defined_feature
-        #define_steps
+        define_steps
+        runtime.visitor = report
         execute [gherkin_doc], mappings, report
         report.after_suite # TODO: move into core
       end

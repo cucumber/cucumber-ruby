@@ -1,3 +1,5 @@
+require 'forwardable'
+
 module Cucumber
   module Formatter
 
@@ -11,6 +13,13 @@ module Cucumber
       def initialize(runtime, formatter)
         super runtime, FormatterWrapper.new(formatter)
       end
+
+      extend Forwardable
+
+      def_delegators :formatter,
+        :embed,
+        :ask,
+        :puts
 
       def before_test_case(test_case); end
       def before_test_step(test_step); end 
@@ -113,6 +122,7 @@ module Cucumber
       FeaturePrinter = Printer.new(:formatter, :runtime, :feature) do
         before do
           formatter.before_feature(feature)
+          feature.comment.accept CommentPrinter.new(formatter)
           feature.tags.accept TagPrinter.new(formatter)
           formatter.feature_name feature.keyword, indented(feature.name) # TODO: change the core's new AST to return name and description separately instead of this lumped-together field
         end
@@ -130,7 +140,7 @@ module Cucumber
         end
 
         after do
-          formatter.after_feature
+          formatter.after_feature(nil)
         end
 
         private
@@ -154,7 +164,7 @@ module Cucumber
 
         def step(step, result)
           @child ||= StepsPrinter.new(formatter).before
-          step_result = LegacyResultBuilder.new(result).step_result(background)
+          step_result = LegacyResultBuilder.new(result).step_result(step_match(step), background)
           runtime.step_visited step_result
           @child.step step, step_result, runtime, indent, background
         end
@@ -164,6 +174,12 @@ module Cucumber
         end
 
         private
+
+        def step_match(step)
+          runtime.step_match(step.name)
+        rescue Cucumber::Undefined
+          NoStepMatch.new(step, step.name)
+        end
 
         def indent
           @indent ||= Indent.new(background)
@@ -179,7 +195,7 @@ module Cucumber
 
         def step(step, result)
           @child ||= StepsPrinter.new(formatter).before
-          step_result = LegacyResultBuilder.new(result).step_result
+          step_result = LegacyResultBuilder.new(result).step_result(step_match(step), background = nil)
           runtime.step_visited step_result
           @child.step step, step_result, runtime, indent
         end
@@ -189,6 +205,12 @@ module Cucumber
         end
 
         private
+
+        def step_match(step)
+          runtime.step_match(step.name)
+        rescue Cucumber::Undefined
+          NoStepMatch.new(step, step.name)
+        end
 
         def step_result(result, background)
           LegacyResultBuilder.new(result).step_result(background)
@@ -201,7 +223,7 @@ module Cucumber
 
       StepsPrinter = Printer.new(:formatter) do
         before do
-          formatter.before_steps
+          formatter.before_steps(nil)
         end
 
         def step(step, step_result, runtime, indent, background = nil)
@@ -209,7 +231,7 @@ module Cucumber
         end
 
         after do
-          formatter.after_steps
+          formatter.after_steps(nil)
         end
       end
 
@@ -221,14 +243,14 @@ module Cucumber
           print_step
           print_multiline_arg
           print_exception
-          formatter.after_step_result
+          formatter.after_step_result(step_result)
           formatter.after_step(legacy_step)
         end
 
         private
 
         def print_step
-          formatter.step_name(step.keyword, step_match(step), step_result.status, indent.of(step), background, step.location.to_s)
+          formatter.step_name(step.keyword, step_result.step_match, step_result.status, indent.of(step), background, step.location.to_s)
         end
 
         def print_multiline_arg
@@ -238,13 +260,8 @@ module Cucumber
 
         def print_exception
           return unless step_result.exception
+          raise step_result.exception if ENV['FAIL_FAST']
           formatter.exception(step_result.exception, step_result.status)
-        end
-
-        def step_match(step)
-          runtime.step_match(step.name)
-        rescue Cucumber::Undefined
-          NoStepMatch.new(step, step.name)
         end
 
         def legacy_step
@@ -254,6 +271,21 @@ module Cucumber
         LegacyStep = Struct.new(:step_result) do
           def status
             step_result.status
+          end
+
+          def dom_id
+
+          end
+
+          def multiline_arg
+
+          end
+
+          def actual_keyword
+            # TODO: This should return the keyword for the snippet
+            # `actual_keyword` translates 'And', 'But', etc. to 'Given', 'When',
+            # 'Then' as appropriate
+            "Given"
           end
         end
 
@@ -462,10 +494,10 @@ module Cucumber
         private
 
         def legacy_table_row
-          LegacyTableRow.new(exception)
+          LegacyTableRow.new(exception, @status)
         end
 
-        LegacyTableRow = Struct.new(:exception)
+        LegacyTableRow = Struct.new(:exception, :status)
 
         def exception
           return nil unless @failed_step_result
@@ -480,6 +512,16 @@ module Cucumber
             formatter.tag_name tag.name
           end
           formatter.after_tags tags
+        end
+      end
+
+      CommentPrinter = Struct.new(:formatter) do
+        def visit_comment(comment)
+          return if comment.empty?
+          formatter.before_comment comment
+          comment.to_s.strip.split("\n").each do |line|
+            formatter.comment_line(line.strip)
+          end
         end
       end
 
@@ -511,8 +553,8 @@ module Cucumber
 
         def duration(*); end
 
-        def step_result(background = nil)
-          Ast::StepResult.new(:keyword, :step_match, :multiline_arg, @status, @exception, :source_indent, background, :file_colon_line)
+        def step_result(step_match, background = nil)
+          Ast::StepResult.new(:keyword, step_match, :multiline_arg, @status, @exception, :source_indent, background, :file_colon_line)
         end
 
         def scenario

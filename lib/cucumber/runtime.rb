@@ -39,6 +39,7 @@ module Cucumber
     def run!
       load_step_definitions
       fire_after_configuration_hook
+      self.visitor = report
 
       execute features, mappings, report, [[Cucumber::Core::Test::TagFilter, ['~@jruby']]]
       report.after_suite
@@ -69,7 +70,7 @@ module Cucumber
     end
 
     def snippet_text(step_keyword, step_name, multiline_arg_class) #:nodoc:
-      @support_code.snippet_text(Gherkin::I18n.code_keyword_for(step_keyword), step_name, multiline_arg_class)
+      @support_code.snippet_text(::Gherkin::I18n.code_keyword_for(step_keyword), step_name, multiline_arg_class)
     end
 
     def with_hooks(scenario, skip_hooks=false)
