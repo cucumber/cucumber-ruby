@@ -244,8 +244,8 @@ module Cucumber
       end
 
       # Returns a new Table where the headers are redefined. See #map_headers!
-      def map_headers(mappings={})
-        Table.new raw.dup, @conversion_procs.dup, mappings
+      def map_headers(mappings={}, &block)
+        Table.new raw.dup, @conversion_procs.dup, mappings, block
       end
 
       # Change how #hashes converts column values. The +column_name+ argument identifies the column
