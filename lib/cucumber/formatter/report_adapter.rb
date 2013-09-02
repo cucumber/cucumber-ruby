@@ -354,7 +354,9 @@ module Cucumber
         end
 
         def outline_step(step)
-          step_result = LegacyResultBuilder.new(Core::Test::Result::Skipped.new).step_result(background = nil)
+          step_match = NoStepMatch.new(step, step.name)
+          step_result = LegacyResultBuilder.new(Core::Test::Result::Skipped.new).
+            step_result(step_match, background = nil)
           steps_printer.step step, step_result, runtime, indent, background = nil
         end
 
@@ -473,7 +475,7 @@ module Cucumber
         end
 
         def step(step, result)
-          step_result = LegacyResultBuilder.new(result).step_result
+          step_result = LegacyResultBuilder.new(result).step_result(step_match(step))
           runtime.step_visited step_result
           @failed_step_result = step_result if result.failed?
           @status = step_result.status unless @status == :failed
@@ -492,6 +494,12 @@ module Cucumber
         end
 
         private
+
+        def step_match(step)
+          runtime.step_match(step.name)
+        rescue Cucumber::Undefined
+          NoStepMatch.new(step, step.name)
+        end
 
         def legacy_table_row
           LegacyTableRow.new(exception, @status)
