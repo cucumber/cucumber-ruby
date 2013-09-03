@@ -268,6 +268,7 @@ module Cucumber
       end
 
       def exception(exception, status)
+        return if @hide_this_step
         build_exception_detail(exception)
       end
 
