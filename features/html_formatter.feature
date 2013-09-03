@@ -27,10 +27,37 @@ Feature: HTML output formatter
             | two     |
             | three   |
       """
+    And a file named "features/scenario_outline_with_background.feature" with:
+     """
+     Feature:
+
+       Background:
+         Given I have set up state
+
+       Scenario:
+         Given a number 1
+
+       Scenario Outline:
+         Given a number <number>
+
+         Examples: 
+           | number |
+           | 2      |
+           | 3      |
+           | 4      |
+          """
     And a file named "features/step_definitions/steps.rb" with:
       """
       Given /^this hasn't been implemented yet$/ do
         pending
+      end
+
+      Given(/I have set up state/) do
+        @state = %w{1 2 3 4}
+      end
+
+      Given(/a number (\d+)/) do |n|
+        @state.should include(n)
       end
       """
 
@@ -68,3 +95,6 @@ Feature: HTML output formatter
     Using the default profile...
     """
 
+  Scenario: the background should run for all scenarios and example rows
+    When I run `cucumber features/scenario_outline_with_background.feature --format html`
+    Then it should pass
