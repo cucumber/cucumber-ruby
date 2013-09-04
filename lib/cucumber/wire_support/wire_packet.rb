@@ -23,7 +23,7 @@ module Cucumber
       def to_json
         packet = [@message]
         packet << @params if @params
-        packet.to_json
+        MultiJson.dump(packet)
       end
 
       def handle_with(handler)
