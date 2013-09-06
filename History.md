@@ -16,6 +16,25 @@
 
 * Greek examples added ([497](https://github.com/cucumber/cucumber/issues/497) @rousisk)
 
+## [1.3.7](https://github.com/cucumber/cucumber/compare/v1.3.6...v1.3.7)
+
+* Fixed incorrect html formatter behaviour when background step fails
+  ([520](https://github.com/cucumber/cucumber/issues/520),
+   [521](https://github.com/cucumber/cucumber/issues/521) @mlex)
+
+* Fixed problem with printing badly formatted backtrace for failed background
+  ([522](https://github.com/cucumber/cucumber/issues/522),
+   [523](https://github.com/cucumber/cucumber/issues/523) @mlex)
+
+* required Gherkin version bumped to 2.12.1
+
+* All mutating methods of AST::Table deprecated
+  ([505](https://github.com/cucumber/cucumber/issues/505),
+   [525](https://github.com/cucumber/cucumber/issues/525) @adbatista)
+
+* AST::Table#map_headers doesn't use #map_headers! anymore
+  ([505](https://github.com/cucumber/cucumber/issues/528) @adbatista)
+
 ## [1.3.6](https://github.com/cucumber/cucumber/compare/v1.3.5...v1.3.6)
 
 * Html formatter fixed to not mark passes scenarios with tables as pending

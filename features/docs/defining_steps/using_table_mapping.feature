@@ -5,6 +5,7 @@ Feature: Table mapping
   run is unchanged. This ensures that readers of the feature output who
   aren't familiar with code aren't confused by what they see.
 
+  @spawn
   Scenario:
     Given a file named "features/f.feature" with:
       """
@@ -23,7 +24,7 @@ Feature: Table mapping
       }
       """
     When I run `cucumber features/f.feature`
-    Then the stderr should not contain anything
+    Then the stderr should have warning message
     And it should pass with:
       """
       Feature: with table
@@ -35,4 +36,5 @@ Feature: Table mapping
 
       1 scenario (1 passed)
       1 step (1 passed)
+
       """

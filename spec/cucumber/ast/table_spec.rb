@@ -54,7 +54,7 @@ module Cucumber
           @table.map_column!('one') { |v| v.to_i }
           @table.hashes.first['one'].should == 4444
         end
-        
+
         it "applies the block once to each value" do
           headers = ['header']
           rows = ['value']
@@ -158,7 +158,54 @@ module Cucumber
         end
       end
 
+      describe '#map_headers!' do
+        let(:table) do
+          Table.new([
+          %w{HELLO WORLD},
+          %w{4444 55555}
+          ])
+        end
+
+        it "renames the columns to the specified values in the provided hash" do
+          @table.map_headers!('one' => :three)
+          @table.hashes.first[:three].should == '4444'
+        end
+
+        it "allows renaming columns using regexp" do
+          @table.map_headers!(/one|uno/ => :three)
+          @table.hashes.first[:three].should == '4444'
+        end
+
+        it "copies column mappings" do
+          @table.map_column!('one') { |v| v.to_i }
+          @table.map_headers!('one' => 'three')
+          @table.hashes.first['three'].should == 4444
+        end
+
+        it "takes a block and operates on all the headers with it" do
+          table.map_headers! do |header|
+            header.downcase
+          end
+          table.hashes.first.keys.should =~ %w[hello world]
+        end
+
+        it "treats the mappings in the provided hash as overrides when used with a block" do
+          table.map_headers!('WORLD' => 'foo') do |header|
+            header.downcase
+          end
+
+          table.hashes.first.keys.should =~ %w[hello foo]
+        end
+      end
+
       describe '#map_headers' do
+        let(:table) do
+           Table.new([
+          %w{HELLO WORLD},
+          %w{4444 55555}
+          ])
+        end
+
         it "renames the columns to the specified values in the provided hash" do
           table2 = @table.map_headers('one' => :three)
           table2.hashes.first[:three].should == '4444'
@@ -176,57 +223,19 @@ module Cucumber
         end
 
         it "takes a block and operates on all the headers with it" do
-          table = Table.new([
-          ['HELLO', 'WORLD'],
-          %w{4444 55555}
-          ])
-
-          table.map_headers! do |header|
+          table2 = table.map_headers do |header|
             header.downcase
           end
 
-          table.hashes.first.keys.should =~ %w[hello world]
+          table2.hashes.first.keys.should =~ %w[hello world]
         end
 
         it "treats the mappings in the provided hash as overrides when used with a block" do
-          table = Table.new([
-          ['HELLO', 'WORLD'],
-          %w{4444 55555}
-          ])
-
-          table.map_headers!('WORLD' => 'foo') do |header|
+          table2 = table.map_headers('WORLD' => 'foo') do |header|
             header.downcase
           end
 
-          table.hashes.first.keys.should =~ %w[hello foo]
-        end
-
-        it "should allow mapping of headers before table.hashes has been accessed" do
-          table = Table.new([
-          ['HELLO', 'WORLD'],
-          %w{4444 55555}
-          ])
-
-          table.map_headers! do |header|
-            header.downcase
-          end
-
-          table.hashes.first.keys.should =~ %w[hello world]
-        end
-
-        it "should allow mapping of headers after table.hashes has been accessed" do
-          table = Table.new([
-          ['HELLO', 'WORLD'],
-          %w{4444 55555}
-          ])
-
-          dev_null = table.hashes.size
-
-          table.map_headers! do |header|
-            header.downcase
-          end
-
-          table.hashes.first.keys.should =~ %w[hello world]
+          table2.hashes.first.keys.should =~ %w[hello foo]
         end
       end
 
@@ -289,7 +298,6 @@ module Cucumber
             table.arguments_replaced({'<book>' => nil, '<qty>' => '5'})
           }.should_not raise_error
         end
-
       end
 
       describe "diff!" do

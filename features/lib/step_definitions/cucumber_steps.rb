@@ -25,6 +25,10 @@ When /^I run the feature with the (\w+) formatter$/ do |formatter|
   run_feature features.first, formatter
 end
 
+Then /^the stderr should have warning message$/ do
+  all_stderr.should include("[warning]")
+end
+
 module CucumberHelper
   def run_feature(filename = 'features/a_feature.feature', formatter = 'progress')
     run_simple "#{Cucumber::BINARY} #{filename} --format #{formatter}", false

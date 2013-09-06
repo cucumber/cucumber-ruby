@@ -270,6 +270,7 @@ module Cucumber
       end
 
       def exception(exception, status)
+        return if @hide_this_step
         build_exception_detail(exception)
       end
 
@@ -419,7 +420,8 @@ module Cucumber
         @builder.script do
           @builder.text!("makeRed('cucumber-header');") unless @header_red
           @header_red = true
-          @builder.text!("makeRed('scenario_#{@scenario_number}');") unless @scenario_red
+          scenario_or_background = @in_background ? "background" : "scenario"
+          @builder.text!("makeRed('#{scenario_or_background}_#{@scenario_number}');") unless @scenario_red
           @scenario_red = true
         end
       end
@@ -427,7 +429,8 @@ module Cucumber
       def set_scenario_color_pending
         @builder.script do
           @builder.text!("makeYellow('cucumber-header');") unless @header_red
-          @builder.text!("makeYellow('scenario_#{@scenario_number}');") unless @scenario_red
+          scenario_or_background = @in_background ? "background" : "scenario"
+          @builder.text!("makeYellow('#{scenario_or_background}_#{@scenario_number}');") unless @scenario_red
         end
       end
 
