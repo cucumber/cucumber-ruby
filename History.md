@@ -16,6 +16,10 @@
 
 * Greek examples added ([497](https://github.com/cucumber/cucumber/issues/497) @rousisk)
 
+## [v1.3.8](https://github.com/cucumber/cucumber/compare/v1.3.7...v1.3.8)
+
+* Make the MultiJson dependency less restrictive (@tooky)
+
 ## [1.3.7](https://github.com/cucumber/cucumber/compare/v1.3.6...v1.3.7)
 
 * Fixed incorrect html formatter behaviour when background step fails
