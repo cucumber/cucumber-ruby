@@ -1,3 +1,7 @@
+## [v1.3.x-bugfix](https://github.com/cucumber/cucumber/compare/v1.3.7...v1.3.x-bugfix)
+
+* Make the MultiJson dependency less restrictive (@tooky)
+
 ## [1.3.7](https://github.com/cucumber/cucumber/compare/v1.3.6...v1.3.7)
 
 * Fixed incorrect html formatter behaviour when background step fails

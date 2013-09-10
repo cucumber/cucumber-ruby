@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'builder', '>= 2.1.2'
   s.add_dependency 'diff-lcs', '>= 1.1.3'
   s.add_dependency 'gherkin', '~> 2.12.1'
-  s.add_dependency 'multi_json', '~> 1.7.5'
+  s.add_dependency 'multi_json', '>= 1.7.5', '< 2.0'
   s.add_dependency 'multi_test', '>= 0.0.2'
 
   s.add_development_dependency 'aruba', '~> 0.5.2'
