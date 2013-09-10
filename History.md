@@ -1,4 +1,4 @@
-## [v1.3.x-bugfix](https://github.com/cucumber/cucumber/compare/v1.3.7...v1.3.x-bugfix)
+## [v1.3.8](https://github.com/cucumber/cucumber/compare/v1.3.7...v1.3.8)
 
 * Make the MultiJson dependency less restrictive (@tooky)
 
