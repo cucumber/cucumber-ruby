@@ -154,10 +154,17 @@ module Cucumber
       def before_feature_element(feature_element)
         @scenario_number+=1
         @scenario_red = false
-        css_class = {
-          Ast::Scenario        => 'scenario',
-          Ast::ScenarioOutline => 'scenario outline'
-        }[feature_element.class]
+        css_class = if ENV['USE_LEGACY']
+          {
+            Ast::Scenario        => 'scenario',
+            Ast::ScenarioOutline => 'scenario outline'
+          }
+        else
+          {
+            Cucumber::Core::Ast::Scenario        => 'scenario',
+            Cucumber::Core::Ast::ScenarioOutline => 'scenario outline'
+          }
+        end[feature_element.class]
         @builder << "<div class='#{css_class}'>"
       end
 
