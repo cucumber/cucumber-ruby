@@ -307,16 +307,11 @@ module Cucumber
       end
 
       def before_table_row(table_row)
-        @row_id = dom_id_from(table_row)
+        @row_id = table_row.dom_id
         @col_index = 0
         return if @hide_this_step
         @builder << "<tr class='step' id='#{@row_id}'>"
       end
-
-      def dom_id_from(table_row)
-        table_row.file_colon_line.gsub(/[\/\.:]/, '_')
-      end
-      private :dom_id_from
 
       def after_table_row(table_row)
         return if @hide_this_step
