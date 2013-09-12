@@ -287,14 +287,16 @@ module Cucumber
 
       def before_multiline_arg(multiline_arg)
         return if @hide_this_step || @skip_step
-        if Ast::Table === multiline_arg
+        class_to_compare = ENV['USE_LEGACY'] ? Ast::Table : Cucumber::Core::Ast::DataTable
+        if class_to_compare === multiline_arg
           @builder << '<table>'
         end
       end
 
       def after_multiline_arg(multiline_arg)
         return if @hide_this_step || @skip_step
-        if Ast::Table === multiline_arg
+        class_to_compare = ENV['USE_LEGACY'] ? Ast::Table : Cucumber::Core::Ast::DataTable
+        if class_to_compare === multiline_arg
           @builder << '</table>'
         end
       end
