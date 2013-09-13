@@ -18,7 +18,7 @@ Feature: Table mapping
       }
       """
     When I run cucumber features/f.feature
-    Then STDERR should have warning message
+    Then STDERR should be empty
     And it should pass with
       """
       Feature: F
