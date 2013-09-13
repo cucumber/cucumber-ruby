@@ -23,7 +23,7 @@ module Cucumber
         :puts
 
       def before_test_case(test_case); end
-      def before_test_step(test_step); end 
+      def before_test_step(test_step); end
 
       def after_test_step(test_step, result)
         test_step.describe_source_to(printer, result)
@@ -141,7 +141,7 @@ module Cucumber
         end
 
         after do
-          formatter.after_feature(nil)
+          formatter.after_feature(feature)
         end
 
         private
@@ -227,13 +227,58 @@ module Cucumber
           formatter.before_steps(nil)
         end
 
+        attr_reader :steps
+        private :steps
+
         def step(step, step_result, runtime, indent, background = nil)
+          @steps ||= [].extend(Steps)
+          steps << Step.new(step, step_result)
           StepPrinter.new(formatter, runtime, indent, step, step_result, background).print
         end
 
-        after do
-          formatter.after_steps(nil)
+        module Steps
+          def failed?
+            any?(&:failed?)
+          end
+
+          def passed?
+            all?(&:passed?)
+          end
+
+          def status
+            return :passed if passed?
+            failed_step.status
+          end
+
+          def exception
+            failed_step.exception if failed_step
+          end
+
+          private
+          def failed_step
+            detect(&:failed?)
+          end
         end
+
+        Step = Struct.new(:step, :step_result) do
+          extend Forwardable
+
+          def_delegators :step, :keyword, :name
+          def_delegators :step_result, :status, :exception
+
+          def failed?
+            status != :passed
+          end
+
+          def passed?
+            status == :passed
+          end
+        end
+
+        after do
+          formatter.after_steps(steps)
+        end
+
       end
 
       StepPrinter = Struct.new(:formatter, :runtime, :indent, :step, :step_result, :background) do
@@ -266,12 +311,16 @@ module Cucumber
         end
 
         def legacy_step
-          LegacyStep.new(step_result)
+          LegacyStep.new(step_result, step)
         end
 
-        LegacyStep = Struct.new(:step_result) do
+        LegacyStep = Struct.new(:step_result, :step) do
           def status
             step_result.status
+          end
+
+          def name
+            step.name
           end
 
           def dom_id
