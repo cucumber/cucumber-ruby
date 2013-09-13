@@ -267,6 +267,13 @@ module Cucumber
         self
       end
 
+      # Returns a new Table with an additional column mapping. See #map_column!
+      def map_column(column_name, strict=true, &conversion_proc)
+        conversion_procs = @conversion_procs.dup
+        conversion_procs[column_name.to_s] = { :strict => strict, :proc => conversion_proc }
+        self.class.new(raw.dup, conversion_procs, @header_mappings.dup, @header_conversion_proc)
+      end
+
       # Compares +other_table+ to self. If +other_table+ contains columns
       # and/or rows that are not in self, new columns/rows are added at the
       # relevant positions, marking the cells in those rows/columns as
