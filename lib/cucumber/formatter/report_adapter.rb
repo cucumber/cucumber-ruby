@@ -1,4 +1,5 @@
 require 'forwardable'
+require 'delegate'
 
 module Cucumber
   module Formatter
@@ -311,12 +312,16 @@ module Cucumber
         end
 
         def table(table)
-          table.raw.each do |values|
-            TableRowPrinter.new(formatter, runtime, TableRow.new(values)).before.after
+          table.cells_rows.each do |row|
+            TableRowPrinter.new(formatter, runtime, DataTableRow.new(row.map(&:value), row.line)).before.after
           end
         end
 
-        TableRow = Struct.new(:values)
+        DataTableRow = Struct.new(:values, :line) do
+          def dom_id
+            "row_#{line}"
+          end
+        end
       end
 
       ScenarioOutlinePrinter = Printer.new(:formatter, :runtime, :node) do
@@ -424,11 +429,17 @@ module Cucumber
           formatter.before_examples(node)
           formatter.examples_name(node.keyword, node.name)
           formatter.before_outline_table(legacy_table)
-          TableRowPrinter.new(formatter, runtime, node.header).before.after
+          TableRowPrinter.new(formatter, runtime, TableRow.new(node.header)).before.after
         end
 
         def examples_table_row(examples_table_row, *)
-          delegate_to TableRowPrinter, examples_table_row
+          delegate_to TableRowPrinter, TableRow.new(examples_table_row)
+        end
+
+        class TableRow < SimpleDelegator
+          def dom_id
+            file_colon_line.gsub(/[\/\.:]/, '_')
+          end
         end
 
         after do

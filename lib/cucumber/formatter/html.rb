@@ -6,6 +6,21 @@ require 'cucumber/formatter/io'
 module Cucumber
   module Formatter
     class Html
+
+      AST_CLASSES = if ENV['USE_LEGACY']
+          {
+            Ast::Scenario        => 'scenario',
+            Ast::ScenarioOutline => 'scenario outline'
+          }
+        else
+          {
+            Cucumber::Core::Ast::Scenario        => 'scenario',
+            Cucumber::Core::Ast::ScenarioOutline => 'scenario outline'
+          }
+        end
+
+      AST_DATA_TABLE = ENV['USE_LEGACY'] ? Ast::Table : Cucumber::Core::Ast::DataTable
+
       include ERB::Util # for the #h method
       include Duration
       include Io
@@ -154,10 +169,7 @@ module Cucumber
       def before_feature_element(feature_element)
         @scenario_number+=1
         @scenario_red = false
-        css_class = {
-          Ast::Scenario        => 'scenario',
-          Ast::ScenarioOutline => 'scenario outline'
-        }[feature_element.class]
+        css_class = AST_CLASSES[feature_element.class]
         @builder << "<div class='#{css_class}'>"
       end
 
@@ -280,14 +292,14 @@ module Cucumber
 
       def before_multiline_arg(multiline_arg)
         return if @hide_this_step || @skip_step
-        if Ast::Table === multiline_arg
+        if AST_DATA_TABLE === multiline_arg
           @builder << '<table>'
         end
       end
 
       def after_multiline_arg(multiline_arg)
         return if @hide_this_step || @skip_step
-        if Ast::Table === multiline_arg
+        if AST_DATA_TABLE === multiline_arg
           @builder << '</table>'
         end
       end
@@ -298,7 +310,6 @@ module Cucumber
           @builder << h(string).gsub("\n", '&#x000A;')
         end
       end
-
 
       def before_table_row(table_row)
         @row_id = table_row.dom_id
