@@ -439,6 +439,7 @@ EXPECTED
             FEATURE
 
             it "displays the table for the background" do
+              pending("legacy cucumber fires extra step events") if ENV['USE_LEGACY']
               @out.string.should eq(<<EXPECTED)
 before_features
   before_feature
@@ -478,29 +479,6 @@ before_features
       after_tags
       scenario_name
       before_steps
-        before_step
-          before_step_result
-            step_name
-            before_multiline_arg
-              before_table_row
-                before_table_cell
-                  table_cell_value
-                after_table_cell
-                before_table_cell
-                  table_cell_value
-                after_table_cell
-              after_table_row
-              before_table_row
-                before_table_cell
-                  table_cell_value
-                after_table_cell
-                before_table_cell
-                  table_cell_value
-                after_table_cell
-              after_table_row
-            after_multiline_arg
-          after_step_result
-        after_step
         before_step
           before_step_result
             step_name
@@ -549,6 +527,7 @@ EXPECTED
             FEATURE
 
             it "displays the background py string" do
+              pending("legacy cucumber fires extra step events") if ENV['USE_LEGACY']
               @out.string.should eq(<<EXPECTED)
 before_features
   before_feature
@@ -573,14 +552,6 @@ before_features
       after_tags
       scenario_name
       before_steps
-        before_step
-          before_step_result
-            step_name
-            before_multiline_arg
-              doc_string
-            after_multiline_arg
-          after_step_result
-        after_step
         before_step
           before_step_result
             step_name
