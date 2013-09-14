@@ -61,29 +61,6 @@ module Cucumber
         end
       end
 
-      describe "verbose mode" do
-
-        before(:each) do
-          b = Cucumber::Parser::GherkinBuilder.new('features/foo.feature')
-          b.feature(Gherkin::Formatter::Model::Feature.new([], [], "Feature", "Foo", "", 99, ""))
-          b.language = double
-          @empty_feature = b.result
-        end
-
-        it "should show feature files parsed" do
-          cli = Main.new(%w{--verbose example.feature}, stdin, stdout, stderr, kernel)
-          cli.stub(:require)
-
-          Cucumber::FeatureFile.stub(:new).and_return(double("feature file", :parse => @empty_feature))
-
-          kernel.should_receive(:exit).with(0)
-          cli.execute!
-
-          stdout.string.should include('example.feature')
-        end
-
-      end
-
       describe "--format with class" do
         describe "in module" do
           it "should resolve each module until it gets Formatter class" do
