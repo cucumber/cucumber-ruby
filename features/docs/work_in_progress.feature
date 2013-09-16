@@ -5,7 +5,6 @@ Feature: Cucumber --work-in-progress switch
             - will not fail otherwise
 
   Background: A passing and a pending feature
-    Given a standard Cucumber project directory structure
     Given a file named "features/wip.feature" with:
       """
       Feature: WIP
