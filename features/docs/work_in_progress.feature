@@ -1,3 +1,4 @@
+@spawn
 Feature: Cucumber --work-in-progress switch
   In order to ensure that feature scenarios do not pass until they are expected to
   Developers should be able to run cucumber in a mode that
@@ -5,7 +6,6 @@ Feature: Cucumber --work-in-progress switch
             - will not fail otherwise
 
   Background: A passing and a pending feature
-    Given a standard Cucumber project directory structure
     Given a file named "features/wip.feature" with:
       """
       Feature: WIP
@@ -50,9 +50,9 @@ Feature: Cucumber --work-in-progress switch
       """
 
   Scenario: Pass with Failing Scenarios
-    When I run cucumber -q -w -t @failing features/wip.feature
-    Then STDERR should be empty
-    Then it should pass with
+    When I run `cucumber -q -w -t @failing features/wip.feature`
+    Then the stderr should not contain anything
+    Then it should pass with:
       """
       Feature: WIP
 
@@ -68,14 +68,16 @@ Feature: Cucumber --work-in-progress switch
 
       1 scenario (1 failed)
       1 step (1 failed)
-
+      """
+    And the output should contain:
+      """
       The --wip switch was used, so the failures were expected. All is good.
 
       """
 
   Scenario: Pass with Undefined Scenarios
-    When I run cucumber -q -w -t @undefined features/wip.feature
-    Then it should pass with
+    When I run `cucumber -q -w -t @undefined features/wip.feature`
+    Then it should pass with:
       """
       Feature: WIP
 
@@ -85,14 +87,16 @@ Feature: Cucumber --work-in-progress switch
 
       1 scenario (1 undefined)
       1 step (1 undefined)
-
+      """
+    And the output should contain:
+      """
       The --wip switch was used, so the failures were expected. All is good.
 
       """
 
   Scenario: Pass with Undefined Scenarios
-    When I run cucumber -q -w -t @pending features/wip.feature
-    Then it should pass with
+    When I run `cucumber -q -w -t @pending features/wip.feature`
+    Then it should pass with:
       """
       Feature: WIP
 
@@ -105,14 +109,16 @@ Feature: Cucumber --work-in-progress switch
 
       1 scenario (1 pending)
       1 step (1 pending)
-
+      """
+    And the output should contain:
+      """
       The --wip switch was used, so the failures were expected. All is good.
 
       """
 
   Scenario: Fail with Passing Scenarios
-    When I run cucumber -q -w -t @passing features/wip.feature
-    Then it should fail with
+    When I run `cucumber -q -w -t @passing features/wip.feature`
+    Then it should fail with:
       """
       Feature: WIP
 
@@ -122,7 +128,9 @@ Feature: Cucumber --work-in-progress switch
 
       1 scenario (1 passed)
       1 step (1 passed)
-
+      """
+    And the output should contain:
+      """
       The --wip switch was used, so I didn't expect anything to pass. These scenarios passed:
       (::) passed scenarios (::)
 
@@ -132,8 +140,8 @@ Feature: Cucumber --work-in-progress switch
       """
 
   Scenario: Fail with Passing Scenario Outline
-    When I run cucumber -q -w features/passing_outline.feature
-    Then it should fail with
+    When I run `cucumber -q -w features/passing_outline.feature`
+    Then it should fail with:
       """
       Feature: Not WIP
 
@@ -146,7 +154,9 @@ Feature: Cucumber --work-in-progress switch
 
       1 scenario (1 passed)
       1 step (1 passed)
-
+      """
+    And the output should contain:
+      """
       The --wip switch was used, so I didn't expect anything to pass. These scenarios passed:
       (::) passed scenarios (::)
 
