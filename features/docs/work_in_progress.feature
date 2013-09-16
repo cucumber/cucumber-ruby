@@ -67,7 +67,9 @@ Feature: Cucumber --work-in-progress switch
 
       1 scenario (1 failed)
       1 step (1 failed)
-
+      """
+    And the output should contain:
+      """
       The --wip switch was used, so the failures were expected. All is good.
 
       """
@@ -84,7 +86,9 @@ Feature: Cucumber --work-in-progress switch
 
       1 scenario (1 undefined)
       1 step (1 undefined)
-
+      """
+    And the output should contain:
+      """
       The --wip switch was used, so the failures were expected. All is good.
 
       """
@@ -104,7 +108,9 @@ Feature: Cucumber --work-in-progress switch
 
       1 scenario (1 pending)
       1 step (1 pending)
-
+      """
+    And the output should contain:
+      """
       The --wip switch was used, so the failures were expected. All is good.
 
       """
@@ -121,7 +127,9 @@ Feature: Cucumber --work-in-progress switch
 
       1 scenario (1 passed)
       1 step (1 passed)
-
+      """
+    And the output should contain:
+      """
       The --wip switch was used, so I didn't expect anything to pass. These scenarios passed:
       (::) passed scenarios (::)
 
@@ -145,7 +153,9 @@ Feature: Cucumber --work-in-progress switch
 
       1 scenario (1 passed)
       1 step (1 passed)
-
+      """
+    And the output should contain:
+      """
       The --wip switch was used, so I didn't expect anything to pass. These scenarios passed:
       (::) passed scenarios (::)
 
