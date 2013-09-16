@@ -49,9 +49,9 @@ Feature: Cucumber --work-in-progress switch
       """
 
   Scenario: Pass with Failing Scenarios
-    When I run cucumber -q -w -t @failing features/wip.feature
-    Then STDERR should be empty
-    Then it should pass with
+    When I run `cucumber -q -w -t @failing features/wip.feature`
+    Then the stderr should not contain anything
+    Then it should pass with:
       """
       Feature: WIP
 
@@ -73,8 +73,8 @@ Feature: Cucumber --work-in-progress switch
       """
 
   Scenario: Pass with Undefined Scenarios
-    When I run cucumber -q -w -t @undefined features/wip.feature
-    Then it should pass with
+    When I run `cucumber -q -w -t @undefined features/wip.feature`
+    Then it should pass with:
       """
       Feature: WIP
 
@@ -90,8 +90,8 @@ Feature: Cucumber --work-in-progress switch
       """
 
   Scenario: Pass with Undefined Scenarios
-    When I run cucumber -q -w -t @pending features/wip.feature
-    Then it should pass with
+    When I run `cucumber -q -w -t @pending features/wip.feature`
+    Then it should pass with:
       """
       Feature: WIP
 
@@ -110,8 +110,8 @@ Feature: Cucumber --work-in-progress switch
       """
 
   Scenario: Fail with Passing Scenarios
-    When I run cucumber -q -w -t @passing features/wip.feature
-    Then it should fail with
+    When I run `cucumber -q -w -t @passing features/wip.feature`
+    Then it should fail with:
       """
       Feature: WIP
 
@@ -131,8 +131,8 @@ Feature: Cucumber --work-in-progress switch
       """
 
   Scenario: Fail with Passing Scenario Outline
-    When I run cucumber -q -w features/passing_outline.feature
-    Then it should fail with
+    When I run `cucumber -q -w features/passing_outline.feature`
+    Then it should fail with:
       """
       Feature: Not WIP
 
