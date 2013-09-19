@@ -7,7 +7,6 @@ Feature: Profiles
   http://wiki.github.com/cucumber/cucumber/cucumber.yml
 
   Background: Basic App
-    Given a standard Cucumber project directory structure
     And a file named "features/sample.feature" with:
       """
       Feature: Sample
