@@ -105,7 +105,7 @@ module Cucumber
         end
 
         lambda { run_step "My car is white" }.
-          should raise_error(RuntimeError, "can't modify frozen String")
+          should raise_error(RuntimeError, /can't modify frozen String/i)
       end
 
       it "should allow puts" do
