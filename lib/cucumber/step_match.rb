@@ -12,7 +12,7 @@ module Cucumber
     end
 
     def args
-      @step_arguments.map{|g| g.val}
+      @step_arguments.map{|g| g.val.freeze }
     end
 
     def name
