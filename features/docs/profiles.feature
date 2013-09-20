@@ -1,4 +1,5 @@
 Feature: Profiles
+
   In order to save time and prevent carpal tunnel syndrome
   Cucumber users can save and reuse commonly used cucumber flags in a 'cucumber.yml' file.
   These named arguments are called profiles and the yml file should be in the root of your project.
@@ -68,7 +69,7 @@ Feature: Profiles
       """
 
   Scenario Outline: Disabling the default profile
-    When I run `cucumber -v features/ <Flag>`
+    When I run `cucumber -v features/ <flag>`
     Then the output should contain:
       """
       Disabling profiles...
@@ -76,18 +77,17 @@ Feature: Profiles
     And exactly these files should be loaded: features/support/env.rb, features/support/super_env.rb
 
     Examples:
-    |   Flag          |
-    | -P              |
-    | --no-profile    |
-
+      | flag         |
+      | -P           |
+      | --no-profile |
 
   Scenario: Overriding the profile's features to run
     Given a file named "features/another.feature" with:
       """
       Feature: Just this one should be ran
       """
-      When I run `cucumber -p default features/another.feature`
-      Then exactly these features should be ran: features/another.feature
+    When I run `cucumber -p default features/another.feature`
+    Then exactly these features should be ran: features/another.feature
 
   Scenario: Overriding the profile's formatter
     You will most likely want to define a formatter in your default formatter.
@@ -101,7 +101,7 @@ Feature: Profiles
       default: features/sample.feature --require features/support/env.rb -v --format profile
       """
     When I run `cucumber features --format pretty`
-    And the output should contain:
+    Then the output should contain:
       """
       Feature: Sample
       """
@@ -118,7 +118,8 @@ Feature: Profiles
        """
        cucumber -p super features/sample.feature:2
        """
+
     Examples:
-      | format  |
-      | pretty  |
-      | progress|
+      | format   |
+      | pretty   |
+      | progress |
