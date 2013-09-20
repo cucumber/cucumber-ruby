@@ -5,7 +5,7 @@ Feature: Wire protocol table diffing
   I want to be able to ask for a table diff during a step definition invocation
 
   Background:
-    And a file named "features/wired.feature" with:
+    Given a file named "features/wired.feature" with:
       """
       Feature: Hello
         Scenario: Wired
@@ -27,9 +27,9 @@ Feature: Wire protocol table diffing
       | ["invoke",{"id":"1","args":[]}]                      | ["diff",[[["a","b"],["c","d"]],[["x","y"],["z","z"]]]]                                               |
       | ["diff_failed"]                                      | ["fail",{"message":"Not same", "exception":"DifferentException", "backtrace":["a.cs:12","b.cs:34"]}] |
       | ["end_scenario"]                                     | ["success"]                                                                                          |
-    When I run cucumber -f progress --backtrace
+    When I run `cucumber -f progress --backtrace`
     Then STDERR should have warning message
-    And it should fail with
+    And it should fail with:
       """
       F
 
@@ -56,8 +56,8 @@ Feature: Wire protocol table diffing
       | ["invoke",{"id":"1","args":[]}]                      | ["diff",[[["a"],["b"]],[["a"],["b"]]]] |
       | ["diff_ok"]                                          | ["success"]                            |
       | ["end_scenario"]                                     | ["success"]                            |
-    When I run cucumber -f progress
-    And it should pass with
+    When I run `cucumber -f progress`
+    Then it should pass with:
       """
       .
 
@@ -74,8 +74,8 @@ Feature: Wire protocol table diffing
       | ["invoke",{"id":"1","args":[]}]                      | ["diff",[[["a"],["b"]],[["a"],["b"]]]]                        |
       | ["diff_ok"]                                          | ["fail",{"message":"I wanted things to be different for us"}] |
       | ["end_scenario"]                                     | ["success"]                                                   |
-    When I run cucumber -f progress
-    And it should fail with
+    When I run `cucumber -f progress`
+    Then it should fail with:
       """
       F
 
@@ -99,8 +99,8 @@ Feature: Wire protocol table diffing
       | ["begin_scenario"]                                   | ["success"]                         |
       | ["invoke",{"id":"1","args":[]}]                      | ["diff!",[[["a"]],[["b"]]]]         |
       | ["end_scenario"]                                     | ["success"]                         |
-    When I run cucumber -f progress
-    And it should fail with
+    When I run `cucumber -f progress`
+    And it should fail with:
       """
       F
 

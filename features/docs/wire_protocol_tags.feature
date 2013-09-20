@@ -28,9 +28,9 @@ Feature: Wire protocol tags
       | ["begin_scenario", {"tags":["bar","baz","foo"]}]     | ["success"]                         |
       | ["invoke",{"id":"1","args":[]}]                      | ["success"]                         |
       | ["end_scenario", {"tags":["bar","baz","foo"]}]       | ["success"]                         |
-    When I run cucumber -f pretty -q
-    Then STDERR should be empty
-    And it should pass with
+    When I run `cucumber -f pretty -q`
+    Then the stderr should not contain anything
+    And it should pass with:
       """
       @foo @bar
       Feature: Wired
@@ -65,9 +65,9 @@ Feature: Wire protocol tags
     | ["begin_scenario", {"tags":["bar","baz","foo"]}]     | ["success"]                         |
     | ["invoke",{"id":"1","args":[]}]                      | ["success"]                         |
     | ["end_scenario", {"tags":["bar","baz","foo"]}]       | ["success"]                         |
-  When I run cucumber -f pretty -q
-  Then STDERR should be empty
-  And it should pass with
+  When I run `cucumber -f pretty -q`
+  Then the stderr should not contain anything
+  And it should pass with:
     """
     @foo @bar
     Feature: Wired
