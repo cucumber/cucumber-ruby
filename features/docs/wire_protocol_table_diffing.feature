@@ -28,7 +28,7 @@ Feature: Wire protocol table diffing
       | ["diff_failed"]                                      | ["fail",{"message":"Not same", "exception":"DifferentException", "backtrace":["a.cs:12","b.cs:34"]}] |
       | ["end_scenario"]                                     | ["success"]                                                                                          |
     When I run `cucumber -f progress --backtrace`
-    Then STDERR should have warning message
+    Then the stderr should contain "[warning]"
     And it should fail with:
       """
       F
