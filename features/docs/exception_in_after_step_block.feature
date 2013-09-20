@@ -4,7 +4,6 @@ Feature: Exception in AfterStep Block
   I want exceptions raised in AfterStep blocks to be handled gracefully and reported by the formatters
 
   Background:
-    Given a standard Cucumber project directory structure
     And a file named "features/step_definitions/steps.rb" with:
       """
       Given /^this step does something naughty$/ do x=1

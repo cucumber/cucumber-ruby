@@ -4,7 +4,6 @@ Feature: Exception in Before Block
   I want exceptions raised in Before blocks to be handled gracefully and reported by the formatters
 
   Background:
-    Given a standard Cucumber project directory structure
     And a file named "features/step_definitions/steps.rb" with:
       """
       Given(/^this step works$/) do; end
