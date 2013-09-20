@@ -4,7 +4,6 @@ Feature: Rake task
   Cucumber features should be executable via Rake
 
   Background:
-    Given a standard Cucumber project directory structure
     And a file named "features/missing_step_definitions.feature" with:
       """
       Feature: Sample
