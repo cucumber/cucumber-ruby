@@ -5,7 +5,6 @@ Feature: Wire protocol timeouts
   to take a while to execute, if that's what they need.
 
   Background:
-    Given a standard Cucumber project directory structure
     And a file named "features/wired.feature" with:
       """
       Feature: Telegraphy

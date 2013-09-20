@@ -5,7 +5,6 @@ Feature: Wire protocol table diffing
   I want to be able to ask for a table diff during a step definition invocation
 
   Background:
-    Given a standard Cucumber project directory structure
     And a file named "features/wired.feature" with:
       """
       Feature: Hello

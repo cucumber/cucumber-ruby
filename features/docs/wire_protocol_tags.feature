@@ -4,7 +4,6 @@ Feature: Wire protocol tags
   scenario in the begin_scenario and end_scenario messages
 
   Background:
-    Given a standard Cucumber project directory structure
     And a file named "features/step_definitions/some_remote_place.wire" with:
       """
       host: localhost

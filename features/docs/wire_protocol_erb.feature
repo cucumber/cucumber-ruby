@@ -6,7 +6,6 @@ Feature: Wire Protocol with ERB
   So that I can avoid port conflicts
 
   Background:
-    Given a standard Cucumber project directory structure
     And a file named "features/wired.feature" with:
       """
       Feature: High strung

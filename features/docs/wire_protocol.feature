@@ -38,7 +38,6 @@ Feature: Wire Protocol
   #
 
   Background:
-    Given a standard Cucumber project directory structure
     And a file named "features/wired.feature" with:
       """
       Feature: High strung
