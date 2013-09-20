@@ -25,8 +25,8 @@ Feature: Exception in Before Block
         Scenario: Run a good step
           Given this step works
       """
-    When I run cucumber features
-    Then it should fail with
+    When I run `cucumber features`
+    Then it should fail with:
       """
       Feature: Sample
 
@@ -54,8 +54,8 @@ Feature: Exception in Before Block
         Scenario: Run a good step
           Given this step works
       """
-    When I run cucumber features
-    Then it should fail with
+    When I run `cucumber features`
+    Then it should fail with:
       """
       Feature: Sample
       
@@ -83,8 +83,8 @@ Feature: Exception in Before Block
         Scenario: Run a good step
           Given this step works
       """
-    When I run cucumber features --format progress
-    Then it should fail with
+    When I run `cucumber features --format progress`
+    Then it should fail with:
       """
       F-
 

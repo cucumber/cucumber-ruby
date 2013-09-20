@@ -33,8 +33,8 @@ Feature: Exception in AfterStep Block
         Scenario: Success
           Given this step works
       """
-    When I run cucumber features
-    Then it should fail with
+    When I run `cucumber features`
+    Then it should fail with:
       """
       Feature: Sample
 
@@ -73,8 +73,8 @@ Feature: Exception in AfterStep Block
           Given this step works
 
       """
-    When I run cucumber features
-    Then it should fail with
+    When I run `cucumber features`
+    Then it should fail with:
       """
       Feature: Sample
 

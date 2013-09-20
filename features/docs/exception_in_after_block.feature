@@ -33,8 +33,8 @@ Feature: Exception in After Block
         Scenario: Success
           Given this step works
       """
-    When I run cucumber features
-    Then it should fail with
+    When I run `cucumber features`
+    Then it should fail with:
       """
       Feature: Sample
 
@@ -72,8 +72,8 @@ Feature: Exception in After Block
           Given this step works
 
       """
-    When I run cucumber features
-    Then it should fail with
+    When I run `cucumber features`
+    Then it should fail with:
       """
       Feature: Sample
 
@@ -110,8 +110,8 @@ Feature: Exception in After Block
         Scenario: Success
           Given this step works
       """
-    When I run cucumber features --format progress
-    Then it should fail with
+    When I run `cucumber features --format progress`
+    Then it should fail with:
       """
       .F.
 
