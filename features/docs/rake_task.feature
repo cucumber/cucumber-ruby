@@ -30,9 +30,8 @@ Feature: Rake task
         t.profile = "foo"
       end
       """
-    When I run rake cucumber
-    Then it should pass
-    And the output should contain
+    When I run `rake cucumber`
+    Then it should pass with:
       """
       Feature: Sample
 
@@ -53,9 +52,8 @@ Feature: Rake task
           t.cucumber_opts = %w{--quiet --no-color}
         end
         """
-      When I run rake cucumber
-      Then it should pass
-      And the output should contain
+      When I run `rake cucumber`
+      Then it should pass with:
         """
         Feature: Sample
 
@@ -84,9 +82,8 @@ Feature: Rake task
         t.cucumber_opts = %w{--quiet --no-color}
       end
       """
-    When I run rake cucumber
-    Then it should pass
-    And the output should contain
+    When I run `rake cucumber`
+    Then it should pass with:
       """
       Feature: Sample
 
@@ -98,8 +95,8 @@ Feature: Rake task
       """
 
   Scenario: respect requires
-    Given a file named "features/support/env.rb"
-    And a file named "features/support/dont_require_me.rb"
+    Given an empty file named "features/support/env.rb"
+    And an empty file named "features/support/dont_require_me.rb"
     And the following profile is defined:
       """
       no_bomb: features/missing_step_definitions.feature:3 --require features/support/env.rb --verbose
@@ -115,9 +112,9 @@ Feature: Rake task
       end
       """
 
-    When I run rake cucumber
+    When I run `rake cucumber`
     Then it should pass
-    And the output should not contain
+    And the output should not contain:
       """
         * features/support/dont_require_me.rb
       """
@@ -139,9 +136,8 @@ Feature: Rake task
          t.cucumber_opts = %w{--quiet --no-color}
        end
        """
-    When I run rake cucumber
-    Then it should pass
-    And the output should contain
+    When I run `rake cucumber`
+    Then it should pass with:
        """
        Feature: The futures green
 
