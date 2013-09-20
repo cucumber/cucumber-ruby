@@ -7,14 +7,14 @@ Feature: Profiles
   http://wiki.github.com/cucumber/cucumber/cucumber.yml
 
   Background: Basic App
-    And a file named "features/sample.feature" with:
+    Given a file named "features/sample.feature" with:
       """
       Feature: Sample
         Scenario: this is a test
           Given I am just testing stuff
       """
-    And a file named "features/support/env.rb"
-    And a file named "features/support/super_env.rb"
+    And an empty file named "features/support/env.rb"
+    And an empty file named "features/support/super_env.rb"
     And the following profiles are defined:
       """
       default: features/sample.feature --require features/support/env.rb -v
@@ -22,8 +22,8 @@ Feature: Profiles
       """
 
   Scenario: Explicitly defining a profile to run
-    When I run cucumber features/sample.feature --profile super
-    Then the output should contain
+    When I run `cucumber features/sample.feature --profile super`
+    Then the output should contain:
       """
       Using the super profile...
       """
@@ -35,29 +35,29 @@ Feature: Profiles
       <% requires = "--require features/support/super_env.rb" %>
       super: <%= "features/sample.feature #{requires} -v" %>
       """
-    When I run cucumber features/sample.feature --profile super
-    Then the output should contain
+    When I run `cucumber features/sample.feature --profile super`
+    Then the output should contain:
       """
       Using the super profile...
       """
     And exactly these files should be loaded: features/support/super_env.rb
 
   Scenario: Defining multiple profiles to run
-    When I run cucumber features/sample.feature --profile default --profile super
-    Then the output should contain
+    When I run `cucumber features/sample.feature --profile default --profile super`
+    Then the output should contain:
       """
       Using the default and super profiles...
       """
     And exactly these files should be loaded: features/support/env.rb, features/support/super_env.rb
 
   Scenario: Arguments passed in but no profile specified
-    When I run cucumber -v
+    When I run `cucumber -v`
     Then the default profile should be used
     And exactly these files should be loaded: features/support/env.rb
 
   Scenario: Trying to use a missing profile
-    When I run cucumber -p foo
-    Then STDERR should be
+    When I run `cucumber -p foo`
+    Then the stderr should contain:
       """
       Could not find profile: 'foo'
 
@@ -68,8 +68,8 @@ Feature: Profiles
       """
 
   Scenario Outline: Disabling the default profile
-    When I run cucumber -v features/ <Flag>
-    Then the output should contain
+    When I run `cucumber -v features/ <Flag>`
+    Then the output should contain:
       """
       Disabling profiles...
       """
@@ -86,7 +86,7 @@ Feature: Profiles
       """
       Feature: Just this one should be ran
       """
-      When I run cucumber -p default features/another.feature
+      When I run `cucumber -p default features/another.feature`
       Then exactly these features should be ran: features/another.feature
 
   Scenario: Overriding the profile's formatter
@@ -100,8 +100,8 @@ Feature: Profiles
       """
       default: features/sample.feature --require features/support/env.rb -v --format profile
       """
-    When I run cucumber features --format pretty
-    And the output should contain
+    When I run `cucumber features --format pretty`
+    And the output should contain:
       """
       Feature: Sample
       """
@@ -113,9 +113,8 @@ Feature: Profiles
         raise 'BANG'
       end
       """
-    When I run cucumber -q -p super -p default -f <format> features/sample.feature --require features/step_definitions/steps.rb
-    Then it should fail
-    And the output should contain
+    When I run `cucumber -q -p super -p default -f <format> features/sample.feature --require features/step_definitions/steps.rb`
+    Then it should fail with:
        """
        cucumber -p super features/sample.feature:2
        """
