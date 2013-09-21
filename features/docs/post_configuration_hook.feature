@@ -6,8 +6,7 @@ Feature: Post Configuration Hook [#423]
 
   Scenario: Using options directly gets a deprecation warning
 
-    Given a standard Cucumber project directory structure
-    And a file named "features/support/env.rb" with:
+    Given a file named "features/support/env.rb" with:
       """
       AfterConfiguration do |config|
         config.options[:blah]
@@ -19,8 +18,7 @@ Feature: Post Configuration Hook [#423]
       Deprecated
       """
 
-    Given a standard Cucumber project directory structure
-    And a file named "features/support/env.rb" with:
+    Given a file named "features/support/env.rb" with:
       """
       AfterConfiguration do |config|
         config.formats << ['html', config.out_stream]
@@ -35,8 +33,7 @@ Feature: Post Configuration Hook [#423]
 
   Scenario: feature directories read from configuration
 
-    Given a standard Cucumber project directory structure
-    And a file named "features/support/env.rb" with:
+    Given a file named "features/support/env.rb" with:
       """
       AfterConfiguration do |config|
         config.out_stream << "AfterConfiguration hook read feature directories: #{config.feature_dirs.join(', ')}" 
