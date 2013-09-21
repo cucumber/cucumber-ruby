@@ -23,7 +23,6 @@ Feature: Rake task
       """
     And a file named "Rakefile" with:
       """
-      $LOAD_PATH.unshift(CUCUMBER_LIB)
       require 'cucumber/rake/task'
 
       Cucumber::Rake::Task.new do |t|
@@ -45,7 +44,6 @@ Feature: Rake task
     Scenario: rake task without a profile
       Given a file named "Rakefile" with:
         """
-        $LOAD_PATH.unshift(CUCUMBER_LIB)
         require 'cucumber/rake/task'
 
         Cucumber::Rake::Task.new do |t|
@@ -74,7 +72,6 @@ Feature: Rake task
       """
     And a file named "Rakefile" with:
       """
-      $LOAD_PATH.unshift(CUCUMBER_LIB)
       require 'cucumber/rake/task'
 
       Cucumber::Rake::Task.new do |t|
@@ -103,7 +100,6 @@ Feature: Rake task
       """
     And a file named "Rakefile" with:
       """
-      $LOAD_PATH.unshift(CUCUMBER_LIB)
       require 'cucumber/rake/task'
 
       Cucumber::Rake::Task.new do |t|
@@ -129,7 +125,6 @@ Feature: Rake task
        """
     And a file named "Rakefile" with:
        """
-       $LOAD_PATH.unshift(CUCUMBER_LIB)
        require 'cucumber/rake/task'
 
        Cucumber::Rake::Task.new do |t|
