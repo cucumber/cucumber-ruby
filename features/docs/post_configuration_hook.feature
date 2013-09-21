@@ -18,6 +18,7 @@ Feature: Post Configuration Hook [#423]
       Deprecated
       """
 
+  Scenario: Changing the output format
     Given a file named "features/support/env.rb" with:
       """
       AfterConfiguration do |config|
