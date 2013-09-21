@@ -3,8 +3,8 @@ Feature: Cucumber command line
   Developers should always see what step definition is missing
 
   Scenario: Get info at arbitrary levels of nesting
-    When I run cucumber features/call_undefined_step_from_step_def.feature
-    Then it should pass with
+    When I run `cucumber features/call_undefined_step_from_step_def.feature`
+    Then it should pass with:
       """
       Feature: Calling undefined step
 
