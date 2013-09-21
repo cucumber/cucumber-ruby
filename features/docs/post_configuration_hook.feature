@@ -12,8 +12,8 @@ Feature: Post Configuration Hook [#423]
         config.options[:blah]
       end
       """
-    When I run cucumber features
-    Then STDERR should match
+    When I run `cucumber features`
+    Then the stderr should contain:
       """
       Deprecated
       """
@@ -24,9 +24,9 @@ Feature: Post Configuration Hook [#423]
         config.formats << ['html', config.out_stream]
       end
       """
-    When I run cucumber features
-    Then STDERR should be empty
-    And the output should contain
+    When I run `cucumber features`
+    Then the stderr should not contain anything
+    And the output should contain:
       """
       html
       """
@@ -39,9 +39,9 @@ Feature: Post Configuration Hook [#423]
         config.out_stream << "AfterConfiguration hook read feature directories: #{config.feature_dirs.join(', ')}" 
       end
       """
-    When I run cucumber features
-    Then STDERR should be empty
-    And the output should contain
+    When I run `cucumber features`
+    Then the stderr should not contain anything
+    And the output should contain:
       """
       AfterConfiguration hook read feature directories: features
       """
