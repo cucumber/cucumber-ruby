@@ -19,6 +19,7 @@ Feature: Wire protocol table diffing
 
       """
 
+  @spawn
   Scenario: Invoke a step definition tries to diff the table and fails
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                                                                             |
@@ -66,6 +67,7 @@ Feature: Wire protocol table diffing
 
       """
 
+  @spawn
   Scenario: Invoke a step definition which successfully diffs a table but then fails
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                                      |
@@ -92,6 +94,7 @@ Feature: Wire protocol table diffing
 
       """
 
+  @spawn
   Scenario: Invoke a step definition which asks for an immediate diff that fails
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                            |

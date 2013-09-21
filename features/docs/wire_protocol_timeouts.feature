@@ -26,6 +26,7 @@ Feature: Wire protocol timeouts
       Unable to contact the wire server at localhost:54321
       """
 
+  @spawn
   Scenario: Invoke a step definition that takes longer than its timeout
     Given a file named "features/step_definitions/some_remote_place.wire" with:
       """
