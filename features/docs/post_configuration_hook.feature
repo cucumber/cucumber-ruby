@@ -4,6 +4,7 @@ Feature: Post Configuration Hook [#423]
   As a developer
   I want to manipulate the Cucumber configuration after it has been created
 
+  @spawn
   Scenario: Using options directly gets a deprecation warning
 
     Given a file named "features/support/env.rb" with:
