@@ -310,6 +310,9 @@ Feature: Wire Protocol
 
       1 scenario (1 undefined)
       1 step (1 undefined)
+      """
+    And the output should contain:
+      """
 
       You can implement step definitions for undefined steps with these snippets:
 
