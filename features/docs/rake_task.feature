@@ -16,7 +16,6 @@ Feature: Rake task
           Given I don't want this ran
       """
 
-
   Scenario: rake task with a defined profile
     Given the following profile is defined:
       """
@@ -42,29 +41,29 @@ Feature: Rake task
       1 step (1 undefined)
       """
 
-    Scenario: rake task without a profile
-      Given a file named "Rakefile" with:
-        """
-        require 'cucumber/rake/task'
+  Scenario: rake task without a profile
+    Given a file named "Rakefile" with:
+      """
+      require 'cucumber/rake/task'
 
-        Cucumber::Rake::Task.new do |t|
-          t.cucumber_opts = %w{--quiet --no-color}
-        end
-        """
-      When I run `rake cucumber`
-      Then it should pass with:
-        """
-        Feature: Sample
+      Cucumber::Rake::Task.new do |t|
+        t.cucumber_opts = %w{--quiet --no-color}
+      end
+      """
+    When I run `rake cucumber`
+    Then it should pass with:
+      """
+      Feature: Sample
 
-          Scenario: Wanted
-            Given I want to run this
+        Scenario: Wanted
+          Given I want to run this
 
-          Scenario: Unwanted
-            Given I don't want this ran
+        Scenario: Unwanted
+          Given I don't want this ran
 
-        2 scenarios (2 undefined)
-        2 steps (2 undefined)
-        """
+      2 scenarios (2 undefined)
+      2 steps (2 undefined)
+      """
 
   Scenario: rake task with a defined profile and cucumber_opts
     Given the following profile is defined:
@@ -108,7 +107,6 @@ Feature: Rake task
         t.cucumber_opts = %w{--quiet --no-color}
       end
       """
-
     When I run `rake cucumber`
     Then it should pass
     And the output should not contain:
