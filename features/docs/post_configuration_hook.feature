@@ -6,7 +6,6 @@ Feature: Post Configuration Hook [#423]
 
   @spawn
   Scenario: Using options directly gets a deprecation warning
-
     Given a file named "features/support/env.rb" with:
       """
       AfterConfiguration do |config|
@@ -34,11 +33,10 @@ Feature: Post Configuration Hook [#423]
       """
 
   Scenario: feature directories read from configuration
-
     Given a file named "features/support/env.rb" with:
       """
       AfterConfiguration do |config|
-        config.out_stream << "AfterConfiguration hook read feature directories: #{config.feature_dirs.join(', ')}" 
+        config.out_stream << "AfterConfiguration hook read feature directories: #{config.feature_dirs.join(', ')}"
       end
       """
     When I run `cucumber features`
