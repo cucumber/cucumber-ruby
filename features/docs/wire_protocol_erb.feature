@@ -6,8 +6,7 @@ Feature: Wire Protocol with ERB
   So that I can avoid port conflicts
 
   Background:
-    Given a standard Cucumber project directory structure
-    And a file named "features/wired.feature" with:
+    Given a file named "features/wired.feature" with:
       """
       Feature: High strung
         Scenario: Wired
@@ -24,8 +23,8 @@ Feature: Wire Protocol with ERB
       And there is a wire server running on port 12345 which understands the following protocol:
         | request                                              | response       |
         | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[]] |
-      When I run cucumber --dry-run --no-snippets -f progress
-      And it should pass with
+      When I run `cucumber --dry-run --no-snippets -f progress`
+      Then it should pass with:
         """
         U
 
@@ -45,8 +44,8 @@ Feature: Wire Protocol with ERB
       And there is a wire server running on port 16816 which understands the following protocol:
         | request                                              | response       |
         | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[]] |
-      When I run cucumber --dry-run --no-snippets -f progress
-      And it should pass with
+      When I run `cucumber --dry-run --no-snippets -f progress`
+      Then it should pass with:
         """
         U
 
