@@ -38,8 +38,7 @@ Feature: Wire Protocol
   #
 
   Background:
-    Given a standard Cucumber project directory structure
-    And a file named "features/wired.feature" with:
+    Given a file named "features/wired.feature" with:
       """
       Feature: High strung
         Scenario: Wired
@@ -67,8 +66,8 @@ Feature: Wire Protocol
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response       |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[]] |
-    When I run cucumber --dry-run --no-snippets -f progress
-    And it should pass with
+    When I run `cucumber --dry-run --no-snippets -f progress`
+    And it should pass with:
       """
       U
 
@@ -87,8 +86,8 @@ Feature: Wire Protocol
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                            |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[{"id":"1", "args":[]}]] |
-    When I run cucumber --dry-run -f progress
-    And it should pass with
+    When I run `cucumber --dry-run -f progress`
+    And it should pass with:
       """
       -
 
@@ -103,9 +102,9 @@ Feature: Wire Protocol
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                                                           |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[{"id":"1", "args":[], "source":"MyApp.MyClass:123", "regexp":"we.*"}]] |
-    When I run cucumber -f stepdefs --dry-run
-    Then STDERR should be empty
-    And it should pass with
+    When I run `cucumber -f stepdefs --dry-run`
+    Then the stderr should not contain anything
+    And it should pass with:
       """
       -
 
@@ -138,6 +137,7 @@ Feature: Wire Protocol
 
   # ## Pending Steps
   #
+  @spawn
   Scenario: Invoke a step definition which is pending
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                            |
@@ -145,8 +145,8 @@ Feature: Wire Protocol
       | ["begin_scenario"]                                   | ["success"]                         |
       | ["invoke",{"id":"1","args":[]}]                      | ["pending", "I'll do it later"]     |
       | ["end_scenario"]                                     | ["success"]                         |
-    When I run cucumber -f pretty -q
-    And it should pass with
+    When I run `cucumber -f pretty -q`
+    And it should pass with:
       """
       Feature: High strung
 
@@ -169,8 +169,8 @@ Feature: Wire Protocol
       | ["begin_scenario"]                                   | ["success"]                         |
       | ["invoke",{"id":"1","args":[]}]                      | ["success"]                         |
       | ["end_scenario"]                                     | ["success"]                         |
-    When I run cucumber -f progress
-    And it should pass with
+    When I run `cucumber -f progress`
+    And it should pass with:
       """
       .
 
@@ -192,6 +192,7 @@ Feature: Wire Protocol
   #
   # See the specs for Cucumber::WireSupport::WireException for more details
   #
+  @spawn
   Scenario: Invoke a step definition which fails
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                                                            |
@@ -199,9 +200,9 @@ Feature: Wire Protocol
       | ["begin_scenario"]                                   | ["success"]                                                                         |
       | ["invoke",{"id":"1","args":[]}]                      | ["fail",{"message":"The wires are down", "exception":"Some.Foreign.ExceptionType"}] |
       | ["end_scenario"]                                     | ["success"]                                                                         |
-    When I run cucumber -f progress
-    Then STDERR should be empty
-    And it should fail with
+    When I run `cucumber -f progress`
+    Then the stderr should not contain anything
+    And it should fail with:
       """
       F
 
@@ -242,9 +243,9 @@ Feature: Wire Protocol
       | ["begin_scenario"]                                   | ["success"]                                                  |
       | ["invoke",{"id":"1","args":["wired"]}]               | ["success"]                                                  |
       | ["end_scenario"]                                     | ["success"]                                                  |
-    When I run cucumber -f progress
-    Then STDERR should be empty
-    And it should pass with
+    When I run `cucumber -f progress`
+    Then the stderr should not contain anything
+    And it should pass with:
       """
       .
 
@@ -275,9 +276,9 @@ Feature: Wire Protocol
       | ["begin_scenario"]                                                    | ["success"]                                                 |
       | ["invoke",{"id":"1","args":["we're",[["wired"],["high"],["happy"]]]}] | ["success"]                                                 |
       | ["end_scenario"]                                                      | ["success"]                                                 |
-    When I run cucumber -f progress features/wired_on_tables.feature
-    Then STDERR should be empty
-    And it should pass with
+    When I run `cucumber -f progress features/wired_on_tables.feature`
+    Then the stderr should not contain anything
+    And it should pass with:
       """
       .
 
@@ -290,6 +291,7 @@ Feature: Wire Protocol
   #
   # # Request: 'snippets'
   #
+  @spawn
   Scenario: Wire server returns snippets for a step that didn't match
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                                                                          | response                         |
@@ -297,9 +299,9 @@ Feature: Wire Protocol
       | ["snippet_text",{"step_keyword":"Given","multiline_arg_class":"","step_name":"we're all wired"}] | ["success","foo()\n  bar;\nbaz"] |
       | ["begin_scenario"]                                                                               | ["success"]                      |
       | ["end_scenario"]                                                                                 | ["success"]                      |
-    When I run cucumber -f pretty
-    Then STDERR should be empty
-    And it should pass with
+    When I run `cucumber -f pretty`
+    Then the stderr should not contain anything
+    And it should pass with:
       """
       Feature: High strung
 
@@ -308,6 +310,9 @@ Feature: Wire Protocol
 
       1 scenario (1 undefined)
       1 step (1 undefined)
+      """
+    And the output should contain:
+      """
 
       You can implement step definitions for undefined steps with these snippets:
 
@@ -325,8 +330,8 @@ Feature: Wire Protocol
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request            | response  |
       | ["begin_scenario"] | ["yikes"] |
-    When I run cucumber -f progress
-    Then STDERR should match
+    When I run `cucumber -f progress`
+    Then the stderr should contain:
       """
       undefined method `handle_yikes'
       """

@@ -5,7 +5,6 @@ Feature: Wire protocol timeouts
   to take a while to execute, if that's what they need.
 
   Background:
-    Given a standard Cucumber project directory structure
     And a file named "features/wired.feature" with:
       """
       Feature: Telegraphy
@@ -21,12 +20,13 @@ Feature: Wire protocol timeouts
       port: 54321
 
       """
-    When I run cucumber -f progress
-    Then STDERR should match
+    When I run `cucumber -f progress`
+    Then the stderr should contain:
       """
       Unable to contact the wire server at localhost:54321
       """
 
+  @spawn
   Scenario: Invoke a step definition that takes longer than its timeout
     Given a file named "features/step_definitions/some_remote_place.wire" with:
       """
@@ -43,9 +43,9 @@ Feature: Wire protocol timeouts
       | ["invoke",{"id":"1","args":["wired"]}]               | ["success"]                                                  |
       | ["end_scenario"]                                     | ["success"]                                                  |
     And the wire server takes 0.2 seconds to respond to the invoke message
-    When I run cucumber -f pretty
-    Then STDERR should be empty
-    And it should fail with
+    When I run `cucumber -f pretty`
+    Then the stderr should not contain anything
+    And it should fail with:
       """
       Feature: Telegraphy
 
