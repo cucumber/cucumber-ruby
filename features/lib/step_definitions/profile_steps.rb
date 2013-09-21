@@ -1,5 +1,5 @@
 Given /^the following profiles? (?:are|is) defined:$/ do |profiles|
-  step 'a file named "cucumber.yml" with:', profiles
+  write_file 'cucumber.yml', profiles
 end
 
 Then /^the (.*) profile should be used$/ do |profile|
