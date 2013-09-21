@@ -478,14 +478,14 @@ module Cucumber
           formatter.before_examples(node)
           formatter.examples_name(node.keyword, node.name)
           formatter.before_outline_table(legacy_table)
-          TableRowPrinter.new(formatter, runtime, TableRow.new(node.header)).before.after
+          TableRowPrinter.new(formatter, runtime, ExampleTableRow.new(node.header)).before.after
         end
 
         def examples_table_row(examples_table_row, *)
-          delegate_to TableRowPrinter, TableRow.new(examples_table_row)
+          delegate_to TableRowPrinter, ExampleTableRow.new(examples_table_row)
         end
 
-        class TableRow < SimpleDelegator
+        class ExampleTableRow < SimpleDelegator
           def dom_id
             file_colon_line.gsub(/[\/\.:]/, '_')
           end
@@ -562,10 +562,25 @@ module Cucumber
         end
 
         def legacy_table_row
-          LegacyTableRow.new(exception, @status)
+          case node
+          when DataTableRow
+            LegacyTableRow.new(exception, @status)
+          when ExampleTableRow
+            LegacyExampleTableRow.new(exception, @status, node.values)
+          end
         end
 
         LegacyTableRow = Struct.new(:exception, :status)
+        LegacyExampleTableRow = Struct.new(:exception, :status, :cells) do
+          def name
+            '| ' + cells.join(' | ') + ' |'
+          end
+
+          def failed?
+            status == :failed
+          end
+        end
+
 
         def exception
           return nil unless @failed_step_result
