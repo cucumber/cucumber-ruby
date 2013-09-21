@@ -11,7 +11,7 @@ Given /^the wire server takes (.*) seconds to respond to the invoke message$/ do
 end
 
 Given /^I have environment variable (\w+) set to "([^"]*)"$/ do |variable, value|
-  set_env_var(variable, value)
+  set_env(variable, value)
 end
 
 module WireHelper
@@ -36,13 +36,3 @@ end
 After('@wire') do
   stop_wire_server
 end
-
-module CucumberHelper
-  def set_env_var(variable, value)
-    @original_env_vars ||= {}
-    @original_env_vars[variable] = ENV[variable]
-    ENV[variable]  = value
-  end
-end
-
-World(CucumberHelper)
