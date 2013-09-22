@@ -3,6 +3,26 @@ Feature: Cucumber command line
   Developers should always see what step definition is missing
 
   Scenario: Get info at arbitrary levels of nesting
+    Given a file named "features/call_undefined_step_from_step_def.feature" with:
+      """
+      Feature: Calling undefined step
+
+        Scenario: Call directly
+          Given a step definition that calls an undefined step
+
+        Scenario: Call via another
+          Given call step "a step definition that calls an undefined step"
+      """
+    And a file named "features/step_definitions/sample_steps.rb" with:
+      """
+      Given /^a step definition that calls an undefined step$/ do
+        step 'this does not exist'
+      end
+
+      Given /^call step "(.*)"$/ do |step_name| x=1
+        step step_name
+      end
+      """
     When I run `cucumber features/call_undefined_step_from_step_def.feature`
     Then it should pass with:
       """
