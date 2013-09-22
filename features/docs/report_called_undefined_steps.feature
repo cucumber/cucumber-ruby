@@ -43,6 +43,9 @@ Feature: Cucumber command line
 
       2 scenarios (2 undefined)
       2 steps (2 undefined)
+      """
+    And the output should contain:
+      """
 
       You can implement step definitions for undefined steps with these snippets:
 
