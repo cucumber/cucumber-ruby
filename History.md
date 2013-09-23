@@ -1,6 +1,7 @@
 ##
 [v1.3.x-bugfix](https://github.com/cucumber/cucumber/compare/v1.3.8...v1.3.x-bugfix)
 
+* Disable minitest autorun after loading support files (@tooky)
 * Add `Ast::Table#map_column` for non-mutating column mapping (@tooky)
 * Remove deprecation warnings on `Ast::Table` (@tooky)
 

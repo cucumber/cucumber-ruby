@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'multi_json'
+require 'multi_test'
 require 'gherkin/rubify'
 require 'gherkin/i18n'
 require 'cucumber/configuration'
@@ -20,7 +21,6 @@ module Cucumber
     include Runtime::UserInterface
 
     def initialize(configuration = Configuration.default)
-      require 'cucumber/core_ext/disable_mini_and_test_unit_autorun'
       @current_scenario = nil
       @configuration = Configuration.parse(configuration)
       @support_code = SupportCode.new(self, @configuration)
@@ -40,6 +40,7 @@ module Cucumber
 
     def run!
       load_step_definitions
+      disable_minitest_test_unit_autorun
       fire_after_configuration_hook
 
       tree_walker = @configuration.build_tree_walker(self)
@@ -181,6 +182,10 @@ module Cucumber
     def load_step_definitions
       files = @configuration.support_to_load + @configuration.step_defs_to_load
       @support_code.load_files!(files)
+    end
+
+    def disable_minitest_test_unit_autorun
+      MultiTest.disable_autorun
     end
 
     def log
