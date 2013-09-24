@@ -240,7 +240,7 @@ can't convert .* into String \(TypeError\)
       """
     And the stderr should contain:
       """
-You \*must\* specify \-\-out DIR for the junit formatter
+You *must* specify --out DIR for the junit formatter
       """
 
   Scenario: one feature, one scenario outline, two examples: one passing, one failing
