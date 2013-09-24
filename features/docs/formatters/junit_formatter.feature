@@ -7,8 +7,8 @@ Feature: JUnit output formatter
     And the tmp directory is empty
   
   Scenario: one feature, one passing scenario, one failing scenario
-    When I run cucumber --format junit --out tmp/ features/one_passing_one_failing.feature
-    Then it should fail with
+    When I run `cucumber --format junit --out tmp/ features/one_passing_one_failing.feature`
+    Then it should fail with:
       """
 
       """
@@ -45,8 +45,8 @@ Feature: JUnit output formatter
       """
   
   Scenario: one feature in a subdirectory, one passing scenario, one failing scenario
-    When I run cucumber --format junit --out tmp/ features/some_subdirectory/one_passing_one_failing.feature --require features
-    Then it should fail with
+    When I run `cucumber --format junit --out tmp/ features/some_subdirectory/one_passing_one_failing.feature --require features`
+    Then it should fail with:
       """
 
       """
@@ -83,8 +83,8 @@ Feature: JUnit output formatter
       """
   
   Scenario: pending and undefined steps are reported as skipped
-    When I run cucumber --format junit --out tmp/ features/pending.feature
-    Then it should pass with
+    When I run `cucumber --format junit --out tmp/ features/pending.feature`
+    Then it should pass with:
       """
       
       """
@@ -113,8 +113,8 @@ Feature: JUnit output formatter
       """
 
   Scenario: pending and undefined steps with strict option should fail
-    When I run cucumber --format junit --out tmp/ features/pending.feature --strict
-    Then it should fail with
+    When I run `cucumber --format junit --out tmp/ features/pending.feature --strict`
+    Then it should fail with:
       """
 
       """
@@ -155,28 +155,28 @@ Feature: JUnit output formatter
       """
     
   Scenario: run all features
-    When I run cucumber --format junit --out tmp/ features
-    Then it should fail with
+    When I run `cucumber --format junit --out tmp/ features`
+    Then it should fail with:
       """
       
       """
-    And "fixtures/junit/tmp/TEST-features-one_passing_one_failing.xml" should exist
-    And "fixtures/junit/tmp/TEST-features-pending.xml" should exist
+    And a file named "fixtures/junit/tmp/TEST-features-one_passing_one_failing.xml" should exist
+    And a file named "fixtures/junit/tmp/TEST-features-pending.xml" should exist
   
   Scenario: show correct error message if no --out is passed
-    When I run cucumber --format junit features
-    Then STDERR should not match 
+    When I run `cucumber --format junit features`
+    Then the stderr should not contain:
       """
 can't convert .* into String \(TypeError\)
       """
-    And STDERR should match
+    And the stderr should contain:
       """
 You \*must\* specify \-\-out DIR for the junit formatter
       """
 
   Scenario: one feature, one scenario outline, two examples: one passing, one failing
-    When I run cucumber --format junit --out tmp/ features/scenario_outline.feature
-    Then it should fail with
+    When I run `cucumber --format junit --out tmp/ features/scenario_outline.feature`
+    Then it should fail with:
       """
 
       """
@@ -210,5 +210,4 @@ You \*must\* specify \-\-out DIR for the junit formatter
         </system-err>
       </testsuite>
 
-      """
-  
+      """ 
