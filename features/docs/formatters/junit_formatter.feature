@@ -3,8 +3,77 @@ Feature: JUnit output formatter
   Cucumber should be able to output JUnit xml files
   
   Background:
-    Given I am in junit
-    And the tmp directory is empty
+    Given the tmp directory is empty
+    And a file named "features/step_definitions/steps.rb" with:
+      """
+      Given /a passing scenario/ do
+	#does nothing
+      end
+
+      Given /a failing scenario/ do
+	fail
+      end
+
+      Given /a pending step/ do
+	pending
+      end
+
+      Given /a skipping scenario/ do
+	skipping
+      end
+      """
+    And a file named "features/one_passing_one_failing.feature" with:
+      """
+      Feature: One passing scenario, one failing scenario
+
+        Scenario: Passing
+          Given a passing scenario
+
+        Scenario: Failing
+          Given a failing scenario
+      """
+    And a file named "features/some_subdirectory/one_passing_one_failing.feature" with:
+      """
+      Feature: Subdirectory - One passing scenario, one failing scenario
+
+        Scenario: Passing
+          Given a passing scenario
+
+        Scenario: Failing
+          Given a failing scenario
+      """
+    And a file named "features/pending.feature" with:
+      """
+      Feature: Pending step
+
+        Scenario: Pending
+          Given a pending step
+
+        Scenario: Undefined
+          Given an undefined step
+      """
+    And a file named "features/pending.feature" with:
+      """
+      Feature: Pending step
+
+        Scenario: Pending
+          Given a pending step
+
+        Scenario: Undefined
+          Given an undefined step
+      """
+    And a file named "features/scenario_outline.feature" with:
+      """
+      Feature: Scenario outlines
+
+        Scenario Outline: Using scenario outlines
+          Given a <type> scenario
+
+          Examples:
+            | type    |
+            | passing |
+            | failing |
+      """
   
   Scenario: one feature, one passing scenario, one failing scenario
     When I run `cucumber --format junit --out tmp/ features/one_passing_one_failing.feature`
