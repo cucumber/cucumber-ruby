@@ -81,7 +81,7 @@ Feature: JUnit output formatter
       """
 
       """
-    And "fixtures/junit/tmp/TEST-features-one_passing_one_failing.xml" with junit duration "0.005" should contain
+    And "tmp/TEST-features-one_passing_one_failing.xml" with junit duration "0.005" should contain
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite errors="0" failures="1" name="One passing scenario, one failing scenario" skipped="0" tests="2" time="0.005">
@@ -119,7 +119,7 @@ Feature: JUnit output formatter
       """
 
       """
-    And "fixtures/junit/tmp/TEST-features-some_subdirectory-one_passing_one_failing.xml" with junit duration "0.005" should contain
+    And "tmp/TEST-features-some_subdirectory-one_passing_one_failing.xml" with junit duration "0.005" should contain
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite errors="0" failures="1" name="Subdirectory - One passing scenario, one failing scenario" skipped="0" tests="2" time="0.005">
@@ -157,7 +157,7 @@ Feature: JUnit output formatter
       """
       
       """
-    And "fixtures/junit/tmp/TEST-features-pending.xml" with junit duration "0.009" should contain
+    And "tmp/TEST-features-pending.xml" with junit duration "0.009" should contain
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite errors="0" failures="0" name="Pending step" skipped="2" tests="2" time="0.009">
@@ -187,7 +187,7 @@ Feature: JUnit output formatter
       """
 
       """
-    And "fixtures/junit/tmp/TEST-features-pending.xml" with junit duration "0.000160" should contain
+    And "tmp/TEST-features-pending.xml" with junit duration "0.000160" should contain
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite errors="0" failures="2" name="Pending step" skipped="0" tests="2" time="0.000160">
@@ -229,8 +229,8 @@ Feature: JUnit output formatter
       """
       
       """
-    And a file named "fixtures/junit/tmp/TEST-features-one_passing_one_failing.xml" should exist
-    And a file named "fixtures/junit/tmp/TEST-features-pending.xml" should exist
+    And a file named "tmp/TEST-features-one_passing_one_failing.xml" should exist
+    And a file named "tmp/TEST-features-pending.xml" should exist
   
   Scenario: show correct error message if no --out is passed
     When I run `cucumber --format junit features`
@@ -249,7 +249,7 @@ You \*must\* specify \-\-out DIR for the junit formatter
       """
 
       """
-    And "fixtures/junit/tmp/TEST-features-scenario_outline.xml" with junit duration "0.005" should contain
+    And "tmp/TEST-features-scenario_outline.xml" with junit duration "0.005" should contain
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite errors="0" failures="1" name="Scenario outlines" skipped="0" tests="2" time="0.005">
