@@ -4,8 +4,7 @@ Feature: JUnit output formatter
   Cucumber should be able to output JUnit xml files
   
   Background:
-    Given the tmp directory is empty
-    And a file named "features/step_definitions/steps.rb" with:
+    Given a file named "features/step_definitions/steps.rb" with:
       """
       Given /a passing scenario/ do
 	#does nothing
