@@ -27,8 +27,22 @@ Feature: HTML output formatter
             | two     |
             | three   |
       """
+    And a file named "features/failing_background_step.feature" with:
+      """
+      Feature: Feature with failing background step
+
+        Background:
+          Given this fails
+
+        Scenario:
+          When I do something
+          Then I should see something
+      """
     And a file named "features/step_definitions/steps.rb" with:
       """
+      Given /^this fails$/ do
+        fail 'This step should fail'
+      end
       Given /^this hasn't been implemented yet$/ do
         pending
       end
@@ -61,10 +75,20 @@ Feature: HTML output formatter
     """
       default: -r features
     """
-    When I run `cucumber --profile default --format html`
+    When I run `cucumber features/scenario_outline_with_undefined_steps.feature --profile default --format html`
     Then it should pass
     And the output should not contain:
     """
     Using the default profile...
     """
 
+  Scenario: a feature with a failing background step
+    When I run `cucumber features/failing_background_step.feature --format html`
+    Then the output should not contain:
+    """
+    makeRed('scenario_0')
+    """
+    And the output should contain:
+    """
+    makeRed('background_0')
+    """

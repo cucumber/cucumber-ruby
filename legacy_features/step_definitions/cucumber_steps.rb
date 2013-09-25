@@ -129,6 +129,10 @@ Then /^STDERR should be empty$/ do
   last_stderr.should == ""
 end
 
+Then /^STDERR should have warning message$/ do
+  last_stderr.should include("[warning]")
+end
+
 Then /^"([^"]*)" should exist$/ do |file|
   File.exists?(file).should be_true
   FileUtils.rm(file)
