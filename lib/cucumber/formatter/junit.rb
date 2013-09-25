@@ -7,6 +7,16 @@ module Cucumber
   module Formatter
     # The formatter used for <tt>--format junit</tt>
     class Junit
+      AST_SCENARIO_OUTLINE = if ENV['USE_LEGACY']
+                               Ast::ScenarioOutline
+                             else
+                               Cucumber::Core::Ast::ScenarioOutline
+                             end
+      AST_EXAMPLE_ROW = if ENV['USE_LEGACY']
+                          Cucumber::Ast::OutlineTable::ExampleRow
+                        else
+                          LegacyExampleTableRow
+                        end
       include Io
 
       class UnNamedFeatureError < StandardError
@@ -32,7 +42,7 @@ module Cucumber
       end
 
       def before_feature_element(feature_element)
-        @in_examples = Ast::ScenarioOutline === feature_element
+        @in_examples = AST_SCENARIO_OUTLINE === feature_element
         @steps_start = Time.now
       end
 
@@ -110,7 +120,7 @@ module Cucumber
       end
 
       def after_table_row(table_row)
-        return unless @in_examples and Cucumber::Ast::OutlineTable::ExampleRow === table_row
+        return unless @in_examples and AST_EXAMPLE_ROW === table_row
         duration = Time.now - @table_start
         unless @header_row
           name_suffix = " (outline example : #{table_row.name})"
