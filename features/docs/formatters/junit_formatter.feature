@@ -1,3 +1,4 @@
+@spawn
 Feature: JUnit output formatter
   In order for developers to create test reports with ant
   Cucumber should be able to output JUnit xml files
@@ -98,6 +99,7 @@ Feature: JUnit output formatter
       Message:
 	]]>
           <![CDATA[ (RuntimeError)
+	./features/step_definitions/steps.rb:6:in `/a failing scenario/'
 	features/one_passing_one_failing.feature:7:in `Given a failing scenario']]>
         </failure>
         <system-out/>
@@ -136,6 +138,7 @@ Feature: JUnit output formatter
       Message:
 	]]>
           <![CDATA[ (RuntimeError)
+	./features/step_definitions/steps.rb:6:in `/a failing scenario/'
 	features/some_subdirectory/one_passing_one_failing.feature:7:in `Given a failing scenario']]>
         </failure>
         <system-out/>
@@ -197,6 +200,7 @@ Feature: JUnit output formatter
 
       ]]>
           <![CDATA[TODO (Cucumber::Pending)
+      ./features/step_definitions/steps.rb:10:in `/a pending step/'
       features/pending.feature:4:in `Given a pending step']]>
         </failure>
         <system-out/>
@@ -266,6 +270,7 @@ You *must* specify --out DIR for the junit formatter
       Message:
       ]]>
           <![CDATA[ (RuntimeError)
+      ./features/step_definitions/steps.rb:6:in `/a failing scenario/'
       features/scenario_outline.feature:4:in `Given a <type> scenario']]>
         </failure>
         <system-out/>
