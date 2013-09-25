@@ -16,11 +16,7 @@ module Cucumber
         end
 
         describe "given a single feature" do
-          before(:each) do
-            run_defined_feature
-            puts @out.string
-            puts self.class.feature_content
-          end
+          before(:each) { run_defined_feature }
 
           describe "with a scenario" do
             define_feature <<-FEATURE
