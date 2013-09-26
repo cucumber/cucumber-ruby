@@ -174,14 +174,37 @@ module Cucumber
 
     require 'cucumber/core/gherkin/document'
     def features
-      @features ||= @configuration.feature_files.map do |file|
-        Cucumber::Core::Gherkin::Document.new(file, File.read(file))
+      @features ||= @configuration.feature_files.map do |path|
+        source = NormalisedEncoding.new(path).to_s
+        Cucumber::Core::Gherkin::Document.new(path, source)
       end
-      #@loader ||= Runtime::FeaturesLoader.new(
-        #@configuration.feature_files,
-        #@configuration.filters,
-        #@configuration.tag_expression)
-      #@loader.features
+    end
+
+    class NormalisedEncoding
+      COMMENT_OR_EMPTY_LINE_PATTERN = /^\s*#|^\s*$/ #:nodoc:
+      ENCODING_PATTERN = /^\s*#\s*encoding\s*:\s*([^\s]+)/ #:nodoc:
+
+      def initialize(path)
+        @file = File.new(path)
+        set_encoding
+      end
+
+      def to_s
+        @file.read.encode("UTF-8")
+      end
+
+      private
+
+      def set_encoding
+        @file.each do |line|
+          if ENCODING_PATTERN =~ line
+            @file.set_encoding $1
+            break
+          end
+          break unless COMMENT_OR_EMPTY_LINE_PATTERN =~ line
+        end
+        @file.rewind
+      end
     end
 
     require 'cucumber/mappings'
