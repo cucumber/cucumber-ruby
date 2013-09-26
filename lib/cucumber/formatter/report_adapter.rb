@@ -429,14 +429,14 @@ module Cucumber
           node.describe_to(self)
         end
 
-        %i(background scenario scenario_outline).each do |node_name|
+        [:background, :scenario, :scenario_outline].each do |node_name|
           define_method(node_name) do |node, &descend|
             record_width_of node
             descend.call
           end
         end
 
-        %i(step outline_step).each do |node_name|
+        [:step, :outline_step].each do |node_name|
           define_method(node_name) do |node|
             record_width_of node
           end
