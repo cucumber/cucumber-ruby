@@ -95,6 +95,53 @@ module Cucumber
         end
       end
 
+      describe '#map_column' do
+        it "should allow mapping columns" do
+          new_table = @table.map_column('one') { |v| v.to_i }
+          new_table.hashes.first['one'].should == 4444
+        end
+
+        it "applies the block once to each value" do
+          headers = ['header']
+          rows = ['value']
+          table = Table.new [headers, rows]
+          count = 0
+          new_table = table.map_column('header') { |value| count +=1 }
+          new_table.rows
+          count.should eq rows.size
+        end
+
+        it "should allow mapping columns and take a symbol as the column name" do
+          new_table = @table.map_column(:one) { |v| v.to_i }
+          new_table.hashes.first['one'].should == 4444
+        end
+
+        it "should allow mapping columns and modify the rows as well" do
+          new_table = @table.map_column(:one) { |v| v.to_i }
+          new_table.rows.first.should include(4444)
+          new_table.rows.first.should_not include('4444')
+        end
+
+        it "should pass silently if a mapped column does not exist in non-strict mode" do
+          lambda {
+            new_table = @table.map_column('two', false) { |v| v.to_i }
+            new_table.hashes
+          }.should_not raise_error
+        end
+
+        it "should fail if a mapped column does not exist in strict mode" do
+          lambda {
+            new_table = @table.map_column('two', true) { |v| v.to_i }
+            new_table.hashes
+          }.should raise_error('The column named "two" does not exist')
+        end
+
+        it "should return a new table" do
+          (@table.map_column(:one) { |v| v.to_i }).should_not == @table
+        end
+      end
+
+
       describe "#match" do
         before(:each) do
           @table = Table.new([
