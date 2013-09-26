@@ -81,15 +81,15 @@ Feature: JUnit output formatter
       """
 
       """
-    And "tmp/TEST-features-one_passing_one_failing.xml" with junit duration "0.005" should contain
+    And the junit output file "tmp/TEST-features-one_passing_one_failing.xml" should contain:
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite errors="0" failures="1" name="One passing scenario, one failing scenario" skipped="0" tests="2" time="0.005">
-      <testcase classname="One passing scenario, one failing scenario" name="Passing" time="0.005">
+      <testsuite errors="0" failures="1" name="One passing scenario, one failing scenario" skipped="0" tests="2" time="0.05">
+      <testcase classname="One passing scenario, one failing scenario" name="Passing" time="0.05">
         <system-out/>
         <system-err/>
       </testcase>
-      <testcase classname="One passing scenario, one failing scenario" name="Failing" time="0.005">
+      <testcase classname="One passing scenario, one failing scenario" name="Failing" time="0.05">
         <failure message="failed Failing" type="failed">
           <![CDATA[Scenario: Failing
 
@@ -120,15 +120,15 @@ Feature: JUnit output formatter
       """
 
       """
-    And "tmp/TEST-features-some_subdirectory-one_passing_one_failing.xml" with junit duration "0.005" should contain
+    And the junit output file "tmp/TEST-features-some_subdirectory-one_passing_one_failing.xml" should contain:
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite errors="0" failures="1" name="Subdirectory - One passing scenario, one failing scenario" skipped="0" tests="2" time="0.005">
-      <testcase classname="Subdirectory - One passing scenario, one failing scenario" name="Passing" time="0.005">
+      <testsuite errors="0" failures="1" name="Subdirectory - One passing scenario, one failing scenario" skipped="0" tests="2" time="0.05">
+      <testcase classname="Subdirectory - One passing scenario, one failing scenario" name="Passing" time="0.05">
         <system-out/>
         <system-err/>
       </testcase>
-      <testcase classname="Subdirectory - One passing scenario, one failing scenario" name="Failing" time="0.005">
+      <testcase classname="Subdirectory - One passing scenario, one failing scenario" name="Failing" time="0.05">
         <failure message="failed Failing" type="failed">
           <![CDATA[Scenario: Failing
 
@@ -159,16 +159,16 @@ Feature: JUnit output formatter
       """
       
       """
-    And "tmp/TEST-features-pending.xml" with junit duration "0.009" should contain
+    And the junit output file "tmp/TEST-features-pending.xml" should contain:
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite errors="0" failures="0" name="Pending step" skipped="2" tests="2" time="0.009">
-      <testcase classname="Pending step" name="Pending" time="0.009">
+      <testsuite errors="0" failures="0" name="Pending step" skipped="2" tests="2" time="0.05">
+      <testcase classname="Pending step" name="Pending" time="0.05">
         <skipped/>
         <system-out/>
         <system-err/>
       </testcase>
-      <testcase classname="Pending step" name="Undefined" time="0.009">
+      <testcase classname="Pending step" name="Undefined" time="0.05">
         <skipped/>
         <system-out/>
         <system-err/>
@@ -189,11 +189,11 @@ Feature: JUnit output formatter
       """
 
       """
-    And "tmp/TEST-features-pending.xml" with junit duration "0.000160" should contain
+    And the junit output file "tmp/TEST-features-pending.xml" should contain:
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite errors="0" failures="2" name="Pending step" skipped="0" tests="2" time="0.000160">
-      <testcase classname="Pending step" name="Pending" time="0.000160">
+      <testsuite errors="0" failures="2" name="Pending step" skipped="0" tests="2" time="0.05">
+      <testcase classname="Pending step" name="Pending" time="0.05">
         <failure message="pending Pending" type="pending">
           <![CDATA[Scenario: Pending
 
@@ -205,7 +205,7 @@ Feature: JUnit output formatter
         <system-out/>
         <system-err/>
       </testcase>
-      <testcase classname="Pending step" name="Undefined" time="0.000160">
+      <testcase classname="Pending step" name="Undefined" time="0.05">
         <failure message="undefined Undefined" type="undefined">
           <![CDATA[Scenario: Undefined
       
@@ -252,15 +252,15 @@ You *must* specify --out DIR for the junit formatter
       """
 
       """
-    And "tmp/TEST-features-scenario_outline.xml" with junit duration "0.005" should contain
+    And the junit output file "tmp/TEST-features-scenario_outline.xml" should contain:
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite errors="0" failures="1" name="Scenario outlines" skipped="0" tests="2" time="0.005">
-      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | passing |)" time="0.005">
+      <testsuite errors="0" failures="1" name="Scenario outlines" skipped="0" tests="2" time="0.05">
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | passing |)" time="0.05">
         <system-out/>
         <system-err/>
       </testcase>
-      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | failing |)" time="0.005">
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | failing |)" time="0.05">
         <failure message="failed Using scenario outlines (outline example : | failing |)" type="failed">
           <![CDATA[Scenario Outline: Using scenario outlines
       
