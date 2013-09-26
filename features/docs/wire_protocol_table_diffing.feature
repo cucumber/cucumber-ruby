@@ -5,8 +5,7 @@ Feature: Wire protocol table diffing
   I want to be able to ask for a table diff during a step definition invocation
 
   Background:
-    Given a standard Cucumber project directory structure
-    And a file named "features/wired.feature" with:
+    Given a file named "features/wired.feature" with:
       """
       Feature: Hello
         Scenario: Wired
@@ -20,6 +19,7 @@ Feature: Wire protocol table diffing
 
       """
 
+  @spawn
   Scenario: Invoke a step definition tries to diff the table and fails
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                                                                             |
@@ -28,9 +28,9 @@ Feature: Wire protocol table diffing
       | ["invoke",{"id":"1","args":[]}]                      | ["diff",[[["a","b"],["c","d"]],[["x","y"],["z","z"]]]]                                               |
       | ["diff_failed"]                                      | ["fail",{"message":"Not same", "exception":"DifferentException", "backtrace":["a.cs:12","b.cs:34"]}] |
       | ["end_scenario"]                                     | ["success"]                                                                                          |
-    When I run cucumber -f progress --backtrace
-    Then STDERR should have warning message
-    And it should fail with
+    When I run `cucumber -f progress --backtrace`
+    Then the stderr should contain a warning message
+    And it should fail with:
       """
       F
 
@@ -57,8 +57,8 @@ Feature: Wire protocol table diffing
       | ["invoke",{"id":"1","args":[]}]                      | ["diff",[[["a"],["b"]],[["a"],["b"]]]] |
       | ["diff_ok"]                                          | ["success"]                            |
       | ["end_scenario"]                                     | ["success"]                            |
-    When I run cucumber -f progress
-    And it should pass with
+    When I run `cucumber -f progress`
+    Then it should pass with:
       """
       .
 
@@ -67,6 +67,7 @@ Feature: Wire protocol table diffing
 
       """
 
+  @spawn
   Scenario: Invoke a step definition which successfully diffs a table but then fails
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                                      |
@@ -75,8 +76,8 @@ Feature: Wire protocol table diffing
       | ["invoke",{"id":"1","args":[]}]                      | ["diff",[[["a"],["b"]],[["a"],["b"]]]]                        |
       | ["diff_ok"]                                          | ["fail",{"message":"I wanted things to be different for us"}] |
       | ["end_scenario"]                                     | ["success"]                                                   |
-    When I run cucumber -f progress
-    And it should fail with
+    When I run `cucumber -f progress`
+    Then it should fail with:
       """
       F
 
@@ -93,6 +94,7 @@ Feature: Wire protocol table diffing
 
       """
 
+  @spawn
   Scenario: Invoke a step definition which asks for an immediate diff that fails
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                            |
@@ -100,8 +102,8 @@ Feature: Wire protocol table diffing
       | ["begin_scenario"]                                   | ["success"]                         |
       | ["invoke",{"id":"1","args":[]}]                      | ["diff!",[[["a"]],[["b"]]]]         |
       | ["end_scenario"]                                     | ["success"]                         |
-    When I run cucumber -f progress
-    And it should fail with
+    When I run `cucumber -f progress`
+    And it should fail with:
       """
       F
 

@@ -1,4 +1,4 @@
-## [In git master](https://github.com/cucumber/cucumber/compare/v1.3.2...master)
+## [In git master](https://github.com/cucumber/cucumber/compare/v1.3.8...master)
 
 ### Features removed
 
@@ -9,6 +9,9 @@
 
 ### API Changes
 
+* String arguments passed to step definitions are immutable (frozen). This is
+  to prevent garbled output in case an argument gets modified. If you need to
+  modify an argument, `dup` it first. (Aslak Hellesøy)
 * Formatter API changed for `before_step_result` and `after_step_result`, now
   expects an Ast::StepResult. (Steve Tooke)
 

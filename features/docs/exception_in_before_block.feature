@@ -4,7 +4,6 @@ Feature: Exception in Before Block
   I want exceptions raised in Before blocks to be handled gracefully and reported by the formatters
 
   Background:
-    Given a standard Cucumber project directory structure
     And a file named "features/step_definitions/steps.rb" with:
       """
       Given(/^this step works$/) do; end
@@ -18,6 +17,7 @@ Feature: Exception in Before Block
       end
       """
 
+  @spawn
   Scenario: Handle Exception in standard scenario step and carry on
     Given a file named "features/naughty_step_in_scenario.feature" with:
       """
@@ -26,8 +26,8 @@ Feature: Exception in Before Block
         Scenario: Run a good step
           Given this step works
       """
-    When I run cucumber features
-    Then it should fail with
+    When I run `cucumber features`
+    Then it should fail with:
       """
       Feature: Sample
 
@@ -44,6 +44,7 @@ Feature: Exception in Before Block
 
       """
 
+  @spawn
   Scenario: Handle Exception in Before hook for Scenario with Background
     Given a file named "features/naughty_step_in_before.feature" with:
       """
@@ -55,8 +56,8 @@ Feature: Exception in Before Block
         Scenario: Run a good step
           Given this step works
       """
-    When I run cucumber features
-    Then it should fail with
+    When I run `cucumber features`
+    Then it should fail with:
       """
       Feature: Sample
       
@@ -84,8 +85,8 @@ Feature: Exception in Before Block
         Scenario: Run a good step
           Given this step works
       """
-    When I run cucumber features --format progress
-    Then it should fail with
+    When I run `cucumber features --format progress`
+    Then it should fail with:
       """
       F-
 

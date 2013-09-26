@@ -24,7 +24,7 @@ Feature: Table mapping
       }
       """
     When I run `cucumber features/f.feature`
-    Then the stderr should have warning message
+    Then the stderr should contain a warning message
     And it should pass with:
       """
       Feature: with table

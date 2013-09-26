@@ -99,6 +99,15 @@ module Cucumber
           should raise_error(Cucumber::ArityMismatchError)
       end
 
+      it "should not allow modification of args since it messes up pretty formatting" do
+        dsl.Given /My car is (.*)/ do |colour|
+          colour << "xxx"
+        end
+
+        lambda { run_step "My car is white" }.
+          should raise_error(RuntimeError, /can't modify frozen String/i)
+      end
+
       it "should allow puts" do
         user_interface.should_receive(:puts).with('wasup')
         dsl.Given /Loud/ do

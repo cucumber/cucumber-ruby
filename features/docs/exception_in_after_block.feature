@@ -4,7 +4,6 @@ Feature: Exception in After Block
   I want exceptions raised in After blocks to be handled gracefully and reported by the formatters
 
   Background:
-    Given a standard Cucumber project directory structure
     And a file named "features/step_definitions/steps.rb" with:
       """
       Given /^this step does something naughty$/ do x=1
@@ -23,6 +22,7 @@ Feature: Exception in After Block
       end
       """
 
+  @spawn
   Scenario: Handle Exception in standard scenario step and carry on
     Given a file named "features/naughty_step_in_scenario.feature" with:
       """
@@ -34,8 +34,8 @@ Feature: Exception in After Block
         Scenario: Success
           Given this step works
       """
-    When I run cucumber features
-    Then it should fail with
+    When I run `cucumber features`
+    Then it should fail with:
       """
       Feature: Sample
 
@@ -55,6 +55,7 @@ Feature: Exception in After Block
 
       """
 
+  @spawn
   Scenario: Handle Exception in scenario outline table row and carry on
     Given a file named "features/naughty_step_in_scenario_outline.feature" with:
       """
@@ -73,8 +74,8 @@ Feature: Exception in After Block
           Given this step works
 
       """
-    When I run cucumber features
-    Then it should fail with
+    When I run `cucumber features`
+    Then it should fail with:
       """
       Feature: Sample
 
@@ -111,8 +112,8 @@ Feature: Exception in After Block
         Scenario: Success
           Given this step works
       """
-    When I run cucumber features --format progress
-    Then it should fail with
+    When I run `cucumber features --format progress`
+    Then it should fail with:
       """
       .F.
 

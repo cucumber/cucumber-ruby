@@ -25,7 +25,7 @@ When /^I run the feature with the (\w+) formatter$/ do |formatter|
   run_feature features.first, formatter
 end
 
-Then /^the stderr should have warning message$/ do
+Then /^the stderr should contain a warning message$/ do
   all_stderr.should include("[warning]")
 end
 
