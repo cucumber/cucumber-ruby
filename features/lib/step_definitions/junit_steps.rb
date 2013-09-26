@@ -4,6 +4,10 @@ Then(/^"(.*?)" with junit duration "(.*?)" should contain$/) do |actual_file, du
   actual.should == text
 end
 
-def replace_junit_duration(s, replacement)
-  s.gsub(/\d+\.\d\d+/m, replacement)
+module JUnitHelper
+  def replace_junit_duration(s, replacement)
+    s.gsub(/\d+\.\d\d+/m, replacement)
+  end
 end
+
+World(JUnitHelper)
