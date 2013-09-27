@@ -123,8 +123,8 @@ module Cucumber
       FeaturePrinter = Printer.new(:formatter, :runtime, :feature) do
         before do
           formatter.before_feature(feature)
-          feature.comment.accept CommentPrinter.new(formatter)
-          feature.tags.accept TagPrinter.new(formatter)
+          CommentsPrinter.new(formatter).comments(feature.comments)
+          TagPrinter.new(formatter).tags(feature.tags)
           formatter.feature_name feature.keyword, indented(feature.name) # TODO: change the core's new AST to return name and description separately instead of this lumped-together field
         end
 
@@ -190,7 +190,7 @@ module Cucumber
       ScenarioPrinter = Printer.new(:formatter, :runtime, :node) do
         before do
           formatter.before_feature_element(node)
-          node.tags.accept TagPrinter.new(formatter)
+          TagPrinter.new(formatter).tags(node.tags)
           formatter.scenario_name node.keyword, node.name, node.location.to_s, indent.of(node)
         end
 
@@ -376,7 +376,7 @@ module Cucumber
       ScenarioOutlinePrinter = Printer.new(:formatter, :runtime, :node) do
         before do
           formatter.before_feature_element(node)
-          node.tags.accept TagPrinter.new(formatter)
+          TagPrinter.new(formatter).tags(node.tags)
           formatter.scenario_name node.keyword, node.name, node.location.to_s, indent.of(node)
           OutlineStepsPrinter.new(formatter, runtime, indent).print(node)
         end
@@ -589,21 +589,21 @@ module Cucumber
       end
 
       TagPrinter = Struct.new(:formatter) do
-        def visit_tags(tags)
+        def tags(tags)
           formatter.before_tags tags
-          tags.tags.each do |tag|
+          tags.each do |tag|
             formatter.tag_name tag.name
           end
           formatter.after_tags tags
         end
       end
 
-      CommentPrinter = Struct.new(:formatter) do
-        def visit_comment(comment)
-          return if comment.empty?
-          formatter.before_comment comment
-          comment.to_s.strip.split("\n").each do |line|
-            formatter.comment_line(line.strip)
+      CommentsPrinter = Struct.new(:formatter) do
+        def comments(comments)
+          return if comments.empty?
+          formatter.before_comment comments
+          comments.each do |comment|
+            formatter.comment_line comment.to_s.strip
           end
         end
       end
