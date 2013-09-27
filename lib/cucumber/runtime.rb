@@ -219,7 +219,7 @@ module Cucumber
 
     def filters
       [
-        [Cucumber::Core::Test::TagFilter, ['~@jruby']],
+        [Cucumber::Core::Test::TagFilter, ['~@jruby']], # TODO: read this from config
         [Quit, []],
       ]
     end
