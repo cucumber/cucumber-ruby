@@ -175,21 +175,25 @@ module Cucumber
     require 'cucumber/core/gherkin/document'
     def features
       @features ||= @configuration.feature_files.map do |path|
-        source = NormalisedEncoding.new(path).to_s
+        source = NormalisedEncodingFile.read(path)
         Cucumber::Core::Gherkin::Document.new(path, source)
       end
     end
 
-    class NormalisedEncoding
+    class NormalisedEncodingFile
       COMMENT_OR_EMPTY_LINE_PATTERN = /^\s*#|^\s*$/ #:nodoc:
       ENCODING_PATTERN = /^\s*#\s*encoding\s*:\s*([^\s]+)/ #:nodoc:
+
+      def self.read(path)
+        new(path).read
+      end
 
       def initialize(path)
         @file = File.new(path)
         set_encoding
       end
 
-      def to_s
+      def read
         @file.read.encode("UTF-8")
       end
 
