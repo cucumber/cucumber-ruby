@@ -30,7 +30,7 @@ module Cucumber
       end
 
       def after_test_case(test_case, result)
-        record_test_case_result(result)
+        record_test_case_result(test_case, result)
       end
 
       def after_suite
@@ -43,8 +43,8 @@ module Cucumber
         @printer ||= FeaturesPrinter.new(formatter, runtime).before
       end
 
-      def record_test_case_result(result)
-        scenario = LegacyResultBuilder.new(result).scenario
+      def record_test_case_result(test_case, result)
+        scenario = LegacyResultBuilder.new(result).scenario(test_case.name, test_case.location.to_s)
         runtime.record_result(scenario)
         yield scenario if block_given?
       end
@@ -640,11 +640,11 @@ module Cucumber
           Ast::StepResult.new(:keyword, step_match, :multiline_arg, @status, @exception, :source_indent, background, :file_colon_line)
         end
 
-        def scenario
-          LegacyScenario.new(@status)
+        def scenario(name, location)
+          LegacyScenario.new(@status, name, location)
         end
 
-        LegacyScenario = Struct.new(:status)
+        LegacyScenario = Struct.new(:status, :name, :location)
       end
 
     end
