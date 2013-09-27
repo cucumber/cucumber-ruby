@@ -227,18 +227,14 @@ module Cucumber
           end
           opts.on_tail("--init", "Should create an empty structure for your code",
             "Creating an empty structure for BDD") do
-            unless File.directory?("features") || File.exists?("cucumber.yml")
-              require 'FileUtils' unless defined?(FileUtils)
-              FileUtils.mkdir_p 'features/step_definitions'
-              FileUtils.mkdir_p 'features/support'
-              FileUtils.touch 'cucumber.yml'
-              FileUtils.touch 'features/support/env.rb'
-              @out_stream.puts "Cucumber has built an empty folder structure"
-              Kernel.exit(0)
-            else
-              @out_stream.puts "'features' directory or 'cucumber.yml' exists, so no structure has been build"
-              Kernel.exit(1)
-            end
+              unless File.directory?("features") || File.exists?("cucumber.yml")
+                Cucumber::SkeletonCreator.run
+                @out_stream.puts "Cucumber has built an empty folder structure"
+                Kernel.exit(0)
+              else
+                @out_stream.puts "'features' directory or 'cucumber.yml' exists, so no structure has been build"
+                Kernel.exit(1)
+              end
           end
           opts.on_tail("--version", "Show version.") do
             @out_stream.puts Cucumber::VERSION

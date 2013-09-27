@@ -7,6 +7,7 @@ require 'cucumber/parser'
 require 'cucumber/runtime'
 require 'cucumber/cli/main'
 require 'cucumber/broadcaster'
+require 'cucumber/skeleton_creator'
 require 'cucumber/step_definitions'
 require 'cucumber/term/ansicolor'
 
@@ -26,3 +27,4 @@ module Cucumber
     end
   end
 end
+
