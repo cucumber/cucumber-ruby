@@ -41,7 +41,7 @@ module Cucumber
       fire_after_configuration_hook
       self.visitor = report
 
-      execute features, mappings, report, [[Cucumber::Core::Test::TagFilter, ['~@jruby']]]
+      execute features, mappings, report, filters
       report.after_suite
     end
 
@@ -215,6 +215,25 @@ module Cucumber
     require 'cucumber/formatter/report_adapter'
     def report
       @report ||= Cucumber::Formatter::ReportAdapter.new(self, @configuration.formatters(self).first)
+    end
+
+    def filters
+      [
+        [Cucumber::Core::Test::TagFilter, ['~@jruby']],
+        [Quit, []],
+      ]
+    end
+
+    class Quit
+      def initialize(receiver)
+        @receiver = receiver
+      end
+
+      def test_case(test_case)
+        unless Cucumber.wants_to_quit
+          test_case.describe_to @receiver
+        end
+      end
     end
 
     def load_step_definitions
