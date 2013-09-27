@@ -9,6 +9,21 @@ require 'cucumber/language_support/language_methods'
 require 'cucumber/formatter/duration'
 
 module Cucumber
+  class FileException < Exception
+    attr :path
+
+    def initialize(original_exception, path)
+      super(original_exception)
+      @path = path
+    end
+  end
+
+  class FileNotFoundException < FileException
+  end
+
+  class FeatureFolderNotFoundException < FileException
+  end
+
   # This is the meaty part of Cucumber that ties everything together.
   require 'cucumber/core'
   class NewRuntime
@@ -189,8 +204,14 @@ module Cucumber
       end
 
       def initialize(path)
-        @file = File.new(path)
-        set_encoding
+        begin
+          @file = File.new(path)
+          set_encoding
+        rescue Errno::EACCES => e
+          raise FileNotFoundException.new(e, File.expand_path(path))
+        rescue Errno::ENOENT => e
+          raise FeatureFolderNotFoundException.new(e, path)
+        end
       end
 
       def read
