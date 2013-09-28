@@ -6,21 +6,10 @@ Feature: JUnit output formatter
   Background:
     Given a file named "features/step_definitions/steps.rb" with:
       """
-      Given /a passing scenario/ do
-	#does nothing
-      end
-
-      Given /a failing scenario/ do
-	fail
-      end
-
-      Given /a pending step/ do
-	pending
-      end
-
-      Given /a skipping scenario/ do
-	skipping
-      end
+      Given(/a passing scenario/)  {}
+      Given(/a failing scenario/)  { fail }
+      Given(/a pending step/)      { pending }
+      Given(/a skipping scenario/) { skipping }
       """
     And a file named "features/one_passing_one_failing.feature" with:
       """
@@ -98,7 +87,7 @@ Feature: JUnit output formatter
       Message:
 	]]>
           <![CDATA[ (RuntimeError)
-	./features/step_definitions/steps.rb:6:in `/a failing scenario/'
+	./features/step_definitions/steps.rb:2:in `/a failing scenario/'
 	features/one_passing_one_failing.feature:7:in `Given a failing scenario']]>
         </failure>
         <system-out/>
@@ -137,7 +126,7 @@ Feature: JUnit output formatter
       Message:
 	]]>
           <![CDATA[ (RuntimeError)
-	./features/step_definitions/steps.rb:6:in `/a failing scenario/'
+	./features/step_definitions/steps.rb:2:in `/a failing scenario/'
 	features/some_subdirectory/one_passing_one_failing.feature:7:in `Given a failing scenario']]>
         </failure>
         <system-out/>
@@ -199,7 +188,7 @@ Feature: JUnit output formatter
 
       ]]>
           <![CDATA[TODO (Cucumber::Pending)
-      ./features/step_definitions/steps.rb:10:in `/a pending step/'
+      ./features/step_definitions/steps.rb:3:in `/a pending step/'
       features/pending.feature:4:in `Given a pending step']]>
         </failure>
         <system-out/>
@@ -269,7 +258,7 @@ You *must* specify --out DIR for the junit formatter
       Message:
       ]]>
           <![CDATA[ (RuntimeError)
-      ./features/step_definitions/steps.rb:6:in `/a failing scenario/'
+      ./features/step_definitions/steps.rb:2:in `/a failing scenario/'
       features/scenario_outline.feature:4:in `Given a <type> scenario']]>
         </failure>
         <system-out/>
