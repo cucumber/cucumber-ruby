@@ -8,7 +8,7 @@ Feature: Run specific scenarios
       """
       Given(/failing/) { fail }
       Given(/passing/) { }
-      Given(/table/) { |t| }
+      Given(/table/)   {|t| }
       """
 
   Scenario: Two scenarios, run just one of them

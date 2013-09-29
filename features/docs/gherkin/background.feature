@@ -164,8 +164,7 @@ Feature: Background
         @cukes = cukes
       end
 
-      Given(/^passing without a table$/) do
-      end
+      Given(/^passing without a table$/) { }
 
       Given /^failing without a table$/ do x=1
         flunker
@@ -297,7 +296,7 @@ Feature: Background
         Given failing without a table
           FAIL (RuntimeError)
           ./features/step_definitions/steps.rb:2:in `flunker'
-          ./features/step_definitions/steps.rb:14:in `/^failing without a table$/'
+          ./features/step_definitions/steps.rb:13:in `/^failing without a table$/'
           features/failing_background.feature:4:in `Given failing without a table'
         And '10' cukes
 
@@ -327,7 +326,7 @@ Feature: Background
         Given failing without a table
           FAIL (RuntimeError)
           ./features/step_definitions/steps.rb:2:in `flunker'
-          ./features/step_definitions/steps.rb:14:in `/^failing without a table$/'
+          ./features/step_definitions/steps.rb:13:in `/^failing without a table$/'
           features/scenario_outline_failing_background.feature:4:in `Given failing without a table'
 
       Scenario Outline: failing background
@@ -392,7 +391,7 @@ Feature: Background
         And '10' global cukes
           FAIL (RuntimeError)
           ./features/step_definitions/steps.rb:2:in `flunker'
-          ./features/step_definitions/steps.rb:19:in `/^'(.+)' global cukes$/'
+          ./features/step_definitions/steps.rb:18:in `/^'(.+)' global cukes$/'
           features/failing_background_after_success.feature:5:in `And '10' global cukes'
         Then I should have '10' global cukes
 

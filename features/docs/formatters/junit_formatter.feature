@@ -6,7 +6,7 @@ Feature: JUnit output formatter
   Background:
     Given a file named "features/step_definitions/steps.rb" with:
       """
-      Given(/a passing scenario/)  {}
+      Given(/a passing scenario/)  { }
       Given(/a failing scenario/)  { fail }
       Given(/a pending step/)      { pending }
       Given(/a skipping scenario/) { skipping }

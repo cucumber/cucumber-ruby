@@ -11,8 +11,8 @@ Feature: List step defs as json
   Scenario: Two Ruby step definitions, in the same file
     Given a file named "features/step_definitions/foo_steps.rb" with:
       """
-      Given(/foo/i) {}
-      Given(/b.r/xm) {}
+      Given(/foo/i)  { }
+      Given(/b.r/xm) { }
       """
     When I run the following Ruby code:
       """
@@ -31,8 +31,8 @@ Feature: List step defs as json
   Scenario: Non-default directory structure
     Given a file named "my_weird/place/foo_steps.rb" with:
       """
-      Given(/foo/) {}
-      Given(/b.r/x) {}
+      Given(/foo/)  { }
+      Given(/b.r/x) { }
       """
     When I run the following Ruby code:
       """

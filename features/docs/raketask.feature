@@ -20,12 +20,8 @@ Feature: Raketask
       """
     Given a file named "features/step_definitions/steps.rb" with:
       """
-      Given(/^passing$/) do
-      end
-
-      Given /^failing$/ do
-        raise "FAIL"
-      end
+      Given(/^passing$/) { }
+      Given(/^failing$/) { raise "FAIL" }
       """
     Given a file named "Rakefile" with:
       """

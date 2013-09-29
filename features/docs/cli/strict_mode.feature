@@ -29,7 +29,7 @@ Feature: Strict mode
   Scenario: Succeed with --strict
     Given a file named "features/step_definitions/steps.rb" with:
     """
-      Given(/^a step$/) do end
+      Given(/^a step$/) { }
     """
     When I run `cucumber -q features/missing.feature --strict`
     Then it should pass with:

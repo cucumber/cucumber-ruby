@@ -3,7 +3,7 @@ Feature: Tagged hooks
   Background:
     Given a file named "features/step_definitions/steps.rb" with:
       """
-      Given /^this step works$/ do; end
+      Given(/^this step works$/) { }
       """
     And a file named "features/support/hooks.rb" with:
       """

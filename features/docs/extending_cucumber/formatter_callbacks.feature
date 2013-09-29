@@ -17,10 +17,8 @@ Feature: Formatter Callback
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given /^.+ step works$/ do
-      end
-      Then /^that|there$/ do
-      end
+      Given(/^.+ step works$/) { }
+      Then(/^that|there$/)     { }
       """
     When I run `cucumber features/f.feature --format debug`
     Then it should pass with exactly:

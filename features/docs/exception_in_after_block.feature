@@ -10,7 +10,7 @@ Feature: Exception in After Block
         @naughty = true
       end
 
-      Given(/^this step works$/) do; end
+      Given(/^this step works$/) { }
       """
     And a file named "features/support/env.rb" with:
       """

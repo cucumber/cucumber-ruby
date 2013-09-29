@@ -29,8 +29,7 @@ Feature: Pretty formatter - Printing messages
         fail
       end
 
-      Given /^this step works$/ do
-      end
+      Given(/^this step works$/) { }
 
       Given /^I puts the world$/ do
         puts(self)

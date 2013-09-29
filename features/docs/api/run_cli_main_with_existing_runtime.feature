@@ -9,7 +9,7 @@ Feature: Run Cli::Main with existing Runtime
     Scenario: Run a single feature
       Given a file named "features/step_definitions/success.rb" with:
         """
-        Given(/pass/) {}
+        Given(/pass/) { }
         """
       Given a file named "features/success.feature" with:
         """

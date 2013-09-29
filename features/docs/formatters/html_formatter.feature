@@ -40,12 +40,8 @@ Feature: HTML output formatter
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given /^this fails$/ do
-        fail 'This step should fail'
-      end
-      Given /^this hasn't been implemented yet$/ do
-        pending
-      end
+      Given(/^this fails$/)                       { fail }
+      Given(/^this hasn't been implemented yet$/) { pending }
       """
 
   Scenario: an scenario outline, one undefined step, one random example, expand flag on

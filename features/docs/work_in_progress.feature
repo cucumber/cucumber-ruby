@@ -37,16 +37,9 @@ Feature: Cucumber --work-in-progress switch
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given /^a failing step$/ do
-        raise "I fail"
-      end
-
-      Given /^a passing step$/ do
-      end
-
-      Given /^a pending step$/ do
-        pending
-      end
+      Given(/^a failing step$/) { raise "I fail" }
+      Given(/^a passing step$/) { }
+      Given(/^a pending step$/) { pending }
       """
 
   Scenario: Pass with Failing Scenarios
@@ -60,7 +53,7 @@ Feature: Cucumber --work-in-progress switch
         Scenario: Failing
           Given a failing step
             I fail (RuntimeError)
-            ./features/step_definitions/steps.rb:2:in `/^a failing step$/'
+            ./features/step_definitions/steps.rb:1:in `/^a failing step$/'
             features/wip.feature:4:in `Given a failing step'
       
       Failing Scenarios:
@@ -104,7 +97,7 @@ Feature: Cucumber --work-in-progress switch
         Scenario: Pending
           Given a pending step
             TODO (Cucumber::Pending)
-            ./features/step_definitions/steps.rb:9:in `/^a pending step$/'
+            ./features/step_definitions/steps.rb:3:in `/^a pending step$/'
             features/wip.feature:12:in `Given a pending step'
 
       1 scenario (1 pending)

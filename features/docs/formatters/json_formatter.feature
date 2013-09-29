@@ -18,17 +18,9 @@ Feature: JSON output formatter
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given /a passing step/ do
-        #does nothing
-      end
-
-      Given /a failing step/ do
-        fail
-      end
-
-      Given /a pending step/ do
-        pending
-      end
+      Given(/a passing step/) { }
+      Given(/a failing step/) { fail }
+      Given(/a pending step/) { pending }
 
       Given /^I add (\d+) and (\d+)$/ do |a,b|
         @result = a.to_i + b.to_i
@@ -38,13 +30,8 @@ Feature: JSON output formatter
         @result.should == c.to_i
       end
 
-      Then /^I should see/ do |string|
-
-      end
-
-      Given /^I pass a table argument/ do |table|
-
-      end
+      Then(/^I should see/)             {|string| }
+      Given(/^I pass a table argument/) {|table| }
 
       Given /^I embed a screenshot/ do
         File.open("screenshot.png", "w") { |file| file << "foo" }
@@ -128,11 +115,11 @@ Feature: JSON output formatter
                   "name": "a failing step",
                   "line": 10,
                   "match": {
-                    "location": "features/step_definitions/steps.rb:5"
+                    "location": "features/step_definitions/steps.rb:2"
                   },
                   "result": {
                     "status": "failed",
-                    "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:6:in `/a failing step/'\nfeatures/one_passing_one_failing.feature:10:in `Given a failing step'",
+                    "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:2:in `/a failing step/'\nfeatures/one_passing_one_failing.feature:10:in `Given a failing step'",
                     "duration": 1
                   }
                 }
@@ -211,11 +198,11 @@ Feature: JSON output formatter
                   "name": "a failing step",
                   "line": 10,
                   "match": {
-                    "location": "features/step_definitions/steps.rb:5"
+                    "location": "features/step_definitions/steps.rb:2"
                   },
                   "result": {
                     "status": "failed",
-                    "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:6:in `/a failing step/'\nfeatures/one_passing_one_failing.feature:10:in `Given a failing step'",
+                    "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:2:in `/a failing step/'\nfeatures/one_passing_one_failing.feature:10:in `Given a failing step'",
                     "duration": 1
                   }
                 }
@@ -322,7 +309,7 @@ Feature: JSON output formatter
                   }
                 ],
                 "match": {
-                  "location": "features/step_definitions/steps.rb:29"
+                  "location": "features/step_definitions/steps.rb:16"
                 },
                 "result": {
                   "status": "passed",
