@@ -99,6 +99,29 @@ Feature: Banana party
               @out.string.should include "4 steps (4 undefined)"
             end
 
+            context 'when the examples table header is wider than the rows' do
+              define_feature <<-FEATURE
+          Feature: Monkey Business
+
+            Scenario Outline: Types of monkey
+              Given there are <Types of monkey>
+
+              Examples:
+               | Types of monkey |
+               | Hominidae       |
+              FEATURE
+
+              it "outputs the scenario outline" do
+                lines = <<-OUTPUT
+              Examples:
+               | Types of monkey |
+               | Hominidae       |
+                OUTPUT
+                lines.split("\n").each do |line|
+                  @out.string.should include line.strip
+                end
+              end
+            end
           end
 
           # To ensure https://rspec.lighthouseapp.com/projects/16211/tickets/475 remains fixed.

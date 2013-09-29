@@ -514,16 +514,22 @@ module Cucumber
              include ::Gherkin::Formatter::Escaping
 
              def examples_table(table, &descend)
+               @result = char_length_of(table.header.values[index])
                descend.call
              end
 
              def examples_table_row(row, &descend)
-               width = escape_cell(row.values[index]).unpack('U*').length
+               width = char_length_of(row.values[index])
                @result = width if width > result
              end
 
              def result
                @result ||= 0
+             end
+
+             private
+             def char_length_of(cell)
+               escape_cell(cell).unpack('U*').length
              end
            end
         end
