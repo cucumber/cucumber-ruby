@@ -225,6 +225,17 @@ module Cucumber
           opts.on("--dotcucumber DIR", "Write metadata to DIR") do |dir|
             @options[:dotcucumber] = dir
           end
+          opts.on_tail("--init", "Should create an empty structure for your code",
+            "Creating an empty structure for BDD") do
+              unless File.directory?("features") || File.exists?("cucumber.yml")
+                Cucumber::SkeletonCreator.run
+                @out_stream.puts "Cucumber has built an empty folder structure"
+                Kernel.exit(0)
+              else
+                @out_stream.puts "'features' directory or 'cucumber.yml' exists, so no structure has been build"
+                Kernel.exit(1)
+              end
+          end
           opts.on_tail("--version", "Show version.") do
             @out_stream.puts Cucumber::VERSION
             Kernel.exit(0)
