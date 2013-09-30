@@ -405,7 +405,7 @@ Feature: Background
     """
 
   Scenario: background with multline args
-    Given a file named "features/step_definitions/multiline_steps.rb" with:
+    Given a file named "features/step_definitions/steps.rb" with:
       """
       Given /^table$/ do |table| x=1
         @table = table

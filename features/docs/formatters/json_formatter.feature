@@ -226,7 +226,7 @@ Feature: JSON output formatter
             a string
             \"\"\"
       """
-    And a file named "features/step_definitions/doc_string_steps.rb" with:
+    And a file named "features/step_definitions/steps.rb" with:
       """
       Then /I should fail with/ do |s|
         raise s
@@ -262,11 +262,11 @@ Feature: JSON output formatter
                     "line": 5
                   },
                   "match": {
-                    "location": "features/step_definitions/doc_string_steps.rb:1"
+                    "location": "features/step_definitions/steps.rb:1"
                   },
                   "result": {
                     "status": "failed",
-                    "error_message": "a string (RuntimeError)\n./features/step_definitions/doc_string_steps.rb:2:in `/I should fail with/'\nfeatures/doc_string.feature:4:in `Then I should fail with'",
+                    "error_message": "a string (RuntimeError)\n./features/step_definitions/steps.rb:2:in `/I should fail with/'\nfeatures/doc_string.feature:4:in `Then I should fail with'",
                     "duration": 1
                   }
                 }

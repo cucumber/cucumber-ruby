@@ -118,8 +118,8 @@ Feature: Nested Steps
     Then it should fail with:
       """
       error (RuntimeError)
-      ./features/step_definitions/test_steps2.rb:5:in `/I have a couple turtles/'
-      ./features/step_definitions/test_steps2.rb:2:in `/two turtles/'
+      ./features/step_definitions/steps2.rb:5:in `/I have a couple turtles/'
+      ./features/step_definitions/steps2.rb:2:in `/two turtles/'
       features/test_feature_1.feature:3:in `Given two turtles'
 
       Failing Scenarios:

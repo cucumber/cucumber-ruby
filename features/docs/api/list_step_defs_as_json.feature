@@ -9,7 +9,7 @@ Feature: List step defs as json
     Given a directory named "features"
 
   Scenario: Two Ruby step definitions, in the same file
-    Given a file named "features/step_definitions/foo_steps.rb" with:
+    Given a file named "features/step_definitions/steps.rb" with:
       """
       Given(/foo/i)  { }
       Given(/b.r/xm) { }
@@ -29,7 +29,7 @@ Feature: List step defs as json
       """
 
   Scenario: Non-default directory structure
-    Given a file named "my_weird/place/foo_steps.rb" with:
+    Given a file named "my_weird/place/steps.rb" with:
       """
       Given(/foo/)  { }
       Given(/b.r/x) { }

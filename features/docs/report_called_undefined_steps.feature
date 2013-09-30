@@ -14,7 +14,7 @@ Feature: Cucumber command line
         Scenario: Call via another
           Given call step "a step definition that calls an undefined step"
       """
-    And a file named "features/step_definitions/sample_steps.rb" with:
+    And a file named "features/step_definitions/steps.rb" with:
       """
       Given /^a step definition that calls an undefined step$/ do
         step 'this does not exist'
@@ -30,16 +30,16 @@ Feature: Cucumber command line
       Feature: Calling undefined step
 
         Scenario: Call directly                                # features/call_undefined_step_from_step_def.feature:3
-          Given a step definition that calls an undefined step # features/step_definitions/sample_steps.rb:1
+          Given a step definition that calls an undefined step # features/step_definitions/steps.rb:1
             Undefined step: "this does not exist" (Cucumber::Undefined)
-            ./features/step_definitions/sample_steps.rb:2:in `/^a step definition that calls an undefined step$/'
+            ./features/step_definitions/steps.rb:2:in `/^a step definition that calls an undefined step$/'
             features/call_undefined_step_from_step_def.feature:4:in `Given a step definition that calls an undefined step'
 
         Scenario: Call via another                                         # features/call_undefined_step_from_step_def.feature:6
-          Given call step "a step definition that calls an undefined step" # features/step_definitions/sample_steps.rb:5
+          Given call step "a step definition that calls an undefined step" # features/step_definitions/steps.rb:5
             Undefined step: "this does not exist" (Cucumber::Undefined)
-            ./features/step_definitions/sample_steps.rb:2:in `/^a step definition that calls an undefined step$/'
-            ./features/step_definitions/sample_steps.rb:6:in `/^call step "(.*)"$/'
+            ./features/step_definitions/steps.rb:2:in `/^a step definition that calls an undefined step$/'
+            ./features/step_definitions/steps.rb:6:in `/^call step "(.*)"$/'
             features/call_undefined_step_from_step_def.feature:7:in `Given call step "a step definition that calls an undefined step"'
 
       2 scenarios (2 undefined)
