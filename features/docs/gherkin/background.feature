@@ -97,7 +97,7 @@ Feature: Background
       Feature: Pending background sample
 
         Background:
-          Given pending
+          Given this step is pending
 
         Scenario: pending background
           Then I should have '10' cukes
@@ -341,6 +341,7 @@ Feature: Background
     
     """
 
+  @spawn
   Scenario: run a feature with a background that is pending
     When I run `cucumber -q features/pending_background.feature`
     Then it should pass with exactly:
@@ -348,7 +349,10 @@ Feature: Background
     Feature: Pending background sample
 
       Background: 
-        Given pending
+        Given this step is pending
+          TODO (Cucumber::Pending)
+          ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
+          features/pending_background.feature:4:in `Given this step is pending'
 
       Scenario: pending background
         Then I should have '10' cukes
@@ -356,8 +360,8 @@ Feature: Background
       Scenario: another pending background
         Then I should have '10' cukes
 
-    2 scenarios (2 undefined)
-    4 steps (2 skipped, 2 undefined)
+    2 scenarios (1 skipped, 1 pending)
+    4 steps (3 skipped, 1 pending)
     0m0.012s
     
     """
