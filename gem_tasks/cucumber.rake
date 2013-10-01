@@ -20,9 +20,4 @@ Cucumber::Rake::Task.new(:features) do |t|
   t.set_profile_for_current_ruby
 end
 
-Cucumber::Rake::Task.new(:legacy_features) do |t|
-  t.fork = true
-  t.profile = :legacy
-end
-
-task :cucumber => [:features, :legacy_features]
+task :cucumber => :features
