@@ -5,10 +5,6 @@ Feature: Run specific scenarios
 
   Background:
     Given the standard step definitions
-    Given a file named "features/step_definitions/table_steps.rb" with:
-      """
-      Given(/table/)   {|t| }
-      """
 
   Scenario: Two scenarios, run just one of them
     Given a file named "features/test.feature" with:
@@ -89,7 +85,7 @@ Feature: Run specific scenarios
       """
       Feature: Sample
         Scenario: Passing
-          Given a table
+          Given this step is a table step
             | a | b |
             | c | d |
 
@@ -100,7 +96,7 @@ Feature: Run specific scenarios
       Feature: Sample
 
         Scenario: Passing
-          Given a table
+          Given this step is a table step
             | a | b |
             | c | d |
 
