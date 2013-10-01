@@ -1,10 +1,7 @@
 Feature: Tagged hooks
 
   Background:
-    Given a file named "features/step_definitions/steps.rb" with:
-      """
-      Given(/^this step works$/) { }
-      """
+    Given the standard step definitions
     And a file named "features/support/hooks.rb" with:
       """
       Before('~@no-boom') do 
@@ -15,11 +12,11 @@ Feature: Tagged hooks
       """
       Feature: With and without hooks
         Scenario: using hook
-          Given this step works
+          Given this step passes
 
         @no-boom
         Scenario: omitting hook
-          Given this step works
+          Given this step passes
       """
   @spawn
   Scenario: omit tagged hook
@@ -28,10 +25,10 @@ Feature: Tagged hooks
       """
       Feature: With and without hooks
       
-        Scenario: using hook    # features/f.feature:2
+        Scenario: using hook     # features/f.feature:2
         boom (RuntimeError)
         ./features/support/hooks.rb:2:in `Before'
-          Given this step works # features/step_definitions/steps.rb:1
+          Given this step passes # features/step_definitions/steps.rb:1
       
       Failing Scenarios:
       cucumber features/f.feature:2 # Scenario: using hook
@@ -48,8 +45,8 @@ Feature: Tagged hooks
         Feature: With and without hooks
 
           @no-boom
-          Scenario: omitting hook # features/f.feature:6
-            Given this step works # features/step_definitions/steps.rb:1
+          Scenario: omitting hook  # features/f.feature:6
+            Given this step passes # features/step_definitions/steps.rb:1
 
         1 scenario (1 passed)
         1 step (1 passed)

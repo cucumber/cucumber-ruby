@@ -6,7 +6,7 @@ Feature: Pretty output formatter
       Feature:
 
         Scenario Outline:
-          Given an undefined step
+          Given this step is undefined
 
         Examples:
           |foo|

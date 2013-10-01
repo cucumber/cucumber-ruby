@@ -12,7 +12,7 @@ Feature: Profiles
       """
       Feature: Sample
         Scenario: this is a test
-          Given I am just testing stuff
+          Given this step raises an error
       """
     And an empty file named "features/support/env.rb"
     And an empty file named "features/support/super_env.rb"
@@ -107,10 +107,7 @@ Feature: Profiles
       """
 
   Scenario Outline: Showing profiles when listing failing scenarios
-    Given a file named "features/step_definitions/steps.rb" with:
-      """
-      Given(/^I am just testing stuff$/) { raise 'BANG' }
-      """
+    Given the standard step definitions
     When I run `cucumber -q -p super -p default -f <format> features/sample.feature --require features/step_definitions/steps.rb`
     Then it should fail with:
        """

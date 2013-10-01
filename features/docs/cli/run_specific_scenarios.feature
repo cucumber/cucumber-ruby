@@ -4,10 +4,9 @@ Feature: Run specific scenarios
   or you can pass in a file with a list of scenarios using @-notation.
 
   Background:
-    Given a file named "features/step_definitions/steps.rb" with:
+    Given the standard step definitions
+    Given a file named "features/step_definitions/table_steps.rb" with:
       """
-      Given(/failing/) { fail }
-      Given(/passing/) { }
       Given(/table/)   {|t| }
       """
 
@@ -16,10 +15,10 @@ Feature: Run specific scenarios
       """
       Feature: 
         Scenario:
-          Given this is undefined
+          Given this step is undefined
 
         Scenario: Hit
-          Given passing
+          Given this step passes
       """
     When I run `cucumber features/test.feature:5 -f progress`
     Then it should pass with:
@@ -32,15 +31,15 @@ Feature: Run specific scenarios
       """
       Feature:
         Scenario Outline:
-          Given this <something>
+          Given this step <something>
 
           Examples:
             | something    |
             | is undefined |
-            | failing      |
+            | fails        |
 
         Scenario: Miss
-          Given passing
+          Given this step passes
       """
     When I run `cucumber features/test.feature:8 -f progress`
     Then it should fail with:
@@ -56,11 +55,11 @@ Feature: Run specific scenarios
 
         @two @three
         Scenario: Passing
-          Given passing
+          Given this step passes
 
         @four
         Scenario: Failing
-          Given failing
+          Given this step fails
       """
     When I run `cucumber -q features/test.feature:3:8`
     Then it should fail with:
@@ -69,14 +68,14 @@ Feature: Run specific scenarios
 
         @two @three
         Scenario: Passing
-          Given passing
+          Given this step passes
 
         @four
         Scenario: Failing
-          Given failing
+          Given this step fails
              (RuntimeError)
-            ./features/step_definitions/steps.rb:1:in `/failing/'
-            features/test.feature:9:in `Given failing'
+            ./features/step_definitions/steps.rb:4:in `/^this step fails$/'
+            features/test.feature:9:in `Given this step fails'
 
       Failing Scenarios:
       cucumber features/test.feature:8
@@ -115,7 +114,7 @@ Feature: Run specific scenarios
       """
       Feature: Sample
         Scenario: Passing
-          Given passing
+          Given this step passes
       """
     And a file named "list-of-features.txt" with:
       """
@@ -127,7 +126,7 @@ Feature: Run specific scenarios
       Feature: Sample
 
         Scenario: Passing
-          Given passing
+          Given this step passes
 
       1 scenario (1 passed)
       1 step (1 passed)
