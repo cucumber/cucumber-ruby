@@ -7,6 +7,7 @@ require 'cucumber/configuration'
 require 'cucumber/load_path'
 require 'cucumber/language_support/language_methods'
 require 'cucumber/formatter/duration'
+require 'cucumber/file_specs'
 
 module Cucumber
   class FileException < Exception
@@ -189,10 +190,18 @@ module Cucumber
 
     require 'cucumber/core/gherkin/document'
     def features
-      @features ||= @configuration.feature_files.map do |path|
+      @features ||= feature_files.map do |path|
         source = NormalisedEncodingFile.read(path)
         Cucumber::Core::Gherkin::Document.new(path, source)
       end
+    end
+
+    def feature_files
+      filespecs.files
+    end
+
+    def filespecs
+      @filespecs ||= FileSpecs.new(@configuration.feature_files)
     end
 
     class NormalisedEncodingFile
@@ -245,8 +254,22 @@ module Cucumber
     def filters
       [
         [Cucumber::Core::Test::TagFilter, ['~@jruby']], # TODO: read this from config
+        [LocationFilter, [filespecs.locations]],
         [Quit, []],
       ]
+    end
+
+    class LocationFilter
+      def initialize(locations, receiver)
+        @receiver = receiver
+        @locations = locations
+      end
+
+      def test_case(test_case)
+        if test_case.match_locations?(@locations)
+          test_case.describe_to @receiver
+        end
+      end
     end
 
     class Quit

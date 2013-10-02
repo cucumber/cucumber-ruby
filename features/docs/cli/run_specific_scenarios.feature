@@ -55,34 +55,18 @@ Feature: Run specific scenarios
       Feature: Sample
 
         @two @three
-        Scenario: Passing
+        Scenario:
           Given passing
 
         @four
-        Scenario: Failing
-          Given failing
+        Scenario:
+          Given passing
       """
     When I run `cucumber -q features/test.feature:3:8`
-    Then it should fail with:
+    Then it should pass with:
       """
-      Feature: Sample
-
-        @two @three
-        Scenario: Passing
-          Given passing
-
-        @four
-        Scenario: Failing
-          Given failing
-             (RuntimeError)
-            ./features/step_definitions/steps.rb:1:in `/failing/'
-            features/test.feature:9:in `Given failing'
-
-      Failing Scenarios:
-      cucumber features/test.feature:8
-
-      2 scenarios (1 failed, 1 passed)
-      2 steps (1 failed, 1 passed)
+      2 scenarios (2 passed)
+      2 steps (2 passed)
       """
 
   Scenario: Specify the line number of a row
