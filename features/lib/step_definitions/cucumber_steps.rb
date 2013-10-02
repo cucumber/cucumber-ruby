@@ -16,6 +16,18 @@ Given(/^a scenario with a step that looks like this in japanese:$/) do |string|
   end
 end
 
+Given(/^the standard step definitions$/) do
+  write_file 'features/step_definitions/steps.rb',
+
+  <<-STEPS
+  Given(/^this step passes$/)          { }
+  Given(/^this step raises an error$/) { raise 'error' }
+  Given(/^this step is pending$/)      { pending }
+  Given(/^this step fails$/)           { fail }
+  Given(/^this step is a table step$/) {|t| }
+  STEPS
+end
+
 Given /^a step definition that looks like this:$/ do |string|
   create_step_definition { string }
 end

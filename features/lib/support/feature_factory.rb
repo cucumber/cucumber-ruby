@@ -50,7 +50,7 @@ Feature: #{name}
   end
 
   def generate_step_definition_filename
-    "features/step_definitions/test_steps#{next_increment(:step_defs)}.rb"
+    "features/step_definitions/steps#{next_increment(:step_defs)}.rb"
   end
 
   def filename(name)

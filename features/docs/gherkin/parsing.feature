@@ -9,7 +9,7 @@ Feature: Scenario Outlines
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given /^I have (\d+) cucumbers$/ do; end
+      Given(/^I have (\d+) cucumbers$/) { }
       """
     When I run `cucumber features/f.feature`
     Then it should fail with:

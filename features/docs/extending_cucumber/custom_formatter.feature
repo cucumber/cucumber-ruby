@@ -6,13 +6,9 @@ Feature: Custom Formatter
       Feature: I'll use my own
         because I'm worth it
         Scenario: just print me
-          Given this step works
+          Given this step passes
       """
-    And a file named "features/step_definitions/steps.rb" with:
-      """
-      Given /^this step works$/ do
-      end
-      """
+    And the standard step definitions
     And a file named "features/support/ze/formator.rb" with:
       """
       module Ze

@@ -4,13 +4,12 @@ Feature: Exception in After Block
   I want exceptions raised in After blocks to be handled gracefully and reported by the formatters
 
   Background:
-    And a file named "features/step_definitions/steps.rb" with:
+    Given the standard step definitions
+    And a file named "features/step_definitions/naughty_steps.rb" with:
       """
       Given /^this step does something naughty$/ do x=1
         @naughty = true
       end
-
-      Given(/^this step works$/) do; end
       """
     And a file named "features/support/env.rb" with:
       """
@@ -32,7 +31,7 @@ Feature: Exception in After Block
           Given this step does something naughty
 
         Scenario: Success
-          Given this step works
+          Given this step passes
       """
     When I run `cucumber features`
     Then it should fail with:
@@ -40,12 +39,12 @@ Feature: Exception in After Block
       Feature: Sample
 
         Scenario: Naughty Step                   # features/naughty_step_in_scenario.feature:3
-          Given this step does something naughty # features/step_definitions/steps.rb:1
+          Given this step does something naughty # features/step_definitions/naughty_steps.rb:1
             This scenario has been very very naughty (NaughtyScenarioException)
             ./features/support/env.rb:4:in `After'
 
-        Scenario: Success       # features/naughty_step_in_scenario.feature:6
-          Given this step works # features/step_definitions/steps.rb:5
+        Scenario: Success        # features/naughty_step_in_scenario.feature:6
+          Given this step passes # features/step_definitions/steps.rb:1
 
       Failing Scenarios:
       cucumber features/naughty_step_in_scenario.feature:3 # Scenario: Naughty Step
@@ -66,12 +65,12 @@ Feature: Exception in After Block
 
           Examples:
           | Might Work             |
-          | works                  |
+          | passes                 |
           | does something naughty |
-          | works                  |
+          | passes                 |
 
         Scenario: Success
-          Given this step works
+          Given this step passes
 
       """
     When I run `cucumber features`
@@ -80,18 +79,18 @@ Feature: Exception in After Block
       Feature: Sample
 
         Scenario Outline: Naughty Step # features/naughty_step_in_scenario_outline.feature:3
-          Given this step <Might Work> # features/step_definitions/steps.rb:5
+          Given this step <Might Work> # features/step_definitions/steps.rb:1
 
           Examples: 
             | Might Work             |
-            | works                  |
+            | passes                 |
             | does something naughty |
             This scenario has been very very naughty (NaughtyScenarioException)
             ./features/support/env.rb:4:in `After'
-            | works                  |
+            | passes                 |
 
-        Scenario: Success       # features/naughty_step_in_scenario_outline.feature:12
-          Given this step works # features/step_definitions/steps.rb:5
+        Scenario: Success        # features/naughty_step_in_scenario_outline.feature:12
+          Given this step passes # features/step_definitions/steps.rb:1
 
       Failing Scenarios:
       cucumber features/naughty_step_in_scenario_outline.feature:3 # Scenario: Naughty Step
@@ -110,7 +109,7 @@ Feature: Exception in After Block
           Given this step does something naughty
 
         Scenario: Success
-          Given this step works
+          Given this step passes
       """
     When I run `cucumber features --format progress`
     Then it should fail with:

@@ -39,11 +39,8 @@ Feature: Scenario outlines
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given(/^passing without a table$/) do end
-
-      Given /^failing without a table$/ do
-        raise RuntimeError
-      end
+      Given(/^passing without a table$/) { }
+      Given(/^failing without a table$/) { raise RuntimeError }
       """
 
   Scenario: Run scenario outline with filtering on outline name
@@ -64,7 +61,7 @@ Feature: Scenario outlines
             | passing | passing     |
             | failing | passing     |
             RuntimeError (RuntimeError)
-            ./features/step_definitions/steps.rb:4:in `/^failing without a table$/'
+            ./features/step_definitions/steps.rb:2:in `/^failing without a table$/'
             features/outline_sample.feature:6:in `Given <state> without a table'
 
           Examples: Only passing
@@ -94,7 +91,7 @@ Feature: Scenario outlines
             | passing | passing     |
             | failing | passing     |
             RuntimeError (RuntimeError)
-            ./features/step_definitions/steps.rb:4:in `/^failing without a table$/'
+            ./features/step_definitions/steps.rb:2:in `/^failing without a table$/'
             features/outline_sample.feature:6:in `Given <state> without a table'
 
           Examples: Only passing
@@ -123,7 +120,7 @@ Feature: Scenario outlines
             | state   | other_state |
             | failing | passing     |
             RuntimeError (RuntimeError)
-            ./features/step_definitions/steps.rb:4:in `/^failing without a table$/'
+            ./features/step_definitions/steps.rb:2:in `/^failing without a table$/'
             features/outline_sample.feature:6:in `Given <state> without a table'
 
       Failing Scenarios:
@@ -145,7 +142,7 @@ Feature: Scenario outlines
       (::) failed steps (::)
 
       RuntimeError (RuntimeError)
-      ./features/step_definitions/steps.rb:4:in `/^failing without a table$/'
+      ./features/step_definitions/steps.rb:2:in `/^failing without a table$/'
       features/outline_sample.feature:6:in `Given <state> without a table'
 
       Failing Scenarios:

@@ -13,10 +13,7 @@ Feature: Using descriptions to give features context
   fine: otherwise Gherkin will start to pay attention.
 
   Background:
-    Given a file named "features/step_definitions/steps.rb" with:
-    """
-    Given(/passing/) { }
-    """
+    Given the standard step definitions
 
   Scenario: Everything with a description
     Given a file named "features/test.feature" with:
@@ -31,26 +28,26 @@ Feature: Using descriptions to give features context
         We can also put in descriptions showing what the background is
         doing.
 
-        Given passing without a table
+        Given this step passes
 
       Scenario: I'm a scenario with a description
 
         You can also put descriptions in front of individual scenarios.
 
-        Given passing without a table
+        Given this step passes
 
       Scenario Outline: I'm a scenario outline with a description
 
         Scenario outlines can have descriptions.
 
-        Given <state> without a table
+        Given this step <state>
         Examples: Examples
 
           Specific examples for an outline are allowed to have
           descriptions, too.
 
-          | state |
-          |passing|
+          |  state |
+          | passes |
     """
     When I run `cucumber -q`
     Then the stderr should not contain anything
@@ -65,24 +62,24 @@ Feature: Using descriptions to give features context
         
         We can also put in descriptions showing what the background is
         doing.
-        Given passing without a table
+        Given this step passes
 
       Scenario: I'm a scenario with a description
         
         You can also put descriptions in front of individual scenarios.
-        Given passing without a table
+        Given this step passes
 
       Scenario Outline: I'm a scenario outline with a description
         
         Scenario outlines can have descriptions.
-        Given <state> without a table
+        Given this step <state>
 
         Examples: Examples
           
           Specific examples for an outline are allowed to have
           descriptions, too.
-          | state   |
-          | passing |
+          | state  |
+          | passes |
 
     2 scenarios (2 passed)
     4 steps (4 passed)

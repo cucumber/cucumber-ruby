@@ -13,7 +13,7 @@ Feature: Table diffing
             | x | y |
             | a | b |
       """
-    And a file named "features/step_definitions/table_steps.rb" with:
+    And a file named "features/step_definitions/steps.rb" with:
       """
       Then /the table should be:/ do |expected| x=1
         expected.diff!(table(%{
@@ -28,12 +28,12 @@ Feature: Table diffing
       Feature: Tables
 
         Scenario: Extra row         # features/tables.feature:2
-          Then the table should be: # features/step_definitions/table_steps.rb:1
+          Then the table should be: # features/step_definitions/steps.rb:1
             | x | y |
             | a | b |
             | a | c |
             Tables were not identical (Cucumber::Ast::Table::Different)
-            ./features/step_definitions/table_steps.rb:2:in `/the table should be:/'
+            ./features/step_definitions/steps.rb:2:in `/the table should be:/'
             features/tables.feature:3:in `Then the table should be:'
 
       Failing Scenarios:

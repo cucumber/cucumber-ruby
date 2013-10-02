@@ -4,64 +4,58 @@ Feature: JUnit output formatter
   Cucumber should be able to output JUnit xml files
   
   Background:
-    Given a file named "features/step_definitions/steps.rb" with:
-      """
-      Given(/a passing scenario/)  {}
-      Given(/a failing scenario/)  { fail }
-      Given(/a pending step/)      { pending }
-      Given(/a skipping scenario/) { skipping }
-      """
+    Given the standard step definitions
     And a file named "features/one_passing_one_failing.feature" with:
       """
       Feature: One passing scenario, one failing scenario
 
         Scenario: Passing
-          Given a passing scenario
+          Given this step passes
 
         Scenario: Failing
-          Given a failing scenario
+          Given this step fails
       """
     And a file named "features/some_subdirectory/one_passing_one_failing.feature" with:
       """
       Feature: Subdirectory - One passing scenario, one failing scenario
 
         Scenario: Passing
-          Given a passing scenario
+          Given this step passes
 
         Scenario: Failing
-          Given a failing scenario
+          Given this step fails
       """
     And a file named "features/pending.feature" with:
       """
       Feature: Pending step
 
         Scenario: Pending
-          Given a pending step
+          Given this step is pending
 
         Scenario: Undefined
-          Given an undefined step
+          Given this step is undefined
       """
     And a file named "features/pending.feature" with:
       """
       Feature: Pending step
 
         Scenario: Pending
-          Given a pending step
+          Given this step is pending
 
         Scenario: Undefined
-          Given an undefined step
+          Given this step is undefined
       """
     And a file named "features/scenario_outline.feature" with:
       """
       Feature: Scenario outlines
 
         Scenario Outline: Using scenario outlines
-          Given a <type> scenario
+          Given this step <type>
 
           Examples:
-            | type    |
-            | passing |
-            | failing |
+            | type   |
+            | passes |
+            | fails  |
       """
   
   Scenario: one feature, one passing scenario, one failing scenario
@@ -82,13 +76,13 @@ Feature: JUnit output formatter
         <failure message="failed Failing" type="failed">
           <![CDATA[Scenario: Failing
 
-      Given a failing scenario
+      Given this step fails
 
       Message:
 	]]>
           <![CDATA[ (RuntimeError)
-	./features/step_definitions/steps.rb:2:in `/a failing scenario/'
-	features/one_passing_one_failing.feature:7:in `Given a failing scenario']]>
+	./features/step_definitions/steps.rb:4:in `/^this step fails$/'
+	features/one_passing_one_failing.feature:7:in `Given this step fails']]>
         </failure>
         <system-out/>
         <system-err/>
@@ -121,13 +115,13 @@ Feature: JUnit output formatter
         <failure message="failed Failing" type="failed">
           <![CDATA[Scenario: Failing
 
-      Given a failing scenario
+      Given this step fails
 
       Message:
 	]]>
           <![CDATA[ (RuntimeError)
-	./features/step_definitions/steps.rb:2:in `/a failing scenario/'
-	features/some_subdirectory/one_passing_one_failing.feature:7:in `Given a failing scenario']]>
+	./features/step_definitions/steps.rb:4:in `/^this step fails$/'
+	features/some_subdirectory/one_passing_one_failing.feature:7:in `Given this step fails']]>
         </failure>
         <system-out/>
         <system-err/>
@@ -188,8 +182,8 @@ Feature: JUnit output formatter
 
       ]]>
           <![CDATA[TODO (Cucumber::Pending)
-      ./features/step_definitions/steps.rb:3:in `/a pending step/'
-      features/pending.feature:4:in `Given a pending step']]>
+      ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
+      features/pending.feature:4:in `Given this step is pending']]>
         </failure>
         <system-out/>
         <system-err/>
@@ -199,8 +193,8 @@ Feature: JUnit output formatter
           <![CDATA[Scenario: Undefined
       
       ]]>
-          <![CDATA[Undefined step: "an undefined step" (Cucumber::Undefined)
-      features/pending.feature:7:in `Given an undefined step']]>
+          <![CDATA[Undefined step: "this step is undefined" (Cucumber::Undefined)
+      features/pending.feature:7:in `Given this step is undefined']]>
         </failure>
         <system-out/>
         <system-err/>
@@ -245,21 +239,21 @@ You *must* specify --out DIR for the junit formatter
       """
       <?xml version="1.0" encoding="UTF-8"?>
       <testsuite errors="0" failures="1" name="Scenario outlines" skipped="0" tests="2" time="0.05">
-      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | passing |)" time="0.05">
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | passes |)" time="0.05">
         <system-out/>
         <system-err/>
       </testcase>
-      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | failing |)" time="0.05">
-        <failure message="failed Using scenario outlines (outline example : | failing |)" type="failed">
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | fails |)" time="0.05">
+        <failure message="failed Using scenario outlines (outline example : | fails |)" type="failed">
           <![CDATA[Scenario Outline: Using scenario outlines
       
-      Example row: | failing |
+      Example row: | fails |
       
       Message:
       ]]>
           <![CDATA[ (RuntimeError)
-      ./features/step_definitions/steps.rb:2:in `/a failing scenario/'
-      features/scenario_outline.feature:4:in `Given a <type> scenario']]>
+      ./features/step_definitions/steps.rb:4:in `/^this step fails$/'
+      features/scenario_outline.feature:4:in `Given this step <type>']]>
         </failure>
         <system-out/>
         <system-err/>

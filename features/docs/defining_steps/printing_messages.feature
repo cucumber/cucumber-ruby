@@ -7,7 +7,8 @@ Feature: Pretty formatter - Printing messages
   Your message will be printed out after the step has run.
 
   Background:
-    Given a file named "features/step_definitions/steps.rb" with:
+    Given the standard step definitions
+    And a file named "features/step_definitions/puts_steps.rb" with:
       """
       Given /^I use puts with text "(.*)"$/ do |ann|
         puts(ann)
@@ -29,9 +30,6 @@ Feature: Pretty formatter - Printing messages
         fail
       end
 
-      Given /^this step works$/ do
-      end
-
       Given /^I puts the world$/ do
         puts(self)
       end
@@ -42,11 +40,11 @@ Feature: Pretty formatter - Printing messages
 
         Scenario:
           Given I use puts with text "Ann"
-          And this step works
+          And this step passes
 
         Scenario:
           Given I use multiple putss
-          And this step works
+          And this step passes
 
         Scenario Outline:
           Given I use message <ann> in line <line>
@@ -59,7 +57,7 @@ Feature: Pretty formatter - Printing messages
 
         Scenario:
           Given I use puts and step fails
-          And this step works
+          And this step passes
 
         Scenario Outline:
           Given I use message <ann> in line <line> with result <result>
@@ -89,14 +87,14 @@ Feature: Pretty formatter - Printing messages
         Scenario: 
           Given I use puts with text "Ann"
             Ann
-          And this step works
+          And this step passes
 
         Scenario: 
           Given I use multiple putss
             Multiple
             Announce
             Me
-          And this step works
+          And this step passes
 
         Scenario Outline: 
           Given I use message <ann> in line <line>
@@ -111,9 +109,9 @@ Feature: Pretty formatter - Printing messages
           Given I use puts and step fails
             Announce with fail
              (RuntimeError)
-            ./features/step_definitions/steps.rb:18:in `/^I use puts and step fails$/'
+            ./features/step_definitions/puts_steps.rb:18:in `/^I use puts and step fails$/'
             features/f.feature:21:in `Given I use puts and step fails'
-          And this step works
+          And this step passes
 
         Scenario Outline: 
           Given I use message <ann> in line <line> with result <result>
@@ -122,7 +120,7 @@ Feature: Pretty formatter - Printing messages
             | line | ann   | result |
             | 1    | anno1 | fail   |  Line: 1: anno1
              (RuntimeError)
-            ./features/step_definitions/steps.rb:13:in `/^I use message (.+) in line (.+) (?:with result (.+))$/'
+            ./features/step_definitions/puts_steps.rb:13:in `/^I use message (.+) in line (.+) (?:with result (.+))$/'
             features/f.feature:25:in `Given I use message <ann> in line <line> with result <result>'
             | 2    | anno2 | pass   |  Line: 2: anno2
       """

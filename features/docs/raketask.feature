@@ -8,24 +8,16 @@ Feature: Raketask
   And non-zero exit status code when it pases
 
   Background:
+    Given the standard step definitions
     Given a file named "features/passing_and_failing.feature" with:
       """
       Feature: Sample
 
         Scenario: Passing
-          Given passing
+          Given this step passes
 
         Scenario: Failing
-          Given failing
-      """
-    Given a file named "features/step_definitions/steps.rb" with:
-      """
-      Given(/^passing$/) do
-      end
-
-      Given /^failing$/ do
-        raise "FAIL"
-      end
+          Given this step raises an error
       """
     Given a file named "Rakefile" with:
       """
