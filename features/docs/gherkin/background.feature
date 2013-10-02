@@ -50,7 +50,7 @@ Feature: Background
       Feature: Background tagged Before on Outline
 
         Background: 
-          Given passing without a table
+          Given this step passes
 
         Scenario Outline: passing background
           Then I should have '<count>' cukes
@@ -64,7 +64,7 @@ Feature: Background
       Feature: Failing background sample
 
         Background:
-          Given failing without a table
+          Given this step raises an error
           And '10' cukes
 
         Scenario: failing background
@@ -78,7 +78,7 @@ Feature: Background
       Feature: Failing background with scenario outlines sample
 
         Background:
-          Given failing without a table
+          Given this step raises an error
 
         Scenario Outline: failing background
           Then I should have '<count>' cukes
@@ -97,7 +97,7 @@ Feature: Background
       Feature: Pending background sample
 
         Background:
-          Given pending
+          Given this step is pending
 
         Scenario: pending background
           Then I should have '10' cukes
@@ -110,7 +110,7 @@ Feature: Background
       Feature: Failing background after previously successful background sample
 
         Background:
-          Given passing without a table
+          Given this step passes
           And '10' global cukes
 
         Scenario: passing background
@@ -153,27 +153,17 @@ Feature: Background
             I sleep all night and I test all day
             \"\"\"
       """
-    And a file named "features/step_definitions/steps.rb" with:
+    And the standard step definitions
+    And a file named "features/step_definitions/cuke_steps.rb" with:
       """
-      def flunker
-        raise "FAIL"
-      end
-
       Given /^'(.+)' cukes$/ do |cukes| x=1
         raise "We already have #{@cukes} cukes!" if @cukes
         @cukes = cukes
       end
 
-      Given(/^passing without a table$/) do
-      end
-
-      Given /^failing without a table$/ do x=1
-        flunker
-      end
-
       Given /^'(.+)' global cukes$/ do |cukes| x=1
         $scenario_runs ||= 0
-        flunker if $scenario_runs >= 1
+        raise 'FAIL' if $scenario_runs >= 1
         $cukes = cukes
         $scenario_runs += 1
       end
@@ -271,7 +261,7 @@ Feature: Background
     Feature: Background tagged Before on Outline
 
       Background: 
-        Given passing without a table
+        Given this step passes
 
       Scenario Outline: passing background
         Then I should have '<count>' cukes
@@ -294,11 +284,10 @@ Feature: Background
     Feature: Failing background sample
 
       Background: 
-        Given failing without a table
-          FAIL (RuntimeError)
-          ./features/step_definitions/steps.rb:2:in `flunker'
-          ./features/step_definitions/steps.rb:14:in `/^failing without a table$/'
-          features/failing_background.feature:4:in `Given failing without a table'
+        Given this step raises an error
+          error (RuntimeError)
+          ./features/step_definitions/steps.rb:2:in `/^this step raises an error$/'
+          features/failing_background.feature:4:in `Given this step raises an error'
         And '10' cukes
 
       Scenario: failing background
@@ -324,11 +313,10 @@ Feature: Background
     Feature: Failing background with scenario outlines sample
 
       Background: 
-        Given failing without a table
-          FAIL (RuntimeError)
-          ./features/step_definitions/steps.rb:2:in `flunker'
-          ./features/step_definitions/steps.rb:14:in `/^failing without a table$/'
-          features/scenario_outline_failing_background.feature:4:in `Given failing without a table'
+        Given this step raises an error
+          error (RuntimeError)
+          ./features/step_definitions/steps.rb:2:in `/^this step raises an error$/'
+          features/scenario_outline_failing_background.feature:4:in `Given this step raises an error'
 
       Scenario Outline: failing background
         Then I should have '<count>' cukes
@@ -353,6 +341,7 @@ Feature: Background
     
     """
 
+  @spawn
   Scenario: run a feature with a background that is pending
     When I run `cucumber -q features/pending_background.feature`
     Then it should pass with exactly:
@@ -360,7 +349,10 @@ Feature: Background
     Feature: Pending background sample
 
       Background: 
-        Given pending
+        Given this step is pending
+          TODO (Cucumber::Pending)
+          ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
+          features/pending_background.feature:4:in `Given this step is pending'
 
       Scenario: pending background
         Then I should have '10' cukes
@@ -368,8 +360,8 @@ Feature: Background
       Scenario: another pending background
         Then I should have '10' cukes
 
-    2 scenarios (2 undefined)
-    4 steps (2 skipped, 2 undefined)
+    2 scenarios (1 skipped, 1 pending)
+    4 steps (3 skipped, 1 pending)
     0m0.012s
     
     """
@@ -382,7 +374,7 @@ Feature: Background
     Feature: Failing background after previously successful background sample
 
       Background: 
-        Given passing without a table
+        Given this step passes
         And '10' global cukes
 
       Scenario: passing background
@@ -391,8 +383,7 @@ Feature: Background
       Scenario: failing background
         And '10' global cukes
           FAIL (RuntimeError)
-          ./features/step_definitions/steps.rb:2:in `flunker'
-          ./features/step_definitions/steps.rb:19:in `/^'(.+)' global cukes$/'
+          ./features/step_definitions/cuke_steps.rb:8:in `/^'(.+)' global cukes$/'
           features/failing_background_after_success.feature:5:in `And '10' global cukes'
         Then I should have '10' global cukes
 
@@ -406,7 +397,7 @@ Feature: Background
     """
 
   Scenario: background with multline args
-    Given a file named "features/step_definitions/multiline_steps.rb" with:
+    Given a file named "features/step_definitions/steps.rb" with:
       """
       Given /^table$/ do |table| x=1
         @table = table

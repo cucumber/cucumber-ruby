@@ -21,7 +21,7 @@ Feature: Assertions
 
       """
     And I run `bundle install --local --quiet`
-    And a file named "features/step_definitions/assert_steps.rb" with:
+    And a file named "features/step_definitions/steps.rb" with:
       """
       Then /^it should pass$/ do
         assert(2 + 2 == 4)
@@ -38,7 +38,7 @@ Feature: Assertions
       gem "rspec"
       """
     And I run `bundle install --local --quiet`
-    And a file named "features/step_definitions/assert_steps.rb" with:
+    And a file named "features/step_definitions/steps.rb" with:
       """
       Then /^it should pass$/ do
         (2 + 2).should == 4

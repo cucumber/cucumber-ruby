@@ -1,12 +1,13 @@
 Feature: HTML output formatter
 
   Background:
-    Given a file named "features/scenario_outline_with_undefined_steps.feature" with:
+    Given the standard step definitions
+    And a file named "features/scenario_outline_with_undefined_steps.feature" with:
       """
       Feature:
 
         Scenario Outline:
-          Given an undefined step
+          Given this step is undefined
         
         Examples:
           |foo|
@@ -17,7 +18,7 @@ Feature: HTML output formatter
       Feature: Outline
 
         Scenario Outline: Will it blend?
-          Given this hasn't been implemented yet
+          Given this step is pending
           And other step
           When I do something with <example>
           Then I should see something
@@ -32,20 +33,11 @@ Feature: HTML output formatter
       Feature: Feature with failing background step
 
         Background:
-          Given this fails
+          Given this step fails
 
         Scenario:
           When I do something
           Then I should see something
-      """
-    And a file named "features/step_definitions/steps.rb" with:
-      """
-      Given /^this fails$/ do
-        fail 'This step should fail'
-      end
-      Given /^this hasn't been implemented yet$/ do
-        pending
-      end
       """
 
   Scenario: an scenario outline, one undefined step, one random example, expand flag on

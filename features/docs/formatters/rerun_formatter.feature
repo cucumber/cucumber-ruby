@@ -16,13 +16,7 @@ Feature: Rerun formatter
   This is useful when debugging in a large suite of features.
 
   Background:
-    Given a file named "features/step_definitions/steps.rb" with:
-      """
-      Given(/failing/) { fail }
-      Given(/pending/) { pending }
-      Given(/passing/) { }
-
-      """
+    Given the standard step definitions
 
   Scenario: Regular scenarios
     Given a file named "features/mixed.feature" with:
@@ -30,16 +24,16 @@ Feature: Rerun formatter
       Feature: Mixed
 
         Scenario:
-          Given failing
+          Given this step fails
 
         Scenario:
-          Given missing
+          Given this step is undefined
 
         Scenario:
-          Given pending
+          Given this step is pending
 
         Scenario:
-          Given passing
+          Given this step passes
 
       """
     And a file named "features/all_good.feature" with:
@@ -47,7 +41,7 @@ Feature: Rerun formatter
       Feature: All good
 
         Scenario:
-          Given passing
+          Given this step passes
       """
 
     When I run `cucumber -f rerun`
@@ -63,12 +57,12 @@ Feature: Rerun formatter
       Feature: One passing example, one failing example
 
         Scenario Outline:
-          Given a <status> step
+          Given this step <status>
         
         Examples:
-          | status  |
-          | passing |
-          | failing |
+          | status |
+          | passes |
+          | fails  |
 
       """
     When I run `cucumber -f rerun`
