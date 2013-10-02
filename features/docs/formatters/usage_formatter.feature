@@ -23,10 +23,10 @@ Feature: Usage formatter
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given /A/ do;end
-      Given /B/ do;end
-      Given /C/ do;end
-      Given /D/ do;end
+      Given(/A/) { }
+      Given(/B/) { }
+      Given(/C/) { }
+      Given(/D/) { }
       """
 
   Scenario: Run with --format usage

@@ -5,17 +5,14 @@ Feature: Debug formatter
   feature is run.
 
   Background:
-    Given a file named "features/step_definitions/steps.rb" with:
-      """
-      Given(/passing/) { }
-      """
+    Given the standard step definitions
 
   Scenario: title
     Given a file named "features/test.feature" with:
       """
       Feature:
         Scenario:
-          Given passing
+          Given this step passes
       """
     When I run `cucumber -f debug`
     Then the stderr should not contain anything

@@ -6,47 +6,35 @@ Feature: Cucumber --work-in-progress switch
             - will not fail otherwise
 
   Background: A passing and a pending feature
-    Given a file named "features/wip.feature" with:
+    Given the standard step definitions
+    And a file named "features/wip.feature" with:
       """
       Feature: WIP
         @failing
         Scenario: Failing
-          Given a failing step
+          Given this step raises an error
 
         @undefined
         Scenario: Undefined
-          Given an undefined step
+          Given this step is undefined
 
         @pending
         Scenario: Pending
-          Given a pending step
+          Given this step is pending
 
         @passing
         Scenario: Passing
-          Given a passing step
+          Given this step passes
       """
     And a file named "features/passing_outline.feature" with:
       """
       Feature: Not WIP
         Scenario Outline: Passing
-          Given a <what> step
+          Given this step <what>
           
           Examples:
-            | what    |
-            | passing |
-      """
-    And a file named "features/step_definitions/steps.rb" with:
-      """
-      Given /^a failing step$/ do
-        raise "I fail"
-      end
-
-      Given /^a passing step$/ do
-      end
-
-      Given /^a pending step$/ do
-        pending
-      end
+            | what   |
+            | passes |
       """
 
   Scenario: Pass with Failing Scenarios
@@ -58,10 +46,10 @@ Feature: Cucumber --work-in-progress switch
 
         @failing
         Scenario: Failing
-          Given a failing step
-            I fail (RuntimeError)
-            ./features/step_definitions/steps.rb:2:in `/^a failing step$/'
-            features/wip.feature:4:in `Given a failing step'
+          Given this step raises an error
+            error (RuntimeError)
+            ./features/step_definitions/steps.rb:2:in `/^this step raises an error$/'
+            features/wip.feature:4:in `Given this step raises an error'
       
       Failing Scenarios:
       cucumber features/wip.feature:3
@@ -83,7 +71,7 @@ Feature: Cucumber --work-in-progress switch
 
         @undefined
         Scenario: Undefined
-          Given an undefined step
+          Given this step is undefined
 
       1 scenario (1 undefined)
       1 step (1 undefined)
@@ -102,10 +90,10 @@ Feature: Cucumber --work-in-progress switch
 
         @pending
         Scenario: Pending
-          Given a pending step
+          Given this step is pending
             TODO (Cucumber::Pending)
-            ./features/step_definitions/steps.rb:9:in `/^a pending step$/'
-            features/wip.feature:12:in `Given a pending step'
+            ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
+            features/wip.feature:12:in `Given this step is pending'
 
       1 scenario (1 pending)
       1 step (1 pending)
@@ -124,7 +112,7 @@ Feature: Cucumber --work-in-progress switch
 
         @passing
         Scenario: Passing
-          Given a passing step
+          Given this step passes
 
       1 scenario (1 passed)
       1 step (1 passed)
@@ -146,11 +134,11 @@ Feature: Cucumber --work-in-progress switch
       Feature: Not WIP
 
         Scenario Outline: Passing
-          Given a <what> step
+          Given this step <what>
       
           Examples: 
-            | what    |
-            | passing |
+            | what   |
+            | passes |
 
       1 scenario (1 passed)
       1 step (1 passed)
@@ -160,7 +148,7 @@ Feature: Cucumber --work-in-progress switch
       The --wip switch was used, so I didn't expect anything to pass. These scenarios passed:
       (::) passed scenarios (::)
 
-      features/passing_outline.feature:7:in `| passing |'
+      features/passing_outline.feature:7:in `| passes |'
 
 
       """

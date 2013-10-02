@@ -8,7 +8,7 @@ Feature: Strict mode
     """
     Feature: Missing
       Scenario: Missing
-        Given a step
+        Given this step passes
     """
 
   Scenario: Fail with --strict
@@ -18,26 +18,23 @@ Feature: Strict mode
       Feature: Missing
 
         Scenario: Missing
-          Given a step
-            Undefined step: "a step" (Cucumber::Undefined)
-            features/missing.feature:3:in `Given a step'
+          Given this step passes
+            Undefined step: "this step passes" (Cucumber::Undefined)
+            features/missing.feature:3:in `Given this step passes'
 
       1 scenario (1 undefined)
       1 step (1 undefined)
       """
 
   Scenario: Succeed with --strict
-    Given a file named "features/step_definitions/steps.rb" with:
-    """
-      Given(/^a step$/) do end
-    """
+    Given the standard step definitions
     When I run `cucumber -q features/missing.feature --strict`
     Then it should pass with:
     """
     Feature: Missing
 
       Scenario: Missing
-        Given a step
+        Given this step passes
 
     1 scenario (1 passed)
     1 step (1 passed)

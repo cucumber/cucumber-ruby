@@ -7,15 +7,12 @@ Feature: Run Cli::Main with existing Runtime
   run it.
 
     Scenario: Run a single feature
-      Given a file named "features/step_definitions/success.rb" with:
-        """
-        Given(/pass/) {}
-        """
+      Given the standard step definitions
       Given a file named "features/success.feature" with:
         """
         Feature: 
           Scenario: 
-            Given I pass
+            Given this step passes
         """
       When I run the following Ruby code:
         """
@@ -28,5 +25,5 @@ Feature: Run Cli::Main with existing Runtime
       Then it should pass
       And the output should contain:
         """
-        Given I pass
+        Given this step passes
         """

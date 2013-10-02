@@ -13,8 +13,7 @@ Feature: Formatter API: Step file path and line number (Issue #179)
       """
     And a file named "features/step_definitions/steps.rb" with:
       """
-      Given /^step at line (.*)$/ do |line|
-      end
+      Given(/^step at line (.*)$/) {|line| }
       """
     And a file named "features/support/jb/formatter.rb" with:
       """

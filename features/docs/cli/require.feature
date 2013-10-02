@@ -11,7 +11,7 @@ Feature: Requiring extra step files
       """
     And a file named "tmp/extras.rb" with:
       """
-      Given(/^found in extra file$/) do end
+      Given(/^found in extra file$/) { }
       """
     When I run `cucumber -q -r tmp/extras.rb features/test.feature`
     Then it should pass with:
