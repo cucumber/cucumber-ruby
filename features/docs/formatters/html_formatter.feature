@@ -1,7 +1,8 @@
 Feature: HTML output formatter
 
   Background:
-    Given a file named "features/scenario_outline_with_undefined_steps.feature" with:
+    Given the standard step definitions
+    And a file named "features/scenario_outline_with_undefined_steps.feature" with:
       """
       Feature:
 
@@ -38,7 +39,6 @@ Feature: HTML output formatter
           When I do something
           Then I should see something
       """
-    And the standard step definitions
 
   Scenario: an scenario outline, one undefined step, one random example, expand flag on
     When I run `cucumber features/scenario_outline_with_undefined_steps.feature --format html --expand `
