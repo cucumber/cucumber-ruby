@@ -43,7 +43,7 @@ module Cucumber
     end
 
     def postponed_tags
-      @options[:postponed_tags]
+      @options[:postponed_tags] || %w[@postponed]
     end
 
   private
