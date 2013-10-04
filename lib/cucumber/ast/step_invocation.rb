@@ -11,7 +11,7 @@ module Cucumber
       attr_accessor :exception
 
       class << self
-        SEVERITY = [:passed, :undefined, :pending, :skipped, :failed]
+        SEVERITY = [:passed, :undefined, :pending, :postponed, :skipped, :failed]
         def worst_status(statuses)
           SEVERITY[statuses.map{|status| SEVERITY.index(status)}.max]
         end
@@ -49,6 +49,9 @@ module Cucumber
           rescue Pending => e
             failed(configuration, e, false)
             status!(:pending)
+          rescue Postponed => e
+            failed(configuration, e, false)
+            status!(:postponed)
           rescue Undefined => e
             failed(configuration, e, false)
             status!(:undefined)
@@ -59,6 +62,19 @@ module Cucumber
           rescue Exception => e
             failed(configuration, e, false)
             status!(:failed)
+
+            if @step.background? || @background
+              # NOTE: Setting tags to empty prevents this step as being updated
+              # to postponed
+              tags = []
+            else
+              f_element = @step.instance_variable_get(:@feature_element)
+              tags = f_element.instance_variable_get(:@tags).tags.map(&:name)
+              tags += f_element.feature_tags.tags.map(&:name)
+            end
+
+            configuration = runtime.instance_variable_get(:@configuration)
+            status!(:postponed) if (tags & configuration.postponed_tags).any?
           end
         end
       end

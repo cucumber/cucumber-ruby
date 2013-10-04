@@ -31,6 +31,8 @@ module Cucumber
     # * <tt>undefined</tt>     - defaults to <tt>yellow</tt>
     # * <tt>pending</tt>       - defaults to <tt>yellow</tt>
     # * <tt>pending_param</tt> - defaults to <tt>yellow,bold</tt>
+    # * <tt>postponed_param</tt> - defaults to <tt>blue,bold</tt>
+    # * <tt>postponed</tt>       - defaults to <tt>blue</tt>
     # * <tt>failed</tt>        - defaults to <tt>red</tt>
     # * <tt>failed_param</tt>  - defaults to <tt>red,bold</tt>
     # * <tt>passed</tt>        - defaults to <tt>green</tt>
@@ -67,6 +69,7 @@ module Cucumber
       end.merge({
         'undefined' => 'yellow',
         'pending'   => 'yellow',
+        'postponed'   => 'blue',
         'failed'    => 'red',
         'passed'    => 'green',
         'outline'   => 'cyan',

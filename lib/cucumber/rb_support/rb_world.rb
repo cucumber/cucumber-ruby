@@ -88,7 +88,7 @@ module Cucumber
       # @note Cucumber might surprise you with the behaviour of this method. Instead
       #   of sending the output directly to STDOUT, Cucumber will intercept and cache
       #   the message until the current step has finished, and then display it.
-      #   
+      #
       #   If you'd prefer to see the message immediately, call {Kernel.puts} instead.
       def puts(*messages)
         @__cucumber_runtime.puts(*messages)
@@ -115,6 +115,20 @@ module Cucumber
           raise Pending.new("Expected pending '#{message}' to fail. No Error was raised. No longer pending?")
         else
           raise Pending.new(message)
+        end
+      end
+
+      # Mark the matched step as postponed.
+      def postponed(message = "TODO")
+        if block_given?
+          begin
+            yield
+          rescue Exception
+            raise Postponed.new(message)
+          end
+          raise Postponed.new("Expected postponed '#{message}' to fail. No Error was raised. No longer postponed?")
+        else
+          raise Postponed.new(message)
         end
       end
 

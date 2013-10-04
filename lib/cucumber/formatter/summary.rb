@@ -15,7 +15,7 @@ module Cucumber
       private
 
       def dump_status_counts(find_elements_proc)
-        counts = [:failed, :skipped, :undefined, :pending, :passed].map do |status|
+        counts = [:failed, :skipped, :undefined, :pending, :postponed, :passed].map do |status|
           elements = find_elements_proc.call(status)
           elements.any? ? yield("#{elements.length} #{status.to_s}", status) : nil
         end.compact

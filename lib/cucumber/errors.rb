@@ -21,6 +21,11 @@ module Cucumber
   class Pending < StandardError
   end
 
+  # Raised when a StepDefinition's block invokes World#postponed or a Scenario
+  # or Step is tagged as @postponed
+  class Postponed < StandardError
+  end
+
   # Raised when a step matches 2 or more StepDefinitions
   class Ambiguous < StandardError
     def initialize(step_name, step_definitions, used_guess)

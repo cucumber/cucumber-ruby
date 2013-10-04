@@ -322,6 +322,8 @@ module Cucumber
           end
           if table_row.exception.is_a? ::Cucumber::Pending
             set_scenario_color_pending
+          elsif table_row.exception.is_a? ::Cucumber::Postponed
+            set_scenario_color_pending
           else
             set_scenario_color_failed
           end
@@ -408,7 +410,7 @@ module Cucumber
       end
 
       def set_scenario_color(status)
-        if status.nil? or status == :undefined or status == :pending
+        if status.nil? or status == :undefined or status == :pending or status == :postponed
           set_scenario_color_pending
         end
         if status == :failed
@@ -562,7 +564,7 @@ module Cucumber
       end
 
       def print_status_counts
-        counts = [:failed, :skipped, :undefined, :pending, :passed].map do |status|
+        counts = [:failed, :skipped, :undefined, :pending, :postponed, :passed].map do |status|
           elements = yield status
           elements.any? ? "#{elements.length} #{status.to_s}" : nil
         end.compact

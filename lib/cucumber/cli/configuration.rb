@@ -133,6 +133,10 @@ module Cucumber
         Gherkin::TagExpression.new(@options[:tag_expressions])
       end
 
+      def postponed_tags
+        @options[:postponed_tags] || %w[@postponed]
+      end
+
       def filters
         @options.filters
       end
