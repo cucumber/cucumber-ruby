@@ -68,6 +68,7 @@ module Cucumber
 
       def print_summary(features)
         print_steps(:pending)
+        print_steps(:postponed)
         print_steps(:failed)
         print_stats(features, @options)
         print_snippets(@options)
@@ -79,6 +80,7 @@ module Cucumber
         :failed    => 'F',
         :undefined => 'U',
         :pending   => 'P',
+        :postponed => '~',
         :skipped   => '-'
       }
 

@@ -42,6 +42,10 @@ module Cucumber
       @options[:snippet_type]
     end
 
+    def postponed_tags
+      @options[:postponed_tags]
+    end
+
   private
 
     def default_options

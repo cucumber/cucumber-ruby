@@ -54,8 +54,11 @@ module Cucumber
         if @configuration.wip?
           scenarios(:passed).any?
         else
+          strict_violation = steps(:undefined).any? || steps(:pending).any? ||
+                      steps(:postponed).any?
+
           scenarios(:failed).any? || steps(:failed).any? ||
-          (@configuration.strict? && (steps(:undefined).any? || steps(:pending).any?))
+          (@configuration.strict? && strict_violation)
         end
       end
     end
