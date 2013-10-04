@@ -60,6 +60,9 @@ module Cucumber
             failed(configuration, e, false)
             status!(:failed)
           rescue Exception => e
+            failed(configuration, e, false)
+            status!(:failed)
+
             if @step.background? || @background
               # NOTE: Setting tags to empty prevents this step as being updated
               # to postponed
