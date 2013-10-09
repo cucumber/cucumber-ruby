@@ -101,7 +101,9 @@ module Cucumber
           formatter.before_features(nil)
         end
 
-        def hook(*); end
+        def hook(result)
+          LegacyResultBuilder.new(result).describe_exception_to(formatter)
+        end
 
         def feature(feature, *)
           delegate_to FeaturePrinter, feature
@@ -648,6 +650,10 @@ module Cucumber
 
         def scenario(name, location)
           LegacyScenario.new(@status, name, location)
+        end
+
+        def describe_exception_to(formatter)
+          formatter.exception(@exception, @status) if @exception
         end
 
         LegacyScenario = Struct.new(:status, :name, :location)
