@@ -78,7 +78,7 @@ module Cucumber
 
 
       def self.included(klass)
-        if version_is_greater_than_18? and klass == String
+        if klass == String
           ATTRIBUTES.delete(:clear)
           ATTRIBUTE_NAMES.delete(:clear)
         end
@@ -105,14 +105,6 @@ module Cucumber
         ATTRIBUTE_NAMES
       end
       extend self
-
-      private
-
-      def version_is_greater_than_18?
-        version = RUBY_VERSION.split('.')
-        version.map! &:to_i
-        version[0] >= 1 && version[1] > 8
-      end
     end
   end
 end
