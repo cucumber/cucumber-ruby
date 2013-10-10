@@ -1,4 +1,5 @@
 require 'timeout'
+require 'json'
 require 'cucumber/wire_support/wire_protocol'
 
 module Cucumber
