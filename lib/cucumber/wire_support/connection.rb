@@ -1,5 +1,4 @@
 require 'timeout'
-require 'json'
 require 'cucumber/wire_support/wire_protocol'
 
 module Cucumber
@@ -17,7 +16,7 @@ module Cucumber
         packet = WirePacket.new(message, params)
 
         begin
-          send_data_to_socket(packet.to_json)
+          send_data_to_socket(MultiJson.dump(packet))
           response = fetch_data_from_socket(@config.timeout(message))
           response.handle_with(request_handler)
         rescue Timeout::Error => e
