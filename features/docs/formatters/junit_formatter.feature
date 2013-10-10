@@ -67,7 +67,7 @@ Feature: JUnit output formatter
     And the junit output file "tmp/TEST-features-one_passing_one_failing.xml" should contain:
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite errors="0" failures="1" name="One passing scenario, one failing scenario" skipped="0" tests="2" time="0.05">
+      <testsuite failures="1" errors="0" skipped="0" tests="2" time="0.05" name="One passing scenario, one failing scenario">
       <testcase classname="One passing scenario, one failing scenario" name="Passing" time="0.05">
         <system-out/>
         <system-err/>
@@ -106,7 +106,7 @@ Feature: JUnit output formatter
     And the junit output file "tmp/TEST-features-some_subdirectory-one_passing_one_failing.xml" should contain:
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite errors="0" failures="1" name="Subdirectory - One passing scenario, one failing scenario" skipped="0" tests="2" time="0.05">
+      <testsuite failures="1" errors="0" skipped="0" tests="2" time="0.05" name="Subdirectory - One passing scenario, one failing scenario">
       <testcase classname="Subdirectory - One passing scenario, one failing scenario" name="Passing" time="0.05">
         <system-out/>
         <system-err/>
@@ -145,7 +145,7 @@ Feature: JUnit output formatter
     And the junit output file "tmp/TEST-features-pending.xml" should contain:
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite errors="0" failures="0" name="Pending step" skipped="2" tests="2" time="0.05">
+      <testsuite failures="0" errors="0" skipped="2" tests="2" time="0.05" name="Pending step">
       <testcase classname="Pending step" name="Pending" time="0.05">
         <skipped/>
         <system-out/>
@@ -175,7 +175,7 @@ Feature: JUnit output formatter
     And the junit output file "tmp/TEST-features-pending.xml" should contain:
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite errors="0" failures="2" name="Pending step" skipped="0" tests="2" time="0.05">
+      <testsuite failures="2" errors="0" skipped="0" tests="2" time="0.05" name="Pending step">
       <testcase classname="Pending step" name="Pending" time="0.05">
         <failure message="pending Pending" type="pending">
           <![CDATA[Scenario: Pending
@@ -238,7 +238,7 @@ You *must* specify --out DIR for the junit formatter
     And the junit output file "tmp/TEST-features-scenario_outline.xml" should contain:
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite errors="0" failures="1" name="Scenario outlines" skipped="0" tests="2" time="0.05">
+      <testsuite failures="1" errors="0" skipped="0" tests="2" time="0.05" name="Scenario outlines">
       <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | passes |)" time="0.05">
         <system-out/>
         <system-err/>
