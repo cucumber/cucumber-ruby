@@ -213,7 +213,7 @@ module Cucumber
         line = "#{keyword}: #{names[0]}".indent(@scenario_indent)
         @io.print(line)
         if @options[:source]
-          line_comment = " # #{file_colon_line}".indent(source_indent)
+          line_comment = "# #{file_colon_line}".indent(source_indent)
           @io.print(format_string(line_comment, :comment))
         end
         @io.puts
