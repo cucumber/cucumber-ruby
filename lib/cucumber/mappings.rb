@@ -21,12 +21,12 @@ module Cucumber
         end
         ruby.hooks_for(:before, scenario).each do |hook|
           mapper.before do
-            hook.invoke('location', scenario)
+            hook.invoke('Before', scenario)
           end
         end
         ruby.hooks_for(:after, scenario).each do |hook|
           mapper.after do
-            hook.invoke('location', scenario)
+            hook.invoke('After', scenario)
           end
         end
       end
