@@ -252,8 +252,9 @@ module Cucumber
     end
 
     def filters
+      tag_expressions = ['~@jruby', '~@wip'] # TODO: read this from config
       [
-        [Cucumber::Core::Test::TagFilter, ['~@jruby']], # TODO: read this from config
+        [Cucumber::Core::Test::TagFilter, [tag_expressions]],
         [LocationFilter, [filespecs.locations]],
         [Quit, []],
       ]
