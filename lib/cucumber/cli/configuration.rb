@@ -25,6 +25,7 @@ module Cucumber
         @options.parse!(args)
         arrange_formats
         raise("You can't use both --strict and --wip") if strict? && wip?
+        # todo: remove
         @options[:tag_expression] = Gherkin::TagExpression.new(@options[:tag_expressions])
         set_environment_variables
       end
@@ -129,8 +130,13 @@ module Cucumber
         logger
       end
 
+      # todo: remove
       def tag_expression
         Gherkin::TagExpression.new(@options[:tag_expressions])
+      end
+
+      def tag_expressions
+        @options[:tag_expressions]
       end
 
       def filters

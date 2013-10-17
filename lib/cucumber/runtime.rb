@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'fileutils'
 require 'multi_json'
 require 'multi_test'
@@ -252,7 +253,7 @@ module Cucumber
     end
 
     def filters
-      tag_expressions = ['~@jruby', '~@wip'] # TODO: read this from config
+      tag_expressions = @configuration.tag_expressions
       [
         [Cucumber::Core::Test::TagFilter, [tag_expressions]],
         [LocationFilter, [filespecs.locations]],
