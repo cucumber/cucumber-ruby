@@ -1,3 +1,4 @@
+@wip-new-core
 Feature: Choosing the language from the feature file header
 
   In order to simplify command line and settings in IDEs, Cucumber picks

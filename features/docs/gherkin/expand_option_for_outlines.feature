@@ -1,3 +1,4 @@
+@wip-new-core
 Feature: Scenario outlines --expand option
 
   In order to make it easier to write certain editor plugins and also

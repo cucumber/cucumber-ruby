@@ -1,3 +1,4 @@
+@wip-new-core
 @spawn
 Feature: Around hooks
 

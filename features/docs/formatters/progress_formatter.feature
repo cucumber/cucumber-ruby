@@ -1,3 +1,4 @@
+@wip-new-core
 Feature: Progress output formatter
 
   Background:

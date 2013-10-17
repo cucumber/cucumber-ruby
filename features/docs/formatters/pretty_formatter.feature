@@ -1,3 +1,4 @@
+@wip-new-core
 Feature: Pretty output formatter
 
   Background:

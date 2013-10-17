@@ -1,3 +1,4 @@
+@wip-new-core
 Feature: Usage formatter
 
   In order to see where step definitions are used

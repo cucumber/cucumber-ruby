@@ -43,6 +43,7 @@ Feature: Run specific scenarios
       1 scenario (1 failed)
       """
 
+  @wip-new-core
   @spawn
   Scenario: Specify 2 line numbers where one is a tag
     Given a file named "features/test.feature" with:
@@ -64,6 +65,7 @@ Feature: Run specific scenarios
       2 steps (2 passed)
       """
 
+  @wip-new-core
   Scenario: Specify the line number of a row
     Given a file named "features/test.feature" with:
       """

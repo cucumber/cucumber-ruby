@@ -1,3 +1,4 @@
+@wip-new-core
 Feature: Formatter Callback
 
   Scenario: callback if not expanded

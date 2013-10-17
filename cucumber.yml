@@ -1,7 +1,7 @@
 <%
 rerun = File.file?('rerun.txt') ? IO.read('rerun.txt') : ""
 rerun_opts = rerun.to_s.strip.empty? ? "--format progress features" : "--format pretty #{rerun}"
-std_opts = "--format progress features --tags ~@wip -r features --strict"
+std_opts = "--format progress features --tags ~@wip --tag ~@wip-new-core -r features --strict"
 std_opts << " --tags ~@drb" if defined?(JRUBY_VERSION)
 begin
   require 'rspec/expectations'
@@ -10,7 +10,7 @@ rescue LoadError
   # rspec 1
   std_opts << ' --tags ~@rspec2'
 end
-wip_opts = "--color --tags @wip:3"
+wip_opts = "--color --tags @wip:3,@wip-new-core"
 wip_opts << ",@wip-jruby:3" if defined?(JRUBY_VERSION)
 
 legacy_opts = ''
@@ -25,5 +25,5 @@ ruby_1_9: <%= std_opts %> --tags ~@jruby
 ruby_2_0: <%= std_opts %> --tags ~@jruby
 wip: --wip <%= wip_opts %> features
 none: --format pretty
-rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip
+rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip --tag ~@wip-new-core
 legacy: legacy_features -r legacy_features -f progress --tags ~@spork <%= legacy_opts %>

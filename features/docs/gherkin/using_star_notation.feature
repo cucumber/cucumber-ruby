@@ -1,3 +1,4 @@
+@wip-new-core
 Feature: Using star notation instead of Given/When/Then
 
   Cucumber supports the star notation when writing features: instead of

@@ -1,3 +1,4 @@
+@wip-new-core
 Feature: Snippets
 
   Cucumber helpfully prints out any undefined step definitions as a code

@@ -1,3 +1,4 @@
+@wip-new-core
 Feature: Pretty formatter - Printing messages
 
   When you want to print to Cucumber's output, just call `puts` from
