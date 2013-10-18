@@ -29,6 +29,11 @@ module Cucumber
             hook.invoke('After', scenario)
           end
         end
+        ruby.hooks_for(:around, scenario).each do |hook|
+          mapper.around do |run_scenario|
+            hook.invoke('Around', scenario, &run_scenario)
+          end
+        end
       end
 
       def runtime

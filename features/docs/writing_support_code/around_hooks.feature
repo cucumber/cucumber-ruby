@@ -1,4 +1,3 @@
-@wip-new-core
 @spawn
 Feature: Around hooks
 
@@ -39,6 +38,7 @@ Feature: Around hooks
 
       """
 
+  @wip-new-core
   Scenario: Multiple Around hooks
     Given a file named "features/step_definitions/steps.rb" with:
       """
@@ -132,6 +132,7 @@ Feature: Around hooks
 
       """
 
+  @wip-new-core
   Scenario: Around hooks with tags
     Given a file named "features/step_definitions/steps.rb" with:
       """
@@ -186,6 +187,7 @@ Feature: Around hooks
 
       """
 
+  @wip-new-core
   Scenario: Around hooks with scenario outlines
     Given a file named "features/step_definitions/steps.rb" with:
       """
