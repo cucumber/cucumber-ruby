@@ -104,8 +104,10 @@ module Autotest::CucumberMixin
         $stdout.sync = old_sync
       end
       self.features_to_run = dirty_features_file.read.strip
-      self.features_to_run.split("\n") =~ /(:[0-9]+)+$/i
-      self.failed_scenarios_count = self.features_to_run.count(':')
+      self.failed_scenarios_count = 
+        self.features_to_run.split("\n").inject(0) do |count, feature|
+          count += feature.match(/((?::[0-9]+)+)$/i).captures[0].count(":") 
+        end
       self.tainted = true unless self.features_to_run == ''
     end
     hook :ran_features
