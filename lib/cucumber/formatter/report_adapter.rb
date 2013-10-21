@@ -26,6 +26,7 @@ module Cucumber
       def before_test_step(test_step); end
 
       def after_test_step(test_step, result)
+        DebugPrinter.new(test_step) if ENV['DEBUG']
         test_step.describe_source_to(printer, result)
       end
 
@@ -35,6 +36,19 @@ module Cucumber
 
       def after_suite
         printer.after
+      end
+
+      class DebugPrinter
+        def initialize(step)
+          @messages = []
+          step.describe_to self
+          @messages << step.name if step.respond_to? :name
+          step.describe_source_to self
+          p @messages
+        end
+        def method_missing(message, *args)
+          @messages << message
+        end
       end
 
       private
