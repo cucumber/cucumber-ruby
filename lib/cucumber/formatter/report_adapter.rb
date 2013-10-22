@@ -301,11 +301,11 @@ module Cucumber
 
         def print
           formatter.before_step(legacy_step)
-          formatter.before_step_result(step_result)
+          step_result.before(formatter)
           print_step
           print_multiline_arg
           print_exception
-          formatter.after_step_result(step_result)
+          step_result.after(formatter)
           formatter.after_step(legacy_step)
         end
 
@@ -630,7 +630,6 @@ module Cucumber
         end
       end
 
-      require 'cucumber/ast/step_result'
       class LegacyResultBuilder
         def initialize(result)
           result.describe_to(self)
@@ -659,7 +658,7 @@ module Cucumber
         def duration(*); end
 
         def step_result(step_match, background = nil)
-          Ast::StepResult.new(:keyword, step_match, :multiline_arg, @status, @exception, :source_indent, background, :file_colon_line)
+          Legacy::Ast::StepResult.new(:keyword, step_match, :multiline_arg, @status, @exception, :source_indent, background, :file_colon_line)
         end
 
         def scenario(name, location)
@@ -671,6 +670,24 @@ module Cucumber
         end
 
         LegacyScenario = Struct.new(:status, :name, :location)
+      end
+
+      module Legacy
+        module Ast
+          StepResult = Struct.new(:keyword, :step_match, :multiline_arg, :status, :exception, :source_indent, :background, :file_colon_line) do
+            def before(formatter)
+              formatter.before_step_result(*attributes)
+            end
+
+            def after(formatter)
+              formatter.after_step_result(*attributes)
+            end
+
+            def attributes
+              [keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line]
+            end
+          end
+        end
       end
 
     end

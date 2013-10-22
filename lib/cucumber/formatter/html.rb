@@ -236,36 +236,34 @@ module Cucumber
         move_progress
       end
 
-      def before_step_result(step_result)
-        #TODO: What is this used for?
-        @step_match = step_result.step_match
+      def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
+        @step_match = step_match
         @hide_this_step = false
-        if step_result.exception
-          if @exceptions.include?(step_result.exception)
+        if exception
+          if @exceptions.include?(exception)
             @hide_this_step = true
             return
           end
-          @exceptions << step_result.exception
+          @exceptions << exception
         end
-        if step_result.status != :failed && @in_background ^ step_result.background
+        if status != :failed && @in_background ^ background
           @hide_this_step = true
           return
         end
-        @status = step_result.status
+        @status = status
         return if @hide_this_step
-        set_scenario_color(step_result.status)
-        @builder << "<li id='#{@step_id}' class='step #{step_result.status}'>"
+        set_scenario_color(status)
+        @builder << "<li id='#{@step_id}' class='step #{status}'>"
       end
 
-      def after_step_result(step_result)
+      def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
         return if @hide_this_step
         # print snippet for undefined steps
-        if step_result.status == :undefined
+        if status == :undefined
           keyword = @step.actual_keyword if @step.respond_to?(:actual_keyword)
           step_multiline_class = @step.multiline_arg ? @step.multiline_arg.class : nil
           @builder.pre do |pre|
-            #TODO: Deal with step_match name nastiness
-            pre << @runtime.snippet_text(keyword,step_result.step_name || '',step_result.step_multiline_class)
+            pre << @runtime.snippet_text(keyword,step_match.instance_variable_get("@name") || '',step_multiline_class)
           end
         end
         @builder << '</li>'

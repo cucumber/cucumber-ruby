@@ -26,19 +26,19 @@ module Cucumber
         @start_time = Time.now
       end
 
-      def before_step_result(step_result)
+      def before_step_result(*args)
         @duration = Time.now - @start_time
       end
 
-      def after_step_result(step_result)
-        step_definition = step_result.step_definition
+      def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
+        step_definition = step_match.step_definition
         unless step_definition.nil? # nil if it's from a scenario outline
           stepdef_key = StepDefKey.new(step_definition.regexp_source, step_definition.file_colon_line)
 
           @stepdef_to_match[stepdef_key] << {
-            :keyword => step_result.keyword,
-            :step_match => step_result.step_match,
-            :status => step_result.status,
+            :keyword => keyword,
+            :step_match => step_match,
+            :status => status,
             :file_colon_line => @step.file_colon_line,
             :duration => @duration
           }
