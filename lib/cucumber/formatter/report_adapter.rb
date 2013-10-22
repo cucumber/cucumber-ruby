@@ -300,18 +300,18 @@ module Cucumber
       StepPrinter = Struct.new(:formatter, :runtime, :indent, :step, :step_result, :background) do
 
         def print
-          formatter.before_step(legacy_step)
-          step_result.before(formatter)
-          print_step
-          print_multiline_arg
-          print_exception
-          step_result.after(formatter)
-          formatter.after_step(legacy_step)
+          legacy_step.describe_to(formatter) do
+            step_result.describe_to(formatter) do
+              print_step_name
+              print_multiline_arg
+              print_exception
+            end
+          end
         end
 
         private
 
-        def print_step
+        def print_step_name
           formatter.step_name(step.keyword, step_result.step_match, step_result.status, indent.of(step), background, step.location.to_s)
         end
 
@@ -327,32 +327,7 @@ module Cucumber
         end
 
         def legacy_step
-          LegacyStep.new(step_result, step)
-        end
-
-        LegacyStep = Struct.new(:step_result, :step) do
-          def status
-            step_result.status
-          end
-
-          def name
-            step.name
-          end
-
-          def dom_id
-
-          end
-
-          def multiline_arg
-
-          end
-
-          def actual_keyword
-            # TODO: This should return the keyword for the snippet
-            # `actual_keyword` translates 'And', 'But', etc. to 'Given', 'When',
-            # 'Then' as appropriate
-            "Given"
-          end
+          Legacy::Ast::Step.new(step_result, step)
         end
 
       end
@@ -672,21 +647,64 @@ module Cucumber
         LegacyScenario = Struct.new(:status, :name, :location)
       end
 
+      # Adapters to pass to the legacy API formatters that provide the interface
+      # of the old AST classes
       module Legacy
         module Ast
-          StepResult = Struct.new(:keyword, :step_match, :multiline_arg, :status, :exception, :source_indent, :background, :file_colon_line) do
-            def before(formatter)
-              formatter.before_step_result(*attributes)
-            end
 
-            def after(formatter)
-              formatter.after_step_result(*attributes)
+          StepResult = Struct.new(
+            :keyword,
+            :step_match,
+            :multiline_arg,
+            :status,
+            :exception,
+            :source_indent,
+            :background,
+            :file_colon_line) do
+
+            def describe_to(formatter)
+              formatter.before_step_result *attributes
+              yield
+              formatter.after_step_result *attributes
             end
 
             def attributes
               [keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line]
             end
           end
+
+          Step = Struct.new(:step_result, :step) do
+
+            def describe_to(formatter)
+              formatter.before_step(self)
+              yield
+              formatter.after_step(self)
+            end
+
+            def status
+              step_result.status
+            end
+
+            def name
+              step.name
+            end
+
+            def dom_id
+
+            end
+
+            def multiline_arg
+
+            end
+
+            def actual_keyword
+              # TODO: This should return the keyword for the snippet
+              # `actual_keyword` translates 'And', 'But', etc. to 'Given', 'When',
+              # 'Then' as appropriate
+              "Given"
+            end
+          end
+
         end
       end
 
