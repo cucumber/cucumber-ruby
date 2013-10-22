@@ -89,16 +89,6 @@ module Cucumber
           end
         end
 
-        def method_missing(message, *args)
-          raise "#{self.class} has no @child to send '#{message}' to. Perhaps you need to implement it?" unless @child
-          return super unless @child.respond_to?(message)
-          @child.send(message, *args)
-        end
-
-        def respond_to_missing?(message, include_private = false)
-          @child.respond_to?(message, include_private) || super
-        end
-
         def for_new(node, &block)
           @current_nodes ||= {}
           if @current_nodes[node.class] != node
@@ -121,6 +111,30 @@ module Cucumber
 
         def feature(feature, *)
           delegate_to FeaturePrinter, feature
+        end
+
+        def background(node, result)
+          @child.background(node, result)
+        end
+
+        def step(node, result)
+          @child.step(node, result)
+        end
+
+        def scenario(node, result)
+          @child.scenario(node, result)
+        end
+
+        def scenario_outline(node, result)
+          @child.scenario_outline(node, result)
+        end
+
+        def examples_table(node, result)
+          @child.examples_table(node, result)
+        end
+
+        def examples_table_row(node, result)
+          @child.examples_table_row(node, result)
         end
 
         after do
@@ -152,8 +166,20 @@ module Cucumber
           delegate_to ScenarioPrinter, scenario
         end
 
+        def step(node, result)
+          @child.step(node, result)
+        end
+
         def scenario_outline(scenario_outline, *)
           delegate_to ScenarioOutlinePrinter, scenario_outline
+        end
+
+        def examples_table(node, result)
+          @child.examples_table(node, result)
+        end
+
+        def examples_table_row(node, result)
+          @child.examples_table_row(node, result)
         end
 
         after do
@@ -372,9 +398,17 @@ module Cucumber
           OutlineStepsPrinter.new(formatter, runtime, indent).print(node)
         end
 
+        def step(node, result)
+          @child.step(node, result)
+        end
+
         def examples_table(examples_table, *)
           @child ||= ExamplesArrayPrinter.new(formatter, runtime).before
           @child.examples_table(examples_table)
+        end
+
+        def examples_table_row(node, result)
+          @child.examples_table_row(node, result)
         end
 
         after do
@@ -459,6 +493,14 @@ module Cucumber
           delegate_to ExamplesTablePrinter, examples_table
         end
 
+        def examples_table_row(node, result)
+          @child.examples_table_row(node, result)
+        end
+
+        def step(node, result)
+          @child.step(node, result)
+        end
+
         after do
           formatter.after_examples_array
         end
@@ -474,6 +516,10 @@ module Cucumber
 
         def examples_table_row(examples_table_row, *)
           delegate_to TableRowPrinter, ExampleTableRow.new(examples_table_row)
+        end
+
+        def step(node, result)
+          @child.step(node, result)
         end
 
         class ExampleTableRow < SimpleDelegator
