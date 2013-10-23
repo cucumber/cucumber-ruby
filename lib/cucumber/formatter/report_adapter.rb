@@ -275,8 +275,10 @@ module Cucumber
         def step(step, step_result, runtime, indent, background = nil)
           @steps ||= [].extend(Steps)
           steps << Step.new(step, step_result)
-          StepPrinter.new(formatter, runtime, indent, step, step_result, background).print
+          step_invocation = Legacy::Ast::StepInvocation.new(step_result, step)
+          StepPrinter.new(formatter, runtime, indent, step_invocation, background).print
         end
+
 
         module Steps
           def failed?
@@ -323,37 +325,31 @@ module Cucumber
 
       end
 
-      StepPrinter = Struct.new(:formatter, :runtime, :indent, :step, :step_result, :background) do
+      StepPrinter = Struct.new(:formatter, :runtime, :indent, :step_invocation, :background) do
 
         def print
-          legacy_step.describe_to(formatter) do
-            step_result.describe_to(formatter) do
-              print_step_name
-              print_multiline_arg
-              print_exception
-            end
+          step_invocation.describe_to(formatter) do
+            print_step_name
+            print_multiline_arg
+            print_exception
           end
         end
 
         private
 
         def print_step_name
-          formatter.step_name(step.keyword, step_result.step_match, step_result.status, indent.of(step), background, step.location.to_s)
+          formatter.step_name(step_invocation.keyword, step_invocation.step_match, step_invocation.status, indent.of(step_invocation), background, step_invocation.location.to_s)
         end
 
         def print_multiline_arg
-          return unless step.multiline_arg
-          MultilineArgPrinter.new(formatter, runtime).print(step.multiline_arg)
+          return unless step_invocation.multiline_arg
+          MultilineArgPrinter.new(formatter, runtime).print(step_invocation.multiline_arg)
         end
 
         def print_exception
-          return unless step_result.exception
-          raise step_result.exception if ENV['FAIL_FAST']
-          formatter.exception(step_result.exception, step_result.status)
-        end
-
-        def legacy_step
-          Legacy::Ast::Step.new(step_result, step)
+          return unless step_invocation.exception
+          raise step_invocation.exception if ENV['FAIL_FAST']
+          formatter.exception(step_invocation.exception, step_invocation.status)
         end
 
       end
@@ -700,22 +696,18 @@ module Cucumber
             :background,
             :file_colon_line) do
 
-            def describe_to(formatter)
-              formatter.before_step_result *attributes
-              yield
-              formatter.after_step_result *attributes
-            end
-
             def attributes
               [keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line]
             end
           end
 
-          Step = Struct.new(:step_result, :step) do
+          StepInvocation = Struct.new(:step_result, :step) do
 
             def describe_to(formatter)
               formatter.before_step(self)
+              formatter.before_step_result *step_result.attributes
               yield
+              formatter.after_step_result *step_result.attributes
               formatter.after_step(self)
             end
 
@@ -727,12 +719,28 @@ module Cucumber
               step.name
             end
 
+            def step_match
+              step_result.step_match
+            end
+
+            def keyword
+              step.keyword
+            end
+
+            def location
+              step.location
+            end
+
+            def exception
+              step_result.exception
+            end
+
             def dom_id
 
             end
 
             def multiline_arg
-
+              step.multiline_arg
             end
 
             def actual_keyword
