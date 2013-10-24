@@ -153,8 +153,8 @@ module Cucumber
       FeaturePrinter = Printer.new(:formatter, :runtime, :feature) do
         before do
           formatter.before_feature(feature)
-          Legacy::Ast::Comments.new(feature.comments).describe_to(formatter)
-          Legacy::Ast::Tags.new(feature.tags).describe_to(formatter)
+          Legacy::Ast::Comments.new(feature.comments).accept(formatter)
+          Legacy::Ast::Tags.new(feature.tags).accept(formatter)
           formatter.feature_name feature.keyword, indented(feature.name) # TODO: change the core's new AST to return name and description separately instead of this lumped-together field
         end
 
@@ -232,7 +232,7 @@ module Cucumber
       ScenarioPrinter = Printer.new(:formatter, :runtime, :node) do
         before do
           formatter.before_feature_element(node)
-          Legacy::Ast::Tags.new(node.tags).describe_to(formatter)
+          Legacy::Ast::Tags.new(node.tags).accept(formatter)
           formatter.scenario_name node.keyword, node.name, node.location.to_s, indent.of(node)
         end
 
@@ -328,7 +328,7 @@ module Cucumber
       StepPrinter = Struct.new(:formatter, :runtime, :indent, :step_invocation, :background) do
 
         def print
-          step_invocation.describe_to(formatter) do
+          step_invocation.accept(formatter) do
             print_step_name
             print_multiline_arg
             print_exception
@@ -389,7 +389,7 @@ module Cucumber
       ScenarioOutlinePrinter = Printer.new(:formatter, :runtime, :node) do
         before do
           formatter.before_feature_element(node)
-          Legacy::Ast::Tags.new(node.tags).describe_to(formatter)
+          Legacy::Ast::Tags.new(node.tags).accept(formatter)
           formatter.scenario_name node.keyword, node.name, node.location.to_s, indent.of(node)
           OutlineStepsPrinter.new(formatter, runtime, indent).print(node)
         end
@@ -676,7 +676,7 @@ module Cucumber
 
           Comments = Struct.new(:comments) do
 
-            def describe_to(formatter)
+            def accept(formatter)
               return if comments.empty?
               formatter.before_comment comments
               comments.each do |comment|
@@ -703,7 +703,7 @@ module Cucumber
 
           StepInvocation = Struct.new(:step_result, :step) do
 
-            def describe_to(formatter)
+            def accept(formatter)
               formatter.before_step(self)
               formatter.before_step_result *step_result.attributes
               yield
@@ -753,7 +753,7 @@ module Cucumber
 
           Tags = Struct.new(:tags) do
 
-            def describe_to(formatter)
+            def accept(formatter)
               formatter.before_tags tags
               tags.each do |tag|
                 formatter.tag_name tag.name
