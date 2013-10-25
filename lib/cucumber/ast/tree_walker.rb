@@ -28,12 +28,12 @@ module Cucumber
         self
       end
 
-      def broadcast_message(message, *args, &block)
+      def broadcast_message(message, *args)
         return self if Cucumber.wants_to_quit
         message = message.to_s.gsub('visit_', '')
         if block_given?
           send_to_all("before_#{message}", *args)
-          yield if block_given?
+          yield
           send_to_all("after_#{message}", *args)
         else
           send_to_all(message, *args)
