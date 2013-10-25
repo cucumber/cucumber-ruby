@@ -51,8 +51,7 @@ module Cucumber
       end
 
       def extract_method_name_from(call_stack_line)
-        matches = call_stack_line.match(/in `(?<method_name>.*)'/)
-        matches[:method_name]
+        call_stack_line.match(/in `(?<method_name>.*)'/)[:method_name]
       end
 
     end
