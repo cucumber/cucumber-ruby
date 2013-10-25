@@ -274,11 +274,10 @@ module Cucumber
 
         def step(step, step_result, runtime, indent, background = nil)
           @steps ||= [].extend(Steps)
-          steps << Step.new(step, step_result)
           step_invocation = Legacy::Ast::StepInvocation.new(step_result, step)
+          steps << step_invocation
           StepPrinter.new(formatter, runtime, indent, step_invocation, background).print
         end
-
 
         module Steps
           def failed?
@@ -304,20 +303,6 @@ module Cucumber
           end
         end
 
-        Step = Struct.new(:step, :step_result) do
-          extend Forwardable
-
-          def_delegators :step, :keyword, :name
-          def_delegators :step_result, :status, :exception
-
-          def failed?
-            status != :passed
-          end
-
-          def passed?
-            status == :passed
-          end
-        end
 
         after do
           formatter.after_steps(steps)
@@ -702,6 +687,10 @@ module Cucumber
           end
 
           StepInvocation = Struct.new(:step_result, :step) do
+            extend Forwardable
+
+            def_delegators :step, :keyword, :name, :multiline_arg, :location
+            def_delegators :step_result, :status, :exception, :step_match
 
             def accept(formatter)
               formatter.before_step(self)
@@ -711,36 +700,16 @@ module Cucumber
               formatter.after_step(self)
             end
 
-            def status
-              step_result.status
+            def failed?
+              status != :passed
             end
 
-            def name
-              step.name
-            end
-
-            def step_match
-              step_result.step_match
-            end
-
-            def keyword
-              step.keyword
-            end
-
-            def location
-              step.location
-            end
-
-            def exception
-              step_result.exception
+            def passed?
+              status == :passed
             end
 
             def dom_id
 
-            end
-
-            def multiline_arg
-              step.multiline_arg
             end
 
             def actual_keyword
