@@ -32,6 +32,6 @@ Feature: Using star notation instead of Given/When/Then
       You can implement step definitions for undefined steps with these snippets:
 
       Given(/^I have some cukes$/) do
-        pending # express the regexp above with the code you wish you had
+        pending
       end
       """
