@@ -207,9 +207,9 @@ module Cucumber
 
         def step(step, result)
           @child ||= StepsPrinter.new(formatter).before
-          step_result = LegacyResultBuilder.new(result).step_result(step_match(step), background)
-          runtime.step_visited step_result
-          @child.step step, step_result, runtime, indent, background
+          step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background)
+          runtime.step_visited step_invocation
+          @child.step_invocation step_invocation, runtime, background
         end
 
         after do
@@ -238,9 +238,9 @@ module Cucumber
 
         def step(step, result)
           @child ||= StepsPrinter.new(formatter).before
-          step_result = LegacyResultBuilder.new(result).step_result(step_match(step), background = nil)
-          runtime.step_visited step_result
-          @child.step step, step_result, runtime, indent
+          step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background = nil)
+          runtime.step_visited step_invocation
+          @child.step_invocation step_invocation, runtime
         end
 
         after do
@@ -253,10 +253,6 @@ module Cucumber
           runtime.step_match(step.name)
         rescue Cucumber::Undefined
           NoStepMatch.new(step, step.name)
-        end
-
-        def step_result(result, background)
-          LegacyResultBuilder.new(result).step_result(background)
         end
 
         def indent
@@ -272,11 +268,10 @@ module Cucumber
         attr_reader :steps
         private :steps
 
-        def step(step, step_result, runtime, indent, background = nil)
+        def step_invocation(step_invocation, runtime, background = nil)
           @steps ||= [].extend(Steps)
-          step_invocation = Legacy::Ast::StepInvocation.new(step_result, step)
           steps << step_invocation
-          StepPrinter.new(formatter, runtime, indent, step_invocation, background).print
+          StepPrinter.new(formatter, runtime, step_invocation).print
         end
 
         module Steps
@@ -310,31 +305,19 @@ module Cucumber
 
       end
 
-      StepPrinter = Struct.new(:formatter, :runtime, :indent, :step_invocation, :background) do
+      StepPrinter = Struct.new(:formatter, :runtime, :step_invocation) do
 
         def print
           step_invocation.accept(formatter) do
-            print_step_name
             print_multiline_arg
-            print_exception
           end
         end
 
         private
 
-        def print_step_name
-          formatter.step_name(step_invocation.keyword, step_invocation.step_match, step_invocation.status, indent.of(step_invocation), background, step_invocation.location.to_s)
-        end
-
         def print_multiline_arg
           return unless step_invocation.multiline_arg
           MultilineArgPrinter.new(formatter, runtime).print(step_invocation.multiline_arg)
-        end
-
-        def print_exception
-          return unless step_invocation.exception
-          raise step_invocation.exception if ENV['FAIL_FAST']
-          formatter.exception(step_invocation.exception, step_invocation.status)
         end
 
       end
@@ -415,9 +398,9 @@ module Cucumber
 
         def outline_step(step)
           step_match = NoStepMatch.new(step, step.name)
-          step_result = LegacyResultBuilder.new(Core::Test::Result::Skipped.new).
-            step_result(step_match, background = nil)
-          steps_printer.step step, step_result, runtime, indent, background = nil
+          step_invocation = LegacyResultBuilder.new(Core::Test::Result::Skipped.new).
+            step_invocation(step_match, step, indent, background = nil)
+          steps_printer.step_invocation step_invocation, runtime, background = nil
         end
 
         def examples_table(*);end
@@ -437,8 +420,8 @@ module Cucumber
 
         [:background, :scenario, :scenario_outline].each do |node_name|
           define_method(node_name) do |node, &descend|
-            record_width_of node
-            descend.call
+          record_width_of node
+          descend.call
           end
         end
 
@@ -527,29 +510,29 @@ module Cucumber
             max_width.result
           end
 
-           require 'gherkin/formatter/escaping'
-           FindMaxWidth = Struct.new(:index) do
-             include ::Gherkin::Formatter::Escaping
+          require 'gherkin/formatter/escaping'
+          FindMaxWidth = Struct.new(:index) do
+            include ::Gherkin::Formatter::Escaping
 
-             def examples_table(table, &descend)
-               @result = char_length_of(table.header.values[index])
-               descend.call
-             end
+            def examples_table(table, &descend)
+              @result = char_length_of(table.header.values[index])
+              descend.call
+            end
 
-             def examples_table_row(row, &descend)
-               width = char_length_of(row.values[index])
-               @result = width if width > result
-             end
+            def examples_table_row(row, &descend)
+              width = char_length_of(row.values[index])
+              @result = width if width > result
+            end
 
-             def result
-               @result ||= 0
-             end
+            def result
+              @result ||= 0
+            end
 
-             private
-             def char_length_of(cell)
-               escape_cell(cell).unpack('U*').length
-             end
-           end
+            private
+            def char_length_of(cell)
+              escape_cell(cell).unpack('U*').length
+            end
+          end
         end
       end
 
@@ -559,10 +542,10 @@ module Cucumber
         end
 
         def step(step, result)
-          step_result = LegacyResultBuilder.new(result).step_result(step_match(step))
-          runtime.step_visited step_result
-          @failed_step_result = step_result if result.failed?
-          @status = step_result.status unless @status == :failed
+          step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, :indent_not_needed)
+          runtime.step_visited step_invocation
+          @failed_step = step_invocation if result.failed?
+          @status = step_invocation.status unless @status == :failed
         end
 
         after do
@@ -572,8 +555,8 @@ module Cucumber
             formatter.after_table_cell(value)
           end
           formatter.after_table_row(legacy_table_row)
-          if @failed_step_result
-            formatter.exception @failed_step_result.exception, @failed_step_result.status
+          if @failed_step
+            formatter.exception @failed_step.exception, @failed_step.status
           end
         end
 
@@ -605,11 +588,11 @@ module Cucumber
           end
         end
 
-
         def exception
-          return nil unless @failed_step_result
-          @failed_step_result.exception
+          return nil unless @failed_step
+          @failed_step.exception
         end
+
       end
 
       class LegacyResultBuilder
@@ -639,8 +622,8 @@ module Cucumber
 
         def duration(*); end
 
-        def step_result(step_match, background = nil)
-          Legacy::Ast::StepResult.new(:keyword, step_match, :multiline_arg, @status, @exception, :source_indent, background, :file_colon_line)
+        def step_invocation(step_match, step, indent, background = nil)
+          Legacy::Ast::StepInvocation.new(step_match, @status, @exception, indent, background, step)
         end
 
         def scenario(name, location)
@@ -654,85 +637,107 @@ module Cucumber
         LegacyScenario = Struct.new(:status, :name, :location)
       end
 
-      # Adapters to pass to the legacy API formatters that provide the interface
-      # of the old AST classes
-      module Legacy
-        module Ast
+    end
 
-          Comments = Struct.new(:comments) do
+    # Adapters to pass to the legacy API formatters that provide the interface
+    # of the old AST classes
+    module Legacy
+      module Ast
 
-            def accept(formatter)
-              return if comments.empty?
-              formatter.before_comment comments
-              comments.each do |comment|
-                formatter.comment_line comment.to_s.strip
-              end
+        Comments = Struct.new(:comments) do
+
+          def accept(formatter)
+            return if comments.empty?
+            formatter.before_comment comments
+            comments.each do |comment|
+              formatter.comment_line comment.to_s.strip
             end
-
-          end
-
-          StepResult = Struct.new(
-            :keyword,
-            :step_match,
-            :multiline_arg,
-            :status,
-            :exception,
-            :source_indent,
-            :background,
-            :file_colon_line) do
-
-            def attributes
-              [keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line]
-            end
-          end
-
-          StepInvocation = Struct.new(:step_result, :step) do
-            extend Forwardable
-
-            def_delegators :step, :keyword, :name, :multiline_arg, :location
-            def_delegators :step_result, :status, :exception, :step_match
-
-            def accept(formatter)
-              formatter.before_step(self)
-              formatter.before_step_result *step_result.attributes
-              yield
-              formatter.after_step_result *step_result.attributes
-              formatter.after_step(self)
-            end
-
-            def failed?
-              status != :passed
-            end
-
-            def passed?
-              status == :passed
-            end
-
-            def dom_id
-
-            end
-
-            def actual_keyword
-              # TODO: This should return the keyword for the snippet
-              # `actual_keyword` translates 'And', 'But', etc. to 'Given', 'When',
-              # 'Then' as appropriate
-              "Given"
-            end
-          end
-
-          Tags = Struct.new(:tags) do
-
-            def accept(formatter)
-              formatter.before_tags tags
-              tags.each do |tag|
-                formatter.tag_name tag.name
-              end
-              formatter.after_tags tags
-            end
-
           end
 
         end
+
+        StepInvocation = Struct.new(:step_match,
+                                    :status,
+                                    :exception,
+                                    :indent,
+                                    :background,
+                                    :step) do
+          extend Forwardable
+
+          def_delegators :step, :keyword, :name, :multiline_arg, :location
+
+          def accept(formatter)
+            formatter.before_step(self)
+            formatter.before_step_result *step_result_attributes
+            print_step_name(formatter)
+            yield
+            print_exception(formatter)
+            formatter.after_step_result *step_result_attributes
+            formatter.after_step(self)
+          end
+
+          def step_result_attributes
+            [keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line]
+          end
+
+          def failed?
+            status != :passed
+          end
+
+          def passed?
+            status == :passed
+          end
+
+          def dom_id
+
+          end
+
+          def actual_keyword
+            # TODO: This should return the keyword for the snippet
+            # `actual_keyword` translates 'And', 'But', etc. to 'Given', 'When',
+            # 'Then' as appropriate
+            "Given"
+          end
+
+          def file_colon_line
+            location.to_s
+          end
+
+          private
+
+          def source_indent
+            indent.of(self)
+          end
+
+          def print_step_name(formatter)
+            formatter.step_name(
+              keyword,
+              step_match,
+              status,
+              source_indent,
+              background,
+              location.to_s)
+          end
+
+          def print_exception(formatter)
+            return unless step_invocation.exception
+            raise step_invocation.exception if ENV['FAIL_FAST']
+            formatter.exception(step_invocation.exception, step_invocation.status)
+          end
+        end
+
+        Tags = Struct.new(:tags) do
+
+          def accept(formatter)
+            formatter.before_tags tags
+            tags.each do |tag|
+              formatter.tag_name tag.name
+            end
+            formatter.after_tags tags
+          end
+
+        end
+
       end
 
     end
