@@ -50,7 +50,7 @@ Feature: Cucumber command line
       You can implement step definitions for undefined steps with these snippets:
 
       Given(/^this does not exist$/) do
-        pending
+        pending # Write code here that turns the phrase above into concrete actions
       end
 
       """

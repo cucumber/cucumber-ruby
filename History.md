@@ -1,5 +1,9 @@
 ## [In git master](https://github.com/cucumber/cucumber/compare/v1.3.8...master)
 
+### New features
+
+* Better snippet comment ([579](https://github.com/cucumber/cucumber/pull/579) Jeff Nyman)
+
 ### Features removed
 
 * Removed deprecated StepMother and Ast::Visitor classes (Matt Wynne)
