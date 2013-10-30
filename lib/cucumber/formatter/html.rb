@@ -1,5 +1,5 @@
 require 'erb'
-require 'cucumber/formatter/ordered_xml_markup'
+require 'builder'
 require 'cucumber/formatter/duration'
 require 'cucumber/formatter/io'
 
@@ -583,7 +583,7 @@ module Cucumber
       end
 
       def create_builder(io)
-        OrderedXmlMarkup.new(:target => io, :indent => 0)
+        Builder::XmlMarkup.new(:target => io, :indent => 0)
       end
 
       class SnippetExtractor #:nodoc:

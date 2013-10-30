@@ -1,4 +1,4 @@
-require 'cucumber/formatter/ordered_xml_markup'
+require 'builder'
 require 'cucumber/formatter/io'
 require 'cucumber/formatter/interceptor'
 require 'fileutils'
@@ -33,7 +33,7 @@ module Cucumber
       def before_feature(feature)
         @current_feature = feature
         @failures = @errors = @tests = @skipped = 0
-        @builder = OrderedXmlMarkup.new( :indent => 2 )
+        @builder = Builder::XmlMarkup.new( :indent => 2 )
         @time = 0
         # In order to fill out <system-err/> and <system-out/>, we need to
         # intercept the $stderr and $stdout
@@ -47,7 +47,7 @@ module Cucumber
       end
 
       def after_feature(feature)
-        @testsuite = OrderedXmlMarkup.new( :indent => 2 )
+        @testsuite = Builder::XmlMarkup.new( :indent => 2 )
         @testsuite.instruct!
         @testsuite.testsuite(
           :failures => @failures,
