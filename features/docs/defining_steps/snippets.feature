@@ -19,7 +19,7 @@ Feature: Snippets
     Then the output should contain:
       """
       Given(/^a pystring$/) do |string|
-        pending
+        pending # Write code here that turns the phrase above into concrete actions
       end
       """
 
@@ -37,6 +37,6 @@ Feature: Snippets
       """
       Given(/^a table$/) do |table|
         # table is a Cucumber::Ast::Table
-        pending
+        pending # Write code here that turns the phrase above into concrete actions
       end
       """

@@ -29,7 +29,7 @@ module Cucumber
 
           snippet_text.should == unindented(%{
           Given(/^A "(.*?)" with (\\d+) spaces$/) do |arg1, arg2|
-            pending
+            pending # Write code here that turns the phrase above into concrete actions
           end
           })
         end
@@ -39,7 +39,7 @@ module Cucumber
 
           snippet_text.should == unindented(%{
           Given(/^Cloud (\\d+) yeah$/) do |arg1|
-            pending
+            pending # Write code here that turns the phrase above into concrete actions
           end
           })
         end
@@ -51,7 +51,7 @@ module Cucumber
           snippet_text.should == unindented(%{
           Given(/^I have (\\d+) "(.*?)" cukes in (\\d+) "(.*?)"$/) do |arg1, arg2, arg3, arg4, table|
             # table is a Cucumber::Ast::Table
-            pending
+            pending # Write code here that turns the phrase above into concrete actions
           end
           })
         end
@@ -61,7 +61,7 @@ module Cucumber
 
           snippet_text.should == unindented(%{
           Given(/^A "(.*?)" arg$/) do |arg1|
-            pending
+            pending # Write code here that turns the phrase above into concrete actions
           end
           })
         end
@@ -71,7 +71,7 @@ module Cucumber
 
           snippet_text.should == unindented(%{
           Given(/^A "(.*?)" and "(.*?)" arg$/) do |arg1, arg2|
-            pending
+            pending # Write code here that turns the phrase above into concrete actions
           end
           })
         end
@@ -81,7 +81,7 @@ module Cucumber
 
           snippet_text.should == unindented(%{
           Given(/^A first arg$/) do
-            pending
+            pending # Write code here that turns the phrase above into concrete actions
           end
           })
         end
@@ -93,7 +93,7 @@ module Cucumber
           snippet_text.should == unindented(%{
           Given(/^A "(.*?)" arg$/) do |arg1, table|
             # table is a Cucumber::Ast::Table
-            pending
+            pending # Write code here that turns the phrase above into concrete actions
           end
           })
         end
@@ -105,7 +105,7 @@ module Cucumber
         it "renders snippet as unwrapped regular expression" do
           snippet.to_s.should eql unindented(%{
           Given /^we have a missing step$/ do
-            pending
+            pending # Write code here that turns the phrase above into concrete actions
           end
           })
         end
@@ -117,7 +117,7 @@ module Cucumber
         it "renders snippet as percent-style regular expression" do
           snippet.to_s.should eql unindented(%{
           Given %r{^we have a missing step$} do
-            pending
+            pending # Write code here that turns the phrase above into concrete actions
           end
           })
         end
