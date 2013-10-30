@@ -44,7 +44,7 @@ module Cucumber
           do_block = ""
           do_block << "do#{arguments}\n"
           do_block << multiline_comment if multiline_argument_class?
-          do_block << "  pending # express the regexp above with the code you wish you had\n"
+          do_block << "  pending\n"
           do_block << "end"
           do_block
         end

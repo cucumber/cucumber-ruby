@@ -18,7 +18,7 @@ Feature: Snippets
     Then the output should contain:
       """
       Given(/^a pystring$/) do |string|
-        pending # express the regexp above with the code you wish you had
+        pending
       end
       """
 
@@ -36,6 +36,6 @@ Feature: Snippets
       """
       Given(/^a table$/) do |table|
         # table is a Cucumber::Ast::Table
-        pending # express the regexp above with the code you wish you had
+        pending
       end
       """
