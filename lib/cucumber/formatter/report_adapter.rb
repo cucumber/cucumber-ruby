@@ -159,7 +159,13 @@ module Cucumber
         end
 
         def background(node, *)
-          delegate_to BackgroundPrinter, node
+          @child.after if @child
+          if @current_background == node
+            @child = HiddenBackgroundPrinter.new(runtime, node)
+          else
+            @current_background = node
+            @child = BackgroundPrinter.new(formatter, runtime, node).before
+          end
         end
 
         def scenario(node, *)
@@ -215,6 +221,31 @@ module Cucumber
         after do
           formatter.after_background(background)
         end
+
+        private
+
+        def step_match(step)
+          runtime.step_match(step.name)
+        rescue Cucumber::Undefined
+          NoStepMatch.new(step, step.name)
+        end
+
+        def indent
+          @indent ||= Indent.new(background)
+        end
+      end
+
+      # Printer to handle background steps for anything but the first scenario in a 
+      # feature. These steps should not be printed, but their results still need to 
+      # be recorded.
+      class HiddenBackgroundPrinter < Struct.new(:runtime, :background)
+
+        def step(step, result)
+          step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background)
+          runtime.step_visited step_invocation
+        end
+
+        def method_missing(*args);end
 
         private
 
