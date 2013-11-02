@@ -60,9 +60,7 @@ module Cucumber
       def record_test_case_result(test_case, result)
         scenario = LegacyResultBuilder.new(result).scenario(test_case.name, test_case.location)
         runtime.record_result(scenario)
-        yield scenario if block_given?
       end
-
 
       # Provides a DSL for making the printers themselves more terse
       class Printer < Struct
@@ -109,8 +107,11 @@ module Cucumber
           LegacyResultBuilder.new(result).describe_exception_to(formatter)
         end
 
-        def feature(feature, *)
-          delegate_to FeaturePrinter, feature
+        def feature(node, *)
+          return if node == @current_feature
+          @child.after if @child
+          @child = FeaturePrinter.new(formatter, runtime, node).before
+          @current_feature = node
         end
 
         def background(node, result)
@@ -138,7 +139,7 @@ module Cucumber
         end
 
         after do
-          formatter.after_features LegacyFeatures.new(timer.sec)
+          formatter.after_features Legacy::Ast::Features.new(timer.sec)
         end
 
         private
@@ -147,7 +148,6 @@ module Cucumber
           @timer ||= Cucumber::Core::Test::Timer.new
         end
 
-        LegacyFeatures = Struct.new(:duration)
       end
 
       FeaturePrinter = Printer.new(:formatter, :runtime, :feature) do
@@ -158,20 +158,20 @@ module Cucumber
           formatter.feature_name feature.keyword, indented(feature.name) # TODO: change the core's new AST to return name and description separately instead of this lumped-together field
         end
 
-        def background(background, *)
-          delegate_to BackgroundPrinter, background
+        def background(node, *)
+          delegate_to BackgroundPrinter, node
         end
 
-        def scenario(scenario, *)
-          delegate_to ScenarioPrinter, scenario
+        def scenario(node, *)
+          delegate_to ScenarioPrinter, node
         end
 
         def step(node, result)
           @child.step(node, result)
         end
 
-        def scenario_outline(scenario_outline, *)
-          delegate_to ScenarioOutlinePrinter, scenario_outline
+        def scenario_outline(node, *)
+          delegate_to ScenarioOutlinePrinter, node
         end
 
         def examples_table(node, result)
@@ -269,35 +269,10 @@ module Cucumber
         private :steps
 
         def step_invocation(step_invocation, runtime, background = nil)
-          @steps ||= [].extend(Steps)
+          @steps ||= Legacy::Ast::StepInvocations.new
           steps << step_invocation
           StepPrinter.new(formatter, runtime, step_invocation).print
         end
-
-        module Steps
-          def failed?
-            any?(&:failed?)
-          end
-
-          def passed?
-            all?(&:passed?)
-          end
-
-          def status
-            return :passed if passed?
-            failed_step.status
-          end
-
-          def exception
-            failed_step.exception if failed_step
-          end
-
-          private
-          def failed_step
-            detect(&:failed?)
-          end
-        end
-
 
         after do
           formatter.after_steps(steps)
@@ -409,42 +384,6 @@ module Cucumber
 
         def steps_printer
           @steps_printer ||= StepsPrinter.new(formatter).before
-        end
-      end
-
-      class Indent
-        def initialize(node)
-          @widths = []
-          node.describe_to(self)
-        end
-
-        [:background, :scenario, :scenario_outline].each do |node_name|
-          define_method(node_name) do |node, &descend|
-          record_width_of node
-          descend.call
-          end
-        end
-
-        [:step, :outline_step].each do |node_name|
-          define_method(node_name) do |node|
-            record_width_of node
-          end
-        end
-
-        def examples_table(*); end
-
-        def of(node)
-          max - node.name.length - node.keyword.length
-        end
-
-        private
-
-        def max
-          @widths.max
-        end
-
-        def record_width_of(node)
-          @widths << node.keyword.length + node.name.length + 1
         end
       end
 
@@ -595,6 +534,42 @@ module Cucumber
 
       end
 
+      class Indent
+        def initialize(node)
+          @widths = []
+          node.describe_to(self)
+        end
+
+        [:background, :scenario, :scenario_outline].each do |node_name|
+          define_method(node_name) do |node, &descend|
+          record_width_of node
+          descend.call
+          end
+        end
+
+        [:step, :outline_step].each do |node_name|
+          define_method(node_name) do |node|
+            record_width_of node
+          end
+        end
+
+        def examples_table(*); end
+
+        def of(node)
+          max - node.name.length - node.keyword.length
+        end
+
+        private
+
+        def max
+          @widths.max
+        end
+
+        def record_width_of(node)
+          @widths << node.keyword.length + node.name.length + 1
+        end
+      end
+
       class LegacyResultBuilder
         def initialize(result)
           result.describe_to(self)
@@ -627,17 +602,11 @@ module Cucumber
         end
 
         def scenario(name, location)
-          LegacyScenario.new(@status, name, location)
+          Legacy::Ast::Scenario.new(@status, name, location)
         end
 
         def describe_exception_to(formatter)
           formatter.exception(@exception, @status) if @exception
-        end
-
-        LegacyScenario = Struct.new(:status, :name, :location) do
-          def backtrace_line(step_name = "#{@keyword}: #{name}", line = self.location.line)
-            "#{location.on_line(line)}:in `#{step_name}'"
-          end
         end
 
       end
@@ -735,6 +704,32 @@ module Cucumber
           end
         end
 
+        class StepInvocations < Array
+          def failed?
+            any?(&:failed?)
+          end
+
+          def passed?
+            all?(&:passed?)
+          end
+
+          def status
+            return :passed if passed?
+            failed_step.status
+          end
+
+          def exception
+            failed_step.exception if failed_step
+          end
+
+          private
+
+          def failed_step
+            detect(&:failed?)
+          end
+        end
+
+
         Tags = Struct.new(:tags) do
 
           def accept(formatter)
@@ -746,6 +741,14 @@ module Cucumber
           end
 
         end
+
+        Scenario = Struct.new(:status, :name, :location) do
+          def backtrace_line(step_name = "#{@keyword}: #{name}", line = self.location.line)
+            "#{location.on_line(line)}:in `#{step_name}'"
+          end
+        end
+
+        Features = Struct.new(:duration)
 
       end
 

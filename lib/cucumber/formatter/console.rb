@@ -91,7 +91,7 @@ module Cucumber
       end
 
       def collect_failing_scenarios(runtime)
-        scenario_class = Cucumber::Formatter::LegacyResultBuilder::LegacyScenario
+        scenario_class = Cucumber::Formatter::Legacy::Ast::Scenario
         example_table_class = Cucumber::Ast::OutlineTable::ExampleRow
 
         runtime.scenarios(:failed).select do |s|
