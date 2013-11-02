@@ -306,7 +306,7 @@ Feature: Background
     
     """
 
-  @spawn @wip-new-core
+  @spawn
   Scenario: run a feature with scenario outlines that has a background that fails
     When I run `cucumber -q features/scenario_outline_failing_background.feature`
     Then it should fail with exactly:
@@ -334,10 +334,11 @@ Feature: Background
           | 10    |
 
     Failing Scenarios:
-    cucumber features/scenario_outline_failing_background.feature:6
+    cucumber features/scenario_outline_failing_background.feature:10
+    cucumber features/scenario_outline_failing_background.feature:16
 
-    2 scenarios (1 failed, 1 skipped)
-    4 steps (1 failed, 3 skipped)
+    2 scenarios (2 failed)
+    4 steps (2 failed, 2 skipped)
     0m0.012s
     
     """
@@ -397,7 +398,6 @@ Feature: Background
     
     """
 
-  @wip-new-core
   Scenario: background with multline args
     Given a file named "features/step_definitions/steps.rb" with:
       """

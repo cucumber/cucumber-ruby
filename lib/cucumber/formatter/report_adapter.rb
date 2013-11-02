@@ -164,15 +164,15 @@ module Cucumber
             @child.after if @child
             @child = BackgroundPrinter.new(formatter, runtime, node).before
           else
-            if @background_done
+            if @current_feature_element
               @child.after if @child
-              @child = HiddenBackgroundPrinter.new(runtime, node)
+              @child = HiddenBackgroundPrinter.new(formatter, runtime, node)
             end
           end
         end
 
         def scenario(node, *)
-          @background_done = true
+          @current_feature_element = node
           delegate_to ScenarioPrinter, node
         end
 
@@ -181,7 +181,7 @@ module Cucumber
         end
 
         def scenario_outline(node, *)
-          @background_done = true
+          @current_feature_element = node
           delegate_to ScenarioOutlinePrinter, node
         end
 
@@ -243,7 +243,7 @@ module Cucumber
       # Printer to handle background steps for anything but the first scenario in a 
       # feature. These steps should not be printed, but their results still need to 
       # be recorded.
-      class HiddenBackgroundPrinter < Struct.new(:runtime, :background)
+      class HiddenBackgroundPrinter < Struct.new(:formatter, :runtime, :background)
 
         def step(step, result)
           step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background)
@@ -308,6 +308,7 @@ module Cucumber
           @steps ||= Legacy::Ast::StepInvocations.new
           steps << step_invocation
           StepPrinter.new(formatter, runtime, step_invocation).print
+          self
         end
 
         after do
