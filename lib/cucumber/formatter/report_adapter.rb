@@ -650,7 +650,6 @@ module Cucumber
       module Ast
 
         Comments = Struct.new(:comments) do
-
           def accept(formatter)
             return if comments.empty?
             formatter.before_comment comments
@@ -658,7 +657,6 @@ module Cucumber
               formatter.comment_line comment.to_s.strip
             end
           end
-
         end
 
         StepInvocation = Struct.new(:step_match,
@@ -764,7 +762,6 @@ module Cucumber
 
 
         Tags = Struct.new(:tags) do
-
           def accept(formatter)
             formatter.before_tags tags
             tags.each do |tag|
@@ -772,7 +769,6 @@ module Cucumber
             end
             formatter.after_tags tags
           end
-
         end
 
         Scenario = Struct.new(:status, :name, :location) do
