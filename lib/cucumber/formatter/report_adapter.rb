@@ -58,7 +58,7 @@ module Cucumber
       end
 
       def record_test_case_result(test_case, result)
-        scenario = LegacyResultBuilder.new(result).scenario(test_case.name, test_case.location.to_s)
+        scenario = LegacyResultBuilder.new(result).scenario(test_case.name, test_case.location)
         runtime.record_result(scenario)
         yield scenario if block_given?
       end
@@ -634,7 +634,12 @@ module Cucumber
           formatter.exception(@exception, @status) if @exception
         end
 
-        LegacyScenario = Struct.new(:status, :name, :location)
+        LegacyScenario = Struct.new(:status, :name, :location) do
+          def backtrace_line(step_name = "#{@keyword}: #{name}", line = self.location.line)
+            "#{location.on_line(line)}:in `#{step_name}'"
+          end
+        end
+
       end
 
     end
@@ -701,6 +706,10 @@ module Cucumber
 
           def file_colon_line
             location.to_s
+          end
+
+          def step_invocation
+            self
           end
 
           private
