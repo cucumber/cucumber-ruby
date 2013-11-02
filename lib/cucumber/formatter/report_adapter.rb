@@ -729,9 +729,11 @@ module Cucumber
           end
 
           def print_exception(formatter)
-            return unless step_invocation.exception
-            raise step_invocation.exception if ENV['FAIL_FAST']
-            formatter.exception(step_invocation.exception, step_invocation.status)
+            return unless exception
+            raise exception if ENV['FAIL_FAST']
+            ex = exception.dup
+            ex.backtrace << "#{step.location}:in `#{step.keyword}#{step.name}'"
+            formatter.exception(ex, status)
           end
         end
 
