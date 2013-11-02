@@ -276,7 +276,7 @@ Feature: Background
 
     """
 
-  @spawn @wip-new-core
+  @spawn
   Scenario: run a feature with a background that fails
     When I run `cucumber -q features/failing_background.feature`
     Then it should fail with exactly:
@@ -298,9 +298,10 @@ Feature: Background
 
     Failing Scenarios:
     cucumber features/failing_background.feature:7
+    cucumber features/failing_background.feature:10
     
-    2 scenarios (1 failed, 1 skipped)
-    6 steps (1 failed, 5 skipped)
+    2 scenarios (2 failed)
+    6 steps (2 failed, 4 skipped)
     0m0.012s
     
     """

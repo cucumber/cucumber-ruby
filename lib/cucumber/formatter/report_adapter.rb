@@ -159,16 +159,20 @@ module Cucumber
         end
 
         def background(node, *)
-          @child.after if @child
-          if @current_background == node
-            @child = HiddenBackgroundPrinter.new(runtime, node)
-          else
+          if @current_background != node
             @current_background = node
+            @child.after if @child
             @child = BackgroundPrinter.new(formatter, runtime, node).before
+          else
+            if @background_done
+              @child.after if @child
+              @child = HiddenBackgroundPrinter.new(runtime, node)
+            end
           end
         end
 
         def scenario(node, *)
+          @background_done = true
           delegate_to ScenarioPrinter, node
         end
 
@@ -177,6 +181,7 @@ module Cucumber
         end
 
         def scenario_outline(node, *)
+          @background_done = true
           delegate_to ScenarioOutlinePrinter, node
         end
 
