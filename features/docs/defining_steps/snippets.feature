@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: Snippets
 
   Cucumber helpfully prints out any undefined step definitions as a code
@@ -23,6 +22,7 @@ Feature: Snippets
       end
       """
 
+  @wip-new-core
   Scenario: Snippet for undefined step with a step table
     Given a file named "features/undefined_steps.feature" with:
       """

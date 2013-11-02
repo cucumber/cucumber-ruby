@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: Formatter API: Step file path and line number (Issue #179)
   To all reporter to understand location of current executing step let's fetch this information
   from step/step_invocation and pass to reporters

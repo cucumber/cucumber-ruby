@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: One line step definitions
 
   Everybody knows you can do step definitions in Cucumber
