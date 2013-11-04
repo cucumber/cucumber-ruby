@@ -65,7 +65,6 @@ Feature: Run specific scenarios
       2 steps (2 passed)
       """
 
-  @wip-new-core
   Scenario: Specify the line number of a row
     Given a file named "features/test.feature" with:
       """
