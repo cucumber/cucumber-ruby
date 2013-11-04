@@ -298,9 +298,10 @@ Feature: Background
 
     Failing Scenarios:
     cucumber features/failing_background.feature:7
+    cucumber features/failing_background.feature:10
     
-    2 scenarios (1 failed, 1 skipped)
-    6 steps (1 failed, 5 skipped)
+    2 scenarios (2 failed)
+    6 steps (2 failed, 4 skipped)
     0m0.012s
     
     """
@@ -333,15 +334,16 @@ Feature: Background
           | 10    |
 
     Failing Scenarios:
-    cucumber features/scenario_outline_failing_background.feature:6
+    cucumber features/scenario_outline_failing_background.feature:10
+    cucumber features/scenario_outline_failing_background.feature:16
 
-    2 scenarios (1 failed, 1 skipped)
-    4 steps (1 failed, 3 skipped)
+    2 scenarios (2 failed)
+    4 steps (2 failed, 2 skipped)
     0m0.012s
     
     """
 
-  @spawn
+  @spawn @wip-new-core
   Scenario: run a feature with a background that is pending
     When I run `cucumber -q features/pending_background.feature`
     Then it should pass with exactly:
@@ -366,7 +368,7 @@ Feature: Background
     
     """
 
-  @spawn
+  @spawn @wip-new-core
   Scenario: background passes with first scenario but fails with second
     When I run `cucumber -q features/failing_background_after_success.feature`
     Then it should fail with exactly:

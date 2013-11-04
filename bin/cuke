@@ -4,166 +4,13 @@ $: << File.dirname(__FILE__) + '/../lib'
 $: << File.dirname(__FILE__) + '/../../cucumber-ruby-core/lib'
 
 require 'cucumber/platform'
-require 'cucumber/ast'
-require 'cucumber/feature_file'
-require 'cucumber/formatter/ansicolor'
 
 module Cucumber
-  module Colors
-    private
-
-    def green(string)
-      "\e[32m#{string}\e[0m"
-    end
-
-    def red(string)
-      "\e[31m#{string}\e[0m"
-    end
-
-    def cyan(string)
-      "\e[36m#{string}\e[0m"
-    end
-
-    def gray(string)
-      "\e[1;30m#{string}\e[0m"
-    end
-  end
-
-  class ProgressConsoleReport
-    include Cucumber::Colors
-
-    def before_test_case(test_case)
-      test_case.describe_source_to feature_printer
-      print "  #{test_case.name} "
-      print green('(')
-    end
-
-    def after_test_case(test_case, result)
-      result.describe_to ResultPrinter.new(") ")
-      result.describe_to ResultPrinter.new(result.to_s)
-      result.describe_to summary, test_case, result
-      puts
-    end
-
-    def before_test_step(step)
-    end
-
-    def after_test_step(step, result)
-      result.describe_to ResultPrinter.new(":")
-    end
-
-    def after_suite
-      summary.print
-    end
-
-    private
-
-    def feature_printer
-      @feature_printer ||= FeaturePrinter.new
-    end
-
-    def summary
-      @summary ||= Summary.new
-    end
-
-    class Summary
-      def initialize
-        @failed = []
-      end
-
-      def failed(test_case, result)
-        @failed << [test_case, result]
-      end
-
-      def exception(exception, test_case, result)
-      end
-
-      def duration(*)
-      end
-
-      def passed(test_case, result)
-      end
-
-      def print
-        if @failed.any?
-          puts
-          puts red("Failed scenarios:")
-          number = 1
-          @failed.each do |test_case, result|
-            puts
-            puts red("#{number}) #{test_case.location}")
-            puts
-            puts red(result.exception.message)
-            puts
-            puts cyan("# " + result.exception.backtrace.join("\n# "))
-            number += 1
-          end
-        end
-      end
-
-      include Cucumber::Colors
-    end
-
-    class FeaturePrinter
-      include Cucumber::Colors
-
-      def feature(feature)
-        return if feature == @current_feature
-        @current_feature = feature
-        puts
-        puts gray("# #{feature.location}")
-        puts feature.title
-      end
-
-      def scenario(*)
-      end
-
-      def scenario_outline(*)
-      end
-
-      def examples_table(*)
-      end
-
-      def examples_table_row(*)
-      end
-    end
-
-    class ResultPrinter
-      include Cucumber::Colors
-
-      def initialize(character)
-        @character = character
-      end
-
-      def passed
-        print green(@character)
-      end
-
-      def failed
-        print red(@character)
-      end
-
-      def skipped
-        print cyan(@character)
-      end
-
-      def duration(ms)
-      end
-
-      def exception(*)
-      end
-
-    end
-
-  end
 
   features_glob = ARGV[0] || 'features/**/*.feature'
   feature_files = Dir[features_glob].reject { |f| f =~ /iso-8859-1/ }
   puts "Running features:"
   p feature_files
-
-  # report = PrettyConsoleReport.new(PrettyPrinter.new)
-  report = ProgressConsoleReport.new
 
   require 'cucumber/core'
   extend Cucumber::Core
@@ -173,61 +20,40 @@ module Cucumber
     Cucumber::Core::Gherkin::Document.new(file, File.read(file))
   end
 
-  require 'cucumber/runtime'
-  require 'cucumber'
-  class ClassicMappings
+  require 'cucumber/mappings'
+  mappings = Mappings.new
 
-    def test_step(step, mapper)
-      step_match = runtime.step_match(step.name)
-      mapper.map { step_match.invoke(step.multiline_arg) }
-    rescue Cucumber::Undefined
+  require 'cucumber/formatter/report_adapter'
+  require 'cucumber/formatter/progress'
+  require 'cucumber/formatter/pretty'
+  formatter_options = {
+    skip_profile_information: true,
+    source: true,
+  }
+  formatter = Cucumber::Formatter::Pretty.new(mappings.runtime, STDOUT, formatter_options)
+  report = Cucumber::Formatter::ReportAdapter.new(mappings.runtime, formatter)
+
+  DebugReport = Class.new do
+    def before_test_case(test_case)
+      puts
+      puts test_case.inspect
     end
 
-    def test_case(test_case, mapper)
-      scenario = Scenario.new(test_case)
-      ruby = @ruby
-      mapper.before do
-        ruby.begin_rb_scenario(scenario)
-      end
-      @ruby.hooks_for(:before, scenario).each do |hook|
-        mapper.before do
-          hook.invoke('location', scenario)
-        end
-      end
+    def after_test_case(test_case, result)
     end
 
-    private
-
-    def support_files
-      Dir['features/**/*.rb']
+    def before_test_step(test_step)
+      puts '  ' + test_step.inspect
     end
 
-    def runtime
-      return @runtime if @runtime
-      result = Cucumber::Runtime.new
-      @ruby = result.load_programming_language('rb')
-      result.support_code.load_files!(support_files)
-      @runtime = result
+    def after_test_step(test_step, result)
     end
 
-
-    # adapts our test_case to look like the Cucumber Runtime's Scenario
-    class Scenario
-      def initialize(test_case)
-        @test_case = test_case
-      end
-
-      def accept_hook?(hook)
-        hook.tag_expressions.any? { |expression| @test_case.match_tags?(expression) }
-      end
-
-      def language
-        @test_case.language
-      end
+    def after_suite
     end
   end
+  #report = DebugReport.new
 
-  mappings = ClassicMappings.new
   require 'cucumber/core/test/tag_filter'
   execute features, mappings, report, [[Cucumber::Core::Test::TagFilter, ['~@jruby']]]
   report.after_suite

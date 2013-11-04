@@ -81,6 +81,7 @@ Feature: Profiles
       | -P           |
       | --no-profile |
 
+  @wip-new-core
   Scenario: Overriding the profile's features to run
     Given a file named "features/another.feature" with:
       """

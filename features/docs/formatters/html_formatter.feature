@@ -1,3 +1,4 @@
+@wip-new-core
 Feature: HTML output formatter
 
   Background:

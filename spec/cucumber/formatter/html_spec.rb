@@ -21,7 +21,6 @@ module Cucumber
       before(:each) do
         @out = StringIO.new
         @formatter = Html.new(runtime, @out, {})
-        runtime.visitor = @formatter
       end
 
       it "should not raise an error when visiting a blank feature name" do
@@ -51,6 +50,8 @@ module Cucumber
           define_feature <<-FEATURE
             # Healthy
             Feature: Foo
+              Scenario:
+                Given passing
           FEATURE
 
           it { @out.string.should =~ /^\<!DOCTYPE/ }
@@ -62,6 +63,8 @@ module Cucumber
           define_feature <<-FEATURE
             @foo
             Feature: can't have standalone tag :)
+              Scenario:
+                Given passing
           FEATURE
 
           it { @doc.should have_css_node('.feature .tag', /foo/) }
@@ -73,6 +76,9 @@ module Cucumber
               In order to find my inner monkey
               As a human
               I must eat bananas
+
+              Scenario:
+                Given passing
           FEATURE
 
           it { @doc.should have_css_node('.feature h2', /Bananas/) }

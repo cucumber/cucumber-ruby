@@ -45,6 +45,13 @@ module Cucumber
         runtime.write_stepdefs_json
         failure = runtime.results.failure? || Cucumber.wants_to_quit
         @kernel.exit(failure ? 1 : 0)
+      rescue FileNotFoundException => e
+        @err.puts(e.message)
+        @err.puts("Couldn't open #{e.path}")
+        @kernel.exit(1)
+      rescue FeatureFolderNotFoundException => e
+        @err.puts(e.message + ". Please create a #{e.path} directory to get started.")
+        @kernel.exit(1)
       rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
         @err.puts(e.message)
       rescue SystemExit => e

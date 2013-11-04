@@ -25,6 +25,7 @@ module Cucumber
         @options.parse!(args)
         arrange_formats
         raise("You can't use both --strict and --wip") if strict? && wip?
+        # todo: remove
         @options[:tag_expression] = Gherkin::TagExpression.new(@options[:tag_expressions])
         set_environment_variables
       end
@@ -129,8 +130,13 @@ module Cucumber
         logger
       end
 
+      # todo: remove
       def tag_expression
         Gherkin::TagExpression.new(@options[:tag_expressions])
+      end
+
+      def tag_expressions
+        @options[:tag_expressions]
       end
 
       def filters
@@ -149,12 +155,6 @@ module Cucumber
       def paths
         @options[:paths]
       end
-    private
-      def with_default_features_path(paths)
-        return ['features'] if paths.empty?
-        paths
-      end
-
 
       def formatters(runtime)
         @options[:formats].map do |format_and_out|
@@ -168,6 +168,12 @@ module Cucumber
             raise e
           end
         end
+      end
+
+    private
+      def with_default_features_path(paths)
+        return ['features'] if paths.empty?
+        paths
       end
 
       class LogFormatter < ::Logger::Formatter

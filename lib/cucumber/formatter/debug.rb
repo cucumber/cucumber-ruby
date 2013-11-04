@@ -9,6 +9,11 @@ module Cucumber
         @indent = 0
       end
 
+      def log(message)
+        return unless ENV['DEBUG']
+        @io.puts "* #{message}"
+      end
+
       def respond_to?(*args)
         true
       end

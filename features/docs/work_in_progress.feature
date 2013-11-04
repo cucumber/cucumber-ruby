@@ -1,3 +1,4 @@
+@wip-new-core
 @spawn
 Feature: Cucumber --work-in-progress switch
   In order to ensure that feature scenarios do not pass until they are expected to

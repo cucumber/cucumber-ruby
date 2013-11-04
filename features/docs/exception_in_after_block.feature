@@ -1,3 +1,4 @@
+@wip-new-core
 Feature: Exception in After Block
   In order to use custom assertions at the end of each scenario
   As a developer

@@ -1,3 +1,4 @@
+@wip-new-core
 @spawn
 Feature: JUnit output formatter
   In order for developers to create test reports with ant

@@ -29,6 +29,7 @@ Feature: Doc strings
   You can read the content type from the argument passed into your step definition, as shown
   in the example below.
 
+  @wip-new-core
   Scenario: Plain text Docstring
     Given a scenario with a step that looks like this:
       """gherkin
@@ -53,6 +54,7 @@ Feature: Doc strings
       Three
       """
 
+  @wip-new-core
   Scenario: DocString with interesting content type
     Given a scenario with a step that looks like this:
       """gherkin

@@ -1,3 +1,4 @@
+@wip-new-core
 Feature: Rerun formatter
 
   The rerun formatter writes an output that's perfect for

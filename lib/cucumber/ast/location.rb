@@ -13,6 +13,10 @@ module Cucumber
         "#{file}:#{line}"
       end
 
+      def to_str
+        to_s
+      end
+
       def on_line(new_line)
         Location.new(file, new_line)
       end

@@ -1,3 +1,4 @@
+@wip-new-core
 Feature: Scenario Outlines
 
   Scenario: Scenario Outline requires Example Section

@@ -21,21 +21,6 @@ module Cucumber
             run_defined_feature
           end
 
-          describe "basic feature" do
-            define_feature <<-FEATURE
-            Feature: Bananas
-              In order to find my inner monkey
-              As a human
-              I must eat bananas
-            FEATURE
-
-            it "prints out the feature description" do
-              @out.string.should include "Feature: Bananas"
-              @out.string.should include "I must eat bananas"
-            end
-
-          end
-
           describe "with a scenario" do
             define_feature <<-FEATURE
           Feature: Banana party
@@ -43,6 +28,29 @@ module Cucumber
             Scenario: Monkey eats banana
               Given there are bananas
             FEATURE
+
+            it "outputs the scenario name" do
+              @out.string.should include "Scenario: Monkey eats banana"
+            end
+            it "outputs the step" do
+              @out.string.should include "Given there are bananas"
+            end
+          end
+
+          describe "with a background" do
+            define_feature <<-FEATURE
+Feature: Banana party
+
+  Background: 
+    Given a tree
+
+  Scenario: Monkey eats banana
+    Given there are bananas
+            FEATURE
+
+            it "outputs the gherkin" do
+              @out.string.should include self.class.feature_content
+            end
 
             it "outputs the scenario name" do
               @out.string.should include "Scenario: Monkey eats banana"
@@ -91,6 +99,29 @@ module Cucumber
               @out.string.should include "4 steps (4 undefined)"
             end
 
+            context 'when the examples table header is wider than the rows' do
+              define_feature <<-FEATURE
+          Feature: Monkey Business
+
+            Scenario Outline: Types of monkey
+              Given there are <Types of monkey>
+
+              Examples:
+               | Types of monkey |
+               | Hominidae       |
+              FEATURE
+
+              it "outputs the scenario outline" do
+                lines = <<-OUTPUT
+              Examples:
+               | Types of monkey |
+               | Hominidae       |
+                OUTPUT
+                lines.split("\n").each do |line|
+                  @out.string.should include line.strip
+                end
+              end
+            end
           end
 
           # To ensure https://rspec.lighthouseapp.com/projects/16211/tickets/475 remains fixed.
@@ -242,21 +273,6 @@ OUTPUT
         describe "given a single feature" do
           before(:each) do
             run_defined_feature
-          end
-
-          describe "basic feature" do
-            define_feature <<-FEATURE
-            Feature: Bananas
-              In order to find my inner monkey
-              As a human
-              I must eat bananas
-            FEATURE
-
-            it "prints out the feature description" do
-              @out.string.should include "Feature: Bananas"
-              @out.string.should include "I must eat bananas"
-            end
-
           end
 
           describe "with a scenario" do

@@ -1,3 +1,4 @@
+@wip-new-core
 Feature: Run feature elements matching a name with --name/-n
 
   The `--name NAME` option runs only scenarios which match a certain

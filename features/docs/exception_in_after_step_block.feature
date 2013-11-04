@@ -1,3 +1,4 @@
+@wip-new-core
 Feature: Exception in AfterStep Block
   In order to use custom assertions at the end of each step
   As a developer

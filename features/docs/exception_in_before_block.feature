@@ -1,3 +1,4 @@
+@wip-new-core
 Feature: Exception in Before Block
   In order to know with confidence that my before blocks have run OK
   As a developer

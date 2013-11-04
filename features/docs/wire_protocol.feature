@@ -1,3 +1,4 @@
+@wip-new-core
 @wire
 Feature: Wire Protocol
   In order to be allow Cucumber to touch my app in intimate places

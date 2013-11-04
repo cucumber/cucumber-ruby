@@ -3,6 +3,7 @@ Feature: Getting started
   To get started, just open a command prompt in an empty directory and run 
   `cucumber`. You'll be prompted for what to do next.
 
+  @wip-new-core
   @spawn
   Scenario: Run Cucumber in an empty directory
     Given a directory without standard Cucumber project directory structure

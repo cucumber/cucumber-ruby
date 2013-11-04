@@ -160,7 +160,7 @@ module Cucumber::Formatter
             Examples:
               | skip   |
               | undefined |
-              | undefined  |
+              | still undefined  |
         FEATURE
 
         it { @doc.to_s.should =~ /skipped="2"/}

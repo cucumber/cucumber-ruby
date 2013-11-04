@@ -1,3 +1,4 @@
+@wip-new-core
 @spawn
 Feature: Rake task
   In order to ease the development process

@@ -11,6 +11,7 @@ Feature: Wire protocol tags
 
       """
 
+  @wip-new-core
   Scenario: Run a scenario
     Given a file named "features/wired.feature" with:
       """
@@ -44,6 +45,7 @@ Feature: Wire protocol tags
 
       """
 
+  @wip-new-core
   Scenario: Run a scenario outline example
   Given a file named "features/wired.feature" with:
     """

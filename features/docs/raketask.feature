@@ -34,6 +34,7 @@ Feature: Raketask
         end
       """
 
+  @wip-new-core
   Scenario: Passing feature
     When I run `bundle exec rake pass`
     Then the exit status should be 0

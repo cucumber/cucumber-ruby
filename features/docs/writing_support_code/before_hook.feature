@@ -1,5 +1,6 @@
 Feature: Before Hook
 
+  @wip-new-core
   Scenario: Examine names of elements
     Given a file named "features/foo.feature" with:
       """

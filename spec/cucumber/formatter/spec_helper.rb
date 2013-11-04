@@ -14,7 +14,7 @@ module Cucumber
       end
     end
 
-    module SpecHelper
+    module OldSpecHelper
       def run_defined_feature
         define_steps
         features = load_features(self.class.feature_content || raise("No feature content defined!"))
@@ -37,6 +37,7 @@ module Cucumber
       def run(features)
         configuration = Cucumber::Configuration.default
         tree_walker = Cucumber::Ast::TreeWalker.new(runtime, [@formatter], configuration)
+        runtime.visitor = tree_walker
         features.accept(tree_walker)
       end
 
@@ -48,5 +49,50 @@ module Cucumber
         dsl.instance_exec &step_defs
       end
     end
+
+    require 'cucumber/core'
+    module NewSpecHelper
+      include Core
+
+      def run_defined_feature
+        define_steps
+        runtime.visitor = report
+        execute [gherkin_doc], mappings, report
+        report.after_suite # TODO: move into core
+      end
+
+      require 'cucumber/mappings'
+      def mappings
+        @mappings ||= Mappings.new
+      end
+
+      require 'cucumber/formatter/report_adapter'
+      def report
+        @report ||= Cucumber::Formatter::ReportAdapter.new runtime, @formatter
+      end
+
+      require 'cucumber/core/gherkin/document'
+      def gherkin_doc
+        Core::Gherkin::Document.new(self.class.feature_filename, gherkin)
+      end
+
+      def gherkin
+        self.class.feature_content || raise("No feature content defined!")
+      end
+
+      def runtime
+        mappings.runtime
+      end
+
+      def define_steps
+        return unless step_defs = self.class.step_defs
+        rb = runtime.load_programming_language('rb')
+        dsl = Object.new
+        dsl.extend RbSupport::RbDsl
+        dsl.instance_exec &step_defs
+      end
+    end
+
+    SpecHelper = ENV['USE_LEGACY'] ? OldSpecHelper : NewSpecHelper
   end
 end

@@ -4,7 +4,7 @@ Feature: Tagged hooks
     Given the standard step definitions
     And a file named "features/support/hooks.rb" with:
       """
-      Before('~@no-boom') do 
+      Before('~@no-boom') do
         raise 'boom'
       end
       """
@@ -18,8 +18,10 @@ Feature: Tagged hooks
         Scenario: omitting hook
           Given this step passes
       """
+
+  @wip-new-core
   @spawn
-  Scenario: omit tagged hook
+  Scenario: Invoke tagged hook
     When I run `cucumber features/f.feature:2`
     Then it should fail with:
       """
@@ -38,7 +40,7 @@ Feature: Tagged hooks
 
       """
 
-    Scenario: omit tagged hook
+    Scenario: Omit tagged hook
       When I run `cucumber features/f.feature:6`
       Then it should pass with:
         """

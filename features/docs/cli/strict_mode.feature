@@ -11,6 +11,7 @@ Feature: Strict mode
         Given this step passes
     """
 
+  @wip-new-core
   Scenario: Fail with --strict
     When I run `cucumber -q features/missing.feature --strict`
     Then it should fail with:

@@ -32,7 +32,7 @@ module Cucumber
 
       def format_step(keyword, step_match, status, source_indent)
         comment = if source_indent
-          c = (' # ' + step_match.file_colon_line).indent(source_indent)
+          c = ('# ' + step_match.file_colon_line).indent(source_indent)
           format_string(c, :comment)
         else
           ''
@@ -77,17 +77,9 @@ module Cucumber
       end
 
       def print_stats(features, options)
-        @failures = runtime.scenarios(:failed).select { |s| s.is_a?(Cucumber::Ast::Scenario) || s.is_a?(Cucumber::Ast::OutlineTable::ExampleRow) }
-        @failures.collect! { |s| (s.is_a?(Cucumber::Ast::OutlineTable::ExampleRow)) ? s.scenario_outline : s }
-
-        if !@failures.empty?
-          @io.puts format_string("Failing Scenarios:", :failed)
-          @failures.each do |failure|
-            profiles_string = options.custom_profiles.empty? ? '' : (options.custom_profiles.map{|profile| "-p #{profile}" }).join(' ') + ' '
-            source = options[:source] ? format_string(" # Scenario: " + failure.name, :comment) : ''
-            @io.puts format_string("cucumber #{profiles_string}" + failure.file_colon_line, :failed) + source
-          end
-          @io.puts
+        failures = collect_failing_scenarios(runtime)
+        if !failures.empty?
+          print_failing_scenarios(failures, options.custom_profiles, options[:source])
         end
 
         @io.puts scenario_summary(runtime) {|status_count, status| format_string(status_count, status)}
@@ -96,6 +88,27 @@ module Cucumber
         @io.puts(format_duration(features.duration)) if features && features.duration
 
         @io.flush
+      end
+
+      def collect_failing_scenarios(runtime)
+        scenario_class = Cucumber::Formatter::Legacy::Ast::Scenario
+        example_table_class = Cucumber::Ast::OutlineTable::ExampleRow
+
+        runtime.scenarios(:failed).select do |s|
+          [scenario_class, example_table_class].include?(s.class)
+        end.map do |s|
+          s.is_a?(example_table_class)? s.scenario_outline : s
+        end
+      end
+
+      def print_failing_scenarios(failures, custom_profiles, given_source)
+        @io.puts format_string("Failing Scenarios:", :failed)
+        failures.each do |failure|
+          profiles_string = custom_profiles.empty? ? '' : (custom_profiles.map{|profile| "-p #{profile}" }).join(' ') + ' '
+          source = given_source ? format_string(" # Scenario: " + failure.name, :comment) : ''
+          @io.puts format_string("cucumber #{profiles_string}" + failure.location, :failed) + source
+        end
+        @io.puts
       end
 
       def print_exception(e, status, indent)
