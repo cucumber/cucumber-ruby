@@ -64,6 +64,7 @@ module Cucumber
 
       # Provides a DSL for making the printers themselves more terse
       class Printer < Struct
+        # TODO: unfactor this
         def self.before(&block)
           define_method(:before) do
             instance_eval(&block)
@@ -71,6 +72,7 @@ module Cucumber
           end
         end
 
+        # TODO: unfactor this
         def self.after(&block)
           define_method(:after) do
             @child.after if @child
@@ -119,6 +121,7 @@ module Cucumber
         end
 
         def step(node, result)
+          # TODO: Create StepInvocation here and send it down.
           @child.step(node, result)
         end
 
@@ -159,16 +162,16 @@ module Cucumber
         end
 
         def background(node, *)
-          if @current_background != node
-            @current_background = node
-            @child.after if @child
-            @child = BackgroundPrinter.new(formatter, runtime, node).before
+          if background_printed?
+            @child.after
+            @child = HiddenBackgroundPrinter.new(formatter, runtime, node)
           else
-            if @current_feature_element
-              @child.after if @child
-              @child = HiddenBackgroundPrinter.new(formatter, runtime, node)
-            end
+            @child ||= BackgroundPrinter.new(formatter, runtime, node).before
           end
+        end
+
+        def background_printed?
+          @current_feature_element
         end
 
         def scenario(node, *)
