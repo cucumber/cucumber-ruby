@@ -15,6 +15,12 @@ We appreciate that. But before you do, please learn our basic rules:
 
 This document is a guide for those maintaining Cucumber, and others who would like to submit patches.
 
+## WARNING
+
+The master branch is the in-development branch for version 2.0 of Cucumber. This code is work in progress and some way off 
+release. If you have a minor change that you'd like released soon, we suggest submitting a pull request against the 
+`1.3.x-bugfix` branch.
+
 ## Note on Patches/Pull Requests
 
 * Fork the project. Make a branch for your change.
