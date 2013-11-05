@@ -7,10 +7,6 @@ if ENV['SIMPLECOV']
     SimpleCov.root(File.expand_path(File.dirname(__FILE__) + '/..'))
     SimpleCov.start do
       add_filter 'iso-8859-1_steps.rb'
-      command_name ENV['SIMPLECOV'] # using the env var for the name is just so that
-                                    # we use different names for the results
-                                    # from features and legacy features so they're 
-                                    # merged and not overwritten.
     end
   rescue LoadError
     warn("Unable to load simplecov")
