@@ -1,4 +1,12 @@
-## [In git master](https://github.com/cucumber/cucumber/compare/v1.3.8...master)
+## [v2.0.0.pre (unreleased)](https://github.com/cucumber/cucumber/compare/v1.3.8...master)
+
+Version 2.0 contains a major internal redesign, extracting the core logic of
+parsing and executing tests into a [separate gem](https://github.com/cucumber/cucumber-ruby-core).
+
+Although we've tried to keep the API and behaviour consistent through this change,
+there are bound to be differences our tests haven't picked up. We're still working through
+a backlog of scenarios that are not yet passing. Run `cucumber -p wip` to see them
+all.
 
 ### New features
 
@@ -16,8 +24,6 @@
 * String arguments passed to step definitions are immutable (frozen). This is
   to prevent garbled output in case an argument gets modified. If you need to
   modify an argument, `dup` it first. (Aslak Hellesøy)
-* Formatter API changed for `before_step_result` and `after_step_result`, now
-  expects an Ast::StepResult. (Steve Tooke)
 
 ### Minor changes
 
