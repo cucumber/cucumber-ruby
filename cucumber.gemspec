@@ -40,6 +40,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sinatra', '>= 1.3.2'
   s.add_development_dependency 'webrat', '>= 0.7.3'
 
+  # Needed for ruby 1.8.7 support v1.3.x
+  s.add_development_dependency 'mime-types', '< 2.0'
+  s.add_development_dependency 'rubyzip', '< 1.0'
+
   s.rubygems_version = ">= 1.6.1"
   s.files            = `git ls-files`.split("\n").reject {|path| path =~ /\.gitignore$/ }
   s.test_files       = `git ls-files -- {spec,features}/*`.split("\n")
