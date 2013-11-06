@@ -1,9 +1,10 @@
 ##
-[v1.3.x-bugfix](https://github.com/cucumber/cucumber/compare/v1.3.8...v1.3.x-bugfix)
+[v1.3.9](https://github.com/cucumber/cucumber/compare/v1.3.8...v1.3.9)
 
 * Disable minitest autorun after loading support files (@tooky)
 * Add `Ast::Table#map_column` for non-mutating column mapping (@tooky)
 * Remove deprecation warnings on `Ast::Table` (@tooky)
+* Fixed ArgumentError for NoStepMatch#format_args ([587](https://github.com/cucumber/cucumber/pull/587) @jshraibman-mdsol)
 
 ## [v1.3.8](https://github.com/cucumber/cucumber/compare/v1.3.7...v1.3.8)
 
