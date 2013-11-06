@@ -11,7 +11,8 @@ task :release => 'api:doc'
 task :default => [:spec, :cucumber]
 
 if ENV['TRAVIS']
-  ENV['SIMPLECOV'] = 'ci'
+  ENV['SIMPLECOV']  ||= 'ci'
+  ENV['JRUBY_OPTS'] ||= '--debug' if defined?(JRUBY_VERSION)
 
   require 'coveralls/rake/task'
   Coveralls::RakeTask.new
