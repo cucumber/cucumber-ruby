@@ -1,17 +1,7 @@
 #!/usr/bin/env ruby
 $:.unshift(File.dirname(__FILE__) + '/../lib') unless $:.include?(File.dirname(__FILE__) + '/../lib')
 
-if ENV['SIMPLECOV']
-  begin
-    require 'simplecov'
-    SimpleCov.root(File.expand_path(File.dirname(__FILE__) + '/..'))
-    SimpleCov.start do
-      add_filter 'iso-8859-1_steps.rb'
-    end
-  rescue LoadError
-    warn("Unable to load simplecov")
-  end
-end
+load File.expand_path(File.dirname(__FILE__) + '/../spec/simplecov_setup.rb')
 
 require 'cucumber/rspec/disable_option_parser'
 require 'cucumber/cli/main'
