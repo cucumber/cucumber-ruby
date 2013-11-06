@@ -11,6 +11,7 @@ if ENV['SIMPLECOV']
   require 'simplecov'
   SimpleCov.start do
     command_name 'rspec'
+    add_filter 'iso-8859-1_steps.rb'
   end
 end
 
