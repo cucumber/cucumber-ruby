@@ -7,7 +7,17 @@ $:.unshift(File.dirname(__FILE__) + '/lib')
 Dir['gem_tasks/**/*.rake'].each { |rake| load rake }
 
 task :release => 'api:doc'
+
 task :default => [:spec, :cucumber]
+
+if ENV['TRAVIS']
+  ENV['SIMPLECOV'] = 'ci'
+
+  require 'coveralls/rake/task'
+  Coveralls::RakeTask.new
+
+  task :default => [:spec, :cucumber, 'coveralls:push']
+end
 
 require 'rake/clean'
 CLEAN.include %w(**/*.{log,pyc,rbc,tgz} doc)
