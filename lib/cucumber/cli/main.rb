@@ -7,7 +7,6 @@ end
 require 'optparse'
 require 'cucumber'
 require 'logger'
-require 'cucumber/feature_file'
 require 'cucumber/cli/configuration'
 
 module Cucumber
