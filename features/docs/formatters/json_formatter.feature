@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: JSON output formatter
   In order to simplify processing of Cucumber features and results
   Developers should be able to consume features as JSON
