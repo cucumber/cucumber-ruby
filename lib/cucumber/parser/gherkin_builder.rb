@@ -53,7 +53,7 @@ module Cucumber
       def examples(examples)
         examples_fields = [
           Ast::Location.new(file, examples.line),
-          Ast::Comment.new(examples.comments.map{|comment| comment.value}.join("\n")),
+          Ast::Comment.new(examples.comments),
           examples.keyword,
           examples.name,
           examples.description,
@@ -120,7 +120,7 @@ module Cucumber
         end
 
         def comment
-          Ast::Comment.new(node.comments.map{ |comment| comment.value }.join("\n"))
+          Ast::Comment.new(node.comments)
         end
 
         attr_reader :file, :node

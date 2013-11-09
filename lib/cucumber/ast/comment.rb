@@ -9,15 +9,16 @@ module Cucumber
     #
     class Comment #:nodoc:
       def initialize(value)
-        @value = value
-      end
-
-      def empty?
-        @value.nil? || @value == ""
+        # for jRuby as Java::JavaUtil::ArrayList is not an Array
+        if value.respond_to?(:map)
+          @value = value.map(&:value).join("\n")
+        else
+          @value = value
+        end
       end
 
       def accept(visitor)
-        return if empty?
+        return if @value.empty?
         visitor.visit_comment(self) do
           @value.strip.split("\n").each do |line|
             visitor.visit_comment_line(line.strip)
@@ -26,7 +27,7 @@ module Cucumber
       end
 
       def to_sexp
-        (@value.nil? || @value == '') ? nil : [:comment, @value]
+        @value.empty? ? nil : [:comment, @value]
       end
     end
   end
