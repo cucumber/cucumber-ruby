@@ -20,10 +20,6 @@ module Cucumber
       end
 
       def initialize(args, _=nil, out=STDOUT, err=STDERR, kernel=Kernel)
-        raise "args can't be nil" unless args
-        raise "out can't be nil" unless out
-        raise "err can't be nil" unless err
-        raise "kernel can't be nil" unless kernel
         @args   = args
         @out    = out
         @err    = err
