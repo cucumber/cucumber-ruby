@@ -28,7 +28,6 @@ module Cucumber
         @out    = out
         @err    = err
         @kernel = kernel
-        @configuration = nil
       end
 
       def execute!(existing_runtime = nil)
@@ -66,12 +65,10 @@ module Cucumber
       end
 
       def configuration
-        return @configuration if @configuration
-
-        @configuration = Configuration.new(@out, @err)
-        @configuration.parse!(@args)
-        Cucumber.logger = @configuration.log
-        @configuration
+        @configuration ||= Configuration.new(@out, @err).tap do |configuration|
+          configuration.parse!(@args)
+          Cucumber.logger = configuration.log
+        end
       end
 
       private
