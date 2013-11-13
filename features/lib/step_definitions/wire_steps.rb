@@ -28,7 +28,7 @@ module WireHelper
   def stop_wire_server
     return unless @wire_pid
     Process.kill('KILL', @wire_pid)
-    Process.wait
+    Process.wait(@wire_pid)
   end
 end
 
