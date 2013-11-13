@@ -1,5 +1,5 @@
 require 'cucumber/constantize'
-require 'cucumber/ast/multiline_argument'
+require 'cucumber/core/ast/multiline_argument'
 require 'cucumber/runtime/for_programming_languages'
 
 module Cucumber
