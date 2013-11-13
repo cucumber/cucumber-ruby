@@ -15,7 +15,7 @@ module Cucumber
 
         it "creates a RemoteSteps object" do
           Connection.should_receive(:new).with(:config)
-          WireLanguage.new(nil).load_code_file('foo.wire')
+          WireLanguage.new.load_code_file('foo.wire')
         end
       end
 
@@ -35,7 +35,7 @@ module Cucumber
           stub_remote_steps! :config_one, :step_matches => [:a, :b]
           stub_remote_steps! :config_two, :step_matches => [:c]
 
-          wire_language = WireLanguage.new(nil)
+          wire_language = WireLanguage.new
           wire_language.load_code_file('one.wire')
           wire_language.load_code_file('two.wire')
 

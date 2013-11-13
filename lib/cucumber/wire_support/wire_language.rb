@@ -9,16 +9,13 @@ require 'cucumber/wire_support/wire_step_definition'
 module Cucumber
   module WireSupport
 
-    # The wire-protocol (lanugage independent) implementation of the programming
+    # The wire-protocol (language independent) implementation of the programming
     # language API.
     class WireLanguage
       include LanguageSupport::LanguageMethods
 
-      def initialize(runtime)
+      def initialize(_=nil)
         @connections = []
-      end
-
-      def alias_adverbs(adverbs)
       end
 
       def load_code_file(wire_file)
@@ -26,7 +23,7 @@ module Cucumber
         @connections << Connection.new(config)
       end
 
-      def snippet_text(code_keyword, step_name, multiline_arg_class, snippet_type)
+      def snippet_text(code_keyword, step_name, multiline_arg_class)
         snippets = @connections.map do |remote|
           remote.snippet_text(code_keyword, step_name, multiline_arg_class.to_s)
         end
