@@ -1,6 +1,10 @@
 if ENV['SIMPLECOV']
   begin
+    # Suppress warnings in order not to pollute stdout which tests expectations rely on
+    $VERBOSE = nil if defined?(JRUBY_VERSION)
+
     require 'simplecov'
+
     SimpleCov.root(File.expand_path(File.dirname(__FILE__) + '/..'))
     SimpleCov.start do
       add_filter 'iso-8859-1_steps.rb'
