@@ -13,7 +13,6 @@ Feature: Wire protocol timeouts
 
       """
 
-  @wip-new-core
   Scenario: Try to talk to a server that's not there
     Given a file named "features/step_definitions/some_remote_place.wire" with:
       """

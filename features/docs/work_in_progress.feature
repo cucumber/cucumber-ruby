@@ -1,4 +1,3 @@
-@wip-new-core
 @spawn
 Feature: Cucumber --work-in-progress switch
   In order to ensure that feature scenarios do not pass until they are expected to
@@ -83,6 +82,7 @@ Feature: Cucumber --work-in-progress switch
 
       """
 
+  @wip
   Scenario: Pass with Undefined Scenarios
     When I run `cucumber -q -w -t @pending features/wip.feature`
     Then it should pass with:
@@ -105,6 +105,7 @@ Feature: Cucumber --work-in-progress switch
 
       """
 
+  @wip
   Scenario: Fail with Passing Scenarios
     When I run `cucumber -q -w -t @passing features/wip.feature`
     Then it should fail with:
@@ -128,6 +129,7 @@ Feature: Cucumber --work-in-progress switch
 
       """
 
+  @wip
   Scenario: Fail with Passing Scenario Outline
     When I run `cucumber -q -w features/passing_outline.feature`
     Then it should fail with:
