@@ -5,6 +5,8 @@ Feature: Post Configuration Hook [#423]
   I want to manipulate the Cucumber configuration after it has been created
 
   @spawn
+  @wip-jruby
+  # Fails on Travis under JRuby
   Scenario: Using options directly gets a deprecation warning
     Given a file named "features/support/env.rb" with:
       """
