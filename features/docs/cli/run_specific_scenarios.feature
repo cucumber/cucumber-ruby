@@ -43,7 +43,6 @@ Feature: Run specific scenarios
       1 scenario (1 failed)
       """
 
-  @wip-new-core
   @spawn
   Scenario: Specify 2 line numbers where one is a tag
     Given a file named "features/test.feature" with:
@@ -52,11 +51,11 @@ Feature: Run specific scenarios
 
         @two @three
         Scenario:
-          Given passing
+          Given this step passes
 
         @four
         Scenario:
-          Given passing
+          Given this step passes
       """
     When I run `cucumber -q features/test.feature:3:8`
     Then it should pass with:
