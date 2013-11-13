@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'cucumber/ast'
 require 'cucumber/rb_support/rb_language'
 
 module Cucumber
@@ -36,7 +35,8 @@ module Cucumber
 
       it "should allow calling of other steps with inline arg" do
         dsl.Given /Outside/ do
-          step "Inside", Cucumber::Ast::Table.new([['inside']])
+          location = Core::Ast::Location.new(__FILE__, __LINE__)
+          step "Inside", Cucumber::Core::Ast::DataTable.new([['inside']], location)
         end
         dsl.Given /Inside/ do |table|
           $inside = table.raw[0][0]

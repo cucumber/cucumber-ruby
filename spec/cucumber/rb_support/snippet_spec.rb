@@ -46,11 +46,11 @@ module Cucumber
 
         it "should recognise a mix of ints, strings and why not a table too" do
           @pattern = 'I have 9 "awesome" cukes in 37 "boxes"'
-          @multiline_argument_class = Cucumber::Ast::Table
+          @multiline_argument_class = Cucumber::Core::Ast::DataTable
 
           snippet_text.should == unindented(%{
           Given(/^I have (\\d+) "(.*?)" cukes in (\\d+) "(.*?)"$/) do |arg1, arg2, arg3, arg4, table|
-            # table is a Cucumber::Ast::Table
+            # table is a Cucumber::Core::Ast::DataTable
             pending # Write code here that turns the phrase above into concrete actions
           end
           })
@@ -88,11 +88,11 @@ module Cucumber
 
         it "should be helpful with tables" do
           @pattern = 'A "first" arg'
-          @multiline_argument_class = Cucumber::Ast::Table
+          @multiline_argument_class = Cucumber::Core::Ast::DataTable
 
           snippet_text.should == unindented(%{
           Given(/^A "(.*?)" arg$/) do |arg1, table|
-            # table is a Cucumber::Ast::Table
+            # table is a Cucumber::Core::Ast::DataTable
             pending # Write code here that turns the phrase above into concrete actions
           end
           })

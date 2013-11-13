@@ -64,7 +64,8 @@ module Cucumber
         end
 
         def multiline_argument_class?
-          multiline_argument_class == Ast::Table
+          # TODO: brittle - stop coupling to type
+          multiline_argument_class == Core::Ast::DataTable
         end
 
         def self.example

@@ -180,7 +180,9 @@ module Cucumber
     # Returns Ast::DocString for +string_without_triple_quotes+.
     #
     def doc_string(string_without_triple_quotes, content_type='', line_offset=0)
-      Ast::DocString.new(string_without_triple_quotes,content_type)
+      file, line = *caller[0].split(':')[0..1]
+      location = Core::Ast::Location.new(file, line)
+      Core::Ast::DocString.new(string_without_triple_quotes, content_type, location)
     end
 
   private

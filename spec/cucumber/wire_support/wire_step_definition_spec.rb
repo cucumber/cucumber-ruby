@@ -11,7 +11,8 @@ module Cucumber
           expected_args = ["a","b", [["1","2"],["3","4"]]]
           connection.should_receive(:invoke).with('the-id', expected_args)
           args = ["a","b"]
-          args << Cucumber::Ast::Table.new([["1","2"],["3","4"]])
+          location = Core::Ast::Location.new(__FILE__, __LINE__)
+          args << Cucumber::Core::Ast::DataTable.new([["1","2"],["3","4"]], location)
           step_definition.invoke(args)
         end
       end
