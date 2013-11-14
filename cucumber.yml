@@ -10,7 +10,7 @@ rescue LoadError
   # rspec 1
   std_opts << ' --tags ~@rspec2'
 end
-wip_opts = "--color --tags @wip:3,@wip-new-core -r features"
+wip_opts = "--color -r features --tags @wip:3,@wip-new-core"
 wip_opts << ",@wip-jruby:3" if defined?(JRUBY_VERSION)
 
 legacy_opts = ''
