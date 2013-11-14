@@ -83,21 +83,6 @@ module Cucumber
           end
         end
 
-        def delegate_to(printer_type, node)
-          for_new(node) do
-            args = [formatter, runtime, node]
-            @child.after if @child
-            @child = printer_type.new(*args).before
-          end
-        end
-
-        def for_new(node, &block)
-          @current_nodes ||= {}
-          if @current_nodes[node.class] != node
-            @current_nodes[node.class] = node
-            block.call
-          end
-        end
       end
 
       require 'cucumber/core/test/timer'
@@ -177,8 +162,10 @@ module Cucumber
         end
 
         def scenario(node, *)
+          return if node == @current_feature_element
+          @child.after if @child
+          @child = ScenarioPrinter.new(formatter, runtime, node).before
           @current_feature_element = node
-          delegate_to ScenarioPrinter, node
         end
 
         def step(node, result)
@@ -186,8 +173,10 @@ module Cucumber
         end
 
         def scenario_outline(node, *)
+          return if node == @current_feature_element
+          @child.after if @child
+          @child = ScenarioOutlinePrinter.new(formatter, runtime, node).before
           @current_feature_element = node
-          delegate_to ScenarioOutlinePrinter, node
         end
 
         def examples_table(node, result)
@@ -435,7 +424,10 @@ module Cucumber
         end
 
         def examples_table(examples_table)
-          delegate_to ExamplesTablePrinter, examples_table
+          return if examples_table == @current
+          @child.after if @child
+          @child = ExamplesTablePrinter.new(formatter, runtime, examples_table).before
+          @current = examples_table
         end
 
         def examples_table_row(node, result)
@@ -460,7 +452,10 @@ module Cucumber
         end
 
         def examples_table_row(examples_table_row, *)
-          delegate_to TableRowPrinter, ExampleTableRow.new(examples_table_row)
+          return if examples_table_row == @current
+          @child.after if @child
+          @child = TableRowPrinter.new(formatter, runtime, ExampleTableRow.new(examples_table_row)).before
+          @current = examples_table_row
         end
 
         def step(node, result)
