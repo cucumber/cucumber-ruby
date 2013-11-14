@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: HTML output formatter
 
   Background:
@@ -9,7 +8,7 @@ Feature: HTML output formatter
 
         Scenario Outline:
           Given this step is undefined
-        
+
         Examples:
           |foo|
           |bar|

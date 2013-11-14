@@ -631,6 +631,10 @@ module Cucumber
           @status = :skipped
         end
 
+        def pending(*)
+          @status = :pending
+        end
+
         def exception(exception, *)
           @exception = exception
         end
@@ -713,6 +717,10 @@ module Cucumber
 
           def file_colon_line
             location.to_s
+          end
+
+          def backtrace_line
+            step_match.backtrace_line
           end
 
           def step_invocation
