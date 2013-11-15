@@ -172,7 +172,7 @@ module Cucumber
         # can be done with the gherkin CLI.
         if @options[:autoformat]
           require 'cucumber/formatter/pretty'
-          return [Formatter::Pretty.new(runtime, nil, @options)]
+          return [Formatter::Pretty.new(runtime, out_stream, @options)]
         end
 
         @options[:formats].map do |format_and_out|
