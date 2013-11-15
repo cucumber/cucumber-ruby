@@ -88,7 +88,7 @@ module Cucumber
         end
 
         lambda { run_step "Outside" }.
-          should raise_error(Cucumber::Core::Test::Result::Pending, "Do me!")
+          should raise_error(Cucumber::Pending, "Do me!")
       end
 
       it "should raise ArityMismatchError when the number of capture groups differs from the number of step arguments" do

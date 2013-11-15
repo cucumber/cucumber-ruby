@@ -110,11 +110,11 @@ module Cucumber
           begin
             yield
           rescue Exception
-            raise Core::Test::Result::Pending.new(message)
+            raise Pending.new(message)
           end
-          raise Core::Test::Result::Pending.new("Expected pending '#{message}' to fail. No Error was raised. No longer pending?")
+          raise Pending.new("Expected pending '#{message}' to fail. No Error was raised. No longer pending?")
         else
-          raise Core::Test::Result::Pending.new(message)
+          raise Pending.new(message)
         end
       end
 
