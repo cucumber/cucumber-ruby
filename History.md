@@ -1,7 +1,7 @@
 ##
 [v1.3.10](https://github.com/cucumber/cucumber/compare/v1.3.9...v1.3.10)
 
-* Fixed "nil:NilClass (NoMethodError)" problem for auto-formatting ([599](https://github.com/cucumber/cucumber/pull/599) Jeff McAffee)
+* Fixed "nil:NilClass (NoMethodError)" problem for auto-formatting ([599](https://github.com/cucumber/cucumber/pull/599) @jmcaffee)
 
 ##
 [v1.3.9](https://github.com/cucumber/cucumber/compare/v1.3.8...v1.3.9)
