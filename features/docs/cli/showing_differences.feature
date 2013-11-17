@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: Showing differences to expected output
 
   Cucumber will helpfully show you the expectation error that your

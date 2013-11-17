@@ -31,7 +31,7 @@ Feature: Cucumber --work-in-progress switch
       Feature: Not WIP
         Scenario Outline: Passing
           Given this step <what>
-          
+
           Examples:
             | what   |
             | passes |
@@ -50,7 +50,7 @@ Feature: Cucumber --work-in-progress switch
             error (RuntimeError)
             ./features/step_definitions/steps.rb:2:in `/^this step raises an error$/'
             features/wip.feature:4:in `Given this step raises an error'
-      
+
       Failing Scenarios:
       cucumber features/wip.feature:3
 
@@ -82,7 +82,6 @@ Feature: Cucumber --work-in-progress switch
 
       """
 
-  @wip
   Scenario: Pass with Undefined Scenarios
     When I run `cucumber -q -w -t @pending features/wip.feature`
     Then it should pass with:
@@ -105,7 +104,7 @@ Feature: Cucumber --work-in-progress switch
 
       """
 
-  @wip
+  @wip-new-core
   Scenario: Fail with Passing Scenarios
     When I run `cucumber -q -w -t @passing features/wip.feature`
     Then it should fail with:
@@ -129,7 +128,7 @@ Feature: Cucumber --work-in-progress switch
 
       """
 
-  @wip
+  @wip-new-core
   Scenario: Fail with Passing Scenario Outline
     When I run `cucumber -q -w features/passing_outline.feature`
     Then it should fail with:
@@ -138,8 +137,8 @@ Feature: Cucumber --work-in-progress switch
 
         Scenario Outline: Passing
           Given this step <what>
-      
-          Examples: 
+
+          Examples:
             | what   |
             | passes |
 

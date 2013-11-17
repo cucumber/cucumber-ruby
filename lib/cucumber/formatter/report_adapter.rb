@@ -633,6 +633,11 @@ module Cucumber
           @status = :skipped
         end
 
+        def pending(exception, *)
+          @exception = exception
+          @status = :pending
+        end
+
         def exception(exception, *)
           @exception = exception
         end
@@ -717,6 +722,10 @@ module Cucumber
             location.to_s
           end
 
+          def backtrace_line
+            step_match.backtrace_line
+          end
+
           def step_invocation
             self
           end
@@ -742,8 +751,38 @@ module Cucumber
             raise exception if ENV['FAIL_FAST']
             ex = exception.dup
             ex.backtrace << "#{step.location}:in `#{step.keyword}#{step.name}'"
+            filter_backtrace(ex)
             formatter.exception(ex, status)
           end
+
+          private
+          # This constant is appended to by Cuke4Duke. Do not change its name
+          BACKTRACE_FILTER_PATTERNS = [/vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\/|minitest|test\/unit/]
+          if(Cucumber::JRUBY)
+            BACKTRACE_FILTER_PATTERNS << /org\/jruby/
+          end
+          PWD_PATTERN = /#{Regexp.escape(Dir.pwd)}\//m
+
+          # This is to work around double ":in " segments in JRuby backtraces. JRuby bug?
+          def filter_backtrace(e)
+            return e if Cucumber.use_full_backtrace
+            e.backtrace.each{|line| line.gsub!(PWD_PATTERN, "./")}
+
+            filtered = (e.backtrace || []).reject do |line|
+              BACKTRACE_FILTER_PATTERNS.detect { |p| line =~ p }
+            end
+
+            if ENV['CUCUMBER_TRUNCATE_OUTPUT']
+              # Strip off file locations
+              filtered = filtered.map do |line|
+                line =~ /(.*):in `/ ? $1 : line
+              end
+            end
+
+            e.set_backtrace(filtered)
+            e
+          end
+
         end
 
         class StepInvocations < Array
