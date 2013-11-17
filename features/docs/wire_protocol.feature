@@ -140,7 +140,6 @@ Feature: Wire Protocol
   # ## Pending Steps
   #
   @spawn
-  @wip
   Scenario: Invoke a step definition which is pending
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                            |

@@ -82,7 +82,6 @@ Feature: Cucumber --work-in-progress switch
 
       """
 
-  @wip
   Scenario: Pass with Undefined Scenarios
     When I run `cucumber -q -w -t @pending features/wip.feature`
     Then it should pass with:

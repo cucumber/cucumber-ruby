@@ -58,7 +58,6 @@ Feature: JUnit output formatter
             | fails  |
       """
 
-  @wip
   Scenario: one feature, one passing scenario, one failing scenario
     When I run `cucumber --format junit --out tmp/ features/one_passing_one_failing.feature`
     Then it should fail with:
@@ -98,7 +97,6 @@ Feature: JUnit output formatter
 
       """
 
-  @wip
   Scenario: one feature in a subdirectory, one passing scenario, one failing scenario
     When I run `cucumber --format junit --out tmp/ features/some_subdirectory/one_passing_one_failing.feature --require features`
     Then it should fail with:
