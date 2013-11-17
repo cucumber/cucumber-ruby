@@ -4,15 +4,17 @@ require 'delegate'
 module Cucumber
   module Formatter
 
-    FormatterWrapper = Struct.new(:formatter) do
+    FormatterWrapper = Struct.new(:formatters) do
       def method_missing(message, *args)
-        formatter.send(message, *args) if formatter.respond_to?(message)
+        formatters.each do |formatter|
+          formatter.send(message, *args) if formatter.respond_to?(message)
+        end
       end
     end
 
     ReportAdapter = Struct.new(:runtime, :formatter) do
-      def initialize(runtime, formatter)
-        super runtime, FormatterWrapper.new(formatter)
+      def initialize(runtime, formatters)
+        super runtime, FormatterWrapper.new(formatters)
       end
 
       extend Forwardable

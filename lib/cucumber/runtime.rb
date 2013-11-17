@@ -251,7 +251,7 @@ module Cucumber
 
     require 'cucumber/formatter/report_adapter'
     def report
-      @report ||= Cucumber::Formatter::ReportAdapter.new(self, @configuration.formatters(self).first)
+      @report ||= Cucumber::Formatter::ReportAdapter.new(self, @configuration.formatters(self))
     end
 
     def filters
