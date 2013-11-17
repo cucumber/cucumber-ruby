@@ -4,8 +4,9 @@ Feature: Post Configuration Hook [#423]
   As a developer
   I want to manipulate the Cucumber configuration after it has been created
 
-  @wip-new-core
+  # Fails on Travis under JRuby
   @spawn
+  @wip-jruby
   Scenario: Using options directly gets a deprecation warning
     Given a file named "features/support/env.rb" with:
       """
@@ -19,7 +20,7 @@ Feature: Post Configuration Hook [#423]
       Deprecated
       """
 
-  @wip-new-core
+  @wip
   Scenario: Changing the output format
     Given a file named "features/support/env.rb" with:
       """

@@ -1,4 +1,3 @@
-@wip-new-core
 @wire
 Feature: Wire Protocol
   In order to be allow Cucumber to touch my app in intimate places
@@ -83,6 +82,7 @@ Feature: Wire Protocol
   #            is simply used for the wire server's own reference.
   #   * args - any argument values as captured by the wire end's own regular
   #            expression (or other argument matching) process.
+  @wip
   Scenario: Dry run finds a step match
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                            |
@@ -99,6 +99,7 @@ Feature: Wire Protocol
 
   # Optionally, the StepMatch can also contain a source reference, and a native
   # regexp string which will be used by some formatters.
+  @wip
   Scenario: Step matches returns details about the remote step definition
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                                                           |
@@ -139,6 +140,7 @@ Feature: Wire Protocol
   # ## Pending Steps
   #
   @spawn
+  @wip
   Scenario: Invoke a step definition which is pending
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                            |
@@ -194,6 +196,7 @@ Feature: Wire Protocol
   # See the specs for Cucumber::WireSupport::WireException for more details
   #
   @spawn
+  @wip
   Scenario: Invoke a step definition which fails
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                                                            |
@@ -293,6 +296,7 @@ Feature: Wire Protocol
   # # Request: 'snippets'
   #
   @spawn
+  @wip
   Scenario: Wire server returns snippets for a step that didn't match
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                                                                          | response                         |
@@ -327,6 +331,7 @@ Feature: Wire Protocol
   #
   # # Bad Response
   #
+  @wip
   Scenario: Unexpected response
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request            | response  |

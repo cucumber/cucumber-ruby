@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: Exception in After Block
   In order to use custom assertions at the end of each scenario
   As a developer
@@ -56,6 +55,7 @@ Feature: Exception in After Block
       """
 
   @spawn
+  @wip
   Scenario: Handle Exception in scenario outline table row and carry on
     Given a file named "features/naughty_step_in_scenario_outline.feature" with:
       """
@@ -101,6 +101,7 @@ Feature: Exception in After Block
 
       """
 
+  @wip
   Scenario: Handle Exception using the progress format
     Given a file named "features/naughty_step_in_scenario.feature" with:
       """
@@ -124,5 +125,4 @@ Feature: Exception in After Block
       2 steps (2 passed)
 
       """
-
 
