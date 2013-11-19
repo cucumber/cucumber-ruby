@@ -143,7 +143,7 @@ module Cucumber
         @options[:name_regexps]
       end
 
-      # todo: remove
+      # todo: remove as unused
       def filters
         @options.filters
       end
