@@ -139,6 +139,11 @@ module Cucumber
         @options[:tag_expressions]
       end
 
+      def name_regexps
+        @options[:name_regexps]
+      end
+
+      # todo: remove
       def filters
         @options.filters
       end

@@ -254,10 +254,13 @@ module Cucumber
       @report ||= Cucumber::Formatter::ReportAdapter.new(self, @configuration.formatters(self))
     end
 
+    require 'cucumber/core/test/name_filter'
     def filters
       tag_expressions = @configuration.tag_expressions
+      name_regexps = @configuration.name_regexps
       [
         [Cucumber::Core::Test::TagFilter, [tag_expressions]],
+        [Cucumber::Core::Test::NameFilter, [name_regexps]],
         [LocationFilter, [filespecs.locations]],
         [Quit, []],
       ]
