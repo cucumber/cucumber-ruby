@@ -136,7 +136,6 @@ Feature: JUnit output formatter
 
       """
 
-  @wip
   Scenario: pending and undefined steps are reported as skipped
     When I run `cucumber --format junit --out tmp/ features/pending.feature`
     Then it should pass with:

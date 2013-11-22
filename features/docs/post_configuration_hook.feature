@@ -20,7 +20,6 @@ Feature: Post Configuration Hook [#423]
       Deprecated
       """
 
-  @wip
   Scenario: Changing the output format
     Given a file named "features/support/env.rb" with:
       """
