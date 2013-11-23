@@ -9,13 +9,13 @@ module Cucumber
 
     it 'should produce Ast::DocString by #doc_string with default content-type' do
       str = runtime_facade.doc_string('DOC')
-      str.should be_kind_of(Ast::DocString)
+      str.should be_kind_of(Core::Ast::DocString)
       str.content_type.should eq('')
     end
 
     it 'should produce Ast::DocString by #doc_string with ruby content-type' do
       str = runtime_facade.doc_string('DOC','ruby')
-      str.should be_kind_of(Ast::DocString)
+      str.should be_kind_of(Core::Ast::DocString)
       str.content_type.should eq('ruby')
     end
 
@@ -24,7 +24,7 @@ module Cucumber
       | account | description | amount |
       | INT-100 | Taxi        | 114    |
       | CUC-101 | Peeler      | 22     |
-      }).should be_kind_of(Ast::Table)
+      }).should be_kind_of(Core::Ast::DataTable)
     end
 
   end

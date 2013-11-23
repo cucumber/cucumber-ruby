@@ -7,7 +7,6 @@ end
 require 'optparse'
 require 'cucumber'
 require 'logger'
-require 'cucumber/feature_file'
 require 'cucumber/cli/configuration'
 
 module Cucumber
@@ -19,16 +18,11 @@ module Cucumber
         end
       end
 
-      def initialize(args, stdin=STDIN, out=STDOUT, err=STDERR, kernel=Kernel)
-        raise "args can't be nil" unless args
-        raise "out can't be nil" unless out
-        raise "err can't be nil" unless err
-        raise "kernel can't be nil" unless kernel
+      def initialize(args, _=nil, out=STDOUT, err=STDERR, kernel=Kernel)
         @args   = args
         @out    = out
         @err    = err
         @kernel = kernel
-        @configuration = nil
       end
 
       def execute!(existing_runtime = nil)
@@ -66,12 +60,10 @@ module Cucumber
       end
 
       def configuration
-        return @configuration if @configuration
-
-        @configuration = Configuration.new(@out, @err)
-        @configuration.parse!(@args)
-        Cucumber.logger = @configuration.log
-        @configuration
+        @configuration ||= Configuration.new(@out, @err).tap do |configuration|
+          configuration.parse!(@args)
+          Cucumber.logger = configuration.log
+        end
       end
 
       private

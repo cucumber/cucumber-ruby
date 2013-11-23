@@ -7,12 +7,7 @@ if defined? Encoding
   Encoding.default_internal = 'utf-8'
 end
 
-if ENV['SIMPLECOV']
-  require 'simplecov'
-  SimpleCov.start do
-    command_name 'rspec'
-  end
-end
+load File.expand_path(File.dirname(__FILE__) + '/../spec/simplecov_setup.rb')
 
 require 'cucumber'
 

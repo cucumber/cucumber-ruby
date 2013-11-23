@@ -1,5 +1,5 @@
 require 'cucumber/constantize'
-require 'cucumber/ast/multiline_argument'
+require 'cucumber/core/ast/multiline_argument'
 require 'cucumber/runtime/for_programming_languages'
 
 module Cucumber
@@ -20,7 +20,7 @@ module Cucumber
         end
 
         def step(step)
-          @support_code.invoke(step.name, Ast::MultilineArgument.from(step.doc_string || step.rows))
+          @support_code.invoke(step.name, Core::Ast::MultilineArgument.from(step.doc_string || step.rows))
         end
 
         def eof
@@ -54,8 +54,9 @@ module Cucumber
       end
 
       def invoke(step_name, multiline_argument=nil)
-        multiline_argument = Cucumber::Ast::MultilineArgument.from(multiline_argument)
-        # It is very important to leave multiline_argument=nil as a vararg. Cuke4Duke needs it that way.
+        file, line = *caller[2].split(':')[0..1]
+        location = Core::Ast::Location.new(file, line)
+        multiline_argument = Cucumber::Core::Ast::MultilineArgument.from(multiline_argument, location)
         begin
           step_match(step_name).invoke(multiline_argument)
         rescue Exception => e

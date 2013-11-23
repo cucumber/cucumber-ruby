@@ -180,7 +180,9 @@ module Cucumber
     # Returns Ast::DocString for +string_without_triple_quotes+.
     #
     def doc_string(string_without_triple_quotes, content_type='', line_offset=0)
-      Ast::DocString.new(string_without_triple_quotes,content_type)
+      file, line = *caller[0].split(':')[0..1]
+      location = Core::Ast::Location.new(file, line)
+      Core::Ast::DocString.new(string_without_triple_quotes, content_type, location)
     end
 
   private
@@ -249,13 +251,16 @@ module Cucumber
 
     require 'cucumber/formatter/report_adapter'
     def report
-      @report ||= Cucumber::Formatter::ReportAdapter.new(self, @configuration.formatters(self).first)
+      @report ||= Cucumber::Formatter::ReportAdapter.new(self, @configuration.formatters(self))
     end
 
+    require 'cucumber/core/test/name_filter'
     def filters
       tag_expressions = @configuration.tag_expressions
+      name_regexps = @configuration.name_regexps
       [
         [Cucumber::Core::Test::TagFilter, [tag_expressions]],
+        [Cucumber::Core::Test::NameFilter, [name_regexps]],
         [LocationFilter, [filespecs.locations]],
         [Quit, []],
       ]

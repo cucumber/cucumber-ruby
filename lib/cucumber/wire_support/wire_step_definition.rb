@@ -18,7 +18,7 @@ module Cucumber
       private
 
       def prepare(arg)
-        return arg unless arg.is_a?(Cucumber::Ast::Table)
+        return arg unless arg.is_a?(Cucumber::Core::Ast::DataTable)
         arg.raw
       end
     end

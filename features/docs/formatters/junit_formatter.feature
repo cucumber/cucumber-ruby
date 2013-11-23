@@ -1,4 +1,3 @@
-@wip-new-core
 @spawn
 Feature: JUnit output formatter
   In order for developers to create test reports with ant
@@ -58,7 +57,7 @@ Feature: JUnit output formatter
             | passes |
             | fails  |
       """
-  
+
   Scenario: one feature, one passing scenario, one failing scenario
     When I run `cucumber --format junit --out tmp/ features/one_passing_one_failing.feature`
     Then it should fail with:
@@ -97,7 +96,7 @@ Feature: JUnit output formatter
       </testsuite>
 
       """
-  
+
   Scenario: one feature in a subdirectory, one passing scenario, one failing scenario
     When I run `cucumber --format junit --out tmp/ features/some_subdirectory/one_passing_one_failing.feature --require features`
     Then it should fail with:
@@ -136,7 +135,7 @@ Feature: JUnit output formatter
       </testsuite>
 
       """
-  
+
   Scenario: pending and undefined steps are reported as skipped
     When I run `cucumber --format junit --out tmp/ features/pending.feature`
     Then it should pass with:
@@ -167,6 +166,7 @@ Feature: JUnit output formatter
       
       """
 
+  @wip
   Scenario: pending and undefined steps with strict option should fail
     When I run `cucumber --format junit --out tmp/ features/pending.feature --strict`
     Then it should fail with:
@@ -230,6 +230,7 @@ can't convert .* into String \(TypeError\)
 You *must* specify --out DIR for the junit formatter
       """
 
+  @wip
   Scenario: one feature, one scenario outline, two examples: one passing, one failing
     When I run `cucumber --format junit --out tmp/ features/scenario_outline.feature`
     Then it should fail with:

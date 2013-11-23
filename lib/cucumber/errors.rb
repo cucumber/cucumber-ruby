@@ -18,7 +18,7 @@ module Cucumber
   end
 
   # Raised when a StepDefinition's block invokes World#pending
-  class Pending < StandardError
+  class Pending < Core::Test::Result::Pending
   end
 
   # Raised when a step matches 2 or more StepDefinitions

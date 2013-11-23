@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: Formatter Callback
 
   Scenario: callback if not expanded
@@ -94,6 +93,8 @@ Feature: Formatter Callback
 
       """
 
+
+  @wip-new-core
   Scenario: callback if expanded
     Given a file named "features/f.feature" with:
       """

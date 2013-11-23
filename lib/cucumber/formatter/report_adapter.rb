@@ -4,15 +4,17 @@ require 'delegate'
 module Cucumber
   module Formatter
 
-    FormatterWrapper = Struct.new(:formatter) do
+    FormatterWrapper = Struct.new(:formatters) do
       def method_missing(message, *args)
-        formatter.send(message, *args) if formatter.respond_to?(message)
+        formatters.each do |formatter|
+          formatter.send(message, *args) if formatter.respond_to?(message)
+        end
       end
     end
 
     ReportAdapter = Struct.new(:runtime, :formatter) do
-      def initialize(runtime, formatter)
-        super runtime, FormatterWrapper.new(formatter)
+      def initialize(runtime, formatters)
+        super runtime, FormatterWrapper.new(formatters)
       end
 
       extend Forwardable
@@ -64,6 +66,7 @@ module Cucumber
 
       # Provides a DSL for making the printers themselves more terse
       class Printer < Struct
+        # TODO: unfactor this
         def self.before(&block)
           define_method(:before) do
             instance_eval(&block)
@@ -71,6 +74,7 @@ module Cucumber
           end
         end
 
+        # TODO: unfactor this
         def self.after(&block)
           define_method(:after) do
             @child.after if @child
@@ -79,21 +83,6 @@ module Cucumber
           end
         end
 
-        def delegate_to(printer_type, node)
-          for_new(node) do
-            args = [formatter, runtime, node]
-            @child.after if @child
-            @child = printer_type.new(*args).before
-          end
-        end
-
-        def for_new(node, &block)
-          @current_nodes ||= {}
-          if @current_nodes[node.class] != node
-            @current_nodes[node.class] = node
-            block.call
-          end
-        end
       end
 
       require 'cucumber/core/test/timer'
@@ -119,6 +108,7 @@ module Cucumber
         end
 
         def step(node, result)
+          # TODO: Create StepInvocation here and send it down.
           @child.step(node, result)
         end
 
@@ -159,21 +149,23 @@ module Cucumber
         end
 
         def background(node, *)
-          if @current_background != node
-            @current_background = node
-            @child.after if @child
-            @child = BackgroundPrinter.new(formatter, runtime, node).before
+          if background_printed?
+            @child.after
+            @child = HiddenBackgroundPrinter.new(formatter, runtime, node)
           else
-            if @current_feature_element
-              @child.after if @child
-              @child = HiddenBackgroundPrinter.new(formatter, runtime, node)
-            end
+            @child ||= BackgroundPrinter.new(formatter, runtime, node).before
           end
         end
 
+        def background_printed?
+          @current_feature_element
+        end
+
         def scenario(node, *)
+          return if node == @current_feature_element
+          @child.after if @child
+          @child = ScenarioPrinter.new(formatter, runtime, node).before
           @current_feature_element = node
-          delegate_to ScenarioPrinter, node
         end
 
         def step(node, result)
@@ -181,8 +173,10 @@ module Cucumber
         end
 
         def scenario_outline(node, *)
+          return if node == @current_feature_element
+          @child.after if @child
+          @child = ScenarioOutlinePrinter.new(formatter, runtime, node).before
           @current_feature_element = node
-          delegate_to ScenarioOutlinePrinter, node
         end
 
         def examples_table(node, result)
@@ -430,7 +424,10 @@ module Cucumber
         end
 
         def examples_table(examples_table)
-          delegate_to ExamplesTablePrinter, examples_table
+          return if examples_table == @current
+          @child.after if @child
+          @child = ExamplesTablePrinter.new(formatter, runtime, examples_table).before
+          @current = examples_table
         end
 
         def examples_table_row(node, result)
@@ -455,7 +452,10 @@ module Cucumber
         end
 
         def examples_table_row(examples_table_row, *)
-          delegate_to TableRowPrinter, ExampleTableRow.new(examples_table_row)
+          return if examples_table_row == @current
+          @child.after if @child
+          @child = TableRowPrinter.new(formatter, runtime, ExampleTableRow.new(examples_table_row)).before
+          @current = examples_table_row
         end
 
         def step(node, result)
@@ -628,6 +628,11 @@ module Cucumber
           @status = :skipped
         end
 
+        def pending(exception, *)
+          @exception = exception
+          @status = :pending
+        end
+
         def exception(exception, *)
           @exception = exception
         end
@@ -712,6 +717,10 @@ module Cucumber
             location.to_s
           end
 
+          def backtrace_line
+            step_match.backtrace_line
+          end
+
           def step_invocation
             self
           end
@@ -737,8 +746,38 @@ module Cucumber
             raise exception if ENV['FAIL_FAST']
             ex = exception.dup
             ex.backtrace << "#{step.location}:in `#{step.keyword}#{step.name}'"
+            filter_backtrace(ex)
             formatter.exception(ex, status)
           end
+
+          private
+          # This constant is appended to by Cuke4Duke. Do not change its name
+          BACKTRACE_FILTER_PATTERNS = [/vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\/|minitest|test\/unit|.gem\/ruby/]
+          if(Cucumber::JRUBY)
+            BACKTRACE_FILTER_PATTERNS << /org\/jruby/
+          end
+          PWD_PATTERN = /#{Regexp.escape(Dir.pwd)}\//m
+
+          # This is to work around double ":in " segments in JRuby backtraces. JRuby bug?
+          def filter_backtrace(e)
+            return e if Cucumber.use_full_backtrace
+            e.backtrace.each{|line| line.gsub!(PWD_PATTERN, "./")}
+
+            filtered = (e.backtrace || []).reject do |line|
+              BACKTRACE_FILTER_PATTERNS.detect { |p| line =~ p }
+            end
+
+            if ENV['CUCUMBER_TRUNCATE_OUTPUT']
+              # Strip off file locations
+              filtered = filtered.map do |line|
+                line =~ /(.*):in `/ ? $1 : line
+              end
+            end
+
+            e.set_backtrace(filtered)
+            e
+          end
+
         end
 
         class StepInvocations < Array

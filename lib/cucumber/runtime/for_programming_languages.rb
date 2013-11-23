@@ -1,4 +1,6 @@
 require 'forwardable'
+require 'cucumber/core/ast/doc_string'
+require 'cucumber/core/ast/data_table'
 
 module Cucumber
   class Runtime
@@ -25,7 +27,7 @@ module Cucumber
         :invoke,
         :load_programming_language
 
-      # Returns a Cucumber::Ast::Table for +text_or_table+, which can either
+      # Returns a Cucumber::Core::Ast::DataTable for +text_or_table+, which can either
       # be a String:
       #
       #   table(%{
@@ -43,17 +45,21 @@ module Cucumber
       #   ])
       #
       def table(text_or_table, file=nil, line_offset=0)
+        file, line = *caller[0].split(':')[0..1]
+        location = Core::Ast::Location.new(file, line)
         if Array === text_or_table
-          Ast::Table.new(text_or_table)
+          Core::Ast::DataTable.new(text_or_table, location)
         else
-          Ast::Table.parse(text_or_table, file, line_offset)
+          Core::Ast::DataTable.parse(text_or_table, file, location)
         end
       end
 
       # Returns Ast::DocString for +string_without_triple_quotes+.
       #
       def doc_string(string_without_triple_quotes, content_type='', line_offset=0)
-        Ast::DocString.new(string_without_triple_quotes,content_type)
+        file, line = *caller[0].split(':')[0..1]
+        location = Core::Ast::Location.new(file, line)
+        Core::Ast::DocString.new(string_without_triple_quotes,content_type, location)
       end
     end
   end

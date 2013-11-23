@@ -29,6 +29,19 @@ all.
 
 * Greek examples added ([497](https://github.com/cucumber/cucumber/issues/497) @rousisk)
 
+##
+[v1.3.10](https://github.com/cucumber/cucumber/compare/v1.3.9...v1.3.10)
+
+* Fixed "nil:NilClass (NoMethodError)" problem for auto-formatting ([599](https://github.com/cucumber/cucumber/pull/599) @jmcaffee)
+
+##
+[v1.3.9](https://github.com/cucumber/cucumber/compare/v1.3.8...v1.3.9)
+
+* Disable minitest autorun after loading support files (@tooky)
+* Add `Ast::Table#map_column` for non-mutating column mapping (@tooky)
+* Remove deprecation warnings on `Ast::Table` (@tooky)
+* Fixed ArgumentError for NoStepMatch#format_args ([587](https://github.com/cucumber/cucumber/pull/587) @jshraibman-mdsol)
+
 ## [v1.3.8](https://github.com/cucumber/cucumber/compare/v1.3.7...v1.3.8)
 
 * Make the MultiJson dependency less restrictive (@tooky)

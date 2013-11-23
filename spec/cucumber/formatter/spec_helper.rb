@@ -68,7 +68,7 @@ module Cucumber
 
       require 'cucumber/formatter/report_adapter'
       def report
-        @report ||= Cucumber::Formatter::ReportAdapter.new runtime, @formatter
+        @report ||= Cucumber::Formatter::ReportAdapter.new runtime, [@formatter]
       end
 
       require 'cucumber/core/gherkin/document'

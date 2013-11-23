@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: HTML output formatter
 
   Background:
@@ -9,7 +8,7 @@ Feature: HTML output formatter
 
         Scenario Outline:
           Given this step is undefined
-        
+
         Examples:
           |foo|
           |bar|
@@ -56,10 +55,14 @@ Feature: HTML output formatter
     """
     makeRed('scenario_1')
     """
+
     Examples:
       | file                                                   | flag     |
       | features/scenario_outline_with_pending_step.feature    | --expand |
       | features/scenario_outline_with_pending_step.feature    |          |
+
+    Examples:
+      | file                                                   | flag     |
       | features/scenario_outline_with_undefined_steps.feature | --expand |
       | features/scenario_outline_with_undefined_steps.feature |          |
 

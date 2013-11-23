@@ -13,7 +13,6 @@ Feature: Wire protocol timeouts
 
       """
 
-  @wip-new-core
   Scenario: Try to talk to a server that's not there
     Given a file named "features/step_definitions/some_remote_place.wire" with:
       """
@@ -28,7 +27,6 @@ Feature: Wire protocol timeouts
       """
 
   @spawn
-  @wip-new-core
   Scenario: Invoke a step definition that takes longer than its timeout
     Given a file named "features/step_definitions/some_remote_place.wire" with:
       """
