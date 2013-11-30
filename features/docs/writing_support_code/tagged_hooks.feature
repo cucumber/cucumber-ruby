@@ -19,17 +19,16 @@ Feature: Tagged hooks
           Given this step passes
       """
 
-  @wip-new-core
   @spawn
   Scenario: Invoke tagged hook
     When I run `cucumber features/f.feature:2`
     Then it should fail with:
       """
+      boom (RuntimeError)
+      ./features/support/hooks.rb:2:in `Before'
       Feature: With and without hooks
-      
+
         Scenario: using hook     # features/f.feature:2
-        boom (RuntimeError)
-        ./features/support/hooks.rb:2:in `Before'
           Given this step passes # features/step_definitions/steps.rb:1
       
       Failing Scenarios:
