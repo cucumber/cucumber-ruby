@@ -751,7 +751,7 @@ module Cucumber
           end
 
           private
-          # This constant is appended to by Cuke4Duke. Do not change its name
+
           BACKTRACE_FILTER_PATTERNS = [/vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\/|minitest|test\/unit|.gem\/ruby/]
           if(Cucumber::JRUBY)
             BACKTRACE_FILTER_PATTERNS << /org\/jruby/
