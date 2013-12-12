@@ -7,19 +7,12 @@ module Cucumber
   module Formatter
     class Html
 
-      AST_CLASSES = if ENV['USE_LEGACY']
-          {
-            Ast::Scenario        => 'scenario',
-            Ast::ScenarioOutline => 'scenario outline'
-          }
-        else
-          {
-            Cucumber::Core::Ast::Scenario        => 'scenario',
-            Cucumber::Core::Ast::ScenarioOutline => 'scenario outline'
-          }
-        end
-
-      AST_DATA_TABLE = ENV['USE_LEGACY'] ? Ast::Table : Cucumber::Core::Ast::DataTable
+      # TODO: remove coupling to types
+      AST_CLASSES = {
+        Cucumber::Core::Ast::Scenario        => 'scenario',
+        Cucumber::Core::Ast::ScenarioOutline => 'scenario outline'
+      }
+      AST_DATA_TABLE = Cucumber::Core::Ast::DataTable
 
       include ERB::Util # for the #h method
       include Duration

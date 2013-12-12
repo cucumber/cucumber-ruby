@@ -7,16 +7,11 @@ module Cucumber
   module Formatter
     # The formatter used for <tt>--format junit</tt>
     class Junit
-      AST_SCENARIO_OUTLINE = if ENV['USE_LEGACY']
-                               Ast::ScenarioOutline
-                             else
-                               Cucumber::Core::Ast::ScenarioOutline
-                             end
-      AST_EXAMPLE_ROW = if ENV['USE_LEGACY']
-                          Cucumber::Ast::OutlineTable::ExampleRow
-                        else
-                          LegacyExampleTableRow
-                        end
+
+      # TODO: remove coupling to types
+      AST_SCENARIO_OUTLINE = Cucumber::Core::Ast::ScenarioOutline
+      AST_EXAMPLE_ROW = LegacyExampleTableRow
+
       include Io
 
       class UnNamedFeatureError < StandardError
