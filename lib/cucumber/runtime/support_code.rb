@@ -20,7 +20,8 @@ module Cucumber
         end
 
         def step(step)
-          @support_code.invoke(step.name, Core::Ast::MultilineArgument.from(step.doc_string || step.rows))
+          location = Cucumber::Core::Ast::Location.new(*caller[0].split(':')[0..1])
+          @support_code.invoke(step.name, Core::Ast::MultilineArgument.from(step.doc_string || step.rows, location))
         end
 
         def eof
