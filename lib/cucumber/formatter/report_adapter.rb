@@ -817,7 +817,7 @@ module Cucumber
         end
 
         Scenario = Struct.new(:status, :name, :location) do
-          def backtrace_line(step_name = "#{@keyword}: #{name}", line = self.location.line)
+          def backtrace_line(step_name = "#{name}", line = self.location.line)
             "#{location.on_line(line)}:in `#{step_name}'"
           end
         end

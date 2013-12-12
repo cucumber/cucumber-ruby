@@ -106,7 +106,7 @@ module Cucumber
         @io.puts format_string("Failing Scenarios:", :failed)
         failures.each do |failure|
           profiles_string = custom_profiles.empty? ? '' : (custom_profiles.map{|profile| "-p #{profile}" }).join(' ') + ' '
-          source = given_source ? format_string(" # Scenario: " + failure.name, :comment) : ''
+          source = given_source ? format_string(" # " + failure.name, :comment) : ''
           @io.puts format_string("cucumber #{profiles_string}" + failure.location, :failed) + source
         end
         @io.puts

@@ -104,7 +104,6 @@ Feature: Cucumber --work-in-progress switch
 
       """
 
-  @wip-new-core
   Scenario: Fail with Passing Scenarios
     When I run `cucumber -q -w -t @passing features/wip.feature`
     Then it should fail with:
@@ -128,7 +127,6 @@ Feature: Cucumber --work-in-progress switch
 
       """
 
-  @wip-new-core
   Scenario: Fail with Passing Scenario Outline
     When I run `cucumber -q -w features/passing_outline.feature`
     Then it should fail with:
@@ -138,7 +136,7 @@ Feature: Cucumber --work-in-progress switch
         Scenario Outline: Passing
           Given this step <what>
 
-          Examples:
+          Examples: 
             | what   |
             | passes |
 
@@ -150,7 +148,7 @@ Feature: Cucumber --work-in-progress switch
       The --wip switch was used, so I didn't expect anything to pass. These scenarios passed:
       (::) passed scenarios (::)
 
-      features/passing_outline.feature:7:in `| passes |'
+      features/passing_outline.feature:7:in `Scenario Outline: Passing, Examples (row 1)'
 
 
       """
