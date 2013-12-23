@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: Nested Steps in I18n
 
   Background:

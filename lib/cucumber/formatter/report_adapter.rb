@@ -4,11 +4,22 @@ require 'delegate'
 module Cucumber
   module Formatter
 
-    FormatterWrapper = Struct.new(:formatters) do
+    class FormatterWrapper < BasicObject
+      attr_reader :formatters
+      private :formatters
+
+      def initialize(formatters)
+        @formatters = formatters
+      end
+
       def method_missing(message, *args)
         formatters.each do |formatter|
           formatter.send(message, *args) if formatter.respond_to?(message)
         end
+      end
+
+      def respond_to_missing?(name, include_private = false)
+        formatters.any? { |formatter| formatter.respond_to?(name, include_private) }
       end
     end
 

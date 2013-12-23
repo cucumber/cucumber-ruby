@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: Nested Steps
 
 
@@ -105,7 +104,7 @@ Feature: Nested Steps
       Liouville
       """
 
-  @spawn
+  @wip-new-core @spawn
   Scenario: Backtrace doesn't skip nested steps
     Given a step definition that looks like this:
       """ruby
