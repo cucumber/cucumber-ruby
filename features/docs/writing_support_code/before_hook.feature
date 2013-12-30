@@ -1,13 +1,37 @@
 Feature: Before Hook
 
-  @wip-new-core
-  Scenario: Examine names of elements
+  Scenario: Examine names of scenario and feature
     Given a file named "features/foo.feature" with:
       """
       Feature: Feature name
 
         Scenario: Scenario name
           Given a step
+      """
+    And a file named "features/support/hook.rb" with:
+      """
+      names = []
+      Before do |scenario|
+        scenario.should_not respond_to(:scenario_outline)
+        names << scenario.feature.name.split("\n").first
+        names << scenario.name.split("\n").first
+        if(names.size == 2)
+          raise "NAMES:\n" + names.join("\n") + "\n"
+        end
+      end
+      """
+    When I run `cucumber`
+    Then the output should contain:
+      """
+      NAMES:
+      Feature name
+      Scenario: Scenario name
+      """
+
+  Scenario: Examine names of scenario outline and feature
+    Given a file named "features/foo.feature" with:
+      """
+      Feature: Feature name
 
         Scenario Outline: Scenario Outline name
           Given a <placeholder>
@@ -20,14 +44,9 @@ Feature: Before Hook
       """
       names = []
       Before do |scenario|
-        unless scenario.respond_to?(:scenario_outline)
-          names << scenario.feature.name.split("\n").first
-          names << scenario.name.split("\n").first
-        else
-          names << scenario.scenario_outline.feature.name.split("\n").first
-          names << scenario.scenario_outline.name.split("\n").first
-        end
-        if(names.size == 4)
+        names << scenario.scenario_outline.feature.name.split("\n").first
+        names << scenario.scenario_outline.name.split("\n").first
+        if(names.size == 2)
           raise "NAMES:\n" + names.join("\n") + "\n"
         end
       end
@@ -35,10 +54,8 @@ Feature: Before Hook
     When I run `cucumber`
     Then the output should contain:
       """
-            NAMES:
-            Feature name
-            Scenario name
-            Feature name
-            Scenario Outline name
+      NAMES:
+      Feature name
+      Scenario Outline: Scenario Outline name
       """
 
