@@ -65,7 +65,6 @@ Feature: Tag logic
 
       """
 
-  @wip-new-core
   Scenario: Negative tags
     When I run `cucumber -q -t ~@three features/test.feature`
     Then it should pass with:

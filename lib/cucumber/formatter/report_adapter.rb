@@ -44,6 +44,7 @@ module Cucumber
       end
 
       def after_test_case(test_case, result)
+        test_case.describe_source_to(printer, result)
         record_test_case_result(test_case, result)
       end
 
