@@ -38,7 +38,6 @@ Feature: Around hooks
 
       """
 
-  @wip-new-core
   Scenario: Multiple Around hooks
     Given a file named "features/step_definitions/steps.rb" with:
       """
@@ -132,7 +131,6 @@ Feature: Around hooks
 
       """
 
-  @wip-new-core
   Scenario: Around hooks with tags
     Given a file named "features/step_definitions/steps.rb" with:
       """
@@ -187,7 +185,6 @@ Feature: Around hooks
 
       """
 
-  @wip-new-core
   Scenario: Around hooks with scenario outlines
     Given a file named "features/step_definitions/steps.rb" with:
       """
@@ -219,7 +216,7 @@ Feature: Around hooks
       Feature: Around hooks with scenario outlines
 
         Scenario Outline: using hook # features/f.feature:2
-          Then the hook is called    # features/step_definitions/steps.rb:1
+          Then the hook is called    # features/f.feature:3
 
           Examples: 
             | Number |
