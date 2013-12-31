@@ -31,6 +31,7 @@ module Cucumber
   require 'cucumber/runtime/features_loader'
   require 'cucumber/runtime/results'
   require 'cucumber/runtime/support_code'
+  require 'cucumber/runtime/tag_limits'
   class Runtime
     attr_reader :results, :support_code
 
@@ -262,6 +263,7 @@ module Cucumber
       name_regexps = @configuration.name_regexps
       [
         [Cucumber::Core::Test::TagFilter, [tag_expressions]],
+        [Cucumber::Runtime::TagLimits::Filter, [::Gherkin::TagExpression.new(tag_expressions.flatten).limits]],
         [Cucumber::Core::Test::NameFilter, [name_regexps]],
         [Cucumber::Core::Test::LocationsFilter, [filespecs.locations]],
         [Quit, []],
