@@ -72,3 +72,23 @@ Feature: Rerun formatter
     features/one_passing_one_failing.feature:9
     """
 
+Scenario: Scenario outlines with expand
+  For details see https://github.com/cucumber/cucumber/issues/503
+    Given a file named "features/one_passing_one_failing.feature" with:
+    """
+      Feature: One passing example, one failing example
+
+        Scenario Outline:
+          Given a <status> step
+
+        Examples:
+          | status  |
+          | passing |
+          | failing |
+
+      """
+    When I run `cucumber --expand -f rerun`
+    Then it should fail with:
+    """
+    features/one_passing_one_failing.feature:9
+    """
