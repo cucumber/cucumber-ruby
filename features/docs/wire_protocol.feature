@@ -82,7 +82,6 @@ Feature: Wire Protocol
   #            is simply used for the wire server's own reference.
   #   * args - any argument values as captured by the wire end's own regular
   #            expression (or other argument matching) process.
-  @wip
   Scenario: Dry run finds a step match
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                            |

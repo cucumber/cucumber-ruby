@@ -61,7 +61,7 @@ module Cucumber
       fire_after_configuration_hook
       self.visitor = report
 
-      execute features, mappings, report, filters
+      execute features, mappings, report, filters, run_options
       report.after_suite
     end
 
@@ -267,6 +267,12 @@ module Cucumber
         [Cucumber::Core::Test::LocationsFilter, [filespecs.locations]],
         [Quit, []],
       ]
+    end
+
+    def run_options
+      {}.tap do |run_options|
+        run_options[:run_mode] = :dry_run if @configuration.dry_run?
+      end
     end
 
     class Quit
