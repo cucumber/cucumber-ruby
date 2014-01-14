@@ -11,7 +11,12 @@ module Cucumber
 
       def initialize(runtime, io, options)
         @io = ensure_io(io, "json")
-        super(Gherkin::Formatter::JSONFormatter.new(@io), false)
+        @formatter = Gherkin::Formatter::JSONFormatter.new(@io)
+        super(@formatter, false)
+      end
+
+      def embed(src, mime_type, label)
+        @formatter.embedding(mime_type, {'label' => label, 'src' => src}.to_json)
       end
     end
   end
