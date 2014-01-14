@@ -113,8 +113,9 @@ Feature: Rerun formatter
     features/failing_background_outline.feature:11:12
     """
 
-Scenario: Scenario outlines with expand
-  For details see https://github.com/cucumber/cucumber/issues/503
+  Scenario: Scenario outlines with expand
+    For details see https://github.com/cucumber/cucumber/issues/503
+
     Given a file named "features/one_passing_one_failing.feature" with:
     """
       Feature: One passing example, one failing example
