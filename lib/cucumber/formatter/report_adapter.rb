@@ -48,7 +48,7 @@ module Cucumber
         record_test_case_result(test_case, result)
       end
 
-      def after_suite
+      def done
         printer.after
       end
 

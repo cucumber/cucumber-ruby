@@ -22,7 +22,6 @@ module Cucumber
         define_steps
         runtime.visitor = report
         execute [gherkin_doc], mappings, report
-        report.after_suite # TODO: move into core
       end
 
       require 'cucumber/mappings'

@@ -62,7 +62,6 @@ module Cucumber
       self.visitor = report
 
       execute features, mappings, report, filters, run_options
-      report.after_suite
     end
 
     def features_paths
@@ -284,6 +283,11 @@ module Cucumber
         unless Cucumber.wants_to_quit
           test_case.describe_to @receiver
         end
+      end
+
+      def done
+        @receiver.done
+        self
       end
     end
 
