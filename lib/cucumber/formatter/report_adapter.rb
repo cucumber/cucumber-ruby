@@ -280,13 +280,17 @@ module Cucumber
 
         def step(step, result)
           @child ||= StepsPrinter.new(formatter).before
+          @last_step_result = result
           step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background = nil)
           runtime.step_visited step_invocation
           @child.step_invocation step_invocation, runtime
         end
 
         after do
-          formatter.after_feature_element(node)
+          # TODO - the last step result might not accurately reflect the
+          # overall scenario result.
+          scenario = LegacyResultBuilder.new(@last_step_result).scenario(node.name, node.location)
+          formatter.after_feature_element(scenario)
         end
 
         private
@@ -831,6 +835,14 @@ module Cucumber
         Scenario = Struct.new(:status, :name, :location) do
           def backtrace_line(step_name = "#{name}", line = self.location.line)
             "#{location.on_line(line)}:in `#{step_name}'"
+          end
+
+          def failed?
+            :failed == status
+          end
+
+          def line
+            location.line
           end
         end
 
