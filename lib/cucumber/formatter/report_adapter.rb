@@ -690,7 +690,7 @@ module Cucumber
                                     :step) do
           extend Forwardable
 
-          def_delegators :step, :keyword, :name, :multiline_arg, :location
+          def_delegators :step, :keyword, :name, :multiline_arg, :location, :gherkin_statement
 
           def accept(formatter)
             formatter.before_step(self)
