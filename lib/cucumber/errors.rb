@@ -1,3 +1,5 @@
+require 'cucumber/core/test/result'
+
 module Cucumber
   # Raised when there is no matching StepDefinition for a step.
   class Undefined < StandardError

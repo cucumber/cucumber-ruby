@@ -1,8 +1,9 @@
 require 'forwardable'
 require 'delegate'
+require 'cucumber/errors'
 
 module Cucumber
-  module Formatter
+  module Reports
 
     class FormatterWrapper < BasicObject
       attr_reader :formatters
@@ -23,7 +24,7 @@ module Cucumber
       end
     end
 
-    ReportAdapter = Struct.new(:runtime, :formatter) do
+    LegacyFormatter = Struct.new(:runtime, :formatter) do
       def initialize(runtime, formatters)
         super runtime, FormatterWrapper.new(formatters)
       end

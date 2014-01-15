@@ -29,9 +29,9 @@ module Cucumber
         @mappings ||= Mappings.new
       end
 
-      require 'cucumber/formatter/report_adapter'
+      require 'cucumber/reports/legacy_formatter'
       def report
-        @report ||= Cucumber::Formatter::ReportAdapter.new runtime, [@formatter]
+        @report ||= Cucumber::Reports::LegacyFormatter.new runtime, [@formatter]
       end
 
       require 'cucumber/core/gherkin/document'
