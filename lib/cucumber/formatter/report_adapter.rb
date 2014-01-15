@@ -289,11 +289,17 @@ module Cucumber
         after do
           # TODO - the last step result might not accurately reflect the
           # overall scenario result.
-          scenario = LegacyResultBuilder.new(@last_step_result).scenario(node.name, node.location)
+          scenario = LegacyResultBuilder.new(last_step_result).scenario(node.name, node.location)
           formatter.after_feature_element(scenario)
         end
 
         private
+
+        # TODO - what is the correct scenario result if there are no
+        # steps e.g. features/docs/cli/execute_with_tag_filter.feature:68
+        def last_step_result
+          @last_step_result || Core::Test::Result::Undefined.new
+        end
 
         def step_match(step)
           runtime.step_match(step.name)
