@@ -296,10 +296,8 @@ module Cucumber
 
         private
 
-        # TODO - what is the correct scenario result if there are no
-        # steps e.g. features/docs/cli/execute_with_tag_filter.feature:68
         def last_step_result
-          @last_step_result || Core::Test::Result::Undefined.new
+          @last_step_result || Core::Test::Result::Unknown.new
         end
 
         def step_match(step)
