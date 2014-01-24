@@ -10,7 +10,7 @@ module Cucumber
 
       # TODO: remove coupling to types
       AST_SCENARIO_OUTLINE = Cucumber::Core::Ast::ScenarioOutline
-      AST_EXAMPLE_ROW = LegacyExampleTableRow
+      AST_EXAMPLE_ROW = Reports::LegacyExampleTableRow
 
       include Io
 

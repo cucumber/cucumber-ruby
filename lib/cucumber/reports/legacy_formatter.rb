@@ -1,8 +1,9 @@
 require 'forwardable'
 require 'delegate'
+require 'cucumber/errors'
 
 module Cucumber
-  module Formatter
+  module Reports
 
     class FormatterWrapper < BasicObject
       attr_reader :formatters
@@ -23,7 +24,7 @@ module Cucumber
       end
     end
 
-    ReportAdapter = Struct.new(:runtime, :formatter) do
+    LegacyFormatter = Struct.new(:runtime, :formatter) do
       def initialize(runtime, formatters)
         super runtime, FormatterWrapper.new(formatters)
       end
@@ -280,16 +281,24 @@ module Cucumber
 
         def step(step, result)
           @child ||= StepsPrinter.new(formatter).before
+          @last_step_result = result
           step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background = nil)
           runtime.step_visited step_invocation
           @child.step_invocation step_invocation, runtime
         end
 
         after do
-          formatter.after_feature_element(node)
+          # TODO - the last step result might not accurately reflect the
+          # overall scenario result.
+          scenario = LegacyResultBuilder.new(last_step_result).scenario(node.name, node.location)
+          formatter.after_feature_element(scenario)
         end
 
         private
+
+        def last_step_result
+          @last_step_result || Core::Test::Result::Unknown.new
+        end
 
         def step_match(step)
           runtime.step_match(step.name)
@@ -690,7 +699,7 @@ module Cucumber
                                     :step) do
           extend Forwardable
 
-          def_delegators :step, :keyword, :name, :multiline_arg, :location
+          def_delegators :step, :keyword, :name, :multiline_arg, :location, :gherkin_statement
 
           def accept(formatter)
             formatter.before_step(self)
@@ -831,6 +840,14 @@ module Cucumber
         Scenario = Struct.new(:status, :name, :location) do
           def backtrace_line(step_name = "#{name}", line = self.location.line)
             "#{location.on_line(line)}:in `#{step_name}'"
+          end
+
+          def failed?
+            :failed == status
+          end
+
+          def line
+            location.line
           end
         end
 

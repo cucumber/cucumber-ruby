@@ -23,10 +23,10 @@ module Cucumber
 
       def before_feature_element(feature_element)
         case(feature_element)
-        when Ast::Scenario
+        when Core::Ast::Scenario
           @outline = false
           @gf.scenario(feature_element.gherkin_statement)
-        when Ast::ScenarioOutline
+        when Core::Ast::ScenarioOutline
           @outline = true
           @gf.scenario_outline(feature_element.gherkin_statement)
         else
