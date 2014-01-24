@@ -31,7 +31,10 @@ module Cucumber
 
       require 'cucumber/reports/legacy_formatter'
       def report
-        @report ||= Cucumber::Reports::LegacyFormatter.new runtime, [@formatter]
+        @report ||= Reports::FanOut.new([
+          Reports::LegacyFormatter.new(runtime, @formatter),
+          Reports::LegacyResultRecorder.new(runtime)
+        ])
       end
 
       require 'cucumber/core/gherkin/document'
