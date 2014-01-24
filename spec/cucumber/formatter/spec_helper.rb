@@ -29,7 +29,7 @@ module Cucumber
         @mappings ||= Mappings.new
       end
 
-      require 'cucumber/reports/legacy_formatter'
+      require 'cucumber/reports'
       def report
         @report ||= Reports::FanOut.new([
           Reports::LegacyFormatter.new(runtime, @formatter),

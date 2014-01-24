@@ -251,7 +251,7 @@ module Cucumber
       @mappings = Mappings.new(self)
     end
 
-    require 'cucumber/reports/legacy_formatter'
+    require 'cucumber/reports'
     def report
       @report ||= Cucumber::Reports::FanOut.new(
         @configuration.formatters(self).map { |f| Cucumber::Reports::LegacyFormatter.new(self, f) } + [ Cucumber::Reports::LegacyResultRecorder.new(self) ]
