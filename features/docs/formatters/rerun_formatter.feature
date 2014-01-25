@@ -50,7 +50,6 @@ Feature: Rerun formatter
       features/mixed.feature:3:6:9
       """
 
-  @wip-new-core
   Scenario: Scenario outlines
     For details see https://github.com/cucumber/cucumber/issues/57
     Given a file named "features/one_passing_one_failing.feature" with:
