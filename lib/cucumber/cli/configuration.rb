@@ -70,7 +70,7 @@ module Cucumber
         if(builtin = Options::BUILTIN_FORMATS[format])
           constantize(builtin[0])
         else
-          constantize(format)
+          Reports::LegacyFormatter.adapt(constantize(format))
         end
       end
 

@@ -85,6 +85,16 @@ module Cucumber
     end
 
     LegacyFormatter = Struct.new(:runtime, :formatter) do
+
+      def self.adapt(formatter_class)
+        Class.new(LegacyFormatter) do
+          define_method(:initialize) do |runtime, path_or_io, options|
+            formatter = formatter_class.new(runtime, path_or_io, options)
+            super(runtime, formatter)
+          end
+        end
+      end
+
       def initialize(runtime, formatter)
         super runtime, MuteMissingMethods.new(formatter)
       end

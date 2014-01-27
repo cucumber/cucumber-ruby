@@ -254,7 +254,7 @@ module Cucumber
     require 'cucumber/reports'
     def report
       @report ||= Cucumber::Reports::FanOut.new(
-        @configuration.formatters(self).map { |f| Cucumber::Reports::LegacyFormatter.new(self, f) } + [ Cucumber::Reports::LegacyResultRecorder.new(self) ]
+        @configuration.formatters(self) + [ Cucumber::Reports::LegacyResultRecorder.new(self) ]
       )
     end
 
