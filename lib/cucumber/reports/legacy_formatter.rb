@@ -301,27 +301,9 @@ module Cucumber
       end
 
       # Printer to handle background steps for anything but the first scenario in a 
-      # feature. These steps should not be printed, but their results still need to 
-      # be recorded.
+      # feature. These steps should not be printed.
       class HiddenBackgroundPrinter < Struct.new(:formatter, :runtime, :background)
-
-        def step(step, result)
-          step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background)
-        end
-
         def method_missing(*args);end
-
-        private
-
-        def step_match(step)
-          runtime.step_match(step.name)
-        rescue Cucumber::Undefined
-          NoStepMatch.new(step, step.name)
-        end
-
-        def indent
-          @indent ||= Indent.new(background)
-        end
       end
 
       ScenarioPrinter = Printer.new(:formatter, :runtime, :node) do
