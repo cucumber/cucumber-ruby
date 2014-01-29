@@ -98,14 +98,12 @@ Feature: Wire Protocol
 
   # Optionally, the StepMatch can also contain a source reference, and a native
   # regexp string which will be used by some formatters.
-  @wip
   Scenario: Step matches returns details about the remote step definition
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                                                           |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[{"id":"1", "args":[], "source":"MyApp.MyClass:123", "regexp":"we.*"}]] |
     When I run `cucumber -f stepdefs --dry-run`
-    Then the stderr should not contain anything
-    And it should pass with:
+    Then it should pass with:
       """
       -
 
@@ -115,6 +113,7 @@ Feature: Wire Protocol
       1 step (1 skipped)
 
       """
+    And the stderr should not contain anything
 
 
   #

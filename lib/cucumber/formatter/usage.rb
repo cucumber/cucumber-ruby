@@ -114,10 +114,16 @@ module Cucumber
             key.status = :skipped
             key.mean_duration = 0
           else
-            key.status = Ast::StepInvocation.worst_status(steps.map{|step| step[:status]})
+            key.status = worst_status(steps.map{ |step| step[:status] })
             total_duration = steps.inject(0) {|sum, step| step[:duration] + sum}
             key.mean_duration = total_duration / steps.length
           end
+        end
+      end
+
+      def worst_status(statuses)
+        [:passed, :undefined, :pending, :skipped, :failed].find do |status|
+          statuses.include?(status)
         end
       end
 
