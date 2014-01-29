@@ -433,6 +433,7 @@ module Cucumber
         end
 
         def step(node, result)
+          @last_step_result = result
           @child.step(node, result)
         end
 
@@ -442,14 +443,22 @@ module Cucumber
         end
 
         def examples_table_row(node, result)
+          @last_step_resule = result
           @child.examples_table_row(node, result)
         end
 
         after do
-          formatter.after_feature_element(node)
+          # TODO - the last step result might not accurately reflect the
+          # overall scenario result.
+          scenario_outline = LegacyResultBuilder.new(last_step_result).scenario_outline(node.name, node.location)
+          formatter.after_feature_element(scenario_outline)
         end
 
         private
+
+        def last_step_result
+          @last_step_result || Core::Test::Result::Unknown.new
+        end
 
         def indent
           @indent ||= Indent.new(node)
@@ -612,18 +621,22 @@ module Cucumber
           when DataTableRow
             LegacyTableRow.new(exception, @status)
           when ExampleTableRow
-            LegacyExampleTableRow.new(exception, @status, node.values)
+            LegacyExampleTableRow.new(exception, @status, node.values, node.location)
           end
         end
 
         LegacyTableRow = Struct.new(:exception, :status)
-        LegacyExampleTableRow = Struct.new(:exception, :status, :cells) do
+        LegacyExampleTableRow = Struct.new(:exception, :status, :cells, :location) do
           def name
             '| ' + cells.join(' | ') + ' |'
           end
 
           def failed?
             status == :failed
+          end
+
+          def line
+            location.line
           end
         end
 
@@ -709,6 +722,10 @@ module Cucumber
 
         def scenario(name, location)
           Legacy::Ast::Scenario.new(@status, name, location)
+        end
+
+        def scenario_outline(name, location)
+          Legacy::Ast::ScenarioOutline.new(@status, name, location)
         end
 
         def describe_exception_to(formatter)
@@ -881,6 +898,20 @@ module Cucumber
         end
 
         Scenario = Struct.new(:status, :name, :location) do
+          def backtrace_line(step_name = "#{name}", line = self.location.line)
+            "#{location.on_line(line)}:in `#{step_name}'"
+          end
+
+          def failed?
+            :failed == status
+          end
+
+          def line
+            location.line
+          end
+        end
+
+        ScenarioOutline = Struct.new(:status, :name, :location) do
           def backtrace_line(step_name = "#{name}", line = self.location.line)
             "#{location.on_line(line)}:in `#{step_name}'"
           end

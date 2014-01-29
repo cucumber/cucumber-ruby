@@ -83,7 +83,6 @@ Feature: Tag logic
       1 step (1 undefined)
       """
 
-  @wip-new-core
   Scenario: Run with limited tag count, blowing it on scenario
      When I run `cucumber -q --no-source --dry-run --tags @one:1 features/test.feature`
      Then it should fail with:
@@ -93,7 +92,6 @@ Feature: Tag logic
          features/test.feature:9
        """
 
-  @wip-new-core
   Scenario: Run with limited tag count, blowing it via feature inheritance
      When I run `cucumber -q --no-source --dry-run --tags @feature:1 features/test.feature`
      Then it should fail with:
@@ -105,7 +103,6 @@ Feature: Tag logic
          features/test.feature:17
        """
 
-  @wip-new-core
   Scenario: Run with limited tag count using negative tag, blowing it via a tag that is not run
      When I run `cucumber -q --no-source --dry-run --tags ~@one:1 features/test.feature`
      Then it should fail with:
