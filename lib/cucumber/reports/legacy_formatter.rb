@@ -88,9 +88,9 @@ module Cucumber
 
       def self.adapt(formatter_class)
         Class.new(LegacyFormatter) do
-          define_method(:initialize) do |runtime, path_or_io, options|
+          define_singleton_method(:configure) do |runtime, path_or_io, options|
             formatter = formatter_class.new(runtime, path_or_io, options)
-            super(runtime, formatter)
+            new(runtime, formatter)
           end
         end
       end
