@@ -1,6 +1,14 @@
+require 'cucumber/formatter/io'
+
 module Cucumber
   module Reports
     class Rerun
+      extend Formatter::Io
+
+      def self.configure(runtime, path_or_io, options)
+        new(ensure_io(path_or_io, "rerun"))
+      end
+
       def initialize(io)
         @io = io
         @failures = {}
@@ -25,7 +33,6 @@ module Cucumber
       def file_failures
         @failures.map { |file, lines| [file, lines].join(':') }
       end
-
     end
   end
 end

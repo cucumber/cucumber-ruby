@@ -1,6 +1,6 @@
 require 'cucumber/reports/legacy_formatter'
 require 'cucumber/reports/fan_out'
-#require 'cucumber/reports/rerun'
+require 'cucumber/reports/rerun'
 require 'cucumber/formatter/html'
 require 'cucumber/formatter/pretty'
 require 'cucumber/formatter/progress'
@@ -17,7 +17,6 @@ module Cucumber
     Html       = LegacyFormatter.adapt(Cucumber::Formatter::Html)
     Pretty     = LegacyFormatter.adapt(Cucumber::Formatter::Pretty)
     Progress   = LegacyFormatter.adapt(Cucumber::Formatter::Progress)
-    Rerun      = LegacyFormatter.adapt(Cucumber::Formatter::Rerun)
     Usage      = LegacyFormatter.adapt(Cucumber::Formatter::Usage)
     Stepdefs   = LegacyFormatter.adapt(Cucumber::Formatter::Stepdefs)
     Junit      = LegacyFormatter.adapt(Cucumber::Formatter::Junit)
