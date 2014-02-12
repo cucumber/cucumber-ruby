@@ -1,7 +1,6 @@
-@wip-new-core
 @spawn
 Feature: Assertions
-  
+
   Assertions are how you tell Cucumber that a step has failed. The most basic
   way to do this is by raising an exception, but you can also use Ruby's built-in
   `Test::Unit` assertions library, or RSpec's `RSpec::Expectations` library.
