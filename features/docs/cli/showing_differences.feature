@@ -5,7 +5,6 @@ Feature: Showing differences to expected output
   When using RSpec, for example, this will show the difference between
   the expected and the actual output.
 
-  @rspec2
   Scenario: Run single failing scenario with default diff enabled
     Given a file named "features/failing_expectation.feature" with:
       """

@@ -2,28 +2,17 @@
 rerun = File.file?('rerun.txt') ? IO.read('rerun.txt') : ""
 rerun_opts = rerun.to_s.strip.empty? ? "--format progress features" : "--format pretty #{rerun}"
 std_opts = "--format progress features --tags ~@wip --tag ~@wip-new-core -r features --strict"
-std_opts << " --tags ~@drb --tags ~@wip-jruby" if defined?(JRUBY_VERSION)
-begin
-  require 'rspec/expectations'
-  std_opts << ' --tags ~@rspec1'
-rescue LoadError
-  # rspec 1
-  std_opts << ' --tags ~@rspec2'
-end
-wip_opts = "--color -r features --tags @wip:3,@wip-new-core"
-wip_opts << ",@wip-jruby:3" if defined?(JRUBY_VERSION)
+std_opts << " --tags ~@wip-jruby" if defined?(JRUBY_VERSION)
 
-legacy_opts = ''
-legacy_opts << " --tags ~@wire" if defined?(JRUBY_VERSION)
-legacy_opts << " --tags ~@wip-jruby" if defined?(JRUBY_VERSION)
+wip_opts = "--color -r features --tags @wip,@wip-new-core"
+wip_opts << ",@wip-jruby" if defined?(JRUBY_VERSION)
 %>
-default: <%= std_opts %> --tags ~@jruby
-jruby: <%= std_opts %> --tags ~@spork --tags ~@wire
-jruby_win: <%= std_opts %> --tags ~@spork --tags ~@wire CUCUMBER_FORWARD_SLASH_PATHS=true
-windows_mri: <%= std_opts %> --tags ~@jruby --tags ~@spork --tags ~@wire --tags ~@needs-many-fonts CUCUMBER_FORWARD_SLASH_PATHS=true
-ruby_1_9: <%= std_opts %> --tags ~@jruby
-ruby_2_0: <%= std_opts %> --tags ~@jruby
-wip: --wip <%= wip_opts %> features
-none: --format pretty
-rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip --tag ~@wip-new-core
-legacy: legacy_features -r legacy_features -f progress --tags ~@spork <%= legacy_opts %>
+default:     <%= std_opts %> --tags ~@jruby
+jruby:       <%= std_opts %> --tags ~@wire
+jruby_win:   <%= std_opts %> --tags ~@wire CUCUMBER_FORWARD_SLASH_PATHS=true
+windows_mri: <%= std_opts %> --tags ~@jruby --tags ~@wire --tags ~@needs-many-fonts CUCUMBER_FORWARD_SLASH_PATHS=true
+ruby_1_9:    <%= std_opts %> --tags ~@jruby
+ruby_2_0:    <%= std_opts %> --tags ~@jruby
+wip:         --wip <%= wip_opts %> features
+none:        --format pretty
+rerun:       <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip --tag ~@wip-new-core
