@@ -1,4 +1,3 @@
-@wip-new-core
 @spawn
 Feature: Assertions
   
@@ -19,6 +18,7 @@ Feature: Assertions
       """
       source "https://rubygems.org"
       gem "cucumber", path: "../.."
+      gem "cucumber-core", path: "../../../cucumber-ruby-core"
 
       """
     And I run `bundle install --local --quiet`
@@ -36,6 +36,7 @@ Feature: Assertions
       """
       source "https://rubygems.org"
       gem "cucumber", path: "../.."
+      gem "cucumber-core", path: "../../../cucumber-ruby-core"
       gem "rspec"
       """
     And I run `bundle install --local --quiet`
