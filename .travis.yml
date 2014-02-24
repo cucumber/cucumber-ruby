@@ -9,6 +9,7 @@ branches:
   only:
     - master
     - v1.3.x-bugfix
+    - ruby-2-1-support
 
 notifications:
   email:
