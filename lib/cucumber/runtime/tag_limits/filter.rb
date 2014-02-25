@@ -5,7 +5,6 @@ module Cucumber
     module TagLimits
       class Filter
         def initialize(tag_limits, receiver)
-          @tag_limits = tag_limits
           @gated_receiver = GatedReceiver.new(receiver)
           @test_case_index = TestCaseIndex.new
           @verifier = Verifier.new(tag_limits)
