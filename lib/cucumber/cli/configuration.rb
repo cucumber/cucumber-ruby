@@ -136,7 +136,7 @@ module Cucumber
       end
 
       def tag_limits
-        tag_expression.limits
+        tag_expression.limits.to_hash
       end
 
       def tag_expressions
