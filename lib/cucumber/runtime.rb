@@ -261,13 +261,14 @@ module Cucumber
     def filters
       tag_expressions = @configuration.tag_expressions
       name_regexps = @configuration.name_regexps
-      [
-        [Cucumber::Core::Test::TagFilter, [tag_expressions]],
-        [Cucumber::Runtime::TagLimits::Filter, [::Gherkin::TagExpression.new(tag_expressions.flatten).limits]],
-        [Cucumber::Core::Test::NameFilter, [name_regexps]],
-        [Cucumber::Core::Test::LocationsFilter, [filespecs.locations]],
-        [Quit, []],
-      ]
+      tag_limits = @configuration.tag_limits
+      [].tap do |filters|
+        filters << [Cucumber::Runtime::TagLimits::Filter, [tag_limits]] if tag_limits.any?
+        filters << [Cucumber::Core::Test::TagFilter, [tag_expressions]]
+        filters << [Cucumber::Core::Test::NameFilter, [name_regexps]]
+        filters << [Cucumber::Core::Test::LocationsFilter, [filespecs.locations]]
+        filters << [Quit, []]
+      end
     end
 
     def run_options
