@@ -408,6 +408,18 @@ END_OF_MESSAGE
       end
     end
 
+    describe '#tag_limits' do
+      it "returns an empty hash when no limits are specified" do
+        config.parse!([])
+        expect(config.tag_limits).to eq({ })
+      end
+
+      it "returns a hash of limits when limits are specified" do
+        config.parse!(['--tags','@foo:1'])
+        expect(config.tag_limits).to eq({ "@foo" => 1 })
+      end
+    end
+
     describe "#dry_run?" do
       it "returns true when --dry-run was specified on in the arguments" do
         config.parse!(['--dry-run'])

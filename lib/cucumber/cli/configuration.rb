@@ -135,6 +135,10 @@ module Cucumber
         Gherkin::TagExpression.new(@options[:tag_expressions])
       end
 
+      def tag_limits
+        tag_expression.limits.to_hash
+      end
+
       def tag_expressions
         @options[:tag_expressions]
       end

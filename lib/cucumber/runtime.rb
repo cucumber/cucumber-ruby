@@ -31,6 +31,7 @@ module Cucumber
   require 'cucumber/runtime/features_loader'
   require 'cucumber/runtime/results'
   require 'cucumber/runtime/support_code'
+  require 'cucumber/runtime/tag_limits'
   class Runtime
     attr_reader :results, :support_code
 
@@ -260,12 +261,14 @@ module Cucumber
     def filters
       tag_expressions = @configuration.tag_expressions
       name_regexps = @configuration.name_regexps
-      [
-        [Cucumber::Core::Test::TagFilter, [tag_expressions]],
-        [Cucumber::Core::Test::NameFilter, [name_regexps]],
-        [Cucumber::Core::Test::LocationsFilter, [filespecs.locations]],
-        [Quit, []],
-      ]
+      tag_limits = @configuration.tag_limits
+      [].tap do |filters|
+        filters << [Cucumber::Runtime::TagLimits::Filter, [tag_limits]] if tag_limits.any?
+        filters << [Cucumber::Core::Test::TagFilter, [tag_expressions]]
+        filters << [Cucumber::Core::Test::NameFilter, [name_regexps]]
+        filters << [Cucumber::Core::Test::LocationsFilter, [filespecs.locations]]
+        filters << [Quit, []]
+      end
     end
 
     def run_options

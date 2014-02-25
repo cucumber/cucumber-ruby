@@ -15,3 +15,8 @@ end
 Then(/^"([^"]*)" should be required$/) do |file_name|
   all_output.should include("* #{file_name}")
 end
+
+Then /^it fails before running features with:$/ do |expected|
+  assert_matching_output("\\A#{expected}", all_output)
+  assert_success(false)
+end
