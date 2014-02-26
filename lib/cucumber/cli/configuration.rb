@@ -70,7 +70,7 @@ module Cucumber
         if(builtin = Options::BUILTIN_FORMATS[format])
           constantize(builtin[0])
         else
-          constantize(format)
+          Reports::LegacyFormatter.adapt(constantize(format))
         end
       end
 
@@ -171,7 +171,7 @@ module Cucumber
           path_or_io = format_and_out[1]
           begin
             formatter_class = formatter_class(format)
-            formatter_class.new(runtime, path_or_io, @options)
+            formatter_class.configure(runtime, path_or_io, @options)
           rescue Exception => e
             e.message << "\nError creating formatter: #{format}"
             raise e

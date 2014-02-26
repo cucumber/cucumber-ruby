@@ -8,21 +8,21 @@ module Cucumber
     class Options
       INDENT = ' ' * 53
       BUILTIN_FORMATS = {
-        'html'        => ['Cucumber::Formatter::Html',        'Generates a nice looking HTML report.'],
-        'pretty'      => ['Cucumber::Formatter::Pretty',      'Prints the feature as is - in colours.'],
-        'progress'    => ['Cucumber::Formatter::Progress',    'Prints one character per scenario.'],
-        'rerun'       => ['Cucumber::Formatter::Rerun',       'Prints failing files with line numbers.'],
-        'usage'       => ['Cucumber::Formatter::Usage',       "Prints where step definitions are used.\n" +
-                                                              "#{INDENT}The slowest step definitions (with duration) are\n" +
-                                                              "#{INDENT}listed first. If --dry-run is used the duration\n" +
-                                                              "#{INDENT}is not shown, and step definitions are sorted by\n" +
-                                                              "#{INDENT}filename instead."],
-        'stepdefs'    => ['Cucumber::Formatter::Stepdefs',    "Prints All step definitions with their locations. Same as\n" +
-                                                              "#{INDENT}the usage formatter, except that steps are not printed."],
-        'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
-        'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
-        'json_pretty' => ['Cucumber::Formatter::JsonPretty',  'Prints the feature as prettified JSON'],
-        'debug'       => ['Cucumber::Formatter::Debug',       'For developing formatters - prints the calls made to the listeners.']
+        'html'        => ['Cucumber::Reports::Html',        'Generates a nice looking HTML report.'],
+        'pretty'      => ['Cucumber::Reports::Pretty',      'Prints the feature as is - in colours.'],
+        'progress'    => ['Cucumber::Reports::Progress',    'Prints one character per scenario.'],
+        'rerun'       => ['Cucumber::Reports::Rerun',       'Prints failing files with line numbers.'],
+        'usage'       => ['Cucumber::Reports::Usage',       "Prints where step definitions are used.\n" +
+                                                            "#{INDENT}The slowest step definitions (with duration) are\n" +
+                                                            "#{INDENT}listed first. If --dry-run is used the duration\n" +
+                                                            "#{INDENT}is not shown, and step definitions are sorted by\n" +
+                                                            "#{INDENT}filename instead."],
+        'stepdefs'    => ['Cucumber::Reports::Stepdefs',    "Prints All step definitions with their locations. Same as\n" +
+                                                            "#{INDENT}the usage formatter, except that steps are not printed."],
+        'junit'       => ['Cucumber::Reports::Junit',       'Generates a report similar to Ant+JUnit.'],
+        'json'        => ['Cucumber::Reports::Json',        'Prints the feature as JSON'],
+        'json_pretty' => ['Cucumber::Reports::JsonPretty',  'Prints the feature as prettified JSON'],
+        'debug'       => ['Cucumber::Reports::Debug',       'For developing formatters - prints the calls made to the listeners.']
       }
       max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
       FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|

@@ -252,9 +252,11 @@ module Cucumber
       @mappings = Mappings.new(self)
     end
 
-    require 'cucumber/reports/legacy_formatter'
+    require 'cucumber/reports'
     def report
-      @report ||= Cucumber::Reports::LegacyFormatter.new(self, @configuration.formatters(self))
+      @report ||= Cucumber::Reports::FanOut.new(
+        @configuration.formatters(self) + [ Cucumber::Reports::LegacyResultRecorder.new(self) ]
+      )
     end
 
     require 'cucumber/core/test/filters'

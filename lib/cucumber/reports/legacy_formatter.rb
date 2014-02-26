@@ -1,32 +1,102 @@
 require 'forwardable'
 require 'delegate'
 require 'cucumber/errors'
+require 'cucumber/initializer'
 
 module Cucumber
   module Reports
 
-    class FormatterWrapper < BasicObject
-      attr_reader :formatters
-      private :formatters
+    class LegacyResultRecorder
+      include ::Cucumber.initializer(:runtime)
 
-      def initialize(formatters)
-        @formatters = formatters
+      def after_test_case(test_case, result)
+        record_test_case_result(test_case, result)
       end
 
-      def method_missing(message, *args)
-        formatters.each do |formatter|
-          formatter.send(message, *args) if formatter.respond_to?(message)
+      def after_test_step(test_step, result)
+        test_step.describe_source_to(
+          StepResultRecorder.new(runtime), result
+        )
+      end
+
+      private
+      def record_test_case_result(test_case, result)
+        scenario = LegacyResultBuilder.new(result).scenario(test_case.name, test_case.location)
+        runtime.record_result(scenario)
+      end
+
+      class StepResultRecorder
+        attr_reader :runtime
+        private :runtime
+        def initialize(runtime)
+          @runtime = runtime
+        end
+
+        def step(step, result)
+          step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, @background)
+          runtime.step_visited step_invocation
+        end
+
+        def method_missing(*args);end
+
+        def background(node, *)
+          @parent = @background = node
+        end
+
+        def scenario(node, *)
+          @parent = node
+        end
+
+        def scenario_outline(node, *)
+          @parent = node
+        end
+
+        private
+
+        def step_match(step)
+          runtime.step_match(step.name)
+        rescue Cucumber::Undefined
+          NoStepMatch.new(step, step.name)
+        end
+
+        def indent
+          return :no_indent unless @parent
+          @indent ||= Indent.new(@parent)
         end
       end
 
+    end
+
+    class MuteMissingMethods < BasicObject
+      attr_reader :formatter
+      private :formatter
+
+      def initialize(formatter)
+        @formatter = formatter
+      end
+
+      def method_missing(message, *args)
+        formatter.send(message, *args) if formatter.respond_to?(message)
+      end
+
       def respond_to_missing?(name, include_private = false)
-        formatters.any? { |formatter| formatter.respond_to?(name, include_private) }
+        formatter.respond_to?(name, include_private)
       end
     end
 
     LegacyFormatter = Struct.new(:runtime, :formatter) do
-      def initialize(runtime, formatters)
-        super runtime, FormatterWrapper.new(formatters)
+
+      def self.adapt(formatter_class)
+        Class.new(LegacyFormatter) do
+          define_singleton_method(:configure) do |runtime, path_or_io, options|
+            formatter = formatter_class.new(runtime, path_or_io, options)
+            new(runtime, formatter)
+          end
+        end
+      end
+
+      def initialize(runtime, formatter)
+        super runtime, MuteMissingMethods.new(formatter)
       end
 
       extend Forwardable
@@ -46,7 +116,6 @@ module Cucumber
 
       def after_test_case(test_case, result)
         test_case.describe_source_to(printer, result)
-        record_test_case_result(test_case, result)
       end
 
       def done
@@ -70,11 +139,6 @@ module Cucumber
 
       def printer
         @printer ||= FeaturesPrinter.new(formatter, runtime).before
-      end
-
-      def record_test_case_result(test_case, result)
-        scenario = LegacyResultBuilder.new(result).scenario(test_case.name, test_case.location)
-        runtime.record_result(scenario)
       end
 
       # Provides a DSL for making the printers themselves more terse
@@ -226,7 +290,6 @@ module Cucumber
         def step(step, result)
           @child ||= StepsPrinter.new(formatter).before
           step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background)
-          runtime.step_visited step_invocation
           @child.step_invocation step_invocation, runtime, background
         end
 
@@ -248,28 +311,9 @@ module Cucumber
       end
 
       # Printer to handle background steps for anything but the first scenario in a 
-      # feature. These steps should not be printed, but their results still need to 
-      # be recorded.
+      # feature. These steps should not be printed.
       class HiddenBackgroundPrinter < Struct.new(:formatter, :runtime, :background)
-
-        def step(step, result)
-          step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background)
-          runtime.step_visited step_invocation
-        end
-
         def method_missing(*args);end
-
-        private
-
-        def step_match(step)
-          runtime.step_match(step.name)
-        rescue Cucumber::Undefined
-          NoStepMatch.new(step, step.name)
-        end
-
-        def indent
-          @indent ||= Indent.new(background)
-        end
       end
 
       ScenarioPrinter = Printer.new(:formatter, :runtime, :node) do
@@ -283,7 +327,6 @@ module Cucumber
           @child ||= StepsPrinter.new(formatter).before
           @last_step_result = result
           step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background = nil)
-          runtime.step_visited step_invocation
           @child.step_invocation step_invocation, runtime
         end
 
@@ -549,7 +592,6 @@ module Cucumber
 
         def step(step, result)
           step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, :indent_not_needed)
-          runtime.step_visited step_invocation
           @failed_step = step_invocation if result.failed?
           @status = step_invocation.status unless @status == :failed
         end
@@ -643,6 +685,7 @@ module Cucumber
 
       class LegacyResultBuilder
         def initialize(result)
+          @result = result
           result.describe_to(self)
         end
 
