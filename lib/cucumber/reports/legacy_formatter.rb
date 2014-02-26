@@ -77,32 +77,12 @@ module Cucumber
         runtime.record_result(scenario)
       end
 
-      # Provides a DSL for making the printers themselves more terse
-      class Printer < Struct
-        # TODO: unfactor this
-        def self.before(&block)
-          define_method(:before) do
-            instance_eval(&block)
-            self
-          end
-        end
-
-        # TODO: unfactor this
-        def self.after(&block)
-          define_method(:after) do
-            @child.after if @child
-            instance_eval(&block)
-            self
-          end
-        end
-
-      end
-
       require 'cucumber/core/test/timer'
-      FeaturesPrinter = Printer.new(:formatter, :runtime) do
-        before do
+      FeaturesPrinter = Struct.new(:formatter, :runtime) do
+        def before
           timer.start
           formatter.before_features(nil)
+          self
         end
 
         def hook(result)
@@ -141,8 +121,10 @@ module Cucumber
           @child.examples_table_row(node, result)
         end
 
-        after do
+        def after
+          @child.after if @child
           formatter.after_features Legacy::Ast::Features.new(timer.sec)
+          self
         end
 
         private
@@ -153,12 +135,13 @@ module Cucumber
 
       end
 
-      FeaturePrinter = Printer.new(:formatter, :runtime, :feature) do
-        before do
+      FeaturePrinter = Struct.new(:formatter, :runtime, :feature) do
+        def before
           formatter.before_feature(feature)
           Legacy::Ast::Comments.new(feature.comments).accept(formatter)
           Legacy::Ast::Tags.new(feature.tags).accept(formatter)
           formatter.feature_name feature.keyword, indented(feature.name) # TODO: change the core's new AST to return name and description separately instead of this lumped-together field
+          self
         end
 
         def background(node, *)
@@ -200,8 +183,10 @@ module Cucumber
           @child.examples_table_row(node, result)
         end
 
-        after do
+        def after
+          @child.after if @child
           formatter.after_feature(feature)
+          self
         end
 
         private
@@ -216,11 +201,12 @@ module Cucumber
         end
       end
 
-      BackgroundPrinter = Printer.new(:formatter, :runtime, :background) do
+      BackgroundPrinter = Struct.new(:formatter, :runtime, :background) do
 
-        before do
+        def before
           formatter.before_background background
           formatter.background_name background.keyword, background.name, background.location.to_s, indent.of(background)
+          self
         end
 
         def step(step, result)
@@ -230,8 +216,10 @@ module Cucumber
           @child.step_invocation step_invocation, runtime, background
         end
 
-        after do
+        def after
+          @child.after if @child
           formatter.after_background(background)
+          self
         end
 
         private
@@ -272,11 +260,12 @@ module Cucumber
         end
       end
 
-      ScenarioPrinter = Printer.new(:formatter, :runtime, :node) do
-        before do
+      ScenarioPrinter = Struct.new(:formatter, :runtime, :node) do
+        def before
           formatter.before_feature_element(node)
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
           formatter.scenario_name node.keyword, node.name, node.location.to_s, indent.of(node)
+          self
         end
 
         def step(step, result)
@@ -287,11 +276,13 @@ module Cucumber
           @child.step_invocation step_invocation, runtime
         end
 
-        after do
+        def after
+          @child.after if @child
           # TODO - the last step result might not accurately reflect the
           # overall scenario result.
           scenario = LegacyResultBuilder.new(last_step_result).scenario(node.name, node.location)
           formatter.after_feature_element(scenario)
+          self
         end
 
         private
@@ -311,9 +302,10 @@ module Cucumber
         end
       end
 
-      StepsPrinter = Printer.new(:formatter) do
-        before do
+      StepsPrinter = Struct.new(:formatter) do
+        def before
           formatter.before_steps(nil)
+          self
         end
 
         attr_reader :steps
@@ -326,8 +318,10 @@ module Cucumber
           self
         end
 
-        after do
+        def after
+          @child.after if @child
           formatter.after_steps(steps)
+          self
         end
 
       end
@@ -381,12 +375,13 @@ module Cucumber
         end
       end
 
-      ScenarioOutlinePrinter = Printer.new(:formatter, :runtime, :node) do
-        before do
+      ScenarioOutlinePrinter = Struct.new(:formatter, :runtime, :node) do
+        def before
           formatter.before_feature_element(node)
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
           formatter.scenario_name node.keyword, node.name, node.location.to_s, indent.of(node)
           OutlineStepsPrinter.new(formatter, runtime, indent).print(node)
+          self
         end
 
         def step(node, result)
@@ -404,11 +399,13 @@ module Cucumber
           @child.examples_table_row(node, result)
         end
 
-        after do
+        def after
+          @child.after if @child
           # TODO - the last step result might not accurately reflect the
           # overall scenario result.
           scenario_outline = LegacyResultBuilder.new(last_step_result).scenario_outline(node.name, node.location)
           formatter.after_feature_element(scenario_outline)
+          self
         end
 
         private
@@ -448,9 +445,10 @@ module Cucumber
         end
       end
 
-      ExamplesArrayPrinter = Printer.new(:formatter, :runtime) do
-        before do
+      ExamplesArrayPrinter = Struct.new(:formatter, :runtime) do
+        def before
           formatter.before_examples_array(:examples_array)
+          self
         end
 
         def examples_table(examples_table)
@@ -468,17 +466,20 @@ module Cucumber
           @child.step(node, result)
         end
 
-        after do
+        def after
+          @child.after if @child
           formatter.after_examples_array
+          self
         end
       end
 
-      ExamplesTablePrinter = Printer.new(:formatter, :runtime, :node) do
-        before do
+      ExamplesTablePrinter = Struct.new(:formatter, :runtime, :node) do
+        def before
           formatter.before_examples(node)
           formatter.examples_name(node.keyword, node.name)
           formatter.before_outline_table(legacy_table)
           TableRowPrinter.new(formatter, runtime, ExampleTableRow.new(node.header)).before.after
+          self
         end
 
         def examples_table_row(examples_table_row, *)
@@ -498,9 +499,11 @@ module Cucumber
           end
         end
 
-        after do
+        def after
+          @child.after if @child
           formatter.after_outline_table(node)
           formatter.after_examples(node)
+          self
         end
 
         private
@@ -542,9 +545,10 @@ module Cucumber
         end
       end
 
-      TableRowPrinter = Printer.new(:formatter, :runtime, :node, :background) do
-        before do
+      TableRowPrinter = Struct.new(:formatter, :runtime, :node, :background) do
+        def before
           formatter.before_table_row(node)
+          self
         end
 
         def step(step, result)
@@ -554,7 +558,8 @@ module Cucumber
           @status = step_invocation.status unless @status == :failed
         end
 
-        after do
+        def after
+          @child.after if @child
           node.values.each do |value|
             formatter.before_table_cell(value)
             formatter.table_cell_value(value, @status || :skipped)
@@ -564,6 +569,7 @@ module Cucumber
           if @failed_step
             formatter.exception @failed_step.exception, @failed_step.status
           end
+          self
         end
 
         private
