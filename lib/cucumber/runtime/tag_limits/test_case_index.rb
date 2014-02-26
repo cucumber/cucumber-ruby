@@ -3,12 +3,12 @@ module Cucumber
     module TagLimits
       class TestCaseIndex
         def initialize
-          @index = { }
+          @index = Hash.new { |hash, key| hash[key] = [] }
         end
 
         def add(test_case)
           test_case.tags.map(&:name).each do |tag_name|
-            (index[tag_name] ||= []) << test_case
+            index[tag_name] << test_case
           end
         end
 
