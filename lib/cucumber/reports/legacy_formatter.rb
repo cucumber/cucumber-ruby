@@ -13,6 +13,12 @@ module Cucumber
         @formatters = formatters
       end
 
+      def node(node_name, node, &block)
+        method_missing "before_#{node_name}", node
+        block.call
+        method_missing "after_#{node_name}", node
+      end
+
       def method_missing(message, *args)
         formatters.each do |formatter|
           formatter.send(message, *args) if formatter.respond_to?(message)
@@ -345,17 +351,9 @@ module Cucumber
 
       MultilineArgPrinter = Struct.new(:formatter, :runtime) do
         def print(node)
-          formatter.before_multiline_arg node
-          node.describe_to(self)
-          formatter.after_multiline_arg node
-        end
-
-        def step(step, &descend)
-          descend.call
-        end
-
-        def outline_step(outline_step, &descend)
-          descend.call
+          formatter.node(:multiline_arg, node) do
+            node.describe_to(self)
+          end
         end
 
         def doc_string(doc_string)
