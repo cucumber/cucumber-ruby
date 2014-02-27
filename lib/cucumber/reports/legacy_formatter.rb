@@ -166,7 +166,7 @@ module Cucumber
         def scenario(node, *)
           return if node == @current_feature_element
           @child.after if @child
-          @child = ScenarioPrinter.new(formatter, runtime, node).before.pending(@child)
+          @child = ScenarioPrinter.new(formatter, runtime, node, @child).before
           @current_feature_element = node
         end
 
@@ -282,21 +282,17 @@ module Cucumber
         end
       end
 
-      ScenarioPrinter = Struct.new(:formatter, :runtime, :node) do
+      ScenarioPrinter = Struct.new(:formatter, :runtime, :node, :last_printer) do
         def before
           formatter.before_feature_element(node)
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
           formatter.scenario_name node.keyword, node.name, node.location.to_s, indent.of(node)
-          self
-        end
-
-        def pending(parent)
-          @child ||= StepsPrinter.new(formatter).before
-          parent && parent.complete_pending(@child)
+          pending
           self
         end
 
         def complete_pending(*)
+          self
         end
 
         def step(step, result)
@@ -317,6 +313,13 @@ module Cucumber
         end
 
         private
+        def pending
+          if last_printer
+            @child ||= StepsPrinter.new(formatter).before
+            last_printer.complete_pending(@child)
+          end
+          self
+        end
 
         def last_step_result
           @last_step_result || Core::Test::Result::Unknown.new
