@@ -7,9 +7,9 @@ Feature: Getting started
   Scenario: Run Cucumber in an empty directory
     Given a directory without standard Cucumber project directory structure
     When I run `cucumber`
-    Then it should fail with:
+    Then it should fail with regexp:
       """
-      No such file or directory - features. Please create a features directory to get started.
+      No such file or directory.*Please create a features directory to get started.
       """
 
   Scenario: Accidentally run Cucumber in a folder with Ruby files in it.
