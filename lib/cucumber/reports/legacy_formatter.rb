@@ -166,7 +166,7 @@ module Cucumber
         def scenario(node, *)
           return if node == @current_feature_element
           @child.after if @child
-          @child = ScenarioPrinter.new(formatter, runtime, node).before
+          @child = ScenarioPrinter.new(formatter, runtime, node).before.pending(@child)
           @current_feature_element = node
         end
 
@@ -228,6 +228,10 @@ module Cucumber
           self
         end
 
+        def complete_pending(child)
+          self
+        end
+
         private
 
         def step_match(step)
@@ -246,8 +250,16 @@ module Cucumber
       # be recorded.
       class HiddenBackgroundPrinter < Struct.new(:formatter, :runtime, :background)
 
+        def complete_pending(child)
+          delayed_step_invocations.each do |step_invocation|
+            child.step_invocation step_invocation, runtime
+          end
+          self
+        end
+
         def step(step, result)
           step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background)
+          delayed_step_invocations << step_invocation if step_invocation.failed?
           runtime.step_visited step_invocation
         end
 
@@ -264,6 +276,10 @@ module Cucumber
         def indent
           @indent ||= Indent.new(background)
         end
+
+        def delayed_step_invocations
+          @delayed_step_invocations ||= []
+        end
       end
 
       ScenarioPrinter = Struct.new(:formatter, :runtime, :node) do
@@ -272,6 +288,15 @@ module Cucumber
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
           formatter.scenario_name node.keyword, node.name, node.location.to_s, indent.of(node)
           self
+        end
+
+        def pending(parent)
+          @child ||= StepsPrinter.new(formatter).before
+          parent && parent.complete_pending(@child)
+          self
+        end
+
+        def complete_pending(*)
         end
 
         def step(step, result)
