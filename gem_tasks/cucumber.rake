@@ -14,7 +14,6 @@ class Cucumber::Rake::Task
     elsif Cucumber::RUBY_2_1
       'ruby_2_1'
     end
-    end
   end
 end
 
