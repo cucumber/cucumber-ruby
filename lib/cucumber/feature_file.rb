@@ -43,6 +43,12 @@ module Cucumber
       end
     end
 
+    module FixRuby21Bug9285
+      def message
+        String(super).gsub("@ rb_sysopen ", "")
+      end
+    end
+
     def source
       @source ||= if @path =~ /^http/
         require 'open-uri'
@@ -63,6 +69,7 @@ module Cucumber
         rescue Errno::ENOENT => e
           # special-case opening features, because this could be a new user:
           e.message << ". Please create a #{@path} directory to get started."
+          e.extend FixRuby21Bug9285 if Cucumber::RUBY_2_1
           raise e
         end
       end

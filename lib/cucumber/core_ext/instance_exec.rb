@@ -74,7 +74,7 @@ class Object #:nodoc:
     end
   end
 
-  INSTANCE_EXEC_OFFSET = (Cucumber::RUBY_2_0 || Cucumber::RUBY_1_9 || Cucumber::RUBY_1_8_7 || Cucumber::JRUBY) ? -3 : -4
+  INSTANCE_EXEC_OFFSET = (Cucumber::RUBY_2_1 || Cucumber::RUBY_2_0 || Cucumber::RUBY_1_9 || Cucumber::RUBY_1_8_7 || Cucumber::JRUBY) ? -3 : -4
 
   def replace_instance_exec_invocation_line!(backtrace, instance_exec_invocation_line, pseudo_method)
     return if Cucumber.use_full_backtrace
