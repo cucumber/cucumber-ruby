@@ -13,6 +13,7 @@ jruby_win:   <%= std_opts %> --tags ~@wire CUCUMBER_FORWARD_SLASH_PATHS=true
 windows_mri: <%= std_opts %> --tags ~@jruby --tags ~@wire --tags ~@needs-many-fonts CUCUMBER_FORWARD_SLASH_PATHS=true
 ruby_1_9:    <%= std_opts %> --tags ~@jruby
 ruby_2_0:    <%= std_opts %> --tags ~@jruby
+ruby_2_1:    <%= std_opts %> --tags ~@jruby
 wip:         --wip <%= wip_opts %> features
 none:        --format pretty
 rerun:       <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip --tag ~@wip-new-core
