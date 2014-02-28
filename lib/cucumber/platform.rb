@@ -14,6 +14,7 @@ module Cucumber
     WINDOWS_MRI   = WINDOWS && !JRUBY && !IRONRUBY
     RAILS         = defined?(Rails)
     RUBY_BINARY   = File.join(RbConfig::CONFIG['bindir'], RbConfig::CONFIG['ruby_install_name'])
+    RUBY_2_1      = RUBY_VERSION =~ /^2\.1/
     RUBY_2_0      = RUBY_VERSION =~ /^2\.0/
     RUBY_1_9      = RUBY_VERSION =~ /^1\.9/
 

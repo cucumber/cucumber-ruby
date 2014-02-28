@@ -11,6 +11,12 @@ require 'cucumber/formatter/duration'
 require 'cucumber/file_specs'
 
 module Cucumber
+  module FixRuby21Bug9285
+    def message
+      String(super).gsub("@ rb_sysopen ", "")
+    end
+  end
+
   class FileException < Exception
     attr :path
 
@@ -24,6 +30,7 @@ module Cucumber
   end
 
   class FeatureFolderNotFoundException < FileException
+    include FixRuby21Bug9285 if Cucumber::RUBY_2_1
   end
 
   require 'cucumber/core'
