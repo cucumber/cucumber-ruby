@@ -21,7 +21,8 @@ module Cucumber
 
         def step(step)
           location = Cucumber::Core::Ast::Location.new(*caller[0].split(':')[0..1])
-          @support_code.invoke(step.name, Core::Ast::MultilineArgument.from(step.doc_string || step.rows, location))
+          core_multiline_arg = Core::Ast::MultilineArgument.from(step.doc_string || step.rows, location)
+          @support_code.invoke(step.name, MultilineArgument.from(core_multiline_arg))
         end
 
         def eof
@@ -54,10 +55,9 @@ module Cucumber
         parser.parse(steps_text, file, line.to_i)
       end
 
-      def invoke(step_name, multiline_argument=nil)
+      def invoke(step_name, multiline_argument)
         file, line = *caller[2].split(':')[0..1]
         location = Core::Ast::Location.new(file, line)
-        multiline_argument = Cucumber::Core::Ast::MultilineArgument.from(multiline_argument, location)
         begin
           step_match(step_name).invoke(multiline_argument)
         rescue Exception => e
@@ -98,10 +98,10 @@ module Cucumber
         end.flatten
       end
 
-      def snippet_text(step_keyword, step_name, multiline_arg_class) #:nodoc:
+      def snippet_text(step_keyword, step_name, multiline_arg) #:nodoc:
         load_programming_language('rb') if unknown_programming_language?
         @programming_languages.map do |programming_language|
-          programming_language.snippet_text(step_keyword, step_name, multiline_arg_class, @configuration.snippet_type)
+          programming_language.snippet_text(step_keyword, step_name, multiline_arg, @configuration.snippet_type)
         end.join("\n")
       end
 

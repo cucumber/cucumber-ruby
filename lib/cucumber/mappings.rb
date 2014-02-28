@@ -1,5 +1,6 @@
 require 'cucumber/runtime'
 require 'cucumber'
+require 'cucumber/multiline_argument'
 
 module Cucumber
   class Mappings
@@ -10,7 +11,8 @@ module Cucumber
 
     def test_step(step, mapper)
       step_match = runtime.step_match(step.name)
-      mapper.map { step_match.invoke(step.multiline_arg) }
+      multiline_arg = MultilineArgument.from(step.multiline_arg)
+      mapper.map { step_match.invoke(multiline_arg) }
     rescue Cucumber::Undefined
     end
 

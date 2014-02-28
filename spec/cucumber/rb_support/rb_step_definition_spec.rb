@@ -18,7 +18,7 @@ module Cucumber
       end
 
       def run_step(text)
-        support_code.step_match(text).invoke(nil)
+        support_code.step_match(text).invoke(MultilineArgument::None.new)
       end
 
       it "should allow calling of other steps" do
@@ -36,7 +36,7 @@ module Cucumber
       it "should allow calling of other steps with inline arg" do
         dsl.Given /Outside/ do
           location = Core::Ast::Location.new(__FILE__, __LINE__)
-          step "Inside", Cucumber::Core::Ast::DataTable.new([['inside']], location)
+          step "Inside", MultilineArgument.from(Cucumber::Core::Ast::DataTable.new([['inside']], location))
         end
         dsl.Given /Inside/ do |table|
           $inside = table.raw[0][0]

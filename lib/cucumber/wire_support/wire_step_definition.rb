@@ -11,16 +11,9 @@ module Cucumber
       end
 
       def invoke(args)
-        prepared_args = args.map{ |arg| prepare(arg) }
-        @connection.invoke(@id, prepared_args)
+        @connection.invoke(@id, args)
       end
 
-      private
-
-      def prepare(arg)
-        return arg unless arg.is_a?(Cucumber::Core::Ast::DataTable)
-        arg.raw
-      end
     end
   end
 end

@@ -343,7 +343,6 @@ module Cucumber
         private
 
         def print_multiline_arg
-          return unless step_invocation.multiline_arg
           MultilineArgPrinter.new(formatter, runtime).print(step_invocation.multiline_arg)
         end
 
@@ -351,6 +350,8 @@ module Cucumber
 
       MultilineArgPrinter = Struct.new(:formatter, :runtime) do
         def print(node)
+          # TODO - stop coupling to type
+          return if node.is_a?( Cucumber::Core::Ast::EmptyMultilineArgument )
           formatter.node(:multiline_arg, node) do
             node.describe_to(self)
           end
@@ -360,7 +361,7 @@ module Cucumber
           formatter.doc_string(doc_string)
         end
 
-        def table(table)
+        def data_table(table)
           table.cells_rows.each do |row|
             TableRowPrinter.new(formatter, runtime, DataTableRow.new(row.map(&:value), row.line)).before.after
           end

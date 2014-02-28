@@ -9,11 +9,11 @@ module Cucumber
 
       before do
         @pattern = 'we have a missing step'
-        @multiline_argument_class = nil
+        @multiline_argument = Core::Ast::EmptyMultilineArgument.new
       end
 
       let(:snippet) do
-        snippet_class.new(code_keyword, @pattern, @multiline_argument_class)
+        snippet_class.new(code_keyword, @pattern, @multiline_argument)
       end
 
       def unindented(s)
@@ -46,7 +46,7 @@ module Cucumber
 
         it "should recognise a mix of ints, strings and why not a table too" do
           @pattern = 'I have 9 "awesome" cukes in 37 "boxes"'
-          @multiline_argument_class = Cucumber::Core::Ast::DataTable
+          @multiline_argument = Core::Ast::DataTable.new([[]], Core::Ast::Location.new(''))
 
           snippet_text.should == unindented(%{
           Given(/^I have (\\d+) "(.*?)" cukes in (\\d+) "(.*?)"$/) do |arg1, arg2, arg3, arg4, table|
@@ -88,11 +88,22 @@ module Cucumber
 
         it "should be helpful with tables" do
           @pattern = 'A "first" arg'
-          @multiline_argument_class = Cucumber::Core::Ast::DataTable
+          @multiline_argument = Core::Ast::DataTable.new([[]], Core::Ast::Location.new(""))
 
           snippet_text.should == unindented(%{
           Given(/^A "(.*?)" arg$/) do |arg1, table|
             # table is a Cucumber::Core::Ast::DataTable
+            pending # Write code here that turns the phrase above into concrete actions
+          end
+          })
+        end
+
+        it "should be helpful with doc string" do
+          @pattern = 'A "first" arg'
+          @multiline_argument = Core::Ast::MultilineArgument.from("", Core::Ast::Location.new(""))
+
+          snippet_text.should == unindented(%{
+          Given(/^A "(.*?)" arg$/) do |arg1, string|
             pending # Write code here that turns the phrase above into concrete actions
           end
           })

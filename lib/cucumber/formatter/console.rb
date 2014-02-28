@@ -135,9 +135,7 @@ module Cucumber
         unknown_programming_language = runtime.unknown_programming_language?
         snippets = undefined.map do |step|
           step_name = Undefined === step.exception ? step.exception.step_name : step.name
-          step_multiline_class = step.multiline_arg ? step.multiline_arg.class : nil
-          snippet = @runtime.snippet_text(step.actual_keyword, step_name, step_multiline_class)
-          snippet
+          @runtime.snippet_text(step.actual_keyword, step_name, step.multiline_arg)
         end.compact.uniq
 
         text = "\nYou can implement step definitions for undefined steps with these snippets:\n\n"

@@ -23,9 +23,10 @@ module Cucumber
         @connections << Connection.new(config)
       end
 
-      def snippet_text(code_keyword, step_name, multiline_arg_class)
+      def snippet_text(code_keyword, step_name, multiline_arg)
         snippets = @connections.map do |remote|
-          remote.snippet_text(code_keyword, step_name, multiline_arg_class.to_s)
+          # TODO: should send an empty string for an EmptyMultilineArgument
+          remote.snippet_text(code_keyword, step_name, multiline_arg.class.to_s)
         end
         snippets.flatten.join("\n")
       end

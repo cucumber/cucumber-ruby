@@ -96,8 +96,8 @@ module Cucumber
       @support_code.unmatched_step_definitions
     end
 
-    def snippet_text(step_keyword, step_name, multiline_arg_class) #:nodoc:
-      @support_code.snippet_text(::Gherkin::I18n.code_keyword_for(step_keyword), step_name, multiline_arg_class)
+    def snippet_text(step_keyword, step_name, multiline_arg) #:nodoc:
+      @support_code.snippet_text(::Gherkin::I18n.code_keyword_for(step_keyword), step_name, multiline_arg)
     end
 
     def with_hooks(scenario, skip_hooks=false)
