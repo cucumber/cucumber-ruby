@@ -1,5 +1,5 @@
 source "https://rubygems.org"
 gemspec
-if ENV['cucumber_dev']
-  gem 'cucumber-core', path: '../cucumber-ruby-core' if File.directory?('../cucumber-ruby-core')
+if ENV['cucumber_use_local_core']
+  gem 'cucumber-core', path: '../cucumber-ruby-core'
 end
