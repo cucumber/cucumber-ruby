@@ -24,6 +24,7 @@ windows_mri: <%= std_opts %> --tags ~@jruby --tags ~@spork --tags ~@wire --tags 
 ruby_1_8_7: <%= std_opts %> --tags ~@jruby --tags ~@fails_on_1_8_7
 ruby_1_9: <%= std_opts %> --tags ~@jruby --tags ~@fails_on_1_9
 ruby_2_0: <%= std_opts %> --tags ~@jruby --tags ~@fails_on_1_9
+ruby_2_1: <%= std_opts %> --tags ~@jruby --tags ~@fails_on_1_9
 wip: --wip <%= wip_opts %> features
 none: --format pretty
 rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip
