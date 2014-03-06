@@ -10,7 +10,7 @@ module Cucumber
 
     let(:report)    { Reports::LegacyFormatter.new(runtime, [formatter]) }
     let(:formatter) { double('formatter').as_null_object }
-    let(:runtime)   { mappings.runtime } 
+    let(:runtime)   { mappings.runtime }
     let(:mappings)  { Mappings.new }
 
     before(:each) do
@@ -35,9 +35,9 @@ module Cucumber
         end
         expect( formatter.messages ).to eq [
           :before_features,
-          :before_feature, 
-          :before_tags, 
-          :after_tags, 
+          :before_feature,
+          :before_tags,
+          :after_tags,
           :feature_name,
           :before_feature_element,
           :before_tags,
@@ -61,6 +61,55 @@ module Cucumber
           :after_features
         ]
       end
+
+      context 'with exception in before hooks' do
+        it 'prints the exception after the scenario name' do
+          define_steps do
+            Before do
+              raise 'an exception'
+            end
+          end
+          execute_gherkin do
+            feature do
+              scenario do
+                step 'passing'
+              end
+            end
+          end
+
+          expect( formatter.messages ).to include(
+            :scenario_name,
+            :exception,
+            :before_steps,
+          )
+        end
+
+      end
+
+      context 'with exception in after hooks' do
+        it 'prints the exception after the scenario name' do
+          define_steps do
+            After do
+              raise 'an exception'
+            end
+          end
+          execute_gherkin do
+            feature do
+              scenario do
+                step 'passing'
+              end
+            end
+          end
+
+          expect( formatter.messages ).to include(
+            :after_steps,
+            :exception,
+            :after_feature_element,
+          )
+        end
+
+      end
+
     end
 
     it 'passes an object responding to failed? with the after_feature_element message' do
