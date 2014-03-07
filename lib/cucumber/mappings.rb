@@ -22,19 +22,13 @@ module Cucumber
         ruby.begin_rb_scenario(scenario)
       end
       ruby.hooks_for(:before, scenario).each do |hook|
-        mapper.before do
-          hook.invoke('Before', scenario)
-        end
+        mapper.before(&hook.build_invoker('Before', scenario))
       end
       ruby.hooks_for(:after, scenario).each do |hook|
-        mapper.after do
-          hook.invoke('After', scenario)
-        end
+        mapper.after(&hook.build_invoker('After', scenario))
       end
       ruby.hooks_for(:around, scenario).each do |hook|
-        mapper.around do |run_scenario|
-          hook.invoke('Around', scenario, &run_scenario)
-        end
+        mapper.around(&hook.build_invoker('Around', scenario, &run_scenario))
       end
     end
 
