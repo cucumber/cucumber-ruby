@@ -77,11 +77,28 @@ module Cucumber
             end
           end
 
-          expect( formatter.messages ).to include(
+          expect( formatter.messages ).to eq [
+            :before_features,
+            :before_feature,
+            :before_tags,
+            :after_tags,
+            :feature_name,
+            :before_feature_element,
+            :before_tags,
+            :after_tags,
             :scenario_name,
             :exception,
             :before_steps,
-          )
+            :before_step,
+            :before_step_result,
+            :step_name,
+            :after_step_result,
+            :after_step,
+            :after_steps,
+            :after_feature_element,
+            :after_feature,
+            :after_features
+          ]
         end
 
       end
@@ -101,11 +118,28 @@ module Cucumber
             end
           end
 
-          expect( formatter.messages ).to include(
+          expect( formatter.messages ).to eq [
+            :before_features,
+            :before_feature,
+            :before_tags,
+            :after_tags,
+            :feature_name,
+            :before_feature_element,
+            :before_tags,
+            :after_tags,
+            :scenario_name,
+            :before_steps,
+            :before_step,
+            :before_step_result,
+            :step_name,
+            :after_step_result,
+            :after_step,
             :after_steps,
             :exception,
             :after_feature_element,
-          )
+            :after_feature,
+            :after_features
+          ]
         end
 
       end

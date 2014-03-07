@@ -15,7 +15,7 @@ module Cucumber
 
       def node(node_name, node, &block)
         method_missing "before_#{node_name}", node
-        block.call
+        block.call if block
         method_missing "after_#{node_name}", node
       end
 
@@ -42,40 +42,33 @@ module Cucumber
         :ask,
         :puts
 
-      def before_test_case(test_case); end
-      def before_test_step(test_step); end
+      def before_test_case(test_case)
+        formatter.before_features
+        formatter.before_feature
+        formatter.node(:tags, nil)
+        formatter.feature_name
+        @feature_thingy = FeatureElement.new(formatter).before_test_case
+      end
+
+      def before_test_step(test_step)
+        @thingy = Step.for(test_step, formatter).before_test_step
+        self
+      end
 
       def after_test_step(test_step, result)
-        DebugPrinter.new(test_step) if ENV['DEBUG']
-        test_step.describe_source_to(printer, result)
+        @thingy.after_test_step
+        self
       end
 
       def after_test_case(test_case, result)
-        test_case.describe_source_to(printer, result)
+        @feature_thingy.after_test_case
         record_test_case_result(test_case, result)
+        self
       end
 
       def done
-        printer.after
-      end
-
-      class DebugPrinter
-        def initialize(step)
-          @messages = []
-          step.describe_to self
-          @messages << step.name if step.respond_to? :name
-          step.describe_source_to self
-          p @messages
-        end
-        def method_missing(message, *args)
-          @messages << message
-        end
-      end
-
-      private
-
-      def printer
-        @printer ||= FeaturesPrinter.new(formatter, runtime).before
+        formatter.after_feature
+        formatter.after_features
       end
 
       def record_test_case_result(test_case, result)
@@ -83,6 +76,68 @@ module Cucumber
         runtime.record_result(scenario)
       end
 
+      class FeatureElement
+        attr_reader :formatter
+        private     :formatter
+
+        def initialize(formatter)
+          @formatter = formatter
+        end
+
+        def before_test_case
+          formatter.before_feature_element
+          formatter.node(:tags, nil)
+          formatter.scenario_name
+          formatter.exception
+          formatter.before_steps
+          self
+        end
+
+        def after_test_case
+          formatter.after_steps
+          formatter.after_feature_element
+          self
+        end
+      end
+
+      class Step
+        def self.for(test_step, formatter)
+          return new(formatter) if test_step.is_a? Core::Test::Step
+          return HookStep.new
+        end
+
+        attr_reader :formatter
+        private     :formatter
+        def initialize(formatter)
+          @formatter = formatter
+        end
+
+        def before_test_step
+          formatter.before_step
+          self
+        end
+
+        def after_test_step
+          formatter.before_step_result
+          formatter.step_name
+          formatter.after_step_result
+          formatter.after_step
+          self
+        end
+
+        class HookStep
+          def before_test_step
+            self
+          end
+
+          def after_test_step
+            self
+          end
+        end
+      end
+
+
+      ##### MANKY
       require 'cucumber/core/test/timer'
       FeaturesPrinter = Struct.new(:formatter, :runtime) do
         def before
@@ -618,8 +673,8 @@ module Cucumber
 
         [:background, :scenario, :scenario_outline].each do |node_name|
           define_method(node_name) do |node, &descend|
-          record_width_of node
-          descend.call
+            record_width_of node
+            descend.call
           end
         end
 
@@ -719,175 +774,175 @@ module Cucumber
                                     :indent,
                                     :background,
                                     :step) do
-          extend Forwardable
+                                      extend Forwardable
 
-          def_delegators :step, :keyword, :name, :multiline_arg, :location, :gherkin_statement
+                                      def_delegators :step, :keyword, :name, :multiline_arg, :location, :gherkin_statement
 
-          def accept(formatter)
-            formatter.before_step(self)
-            formatter.before_step_result *step_result_attributes
-            print_step_name(formatter)
-            yield
-            print_exception(formatter)
-            formatter.after_step_result *step_result_attributes
-            formatter.after_step(self)
-          end
+                                      def accept(formatter)
+                                        formatter.before_step(self)
+                                        formatter.before_step_result *step_result_attributes
+                                        print_step_name(formatter)
+                                        yield
+                                        print_exception(formatter)
+                                        formatter.after_step_result *step_result_attributes
+                                        formatter.after_step(self)
+                                      end
 
-          def step_result_attributes
-            [keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line]
-          end
+                                      def step_result_attributes
+                                        [keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line]
+                                      end
 
-          def failed?
-            status != :passed
-          end
+                                      def failed?
+                                        status != :passed
+                                      end
 
-          def passed?
-            status == :passed
-          end
+                                      def passed?
+                                        status == :passed
+                                      end
 
-          def dom_id
+                                      def dom_id
 
-          end
+                                      end
 
-          def actual_keyword
-            # TODO: This should return the keyword for the snippet
-            # `actual_keyword` translates 'And', 'But', etc. to 'Given', 'When',
-            # 'Then' as appropriate
-            "Given"
-          end
+                                      def actual_keyword
+                                        # TODO: This should return the keyword for the snippet
+                                        # `actual_keyword` translates 'And', 'But', etc. to 'Given', 'When',
+                                        # 'Then' as appropriate
+                                        "Given"
+                                      end
 
-          def file_colon_line
-            location.to_s
-          end
+                                      def file_colon_line
+                                        location.to_s
+                                      end
 
-          def backtrace_line
-            step_match.backtrace_line
-          end
+                                      def backtrace_line
+                                        step_match.backtrace_line
+                                      end
 
-          def step_invocation
-            self
-          end
+                                      def step_invocation
+                                        self
+                                      end
 
-          private
+                                      private
 
-          def source_indent
-            indent.of(self)
-          end
+                                      def source_indent
+                                        indent.of(self)
+                                      end
 
-          def print_step_name(formatter)
-            formatter.step_name(
-              keyword,
-              step_match,
-              status,
-              source_indent,
-              background,
-              location.to_s)
-          end
+                                      def print_step_name(formatter)
+                                        formatter.step_name(
+                                          keyword,
+                                          step_match,
+                                          status,
+                                          source_indent,
+                                          background,
+                                          location.to_s)
+                                      end
 
-          def print_exception(formatter)
-            return unless exception
-            raise exception if ENV['FAIL_FAST']
-            ex = exception.dup
-            ex.backtrace << "#{step.location}:in `#{step.keyword}#{step.name}'"
-            filter_backtrace(ex)
-            formatter.exception(ex, status)
-          end
+                                      def print_exception(formatter)
+                                        return unless exception
+                                        raise exception if ENV['FAIL_FAST']
+                                        ex = exception.dup
+                                        ex.backtrace << "#{step.location}:in `#{step.keyword}#{step.name}'"
+                                        filter_backtrace(ex)
+                                        formatter.exception(ex, status)
+                                      end
 
-          private
+                                      private
 
-          BACKTRACE_FILTER_PATTERNS = [/vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\/|minitest|test\/unit|.gem\/ruby|lib\/ruby/]
-          if(Cucumber::JRUBY)
-            BACKTRACE_FILTER_PATTERNS << /org\/jruby/
-          end
-          PWD_PATTERN = /#{Regexp.escape(Dir.pwd)}\//m
+                                      BACKTRACE_FILTER_PATTERNS = [/vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\/|minitest|test\/unit|.gem\/ruby|lib\/ruby/]
+                                      if(Cucumber::JRUBY)
+                                        BACKTRACE_FILTER_PATTERNS << /org\/jruby/
+                                      end
+                                      PWD_PATTERN = /#{Regexp.escape(Dir.pwd)}\//m
 
-          # This is to work around double ":in " segments in JRuby backtraces. JRuby bug?
-          def filter_backtrace(e)
-            return e if Cucumber.use_full_backtrace
-            e.backtrace.each{|line| line.gsub!(PWD_PATTERN, "./")}
+                                      # This is to work around double ":in " segments in JRuby backtraces. JRuby bug?
+                                      def filter_backtrace(e)
+                                        return e if Cucumber.use_full_backtrace
+                                        e.backtrace.each{|line| line.gsub!(PWD_PATTERN, "./")}
 
-            filtered = (e.backtrace || []).reject do |line|
-              BACKTRACE_FILTER_PATTERNS.detect { |p| line =~ p }
-            end
+                                        filtered = (e.backtrace || []).reject do |line|
+                                          BACKTRACE_FILTER_PATTERNS.detect { |p| line =~ p }
+                                        end
 
-            if ENV['CUCUMBER_TRUNCATE_OUTPUT']
-              # Strip off file locations
-              filtered = filtered.map do |line|
-                line =~ /(.*):in `/ ? $1 : line
-              end
-            end
+                                        if ENV['CUCUMBER_TRUNCATE_OUTPUT']
+                                          # Strip off file locations
+                                          filtered = filtered.map do |line|
+                                            line =~ /(.*):in `/ ? $1 : line
+                                          end
+                                        end
 
-            e.set_backtrace(filtered)
-            e
-          end
+                                        e.set_backtrace(filtered)
+                                        e
+                                      end
 
-        end
+                                    end
 
-        class StepInvocations < Array
-          def failed?
-            any?(&:failed?)
-          end
+                                    class StepInvocations < Array
+                                      def failed?
+                                        any?(&:failed?)
+                                      end
 
-          def passed?
-            all?(&:passed?)
-          end
+                                      def passed?
+                                        all?(&:passed?)
+                                      end
 
-          def status
-            return :passed if passed?
-            failed_step.status
-          end
+                                      def status
+                                        return :passed if passed?
+                                        failed_step.status
+                                      end
 
-          def exception
-            failed_step.exception if failed_step
-          end
+                                      def exception
+                                        failed_step.exception if failed_step
+                                      end
 
-          private
+                                      private
 
-          def failed_step
-            detect(&:failed?)
-          end
-        end
+                                      def failed_step
+                                        detect(&:failed?)
+                                      end
+                                    end
 
 
-        Tags = Struct.new(:tags) do
-          def accept(formatter)
-            formatter.before_tags tags
-            tags.each do |tag|
-              formatter.tag_name tag.name
-            end
-            formatter.after_tags tags
-          end
-        end
+                                    Tags = Struct.new(:tags) do
+                                      def accept(formatter)
+                                        formatter.before_tags tags
+                                        tags.each do |tag|
+                                          formatter.tag_name tag.name
+                                        end
+                                        formatter.after_tags tags
+                                      end
+                                    end
 
-        Scenario = Struct.new(:status, :name, :location) do
-          def backtrace_line(step_name = "#{name}", line = self.location.line)
-            "#{location.on_line(line)}:in `#{step_name}'"
-          end
+                                    Scenario = Struct.new(:status, :name, :location) do
+                                      def backtrace_line(step_name = "#{name}", line = self.location.line)
+                                        "#{location.on_line(line)}:in `#{step_name}'"
+                                      end
 
-          def failed?
-            :failed == status
-          end
+                                      def failed?
+                                        :failed == status
+                                      end
 
-          def line
-            location.line
-          end
-        end
+                                      def line
+                                        location.line
+                                      end
+                                    end
 
-        ScenarioOutline = Struct.new(:status, :name, :location) do
-          def backtrace_line(step_name = "#{name}", line = self.location.line)
-            "#{location.on_line(line)}:in `#{step_name}'"
-          end
+                                    ScenarioOutline = Struct.new(:status, :name, :location) do
+                                      def backtrace_line(step_name = "#{name}", line = self.location.line)
+                                        "#{location.on_line(line)}:in `#{step_name}'"
+                                      end
 
-          def failed?
-            :failed == status
-          end
+                                      def failed?
+                                        :failed == status
+                                      end
 
-          def line
-            location.line
-          end
-        end
+                                      def line
+                                        location.line
+                                      end
+                                    end
 
-        Features = Struct.new(:duration)
+                                    Features = Struct.new(:duration)
 
       end
 
