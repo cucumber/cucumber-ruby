@@ -42,33 +42,35 @@ module Cucumber
         :ask,
         :puts
 
-      def before_test_case(test_case)
-        formatter.before_features
-        formatter.before_feature
-        formatter.node(:tags, nil)
-        formatter.feature_name
-        @feature_thingy = FeatureElement.new(formatter).before_test_case
+      def before_test_case(test_case, &continue)
+        Features.new.accept(formatter) do
+          Feature.new.accept(formatter) do
+            FeatureElement.new.accept(formatter) do
+              Steps.new.accept(formatter) do |new_formatter|
+                @current_formatter = new_formatter
+                continue.call
+              end
+            end
+          end
+        end
       end
 
       def before_test_step(test_step)
-        @thingy = Step.for(test_step, formatter).before_test_step
+        @current_step = Step.for(test_step)
         self
       end
 
       def after_test_step(test_step, result)
-        @thingy.after_test_step
+        @current_step.accept(@current_formatter, result)
         self
       end
 
       def after_test_case(test_case, result)
-        @feature_thingy.after_test_case
         record_test_case_result(test_case, result)
         self
       end
 
       def done
-        formatter.after_feature
-        formatter.after_features
       end
 
       def record_test_case_result(test_case, result)
@@ -76,61 +78,125 @@ module Cucumber
         runtime.record_result(scenario)
       end
 
-      class FeatureElement
-        attr_reader :formatter
-        private     :formatter
+      class Features
+        def accept(formatter)
+          formatter.before_features
 
-        def initialize(formatter)
-          @formatter = formatter
-        end
+          yield if block_given?
 
-        def before_test_case
-          formatter.before_feature_element
-          formatter.node(:tags, nil)
-          formatter.scenario_name
-          formatter.exception
-          formatter.before_steps
-          self
-        end
-
-        def after_test_case
-          formatter.after_steps
-          formatter.after_feature_element
+          formatter.after_features
           self
         end
       end
 
+      class Feature
+        def accept(formatter)
+          formatter.before_feature
+          formatter.node(:tags, nil)
+          formatter.feature_name
+
+          yield if block_given?
+
+          formatter.after_feature
+          self
+        end
+      end
+
+      class FeatureElement
+        def accept(visitor)
+          visitor.before_feature_element
+          visitor.node(:tags, nil)
+          visitor.scenario_name
+
+          yield if block_given?
+
+          visitor.after_feature_element
+          self
+        end
+      end
+
+      class Steps
+        def accept(visitor)
+          visitor = StepsFormatter.new(visitor)
+          visitor.before_steps
+
+          yield visitor if block_given?
+
+          visitor.after_steps
+        end
+
+        require 'delegate'
+        class StepsFormatter < SimpleDelegator
+          attr_reader :messages
+          def initialize(visitor)
+            @visitor = visitor
+            @messages = []
+            @recording = true
+            super(visitor)
+          end
+
+          def before_steps(*args)
+            messages << [:before_steps, args]
+            self
+          end
+
+          def exception(*args)
+            if @recording
+              messages.unshift [:exception, args]
+            else
+              @visitor.exception(*args)
+            end
+            self
+          end
+
+          def before_step(*args)
+            playback
+            @visitor.before_step(*args)
+            self
+          end
+
+          def playback
+            if @recording
+              messages.each { |m, args| @visitor.public_send(m, *args) }
+              @messages = []
+              @recording = false
+            end
+          end
+
+          def after_step
+            @visitor.after_step
+            @recording = true
+          end
+
+          def after_steps
+            @visitor.after_steps
+            playback
+          end
+
+        end
+      end
+
       class Step
-        def self.for(test_step, formatter)
-          return new(formatter) if test_step.is_a? Core::Test::Step
+        def self.for(test_step)
+          return new if test_step.is_a? Core::Test::Step
           return HookStep.new
         end
 
-        attr_reader :formatter
-        private     :formatter
-        def initialize(formatter)
-          @formatter = formatter
-        end
-
-        def before_test_step
-          formatter.before_step
-          self
-        end
-
-        def after_test_step
-          formatter.before_step_result
-          formatter.step_name
-          formatter.after_step_result
-          formatter.after_step
+        def accept(visitor, result)
+          visitor.before_step
+          yield if block_given?
+          visitor.before_step_result
+          visitor.step_name
+          visitor.exception if result.failed?
+          visitor.after_step_result
+          visitor.after_step
           self
         end
 
         class HookStep
-          def before_test_step
-            self
-          end
-
-          def after_test_step
+          def accept(visitor, result)
+            visitor.exception if result.failed?
+            yield if block_given?
             self
           end
         end
