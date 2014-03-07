@@ -10,8 +10,8 @@ module Cucumber
 
     let(:report)    { Reports::LegacyFormatter.new(runtime, [formatter]) }
     let(:formatter) { double('formatter').as_null_object }
-    let(:runtime)   { mappings.runtime }
-    let(:mappings)  { Mappings.new }
+    let(:runtime)   { Runtime.new }
+    let(:mappings)  { Mappings.new(runtime) }
 
     before(:each) do
       define_steps do
