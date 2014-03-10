@@ -42,16 +42,14 @@ module Cucumber
         :ask,
         :puts
 
+      attr_accessor :cursor
+      private :cursor
       def before_test_case(test_case, &continue)
-        Features.new.accept(formatter) do
-          Feature.new.accept(formatter) do
-            FeatureElement.new.accept(formatter) do
-              Steps.new.accept(formatter) do |new_formatter|
-                @current_formatter = new_formatter
-                continue.call
-              end
-            end
-          end
+        self.cursor = Cursor.new(test_case)
+
+        cursor.accept(formatter) do |new_formatter|
+          @current_formatter = new_formatter
+          continue.call
         end
       end
 
@@ -61,6 +59,7 @@ module Cucumber
       end
 
       def after_test_step(test_step, result)
+        @cursor.result(result)
         @current_step.accept(@current_formatter, result)
         self
       end
@@ -77,6 +76,42 @@ module Cucumber
         scenario = LegacyResultBuilder.new(result).scenario(test_case.name, test_case.location)
         runtime.record_result(scenario)
       end
+
+      class Cursor
+        def initialize(test_case)
+          @test_case = test_case
+          test_case.describe_source_to(self)
+        end
+
+        def accept(formatter, &block)
+          Features.new.accept(formatter) do
+            Feature.new.accept(formatter) do
+              FeatureElement.new(@current_scenario, self).accept(formatter) do
+                Steps.new.accept(formatter, &block)
+              end
+            end
+          end
+        end
+
+        def feature(feature, *args)
+          self
+        end
+
+        def scenario(scenario, *args)
+          @current_scenario = scenario
+          self
+        end
+
+        def result(result, *args)
+          @current_result = result
+          self
+        end
+
+        def legacy_scenario(name, location)
+          LegacyResultBuilder.new(@current_result).scenario(name, location)
+        end
+      end
+
 
       class Features
         def accept(formatter)
@@ -103,6 +138,8 @@ module Cucumber
       end
 
       class FeatureElement
+        include Cucumber.initializer(:scenario, :cursor)
+
         def accept(visitor)
           visitor.before_feature_element
           visitor.node(:tags, nil)
@@ -110,7 +147,7 @@ module Cucumber
 
           yield if block_given?
 
-          visitor.after_feature_element
+          visitor.after_feature_element cursor.legacy_scenario(scenario.name, scenario.location)
           self
         end
       end
@@ -194,6 +231,7 @@ module Cucumber
         end
 
         class HookStep
+
           def accept(visitor, result)
             visitor.exception if result.failed?
             yield if block_given?
