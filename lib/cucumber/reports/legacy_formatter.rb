@@ -142,12 +142,18 @@ module Cucumber
 
       class Features
         def accept(formatter)
+          timer.start
           formatter.before_features(nil)
 
           yield if block_given?
 
-          formatter.after_features
+          formatter.after_features(Legacy::Ast::Features.new(timer.sec))
           self
+        end
+        private
+
+        def timer
+          @timer ||= Cucumber::Core::Test::Timer.new
         end
       end
 

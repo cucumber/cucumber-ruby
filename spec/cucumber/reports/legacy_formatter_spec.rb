@@ -240,6 +240,12 @@ module Cucumber
             end
           end
         end
+
+        it 'passes an object that has the test suite duration to the after_feature message' do
+          expect( formatter ).to receive(:after_features) do |features|
+            expect( features ).to respond_to :duration
+          end
+        end
       end
     end
 
