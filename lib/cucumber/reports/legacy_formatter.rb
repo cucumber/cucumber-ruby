@@ -45,7 +45,7 @@ module Cucumber
       attr_accessor :cursor
       private :cursor
       def before_test_case(test_case, &continue)
-        self.cursor = Cursor.new(test_case)
+        self.cursor = Cursor.new(runtime, test_case)
 
         cursor.accept(formatter) do |new_formatter|
           @current_formatter = new_formatter
@@ -54,7 +54,8 @@ module Cucumber
       end
 
       def before_test_step(test_step)
-        @current_step = Step.for(test_step)
+        @current_step = Step.for(test_step, cursor)
+        test_step.describe_source_to(cursor)
         self
       end
 
@@ -78,8 +79,10 @@ module Cucumber
       end
 
       class Cursor
-        def initialize(test_case)
-          @test_case = test_case
+        attr_reader :runtime
+        private     :runtime
+        def initialize(runtime, test_case)
+          @runtime = runtime
           test_case.describe_source_to(self)
         end
 
@@ -91,6 +94,14 @@ module Cucumber
               end
             end
           end
+        end
+
+        def hook
+        end
+
+        def step(step, *args)
+          @current_step = step
+          self
         end
 
         def feature(feature, *args)
@@ -110,12 +121,28 @@ module Cucumber
         def legacy_scenario(name, location)
           LegacyResultBuilder.new(@current_result).scenario(name, location)
         end
-      end
 
+        def legacy_step_result_attributes
+          LegacyResultBuilder.new(@current_result).
+            step_invocation(
+              step_match(@current_step),
+              @current_step,
+              Indent.new(@current_step)
+            ).
+            step_result_attributes
+        end
+
+        private
+        def step_match(step)
+          runtime.step_match(step.name)
+        rescue Cucumber::Undefined
+          NoStepMatch.new(step, step.name)
+        end
+      end
 
       class Features
         def accept(formatter)
-          formatter.before_features
+          formatter.before_features(nil)
 
           yield if block_given?
 
@@ -214,9 +241,15 @@ module Cucumber
       end
 
       class Step
-        def self.for(test_step)
-          return new if test_step.is_a? Core::Test::Step
+        def self.for(test_step, cursor)
+          return new(cursor) if test_step.is_a? Core::Test::Step
           return HookStep.new
+        end
+
+        attr_reader :cursor
+        private     :cursor
+        def initialize(cursor)
+          @cursor = cursor
         end
 
         def accept(visitor, result)
@@ -225,13 +258,13 @@ module Cucumber
           visitor.before_step_result
           visitor.step_name
           visitor.exception if result.failed?
-          visitor.after_step_result
+
+          visitor.after_step_result *cursor.legacy_step_result_attributes
           visitor.after_step
           self
         end
 
         class HookStep
-
           def accept(visitor, result)
             visitor.exception if result.failed?
             yield if block_given?
@@ -404,7 +437,6 @@ module Cucumber
       # feature. These steps should not be printed, but their results still need to 
       # be recorded.
       class HiddenBackgroundPrinter < Struct.new(:formatter, :runtime, :background)
-
         def step(step, result)
           step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background)
           runtime.step_visited step_invocation

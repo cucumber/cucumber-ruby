@@ -1,6 +1,6 @@
 module Cucumber
   class StepMatch #:nodoc:
-    attr_reader :step_definition, :step_arguments
+    attr_reader :step_definition, :step_arguments, :name_to_match
 
     # Creates a new StepMatch. The +name_to_report+ argument is what's
     # reported, unless it's is, in which case +name_to_report+ is used instead.
