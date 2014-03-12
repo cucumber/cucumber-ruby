@@ -85,7 +85,6 @@ Feature: Profiles
     Given a file named "features/another.feature" with:
       """
       Feature: Just this one should be ran
-        Scenario: this is a test
       """
     When I run `cucumber -p default features/another.feature`
     Then exactly these features should be ran: features/another.feature
