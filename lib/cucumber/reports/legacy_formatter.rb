@@ -43,11 +43,12 @@ module Cucumber
         :puts
 
       attr_accessor :cursor
-      private :cursor
+      private       :cursor
       def before_test_case(test_case, &continue)
-        self.cursor = Cursor.new(runtime, test_case)
+        features.before(formatter) unless already_running_features?
+        @cursor ||= Cursor.new(runtime, self)
 
-        cursor.accept(formatter) do |new_formatter|
+        cursor.accept(test_case, formatter) do |new_formatter|
           @current_formatter = new_formatter
           continue.call
         end
@@ -60,7 +61,7 @@ module Cucumber
       end
 
       def after_test_step(test_step, result)
-        @cursor.result(result)
+        cursor.result(result)
         @current_step.accept(@current_formatter, result)
         self
       end
@@ -70,7 +71,24 @@ module Cucumber
         self
       end
 
+      def new_feature(ast_feature)
+        @current_feature.after(formatter) if @current_feature
+        @current_feature = Feature.new(ast_feature)
+        @current_feature.before(formatter)
+      end
+
       def done
+        @current_feature.after(formatter)
+        @features.after(formatter)
+      end
+
+      def features
+        @running_features = true
+        @features ||= Features.new
+      end
+
+      def already_running_features?
+        !!@running_features
       end
 
       def record_test_case_result(test_case, result)
@@ -79,20 +97,17 @@ module Cucumber
       end
 
       class Cursor
-        attr_reader :runtime
-        private     :runtime
-        def initialize(runtime, test_case)
+        attr_reader :runtime, :features
+        private     :runtime, :features
+        def initialize(runtime, features)
+          @features = features
           @runtime = runtime
-          test_case.describe_source_to(self)
         end
 
-        def accept(formatter, &block)
-          Features.new.accept(formatter) do
-            Feature.new.accept(formatter) do
-              FeatureElement.new(@current_scenario, self).accept(formatter) do
-                Steps.new.accept(formatter, &block)
-              end
-            end
+        def accept(test_case, formatter, &block)
+          test_case.describe_source_to(self)
+          FeatureElement.new(@current_scenario, self).accept(formatter) do
+            Steps.new.accept(formatter, &block)
           end
         end
 
@@ -104,7 +119,13 @@ module Cucumber
           self
         end
 
-        def feature(feature, *args)
+        def feature(ast_feature, *args)
+          if @current_feature && @current_feature == ast_feature
+            #do nothing
+          else
+            @current_feature = ast_feature
+            features.new_feature(ast_feature)
+          end
           self
         end
 
@@ -141,15 +162,17 @@ module Cucumber
       end
 
       class Features
-        def accept(formatter)
+        def before(formatter)
           timer.start
           formatter.before_features(nil)
+          self
+        end
 
-          yield if block_given?
-
+        def after(formatter)
           formatter.after_features(Legacy::Ast::Features.new(timer.sec))
           self
         end
+
         private
 
         def timer
@@ -158,13 +181,19 @@ module Cucumber
       end
 
       class Feature
-        def accept(formatter)
+        attr_reader :ast_feature
+        def initialize(ast_feature)
+          @ast_feature = ast_feature
+        end
+
+        def before(formatter)
           formatter.before_feature
           formatter.node(:tags, nil)
           formatter.feature_name
+          self
+        end
 
-          yield if block_given?
-
+        def after(formatter)
           formatter.after_feature
           self
         end

@@ -146,6 +146,76 @@ module Cucumber
 
     end
 
+    describe 'message counts' do
+      let(:formatter) { MessageSpy.new }
+      let(:received_messages) { formatter.messages }
+
+      context 'a feature with multiple scenarios' do
+        before do
+          define_steps do
+            Given(/step one/)   { }
+            Given(/step two/)   { }
+            Given(/step three/) { }
+          end
+
+          execute_gherkin do
+            feature do
+              scenario do
+                step 'step one'
+              end
+
+              scenario do
+                step 'step two'
+                step 'step three'
+              end
+            end
+          end
+        end
+
+        def received_messages_count(message_name)
+          received_messages.count do |received_message|
+            received_message == message_name
+          end
+        end
+
+        it 'sends the before_features once at the start' do
+          expect( received_messages_count(:before_features) ).to eq 1
+          expect( received_messages.first ).to eq :before_features
+        end
+
+        it 'sends the after_features once at the end' do
+          expect( received_messages_count(:after_features) ).to eq 1
+          expect( received_messages.last ).to eq :after_features
+        end
+
+        it 'sends the before_feature once as the second message' do
+          expect( received_messages_count(:before_feature) ).to eq 1
+          expect( received_messages.fetch(1)).to eq :before_feature
+        end
+
+        it 'sends the after_feature once as the second to last message' do
+          expect( received_messages_count(:after_feature)).to eq 1
+          expect( received_messages.fetch(-2)).to eq :after_feature
+        end
+
+        it 'sends the before_feature_element twice' do
+          expect( received_messages_count(:before_feature_element) ).to eq 2
+        end
+
+        it 'sends the after_feature_element twice' do
+          expect( received_messages_count(:after_feature_element) ).to eq 2
+        end
+
+        it 'sends the before step 3 times' do
+          expect( received_messages_count(:before_step) ).to eq 3
+        end
+
+        it 'sends the after step 3 times' do
+          expect( received_messages_count(:after_step) ).to eq 3
+        end
+      end
+    end
+
     describe 'API translation' do
 
       context 'with one failing feature that has one failing scenario' do
