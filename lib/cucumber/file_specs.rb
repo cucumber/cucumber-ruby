@@ -4,7 +4,9 @@ module Cucumber
     FILE_COLON_LINE_PATTERN = /^([\w\W]*?)(?::([\d:]+))?$/ #:nodoc:
 
     def initialize(file_specs)
+      Cucumber.logger.debug("Features:\n")
       @file_specs = file_specs.map { |s| FileSpec.new(s) }
+      Cucumber.logger.debug("\n")
     end
 
     def locations
@@ -18,6 +20,7 @@ module Cucumber
     class FileSpec
       def initialize(s)
         @file, @lines = *FILE_COLON_LINE_PATTERN.match(s).captures
+        Cucumber.logger.debug("  * #{@file}\n")
         @lines = String(@lines).split(':').map { |line| Integer(line) }
       end
 
