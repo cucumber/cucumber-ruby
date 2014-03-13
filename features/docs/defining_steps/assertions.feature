@@ -1,9 +1,10 @@
-@spawn
+@spawn @wip
 Feature: Assertions
 
   Assertions are how you tell Cucumber that a step has failed. The most basic
   way to do this is by raising an exception, but you can also use Ruby's built-in
-  `Test::Unit` assertions library, or RSpec's `RSpec::Expectations` library.
+  `MiniTest::Unit` or `Test::Unit` assertions library, the `minitest` gem with
+  assertions in `Minitest::Assertions` or RSpec's `RSpec::Expectations` library.
 
   Background:
     Given a file named "features/assert.feature" with:
