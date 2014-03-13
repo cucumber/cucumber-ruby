@@ -1,4 +1,4 @@
-@spawn
+@spawn @wip-new-core
 Feature: Assertions
 
   Assertions are how you tell Cucumber that a step has failed. The most basic
