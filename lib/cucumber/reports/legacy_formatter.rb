@@ -42,7 +42,9 @@ module Cucumber
         :ask,
         :puts
 
-      def before_test_case(test_case); end
+      def before_test_case(test_case, &continue)
+        continue.call
+      end
       def before_test_step(test_step); end
 
       def after_test_step(test_step, result)
