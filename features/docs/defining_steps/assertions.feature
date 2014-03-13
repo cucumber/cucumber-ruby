@@ -1,4 +1,4 @@
-@spawn
+@spawn @wip-new-core
 Feature: Assertions
 
   Assertions are how you tell Cucumber that a step has failed. The most basic
@@ -18,6 +18,12 @@ Feature: Assertions
       """
       source "https://rubygems.org"
       gem "cucumber", path: "../.."
+      core_path = File.expand_path("../../../../cucumber-ruby-core", __FILE__)
+      if File.exist?(core_path)
+        gem 'cucumber-core', :path => core_path
+      else
+        gem 'cucumber-core', :git => "git://github.com/cucumber/cucumber-ruby-core.git"
+      end
 
       """
     And I run `bundle install --local --quiet`
@@ -28,13 +34,20 @@ Feature: Assertions
       end
       """
     When I run `bundle exec cucumber`
-    Then the exit status should be 0
+    Then it should pass
 
   Scenario: RSpec
     Given a Gemfile with:
       """
       source "https://rubygems.org"
       gem "cucumber", path: "../.."
+      core_path = File.expand_path("../../../../cucumber-ruby-core", __FILE__)
+      if File.exist?(core_path)
+        gem 'cucumber-core', :path => core_path
+      else
+        gem 'cucumber-core', :git => "git://github.com/cucumber/cucumber-ruby-core.git"
+      end
+
       gem "rspec"
       """
     And I run `bundle install --local --quiet`
