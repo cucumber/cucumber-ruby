@@ -6,16 +6,29 @@ require 'cucumber/rb_support/rb_hook'
 require 'cucumber/rb_support/rb_transform'
 require 'cucumber/rb_support/snippet'
 
-begin
-  require 'rspec/expectations'
-rescue LoadError
-  begin
+[
+  proc { require 'rspec/expectations' },
+
+  proc do
     require 'spec/expectations'
     require 'spec/runner/differs/default'
     require 'ostruct'
-  rescue LoadError
-    require 'test/unit/assertions'
-  end
+  end,
+
+  proc { require 'minitest/assertions' },
+
+  proc { require 'minitest/unit' },
+
+  proc { require 'test/unit/assertions' },
+].each do | load_proc |
+  result =
+    begin
+      load_proc.call
+    rescue LoadError
+      next
+    end
+
+  break if result
 end
 
 module Cucumber
@@ -59,18 +72,39 @@ module Cucumber
       end
 
       def find_best_assertions_module
-        begin
-          ::RSpec::Matchers
-        rescue NameError
-          # RSpec >=1.2.4
-          begin
+        result = nil
+
+        ##
+        # The order of these procs should match the order
+        # of the procs defined at the top of this file in
+        # order to search for constants in the same order
+        #
+        [
+          proc { ::RSpec::Matchers },
+
+          proc do
             options = OpenStruct.new(:diff_format => :unified, :context_lines => 3)
             Spec::Expectations.differ = Spec::Expectations::Differs::Default.new(options)
             ::Spec::Matchers
-          rescue NameError
-            ::Test::Unit::Assertions
-          end
+          end,
+
+          proc { ::Minitest::Assertions },
+
+          proc { ::MiniTest::Assertions },
+
+          proc { ::Test::Unit::Assertions },
+        ].each do | search_proc |
+          result =
+            begin
+              search_proc.call
+            rescue NameError
+              next
+            end
+
+          break if result
         end
+
+        result
       end
 
       def step_matches(name_to_match, name_to_format)
