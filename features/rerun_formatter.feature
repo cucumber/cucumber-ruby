@@ -33,3 +33,21 @@ Feature: Rerun formatter
     features/one_passing_one_failing.feature:9
     """
 
+  Scenario: Handle background failure with the rerun formatter
+    Given a file named "features/background_failing.feature" with:
+    """
+    Feature: Background failing
+
+    Background:
+      Given a passing step
+      And a failing step
+
+      Scenario:
+        When a passing step
+
+    """
+    When I run `cucumber features/background_failing.feature -r features -f rerun`
+    Then it should fail with:
+    """
+    features/background_failing.feature
+    """
