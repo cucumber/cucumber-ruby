@@ -32,8 +32,13 @@ module Cucumber
           after_first_time do
             @io.print ' '
           end
-          @io.print "#{@file}:#{@lines.join(':')}"
+          if @in_background
+            @io.print @file
+          else
+            @io.print "#{@file}:#{@lines.join(':')}"
+          end
           @io.flush
+          @in_background = false
         end
       end
 
@@ -77,6 +82,7 @@ module Cucumber
       end
 
       def step_name(keyword, step_match, status, source_indent, background, file_colon_line)
+        @in_background = true if status == :failed && background
         @rerun = true if [:failed, :pending, :undefined].index(status)
       end
 
