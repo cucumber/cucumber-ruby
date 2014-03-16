@@ -5,18 +5,7 @@ require 'cucumber/rb_support/rb_step_definition'
 require 'cucumber/rb_support/rb_hook'
 require 'cucumber/rb_support/rb_transform'
 require 'cucumber/rb_support/snippet'
-
-begin
-  require 'rspec/expectations'
-rescue LoadError
-  begin
-    require 'spec/expectations'
-    require 'spec/runner/differs/default'
-    require 'ostruct'
-  rescue LoadError
-    require 'test/unit/assertions'
-  end
-end
+require 'multi_test'
 
 module Cucumber
   module RbSupport
@@ -56,22 +45,6 @@ module Cucumber
         @step_definitions = []
         RbDsl.rb_language = self
         @world_proc = @world_modules = nil
-        @assertions_module = find_best_assertions_module
-      end
-
-      def find_best_assertions_module
-        begin
-          ::RSpec::Matchers
-        rescue NameError
-          # RSpec >=1.2.4
-          begin
-            options = OpenStruct.new(:diff_format => :unified, :context_lines => 3)
-            Spec::Expectations.differ = Spec::Expectations::Differs::Default.new(options)
-            ::Spec::Matchers
-          rescue NameError
-            ::Test::Unit::Assertions
-          end
-        end
       end
 
       def step_matches(name_to_match, name_to_format)
@@ -145,7 +118,7 @@ module Cucumber
 
       def extend_world
         @current_world.extend(RbWorld)
-        @current_world.extend(@assertions_module)
+        MultiTest.extend_with_best_assertion_library(@current_world)
         (@world_modules || []).each do |mod|
           @current_world.extend(mod)
         end
