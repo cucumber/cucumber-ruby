@@ -15,6 +15,19 @@ Feature: Rerun formatter
           |failing|
 
       """
+    And a file named "features/failing_background.feature" with:
+      """
+      Feature: Failing background sample
+
+        Background:
+          Given a failing step
+
+        Scenario: failing background
+          Then a passing step
+
+        Scenario: another failing background
+          Then a passing step
+      """
     And a file named "features/step_definitions/steps.rb" with:
       """
       Given /a passing step/ do
@@ -33,3 +46,9 @@ Feature: Rerun formatter
     features/one_passing_one_failing.feature:9
     """
 
+  Scenario: Failing background
+    When I run `cucumber features/failing_background.feature -r features -f rerun`
+    Then it should fail with:
+    """
+    features/failing_background.feature:6:9
+    """

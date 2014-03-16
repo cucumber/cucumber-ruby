@@ -2,7 +2,7 @@
   {
     "source": "The default aruba timeout is (\\d+) seconds",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:7",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:7",
     "steps": [
 
     ]
@@ -10,7 +10,7 @@
   {
     "source": "^I'm using a clean gemset \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:11",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:11",
     "steps": [
 
     ]
@@ -18,7 +18,15 @@
   {
     "source": "^a directory named \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:15",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:15",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^a directory named \"([^\"]*)\" with mode \"([^\"]*)\"$",
+    "flags": "",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:19",
     "steps": [
 
     ]
@@ -26,32 +34,23 @@
   {
     "source": "^a file named \"([^\"]*)\" with:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:19",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:24",
     "steps": [
-      {
-        "name": "a file named \"features/f.feature\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/f.feature"
-          }
-        ]
-      },
-      {
-        "name": "a file named \"features/step_definitions/steps.rb\" with:",
-        "args": [
-          {
-            "offset": 14,
-            "val": "features/step_definitions/steps.rb"
-          }
-        ]
-      }
+
+    ]
+  },
+  {
+    "source": "^a file named \"([^\"]*)\" with mode \"([^\"]*)\" and with:$",
+    "flags": "",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:28",
+    "steps": [
+
     ]
   },
   {
     "source": "^a (\\d+) byte file named \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:23",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:33",
     "steps": [
 
     ]
@@ -59,7 +58,15 @@
   {
     "source": "^an empty file named \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:27",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:37",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^an empty file named \"([^\"]*)\" with mode \"([^\"]*)\"$",
+    "flags": "",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:41",
     "steps": [
 
     ]
@@ -67,7 +74,7 @@
   {
     "source": "^I write to \"([^\"]*)\" with:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:31",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:46",
     "steps": [
 
     ]
@@ -75,7 +82,7 @@
   {
     "source": "^I overwrite \"([^\"]*)\" with:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:35",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:50",
     "steps": [
 
     ]
@@ -83,7 +90,7 @@
   {
     "source": "^I append to \"([^\"]*)\" with:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:39",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:54",
     "steps": [
 
     ]
@@ -91,7 +98,7 @@
   {
     "source": "^I append to \"([^\"]*)\" with \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:43",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:58",
     "steps": [
 
     ]
@@ -99,7 +106,7 @@
   {
     "source": "^I remove the file \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:47",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:62",
     "steps": [
 
     ]
@@ -107,7 +114,15 @@
   {
     "source": "^I cd to \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:51",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:66",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^I set the environment variables to:",
+    "flags": "",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:70",
     "steps": [
 
     ]
@@ -115,7 +130,7 @@
   {
     "source": "^I run \"(.*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:55",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:79",
     "steps": [
 
     ]
@@ -123,14 +138,23 @@
   {
     "source": "^I run `([^`]*)`$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:60",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:84",
     "steps": [
       {
-        "name": "I run `cucumber features/f.feature`",
+        "name": "I run `cucumber features/failing_background.feature -r features -f rerun`",
         "args": [
           {
             "offset": 7,
-            "val": "cucumber features/f.feature"
+            "val": "cucumber features/failing_background.feature -r features -f rerun"
+          }
+        ]
+      },
+      {
+        "name": "I run `cucumber features/one_passing_one_failing.feature -r features -f rerun`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/one_passing_one_failing.feature -r features -f rerun"
           }
         ]
       }
@@ -139,7 +163,7 @@
   {
     "source": "^I successfully run \"(.*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:64",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:88",
     "steps": [
 
     ]
@@ -147,7 +171,7 @@
   {
     "source": "^I successfully run `(.*?)`(?: for up to (\\d+) seconds)?$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:71",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:95",
     "steps": [
 
     ]
@@ -155,7 +179,7 @@
   {
     "source": "^I run \"([^\"]*)\" interactively$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:75",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:99",
     "steps": [
 
     ]
@@ -163,7 +187,7 @@
   {
     "source": "^I run `([^`]*)` interactively$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:80",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:104",
     "steps": [
 
     ]
@@ -171,7 +195,23 @@
   {
     "source": "^I type \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:84",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:108",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^I close the stdin stream$",
+    "flags": "",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:112",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^I pipe in the file \"([^\"]*)\"$",
+    "flags": "",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:116",
     "steps": [
 
     ]
@@ -179,7 +219,7 @@
   {
     "source": "^I wait for (?:output|stdout) to contain \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:88",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:122",
     "steps": [
 
     ]
@@ -187,7 +227,7 @@
   {
     "source": "^the output should contain \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:97",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:131",
     "steps": [
 
     ]
@@ -195,7 +235,7 @@
   {
     "source": "^the output from \"([^\"]*)\" should contain \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:101",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:135",
     "steps": [
 
     ]
@@ -203,7 +243,7 @@
   {
     "source": "^the output from \"([^\"]*)\" should not contain \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:105",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:139",
     "steps": [
 
     ]
@@ -211,7 +251,7 @@
   {
     "source": "^the output should not contain \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:109",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:143",
     "steps": [
 
     ]
@@ -219,7 +259,7 @@
   {
     "source": "^the output should contain:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:113",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:147",
     "steps": [
 
     ]
@@ -227,7 +267,7 @@
   {
     "source": "^the output should not contain:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:117",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:151",
     "steps": [
 
     ]
@@ -235,7 +275,7 @@
   {
     "source": "^the output(?: from \"(.*?)\")? should contain exactly \"(.*?)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:123",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:157",
     "steps": [
 
     ]
@@ -243,7 +283,7 @@
   {
     "source": "^the output(?: from \"(.*?)\")? should contain exactly:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:129",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:163",
     "steps": [
 
     ]
@@ -251,7 +291,7 @@
   {
     "source": "^the output should match \\/([^\\/]*)\\/$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:137",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:171",
     "steps": [
 
     ]
@@ -259,7 +299,7 @@
   {
     "source": "^the output should match:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:141",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:175",
     "steps": [
 
     ]
@@ -267,7 +307,7 @@
   {
     "source": "^the output should not match \\/([^\\/]*)\\/$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:146",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:180",
     "steps": [
 
     ]
@@ -275,7 +315,7 @@
   {
     "source": "^the output should not match:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:150",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:184",
     "steps": [
 
     ]
@@ -283,7 +323,7 @@
   {
     "source": "^the exit status should be (\\d+)$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:154",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:188",
     "steps": [
 
     ]
@@ -291,7 +331,7 @@
   {
     "source": "^the exit status should not be (\\d+)$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:158",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:192",
     "steps": [
 
     ]
@@ -299,7 +339,7 @@
   {
     "source": "^it should (pass|fail) with:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:162",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:196",
     "steps": [
       {
         "name": "it should fail with:",
@@ -315,7 +355,7 @@
   {
     "source": "^it should (pass|fail) with exactly:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:166",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:200",
     "steps": [
 
     ]
@@ -323,7 +363,7 @@
   {
     "source": "^it should (pass|fail) with regexp?:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:170",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:204",
     "steps": [
 
     ]
@@ -331,7 +371,7 @@
   {
     "source": "^the stderr(?: from \"(.*?)\")? should contain( exactly)? \"(.*?)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:179",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:213",
     "steps": [
 
     ]
@@ -339,7 +379,7 @@
   {
     "source": "^the stderr(?: from \"(.*?)\")? should contain( exactly)?:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:191",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:225",
     "steps": [
 
     ]
@@ -347,7 +387,7 @@
   {
     "source": "^the stdout(?: from \"(.*?)\")? should contain( exactly)? \"(.*?)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:203",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:237",
     "steps": [
 
     ]
@@ -355,7 +395,7 @@
   {
     "source": "^the stdout(?: from \"(.*?)\")? should contain( exactly)?:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:215",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:249",
     "steps": [
 
     ]
@@ -363,7 +403,7 @@
   {
     "source": "^the stderr should not contain \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:223",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:257",
     "steps": [
 
     ]
@@ -371,7 +411,7 @@
   {
     "source": "^the stderr should not contain:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:227",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:261",
     "steps": [
 
     ]
@@ -379,7 +419,7 @@
   {
     "source": "^the (stderr|stdout) should not contain anything$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:231",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:265",
     "steps": [
 
     ]
@@ -387,7 +427,7 @@
   {
     "source": "^the stdout should not contain \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:236",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:270",
     "steps": [
 
     ]
@@ -395,7 +435,7 @@
   {
     "source": "^the stdout should not contain:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:240",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:274",
     "steps": [
 
     ]
@@ -403,7 +443,7 @@
   {
     "source": "^the stdout from \"([^\"]*)\" should not contain \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:244",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:278",
     "steps": [
 
     ]
@@ -411,7 +451,7 @@
   {
     "source": "^the stderr from \"([^\"]*)\" should not contain \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:248",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:282",
     "steps": [
 
     ]
@@ -419,7 +459,7 @@
   {
     "source": "^the file \"([^\"]*)\" should not exist$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:252",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:286",
     "steps": [
 
     ]
@@ -427,7 +467,7 @@
   {
     "source": "^the following files should exist:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:256",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:290",
     "steps": [
 
     ]
@@ -435,7 +475,7 @@
   {
     "source": "^the following files should not exist:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:260",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:294",
     "steps": [
 
     ]
@@ -443,7 +483,7 @@
   {
     "source": "^a file named \"([^\"]*)\" should exist$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:264",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:298",
     "steps": [
 
     ]
@@ -451,7 +491,23 @@
   {
     "source": "^a file named \"([^\"]*)\" should not exist$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:268",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:302",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^a file matching %r<(.*?)> should exist$",
+    "flags": "",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:306",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^a file matching %r<(.*?)> should not exist$",
+    "flags": "",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:310",
     "steps": [
 
     ]
@@ -459,7 +515,7 @@
   {
     "source": "^a (\\d+) byte file named \"([^\"]*)\" should exist$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:272",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:314",
     "steps": [
 
     ]
@@ -467,7 +523,7 @@
   {
     "source": "^the following directories should exist:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:276",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:318",
     "steps": [
 
     ]
@@ -475,7 +531,7 @@
   {
     "source": "^the following directories should not exist:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:280",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:322",
     "steps": [
 
     ]
@@ -483,7 +539,7 @@
   {
     "source": "^a directory named \"([^\"]*)\" should exist$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:284",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:326",
     "steps": [
 
     ]
@@ -491,7 +547,7 @@
   {
     "source": "^a directory named \"([^\"]*)\" should not exist$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:288",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:330",
     "steps": [
 
     ]
@@ -499,7 +555,7 @@
   {
     "source": "^the file \"([^\"]*)\" should contain \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:292",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:334",
     "steps": [
 
     ]
@@ -507,7 +563,7 @@
   {
     "source": "^the file \"([^\"]*)\" should not contain \"([^\"]*)\"$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:296",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:338",
     "steps": [
 
     ]
@@ -515,7 +571,7 @@
   {
     "source": "^the file \"([^\"]*)\" should contain:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:300",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:342",
     "steps": [
 
     ]
@@ -523,7 +579,7 @@
   {
     "source": "^the file \"([^\"]*)\" should contain exactly:$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:304",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:346",
     "steps": [
 
     ]
@@ -531,7 +587,7 @@
   {
     "source": "^the file \"([^\"]*)\" should match \\/([^\\/]*)\\/$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:308",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:350",
     "steps": [
 
     ]
@@ -539,7 +595,23 @@
   {
     "source": "^the file \"([^\"]*)\" should not match \\/([^\\/]*)\\/$",
     "flags": "",
-    "file_colon_line": "aruba-0.5.2/lib/aruba/cucumber.rb:312",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:354",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^the mode of filesystem object \"([^\"]*)\" should match \"([^\"]*)\"$",
+    "flags": "",
+    "file_colon_line": "aruba-0.5.4/lib/aruba/cucumber.rb:358",
+    "steps": [
+
+    ]
+  },
+  {
+    "source": "^cucumber lists all the supported languages$",
+    "flags": "",
+    "file_colon_line": "features/lib/step_definitions/language_steps.rb:3",
     "steps": [
 
     ]
