@@ -93,7 +93,7 @@ module Cucumber
           self
         end
 
-        def hook(result)
+        def hook(location, result)
           LegacyResultBuilder.new(result).describe_exception_to(formatter)
         end
 
