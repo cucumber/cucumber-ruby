@@ -71,6 +71,26 @@ Feature: Rerun formatter
     features/one_passing_one_failing.feature:9
     """
 
+  Scenario: Failing background
+    Given a file named "features/failing_background.feature" with:
+      """
+      Feature: Failing background sample
+
+        Background:
+          Given this step fails
+
+        Scenario: failing background
+          Then this step passes
+
+        Scenario: another failing background
+          Then this step passes
+      """
+    When I run `cucumber -f rerun`
+    Then it should fail with:
+    """
+    features/failing_background.feature:6:9
+    """
+
 @wip-new-core
 Scenario: Scenario outlines with expand
   For details see https://github.com/cucumber/cucumber/issues/503
