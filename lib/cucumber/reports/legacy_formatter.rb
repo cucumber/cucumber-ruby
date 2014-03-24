@@ -279,7 +279,8 @@ module Cucumber
         def step(step, result)
           @child ||= StepsPrinter.new(formatter).before
           @last_step_result = result
-          step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background = nil)
+          legacy_result_builder = LegacyResultBuilder.new(result)
+          step_invocation = legacy_result_builder.step_invocation(step_match(step, legacy_result_builder), step, indent, background = nil)
           runtime.step_visited step_invocation
           @child.step_invocation step_invocation, runtime
         end
@@ -299,9 +300,10 @@ module Cucumber
           @last_step_result || Core::Test::Result::Unknown.new
         end
 
-        def step_match(step)
+        def step_match(step, legacy_result_builder)
           runtime.step_match(step.name)
-        rescue Cucumber::Undefined
+        rescue Cucumber::Undefined => e
+          legacy_result_builder.exception(e) if runtime.strict?
           NoStepMatch.new(step, step.name)
         end
 

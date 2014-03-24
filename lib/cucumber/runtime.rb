@@ -195,6 +195,10 @@ module Cucumber
       Core::Ast::DocString.new(string_without_triple_quotes, content_type, location)
     end
 
+    def strict?
+      @configuration.strict?
+    end
+
   private
 
     def fire_after_configuration_hook #:nodoc
