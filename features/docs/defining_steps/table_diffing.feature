@@ -33,7 +33,7 @@ Feature: Table diffing
             | x | y |
             | a | b |
             | a | c |
-            Tables were not identical (Cucumber::Ast::Table::Different)
+            Tables were not identical (Cucumber::MultilineArgument::DataTable::Different)
             ./features/step_definitions/steps.rb:2:in `/the table should be:/'
             features/tables.feature:3:in `Then the table should be:'
 
