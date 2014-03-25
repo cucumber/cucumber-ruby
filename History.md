@@ -29,6 +29,20 @@ all.
 
 * Greek examples added ([497](https://github.com/cucumber/cucumber/issues/497) @rousisk)
 
+## [v1.3.13](https://github.com/cucumber/cucumber/compare/v1.3.12...v1.3.13)
+
+* Rerun formatter includes all scenarios when the background fails
+  ([654](https://github.com/cucumber/cucumber/pull/654) @brasmusson)
+
+## [v1.3.12](https://github.com/cucumber/cucumber/compare/v1.3.11...v1.3.12)
+
+* Use MultiTest to handle assertions library selection (@tooky)
+  * Adds full support for rails 4.1 / Minitest
+
+## [v1.3.11](https://github.com/cucumber/cucumber/compare/v1.3.10...v1.3.11)
+
+* Add Ruby 2.1 Support ([#644](https://github.com/cucumber/cucumber/pull/644) @tooky, @chrismdp)
+
 ## [v1.3.10](https://github.com/cucumber/cucumber/compare/v1.3.9...v1.3.10)
 
 * Fixed "nil:NilClass (NoMethodError)" problem for auto-formatting ([599](https://github.com/cucumber/cucumber/pull/599) @jmcaffee)
