@@ -368,7 +368,7 @@ Feature: Background
     
     """
 
-  @spawn @wip-new-core
+  @spawn
   Scenario: background passes with first scenario but fails with second
     When I run `cucumber -q features/failing_background_after_success.feature`
     Then it should fail with exactly:

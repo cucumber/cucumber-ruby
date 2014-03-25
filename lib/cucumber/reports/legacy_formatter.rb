@@ -168,7 +168,7 @@ module Cucumber
         def scenario(node, *)
           return if node == @current_feature_element
           @child.after if @child
-          @child = ScenarioPrinter.new(formatter, runtime, node).before
+          @child = ScenarioPrinter.new(formatter, runtime, node, @child).before
           @current_feature_element = node
         end
 
@@ -230,6 +230,10 @@ module Cucumber
           self
         end
 
+        def complete_pending(child)
+          self
+        end
+
         private
 
         def step_match(step)
@@ -248,8 +252,16 @@ module Cucumber
       # be recorded.
       class HiddenBackgroundPrinter < Struct.new(:formatter, :runtime, :background)
 
+        def complete_pending(child)
+          delayed_step_invocations.each do |step_invocation|
+            child.step_invocation step_invocation, runtime
+          end
+          self
+        end
+
         def step(step, result)
           step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background)
+          delayed_step_invocations << step_invocation if step_invocation.failed?
           runtime.step_visited step_invocation
         end
 
@@ -266,13 +278,22 @@ module Cucumber
         def indent
           @indent ||= Indent.new(background)
         end
+
+        def delayed_step_invocations
+          @delayed_step_invocations ||= []
+        end
       end
 
-      ScenarioPrinter = Struct.new(:formatter, :runtime, :node) do
+      ScenarioPrinter = Struct.new(:formatter, :runtime, :node, :last_printer) do
         def before
           formatter.before_feature_element(node)
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
           formatter.scenario_name node.keyword, node.name, node.location.to_s, indent.of(node)
+          pending
+          self
+        end
+
+        def complete_pending(*)
           self
         end
 
@@ -294,6 +315,13 @@ module Cucumber
         end
 
         private
+        def pending
+          if last_printer
+            @child ||= StepsPrinter.new(formatter).before
+            last_printer.complete_pending(@child)
+          end
+          self
+        end
 
         def last_step_result
           @last_step_result || Core::Test::Result::Unknown.new
