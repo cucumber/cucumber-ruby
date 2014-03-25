@@ -1,4 +1,4 @@
-@wip-new-core
+
 Feature: Exception in Before Block
   In order to know with confidence that my before blocks have run OK
   As a developer
@@ -42,7 +42,7 @@ Feature: Exception in Before Block
 
       """
 
-  @spawn
+  @spawn @wip-new-core
   Scenario: Handle Exception in Before hook for Scenario with Background
     Given a file named "features/naughty_step_in_before.feature" with:
       """
@@ -75,6 +75,7 @@ Feature: Exception in Before Block
 
       """
 
+  @wip-new-core
   Scenario: Handle Exception using the progress format
     Given a file named "features/naughty_step_in_scenario.feature" with:
       """
