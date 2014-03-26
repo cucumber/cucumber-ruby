@@ -40,6 +40,21 @@ Feature: Rerun formatter
         Scenario: another failing background
           Then a passing step
       """
+    And a file named "features/failing_background_outline.feature" with:
+      """
+      Feature: Failing background sample with scenario outline
+
+        Background:
+          Given a failing step
+
+        Scenario Outline:
+          Then a <certain> step
+
+        Examples:
+          |certain|
+          |passing|
+          |passing|
+      """
     And a file named "features/step_definitions/steps.rb" with:
       """
       Given /a passing step/ do
@@ -67,4 +82,11 @@ Feature: Rerun formatter
     Then it should fail with:
     """
     features/failing_background.feature:6:9
+    """
+
+  Scenario: Failing background with scenario outline
+    When I run `cucumber features/failing_background_outline.feature -r features -f rerun`
+    Then it should fail with:
+    """
+    features/failing_background_outline.feature:11:12
     """

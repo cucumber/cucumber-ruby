@@ -55,7 +55,7 @@ module Cucumber
       def after_table_row(table_row)
         return unless @in_examples and Cucumber::Ast::OutlineTable::ExampleRow === table_row
         unless @header_row
-          if table_row.failed?
+          if table_row.failed? || table_row.status == :skipped
             @rerun = true
             @lines << table_row.line
           end
