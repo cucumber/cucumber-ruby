@@ -157,6 +157,15 @@
             "val": "cucumber features/one_passing_one_failing.feature -r features -f rerun"
           }
         ]
+      },
+      {
+        "name": "I run `cucumber features/passing_outline.feature -r features -f rerun`",
+        "args": [
+          {
+            "offset": 7,
+            "val": "cucumber features/passing_outline.feature -r features -f rerun"
+          }
+        ]
       }
     ]
   },
@@ -621,7 +630,12 @@
     "flags": "",
     "file_colon_line": "features/step_definitions/cucumber_steps.rb:1",
     "steps": [
+      {
+        "name": "it should pass",
+        "args": [
 
+        ]
+      }
     ]
   },
   {

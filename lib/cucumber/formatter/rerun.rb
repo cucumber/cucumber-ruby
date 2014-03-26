@@ -46,7 +46,8 @@ module Cucumber
       end
 
       def after_feature_element(feature_element)
-        if (@rerun || feature_element.failed? || feature_element.status == :skipped) && !(Ast::ScenarioOutline === feature_element)
+        return if Cucumber::Ast::ScenarioOutline === feature_element
+        if  @rerun || feature_element.failed? || feature_element.status == :skipped
           @lines << feature_element.line
         end
       end

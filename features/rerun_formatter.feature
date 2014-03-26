@@ -15,6 +15,18 @@ Feature: Rerun formatter
           |failing|
 
       """
+    Given a file named "features/passing_outline.feature" with:
+      """
+      Feature: One passing example
+
+        Scenario Outline:
+          Given a <certain> step
+        
+        Examples:
+          |certain|
+          |passing|
+
+      """
     And a file named "features/failing_background.feature" with:
       """
       Feature: Failing background sample
@@ -45,6 +57,10 @@ Feature: Rerun formatter
     """
     features/one_passing_one_failing.feature:9
     """
+
+  Scenario: Handle scenario outline with passing example
+    When I run `cucumber features/passing_outline.feature -r features -f rerun`
+    Then it should pass
 
   Scenario: Failing background
     When I run `cucumber features/failing_background.feature -r features -f rerun`
