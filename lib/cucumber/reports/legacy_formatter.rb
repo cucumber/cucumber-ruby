@@ -210,7 +210,7 @@ module Cucumber
           return unless @background
           if background_printed?
             @child.after
-            @child = HiddenBackgroundPrinter.new(formatter, runtime, @background)
+            @child = HiddenBackgroundPrinter.new(formatter, runtime, @background).before
           else
             @child ||= BackgroundPrinter.new(formatter, runtime, @background).before
           end
@@ -308,7 +308,10 @@ module Cucumber
           runtime.step_visited step_invocation
         end
 
-        def method_missing(*args);end
+        def examples_table(*);end
+        def examples_table_row(*);end
+        def before;self;end
+        def after;self;end
 
         private
 
