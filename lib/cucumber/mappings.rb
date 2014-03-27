@@ -10,10 +10,25 @@ module Cucumber
     end
 
     def test_step(step, mapper)
-      step_match = runtime.step_match(step.name)
-      multiline_arg = MultilineArgument.from(step.multiline_arg)
-      mapper.map { step_match.invoke(multiline_arg) }
-    rescue Cucumber::Undefined
+      step.describe_source_to MapStep.new(runtime, mapper)
+    end
+
+    class MapStep
+      include Cucumber.initializer(:runtime, :mapper)
+
+      def step(node)
+        step_match = runtime.step_match(node.name)
+        multiline_arg = MultilineArgument.from(node.multiline_arg)
+        mapper.map { step_match.invoke(multiline_arg) }
+      rescue Cucumber::Undefined
+      end
+
+      def feature(*);end
+      def scenario(*);end
+      def background(*);end
+      def scenario_outline(*);end
+      def examples_table(*);end
+      def examples_table_row(*);end
     end
 
     def test_case(test_case, mapper)

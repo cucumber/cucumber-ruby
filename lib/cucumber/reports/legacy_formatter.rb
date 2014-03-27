@@ -43,6 +43,7 @@ module Cucumber
         :puts
 
       def before_test_case(test_case, &continue)
+        test_case.describe_source_to(printer)
         continue.call
       end
       def before_test_step(test_step); end
@@ -93,8 +94,13 @@ module Cucumber
           self
         end
 
-        def hook(location, result)
+        def after_hook(location, result)
           LegacyResultBuilder.new(result).describe_exception_to(formatter)
+        end
+
+        def before_hook(location, result)
+          LegacyResultBuilder.new(result).describe_exception_to(formatter)
+          @child.before_hook
         end
 
         def feature(node, *)
@@ -113,19 +119,19 @@ module Cucumber
           @child.step(node, result)
         end
 
-        def scenario(node, result)
+        def scenario(node, result=nil)
           @child.scenario(node, result)
         end
 
-        def scenario_outline(node, result)
+        def scenario_outline(node, result=nil)
           @child.scenario_outline(node, result)
         end
 
-        def examples_table(node, result)
+        def examples_table(node, result=nil)
           @child.examples_table(node, result)
         end
 
-        def examples_table_row(node, result)
+        def examples_table_row(node, result=nil)
           @child.examples_table_row(node, result)
         end
 
@@ -152,52 +158,101 @@ module Cucumber
           self
         end
 
-        def background(node, *)
-          if background_printed?
-            @child.after
-            @child = HiddenBackgroundPrinter.new(formatter, runtime, node)
-          else
-            @child ||= BackgroundPrinter.new(formatter, runtime, node).before
-          end
+        def before_hook
+          # Clear out any state set by the hook
+          @scenario = nil
+          @scenario_outline = nil
+          @examples_table = nil
+          @examples_table_row = nil
         end
 
-        def background_printed?
-          @current_feature_element
+        def background(node, *)
+          @background = node
         end
 
         def scenario(node, *)
-          return if node == @current_feature_element
-          @child.after if @child
-          @child = ScenarioPrinter.new(formatter, runtime, node).before
-          @current_feature_element = node
+          @scenario = node
         end
 
         def step(node, result)
+          print_step_container
           @child.step(node, result)
         end
 
         def scenario_outline(node, *)
-          return if node == @current_feature_element
-          @child.after if @child
-          @child = ScenarioOutlinePrinter.new(formatter, runtime, node).before
-          @current_feature_element = node
+          @scenario_outline = node
         end
 
         def examples_table(node, result)
-          @child.examples_table(node, result)
+          @examples_table = node
         end
 
         def examples_table_row(node, result)
-          @child.examples_table_row(node, result)
+          @examples_table_row = node
         end
 
         def after
+          print_step_container
           @child.after if @child
           formatter.after_feature(feature)
           self
         end
 
         private
+
+        def print_step_container
+          print_background && return
+          print_scenario && return
+          print_scenario_outline
+        end
+
+        def print_background
+          return unless @background
+          if background_printed?
+            @child.after
+            @child = HiddenBackgroundPrinter.new(formatter, runtime, @background)
+          else
+            @child ||= BackgroundPrinter.new(formatter, runtime, @background).before
+          end
+          @background = nil
+          true
+        end
+
+        def print_scenario
+          return unless @scenario
+          return if @scenario == @current_feature_element
+          @child.after if @child
+          @child = ScenarioPrinter.new(formatter, runtime, @scenario).before
+          @current_feature_element = @scenario
+          @scenario = nil
+          true
+        end
+
+        def print_scenario_outline
+          return unless @scenario_outline
+          unless @scenario_outline == @current_feature_element
+            @child.after if @child
+            @child = ScenarioOutlinePrinter.new(formatter, runtime, @scenario_outline).before
+            @current_feature_element = @scenario_outline
+          end
+          @scenario_outline = nil
+          print_examples_table
+          print_examples_table_row
+        end
+
+        def print_examples_table
+          @child.examples_table(@examples_table)
+          @examples_table = nil
+        end
+
+        def print_examples_table_row
+          @child.examples_table_row(@examples_table_row)
+          @examples_table_row = nil
+        end
+
+        def background_printed?
+          @current_feature_element
+        end
 
         def indented(nasty_old_conflation_of_name_and_description)
           indent = ""
@@ -390,14 +445,13 @@ module Cucumber
           @child.step(node, result)
         end
 
-        def examples_table(examples_table, *)
+        def examples_table(examples_table)
           @child ||= ExamplesArrayPrinter.new(formatter, runtime).before
           @child.examples_table(examples_table)
         end
 
-        def examples_table_row(node, result)
-          @last_step_resule = result
-          @child.examples_table_row(node, result)
+        def examples_table_row(node)
+          @child.examples_table_row(node)
         end
 
         def after
@@ -459,8 +513,8 @@ module Cucumber
           @current = examples_table
         end
 
-        def examples_table_row(node, result)
-          @child.examples_table_row(node, result)
+        def examples_table_row(node)
+          @child.examples_table_row(node)
         end
 
         def step(node, result)
@@ -483,7 +537,7 @@ module Cucumber
           self
         end
 
-        def examples_table_row(examples_table_row, *)
+        def examples_table_row(examples_table_row)
           return if examples_table_row == @current
           @child.after if @child
           @child = TableRowPrinter.new(formatter, runtime, ExampleTableRow.new(examples_table_row)).before
