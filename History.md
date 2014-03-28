@@ -29,6 +29,12 @@ all.
 
 * Greek examples added ([497](https://github.com/cucumber/cucumber/issues/497) @rousisk)
 
+## [v1.3.14](https://github.com/cucumber/cucumber/compare/v1.3.13...v1.3.14)
+
+* Rerun formatter includes all scenarios when the background fails
+  ([660](https://github.com/cucumber/cucumber/issues/660),
+   [661](https://github.com/cucumber/cucumber/pull/661) @brasmusson)
+
 ## [v1.3.13](https://github.com/cucumber/cucumber/compare/v1.3.12...v1.3.13)
 
 * Rerun formatter includes all scenarios when the background fails
