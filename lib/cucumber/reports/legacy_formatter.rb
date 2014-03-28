@@ -182,27 +182,24 @@ module Cucumber
 
         def background(node, *)
           @background = node
-          print_background
-          print_step
+          print_step_container
         end
 
         def scenario(node, *)
           @scenario = node
           return unless @state == :step
-          print_scenario
-          print_step
-        end
-
-        def step(node, result)
-          set_state(:step)
-          @step_result = [node, result]
+          print_step_container
         end
 
         def scenario_outline(node, *)
           @scenario_outline = node
           return unless @state == :step
-          print_scenario_outline
-          print_step
+          print_step_container
+        end
+
+        def step(node, result)
+          set_state(:step)
+          @step_result = [node, result]
         end
 
         def examples_table(node, result)
@@ -228,6 +225,8 @@ module Cucumber
 
         def print_step_container
           case current_state
+          when :hidden_background
+            print_hidden_background
           when :background
             print_background
           when :scenario
@@ -235,52 +234,41 @@ module Cucumber
           when :scenario_outline
             print_scenario_outline
           end
+          print_step
         end
 
         def current_state
-          return :background if @background
+          return :hidden_background if @background && background_printed?
+          return :background if @background && !background_printed?
           return :scenario if @scenario
           return :scenario_outline if @scenario_outline
         end
 
-        def print_background
-          if background_printed?
-            @child.after
+        def print_hidden_background
+          unless @background == @current_hidden_background
+            @child.after if @child
             set_child HiddenBackgroundPrinter.new(formatter, runtime, @background)
-          else
-            set_child(BackgroundPrinter.new(formatter, runtime, @background).before) unless @child
+            @current_hidden_background = @background
           end
           @background = nil
-          true
         end
 
-        def print_step
-          debug [:print_step, @step_result.map(&:class)]
-          return unless @step_result.any?
-          @child.step(*@step_result)
-          @step_result = []
-        end
-
-        def set_current_feature_element(element)
-          return unless @state == :step
-          debug [:set_feature_element, element.class, element.location.to_s]
-          @current_feature_element = element
-        end
-
-        def set_child(child)
-          @child = child
-          debug [:set_child, child.class]
+        def print_background
+          unless @background == @current_background
+            @child.after if @child
+            set_child(BackgroundPrinter.new(formatter, runtime, @background).before)
+            @current_background = @background
+          end
+          @background = nil
         end
 
         def print_scenario
-          debug [:print_scenario, @scenario.class, @current_feature_element.class]
           unless @scenario == @current_feature_element
             @child.after if @child
             set_child(ScenarioPrinter.new(formatter, runtime, @scenario).before)
             set_current_feature_element(@scenario)
           end
           @scenario = nil
-          true
         end
 
         def print_scenario_outline
@@ -302,6 +290,24 @@ module Cucumber
         def print_examples_table_row
           @child.examples_table_row(@examples_table_row)
           @examples_table_row = nil
+        end
+
+        def print_step
+          debug [:print_step, @step_result.map(&:class)]
+          return unless @step_result.any?
+          @child.step(*@step_result)
+          @step_result = []
+        end
+
+        def set_current_feature_element(element)
+          return unless @state == :step
+          debug [:set_feature_element, element.class, element.location.to_s]
+          @current_feature_element = element
+        end
+
+        def set_child(child)
+          @child = child
+          debug [:set_child, child.class]
         end
 
         def background_printed?
