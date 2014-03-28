@@ -227,13 +227,23 @@ module Cucumber
         end
 
         def print_step_container
-          print_background && return
-          print_scenario && return
-          print_scenario_outline
+          case current_state
+          when :background
+            print_background
+          when :scenario
+            print_scenario
+          when :scenario_outline
+            print_scenario_outline
+          end
+        end
+
+        def current_state
+          return :background if @background
+          return :scenario if @scenario
+          return :scenario_outline if @scenario_outline
         end
 
         def print_background
-          return unless @background
           if background_printed?
             @child.after
             set_child HiddenBackgroundPrinter.new(formatter, runtime, @background)
@@ -264,17 +274,16 @@ module Cucumber
 
         def print_scenario
           debug [:print_scenario, @scenario.class, @current_feature_element.class]
-          return unless @scenario
-          return if @scenario == @current_feature_element
-          @child.after if @child
-          set_child(ScenarioPrinter.new(formatter, runtime, @scenario).before)
-          set_current_feature_element(@scenario)
+          unless @scenario == @current_feature_element
+            @child.after if @child
+            set_child(ScenarioPrinter.new(formatter, runtime, @scenario).before)
+            set_current_feature_element(@scenario)
+          end
           @scenario = nil
           true
         end
 
         def print_scenario_outline
-          return unless @scenario_outline
           unless @scenario_outline == @current_feature_element
             @child.after if @child
             set_child(ScenarioOutlinePrinter.new(formatter, runtime, @scenario_outline).before)
