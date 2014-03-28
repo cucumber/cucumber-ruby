@@ -10,8 +10,8 @@ module Cucumber
 
     let(:report)    { Reports::LegacyFormatter.new(runtime, [formatter]) }
     let(:formatter) { double('formatter').as_null_object }
-    let(:runtime)   { mappings.runtime } 
-    let(:mappings)  { Mappings.new }
+    let(:runtime)   { Runtime.new }
+    let(:mappings)  { Mappings.new(runtime) }
 
     before(:each) do
       define_steps do
@@ -24,6 +24,64 @@ module Cucumber
     context 'message order' do
       let(:formatter) { MessageSpy.new }
 
+      it 'two features' do
+        gherkin_docs = [
+          gherkin do
+            feature do
+              scenario do
+                step 'passing'
+              end
+            end
+          end,
+          gherkin do
+            feature do
+              scenario do
+                step 'passing'
+              end
+            end
+          end,
+        ]
+        execute gherkin_docs, mappings, report
+        expect( formatter.messages ).to eq [
+          :before_features,
+            :before_feature,
+              :before_tags,
+              :after_tags,
+              :feature_name,
+              :before_feature_element,
+                :before_tags,
+                :after_tags,
+                :scenario_name,
+                :before_steps,
+                  :before_step,
+                    :before_step_result,
+                    :step_name,
+                    :after_step_result,
+                  :after_step,
+                :after_steps,
+              :after_feature_element,
+            :after_feature,
+            :before_feature,
+              :before_tags,
+              :after_tags,
+              :feature_name,
+              :before_feature_element,
+                :before_tags,
+                :after_tags,
+                :scenario_name,
+                :before_steps,
+                  :before_step,
+                    :before_step_result,
+                    :step_name,
+                    :after_step_result,
+                  :after_step,
+                :after_steps,
+              :after_feature_element,
+            :after_feature,
+          :after_features
+        ]
+      end
+
       it 'a scenario with no steps' do
         execute_gherkin do
           feature do
@@ -32,14 +90,45 @@ module Cucumber
         end
         expect( formatter.messages ).to eq [
           :before_features,
-            :before_feature, 
-              :before_tags, 
-              :after_tags, 
+            :before_feature,
+              :before_tags,
+              :after_tags,
               :feature_name,
               :before_feature_element,
                 :before_tags,
                   :after_tags,
                 :scenario_name,
+              :after_feature_element,
+            :after_feature,
+          :after_features
+        ]
+      end
+
+      it 'a scenario with one step' do
+        execute_gherkin do
+          feature do
+            scenario do
+              step 'passing'
+            end
+          end
+        end
+        expect( formatter.messages ).to eq [
+          :before_features,
+            :before_feature,
+              :before_tags,
+              :after_tags,
+              :feature_name,
+              :before_feature_element,
+                :before_tags,
+                  :after_tags,
+                :scenario_name,
+                :before_steps,
+                  :before_step,
+                    :before_step_result,
+                    :step_name,
+                    :after_step_result,
+                  :after_step,
+                :after_steps,
               :after_feature_element,
             :after_feature,
           :after_features
@@ -57,9 +146,9 @@ module Cucumber
         end
         expect( formatter.messages ).to eq [
           :before_features,
-          :before_feature, 
-          :before_tags, 
-          :after_tags, 
+          :before_feature,
+          :before_tags,
+          :after_tags,
           :feature_name,
           :before_feature_element,
           :before_tags,
@@ -84,6 +173,65 @@ module Cucumber
         ]
       end
 
+      it 'a feature with a background and two scenarios' do
+        execute_gherkin do
+          feature do
+            background do
+              step 'passing'
+            end
+            scenario do
+              step 'passing'
+            end
+            scenario do
+              step 'passing'
+            end
+          end
+        end
+        expect( formatter.messages ).to eq [
+          :before_features,
+            :before_feature,
+              :before_tags,
+              :after_tags,
+              :feature_name,
+              :before_background,
+                :background_name,
+                :before_steps,
+                  :before_step,
+                    :before_step_result,
+                      :step_name,
+                    :after_step_result,
+                  :after_step,
+                :after_steps,
+              :after_background,
+              :before_feature_element,
+                :before_tags,
+                :after_tags,
+                :scenario_name,
+                :before_steps,
+                  :before_step,
+                    :before_step_result,
+                      :step_name,
+                    :after_step_result,
+                  :after_step,
+                :after_steps,
+              :after_feature_element,
+              :before_feature_element,
+                :before_tags,
+                :after_tags,
+                :scenario_name,
+                :before_steps,
+                  :before_step,
+                    :before_step_result,
+                      :step_name,
+                    :after_step_result,
+                  :after_step,
+                :after_steps,
+              :after_feature_element,
+            :after_feature,
+          :after_features
+        ]
+      end
+
       it 'a feature with a background with two steps' do
         execute_gherkin do
           feature do
@@ -98,9 +246,9 @@ module Cucumber
         end
         expect( formatter.messages ).to eq [
           :before_features,
-            :before_feature, 
-              :before_tags, 
-              :after_tags, 
+            :before_feature,
+              :before_tags,
+              :after_tags,
               :feature_name,
               :before_background,
                 :background_name,
@@ -147,9 +295,9 @@ module Cucumber
         end
         expect( formatter.messages ).to eq [
           :before_features,
-          :before_feature, 
-          :before_tags, 
-          :after_tags, 
+          :before_feature,
+          :before_tags,
+          :after_tags,
           :feature_name,
           :before_background,
           :background_name,
@@ -192,9 +340,9 @@ module Cucumber
         end
         expect( formatter.messages ).to eq [
           :before_features,
-            :before_feature, 
-              :before_tags, 
-              :after_tags, 
+            :before_feature,
+              :before_tags,
+              :after_tags,
               :feature_name,
               :before_feature_element,
                 :before_tags,
@@ -211,6 +359,130 @@ module Cucumber
                   :before_examples,
                     :examples_name,
                     :before_outline_table,
+                      :before_table_row,
+                        :before_table_cell,
+                          :table_cell_value,
+                        :after_table_cell,
+                      :after_table_row,
+                      :before_table_row,
+                        :before_table_cell,
+                          :table_cell_value,
+                        :after_table_cell,
+                      :after_table_row,
+                    :after_outline_table,
+                  :after_examples,
+                :after_examples_array,
+              :after_feature_element,
+            :after_feature,
+          :after_features
+        ]
+      end
+
+      it 'scenario outline with scenario' do
+        execute_gherkin do
+          feature do
+            scenario do
+              step 'passing'
+            end
+            scenario_outline do
+              step '<result>ing'
+              examples do
+                row 'result'
+                row 'pass'
+              end
+            end
+          end
+        end
+        expect( formatter.messages ).to eq [
+          :before_features,
+            :before_feature,
+              :before_tags,
+              :after_tags,
+              :feature_name,
+              :before_feature_element,
+                :before_tags,
+                :after_tags,
+                :scenario_name,
+                :before_steps,
+                  :before_step,
+                    :before_step_result,
+                      :step_name,
+                    :after_step_result,
+                  :after_step,
+                :after_steps,
+              :after_feature_element,
+              :before_feature_element,
+                :before_tags,
+                :after_tags,
+                :scenario_name,
+                :before_steps,
+                  :before_step,
+                    :before_step_result,
+                      :step_name,
+                    :after_step_result,
+                  :after_step,
+                :after_steps,
+                :before_examples_array,
+                  :before_examples,
+                    :examples_name,
+                    :before_outline_table,
+                      :before_table_row,
+                        :before_table_cell,
+                          :table_cell_value,
+                        :after_table_cell,
+                      :after_table_row,
+                      :before_table_row,
+                        :before_table_cell,
+                          :table_cell_value,
+                        :after_table_cell,
+                      :after_table_row,
+                    :after_outline_table,
+                  :after_examples,
+                :after_examples_array,
+              :after_feature_element,
+            :after_feature,
+          :after_features
+        ]
+      end
+      it 'scenario outline two rows' do
+        execute_gherkin do
+          feature do
+            scenario_outline do
+              step '<result>ing'
+              examples do
+                row 'result'
+                row 'pass'
+                row 'pass'
+              end
+            end
+          end
+        end
+        expect( formatter.messages ).to eq [
+          :before_features,
+            :before_feature,
+              :before_tags,
+              :after_tags,
+              :feature_name,
+              :before_feature_element,
+                :before_tags,
+                :after_tags,
+                :scenario_name,
+                :before_steps,
+                  :before_step,
+                    :before_step_result,
+                      :step_name,
+                    :after_step_result,
+                  :after_step,
+                :after_steps,
+                :before_examples_array,
+                  :before_examples,
+                    :examples_name,
+                    :before_outline_table,
+                      :before_table_row,
+                        :before_table_cell,
+                          :table_cell_value,
+                        :after_table_cell,
+                      :after_table_row,
                       :before_table_row,
                         :before_table_cell,
                           :table_cell_value,
