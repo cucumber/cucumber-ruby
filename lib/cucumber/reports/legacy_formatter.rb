@@ -43,7 +43,6 @@ module Cucumber
         :puts
 
       def before_test_case(test_case)
-        printer.before_test_case
       end
 
       def before_test_step(test_step);
@@ -83,12 +82,32 @@ module Cucumber
         runtime.record_result(scenario)
       end
 
+      class Buffer
+        attr_reader :messages
+        private     :messages
+        def initialize
+          @messages = []
+        end
+
+        def method_missing(message, *args)
+          messages << [message, args]
+          self
+        end
+
+        def flush_to(receiver)
+          while messages.any?
+            message, args = messages.shift
+            receiver.send(message, *args)
+          end
+        end
+
+      end
+
       require 'cucumber/core/test/timer'
       FeaturesPrinter = Struct.new(:formatter, :runtime) do
-        def debug(*args)
-          return unless ENV['DEBUG']
-          p *args
-        end
+        extend Forwardable
+
+        def_delegators :buffer, :background, :scenario, :scenario_outline, :examples_table, :examples_table_row
 
         def before
           timer.start
@@ -102,76 +121,21 @@ module Cucumber
 
         def before_hook(location, result)
           LegacyResultBuilder.new(result).describe_exception_to(formatter)
-          @before_hook_result = [location, result]
-          @child.before_hook if @child
-        end
-
-        def before_test_case
-          debug [:before_test_case]
+          buffer.before_hook
         end
 
         def feature(node, *)
-          debug [:feature, node.location.to_s, @current_feature && @current_feature.location.to_s]
-          flush_buffer && return if node == @current_feature
-          debug [:feature, @child.feature.location] if @child
-          @child.after if @child
-          @child = FeaturePrinter.new(formatter, runtime, node).before
-          @current_feature = node
-
-          flush_buffer
-        end
-
-        def flush_buffer
-          if @before_hook_result
-            @child.before_hook
-            @before_hook_result = nil
+          if node != @current_feature
+            @child.after if @child
+            @child = FeaturePrinter.new(formatter, runtime, node).before
+            @current_feature = node
           end
-
-          if @scenario
-            @child.scenario(@scenario, nil)
-            @scenario = nil
-          end
-
-          if @examples_table_row
-            @child.examples_table_row(@examples_table_row, nil)
-            @examples_table_row = nil
-          end
-
-          if @examples_table_result
-            @child.examples_table(*@examples_table_result)
-            @examples_table_result = nil
-          end
-
-          if @scenario_outline_result
-            @child.scenario_outline(*@scenario_outline_result)
-            @scenario_outline_result = nil
-          end
-          true
-        end
-
-        def background(node, result)
-          @child.background(node, result)
+          buffer.flush_to(@child)
         end
 
         def step(node, result)
           # TODO: Create StepInvocation here and send it down.
           @child.step(node, result)
-        end
-
-        def scenario(node, result=nil)
-          @scenario = node
-        end
-
-        def scenario_outline(node, result=nil)
-          @scenario_outline_result = [node, result]
-        end
-
-        def examples_table(node, result=nil)
-          @examples_table_result = [node, result]
-        end
-
-        def examples_table_row(node, result=nil)
-          @examples_table_row = node
         end
 
         def after
@@ -181,6 +145,14 @@ module Cucumber
         end
 
         private
+        def buffer
+          @buffer ||= Buffer.new
+        end
+
+        def debug(*args)
+          return unless ENV['DEBUG']
+          p *args
+        end
 
         def timer
           @timer ||= Cucumber::Core::Test::Timer.new
