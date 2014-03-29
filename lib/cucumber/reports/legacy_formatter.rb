@@ -42,19 +42,17 @@ module Cucumber
         :ask,
         :puts
 
-      def before_test_case(test_case, &continue)
-        test_case.describe_source_to(printer)
-        continue.call
+      def before_test_case(test_case)
       end
-      def before_test_step(test_step); end
+
+      def before_test_step(test_step);
+      end
 
       def after_test_step(test_step, result)
-        DebugPrinter.new(test_step) if ENV['DEBUG']
         test_step.describe_source_to(printer, result)
       end
 
       def after_test_case(test_case, result)
-        test_case.describe_source_to(printer, result)
         record_test_case_result(test_case, result)
       end
 
@@ -62,23 +60,21 @@ module Cucumber
         printer.after
       end
 
-      class DebugPrinter
-        def initialize(step)
-          @messages = []
-          step.describe_to self
-          @messages << step.name if step.respond_to? :name
-          step.describe_source_to self
-          p @messages
+      class DebugWrapper
+        def initialize(receiver)
+          @receiver = receiver
         end
+
         def method_missing(message, *args)
-          @messages << message
+          p [message] if ENV['DEBUG']
+          @receiver.send(message, *args)
         end
       end
 
       private
 
       def printer
-        @printer ||= FeaturesPrinter.new(formatter, runtime).before
+        @printer ||= DebugWrapper.new(FeaturesPrinter.new(formatter, runtime).before)
       end
 
       def record_test_case_result(test_case, result)
@@ -86,8 +82,33 @@ module Cucumber
         runtime.record_result(scenario)
       end
 
+      class Buffer
+        attr_reader :messages
+        private     :messages
+        def initialize
+          @messages = []
+        end
+
+        def method_missing(message, *args)
+          messages << [message, args]
+          self
+        end
+
+        def flush_to(receiver)
+          while messages.any?
+            message, args = messages.shift
+            receiver.send(message, *args)
+          end
+        end
+
+      end
+
       require 'cucumber/core/test/timer'
       FeaturesPrinter = Struct.new(:formatter, :runtime) do
+        extend Forwardable
+
+        def_delegators :buffer, :background, :scenario, :scenario_outline, :examples_table, :examples_table_row
+
         def before
           timer.start
           formatter.before_features(nil)
@@ -100,39 +121,21 @@ module Cucumber
 
         def before_hook(location, result)
           LegacyResultBuilder.new(result).describe_exception_to(formatter)
-          @child.before_hook
+          buffer.before_hook
         end
 
         def feature(node, *)
-          return if node == @current_feature
-          @child.after if @child
-          @child = FeaturePrinter.new(formatter, runtime, node).before
-          @current_feature = node
-        end
-
-        def background(node, result)
-          @child.background(node, result)
+          if node != @current_feature
+            @child.after if @child
+            @child = FeaturePrinter.new(formatter, runtime, node).before
+            @current_feature = node
+          end
+          buffer.flush_to(@child)
         end
 
         def step(node, result)
           # TODO: Create StepInvocation here and send it down.
           @child.step(node, result)
-        end
-
-        def scenario(node, result=nil)
-          @child.scenario(node, result)
-        end
-
-        def scenario_outline(node, result=nil)
-          @child.scenario_outline(node, result)
-        end
-
-        def examples_table(node, result=nil)
-          @child.examples_table(node, result)
-        end
-
-        def examples_table_row(node, result=nil)
-          @child.examples_table_row(node, result)
         end
 
         def after
@@ -142,6 +145,14 @@ module Cucumber
         end
 
         private
+        def buffer
+          @buffer ||= Buffer.new
+        end
+
+        def debug(*args)
+          return unless ENV['DEBUG']
+          p *args
+        end
 
         def timer
           @timer ||= Cucumber::Core::Test::Timer.new
@@ -150,37 +161,45 @@ module Cucumber
       end
 
       FeaturePrinter = Struct.new(:formatter, :runtime, :feature) do
+        def set_state(state)
+          @state = state
+          debug [:set_state, state]
+        end
+
         def before
+          set_state(:unknown)
           formatter.before_feature(feature)
           Legacy::Ast::Comments.new(feature.comments).accept(formatter)
           Legacy::Ast::Tags.new(feature.tags).accept(formatter)
           formatter.feature_name feature.keyword, indented(feature.name) # TODO: change the core's new AST to return name and description separately instead of this lumped-together field
+          @step_result = []
           self
         end
 
         def before_hook
-          # Clear out any state set by the hook
-          @scenario = nil
-          @scenario_outline = nil
-          @examples_table = nil
-          @examples_table_row = nil
+          set_state(:hook)
         end
 
         def background(node, *)
           @background = node
+          print_step_container
         end
 
         def scenario(node, *)
           @scenario = node
-        end
-
-        def step(node, result)
+          return unless @state == :step
           print_step_container
-          @child.step(node, result)
         end
 
         def scenario_outline(node, *)
           @scenario_outline = node
+          return unless @state == :step
+          print_step_container
+        end
+
+        def step(node, result)
+          set_state(:step)
+          @step_result = [node, result]
         end
 
         def examples_table(node, result)
@@ -199,41 +218,64 @@ module Cucumber
         end
 
         private
+        def debug(*args)
+          return unless ENV['DEBUG']
+          p *args
+        end
 
         def print_step_container
-          print_background && return
-          print_scenario && return
-          print_scenario_outline
+          case current_state
+          when :hidden_background
+            print_hidden_background
+          when :background
+            print_background
+          when :scenario
+            print_scenario
+          when :scenario_outline
+            print_scenario_outline
+          end
+          print_step
+        end
+
+        def current_state
+          return :hidden_background if @background && background_printed?
+          return :background if @background && !background_printed?
+          return :scenario if @scenario
+          return :scenario_outline if @scenario_outline
+        end
+
+        def print_hidden_background
+          unless @background == @current_hidden_background
+            @child.after if @child
+            set_child HiddenBackgroundPrinter.new(formatter, runtime, @background)
+            @current_hidden_background = @background
+          end
+          @background = nil
         end
 
         def print_background
-          return unless @background
-          if background_printed?
-            @child.after
-            @child = HiddenBackgroundPrinter.new(formatter, runtime, @background).before
-          else
-            @child ||= BackgroundPrinter.new(formatter, runtime, @background).before
+          unless @background == @current_background
+            @child.after if @child
+            set_child(BackgroundPrinter.new(formatter, runtime, @background).before)
+            @current_background = @background
           end
           @background = nil
-          true
         end
 
         def print_scenario
-          return unless @scenario
-          return if @scenario == @current_feature_element
-          @child.after if @child
-          @child = ScenarioPrinter.new(formatter, runtime, @scenario).before
-          @current_feature_element = @scenario
+          unless @scenario == @current_feature_element
+            @child.after if @child
+            set_child(ScenarioPrinter.new(formatter, runtime, @scenario).before)
+            set_current_feature_element(@scenario)
+          end
           @scenario = nil
-          true
         end
 
         def print_scenario_outline
-          return unless @scenario_outline
           unless @scenario_outline == @current_feature_element
             @child.after if @child
-            @child = ScenarioOutlinePrinter.new(formatter, runtime, @scenario_outline).before
-            @current_feature_element = @scenario_outline
+            set_child(ScenarioOutlinePrinter.new(formatter, runtime, @scenario_outline).before)
+            set_current_feature_element(@scenario_outline)
           end
           @scenario_outline = nil
           print_examples_table
@@ -248,6 +290,24 @@ module Cucumber
         def print_examples_table_row
           @child.examples_table_row(@examples_table_row)
           @examples_table_row = nil
+        end
+
+        def print_step
+          debug [:print_step, @step_result.map(&:class)]
+          return unless @step_result.any?
+          @child.step(*@step_result)
+          @step_result = []
+        end
+
+        def set_current_feature_element(element)
+          return unless @state == :step
+          debug [:set_feature_element, element.class, element.location.to_s]
+          @current_feature_element = element
+        end
+
+        def set_child(child)
+          @child = child
+          debug [:set_child, child.class]
         end
 
         def background_printed?
