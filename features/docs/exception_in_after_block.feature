@@ -101,7 +101,6 @@ Feature: Exception in After Block
 
       """
 
-  @wip
   Scenario: Handle Exception using the progress format
     Given a file named "features/naughty_step_in_scenario.feature" with:
       """
