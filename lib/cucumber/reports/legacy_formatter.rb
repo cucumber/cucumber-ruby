@@ -115,13 +115,14 @@ module Cucumber
           self
         end
 
-        def after_hook(location, result)
-          LegacyResultBuilder.new(result).describe_exception_to(formatter)
+        def before_hook(location, result)
+          before_hook_result = LegacyResultBuilder.new(result)
+          buffer.before_hook(before_hook_result)
         end
 
-        def before_hook(location, result)
-          LegacyResultBuilder.new(result).describe_exception_to(formatter)
-          buffer.before_hook
+        def after_hook(location, result)
+          after_hook_result = LegacyResultBuilder.new(result)
+          buffer.after_hook(after_hook_result)
         end
 
         def feature(node, *)
@@ -176,8 +177,13 @@ module Cucumber
           self
         end
 
-        def before_hook
+        def before_hook(result)
           set_state(:hook)
+          @before_hook_result = result
+        end
+
+        def after_hook(result)
+          @child.after_hook(result)
         end
 
         def background(node, *)
@@ -265,7 +271,7 @@ module Cucumber
         def print_scenario
           unless @scenario == @current_feature_element
             @child.after if @child
-            set_child(ScenarioPrinter.new(formatter, runtime, @scenario).before)
+            set_child(ScenarioPrinter.new(formatter, runtime, @scenario, @before_hook_result).before)
             set_current_feature_element(@scenario)
           end
           @scenario = nil
@@ -288,7 +294,7 @@ module Cucumber
         end
 
         def print_examples_table_row
-          @child.examples_table_row(@examples_table_row)
+          @child.examples_table_row(@examples_table_row, @before_hook_result)
           @examples_table_row = nil
         end
 
@@ -386,10 +392,11 @@ module Cucumber
         end
       end
 
-      ScenarioPrinter = Struct.new(:formatter, :runtime, :node) do
+      ScenarioPrinter = Struct.new(:formatter, :runtime, :node, :before_hook_result) do
         def before
           formatter.before_feature_element(node)
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
+          before_hook_result.describe_exception_to(formatter)
           formatter.scenario_name node.keyword, node.name, node.location.to_s, indent.of(node)
           self
         end
@@ -402,11 +409,16 @@ module Cucumber
           @child.step_invocation step_invocation, runtime
         end
 
+        def after_hook(result)
+          @after_hook_result = result
+        end
+
         def after
           @child.after if @child
           # TODO - the last step result might not accurately reflect the
           # overall scenario result.
           scenario = LegacyResultBuilder.new(last_step_result).scenario(node.name, node.location)
+          @after_hook_result.describe_exception_to(formatter) if @after_hook_result
           formatter.after_feature_element(scenario)
           self
         end
@@ -503,6 +515,10 @@ module Cucumber
           self
         end
 
+        def after_hook(result)
+          @child.after_hook(result)
+        end
+
         def step(node, result)
           @last_step_result = result
           @child.step(node, result)
@@ -513,8 +529,8 @@ module Cucumber
           @child.examples_table(examples_table)
         end
 
-        def examples_table_row(node)
-          @child.examples_table_row(node)
+        def examples_table_row(node, before_hook_result)
+          @child.examples_table_row(node, before_hook_result)
         end
 
         def after
@@ -576,12 +592,16 @@ module Cucumber
           @current = examples_table
         end
 
-        def examples_table_row(node)
-          @child.examples_table_row(node)
+        def examples_table_row(node, before_hook_result)
+          @child.examples_table_row(node, before_hook_result)
         end
 
         def step(node, result)
           @child.step(node, result)
+        end
+
+        def after_hook(result)
+          @child.after_hook(result)
         end
 
         def after
@@ -600,10 +620,15 @@ module Cucumber
           self
         end
 
-        def examples_table_row(examples_table_row)
+        def after_hook(result)
+          @child.after_hook(result)
+        end
+
+        def examples_table_row(examples_table_row, before_hook_result)
           return if examples_table_row == @current
           @child.after if @child
-          @child = TableRowPrinter.new(formatter, runtime, ExampleTableRow.new(examples_table_row)).before
+          row = ExampleTableRow.new(examples_table_row)
+          @child = TableRowPrinter.new(formatter, runtime, row, nil, before_hook_result).before
           @current = examples_table_row
         end
 
@@ -663,10 +688,15 @@ module Cucumber
         end
       end
 
-      TableRowPrinter = Struct.new(:formatter, :runtime, :node, :background) do
+      TableRowPrinter = Struct.new(:formatter, :runtime, :node, :background, :before_hook_result) do
         def before
+          before_hook_result.describe_exception_to(formatter) if before_hook_result
           formatter.before_table_row(node)
           self
+        end
+
+        def after_hook(result)
+          @after_hook_result = result
         end
 
         def step(step, result)
@@ -683,6 +713,7 @@ module Cucumber
             formatter.table_cell_value(value, @status || :skipped)
             formatter.after_table_cell(value)
           end
+          @after_hook_result.describe_exception_to(formatter) if @after_hook_result
           formatter.after_table_row(legacy_table_row)
           if @failed_step
             formatter.exception @failed_step.exception, @failed_step.status

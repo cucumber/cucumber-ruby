@@ -23,9 +23,9 @@ Feature: Before Hook
     When I run `cucumber`
     Then the output should contain:
       """
-      NAMES:
-      Feature name
-      Scenario: Scenario name
+        NAMES:
+        Feature name
+        Scenario: Scenario name
       """
 
   Scenario: Examine names of scenario outline and feature
@@ -54,8 +54,8 @@ Feature: Before Hook
     When I run `cucumber`
     Then the output should contain:
       """
-      NAMES:
-      Feature name
-      Scenario Outline: Scenario Outline name
+            NAMES:
+            Feature name
+            Scenario Outline: Scenario Outline name
       """
 
