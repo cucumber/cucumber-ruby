@@ -541,10 +541,70 @@ module Cucumber
           ])
         end
 
+        it 'prints the exception before the examples table row' do
+          define_steps do
+            Before do
+              raise 'an exception'
+            end
+          end
+          execute_gherkin do
+            feature do
+              scenario_outline do
+                step '<status>ing'
+                examples do
+                  row 'status'
+                  row 'pass'
+                end
+              end
+            end
+          end
+
+          expect( formatter.messages ).to eq([
+            :before_features,
+              :before_feature,
+                :before_tags,
+                :after_tags,
+                :feature_name,
+                :before_feature_element,
+                  :before_tags,
+                  :after_tags,
+                  :scenario_name,
+                  :before_steps,
+                    :before_step,
+                      :before_step_result,
+                        :step_name,
+                      :after_step_result,
+                    :after_step,
+                  :after_steps,
+                  :before_examples_array,
+                    :before_examples,
+                      :examples_name,
+                      :before_outline_table,
+                        :before_table_row,
+                          :before_table_cell,
+                            :table_cell_value,
+                          :after_table_cell,
+                        :after_table_row,
+                        :exception,
+                        :before_table_row,
+                          :before_table_cell,
+                            :table_cell_value,
+                          :after_table_cell,
+                        :after_table_row,
+                      :after_outline_table,
+                    :after_examples,
+                  :after_examples_array,
+                :after_feature_element,
+              :after_feature,
+            :after_features
+          ])
+        end
+
+
       end
 
       context 'with exception in after hooks' do
-        it 'prints the exception after the scenario name' do
+        it 'prints the exception after the steps' do
           define_steps do
             After do
               raise 'an exception'
@@ -576,6 +636,65 @@ module Cucumber
                     :after_step,
                   :after_steps,
                   :exception,
+                :after_feature_element,
+              :after_feature,
+            :after_features
+          ])
+        end
+
+        it 'prints the exception after the examples table row' do
+          define_steps do
+            After do
+              raise 'an exception'
+            end
+          end
+          execute_gherkin do
+            feature do
+              scenario_outline do
+                step '<status>ing'
+                examples do
+                  row 'status'
+                  row 'pass'
+                end
+              end
+            end
+          end
+
+          expect( formatter.messages ).to eq([
+            :before_features,
+              :before_feature,
+                :before_tags,
+                :after_tags,
+                :feature_name,
+                :before_feature_element,
+                  :before_tags,
+                  :after_tags,
+                  :scenario_name,
+                  :before_steps,
+                    :before_step,
+                      :before_step_result,
+                        :step_name,
+                      :after_step_result,
+                    :after_step,
+                  :after_steps,
+                  :before_examples_array,
+                    :before_examples,
+                      :examples_name,
+                      :before_outline_table,
+                        :before_table_row,
+                          :before_table_cell,
+                            :table_cell_value,
+                          :after_table_cell,
+                        :after_table_row,
+                        :before_table_row,
+                          :before_table_cell,
+                            :table_cell_value,
+                          :after_table_cell,
+                          :exception,
+                        :after_table_row,
+                      :after_outline_table,
+                    :after_examples,
+                  :after_examples_array,
                 :after_feature_element,
               :after_feature,
             :after_features
