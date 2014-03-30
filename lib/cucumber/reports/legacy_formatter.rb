@@ -713,8 +713,8 @@ module Cucumber
             formatter.table_cell_value(value, @status || :skipped)
             formatter.after_table_cell(value)
           end
-          @after_hook_result.describe_exception_to(formatter) if @after_hook_result
           formatter.after_table_row(legacy_table_row)
+          @after_hook_result.describe_exception_to(formatter) if @after_hook_result
           if @failed_step
             formatter.exception @failed_step.exception, @failed_step.status
           end

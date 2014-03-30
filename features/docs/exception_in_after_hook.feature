@@ -55,7 +55,6 @@ Feature: Exception in After Block
       """
 
   @spawn
-  @wip
   Scenario: Handle Exception in scenario outline table row and carry on
     Given a file named "features/naughty_step_in_scenario_outline.feature" with:
       """
@@ -74,13 +73,13 @@ Feature: Exception in After Block
           Given this step passes
 
       """
-    When I run `cucumber features`
+    When I run `cucumber features -q`
     Then it should fail with:
       """
       Feature: Sample
 
-        Scenario Outline: Naughty Step # features/naughty_step_in_scenario_outline.feature:3
-          Given this step <Might Work> # features/step_definitions/steps.rb:1
+        Scenario Outline: Naughty Step
+          Given this step <Might Work>
 
           Examples: 
             | Might Work             |
@@ -90,11 +89,11 @@ Feature: Exception in After Block
             ./features/support/env.rb:4:in `After'
             | passes                 |
 
-        Scenario: Success        # features/naughty_step_in_scenario_outline.feature:12
-          Given this step passes # features/step_definitions/steps.rb:1
+        Scenario: Success
+          Given this step passes
 
       Failing Scenarios:
-      cucumber features/naughty_step_in_scenario_outline.feature:3 # Scenario: Naughty Step
+      cucumber features/naughty_step_in_scenario_outline.feature:9
 
       4 scenarios (1 failed, 3 passed)
       4 steps (4 passed)
