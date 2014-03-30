@@ -34,6 +34,10 @@ module Cucumber
         @options[:verbose]
       end
 
+      def randomize?
+        @options[:randomize]
+      end
+
       def strict?
         @options[:strict]
       end

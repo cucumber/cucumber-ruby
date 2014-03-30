@@ -14,6 +14,10 @@ module Cucumber
       @options = default_options.merge(user_options)
     end
 
+    def randomize?
+      @options[:randomize]
+    end
+
     def dry_run?
       @options[:dry_run]
     end

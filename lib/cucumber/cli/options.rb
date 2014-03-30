@@ -225,6 +225,9 @@ module Cucumber
           opts.on("--dotcucumber DIR", "Write metadata to DIR") do |dir|
             @options[:dotcucumber] = dir
           end
+          opts.on("--randomize", "Run scenarios in random order") do
+            @options[:randomize] = true
+          end
           opts.on_tail("--version", "Show version.") do
             @out_stream.puts Cucumber::VERSION
             Kernel.exit(0)

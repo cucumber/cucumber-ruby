@@ -270,11 +270,29 @@ module Cucumber
       name_regexps = @configuration.name_regexps
       tag_limits = @configuration.tag_limits
       [].tap do |filters|
+        filters << [Cucumber::Runtime::Randomizer, []] if @configuration.randomize?
         filters << [Cucumber::Runtime::TagLimits::Filter, [tag_limits]] if tag_limits.any?
         filters << [Cucumber::Core::Test::TagFilter, [tag_expressions]]
         filters << [Cucumber::Core::Test::NameFilter, [name_regexps]]
         filters << [Cucumber::Core::Test::LocationsFilter, [filespecs.locations]]
         filters << [Quit, []]
+      end
+    end
+
+    class Randomizer
+      def initialize(receiver)
+        @receiver = receiver
+        @test_cases = []
+      end
+
+      def test_case(test_case)
+        @test_cases << test_case
+      end
+
+      def done
+        @test_cases.shuffle.each do |test_case|
+          test_case.describe_to(@receiver)
+        end
       end
     end
 

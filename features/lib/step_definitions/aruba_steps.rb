@@ -20,3 +20,16 @@ Then /^it fails before running features with:$/ do |expected|
   assert_matching_output("\\A#{expected}", all_output)
   assert_success(false)
 end
+
+When(/^I run `(.*)` (\d+) times$/) do |cmd, num|
+  @exit_statuses = []
+  num.to_i.times do
+    run(cmd)
+    @exit_statuses << last_exit_status
+  end
+end
+
+Then(/^it should fail at least once$/) do
+  failure_count = @exit_statuses.count { |exit_status| exit_status > 0 }
+  expect( failure_count ).to be > 0
+end
