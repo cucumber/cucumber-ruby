@@ -396,8 +396,8 @@ module Cucumber
         def before
           formatter.before_feature_element(node)
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
-          before_hook_result.describe_exception_to(formatter)
           formatter.scenario_name node.keyword, node.name, node.location.to_s, indent.of(node)
+          before_hook_result.describe_exception_to(formatter)
           self
         end
 

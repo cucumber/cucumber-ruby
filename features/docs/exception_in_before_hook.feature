@@ -14,7 +14,7 @@ Feature: Exception in Before Block
       end
       """
 
-  @spawn @wip
+  @spawn
   Scenario: Handle Exception in standard scenario step and carry on
     Given a file named "features/naughty_step_in_scenario.feature" with:
       """

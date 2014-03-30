@@ -19,7 +19,6 @@ Feature: Tagged hooks
           Given this step passes
       """
 
-  @wip-new-core
   @spawn
   Scenario: Invoke tagged hook
     When I run `cucumber features/f.feature:2`
