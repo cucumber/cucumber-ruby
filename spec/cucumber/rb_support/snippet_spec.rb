@@ -28,7 +28,7 @@ module Cucumber
           @pattern = 'A "string" with 4 spaces'
 
           snippet_text.should == unindented(%{
-          Given(/^A "(.*?)" with (\\d+) spaces$/) do |arg1, arg2|
+          Given(/^A "([^"]*)" with (\\d+) spaces$/) do |arg1, arg2|
             pending # Write code here that turns the phrase above into concrete actions
           end
           })
@@ -49,7 +49,7 @@ module Cucumber
           @multiline_argument = Core::Ast::DataTable.new([[]], Core::Ast::Location.new(''))
 
           snippet_text.should == unindented(%{
-          Given(/^I have (\\d+) "(.*?)" cukes in (\\d+) "(.*?)"$/) do |arg1, arg2, arg3, arg4, table|
+          Given(/^I have (\\d+) "([^"]*)" cukes in (\\d+) "([^"]*)"$/) do |arg1, arg2, arg3, arg4, table|
             # table is a Cucumber::Core::Ast::DataTable
             pending # Write code here that turns the phrase above into concrete actions
           end
@@ -60,7 +60,7 @@ module Cucumber
           @pattern = 'A "first" arg'
 
           snippet_text.should == unindented(%{
-          Given(/^A "(.*?)" arg$/) do |arg1|
+          Given(/^A "([^"]*)" arg$/) do |arg1|
             pending # Write code here that turns the phrase above into concrete actions
           end
           })
@@ -70,7 +70,7 @@ module Cucumber
           @pattern = 'A "first" and "second" arg'
 
           snippet_text.should == unindented(%{
-          Given(/^A "(.*?)" and "(.*?)" arg$/) do |arg1, arg2|
+          Given(/^A "([^"]*)" and "([^"]*)" arg$/) do |arg1, arg2|
             pending # Write code here that turns the phrase above into concrete actions
           end
           })
@@ -91,7 +91,7 @@ module Cucumber
           @multiline_argument = Core::Ast::DataTable.new([[]], Core::Ast::Location.new(""))
 
           snippet_text.should == unindented(%{
-          Given(/^A "(.*?)" arg$/) do |arg1, table|
+          Given(/^A "([^"]*)" arg$/) do |arg1, table|
             # table is a Cucumber::Core::Ast::DataTable
             pending # Write code here that turns the phrase above into concrete actions
           end
@@ -103,7 +103,7 @@ module Cucumber
           @multiline_argument = Core::Ast::MultilineArgument.from("", Core::Ast::Location.new(""))
 
           snippet_text.should == unindented(%{
-          Given(/^A "(.*?)" arg$/) do |arg1, string|
+          Given(/^A "([^"]*)" arg$/) do |arg1, string|
             pending # Write code here that turns the phrase above into concrete actions
           end
           })
