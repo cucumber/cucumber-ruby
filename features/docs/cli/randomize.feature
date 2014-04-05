@@ -1,4 +1,3 @@
-@wip
 Feature: Randomize
 
   Use the `--randomize` switch to run scenarios in random order.
@@ -32,7 +31,8 @@ Feature: Randomize
     When I run `cucumber`
     Then it should pass
 
+  @spawn
   Scenario: Run scenarios randomized
-    When I run `cucumber --random` 20 times
+    When I run `cucumber --random` 4 times
     Then it should fail at least once
 

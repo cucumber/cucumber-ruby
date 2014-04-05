@@ -24,7 +24,7 @@ end
 When(/^I run `(.*)` (\d+) times$/) do |cmd, num|
   @exit_statuses = []
   num.to_i.times do
-    run(cmd)
+    run_simple(cmd, false)
     @exit_statuses << last_exit_status
   end
 end
