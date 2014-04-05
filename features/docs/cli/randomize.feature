@@ -33,6 +33,6 @@ Feature: Randomize
 
   @spawn
   Scenario: Run scenarios randomized
-    When I run `cucumber --random` 4 times
+    When I run `cucumber --randomize` 4 times
     Then it should fail at least once
 
