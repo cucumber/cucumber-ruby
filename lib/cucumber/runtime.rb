@@ -293,6 +293,7 @@ module Cucumber
         @test_cases.shuffle.each do |test_case|
           test_case.describe_to(@receiver)
         end
+        @receiver.done
       end
     end
 
