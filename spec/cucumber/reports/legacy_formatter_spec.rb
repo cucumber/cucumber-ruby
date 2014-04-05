@@ -104,6 +104,43 @@ module Cucumber
         ]
       end
 
+      it 'a scenario with no steps coming after another scenario' do
+        execute_gherkin do
+          feature do
+            scenario do
+              step 'passing'
+            end
+            scenario
+          end
+        end
+        expect( formatter.messages ).to eq [
+          :before_features,
+            :before_feature,
+              :before_tags,
+              :after_tags,
+              :feature_name,
+              :before_feature_element,
+                :before_tags,
+                  :after_tags,
+                :scenario_name,
+                :before_steps,
+                  :before_step,
+                    :before_step_result,
+                    :step_name,
+                    :after_step_result,
+                  :after_step,
+                :after_steps,
+              :after_feature_element,
+              :before_feature_element,
+                :before_tags,
+                  :after_tags,
+                :scenario_name,
+              :after_feature_element,
+            :after_feature,
+          :after_features
+        ]
+      end
+
       it 'a scenario with one step' do
         execute_gherkin do
           feature do
@@ -169,6 +206,52 @@ module Cucumber
           :after_steps,
           :after_feature_element,
           :after_feature,
+          :after_features
+        ]
+      end
+
+      it 'a feature with two scenarios' do
+        execute_gherkin do
+          feature do
+            scenario do
+              step 'passing'
+            end
+            scenario do
+              step 'passing'
+            end
+          end
+        end
+        expect( formatter.messages ).to eq [
+          :before_features,
+            :before_feature,
+              :before_tags,
+              :after_tags,
+              :feature_name,
+              :before_feature_element,
+                :before_tags,
+                :after_tags,
+                :scenario_name,
+                :before_steps,
+                  :before_step,
+                    :before_step_result,
+                      :step_name,
+                    :after_step_result,
+                  :after_step,
+                :after_steps,
+              :after_feature_element,
+              :before_feature_element,
+                :before_tags,
+                :after_tags,
+                :scenario_name,
+                :before_steps,
+                  :before_step,
+                    :before_step_result,
+                      :step_name,
+                    :after_step_result,
+                  :after_step,
+                :after_steps,
+              :after_feature_element,
+            :after_feature,
           :after_features
         ]
       end
