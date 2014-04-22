@@ -1,9 +1,10 @@
+require 'thread'
 
 module Cucumber
   module Formatter
     module Interceptor
       class Pipe
-        attr_reader :pipe, :buffer
+        attr_reader :pipe
         def initialize(pipe)
           @pipe = pipe
           @buffer = []
@@ -11,8 +12,16 @@ module Cucumber
         end
 
         def write(str)
-          @buffer << str if @wrapped
-          return @pipe.write(str)
+          lock.synchronize do 
+            @buffer << str if @wrapped
+            return @pipe.write(str)
+          end
+        end
+
+        def buffer
+          lock.synchronize do
+            return @buffer.dup
+          end
         end
 
         def unwrap!
@@ -59,6 +68,11 @@ module Cucumber
             $stdout = self.new($stdout)
             return $stdout
           end
+        end
+
+      private
+        def lock
+          @lock||=Mutex.new
         end
       end
     end
