@@ -1,3 +1,8 @@
+## [v1.3.15](https://github.com/cucumber/cucumber/compare/v1.3.14...v1.3.15)
+
+* Fixed intermittent ConcurrencyError seen in JRuby
+  ([671](https://github.com/cucumber/cucumber/issues/670) @cbusbey)
+
 ## [v1.3.14](https://github.com/cucumber/cucumber/compare/v1.3.13...v1.3.14)
 
 * Rerun formatter includes all scenarios when the background fails
