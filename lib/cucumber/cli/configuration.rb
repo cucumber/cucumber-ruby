@@ -72,7 +72,7 @@ module Cucumber
 
       def formatter_class(format)
         if(builtin = Options::BUILTIN_FORMATS[format])
-          constantize(builtin[0])
+          constantize("Cucumber::Formatter::#{builtin[0]}")
         else
           constantize(format)
         end
