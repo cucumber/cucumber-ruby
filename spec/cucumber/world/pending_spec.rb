@@ -10,13 +10,13 @@ module Cucumber
         @world = l.current_world
       end
 
-      it 'should raise a Pending if no block is supplied' do
+      it 'raises a Pending if no block is supplied' do
         lambda {
           @world.pending "TODO"
         }.should raise_error(Cucumber::Pending, /TODO/)
       end
 
-      it 'should raise a Pending if a supplied block fails as expected' do
+      it 'raises a Pending if a supplied block fails as expected' do
         lambda {
           @world.pending "TODO" do
             raise "oops"
@@ -24,7 +24,7 @@ module Cucumber
         }.should raise_error(Cucumber::Pending, /TODO/)
       end
 
-      it 'should raise a Pending if a supplied block fails as expected with a double' do
+      it 'raises a Pending if a supplied block fails as expected with a double' do
         lambda {
           @world.pending "TODO" do
             m = double('thing')
@@ -34,7 +34,7 @@ module Cucumber
         }.should raise_error(Cucumber::Pending, /TODO/)
       end
 
-      it 'should raise a Pending if a supplied block starts working' do
+      it 'raises a Pending if a supplied block starts working' do
         lambda {
           @world.pending "TODO" do
             # success!
