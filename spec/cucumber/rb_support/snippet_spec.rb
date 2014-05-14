@@ -24,7 +24,7 @@ module Cucumber
         let(:snippet_class) { Snippet::Regexp }
         let(:snippet_text) { snippet.to_s }
 
-        it "should wrap snippet patterns in parentheses" do
+        it "wraps snippet patterns in parentheses" do
           @pattern = 'A "string" with 4 spaces'
 
           snippet_text.should == unindented(%{
@@ -34,7 +34,7 @@ module Cucumber
           })
         end
 
-        it "should recognise numbers in name and make according regexp" do
+        it "recognises numbers in name and make according regexp" do
           @pattern = 'Cloud 9 yeah'
 
           snippet_text.should == unindented(%{
@@ -44,7 +44,7 @@ module Cucumber
           })
         end
 
-        it "should recognise a mix of ints, strings and why not a table too" do
+        it "recognises a mix of ints, strings and why not a table too" do
           @pattern = 'I have 9 "awesome" cukes in 37 "boxes"'
           @multiline_argument = Core::Ast::DataTable.new([[]], Core::Ast::Location.new(''))
 
@@ -56,7 +56,7 @@ module Cucumber
           })
         end
 
-        it "should recognise quotes in name and make according regexp" do
+        it "recognises quotes in name and make according regexp" do
           @pattern = 'A "first" arg'
 
           snippet_text.should == unindented(%{
@@ -66,7 +66,7 @@ module Cucumber
           })
         end
 
-        it "should recognise several quoted words in name and make according regexp and args" do
+        it "recognises several quoted words in name and make according regexp and args" do
           @pattern = 'A "first" and "second" arg'
 
           snippet_text.should == unindented(%{
@@ -76,7 +76,7 @@ module Cucumber
           })
         end
 
-        it "should not use quote group when there are no quotes" do
+        it "does not use quote group when there are no quotes" do
           @pattern = 'A first arg'
 
           snippet_text.should == unindented(%{
@@ -86,7 +86,7 @@ module Cucumber
           })
         end
 
-        it "should be helpful with tables" do
+        it "is helpful with tables" do
           @pattern = 'A "first" arg'
           @multiline_argument = Core::Ast::DataTable.new([[]], Core::Ast::Location.new(""))
 
@@ -98,7 +98,7 @@ module Cucumber
           })
         end
 
-        it "should be helpful with doc string" do
+        it "is helpful with doc string" do
           @pattern = 'A "first" arg'
           @multiline_argument = Core::Ast::MultilineArgument.from("", Core::Ast::Location.new(""))
 

@@ -81,7 +81,7 @@ module Cucumber
 
       describe "Handling the World" do
 
-        it "should raise an error if the world is nil" do
+        it "raises an error if the world is nil" do
           dsl.World {}
 
           begin
@@ -103,7 +103,7 @@ module Cucumber
         class ClassOne
         end
 
-        it "should implicitly extend world with modules" do
+        it "implicitlys extend world with modules" do
           dsl.World(ModuleOne, ModuleTwo)
           rb.before(double('scenario').as_null_object)
           class << rb.current_world
@@ -113,7 +113,7 @@ module Cucumber
           rb.current_world.class.should == Object
         end
 
-        it "should raise error when we try to register more than one World proc" do
+        it "raises error when we try to register more than one World proc" do
           expected_error = %{You can only pass a proc to #World once, but it's happening
 in 2 places:
 
@@ -238,7 +238,7 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 
       describe "hooks" do
 
-        it "should find before hooks" do
+        it "finds before hooks" do
           fish = dsl.Before('@fish'){}
           meat = dsl.Before('@meat'){}
 
@@ -249,7 +249,7 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
           rb.hooks_for(:before, scenario).should == [fish]
         end
 
-        it "should find around hooks" do
+        it "finds around hooks" do
           a = dsl.Around do |scenario, block|
           end
 
