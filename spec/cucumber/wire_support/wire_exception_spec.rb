@@ -14,7 +14,7 @@ module Cucumber
         before(:each) do
           @data = {'message' => 'foo'}
         end
-        it "should #to_s as expected" do
+        it "#to_s as expecteds" do
           exception.to_s.should == "foo"
         end
       end
@@ -23,10 +23,10 @@ module Cucumber
         before(:each) do
           @data = {'message' => 'foo', 'exception' => 'Bar'}
         end
-        it "should #to_s as expected" do
+        it "#to_s as expecteds" do
           exception.to_s.should == "foo"
         end
-        it "#class.to_s should return the name of the exception" do
+        it "#class.to_s returns the name of the exception" do
           exception.class.to_s.should == 'Bar from localhost:54321'
         end
       end
@@ -35,7 +35,7 @@ module Cucumber
         before(:each) do
           @data = {'message' => 'foo', 'backtrace' => ['foo', 'bar', 'baz']}
         end
-        it "#backrace should return the custom backtrace" do
+        it "#backrace returns the custom backtrace" do
           exception.backtrace.should == ['foo', 'bar', 'baz']
         end
       end
