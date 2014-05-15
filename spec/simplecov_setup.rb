@@ -16,4 +16,3 @@ if ENV['SIMPLECOV']
     warn("Unable to load simplecov")
   end
 end
-
