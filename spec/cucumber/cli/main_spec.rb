@@ -47,7 +47,7 @@ module Cucumber
             Cucumber.wants_to_quit = false
           end
 
-          it "should register as a failure" do
+          it "registers as a failure" do
             results = double('results', :failure? => false)
             runtime = Runtime.any_instance
             runtime.stub(:run!)
@@ -62,7 +62,7 @@ module Cucumber
 
       describe "--format with class" do
         describe "in module" do
-          it "should resolve each module until it gets Formatter class" do
+          it "resolves each module until it gets Formatter class" do
             cli = Main.new(%w{--format ZooModule::MonkeyFormatterClass}, stdin, stdout, stderr, kernel)
             mock_module = double('module')
             Object.stub(:const_defined?).and_return(true)

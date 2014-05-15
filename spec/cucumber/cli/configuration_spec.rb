@@ -35,7 +35,7 @@ module Cli
 
     attr_reader :out, :error
 
-    it "should require env.rb files first" do
+    it "requires env.rb files first" do
       given_the_following_files("/features/support/a_file.rb","/features/support/env.rb")
 
       config.parse!(%w{--require /features})
@@ -46,7 +46,7 @@ module Cli
       ]
     end
 
-    it "should not require env.rb files when --dry-run" do
+    it "does not require env.rb files when --dry-run" do
       given_the_following_files("/features/support/a_file.rb","/features/support/env.rb")
 
       config.parse!(%w{--require /features --dry-run})
@@ -56,7 +56,7 @@ module Cli
       ]
     end
 
-    it "should require files in vendor/{plugins,gems}/*/cucumber/*.rb" do
+    it "requires files in vendor/{plugins,gems}/*/cucumber/*.rb" do
       given_the_following_files("/vendor/gems/gem_a/cucumber/bar.rb",
                                 "/vendor/plugins/plugin_a/cucumber/foo.rb")
 
@@ -170,8 +170,6 @@ END_OF_MESSAGE
         config.options[:formats].should == [['progress', out]]#, ['pretty', 'pretty.txt']]
       end
 
-
-
       ["--no-profile", "-P"].each do |flag|
         context 'when none is specified with #{flag}' do
           it "disables profiles" do
@@ -233,90 +231,89 @@ END_OF_MESSAGE
       end
     end
 
-
-    it "should accept --dry-run option" do
+    it "accepts --dry-run option" do
       config.parse!(%w{--dry-run})
       config.options[:dry_run].should be_true
     end
 
-    it "should accept --no-source option" do
+    it "accepts --no-source option" do
       config.parse!(%w{--no-source})
 
       config.options[:source].should be_false
     end
 
-    it "should accept --no-snippets option" do
+    it "accepts --no-snippets option" do
       config.parse!(%w{--no-snippets})
 
       config.options[:snippets].should be_false
     end
 
-    it "should set snippets and source to false with --quiet option" do
+    it "sets snippets and source to false with --quiet option" do
       config.parse!(%w{--quiet})
 
       config.options[:snippets].should be_false
       config.options[:source].should be_false
     end
 
-    it "should accept --verbose option" do
+    it "accepts --verbose option" do
       config.parse!(%w{--verbose})
 
       config.options[:verbose].should be_true
     end
 
-    it "should accept --out option" do
+    it "accepts --out option" do
       config.parse!(%w{--out jalla.txt})
       config.formats.should == [['pretty', 'jalla.txt']]
     end
 
-    it "should accept multiple --out options" do
+    it "accepts multiple --out options" do
       config.parse!(%w{--format progress --out file1 --out file2})
       config.formats.should == [['progress', 'file2']]
     end
 
-    it "should accept multiple --format options and put the STDOUT one first so progress is seen" do
+    it "accepts multiple --format options and put the STDOUT one first so progress is seen" do
       config.parse!(%w{--format pretty --out pretty.txt --format progress})
       config.formats.should == [['progress', out], ['pretty', 'pretty.txt']]
     end
 
-    it "should not accept multiple --format options when both use implicit STDOUT" do
+    it "does not accept multiple --format options when both use implicit STDOUT" do
       lambda do
         config.parse!(%w{--format pretty --format progress})
       end.should raise_error("All but one formatter must use --out, only one can print to each stream (or STDOUT)")
     end
 
-    it "should accept same --format options with implicit STDOUT, and keep only one" do
+    it "accepts same --format options with implicit STDOUT, and keep only one" do
       config.parse!(%w{--format pretty --format pretty})
       config.formats.should == [["pretty", out]]
     end
 
-    it "should not accept multiple --out streams pointing to the same place" do
+    it "does not accept multiple --out streams pointing to the same place" do
       lambda do
         config.parse!(%w{--format pretty --out file1 --format progress --out file1})
       end.should raise_error("All but one formatter must use --out, only one can print to each stream (or STDOUT)")
     end
 
-    it "should associate --out to previous --format" do
+    it "associates --out to previous --format" do
       config.parse!(%w{--format progress --out file1 --format profile --out file2})
       config.formats.should == [["progress", "file1"], ["profile" ,"file2"]]
     end
 
-    it "should accept same --format options with same --out streams and keep only one" do
+    it "accepts same --format options with same --out streams and keep only one" do
       config.parse!(%w{--format html --out file --format pretty --format html --out file})
       config.formats.should == [["pretty", out], ["html", "file"]]
     end
 
-    it "should accept same --format options with different --out streams" do
+    it "accepts same --format options with different --out streams" do
       config.parse!(%w{--format html --out file1 --format html --out file2})
       config.formats.should == [["html", "file1"], ["html", "file2"]]
     end
 
-    it "should accept --color option" do
+    it "accepts --color option" do
       Cucumber::Term::ANSIColor.should_receive(:coloring=).with(true)
       config.parse!(['--color'])
     end
 
-    it "should accept --no-color option" do
+    it "accepts --no-color option" do
       Cucumber::Term::ANSIColor.should_receive(:coloring=).with(false)
       config = Configuration.new(StringIO.new)
       config.parse!(['--no-color'])
@@ -327,7 +324,7 @@ END_OF_MESSAGE
         Cucumber.use_full_backtrace = false
       end
 
-      it "should show full backtrace when --backtrace is present" do
+      it "shows full backtrace when --backtrace is present" do
         config = Main.new(['--backtrace'])
         begin
           "x".should == "y"
@@ -341,27 +338,27 @@ END_OF_MESSAGE
       end
     end
 
-    it "should accept multiple --name options" do
+    it "accepts multiple --name options" do
       config.parse!(['--name', "User logs in", '--name', "User signs up"])
 
       config.options[:name_regexps].should include(/User logs in/)
       config.options[:name_regexps].should include(/User signs up/)
     end
 
-    it "should accept multiple -n options" do
+    it "accepts multiple -n options" do
       config.parse!(['-n', "User logs in", '-n', "User signs up"])
 
       config.options[:name_regexps].should include(/User logs in/)
       config.options[:name_regexps].should include(/User signs up/)
     end
 
-    it "should preserve the order of the feature files" do
+    it "preserves the order of the feature files" do
       config.parse!(%w{b.feature c.feature a.feature})
 
       config.feature_files.should == ["b.feature", "c.feature", "a.feature"]
     end
 
-    it "should search for all features in the specified directory" do
+    it "searchs for all features in the specified directory" do
       File.stub(:directory?).and_return(true)
       Dir.stub(:[]).with("feature_directory/**/*.feature").
         and_return(["cucumber.feature"])
@@ -381,13 +378,13 @@ END_OF_MESSAGE
       config.feature_files.should == ["cucumber.feature"]
     end
 
-    it "should allow specifying environment variables on the command line" do
+    it "allows specifying environment variables on the command line" do
       config.parse!(["foo=bar"])
       ENV["foo"].should == "bar"
       config.feature_files.should_not include('foo=bar')
     end
 
-    it "should allow specifying environment variables in profiles" do
+    it "allows specifying environment variables in profiles" do
       given_cucumber_yml_defined_as({'selenium' => 'RAILS_ENV=selenium'})
       config.parse!(["--profile", "selenium"])
       ENV["RAILS_ENV"].should == "selenium"

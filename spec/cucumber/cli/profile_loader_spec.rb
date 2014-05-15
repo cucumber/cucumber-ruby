@@ -29,7 +29,6 @@ module Cucumber
         given_cucumber_yml_defined_as({'default' => '--format "ugly" features/sync_imap_mailbox.feature:16:22'})
         loader.args_from('default').should == ['--format','ugly','features/sync_imap_mailbox.feature:16:22']
       end
-
     end
   end
 end
