@@ -6,8 +6,8 @@ module Cucumber
       subject { Configuration.default }
 
       it "has an autoload_code_paths containing the standard support and step_definitions folders" do
-        subject.autoload_code_paths.should include('features/support')
-        subject.autoload_code_paths.should include('features/step_definitions')
+        expect(subject.autoload_code_paths).to include('features/support')
+        expect(subject.autoload_code_paths).to include('features/step_definitions')
       end
     end
 
@@ -16,7 +16,7 @@ module Cucumber
       subject { Configuration.new(user_options) }
 
       it "allows you to override the defaults" do
-        subject.autoload_code_paths.should == ['foo/bar/baz']
+        expect(subject.autoload_code_paths).to eq ['foo/bar/baz']
       end
     end
   end
