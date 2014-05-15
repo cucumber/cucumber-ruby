@@ -5,7 +5,7 @@ module Cucumber
   module WireSupport
     describe WireLanguage do
       def stub_wire_file!(filename, config)
-        Configuration.stub(:from_file).with(filename).and_return config
+        allow(Configuration).to receive(:from_file).with(filename) { config }
       end
 
       describe "#load_code_file" do
@@ -14,16 +14,15 @@ module Cucumber
         end
 
         it "creates a RemoteSteps object" do
-          Connection.should_receive(:new).with(:config)
+          expect(Connection).to receive(:new).with(:config)
+
           WireLanguage.new.load_code_file('foo.wire')
         end
       end
 
       describe "#step_matches" do
         def stub_remote_steps!(config, attributes)
-          Connection.should_receive(:new).
-            with(config).
-            and_return( double('remote_steps', attributes) )
+          expect(Connection).to receive(:new).with(config) { double('remote_steps', attributes) }
         end
 
         before(:each) do
@@ -39,7 +38,7 @@ module Cucumber
           wire_language.load_code_file('one.wire')
           wire_language.load_code_file('two.wire')
 
-          wire_language.step_matches('','').should == [:a, :b, :c]
+          expect(wire_language.step_matches('','')).to eq [:a, :b, :c]
         end
       end
     end
