@@ -27,7 +27,7 @@ module Cucumber
             FEATURE
 
             it "outputs the events as expected" do
-              @out.string.should eq(<<EXPECTED)
+              expect(@out.string).to eq(<<EXPECTED)
 before_features
   before_feature
     before_tags
@@ -61,7 +61,7 @@ EXPECTED
             FEATURE
 
             it "outputs the events as expected" do
-              @out.string.should eq(<<EXPECTED)
+              expect(@out.string).to eq(<<EXPECTED)
 before_features
   before_feature
     before_tags
@@ -102,7 +102,7 @@ EXPECTED
             FEATURE
 
             it "outputs the events as expected" do
-              @out.string.should eq(<<EXPECTED)
+              expect(@out.string).to eq(<<EXPECTED)
 before_features
   before_feature
     before_tags
@@ -151,7 +151,7 @@ EXPECTED
 
             it "outputs the events as expected" do
               pending("legacy cucumber fires extra step events") if ENV['USE_LEGACY']
-              @out.string.should eq(<<EXPECTED)
+              expect(@out.string).to eq(<<EXPECTED)
 before_features
   before_feature
     before_tags
@@ -203,7 +203,7 @@ EXPECTED
             FEATURE
 
             it "outputs the events as expected" do
-              @out.string.should eq(<<EXPECTED)
+              expect(@out.string).to eq(<<EXPECTED)
 before_features
   before_feature
     before_tags
@@ -284,7 +284,7 @@ EXPECTED
             FEATURE
 
             it "outputs the events as expected" do
-              @out.string.should eq(<<EXPECTED)
+              expect(@out.string).to eq(<<EXPECTED)
 before_features
   before_feature
     before_tags
@@ -340,7 +340,7 @@ EXPECTED
             FEATURE
 
             it "displays the events as expected" do
-              @out.string.should eq(<<EXPECTED)
+              expect(@out.string).to eq(<<EXPECTED)
 before_features
   before_feature
     before_tags
@@ -379,7 +379,7 @@ EXPECTED
             FEATURE
 
             it "displays the events as expected" do
-              @out.string.should eq(<<EXPECTED)
+              expect(@out.string).to eq(<<EXPECTED)
 before_features
   before_feature
     before_tags
@@ -436,7 +436,7 @@ EXPECTED
 
             it "displays the table for the background" do
               pending("legacy cucumber fires extra step events") if ENV['USE_LEGACY']
-              @out.string.should eq(<<EXPECTED)
+              expect(@out.string).to eq(<<EXPECTED)
 before_features
   before_feature
     before_tags
@@ -524,7 +524,7 @@ EXPECTED
 
             it "displays the background py string" do
               pending("legacy cucumber fires extra step events") if ENV['USE_LEGACY']
-              @out.string.should eq(<<EXPECTED)
+              expect(@out.string).to eq(<<EXPECTED)
 before_features
   before_feature
     before_tags
@@ -562,7 +562,6 @@ before_features
 after_features
 EXPECTED
             end
-
           end
         end
     end
