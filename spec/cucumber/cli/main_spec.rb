@@ -6,8 +6,8 @@ module Cucumber
   module Cli
     describe Main do
       before(:each) do
-        File.stub(:exist?).and_return(false) # When Configuration checks for cucumber.yml
-        Dir.stub(:[]).and_return([]) # to prevent cucumber's features dir to being laoded
+        allow(File).to receive(:exist?) { false } # When Configuration checks for cucumber.yml
+        allow(Dir).to receive(:[]) { [] } # to prevent cucumber's features dir to being laoded
       end
 
       let(:args)   { [] }
@@ -27,17 +27,21 @@ module Cucumber
 
           it "configures that runtime" do
             expected_configuration = double('Configuration').as_null_object
-            Configuration.stub(:new => expected_configuration)
-            existing_runtime.should_receive(:configure).with(expected_configuration)
-            kernel.should_receive(:exit).with(1)
+
+            allow(Configuration).to receive(:new) { expected_configuration }
+            expect(existing_runtime).to receive(:configure).with(expected_configuration)
+            expect(kernel).to receive(:exit).with(1)
+
             do_execute
           end
 
           it "uses that runtime for running and reporting results" do
             expected_results = double('results', :failure? => true)
-            existing_runtime.should_receive(:run!)
-            existing_runtime.stub(:results).and_return(expected_results)
-            kernel.should_receive(:exit).with(1)
+
+            expect(existing_runtime).to receive(:run!)
+            allow(existing_runtime).to receive(:results) { expected_results }
+            expect(kernel).to receive(:exit).with(1)
+
             do_execute
           end
         end
@@ -49,12 +53,14 @@ module Cucumber
 
           it "registers as a failure" do
             results = double('results', :failure? => false)
-            runtime = Runtime.any_instance
-            runtime.stub(:run!)
-            runtime.stub(:results).and_return(results)
+
+            allow_any_instance_of(Runtime).to receive(:run!)
+            allow_any_instance_of(Runtime).to receive(:results) { results }
 
             Cucumber.wants_to_quit = true
-            kernel.should_receive(:exit).with(1)
+
+            expect(kernel).to receive(:exit).with(1)
+
             subject.execute!
           end
         end
@@ -62,34 +68,37 @@ module Cucumber
 
       describe "--format with class" do
         describe "in module" do
+          let(:double_module) { double('module') }
+          let(:formatter) { double('formatter') }
+
           it "resolves each module until it gets Formatter class" do
             cli = Main.new(%w{--format ZooModule::MonkeyFormatterClass}, stdin, stdout, stderr, kernel)
-            mock_module = double('module')
-            Object.stub(:const_defined?).and_return(true)
-            mock_module.stub(:const_defined?).and_return(true)
 
-            f = double('formatter').as_null_object
+            allow(Object).to receive(:const_defined?) { true }
+            allow(double_module).to receive(:const_defined?) { true }
 
-            Object.should_receive(:const_get).with('ZooModule', false).and_return(mock_module)
-            mock_module.should_receive(:const_get).with('MonkeyFormatterClass', false).and_return(double('formatter class', :new => f))
+            expect(Object).to receive(:const_get).with('ZooModule', false) { double_module }
+            expect(double_module).to receive(:const_get).with('MonkeyFormatterClass', false) { double('formatter class', :new => formatter) }
 
-            kernel.should_receive(:exit).with(0)
+            expect(kernel).to receive(:exit).with(0)
+
             cli.execute!
           end
         end
       end
 
       [ProfilesNotDefinedError, YmlLoadError, ProfileNotFound].each do |exception_klass|
-
         it "rescues #{exception_klass}, prints the message to the error stream" do
-          Configuration.stub(:new).and_return(configuration = double('configuration'))
-          configuration.stub(:parse!).and_raise(exception_klass.new("error message"))
+          configuration = double('configuration')
+
+          allow(Configuration).to receive(:new) { configuration }
+          allow(configuration).to receive(:parse!).and_raise(exception_klass.new("error message"))
 
           subject.execute!
-          stderr.string.should == "error message\n"
+
+          expect(stderr.string).to eq "error message\n"
         end
       end
-
     end
   end
 end
