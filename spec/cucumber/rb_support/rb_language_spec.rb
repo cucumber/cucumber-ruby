@@ -113,8 +113,8 @@ module Cucumber
           dsl.World(ModuleOne, ModuleTwo)
           rb.before(double('scenario').as_null_object)
           class << rb.current_world
-            expect(included_modules.inspect).to match /ModuleOne/ # Workaround for RSpec/Ruby 1.9 issue with namespaces
-            expect(included_modules.inspect).to match /ModuleTwo/
+            included_modules.inspect.should =~ /ModuleOne/ # Workaround for RSpec/Ruby 1.9 issue with namespaces
+            included_modules.inspect.should =~ /ModuleTwo/
           end
           expect(rb.current_world.class).to eq Object
         end
