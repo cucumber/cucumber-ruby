@@ -8,7 +8,8 @@ module Cucumber
 
     it "loads html formatter" do
       clazz = constantize('Cucumber::Formatter::Html')
-      clazz.name.should == 'Cucumber::Formatter::Html'
+
+      expect(clazz.name).to eq 'Cucumber::Formatter::Html'
     end
 
     it "fails to load a made up class" do

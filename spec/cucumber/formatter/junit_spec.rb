@@ -19,7 +19,7 @@ module Cucumber::Formatter
     end
 
     before(:each) do
-      File.stub(:directory?).and_return(true)
+      allow(File).to receive(:directory?) { true }
       @formatter = TestDoubleJunitFormatter.new(runtime, '', {})
     end
 
@@ -57,7 +57,7 @@ module Cucumber::Formatter
         end
       end
 
-      it { @doc.xpath('//testsuite/system-out').first.content.should match(/\s+boo boo\s+/) }
+      it { expect(@doc.xpath('//testsuite/system-out').first.content).to match(/\s+boo boo\s+/) }
     end
 
     describe "a feature with no name" do
@@ -68,7 +68,9 @@ module Cucumber::Formatter
       FEATURE
 
       it "raises an exception" do
-        lambda { run_defined_feature }.should raise_error(Junit::UnNamedFeatureError)
+        expect(-> {
+          run_defined_feature
+        }).to raise_error(Junit::UnNamedFeatureError)
       end
     end
 
@@ -86,22 +88,22 @@ module Cucumber::Formatter
               Given a passing scenario
         FEATURE
 
-        it { @doc.to_s.should =~ /One passing scenario, one failing scenario/ }
+        it { expect(@doc.to_s).to match /One passing scenario, one failing scenario/ }
 
         it 'has a root system-out node' do
-          @doc.xpath('//testsuite/system-out').size.should == 1
+          expect(@doc.xpath('//testsuite/system-out').size).to eq 1
         end
 
         it 'has a root system-err node' do
-          @doc.xpath('//testsuite/system-err').size.should == 1
+          expect(@doc.xpath('//testsuite/system-err').size).to eq 1
         end
 
         it 'has a system-out node under <testcase/>' do
-          @doc.xpath('//testcase/system-out').size.should == 1
+          expect(@doc.xpath('//testcase/system-out').size).to eq 1
         end
 
         it 'has a system-err node under <testcase/>' do
-          @doc.xpath('//testcase/system-err').size.should == 1
+          expect(@doc.xpath('//testcase/system-err').size).to eq 1
         end
       end
 
@@ -114,7 +116,7 @@ module Cucumber::Formatter
         }, File.join('features', 'some', 'path', 'spec.feature')
 
         it 'writes the filename including the subdirectory' do
-          @formatter.written_files.keys.first.should == File.join('', 'TEST-features-some-path-spec.xml')
+          expect(@formatter.written_files.keys.first).to eq File.join('', 'TEST-features-some-path-spec.xml')
         end
       end
 
@@ -141,13 +143,13 @@ module Cucumber::Formatter
               | Big Mac  |
         FEATURE
 
-        it { @doc.to_s.should =~ /Eat things when hungry/ }
-        it { @doc.to_s.should =~ /Cucumber/ }
-        it { @doc.to_s.should =~ /Whisky/ }
-        it { @doc.to_s.should =~ /Big Mac/ }
-        it { @doc.to_s.should_not =~ /Things/ }
-        it { @doc.to_s.should_not =~ /Good|Evil/ }
-        it { @doc.to_s.should_not =~ /type="skipped"/}
+        it { expect(@doc.to_s).to match /Eat things when hungry/ }
+        it { expect(@doc.to_s).to match /Cucumber/ }
+        it { expect(@doc.to_s).to match /Whisky/ }
+        it { expect(@doc.to_s).to match /Big Mac/ }
+        it { expect(@doc.to_s).not_to match /Things/ }
+        it { expect(@doc.to_s).not_to match /Good|Evil/ }
+        it { expect(@doc.to_s).not_to match /type="skipped"/}
       end
 
       describe "scenario with skipped test in junit report" do
@@ -163,7 +165,7 @@ module Cucumber::Formatter
               | still undefined  |
         FEATURE
 
-        it { @doc.to_s.should =~ /skipped="2"/}
+        it { expect(@doc.to_s).to match /skipped="2"/}
       end
 
       describe "with a regular data table scenario" do
@@ -186,8 +188,8 @@ module Cucumber::Formatter
 
         FEATURE
         # these type of tables shouldn't crash (or generate test cases)
-        it { @doc.to_s.should_not =~ /milk/ }
-        it { @doc.to_s.should_not =~ /cookies/ }
+        it { expect(@doc.to_s).not_to match /milk/ }
+        it { expect(@doc.to_s).not_to match /cookies/ }
       end
     end
   end

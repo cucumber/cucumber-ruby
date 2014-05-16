@@ -33,12 +33,12 @@ Given /^a step definition that looks like this:$/ do |string|
 end
 
 When /^I run the feature with the (\w+) formatter$/ do |formatter|
-  features.length.should == 1
+  expect(features.length).to eq 1
   run_feature features.first, formatter
 end
 
 Then /^the stderr should contain a warning message$/ do
-  all_stderr.should include("[warning]")
+  expect(all_stderr).to include("[warning]")
 end
 
 module CucumberHelper

@@ -6,7 +6,6 @@ require 'cucumber/rb_support/rb_language'
 
 module Cucumber
   module Formatter
-
     describe Html do
       extend SpecHelperDsl
       include SpecHelper
@@ -24,7 +23,9 @@ module Cucumber
       end
 
       it "does not raise an error when visiting a blank feature name" do
-        lambda { @formatter.feature_name("Feature", "") }.should_not raise_error
+        expect(-> {
+          @formatter.feature_name("Feature", "")
+        }).not_to raise_error
       end
 
       describe "given a single feature" do
@@ -42,7 +43,7 @@ module Cucumber
           FEATURE
 
           it "should output a main container div" do
-            @out.string.should =~ /\<div class="cucumber"\>/
+            expect(@out.string).to match /\<div class="cucumber"\>/
           end
         end
 
@@ -54,9 +55,9 @@ module Cucumber
                 Given passing
           FEATURE
 
-          it { @out.string.should =~ /^\<!DOCTYPE/ }
-          it { @out.string.should =~ /\<\/html\>$/ }
-          it { @doc.should have_css_node('.feature .comment', /Healthy/) }
+          it { expect(@out.string).to match /^\<!DOCTYPE/ }
+          it { expect(@out.string).to match /\<\/html\>$/ }
+          it { expect(@doc).to have_css_node('.feature .comment', /Healthy/) }
         end
 
         describe "with a tag" do
@@ -67,7 +68,7 @@ module Cucumber
                 Given passing
           FEATURE
 
-          it { @doc.should have_css_node('.feature .tag', /foo/) }
+          it { expect(@doc).to have_css_node('.feature .tag', /foo/) }
         end
 
         describe "with a narrative" do
@@ -81,8 +82,8 @@ module Cucumber
                 Given passing
           FEATURE
 
-          it { @doc.should have_css_node('.feature h2', /Bananas/) }
-          it { @doc.should have_css_node('.feature .narrative', /must eat bananas/) }
+          it { expect(@doc).to have_css_node('.feature h2', /Bananas/) }
+          it { expect(@doc).to have_css_node('.feature .narrative', /must eat bananas/) }
         end
 
         describe "with a background" do
@@ -96,7 +97,7 @@ module Cucumber
               When the monkey eats a banana
           FEATURE
 
-          it { @doc.should have_css_node('.feature .background', /there are bananas/) }
+          it { expect(@doc).to have_css_node('.feature .background', /there are bananas/) }
         end
 
         describe "with a scenario" do
@@ -107,8 +108,8 @@ module Cucumber
               Given there are bananas
           FEATURE
 
-          it { @doc.should have_css_node('.feature h3', /Monkey eats banana/) }
-          it { @doc.should have_css_node('.feature .scenario .step', /there are bananas/) }
+          it { expect(@doc).to have_css_node('.feature h3', /Monkey eats banana/) }
+          it { expect(@doc).to have_css_node('.feature .scenario .step', /there are bananas/) }
         end
 
         describe "with a scenario outline" do
@@ -128,11 +129,11 @@ module Cucumber
                | carrots  |
           FEATURE
 
-          it { @doc.should have_css_node('.feature .scenario.outline h4', /Fruit/) }
-          it { @doc.should have_css_node('.feature .scenario.outline h4', /Vegetables/) }
-          it { @doc.css('.feature .scenario.outline h4').length.should == 2}
-          it { @doc.should have_css_node('.feature .scenario.outline table', //) }
-          it { @doc.should have_css_node('.feature .scenario.outline table td', /carrots/) }
+          it { expect(@doc).to have_css_node('.feature .scenario.outline h4', /Fruit/) }
+          it { expect(@doc).to have_css_node('.feature .scenario.outline h4', /Vegetables/) }
+          it { expect(@doc.css('.feature .scenario.outline h4').length).to eq 2}
+          it { expect(@doc).to have_css_node('.feature .scenario.outline table', //) }
+          it { expect(@doc).to have_css_node('.feature .scenario.outline table td', /carrots/) }
         end
 
         describe "with a step with a py string" do
@@ -146,7 +147,7 @@ module Cucumber
                """
           FEATURE
 
-          it { @doc.should have_css_node('.feature .scenario .val', /foo/) }
+          it { expect(@doc).to have_css_node('.feature .scenario .val', /foo/) }
         end
 
         describe "with a multiline step arg" do
@@ -163,8 +164,8 @@ module Cucumber
                | bar  |
           FEATURE
 
-          it { @doc.should have_css_node('.feature .scenario table td', /foo/) }
-          it { @out.string.include?('makeYellow(\'scenario_1\')').should be_false }
+          it { expect(@doc).to have_css_node('.feature .scenario table td', /foo/) }
+          it { expect(@out.string.include?('makeYellow(\'scenario_1\')')).to be_false }
         end
 
         describe "with a table in the background and the scenario" do
@@ -181,7 +182,7 @@ module Cucumber
                | g | h |
           FEATURE
 
-          it { @doc.css('td').length.should == 8 }
+          it { expect(@doc.css('td').length).to eq 8 }
         end
 
         describe "with a py string in the background and the scenario" do
@@ -200,8 +201,8 @@ module Cucumber
                 """
           FEATURE
 
-          it { @doc.css('.feature .background pre.val').length.should == 1 }
-          it { @doc.css('.feature .scenario pre.val').length.should == 1 }
+          it { expect(@doc.css('.feature .background pre.val').length).to eq 1 }
+          it { expect(@doc.css('.feature .scenario pre.val').length).to eq 1 }
         end
 
         describe "with a step that fails in the scenario" do
@@ -216,8 +217,8 @@ module Cucumber
               Given boo
             FEATURE
 
-          it { @doc.should have_css_node('.feature .scenario .step.failed .message', /eek/) }
-          it { @doc.should have_css_node('.feature .scenario .step.failed .message', /StandardError/) }
+          it { expect(@doc).to have_css_node('.feature .scenario .step.failed .message', /eek/) }
+          it { expect(@doc).to have_css_node('.feature .scenario .step.failed .message', /StandardError/) }
         end
 
         describe "with a step that fails in the background" do
@@ -233,13 +234,13 @@ module Cucumber
               Given yay
             FEATURE
 
-          it { @doc.should have_css_node('.feature .background .step.failed', /eek/) }
-          it { @out.string.should_not include('makeRed(\'scenario_0\')') }
-          it { @out.string.should include('makeRed(\'background_0\')') }
-          it { @doc.should_not have_css_node('.feature .scenario .step.failed', //) }
-          it { @doc.should have_css_node('.feature .scenario .step.undefined', /yay/) }
-          it { @doc.should have_css_node('.feature .background .backtrace', //) }
-          it { @doc.should_not have_css_node('.feature .scenario .backtrace', //) }
+          it { expect(@doc).to have_css_node('.feature .background .step.failed', /eek/) }
+          it { expect(@out.string).not_to include('makeRed(\'scenario_0\')') }
+          it { expect(@out.string).to include('makeRed(\'background_0\')') }
+          it { expect(@doc).not_to have_css_node('.feature .scenario .step.failed', //) }
+          it { expect(@doc).to have_css_node('.feature .scenario .step.undefined', /yay/) }
+          it { expect(@doc).to have_css_node('.feature .background .backtrace', //) }
+          it { expect(@doc).not_to have_css_node('.feature .scenario .backtrace', //) }
         end
 
         describe "with a step that embeds a snapshot" do
@@ -253,7 +254,7 @@ module Cucumber
               Given snap
             FEATURE
 
-          it { @doc.css('.embed img').first.attributes['src'].to_s.should == "snapshot.jpeg" }
+          it { expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq "snapshot.jpeg" }
         end
 
         describe "with an undefined Given step then an undefined And step" do
@@ -264,9 +265,8 @@ module Cucumber
               And another undefined step
             FEATURE
 
-          it { @doc.css('pre').map { |pre| /^(Given|And)/.match(pre.text)[1] }.should == ["Given", "Given"] }
+          it { expect(@doc.css('pre').map { |pre| /^(Given|And)/.match(pre.text)[1] }).to eq ["Given", "Given"] }
         end
-
       end
     end
   end

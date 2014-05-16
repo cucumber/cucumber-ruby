@@ -1,6 +1,5 @@
 module Cucumber
   module Formatter
-
     module SpecHelperDsl
       attr_reader :feature_content, :step_defs, :feature_filename
 
@@ -55,6 +54,5 @@ module Cucumber
         dsl.instance_exec &step_defs
       end
     end
-
   end
 end

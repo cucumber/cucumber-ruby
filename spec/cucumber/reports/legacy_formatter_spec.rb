@@ -682,8 +682,6 @@ module Cucumber
             :after_features
           ])
         end
-
-
       end
 
       context 'with exception in after hooks' do
@@ -783,9 +781,7 @@ module Cucumber
             :after_features
           ])
         end
-
       end
-
     end
 
     it 'passes an object responding to failed? with the after_feature_element message' do
@@ -827,6 +823,5 @@ module Cucumber
       dsl.extend RbSupport::RbDsl
       dsl.instance_exec &block
     end
-
   end
 end

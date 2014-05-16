@@ -9,11 +9,11 @@ Then('it should pass') do
 end
 
 Then(/^"([^"]*)" should not be required$/) do |file_name|
-  all_output.should_not include("* #{file_name}")
+  expect(all_output).not_to include("* #{file_name}")
 end
 
 Then(/^"([^"]*)" should be required$/) do |file_name|
-  all_output.should include("* #{file_name}")
+  expect(all_output).to include("* #{file_name}")
 end
 
 Then /^it fails before running features with:$/ do |expected|

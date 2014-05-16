@@ -7,15 +7,18 @@ module Cucumber
       before(:each) do
         @config = Configuration.new('host' => 'localhost', 'port' => 54321)
       end
+
       def exception
         WireException.new(@data, @config)
       end
+
       describe "with just a message" do
         before(:each) do
           @data = {'message' => 'foo'}
         end
+
         it "#to_s as expecteds" do
-          exception.to_s.should == "foo"
+          expect(exception.to_s).to eq "foo"
         end
       end
 
@@ -23,11 +26,13 @@ module Cucumber
         before(:each) do
           @data = {'message' => 'foo', 'exception' => 'Bar'}
         end
+
         it "#to_s as expecteds" do
-          exception.to_s.should == "foo"
+          expect(exception.to_s).to eq "foo"
         end
+
         it "#class.to_s returns the name of the exception" do
-          exception.class.to_s.should == 'Bar from localhost:54321'
+          expect(exception.class.to_s).to eq 'Bar from localhost:54321'
         end
       end
 
@@ -35,8 +40,9 @@ module Cucumber
         before(:each) do
           @data = {'message' => 'foo', 'backtrace' => ['foo', 'bar', 'baz']}
         end
+
         it "#backrace returns the custom backtrace" do
-          exception.backtrace.should == ['foo', 'bar', 'baz']
+          expect(exception.backtrace).to eq ['foo', 'bar', 'baz']
         end
       end
     end
