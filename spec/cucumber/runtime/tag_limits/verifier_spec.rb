@@ -21,10 +21,7 @@ describe Cucumber::Runtime::TagLimits::Verifier do
 
       before do
         allow(test_case_index).to receive(:count_by_tag_name).with("@exceed_me") { 2 }
-
-        allow(test_case_index).to receive(:locations_of_tag_name).
-          with("@exceed_me").
-          and_return(locations)
+        allow(test_case_index).to receive(:locations_of_tag_name).with("@exceed_me") { locations }
       end
 
       it "raises a TagLimitExceeded error with the locations of the tags" do

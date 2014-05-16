@@ -18,37 +18,43 @@ module Cucumber
         let(:snippet) { double.as_null_object }
 
         it "creates a regexp Snippet class by default" do
-          Snippet::Regexp.should_receive(:new).and_return(snippet)
+          expect(Snippet::Regexp).to receive(:new) { snippet }
+
           rb.snippet_text('Given', 'A "string" with 4 spaces', nil)
         end
 
         it "creates a regexp Snippet class explicitly" do
-          Snippet::Regexp.should_receive(:new).and_return(snippet)
+          expect(Snippet::Regexp).to receive(:new) { snippet }
+
           rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :regexp)
         end
 
         it "creates a classic Snippet class" do
-          Snippet::Classic.should_receive(:new).and_return(snippet)
+          expect(Snippet::Classic).to receive(:new) { snippet }
+
           rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :classic)
         end
 
         it "creates a percent Snippet class" do
-          Snippet::Percent.should_receive(:new).and_return(snippet)
+          expect(Snippet::Percent).to receive(:new) { snippet }
+
           rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :percent)
         end
 
         it "passes all parameters to Snippet contructor" do
           code_keyword, pattern, multiline_argument_class = double, double, double
-          Snippet::Regexp.should_receive(:new).with(code_keyword, pattern, multiline_argument_class)
+
+          expect(Snippet::Regexp).to receive(:new).with(code_keyword, pattern, multiline_argument_class)
+
           rb.snippet_text(code_keyword, pattern, multiline_argument_class)
         end
 
         it "renders the snippet" do
-          Snippet::Regexp.stub(:new => snippet)
-          snippet.should_receive(:to_s)
+          allow(Snippet::Regexp).to receive(:new) { snippet }
+          expect(snippet).to receive(:to_s)
+
           rb.snippet_text('Given', 'A "string" with 4 spaces', nil)
         end
-
       end
 
       describe "#load_code_file" do
@@ -68,19 +74,19 @@ module Cucumber
           end
 
           rb.load_code_file('tmp.rb')
-          $foo.should == 1
+          expect($foo).to eq 1
 
           a_file_called('tmp.rb') do
             "$foo = 2"
           end
 
           rb.load_code_file('tmp.rb')
-          $foo.should == 2
+
+          expect($foo).to eq 2
         end
       end
 
       describe "Handling the World" do
-
         it "raises an error if the world is nil" do
           dsl.World {}
 
@@ -88,9 +94,9 @@ module Cucumber
             rb.before(nil)
             raise "Should fail"
           rescue RbSupport::NilWorld => e
-            e.message.should == "World procs should never return nil"
-            e.backtrace.length.should == 1
-            e.backtrace[0].should =~ /spec\/cucumber\/rb_support\/rb_language_spec\.rb\:\d+\:in `World'/
+            expect(e.message).to eq "World procs should never return nil"
+            expect(e.backtrace.length).to eq 1
+            expect(e.backtrace[0]).to match /spec\/cucumber\/rb_support\/rb_language_spec\.rb\:\d+\:in `World'/
           end
         end
 
@@ -110,7 +116,7 @@ module Cucumber
             included_modules.inspect.should =~ /ModuleOne/ # Workaround for RSpec/Ruby 1.9 issue with namespaces
             included_modules.inspect.should =~ /ModuleTwo/
           end
-          rb.current_world.class.should == Object
+          expect(rb.current_world.class).to eq Object
         end
 
         it "raises error when we try to register more than one World proc" do
@@ -125,47 +131,47 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
 
 }
           dsl.World { Hash.new }
-          lambda do
-            dsl.World { Array.new }
-          end.should raise_error(RbSupport::MultipleWorld, /#{expected_error}/)
 
+          expect(-> {
+            dsl.World { Array.new }
+          }).to raise_error(RbSupport::MultipleWorld, /#{expected_error}/)
         end
       end
 
       describe "step argument transformations" do
-
         describe "without capture groups" do
           it "complains when registering with a with no transform block" do
-            lambda do
+            expect(-> {
               dsl.Transform('^abc$')
-            end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
+            }).to raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
           end
 
           it "complains when registering with a zero-arg transform block" do
-            lambda do
+            expect(-> {
               dsl.Transform('^abc$') {42}
-            end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
+            }).to raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
           end
 
           it "complains when registering with a splat-arg transform block" do
-            lambda do
+            expect(-> {
               dsl.Transform('^abc$') {|*splat| 42 }
-            end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
+            }).to raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
           end
 
           it "complains when transforming with an arity mismatch" do
-            lambda do
+            expect(-> {
               dsl.Transform('^abc$') {|one, two| 42 }
               rb.execute_transforms(['abc'])
-            end.should raise_error(Cucumber::ArityMismatchError)
+            }).to raise_error(Cucumber::ArityMismatchError)
           end
 
           it "allows registering a regexp pattern that yields the step_arg matched" do
             dsl.Transform(/^ab*c$/) {|arg| 42}
-            rb.execute_transforms(['ab']).should == ['ab']
-            rb.execute_transforms(['ac']).should == [42]
-            rb.execute_transforms(['abc']).should == [42]
-            rb.execute_transforms(['abbc']).should == [42]
+
+            expect(rb.execute_transforms(['ab'])).to eq ['ab']
+            expect(rb.execute_transforms(['ac'])).to eq [42]
+            expect(rb.execute_transforms(['abc'])).to eq [42]
+            expect(rb.execute_transforms(['abbc'])).to eq [42]
           end
 
           it "transforms times" do
@@ -173,80 +179,83 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
             dsl.Transform(/^(\d\d-\d\d-\d\d\d\d)$/) do |arg|
               Time.parse(arg)
             end
-            rb.execute_transforms(['10-0E-1971']).should == ['10-0E-1971']
-            rb.execute_transforms(['10-03-1971']).should == [Time.parse('10-03-1971')]
+            expect(rb.execute_transforms(['10-0E-1971'])).to eq ['10-0E-1971']
+            expect(rb.execute_transforms(['10-03-1971'])).to eq [Time.parse('10-03-1971')]
           end
         end
 
         describe "with capture groups" do
           it "complains when registering with a with no transform block" do
-            lambda do
+            expect(-> {
               dsl.Transform('^a(.)c$')
-            end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
+            }).to raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
           end
 
           it "complains when registering with a zero-arg transform block" do
-            lambda do
+            expect(-> {
               dsl.Transform('^a(.)c$') { 42 }
-            end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
+            }).to raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
           end
 
           it "complains when registering with a splat-arg transform block" do
-            lambda do
+            expect(-> {
               dsl.Transform('^a(.)c$') {|*splat| 42 }
-            end.should raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
+            }).to raise_error(Cucumber::RbSupport::RbTransform::MissingProc)
           end
 
           it "complains when transforming with an arity mismatch" do
-            lambda do
+            expect(-> {
               dsl.Transform('^a(.)c$') {|one, two| 42 }
               rb.execute_transforms(['abc'])
-            end.should raise_error(Cucumber::ArityMismatchError)
+            }).to raise_error(Cucumber::ArityMismatchError)
           end
 
           it "allows registering a regexp pattern that yields capture groups" do
             dsl.Transform(/^shape: (.+), color: (.+)$/) do |shape, color|
               {shape.to_sym => color.to_sym}
             end
-            rb.execute_transforms(['shape: circle, color: blue']).should == [{:circle => :blue}]
-            rb.execute_transforms(['shape: square, color: red']).should == [{:square => :red}]
-            rb.execute_transforms(['not shape: square, not color: red']).should == ['not shape: square, not color: red']
+
+            expect(rb.execute_transforms(['shape: circle, color: blue'])).to eq [{:circle => :blue}]
+            expect(rb.execute_transforms(['shape: square, color: red'])).to eq [{:square => :red}]
+            expect(rb.execute_transforms(['not shape: square, not color: red'])).to eq ['not shape: square, not color: red']
           end
         end
 
         it "allows registering a string pattern" do
           dsl.Transform('^ab*c$') {|arg| 42}
-          rb.execute_transforms(['ab']).should == ['ab']
-          rb.execute_transforms(['ac']).should == [42]
-          rb.execute_transforms(['abc']).should == [42]
-          rb.execute_transforms(['abbc']).should == [42]
+
+          expect(rb.execute_transforms(['ab'])).to eq ['ab']
+          expect(rb.execute_transforms(['ac'])).to eq [42]
+          expect(rb.execute_transforms(['abc'])).to eq [42]
+          expect(rb.execute_transforms(['abbc'])).to eq [42]
         end
 
         it "gives match priority to transforms defined last" do
           dsl.Transform(/^transform_me$/) {|arg| :foo }
           dsl.Transform(/^transform_me$/) {|arg| :bar }
           dsl.Transform(/^transform_me$/) {|arg| :baz }
-          rb.execute_transforms(['transform_me']).should == [:baz]
+
+          expect(rb.execute_transforms(['transform_me'])).to eq [:baz]
         end
 
         it "allows registering a transform which returns nil" do
           dsl.Transform('^ac$') {|arg| nil}
-          rb.execute_transforms(['ab']).should == ['ab']
-          rb.execute_transforms(['ac']).should == [nil]
+
+          expect(rb.execute_transforms(['ab'])).to eq ['ab']
+          expect(rb.execute_transforms(['ac'])).to eq [nil]
         end
       end
 
       describe "hooks" do
-
         it "finds before hooks" do
           fish = dsl.Before('@fish'){}
           meat = dsl.Before('@meat'){}
 
           scenario = double('Scenario')
-          scenario.should_receive(:accept_hook?).with(fish).and_return(true)
-          scenario.should_receive(:accept_hook?).with(meat).and_return(false)
 
-          rb.hooks_for(:before, scenario).should == [fish]
+          expect(scenario).to receive(:accept_hook?).with(fish) { true }
+          expect(scenario).to receive(:accept_hook?).with(meat) { false }
+          expect(rb.hooks_for(:before, scenario)).to eq [fish]
         end
 
         it "finds around hooks" do
@@ -257,13 +266,12 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
           end
 
           scenario = double('Scenario')
-          scenario.should_receive(:accept_hook?).with(a).and_return(true)
-          scenario.should_receive(:accept_hook?).with(b).and_return(false)
 
-          rb.hooks_for(:around, scenario).should == [a]
+          expect(scenario).to receive(:accept_hook?).with(a) { true }
+          expect(scenario).to receive(:accept_hook?).with(b) { false }
+          expect(rb.hooks_for(:around, scenario)).to eq [a]
         end
       end
-
     end
   end
 end

@@ -7,17 +7,18 @@ module Cucumber
       def transform(regexp)
         RbTransform.new(nil, regexp, lambda { |a| })
       end
+
       describe "#to_s" do
         it "converts captures groups to non-capture groups" do
-          transform(/(a|b)bc/).to_s.should == "(?:a|b)bc"
+          expect(transform(/(a|b)bc/).to_s).to eq "(?:a|b)bc"
         end
 
         it "leaves non capture groups alone" do
-          transform(/(?:a|b)bc/).to_s.should == "(?:a|b)bc"
+          expect(transform(/(?:a|b)bc/).to_s).to eq "(?:a|b)bc"
         end
 
         it "strips away anchors" do
-          transform(/^xyz$/).to_s.should == "xyz"
+          expect(transform(/^xyz$/).to_s).to eq "xyz"
         end
       end
     end

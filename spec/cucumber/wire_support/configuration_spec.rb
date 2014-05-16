@@ -18,8 +18,9 @@ module Cucumber
           host: localhost
           port: 54321
         }
-        config.host.should == 'localhost'
-        config.port.should == 54321
+
+        expect(config.host).to eq 'localhost'
+        expect(config.port).to eq 54321
       end
 
       it "reads the timeout for a specific message" do
@@ -29,7 +30,8 @@ module Cucumber
           timeout:
             invoke: 99
         }
-        config.timeout('invoke').should == 99
+
+        expect(config.timeout('invoke')).to eq 99
       end
 
       it "reads the timeout for a connect message" do
@@ -39,7 +41,8 @@ module Cucumber
           timeout:
             connect: 99
         }
-        config.timeout('connect').should == 99
+
+        expect(config.timeout('connect')).to eq 99
       end
 
       describe "a wire file with no timeouts specified" do
@@ -52,7 +55,7 @@ module Cucumber
 
         %w(invoke begin_scenario end_scenario).each do |message|
           it "sets the default timeout for '#{message}' to 120 seconds" do
-            config.timeout(message).should == 120
+            expect(config.timeout(message)).to eq 120
           end
         end
       end

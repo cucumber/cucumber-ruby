@@ -7,24 +7,25 @@ module Cucumber
       include ANSIColor
 
       it "wraps passed_param with bold green and reset to green" do
-        passed_param("foo").should == "\e[32m\e[1mfoo\e[0m\e[0m\e[32m"
+        expect(passed_param("foo")).to eq "\e[32m\e[1mfoo\e[0m\e[0m\e[32m"
       end
 
       it "wraps passed in green" do
-        passed("foo").should == "\e[32mfoo\e[0m"
+        expect(passed("foo")).to eq "\e[32mfoo\e[0m"
       end
 
       it "does not reset passed if there are no arguments" do
-        passed.should == "\e[32m"
+        expect(passed).to eq "\e[32m"
       end
 
       it "wraps comments in grey" do
-        comment("foo").should == "\e[90mfoo\e[0m"
+        expect(comment("foo")).to eq "\e[90mfoo\e[0m"
       end
 
       it "does not generate ansi codes when colors are disabled" do
         ::Cucumber::Term::ANSIColor.coloring = false
-        passed("foo").should == "foo"
+
+        expect(passed("foo")).to eq "foo"
       end
     end
   end

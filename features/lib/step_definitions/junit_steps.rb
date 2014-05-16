@@ -1,7 +1,7 @@
 Then(/^the junit output file "(.*?)" should contain:$/) do |actual_file, text|
   actual = IO.read(current_dir + '/' + actual_file)
   actual = replace_junit_time(actual)
-  actual.should == text
+  expect(actual).to eq text
 end
 
 module JUnitHelper

@@ -30,7 +30,8 @@ module Cucumber
         end
 
         run_step "Outside"
-        $inside.should == true
+
+        expect($inside).to be_true
       end
 
       it "allows calling of other steps with inline arg" do
@@ -43,12 +44,14 @@ module Cucumber
         end
 
         run_step "Outside"
-        $inside.should == 'inside'
+
+        expect($inside).to eq 'inside'
       end
 
       context "mapping to world methods" do
         it "calls a method on the world when specified with a symbol" do
-          rb.current_world.should_receive(:with_symbol)
+          expect(rb.current_world).to receive(:with_symbol)
+
           dsl.Given /With symbol/, :with_symbol
 
           run_step "With symbol"
@@ -56,19 +59,25 @@ module Cucumber
 
         it "calls a method on a specified object" do
           target = double('target')
-          rb.current_world.stub(:target => target)
+
+          allow(rb.current_world).to receive(:target) { target }
+
           dsl.Given /With symbol on block/, :with_symbol, :on => lambda { target }
 
-          target.should_receive(:with_symbol)
+          expect(target).to receive(:with_symbol)
+
           run_step "With symbol on block"
         end
 
         it "calls a method on a specified world attribute" do
           target = double('target')
-          rb.current_world.stub(:target => target)
+
+          allow(rb.current_world).to receive(:target) { target }
+
           dsl.Given /With symbol on symbol/, :with_symbol, :on => :target
 
-          target.should_receive(:with_symbol)
+          expect(target).to receive(:with_symbol)
+
           run_step "With symbol on symbol"
         end
       end
@@ -78,8 +87,9 @@ module Cucumber
           step 'Inside'
         end
 
-        lambda { run_step "Outside" }.
-          should raise_error(Cucumber::Undefined, 'Undefined step: "Inside"')
+        expect(-> {
+          run_step "Outside"
+        }).to raise_error(Cucumber::Undefined, 'Undefined step: "Inside"')
       end
 
       it "allows forced pending" do
@@ -87,16 +97,18 @@ module Cucumber
           pending("Do me!")
         end
 
-        lambda { run_step "Outside" }.
-          should raise_error(Cucumber::Pending, "Do me!")
+        expect(-> {
+          run_step "Outside"
+        }).to raise_error(Cucumber::Pending, "Do me!")
       end
 
       it "raises ArityMismatchError when the number of capture groups differs from the number of step arguments" do
         dsl.Given /No group: \w+/ do |arg|
         end
 
-        lambda { run_step "No group: arg" }.
-          should raise_error(Cucumber::ArityMismatchError)
+        expect(-> {
+          run_step "No group: arg"
+        }).to raise_error(Cucumber::ArityMismatchError)
       end
 
       it "does not allow modification of args since it messes up pretty formatting" do
@@ -104,8 +116,9 @@ module Cucumber
           colour << "xxx"
         end
 
-        lambda { run_step "My car is white" }.
-          should raise_error(RuntimeError, /can't modify frozen String/i)
+        expect(-> {
+          run_step "My car is white"
+        }).to raise_error(RuntimeError, /can't modify frozen String/i)
       end
 
       it "allows puts" do
@@ -119,13 +132,13 @@ module Cucumber
       it "recognizes $arg style captures" do
         arg_value = "wow!"
         dsl.Given "capture this: $arg" do |arg|
-          arg.should == arg_value
+          expect(arg).to eq arg_value
         end
         run_step "capture this: wow!"
       end
 
       it "has a JSON representation of the signature" do
-        RbStepDefinition.new(rb, /I CAN HAZ (\d+) CUKES/i, lambda{}, {}).to_hash.should == {'source' => "I CAN HAZ (\\d+) CUKES", 'flags' => 'i'}
+        expect(RbStepDefinition.new(rb, /I CAN HAZ (\d+) CUKES/i, lambda{}, {}).to_hash).to eq({ 'source' => "I CAN HAZ (\\d+) CUKES", 'flags' => 'i' })
       end
     end
   end

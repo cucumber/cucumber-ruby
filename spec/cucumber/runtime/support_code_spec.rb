@@ -4,7 +4,7 @@ module Cucumber
   describe Runtime::SupportCode do
     let(:user_interface) { double('user interface') }
     subject { Runtime::SupportCode.new(user_interface, options) }
-    let(:options)     { {} }
+    let(:options) { {} }
     let(:dsl) do
       @rb = subject.load_programming_language('rb')
       Object.new.extend(RbSupport::RbDsl)
@@ -15,7 +15,8 @@ module Cucumber
       dsl.Given(/nope something else/) { |what, month| }
 
       format = subject.step_match("it snows in april").format_args("[%s]")
-      format.should == "it [snows] in [april]"
+
+      expect(format).to eq "it [snows] in [april]"
     end
 
     it "caches step match results" do
@@ -23,10 +24,10 @@ module Cucumber
 
       step_match = subject.step_match("it snows in april")
 
-      @rb.should_not_receive :step_matches
+      expect(@rb).not_to receive(:step_matches)
       second_step_match = subject.step_match("it snows in april")
 
-      step_match.should equal(second_step_match)
+      expect(step_match).to equal(second_step_match)
     end
 
     describe "resolving step defintion matches" do
@@ -42,9 +43,9 @@ You can run again with --guess to make Cucumber be more smart about it
         dsl.Given(/Three (.*) mice/) {|disability|}
         dsl.Given(/Three blind (.*)/) {|animal|}
 
-        lambda do
+        expect(-> {
           subject.step_match("Three blind mice")
-        end.should raise_error(Ambiguous, /#{expected_error}/)
+        }).to raise_error(Ambiguous, /#{expected_error}/)
       end
 
       describe "when --guess is used" do
@@ -60,41 +61,41 @@ spec/cucumber/runtime/support_code_spec.rb:\\d+:in `/Three cute (.*)/'
           dsl.Given(/Three (.*) mice/) {|disability|}
           dsl.Given(/Three cute (.*)/) {|animal|}
 
-          lambda do
+          expect(-> {
             subject.step_match("Three cute mice")
-          end.should raise_error(Ambiguous, /#{expected_error}/)
+          }).to raise_error(Ambiguous, /#{expected_error}/)
         end
 
         it "does not raise Ambiguous error when multiple step definitions match" do
           dsl.Given(/Three (.*) mice/) {|disability|}
           dsl.Given(/Three (.*)/) {|animal|}
 
-          lambda do
+          expect(-> {
             subject.step_match("Three blind mice")
-          end.should_not raise_error
+          }).not_to raise_error
         end
 
         it "does not raise NoMethodError when guessing from multiple step definitions with nil fields" do
           dsl.Given(/Three (.*) mice( cannot find food)?/) {|disability, is_disastrous|}
           dsl.Given(/Three (.*)?/) {|animal|}
 
-          lambda do
+          expect(-> {
             subject.step_match("Three blind mice")
-          end.should_not raise_error
+          }).not_to raise_error
         end
 
         it "picks right step definition when an equal number of capture groups" do
           right = dsl.Given(/Three (.*) mice/) {|disability|}
           wrong = dsl.Given(/Three (.*)/) {|animal|}
 
-          subject.step_match("Three blind mice").step_definition.should == right
+          expect(subject.step_match("Three blind mice").step_definition).to eq right
         end
 
         it "picks right step definition when an unequal number of capture groups" do
           right = dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
           wrong = dsl.Given(/Three (.*)/) {|animal|}
 
-          subject.step_match("Three blind mice ran far").step_definition.should == right
+          expect(subject.step_match("Three blind mice ran far").step_definition).to eq right
         end
 
         it "picks most specific step definition when an unequal number of capture groups" do
@@ -102,14 +103,14 @@ spec/cucumber/runtime/support_code_spec.rb:\\d+:in `/Three cute (.*)/'
           specific      = dsl.Given(/Three blind mice ran far/) do; end
           more_specific = dsl.Given(/^Three blind mice ran far$/) do; end
 
-          subject.step_match("Three blind mice ran far").step_definition.should == more_specific
+          expect(subject.step_match("Three blind mice ran far").step_definition).to eq more_specific
         end
       end
 
       it "raises Undefined error when no step definitions match" do
-        lambda do
+        expect(-> {
           subject.step_match("Three blind mice")
-        end.should raise_error(Undefined)
+        }).to raise_error(Undefined)
       end
 
       # http://railsforum.com/viewtopic.php?pid=93881
@@ -118,6 +119,5 @@ spec/cucumber/runtime/support_code_spec.rb:\\d+:in `/Three cute (.*)/'
         dsl.Given(/^there is no (.*) user named '(.*)'$/) {|a,b|}
       end
     end
-
   end
 end

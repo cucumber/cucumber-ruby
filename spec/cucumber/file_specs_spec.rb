@@ -19,8 +19,9 @@ module Cucumber
 
     it "parses file names from multiple file specs" do
       files = file_specs.files
-      files.length.should == 2
-      files.should == [
+
+      expect(files.length).to eq 2
+      expect(files).to eq [
         "features/foo.feature",
         "features/bar.feature",
       ]
@@ -28,8 +29,9 @@ module Cucumber
 
     context "when no line number is specified" do
       let(:file_specs) { FileSpecs.new(["features/foo.feature", "features/bar.feature:34"]) }
+
       it "returns a wildcard location for that file" do
-        locations.should == [
+        expect(locations).to eq [
           Cucumber::Core::Ast::Location.new("features/foo.feature"),
           Cucumber::Core::Ast::Location.new("features/bar.feature", 34),
         ]

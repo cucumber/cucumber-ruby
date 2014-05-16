@@ -7,9 +7,9 @@ Then /^the (.*) profile should be used$/ do |profile|
 end
 
 Then /^exactly these files should be loaded:\s*(.*)$/ do |files|
-  all_stdout.scan(/^  \* (.*\.rb)$/).flatten.should == files.split(/,\s+/)
+  expect(all_stdout.scan(/^  \* (.*\.rb)$/).flatten).to eq files.split(/,\s+/)
 end
 
 Then /^exactly these features should be ran:\s*(.*)$/ do |files|
-  all_stdout.scan(/^  \* (.*\.feature)$/).flatten.should == files.split(/,\s+/)
+  expect(all_stdout.scan(/^  \* (.*\.feature)$/).flatten).to eq files.split(/,\s+/)
 end

@@ -9,23 +9,24 @@ module Cucumber
 
     it 'produces Ast::DocString by #doc_string with default content-type' do
       str = runtime_facade.doc_string('DOC')
-      str.should be_kind_of(Core::Ast::DocString)
-      str.content_type.should eq('')
+
+      expect(str).to be_kind_of(Core::Ast::DocString)
+      expect(str.content_type).to eq('')
     end
 
     it 'produces Ast::DocString by #doc_string with ruby content-type' do
       str = runtime_facade.doc_string('DOC','ruby')
-      str.should be_kind_of(Core::Ast::DocString)
-      str.content_type.should eq('ruby')
+
+      expect(str).to be_kind_of(Core::Ast::DocString)
+      expect(str.content_type).to eq('ruby')
     end
 
     it 'produces Ast::Table by #table' do
-      runtime_facade.table(%{
+      expect(runtime_facade.table(%{
       | account | description | amount |
       | INT-100 | Taxi        | 114    |
       | CUC-101 | Peeler      | 22     |
-      }).should be_kind_of(Core::Ast::DataTable)
+      })).to be_kind_of(Core::Ast::DataTable)
     end
-
   end
 end
