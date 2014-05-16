@@ -23,7 +23,7 @@ module Cucumber
         @formatter = Html.new(runtime, @out, {})
       end
 
-      it "should not raise an error when visiting a blank feature name" do
+      it "does not raise an error when visiting a blank feature name" do
         lambda { @formatter.feature_name("Feature", "") }.should_not raise_error
       end
 
@@ -271,4 +271,3 @@ module Cucumber
     end
   end
 end
-

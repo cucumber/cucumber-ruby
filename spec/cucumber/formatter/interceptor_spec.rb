@@ -10,7 +10,7 @@ module Cucumber::Formatter
     end
 
     describe '#wrap!' do
-      it 'should raise an ArgumentError if its not passed :stderr/:stdout' do
+      it 'raises an ArgumentError if its not passed :stderr/:stdout' do
         expect {
           Interceptor::Pipe.wrap(:nonsense)
         }.to raise_error(ArgumentError)
@@ -22,7 +22,7 @@ module Cucumber::Formatter
           @stderr = $stdout
         end
 
-        it 'should wrap $stderr' do
+        it 'wraps $stderr' do
           wrapped = Interceptor::Pipe.wrap(:stderr)
           $stderr.should be_instance_of Interceptor::Pipe
           $stderr.should be wrapped
@@ -38,7 +38,7 @@ module Cucumber::Formatter
           @stdout = $stdout
         end
 
-        it 'should wrap $stdout' do
+        it 'wraps $stdout' do
           wrapped = Interceptor::Pipe.wrap(:stdout)
           $stdout.should be_instance_of Interceptor::Pipe
           $stdout.should be wrapped
@@ -56,19 +56,19 @@ module Cucumber::Formatter
         @wrapped = Interceptor::Pipe.wrap(:stdout)
       end
 
-      it 'should raise an ArgumentError if it wasn\'t passed :stderr/:stdout' do
+      it 'raises an ArgumentError if it wasn\'t passed :stderr/:stdout' do
         expect {
           Interceptor::Pipe.unwrap!(:nonsense)
         }.to raise_error(ArgumentError)
       end
 
-      it 'should reset $stdout when #unwrap! is called' do
+      it 'resets $stdout when #unwrap! is called' do
         interceptor = Interceptor::Pipe.unwrap! :stdout
         interceptor.should be_instance_of Interceptor::Pipe
         $stdout.should_not be interceptor
       end
 
-      it 'should noop if $stdout or $stderr has been overwritten' do
+      it 'noops if $stdout or $stderr has been overwritten' do
         $stdout = StringIO.new
         pipe = Interceptor::Pipe.unwrap! :stdout
         pipe.should == $stdout
@@ -78,7 +78,7 @@ module Cucumber::Formatter
         pipe.should == $stderr
       end
 
-      it 'should disable the pipe bypass' do
+      it 'disables the pipe bypass' do
         buffer = '(::)'
         Interceptor::Pipe.unwrap! :stdout
 
@@ -96,12 +96,12 @@ module Cucumber::Formatter
       let(:buffer) { 'Some stupid buffer' }
       let(:pi) { Interceptor::Pipe.new(pipe) }
 
-      it 'should write arguments to the original pipe' do
+      it 'writes arguments to the original pipe' do
         pipe.should_receive(:write).with(buffer).and_return(buffer.size)
         pi.write(buffer).should == buffer.size
       end
 
-      it 'should add the buffer to its stored output' do
+      it 'adds the buffer to its stored output' do
         pipe.stub(:write)
         pi.write(buffer)
         pi.buffer.should_not be_empty
@@ -112,7 +112,7 @@ module Cucumber::Formatter
     describe '#method_missing' do
       let(:pi) { Interceptor::Pipe.new(pipe) }
 
-      it 'should pass #tty? to the original pipe' do
+      it 'passes #tty? to the original pipe' do
         pipe.should_receive(:tty?).and_return(true)
         pi.tty?.should be true
       end
@@ -121,7 +121,7 @@ module Cucumber::Formatter
     describe '#respond_to' do
       let(:pi) { Interceptor::Pipe.wrap(:stderr) }
 
-      it 'should respond to all methods $stderr has' do
+      it 'responds to all methods $stderr has' do
         $stderr.methods.each { |m| pi.respond_to?(m).should be true }
       end
     end

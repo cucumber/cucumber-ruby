@@ -10,7 +10,7 @@ module Cucumber
       Object.new.extend(RbSupport::RbDsl)
     end
 
-    it "should format step names" do
+    it "formats step names" do
       dsl.Given(/it (.*) in (.*)/) { |what, month| }
       dsl.Given(/nope something else/) { |what, month| }
 
@@ -18,7 +18,7 @@ module Cucumber
       format.should == "it [snows] in [april]"
     end
 
-    it "should cache step match results" do
+    it "caches step match results" do
       dsl.Given(/it (.*) in (.*)/) { |what, month| }
 
       step_match = subject.step_match("it snows in april")
@@ -31,7 +31,7 @@ module Cucumber
 
     describe "resolving step defintion matches" do
 
-      it "should raise Ambiguous error with guess hint when multiple step definitions match" do
+      it "raises Ambiguous error with guess hint when multiple step definitions match" do
         expected_error = %{Ambiguous match of "Three blind mice":
 
 spec/cucumber/runtime/support_code_spec.rb:\\d+:in `/Three (.*) mice/'
@@ -50,7 +50,7 @@ You can run again with --guess to make Cucumber be more smart about it
       describe "when --guess is used" do
         let(:options) { {:guess => true} }
 
-        it "should not show --guess hint" do
+        it "does not show --guess hint" do
         expected_error = %{Ambiguous match of "Three cute mice":
 
 spec/cucumber/runtime/support_code_spec.rb:\\d+:in `/Three (.*) mice/'
@@ -65,7 +65,7 @@ spec/cucumber/runtime/support_code_spec.rb:\\d+:in `/Three cute (.*)/'
           end.should raise_error(Ambiguous, /#{expected_error}/)
         end
 
-        it "should not raise Ambiguous error when multiple step definitions match" do
+        it "does not raise Ambiguous error when multiple step definitions match" do
           dsl.Given(/Three (.*) mice/) {|disability|}
           dsl.Given(/Three (.*)/) {|animal|}
 
@@ -74,7 +74,7 @@ spec/cucumber/runtime/support_code_spec.rb:\\d+:in `/Three cute (.*)/'
           end.should_not raise_error
         end
 
-        it "should not raise NoMethodError when guessing from multiple step definitions with nil fields" do
+        it "does not raise NoMethodError when guessing from multiple step definitions with nil fields" do
           dsl.Given(/Three (.*) mice( cannot find food)?/) {|disability, is_disastrous|}
           dsl.Given(/Three (.*)?/) {|animal|}
 
@@ -83,21 +83,21 @@ spec/cucumber/runtime/support_code_spec.rb:\\d+:in `/Three cute (.*)/'
           end.should_not raise_error
         end
 
-        it "should pick right step definition when an equal number of capture groups" do
+        it "picks right step definition when an equal number of capture groups" do
           right = dsl.Given(/Three (.*) mice/) {|disability|}
           wrong = dsl.Given(/Three (.*)/) {|animal|}
 
           subject.step_match("Three blind mice").step_definition.should == right
         end
 
-        it "should pick right step definition when an unequal number of capture groups" do
+        it "picks right step definition when an unequal number of capture groups" do
           right = dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
           wrong = dsl.Given(/Three (.*)/) {|animal|}
 
           subject.step_match("Three blind mice ran far").step_definition.should == right
         end
 
-        it "should pick most specific step definition when an unequal number of capture groups" do
+        it "picks most specific step definition when an unequal number of capture groups" do
           general       = dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
           specific      = dsl.Given(/Three blind mice ran far/) do; end
           more_specific = dsl.Given(/^Three blind mice ran far$/) do; end
@@ -106,14 +106,14 @@ spec/cucumber/runtime/support_code_spec.rb:\\d+:in `/Three cute (.*)/'
         end
       end
 
-      it "should raise Undefined error when no step definitions match" do
+      it "raises Undefined error when no step definitions match" do
         lambda do
           subject.step_match("Three blind mice")
         end.should raise_error(Undefined)
       end
 
       # http://railsforum.com/viewtopic.php?pid=93881
-      it "should not raise Redundant unless it's really redundant" do
+      it "does not raise Redundant unless it's really redundant" do
         dsl.Given(/^(.*) (.*) user named '(.*)'$/) {|a,b,c|}
         dsl.Given(/^there is no (.*) user named '(.*)'$/) {|a,b|}
       end

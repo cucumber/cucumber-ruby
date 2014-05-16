@@ -31,7 +31,7 @@ module Cucumber
           stub_wire_file! 'two.wire', :config_two
         end
 
-        it "should return the matches from each of the RemoteSteps" do
+        it "returns the matches from each of the RemoteSteps" do
           stub_remote_steps! :config_one, :step_matches => [:a, :b]
           stub_remote_steps! :config_two, :step_matches => [:c]
 

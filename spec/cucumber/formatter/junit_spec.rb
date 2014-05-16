@@ -27,7 +27,7 @@ module Cucumber::Formatter
       $stdout = STDOUT
     end
 
-    describe "should be able to strip control chars from cdata" do
+    describe "is able to strip control chars from cdata" do
       before(:each) do
         run_defined_feature
         @doc = Nokogiri.XML(@formatter.written_files.values.first)
@@ -56,7 +56,7 @@ module Cucumber::Formatter
           end
         end
       end
-      
+
       it { @doc.xpath('//testsuite/system-out').first.content.should match(/\s+boo boo\s+/) }
     end
 
@@ -67,7 +67,7 @@ module Cucumber::Formatter
             Given a passing scenario
       FEATURE
 
-      it "should raise an exception" do
+      it "raises an exception" do
         lambda { run_defined_feature }.should raise_error(Junit::UnNamedFeatureError)
       end
     end
@@ -88,19 +88,19 @@ module Cucumber::Formatter
 
         it { @doc.to_s.should =~ /One passing scenario, one failing scenario/ }
 
-        it 'should have a root system-out node' do
+        it 'has a root system-out node' do
           @doc.xpath('//testsuite/system-out').size.should == 1
         end
 
-        it 'should have a root system-err node' do
+        it 'has a root system-err node' do
           @doc.xpath('//testsuite/system-err').size.should == 1
         end
 
-        it 'should have a system-out node under <testcase/>' do
+        it 'has a system-out node under <testcase/>' do
           @doc.xpath('//testcase/system-out').size.should == 1
         end
 
-        it 'should have a system-err node under <testcase/>' do
+        it 'has a system-err node under <testcase/>' do
           @doc.xpath('//testcase/system-err').size.should == 1
         end
       end

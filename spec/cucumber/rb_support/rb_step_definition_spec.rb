@@ -21,7 +21,7 @@ module Cucumber
         support_code.step_match(text).invoke(MultilineArgument::None.new)
       end
 
-      it "should allow calling of other steps" do
+      it "allows calling of other steps" do
         dsl.Given /Outside/ do
           step "Inside"
         end
@@ -33,7 +33,7 @@ module Cucumber
         $inside.should == true
       end
 
-      it "should allow calling of other steps with inline arg" do
+      it "allows calling of other steps with inline arg" do
         dsl.Given /Outside/ do
           location = Core::Ast::Location.new(__FILE__, __LINE__)
           step "Inside", MultilineArgument.from(Cucumber::Core::Ast::DataTable.new([['inside']], location))
@@ -47,14 +47,14 @@ module Cucumber
       end
 
       context "mapping to world methods" do
-        it "should call a method on the world when specified with a symbol" do
+        it "calls a method on the world when specified with a symbol" do
           rb.current_world.should_receive(:with_symbol)
           dsl.Given /With symbol/, :with_symbol
 
           run_step "With symbol"
         end
 
-        it "should call a method on a specified object" do
+        it "calls a method on a specified object" do
           target = double('target')
           rb.current_world.stub(:target => target)
           dsl.Given /With symbol on block/, :with_symbol, :on => lambda { target }
@@ -63,7 +63,7 @@ module Cucumber
           run_step "With symbol on block"
         end
 
-        it "should call a method on a specified world attribute" do
+        it "calls a method on a specified world attribute" do
           target = double('target')
           rb.current_world.stub(:target => target)
           dsl.Given /With symbol on symbol/, :with_symbol, :on => :target
@@ -73,7 +73,7 @@ module Cucumber
         end
       end
 
-      it "should raise Undefined when inside step is not defined" do
+      it "raises Undefined when inside step is not defined" do
         dsl.Given /Outside/ do
           step 'Inside'
         end
@@ -82,7 +82,7 @@ module Cucumber
           should raise_error(Cucumber::Undefined, 'Undefined step: "Inside"')
       end
 
-      it "should allow forced pending" do
+      it "allows forced pending" do
         dsl.Given /Outside/ do
           pending("Do me!")
         end
@@ -91,7 +91,7 @@ module Cucumber
           should raise_error(Cucumber::Pending, "Do me!")
       end
 
-      it "should raise ArityMismatchError when the number of capture groups differs from the number of step arguments" do
+      it "raises ArityMismatchError when the number of capture groups differs from the number of step arguments" do
         dsl.Given /No group: \w+/ do |arg|
         end
 
@@ -99,7 +99,7 @@ module Cucumber
           should raise_error(Cucumber::ArityMismatchError)
       end
 
-      it "should not allow modification of args since it messes up pretty formatting" do
+      it "does not allow modification of args since it messes up pretty formatting" do
         dsl.Given /My car is (.*)/ do |colour|
           colour << "xxx"
         end
@@ -108,7 +108,7 @@ module Cucumber
           should raise_error(RuntimeError, /can't modify frozen String/i)
       end
 
-      it "should allow puts" do
+      it "allows puts" do
         user_interface.should_receive(:puts).with('wasup')
         dsl.Given /Loud/ do
           puts 'wasup'
@@ -116,7 +116,7 @@ module Cucumber
         run_step "Loud"
       end
 
-      it "should recognize $arg style captures" do
+      it "recognizes $arg style captures" do
         arg_value = "wow!"
         dsl.Given "capture this: $arg" do |arg|
           arg.should == arg_value
@@ -124,7 +124,7 @@ module Cucumber
         run_step "capture this: wow!"
       end
 
-      it "should have a JSON representation of the signature" do
+      it "has a JSON representation of the signature" do
         RbStepDefinition.new(rb, /I CAN HAZ (\d+) CUKES/i, lambda{}, {}).to_hash.should == {'source' => "I CAN HAZ (\\d+) CUKES", 'flags' => 'i'}
       end
     end
