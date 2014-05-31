@@ -40,7 +40,7 @@ module Cucumber
   require 'cucumber/runtime/support_code'
   require 'cucumber/runtime/tag_limits'
   class Runtime
-    attr_reader :results, :support_code
+    attr_reader :results, :support_code, :configuration
 
     include Cucumber::Core
     include Formatter::Duration

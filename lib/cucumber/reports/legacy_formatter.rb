@@ -349,7 +349,7 @@ module Cucumber
 
         def step(step, result)
           @child ||= StepsPrinter.new(formatter).before
-          step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background)
+          step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background, runtime.configuration)
           runtime.step_visited step_invocation
           @child.step_invocation step_invocation, runtime, background
         end
@@ -379,7 +379,8 @@ module Cucumber
       class HiddenBackgroundPrinter < Struct.new(:formatter, :runtime, :background)
 
         def step(step, result)
-          step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background)
+          step_invocation = LegacyResultBuilder.new(result).
+            step_invocation(step_match(step), step, indent, background, runtime.configuration)
           runtime.step_visited step_invocation
         end
 
@@ -413,7 +414,8 @@ module Cucumber
         def step(step, result)
           @child ||= StepsPrinter.new(formatter).before
           @last_step_result = result
-          step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background = nil)
+          step_invocation = LegacyResultBuilder.new(result).
+            step_invocation(step_match(step), step, indent, background = nil, runtime.configuration)
           runtime.step_visited step_invocation
           @child.step_invocation step_invocation, runtime
         end
@@ -585,7 +587,7 @@ module Cucumber
         def outline_step(step)
           step_match = NoStepMatch.new(step, step.name)
           step_invocation = LegacyResultBuilder.new(Core::Test::Result::Skipped.new).
-            step_invocation(step_match, step, indent, background = nil)
+            step_invocation(step_match, step, indent, background = nil, runtime.configuration)
           steps_printer.step_invocation step_invocation, runtime, background = nil
         end
 
@@ -727,7 +729,8 @@ module Cucumber
         end
 
         def step(step, result)
-          step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, :indent_not_needed)
+          step_invocation = LegacyResultBuilder.new(result).
+            step_invocation(step_match(step), step, :indent_not_needed, background = nil, runtime.configuration)
           runtime.step_visited step_invocation
           @failed_step = step_invocation if result.failed?
           @status = step_invocation.status unless @status == :failed
@@ -861,8 +864,8 @@ module Cucumber
 
         def duration(*); end
 
-        def step_invocation(step_match, step, indent, background = nil)
-          Legacy::Ast::StepInvocation.new(step_match, @status, @exception, indent, background, step)
+        def step_invocation(step_match, step, indent, background, configuration)
+          Legacy::Ast::StepInvocation.new(step_match, @status, step_exception(step, configuration), indent, background, step)
         end
 
         def scenario(name, location)
@@ -875,6 +878,18 @@ module Cucumber
 
         def describe_exception_to(formatter)
           formatter.exception(@exception, @status) if @exception
+        end
+
+        private
+
+        def step_exception(step, configuration)
+          return @exception if @exception
+          return nil unless @status == :undefined && configuration.strict?
+          begin
+            raise Cucumber::Undefined.new(step.name)
+          rescue => exception
+            @exception = exception
+          end
         end
 
       end

@@ -797,6 +797,23 @@ module Cucumber
       end
     end
 
+    context 'in strict mode' do
+      let(:runtime) { Runtime.new strict: true }
+
+      it 'passes an exception to the formatter for undefined steps' do
+      expect( formatter ).to receive(:exception) do |exception|
+        expect( exception.message ).to eq %{Undefined step: "this step is undefined"}
+      end
+        execute_gherkin do
+          feature do
+            scenario do
+              step 'this step is undefined'
+            end
+          end
+        end
+      end
+    end
+
     class MessageSpy
       attr_reader :messages
 
