@@ -3,7 +3,11 @@ require 'rspec/mocks'
 World(RSpec::Mocks::ExampleMethods)
 
 Before do
-  RSpec::Mocks::setup(self)
+  if RSpec::Mocks::Version::STRING.split('.').first.to_i > 2
+    RSpec::Mocks::setup
+  else
+    RSpec::Mocks::setup(self)
+  end
 end
 
 After do
