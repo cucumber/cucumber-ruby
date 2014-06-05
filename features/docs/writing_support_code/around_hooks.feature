@@ -9,7 +9,7 @@ Feature: Around hooks
     Given a file named "features/step_definitions/steps.rb" with:
       """
       Then /^the hook is called$/ do
-        $hook_called.should == true
+        expect($hook_called).to be true
       end
       """
     And a file named "features/support/hooks.rb" with:
@@ -42,7 +42,7 @@ Feature: Around hooks
     Given a file named "features/step_definitions/steps.rb" with:
       """
       Then /^the hooks are called in the correct order$/ do
-        $hooks_called.should == ['A', 'B', 'C']
+        expect($hooks_called).to eq ['A', 'B', 'C']
       end
       """
     And a file named "features/support/hooks.rb" with:
@@ -88,7 +88,7 @@ Feature: Around hooks
     Given a file named "features/step_definitions/steps.rb" with:
       """
       Then /^the Around hook is called around Before and After hooks$/ do
-        $hooks_called.should == ['Around', 'Before']
+        expect($hooks_called).to eq ['Around', 'Before']
       end
       """
     And a file named "features/support/hooks.rb" with:
@@ -98,7 +98,7 @@ Feature: Around hooks
         $hooks_called << 'Around'
         block.call
         $hooks_called << 'Around'
-        $hooks_called.should == ['Around', 'Before', 'After', 'Around']
+        $hooks_called.should == ['Around', 'Before', 'After', 'Around'] #TODO: Find out why this fails using the new rspec expect syntax.
       end
 
       Before do |scenario|
@@ -109,7 +109,7 @@ Feature: Around hooks
       After do |scenario|
         $hooks_called ||= []
         $hooks_called << 'After'
-        $hooks_called.should == ['Around', 'Before', 'After']
+        expect($hooks_called).to eq ['Around', 'Before', 'After']
       end
       """
     And a file named "features/f.feature" with:
@@ -135,7 +135,7 @@ Feature: Around hooks
     Given a file named "features/step_definitions/steps.rb" with:
       """
       Then /^the Around hooks with matching tags are called$/ do
-        $hooks_called.should == ['one', 'one or two']
+        expect($hooks_called).to eq ['one', 'one or two']
       end
       """
     And a file named "features/support/hooks.rb" with:
@@ -189,7 +189,7 @@ Feature: Around hooks
     Given a file named "features/step_definitions/steps.rb" with:
       """
       Then /^the hook is called$/ do
-        $hook_called.should == true
+        expect($hook_called).to be true
       end
       """
     And a file named "features/support/hooks.rb" with:

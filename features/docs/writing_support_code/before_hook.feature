@@ -12,7 +12,7 @@ Feature: Before Hook
       """
       names = []
       Before do |scenario|
-        scenario.should_not respond_to(:scenario_outline)
+        expect(scenario).to_not respond_to(:scenario_outline)
         names << scenario.feature.name.split("\n").first
         names << scenario.name.split("\n").first
         if(names.size == 2)

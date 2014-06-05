@@ -37,7 +37,7 @@ Feature: Transforms
       end
       
       Given /^(a Person aged \d+) with blonde hair$/ do |person|
-        person.age.should == 15
+        expect(person.age).to eq 15
       end
       """
     When I run `cucumber features/foo.feature`
@@ -56,7 +56,7 @@ Feature: Transforms
       end
 
       Given /^(#{A_PERSON}) with blonde hair$/ do |person|
-        person.age.should == 15
+        expect(person.age).to eq 15
       end
       """
     When I run `cucumber features/foo.feature`

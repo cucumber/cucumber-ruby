@@ -12,7 +12,7 @@ Feature: One line step definitions
         end
 
         def assert_done
-          @done.should be_true
+          expect(@done).to be true
         end
       end
       World(Driver)
@@ -39,7 +39,7 @@ Feature: One line step definitions
         end
 
         def assert_done
-          @done.should be_true
+          expect(@done).to be true
         end
       end
 

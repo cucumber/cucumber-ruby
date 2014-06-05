@@ -16,18 +16,22 @@ Feature: Showing differences to expected output
     And a file named "features/step_definitions/steps.rb" with:
       """
       Given /^failing expectation$/ do x=1
-        'this'.should == 'that'
+        expect('this').to eq 'that'
       end
       """
     When I run `cucumber -q features/failing_expectation.feature`
     Then it should fail with:
       """
       Feature: Failing expectation
-
+      
         Scenario: Failing expectation
           Given failing expectation
+            
             expected: "that"
-                 got: "this" (using ==) (RSpec::Expectations::ExpectationNotMetError)
+                 got: "this"
+            
+            (compared using ==)
+             (RSpec::Expectations::ExpectationNotMetError)
             ./features/step_definitions/steps.rb:2:in `/^failing expectation$/'
             features/failing_expectation.feature:4:in `Given failing expectation'
 
