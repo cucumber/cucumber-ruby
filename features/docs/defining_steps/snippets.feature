@@ -22,7 +22,6 @@ Feature: Snippets
       end
       """
 
-  @wip-new-core
   Scenario: Snippet for undefined step with a step table
     Given a file named "features/undefined_steps.feature" with:
       """
@@ -36,7 +35,7 @@ Feature: Snippets
     Then the output should contain:
       """
       Given(/^a table$/) do |table|
-        # table is a Cucumber::Ast::Table
+        # table is a Cucumber::Core::Ast::DataTable
         pending # Write code here that turns the phrase above into concrete actions
       end
       """
