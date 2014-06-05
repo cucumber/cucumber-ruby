@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'json', '~> 1.7'
   s.add_development_dependency 'nokogiri', '~> 1.5'
   s.add_development_dependency 'rake', '>= 0.9.2'
-  s.add_development_dependency 'rspec', '>= 2.13'
+  s.add_development_dependency 'rspec', '>= 3.0'
   s.add_development_dependency 'simplecov', '>= 0.6.2'
   s.add_development_dependency 'coveralls', '~> 0.7'
   s.add_development_dependency 'syntax', '>= 1.0.0'
