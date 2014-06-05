@@ -6,8 +6,8 @@ module Cucumber
     let(:locations) { file_specs.locations }
 
     it "parses locations from multiple files" do
-      locations.length.should == 6
-      locations.should == [
+      expect(locations.length).to eq 6
+      expect(locations).to eq [
         Cucumber::Core::Ast::Location.new("features/foo.feature", 1),
         Cucumber::Core::Ast::Location.new("features/foo.feature", 2),
         Cucumber::Core::Ast::Location.new("features/foo.feature", 3),

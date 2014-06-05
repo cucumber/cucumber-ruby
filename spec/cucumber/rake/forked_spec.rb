@@ -17,7 +17,7 @@ module Cucumber
             libs, binary, cucumber_opts, bundler, feature_files) }
 
         it "does use bundler if bundler is set to true" do
-          expect(subject.use_bundler).to be_true
+          expect(subject.use_bundler).to be true
         end
 
         it "uses bundle exec to find cucumber and libraries" do
@@ -37,7 +37,7 @@ module Cucumber
             libs, binary, cucumber_opts, bundler, feature_files) }
 
         it "does not use bundler if bundler is set to false" do
-          expect(subject.use_bundler).to be_false
+          expect(subject.use_bundler).to be false
         end
 
         it "uses well known cucumber location and specified libraries" do

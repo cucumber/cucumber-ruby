@@ -132,8 +132,8 @@ module Cucumber
             given_cucumber_yml_defined_as('foo' => %w[--verbose])
             options.parse!(%w[--wip --profile foo])
 
-            expect(options[:wip]).to be_true
-            expect(options[:verbose]).to be_true
+            expect(options[:wip]).to be true
+            expect(options[:verbose]).to be true
           end
 
           it "gives precendene to the origianl options' paths" do
@@ -236,8 +236,8 @@ module Cucumber
             given_cucumber_yml_defined_as('foo' => '-q')
             options.parse!(%w[-p foo])
 
-            expect(options[:snippets]).to be_false
-            expect(options[:source]).to be_false
+            expect(options[:snippets]).to be false
+            expect(options[:source]).to be false
           end
         end
 
@@ -254,7 +254,7 @@ module Cucumber
             given_cucumber_yml_defined_as({'default' => '-v'})
 
             after_parsing("--no-profile --require some_file.rb") do
-              expect(output_stream.string).to match /Disabling profiles.../
+              expect(output_stream.string).to match(/Disabling profiles.../)
             end
           end
         end
@@ -270,7 +270,7 @@ module Cucumber
         context '--version' do
           it "displays Cucumber's version" do
             after_parsing('--version') do
-              expect(output_stream.string).to match /#{Cucumber::VERSION}/
+              expect(output_stream.string).to match(/#{Cucumber::VERSION}/)
             end
           end
 
@@ -313,21 +313,21 @@ module Cucumber
           given_cucumber_yml_defined_as({'foo' => %w[--dry-run]})
           options.parse!(%w{--dry-run})
 
-          expect(options[:snippets]).to be_true
+          expect(options[:snippets]).to be true
         end
 
         it "sets snippets to false when no-snippets provided after dry-run" do
           given_cucumber_yml_defined_as({'foo' => %w[--dry-run --no-snippets]})
           options.parse!(%w{--dry-run --no-snippets})
 
-          expect(options[:snippets]).to be_false
+          expect(options[:snippets]).to be false
         end
 
         it "sets snippets to false when no-snippets provided before dry-run" do
           given_cucumber_yml_defined_as({'foo' => %w[--no-snippet --dry-run]})
           options.parse!(%w{--no-snippets --dry-run})
 
-          expect(options[:snippets]).to be_false
+          expect(options[:snippets]).to be false
         end
       end
     end

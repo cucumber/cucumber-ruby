@@ -79,7 +79,7 @@ module Cucumber::Formatter
 
         $stderr = StringIO.new
         pipe = Interceptor::Pipe.unwrap! :stderr
-        expect(pipe.should).to eq $stderr
+        expect(pipe).to eq $stderr
       end
 
       it 'disables the pipe bypass' do
@@ -121,7 +121,7 @@ module Cucumber::Formatter
 
       it 'passes #tty? to the original pipe' do
         expect(pipe).to receive(:tty?) { true }
-        expect(pi.tty?).to be_true
+        expect(pi.tty?).to be true
       end
     end
 
@@ -129,7 +129,7 @@ module Cucumber::Formatter
       let(:pi) { Interceptor::Pipe.wrap(:stderr) }
 
       it 'responds to all methods $stderr has' do
-        $stderr.methods.each { |m| expect(pi.respond_to?(m)).to be_true }
+        $stderr.methods.each { |m| expect(pi.respond_to?(m)).to be true }
       end
     end
   end

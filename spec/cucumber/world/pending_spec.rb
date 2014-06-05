@@ -24,15 +24,15 @@ module Cucumber
     end
 
     it 'raises a Pending if a supplied block fails as expected with a double' do
-      expect(-> {
+      expect do
         @world.pending "TODO" do
-        m = double('thing')
-
-        expect(m).to receive(:foo)
-
-        RSpec::Mocks.verify
+          m = double('thing')
+          expect(m).to receive(:foo)
+          RSpec::Mocks.verify
         end
-      }).to raise_error(Cucumber::Pending, /TODO/)
+      end.to raise_error(Cucumber::Pending, /TODO/)
+      # The teardown is needed so that the message expectation does not bubble up.
+      RSpec::Mocks.teardown 
     end
 
     it 'raises a Pending if a supplied block starts working' do

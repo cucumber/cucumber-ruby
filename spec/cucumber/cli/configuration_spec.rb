@@ -129,7 +129,7 @@ module Cli
 
         config.parse!(%w{--profile bongo})
 
-        expect(config.options[:strict]).to be_true
+        expect(config.options[:strict]).to be true
       end
 
       it "parses ERB syntax in the cucumber.yml file" do
@@ -250,32 +250,32 @@ END_OF_MESSAGE
     it "accepts --dry-run option" do
       config.parse!(%w{--dry-run})
 
-      expect(config.options[:dry_run]).to be_true
+      expect(config.options[:dry_run]).to be true
     end
 
     it "accepts --no-source option" do
       config.parse!(%w{--no-source})
 
-      expect(config.options[:source]).to be_false
+      expect(config.options[:source]).to be false
     end
 
     it "accepts --no-snippets option" do
       config.parse!(%w{--no-snippets})
 
-      expect(config.options[:snippets]).to be_false
+      expect(config.options[:snippets]).to be false
     end
 
     it "sets snippets and source to false with --quiet option" do
       config.parse!(%w{--quiet})
 
-      expect(config.options[:snippets]).to be_false
-      expect(config.options[:source]).to be_false
+      expect(config.options[:snippets]).to be false
+      expect(config.options[:source]).to be false
     end
 
     it "accepts --verbose option" do
       config.parse!(%w{--verbose})
 
-      expect(config.options[:verbose]).to be_true
+      expect(config.options[:verbose]).to be true
     end
 
     it "accepts --out option" do
@@ -347,10 +347,10 @@ END_OF_MESSAGE
       end
 
       it "shows full backtrace when --backtrace is present" do
-        config = Main.new(['--backtrace'])
+        Main.new(['--backtrace'])
         begin
-          "x".should == "y"
-        rescue => e
+          expect("x").to eq "y"
+        rescue RSpec::Expectations::ExpectationNotMetError => e
           expect(e.backtrace[0]).not_to eq "#{__FILE__}:#{__LINE__ - 2}"
         end
       end
@@ -447,20 +447,20 @@ END_OF_MESSAGE
       it "returns true when --dry-run was specified on in the arguments" do
         config.parse!(['--dry-run'])
 
-        expect(config.dry_run?).to be_true
+        expect(config.dry_run?).to be true
       end
 
       it "returns true when --dry-run was specified in yaml file" do
         given_cucumber_yml_defined_as({'default' => '--dry-run'})
         config.parse!([])
 
-        expect(config.dry_run?).to be_true
+        expect(config.dry_run?).to be true
       end
 
       it "returns false by default" do
         config.parse!([])
 
-        expect(config.dry_run?).to be_false
+        expect(config.dry_run?).to be false
       end
     end
 

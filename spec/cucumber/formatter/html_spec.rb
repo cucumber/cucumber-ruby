@@ -43,7 +43,7 @@ module Cucumber
           FEATURE
 
           it "should output a main container div" do
-            expect(@out.string).to match /\<div class="cucumber"\>/
+            expect(@out.string).to match(/\<div class="cucumber"\>/)
           end
         end
 
@@ -55,8 +55,8 @@ module Cucumber
                 Given passing
           FEATURE
 
-          it { expect(@out.string).to match /^\<!DOCTYPE/ }
-          it { expect(@out.string).to match /\<\/html\>$/ }
+          it { expect(@out.string).to match(/^\<!DOCTYPE/) }
+          it { expect(@out.string).to match(/\<\/html\>$/) }
           it { expect(@doc).to have_css_node('.feature .comment', /Healthy/) }
         end
 
@@ -165,7 +165,7 @@ module Cucumber
           FEATURE
 
           it { expect(@doc).to have_css_node('.feature .scenario table td', /foo/) }
-          it { expect(@out.string.include?('makeYellow(\'scenario_1\')')).to be_false }
+          it { expect(@out.string.include?('makeYellow(\'scenario_1\')')).to be false }
         end
 
         describe "with a table in the background and the scenario" do

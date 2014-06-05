@@ -96,7 +96,7 @@ module Cucumber
           rescue RbSupport::NilWorld => e
             expect(e.message).to eq "World procs should never return nil"
             expect(e.backtrace.length).to eq 1
-            expect(e.backtrace[0]).to match /spec\/cucumber\/rb_support\/rb_language_spec\.rb\:\d+\:in `World'/
+            expect(e.backtrace[0]).to match(/spec\/cucumber\/rb_support\/rb_language_spec\.rb\:\d+\:in `World'/)
           end
         end
 
@@ -113,8 +113,10 @@ module Cucumber
           dsl.World(ModuleOne, ModuleTwo)
           rb.before(double('scenario').as_null_object)
           class << rb.current_world
-            included_modules.inspect.should =~ /ModuleOne/ # Workaround for RSpec/Ruby 1.9 issue with namespaces
-            included_modules.inspect.should =~ /ModuleTwo/
+            extend RSpec::Matchers
+
+            expect(included_modules.inspect).to match(/ModuleOne/) # Workaround for RSpec/Ruby 1.9 issue with namespaces
+            expect(included_modules.inspect).to match(/ModuleTwo/)
           end
           expect(rb.current_world.class).to eq Object
         end

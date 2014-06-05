@@ -22,24 +22,24 @@ module Cucumber
       end
 
       it "allows calling of other steps" do
-        dsl.Given /Outside/ do
+        dsl.Given(/Outside/) do
           step "Inside"
         end
-        dsl.Given /Inside/ do
+        dsl.Given(/Inside/) do
           $inside = true
         end
 
         run_step "Outside"
 
-        expect($inside).to be_true
+        expect($inside).to be true
       end
 
       it "allows calling of other steps with inline arg" do
-        dsl.Given /Outside/ do
+        dsl.Given(/Outside/) do
           location = Core::Ast::Location.new(__FILE__, __LINE__)
           step "Inside", MultilineArgument.from(Cucumber::Core::Ast::DataTable.new([['inside']], location))
         end
-        dsl.Given /Inside/ do |table|
+        dsl.Given(/Inside/) do |table|
           $inside = table.raw[0][0]
         end
 
@@ -52,7 +52,7 @@ module Cucumber
         it "calls a method on the world when specified with a symbol" do
           expect(rb.current_world).to receive(:with_symbol)
 
-          dsl.Given /With symbol/, :with_symbol
+          dsl.Given(/With symbol/, :with_symbol)
 
           run_step "With symbol"
         end
@@ -62,7 +62,7 @@ module Cucumber
 
           allow(rb.current_world).to receive(:target) { target }
 
-          dsl.Given /With symbol on block/, :with_symbol, :on => lambda { target }
+          dsl.Given(/With symbol on block/, :with_symbol, :on => lambda { target })
 
           expect(target).to receive(:with_symbol)
 
@@ -74,7 +74,7 @@ module Cucumber
 
           allow(rb.current_world).to receive(:target) { target }
 
-          dsl.Given /With symbol on symbol/, :with_symbol, :on => :target
+          dsl.Given(/With symbol on symbol/, :with_symbol, :on => :target)
 
           expect(target).to receive(:with_symbol)
 
@@ -83,7 +83,7 @@ module Cucumber
       end
 
       it "raises Undefined when inside step is not defined" do
-        dsl.Given /Outside/ do
+        dsl.Given(/Outside/) do
           step 'Inside'
         end
 
@@ -93,7 +93,7 @@ module Cucumber
       end
 
       it "allows forced pending" do
-        dsl.Given /Outside/ do
+        dsl.Given(/Outside/) do
           pending("Do me!")
         end
 
@@ -103,7 +103,7 @@ module Cucumber
       end
 
       it "raises ArityMismatchError when the number of capture groups differs from the number of step arguments" do
-        dsl.Given /No group: \w+/ do |arg|
+        dsl.Given(/No group: \w+/) do |arg|
         end
 
         expect(-> {
@@ -112,7 +112,7 @@ module Cucumber
       end
 
       it "does not allow modification of args since it messes up pretty formatting" do
-        dsl.Given /My car is (.*)/ do |colour|
+        dsl.Given(/My car is (.*)/) do |colour|
           colour << "xxx"
         end
 
@@ -122,8 +122,8 @@ module Cucumber
       end
 
       it "allows puts" do
-        user_interface.should_receive(:puts).with('wasup')
-        dsl.Given /Loud/ do
+        expect(user_interface).to  receive(:puts).with('wasup')
+        dsl.Given(/Loud/) do
           puts 'wasup'
         end
         run_step "Loud"
