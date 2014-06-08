@@ -3,7 +3,7 @@ module Cucumber
     module Io
       def ensure_io(path_or_io, name)
         return nil if path_or_io.nil?
-        return path_or_io if path_or_io.respond_to?(:write)
+        [IO, StringIO].each { |obj| return path_or_io if path_or_io.kind_of?(obj) }
         file = File.open(path_or_io, Cucumber.file_mode('w'))
         at_exit do
           unless file.closed?
