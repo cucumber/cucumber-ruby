@@ -343,7 +343,6 @@ Feature: Background
     
     """
 
-  @spawn @wip-new-core
   Scenario: run a feature with a background that is pending
     When I run `cucumber -q features/pending_background.feature`
     Then it should pass with exactly:
@@ -362,8 +361,8 @@ Feature: Background
       Scenario: another pending background
         Then I should have '10' cukes
 
-    2 scenarios (1 skipped, 1 pending)
-    4 steps (3 skipped, 1 pending)
+    2 scenarios (2 pending)
+    4 steps (2 skipped, 2 pending)
     0m0.012s
     
     """
