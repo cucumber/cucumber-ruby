@@ -23,27 +23,6 @@ module Cucumber
       end
     end
 
-    # TODO: not needed - delete
-    class Buffer
-      attr_reader :messages
-      private     :messages
-      def initialize
-        @messages = []
-      end
-
-      def method_missing(message, *args)
-        messages << [message, args]
-        self
-      end
-
-      def flush_to(receiver)
-        while messages.any?
-          message, args = messages.shift
-          receiver.send(message, *args)
-        end
-      end
-    end
-
     class FormatterWrapper < BasicObject
       attr_reader :formatters
       private :formatters
