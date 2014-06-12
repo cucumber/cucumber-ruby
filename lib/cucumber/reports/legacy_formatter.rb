@@ -47,10 +47,6 @@ module Cucumber
         formatters.any? { |formatter| formatter.respond_to?(name, include_private) }
       end
 
-      def exception(exception, status)
-        super BacktraceFilter.new(exception).exception, status
-      end
-
     end
 
     LegacyFormatter = Struct.new(:runtime, :formatter) do
@@ -872,19 +868,24 @@ module Cucumber
         end
 
         def describe_exception_to(formatter)
-          formatter.exception(@exception, @status) if @exception
+          formatter.exception(filtered_exception, @status) if @exception
         end
 
         private
 
         def step_exception(step, configuration)
-          return @exception if @exception
+          return filtered_exception if @exception
           return nil unless @status == :undefined && configuration.strict?
           begin
             raise Cucumber::Undefined.new(step.name)
           rescue => exception
             @exception = exception
+            filtered_exception
           end
+        end
+
+        def filtered_exception
+          BacktraceFilter.new(@exception).exception
         end
 
       end

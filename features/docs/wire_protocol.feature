@@ -193,7 +193,6 @@ Feature: Wire Protocol
   # See the specs for Cucumber::WireSupport::WireException for more details
   #
   @spawn
-  @wip
   Scenario: Invoke a step definition which fails
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                                                                            |
