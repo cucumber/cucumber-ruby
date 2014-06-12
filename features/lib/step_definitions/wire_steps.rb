@@ -19,10 +19,8 @@ end
 
 module WireHelper
   def start_wire_server
-    @wire_pid = fork do
-      at_exit { stop_wire_server }
-      @server.run
-    end
+    @wire_pid = fork { @server.run }
+    at_exit { stop_wire_server }
   end
 
   def stop_wire_server
