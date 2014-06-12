@@ -28,7 +28,7 @@ module Cucumber
 
       def execute_after_step(scenario)
         hooks_for(:after_step, scenario).each do |hook|
-          invoke(hook, 'AfterStep', scenario, false)
+          invoke(hook, 'AfterStep', scenario)
         end
       end
 

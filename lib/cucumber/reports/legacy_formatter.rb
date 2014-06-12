@@ -67,6 +67,43 @@ module Cucumber
       def respond_to_missing?(name, include_private = false)
         formatters.any? { |formatter| formatter.respond_to?(name, include_private) }
       end
+
+      def exception(exception, status)
+        super BacktraceFilter.new(exception).exception, status
+      end
+
+    end
+
+    class BacktraceFilter
+      BACKTRACE_FILTER_PATTERNS = \
+        [/vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\/|minitest|test\/unit|.gem\/ruby|lib\/ruby/]
+      if(::Cucumber::JRUBY)
+        BACKTRACE_FILTER_PATTERNS << /org\/jruby/
+      end
+      PWD_PATTERN = /#{::Regexp.escape(::Dir.pwd)}\//m
+
+      def initialize(exception)
+        @exception = exception
+      end
+
+      def exception
+        return @exception if ::Cucumber.use_full_backtrace
+        @exception.backtrace.each{|line| line.gsub!(PWD_PATTERN, "./")}
+
+        filtered = (@exception.backtrace || []).reject do |line|
+          BACKTRACE_FILTER_PATTERNS.detect { |p| line =~ p }
+        end
+
+        if ::ENV['CUCUMBER_TRUNCATE_OUTPUT']
+          # Strip off file locations
+          filtered = filtered.map do |line|
+            line =~ /(.*):in `/ ? $1 : line
+          end
+        end
+
+        @exception.set_backtrace(filtered)
+        @exception
+      end
     end
 
     LegacyFormatter = Struct.new(:runtime, :formatter) do
@@ -229,7 +266,15 @@ module Cucumber
           @child.after_hook LegacyResultBuilder.new(result)
         end
 
+        def after_step_hook(hook, result)
+          line = StepBacktraceLine.new(@current_step)
+          LegacyResultBuilder.new(result).
+            append_to_exception_backtrace(line).
+            describe_exception_to(formatter)
+        end
+
         def step(node, result)
+          @current_step = node
           @step_result = [node, result]
         end
 
@@ -862,6 +907,11 @@ module Cucumber
           @exception = exception
         end
 
+        def append_to_exception_backtrace(line)
+          @exception.set_backtrace(@exception.backtrace + [line.to_s]) if @exception
+          return self
+        end
+
         def duration(*); end
 
         def step_invocation(step_match, step, indent, background, configuration)
@@ -894,6 +944,12 @@ module Cucumber
 
       end
 
+    end
+
+    class StepBacktraceLine < Struct.new(:step)
+      def to_s
+        "#{step.location}:in `#{step.keyword}#{step.name}'"
+      end
     end
 
     # Adapters to pass to the legacy API formatters that provide the interface
@@ -986,39 +1042,9 @@ module Cucumber
             return unless exception
             raise exception if ENV['FAIL_FAST']
             ex = exception.dup
-            ex.backtrace << "#{step.location}:in `#{step.keyword}#{step.name}'"
-            filter_backtrace(ex)
+            ex.backtrace << StepBacktraceLine.new(step).to_s
             formatter.exception(ex, status)
           end
-
-          private
-
-          BACKTRACE_FILTER_PATTERNS = [/vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\/|minitest|test\/unit|.gem\/ruby|lib\/ruby/]
-          if(Cucumber::JRUBY)
-            BACKTRACE_FILTER_PATTERNS << /org\/jruby/
-          end
-          PWD_PATTERN = /#{Regexp.escape(Dir.pwd)}\//m
-
-          # This is to work around double ":in " segments in JRuby backtraces. JRuby bug?
-          def filter_backtrace(e)
-            return e if Cucumber.use_full_backtrace
-            e.backtrace.each{|line| line.gsub!(PWD_PATTERN, "./")}
-
-            filtered = (e.backtrace || []).reject do |line|
-              BACKTRACE_FILTER_PATTERNS.detect { |p| line =~ p }
-            end
-
-            if ENV['CUCUMBER_TRUNCATE_OUTPUT']
-              # Strip off file locations
-              filtered = filtered.map do |line|
-                line =~ /(.*):in `/ ? $1 : line
-              end
-            end
-
-            e.set_backtrace(filtered)
-            e
-          end
-
         end
 
         class StepInvocations < Array

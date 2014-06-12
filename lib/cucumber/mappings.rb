@@ -11,6 +11,11 @@ module Cucumber
 
     def test_step(step, mapper)
       step.describe_source_to MapStep.new(runtime, mapper)
+      mapper.after do
+        ruby.hooks_for(:after_step, scenario).each do |hook|
+          hook.invoke 'AfterStep', scenario
+        end
+      end
     end
 
     class MapStep
@@ -32,7 +37,7 @@ module Cucumber
     end
 
     def test_case(test_case, mapper)
-      scenario = Source.new(test_case).build_scenario
+      @scenario = Source.new(test_case).build_scenario
       mapper.before do
         ruby.begin_rb_scenario(scenario)
       end
@@ -61,6 +66,9 @@ module Cucumber
     end
 
     private
+
+    attr_reader :scenario
+    private :scenario
 
     def ruby
       @ruby ||= runtime.load_programming_language('rb')

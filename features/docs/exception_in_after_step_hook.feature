@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: Exception in AfterStep Block
   In order to use custom assertions at the end of each step
   As a developer
@@ -51,10 +50,11 @@ Feature: Exception in AfterStep Block
       cucumber features/naughty_step_in_scenario.feature:3 # Scenario: Naughty Step
 
       2 scenarios (1 failed, 1 passed)
-      2 steps (1 failed, 1 passed)
+      2 steps (2 passed)
 
       """
 
+  @wip-new-core @announce
   Scenario: Handle Exception in scenario outline table row and carry on
     Given a file named "features/naughty_step_in_scenario_outline.feature" with:
       """
