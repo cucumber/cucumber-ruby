@@ -54,7 +54,6 @@ Feature: Exception in AfterStep Block
 
       """
 
-  @wip-new-core @announce
   Scenario: Handle Exception in scenario outline table row and carry on
     Given a file named "features/naughty_step_in_scenario_outline.feature" with:
       """
@@ -79,7 +78,7 @@ Feature: Exception in AfterStep Block
       Feature: Sample
 
         Scenario Outline: Naughty Step # features/naughty_step_in_scenario_outline.feature:3
-          Given this step <Might Work> # features/step_definitions/steps.rb:1
+          Given this step <Might Work> # features/naughty_step_in_scenario_outline.feature:4
 
           Examples: 
             | Might Work             |
@@ -87,17 +86,16 @@ Feature: Exception in AfterStep Block
             | does something naughty |
             This step has been very very naughty (NaughtyStepException)
             ./features/support/env.rb:4:in `AfterStep'
-            features/naughty_step_in_scenario_outline.feature:4:in `Given this step <Might Work>'
+            features/naughty_step_in_scenario_outline.feature:4:in `Given this step does something naughty'
             | passes                 |
 
         Scenario: Success        # features/naughty_step_in_scenario_outline.feature:12
           Given this step passes # features/step_definitions/steps.rb:1
 
       Failing Scenarios:
-      cucumber features/naughty_step_in_scenario_outline.feature:3 # Scenario: Naughty Step
+      cucumber features/naughty_step_in_scenario_outline.feature:9 # Scenario Outline: Naughty Step, Examples (row 2)
 
       4 scenarios (1 failed, 3 passed)
-      4 steps (1 failed, 3 passed)
+      4 steps (4 passed)
 
       """
-

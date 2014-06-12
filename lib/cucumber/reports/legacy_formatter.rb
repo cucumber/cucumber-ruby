@@ -215,9 +215,8 @@ module Cucumber
 
         def after_step_hook(hook, result)
           line = StepBacktraceLine.new(@current_step)
-          LegacyResultBuilder.new(result).
-            append_to_exception_backtrace(line).
-            describe_exception_to(formatter)
+          @child.after_step_hook LegacyResultBuilder.new(result).
+            append_to_exception_backtrace(line)
         end
 
         def step(node, result)
@@ -346,6 +345,10 @@ module Cucumber
           @child.step_invocation step_invocation, runtime, background
         end
 
+        def after_step_hook(result)
+          result.describe_exception_to formatter
+        end
+
         def after
           @child.after if @child
           formatter.after_background(background)
@@ -376,6 +379,7 @@ module Cucumber
           runtime.step_visited step_invocation
         end
 
+        def after_step_hook(*);end
         def examples_table(*);end
         def examples_table_row(*);end
         def before;self;end
@@ -414,6 +418,10 @@ module Cucumber
 
         def after_hook(result)
           @after_hook_result = result
+        end
+
+        def after_step_hook(result)
+          result.describe_exception_to formatter
         end
 
         def after_test_case(*args)
@@ -516,6 +524,9 @@ module Cucumber
       end
 
       ScenarioOutlinePrinter = Struct.new(:formatter, :runtime, :node) do
+        extend Forwardable
+        def_delegators :@child, :after_hook, :after_step_hook
+
         def before
           formatter.before_feature_element(node)
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
@@ -593,6 +604,9 @@ module Cucumber
       end
 
       ExamplesArrayPrinter = Struct.new(:formatter, :runtime) do
+        extend Forwardable
+        def_delegators :@child, :step, :after_hook, :after_step_hook, :after_test_case, :examples_table_row
+
         def before
           formatter.before_examples_array(:examples_array)
           self
@@ -605,22 +619,6 @@ module Cucumber
           @current = examples_table
         end
 
-        def examples_table_row(node, before_hook_result)
-          @child.examples_table_row(node, before_hook_result)
-        end
-
-        def step(node, result)
-          @child.step(node, result)
-        end
-
-        def after_hook(result)
-          @child.after_hook(result)
-        end
-
-        def after_test_case(*args)
-          @child.after_test_case(*args)
-        end
-
         def after
           @child.after if @child
           formatter.after_examples_array
@@ -629,6 +627,9 @@ module Cucumber
       end
 
       ExamplesTablePrinter = Struct.new(:formatter, :runtime, :node) do
+        extend Forwardable
+        def_delegators :@child, :step, :after_hook, :after_step_hook, :after_test_case
+
         def before
           formatter.before_examples(node)
           formatter.examples_name(node.keyword, node.name)
@@ -637,26 +638,12 @@ module Cucumber
           self
         end
 
-        def after_hook(result)
-          @child.after_hook(result)
-        end
-
         def examples_table_row(examples_table_row, before_hook_result)
           return if examples_table_row == @current
           @child.after if @child
           row = ExampleTableRow.new(examples_table_row)
           @child = TableRowPrinter.new(formatter, runtime, row, nil, before_hook_result).before
           @current = examples_table_row
-        end
-
-        def step(node, result)
-          @child.step(node, result)
-        end
-
-        class ExampleTableRow < SimpleDelegator
-          def dom_id
-            file_colon_line.gsub(/[\/\.:]/, '_')
-          end
         end
 
         def after_test_case(*args)
@@ -674,6 +661,12 @@ module Cucumber
 
         def legacy_table
           LegacyTable.new(node)
+        end
+
+        class ExampleTableRow < SimpleDelegator
+          def dom_id
+            file_colon_line.gsub(/[\/\.:]/, '_')
+          end
         end
 
         LegacyTable = Struct.new(:node) do
@@ -728,6 +721,10 @@ module Cucumber
           @status = step_invocation.status unless @status == :failed
         end
 
+        def after_step_hook(result)
+          @after_step_hook_result = result
+        end
+
         def after_test_case(*args)
           after
         end
@@ -741,6 +738,7 @@ module Cucumber
             formatter.after_table_cell(value)
           end
           formatter.after_table_row(legacy_table_row)
+          @after_step_hook_result.describe_exception_to formatter if @after_step_hook_result
           @after_hook_result.describe_exception_to(formatter) if @after_hook_result
           if @failed_step
             formatter.exception @failed_step.exception, @failed_step.status
