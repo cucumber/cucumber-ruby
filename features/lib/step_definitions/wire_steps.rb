@@ -27,6 +27,8 @@ module WireHelper
     return unless @wire_pid
     Process.kill('KILL', @wire_pid)
     Process.wait(@wire_pid)
+  rescue Errno::ESRCH
+    # No such process - wire server has already been stopped by the After hook
   end
 end
 
