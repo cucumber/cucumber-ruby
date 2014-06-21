@@ -54,6 +54,11 @@ Feature: JSON output formatter
       Given /^I print from step definition/ do
         puts "from step definition"
       end
+
+      Given /^I embed data directly/ do
+        data = "abc"
+        embed data, "mime-type"
+      end
       """
     And a file named "features/embed.feature" with:
       """
@@ -87,6 +92,14 @@ Feature: JSON output formatter
           Examples: examples2
             |  type   |
             | passing |
+
+      """
+    And a file named "features/embed_data_directly.feature" with:
+      """
+      Feature: An embed data directly feature
+
+        Scenario:
+          Given I embed data directly
 
       """
 
@@ -410,6 +423,52 @@ Feature: JSON output formatter
                 ],
                 "match": {
                   "location": "features/step_definitions/steps.rb:34"
+                },
+                "result": {
+                  "status": "passed",
+                  "duration": 1
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    """
+  Scenario: embedding data directly
+    When I run `cucumber -b --format json features/embed_data_directly.feature`
+    Then it should pass with JSON:
+    """
+    [
+      {
+        "uri": "features/embed_data_directly.feature",
+        "id": "an-embed-data-directly-feature",
+        "keyword": "Feature",
+        "name": "An embed data directly feature",
+        "line": 1,
+        "description": "",
+        "elements": [
+          {
+            "id": "an-embed-data-directly-feature;",
+            "keyword": "Scenario",
+            "name": "",
+            "line": 3,
+            "description": "",
+            "type": "scenario",
+            "steps": [
+              {
+                "keyword": "Given ",
+                "name": "I embed data directly",
+                "line": 4,
+                "embeddings": [
+                  {
+		    "mime_type": "mime-type",
+		    "data": "YWJj"
+                  }
+                ],
+                "match": {
+                  "location": "features/step_definitions/steps.rb:38"
                 },
                 "result": {
                   "status": "passed",

@@ -146,7 +146,11 @@ module Cucumber
       end
 
       def embed(file, mime_type, label)
-        data = File.open(file, 'rb') { |f| f.read }
+        if File.file?(file)
+          data = File.open(file, 'rb') { |f| f.read }
+        else
+          data = file
+        end
         if defined?(JRUBY_VERSION)
           data = data.to_java_bytes
         end
