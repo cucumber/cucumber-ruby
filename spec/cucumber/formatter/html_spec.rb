@@ -266,7 +266,7 @@ module Cucumber
 
         describe "with a step that embeds a snapshot content" do
           define_steps do
-            Given(/snap/) { embed('YWJj', 'image/png') }
+            Given(/snap/) { embed('YWJj', 'image/png;base64') }
           end
 
           define_feature(<<-FEATURE)
