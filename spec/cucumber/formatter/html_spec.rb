@@ -235,7 +235,10 @@ module Cucumber
 
         describe "with a step that embeds a snapshot" do
           define_steps do
-            Given(/snap/) { embed('snapshot.jpeg', 'image/jpeg') }
+            Given(/snap/) { 
+              File.should_receive(:file?).with('snapshot.jpeg').and_return(true)
+              embed('snapshot.jpeg', 'image/jpeg')
+            }
           end
 
           define_feature(<<-FEATURE)
@@ -245,6 +248,34 @@ module Cucumber
             FEATURE
 
           it { @doc.css('.embed img').first.attributes['src'].to_s.should == "snapshot.jpeg" }
+        end
+
+        describe "with a step that embeds a snapshot content manually" do
+          define_steps do
+            Given(/snap/) { embed('data:image/png;base64,YWJj', 'image/png') }
+          end
+
+          define_feature(<<-FEATURE)
+          Feature:
+            Scenario:
+              Given snap
+            FEATURE
+
+          it { @doc.css('.embed img').first.attributes['src'].to_s.should == "data:image/png;base64,YWJj" }
+        end
+
+        describe "with a step that embeds a snapshot content" do
+          define_steps do
+            Given(/snap/) { embed('YWJj', 'image/png') }
+          end
+
+          define_feature(<<-FEATURE)
+          Feature:
+            Scenario:
+              Given snap
+            FEATURE
+
+          it { @doc.css('.embed img').first.attributes['src'].to_s.should == "data:image/png;base64,YWJj" }
         end
 
         describe "with an undefined Given step then an undefined And step" do
