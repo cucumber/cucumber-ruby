@@ -56,8 +56,8 @@ Feature: JSON output formatter
       end
 
       Given /^I embed data directly/ do
-        data = "abc"
-        embed data, "mime-type"
+        data = "YWJj"
+        embed data, "mime-type;base64"
       end
       """
     And a file named "features/embed.feature" with:
