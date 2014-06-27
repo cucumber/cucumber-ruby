@@ -1,6 +1,7 @@
 require 'cucumber/cli/profile_loader'
 require 'cucumber/formatter/ansicolor'
 require 'cucumber/rb_support/rb_language'
+require 'cucumber/project_initializer'
 
 module Cucumber
   module Cli
@@ -124,6 +125,12 @@ module Cucumber
             "How to format features (Default: pretty). Available formats:",
             *FORMAT_HELP) do |v|
             @options[:formats] << [v, @out_stream]
+          end
+          opts.on('--init',
+            'Initializes folder structure and generates conventional files for',
+            'a Cucumber project.') do |v|
+            ProjectInitializer.new.run
+            Kernel.exit(0)
           end
           opts.on("-o", "--out [FILE|DIR]",
             "Write output to a file/directory instead of STDOUT. This option",
