@@ -302,7 +302,6 @@ Feature: JSON output formatter
         }
       ]
       """
-  @wip-jruby
   Scenario: embedding screenshot
     When I run `cucumber -b --format json features/embed.feature`
     Then it should pass with JSON:
