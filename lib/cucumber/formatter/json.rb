@@ -11,7 +11,7 @@ module Cucumber
 
       def initialize(runtime, io, options)
         @io = ensure_io(io, "json")
-        super(Gherkin::Formatter::JSONFormatter.new(@io), false)
+        super(Gherkin::Formatter::JSONFormatter.new(@io), false, options)
       end
     end
   end
