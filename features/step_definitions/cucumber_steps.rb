@@ -17,8 +17,10 @@ Then /^it should (pass|fail) with JSON:$/ do |pass_fail, json|
   actual.each do |feature|
     feature['elements'].each do |scenario|
       scenario['steps'].each do |step|
-        step['result']['duration'].should be >= 0
-        step['result']['duration'] = 1
+        if step['result']
+          step['result']['duration'].should be >= 0
+          step['result']['duration'] = 1
+        end
       end
     end
   end
