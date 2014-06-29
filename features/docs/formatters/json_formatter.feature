@@ -639,3 +639,67 @@ Feature: JSON output formatter
     ]
 
     """
+  @spawn
+  Scenario: scenario outline expanded
+    When I run `cucumber --expand --format json features/outline.feature`
+    Then it should fail with JSON:
+    """
+    [
+      {
+        "uri": "features/outline.feature",
+        "id": "an-outline-feature",
+        "keyword": "Feature",
+        "name": "An outline feature",
+        "line": 1,
+        "description": "",
+        "elements": [
+          {
+            "id": "an-outline-feature;outline;examples;2",
+            "keyword": "Scenario Outline",
+            "name": "outline",
+            "line": 8,
+            "description": "",
+            "type": "scenario",
+            "steps": [
+              {
+                "keyword": "Given ",
+                "name": "a passing step",
+                "line": 4,
+                "match": {
+                  "location": "features/step_definitions/steps.rb:1"
+                },
+                "result": {
+                  "status": "passed",
+                  "duration": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "an-outline-feature;outline;examples;3",
+            "keyword": "Scenario Outline",
+            "name": "outline",
+            "line": 9,
+            "description": "",
+            "type": "scenario",
+            "steps": [
+              {
+                "keyword": "Given ",
+                "name": "a failing step",
+                "line": 4,
+                "match": {
+                  "location": "features/step_definitions/steps.rb:5"
+                },
+                "result": {
+                  "status": "failed",
+                  "error_message" : " (RuntimeError)\n./features/step_definitions/steps.rb:6:in `/a failing step/'\nfeatures/outline.feature:4:in `Given a <type> step'",
+		  "duration": 1
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    """
