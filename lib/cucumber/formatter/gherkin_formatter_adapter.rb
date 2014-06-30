@@ -30,6 +30,7 @@ module Cucumber
         when Ast::ScenarioOutline
           @outline = true
           if @options[:expand]
+            @in_instantiated_scenario = false
             @current_scenario_hash = to_hash(feature_element.gherkin_statement)
           else
             @gf.scenario_outline(feature_element.gherkin_statement)
@@ -41,19 +42,23 @@ module Cucumber
 
       def scenario_name(keyword, name, file_colon_line, source_indent)
         if @outline and @options[:expand]
-          @example_row = @example_row ? @example_row + 1 : 0
-          if in_instantiated_scenario?
-            example_row_hash = @current_example_rows[@example_row].to_hash
-            scenario = Gherkin::Formatter::Model::Scenario.new(
-                @current_scenario_hash['comments'],
-                @current_scenario_hash['tags'],
-                @current_scenario_hash['keyword'],
-                @current_scenario_hash['name'],
-                @current_scenario_hash['description'],
-                example_row_hash['line'],
-                example_row_hash['id'])
-            @gf.scenario(scenario)
+          return if not @in_instantiated_scenario
+          if @new_example_table
+            @example_row = 1
+            @new_example_table = false
+          else
+            @example_row += 1
           end
+          example_row_hash = @current_example_rows[@example_row].to_hash
+          scenario = Gherkin::Formatter::Model::Scenario.new(
+              @current_scenario_hash['comments'],
+              @current_scenario_hash['tags'],
+              @current_scenario_hash['keyword'],
+              @current_scenario_hash['name'],
+              @current_scenario_hash['description'],
+              example_row_hash['line'],
+              example_row_hash['id'])
+          @gf.scenario(scenario)
         end
       end
 
@@ -61,7 +66,7 @@ module Cucumber
         unless @outline and @options[:expand]
           @gf.step(step.gherkin_statement)
         else 
-          if in_instantiated_scenario?
+          if @in_instantiated_scenario
             @current_step_hash = to_hash(step.gherkin_statement)
           end
         end
@@ -93,7 +98,7 @@ module Cucumber
         unless @outline
           @gf.result(Gherkin::Formatter::Model::Result.new(status, nil, error_message))
         else
-          if @options[:expand] and in_instantiated_scenario?
+          if @options[:expand] and @in_instantiated_scenario
             @current_match = match
             @current_result = Gherkin::Formatter::Model::Result.new(status, nil, error_message)
           end
@@ -101,7 +106,7 @@ module Cucumber
       end
 
       def step_name(keyword, step_match, status, source_indent, background, file_colon_line)
-        if @outline and @options[:expand] and in_instantiated_scenario?
+        if @outline and @options[:expand] and @in_instantiated_scenario
           @gf.step(Gherkin::Formatter::Model::Step.new(
               @current_step_hash['comments'],
               @current_step_hash['keyword'],
@@ -118,6 +123,8 @@ module Cucumber
         unless @options[:expand]
           @gf.examples(examples.gherkin_statement)
         else
+          @in_instantiated_scenario = true
+          @new_example_table = true
           @current_example_rows = to_hash(examples.gherkin_statement)['rows']
         end
       end
@@ -125,7 +132,7 @@ module Cucumber
       #used for capturing duration
       def after_step(step)
         step_finish = (Time.now - @step_time)
-        unless @outline and @options[:expand] and not in_instantiated_scenario?
+        unless @outline and @options[:expand] and not @in_instantiated_scenario
           @gf.append_duration(step_finish)
         end
       end
@@ -151,10 +158,6 @@ module Cucumber
       end
 
       private
-
-      def in_instantiated_scenario?
-        @example_row > 0
-      end
 
       def to_hash(gherkin_statement)
         if defined?(JRUBY_VERSION)
