@@ -79,10 +79,14 @@ Feature: JSON output formatter
         Scenario Outline: outline
           Given a <type> step
 
-          Examples: examples
+          Examples: examples1
             |  type   |
             | passing |
             | failing |
+
+          Examples: examples2
+            |  type   |
+            | passing |
 
       """
 
@@ -453,31 +457,54 @@ Feature: JSON output formatter
             "examples": [
               {
                 "keyword": "Examples", 
-                "name": "examples", 
+                "name": "examples1", 
                 "line": 6, 
                 "description": "", 
-                "id": "an-outline-feature;outline;examples", 
+                "id": "an-outline-feature;outline;examples1", 
                 "rows": [
                   {
                     "cells": [
                       "type"
                      ], 
                      "line": 7, 
-                     "id": "an-outline-feature;outline;examples;1"
+                     "id": "an-outline-feature;outline;examples1;1"
                   }, 
                   {
                     "cells": [
                       "passing"
                     ], 
                     "line": 8, 
-                    "id": "an-outline-feature;outline;examples;2"
+                    "id": "an-outline-feature;outline;examples1;2"
                   }, 
                   {
                     "cells": [
                       "failing"
                     ], 
                     "line": 9, 
-                    "id": "an-outline-feature;outline;examples;3"
+                    "id": "an-outline-feature;outline;examples1;3"
+                  }
+                ]
+              },
+              {
+                "keyword": "Examples", 
+                "name": "examples2", 
+                "line": 11, 
+                "description": "", 
+                "id": "an-outline-feature;outline;examples2", 
+                "rows": [
+                  {
+                    "cells": [
+                      "type"
+                     ], 
+                     "line": 12, 
+                     "id": "an-outline-feature;outline;examples2;1"
+                  }, 
+                  {
+                    "cells": [
+                      "passing"
+                    ], 
+                    "line": 13, 
+                    "id": "an-outline-feature;outline;examples2;2"
                   }
                 ]
               }
@@ -503,7 +530,7 @@ Feature: JSON output formatter
         "description": "",
         "elements": [
           {
-            "id": "an-outline-feature;outline;examples;2",
+            "id": "an-outline-feature;outline;examples1;2",
             "keyword": "Scenario Outline",
             "name": "outline",
             "line": 8,
@@ -525,7 +552,7 @@ Feature: JSON output formatter
             ]
           },
           {
-            "id": "an-outline-feature;outline;examples;3",
+            "id": "an-outline-feature;outline;examples1;3",
             "keyword": "Scenario Outline",
             "name": "outline",
             "line": 9,
@@ -543,6 +570,28 @@ Feature: JSON output formatter
                   "status": "failed",
                   "error_message" : " (RuntimeError)\n./features/step_definitions/steps.rb:6:in `/a failing step/'\nfeatures/outline.feature:4:in `Given a <type> step'",
 		  "duration": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "an-outline-feature;outline;examples2;2",
+            "keyword": "Scenario Outline",
+            "name": "outline",
+            "line": 13,
+            "description": "",
+            "type": "scenario",
+            "steps": [
+              {
+                "keyword": "Given ",
+                "name": "a passing step",
+                "line": 4,
+                "match": {
+                  "location": "features/step_definitions/steps.rb:1"
+                },
+                "result": {
+                  "status": "passed",
+                  "duration": 1
                 }
               }
             ]
