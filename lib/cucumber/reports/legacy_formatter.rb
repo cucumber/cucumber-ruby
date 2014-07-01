@@ -580,7 +580,7 @@ module Cucumber
         end
 
         def scenario_outline(node, &descend)
-          descend.call
+          descend.call(self)
         end
 
         def outline_step(step)
@@ -678,7 +678,7 @@ module Cucumber
 
             def examples_table(table, &descend)
               @result = char_length_of(table.header.values[index])
-              descend.call
+              descend.call(self)
             end
 
             def examples_table_row(row, &descend)
@@ -791,7 +791,7 @@ module Cucumber
         [:background, :scenario, :scenario_outline].each do |node_name|
           define_method(node_name) do |node, &descend|
           record_width_of node
-          descend.call
+          descend.call(self)
           end
         end
 
