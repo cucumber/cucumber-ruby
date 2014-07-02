@@ -20,11 +20,11 @@ Lorsqu /on tape additionner/ do
 end
 
 Alors /le résultat affiché doit être (\d*)/ do |result|
-  result.to_i.should == @expected_result
+  expect result.to_i == @expected_result
 end
 
 Alors /le résultat doit être (\d*)/ do |result|
-  result.to_i.should == @expected_result
+  expect result.to_i == @expected_result
 end
 
 Soit /^que je tape sur la touche "\+"$/ do
