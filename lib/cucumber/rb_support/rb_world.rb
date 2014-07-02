@@ -121,6 +121,11 @@ module Cucumber
         end
       end
 
+      # Skips this step and the remaining steps in the scenario
+      def skip_this_scenario(message = "Scenario skipped")
+        raise Core::Test::Result::Skipped, message
+      end
+
       # Prints the list of modules that are included in the World
       def inspect
         modules = [self.class]
