@@ -5,57 +5,26 @@ require 'cucumber/multiline_argument'
 module Cucumber
   class Mappings
 
+    def self.for(runtime)
+      if runtime.dry_run?
+        Mappings::DryRun.new(runtime)
+      else
+        Mappings.new(runtime)
+      end
+    end
+
     def initialize(runtime = nil)
       @runtime = runtime
     end
 
     def test_step(step, mapper)
-      step.describe_source_to MapStep.new(runtime, mapper)
-      mapper.after do
-        ruby.hooks_for(:after_step, scenario).each do |hook|
-          hook.invoke 'AfterStep', scenario
-        end
-      end
-    end
-
-    class MapStep
-      include Cucumber.initializer(:runtime, :mapper)
-
-      def step(node)
-        step_match = runtime.step_match(node.name)
-        multiline_arg = MultilineArgument.from(node.multiline_arg)
-        mapper.map { step_match.invoke(multiline_arg) }
-      rescue Cucumber::Undefined
-      end
-
-      def feature(*);end
-      def scenario(*);end
-      def background(*);end
-      def scenario_outline(*);end
-      def examples_table(*);end
-      def examples_table_row(*);end
+      map_step(step, mapper)
+      map_after_step_hooks(mapper)
     end
 
     def test_case(test_case, mapper)
-      @scenario = Source.new(test_case).build_scenario
-      mapper.before do
-        ruby.begin_rb_scenario(scenario)
-      end
-      ruby.hooks_for(:before, scenario).each do |hook|
-        mapper.before do
-          hook.invoke('Before', scenario)
-        end
-      end
-      ruby.hooks_for(:after, scenario).each do |hook|
-        mapper.after do
-          hook.invoke('After', scenario)
-        end
-      end
-      ruby.hooks_for(:around, scenario).each do |hook|
-        mapper.around do |run_scenario|
-          hook.invoke('Around', scenario, &run_scenario)
-        end
-      end
+      map_test_case(test_case, mapper)
+      map_test_case_hooks(mapper)
     end
 
     def runtime
@@ -76,6 +45,43 @@ module Cucumber
 
     def support_files
       Dir['features/**/*.rb']
+    end
+
+    def map_step(step, mapper)
+      step.describe_source_to MapStep.new(runtime, mapper)
+    end
+
+    def map_after_step_hooks(mapper)
+      mapper.after do
+        ruby.hooks_for(:after_step, scenario).each do |hook|
+          hook.invoke 'AfterStep', scenario
+        end
+      end
+    end
+
+    def map_test_case(test_case, mapper)
+      @scenario = Source.new(test_case).build_scenario
+      mapper.before do
+        ruby.begin_rb_scenario(scenario)
+      end
+    end
+
+    def map_test_case_hooks(mapper)
+      ruby.hooks_for(:before, scenario).each do |hook|
+        mapper.before do
+          hook.invoke('Before', scenario)
+        end
+      end
+      ruby.hooks_for(:after, scenario).each do |hook|
+        mapper.after do
+          hook.invoke('After', scenario)
+        end
+      end
+      ruby.hooks_for(:around, scenario).each do |hook|
+        mapper.around do |run_scenario|
+          hook.invoke('Around', scenario, &run_scenario)
+        end
+      end
     end
 
     # adapts our test_case to look like the Cucumber Runtime's Scenario
@@ -140,6 +146,53 @@ module Cucumber
       end
     end
 
+    class DryRun < Mappings
+
+      private
+      def map_step(step, mapper)
+        step.describe_source_to MapStep::DryRun.new(runtime, mapper)
+      end
+
+      def map_after_step_hooks(mapper)
+        # NOOP - we don't need after step hooks for dry run
+      end
+
+      def map_test_case_hooks(mapper)
+        # NOOP - we don't need hooks for dry run
+      end
+    end
+
     Feature = Struct.new(:name)
+
+    class MapStep
+      include Cucumber.initializer(:runtime, :mapper)
+
+      def step(node)
+        step_match = runtime.step_match(node.name)
+        map_step(node, step_match)
+      rescue Cucumber::Undefined
+      end
+
+      def feature(*);end
+      def scenario(*);end
+      def background(*);end
+      def scenario_outline(*);end
+      def examples_table(*);end
+      def examples_table_row(*);end
+
+      private
+      def map_step(node, step_match)
+        multiline_arg = MultilineArgument.from(node.multiline_arg)
+        mapper.map { step_match.invoke(multiline_arg) }
+      end
+
+      class DryRun < MapStep
+        private
+        def map_step(node, step_match)
+          mapper.map { raise Core::Test::Result::Skipped, "dry run" }
+        end
+      end
+    end
+
   end
 end

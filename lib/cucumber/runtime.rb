@@ -69,11 +69,15 @@ module Cucumber
       fire_after_configuration_hook
       self.visitor = report
 
-      execute features, mappings, report, filters, run_options
+      execute features, mappings, report, filters
     end
 
     def features_paths
       @configuration.paths
+    end
+
+    def dry_run?
+      @configuration.dry_run?
     end
 
     def step_visited(step) #:nodoc:
@@ -129,19 +133,19 @@ module Cucumber
     end
 
     def before(scenario) #:nodoc:
-      return if @configuration.dry_run? || @current_scenario
+      return if dry_run? || @current_scenario
       @current_scenario = scenario
       @support_code.fire_hook(:before, scenario)
     end
 
     def after(scenario) #:nodoc:
       @current_scenario = nil
-      return if @configuration.dry_run?
+      return if dry_run?
       @support_code.fire_hook(:after, scenario)
     end
 
     def after_step #:nodoc:
-      return if @configuration.dry_run?
+      return if dry_run?
       @support_code.fire_hook(:execute_after_step, @current_scenario)
     end
 
@@ -256,7 +260,7 @@ module Cucumber
 
     require 'cucumber/mappings'
     def mappings
-      @mappings = Mappings.new(self)
+      @mappings = Mappings.for(self)
     end
 
     require 'cucumber/reports/legacy_formatter'
@@ -294,12 +298,6 @@ module Cucumber
           test_case.describe_to(@receiver)
         end
         @receiver.done
-      end
-    end
-
-    def run_options
-      {}.tap do |run_options|
-        run_options[:run_mode] = :dry_run if @configuration.dry_run?
       end
     end
 
