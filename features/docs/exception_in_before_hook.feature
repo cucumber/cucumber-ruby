@@ -54,7 +54,7 @@ Feature: Exception in Before Block
           Given this step passes
       """
     When I run `cucumber features`
-    Then it should fail with:
+    Then it should fail with exactly:
       """
       Feature: Sample
       
