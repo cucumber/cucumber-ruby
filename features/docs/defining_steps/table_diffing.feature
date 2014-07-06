@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: Table diffing
 
   To allow you to more easily compare data in tables, you are able
