@@ -259,8 +259,7 @@ module Cucumber
         def print_hidden_background
           return unless @background
           return if @background != @previous_test_case_background
-          @child.after if @child
-          set_child HiddenBackgroundPrinter.new(formatter, runtime, @background)
+          set_child_calling_before HiddenBackgroundPrinter.new(formatter, runtime, @background)
           @current_hidden_background = @background
           true
         end
@@ -268,24 +267,21 @@ module Cucumber
         def print_background
           return unless @background
           return true if @background == @previous_test_step_background
-          @child.after if @child
-          set_child(BackgroundPrinter.new(formatter, runtime, @background).before)
+          set_child_calling_before(BackgroundPrinter.new(formatter, runtime, @background))
           true
         end
 
         def print_scenario
           return unless @scenario
           return if @scenario == @previous_test_step_scenario
-          @child.after if @child
-          set_child(ScenarioPrinter.new(formatter, runtime, @scenario, @before_hook_result).before)
+          set_child_calling_before(ScenarioPrinter.new(formatter, runtime, @scenario, @before_hook_result))
           true
         end
 
         def print_scenario_outline
           return unless @scenario_outline
           return if @child.is_a?(ScenarioOutlinePrinter) && @child.node == @scenario_outline
-          @child.after if @child
-          set_child(ScenarioOutlinePrinter.new(formatter, runtime, @scenario_outline).before)
+          set_child_calling_before(ScenarioOutlinePrinter.new(formatter, runtime, @scenario_outline))
           true
         end
 
@@ -311,9 +307,10 @@ module Cucumber
           @step_result = []
         end
 
-        def set_child(child)
-          @child = child
-          debug [:set_child, child.class]
+        def set_child_calling_before(child)
+          @child.after if @child
+          @child = child.before
+          debug [:set_child, @child.class]
         end
 
         def indented(nasty_old_conflation_of_name_and_description)
