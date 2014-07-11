@@ -155,6 +155,31 @@ module Cucumber
         end
       end
 
+      # TODO: move to core
+      module Source
+        def self.for(test_node)
+          collector = Collector.new
+          test_node.describe_source_to collector
+          collector.result.freeze
+        end
+
+        class Collector
+          attr_reader :result
+
+          def initialize
+            @result = OpenStruct.new
+          end
+
+          def before_hook(node, *args)
+            result.before_hook = node
+          end
+
+          def method_missing(name, node, *args)
+            result.send("#{name}=", node)
+          end
+        end
+      end
+
       FeaturePrinter = Struct.new(:formatter, :runtime, :node) do
         include Debug
 
@@ -167,28 +192,25 @@ module Cucumber
           self
         end
 
+        attr_reader :current_test_case_source
+        attr_reader :current_test_step_source
+
         def before_test_case(test_case)
           @test_case = test_case
-          @background = nil
-          @scenario = nil
-          @scenario_outline = nil
-          @previous_test_step_background = nil
-          @previous_test_step_scenario = nil
-          @previous_test_step_scenario_outline = nil
+          @current_test_case_source = Source.for(test_case)
         end
 
         def before_test_step(test_step)
-          @background = nil
-          @scenario = nil
         end
 
         def after_test_step(test_step, result)
           test_step.describe_source_to(self, result)
+          @current_test_step_source = Source.for(test_step)
           print_step
-          debug [:after_test_step, @scenario && @scenario.location.to_s]
-          @previous_test_step_background       = @background       if @background
-          @previous_test_step_scenario         = @scenario         if @scenario
-          @previous_test_step_scenario_outline = @scenario_outline if @scenario_outline
+          debug [:after_test_step, current_test_step_source.scenario && current_test_step_source.scenario.location.to_s]
+          @previous_test_step_background       = current_test_step_source.background       if current_test_step_source.background
+          @previous_test_step_scenario         = current_test_step_source.scenario         if current_test_step_source.scenario
+          @previous_test_step_scenario_outline = current_test_step_source.scenario_outline if current_test_step_source.scenario_outline
         end
 
         def after_test_case(*args)
@@ -221,16 +243,13 @@ module Cucumber
         end
 
         def background(node, *)
-          @background = node
-          @current_test_case_background = @background
+          @current_test_case_background = node
         end
 
         def scenario(node, *)
-          @scenario = node
         end
 
         def scenario_outline(node, *)
-          @scenario_outline = node
         end
 
         def examples_table(node, *)
@@ -257,31 +276,31 @@ module Cucumber
         end
 
         def print_hidden_background
-          return unless @background
-          return if @background != @previous_test_case_background
-          set_child_calling_before HiddenBackgroundPrinter.new(formatter, runtime, @background)
-          @current_hidden_background = @background
+          return unless current_test_step_source.background
+          return if current_test_step_source.background != @previous_test_case_background
+          set_child_calling_before HiddenBackgroundPrinter.new(formatter, runtime, current_test_step_source.background)
+          @current_hidden_background = current_test_step_source.background
           true
         end
 
         def print_background
-          return unless @background
-          return true if @background == @previous_test_step_background
-          set_child_calling_before(BackgroundPrinter.new(formatter, runtime, @background))
+          return unless current_test_step_source.background
+          return true if current_test_step_source.background == @previous_test_step_background
+          set_child_calling_before(BackgroundPrinter.new(formatter, runtime, current_test_step_source.background))
           true
         end
 
         def print_scenario
-          return unless @scenario
-          return if @scenario == @previous_test_step_scenario
-          set_child_calling_before(ScenarioPrinter.new(formatter, runtime, @scenario, @before_hook_result))
+          return unless current_test_case_source.scenario
+          return if current_test_case_source.scenario == @previous_test_step_scenario
+          set_child_calling_before(ScenarioPrinter.new(formatter, runtime, current_test_case_source.scenario, @before_hook_result))
           true
         end
 
         def print_scenario_outline
-          return unless @scenario_outline
-          return if @child.is_a?(ScenarioOutlinePrinter) && @child.node == @scenario_outline
-          set_child_calling_before(ScenarioOutlinePrinter.new(formatter, runtime, @scenario_outline))
+          return unless current_test_case_source.scenario_outline
+          return if @child.is_a?(ScenarioOutlinePrinter) && @child.node == current_test_case_source.scenario_outline
+          set_child_calling_before(ScenarioOutlinePrinter.new(formatter, runtime, current_test_case_source.scenario_outline))
           true
         end
 
