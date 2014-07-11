@@ -48,6 +48,7 @@ module Cucumber
         @kernel.exit(1)
       rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
         @err.puts(e.message)
+        @kernel.exit(1)
       rescue SystemExit => e
         @kernel.exit(e.status)
       rescue Errno::EACCES, Errno::ENOENT => e

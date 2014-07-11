@@ -93,6 +93,7 @@ module Cucumber
 
           allow(Configuration).to receive(:new) { configuration }
           allow(configuration).to receive(:parse!).and_raise(exception_klass.new("error message"))
+          allow(kernel).to receive(:exit).with(1)
 
           subject.execute!
 
