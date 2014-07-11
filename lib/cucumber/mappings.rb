@@ -52,8 +52,8 @@ module Cucumber
     end
 
     def map_after_step_hooks(mapper)
-      mapper.after do
-        ruby.hooks_for(:after_step, scenario).each do |hook|
+      ruby.hooks_for(:after_step, scenario).each do |hook|
+        mapper.after do
           hook.invoke 'AfterStep', scenario
         end
       end
