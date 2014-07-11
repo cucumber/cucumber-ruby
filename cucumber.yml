@@ -1,7 +1,8 @@
 <%
+cucumber_pro_opts = ENV['ENABLE_CUCUMBER_PRO'] ? "--format Cucumber::Pro --out /dev/null" : ""
 rerun = File.file?('rerun.txt') ? IO.read('rerun.txt') : ""
 rerun_opts = rerun.to_s.strip.empty? ? "--format progress features" : "--format pretty #{rerun}"
-std_opts = "--format progress features --tags ~@wip --tag ~@wip-new-core -r features --strict --format Cucumber::Pro --out /dev/null"
+std_opts = "--format progress features --tags ~@wip --tag ~@wip-new-core -r features --strict #{cucumber_pro_opts}"
 std_opts << " --tags ~@wip-jruby" if defined?(JRUBY_VERSION)
 
 wip_opts = "--color -r features --tags @wip,@wip-new-core"
@@ -14,6 +15,6 @@ windows_mri: <%= std_opts %> --tags ~@jruby --tags ~@wire --tags ~@needs-many-fo
 ruby_1_9:    <%= std_opts %> --tags ~@jruby
 ruby_2_0:    <%= std_opts %> --tags ~@jruby
 ruby_2_1:    <%= std_opts %> --tags ~@jruby
-wip:         --wip <%= wip_opts %> features --format Cucumber::Pro --out /dev/null
+wip:         --wip <%= wip_opts %> features <%= cucumber_pro_opts %>
 none:        --format pretty --format Cucumber::Pro --out /dev/null
-rerun:       <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip --tag ~@wip-new-core --format Cucumber::Pro --out /dev/null
+rerun:       <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip --tag ~@wip-new-core <%= cucumber_pro_opts %>
