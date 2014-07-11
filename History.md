@@ -29,6 +29,10 @@ all.
 
 * Greek examples added ([497](https://github.com/cucumber/cucumber/issues/497) @rousisk)
 
+## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.15...v1.3.x-bugfix)
+
+* Add RSpec 3 test double support ([689](https://github.com/cucumber/cucumber/pull/689) @cyphactor)
+
 ## [v1.3.15](https://github.com/cucumber/cucumber/compare/v1.3.14...v1.3.15)
 
 * Fixed intermittent ConcurrencyError seen in JRuby
