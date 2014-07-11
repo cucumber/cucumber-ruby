@@ -271,35 +271,39 @@ module Cucumber
 
         private
 
+        def previous_test_step_background
+          @previous_test_step_background
+        end
+
         def print_step_container
           print_hidden_background || print_background || print_scenario || print_examples_table_row
         end
 
         def print_hidden_background
-          return unless current_test_step_source.background
-          return if current_test_step_source.background != @previous_test_case_background
+          return false unless current_test_step_source.background
+          return false if current_test_step_source.background != @previous_test_case_background
           set_child_calling_before HiddenBackgroundPrinter.new(formatter, runtime, current_test_step_source.background)
           @current_hidden_background = current_test_step_source.background
           true
         end
 
         def print_background
-          return unless current_test_step_source.background
-          return true if current_test_step_source.background == @previous_test_step_background
+          return false unless current_test_step_source.background
+          return true if current_test_step_source.background == previous_test_step_background
           set_child_calling_before(BackgroundPrinter.new(formatter, runtime, current_test_step_source.background))
           true
         end
 
         def print_scenario
-          return unless current_test_case_source.scenario
-          return if current_test_case_source.scenario == @previous_test_step_scenario
+          return false unless current_test_case_source.scenario
+          return false if current_test_case_source.scenario == @previous_test_step_scenario
           set_child_calling_before(ScenarioPrinter.new(formatter, runtime, current_test_case_source.scenario, @before_hook_result))
           true
         end
 
         def print_scenario_outline
-          return unless current_test_case_source.scenario_outline
-          return if @child.is_a?(ScenarioOutlinePrinter) && @child.node == current_test_case_source.scenario_outline
+          return false unless current_test_case_source.scenario_outline
+          return false if @child.is_a?(ScenarioOutlinePrinter) && @child.node == current_test_case_source.scenario_outline
           set_child_calling_before(ScenarioOutlinePrinter.new(formatter, runtime, current_test_case_source.scenario_outline))
           true
         end
