@@ -200,7 +200,7 @@ Feature: JSON output formatter
 
       """
 
-  @spawn
+  @spawn @wip-jruby
   Scenario: DocString
     Given a file named "features/doc_string.feature" with:
       """
