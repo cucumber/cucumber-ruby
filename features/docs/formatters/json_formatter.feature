@@ -32,6 +32,23 @@ Feature: JSON output formatter
           Given I embed a screenshot
 
       """
+    And a file named "features/outline.feature" with:
+      """
+      Feature: An outline feature
+
+        Scenario Outline: outline
+          Given this step <status>
+
+          Examples: examples1
+            | status |
+            | passes |
+            | fails  |
+
+          Examples: examples2
+            | status |
+            | passes |
+
+      """
 
   # Need to investigate why this won't pass in-process. error_message doesn't get det?
   @spawn
@@ -302,6 +319,99 @@ Feature: JSON output formatter
                   "status": "passed",
                   "duration": 1
                 }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    """
+
+  @wip-new-core
+  Scenario: scenario outline
+    When I run `cucumber --format json features/outline.feature`
+    Then it should fail with JSON:
+    """
+    [
+      {
+        "uri": "features/outline.feature",
+        "id": "an-outline-feature",
+        "keyword": "Feature",
+        "name": "An outline feature",
+        "line": 1,
+        "description": "",
+        "elements": [
+          {
+            "id": "an-outline-feature;outline",
+            "keyword": "Scenario Outline",
+            "name": "outline",
+            "line": 3,
+            "description": "",
+            "type": "scenario_outline",
+            "steps": [
+              {
+                "keyword": "Given ",
+                "name": "this step <status>",
+                "line": 4,
+                "match": {
+                  "location": "features/step_definitions/steps.rb:1"
+                }
+              }
+            ],
+            "examples": [
+              {
+                "keyword": "Examples", 
+                "name": "examples1", 
+                "line": 6, 
+                "description": "", 
+                "id": "an-outline-feature;outline;examples1", 
+                "rows": [
+                  {
+                    "cells": [
+                      "status"
+                     ], 
+                     "line": 7, 
+                     "id": "an-outline-feature;outline;examples1;1"
+                  }, 
+                  {
+                    "cells": [
+                      "passes"
+                    ], 
+                    "line": 8, 
+                    "id": "an-outline-feature;outline;examples1;2"
+                  }, 
+                  {
+                    "cells": [
+                      "fails"
+                    ], 
+                    "line": 9, 
+                    "id": "an-outline-feature;outline;examples1;3"
+                  }
+                ]
+              },
+              {
+                "keyword": "Examples", 
+                "name": "examples2", 
+                "line": 11, 
+                "description": "", 
+                "id": "an-outline-feature;outline;examples2", 
+                "rows": [
+                  {
+                    "cells": [
+                      "status"
+                     ], 
+                     "line": 12, 
+                     "id": "an-outline-feature;outline;examples2;1"
+                  }, 
+                  {
+                    "cells": [
+                      "passes"
+                    ], 
+                    "line": 13, 
+                    "id": "an-outline-feature;outline;examples2;2"
+                  }
+                ]
               }
             ]
           }
