@@ -263,6 +263,7 @@ Feature: JSON output formatter
       ]
       """
 
+  @spawn 
   Scenario: embedding screenshot
     When I run `cucumber -b --format json features/embed.feature`
     Then it should pass with JSON:
