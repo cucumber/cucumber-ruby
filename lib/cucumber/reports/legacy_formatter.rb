@@ -65,8 +65,7 @@ module Cucumber
 
       def_delegators :formatter,
         :embed,
-        :ask,
-        :puts
+        :ask
 
       def before_test_case(test_case)
         printer.before_test_case(test_case)
@@ -83,6 +82,10 @@ module Cucumber
       def after_test_case(test_case, result)
         record_test_case_result(test_case, result)
         printer.after_test_case(test_case, result)
+      end
+
+      def puts(message)
+        printer.puts(message)
       end
 
       def done
@@ -153,6 +156,10 @@ module Cucumber
           self
         end
 
+        def puts(message)
+          @child.puts(message)
+        end
+
         private
 
         def timer
@@ -189,6 +196,7 @@ module Cucumber
           Legacy::Ast::Comments.new(node.comments).accept(formatter)
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
           formatter.feature_name node.keyword, indented(node.name) # TODO: change the core's new AST to return name and description separately instead of this lumped-together field
+          @delayed_messages = []
           self
         end
 
@@ -209,6 +217,7 @@ module Cucumber
         def after_test_case(*args)
           if current_test_step_source.step_result.nil?
             print_step_container
+            @delayed_messages = []
           end
           @child.after_test_case
           @previous_test_case_background = @current_test_case_background
@@ -256,6 +265,10 @@ module Cucumber
           self
         end
 
+        def puts(message)
+          @delayed_messages << message
+        end
+
         private
 
         def print_step_container
@@ -292,6 +305,14 @@ module Cucumber
           return unless current_test_step_source.step_result
           print_step_container
           @child.step(current_test_step_source.step, current_test_step_source.step_result)
+          print_messages
+        end
+
+        def print_messages
+          @delayed_messages.each do |message|
+            formatter.puts(message)
+          end
+          @delayed_messages = []
         end
 
         def set_child_calling_before(child)
