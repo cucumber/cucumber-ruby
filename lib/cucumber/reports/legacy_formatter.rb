@@ -914,7 +914,7 @@ module Cucumber
         end
 
         def filtered_exception
-          BacktraceFilter.new(@exception).exception
+          BacktraceFilter.new(@exception.dup).exception
         end
 
         def filtered_step_exception(step)
