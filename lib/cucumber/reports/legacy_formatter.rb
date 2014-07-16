@@ -201,11 +201,11 @@ module Cucumber
         end
 
         def before_test_step(test_step)
+          @current_test_step_source = Source.for(test_step)
         end
 
         def after_test_step(test_step, result)
           test_step.describe_source_to(self, result)
-          @current_test_step_source = Source.for(test_step)
           print_step
           debug [:after_test_step, current_test_step_source.scenario && current_test_step_source.scenario.location.to_s]
           @previous_test_step_background       = current_test_step_source.background       if current_test_step_source.background
@@ -288,7 +288,6 @@ module Cucumber
           return false unless same_background_as_previous_test_case?
 
           set_child_calling_before HiddenBackgroundPrinter.new(formatter, runtime, current_test_step_source.background)
-          @current_hidden_background = current_test_step_source.background
           true
         end
 
