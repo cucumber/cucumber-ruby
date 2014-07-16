@@ -11,7 +11,7 @@ module Cucumber
       end
 
       def method_missing(message, *args)
-        p [@receiver.class, message] if ENV['DEBUG']
+        #p [@receiver.class, message] if ENV['DEBUG']
         @receiver.send(message, *args)
       end
     end
@@ -20,6 +20,11 @@ module Cucumber
       def debug(*args)
         return unless ENV['DEBUG']
         p args.unshift(self.class).flatten
+      end
+
+      module Off
+        def debug(*args)
+        end
       end
     end
 
@@ -50,7 +55,7 @@ module Cucumber
     end
 
     LegacyFormatter = Struct.new(:runtime, :formatter) do
-      include Debug
+      include Debug::Off
 
       def initialize(runtime, formatters)
         super runtime, FormatterWrapper.new(formatters)
@@ -207,7 +212,7 @@ module Cucumber
         def after_test_step(test_step, result)
           test_step.describe_source_to(self, result)
           print_step
-          debug [:after_test_step, current_test_step_source.scenario && current_test_step_source.scenario.location.to_s]
+          debug [:after_test_step, test_step.source.map(&:class), current_test_step_source.scenario && current_test_step_source.scenario.location.to_s]
           @previous_test_step_background       = current_test_step_source.background       if current_test_step_source.background
           @previous_test_step_scenario         = current_test_step_source.scenario         if current_test_step_source.scenario
           @previous_test_step_scenario_outline = current_test_step_source.scenario_outline if current_test_step_source.scenario_outline
@@ -392,8 +397,8 @@ module Cucumber
         end
       end
 
-      # Printer to handle background steps for anything but the first scenario in a 
-      # feature. These steps should not be printed, but their results still need to 
+      # Printer to handle background steps for anything but the first scenario in a
+      # feature. These steps should not be printed, but their results still need to
       # be recorded.
       class HiddenBackgroundPrinter < Struct.new(:formatter, :runtime, :background)
 
