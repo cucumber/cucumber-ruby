@@ -26,33 +26,17 @@ module Cucumber
       class << self
         def new(rb_language, pattern, proc_or_sym, options)
           raise MissingProc if proc_or_sym.nil?
-          super rb_language, parse_pattern(pattern), create_proc(proc_or_sym, options)
+          case pattern
+          when String
+            TurnipStyle.new(rb_language, pattern, create_proc(proc_or_sym, options))
+          when Regexp
+            RegexpStyle.new rb_language, pattern, create_proc(proc_or_sym, options)
+          else
+            raise ArgumentError, "Step definitions must be defined with a String or a Regexp"
+          end
         end
 
         private
-
-        def parse_pattern(pattern)
-          return pattern if pattern.is_a?(Regexp)
-          raise ArgumentError unless pattern.is_a?(String)
-          p = Regexp.escape(pattern)
-          p = p.gsub(/\\\$\w+/, '(.*)') # Replace $var with (.*)
-
-          # turnip placeholders
-          p = p.gsub(/:\w+/, %{("(?:[^"]*)"|'(?:[^']*)'|(?:[[:alnum:]_-]+))})
-
-          # turnip alternate words
-          p = p.gsub(/([[:alpha:]]+)((\/[[:alpha:]]+)+)/) do
-            "(?:#{$1}#{$2.tr('/', '|')})"
-          end
-
-          # turnip optional words
-          p = p.gsub(/(\\\s)?\\\(([^)]+)\\\)(\\\s)?/) do
-            [$1, $2, $3].compact.map { |m| "(?:#{m})?" }.join
-          end
-
-          Regexp.new("^#{p}$")
-        end
-
         def create_proc(proc_or_sym, options)
           return proc_or_sym if proc_or_sym.is_a?(Proc)
           raise ArgumentError unless proc_or_sym.is_a?(Symbol)
@@ -78,59 +62,100 @@ module Cucumber
         end
       end
 
-      def initialize(rb_language, regexp, proc)
-        @rb_language, @regexp, @proc = rb_language, regexp, proc
-        @rb_language.available_step_definition(regexp_source, file_colon_line)
-      end
+      class RegexpStyle
 
-      def regexp_source
-        @regexp.inspect
-      end
+        def initialize(rb_language, regexp, proc)
+          @rb_language, @regexp, @proc = rb_language, regexp, proc
+          @rb_language.available_step_definition(regexp_source, file_colon_line)
+        end
 
-      def to_hash
-        flags = ''
-        flags += 'm' if (@regexp.options & Regexp::MULTILINE) != 0
-        flags += 'i' if (@regexp.options & Regexp::IGNORECASE) != 0
-        flags += 'x' if (@regexp.options & Regexp::EXTENDED) != 0
-        {'source' => @regexp.source, 'flags' => flags}
-      end
+        def regexp_source
+          @regexp.inspect
+        end
 
-      def ==(step_definition)
-        regexp_source == step_definition.regexp_source
-      end
+        def to_hash
+          flags = ''
+          flags += 'm' if (@regexp.options & Regexp::MULTILINE) != 0
+          flags += 'i' if (@regexp.options & Regexp::IGNORECASE) != 0
+          flags += 'x' if (@regexp.options & Regexp::EXTENDED) != 0
+          {'source' => @regexp.source, 'flags' => flags}
+        end
 
-      def arguments_from(step_name)
-        args = RegexpArgumentMatcher.arguments_from(@regexp, step_name)
-        @rb_language.invoked_step_definition(regexp_source, file_colon_line) if args
-        args
-      end
+        def ==(step_definition)
+          regexp_source == step_definition.regexp_source
+        end
 
-      def invoke(args)
-        begin
-          args = @rb_language.execute_transforms(args)
-          @rb_language.current_world.cucumber_instance_exec(true, regexp_source, *args, &@proc)
-        rescue Cucumber::ArityMismatchError => e
-          e.backtrace.unshift(self.backtrace_line)
-          raise e
+        def arguments_from(step_name)
+          args = RegexpArgumentMatcher.arguments_from(@regexp, step_name)
+          @rb_language.invoked_step_definition(regexp_source, file_colon_line) if args
+          args
+        end
+
+        def invoke(args)
+          begin
+            args = @rb_language.execute_transforms(args)
+            @rb_language.current_world.cucumber_instance_exec(true, regexp_source, *args, &@proc)
+          rescue Cucumber::ArityMismatchError => e
+            e.backtrace.unshift(self.backtrace_line)
+            raise e
+          end
+        end
+
+        def backtrace_line
+          @proc.backtrace_line(regexp_source)
+        end
+
+        def file_colon_line
+          case @proc
+          when Proc
+            @proc.file_colon_line
+          when Symbol
+            ":#{@proc}"
+          end
+        end
+
+        def file
+          @file ||= file_colon_line.split(':')[0]
         end
       end
 
-      def backtrace_line
-        @proc.backtrace_line(regexp_source)
-      end
-
-      def file_colon_line
-        case @proc
-        when Proc
-          @proc.file_colon_line
-        when Symbol
-          ":#{@proc}"
+      class TurnipStyle < RegexpStyle
+        def initialize(rb_language, pattern, proc)
+          @pattern = pattern
+          regexp = parse_pattern(pattern)
+          super(rb_language, regexp, proc)
         end
-      end
 
-      def file
-        @file ||= file_colon_line.split(':')[0]
+        def regexp_source
+          @pattern.inspect
+        end
+
+        def invoke(args)
+          super args.compact
+        end
+
+        private
+        def parse_pattern(pattern)
+          p = Regexp.escape(pattern)
+          p = p.gsub(/\\\$\w+/, '(.*)') # Replace $var with (.*)
+
+          # turnip placeholders
+          p = p.gsub(/:\w+/, %{(?:"([^"]*)"|'([^']*)'|([[:alnum:]_-]+))})
+
+          # turnip alternate words
+          p = p.gsub(/([[:alpha:]]+)((\/[[:alpha:]]+)+)/) do
+            "(?:#{$1}#{$2.tr('/', '|')})"
+          end
+
+          # turnip optional words
+          p = p.gsub(/(\\\s)?\\\(([^)]+)\\\)(\\\s)?/) do
+            [$1, $2, $3].compact.map { |m| "(?:#{m})?" }.join
+          end
+
+          Regexp.new("^#{p}$")
+        end
       end
     end
+
   end
 end

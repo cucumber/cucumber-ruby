@@ -137,6 +137,49 @@ module Cucumber
         run_step "capture this: wow!"
       end
 
+      it "recognizes :turnip style placeholders" do
+        arg_value = "wow"
+        dsl.Given "capture this: :arg" do |arg|
+          expect(arg).to eq arg_value
+        end
+        run_step "capture this: wow"
+      end
+
+      it 'recognizes :turnip style placeholders in "quotes"' do
+
+        arg_value = "wow!"
+        dsl.Given "capture this: :arg" do |arg|
+          expect(arg).to eq arg_value
+        end
+
+        run_step 'capture this: "wow!"'
+      end
+
+      it 'handles turnip style optional words' do
+        count = 0
+        dsl.Given "there are (many) cucumbers" do
+          count += 1
+        end
+
+        run_step "there are cucumbers"
+        run_step "there are many cucumbers"
+
+        expect(count).to eq 2
+      end
+
+      it "handles turnip style alternative words" do
+        count = 0
+
+        dsl.Given "there are some/many cucumbers" do
+          count += 1
+        end
+
+        run_step "there are some cucumbers"
+        run_step "there are many cucumbers"
+
+        expect(count).to eq 2
+      end
+
       it "has a JSON representation of the signature" do
         expect(RbStepDefinition.new(rb, /I CAN HAZ (\d+) CUKES/i, lambda{}, {}).to_hash).to eq({ 'source' => "I CAN HAZ (\\d+) CUKES", 'flags' => 'i' })
       end

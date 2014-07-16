@@ -46,7 +46,7 @@ Feature: Turnip-style Placeholders in Step Definitions
         Scenario: failing         # features/using_placeholders.feature:2
           Given a step that fails # features/step_definitions/steps.rb:1
              (RuntimeError)
-            ./features/step_definitions/steps.rb:2:in "a step that :state"
+            ./features/step_definitions/steps.rb:2:in `"a step that :state"'
             features/using_placeholders.feature:3:in `Given a step that fails'
 
       Failing Scenarios:
