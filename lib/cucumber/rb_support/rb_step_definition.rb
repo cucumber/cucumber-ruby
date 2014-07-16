@@ -36,6 +36,20 @@ module Cucumber
           raise ArgumentError unless pattern.is_a?(String)
           p = Regexp.escape(pattern)
           p = p.gsub(/\\\$\w+/, '(.*)') # Replace $var with (.*)
+
+          # turnip placeholders
+          p = p.gsub(/:\w+/, %{("(?:[^"]*)"|'(?:[^']*)'|(?:[[:alnum:]_-]+))})
+
+          # turnip alternate words
+          p = p.gsub(/([[:alpha:]]+)((\/[[:alpha:]]+)+)/) do
+            "(?:#{$1}#{$2.tr('/', '|')})"
+          end
+
+          # turnip optional words
+          p = p.gsub(/(\\\s)?\\\(([^)]+)\\\)(\\\s)?/) do
+            [$1, $2, $3].compact.map { |m| "(?:#{m})?" }.join
+          end
+
           Regexp.new("^#{p}$")
         end
 
