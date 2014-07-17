@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: JSON output formatter
   In order to simplify processing of Cucumber features and results
   Developers should be able to consume features as JSON
@@ -201,7 +200,7 @@ Feature: JSON output formatter
 
       """
 
-  @spawn
+  @spawn @wip-jruby
   Scenario: DocString
     Given a file named "features/doc_string.feature" with:
       """
@@ -264,6 +263,7 @@ Feature: JSON output formatter
       ]
       """
 
+  @wip-new-core
   Scenario: embedding screenshot
     When I run `cucumber -b --format json features/embed.feature`
     Then it should pass with JSON:

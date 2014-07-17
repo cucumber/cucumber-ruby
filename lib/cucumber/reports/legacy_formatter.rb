@@ -907,20 +907,25 @@ module Cucumber
         private
 
         def step_exception(step, configuration)
-          return filtered_exception if @exception
+          return filtered_step_exception(step) if @exception
           return nil unless @status == :undefined && configuration.strict?
           begin
             raise Cucumber::Undefined.new(step.name)
           rescue => exception
             @exception = exception
-            filtered_exception
+            filtered_step_exception(step)
           end
         end
 
         def filtered_exception
-          BacktraceFilter.new(@exception).exception
+          BacktraceFilter.new(@exception.dup).exception
         end
 
+        def filtered_step_exception(step)
+          exception = filtered_exception
+          exception.backtrace << StepBacktraceLine.new(step).to_s
+          return exception
+        end
       end
 
     end
@@ -1052,9 +1057,7 @@ module Cucumber
           def print_exception(formatter)
             return unless exception
             raise exception if ENV['FAIL_FAST']
-            ex = exception.dup
-            ex.backtrace << StepBacktraceLine.new(step).to_s
-            formatter.exception(ex, status)
+            formatter.exception(exception, status)
           end
         end
 
