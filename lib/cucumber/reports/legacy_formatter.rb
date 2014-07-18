@@ -160,11 +160,10 @@ module Cucumber
         end
       end
 
-      # TODO: move to core
-      module Source
-        def self.for(test_node)
+      module TestStepPrinter
+        def self.for(test_step, result)
           collector = Collector.new
-          test_node.describe_source_to collector
+          test_step.describe_source_to collector, result
           collector.result.freeze
         end
 
@@ -175,12 +174,9 @@ module Cucumber
             @result = OpenStruct.new
           end
 
-          def before_hook(node, *args)
-            result.before_hook = node
-          end
-
-          def method_missing(name, node, *args)
-            result.send("#{name}=", node)
+          def method_missing(name, node, step_result, *args)
+            result[name] = node
+            result[:"#{name}_result"] = LegacyResultBuilder.new(step_result)
           end
         end
       end
@@ -193,35 +189,25 @@ module Cucumber
           Legacy::Ast::Comments.new(node.comments).accept(formatter)
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
           formatter.feature_name node.keyword, indented(node.name) # TODO: change the core's new AST to return name and description separately instead of this lumped-together field
-          @step_result = []
           self
         end
 
-        attr_reader :current_test_case_source
         attr_reader :current_test_step_source
 
         def before_test_case(test_case)
-          @test_case = test_case
-          @current_test_case_source = Source.for(test_case)
         end
 
         def before_test_step(test_step)
-          @current_test_step_source = Source.for(test_step)
         end
 
         def after_test_step(test_step, result)
+          @current_test_step_source = TestStepPrinter.for(test_step, result)
           test_step.describe_source_to(self, result)
           print_step
-          debug [:after_test_step, test_step.source.map(&:class), current_test_step_source.scenario && current_test_step_source.scenario.location.to_s]
-          @previous_test_step_background       = current_test_step_source.background       if current_test_step_source.background
-          @previous_test_step_scenario         = current_test_step_source.scenario         if current_test_step_source.scenario
-          @previous_test_step_scenario_outline = current_test_step_source.scenario_outline if current_test_step_source.scenario_outline
         end
 
         def after_test_case(*args)
-          debug [:after_test_case, @test_case.location.to_s]
-          if @step_result.empty?
-            @test_case.describe_source_to(self)
+          if current_test_step_source.step_result.nil?
             print_step_container
           end
           @child.after_test_case
@@ -237,14 +223,12 @@ module Cucumber
         end
 
         def after_step_hook(hook, result)
-          line = StepBacktraceLine.new(@current_step)
+          line = StepBacktraceLine.new(current_test_step_source.step)
           @child.after_step_hook LegacyResultBuilder.new(result).
             append_to_exception_backtrace(line)
         end
 
         def step(node, result)
-          @current_step = node
-          @step_result = [node, result]
         end
 
         def background(node, *)
@@ -258,11 +242,9 @@ module Cucumber
         end
 
         def examples_table(node, *)
-          @examples_table = node
         end
 
         def examples_table_row(node, *)
-          @examples_table_row = node
         end
 
         def feature(feature, *args)
@@ -277,76 +259,50 @@ module Cucumber
         private
 
         def print_step_container
-          print_hidden_background || print_background || print_scenario || print_examples_table_row
+          if current_test_step_source.background
+
+            if same_background_as_previous_test_case?
+              set_child_calling_before HiddenBackgroundPrinter.new(formatter, runtime, current_test_step_source.background)
+            else
+              set_child_calling_before BackgroundPrinter.new(formatter, runtime, current_test_step_source.background)
+            end
+
+          elsif current_test_step_source.scenario
+
+            set_child_calling_before ScenarioPrinter.new(formatter, runtime, current_test_step_source.scenario, @before_hook_result)
+
+          elsif current_test_step_source.examples_table_row
+            if current_test_step_source.examples_table
+              if current_test_step_source.scenario_outline
+                set_child_calling_before ScenarioOutlinePrinter.new(formatter, runtime, current_test_step_source.scenario_outline)
+              end
+              @child.examples_table(current_test_step_source.examples_table)
+            end
+            @child.examples_table_row(current_test_step_source.examples_table_row, @before_hook_result)
+          else
+            return
+          end
         end
 
         def same_background_as_previous_test_case?
           current_test_step_source.background == @previous_test_case_background
         end
 
-        def same_background_as_previous_test_step?
-          current_test_step_source.background == @previous_test_step_background
-        end
-
-        def print_hidden_background
-          return false unless current_test_step_source.background
-          return false unless same_background_as_previous_test_case?
-
-          set_child_calling_before HiddenBackgroundPrinter.new(formatter, runtime, current_test_step_source.background)
-          true
-        end
-
-        def print_background
-          return false unless current_test_step_source.background
-
-          unless same_background_as_previous_test_step?
-            set_child_calling_before(BackgroundPrinter.new(formatter, runtime, current_test_step_source.background))
-          end
-          true
-        end
-
-        def print_scenario
-          return false unless current_test_case_source.scenario
-          return false if current_test_case_source.scenario == @previous_test_step_scenario
-
-          set_child_calling_before(ScenarioPrinter.new(formatter, runtime, current_test_case_source.scenario, @before_hook_result))
-          true
-        end
-
-        def print_scenario_outline
-          return false unless current_test_case_source.scenario_outline
-          return false if @child.is_a?(ScenarioOutlinePrinter) && @child.node == current_test_case_source.scenario_outline
-
-          set_child_calling_before(ScenarioOutlinePrinter.new(formatter, runtime, current_test_case_source.scenario_outline))
-          true
-        end
-
-        def print_examples_table
-          return unless @examples_table
-          print_scenario_outline
-          @child.examples_table(@examples_table)
-          @examples_table = nil
-        end
-
-        def print_examples_table_row
-          return unless @examples_table_row
-          print_examples_table
-          @child.examples_table_row(@examples_table_row, @before_hook_result)
-          @examples_table_row = nil
-        end
-
         def print_step
-          return unless @step_result.any?
+          return unless current_test_step_source.step_result
           print_step_container
-          debug [:print_step, @step_result.map(&:class), @child.class]
-          @child.step(*@step_result)
-          @step_result = []
+          @child.step(current_test_step_source.step, current_test_step_source.step_result)
         end
 
         def set_child_calling_before(child)
+          if @child
+            if @child.node == child.node
+              return
+            else
+            end
+          end
           @child.after if @child
           @child = child.before
-          debug [:set_child, @child.class]
         end
 
         def indented(nasty_old_conflation_of_name_and_description)
@@ -359,19 +315,21 @@ module Cucumber
         end
       end
 
-      BackgroundPrinter = Struct.new(:formatter, :runtime, :background) do
+      BackgroundPrinter = Struct.new(:formatter, :runtime, :node) do
 
         def before
-          formatter.before_background background
-          formatter.background_name background.keyword, background.name, background.location.to_s, indent.of(background)
+          formatter.before_background node
+          formatter.background_name node.keyword, node.name, node.location.to_s, indent.of(node)
           self
         end
 
         def step(step, result)
+          return if @last_step == step
+          @last_step = step
           @child ||= StepsPrinter.new(formatter).before
-          step_invocation = LegacyResultBuilder.new(result).step_invocation(step_match(step), step, indent, background, runtime.configuration)
+          step_invocation = result.step_invocation(step_match(step), step, indent, node, runtime.configuration)
           runtime.step_visited step_invocation
-          @child.step_invocation step_invocation, runtime, background
+          @child.step_invocation step_invocation, runtime, node
         end
 
         def after_step_hook(result)
@@ -380,7 +338,7 @@ module Cucumber
 
         def after
           @child.after if @child
-          formatter.after_background(background)
+          formatter.after_background(node)
           self
         end
 
@@ -393,26 +351,28 @@ module Cucumber
         end
 
         def indent
-          @indent ||= Indent.new(background)
+          @indent ||= Indent.new(node)
         end
       end
 
       # Printer to handle background steps for anything but the first scenario in a
       # feature. These steps should not be printed, but their results still need to
       # be recorded.
-      class HiddenBackgroundPrinter < Struct.new(:formatter, :runtime, :background)
+      class HiddenBackgroundPrinter < Struct.new(:formatter, :runtime, :node)
 
         def step(step, result)
-          step_invocation = LegacyResultBuilder.new(result).
-            step_invocation(step_match(step), step, indent, background, runtime.configuration)
+          step_invocation = result.step_invocation(step_match(step), step, indent, node, runtime.configuration)
           runtime.step_visited step_invocation
         end
 
+        def before_hook(*);end
+        def after_hook(*);end
         def after_step_hook(*);end
         def examples_table(*);end
         def examples_table_row(*);end
         def before;self;end
         def after;self;end
+        def after_test_case(*);end
 
         private
 
@@ -423,7 +383,7 @@ module Cucumber
         end
 
         def indent
-          @indent ||= Indent.new(background)
+          @indent ||= Indent.new(node)
         end
       end
 
@@ -437,10 +397,11 @@ module Cucumber
         end
 
         def step(step, result)
+          return if @last_step == step
           @child ||= StepsPrinter.new(formatter).before
+          @last_step = step
           @last_step_result = result
-          step_invocation = LegacyResultBuilder.new(result).
-            step_invocation(step_match(step), step, indent, background = nil, runtime.configuration)
+          step_invocation = result.step_invocation(step_match(step), step, indent, background = nil, runtime.configuration)
           runtime.step_visited step_invocation
           @child.step_invocation step_invocation, runtime
         end
@@ -462,7 +423,7 @@ module Cucumber
           @child.after if @child
           # TODO - the last step result might not accurately reflect the
           # overall scenario result.
-          scenario = LegacyResultBuilder.new(last_step_result).scenario(node.name, node.location)
+          scenario = last_step_result.scenario(node.name, node.location)
           @after_hook_result.describe_exception_to(formatter) if @after_hook_result
           formatter.after_feature_element(scenario)
           @done = true
@@ -472,7 +433,7 @@ module Cucumber
         private
 
         def last_step_result
-          @last_step_result || Core::Test::Result::Unknown.new
+          @last_step_result || LegacyResultBuilder.new(Core::Test::Result::Unknown.new)
         end
 
         def step_match(step)
@@ -590,7 +551,7 @@ module Cucumber
           @child.after if @child
           # TODO - the last step result might not accurately reflect the
           # overall scenario result.
-          scenario_outline = LegacyResultBuilder.new(last_step_result).scenario_outline(node.name, node.location)
+          scenario_outline = last_step_result.scenario_outline(node.name, node.location)
           formatter.after_feature_element(scenario_outline)
           self
         end
@@ -743,10 +704,11 @@ module Cucumber
         end
 
         def step(step, result)
-          step_invocation = LegacyResultBuilder.new(result).
-            step_invocation(step_match(step), step, :indent_not_needed, background = nil, runtime.configuration)
+          return if @last_step == step
+          @last_step = step
+          step_invocation = result.step_invocation(step_match(step), step, :indent_not_needed, background = nil, runtime.configuration)
           runtime.step_visited step_invocation
-          @failed_step = step_invocation if result.failed?
+          @failed_step = step_invocation if result.status == :failed
           @status = step_invocation.status unless @status == :failed
         end
 
@@ -852,6 +814,7 @@ module Cucumber
       end
 
       class LegacyResultBuilder
+        attr_reader :status
         def initialize(result)
           result.describe_to(self)
         end
