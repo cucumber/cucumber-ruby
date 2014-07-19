@@ -175,8 +175,8 @@ module Cucumber
           end
 
           def method_missing(name, node, step_result, *args)
-            result[name] = node
-            result[:"#{name}_result"] = LegacyResultBuilder.new(step_result)
+            result.send "#{name}=", node
+            result.send "#{name}_result=", LegacyResultBuilder.new(step_result)
           end
         end
       end
