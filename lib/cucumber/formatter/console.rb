@@ -87,6 +87,11 @@ module Cucumber
 
         @io.puts(format_duration(features.duration)) if features && features.duration
 
+        if runtime.configuration.randomize?
+          @io.puts
+          @io.puts "Randomized with seed #{runtime.configuration.seed}"
+        end
+
         @io.flush
       end
 

@@ -274,7 +274,7 @@ module Cucumber
       name_regexps = @configuration.name_regexps
       tag_limits = @configuration.tag_limits
       [].tap do |filters|
-        filters << [Cucumber::Runtime::Randomizer, []] if @configuration.randomize?
+        filters << [Cucumber::Runtime::Randomizer, [@configuration.seed]] if @configuration.randomize?
         filters << [Cucumber::Runtime::TagLimits::Filter, [tag_limits]] if tag_limits.any?
         filters << [Cucumber::Core::Test::TagFilter, [tag_expressions]]
         filters << [Cucumber::Core::Test::NameFilter, [name_regexps]]
@@ -284,9 +284,10 @@ module Cucumber
     end
 
     class Randomizer
-      def initialize(receiver)
+      def initialize(seed, receiver)
         @receiver = receiver
         @test_cases = []
+        @seed = seed
       end
 
       def test_case(test_case)
@@ -294,11 +295,20 @@ module Cucumber
       end
 
       def done
-        @test_cases.shuffle.each do |test_case|
+        shuffled_test_cases.each do |test_case|
           test_case.describe_to(@receiver)
         end
         @receiver.done
       end
+
+      private
+
+      def shuffled_test_cases
+        @test_cases.shuffle(random: Random.new(seed))
+      end
+
+      attr_reader :seed
+      private :seed
     end
 
     class Quit

@@ -47,6 +47,7 @@ module Cucumber
                                   PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG,
                                   '-l', '--lines', '--port',
                                   '-I', '--snippet-type']
+      ORDER_TYPES = %w{defined random}
 
       def self.parse(args, out_stream, error_stream, options = {})
         new(out_stream, error_stream, options).parse!(args)
@@ -225,8 +226,17 @@ module Cucumber
           opts.on("--dotcucumber DIR", "Write metadata to DIR") do |dir|
             @options[:dotcucumber] = dir
           end
-          opts.on("--randomize", "Run scenarios in random order") do
-            @options[:randomize] = true
+          opts.on("--order TYPE[:SEED]", "Run examples in the specified order. Available types:",
+            *<<-TEXT.split("\n")) do |order|
+  [defined]     Run scenarios in the order they were defined (default).
+  [random]      Shuffle scenarios before running.
+Specify SEED to reproduce the shuffling from a previous run.
+  e.g. --order random:5738
+TEXT
+            @options[:order], @options[:seed] = *order.split(":")
+            unless ORDER_TYPES.include?(@options[:order])
+              fail "'#{@options[:order]}' is not a recognised order type. Please use one of #{ORDER_TYPES.join(", ")}."
+            end
           end
           opts.on_tail("--version", "Show version.") do
             @out_stream.puts Cucumber::VERSION

@@ -1,9 +1,13 @@
 Feature: Randomize
 
-  Use the `--randomize` switch to run scenarios in random order.
+  Use the `--order random` switch to run scenarios in random order.
 
   This is especially helpful for detecting situations where you have state
   leaking between scenarios, which can cause flickering or fragile tests.
+
+  If you do find a randmon run that exposes dependencies between your tests,
+  you can reproduce that run by using the seed that's printed at the end of
+  the test run.
 
   Background:
     Given a file named "features/bad_practice.feature" with:
@@ -33,6 +37,10 @@ Feature: Randomize
 
   @spawn
   Scenario: Run scenarios randomized
-    When I run `cucumber --randomize` 4 times
-    Then it should fail at least once
+    When I run `cucumber --order random:41515`
+    Then it should fail
+    And the stdout should contain:
+      """
+      Randomized with seed 41515
+      """
 
