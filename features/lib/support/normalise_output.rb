@@ -19,8 +19,10 @@ module NormaliseArubaOutput
       elements = feature.fetch('elements') { [] }
       elements.each do |scenario|
         scenario['steps'].each do |step|
-          expect(step['result']['duration']).to be >= 0
-          step['result']['duration'] = 1
+          if step['result']
+            expect(step['result']['duration']).to be >= 0
+            step['result']['duration'] = 1
+          end
         end
       end
     end
