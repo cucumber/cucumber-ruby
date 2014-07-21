@@ -262,19 +262,19 @@ module Cucumber
           if current_test_step_source.background
 
             if same_background_as_previous_test_case?
-              set_child_calling_before HiddenBackgroundPrinter.new(formatter, runtime, current_test_step_source.background)
+              switch_to_child HiddenBackgroundPrinter.new(formatter, runtime, current_test_step_source.background)
             else
-              set_child_calling_before BackgroundPrinter.new(formatter, runtime, current_test_step_source.background)
+              switch_to_child BackgroundPrinter.new(formatter, runtime, current_test_step_source.background)
             end
 
           elsif current_test_step_source.scenario
 
-            set_child_calling_before ScenarioPrinter.new(formatter, runtime, current_test_step_source.scenario, @before_hook_result)
+            switch_to_child ScenarioPrinter.new(formatter, runtime, current_test_step_source.scenario, @before_hook_result)
 
           elsif current_test_step_source.examples_table_row
             if current_test_step_source.examples_table
               if current_test_step_source.scenario_outline
-                set_child_calling_before ScenarioOutlinePrinter.new(formatter, runtime, current_test_step_source.scenario_outline)
+                switch_to_child ScenarioOutlinePrinter.new(formatter, runtime, current_test_step_source.scenario_outline)
               end
               @child.examples_table(current_test_step_source.examples_table)
             end
@@ -294,13 +294,8 @@ module Cucumber
           @child.step(current_test_step_source.step, current_test_step_source.step_result)
         end
 
-        def set_child_calling_before(child)
-          if @child
-            if @child.node == child.node
-              return
-            else
-            end
-          end
+        def switch_to_child(child)
+          return if @child && @child.node == child.node
           @child.after if @child
           @child = child.before
         end
