@@ -73,6 +73,13 @@ Feature: Rerun formatter
     features/one_passing_one_failing.feature:9
     """
 
+  Scenario: Handle examples using expand with the rerun formatter
+    When I run `cucumber features/one_passing_one_failing.feature --expand -r features -f rerun`
+    Then it should fail with:
+    """
+    features/one_passing_one_failing.feature:9
+    """
+
   Scenario: Handle scenario outline with passing example
     When I run `cucumber features/passing_outline.feature -r features -f rerun`
     Then it should pass
