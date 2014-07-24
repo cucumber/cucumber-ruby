@@ -30,6 +30,7 @@ module Cucumber
         @header_red = nil
         @delayed_messages = []
         @img_id = 0
+        @text_id = 0
         @inside_outline = false
       end
 
@@ -37,6 +38,8 @@ module Cucumber
         case(mime_type)
         when /^image\/(png|gif|jpg|jpeg)/
           embed_image(src, label)
+        when /^text\/plain/
+          embed_text(src, label)
         end
       end
 
@@ -46,6 +49,14 @@ module Cucumber
         @builder.span(:class => 'embed') do |pre|
           pre << %{<a href="" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">#{label}</a><br>&nbsp;
           <img id="#{id}" style="display: none" src="#{src}"/>}
+        end
+      end
+
+      def embed_text(src, label)
+        id = "text_#{@text_id}"
+        @text_id += 1
+        @builder.span(:class => 'embed') do |pre|
+          pre << %{<a id="#{id}" href="#{src}" title="#{label}">#{label}</a>}
         end
       end
 
