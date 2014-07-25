@@ -93,6 +93,10 @@ module Cucumber
           @gf.embedding(mime_type, data)
         end
       end
+
+      def puts(message)
+        @gf.write(message)
+      end
     end
   end
 end
