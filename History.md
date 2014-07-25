@@ -34,6 +34,7 @@ all.
 ## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.15...v1.3.x-bugfix)
 
 * Add RSpec 3 test double support ([689](https://github.com/cucumber/cucumber/pull/689) @cyphactor)
+* Fix bug with rerun formatter and `--expand` option ([710](https://github.com/cucumber/cucumber/pull/710) @brasmusson)
 
 ## [v1.3.15](https://github.com/cucumber/cucumber/compare/v1.3.14...v1.3.15)
 
