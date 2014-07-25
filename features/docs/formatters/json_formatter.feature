@@ -328,7 +328,6 @@ Feature: JSON output formatter
 
     """
 
-  @wip-new-core
   Scenario: scenario outline
     When I run `cucumber --format json features/outline.feature`
     Then it should fail with JSON:
@@ -355,7 +354,7 @@ Feature: JSON output formatter
                 "name": "this step <status>",
                 "line": 4,
                 "match": {
-                  "location": "features/step_definitions/steps.rb:1"
+                  "location": "features/outline.feature:4"
                 }
               }
             ],
