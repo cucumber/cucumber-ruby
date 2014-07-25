@@ -66,6 +66,7 @@ module Cucumber
       def_delegators :formatter,
         :embed,
         :ask
+        :puts
 
       def before_test_case(test_case)
         printer.before_test_case(test_case)
@@ -86,6 +87,10 @@ module Cucumber
 
       def puts(message)
         printer.puts(message)
+      end
+
+      def embed(src, mime_type, label)
+        printer.embed(src, mime_type, label)
       end
 
       def done
@@ -160,6 +165,10 @@ module Cucumber
           @child.puts(message)
         end
 
+        def embed(src, mime_type, label)
+          @child.embed(src, mime_type, label)
+        end
+
         private
 
         def timer
@@ -188,6 +197,13 @@ module Cucumber
         end
       end
 
+      Embedding = Struct.new(:src, :mime_type, :label) do
+
+        def send_to_formatter(formatter)
+          formatter.embed(src, mime_type, label)
+        end
+      end
+
       FeaturePrinter = Struct.new(:formatter, :runtime, :node) do
         include Debug
 
@@ -197,6 +213,7 @@ module Cucumber
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
           formatter.feature_name node.keyword, indented(node.name) # TODO: change the core's new AST to return name and description separately instead of this lumped-together field
           @delayed_messages = []
+          @delayed_embeddings = []
           self
         end
 
@@ -218,6 +235,7 @@ module Cucumber
           if current_test_step_source.step_result.nil?
             print_step_container
             @delayed_messages = []
+            @delayed_embeddings = []
           end
           @child.after_test_case
           @previous_test_case_background = @current_test_case_background
@@ -269,6 +287,10 @@ module Cucumber
           @delayed_messages << message
         end
 
+        def embed(src, mime_type, label)
+          @delayed_embeddings << Embedding.new(src, mime_type, label)
+        end
+
         private
 
         def print_step_container
@@ -306,6 +328,14 @@ module Cucumber
           print_step_container
           @child.step(current_test_step_source.step, current_test_step_source.step_result)
           print_messages
+          print_embeddings
+        end
+
+        def print_embeddings
+          @delayed_embeddings.each do |embedding|
+            embedding.send_to_formatter(formatter)
+          end
+          @delayed_embeddings = []
         end
 
         def print_messages
