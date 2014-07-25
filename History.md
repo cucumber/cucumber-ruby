@@ -11,6 +11,8 @@ all.
 ### New features
 
 * Better snippet comment ([579](https://github.com/cucumber/cucumber/pull/579) Jeff Nyman)
+* Random scenario ordering with `--order random`
+* Embed plain text ([712](https://github.com/cucumber/cucumber/pull/712) @bingwei
 
 ### Features removed
 
