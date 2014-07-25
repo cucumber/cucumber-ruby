@@ -256,6 +256,20 @@ module Cucumber
 
           it { expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq "snapshot.jpeg" }
         end
+        
+        describe "with a step that embeds a text" do
+          define_steps do
+            Given(/log/) { embed('log.txt', 'text/plain') }
+          end
+
+          define_feature(<<-FEATURE)
+          Feature:
+            Scenario:
+              Given log
+            FEATURE
+
+          it { expect(@doc.at('a#text_0')['href'].to_s).to eq "log.txt" }
+        end
 
         describe "with an undefined Given step then an undefined And step" do
           define_feature(<<-FEATURE)

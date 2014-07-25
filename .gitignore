@@ -29,3 +29,4 @@ Gemfile.lock
 tags
 features/.cucumber/stepdefs.json
 .ruby-version
+.project
