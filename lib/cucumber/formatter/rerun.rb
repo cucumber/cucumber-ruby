@@ -67,10 +67,14 @@ module Cucumber
       def before_examples(*args)
         @header_row = true
         @in_examples = true
+        @current_example_line = nil
       end
 
       def after_examples(*args)
         @in_examples = false
+        if @current_example_line and @rerun
+          @lines << @current_example_line
+        end
       end
 
       def before_table_row(table_row)
@@ -79,6 +83,15 @@ module Cucumber
 
       def step_name(keyword, step_match, status, source_indent, background, file_colon_line)
         @rerun = true if [:failed, :pending, :undefined].index(status)
+      end
+
+      def scenario_name(keyword, name, file_colon_line, source_indent)
+        return unless @in_examples
+        if @current_example_line and @rerun
+          @lines << @current_example_line
+        end
+        @rerun = false
+        @current_example_line = file_colon_line.split(':')[1]
       end
 
     private
