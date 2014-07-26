@@ -936,7 +936,7 @@ module Cucumber
 
     class StepBacktraceLine < Struct.new(:step)
       def to_s
-        "#{step.location}:in `#{step.keyword}#{step.name}'"
+        "#{step.location}:in `#{step.keyword}#{step.gherkin_statement.name}'"
       end
     end
 
