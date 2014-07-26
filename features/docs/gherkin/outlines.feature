@@ -1,4 +1,3 @@
-@wip-new-core
 @spawn
 Feature: Scenario outlines
 
@@ -44,6 +43,7 @@ Feature: Scenario outlines
       Given(/^failing without a table$/) { raise RuntimeError }
       """
 
+  @wip-new-core
   Scenario: Run scenario outline with filtering on outline name
     When I run `cucumber -q features/outline_sample.feature`
     Then it should fail with:
@@ -76,6 +76,7 @@ Feature: Scenario outlines
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
       """
 
+  @wip-new-core
   Scenario: Run scenario outline steps only
     When I run `cucumber -q features/outline_sample.feature:7`
     Then it should fail with:
@@ -107,6 +108,7 @@ Feature: Scenario outlines
 
       """
 
+  @wip-new-core
   Scenario: Run single failing scenario outline table row
     When I run `cucumber -q features/outline_sample.feature:12`
     Then it should fail with:
@@ -134,6 +136,7 @@ Feature: Scenario outlines
 
   # There are 10 characters in the progress, but only 8 reported steps. Needs investigation.
   # Looks like we're outputting too many characters.
+  @wip-new-core
   Scenario: Run all with progress formatter
     When I run `cucumber -q --format progress features/outline_sample.feature`
     Then it should fail with:
