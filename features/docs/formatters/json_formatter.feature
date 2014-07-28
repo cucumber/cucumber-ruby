@@ -61,6 +61,15 @@ Feature: JSON output formatter
           And I print from step definition
 
       """
+    And a file named "features/print_from_step_definition.feature" with:
+      """
+      Feature: A print from step definition feature
+
+        Scenario:
+          Given I print from step definition
+          And I print from step definition
+
+      """
 
   # Need to investigate why this won't pass in-process. error_message doesn't get det?
   @spawn
@@ -474,6 +483,64 @@ Feature: JSON output formatter
                 "line": 5,
                 "output": [
                   "from step definition"
+                ],
+                "match": {
+                  "location": "features/step_definitions/json_steps.rb:6"
+                },
+                "result": {
+                  "status": "passed",
+                  "duration": 1
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    """
+  Scenario: print from step definition
+    When I run `cucumber --format json features/print_from_step_definition.feature`
+    Then it should pass with JSON:
+    """
+    [
+      {
+        "uri": "features/print_from_step_definition.feature",
+        "id": "a-print-from-step-definition-feature",
+        "keyword": "Feature",
+        "name": "A print from step definition feature",
+        "line": 1,
+        "description": "",
+        "elements": [
+          {
+            "id": "a-print-from-step-definition-feature;",
+            "keyword": "Scenario",
+            "name": "",
+            "line": 3,
+            "description": "",
+            "type": "scenario",
+            "steps": [
+              {
+                "keyword": "Given ",
+                "name": "I print from step definition",
+                "line": 4,
+                "output": [
+		  "from step definition"
+                ],
+                "match": {
+                  "location": "features/step_definitions/json_steps.rb:6"
+                },
+                "result": {
+                  "status": "passed",
+                  "duration": 1
+                }
+              },
+              {
+                "keyword": "And ",
+                "name": "I print from step definition",
+                "line": 5,
+                "output": [
+		  "from step definition"
                 ],
                 "match": {
                   "location": "features/step_definitions/json_steps.rb:6"
