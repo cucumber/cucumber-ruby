@@ -1,4 +1,6 @@
-## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.15...v1.3.x-bugfix)
+## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.16...v1.3.x-bugfix)
+
+## [v1.3.16](https://github.com/cucumber/cucumber/compare/v1.3.15...v1.3.16)
 
 * Add RSpec 3 test double support ([689](https://github.com/cucumber/cucumber/pull/689) @cyphactor)
 * Fix bug with rerun formatter and `--expand` option ([710](https://github.com/cucumber/cucumber/pull/710) @brasmusson)
