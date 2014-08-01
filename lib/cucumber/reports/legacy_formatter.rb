@@ -303,7 +303,8 @@ module Cucumber
             @child.examples_table(current_test_step_source.examples_table)
             @child.examples_table_row(current_test_step_source.examples_table_row, @before_hook_result)
           else
-            return
+            # We don't expect this to ever happen!
+            raise 'unknown step container'
           end
         end
 
