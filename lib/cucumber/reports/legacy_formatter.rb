@@ -295,28 +295,32 @@ module Cucumber
 
         def print_step_container
           if current_test_step_source.background
-
-            if same_background_as_previous_test_case?
-              switch_to_child HiddenBackgroundPrinter.new(formatter, runtime, current_test_step_source.background)
-            else
-              switch_to_child BackgroundPrinter.new(formatter, runtime, current_test_step_source.background)
-            end
-
+            switch_to_background
           elsif current_test_step_source.scenario
-
-            switch_to_child ScenarioPrinter.new(formatter, runtime, current_test_step_source.scenario, @before_hook_result)
-
-          elsif current_test_step_source.examples_table_row
-            if current_test_step_source.examples_table
-              if current_test_step_source.scenario_outline
-                switch_to_child ScenarioOutlinePrinter.new(formatter, runtime, current_test_step_source.scenario_outline)
-              end
-              @child.examples_table(current_test_step_source.examples_table)
-            end
+            switch_to_scenario
+          elsif current_test_step_source.scenario_outline
+            switch_to_scenario_outline
+            @child.examples_table(current_test_step_source.examples_table)
             @child.examples_table_row(current_test_step_source.examples_table_row, @before_hook_result)
           else
             return
           end
+        end
+
+        def switch_to_background
+          if same_background_as_previous_test_case?
+            switch_to_child HiddenBackgroundPrinter.new(formatter, runtime, current_test_step_source.background)
+          else
+            switch_to_child BackgroundPrinter.new(formatter, runtime, current_test_step_source.background)
+          end
+        end
+
+        def switch_to_scenario
+          switch_to_child ScenarioPrinter.new(formatter, runtime, current_test_step_source.scenario, @before_hook_result)
+        end
+
+        def switch_to_scenario_outline
+          switch_to_child ScenarioOutlinePrinter.new(formatter, runtime, current_test_step_source.scenario_outline)
         end
 
         def same_background_as_previous_test_case?
