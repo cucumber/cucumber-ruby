@@ -187,7 +187,7 @@ module Cucumber
           attr_reader :result
 
           def initialize
-            @result = OpenStruct.new
+            @result = StepSource.new
           end
 
           def method_missing(name, node, step_result, *args)
@@ -195,6 +195,22 @@ module Cucumber
             result.send "#{name}_result=", LegacyResultBuilder.new(step_result)
           end
         end
+
+        require 'ostruct'
+        class StepSource < OpenStruct
+
+          def step_invocation(node, indent, runtime)
+            step_result.step_invocation(step_match(runtime), step, indent, node, runtime.configuration)
+          end
+
+          def step_match(runtime)
+            runtime.step_match(step.name)
+          rescue Cucumber::Undefined
+            NoStepMatch.new(step, step.name)
+          end
+
+        end
+
       end
 
       Embedding = Struct.new(:src, :mime_type, :label) do
@@ -325,7 +341,7 @@ module Cucumber
             @child.examples_table_row(current_test_step_source.examples_table_row, @before_hook_result)
           end
 
-          @child.step(current_test_step_source.step, current_test_step_source.step_result)
+          @child.step(current_test_step_source)
           print_messages
           print_embeddings
         end
@@ -368,11 +384,12 @@ module Cucumber
           self
         end
 
-        def step(step, result)
+        def step(source)
+          step, result = source.step, source.step_result
           return if @last_step == step
           @last_step = step
           @child ||= StepsPrinter.new(formatter).before
-          step_invocation = result.step_invocation(step_match(step), step, indent, node, runtime.configuration)
+          step_invocation = source.step_invocation(node, indent, runtime)
           runtime.step_visited step_invocation
           @child.step_invocation step_invocation, runtime, node
         end
@@ -389,12 +406,6 @@ module Cucumber
 
         private
 
-        def step_match(step)
-          runtime.step_match(step.name)
-        rescue Cucumber::Undefined
-          NoStepMatch.new(step, step.name)
-        end
-
         def indent
           @indent ||= Indent.new(node)
         end
@@ -405,8 +416,8 @@ module Cucumber
       # be recorded.
       class HiddenBackgroundPrinter < Struct.new(:formatter, :runtime, :node)
 
-        def step(step, result)
-          step_invocation = result.step_invocation(step_match(step), step, indent, node, runtime.configuration)
+        def step(source)
+          step_invocation = source.step_invocation(node, indent, runtime)
           runtime.step_visited step_invocation
         end
 
@@ -420,12 +431,6 @@ module Cucumber
         def after_test_case(*);end
 
         private
-
-        def step_match(step)
-          runtime.step_match(step.name)
-        rescue Cucumber::Undefined
-          NoStepMatch.new(step, step.name)
-        end
 
         def indent
           @indent ||= Indent.new(node)
@@ -441,12 +446,13 @@ module Cucumber
           self
         end
 
-        def step(step, result)
+        def step(source)
+          step, result = source.step, source.step_result
           return if @last_step == step
           @child ||= StepsPrinter.new(formatter).before
           @last_step = step
           @last_step_result = result
-          step_invocation = result.step_invocation(step_match(step), step, indent, background = nil, runtime.configuration)
+          step_invocation = source.step_invocation(background = nil, indent, runtime)
           runtime.step_visited step_invocation
           @child.step_invocation step_invocation, runtime
         end
@@ -479,12 +485,6 @@ module Cucumber
 
         def last_step_result
           @last_step_result || LegacyResultBuilder.new(Core::Test::Result::Unknown.new)
-        end
-
-        def step_match(step)
-          runtime.step_match(step.name)
-        rescue Cucumber::Undefined
-          NoStepMatch.new(step, step.name)
         end
 
         def indent
@@ -574,9 +574,10 @@ module Cucumber
           @child.after_hook(result)
         end
 
-        def step(node, result)
+        def step(source)
+          node, result = source.step, source.step_result
           @last_step_result = result
-          @child.step(node, result)
+          @child.step(source)
         end
 
         def examples_table(examples_table)
@@ -748,10 +749,11 @@ module Cucumber
           @after_hook_result = result
         end
 
-        def step(step, result)
+        def step(source)
+          step, result = source.step, source.step_result
           return if @last_step == step
           @last_step = step
-          step_invocation = result.step_invocation(step_match(step), step, :indent_not_needed, background = nil, runtime.configuration)
+          step_invocation = source.step_invocation(background = nil, :indent_not_needed, runtime)
           runtime.step_visited step_invocation
           @failed_step = step_invocation if result.status == :failed
           @status = step_invocation.status unless @status == :failed
@@ -784,12 +786,6 @@ module Cucumber
         end
 
         private
-
-        def step_match(step)
-          runtime.step_match(step.name)
-        rescue Cucumber::Undefined
-          NoStepMatch.new(step, step.name)
-        end
 
         def legacy_table_row
           case node
