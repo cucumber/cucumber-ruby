@@ -233,7 +233,7 @@ module Cucumber
 
         def after_test_case(*args)
           if current_test_step_source.step_result.nil?
-            print_step_container
+            switch_step_container
             @delayed_messages = []
             @delayed_embeddings = []
           end
@@ -292,45 +292,39 @@ module Cucumber
         end
 
         private
+        def switch_step_container
+          switch_to_child select_step_container(current_test_step_source)
+        end
 
-        def print_step_container
-          if current_test_step_source.background
-            switch_to_background
-          elsif current_test_step_source.scenario
-            switch_to_scenario
-          elsif current_test_step_source.scenario_outline
-            switch_to_scenario_outline
-            @child.examples_table(current_test_step_source.examples_table)
-            @child.examples_table_row(current_test_step_source.examples_table_row, @before_hook_result)
+        def select_step_container(source)
+          if source.background
+            if same_background_as_previous_test_case?(source)
+              HiddenBackgroundPrinter.new(formatter, runtime, source.background)
+            else
+              BackgroundPrinter.new(formatter, runtime, source.background)
+            end
+          elsif source.scenario
+            ScenarioPrinter.new(formatter, runtime, source.scenario, @before_hook_result)
+          elsif source.scenario_outline
+            ScenarioOutlinePrinter.new(formatter, runtime, source.scenario_outline)
           else
-            # We don't expect this to ever happen!
             raise 'unknown step container'
           end
         end
 
-        def switch_to_background
-          if same_background_as_previous_test_case?
-            switch_to_child HiddenBackgroundPrinter.new(formatter, runtime, current_test_step_source.background)
-          else
-            switch_to_child BackgroundPrinter.new(formatter, runtime, current_test_step_source.background)
-          end
-        end
-
-        def switch_to_scenario
-          switch_to_child ScenarioPrinter.new(formatter, runtime, current_test_step_source.scenario, @before_hook_result)
-        end
-
-        def switch_to_scenario_outline
-          switch_to_child ScenarioOutlinePrinter.new(formatter, runtime, current_test_step_source.scenario_outline)
-        end
-
-        def same_background_as_previous_test_case?
-          current_test_step_source.background == @previous_test_case_background
+        def same_background_as_previous_test_case?(source)
+          source.background == @previous_test_case_background
         end
 
         def print_step
           return unless current_test_step_source.step_result
-          print_step_container
+          switch_step_container
+
+          if current_test_step_source.scenario_outline
+            @child.examples_table(current_test_step_source.examples_table)
+            @child.examples_table_row(current_test_step_source.examples_table_row, @before_hook_result)
+          end
+
           @child.step(current_test_step_source.step, current_test_step_source.step_result)
           print_messages
           print_embeddings
