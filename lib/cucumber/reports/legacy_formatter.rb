@@ -351,7 +351,7 @@ module Cucumber
         end
 
         def switch_to_child(child)
-          return if @child && @child.node == child.node
+          return if @child == child
           @child.after if @child
           @child = child.before
         end
