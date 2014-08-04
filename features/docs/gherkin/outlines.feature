@@ -70,7 +70,7 @@ Feature: Scenario outlines
             | passing | passing     |
 
       Failing Scenarios:
-      cucumber features/outline_sample.feature:5
+      cucumber features/outline_sample.feature:12
 
       5 scenarios (1 failed, 1 undefined, 3 passed)
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
@@ -100,7 +100,7 @@ Feature: Scenario outlines
             | passing | passing     |
 
       Failing Scenarios:
-      cucumber features/outline_sample.feature:5
+      cucumber features/outline_sample.feature:12
 
       4 scenarios (1 failed, 1 undefined, 2 passed)
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
@@ -125,7 +125,7 @@ Feature: Scenario outlines
             features/outline_sample.feature:6:in `Given <state> without a table'
 
       Failing Scenarios:
-      cucumber features/outline_sample.feature:5
+      cucumber features/outline_sample.feature:12
 
       1 scenario (1 failed)
       2 steps (1 failed, 1 skipped)
@@ -147,7 +147,7 @@ Feature: Scenario outlines
       features/outline_sample.feature:6:in `Given <state> without a table'
 
       Failing Scenarios:
-      cucumber features/outline_sample.feature:5
+      cucumber features/outline_sample.feature:12
 
       5 scenarios (1 failed, 1 undefined, 3 passed)
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
