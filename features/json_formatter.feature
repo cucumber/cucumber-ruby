@@ -72,6 +72,23 @@ Feature: JSON output formatter
           And I print from step definition
 
       """
+    And a file named "features/outline.feature" with:
+      """
+      Feature: An outline feature
+
+        Scenario Outline: outline
+          Given a <type> step
+
+          Examples: examples1
+            |  type   |
+            | passing |
+            | failing |
+
+          Examples: examples2
+            |  type   |
+            | passing |
+
+      """
 
   # Need to investigate why this won't pass in-process. error_message doesn't get det?
   @spawn
@@ -393,6 +410,184 @@ Feature: JSON output formatter
                 ],
                 "match": {
                   "location": "features/step_definitions/steps.rb:34"
+                },
+                "result": {
+                  "status": "passed",
+                  "duration": 1
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    """
+  @spawn
+  Scenario: scenario outline
+    When I run `cucumber --format json features/outline.feature`
+    Then it should fail with JSON:
+    """
+    [
+      {
+        "uri": "features/outline.feature",
+        "id": "an-outline-feature",
+        "keyword": "Feature",
+        "name": "An outline feature",
+        "line": 1,
+        "description": "",
+        "elements": [
+          {
+            "id": "an-outline-feature;outline",
+            "keyword": "Scenario Outline",
+            "name": "outline",
+            "line": 3,
+            "description": "",
+            "type": "scenario_outline",
+            "steps": [
+              {
+                "keyword": "Given ",
+                "name": "a <type> step",
+                "line": 4,
+                "match": {
+                  "location": "features/step_definitions/steps.rb:1"
+                }
+              }
+            ],
+            "examples": [
+              {
+                "keyword": "Examples", 
+                "name": "examples1", 
+                "line": 6, 
+                "description": "", 
+                "id": "an-outline-feature;outline;examples1", 
+                "rows": [
+                  {
+                    "cells": [
+                      "type"
+                     ], 
+                     "line": 7, 
+                     "id": "an-outline-feature;outline;examples1;1"
+                  }, 
+                  {
+                    "cells": [
+                      "passing"
+                    ], 
+                    "line": 8, 
+                    "id": "an-outline-feature;outline;examples1;2"
+                  }, 
+                  {
+                    "cells": [
+                      "failing"
+                    ], 
+                    "line": 9, 
+                    "id": "an-outline-feature;outline;examples1;3"
+                  }
+                ]
+              },
+              {
+                "keyword": "Examples", 
+                "name": "examples2", 
+                "line": 11, 
+                "description": "", 
+                "id": "an-outline-feature;outline;examples2", 
+                "rows": [
+                  {
+                    "cells": [
+                      "type"
+                     ], 
+                     "line": 12, 
+                     "id": "an-outline-feature;outline;examples2;1"
+                  }, 
+                  {
+                    "cells": [
+                      "passing"
+                    ], 
+                    "line": 13, 
+                    "id": "an-outline-feature;outline;examples2;2"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    """
+  @spawn
+  Scenario: scenario outline expanded
+    When I run `cucumber --expand --format json features/outline.feature`
+    Then it should fail with JSON:
+    """
+    [
+      {
+        "uri": "features/outline.feature",
+        "id": "an-outline-feature",
+        "keyword": "Feature",
+        "name": "An outline feature",
+        "line": 1,
+        "description": "",
+        "elements": [
+          {
+            "id": "an-outline-feature;outline;examples1;2",
+            "keyword": "Scenario Outline",
+            "name": "outline",
+            "line": 8,
+            "description": "",
+            "type": "scenario",
+            "steps": [
+              {
+                "keyword": "Given ",
+                "name": "a passing step",
+                "line": 4,
+                "match": {
+                  "location": "features/step_definitions/steps.rb:1"
+                },
+                "result": {
+                  "status": "passed",
+                  "duration": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "an-outline-feature;outline;examples1;3",
+            "keyword": "Scenario Outline",
+            "name": "outline",
+            "line": 9,
+            "description": "",
+            "type": "scenario",
+            "steps": [
+              {
+                "keyword": "Given ",
+                "name": "a failing step",
+                "line": 4,
+                "match": {
+                  "location": "features/step_definitions/steps.rb:5"
+                },
+                "result": {
+                  "status": "failed",
+                  "error_message" : " (RuntimeError)\n./features/step_definitions/steps.rb:6:in `/a failing step/'\nfeatures/outline.feature:4:in `Given a <type> step'",
+		  "duration": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "an-outline-feature;outline;examples2;2",
+            "keyword": "Scenario Outline",
+            "name": "outline",
+            "line": 13,
+            "description": "",
+            "type": "scenario",
+            "steps": [
+              {
+                "keyword": "Given ",
+                "name": "a passing step",
+                "line": 4,
+                "match": {
+                  "location": "features/step_definitions/steps.rb:1"
                 },
                 "result": {
                   "status": "passed",
