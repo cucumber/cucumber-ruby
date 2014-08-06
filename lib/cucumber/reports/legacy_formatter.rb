@@ -778,9 +778,6 @@ module Cucumber
           formatter.after_table_row(legacy_table_row)
           @after_step_hook_result.describe_exception_to formatter if @after_step_hook_result
           @after_hook_result.describe_exception_to(formatter) if @after_hook_result
-          if @failed_step
-            formatter.exception @failed_step.exception, @failed_step.status
-          end
           @done = true
           self
         end
@@ -936,7 +933,7 @@ module Cucumber
 
     class StepBacktraceLine < Struct.new(:step)
       def to_s
-        "#{step.location}:in `#{step.keyword}#{step.name}'"
+        "#{step.location}:in `#{step.keyword}#{step.gherkin_statement.name}'"
       end
     end
 
