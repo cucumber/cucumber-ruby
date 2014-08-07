@@ -142,7 +142,7 @@ module Cucumber
       end
 
       def build_scenario
-        @factory.new(@test_case, Feature.new(@feature.name))
+        @factory.new(@test_case, Feature.new(@feature.legacy_conflated_name_and_description))
       end
     end
 

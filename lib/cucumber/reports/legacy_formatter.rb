@@ -227,7 +227,7 @@ module Cucumber
           formatter.before_feature(node)
           Legacy::Ast::Comments.new(node.comments).accept(formatter)
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
-          formatter.feature_name node.keyword, indented(node.name) # TODO: change the core's new AST to return name and description separately instead of this lumped-together field
+          formatter.feature_name node.keyword, indented(node.legacy_conflated_name_and_description) # TODO: change the core's new AST to return name and description separately instead of this lumped-together field
           @delayed_messages = []
           @delayed_embeddings = []
           self
@@ -380,7 +380,7 @@ module Cucumber
 
         def before
           formatter.before_background node
-          formatter.background_name node.keyword, node.name, node.location.to_s, indent.of(node)
+          formatter.background_name node.keyword, node.legacy_conflated_name_and_description, node.location.to_s, indent.of(node)
           self
         end
 
@@ -441,7 +441,7 @@ module Cucumber
         def before
           formatter.before_feature_element(node)
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
-          formatter.scenario_name node.keyword, node.name, node.location.to_s, indent.of(node)
+          formatter.scenario_name node.keyword, node.legacy_conflated_name_and_description, node.location.to_s, indent.of(node)
           before_hook_result.describe_exception_to(formatter) if before_hook_result
           self
         end
@@ -565,7 +565,7 @@ module Cucumber
         def before
           formatter.before_feature_element(node)
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
-          formatter.scenario_name node.keyword, node.name, node.location.to_s, indent.of(node)
+          formatter.scenario_name node.keyword, node.legacy_conflated_name_and_description, node.location.to_s, indent.of(node)
           OutlineStepsPrinter.new(formatter, runtime, indent).print(node)
           self
         end
@@ -668,7 +668,7 @@ module Cucumber
 
         def before
           formatter.before_examples(node)
-          formatter.examples_name(node.keyword, node.name)
+          formatter.examples_name(node.keyword, node.legacy_conflated_name_and_description)
           formatter.before_outline_table(legacy_table)
           TableRowPrinter.new(formatter, runtime, ExampleTableRow.new(node.header)).before.after
           self
