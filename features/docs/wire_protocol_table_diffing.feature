@@ -109,7 +109,7 @@ Feature: Wire protocol table diffing
 
       (::) failed steps (::)
 
-      Tables were not identical (Cucumber::Ast::Table::Different)
+      Tables were not identical (Cucumber::MultilineArgument::DataTable::Different)
       features/wired.feature:3:in `Given we're all wired'
 
       Failing Scenarios:
