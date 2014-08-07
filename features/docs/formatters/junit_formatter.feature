@@ -230,7 +230,6 @@ can't convert .* into String \(TypeError\)
 You *must* specify --out DIR for the junit formatter
       """
 
-  @wip
   Scenario: one feature, one scenario outline, two examples: one passing, one failing
     When I run `cucumber --format junit --out tmp/ features/scenario_outline.feature`
     Then it should fail with:
