@@ -1,4 +1,3 @@
-@wip-new-core
 @wire
 Feature: Wire protocol table diffing
   In order to use the amazing functionality in the Cucumber table object
