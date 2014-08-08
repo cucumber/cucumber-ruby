@@ -170,7 +170,7 @@ module Cucumber
         end
       end
 
-      module TestStepPrinter
+      module TestStepSource
         def self.for(test_step, result)
           collector = Collector.new
           test_step.describe_source_to collector, result
@@ -238,7 +238,7 @@ module Cucumber
         end
 
         def after_test_step(test_step, result)
-          @current_test_step_source = TestStepPrinter.for(test_step, result)
+          @current_test_step_source = TestStepSource.for(test_step, result)
           test_step.describe_source_to(self, result)
           print_step
         end
