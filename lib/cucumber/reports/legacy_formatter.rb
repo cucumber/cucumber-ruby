@@ -420,7 +420,6 @@ module Cucumber
         def after_hook(*);end
         def after_step_hook(*);end
         def examples_table(*);end
-        def examples_table_row(*);end
         def after_test_case(*);end
       end
 
