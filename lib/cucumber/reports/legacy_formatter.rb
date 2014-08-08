@@ -36,12 +36,6 @@ module Cucumber
         @formatters = formatters
       end
 
-      def node(node_name, node, &block)
-        method_missing "before_#{node_name}", node
-        block.call
-        method_missing "after_#{node_name}", node
-      end
-
       def method_missing(message, *args)
         formatters.each do |formatter|
           formatter.send(message, *args) if formatter.respond_to?(message)
@@ -229,7 +223,7 @@ module Cucumber
           formatter.before_feature(node)
           Legacy::Ast::Comments.new(node.comments).accept(formatter)
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
-          formatter.feature_name node.keyword, indented(node.legacy_conflated_name_and_description) # TODO: change the core's new AST to return name and description separately instead of this lumped-together field
+          formatter.feature_name node.keyword, indented(node.legacy_conflated_name_and_description)
           @delayed_messages = []
           @delayed_embeddings = []
           self
@@ -499,19 +493,13 @@ module Cucumber
           self
         end
 
-        attr_reader :steps
-        private :steps
-
         def step_invocation(step_invocation)
           steps << step_invocation
-          step_invocation.accept(formatter) do
-            MultilineArgPrinter.new(formatter, runtime).print(step_invocation.multiline_arg)
-          end
+          step_invocation.accept(formatter)
           self
         end
 
         def after
-          @child.after if @child
           formatter.after_steps(steps)
           self
         end
@@ -522,58 +510,6 @@ module Cucumber
           @steps ||= Legacy::Ast::StepInvocations.new
         end
 
-      end
-
-      MultilineArgPrinter = Struct.new(:formatter, :runtime) do
-        def print(node)
-          # TODO - stop coupling to type
-          return if node.is_a?( Cucumber::Core::Ast::EmptyMultilineArgument )
-          formatter.node(:multiline_arg, node) do
-            node.describe_to(self)
-          end
-        end
-
-        def doc_string(doc_string)
-          formatter.doc_string(doc_string)
-        end
-
-        def data_table(table)
-          table.cells_rows.each do |row|
-            TableRow.new(row).accept(formatter)
-          end
-        end
-
-        class TableRow
-          def initialize(row)
-            @values = row.map(&:value)
-            @line = row.line
-          end
-
-          def dom_id
-            "row_#{line}"
-          end
-
-          def accept(formatter)
-            formatter.before_table_row(self)
-            values.each do |value|
-              formatter.before_table_cell(value)
-              formatter.table_cell_value(value, status)
-              formatter.after_table_cell(value)
-            end
-            formatter.after_table_row(self)
-          end
-
-          def status
-            :skipped
-          end
-
-          def exception
-            nil
-          end
-
-          attr_reader :values, :line
-          private :values, :line
-        end
       end
 
       ScenarioOutlinePrinter = Struct.new(:formatter, :runtime, :node) do
@@ -987,6 +923,18 @@ module Cucumber
     module Legacy
       module Ast
 
+        class Node
+          def initialize(node)
+            @node = node
+          end
+
+          def accept(formatter)
+          end
+
+          attr_reader :node
+          private :node
+        end
+
         Comments = Struct.new(:comments) do
           def accept(formatter)
             return if comments.empty?
@@ -1011,7 +959,7 @@ module Cucumber
             formatter.before_step(self)
             formatter.before_step_result *step_result_attributes
             print_step_name(formatter)
-            yield
+            Legacy::Ast::MultilineArg.for(multiline_arg).accept(formatter)
             print_exception(formatter)
             formatter.after_step_result *step_result_attributes
             formatter.after_step(self)
@@ -1100,6 +1048,37 @@ module Cucumber
           end
         end
 
+        class DataTableRow
+          def initialize(row)
+            @values = row.map(&:value)
+            @line = row.line
+          end
+
+          def dom_id
+            "row_#{line}"
+          end
+
+          def accept(formatter)
+            formatter.before_table_row(self)
+            values.each do |value|
+              formatter.before_table_cell(value)
+              formatter.table_cell_value(value, status)
+              formatter.after_table_cell(value)
+            end
+            formatter.after_table_row(self)
+          end
+
+          def status
+            :skipped
+          end
+
+          def exception
+            nil
+          end
+
+          attr_reader :values, :line
+          private :values, :line
+        end
 
         Tags = Struct.new(:tags) do
           def accept(formatter)
@@ -1137,6 +1116,51 @@ module Cucumber
           def line
             location.line
           end
+        end
+
+        module MultilineArg
+          class << self
+            def for(node)
+              Builder.new(node).result
+            end
+          end
+
+          class Builder
+            def initialize(node)
+              node.describe_to(self)
+            end
+
+            def doc_string(node)
+              @result = DocString.new(node)
+            end
+
+            def data_table(node)
+              @result = DataTable.new(node)
+            end
+
+            def result
+              @result || Node.new(nil)
+            end
+          end
+
+          class DocString < Node
+            def accept(formatter)
+              formatter.before_multiline_arg node
+              formatter.doc_string(node)
+              formatter.after_multiline_arg node
+            end
+          end
+
+          class DataTable < Node
+            def accept(formatter)
+              formatter.before_multiline_arg node
+              node.cells_rows.each do |row|
+                Legacy::Ast::DataTableRow.new(row).accept(formatter)
+              end
+              formatter.after_multiline_arg node
+            end
+          end
+
         end
 
         Features = Struct.new(:duration)
