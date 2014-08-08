@@ -199,8 +199,8 @@ module Cucumber
         require 'ostruct'
         class StepSource < OpenStruct
 
-          def step_invocation(node, indent, runtime)
-            step_result.step_invocation(step_match(runtime), step, indent, node, runtime.configuration)
+          def step_invocation(indent, runtime)
+            step_result.step_invocation(step_match(runtime), step, indent, background, runtime.configuration)
           end
 
           def step_match(runtime)
@@ -376,22 +376,25 @@ module Cucumber
         end
       end
 
-      BackgroundPrinter = Struct.new(:formatter, :runtime, :node) do
-
-        def before
-          formatter.before_background node
-          formatter.background_name node.keyword, node.legacy_conflated_name_and_description, node.location.to_s, indent.of(node)
-          self
-        end
-
+      module HasSteps
         def step(source)
           step, result = source.step, source.step_result
           return if @last_step == step
           @last_step = step
           @child ||= StepsPrinter.new(formatter).before
-          step_invocation = source.step_invocation(node, indent, runtime)
+          step_invocation = source.step_invocation(indent, runtime)
           runtime.step_visited step_invocation
-          @child.step_invocation step_invocation, runtime, node
+          @child.step_invocation step_invocation, runtime
+        end
+      end
+
+      BackgroundPrinter = Struct.new(:formatter, :runtime, :node) do
+        include HasSteps
+
+        def before
+          formatter.before_background node
+          formatter.background_name node.keyword, node.legacy_conflated_name_and_description, node.location.to_s, indent.of(node)
+          self
         end
 
         def after_step_hook(result)
@@ -417,7 +420,7 @@ module Cucumber
       class HiddenBackgroundPrinter < Struct.new(:formatter, :runtime, :node)
 
         def step(source)
-          step_invocation = source.step_invocation(node, indent, runtime)
+          step_invocation = source.step_invocation(indent, runtime)
           runtime.step_visited step_invocation
         end
 
@@ -438,6 +441,8 @@ module Cucumber
       end
 
       ScenarioPrinter = Struct.new(:formatter, :runtime, :node, :before_hook_result) do
+        include HasSteps
+
         def before
           formatter.before_feature_element(node)
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
@@ -447,14 +452,8 @@ module Cucumber
         end
 
         def step(source)
-          step, result = source.step, source.step_result
-          return if @last_step == step
-          @child ||= StepsPrinter.new(formatter).before
-          @last_step = step
-          @last_step_result = result
-          step_invocation = source.step_invocation(background = nil, indent, runtime)
-          runtime.step_visited step_invocation
-          @child.step_invocation step_invocation, runtime
+          super
+          @last_step_result = source.step_result
         end
 
         def after_hook(result)
@@ -501,7 +500,7 @@ module Cucumber
         attr_reader :steps
         private :steps
 
-        def step_invocation(step_invocation, runtime, background = nil)
+        def step_invocation(step_invocation, runtime)
           @steps ||= Legacy::Ast::StepInvocations.new
           steps << step_invocation
           StepPrinter.new(formatter, runtime, step_invocation).print
@@ -627,7 +626,7 @@ module Cucumber
           step_match = NoStepMatch.new(step, step.name)
           step_invocation = LegacyResultBuilder.new(Core::Test::Result::Skipped.new).
             step_invocation(step_match, step, indent, background = nil, runtime.configuration)
-          steps_printer.step_invocation step_invocation, runtime, background = nil
+          steps_printer.step_invocation step_invocation, runtime
         end
 
         def examples_table(*);end
@@ -753,7 +752,7 @@ module Cucumber
           step, result = source.step, source.step_result
           return if @last_step == step
           @last_step = step
-          step_invocation = source.step_invocation(background = nil, :indent_not_needed, runtime)
+          step_invocation = source.step_invocation(:indent_not_needed, runtime)
           runtime.step_visited step_invocation
           @failed_step = step_invocation if result.status == :failed
           @status = step_invocation.status unless @status == :failed
