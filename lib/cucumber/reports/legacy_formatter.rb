@@ -539,14 +539,40 @@ module Cucumber
 
         def data_table(table)
           table.cells_rows.each do |row|
-            TableRowPrinter.new(formatter, runtime, DataTableRow.new(row.map(&:value), row.line)).before.after
+            TableRow.new(row).accept(formatter)
           end
         end
 
-        DataTableRow = Struct.new(:values, :line) do
+        class TableRow
+          def initialize(row)
+            @values = row.map(&:value)
+            @line = row.line
+          end
+
           def dom_id
             "row_#{line}"
           end
+
+          def accept(formatter)
+            formatter.before_table_row(self)
+            values.each do |value|
+              formatter.before_table_cell(value)
+              formatter.table_cell_value(value, status)
+              formatter.after_table_cell(value)
+            end
+            formatter.after_table_row(self)
+          end
+
+          def status
+            :skipped
+          end
+
+          def exception
+            nil
+          end
+
+          attr_reader :values, :line
+          private :values, :line
         end
       end
 
@@ -653,6 +679,7 @@ module Cucumber
           self
         end
       end
+
 
       ExamplesTablePrinter = Struct.new(:formatter, :runtime, :node) do
         extend Forwardable
@@ -777,15 +804,9 @@ module Cucumber
         private
 
         def legacy_table_row
-          case node
-          when DataTableRow
-            LegacyTableRow.new(exception, @status)
-          when ExampleTableRow
-            LegacyExampleTableRow.new(exception, @status, node.values, node.location)
-          end
+          LegacyExampleTableRow.new(exception, @status, node.values, node.location)
         end
 
-        LegacyTableRow = Struct.new(:exception, :status)
         LegacyExampleTableRow = Struct.new(:exception, :status, :cells, :location) do
           def name
             '| ' + cells.join(' | ') + ' |'
