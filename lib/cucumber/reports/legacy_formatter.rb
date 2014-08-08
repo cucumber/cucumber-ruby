@@ -338,7 +338,10 @@ module Cucumber
           end
 
           unless @last_step == current_test_step_source.step
-            @child.step(current_test_step_source)
+            step, result = current_test_step_source.step, current_test_step_source.step_result
+            step_invocation = current_test_step_source.build_step_invocation(Indent.new(@child.node), runtime)
+            runtime.step_visited step_invocation
+            @child.step(step_invocation, current_test_step_source)
             @last_step = current_test_step_source.step
           end
           print_messages
@@ -376,10 +379,7 @@ module Cucumber
       end
 
       module HasSteps
-        def step(source)
-          step, result = source.step, source.step_result
-          step_invocation = source.build_step_invocation(indent, runtime)
-          runtime.step_visited step_invocation
+        def step(step_invocation, source)
           self.step_invocation step_invocation, source
         end
 
@@ -416,29 +416,17 @@ module Cucumber
       end
 
       # Printer to handle background steps for anything but the first scenario in a
-      # feature. These steps should not be printed, but their results still need to
-      # be recorded.
+      # feature. These steps should not be printed.
       class HiddenBackgroundPrinter < Struct.new(:formatter, :runtime, :node)
-
-        def step(source)
-          step_invocation = source.build_step_invocation(indent, runtime)
-          runtime.step_visited step_invocation
-        end
-
+        def before;self;end
+        def after;self;end
+        def step(*);end
         def before_hook(*);end
         def after_hook(*);end
         def after_step_hook(*);end
         def examples_table(*);end
         def examples_table_row(*);end
-        def before;self;end
-        def after;self;end
         def after_test_case(*);end
-
-        private
-
-        def indent
-          @indent ||= Indent.new(node)
-        end
       end
 
       ScenarioPrinter = Struct.new(:formatter, :runtime, :node, :before_hook_result) do
@@ -452,7 +440,7 @@ module Cucumber
           self
         end
 
-        def step(source)
+        def step(step_invocation, source)
           super
           @last_step_result = source.step_result
         end
@@ -533,10 +521,10 @@ module Cucumber
           @child.after_hook(result)
         end
 
-        def step(source)
+        def step(step_invocation, source)
           node, result = source.step, source.step_result
           @last_step_result = result
-          @child.step(source)
+          @child.step(step_invocation, source)
         end
 
         def examples_table(examples_table)
@@ -791,6 +779,7 @@ module Cucumber
         end
 
         def examples_table(*); end
+        def examples_table_row(*); end
 
         def of(node)
           max - node.name.length - node.keyword.length
