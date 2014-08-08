@@ -79,8 +79,8 @@ module Cucumber
         printer.after_test_case(test_case, result)
       end
 
-      def puts(message)
-        printer.puts(message)
+      def puts(*messages)
+        printer.puts(messages)
       end
 
       def embed(src, mime_type, label)
@@ -155,8 +155,8 @@ module Cucumber
           self
         end
 
-        def puts(message)
-          @child.puts(message)
+        def puts(messages)
+          @child.puts(messages)
         end
 
         def embed(src, mime_type, label)
@@ -295,8 +295,8 @@ module Cucumber
           self
         end
 
-        def puts(message)
-          @delayed_messages << message
+        def puts(messages)
+          @delayed_messages.push *messages
         end
 
         def embed(src, mime_type, label)
