@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: Pretty formatter - Printing messages
 
   When you want to print to Cucumber's output, just call `puts` from
@@ -126,6 +125,7 @@ Feature: Pretty formatter - Printing messages
             | 2    | anno2 | pass   |  Line: 2: anno2
       """
 
+    @wip-new-core
     Scenario: Non-delayed messages feature (progress formatter)
       When I run `cucumber --format progress features/f.feature`
       Then the output should contain:
