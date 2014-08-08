@@ -377,9 +377,9 @@ module Cucumber
           step, result = source.step, source.step_result
           return if @last_step == step
           @last_step = step
-          @child ||= StepsPrinter.new(formatter, runtime).before
           step_invocation = source.build_step_invocation(indent, runtime)
           runtime.step_visited step_invocation
+          @child ||= StepsPrinter.new(formatter, runtime).before
           @child.step_invocation step_invocation
         end
       end
