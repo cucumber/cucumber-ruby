@@ -304,6 +304,7 @@ module Cucumber
         end
 
         private
+
         def switch_step_container
           switch_to_child select_step_container(current_test_step_source)
         end
@@ -339,9 +340,10 @@ module Cucumber
 
           unless @last_step == current_test_step_source.step
             step, result = current_test_step_source.step, current_test_step_source.step_result
-            step_invocation = current_test_step_source.build_step_invocation(Indent.new(@child.node), runtime)
+            indent = Indent.new(@child.node)
+            step_invocation = current_test_step_source.build_step_invocation(indent, runtime)
             runtime.step_visited step_invocation
-            @child.step(step_invocation, current_test_step_source)
+            @child.step_invocation(step_invocation, current_test_step_source)
             @last_step = current_test_step_source.step
           end
           print_messages
@@ -378,19 +380,7 @@ module Cucumber
         end
       end
 
-      module HasSteps
-        def step(step_invocation, source)
-          self.step_invocation step_invocation, source
-        end
-
-        def step_invocation(step_invocation, source)
-          @child ||= StepsPrinter.new(formatter, runtime).before
-          @child.step_invocation step_invocation
-        end
-      end
-
       BackgroundPrinter = Struct.new(:formatter, :runtime, :node) do
-        include HasSteps
 
         def before
           formatter.before_background node
@@ -400,6 +390,11 @@ module Cucumber
 
         def after_step_hook(result)
           result.describe_exception_to formatter
+        end
+
+        def step_invocation(step_invocation, source)
+          @child ||= StepsPrinter.new(formatter, runtime).before
+          @child.step_invocation step_invocation
         end
 
         def after
@@ -420,7 +415,7 @@ module Cucumber
       class HiddenBackgroundPrinter < Struct.new(:formatter, :runtime, :node)
         def before;self;end
         def after;self;end
-        def step(*);end
+        def step_invocation(*);end
         def before_hook(*);end
         def after_hook(*);end
         def after_step_hook(*);end
@@ -430,7 +425,6 @@ module Cucumber
       end
 
       ScenarioPrinter = Struct.new(:formatter, :runtime, :node, :before_hook_result) do
-        include HasSteps
 
         def before
           formatter.before_feature_element(node)
@@ -440,8 +434,9 @@ module Cucumber
           self
         end
 
-        def step(step_invocation, source)
-          super
+        def step_invocation(step_invocation, source)
+          @child ||= StepsPrinter.new(formatter, runtime).before
+          @child.step_invocation step_invocation
           @last_step_result = source.step_result
         end
 
@@ -521,10 +516,10 @@ module Cucumber
           @child.after_hook(result)
         end
 
-        def step(step_invocation, source)
+        def step_invocation(step_invocation, source)
           node, result = source.step, source.step_result
           @last_step_result = result
-          @child.step(step_invocation, source)
+          @child.step_invocation(step_invocation, source)
         end
 
         def examples_table(examples_table)
@@ -588,7 +583,7 @@ module Cucumber
 
       ExamplesArrayPrinter = Struct.new(:formatter, :runtime) do
         extend Forwardable
-        def_delegators :@child, :step, :after_hook, :after_step_hook, :after_test_case, :examples_table_row
+        def_delegators :@child, :step_invocation, :after_hook, :after_step_hook, :after_test_case, :examples_table_row
 
         def before
           formatter.before_examples_array(:examples_array)
@@ -609,10 +604,9 @@ module Cucumber
         end
       end
 
-
       ExamplesTablePrinter = Struct.new(:formatter, :runtime, :node) do
         extend Forwardable
-        def_delegators :@child, :step, :after_hook, :after_step_hook, :after_test_case
+        def_delegators :@child, :step_invocation, :after_hook, :after_step_hook, :after_test_case
 
         def before
           formatter.before_examples(node)
@@ -687,8 +681,6 @@ module Cucumber
       end
 
       TableRowPrinter = Struct.new(:formatter, :runtime, :node, :background, :before_hook_result) do
-        include HasSteps
-
         def before
           before_hook_result.describe_exception_to(formatter) if before_hook_result
           formatter.before_table_row(node)
