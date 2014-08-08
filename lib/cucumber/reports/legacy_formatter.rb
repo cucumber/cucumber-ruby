@@ -337,7 +337,10 @@ module Cucumber
             @child.examples_table_row(current_test_step_source.examples_table_row, @before_hook_result)
           end
 
-          @child.step(current_test_step_source)
+          unless @last_step == current_test_step_source.step
+            @child.step(current_test_step_source)
+            @last_step = current_test_step_source.step
+          end
           print_messages
           print_embeddings
         end
@@ -375,10 +378,12 @@ module Cucumber
       module HasSteps
         def step(source)
           step, result = source.step, source.step_result
-          return if @last_step == step
-          @last_step = step
           step_invocation = source.build_step_invocation(indent, runtime)
           runtime.step_visited step_invocation
+          self.step_invocation step_invocation, source
+        end
+
+        def step_invocation(step_invocation, source)
           @child ||= StepsPrinter.new(formatter, runtime).before
           @child.step_invocation step_invocation
         end
@@ -694,6 +699,8 @@ module Cucumber
       end
 
       TableRowPrinter = Struct.new(:formatter, :runtime, :node, :background, :before_hook_result) do
+        include HasSteps
+
         def before
           before_hook_result.describe_exception_to(formatter) if before_hook_result
           formatter.before_table_row(node)
@@ -704,12 +711,8 @@ module Cucumber
           @after_hook_result = result
         end
 
-        def step(source)
-          step, result = source.step, source.step_result
-          return if @last_step == step
-          @last_step = step
-          step_invocation = source.build_step_invocation(:indent_not_needed, runtime)
-          runtime.step_visited step_invocation
+        def step_invocation(step_invocation, source)
+          result = source.step_result
           @failed_step = step_invocation if result.status == :failed
           @status = step_invocation.status unless @status == :failed
         end
@@ -738,6 +741,10 @@ module Cucumber
         end
 
         private
+
+        def indent
+          :not_needed
+        end
 
         def legacy_table_row
           LegacyExampleTableRow.new(exception, @status, node.values, node.location)
