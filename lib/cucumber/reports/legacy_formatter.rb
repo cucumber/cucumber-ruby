@@ -199,9 +199,11 @@ module Cucumber
         require 'ostruct'
         class StepSource < OpenStruct
 
-          def step_invocation(indent, runtime)
+          def build_step_invocation(indent, runtime)
             step_result.step_invocation(step_match(runtime), step, indent, background, runtime.configuration)
           end
+
+          private
 
           def step_match(runtime)
             runtime.step_match(step.name)
@@ -381,10 +383,10 @@ module Cucumber
           step, result = source.step, source.step_result
           return if @last_step == step
           @last_step = step
-          @child ||= StepsPrinter.new(formatter).before
-          step_invocation = source.step_invocation(indent, runtime)
+          @child ||= StepsPrinter.new(formatter, runtime).before
+          step_invocation = source.build_step_invocation(indent, runtime)
           runtime.step_visited step_invocation
-          @child.step_invocation step_invocation, runtime
+          @child.step_invocation step_invocation
         end
       end
 
@@ -420,7 +422,7 @@ module Cucumber
       class HiddenBackgroundPrinter < Struct.new(:formatter, :runtime, :node)
 
         def step(source)
-          step_invocation = source.step_invocation(indent, runtime)
+          step_invocation = source.build_step_invocation(indent, runtime)
           runtime.step_visited step_invocation
         end
 
@@ -491,7 +493,7 @@ module Cucumber
         end
       end
 
-      StepsPrinter = Struct.new(:formatter) do
+      StepsPrinter = Struct.new(:formatter, :runtime) do
         def before
           formatter.before_steps(nil)
           self
@@ -500,10 +502,11 @@ module Cucumber
         attr_reader :steps
         private :steps
 
-        def step_invocation(step_invocation, runtime)
-          @steps ||= Legacy::Ast::StepInvocations.new
+        def step_invocation(step_invocation)
           steps << step_invocation
-          StepPrinter.new(formatter, runtime, step_invocation).print
+          step_invocation.accept(formatter) do
+            MultilineArgPrinter.new(formatter, runtime).print(step_invocation.multiline_arg)
+          end
           self
         end
 
@@ -513,20 +516,10 @@ module Cucumber
           self
         end
 
-      end
-
-      StepPrinter = Struct.new(:formatter, :runtime, :step_invocation) do
-
-        def print
-          step_invocation.accept(formatter) do
-            print_multiline_arg
-          end
-        end
-
         private
 
-        def print_multiline_arg
-          MultilineArgPrinter.new(formatter, runtime).print(step_invocation.multiline_arg)
+        def steps
+          @steps ||= Legacy::Ast::StepInvocations.new
         end
 
       end
@@ -626,7 +619,7 @@ module Cucumber
           step_match = NoStepMatch.new(step, step.name)
           step_invocation = LegacyResultBuilder.new(Core::Test::Result::Skipped.new).
             step_invocation(step_match, step, indent, background = nil, runtime.configuration)
-          steps_printer.step_invocation step_invocation, runtime
+          steps_printer.step_invocation step_invocation
         end
 
         def examples_table(*);end
@@ -752,7 +745,7 @@ module Cucumber
           step, result = source.step, source.step_result
           return if @last_step == step
           @last_step = step
-          step_invocation = source.step_invocation(:indent_not_needed, runtime)
+          step_invocation = source.build_step_invocation(:indent_not_needed, runtime)
           runtime.step_visited step_invocation
           @failed_step = step_invocation if result.status == :failed
           @status = step_invocation.status unless @status == :failed
