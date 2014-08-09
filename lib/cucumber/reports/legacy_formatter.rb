@@ -193,8 +193,8 @@ module Cucumber
         require 'ostruct'
         class StepSource < OpenStruct
 
-          def build_step_invocation(indent, runtime)
-            step_result.step_invocation(step_match(runtime), step, indent, background, runtime.configuration)
+          def build_step_invocation(indent, runtime, messages, embeddings)
+            step_result.step_invocation(step_match(runtime), step, indent, background, runtime.configuration, messages, embeddings)
           end
 
           private
@@ -341,27 +341,13 @@ module Cucumber
           unless @last_step == current_test_step_source.step
             step, result = current_test_step_source.step, current_test_step_source.step_result
             indent = Indent.new(@child.node)
-            step_invocation = current_test_step_source.build_step_invocation(indent, runtime)
+            step_invocation = current_test_step_source.build_step_invocation(indent, runtime, @delayed_messages, @delayed_embeddings)
             runtime.step_visited step_invocation
             @child.step_invocation(step_invocation, current_test_step_source)
             @last_step = current_test_step_source.step
           end
-          print_messages
-          print_embeddings
-        end
-
-        def print_embeddings
-          @delayed_embeddings.each do |embedding|
-            embedding.send_to_formatter(formatter)
-          end
+          @delayed_messages = []          
           @delayed_embeddings = []
-        end
-
-        def print_messages
-          @delayed_messages.each do |message|
-            formatter.puts(message)
-          end
-          @delayed_messages = []
         end
 
         def switch_to_child(child)
@@ -567,7 +553,7 @@ module Cucumber
         def outline_step(step)
           step_match = NoStepMatch.new(step, step.name)
           step_invocation = LegacyResultBuilder.new(Core::Test::Result::Skipped.new).
-            step_invocation(step_match, step, indent, background = nil, runtime.configuration)
+            step_invocation(step_match, step, indent, background = nil, runtime.configuration, messages = [], embeddings = [])
           steps_printer.step_invocation step_invocation
         end
 
@@ -692,6 +678,8 @@ module Cucumber
 
         def step_invocation(step_invocation, source)
           result = source.step_result
+          step_invocation.messages.each { |message| formatter.puts(message) }
+          step_invocation.embeddings.each { |embedding| embedding.send_to_formatter(formatter) }
           @failed_step = step_invocation if result.status == :failed
           @status = step_invocation.status unless @status == :failed
         end
@@ -825,8 +813,8 @@ module Cucumber
 
         def duration(*); end
 
-        def step_invocation(step_match, step, indent, background, configuration)
-          Legacy::Ast::StepInvocation.new(step_match, @status, step_exception(step, configuration), indent, background, step)
+        def step_invocation(step_match, step, indent, background, configuration, messages, embeddings)
+          Legacy::Ast::StepInvocation.new(step_match, @status, step_exception(step, configuration), indent, background, step, messages, embeddings)
         end
 
         def scenario(name, location)
@@ -937,13 +925,17 @@ module Cucumber
                                     :exception,
                                     :indent,
                                     :background,
-                                    :step) do
+                                    :step,
+                                    :messages,
+                                    :embeddings) do
           extend Forwardable
 
           def_delegators :step, :keyword, :name, :multiline_arg, :location, :gherkin_statement
 
           def accept(formatter)
             formatter.before_step(self)
+            messages.each { |message| formatter.puts(message) }
+            embeddings.each { |embedding| embedding.send_to_formatter(formatter) }
             formatter.before_step_result *step_result_attributes
             print_step_name(formatter)
             Legacy::Ast::MultilineArg.for(multiline_arg).accept(formatter)
