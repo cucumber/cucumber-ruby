@@ -30,11 +30,14 @@ namespace :api do
   task :release do
     Dir.chdir(SITE_DIR) do
       sh 'git add .'
-      sh "git commit -m 'Update API docs for Cucumber-Ruby v#{Cucumber::VERSION}'"
+      sh '''git commit -m "Update API docs for Cucumber-Ruby v#{Cucumber::VERSION}"'''
       sh 'git push'
     end
   end
 
   desc "Generate YARD docs for Cucumber's API"
   task :doc => [:yard, :sync_with_git, :copy_to_website, :release]
+  
+  desc "Build cucumber gem and doc locally"
+  task :build => [:yard, :sync_with_git, :copy_to_website]
 end
