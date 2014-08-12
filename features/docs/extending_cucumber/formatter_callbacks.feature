@@ -94,7 +94,6 @@ Feature: Formatter Callback
       """
 
 
-  @wip-new-core
   Scenario: callback if expanded
     Given a file named "features/f.feature" with:
       """

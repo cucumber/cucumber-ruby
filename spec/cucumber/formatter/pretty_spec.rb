@@ -441,6 +441,137 @@ OUTPUT
           end
         end
       end
+
+      context "In --expand mode" do
+        let(:runtime)   { Runtime.new({:expand => true})}
+        let(:mappings)  { Mappings.new(runtime) }
+        before(:each) do
+          Cucumber::Term::ANSIColor.coloring = false
+          @out = StringIO.new
+          @formatter = Pretty.new(runtime, @out, {})
+        end
+
+        describe "given a single feature" do
+          before(:each) do
+            run_defined_feature
+          end
+
+          describe "with a scenario outline" do
+            define_feature <<-FEATURE
+          Feature: Fud Pyramid
+
+            Scenario Outline: Monkey eats a balanced diet
+              Given there are <Things>
+
+              Examples: Fruit
+               | Things  |
+               | apples  |
+               | bananas |
+              Examples: Vegetables
+               | Things   |
+               | broccoli |
+               | carrots  |
+            FEATURE
+
+            it "outputs the instantiated scenarios" do
+              lines = <<-OUTPUT
+              Examples: Fruit
+                Scenario: | apples |
+                  Given there are apples
+                Scenario: | bananas |
+                  Given there are bananas
+              Examples: Vegetables
+                Scenario: | broccoli |
+                  Given there are broccoli
+                Scenario: | carrots |
+                  Given there are carrots
+              OUTPUT
+              lines.split("\n").each do |line|
+                expect(@out.string).to include line.strip
+              end
+            end
+          end
+        end
+      end
+
+      context "In --expand mode with --source as an option" do
+        let(:runtime)   { Runtime.new({:expand => true})}
+        let(:mappings)  { Mappings.new(runtime) }
+        before(:each) do
+          Cucumber::Term::ANSIColor.coloring = false
+          @out = StringIO.new
+          @formatter = Pretty.new(runtime, @out, {:source => true})
+        end
+
+        describe "given a single feature" do
+          before(:each) do
+            run_defined_feature
+          end
+
+          describe "with a scenario outline" do
+            define_feature <<-FEATURE
+          Feature: Fud Pyramid
+
+            Scenario Outline: Monkey eats a balanced diet
+              Given there are <Things>
+
+              Examples: Fruit
+               | Things  |
+               | apples  |
+               | bananas |
+              Examples: Vegetables
+               | Things   |
+               | broccoli |
+               | carrots  |
+            FEATURE
+
+            it "includes the source in the output" do
+              lines = <<-OUTPUT
+              Scenario Outline: Monkey eats a balanced diet # spec.feature:3
+                Given there are <Things>                    # spec.feature:4
+                Examples: Fruit
+                  Scenario: | apples |                          # spec.feature:8
+                    Given there are apples                      # spec.feature:4
+                  Scenario: | bananas |                         # spec.feature:9
+                    Given there are bananas                     # spec.feature:4
+                Examples: Vegetables
+                  Scenario: | broccoli |                        # spec.feature:12
+                    Given there are broccoli                    # spec.feature:4
+                  Scenario: | carrots |                         # spec.feature:13
+                    Given there are carrots                     # spec.feature:4
+              OUTPUT
+              lines.split("\n").each do |line|
+                expect(@out.string).to include line.strip
+              end
+            end
+
+            context "With very wide cells" do
+              define_feature <<-FEATURE
+            Feature: Monkey Business
+
+              Scenario Outline: Types of monkey
+                Given there are <Types of monkey>
+
+                Examples:
+                 | Types of monkey | Extra                  |
+                 | Hominidae       | Very long cell content |
+              FEATURE
+
+              it "the scenario line controls the source indentation" do
+                lines = <<-OUTPUT
+              Examples:
+                 Scenario: | Hominidae | Very long cell content | # spec.feature:8
+                   Given there are Hominidae                      # spec.feature:4
+
+                OUTPUT
+                lines.split("\n").each do |line|
+                  expect(@out.string).to include line.strip
+                end
+              end
+            end
+          end
+        end
+      end
     end
   end
 end

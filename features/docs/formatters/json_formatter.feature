@@ -499,7 +499,7 @@ Feature: JSON output formatter
     ]
 
     """
-  @wip-new-core
+
   @spawn
   Scenario: scenario outline expanded
     When I run `cucumber --expand --format json features/outline.feature`

@@ -597,7 +597,9 @@ module Cucumber
           formatter.before_examples(node)
           formatter.examples_name(node.keyword, node.legacy_conflated_name_and_description)
           formatter.before_outline_table(legacy_table)
-          TableRowPrinter.new(formatter, runtime, ExampleTableRow.new(node.header)).before.after
+          if !runtime.configuration.expand?
+            TableRowPrinter.new(formatter, runtime, ExampleTableRow.new(node.header)).before.after
+          end
           self
         end
 
@@ -605,7 +607,11 @@ module Cucumber
           return if examples_table_row == @current
           @child.after if @child
           row = ExampleTableRow.new(examples_table_row)
-          @child = TableRowPrinter.new(formatter, runtime, row, nil, before_hook_result).before
+          if !runtime.configuration.expand?
+            @child = TableRowPrinter.new(formatter, runtime, row, nil, before_hook_result).before
+          else
+            @child = ExpandTableRowPrinter.new(formatter, runtime, row, nil, before_hook_result).before
+          end
           @current = examples_table_row
         end
 
@@ -665,23 +671,9 @@ module Cucumber
         end
       end
 
-      TableRowPrinter = Struct.new(:formatter, :runtime, :node, :background, :before_hook_result) do
-        def before
-          before_hook_result.describe_exception_to(formatter) if before_hook_result
-          formatter.before_table_row(node)
-          self
-        end
-
+      class TableRowPrinterBase < Struct.new(:formatter, :runtime, :node, :background, :before_hook_result)
         def after_hook(result)
           @after_hook_result = result
-        end
-
-        def step_invocation(step_invocation, source)
-          result = source.step_result
-          step_invocation.messages.each { |message| formatter.puts(message) }
-          step_invocation.embeddings.each { |embedding| embedding.send_to_formatter(formatter) }
-          @failed_step = step_invocation if result.status == :failed
-          @status = step_invocation.status unless @status == :failed
         end
 
         def after_step_hook(result)
@@ -690,6 +682,37 @@ module Cucumber
 
         def after_test_case(*args)
           after
+        end
+
+        private
+
+        def indent
+          :not_needed
+        end
+
+        def legacy_table_row
+          LegacyExampleTableRow.new(exception, @status, node.values, node.location)
+        end
+
+        def exception
+          return nil unless @failed_step
+          @failed_step.exception
+        end
+      end
+
+      class TableRowPrinter < TableRowPrinterBase
+        def before
+          before_hook_result.describe_exception_to(formatter) if before_hook_result
+          formatter.before_table_row(node)
+          self
+        end
+
+        def step_invocation(step_invocation, source)
+          result = source.step_result
+          step_invocation.messages.each { |message| formatter.puts(message) }
+          step_invocation.embeddings.each { |embedding| embedding.send_to_formatter(formatter) }
+          @failed_step = step_invocation if result.status == :failed
+          @status = step_invocation.status unless @status == :failed
         end
 
         def after
@@ -706,36 +729,61 @@ module Cucumber
           @done = true
           self
         end
+      end
+
+      class ExpandTableRowPrinter < TableRowPrinterBase
+        def before
+          before_hook_result.describe_exception_to(formatter) if before_hook_result
+          self
+        end
+
+        def step_invocation(step_invocation, source)
+          result = source.step_result
+          @table_row ||= legacy_table_row
+          step_invocation.indent.record_width_of(@table_row)
+          if !@scenario_name_printed
+            print_scenario_name(step_invocation, @table_row)
+            @scenario_name_printed = true
+          end
+          step_invocation.accept(formatter)
+          @failed_step = step_invocation if result.status == :failed
+          @status = step_invocation.status unless @status == :failed
+        end
+
+        def after
+          return if @done
+          @child.after if @child
+          @after_step_hook_result.describe_exception_to formatter if @after_step_hook_result
+          @after_hook_result.describe_exception_to(formatter) if @after_hook_result
+          @done = true
+          self
+        end
 
         private
 
-        def indent
-          :not_needed
+        def print_scenario_name(step_invocation, table_row)
+          formatter.scenario_name table_row.keyword, table_row.name, node.location.to_s, step_invocation.indent.of(table_row)
+        end
+      end
+
+      LegacyExampleTableRow = Struct.new(:exception, :status, :cells, :location) do
+        def name
+          '| ' + cells.join(' | ') + ' |'
         end
 
-        def legacy_table_row
-          LegacyExampleTableRow.new(exception, @status, node.values, node.location)
+        def failed?
+          status == :failed
         end
 
-        LegacyExampleTableRow = Struct.new(:exception, :status, :cells, :location) do
-          def name
-            '| ' + cells.join(' | ') + ' |'
-          end
-
-          def failed?
-            status == :failed
-          end
-
-          def line
-            location.line
-          end
+        def line
+          location.line
         end
 
-        def exception
-          return nil unless @failed_step
-          @failed_step.exception
+        def keyword
+          # This method is only called when used for the scenario name line with
+          # the expand option, and on that line the keyword is "Scenario"
+          "Scenario"
         end
-
       end
 
       class Indent
@@ -761,17 +809,19 @@ module Cucumber
         def examples_table_row(*); end
 
         def of(node)
-          max - node.name.length - node.keyword.length
+          # The length of the instantiated steps in --expand mode are currently
+          # not included in the calculation of max => make sure to return >= 1
+          [1, max - node.name.length - node.keyword.length].max
+        end
+
+        def record_width_of(node)
+          @widths << node.keyword.length + node.name.length + 1
         end
 
         private
 
         def max
           @widths.max
-        end
-
-        def record_width_of(node)
-          @widths << node.keyword.length + node.name.length + 1
         end
       end
 

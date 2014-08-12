@@ -637,6 +637,66 @@ module Cucumber
         ]
       end
 
+      context 'in expand mode' do
+        let(:runtime) { Runtime.new expand: true }
+        let(:formatter) { MessageSpy.new }
+
+        it 'scenario outline two rows' do
+          execute_gherkin do
+            feature do
+              scenario_outline do
+                step '<result>ing'
+                examples do
+                  row 'result'
+                  row 'pass'
+                  row 'pass'
+                end
+              end
+            end
+          end
+          expect( formatter.messages ).to eq [
+            :before_features,
+              :before_feature,
+                :before_tags,
+                :after_tags,
+                :feature_name,
+                :before_feature_element,
+                  :before_tags,
+                  :after_tags,
+                  :scenario_name,
+                  :before_steps,
+                    :before_step,
+                      :before_step_result,
+                        :step_name,
+                      :after_step_result,
+                    :after_step,
+                  :after_steps,
+                  :before_examples_array,
+                    :before_examples,
+                      :examples_name,
+                      :before_outline_table,
+                        :scenario_name,
+                        :before_step,
+                          :before_step_result,
+                            :step_name,
+                          :after_step_result,
+                        :after_step,
+                        :scenario_name,
+                        :before_step,
+                          :before_step_result,
+                            :step_name,
+                          :after_step_result,
+                        :after_step,
+                      :after_outline_table,
+                    :after_examples,
+                  :after_examples_array,
+                :after_feature_element,
+              :after_feature,
+            :after_features
+          ]
+        end
+      end
+
       context 'with exception in after step hook' do
         it 'prints the exception within the step' do
           define_steps do
