@@ -321,7 +321,7 @@ module Cucumber
             @child.step_invocation(step_invocation, current_test_step_source)
             @last_step = current_test_step_source.step
           end
-          @delayed_messages = []          
+          @delayed_messages = []
           @delayed_embeddings = []
         end
 
