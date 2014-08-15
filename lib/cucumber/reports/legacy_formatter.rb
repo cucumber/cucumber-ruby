@@ -214,6 +214,7 @@ module Cucumber
 
         def after_test_step(test_step, result)
           @current_test_step_source = TestStepSource.for(test_step, result)
+          # TODO: stop calling self, and describe source to another object
           test_step.describe_source_to(self, result)
           print_step
         end
@@ -242,32 +243,8 @@ module Cucumber
             append_to_exception_backtrace(line)
         end
 
-        def step(node, result)
-        end
-
         def background(node, *)
           @current_test_case_background = node
-        end
-
-        def scenario(node, *)
-        end
-
-        def scenario_outline(node, *)
-        end
-
-        def examples_table(node, *)
-        end
-
-        def examples_table_row(node, *)
-        end
-
-        def feature(feature, *args)
-        end
-
-        def after
-          @child.after
-          formatter.after_feature(node)
-          self
         end
 
         def puts(messages)
@@ -276,6 +253,19 @@ module Cucumber
 
         def embed(src, mime_type, label)
           @delayed_embeddings.push Embedding.new(src, mime_type, label)
+        end
+
+        def step(*);end
+        def scenario(*);end
+        def scenario_outline(*);end
+        def examples_table(*);end
+        def examples_table_row(*);end
+        def feature(*);end
+
+        def after
+          @child.after
+          formatter.after_feature(node)
+          self
         end
 
         private
