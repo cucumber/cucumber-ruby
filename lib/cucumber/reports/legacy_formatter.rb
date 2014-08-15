@@ -569,7 +569,7 @@ module Cucumber
           formatter.examples_name(node.keyword, node.legacy_conflated_name_and_description)
           formatter.before_outline_table(legacy_table)
           if !runtime.configuration.expand?
-            TableRowPrinter.new(formatter, runtime, ExampleTableRow.new(node.header), nil, Legacy::Ast::Node.new).before.after
+            TableRowPrinter.new(formatter, runtime, ExampleTableRow.new(node.header), Legacy::Ast::Node.new).before.after
           end
           self
         end
@@ -579,9 +579,9 @@ module Cucumber
           @child.after if @child
           row = ExampleTableRow.new(examples_table_row)
           if !runtime.configuration.expand?
-            @child = TableRowPrinter.new(formatter, runtime, row, nil, before_hook_result).before
+            @child = TableRowPrinter.new(formatter, runtime, row, before_hook_result).before
           else
-            @child = ExpandTableRowPrinter.new(formatter, runtime, row, nil, before_hook_result).before
+            @child = ExpandTableRowPrinter.new(formatter, runtime, row, before_hook_result).before
           end
           @current = examples_table_row
         end
@@ -642,7 +642,7 @@ module Cucumber
         end
       end
 
-      class TableRowPrinterBase < Struct.new(:formatter, :runtime, :node, :background, :before_hook_result)
+      class TableRowPrinterBase < Struct.new(:formatter, :runtime, :node, :before_hook_result)
         def after_hook(result)
           @after_hook_result = result
         end

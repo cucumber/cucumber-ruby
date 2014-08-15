@@ -41,7 +41,6 @@ Feature: Exception in Before Block
 
       """
 
-  @spawn @wip
   Scenario: Handle Exception in Before hook for Scenario with Background
     Given a file named "features/naughty_step_in_before.feature" with:
       """
