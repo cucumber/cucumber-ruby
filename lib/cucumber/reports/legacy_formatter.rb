@@ -207,6 +207,7 @@ module Cucumber
         attr_reader :current_test_step_source
 
         def before_test_case(test_case)
+          @before_hook_result = Legacy::Ast::Node.new
         end
 
         def before_test_step(test_step)
@@ -230,7 +231,7 @@ module Cucumber
         end
 
         def before_hook(location, result)
-          @before_hook_result = LegacyResultBuilder.new(result)
+          @before_hook_result = Legacy::Ast::BeforeHookResult.new(LegacyResultBuilder.new(result))
         end
 
         def after_hook(location, result)
@@ -270,6 +271,9 @@ module Cucumber
 
         private
 
+        attr_reader :before_hook_result
+        private :before_hook_result
+
         def switch_step_container
           switch_to_child select_step_container(current_test_step_source)
         end
@@ -279,10 +283,10 @@ module Cucumber
             if same_background_as_previous_test_case?(source)
               HiddenBackgroundPrinter.new(formatter, runtime, source.background)
             else
-              BackgroundPrinter.new(formatter, runtime, source.background)
+              BackgroundPrinter.new(formatter, runtime, source.background, before_hook_result)
             end
           elsif source.scenario
-            ScenarioPrinter.new(formatter, runtime, source.scenario, @before_hook_result)
+            ScenarioPrinter.new(formatter, runtime, source.scenario, before_hook_result)
           elsif source.scenario_outline
             ScenarioOutlinePrinter.new(formatter, runtime, source.scenario_outline)
           else
@@ -300,7 +304,7 @@ module Cucumber
 
           if current_test_step_source.scenario_outline
             @child.examples_table(current_test_step_source.examples_table)
-            @child.examples_table_row(current_test_step_source.examples_table_row, @before_hook_result)
+            @child.examples_table_row(current_test_step_source.examples_table_row, before_hook_result)
           end
 
           unless @last_step == current_test_step_source.step
@@ -329,13 +333,15 @@ module Cucumber
             s
           end.join("\n")
         end
+
       end
 
-      BackgroundPrinter = Struct.new(:formatter, :runtime, :node) do
+      BackgroundPrinter = Struct.new(:formatter, :runtime, :node, :before_hook_result) do
 
         def before
           formatter.before_background node
           formatter.background_name node.keyword, node.legacy_conflated_name_and_description, node.location.to_s, indent.of(node)
+          before_hook_result.accept(formatter)
           self
         end
 
@@ -380,7 +386,7 @@ module Cucumber
           formatter.before_feature_element(node)
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
           formatter.scenario_name node.keyword, node.legacy_conflated_name_and_description, node.location.to_s, indent.of(node)
-          before_hook_result.describe_exception_to(formatter) if before_hook_result
+          before_hook_result.accept(formatter)
           self
         end
 
@@ -563,7 +569,7 @@ module Cucumber
           formatter.examples_name(node.keyword, node.legacy_conflated_name_and_description)
           formatter.before_outline_table(legacy_table)
           if !runtime.configuration.expand?
-            TableRowPrinter.new(formatter, runtime, ExampleTableRow.new(node.header)).before.after
+            TableRowPrinter.new(formatter, runtime, ExampleTableRow.new(node.header), nil, Legacy::Ast::Node.new).before.after
           end
           self
         end
@@ -667,7 +673,7 @@ module Cucumber
 
       class TableRowPrinter < TableRowPrinterBase
         def before
-          before_hook_result.describe_exception_to(formatter) if before_hook_result
+          before_hook_result.accept(formatter)
           formatter.before_table_row(node)
           self
         end
@@ -698,7 +704,7 @@ module Cucumber
 
       class ExpandTableRowPrinter < TableRowPrinterBase
         def before
-          before_hook_result.describe_exception_to(formatter) if before_hook_result
+          before_hook_result.accept(formatter)
           self
         end
 
@@ -908,13 +914,15 @@ module Cucumber
       end
     end
 
+
     # Adapters to pass to the legacy API formatters that provide the interface
     # of the old AST classes
     module Legacy
       module Ast
 
+        # Acts as a null object, or a base class
         class Node
-          def initialize(node)
+          def initialize(node = nil)
             @node = node
           end
 
@@ -932,6 +940,21 @@ module Cucumber
             comments.each do |comment|
               formatter.comment_line comment.to_s.strip
             end
+          end
+        end
+
+        class BeforeHookResult
+          def initialize(result)
+            @result = result
+            @already_accepted = false
+          end
+
+          def accept(formatter)
+            unless @already_accepted
+              @result.describe_exception_to(formatter)
+              @already_accepted = true
+            end
+            self
           end
         end
 

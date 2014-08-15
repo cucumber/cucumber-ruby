@@ -71,6 +71,7 @@ Feature: Exception in Before Block
 
       1 scenario (1 failed)
       2 steps (2 skipped)
+      0m0.012s
 
       """
 
