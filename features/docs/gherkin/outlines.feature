@@ -136,7 +136,7 @@ Feature: Scenario outlines
   @wip-new-core
   Scenario: Run all with progress formatter
     When I run `cucumber -q --format progress features/outline_sample.feature`
-    Then it should fail with:
+    Then it should fail with exactly:
       """
       --U-..F-..
 
@@ -151,6 +151,7 @@ Feature: Scenario outlines
 
       5 scenarios (1 failed, 1 undefined, 3 passed)
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
+      0m0.012s
 
       """
 

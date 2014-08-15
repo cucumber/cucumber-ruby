@@ -569,7 +569,7 @@ module Cucumber
           formatter.examples_name(node.keyword, node.legacy_conflated_name_and_description)
           formatter.before_outline_table(legacy_table)
           if !runtime.configuration.expand?
-            TableRowPrinter.new(formatter, runtime, ExampleTableRow.new(node.header), Legacy::Ast::Node.new).before.after
+            HeaderTableRowPrinter.new(formatter, runtime, ExampleTableRow.new(node.header), Legacy::Ast::Node.new).before.after
           end
           self
         end
@@ -670,6 +670,24 @@ module Cucumber
           @failed_step.exception
         end
       end
+
+      class HeaderTableRowPrinter < TableRowPrinterBase
+        def before
+          formatter.before_table_row(node)
+          self
+        end
+
+        def after
+          node.values.each do |value|
+            formatter.before_table_cell(value)
+            formatter.table_cell_value(value, :skipped_param)
+            formatter.after_table_cell(value)
+          end
+          formatter.after_table_row(legacy_table_row)
+          self
+        end
+      end
+
 
       class TableRowPrinter < TableRowPrinterBase
         def before

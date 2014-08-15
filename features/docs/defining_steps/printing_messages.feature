@@ -136,9 +136,9 @@ Feature: Pretty formatter - Printing messages
         Announce
         
         Me
-        ..---UUUUUU
+        ..-UUUUUU
         Announce with fail
-        F-----
+        F--
         Line: 1: anno1
         FFF
         Line: 2: anno2

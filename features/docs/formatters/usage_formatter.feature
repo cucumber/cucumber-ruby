@@ -58,7 +58,7 @@ Feature: Usage formatter
       When I run `cucumber -f stepdefs --dry-run`
       Then it should pass with exactly:
         """
-        --------
+        -------
         
         /A/   # features/step_definitions/steps.rb:1
         /B/   # features/step_definitions/steps.rb:2
