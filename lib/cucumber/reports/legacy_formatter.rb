@@ -701,7 +701,7 @@ module Cucumber
           step_invocation.messages.each { |message| formatter.puts(message) }
           step_invocation.embeddings.each { |embedding| embedding.send_to_formatter(formatter) }
           @failed_step = step_invocation if result.status == :failed
-          @status = step_invocation.status unless @status == :failed
+          @status = step_invocation.status unless already_failed?
         end
 
         def after
@@ -717,6 +717,12 @@ module Cucumber
           @after_hook_result.describe_exception_to(formatter) if @after_hook_result
           @done = true
           self
+        end
+
+        private
+
+        def already_failed?
+          @status == :failed || @status == :undefined || @status == :pending
         end
       end
 

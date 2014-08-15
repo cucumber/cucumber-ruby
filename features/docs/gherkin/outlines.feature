@@ -131,14 +131,11 @@ Feature: Scenario outlines
 
       """
 
-  # There are 10 characters in the progress, but only 8 reported steps. Needs investigation.
-  # Looks like we're outputting too many characters.
-  @wip-new-core
   Scenario: Run all with progress formatter
     When I run `cucumber -q --format progress features/outline_sample.feature`
     Then it should fail with exactly:
       """
-      --U-..F-..
+      --UU..FF..
 
       (::) failed steps (::)
 
