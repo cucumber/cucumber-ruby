@@ -125,7 +125,6 @@ Feature: Pretty formatter - Printing messages
             | 2    | anno2 | pass   |  Line: 2: anno2
       """
 
-    @wip-new-core
     Scenario: Non-delayed messages feature (progress formatter)
       When I run `cucumber --format progress features/f.feature`
       Then the output should contain:
@@ -133,12 +132,13 @@ Feature: Pretty formatter - Printing messages
         Ann
         ..
         Multiple
-
+        
         Announce
+        
         Me
-        ..-UUUUUU
+        ..---UUUUUU
         Announce with fail
-        F--
+        F-----
         Line: 1: anno1
         FFF
         Line: 2: anno2
