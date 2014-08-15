@@ -5,29 +5,6 @@ require 'cucumber/errors'
 module Cucumber
   module Reports
 
-    class DebugWrapper
-      def initialize(receiver)
-        @receiver = receiver
-      end
-
-      def method_missing(message, *args)
-        #p [@receiver.class, message] if ENV['DEBUG']
-        @receiver.send(message, *args)
-      end
-    end
-
-    module Debug
-      def debug(*args)
-        return unless ENV['DEBUG']
-        p args.unshift(self.class).flatten
-      end
-
-      module Off
-        def debug(*args)
-        end
-      end
-    end
-
     class FormatterWrapper < BasicObject
       attr_reader :formatters
       private :formatters
@@ -49,7 +26,6 @@ module Cucumber
     end
 
     LegacyFormatter = Struct.new(:runtime, :formatter) do
-      include Debug::Off
 
       def initialize(runtime, formatters)
         super runtime, FormatterWrapper.new(formatters)
@@ -94,7 +70,7 @@ module Cucumber
       private
 
       def printer
-        @printer ||= DebugWrapper.new(FeaturesPrinter.new(formatter, runtime).before)
+        @printer ||= FeaturesPrinter.new(formatter, runtime).before
       end
 
       def record_test_case_result(test_case, result)
@@ -132,7 +108,7 @@ module Cucumber
         def feature(node, *)
           if node != @current_feature
             @child.after if @child
-            @child = DebugWrapper.new(FeaturePrinter.new(formatter, runtime, node).before)
+            @child = FeaturePrinter.new(formatter, runtime, node).before
             @current_feature = node
           end
         end
@@ -217,7 +193,6 @@ module Cucumber
       end
 
       FeaturePrinter = Struct.new(:formatter, :runtime, :node) do
-        include Debug
 
         def before
           formatter.before_feature(node)
