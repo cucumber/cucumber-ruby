@@ -275,7 +275,7 @@ module Cucumber
         end
 
         def embed(src, mime_type, label)
-          @delayed_embeddings << Embedding.new(src, mime_type, label)
+          @delayed_embeddings.push Embedding.new(src, mime_type, label)
         end
 
         private
