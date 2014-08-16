@@ -132,6 +132,10 @@ module Cucumber
       @results.scenario_visited(scenario)
     end
 
+    def begin_scenario(scenario)
+      @support_code.fire_hook(:begin_scenario, scenario)
+    end
+
     def before(scenario) #:nodoc:
       return if dry_run? || @current_scenario
       @current_scenario = scenario

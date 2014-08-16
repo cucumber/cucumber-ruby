@@ -62,7 +62,7 @@ module Cucumber
     def map_test_case(test_case, mapper)
       @scenario = Source.new(test_case).build_scenario
       mapper.before do
-        ruby.begin_rb_scenario(scenario)
+        runtime.begin_scenario(scenario)
       end
     end
 
@@ -105,6 +105,15 @@ module Cucumber
 
       def name
         @test_case.name
+      end
+
+      def source_tags
+        warn('deprecated: call #tags instead')
+        tags
+      end
+
+      def tags
+        @test_case.tags
       end
     end
 
@@ -149,6 +158,11 @@ module Cucumber
     class DryRun < Mappings
 
       private
+
+      def map_test_case(*)
+        # NOOP - we don't want to create World etc for dry run
+      end
+
       def map_step(step, mapper)
         step.describe_source_to MapStep::DryRun.new(runtime, mapper)
       end

@@ -34,8 +34,6 @@ module Cucumber
         @connections.map{ |c| c.step_matches(step_name, formatted_step_name)}.flatten
       end
 
-      protected
-
       def begin_scenario(scenario)
         @connections.each { |c| c.begin_scenario(scenario) }
         @current_scenario = scenario

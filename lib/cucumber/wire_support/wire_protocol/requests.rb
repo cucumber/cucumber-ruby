@@ -103,11 +103,11 @@ module Cucumber
 
         module Tags
           def clean_tag_names(scenario)
-            scenario.source_tags.map { |tag| tag.name.gsub(/^@/, '') }.sort
+            scenario.tags.map { |tag| tag.name.gsub(/^@/, '') }.sort
           end
 
           def request_params(scenario)
-            return nil unless scenario.source_tags.any?
+            return nil unless scenario.tags.any?
             { "tags" => clean_tag_names(scenario) }
           end
         end
