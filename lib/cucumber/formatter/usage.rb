@@ -21,6 +21,36 @@ module Cucumber
         print_profile_information
       end
 
+      def before_background(background)
+        @outline = false
+      end
+
+      def before_feature_element(feature_element)
+        case(feature_element)
+        when Core::Ast::Scenario
+          @outline = false
+        when Core::Ast::ScenarioOutline
+          @outline = true
+          if @options[:expand]
+            @in_instantiated_scenario = false
+          end
+        else
+          raise "Bad type: #{feature_element.class}"
+        end
+      end
+
+      def scenario_name(keyword, name, file_colon_line, source_indent)
+        if @outline and @in_instantiated_scenario
+          if @new_example_table
+            @example_row = 1
+            @new_example_table = false
+          else
+            @example_row += 1
+          end
+          @example_line = @current_example_rows[@example_row].to_hash['line']
+        end
+      end
+
       def before_step(step)
         @step = step
         @start_time = Time.now
@@ -35,15 +65,28 @@ module Cucumber
         unless step_definition.nil? # nil if it's from a scenario outline
           stepdef_key = StepDefKey.new(step_definition.regexp_source, step_definition.file_colon_line)
 
+          file_colon_line = @step.file_colon_line
+          if @outline and @in_instantiated_scenario
+            file_colon_line = replace_line_number(@step.file_colon_line, @example_line)
+          end
+
           @stepdef_to_match[stepdef_key] << {
             :keyword => keyword,
             :step_match => step_match,
             :status => status,
-            :file_colon_line => @step.file_colon_line,
+            :file_colon_line => file_colon_line,
             :duration => @duration
           }
         end
         super
+      end
+
+      def before_examples(examples)
+        if @options[:expand]
+          @in_instantiated_scenario = true
+          @new_example_table = true
+          @current_example_rows = to_hash(examples.gherkin_statement)['rows']
+        end
       end
 
       def print_summary(features)
@@ -131,6 +174,20 @@ module Cucumber
         @runtime.unmatched_step_definitions.each do |step_definition|
           stepdef_key = StepDefKey.new(step_definition.regexp_source, step_definition.file_colon_line)
           @stepdef_to_match[stepdef_key] = []
+        end
+      end
+
+      private
+
+      def replace_line_number(file_colon_line, line)
+        file_colon_line.split(':')[0] + ':' + line.to_s
+      end
+
+      def to_hash(gherkin_statement)
+        if defined?(JRUBY_VERSION)
+          gherkin_statement.toMap()
+        else
+          gherkin_statement.to_hash
         end
       end
     end

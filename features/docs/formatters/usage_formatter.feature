@@ -11,12 +11,13 @@ Feature: Usage formatter
           Given A
         Scenario: B
           Given B
-        Scenario Outline: C
+        Scenario Outline: CA
           Given <x>
           And B
           Examples:
             |x|
             |C|
+            |A|
         Scenario: AC
           Given A
           Given C
@@ -38,18 +39,46 @@ Feature: Usage formatter
       
       /A/       # features/step_definitions/steps.rb:1
         Given A # features/f.feature:3
-        Given A # features/f.feature:13
+        Given A # features/f.feature:12
+        Given A # features/f.feature:14
       /B/       # features/step_definitions/steps.rb:2
         Given B # features/f.feature:5
         And B   # features/f.feature:11
+        And B   # features/f.feature:12
       /C/       # features/step_definitions/steps.rb:3
         Given C # features/f.feature:11
-        Given C # features/f.feature:14
+        Given C # features/f.feature:15
       /D/       # features/step_definitions/steps.rb:4
         NOT MATCHED BY ANY STEPS
       
-      3 scenarios (3 skipped)
-      8 steps (8 skipped)
+      4 scenarios (4 skipped)
+      11 steps (11 skipped)
+      0m0.012s
+
+      """
+
+  Scenario: Run with --expand --format usage
+    When I run `cucumber -x -f usage --dry-run`
+    Then it should pass with exactly:
+      """
+      ----------
+      
+      /A/       # features/step_definitions/steps.rb:1
+        Given A # features/f.feature:3
+        Given A # features/f.feature:12
+        Given A # features/f.feature:14
+      /B/       # features/step_definitions/steps.rb:2
+        Given B # features/f.feature:5
+        And B   # features/f.feature:11
+        And B   # features/f.feature:12
+      /C/       # features/step_definitions/steps.rb:3
+        Given C # features/f.feature:11
+        Given C # features/f.feature:15
+      /D/       # features/step_definitions/steps.rb:4
+        NOT MATCHED BY ANY STEPS
+      
+      4 scenarios (4 skipped)
+      11 steps (11 skipped)
       0m0.012s
 
       """
@@ -58,7 +87,7 @@ Feature: Usage formatter
       When I run `cucumber -f stepdefs --dry-run`
       Then it should pass with exactly:
         """
-        -------
+        --------
         
         /A/   # features/step_definitions/steps.rb:1
         /B/   # features/step_definitions/steps.rb:2
@@ -66,8 +95,8 @@ Feature: Usage formatter
         /D/   # features/step_definitions/steps.rb:4
           NOT MATCHED BY ANY STEPS
         
-        3 scenarios (3 skipped)
-        8 steps (8 skipped)
+        4 scenarios (4 skipped)
+        11 steps (11 skipped)
         0m0.012s
 
         """
