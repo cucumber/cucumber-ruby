@@ -228,6 +228,8 @@ module Cucumber
           end
           @child.after_test_case
           @previous_test_case_background = @current_test_case_background
+          @previous_test_case_scenario_outline = current_test_step_source.scenario_outline
+          @previous_test_case_examples_table = current_test_step_source.examples_table
         end
 
         def before_hook(location, result)
@@ -275,7 +277,7 @@ module Cucumber
         private :before_hook_result
 
         def switch_step_container
-          switch_to_child select_step_container(current_test_step_source)
+          switch_to_child select_step_container(current_test_step_source), current_test_step_source
         end
 
         def select_step_container(source)
@@ -298,12 +300,18 @@ module Cucumber
           source.background == @previous_test_case_background
         end
 
+        def same_scenario_outline_as_previous_test_case?(source)
+          source.scenario_outline == @previous_test_case_scenario_outline
+        end
+
         def print_step
           return unless current_test_step_source.step_result
           switch_step_container
 
           if current_test_step_source.scenario_outline
-            @child.examples_table(current_test_step_source.examples_table)
+            @child.examples_table(current_test_step_source.examples_table, 
+                                  same_scenario_outline_as_previous_test_case?(current_test_step_source),
+                                  @previous_test_case_examples_table)
             @child.examples_table_row(current_test_step_source.examples_table_row, before_hook_result)
           end
 
@@ -319,10 +327,34 @@ module Cucumber
           @delayed_embeddings = []
         end
 
-        def switch_to_child(child)
+        def switch_to_child(child, source)
           return if @child == child
-          @child.after if @child
-          @child = child.before
+          if @child
+            if from_hidden_background(@child) and @previous_outline_child
+              @previous_outline_child.after unless same_scenario_outline_as_previous_test_case?(source)
+            end
+            unless from_scenario_outline_to_hidden_backgroud(@child, child)
+              @child.after 
+              @previous_outline_child = nil
+            else
+              @previous_outline_child = @child
+            end
+          end
+          child.before unless to_scenario_outline(child) and same_scenario_outline_as_previous_test_case?(source)
+          @child = child
+        end
+
+        def from_scenario_outline_to_hidden_backgroud(from, to)
+          from.class.name == "Cucumber::Reports::ScenarioOutlinePrinter" and
+          to.class.name == "Cucumber::Reports::HiddenBackgroundPrinter"
+        end
+
+        def from_hidden_background(from)
+          from.class.name == "Cucumber::Reports::HiddenBackgroundPrinter"
+        end
+
+        def to_scenario_outline(to)
+          to.class.name == "Cucumber::Reports::ScenarioOutlinePrinter"
         end
 
         def indented(nasty_old_conflation_of_name_and_description)
@@ -478,9 +510,9 @@ module Cucumber
           @child.step_invocation(step_invocation, source)
         end
 
-        def examples_table(examples_table)
-          @child ||= ExamplesArrayPrinter.new(formatter, runtime).before
-          @child.examples_table(examples_table)
+        def examples_table(examples_table, continuing_outline, previous_examples_table)
+          @child ||= ExamplesArrayPrinter.new(formatter, runtime).before(continuing_outline)
+          @child.examples_table(examples_table, continuing_outline, previous_examples_table)
         end
 
         def examples_table_row(node, before_hook_result)
@@ -541,15 +573,20 @@ module Cucumber
         extend Forwardable
         def_delegators :@child, :step_invocation, :after_hook, :after_step_hook, :after_test_case, :examples_table_row
 
-        def before
-          formatter.before_examples_array(:examples_array)
+        def before(continuing_outline)
+          formatter.before_examples_array(:examples_array) unless continuing_outline
           self
         end
 
-        def examples_table(examples_table)
+        def examples_table(examples_table, continuing_outline, previous_examples_table)
           return if examples_table == @current
-          @child.after if @child
-          @child = ExamplesTablePrinter.new(formatter, runtime, examples_table).before
+          if @child 
+            @child.after
+          elsif continuing_outline and not examples_table == previous_examples_table
+            ExamplesTablePrinter.new(formatter, runtime, previous_examples_table).after
+          end
+          @child = ExamplesTablePrinter.new(formatter, runtime, examples_table)
+          @child.before unless examples_table == previous_examples_table
           @current = examples_table
         end
 

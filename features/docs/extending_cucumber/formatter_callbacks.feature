@@ -187,7 +187,6 @@ Feature: Formatter Callback
 
       """
 
-  @wip-new-core
   Scenario: callback with background if not expanded
     Given a file named "features/f.feature" with:
       """
@@ -279,7 +278,6 @@ Feature: Formatter Callback
 
       """
 
-  @wip-new-core
   Scenario: callback with background if expanded
     Given a file named "features/f.feature" with:
       """
