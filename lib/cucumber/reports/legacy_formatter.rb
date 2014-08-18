@@ -290,7 +290,11 @@ module Cucumber
           elsif source.scenario
             ScenarioPrinter.new(formatter, runtime, source.scenario, before_hook_result)
           elsif source.scenario_outline
-            ScenarioOutlinePrinter.new(formatter, runtime, source.scenario_outline)
+            if same_scenario_outline_as_previous_test_case?(source) and @previous_outline_child
+              @previous_outline_child
+            else
+              ScenarioOutlinePrinter.new(formatter, runtime, source.scenario_outline)
+            end
           else
             raise 'unknown step container'
           end
@@ -309,9 +313,7 @@ module Cucumber
           switch_step_container
 
           if current_test_step_source.scenario_outline
-            @child.examples_table(current_test_step_source.examples_table, 
-                                  same_scenario_outline_as_previous_test_case?(current_test_step_source),
-                                  @previous_test_case_examples_table)
+            @child.examples_table(current_test_step_source.examples_table)
             @child.examples_table_row(current_test_step_source.examples_table_row, before_hook_result)
           end
 
@@ -510,9 +512,9 @@ module Cucumber
           @child.step_invocation(step_invocation, source)
         end
 
-        def examples_table(examples_table, continuing_outline, previous_examples_table)
-          @child ||= ExamplesArrayPrinter.new(formatter, runtime).before(continuing_outline)
-          @child.examples_table(examples_table, continuing_outline, previous_examples_table)
+        def examples_table(examples_table)
+          @child ||= ExamplesArrayPrinter.new(formatter, runtime).before
+          @child.examples_table(examples_table)
         end
 
         def examples_table_row(node, before_hook_result)
@@ -573,20 +575,15 @@ module Cucumber
         extend Forwardable
         def_delegators :@child, :step_invocation, :after_hook, :after_step_hook, :after_test_case, :examples_table_row
 
-        def before(continuing_outline)
-          formatter.before_examples_array(:examples_array) unless continuing_outline
+        def before
+          formatter.before_examples_array(:examples_array)
           self
         end
 
-        def examples_table(examples_table, continuing_outline, previous_examples_table)
+        def examples_table(examples_table)
           return if examples_table == @current
-          if @child 
-            @child.after
-          elsif continuing_outline and not examples_table == previous_examples_table
-            ExamplesTablePrinter.new(formatter, runtime, previous_examples_table).after
-          end
-          @child = ExamplesTablePrinter.new(formatter, runtime, examples_table)
-          @child.before unless examples_table == previous_examples_table
+          @child.after if @child
+          @child = ExamplesTablePrinter.new(formatter, runtime, examples_table).before
           @current = examples_table
         end
 
