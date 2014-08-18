@@ -229,7 +229,6 @@ module Cucumber
           @child.after_test_case
           @previous_test_case_background = @current_test_case_background
           @previous_test_case_scenario_outline = current_test_step_source.scenario_outline
-          @previous_test_case_examples_table = current_test_step_source.examples_table
         end
 
         def before_hook(location, result)
