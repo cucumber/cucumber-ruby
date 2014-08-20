@@ -119,6 +119,29 @@ Feature: Background
         Scenario: failing background
           Then I should have '10' global cukes
       """
+    And a file named "features/failing_background_after_success_outline.feature" with:
+      """
+      Feature: Failing background after previously successful background sample
+
+        Background:
+          Given this step passes
+          And '10' global cukes
+
+        Scenario Outline: passing background
+          Then I should have '<count>' global cukes
+
+          Examples: 
+            | count |
+            | 10    |
+
+        Scenario Outline: failing background
+          Then I should have '<count>' global cukes
+
+          Examples: 
+            | count |
+            | 10    |
+
+      """
     And a file named "features/multiline_args_background.feature" with:
       """
       Feature: Passing background with multiline args
@@ -367,7 +390,7 @@ Feature: Background
     
     """
 
-  @spawn @wip-new-core
+  @spawn
   Scenario: background passes with first scenario but fails with second
     When I run `cucumber -q features/failing_background_after_success.feature`
     Then it should fail with exactly:
@@ -390,6 +413,83 @@ Feature: Background
 
     Failing Scenarios:
     cucumber features/failing_background_after_success.feature:10
+
+    2 scenarios (1 failed, 1 passed)
+    6 steps (1 failed, 1 skipped, 4 passed)
+    0m0.012s
+    
+    """
+
+  @spawn
+  Scenario: background passes with first outline scenario but fails with second
+    When I run `cucumber -q features/failing_background_after_success_outline.feature`
+    Then it should fail with exactly:
+    """
+    Feature: Failing background after previously successful background sample
+
+      Background: 
+        Given this step passes
+        And '10' global cukes
+
+      Scenario Outline: passing background
+        Then I should have '<count>' global cukes
+
+        Examples: 
+          | count |
+          | 10    |
+
+      Scenario Outline: failing background
+        Then I should have '<count>' global cukes
+
+        Examples: 
+          | count |
+          | 10    |
+          FAIL (RuntimeError)
+          ./features/step_definitions/cuke_steps.rb:8:in `/^'(.+)' global cukes$/'
+          features/failing_background_after_success_outline.feature:5:in `And '10' global cukes'
+
+    Failing Scenarios:
+    cucumber features/failing_background_after_success_outline.feature:19
+
+    2 scenarios (1 failed, 1 passed)
+    6 steps (1 failed, 1 skipped, 4 passed)
+    0m0.012s
+    
+    """
+
+  @spawn
+  Scenario: background passes with first outline scenario but fails with second (--expand)
+    When I run `cucumber -x -q features/failing_background_after_success_outline.feature`
+    Then it should fail with exactly:
+    """
+    Feature: Failing background after previously successful background sample
+
+      Background: 
+        Given this step passes
+        And '10' global cukes
+
+      Scenario Outline: passing background
+        Then I should have '<count>' global cukes
+
+        Examples: 
+ 
+          Scenario: | 10 |
+            Then I should have '10' global cukes
+
+      Scenario Outline: failing background
+        Then I should have '<count>' global cukes
+
+        Examples: 
+
+          Scenario: | 10 |
+            And '10' global cukes
+          FAIL (RuntimeError)
+          ./features/step_definitions/cuke_steps.rb:8:in `/^'(.+)' global cukes$/'
+          features/failing_background_after_success_outline.feature:5:in `And '10' global cukes'
+            Then I should have '10' global cukes
+
+    Failing Scenarios:
+    cucumber features/failing_background_after_success_outline.feature:19
 
     2 scenarios (1 failed, 1 passed)
     6 steps (1 failed, 1 skipped, 4 passed)

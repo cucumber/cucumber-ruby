@@ -316,9 +316,15 @@ module Cucumber
             @child.examples_table_row(current_test_step_source.examples_table_row, before_hook_result)
           end
 
-          unless @last_step == current_test_step_source.step
-            step, result = current_test_step_source.step, current_test_step_source.step_result
+          if @failed_hidden_background_step
             indent = Indent.new(@child.node)
+            step_invocation = @failed_hidden_background_step.build_step_invocation(indent, runtime, messages = [], embeddings = [])
+            @child.step_invocation(step_invocation, @failed_hidden_background_step)
+            @failed_hidden_background_step = nil
+          end
+
+          unless @last_step == current_test_step_source.step
+            indent ||= Indent.new(@child.node)
             step_invocation = current_test_step_source.build_step_invocation(indent, runtime, @delayed_messages, @delayed_embeddings)
             runtime.step_visited step_invocation
             @child.step_invocation(step_invocation, current_test_step_source)
@@ -331,8 +337,15 @@ module Cucumber
         def switch_to_child(child, source)
           return if @child == child
           if @child
-            if from_hidden_background(@child) and @previous_outline_child
-              @previous_outline_child.after unless same_scenario_outline_as_previous_test_case?(source)
+            if from_first_background(@child)
+              @first_background_failed = @child.failed?
+            elsif from_hidden_background(@child)
+              if not @first_background_failed
+                @failed_hidden_background_step = @child.get_failed_step_source
+              end
+              if @previous_outline_child
+                @previous_outline_child.after unless same_scenario_outline_as_previous_test_case?(source)
+              end
             end
             unless from_scenario_outline_to_hidden_backgroud(@child, child)
               @child.after 
@@ -348,6 +361,10 @@ module Cucumber
         def from_scenario_outline_to_hidden_backgroud(from, to)
           from.class.name == "Cucumber::Reports::ScenarioOutlinePrinter" and
           to.class.name == "Cucumber::Reports::HiddenBackgroundPrinter"
+        end
+
+        def from_first_background(from)
+          from.class.name == "Cucumber::Reports::BackgroundPrinter"
         end
 
         def from_hidden_background(from)
@@ -385,12 +402,19 @@ module Cucumber
         def step_invocation(step_invocation, source)
           @child ||= StepsPrinter.new(formatter, runtime).before
           @child.step_invocation step_invocation
+          if source.step_result.status == :failed
+            @failed = true
+          end
         end
 
         def after
           @child.after if @child
           formatter.after_background(node)
           self
+        end
+
+        def failed?
+          @failed
         end
 
         private
@@ -403,9 +427,18 @@ module Cucumber
       # Printer to handle background steps for anything but the first scenario in a
       # feature. These steps should not be printed.
       class HiddenBackgroundPrinter < Struct.new(:formatter, :runtime, :node)
+        def get_failed_step_source
+          return @source_of_failed_step
+        end
+
+        def step_invocation(step_invocation, source)
+          if source.step_result.status == :failed
+            @source_of_failed_step = source
+          end
+        end
+
         def before;self;end
         def after;self;end
-        def step_invocation(*);end
         def before_hook(*);end
         def after_hook(*);end
         def after_step_hook(*);end
