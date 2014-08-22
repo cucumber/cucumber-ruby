@@ -1,38 +1,85 @@
 require 'spec_helper'
 require 'cucumber/formatter/progress'
+require 'cucumber/formatter/spec_helper'
+require 'cucumber/cli/options'
 
 module Cucumber
   module Formatter
     describe Progress do
+      extend SpecHelperDsl
+      include SpecHelper
 
       before(:each) do
         Cucumber::Term::ANSIColor.coloring = false
         @out = StringIO.new
-        progress = Cucumber::Formatter::Progress.new(double("step mother"), @out, {})
-        @visitor = Cucumber::Ast::TreeWalker.new(nil, [progress])
+        @formatter = Progress.new(step_mother, @out, {})
       end
 
-      describe "visiting a table cell value without a status" do
-        it "should take the status from the last run step" do
-          @visitor.visit_step_result('', '', nil, :failed, nil, 10, nil, nil)
-          outline_table = double()
-          outline_table.should_receive(:accept) do |visitor|
-            visitor.visit_table_cell_value('value', nil)
+      describe "given a single feature" do
+        before(:each) do
+          run_defined_feature
+        end
+
+        describe "with a scenario" do
+          define_feature <<-FEATURE
+            Feature: Banana party
+
+              Scenario: Monkey eats banana
+                Given there are bananas
+          FEATURE
+
+          it "outputs the undefined step" do
+            expect(@out.string).to include "U\n"
           end
-          @visitor.visit_outline_table(outline_table)
+        end
 
-          @out.string.should == "FF"
+        describe "with a background" do
+          define_feature <<-FEATURE
+            Feature: Banana party
+
+              Background: 
+                Given a tree
+
+              Scenario: Monkey eats banana
+                Given there are bananas
+          FEATURE
+
+          it "outputs the two undefined steps" do
+            expect(@out.string).to include "UU\n"
+          end
+        end
+
+        describe "with a scenario outline" do
+          define_feature <<-FEATURE
+            Feature: Fud Pyramid
+
+              Scenario Outline: Monkey eats a balanced diet
+                Given there are <Things>
+
+                Examples: Fruit
+                 | Things  |
+                 | apples  |
+                 | bananas |
+                Examples: Vegetables
+                 | Things   |
+                 | broccoli |
+                 | carrots  |
+          FEATURE
+
+          it "outputs each undefined step" do
+            expect(@out.string).to include "UUUU\n"
+          end
+
+          it "has 4 undefined scenarios" do
+            expect(@out.string).to include "4 scenarios (4 undefined)"
+          end
+
+          it "has 4 undefined steps" do
+            expect(@out.string).to include "4 steps (4 undefined)"
+          end
+
         end
       end
-
-      describe "visiting a table cell which is a table header" do
-        it "should not output anything" do
-          @visitor.visit_table_cell_value('value', :skipped_param)
-
-          @out.string.should == ""
-        end
-      end
-
     end
   end
 end
