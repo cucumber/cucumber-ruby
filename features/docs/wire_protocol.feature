@@ -325,14 +325,13 @@ Feature: Wire Protocol
   #
   # # Bad Response
   #
-  @wip
   Scenario: Unexpected response
     Given there is a wire server running on port 54321 which understands the following protocol:
       | request                                              | response                            |
       | ["begin_scenario"]                                   | ["yikes"]                           |
       | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[{"id":"1", "args":[]}]] |
-    When I run `cucumber -f progress`
-    Then the stderr should contain exactly:
+    When I run `cucumber -f pretty`
+    Then the stdout should contain:
       """
       undefined method `handle_yikes'
       """
