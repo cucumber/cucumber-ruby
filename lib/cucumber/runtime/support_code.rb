@@ -22,7 +22,7 @@ module Cucumber
         def step(step)
           location = Cucumber::Core::Ast::Location.new(*caller[0].split(':')[0..1])
           core_multiline_arg = Core::Ast::MultilineArgument.from(step.doc_string || step.rows, location)
-          @support_code.invoke(step.name, MultilineArgument.from(core_multiline_arg))
+          @support_code.invoke(step.name, MultilineArgument.from(core_multiline_arg), location)
         end
 
         def eof
@@ -55,9 +55,7 @@ module Cucumber
         parser.parse(steps_text, file, line.to_i)
       end
 
-      def invoke(step_name, multiline_argument)
-        file, line = *caller[2].split(':')[0..1]
-        location = Core::Ast::Location.new(file, line)
+      def invoke(step_name, multiline_argument, location=nil)
         step_match(step_name).invoke(multiline_argument)
       end
 

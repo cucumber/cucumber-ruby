@@ -39,7 +39,7 @@ module Cucumber
         # TODO: this argument parsing should move up out of core
         location = Core::Ast::Location.new(*caller[0].split(':')[0..1])
         core_multiline_arg = Core::Ast::MultilineArgument.from(raw_multiline_arg, location)
-        @__cucumber_runtime.invoke(name, MultilineArgument.from(core_multiline_arg))
+        @__cucumber_runtime.invoke(name, MultilineArgument.from(core_multiline_arg), location)
       end
 
       # Run a snippet of Gherkin
