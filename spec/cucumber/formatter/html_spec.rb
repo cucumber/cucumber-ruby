@@ -3,6 +3,7 @@ require 'cucumber/formatter/spec_helper'
 require 'cucumber/formatter/html'
 require 'nokogiri'
 require 'cucumber/rb_support/rb_language'
+require 'rspec/mocks'
 
 module Cucumber
   module Formatter
@@ -246,7 +247,7 @@ module Cucumber
         describe "with a step that embeds a snapshot" do
           define_steps do
             Given(/snap/) { 
-              File.should_receive(:file?).with('snapshot.jpeg').and_return(true)
+              RSpec::Mocks.allow_message(File, :file?) { true }
               embed('snapshot.jpeg', 'image/jpeg')
             }
           end
