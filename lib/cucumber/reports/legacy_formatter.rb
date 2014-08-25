@@ -236,6 +236,7 @@ module Cucumber
         end
 
         def after_hook(location, result)
+          return unless @child
           @child.after_hook LegacyResultBuilder.new(result)
         end
 
