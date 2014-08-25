@@ -25,6 +25,10 @@ module Cucumber
       def before_feature(feature_element)
         @lines = []
         @file = feature_element.file
+        # See https://github.com/cucumber/cucumber/issues/629
+        if @file.include?(' ')
+          warn("Filenames with spaces like '#{@file}' cause unexpected behaviour from the rerun formatter.")
+        end
       end
 
       def after_feature(*)
