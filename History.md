@@ -1,4 +1,4 @@
-## [v2.0.0.pre (unreleased)](https://github.com/cucumber/cucumber/compare/v1.3.8...master)
+## [v2.0.0.beta.1 ](https://github.com/cucumber/cucumber/compare/v1.3.8...v.2.0.0.beta.1)
 
 Version 2.0 contains a major internal redesign, extracting the core logic of
 parsing and executing tests into a [separate gem](https://github.com/cucumber/cucumber-ruby-core).
@@ -13,6 +13,7 @@ all.
 * Better snippet comment ([579](https://github.com/cucumber/cucumber/pull/579) Jeff Nyman)
 * Random scenario ordering with `--order random`
 * Embed plain text ([712](https://github.com/cucumber/cucumber/pull/712) @bingwei
+* Support embedding images directly in HTML and JSON reports ([696](https://github.com/cucumber/cucumber/pull/696),[695](https://github.com/cucumber/cucumber/pull/695/files) @brasmusson)
 
 ### Features removed
 
@@ -20,6 +21,7 @@ all.
 * Remove support for i18n nested step methods (Matt Wynne)
 * Remove experimental .js and .py support (Matt Wynne)
 * Remove Ruby 1.8.7 support, including RCov
+* Spork support
 
 ### API Changes
 
