@@ -37,6 +37,10 @@ module Cucumber
       def embed(src, mime_type, label)
         case(mime_type)
         when /^image\/(png|gif|jpg|jpeg)/
+          unless File.file?(src) or src =~ /^data:image\/(png|gif|jpg|jpeg);base64,/
+            type = mime_type =~ /;base[0-9]+$/ ? mime_type : mime_type + ";base64"
+            src = "data:" + type + "," + src
+          end
           embed_image(src, label)
         when /^text\/plain/
           embed_text(src, label)
