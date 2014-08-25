@@ -89,7 +89,7 @@ module Cucumber
 
         expect(-> {
           run_step "Outside"
-        }).to raise_error(Cucumber::Undefined, 'Undefined step: "Inside"')
+        }).to raise_error(Cucumber::Undefined)
       end
 
       it "allows forced pending" do

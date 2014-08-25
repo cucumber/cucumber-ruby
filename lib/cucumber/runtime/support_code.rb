@@ -58,12 +58,7 @@ module Cucumber
       def invoke(step_name, multiline_argument)
         file, line = *caller[2].split(':')[0..1]
         location = Core::Ast::Location.new(file, line)
-        begin
-          step_match(step_name).invoke(multiline_argument)
-        rescue Exception => e
-          e.nested! if Undefined === e
-          raise e
-        end
+        step_match(step_name).invoke(multiline_argument)
       end
 
       # Loads and registers programming language implementation.

@@ -890,7 +890,8 @@ module Cucumber
       class LegacyResultBuilder
         attr_reader :status
         def initialize(result)
-          result.describe_to(self)
+          @result = result
+          @result.describe_to(self)
         end
 
         def passed
@@ -946,12 +947,8 @@ module Cucumber
         def step_exception(step, configuration)
           return filtered_step_exception(step) if @exception
           return nil unless @status == :undefined && configuration.strict?
-          begin
-            raise Cucumber::Undefined.new(step.name)
-          rescue => exception
-            @exception = exception
-            filtered_step_exception(step)
-          end
+          @exception = Cucumber::Undefined.from(@result, step.name)
+          filtered_step_exception(step)
         end
 
         def filtered_exception
