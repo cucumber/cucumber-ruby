@@ -1,3 +1,9 @@
+## [In Git](https://github.com/cucumber/cucumber/compare/v.2.0.0.beta.1...master)
+
+### New features
+
+* Support embedding images directly in HTML and JSON reports ([696](https://github.com/cucumber/cucumber/pull/696),[695](https://github.com/cucumber/cucumber/pull/695/files) @brasmusson)
+
 ## [v2.0.0.beta.1 ](https://github.com/cucumber/cucumber/compare/v1.3.8...v.2.0.0.beta.1)
 
 Version 2.0 contains a major internal redesign, extracting the core logic of
@@ -13,7 +19,6 @@ all.
 * Better snippet comment ([579](https://github.com/cucumber/cucumber/pull/579) Jeff Nyman)
 * Random scenario ordering with `--order random`
 * Embed plain text ([712](https://github.com/cucumber/cucumber/pull/712) @bingwei
-* Support embedding images directly in HTML and JSON reports ([696](https://github.com/cucumber/cucumber/pull/696),[695](https://github.com/cucumber/cucumber/pull/695/files) @brasmusson)
 
 ### Features removed
 
