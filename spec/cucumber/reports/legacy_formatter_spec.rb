@@ -1439,7 +1439,7 @@ module Cucumber
         end
       end
 
-      context 'with exception in before hooks' do
+      context 'with exception in a single before hook' do
         it 'prints the exception after the scenario name' do
           define_steps do
             Before do
@@ -1586,6 +1586,47 @@ module Cucumber
                 :after_feature_element,
               :after_feature,
             :after_features
+          ])
+        end
+      end
+
+      context 'with exception in the first of several before hooks' do
+        # This proves that the second before hook's result doesn't overwrite
+        # the result of the first one.
+        it 'prints the exception after the scenario name' do
+          define_steps do
+            Before { raise 'an exception' }
+            Before { }
+          end
+          execute_gherkin do
+            feature do
+              scenario do
+                step 'passing'
+              end
+            end
+          end
+
+          expect( formatter.messages ).to eq([
+          :before_features,
+            :before_feature,
+              :before_tags,
+              :after_tags,
+              :feature_name,
+              :before_feature_element,
+                :before_tags,
+                :after_tags,
+                :scenario_name,
+                :exception,
+                :before_steps,
+                  :before_step,
+                    :before_step_result,
+                    :step_name,
+                    :after_step_result,
+                  :after_step,
+                :after_steps,
+              :after_feature_element,
+            :after_feature,
+          :after_features
           ])
         end
       end

@@ -34,21 +34,12 @@ module Cucumber
       extend Forwardable
 
       def_delegators :formatter,
-        :embed,
         :ask
-        :puts
 
-      def before_test_case(test_case)
-        printer.before_test_case(test_case)
-      end
-
-      def before_test_step(test_step)
-        printer.before_test_step(test_step)
-      end
-
-      def after_test_step(test_step, result)
-        printer.after_test_step(test_step, result)
-      end
+      def_delegators :printer,
+        :before_test_case,
+        :before_test_step,
+        :after_test_step
 
       def after_test_case(test_case, result)
         record_test_case_result(test_case, result)
@@ -207,7 +198,7 @@ module Cucumber
         attr_reader :current_test_step_source
 
         def before_test_case(test_case)
-          @before_hook_result = Legacy::Ast::Node.new
+          @before_hook_results = Legacy::Ast::NodeCollection.new
         end
 
         def before_test_step(test_step)
@@ -232,7 +223,7 @@ module Cucumber
         end
 
         def before_hook(location, result)
-          @before_hook_result = Legacy::Ast::BeforeHookResult.new(LegacyResultBuilder.new(result))
+          @before_hook_results << Legacy::Ast::BeforeHookResult.new(LegacyResultBuilder.new(result))
         end
 
         def after_hook(location, result)
@@ -273,8 +264,8 @@ module Cucumber
 
         private
 
-        attr_reader :before_hook_result
-        private :before_hook_result
+        attr_reader :before_hook_results
+        private :before_hook_results
 
         def switch_step_container
           switch_to_child select_step_container(current_test_step_source), current_test_step_source
@@ -285,10 +276,10 @@ module Cucumber
             if same_background_as_previous_test_case?(source)
               HiddenBackgroundPrinter.new(formatter, runtime, source.background)
             else
-              BackgroundPrinter.new(formatter, runtime, source.background, before_hook_result)
+              BackgroundPrinter.new(formatter, runtime, source.background, before_hook_results)
             end
           elsif source.scenario
-            ScenarioPrinter.new(formatter, runtime, source.scenario, before_hook_result)
+            ScenarioPrinter.new(formatter, runtime, source.scenario, before_hook_results)
           elsif source.scenario_outline
             if same_scenario_outline_as_previous_test_case?(source) and @previous_outline_child
               @previous_outline_child
@@ -314,7 +305,7 @@ module Cucumber
 
           if current_test_step_source.scenario_outline
             @child.examples_table(current_test_step_source.examples_table)
-            @child.examples_table_row(current_test_step_source.examples_table_row, before_hook_result)
+            @child.examples_table_row(current_test_step_source.examples_table_row, before_hook_results)
           end
 
           if @failed_hidden_background_step
@@ -387,12 +378,12 @@ module Cucumber
 
       end
 
-      BackgroundPrinter = Struct.new(:formatter, :runtime, :node, :before_hook_result) do
+      BackgroundPrinter = Struct.new(:formatter, :runtime, :node, :before_hook_results) do
 
         def before
           formatter.before_background node
           formatter.background_name node.keyword, node.legacy_conflated_name_and_description, node.location.to_s, indent.of(node)
-          before_hook_result.accept(formatter)
+          before_hook_results.accept(formatter)
           self
         end
 
@@ -447,13 +438,13 @@ module Cucumber
         def after_test_case(*);end
       end
 
-      ScenarioPrinter = Struct.new(:formatter, :runtime, :node, :before_hook_result) do
+      ScenarioPrinter = Struct.new(:formatter, :runtime, :node, :before_hook_results) do
 
         def before
           formatter.before_feature_element(node)
           Legacy::Ast::Tags.new(node.tags).accept(formatter)
           formatter.scenario_name node.keyword, node.legacy_conflated_name_and_description, node.location.to_s, indent.of(node)
-          before_hook_result.accept(formatter)
+          before_hook_results.accept(formatter)
           self
         end
 
@@ -550,8 +541,8 @@ module Cucumber
           @child.examples_table(examples_table)
         end
 
-        def examples_table_row(node, before_hook_result)
-          @child.examples_table_row(node, before_hook_result)
+        def examples_table_row(node, before_hook_results)
+          @child.examples_table_row(node, before_hook_results)
         end
 
         def after_test_case
@@ -641,14 +632,14 @@ module Cucumber
           self
         end
 
-        def examples_table_row(examples_table_row, before_hook_result)
+        def examples_table_row(examples_table_row, before_hook_results)
           return if examples_table_row == @current
           @child.after if @child
           row = ExampleTableRow.new(examples_table_row)
           if !runtime.configuration.expand?
-            @child = TableRowPrinter.new(formatter, runtime, row, before_hook_result).before
+            @child = TableRowPrinter.new(formatter, runtime, row, before_hook_results).before
           else
-            @child = ExpandTableRowPrinter.new(formatter, runtime, row, before_hook_result).before
+            @child = ExpandTableRowPrinter.new(formatter, runtime, row, before_hook_results).before
           end
           @current = examples_table_row
         end
@@ -709,7 +700,7 @@ module Cucumber
         end
       end
 
-      class TableRowPrinterBase < Struct.new(:formatter, :runtime, :node, :before_hook_result)
+      class TableRowPrinterBase < Struct.new(:formatter, :runtime, :node, :before_hook_results)
         def after_hook(result)
           @after_hook_result = result
         end
@@ -758,7 +749,7 @@ module Cucumber
 
       class TableRowPrinter < TableRowPrinterBase
         def before
-          before_hook_result.accept(formatter)
+          before_hook_results.accept(formatter)
           formatter.before_table_row(node)
           self
         end
@@ -795,7 +786,7 @@ module Cucumber
 
       class ExpandTableRowPrinter < TableRowPrinterBase
         def before
-          before_hook_result.accept(formatter)
+          before_hook_results.accept(formatter)
           self
         end
 
@@ -1019,6 +1010,20 @@ module Cucumber
 
           attr_reader :node
           private :node
+        end
+
+        class NodeCollection
+          def initialize
+            @children = []
+          end
+
+          def accept(formatter)
+            @children.each { |child| child.accept(formatter) }
+          end
+
+          def <<(child)
+            @children << child
+          end
         end
 
         Comments = Struct.new(:comments) do
