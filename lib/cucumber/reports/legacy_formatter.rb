@@ -223,12 +223,14 @@ module Cucumber
         end
 
         def before_hook(location, result)
-          @before_hook_results << Legacy::Ast::BeforeHookResult.new(LegacyResultBuilder.new(result))
+          @before_hook_results << Legacy::Ast::HookResult.new(LegacyResultBuilder.new(result))
         end
 
         def after_hook(location, result)
-          return unless @child
-          @child.after_hook LegacyResultBuilder.new(result)
+          # if the scenario has no steps, we can hit this before we've created the scenario printer
+          # ideally we should call switch_step_container in before_step_step
+          switch_step_container if !@child 
+          @child.after_hook Legacy::Ast::HookResult.new(LegacyResultBuilder.new(result))
         end
 
         def after_step_hook(hook, result)
@@ -378,6 +380,27 @@ module Cucumber
 
       end
 
+      module PrintsAfterHooks
+        def after_hook_results
+          @after_hook_results ||= Legacy::Ast::NodeCollection.new
+        end
+
+        def after_hook(result)
+          after_hook_results << result
+        end
+      end
+
+      # Basic printer used by default
+      class AfterHookPrinter
+        include Cucumber.initializer(:formatter)
+
+        include PrintsAfterHooks
+
+        def after
+          after_hook_results.accept(formatter)
+        end
+      end
+
       BackgroundPrinter = Struct.new(:formatter, :runtime, :node, :before_hook_results) do
 
         def before
@@ -439,6 +462,7 @@ module Cucumber
       end
 
       ScenarioPrinter = Struct.new(:formatter, :runtime, :node, :before_hook_results) do
+        include PrintsAfterHooks
 
         def before
           formatter.before_feature_element(node)
@@ -452,10 +476,6 @@ module Cucumber
           @child ||= StepsPrinter.new(formatter, runtime).before
           @child.step_invocation step_invocation
           @last_step_result = source.step_result
-        end
-
-        def after_hook(result)
-          @after_hook_result = result
         end
 
         def after_step_hook(result)
@@ -472,7 +492,7 @@ module Cucumber
           # TODO - the last step result might not accurately reflect the
           # overall scenario result.
           scenario = last_step_result.scenario(node.name, node.location)
-          @after_hook_result.describe_exception_to(formatter) if @after_hook_result
+          after_hook_results.accept(formatter)
           formatter.after_feature_element(scenario)
           @done = true
           self
@@ -524,10 +544,6 @@ module Cucumber
           formatter.scenario_name node.keyword, node.legacy_conflated_name_and_description, node.location.to_s, indent.of(node)
           OutlineStepsPrinter.new(formatter, runtime, indent).print(node)
           self
-        end
-
-        def after_hook(result)
-          @child.after_hook(result)
         end
 
         def step_invocation(step_invocation, source)
@@ -701,9 +717,7 @@ module Cucumber
       end
 
       class TableRowPrinterBase < Struct.new(:formatter, :runtime, :node, :before_hook_results)
-        def after_hook(result)
-          @after_hook_result = result
-        end
+        include PrintsAfterHooks
 
         def after_step_hook(result)
           @after_step_hook_result = result
@@ -772,7 +786,7 @@ module Cucumber
           end
           formatter.after_table_row(legacy_table_row)
           @after_step_hook_result.describe_exception_to formatter if @after_step_hook_result
-          @after_hook_result.describe_exception_to(formatter) if @after_hook_result
+          after_hook_results.accept(formatter)
           @done = true
           self
         end
@@ -807,7 +821,7 @@ module Cucumber
           return if @done
           @child.after if @child
           @after_step_hook_result.describe_exception_to formatter if @after_step_hook_result
-          @after_hook_result.describe_exception_to(formatter) if @after_hook_result
+          after_hook_results.accept(formatter)
           @done = true
           self
         end
@@ -1036,7 +1050,7 @@ module Cucumber
           end
         end
 
-        class BeforeHookResult
+        class HookResult
           def initialize(result)
             @result = result
             @already_accepted = false

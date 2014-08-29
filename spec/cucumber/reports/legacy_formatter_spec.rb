@@ -1729,6 +1729,75 @@ module Cucumber
           ])
         end
       end
+
+      context 'with exception in the first of several after hooks' do
+        it 'prints the exception after the steps' do
+          define_steps do
+            After { raise 'an exception' }
+            After { }
+          end
+          execute_gherkin do
+            feature do
+              scenario do
+                step 'passing'
+              end
+            end
+          end
+
+          expect( formatter.messages ).to eq([
+            :before_features,
+              :before_feature,
+                :before_tags,
+                :after_tags,
+                :feature_name,
+                :before_feature_element,
+                  :before_tags,
+                  :after_tags,
+                  :scenario_name,
+                  :before_steps,
+                    :before_step,
+                      :before_step_result,
+                      :step_name,
+                      :after_step_result,
+                    :after_step,
+                  :after_steps,
+                  :exception,
+                :after_feature_element,
+              :after_feature,
+            :after_features
+          ])
+        end
+      end
+
+      context 'with an exception in an after hook but no steps' do
+        it 'prints the exception after the steps' do
+          define_steps do
+            After { fail }
+          end
+          execute_gherkin do
+            feature do
+              scenario do
+              end
+            end
+          end
+
+          expect( formatter.messages ).to eq([
+            :before_features,
+              :before_feature,
+                :before_tags,
+                :after_tags,
+                :feature_name,
+                :before_feature_element,
+                  :before_tags,
+                  :after_tags,
+                  :scenario_name,
+                  :exception,
+                :after_feature_element,
+              :after_feature,
+            :after_features
+          ])
+        end
+      end
     end
 
     it 'passes an object responding to failed? with the after_feature_element message' do
