@@ -84,7 +84,7 @@ module Cucumber
       end
     end
 
-    # adapts our test_case to look like the Cucumber Runtime's Scenario
+    # adapts our test_case to look like the Cucumber Runtime's old Scenario
     class TestCase
       def initialize(test_case, feature)
         @test_case = test_case
@@ -108,8 +108,12 @@ module Cucumber
       end
 
       def source_tags
-        warn('deprecated: call #tags instead')
+        #warn('deprecated: call #tags instead')
         tags
+      end
+
+      def source_tag_names
+        tags.map &:name
       end
 
       def tags

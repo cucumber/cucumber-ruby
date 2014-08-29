@@ -113,3 +113,4 @@ module Cucumber
   end
 end
 
+require 'cucumber/ast'
