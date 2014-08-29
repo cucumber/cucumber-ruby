@@ -1,5 +1,9 @@
 ## [In Git](https://github.com/cucumber/cucumber/compare/v.2.0.0.beta.1...master)
 
+### Bugfixes
+
+  * Better reporting of exceptions in Before / After hooks ([723](https://github.com/cucumber/cucumber/pull/723) @mattwynne)
+
 ### New features
 
 * Support embedding images directly in HTML and JSON reports ([696](https://github.com/cucumber/cucumber/pull/696),[695](https://github.com/cucumber/cucumber/pull/695/files) @brasmusson)
