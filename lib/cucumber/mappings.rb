@@ -95,6 +95,10 @@ module Cucumber
         hook.tag_expressions.all? { |expression| @test_case.match_tags?(expression) }
       end
 
+      def failed?
+        warn("Calling failed? on a scenario is not currently supported in Cucumber 2.0. Please see https://github.com/cucumber/cucumber/issues/726")
+      end
+
       def language
         @test_case.language
       end
