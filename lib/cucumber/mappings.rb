@@ -123,12 +123,20 @@ module Cucumber
       def tags
         @test_case.tags
       end
+
+      def outline?
+        false
+      end
     end
 
     class Scenario < TestCase
     end
 
     class ScenarioOutlineExample < TestCase
+      def outline?
+        true
+      end
+
       def scenario_outline
         self
       end
