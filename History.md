@@ -1,12 +1,16 @@
-## [In Git](https://github.com/cucumber/cucumber/compare/v.2.0.0.beta.1...master)
+## [In Git](https://github.com/cucumber/cucumber/compare/v.2.0.0.beta.2...master)
+
+### New Features
+
+ * Add TestCase#outline? for conditionals in Before / After hooks ([728](https://github.com/cucumber/cucumber/pull/728) [Erran Carey](https://github.com/erran)
+ * Support embedding images directly in HTML and JSON reports ([696](https://github.com/cucumber/cucumber/pull/696),[695](https://github.com/cucumber/cucumber/pull/695/files) @brasmusson)
+
+## [v2.0.0.beta.2](https://github.com/cucumber/cucumber/compare/v.2.0.0.beta.1...v.2.0.0.beta.2)
 
 ### Bugfixes
 
   * Better reporting of exceptions in Before / After hooks ([723](https://github.com/cucumber/cucumber/pull/723) @mattwynne)
-
-### New features
-
-* Support embedding images directly in HTML and JSON reports ([696](https://github.com/cucumber/cucumber/pull/696),[695](https://github.com/cucumber/cucumber/pull/695/files) @brasmusson)
+  * Add `#source_tag_names` method to `TestCase` object passed to hooks (@mattwynne)
 
 ## [v2.0.0.beta.1 ](https://github.com/cucumber/cucumber/compare/v1.3.8...v.2.0.0.beta.1)
 
