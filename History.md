@@ -2,7 +2,7 @@
 
 ### New Features
 
- * Add TestCase#outline? for conditionals in Before / After hooks ([728](https://github.com/cucumber/cucumber/pull/728) [Erran Carey](https://github.com/erran)
+ * Add TestCase#outline? for conditionals in Before / After hooks ([728](https://github.com/cucumber/cucumber/pull/728) [Erran Carey](https://github.com/erran))
  * Support embedding images directly in HTML and JSON reports ([696](https://github.com/cucumber/cucumber/pull/696),[695](https://github.com/cucumber/cucumber/pull/695/files) @brasmusson)
 
 ## [v2.0.0.beta.2](https://github.com/cucumber/cucumber/compare/v.2.0.0.beta.1...v.2.0.0.beta.2)
