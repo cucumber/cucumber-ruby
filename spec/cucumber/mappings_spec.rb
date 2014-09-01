@@ -10,7 +10,7 @@ module Cucumber
       let(:ruby)      { double.as_null_object }
       let(:runtime)   do
         double(
-          load_programming_language: ruby, 
+          load_programming_language: ruby,
           step_match: double
         )
       end
@@ -33,7 +33,7 @@ module Cucumber
 
       describe "#scenario_outline" do
 
-        it "is thows NoMethodError when the test case is from a scenario" do
+        it "throws a NoMethodError when the test case is from a scenario" do
           define_gherkin do
             feature do
               scenario do
@@ -69,6 +69,42 @@ module Cucumber
 
       end
 
+      describe "#outline?" do
+
+        it "returns false when the test case is from a scenario" do
+          define_gherkin do
+            feature do
+              scenario do
+                step 'passing'
+              end
+            end
+          end
+
+          before do |test_case|
+            expect(test_case).to_not be_an_outline
+          end
+        end
+
+        it "returns true when the test case is from a scenario" do
+          define_gherkin do
+            feature do
+              scenario_outline do
+                step 'passing'
+
+                examples 'examples' do
+                  row 'a'
+                  row '1'
+                end
+              end
+            end
+          end
+
+          before do |test_case|
+            expect(test_case).to be_an_outline
+          end
+        end
+
+      end
       attr_accessor :gherkin_docs
 
       def define_gherkin(&block)
