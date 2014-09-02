@@ -68,13 +68,13 @@ module Cucumber
 
     def map_test_case_hooks(mapper)
       ruby.hooks_for(:before, scenario).each do |hook|
-        mapper.before do
-          hook.invoke('Before', scenario)
+        mapper.before do |result|
+          hook.invoke('Before', scenario.with_result(result))
         end
       end
       ruby.hooks_for(:after, scenario).each do |hook|
-        mapper.after do
-          hook.invoke('After', scenario)
+        mapper.after do |result|
+          hook.invoke('After', scenario.with_result(result))
         end
       end
       ruby.hooks_for(:around, scenario).each do |hook|
@@ -86,9 +86,10 @@ module Cucumber
 
     # adapts our test_case to look like the Cucumber Runtime's old Scenario
     class TestCase
-      def initialize(test_case, feature)
+      def initialize(test_case, feature, result = Core::Test::Result::Unknown.new)
         @test_case = test_case
         @feature = feature
+        @result = result
       end
 
       def accept_hook?(hook)
@@ -96,7 +97,7 @@ module Cucumber
       end
 
       def failed?
-        warn("Calling failed? on a scenario is not currently supported in Cucumber 2.0. Please see https://github.com/cucumber/cucumber/issues/726")
+        @result.failed?
       end
 
       def language
@@ -126,6 +127,10 @@ module Cucumber
 
       def outline?
         false
+      end
+
+      def with_result(result)
+        self.class.new(@test_case, @feature, result)
       end
     end
 

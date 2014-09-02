@@ -31,8 +31,37 @@ module Cucumber
         end
       end
 
+      describe "#failed?" do
+
+        it "is true if the test case is in a failed state" do
+          define_gherkin do
+            feature do
+              scenario do
+                step 'failing'
+              end
+            end
+          end
+
+          allow(runtime).to receive(:step_match) do |step_name|
+            if step_name == 'failing'
+              step_match = double
+              allow(step_match).to receive(:invoke) { fail }
+              step_match
+            else
+              raise Cucumber::Undefined
+            end
+          end
+
+          after do |test_case|
+            expect(test_case).to be_failed
+          end
+        end
+
+      end
+
       describe "#scenario_outline" do
 
+        # TODO: is this actually desired behaviour?
         it "throws a NoMethodError when the test case is from a scenario" do
           define_gherkin do
             feature do
@@ -116,6 +145,24 @@ module Cucumber
         scenario_spy = nil
         allow(ruby).to receive(:hooks_for) do |phase, scenario|
           if phase == :before
+            hook = double
+            expect(hook).to receive(:invoke) do |phase, scenario|
+              scenario_spy = scenario
+            end
+            [hook]
+          else
+            []
+          end
+        end
+        execute gherkin_docs, mappings, report
+        yield scenario_spy
+      end
+
+      def after
+        # TODO: the complexity of this stubbing shows we need to clean up the interface
+        scenario_spy = nil
+        allow(ruby).to receive(:hooks_for) do |phase, scenario|
+          if phase == :after
             hook = double
             expect(hook).to receive(:invoke) do |phase, scenario|
               scenario_spy = scenario
