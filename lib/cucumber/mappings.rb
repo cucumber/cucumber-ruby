@@ -112,6 +112,11 @@ module Cucumber
         @test_case.name
       end
 
+      def title
+        warn("deprecated: call #name instead")
+        name
+      end
+
       def source_tags
         #warn('deprecated: call #tags instead')
         tags
