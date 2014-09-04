@@ -62,7 +62,7 @@ Feature: Scenario outlines
             | failing | passing     |
             RuntimeError (RuntimeError)
             ./features/step_definitions/steps.rb:2:in `/^failing without a table$/'
-            features/outline_sample.feature:6:in `Given <state> without a table'
+            features/outline_sample.feature:12:in `Given failing without a table'
 
           Examples: Only passing
             | state   | other_state |
@@ -92,7 +92,7 @@ Feature: Scenario outlines
             | failing | passing     |
             RuntimeError (RuntimeError)
             ./features/step_definitions/steps.rb:2:in `/^failing without a table$/'
-            features/outline_sample.feature:6:in `Given <state> without a table'
+            features/outline_sample.feature:12:in `Given failing without a table'
 
           Examples: Only passing
             | state   | other_state |
@@ -121,7 +121,7 @@ Feature: Scenario outlines
             | failing | passing     |
             RuntimeError (RuntimeError)
             ./features/step_definitions/steps.rb:2:in `/^failing without a table$/'
-            features/outline_sample.feature:6:in `Given <state> without a table'
+            features/outline_sample.feature:12:in `Given failing without a table'
 
       Failing Scenarios:
       cucumber features/outline_sample.feature:12
@@ -141,7 +141,7 @@ Feature: Scenario outlines
 
       RuntimeError (RuntimeError)
       ./features/step_definitions/steps.rb:2:in `/^failing without a table$/'
-      features/outline_sample.feature:6:in `Given <state> without a table'
+      features/outline_sample.feature:12:in `Given failing without a table'
 
       Failing Scenarios:
       cucumber features/outline_sample.feature:12
