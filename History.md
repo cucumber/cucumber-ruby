@@ -2,12 +2,13 @@
 
 ### New Features
 
- * Add TestCase#outline? for conditionals in Before / After hooks ([728](https://github.com/cucumber/cucumber/pull/728) [Erran Carey](https://github.com/erran))
- * Support embedding images directly in HTML and JSON reports ([696](https://github.com/cucumber/cucumber/pull/696),[695](https://github.com/cucumber/cucumber/pull/695/files) @brasmusson)
+  * Add TestCase#outline? for conditionals in Before / After hooks ([728](https://github.com/cucumber/cucumber/pull/728) [Erran Carey](https://github.com/erran))
+  * Support embedding images directly in HTML and JSON reports ([696](https://github.com/cucumber/cucumber/pull/696),[695](https://github.com/cucumber/cucumber/pull/695/files) @brasmusson)
 
 ### Bugfixes
 
- * Added tests for, and re-added behaviour to support Scenario#failed? in hooks
+  * Added tests for, and re-added behaviour to support Scenario#failed? in hooks (Matt Wynne)
+  * Rescuing ArgumentError in HTML formatter so Cucumber won't stop tests due bad encoding ([690](https://github.com/cucumber/cucumber/pull/690) @awls99)
 
 ## [v2.0.0.beta.2](https://github.com/cucumber/cucumber/compare/v.2.0.0.beta.1...v.2.0.0.beta.2)
 
