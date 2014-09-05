@@ -31,8 +31,8 @@ all.
 
 * Better snippet comment ([579](https://github.com/cucumber/cucumber/pull/579) Jeff Nyman)
 * Random scenario ordering with `--order random`
-* Embed plain text ([712](https://github.com/cucumber/cucumber/pull/712) @bingwei
-* Support the cucumber-reporting tools also when using Scenario Outlines ([700](https://github.com/cucumber/cucumber/pull/700) @brasmusson
+* Embed plain text ([712](https://github.com/cucumber/cucumber/pull/712) @bingwei)
+* Support the cucumber-reporting tools also when using Scenario Outlines ([700](https://github.com/cucumber/cucumber/pull/700) @brasmusson)
 
 ### Features removed
 
