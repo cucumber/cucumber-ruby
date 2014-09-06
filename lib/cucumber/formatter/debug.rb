@@ -24,6 +24,10 @@ module Cucumber
         @indent += 2 if name.to_s =~ /^before/
       end
 
+      def puts(*args)
+        print("puts")
+      end
+
     private
 
       def print(text)

@@ -220,29 +220,41 @@ module Cucumber
         def after_test_case(*args)
           if current_test_step_source.step_result.nil?
             switch_step_container
-            @delayed_messages = []
-            @delayed_embeddings = []
           end
+
+          # messages and embedding should already have been handled, but just in case...
+          @delayed_messages.each { |message| formatter.puts(message) }
+          @delayed_embeddings.each { |embedding| embedding.send_to_formatter(formatter) }
+          @delayed_messages = []
+          @delayed_embeddings = []
+
           @child.after_test_case
           @previous_test_case_background = @current_test_case_background
           @previous_test_case_scenario_outline = current_test_step_source.scenario_outline
         end
 
         def before_hook(location, result)
-          @before_hook_results << Legacy::Ast::HookResult.new(LegacyResultBuilder.new(result))
+          @before_hook_results << Legacy::Ast::HookResult.new(LegacyResultBuilder.new(result), @delayed_messages, @delayed_embeddings)
+          @delayed_messages = []
+          @delayed_embeddings = []
         end
 
         def after_hook(location, result)
           # if the scenario has no steps, we can hit this before we've created the scenario printer
           # ideally we should call switch_step_container in before_step_step
           switch_step_container if !@child 
-          @child.after_hook Legacy::Ast::HookResult.new(LegacyResultBuilder.new(result))
+          @child.after_hook Legacy::Ast::HookResult.new(LegacyResultBuilder.new(result), @delayed_messages, @delayed_embeddings)
+          @delayed_messages = []
+          @delayed_embeddings = []
         end
 
         def after_step_hook(hook, result)
           line = StepBacktraceLine.new(current_test_step_source.step)
-          @child.after_step_hook LegacyResultBuilder.new(result).
-            append_to_exception_backtrace(line)
+          @child.after_step_hook Legacy::Ast::HookResult.new(LegacyResultBuilder.new(result).
+            append_to_exception_backtrace(line), @delayed_messages, @delayed_embeddings)
+          @delayed_messages = []
+          @delayed_embeddings = []
+
         end
 
         def background(node, *)
@@ -417,7 +429,7 @@ module Cucumber
         end
 
         def after_step_hook(result)
-          result.describe_exception_to formatter
+          result.accept formatter
         end
 
         def step_invocation(step_invocation, source)
@@ -485,7 +497,7 @@ module Cucumber
         end
 
         def after_step_hook(result)
-          result.describe_exception_to formatter
+          result.accept formatter
         end
 
         def after_test_case(*args)
@@ -726,7 +738,8 @@ module Cucumber
         include PrintsAfterHooks
 
         def after_step_hook(result)
-          @after_step_hook_result = result
+          @after_step_hook_result ||= []
+          @after_step_hook_result.push result
         end
 
         def after_test_case(*args)
@@ -791,7 +804,7 @@ module Cucumber
             formatter.after_table_cell(value)
           end
           formatter.after_table_row(legacy_table_row)
-          @after_step_hook_result.describe_exception_to formatter if @after_step_hook_result
+          @after_step_hook_result.each { |result| result.accept formatter } if @after_step_hook_result
           after_hook_results.accept(formatter)
           @done = true
           self
@@ -826,7 +839,7 @@ module Cucumber
         def after
           return if @done
           @child.after if @child
-          @after_step_hook_result.describe_exception_to formatter if @after_step_hook_result
+          @after_step_hook_result.each { |result| result.accept formatter } if @after_step_hook_result
           after_hook_results.accept(formatter)
           @done = true
           self
@@ -1057,13 +1070,15 @@ module Cucumber
         end
 
         class HookResult
-          def initialize(result)
-            @result = result
+          def initialize(result, messages, embeddings)
+            @result, @messages, @embeddings = result, messages, embeddings
             @already_accepted = false
           end
 
           def accept(formatter)
             unless @already_accepted
+              @messages.each { |message| formatter.puts(message) }
+              @embeddings.each { |embedding| embedding.send_to_formatter(formatter) }
               @result.describe_exception_to(formatter)
               @already_accepted = true
             end
