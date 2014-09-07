@@ -977,7 +977,7 @@ module Cucumber
 
     class StepBacktraceLine < Struct.new(:step)
       def to_s
-        "#{step.location}:in `#{step.keyword}#{step.name}'"
+        step.backtrace_line
       end
     end
 
