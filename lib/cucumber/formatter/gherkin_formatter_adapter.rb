@@ -111,7 +111,7 @@ module Cucumber
               @current_step_hash['comments'],
               @current_step_hash['keyword'],
               step_match.format_args(),
-              @current_step_hash['line'],
+              file_colon_line.split(':')[1].to_i,
               @current_step_hash['rows'],
               @current_step_hash['doc_string']))
           @gf.match(@current_match)

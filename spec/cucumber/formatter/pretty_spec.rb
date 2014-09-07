@@ -531,14 +531,14 @@ OUTPUT
                 Given there are <Things>                    # spec.feature:4
                 Examples: Fruit
                   Scenario: | apples |                          # spec.feature:8
-                    Given there are apples                      # spec.feature:4
+                    Given there are apples                      # spec.feature:8
                   Scenario: | bananas |                         # spec.feature:9
-                    Given there are bananas                     # spec.feature:4
+                    Given there are bananas                     # spec.feature:9
                 Examples: Vegetables
                   Scenario: | broccoli |                        # spec.feature:12
-                    Given there are broccoli                    # spec.feature:4
+                    Given there are broccoli                    # spec.feature:12
                   Scenario: | carrots |                         # spec.feature:13
-                    Given there are carrots                     # spec.feature:4
+                    Given there are carrots                     # spec.feature:13
               OUTPUT
               lines.split("\n").each do |line|
                 expect(@out.string).to include line.strip
@@ -561,7 +561,7 @@ OUTPUT
                 lines = <<-OUTPUT
               Examples:
                  Scenario: | Hominidae | Very long cell content | # spec.feature:8
-                   Given there are Hominidae                      # spec.feature:4
+                   Given there are Hominidae                      # spec.feature:8
 
                 OUTPUT
                 lines.split("\n").each do |line|
