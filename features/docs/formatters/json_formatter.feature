@@ -83,6 +83,17 @@ Feature: JSON output formatter
           Given I embed data directly
 
       """
+    And a file named "features/out_scenario_out_scenario_outline.feature" with:
+      """
+      Feature:
+        Scenario:
+          Given this step passes
+        Scenario Outline:
+          Given this step <status>
+          Examples:
+          | status |
+          | passes |
+      """
 
   # Need to investigate why this won't pass in-process. error_message doesn't get det?
   @spawn
@@ -647,3 +658,39 @@ Feature: JSON output formatter
     ]
 
     """
+  @spawn
+  Scenario: handle output from hooks
+     Given a file named "features/step_definitions/output_steps.rb" with:
+      """
+      Before do
+        puts "Before hook 1"
+        embed "src", "mime_type", "label"
+      end
+
+      Before do
+        puts "Before hook 2"
+        embed "src", "mime_type", "label"
+      end
+ 
+      AfterStep do
+        puts "AfterStep hook 1"
+        embed "src", "mime_type", "label"
+      end
+
+      AfterStep do
+        puts "AfterStep hook 2"
+        embed "src", "mime_type", "label"
+      end
+
+      After do
+        puts "After hook 1"
+        embed "src", "mime_type", "label"
+      end
+
+      After do
+        puts "After hook 2"
+        embed "src", "mime_type", "label"
+      end
+      """
+    When I run `cucumber --format json features/out_scenario_out_scenario_outline.feature`
+    Then it should pass

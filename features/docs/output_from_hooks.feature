@@ -12,10 +12,10 @@ Feature: Hook output feature
         Scenario:
           Given this step passes
         Scenario Outline:
-          Given this step <status>es
+          Given this step <status>
           Examples:
           | status |
-          |  pass  |
+          | passes  |
       """
     And a file named "features/step_definitions/output_steps.rb" with:
       """
