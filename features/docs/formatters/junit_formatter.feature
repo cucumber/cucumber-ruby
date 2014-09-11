@@ -259,6 +259,7 @@ You *must* specify --out DIR for the junit formatter
       ]]>
           <![CDATA[ (RuntimeError)
       ./features/step_definitions/steps.rb:4:in `/^this step fails$/'
+      features/scenario_outline.feature:9:in `Given this step fails'
       features/scenario_outline.feature:4:in `Given this step <type>']]>
         </failure>
         <system-out/>

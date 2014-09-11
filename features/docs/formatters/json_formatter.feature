@@ -538,7 +538,7 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "this step passes",
-                "line": 4,
+                "line": 8,
                 "match": {
                   "location": "features/step_definitions/steps.rb:1"
                 },
@@ -560,13 +560,13 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "this step fails",
-                "line": 4,
+                "line": 9,
                 "match": {
                   "location": "features/step_definitions/steps.rb:4"
                 },
                 "result": {
                   "status": "failed",
-                  "error_message" : " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/outline.feature:4:in `Given this step <status>'",
+                  "error_message" : " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/outline.feature:9:in `Given this step fails'\nfeatures/outline.feature:4:in `Given this step <status>'",
 		  "duration": 1
                 }
               }
@@ -583,7 +583,7 @@ Feature: JSON output formatter
               {
                 "keyword": "Given ",
                 "name": "this step passes",
-                "line": 4,
+                "line": 13,
                 "match": {
                   "location": "features/step_definitions/steps.rb:1"
                 },

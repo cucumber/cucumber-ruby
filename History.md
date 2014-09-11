@@ -2,6 +2,7 @@
 
 ### New Features
 
+  * Include both outline step and expanded step in error backtrace ([730](https://github.com/cucumber/cucumber/pull/730) @brasmusson)
   * Add TestCase#outline? for conditionals in Before / After hooks ([728](https://github.com/cucumber/cucumber/pull/728) [Erran Carey](https://github.com/erran))
   * Support embedding images directly in HTML and JSON reports ([696](https://github.com/cucumber/cucumber/pull/696),[695](https://github.com/cucumber/cucumber/pull/695/files) @brasmusson)
 
@@ -54,6 +55,7 @@ all.
 
 ## [v1.3.16](https://github.com/cucumber/cucumber/compare/v1.3.15...v1.3.16)
 
+* Pass output from the step definition on to the JSON formatter ([701](https://github.com/cucumber/cucumber/pull/701) @brasmusson)
 * Add RSpec 3 test double support ([689](https://github.com/cucumber/cucumber/pull/689) @cyphactor)
 * Fix bug with rerun formatter and `--expand` option ([710](https://github.com/cucumber/cucumber/pull/710) @brasmusson)
 
