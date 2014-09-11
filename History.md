@@ -1,5 +1,9 @@
 ## [In Git](https://github.com/cucumber/cucumber/compare/v.2.0.0.beta.2...master)
 
+### Removed Features
+
+  * The `--dotcucumber` option is no longer supported and `stepdefs.json` is no longer written. (Aslak Hellesøy)
+
 ### New Features
 
   * Add TestCase#outline? for conditionals in Before / After hooks ([728](https://github.com/cucumber/cucumber/pull/728) [Erran Carey](https://github.com/erran))

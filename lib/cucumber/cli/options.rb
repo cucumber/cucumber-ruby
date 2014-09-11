@@ -223,9 +223,6 @@ module Cucumber
           opts.on("-x", "--expand", "Expand Scenario Outline Tables in output.") do
             @options[:expand] = true
           end
-          opts.on("--dotcucumber DIR", "Write metadata to DIR") do |dir|
-            @options[:dotcucumber] = dir
-          end
           opts.on("--order TYPE[:SEED]", "Run examples in the specified order. Available types:",
             *<<-TEXT.split("\n")) do |order|
   [defined]     Run scenarios in the order they were defined (default).
