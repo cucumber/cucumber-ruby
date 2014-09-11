@@ -8,6 +8,7 @@
 
 ### Bugfixes
 
+  * Pass hook output to the formatters appropriately ([732](https://github.com/cucumber/cucumber/pull/732) @brasmusson)
   * Added tests for, and re-added behaviour to support Scenario#failed? in hooks (Matt Wynne)
   * Rescuing ArgumentError in HTML formatter so Cucumber won't stop tests due bad encoding ([690](https://github.com/cucumber/cucumber/pull/690) @awls99)
 

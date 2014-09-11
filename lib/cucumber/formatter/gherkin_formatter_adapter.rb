@@ -10,6 +10,8 @@ module Cucumber
         @gf = gherkin_formatter
         @print_empty_match = print_empty_match
         @options = options
+        @delayed_messages = []
+        @delayed_embeddings = []
       end
 
       def before_feature(feature)
@@ -19,10 +21,12 @@ module Cucumber
 
       def before_background(background)
         @outline = false
+        @before_steps = true
         @gf.background(background.gherkin_statement)
       end
 
       def before_feature_element(feature_element)
+        @before_steps = true
         case(feature_element)
         when Core::Ast::Scenario
           @outline = false
@@ -65,6 +69,8 @@ module Cucumber
       def before_step(step)
         unless @outline and @options[:expand]
           @gf.step(step.gherkin_statement)
+          pass_delayed_output
+          @before_steps = false
         else 
           if @in_instantiated_scenario
             @current_step_hash = to_hash(step.gherkin_statement)
@@ -114,6 +120,8 @@ module Cucumber
               file_colon_line.split(':')[1].to_i,
               @current_step_hash['rows'],
               @current_step_hash['doc_string']))
+          pass_delayed_output
+          @before_steps = false
           @gf.match(@current_match)
           @gf.result(@current_result)
         end
@@ -159,11 +167,19 @@ module Cucumber
         if defined?(JRUBY_VERSION)
           data = data.to_java_bytes
         end
-        @gf.embedding(mime_type, data)
+        unless @before_steps
+          @gf.embedding(mime_type, data)
+        else
+          @delayed_embeddings.push [mime_type, data]
+        end
       end
 
       def puts(message)
-        @gf.write(message)
+        unless @before_steps
+          @gf.write(message)
+        else
+          @delayed_messages.push message
+        end
       end
 
       private
@@ -174,6 +190,13 @@ module Cucumber
         else
           gherkin_statement.to_hash
         end
+      end
+
+      def pass_delayed_output
+        @delayed_messages.each { |message| @gf.write(message) }
+        @delayed_embeddings.each { |embed_data| @gf.embedding(embed_data[0], embed_data[1]) }
+        @delayed_messages = []
+        @delayed_embeddings = []
       end
     end
   end
