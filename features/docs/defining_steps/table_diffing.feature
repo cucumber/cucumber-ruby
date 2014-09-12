@@ -23,7 +23,7 @@ Feature: Table diffing
       end
       """
     When I run `cucumber -i features/tables.feature`
-    Then it should fail with:
+    Then it should fail with exactly:
       """
       Feature: Tables
 
@@ -41,5 +41,6 @@ Feature: Table diffing
 
       1 scenario (1 failed)
       1 step (1 failed)
+      0m0.012s
 
       """
