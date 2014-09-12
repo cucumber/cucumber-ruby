@@ -83,6 +83,10 @@ module Cucumber
         @ast_table = ast_table
       end
 
+      def append_to(array)
+        array << self
+      end
+
       def to_step_definition_arg
         dup
       end
