@@ -1211,6 +1211,18 @@ module Cucumber
           private :values, :line
         end
 
+        class LegacyTableRow < DataTableRow
+          def accept(formatter)
+            formatter.before_table_row(self)
+            values.each do |value|
+              formatter.before_table_cell(value.value)
+              formatter.table_cell_value(value.value, value.status)
+              formatter.after_table_cell(value.value)
+            end
+            formatter.after_table_row(self)
+          end
+        end
+
         Tags = Struct.new(:tags) do
           def accept(formatter)
             formatter.before_tags tags
@@ -1269,6 +1281,10 @@ module Cucumber
               @result = DataTable.new(node)
             end
 
+            def legacy_table(node)
+              @result = LegacyTable.new(node)
+            end
+
             def result
               @result || Node.new(nil)
             end
@@ -1296,7 +1312,17 @@ module Cucumber
               formatter.after_multiline_arg self
             end
           end
+        end
 
+        class LegacyTable < SimpleDelegator
+          def accept(formatter)
+            formatter.before_multiline_arg self
+            cells_rows.each_with_index do |row, index|
+              line = location.line + index
+              Legacy::Ast::LegacyTableRow.new(row, line).accept(formatter)
+            end
+            formatter.after_multiline_arg self
+          end
         end
 
         Features = Struct.new(:duration)

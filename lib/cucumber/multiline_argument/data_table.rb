@@ -1,4 +1,5 @@
 require 'gherkin/formatter/escaping'
+require 'cucumber/core/ast/describes_itself'
 
 module Cucumber
   module MultilineArgument
@@ -47,6 +48,7 @@ module Cucumber
       end
 
       include Enumerable
+      include Core::Ast::DescribesItself
 
       NULL_CONVERSIONS = Hash.new({ :strict => false, :proc => lambda{ |cell_value| cell_value } }).freeze
 
@@ -452,12 +454,21 @@ module Cucumber
         Cucumber::Term::ANSIColor.coloring = options[:color]
         formatter = Formatter::Pretty.new(nil, io, options)
         formatter.instance_variable_set('@indent', options[:indent])
-        Reports::Legacy::Ast::MultilineArg.for(@ast_table).accept(Reports::FormatterWrapper.new([formatter]))
+
+        Reports::Legacy::Ast::MultilineArg.for(self).accept(Reports::FormatterWrapper.new([formatter]))
 
         Cucumber::Term::ANSIColor.coloring = c
         io.rewind
         s = "\n" + io.read + (" " * (options[:indent] - 2))
         s
+      end
+
+      def location
+        @ast_table.location
+      end
+
+      def description_for_visitors
+        :legacy_table
       end
 
       def columns #:nodoc:
@@ -659,6 +670,10 @@ module Cucumber
           "row_#{line}"
         end
 
+        def each(&proc)
+          @cells.each(&proc)
+        end
+
         private
 
         def index
@@ -668,10 +683,6 @@ module Cucumber
         def width
           map{|cell| cell.value ? escape_cell(cell.value.to_s).unpack('U*').length : 0}.max
         end
-
-        def each(&proc)
-          @cells.each(&proc)
-        end
       end
 
       class Cell #:nodoc:
@@ -680,11 +691,6 @@ module Cucumber
 
         def initialize(value, table, line)
           @value, @table, @line = value, table, line
-        end
-
-        def accept(visitor)
-          return if Cucumber.wants_to_quit
-          visitor.visit_table_cell_value(value, status)
         end
 
         def inspect!
