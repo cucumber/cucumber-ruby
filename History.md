@@ -1,5 +1,9 @@
 ## [In Git](https://github.com/cucumber/cucumber/compare/v.2.0.0.beta.2...master)
 
+### Removed Features
+
+  * The `--dotcucumber` option is no longer supported and `stepdefs.json` is no longer written. (Aslak Hellesøy)
+
 ### New Features
 
   * Include both outline step and expanded step in error backtrace ([730](https://github.com/cucumber/cucumber/pull/730) @brasmusson)

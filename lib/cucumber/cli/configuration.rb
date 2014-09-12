@@ -62,10 +62,6 @@ module Cucumber
         @options[:expand]
       end
 
-      def dotcucumber
-        @options[:dotcucumber]
-      end
-
       def snippet_type
         @options[:snippet_type] || :regexp
       end
