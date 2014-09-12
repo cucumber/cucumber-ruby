@@ -1,6 +1,7 @@
 require 'forwardable'
 require 'delegate'
 require 'cucumber/errors'
+require 'cucumber/multiline_argument'
 
 module Cucumber
   module Reports
@@ -1281,7 +1282,7 @@ module Cucumber
             end
           end
 
-          class DataTable < MultilineArgument::DataTable
+          class DataTable < Cucumber::MultilineArgument::DataTable
             def node
               @ast_table
             end

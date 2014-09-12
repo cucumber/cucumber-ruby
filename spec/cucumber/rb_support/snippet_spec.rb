@@ -99,7 +99,7 @@ module Cucumber
 
         it "is helpful with doc string" do
           @pattern = 'A "first" arg'
-          @multiline_argument = Core::Ast::MultilineArgument.from("", Core::Ast::Location.new(""))
+          @multiline_argument = MultilineArgument.from("", Core::Ast::Location.new(""))
 
           expect(snippet_text).to eq unindented(%{
           Given(/^A "(.*?)" arg$/) do |arg1, string|

@@ -1,3 +1,5 @@
+require 'gherkin/formatter/escaping'
+
 module Cucumber
   module MultilineArgument
     # Step Definitions that match a plain text Step with a multiline argument table
@@ -45,7 +47,6 @@ module Cucumber
       end
 
       include Enumerable
-      include Gherkin::Rubify
 
       NULL_CONVERSIONS = Hash.new({ :strict => false, :proc => lambda{ |cell_value| cell_value } }).freeze
 

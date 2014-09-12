@@ -1,5 +1,4 @@
 require 'cucumber/constantize'
-require 'cucumber/core/ast/multiline_argument'
 require 'cucumber/runtime/for_programming_languages'
 
 module Cucumber
@@ -20,9 +19,8 @@ module Cucumber
         end
 
         def step(step)
-          location = Cucumber::Core::Ast::Location.new(*caller[0].split(':')[0..1])
-          core_multiline_arg = Core::Ast::MultilineArgument.from(step.doc_string || step.rows, location)
-          @support_code.invoke(step.name, MultilineArgument.from(core_multiline_arg), location)
+          location = Cucumber::Core::Ast::Location.of_caller
+          @support_code.invoke(step.name, MultilineArgument.from(step.doc_string || step.rows, location))
         end
 
         def eof

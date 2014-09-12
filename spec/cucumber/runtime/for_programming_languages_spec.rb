@@ -7,26 +7,30 @@ module Cucumber
     subject               { Runtime::SupportCode.new(user_interface,{}) }
     let(:runtime_facade)  { Runtime::ForProgrammingLanguages.new(subject, user_interface) }
 
-    it 'produces Ast::DocString by #doc_string with default content-type' do
-      str = runtime_facade.doc_string('DOC')
+    describe "#doc_string" do
 
-      expect(str).to be_kind_of(Core::Ast::DocString)
-      expect(str.content_type).to eq('')
+      it 'defaults to a blank content-type' do
+        str = runtime_facade.doc_string('DOC')
+        expect(str).to be_kind_of(MultilineArgument::DocString)
+        expect(str.content_type).to eq('')
+      end
+
+      it 'can have a content type' do
+        str = runtime_facade.doc_string('DOC','ruby')
+        expect(str.content_type).to eq('ruby')
+      end
+
     end
 
-    it 'produces Ast::DocString by #doc_string with ruby content-type' do
-      str = runtime_facade.doc_string('DOC','ruby')
+    describe "#table" do
 
-      expect(str).to be_kind_of(Core::Ast::DocString)
-      expect(str.content_type).to eq('ruby')
-    end
-
-    it 'produces Ast::Table by #table' do
-      expect(runtime_facade.table(%{
+      it 'produces Ast::Table by #table' do
+        expect(runtime_facade.table(%{
       | account | description | amount |
       | INT-100 | Taxi        | 114    |
       | CUC-101 | Peeler      | 22     |
-      })).to be_kind_of(Core::Ast::DataTable)
+        })).to be_kind_of(MultilineArgument::DataTable)
+      end
     end
   end
 end
