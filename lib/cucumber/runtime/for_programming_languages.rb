@@ -61,7 +61,7 @@ module Cucumber
       #
       def doc_string(body, content_type='', line_offset=0)
         location = Core::Ast::Location.of_caller
-        MultilineArgument::DocString.new(Core::Ast::DocString.new(body, content_type, location))
+        MultilineArgument.doc_string(body, content_type, location)
       end
     end
   end

@@ -7,6 +7,7 @@ module Cucumber
 
     class SupportCode
 
+      # TODO: figure out a way to move this to the core. We'd need to have access to the mappings to pass those in.
       require 'forwardable'
       class StepInvoker
         include Gherkin::Rubify
@@ -19,11 +20,19 @@ module Cucumber
         end
 
         def step(step)
-          location = Cucumber::Core::Ast::Location.of_caller
-          @support_code.invoke(step.name, MultilineArgument.from(step.doc_string || step.rows, location))
+          location = Core::Ast::Location.of_caller
+          @support_code.invoke(step.name, multiline_arg(step, location))
         end
 
         def eof
+        end
+
+        def multiline_arg(step, location)
+          if argument = step.doc_string
+            MultilineArgument.doc_string(argument.value, argument.content_type, location.on_line(argument.line_range))
+          else
+            MultilineArgument.from(step.rows, location)
+          end
         end
       end
 

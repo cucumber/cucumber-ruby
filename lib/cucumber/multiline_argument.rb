@@ -17,8 +17,6 @@ module Cucumber
         case rubify(argument)
         when String
           doc_string(argument, 'text/plain', location)
-        when ::Gherkin::Formatter::Model::DocString
-          doc_string(argument.value, argument.content_type, location.on_line(argument.line_range))
         when Array
           location = location.on_line(argument.first.line..argument.last.line)
           data_table(argument.map{ |row| row.cells }, location)
@@ -31,8 +29,6 @@ module Cucumber
         end
       end
 
-      private
-
       def doc_string(argument, content_type, location)
         builder.doc_string(Core::Ast::DocString.new(argument, content_type, location))
       end
@@ -40,6 +36,8 @@ module Cucumber
       def data_table(data, location)
         builder.data_table(Core::Ast::DataTable.new(data, location))
       end
+
+      private
 
       def builder
         @builder ||= Builder.new
