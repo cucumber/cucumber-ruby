@@ -222,7 +222,7 @@ module Cucumber
           table.map_headers! do |header|
             header.downcase
           end
-          expect( table.hashes.first.keys ).to =~ %w[hello world]
+          expect( table.hashes.first.keys ).to match %w[hello world]
         end
 
         it "treats the mappings in the provided hash as overrides when used with a block" do
@@ -230,7 +230,7 @@ module Cucumber
             header.downcase
           end
 
-          expect( table.hashes.first.keys ).to =~ %w[hello foo]
+          expect( table.hashes.first.keys ).to match %w[hello foo]
         end
       end
 
@@ -244,18 +244,18 @@ module Cucumber
 
         it "renames the columns to the specified values in the provided hash" do
           table2 = @table.map_headers('one' => :three)
-          expect( table2.hashes.first[:three] ).to == '4444'
+          expect( table2.hashes.first[:three] ).to eq '4444'
         end
 
         it "allows renaming columns using regexp" do
           table2 = @table.map_headers(/one|uno/ => :three)
-          expect( table2.hashes.first[:three] ).to == '4444'
+          expect( table2.hashes.first[:three] ).to eq '4444'
         end
 
         it "copies column mappings" do
           @table.map_column!('one') { |v| v.to_i }
           table2 = @table.map_headers('one' => 'three')
-          expect( table2.hashes.first['three'] ).to == 4444
+          expect( table2.hashes.first['three'] ).to eq 4444
         end
 
         it "takes a block and operates on all the headers with it" do
@@ -263,7 +263,7 @@ module Cucumber
             header.downcase
           end
 
-          expect( table2.hashes.first.keys ).to =~ %w[hello world]
+          expect( table2.hashes.first.keys ).to match %w[hello world]
         end
 
         it "treats the mappings in the provided hash as overrides when used with a block" do
@@ -271,7 +271,7 @@ module Cucumber
             header.downcase
           end
 
-          expect( table2.hashes.first.keys ).to =~ %w[hello foo]
+          expect( table2.hashes.first.keys ).to match %w[hello foo]
         end
       end
 
@@ -287,8 +287,8 @@ module Cucumber
         it "should return a new table with arguments replaced with values" do
           table_with_replaced_args = @table.arguments_replaced({'<book>' => 'Unbearable lightness of being', '<qty>' => '5'})
 
-          expect( table_with_replaced_args.hashes[0]['book'] ).to == 'Unbearable lightness of being'
-          expect( table_with_replaced_args.hashes[0]['qty'] ).to == '5'
+          expect( table_with_replaced_args.hashes[0]['book'] ).to eq 'Unbearable lightness of being'
+          expect( table_with_replaced_args.hashes[0]['qty'] ).to eq '5'
         end
 
         it "should recognise when entire cell is delimited" do
@@ -306,7 +306,7 @@ module Cucumber
         it "should replace nil values with nil" do
           table_with_replaced_args = @table.arguments_replaced({'<book>' => nil})
 
-          expect( table_with_replaced_args.hashes[0]['book'] ).to == nil
+          expect( table_with_replaced_args.hashes[0]['book'] ).to eq nil
         end
 
         it "should preserve values which don't match a placeholder when replacing with nil" do
@@ -316,13 +316,13 @@ module Cucumber
                             ])
           table_with_replaced_args = table.arguments_replaced({'<book>' => nil})
 
-          expect( table_with_replaced_args.hashes[0]['book'] ).to == 'cat'
+          expect( table_with_replaced_args.hashes[0]['book'] ).to eq 'cat'
         end
 
         it "should not change the original table" do
           @table.arguments_replaced({'<book>' => 'Unbearable lightness of being'})
 
-          expect( @table.hashes[0]['book'] ).to == 'Unbearable lightness of being'
+          expect( @table.hashes[0]['book'] ).not_to eq 'Unbearable lightness of being'
         end
 
         it "should not raise an error when there are nil values in the table" do
@@ -330,9 +330,9 @@ module Cucumber
                               ['book', 'qty'],
                               ['<book>', nil],
                             ])
-          lambda{
+          expect {
             table.arguments_replaced({'<book>' => nil, '<qty>' => '5'})
-          }.should_not raise_error
+          }.not_to raise_error
         end
       end
 
@@ -352,8 +352,8 @@ module Cucumber
             | dddd  | 4000     | 300       |
             | e     | 50000    | 4000      |
           }, __FILE__, __LINE__)
-          lambda{t1.diff!(t2)}.should raise_error
-          expect( t1.to_s(:indent => 12, :color => false) ).to == %{
+          expect { t1.diff!(t2) }.to raise_error
+          expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     1         | (-) 22         | (-) 333         |     4444         | (+) a    |
             |     55555     | (-) 666666     | (-) 7777777     |     88888888     | (+) bb   |
             | (-) 999999999 | (-) 0000000000 | (-) 01010101010 | (-) 121212121212 | (+)      |
@@ -370,7 +370,7 @@ module Cucumber
             |g|h|i|
           }, __FILE__, __LINE__)
           t.diff!(t.dup)
-          expect( t.to_s(:indent => 12, :color => false) ).to == %{
+          expect( t.to_s(:indent => 12, :color => false) ).to eq %{
             |     a |     b |     c |
             |     d |     e |     f |
             |     g |     h |     i |
@@ -386,9 +386,9 @@ module Cucumber
             ['name',  'male', 'lastname', 'swedish'],
             ['aslak', true,   'hellesøy', false]
           ])
-          lambda{t1.diff!(t2)}.should raise_error
+          expect { t1.diff!(t2) }.to raise_error
 
-          expect( t1.to_s(:indent => 12, :color => false) ).to == %{
+          expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     name  |     male       |     lastname |     swedish     |
             | (-) aslak | (-) (i) "true" | (-) hellesøy | (-) (i) "false" |
             | (+) aslak | (+) (i) true   | (+) hellesøy | (+) (i) false   |
@@ -406,7 +406,7 @@ module Cucumber
             ['aslak', true]
           ])
           t1.diff!(t2)
-          expect( t1.to_s(:indent => 12, :color => false) ).to == %{
+          expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     name  |     male |
             |     aslak |     true |
           }
@@ -425,7 +425,7 @@ module Cucumber
             ['aslak', 'true']
           ])
           t2.diff!(t1)
-          expect( t1.to_s(:indent => 12, :color => false) ).to == %{
+          expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     name  |     male |
             |     aslak |     true |
           }
@@ -443,7 +443,7 @@ module Cucumber
             ['aslak', true]
           ])
           t1.diff!(t2)
-          expect( t1.to_s(:indent => 12, :color => false) ).to == %{
+          expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     name  |     male |
             |     aslak |     true |
           }
@@ -458,8 +458,8 @@ module Cucumber
             ['X',  'Y'],
             [2, 1]
           ])
-          lambda{t1.diff!(t2)}.should raise_error
-          expect( t1.to_s(:indent => 12, :color => false) ).to == %{
+          expect { t1.diff!(t2) }.to raise_error
+          expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     X       |     Y       |
             | (-) (i) "2" | (-) (i) "1" |
             | (+) (i) 2   | (+) (i) 1   |
@@ -471,10 +471,10 @@ module Cucumber
             ['Cuke',  'Duke'],
             ['Foo', 'Bar']
           ])
-          lambda do
+          expect do
             t1.map_headers!(/uk/ => 'u')
             t1.hashes
-          end.should raise_error(%{2 headers matched /uk/: ["Cuke", "Duke"]})
+          end.to raise_error(%{2 headers matched /uk/: ["Cuke", "Duke"]})
         end
 
         describe "raising" do
@@ -483,7 +483,7 @@ module Cucumber
               | a | b |
               | c | d |
             }, __FILE__, __LINE__)
-            expect( @t ).to_not == nil
+            expect( @t ).not_to eq nil
           end
 
           it "should raise on missing rows" do
@@ -491,7 +491,7 @@ module Cucumber
               | a | b |
             }, __FILE__, __LINE__)
             expect( lambda { @t.dup.diff!(t) } ).to raise_error
-            lambda { @t.dup.diff!(t, :missing_row => false) }.should_not raise_error
+            expect { @t.dup.diff!(t, :missing_row => false) }.not_to raise_error
           end
 
           it "should not raise on surplus rows when surplus is at the end" do
@@ -500,8 +500,8 @@ module Cucumber
               | c | d |
               | e | f |
             }, __FILE__, __LINE__)
-            lambda { @t.dup.diff!(t) }.should raise_error
-            lambda { @t.dup.diff!(t, :surplus_row => false) }.should_not raise_error
+            expect { @t.dup.diff!(t) }.to raise_error
+            expect { @t.dup.diff!(t, :surplus_row => false) }.not_to raise_error
           end
 
           it "should not raise on surplus rows when surplus is interleaved" do
@@ -517,9 +517,9 @@ module Cucumber
               | four  | 4     |
               | five  | 5     |
             }, __FILE__, __LINE__)
-            lambda { t1.dup.diff!(t2) }.should raise_error
+            expect { t1.dup.diff!(t2) }.not_to raise_error
 
-            lambda { t1.dup.diff!(t2, :surplus_row => false) }.should_not raise_error
+            expect { t1.dup.diff!(t2, :surplus_row => false) }.not_to raise_error
           end
 
           it "should raise on missing columns" do
@@ -527,8 +527,8 @@ module Cucumber
               | a |
               | c |
             }, __FILE__, __LINE__)
-            lambda { @t.dup.diff!(t) }.should raise_error
-            lambda { @t.dup.diff!(t, :missing_col => false) }.should_not raise_error
+            expect { @t.dup.diff!(t) }.to raise_error
+            expect { @t.dup.diff!(t, :missing_col => false) }.not_to raise_error
           end
 
           it "should not raise on surplus columns" do
@@ -536,8 +536,8 @@ module Cucumber
               | a | b | x |
               | c | d | y |
             }, __FILE__, __LINE__)
-            lambda { @t.dup.diff!(t) }.should_not raise_error
-            lambda { @t.dup.diff!(t, :surplus_col => true) }.should raise_error
+            expect { @t.dup.diff!(t) }.not_to raise_error
+            expect { @t.dup.diff!(t, :surplus_col => true) }.to raise_error
           end
 
           it "should not raise on misplaced columns" do
@@ -545,8 +545,8 @@ module Cucumber
               | b | a |
               | d | c |
             }, __FILE__, __LINE__)
-            lambda { @t.dup.diff!(t) }.should_not raise_error
-            lambda { @t.dup.diff!(t, :misplaced_col => true) }.should raise_error
+            expect { @t.dup.diff!(t) }.not_to raise_error
+            expect { @t.dup.diff!(t, :misplaced_col => true) }.to raise_error
           end
         end
 
@@ -558,25 +558,11 @@ module Cucumber
       describe "#new" do
         it "should allow Array of Hash" do
           t1 = DataTable.new([{'name' => 'aslak', 'male' => 'true'}])
-          expect( t1.to_s(:indent => 12, :color => false) ).to == %{
+          expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     male |     name  |
             |     true |     aslak |
           }
         end
-      end
-
-      it "should convert to sexp" do
-        expect( @table.to_sexp ).to ==
-          [:table,
-            [:row, -1,
-              [:cell, "one"],
-              [:cell, "four"],
-              [:cell, "seven"]
-            ],
-            [:row, -1,
-              [:cell, "4444"],
-              [:cell, "55555"],
-              [:cell, "666666"]]]
       end
     end
   end
