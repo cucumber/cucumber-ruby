@@ -403,21 +403,6 @@ module Cucumber
         raise %{The table must have exactly #{width} columns} unless raw[0].size == width
       end
 
-      def arguments_replaced(arguments) #:nodoc:
-        raw_with_replaced_args = raw.map do |row|
-          row.map do |cell|
-            cell_with_replaced_args = cell
-            arguments.each do |name, value|
-              if cell_with_replaced_args && cell_with_replaced_args.include?(name)
-                cell_with_replaced_args = value ? cell_with_replaced_args.gsub(name, value) : nil
-              end
-            end
-            cell_with_replaced_args
-          end
-        end
-        self.class.new(raw_with_replaced_args)
-      end
-
       def has_text?(text) #:nodoc:
         raw.flatten.compact.detect{|cell_value| cell_value.index(text)}
       end
