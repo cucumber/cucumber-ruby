@@ -23,6 +23,8 @@ module Cucumber
         when Array
           location = location.on_line(argument.first.line..argument.last.line)
           data_table(Core::Ast::DataTable.new(argument.map{ |row| row.cells }, location))
+        when DataTable, DocString, None
+          argument
         else
           raise ArgumentError, "Don't know how to convert #{argument.inspect} into a MultilineArgument"
         end
