@@ -1179,9 +1179,9 @@ module Cucumber
         end
 
         class DataTableRow
-          def initialize(row)
-            @values = row.map(&:value)
-            @line = row.line
+          def initialize(row, line)
+            @values = row
+            @line = line
           end
 
           def dom_id
@@ -1281,13 +1281,18 @@ module Cucumber
             end
           end
 
-          class DataTable < Node
+          class DataTable < MultilineArgument::DataTable
+            def node
+              @ast_table
+            end
+
             def accept(formatter)
-              formatter.before_multiline_arg node
-              node.cells_rows.each do |row|
-                Legacy::Ast::DataTableRow.new(row).accept(formatter)
+              formatter.before_multiline_arg self
+              node.raw.each_with_index do |row, index|
+                line = node.location.line + index
+                Legacy::Ast::DataTableRow.new(row, line).accept(formatter)
               end
-              formatter.after_multiline_arg node
+              formatter.after_multiline_arg self
             end
           end
 

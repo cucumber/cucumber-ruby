@@ -80,6 +80,7 @@ module Cucumber
         @conversion_procs = conversion_procs
         @header_mappings = header_mappings
         @header_conversion_proc = header_conversion_proc
+        @ast_table = ast_table
       end
 
       def to_step_definition_arg
@@ -438,6 +439,7 @@ module Cucumber
 
       def to_s(options = {}) #:nodoc:
         require 'cucumber/formatter/pretty'
+        require 'cucumber/reports/legacy_formatter'
         options = {:color => true, :indent => 2, :prefixes => TO_S_PREFIXES}.merge(options)
         io = StringIO.new
 
@@ -445,7 +447,7 @@ module Cucumber
         Cucumber::Term::ANSIColor.coloring = options[:color]
         formatter = Formatter::Pretty.new(nil, io, options)
         formatter.instance_variable_set('@indent', options[:indent])
-        TreeWalker.new(nil, [formatter]).visit_multiline_arg(self)
+        Reports::Legacy::Ast::MultilineArg.for(@ast_table).accept(Reports::FormatterWrapper.new([formatter]))
 
         Cucumber::Term::ANSIColor.coloring = c
         io.rewind
