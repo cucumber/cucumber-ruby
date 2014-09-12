@@ -462,6 +462,10 @@ module Cucumber
         end
       end
 
+      def to_json(*args)
+        raw.to_json(*args)
+      end
+
       private
 
       TO_S_PREFIXES = Hash.new('    ')
