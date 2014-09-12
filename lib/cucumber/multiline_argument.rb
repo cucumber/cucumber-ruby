@@ -9,36 +9,41 @@ module Cucumber
 
     class << self
       def from_core(node)
-        Builder.new(node).result
+        builder.describe(node)
       end
 
       def from(argument, location)
-        return None.new unless argument
         argument = rubify(argument)
         case argument
         when String
-          doc_string(Core::Ast::DocString.new(argument, 'text/plain', location))
+          builder.doc_string(Core::Ast::DocString.new(argument, 'text/plain', location))
         when ::Gherkin::Formatter::Model::DocString
-          doc_string(Core::Ast::DocString.new(argument.value, argument.content_type, location.on_line(argument.line_range)))
+          builder.doc_string(Core::Ast::DocString.new(argument.value, argument.content_type, location.on_line(argument.line_range)))
         when Array
           location = location.on_line(argument.first.line..argument.last.line)
-          data_table(Core::Ast::DataTable.new(argument.map{ |row| row.cells }, location))
+          builder.data_table(Core::Ast::DataTable.new(argument.map{ |row| row.cells }, location))
         when DataTable, DocString, None
           argument
+        when nil
+          None.new
         else
           raise ArgumentError, "Don't know how to convert #{argument.inspect} into a MultilineArgument"
         end
       end
 
+      protected
+      def builder
+        @builder ||= Builder.new
+      end
+
       class Builder
         attr_reader :result
 
-        def initialize(node)
+        def describe(node)
           @result = None.new
           node.describe_to(self)
+          @result
         end
-
-        protected
 
         def doc_string(node, *args)
           @result = DocString.new(node)
@@ -47,7 +52,6 @@ module Cucumber
         def data_table(node, *args)
           @result = DataTable.new(node)
         end
-
       end
     end
 
