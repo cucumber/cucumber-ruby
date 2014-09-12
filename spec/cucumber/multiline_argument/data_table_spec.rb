@@ -517,7 +517,7 @@ module Cucumber
               | four  | 4     |
               | five  | 5     |
             }, __FILE__, __LINE__)
-            expect { t1.dup.diff!(t2) }.not_to raise_error
+            expect { t1.dup.diff!(t2) }.to raise_error
 
             expect { t1.dup.diff!(t2, :surplus_row => false) }.not_to raise_error
           end
