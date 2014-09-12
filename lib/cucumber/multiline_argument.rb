@@ -7,42 +7,35 @@ module Cucumber
   module MultilineArgument
     extend Gherkin::Rubify
 
-    def self.from_core(node)
-      Builder.new(node).result
-    end
-
-    def self.from(argument, location)
-      return None.new unless argument
-      return argument if argument.respond_to?(:to_step_definition_arg)
-      argument = rubify(argument)
-      case argument
-      when String
-        DocString.new(Core::Ast::DocString.new(argument, 'text/plain', location))
-      when ::Gherkin::Formatter::Model::DocString
-        DocString.new(argument.value, argument.content_type, location.on_line(argument.line_range))
-      when Array
-        location = location.on_line(argument.first.line..argument.last.line)
-        DataTable.new(argument.map{|row| row.cells}, location)
-      else
-        raise ArgumentError, "Don't know how to convert #{argument.inspect} into a MultilineArgument"
+    class << self
+      def from_core(node)
+        node.describe_to(self)
       end
-    end
 
-    class Builder
-      def initialize(multiline_arg)
-        multiline_arg.describe_to self
+      def from(argument, location)
+        return None.new unless argument
+        argument = rubify(argument)
+        case argument
+        when String
+          doc_string(Core::Ast::DocString.new(argument, 'text/plain', location))
+        when ::Gherkin::Formatter::Model::DocString
+          doc_string(Core::Ast::DocString.new(argument.value, argument.content_type, location.on_line(argument.line_range)))
+        when Array
+          location = location.on_line(argument.first.line..argument.last.line)
+          data_table(Core::Ast::DataTable.new(argument.map{ |row| row.cells }, location))
+        else
+          raise ArgumentError, "Don't know how to convert #{argument.inspect} into a MultilineArgument"
+        end
       end
+
+      protected
 
       def doc_string(node, *args)
-        @result = DocString.new(node)
+        DocString.new(node)
       end
 
       def data_table(node, *args)
-        @result = DataTable.new(node)
-      end
-
-      def result
-        @result || None.new
+        DataTable.new(node)
       end
     end
 
