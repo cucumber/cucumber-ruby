@@ -89,7 +89,7 @@ module Cucumber
           private
 
           def table(data, location)
-            Cucumber::MultilineArgument.from(Core::Ast::DataTable.new(data, location))
+            Cucumber::MultilineArgument.from_core(Core::Ast::DataTable.new(data, location))
           end
         end
 
