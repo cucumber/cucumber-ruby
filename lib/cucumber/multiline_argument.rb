@@ -9,7 +9,7 @@ module Cucumber
 
     class << self
       def from_core(node)
-        node.describe_to(self)
+        Builder.new(node).result
       end
 
       def from(argument, location)
@@ -28,14 +28,24 @@ module Cucumber
         end
       end
 
-      protected
+      class Builder
+        attr_reader :result
 
-      def doc_string(node, *args)
-        DocString.new(node)
-      end
+        def initialize(node)
+          @result = None.new
+          node.describe_to(self)
+        end
 
-      def data_table(node, *args)
-        DataTable.new(node)
+        protected
+
+        def doc_string(node, *args)
+          @result = DocString.new(node)
+        end
+
+        def data_table(node, *args)
+          @result = DataTable.new(node)
+        end
+
       end
     end
 
