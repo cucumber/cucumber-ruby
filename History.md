@@ -15,6 +15,8 @@
   * Pass hook output to the formatters appropriately ([732](https://github.com/cucumber/cucumber/pull/732) @brasmusson)
   * Added tests for, and re-added behaviour to support Scenario#failed? in hooks (Matt Wynne)
   * Rescuing ArgumentError in HTML formatter so Cucumber won't stop tests due bad encoding ([690](https://github.com/cucumber/cucumber/pull/690) @awls99)
+  * Add back support for the DataTable API ([729](https://github.com/cucumber/cucumber/pull/729) @mattwynne and @tooky)
+  * Fix Windows support loading files properly ([739](https://github.com/cucumber/cucumber/issues/739) @os97673)
 
 ## [v2.0.0.beta.2](https://github.com/cucumber/cucumber/compare/v.2.0.0.beta.1...v.2.0.0.beta.2)
 
