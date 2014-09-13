@@ -103,13 +103,16 @@ Feature: Wire protocol table diffing
       | ["invoke",{"id":"1","args":[]}]                      | ["diff!",[[["a"]],[["b"]]]]         |
       | ["end_scenario"]                                     | ["success"]                         |
     When I run `cucumber -f progress`
-    And it should fail with:
+    And it should fail with exactly:
       """
       F
 
       (::) failed steps (::)
 
-      Tables were not identical (Cucumber::MultilineArgument::DataTable::Different)
+      Tables were not identical:
+      
+        | (-) a | (+) b |
+       (Cucumber::MultilineArgument::DataTable::Different)
       features/wired.feature:3:in `Given we're all wired'
 
       Failing Scenarios:
@@ -117,5 +120,6 @@ Feature: Wire protocol table diffing
 
       1 scenario (1 failed)
       1 step (1 failed)
+      0m0.012s
 
       """

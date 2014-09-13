@@ -22,7 +22,7 @@ Feature: Table diffing
         }))
       end
       """
-    When I run `cucumber -i features/tables.feature`
+    When I run `cucumber features/tables.feature`
     Then it should fail with exactly:
       """
       Feature: Tables
@@ -31,8 +31,12 @@ Feature: Table diffing
           Then the table should be: # features/step_definitions/steps.rb:1
             | x | y |
             | a | b |
-            | a | c |
-            Tables were not identical (Cucumber::MultilineArgument::DataTable::Different)
+            Tables were not identical:
+            
+              |     x |     y |
+              | (-) a | (-) b |
+              | (+) a | (+) c |
+             (Cucumber::MultilineArgument::DataTable::Different)
             ./features/step_definitions/steps.rb:2:in `/the table should be:/'
             features/tables.feature:3:in `Then the table should be:'
 

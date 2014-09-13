@@ -24,11 +24,8 @@ module Cucumber
     #
     class DataTable
       class Different < StandardError
-        attr_reader :table
-
         def initialize(table)
-          super('Tables were not identical')
-          @table = table
+          super("Tables were not identical:\n#{table}")
         end
       end
 
