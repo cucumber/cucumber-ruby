@@ -14,7 +14,8 @@ module Cucumber
 
       def from(argument, location=nil)
         location ||= Core::Ast::Location.of_caller
-        case rubify(argument)
+        argument = rubify(argument)
+        case argument
         when String
           doc_string(argument, 'text/plain', location)
         when Array
