@@ -139,7 +139,9 @@ module Cucumber
 
         unknown_programming_language = runtime.unknown_programming_language?
         snippets = undefined.map do |step|
-          step_name = Undefined === step.exception ? step.exception.step_name : step.name
+          # step_name = Undefined === step.exception ? step.exception.step_name : step.name
+          # TODO: This probably won't work for nested steps :( See above for old code. 
+          step_name = step.name
           @runtime.snippet_text(step.actual_keyword, step_name, step.multiline_arg)
         end.compact.uniq
 
