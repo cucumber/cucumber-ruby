@@ -1,5 +1,10 @@
 ## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.16...v1.3.x-bugfix)
 
+* Rescue ArgumentError on split so formatters don't fail due to bad encoding ([692](https://github.com/cucumber/cucumber/pull/692) Arthur Silva)
+* Support embedding images directly in HTML files ([696](https://github.com/cucumber/cucumber/pull/696) @brasmusson)
+* Support embedding images directly in Gherkin formatters ([695](https://github.com/cucumber/cucumber/pull/695) @brasmusson)
+* Fix JSON formatter output for expand mode ([700](https://github.com/cucumber/cucumber/pull/700) @brasmusson)
+
 ## [v1.3.16](https://github.com/cucumber/cucumber/compare/v1.3.15...v1.3.16)
 
 * Add RSpec 3 test double support ([689](https://github.com/cucumber/cucumber/pull/689) @cyphactor)
