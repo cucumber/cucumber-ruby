@@ -110,15 +110,15 @@ Feature: Hook output feature
                     before_table_cell
                       table_cell_value
                     after_table_cell
+                    puts
+                    embed
+                    puts
+                    embed
+                    puts
+                    embed
+                    puts
+                    embed
                   after_table_row
-                  puts
-                  embed
-                  puts
-                  embed
-                  puts
-                  embed
-                  puts
-                  embed
                 after_outline_table
               after_examples
             after_examples_array
