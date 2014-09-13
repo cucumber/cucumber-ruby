@@ -275,67 +275,6 @@ module Cucumber
         end
       end
 
-      describe "replacing arguments" do
-
-        before(:each) do
-          @table = DataTable.new([
-            %w{qty book},
-            %w{<qty> <book>}
-          ])
-        end
-
-        it "should return a new table with arguments replaced with values" do
-          table_with_replaced_args = @table.arguments_replaced({'<book>' => 'Unbearable lightness of being', '<qty>' => '5'})
-
-          expect( table_with_replaced_args.hashes[0]['book'] ).to eq 'Unbearable lightness of being'
-          expect( table_with_replaced_args.hashes[0]['qty'] ).to eq '5'
-        end
-
-        it "should recognise when entire cell is delimited" do
-          expect( @table ).to have_text('<book>')
-        end
-
-        it "should recognise when just a subset of a cell is delimited" do
-          table = DataTable.new([
-            %w{qty book},
-            [nil, "This is <who>'s book"]
-          ])
-          expect( table ).to have_text('<who>')
-        end
-
-        it "should replace nil values with nil" do
-          table_with_replaced_args = @table.arguments_replaced({'<book>' => nil})
-
-          expect( table_with_replaced_args.hashes[0]['book'] ).to eq nil
-        end
-
-        it "should preserve values which don't match a placeholder when replacing with nil" do
-          table = DataTable.new([
-                              %w{book},
-                              %w{cat}
-                            ])
-          table_with_replaced_args = table.arguments_replaced({'<book>' => nil})
-
-          expect( table_with_replaced_args.hashes[0]['book'] ).to eq 'cat'
-        end
-
-        it "should not change the original table" do
-          @table.arguments_replaced({'<book>' => 'Unbearable lightness of being'})
-
-          expect( @table.hashes[0]['book'] ).not_to eq 'Unbearable lightness of being'
-        end
-
-        it "should not raise an error when there are nil values in the table" do
-          table = DataTable.new([
-                              ['book', 'qty'],
-                              ['<book>', nil],
-                            ])
-          expect {
-            table.arguments_replaced({'<book>' => nil, '<qty>' => '5'})
-          }.not_to raise_error
-        end
-      end
-
       describe "diff!" do
         it "should detect a complex diff" do
           t1 = table(%{
