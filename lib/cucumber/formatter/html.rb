@@ -12,7 +12,7 @@ module Cucumber
         Cucumber::Core::Ast::Scenario        => 'scenario',
         Cucumber::Core::Ast::ScenarioOutline => 'scenario outline'
       }
-      AST_DATA_TABLE = Cucumber::Core::Ast::DataTable
+      AST_DATA_TABLE = Cucumber::Reports::Legacy::Ast::MultilineArg::DataTable
 
       include ERB::Util # for the #h method
       include Duration

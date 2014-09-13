@@ -222,7 +222,7 @@ module Cucumber
 
       private
       def map_step(node, step_match)
-        multiline_arg = MultilineArgument.from(node.multiline_arg)
+        multiline_arg = MultilineArgument.from_core(node.multiline_arg)
         mapper.map { step_match.invoke(multiline_arg) }
       end
 

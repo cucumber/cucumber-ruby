@@ -1,6 +1,7 @@
 require 'forwardable'
 require 'delegate'
 require 'cucumber/errors'
+require 'cucumber/multiline_argument'
 
 module Cucumber
   module Reports
@@ -1194,9 +1195,9 @@ module Cucumber
         end
 
         class DataTableRow
-          def initialize(row)
-            @values = row.map(&:value)
-            @line = row.line
+          def initialize(row, line)
+            @values = row
+            @line = line
           end
 
           def dom_id
@@ -1223,6 +1224,18 @@ module Cucumber
 
           attr_reader :values, :line
           private :values, :line
+        end
+
+        class LegacyTableRow < DataTableRow
+          def accept(formatter)
+            formatter.before_table_row(self)
+            values.each do |value|
+              formatter.before_table_cell(value.value)
+              formatter.table_cell_value(value.value, value.status)
+              formatter.after_table_cell(value.value)
+            end
+            formatter.after_table_row(self)
+          end
         end
 
         Tags = Struct.new(:tags) do
@@ -1283,6 +1296,10 @@ module Cucumber
               @result = DataTable.new(node)
             end
 
+            def legacy_table(node)
+              @result = LegacyTable.new(node)
+            end
+
             def result
               @result || Node.new(nil)
             end
@@ -1296,16 +1313,31 @@ module Cucumber
             end
           end
 
-          class DataTable < Node
+          class DataTable < Cucumber::MultilineArgument::DataTable
+            def node
+              @ast_table
+            end
+
             def accept(formatter)
-              formatter.before_multiline_arg node
-              node.cells_rows.each do |row|
-                Legacy::Ast::DataTableRow.new(row).accept(formatter)
+              formatter.before_multiline_arg self
+              node.raw.each_with_index do |row, index|
+                line = node.location.line + index
+                Legacy::Ast::DataTableRow.new(row, line).accept(formatter)
               end
-              formatter.after_multiline_arg node
+              formatter.after_multiline_arg self
             end
           end
+        end
 
+        class LegacyTable < SimpleDelegator
+          def accept(formatter)
+            formatter.before_multiline_arg self
+            cells_rows.each_with_index do |row, index|
+              line = location.line + index
+              Legacy::Ast::LegacyTableRow.new(row, line).accept(formatter)
+            end
+            formatter.after_multiline_arg self
+          end
         end
 
         Features = Struct.new(:duration)
