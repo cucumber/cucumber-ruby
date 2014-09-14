@@ -205,7 +205,7 @@ module Cucumber
         attr_reader :current_test_step_source
 
         def before_test_case(test_case)
-          @before_hook_results = Legacy::Ast::NodeCollection.new
+          @before_hook_results = Legacy::Ast::HookResultCollection.new
         end
 
         def before_test_step(test_step)
@@ -401,7 +401,7 @@ module Cucumber
 
       module PrintsAfterHooks
         def after_hook_results
-          @after_hook_results ||= Legacy::Ast::NodeCollection.new
+          @after_hook_results ||= Legacy::Ast::HookResultCollection.new
         end
 
         def after_hook(result)
@@ -739,8 +739,8 @@ module Cucumber
         include PrintsAfterHooks
 
         def after_step_hook(result)
-          @after_step_hook_result ||= []
-          @after_step_hook_result.push result
+          @after_step_hook_result ||= Legacy::Ast::HookResultCollection.new
+          @after_step_hook_result << result
         end
 
         def after_test_case(*args)
@@ -804,9 +804,11 @@ module Cucumber
             formatter.table_cell_value(value, @status || :skipped)
             formatter.after_table_cell(value)
           end
+          @after_step_hook_result.send_output_to(formatter) if @after_step_hook_result
+          after_hook_results.send_output_to(formatter)
           formatter.after_table_row(legacy_table_row)
-          @after_step_hook_result.each { |result| result.accept formatter } if @after_step_hook_result
-          after_hook_results.accept(formatter)
+          @after_step_hook_result.describe_exception_to(formatter) if @after_step_hook_result
+          after_hook_results.describe_exception_to(formatter)
           @done = true
           self
         end
@@ -840,7 +842,7 @@ module Cucumber
         def after
           return if @done
           @child.after if @child
-          @after_step_hook_result.each { |result| result.accept formatter } if @after_step_hook_result
+          @after_step_hook_result.accept(formatter) if @after_step_hook_result
           after_hook_results.accept(formatter)
           @done = true
           self
@@ -1046,13 +1048,21 @@ module Cucumber
           private :node
         end
 
-        class NodeCollection
+        class HookResultCollection
           def initialize
             @children = []
           end
 
           def accept(formatter)
             @children.each { |child| child.accept(formatter) }
+          end
+
+          def send_output_to(formatter)
+            @children.each { |child| child.send_output_to(formatter) }
+          end
+
+          def describe_exception_to(formatter)
+            @children.each { |child| child.describe_exception_to(formatter) }
           end
 
           def <<(child)
@@ -1078,12 +1088,24 @@ module Cucumber
 
           def accept(formatter)
             unless @already_accepted
+              send_output_to(formatter)
+              describe_exception_to(formatter)
+            end
+            self
+          end
+
+          def send_output_to(formatter)
+            unless @already_accepted
               @messages.each { |message| formatter.puts(message) }
               @embeddings.each { |embedding| embedding.send_to_formatter(formatter) }
+            end
+          end
+
+          def describe_exception_to(formatter)
+            unless @already_accepted
               @result.describe_exception_to(formatter)
               @already_accepted = true
             end
-            self
           end
         end
 

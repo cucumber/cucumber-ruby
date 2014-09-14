@@ -1,4 +1,12 @@
-## [In Git](https://github.com/cucumber/cucumber/compare/v.2.0.0.beta.2...master)
+## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.3...master)
+
+### New Features
+
+### Bugfixes
+
+  * Handle hook output appropriately in the Pretty formatter ([738](https://github.com/cucumber/cucumber/pull/738) @brasmusson)
+
+## [v2.0.0.beta.3](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.2...v2.0.0.beta.3)
 
 ### Removed Features
 
@@ -18,14 +26,14 @@
   * Add back support for the DataTable API ([729](https://github.com/cucumber/cucumber/pull/729) @mattwynne and @tooky)
   * Fix Windows support loading files properly ([739](https://github.com/cucumber/cucumber/issues/739) @os97673)
 
-## [v2.0.0.beta.2](https://github.com/cucumber/cucumber/compare/v.2.0.0.beta.1...v.2.0.0.beta.2)
+## [v2.0.0.beta.2](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.1...v2.0.0.beta.2)
 
 ### Bugfixes
 
   * Better reporting of exceptions in Before / After hooks ([723](https://github.com/cucumber/cucumber/pull/723) @mattwynne)
   * Add `#source_tag_names` method to `TestCase` object passed to hooks (@mattwynne)
 
-## [v2.0.0.beta.1 ](https://github.com/cucumber/cucumber/compare/v1.3.8...v.2.0.0.beta.1)
+## [v2.0.0.beta.1 ](https://github.com/cucumber/cucumber/compare/v1.3.8...v2.0.0.beta.1)
 
 Version 2.0 contains a major internal redesign, extracting the core logic of
 parsing and executing tests into a [separate gem](https://github.com/cucumber/cucumber-ruby-core).

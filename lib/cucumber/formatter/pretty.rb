@@ -72,6 +72,7 @@ module Cucumber
       end
 
       def after_feature_element(feature_element)
+        print_messages
         @io.puts
         @io.flush
       end
@@ -125,6 +126,7 @@ module Cucumber
       def before_step(step)
         @current_step = step
         @indent = 6
+        print_messages
       end
 
       def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
@@ -161,6 +163,7 @@ module Cucumber
 
       def exception(exception, status)
         return if @hide_this_step
+        print_messages
         print_exception(exception, status, @indent)
         @io.flush
       end
