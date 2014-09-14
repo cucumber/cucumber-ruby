@@ -35,7 +35,6 @@ module Cucumber
 
   require 'cucumber/core'
   require 'cucumber/runtime/user_interface'
-  require 'cucumber/runtime/features_loader'
   require 'cucumber/runtime/results'
   require 'cucumber/runtime/support_code'
   require 'cucumber/runtime/tag_limits'
