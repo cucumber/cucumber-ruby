@@ -163,6 +163,7 @@ module Cucumber
 
       def exception(exception, status)
         return if @hide_this_step
+        print_messages
         print_exception(exception, status, @indent)
         @io.flush
       end
