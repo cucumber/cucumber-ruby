@@ -91,7 +91,7 @@ module Cucumber
           dsl.World {}
 
           begin
-            rb.before(nil)
+            rb.begin_scenario(nil)
             raise "Should fail"
           rescue RbSupport::NilWorld => e
             expect(e.message).to eq "World procs should never return nil"
@@ -111,7 +111,7 @@ module Cucumber
 
         it "implicitlys extend world with modules" do
           dsl.World(ModuleOne, ModuleTwo)
-          rb.before(double('scenario').as_null_object)
+          rb.begin_scenario(double('scenario').as_null_object)
           class << rb.current_world
             extend RSpec::Matchers
 

@@ -104,6 +104,7 @@ module Cucumber
     end
 
     def with_hooks(scenario, skip_hooks=false)
+      fail 'deprecated'
       around(scenario, skip_hooks) do
         before_and_after(scenario, skip_hooks) do
           yield scenario
@@ -112,6 +113,7 @@ module Cucumber
     end
 
     def around(scenario, skip_hooks=false, &block) #:nodoc:
+      fail 'deprecated'
       if skip_hooks
         yield
         return
@@ -136,12 +138,14 @@ module Cucumber
     end
 
     def before(scenario) #:nodoc:
+      fail 'deprecated'
       return if dry_run? || @current_scenario
       @current_scenario = scenario
       @support_code.fire_hook(:before, scenario)
     end
 
     def after(scenario) #:nodoc:
+      fail 'deprecated'
       @current_scenario = nil
       return if dry_run?
       @support_code.fire_hook(:after, scenario)

@@ -13,7 +13,7 @@ module Cucumber
       end
 
       before do
-        rb.before(double('scenario').as_null_object)
+        rb.begin_scenario(double('scenario').as_null_object)
         $inside = nil
       end
 
