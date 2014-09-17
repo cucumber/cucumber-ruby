@@ -3,5 +3,5 @@ When /^I ask Tcl to calculate fibonacci for (\d+)$/ do |n|
 end
 
 Then /^it should give me (\d+)$/ do |expected|
-  @fib_result.should == expected.to_i
+  expect(@fib_result).to eq expected.to_i
 end
