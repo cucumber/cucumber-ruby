@@ -46,13 +46,12 @@ module Cucumber
     include Runtime::UserInterface
 
     def initialize(configuration = Configuration.default)
-      @current_scenario = nil
       @configuration = Configuration.parse(configuration)
       @support_code = SupportCode.new(self, @configuration)
       @results = Results.new(@configuration)
     end
 
-    # Allows you to take an existing runtime and change it's configuration
+    # Allows you to take an existing runtime and change its configuration
     def configure(new_configuration)
       @configuration = Configuration.parse(new_configuration)
       @support_code.configure(@configuration)
@@ -103,57 +102,12 @@ module Cucumber
       @support_code.snippet_text(::Gherkin::I18n.code_keyword_for(step_keyword), step_name, multiline_arg)
     end
 
-    def with_hooks(scenario, skip_hooks=false)
-      fail 'deprecated'
-      around(scenario, skip_hooks) do
-        before_and_after(scenario, skip_hooks) do
-          yield scenario
-        end
-      end
-    end
-
-    def around(scenario, skip_hooks=false, &block) #:nodoc:
-      fail 'deprecated'
-      if skip_hooks
-        yield
-        return
-      end
-
-      @support_code.around(scenario, block)
-    end
-
-    def before_and_after(scenario, skip_hooks=false) #:nodoc:
-      before(scenario) unless skip_hooks
-      yield scenario
-      after(scenario) unless skip_hooks
-      record_result scenario
-    end
-
     def record_result(scenario)
       @results.scenario_visited(scenario)
     end
 
     def begin_scenario(scenario)
       @support_code.fire_hook(:begin_scenario, scenario)
-    end
-
-    def before(scenario) #:nodoc:
-      fail 'deprecated'
-      return if dry_run? || @current_scenario
-      @current_scenario = scenario
-      @support_code.fire_hook(:before, scenario)
-    end
-
-    def after(scenario) #:nodoc:
-      fail 'deprecated'
-      @current_scenario = nil
-      return if dry_run?
-      @support_code.fire_hook(:after, scenario)
-    end
-
-    def after_step #:nodoc:
-      return if dry_run?
-      @support_code.fire_hook(:execute_after_step, @current_scenario)
     end
 
     def unknown_programming_language?
