@@ -1,21 +1,24 @@
 module Cucumber
-  class Runtime
-    class GatedReceiver
+  module Filters
+
+    class Quit
       def initialize(receiver)
         @receiver = receiver
-        @test_cases = []
       end
 
       def test_case(test_case)
-        @test_cases << test_case
+        unless Cucumber.wants_to_quit
+          test_case.describe_to @receiver
+        end
+        self
       end
 
       def done
-        @test_cases.map do |test_case|
-          test_case.describe_to(@receiver)
-        end
         @receiver.done
+        self
       end
     end
+
   end
 end
+

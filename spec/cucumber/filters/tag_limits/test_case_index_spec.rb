@@ -1,7 +1,7 @@
-require "cucumber/runtime/tag_limits"
+require "cucumber/filters/tag_limits"
 
-describe Cucumber::Runtime::TagLimits::TestCaseIndex do
-  subject(:index) { Cucumber::Runtime::TagLimits::TestCaseIndex.new }
+describe Cucumber::Filters::TagLimits::TestCaseIndex do
+  subject(:index) { Cucumber::Filters::TagLimits::TestCaseIndex.new }
 
   let(:test_cases) do
     [

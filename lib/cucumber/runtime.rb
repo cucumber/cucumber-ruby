@@ -9,6 +9,9 @@ require 'cucumber/load_path'
 require 'cucumber/language_support/language_methods'
 require 'cucumber/formatter/duration'
 require 'cucumber/file_specs'
+require 'cucumber/filters/quit'
+require 'cucumber/filters/randomizer'
+require 'cucumber/filters/tag_limits'
 
 module Cucumber
   module FixRuby21Bug9285
@@ -37,7 +40,6 @@ module Cucumber
   require 'cucumber/runtime/user_interface'
   require 'cucumber/runtime/results'
   require 'cucumber/runtime/support_code'
-  require 'cucumber/runtime/tag_limits'
   class Runtime
     attr_reader :results, :support_code, :configuration
 
@@ -197,57 +199,12 @@ module Cucumber
       name_regexps = @configuration.name_regexps
       tag_limits = @configuration.tag_limits
       [].tap do |filters|
-        filters << [Cucumber::Runtime::Randomizer, [@configuration.seed]] if @configuration.randomize?
-        filters << [Cucumber::Runtime::TagLimits::Filter, [tag_limits]] if tag_limits.any?
+        filters << [Filters::Randomizer, [@configuration.seed]] if @configuration.randomize?
+        filters << [Filters::TagLimits, [tag_limits]] if tag_limits.any?
         filters << [Cucumber::Core::Test::TagFilter, [tag_expressions]]
         filters << [Cucumber::Core::Test::NameFilter, [name_regexps]]
         filters << [Cucumber::Core::Test::LocationsFilter, [filespecs.locations]]
-        filters << [Quit, []]
-      end
-    end
-
-    class Randomizer
-      def initialize(seed, receiver)
-        @receiver = receiver
-        @test_cases = []
-        @seed = seed
-      end
-
-      def test_case(test_case)
-        @test_cases << test_case
-      end
-
-      def done
-        shuffled_test_cases.each do |test_case|
-          test_case.describe_to(@receiver)
-        end
-        @receiver.done
-      end
-
-      private
-
-      def shuffled_test_cases
-        @test_cases.shuffle(random: Random.new(seed))
-      end
-
-      attr_reader :seed
-      private :seed
-    end
-
-    class Quit
-      def initialize(receiver)
-        @receiver = receiver
-      end
-
-      def test_case(test_case)
-        unless Cucumber.wants_to_quit
-          test_case.describe_to @receiver
-        end
-      end
-
-      def done
-        @receiver.done
-        self
+        filters << [Filters::Quit, []]
       end
     end
 
