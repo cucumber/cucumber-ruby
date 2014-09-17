@@ -66,10 +66,6 @@ module Cucumber
         @options[:snippet_type] || :regexp
       end
 
-      def build_tree_walker(runtime)
-        Ast::TreeWalker.new(runtime, formatters(runtime), self)
-      end
-
       def formatter_class(format)
         if(builtin = Options::BUILTIN_FORMATS[format])
           constantize(builtin[0])

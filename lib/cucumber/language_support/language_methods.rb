@@ -11,12 +11,6 @@ module Cucumber
         end
       end
 
-      def execute_after_step(scenario)
-        hooks_for(:after_step, scenario).each do |hook|
-          invoke(hook, 'AfterStep', scenario)
-        end
-      end
-
       def execute_transforms(args)
         args.map do |arg|
           matching_transform = transforms.detect {|transform| transform.match(arg) }
@@ -72,17 +66,6 @@ module Cucumber
         @transforms ||= []
       end
 
-      def invoke(hook, location, scenario, exception_fails_scenario, &block)
-        begin
-          hook.invoke(location, scenario, &block)
-        rescue Exception => exception
-          if exception_fails_scenario
-            scenario.fail!(exception)
-          else
-            raise
-          end
-        end
-      end
     end
   end
 end
