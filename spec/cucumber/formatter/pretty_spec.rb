@@ -267,7 +267,7 @@ OUTPUT
             end
           end
 
-          describe "with a output from hooks" do
+          describe "with output from hooks" do
             define_feature <<-FEATURE
           Feature:
             Scenario:
@@ -310,6 +310,48 @@ Feature:
       | passes |  Before hook, AfterStep hook, After hook
 
 2 scenarios (2 passed)
+2 steps (2 passed)
+OUTPUT
+            end
+          end
+
+          describe "with background and output from hooks" do
+            define_feature <<-FEATURE
+          Feature:
+            Background:
+              Given this step passes
+            Scenario:
+              Given this step passes
+            FEATURE
+
+            define_steps do
+              Before do
+                puts "Before hook"
+              end
+              AfterStep do
+                puts "AfterStep hook"
+              end
+              After do
+                puts "After hook"
+              end
+              Given(/^this step passes$/) {}
+            end
+
+            it "displays hook output appropriately " do
+              expect( @out.string ).to include <<OUTPUT
+Feature: 
+
+  Background: 
+      Before hook
+    Given this step passes
+      AfterStep hook
+
+  Scenario: 
+    Given this step passes
+      AfterStep hook
+      After hook
+
+1 scenario (1 passed)
 2 steps (2 passed)
 OUTPUT
             end

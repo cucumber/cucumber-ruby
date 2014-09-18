@@ -84,6 +84,7 @@ module Cucumber
       end
 
       def after_background(background)
+        print_messages
         @in_background = nil
         @io.puts
         @io.flush
