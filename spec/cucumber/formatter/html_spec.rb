@@ -313,6 +313,59 @@ module Cucumber
 
           it { expect(@doc.css('pre').map { |pre| /^(Given|And)/.match(pre.text)[1] }).to eq ["Given", "Given"] }
         end
+
+        describe "with a output from hooks" do
+          describe "in a scenario" do
+            define_feature <<-FEATURE
+          Feature:
+            Scenario:
+              Given this step passes
+            FEATURE
+
+            define_steps do
+              Before do
+                puts "Before hook"
+              end
+              AfterStep do
+                puts "AfterStep hook"
+              end
+              After do
+                puts "After hook"
+              end
+              Given(/^this step passes$/) {}
+            end
+
+            it { expect(@doc).to have_css_node('.step.message', /Before hook/) }
+            it { expect(@doc).to have_css_node('.step.message', /AfterStep hook/) }
+            it { expect(@doc).to have_css_node('.step.message', /After hook/) }
+          end
+
+          describe "in a scenario outline" do
+            define_feature <<-FEATURE
+          Feature:
+            Scenario Outline:
+              Given this step <status>
+              Examples:
+              | status |
+              | passes |
+            FEATURE
+
+            define_steps do
+              Before do
+                puts "Before hook"
+              end
+              AfterStep do
+                puts "AfterStep hook"
+              end
+              After do
+                puts "After hook"
+              end
+              Given(/^this step passes$/) {}
+            end
+
+            it { expect(@doc).to have_css_node('.message', /Before hook, AfterStep hook, After hook/) }
+          end
+        end
       end
     end
   end

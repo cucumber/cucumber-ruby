@@ -179,11 +179,16 @@ module Cucumber
         @scenario_red = false
         css_class = AST_CLASSES[feature_element.class]
         @builder << "<div class='#{css_class}'>"
+        @in_scenario_outline = feature_element.class == Cucumber::Core::Ast::ScenarioOutline
       end
 
       def after_feature_element(feature_element)
+        unless @in_scenario_outline
+          print_messages
+          @builder << '</ol>'
+        end
         @builder << '</div>'
-        @open_step_list = true
+        @in_scenario_outline = nil
       end
 
       def scenario_name(keyword, name, file_colon_line, source_indent)
@@ -211,7 +216,7 @@ module Cucumber
       end
 
       def before_examples(examples)
-         @builder << '<div class="examples">'
+        @builder << '<div class="examples">'
       end
 
       def after_examples(examples)
@@ -231,10 +236,12 @@ module Cucumber
       end
 
       def after_steps(steps)
-        @builder << '</ol>'
+        print_messages
+        @builder << '</ol>' if @in_background or @in_scenario_outline
       end
 
       def before_step(step)
+        print_messages
         @step_id = step.dom_id
         @step_number += 1
         @step = step
@@ -290,6 +297,7 @@ module Cucumber
 
       def exception(exception, status)
         return if @hide_this_step
+        print_messages
         build_exception_detail(exception)
       end
 
