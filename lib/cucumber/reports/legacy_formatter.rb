@@ -917,6 +917,7 @@ module Cucumber
       class LegacyResultBuilder
         attr_reader :status
         def initialize(result)
+          @duration = :unknown
           @result = result
           @result.describe_to(self)
         end
@@ -951,10 +952,12 @@ module Cucumber
           return self
         end
 
-        def duration(*); end
+        def duration(duration, *)
+          @duration = duration
+        end
 
         def step_invocation(step_match, step, indent, background, configuration, messages, embeddings)
-          Legacy::Ast::StepInvocation.new(step_match, @status, step_exception(step, configuration), indent, background, step, messages, embeddings)
+          Legacy::Ast::StepInvocation.new(step_match, @status, @duration, step_exception(step, configuration), indent, background, step, messages, embeddings)
         end
 
         def scenario(name, location)
@@ -1111,6 +1114,7 @@ module Cucumber
 
         StepInvocation = Struct.new(:step_match,
                                     :status,
+                                    :duration,
                                     :exception,
                                     :indent,
                                     :background,

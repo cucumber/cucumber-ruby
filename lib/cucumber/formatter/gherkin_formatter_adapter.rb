@@ -84,7 +84,6 @@ module Cucumber
           end
           @gf.match(match)
         end
-        @step_time = Time.now
       end
 
       def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
@@ -139,9 +138,10 @@ module Cucumber
 
       #used for capturing duration
       def after_step(step)
-        step_finish = (Time.now - @step_time)
         unless @outline and @options[:expand] and not @in_instantiated_scenario
-          @gf.append_duration(step_finish)
+          unless step.duration == :unknown
+            @gf.append_duration(step.duration / 10 ** 9.0)
+          end
         end
       end
 
