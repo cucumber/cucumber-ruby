@@ -335,9 +335,12 @@ module Cucumber
               Given(/^this step passes$/) {}
             end
 
-            it { expect(@doc).to have_css_node('.step.message', /Before hook/) }
-            it { expect(@doc).to have_css_node('.step.message', /AfterStep hook/) }
-            it { expect(@doc).to have_css_node('.step.message', /After hook/) }
+            it 'should have ccs nodes ".step.message" for all the hooks' do
+              expect(@doc.css('.step.message').length).to eq 3
+              expect(@doc.css('.step.message')[0].text).to eq "Before hook"
+              expect(@doc.css('.step.message')[1].text).to eq "AfterStep hook"
+              expect(@doc.css('.step.message')[2].text).to eq "After hook"
+            end
           end
 
           describe "in a scenario outline" do
