@@ -36,10 +36,8 @@ module Cucumber
       # @param [String] name The name of the step
       # @param [String,Cucumber::Ast::DocString,Cucumber::Ast::Table] multiline_argument
       def step(name, raw_multiline_arg=nil)
-        # TODO: this argument parsing should move up out of core
-        location = Core::Ast::Location.new(*caller[0].split(':')[0..1])
-        core_multiline_arg = Core::Ast::MultilineArgument.from(raw_multiline_arg, location)
-        @__cucumber_runtime.invoke(name, MultilineArgument.from(core_multiline_arg))
+        location = Core::Ast::Location.of_caller
+        @__cucumber_runtime.invoke(name, MultilineArgument.from(raw_multiline_arg, location))
       end
 
       # Run a snippet of Gherkin

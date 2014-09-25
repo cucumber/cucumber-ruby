@@ -1,7 +1,7 @@
-require "cucumber/runtime/tag_limits"
+require "cucumber/filters/tag_limits"
 
-describe Cucumber::Runtime::TagLimits::Filter do
-  subject(:filter) { Cucumber::Runtime::TagLimits::Filter.new(tag_limits, receiver) }
+describe Cucumber::Filters::TagLimits do
+  subject(:filter) { Cucumber::Filters::TagLimits.new(tag_limits, receiver) }
 
   let(:tag_limits) { double(:tag_limits) }
   let(:receiver) { double(:receiver) }
@@ -11,8 +11,8 @@ describe Cucumber::Runtime::TagLimits::Filter do
   let(:test_case) { double(:test_case) }
 
   before do
-    allow(Cucumber::Runtime::GatedReceiver).to receive(:new).with(receiver) { gated_receiver }
-    allow(Cucumber::Runtime::TagLimits::TestCaseIndex).to receive(:new) { test_case_index }
+    allow(Cucumber::Filters::GatedReceiver).to receive(:new).with(receiver) { gated_receiver }
+    allow(Cucumber::Filters::TagLimits::TestCaseIndex).to receive(:new) { test_case_index }
   end
 
   describe "#test_case" do
@@ -36,7 +36,7 @@ describe Cucumber::Runtime::TagLimits::Filter do
     let(:verifier) { double(:verifier) }
 
     before do
-      allow(Cucumber::Runtime::TagLimits::Verifier).to receive(:new).with(tag_limits) { verifier }
+      allow(Cucumber::Filters::TagLimits::Verifier).to receive(:new).with(tag_limits) { verifier }
       allow(gated_receiver).to receive(:done)
     end
 

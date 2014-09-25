@@ -36,7 +36,6 @@ module Cucumber
         end
 
         runtime.run!
-        runtime.write_stepdefs_json
         failure = runtime.results.failure? || Cucumber.wants_to_quit
         @kernel.exit(failure ? 1 : 0)
       rescue FileNotFoundException => e

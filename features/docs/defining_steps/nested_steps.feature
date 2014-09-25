@@ -1,6 +1,5 @@
 Feature: Nested Steps
 
-
   Background:
     Given a scenario with a step that looks like this:
       """gherkin

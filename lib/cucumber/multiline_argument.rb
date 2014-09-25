@@ -1,104 +1,62 @@
 require 'delegate'
+require 'cucumber/multiline_argument/data_table'
+require 'cucumber/multiline_argument/doc_string'
+require 'gherkin/rubify'
+
 module Cucumber
   module MultilineArgument
-    def self.from(core_multiline_arg)
-      Builder.new(core_multiline_arg).result
-    end
+    extend Gherkin::Rubify
 
-    class Builder
-      def initialize(multiline_arg)
-        multiline_arg.describe_to self
+    class << self
+      def from_core(node)
+        builder.wrap(node)
       end
 
-      def doc_string(string, *args)
-        @result = DocString.new(string)
-      end
-
-      def data_table(table, *args)
-        @result = DataTable.new(table)
-      end
-
-      def result
-        @result || None.new
-      end
-    end
-
-    class DocString < SimpleDelegator
-      def append_to(array)
-        array << self
-      end
-    end
-
-    class DataTable < SimpleDelegator
-      def append_to(array)
-        array << self
-      end
-
-      def to_json(options)
-        raw.to_json(options)
-      end
-
-      def diff!(other_table)
-        other_table = ensure_table(other_table)
-        other_table_cell_matrix = other_table.cell_matrix
-
-        ensure_green!
-
-        require_diff_lcs
-        cell_matrix.extend(Diff::LCS)
-
-        changes = cell_matrix.diff(other_table_cell_matrix).flatten
-
-        return if changes.empty?
-
-        inserted = 0
-        missing  = 0
-
-        changes.each do |change|
-          if(change.action == '-')
-            missing_row_pos = change.position + inserted
-            cell_matrix[missing_row_pos].each{|cell| cell.status = :undefined}
-
-            missing += 1
-          else # '+'
-            inserted_row = change.element
-            inserted_row.each{|cell| cell.status = :comment}
-
-            insert_row_pos = change.position + missing
-            cell_matrix.insert(insert_row_pos, inserted_row)
-
-            inserted += 1
-          end
+      def from(argument, location=nil)
+        location ||= Core::Ast::Location.of_caller
+        argument = rubify(argument)
+        case argument
+        when String
+          doc_string(argument, 'text/plain', location)
+        when Array
+          location = location.on_line(argument.first.line..argument.last.line)
+          data_table(argument.map{ |row| row.cells }, location)
+        when DataTable, DocString, None
+          argument
+        when nil
+          None.new
+        else
+          raise ArgumentError, "Don't know how to convert #{argument.class} #{argument.inspect} into a MultilineArgument"
         end
-
-        raise Different.new(self)
       end
 
-      def ensure_green! #:nodoc:
-        each_cell{|cell| cell.status = :passed}
+      def doc_string(argument, content_type, location)
+        builder.doc_string(Core::Ast::DocString.new(argument, content_type, location))
+      end
+
+      def data_table(data, location)
+        builder.data_table(Core::Ast::DataTable.new(data, location))
       end
 
       private
 
-      def ensure_table(table_or_array) #:nodoc:
-        return table_or_array if DataTable === table_or_array
-        DataTable.new(table_or_array)
+      def builder
+        @builder ||= Builder.new
       end
 
-      def require_diff_lcs #:nodoc:
-        begin
-          require 'diff/lcs'
-        rescue LoadError => e
-          e.message << "\n Please gem install diff-lcs\n"
-          raise e
+      class Builder
+        def wrap(node)
+          @result = None.new
+          node.describe_to(self)
+          @result
         end
-      end
 
-      class Different < StandardError
-        attr_reader :table
-        def initialize(table)
-          @table = table
-          super("Tables were not identical")
+        def doc_string(node, *args)
+          @result = DocString.new(node)
+        end
+
+        def data_table(node, *args)
+          @result = DataTable.new(node)
         end
       end
     end
@@ -113,3 +71,4 @@ module Cucumber
   end
 end
 
+require 'cucumber/ast'

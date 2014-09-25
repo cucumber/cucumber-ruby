@@ -35,7 +35,11 @@ module Cucumber
       end
 
       def randomize?
-        @options[:randomize]
+        @options[:order] == 'random'
+      end
+
+      def seed
+        Integer(@options[:seed] || rand(0xFFFF))
       end
 
       def strict?
@@ -56,10 +60,6 @@ module Cucumber
 
       def expand?
         @options[:expand]
-      end
-
-      def dotcucumber
-        @options[:dotcucumber]
       end
 
       def snippet_type

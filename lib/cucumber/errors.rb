@@ -2,20 +2,21 @@ require 'cucumber/core/test/result'
 
 module Cucumber
   # Raised when there is no matching StepDefinition for a step.
-  class Undefined < StandardError
-    attr_reader :step_name
+  class Undefined < Core::Test::Result::Undefined
+    def self.from(result, step_name)
+      if result.is_a?(self)
+        return result.with_message(with_prefix(result.message))
+      end
 
-    def initialize(step_name)
-      super %{Undefined step: "#{step_name}"}
-      @step_name = step_name
+      begin
+        raise self.new(with_prefix(step_name))
+      rescue => exception
+        return exception
+      end
     end
 
-    def nested!
-      @nested = true
-    end
-
-    def nested?
-      @nested
+    def self.with_prefix(step_name)
+      %(Undefined step: "#{step_name}")
     end
   end
 

@@ -12,7 +12,7 @@ module Cucumber
         Cucumber::Core::Ast::Scenario        => 'scenario',
         Cucumber::Core::Ast::ScenarioOutline => 'scenario outline'
       }
-      AST_DATA_TABLE = Cucumber::Core::Ast::DataTable
+      AST_DATA_TABLE = Cucumber::Reports::Legacy::Ast::MultilineArg::DataTable
 
       include ERB::Util # for the #h method
       include Duration
@@ -30,13 +30,20 @@ module Cucumber
         @header_red = nil
         @delayed_messages = []
         @img_id = 0
+        @text_id = 0
         @inside_outline = false
       end
 
       def embed(src, mime_type, label)
         case(mime_type)
         when /^image\/(png|gif|jpg|jpeg)/
+          unless File.file?(src) or src =~ /^data:image\/(png|gif|jpg|jpeg);base64,/
+            type = mime_type =~ /;base[0-9]+$/ ? mime_type : mime_type + ";base64"
+            src = "data:" + type + "," + src
+          end
           embed_image(src, label)
+        when /^text\/plain/
+          embed_text(src, label)
         end
       end
 
@@ -46,6 +53,14 @@ module Cucumber
         @builder.span(:class => 'embed') do |pre|
           pre << %{<a href="" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">#{label}</a><br>&nbsp;
           <img id="#{id}" style="display: none" src="#{src}"/>}
+        end
+      end
+
+      def embed_text(src, label)
+        id = "text_#{@text_id}"
+        @text_id += 1
+        @builder.span(:class => 'embed') do |pre|
+          pre << %{<a id="#{id}" href="#{src}" title="#{label}">#{label}</a>}
         end
       end
 
@@ -164,11 +179,16 @@ module Cucumber
         @scenario_red = false
         css_class = AST_CLASSES[feature_element.class]
         @builder << "<div class='#{css_class}'>"
+        @in_scenario_outline = feature_element.class == Cucumber::Core::Ast::ScenarioOutline
       end
 
       def after_feature_element(feature_element)
+        unless @in_scenario_outline
+          print_messages
+          @builder << '</ol>'
+        end
         @builder << '</div>'
-        @open_step_list = true
+        @in_scenario_outline = nil
       end
 
       def scenario_name(keyword, name, file_colon_line, source_indent)
@@ -196,7 +216,7 @@ module Cucumber
       end
 
       def before_examples(examples)
-         @builder << '<div class="examples">'
+        @builder << '<div class="examples">'
       end
 
       def after_examples(examples)
@@ -216,10 +236,12 @@ module Cucumber
       end
 
       def after_steps(steps)
-        @builder << '</ol>'
+        print_messages
+        @builder << '</ol>' if @in_background or @in_scenario_outline
       end
 
       def before_step(step)
+        print_messages
         @step_id = step.dom_id
         @step_number += 1
         @step = step
@@ -275,6 +297,7 @@ module Cucumber
 
       def exception(exception, status)
         return if @hide_this_step
+        print_messages
         build_exception_detail(exception)
       end
 
@@ -603,8 +626,12 @@ module Cucumber
 
         def lines_around(file, line)
           if File.file?(file)
+            begin
             lines = File.open(file).read.split("\n")
-            min = [0, line-3].max
+          rescue ArgumentError
+            return "# Couldn't get snippet for #{file}"
+          end
+          min = [0, line-3].max
             max = [line+1, lines.length-1].min
             selected_lines = []
             selected_lines.join("\n")

@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: Using descriptions to give features context
 
   When writing your feature files its very helpful to use description
@@ -52,7 +51,7 @@ Feature: Using descriptions to give features context
     """
     When I run `cucumber -q`
     Then the stderr should not contain anything
-    Then it should pass with:
+    Then it should pass with exactly:
     """
     Feature: descriptions everywhere
       
@@ -84,4 +83,6 @@ Feature: Using descriptions to give features context
 
     2 scenarios (2 passed)
     4 steps (4 passed)
+    0m0.012s
+
     """

@@ -1,4 +1,3 @@
-@wip-new-core
 @spawn
 Feature: Scenario outlines
 
@@ -63,6 +62,7 @@ Feature: Scenario outlines
             | failing | passing     |
             RuntimeError (RuntimeError)
             ./features/step_definitions/steps.rb:2:in `/^failing without a table$/'
+            features/outline_sample.feature:12:in `Given failing without a table'
             features/outline_sample.feature:6:in `Given <state> without a table'
 
           Examples: Only passing
@@ -70,7 +70,7 @@ Feature: Scenario outlines
             | passing | passing     |
 
       Failing Scenarios:
-      cucumber features/outline_sample.feature:5
+      cucumber features/outline_sample.feature:12
 
       5 scenarios (1 failed, 1 undefined, 3 passed)
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
@@ -93,6 +93,7 @@ Feature: Scenario outlines
             | failing | passing     |
             RuntimeError (RuntimeError)
             ./features/step_definitions/steps.rb:2:in `/^failing without a table$/'
+            features/outline_sample.feature:12:in `Given failing without a table'
             features/outline_sample.feature:6:in `Given <state> without a table'
 
           Examples: Only passing
@@ -100,7 +101,7 @@ Feature: Scenario outlines
             | passing | passing     |
 
       Failing Scenarios:
-      cucumber features/outline_sample.feature:5
+      cucumber features/outline_sample.feature:12
 
       4 scenarios (1 failed, 1 undefined, 2 passed)
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
@@ -122,35 +123,36 @@ Feature: Scenario outlines
             | failing | passing     |
             RuntimeError (RuntimeError)
             ./features/step_definitions/steps.rb:2:in `/^failing without a table$/'
+            features/outline_sample.feature:12:in `Given failing without a table'
             features/outline_sample.feature:6:in `Given <state> without a table'
 
       Failing Scenarios:
-      cucumber features/outline_sample.feature:5
+      cucumber features/outline_sample.feature:12
 
       1 scenario (1 failed)
       2 steps (1 failed, 1 skipped)
 
       """
 
-  # There are 10 characters in the progress, but only 8 reported steps. Needs investigation.
-  # Looks like we're outputting too many characters.
   Scenario: Run all with progress formatter
     When I run `cucumber -q --format progress features/outline_sample.feature`
-    Then it should fail with:
+    Then it should fail with exactly:
       """
-      --U-..F-..
+      --UU..FF..
 
       (::) failed steps (::)
 
       RuntimeError (RuntimeError)
       ./features/step_definitions/steps.rb:2:in `/^failing without a table$/'
+      features/outline_sample.feature:12:in `Given failing without a table'
       features/outline_sample.feature:6:in `Given <state> without a table'
 
       Failing Scenarios:
-      cucumber features/outline_sample.feature:5
+      cucumber features/outline_sample.feature:12
 
       5 scenarios (1 failed, 1 undefined, 3 passed)
       8 steps (1 failed, 2 skipped, 1 undefined, 4 passed)
+      0m0.012s
 
       """
 

@@ -3,6 +3,7 @@ require 'cucumber/formatter/spec_helper'
 require 'cucumber/formatter/html'
 require 'nokogiri'
 require 'cucumber/rb_support/rb_language'
+require 'rspec/mocks'
 
 module Cucumber
   module Formatter
@@ -245,7 +246,10 @@ module Cucumber
 
         describe "with a step that embeds a snapshot" do
           define_steps do
-            Given(/snap/) { embed('snapshot.jpeg', 'image/jpeg') }
+            Given(/snap/) { 
+              RSpec::Mocks.allow_message(File, :file?) { true }
+              embed('snapshot.jpeg', 'image/jpeg')
+            }
           end
 
           define_feature(<<-FEATURE)
@@ -255,6 +259,48 @@ module Cucumber
             FEATURE
 
           it { expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq "snapshot.jpeg" }
+        end
+        
+        describe "with a step that embeds a text" do
+          define_steps do
+            Given(/log/) { embed('log.txt', 'text/plain') }
+          end
+
+          define_feature(<<-FEATURE)
+          Feature:
+            Scenario:
+              Given log
+            FEATURE
+
+          it { expect(@doc.at('a#text_0')['href'].to_s).to eq "log.txt" }
+        end
+
+        describe "with a step that embeds a snapshot content manually" do
+          define_steps do
+            Given(/snap/) { embed('data:image/png;base64,YWJj', 'image/png') }
+          end
+
+          define_feature(<<-FEATURE)
+          Feature:
+            Scenario:
+              Given snap
+            FEATURE
+
+          it { expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq "data:image/png;base64,YWJj" }
+        end
+
+        describe "with a step that embeds a snapshot content" do
+          define_steps do
+            Given(/snap/) { embed('YWJj', 'image/png;base64') }
+          end
+
+          define_feature(<<-FEATURE)
+          Feature:
+            Scenario:
+              Given snap
+            FEATURE
+
+          it { expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq "data:image/png;base64,YWJj" }
         end
 
         describe "with an undefined Given step then an undefined And step" do
@@ -266,6 +312,62 @@ module Cucumber
             FEATURE
 
           it { expect(@doc.css('pre').map { |pre| /^(Given|And)/.match(pre.text)[1] }).to eq ["Given", "Given"] }
+        end
+
+        describe "with a output from hooks" do
+          describe "in a scenario" do
+            define_feature <<-FEATURE
+          Feature:
+            Scenario:
+              Given this step passes
+            FEATURE
+
+            define_steps do
+              Before do
+                puts "Before hook"
+              end
+              AfterStep do
+                puts "AfterStep hook"
+              end
+              After do
+                puts "After hook"
+              end
+              Given(/^this step passes$/) {}
+            end
+
+            it 'should have ccs nodes ".step.message" for all the hooks' do
+              expect(@doc.css('.step.message').length).to eq 3
+              expect(@doc.css('.step.message')[0].text).to eq "Before hook"
+              expect(@doc.css('.step.message')[1].text).to eq "AfterStep hook"
+              expect(@doc.css('.step.message')[2].text).to eq "After hook"
+            end
+          end
+
+          describe "in a scenario outline" do
+            define_feature <<-FEATURE
+          Feature:
+            Scenario Outline:
+              Given this step <status>
+              Examples:
+              | status |
+              | passes |
+            FEATURE
+
+            define_steps do
+              Before do
+                puts "Before hook"
+              end
+              AfterStep do
+                puts "AfterStep hook"
+              end
+              After do
+                puts "After hook"
+              end
+              Given(/^this step passes$/) {}
+            end
+
+            it { expect(@doc).to have_css_node('.message', /Before hook, AfterStep hook, After hook/) }
+          end
         end
       end
     end

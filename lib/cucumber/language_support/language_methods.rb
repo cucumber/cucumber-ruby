@@ -4,21 +4,6 @@ require 'cucumber/step_definition_light'
 module Cucumber
   module LanguageSupport
     module LanguageMethods
-      def around(scenario)
-        execute_around(scenario) do
-          yield
-        end
-      end
-
-      def before(scenario)
-        begin_scenario(scenario)
-        execute_before(scenario)
-      end
-
-      def after(scenario)
-        execute_after(scenario)
-        end_scenario
-      end
 
       def after_configuration(configuration)
         hooks[:after_configuration].each do |hook|
@@ -85,28 +70,6 @@ module Cucumber
 
       def transforms
         @transforms ||= []
-      end
-
-      def execute_around(scenario, &block)
-        hooks_for(:around, scenario).reverse.inject(block) do |blk, hook|
-          proc do
-            invoke(hook, 'Around', scenario, true) do
-              blk.call(scenario)
-            end
-          end
-        end.call
-      end
-
-      def execute_before(scenario)
-        hooks_for(:before, scenario).each do |hook|
-          invoke(hook, 'Before', scenario, true)
-        end
-      end
-
-      def execute_after(scenario)
-        hooks_for(:after, scenario).reverse_each do |hook|
-          invoke(hook, 'After', scenario, true)
-        end
       end
 
       def invoke(hook, location, scenario, exception_fails_scenario, &block)

@@ -1,5 +1,4 @@
 require 'cucumber/constantize'
-require 'cucumber/core/ast/multiline_argument'
 require 'cucumber/runtime/for_programming_languages'
 
 module Cucumber
@@ -8,6 +7,7 @@ module Cucumber
 
     class SupportCode
 
+      # TODO: figure out a way to move this to the core. We'd need to have access to the mappings to pass those in.
       require 'forwardable'
       class StepInvoker
         include Gherkin::Rubify
@@ -20,12 +20,19 @@ module Cucumber
         end
 
         def step(step)
-          location = Cucumber::Core::Ast::Location.new(*caller[0].split(':')[0..1])
-          core_multiline_arg = Core::Ast::MultilineArgument.from(step.doc_string || step.rows, location)
-          @support_code.invoke(step.name, MultilineArgument.from(core_multiline_arg))
+          location = Core::Ast::Location.of_caller
+          @support_code.invoke(step.name, multiline_arg(step, location))
         end
 
         def eof
+        end
+
+        def multiline_arg(step, location)
+          if argument = step.doc_string
+            MultilineArgument.doc_string(argument.value, argument.content_type, location.on_line(argument.line_range))
+          else
+            MultilineArgument.from(step.rows, location)
+          end
         end
       end
 
@@ -55,15 +62,8 @@ module Cucumber
         parser.parse(steps_text, file, line.to_i)
       end
 
-      def invoke(step_name, multiline_argument)
-        file, line = *caller[2].split(':')[0..1]
-        location = Core::Ast::Location.new(file, line)
-        begin
-          step_match(step_name).invoke(multiline_argument)
-        rescue Exception => e
-          e.nested! if Undefined === e
-          raise e
-        end
+      def invoke(step_name, multiline_argument, location=nil)
+        step_match(step_name).invoke(multiline_argument)
       end
 
       # Loads and registers programming language implementation.
@@ -113,16 +113,6 @@ module Cucumber
         @programming_languages.each do |programming_language|
           programming_language.send(name, *args)
         end
-      end
-
-      def around(scenario, block)
-        @programming_languages.reverse.inject(block) do |blk, programming_language|
-          proc do
-            programming_language.around(scenario) do
-              blk.call(scenario)
-            end
-          end
-        end.call
       end
 
       def step_definitions

@@ -1,4 +1,40 @@
-## [v2.0.0.pre (unreleased)](https://github.com/cucumber/cucumber/compare/v1.3.8...master)
+## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.3...master)
+
+### New Features
+
+### Bugfixes
+
+  * Handle hook output appropriately in the HTML formatter ([746](https://github.com/cucumber/cucumber/pull/746), [731](https://github.com/cucumber/cucumber/issues/731), [298](https://github.com/cucumber/cucumber/pull/298) @brasmusson)
+  * Handle hook output appropriately in the Pretty formatter ([738](https://github.com/cucumber/cucumber/pull/738) @brasmusson)
+
+## [v2.0.0.beta.3](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.2...v2.0.0.beta.3)
+
+### Removed Features
+
+  * The `--dotcucumber` option is no longer supported and `stepdefs.json` is no longer written. (Aslak Hellesøy)
+
+### New Features
+
+  * Include both outline step and expanded step in error backtrace ([730](https://github.com/cucumber/cucumber/pull/730) @brasmusson)
+  * Add TestCase#outline? for conditionals in Before / After hooks ([728](https://github.com/cucumber/cucumber/pull/728) [Erran Carey](https://github.com/erran))
+  * Support embedding images directly in HTML and JSON reports ([696](https://github.com/cucumber/cucumber/pull/696),[695](https://github.com/cucumber/cucumber/pull/695/files) @brasmusson)
+
+### Bugfixes
+
+  * Pass hook output to the formatters appropriately ([732](https://github.com/cucumber/cucumber/pull/732) @brasmusson)
+  * Added tests for, and re-added behaviour to support Scenario#failed? in hooks (Matt Wynne)
+  * Rescuing ArgumentError in HTML formatter so Cucumber won't stop tests due bad encoding ([690](https://github.com/cucumber/cucumber/pull/690) @awls99)
+  * Add back support for the DataTable API ([729](https://github.com/cucumber/cucumber/pull/729) @mattwynne and @tooky)
+  * Fix Windows support loading files properly ([739](https://github.com/cucumber/cucumber/issues/739) @os97673)
+
+## [v2.0.0.beta.2](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.1...v2.0.0.beta.2)
+
+### Bugfixes
+
+  * Better reporting of exceptions in Before / After hooks ([723](https://github.com/cucumber/cucumber/pull/723) @mattwynne)
+  * Add `#source_tag_names` method to `TestCase` object passed to hooks (@mattwynne)
+
+## [v2.0.0.beta.1 ](https://github.com/cucumber/cucumber/compare/v1.3.8...v2.0.0.beta.1)
 
 Version 2.0 contains a major internal redesign, extracting the core logic of
 parsing and executing tests into a [separate gem](https://github.com/cucumber/cucumber-ruby-core).
@@ -11,6 +47,9 @@ all.
 ### New features
 
 * Better snippet comment ([579](https://github.com/cucumber/cucumber/pull/579) Jeff Nyman)
+* Random scenario ordering with `--order random`
+* Embed plain text ([712](https://github.com/cucumber/cucumber/pull/712) @bingwei)
+* Support the cucumber-reporting tools also when using Scenario Outlines ([700](https://github.com/cucumber/cucumber/pull/700) @brasmusson)
 
 ### Features removed
 
@@ -18,6 +57,7 @@ all.
 * Remove support for i18n nested step methods (Matt Wynne)
 * Remove experimental .js and .py support (Matt Wynne)
 * Remove Ruby 1.8.7 support, including RCov
+* Spork support
 
 ### API Changes
 
@@ -29,9 +69,11 @@ all.
 
 * Greek examples added ([497](https://github.com/cucumber/cucumber/issues/497) @rousisk)
 
-## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.15...v1.3.x-bugfix)
+## [v1.3.16](https://github.com/cucumber/cucumber/compare/v1.3.15...v1.3.16)
 
+* Pass output from the step definition on to the JSON formatter ([701](https://github.com/cucumber/cucumber/pull/701) @brasmusson)
 * Add RSpec 3 test double support ([689](https://github.com/cucumber/cucumber/pull/689) @cyphactor)
+* Fix bug with rerun formatter and `--expand` option ([710](https://github.com/cucumber/cucumber/pull/710) @brasmusson)
 
 ## [v1.3.15](https://github.com/cucumber/cucumber/compare/v1.3.14...v1.3.15)
 

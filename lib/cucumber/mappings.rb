@@ -62,19 +62,19 @@ module Cucumber
     def map_test_case(test_case, mapper)
       @scenario = Source.new(test_case).build_scenario
       mapper.before do
-        ruby.begin_rb_scenario(scenario)
+        runtime.begin_scenario(scenario)
       end
     end
 
     def map_test_case_hooks(mapper)
       ruby.hooks_for(:before, scenario).each do |hook|
-        mapper.before do
-          hook.invoke('Before', scenario)
+        mapper.before do |result|
+          hook.invoke('Before', scenario.with_result(result))
         end
       end
       ruby.hooks_for(:after, scenario).each do |hook|
-        mapper.after do
-          hook.invoke('After', scenario)
+        mapper.after do |result|
+          hook.invoke('After', scenario.with_result(result))
         end
       end
       ruby.hooks_for(:around, scenario).each do |hook|
@@ -84,15 +84,20 @@ module Cucumber
       end
     end
 
-    # adapts our test_case to look like the Cucumber Runtime's Scenario
+    # adapts our test_case to look like the Cucumber Runtime's old Scenario
     class TestCase
-      def initialize(test_case, feature)
+      def initialize(test_case, feature, result = Core::Test::Result::Unknown.new)
         @test_case = test_case
         @feature = feature
+        @result = result
       end
 
       def accept_hook?(hook)
         hook.tag_expressions.all? { |expression| @test_case.match_tags?(expression) }
+      end
+
+      def failed?
+        @result.failed?
       end
 
       def language
@@ -106,12 +111,42 @@ module Cucumber
       def name
         @test_case.name
       end
+
+      def title
+        warn("deprecated: call #name instead")
+        name
+      end
+
+      def source_tags
+        #warn('deprecated: call #tags instead')
+        tags
+      end
+
+      def source_tag_names
+        tags.map &:name
+      end
+
+      def tags
+        @test_case.tags
+      end
+
+      def outline?
+        false
+      end
+
+      def with_result(result)
+        self.class.new(@test_case, @feature, result)
+      end
     end
 
     class Scenario < TestCase
     end
 
     class ScenarioOutlineExample < TestCase
+      def outline?
+        true
+      end
+
       def scenario_outline
         self
       end
@@ -142,13 +177,18 @@ module Cucumber
       end
 
       def build_scenario
-        @factory.new(@test_case, Feature.new(@feature.name))
+        @factory.new(@test_case, Feature.new(@feature.legacy_conflated_name_and_description))
       end
     end
 
     class DryRun < Mappings
 
       private
+
+      def map_test_case(*)
+        # NOOP - we don't want to create World etc for dry run
+      end
+
       def map_step(step, mapper)
         step.describe_source_to MapStep::DryRun.new(runtime, mapper)
       end
@@ -182,7 +222,7 @@ module Cucumber
 
       private
       def map_step(node, step_match)
-        multiline_arg = MultilineArgument.from(node.multiline_arg)
+        multiline_arg = MultilineArgument.from_core(node.multiline_arg)
         mapper.map { step_match.invoke(multiline_arg) }
       end
 

@@ -1,6 +1,7 @@
 module Cucumber
-  class Runtime
-    module TagLimits
+  module Filters
+    class TagLimits
+
       class TestCaseIndex
         def initialize
           @index = Hash.new { |hash, key| hash[key] = [] }
@@ -24,6 +25,7 @@ module Cucumber
 
         attr_accessor :index
       end
+
     end
   end
 end

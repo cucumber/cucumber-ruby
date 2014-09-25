@@ -91,7 +91,28 @@ Feature: Rerun formatter
     features/failing_background.feature:6:9
     """
 
-@wip-new-core
+  Scenario: Failing background with scenario outline
+    Given a file named "features/failing_background_outline.feature" with:
+      """
+      Feature: Failing background sample with scenario outline
+
+        Background:
+          Given this step fails
+
+        Scenario Outline:
+          Then this step <status>
+
+        Examples:
+          | status |
+          | passes |
+          | passes |
+      """
+    When I run `cucumber features/failing_background_outline.feature -r features -f rerun`
+    Then it should fail with:
+    """
+    features/failing_background_outline.feature:11:12
+    """
+
 Scenario: Scenario outlines with expand
   For details see https://github.com/cucumber/cucumber/issues/503
     Given a file named "features/one_passing_one_failing.feature" with:
@@ -99,12 +120,12 @@ Scenario: Scenario outlines with expand
       Feature: One passing example, one failing example
 
         Scenario Outline:
-          Given a <status> step
+          Given this step <status>
 
         Examples:
-          | status  |
-          | passing |
-          | failing |
+          | status |
+          | passes |
+          | fails  |
 
       """
     When I run `cucumber --expand -f rerun`

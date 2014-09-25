@@ -9,6 +9,9 @@ require 'cucumber/load_path'
 require 'cucumber/language_support/language_methods'
 require 'cucumber/formatter/duration'
 require 'cucumber/file_specs'
+require 'cucumber/filters/quit'
+require 'cucumber/filters/randomizer'
+require 'cucumber/filters/tag_limits'
 
 module Cucumber
   module FixRuby21Bug9285
@@ -35,10 +38,8 @@ module Cucumber
 
   require 'cucumber/core'
   require 'cucumber/runtime/user_interface'
-  require 'cucumber/runtime/features_loader'
   require 'cucumber/runtime/results'
   require 'cucumber/runtime/support_code'
-  require 'cucumber/runtime/tag_limits'
   class Runtime
     attr_reader :results, :support_code, :configuration
 
@@ -47,13 +48,12 @@ module Cucumber
     include Runtime::UserInterface
 
     def initialize(configuration = Configuration.default)
-      @current_scenario = nil
       @configuration = Configuration.parse(configuration)
       @support_code = SupportCode.new(self, @configuration)
       @results = Results.new(@configuration)
     end
 
-    # Allows you to take an existing runtime and change it's configuration
+    # Allows you to take an existing runtime and change its configuration
     def configure(new_configuration)
       @configuration = Configuration.parse(new_configuration)
       @support_code.configure(@configuration)
@@ -104,91 +104,16 @@ module Cucumber
       @support_code.snippet_text(::Gherkin::I18n.code_keyword_for(step_keyword), step_name, multiline_arg)
     end
 
-    def with_hooks(scenario, skip_hooks=false)
-      around(scenario, skip_hooks) do
-        before_and_after(scenario, skip_hooks) do
-          yield scenario
-        end
-      end
-    end
-
-    def around(scenario, skip_hooks=false, &block) #:nodoc:
-      if skip_hooks
-        yield
-        return
-      end
-
-      @support_code.around(scenario, block)
-    end
-
-    def before_and_after(scenario, skip_hooks=false) #:nodoc:
-      before(scenario) unless skip_hooks
-      yield scenario
-      after(scenario) unless skip_hooks
-      record_result scenario
-    end
-
     def record_result(scenario)
       @results.scenario_visited(scenario)
     end
 
-    def before(scenario) #:nodoc:
-      return if dry_run? || @current_scenario
-      @current_scenario = scenario
-      @support_code.fire_hook(:before, scenario)
-    end
-
-    def after(scenario) #:nodoc:
-      @current_scenario = nil
-      return if dry_run?
-      @support_code.fire_hook(:after, scenario)
-    end
-
-    def after_step #:nodoc:
-      return if dry_run?
-      @support_code.fire_hook(:execute_after_step, @current_scenario)
+    def begin_scenario(scenario)
+      @support_code.fire_hook(:begin_scenario, scenario)
     end
 
     def unknown_programming_language?
       @support_code.unknown_programming_language?
-    end
-
-    # TODO: this code is untested
-    def write_stepdefs_json
-      if(@configuration.dotcucumber)
-        stepdefs = []
-        @support_code.step_definitions.sort{|a,b| a.to_hash['source'] <=> a.to_hash['source']}.each do |stepdef|
-          stepdef_hash = stepdef.to_hash
-          steps = []
-          features.each do |feature|
-            feature.feature_elements.each do |feature_element|
-              feature_element.raw_steps.each do |step|
-                args = stepdef.arguments_from(step.name)
-                if(args)
-                  steps << {
-                    'name' => step.name,
-                    'args' => args.map do |arg|
-                      {
-                        'offset' => arg.offset,
-                        'val' => arg.val
-                      }
-                    end
-                  }
-                end
-              end
-            end
-          end
-          stepdef_hash['file_colon_line'] = stepdef.file_colon_line
-          stepdef_hash['steps'] = steps.uniq.sort {|a,b| a['name'] <=> b['name']}
-          stepdefs << stepdef_hash
-        end
-        if !File.directory?(@configuration.dotcucumber)
-          FileUtils.mkdir_p(@configuration.dotcucumber)
-        end
-        File.open(File.join(@configuration.dotcucumber, 'stepdefs.json'), 'w') do |io|
-          io.write(MultiJson.dump(stepdefs, :pretty => true))
-        end
-      end
     end
 
     # Returns Ast::DocString for +string_without_triple_quotes+.
@@ -274,47 +199,12 @@ module Cucumber
       name_regexps = @configuration.name_regexps
       tag_limits = @configuration.tag_limits
       [].tap do |filters|
-        filters << [Cucumber::Runtime::Randomizer, []] if @configuration.randomize?
-        filters << [Cucumber::Runtime::TagLimits::Filter, [tag_limits]] if tag_limits.any?
+        filters << [Filters::Randomizer, [@configuration.seed]] if @configuration.randomize?
+        filters << [Filters::TagLimits, [tag_limits]] if tag_limits.any?
         filters << [Cucumber::Core::Test::TagFilter, [tag_expressions]]
         filters << [Cucumber::Core::Test::NameFilter, [name_regexps]]
         filters << [Cucumber::Core::Test::LocationsFilter, [filespecs.locations]]
-        filters << [Quit, []]
-      end
-    end
-
-    class Randomizer
-      def initialize(receiver)
-        @receiver = receiver
-        @test_cases = []
-      end
-
-      def test_case(test_case)
-        @test_cases << test_case
-      end
-
-      def done
-        @test_cases.shuffle.each do |test_case|
-          test_case.describe_to(@receiver)
-        end
-        @receiver.done
-      end
-    end
-
-    class Quit
-      def initialize(receiver)
-        @receiver = receiver
-      end
-
-      def test_case(test_case)
-        unless Cucumber.wants_to_quit
-          test_case.describe_to @receiver
-        end
-      end
-
-      def done
-        @receiver.done
-        self
+        filters << [Filters::Quit, []]
       end
     end
 

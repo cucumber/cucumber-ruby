@@ -1,4 +1,3 @@
-@wip-new-core
 Feature: Pretty formatter - Printing messages
 
   When you want to print to Cucumber's output, just call `puts` from
@@ -122,6 +121,7 @@ Feature: Pretty formatter - Printing messages
             | 1    | anno1 | fail   |  Line: 1: anno1
              (RuntimeError)
             ./features/step_definitions/puts_steps.rb:13:in `/^I use message (.+) in line (.+) (?:with result (.+))$/'
+            features/f.feature:29:in `Given I use message anno1 in line 1 with result fail'
             features/f.feature:25:in `Given I use message <ann> in line <line> with result <result>'
             | 2    | anno2 | pass   |  Line: 2: anno2
       """
@@ -133,8 +133,9 @@ Feature: Pretty formatter - Printing messages
         Ann
         ..
         Multiple
-
+        
         Announce
+        
         Me
         ..-UUUUUU
         Announce with fail

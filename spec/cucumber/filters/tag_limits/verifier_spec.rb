@@ -1,8 +1,8 @@
-require "cucumber/runtime/tag_limits"
+require "cucumber/filters/tag_limits"
 
-describe Cucumber::Runtime::TagLimits::Verifier do
+describe Cucumber::Filters::TagLimits::Verifier do
   describe "#verify!" do
-    subject(:verifier) { Cucumber::Runtime::TagLimits::Verifier.new(tag_limits) }
+    subject(:verifier) { Cucumber::Filters::TagLimits::Verifier.new(tag_limits) }
     let(:test_case_index) { double(:test_case_index) }
 
     context "the tag counts exceed the tag limits" do
@@ -28,7 +28,7 @@ describe Cucumber::Runtime::TagLimits::Verifier do
         expect {
           verifier.verify!(test_case_index)
         }.to raise_error(
-          Cucumber::Runtime::TagLimits::TagLimitExceededError,
+          Cucumber::Filters::TagLimitExceededError,
           "@exceed_me occurred 2 times, but the limit was set to 1\n" +
           "  path/to/some.feature:3\n" +
           "  path/to/some/other.feature:8"

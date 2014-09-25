@@ -13,7 +13,7 @@ module Cucumber
       end
 
       before do
-        rb.before(double('scenario').as_null_object)
+        rb.begin_scenario(double('scenario').as_null_object)
         $inside = nil
       end
 
@@ -37,10 +37,10 @@ module Cucumber
       it "allows calling of other steps with inline arg" do
         dsl.Given(/Outside/) do
           location = Core::Ast::Location.new(__FILE__, __LINE__)
-          step "Inside", MultilineArgument.from(Cucumber::Core::Ast::DataTable.new([['inside']], location))
+          step "Inside", table([['inside']])
         end
-        dsl.Given(/Inside/) do |table|
-          $inside = table.raw[0][0]
+        dsl.Given(/Inside/) do |t|
+          $inside = t.raw[0][0]
         end
 
         run_step "Outside"
@@ -89,7 +89,7 @@ module Cucumber
 
         expect(-> {
           run_step "Outside"
-        }).to raise_error(Cucumber::Undefined, 'Undefined step: "Inside"')
+        }).to raise_error(Cucumber::Undefined)
       end
 
       it "allows forced pending" do

@@ -166,7 +166,6 @@ Feature: JUnit output formatter
       
       """
 
-  @wip
   Scenario: pending and undefined steps with strict option should fail
     When I run `cucumber --format junit --out tmp/ features/pending.feature --strict`
     Then it should fail with:
@@ -181,6 +180,9 @@ Feature: JUnit output formatter
         <failure message="pending Pending" type="pending">
           <![CDATA[Scenario: Pending
 
+      Given this step is pending
+
+      Message:
       ]]>
           <![CDATA[TODO (Cucumber::Pending)
       ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
@@ -193,6 +195,9 @@ Feature: JUnit output formatter
         <failure message="undefined Undefined" type="undefined">
           <![CDATA[Scenario: Undefined
       
+      Given this step is undefined
+
+      Message:
       ]]>
           <![CDATA[Undefined step: "this step is undefined" (Cucumber::Undefined)
       features/pending.feature:7:in `Given this step is undefined']]>
@@ -230,7 +235,6 @@ can't convert .* into String \(TypeError\)
 You *must* specify --out DIR for the junit formatter
       """
 
-  @wip
   Scenario: one feature, one scenario outline, two examples: one passing, one failing
     When I run `cucumber --format junit --out tmp/ features/scenario_outline.feature`
     Then it should fail with:
@@ -255,6 +259,7 @@ You *must* specify --out DIR for the junit formatter
       ]]>
           <![CDATA[ (RuntimeError)
       ./features/step_definitions/steps.rb:4:in `/^this step fails$/'
+      features/scenario_outline.feature:9:in `Given this step fails'
       features/scenario_outline.feature:4:in `Given this step <type>']]>
         </failure>
         <system-out/>

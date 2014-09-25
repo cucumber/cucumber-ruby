@@ -1,7 +1,7 @@
-require "cucumber/runtime/gated_receiver"
+require "cucumber/filters/gated_receiver"
 
-describe Cucumber::Runtime::GatedReceiver do
-  subject(:gated_receiver) { Cucumber::Runtime::GatedReceiver.new(receiver) }
+describe Cucumber::Filters::GatedReceiver do
+  subject(:gated_receiver) { Cucumber::Filters::GatedReceiver.new(receiver) }
 
   let(:receiver) { double(:receiver) }
   let(:test_cases){ [double(:test_case), double(:test_case)] }

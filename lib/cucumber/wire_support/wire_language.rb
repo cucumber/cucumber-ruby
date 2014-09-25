@@ -25,8 +25,7 @@ module Cucumber
 
       def snippet_text(code_keyword, step_name, multiline_arg, snippet_type)
         snippets = @connections.map do |remote|
-          # TODO: should send an empty string for an EmptyMultilineArgument
-          remote.snippet_text(code_keyword, step_name, multiline_arg.class.to_s)
+          remote.snippet_text(code_keyword, step_name, MultilineArgClassName.new(multiline_arg).to_s)
         end
         snippets.flatten.join("\n")
       end
@@ -34,8 +33,6 @@ module Cucumber
       def step_matches(step_name, formatted_step_name)
         @connections.map{ |c| c.step_matches(step_name, formatted_step_name)}.flatten
       end
-
-      protected
 
       def begin_scenario(scenario)
         @connections.each { |c| c.begin_scenario(scenario) }
@@ -46,6 +43,25 @@ module Cucumber
         scenario = @current_scenario
         @connections.each { |c| c.end_scenario(scenario) }
         @current_scenario = nil
+      end
+
+      class MultilineArgClassName
+        def initialize(arg)
+          arg.describe_to(self)
+          @result = ""
+        end
+
+        def data_table(*)
+          @result = "Cucumber::MultilineArgument::DataTable"
+        end
+
+        def doc_string(*)
+          @result = "Cucumber::MultilineArgument::DocString"
+        end
+
+        def to_s
+          @result
+        end
       end
     end
   end
