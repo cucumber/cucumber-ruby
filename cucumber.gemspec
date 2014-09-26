@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'multi_json', '>= 1.7.5', '< 2.0'
   s.add_dependency 'multi_test', '>= 0.1.1'
 
-  s.add_development_dependency 'aruba', '~> 0.5.3'
+  s.add_development_dependency 'aruba', '~> 0.6.1'
   s.add_development_dependency 'json', '~> 1.7'
   s.add_development_dependency 'nokogiri', '~> 1.5'
   s.add_development_dependency 'rake', '>= 0.9.2'
@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'simplecov', '>= 0.6.2'
   s.add_development_dependency 'coveralls', '~> 0.7'
   s.add_development_dependency 'syntax', '>= 1.0.0'
+  s.add_development_dependency 'pry'
 
   # For Documentation:
   s.add_development_dependency 'bcat', '~> 0.6.2'
