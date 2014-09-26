@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'multi_json', '>= 1.7.5', '< 2.0'
   s.add_dependency 'multi_test', '>= 0.1.1'
 
-  s.add_development_dependency 'aruba', '~> 0.5.3'
+  s.add_development_dependency 'aruba', '~> 0.6.1'
   s.add_development_dependency 'json', '~> 1.7'
   s.add_development_dependency 'nokogiri', '~> 1.5'
   s.add_development_dependency 'rake', '>= 0.9.2'
