@@ -120,39 +120,86 @@ module Cucumber
       end
 
       class TurnipStyle < RegexpStyle
+
         def initialize(rb_language, pattern, proc)
           @pattern = pattern
-          regexp = parse_pattern(pattern)
-          super(rb_language, regexp, proc)
+          super rb_language, compile_regexp(@pattern), proc
         end
 
         def regexp_source
           @pattern.inspect
         end
 
-        def invoke(args)
-          super args.compact
+        def arguments_from(step_name)
+          args = TurnipArguments.match(@regexp, step_name)
+          @rb_language.invoked_step_definition(regexp_source, file_colon_line) if args
+          args
         end
 
-        private
-        def parse_pattern(pattern)
-          p = Regexp.escape(pattern)
-          p = p.gsub(/\\\$\w+/, '(.*)') # Replace $var with (.*)
-
-          # turnip placeholders
-          p = p.gsub(/:\w+/, %{(?:"([^"]*)"|'([^']*)'|([[:alnum:]_-]+))})
-
-          # turnip alternate words
-          p = p.gsub(/([[:alpha:]]+)((\/[[:alpha:]]+)+)/) do
-            "(?:#{$1}#{$2.tr('/', '|')})"
+        class TurnipArguments
+          def self.match(regexp, step_name)
+            match = regexp.match(step_name)
+            if match
+              [new(match)].select(&:with_arguments?)
+            else
+              nil
+            end
           end
 
-          # turnip optional words
-          p = p.gsub(/(\\\s)?\\\(([^)]+)\\\)(\\\s)?/) do
+          def initialize(match)
+            @match = match
+          end
+
+          def with_arguments?
+            @match.names.any?
+          end
+
+          def method_missing(method_name, *arguments, &block)
+            if @match.names.include?(String(method_name))
+              extract_capture(@match[method_name])
+            else
+              super
+            end
+          end
+
+          def val
+            self
+          end
+
+          def offset
+            nil
+          end
+
+          private
+          def extract_capture(capture)
+            capture.scan(/(?-:"([^"]*)"|'([^']*)'|([[:alnum:]_-]+))/).flatten.compact.first
+          end
+        end
+
+
+        private
+        OPTIONAL_WORD_REGEXP = /(\\\s)?\\\(([^)]+)\\\)(\\\s)?/
+        PLACEHOLDER_REGEXP = /:([\w]+)/
+        ALTERNATIVE_WORD_REGEXP = /([[:alpha:]]+)((\/[[:alpha:]]+)+)/
+
+        def compile_regexp(pattern)
+          @placeholder_names = []
+          regexp = Regexp.escape(pattern)
+
+          regexp.gsub!(PLACEHOLDER_REGEXP) do |_|
+            @placeholder_names << "#{$1}"
+            "(?<#{$1}>#{/(?-:"([^"]*)"|'([^']*)'|([[:alnum:]_-]+))/.source})"
+          end
+
+          regexp.gsub!(OPTIONAL_WORD_REGEXP) do |_|
             [$1, $2, $3].compact.map { |m| "(?:#{m})?" }.join
           end
 
-          Regexp.new("^#{p}$")
+          regexp.gsub!(ALTERNATIVE_WORD_REGEXP) do |_|
+            "(?:#{$1}#{$2.tr('/', '|')})"
+          end
+
+          Regexp.new("^#{regexp}$")
         end
       end
     end

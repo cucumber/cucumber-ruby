@@ -130,6 +130,7 @@ module Cucumber
       end
 
       it "recognizes $arg style captures" do
+        skip
         arg_value = "wow!"
         dsl.Given "capture this: $arg" do |arg|
           expect(arg).to eq arg_value
@@ -139,8 +140,8 @@ module Cucumber
 
       it "recognizes :turnip style placeholders" do
         arg_value = "wow"
-        dsl.Given "capture this: :arg" do |arg|
-          expect(arg).to eq arg_value
+        dsl.Given "capture this: :arg" do |params|
+          expect(params.arg).to eq arg_value
         end
         run_step "capture this: wow"
       end
@@ -148,8 +149,8 @@ module Cucumber
       it 'recognizes :turnip style placeholders in "quotes"' do
 
         arg_value = "wow!"
-        dsl.Given "capture this: :arg" do |arg|
-          expect(arg).to eq arg_value
+        dsl.Given "capture this: :arg" do |params|
+          expect(params.arg).to eq arg_value
         end
 
         run_step 'capture this: "wow!"'

@@ -5,13 +5,13 @@ Feature: Turnip-style Placeholders in Step Definitions
   Scenario: Use place holders in step definitions
     Given a file named "features/step_definitions/steps.rb" with:
       """
-      Given("there is a monster called :name") do |name|
+      Given("there is a monster called :name") do |args|
         @monsters ||= []
-        @monsters << name
+        @monsters << args.name
       end
 
-      Then("there is/are :count monster(s)") do |count|
-        expect(@monsters.count).to eq(count.to_i)
+      Then("there is/are :count monster(s)") do |args|
+        expect(@monsters.count).to eq(args.count.to_i)
       end
       """
     And a file named "features/using_placeholders.feature" with:
@@ -28,8 +28,8 @@ Feature: Turnip-style Placeholders in Step Definitions
   Scenario:
     Given a file named "features/step_definitions/steps.rb" with:
       """
-      Given("a step that :state") do |state|
-        fail if state =~ /fail/
+      Given("a step that :state") do |args|
+        fail if args.state =~ /fail/
       end
       """
     And a file named "features/using_placeholders.feature" with:
@@ -58,6 +58,7 @@ Feature: Turnip-style Placeholders in Step Definitions
 
       """
 
+  @wip
   Scenario: Define custom placeholders
     Given a file named "features/step_definitions/steps.rb" with:
       """
@@ -67,8 +68,8 @@ Feature: Turnip-style Placeholders in Step Definitions
         end
       end
 
-      Given("there are :count monsters") do |count|
-        count.times do
+      Given("there are :count monsters") do |args|
+        args.count.times do
           # yes this is a number
         end
       end
