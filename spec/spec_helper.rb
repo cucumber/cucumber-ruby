@@ -9,6 +9,8 @@ end
 
 load File.expand_path(File.dirname(__FILE__) + '/../spec/simplecov_setup.rb')
 
+require 'pry'
+
 require 'cucumber'
 
 RSpec.configure do |c|
