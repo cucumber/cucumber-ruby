@@ -5,7 +5,6 @@ require 'cucumber/rb_support/rb_step_definition'
 require 'cucumber/rb_support/rb_hook'
 require 'cucumber/rb_support/rb_transform'
 require 'cucumber/rb_support/snippet'
-require 'multi_test'
 
 module Cucumber
   module RbSupport
