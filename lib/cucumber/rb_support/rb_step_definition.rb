@@ -138,11 +138,12 @@ module Cucumber
 
         class TurnipArguments
           def self.match(regexp, step_name)
-            match = regexp.match(step_name)
-            if match
-              [new(match)].select(&:with_arguments?)
-            else
-              nil
+            regexp.match(step_name) do |match|
+              if match.names.any?
+                [new(match)]
+              else
+                []
+              end
             end
           end
 
@@ -150,16 +151,16 @@ module Cucumber
             @match = match
           end
 
-          def with_arguments?
-            @match.names.any?
-          end
-
           def method_missing(method_name, *arguments, &block)
-            if @match.names.include?(String(method_name))
+            if captured_name?(method_name)
               extract_capture(@match[method_name])
             else
               super
             end
+          end
+
+          def respond_to_missing?(method_name, include_private = false)
+            captured_name?(method_name) || super
           end
 
           def val
@@ -171,11 +172,15 @@ module Cucumber
           end
 
           private
+          DEFAULT_PLACEHOLDER_PATTERN = /(?-:"([^"]*)"|'([^']*)'|([[:alnum:]_-]+))/
           def extract_capture(capture)
-            capture.scan(/(?-:"([^"]*)"|'([^']*)'|([[:alnum:]_-]+))/).flatten.compact.first
+            capture.scan(DEFAULT_PLACEHOLDER_PATTERN).flatten.compact.first
+          end
+
+          def captured_name?(name)
+            @match.names.include?(String(name))
           end
         end
-
 
         private
         OPTIONAL_WORD_REGEXP = /(\\\s)?\\\(([^)]+)\\\)(\\\s)?/
@@ -183,12 +188,10 @@ module Cucumber
         ALTERNATIVE_WORD_REGEXP = /([[:alpha:]]+)((\/[[:alpha:]]+)+)/
 
         def compile_regexp(pattern)
-          @placeholder_names = []
           regexp = Regexp.escape(pattern)
 
           regexp.gsub!(PLACEHOLDER_REGEXP) do |_|
-            @placeholder_names << "#{$1}"
-            "(?<#{$1}>#{/(?-:"([^"]*)"|'([^']*)'|([[:alnum:]_-]+))/.source})"
+            "(?<#{$1}>#{TurnipArguments::DEFAULT_PLACEHOLDER_PATTERN.source})"
           end
 
           regexp.gsub!(OPTIONAL_WORD_REGEXP) do |_|
