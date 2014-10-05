@@ -97,8 +97,8 @@ module Cucumber
 
       def collect_failing_scenarios(runtime)
         # TODO: brittle - stop coupling to types
-        scenario_class = Cucumber::Reports::Legacy::Ast::Scenario
-        example_table_class = Cucumber::Core::Ast::ExamplesTable
+        scenario_class = LegacyApi::Ast::Scenario
+        example_table_class = Core::Ast::ExamplesTable
 
         runtime.scenarios(:failed).select do |s|
           [scenario_class, example_table_class].include?(s.class)

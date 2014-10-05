@@ -9,8 +9,8 @@ module Cucumber
     class Junit
 
       # TODO: remove coupling to types
-      AST_SCENARIO_OUTLINE = Cucumber::Core::Ast::ScenarioOutline
-      AST_EXAMPLE_ROW = Reports::LegacyExampleTableRow
+      AST_SCENARIO_OUTLINE = Core::Ast::ScenarioOutline
+      AST_EXAMPLE_ROW = LegacyApi::Ast::ExampleTableRow
 
       include Io
 

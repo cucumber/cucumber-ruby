@@ -427,8 +427,9 @@ module Cucumber
       end
 
       def to_s(options = {}) #:nodoc:
+        # TODO: factor out this code so we don't depend on such a big lump of old cruft
         require 'cucumber/formatter/pretty'
-        require 'cucumber/reports/legacy_formatter'
+        require 'cucumber/formatter/legacy_api/adapter'
         options = {:color => true, :indent => 2, :prefixes => TO_S_PREFIXES}.merge(options)
         io = StringIO.new
 
@@ -437,7 +438,7 @@ module Cucumber
         formatter = Formatter::Pretty.new(nil, io, options)
         formatter.instance_variable_set('@indent', options[:indent])
 
-        Reports::Legacy::Ast::MultilineArg.for(self).accept(Reports::FormatterWrapper.new([formatter]))
+        Formatter::LegacyApi::Ast::MultilineArg.for(self).accept(Formatter::LegacyApi::FormatterWrapper.new([formatter]))
 
         Cucumber::Term::ANSIColor.coloring = c
         io.rewind

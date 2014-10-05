@@ -187,9 +187,9 @@ module Cucumber
       @mappings = Mappings.for(self)
     end
 
-    require 'cucumber/reports/legacy_formatter'
+    require 'cucumber/formatter/legacy_api/adapter'
     def report
-      @report ||= Cucumber::Reports::LegacyFormatter.new(self, @configuration.formatters(self))
+      @report ||= Formatter::LegacyApi::Adapter.new(self, @configuration.formatters(self))
     end
 
     require 'cucumber/core/test/filters'
