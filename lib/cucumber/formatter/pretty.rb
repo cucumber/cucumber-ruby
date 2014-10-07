@@ -84,7 +84,6 @@ module Cucumber
       end
 
       def after_background(background)
-        print_messages
         @in_background = nil
         @io.puts
         @io.flush
@@ -121,6 +120,7 @@ module Cucumber
       end
 
       def scenario_name(keyword, name, file_colon_line, source_indent)
+        print_messages
         print_feature_element_name(keyword, name, file_colon_line, source_indent)
       end
 
