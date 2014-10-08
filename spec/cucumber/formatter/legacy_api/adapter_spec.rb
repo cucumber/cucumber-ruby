@@ -1440,6 +1440,45 @@ module Cucumber
           end
         end
 
+        context 'with exception in before step hook' do
+          it 'prints the exception within the step' do
+            define_steps do
+              BeforeStep do
+                raise 'an exception'
+              end
+            end
+            execute_gherkin do
+              feature do
+                scenario do
+                  step 'passing'
+                end
+              end
+            end
+            expect( formatter.messages ).to eq([
+            :before_features,
+              :before_feature,
+                :before_tags,
+                :after_tags,
+                :feature_name,
+                :before_feature_element,
+                  :before_tags,
+                  :after_tags,
+                  :scenario_name,
+                  :before_steps,
+                    :before_step,
+                      :before_step_result,
+                      :step_name,
+                      :exception,
+                      :after_step_result,
+                    :after_step,
+                  :after_steps,
+                :after_feature_element,
+              :after_feature,
+            :after_features
+            ])
+          end
+        end
+
         context 'with exception in a single before hook' do
           it 'prints the exception after the scenario name' do
             define_steps do
