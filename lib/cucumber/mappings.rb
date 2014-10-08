@@ -18,6 +18,7 @@ module Cucumber
     end
 
     def test_step(step, mapper)
+      map_before_step_hooks(mapper)
       map_step(step, mapper)
       map_after_step_hooks(mapper)
     end
@@ -49,6 +50,14 @@ module Cucumber
 
     def map_step(step, mapper)
       step.describe_source_to MapStep.new(runtime, mapper)
+    end
+
+    def map_before_step_hooks(mapper)
+      ruby.hooks_for(:before_step, scenario).each do |hook|
+        mapper.before do
+          hook.invoke 'BeforeStep', scenario
+        end
+      end
     end
 
     def map_after_step_hooks(mapper)
