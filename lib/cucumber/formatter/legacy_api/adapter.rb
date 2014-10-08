@@ -8,31 +8,7 @@ module Cucumber
   module Formatter
     module LegacyApi
 
-      class FormatterWrapper < BasicObject
-        attr_reader :formatters
-        private :formatters
-
-        def initialize(formatters)
-          @formatters = formatters
-        end
-
-        def method_missing(message, *args)
-          formatters.each do |formatter|
-            formatter.send(message, *args) if formatter.respond_to?(message)
-          end
-        end
-
-        def respond_to_missing?(name, include_private = false)
-          formatters.any? { |formatter| formatter.respond_to?(name, include_private) }
-        end
-
-      end
-
       Adapter = Struct.new(:runtime, :formatter) do
-
-        def initialize(runtime, formatters)
-          super runtime, FormatterWrapper.new(formatters)
-        end
 
         extend Forwardable
 
@@ -42,7 +18,8 @@ module Cucumber
         def_delegators :printer,
           :before_test_case,
           :before_test_step,
-          :after_test_step
+          :after_test_step,
+          :embed
 
         def after_test_case(test_case, result)
           record_test_case_result(test_case, result)
@@ -51,10 +28,6 @@ module Cucumber
 
         def puts(*messages)
           printer.puts(messages)
-        end
-
-        def embed(src, mime_type, label)
-          printer.embed(src, mime_type, label)
         end
 
         def done

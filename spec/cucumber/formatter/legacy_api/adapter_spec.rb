@@ -9,7 +9,7 @@ module Cucumber
       include Core::Gherkin::Writer
       include Core
 
-      let(:report)    { Adapter.new(runtime, [formatter]) }
+      let(:report)    { Adapter.new(runtime, formatter) }
       let(:formatter) { double('formatter').as_null_object }
       let(:runtime)   { Runtime.new }
       let(:mappings)  { Mappings.new(runtime) }

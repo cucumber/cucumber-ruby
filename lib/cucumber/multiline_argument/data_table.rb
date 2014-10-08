@@ -437,9 +437,7 @@ module Cucumber
         Cucumber::Term::ANSIColor.coloring = options[:color]
         formatter = Formatter::Pretty.new(nil, io, options)
         formatter.instance_variable_set('@indent', options[:indent])
-
-        Formatter::LegacyApi::Ast::MultilineArg.for(self).accept(Formatter::LegacyApi::FormatterWrapper.new([formatter]))
-
+        Formatter::LegacyApi::Ast::MultilineArg.for(self).accept(Formatter::Fanout.new([formatter]))
         Cucumber::Term::ANSIColor.coloring = c
         io.rewind
         s = "\n" + io.read + (" " * (options[:indent] - 2))

@@ -12,6 +12,7 @@ require 'cucumber/file_specs'
 require 'cucumber/filters/quit'
 require 'cucumber/filters/randomizer'
 require 'cucumber/filters/tag_limits'
+require 'cucumber/formatter/fanout'
 
 module Cucumber
   module FixRuby21Bug9285
@@ -189,7 +190,8 @@ module Cucumber
 
     require 'cucumber/formatter/legacy_api/adapter'
     def report
-      @report ||= Formatter::LegacyApi::Adapter.new(self, @configuration.formatters(self))
+      
+      @report ||= Formatter::LegacyApi::Adapter.new(self, Formatter::Fanout.new(@configuration.formatters(self)))
     end
 
     require 'cucumber/core/test/filters'
