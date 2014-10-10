@@ -39,7 +39,6 @@ module Cucumber
 
   require 'cucumber/core'
   require 'cucumber/runtime/user_interface'
-  require 'cucumber/runtime/results'
   require 'cucumber/runtime/support_code'
   class Runtime
     attr_reader :results, :support_code, :configuration
@@ -51,7 +50,7 @@ module Cucumber
     def initialize(configuration = Configuration.default)
       @configuration = Configuration.parse(configuration)
       @support_code = SupportCode.new(self, @configuration)
-      @results = Results.new
+      @results = Formatter::LegacyApi::Results.new
     end
 
     # Allows you to take an existing runtime and change its configuration
@@ -181,6 +180,7 @@ module Cucumber
 
     require 'cucumber/formatter/legacy_api/adapter'
     require 'cucumber/formatter/legacy_api/runtime_facade'
+    require 'cucumber/formatter/legacy_api/results'
     require 'cucumber/formatter/ignore_missing_messages'
     require 'cucumber/core/report/summary'
     def report
@@ -193,7 +193,7 @@ module Cucumber
 
     def formatters
       @formatters ||= @configuration.formatters { |formatter_class, path_or_io, options|
-        results = Results.new
+        results = Formatter::LegacyApi::Results.new
         runtime_facade = Formatter::LegacyApi::RuntimeFacade.new(results, @support_code, @configuration)
         formatter = formatter_class.new(runtime_facade, path_or_io, options)
         Formatter::LegacyApi::Adapter.new(
