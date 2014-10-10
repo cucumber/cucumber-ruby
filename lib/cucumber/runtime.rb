@@ -80,10 +80,6 @@ module Cucumber
       @configuration.dry_run?
     end
 
-    def step_visited(step) #:nodoc:
-      @results.step_visited(step)
-    end
-
     def scenarios(status = nil)
       @results.scenarios(status)
     end
@@ -102,10 +98,6 @@ module Cucumber
 
     def snippet_text(step_keyword, step_name, multiline_arg) #:nodoc:
       @support_code.snippet_text(::Gherkin::I18n.code_keyword_for(step_keyword), step_name, multiline_arg)
-    end
-
-    def record_result(scenario)
-      @results.scenario_visited(scenario)
     end
 
     def begin_scenario(scenario)

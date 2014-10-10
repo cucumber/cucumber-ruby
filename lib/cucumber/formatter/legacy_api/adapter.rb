@@ -8,8 +8,7 @@ module Cucumber
   module Formatter
     module LegacyApi
 
-      Adapter = Struct.new(:runtime, :formatter) do
-
+      Adapter = Struct.new(:runtime_deprecated, :formatter) do
         extend Forwardable
 
         def_delegators :formatter,
@@ -37,16 +36,28 @@ module Cucumber
         private
 
         def printer
-          @printer ||= FeaturesPrinter.new(formatter, runtime).before
+          @printer ||= FeaturesPrinter.new(formatter, results, support_code, config).before
         end
 
         def record_test_case_result(test_case, result)
           scenario = LegacyResultBuilder.new(result).scenario(test_case.name, test_case.location)
-          runtime.record_result(scenario)
+          results.scenario_visited(scenario)
+        end
+
+        def results
+          @results ||= runtime_deprecated.results
+        end
+
+        def support_code
+          @support_code ||= runtime_deprecated.support_code
+        end
+
+        def config
+          @config ||= runtime_deprecated.configuration
         end
 
         require 'cucumber/core/test/timer'
-        FeaturesPrinter = Struct.new(:formatter, :runtime) do
+        FeaturesPrinter = Struct.new(:formatter, :results, :support_code, :config) do
           extend Forwardable
 
           def before
@@ -75,7 +86,7 @@ module Cucumber
           def feature(node, *)
             if node != @current_feature
               @child.after if @child
-              @child = FeaturePrinter.new(formatter, runtime, node).before
+              @child = FeaturePrinter.new(formatter, results, support_code, config, node).before
               @current_feature = node
             end
           end
@@ -135,13 +146,13 @@ module Cucumber
 
           require 'ostruct'
           class StepSource < OpenStruct
-            def build_step_invocation(indent, runtime, messages, embeddings)
+            def build_step_invocation(indent, support_code, config, messages, embeddings)
               step_result.step_invocation(
-                step_match(runtime),
+                step_match(support_code),
                 step,
                 indent,
                 background,
-                runtime.configuration,
+                config,
                 messages,
                 embeddings
               )
@@ -149,8 +160,8 @@ module Cucumber
 
             private
 
-            def step_match(runtime)
-              runtime.step_match(step.name)
+            def step_match(support_code)
+              support_code.step_match(step.name)
             rescue Cucumber::Undefined
               NoStepMatch.new(step, step.name)
             end
@@ -165,7 +176,7 @@ module Cucumber
           end
         end
 
-        FeaturePrinter = Struct.new(:formatter, :runtime, :node) do
+        FeaturePrinter = Struct.new(:formatter, :results, :support_code, :config, :node) do
 
           def before
             formatter.before_feature(node)
@@ -280,7 +291,7 @@ module Cucumber
               if same_scenario_outline_as_previous_test_case?(source) and @previous_outline_child
                 @previous_outline_child
               else
-                ScenarioOutlinePrinter.new(formatter, runtime.configuration, source.scenario_outline)
+                ScenarioOutlinePrinter.new(formatter, config, source.scenario_outline)
               end
             else
               raise 'unknown step container'
@@ -306,15 +317,15 @@ module Cucumber
 
             if @failed_hidden_background_step
               indent = Indent.new(@child.node)
-              step_invocation = @failed_hidden_background_step.build_step_invocation(indent, runtime, messages = [], embeddings = [])
+              step_invocation = @failed_hidden_background_step.build_step_invocation(indent, support_code, config, messages = [], embeddings = [])
               @child.step_invocation(step_invocation, @failed_hidden_background_step)
               @failed_hidden_background_step = nil
             end
 
             unless @last_step == current_test_step_source.step
               indent ||= Indent.new(@child.node)
-              step_invocation = current_test_step_source.build_step_invocation(indent, runtime, @delayed_messages, @delayed_embeddings)
-              runtime.step_visited step_invocation
+              step_invocation = current_test_step_source.build_step_invocation(indent, support_code, config, @delayed_messages, @delayed_embeddings)
+              results.step_visited step_invocation
               @child.step_invocation(step_invocation, current_test_step_source)
               @last_step = current_test_step_source.step
             end
