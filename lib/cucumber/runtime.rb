@@ -184,13 +184,13 @@ module Cucumber
     require 'cucumber/core/report/summary'
     def report
       return @report if @report
-      runtime_facade = Formatter::LegacyApi::RuntimeFacade.new(@results, @support_code, @configuration)
-      @report = Formatter::Fanout.new([
-        summary_report,
+      formatters = @configuration.formatters { |formatter_class, path_or_io, options|
+        runtime_facade = Formatter::LegacyApi::RuntimeFacade.new(Results.new, @support_code, @configuration)
         Formatter::LegacyApi::Adapter.new(
-          Formatter::Fanout.new(@configuration.formatters(runtime_facade)),
-          @results, @support_code, @configuration)
-      ])
+          Formatter::Fanout.new([formatter_class.new(runtime_facade, path_or_io, options)]),
+          runtime_facade.results, @support_code, @configuration)
+      }
+      @report = Formatter::Fanout.new([summary_report] + formatters)
     end
 
     def summary_report

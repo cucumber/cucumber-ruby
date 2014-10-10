@@ -165,13 +165,13 @@ module Cucumber
         @options[:paths]
       end
 
-      def formatters(runtime)
+      def formatters
         @options[:formats].map do |format_and_out|
           format = format_and_out[0]
           path_or_io = format_and_out[1]
           begin
             formatter_class = formatter_class(format)
-            formatter_class.new(runtime, path_or_io, @options)
+            yield formatter_class, path_or_io, @options
           rescue Exception => e
             e.message << "\nError creating formatter: #{format}"
             raise e
