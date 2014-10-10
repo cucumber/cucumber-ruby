@@ -8,7 +8,7 @@ module Cucumber
   module Formatter
     module LegacyApi
 
-      Adapter = Struct.new(:runtime_deprecated, :formatter) do
+      Adapter = Struct.new(:formatter, :results, :support_code, :config) do
         extend Forwardable
 
         def_delegators :formatter,
@@ -42,18 +42,6 @@ module Cucumber
         def record_test_case_result(test_case, result)
           scenario = LegacyResultBuilder.new(result).scenario(test_case.name, test_case.location)
           results.scenario_visited(scenario)
-        end
-
-        def results
-          @results ||= runtime_deprecated.results
-        end
-
-        def support_code
-          @support_code ||= runtime_deprecated.support_code
-        end
-
-        def config
-          @config ||= runtime_deprecated.configuration
         end
 
         require 'cucumber/core/test/timer'

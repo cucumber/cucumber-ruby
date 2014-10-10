@@ -180,11 +180,16 @@ module Cucumber
     end
 
     require 'cucumber/formatter/legacy_api/adapter'
+    require 'cucumber/formatter/legacy_api/runtime_facade'
     require 'cucumber/core/report/summary'
     def report
-      @report ||= Formatter::Fanout.new([
+      return @report if @report
+      runtime_facade = Formatter::LegacyApi::RuntimeFacade.new(@results, @support_code, @configuration)
+      @report = Formatter::Fanout.new([
         summary_report,
-        Formatter::LegacyApi::Adapter.new(self, Formatter::Fanout.new(@configuration.formatters(self))),
+        Formatter::LegacyApi::Adapter.new(
+          Formatter::Fanout.new(@configuration.formatters(runtime_facade)),
+          @results, @support_code, @configuration)
       ])
     end
 
