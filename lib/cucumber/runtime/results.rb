@@ -2,16 +2,10 @@ module Cucumber
   class Runtime
 
     class Results
-      def initialize(configuration)
-        @configuration = configuration
-
+      def initialize
         # Optimization - quicker lookup.
         @inserted_steps = {}
         @inserted_scenarios = {}
-      end
-
-      def configure(new_configuration)
-        @configuration = Configuration.parse(new_configuration)
       end
 
       def step_visited(step) #:nodoc:
@@ -47,15 +41,6 @@ module Cucumber
           @scenarios.select{|scenario| scenario.status == status}
         else
           @scenarios
-        end
-      end
-
-      def failure?
-        if @configuration.wip?
-          scenarios(:passed).any?
-        else
-          scenarios(:failed).any? || steps(:failed).any? ||
-          (@configuration.strict? && (steps(:undefined).any? || steps(:pending).any?))
         end
       end
     end

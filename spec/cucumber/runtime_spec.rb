@@ -15,18 +15,14 @@ module Cucumber
 
     describe "#configure" do
       let(:support_code)      { double(Runtime::SupportCode).as_null_object }
-      let(:results)           { double(Runtime::Results).as_null_object     }
       let(:new_configuration) { double('New configuration')}
 
       before(:each) do
         allow(Runtime::SupportCode).to receive(:new) { support_code }
-        allow(Runtime::Results).to receive(:new) { results }
       end
 
-      it "tells the support_code and results about the new configuration" do
+      it "tells the support_code about the new configuration" do
         expect(support_code).to receive(:configure).with(new_configuration)
-        expect(results).to receive(:configure).with(new_configuration)
-
         subject.configure(new_configuration)
       end
 

@@ -36,7 +36,7 @@ module Cucumber
         end
 
         runtime.run!
-        failure = runtime.results.failure? || Cucumber.wants_to_quit
+        failure = runtime.failure? || Cucumber.wants_to_quit
         @kernel.exit(failure ? 1 : 0)
       rescue FileNotFoundException => e
         @err.puts(e.message)
