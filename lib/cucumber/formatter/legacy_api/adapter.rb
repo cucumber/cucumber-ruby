@@ -871,7 +871,6 @@ module Cucumber
         class LegacyResultBuilder
           attr_reader :status
           def initialize(result)
-            @duration = :unknown
             @result = result
             @result.describe_to(self)
           end

@@ -139,8 +139,8 @@ module Cucumber
       #used for capturing duration
       def after_step(step)
         unless @outline and @options[:expand] and not @in_instantiated_scenario
-          unless step.duration == :unknown
-            @gf.append_duration(step.duration / 10 ** 9.0)
+          if step.duration.exist?
+            @gf.append_duration(step.duration.duration / 10 ** 9.0)
           end
         end
       end
