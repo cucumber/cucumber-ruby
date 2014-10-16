@@ -12,7 +12,7 @@ module Cucumber
     end
 
     def args
-      @step_arguments.map{|g| g.val.freeze }
+      @step_arguments.map{|g| g.val }
     end
 
     def name
@@ -20,7 +20,7 @@ module Cucumber
     end
 
     def invoke(multiline_arg)
-      all_args = args.dup
+      all_args = deep_clone_args
       multiline_arg.append_to(all_args)
       @step_definition.invoke(all_args)
     end
@@ -79,6 +79,11 @@ module Cucumber
 
     def inspect #:nodoc:
       sprintf("#<%s:0x%x>", self.class, self.object_id)
+    end
+
+    private
+    def deep_clone_args
+      Marshal.load( Marshal.dump( args ) )
     end
   end
 
