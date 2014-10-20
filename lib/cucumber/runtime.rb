@@ -192,10 +192,10 @@ module Cucumber
     end
 
     def formatters
-      @formatters ||= @configuration.formatters { |formatter_class, path_or_io, options|
+      @formatters ||= @configuration.formatter_factories { |factory, path_or_io, options|
         results = Formatter::LegacyApi::Results.new
         runtime_facade = Formatter::LegacyApi::RuntimeFacade.new(results, @support_code, @configuration)
-        formatter = formatter_class.new(runtime_facade, path_or_io, options)
+        formatter = factory.new(runtime_facade, path_or_io, options)
         Formatter::LegacyApi::Adapter.new(
           Formatter::IgnoreMissingMessages.new(formatter),
           results, @support_code, @configuration)
