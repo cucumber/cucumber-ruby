@@ -13,11 +13,21 @@ Feature: Snippets
         \"\"\"
           example with <html> entities
         \"\"\"
+        When a simple when step
+        Then a simple then step
       """
     When I run `cucumber features/undefined_steps.feature -s`
     Then the output should contain:
       """
       Given(/^a pystring$/) do |string|
+        pending # Write code here that turns the phrase above into concrete actions
+      end
+      
+      When(/^a simple when step$/) do
+        pending # Write code here that turns the phrase above into concrete actions
+      end
+
+      Then(/^a simple then step$/) do
         pending # Write code here that turns the phrase above into concrete actions
       end
       """
