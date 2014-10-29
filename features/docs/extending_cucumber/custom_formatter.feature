@@ -1,18 +1,43 @@
 Feature: Custom Formatter
 
-  Scenario: my own formatter
+  Background:
     Given a file named "features/f.feature" with:
       """
       Feature: I'll use my own
-        because I'm worth it
-        Scenario: just print me
+        Scenario: Just print me
           Given this step passes
       """
     And the standard step definitions
-    And a file named "features/support/ze/formator.rb" with:
+
+  Scenario: Use the new API
+    Given a file named "features/support/custom_formatter.rb" with:
       """
-      module Ze
-        class Formator
+      module MyCustom
+        class Formatter
+          def initialize(runtime, io, options)
+            @io = io
+          end
+
+          def before_test_case(test_case)
+            @io.puts test_case.feature.short_name.upcase
+            @io.puts "  #{test_case.name.upcase}"
+          end
+        end
+      end
+      """
+    When I run `cucumber features/f.feature --format MyCustom::Formatter`
+    Then it should pass with exactly:
+      """
+      I'LL USE MY OWN
+        JUST PRINT ME
+
+      """
+
+  Scenario: Use the legacy API
+    Given a file named "features/support/custom_legacy_formatter.rb" with:
+      """
+      module MyCustom
+        class LegacyFormatter
           def initialize(runtime, io, options)
             @io = io
           end
@@ -27,7 +52,7 @@ Feature: Custom Formatter
         end
       end
       """
-    When I run `cucumber features/f.feature --format Ze::Formator`
+    When I run `cucumber features/f.feature --format MyCustom::LegacyFormatter`
     Then it should pass with exactly:
       """
       I'LL USE MY OWN
