@@ -728,7 +728,7 @@ module Cucumber
           end
 
           def legacy_table_row
-            Ast::ExampleTableRow.new(exception, @status, node.values, node.location)
+            Ast::ExampleTableRow.new(exception, @status, node.values, node.location, node.language)
           end
 
           def exception
@@ -738,6 +738,10 @@ module Cucumber
         end
 
         class HeaderTableRowPrinter < TableRowPrinterBase
+          def legacy_table_row
+            Ast::ExampleTableRow.new(exception, @status, node.values, node.location, Ast::NullLanguage.new)
+          end
+
           def before
             formatter.before_table_row(node)
             self

@@ -18,6 +18,19 @@ module Cucumber
           private :node
         end
 
+        # Null object for HeaderRow language.
+        # ExampleTableRow#keyword is never called on them,
+        # but this will pass silently if it happens anyway
+        class NullLanguage
+          def method_missing(*args, &block)
+            self
+          end
+
+          def to_ary
+            ['']
+          end
+        end
+
         class HookResultCollection
           def initialize
             @children = []
@@ -219,7 +232,7 @@ module Cucumber
           private :values, :line
         end
 
-        ExampleTableRow = Struct.new(:exception, :status, :cells, :location) do
+        ExampleTableRow = Struct.new(:exception, :status, :cells, :location, :language) do
           def name
             '| ' + cells.join(' | ') + ' |'
           end
@@ -235,7 +248,7 @@ module Cucumber
           def keyword
             # This method is only called when used for the scenario name line with
             # the expand option, and on that line the keyword is "Scenario"
-            "Scenario"
+            language.keywords('scenario')[0]
           end
         end
 

@@ -581,6 +581,44 @@ OUTPUT
               end
             end
           end
+
+          describe "with a scenario outline in en-lol" do
+            define_feature <<-FEATURE
+          # language: en-lol
+          OH HAI: STUFFING
+
+            MISHUN SRSLY: CUCUMBR
+              I CAN HAZ IN TEH BEGINNIN <BEGINNIN> CUCUMBRZ
+              WEN I EAT <EAT> CUCUMBRZ
+              DEN I HAS <EAT> CUCUMBERZ IN MAH BELLY
+              AN IN TEH END <KTHXBAI> CUCUMBRZ KTHXBAI
+
+              EXAMPLZ:
+               | BEGINNIN | EAT | KTHXBAI |
+               |    3     |  2  |    1    |
+            FEATURE
+
+            it "outputs localized text" do
+              lines = <<-OUTPUT
+          OH HAI: STUFFING
+
+            MISHUN SRSLY: CUCUMBR
+              I CAN HAZ IN TEH BEGINNIN <BEGINNIN> CUCUMBRZ
+              WEN I EAT <EAT> CUCUMBRZ
+              DEN I HAS <EAT> CUCUMBERZ IN MAH BELLY
+              AN IN TEH END <KTHXBAI> CUCUMBRZ KTHXBAI
+              EXAMPLZ:
+                MISHUN: | 3 | 2 | 1 |
+                  I CAN HAZ IN TEH BEGINNIN 3 CUCUMBRZ
+                  WEN I EAT 2 CUCUMBRZ
+                  DEN I HAS 2 CUCUMBERZ IN MAH BELLY
+                  AN IN TEH END 1 CUCUMBRZ KTHXBAI
+              OUTPUT
+              lines.split("\n").each do |line|
+                expect(@out.string).to include line.strip
+              end
+            end
+          end
         end
       end
 

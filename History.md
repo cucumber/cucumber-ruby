@@ -4,6 +4,7 @@
 
 ### Bugfixes
 
+  * Localize the Scenario keyword with the --expand option ([766](https://github.com/cucumber/cucumber/pull/766) @brasmusson)
   * Handle hook output appropriately in the HTML formatter ([746](https://github.com/cucumber/cucumber/pull/746), [731](https://github.com/cucumber/cucumber/issues/731), [298](https://github.com/cucumber/cucumber/pull/298) @brasmusson)
   * Handle hook output appropriately in the Pretty formatter ([738](https://github.com/cucumber/cucumber/pull/738) @brasmusson)
 
