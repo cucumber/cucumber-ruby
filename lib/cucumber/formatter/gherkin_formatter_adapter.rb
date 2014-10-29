@@ -139,9 +139,7 @@ module Cucumber
       #used for capturing duration
       def after_step(step)
         unless @outline and @options[:expand] and not @in_instantiated_scenario
-          if not step.duration.nil?
-            @gf.append_duration(step.duration.duration / 10 ** 9.0)
-          end
+          step.duration.tap { |duration| @gf.append_duration(duration.nanoseconds / 10 ** 9.0) }
         end
       end
 
