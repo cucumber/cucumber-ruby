@@ -14,18 +14,36 @@ module Cucumber
         def_delegators :formatter,
           :ask
 
-        def_delegators :printer,
-          :before_test_case,
-          :before_test_step,
-          :after_test_step,
-          :embed
+        def before_test_case(test_case)
+          formatter.before_test_case test_case
+          printer.before_test_case test_case
+        end
+
+        def before_test_step(test_step)
+          formatter.before_test_step test_step
+          printer.before_test_step test_step
+        end
+
+        def after_test_step(test_step, result)
+          formatter.after_test_test test_step, result
+          printer.after_test_step test_step, result
+        end
+
+        def embed(*args)
+          formatter.embed *args
+        end
 
         def after_test_case(test_case, result)
-          record_test_case_result(test_case, result)
-          printer.after_test_case(test_case, result)
+          formatter.after_test_case test_case, result
+          record_test_case_result test_case, result
+          printer.after_test_case test_case, result
         end
 
         def puts(*messages)
+          messages.each do |message|
+            formatter.puts message
+          end
+          formatter.puts *messages
           printer.puts(messages)
         end
 

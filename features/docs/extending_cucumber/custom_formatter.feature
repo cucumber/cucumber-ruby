@@ -20,7 +20,7 @@ Feature: Custom Formatter
 
           def before_test_case(test_case)
             @io.puts test_case.feature.short_name.upcase
-            @io.puts "  #{test_case.name.upcase}"
+            @io.puts "  #{test_case.source.scenario.name.upcase}"
           end
         end
       end
