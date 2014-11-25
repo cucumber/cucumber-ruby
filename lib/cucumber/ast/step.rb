@@ -77,7 +77,7 @@ module Cucumber
         feature_element.source_indent(text_length)
       end
 
-      def text_length(name=name)
+      def text_length(name=name())
         INDENT + INDENT + keyword.unpack('U*').length + name.unpack('U*').length
       end
 
