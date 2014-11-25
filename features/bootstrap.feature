@@ -9,7 +9,7 @@ Feature: Bootstrapping a new project
     When I run `cucumber`
     Then it should fail with:
       """
-      No such file or directory - features. Please create a features directory to get started. (Errno::ENOENT)
+      Please create a features directory to get started. (Errno::ENOENT)
       """
 
  @spawn
@@ -20,8 +20,7 @@ Feature: Bootstrapping a new project
     puts 'this will not be shown'
     """
   When I run `cucumber`
-  Then it should fail with exactly:
+  Then it should fail with:
     """
-    No such file or directory - features. Please create a features directory to get started. (Errno::ENOENT)
-
+    Please create a features directory to get started. (Errno::ENOENT)
     """
