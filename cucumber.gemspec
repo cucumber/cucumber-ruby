@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'nokogiri', '~> 1.5.2'
   s.add_development_dependency 'rake', '>= 0.9.2', '< 10.2'
   s.add_development_dependency 'rspec', '~> 2'
+  s.add_development_dependency 'test-unit'
   s.add_development_dependency 'simplecov', '>= 0.6.2'
   s.add_development_dependency 'spork', '>= 1.0.0.rc2'
   s.add_development_dependency 'syntax', '>= 1.0.0'
