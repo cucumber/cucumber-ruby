@@ -267,16 +267,12 @@ OUTPUT
             end
           end
 
-          describe "with output from hooks" do
+          describe "scenario with output from hooks" do
             define_feature <<-FEATURE
           Feature:
+
             Scenario:
               Given this step passes
-            Scenario Outline:
-              Given this step <status>
-              Examples:
-              | status |
-              | passes  |
             FEATURE
 
             define_steps do
@@ -293,7 +289,7 @@ OUTPUT
             end
 
             it "displays hook output appropriately " do
-              expect( @out.string ).to include <<OUTPUT
+              expect( @out.string.gsub(/0m0\.\d+s/,'') ).to eq <<OUTPUT
 Feature: 
 
   Scenario: 
@@ -302,6 +298,41 @@ Feature:
       AfterStep hook
       After hook
 
+1 scenario (1 passed)
+1 step (1 passed)
+OUTPUT
+            end
+          end
+
+          describe "scenario outline with output from hooks" do
+            define_feature <<-FEATURE
+          Feature:
+
+            Scenario Outline:
+              Given this step <status>
+
+              Examples:
+                | status |
+                | passes |
+            FEATURE
+
+            define_steps do
+              Before do
+                puts "Before hook"
+              end
+              AfterStep do
+                puts "AfterStep hook"
+              end
+              After do
+                puts "After hook"
+              end
+              Given(/^this step passes$/) {}
+            end
+
+            it "displays hook output appropriately " do
+              expect( @out.string.gsub(/0m0\.\d+s/,'') ).to eq <<OUTPUT
+Feature: 
+
   Scenario Outline: 
     Given this step <status>
 
@@ -309,8 +340,8 @@ Feature:
       | status |
       | passes |  Before hook, AfterStep hook, After hook
 
-2 scenarios (2 passed)
-2 steps (2 passed)
+1 scenario (1 passed)
+1 step (1 passed)
 OUTPUT
             end
           end

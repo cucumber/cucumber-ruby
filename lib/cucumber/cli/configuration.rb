@@ -165,7 +165,7 @@ module Cucumber
         @options[:paths]
       end
 
-      def formatter_factories
+      def map_formatter_factories
         @options[:formats].map do |format_and_out|
           format = format_and_out[0]
           path_or_io = format_and_out[1]

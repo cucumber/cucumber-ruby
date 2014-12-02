@@ -11,10 +11,14 @@ module Cucumber
         @recipients = recipients
       end
 
-      def method_missing(message, *args)
+      def send(message, *args)
         recipients.each do |recipient|
           recipient.send(message, *args) if recipient.respond_to?(message)
         end
+      end
+
+      def method_missing(message, *args)
+        send(message, *args)
       end
 
       def respond_to_missing?(name, include_private = false)
