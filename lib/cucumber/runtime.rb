@@ -13,6 +13,7 @@ require 'cucumber/filters/quit'
 require 'cucumber/filters/randomizer'
 require 'cucumber/filters/tag_limits'
 require 'cucumber/formatter/fanout'
+require 'cucumber/formatter/shim'
 
 module Cucumber
   module FixRuby21Bug9285
@@ -192,13 +193,13 @@ module Cucumber
     end
 
     def formatters
-      @formatters ||= @configuration.formatter_factories { |factory, path_or_io, options|
-        results = Formatter::LegacyApi::Results.new
-        runtime_facade = Formatter::LegacyApi::RuntimeFacade.new(results, @support_code, @configuration)
+      @formatters ||= @configuration.map_formatter_factories { |factory, path_or_io, options|
+        # legacy formatters need this.
+        formatter_results = Formatter::LegacyApi::Results.new
+        runtime_facade = Formatter::LegacyApi::RuntimeFacade.new(formatter_results, @support_code, @configuration)
         formatter = factory.new(runtime_facade, path_or_io, options)
-        Formatter::LegacyApi::Adapter.new(
-          Formatter::IgnoreMissingMessages.new(formatter),
-          results, @support_code, @configuration)
+        shim = Formatter::Shim.for(factory)
+        shim.wrap(formatter, formatter_results, @support_code, @configuration)
       }
     end
 

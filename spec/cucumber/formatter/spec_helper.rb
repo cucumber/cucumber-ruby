@@ -30,11 +30,8 @@ module Cucumber
 
       require 'cucumber/formatter/legacy_api/adapter'
       def report
-        @report ||= LegacyApi::Adapter.new(
-          Fanout.new([@formatter]),
-          runtime.results,
-          runtime.support_code,
-          runtime.configuration)
+        @report ||= Formatter::Shim.for(@formatter.class).
+          wrap(@formatter, runtime.results, runtime.support_code, runtime.configuration)
       end
 
       require 'cucumber/core/gherkin/document'
