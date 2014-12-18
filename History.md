@@ -2,6 +2,8 @@
 
 ### New Features
 
+  * Support both new and legacy formatter APIs simultaneously (@mattwynne and @tooky)
+
 ### Bugfixes
 
   * Localize the Scenario keyword with the --expand option ([766](https://github.com/cucumber/cucumber/pull/766) @brasmusson)
