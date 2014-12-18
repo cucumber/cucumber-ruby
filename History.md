@@ -1,5 +1,6 @@
-## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.3...master)
+## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.4...master)
 
+## [v2.0.0.beta.4](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.3...v2.0.0.beta.4)
 ### New Features
 
   * Support both new and legacy formatter APIs simultaneously (@mattwynne and @tooky)
