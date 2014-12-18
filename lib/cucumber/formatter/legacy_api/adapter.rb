@@ -15,14 +15,27 @@ module Cucumber
           :ask
 
         def_delegators :printer,
-          :before_test_case,
-          :before_test_step,
-          :after_test_step,
           :embed
+
+        def before_test_case(test_case)
+          formatter.before_test_case(test_case)
+          printer.before_test_case(test_case)
+        end
+
+        def before_test_step(test_step)
+          formatter.before_test_step(test_step)
+          printer.before_test_step(test_step)
+        end
+
+        def after_test_step(test_step, result)
+          printer.after_test_step(test_step, result)
+          formatter.after_test_step(test_step, result)
+        end
 
         def after_test_case(test_case, result)
           record_test_case_result(test_case, result)
           printer.after_test_case(test_case, result)
+          formatter.after_test_case(test_case, result)
         end
 
         def puts(*messages)
@@ -31,6 +44,7 @@ module Cucumber
 
         def done
           printer.after
+          formatter.done
         end
 
         private
@@ -193,7 +207,7 @@ module Cucumber
           end
 
           def after_test_case(*args)
-            if current_test_step_source.step_result.nil?
+            if current_test_step_source && current_test_step_source.step_result.nil?
               switch_step_container
             end
 
@@ -203,9 +217,9 @@ module Cucumber
             @delayed_messages = []
             @delayed_embeddings = []
 
-            @child.after_test_case
+            @child.after_test_case if @child
             @previous_test_case_background = @current_test_case_background
-            @previous_test_case_scenario_outline = current_test_step_source.scenario_outline
+            @previous_test_case_scenario_outline = current_test_step_source && current_test_step_source.scenario_outline
           end
 
           def before_hook(location, result)
@@ -229,7 +243,6 @@ module Cucumber
               append_to_exception_backtrace(line), @delayed_messages, @delayed_embeddings)
             @delayed_messages = []
             @delayed_embeddings = []
-
           end
 
           def background(node, *)
@@ -252,7 +265,7 @@ module Cucumber
           def feature(*);end
 
           def after
-            @child.after
+            @child.after if @child
             formatter.after_feature(node)
             self
           end

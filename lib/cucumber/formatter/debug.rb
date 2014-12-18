@@ -6,7 +6,6 @@ module Cucumber
     class Debug
       def initialize(runtime, io, options)
         @io = io
-        @indent = 0
       end
 
       def log(message)
@@ -19,9 +18,7 @@ module Cucumber
       end
 
       def method_missing(name, *args)
-        @indent -= 2 if name.to_s =~ /^after/
         print(name)
-        @indent += 2 if name.to_s =~ /^before/
       end
 
       def puts(*args)
@@ -31,11 +28,7 @@ module Cucumber
     private
 
       def print(text)
-        @io.puts "#{indent}#{text}"
-      end
-
-      def indent
-        (' ' * @indent)
+        @io.puts text
       end
     end
   end
