@@ -10,6 +10,10 @@
   * Handle hook output appropriately in the HTML formatter ([746](https://github.com/cucumber/cucumber/pull/746), [731](https://github.com/cucumber/cucumber/issues/731), [298](https://github.com/cucumber/cucumber/pull/298) @brasmusson)
   * Handle hook output appropriately in the Pretty formatter ([738](https://github.com/cucumber/cucumber/pull/738) @brasmusson)
 
+### Internal changes
+
+  * Re-write rerun formatter against new formatter API
+
 ## [v2.0.0.beta.3](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.2...v2.0.0.beta.3)
 
 ### Removed Features
