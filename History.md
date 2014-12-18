@@ -1,5 +1,9 @@
 ## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.4...master)
 
+## [v2.0.0.beta.5](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.4...v2.0.0.beta.5)
+
+  * Depend on the correct version of core (@tooky)
+
 ## [v2.0.0.beta.4](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.3...v2.0.0.beta.4)
 ### New Features
 
