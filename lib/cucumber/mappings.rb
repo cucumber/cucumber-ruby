@@ -205,7 +205,11 @@ module Cucumber
     Feature = Struct.new(:name)
 
     class MapStep
-      include Cucumber.initializer(:runtime, :mapper)
+      attr_reader :runtime, :mapper
+      def initialize(runtime, mapper)
+        @runtime = runtime
+        @mapper  = mapper
+      end
 
       def step(node)
         step_match = runtime.step_match(node.name)

@@ -398,7 +398,11 @@ module Cucumber
 
         # Basic printer used by default
         class AfterHookPrinter
-          include Cucumber.initializer(:formatter)
+          attr_reader :formatter
+
+          def initialize(formatter)
+            @formatter = formatter
+          end
 
           include PrintsAfterHooks
 
