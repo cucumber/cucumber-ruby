@@ -5,6 +5,10 @@
   * Allow cucumber.yml to parse % erb code lines ([755](https://github.com/cucumber/cucumber/pull/755) @snowe2010)
   * Give each step definition a unique copy of argument objects ([760](https://github.com/cucumber/cucumber/pull/760) @tooky)
 
+### Bugfixes
+
+  * No links to lines in backtrace under TextMate ([548](https://github.com/cucumber/cucumber/pull/548) @bilus)
+
 ## [v2.0.0.beta.5](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.4...v2.0.0.beta.5)
 
   * Depend on the correct version of core (@tooky)
