@@ -1,4 +1,8 @@
-## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.4...master)
+## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.5...master)
+
+### New Features
+
+  * Allow cucumber.yml to parse % erb code lines ([755](https://github.com/cucumber/cucumber/pull/755) @snowe2010)
 
 ## [v2.0.0.beta.5](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.4...v2.0.0.beta.5)
 
