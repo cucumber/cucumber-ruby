@@ -15,6 +15,8 @@ class Cucumber::Rake::Task
       'ruby_2_0'
     elsif Cucumber::RUBY_2_1
       'ruby_2_1'
+    elsif Cucumber::RUBY_2_2
+      'ruby_2_2'
     end
   end
 end
