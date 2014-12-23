@@ -139,7 +139,11 @@ module Cucumber
           end
 
           def actual_keyword
-            gherkin_statement.keyword
+            if gherkin_statement.keyword == 'And '
+              'Given'
+            else
+              gherkin_statement.keyword
+            end
           end
 
           def file_colon_line

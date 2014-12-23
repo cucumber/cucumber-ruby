@@ -14,6 +14,7 @@ Feature: Snippets
           example with <html> entities
         \"\"\"
         When a simple when step
+        And another when step
         Then a simple then step
       """
     When I run `cucumber features/undefined_steps.feature -s`
@@ -22,8 +23,12 @@ Feature: Snippets
       Given(/^a pystring$/) do |string|
         pending # Write code here that turns the phrase above into concrete actions
       end
-      
+
       When(/^a simple when step$/) do
+        pending # Write code here that turns the phrase above into concrete actions
+      end
+
+      When(/^another when step$/) do
         pending # Write code here that turns the phrase above into concrete actions
       end
 
