@@ -139,10 +139,7 @@ module Cucumber
           end
 
           def actual_keyword
-            # TODO: This should return the keyword for the snippet
-            # `actual_keyword` translates 'And', 'But', etc. to 'Given', 'When',
-            # 'Then' as appropriate
-            "Given"
+            gherkin_statement.keyword
           end
 
           def file_colon_line
