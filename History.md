@@ -1,4 +1,8 @@
-## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.17...v1.3.x-bugfix)
+## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.18...v1.3.x-bugfix)
+
+* Your change here?
+
+## [v1.3.18](https://github.com/cucumber/cucumber/compare/v1.3.17...v1.3.18)
 
 * Ruby 2.2 support ([774](https://github.com/cucumber/cucumber/pull/774) @tricknotes)
 
