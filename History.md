@@ -1,4 +1,8 @@
-## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.16...v1.3.x-bugfix)
+## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.17...v1.3.x-bugfix)
+
+* Ruby 2.2 support ([774](https://github.com/cucumber/cucumber/pull/774) @tricknotes)
+
+## [v1.3.17](https://github.com/cucumber/cucumber/compare/v1.3.16...v1.3.17)
 
 * Rescue ArgumentError on split so formatters don't fail due to bad encoding ([692](https://github.com/cucumber/cucumber/pull/692) Arthur Silva)
 * Support embedding images directly in HTML files ([696](https://github.com/cucumber/cucumber/pull/696) @brasmusson)
