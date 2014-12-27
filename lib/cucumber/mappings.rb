@@ -148,9 +148,6 @@ module Cucumber
       end
     end
 
-    class Scenario < TestCase
-    end
-
     class ScenarioOutlineExample < TestCase
       def outline?
         true
@@ -172,7 +169,7 @@ module Cucumber
       end
 
       def scenario(scenario)
-        @factory = Scenario
+        @factory = TestCase
       end
 
       def scenario_outline(scenario)

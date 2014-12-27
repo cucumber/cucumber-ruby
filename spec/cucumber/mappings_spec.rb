@@ -4,7 +4,7 @@ require 'cucumber/core/gherkin/writer'
 
 module Cucumber
   class Mappings
-    describe Scenario do
+    describe TestCase do
       include Core::Gherkin::Writer
       include Core
       let(:ruby)      { double.as_null_object }
