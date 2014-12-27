@@ -84,7 +84,11 @@ module Cucumber
       end
     end
 
-    # adapts our test_case to look like the Cucumber Runtime's old Scenario
+    require 'cucumber/core/test/result'
+    # Decorates the `Cucumber::Core::Test::Case` to look like the 
+    # Cucumber 1.3's `Cucumber::Ast::Scenario`.
+    #
+    # This is for backwards compatability in before / after hooks.
     class TestCase
       def initialize(test_case, feature, result = Core::Test::Result::Unknown.new)
         @test_case = test_case
@@ -124,6 +128,11 @@ module Cucumber
 
       def source_tag_names
         tags.map &:name
+      end
+
+      def skip_invoke!
+        Cucumber.deprecate(self.class.name, __method__, "Call #skip_this_scenario on the World directly")
+        raise Cucumber::Core::Test::Result::Skipped
       end
 
       def tags

@@ -22,5 +22,10 @@ module Cucumber
     def logger=(logger)
       @log = logger
     end
+
+    def deprecate(class_name, method, message)
+      called_by = caller[1]
+      warn("Deprecated: #{class_name}##{method} #{message}. Caller: #{called_by}")
+    end
   end
 end
