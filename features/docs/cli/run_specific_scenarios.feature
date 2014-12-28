@@ -64,6 +64,23 @@ Feature: Run specific scenarios
       2 steps (2 passed)
       """
 
+  Scenario: Specify 2 line numbers using separate arguments
+    Given a file named "features/test.feature" with:
+      """
+      Feature: Sample
+        Scenario: One
+          Given this step passes
+
+        Scenario: Two
+          Given this step passes
+      """
+    When I run `cucumber -q features/test.feature:3 features/test.feature:6`
+    Then it should pass with:
+      """
+      2 scenarios (2 passed)
+      2 steps (2 passed)
+      """
+
   Scenario: Specify the line number of a row
     Given a file named "features/test.feature" with:
       """
