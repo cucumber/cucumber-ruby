@@ -31,7 +31,7 @@ module Cucumber
         end
       end
 
-      describe "#failed?" do
+      describe "#failed? / #passed?" do
 
         it "is true if the test case is in a failed state" do
           define_gherkin do
@@ -54,6 +54,7 @@ module Cucumber
 
           after do |test_case|
             expect(test_case).to be_failed
+            expect(test_case).not_to be_passed
           end
         end
 

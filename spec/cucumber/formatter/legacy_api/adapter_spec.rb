@@ -21,6 +21,9 @@ module Cucumber
           # The adapter is built on the assumption that each test case will have at least one step. This is annoying
           # for tests, but a safe assumption for production use as we always add one hook to initialize the world.
           mapper.before {}
+
+          # also add an after hook to make sure the adapter can cope with it
+          mapper.after {}
         end
 
         def test_step(test_step, mapper)
@@ -267,6 +270,41 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features,
+          ]
+        end
+
+        it 'a feature with a background and an empty scenario' do
+          execute_gherkin do
+            feature do
+              background do
+                step 'passing'
+              end
+              scenario
+            end
+          end
+          expect( formatter.legacy_messages ).to eq [
+            :before_features,
+              :before_feature,
+                :before_tags,
+                :after_tags,
+                :feature_name,
+                :before_background,
+                  :background_name,
+                  :before_steps,
+                    :before_step,
+                      :before_step_result,
+                        :step_name,
+                      :after_step_result,
+                    :after_step,
+                  :after_steps,
+                :after_background,
+                :before_feature_element,
+                  :before_tags,
+                  :after_tags,
+                  :scenario_name,
+                :after_feature_element,
+              :after_feature,
+            :after_features,
           ]
         end
 

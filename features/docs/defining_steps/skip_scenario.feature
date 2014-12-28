@@ -30,7 +30,6 @@ Feature: Skip Scenario
 
       """
 
-  @spawn
   Scenario: Use legacy API from a hook
     Given a file named "features/test.feature" with:
       """
@@ -47,8 +46,7 @@ Feature: Skip Scenario
       end
       """
     When I run `cucumber -q`
-    Then it should pass
-    And the stdout should contain exactly:
+    Then it should pass with:
       """
       Feature: test
 
@@ -60,9 +58,5 @@ Feature: Skip Scenario
       2 steps (2 skipped)
       0m0.012s
 
-      """
-    And the stderr should contain:
-      """
-      Deprecated
       """
 

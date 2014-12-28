@@ -24,6 +24,7 @@ module Cucumber
     end
 
     def deprecate(class_name, method, message)
+      return self # deprecation warnings will come in v2.1
       called_by = caller[1]
       warn("Deprecated: #{class_name}##{method} #{message}. Caller: #{called_by}")
     end

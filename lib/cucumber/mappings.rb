@@ -104,6 +104,10 @@ module Cucumber
         @result.failed?
       end
 
+      def passed?
+        !failed?
+      end
+
       def language
         @test_case.language
       end

@@ -2,6 +2,7 @@
 
 ### New Features
 
+  * Let the HTML formatter store the relative path to files in the report ([697](https://github.com/cucumber/cucumber/pull/697) @idstein, @brasmusson)
   * Allow cucumber.yml to parse % erb code lines ([755](https://github.com/cucumber/cucumber/pull/755) @snowe2010)
   * Give each step definition a unique copy of argument objects ([760](https://github.com/cucumber/cucumber/pull/760) @tooky)
 
