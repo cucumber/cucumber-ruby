@@ -413,6 +413,12 @@ module Cucumber
 
         BackgroundPrinter = Struct.new(:formatter, :node, :before_hook_results) do
 
+          def after_test_case(*)
+          end
+
+          def after_hook(*)
+          end
+
           def before
             formatter.before_background node
             formatter.background_name node.keyword, node.legacy_conflated_name_and_description, node.location.to_s, indent.of(node)
