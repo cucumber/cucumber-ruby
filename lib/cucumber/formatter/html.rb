@@ -2,6 +2,7 @@ require 'erb'
 require 'builder'
 require 'cucumber/formatter/duration'
 require 'cucumber/formatter/io'
+require 'pathname'
 
 module Cucumber
   module Formatter
@@ -50,6 +51,10 @@ module Cucumber
       def embed_image(src, label)
         id = "img_#{@img_id}"
         @img_id += 1
+        if @io.respond_to?(:path) and File.file?(src)
+          out_dir = Pathname.new(File.dirname(File.absolute_path(@io.path)))
+          src = Pathname.new(File.absolute_path(src)).relative_path_from(out_dir)
+        end        
         @builder.span(:class => 'embed') do |pre|
           pre << %{<a href="" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">#{label}</a><br>&nbsp;
           <img id="#{id}" style="display: none" src="#{src}"/>}

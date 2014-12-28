@@ -29,6 +29,35 @@ module Cucumber
         }).not_to raise_error
       end
 
+      describe "when writing the report to a file" do
+        before(:each) do
+          allow(@out).to receive(:respond_to?).with(:path, false).and_return(true)
+          expect(@out).to receive(:respond_to?).with(:path).and_return(true)
+          expect(@out).to receive(:path).and_return('out/file.html')
+          run_defined_feature
+          @doc = Nokogiri.HTML(@out.string)
+        end
+
+        describe "with a step that embeds a snapshot" do
+          define_steps do
+            Given(/snap/) { 
+              RSpec::Mocks.allow_message(File, :file?) { true }
+              embed('out/snapshot.jpeg', 'image/jpeg')
+            }
+          end
+
+          define_feature(<<-FEATURE)
+          Feature:
+            Scenario:
+              Given snap
+            FEATURE
+
+          it "converts the snapshot path to a relative path" do
+            expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq "snapshot.jpeg"
+          end
+        end
+      end
+
       describe "given a single feature" do
         before(:each) do
           run_defined_feature
