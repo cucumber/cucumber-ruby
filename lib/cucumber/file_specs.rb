@@ -14,7 +14,7 @@ module Cucumber
     end
 
     def files
-      @file_specs.map(&:file)
+      @file_specs.map(&:file).uniq
     end
 
     class FileSpec
