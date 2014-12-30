@@ -9,6 +9,7 @@
 ### Bugfixes
 
   * No links to lines in backtrace under TextMate ([548](https://github.com/cucumber/cucumber/pull/548) @bilus)
+  * Using file:line CLI to select scenarios was running same scenario multiple times ([786](https://github.com/cucumber/cucumber/pull/786) @jdks)
 
 ## [v2.0.0.beta.5](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.4...v2.0.0.beta.5)
 
