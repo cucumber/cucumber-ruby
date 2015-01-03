@@ -3,7 +3,7 @@ module Cucumber
 
     # Batches up all test cases, randomizes them, and then sends them on
     class Randomizer
-      def initialize(seed, receiver)
+      def initialize(seed, receiver=nil)
         @receiver = receiver
         @test_cases = []
         @seed = seed
@@ -20,6 +20,10 @@ module Cucumber
         end
         @receiver.done
         self
+      end
+
+      def with_receiver(receiver)
+        self.class.new(@seed, receiver)
       end
 
       private

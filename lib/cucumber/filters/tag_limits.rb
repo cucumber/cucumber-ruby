@@ -11,10 +11,11 @@ module Cucumber
     end
 
     class TagLimits
-      def initialize(tag_limits, receiver)
+      def initialize(tag_limits, receiver=nil)
+        @tag_limits = tag_limits
         @gated_receiver = GatedReceiver.new(receiver)
         @test_case_index = TestCaseIndex.new
-        @verifier = Verifier.new(tag_limits)
+        @verifier = Verifier.new(@tag_limits)
       end
 
       def test_case(test_case)
@@ -27,6 +28,10 @@ module Cucumber
         verifier.verify!(test_case_index)
         gated_receiver.done
         self
+      end
+
+      def with_receiver(receiver)
+        self.class.new(@tag_limits, receiver)
       end
 
       private

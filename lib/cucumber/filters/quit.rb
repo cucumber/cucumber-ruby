@@ -2,7 +2,7 @@ module Cucumber
   module Filters
 
     class Quit
-      def initialize(receiver)
+      def initialize(receiver=nil)
         @receiver = receiver
       end
 
@@ -16,6 +16,10 @@ module Cucumber
       def done
         @receiver.done
         self
+      end
+
+      def with_receiver(receiver)
+        self.class.new(receiver)
       end
     end
 
