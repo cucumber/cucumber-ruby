@@ -40,4 +40,5 @@ namespace :api do
   
   desc "Build cucumber gem and doc locally"
   task :build => [:yard, :sync_with_git, :copy_to_website]
+  FileUtils.touch("d")
 end

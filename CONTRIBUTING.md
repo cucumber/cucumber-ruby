@@ -52,6 +52,12 @@ Now release it
     bundle exec rake
     git commit -m "Release X.Y.Z"
     rake release
+    
+Build gem and document locally  
+Documentation will be updated in cucumber.github.com directory
+
+    bundle update
+    rake build
 
 ## Gaining Release Karma
 
