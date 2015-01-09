@@ -138,9 +138,13 @@ module Cucumber
 
           end
 
-          def actual_keyword
-            if gherkin_statement.keyword == 'And '
-              'Given'
+          def actual_keyword(previous_step_name = nil)
+            if ['And ', 'But ', '* '].include? gherkin_statement.keyword
+              if previous_step_name.nil?
+                'Given'
+              else
+                previous_step_name
+              end
             else
               gherkin_statement.keyword
             end

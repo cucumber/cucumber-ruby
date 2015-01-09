@@ -138,11 +138,14 @@ module Cucumber
         return if undefined.empty?
 
         unknown_programming_language = runtime.unknown_programming_language?
+        previous_step_keyword = nil
         snippets = undefined.map do |step|
           # step_name = Undefined === step.exception ? step.exception.step_name : step.name
           # TODO: This probably won't work for nested steps :( See above for old code. 
           step_name = step.name
-          @runtime.snippet_text(step.actual_keyword, step_name, step.multiline_arg)
+          snippet = @runtime.snippet_text(step.actual_keyword(previous_step_keyword), step_name, step.multiline_arg)
+          previous_step_keyword = step.actual_keyword
+          snippet
         end.compact.uniq
 
         text = "\nYou can implement step definitions for undefined steps with these snippets:\n\n"
