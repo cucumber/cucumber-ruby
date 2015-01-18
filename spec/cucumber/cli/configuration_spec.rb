@@ -406,6 +406,21 @@ END_OF_MESSAGE
       config.feature_files.should == ["cucumber.feature"]
     end
 
+    it "should get the feature files from the rerun file" do
+      File.stub(:directory?).and_return(false)
+      File.stub(:file?).and_return(true)
+      IO.stub(:read).and_return(
+        "cucumber.feature:1:3 cucumber space.feature:134 domain folder/cuke.feature:1 domain folder/different cuke:4:5" )
+
+      config.parse!(%w{@rerun.txt})
+
+      config.feature_files.should == [
+        "cucumber.feature:1:3",
+        "cucumber space.feature:134",
+        "domain folder/cuke.feature:1",
+        "domain folder/different cuke:4:5"]
+    end
+
     it "should allow specifying environment variables on the command line" do
       config.parse!(["foo=bar"])
       ENV["foo"].should == "bar"

@@ -117,7 +117,7 @@ module Cucumber
             Dir["#{path}/**/*.feature"].sort
           elsif path[0..0] == '@' and # @listfile.txt
               File.file?(path[1..-1]) # listfile.txt is a file
-            IO.read(path[1..-1]).split
+            IO.read(path[1..-1]).split(/(.*?\.feature.*?) /).collect(&:strip).reject(&:empty?)
           else
             path
           end
