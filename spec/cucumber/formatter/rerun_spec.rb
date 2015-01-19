@@ -1,6 +1,7 @@
 require 'cucumber/formatter/rerun'
 require 'cucumber/core'
 require 'cucumber/core/gherkin/writer'
+require 'cucumber/core/filter'
 
 module Cucumber::Formatter
   describe Rerun do
@@ -9,17 +10,20 @@ module Cucumber::Formatter
 
     # after_test_case
     context 'when 2 scenarios fail in the same file' do
-      class StepTestMappings
-        Failure = Class.new(StandardError)
+      class WithSteps < Cucumber::Core::Filter.new
+        def test_case(test_case)
+          test_steps = test_case.test_steps.map do |step|
+            case step.name
+            when /fail/
+              step.with_action { raise Failure }
+            when /pass/
+              step.with_action {}
+            else
+              step
+            end
+          end
 
-        def test_case(test_case, mapper)
-          self
-        end
-
-        def test_step(step, mapper)
-          mapper.map { raise Failure } if step.name =~ /fail/
-          mapper.map {}                if step.name =~ /pass/
-          self
+          test_case.with_steps(test_steps).describe_to(receiver)
         end
       end
 
@@ -41,9 +45,8 @@ module Cucumber::Formatter
         end
         io = StringIO.new
         report = Rerun.new(double, io, double)
-        mappings = StepTestMappings.new
 
-        execute [gherkin], mappings, report
+        execute [gherkin], report, [WithSteps.new]
 
         expect( io.string ).to eq 'foo.feature:3:6'
       end
@@ -77,9 +80,8 @@ module Cucumber::Formatter
 
         io = StringIO.new
         report = Rerun.new(double, io, double)
-        mappings = StepTestMappings.new
 
-        execute [foo, bar], mappings, report
+        execute [foo, bar], report, [WithSteps.new]
 
         expect(io.string).to eq 'foo.feature:3:6 bar.feature:3'
       end
@@ -97,9 +99,8 @@ module Cucumber::Formatter
 
         io = StringIO.new
         report = Rerun.new(double, io, double)
-        mappings = StepTestMappings.new
 
-        execute [gherkin], mappings, report
+        execute [gherkin], report, [WithSteps.new]
       end
     end
   end

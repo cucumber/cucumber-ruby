@@ -37,14 +37,6 @@ feature_name
 before_test_step
 after_test_step
 before_test_step
-after_test_step
-before_test_step
-after_test_step
-before_test_step
-after_test_step
-before_test_step
-after_test_step
-before_test_step
 before_feature_element
 before_tags
 after_tags
@@ -55,12 +47,6 @@ before_step_result
 step_name
 after_step_result
 after_step
-after_test_step
-before_test_step
-after_test_step
-before_test_step
-after_test_step
-before_test_step
 after_test_step
 after_steps
 after_feature_element

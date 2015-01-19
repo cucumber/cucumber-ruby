@@ -1,7 +1,10 @@
 require 'cucumber/formatter/legacy_api/adapter'
 require 'cucumber/core'
 require 'cucumber/core/gherkin/writer'
-require 'cucumber/mappings'
+require 'cucumber/runtime/step_hooks'
+require 'cucumber/runtime/before_hooks'
+require 'cucumber/runtime/after_hooks'
+require 'cucumber/filters'
 
 module Cucumber
   module Formatter::LegacyApi
@@ -12,28 +15,52 @@ module Cucumber
       let(:report)    { Adapter.new(formatter, runtime.results, runtime.support_code, runtime.configuration) }
       let(:formatter) { double('formatter').as_null_object }
       let(:runtime)   { Runtime.new }
-      let(:mappings)  { mappings = CustomMappings.new }
 
       Failure = Class.new(StandardError)
 
-      class CustomMappings
-        def test_case(test_case, mapper)
-          # The adapter is built on the assumption that each test case will have at least one step. This is annoying
-          # for tests, but a safe assumption for production use as we always add one hook to initialize the world.
-          mapper.before {}
-
-          # also add an after hook to make sure the adapter can cope with it
-          mapper.after {}
+      class SimpleStepMatch
+        def initialize(&block)
+          @block = block
         end
 
-        def test_step(test_step, mapper)
+        def activate(test_step)
+          test_step.with_action &@block
+        end
+      end
+
+      class SimpleStepDefinitions
+        def find_match(test_step)
           if test_step.name =~ /pass/
-            mapper.map {}
+            return SimpleStepMatch.new {}
           end
 
           if test_step.name =~ /fail/
-            mapper.map { raise Failure }
+            return SimpleStepMatch.new { raise Failure }
           end
+
+          NoStepMatch.new test_step.source.last, test_step.name
+        end
+      end
+
+      class AddBeforeAndAfterHooks < Core::Filter.new
+        def test_case(test_case)
+          steps = before_hooks(test_case.source) + 
+            test_case.test_steps +
+            after_hooks(test_case.source)
+          test_case.with_steps(steps).describe_to receiver
+        end
+
+        private
+
+        def before_hooks(source)
+          # The adapter is built on the assumption that each test case will have at least one step. This is annoying
+          # for tests, but a safe assumption for production use as we always add one hook to initialize the world.
+          [ Hooks.before_hook(source) {} ]
+        end
+
+        def after_hooks(source)
+          # We add an after hook to make sure the adapter can cope with it
+          [ Hooks.after_hook(source) {} ]
         end
       end
 
@@ -57,44 +84,45 @@ module Cucumber
               end
             end,
           ]
-          execute gherkin_docs, mappings, report
+          runner = Core::Test::Runner.new(report)
+          compile gherkin_docs, runner, default_filters
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
-                :before_feature,
+            :before_features,
+              :before_feature,
+                :before_tags,
+                :after_tags,
+                :feature_name,
+                :before_feature_element,
                   :before_tags,
                   :after_tags,
-                  :feature_name,
-                  :before_feature_element,
-                    :before_tags,
-                    :after_tags,
-                    :scenario_name,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                        :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                  :after_feature_element,
-                :after_feature,
-                :before_feature,
+                  :scenario_name,
+                  :before_steps,
+                    :before_step,
+                      :before_step_result,
+                      :step_name,
+                      :after_step_result,
+                    :after_step,
+                  :after_steps,
+                :after_feature_element,
+              :after_feature,
+              :before_feature,
+                :before_tags,
+                :after_tags,
+                :feature_name,
+                :before_feature_element,
                   :before_tags,
                   :after_tags,
-                  :feature_name,
-                  :before_feature_element,
-                    :before_tags,
-                    :after_tags,
-                    :scenario_name,
-                    :before_steps,
-                      :before_step,
-                        :before_step_result,
-                        :step_name,
-                        :after_step_result,
-                      :after_step,
-                    :after_steps,
-                  :after_feature_element,
-                :after_feature,
-              :after_features,
+                  :scenario_name,
+                  :before_steps,
+                    :before_step,
+                      :before_step_result,
+                      :step_name,
+                      :after_step_result,
+                    :after_step,
+                  :after_steps,
+                :after_feature_element,
+              :after_feature,
+            :after_features,
           ]
         end
 
@@ -1454,17 +1482,19 @@ module Cucumber
 
         context 'with exception in after step hook' do
 
-          class CustomMappingsWithAfterStepHook < CustomMappings
-            def test_step(test_step, mappings)
-              super
-              mappings.after { raise Failure }
+          class FailingAfterStepHook
+            def find_after_step_hooks(test_case)
+              Runtime::StepHooks.new [-> { raise Failure }]
             end
           end
 
-          let(:mappings) { CustomMappingsWithAfterStepHook.new }
-
           it 'prints the exception within the step' do
-            execute_gherkin do
+            filters = [
+              Filters::ActivateSteps.new(SimpleStepDefinitions.new),
+              Filters::ApplyAfterStepHooks.new(FailingAfterStepHook.new),
+              AddBeforeAndAfterHooks.new
+            ]
+            execute_gherkin(filters) do
               feature do
                 scenario do
                   step 'passing'
@@ -1497,17 +1527,19 @@ module Cucumber
         end
 
         context 'with exception in a single before hook' do
-          class CustomMappingsWithBeforeHook < CustomMappings
-            def test_case(test_case, mappings)
-              super
-              mappings.before { raise Failure }
+          class FailingBeforeHook
+            def apply_before_hooks(test_case)
+              Runtime::BeforeHooks.new([proc { raise Failure }]).apply_to(test_case)
             end
           end
 
-          let(:mappings) { CustomMappingsWithBeforeHook.new }
-
           it 'prints the exception after the scenario name' do
-            execute_gherkin do
+            filters = [
+              Filters::ActivateSteps.new(SimpleStepDefinitions.new),
+              Filters::ApplyBeforeHooks.new(FailingBeforeHook.new),
+              AddBeforeAndAfterHooks.new
+            ]
+            execute_gherkin(filters) do
               feature do
                 scenario do
                   step 'passing'
@@ -1540,13 +1572,12 @@ module Cucumber
           end
 
           it 'prints the exception after the background name' do
-            mappings = Class.new(CustomMappings) {
-              def test_case(test_case, mapper)
-                mapper.before { raise Failure }
-              end
-            }.new
-
-            execute_gherkin(mappings) do
+            filters = [
+              Filters::ActivateSteps.new(SimpleStepDefinitions.new),
+              Filters::ApplyBeforeHooks.new(FailingBeforeHook.new),
+              AddBeforeAndAfterHooks.new
+            ]
+            execute_gherkin(filters) do
               feature do
                 background do
                   step 'passing'
@@ -1593,13 +1624,12 @@ module Cucumber
 
 
           it 'prints the exception before the examples table row' do
-            mappings = Class.new(CustomMappings) {
-              def test_case(test_case, mapper)
-                mapper.before { raise Failure }
-              end
-            }.new
-
-            execute_gherkin(mappings) do
+            filters = [
+              Filters::ActivateSteps.new(SimpleStepDefinitions.new),
+              Filters::ApplyBeforeHooks.new(FailingBeforeHook.new),
+              AddBeforeAndAfterHooks.new
+            ]
+            execute_gherkin(filters) do
               feature do
                 scenario_outline do
                   step '<status>ing'
@@ -1656,15 +1686,19 @@ module Cucumber
         context 'with exception in the first of several before hooks' do
           # This proves that the second before hook's result doesn't overwrite
           # the result of the first one.
-          it 'prints the exception after the scenario name' do
-            mappings = Class.new(CustomMappings) {
-              def test_case(test_case, mapper)
-                mapper.before { raise Failure }
-                mapper.before { }
-              end
-            }.new
+          class FailingAndPassingBeforeHooks
+            def apply_before_hooks(test_case)
+              Runtime::BeforeHooks.new([proc { raise Failure }, proc { }]).apply_to(test_case)
+            end
+          end
 
-            execute_gherkin(mappings) do
+          it 'prints the exception after the scenario name' do
+            filters = [
+              Filters::ActivateSteps.new(SimpleStepDefinitions.new),
+              Filters::ApplyBeforeHooks.new(FailingAndPassingBeforeHooks.new),
+              AddBeforeAndAfterHooks.new
+            ]
+            execute_gherkin(filters) do
               feature do
                 scenario do
                   step 'passing'
@@ -1698,17 +1732,20 @@ module Cucumber
         end
 
         context 'with exception in after hooks' do
-          let(:mappings) do
-            Class.new(CustomMappings) {
-              def test_case(test_case, mapper)
-                mapper.after { raise Failure }
-              end
-            }.new
+
+          class FailingAfterHook
+            def apply_after_hooks(test_case)
+              Runtime::AfterHooks.new([proc { raise Failure }]).apply_to(test_case)
+            end
           end
 
           it 'prints the exception after the steps' do
-
-            execute_gherkin(mappings) do
+            filters = [
+              Filters::ActivateSteps.new(SimpleStepDefinitions.new),
+              Filters::ApplyAfterHooks.new(FailingAfterHook.new),
+              AddBeforeAndAfterHooks.new
+            ]
+            execute_gherkin(filters) do
               feature do
                 scenario do
                   step 'passing'
@@ -1741,7 +1778,12 @@ module Cucumber
           end
 
           it 'prints the exception after the examples table row' do
-            execute_gherkin do
+            filters = [
+              Filters::ActivateSteps.new(SimpleStepDefinitions.new),
+              Filters::ApplyAfterHooks.new(FailingAfterHook.new),
+              AddBeforeAndAfterHooks.new
+            ]
+            execute_gherkin(filters) do
               feature do
                 scenario_outline do
                   step '<status>ing'
@@ -1796,17 +1838,19 @@ module Cucumber
         end
 
         context 'with exception in the first of several after hooks' do
-          let(:mappings) do
-            Class.new(CustomMappings) {
-              def test_case(test_case, mapper)
-                mapper.after { raise Failure }
-                mapper.after { }
-              end
-            }.new
+          class FailingThenPassingAfterHooks
+            def apply_after_hooks(test_case)
+              Runtime::AfterHooks.new([proc { raise Failure }, proc {}]).apply_to(test_case)
+            end
           end
 
           it 'prints the exception after the steps' do
-            execute_gherkin do
+            filters = [
+              Filters::ActivateSteps.new(SimpleStepDefinitions.new),
+              Filters::ApplyAfterHooks.new(FailingThenPassingAfterHooks.new),
+              AddBeforeAndAfterHooks.new
+            ]
+            execute_gherkin(filters) do
               feature do
                 scenario do
                   step 'passing'
@@ -1840,16 +1884,13 @@ module Cucumber
         end
 
         context 'with an exception in an after hook but no steps' do
-          let(:mappings) do
-            Class.new(CustomMappings) {
-              def test_case(test_case, mapper)
-                mapper.after { raise Failure }
-              end
-            }.new
-          end
-
           it 'prints the exception after the steps' do
-            execute_gherkin do
+            filters = [
+              Filters::ActivateSteps.new(SimpleStepDefinitions.new),
+              Filters::ApplyAfterHooks.new(FailingAfterHook.new),
+              AddBeforeAndAfterHooks.new
+            ]
+            execute_gherkin(filters) do
               feature do
                 scenario do
                 end
@@ -1892,9 +1933,9 @@ module Cucumber
         let(:runtime) { Runtime.new strict: true }
 
         it 'passes an exception to the formatter for undefined steps' do
-        expect( formatter ).to receive(:exception) do |exception|
-          expect( exception.message ).to eq %{Undefined step: "this step is undefined"}
-        end
+          expect( formatter ).to receive(:exception) do |exception|
+            expect( exception.message ).to eq %{Undefined step: "this step is undefined"}
+          end
           execute_gherkin do
             feature do
               scenario do
@@ -1931,8 +1972,16 @@ module Cucumber
         end
       end
 
-      def execute_gherkin(custom_mappings = mappings, &gherkin)
-        execute [gherkin(&gherkin)], custom_mappings, report
+      def execute_gherkin(filters = default_filters, &gherkin)
+        runner = Core::Test::Runner.new(report)
+        compile [gherkin(&gherkin)], runner, filters
+      end
+
+      def default_filters
+        [
+          Filters::ActivateSteps.new(SimpleStepDefinitions.new),
+          AddBeforeAndAfterHooks.new
+        ]
       end
 
     end

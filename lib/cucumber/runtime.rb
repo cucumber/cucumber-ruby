@@ -9,9 +9,7 @@ require 'cucumber/load_path'
 require 'cucumber/language_support/language_methods'
 require 'cucumber/formatter/duration'
 require 'cucumber/file_specs'
-require 'cucumber/filters/quit'
-require 'cucumber/filters/randomizer'
-require 'cucumber/filters/tag_limits'
+require 'cucumber/filters'
 require 'cucumber/formatter/fanout'
 
 module Cucumber
@@ -68,7 +66,8 @@ module Cucumber
       fire_after_configuration_hook
       self.visitor = report
 
-      execute features, mappings, report, filters
+      receiver = Test::Runner.new(report)
+      compile features, receiver, filters
     end
 
     def features_paths
@@ -173,11 +172,6 @@ module Cucumber
       end
     end
 
-    require 'cucumber/mappings'
-    def mappings
-      @mappings = Mappings.for(self)
-    end
-
     require 'cucumber/formatter/legacy_api/adapter'
     require 'cucumber/formatter/legacy_api/runtime_facade'
     require 'cucumber/formatter/legacy_api/results'
@@ -224,6 +218,15 @@ module Cucumber
         filters << Cucumber::Core::Test::NameFilter.new(name_regexps)
         filters << Cucumber::Core::Test::LocationsFilter.new(filespecs.locations)
         filters << Filters::Quit.new
+        filters << Filters::ActivateSteps.new(@support_code)
+        unless configuration.dry_run?
+          filters << Filters::ApplyAfterStepHooks.new(@support_code)
+          filters << Filters::ApplyBeforeHooks.new(@support_code)
+          filters << Filters::ApplyAfterHooks.new(@support_code)
+          filters << Filters::ApplyAroundHooks.new(@support_code)
+          # need to do this last so it becomes the first test step
+          filters << Filters::PrepareWorld.new(self)
+        end
       end
     end
 

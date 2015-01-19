@@ -1,5 +1,8 @@
 require 'cucumber/constantize'
 require 'cucumber/runtime/for_programming_languages'
+require 'cucumber/runtime/step_hooks'
+require 'cucumber/runtime/before_hooks'
+require 'cucumber/runtime/after_hooks'
 
 module Cucumber
 
@@ -7,7 +10,6 @@ module Cucumber
 
     class SupportCode
 
-      # TODO: figure out a way to move this to the core. We'd need to have access to the mappings to pass those in.
       require 'forwardable'
       class StepInvoker
         include Gherkin::Rubify
@@ -119,6 +121,59 @@ module Cucumber
         @programming_languages.map do |programming_language|
           programming_language.step_definitions
         end.flatten
+      end
+
+      def find_match(test_step)
+        begin
+          match = step_match(test_step.name)
+        rescue Cucumber::Undefined
+          return NoStepMatch.new(test_step.source.last, test_step.name)
+        end
+        if @configuration.dry_run?
+          return SkippingStepMatch.new
+        end
+        match
+      end
+
+      def find_after_step_hooks(test_case)
+        ruby = load_programming_language('rb')
+        scenario = Ast::Facade.new(test_case).build_scenario
+
+        action_blocks = ruby.hooks_for(:after_step, scenario).map do |hook|
+          ->(*args) { hook.invoke('AfterStep', args) }
+        end
+        StepHooks.new action_blocks
+      end
+
+      def apply_before_hooks(test_case)
+        ruby = load_programming_language('rb')
+        scenario = Ast::Facade.new(test_case).build_scenario
+
+        action_blocks = ruby.hooks_for(:before, scenario).map do |hook|
+          ->(result) { hook.invoke('Before', scenario.with_result(result)) }
+        end
+        BeforeHooks.new(action_blocks).apply_to(test_case)
+      end
+
+      def apply_after_hooks(test_case)
+        ruby = load_programming_language('rb')
+        scenario = Ast::Facade.new(test_case).build_scenario
+
+        action_blocks = ruby.hooks_for(:after, scenario).map do |hook|
+          ->(result) { hook.invoke('After', scenario.with_result(result)) }
+        end
+        AfterHooks.new(action_blocks).apply_to(test_case)
+      end
+
+      def find_around_hooks(test_case)
+        ruby = load_programming_language('rb')
+        scenario = Ast::Facade.new(test_case).build_scenario
+
+        ruby.hooks_for(:around, scenario).map do |hook|
+          Hooks.around_hook(test_case.source) do |run_scenario|
+            hook.invoke('Around', scenario, &run_scenario)
+          end
+        end
       end
 
       def step_match(step_name, name_to_report=nil) #:nodoc:

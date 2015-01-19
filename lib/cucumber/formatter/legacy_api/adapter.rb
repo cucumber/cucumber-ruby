@@ -238,6 +238,7 @@ module Cucumber
           end
 
           def after_step_hook(hook, result)
+            p current_test_step_source if current_test_step_source.step.nil?
             line = StepBacktraceLine.new(current_test_step_source.step)
             @child.after_step_hook Ast::HookResult.new(LegacyResultBuilder.new(result).
               append_to_exception_backtrace(line), @delayed_messages, @delayed_embeddings)
@@ -975,6 +976,11 @@ module Cucumber
       end
 
       class StepBacktraceLine < Struct.new(:step)
+        def initialize(step)
+          raise ArgumentError if step.nil?
+          super
+        end
+
         def to_s
           step.backtrace_line
         end
