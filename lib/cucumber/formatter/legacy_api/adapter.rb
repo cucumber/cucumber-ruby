@@ -199,6 +199,9 @@ module Cucumber
           def before_test_step(test_step)
           end
 
+          def before_step_hook(test_step, result)
+          end
+
           def after_test_step(test_step, result)
             @current_test_step_source = TestStepSource.for(test_step, result)
             # TODO: stop calling self, and describe source to another object

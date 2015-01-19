@@ -71,6 +71,12 @@ module Cucumber
         RbDsl.register_rb_hook('around', tag_expressions, proc)
       end
 
+      # Registers a proc that will run before each Step. You can register as
+      # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
+      def BeforeStep(*tag_expressions, &proc)
+        RbDsl.register_rb_hook('before_step', tag_expressions, proc)
+      end
+
       # Registers a proc that will run after each Step. You can register as
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
       def AfterStep(*tag_expressions, &proc)
