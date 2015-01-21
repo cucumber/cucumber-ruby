@@ -1916,6 +1916,19 @@ module Cucumber
         end
       end
 
+      it 'passes nil as the multiline arg when there is none' do
+        expect(formatter).to receive(:after_step_result) do |keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line|
+          expect(multiline_arg).to be_nil
+        end
+        execute_gherkin do
+          feature do
+            scenario do
+              step 'passing'
+            end
+          end
+        end
+      end
+
       it 'passes an object responding to failed? with the after_feature_element message' do
         expect( formatter ).to receive(:after_feature_element) do |scenario|
           expect( scenario ).to be_failed

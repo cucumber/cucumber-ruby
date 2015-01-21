@@ -118,7 +118,12 @@ module Cucumber
           end
 
           def step_result_attributes
-            [keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line]
+            legacy_multiline_arg = if multiline_arg.kind_of?(Core::Ast::EmptyMultilineArgument)
+              nil
+            else
+              step.multiline_arg
+            end
+            [keyword, step_match, legacy_multiline_arg, status, exception, source_indent, background, file_colon_line]
           end
 
           def failed?
