@@ -1,3 +1,5 @@
+require 'cucumber/core/test/around_hook'
+
 module Cucumber
 
   # Hooks quack enough like `Cucumber::Core::Ast` source nodes that we can use them as 
@@ -19,7 +21,7 @@ module Cucumber
       end
 
       def around_hook(source, &block)
-        AroundHook.new(&block)
+        Core::Test::AroundHook.new(&block)
       end
 
       private
@@ -48,20 +50,6 @@ module Cucumber
 
       def describe_to(visitor, *args)
         visitor.after_hook(self, *args)
-      end
-    end
-
-    class AroundHook
-      def initialize(&block)
-        @block = block
-      end
-
-      def describe_to(visitor, *args, &continue)
-        visitor.around_hook(self, *args, &continue)
-      end
-
-      def call(continue)
-        @block.call(continue)
       end
     end
 
