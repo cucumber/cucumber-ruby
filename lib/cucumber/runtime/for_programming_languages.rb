@@ -44,17 +44,13 @@ module Cucumber
       #     %w{ CUC-101 Peeler      22     }
       #   ])
       #
-      def table(text_or_table, file=nil, line_offset=0)
+      def table(text_or_table, file=nil, line=0)
         if !file
           location = Core::Ast::Location.of_caller
         else
           location = Core::Ast::Location.new(file, line)
         end
-        if Array === text_or_table
-          MultilineArgument::DataTable.new(text_or_table, location)
-        else
-          MultilineArgument::DataTable.parse(text_or_table, file, location)
-        end
+        MultilineArgument::DataTable.from(text_or_table, location)
       end
 
       # Returns a Cucumber::MultilineArgument::DocString for +body+.
