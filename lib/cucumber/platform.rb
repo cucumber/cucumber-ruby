@@ -8,10 +8,9 @@ module Cucumber
     BINARY        = File.expand_path(File.dirname(__FILE__) + '/../../bin/cucumber')
     LIBDIR        = File.expand_path(File.dirname(__FILE__) + '/../../lib')
     JRUBY         = defined?(JRUBY_VERSION)
-    IRONRUBY      = defined?(RUBY_ENGINE) && RUBY_ENGINE == "ironruby"
     WINDOWS       = RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
     OS_X          = RbConfig::CONFIG['host_os'] =~ /darwin/
-    WINDOWS_MRI   = WINDOWS && !JRUBY && !IRONRUBY
+    WINDOWS_MRI   = WINDOWS && !JRUBY
     RAILS         = defined?(Rails)
     RUBY_BINARY   = File.join(RbConfig::CONFIG['bindir'], RbConfig::CONFIG['ruby_install_name'])
     RUBY_2_1      = RUBY_VERSION =~ /^2\.1/

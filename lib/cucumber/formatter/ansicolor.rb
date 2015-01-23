@@ -1,14 +1,6 @@
 require 'cucumber/platform'
 require 'cucumber/term/ansicolor'
 
-if Cucumber::IRONRUBY
-  begin
-    require 'iron-term-ansicolor'
-  rescue LoadError
-    STDERR.puts %{*** WARNING: You must "igem install iron-term-ansicolor" to get coloured ouput in on IronRuby}
-  end
-end
-
 if Cucumber::WINDOWS_MRI
   unless ENV['ANSICON']
     STDERR.puts %{*** WARNING: You must use ANSICON 1.31 or higher (https://github.com/adoxa/ansicon/) to get coloured output on Windows}
