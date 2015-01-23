@@ -1,5 +1,9 @@
 ## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.1...master)
 
+### Bugfixes
+
+  * World#table no longer creates invalid table objects when using an Array (@tooky, @mattwynne)
+
 ## [v2.0.0.rc.1](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.5...v2.0.0.rc.1)
 
 ### Removed Features
