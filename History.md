@@ -1,4 +1,11 @@
-## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.1...master)
+## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.3...master)
+## [v2.0.0.rc.3](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.2...v2.0.0.rc.3)
+
+### Bugfixes
+
+  * MultilineArgument::DataTable#diff will correctly compare to an Array (@tooky)
+
+## [v2.0.0.rc.2](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.1...v2.0.0.rc.2)
 
 ### Bugfixes
 
