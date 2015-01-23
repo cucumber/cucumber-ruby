@@ -597,7 +597,7 @@ module Cucumber
 
       def ensure_table(table_or_array) #:nodoc:
         return table_or_array if DataTable === table_or_array
-        DataTable.new(table_or_array)
+        DataTable.from(table_or_array)
       end
 
       def ensure_array_of_array(array)

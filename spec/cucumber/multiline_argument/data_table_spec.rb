@@ -489,6 +489,15 @@ module Cucumber
           end
         end
 
+        it "can compare to an Array" do
+          t = DataTable.from(%{
+            | b | a |
+            | d | c |
+          })
+          other = [ %w{b a}, %w{d c} ]
+
+          expect { t.diff!(other) }.not_to raise_error
+        end
       end
 
       describe "#from" do
