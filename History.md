@@ -1,4 +1,10 @@
-## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.5...master)
+## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.1...master)
+
+## [v2.0.0.rc.1](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.5...v2.0.0.rc.1)
+
+### Removed Features
+  
+  * Removed support for IronRuby (@tooky @mattwynne)
 
 ### New Features
 
@@ -8,6 +14,7 @@
 
 ### Bugfixes
 
+  * Add old Scenario#skip_invoke! method back (@mattwynne)
   * No links to lines in backtrace under TextMate ([548](https://github.com/cucumber/cucumber/pull/548) @bilus)
   * Using file:line CLI to select scenarios was running same scenario multiple times ([786](https://github.com/cucumber/cucumber/pull/786) @jdks)
   * Allow spaces in filenames for rerun formatter ([793](https://github.com/cucumber/cucumber/pull/793) @callahat)

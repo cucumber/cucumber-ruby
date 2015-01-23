@@ -4,7 +4,7 @@ require 'rbconfig'
 
 module Cucumber
   unless defined?(Cucumber::VERSION)
-    VERSION       = '2.0.0.beta.5'
+    VERSION       = '2.0.0.rc.1'
     BINARY        = File.expand_path(File.dirname(__FILE__) + '/../../bin/cucumber')
     LIBDIR        = File.expand_path(File.dirname(__FILE__) + '/../../lib')
     JRUBY         = defined?(JRUBY_VERSION)
