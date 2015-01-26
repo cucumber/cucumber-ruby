@@ -1,3 +1,4 @@
+require 'forwardable'
 require 'gherkin/formatter/escaping'
 require 'cucumber/core/ast/describes_itself'
 
