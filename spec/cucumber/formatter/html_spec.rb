@@ -343,6 +343,18 @@ module Cucumber
           it { expect(@doc.css('pre').map { |pre| /^(Given|And)/.match(pre.text)[1] }).to eq ["Given", "Given"] }
         end
 
+        describe "with an undefined When step then an undefined And step" do
+          define_feature(<<-FEATURE)
+          Feature:
+            Scenario:
+              Given some undefined step
+              When a different undefined step
+              And another undefined step
+            FEATURE
+
+          it { expect(@doc.css('pre').map { |pre| /^(Given|When|And)/.match(pre.text)[1] }).to eq ["Given", "When", "When"] }
+        end
+
         describe "with a output from hooks" do
           describe "in a scenario" do
             define_feature <<-FEATURE

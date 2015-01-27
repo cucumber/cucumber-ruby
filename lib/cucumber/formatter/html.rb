@@ -33,6 +33,7 @@ module Cucumber
         @img_id = 0
         @text_id = 0
         @inside_outline = false
+        @previous_step_name = 'Given'
       end
 
       def embed(src, mime_type, label)
@@ -280,7 +281,8 @@ module Cucumber
         return if @hide_this_step
         # print snippet for undefined steps
         if status == :undefined
-          keyword = @step.actual_keyword if @step.respond_to?(:actual_keyword)
+          keyword = @step.actual_keyword(@previous_step_name) if @step.respond_to?(:actual_keyword)
+          @previous_step_name = keyword
           @builder.pre do |pre|
             # TODO: snippet text should be an event sent to the formatter so we don't 
             # have this couping to the runtime.
