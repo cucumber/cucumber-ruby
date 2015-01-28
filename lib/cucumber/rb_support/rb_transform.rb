@@ -39,7 +39,9 @@ module Cucumber
 
     private
       def convert_captures(regexp_source)
-        regexp_source.gsub(/(\()(?!\?:)/,'(?:')
+        regexp_source
+          .gsub(/(\()(?!\?[<:=!])/,'(?:')
+          .gsub(/(\(\?<)(?![=!])/,'(?:<')
       end
 
       def strip_captures(regexp_source)
