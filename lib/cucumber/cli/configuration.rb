@@ -179,7 +179,8 @@ module Cucumber
         end
       end
 
-    private
+      private
+
       def with_default_features_path(paths)
         return ['features'] if paths.empty?
         paths
@@ -190,7 +191,6 @@ module Cucumber
           msg
         end
       end
-
 
       def set_environment_variables
         @options[:env_vars].each do |var, value|
