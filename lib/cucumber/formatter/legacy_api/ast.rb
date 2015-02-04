@@ -99,6 +99,7 @@ module Cucumber
                                     :indent,
                                     :background,
                                     :step,
+                                    :language,
                                     :messages,
                                     :embeddings) do
           extend Forwardable
@@ -139,9 +140,9 @@ module Cucumber
           end
 
           def actual_keyword(previous_step_keyword = nil)
-            if ['And ', 'But ', '* '].include? gherkin_statement.keyword
+            if [language.keywords('and'), language.keywords('but')].flatten.uniq.include? gherkin_statement.keyword
               if previous_step_keyword.nil?
-                'Given'
+                language.keywords('given').reject{|kw| kw == '* '}[0]
               else
                 previous_step_keyword
               end

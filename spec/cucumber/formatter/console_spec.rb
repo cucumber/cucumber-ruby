@@ -86,6 +86,19 @@ module Cucumber
           end
         end
 
+        describe "with a scenario in en-lol" do
+          define_feature <<-FEATURE
+          # language: en-lol
+          OH HAI: STUFFING
+
+            MISHUN: CUCUMBR
+              I CAN HAZ IN TEH BEGINNIN CUCUMBRZ
+              AN I EAT CUCUMBRZ
+            FEATURE
+          it "uses actual keyword of the previous passing step for the undefined step" do
+            expect(@out.string).to include("ICANHAZ(/^I EAT CUCUMBRZ$/)")
+          end
+        end
       end
     end
   end

@@ -2,7 +2,7 @@
 
 ### Bugfixes
 
- * Fix snippet suggestions ([765](https://github.com/cucumber/cucumber/pull/765) @richarda)
+ * Fix snippet suggestions ([765](https://github.com/cucumber/cucumber/pull/765) @richarda), also with i18n languages (@brasmusson)
  * Fix transformation of regex with lookahead/lookbehind ([796](https://github.com/cucumber/cucumber/pull/796) @bolshakov)
 
 ## [v2.0.0.rc.3](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.2...v2.0.0.rc.3)
