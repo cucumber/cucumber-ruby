@@ -1,4 +1,6 @@
+require 'cucumber'
 require 'cucumber/core/ast/location'
+
 module Cucumber
   class FileSpecs
     FILE_COLON_LINE_PATTERN = /^([\w\W]*?)(?::([\d:]+))?$/ #:nodoc:

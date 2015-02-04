@@ -45,5 +45,16 @@ module Cucumber
         ]
       end
     end
+
+    context "when the same file is referenced more than once" do
+      let(:file_specs) { FileSpecs.new(["features/foo.feature:10", "features/foo.feature:1"]) }
+
+      it "returns locations in the order specified" do
+        expect(locations).to eq [
+          Cucumber::Core::Ast::Location.new("features/foo.feature", 10),
+          Cucumber::Core::Ast::Location.new("features/foo.feature", 1),
+        ]
+      end
+    end
   end
 end
