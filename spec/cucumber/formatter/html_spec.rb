@@ -355,6 +355,22 @@ module Cucumber
           it { expect(@doc.css('pre').map { |pre| /^(Given|When|And)/.match(pre.text)[1] }).to eq ["Given", "When", "When"] }
         end
 
+        describe "with an passing Then step and an undefined And step" do
+          define_feature <<-FEATURE
+          Feature:
+            Scenario:
+              Given this step passes
+              Then this step passes
+              And this step is undefined
+            FEATURE
+
+          define_steps do
+            Given(/^this step passes$/) {}
+          end
+
+          it { expect(@doc.css('pre').map { |pre| /^(Given|Then)/.match(pre.text)[1] }).to eq ["Then"] }
+        end
+
         describe "with a output from hooks" do
           describe "in a scenario" do
             define_feature <<-FEATURE
@@ -409,6 +425,28 @@ module Cucumber
 
             it { expect(@doc).to have_css_node('.message', /Before hook, AfterStep hook, After hook/) }
           end
+        end
+      end
+      context "in --expand mode" do
+        let(:runtime)   { Runtime.new({:expand => true})}
+        before(:each) do
+          @out = StringIO.new
+          @formatter = Html.new(runtime, @out, {})
+          run_defined_feature
+          @doc = Nokogiri.HTML(@out.string)
+        end
+        describe "with undefined * steps in a Scenario Outline" do
+          define_feature <<-FEATURE
+          Feature:
+            Scenario Outline:
+              * this step is <status>
+              * this step is <status>
+              Examples:
+              |  status   |
+              | undefined |
+            FEATURE
+
+          it { expect(@doc.css('pre').map { |pre| /^(Given|Then|When)/.match(pre.text)[1] }).to eq ["Given", "Given"] }
         end
       end
     end

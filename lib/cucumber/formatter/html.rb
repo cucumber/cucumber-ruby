@@ -33,7 +33,8 @@ module Cucumber
         @img_id = 0
         @text_id = 0
         @inside_outline = false
-        @previous_step_name = 'Given'
+        @inside_examples = false
+        @previous_step_keyword = nil
       end
 
       def embed(src, mime_type, label)
@@ -164,6 +165,7 @@ module Cucumber
       def before_background(background)
         @in_background = true
         @builder << '<div class="background">'
+        @previous_step_keyword = nil
       end
 
       def after_background(background)
@@ -186,6 +188,7 @@ module Cucumber
         css_class = AST_CLASSES[feature_element.class]
         @builder << "<div class='#{css_class}'>"
         @in_scenario_outline = feature_element.class == Cucumber::Core::Ast::ScenarioOutline
+        @previous_step_keyword = nil
       end
 
       def after_feature_element(feature_element)
@@ -222,11 +225,13 @@ module Cucumber
       end
 
       def before_examples(examples)
+        @inside_examples = true
         @builder << '<div class="examples">'
       end
 
       def after_examples(examples)
         @builder << '</div>'
+        @inside_examples = false
       end
 
       def examples_name(keyword, name)
@@ -280,9 +285,11 @@ module Cucumber
       def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
         return if @hide_this_step
         # print snippet for undefined steps
+        unless @in_scenario_outline and not @inside_examples
+          keyword = @step.actual_keyword(@previous_step_keyword) if @step.respond_to?(:actual_keyword)
+          @previous_step_keyword = keyword
+        end
         if status == :undefined
-          keyword = @step.actual_keyword(@previous_step_name) if @step.respond_to?(:actual_keyword)
-          @previous_step_name = keyword
           @builder.pre do |pre|
             # TODO: snippet text should be an event sent to the formatter so we don't 
             # have this couping to the runtime.

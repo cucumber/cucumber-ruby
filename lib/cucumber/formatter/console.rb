@@ -134,18 +134,17 @@ module Cucumber
 
       def print_snippets(options)
         return unless options[:snippets]
-        undefined = runtime.steps(:undefined)
-        return if undefined.empty?
+        return if runtime.steps(:undefined).empty?
 
         unknown_programming_language = runtime.unknown_programming_language?
         previous_step_keyword = nil
-        snippets = undefined.map do |step|
+        snippets = runtime.steps.map do |step|
           # step_name = Undefined === step.exception ? step.exception.step_name : step.name
           # TODO: This probably won't work for nested steps :( See above for old code. 
           step_name = step.name
-          snippet = @runtime.snippet_text(step.actual_keyword(previous_step_keyword), step_name, step.multiline_arg)
-          previous_step_keyword = step.actual_keyword
-          snippet
+          step_keyword = step.actual_keyword(previous_step_keyword)
+          previous_step_keyword = step_keyword
+          step.status == :undefined ? @runtime.snippet_text(step_keyword, step_name, step.multiline_arg) : nil
         end.compact.uniq
 
         text = "\nYou can implement step definitions for undefined steps with these snippets:\n\n"

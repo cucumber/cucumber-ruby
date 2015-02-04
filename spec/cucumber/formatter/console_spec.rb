@@ -69,6 +69,23 @@ module Cucumber
           end
         end
 
+        describe "With a scenario where the only undefined step uses 'And'" do
+          define_feature <<-FEATURE
+          Feature:
+
+            Scenario:
+              Given this step passes
+              Then this step passes
+              And this step is undefined
+          FEATURE
+          define_steps do
+            Given(/^this step passes$/) {}
+          end
+          it "uses actual keyword of the previous passing step for the undefined step" do
+            expect(@out.string).to include("Then(/^this step is undefined$/)")
+          end
+        end
+
       end
     end
   end
