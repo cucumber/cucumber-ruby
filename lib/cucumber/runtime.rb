@@ -219,6 +219,9 @@ module Cucumber
         filters << Cucumber::Core::Test::LocationsFilter.new(filespecs.locations)
         filters << Filters::Quit.new
         filters << Filters::ActivateSteps.new(@support_code)
+        @configuration.filters.each do |filter|
+          filters << filter
+        end
         unless configuration.dry_run?
           filters << Filters::ApplyAfterStepHooks.new(@support_code)
           filters << Filters::ApplyBeforeHooks.new(@support_code)

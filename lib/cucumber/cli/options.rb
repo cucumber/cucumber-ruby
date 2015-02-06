@@ -266,7 +266,7 @@ TEXT
       end
 
       def filters
-        @options.values_at(:name_regexps, :tag_expressions).select{|v| !v.empty?}.first || []
+        @options[:filters] ||= []
       end
 
     protected
