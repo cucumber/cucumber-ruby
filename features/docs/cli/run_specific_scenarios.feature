@@ -111,3 +111,20 @@ Feature: Run specific scenarios
       1 scenario (1 passed)
       1 step (1 passed)
       """
+
+  Scenario: Specify order of scenarios
+    Given a file named "features/test.feature" with:
+      """
+      Feature: 
+        Scenario:
+          Given this step passes
+
+        Scenario:
+          Given this step fails
+      """
+    When I run `cucumber features/test.feature:5 features/test.feature:3 -f progress`
+    Then it should fail with:
+      """
+      F.
+      """
+

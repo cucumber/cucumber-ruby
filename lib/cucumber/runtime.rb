@@ -216,7 +216,7 @@ module Cucumber
         filters << Filters::TagLimits.new(tag_limits) if tag_limits.any?
         filters << Cucumber::Core::Test::TagFilter.new(tag_expressions)
         filters << Cucumber::Core::Test::NameFilter.new(name_regexps)
-        filters << Cucumber::Core::Test::LocationsFilter.new(filespecs.locations)
+        filters << Cucumber::Core::Test::LocationFilter.new(filespecs.locations)
         filters << Filters::Quit.new
         filters << Filters::ActivateSteps.new(@support_code)
         @configuration.filters.each do |filter|
