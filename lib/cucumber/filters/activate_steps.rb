@@ -1,4 +1,3 @@
-require 'cucumber/multiline_argument'
 require 'cucumber/core/filter'
 
 module Cucumber
