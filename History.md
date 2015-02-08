@@ -2,7 +2,7 @@
 
 ### Features
 
-  * Add custom filters from Ruby configuration code (@mattwynne)
+  * [Add custom filters from Ruby configuration code](https://github.com/cucumber/cucumber/blob/master/features/docs/extending_cucumber/custom_filter.feature) (@mattwynne)
 
 ### Bugfixes
 
