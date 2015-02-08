@@ -132,20 +132,24 @@ module Cucumber
         s.gsub(/.{1,#{max}}(?:\s|\Z)/){($& + 5.chr).gsub(/\n\005/,"\n").gsub(/\005/,"\n")}.rstrip
       end
 
+      def collect_snippet_data(test_step, result)
+        # collect snippet data for undefined steps
+        unless hook?(test_step)
+          keyword = test_step.source.last.actual_keyword(@previous_step_keyword)
+          @previous_step_keyword = keyword
+          if result.undefined?
+            @snippets_input << Console::SnippetData.new(keyword, test_step.source.last)
+          end
+        end
+      end
+
       def print_snippets(options)
         return unless options[:snippets]
         return if runtime.steps(:undefined).empty?
 
-        unknown_programming_language = runtime.unknown_programming_language?
-        previous_step_keyword = nil
-        snippets = runtime.steps.map do |step|
-          # step_name = Undefined === step.exception ? step.exception.step_name : step.name
-          # TODO: This probably won't work for nested steps :( See above for old code. 
-          step_name = step.name
-          step_keyword = step.actual_keyword(previous_step_keyword)
-          previous_step_keyword = step_keyword
-          step.status == :undefined ? @runtime.snippet_text(step_keyword, step_name, step.multiline_arg) : nil
-        end.compact.uniq
+        snippets = @snippets_input.map do |data|
+          @runtime.snippet_text(data.actual_keyword, data.step.name, data.step.multiline_arg)
+        end.uniq
 
         text = "\nYou can implement step definitions for undefined steps with these snippets:\n\n"
         text += snippets.join("\n\n")
@@ -217,16 +221,27 @@ module Cucumber
         @io.puts "Using the #{profiles_sentence} profile#{'s' if profiles.size> 1}..."
       end
 
-    private
+      private
 
-    FORMATS = Hash.new{ |hash, format| hash[format] = method(format).to_proc }
+      FORMATS = Hash.new{ |hash, format| hash[format] = method(format).to_proc }
 
-    def format_for(*keys)
-      key = keys.join('_').to_sym
-      fmt = FORMATS[key]
-      raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
-      fmt
-    end
+      def format_for(*keys)
+        key = keys.join('_').to_sym
+        fmt = FORMATS[key]
+        raise "No format for #{key.inspect}: #{FORMATS.inspect}" if fmt.nil?
+        fmt
+      end
+
+      def hook?(test_step)
+        not test_step.source.last.respond_to?(:actual_keyword)
+      end
+
+      class SnippetData
+        attr_reader :actual_keyword, :step
+        def initialize(actual_keyword, step)
+          @actual_keyword, @step = actual_keyword, step
+        end
+      end
 
     end
   end

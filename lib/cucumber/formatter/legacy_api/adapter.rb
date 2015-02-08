@@ -148,14 +148,13 @@ module Cucumber
 
           require 'ostruct'
           class StepSource < OpenStruct
-            def build_step_invocation(indent, support_code, config, language, messages, embeddings)
+            def build_step_invocation(indent, support_code, config, messages, embeddings)
               step_result.step_invocation(
                 step_match(support_code),
                 step,
                 indent,
                 background,
                 config,
-                language,
                 messages,
                 embeddings
               )
@@ -320,14 +319,14 @@ module Cucumber
 
             if @failed_hidden_background_step
               indent = Indent.new(@child.node)
-              step_invocation = @failed_hidden_background_step.build_step_invocation(indent, support_code, config, node.language, messages = [], embeddings = [])
+              step_invocation = @failed_hidden_background_step.build_step_invocation(indent, support_code, config, messages = [], embeddings = [])
               @child.step_invocation(step_invocation, @failed_hidden_background_step)
               @failed_hidden_background_step = nil
             end
 
             unless @last_step == current_test_step_source.step
               indent ||= Indent.new(@child.node)
-              step_invocation = current_test_step_source.build_step_invocation(indent, support_code, config, node.language, @delayed_messages, @delayed_embeddings)
+              step_invocation = current_test_step_source.build_step_invocation(indent, support_code, config, @delayed_messages, @delayed_embeddings)
               results.step_visited step_invocation
               @child.step_invocation(step_invocation, current_test_step_source)
               @last_step = current_test_step_source.step
@@ -616,7 +615,7 @@ module Cucumber
           def outline_step(step)
             step_match = NoStepMatch.new(step, step.name)
             step_invocation = LegacyResultBuilder.new(Core::Test::Result::Skipped.new).
-              step_invocation(step_match, step, indent, background = nil, configuration, Ast::NullLanguage.new, messages = [], embeddings = [])
+              step_invocation(step_match, step, indent, background = nil, configuration, messages = [], embeddings = [])
             steps_printer.step_invocation step_invocation
           end
 
@@ -938,8 +937,8 @@ module Cucumber
             @duration = duration
           end
 
-          def step_invocation(step_match, step, indent, background, configuration, language, messages, embeddings)
-            Ast::StepInvocation.new(step_match, @status, @duration, step_exception(step, configuration), indent, background, step, language, messages, embeddings)
+          def step_invocation(step_match, step, indent, background, configuration, messages, embeddings)
+            Ast::StepInvocation.new(step_match, @status, @duration, step_exception(step, configuration), indent, background, step, messages, embeddings)
           end
 
           def scenario(name, location)

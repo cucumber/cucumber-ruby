@@ -11,6 +11,8 @@ module Cucumber
 
       def initialize(runtime, path_or_io, options)
         @runtime, @io, @options = runtime, ensure_io(path_or_io, "progress"), options
+        @previous_step_keyword = nil
+        @snippets_input = []
       end
 
       def before_features(features)
@@ -62,6 +64,14 @@ module Cucumber
 
       def exception(*args)
         @exception_raised = true
+      end
+
+      def before_test_case(test_case)
+        @previous_step_keyword = nil
+      end
+
+      def after_test_step(test_step, result)
+        collect_snippet_data(test_step, result)
       end
 
       private

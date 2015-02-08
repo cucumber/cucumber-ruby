@@ -33,7 +33,6 @@ module Cucumber
         @img_id = 0
         @text_id = 0
         @inside_outline = false
-        @inside_examples = false
         @previous_step_keyword = nil
       end
 
@@ -227,13 +226,11 @@ module Cucumber
       end
 
       def before_examples(examples)
-        @inside_examples = true
         @builder << '<div class="examples">'
       end
 
       def after_examples(examples)
         @builder << '</div>'
-        @inside_examples = false
       end
 
       def examples_name(keyword, name)
@@ -287,8 +284,8 @@ module Cucumber
       def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
         return if @hide_this_step
         # print snippet for undefined steps
-        unless @in_scenario_outline and not @inside_examples
-          keyword = @step.actual_keyword(@previous_step_keyword) if @step.respond_to?(:actual_keyword)
+        unless outline_step?(@step)
+          keyword = @step.actual_keyword(@previous_step_keyword)
           @previous_step_keyword = keyword
         end
         if status == :undefined
@@ -617,6 +614,10 @@ module Cucumber
 
       def create_builder(io)
         Builder::XmlMarkup.new(:target => io, :indent => 0)
+      end
+
+      def outline_step?(step)
+        not @step.step.respond_to?(:actual_keyword)
       end
 
       class SnippetExtractor #:nodoc:

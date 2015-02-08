@@ -26,6 +26,8 @@ module Cucumber
         @indent = 0
         @prefixes = options[:prefixes] || {}
         @delayed_messages = []
+        @previous_step_keyword = nil
+        @snippets_input = []
       end
 
       def before_features(features)
@@ -207,6 +209,14 @@ module Cucumber
         prefix = cell_prefix(status)
         @io.print(' ' + format_string("#{prefix}#{padded}", status) + ::Cucumber::Term::ANSIColor.reset(" |"))
         @io.flush
+      end
+
+      def before_test_case(test_case)
+        @previous_step_keyword = nil
+      end
+
+      def after_test_step(test_step, result)
+        collect_snippet_data(test_step, result)
       end
 
       private

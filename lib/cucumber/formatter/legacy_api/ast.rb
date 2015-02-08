@@ -99,7 +99,6 @@ module Cucumber
                                     :indent,
                                     :background,
                                     :step,
-                                    :language,
                                     :messages,
                                     :embeddings) do
           extend Forwardable
@@ -140,15 +139,7 @@ module Cucumber
           end
 
           def actual_keyword(previous_step_keyword = nil)
-            if [language.keywords('and'), language.keywords('but')].flatten.uniq.include? gherkin_statement.keyword
-              if previous_step_keyword.nil?
-                language.keywords('given').reject{|kw| kw == '* '}[0]
-              else
-                previous_step_keyword
-              end
-            else
-              gherkin_statement.keyword
-            end
+            step.actual_keyword(previous_step_keyword)
           end
 
           def file_colon_line

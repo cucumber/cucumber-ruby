@@ -698,6 +698,113 @@ OUTPUT
           end
         end
       end
+
+      context "snippets contain relevant keyword replacements" do
+
+        before(:each) do
+          Cucumber::Term::ANSIColor.coloring = false
+          @out = StringIO.new
+          @formatter = Pretty.new(runtime, @out, {snippets: true})
+          run_defined_feature
+        end
+
+        describe "With a scenario that has undefined steps" do
+          define_feature <<-FEATURE
+          Feature: Banana party
+
+            Scenario: many monkeys eat many things
+              Given there are bananas and apples
+              And other monkeys are around
+              When one monkey eats a banana
+              And the other monkeys eat all the apples
+              Then bananas remain
+              But there are no apples left
+            FEATURE
+
+          it "containes snippets with 'And' or 'But' replaced by previous step name" do
+            expect(@out.string).to include("Given(/^there are bananas and apples$/)")
+            expect(@out.string).to include("Given(/^other monkeys are around$/)")
+            expect(@out.string).to include("When(/^one monkey eats a banana$/)")
+            expect(@out.string).to include("When(/^the other monkeys eat all the apples$/)")
+            expect(@out.string).to include("Then(/^bananas remain$/)")
+            expect(@out.string).to include("Then(/^there are no apples left$/)")
+          end
+        end
+
+        describe "With a scenario that uses * and 'But'" do
+          define_feature <<-FEATURE
+          Feature: Banana party
+
+            Scenario: many monkeys eat many things
+              * there are bananas and apples
+              * other monkeys are around
+              When one monkey eats a banana
+              * the other monkeys eat all the apples
+              Then bananas remain
+              * there are no apples left
+          FEATURE
+          it "replaces the first step with 'Given'" do
+            expect(@out.string).to include("Given(/^there are bananas and apples$/)")
+          end
+          it "uses actual keywords as the 'previous' keyword for future replacements" do
+            expect(@out.string).to include("Given(/^other monkeys are around$/)")
+            expect(@out.string).to include("When(/^the other monkeys eat all the apples$/)")
+            expect(@out.string).to include("Then(/^there are no apples left$/)")
+          end
+        end
+
+        describe "With a scenario where the only undefined step uses 'And'" do
+          define_feature <<-FEATURE
+          Feature:
+
+            Scenario:
+              Given this step passes
+              Then this step passes
+              And this step is undefined
+          FEATURE
+          define_steps do
+            Given(/^this step passes$/) {}
+          end
+          it "uses actual keyword of the previous passing step for the undefined step" do
+            expect(@out.string).to include("Then(/^this step is undefined$/)")
+          end
+        end
+
+        describe "With scenarios where the first step is undefined and uses '*'" do
+          define_feature <<-FEATURE
+          Feature:
+
+            Scenario:
+              * this step is undefined
+              Then this step passes
+
+            Scenario:
+              * this step is also undefined
+              Then this step passes
+          FEATURE
+          define_steps do
+            Given(/^this step passes$/) {}
+          end
+          it "uses 'Given' as actual keyword the step in each scenario" do
+            expect(@out.string).to include("Given(/^this step is undefined$/)")
+            expect(@out.string).to include("Given(/^this step is also undefined$/)")
+          end
+        end
+
+        describe "with a scenario in en-lol" do
+          define_feature <<-FEATURE
+          # language: en-lol
+          OH HAI: STUFFING
+
+            MISHUN: CUCUMBR
+              I CAN HAZ IN TEH BEGINNIN CUCUMBRZ
+              AN I EAT CUCUMBRZ
+            FEATURE
+          it "uses actual keyword of the previous passing step for the undefined step" do
+            expect(@out.string).to include("ICANHAZ(/^I EAT CUCUMBRZ$/)")
+          end
+        end
+      end
     end
   end
 end
