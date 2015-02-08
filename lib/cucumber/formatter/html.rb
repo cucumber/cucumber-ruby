@@ -162,10 +162,13 @@ module Cucumber
         end
       end
 
+      def before_test_case(test_case)
+        @previous_step_keyword = nil
+      end
+
       def before_background(background)
         @in_background = true
         @builder << '<div class="background">'
-        @previous_step_keyword = nil
       end
 
       def after_background(background)
@@ -188,7 +191,6 @@ module Cucumber
         css_class = AST_CLASSES[feature_element.class]
         @builder << "<div class='#{css_class}'>"
         @in_scenario_outline = feature_element.class == Cucumber::Core::Ast::ScenarioOutline
-        @previous_step_keyword = nil
       end
 
       def after_feature_element(feature_element)

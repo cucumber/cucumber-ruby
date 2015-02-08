@@ -440,11 +440,16 @@ module Cucumber
           Feature:
             Scenario Outline:
               * this step is <status>
-              * this step is <status>
+              Then this step passes
               Examples:
               |  status   |
               | undefined |
+              | undefined |
             FEATURE
+
+            define_steps do
+              Given(/^this step passes$/) {}
+            end
 
           it { expect(@doc.css('pre').map { |pre| /^(Given|Then|When)/.match(pre.text)[1] }).to eq ["Given", "Given"] }
         end
