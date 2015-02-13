@@ -54,7 +54,7 @@ module Cucumber
         end
 
         def record_test_case_result(test_case, result)
-          scenario = LegacyResultBuilder.new(result).scenario(test_case.name, test_case.location)
+          scenario = LegacyResultBuilder.new(result).scenario("#{test_case.keyword}: #{test_case.name}", test_case.location)
           results.scenario_visited(scenario)
         end
 

@@ -65,7 +65,7 @@ module Cucumber
         end
 
         def name
-          @test_case.name
+          "#{@test_case.keyword}: #{@test_case.name}"
         end
 
         def title
