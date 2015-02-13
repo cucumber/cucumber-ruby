@@ -6,6 +6,7 @@
 
 ### Bugfixes
 
+ * Fix missing `require Forwardable` (@tooky)
  * Fix snippet suggestions ([765](https://github.com/cucumber/cucumber/pull/765) @richarda), also with i18n languages (@brasmusson)
  * Fix transformation of regex with lookahead/lookbehind ([796](https://github.com/cucumber/cucumber/pull/796) @bolshakov)
  * Sort scenarios by location ([789](https://github.com/cucumber/cucumber/issues/789) @mattwynne)
