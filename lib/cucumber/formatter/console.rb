@@ -118,7 +118,7 @@ module Cucumber
       end
 
       def print_exception(e, status, indent)
-        message = "#{e.message} (#{e.class})"
+        message = "#{e.message} (#{e.class})".force_encoding("UTF-8")
         if ENV['CUCUMBER_TRUNCATE_OUTPUT']
           message = linebreaks(message, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
         end
