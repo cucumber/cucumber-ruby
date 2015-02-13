@@ -1,6 +1,14 @@
-## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.18...v1.3.x-bugfix)
+## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.19...v1.3.x-bugfix)
 
 * Your change here?
+
+## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.18...v1.3.19)
+
+* Update multi_test dependency to prevent crashes on ruby 2.2 when no minitest
+  or rspec available (@tooky)
+* Fixing the spaces in file paths in the rerun file causing the file list to be
+  split incorrectly ([793](https://github.com/cucumber/cucumber/pull/793)
+  @callahat)
 
 ## [v1.3.18](https://github.com/cucumber/cucumber/compare/v1.3.17...v1.3.18)
 
