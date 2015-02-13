@@ -1,4 +1,5 @@
-## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.3...master)
+## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.4...master)
+## [v2.0.0.rc.4](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.3...2.0.0.rc.4)
 
 ### Features
 
