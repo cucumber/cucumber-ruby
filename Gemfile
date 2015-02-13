@@ -6,6 +6,6 @@ unless ENV['CUCUMBER_USE_RELEASED_CORE']
   if File.exist?(core_path) && !ENV['CUCUMBER_USE_GIT_CORE']
     gem 'cucumber-core', :path => core_path
   else
-    gem 'cucumber-core', :git => "git://github.com/cucumber/cucumber-ruby-core.git"
+    gem 'cucumber-core', :git => "https://github.com/richarda/cucumber-ruby-core.git", :branch => '768-scenario-name'
   end
 end
