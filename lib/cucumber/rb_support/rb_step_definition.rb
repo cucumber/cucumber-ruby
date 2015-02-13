@@ -44,10 +44,19 @@ module Cucumber
           raise ArgumentError unless proc_or_sym.is_a?(Symbol)
           message = proc_or_sym
           target_proc = parse_target_proc_from(options)
-          lambda do |*args|
+          patch_location_onto lambda { |*args|
             target = instance_exec(&target_proc)
             target.send(message, *args)
-          end
+          }
+        end
+
+        def patch_location_onto(block)
+          file, line = caller[5].split(':')[0..1]
+          location = Core::Ast::Location.new(
+            Pathname.new(file).relative_path_from(Pathname.new(Dir.pwd)),
+            line)
+          block.define_singleton_method(:file_colon_line) { location.to_s }
+          block
         end
 
         def parse_target_proc_from(options)

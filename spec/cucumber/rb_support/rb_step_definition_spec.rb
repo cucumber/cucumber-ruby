@@ -84,6 +84,11 @@ module Cucumber
 
           run_step "With symbol on symbol"
         end
+
+        it "has the correct location" do
+          dsl.Given /With symbol/, :with_symbol
+          expect(step_match("With symbol").file_colon_line).to eq "spec/cucumber/rb_support/rb_step_definition_spec.rb:89"
+        end
       end
 
       it "raises Undefined when inside step is not defined" do
