@@ -21,12 +21,10 @@ module Cucumber
 
       def before_background(background)
         @outline = false
-        @before_steps = true
         @gf.background(background.gherkin_statement)
       end
 
       def before_feature_element(feature_element)
-        @before_steps = true
         case(feature_element)
         when Core::Ast::Scenario
           @outline = false
@@ -42,6 +40,10 @@ module Cucumber
         else
           raise "Bad type: #{feature_element.class}"
         end
+      end
+
+      def before_test_case(test_case)
+        @delay_output = true
       end
 
       def scenario_name(keyword, name, file_colon_line, source_indent)
@@ -70,10 +72,11 @@ module Cucumber
         unless @outline and @options[:expand]
           @gf.step(step.gherkin_statement)
           pass_delayed_output
-          @before_steps = false
+          @delay_output = false
         else 
           if @in_instantiated_scenario
             @current_step_hash = to_hash(step.gherkin_statement)
+            @delay_output = true
           end
         end
         if @print_empty_match
@@ -120,7 +123,7 @@ module Cucumber
               @current_step_hash['rows'],
               @current_step_hash['doc_string']))
           pass_delayed_output
-          @before_steps = false
+          @delay_output = false
           @gf.match(@current_match)
           @gf.result(@current_result)
         end
@@ -165,7 +168,7 @@ module Cucumber
         if defined?(JRUBY_VERSION)
           data = data.to_java_bytes
         end
-        unless @before_steps
+        unless @delay_output
           @gf.embedding(mime_type, data)
         else
           @delayed_embeddings.push [mime_type, data]
@@ -173,7 +176,7 @@ module Cucumber
       end
 
       def puts(message)
-        unless @before_steps
+        unless @delay_output
           @gf.write(message)
         else
           @delayed_messages.push message
