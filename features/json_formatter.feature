@@ -98,6 +98,14 @@ Feature: JSON output formatter
       """
       Feature: An embed data directly feature
 
+        Scenario Outline:
+          Given I embed data directly
+
+	  Examples:
+	  | dummy |
+	  |   1   |
+	  |   2   |
+
         Scenario:
           Given I embed data directly
 
@@ -437,7 +445,7 @@ Feature: JSON output formatter
 
     """
   Scenario: embedding data directly
-    When I run `cucumber -b --format json features/embed_data_directly.feature`
+    When I run `cucumber -b --format json -x features/embed_data_directly.feature`
     Then it should pass with JSON:
     """
     [
@@ -450,17 +458,73 @@ Feature: JSON output formatter
         "description": "",
         "elements": [
           {
-            "id": "an-embed-data-directly-feature;",
-            "keyword": "Scenario",
+            "keyword": "Scenario Outline",
             "name": "",
-            "line": 3,
+            "line": 8,
             "description": "",
+            "id": "an-embed-data-directly-feature;;;2",
             "type": "scenario",
             "steps": [
               {
                 "keyword": "Given ",
                 "name": "I embed data directly",
                 "line": 4,
+                "embeddings": [
+                  {
+                    "mime_type": "mime-type",
+                    "data": "YWJj"
+                  }
+                ],
+                "match": {
+                  "location": "features/step_definitions/steps.rb:38"
+                },
+                "result": {
+                  "status": "passed",
+                  "duration": 1
+                }
+              }
+            ]
+          },
+          {
+            "keyword": "Scenario Outline",
+            "name": "",
+            "line": 9,
+            "description": "",
+            "id": "an-embed-data-directly-feature;;;3",
+            "type": "scenario",
+            "steps": [
+              {
+                "keyword": "Given ",
+                "name": "I embed data directly",
+                "line": 4,
+                "embeddings": [
+                  {
+                    "mime_type": "mime-type",
+                    "data": "YWJj"
+                  }
+                ],
+                "match": {
+                  "location": "features/step_definitions/steps.rb:38"
+                },
+                "result": {
+                  "status": "passed",
+                  "duration": 1
+                }
+              }
+            ]
+	  },
+          {
+            "id": "an-embed-data-directly-feature;",
+            "keyword": "Scenario",
+            "name": "",
+            "line": 11,
+            "description": "",
+            "type": "scenario",
+            "steps": [
+              {
+                "keyword": "Given ",
+                "name": "I embed data directly",
+                "line": 12,
                 "embeddings": [
                   {
 		    "mime_type": "mime-type",

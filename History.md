@@ -1,8 +1,8 @@
 ## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.19...v1.3.x-bugfix)
 
-* Your change here?
+ * Handle step output correctly for Scenario Outlines with the --expand option ([804](https://github.com/cucumber/cucumber/issues/804) @brasmusson)
 
-## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.18...v1.3.19)
+## [v1.3.19](https://github.com/cucumber/cucumber/compare/v1.3.18...v1.3.19)
 
 * Update multi_test dependency to prevent crashes on ruby 2.2 when no minitest
   or rspec available (@tooky)
