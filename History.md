@@ -1,4 +1,8 @@
 ## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.4...master)
+### Bugfixes
+
+ * Handle step output correctly for Scenario Outlines with the --expand option ([806](https://github.com/cucumber/cucumber/issues/806) @brasmusson)
+
 ## [v2.0.0.rc.4](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.3...2.0.0.rc.4)
 
 ### Features
