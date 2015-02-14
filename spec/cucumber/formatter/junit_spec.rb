@@ -3,7 +3,7 @@ require 'cucumber/formatter/spec_helper'
 
 require 'cucumber/formatter/junit'
 require 'nokogiri'
-require 'pry'
+
 module Cucumber
   module Formatter
     describe Junit do
