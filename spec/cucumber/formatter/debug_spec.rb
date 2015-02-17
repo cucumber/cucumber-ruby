@@ -35,6 +35,8 @@ before_tags
 after_tags
 feature_name
 before_test_step
+after_test_step
+before_test_step
 before_feature_element
 before_tags
 after_tags
