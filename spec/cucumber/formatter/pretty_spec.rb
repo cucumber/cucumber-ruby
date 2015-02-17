@@ -21,6 +21,19 @@ module Cucumber
             run_defined_feature
           end
 
+          describe "with a scenario with no steps" do
+            define_feature <<-FEATURE
+          Feature: Banana party
+
+            Scenario: Monkey eats banana
+            FEATURE
+
+            it "outputs the scenario name" do
+              expect(@out.string).to include "Scenario: Monkey eats banana"
+            end
+          end
+
+
           describe "with a scenario" do
             define_feature <<-FEATURE
           Feature: Banana party
