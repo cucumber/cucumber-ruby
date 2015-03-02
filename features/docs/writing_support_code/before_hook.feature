@@ -58,8 +58,8 @@ Feature: Before Hook
       """
             NAMES:
             Feature name
-            Scenario Outline name, Examples Table name (#1)
-            Scenario Outline name, Examples Table name (#1)
+            Scenario Outline name
+            | step |
 
       """
 
