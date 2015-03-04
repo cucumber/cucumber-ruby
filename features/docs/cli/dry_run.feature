@@ -23,3 +23,46 @@ Feature: Dry Run
       0m0.012s
 
       """
+  Scenario: In the strict mode
+    Given a file named "features/test.feature" with:
+      """
+      Feature: test
+        Scenario:
+          Given this step fails
+      """
+    And the standard step definitions
+    When I run `cucumber --dry-run --strict`
+    Then it should pass with exactly:
+      """
+      Feature: test
+
+        Scenario:               # features/test.feature:2
+          Given this step fails # features/step_definitions/steps.rb:4
+
+      1 scenario (1 skipped)
+      1 step (1 skipped)
+      0m0.012s
+
+      """
+  Scenario: In the strict mode with an undefined step
+    Given a file named "features/test.feature" with:
+      """
+      Feature: test
+        Scenario:
+          Given this step is undefined
+      """
+    When I run `cucumber --dry-run --strict`
+    Then it should fail with:
+      """
+      Feature: test
+
+        Scenario:                      # features/test.feature:2
+          Given this step is undefined # features/test.feature:3
+            Undefined step: "this step is undefined" (Cucumber::Undefined)
+            features/test.feature:3:in `Given this step is undefined'
+
+      1 scenario (1 undefined)
+      1 step (1 undefined)
+      0m0.012s
+
+      """

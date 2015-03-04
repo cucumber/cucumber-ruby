@@ -201,7 +201,7 @@ module Cucumber
         summary_report.test_cases.total_passed > 0
       else
         summary_report.test_cases.total_failed > 0 || summary_report.test_steps.total_failed > 0 ||
-          (@configuration.strict? && (summary_report.test_steps.total_undefined > 0 || summary_report.test_steps.total_skipped > 0))
+          (@configuration.strict? && (summary_report.test_steps.total_undefined > 0 || summary_report.test_steps.total_pending > 0))
       end
     end
     public :failure?

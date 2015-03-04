@@ -1,6 +1,7 @@
 ## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.4...master)
 ### Bugfixes
 
+ * Pass when using both the --dry-run and the --strict options, unless there are no undefined steps ([810](https://github.com/cucumber/cucumber/issues/810) @brasmusson)
  * Handle step output correctly for Scenario Outlines with the --expand option ([806](https://github.com/cucumber/cucumber/issues/806) @brasmusson)
 
 ## [v2.0.0.rc.4](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.3...2.0.0.rc.4)

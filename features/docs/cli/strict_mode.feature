@@ -10,8 +10,14 @@ Feature: Strict mode
       Scenario: Missing
         Given this step passes
     """
+    And a file named "features/pending.feature" with:
+    """
+    Feature: Pending
+      Scenario: Pending
+        Given this step is pending
+    """
 
-  Scenario: Fail with --strict
+  Scenario: Fail with --strict due to undefined step
     When I run `cucumber -q features/missing.feature --strict`
     Then it should fail with:
       """
@@ -24,6 +30,23 @@ Feature: Strict mode
 
       1 scenario (1 undefined)
       1 step (1 undefined)
+      """
+
+  Scenario: Fail with --strict due to pending step
+    Given the standard step definitions
+    When I run `cucumber -q features/pending.feature --strict`
+    Then it should fail with:
+      """
+      Feature: Pending
+
+        Scenario: Pending
+          Given this step is pending
+            TODO (Cucumber::Pending)
+            ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
+            features/pending.feature:3:in `Given this step is pending'
+
+      1 scenario (1 pending)
+      1 step (1 pending)
       """
 
   Scenario: Succeed with --strict
