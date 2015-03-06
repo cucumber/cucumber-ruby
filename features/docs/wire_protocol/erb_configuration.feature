@@ -1,6 +1,6 @@
 @wire
-Feature: Wire Protocol with ERB
-  In order to be allow Cucumber to touch my app in intimate places
+Feature: ERB configuration
+
   As a developer on server with multiple users
   I want to be able to configure which port my wire server runs on
   So that I can avoid port conflicts

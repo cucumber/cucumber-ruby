@@ -1,5 +1,6 @@
 @wire
 Feature: Wire protocol table diffing
+
   In order to use the amazing functionality in the Cucumber table object
   As a wire server
   I want to be able to ask for a table diff during a step definition invocation

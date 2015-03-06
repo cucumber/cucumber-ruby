@@ -1,5 +1,6 @@
 @wire
 Feature: Wire protocol timeouts
+
   We don't want Cucumber to hang forever on a wire server that's not even there,
   but equally we need to give the user the flexibility to allow step definitions
   to take a while to execute, if that's what they need.

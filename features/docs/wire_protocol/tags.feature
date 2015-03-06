@@ -1,5 +1,6 @@
 @wire
 Feature: Wire protocol tags
+
   In order to use Before and After hooks in a wire server, we send tags with the 
   scenario in the begin_scenario and end_scenario messages
 
