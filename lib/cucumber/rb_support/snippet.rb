@@ -2,7 +2,7 @@ module Cucumber
   module RbSupport
     module Snippet
 
-      ARGUMENT_PATTERNS = ['"(.*?)"', '(\d+)']
+      ARGUMENT_PATTERNS = ['"([^"]*)"', '(\d+)']
 
       class BaseSnippet
 
