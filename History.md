@@ -4,101 +4,101 @@
 
 * Add `--init` command ([699](https://github.com/cucumber/cucumber/pull/699) @LGordon2)
 
-### Bugfixes
+## Bugfixes
 
- * Pass when using both the --dry-run and the --strict options, unless there are undefined steps ([810](https://github.com/cucumber/cucumber/issues/810) @brasmusson)
- * Handle step output correctly for Scenario Outlines with the --expand option ([806](https://github.com/cucumber/cucumber/issues/806) @brasmusson)
+* Pass when using both the --dry-run and the --strict options, unless there are undefined steps ([810](https://github.com/cucumber/cucumber/issues/810) @brasmusson)
+* Handle step output correctly for Scenario Outlines with the --expand option ([806](https://github.com/cucumber/cucumber/issues/806) @brasmusson)
 
 ## [v2.0.0.rc.4](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.3...2.0.0.rc.4)
 
 ### Features
 
-  * [Add custom filters from Ruby configuration code](https://github.com/cucumber/cucumber/blob/master/features/docs/extending_cucumber/custom_filter.feature) (@mattwynne)
+* [Add custom filters from Ruby configuration code](https://github.com/cucumber/cucumber/blob/master/features/docs/extending_cucumber/custom_filter.feature) (@mattwynne)
 
 ### Bugfixes
 
- * Fix missing `require Forwardable` (@tooky)
- * Fix snippet suggestions ([765](https://github.com/cucumber/cucumber/pull/765) @richarda), also with i18n languages (@brasmusson)
- * Fix transformation of regex with lookahead/lookbehind ([796](https://github.com/cucumber/cucumber/pull/796) @bolshakov)
- * Sort scenarios by location ([789](https://github.com/cucumber/cucumber/issues/789) @mattwynne)
- * Remove keyword from name property of test case object yielded to hooks ([768](https://github.com/cucumber/cucumber/issues/768) @richarda, @akostadinov)
+* Fix missing `require Forwardable` (@tooky)
+* Fix snippet suggestions ([765](https://github.com/cucumber/cucumber/pull/765) @richarda), also with i18n languages (@brasmusson)
+* Fix transformation of regex with lookahead/lookbehind ([796](https://github.com/cucumber/cucumber/pull/796) @bolshakov)
+* Sort scenarios by location ([789](https://github.com/cucumber/cucumber/issues/789) @mattwynne)
+* Remove keyword from name property of test case object yielded to hooks ([768](https://github.com/cucumber/cucumber/issues/768) @richarda, @akostadinov)
 
 ## [v2.0.0.rc.3](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.2...v2.0.0.rc.3)
 
 ### Bugfixes
 
-  * MultilineArgument::DataTable#diff will correctly compare to an Array (@tooky)
+* MultilineArgument::DataTable#diff will correctly compare to an Array (@tooky)
 
 ## [v2.0.0.rc.2](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.1...v2.0.0.rc.2)
 
 ### Bugfixes
 
-  * World#table no longer creates invalid table objects when using an Array (@tooky, @mattwynne)
+* World#table no longer creates invalid table objects when using an Array (@tooky, @mattwynne)
 
 ## [v2.0.0.rc.1](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.5...v2.0.0.rc.1)
 
 ### Removed Features
   
-  * Removed support for IronRuby (@tooky @mattwynne)
+* Removed support for IronRuby (@tooky @mattwynne)
 
 ### New Features
 
-  * Let the HTML formatter store the relative path to files in the report ([697](https://github.com/cucumber/cucumber/pull/697) @idstein, @brasmusson)
-  * Allow cucumber.yml to parse % erb code lines ([755](https://github.com/cucumber/cucumber/pull/755) @snowe2010)
-  * Give each step definition a unique copy of argument objects ([760](https://github.com/cucumber/cucumber/pull/760) @tooky)
+* Let the HTML formatter store the relative path to files in the report ([697](https://github.com/cucumber/cucumber/pull/697) @idstein, @brasmusson)
+* Allow cucumber.yml to parse % erb code lines ([755](https://github.com/cucumber/cucumber/pull/755) @snowe2010)
+* Give each step definition a unique copy of argument objects ([760](https://github.com/cucumber/cucumber/pull/760) @tooky)
 
 ### Bugfixes
 
-  * Add old Scenario#skip_invoke! method back (@mattwynne)
-  * No links to lines in backtrace under TextMate ([548](https://github.com/cucumber/cucumber/pull/548) @bilus)
-  * Using file:line CLI to select scenarios was running same scenario multiple times ([786](https://github.com/cucumber/cucumber/pull/786) @jdks)
-  * Allow spaces in filenames for rerun formatter ([793](https://github.com/cucumber/cucumber/pull/793) @callahat)
+* Add old Scenario#skip_invoke! method back (@mattwynne)
+* No links to lines in backtrace under TextMate ([548](https://github.com/cucumber/cucumber/pull/548) @bilus)
+* Using file:line CLI to select scenarios was running same scenario multiple times ([786](https://github.com/cucumber/cucumber/pull/786) @jdks)
+* Allow spaces in filenames for rerun formatter ([793](https://github.com/cucumber/cucumber/pull/793) @callahat)
 
 ## [v2.0.0.beta.5](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.4...v2.0.0.beta.5)
 
-  * Depend on the correct version of core (@tooky)
+* Depend on the correct version of core (@tooky)
 
 ## [v2.0.0.beta.4](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.3...v2.0.0.beta.4)
 ### New Features
 
-  * Support both new and legacy formatter APIs simultaneously (@mattwynne and @tooky)
+* Support both new and legacy formatter APIs simultaneously (@mattwynne and @tooky)
 
 ### Bugfixes
 
-  * Localize the Scenario keyword with the --expand option ([766](https://github.com/cucumber/cucumber/pull/766) @brasmusson)
-  * Handle hook output appropriately in the HTML formatter ([746](https://github.com/cucumber/cucumber/pull/746), [731](https://github.com/cucumber/cucumber/issues/731), [298](https://github.com/cucumber/cucumber/pull/298) @brasmusson)
-  * Handle hook output appropriately in the Pretty formatter ([738](https://github.com/cucumber/cucumber/pull/738) @brasmusson)
+* Localize the Scenario keyword with the --expand option ([766](https://github.com/cucumber/cucumber/pull/766) @brasmusson)
+* Handle hook output appropriately in the HTML formatter ([746](https://github.com/cucumber/cucumber/pull/746), [731](https://github.com/cucumber/cucumber/issues/731), [298](https://github.com/cucumber/cucumber/pull/298) @brasmusson)
+* Handle hook output appropriately in the Pretty formatter ([738](https://github.com/cucumber/cucumber/pull/738) @brasmusson)
 
 ### Internal changes
 
-  * Re-write rerun formatter against new formatter API
+* Re-write rerun formatter against new formatter API
 
 ## [v2.0.0.beta.3](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.2...v2.0.0.beta.3)
 
 ### Removed Features
 
-  * The `--dotcucumber` option is no longer supported and `stepdefs.json` is no longer written. (Aslak Hellesøy)
+* The `--dotcucumber` option is no longer supported and `stepdefs.json` is no longer written. (Aslak Hellesøy)
 
 ### New Features
 
-  * Include both outline step and expanded step in error backtrace ([730](https://github.com/cucumber/cucumber/pull/730) @brasmusson)
-  * Add TestCase#outline? for conditionals in Before / After hooks ([728](https://github.com/cucumber/cucumber/pull/728) [Erran Carey](https://github.com/erran))
-  * Support embedding images directly in HTML and JSON reports ([696](https://github.com/cucumber/cucumber/pull/696),[695](https://github.com/cucumber/cucumber/pull/695/files) @brasmusson)
+* Include both outline step and expanded step in error backtrace ([730](https://github.com/cucumber/cucumber/pull/730) @brasmusson)
+* Add TestCase#outline? for conditionals in Before / After hooks ([728](https://github.com/cucumber/cucumber/pull/728) [Erran Carey](https://github.com/erran))
+* Support embedding images directly in HTML and JSON reports ([696](https://github.com/cucumber/cucumber/pull/696),[695](https://github.com/cucumber/cucumber/pull/695/files) @brasmusson)
 
 ### Bugfixes
 
-  * Pass hook output to the formatters appropriately ([732](https://github.com/cucumber/cucumber/pull/732) @brasmusson)
-  * Added tests for, and re-added behaviour to support Scenario#failed? in hooks (Matt Wynne)
-  * Rescuing ArgumentError in HTML formatter so Cucumber won't stop tests due bad encoding ([690](https://github.com/cucumber/cucumber/pull/690) @awls99)
-  * Add back support for the DataTable API ([729](https://github.com/cucumber/cucumber/pull/729) @mattwynne and @tooky)
-  * Fix Windows support loading files properly ([739](https://github.com/cucumber/cucumber/issues/739) @os97673)
+* Pass hook output to the formatters appropriately ([732](https://github.com/cucumber/cucumber/pull/732) @brasmusson)
+* Added tests for, and re-added behaviour to support Scenario#failed? in hooks (Matt Wynne)
+* Rescuing ArgumentError in HTML formatter so Cucumber won't stop tests due bad encoding ([690](https://github.com/cucumber/cucumber/pull/690) @awls99)
+* Add back support for the DataTable API ([729](https://github.com/cucumber/cucumber/pull/729) @mattwynne and @tooky)
+* Fix Windows support loading files properly ([739](https://github.com/cucumber/cucumber/issues/739) @os97673)
 
 ## [v2.0.0.beta.2](https://github.com/cucumber/cucumber/compare/v2.0.0.beta.1...v2.0.0.beta.2)
 
 ### Bugfixes
 
-  * Better reporting of exceptions in Before / After hooks ([723](https://github.com/cucumber/cucumber/pull/723) @mattwynne)
-  * Add `#source_tag_names` method to `TestCase` object passed to hooks (@mattwynne)
+* Better reporting of exceptions in Before / After hooks ([723](https://github.com/cucumber/cucumber/pull/723) @mattwynne)
+* Add `#source_tag_names` method to `TestCase` object passed to hooks (@mattwynne)
 
 ## [v2.0.0.beta.1 ](https://github.com/cucumber/cucumber/compare/v1.3.8...v2.0.0.beta.1)
 
@@ -160,7 +160,7 @@ all.
 ## [v1.3.12](https://github.com/cucumber/cucumber/compare/v1.3.11...v1.3.12)
 
 * Use MultiTest to handle assertions library selection (@tooky)
-  * Adds full support for rails 4.1 / Minitest
+* Adds full support for rails 4.1 / Minitest
 
 ## [v1.3.11](https://github.com/cucumber/cucumber/compare/v1.3.10...v1.3.11)
 
@@ -645,7 +645,7 @@ Bugfix release which most importantly fixes an issue with the gem's gemspec.
 * JSON formatters (json and json_pretty). (Jari Bakken)
 
 ### Removed features
-* The --no-diff option is removed. If you're using RSpec you will *always* get diffs. (Aslak Hellesøy)
+* The --no-diff option is removed. If you're using RSpec you will*always* get diffs. (Aslak Hellesøy)
 
 ### Changed Features
 * Upgraded to be compatible with rspec 2.0.0.beta.10 (Aslak Hellesøy)
@@ -850,7 +850,7 @@ Please see History.txt in cucumber-rails for details about what's new on the Rai
 * "Given" in Dutch is now aliased to "Gegeven" or "Stel". (Iain Hecker)
 * New --i18n option to list keywords in various languages. (Aslak Hellesøy)
 * Added a Tcl example using Sam Stephenson's ruby-tcl (Aslak Hellesøy)
-* Added * as a synonym for Given/When/Then/And/But (for all i18n languages). (#462 Aslak Hellesøy)
+* Added* as a synonym for Given/When/Then/And/But (for all i18n languages). (#462 Aslak Hellesøy)
 * The HTML formatter produces a much nicer report, with TextMate link integration. (Rob Aldred)
 * Wire protocol now supports table arguments, step definition source & regexp, snippets, pending, table diffing (Matt Wynne)
 
@@ -910,7 +910,7 @@ As usual there are several small features and bug fixes.
 * New Wire Protocol - allowing out of process execution of Cucumber scenarios. (#428 Matt Wynne)
 * Added an example illustrating how to get screenshots in HTML reports (examples/watir) (Aslak Hellesøy)
 * Added new #embed(file, mime_type) method to visitors and Ruby Worlds to make it easier to embed screenshots (Aslak Hellesøy)
-* The #puts method available from Ruby Step Definitions will print *after* the step is executed. (#487 Zoltan Penzeli)
+* The #puts method available from Ruby Step Definitions will print*after* the step is executed. (#487 Zoltan Penzeli)
 * Add support for rolling back transaction for all open database connections. (John Ferlito)
 * Show scenario and step summary in HTML formatter (#285 Joseph Wilk)
 * Ast::Table can now be constructed with an Array of Hash. (Aslak Hellesøy)
@@ -963,7 +963,7 @@ The back to stable release. When we went from 0.3.11 to 0.3.90 we thought we wer
 went nuts and a lot of great contributions came in. Some of those broke backwards compatibility, and we decided it would be
 better to do this while still on 0.3.x.
 
-Rails users: you *must* run script/generate cucumber after installing this version.
+Rails users: you*must* run script/generate cucumber after installing this version.
 
 If something breaks for you, please please please read this file carefully. It's most likely something referenced here, and
 that will give you more information so you can solve any problems. If not, just get in touch on IRC or the Google Group.
@@ -1055,7 +1055,7 @@ Other noteworthy new features are improved Hook, tags and Transform support, and
 ### New Features
 * Added new internal API for Regexp and groups, allowing other programming languages to leverage native regexps. (Aslak Hellesøy)
 * New @allow_rescue tag for Rails scenarios. Causes exceptions raised in actions to be caught by rails and not bubble up to Cucumber (Aslak Hellesøy)
-* Negative tags can now be used in hooks, just like the command line's --tags option: Before('~@yarr') - will run for all scenarios that *don't* have the @yarr tag. (Aslak Hellesøy)
+* Negative tags can now be used in hooks, just like the command line's --tags option: Before('~@yarr') - will run for all scenarios that*don't* have the @yarr tag. (Aslak Hellesøy)
 * Transform has current "World" scope (Larry Diehl)
 * Other Transforms can be reused by calling Transform with a string inside of another Transform definition (Larry Diehl)
 * Execute "After" hooks in reverse order of declaration for better behavior with dependent blocks and to mimic the behavior of at_exit (David Waite)
@@ -1069,7 +1069,7 @@ Other noteworthy new features are improved Hook, tags and Transform support, and
 * Cucumber with Spork breaks on OS X Snow Leopard (#431 David Chelimsky)
 
 ### Changed Features
-* Tag names passed on the command line *always* have to use the @ sign. --tags foo or --tags ~bar won't work. Use --tags @foo or --tags ~@bar (Aslak Hellesøy)
+* Tag names passed on the command line*always* have to use the @ sign. --tags foo or --tags ~bar won't work. Use --tags @foo or --tags ~@bar (Aslak Hellesøy)
 
 ### Removed features
 * The Cucumber::Rails.bypass_rescue no longer exists. Errors will always bubble up, unless you use the new @allow_rescue tag. (Aslak Hellesøy)
@@ -1207,8 +1207,8 @@ You'll achieve better flow this way.
 * Added examples/python that uses rubypython. (Aslak Hellesøy)
 * Checks the number of available colors on the terminal with ruby-terminfo if ruby-terminfo is installed.
   This prevents Apple's Terminal.app from stalling (Yugui - Yuki Sonoda).
-  * Set 'xterm-256color' to TERM if your terminal supports grey.
-  * ruby-terminfo is available as genki-ruby-terminfo gem from github.
+* Set 'xterm-256color' to TERM if your terminal supports grey.
+* ruby-terminfo is available as genki-ruby-terminfo gem from github.
 * Document builtin formatters with --help. (#406 Aslak Hellesøy)
 * Added support for using regular expressions when mapping table headers.  (Peter Williams)
 
@@ -1308,7 +1308,7 @@ expected data passed to a step. Here is an example:
     end
 
 You can do the same trick to compare data from a Rails ActiveRecord table (although this is not a
-recommended practice - your Then steps should compare against what users *see*, not what's in the
+recommended practice - your Then steps should compare against what users*see*, not what's in the
 database):
 
     # This requires that you use the column names in the header of the plain text expected table
@@ -1376,7 +1376,7 @@ thanks to a brand new gem called Spork by Tim Harper and Ben Mabey. (You can fin
 here: http://github.com/timcharper/spork/tree/master). You can start Spork and have it preload your
 application in a separate process. Spork listens for DRb connections, and when you run cucumber with
 --drb the features will run inside the Spork server instead. Spork provides two simple hooks for preloading
-your application - one for framework/stable code (Spork.prefork) and one for the code that *you* write and
+your application - one for framework/stable code (Spork.prefork) and one for the code that*you* write and
 change often (Spork.each_run). Keep in mind that all World, Before, and other Cucumber hooks need to be
 in the Spork.each_run block.  Using Spork works great for Ruby on Rails, which can take a while to load,
 but --drb and Spork aren't tied to Rails at all. The new --drb switch also works great alongside autotest
@@ -1418,7 +1418,7 @@ generator which is fixed in 0.3.9.
 ## [0.3.8](https://github.com/cucumber/cucumber/compare/v0.3.7...v0.3.8)
 
 This Cucumber version fixes several bugs related to Ruby on Rails and RSpec. If you
-use Cucumber with a Rails app we *strongly* recommend you bootstrap Cucumber again:
+use Cucumber with a Rails app we*strongly* recommend you bootstrap Cucumber again:
 
     ruby script/generate cucumber
 
@@ -1433,7 +1433,7 @@ use Cucumber with a Rails app we *strongly* recommend you bootstrap Cucumber aga
 * The Cucumber Rake task will again fork by default (as 0.3.3 and earlier). Forking must be turned off explicitly. (Aslak Hellesøy)
 
 ### Bugfixes
-* Better coexistence with RSpec - Cucumber now *neuters* the part of RSpec that tries to parse ARGV.
+* Better coexistence with RSpec - Cucumber now*neuters* the part of RSpec that tries to parse ARGV.
 * The differ= exception is gone (#325, #340 Aslak Hellesøy)
 
 ## [0.3.7](https://github.com/cucumber/cucumber/compare/v0.3.6...v0.3.7)
@@ -1481,7 +1481,7 @@ and there is a brand new JUnit formatter - great for Continuous Integration repo
 
 This release was made especially for the Oslo XP Meetup today.
 
-** IMPORTANT UPGRADE NOTES FOR RAILS USERS **
+** IMPORTANT UPGRADE NOTES FOR RAILS USERS**
 
 Running Cucumber features in the same Ruby interpreter as Rake doesn't seem to work,
 so you have to explicitly tell the task to fork (like it was doing by default in prior
@@ -1621,10 +1621,10 @@ http://wiki.github.com/aslakhellesoy/cucumber/using-rake#profiles
 
 ### Removed/changed features
 * The visitor API has changed slightly:
-  * \#visit_step_name, #visit_multiline_arg and \#visit_exception are no longer official API methods.
-  * \#visit_step_result replaces those 3 methods.
-  * Table and PyString no longer hold status information. Each visitor subclass should store state in @state if needed.
-  * \#visit_py_string no longer takes a status argument.
+* \#visit_step_name, #visit_multiline_arg and \#visit_exception are no longer official API methods.
+* \#visit_step_result replaces those 3 methods.
+* Table and PyString no longer hold status information. Each visitor subclass should store state in @state if needed.
+* \#visit_py_string no longer takes a status argument.
 
 ## [0.2.3](https://github.com/cucumber/cucumber/compare/v0.2.2...v0.2.3)
 
@@ -2074,6 +2074,7 @@ The step definitions for such multiline steps must define an extra block argumen
 * Show the feature file and line for pending steps as a comment when displaying with the pretty formatter. (#40, Joseph Wilk)
 
 ### Bugfixes
+
 * Fixed speling errors in Spanish (Daniel Cadenas)
 * ActionMailer delivery_method should not be set to test (#41, Luke Melia)
 * Reverse incorrectly ordered args in webrat select step (#43, David Chelimsky)
@@ -2081,9 +2082,11 @@ The step definitions for such multiline steps must define an extra block argumen
 * Fixed the HTML Formatter to use actual values for FIT table headers (#30, Joseph Wilk)
 
 ### Removed features
+
 * Removed the /^I go to (.*)$/ step from common_webrat.rb - it's not language agnostic and provides little value.
 
 ### New features
+
 * Added new --out option to make it easier to specify output from Rake and cucumber.yml
 
 ## [0.1.7](https://github.com/cucumber/cucumber/compare/v0.1.6...v0.1.7)
@@ -2129,11 +2132,13 @@ a plain text step is defined. Not anymore! Cucumber will now output this:
       And the result class should be Float         # features/steps/calculator_steps.rb:24
 
 ### Bugfixes
+
 * Fixed a bug in the command line args being lost when using --profile (#27, Joseph Wilk)
 * Fixed a bug in Webrat selects (Tim Glen)
 * Fixed parsing of DOS line endings (#2, #28, Aslak Hellesøy)
 
 ### New features
+
 * Steps can be called from other steps (#3, Bryan Helmkamp, Aslak Hellesøy)
 * Added But keyword to all languages (#21, Aslak Hellesøy)
 * Added --no-source option to display step definition location next to step text (#26, Joseph Wilk, Aslak Hellesøy)
