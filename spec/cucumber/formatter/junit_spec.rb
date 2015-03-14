@@ -200,7 +200,7 @@ module Cucumber
         let(:runtime)   { Runtime.new({:expand => true}) }
         before(:each) do
           allow(File).to receive(:directory?) { true }
-          @formatter = TestDoubleJunitFormatter.new(runtime, '', {})
+          @formatter = TestDoubleJunitFormatter.new(runtime, '', {:expand => true})
         end
 
         after(:each) do
