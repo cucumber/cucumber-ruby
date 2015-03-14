@@ -274,3 +274,43 @@ You *must* specify --out DIR for the junit formatter
       </testsuite>
 
       """ 
+
+  Scenario: one feature, one scenario outline, two examples: one passing, one failing with --expand option
+    When I run `cucumber --expand --format junit --out tmp/ features/scenario_outline.feature`
+    Then it should fail with exactly:
+      """
+
+      """
+    And the junit output file "tmp/TEST-features-scenario_outline.xml" should contain:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <testsuite failures="1" errors="0" skipped="0" tests="2" time="0.05" name="Scenario outlines">
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | passes |)" time="0.05">
+        <system-out/>
+        <system-err/>
+      </testcase>
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | fails |)" time="0.05">
+        <failure message="failed Using scenario outlines (outline example : | fails |)" type="failed">
+          <![CDATA[Scenario Outline: Using scenario outlines
+      
+      Example row: | fails |
+      
+      Message:
+      ]]>
+          <![CDATA[ (RuntimeError)
+      ./features/step_definitions/steps.rb:4:in `/^this step fails$/'
+      features/scenario_outline.feature:9:in `Given this step fails'
+      features/scenario_outline.feature:4:in `Given this step <type>']]>
+        </failure>
+        <system-out/>
+        <system-err/>
+      </testcase>
+        <system-out>
+          <![CDATA[]]>
+        </system-out>
+        <system-err>
+          <![CDATA[]]>
+        </system-err>
+      </testsuite>
+
+      """ 

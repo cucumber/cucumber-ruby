@@ -129,6 +129,34 @@ module Cucumber
         @header_row = false if @header_row
       end
 
+      def before_test_case(test_case)
+        if @options[:expand] and test_case.keyword == "Scenario Outline"
+          @exception = nil
+        end
+      end
+
+      def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
+        if @options[:expand] and @in_examples
+          if not @exception and exception
+            @exception = exception
+          end
+        end
+      end
+
+      def after_test_case(test_case, result)
+        if @options[:expand] and test_case.keyword == "Scenario Outline"
+          test_case_name = NameBuilder.new(test_case)
+          @scenario = test_case_name.outline_name
+          @output = "#{test_case.keyword}: #{@scenario}\n\n"
+          if result.failed?
+            @output += "Example row: #{test_case_name.row_name}\n"
+            @output += "\nMessage:\n"
+          end
+          test_case_result = ResultBuilder.new(result)
+          build_testcase(test_case_result.test_case_duration, test_case_result.status, @exception, test_case_name.name_suffix)
+        end
+      end
+
       private
 
       def build_testcase(duration, status, exception = nil, suffix = "")
@@ -176,5 +204,72 @@ module Cucumber
       end
       
     end
+
+    class NameBuilder
+      attr_reader :outline_name, :name_suffix, :row_name
+
+      def initialize(test_case)
+        test_case.describe_source_to self
+      end
+
+      def feature(*)
+        self
+      end
+
+      def scenario(*)
+        self
+      end
+
+      def scenario_outline(outline)
+        @outline_name = outline.name
+        self
+      end
+
+      def examples_table(*)
+        self
+      end
+
+      def examples_table_row(row)
+        @row_name = '| ' + row.values.join(' | ') + ' |'
+        @name_suffix = " (outline example : #{@row_name})"
+        self
+      end
+    end
+
+    class ResultBuilder
+      attr_reader :status, :test_case_duration
+      def initialize(result)
+        @test_case_duration = 0
+        result.describe_to(self)
+      end
+
+      def passed
+        @status = :passed
+      end
+
+      def failed
+        @status = :failed
+      end
+
+      def undefined
+        @status = :undefined
+      end
+
+      def skipped
+        @status = :skipped
+      end
+
+      def pending(*)
+        @status = :pending
+      end
+
+      def exception(*)
+      end
+
+      def duration(duration, *)
+        duration.tap { |duration| @test_case_duration = duration.nanoseconds / 10 ** 9.0 }
+      end
+    end
+
   end
 end

@@ -6,6 +6,7 @@
 
 ## Bugfixes
 
+* Let the JUnitFormatter handle Scenario Outlines with the --expand option ([124](https://github.com/cucumber/cucumber/issues/124), [808](https://github.com/cucumber/cucumber/pull/808) @brasmusson, @richarda)
 * Suggested regexes result in ambigous matches ([663](https://github.com/cucumber/cucumber/pull/663) @rwz)
 * Pass when using both the --dry-run and the --strict options, unless there are undefined steps ([810](https://github.com/cucumber/cucumber/issues/810) @brasmusson)
 * Handle step output correctly for Scenario Outlines with the --expand option ([806](https://github.com/cucumber/cucumber/issues/806) @brasmusson)
