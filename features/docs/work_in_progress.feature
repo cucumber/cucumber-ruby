@@ -148,7 +148,7 @@ Feature: Cucumber --work-in-progress switch
       The --wip switch was used, so I didn't expect anything to pass. These scenarios passed:
       (::) passed scenarios (::)
 
-      features/passing_outline.feature:7:in `Scenario Outline: Passing, Examples (row 1)'
+      features/passing_outline.feature:7:in `Scenario Outline: Passing, Examples (#1)'
 
 
       """
