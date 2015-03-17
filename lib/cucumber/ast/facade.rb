@@ -12,6 +12,7 @@ module Cucumber
     class Facade
       def initialize(test_case)
         @test_case = test_case
+        @row = nil
         test_case.describe_source_to(self)
       end
 
@@ -31,10 +32,15 @@ module Cucumber
       end
 
       def examples_table_row(row)
+        @row = row
       end
 
       def build_scenario
-        @factory.new(@test_case, Feature.new(@feature.legacy_conflated_name_and_description))
+        if @factory == Scenario
+          @factory.new(@test_case, Feature.new(@feature.legacy_conflated_name_and_description))
+        else
+          @factory.new(@test_case, Feature.new(@feature.legacy_conflated_name_and_description), @row)
+        end
       end
 
       class Scenario
@@ -101,12 +107,64 @@ module Cucumber
       end
 
       class ScenarioOutlineExample < Scenario
+        def initialize(test_case, feature, row, result = Core::Test::Result::Unknown.new)
+          super(test_case, feature, result)
+          @row = row
+        end
+
         def outline?
           true
         end
 
         def scenario_outline
-          self
+          self.class.new(@test_case, @feature, nil, @result)
+        end
+
+        def with_result(result)
+          self.class.new(@test_case, @feature, @row, result)
+        end
+
+        def name
+          @name ||= build_name
+        end
+
+        private
+        
+        def build_name
+          if @row
+            '| ' + @row.values.join(' | ') + ' |'
+          else
+            NameBuilder.new(@test_case).result
+          end
+        end
+
+        class NameBuilder
+          attr_reader :result
+
+          def initialize(test_case)
+            test_case.describe_source_to self
+          end
+
+          def feature(*)
+            self
+          end
+
+          def scenario(*)
+            self
+          end
+
+          def scenario_outline(outline)
+            @result = outline.name
+            self
+          end
+
+          def examples_table(*)
+            self
+          end
+
+          def examples_table_row(*)
+            self
+          end
         end
       end
 
