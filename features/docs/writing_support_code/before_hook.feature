@@ -25,7 +25,8 @@ Feature: Before Hook
       """
         NAMES:
         Feature name
-        Scenario: Scenario name
+        Scenario name
+
       """
 
   Scenario: Examine names of scenario outline and feature
@@ -46,7 +47,8 @@ Feature: Before Hook
       Before do |scenario|
         names << scenario.scenario_outline.feature.name.split("\n").first
         names << scenario.scenario_outline.name.split("\n").first
-        if(names.size == 2)
+        names << scenario.name.split("\n").first
+        if(names.size == 3)
           raise "NAMES:\n" + names.join("\n") + "\n"
         end
       end
@@ -56,6 +58,8 @@ Feature: Before Hook
       """
             NAMES:
             Feature name
-            Scenario Outline: Scenario Outline name
+            Scenario Outline name, Examples Table name (#1)
+            Scenario Outline name, Examples Table name (#1)
+
       """
 
