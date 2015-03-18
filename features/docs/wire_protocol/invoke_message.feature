@@ -178,3 +178,39 @@ Feature: Invoke message
       1 step (1 passed)
 
       """
+
+  Scenario: Invoke a scenario outline step
+    Given a file named "features/wired_in_an_outline.feature" with:
+      """
+      Feature:
+        Scenario Outline:
+          Given we're all <arg>
+
+          Examples:
+            | arg   |
+            | wired |
+      """
+    And there is a wire server running on port 54321 which understands the following protocol:
+      | request                                              | response                            |
+      | ["step_matches",{"name_to_match":"we're all wired"}] | ["success",[{"id":"1", "args":[]}]] |
+      | ["begin_scenario"]                                   | ["success"]                         |
+      | ["invoke",{"id":"1","args":[]}]                      | ["success"]                         |
+      | ["end_scenario"]                                     | ["success"]                         |
+    When I run `cucumber -f progress features/wired_in_an_outline.feature`
+    Then the stderr should not contain anything
+    And it should pass with:
+      """
+      .
+
+      1 scenario (1 passed)
+      1 step (1 passed)
+
+      """
+    And the wire server should have received the following messages:
+      | step_matches   |
+      | begin_scenario |
+      | invoke         |
+      | end_scenario   |
+
+
+

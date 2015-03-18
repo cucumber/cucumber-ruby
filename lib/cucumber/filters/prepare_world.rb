@@ -20,6 +20,7 @@ module Cucumber
           init_scenario = Cucumber::Hooks.around_hook(@original_test_case.source) do |continue|
             @runtime.begin_scenario(scenario)
             continue.call
+            @runtime.end_scenario(scenario)
           end
           around_hooks = [init_scenario] + @original_test_case.around_hooks
 

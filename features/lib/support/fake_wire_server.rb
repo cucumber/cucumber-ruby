@@ -7,9 +7,9 @@ class FakeWireServer
     @delays = {}
   end
 
-  def run
+  def run(io)
     @server = TCPServer.open(@port)
-    loop { handle_connections }
+    loop { handle_connections(io) }
   end
 
   def delay_response(message, delay)
@@ -18,13 +18,14 @@ class FakeWireServer
 
   private
 
-  def handle_connections
-    Thread.start(@server.accept) { |socket| open_session_on socket }
+  def handle_connections(io)
+    Thread.start(@server.accept) { |socket| open_session_on socket, io }
   end
 
-  def open_session_on(socket)
+  def open_session_on(socket, io)
     begin
-      SocketSession.new(socket, @protocol_table, @delays).start
+      on_message = -> (message) { io.puts message }
+      SocketSession.new(socket, @protocol_table, @delays, on_message).start
     rescue Exception => e
       raise e
     ensure
@@ -33,10 +34,11 @@ class FakeWireServer
   end
 
   class SocketSession
-    def initialize(socket, protocol, delays)
+    def initialize(socket, protocol, delays, on_message)
       @socket = socket
       @protocol = protocol
       @delays = delays
+      @on_message = on_message
     end
 
     def start
@@ -50,6 +52,7 @@ class FakeWireServer
     def handle(data)
       if protocol_entry = response_to(data.strip)
         sleep delay(data)
+        @on_message.call(MultiJson.load(protocol_entry['request'])[0])
         send_response(protocol_entry['response'])
       else
         serialized_exception = { :message => "Not understood: #{data}", :backtrace => [] }

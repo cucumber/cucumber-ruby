@@ -17,9 +17,26 @@ Given /^I have environment variable (\w+) set to "([^"]*)"$/ do |variable, value
   set_env(variable, value)
 end
 
+Then(/^the wire server should have received the following messages:$/) do |expected_messages|
+  expect(messages_received).to eq expected_messages.raw.flatten
+end
+
 module WireHelper
+  attr_reader :messages_received
+
   def start_wire_server
-    @wire_pid = fork { @server.run }
+    @messages_received = []
+    reader, writer = IO.pipe
+    @wire_pid = fork { 
+      reader.close
+      @server.run(writer)
+    }
+    writer.close
+    Thread.new do
+      while message = reader.gets
+        @messages_received << message.strip
+      end
+    end
     at_exit { stop_wire_server }
   end
 

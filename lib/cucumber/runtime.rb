@@ -102,6 +102,10 @@ module Cucumber
       @support_code.fire_hook(:begin_scenario, scenario)
     end
 
+    def end_scenario(scenario)
+      @support_code.fire_hook(:end_scenario)
+    end
+
     def unknown_programming_language?
       @support_code.unknown_programming_language?
     end
