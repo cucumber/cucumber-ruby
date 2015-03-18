@@ -126,6 +126,30 @@ module Cucumber
           end
         end
 
+        module TestCaseSource
+          def self.for(test_case, result)
+            collector = Collector.new
+            test_case.describe_source_to collector, result
+            collector.result.freeze
+          end
+
+          class Collector
+            attr_reader :result
+
+            def initialize
+              @result = CaseSource.new
+            end
+
+            def method_missing(name, node, test_case_result, *args)
+              result.send "#{name}=", node
+            end
+          end
+
+          require 'ostruct'
+          class CaseSource < OpenStruct
+          end
+        end
+
         module TestStepSource
           def self.for(test_step, result)
             collector = Collector.new
@@ -194,6 +218,7 @@ module Cucumber
 
           def before_test_case(test_case)
             @before_hook_results = Ast::HookResultCollection.new
+            @test_step_results = []
           end
 
           def before_test_step(test_step)
@@ -204,11 +229,18 @@ module Cucumber
             # TODO: stop calling self, and describe source to another object
             test_step.describe_source_to(self, result)
             print_step
+            @test_step_results << result
           end
 
-          def after_test_case(*args)
+          def after_test_case(test_case, test_case_result)
             if current_test_step_source && current_test_step_source.step_result.nil?
               switch_step_container
+            end
+
+            if test_case_result.failed? && !any_test_steps_failed?
+              # around hook must have failed. Print the error.
+              switch_step_container(TestCaseSource.for(test_case, test_case_result))
+              LegacyResultBuilder.new(test_case_result).describe_exception_to formatter
             end
 
             # messages and embedding should already have been handled, but just in case...
@@ -276,8 +308,12 @@ module Cucumber
           attr_reader :before_hook_results
           private :before_hook_results
 
-          def switch_step_container
-            switch_to_child select_step_container(current_test_step_source), current_test_step_source
+          def any_test_steps_failed?
+            @test_step_results.any? &:failed?
+          end
+
+          def switch_step_container(source = current_test_step_source)
+            switch_to_child select_step_container(source), source
           end
 
           def select_step_container(source)
