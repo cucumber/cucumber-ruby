@@ -137,7 +137,7 @@ module Cucumber
 
       def find_after_step_hooks(test_case)
         ruby = load_programming_language('rb')
-        scenario = Ast::Facade.new(test_case).build_scenario
+        scenario = RunningTestCase.new(test_case)
 
         action_blocks = ruby.hooks_for(:after_step, scenario).map do |hook|
           ->(*args) { hook.invoke('AfterStep', args) }
@@ -147,7 +147,7 @@ module Cucumber
 
       def apply_before_hooks(test_case)
         ruby = load_programming_language('rb')
-        scenario = Ast::Facade.new(test_case).build_scenario
+        scenario = RunningTestCase.new(test_case)
 
         action_blocks = ruby.hooks_for(:before, scenario).map do |hook|
           ->(result) { hook.invoke('Before', scenario.with_result(result)) }
@@ -157,7 +157,7 @@ module Cucumber
 
       def apply_after_hooks(test_case)
         ruby = load_programming_language('rb')
-        scenario = Ast::Facade.new(test_case).build_scenario
+        scenario = RunningTestCase.new(test_case)
 
         action_blocks = ruby.hooks_for(:after, scenario).map do |hook|
           ->(result) { hook.invoke('After', scenario.with_result(result)) }
@@ -167,7 +167,7 @@ module Cucumber
 
       def find_around_hooks(test_case)
         ruby = load_programming_language('rb')
-        scenario = Ast::Facade.new(test_case).build_scenario
+        scenario = RunningTestCase.new(test_case)
 
         ruby.hooks_for(:around, scenario).map do |hook|
           Hooks.around_hook(test_case.source) do |run_scenario|

@@ -1,10 +1,11 @@
-require 'cucumber/ast/facade'
+require 'cucumber/running_test_case'
+require 'cucumber/core'
 require 'cucumber/core/gherkin/writer'
 
-module Cucumber::Ast
-  describe Facade do
-    include Cucumber::Core::Gherkin::Writer
-    include Cucumber::Core
+module Cucumber
+  describe RunningTestCase do
+    include Core
+    include Core::Gherkin::Writer
 
     attr_accessor :wrapped_test_case, :core_test_case
 
@@ -12,7 +13,7 @@ module Cucumber::Ast
       receiver = double.as_null_object
       allow(receiver).to receive(:test_case) { |core_test_case|
         self.core_test_case = core_test_case
-        self.wrapped_test_case = Facade.new(core_test_case).build_scenario
+        self.wrapped_test_case = RunningTestCase.new(core_test_case)
       }
       compile [gherkin_doc], receiver
     end

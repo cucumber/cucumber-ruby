@@ -1,5 +1,5 @@
 require 'cucumber/core/filter'
-require 'cucumber/ast/facade'
+require 'cucumber/running_test_case'
 require 'cucumber/hooks'
 
 module Cucumber
@@ -27,7 +27,7 @@ module Cucumber
         private
 
         def scenario
-          @scenario ||= Ast::Facade.new(test_case).build_scenario
+          @scenario ||= RunningTestCase.new(test_case)
         end
       end
 
