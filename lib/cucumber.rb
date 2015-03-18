@@ -1,4 +1,5 @@
 require 'yaml'
+require 'cucumber/encoding'
 require 'cucumber/platform'
 require 'cucumber/runtime'
 require 'cucumber/cli/main'

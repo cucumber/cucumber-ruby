@@ -2,10 +2,7 @@ ENV['CUCUMBER_COLORS'] = nil
 $:.unshift(File.dirname(__FILE__))
 
 # For Travis....
-if defined? Encoding
-  Encoding.default_external = 'utf-8'
-  Encoding.default_internal = 'utf-8'
-end
+require 'cucumber/encoding'
 
 load File.expand_path(File.dirname(__FILE__) + '/../spec/simplecov_setup.rb')
 
