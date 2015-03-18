@@ -91,6 +91,10 @@ module Cucumber
         def scenario_outline
           self
         end
+
+        def cell_values
+          source.last.values
+        end
       end
 
     end

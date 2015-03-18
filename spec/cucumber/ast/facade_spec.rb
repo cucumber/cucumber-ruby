@@ -48,11 +48,11 @@ module Cucumber::Ast
         gherkin do
           feature "feature name" do
             scenario_outline "scenario outline name" do
-              step "passing with <arg>"
+              step "passing with <arg1> <arg2>"
 
               examples "examples name" do
-                row "arg"
-                row "a"
+                row "arg1", "arg2"
+                row "a", "b"
               end
             end
           end
@@ -71,6 +71,10 @@ module Cucumber::Ast
         expect(wrapped_test_case.location).to eq core_test_case.location
         expect(wrapped_test_case.source).to eq core_test_case.source
         expect(wrapped_test_case.keyword).to eq core_test_case.keyword
+      end
+
+      it "exposes the examples table row cell values" do
+        expect(wrapped_test_case.cell_values).to eq ["a", "b"]
       end
 
     end
