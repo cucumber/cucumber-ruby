@@ -16,7 +16,6 @@ module Cucumber
       end
 
       def feature(feature)
-        @feature = feature
       end
 
       def scenario(scenario)
@@ -34,14 +33,14 @@ module Cucumber
       end
 
       def build_scenario
-        @factory.new(@test_case, Feature.new(@feature.legacy_conflated_name_and_description))
+        @factory.new(@test_case)
       end
 
-      class Scenario
-        def initialize(test_case, feature, result = Core::Test::Result::Unknown.new)
+      class Scenario < SimpleDelegator
+        def initialize(test_case, result = Core::Test::Result::Unknown.new)
           @test_case = test_case
-          @feature = feature
           @result = result
+          super test_case
         end
 
         def accept_hook?(hook)
@@ -54,18 +53,6 @@ module Cucumber
 
         def passed?
           !failed?
-        end
-
-        def language
-          @test_case.language
-        end
-
-        def feature
-          @feature
-        end
-
-        def name
-          "#{@test_case.name}"
         end
 
         def title
@@ -87,16 +74,12 @@ module Cucumber
           raise Cucumber::Core::Test::Result::Skipped
         end
 
-        def tags
-          @test_case.tags
-        end
-
         def outline?
           false
         end
 
         def with_result(result)
-          self.class.new(@test_case, @feature, result)
+          self.class.new(@test_case, result)
         end
       end
 
@@ -109,8 +92,6 @@ module Cucumber
           self
         end
       end
-
-      Feature = Struct.new(:name)
 
     end
   end
