@@ -227,3 +227,34 @@ Feature: Around hooks
       2 steps (2 passed)
 
       """
+
+  Scenario: Around Hooks and the Custom World
+    Given a file named "features/step_definitions/steps.rb" with:
+      """
+      Then /^the world should be available in the hook$/ do
+        $previous_world = self
+        expect($hook_world).to eq(self)
+      end
+
+      Then /^what$/ do
+        expect($hook_world).not_to eq($previous_world)
+      end
+      """
+    And a file named "features/support/hooks.rb" with:
+      """
+      Around do |scenario, block|
+        $hook_world = self
+        block.call
+      end
+      """
+    And a file named "features/f.feature" with:
+      """
+      Feature: Around hooks
+        Scenario: using hook
+          Then the world should be available in the hook
+
+        Scenario: using the same hook
+          Then what
+      """
+    When I run `cucumber features/f.feature`
+    Then it should pass

@@ -1884,7 +1884,7 @@ module Cucumber
         end
 
         context 'with an exception in an after hook but no steps' do
-          it 'prints the exception after the steps' do
+          it 'prints the exception after the scenario name' do
             filters = [
               Filters::ActivateSteps.new(SimpleStepDefinitions.new),
               Filters::ApplyAfterHooks.new(FailingAfterHook.new),
@@ -1908,6 +1908,94 @@ module Cucumber
                     :after_tags,
                     :scenario_name,
                     :exception,
+                  :after_feature_element,
+                :after_feature,
+              :after_features,
+            ])
+          end
+        end
+
+        context 'with an exception in an around hook before the test case is run' do
+          class FailingAroundHookBeforeRunningTestCase
+            def find_around_hooks(test_case)
+              [
+                Hooks.around_hook(test_case.source) { raise Failure }
+              ]
+            end
+          end
+
+          it 'prints the exception after the scenario name' do
+            filters = [
+              Filters::ActivateSteps.new(SimpleStepDefinitions.new),
+              Filters::ApplyAroundHooks.new(FailingAroundHookBeforeRunningTestCase.new),
+              AddBeforeAndAfterHooks.new
+            ]
+            execute_gherkin(filters) do
+              feature do
+                scenario do
+                end
+              end
+            end
+
+            expect( formatter.legacy_messages ).to eq([
+              :before_features,
+                :before_feature,
+                  :before_tags,
+                  :after_tags,
+                  :feature_name,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :exception,
+                  :after_feature_element,
+                :after_feature,
+              :after_features,
+            ])
+          end
+        end
+
+        context 'with an exception in an around hook after the test case is run' do
+          class FailingAroundHookAfterRunningTestCase
+            def find_around_hooks(test_case)
+              [
+                Hooks.around_hook(test_case.source) { |run_test_case| run_test_case.call; raise Failure }
+              ]
+            end
+          end
+
+          it 'prints the exception after the scenario name' do
+            filters = [
+              Filters::ActivateSteps.new(SimpleStepDefinitions.new),
+              Filters::ApplyAroundHooks.new(FailingAroundHookAfterRunningTestCase.new),
+              AddBeforeAndAfterHooks.new
+            ]
+            execute_gherkin(filters) do
+              feature do
+                scenario do
+                  step
+                end
+              end
+            end
+
+            expect( formatter.legacy_messages ).to eq([
+              :before_features,
+                :before_feature,
+                  :before_tags,
+                  :after_tags,
+                  :feature_name,
+                  :before_feature_element,
+                    :before_tags,
+                    :after_tags,
+                    :scenario_name,
+                    :before_steps,
+                    :before_step,
+                    :before_step_result,
+                    :step_name,
+                    :after_step_result,
+                    :after_step,
+                    :exception,
+                    :after_steps,
                   :after_feature_element,
                 :after_feature,
               :after_features,
