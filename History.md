@@ -10,6 +10,10 @@
 * Suggested regexes result in ambigous matches ([663](https://github.com/cucumber/cucumber/pull/663) @rwz)
 * Pass when using both the --dry-run and the --strict options, unless there are undefined steps ([810](https://github.com/cucumber/cucumber/issues/810) @brasmusson)
 * Handle step output correctly for Scenario Outlines with the --expand option ([806](https://github.com/cucumber/cucumber/issues/806) @brasmusson)
+* Fix GBK and UTF-8 (Encoding::CompatibilityError) ([693](https://github.com/cucumber/cucumber/issues/693) @mattwynne)
+* Make the scenario object available in hooks compatible with v1.3.x ([814](https://github.com/cucumber/cucumber/pull/814) @brasmusson)
+* JUnit expand option ([808](https://github.com/cucumber/cucumber/pull/808) @richarda @brasmusson)
+* Around hooks not executing in correct world context ([807](https://github.com/cucumber/cucumber/pull/807) @tooky)
 
 ## [v2.0.0.rc.4](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.3...2.0.0.rc.4)
 
