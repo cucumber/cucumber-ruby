@@ -23,8 +23,8 @@ module Cucumber
         :step_match
 
       def_delegators :@support_code,
-        :invoke_steps,
-        :invoke,
+        :invoke_dynamic_steps,
+        :invoke_dynamic_step,
         :load_programming_language
 
       # Returns a Cucumber::MultilineArgument::DataTable for +text_or_table+, which can either

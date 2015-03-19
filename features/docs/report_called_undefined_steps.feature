@@ -39,13 +39,13 @@ Feature: Cucumber command line
 
         Scenario: Call directly
           Given a step that calls an undefined step
-            Undefined nested step: "this does not exist" (Cucumber::UndefinedNestedStep)
+            Undefined dynamic step: "this does not exist" (Cucumber::UndefinedDynamicStep)
             ./features/step_definitions/steps.rb:2:in `/^a step that calls an undefined step$/'
             features/call_undefined_step_from_step_def.feature:7:in `Given a step that calls an undefined step'
 
         Scenario: Call via another
           Given a step that calls a step that calls an undefined step
-            Undefined nested step: "this does not exist" (Cucumber::UndefinedNestedStep)
+            Undefined dynamic step: "this does not exist" (Cucumber::UndefinedDynamicStep)
             ./features/step_definitions/steps.rb:2:in `/^a step that calls an undefined step$/'
             ./features/step_definitions/steps.rb:6:in `/^a step that calls a step that calls an undefined step$/'
             features/call_undefined_step_from_step_def.feature:10:in `Given a step that calls a step that calls an undefined step'

@@ -23,7 +23,7 @@ module Cucumber
 
         def step(step)
           location = Core::Ast::Location.of_caller
-          @support_code.invoke(step.name, multiline_arg(step, location))
+          @support_code.invoke_dynamic_step(step.name, multiline_arg(step, location))
         end
 
         def eof
@@ -58,14 +58,24 @@ module Cucumber
       #     Given I have 8 cukes in my belly
       #     Then I should not be thirsty
       #   })
-      def invoke_steps(steps_text, i18n, file_colon_line)
+      def invoke_dynamic_steps(steps_text, i18n, file_colon_line)
         file, line = file_colon_line.split(':')
         parser = Gherkin::Parser::Parser.new(StepInvoker.new(self), true, 'steps', false, i18n.iso_code)
         parser.parse(steps_text, file, line.to_i)
       end
 
-      def invoke(step_name, multiline_argument, location=nil)
-        step_match(step_name).invoke(multiline_argument)
+      # @api private
+      # This allows users to attempt to find, match and execute steps
+      # from code as the features are running, as opposed to regular
+      # steps which are compiled into test steps before execution.
+      #
+      # These are commonly called nested steps.
+      def invoke_dynamic_step(step_name, multiline_argument, location=nil)
+        begin
+          step_match(step_name).invoke(multiline_argument)
+        rescue Undefined => exception
+          raise UndefinedDynamicStep, step_name
+        end
       end
 
       # Loads and registers programming language implementation.

@@ -22,9 +22,9 @@ module Cucumber
 
   # Raised when there is no matching StepDefinition for a step called
   # from within another step definition.
-  class UndefinedNestedStep < StandardError
+  class UndefinedDynamicStep < StandardError
     def initialize(step_name)
-      super %(Undefined nested step: "#{step_name}")
+      super %(Undefined dynamic step: "#{step_name}")
     end
   end
 

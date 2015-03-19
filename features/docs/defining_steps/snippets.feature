@@ -54,22 +54,3 @@ Feature: Snippets
         pending # Write code here that turns the phrase above into concrete actions
       end
       """
-
-  Scenario: Snippet for a nested step
-    Given a file named "features/f.feature" with:
-      """
-      Feature:
-        Scenario:
-          Given this step calls an undefined step
-      """
-    And a file named "features/step_definitions/steps.rb" with:
-      """ruby
-      Given "this step calls an undefined step" do
-        step "definitely undefined"
-      end
-      """
-    When I run `cucumber`
-    Then it should fail with:
-      """
-      Undefined nested step: "definitely undefined"
-      """
