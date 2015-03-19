@@ -37,7 +37,11 @@ module Cucumber
       # @param [String,Cucumber::Ast::DocString,Cucumber::Ast::Table] multiline_argument
       def step(name, raw_multiline_arg=nil)
         location = Core::Ast::Location.of_caller
-        @__cucumber_runtime.invoke(name, MultilineArgument.from(raw_multiline_arg, location))
+        begin
+          @__cucumber_runtime.invoke(name, MultilineArgument.from(raw_multiline_arg, location))
+        rescue Undefined => exception
+          raise UndefinedNestedStep, name
+        end
       end
 
       # Run a snippet of Gherkin

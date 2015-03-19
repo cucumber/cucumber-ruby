@@ -91,14 +91,14 @@ module Cucumber
         end
       end
 
-      it "raises Undefined when inside step is not defined" do
+      it "raises UndefinedNestedStep when inside step is not defined" do
         dsl.Given(/Outside/) do
           step 'Inside'
         end
 
         expect(-> {
           run_step "Outside"
-        }).to raise_error(Cucumber::Undefined)
+        }).to raise_error(Cucumber::UndefinedNestedStep)
       end
 
       it "allows forced pending" do

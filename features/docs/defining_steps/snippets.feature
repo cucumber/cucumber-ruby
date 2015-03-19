@@ -69,9 +69,7 @@ Feature: Snippets
       end
       """
     When I run `cucumber`
-    Then the output should contain:
+    Then it should fail with:
       """
-      Given(/^definitely undefined$/) do
-        pending # Write code here that turns the phrase above into concrete actions
-      end
+      Undefined nested step: "definitely undefined"
       """

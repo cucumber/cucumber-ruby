@@ -20,6 +20,14 @@ module Cucumber
     end
   end
 
+  # Raised when there is no matching StepDefinition for a step called
+  # from within another step definition.
+  class UndefinedNestedStep < StandardError
+    def initialize(step_name)
+      super %(Undefined nested step: "#{step_name}")
+    end
+  end
+
   # Raised when a StepDefinition's block invokes World#pending
   class Pending < Core::Test::Result::Pending
   end
