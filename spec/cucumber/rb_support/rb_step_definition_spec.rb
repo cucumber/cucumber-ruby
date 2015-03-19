@@ -7,13 +7,14 @@ module Cucumber
       let(:user_interface) { double('user interface') }
       let(:support_code)   { Cucumber::Runtime::SupportCode.new(user_interface) }
       let(:rb)             { support_code.load_programming_language('rb') }
+      let(:scenario)       { double('scenario', iso_code: 'en').as_null_object }
       let(:dsl) do
         rb
         Object.new.extend(Cucumber::RbSupport::RbDsl)
       end
 
       before do
-        rb.begin_scenario(double('scenario').as_null_object)
+        rb.begin_scenario(scenario)
         $inside = nil
       end
 
@@ -87,13 +88,25 @@ module Cucumber
 
         it "has the correct location" do
           dsl.Given /With symbol/, :with_symbol
-          expect(step_match("With symbol").file_colon_line).to eq "spec/cucumber/rb_support/rb_step_definition_spec.rb:89"
+          expect(step_match("With symbol").file_colon_line).to eq "spec/cucumber/rb_support/rb_step_definition_spec.rb:#{__LINE__-1}"
         end
       end
 
       it "raises UndefinedDynamicStep when inside step is not defined" do
         dsl.Given(/Outside/) do
           step 'Inside'
+        end
+
+        expect(-> {
+          run_step "Outside"
+        }).to raise_error(Cucumber::UndefinedDynamicStep)
+      end
+
+      it "raises UndefinedDynamicStep when an undefined step is parsed dynamically" do
+        dsl.Given(/Outside/) do
+          steps %{
+            Given Inside
+          }
         end
 
         expect(-> {
