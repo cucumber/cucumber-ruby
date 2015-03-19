@@ -39,19 +39,23 @@ Feature: Cucumber command line
 
         Scenario: Call directly
           Given a step that calls an undefined step
-            Undefined step: "this does not exist" (Cucumber::Undefined)
+            Undefined nested step: "this does not exist" (Cucumber::UndefinedNestedStep)
             ./features/step_definitions/steps.rb:2:in `/^a step that calls an undefined step$/'
             features/call_undefined_step_from_step_def.feature:7:in `Given a step that calls an undefined step'
 
         Scenario: Call via another
           Given a step that calls a step that calls an undefined step
-            Undefined step: "this does not exist" (Cucumber::Undefined)
+            Undefined nested step: "this does not exist" (Cucumber::UndefinedNestedStep)
             ./features/step_definitions/steps.rb:2:in `/^a step that calls an undefined step$/'
             ./features/step_definitions/steps.rb:6:in `/^a step that calls a step that calls an undefined step$/'
             features/call_undefined_step_from_step_def.feature:10:in `Given a step that calls a step that calls an undefined step'
 
-      3 scenarios (3 undefined)
-      3 steps (3 undefined)
+      Failing Scenarios:
+      cucumber features/call_undefined_step_from_step_def.feature:6
+      cucumber features/call_undefined_step_from_step_def.feature:9
+
+      3 scenarios (2 failed, 1 undefined)
+      3 steps (2 failed, 1 undefined)
       0m0.012s
 
       """
