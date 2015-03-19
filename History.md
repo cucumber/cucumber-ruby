@@ -1,6 +1,8 @@
 ## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.5...master)
 
-Your fix here?
+### New Features
+
+* Support ruby 2.2 in master (@mattwynne, @tooky)
 
 ## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.4...v2.0.0.rc.5)
 
