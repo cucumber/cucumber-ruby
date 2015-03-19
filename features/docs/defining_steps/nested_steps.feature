@@ -127,3 +127,52 @@ Feature: Nested Steps
       1 scenario (1 failed)
       1 step (1 failed)
       """
+
+  Scenario: Undefined nested step
+    Given a file named "features/call_undefined_step_from_step_def.feature" with:
+      """
+      Feature: Calling undefined step
+
+        Scenario: Call directly
+          Given a step that calls an undefined step
+
+        Scenario: Call via another
+          Given a step that calls a step that calls an undefined step
+      """
+    And a file named "features/step_definitions/steps.rb" with:
+      """
+      Given /^a step that calls an undefined step$/ do
+        step 'this does not exist'
+      end
+
+      Given /^a step that calls a step that calls an undefined step$/ do
+        step 'a step that calls an undefined step'
+      end
+      """
+    When I run `cucumber -q features/call_undefined_step_from_step_def.feature`
+    Then it should fail with exactly:
+      """
+      Feature: Calling undefined step
+
+        Scenario: Call directly
+          Given a step that calls an undefined step
+            Undefined dynamic step: "this does not exist" (Cucumber::UndefinedDynamicStep)
+            ./features/step_definitions/steps.rb:2:in `/^a step that calls an undefined step$/'
+            features/call_undefined_step_from_step_def.feature:4:in `Given a step that calls an undefined step'
+
+        Scenario: Call via another
+          Given a step that calls a step that calls an undefined step
+            Undefined dynamic step: "this does not exist" (Cucumber::UndefinedDynamicStep)
+            ./features/step_definitions/steps.rb:2:in `/^a step that calls an undefined step$/'
+            ./features/step_definitions/steps.rb:6:in `/^a step that calls a step that calls an undefined step$/'
+            features/call_undefined_step_from_step_def.feature:7:in `Given a step that calls a step that calls an undefined step'
+
+      Failing Scenarios:
+      cucumber features/call_undefined_step_from_step_def.feature:3
+      cucumber features/call_undefined_step_from_step_def.feature:6
+
+      2 scenarios (2 failed)
+      2 steps (2 failed)
+      0m0.012s
+
+      """

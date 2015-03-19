@@ -37,7 +37,7 @@ module Cucumber
       # @param [String,Cucumber::Ast::DocString,Cucumber::Ast::Table] multiline_argument
       def step(name, raw_multiline_arg=nil)
         location = Core::Ast::Location.of_caller
-        @__cucumber_runtime.invoke(name, MultilineArgument.from(raw_multiline_arg, location))
+        @__cucumber_runtime.invoke_dynamic_step(name, MultilineArgument.from(raw_multiline_arg, location))
       end
 
       # Run a snippet of Gherkin
@@ -48,7 +48,7 @@ module Cucumber
       #   }
       # @param [String] steps_text The Gherkin snippet to run
       def steps(steps_text)
-        @__cucumber_runtime.invoke_steps(steps_text, @__natural_language, caller[0])
+        @__cucumber_runtime.invoke_dynamic_steps(steps_text, @__natural_language, caller[0])
       end
 
       # Parse Gherkin into a {Cucumber::Ast::Table} object.
