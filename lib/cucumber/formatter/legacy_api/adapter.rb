@@ -1005,7 +1005,7 @@ module Cucumber
           def filtered_step_exception(step)
             exception = filtered_exception
             exception.backtrace << StepBacktraceLine.new(step).to_s
-            return exception
+            return BacktraceFilter.new(exception).exception
           end
         end
 
