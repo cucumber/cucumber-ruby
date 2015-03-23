@@ -54,3 +54,24 @@ Feature: After Hooks
             ./features/support/bad_hook.rb:2:in `After'
       """
 
+  Scenario: The World still exists in an After hook
+    Given a file named "features/support/after_hook.rb" with:
+      """
+      After do
+        expect(@set_in_step).to be(true)
+      end
+      """
+    And a file named "feautures/step_definitions/steps.rb" with:
+      """
+      Given(/we set a world variable/) do
+        @set_in_step = true
+      end
+      """
+    And a file named "features/feature.feature" with:
+      """
+      Feature:
+        Scenario:
+          Given we set a world variable
+      """
+    When I run `cucumber -q`
+    Then it should pass
