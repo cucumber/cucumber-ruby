@@ -9,7 +9,7 @@ Feature: Getting started
     When I run `cucumber`
     Then it should fail with:
       """
-      No such file or directory - features. Please create a features directory to get started.
+      No such file or directory - features. Please create a features directory to get started. The --init option will help you.
       """
 
   Scenario: Accidentally run Cucumber in a folder with Ruby files in it.
