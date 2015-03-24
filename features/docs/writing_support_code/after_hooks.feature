@@ -61,7 +61,7 @@ Feature: After Hooks
         expect(@set_in_step).to be(true)
       end
       """
-    And a file named "feautures/step_definitions/steps.rb" with:
+    And a file named "features/step_definitions/steps.rb" with:
       """
       Given(/we set a world variable/) do
         @set_in_step = true
