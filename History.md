@@ -5,7 +5,7 @@
 * Support ruby 2.2 in master (@mattwynne, @tooky)
 * Ensure After Hooks execute in reverse order (@tooky)
 
-## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.4...v2.0.0.rc.5)
+## [v2.0.0.rc5](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.4...v2.0.0.rc.5)
 
 ### New Features
 
