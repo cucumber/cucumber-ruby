@@ -7,7 +7,7 @@ module Cucumber
 
       def apply_to(test_case)
         test_case.with_steps(
-          test_case.test_steps + after_hooks(test_case.source)
+          test_case.test_steps + after_hooks(test_case.source).reverse
         )
       end
 

@@ -54,3 +54,27 @@ Feature: After Hooks
             ./features/support/bad_hook.rb:2:in `After'
       """
 
+  Scenario: After hooks are executed in reverse order of definition
+    Given a file named "features/support/hooks.rb" with:
+      """
+      After do
+        puts "First"
+      end
+
+      After do
+        puts "Second"
+      end
+      """
+    And a file named "features/pass.feature" with:
+      """
+      Feature:
+        Scenario:
+          Given this step passes
+      """
+    When I run `cucumber -f progress`
+    Then the output should contain:
+      """
+      Second
+
+      First
+      """
