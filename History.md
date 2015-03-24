@@ -3,6 +3,9 @@
 ### New Features
 
 * Support ruby 2.2 in master (@mattwynne, @tooky)
+
+### Bugfixes
+
 * Ensure After Hooks execute in reverse order (@tooky)
 
 ## [v2.0.0.rc5](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.4...v2.0.0.rc.5)
