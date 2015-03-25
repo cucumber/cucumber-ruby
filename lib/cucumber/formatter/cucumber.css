@@ -197,6 +197,7 @@ body {
   background: #e0ffff;
   color: #001111;
   margin-left: 10px;
+  white-space: pre;
 }
 .cucumber #summary, td #summary, th #summary {
   margin: 0px;
