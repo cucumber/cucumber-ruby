@@ -3,6 +3,7 @@
 ### New Features
 
 * Support ruby 2.2 in master (@mattwynne, @tooky)
+* Tell users to use the `--init` command ([818](https://github.com/cucumber/cucumber/pull/818) @olleolleolle)
 
 ### Bugfixes
 
