@@ -8,6 +8,7 @@
 ### Bugfixes
 
 * Ensure After Hooks execute in reverse order (@tooky)
+* Make console output with embedded cr/lf look correct. ([820](https://github.com/cucumber/cucumber/pull/820) @SteveDonie)
 
 ## [v2.0.0.rc5](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.4...v2.0.0.rc.5)
 
