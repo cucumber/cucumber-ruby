@@ -1,4 +1,7 @@
 Feature: Dry Run
+
+  Dry run gives you a way to quickly scan your features without actually running them.
+
   - Invokes formatters without executing the steps.
   - This also omits the loading of your support/env.rb file if it exists.
 
@@ -23,7 +26,8 @@ Feature: Dry Run
       0m0.012s
 
       """
-  Scenario: In the strict mode
+
+  Scenario: In strict mode
     Given a file named "features/test.feature" with:
       """
       Feature: test
@@ -44,7 +48,8 @@ Feature: Dry Run
       0m0.012s
 
       """
-  Scenario: In the strict mode with an undefined step
+
+  Scenario: In strict mode with an undefined step
     Given a file named "features/test.feature" with:
       """
       Feature: test
