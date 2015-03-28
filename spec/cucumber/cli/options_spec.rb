@@ -238,6 +238,7 @@ module Cucumber
 
             expect(options[:snippets]).to be false
             expect(options[:source]).to be false
+            expect(options[:duration]).to be false
           end
         end
 

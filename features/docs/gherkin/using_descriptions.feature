@@ -83,6 +83,5 @@ Feature: Using descriptions to give features context
 
     2 scenarios (2 passed)
     4 steps (4 passed)
-    0m0.012s
 
     """

@@ -41,8 +41,7 @@ Feature: Exceptions in Around Hooks
       
       1 scenario (1 failed)
       0 steps
-      0m0.012s
-
+      
       """
 
   Scenario: Exception after the test case is run
@@ -75,6 +74,5 @@ Feature: Exceptions in Around Hooks
       
       1 scenario (1 failed)
       1 step (1 passed)
-      0m0.012s
 
       """

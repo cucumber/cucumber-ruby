@@ -26,7 +26,6 @@ Feature: Skip Scenario
 
       1 scenario (1 skipped)
       2 steps (2 skipped)
-      0m0.012s
 
       """
 
@@ -56,7 +55,6 @@ Feature: Skip Scenario
 
       1 scenario (1 skipped)
       2 steps (2 skipped)
-      0m0.012s
 
       """
 

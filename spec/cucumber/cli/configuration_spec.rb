@@ -265,11 +265,12 @@ END_OF_MESSAGE
       expect(config.options[:snippets]).to be false
     end
 
-    it "sets snippets and source to false with --quiet option" do
+    it "sets snippets and source and duration to false with --quiet option" do
       config.parse!(%w{--quiet})
 
       expect(config.options[:snippets]).to be false
       expect(config.options[:source]).to be false
+      expect(config.options[:duration]).to be false
     end
 
     it "accepts --verbose option" do

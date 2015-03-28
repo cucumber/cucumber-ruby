@@ -85,8 +85,8 @@ module Cucumber
         @io.puts scenario_summary(runtime) {|status_count, status| format_string(status_count, status)}
         @io.puts step_summary(runtime) {|status_count, status| format_string(status_count, status)}
 
-        @io.puts(format_duration(features.duration)) if features && features.duration
-
+        @io.puts(format_duration(features.duration)) if features && features.duration && options[:duration]
+        
         if runtime.configuration.randomize?
           @io.puts
           @io.puts "Randomized with seed #{runtime.configuration.seed}"
