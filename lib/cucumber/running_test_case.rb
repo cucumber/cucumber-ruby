@@ -19,7 +19,7 @@ module Cucumber
   # you get a couple of extra methods.
   module RunningTestCase
     def self.new(test_case)
-      Builder.new(test_case).result
+      Builder.new(test_case).running_test_case
     end
 
     class Builder
@@ -45,7 +45,7 @@ module Cucumber
       def examples_table_row(row)
       end
 
-      def result
+      def running_test_case
         @factory.new(@test_case)
       end
     end
@@ -60,6 +60,11 @@ module Cucumber
 
       def accept_hook?(hook)
         hook.tag_expressions.all? { |expression| @test_case.match_tags?(expression) }
+      end
+
+      def exception
+        return unless @result.failed?
+        @result.exception
       end
 
       def failed?

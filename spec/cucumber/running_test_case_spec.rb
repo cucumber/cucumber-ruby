@@ -44,6 +44,56 @@ module Cucumber
       end
     end
 
+    context "for a failed scenario" do
+      let(:gherkin_doc) do
+        gherkin do
+          feature "feature name" do
+            scenario "scenario name" do
+              step "failed"
+            end
+          end
+        end
+      end
+
+      let(:exception) { StandardError.new }
+
+      before do
+        self.wrapped_test_case = self.wrapped_test_case.with_result(Core::Test::Result::Failed.new(0, exception))
+      end
+
+      it "is failed?" do
+        expect(wrapped_test_case.failed?).to be_truthy
+      end
+
+      it "exposes the exception" do
+        expect(wrapped_test_case.exception).to eq exception
+      end
+    end
+
+    context "for a passing scenario" do
+      let(:gherkin_doc) do
+        gherkin do
+          feature "feature name" do
+            scenario "scenario name" do
+              step "passing"
+            end
+          end
+        end
+      end
+
+      before do
+        self.wrapped_test_case = self.wrapped_test_case.with_result(Core::Test::Result::Passed.new(0))
+      end
+
+      it "is not failed?" do
+        expect(wrapped_test_case.failed?).to be_falsey
+      end
+
+      it "#exception is nil" do
+        expect(wrapped_test_case.exception).to be_nil
+      end
+    end
+
     context "for a scenario outline" do
       let(:gherkin_doc) do
         gherkin do
