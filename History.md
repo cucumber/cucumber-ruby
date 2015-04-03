@@ -1,5 +1,9 @@
 ## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0...master)
 
+### Bugfixes
+
+* Make background.feature available to formatters (backward compatibility with v1.3.x) (@brasmusson)
+
 ## [v2.0.0](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.5...v2.0.0)
 
 ### New Features
