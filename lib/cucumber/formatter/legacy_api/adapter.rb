@@ -321,7 +321,7 @@ module Cucumber
               if same_background_as_previous_test_case?(source)
                 HiddenBackgroundPrinter.new(formatter, source.background)
               else
-                BackgroundPrinter.new(formatter, source.background, before_hook_results)
+                BackgroundPrinter.new(formatter, node, source.background, before_hook_results)
               end
             elsif source.scenario
               ScenarioPrinter.new(formatter, source.scenario, before_hook_results)
@@ -448,7 +448,7 @@ module Cucumber
           end
         end
 
-        BackgroundPrinter = Struct.new(:formatter, :node, :before_hook_results) do
+        BackgroundPrinter = Struct.new(:formatter, :feature, :node, :before_hook_results) do
 
           def after_test_case(*)
           end
@@ -457,7 +457,7 @@ module Cucumber
           end
 
           def before
-            formatter.before_background node
+            formatter.before_background Ast::Background.new(feature, node)
             formatter.background_name node.keyword, node.legacy_conflated_name_and_description, node.location.to_s, indent.of(node)
             before_hook_results.accept(formatter)
             self
@@ -477,7 +477,7 @@ module Cucumber
 
           def after
             @child.after if @child
-            formatter.after_background(node)
+            formatter.after_background(Ast::Background.new(feature, node))
             self
           end
 

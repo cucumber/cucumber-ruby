@@ -370,6 +370,17 @@ module Cucumber
 
         Features = Struct.new(:duration)
 
+        class Background < SimpleDelegator
+          def initialize(feature, node)
+            super node
+            @feature = feature
+          end
+
+          def feature
+            @feature
+          end
+        end
+
       end
     end
   end
