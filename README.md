@@ -9,14 +9,14 @@ your team.
 
 Where to get more info:
 
-  * The main website: http://cukes.info/
-  * Documentation: https://wiki.github.com/cucumber/cucumber/
-  * API Documentation: http://cukes.info/api/cucumber/ruby/yardoc/
-  * Support forum: https://groups.google.com/forum/?fromgroups#!forum/cukes
+  * The main website: https://cukes.info/
+  * Documentation: https://github.com/cucumber/cucumber/wiki
+  * Ruby API Documentation: http://www.rubydoc.info/github/cucumber/cucumber/
+  * Support forum: https://groups.google.com/group/cukes
   * IRC channel: irc://irc.freenode.net/cucumber
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for info on contributing to Cucumber.
 
 ## Copyright
 
-Copyright (c) 2008-2013 Aslak Hellesøy and Contributors. See LICENSE for details.
+Copyright (c) 2008-2015 Aslak Hellesøy and Contributors. See LICENSE for details.
