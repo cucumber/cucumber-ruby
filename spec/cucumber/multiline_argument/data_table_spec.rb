@@ -316,6 +316,20 @@ module Cucumber
           }
         end
 
+        it "raises no error for two identical tables with duplicate header values" do
+          t = DataTable.from(%{
+            |a|a|c|
+            |d|e|f|
+            |g|h|i|
+          })
+          t.diff!(t.dup)
+          expect( t.to_s(:indent => 12, :color => false) ).to eq %{
+            |     a |     a |     c |
+            |     d |     e |     f |
+            |     g |     h |     i |
+          }
+        end
+
         it "should inspect missing and surplus cells" do
           t1 = DataTable.from([
             ['name',  'male', 'lastname', 'swedish'],
