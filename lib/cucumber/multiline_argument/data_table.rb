@@ -563,32 +563,25 @@ module Cucumber
         cols = cell_matrix.transpose
         unmapped_cols = other_cell_matrix.transpose
 
+
+        header_values = cols.map(&:first)
         mapped_cols = []
 
-        cols.each_with_index do |col, col_index|
-          header = col[0]
-          candidate_cols, unmapped_cols = unmapped_cols.partition do |other_col|
-            other_col[0] == header
-          end
-          raise "More than one column has the header #{header}" if candidate_cols.size > 2
-
-          other_padded_col = if candidate_cols.size == 1
-            # Found a matching column
-            candidate_cols[0]
+        header_values.each_with_index do |v, i|
+          mapped_index = unmapped_cols.index{|unmapped_col| unmapped_col.first == v}
+          if (mapped_index)
+            mapped_cols << unmapped_cols.delete_at(mapped_index)
           else
-            mark_as_missing(cols[col_index])
-            (0...other_cell_matrix.length).map do |row|
-              val = row == 0 ? header.value : nil
-              SurplusCell.new(val, self, -1)
-            end
+            mark_as_missing(cols[i])
+            empty_col = other_cell_matrix.collect {SurplusCell.new(nil, self, -1)}
+            empty_col.first.value = v
+            mapped_cols << empty_col
           end
-          mapped_cols.insert(col_index, other_padded_col)
         end
 
-        unmapped_cols.each_with_index do |col, col_index|
-          empty_col = (0...cell_matrix.length).map do |row|
-            SurplusCell.new(nil, self, -1)
-          end
+
+        empty_col = cell_matrix.collect {SurplusCell.new(nil, self, -1)}
+        unmapped_cols.each do
           cols << empty_col
         end
 
