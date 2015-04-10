@@ -316,18 +316,78 @@ module Cucumber
           }
         end
 
-        it "raises no error for two identical tables with duplicate header values" do
-          t = DataTable.from(%{
+        context "in case of duplicate header values" do
+          it "raises no error for two identical tables" do
+            t = DataTable.from(%{
             |a|a|c|
             |d|e|f|
             |g|h|i|
-          })
-          t.diff!(t.dup)
-          expect( t.to_s(:indent => 12, :color => false) ).to eq %{
+                               })
+            t.diff!(t.dup)
+            expect( t.to_s(:indent => 12, :color => false) ).to eq %{
             |     a |     a |     c |
             |     d |     e |     f |
             |     g |     h |     i |
           }
+          end
+
+          it "detects a diff in one cell" do
+            t1 = DataTable.from(%{
+            |a|a|c|
+            |d|e|f|
+            |g|h|i|
+                                })
+            t2 = DataTable.from(%{
+            |a|a|c|
+            |d|oops|f|
+            |g|h|i|
+                                })
+            expect{ t1.diff!(t2) }.to raise_error
+            expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
+            |     a |     a    |     c |
+            | (-) d | (-) e    | (-) f |
+            | (+) d | (+) oops | (+) f |
+            |     g |     h    |     i |
+          }
+          end
+
+          it "detects missing columns" do
+            t1 = DataTable.from(%{
+            |a|a|b|c|
+            |d|d|e|f|
+            |g|g|h|i|
+                                })
+            t2 = DataTable.from(%{
+            |a|b|c|
+            |d|e|f|
+            |g|h|i|
+                                })
+            expect{ t1.diff!(t2) }.to raise_error
+            expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
+            |     a | (-) a |     b |     c |
+            |     d | (-) d |     e |     f |
+            |     g | (-) g |     h |     i |
+          }
+          end
+
+          it "detects surplus columns" do
+            t1 = DataTable.from(%{
+            |a|b|c|
+            |d|e|f|
+            |g|h|i|
+                                })
+            t2 = DataTable.from(%{
+            |a|b|a|c|
+            |d|e|d|f|
+            |g|h|g|i|
+                                })
+            expect{ t1.diff!(t2, :surplus_col => true) }.to raise_error
+            expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
+            |     a |     b |     c | (+) a |
+            |     d |     e |     f | (+) d |
+            |     g |     h |     i | (+) g |
+          }
+          end
         end
 
         it "should inspect missing and surplus cells" do
