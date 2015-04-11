@@ -23,7 +23,6 @@ Feature: Dry Run
 
       1 scenario (1 skipped)
       1 step (1 skipped)
-      0m0.012s
 
       """
 
@@ -45,7 +44,6 @@ Feature: Dry Run
 
       1 scenario (1 skipped)
       1 step (1 skipped)
-      0m0.012s
 
       """
 
@@ -68,6 +66,5 @@ Feature: Dry Run
 
       1 scenario (1 undefined)
       1 step (1 undefined)
-      0m0.012s
 
       """

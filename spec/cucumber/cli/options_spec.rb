@@ -240,6 +240,13 @@ module Cucumber
             expect(options[:source]).to be false
             expect(options[:duration]).to be false
           end
+          
+          it "uses --no-duration when defined in the profile" do
+            given_cucumber_yml_defined_as('foo' => '--no-duration')
+            options.parse!(%w[-p foo])
+
+            expect(options[:duration]).to be false
+          end
         end
 
         context '-P or --no-profile' do

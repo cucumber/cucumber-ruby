@@ -188,6 +188,7 @@ module Cucumber
           opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.",
             "This also omits the loading of your support/env.rb file if it exists.") do
             @options[:dry_run] = true
+            @options[:duration] = false
           end
           opts.on("-m", "--no-multiline",
             "Don't print multiline strings and tables under steps.") do
@@ -209,6 +210,9 @@ module Cucumber
           opts.on("-q", "--quiet", "Alias for --no-snippets --no-source.") do
             @options[:snippets] = false
             @options[:source] = false
+            @options[:duration] = false
+          end
+          opts.on("--no-duration", "Don't print the duration at the end of the summary") do
             @options[:duration] = false
           end
           opts.on("-b", "--backtrace", "Show full backtrace for all errors.") do
