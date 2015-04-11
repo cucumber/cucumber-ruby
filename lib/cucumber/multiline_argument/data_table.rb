@@ -336,7 +336,7 @@ module Cucumber
         convert_columns!
 
         original_width = cell_matrix[0].length
-        other_table_cell_matrix = pad!(other_table.cell_matrix)
+        @cell_matrix, other_table_cell_matrix = pad_and_match(@cell_matrix, other_table.cell_matrix)
         padded_width = cell_matrix[0].length
 
         missing_col = cell_matrix[0].detect{|cell| cell.status == :undefined}
@@ -556,37 +556,36 @@ module Cucumber
         @hashes = @rows_hash = @col_names = @rows = @columns = nil
       end
 
-      # Pads our own cell_matrix and returns a cell matrix of same
-      # column width that can be used for diffing
-      def pad!(other_cell_matrix) #:nodoc:
+      # Pads two cell matrices to same column width and matches columns according to header value.
+      # The first cell matrix is the reference matrix with the second matrix matched against it.
+      def pad_and_match(a_cell_matrix, other_cell_matrix) #:nodoc:
         clear_cache!
-        cols = cell_matrix.transpose
-        unmapped_cols = other_cell_matrix.transpose
+        cols = a_cell_matrix.transpose
+        unmatched_cols = other_cell_matrix.transpose
 
 
         header_values = cols.map(&:first)
-        mapped_cols = []
+        matched_cols = []
 
         header_values.each_with_index do |v, i|
-          mapped_index = unmapped_cols.index{|unmapped_col| unmapped_col.first == v}
+          mapped_index = unmatched_cols.index{|unmapped_col| unmapped_col.first == v}
           if (mapped_index)
-            mapped_cols << unmapped_cols.delete_at(mapped_index)
+            matched_cols << unmatched_cols.delete_at(mapped_index)
           else
             mark_as_missing(cols[i])
             empty_col = other_cell_matrix.collect {SurplusCell.new(nil, self, -1)}
             empty_col.first.value = v
-            mapped_cols << empty_col
+            matched_cols << empty_col
           end
         end
 
 
         empty_col = cell_matrix.collect {SurplusCell.new(nil, self, -1)}
-        unmapped_cols.each do
+        unmatched_cols.each do
           cols << empty_col
         end
 
-        @cell_matrix = cols.transpose
-        (mapped_cols + unmapped_cols).transpose
+        return cols.transpose, (matched_cols + unmatched_cols).transpose
       end
 
       def ensure_table(table_or_array) #:nodoc:
