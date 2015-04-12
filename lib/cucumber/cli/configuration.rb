@@ -201,10 +201,7 @@ module Cucumber
         @options[:formats] << ['pretty', @out_stream] if @options[:formats].empty?
         @options[:formats] = @options[:formats].sort_by{|f| f[1] == @out_stream ? -1 : 1}
         @options[:formats].uniq!
-        streams = @options[:formats].map { |(_, stream)| stream }
-        if streams != streams.uniq
-          raise "All but one formatter must use --out, only one can print to each stream (or STDOUT)"
-        end
+        @options.check_formatter_stream_conflicts()
       end
 
       def remove_excluded_files_from(files)

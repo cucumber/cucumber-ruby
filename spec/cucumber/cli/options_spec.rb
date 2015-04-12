@@ -88,6 +88,35 @@ module Cucumber
           end
         end
 
+        context 'handling multiple formatters' do
+          it "catches multiple command line formatters using the same stream" do
+            expect{ options.parse!(prepare_args('-f pretty -f progress')) }.to raise_error("All but one formatter must use --out, only one can print to each stream (or STDOUT)")
+          end
+
+          it "catches multiple profile formatters using the same stream" do
+            given_cucumber_yml_defined_as({'default' => '-f progress -f pretty'})
+            options = Options.new(output_stream, error_stream, :default_profile => 'default')
+
+            expect{ options.parse!(%w{}) }.to raise_error("All but one formatter must use --out, only one can print to each stream (or STDOUT)")
+          end
+
+          it "profiles does not affect the catching of multiple command line formatters using the same stream" do
+            given_cucumber_yml_defined_as({'default' => '-q'})
+            options = Options.new(output_stream, error_stream, :default_profile => 'default')
+
+            expect{ options.parse!(%w{-f progress -f pretty}) }.to raise_error("All but one formatter must use --out, only one can print to each stream (or STDOUT)")
+          end
+
+          it "merges profile formatters and command line formatters" do
+            given_cucumber_yml_defined_as({'default' => '-f junit -o result.xml'})
+            options = Options.new(output_stream, error_stream, :default_profile => 'default')
+
+            options.parse!(%w{-f pretty})
+            
+            expect(options[:formats]).to eq [['pretty', output_stream], ["junit", "result.xml"]]
+          end
+        end
+
         context '-t TAGS --tags TAGS' do
           it "designates tags prefixed with ~ as tags to be excluded" do
             after_parsing('--tags ~@foo,@bar') { expect(options[:tag_expressions]).to eq ['~@foo,@bar'] }

@@ -263,6 +263,8 @@ TEXT
         extract_environment_variables
         @options[:paths] = @args.dup #whatver is left over
 
+        check_formatter_stream_conflicts()
+
         merge_profiles
 
         self
@@ -274,6 +276,13 @@ TEXT
 
       def filters
         @options[:filters] ||= []
+      end
+
+      def check_formatter_stream_conflicts()
+        streams = @options[:formats].uniq.map { |(_, stream)| stream }
+        if streams != streams.uniq
+          raise "All but one formatter must use --out, only one can print to each stream (or STDOUT)"
+        end
       end
 
     protected
