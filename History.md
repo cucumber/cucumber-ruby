@@ -2,6 +2,7 @@
 
 ### Bugfixes
 
+* Fix the check for multiple formatters using stdout ([826](https://github.com/cucumber/cucumber/pull/826) @brasmusson)
 * Make background.feature available to formatters (backward compatibility with v1.3.x) (@brasmusson)
 
 ## [v2.0.0](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.5...v2.0.0)

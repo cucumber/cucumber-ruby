@@ -300,6 +300,11 @@ END_OF_MESSAGE
       expect(-> { config.parse!(%w{--format pretty --format progress}) }).to raise_error("All but one formatter must use --out, only one can print to each stream (or STDOUT)")
     end
 
+    it "does not accept multiple --format options when both use implicit STDOUT (using profile with no formatters)" do
+      given_cucumber_yml_defined_as({'default' => ['-q']})
+      expect(-> { config.parse!(%w{--format pretty --format progress}) }).to raise_error("All but one formatter must use --out, only one can print to each stream (or STDOUT)")
+    end
+
     it "accepts same --format options with implicit STDOUT, and keep only one" do
       config.parse!(%w{--format pretty --format pretty})
 
@@ -308,6 +313,11 @@ END_OF_MESSAGE
 
     it "does not accept multiple --out streams pointing to the same place" do
       expect(-> { config.parse!(%w{--format pretty --out file1 --format progress --out file1}) }).to raise_error("All but one formatter must use --out, only one can print to each stream (or STDOUT)")
+    end
+
+    it "does not accept multiple --out streams pointing to the same place (one from profile, one from command line)" do
+      given_cucumber_yml_defined_as({'default' => ['-f','progress', '--out', 'file1']})
+      expect(-> { config.parse!(%w{--format pretty --out file1}) }).to raise_error("All but one formatter must use --out, only one can print to each stream (or STDOUT)")
     end
 
     it "associates --out to previous --format" do
