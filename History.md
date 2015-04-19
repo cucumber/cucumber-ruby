@@ -2,6 +2,7 @@
 
 ### Bugfixes
 
+* Make the HTML formatter handle failures in hooks ([835](https://github.com/cucumber/cucumber/issues/835) @brasmusson)
 * Fix the check for multiple formatters using stdout ([826](https://github.com/cucumber/cucumber/pull/826) @brasmusson)
 * Make background.feature available to formatters (backward compatibility with v1.3.x) (@brasmusson)
 

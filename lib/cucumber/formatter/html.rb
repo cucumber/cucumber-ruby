@@ -206,7 +206,13 @@ module Cucumber
           @builder << file_colon_line
         end
         @listing_background = false
-        @builder.h3(:id => "scenario_#{@scenario_number}") do
+        scenario_id = "scenario_#{@scenario_number}"
+        if @inside_outline
+          @outline_row += 1
+          scenario_id += "_#{@outline_row}"
+          @scenario_red = false
+        end
+        @builder.h3(:id => scenario_id) do
           @builder.span(keyword + ':', :class => 'keyword')
           @builder.text!(' ')
           @builder.span(name, :class => 'val')
@@ -414,6 +420,12 @@ module Cucumber
         @delayed_messages = []
       end
 
+      def after_test_case(test_case, result)
+        if result.failed? and not @scenario_red
+          set_scenario_color_failed
+        end
+      end
+
       protected
 
       def build_exception_detail(exception)
@@ -462,6 +474,9 @@ module Cucumber
           scenario_or_background = @in_background ? "background" : "scenario"
           @builder.text!("makeRed('#{scenario_or_background}_#{@scenario_number}');") unless @scenario_red
           @scenario_red = true
+          if @options[:expand] and @inside_outline
+            @builder.text!("makeRed('#{scenario_or_background}_#{@scenario_number}_#{@outline_row}');")
+          end
         end
       end
 

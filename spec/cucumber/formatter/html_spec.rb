@@ -273,6 +273,46 @@ module Cucumber
           it { expect(@doc).not_to have_css_node('.feature .scenario .backtrace', //) }
         end
 
+        context "with a before hook that fails" do
+          describe "in a scenario" do
+            define_steps do
+              Before { raise 'eek' }
+              Given(/yay/) {}
+            end
+
+            define_feature(<<-FEATURE)
+            Feature: shouting
+              Scenario:
+                Given yay
+              FEATURE
+
+            it { expect(@out.string).to include('makeRed(\'scenario_1\')') }
+            it { expect(@doc).not_to have_css_node('.feature .scenario .step.failed', //) }
+            it { expect(@doc).to have_css_node('.feature .scenario .step.skipped', /yay/) }
+          end
+
+          describe "in a scenario outline" do
+            define_steps do
+              Before { raise 'eek' }
+              Given(/yay/) {}
+            end
+
+            define_feature(<<-FEATURE)
+            Feature: shouting
+              Scenario Outline:
+                Given <step>
+                Examples:
+                | step |
+                | yay  |
+              FEATURE
+
+            it { expect(@out.string).to include('makeRed(\'scenario_1\')') }
+            it { expect(@doc).not_to have_css_node('.feature .scenario .step.failed', //) }
+            it { expect(@doc).to have_css_node('.feature .scenario .step.skipped', /yay/) }
+          end
+
+        end
+
         describe "with a step that embeds a snapshot" do
           define_steps do
             Given(/snap/) { 
@@ -431,7 +471,7 @@ module Cucumber
         let(:runtime)   { Runtime.new({:expand => true})}
         before(:each) do
           @out = StringIO.new
-          @formatter = Html.new(runtime, @out, {})
+          @formatter = Html.new(runtime, @out, {:expand => true})
           run_defined_feature
           @doc = Nokogiri.HTML(@out.string)
         end
@@ -452,6 +492,27 @@ module Cucumber
             end
 
           it { expect(@doc.css('pre').map { |pre| /^(Given|Then|When)/.match(pre.text)[1] }).to eq ["Given", "Given"] }
+        end
+
+        describe "with a scenario outline and a before hook that fails" do
+          define_steps do
+            Before { raise 'eek' }
+            Given(/yay/) {}
+          end
+
+          define_feature(<<-FEATURE)
+          Feature: shouting
+            Scenario Outline:
+              Given <step>
+              Examples:
+              | step |
+              | yay  |
+            FEATURE
+
+          it { expect(@out.string).to include('makeRed(\'scenario_1\')') }
+          it { expect(@out.string).to include('makeRed(\'scenario_1_1\')') }
+          it { expect(@doc).not_to have_css_node('.feature .scenario .step.failed', //) }
+          it { expect(@doc).to have_css_node('.feature .scenario .step.skipped', /yay/) }
         end
       end
     end
