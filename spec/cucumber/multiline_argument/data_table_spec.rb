@@ -39,6 +39,19 @@ module Cucumber
         expect( @table.rows.first ).to eq %w{4444 55555 666666}
       end
 
+      describe '#symbolic_hashes' do
+
+        it 'should covert data table to an array of hashes with symbols as keys' do
+          expect(@table.symbolic_hashes).to eq([{:one => '4444', :four => '55555', :seven => '666666'}])
+        end
+
+        it 'should be able to be accessed multiple times' do
+          @table.symbolic_hashes
+          expect{@table.symbolic_hashes}.to_not raise_error
+        end
+
+      end
+
       describe '#map_column!' do
         it "should allow mapping columns" do
           @table.map_column!('one') { |v| v.to_i }
