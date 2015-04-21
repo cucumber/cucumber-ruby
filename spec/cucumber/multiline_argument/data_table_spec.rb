@@ -42,7 +42,9 @@ module Cucumber
       describe '#symbolic_hashes' do
 
         it 'should covert data table to an array of hashes with symbols as keys' do
-          expect(@table.symbolic_hashes).to eq([{:one => '4444', :four => '55555', :seven => '666666'}])
+          ast_table = Cucumber::Core::Ast::DataTable.new([['foo', 'Bar', 'Foo Bar'], %w{1 22 333}], nil)
+          data_table = DataTable.new(ast_table)
+          expect(data_table.symbolic_hashes).to eq([{:foo => '1', :bar => '22', :foo_bar => '333'}])
         end
 
         it 'should be able to be accessed multiple times' do
