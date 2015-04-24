@@ -53,9 +53,11 @@ Feature: JUnit output formatter
           Given this step <type>
 
           Examples:
-            | type   |
-            | passes |
-            | fails  |
+            | type         |
+            | passes       |
+            | fails        |
+            | is pending   |
+            | is undefined |
       """
 
   Scenario: one feature, one passing scenario, one failing scenario
@@ -235,8 +237,8 @@ can't convert .* into String \(TypeError\)
 You *must* specify --out DIR for the junit formatter
       """
 
-  Scenario: one feature, one scenario outline, two examples: one passing, one failing
-    When I run `cucumber --format junit --out tmp/ features/scenario_outline.feature`
+  Scenario: strict mode, one feature, one scenario outline, four examples: one passing, one failing, one pending, one undefined
+    When I run `cucumber --strict --format junit --out tmp/ features/scenario_outline.feature`
     Then it should fail with:
       """
 
@@ -244,7 +246,7 @@ You *must* specify --out DIR for the junit formatter
     And the junit output file "tmp/TEST-features-scenario_outline.xml" should contain:
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite failures="1" errors="0" skipped="0" tests="2" time="0.05" name="Scenario outlines">
+      <testsuite failures="3" errors="0" skipped="0" tests="4" time="0.05" name="Scenario outlines">
       <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | passes |)" time="0.05">
         <system-out/>
         <system-err/>
@@ -265,6 +267,30 @@ You *must* specify --out DIR for the junit formatter
         <system-out/>
         <system-err/>
       </testcase>
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | is pending |)" time="0.05">
+        <failure message="pending Using scenario outlines (outline example : | is pending |)" type="pending">
+          <![CDATA[Scenario Outline: Using scenario outlines
+
+      Example row: | fails |
+
+      Message:
+      ]]>
+        </failure>
+        <system-out/>
+        <system-err/>
+      </testcase>
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | is undefined |)" time="0.05">
+        <failure message="undefined Using scenario outlines (outline example : | is undefined |)" type="undefined">
+          <![CDATA[Scenario Outline: Using scenario outlines
+
+      Example row: | fails |
+
+      Message:
+      ]]>
+        </failure>
+        <system-out/>
+        <system-err/>
+      </testcase>
         <system-out>
           <![CDATA[]]>
         </system-out>
@@ -275,8 +301,8 @@ You *must* specify --out DIR for the junit formatter
 
       """ 
 
-  Scenario: one feature, one scenario outline, two examples: one passing, one failing with --expand option
-    When I run `cucumber --expand --format junit --out tmp/ features/scenario_outline.feature`
+  Scenario: strict mode with --expand option, one feature, one scenario outline, four examples: one passing, one failing, one pending, one undefined
+    When I run `cucumber --strict --expand --format junit --out tmp/ features/scenario_outline.feature`
     Then it should fail with exactly:
       """
 
@@ -284,7 +310,7 @@ You *must* specify --out DIR for the junit formatter
     And the junit output file "tmp/TEST-features-scenario_outline.xml" should contain:
       """
       <?xml version="1.0" encoding="UTF-8"?>
-      <testsuite failures="1" errors="0" skipped="0" tests="2" time="0.05" name="Scenario outlines">
+      <testsuite failures="3" errors="0" skipped="0" tests="4" time="0.05" name="Scenario outlines">
       <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | passes |)" time="0.05">
         <system-out/>
         <system-err/>
@@ -300,6 +326,31 @@ You *must* specify --out DIR for the junit formatter
           <![CDATA[ (RuntimeError)
       ./features/step_definitions/steps.rb:4:in `/^this step fails$/'
       features/scenario_outline.feature:9:in `Given this step fails'
+      features/scenario_outline.feature:4:in `Given this step <type>']]>
+        </failure>
+        <system-out/>
+        <system-err/>
+      </testcase>
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | is pending |)" time="0.05">
+        <failure message="pending Using scenario outlines (outline example : | is pending |)" type="pending">
+          <![CDATA[Scenario Outline: Using scenario outlines
+
+      ]]>
+          <![CDATA[TODO (Cucumber::Pending)
+      ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
+      features/scenario_outline.feature:10:in `Given this step is pending'
+      features/scenario_outline.feature:4:in `Given this step <type>']]>
+        </failure>
+        <system-out/>
+        <system-err/>
+      </testcase>
+      <testcase classname="Scenario outlines" name="Using scenario outlines (outline example : | is undefined |)" time="0.05">
+        <failure message="undefined Using scenario outlines (outline example : | is undefined |)" type="undefined">
+          <![CDATA[Scenario Outline: Using scenario outlines
+
+      ]]>
+          <![CDATA[Undefined step: "this step is undefined" (Cucumber::Undefined)
+      features/scenario_outline.feature:11:in `Given this step is undefined'
       features/scenario_outline.feature:4:in `Given this step <type>']]>
         </failure>
         <system-out/>
