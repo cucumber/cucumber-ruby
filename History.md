@@ -1,5 +1,9 @@
 ## [In Git](https://github.com/cucumber/cucumber/compare/v2.0.0...master)
 
+### New Features
+
+* Properly support symbol keys in table hashes ([840](https://github.com/cucumber/cucumber/issues/840) @dmorgan3405)
+
 ### Bugfixes
 
 * Make the HTML formatter handle failures in hooks ([835](https://github.com/cucumber/cucumber/issues/835) @brasmusson)
