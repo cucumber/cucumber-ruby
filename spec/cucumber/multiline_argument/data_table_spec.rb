@@ -39,6 +39,21 @@ module Cucumber
         expect( @table.rows.first ).to eq %w{4444 55555 666666}
       end
 
+      describe '#symbolic_hashes' do
+
+        it 'should covert data table to an array of hashes with symbols as keys' do
+          ast_table = Cucumber::Core::Ast::DataTable.new([['foo', 'Bar', 'Foo Bar'], %w{1 22 333}], nil)
+          data_table = DataTable.new(ast_table)
+          expect(data_table.symbolic_hashes).to eq([{:foo => '1', :bar => '22', :foo_bar => '333'}])
+        end
+
+        it 'should be able to be accessed multiple times' do
+          @table.symbolic_hashes
+          expect{@table.symbolic_hashes}.to_not raise_error
+        end
+
+      end
+
       describe '#map_column!' do
         it "should allow mapping columns" do
           @table.map_column!('one') { |v| v.to_i }

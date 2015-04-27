@@ -148,6 +148,22 @@ module Cucumber
         @hashes ||= build_hashes
       end
 
+      # Converts this table into an Array of Hashes where the keys are symbols.
+      # For example, a Table built from the following plain text:
+      #
+      #   | foo | Bar | Foo Bar |
+      #   | 2   | 3   | 5       |
+      #   | 7   | 9   | 16      |
+      #
+      # Gets converted into the following:
+      #
+      #   [{:foo => '2', :bar => '3', :foo_bar => '5'}, {:foo => '7', :bar => '9', :foo_bar => '16'}]
+      #
+      def symbolic_hashes
+        @header_conversion_proc = lambda { |h| symbolize_key(h) }
+        @symbolic_hashes ||= build_hashes
+      end
+
       # Converts this table into a Hash where the first column is
       # used as keys and the second column is used as values
       #
@@ -614,6 +630,10 @@ module Cucumber
         col.each do |cell|
           cell.status = :undefined
         end
+      end
+
+      def symbolize_key(key)
+        key.downcase.tr(' ', '_').to_sym
       end
 
       # Represents a row of cells or columns of cells
