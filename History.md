@@ -3,6 +3,7 @@
 ### New Features
 
 * Properly support symbol keys in table hashes ([840](https://github.com/cucumber/cucumber/issues/840) @dmorgan3405)
+* Default require path to features unless specified explicitly. ([842](https://github.com/cucumber/cucumber/issues/842) @pdswan)
 
 ### Bugfixes
 
