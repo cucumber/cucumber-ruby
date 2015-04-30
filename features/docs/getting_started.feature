@@ -19,7 +19,7 @@ Feature: Getting started
       puts 'this will not be shown'
       """
     When I run `cucumber`
-    Then the exit status should be 1
+    Then the exit status should be 2
     And the output should not contain:
       """
       this will not be shown
