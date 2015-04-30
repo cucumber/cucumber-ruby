@@ -51,7 +51,7 @@ module Cucumber
             Cucumber.wants_to_quit = false
           end
 
-          it "registers as a failure" do
+          it "exits with error code" do
             results = double('results', :failure? => false)
 
             allow_any_instance_of(Runtime).to receive(:run!)
@@ -59,7 +59,7 @@ module Cucumber
 
             Cucumber.wants_to_quit = true
 
-            expect(kernel).to receive(:exit).with(1)
+            expect(kernel).to receive(:exit).with(2)
 
             subject.execute!
           end
@@ -93,7 +93,7 @@ module Cucumber
 
           allow(Configuration).to receive(:new) { configuration }
           allow(configuration).to receive(:parse!).and_raise(exception_klass.new("error message"))
-          allow(kernel).to receive(:exit).with(1)
+          allow(kernel).to receive(:exit).with(2)
 
           subject.execute!
 

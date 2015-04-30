@@ -36,27 +36,30 @@ module Cucumber
         end
 
         runtime.run!
-        failure = runtime.failure? || Cucumber.wants_to_quit
-        @kernel.exit(failure ? 1 : 0)
+        if Cucumber.wants_to_quit
+          @kernel.exit(2)
+        else
+          @kernel.exit(runtime.failure? ? 1 : 0)
+        end
       rescue FileNotFoundException => e
         @err.puts(e.message)
         @err.puts("Couldn't open #{e.path}")
-        @kernel.exit(1)
+        @kernel.exit(2)
       rescue FeatureFolderNotFoundException => e
         @err.puts(e.message + ". You can use `cucumber --init` to get started.")
-        @kernel.exit(1)
+        @kernel.exit(2)
       rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
         @err.puts(e.message)
-        @kernel.exit(1)
+        @kernel.exit(2)
       rescue SystemExit => e
         @kernel.exit(e.status)
       rescue Errno::EACCES, Errno::ENOENT => e
         @err.puts("#{e.message} (#{e.class})")
-        @kernel.exit(1)
+        @kernel.exit(2)
       rescue Exception => e
         @err.puts("#{e.message} (#{e.class})")
         @err.puts(e.backtrace.join("\n"))
-        @kernel.exit(1)
+        @kernel.exit(2)
       end
 
       def configuration
@@ -70,7 +73,7 @@ module Cucumber
 
       def trap_interrupt
         trap('INT') do
-          exit!(1) if Cucumber.wants_to_quit
+          exit!(2) if Cucumber.wants_to_quit
           Cucumber.wants_to_quit = true
           STDERR.puts "\nExiting... Interrupt again to exit immediately."
         end
