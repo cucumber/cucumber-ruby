@@ -40,5 +40,5 @@ Feature: Raketask
 
   Scenario: Failing feature
     When I run `bundle exec rake fail`
-    Then the exit status should not be 0
+    Then the exit status should be 1
     But the output should not contain "rake aborted!"

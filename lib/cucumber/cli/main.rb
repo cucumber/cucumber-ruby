@@ -36,27 +36,34 @@ module Cucumber
         end
 
         runtime.run!
-        failure = runtime.failure? || Cucumber.wants_to_quit
-        @kernel.exit(failure ? 1 : 0)
+        if Cucumber.wants_to_quit
+          exit_unable_to_finish
+        else
+          if runtime.failure?
+            exit_tests_failed
+          else
+            exit_ok
+          end
+        end
+      rescue SystemExit => e
+        @kernel.exit(e.status)
       rescue FileNotFoundException => e
         @err.puts(e.message)
         @err.puts("Couldn't open #{e.path}")
-        @kernel.exit(1)
+        exit_unable_to_finish
       rescue FeatureFolderNotFoundException => e
         @err.puts(e.message + ". You can use `cucumber --init` to get started.")
-        @kernel.exit(1)
+        exit_unable_to_finish
       rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
         @err.puts(e.message)
-        @kernel.exit(1)
-      rescue SystemExit => e
-        @kernel.exit(e.status)
+        exit_unable_to_finish
       rescue Errno::EACCES, Errno::ENOENT => e
         @err.puts("#{e.message} (#{e.class})")
-        @kernel.exit(1)
+        exit_unable_to_finish
       rescue Exception => e
         @err.puts("#{e.message} (#{e.class})")
         @err.puts(e.backtrace.join("\n"))
-        @kernel.exit(1)
+        exit_unable_to_finish
       end
 
       def configuration
@@ -68,9 +75,27 @@ module Cucumber
 
       private
 
+
+      def exit_ok
+        @kernel.exit 0
+      end
+
+      def exit_tests_failed
+        @kernel.exit 1
+      end
+
+      def exit_unable_to_finish
+        @kernel.exit 2
+      end
+
+      # stops the program immediately, without running at_exit blocks
+      def exit_unable_to_finish!
+        @kernel.exit! 2
+      end
+
       def trap_interrupt
         trap('INT') do
-          exit!(1) if Cucumber.wants_to_quit
+          exit_unable_to_finish! if Cucumber.wants_to_quit
           Cucumber.wants_to_quit = true
           STDERR.puts "\nExiting... Interrupt again to exit immediately."
         end
