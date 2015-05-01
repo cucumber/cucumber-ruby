@@ -18,7 +18,7 @@ Feature: After Hooks
         puts scenario.status.inspect
       end
       """
-    And a file named "features/fail.feature" with:
+    And a file named "features/result.feature" with:
       """
       Feature:
         Scenario:
