@@ -9,7 +9,7 @@ module Cucumber
 
     attr_accessor :wrapped_test_case, :core_test_case
 
-    let(:result) { double(:result, status: double(:status)) }
+    let(:result) { double(:result, to_sym: :status_symbol) }
 
     before do
       receiver = double.as_null_object
@@ -46,7 +46,7 @@ module Cucumber
       end
 
       it "exposes properties of the result" do
-        expect(wrapped_test_case.status).to eq result.status
+        expect(wrapped_test_case.status).to eq result.to_sym
       end
     end
 

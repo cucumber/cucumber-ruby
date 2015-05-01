@@ -68,7 +68,7 @@ module Cucumber
       end
 
       def status
-        @result.status
+        @result.to_sym
       end
 
       def failed?
