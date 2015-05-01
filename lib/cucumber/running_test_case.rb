@@ -2,7 +2,7 @@ require 'delegate'
 
 module Cucumber
   # Represents the current status of a running test case.
-  # 
+  #
   # This wraps a `Cucumber::Core::Test::Case` and delegates
   # many methods to that object.
   #
@@ -15,7 +15,7 @@ module Cucumber
   #
   # The test case might come from a regular Scenario or
   # a Scenario outline. You can call the `#outline?`
-  # predicate to find out. If it's from an outline, 
+  # predicate to find out. If it's from an outline,
   # you get a couple of extra methods.
   module RunningTestCase
     def self.new(test_case)
@@ -65,6 +65,10 @@ module Cucumber
       def exception
         return unless @result.failed?
         @result.exception
+      end
+
+      def status
+        @result.status
       end
 
       def failed?
