@@ -129,26 +129,18 @@ module Cucumber
         @header_row = false if @header_row
       end
 
-      def before_test_case(test_case)
-        if @options[:expand] and test_case.keyword == "Scenario Outline"
-          @exception = nil
-        end
-      end
-
-      def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
-        if @options[:expand] and @in_examples
-          if not @exception and exception
-            @exception = exception
-          end
-        end
-      end
-
       def after_test_case(test_case, result)
         if @options[:expand] and test_case.keyword == "Scenario Outline"
           test_case_name = NameBuilder.new(test_case)
           @scenario = test_case_name.outline_name
           @output = "#{test_case.keyword}: #{@scenario}\n\n"
-          if result.failed?
+          @exception = nil
+          if result.failed? or (@options[:strict] and (result.pending? or result.undefined?))
+            if result.failed?
+              @exception = result.exception
+            elsif result.backtrace
+              @exception = result
+            end
             @output += "Example row: #{test_case_name.row_name}\n"
             @output += "\nMessage:\n"
           end
