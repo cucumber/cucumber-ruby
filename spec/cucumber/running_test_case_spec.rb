@@ -9,11 +9,13 @@ module Cucumber
 
     attr_accessor :wrapped_test_case, :core_test_case
 
+    let(:result) { double(:result, to_sym: :status_symbol) }
+
     before do
       receiver = double.as_null_object
       allow(receiver).to receive(:test_case) { |core_test_case|
         self.core_test_case = core_test_case
-        self.wrapped_test_case = RunningTestCase.new(core_test_case)
+        self.wrapped_test_case = RunningTestCase.new(core_test_case).with_result(result)
       }
       compile [gherkin_doc], receiver
     end
@@ -41,6 +43,10 @@ module Cucumber
         expect(wrapped_test_case.location).to eq core_test_case.location
         expect(wrapped_test_case.source).to eq core_test_case.source
         expect(wrapped_test_case.keyword).to eq core_test_case.keyword
+      end
+
+      it "exposes properties of the result" do
+        expect(wrapped_test_case.status).to eq result.to_sym
       end
     end
 
