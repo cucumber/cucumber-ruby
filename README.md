@@ -1,8 +1,7 @@
-[![Build Status](https://secure.travis-ci.org/cucumber/cucumber.png)](http://travis-ci.org/cucumber/cucumber) [![Code Climate](https://codeclimate.com/github/cucumber/cucumber.png)](https://codeclimate.com/github/cucumber/cucumber) [![Coverage Status](https://coveralls.io/repos/cucumber/cucumber/badge.png?branch=master)](https://coveralls.io/r/cucumber/cucumber?branch=master) [![Dependency Status](https://gemnasium.com/cucumber/cucumber.png)](https://gemnasium.com/cucumber/cucumber)
+[![Join the chat at https://gitter.im/cucumber/cucumber](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cucumber/cucumber?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://secure.travis-ci.org/cucumber/cucumber.png)](http://travis-ci.org/cucumber/cucumber) [![Code Climate](https://codeclimate.com/github/cucumber/cucumber.png)](https://codeclimate.com/github/cucumber/cucumber) [![Coverage Status](https://coveralls.io/repos/cucumber/cucumber/badge.png?branch=master)](https://coveralls.io/r/cucumber/cucumber?branch=master) [![Dependency Status](https://gemnasium.com/cucumber/cucumber.png)](https://gemnasium.com/cucumber/cucumber)
 
 # Cucumber
 
-[![Join the chat at https://gitter.im/cucumber/cucumber](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cucumber/cucumber?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Cucumber is a tool for running automated tests written in plain language. Because they're
 written in plain language, they can be read by anyone on your team. Because they can be 
@@ -15,7 +14,8 @@ Where to get more info:
   * Documentation: https://github.com/cucumber/cucumber/wiki
   * Ruby API Documentation: http://www.rubydoc.info/github/cucumber/cucumber/
   * Support forum: https://groups.google.com/group/cukes
-  * IRC channel: irc://irc.freenode.net/cucumber
+  * Developer chat: https://gitter.im/cucumber/cucumber
+  * IRC channel: [irc://irc.freenode.net/cucumber](irc://irc.freenode.net/cucumber)
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for info on contributing to Cucumber.
 
