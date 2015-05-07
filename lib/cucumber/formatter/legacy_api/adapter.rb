@@ -2,6 +2,7 @@ require 'forwardable'
 require 'delegate'
 require 'cucumber/errors'
 require 'cucumber/multiline_argument'
+require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/legacy_api/ast'
 
 module Cucumber
@@ -29,13 +30,13 @@ module Cucumber
 
         def after_test_step(test_step, result)
           printer.after_test_step(test_step, result)
-          formatter.after_test_step(test_step, result)
+          formatter.after_test_step(test_step, result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter))
         end
 
         def after_test_case(test_case, result)
           record_test_case_result(test_case, result)
           printer.after_test_case(test_case, result)
-          formatter.after_test_case(test_case, result)
+          formatter.after_test_case(test_case, result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter))
         end
 
         def puts(*messages)
@@ -271,7 +272,7 @@ module Cucumber
 
           def after_step_hook(hook, result)
             p current_test_step_source if current_test_step_source.step.nil?
-            line = StepBacktraceLine.new(current_test_step_source.step)
+            line = current_test_step_source.step.backtrace_line
             @child.after_step_hook Ast::HookResult.new(LegacyResultBuilder.new(result).
               append_to_exception_backtrace(line), @delayed_messages, @delayed_embeddings)
             @delayed_messages = []
@@ -995,64 +996,20 @@ module Cucumber
             return filtered_step_exception(step) if @exception
             return nil unless @status == :undefined && configuration.strict?
             @exception = Cucumber::Undefined.from(@result, step.name)
+            @exception.backtrace << step.backtrace_line
             filtered_step_exception(step)
           end
 
           def filtered_exception
-            BacktraceFilter.new(@exception.dup).exception
+            Cucumber::Formatter::BacktraceFilter.new(@exception.dup).exception
           end
 
           def filtered_step_exception(step)
             exception = filtered_exception
-            exception.backtrace << StepBacktraceLine.new(step).to_s
-            return BacktraceFilter.new(exception).exception
+            return Cucumber::Formatter::BacktraceFilter.new(exception).exception
           end
         end
 
-      end
-
-      class StepBacktraceLine < Struct.new(:step)
-        def initialize(step)
-          raise ArgumentError if step.nil?
-          super
-        end
-
-        def to_s
-          step.backtrace_line
-        end
-      end
-
-      require 'cucumber/platform'
-      class BacktraceFilter
-        BACKTRACE_FILTER_PATTERNS = \
-          [/vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\/|minitest|test\/unit|.gem\/ruby|lib\/ruby/]
-        if(::Cucumber::JRUBY)
-          BACKTRACE_FILTER_PATTERNS << /org\/jruby/
-        end
-        PWD_PATTERN = /#{::Regexp.escape(::Dir.pwd)}\//m
-
-        def initialize(exception)
-          @exception = exception
-        end
-
-        def exception
-          return @exception if ::Cucumber.use_full_backtrace
-          @exception.backtrace.each{|line| line.gsub!(PWD_PATTERN, "./")}
-
-          filtered = (@exception.backtrace || []).reject do |line|
-            BACKTRACE_FILTER_PATTERNS.detect { |p| line =~ p }
-          end
-
-          if ::ENV['CUCUMBER_TRUNCATE_OUTPUT']
-            # Strip off file locations
-            filtered = filtered.map do |line|
-              line =~ /(.*):in `/ ? $1 : line
-            end
-          end
-
-          @exception.set_backtrace(filtered)
-          @exception
-        end
       end
 
     end

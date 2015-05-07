@@ -11,6 +11,28 @@ Feature: After Hooks
   Background:
     Given the standard step definitions
 
+  Scenario Outline: Retreive the status of a scenario as a symbol
+    Given a file named "features/support/debug_hook.rb" with:
+      """
+      After do |scenario|
+        puts scenario.status.inspect
+      end
+      """
+    And a file named "features/result.feature" with:
+      """
+      Feature:
+        Scenario:
+          Given this step <result>
+      """
+    When I run `cucumber -f progress`
+    Then the output should contain "<status symbol>"
+
+    Examples:
+      | result     | status symbol |
+      | passes     | :passed       |
+      | fails      | :failed       |
+      | is pending | :pending      |
+
   Scenario: Check the failed status of a scenario in a hook
     Given a file named "features/support/debug_hook.rb" with:
       """

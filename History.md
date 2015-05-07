@@ -5,6 +5,7 @@
 * Properly support symbol keys in table hashes ([840](https://github.com/cucumber/cucumber/issues/840) @dmorgan3405)
 * Default require path to features unless specified explicitly. ([842](https://github.com/cucumber/cucumber/issues/842) @pdswan)
 * Exit with different status codes when scenarios failed (1) vs when failed to run scenarios (2) ([#845](https://github.com/cucumber/cucumber/pull/845) @ciembor)
+* Expose #status on Cucumber::RunningTestCase ([#836](https://github.com/cucumber/cucumber/pull/846) [#836](https://github.com/cucumber/cucumber/issues/836) @pdswan)
 
 ### Bugfixes
 
