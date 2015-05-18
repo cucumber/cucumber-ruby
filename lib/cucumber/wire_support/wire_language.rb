@@ -5,6 +5,7 @@ require 'cucumber/wire_support/configuration'
 require 'cucumber/wire_support/wire_packet'
 require 'cucumber/wire_support/wire_exception'
 require 'cucumber/wire_support/wire_step_definition'
+require 'cucumber/configuration'
 
 module Cucumber
   module WireSupport
@@ -13,8 +14,9 @@ module Cucumber
     # language API.
     class WireLanguage
 
-      def initialize(_=nil)
+      def initialize(_=nil, configuration = Cucumber::Configuration.new)
         @connections = []
+        configuration.snippet_generators << self.method(:snippet_text)
       end
 
       def load_code_file(wire_file)

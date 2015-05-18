@@ -87,7 +87,7 @@ module Cucumber
       def load_programming_language(ext)
         return @language_map[ext] if @language_map[ext]
         programming_language_class = constantize("Cucumber::#{ext.capitalize}Support::#{ext.capitalize}Language")
-        programming_language = programming_language_class.new(@runtime_facade)
+        programming_language = programming_language_class.new(@runtime_facade, @configuration)
         @programming_languages << programming_language
         @language_map[ext] = programming_language
         programming_language
@@ -114,9 +114,9 @@ module Cucumber
 
       def snippet_text(step_keyword, step_name, multiline_arg) #:nodoc:
         load_programming_language('rb') if unknown_programming_language?
-        @programming_languages.map do |programming_language|
-          programming_language.snippet_text(step_keyword, step_name, multiline_arg, @configuration.snippet_type)
-        end.join("\n")
+        @configuration.snippet_generators.map { |generator|
+          generator.call(step_keyword, step_name, multiline_arg, @configuration.snippet_type)
+        }.join("\n")
       end
 
       def unknown_programming_language?

@@ -193,6 +193,20 @@ module Cucumber
       @options
     end
 
+    # An array of procs that can generate snippets for undefined steps. These procs may be called if a
+    # formatter wants to display snippets to the user.
+    #
+    # Each proc should take the following arguments:
+    # 
+    #  - keyword
+    #  - step text
+    #  - multiline argument
+    #  - snippet type
+    #
+    def snippet_generators
+      @options[:snippet_generators] ||= []
+    end
+
   private
 
     def default_options

@@ -45,11 +45,12 @@ module Cucumber
         RbDsl.alias_adverb(adverb.strip)
       end
 
-      def initialize(runtime)
+      def initialize(runtime, configuration)
         @runtime = runtime
         @step_definitions = []
         RbDsl.rb_language = self
         @world_proc = @world_modules = nil
+        configuration.snippet_generators << self.method(:snippet_text)
       end
 
       def step_matches(name_to_match, name_to_format)

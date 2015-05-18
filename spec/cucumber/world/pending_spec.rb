@@ -1,10 +1,11 @@
 require 'spec_helper'
 require 'cucumber/rb_support/rb_language'
+require 'cucumber/configuration'
 
 module Cucumber
   describe 'Pending' do
     before(:each) do
-      l = RbSupport::RbLanguage.new(Runtime.new)
+      l = RbSupport::RbLanguage.new(Runtime.new, Configuration.new)
       l.begin_rb_scenario(double('scenario').as_null_object)
       @world = l.current_world
     end

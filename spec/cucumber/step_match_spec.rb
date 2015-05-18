@@ -8,7 +8,7 @@ module Cucumber
     WORD = '[[:word:]]'
 
     before do
-      @rb_language = RbSupport::RbLanguage.new(nil)
+      @rb_language = RbSupport::RbLanguage.new(nil, Configuration.new)
     end
 
     def stepdef(regexp)

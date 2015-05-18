@@ -117,6 +117,10 @@ module Cucumber
         Cucumber::Hash(@options).merge(out_stream: @out_stream, error_stream: @error_stream)
       end
 
+      def snippet_generators
+        @options[:snippet_generators] ||= []
+      end
+
       private
 
       class LogFormatter < ::Logger::Formatter
