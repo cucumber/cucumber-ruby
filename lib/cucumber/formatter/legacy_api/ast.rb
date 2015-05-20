@@ -60,6 +60,7 @@ module Cucumber
             comments.each do |comment|
               formatter.comment_line comment.to_s.strip
             end
+            formatter.after_comment comments
           end
         end
 

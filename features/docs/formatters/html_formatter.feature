@@ -39,6 +39,15 @@ Feature: HTML output formatter
           When I do something
           Then I should see something
       """
+    And a file named "features/feature_with_comment.feature" with:
+      """
+      # Hey this is a comment
+      Feature: Feature with a leading comment
+
+        Scenario: A comment at the top of the file
+          Given this step is passing
+          Then I should see something
+      """
 
   Scenario: an scenario outline, one undefined step, one random example, expand flag on
     When I run `cucumber features/scenario_outline_with_undefined_steps.feature --format html --expand `
@@ -88,3 +97,11 @@ Feature: HTML output formatter
     """
     makeRed('background_0')
     """
+
+  Scenario: a feature with a leading comment
+    When I run `cucumber features/feature_with_comment.feature --format html`
+    Then the output should contain:
+      """
+      <pre class="comment"># Hey this is a comment<br/></pre>
+      """
+
