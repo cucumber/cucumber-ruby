@@ -40,7 +40,7 @@ module Cucumber
 
         describe "with a step that embeds a snapshot" do
           define_steps do
-            Given(/snap/) { 
+            Given(/snap/) {
               RSpec::Mocks.allow_message(File, :file?) { true }
               embed('out/snapshot.jpeg', 'image/jpeg')
             }
@@ -87,7 +87,14 @@ module Cucumber
 
           it { expect(@out.string).to match(/^\<!DOCTYPE/) }
           it { expect(@out.string).to match(/\<\/html\>$/) }
-          it { expect(@doc).to have_css_node('.feature .comment', /Healthy/) }
+
+          it "nests the comment within the feature" do
+            expect(@doc).to have_css_node('.feature .comment', /Healthy/)
+          end
+
+          it "properly closes the comment" do
+            expect(@out.string).to match(%r{<pre class="comment"># Healthy<br/></pre>})
+          end
         end
 
         describe "with a tag" do
@@ -315,7 +322,7 @@ module Cucumber
 
         describe "with a step that embeds a snapshot" do
           define_steps do
-            Given(/snap/) { 
+            Given(/snap/) {
               RSpec::Mocks.allow_message(File, :file?) { true }
               embed('snapshot.jpeg', 'image/jpeg')
             }
@@ -329,7 +336,7 @@ module Cucumber
 
           it { expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq "snapshot.jpeg" }
         end
-        
+
         describe "with a step that embeds a text" do
           define_steps do
             Given(/log/) { embed('log.txt', 'text/plain') }
