@@ -271,10 +271,14 @@ You *must* specify --out DIR for the junit formatter
         <failure message="pending Using scenario outlines (outline example : | is pending |)" type="pending">
           <![CDATA[Scenario Outline: Using scenario outlines
 
-      Example row: | fails |
+      Example row: | is pending |
 
       Message:
       ]]>
+          <![CDATA[TODO (Cucumber::Pending)
+      ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
+      features/scenario_outline.feature:10:in `Given this step is pending'
+      features/scenario_outline.feature:4:in `Given this step <type>']]>
         </failure>
         <system-out/>
         <system-err/>
@@ -283,10 +287,13 @@ You *must* specify --out DIR for the junit formatter
         <failure message="undefined Using scenario outlines (outline example : | is undefined |)" type="undefined">
           <![CDATA[Scenario Outline: Using scenario outlines
 
-      Example row: | fails |
+      Example row: | is undefined |
 
       Message:
       ]]>
+          <![CDATA[Undefined step: "this step is undefined" (Cucumber::Core::Test::Result::Undefined)
+      features/scenario_outline.feature:11:in `Given this step is undefined'
+      features/scenario_outline.feature:4:in `Given this step <type>']]>
         </failure>
         <system-out/>
         <system-err/>
