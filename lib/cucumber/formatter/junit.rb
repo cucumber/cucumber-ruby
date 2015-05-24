@@ -27,6 +27,10 @@ module Cucumber
           start_feature(test_case.feature)
         end
         @failing_step_source = nil
+        # In order to fill out <system-err/> and <system-out/>, we need to
+        # intercept the $stderr and $stdout
+        @interceptedout = Interceptor::Pipe.wrap(:stdout)
+        @interceptederr = Interceptor::Pipe.wrap(:stderr)
       end
 
       def after_test_step(test_step, result)
@@ -41,6 +45,9 @@ module Cucumber
         scenario_designation = "#{scenario}#{test_case_name.name_suffix}"
         output = create_output_string(test_case, scenario, result, test_case_name.row_name)
         build_testcase(result, scenario_designation, output)
+
+        Interceptor::Pipe.unwrap! :stdout
+        Interceptor::Pipe.unwrap! :stderr
       end
 
       def done
@@ -59,10 +66,6 @@ module Cucumber
         @failures = @errors = @tests = @skipped = 0
         @builder = Builder::XmlMarkup.new(:indent => 2)
         @time = 0
-        # In order to fill out <system-err/> and <system-out/>, we need to
-        # intercept the $stderr and $stdout
-        @interceptedout = Interceptor::Pipe.wrap(:stdout)
-        @interceptederr = Interceptor::Pipe.wrap(:stderr)
       end
 
       def end_feature
@@ -76,18 +79,9 @@ module Cucumber
           :time => "%.6f" % @time,
           :name => @current_feature.name ) do
           @testsuite << @builder.target!
-          @testsuite.tag!('system-out') do
-            @testsuite.cdata! strip_control_chars(@interceptedout.buffer.join)
-          end
-          @testsuite.tag!('system-err') do
-            @testsuite.cdata! strip_control_chars(@interceptederr.buffer.join)
-          end
         end
 
         write_file(feature_result_filename(@current_feature.file), @testsuite.target!)
-
-        Interceptor::Pipe.unwrap! :stdout
-        Interceptor::Pipe.unwrap! :stderr
       end
 
       def create_output_string(test_case, scenario, result, row_name)
@@ -126,8 +120,12 @@ module Cucumber
             end
             @failures += 1
           end
-          @builder.tag!('system-out')
-          @builder.tag!('system-err')
+          @builder.tag!('system-out') do
+            @builder.cdata! strip_control_chars(@interceptedout.buffer.join)
+          end
+          @builder.tag!('system-err') do
+            @builder.cdata! strip_control_chars(@interceptederr.buffer.join)
+          end
         end
         @tests += 1
       end
