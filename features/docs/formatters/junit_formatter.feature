@@ -201,7 +201,7 @@ Feature: JUnit output formatter
 
       Message:
       ]]>
-          <![CDATA[Undefined step: "this step is undefined" (Cucumber::Undefined)
+          <![CDATA[Undefined step: "this step is undefined" (Cucumber::Core::Test::Result::Undefined)
       features/pending.feature:7:in `Given this step is undefined']]>
         </failure>
         <system-out/>
