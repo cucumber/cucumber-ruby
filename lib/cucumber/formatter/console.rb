@@ -76,7 +76,7 @@ module Cucumber
         end
       end
 
-      def print_stats(features, options)
+      def print_stats(duration, options)
         failures = collect_failing_scenarios(runtime)
         if !failures.empty?
           print_failing_scenarios(failures, options.custom_profiles, options[:source])
@@ -85,7 +85,7 @@ module Cucumber
         @io.puts scenario_summary(runtime) {|status_count, status| format_string(status_count, status)}
         @io.puts step_summary(runtime) {|status_count, status| format_string(status_count, status)}
 
-        @io.puts(format_duration(features.duration)) if features && features.duration
+        @io.puts(format_duration(duration)) if duration
 
         if runtime.configuration.randomize?
           @io.puts

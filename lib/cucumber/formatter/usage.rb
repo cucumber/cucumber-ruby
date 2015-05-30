@@ -14,39 +14,33 @@ module Cucumber
         @runtime = runtime
         @io = ensure_io(path_or_io, "usage")
         @options = options
-        @stepdef_to_match = Hash.new{|h,stepdef_key| h[stepdef_key] = []}
+        @stepdef_to_match = Hash.new { |h, stepdef_key| h[stepdef_key] = [] }
+        @total_duration = 0
       end
 
-      def before_features(features)
-        print_profile_information
-      end
+      def after_test_step(test_step, result)
+        return if hook?(test_step.source.last)
 
-      def before_step(step)
-        @step = step
-        @start_time = Time.now
-      end
-
-      def before_step_result(*args)
-        @duration = Time.now - @start_time
-      end
-
-      def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
+        step_match = @runtime.step_match(test_step.source.last.name)
         step_definition = step_match.step_definition
-        unless step_definition.nil? # nil if it's from a scenario outline
-          stepdef_key = StepDefKey.new(step_definition.regexp_source, step_definition.file_colon_line)
+        stepdef_key = StepDefKey.new(step_definition.regexp_source, step_definition.file_colon_line)
+        unless @stepdef_to_match[stepdef_key].map { |key| key[:file_colon_line] }.include? test_step.location
+          duration = DurationExtractor.new(result).result_duration
 
           @stepdef_to_match[stepdef_key] << {
-            :keyword => keyword,
-            :step_match => step_match,
-            :status => status,
-            :file_colon_line => @step.file_colon_line,
-            :duration => @duration
+            keyword: test_step.source.last.keyword,
+            step_match: step_match,
+            status: result.to_sym,
+            file_colon_line: test_step.location,
+            duration: duration
           }
         end
         super
       end
 
-      def print_summary(features)
+      private
+
+      def print_summary
         add_unused_stepdefs
         aggregate_info
 

@@ -1,5 +1,6 @@
 require 'cucumber/formatter/console'
 require 'cucumber/formatter/io'
+require 'cucumber/formatter/duration_extractor'
 
 module Cucumber
   module Formatter
@@ -13,73 +14,42 @@ module Cucumber
         @runtime, @io, @options = runtime, ensure_io(path_or_io, "progress"), options
         @previous_step_keyword = nil
         @snippets_input = []
+        @total_duration = 0
       end
 
-      def before_features(features)
-        print_profile_information
-      end
-
-      def after_features(features)
-        @io.puts
-        @io.puts
-        print_summary(features)
-      end
-
-      def before_feature_element(*args)
-        @exception_raised = false
-      end
-
-      def after_feature_element(*args)
-        progress(:failed) if (defined? @exception_raised) and (@exception_raised)
-        @exception_raised = false
-      end
-
-      def before_steps(*args)
-        progress(:failed) if (defined? @exception_raised) and (@exception_raised)
-        @exception_raised = false
-      end
-
-      def after_steps(*args)
-        @exception_raised = false
-      end
-
-      def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
-        progress(status)
-        @status = status
-      end
-
-      def before_outline_table(outline_table)
-        @outline_table = outline_table
-      end
-
-      def after_outline_table(outline_table)
-        @outline_table = nil
-      end
-
-      def table_cell_value(value, status)
-        return unless @outline_table
-        status ||= @status
-        progress(status) unless table_header_cell?(status)
-      end
-
-      def exception(*args)
-        @exception_raised = true
-      end
-
-      def before_test_case(test_case)
+      def before_test_case(_test_case)
+        unless @profile_information_printed
+          print_profile_information
+          @profile_information_printed = true
+        end
         @previous_step_keyword = nil
       end
 
       def after_test_step(test_step, result)
-        collect_snippet_data(test_step, result)
+        progress(result.to_sym) if !hook?(test_step.source.last) || result.failed?
+        collect_snippet_data(test_step, result) unless hook?(test_step.source.last) 
+      end
+
+      def after_test_case(_test_case, result)
+        @total_duration += DurationExtractor.new(result).result_duration
+      end
+
+      def done
+        @io.puts
+        @io.puts
+        print_summary
       end
 
       private
 
-      def print_summary(features)
+      def hook?(step)
+        ['Before hook', 'After hook', 'AfterStep hook'].include? step.name
+      end
+
+      def print_summary
         print_steps(:pending)
         print_steps(:failed)
-        print_stats(features, @options)
+        print_stats(@total_duration, @options)
         print_snippets(@options)
         print_passing_wip(@options)
       end

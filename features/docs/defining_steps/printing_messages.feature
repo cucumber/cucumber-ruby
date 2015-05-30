@@ -137,12 +137,12 @@ Feature: Pretty formatter - Printing messages
         Announce
         
         Me
-        ..-UUUUUU
+        ..UUU
         Announce with fail
-        F--
+        F-
         Line: 1: anno1
-        FFF
+        F
         Line: 2: anno2
-        ...
+        .
         """
 

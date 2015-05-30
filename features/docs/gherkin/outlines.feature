@@ -138,7 +138,7 @@ Feature: Scenario outlines
     When I run `cucumber -q --format progress features/outline_sample.feature`
     Then it should fail with exactly:
       """
-      --UU..FF..
+      U-..F-..
 
       (::) failed steps (::)
 
@@ -155,4 +155,3 @@ Feature: Scenario outlines
       0m0.012s
 
       """
-
