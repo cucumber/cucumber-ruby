@@ -12,7 +12,7 @@ module Cucumber
       before(:each) do
         Cucumber::Term::ANSIColor.coloring = false
         @out = StringIO.new
-        @formatter = Progress.new(runtime, @out, {})
+        @formatter = Progress.new(runtime, @out, Cucumber::Cli::Options.new)
       end
 
       describe "given a single feature" do
@@ -78,6 +78,90 @@ module Cucumber
             expect(@out.string).to include "4 steps (4 undefined)"
           end
 
+        end
+
+        describe "with hooks" do
+
+          describe "all hook passes" do
+            define_feature <<-FEATURE
+          Feature:
+            Scenario:
+              Given this step passes
+          FEATURE
+
+            define_steps do
+              Before do
+              end
+              AfterStep do
+              end
+              After do
+              end
+              Given(/^this step passes$/) {}
+            end
+
+            it "only steps generate output" do
+              lines = <<-OUTPUT
+              .
+              1 scenario (1 passed)
+              1 step (1 passed)
+              OUTPUT
+              lines.split("\n").each do |line|
+                expect(@out.string).to include line.strip
+              end
+            end
+          end
+
+          describe "with a failing before hook" do
+            define_feature <<-FEATURE
+          Feature:
+            Scenario:
+              Given this step passes
+          FEATURE
+
+            define_steps do
+              Before do
+                fail "hook failed" 
+              end
+              Given(/^this step passes$/) {}
+            end
+
+            it "the failing hook generate output" do
+              lines = <<-OUTPUT
+              F-
+              1 scenario (1 failed)
+              1 step (1 skipped)
+              OUTPUT
+              lines.split("\n").each do |line|
+                expect(@out.string).to include line.strip
+              end
+            end
+          end
+
+          describe "with a failing after hook" do
+            define_feature <<-FEATURE
+          Feature:
+            Scenario:
+              Given this step passes
+          FEATURE
+
+            define_steps do
+              After do
+                fail "hook failed" 
+              end
+              Given(/^this step passes$/) {}
+            end
+
+            it "the failing hook generate output" do
+              lines = <<-OUTPUT
+              .F
+              1 scenario (1 failed)
+              1 step (1 passed)
+              OUTPUT
+              lines.split("\n").each do |line|
+                expect(@out.string).to include line.strip
+              end
+            end
+          end
         end
       end
     end
