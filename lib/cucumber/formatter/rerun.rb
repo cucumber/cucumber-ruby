@@ -8,10 +8,11 @@ module Cucumber
       def initialize(runtime, path_or_io, options)
         @io = ensure_io(path_or_io, "rerun")
         @failures = {}
+        @options = options
       end
 
       def after_test_case(test_case, result)
-        return if result.passed?
+        return if result.passed? || result.skipped? || !@options[:strict] && (result.pending? || result.undefined?)
         @failures[test_case.location.file] ||= []
         @failures[test_case.location.file] << test_case.location.line
       end
