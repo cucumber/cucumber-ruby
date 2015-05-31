@@ -12,7 +12,7 @@ module Cucumber
       end
 
       def after_test_case(test_case, result)
-        return if result.passed? || result.skipped? || !@options[:strict] && (result.pending? || result.undefined?)
+        return if result.ok?(@options[:strict])
         @failures[test_case.location.file] ||= []
         @failures[test_case.location.file] << test_case.location.line
       end
