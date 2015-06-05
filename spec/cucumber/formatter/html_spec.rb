@@ -90,6 +90,17 @@ module Cucumber
           it { expect(@doc).to have_css_node('.feature .comment', /Healthy/) }
         end
 
+        describe "with a comment at scenario level" do
+          define_feature <<-FEATURE
+            Feature: Foo
+              # Healthy Scenario
+              Scenario:
+                Given passing
+          FEATURE
+
+          it { expect(@doc).to have_css_node('.scenario .comment', /Healthy Scenario/) }
+        end
+
         describe "with a tag" do
           define_feature <<-FEATURE
             @foo
