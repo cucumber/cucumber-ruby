@@ -369,6 +369,102 @@ Feature:
 OUTPUT
             end
           end
+
+          describe "with tags on all levels" do
+            define_feature <<-FEATURE
+          @tag1
+          Feature:
+            @tag2
+            Scenario:
+              Given this step passes
+            @tag3
+            Scenario Outline:
+              Given this step passes
+              @tag4
+              Examples:
+              | dummy |
+              | dummy |
+            FEATURE
+
+
+            it "includes the tags in the output " do
+              expect( @out.string ).to include <<OUTPUT
+@tag1
+Feature: 
+
+  @tag2
+  Scenario: 
+    Given this step passes
+
+  @tag3
+  Scenario Outline: 
+    Given this step passes
+
+    @tag4
+    Examples: 
+      | dummy |
+      | dummy |
+OUTPUT
+            end
+          end
+
+          describe "with comments on all levels" do
+            define_feature <<-FEATURE
+          #comment1
+          Feature:
+            #comment2
+            Background:
+              #comment3
+              Given this step passes
+            #comment4
+            Scenario:
+              #comment5
+              Given this step passes
+              #comment6
+              | dummy |
+            #comment7
+            Scenario Outline:
+              #comment8
+              Given this step passes
+              #comment9
+              Examples:
+                #comment10
+                | dummy |
+                #comment11
+                | dummy |
+            FEATURE
+
+
+            it "includes the all comments except for data table rows in the output " do
+              expect( @out.string ).to include <<OUTPUT
+#comment1
+Feature: 
+
+  #comment2
+  Background: 
+      #comment3
+    Given this step passes
+
+  #comment4
+  Scenario: 
+      #comment5
+    Given this step passes
+      | dummy |
+
+  #comment7
+  Scenario Outline: 
+      #comment8
+    Given this step passes
+
+    #comment9
+    Examples: 
+      #comment10
+      | dummy |
+      #comment11
+      | dummy |
+OUTPUT
+            end
+          end
         end
       end
 
