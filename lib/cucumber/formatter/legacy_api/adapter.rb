@@ -459,6 +459,7 @@ module Cucumber
 
           def before
             formatter.before_background Ast::Background.new(feature, node)
+            Ast::Comments.new(node.comments).accept(formatter)
             formatter.background_name node.keyword, node.legacy_conflated_name_and_description, node.location.to_s, indent.of(node)
             before_hook_results.accept(formatter)
             self
@@ -520,6 +521,7 @@ module Cucumber
 
           def before
             formatter.before_feature_element(node)
+            Ast::Comments.new(node.comments).accept(formatter)
             Ast::Tags.new(node.tags).accept(formatter)
             formatter.scenario_name node.keyword, node.legacy_conflated_name_and_description, node.location.to_s, indent.of(node)
             before_hook_results.accept(formatter)
@@ -594,6 +596,7 @@ module Cucumber
 
           def before
             formatter.before_feature_element(node)
+            Ast::Comments.new(node.comments).accept(formatter)
             Ast::Tags.new(node.tags).accept(formatter)
             formatter.scenario_name node.keyword, node.legacy_conflated_name_and_description, node.location.to_s, indent.of(node)
             OutlineStepsPrinter.new(formatter, configuration, indent).print(node)
@@ -694,6 +697,8 @@ module Cucumber
 
           def before
             formatter.before_examples(node)
+            Ast::Comments.new(node.comments).accept(formatter)
+            Ast::Tags.new(node.tags).accept(formatter)
             formatter.examples_name(node.keyword, node.legacy_conflated_name_and_description)
             formatter.before_outline_table(legacy_table)
             if !configuration.expand?
@@ -804,6 +809,7 @@ module Cucumber
           end
 
           def before
+            Ast::Comments.new(node.comments).accept(formatter)
             formatter.before_table_row(node)
             self
           end
@@ -823,6 +829,7 @@ module Cucumber
         class TableRowPrinter < TableRowPrinterBase
           def before
             before_hook_results.accept(formatter)
+            Ast::Comments.new(node.comments).accept(formatter)
             formatter.before_table_row(node)
             self
           end

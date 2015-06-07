@@ -108,6 +108,7 @@ module Cucumber
 
           def accept(formatter)
             formatter.before_step(self)
+            Ast::Comments.new(step.comments).accept(formatter)
             messages.each { |message| formatter.puts(message) }
             embeddings.each { |embedding| embedding.send_to_formatter(formatter) }
             formatter.before_step_result *step_result_attributes
