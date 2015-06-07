@@ -88,3 +88,4 @@ Feature: HTML output formatter
     """
     makeRed('background_0')
     """
+
