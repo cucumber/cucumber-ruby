@@ -36,7 +36,7 @@ module Cucumber
       def after_test_step(test_step, result)
         return if @failing_step_source
 
-        @failing_step_source = test_step.source.last if result.failed? || (@options[:strict] && (result.pending? || result.undefined?))
+        @failing_step_source = test_step.source.last unless result.ok?(@options[:strict])
       end
 
       def after_test_case(test_case, result)
@@ -86,7 +86,7 @@ module Cucumber
 
       def create_output_string(test_case, scenario, result, row_name)
         output = "#{test_case.keyword}: #{scenario}\n\n"
-        return output unless result.failed? || (@options[:strict] && (result.pending? || result.undefined?))
+        return output if result.ok?(@options[:strict])
         if test_case.keyword == "Scenario"
           output += "#{@failing_step_source.keyword}" unless hook?(@failing_step_source)
           output += "#{@failing_step_source.name}\n"
@@ -105,10 +105,9 @@ module Cucumber
         @time += duration
         classname = @current_feature.name
         name = scenario_designation
-        pending = (result.pending? || result.undefined?) && (!@options[:strict])
 
         @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
-          if result.skipped? || pending
+          if !result.passed? && result.ok?(@options[:strict])
             @builder.skipped
             @skipped += 1
           elsif !result.passed?
