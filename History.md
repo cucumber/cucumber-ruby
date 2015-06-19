@@ -7,6 +7,7 @@
 * Exit with different status codes when scenarios failed (1) vs when failed to run scenarios (2) ([#845](https://github.com/cucumber/cucumber/pull/845) @ciembor)
 * Expose #status on Cucumber::RunningTestCase ([#836](https://github.com/cucumber/cucumber/pull/846) [#836](https://github.com/cucumber/cucumber/issues/836) @pdswan)
 * New `--no-duration` flag on command-line ([#822](https://github.com/cucumber/cucumber/pull/822) @richarda)
+* Make the Rerun Formatter consistent with the exit code ([860](https://github.com/cucumber/cucumber/pull/860) @brasmusson)
 
 ### Bugfixes
 
