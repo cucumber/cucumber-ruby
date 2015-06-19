@@ -252,6 +252,12 @@ END_OF_MESSAGE
 
       expect(config.options[:dry_run]).to be true
     end
+    
+    it "implies --no-duration with --dry-run option" do
+      config.parse!(%w{--dry-run})
+      
+      expect(config.options[:duration]).to be false
+    end
 
     it "accepts --no-source option" do
       config.parse!(%w{--no-source})
@@ -265,11 +271,18 @@ END_OF_MESSAGE
       expect(config.options[:snippets]).to be false
     end
 
-    it "sets snippets and source to false with --quiet option" do
+    it "sets snippets and source and duration to false with --quiet option" do
       config.parse!(%w{--quiet})
 
       expect(config.options[:snippets]).to be false
       expect(config.options[:source]).to be false
+      expect(config.options[:duration]).to be false
+    end
+    
+    it "sets duration to false with --no-duration" do
+      config.parse!(%w{--no-duration})
+      
+      expect(config.options[:duration]).to be false
     end
 
     it "accepts --verbose option" do

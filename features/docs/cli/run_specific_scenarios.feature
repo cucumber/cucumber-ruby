@@ -24,7 +24,7 @@ Feature: Run specific scenarios
           Given this step passes
       """
     When I run `cucumber features/test.feature:7 --format pretty --quiet`
-    Then it should pass with:
+    Then it should pass with exactly:
       """
       Feature: 
 
@@ -32,6 +32,8 @@ Feature: Run specific scenarios
           Given this step passes
 
       1 scenario (1 passed)
+      1 step (1 passed)
+      
       """
 
   Scenario: Use @-notation to specify a file containing feature file list

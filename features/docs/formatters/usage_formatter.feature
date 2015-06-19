@@ -79,7 +79,6 @@ Feature: Usage formatter
       
       4 scenarios (4 skipped)
       11 steps (11 skipped)
-      0m0.012s
 
       """
 
@@ -97,6 +96,5 @@ Feature: Usage formatter
         
         4 scenarios (4 skipped)
         11 steps (11 skipped)
-        0m0.012s
 
         """
