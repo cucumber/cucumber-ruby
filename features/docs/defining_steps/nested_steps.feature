@@ -173,6 +173,5 @@ Feature: Nested Steps
 
       2 scenarios (2 failed)
       2 steps (2 failed)
-      0m0.012s
 
       """

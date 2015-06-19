@@ -65,7 +65,7 @@ module Cucumber
         @profile_loader = options[:profile_loader]
         @options[:skip_profile_information] = options[:skip_profile_information]
 
-        @quiet = @disable_profile_loading = nil
+        @disable_profile_loading = nil
       end
 
       def [](key)
@@ -188,6 +188,7 @@ module Cucumber
           opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.",
             "This also omits the loading of your support/env.rb file if it exists.") do
             @options[:dry_run] = true
+            @options[:duration] = false
           end
           opts.on("-m", "--no-multiline",
             "Don't print multiline strings and tables under steps.") do
@@ -207,7 +208,12 @@ module Cucumber
           end
 
           opts.on("-q", "--quiet", "Alias for --no-snippets --no-source.") do
-            @quiet = true
+            @options[:snippets] = false
+            @options[:source] = false
+            @options[:duration] = false
+          end
+          opts.on("--no-duration", "Don't print the duration at the end of the summary") do
+            @options[:duration] = false
           end
           opts.on("-b", "--backtrace", "Show full backtrace for all errors.") do
             Cucumber.use_full_backtrace = true
@@ -252,12 +258,6 @@ TEXT
           end
         end.parse!
 
-        if @quiet
-          @options[:snippets] = @options[:source] = false
-        else
-          @options[:snippets] = true if @options[:snippets].nil?
-          @options[:source]   = true if @options[:source].nil?
-        end
         @args.map! { |a| "#{a}:#{@options[:lines]}" } if @options[:lines]
 
         extract_environment_variables
@@ -362,6 +362,7 @@ TEXT
         end
         @options[:source] &= other_options[:source]
         @options[:snippets] &= other_options[:snippets]
+        @options[:duration] &= other_options[:duration]
         @options[:strict] |= other_options[:strict]
         @options[:dry_run] |= other_options[:dry_run]
 
@@ -400,7 +401,10 @@ TEXT
           :tag_expressions  => [],
           :name_regexps => [],
           :env_vars     => {},
-          :diff_enabled => true
+          :diff_enabled => true,
+          :snippets     => true,
+          :source       => true,
+          :duration     => true
         }
       end
     end

@@ -222,7 +222,6 @@ Feature: Background
 
     1 scenario (1 passed)
     2 steps (2 passed)
-    0m0.012s
 
     """
   
@@ -243,7 +242,6 @@ Feature: Background
 
     2 scenarios (2 passed)
     4 steps (4 passed)
-    0m0.012s
 
     """
 
@@ -272,7 +270,6 @@ Feature: Background
 
     2 scenarios (2 passed)
     4 steps (4 passed)
-    0m0.012s
 
     """
 
@@ -295,7 +292,6 @@ Feature: Background
 
     1 scenario (1 passed)
     2 steps (2 passed)
-    0m0.012s
 
     """
 
@@ -325,7 +321,6 @@ Feature: Background
     
     2 scenarios (2 failed)
     6 steps (2 failed, 4 skipped)
-    0m0.012s
     
     """
 
@@ -362,7 +357,6 @@ Feature: Background
 
     2 scenarios (2 failed)
     4 steps (2 failed, 2 skipped)
-    0m0.012s
     
     """
 
@@ -386,7 +380,6 @@ Feature: Background
 
     2 scenarios (2 pending)
     4 steps (2 skipped, 2 pending)
-    0m0.012s
     
     """
 
@@ -416,7 +409,6 @@ Feature: Background
 
     2 scenarios (1 failed, 1 passed)
     6 steps (1 failed, 1 skipped, 4 passed)
-    0m0.012s
     
     """
 
@@ -453,7 +445,6 @@ Feature: Background
 
     2 scenarios (1 failed, 1 passed)
     6 steps (1 failed, 1 skipped, 4 passed)
-    0m0.012s
     
     """
 
@@ -493,7 +484,6 @@ Feature: Background
 
     2 scenarios (1 failed, 1 passed)
     6 steps (1 failed, 1 skipped, 4 passed)
-    0m0.012s
     
     """
 
@@ -553,7 +543,6 @@ Feature: Background
 
       2 scenarios (2 passed)
       8 steps (8 passed)
-      0m0.012s
     
       """
 
