@@ -18,7 +18,8 @@
 
 ### Refactoring
 
-* Rewrite the JUnit Formatter to the new formatter Api ([855](https://github.com/cucumber/cucumber/pull/855) @brasmusson)
+* Rewrite the JUnit Formatter to the new formatter API ([855](https://github.com/cucumber/cucumber/pull/855) @brasmusson)
+* Rewrite the Progress, Usage, Stepdefs formatters to the new formatter API ([859](https://github.com/cucumber/cucumber/pull/859) @brasmusson)
 
 ## [v2.0.0](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.5...v2.0.0)
 
