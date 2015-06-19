@@ -59,7 +59,7 @@ module Cucumber
             end
           end
 
-          it { expect(@doc.xpath('//testsuite/system-out').first.content).to match(/\s+boo boo\s+/) }
+          it { expect(@doc.xpath('//testsuite/testcase/system-out').first.content).to match(/\s+boo boo\s+/) }
         end
 
         describe "a feature with no name" do
@@ -92,12 +92,12 @@ module Cucumber
 
             it { expect(@doc.to_s).to match /One passing scenario, one failing scenario/ }
 
-            it 'has a root system-out node' do
-              expect(@doc.xpath('//testsuite/system-out').size).to eq 1
+            it 'has not a root system-out node' do
+              expect(@doc.xpath('//testsuite/system-out').size).to eq 0
             end
 
-            it 'has a root system-err node' do
-              expect(@doc.xpath('//testsuite/system-err').size).to eq 1
+            it 'has not a root system-err node' do
+              expect(@doc.xpath('//testsuite/system-err').size).to eq 0
             end
 
             it 'has a system-out node under <testcase/>' do

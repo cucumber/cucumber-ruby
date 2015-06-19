@@ -8,10 +8,6 @@ module Cucumber
     # The formatter used for <tt>--format junit</tt>
     class Junit
 
-      # TODO: remove coupling to types
-      AST_SCENARIO_OUTLINE = Core::Ast::ScenarioOutline
-      AST_EXAMPLE_ROW = LegacyApi::Ast::ExampleTableRow
-
       include Io
 
       class UnNamedFeatureError < StandardError
@@ -20,29 +16,60 @@ module Cucumber
         end
       end
 
-      def initialize(runtime, io, options)
+      def initialize(_runtime, io, options)
         @reportdir = ensure_dir(io, "junit")
         @options = options
       end
 
-      def before_feature(feature)
-        @current_feature = feature
-        @failures = @errors = @tests = @skipped = 0
-        @builder = Builder::XmlMarkup.new( :indent => 2 )
-        @time = 0
+      def before_test_case(test_case)
+        unless same_feature_as_previous_test_case?(test_case.feature)
+          end_feature if @current_feature
+          start_feature(test_case.feature)
+        end
+        @failing_step_source = nil
         # In order to fill out <system-err/> and <system-out/>, we need to
         # intercept the $stderr and $stdout
         @interceptedout = Interceptor::Pipe.wrap(:stdout)
         @interceptederr = Interceptor::Pipe.wrap(:stderr)
       end
 
-      def before_feature_element(feature_element)
-        @in_examples = AST_SCENARIO_OUTLINE === feature_element
-        @steps_start = Time.now
+      def after_test_step(test_step, result)
+        return if @failing_step_source
+
+        @failing_step_source = test_step.source.last unless result.ok?(@options[:strict])
       end
 
-      def after_feature(feature)
-        @testsuite = Builder::XmlMarkup.new( :indent => 2 )
+      def after_test_case(test_case, result)
+        test_case_name = NameBuilder.new(test_case)
+        scenario = test_case_name.scenario_name
+        scenario_designation = "#{scenario}#{test_case_name.name_suffix}"
+        output = create_output_string(test_case, scenario, result, test_case_name.row_name)
+        build_testcase(result, scenario_designation, output)
+
+        Interceptor::Pipe.unwrap! :stdout
+        Interceptor::Pipe.unwrap! :stderr
+      end
+
+      def done
+        end_feature if @current_feature
+      end
+
+      private
+
+      def same_feature_as_previous_test_case?(feature)
+        @current_feature && @current_feature.file == feature.file && @current_feature.location == feature.location
+      end
+
+      def start_feature(feature)
+        raise UnNamedFeatureError.new(feature.file) if feature.name.empty?
+        @current_feature = feature
+        @failures = @errors = @tests = @skipped = 0
+        @builder = Builder::XmlMarkup.new(:indent => 2)
+        @time = 0
+      end
+
+      def end_feature
+        @testsuite = Builder::XmlMarkup.new(:indent => 2)
         @testsuite.instruct!
         @testsuite.testsuite(
           :failures => @failures,
@@ -50,128 +77,66 @@ module Cucumber
           :skipped => @skipped,
           :tests => @tests,
           :time => "%.6f" % @time,
-          :name => @feature_name ) do
+          :name => @current_feature.name ) do
           @testsuite << @builder.target!
-          @testsuite.tag!('system-out') do
-            @testsuite.cdata! strip_control_chars(@interceptedout.buffer.join)
-          end
-          @testsuite.tag!('system-err') do
-            @testsuite.cdata! strip_control_chars(@interceptederr.buffer.join)
-          end
         end
 
-        write_file(feature_result_filename(feature.file), @testsuite.target!)
-
-        Interceptor::Pipe.unwrap! :stdout
-        Interceptor::Pipe.unwrap! :stderr
+        write_file(feature_result_filename(@current_feature.file), @testsuite.target!)
       end
 
-      def before_background(*args)
-        @in_background = true
-      end
-
-      def after_background(*args)
-        @in_background = false
-      end
-
-      def feature_name(keyword, name)
-        raise UnNamedFeatureError.new(@current_feature.file) if name.empty?
-        lines = name.split(/\r?\n/)
-        @feature_name = lines[0]
-      end
-
-      def scenario_name(keyword, name, file_colon_line, source_indent)
-        @scenario = (name.nil? || name == "") ? "Unnamed scenario" : name.split("\n")[0]
-        @output = "#{keyword}: #{@scenario}\n\n"
-      end
-
-      def before_steps(steps)
-      end
-
-      def after_steps(steps)
-        return if @in_background || @in_examples
-
-        duration = Time.now - @steps_start
-        if steps.failed?
-          steps.each { |step| @output += "#{step.keyword}#{step.name}\n" }
-          @output += "\nMessage:\n"
+      def create_output_string(test_case, scenario, result, row_name)
+        output = "#{test_case.keyword}: #{scenario}\n\n"
+        return output if result.ok?(@options[:strict])
+        if test_case.keyword == "Scenario"
+          output += "#{@failing_step_source.keyword}" unless hook?(@failing_step_source)
+          output += "#{@failing_step_source.name}\n"
+        else
+          output += "Example row: #{row_name}\n"
         end
-        build_testcase(duration, steps.status, steps.exception)
+        output + "\nMessage:\n"
       end
 
-      def before_examples(*args)
-        @header_row = true
-        @in_examples = true
+      def hook?(step)
+        ["Before hook", "After hook", "AfterStep hook"].include? step.name
       end
 
-      def after_examples(*args)
-        @in_examples = false
-      end
-
-      def before_table_row(table_row)
-        return unless @in_examples
-
-        @table_start = Time.now
-      end
-
-      def after_table_row(table_row)
-        return unless @in_examples and AST_EXAMPLE_ROW === table_row
-        duration = Time.now - @table_start
-        unless @header_row
-          name_suffix = " (outline example : #{table_row.name})"
-          if table_row.failed?
-            @output += "Example row: #{table_row.name}\n"
-            @output += "\nMessage:\n"
-          end
-          build_testcase(duration, table_row.status, table_row.exception, name_suffix)
-        end
-
-        @header_row = false if @header_row
-      end
-
-      def after_test_case(test_case, result)
-        if @options[:expand] and test_case.keyword == "Scenario Outline"
-          test_case_name = NameBuilder.new(test_case)
-          @scenario = test_case_name.outline_name
-          @output = "#{test_case.keyword}: #{@scenario}\n\n"
-          @exception = nil
-          if result.failed? or (@options[:strict] and (result.pending? or result.undefined?))
-            if result.failed?
-              @exception = result.exception
-            elsif result.backtrace
-              @exception = result
-            end
-            @output += "Example row: #{test_case_name.row_name}\n"
-            @output += "\nMessage:\n"
-          end
-          test_case_result = ResultBuilder.new(result)
-          build_testcase(test_case_result.test_case_duration, test_case_result.status, @exception, test_case_name.name_suffix)
-        end
-      end
-
-      private
-
-      def build_testcase(duration, status, exception = nil, suffix = "")
+      def build_testcase(result, scenario_designation, output)
+        duration = ResultBuilder.new(result).test_case_duration
         @time += duration
-        classname = @feature_name
-        name = "#{@scenario}#{suffix}"
-        pending = [:pending, :undefined].include?(status) && (!@options[:strict])
+        classname = @current_feature.name
+        name = scenario_designation
 
         @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
-          if status == :skipped || pending
+          if !result.passed? && result.ok?(@options[:strict])
             @builder.skipped
             @skipped += 1
-          elsif status != :passed
-            @builder.failure(:message => "#{status.to_s} #{name}", :type => status.to_s) do
-              @builder.cdata! @output
+          elsif !result.passed?
+            status = result.to_sym
+            exception = get_backtrace_object(result)
+            @builder.failure(:message => "#{status} #{name}", :type => status) do
+              @builder.cdata! output
               @builder.cdata!(format_exception(exception)) if exception
             end
             @failures += 1
           end
-          @builder.tag!('system-out')
-          @builder.tag!('system-err')
+          @builder.tag!('system-out') do
+            @builder.cdata! strip_control_chars(@interceptedout.buffer.join)
+          end
+          @builder.tag!('system-err') do
+            @builder.cdata! strip_control_chars(@interceptederr.buffer.join)
+          end
         end
         @tests += 1
+      end
+
+      def get_backtrace_object(result)
+        if result.failed?
+          return result.exception
+        elsif result.backtrace
+          return result
+        else
+          return nil
+        end
       end
 
       def format_exception(exception)
@@ -194,13 +159,15 @@ module Cucumber
       def strip_control_chars(cdata)
         cdata.scan(/[[:print:]\t\n\r]/).join
       end
-      
+
     end
 
     class NameBuilder
-      attr_reader :outline_name, :name_suffix, :row_name
+      attr_reader :scenario_name, :name_suffix, :row_name
 
       def initialize(test_case)
+        @name_suffix = ""
+        @row_name = ""
         test_case.describe_source_to self
       end
 
@@ -208,12 +175,13 @@ module Cucumber
         self
       end
 
-      def scenario(*)
+      def scenario(scenario)
+        @scenario_name = (scenario.name.nil? || scenario.name == "") ? "Unnamed scenario" : scenario.name
         self
       end
 
       def scenario_outline(outline)
-        @outline_name = outline.name
+        @scenario_name = (outline.name.nil? || outline.name == "") ? "Unnamed scenario outline" : outline.name
         self
       end
 
@@ -229,37 +197,26 @@ module Cucumber
     end
 
     class ResultBuilder
-      attr_reader :status, :test_case_duration
+      attr_reader :test_case_duration
       def initialize(result)
         @test_case_duration = 0
         result.describe_to(self)
       end
 
-      def passed
-        @status = :passed
-      end
+      def passed(*) end
 
-      def failed
-        @status = :failed
-      end
+      def failed(*) end
 
-      def undefined
-        @status = :undefined
-      end
+      def undefined(*) end
 
-      def skipped
-        @status = :skipped
-      end
+      def skipped(*) end
 
-      def pending(*)
-        @status = :pending
-      end
+      def pending(*) end
 
-      def exception(*)
-      end
+      def exception(*) end
 
       def duration(duration, *)
-        duration.tap { |duration| @test_case_duration = duration.nanoseconds / 10 ** 9.0 }
+        duration.tap { |duration| @test_case_duration = duration.nanoseconds / 10**9.0 }
       end
     end
 
