@@ -44,7 +44,7 @@ module Cucumber::Formatter
           end
         end
         io = StringIO.new
-        report = Rerun.new(double, io, double)
+        report = Rerun.new(double, io, {})
 
         execute [gherkin], report, [WithSteps.new]
 
@@ -79,7 +79,7 @@ module Cucumber::Formatter
         end
 
         io = StringIO.new
-        report = Rerun.new(double, io, double)
+        report = Rerun.new(double, io, {})
 
         execute [foo, bar], report, [WithSteps.new]
 
@@ -98,7 +98,7 @@ module Cucumber::Formatter
         end
 
         io = StringIO.new
-        report = Rerun.new(double, io, double)
+        report = Rerun.new(double, io, {})
 
         execute [gherkin], report, [WithSteps.new]
       end
