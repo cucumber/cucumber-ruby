@@ -162,6 +162,8 @@ module Cucumber
       end
 
       def write_file(feature_filename, data)
+        return unless @tests > 0
+
         File.open(feature_filename, 'w') { |file| file.write(data) }
       end
 
