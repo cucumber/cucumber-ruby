@@ -240,7 +240,8 @@ module Cucumber
       end
 
       def print_summary(features)
-        print_stats(features, @options)
+        duration = features ? features.duration : nil
+        print_stats(duration, @options)
         print_snippets(@options)
         print_passing_wip(@options)
       end
