@@ -16,6 +16,10 @@
 * Make background.feature available to formatters (backward compatibility with v1.3.x) (@brasmusson)
 * Cucumber::Ast::Table.diff! is broken when using no headers ([832](https://github.com/cucumber/cucumber/pull/832) @roschaefer)
 
+### Refactoring
+
+* Rewrite the JUnit Formatter to the new formatter Api ([855](https://github.com/cucumber/cucumber/pull/855) @brasmusson)
+
 ## [v2.0.0](https://github.com/cucumber/cucumber/compare/v2.0.0.rc.5...v2.0.0)
 
 ### New Features
