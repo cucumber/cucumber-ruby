@@ -1,7 +1,11 @@
-## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.19...v1.3.x-bugfix)
+## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.20...v1.3.x-bugfix)
 
- * Handle step output correctly for Scenario Outlines with the --expand option ([804](https://github.com/cucumber/cucumber/issues/804) @brasmusson)
- * Avoid writing JUnit results that have no testcases ([872](https://github.com/cucumber/cucumber/pull/872) @marxarelli)
+...
+
+## [In Git](https://github.com/cucumber/cucumber/compare/v1.3.19...v1.3.20)
+
+* Handle step output correctly for Scenario Outlines with the --expand option ([804](https://github.com/cucumber/cucumber/issues/804) @brasmusson)
+* Avoid writing JUnit results that have no testcases ([872](https://github.com/cucumber/cucumber/pull/872) @marxarelli)
 
 ## [v1.3.19](https://github.com/cucumber/cucumber/compare/v1.3.18...v1.3.19)
 
