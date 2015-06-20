@@ -42,9 +42,23 @@ module Cucumber
         end
       end
 
+      class HookWrapper
+        def initialize(proc)
+          @proc = proc
+        end
+
+        def source_location
+          @proc.source_location
+        end
+
+        def invoke(pseudo_method, arguments, &block)
+          @proc.call
+        end
+      end
+
       class AddBeforeAndAfterHooks < Core::Filter.new
         def test_case(test_case)
-          steps = before_hooks(test_case.source) + 
+          steps = before_hooks(test_case.source) +
             test_case.test_steps +
             after_hooks(test_case.source)
           test_case.with_steps(steps).describe_to receiver
@@ -55,12 +69,14 @@ module Cucumber
         def before_hooks(source)
           # The adapter is built on the assumption that each test case will have at least one step. This is annoying
           # for tests, but a safe assumption for production use as we always add one hook to initialize the world.
-          [ Hooks.before_hook(source) {} ]
+          hook = proc {}
+          [ Hooks.before_hook(source, Hooks.location(hook), &hook) ]
         end
 
         def after_hooks(source)
           # We add an after hook to make sure the adapter can cope with it
-          [ Hooks.after_hook(source) {} ]
+          hook = proc {}
+          [ Hooks.after_hook(source, Hooks.location(hook), &hook) ]
         end
       end
 
@@ -1518,7 +1534,8 @@ module Cucumber
 
           class FailingAfterStepHook
             def find_after_step_hooks(test_case)
-              Runtime::StepHooks.new [-> { raise Failure }]
+              failing_hook = HookWrapper.new(proc { raise Failure })
+              Runtime::StepHooks.new [failing_hook]
             end
           end
 
@@ -1563,7 +1580,8 @@ module Cucumber
         context 'with exception in a single before hook' do
           class FailingBeforeHook
             def apply_before_hooks(test_case)
-              Runtime::BeforeHooks.new([proc { raise Failure }]).apply_to(test_case)
+              failing_hook = HookWrapper.new(proc { raise Failure })
+              Runtime::BeforeHooks.new([failing_hook], RunningTestCase.new(test_case)).apply_to(test_case)
             end
           end
 
@@ -1724,7 +1742,9 @@ module Cucumber
           # the result of the first one.
           class FailingAndPassingBeforeHooks
             def apply_before_hooks(test_case)
-              Runtime::BeforeHooks.new([proc { raise Failure }, proc { }]).apply_to(test_case)
+              failing_hook = HookWrapper.new(proc { raise Failure })
+              passing_hook = HookWrapper.new(proc {})
+              Runtime::BeforeHooks.new([failing_hook, passing_hook], RunningTestCase.new(test_case)).apply_to(test_case)
             end
           end
 
@@ -1771,7 +1791,8 @@ module Cucumber
 
           class FailingAfterHook
             def apply_after_hooks(test_case)
-              Runtime::AfterHooks.new([proc { raise Failure }]).apply_to(test_case)
+              failing_hook = HookWrapper.new(proc { raise Failure })
+              Runtime::AfterHooks.new([failing_hook], RunningTestCase.new(test_case)).apply_to(test_case)
             end
           end
 
@@ -1878,7 +1899,9 @@ module Cucumber
         context 'with exception in the first of several after hooks' do
           class FailingThenPassingAfterHooks
             def apply_after_hooks(test_case)
-              Runtime::AfterHooks.new([proc { raise Failure }, proc {}]).apply_to(test_case)
+              failing_hook = HookWrapper.new(proc { raise Failure })
+              passing_hook = HookWrapper.new(proc {})
+              Runtime::AfterHooks.new([failing_hook, passing_hook], RunningTestCase.new(test_case)).apply_to(test_case)
             end
           end
 
