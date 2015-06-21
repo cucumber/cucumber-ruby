@@ -22,7 +22,7 @@ module Cucumber
     end
 
     def activate(test_step)
-      test_step.with_action do
+      test_step.with_action(@step_definition.file_colon_line) do
         invoke(MultilineArgument.from_core(test_step.source.last.multiline_arg))
       end
     end

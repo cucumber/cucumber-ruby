@@ -19,15 +19,32 @@ module NormaliseArubaOutput
       elements = feature.fetch('elements') { [] }
       elements.each do |scenario|
         scenario['steps'].each do |step|
-          if step['result']
-            expect(step['result']['duration']).to be >= 0
-            step['result']['duration'] = 1
+          ['steps', 'before', 'after'].each do |type|
+            if scenario[type]
+              scenario[type].each do |step_or_hook|
+                normalise_json_step_or_hook(step_or_hook)
+                if step_or_hook['after']
+                  step_or_hook['after'].each do |hook|
+                    normalise_json_step_or_hook(hook)
+                  end
+                end
+              end
+            end
           end
         end
       end
     end
   end
+
+  def normalise_json_step_or_hook(step_or_hook)
+    if step_or_hook['result']
+      if step_or_hook['result']['duration']
+        expect(step_or_hook['result']['duration']).to be >= 0
+        step_or_hook['result']['duration'] = 1
+      end
+    end
+  end
+
 end
 
 World(NormaliseArubaOutput)
-

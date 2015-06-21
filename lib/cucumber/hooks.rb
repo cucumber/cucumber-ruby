@@ -1,33 +1,42 @@
+require 'pathname'
+require 'cucumber/core/ast/location'
 require 'cucumber/core/test/around_hook'
 
 module Cucumber
 
-  # Hooks quack enough like `Cucumber::Core::Ast` source nodes that we can use them as 
+  # Hooks quack enough like `Cucumber::Core::Ast` source nodes that we can use them as
   # source for test steps
   module Hooks
 
     class << self
-      def before_hook(source, &block)
-        build_hook_step(source, block, BeforeHook, Core::Test::UnskippableAction)
+      def before_hook(source, location, &block)
+        build_hook_step(source, location, block, BeforeHook, Core::Test::UnskippableAction)
       end
 
-      def after_hook(source, &block)
-        build_hook_step(source, block, AfterHook, Core::Test::UnskippableAction)
+      def after_hook(source, location, &block)
+        build_hook_step(source, location, block, AfterHook, Core::Test::UnskippableAction)
       end
 
-      def after_step_hook(source, &block)
+      def after_step_hook(source, location, &block)
         raise ArgumentError unless source.last.kind_of?(Core::Ast::Step)
-        build_hook_step(source, block, AfterStepHook, Core::Test::Action)
+        build_hook_step(source, location, block, AfterStepHook, Core::Test::Action)
       end
 
       def around_hook(source, &block)
         Core::Test::AroundHook.new(&block)
       end
 
+      def location(hook)
+        filepath, line = *hook.source_location
+        Core::Ast::Location.new(
+          Pathname.new(filepath).relative_path_from(Pathname.new(Dir.pwd)).to_path,
+          line)
+      end
+
       private
 
-      def build_hook_step(source, block, hook_type, action_type)
-        action = action_type.new(&block)
+      def build_hook_step(source, location, block, hook_type, action_type)
+        action = action_type.new(location, &block)
         hook = hook_type.new(action.location)
         Core::Test::Step.new(source + [hook], action)
       end

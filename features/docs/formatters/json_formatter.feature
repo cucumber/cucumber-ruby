@@ -132,6 +132,10 @@ Feature: JSON output formatter
               "description": "",
               "tags": [
                 {
+                  "name": "@a",
+                  "line": 1
+                },
+                {
                   "name": "@b",
                   "line": 4
                 }
@@ -159,6 +163,10 @@ Feature: JSON output formatter
               "line": 9,
               "description": "",
               "tags": [
+                {
+                  "name": "@a",
+                  "line": 1
+                },
                 {
                   "name": "@c",
                   "line": 8
@@ -215,6 +223,10 @@ Feature: JSON output formatter
               "description": "",
               "tags": [
                 {
+                  "name": "@a",
+                  "line": 1
+                },
+                {
                   "name": "@b",
                   "line": 4
                 }
@@ -243,6 +255,10 @@ Feature: JSON output formatter
               "description": "",
               "tags": [
                 {
+                  "name": "@a",
+                  "line": 1
+                },
+                {
                   "name": "@c",
                   "line": 8
                 }
@@ -270,7 +286,7 @@ Feature: JSON output formatter
 
       """
 
-  @spawn @wip-jruby
+  @spawn
   Scenario: DocString
     Given a file named "features/doc_string.feature" with:
       """
@@ -285,7 +301,7 @@ Feature: JSON output formatter
     And a file named "features/step_definitions/steps.rb" with:
       """
       Then /I should fail with/ do |s|
-        raise s
+        raise RuntimeError, s
       end
       """
     When I run `cucumber --format json features/doc_string.feature`
@@ -333,7 +349,7 @@ Feature: JSON output formatter
       ]
       """
 
-  @spawn 
+  @spawn
   Scenario: embedding screenshot
     When I run `cucumber -b --format json features/embed.feature`
     Then it should pass with JSON:
@@ -381,6 +397,7 @@ Feature: JSON output formatter
 
     """
 
+  @spawn
   Scenario: scenario outline
     When I run `cucumber --format json features/outline.feature`
     Then it should fail with JSON:
@@ -395,75 +412,69 @@ Feature: JSON output formatter
         "description": "",
         "elements": [
           {
-            "id": "an-outline-feature;outline",
+            "id": "an-outline-feature;outline;examples1;2",
             "keyword": "Scenario Outline",
             "name": "outline",
-            "line": 3,
             "description": "",
-            "type": "scenario_outline",
+            "line": 8,
+            "type": "scenario",
             "steps": [
               {
                 "keyword": "Given ",
-                "name": "this step <status>",
-                "line": 4,
+                "name": "this step passes",
+                "line": 8,
                 "match": {
-                  "location": "features/outline.feature:4"
+                  "location": "features/step_definitions/steps.rb:1"
+                },
+                "result": {
+                  "status": "passed",
+                  "duration": 1
                 }
               }
-            ],
-            "examples": [
+            ]
+          },
+          {
+            "id": "an-outline-feature;outline;examples1;3",
+            "keyword": "Scenario Outline",
+            "name": "outline",
+            "description": "",
+            "line": 9,
+            "type": "scenario",
+            "steps": [
               {
-                "keyword": "Examples", 
-                "name": "examples1", 
-                "line": 6, 
-                "description": "", 
-                "id": "an-outline-feature;outline;examples1", 
-                "rows": [
-                  {
-                    "cells": [
-                      "status"
-                     ], 
-                     "line": 7, 
-                     "id": "an-outline-feature;outline;examples1;1"
-                  }, 
-                  {
-                    "cells": [
-                      "passes"
-                    ], 
-                    "line": 8, 
-                    "id": "an-outline-feature;outline;examples1;2"
-                  }, 
-                  {
-                    "cells": [
-                      "fails"
-                    ], 
-                    "line": 9, 
-                    "id": "an-outline-feature;outline;examples1;3"
-                  }
-                ]
-              },
+                "keyword": "Given ",
+                "name": "this step fails",
+                "line": 9,
+                "match": {
+                  "location": "features/step_definitions/steps.rb:4"
+                },
+                "result": {
+                  "status": "failed",
+                  "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/outline.feature:9:in `Given this step fails'\nfeatures/outline.feature:4:in `Given this step <status>'",
+                  "duration": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "an-outline-feature;outline;examples2;2",
+            "keyword": "Scenario Outline",
+            "name": "outline",
+            "description": "",
+            "line": 13,
+            "type": "scenario",
+            "steps": [
               {
-                "keyword": "Examples", 
-                "name": "examples2", 
-                "line": 11, 
-                "description": "", 
-                "id": "an-outline-feature;outline;examples2", 
-                "rows": [
-                  {
-                    "cells": [
-                      "status"
-                     ], 
-                     "line": 12, 
-                     "id": "an-outline-feature;outline;examples2;1"
-                  }, 
-                  {
-                    "cells": [
-                      "passes"
-                    ], 
-                    "line": 13, 
-                    "id": "an-outline-feature;outline;examples2;2"
-                  }
-                ]
+                "keyword": "Given ",
+                "name": "this step passes",
+                "line": 13,
+                "match": {
+                  "location": "features/step_definitions/steps.rb:1"
+                },
+                "result": {
+                  "status": "passed",
+                  "duration": 1
+                }
               }
             ]
           }
@@ -735,7 +746,7 @@ Feature: JSON output formatter
         puts "Before hook 2"
         embed "src", "mime_type", "label"
       end
- 
+
       AfterStep do
         puts "AfterStep hook 1"
         embed "src", "mime_type", "label"

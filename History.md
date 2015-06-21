@@ -8,6 +8,7 @@
 * Expose #status on Cucumber::RunningTestCase ([#836](https://github.com/cucumber/cucumber-ruby/pull/846) [#836](https://github.com/cucumber/cucumber-ruby/issues/836) @pdswan)
 * New `--no-duration` flag on command-line ([#822](https://github.com/cucumber/cucumber-ruby/pull/822) @richarda)
 * Make the Rerun Formatter consistent with the exit code ([860](https://github.com/cucumber/cucumber-ruby/pull/860) @brasmusson)
+* Let the Json Formatter include results from all executed steps and hooks (and from Scenario Outlines also without the --expand option) ([851](https://github.com/cucumber/cucumber-ruby/pull/851) @brasmusson)
 
 ### Bugfixes
 
