@@ -105,7 +105,7 @@ module Cucumber
           path = path.chomp('/')
           if File.directory?(path)
             Dir["#{path}/**/*.feature"].sort
-          elsif RerunFile.rerun_file?(path)
+          elsif RerunFile.can_read?(path)
             RerunFile.new(path).features
           else
             path

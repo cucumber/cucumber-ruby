@@ -8,13 +8,13 @@ module Cucumber
 
       it "expects rerun files to have a leading @" do
         allow(File).to receive(:file?) { true }
-        expect(RerunFile.rerun_file?('rerun.txt')).to eq false
-        expect(RerunFile.rerun_file?('@rerun.txt')).to eq true
+        expect(RerunFile.can_read?('rerun.txt')).to eq false
+        expect(RerunFile.can_read?('@rerun.txt')).to eq true
       end
 
       it "does not treat directories as rerun files" do
         allow(File).to receive(:file?) { false }
-        expect(RerunFile.rerun_file?('@rerun.txt')).to eq false
+        expect(RerunFile.can_read?('@rerun.txt')).to eq false
       end
 
       it "removes leading @ character from filename" do

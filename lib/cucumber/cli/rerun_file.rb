@@ -3,7 +3,7 @@ module Cucumber
     class RerunFile
       attr_reader :path
 
-      def self.rerun_file?(path)
+      def self.can_read?(path)
         path[0] == '@' && File.file?(real_path(path))
       end
 
