@@ -50,7 +50,7 @@ module Cucumber
         @step_definitions = []
         RbDsl.rb_language = self
         @world_proc = @world_modules = nil
-        configuration.snippet_generators << self.method(:snippet_text)
+        configuration.snippet_generators << SnippetGenerator.new
       end
 
       def step_matches(name_to_match, name_to_format)
@@ -63,9 +63,22 @@ module Cucumber
         end.compact
       end
 
-      def snippet_text(code_keyword, step_name, multiline_arg, snippet_type = :regexp)
-        snippet_class = typed_snippet_class(snippet_type)
-        snippet_class.new(code_keyword, step_name, multiline_arg).to_s
+      class SnippetGenerator
+
+        def call(code_keyword, step_name, multiline_arg, snippet_type = :regexp)
+          snippet_class = typed_snippet_class(snippet_type)
+          snippet_class.new(code_keyword, step_name, multiline_arg).to_s
+        end
+
+        SNIPPET_TYPES = {
+          :regexp => Snippet::Regexp,
+          :classic => Snippet::Classic,
+          :percent => Snippet::Percent
+        }
+
+        def typed_snippet_class(type)
+          SNIPPET_TYPES.fetch(type || :regexp)
+        end
       end
 
       def begin_rb_scenario(scenario)
@@ -206,19 +219,9 @@ module Cucumber
         end
       end
 
-      SNIPPET_TYPES = {
-        :regexp => Snippet::Regexp,
-        :classic => Snippet::Classic,
-        :percent => Snippet::Percent
-      }
-
-      def typed_snippet_class(type)
-        SNIPPET_TYPES.fetch(type || :regexp)
-      end
-
       def self.cli_snippet_type_options
-        SNIPPET_TYPES.keys.sort_by(&:to_s).map do |type|
-          SNIPPET_TYPES[type].cli_option_string(type)
+        SnippetGenerator::SNIPPET_TYPES.keys.sort_by(&:to_s).map do |type|
+          SnippetGenerator::SNIPPET_TYPES[type].cli_option_string(type)
         end
       end
     end
