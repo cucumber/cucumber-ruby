@@ -14,49 +14,6 @@ module Cucumber
         Object.new.extend(RbSupport::RbDsl)
       end
 
-      describe "snippets" do
-        let(:snippet) { double.as_null_object }
-
-        it "creates a regexp Snippet class by default" do
-          expect(Snippet::Regexp).to receive(:new) { snippet }
-
-          rb.snippet_text('Given', 'A "string" with 4 spaces', nil)
-        end
-
-        it "creates a regexp Snippet class explicitly" do
-          expect(Snippet::Regexp).to receive(:new) { snippet }
-
-          rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :regexp)
-        end
-
-        it "creates a classic Snippet class" do
-          expect(Snippet::Classic).to receive(:new) { snippet }
-
-          rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :classic)
-        end
-
-        it "creates a percent Snippet class" do
-          expect(Snippet::Percent).to receive(:new) { snippet }
-
-          rb.snippet_text('Given', 'A "string" with 4 spaces', nil, :percent)
-        end
-
-        it "passes all parameters to Snippet contructor" do
-          code_keyword, pattern, multiline_argument_class = double, double, double
-
-          expect(Snippet::Regexp).to receive(:new).with(code_keyword, pattern, multiline_argument_class)
-
-          rb.snippet_text(code_keyword, pattern, multiline_argument_class)
-        end
-
-        it "renders the snippet" do
-          allow(Snippet::Regexp).to receive(:new) { snippet }
-          expect(snippet).to receive(:to_s)
-
-          rb.snippet_text('Given', 'A "string" with 4 spaces', nil)
-        end
-      end
-
       describe "#load_code_file" do
         after do
           FileUtils.rm_rf('tmp.rb')
