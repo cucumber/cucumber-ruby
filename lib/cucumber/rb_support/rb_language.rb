@@ -50,7 +50,7 @@ module Cucumber
         @step_definitions = []
         RbDsl.rb_language = self
         @world_proc = @world_modules = nil
-        Snippet::Generator.register_on configuration
+        configuration.register_snippet_generator(Snippet::Generator.new)
       end
 
       def step_matches(name_to_match, name_to_format)

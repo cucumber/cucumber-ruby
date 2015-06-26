@@ -207,6 +207,10 @@ module Cucumber
       @options[:snippet_generators] ||= []
     end
 
+    def register_snippet_generator(generator)
+      snippet_generators << generator
+    end
+
   private
 
     def default_options

@@ -17,7 +17,7 @@ module Cucumber
 
       def initialize(_=nil, configuration = Cucumber::Configuration.new)
         @connections = []
-        configuration.snippet_generators << Snippet::Generator.new(@connections)
+        configuration.register_snippet_generator Snippet::Generator.new(@connections)
       end
 
       def load_code_file(wire_file)
