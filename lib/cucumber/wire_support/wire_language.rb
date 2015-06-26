@@ -5,6 +5,7 @@ require 'cucumber/wire_support/configuration'
 require 'cucumber/wire_support/wire_packet'
 require 'cucumber/wire_support/wire_exception'
 require 'cucumber/wire_support/wire_step_definition'
+require 'cucumber/wire_support/snippet'
 require 'cucumber/configuration'
 
 module Cucumber
@@ -16,19 +17,12 @@ module Cucumber
 
       def initialize(_=nil, configuration = Cucumber::Configuration.new)
         @connections = []
-        configuration.snippet_generators << self.method(:snippet_text)
+        configuration.snippet_generators << Snippet::Generator.new(@connections)
       end
 
       def load_code_file(wire_file)
         config = Configuration.from_file(wire_file)
         @connections << Connection.new(config)
-      end
-
-      def snippet_text(code_keyword, step_name, multiline_arg, snippet_type)
-        snippets = @connections.map do |remote|
-          remote.snippet_text(code_keyword, step_name, MultilineArgClassName.new(multiline_arg).to_s)
-        end
-        snippets.flatten.join("\n")
       end
 
       def step_matches(step_name, formatted_step_name)
@@ -107,24 +101,6 @@ module Cucumber
         @transforms ||= []
       end
 
-      class MultilineArgClassName
-        def initialize(arg)
-          arg.describe_to(self)
-          @result = ""
-        end
-
-        def data_table(*)
-          @result = "Cucumber::MultilineArgument::DataTable"
-        end
-
-        def doc_string(*)
-          @result = "Cucumber::MultilineArgument::DocString"
-        end
-
-        def to_s
-          @result
-        end
-      end
     end
   end
 end
