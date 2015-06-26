@@ -4,6 +4,21 @@ module Cucumber
 
       ARGUMENT_PATTERNS = ['"([^"]*)"', '(\d+)']
 
+      class Generator
+        def self.register_on(configuration)
+          configuration.snippet_generators << new
+        end
+
+        def call(code_keyword, step_name, multiline_arg, snippet_type = :regexp)
+          snippet_class = typed_snippet_class(snippet_type)
+          snippet_class.new(code_keyword, step_name, multiline_arg).to_s
+        end
+
+        def typed_snippet_class(type)
+          SNIPPET_TYPES.fetch(type || :regexp)
+        end
+      end
+
       class BaseSnippet
 
         def initialize(code_keyword, pattern, multiline_argument)
@@ -90,6 +105,12 @@ module Cucumber
           "Snippets with percent regexp"
         end
       end
+
+      SNIPPET_TYPES = {
+        :regexp => Regexp,
+        :classic => Classic,
+        :percent => Percent
+      }
 
       module MultilineArgumentSnippet
 
