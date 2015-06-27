@@ -19,7 +19,7 @@ module Cucumber
       end
 
       def after_test_step(test_step, result)
-        return if hook?(test_step.source.last)
+        return if HookQueryVisitor.new(test_step).hook?
 
         step_match = @runtime.step_match(test_step.source.last.name)
         step_definition = step_match.step_definition
