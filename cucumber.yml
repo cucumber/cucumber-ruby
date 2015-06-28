@@ -2,7 +2,7 @@
 cucumber_pro_opts = ENV['ENABLE_CUCUMBER_PRO'] ? "--format Cucumber::Pro --out /dev/null" : ""
 rerun = File.file?('rerun.txt') ? IO.read('rerun.txt') : ""
 rerun_opts = rerun.to_s.strip.empty? ? "--format progress features" : "--format pretty #{rerun}"
-std_opts = "--format progress features --tags ~@wip --tag ~@wip-new-core -r features --strict #{cucumber_pro_opts}"
+std_opts = "--format progress features --tags ~@wip --tags ~@wip-new-core --tag ~@wire -r features --strict #{cucumber_pro_opts}"
 std_opts << " --tags ~@wip-jruby" if defined?(JRUBY_VERSION)
 
 wip_opts = "--color -r features --tags @wip,@wip-new-core"
