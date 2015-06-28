@@ -1,5 +1,6 @@
 require 'logger'
 require 'cucumber/cli/options'
+require 'cucumber/cli/rerun_file'
 require 'cucumber/constantize'
 require 'gherkin/tag_expression'
 
@@ -104,9 +105,8 @@ module Cucumber
           path = path.chomp('/')
           if File.directory?(path)
             Dir["#{path}/**/*.feature"].sort
-          elsif path[0..0] == '@' and # @listfile.txt
-              File.file?(path[1..-1]) # listfile.txt is a file
-            IO.read(path[1..-1]).split(/(.*?\.feature.*?) /).collect(&:strip).reject(&:empty?)
+          elsif RerunFile.can_read?(path)
+            RerunFile.new(path).features
           else
             path
           end
@@ -114,6 +114,7 @@ module Cucumber
         remove_excluded_files_from(potential_feature_files)
         potential_feature_files
       end
+
 
       def feature_dirs
         dirs = paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq

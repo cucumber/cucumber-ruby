@@ -425,15 +425,19 @@ END_OF_MESSAGE
       allow(File).to receive(:directory?).and_return(false)
       allow(File).to receive(:file?).and_return(true)
       allow(IO).to receive(:read).and_return(
-        "cucumber.feature:1:3 cucumber space.feature:134 domain folder/cuke.feature:1 domain folder/different cuke:4:5" )
-
+        "cucumber.feature:1:3\ncucumber.feature:5 cucumber.feature:10\n"\
+        "domain folder/different cuke.feature:134 domain folder/cuke.feature:1\n"\
+        "domain folder/different cuke.feature:4:5 bar.feature")
       config.parse!(%w{@rerun.txt})
 
       expect(config.feature_files).to eq [
         "cucumber.feature:1:3",
-        "cucumber space.feature:134",
+        "cucumber.feature:5",
+        "cucumber.feature:10",
+        "domain folder/different cuke.feature:134",
         "domain folder/cuke.feature:1",
-        "domain folder/different cuke:4:5"]
+        "domain folder/different cuke.feature:4:5",
+        "bar.feature"]
     end
 
     it "should allow specifying environment variables on the command line" do
