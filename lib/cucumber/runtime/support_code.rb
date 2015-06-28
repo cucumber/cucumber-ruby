@@ -50,7 +50,6 @@ module Cucumber
 
         @unsupported_programming_languages = []
         @programming_languages = [@ruby]
-        @language_map = {}
       end
 
       def configure(new_configuration)
@@ -88,12 +87,6 @@ module Cucumber
       #
       def load_programming_language(ext)
         return @ruby if ext == "rb"
-        return @language_map[ext] if @language_map[ext]
-        programming_language_class = constantize("Cucumber::#{ext.capitalize}Support::#{ext.capitalize}Language")
-        programming_language = programming_language_class.new(@runtime_facade, @configuration)
-        @programming_languages << programming_language
-        @language_map[ext] = programming_language
-        programming_language
       end
 
       def load_files!(files)
@@ -105,37 +98,26 @@ module Cucumber
       end
 
       def load_files_from_paths(paths)
-        files = paths.map { |path| Dir["#{path}/**/*"] }.flatten
+        files = paths.map { |path| Dir["#{path}/**/*.rb"] }.flatten
         load_files! files
       end
 
       def unmatched_step_definitions
-        @programming_languages.map do |programming_language|
-          programming_language.unmatched_step_definitions
-        end.flatten
+        @ruby.unmatched_step_definitions
       end
 
       def snippet_text(step_keyword, step_name, multiline_arg) #:nodoc:
-        load_programming_language('rb') if unknown_programming_language?
         @configuration.snippet_generators.map { |generator|
           generator.call(step_keyword, step_name, multiline_arg, @configuration.snippet_type)
         }.join("\n")
       end
 
-      def unknown_programming_language?
-        @programming_languages.empty?
-      end
-
       def fire_hook(name, *args)
-        @programming_languages.each do |programming_language|
-          programming_language.send(name, *args)
-        end
+        @ruby.send(name, *args)
       end
 
       def step_definitions
-        @programming_languages.map do |programming_language|
-          programming_language.step_definitions
-        end.flatten
+        @ruby.step_definitions
       end
 
       def find_match(test_step)
@@ -153,31 +135,27 @@ module Cucumber
       end
 
       def find_after_step_hooks(test_case)
-        ruby = load_programming_language('rb')
         scenario = RunningTestCase.new(test_case)
-        hooks = ruby.hooks_for(:after_step, scenario)
+        hooks = @ruby.hooks_for(:after_step, scenario)
         StepHooks.new hooks
       end
 
       def apply_before_hooks(test_case)
-        ruby = load_programming_language('rb')
         scenario = RunningTestCase.new(test_case)
-        hooks = ruby.hooks_for(:before, scenario)
+        hooks = @ruby.hooks_for(:before, scenario)
         BeforeHooks.new(hooks, scenario).apply_to(test_case)
       end
 
       def apply_after_hooks(test_case)
-        ruby = load_programming_language('rb')
         scenario = RunningTestCase.new(test_case)
-        hooks = ruby.hooks_for(:after, scenario)
+        hooks = @ruby.hooks_for(:after, scenario)
         AfterHooks.new(hooks, scenario).apply_to(test_case)
       end
 
       def find_around_hooks(test_case)
-        ruby = load_programming_language('rb')
         scenario = RunningTestCase.new(test_case)
 
-        ruby.hooks_for(:around, scenario).map do |hook|
+        @ruby.hooks_for(:around, scenario).map do |hook|
           Hooks.around_hook(test_case.source) do |run_scenario|
             hook.invoke('Around', scenario, &run_scenario)
           end
@@ -208,9 +186,7 @@ module Cucumber
       end
 
       def matches(step_name, name_to_report)
-        @programming_languages.map do |programming_language|
-          programming_language.step_matches(step_name, name_to_report).to_a
-        end.flatten
+        @ruby.step_matches(step_name, name_to_report).to_a
       end
 
       def best_matches(step_name, step_matches) #:nodoc:
@@ -230,31 +206,12 @@ module Cucumber
       end
 
       def load_file(file)
-        if programming_language = programming_language_for(file)
-          log.debug("  * #{file}\n")
-          programming_language.load_code_file(file)
-        else
-          log.debug("  * #{file} [NOT SUPPORTED]\n")
-        end
+        log.debug("  * #{file}\n")
+        @ruby.load_code_file(file)
       end
 
       def log
         Cucumber.logger
-      end
-
-      def programming_language_for(step_def_file)
-        if ext = File.extname(step_def_file)[1..-1]
-          return nil if @unsupported_programming_languages.index(ext)
-          begin
-            load_programming_language(ext)
-          rescue LoadError => e
-            log.debug("Failed to load '#{ext}' programming language for file #{step_def_file}: #{e.message}\n")
-            @unsupported_programming_languages << ext
-            nil
-          end
-        else
-          nil
-        end
       end
 
     end
