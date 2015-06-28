@@ -46,8 +46,10 @@ module Cucumber
       def initialize(user_interface, configuration={})
         @configuration = Configuration.new(configuration)
         @runtime_facade = Runtime::ForProgrammingLanguages.new(self, user_interface)
+        @ruby = Cucumber::RbSupport::RbLanguage.new(@runtime_facade, @configuration)
+
         @unsupported_programming_languages = []
-        @programming_languages = []
+        @programming_languages = [@ruby]
         @language_map = {}
       end
 
@@ -85,6 +87,7 @@ module Cucumber
       # twice will return the same instance.
       #
       def load_programming_language(ext)
+        return @ruby if ext == "rb"
         return @language_map[ext] if @language_map[ext]
         programming_language_class = constantize("Cucumber::#{ext.capitalize}Support::#{ext.capitalize}Language")
         programming_language = programming_language_class.new(@runtime_facade, @configuration)
