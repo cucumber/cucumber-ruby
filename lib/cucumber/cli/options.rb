@@ -119,7 +119,11 @@ module Cucumber
             if lang == 'help'
               list_languages_and_exit
             else
-              list_keywords_and_exit(lang)
+              begin 
+                list_keywords_and_exit(lang)
+              rescue NoMethodError
+                indicate_invalid_language_and_exit(lang)
+              end
             end
           end
           opts.on("-f FORMAT", "--format FORMAT",
@@ -377,6 +381,11 @@ TEXT
         end
 
         self
+      end
+
+      def indicate_invalid_language_and_exit(lang)
+        @out_stream.write("Invalid language '#{lang}'\nRun 'cucumber --i18n help` to see all languages")
+        Kernel.exit(0)
       end
 
       def list_keywords_and_exit(lang)
