@@ -56,10 +56,6 @@ module Cucumber
       @support_code.configure(@configuration)
     end
 
-    def load_programming_language(language)
-      @support_code.ruby
-    end
-
     def run!
       load_step_definitions
       fire_after_configuration_hook

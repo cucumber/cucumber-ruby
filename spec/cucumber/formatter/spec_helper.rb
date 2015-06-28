@@ -57,7 +57,7 @@ module Cucumber
 
       def define_steps
         return unless step_defs = self.class.step_defs
-        rb = runtime.load_programming_language('rb')
+        rb = runtime.support_code.ruby
         dsl = Object.new
         dsl.extend RbSupport::RbDsl
         dsl.instance_exec &step_defs
