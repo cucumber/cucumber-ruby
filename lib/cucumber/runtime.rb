@@ -57,7 +57,7 @@ module Cucumber
     end
 
     def load_programming_language(language)
-      @support_code.load_programming_language(language)
+      @support_code.ruby
     end
 
     def run!

@@ -5,7 +5,7 @@ module Cucumber
   module RbSupport
     describe RbStepDefinition do
       let(:user_interface) { double('user interface') }
-      let(:rb)             { support_code.load_programming_language('rb')}
+      let(:rb)             { support_code.ruby }
       let(:support_code) do
         Cucumber::Runtime::SupportCode.new(user_interface, {})
       end

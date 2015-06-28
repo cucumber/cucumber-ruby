@@ -6,7 +6,7 @@ module Cucumber
     subject { Runtime::SupportCode.new(user_interface, options) }
     let(:options) { {} }
     let(:dsl) do
-      @rb = subject.load_programming_language('rb')
+      @rb = subject.ruby
       Object.new.extend(RbSupport::RbDsl)
     end
 
