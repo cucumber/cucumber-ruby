@@ -38,8 +38,5 @@ Feature: Language help
 
   Scenario: Seek help for invalid language
     When I run `cucumber --i18n foo`
-    Then cucumber should print the message:
-      """
-      Invalid language 'foo'
-      Run 'cucumber --i18n help` to see all languages
-      """
+    Then the output includes the message "Invalid language 'foo'"
+    And cucumber lists all the supported languages

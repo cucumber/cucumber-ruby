@@ -7,6 +7,6 @@ Then(/^cucumber lists all the supported languages$/) do
   end
 end
 
-Then(/^cucumber should print the message:$/) do |message|
+Then(/^the output includes the message "(.*)"$/) do |message|
   expect(all_output).to include(message)
 end

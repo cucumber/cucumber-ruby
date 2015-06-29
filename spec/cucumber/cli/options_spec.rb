@@ -81,7 +81,13 @@ module Cucumber
 
             it "says the language was invalid" do 
               after_parsing '--i18n foo' do 
-                expect(@output_stream.string).to include("Invalid language 'foo'\nRun 'cucumber --i18n help` to see all languages")
+                expect(@output_stream.string).to include("Invalid language 'foo'. Available languages are:")
+              end
+            end
+
+            it "displays the language table" do 
+              after_parsing '--i18n foo' do 
+                expect(@output_stream.string).to include(Gherkin::I18n.language_table);
               end
             end
           end
