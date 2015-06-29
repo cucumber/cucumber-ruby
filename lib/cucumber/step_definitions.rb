@@ -2,7 +2,7 @@ module Cucumber
   class StepDefinitions
     def initialize(configuration = Configuration.default)
       configuration = Configuration.new(configuration)
-      @support_code = Runtime::SupportCode.new(nil, configuration)
+      @support_code = Runtime::SupportCode::CachesStepMatch.new Runtime::SupportCode.new(nil, configuration)
       @support_code.load_files_from_paths(configuration.autoload_code_paths)
     end
 

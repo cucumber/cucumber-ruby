@@ -19,15 +19,19 @@ module Cucumber
       expect(format).to eq "it [snows] in [april]"
     end
 
-    it "caches step match results" do
-      dsl.Given(/it (.*) in (.*)/) { |what, month| }
+    context 'caching' do
+      let(:cached) { Runtime::SupportCode::CachesStepMatch.new(subject) }
 
-      step_match = subject.step_match("it snows in april")
+      it "caches step match results" do
+        dsl.Given(/it (.*) in (.*)/) { |what, month| }
 
-      expect(@rb).not_to receive(:step_matches)
-      second_step_match = subject.step_match("it snows in april")
+        step_match = cached.step_match("it snows in april")
 
-      expect(step_match).to equal(second_step_match)
+        expect(@rb).not_to receive(:step_matches)
+        second_step_match = cached.step_match("it snows in april")
+
+        expect(step_match).to equal(second_step_match)
+      end
     end
 
     describe "resolving step defintion matches" do

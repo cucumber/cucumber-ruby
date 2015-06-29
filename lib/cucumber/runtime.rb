@@ -46,7 +46,7 @@ module Cucumber
 
     def initialize(configuration = Configuration.default)
       @configuration = Configuration.new(configuration)
-      @support_code = SupportCode.new(self, @configuration)
+      @support_code = SupportCode::CachesStepMatch.new SupportCode.new(self, @configuration)
       @results = Formatter::LegacyApi::Results.new
     end
 
