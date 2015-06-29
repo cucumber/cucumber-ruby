@@ -13,7 +13,7 @@ module Cucumber
 
       # Call a Transform with a string from another Transform definition
       def Transform(arg)
-        rb = @__cucumber_runtime.load_programming_language('rb')
+        rb = @__cucumber_runtime.support_code.ruby
         rb.execute_transforms([arg]).first
       end
 
