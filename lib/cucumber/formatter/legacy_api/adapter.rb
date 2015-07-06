@@ -209,7 +209,7 @@ module Cucumber
             formatter.before_feature(node)
             Ast::Comments.new(node.comments).accept(formatter)
             Ast::Tags.new(node.tags).accept(formatter)
-            formatter.feature_name node.keyword, indented(node.legacy_conflated_name_and_description)
+            formatter.feature_name node.keyword, node.legacy_conflated_name_and_description
             @delayed_messages = []
             @delayed_embeddings = []
             self
@@ -411,15 +411,6 @@ module Cucumber
 
           def to_scenario_outline(to)
             to.class.name == ScenarioOutlinePrinter.name
-          end
-
-          def indented(nasty_old_conflation_of_name_and_description)
-            indent = ""
-            nasty_old_conflation_of_name_and_description.split("\n").map do |l|
-              s = "#{indent}#{l}"
-              indent = "  "
-              s
-            end.join("\n")
           end
 
         end
