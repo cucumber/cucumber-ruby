@@ -1,4 +1,5 @@
 require 'forwardable'
+require 'cucumber/gherkin/data_table_parser'
 require 'cucumber/gherkin/formatter/escaping'
 require 'cucumber/core/ast/describes_itself'
 
@@ -37,7 +38,7 @@ module Cucumber
           @rows = []
         end
 
-        def row(row, line_number)
+        def row(row)
           @rows << row
         end
 
@@ -73,8 +74,8 @@ module Cucumber
         private
         def parse(text, location = Core::Ast::Location.of_caller)
           builder = Builder.new
-          lexer = Gherkin::Lexer::I18nLexer.new(builder)
-          lexer.scan(text)
+          parser = Cucumber::Gherkin::DataTableParser.new(builder)
+          parser.parse(text)
           from_array(builder.rows, location)
         end
 
