@@ -14,21 +14,21 @@ Feature: Language help
     When I run `cucumber --i18n pt help`
     Then it should pass with:
       """
-            | feature          | "Funcionalidade", "Característica", "Caracteristica"                                         |
-            | background       | "Contexto", "Cenário de Fundo", "Cenario de Fundo", "Fundo"                                  |
-            | scenario         | "Cenário", "Cenario"                                                                         |
-            | scenario_outline | "Esquema do Cenário", "Esquema do Cenario", "Delineação do Cenário", "Delineacao do Cenario" |
-            | examples         | "Exemplos", "Cenários", "Cenarios"                                                           |
-            | given            | "* ", "Dado ", "Dada ", "Dados ", "Dadas "                                                   |
-            | when             | "* ", "Quando "                                                                              |
-            | then             | "* ", "Então ", "Entao "                                                                     |
-            | and              | "* ", "E "                                                                                   |
-            | but              | "* ", "Mas "                                                                                 |
-            | given (code)     | "Dado", "Dada", "Dados", "Dadas"                                                             |
-            | when (code)      | "Quando"                                                                                     |
-            | then (code)      | "Então", "Entao"                                                                             |
-            | and (code)       | "E"                                                                                          |
-            | but (code)       | "Mas"                                                                                        |
+        | feature          | "Funcionalidade", "Característica", "Caracteristica"                                         |
+        | background       | "Contexto", "Cenário de Fundo", "Cenario de Fundo", "Fundo"                                  |
+        | scenario         | "Cenário", "Cenario"                                                                         |
+        | scenario_outline | "Esquema do Cenário", "Esquema do Cenario", "Delineação do Cenário", "Delineacao do Cenario" |
+        | examples         | "Exemplos", "Cenários", "Cenarios"                                                           |
+        | given            | "* ", "Dado ", "Dada ", "Dados ", "Dadas "                                                   |
+        | when             | "* ", "Quando "                                                                              |
+        | then             | "* ", "Então ", "Entao "                                                                     |
+        | and              | "* ", "E "                                                                                   |
+        | but              | "* ", "Mas "                                                                                 |
+        | given (code)     | "Dado", "Dada", "Dados", "Dadas"                                                             |
+        | when (code)      | "Quando"                                                                                     |
+        | then (code)      | "Então", "Entao"                                                                             |
+        | and (code)       | "E"                                                                                          |
+        | but (code)       | "Mas"                                                                                        |
 
       """
 
