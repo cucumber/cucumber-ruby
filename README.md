@@ -1,4 +1,4 @@
-[![Join the chat at https://gitter.im/cucumber/cucumber-ruby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cucumber/cucumber?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://secure.travis-ci.org/cucumber/cucumber-ruby.png)](http://travis-ci.org/cucumber/cucumber-ruby) [![Code Climate](https://codeclimate.com/github/cucumber/cucumber-ruby.png)](https://codeclimate.com/github/cucumber/cucumber-ruby) [![Coverage Status](https://coveralls.io/repos/cucumber/cucumber-ruby/badge.png?branch=master)](https://coveralls.io/r/cucumber/cucumber-ruby?branch=master) [![Dependency Status](https://gemnasium.com/cucumber/cucumber-ruby.png)](https://gemnasium.com/cucumber/cucumber-ruby)
+[![Join the chat at https://gitter.im/cucumber/cucumber-ruby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cucumber/cucumber-ruby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://secure.travis-ci.org/cucumber/cucumber-ruby.png)](http://travis-ci.org/cucumber/cucumber-ruby) [![Code Climate](https://codeclimate.com/github/cucumber/cucumber-ruby.png)](https://codeclimate.com/github/cucumber/cucumber-ruby) [![Coverage Status](https://coveralls.io/repos/cucumber/cucumber-ruby/badge.png?branch=master)](https://coveralls.io/r/cucumber/cucumber-ruby?branch=master) [![Dependency Status](https://gemnasium.com/cucumber/cucumber-ruby.png)](https://gemnasium.com/cucumber/cucumber-ruby)
 
 # Cucumber
 
@@ -10,11 +10,11 @@ your team.
 
 Where to get more info:
 
-  * The main website: https://cukes.info/
+  * The main website: https://cucumber.io/
   * Documentation: https://github.com/cucumber/cucumber/wiki
   * Ruby API Documentation: http://www.rubydoc.info/github/cucumber/cucumber/
   * Support forum: https://groups.google.com/group/cukes
-  * Developer chat: https://gitter.im/cucumber/cucumber
+  * Developer chat: https://gitter.im/cucumber/cucumber-ruby
   * IRC channel: [irc://irc.freenode.net/cucumber](irc://irc.freenode.net/cucumber)
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for info on contributing to Cucumber.
