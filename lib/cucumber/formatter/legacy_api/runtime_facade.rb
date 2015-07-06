@@ -1,3 +1,5 @@
+require 'cucumber/gherkin/i18n'
+
 module Cucumber
   module Formatter
     module LegacyApi
@@ -9,7 +11,7 @@ module Cucumber
         end
 
         def snippet_text(step_keyword, step_name, multiline_arg) #:nodoc:
-          support_code.snippet_text(::Gherkin::I18n.code_keyword_for(step_keyword), step_name, multiline_arg)
+          support_code.snippet_text(Cucumber::Gherkin::I18n.code_keyword_for(step_keyword).strip, step_name, multiline_arg)
         end
 
         def unknown_programming_language?

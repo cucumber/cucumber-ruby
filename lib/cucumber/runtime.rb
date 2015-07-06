@@ -2,8 +2,6 @@
 require 'fileutils'
 require 'multi_json'
 require 'multi_test'
-require 'gherkin/rubify'
-require 'gherkin/i18n'
 require 'cucumber/configuration'
 require 'cucumber/load_path'
 require 'cucumber/language_support/language_methods'
@@ -12,6 +10,7 @@ require 'cucumber/file_specs'
 require 'cucumber/filters'
 require 'cucumber/formatter/fanout'
 require 'cucumber/formatter/event_bus_report'
+require 'cucumber/gherkin/i18n'
 
 module Cucumber
   module FixRuby21Bug9285
@@ -92,7 +91,7 @@ module Cucumber
     end
 
     def snippet_text(step_keyword, step_name, multiline_arg) #:nodoc:
-      @support_code.snippet_text(::Gherkin::I18n.code_keyword_for(step_keyword), step_name, multiline_arg)
+      @support_code.snippet_text(Cucumber::Gherkin::I18n.code_keyword_for(step_keyword).strip, step_name, multiline_arg)
     end
 
     def begin_scenario(scenario)

@@ -13,7 +13,6 @@ module Cucumber
 
       require 'forwardable'
       class StepInvoker
-        include Gherkin::Rubify
 
         def initialize(support_code)
           @support_code = support_code

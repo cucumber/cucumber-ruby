@@ -1,4 +1,4 @@
-require 'gherkin/formatter/ansi_escapes'
+require 'cucumber/gherkin/formatter/ansi_escapes'
 
 module Cucumber
   module RbSupport
@@ -9,7 +9,7 @@ module Cucumber
     module RbWorld
 
       # @private
-      AnsiEscapes = Gherkin::Formatter::AnsiEscapes
+      AnsiEscapes = Cucumber::Gherkin::Formatter::AnsiEscapes
 
       # Call a Transform with a string from another Transform definition
       def Transform(arg)

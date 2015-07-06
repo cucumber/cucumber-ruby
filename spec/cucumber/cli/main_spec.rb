@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'yaml'
-require 'gherkin/formatter/model'
 
 module Cucumber
   module Cli

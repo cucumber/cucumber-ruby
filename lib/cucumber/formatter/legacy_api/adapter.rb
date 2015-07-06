@@ -749,9 +749,9 @@ module Cucumber
               max_width.result
             end
 
-            require 'gherkin/formatter/escaping'
+            require 'cucumber/gherkin/formatter/escaping'
             FindMaxWidth = Struct.new(:index) do
-              include ::Gherkin::Formatter::Escaping
+              include ::Cucumber::Gherkin::Formatter::Escaping
 
               def examples_table(table, &descend)
                 @result = char_length_of(table.header.values[index])

@@ -1,7 +1,7 @@
 require 'fileutils'
 require 'cucumber/formatter/console'
 require 'cucumber/formatter/io'
-require 'gherkin/formatter/escaping'
+require 'cucumber/gherkin/formatter/escaping'
 
 module Cucumber
   module Formatter
@@ -16,7 +16,7 @@ module Cucumber
       include FileUtils
       include Console
       include Io
-      include Gherkin::Formatter::Escaping
+      include Cucumber::Gherkin::Formatter::Escaping
       attr_writer :indent
       attr_reader :runtime
 

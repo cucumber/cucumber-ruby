@@ -1,5 +1,5 @@
 require 'forwardable'
-require 'gherkin/formatter/escaping'
+require 'cucumber/gherkin/formatter/escaping'
 require 'cucumber/core/ast/describes_itself'
 
 module Cucumber
@@ -639,7 +639,7 @@ module Cucumber
       # Represents a row of cells or columns of cells
       class Cells #:nodoc:
         include Enumerable
-        include Gherkin::Formatter::Escaping
+        include Cucumber::Gherkin::Formatter::Escaping
 
         attr_reader :exception
 
