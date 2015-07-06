@@ -8,4 +8,5 @@ unless ENV['CUCUMBER_USE_RELEASED_CORE']
   else
     gem 'cucumber-core', :git => "git://github.com/cucumber/cucumber-ruby-core.git"
   end
+  gem 'gherkin3', github: "cucumber/gherkin3", branch: "integrate-ruby-core"
 end
