@@ -207,7 +207,8 @@ module Cucumber
 
           def before
             formatter.before_feature(node)
-            Ast::Comments.new(node.comments).accept(formatter)
+            language_comment = node.language.iso_code != 'en' ? ["# language: #{node.language.iso_code}"] : []
+            Ast::Comments.new(language_comment + node.comments).accept(formatter)
             Ast::Tags.new(node.tags).accept(formatter)
             formatter.feature_name node.keyword, node.legacy_conflated_name_and_description
             @delayed_messages = []
