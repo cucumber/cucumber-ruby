@@ -104,7 +104,7 @@ module Cucumber
                                     :embeddings) do
           extend Forwardable
 
-          def_delegators :step, :keyword, :name, :multiline_arg, :location, :gherkin_statement
+          def_delegators :step, :keyword, :name, :multiline_arg, :location
 
           def accept(formatter)
             formatter.before_step(self)
@@ -252,7 +252,7 @@ module Cucumber
           def keyword
             # This method is only called when used for the scenario name line with
             # the expand option, and on that line the keyword is "Scenario"
-            language.keywords('scenario')[0]
+            language.scenario[0]
           end
         end
 

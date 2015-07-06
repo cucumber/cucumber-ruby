@@ -5,6 +5,7 @@ require 'cucumber/rb_support/rb_step_definition'
 require 'cucumber/rb_support/rb_hook'
 require 'cucumber/rb_support/rb_transform'
 require 'cucumber/rb_support/snippet'
+require 'cucumber/gherkin/i18n'
 require 'multi_test'
 
 module Cucumber
@@ -35,8 +36,12 @@ module Cucumber
       attr_reader :current_world,
                   :step_definitions
 
-      Gherkin::I18n.code_keywords.each do |adverb|
-        RbDsl.alias_adverb(adverb)
+      all_keywords = ::Gherkin3::DIALECTS.keys.map do |dialect_name|
+        dialect = ::Gherkin3::Dialect.for(dialect_name)
+        dialect.given + dialect.when + dialect.then + dialect.and + dialect.but
+      end
+      Cucumber::Gherkin::I18n.code_keywords_for(all_keywords.flatten.uniq.sort).each do |adverb|
+        RbDsl.alias_adverb(adverb.strip)
       end
 
       def initialize(runtime)
