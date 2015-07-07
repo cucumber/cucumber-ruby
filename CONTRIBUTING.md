@@ -56,10 +56,10 @@ Now release it
 To become a release manager, create a pull request adding your name to the list below, and include your Rubygems email address in the ticket. One of the existing Release managers will then add you.
 
 Current release managers:
-  * Matt Wynne
-  * Aslak Hellesøy
-  * Oleg Sukhodolsky
-  * Steve Tooke
+  * [Matt Wynne](https://rubygems.org/profiles/mattwynne)
+  * [Aslak Hellesøy](https://rubygems.org/profiles/aslakhellesoy)
+  * [Oleg Sukhodolsky](https://rubygems.org/profiles/os97673)
+  * [Steve Tooke](https://rubygems.org/profiles/tooky)
 
 To grant release karma, issue the following command:
 
