@@ -6,3 +6,7 @@ Then(/^cucumber lists all the supported languages$/) do
     expect(all_output.force_encoding('utf-8')).to include(language)
   end
 end
+
+Then(/^the output includes the message "(.*)"$/) do |message|
+  expect(all_output).to include(message)
+end

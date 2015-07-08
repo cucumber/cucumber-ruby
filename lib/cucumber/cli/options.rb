@@ -116,8 +116,12 @@ module Cucumber
           opts.on("--i18n LANG",
             "List keywords for in a particular language",
             %{Run with "--i18n help" to see all languages}) do |lang|
+            require 'gherkin/i18n'
+
             if lang == 'help'
               list_languages_and_exit
+            elsif !Gherkin::I18n::LANGUAGES.keys.include? lang
+              indicate_invalid_language_and_exit(lang)
             else
               list_keywords_and_exit(lang)
             end
@@ -377,6 +381,13 @@ TEXT
         end
 
         self
+      end
+
+      def indicate_invalid_language_and_exit(lang)
+        require 'gherkin/i18n'
+        @out_stream.write("Invalid language '#{lang}'. Available languages are:\n")
+        @out_stream.write(Gherkin::I18n.language_table)
+        Kernel.exit(0)
       end
 
       def list_keywords_and_exit(lang)
