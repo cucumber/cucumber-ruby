@@ -18,6 +18,7 @@
 * Fix the check for multiple formatters using stdout ([826](https://github.com/cucumber/cucumber-ruby/pull/826) @brasmusson)
 * Make background.feature available to formatters (backward compatibility with v1.3.x) (@brasmusson)
 * Cucumber::Ast::Table.diff! is broken when using no headers ([832](https://github.com/cucumber/cucumber-ruby/pull/832) @roschaefer)
+* `cucumber --i18n <invalid_language>` breaks ([#869](https://github.com/cucumber/cucumber-ruby/issues/869) (@danascheider)
 
 ### Refactoring
 
