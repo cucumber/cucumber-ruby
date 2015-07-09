@@ -2,12 +2,14 @@ module Cucumber
   module RbSupport
     # Wrapper for Before, After and AfterStep hooks
     class RbHook
-      attr_reader :tag_expressions
+      attr_reader :tag_expressions, :location
 
       def initialize(rb_language, tag_expressions, proc)
         @rb_language = rb_language
         @tag_expressions = tag_expressions
         @proc = proc
+        file, line = @proc.file_colon_line.match(/(.*):(\d+)/)[1..2]
+        @location = Core::Ast::Location.new(file, line)
       end
 
       def source_location

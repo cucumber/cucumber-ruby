@@ -51,6 +51,10 @@ module Cucumber
           @proc.source_location
         end
 
+        def location
+          source_location
+        end
+
         def invoke(pseudo_method, arguments, &block)
           @proc.call
         end
@@ -70,13 +74,13 @@ module Cucumber
           # The adapter is built on the assumption that each test case will have at least one step. This is annoying
           # for tests, but a safe assumption for production use as we always add one hook to initialize the world.
           hook = proc {}
-          [ Hooks.before_hook(source, Hooks.location(hook), &hook) ]
+          [ Hooks.before_hook(source, hook.source_location, &hook) ]
         end
 
         def after_hooks(source)
           # We add an after hook to make sure the adapter can cope with it
           hook = proc {}
-          [ Hooks.after_hook(source, Hooks.location(hook), &hook) ]
+          [ Hooks.after_hook(source, hook.source_location, &hook) ]
         end
       end
 

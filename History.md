@@ -1,6 +1,8 @@
 ## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.0.1...master)
 
-...
+### Bugfixes
+
+* Calculate the locations of hooks properly (so it also work between drives on Windows) ([885](https://github.com/cucumber/cucumber-ruby/issues/885) @brasmusson).
 
 ## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0...v2.0.1)
 

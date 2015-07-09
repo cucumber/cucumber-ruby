@@ -26,13 +26,6 @@ module Cucumber
         Core::Test::AroundHook.new(&block)
       end
 
-      def location(hook)
-        filepath, line = *hook.source_location
-        Core::Ast::Location.new(
-          Pathname.new(filepath).relative_path_from(Pathname.new(Dir.pwd)).to_path,
-          line)
-      end
-
       private
 
       def build_hook_step(source, location, block, hook_type, action_type)

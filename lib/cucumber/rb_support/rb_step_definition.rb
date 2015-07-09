@@ -51,10 +51,16 @@ module Cucumber
         end
 
         def patch_location_onto(block)
-          file, line = caller[5].split(':')[0..1]
-          location = Core::Ast::Location.new(
-            Pathname.new(file).relative_path_from(Pathname.new(Dir.pwd)),
-            line)
+          file, line = caller[5].match(/(.*):(\d+)/)[1..2]
+          file = File.expand_path(file)
+          pwd = File.expand_path(Dir.pwd)
+          pwd.force_encoding(file.encoding)
+          if file.index(pwd)
+            file = file[pwd.length+1..-1]
+          elsif file =~ /.*\/gems\/(.*\.rb)$/
+            file = $1
+          end
+          location = Core::Ast::Location.new(file, line)
           block.define_singleton_method(:file_colon_line) { location.to_s }
           block
         end
