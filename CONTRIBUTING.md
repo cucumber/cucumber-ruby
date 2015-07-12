@@ -60,6 +60,7 @@ Current release managers:
   * [Aslak Hellesøy](https://rubygems.org/profiles/aslakhellesoy)
   * [Oleg Sukhodolsky](https://rubygems.org/profiles/os97673)
   * [Steve Tooke](https://rubygems.org/profiles/tooky)
+  * [Björn Rasmusson](https://rubygems.org/profiles/brasmusson)
 
 To grant release karma, issue the following command:
 
