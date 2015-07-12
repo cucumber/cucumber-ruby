@@ -21,8 +21,8 @@ module Cucumber
       def initialize(first_proc, second_proc)
         message = "You can only pass a proc to #World once, but it's happening\n"
         message << "in 2 places:\n\n"
-        message << first_proc.backtrace_line('World') << "\n"
-        message << second_proc.backtrace_line('World') << "\n\n"
+        message << RbSupport.backtrace_line(first_proc, 'World') << "\n"
+        message << RbSupport.backtrace_line(second_proc, 'World') << "\n\n"
         message << "Use Ruby modules instead to extend your worlds. See the Cucumber::RbSupport::RbDsl#World RDoc\n"
         message << "or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.\n\n"
         super(message)
@@ -132,7 +132,7 @@ module Cucumber
             raise NilWorld.new
           rescue NilWorld => e
             e.backtrace.clear
-            e.backtrace.push(proc.backtrace_line("World"))
+            e.backtrace.push(RbSupport.backtrace_line(proc, "World"))
             raise e
           end
         else
@@ -155,6 +155,11 @@ module Cucumber
           SNIPPET_TYPES[type].cli_option_string(type)
         end
       end
+    end
+
+    def self.backtrace_line(proc, name)
+      location = Cucumber::Core::Ast::Location.from_source_location(*proc.source_location)
+      "#{location.to_s}:in `#{name}'"
     end
   end
 end

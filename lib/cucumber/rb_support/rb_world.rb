@@ -48,7 +48,8 @@ module Cucumber
       #   }
       # @param [String] steps_text The Gherkin snippet to run
       def steps(steps_text)
-        @__cucumber_runtime.invoke_dynamic_steps(steps_text, @__natural_language, caller[0])
+        location = Core::Ast::Location.of_caller
+        @__cucumber_runtime.invoke_dynamic_steps(steps_text, @__natural_language, location)
       end
 
       # Parse Gherkin into a {Cucumber::Ast::Table} object.
