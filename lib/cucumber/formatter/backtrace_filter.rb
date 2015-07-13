@@ -3,25 +3,25 @@ require 'cucumber/platform'
 
 module Cucumber
   module Formatter
-
     class BacktraceFilter
-      BACKTRACE_FILTER_PATTERNS = \
-      [/vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\/|minitest|test\/unit|.gem\/ruby|lib\/ruby/]
-      if(::Cucumber::JRUBY)
-        BACKTRACE_FILTER_PATTERNS << /org\/jruby/
-      end
-      PWD_PATTERN = /#{::Regexp.escape(::Dir.pwd)}\//m
-
       def initialize(exception)
         @exception = exception
+        @backtrace_filter_patterns = \
+          [/vendor\/rails|lib\/cucumber|bin\/cucumber:|lib\/rspec|gems\/|minitest|test\/unit|.gem\/ruby|lib\/ruby/]
+
+        if(::Cucumber::JRUBY)
+          @backtrace_filter_patterns << /org\/jruby/
+        end
+
+        @pwd_pattern = /#{::Regexp.escape(::Dir.pwd)}\//m
       end
 
       def exception
         return @exception if ::Cucumber.use_full_backtrace
-        @exception.backtrace.each{|line| line.gsub!(PWD_PATTERN, "./")}
+        @exception.backtrace.each{|line| line.gsub!(@pwd_pattern, "./")}
 
         filtered = (@exception.backtrace || []).reject do |line|
-          BACKTRACE_FILTER_PATTERNS.detect { |p| line =~ p }
+          @backtrace_filter_patterns.detect { |p| line =~ p }
         end
 
         if ::ENV['CUCUMBER_TRUNCATE_OUTPUT']
