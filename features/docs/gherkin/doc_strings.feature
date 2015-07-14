@@ -53,22 +53,22 @@ Feature: Doc strings
       Three
       """
 
-  Scenario: DocString with interesting content type
+  Scenario: DocString passed as String
     Given a scenario with a step that looks like this:
       """gherkin
       Given I have some code for you:
-        \"\"\"ruby
-        # hello
+        \"\"\"
+        hello
         \"\"\"
       """
     And a step definition that looks like this:
       """ruby
       Given /code/ do |text|
-        puts text.content_type
+        puts text.class
       end
       """
     When I run the feature with the progress formatter
     Then the output should contain:
       """
-      ruby
+      String
       """
