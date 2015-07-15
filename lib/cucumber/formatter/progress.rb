@@ -46,7 +46,7 @@ module Cucumber
       def print_summary
         print_steps(:pending)
         print_steps(:failed)
-        print_stats(@total_duration, @options)
+        print_statistics(@total_duration, @options)
         print_snippets(@options)
         print_passing_wip(@options)
       end

@@ -76,7 +76,12 @@ module Cucumber
         end
       end
 
-      def print_stats(duration, options)
+      def print_stats(features, options)
+        duration = features ? features.duration : nil
+        print_statistics(duration, options)
+      end
+
+      def print_statistics(duration, options)
         failures = collect_failing_scenarios(runtime)
         if !failures.empty?
           print_failing_scenarios(failures, options.custom_profiles, options[:source])
