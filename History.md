@@ -2,6 +2,7 @@
 
 ### Bugfixes
 
+* Revert interface change in Cucumber::Formatter::Console (which can break custom formatters in v2.0.1) ([893](https://github.com/cucumber/cucumber-ruby/issues/893) @brasmusson).
 * Calculate the locations of hooks properly (so it also work between drives on Windows) ([885](https://github.com/cucumber/cucumber-ruby/issues/885) @brasmusson).
 
 ## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0...v2.0.1)
