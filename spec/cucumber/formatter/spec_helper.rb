@@ -23,7 +23,7 @@ module Cucumber
 
         receiver = Test::Runner.new(report)
         filters = [
-          Filters::ActivateSteps.new(runtime.support_code),
+          Filters::ActivateSteps.new(runtime.support_code, runtime.configuration),
           Filters::ApplyAfterStepHooks.new(runtime.support_code),
           Filters::ApplyBeforeHooks.new(runtime.support_code),
           Filters::ApplyAfterHooks.new(runtime.support_code),

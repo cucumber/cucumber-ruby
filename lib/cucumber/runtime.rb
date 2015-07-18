@@ -237,7 +237,7 @@ module Cucumber
         filters << Cucumber::Core::Test::NameFilter.new(name_regexps)
         filters << Cucumber::Core::Test::LocationsFilter.new(filespecs.locations)
         filters << Filters::Quit.new
-        filters << Filters::ActivateSteps.new(@support_code)
+        filters << Filters::ActivateSteps.new(@support_code, @configuration)
         @configuration.filters.each do |filter|
           filters << filter
         end
