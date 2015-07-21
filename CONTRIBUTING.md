@@ -62,6 +62,7 @@ Current release managers:
   * [Steve Tooke](https://rubygems.org/profiles/tooky)
   * [Björn Rasmusson](https://rubygems.org/profiles/brasmusson)
 
-To grant release karma, issue the following command:
+To grant release karma, issue the following commands:
 
     gem owner cucumber --add <NEW OWNER RUBYGEMS EMAIL>
+    gem owner cucumber-core --add <NEW OWNER RUBYGEMS EMAIL>
