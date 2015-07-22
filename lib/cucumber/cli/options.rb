@@ -59,9 +59,9 @@ module Cucumber
         @error_stream = error_stream
 
         @default_profile = options[:default_profile]
-        @profiles = []
+        @profiles = options[:profiles] || []
         @overridden_paths = []
-        @options = default_options
+        @options = default_options.merge(options)
         @profile_loader = options[:profile_loader]
         @options[:skip_profile_information] = options[:skip_profile_information]
 
@@ -287,6 +287,10 @@ TEXT
         if streams != streams.uniq
           raise "All but one formatter must use --out, only one can print to each stream (or STDOUT)"
         end
+      end
+
+      def to_hash
+        Hash(@options)
       end
 
     protected

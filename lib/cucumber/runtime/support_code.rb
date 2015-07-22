@@ -41,7 +41,7 @@ module Cucumber
       include Constantize
 
       def initialize(user_interface, configuration={})
-        @configuration = Configuration.parse(configuration)
+        @configuration = Configuration.new(configuration)
         @runtime_facade = Runtime::ForProgrammingLanguages.new(self, user_interface)
         @unsupported_programming_languages = []
         @programming_languages = []
@@ -49,7 +49,7 @@ module Cucumber
       end
 
       def configure(new_configuration)
-        @configuration = Configuration.parse(new_configuration)
+        @configuration = Configuration.new(new_configuration)
       end
 
       # Invokes a series of steps +steps_text+. Example:

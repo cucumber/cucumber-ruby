@@ -5,7 +5,8 @@ module Cucumber
   module LanguageSupport
     module LanguageMethods
 
-      def after_configuration(configuration)
+      def after_configuration(cli_configuration)
+        configuration = Configuration.new(cli_configuration)
         hooks[:after_configuration].each do |hook|
           hook.invoke('AfterConfiguration', configuration)
         end
