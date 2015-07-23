@@ -113,26 +113,25 @@ module Cucumber
         expect(configuration.feature_files).to eq ["cucumber.feature"]
       end
 
-    end
+      it "gets the feature files from the rerun file" do
+        allow(File).to receive(:directory?).and_return(false)
+        allow(File).to receive(:file?).and_return(true)
+        allow(IO).to receive(:read).and_return(
+          "cucumber.feature:1:3\ncucumber.feature:5 cucumber.feature:10\n"\
+          "domain folder/different cuke.feature:134 domain folder/cuke.feature:1\n"\
+          "domain folder/different cuke.feature:4:5 bar.feature")
 
-    it "gets the feature files from the rerun file" do
-      allow(File).to receive(:directory?).and_return(false)
-      allow(File).to receive(:file?).and_return(true)
-      allow(IO).to receive(:read).and_return(
-        "cucumber.feature:1:3\ncucumber.feature:5 cucumber.feature:10\n"\
-        "domain folder/different cuke.feature:134 domain folder/cuke.feature:1\n"\
-        "domain folder/different cuke.feature:4:5 bar.feature")
+        configuration = Configuration.new(paths: %w{@rerun.txt})
 
-      configuration = Configuration.new(paths: %w{@rerun.txt})
-
-      expect(configuration.feature_files).to eq [
-        "cucumber.feature:1:3",
-        "cucumber.feature:5",
-        "cucumber.feature:10",
-        "domain folder/different cuke.feature:134",
-        "domain folder/cuke.feature:1",
-        "domain folder/different cuke.feature:4:5",
-        "bar.feature"]
+        expect(configuration.feature_files).to eq [
+          "cucumber.feature:1:3",
+          "cucumber.feature:5",
+          "cucumber.feature:10",
+          "domain folder/different cuke.feature:134",
+          "domain folder/cuke.feature:1",
+          "domain folder/different cuke.feature:4:5",
+          "bar.feature"]
+      end
     end
 
   end

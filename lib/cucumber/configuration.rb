@@ -1,15 +1,20 @@
 require 'cucumber/constantize'
 require 'cucumber/cli/rerun_file'
+require 'cucumber/events/bus'
 require 'gherkin/tag_expression'
+require 'forwardable'
 
 module Cucumber
   # The base class for configuring settings for a Cucumber run.
   class Configuration
     include Constantize
+    extend Forwardable
 
     def self.default
       new
     end
+
+    delegate :on_event => :event_bus
 
     def initialize(user_options = {})
       @options = default_options.merge(Hash.try_convert(user_options))
@@ -165,10 +170,6 @@ module Cucumber
       end
     end
 
-    def on_event(event_name, &handler)
-
-    end
-
     def to_hash
       @options
     end
@@ -190,9 +191,15 @@ module Cucumber
         :diff_enabled        => true,
         :snippets            => true,
         :source              => true,
-        :duration            => true
+        :duration            => true,
+        :event_bus           => Events::Bus.new
       }
     end
+
+    def event_bus
+      @options[:event_bus]
+    end
+
 
     def default_features_paths
       ["features"]
