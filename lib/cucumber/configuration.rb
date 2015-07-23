@@ -14,7 +14,7 @@ module Cucumber
       new
     end
 
-    delegate :on_event => :event_bus
+    delegate [:on_event, :notify] => :event_bus
 
     def initialize(user_options = {})
       @options = default_options.merge(Hash.try_convert(user_options))

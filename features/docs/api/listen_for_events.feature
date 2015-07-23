@@ -5,7 +5,7 @@ Feature: Listen for events
       """
       Feature:
         Scenario:
-        Given matching
+          Given matching
       """
     And a file named "features/steps_definitions/steps.rb" with:
       """
