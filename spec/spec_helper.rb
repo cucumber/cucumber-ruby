@@ -4,7 +4,7 @@ $:.unshift(File.dirname(__FILE__))
 # For Travis....
 require 'cucumber/encoding'
 
-load File.expand_path(File.dirname(__FILE__) + '/../spec/simplecov_setup.rb')
+require 'simplecov_setup'
 
 require 'pry'
 
