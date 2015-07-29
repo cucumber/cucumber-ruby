@@ -38,7 +38,7 @@ module Cucumber
 
       all_keywords = ::Gherkin3::DIALECTS.keys.map do |dialect_name|
         dialect = ::Gherkin3::Dialect.for(dialect_name)
-        dialect.given + dialect.when + dialect.then + dialect.and + dialect.but
+        dialect.given_keywords + dialect.when_keywords + dialect.then_keywords + dialect.and_keywords + dialect.but_keywords
       end
       Cucumber::Gherkin::I18n.code_keywords_for(all_keywords.flatten.uniq.sort).each do |adverb|
         RbDsl.alias_adverb(adverb.strip)

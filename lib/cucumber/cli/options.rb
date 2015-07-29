@@ -400,21 +400,21 @@ TEXT
         require 'gherkin3/dialect'
         language = ::Gherkin3::Dialect.for(lang)
         data = Cucumber::MultilineArgument::DataTable.from(
-          [["feature", to_keywords_string(language.feature)],
-          ["background", to_keywords_string(language.background)],
-          ["scenario", to_keywords_string(language.scenario)],
-          ["scenario_outline", to_keywords_string(language.scenario_outline)],
-          ["examples", to_keywords_string(language.examples)],
-          ["given", to_keywords_string(language.given)],
-          ["when", to_keywords_string(language.when)],
-          ["then", to_keywords_string(language.then)],
-          ["and", to_keywords_string(language.and)],
-          ["but", to_keywords_string(language.but)],
-          ["given (code)", to_code_keywords_string(language.given)],
-          ["when (code)", to_code_keywords_string(language.when)],
-          ["then (code)", to_code_keywords_string(language.then)],
-          ["and (code)", to_code_keywords_string(language.and)],
-          ["but (code)", to_code_keywords_string(language.but)]])
+          [["feature", to_keywords_string(language.feature_keywords)],
+          ["background", to_keywords_string(language.background_keywords)],
+          ["scenario", to_keywords_string(language.scenario_keywords)],
+          ["scenario_outline", to_keywords_string(language.scenario_outline_keywords)],
+          ["examples", to_keywords_string(language.examples_keywords)],
+          ["given", to_keywords_string(language.given_keywords)],
+          ["when", to_keywords_string(language.when_keywords)],
+          ["then", to_keywords_string(language.then_keywords)],
+          ["and", to_keywords_string(language.and_keywords)],
+          ["but", to_keywords_string(language.but_keywords)],
+          ["given (code)", to_code_keywords_string(language.given_keywords)],
+          ["when (code)", to_code_keywords_string(language.when_keywords)],
+          ["then (code)", to_code_keywords_string(language.then_keywords)],
+          ["and (code)", to_code_keywords_string(language.and_keywords)],
+          ["but (code)", to_code_keywords_string(language.but_keywords)]])
         @out_stream.write(data.to_s({ color: false, prefixes: Hash.new('') }))
         Kernel.exit(0)
       end
@@ -423,8 +423,7 @@ TEXT
         require 'gherkin3/dialect'
         data = Cucumber::MultilineArgument::DataTable.from(
           ::Gherkin3::DIALECTS.keys.map do |key|
-            language = ::Gherkin3::Dialect.for(key)
-            [key, language.name, language.native]
+            [key, ::Gherkin3::DIALECTS[key].fetch('name'), ::Gherkin3::DIALECTS[key].fetch('native')]
           end)
         @out_stream.write(data.to_s({ color: false, prefixes: Hash.new('') }))
         Kernel.exit(0)

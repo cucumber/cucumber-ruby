@@ -252,7 +252,7 @@ module Cucumber
           def keyword
             # This method is only called when used for the scenario name line with
             # the expand option, and on that line the keyword is "Scenario"
-            language.scenario[0]
+            language.scenario_keywords[0]
           end
         end
 
