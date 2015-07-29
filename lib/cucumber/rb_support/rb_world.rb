@@ -65,6 +65,20 @@ module Cucumber
         @__cucumber_runtime.table(text_or_table, file, line_offset)
       end
 
+      # Create an {Cucumber::Ast::DocString} object
+      #
+      # Useful in conjunction with the #step method, when
+      # want to specify a content type.
+      # @example Create a multiline string
+      #   code = multiline_string(%{
+      #     puts "this is ruby code"
+      #   %}, 'ruby')
+      def doc_string(string_without_triple_quotes, content_type='', line_offset=0)
+        STDERR.puts AnsiEscapes.failed + "WARNING: #doc_string is deprecated. Just pass a regular String instead:" + caller[0] + AnsiEscapes.reset
+        # TODO: rename this method to multiline_string
+        @__cucumber_runtime.doc_string(string_without_triple_quotes, content_type, line_offset)
+      end
+
       # @deprecated Use {#puts} instead.
       def announce(*messages)
         STDERR.puts AnsiEscapes.failed + "WARNING: #announce is deprecated. Use #puts instead:" + caller[0] + AnsiEscapes.reset
