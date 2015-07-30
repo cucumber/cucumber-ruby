@@ -290,7 +290,7 @@ TEXT
       end
 
       def to_hash
-        Hash(@options)
+        Hash.try_convert(@options)
       end
 
     protected

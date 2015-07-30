@@ -12,7 +12,7 @@ module Cucumber
     end
 
     def initialize(user_options = {})
-      @options = default_options.merge(Hash(user_options))
+      @options = default_options.merge(Hash.try_convert(user_options))
     end
 
     # TODO: Actually Deprecate???
