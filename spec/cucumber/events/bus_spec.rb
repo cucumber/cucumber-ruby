@@ -61,6 +61,17 @@ module Cucumber
         expect(received_payload).to eq(test_event)
       end
 
+      it "allows subscription by symbol (for events in the Cucumber::Events namespace)" do
+        received_payload = nil
+        bus.on_event(:test_event) do |event|
+          received_payload = event
+        end
+
+        bus.notify test_event
+
+        expect(received_payload).to eq(test_event)
+      end
+
       it "allows handlers that are objects with a `call` method" do
         class MyHandler
           attr_reader :received_payload
@@ -77,6 +88,7 @@ module Cucumber
 
         expect(handler.received_payload).to eq test_event
       end
+
     end
   end
 end
