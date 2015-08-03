@@ -1,6 +1,6 @@
 require 'cucumber/constantize'
 require 'cucumber/cli/rerun_file'
-require 'cucumber/events/bus'
+require 'cucumber/events'
 require 'gherkin/tag_expression'
 require 'forwardable'
 
@@ -18,6 +18,10 @@ module Cucumber
 
     def initialize(user_options = {})
       @options = default_options.merge(Hash.try_convert(user_options))
+    end
+
+    def with_options(new_options)
+      self.class.new(new_options.merge(@options))
     end
 
     # TODO: Actually Deprecate???
