@@ -3,6 +3,7 @@ require 'cucumber/runtime/for_programming_languages'
 require 'cucumber/runtime/step_hooks'
 require 'cucumber/runtime/before_hooks'
 require 'cucumber/runtime/after_hooks'
+require 'cucumber/events/step_match'
 
 module Cucumber
 
@@ -138,6 +139,7 @@ module Cucumber
         rescue Cucumber::Undefined
           return NoStepMatch.new(test_step.source.last, test_step.name)
         end
+        @configuration.notify :step_match, Events::StepMatch.new(test_step, match)
         if @configuration.dry_run?
           return SkippingStepMatch.new
         end
