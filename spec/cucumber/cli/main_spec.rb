@@ -66,27 +66,6 @@ module Cucumber
         end
       end
 
-      describe "--format with class" do
-        describe "in module" do
-          let(:double_module) { double('module') }
-          let(:formatter) { double('formatter') }
-
-          it "resolves each module until it gets Formatter class" do
-            cli = Main.new(%w{--format ZooModule::MonkeyFormatterClass}, stdin, stdout, stderr, kernel)
-
-            allow(Object).to receive(:const_defined?) { true }
-            allow(double_module).to receive(:const_defined?) { true }
-
-            expect(Object).to receive(:const_get).with('ZooModule', false) { double_module }
-            expect(double_module).to receive(:const_get).with('MonkeyFormatterClass', false) { double('formatter class', :new => formatter) }
-
-            expect(kernel).to receive(:exit).with(0)
-
-            cli.execute!
-          end
-        end
-      end
-
       [ProfilesNotDefinedError, YmlLoadError, ProfileNotFound].each do |exception_klass|
         it "rescues #{exception_klass}, prints the message to the error stream" do
           configuration = double('configuration')

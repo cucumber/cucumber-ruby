@@ -32,3 +32,27 @@ Feature: Listen for events
       Step name:       matching
       Source location: features/step_definitions/steps.rb:1
       """
+
+  Scenario: After Test Step event
+    Given a file named "features/test.feature" with:
+      """
+      Feature:
+        Scenario:
+          Given passing
+      """
+    And the standard step definitions
+    And a file named "features/support/my_listener.rb" with:
+      """
+      AfterConfiguration do |config|
+        io = config.out_stream
+        config.on_event Cucumber::Events::AfterTestStep do |event|
+          io.puts "YO"
+        end
+      end
+      """
+    When I run `cucumber`
+    Then it should pass with:
+      """
+      YO
+      """
+

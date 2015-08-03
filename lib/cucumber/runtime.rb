@@ -11,6 +11,7 @@ require 'cucumber/formatter/duration'
 require 'cucumber/file_specs'
 require 'cucumber/filters'
 require 'cucumber/formatter/fanout'
+require 'cucumber/formatter/event_bus_report'
 
 module Cucumber
   module FixRuby21Bug9285
@@ -182,22 +183,38 @@ module Cucumber
     require 'cucumber/formatter/ignore_missing_messages'
     require 'cucumber/core/report/summary'
     def report
-      @report ||= Formatter::Fanout.new([summary_report] + formatters)
+      @report ||= Formatter::Fanout.new([summary_report, event_bus_report] + formatters)
     end
 
     def summary_report
       @summary_report ||= Core::Report::Summary.new
     end
 
+    def event_bus_report
+      @event_bus_report ||= Cucumber::Formatter::EventBusReport.new(@configuration)
+    end
+
     def formatters
       @formatters ||= @configuration.formatter_factories { |factory, path_or_io, options|
-        results = Formatter::LegacyApi::Results.new
-        runtime_facade = Formatter::LegacyApi::RuntimeFacade.new(results, @support_code, @configuration)
-        formatter = factory.new(runtime_facade, path_or_io, options)
-        Formatter::LegacyApi::Adapter.new(
-          Formatter::IgnoreMissingMessages.new(formatter),
-          results, @support_code, @configuration)
+        create_formatter(factory, path_or_io, options)
       }
+    end
+
+    def create_formatter(factory, path_or_io, options)
+      if !legacy_formatter?(factory)
+        out_stream = Cucumber::Formatter::Io.ensure_io(path_or_io)
+        return factory.new(@configuration.with_options(out_stream: out_stream))
+      end
+      results = Formatter::LegacyApi::Results.new
+      runtime_facade = Formatter::LegacyApi::RuntimeFacade.new(results, @support_code, @configuration)
+      formatter = factory.new(runtime_facade, path_or_io, options)
+      Formatter::LegacyApi::Adapter.new(
+        Formatter::IgnoreMissingMessages.new(formatter),
+        results, @support_code, @configuration)
+    end
+
+    def legacy_formatter?(factory)
+      factory.instance_method(:initialize).arity > 1
     end
 
     def failure?
