@@ -87,10 +87,6 @@ module Cucumber
       @results.steps(status)
     end
 
-    def step_match(step_name, name_to_report=nil) #:nodoc:
-      @support_code.step_match(step_name, name_to_report)
-    end
-
     def unmatched_step_definitions
       @support_code.unmatched_step_definitions
     end
