@@ -1,6 +1,5 @@
 Feature: Listen for events
 
-  @spawn
   Scenario: Step Matched Event
     Given a file named "features/test.feature" with:
       """
@@ -16,11 +15,12 @@ Feature: Listen for events
     And a file named "features/support/my_listener.rb" with:
       """
       AfterConfiguration do |config|
+        io = config.out_stream
         config.on_event Cucumber::Events::StepMatch do |event|
-          puts "Success!"
-          puts "Event type:      #{event.class}"
-          puts "Step name:       #{event.test_step.name}"
-          puts "Source location: #{event.step_match.location}"
+          io.puts "Success!"
+          io.puts "Event type:      #{event.class}"
+          io.puts "Step name:       #{event.test_step.name}"
+          io.puts "Source location: #{event.step_match.location}"
         end
       end
       """
