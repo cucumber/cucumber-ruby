@@ -4,7 +4,7 @@ module Cucumber
     class Steps
 
       def initialize(runtime, path_or_io, options)
-        @io = ensure_io(path_or_io, "steps")
+        @io = ensure_io(path_or_io)
         @options = options
         @step_definition_files = collect_steps(runtime)
       end

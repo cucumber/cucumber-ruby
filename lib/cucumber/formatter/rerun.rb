@@ -6,7 +6,7 @@ module Cucumber
       include Formatter::Io
 
       def initialize(runtime, path_or_io, options)
-        @io = ensure_io(path_or_io, "rerun")
+        @io = ensure_io(path_or_io)
         @failures = {}
         @options = options
       end

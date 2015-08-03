@@ -21,7 +21,7 @@ module Cucumber
       attr_reader :runtime
 
       def initialize(runtime, path_or_io, options)
-        @runtime, @io, @options = runtime, ensure_io(path_or_io, "pretty"), options
+        @runtime, @io, @options = runtime, ensure_io(path_or_io), options
         @exceptions = []
         @indent = 0
         @prefixes = options[:prefixes] || {}

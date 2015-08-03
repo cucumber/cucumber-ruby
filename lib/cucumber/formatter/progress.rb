@@ -12,7 +12,7 @@ module Cucumber
       attr_reader :runtime
 
       def initialize(runtime, path_or_io, options)
-        @runtime, @io, @options = runtime, ensure_io(path_or_io, "progress"), options
+        @runtime, @io, @options = runtime, ensure_io(path_or_io), options
         @previous_step_keyword = nil
         @snippets_input = []
         @total_duration = 0

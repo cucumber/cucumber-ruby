@@ -11,7 +11,7 @@ module Cucumber
 
       def initialize(runtime, io, _options)
         @runtime = runtime
-        @io = ensure_io(io, 'json')
+        @io = ensure_io(io)
         @feature_hashes = []
       end
 
