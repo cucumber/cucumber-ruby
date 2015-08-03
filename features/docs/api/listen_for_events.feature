@@ -16,7 +16,7 @@ Feature: Listen for events
     And a file named "features/support/my_listener.rb" with:
       """
       AfterConfiguration do |config|
-        config.on_event :step_match do |event|
+        config.on_event Cucumber::Events::StepMatch do |event|
           puts "Success!"
           puts "Event type:      #{event.class}"
           puts "Step name:       #{event.test_step.name}"

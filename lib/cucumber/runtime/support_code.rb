@@ -139,7 +139,7 @@ module Cucumber
         rescue Cucumber::Undefined
           return NoStepMatch.new(test_step.source.last, test_step.name)
         end
-        @configuration.notify :step_match, Events::StepMatch.new(test_step, match)
+        @configuration.notify Events::StepMatch.new(test_step, match)
         if @configuration.dry_run?
           return SkippingStepMatch.new
         end

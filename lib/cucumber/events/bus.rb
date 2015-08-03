@@ -5,12 +5,12 @@ module Cucumber
         @handlers = Hash.new(UnknownEventHandler)
       end
 
-      def on_event(event_name, &handler)
-        @handlers[event_name] = handler
+      def on_event(event_type, &handler)
+        @handlers[event_type] = handler
       end
 
-      def notify(event_name, payload)
-        @handlers[event_name].call(payload)
+      def notify(event)
+        @handlers[event.class].call(event)
       end
 
       UnknownEventHandler = ->(event) {}
