@@ -2,18 +2,23 @@ module Cucumber
   module Events
     class Bus
       def initialize
-        @handlers = Hash.new(UnknownEventHandler)
+        @handlers = {}
       end
 
-      def on_event(event_type, &handler)
-        @handlers[event_type] = handler
+      def on_event(event_class, &handler)
+        handlers_for(event_class) << handler
       end
 
       def notify(event)
-        @handlers[event.class].call(event)
+        handlers_for(event.class).each { |handler| handler.call(event) }
       end
 
-      UnknownEventHandler = ->(event) {}
+      private
+
+      def handlers_for(event_class)
+        @handlers[event_class] ||= []
+      end
+
     end
   end
 end
