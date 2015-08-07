@@ -22,7 +22,7 @@ module Cucumber
     end
 
     def activate(test_step)
-      test_step.with_action(@step_definition.file_colon_line) do
+      test_step.with_action(@step_definition.location) do
         invoke(MultilineArgument.from_core(test_step.source.last.multiline_arg))
       end
     end
@@ -52,8 +52,12 @@ module Cucumber
       @name_to_report || replace_arguments(@name_to_match, @step_arguments, format, &proc)
     end
 
+    def location
+      @step_definition.location
+    end
+
     def file_colon_line
-      @step_definition.file_colon_line
+      location.to_s
     end
 
     def backtrace_line
@@ -111,6 +115,11 @@ module Cucumber
 
     def format_args(*args)
       @name
+    end
+
+    def location
+      raise "No location for #{@step}" unless @step.location
+      @step.location
     end
 
     def file_colon_line

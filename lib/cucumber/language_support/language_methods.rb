@@ -41,12 +41,12 @@ module Cucumber
         available_step_definition_hash.keys - invoked_step_definition_hash.keys
       end
 
-      def available_step_definition(regexp_source, file_colon_line)
-        available_step_definition_hash[StepDefinitionLight.new(regexp_source, file_colon_line)] = nil
+      def available_step_definition(regexp_source, location)
+        available_step_definition_hash[StepDefinitionLight.new(regexp_source, location)] = nil
       end
 
-      def invoked_step_definition(regexp_source, file_colon_line)
-        invoked_step_definition_hash[StepDefinitionLight.new(regexp_source, file_colon_line)] = nil
+      def invoked_step_definition(regexp_source, location)
+        invoked_step_definition_hash[StepDefinitionLight.new(regexp_source, location)] = nil
       end
 
       private

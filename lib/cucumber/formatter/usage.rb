@@ -23,15 +23,15 @@ module Cucumber
 
         step_match = @runtime.step_match(test_step.source.last.name)
         step_definition = step_match.step_definition
-        stepdef_key = StepDefKey.new(step_definition.regexp_source, step_definition.file_colon_line)
-        unless @stepdef_to_match[stepdef_key].map { |key| key[:file_colon_line] }.include? test_step.location
+        stepdef_key = StepDefKey.new(step_definition.regexp_source, step_definition.location)
+        unless @stepdef_to_match[stepdef_key].map { |key| key[:location] }.include? test_step.location
           duration = DurationExtractor.new(result).result_duration
 
           @stepdef_to_match[stepdef_key] << {
             keyword: test_step.source.last.keyword,
             step_match: step_match,
             status: result.to_sym,
-            file_colon_line: test_step.location,
+            location: test_step.location,
             duration: duration
           }
         end
@@ -68,7 +68,7 @@ module Cucumber
         @io.print format_string(stepdef_key.regexp_source, stepdef_key.status)
         if @options[:source]
           indent = max_length - stepdef_key.regexp_source.unpack('U*').length
-          line_comment = "   # #{stepdef_key.file_colon_line}".indent(indent)
+          line_comment = "   # #{stepdef_key.location}".indent(indent)
           @io.print(format_string(line_comment, :comment))
         end
         @io.puts
@@ -81,7 +81,7 @@ module Cucumber
           @io.print format_step(step[:keyword], step[:step_match], step[:status], nil)
           if @options[:source]
             indent = max_length - (step[:keyword].unpack('U*').length + step[:step_match].format_args.unpack('U*').length)
-            line_comment = " # #{step[:file_colon_line]}".indent(indent)
+            line_comment = " # #{step[:location]}".indent(indent)
             @io.print(format_string(line_comment, :comment))
           end
           @io.puts
@@ -123,7 +123,7 @@ module Cucumber
 
       def add_unused_stepdefs
         @runtime.unmatched_step_definitions.each do |step_definition|
-          stepdef_key = StepDefKey.new(step_definition.regexp_source, step_definition.file_colon_line)
+          stepdef_key = StepDefKey.new(step_definition.regexp_source, step_definition.location)
           @stepdef_to_match[stepdef_key] = []
         end
       end

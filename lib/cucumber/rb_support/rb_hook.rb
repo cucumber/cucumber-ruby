@@ -8,12 +8,7 @@ module Cucumber
         @rb_language = rb_language
         @tag_expressions = tag_expressions
         @proc = proc
-        file, line = @proc.file_colon_line.match(/(.*):(\d+)/)[1..2]
-        @location = Core::Ast::Location.new(file, line)
-      end
-
-      def source_location
-        @proc.source_location
+        @location = Cucumber::Core::Ast::Location.from_source_location(*@proc.source_location)
       end
 
       def invoke(pseudo_method, arguments, &block)
