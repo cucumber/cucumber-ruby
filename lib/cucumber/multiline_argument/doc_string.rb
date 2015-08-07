@@ -2,9 +2,8 @@ module Cucumber
   module MultilineArgument
     class DocString < SimpleDelegator
       def append_to(array)
-        array << self
+        array << self.to_s
       end
     end
   end
 end
-

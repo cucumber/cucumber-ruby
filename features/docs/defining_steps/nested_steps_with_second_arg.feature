@@ -34,7 +34,7 @@ Feature: Nested Steps with either table or doc string
 
       """
 
-  Scenario: Use #step with docstring
+  Scenario: Use #step with Doc String
     Given a step definition that looks like this:
       """ruby
       Given /two turtles/ do
@@ -44,30 +44,11 @@ Feature: Nested Steps with either table or doc string
     And a step definition that looks like this:
       """ruby
       Given /turtles:/ do |text|
-        puts text
+        puts "#{text}:#{text.class}"
       end
       """
     When I run the feature with the progress formatter
     Then the output should contain:
       """
-      Sturm and Lioville
-      """
-
-  Scenario: Use #step with docstring and content-type
-    Given a step definition that looks like this:
-      """ruby
-      Given /two turtles/ do
-        step %{turtles:}, doc_string('Sturm and Lioville','math')
-      end
-      """
-    And a step definition that looks like this:
-      """ruby
-      Given /turtles:/ do |text|
-        puts text.content_type
-      end
-      """
-    When I run the feature with the progress formatter
-    Then the output should contain:
-      """
-      math
+      Sturm and Lioville:String
       """
