@@ -1,5 +1,6 @@
 require 'logger'
 require 'cucumber/cli/options'
+require 'cucumber/cli/rerun_file'
 require 'cucumber/constantize'
 require 'gherkin/tag_expression'
 
@@ -78,53 +79,6 @@ module Cucumber
         end
       end
 
-      def all_files_to_load
-        files = require_dirs.map do |path|
-          path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
-          path = path.gsub(/\/$/, '') # Strip trailing slash.
-          File.directory?(path) ? Dir["#{path}/**/*"] : path
-        end.flatten.uniq
-        remove_excluded_files_from(files)
-        files.reject! {|f| !File.file?(f)}
-        files.reject! {|f| File.extname(f) == '.feature' }
-        files.reject! {|f| f =~ /^http/}
-        files.sort
-      end
-
-      def step_defs_to_load
-        all_files_to_load.reject {|f| f =~ %r{/support/} }
-      end
-
-      def support_to_load
-        support_files = all_files_to_load.select {|f| f =~ %r{/support/} }
-        env_files = support_files.select {|f| f =~ %r{/support/env\..*} }
-        other_files = support_files - env_files
-        @options[:dry_run] ? other_files : env_files + other_files
-      end
-
-      def feature_files
-        potential_feature_files = with_default_features_path(paths).map do |path|
-          path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
-          path = path.chomp('/')
-          if File.directory?(path)
-            Dir["#{path}/**/*.feature"].sort
-          elsif path[0..0] == '@' and # @listfile.txt
-              File.file?(path[1..-1]) # listfile.txt is a file
-            IO.read(path[1..-1]).split(/(.*?\.feature.*?) /).collect(&:strip).reject(&:empty?)
-          else
-            path
-          end
-        end.flatten.uniq
-        remove_excluded_files_from(potential_feature_files)
-        potential_feature_files
-      end
-
-      def feature_dirs
-        dirs = paths.map { |f| File.directory?(f) ? f : File.dirname(f) }.uniq
-        dirs.delete('.') unless paths.include?('.')
-        with_default_features_path(dirs)
-      end
-
       def log
         logger = Logger.new(@out_stream)
         logger.formatter = LogFormatter.new
@@ -167,30 +121,11 @@ module Cucumber
         @options[:paths]
       end
 
-      def formatter_factories
-        @options[:formats].map do |format_and_out|
-          format = format_and_out[0]
-          path_or_io = format_and_out[1]
-          begin
-            factory = formatter_class(format)
-            yield factory, path_or_io, @options
-          rescue Exception => e
-            e.message << "\nError creating formatter: #{format}"
-            raise e
-          end
-        end
+      def to_hash
+        Hash.try_convert(@options).merge(out_stream: @out_stream, error_stream: @error_stream)
       end
 
       private
-
-      def default_features_paths
-        ["features"]
-      end
-
-      def with_default_features_path(paths)
-        return default_features_paths if paths.empty?
-        paths
-      end
 
       class LogFormatter < ::Logger::Formatter
         def call(severity, time, progname, msg)
@@ -209,18 +144,6 @@ module Cucumber
         @options[:formats] = @options[:formats].sort_by{|f| f[1] == @out_stream ? -1 : 1}
         @options[:formats].uniq!
         @options.check_formatter_stream_conflicts()
-      end
-
-      def remove_excluded_files_from(files)
-        files.reject! {|path| @options[:excludes].detect {|pattern| path =~ pattern } }
-      end
-
-      def require_dirs
-        if @options[:require].empty?
-          default_features_paths + Dir['vendor/{gems,plugins}/*/cucumber']
-        else
-          @options[:require]
-        end
       end
     end
   end
