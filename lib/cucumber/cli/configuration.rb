@@ -71,14 +71,6 @@ module Cucumber
         @options[:snippet_type] || :regexp
       end
 
-      def formatter_class(format)
-        if(builtin = Options::BUILTIN_FORMATS[format])
-          constantize(builtin[0])
-        else
-          constantize(format)
-        end
-      end
-
       def log
         logger = Logger.new(@out_stream)
         logger.formatter = LogFormatter.new

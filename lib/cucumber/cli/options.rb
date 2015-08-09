@@ -167,9 +167,6 @@ module Cucumber
             "This can be practical if you are practicing Kanban or CONWIP.") do |v|
             @options[:tag_expressions] << v
           end
-          opts.on("--fail-fast", "Cause Cucumber to exit after first failing scenario") do |v|
-            @options[:fail_fast] = true
-          end
           opts.on("-n NAME", "--name NAME",
             "Only execute the feature elements which match part of the given name.",
             "If this option is given more than once, it will match against all the",
