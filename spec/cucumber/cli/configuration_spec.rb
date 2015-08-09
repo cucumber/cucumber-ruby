@@ -37,65 +37,6 @@ module Cli
 
     attr_reader :out, :error
 
-    it "requires env.rb files first" do
-      given_the_following_files("/features/support/a_file.rb","/features/support/env.rb")
-
-      config.parse!(%w{--require /features})
-
-      expect(config.support_to_load).to eq [
-        "/features/support/env.rb",
-        "/features/support/a_file.rb"
-      ]
-    end
-
-    it "does not require env.rb files when --dry-run" do
-      given_the_following_files("/features/support/a_file.rb","/features/support/env.rb")
-
-      config.parse!(%w{--require /features --dry-run})
-
-      expect(config.support_to_load).to eq [
-        "/features/support/a_file.rb"
-      ]
-    end
-
-    it "requires files in vendor/{plugins,gems}/*/cucumber/*.rb" do
-      given_the_following_files("/vendor/gems/gem_a/cucumber/bar.rb",
-                                "/vendor/plugins/plugin_a/cucumber/foo.rb")
-
-      config.parse!(%w{--require /features})
-
-      expect(config.step_defs_to_load).to eq [
-        "/vendor/gems/gem_a/cucumber/bar.rb",
-        "/vendor/plugins/plugin_a/cucumber/foo.rb"
-      ]
-    end
-
-    describe "--exclude" do
-
-      it "excludes a ruby file from requiring when the name matches exactly" do
-        given_the_following_files("/features/support/a_file.rb","/features/support/env.rb")
-
-        config.parse!(%w{--require /features --exclude a_file.rb})
-
-        expect(config.all_files_to_load).to eq [
-          "/features/support/env.rb"
-        ]
-      end
-
-      it "excludes all ruby files that match the provided patterns from requiring" do
-        given_the_following_files("/features/support/foof.rb","/features/support/bar.rb",
-                                  "/features/support/food.rb","/features/blah.rb",
-                                  "/features/support/fooz.rb")
-
-        config.parse!(%w{--require /features --exclude foo[df] --exclude blah})
-
-        expect(config.all_files_to_load).to eq [
-          "/features/support/bar.rb",
-          "/features/support/fooz.rb"
-        ]
-      end
-    end
-
     it "uses the default profile when no profile is defined" do
       given_cucumber_yml_defined_as({'default' => '--require some_file'})
 
@@ -397,50 +338,11 @@ END_OF_MESSAGE
       expect(config.options[:name_regexps]).to include(/User signs up/)
     end
 
-    it "preserves the order of the feature files" do
-      config.parse!(%w{b.feature c.feature a.feature})
-
-      expect(config.feature_files).to eq ["b.feature", "c.feature", "a.feature"]
-    end
-
-    it "searchs for all features in the specified directory" do
-      allow(File).to receive(:directory?) { true }
-      allow(Dir).to receive(:[]).with("feature_directory/**/*.feature") { ["cucumber.feature"] }
-
-      config.parse!(%w{feature_directory/})
-
-      expect(config.feature_files).to eq ["cucumber.feature"]
-    end
-
-    it "defaults to the features directory when no feature file are provided" do
-      allow(File).to receive(:directory?) { true }
-      allow(Dir).to receive(:[]).with("features/**/*.feature") { ["cucumber.feature"] }
-
-      config.parse!(%w{})
-
-      expect(config.feature_files).to eq ["cucumber.feature"]
-    end
-
-    it "gets the feature files from the rerun file" do
-      allow(File).to receive(:directory?).and_return(false)
-      allow(File).to receive(:file?).and_return(true)
-      allow(IO).to receive(:read).and_return(
-        "cucumber.feature:1:3 cucumber space.feature:134 domain folder/cuke.feature:1 domain folder/different cuke:4:5" )
-
-      config.parse!(%w{@rerun.txt})
-
-      expect(config.feature_files).to eq [
-        "cucumber.feature:1:3",
-        "cucumber space.feature:134",
-        "domain folder/cuke.feature:1",
-        "domain folder/different cuke:4:5"]
-    end
-
     it "should allow specifying environment variables on the command line" do
       config.parse!(["foo=bar"])
 
       expect(ENV["foo"]).to eq "bar"
-      expect(config.feature_files).not_to include('foo=bar')
+      expect(config.paths).not_to include('foo=bar')
     end
 
     it "allows specifying environment variables in profiles" do
@@ -448,7 +350,7 @@ END_OF_MESSAGE
       config.parse!(["--profile", "selenium"])
 
       expect(ENV["RAILS_ENV"]).to eq "selenium"
-      expect(config.feature_files).not_to include('RAILS_ENV=selenium')
+      expect(config.paths).not_to include('RAILS_ENV=selenium')
     end
 
     describe "#tag_expression" do

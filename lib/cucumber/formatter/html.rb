@@ -20,7 +20,7 @@ module Cucumber
       include Io
 
       def initialize(runtime, path_or_io, options)
-        @io = ensure_io(path_or_io, "html")
+        @io = ensure_io(path_or_io)
         @runtime = runtime
         @options = options
         @buffer = {}

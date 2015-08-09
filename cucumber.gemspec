@@ -5,7 +5,7 @@ require "cucumber/platform"
 Gem::Specification.new do |s|
   s.name        = 'cucumber'
   s.version     = Cucumber::VERSION
-  s.authors     = ["Aslak Hellesøy"]
+  s.authors     = ["Aslak Hellesøy", "Matt Wynne", "Steve Tooke"]
   s.description = 'Behaviour Driven Development with elegance and joy'
   s.summary     = "cucumber-#{s.version}"
   s.email       = 'cukes@googlegroups.com'
@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.required_ruby_version = ">= 1.9.3"
 
-  s.add_dependency 'cucumber-core', '~> 1.1.3'
+  s.add_dependency 'cucumber-core', '~> 1.2.0'
   s.add_dependency 'builder', '>= 2.1.2'
   s.add_dependency 'diff-lcs', '>= 1.1.3'
   s.add_dependency 'gherkin', '~> 2.12'

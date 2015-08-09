@@ -1,6 +1,7 @@
 require 'multi_json'
 require 'base64'
 require 'cucumber/formatter/io'
+require 'cucumber/formatter/hook_query_visitor'
 
 module Cucumber
   module Formatter
@@ -10,7 +11,7 @@ module Cucumber
 
       def initialize(runtime, io, _options)
         @runtime = runtime
-        @io = ensure_io(io, 'json')
+        @io = ensure_io(io)
         @feature_hashes = []
       end
 
@@ -32,9 +33,10 @@ module Cucumber
 
       def before_test_step(test_step)
         return if internal_hook?(test_step)
-        if hook?(test_step)
+        hook_query = HookQueryVisitor.new(test_step)
+        if hook_query.hook?
           @step_or_hook_hash = {}
-          hooks_of_type(test_step) << @step_or_hook_hash
+          hooks_of_type(hook_query) << @step_or_hook_hash
           return
         end
         if first_step_after_background?(test_step)
@@ -88,10 +90,6 @@ module Cucumber
         test_step.source.last.location.file.include?('lib/cucumber/')
       end
 
-      def hook?(test_step)
-        ['Before hook', 'After hook', 'AfterStep hook'].include? test_step.source.last.name
-      end
-
       def current_feature
         @feature_hash ||= {}
       end
@@ -104,16 +102,16 @@ module Cucumber
         @element_hash[:steps] ||= []
       end
 
-      def hooks_of_type(test_step)
-        name = test_step.source.last.name
-        if name == 'Before hook'
+      def hooks_of_type(hook_query)
+        case hook_query.type
+        when :before
           return before_hooks
-        elsif name == 'After hook'
+        when :after
           return after_hooks
-        elsif name == 'AfterStep hook'
+        when :after_step
           return after_step_hooks
         else
-          fail 'Unkown hook type ' + name
+          fail 'Unkown hook type ' + hook_query.type.to_s
         end
       end
 

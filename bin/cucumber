@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 $:.unshift(File.dirname(__FILE__) + '/../lib') unless $:.include?(File.dirname(__FILE__) + '/../lib')
 
-load File.expand_path(File.dirname(__FILE__) + '/../spec/simplecov_setup.rb')
-
+require 'simplecov_setup'
 require 'cucumber/rspec/disable_option_parser'
 require 'cucumber/cli/main'
 # The dup is to keep ARGV intact, so that tools like ruby-debug can respawn.

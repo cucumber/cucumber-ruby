@@ -46,14 +46,14 @@ module Cucumber
     include Runtime::UserInterface
 
     def initialize(configuration = Configuration.default)
-      @configuration = Configuration.parse(configuration)
+      @configuration = Configuration.new(configuration)
       @support_code = SupportCode.new(self, @configuration)
       @results = Formatter::LegacyApi::Results.new
     end
 
     # Allows you to take an existing runtime and change its configuration
     def configure(new_configuration)
-      @configuration = Configuration.parse(new_configuration)
+      @configuration = Configuration.new(new_configuration)
       @support_code.configure(@configuration)
     end
 

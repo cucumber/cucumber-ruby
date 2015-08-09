@@ -1,6 +1,5 @@
 require 'cucumber/step_match'
 require 'cucumber/core_ext/string'
-require 'cucumber/core_ext/proc'
 require 'cucumber/rb_support/regexp_argument_matcher'
 
 module Cucumber
@@ -51,11 +50,8 @@ module Cucumber
         end
 
         def patch_location_onto(block)
-          file, line = caller[5].split(':')[0..1]
-          location = Core::Ast::Location.new(
-            Pathname.new(file).relative_path_from(Pathname.new(Dir.pwd)),
-            line)
-          block.define_singleton_method(:file_colon_line) { location.to_s }
+          location = Core::Ast::Location.of_caller(5)
+          block.define_singleton_method(:source_location) { [location.file, location.line] }
           block
         end
 
@@ -75,7 +71,7 @@ module Cucumber
 
       def initialize(rb_language, regexp, proc)
         @rb_language, @regexp, @proc = rb_language, regexp, proc
-        @rb_language.available_step_definition(regexp_source, file_colon_line)
+        @rb_language.available_step_definition(regexp_source, location)
       end
 
       def regexp_source
@@ -96,7 +92,7 @@ module Cucumber
 
       def arguments_from(step_name)
         args = RegexpArgumentMatcher.arguments_from(@regexp, step_name)
-        @rb_language.invoked_step_definition(regexp_source, file_colon_line) if args
+        @rb_language.invoked_step_definition(regexp_source, location) if args
         args
       end
 
@@ -111,20 +107,24 @@ module Cucumber
       end
 
       def backtrace_line
-        @proc.backtrace_line(regexp_source)
+        "#{location.to_s}:in `#{regexp_source}'"
       end
 
       def file_colon_line
         case @proc
         when Proc
-          @proc.file_colon_line
+          location.to_s
         when Symbol
           ":#{@proc}"
         end
       end
 
+      def location
+        @location ||= Cucumber::Core::Ast::Location.from_source_location(*@proc.source_location)
+      end
+
       def file
-        @file ||= file_colon_line.split(':')[0]
+        @file ||= location.file
       end
     end
   end

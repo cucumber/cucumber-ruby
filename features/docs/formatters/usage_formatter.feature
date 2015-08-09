@@ -30,12 +30,11 @@ Feature: Usage formatter
       Given(/D/) { }
       """
 
-  @wip-new-core
   Scenario: Run with --format usage
     When I run `cucumber -f usage --dry-run`
     Then it should pass with exactly:
       """
-      --------
+      -----------
       
       /A/       # features/step_definitions/steps.rb:1
         Given A # features/f.feature:3
@@ -53,7 +52,6 @@ Feature: Usage formatter
       
       4 scenarios (4 skipped)
       11 steps (11 skipped)
-      0m0.012s
 
       """
 

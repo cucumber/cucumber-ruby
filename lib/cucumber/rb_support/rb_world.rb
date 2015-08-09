@@ -48,7 +48,8 @@ module Cucumber
       #   }
       # @param [String] steps_text The Gherkin snippet to run
       def steps(steps_text)
-        @__cucumber_runtime.invoke_dynamic_steps(steps_text, @__natural_language, caller[0])
+        location = Core::Ast::Location.of_caller
+        @__cucumber_runtime.invoke_dynamic_steps(steps_text, @__natural_language, location)
       end
 
       # Parse Gherkin into a {Cucumber::Ast::Table} object.
@@ -74,6 +75,7 @@ module Cucumber
       #     puts "this is ruby code"
       #   %}, 'ruby')
       def doc_string(string_without_triple_quotes, content_type='', line_offset=0)
+        STDERR.puts AnsiEscapes.failed + "WARNING: #doc_string is deprecated. Just pass a regular String instead:" + caller[0] + AnsiEscapes.reset
         # TODO: rename this method to multiline_string
         @__cucumber_runtime.doc_string(string_without_triple_quotes, content_type, line_offset)
       end
@@ -89,7 +91,7 @@ module Cucumber
       # @note Cucumber might surprise you with the behaviour of this method. Instead
       #   of sending the output directly to STDOUT, Cucumber will intercept and cache
       #   the message until the current step has finished, and then display it.
-      #   
+      #
       #   If you'd prefer to see the message immediately, call {Kernel.puts} instead.
       def puts(*messages)
         @__cucumber_runtime.puts(*messages)

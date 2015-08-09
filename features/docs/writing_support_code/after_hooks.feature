@@ -11,7 +11,7 @@ Feature: After Hooks
   Background:
     Given the standard step definitions
 
-  Scenario Outline: Retreive the status of a scenario as a symbol
+  Scenario Outline: Retrieve the status of a scenario as a symbol
     Given a file named "features/support/debug_hook.rb" with:
       """
       After do |scenario|

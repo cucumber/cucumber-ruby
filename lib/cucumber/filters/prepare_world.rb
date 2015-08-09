@@ -1,6 +1,6 @@
 require 'cucumber/core/filter'
+require 'cucumber/core/ast/location'
 require 'cucumber/running_test_case'
-require 'cucumber/hooks'
 
 module Cucumber
   module Filters
@@ -25,7 +25,8 @@ module Cucumber
           around_hooks = [init_scenario] + @original_test_case.around_hooks
 
           empty_hook = proc {} #no op - legacy format adapter expects a before hooks
-          default_hook = Cucumber::Hooks.before_hook(@original_test_case.source, Cucumber::Hooks.location(empty_hook), &empty_hook)
+          empty_hook_location = Cucumber::Core::Ast::Location.from_source_location(*empty_hook.source_location)
+          default_hook = Cucumber::Hooks.before_hook(@original_test_case.source, empty_hook_location, &empty_hook)
           steps = [default_hook] + @original_test_case.test_steps
 
           @original_test_case.with_around_hooks(around_hooks).with_steps(steps)

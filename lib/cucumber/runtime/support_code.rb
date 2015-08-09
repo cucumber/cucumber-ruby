@@ -41,7 +41,7 @@ module Cucumber
       include Constantize
 
       def initialize(user_interface, configuration={})
-        @configuration = Configuration.parse(configuration)
+        @configuration = Configuration.new(configuration)
         @runtime_facade = Runtime::ForProgrammingLanguages.new(self, user_interface)
         @unsupported_programming_languages = []
         @programming_languages = []
@@ -49,7 +49,7 @@ module Cucumber
       end
 
       def configure(new_configuration)
-        @configuration = Configuration.parse(new_configuration)
+        @configuration = Configuration.new(new_configuration)
       end
 
       # Invokes a series of steps +steps_text+. Example:
@@ -58,10 +58,9 @@ module Cucumber
       #     Given I have 8 cukes in my belly
       #     Then I should not be thirsty
       #   })
-      def invoke_dynamic_steps(steps_text, i18n, file_colon_line)
-        file, line = file_colon_line.split(':')
+      def invoke_dynamic_steps(steps_text, i18n, location)
         parser = Gherkin::Parser::Parser.new(StepInvoker.new(self), true, 'steps', false, i18n.iso_code)
-        parser.parse(steps_text, file, line.to_i)
+        parser.parse(steps_text, location.file, location.line)
       end
 
       # @api private

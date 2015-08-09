@@ -32,7 +32,7 @@ module Cucumber
 
       def format_step(keyword, step_match, status, source_indent)
         comment = if source_indent
-          c = ('# ' + step_match.file_colon_line).indent(source_indent)
+          c = ('# ' + step_match.location.to_s).indent(source_indent)
           format_string(c, :comment)
         else
           ''
@@ -76,7 +76,12 @@ module Cucumber
         end
       end
 
-      def print_stats(duration, options)
+      def print_stats(features, options)
+        duration = features ? features.duration : nil
+        print_statistics(duration, options)
+      end
+
+      def print_statistics(duration, options)
         failures = collect_failing_scenarios(runtime)
         if !failures.empty?
           print_failing_scenarios(failures, options.custom_profiles, options[:source])

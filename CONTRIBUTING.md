@@ -56,11 +56,13 @@ Now release it
 To become a release manager, create a pull request adding your name to the list below, and include your Rubygems email address in the ticket. One of the existing Release managers will then add you.
 
 Current release managers:
-  * Matt Wynne
-  * Aslak Hellesøy
-  * Oleg Sukhodolsky
-  * Steve Tooke
+  * [Matt Wynne](https://rubygems.org/profiles/mattwynne)
+  * [Aslak Hellesøy](https://rubygems.org/profiles/aslakhellesoy)
+  * [Oleg Sukhodolsky](https://rubygems.org/profiles/os97673)
+  * [Steve Tooke](https://rubygems.org/profiles/tooky)
+  * [Björn Rasmusson](https://rubygems.org/profiles/brasmusson)
 
-To grant release karma, issue the following command:
+To grant release karma, issue the following commands:
 
     gem owner cucumber --add <NEW OWNER RUBYGEMS EMAIL>
+    gem owner cucumber-core --add <NEW OWNER RUBYGEMS EMAIL>

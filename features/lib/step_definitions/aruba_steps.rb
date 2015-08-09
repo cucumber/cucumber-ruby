@@ -20,3 +20,7 @@ Then /^it fails before running features with:$/ do |expected|
   assert_matching_output("\\A#{expected}", all_output)
   assert_success(false)
 end
+
+Then(/^the output includes the message "(.*)"$/) do |message|
+  expect(all_output).to include(message)
+end

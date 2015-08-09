@@ -1,6 +1,7 @@
 require 'cucumber/formatter/console'
 require 'cucumber/formatter/io'
 require 'cucumber/formatter/duration_extractor'
+require 'cucumber/formatter/hook_query_visitor'
 
 module Cucumber
   module Formatter
@@ -11,7 +12,7 @@ module Cucumber
       attr_reader :runtime
 
       def initialize(runtime, path_or_io, options)
-        @runtime, @io, @options = runtime, ensure_io(path_or_io, "progress"), options
+        @runtime, @io, @options = runtime, ensure_io(path_or_io), options
         @previous_step_keyword = nil
         @snippets_input = []
         @total_duration = 0
@@ -26,8 +27,8 @@ module Cucumber
       end
 
       def after_test_step(test_step, result)
-        progress(result.to_sym) if !hook?(test_step.source.last) || result.failed?
-        collect_snippet_data(test_step, result) unless hook?(test_step.source.last) 
+        progress(result.to_sym) if !HookQueryVisitor.new(test_step).hook? || result.failed?
+        collect_snippet_data(test_step, result) unless HookQueryVisitor.new(test_step).hook?
       end
 
       def after_test_case(_test_case, result)
@@ -42,14 +43,10 @@ module Cucumber
 
       private
 
-      def hook?(step)
-        ['Before hook', 'After hook', 'AfterStep hook'].include? step.name
-      end
-
       def print_summary
         print_steps(:pending)
         print_steps(:failed)
-        print_stats(@total_duration, @options)
+        print_statistics(@total_duration, @options)
         print_snippets(@options)
         print_passing_wip(@options)
       end

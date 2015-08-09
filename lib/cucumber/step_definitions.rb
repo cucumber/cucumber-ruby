@@ -1,8 +1,8 @@
 module Cucumber
   class StepDefinitions
     def initialize(configuration = Configuration.default)
-      configuration = Configuration.parse(configuration)
-      @support_code = Runtime::SupportCode.new(nil, false)
+      configuration = Configuration.new(configuration)
+      @support_code = Runtime::SupportCode.new(nil, configuration)
       @support_code.load_files_from_paths(configuration.autoload_code_paths)
     end
 

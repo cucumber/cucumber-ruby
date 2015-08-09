@@ -21,7 +21,7 @@ module Cucumber
       attr_reader :runtime
 
       def initialize(runtime, path_or_io, options)
-        @runtime, @io, @options = runtime, ensure_io(path_or_io, "pretty"), options
+        @runtime, @io, @options = runtime, ensure_io(path_or_io), options
         @exceptions = []
         @indent = 0
         @prefixes = options[:prefixes] || {}
@@ -240,8 +240,7 @@ module Cucumber
       end
 
       def print_summary(features)
-        duration = features ? features.duration : nil
-        print_stats(duration, @options)
+        print_stats(features, @options)
         print_snippets(@options)
         print_passing_wip(@options)
       end

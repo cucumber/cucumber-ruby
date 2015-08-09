@@ -1,4 +1,23 @@
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0...master)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...master)
+
+### Bugfixes
+
+### Refactoring
+
+* Coveralls badge switch to SVG ([897](https://github.com/cucumber/cucumber-ruby/pull/897) @nickmerwin)
+* Moved simplecov_setup into lib folder ([896](https://github.com/cucumber/cucumber-ruby/pull/896) @tboerger)
+* Pass DocString as String ([891](https://github.com/cucumber/cucumber-ruby/pull/891) @aslakhellesoy)
+* Remove core_ext/proc.rb and use Proc#source_location instead ([888](https://github.com/cucumber/cucumber-ruby/pull/888) @brasmusson)
+* Move behaviour from `Cucumber::Cli::Configuration` to `Cucumber::Configuration` (@tooky, @mattwynne)
+
+## [v2.0.2](https://github.com/cucumber/cucumber-ruby/compare/v2.0.1...v2.0.2)
+
+### Bugfixes
+
+* Revert interface change in Cucumber::Formatter::Console (which can break custom formatters in v2.0.1) ([893](https://github.com/cucumber/cucumber-ruby/issues/893) @brasmusson).
+* Calculate the locations of hooks properly (so it also work between drives on Windows) ([885](https://github.com/cucumber/cucumber-ruby/issues/885) @brasmusson).
+
+## [v2.0.1](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0...v2.0.1)
 
 ### New Features
 
@@ -18,6 +37,7 @@
 * Fix the check for multiple formatters using stdout ([826](https://github.com/cucumber/cucumber-ruby/pull/826) @brasmusson)
 * Make background.feature available to formatters (backward compatibility with v1.3.x) (@brasmusson)
 * Cucumber::Ast::Table.diff! is broken when using no headers ([832](https://github.com/cucumber/cucumber-ruby/pull/832) @roschaefer)
+* `cucumber --i18n <invalid_language>` breaks ([#869](https://github.com/cucumber/cucumber-ruby/issues/869) (@danascheider)
 
 ### Refactoring
 
