@@ -43,6 +43,7 @@ module Cucumber
       NO_PROFILE_SHORT_FLAG = '-P'
       PROFILE_LONG_FLAG = '--profile'
       NO_PROFILE_LONG_FLAG = '--no-profile'
+      FAIL_FAST_FLAG = '--fail-fast'
       OPTIONS_WITH_ARGS = ['-r', '--require', '--i18n', '-f', '--format', '-o', '--out',
                                   '-t', '--tags', '-n', '--name', '-e', '--exclude',
                                   PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG,
@@ -59,9 +60,9 @@ module Cucumber
         @error_stream = error_stream
 
         @default_profile = options[:default_profile]
-        @profiles = options[:profiles] || []
+        @profiles = []
         @overridden_paths = []
-        @options = default_options.merge(options)
+        @options = default_options
         @profile_loader = options[:profile_loader]
         @options[:skip_profile_information] = options[:skip_profile_information]
 
@@ -125,6 +126,9 @@ module Cucumber
             else
               list_keywords_and_exit(lang)
             end
+          end
+          opts.on(FAIL_FAST_FLAG, "Exit immediately following the first failing scenario") do |v|
+            options[:fail_fast] = true
           end
           opts.on("-f FORMAT", "--format FORMAT",
             "How to format features (Default: pretty). Available formats:",
@@ -287,10 +291,6 @@ TEXT
         if streams != streams.uniq
           raise "All but one formatter must use --out, only one can print to each stream (or STDOUT)"
         end
-      end
-
-      def to_hash
-        Hash.try_convert(@options)
       end
 
     protected

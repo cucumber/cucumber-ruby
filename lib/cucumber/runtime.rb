@@ -46,14 +46,14 @@ module Cucumber
     include Runtime::UserInterface
 
     def initialize(configuration = Configuration.default)
-      @configuration = Configuration.new(configuration)
+      @configuration = Configuration.parse(configuration)
       @support_code = SupportCode.new(self, @configuration)
       @results = Formatter::LegacyApi::Results.new
     end
 
     # Allows you to take an existing runtime and change its configuration
     def configure(new_configuration)
-      @configuration = Configuration.new(new_configuration)
+      @configuration = Configuration.parse(new_configuration)
       @support_code.configure(@configuration)
     end
 
@@ -180,9 +180,12 @@ module Cucumber
     require 'cucumber/formatter/legacy_api/runtime_facade'
     require 'cucumber/formatter/legacy_api/results'
     require 'cucumber/formatter/ignore_missing_messages'
+    require 'cucumber/formatter/fail_fast'
     require 'cucumber/core/report/summary'
     def report
-      @report ||= Formatter::Fanout.new([summary_report] + formatters)
+      args = [summary_report] + formatters 
+      args << fail_fast_report if @configuration.fail_fast?
+      @report ||= Formatter::Fanout.new(args)
     end
 
     def summary_report
@@ -198,6 +201,10 @@ module Cucumber
           Formatter::IgnoreMissingMessages.new(formatter),
           results, @support_code, @configuration)
       }
+    end
+
+    def fail_fast_report
+      @fail_fast_report ||= Formatter::FailFast.new configuration
     end
 
     def failure?
