@@ -41,6 +41,10 @@ module Cucumber
       @options[:dry_run]
     end
 
+    def fail_fast?
+      @options[:fail_fast]
+    end
+
     def guess?
       @options[:guess]
     end
@@ -182,6 +186,7 @@ module Cucumber
         :strict              => false,
         :require             => [],
         :dry_run             => false,
+        :fail_fast           => false,
         :formats             => [],
         :excludes            => [],
         :tag_expressions     => [],
