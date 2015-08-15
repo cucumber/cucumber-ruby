@@ -20,6 +20,52 @@ module Cucumber
         end
       end
 
+      describe "#cucumber_opts_with_profile" do
+        before do
+          subject.cucumber_opts = opts
+          subject.profile = profile
+        end
+
+        context "with cucumber_opts" do
+          let(:opts) { [ :foo, :bar ] }
+
+          context "without profile" do
+            let(:profile) { nil }
+
+            it "should return just cucumber_opts" do
+              expect(subject.cucumber_opts_with_profile).to be opts
+            end
+          end
+
+          context "with profile" do
+            let(:profile) { "fancy" }
+
+            it "should combine opts and profile into an array, prepending --profile option" do
+              expect(subject.cucumber_opts_with_profile).to eq [ [:foo, :bar], "--profile", "fancy" ]
+            end
+          end
+        end
+
+        context "without cucumber_opts" do
+          let(:opts) { nil }
+
+          context "without profile" do
+            let(:profile) { nil }
+
+            it "should return just cucumber_opts" do
+              expect(subject.cucumber_opts_with_profile).to be opts
+            end
+          end
+
+          context "with profile" do
+            let(:profile) { "fancy" }
+
+            it "should combine opts and profile into an array, prepending --profile option" do
+              expect(subject.cucumber_opts_with_profile).to eq [ nil, "--profile", "fancy" ]
+            end
+          end
+        end
+      end
     end
   end
 end
