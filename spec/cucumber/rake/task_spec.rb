@@ -10,13 +10,13 @@ module Cucumber
         before { subject.cucumber_opts = opts }
 
         context "when set via array" do
-          let(:opts) { [ :foo, :bar ] }
+          let(:opts) { %w[ foo bar ] }
           it { expect(subject.cucumber_opts).to be opts }
         end
 
         context "when set via space-delimited string" do
           let(:opts) { "foo bar" }
-          it { expect(subject.cucumber_opts).to eq [ "foo", "bar" ] }
+          it { expect(subject.cucumber_opts).to eq %w[ foo bar ] }
         end
       end
 
@@ -27,7 +27,7 @@ module Cucumber
         end
 
         context "with cucumber_opts" do
-          let(:opts) { [ :foo, :bar ] }
+          let(:opts) { %w[ foo bar ] }
 
           context "without profile" do
             let(:profile) { nil }
@@ -41,7 +41,7 @@ module Cucumber
             let(:profile) { "fancy" }
 
             it "should combine opts and profile into an array, prepending --profile option" do
-              expect(subject.cucumber_opts_with_profile).to eq [ [:foo, :bar], "--profile", "fancy" ]
+              expect(subject.cucumber_opts_with_profile).to eq [ %w[ foo bar ], "--profile", "fancy" ]
             end
           end
         end
