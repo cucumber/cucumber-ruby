@@ -44,6 +44,14 @@ module Cucumber
               expect(subject.cucumber_opts_with_profile).to eq [ %w[ foo bar ], "--profile", "fancy" ]
             end
           end
+
+          context "with multiple profiles" do
+            let(:profile) { %w[ fancy pants ] }
+
+            it "should combine opts and profile into an array, prepending --profile option" do
+              expect(subject.cucumber_opts_with_profile).to eq [ %w[ foo bar ], "--profile", "fancy", "--profile", "pants" ]
+            end
+          end
         end
 
         context "without cucumber_opts" do
@@ -62,6 +70,14 @@ module Cucumber
 
             it "should combine opts and profile into an array, prepending --profile option" do
               expect(subject.cucumber_opts_with_profile).to eq [ nil, "--profile", "fancy" ]
+            end
+          end
+
+          context "with multiple profiles" do
+            let(:profile) { %w[ fancy pants ] }
+
+            it "should combine opts and profile into an array, prepending --profile option" do
+              expect(subject.cucumber_opts_with_profile).to eq [ nil, "--profile", "fancy", "--profile", "pants" ]
             end
           end
         end
