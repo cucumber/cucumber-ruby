@@ -153,7 +153,7 @@ module Cucumber
       end
 
       def cucumber_opts_with_profile #:nodoc:
-        @profile ? [cucumber_opts, Array(@profile).flat_map {|p| ["--profile", p] }] : cucumber_opts
+        Array(cucumber_opts).concat Array(@profile).flat_map {|p| ["--profile", p] }
       end
 
       def feature_files #:nodoc:
