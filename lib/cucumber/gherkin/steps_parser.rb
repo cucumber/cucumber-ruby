@@ -12,14 +12,15 @@ module Cucumber
       end
       def parse(text)
         ast_builder = ::Gherkin3::AstBuilder.new
+        token_matcher = ::Gherkin3::TokenMatcher.new
+        token_matcher.send(:change_dialect, @language, nil) unless @language == 'en'
         context = ::Gherkin3::ParserContext.new(
           ::Gherkin3::TokenScanner.new(text),
-          ast_builder,
-          ::Gherkin3::TokenMatcher.new(@language),
+          token_matcher,
           [],
           []
           )
-        parser = ::Gherkin3::Parser.new
+        parser = ::Gherkin3::Parser.new(ast_builder)
 
         parser.start_rule(context, :ScenarioDefinition)
         parser.start_rule(context, :Scenario)
