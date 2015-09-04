@@ -60,10 +60,6 @@ module Cucumber
       location.to_s
     end
 
-    def location
-      Core::Ast::Location.new(file_colon_line)
-    end
-
     def backtrace_line
       "#{file_colon_line}:in `#{@step_definition.regexp_source}'"
     end
