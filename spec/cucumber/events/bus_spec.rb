@@ -2,13 +2,13 @@ require "cucumber/events/bus"
 
 module Cucumber
   module Events
+    class TestEvent
+    end
+
+    class AnotherTestEvent
+    end
+
     describe Bus do
-      class TestEvent
-      end
-
-      class AnotherTestEvent
-      end
-
       let(:bus) { Bus.new(Cucumber::Events) }
       let(:test_event) { TestEvent.new }
       let(:another_test_event) { AnotherTestEvent.new }
