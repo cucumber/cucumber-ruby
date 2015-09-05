@@ -14,7 +14,18 @@ module Cucumber
       new
     end
 
-    delegate [:on_event, :notify] => :event_bus
+    # Subscribe to an event.
+    #
+    # See {Cucumber::Events} for the list of possible events.
+    #
+    # @param event_id [Symbol, Class, String] Identifier for the type of event to subscribe to
+    # @param handler_object [Object optional] an object to be called when the event occurs
+    # @yield [Object] Block to be called when th event occurs
+    # @method on_event
+    def_instance_delegator :event_bus, :register, :on_event
+
+    # @private
+    def_instance_delegator :event_bus, :notify
 
     def initialize(user_options = {})
       @options = default_options.merge(Hash.try_convert(user_options))
@@ -196,7 +207,7 @@ module Cucumber
         :snippets            => true,
         :source              => true,
         :duration            => true,
-        :event_bus           => Events::Bus.new
+        :event_bus           => Events::Bus.new(Cucumber::Events)
       }
     end
 

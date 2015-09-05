@@ -9,13 +9,13 @@ module Cucumber
       class AnotherTestEvent
       end
 
-      let(:bus) { Bus.new }
+      let(:bus) { Bus.new(Cucumber::Events) }
       let(:test_event) { TestEvent.new }
       let(:another_test_event) { AnotherTestEvent.new }
 
       it "calls subscriber with event payload" do
         received_payload = nil
-        bus.on_event(TestEvent) do |event|
+        bus.register(TestEvent) do |event|
           received_payload = event
         end
 
@@ -26,7 +26,7 @@ module Cucumber
 
       it "does not call subscribers for other events" do
         handler_called = false
-        bus.on_event(TestEvent) do |event|
+        bus.register(TestEvent) do |event|
           handler_called = true
         end
 
@@ -37,10 +37,10 @@ module Cucumber
 
       it "broadcasts to multiple subscribers" do
         received_events = []
-        bus.on_event(TestEvent) do |event|
+        bus.register(TestEvent) do |event|
           received_events << event
         end
-        bus.on_event(TestEvent) do |event|
+        bus.register(TestEvent) do |event|
           received_events << event
         end
 
@@ -52,7 +52,7 @@ module Cucumber
 
       it "allows subscription by string" do
         received_payload = nil
-        bus.on_event('Cucumber::Events::TestEvent') do |event|
+        bus.register('Cucumber::Events::TestEvent') do |event|
           received_payload = event
         end
 
@@ -63,7 +63,7 @@ module Cucumber
 
       it "allows subscription by symbol (for events in the Cucumber::Events namespace)" do
         received_payload = nil
-        bus.on_event(:test_event) do |event|
+        bus.register(:test_event) do |event|
           received_payload = event
         end
 
@@ -82,7 +82,7 @@ module Cucumber
         end
 
         handler = MyHandler.new
-        bus.on_event(TestEvent, handler)
+        bus.register(TestEvent, handler)
 
         bus.notify test_event
 
