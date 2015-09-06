@@ -29,6 +29,7 @@ module Cucumber
           feature_elements << @test_case_hash
           @element_hash = @test_case_hash
         end
+        @any_step_failed = false
       end
 
       def before_test_step(test_step)
@@ -51,6 +52,11 @@ module Cucumber
       def after_test_step(test_step, result)
         return if internal_hook?(test_step)
         add_match_and_result(test_step, result)
+        @any_step_failed = true if result.failed?
+      end
+
+      def after_test_case(test_case, result)
+        add_failed_around_hook(result) if result.failed? && !@any_step_failed
       end
 
       def done
@@ -123,6 +129,10 @@ module Cucumber
         @element_hash[:after] ||= []
       end
 
+      def around_hooks
+        @element_hash[:around] ||= []
+      end
+
       def after_step_hooks
         @step_hash[:after] ||= []
       end
@@ -156,6 +166,14 @@ module Cucumber
 
       def add_match_and_result(test_step, result)
         @step_or_hook_hash[:match] = create_match_hash(test_step, result)
+        @step_or_hook_hash[:result] = create_result_hash(result)
+      end
+
+      def add_failed_around_hook(result)
+        @step_or_hook_hash = {}
+        around_hooks << @step_or_hook_hash
+        @step_or_hook_hash[:match] = { location: "unknown_hook_location:1" }
+
         @step_or_hook_hash[:result] = create_result_hash(result)
       end
 

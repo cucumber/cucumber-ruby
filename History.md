@@ -1,6 +1,8 @@
 ## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...master)
 
-### Bugfixes
+### Bugfixes
+
+* When only an around hook is failing, let the Json Formatter include the around hook result ([909](https://github.com/cucumber/cucumber-ruby/issues/909) @brasmusson).
 
 ### Refactoring
 
