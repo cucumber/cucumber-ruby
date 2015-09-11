@@ -6,6 +6,8 @@
 
 ### Bugfixes
 
+* When only an around hook is failing, let the Json Formatter include the around hook result ([909](https://github.com/cucumber/cucumber-ruby/issues/909) @brasmusson).
+
 ### Refactoring
 
 * Coveralls badge switch to SVG ([897](https://github.com/cucumber/cucumber-ruby/pull/897) @nickmerwin)
