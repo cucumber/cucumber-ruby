@@ -5,28 +5,12 @@ require 'cucumber/core/test/result'
 require 'cucumber/core/filter'
 require 'cucumber/core/ast'
 require 'cucumber'
+require 'support/standard_step_actions'
 
 module Cucumber::Formatter
   describe FailFast do 
     include Cucumber::Core
     include Cucumber::Core::Gherkin::Writer
-
-    class WithStepsFake < Cucumber::Core::Filter.new
-      def test_case(test_case)
-        test_steps = test_case.test_steps.map do |step|
-          case step.name
-          when /fail/
-            step.with_action { raise Failure }
-          when /pass/
-            step.with_action {}
-          else
-            step
-          end
-        end
-
-        test_case.with_steps(test_steps).describe_to(receiver)
-      end
-    end
 
     let(:configuration) { Cucumber::Configuration.new }
     before { FailFast.new(configuration) }
@@ -52,7 +36,7 @@ module Cucumber::Formatter
       end
 
       it 'sets Cucumber.wants_to_quit' do 
-        execute([@gherkin], report, [WithStepsFake.new])
+        execute([@gherkin], report, [StandardStepActions.new])
         expect(Cucumber.wants_to_quit).to be true
       end
     end
@@ -69,7 +53,7 @@ module Cucumber::Formatter
       end
 
       it 'doesn\'t set Cucumber.wants_to_quit' do 
-        execute([@gherkin], report, [WithStepsFake.new])
+        execute([@gherkin], report, [StandardStepActions.new])
         expect(Cucumber.wants_to_quit).to be_falsey
       end
     end

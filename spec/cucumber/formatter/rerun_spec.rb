@@ -2,6 +2,7 @@ require 'cucumber/formatter/rerun'
 require 'cucumber/core'
 require 'cucumber/core/gherkin/writer'
 require 'cucumber/core/filter'
+require 'support/standard_step_actions'
 
 module Cucumber::Formatter
   describe Rerun do
@@ -10,23 +11,6 @@ module Cucumber::Formatter
 
     # after_test_case
     context 'when 2 scenarios fail in the same file' do
-      class WithSteps < Cucumber::Core::Filter.new
-        def test_case(test_case)
-          test_steps = test_case.test_steps.map do |step|
-            case step.name
-            when /fail/
-              step.with_action { raise Failure }
-            when /pass/
-              step.with_action {}
-            else
-              step
-            end
-          end
-
-          test_case.with_steps(test_steps).describe_to(receiver)
-        end
-      end
-
       it 'Prints the locations of the failed scenarios' do
         gherkin = gherkin('foo.feature') do
           feature do
@@ -46,7 +30,7 @@ module Cucumber::Formatter
         io = StringIO.new
         report = Rerun.new(double, io, {})
 
-        execute [gherkin], report, [WithSteps.new]
+        execute [gherkin], report, [StandardStepActions.new]
 
         expect( io.string ).to eq 'foo.feature:3:6'
       end
@@ -81,7 +65,7 @@ module Cucumber::Formatter
         io = StringIO.new
         report = Rerun.new(double, io, {})
 
-        execute [foo, bar], report, [WithSteps.new]
+        execute [foo, bar], report, [StandardStepActions.new]
 
         expect(io.string).to eq 'foo.feature:3:6 bar.feature:3'
       end
@@ -100,7 +84,7 @@ module Cucumber::Formatter
         io = StringIO.new
         report = Rerun.new(double, io, {})
 
-        execute [gherkin], report, [WithSteps.new]
+        execute [gherkin], report, [StandardStepActions.new]
       end
     end
   end
