@@ -3,6 +3,7 @@
 ### New Features
 
 * Introduce EventBus ([903](https://github.com/cucumber/cucumber-ruby/pull/903) @mattwynne @tooky)
+* Fail-fast CLI switch ([906](https://github.com/cucumber/cucumber-ruby/pull/906) @danascheider)
 
 ### Bugfixes
 
