@@ -12,7 +12,7 @@ Where to get more info:
 
   * The main website: https://cucumber.io/
   * Documentation: https://github.com/cucumber/cucumber/wiki
-  * Ruby API Documentation: http://www.rubydoc.info/github/cucumber/cucumber/
+  * Ruby API Documentation: http://www.rubydoc.info/github/cucumber/cucumber-ruby/
   * Support forum: https://groups.google.com/group/cukes
   * Developer chat: https://gitter.im/cucumber/cucumber-ruby
   * IRC channel: [irc://irc.freenode.net/cucumber](irc://irc.freenode.net/cucumber)
