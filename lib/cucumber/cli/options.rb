@@ -43,6 +43,7 @@ module Cucumber
       NO_PROFILE_SHORT_FLAG = '-P'
       PROFILE_LONG_FLAG = '--profile'
       NO_PROFILE_LONG_FLAG = '--no-profile'
+      FAIL_FAST_FLAG = '--fail-fast'
       OPTIONS_WITH_ARGS = ['-r', '--require', '--i18n', '-f', '--format', '-o', '--out',
                                   '-t', '--tags', '-n', '--name', '-e', '--exclude',
                                   PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG,
@@ -125,6 +126,9 @@ module Cucumber
             else
               list_keywords_and_exit(lang)
             end
+          end
+          opts.on(FAIL_FAST_FLAG, "Exit immediately following the first failing scenario") do |v|
+            options[:fail_fast] = true
           end
           opts.on("-f FORMAT", "--format FORMAT",
             "How to format features (Default: pretty). Available formats:",

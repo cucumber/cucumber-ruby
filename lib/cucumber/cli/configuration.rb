@@ -63,6 +63,10 @@ module Cucumber
         @options[:expand]
       end
 
+      def fail_fast?
+        !!@options[:fail_fast]
+      end
+
       def snippet_type
         @options[:snippet_type] || :regexp
       end
@@ -133,8 +137,6 @@ module Cucumber
         @options[:formats].uniq!
         @options.check_formatter_stream_conflicts()
       end
-
-
     end
   end
 end

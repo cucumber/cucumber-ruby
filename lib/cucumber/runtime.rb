@@ -177,9 +177,13 @@ module Cucumber
     require 'cucumber/formatter/legacy_api/runtime_facade'
     require 'cucumber/formatter/legacy_api/results'
     require 'cucumber/formatter/ignore_missing_messages'
+    require 'cucumber/formatter/fail_fast'
     require 'cucumber/core/report/summary'
     def report
-      @report ||= Formatter::Fanout.new([summary_report, event_bus_report] + formatters)
+      return @report if @report
+      reports = [summary_report, event_bus_report] + formatters
+      reports << fail_fast_report if @configuration.fail_fast?
+      @report ||= Formatter::Fanout.new(reports)
     end
 
     def summary_report
@@ -187,7 +191,11 @@ module Cucumber
     end
 
     def event_bus_report
-      @event_bus_report ||= Cucumber::Formatter::EventBusReport.new(@configuration)
+      @event_bus_report ||= Formatter::EventBusReport.new(@configuration)
+    end
+
+    def fail_fast_report
+      @fail_fast_report ||= Formatter::FailFast.new(@configuration)
     end
 
     def formatters
