@@ -84,10 +84,10 @@ Feature: Profiles
   Scenario: Overriding the profile's features to run
     Given a file named "features/another.feature" with:
       """
-      Feature: Just this one should be ran
+      Feature: Just this one should be run
       """
     When I run `cucumber -p default features/another.feature`
-    Then exactly these features should be ran: features/another.feature
+    Then exactly these features should be run: features/another.feature
 
   Scenario: Overriding the profile's formatter
     You will most likely want to define a formatter in your default formatter.
