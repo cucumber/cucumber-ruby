@@ -2,7 +2,7 @@
 
 ### New Features
 
-### Bugfixes
+### Bugfixes
 
 ### Refactoring
 
