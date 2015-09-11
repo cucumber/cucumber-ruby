@@ -1,5 +1,9 @@
 ## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...master)
 
+### New Features
+
+* Introduce EventBus ([903](https://github.com/cucumber/cucumber-ruby/pull/903) @mattwynne @tooky)
+
 ### Bugfixes
 
 ### Refactoring
