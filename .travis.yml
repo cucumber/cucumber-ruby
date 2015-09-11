@@ -10,4 +10,3 @@ branches:
   only:
     - master
     - v1.3.x-bugfix
-    - add-fail-fast-switch
