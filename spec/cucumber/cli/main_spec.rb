@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'yaml'
-require 'gherkin/formatter/model'
 
 module Cucumber
   module Cli
@@ -62,27 +61,6 @@ module Cucumber
             expect(kernel).to receive(:exit).with(2)
 
             subject.execute!
-          end
-        end
-      end
-
-      describe "--format with class" do
-        describe "in module" do
-          let(:double_module) { double('module') }
-          let(:formatter) { double('formatter') }
-
-          it "resolves each module until it gets Formatter class" do
-            cli = Main.new(%w{--format ZooModule::MonkeyFormatterClass}, stdin, stdout, stderr, kernel)
-
-            allow(Object).to receive(:const_defined?) { true }
-            allow(double_module).to receive(:const_defined?) { true }
-
-            expect(Object).to receive(:const_get).with('ZooModule', false) { double_module }
-            expect(double_module).to receive(:const_get).with('MonkeyFormatterClass', false) { double('formatter class', :new => formatter) }
-
-            expect(kernel).to receive(:exit).with(0)
-
-            cli.execute!
           end
         end
       end

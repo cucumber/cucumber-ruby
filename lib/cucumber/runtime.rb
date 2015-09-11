@@ -2,8 +2,6 @@
 require 'fileutils'
 require 'multi_json'
 require 'multi_test'
-require 'gherkin/rubify'
-require 'gherkin/i18n'
 require 'cucumber/configuration'
 require 'cucumber/load_path'
 require 'cucumber/language_support/language_methods'
@@ -11,6 +9,8 @@ require 'cucumber/formatter/duration'
 require 'cucumber/file_specs'
 require 'cucumber/filters'
 require 'cucumber/formatter/fanout'
+require 'cucumber/formatter/event_bus_report'
+require 'cucumber/gherkin/i18n'
 
 module Cucumber
   module FixRuby21Bug9285
@@ -86,16 +86,12 @@ module Cucumber
       @results.steps(status)
     end
 
-    def step_match(step_name, name_to_report=nil) #:nodoc:
-      @support_code.step_match(step_name, name_to_report)
-    end
-
     def unmatched_step_definitions
       @support_code.unmatched_step_definitions
     end
 
     def snippet_text(step_keyword, step_name, multiline_arg) #:nodoc:
-      @support_code.snippet_text(::Gherkin::I18n.code_keyword_for(step_keyword), step_name, multiline_arg)
+      @support_code.snippet_text(Cucumber::Gherkin::I18n.code_keyword_for(step_keyword).strip, step_name, multiline_arg)
     end
 
     def begin_scenario(scenario)
@@ -180,24 +176,48 @@ module Cucumber
     require 'cucumber/formatter/legacy_api/runtime_facade'
     require 'cucumber/formatter/legacy_api/results'
     require 'cucumber/formatter/ignore_missing_messages'
+    require 'cucumber/formatter/fail_fast'
     require 'cucumber/core/report/summary'
     def report
-      @report ||= Formatter::Fanout.new([summary_report] + formatters)
+      return @report if @report
+      reports = [summary_report, event_bus_report] + formatters
+      reports << fail_fast_report if @configuration.fail_fast?
+      @report ||= Formatter::Fanout.new(reports)
     end
 
     def summary_report
       @summary_report ||= Core::Report::Summary.new
     end
 
+    def event_bus_report
+      @event_bus_report ||= Formatter::EventBusReport.new(@configuration)
+    end
+
+    def fail_fast_report
+      @fail_fast_report ||= Formatter::FailFast.new(@configuration)
+    end
+
     def formatters
       @formatters ||= @configuration.formatter_factories { |factory, path_or_io, options|
-        results = Formatter::LegacyApi::Results.new
-        runtime_facade = Formatter::LegacyApi::RuntimeFacade.new(results, @support_code, @configuration)
-        formatter = factory.new(runtime_facade, path_or_io, options)
-        Formatter::LegacyApi::Adapter.new(
-          Formatter::IgnoreMissingMessages.new(formatter),
-          results, @support_code, @configuration)
+        create_formatter(factory, path_or_io, options)
       }
+    end
+
+    def create_formatter(factory, path_or_io, options)
+      if !legacy_formatter?(factory)
+        out_stream = Cucumber::Formatter::Io.ensure_io(path_or_io)
+        return factory.new(@configuration.with_options(out_stream: out_stream))
+      end
+      results = Formatter::LegacyApi::Results.new
+      runtime_facade = Formatter::LegacyApi::RuntimeFacade.new(results, @support_code, @configuration)
+      formatter = factory.new(runtime_facade, path_or_io, options)
+      Formatter::LegacyApi::Adapter.new(
+        Formatter::IgnoreMissingMessages.new(formatter),
+        results, @support_code, @configuration)
+    end
+
+    def legacy_formatter?(factory)
+      factory.instance_method(:initialize).arity > 1
     end
 
     def failure?

@@ -1,3 +1,5 @@
+sudo: false
+
 rvm:
   - 2.2
   - 2.1
@@ -12,7 +14,6 @@ branches:
     - v1.3.x-bugfix
 
 notifications:
-  email:
-    - cukes-devs@googlegroups.com
-  irc:
-    - "irc.freenode.org#cucumber"
+  webhooks:
+    urls: # gitter
+      - https://webhooks.gitter.im/e/dc010332f9d40fcc21c4

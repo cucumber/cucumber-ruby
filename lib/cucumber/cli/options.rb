@@ -43,6 +43,7 @@ module Cucumber
       NO_PROFILE_SHORT_FLAG = '-P'
       PROFILE_LONG_FLAG = '--profile'
       NO_PROFILE_LONG_FLAG = '--no-profile'
+      FAIL_FAST_FLAG = '--fail-fast'
       OPTIONS_WITH_ARGS = ['-r', '--require', '--i18n', '-f', '--format', '-o', '--out',
                                   '-t', '--tags', '-n', '--name', '-e', '--exclude',
                                   PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG,
@@ -116,15 +117,18 @@ module Cucumber
           opts.on("--i18n LANG",
             "List keywords for in a particular language",
             %{Run with "--i18n help" to see all languages}) do |lang|
-            require 'gherkin/i18n'
+            require 'gherkin3/dialect'
 
             if lang == 'help'
               list_languages_and_exit
-            elsif !Gherkin::I18n::LANGUAGES.keys.include? lang
+            elsif !::Gherkin3::DIALECTS.keys.include? lang
               indicate_invalid_language_and_exit(lang)
             else
               list_keywords_and_exit(lang)
             end
+          end
+          opts.on(FAIL_FAST_FLAG, "Exit immediately following the first failing scenario") do |v|
+            options[:fail_fast] = true
           end
           opts.on("-f FORMAT", "--format FORMAT",
             "How to format features (Default: pretty). Available formats:",
@@ -388,22 +392,49 @@ TEXT
       end
 
       def indicate_invalid_language_and_exit(lang)
-        require 'gherkin/i18n'
         @out_stream.write("Invalid language '#{lang}'. Available languages are:\n")
-        @out_stream.write(Gherkin::I18n.language_table)
-        Kernel.exit(0)
+        list_languages_and_exit
       end
 
       def list_keywords_and_exit(lang)
-        require 'gherkin/i18n'
-        @out_stream.write(Gherkin::I18n.get(lang).keyword_table)
+        require 'gherkin3/dialect'
+        language = ::Gherkin3::Dialect.for(lang)
+        data = Cucumber::MultilineArgument::DataTable.from(
+          [["feature", to_keywords_string(language.feature_keywords)],
+          ["background", to_keywords_string(language.background_keywords)],
+          ["scenario", to_keywords_string(language.scenario_keywords)],
+          ["scenario_outline", to_keywords_string(language.scenario_outline_keywords)],
+          ["examples", to_keywords_string(language.examples_keywords)],
+          ["given", to_keywords_string(language.given_keywords)],
+          ["when", to_keywords_string(language.when_keywords)],
+          ["then", to_keywords_string(language.then_keywords)],
+          ["and", to_keywords_string(language.and_keywords)],
+          ["but", to_keywords_string(language.but_keywords)],
+          ["given (code)", to_code_keywords_string(language.given_keywords)],
+          ["when (code)", to_code_keywords_string(language.when_keywords)],
+          ["then (code)", to_code_keywords_string(language.then_keywords)],
+          ["and (code)", to_code_keywords_string(language.and_keywords)],
+          ["but (code)", to_code_keywords_string(language.but_keywords)]])
+        @out_stream.write(data.to_s({ color: false, prefixes: Hash.new('') }))
         Kernel.exit(0)
       end
 
       def list_languages_and_exit
-        require 'gherkin/i18n'
-        @out_stream.write(Gherkin::I18n.language_table)
+        require 'gherkin3/dialect'
+        data = Cucumber::MultilineArgument::DataTable.from(
+          ::Gherkin3::DIALECTS.keys.map do |key|
+            [key, ::Gherkin3::DIALECTS[key].fetch('name'), ::Gherkin3::DIALECTS[key].fetch('native')]
+          end)
+        @out_stream.write(data.to_s({ color: false, prefixes: Hash.new('') }))
         Kernel.exit(0)
+      end
+
+      def to_keywords_string(list)
+        list.map { |item| "\"#{item}\"" }.join(', ')
+      end
+
+      def to_code_keywords_string(list)
+        to_keywords_string(Cucumber::Gherkin::I18n.code_keywords_for(list))
       end
 
       def default_options

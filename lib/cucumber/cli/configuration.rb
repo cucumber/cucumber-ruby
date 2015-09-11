@@ -2,7 +2,7 @@ require 'logger'
 require 'cucumber/cli/options'
 require 'cucumber/cli/rerun_file'
 require 'cucumber/constantize'
-require 'gherkin/tag_expression'
+require 'cucumber/core/gherkin/tag_expression'
 
 module Cucumber
   module Cli
@@ -27,7 +27,7 @@ module Cucumber
         arrange_formats
         raise("You can't use both --strict and --wip") if strict? && wip?
         # todo: remove
-        @options[:tag_expression] = Gherkin::TagExpression.new(@options[:tag_expressions])
+        @options[:tag_expression] = Cucumber::Core::Gherkin::TagExpression.new(@options[:tag_expressions])
         set_environment_variables
       end
 
@@ -63,6 +63,10 @@ module Cucumber
         @options[:expand]
       end
 
+      def fail_fast?
+        !!@options[:fail_fast]
+      end
+
       def snippet_type
         @options[:snippet_type] || :regexp
       end
@@ -77,7 +81,7 @@ module Cucumber
 
       # todo: remove
       def tag_expression
-        Gherkin::TagExpression.new(@options[:tag_expressions])
+        Cucumber::Core::Gherkin::TagExpression.new(@options[:tag_expressions])
       end
 
       def tag_limits
@@ -133,8 +137,6 @@ module Cucumber
         @options[:formats].uniq!
         @options.check_formatter_stream_conflicts()
       end
-
-
     end
   end
 end

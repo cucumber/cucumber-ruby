@@ -1,18 +1,38 @@
 require 'cucumber/constantize'
 require 'cucumber/cli/rerun_file'
-require 'gherkin/tag_expression'
+require 'cucumber/events'
+require 'forwardable'
+require 'cucumber/core/gherkin/tag_expression'
 
 module Cucumber
   # The base class for configuring settings for a Cucumber run.
   class Configuration
     include Constantize
+    extend Forwardable
 
     def self.default
       new
     end
 
+    # Subscribe to an event.
+    #
+    # See {Cucumber::Events} for the list of possible events.
+    #
+    # @param event_id [Symbol, Class, String] Identifier for the type of event to subscribe to
+    # @param handler_object [Object optional] an object to be called when the event occurs
+    # @yield [Object] Block to be called when th event occurs
+    # @method on_event
+    def_instance_delegator :event_bus, :register, :on_event
+
+    # @private
+    def_instance_delegator :event_bus, :notify
+
     def initialize(user_options = {})
       @options = default_options.merge(Hash.try_convert(user_options))
+    end
+
+    def with_options(new_options)
+      self.class.new(new_options.merge(@options))
     end
 
     # TODO: Actually Deprecate???
@@ -39,6 +59,10 @@ module Cucumber
 
     def dry_run?
       @options[:dry_run]
+    end
+
+    def fail_fast?
+      @options[:fail_fast]
     end
 
     def guess?
@@ -81,7 +105,7 @@ module Cucumber
 
     # todo: remove
     def tag_expression
-      Gherkin::TagExpression.new(@options[:tag_expressions])
+      Cucumber::Core::Gherkin::TagExpression.new(@options[:tag_expressions])
     end
 
     def tag_limits
@@ -165,10 +189,6 @@ module Cucumber
       end
     end
 
-    def on_event(event_name, &handler)
-
-    end
-
     def to_hash
       @options
     end
@@ -182,6 +202,7 @@ module Cucumber
         :strict              => false,
         :require             => [],
         :dry_run             => false,
+        :fail_fast           => false,
         :formats             => [],
         :excludes            => [],
         :tag_expressions     => [],
@@ -190,9 +211,15 @@ module Cucumber
         :diff_enabled        => true,
         :snippets            => true,
         :source              => true,
-        :duration            => true
+        :duration            => true,
+        :event_bus           => Events::Bus.new(Cucumber::Events)
       }
     end
+
+    def event_bus
+      @options[:event_bus]
+    end
+
 
     def default_features_paths
       ["features"]

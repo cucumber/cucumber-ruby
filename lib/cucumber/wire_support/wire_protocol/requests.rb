@@ -1,5 +1,5 @@
 require 'cucumber/wire_support/request_handler'
-require 'gherkin/formatter/argument'
+require 'cucumber/gherkin/formatter/argument'
 
 module Cucumber
   module WireSupport
@@ -27,7 +27,7 @@ module Cucumber
           def create_step_match(raw_step_match)
             step_definition = WireStepDefinition.new(@connection, raw_step_match)
             step_args = raw_step_match['args'].map do |raw_arg|
-              Gherkin::Formatter::Argument.new(raw_arg['pos'], raw_arg['val'])
+              Cucumber::Gherkin::Formatter::Argument.new(raw_arg['pos'], raw_arg['val'])
             end
             step_match(step_definition, step_args)
           end

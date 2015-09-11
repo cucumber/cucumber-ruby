@@ -16,12 +16,16 @@ module Cucumber
         @options = options
         @stepdef_to_match = Hash.new { |h, stepdef_key| h[stepdef_key] = [] }
         @total_duration = 0
+        @matches = {}
+        runtime.configuration.on_event :step_match do |event|
+          @matches[event.test_step.source] = event.step_match
+        end
       end
 
       def after_test_step(test_step, result)
         return if HookQueryVisitor.new(test_step).hook?
 
-        step_match = @runtime.step_match(test_step.source.last.name)
+        step_match = @matches[test_step.source]
         step_definition = step_match.step_definition
         stepdef_key = StepDefKey.new(step_definition.regexp_source, step_definition.location)
         unless @stepdef_to_match[stepdef_key].map { |key| key[:location] }.include? test_step.location

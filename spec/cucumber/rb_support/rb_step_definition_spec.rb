@@ -114,6 +114,35 @@ module Cucumber
         }).to raise_error(Cucumber::UndefinedDynamicStep)
       end
 
+      it "raises UndefinedDynamicStep when an undefined step with doc string is parsed dynamically" do
+        dsl.Given(/Outside/) do
+          steps %{
+            Given Inside
+            """
+            abc
+            """
+          }
+        end
+
+        expect(-> {
+          run_step "Outside"
+        }).to raise_error(Cucumber::UndefinedDynamicStep)
+      end
+
+      it "raises UndefinedDynamicStep when an undefined step with data table is parsed dynamically" do
+        dsl.Given(/Outside/) do
+          steps %{
+            Given Inside
+             | a |
+             | 1 |
+          }
+        end
+
+        expect(-> {
+          run_step "Outside"
+        }).to raise_error(Cucumber::UndefinedDynamicStep)
+      end
+
       it "allows forced pending" do
         dsl.Given(/Outside/) do
           pending("Do me!")

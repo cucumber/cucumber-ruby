@@ -1,11 +1,9 @@
 require 'delegate'
 require 'cucumber/multiline_argument/data_table'
 require 'cucumber/multiline_argument/doc_string'
-require 'gherkin/rubify'
 
 module Cucumber
   module MultilineArgument
-    extend Gherkin::Rubify
 
     class << self
       def from_core(node)
@@ -14,7 +12,6 @@ module Cucumber
 
       def from(argument, location=nil)
         location ||= Core::Ast::Location.of_caller
-        argument = rubify(argument)
         case argument
         when String
           doc_string(argument, 'text/plain', location)

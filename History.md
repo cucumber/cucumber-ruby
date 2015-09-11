@@ -1,6 +1,21 @@
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...master)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.1...master)
+
+### New Features
+
+### Bugfixes
+
+### Refactoring
+
+## [v2.1](https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...v2.1)
+
+### New Features
+
+* Introduce EventBus ([903](https://github.com/cucumber/cucumber-ruby/pull/903) @mattwynne @tooky)
+* Fail-fast CLI switch ([906](https://github.com/cucumber/cucumber-ruby/pull/906) @danascheider)
 
 ### Bugfixes
+
+* When only an around hook is failing, let the Json Formatter include the around hook result ([909](https://github.com/cucumber/cucumber-ruby/issues/909) @brasmusson).
 
 ### Refactoring
 
@@ -9,6 +24,7 @@
 * Pass DocString as String ([891](https://github.com/cucumber/cucumber-ruby/pull/891) @aslakhellesoy)
 * Remove core_ext/proc.rb and use Proc#source_location instead ([888](https://github.com/cucumber/cucumber-ruby/pull/888) @brasmusson)
 * Move behaviour from `Cucumber::Cli::Configuration` to `Cucumber::Configuration` (@tooky, @mattwynne)
+* Integrate Gherkin3 parser ([884](https://github.com/cucumber/cucumber-ruby/pull/884) (@brassmusson)
 
 ## [v2.0.2](https://github.com/cucumber/cucumber-ruby/compare/v2.0.1...v2.0.2)
 

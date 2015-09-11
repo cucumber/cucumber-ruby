@@ -1,7 +1,7 @@
 require 'fileutils'
 require 'cucumber/formatter/console'
 require 'cucumber/formatter/io'
-require 'gherkin/formatter/escaping'
+require 'cucumber/gherkin/formatter/escaping'
 
 module Cucumber
   module Formatter
@@ -16,7 +16,7 @@ module Cucumber
       include FileUtils
       include Console
       include Io
-      include Gherkin::Formatter::Escaping
+      include Cucumber::Gherkin::Formatter::Escaping
       attr_writer :indent
       attr_reader :runtime
 
@@ -105,9 +105,7 @@ module Cucumber
       def examples_name(keyword, name)
         @io.puts unless @visiting_first_example_name
         @visiting_first_example_name = false
-        names = name.strip.empty? ? [name.strip] : name.split("\n")
-        @io.puts("    #{keyword}: #{names[0]}")
-        names[1..-1].each {|s| @io.puts "      #{s}" } unless names.empty?
+        @io.puts("    #{keyword}: #{name}")
         @io.flush
         @indent = 6
         @scenario_indent = 6
@@ -231,7 +229,7 @@ module Cucumber
           @io.print(format_string(line_comment, :comment))
         end
         @io.puts
-        names[1..-1].each {|s| @io.puts "    #{s}"}
+        names[1..-1].each {|s| @io.puts "#{s}"}
         @io.flush
       end
 

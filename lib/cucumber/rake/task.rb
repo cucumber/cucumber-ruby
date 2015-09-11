@@ -1,5 +1,5 @@
 require 'cucumber/platform'
-require 'gherkin/formatter/ansi_escapes'
+require 'cucumber/gherkin/formatter/ansi_escapes'
 begin
   # Support Rake > 0.8.7
   require 'rake/dsl_definition'
@@ -25,7 +25,7 @@ module Cucumber
     #
     # See the attributes for additional configuration possibilities.
     class Task
-      include Gherkin::Formatter::AnsiEscapes
+      include Cucumber::Gherkin::Formatter::AnsiEscapes
       include ::Rake::DSL if defined?(::Rake::DSL)
 
       class InProcessCucumberRunner #:nodoc:

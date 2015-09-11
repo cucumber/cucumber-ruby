@@ -3,6 +3,8 @@ require 'cucumber/runtime/for_programming_languages'
 require 'cucumber/runtime/step_hooks'
 require 'cucumber/runtime/before_hooks'
 require 'cucumber/runtime/after_hooks'
+require 'cucumber/events/step_match'
+require 'cucumber/gherkin/steps_parser'
 
 module Cucumber
 
@@ -12,28 +14,29 @@ module Cucumber
 
       require 'forwardable'
       class StepInvoker
-        include Gherkin::Rubify
 
         def initialize(support_code)
           @support_code = support_code
         end
 
-        def uri(uri)
+        def steps(steps)
+          steps.each { |step| step(step) }
         end
 
         def step(step)
           location = Core::Ast::Location.of_caller
-          @support_code.invoke_dynamic_step(step.name, multiline_arg(step, location))
-        end
-
-        def eof
+          @support_code.invoke_dynamic_step(step[:text], multiline_arg(step, location))
         end
 
         def multiline_arg(step, location)
-          if argument = step.doc_string
-            MultilineArgument.doc_string(argument.value, argument.content_type, location.on_line(argument.line_range))
+          if argument = step[:argument]
+            if argument[:type] == :DocString
+              MultilineArgument.doc_string(argument[:content], argument[:content_type], location)
+            else
+              MultilineArgument::DataTable.from(argument[:rows].map { |row| row[:cells].map { |cell| cell[:value] } })
+            end
           else
-            MultilineArgument.from(step.rows, location)
+            MultilineArgument.from(nil)
           end
         end
       end
@@ -59,8 +62,8 @@ module Cucumber
       #     Then I should not be thirsty
       #   })
       def invoke_dynamic_steps(steps_text, i18n, location)
-        parser = Gherkin::Parser::Parser.new(StepInvoker.new(self), true, 'steps', false, i18n.iso_code)
-        parser.parse(steps_text, location.file, location.line)
+        parser = Cucumber::Gherkin::StepsParser.new(StepInvoker.new(self), i18n.iso_code)
+        parser.parse(steps_text)
       end
 
       # @api private
@@ -138,6 +141,8 @@ module Cucumber
         rescue Cucumber::Undefined
           return NoStepMatch.new(test_step.source.last, test_step.name)
         end
+        # TODO: move this onto Filters::ActivateSteps
+        @configuration.notify Events::StepMatch.new(test_step, match)
         if @configuration.dry_run?
           return SkippingStepMatch.new
         end
