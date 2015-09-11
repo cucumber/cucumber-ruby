@@ -28,7 +28,9 @@ module Cucumber::Formatter
       end
     end
 
-    let(:report) { FailFast.new(double.as_null_object) }
+    let(:configuration) { Cucumber::Configuration.new }
+    before { FailFast.new(configuration) }
+    let(:report) { EventBusReport.new(configuration) }
 
     context 'failing scenario' do 
       before(:each) do 
@@ -72,29 +74,5 @@ module Cucumber::Formatter
       end
     end
 
-    describe 'after_test_case method' do 
-      context 'failing scenario' do 
-        it 'sets Cucumber.wants_to_quit' do 
-          result = Cucumber::Core::Test::Result::Failed.new(double('duration'), double('exception'))
-          
-          test_case = double('test_case')
-          allow(test_case).to receive(:location) { Cucumber::Core::Ast::Location.new('foo.feature')}
-          report.after_test_case(test_case, result)
-          expect(Cucumber.wants_to_quit).to be true
-        end
-      end
-
-      context 'passing scenario' do 
-        let(:result) { Cucumber::Core::Test::Result::Passed.new(double) }
-
-        it 'doesn\'t raise an error' do 
-          expect{ report.after_test_case(double, result) }.not_to raise_error
-        end
-
-        it 'returns nil' do 
-          expect(report.after_test_case(double, result)).to eql nil
-        end
-      end
-    end
   end
 end

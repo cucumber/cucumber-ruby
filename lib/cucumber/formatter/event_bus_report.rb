@@ -27,6 +27,9 @@ module Cucumber
       def after_test_case(test_case, result)
         @config.notify Events::AfterTestCase.new(test_case, result)
       end
+
+      def done
+      end
     end
 
   end
