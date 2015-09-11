@@ -9,7 +9,7 @@ module Cucumber
       end
 
       def after_test_case(test_case, result)
-        Cucumber.wants_to_quit = true unless result.ok? @configuration.strict?
+        Cucumber.wants_to_quit = true unless result.ok?
       end
 
       def done; end
