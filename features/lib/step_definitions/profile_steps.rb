@@ -10,6 +10,6 @@ Then /^exactly these files should be loaded:\s*(.*)$/ do |files|
   expect(all_stdout.scan(/^  \* (.*\.rb)$/).flatten).to eq files.split(/,\s+/)
 end
 
-Then /^exactly these features should be ran:\s*(.*)$/ do |files|
+Then /^exactly these features should be run:\s*(.*)$/ do |files|
   expect(all_stdout.scan(/^  \* (.*\.feature)$/).flatten).to eq files.split(/,\s+/)
 end
