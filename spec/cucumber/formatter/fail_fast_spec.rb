@@ -58,5 +58,31 @@ module Cucumber::Formatter
       end
     end
 
+    context 'undefined scenario' do
+      before(:each) do 
+        @gherkin = gherkin('foo.feature') do 
+          feature do 
+            scenario do 
+              step 'undefined'
+            end
+          end
+        end
+      end
+
+      it 'doesn\'t set Cucumber.wants_to_quit' do 
+        execute([@gherkin], report, [StandardStepActions.new])
+        expect(Cucumber.wants_to_quit).to be_falsey
+      end
+
+      context 'in strict mode' do
+        let(:configuration) { Cucumber::Configuration.new strict: true }
+
+        it 'sets Cucumber.wants_to_quit' do 
+          execute([@gherkin], report, [StandardStepActions.new])
+          expect(Cucumber.wants_to_quit).to be_truthy
+        end
+      end
+    end
+
   end
 end

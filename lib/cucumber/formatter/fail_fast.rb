@@ -8,7 +8,7 @@ module Cucumber
 
       def initialize(configuration)
         configuration.on_event :after_test_case do |event|
-          Cucumber.wants_to_quit = true unless event.result.ok?
+          Cucumber.wants_to_quit = true unless event.result.ok?(configuration.strict?)
         end
       end
 
