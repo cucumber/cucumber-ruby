@@ -1,4 +1,12 @@
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...master)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.1...master)
+
+### New Features
+
+### Bugfixes
+
+### Refactoring
+
+## [v2.1](https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...v2.1)
 
 ### New Features
 
