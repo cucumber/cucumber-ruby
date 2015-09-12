@@ -6,6 +6,6 @@ unless ENV['CUCUMBER_USE_RELEASED_CORE']
   if File.exist?(core_path) && !ENV['CUCUMBER_USE_GIT_CORE']
     gem 'cucumber-core', :path => core_path
   else
-    gem 'cucumber-core', :git => "git://github.com/cucumber/cucumber-ruby-core.git", branch: "integrate-gherkin3-parser"
+    gem 'cucumber-core', :git => "git://github.com/cucumber/cucumber-ruby-core.git"
   end
 end
