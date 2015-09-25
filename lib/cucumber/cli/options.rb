@@ -44,9 +44,10 @@ module Cucumber
       PROFILE_LONG_FLAG = '--profile'
       NO_PROFILE_LONG_FLAG = '--no-profile'
       FAIL_FAST_FLAG = '--fail-fast'
+      RETRY_FLAG = '--retry'
       OPTIONS_WITH_ARGS = ['-r', '--require', '--i18n', '-f', '--format', '-o', '--out',
                                   '-t', '--tags', '-n', '--name', '-e', '--exclude',
-                                  PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG,
+                                  PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG,
                                   '-l', '--lines', '--port',
                                   '-I', '--snippet-type']
       ORDER_TYPES = %w{defined random}
@@ -187,6 +188,9 @@ module Cucumber
           opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG,
             "Disables all profile loading to avoid using the 'default' profile.") do |v|
             @disable_profile_loading = true
+          end
+          opts.on("#{RETRY_FLAG} ATTEMPTS", "Specify number of times to retry failing tests (default 0)") do |v|
+            @options[:retry] = v.to_i
           end
           opts.on("-c", "--[no-]color",
             "Whether or not to use ANSI color in the output. Cucumber decides",
@@ -450,7 +454,8 @@ TEXT
           :diff_enabled => true,
           :snippets     => true,
           :source       => true,
-          :duration     => true
+          :duration     => true,
+          :retry        => 0
         }
       end
     end
