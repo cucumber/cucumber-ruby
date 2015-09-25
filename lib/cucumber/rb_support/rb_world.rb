@@ -97,7 +97,7 @@ module Cucumber
         # Even though they won't be output until later, converting the messages to
         # strings right away will protect them from modifications to their original
         # objects in the mean time
-        messages.collect! { |message| message.to_s }
+        messages.collect! { |message| "#{message}" }
 
         @__cucumber_runtime.puts(*messages)
       end
