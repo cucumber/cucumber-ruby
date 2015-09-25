@@ -12,6 +12,7 @@ rvm:
 branches:
   only:
     - master
+    - resolve-issue-882
     - v1.3.x-bugfix
 
 before_install:

@@ -67,6 +67,10 @@ module Cucumber
         !!@options[:fail_fast]
       end
 
+      def retry_attempts
+        @options[:retry]
+      end
+
       def snippet_type
         @options[:snippet_type] || :regexp
       end
