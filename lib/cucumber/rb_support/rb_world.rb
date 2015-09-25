@@ -94,6 +94,10 @@ module Cucumber
       #
       #   If you'd prefer to see the message immediately, call {Kernel.puts} instead.
       def puts(*messages)
+        # Copying the objects because they may be modified after #puts is called and their
+        # original value needs to be retained for later output.
+        messages.collect!{|message| Marshal.load(Marshal.dump(message))}
+
         @__cucumber_runtime.puts(*messages)
       end
 
