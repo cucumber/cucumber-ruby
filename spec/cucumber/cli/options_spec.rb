@@ -348,6 +348,14 @@ module Cucumber
           end
         end
 
+        context '--retry ATTEMPTS' do
+          it 'is 0 by default' do 
+            after_parsing("") do 
+              expect(options[:retry]).to eql 0
+            end
+          end
+        end
+
         it "assigns any extra arguments as paths to features" do
           after_parsing('-f pretty my_feature.feature my_other_features') do
             expect(options[:paths]).to eq ['my_feature.feature', 'my_other_features']
