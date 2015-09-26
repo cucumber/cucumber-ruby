@@ -112,9 +112,9 @@ module Cucumber
 
       def find_match(test_step)
         begin
-          step_match(test_step.name)
+          match = step_match(test_step.name)
         rescue Cucumber::Undefined
-          nil
+          return nil
         end
 
         # TODO: move this onto Filters::ActivateSteps
