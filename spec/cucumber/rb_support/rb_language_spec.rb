@@ -41,6 +41,13 @@ module Cucumber
 
           expect($foo).to eq 2
         end
+
+        it "only loads ruby files" do
+          a_file_called("readme.md") do
+            "yo"
+          end
+          rb.load_code_file('readme.md')
+        end
       end
 
       describe "Handling the World" do
