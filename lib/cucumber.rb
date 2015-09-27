@@ -26,5 +26,18 @@ module Cucumber
       called_by = caller[1]
       warn("Deprecated: #{class_name}##{method} #{message}. Caller: #{called_by}")
     end
+
+    if Cucumber::RUBY_1_9
+      # Backported from Ruby 2.0 to 1.9
+      def Hash(other)
+        return {} if other.nil? || other == []
+        raise TypeError, "can't convert #{other.class} into Hash" unless other.respond_to?(:to_hash)
+        other.to_hash
+      end
+    else
+      def Hash(other)
+        Kernel::Hash(other)
+      end
+    end
   end
 end

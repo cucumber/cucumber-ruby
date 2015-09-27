@@ -294,7 +294,7 @@ TEXT
       end
 
       def to_hash
-        Hash.try_convert(@options)
+        Cucumber::Hash(@options)
       end
 
     protected
