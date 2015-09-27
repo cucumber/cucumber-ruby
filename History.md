@@ -24,7 +24,7 @@
 * Pass DocString as String ([891](https://github.com/cucumber/cucumber-ruby/pull/891) @aslakhellesoy)
 * Remove core_ext/proc.rb and use Proc#source_location instead ([888](https://github.com/cucumber/cucumber-ruby/pull/888) @brasmusson)
 * Move behaviour from `Cucumber::Cli::Configuration` to `Cucumber::Configuration` (@tooky, @mattwynne)
-* Integrate Gherkin3 parser ([884](https://github.com/cucumber/cucumber-ruby/pull/884) (@brassmusson)
+* Integrate Gherkin3 parser ([884](https://github.com/cucumber/cucumber-ruby/pull/884) (@brasmusson)
 
 ## [v2.0.2](https://github.com/cucumber/cucumber-ruby/compare/v2.0.1...v2.0.2)
 
