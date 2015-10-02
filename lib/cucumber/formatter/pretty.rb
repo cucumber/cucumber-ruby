@@ -203,7 +203,8 @@ module Cucumber
         status ||= @status || :passed
         width = @table.col_width(@col_index)
         cell_text = escape_cell(value.to_s || '')
-        padded = cell_text + (' ' * (width - cell_text.unpack('U*').length))
+        text_width = defined?(Unicode) ? Unicode.width(cell_text, Cucumber.treats_ambiguous_as_fullwidth) : cell_text.unpack('U*').length
+        padded = cell_text + (' ' * (width - text_width))
         prefix = cell_prefix(status)
         @io.print(' ' + format_string("#{prefix}#{padded}", status) + ::Cucumber::Term::ANSIColor.reset(" |"))
         @io.flush

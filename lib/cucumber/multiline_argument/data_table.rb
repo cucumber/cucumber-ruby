@@ -692,7 +692,18 @@ module Cucumber
         end
 
         def width
-          map{|cell| cell.value ? escape_cell(cell.value.to_s).unpack('U*').length : 0}.max
+          map {|cell|
+            if cell.value
+              escaped = escape_cell(cell.value.to_s)
+              if defined?(Unicode)
+                Unicode.width(escaped, Cucumber.treats_ambiguous_as_fullwidth)
+              else
+                escaped.unpack('U*').length
+              end
+            else
+              0
+            end
+          }.max
         end
       end
 

@@ -10,6 +10,8 @@ require 'pry'
 
 require 'cucumber'
 
+require 'unicode'
+
 RSpec.configure do |c|
   c.before do
     ::Cucumber::Term::ANSIColor.coloring = true
