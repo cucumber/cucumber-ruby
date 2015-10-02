@@ -1,6 +1,6 @@
 require 'cucumber/step_match'
+require 'cucumber/step_argument'
 require 'cucumber/core_ext/string'
-require 'cucumber/rb_support/regexp_argument_matcher'
 
 module Cucumber
   module RbSupport
@@ -91,7 +91,7 @@ module Cucumber
       end
 
       def arguments_from(step_name)
-        args = RegexpArgumentMatcher.arguments_from(@regexp, step_name)
+        args = StepArgument.arguments_from(@regexp, step_name)
         @rb_language.invoked_step_definition(regexp_source, location) if args
         args
       end
