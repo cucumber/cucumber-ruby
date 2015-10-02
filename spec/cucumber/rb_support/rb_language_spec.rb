@@ -7,7 +7,7 @@ module Cucumber
       let(:user_interface) { double('user interface') }
       let(:rb)             { support_code.ruby }
       let(:support_code) do
-        Cucumber::Runtime::SupportCode.new(user_interface, {})
+        Cucumber::Runtime::SupportCode.new(user_interface)
       end
       let(:dsl) do
         rb

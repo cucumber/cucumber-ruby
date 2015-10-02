@@ -4,7 +4,7 @@ module Cucumber
   describe Runtime::ForProgrammingLanguages do
 
     let(:user_interface)  { double('user interface') }
-    subject               { Runtime::SupportCode.new(user_interface,{}) }
+    subject               { Runtime::SupportCode.new(user_interface) }
     let(:runtime_facade)  { Runtime::ForProgrammingLanguages.new(subject, user_interface) }
 
     describe "#doc_string" do

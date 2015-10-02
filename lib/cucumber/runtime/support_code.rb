@@ -44,8 +44,8 @@ module Cucumber
       include Constantize
 
       attr_reader :ruby
-      def initialize(user_interface, configuration={})
-        @configuration = Configuration.new(configuration)
+      def initialize(user_interface, configuration=Configuration.default)
+        @configuration = configuration
         @runtime_facade = Runtime::ForProgrammingLanguages.new(self, user_interface)
         @ruby = Cucumber::RbSupport::RbLanguage.new(@runtime_facade, @configuration)
       end

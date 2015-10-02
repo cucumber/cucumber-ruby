@@ -209,6 +209,7 @@ module Cucumber
 
     def register_snippet_generator(generator)
       snippet_generators << generator
+      self
     end
 
   private
