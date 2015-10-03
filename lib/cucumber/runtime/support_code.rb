@@ -117,9 +117,6 @@ module Cucumber
           return nil
         end
 
-        # TODO: move this onto Filters::ActivateSteps
-        @configuration.notify Events::StepMatch.new(test_step, match)
-
         match
       end
 

@@ -1,5 +1,6 @@
 require 'cucumber/core/filter'
 require 'cucumber/step_match'
+require 'cucumber/events'
 
 module Cucumber
   module Filters
@@ -32,6 +33,7 @@ module Cucumber
 
         def find_match(test_step)
           match = @step_definitions.find_match(test_step)
+          @configuration.notify Events::StepMatch.new(test_step, match) if match
           return NoStepMatch.new(test_step.source.last, test_step.name) unless match
           return SkippingStepMatch.new if @configuration.dry_run?
           match

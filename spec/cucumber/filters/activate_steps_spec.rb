@@ -11,7 +11,7 @@ describe Cucumber::Filters::ActivateSteps do
   let(:activated_test_step) { double }
   let(:receiver) { double.as_null_object }
   let(:filter) { Cucumber::Filters::ActivateSteps.new(step_definitions, configuration) }
-  let(:configuration) { double(dry_run?: false) }
+  let(:configuration) { double(dry_run?: false, notify: nil) }
 
   context "a scenario with a single step" do
     let(:doc) do
@@ -27,6 +27,14 @@ describe Cucumber::Filters::ActivateSteps do
     it "activates each step" do
       expect(step_match).to receive(:activate) do |test_step|
         expect(test_step.name).to eq 'a passing step'
+      end
+      compile [doc], receiver, [filter]
+    end
+
+    it "notifies with a StepMatch event" do
+      expect(configuration).to receive(:notify) do |event|
+        expect(event.test_step.name).to eq 'a passing step'
+        expect(event.step_match).to eq step_match
       end
       compile [doc], receiver, [filter]
     end
@@ -75,10 +83,15 @@ describe Cucumber::Filters::ActivateSteps do
       end
       compile [doc], receiver, [filter]
     end
+
+    it "does not notify" do
+      expect(configuration).not_to receive(:notify)
+      compile [doc], receiver, [filter]
+    end
   end
 
   context "dry run" do
-    let(:configuration) { double(dry_run?: true) }
+    let(:configuration) { double(dry_run?: true, notify: nil) }
 
     let(:doc) do
       gherkin do
@@ -96,11 +109,19 @@ describe Cucumber::Filters::ActivateSteps do
       end
       compile [doc], receiver, [filter]
     end
+
+    it "notifies with a StepMatch event" do
+      expect(configuration).to receive(:notify) do |event|
+        expect(event.test_step.name).to eq 'a passing step'
+        expect(event.step_match).to eq step_match
+      end
+      compile [doc], receiver, [filter]
+    end
   end
 
   context "undefined step in a dry run" do
     let(:step_definitions) { double(find_match: nil) }
-    let(:configuration) { double(dry_run?: true) }
+    let(:configuration) { double(dry_run?: true, notify: nil) }
 
     let(:doc) do
       gherkin do
@@ -118,7 +139,11 @@ describe Cucumber::Filters::ActivateSteps do
       end
       compile [doc], receiver, [filter]
     end
-  end
 
+    it "does not notify" do
+      expect(configuration).not_to receive(:notify)
+      compile [doc], receiver, [filter]
+    end
+  end
 
 end
