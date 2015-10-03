@@ -73,7 +73,7 @@ module Cucumber
       # These are commonly called nested steps.
       def invoke_dynamic_step(step_name, multiline_argument, location=nil)
         begin
-          step_match(step_name).invoke(multiline_argument)
+          step_matches(step_name).first.invoke(multiline_argument)
         rescue Undefined => exception
           raise UndefinedDynamicStep, step_name
         end
@@ -110,16 +110,6 @@ module Cucumber
         @ruby.step_definitions
       end
 
-      def find_match(test_step)
-        begin
-          match = step_match(test_step.name)
-        rescue Cucumber::Undefined
-          return nil
-        end
-
-        match
-      end
-
       def find_after_step_hooks(test_case)
         scenario = RunningTestCase.new(test_case)
         hooks = @ruby.hooks_for(:after_step, scenario)
@@ -148,12 +138,20 @@ module Cucumber
         end
       end
 
-      def step_match(step_name)
+      def find_match(test_step)
+        begin
+          step_matches(test_step.name).first
+        rescue Cucumber::Undefined
+          return nil
+        end
+      end
+
+      def step_matches(step_name)
         matches = matches(step_name)
         raise Undefined.new(step_name) if matches.empty?
         matches = best_matches(step_name, matches) if matches.size > 1 && guess_step_matches?
         raise Ambiguous.new(step_name, matches, guess_step_matches?) if matches.size > 1
-        matches[0]
+        matches
       end
 
       private
@@ -193,11 +191,11 @@ module Cucumber
 
       require 'delegate'
       class CachesStepMatch < SimpleDelegator
-        def step_match(step_name) #:nodoc:
+        def step_matches(step_name) #:nodoc:
           @match_cache ||= {}
 
-          match = @match_cache[step_name]
-          return match if match
+          matches = @match_cache[step_name]
+          return matches if matches
 
           @match_cache[step_name] = super(step_name)
         end

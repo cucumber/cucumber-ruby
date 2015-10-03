@@ -20,6 +20,12 @@ module Cucumber
       StepMatch.new(stepdef, name, stepdef.arguments_from(name))
     end
 
+    it "formats step names" do
+      m = step_match(/it (.*) in (.*)/, "it snows in april")
+      format = m.format_args("[%s]")
+      expect(format).to eq "it [snows] in [april]"
+    end
+
     it "formats one group when we use Unicode" do
       m = step_match(/I (#{WORD}+) ok/, "I æøåÆØÅæøåÆØÅæøåÆØÅæøåÆØÅ ok")
 

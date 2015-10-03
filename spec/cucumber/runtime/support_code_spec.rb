@@ -11,25 +11,16 @@ module Cucumber
       Object.new.extend(RbSupport::RbDsl)
     end
 
-    it "formats step names" do
-      dsl.Given(/it (.*) in (.*)/) { |what, month| }
-      dsl.Given(/nope something else/) { |what, month| }
-
-      format = subject.step_match("it snows in april").format_args("[%s]")
-
-      expect(format).to eq "it [snows] in [april]"
-    end
-
     context 'caching' do
       let(:cached) { Runtime::SupportCode::CachesStepMatch.new(subject) }
 
       it "caches step match results" do
         dsl.Given(/it (.*) in (.*)/) { |what, month| }
 
-        step_match = cached.step_match("it snows in april")
+        step_match = cached.step_matches("it snows in april").first
 
         expect(@rb).not_to receive(:step_matches)
-        second_step_match = cached.step_match("it snows in april")
+        second_step_match = cached.step_matches("it snows in april").first
 
         expect(step_match).to equal(second_step_match)
       end
@@ -49,7 +40,7 @@ You can run again with --guess to make Cucumber be more smart about it
         dsl.Given(/Three blind (.*)/) {|animal|}
 
         expect(-> {
-          subject.step_match("Three blind mice")
+          subject.step_matches("Three blind mice").first
         }).to raise_error(Ambiguous, /#{expected_error}/)
       end
 
@@ -67,7 +58,7 @@ spec/cucumber/runtime/support_code_spec.rb:\\d+:in `/Three cute (.*)/'
           dsl.Given(/Three cute (.*)/) {|animal|}
 
           expect(-> {
-            subject.step_match("Three cute mice")
+            subject.step_matches("Three cute mice").first
           }).to raise_error(Ambiguous, /#{expected_error}/)
         end
 
@@ -76,7 +67,7 @@ spec/cucumber/runtime/support_code_spec.rb:\\d+:in `/Three cute (.*)/'
           dsl.Given(/Three (.*)/) {|animal|}
 
           expect(-> {
-            subject.step_match("Three blind mice")
+            subject.step_matches("Three blind mice").first
           }).not_to raise_error
         end
 
@@ -85,7 +76,7 @@ spec/cucumber/runtime/support_code_spec.rb:\\d+:in `/Three cute (.*)/'
           dsl.Given(/Three (.*)?/) {|animal|}
 
           expect(-> {
-            subject.step_match("Three blind mice")
+            subject.step_matches("Three blind mice").first
           }).not_to raise_error
         end
 
@@ -93,14 +84,14 @@ spec/cucumber/runtime/support_code_spec.rb:\\d+:in `/Three cute (.*)/'
           right = dsl.Given(/Three (.*) mice/) {|disability|}
           wrong = dsl.Given(/Three (.*)/) {|animal|}
 
-          expect(subject.step_match("Three blind mice").step_definition).to eq right
+          expect(subject.step_matches("Three blind mice").first.step_definition).to eq right
         end
 
         it "picks right step definition when an unequal number of capture groups" do
           right = dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
           wrong = dsl.Given(/Three (.*)/) {|animal|}
 
-          expect(subject.step_match("Three blind mice ran far").step_definition).to eq right
+          expect(subject.step_matches("Three blind mice ran far").first.step_definition).to eq right
         end
 
         it "picks most specific step definition when an unequal number of capture groups" do
@@ -108,13 +99,13 @@ spec/cucumber/runtime/support_code_spec.rb:\\d+:in `/Three cute (.*)/'
           specific      = dsl.Given(/Three blind mice ran far/) do; end
           more_specific = dsl.Given(/^Three blind mice ran far$/) do; end
 
-          expect(subject.step_match("Three blind mice ran far").step_definition).to eq more_specific
+          expect(subject.step_matches("Three blind mice ran far").first.step_definition).to eq more_specific
         end
       end
 
       it "raises Undefined error when no step definitions match" do
         expect(-> {
-          subject.step_match("Three blind mice")
+          subject.step_matches("Three blind mice").first
         }).to raise_error(Undefined)
       end
 

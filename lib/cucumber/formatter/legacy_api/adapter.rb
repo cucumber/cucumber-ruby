@@ -188,9 +188,7 @@ module Cucumber
             private
 
             def step_match(support_code)
-              support_code.step_match(step.name)
-            rescue Cucumber::Undefined
-              NoStepMatch.new(step, step.name)
+              support_code.find_match(step) || NoStepMatch.new(step, step.name)
             end
           end
 
