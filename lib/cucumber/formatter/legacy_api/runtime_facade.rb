@@ -25,10 +25,6 @@ module Cucumber
         def steps(status = nil)
           results.steps(status)
         end
-
-        def step_match(step_name, name_to_report=nil)
-          support_code.step_match(step_name, name_to_report)
-        end
       end
 
     end
