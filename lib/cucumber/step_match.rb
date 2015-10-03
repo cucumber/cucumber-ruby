@@ -1,24 +1,18 @@
 require 'cucumber/multiline_argument'
 
 module Cucumber
+
+  # Represents the match found between a Test Step and it's activation
   class StepMatch #:nodoc:
     attr_reader :step_definition, :step_arguments
 
-    # Creates a new StepMatch. The +name_to_report+ argument is what's
-    # reported, unless it's is, in which case +name_to_report+ is used instead.
-    #
-    def initialize(step_definition, name_to_match, name_to_report, step_arguments)
-      raise "name_to_match can't be nil" if name_to_match.nil?
+    def initialize(step_definition, step_name, step_arguments)
       raise "step_arguments can't be nil (but it can be an empty array)" if step_arguments.nil?
-      @step_definition, @name_to_match, @name_to_report, @step_arguments = step_definition, name_to_match, name_to_report, step_arguments
+      @step_definition, @name_to_match, @step_arguments = step_definition, step_name, step_arguments
     end
 
     def args
       @step_arguments.map{|g| g.val }
-    end
-
-    def name
-      @name_to_report
     end
 
     def activate(test_step)
@@ -49,7 +43,7 @@ module Cucumber
     #   lambda { |param| "[#{param}]" }
     #
     def format_args(format = lambda{|a| a}, &proc)
-      @name_to_report || replace_arguments(@name_to_match, @step_arguments, format, &proc)
+      replace_arguments(@name_to_match, @step_arguments, format, &proc)
     end
 
     def location

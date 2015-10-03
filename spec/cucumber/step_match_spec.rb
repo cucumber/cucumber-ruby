@@ -17,7 +17,7 @@ module Cucumber
 
     def step_match(regexp, name)
       stepdef = stepdef(regexp)
-      StepMatch.new(stepdef, name, nil, stepdef.arguments_from(name))
+      StepMatch.new(stepdef, name, stepdef.arguments_from(name))
     end
 
     it "formats one group when we use Unicode" do

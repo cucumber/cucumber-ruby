@@ -53,10 +53,10 @@ module Cucumber
         configuration.register_snippet_generator(Snippet::Generator.new)
       end
 
-      def step_matches(name_to_match, name_to_format)
+      def step_matches(name_to_match)
         @step_definitions.map do |step_definition|
-          if(arguments = step_definition.arguments_from(name_to_match))
-            StepMatch.new(step_definition, name_to_match, name_to_format, arguments)
+          if (arguments = step_definition.arguments_from(name_to_match))
+            StepMatch.new(step_definition, name_to_match, arguments)
           else
             nil
           end

@@ -149,8 +149,7 @@ module Cucumber
       end
 
       def step_match(step_name)
-        name_to_report = nil
-        matches = matches(step_name, name_to_report)
+        matches = matches(step_name)
         raise Undefined.new(step_name) if matches.empty?
         matches = best_matches(step_name, matches) if matches.size > 1 && guess_step_matches?
         raise Ambiguous.new(step_name, matches, guess_step_matches?) if matches.size > 1
@@ -163,8 +162,8 @@ module Cucumber
         @configuration.guess?
       end
 
-      def matches(step_name, name_to_report)
-        @ruby.step_matches(step_name, name_to_report).to_a
+      def matches(step_name)
+        @ruby.step_matches(step_name).to_a
       end
 
       def best_matches(step_name, step_matches) #:nodoc:
@@ -195,13 +194,12 @@ module Cucumber
       require 'delegate'
       class CachesStepMatch < SimpleDelegator
         def step_match(step_name) #:nodoc:
-          name_to_report = nil
           @match_cache ||= {}
 
-          match = @match_cache[[step_name, name_to_report]]
+          match = @match_cache[step_name]
           return match if match
 
-          @match_cache[[step_name, name_to_report]] = super(step_name)
+          @match_cache[step_name] = super(step_name)
         end
       end
     end
