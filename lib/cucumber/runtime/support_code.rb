@@ -120,7 +120,6 @@ module Cucumber
         # TODO: move this onto Filters::ActivateSteps
         @configuration.notify Events::StepMatch.new(test_step, match)
 
-        return SkippingStepMatch.new if @configuration.dry_run?
         match
       end
 
