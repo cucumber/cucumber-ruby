@@ -56,8 +56,10 @@ module Cucumber
       @support_code.configure(@configuration)
     end
 
+    require 'cucumber/wire/plugin'
     def run!
       load_step_definitions
+      install_wire_plugin
       fire_after_configuration_hook
       self.visitor = report
 
@@ -255,6 +257,10 @@ module Cucumber
     def load_step_definitions
       files = @configuration.support_to_load + @configuration.step_defs_to_load
       @support_code.load_files!(files)
+    end
+
+    def install_wire_plugin
+      Cucumber::Wire::Plugin.new(@configuration).install if @configuration.all_files_to_load.any? {|f| f =~ %r{\.wire$} }
     end
 
     def log
