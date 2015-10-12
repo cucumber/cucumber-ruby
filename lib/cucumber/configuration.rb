@@ -32,7 +32,7 @@ module Cucumber
     end
 
     def with_options(new_options)
-      self.class.new(new_options.merge(@options))
+      self.class.new(@options.merge(new_options))
     end
 
     # TODO: Actually Deprecate???
