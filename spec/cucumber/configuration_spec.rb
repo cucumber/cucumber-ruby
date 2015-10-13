@@ -136,8 +136,9 @@ module Cucumber
 
     describe "#with_options" do
       it "returns a copy of the configuration with new options" do
-        new_out_stream = double
-        config = Configuration.new.with_options(out_stream: new_out_stream)
+        old_out_stream = double('Old out_stream')
+        new_out_stream = double('New out_stream')
+        config = Configuration.new(out_stream: old_out_stream).with_options(out_stream: new_out_stream)
         expect(config.out_stream).to eq new_out_stream
       end
     end
