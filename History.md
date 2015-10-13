@@ -4,6 +4,8 @@
 
 ### Bugfixes
 
+* Fix Configuration.with_options merge direction ([#922](https://github.com/cucumber/cucumber-ruby/pull/922) @limhoff-r7)
+
 ### Refactoring
 
 ## [v2.1](https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...v2.1)
