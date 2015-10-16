@@ -6,7 +6,7 @@ describe Cucumber::Filters::ActivateSteps do
   include Cucumber::Core::Gherkin::Writer
   include Cucumber::Core
 
-  let(:step_definitions) { double(find_match: step_match) }
+  let(:step_definitions) { double(step_matches: [step_match]) }
   let(:step_match) { double(activate: activated_test_step) }
   let(:activated_test_step) { double }
   let(:receiver) { double.as_null_object }
@@ -65,7 +65,7 @@ describe Cucumber::Filters::ActivateSteps do
   end
 
   context "undefined step" do
-    let(:step_definitions) { double(find_match: nil) }
+    let(:step_definitions) { double(step_matches: []) }
 
     let(:doc) do
       gherkin do
@@ -120,7 +120,7 @@ describe Cucumber::Filters::ActivateSteps do
   end
 
   context "undefined step in a dry run" do
-    let(:step_definitions) { double(find_match: nil) }
+    let(:step_definitions) { double(step_matches: []) }
     let(:configuration) { double(dry_run?: true, notify: nil) }
 
     let(:doc) do

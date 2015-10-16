@@ -30,16 +30,16 @@ module Cucumber
       end
 
       class SimpleStepDefinitions
-        def find_match(test_step)
-          if test_step.name =~ /pass/
-            return SimpleStepMatch.new {}
+        def step_matches(name)
+          if name =~ /pass/
+            return [SimpleStepMatch.new {}]
           end
 
-          if test_step.name =~ /fail/
-            return SimpleStepMatch.new { raise Failure }
+          if name =~ /fail/
+            return [SimpleStepMatch.new { raise Failure }]
           end
 
-          NoStepMatch.new test_step.source.last, test_step.name
+          raise Cucumber::Undefined
         end
       end
 
