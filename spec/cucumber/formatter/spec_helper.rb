@@ -38,7 +38,6 @@ module Cucumber
         @report ||= LegacyApi::Adapter.new(
           Fanout.new([@formatter]),
           runtime.results,
-          runtime.support_code,
           runtime.configuration)
       end
 

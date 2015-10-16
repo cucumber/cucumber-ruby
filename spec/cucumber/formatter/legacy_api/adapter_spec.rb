@@ -5,6 +5,7 @@ require 'cucumber/runtime/step_hooks'
 require 'cucumber/runtime/before_hooks'
 require 'cucumber/runtime/after_hooks'
 require 'cucumber/filters'
+require 'spec_helper'
 
 module Cucumber
   module Formatter::LegacyApi
@@ -12,7 +13,7 @@ module Cucumber
       include Core::Gherkin::Writer
       include Core
 
-      let(:report)    { Adapter.new(formatter, runtime.results, runtime.support_code, runtime.configuration) }
+      let(:report)    { Adapter.new(formatter, runtime.results, runtime.configuration) }
       let(:formatter) { double('formatter').as_null_object }
       let(:runtime)   { Runtime.new }
 
@@ -2065,6 +2066,28 @@ module Cucumber
                 :after_feature,
               :after_features,
             ])
+          end
+        end
+      end
+
+      describe 'before_step_result message' do
+        context 'when the step matches' do
+          it "sends the step match to the formatter" do
+            expect(formatter).to receive(:before_step_result) do |_, step_match, *|
+              expect(step_match).to be_a SimpleStepMatch
+            end
+            execute_gherkin do
+              feature do
+                scenario do
+                  step 'passing'
+                end
+              end
+            end
+          end
+        end
+
+        context "when the step doesn't match" do
+          it "sends a null object to the formatter" do
           end
         end
       end

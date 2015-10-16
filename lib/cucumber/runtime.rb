@@ -210,7 +210,7 @@ module Cucumber
       formatter = factory.new(runtime_facade, path_or_io, options)
       Formatter::LegacyApi::Adapter.new(
         Formatter::IgnoreMissingMessages.new(formatter),
-        results, @support_code, @configuration)
+        results, @configuration)
     end
 
     def legacy_formatter?(factory)

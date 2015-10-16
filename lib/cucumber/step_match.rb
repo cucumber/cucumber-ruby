@@ -84,7 +84,7 @@ module Cucumber
     end
 
     def inspect #:nodoc:
-      sprintf("#<%s:0x%x>", self.class, self.object_id)
+      "#<#{self.class}: #{location}>"
     end
 
     private

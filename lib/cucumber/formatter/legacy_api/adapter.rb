@@ -9,8 +9,13 @@ module Cucumber
   module Formatter
     module LegacyApi
 
-      Adapter = Struct.new(:formatter, :results, :support_code, :config) do
+      Adapter = Struct.new(:formatter, :results, :config) do
         extend Forwardable
+
+        def initialize(*)
+          super
+          @matches = collect_matches
+        end
 
         def_delegators :formatter,
           :ask
@@ -51,7 +56,7 @@ module Cucumber
         private
 
         def printer
-          @printer ||= FeaturesPrinter.new(formatter, results, support_code, config).before
+          @printer ||= FeaturesPrinter.new(formatter, results, config, @matches).before
         end
 
         def record_test_case_result(test_case, result)
@@ -59,8 +64,16 @@ module Cucumber
           results.scenario_visited(scenario)
         end
 
+        def collect_matches
+          result = {}
+          config.on_event(:step_match) do |event|
+            result[event.test_step.source.last] = event.step_match
+          end
+          result
+        end
+
         require 'cucumber/core/test/timer'
-        FeaturesPrinter = Struct.new(:formatter, :results, :support_code, :config) do
+        FeaturesPrinter = Struct.new(:formatter, :results, :config, :matches) do
           extend Forwardable
 
           def before
@@ -89,7 +102,7 @@ module Cucumber
           def feature(node, *)
             if node != @current_feature
               @child.after if @child
-              @child = FeaturePrinter.new(formatter, results, support_code, config, node).before
+              @child = FeaturePrinter.new(formatter, results, matches, config, node).before
               @current_feature = node
             end
           end
@@ -125,6 +138,7 @@ module Cucumber
           def timer
             @timer ||= Cucumber::Core::Test::Timer.new
           end
+
         end
 
         module TestCaseSource
@@ -173,9 +187,9 @@ module Cucumber
 
           require 'ostruct'
           class StepSource < OpenStruct
-            def build_step_invocation(indent, support_code, config, messages, embeddings)
+            def build_step_invocation(indent, matches, config, messages, embeddings)
               step_result.step_invocation(
-                step_match(support_code),
+                matches.fetch(step) { NoStepMatch.new(step, step.name) },
                 step,
                 indent,
                 background,
@@ -183,12 +197,6 @@ module Cucumber
                 messages,
                 embeddings
               )
-            end
-
-            private
-
-            def step_match(support_code)
-              support_code.find_match(step) || NoStepMatch.new(step, step.name)
             end
           end
 
@@ -201,7 +209,7 @@ module Cucumber
           end
         end
 
-        FeaturePrinter = Struct.new(:formatter, :results, :support_code, :config, :node) do
+        FeaturePrinter = Struct.new(:formatter, :results, :matches, :config, :node) do
 
           def before
             formatter.before_feature(node)
@@ -355,14 +363,14 @@ module Cucumber
 
             if @failed_hidden_background_step
               indent = Indent.new(@child.node)
-              step_invocation = @failed_hidden_background_step.build_step_invocation(indent, support_code, config, messages = [], embeddings = [])
+              step_invocation = @failed_hidden_background_step.build_step_invocation(indent, matches, config, messages = [], embeddings = [])
               @child.step_invocation(step_invocation, @failed_hidden_background_step)
               @failed_hidden_background_step = nil
             end
 
             unless @last_step == current_test_step_source.step
               indent ||= Indent.new(@child.node)
-              step_invocation = current_test_step_source.build_step_invocation(indent, support_code, config, @delayed_messages, @delayed_embeddings)
+              step_invocation = current_test_step_source.build_step_invocation(indent, matches, config, @delayed_messages, @delayed_embeddings)
               results.step_visited step_invocation
               @child.step_invocation(step_invocation, current_test_step_source)
               @last_step = current_test_step_source.step
