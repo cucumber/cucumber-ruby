@@ -354,6 +354,12 @@ module Cucumber
               expect(options[:retry]).to eql 0
             end
           end
+
+          it 'sets the options[:retry] value' do 
+            after_parsing("--retry 4") do 
+              expect(options[:retry]).to eql 4
+            end
+          end
         end
 
         it "assigns any extra arguments as paths to features" do

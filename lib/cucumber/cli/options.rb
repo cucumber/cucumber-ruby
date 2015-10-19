@@ -189,7 +189,7 @@ module Cucumber
             "Disables all profile loading to avoid using the 'default' profile.") do |v|
             @disable_profile_loading = true
           end
-          opts.on("#{RETRY_FLAG} ATTEMPTS", "Specify number of times to retry failing tests (default 0)") do |v|
+          opts.on("#{RETRY_FLAG} ATTEMPTS", "Specify the number of times to retry failing tests (default: 0)") do |v|
             @options[:retry] = v.to_i
           end
           opts.on("-c", "--[no-]color",
