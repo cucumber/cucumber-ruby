@@ -15,17 +15,18 @@ Feature: Retry failing tests
     Given a scenario "Flakey" that fails once, then passes
     And a scenario "Shakey" that fails twice, then passes
     And a scenario "Solid" that passes
+    And a scenario "No Dice" that fails
   
   Scenario:
-    When I run `cucumber --retry 1`
+    When I run `cucumber -q --retry 1`
     Then it should fail with:
       """
-      3 scenarios (2 passed, 1 failed)
+      4 scenarios (2 passed, 2 failed)
       """
 
   Scenario:
-    When I run `cucumber --retry 2`
+    When I run `cucumber -q --retry 2`
     Then it should pass with:
       """
-      3 scenarios (3 passed)
+      4 scenarios (3 passed, 1 failed)
       """
