@@ -16,7 +16,7 @@ module Cucumber
       end
 
       def features
-        lines.map { |l| l.scan(/(?:^| )(.*?\.feature(?:(?::\d+)*))/) }.flatten
+        lines.map { |l| l.scan(/(?:^| |)(.*?\.feature(?:(?::\d+)*))/) }.flatten
       end
 
       private
