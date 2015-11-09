@@ -94,6 +94,11 @@ module Cucumber
       #
       #   If you'd prefer to see the message immediately, call {Kernel.puts} instead.
       def puts(*messages)
+        # Even though they won't be output until later, converting the messages to
+        # strings right away will protect them from modifications to their original
+        # objects in the mean time
+        messages.collect! { |message| "#{message}" }
+
         @__cucumber_runtime.puts(*messages)
       end
 

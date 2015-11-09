@@ -4,6 +4,7 @@
 
 ### Bugfixes
 
+* Let the formatters output the value of printed variables at time of the call to `#puts` ([#918](https://github.com/cucumber/cucumber-ruby/pull/918) [#915](https://github.com/cucumber/cucumber-ruby/issues/915) @enkessler @brasmusson)
 * Fix Configuration.with_options merge direction ([#922](https://github.com/cucumber/cucumber-ruby/pull/922) @limhoff-r7)
 
 ### Refactoring
