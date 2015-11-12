@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'gherkin3', '~> 3.1.0'
   s.add_dependency 'multi_json', '>= 1.7.5', '< 2.0'
   s.add_dependency 'multi_test', '>= 0.1.2'
+  s.add_dependency 'event-bus', '~> 0.1.0'
 
   s.add_development_dependency 'aruba', '~> 0.6.1'
   s.add_development_dependency 'json', '~> 1.7'

@@ -3,6 +3,8 @@ require 'cucumber/cli/rerun_file'
 require 'cucumber/events'
 require 'forwardable'
 require 'cucumber/core/gherkin/tag_expression'
+require 'event/bus'
+require 'event/name_resolver'
 
 module Cucumber
   # The base class for configuring settings for a Cucumber run.
@@ -212,7 +214,7 @@ module Cucumber
         :snippets            => true,
         :source              => true,
         :duration            => true,
-        :event_bus           => Events::Bus.new(Cucumber::Events)
+        :event_bus           => ::Event::Bus.new(::Event::NameResolver.new(Cucumber::Events))
       }
     end
 
