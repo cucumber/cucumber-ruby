@@ -48,4 +48,8 @@ module Cucumber
       super(messages.join("\n"))
     end
   end
+
+  # Raised if an event name cannot be resolved
+  class EventNameResolveError < StandardError; end
+  class NoEventError < StandardError; end
 end

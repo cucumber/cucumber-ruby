@@ -212,7 +212,7 @@ module Cucumber
         :snippets            => true,
         :source              => true,
         :duration            => true,
-        :event_bus           => Events::Bus.new(Cucumber::Events)
+        :event_bus           => Events::Bus.new(Events::NameResolver.new(Cucumber::Events))
       }
     end
 
