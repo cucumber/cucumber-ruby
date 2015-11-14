@@ -12,7 +12,7 @@ module Cucumber
       end
 
       def invoke(pseudo_method, arguments, &block)
-        @rb_language.current_world.cucumber_instance_exec(false, pseudo_method, *[arguments, block].compact, &@proc)
+        @rb_language.current_world.cucumber_instance_exec(false, pseudo_method, *[arguments, block].flatten.compact, &@proc)
       end
     end
   end
