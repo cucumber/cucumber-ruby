@@ -1,7 +1,6 @@
-Feature: Test Step is available in AfterStep Block
-  In order to inspect a Test Step after it has executed
-  As a developer
-  I want Test Step objects available in AfterStep blocks
+Feature: AfterStep Hooks
+  AfterStep hooks can be used to further inspect the Step object of the step
+  that has just run, or to simply check the step's result.
 
   Background:
     Given the standard step definitions
@@ -33,7 +32,7 @@ Feature: Test Step is available in AfterStep Block
 
       """
 
-  Scenario: An AfterStep with one named argument does not change behavior
+  Scenario: An AfterStep with one named argument receives only the result
     Given a file named "features/support/env.rb" with:
       """
       AfterStep do |result|
