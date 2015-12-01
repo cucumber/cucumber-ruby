@@ -19,19 +19,19 @@ module Cucumber
 
       def run_defined_feature
         define_steps
-        runtime.visitor = report
+        actual_runtime.visitor = report
 
         receiver = Test::Runner.new(report)
         filters = [
           Filters::ActivateSteps.new(
-            StepMatchSearch.new(runtime.support_code.ruby.method(:step_matches), runtime.configuration),
-            runtime.configuration
+            StepMatchSearch.new(actual_runtime.support_code.ruby.method(:step_matches), actual_runtime.configuration),
+            actual_runtime.configuration
           ),
-          Filters::ApplyAfterStepHooks.new(runtime.support_code),
-          Filters::ApplyBeforeHooks.new(runtime.support_code),
-          Filters::ApplyAfterHooks.new(runtime.support_code),
-          Filters::ApplyAroundHooks.new(runtime.support_code),
-          Filters::PrepareWorld.new(runtime)
+          Filters::ApplyAfterStepHooks.new(actual_runtime.support_code),
+          Filters::ApplyBeforeHooks.new(actual_runtime.support_code),
+          Filters::ApplyAfterHooks.new(actual_runtime.support_code),
+          Filters::ApplyAroundHooks.new(actual_runtime.support_code),
+          Filters::PrepareWorld.new(actual_runtime)
         ]
         compile [gherkin_doc], receiver, filters
       end
@@ -40,8 +40,8 @@ module Cucumber
       def report
         @report ||= LegacyApi::Adapter.new(
           Fanout.new([@formatter]),
-          runtime.results,
-          runtime.configuration)
+          actual_runtime.results,
+          actual_runtime.configuration)
       end
 
       require 'cucumber/core/gherkin/document'
@@ -54,7 +54,11 @@ module Cucumber
       end
 
       def runtime
-        @runtime ||= Runtime.new
+        @runtime_facade ||= LegacyApi::RuntimeFacade.new(actual_runtime.results, actual_runtime.support_code, actual_runtime.configuration)
+      end
+
+      def actual_runtime
+        @runtime ||= Runtime.new(options)
       end
 
       def define_steps
@@ -63,6 +67,10 @@ module Cucumber
         dsl = Object.new
         dsl.extend RbSupport::RbDsl
         dsl.instance_exec &step_defs
+      end
+
+      def options
+        {}
       end
     end
   end

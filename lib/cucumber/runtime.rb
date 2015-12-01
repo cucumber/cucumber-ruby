@@ -88,10 +88,6 @@ module Cucumber
       @support_code.unmatched_step_definitions
     end
 
-    def snippet_text(step_keyword, step_name, multiline_arg) #:nodoc:
-      @support_code.snippet_text(Cucumber::Gherkin::I18n.code_keyword_for(step_keyword).strip, step_name, multiline_arg)
-    end
-
     def begin_scenario(scenario)
       @support_code.fire_hook(:begin_scenario, scenario)
     end

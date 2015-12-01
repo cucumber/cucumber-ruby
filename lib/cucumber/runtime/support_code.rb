@@ -95,12 +95,6 @@ module Cucumber
         @ruby.unmatched_step_definitions
       end
 
-      def snippet_text(step_keyword, step_name, multiline_arg) #:nodoc:
-        @configuration.snippet_generators.map { |generator|
-          generator.call(step_keyword, step_name, multiline_arg, @configuration.snippet_type)
-        }.join("\n")
-      end
-
       def fire_hook(name, *args)
         @ruby.send(name, *args)
       end

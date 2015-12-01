@@ -642,7 +642,7 @@ OUTPUT
       end
 
       context "In --expand mode" do
-        let(:runtime)   { Runtime.new({:expand => true})}
+        let(:options) { { expand: true } }
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
@@ -731,7 +731,7 @@ OUTPUT
       end
 
       context "In --expand mode with --source as an option" do
-        let(:runtime)   { Runtime.new({:expand => true})}
+        let(:options) { { expand: true } }
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new

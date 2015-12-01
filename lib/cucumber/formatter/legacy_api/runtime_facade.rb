@@ -11,7 +11,10 @@ module Cucumber
         end
 
         def snippet_text(step_keyword, step_name, multiline_arg) #:nodoc:
-          support_code.snippet_text(Cucumber::Gherkin::I18n.code_keyword_for(step_keyword).strip, step_name, multiline_arg)
+          keyword = Cucumber::Gherkin::I18n.code_keyword_for(step_keyword).strip
+          configuration.snippet_generators.map { |generator|
+            generator.call(keyword, step_name, multiline_arg, configuration.snippet_type)
+          }.join("\n")
         end
 
         def unknown_programming_language?
