@@ -10,6 +10,7 @@ require 'cucumber/filters'
 require 'cucumber/formatter/fanout'
 require 'cucumber/formatter/event_bus_report'
 require 'cucumber/gherkin/i18n'
+require 'cucumber/step_match_search'
 
 module Cucumber
   module FixRuby21Bug9285
@@ -46,7 +47,7 @@ module Cucumber
 
     def initialize(configuration = Configuration.default)
       @configuration = Configuration.new(configuration)
-      @support_code = SupportCode::CachesStepMatch.new SupportCode.new(self, @configuration)
+      @support_code = SupportCode.new(self, @configuration)
       @results = Formatter::LegacyApi::Results.new
     end
 
@@ -239,7 +240,9 @@ module Cucumber
         filters << Cucumber::Core::Test::NameFilter.new(name_regexps)
         filters << Cucumber::Core::Test::LocationsFilter.new(filespecs.locations)
         filters << Filters::Quit.new
-        filters << Filters::ActivateSteps.new(@support_code, @configuration)
+        # TODO: can we just use RbLanguages's step definitions directly?
+        step_match_search = StepMatchSearch.new(@support_code.ruby.method(:step_matches), @configuration)
+        filters << Filters::ActivateSteps.new(step_match_search, @configuration)
         @configuration.filters.each do |filter|
           filters << filter
         end

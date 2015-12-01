@@ -23,7 +23,7 @@ module Cucumber
       end
 
       def step_match(text)
-        support_code.step_matches(text).first
+        StepMatchSearch.new(rb.method(:step_matches), Configuration.default).call(text).first
       end
 
       it "allows calling of other steps" do

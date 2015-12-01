@@ -3,6 +3,7 @@ require 'cucumber/cli/rerun_file'
 require 'cucumber/events'
 require 'forwardable'
 require 'cucumber/core/gherkin/tag_expression'
+require 'cucumber'
 
 module Cucumber
   # The base class for configuring settings for a Cucumber run.
