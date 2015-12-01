@@ -137,7 +137,7 @@ module Cucumber
       end
 
       def step_matches(step_name)
-        return step_match_library.step_matches(step_name)
+        step_match_library.step_matches(step_name)
       end
 
       private
