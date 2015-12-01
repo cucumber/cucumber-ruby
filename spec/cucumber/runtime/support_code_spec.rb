@@ -103,12 +103,6 @@ spec/cucumber/runtime/support_code_spec.rb:\\d+:in `/Three cute (.*)/'
         end
       end
 
-      it "raises Undefined error when no step definitions match" do
-        expect(-> {
-          subject.step_matches("Three blind mice").first
-        }).to raise_error(Undefined)
-      end
-
       # http://railsforum.com/viewtopic.php?pid=93881
       it "does not raise Redundant unless it's really redundant" do
         dsl.Given(/^(.*) (.*) user named '(.*)'$/) {|a,b,c|}

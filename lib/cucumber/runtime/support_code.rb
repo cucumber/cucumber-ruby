@@ -71,7 +71,9 @@ module Cucumber
         end
 
         def step_matches(step_name)
-          @step_match_library.step_matches(step_name)
+          result = @step_match_library.step_matches(step_name)
+          raise Cucumber::Ambiguous.new(step_name, result, false) if result.length > 1
+          result
         end
       end
 
@@ -147,33 +149,44 @@ module Cucumber
       end
 
       def step_matches(step_name)
-        return @ruby.step_matches(step_name).to_a
+        return step_match_library.step_matches(step_name)
       end
 
       private
 
-      def guess_step_matches?
-        @configuration.guess?
-      end
-
-      def matches(step_name)
-        @ruby.step_matches(step_name).to_a
-      end
-
-      def best_matches(step_name, step_matches) #:nodoc:
-        no_groups      = step_matches.select {|step_match| step_match.args.length == 0}
-        max_arg_length = step_matches.map {|step_match| step_match.args.length }.max
-        top_groups     = step_matches.select {|step_match| step_match.args.length == max_arg_length }
-
-        if no_groups.any?
-          longest_regexp_length = no_groups.map {|step_match| step_match.text_length }.max
-          no_groups.select {|step_match| step_match.text_length == longest_regexp_length }
-        elsif top_groups.any?
-          shortest_capture_length = top_groups.map {|step_match| step_match.args.inject(0) {|sum, c| sum + c.to_s.length } }.min
-          top_groups.select {|step_match| step_match.args.inject(0) {|sum, c| sum + c.to_s.length } == shortest_capture_length }
-        else
-          top_groups
+      class Guess
+        def initialize(step_match_library)
+          @step_match_library = step_match_library
         end
+
+        def step_matches(step_name)
+          best_matches(step_name, @step_match_library.step_matches(step_name))
+        end
+
+        private
+
+        def best_matches(step_name, step_matches) #:nodoc:
+          no_groups      = step_matches.select {|step_match| step_match.args.length == 0}
+          max_arg_length = step_matches.map {|step_match| step_match.args.length }.max
+          top_groups     = step_matches.select {|step_match| step_match.args.length == max_arg_length }
+
+          if no_groups.any?
+            longest_regexp_length = no_groups.map {|step_match| step_match.text_length }.max
+            no_groups.select {|step_match| step_match.text_length == longest_regexp_length }
+          elsif top_groups.any?
+            shortest_capture_length = top_groups.map {|step_match| step_match.args.inject(0) {|sum, c| sum + c.to_s.length } }.min
+            top_groups.select {|step_match| step_match.args.inject(0) {|sum, c| sum + c.to_s.length } == shortest_capture_length }
+          else
+            top_groups
+          end
+        end
+
+      end
+
+      def step_match_library
+        result = @ruby
+        result = Guess.new(result) if @configuration.guess?
+        AmbiguityCheck.new(result)
       end
 
       def load_file(file)
