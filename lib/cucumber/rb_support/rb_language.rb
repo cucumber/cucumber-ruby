@@ -54,13 +54,12 @@ module Cucumber
       end
 
       def step_matches(name_to_match)
-        @step_definitions.map do |step_definition|
+        @step_definitions.reduce([]) { |result, step_definition|
           if (arguments = step_definition.arguments_from(name_to_match))
-            StepMatch.new(step_definition, name_to_match, arguments)
-          else
-            nil
+            result << StepMatch.new(step_definition, name_to_match, arguments)
           end
-        end.compact
+          result
+        }
       end
 
       def begin_rb_scenario(scenario)
