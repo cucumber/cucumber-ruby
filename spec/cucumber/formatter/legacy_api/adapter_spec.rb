@@ -39,7 +39,7 @@ module Cucumber
             return [SimpleStepMatch.new { raise Failure }]
           end
 
-          raise Cucumber::Undefined
+          []
         end
       end
 
