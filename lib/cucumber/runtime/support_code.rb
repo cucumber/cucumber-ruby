@@ -144,7 +144,8 @@ module Cucumber
 
       def step_match_library
         AssertUnambiguousMatch.new(
-          @configuration.guess? ? AttemptToGuessAmbiguousMatch.new(@ruby) : @ruby
+          @configuration.guess? ? AttemptToGuessAmbiguousMatch.new(@ruby) : @ruby,
+          @configuration
         )
       end
 
@@ -170,13 +171,13 @@ module Cucumber
       end
 
       class AssertUnambiguousMatch
-        def initialize(step_match_library)
-          @step_match_library = step_match_library
+        def initialize(step_match_library, configuration)
+          @step_match_library, @configuration = step_match_library, configuration
         end
 
         def step_matches(step_name)
           result = @step_match_library.step_matches(step_name)
-          raise Cucumber::Ambiguous.new(step_name, result, false) if result.length > 1
+          raise Cucumber::Ambiguous.new(step_name, result, @configuration.guess?) if result.length > 1
           result
         end
       end
