@@ -65,18 +65,6 @@ module Cucumber
         parser.parse(steps_text)
       end
 
-      class AmbiguityCheck
-        def initialize(step_match_library)
-          @step_match_library = step_match_library
-        end
-
-        def step_matches(step_name)
-          result = @step_match_library.step_matches(step_name)
-          raise Cucumber::Ambiguous.new(step_name, result, false) if result.length > 1
-          result
-        end
-      end
-
       # @api private
       # This allows users to attempt to find, match and execute steps
       # from code as the features are running, as opposed to regular
@@ -84,7 +72,7 @@ module Cucumber
       #
       # These are commonly called nested steps.
       def invoke_dynamic_step(step_name, multiline_argument, location=nil)
-        matches = AmbiguityCheck.new(self).step_matches(step_name)
+        matches = step_matches(step_name)
         raise UndefinedDynamicStep, step_name if matches.empty?
         matches.first.invoke(multiline_argument)
       end
@@ -186,7 +174,7 @@ module Cucumber
       def step_match_library
         result = @ruby
         result = Guess.new(result) if @configuration.guess?
-        AmbiguityCheck.new(result)
+        AssertUnambiguousMatch.new(result)
       end
 
       def load_file(file)
@@ -209,6 +197,19 @@ module Cucumber
           @match_cache[step_name] = super(step_name)
         end
       end
+
+      class AssertUnambiguousMatch
+        def initialize(step_match_library)
+          @step_match_library = step_match_library
+        end
+
+        def step_matches(step_name)
+          result = @step_match_library.step_matches(step_name)
+          raise Cucumber::Ambiguous.new(step_name, result, false) if result.length > 1
+          result
+        end
+      end
+
     end
   end
 end
