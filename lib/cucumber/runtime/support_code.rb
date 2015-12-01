@@ -137,16 +137,18 @@ module Cucumber
       end
 
       def step_matches(step_name)
-        step_match_library.step_matches(step_name)
+        StepMatchSearch.new(@ruby, @configuration).call(step_name)
       end
 
       private
 
-      def step_match_library
-        AssertUnambiguousMatch.new(
-          @configuration.guess? ? AttemptToGuessAmbiguousMatch.new(@ruby) : @ruby,
-          @configuration
-        )
+      module StepMatchSearch
+        def self.new(ruby, configuration)
+          AssertUnambiguousMatch.new(
+            configuration.guess? ? AttemptToGuessAmbiguousMatch.new(ruby) : ruby,
+            configuration
+          ).method(:step_matches)
+        end
       end
 
       def load_file(file)
