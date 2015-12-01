@@ -17,10 +17,6 @@ module Cucumber
           }.join("\n")
         end
 
-        def unknown_programming_language?
-          support_code.unknown_programming_language?
-        end
-
         def scenarios(status = nil)
           results.scenarios(status)
         end

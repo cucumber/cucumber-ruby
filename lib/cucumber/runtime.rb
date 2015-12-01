@@ -96,10 +96,6 @@ module Cucumber
       @support_code.fire_hook(:end_scenario)
     end
 
-    def unknown_programming_language?
-      @support_code.unknown_programming_language?
-    end
-
     # Returns Ast::DocString for +string_without_triple_quotes+.
     #
     def doc_string(string_without_triple_quotes, content_type='', line_offset=0)
