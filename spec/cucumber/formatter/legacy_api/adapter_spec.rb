@@ -2082,14 +2082,17 @@ module Cucumber
         end
       end
 
-      it 'passes an object responding to failed? with the after_feature_element message' do
-        expect( formatter ).to receive(:after_feature_element) do |scenario|
-          expect( scenario ).to be_failed
-        end
-        execute_gherkin do
-          feature do
-            scenario do
-              step 'failing'
+      context "after_feature_element callback" do
+        it 'passes an object reflecting the status of the scenario' do
+          expect( formatter ).to receive(:after_feature_element).once do |scenario|
+            expect( scenario ).to be_failed
+          end
+          execute_gherkin do
+            feature do
+              scenario do
+                step 'failing'
+                step 'this will be skipped'
+              end
             end
           end
         end
