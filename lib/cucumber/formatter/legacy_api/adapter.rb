@@ -251,7 +251,7 @@ module Cucumber
             @delayed_messages = []
             @delayed_embeddings = []
 
-            @child.after_test_case if @child
+            @child.after_test_case(test_case, test_case_result) if @child
             @previous_test_case_background = @current_test_case_background
             @previous_test_case_scenario_outline = current_test_step_source && current_test_step_source.scenario_outline
           end
@@ -523,23 +523,21 @@ module Cucumber
           def step_invocation(step_invocation, source)
             @child ||= StepsPrinter.new(formatter).before
             @child.step_invocation step_invocation
-            @last_step_result = source.step_result
           end
 
           def after_step_hook(result)
             result.accept formatter
           end
 
-          def after_test_case(*args)
+          def after_test_case(test_case, result)
+            @test_case_result = result
             after
           end
 
           def after
             return if @done
             @child.after if @child
-            # TODO - the last step result might not accurately reflect the
-            # overall scenario result.
-            scenario = last_step_result.scenario(node.name, node.location)
+            scenario = LegacyResultBuilder.new(@test_case_result).scenario(node.name, node.location)
             after_hook_results.accept(formatter)
             formatter.after_feature_element(scenario)
             @done = true
@@ -547,10 +545,6 @@ module Cucumber
           end
 
           private
-
-          def last_step_result
-            @last_step_result || LegacyResultBuilder.new(Core::Test::Result::Unknown.new)
-          end
 
           def indent
             @indent ||= Indent.new(node)
@@ -610,8 +604,8 @@ module Cucumber
             @child.examples_table_row(node, before_hook_results)
           end
 
-          def after_test_case
-            @child.after_test_case
+          def after_test_case(test_case, result)
+            @child.after_test_case(test_case, result)
           end
 
           def after
@@ -712,7 +706,7 @@ module Cucumber
           end
 
           def after_test_case(*args)
-            @child.after_test_case
+            @child.after_test_case(*args)
           end
 
           def after
