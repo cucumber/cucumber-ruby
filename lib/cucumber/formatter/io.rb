@@ -19,7 +19,7 @@ module Cucumber
       def ensure_file(path, name)
         raise "You *must* specify --out FILE for the #{name} formatter" unless String === path
         raise "I can't write #{name} to a directory - it has to be a file" if File.directory?(path)
-        ensure_io(path, name)
+        ensure_io(path)
       end
 
       def ensure_dir(path, name)
