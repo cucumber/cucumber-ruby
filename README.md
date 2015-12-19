@@ -2,7 +2,7 @@
 [![Build Status](https://secure.travis-ci.org/cucumber/cucumber-ruby.svg)](http://travis-ci.org/cucumber/cucumber-ruby)
 [![Code Climate](https://codeclimate.com/github/cucumber/cucumber-ruby.svg)](https://codeclimate.com/github/cucumber/cucumber-ruby)
 [![Coverage Status](https://coveralls.io/repos/cucumber/cucumber-ruby/badge.svg?branch=master)](https://coveralls.io/r/cucumber/cucumber-ruby?branch=master)
-[![Dependency Status](https://gemnasium.com/cucumber/cucumber-ruby.png)](https://gemnasium.com/cucumber/cucumber-ruby)
+[![Dependency Status](https://gemnasium.com/cucumber/cucumber-ruby.svg)](https://gemnasium.com/cucumber/cucumber-ruby)
 
 # Cucumber
 
