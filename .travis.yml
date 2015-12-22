@@ -11,6 +11,9 @@ branches:
     - master
     - v1.3.x-bugfix
 
+before_install:
+  - gem update bundler
+
 notifications:
   email:
     - cukes-devs@googlegroups.com
