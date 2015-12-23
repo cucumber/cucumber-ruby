@@ -1,10 +1,7 @@
 # -*- encoding: utf-8 -*-
-$LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
-require "cucumber/platform"
-
 Gem::Specification.new do |s|
   s.name        = 'cucumber'
-  s.version     = Cucumber::VERSION
+  s.version     = File.read(File.expand_path("../lib/cucumber/version", __FILE__))
   s.authors     = ["Aslak Hellesøy", "Matt Wynne", "Steve Tooke"]
   s.description = 'Behaviour Driven Development with elegance and joy'
   s.summary     = "cucumber-#{s.version}"
