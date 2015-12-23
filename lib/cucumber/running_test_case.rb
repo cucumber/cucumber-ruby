@@ -1,4 +1,5 @@
 require 'delegate'
+require 'cucumber/deprecate'
 
 module Cucumber
   # Represents the current status of a running test case.
@@ -94,7 +95,10 @@ module Cucumber
       end
 
       def skip_invoke!
-        Cucumber.deprecate(self.class.name, __method__, "Call #skip_this_scenario on the World directly")
+        Cucumber.deprecate(
+          "Just call #skip_this_scenario directly",
+          "skip_invoke!",
+          "2.9.9")
         raise Cucumber::Core::Test::Result::Skipped
       end
 

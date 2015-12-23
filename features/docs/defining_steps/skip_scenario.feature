@@ -29,7 +29,8 @@ Feature: Skip Scenario
 
       """
 
-  Scenario: Use legacy API from a hook
+  @spawn
+  Scenario: Use (deprecated) legacy API
     Given a file named "features/test.feature" with:
       """
       Feature: test
@@ -57,4 +58,7 @@ Feature: Skip Scenario
       2 steps (2 skipped)
 
       """
-
+    And the stderr should contain:
+      """
+      WARNING: skip_invoke! is deprecated
+      """
