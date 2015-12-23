@@ -9,6 +9,8 @@
 
 ### Refactoring
 
+* Remove wire protocol to plugin ([#878](https://github.com/cucumber/cucumber-ruby/pull/878) @mattwynne @tooky)
+
 ## [v2.1](https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...v2.1)
 
 ### New Features
