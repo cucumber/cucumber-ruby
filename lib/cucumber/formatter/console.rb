@@ -69,7 +69,8 @@ module Cucumber
           if status == :failed
             print_exception(element.exception, status, 0)
           else
-            @io.puts(format_string(element.backtrace_line, status))
+            message = linebreaks(element.backtrace_line, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
+            @io.puts(format_string(message, status))
           end
           @io.puts
           @io.flush
@@ -123,9 +124,7 @@ module Cucumber
 
       def print_exception(e, status, indent)
         message = "#{e.message} (#{e.class})".force_encoding("UTF-8")
-        if ENV['CUCUMBER_TRUNCATE_OUTPUT']
-          message = linebreaks(message, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
-        end
+        message = linebreaks(message, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
 
         string = "#{message}\n#{e.backtrace.join("\n")}".indent(indent)
         @io.puts(format_string(string, status))
@@ -133,6 +132,7 @@ module Cucumber
 
       # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655
       def linebreaks(s, max)
+        return s unless max && max > 0
         s.gsub(/.{1,#{max}}(?:\s|\Z)/){($& + 5.chr).gsub(/\n\005/,"\n").gsub(/\005/,"\n")}.rstrip
       end
 
