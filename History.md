@@ -12,6 +12,7 @@
 ### Refactoring
 
 * Remove wire protocol to plugin ([#878](https://github.com/cucumber/cucumber-ruby/pull/878) @mattwynne @tooky)
+* Remove event bus to separate gem ([#933](https://github.com/cucumber/cucumber-ruby/pull/933) @dg-ratiodata)
 
 ## [v2.1](https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...v2.1)
 
