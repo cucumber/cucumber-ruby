@@ -7,6 +7,7 @@
 * Let the formatters output the value of printed variables at time of the call to `#puts` ([#918](https://github.com/cucumber/cucumber-ruby/pull/918) [#915](https://github.com/cucumber/cucumber-ruby/issues/915) @enkessler @brasmusson)
 * Fix Configuration.with_options merge direction ([#922](https://github.com/cucumber/cucumber-ruby/pull/922) @limhoff-r7)
 * Consistent line breaks / truncation in backtraces ([#941](https://github.com/cucumber/cucumber-ruby/pull/941) @tooky)
+* Fix extra arg passed to ensure_io ([#939](https://github.com/cucumber/cucumber-ruby/pull/939A @benshan)
 
 ### Refactoring
 
