@@ -6,7 +6,7 @@
 
 ### Refactoring
 
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.1...v2.2)
+## [v2.2](https://github.com/cucumber/cucumber-ruby/compare/v2.1...v2.2)
 
 ### Bugfixes
 
