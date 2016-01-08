@@ -8,6 +8,9 @@
 
 ## [v2.2](https://github.com/cucumber/cucumber-ruby/compare/v2.1...v2.2)
 
+Although this release is only bugfixes and refactorings, the extraction of the wire protocol is quite a significant change and
+could cause breaking changes for users of undocumented APIs. Hence the minor version bump.
+
 ### Bugfixes
 
 * Let the formatters output the value of printed variables at time of the call to `#puts` ([#918](https://github.com/cucumber/cucumber-ruby/pull/918) [#915](https://github.com/cucumber/cucumber-ruby/issues/915) @enkessler @brasmusson)
