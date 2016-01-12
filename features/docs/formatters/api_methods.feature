@@ -18,6 +18,7 @@ Feature: Formatter API methods
       Feature: Test
         Scenario: Test
       """
+    And a directory named "my/special"
     And a file named "features/support/custom_formatter.rb" with:
       """
       require 'cucumber/formatter/io'
