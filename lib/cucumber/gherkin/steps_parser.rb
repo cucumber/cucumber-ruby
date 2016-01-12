@@ -1,7 +1,7 @@
-require 'gherkin3/token_scanner'
-require 'gherkin3/token_matcher'
-require 'gherkin3/ast_builder'
-require 'gherkin3/parser'
+require 'gherkin/token_scanner'
+require 'gherkin/token_matcher'
+require 'gherkin/ast_builder'
+require 'gherkin/parser'
 
 module Cucumber
   module Gherkin
@@ -11,16 +11,16 @@ module Cucumber
         @language = language
       end
       def parse(text)
-        ast_builder = ::Gherkin3::AstBuilder.new
-        token_matcher = ::Gherkin3::TokenMatcher.new
+        ast_builder = ::Gherkin::AstBuilder.new
+        token_matcher = ::Gherkin::TokenMatcher.new
         token_matcher.send(:change_dialect, @language, nil) unless @language == 'en'
-        context = ::Gherkin3::ParserContext.new(
-          ::Gherkin3::TokenScanner.new(text),
+        context = ::Gherkin::ParserContext.new(
+          ::Gherkin::TokenScanner.new(text),
           token_matcher,
           [],
           []
           )
-        parser = ::Gherkin3::Parser.new(ast_builder)
+        parser = ::Gherkin::Parser.new(ast_builder)
 
         parser.start_rule(context, :ScenarioDefinition)
         parser.start_rule(context, :Scenario)

@@ -87,7 +87,7 @@ module Cucumber
 
             it "displays the language table" do 
               after_parsing '--i18n foo' do 
-                ::Gherkin3::DIALECTS.keys.map do |key|
+                ::Gherkin::DIALECTS.keys.map do |key|
                   expect(@output_stream.string).to include("#{key}");
                 end
               end

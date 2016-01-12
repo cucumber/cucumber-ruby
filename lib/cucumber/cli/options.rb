@@ -117,11 +117,11 @@ module Cucumber
           opts.on("--i18n LANG",
             "List keywords for in a particular language",
             %{Run with "--i18n help" to see all languages}) do |lang|
-            require 'gherkin3/dialect'
+            require 'gherkin/dialect'
 
             if lang == 'help'
               list_languages_and_exit
-            elsif !::Gherkin3::DIALECTS.keys.include? lang
+            elsif !::Gherkin::DIALECTS.keys.include? lang
               indicate_invalid_language_and_exit(lang)
             else
               list_keywords_and_exit(lang)
@@ -397,8 +397,8 @@ TEXT
       end
 
       def list_keywords_and_exit(lang)
-        require 'gherkin3/dialect'
-        language = ::Gherkin3::Dialect.for(lang)
+        require 'gherkin/dialect'
+        language = ::Gherkin::Dialect.for(lang)
         data = Cucumber::MultilineArgument::DataTable.from(
           [["feature", to_keywords_string(language.feature_keywords)],
           ["background", to_keywords_string(language.background_keywords)],
@@ -420,10 +420,10 @@ TEXT
       end
 
       def list_languages_and_exit
-        require 'gherkin3/dialect'
+        require 'gherkin/dialect'
         data = Cucumber::MultilineArgument::DataTable.from(
-          ::Gherkin3::DIALECTS.keys.map do |key|
-            [key, ::Gherkin3::DIALECTS[key].fetch('name'), ::Gherkin3::DIALECTS[key].fetch('native')]
+          ::Gherkin::DIALECTS.keys.map do |key|
+            [key, ::Gherkin::DIALECTS[key].fetch('name'), ::Gherkin::DIALECTS[key].fetch('native')]
           end)
         @out_stream.write(data.to_s({ color: false, prefixes: Hash.new('') }))
         Kernel.exit(0)

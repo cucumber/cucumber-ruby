@@ -2,6 +2,8 @@
 
 ### New Features
 
+* Update to Gherkin v3.2.0 (@brasmusson)
+
 ### Bugfixes
 
 ### Refactoring
