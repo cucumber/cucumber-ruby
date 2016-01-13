@@ -1,4 +1,12 @@
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.2...master)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.3.0...master)
+
+### New Features
+
+### Bugfixes
+
+### Refactoring
+
+## [v2.3.0](https://github.com/cucumber/cucumber-ruby/compare/v2.2.0...v2.3.0)
 
 ### New Features
 
@@ -8,7 +16,7 @@
 
 ### Refactoring
 
-## [v2.2](https://github.com/cucumber/cucumber-ruby/compare/v2.1...v2.2)
+## [v2.2.0](https://github.com/cucumber/cucumber-ruby/compare/v2.1.0...v2.2.0)
 
 Although this release is only bugfixes and refactorings, the extraction of the wire protocol is quite a significant change and
 could cause breaking changes for users of undocumented APIs. Hence the minor version bump.
@@ -25,7 +33,7 @@ could cause breaking changes for users of undocumented APIs. Hence the minor ver
 * Remove wire protocol to plugin ([#878](https://github.com/cucumber/cucumber-ruby/pull/878) @mattwynne @tooky)
 * Remove event bus to separate gem ([#933](https://github.com/cucumber/cucumber-ruby/pull/933) @dg-ratiodata)
 
-## [v2.1](https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...v2.1)
+## [v2.1.0](https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...v2.1.0)
 
 ### New Features
 
