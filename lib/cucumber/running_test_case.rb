@@ -81,12 +81,18 @@ module Cucumber
       end
 
       def title
-        warn("deprecated: call #name instead")
+        Cucumber.deprecate(
+          "Call #name instead",
+          "RunningTestCase#title",
+          "2.9.9")
         name
       end
 
       def source_tags
-        #warn('deprecated: call #tags instead')
+        Cucumber.deprecate(
+          "Call #tags instead",
+          "RunningTestCase#source_tags",
+          "2.9.9")
         tags
       end
 
@@ -96,8 +102,8 @@ module Cucumber
 
       def skip_invoke!
         Cucumber.deprecate(
-          "Just call #skip_this_scenario directly",
-          "skip_invoke!",
+          "Call #skip_this_scenario directly (not on any object)",
+          "RunningTestCase#skip_invoke!",
           "2.9.9")
         raise Cucumber::Core::Test::Result::Skipped
       end
