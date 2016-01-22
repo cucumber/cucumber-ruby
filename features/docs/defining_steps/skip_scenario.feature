@@ -60,5 +60,5 @@ Feature: Skip Scenario
       """
     And the stderr should contain:
       """
-      WARNING: skip_invoke! is deprecated
+      deprecated
       """
