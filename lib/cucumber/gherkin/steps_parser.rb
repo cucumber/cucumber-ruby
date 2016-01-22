@@ -12,11 +12,9 @@ module Cucumber
       end
       def parse(text)
         ast_builder = ::Gherkin::AstBuilder.new
-        token_matcher = ::Gherkin::TokenMatcher.new
-        token_matcher.send(:change_dialect, @language, nil) unless @language == 'en'
         context = ::Gherkin::ParserContext.new(
           ::Gherkin::TokenScanner.new(text),
-          token_matcher,
+          ::Gherkin::TokenMatcher.new(@language),
           [],
           []
           )
