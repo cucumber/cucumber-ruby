@@ -1,12 +1,12 @@
 ## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.3.1...master)
 
-### New Features
+... your change here?
 
-### Bugfixes
+## [v2.3.2](https://github.com/cucumber/cucumber-ruby/compare/v2.3.1...v2.3.2)
 
-### Refactoring
+Brought the event bus code back into Cucumber to avoid https://github.com/fedux-org/event-bus/issues/6
 
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.3.0...v2.3.1)
+## [v2.3.1](https://github.com/cucumber/cucumber-ruby/compare/v2.3.0...v2.3.1)
 
 Better deprecation warnings to help fix https://github.com/cucumber/cucumber-ruby/issues/942
 
