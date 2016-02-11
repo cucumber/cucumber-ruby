@@ -179,7 +179,7 @@ module Cucumber
       end
 
       def create_match_hash(test_step, result)
-        { location: test_step.action_location }
+        { location: test_step.action_location.to_s }
       end
 
       def create_result_hash(result)

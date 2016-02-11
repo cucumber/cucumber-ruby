@@ -1,6 +1,12 @@
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.3.1...master)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.3.2...master)
 
-... your change here?
+### New Features
+
+### Bugfixes
+
+* Stringifying location in the JSON formatter for more consistent json parsing ([949](https://github.com/cucumber/cucumber-ruby/pull/949), [945](https://github.com/cucumber/cucumber-ruby/issues/945) @larryprice)
+
+### Refactoring
 
 ## [v2.3.2](https://github.com/cucumber/cucumber-ruby/compare/v2.3.1...v2.3.2)
 
