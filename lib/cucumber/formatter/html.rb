@@ -30,6 +30,7 @@ module Cucumber
         @step_number = 0
         @header_red = nil
         @delayed_messages = []
+        @delayed_embeds = []
         @img_id = 0
         @text_id = 0
         @inside_outline = false
@@ -55,10 +56,15 @@ module Cucumber
         if @io.respond_to?(:path) and File.file?(src)
           out_dir = Pathname.new(File.dirname(File.absolute_path(@io.path)))
           src = Pathname.new(File.absolute_path(src)).relative_path_from(out_dir)
-        end        
-        @builder.span(:class => 'embed') do |pre|
-          pre << %{<a href="" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">#{label}</a><br>&nbsp;
-          <img id="#{id}" style="display: none" src="#{src}"/>}
+        end
+        link_to_screenshot = %{<a href="" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">#{label}</a><br /><img id="#{id}" style="display: none" src="#{src}" />}
+
+        if @in_scenario_outline
+          @delayed_embeds << link_to_screenshot
+        else
+          @builder.span(:class => 'embed') do |pre|
+            pre << link_to_screenshot
+          end
         end
       end
 
@@ -371,6 +377,7 @@ module Cucumber
             set_scenario_color_failed
           end
         end
+        embed_delayed_embeds
         if @outline_row
           @outline_row += 1
         end
@@ -414,6 +421,17 @@ module Cucumber
           @builder << @delayed_messages.join(", ")
         end
         empty_messages
+      end
+
+      def embed_delayed_embeds
+        @delayed_embeds.each do |embed|
+          @builder.tr do
+            @builder.td do |td|
+              td << embed
+            end
+          end
+        end
+        @delayed_embeds.clear
       end
 
       def empty_messages
