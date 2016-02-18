@@ -153,6 +153,7 @@ module Cucumber
         }
         step_hash[:comments] = Formatter.create_comments_array(step_source.comments) unless step_source.comments.empty?
         step_hash[:doc_string] = create_doc_string_hash(step_source.multiline_arg) if step_source.multiline_arg.doc_string?
+        step_hash[:rows] = create_data_table_value(step_source.multiline_arg) if step_source.multiline_arg.data_table?
         step_hash
       end
 
@@ -163,6 +164,12 @@ module Cucumber
           content_type: content_type,
           line: doc_string.location.line
         }
+      end
+
+      def create_data_table_value(data_table)
+        data_table.raw.map do |row|
+          { cells: row }
+        end
       end
 
       def add_match_and_result(test_step, result)

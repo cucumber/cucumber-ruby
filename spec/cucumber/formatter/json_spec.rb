@@ -757,6 +757,48 @@ module Cucumber
                                  "duration": 1}}]}]}]})
           end
         end
+
+        describe "with a scenario with a step with a data table" do
+          define_feature <<-FEATURE
+          Feature: Banana party
+
+            Scenario: Monkey eats bananas
+              Given there are bananas
+                | aa | bb |
+                | cc | dd |
+            FEATURE
+
+          define_steps do
+            Given(/^there are bananas$/) { |s| s }
+          end
+
+          it "includes the doc string in the json data" do
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+              [{"id": "banana-party",
+                "uri": "spec.feature",
+                "keyword": "Feature",
+                "name": "Banana party",
+                "line": 1,
+                "description": "",
+                "elements":
+                 [{"id": "banana-party;monkey-eats-bananas",
+                   "keyword": "Scenario",
+                   "name": "Monkey eats bananas",
+                   "line": 3,
+                   "description": "",
+                   "type": "scenario",
+                   "steps":
+                     [{"keyword": "Given ",
+                       "name": "there are bananas",
+                       "line": 4,
+                       "rows": 
+                         [{"cells": ["aa", "bb"]}, 
+                          {"cells": ["cc", "dd"]}],
+                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:772"},
+                       "result": {"status": "passed",
+                                  "duration": 1}}]}]}]})
+          end
+        end
       end
 
       def load_normalised_json(out)

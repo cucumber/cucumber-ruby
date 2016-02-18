@@ -4,6 +4,7 @@
 
 ### Bugfixes
 
+* Let the JSON formatter include data tables in the JSON file ([#948](https://github.com/cucumber/cucumber-ruby/issues/948) @brasmusson)
 * Stringifying location in the JSON formatter for more consistent json parsing ([949](https://github.com/cucumber/cucumber-ruby/pull/949), [945](https://github.com/cucumber/cucumber-ruby/issues/945) @larryprice)
 
 ### Refactoring
