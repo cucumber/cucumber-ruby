@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 Given /^a scenario "([^\"]*)" that fails once, then passes$/ do |name|
   write_file "features/#{name}.feature",
   <<-FEATURE

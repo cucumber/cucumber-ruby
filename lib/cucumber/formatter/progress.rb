@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cucumber/core/report/summary'
 require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/console'
@@ -53,7 +54,7 @@ module Cucumber
         result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         progress(result.to_sym) if !HookQueryVisitor.new(test_step).hook? || result.failed?
         unless HookQueryVisitor.new(test_step).hook?
-          collect_snippet_data(test_step, result) 
+          collect_snippet_data(test_step, result)
           @pending_step_matches << @matches[test_step.source] if result.pending?
           @failed_results << result if result.failed?
         end

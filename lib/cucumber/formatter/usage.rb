@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cucumber/formatter/progress'
 require 'cucumber/step_definition_light'
 

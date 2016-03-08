@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "cucumber/filters/gated_receiver"
 
 describe Cucumber::Filters::GatedReceiver do

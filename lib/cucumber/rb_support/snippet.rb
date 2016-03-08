@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Cucumber
   module RbSupport
     module Snippet
@@ -56,7 +57,7 @@ module Cucumber
         end
 
         def do_block
-          do_block = ""
+          do_block = String.new
           do_block << "do#{arguments}\n"
           multiline_argument.append_comment_to(do_block)
           do_block << "  pending # Write code here that turns the phrase above into concrete actions\n"

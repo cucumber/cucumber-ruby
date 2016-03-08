@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 require 'spec_helper'
 require 'cucumber/rb_support/rb_step_definition'
 require 'cucumber/rb_support/rb_language'

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 desc 'Make all files use UNIX (\n) line endings'
 task :fix_cr_lf do
   files = FileList['**/*']

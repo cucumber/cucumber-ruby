@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cucumber/filters/activate_steps'
 require 'cucumber/core/gherkin/writer'
 require 'cucumber/core'

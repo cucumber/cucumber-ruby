@@ -8,6 +8,7 @@ Feature: Nested Steps in I18n
     And a step definition that looks like this:
       """ruby
       # -*- coding: utf-8 -*-
+      # frozen_string_literal: true
       前提 /a turtle/ do
         puts "turtle!"
       end
@@ -17,6 +18,7 @@ Feature: Nested Steps in I18n
     Given a step definition that looks like this:
       """ruby
       # -*- coding: utf-8 -*-
+      # frozen_string_literal: true
       前提 /two turtles/ do
         steps %{
           前提 a turtle

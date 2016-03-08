@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Cucumber
   class StepDefinitions
     def initialize(configuration = Configuration.default)

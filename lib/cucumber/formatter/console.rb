@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cucumber/formatter/ansicolor'
 require 'cucumber/formatter/duration'
 require 'cucumber/gherkin/i18n'
@@ -101,7 +102,7 @@ module Cucumber
       end
 
       def exception_message_string(e, indent)
-        message = "#{e.message} (#{e.class})".force_encoding("UTF-8")
+        message = "#{e.message} (#{e.class})".dup.force_encoding("UTF-8")
         message = linebreaks(message, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
 
         string = "#{message}\n#{e.backtrace.join("\n")}".indent(indent)

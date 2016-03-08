@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 ENV['CUCUMBER_COLORS'] = nil
 $:.unshift(File.dirname(__FILE__))
 

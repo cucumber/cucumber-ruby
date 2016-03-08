@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 Given /^a directory without standard Cucumber project directory structure$/ do
   in_current_dir do
     FileUtils.rm_rf 'features' if File.directory?('features')

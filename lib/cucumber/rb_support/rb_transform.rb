@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Cucumber
   module RbSupport
     # A Ruby Transform holds a Regexp and a Proc, and is created

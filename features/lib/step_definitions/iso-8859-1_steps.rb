@@ -1,4 +1,5 @@
 # encoding: iso-8859-1
+# frozen_string_literal: true
 # Ideally we would use Norwegian keywords here, but that won't work unless this file is UTF-8 encoded.
 # Alternatively it would be possible to use Norwegian keywords and encode the file as UTF-8.
 #
