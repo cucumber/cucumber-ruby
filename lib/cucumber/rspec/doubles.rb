@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rspec/mocks'
 
 World(RSpec::Mocks::ExampleMethods)

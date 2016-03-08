@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 require 'cucumber/rb_support/rb_language'
 require 'cucumber/configuration'

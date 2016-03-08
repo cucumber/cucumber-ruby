@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 Autotest.add_discovery do
   if File.directory?('features')
     if ENV['AUTOFEATURE'] =~ /true/i

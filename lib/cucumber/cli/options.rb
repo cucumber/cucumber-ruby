@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cucumber/cli/profile_loader'
 require 'cucumber/formatter/ansicolor'
 require 'cucumber/rb_support/rb_language'

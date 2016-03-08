@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cucumber/formatter/rerun'
 require 'cucumber/core'
 require 'cucumber/core/gherkin/writer'
