@@ -1,13 +1,17 @@
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.3.2...master)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...master)
 
 ### New Features
 
 ### Bugfixes
 
+## [v2.3.3](https://github.com/cucumber/cucumber-ruby/compare/v2.3.2...v2.3.3)
+
+Added a message pointing users to [The Great Cucumber and BDD Census of 2016](https://cucumber.typeform.com/to/kjrSc2?audience=cucumber-ruby) to the installer message. Please take a few moments to help us all learn more about how you're using Cucumber and BDD.
+
+### Bugfixes
+
 * Let the JSON formatter include data tables in the JSON file ([#948](https://github.com/cucumber/cucumber-ruby/issues/948) @brasmusson)
 * Stringifying location in the JSON formatter for more consistent json parsing ([949](https://github.com/cucumber/cucumber-ruby/pull/949), [945](https://github.com/cucumber/cucumber-ruby/issues/945) @larryprice)
-
-### Refactoring
 
 ## [v2.3.2](https://github.com/cucumber/cucumber-ruby/compare/v2.3.1...v2.3.2)
 
