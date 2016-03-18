@@ -5,7 +5,7 @@ Feature: Randomize
   This is especially helpful for detecting situations where you have state
   leaking between scenarios, which can cause flickering or fragile tests.
 
-  If you do find a randmon run that exposes dependencies between your tests,
+  If you do find a random run that exposes dependencies between your tests,
   you can reproduce that run by using the seed that's printed at the end of
   the test run.
 
@@ -37,10 +37,28 @@ Feature: Randomize
 
   @spawn
   Scenario: Run scenarios randomized
-    When I run `cucumber --order random:41515`
+    When I run `cucumber --order random:41515 -q`
     Then it should fail
-    And the stdout should contain:
+    And the stdout should contain exactly:
       """
+      Feature: Bad practice
+      
+        Scenario: Depend on state
+          When I depend on the state
+            I expect the state to be set! (RuntimeError)
+            ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
+            features/bad_practice.feature:7:in `When I depend on the state'
+
+        Scenario: Set state
+          Given I set some state
+      
+      Failing Scenarios:
+      cucumber features/bad_practice.feature:6
+    
+      2 scenarios (1 failed, 1 passed)
+      2 steps (1 failed, 1 passed)
+      
       Randomized with seed 41515
+      
       """
 
