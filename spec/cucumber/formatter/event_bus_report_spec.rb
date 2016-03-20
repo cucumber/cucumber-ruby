@@ -68,6 +68,15 @@ module Cucumber
               expect(received_event.test_case.name).to eq "Test Scenario"
               expect(received_event.result).to be_passed
             end
+
+            it "emits a Done event when the test run is finished" do
+              received_event = nil
+              config.on_event Cucumber::Events::FinishedTesting do |event|
+                received_event = event
+              end
+              run_defined_feature
+              expect(received_event).not_to be_nil
+            end
           end
         end
       end

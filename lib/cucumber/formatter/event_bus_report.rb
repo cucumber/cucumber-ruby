@@ -29,6 +29,7 @@ module Cucumber
       end
 
       def done
+        @config.notify Events::FinishedTesting.new
       end
     end
 
