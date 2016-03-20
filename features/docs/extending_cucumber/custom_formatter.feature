@@ -41,6 +41,48 @@ Feature: Custom Formatter
 
       """
 
+  Scenario: Custom config
+    Given a file named "features/support/custom_formatter.rb" with:
+      """
+      module MyCustom
+        class Formatter
+          def initialize(config, options={})
+            config.on_event Cucumber::Events::FinishedRunningTests do |event|
+              puts options.inspect
+            end
+          end
+        end
+      end
+      """
+    When I run `cucumber features/f.feature --format MyCustom::Formatter,foo=bar,one=two`
+    Then it should pass with exactly:
+      """
+      { "foo": "bar", "one": "two" }
+      """
+
+  Scenario: Support legacy --out
+    Given a file named "features/support/custom_formatter.rb" with:
+      """
+      module MyCustom
+        class Formatter
+          def initialize(config, options={})
+            config.on_event Cucumber::Events::FinishedRunningTests do |event|
+              puts options["out"]
+            end
+          end
+        end
+      end
+      """
+    When I run `cucumber features/f.feature --format MyCustom::Formatter --out foo/bar.file`
+    Then it should pass with exactly:
+      """
+      Deprecated: Please don't use --out, but pass the formatter options like this intead:
+
+        --format junit,out=path/to/output
+
+      foo/bar.file
+      """
+
   Scenario: Implement v2.0 formatter methods
     Note that this method is likely to be deprecated in favour of events - see above.
 
