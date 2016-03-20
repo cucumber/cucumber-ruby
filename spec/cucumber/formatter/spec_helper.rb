@@ -36,10 +36,15 @@ module Cucumber
         compile [gherkin_doc], receiver, filters
       end
 
+      require 'cucumber/formatter/event_bus_report'
+      def event_bus_report
+        @event_bus_report ||= Formatter::EventBusReport.new(actual_runtime.configuration)
+      end
+
       require 'cucumber/formatter/legacy_api/adapter'
       def report
         @report ||= LegacyApi::Adapter.new(
-          Fanout.new([@formatter]),
+          Fanout.new([@formatter, event_bus_report]),
           actual_runtime.results,
           actual_runtime.configuration)
       end
