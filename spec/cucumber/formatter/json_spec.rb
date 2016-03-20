@@ -13,7 +13,7 @@ module Cucumber
       context "Given a single feature" do
         before(:each) do
           @out = StringIO.new
-          @formatter = Json.new(runtime, @out, {})
+          @formatter = Json.new(actual_runtime.configuration.with_options(out_stream: @out))
           run_defined_feature
         end
 
