@@ -1,6 +1,8 @@
 gem "cucumber-pro", "0.0.13", :group => :test
 source "https://rubygems.org"
 gemspec
+load File.expand_path('../Gemfile.local', __FILE__) if File.file? File.expand_path('../Gemfile.local', __FILE__)
+
 unless ENV['CUCUMBER_USE_RELEASED_CORE']
   core_path = File.expand_path("../../cucumber-ruby-core", __FILE__)
   wire_path = File.expand_path("../../cucumber-ruby-wire", __FILE__)

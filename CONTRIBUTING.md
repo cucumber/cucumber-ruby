@@ -19,6 +19,19 @@ The rest of this document is a guide for those maintaining Cucumber, and others 
 
 You can chat with the core team on https://gitter.im/cucumber/cucumber. We try to have office hours on Fridays.
 
+## Installing your own gems
+
+A `Gemfile.local`-file can be used to have your own gems installed to support
+your normal development workflow.
+
+Example:
+
+~~~ruby
+gem 'pry'
+gem 'pry-byebug'
+gem 'byebug'
+~~~
+
 ## Note on Patches/Pull Requests
 
 * Fork the project. Make a branch for your change.
