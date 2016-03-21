@@ -97,17 +97,21 @@ module Cucumber
 
         context '-f FORMAT or --format FORMAT' do
           it "defaults the output for the formatter to the output stream (STDOUT)" do
-            after_parsing('-f pretty') { expect(options[:formats]).to eq [['pretty', output_stream]] }
+            after_parsing('-f pretty') { expect(options[:formats]).to eq [['pretty', {}, output_stream]] }
+          end
+
+          it "extracts per formatter options" do
+            after_parsing('-f pretty,foo=bar,foo2=bar2') { expect(options[:formats]).to eq [['pretty', { 'foo' => 'bar', 'foo2' => 'bar2' }, output_stream]] }
           end
         end
 
         context '-o [FILE|DIR] or --out [FILE|DIR]' do
           it "defaults the formatter to 'pretty' when not specified earlier" do
-            after_parsing('-o file.txt') { expect(options[:formats]).to eq [['pretty', 'file.txt']] }
+            after_parsing('-o file.txt') { expect(options[:formats]).to eq [['pretty', {}, 'file.txt']] }
           end
           it "sets the output for the formatter defined immediatly before it" do
             after_parsing('-f profile --out file.txt -f pretty -o file2.txt') do
-              expect(options[:formats]).to eq [['profile', 'file.txt'], ['pretty', 'file2.txt']]
+              expect(options[:formats]).to eq [['profile', {}, 'file.txt'], ['pretty', {}, 'file2.txt']]
             end
           end
         end
@@ -137,7 +141,7 @@ module Cucumber
 
             options.parse!(%w{-f pretty})
             
-            expect(options[:formats]).to eq [['pretty', output_stream], ["junit", "result.xml"]]
+            expect(options[:formats]).to eq [['pretty', {}, output_stream], ["junit", {}, "result.xml"]]
           end
         end
 
@@ -235,35 +239,35 @@ module Cucumber
             given_cucumber_yml_defined_as({'foo' => %w[--format pretty]})
             options.parse!(%w{--format progress --profile foo})
 
-            expect(options[:formats]).to eq [['progress', output_stream]]
+            expect(options[:formats]).to eq [['progress', {}, output_stream]]
           end
 
           it "includes any non-STDOUT formatters from the profile" do
             given_cucumber_yml_defined_as({'html' => %w[--format html -o features.html]})
             options.parse!(%w{--format progress --profile html})
 
-            expect(options[:formats]).to eq [['progress', output_stream], ['html', 'features.html']]
+            expect(options[:formats]).to eq [['progress', {}, output_stream], ['html', {}, 'features.html']]
           end
 
           it "does not include STDOUT formatters from the profile if there is a STDOUT formatter in command line" do
             given_cucumber_yml_defined_as({'html' => %w[--format html -o features.html --format pretty]})
             options.parse!(%w{--format progress --profile html})
 
-            expect(options[:formats]).to eq [['progress', output_stream], ['html', 'features.html']]
+            expect(options[:formats]).to eq [['progress', {}, output_stream], ['html', {}, 'features.html']]
           end
 
           it "includes any STDOUT formatters from the profile if no STDOUT formatter was specified in command line" do
             given_cucumber_yml_defined_as({'html' => %w[--format html]})
             options.parse!(%w{--format rerun -o rerun.txt --profile html})
 
-            expect(options[:formats]).to eq [['html', output_stream], ['rerun', 'rerun.txt']]
+            expect(options[:formats]).to eq [['html', {}, output_stream], ['rerun', {}, 'rerun.txt']]
           end
 
           it "assumes all of the formatters defined in the profile when none are specified on cmd line" do
             given_cucumber_yml_defined_as({'html' => %w[--format progress --format html -o features.html]})
             options.parse!(%w{--profile html})
 
-            expect(options[:formats]).to eq [['progress', output_stream], ['html', 'features.html']]
+            expect(options[:formats]).to eq [['progress', {}, output_stream], ['html', {}, 'features.html']]
           end
 
           it "only reads cucumber.yml once" do
