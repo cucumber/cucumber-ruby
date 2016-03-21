@@ -426,7 +426,7 @@ module Cucumber
       def embed_delayed_embeds
         @delayed_embeds.each do |embed|
           @builder.tr do
-            @builder.td do |td|
+            @builder.td(:class => 'embed') do |td|
               td << embed
             end
           end
