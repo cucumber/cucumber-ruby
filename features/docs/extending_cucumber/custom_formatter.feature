@@ -17,7 +17,7 @@ Feature: Custom Formatter
       """
       module MyCustom
         class Formatter
-          def initialize(config)
+          def initialize(config, options={})
             @io = config.out_stream
             config.on_event Cucumber::Events::BeforeTestCase do |event|
               print_test_case_name(event.test_case)
@@ -47,8 +47,8 @@ Feature: Custom Formatter
       module MyCustom
         class Formatter
           def initialize(config, options={})
-            config.on_event Cucumber::Events::FinishedRunningTests do |event|
-              puts options.inspect
+            config.on_event Cucumber::Events::FinishedTesting do |event|
+              config.out_stream.print options.inspect
             end
           end
         end
@@ -57,7 +57,7 @@ Feature: Custom Formatter
     When I run `cucumber features/f.feature --format MyCustom::Formatter,foo=bar,one=two`
     Then it should pass with exactly:
       """
-      { "foo": "bar", "one": "two" }
+      {"foo"=>"bar", "one"=>"two"}
       """
 
   Scenario: Support legacy --out
@@ -66,7 +66,7 @@ Feature: Custom Formatter
       module MyCustom
         class Formatter
           def initialize(config, options={})
-            config.on_event Cucumber::Events::FinishedRunningTests do |event|
+            config.on_event Cucumber::Events::FinishedTesting do |event|
               puts options["out"]
             end
           end
@@ -90,7 +90,7 @@ Feature: Custom Formatter
       """
       module MyCustom
         class Formatter
-          def initialize(config)
+        def initialize(config, options = {})
             @io = config.out_stream
           end
 

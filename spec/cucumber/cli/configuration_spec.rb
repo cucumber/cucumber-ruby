@@ -53,7 +53,7 @@ module Cli
 
         config.parse!(%w{--format progress --profile bongo})
 
-        expect(config.options[:formats]).to eq [['progress', out]]
+        expect(config.options[:formats]).to eq [['progress', {}, out]]
         expect(config.options[:require]).to eq ['from/yml']
       end
 
@@ -111,14 +111,14 @@ END_OF_MESSAGE
 
         config.parse!(%w{--profile foo})
 
-        expect(config.options[:formats]).to eq [['progress', out]]
+        expect(config.options[:formats]).to eq [['progress', {}, out]]
       end
 
       it "disregards default STDOUT formatter defined in profile when another is passed in (via cmd line)" do
         given_cucumber_yml_defined_as({'foo' => %w[--format pretty]})
         config.parse!(%w{--format progress --profile foo})
 
-        expect(config.options[:formats]).to eq [['progress', out]]
+        expect(config.options[:formats]).to eq [['progress', {}, out]]
       end
 
       ["--no-profile", "-P"].each do |flag|
@@ -233,21 +233,21 @@ END_OF_MESSAGE
     end
 
     it "accepts --out option" do
-      config.parse!(%w{--out jalla.txt})
+      config.parse!(%w{--out text.txt})
 
-      expect(config.formats).to eq [['pretty', 'jalla.txt']]
+      expect(config.formats).to eq [['pretty', {}, 'text.txt']]
     end
 
     it "accepts multiple --out options" do
       config.parse!(%w{--format progress --out file1 --out file2})
 
-      expect(config.formats).to eq [['progress', 'file2']]
+      expect(config.formats).to eq [['progress', {}, 'file2']]
     end
 
     it "accepts multiple --format options and put the STDOUT one first so progress is seen" do
       config.parse!(%w{--format pretty --out pretty.txt --format progress})
 
-      expect(config.formats).to eq [['progress', out], ['pretty', 'pretty.txt']]
+      expect(config.formats).to eq [['progress', {}, out], ['pretty', {}, 'pretty.txt']]
     end
 
     it "does not accept multiple --format options when both use implicit STDOUT" do
@@ -262,7 +262,7 @@ END_OF_MESSAGE
     it "accepts same --format options with implicit STDOUT, and keep only one" do
       config.parse!(%w{--format pretty --format pretty})
 
-      expect(config.formats).to eq [["pretty", out]]
+      expect(config.formats).to eq [["pretty", {}, out]]
     end
 
     it "does not accept multiple --out streams pointing to the same place" do
@@ -277,19 +277,19 @@ END_OF_MESSAGE
     it "associates --out to previous --format" do
       config.parse!(%w{--format progress --out file1 --format profile --out file2})
 
-      expect(config.formats).to eq [["progress", "file1"], ["profile" ,"file2"]]
+      expect(config.formats).to eq [["progress", {}, "file1"], ["profile", {}, "file2"]]
     end
 
     it "accepts same --format options with same --out streams and keep only one" do
       config.parse!(%w{--format html --out file --format pretty --format html --out file})
 
-      expect(config.formats).to eq [["pretty", out], ["html", "file"]]
+      expect(config.formats).to eq [["pretty", {}, out], ["html", {}, "file"]]
     end
 
     it "accepts same --format options with different --out streams" do
       config.parse!(%w{--format html --out file1 --format html --out file2})
 
-      expect(config.formats).to eq [["html", "file1"], ["html", "file2"]]
+      expect(config.formats).to eq [["html", {}, "file1"], ["html", {}, "file2"]]
     end
 
     it "accepts --color option" do
