@@ -155,6 +155,7 @@ module Cucumber
             "formatter's docs to see whether to pass a file or a dir.") do |v|
             @options[:formats] << ['pretty', {}, nil] if @options[:formats].empty?
             @options[:formats][-1][2] = v
+            @options[:formats][-1][1]['out'] = v
           end
           opts.on("-t TAG_EXPRESSION", "--tags TAG_EXPRESSION",
             "Only execute the features or scenarios with tags matching TAG_EXPRESSION.",

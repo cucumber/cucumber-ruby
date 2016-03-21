@@ -73,14 +73,33 @@ Feature: Custom Formatter
         end
       end
       """
-    When I run `cucumber features/f.feature --format MyCustom::Formatter --out foo/bar.file`
+    When I run `cucumber features/f.feature --format MyCustom::Formatter --out foo.file`
     Then it should pass with exactly:
       """
-      Deprecated: Please don't use --out, but pass the formatter options like this intead:
+      Deprecated: Please don't use --out, but pass the formatter options like this instead:
 
         --format junit,out=path/to/output
 
-      foo/bar.file
+      foo.file
+      """
+
+  Scenario: Setting output using the new style per-formatter options
+    Given a file named "features/support/custom_formatter.rb" with:
+      """
+      module MyCustom
+        class Formatter
+          def initialize(config, options={})
+            config.on_event Cucumber::Events::FinishedTesting do |event|
+              puts options["out"]
+            end
+          end
+        end
+      end
+      """
+    When I run `cucumber features/f.feature --format MyCustom::Formatter,out=foo.file`
+    Then it should pass with exactly:
+      """
+      foo.file
       """
 
   Scenario: Implement v2.0 formatter methods
