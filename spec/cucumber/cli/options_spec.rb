@@ -107,11 +107,12 @@ module Cucumber
 
         context '-o [FILE|DIR] or --out [FILE|DIR]' do
           it "defaults the formatter to 'pretty' when not specified earlier" do
-            after_parsing('-o file.txt') { expect(options[:formats]).to eq [['pretty', {}, 'file.txt']] }
+            after_parsing('-o file.txt') { expect(options[:formats]).to eq [['pretty', { 'out' => 'file.txt' }, 'file.txt']] }
           end
+
           it "sets the output for the formatter defined immediatly before it" do
             after_parsing('-f profile --out file.txt -f pretty -o file2.txt') do
-              expect(options[:formats]).to eq [['profile', {}, 'file.txt'], ['pretty', {}, 'file2.txt']]
+              expect(options[:formats]).to eq [['profile', { 'out' => 'file.txt' }, 'file.txt'], ['pretty', { 'out' => 'file2.txt' }, 'file2.txt']]
             end
           end
         end

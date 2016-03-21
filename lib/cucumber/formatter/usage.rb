@@ -11,6 +11,8 @@ module Cucumber
       end
 
       def initialize(runtime, path_or_io, options)
+        require 'pry'
+        binding.pry
         @runtime = runtime
         @io = ensure_io(path_or_io)
         @options = options
