@@ -103,6 +103,10 @@ module Cucumber
           it "extracts per formatter options" do
             after_parsing('-f pretty,foo=bar,foo2=bar2') { expect(options[:formats]).to eq [['pretty', { 'foo' => 'bar', 'foo2' => 'bar2' }, output_stream]] }
           end
+
+          it "formatter option take precendence over --out option" do
+            after_parsing('-f pretty,out=file1.txt --out file2.txt') { expect(options[:formats]).to eq [['pretty', { 'out' => 'file1.txt'}, 'file1.txt']] }
+          end
         end
 
         context '-o [FILE|DIR] or --out [FILE|DIR]' do
@@ -142,7 +146,7 @@ module Cucumber
 
             options.parse!(%w{-f pretty})
             
-            expect(options[:formats]).to eq [['pretty', {}, output_stream], ["junit", {}, "result.xml"]]
+            expect(options[:formats]).to eq [['pretty', {'out' => output_stream}, output_stream], ["junit", {'out' => 'result.xml'}, "result.xml"]]
           end
         end
 
@@ -254,21 +258,21 @@ module Cucumber
             given_cucumber_yml_defined_as({'html' => %w[--format html -o features.html --format pretty]})
             options.parse!(%w{--format progress --profile html})
 
-            expect(options[:formats]).to eq [['progress', {}, output_stream], ['html', {}, 'features.html']]
+            expect(options[:formats]).to eq [['progress', {'out' => output_stream}, output_stream], ['html', {'out' => 'features.html'}, 'features.html']]
           end
 
           it "includes any STDOUT formatters from the profile if no STDOUT formatter was specified in command line" do
             given_cucumber_yml_defined_as({'html' => %w[--format html]})
             options.parse!(%w{--format rerun -o rerun.txt --profile html})
 
-            expect(options[:formats]).to eq [['html', {}, output_stream], ['rerun', {}, 'rerun.txt']]
+            expect(options[:formats]).to eq [['html', {'out' => output_stream}, output_stream], ['rerun', {'out' => 'rerun.txt'}, 'rerun.txt']]
           end
 
           it "assumes all of the formatters defined in the profile when none are specified on cmd line" do
             given_cucumber_yml_defined_as({'html' => %w[--format progress --format html -o features.html]})
             options.parse!(%w{--profile html})
 
-            expect(options[:formats]).to eq [['progress', {}, output_stream], ['html', {}, 'features.html']]
+            expect(options[:formats]).to eq [['progress', {'out' => output_stream}, output_stream], ['html', {'out' => 'features.html'}, 'features.html']]
           end
 
           it "only reads cucumber.yml once" do

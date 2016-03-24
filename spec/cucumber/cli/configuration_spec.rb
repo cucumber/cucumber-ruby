@@ -235,19 +235,19 @@ END_OF_MESSAGE
     it "accepts --out option" do
       config.parse!(%w{--out text.txt})
 
-      expect(config.formats).to eq [['pretty', {}, 'text.txt']]
+      expect(config.formats).to eq [['pretty', {'out' => 'text.txt'}, 'text.txt']]
     end
 
     it "accepts multiple --out options" do
       config.parse!(%w{--format progress --out file1 --out file2})
 
-      expect(config.formats).to eq [['progress', {}, 'file2']]
+      expect(config.formats).to eq [['progress', {'out' => 'file2'}, 'file2']]
     end
 
     it "accepts multiple --format options and put the STDOUT one first so progress is seen" do
       config.parse!(%w{--format pretty --out pretty.txt --format progress})
 
-      expect(config.formats).to eq [['progress', {}, out], ['pretty', {}, 'pretty.txt']]
+      expect(config.formats).to eq [['progress', {'out' => out}, out], ['pretty', {'out' => 'pretty.txt'}, 'pretty.txt']]
     end
 
     it "does not accept multiple --format options when both use implicit STDOUT" do
@@ -277,19 +277,19 @@ END_OF_MESSAGE
     it "associates --out to previous --format" do
       config.parse!(%w{--format progress --out file1 --format profile --out file2})
 
-      expect(config.formats).to eq [["progress", {}, "file1"], ["profile", {}, "file2"]]
+      expect(config.formats).to eq [["progress", {'out' => 'file1'}, "file1"], ["profile", {'out' => 'file2'}, "file2"]]
     end
 
     it "accepts same --format options with same --out streams and keep only one" do
       config.parse!(%w{--format html --out file --format pretty --format html --out file})
 
-      expect(config.formats).to eq [["pretty", {}, out], ["html", {}, "file"]]
+      expect(config.formats).to eq [["pretty", {'out' => out}, out], ["html", {'out' => 'file'}, "file"]]
     end
 
     it "accepts same --format options with different --out streams" do
       config.parse!(%w{--format html --out file1 --format html --out file2})
 
-      expect(config.formats).to eq [["html", {}, "file1"], ["html", {}, "file2"]]
+      expect(config.formats).to eq [["html", {'out' => 'file1'}, "file1"], ["html", {'out' => 'file2'}, "file2"]]
     end
 
     it "accepts --color option" do
