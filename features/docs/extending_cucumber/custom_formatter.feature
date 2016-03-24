@@ -17,7 +17,7 @@ Feature: Custom Formatter
       """
       module MyCustom
         class Formatter
-          def initialize(config)
+          def initialize(config, options={})
             @io = config.out_stream
             config.on_event Cucumber::Events::BeforeTestCase do |event|
               print_test_case_name(event.test_case)
@@ -41,6 +41,68 @@ Feature: Custom Formatter
 
       """
 
+  Scenario: Custom config
+    Given a file named "features/support/custom_formatter.rb" with:
+      """
+      module MyCustom
+        class Formatter
+          def initialize(config, options={})
+            config.on_event Cucumber::Events::FinishedTesting do |event|
+              config.out_stream.print options.inspect
+            end
+          end
+        end
+      end
+      """
+    When I run `cucumber features/f.feature --format MyCustom::Formatter,foo=bar,one=two`
+    Then it should pass with exactly:
+      """
+      {"foo"=>"bar", "one"=>"two"}
+      """
+
+  Scenario: Support legacy --out
+    Given a file named "features/support/custom_formatter.rb" with:
+      """
+      module MyCustom
+        class Formatter
+          def initialize(config, options={})
+            config.on_event Cucumber::Events::FinishedTesting do |event|
+              puts options["out"]
+            end
+          end
+        end
+      end
+      """
+    When I run `cucumber features/f.feature --format MyCustom::Formatter --out foo.file`
+    Then it should pass with exactly:
+      """
+      foo.file
+      Deprecated: Please don't use --out, but pass the formatter options like this instead:
+
+        --format junit,out=path/to/output
+
+      """
+
+  Scenario: Setting output using the new style per-formatter options
+    Given a file named "features/support/custom_formatter.rb" with:
+      """
+      module MyCustom
+        class Formatter
+          def initialize(config, options={})
+            config.on_event Cucumber::Events::FinishedTesting do |event|
+              puts options["out"]
+            end
+          end
+        end
+      end
+      """
+    When I run `cucumber features/f.feature --format MyCustom::Formatter,out=foo.file`
+    Then it should pass with exactly:
+      """
+      foo.file
+
+      """
+
   Scenario: Implement v2.0 formatter methods
     Note that this method is likely to be deprecated in favour of events - see above.
 
@@ -48,7 +110,7 @@ Feature: Custom Formatter
       """
       module MyCustom
         class Formatter
-          def initialize(config)
+        def initialize(config, options = {})
             @io = config.out_stream
           end
 

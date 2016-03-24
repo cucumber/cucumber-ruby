@@ -196,7 +196,7 @@ module Cucumber
     def create_formatter(factory, path_or_io, options)
       if !legacy_formatter?(factory)
         out_stream = Cucumber::Formatter::Io.ensure_io(path_or_io)
-        return factory.new(@configuration.with_options(out_stream: out_stream))
+        return factory.new(@configuration.with_options(out_stream: out_stream), options)
       end
       results = Formatter::LegacyApi::Results.new
       runtime_facade = Formatter::LegacyApi::RuntimeFacade.new(results, @support_code, @configuration)

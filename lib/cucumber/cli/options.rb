@@ -133,7 +133,14 @@ module Cucumber
           opts.on("-f FORMAT", "--format FORMAT",
             "How to format features (Default: pretty). Available formats:",
             *FORMAT_HELP) do |v|
-            @options[:formats] << [v, @out_stream]
+              formatter, *custom_options = v.split(/,/)
+
+              parsed_options = custom_options.each_with_object({}) do |e, a| 
+                name, value = e.split(/=/)
+                a[name] = value
+              end
+
+              @options[:formats] << [formatter, parsed_options, @out_stream]
           end
           opts.on('--init',
             'Initializes folder structure and generates conventional files for',
@@ -142,12 +149,20 @@ module Cucumber
             Kernel.exit(0)
           end
           opts.on("-o", "--out [FILE|DIR]",
-            "Write output to a file/directory instead of STDOUT. This option",
+            "DEPRECATED: Write output to a file/directory instead of STDOUT. This option",
             "applies to the previously specified --format, or the",
             "default format if no format is specified. Check the specific",
             "formatter's docs to see whether to pass a file or a dir.") do |v|
-            @options[:formats] << ['pretty', nil] if @options[:formats].empty?
-            @options[:formats][-1][1] = v
+
+            $stdout.puts [
+              "Deprecated: Please don't use --out, but pass the formatter options like this instead:",
+              '',
+              '  --format junit,out=path/to/output'
+            ].join("\n")
+
+            @options[:formats] << ['pretty', {}, nil] if @options[:formats].empty?
+            @options[:formats][-1][2] = v
+            @options[:formats][-1][1]['out'] = v
           end
           opts.on("-t TAG_EXPRESSION", "--tags TAG_EXPRESSION",
             "Only execute the features or scenarios with tags matching TAG_EXPRESSION.",
@@ -287,7 +302,7 @@ TEXT
       end
 
       def check_formatter_stream_conflicts()
-        streams = @options[:formats].uniq.map { |(_, stream)| stream }
+        streams = @options[:formats].uniq.map { |(_, _, stream)| stream }
         if streams != streams.uniq
           raise "All but one formatter must use --out, only one can print to each stream (or STDOUT)"
         end
@@ -305,11 +320,11 @@ TEXT
     private
 
       def non_stdout_formats
-        @options[:formats].select {|format, output| output != @out_stream }
+        @options[:formats].select {|format, _, output| output != @out_stream }
       end
 
       def stdout_formats
-        @options[:formats].select {|format, output| output == @out_stream }
+        @options[:formats].select {|format, _, output| output == @out_stream }
       end
 
       def extract_environment_variables

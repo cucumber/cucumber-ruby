@@ -169,11 +169,13 @@ module Cucumber
 
     def formatter_factories
       @options[:formats].map do |format_and_out|
-        format = format_and_out[0]
-        path_or_io = format_and_out[1]
+        format     = format_and_out[0]
+        options    = format_and_out[1].empty? ? Cli::Options.new(STDOUT, STDERR, @options) : format_and_out[1]
+        path_or_io = format_and_out[2]
+
         begin
           factory = formatter_class(format)
-          yield factory, path_or_io, Cli::Options.new(STDOUT, STDERR, @options)
+          yield factory, path_or_io, options
         rescue Exception => e
           e.message << "\nError creating formatter: #{format}"
           raise e
