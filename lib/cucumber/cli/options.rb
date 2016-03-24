@@ -150,10 +150,17 @@ module Cucumber
             Kernel.exit(0)
           end
           opts.on("-o", "--out [FILE|DIR]",
-            "Write output to a file/directory instead of STDOUT. This option",
+            "DEPRECATED: Write output to a file/directory instead of STDOUT. This option",
             "applies to the previously specified --format, or the",
             "default format if no format is specified. Check the specific",
             "formatter's docs to see whether to pass a file or a dir.") do |v|
+
+            $stdout.puts [
+              "Deprecated: Please don't use --out, but pass the formatter options like this instead:",
+              '',
+              '  --format junit,out=path/to/output'
+            ].join("\n")
+
             @options[:formats] << ['pretty', {}, nil] if @options[:formats].empty?
             @options[:formats][-1][2] = v
             @options[:formats][-1][1]['out'] = v
