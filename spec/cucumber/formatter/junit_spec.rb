@@ -22,7 +22,7 @@ module Cucumber
       context "With no options" do
         before(:each) do
           allow(File).to receive(:directory?) { true }
-          @formatter = TestDoubleJunitFormatter.new(runtime, '', {})
+          @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: ''))
         end
 
         after(:each) do
@@ -200,7 +200,7 @@ module Cucumber
         let(:runtime)   { Runtime.new({:expand => true}) }
         before(:each) do
           allow(File).to receive(:directory?) { true }
-          @formatter = TestDoubleJunitFormatter.new(runtime, '', {:expand => true})
+          @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: '', :expand => true))
         end
 
         after(:each) do

@@ -1,4 +1,5 @@
 require 'builder'
+require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/io'
 require 'cucumber/formatter/interceptor'
 require 'fileutils'
@@ -16,12 +17,17 @@ module Cucumber
         end
       end
 
-      def initialize(_runtime, io, options)
-        @reportdir = ensure_dir(io, "junit")
-        @options = options
+      def initialize(config)
+        config.on_event :before_test_case, &method(:on_before_test_case)
+        config.on_event :after_test_case, &method(:on_after_test_case)
+        config.on_event :after_test_step, &method(:on_after_test_step)
+        config.on_event :finished_testing, &method(:on_finished_testing)
+        @reportdir = ensure_dir(config.out_stream, "junit")
+        @config = config
       end
 
-      def before_test_case(test_case)
+      def on_before_test_case(event)
+        test_case = event.test_case
         unless same_feature_as_previous_test_case?(test_case.feature)
           end_feature if @current_feature
           start_feature(test_case.feature)
@@ -33,13 +39,15 @@ module Cucumber
         @interceptederr = Interceptor::Pipe.wrap(:stderr)
       end
 
-      def after_test_step(test_step, result)
+      def on_after_test_step(event)
         return if @failing_step_source
 
-        @failing_step_source = test_step.source.last unless result.ok?(@options[:strict])
+        @failing_step_source = event.test_step.source.last unless event.result.ok?(@config.strict?)
       end
 
-      def after_test_case(test_case, result)
+      def on_after_test_case(event)
+        test_case = event.test_case
+        result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         test_case_name = NameBuilder.new(test_case)
         scenario = test_case_name.scenario_name
         scenario_designation = "#{scenario}#{test_case_name.name_suffix}"
@@ -50,7 +58,7 @@ module Cucumber
         Interceptor::Pipe.unwrap! :stderr
       end
 
-      def done
+      def on_finished_testing(event)
         end_feature if @current_feature
       end
 
@@ -86,7 +94,7 @@ module Cucumber
 
       def create_output_string(test_case, scenario, result, row_name)
         output = "#{test_case.keyword}: #{scenario}\n\n"
-        return output if result.ok?(@options[:strict])
+        return output if result.ok?(@config.strict?)
         if test_case.keyword == "Scenario"
           output += "#{@failing_step_source.keyword}" unless hook?(@failing_step_source)
           output += "#{@failing_step_source.name}\n"
@@ -107,7 +115,7 @@ module Cucumber
         name = scenario_designation
 
         @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
-          if !result.passed? && result.ok?(@options[:strict])
+          if !result.passed? && result.ok?(@config.strict?)
             @builder.skipped
             @skipped += 1
           elsif !result.passed?
