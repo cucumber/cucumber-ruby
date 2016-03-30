@@ -1,5 +1,6 @@
 require 'multi_json'
 require 'base64'
+require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/io'
 require 'cucumber/formatter/hook_query_visitor'
 
@@ -57,14 +58,14 @@ module Cucumber
 
       def on_after_test_step(event)
         test_step = event.test_step
-        result = event.result
+        result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         return if internal_hook?(test_step)
         add_match_and_result(test_step, result)
         @any_step_failed = true if result.failed?
       end
 
       def on_after_test_case(event)
-        result = event.result
+        result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         add_failed_around_hook(result) if result.failed? && !@any_step_failed
       end
 

@@ -286,7 +286,6 @@ Feature: JSON output formatter
 
       """
 
-  @spawn
   Scenario: DocString
     Given a file named "features/doc_string.feature" with:
       """
@@ -349,9 +348,8 @@ Feature: JSON output formatter
       ]
       """
 
-  @spawn
   Scenario: embedding screenshot
-    When I run `cucumber -b --format json features/embed.feature`
+    When I run `cucumber --format json features/embed.feature`
     Then it should pass with JSON:
     """
     [
@@ -630,9 +628,8 @@ Feature: JSON output formatter
 
     """
 
-  @spawn
   Scenario: embedding data directly
-    When I run `cucumber -b --format json -x features/embed_data_directly.feature`
+    When I run `cucumber --format json -x features/embed_data_directly.feature`
     Then it should pass with JSON:
     """
     [
@@ -733,7 +730,6 @@ Feature: JSON output formatter
     ]
 
     """
-  @spawn
   Scenario: handle output from hooks
      Given a file named "features/step_definitions/output_steps.rb" with:
       """
