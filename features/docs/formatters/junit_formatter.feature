@@ -409,3 +409,46 @@ You *must* specify --out DIR for the junit formatter
       </testsuite>
 
       """ 
+
+  @spawn
+  Scenario: run test cases from different features interweaved
+    When I run `cucumber --format junit --out tmp/ features/one_passing_one_failing.feature:3 features/pending.feature:3 features/one_passing_one_failing.feature:6`
+    Then it should fail with:
+      """
+
+      """
+    And the junit output file "tmp/TEST-features-one_passing_one_failing.xml" should contain:
+      """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <testsuite failures="1" errors="0" skipped="0" tests="2" time="0.05" name="One passing scenario, one failing scenario">
+      <testcase classname="One passing scenario, one failing scenario" name="Passing" time="0.05">
+        <system-out>
+          <![CDATA[]]>
+        </system-out>
+        <system-err>
+          <![CDATA[]]>
+        </system-err>
+      </testcase>
+      <testcase classname="One passing scenario, one failing scenario" name="Failing" time="0.05">
+        <failure message="failed Failing" type="failed">
+          <![CDATA[Scenario: Failing
+
+      Given this step fails
+
+      Message:
+	]]>
+          <![CDATA[ (RuntimeError)
+	./features/step_definitions/steps.rb:4:in `/^this step fails$/'
+	features/one_passing_one_failing.feature:7:in `Given this step fails']]>
+        </failure>
+        <system-out>
+          <![CDATA[]]>
+        </system-out>
+        <system-err>
+          <![CDATA[]]>
+        </system-err>
+      </testcase>
+      </testsuite>
+
+      """
+    And a file named "tmp/TEST-features-pending.xml" should exist

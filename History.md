@@ -4,6 +4,8 @@
 
 ### Bugfixes
 
+* Let the JUnit formatter handle running test cases for different features interweaved ([#952](https://github.com/cucumber/cucumber-ruby/issues/952) @brasmusson)
+
 ## [v2.3.3](https://github.com/cucumber/cucumber-ruby/compare/v2.3.2...v2.3.3)
 
 Added a message pointing users to [The Great Cucumber and BDD Census of 2016](https://cucumber.typeform.com/to/kjrSc2?audience=cucumber-ruby) to the installer message. Please take a few moments to help us all learn more about how you're using Cucumber and BDD.

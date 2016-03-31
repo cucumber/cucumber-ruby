@@ -24,12 +24,20 @@ module Cucumber
         config.on_event :finished_testing, &method(:on_finished_testing)
         @reportdir = ensure_dir(config.out_stream, "junit")
         @config = config
+        @features_data = Hash.new { |h,k| h[k] = {
+          feature: nil,
+          failures: 0,
+          errors: 0,
+          tests: 0,
+          skipped: 0,
+          time: 0,
+          builder: Builder::XmlMarkup.new(:indent => 2)
+        }}
       end
 
       def on_before_test_case(event)
         test_case = event.test_case
         unless same_feature_as_previous_test_case?(test_case.feature)
-          end_feature if @current_feature
           start_feature(test_case.feature)
         end
         @failing_step_source = nil
@@ -59,37 +67,35 @@ module Cucumber
       end
 
       def on_finished_testing(event)
-        end_feature if @current_feature
+        @features_data.each { |file, data| end_feature(data) }
       end
 
       private
 
       def same_feature_as_previous_test_case?(feature)
-        @current_feature && @current_feature.file == feature.file && @current_feature.location == feature.location
+        @current_feature_data && @current_feature_data[:feature].file == feature.file && @current_feature_data[:feature].location == feature.location
       end
 
       def start_feature(feature)
         raise UnNamedFeatureError.new(feature.file) if feature.name.empty?
-        @current_feature = feature
-        @failures = @errors = @tests = @skipped = 0
-        @builder = Builder::XmlMarkup.new(:indent => 2)
-        @time = 0
+        @current_feature_data = @features_data[feature.file]
+        @current_feature_data[:feature] = feature unless @current_feature_data[:feature]
       end
 
-      def end_feature
+      def end_feature(feature_data)
         @testsuite = Builder::XmlMarkup.new(:indent => 2)
         @testsuite.instruct!
         @testsuite.testsuite(
-          :failures => @failures,
-          :errors => @errors,
-          :skipped => @skipped,
-          :tests => @tests,
-          :time => "%.6f" % @time,
-          :name => @current_feature.name ) do
-          @testsuite << @builder.target!
+          :failures => feature_data[:failures],
+          :errors => feature_data[:errors],
+          :skipped => feature_data[:skipped],
+          :tests => feature_data[:tests],
+          :time => "%.6f" % feature_data[:time],
+          :name => feature_data[:feature].name ) do
+          @testsuite << feature_data[:builder].target!
         end
 
-        write_file(feature_result_filename(@current_feature.file), @testsuite.target!)
+        write_file(feature_result_filename(feature_data[:feature].file), @testsuite.target!)
       end
 
       def create_output_string(test_case, scenario, result, row_name)
@@ -110,31 +116,31 @@ module Cucumber
 
       def build_testcase(result, scenario_designation, output)
         duration = ResultBuilder.new(result).test_case_duration
-        @time += duration
-        classname = @current_feature.name
+        @current_feature_data[:time] += duration
+        classname = @current_feature_data[:feature].name
         name = scenario_designation
 
-        @builder.testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
+        @current_feature_data[:builder].testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
           if !result.passed? && result.ok?(@config.strict?)
-            @builder.skipped
-            @skipped += 1
+            @current_feature_data[:builder].skipped
+            @current_feature_data[:skipped] += 1
           elsif !result.passed?
             status = result.to_sym
             exception = get_backtrace_object(result)
-            @builder.failure(:message => "#{status} #{name}", :type => status) do
-              @builder.cdata! output
-              @builder.cdata!(format_exception(exception)) if exception
+            @current_feature_data[:builder].failure(:message => "#{status} #{name}", :type => status) do
+              @current_feature_data[:builder].cdata! output
+              @current_feature_data[:builder].cdata!(format_exception(exception)) if exception
             end
-            @failures += 1
+            @current_feature_data[:failures] += 1
           end
-          @builder.tag!('system-out') do
-            @builder.cdata! strip_control_chars(@interceptedout.buffer.join)
+          @current_feature_data[:builder].tag!('system-out') do
+            @current_feature_data[:builder].cdata! strip_control_chars(@interceptedout.buffer.join)
           end
-          @builder.tag!('system-err') do
-            @builder.cdata! strip_control_chars(@interceptederr.buffer.join)
+          @current_feature_data[:builder].tag!('system-err') do
+            @current_feature_data[:builder].cdata! strip_control_chars(@interceptederr.buffer.join)
           end
         end
-        @tests += 1
+        @current_feature_data[:tests] += 1
       end
 
       def get_backtrace_object(result)
