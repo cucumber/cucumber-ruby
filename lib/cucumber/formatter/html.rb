@@ -589,13 +589,13 @@ module Cucumber
         (["#{exception.message}"] + exception.backtrace).join("\n")
       end
 
-      def backtrace_line(line)
-        line.gsub(/^([^:]*\.(?:rb|feature|haml)):(\d*).*$/) do
-          if ENV['TM_PROJECT_DIRECTORY']
+     def backtrace_line(line)
+        if ENV['TM_PROJECT_DIRECTORY']
+          line.gsub(/^([^:]*\.(?:rb|feature|haml)):(\d*).*$/) do
             "<a href=\"txmt://open?url=file://#{File.expand_path($1)}&line=#{$2}\">#{$1}:#{$2}</a> "
-          else
-            line
           end
+        else
+          line
         end
       end
 
