@@ -28,5 +28,7 @@ end
 
 Then(/^the following events should be streamed from STDOUT:$/) do |expected_events|
   actual_events = all_output.gsub(/"duration":\d+/,'"duration":9999')
-  expect(actual_events.lines).to include *expected_events.lines
+  extraneous_events = actual_events.lines - expected_events.lines
+  clean_actual = actual_events.lines - extraneous_events
+  expect(clean_actual).to eq expected_events
 end
