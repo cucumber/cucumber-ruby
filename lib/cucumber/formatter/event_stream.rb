@@ -34,6 +34,12 @@ module Cucumber
           })
         end
 
+        on(:step_match) do |event|
+          emit({
+            event: "StepDefinitionMatched",
+          })
+        end
+
         on(:before_test_case) do |event|
           emit({
             event: "TestCaseStarted",

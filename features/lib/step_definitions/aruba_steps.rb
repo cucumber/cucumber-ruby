@@ -25,3 +25,8 @@ end
 Then(/^the output includes the message "(.*)"$/) do |message|
   expect(all_output).to include(message)
 end
+
+Then(/^the following events should be streamed from STDOUT:$/) do |expected_events|
+  actual_events = all_output.gsub(/"duration":\d+/,'"duration":9999')
+  expect(actual_events.lines).to include *expected_events.lines
+end

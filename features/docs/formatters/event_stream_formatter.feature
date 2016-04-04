@@ -5,6 +5,7 @@ Feature: Event Stream Formatter
   Background:
     Given the standard step definitions
 
+  @wip
   Scenario: A simple scenario
     Given a file named "features/simple.feature" with:
       """
@@ -14,18 +15,19 @@ Feature: Event Stream Formatter
       """
     When I run `cucumber -q --format Cucumber::Formatter::EventStream`
     Then it should pass
-    And the stdout should contain exactly:
+    And the following events should be streamed from STDOUT:
       """
       {"event":"TestRunStarted","protocol_version":"0.0.1"}
       {"event":"GherkinSourceRead","id":"features/simple.feature:1","source":"Feature:\n  Scenario:\n    Given this step passes"}
       {"event":"StepDefinitionFound","source_id":"features/simple.feature:3","definition_id": "features/step_definitions/steps.rb:1"}
       {"event":"TestCaseStarted","id":"features/simple.feature:2"}
       {"event":"TestStepStarted","id":"features/simple.feature:3"}
-      {"event":"TestStepPassed","id":"features/simple.feature:3"}
-      {"event":"TestCasePassed","id":"features/simple.feature:2"}
+      {"event":"TestStepPassed","id":"features/simple.feature:3","duration":9999}
+      {"event":"TestCasePassed","id":"features/simple.feature:2","duration":9999}
       {"event":"TestRunFinished"}
       """
 
+  @todo
   Scenario: An outline
     Given a file named "features/outline.feature" with:
       """
