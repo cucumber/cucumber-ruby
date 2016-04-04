@@ -267,6 +267,11 @@ module Cucumber
 
           it { expect(@doc).to have_css_node('.feature .scenario .step.failed .message', /eek/) }
           it { expect(@doc).to have_css_node('.feature .scenario .step.failed .message', /StandardError/) }
+          it 'has the backtrace embeded in the output once and only once' do
+            html_str = @doc.to_s
+            expect(html_str).not_to match(%r{<pre\b.*html_spec.rb:.*html_spec.rb:.*</pre>}m)
+            expect(html_str).to match(%r{<pre\b.*html_spec.rb:.*</pre>}m)
+          end
         end
 
         describe "with a step that fails in the background" do
