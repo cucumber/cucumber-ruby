@@ -49,7 +49,7 @@ module Cucumber
 
           expect(snippet_text).to eq unindented(%{
           Given(/^I have (\\d+) "([^"]*)" cukes in (\\d+) "([^"]*)"$/) do |arg1, arg2, arg3, arg4, table|
-            # table is a Cucumber::Core::Ast::DataTable
+            # table is a Cucumber::MultilineArgument::DataTable
             pending # Write code here that turns the phrase above into concrete actions
           end
           })
@@ -91,7 +91,7 @@ module Cucumber
 
           expect(snippet_text).to eq unindented(%{
           Given(/^A "([^"]*)" arg$/) do |arg1, table|
-            # table is a Cucumber::Core::Ast::DataTable
+            # table is a Cucumber::MultilineArgument::DataTable
             pending # Write code here that turns the phrase above into concrete actions
           end
           })

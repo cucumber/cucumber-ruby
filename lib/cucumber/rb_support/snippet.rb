@@ -153,7 +153,7 @@ module Cucumber
           end
 
           def append_comment_to(string)
-            string << "  # table is a #{@table.class.to_s}\n"
+            string << "  # table is a #{Cucumber::MultilineArgument::DataTable.to_s}\n"
           end
         end
 
