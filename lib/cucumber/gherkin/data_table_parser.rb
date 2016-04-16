@@ -1,5 +1,6 @@
 require 'gherkin/token_scanner'
-require 'gherkin/token_matcher'
+require 'gherkin/parser'
+require 'gherkin/dialect'
 
 module Cucumber
   module Gherkin
@@ -7,16 +8,23 @@ module Cucumber
       def initialize(builder)
         @builder = builder
       end
+
       def parse(text)
-        scanner = ::Gherkin::TokenScanner.new(text)
-        matcher = ::Gherkin::TokenMatcher.new
-        token = scanner.read
-        until matcher.match_EOF(token) do
-          if matcher.match_TableRow(token)
-            @builder.row(token.matched_items.map { |cell_item| cell_item.text })
-          end
-          token = scanner.read
+        token_scanner = ::Gherkin::TokenScanner.new(feature_header + text)
+        parser = ::Gherkin::Parser.new
+        gherkin_document = parser.parse(token_scanner)
+
+        gherkin_document[:feature][:children][0][:steps][0][:argument][:rows].each do |row|
+          @builder.row(row[:cells].map { |cell| cell[:value] })
         end
+      end
+
+      def feature_header
+        dialect = ::Gherkin::Dialect.for('en')
+        %(#{dialect.feature_keywords[0]}:
+            #{dialect.scenario_keywords[0]}:
+              #{dialect.given_keywords[0]} x
+         )
       end
     end
   end

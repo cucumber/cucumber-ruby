@@ -24,7 +24,7 @@ Thanks!
   s.add_dependency 'cucumber-core', '~> 1.4.0'
   s.add_dependency 'builder', '>= 2.1.2'
   s.add_dependency 'diff-lcs', '>= 1.1.3'
-  s.add_dependency 'gherkin', '~> 3.2.0'
+  s.add_dependency 'gherkin', '~> 4.0'
   s.add_dependency 'multi_json', '>= 1.7.5', '< 2.0'
   s.add_dependency 'multi_test', '>= 0.1.2'
   s.add_dependency 'cucumber-wire', '~> 0.0.1'

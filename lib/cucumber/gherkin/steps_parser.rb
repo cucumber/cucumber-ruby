@@ -1,7 +1,7 @@
 require 'gherkin/token_scanner'
 require 'gherkin/token_matcher'
-require 'gherkin/ast_builder'
 require 'gherkin/parser'
+require 'gherkin/dialect'
 
 module Cucumber
   module Gherkin
@@ -10,29 +10,21 @@ module Cucumber
         @builder = builder
         @language = language
       end
+
       def parse(text)
-        ast_builder = ::Gherkin::AstBuilder.new
-        context = ::Gherkin::ParserContext.new(
-          ::Gherkin::TokenScanner.new(text),
-          ::Gherkin::TokenMatcher.new(@language),
-          [],
-          []
-          )
-        parser = ::Gherkin::Parser.new(ast_builder)
+        dialect = ::Gherkin::Dialect.for(@language)
+        token_matcher = ::Gherkin::TokenMatcher.new(@language)
+        token_scanner = ::Gherkin::TokenScanner.new(feature_header(dialect) + text)
+        parser = ::Gherkin::Parser.new
+        gherkin_document = parser.parse(token_scanner, token_matcher)
 
-        parser.start_rule(context, :ScenarioDefinition)
-        parser.start_rule(context, :Scenario)
-        scenario = ast_builder.current_node
-        state = 12
-        token = nil
-        begin
-          token = parser.read_token(context)
-          state = parser.match_token(state, token, context)
-        end until(token.eof?)
+        @builder.steps(gherkin_document[:feature][:children][0][:steps])
+      end
 
-        raise CompositeParserException.new(context.errors) if context.errors.any?
-
-        @builder.steps(ast_builder.get_steps(scenario))
+      def feature_header(dialect)
+        %(#{dialect.feature_keywords[0]}:
+            #{dialect.scenario_keywords[0]}:
+         )
       end
     end
   end
