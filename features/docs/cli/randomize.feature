@@ -44,7 +44,7 @@ Feature: Randomize
 
   @spawn
   Scenario: Run scenarios randomized
-    When I run `cucumber --order random:41516 -q`
+    When I run `cucumber --order random:41529 -q`
     Then it should fail
     And the stdout should contain exactly:
       """
@@ -76,7 +76,7 @@ Feature: Randomize
       3 scenarios (2 failed, 1 passed)
       3 steps (2 failed, 1 passed)
       
-      Randomized with seed 41516
+      Randomized with seed 41529
       
       """
 
