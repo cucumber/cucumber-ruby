@@ -10,14 +10,21 @@ Feature: Randomize
   the test run.
 
   Background:
-    Given a file named "features/bad_practice.feature" with:
+    Given a file named "features/bad_practice_part_1.feature" with:
       """
-      Feature: Bad practice
+      Feature: Bad practice, part 1
         
         Scenario: Set state
           Given I set some state
       
-        Scenario: Depend on state
+        Scenario: Depend on state from a preceding scenario
+          When I depend on the state
+      """
+    And a file named "features/bad_practice_part_2.feature" with:
+      """
+      Feature: Bad practice, part 2
+
+        Scenario: Depend on state from a preceding feature
           When I depend on the state
       """
     And a file named "features/step_definitions/steps.rb" with:
@@ -37,28 +44,39 @@ Feature: Randomize
 
   @spawn
   Scenario: Run scenarios randomized
-    When I run `cucumber --order random:41515 -q`
+    When I run `cucumber --order random:41516 -q`
     Then it should fail
     And the stdout should contain exactly:
       """
-      Feature: Bad practice
-      
-        Scenario: Depend on state
+      Feature: Bad practice, part 1
+
+        Scenario: Depend on state from a preceding scenario
           When I depend on the state
             I expect the state to be set! (RuntimeError)
             ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
-            features/bad_practice.feature:7:in `When I depend on the state'
+            features/bad_practice_part_1.feature:7:in `When I depend on the state'
+
+      Feature: Bad practice, part 2
+
+        Scenario: Depend on state from a preceding feature
+          When I depend on the state
+            I expect the state to be set! (RuntimeError)
+            ./features/step_definitions/steps.rb:6:in `/^I depend on the state$/'
+            features/bad_practice_part_2.feature:4:in `When I depend on the state'
+
+      Feature: Bad practice, part 1
 
         Scenario: Set state
           Given I set some state
       
       Failing Scenarios:
-      cucumber features/bad_practice.feature:6
+      cucumber features/bad_practice_part_1.feature:6
+      cucumber features/bad_practice_part_2.feature:3
     
-      2 scenarios (1 failed, 1 passed)
-      2 steps (1 failed, 1 passed)
+      3 scenarios (2 failed, 1 passed)
+      3 steps (2 failed, 1 passed)
       
-      Randomized with seed 41515
+      Randomized with seed 41516
       
       """
 
