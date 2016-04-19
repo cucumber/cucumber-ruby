@@ -11,6 +11,8 @@ module Cucumber
     class ForProgrammingLanguages
       extend Forwardable
 
+      attr_reader :support_code
+
       def initialize(support_code, user_interface)
         @support_code, @user_interface = support_code, user_interface
       end
