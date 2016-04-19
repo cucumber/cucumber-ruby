@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 require 'fileutils'
 require 'multi_json'
-require 'multi_test'
 require 'cucumber/configuration'
 require 'cucumber/load_path'
 require 'cucumber/formatter/duration'
