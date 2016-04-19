@@ -71,17 +71,13 @@ module Cucumber
         end
       end
 
-      context "contains features and scenarios with and without spaces same line and across lines" do
+      context "contains multiple scenarios without spaces between them" do
         before(:each) do
-          allow(IO).to receive(:read).and_return(
-            "cucumber.feature:1:3\ncucumber.feature:5 cucumber.feature:10\n"\
-            "cucumber space.feature:134 domain folder/cuke.feature\n")
+          allow(IO).to receive(:read).and_return("cucumber test.feature:8foo.feature:8:16")
         end
 
         it "produces an array containing multiple feature file paths with scenario lines" do
-          feature_files = ['cucumber.feature:1:3', 'cucumber.feature:5', 'cucumber.feature:10',
-                           'cucumber space.feature:134', 'domain folder/cuke.feature']
-          expect(rerun_file.features).to eq feature_files
+          expect(rerun_file.features).to eq ['cucumber test.feature:8', 'foo.feature:8:16']
         end
       end
     end
