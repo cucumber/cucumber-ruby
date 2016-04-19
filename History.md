@@ -4,6 +4,7 @@
 
 ### Bugfixes
 
+* Allow Rake task to accept multiple profiles. ([#907](https://github.com/cucumber/cucumber-ruby/pull/907) @jasonkarns)
 * Let the JUnit formatter handle running test cases for different features interweaved ([#952](https://github.com/cucumber/cucumber-ruby/issues/952) @brasmusson)
 
 ## [v2.3.3](https://github.com/cucumber/cucumber-ruby/compare/v2.3.2...v2.3.3)
