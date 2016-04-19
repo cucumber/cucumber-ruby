@@ -1,10 +1,10 @@
 # language: eo
 Trajto: Divido
   Por eviti stultajn erarojn
-  Uzantoj devas havi eblecon kalkuli frakcion
+  Uzantoj kapablu kalkuli frakciojn
 
-  Scanaro: Simplaj nombroj
-    * mi entajpis 3 en kalkulilo
-    * mi entajpis 2 en kalkulilo
-    * mi premis dividi
-    * la rezulto devas esti 1.5
+  Kazo: Simplaj nombroj
+    * mi entajpas 3 en la kalkulilon
+    * mi entajpas 2 en la kalkulilon
+    * mi premis divide
+    * la rezulto estu 1.5

@@ -1,14 +1,14 @@
 # language: eo
 Trajto: Adicio
   Por eviti stultajn erarojn
-  Kiel stultulo in matematiko
-  Mi volas ke mi estu ebla adicii du nombrojn
+  Kiel stultulo pri matematiko
+  Mi volas adicii du nombrojn
 
-  Konturo de la scenaro: Adiciu du nombrojn
-    Donitaĵo mi entajpas <nombro_1> en kalkulilo
-    Kaj mi entajpas <nombro_2> en kalkulilo
+  Kazo-skizo: Adiciu du nombrojn
+    Komence mi entajpas <nombro_1> en la kalkulilon
+    Kaj mi entajpas <nombro_2> en la kalkulilon
     Se mi premas <butono>
-    Do la rezulto devas esti <rezulto>
+    Do la rezulto estu <rezulto>
 
   Ekzemploj:
     | nombro_1 | nombro_2 | butono | rezulto |
