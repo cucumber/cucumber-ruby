@@ -4,7 +4,8 @@
 
 ### Bugfixes
 
-* Adding Test Step in AfterStep hook. ([#931] (https://github.com/cucumber/cucumber-ruby/pull/931) @t-morgan)
+* Run scenarios in fully random order ([#970](https://github.com/cucumber/cucumber-ruby/pull/970) @threedaymonk)
+* Adding Test Step in AfterStep hook. ([#931](https://github.com/cucumber/cucumber-ruby/pull/931) @t-morgan)
 * Handle even more exotic rerun file formats seen in the wild ([#928](https://github.com/cucumber/cucumber-ruby/pull/928) @mcrmfc)
 * Allow Rake task to accept multiple profiles. ([#907](https://github.com/cucumber/cucumber-ruby/pull/907) @jasonkarns)
 * Let the JUnit formatter handle running test cases for different features interweaved ([#952](https://github.com/cucumber/cucumber-ruby/issues/952) @brasmusson)
