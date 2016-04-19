@@ -225,11 +225,11 @@ module Cucumber
       name_regexps = @configuration.name_regexps
       tag_limits = @configuration.tag_limits
       [].tap do |filters|
-        filters << Filters::Randomizer.new(@configuration.seed) if @configuration.randomize?
         filters << Filters::TagLimits.new(tag_limits) if tag_limits.any?
         filters << Cucumber::Core::Test::TagFilter.new(tag_expressions)
         filters << Cucumber::Core::Test::NameFilter.new(name_regexps)
         filters << Cucumber::Core::Test::LocationsFilter.new(filespecs.locations)
+        filters << Filters::Randomizer.new(@configuration.seed) if @configuration.randomize?
         filters << Filters::Quit.new
         # TODO: can we just use RbLanguages's step definitions directly?
         step_match_search = StepMatchSearch.new(@support_code.ruby.method(:step_matches), @configuration)
