@@ -50,7 +50,7 @@ Feature: Snippets
     Then the output should contain:
       """
       Given(/^a table$/) do |table|
-        # table is a Cucumber::Core::Ast::DataTable
+        # table is a Cucumber::MultilineArgument::DataTable
         pending # Write code here that turns the phrase above into concrete actions
       end
       """
