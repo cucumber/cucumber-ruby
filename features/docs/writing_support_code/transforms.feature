@@ -1,12 +1,12 @@
 Feature: Transforms
 
-  If you see certain phrases repeated over and over in your step definitions, you can
-  use transforms to factor out that duplication, and make your step definitions simpler.
-  
+  Transforms allow you to convert primitive string arguments captured in step definitions
+  into more meaningful data types.
+
   Background:
     Let's just create a simple feature for testing out Transforms.
     We also have a Person class that we need to be able to build.
-    
+
     Given a file named "features/foo.feature" with:
       """
       Feature:
@@ -26,8 +26,9 @@ Feature: Transforms
 
   Scenario: Basic Transform
     This is the most basic way to use a transform. Notice that the regular
-    expression is pretty much duplicated.
-    
+    expression is pretty much duplicated between the step defintion and the 
+    transform itself.
+
     And a file named "features/step_definitions/steps.rb" with:
       """
       Transform(/a Person aged (\d+)/) do |age|
@@ -42,7 +43,7 @@ Feature: Transforms
       """
     When I run `cucumber features/foo.feature`
     Then it should pass
-  
+
   Scenario: Re-use Transform's Regular Expression
     If you keep a reference to the transform, you can use it in your
     regular expressions to avoid repeating the regular expression.
@@ -60,4 +61,38 @@ Feature: Transforms
       end
       """
     When I run `cucumber features/foo.feature`
+    Then it should pass
+
+  Scenario: Use Transform from code
+    You can also call the `Transform` method from within a step definition to
+    dynamically run a tranform.
+
+    Note that this is rather useless at present, unless the transform itself has a side-effect, since the `Transform`
+    function still returns the regular expression pattern.
+
+    Given a file named "features/people.feature" with:
+      """
+      Feature:
+        Scenario:
+          Given people with these ages:
+            | name  | age |
+            | sue   | 25  |
+            | sally | 77  |
+      """
+    And a file named "features/step_definitions/steps.rb" with:
+      """
+      Transform(/a Person aged (\d+)/) do |age|
+        $person = Person.new
+        $person.age = age.to_i
+        $person
+      end
+
+      Given(/^people with these ages:$/) do |table|
+        table.rows.each do |name, age|
+          Transform("a Person aged #{age}")
+          expect($person.age).to eq age.to_i
+        end
+      end
+      """
+    When I run `cucumber features/people.feature`
     Then it should pass
