@@ -46,7 +46,7 @@ module Cucumber
       end
 
       def source_indent(text_length)
-        max_line_length - text_length
+        [max_line_length - text_length, 0].max
       end
 
       def max_line_length
