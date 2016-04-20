@@ -60,6 +60,7 @@ Feature: Custom Formatter
       {"foo"=>"bar", "one"=>"two"}
       """
 
+  @spawn
   Scenario: Support legacy --out
     Given a file named "features/support/custom_formatter.rb" with:
       """
@@ -67,7 +68,7 @@ Feature: Custom Formatter
         class Formatter
           def initialize(config, options={})
             config.on_event Cucumber::Events::FinishedTesting do |event|
-              puts options["out"]
+              $stdout.puts options["out"]
             end
           end
         end
@@ -76,13 +77,14 @@ Feature: Custom Formatter
     When I run `cucumber features/f.feature --format MyCustom::Formatter --out foo.file`
     Then it should pass with exactly:
       """
-      foo.file
       Deprecated: Please don't use --out, but pass the formatter options like this instead:
 
         --format junit,out=path/to/output
+      foo.file
 
       """
 
+  @spawn
   Scenario: Setting output using the new style per-formatter options
     Given a file named "features/support/custom_formatter.rb" with:
       """
@@ -90,7 +92,7 @@ Feature: Custom Formatter
         class Formatter
           def initialize(config, options={})
             config.on_event Cucumber::Events::FinishedTesting do |event|
-              puts options["out"]
+              $stdout.puts options["out"]
             end
           end
         end
