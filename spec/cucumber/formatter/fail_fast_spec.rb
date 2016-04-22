@@ -14,7 +14,6 @@ module Cucumber::Formatter
 
     let(:configuration) { Cucumber::Configuration.new }
     before { FailFast.new(configuration) }
-    let(:report) { EventBusReport.new(configuration) }
 
     context 'failing scenario' do 
       before(:each) do 
@@ -36,7 +35,7 @@ module Cucumber::Formatter
       end
 
       it 'sets Cucumber.wants_to_quit' do 
-        execute([@gherkin], report, [StandardStepActions.new])
+        execute [@gherkin], [StandardStepActions.new], configuration.event_bus
         expect(Cucumber.wants_to_quit).to be true
       end
     end
@@ -53,7 +52,7 @@ module Cucumber::Formatter
       end
 
       it 'doesn\'t set Cucumber.wants_to_quit' do 
-        execute([@gherkin], report, [StandardStepActions.new])
+        execute [@gherkin], [StandardStepActions.new], configuration.event_bus
         expect(Cucumber.wants_to_quit).to be_falsey
       end
     end
@@ -70,7 +69,7 @@ module Cucumber::Formatter
       end
 
       it 'doesn\'t set Cucumber.wants_to_quit' do 
-        execute([@gherkin], report, [StandardStepActions.new])
+        execute [@gherkin], [StandardStepActions.new], configuration.event_bus
         expect(Cucumber.wants_to_quit).to be_falsey
       end
 
@@ -78,7 +77,7 @@ module Cucumber::Formatter
         let(:configuration) { Cucumber::Configuration.new strict: true }
 
         it 'sets Cucumber.wants_to_quit' do 
-          execute([@gherkin], report, [StandardStepActions.new])
+          execute [@gherkin], [StandardStepActions.new], configuration.event_bus
           expect(Cucumber.wants_to_quit).to be_truthy
         end
       end

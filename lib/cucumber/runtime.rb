@@ -7,7 +7,6 @@ require 'cucumber/formatter/duration'
 require 'cucumber/file_specs'
 require 'cucumber/filters'
 require 'cucumber/formatter/fanout'
-require 'cucumber/formatter/event_bus_report'
 require 'cucumber/gherkin/i18n'
 require 'cucumber/step_match_search'
 
@@ -63,8 +62,9 @@ module Cucumber
       fire_after_configuration_hook
       self.visitor = report
 
-      receiver = Test::Runner.new(report)
+      receiver = Test::Runner.new(@configuration.event_bus)
       compile features, receiver, filters
+      @configuration.notify :test_run_finished
     end
 
     def features_paths
@@ -169,17 +169,13 @@ module Cucumber
     require 'cucumber/core/report/summary'
     def report
       return @report if @report
-      reports = [summary_report, event_bus_report] + formatters
+      reports = [summary_report] + formatters
       reports << fail_fast_report if @configuration.fail_fast?
       @report ||= Formatter::Fanout.new(reports)
     end
 
     def summary_report
-      @summary_report ||= Core::Report::Summary.new
-    end
-
-    def event_bus_report
-      @event_bus_report ||= Formatter::EventBusReport.new(@configuration)
+      @summary_report ||= Core::Report::Summary.new(@configuration.event_bus)
     end
 
     def fail_fast_report

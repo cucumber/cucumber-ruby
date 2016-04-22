@@ -11,17 +11,16 @@ module Cucumber
       include Io
 
       def initialize(config)
-        config.on_event :before_test_case, &method(:on_before_test_case)
-        config.on_event :after_test_case, &method(:on_after_test_case)
-        config.on_event :before_test_step, &method(:on_before_test_step)
-        config.on_event :after_test_step, &method(:on_after_test_step)
-        config.on_event :finished_testing, &method(:on_finished_testing)
         @io = ensure_io(config.out_stream)
         @feature_hashes = []
+        config.on_event :test_case_starting, &method(:on_before_test_case)
+        config.on_event :test_case_finished, &method(:on_after_test_case)
+        config.on_event :test_step_starting, &method(:on_before_test_step)
+        config.on_event :test_step_finished, &method(:on_after_test_step)
+        config.on_event :test_run_finished, &method(:on_test_run_finished)
       end
 
-      def on_before_test_case(event)
-        test_case = event.test_case
+      def on_before_test_case(test_case)
         builder = Builder.new(test_case)
         unless same_feature_as_previous_test_case?(test_case.feature)
           @feature_hash = builder.feature_hash
@@ -38,8 +37,7 @@ module Cucumber
         @any_step_failed = false
       end
 
-      def on_before_test_step(event)
-        test_step = event.test_step
+      def on_before_test_step(test_step)
         return if internal_hook?(test_step)
         hook_query = HookQueryVisitor.new(test_step)
         if hook_query.hook?
@@ -56,20 +54,19 @@ module Cucumber
         @step_hash = @step_or_hook_hash
       end
 
-      def on_after_test_step(event)
-        test_step = event.test_step
-        result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
+      def on_after_test_step(test_step, result)
+        result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         return if internal_hook?(test_step)
         add_match_and_result(test_step, result)
         @any_step_failed = true if result.failed?
       end
 
-      def on_after_test_case(event)
-        result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
+      def on_after_test_case(test_case, result)
+        result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         add_failed_around_hook(result) if result.failed? && !@any_step_failed
       end
 
-      def on_finished_testing(event)
+      def on_test_run_finished
         @io.write(MultiJson.dump(@feature_hashes, pretty: true))
       end
 

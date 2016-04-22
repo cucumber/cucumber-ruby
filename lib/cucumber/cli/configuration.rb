@@ -3,6 +3,7 @@ require 'cucumber/cli/options'
 require 'cucumber/cli/rerun_file'
 require 'cucumber/constantize'
 require 'cucumber/core/gherkin/tag_expression'
+require 'cucumber'
 
 module Cucumber
   module Cli

@@ -1,8 +1,10 @@
+require 'cucumber/core/events'
+
 module Cucumber
   module Events
 
     # Event fired when a step is matched to a definition
-    class StepMatch
+    class StepMatch < Core::Event.new(:test_step, :step_match)
 
       # The test step that was matched.
       #

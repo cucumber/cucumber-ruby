@@ -19,40 +19,12 @@ Feature: Custom Formatter
         class Formatter
           def initialize(config)
             @io = config.out_stream
-            config.on_event Cucumber::Events::BeforeTestCase do |event|
-              print_test_case_name(event.test_case)
+            config.on_event :test_case_starting do |test_case|
+              print_test_case_name(test_case)
             end
           end
 
           def print_test_case_name(test_case)
-            feature = test_case.source.first
-            scenario = test_case.source.last
-            @io.puts feature.short_name.upcase
-            @io.puts "  #{scenario.name.upcase}"
-          end
-        end
-      end
-      """
-    When I run `cucumber features/f.feature --format MyCustom::Formatter`
-    Then it should pass with exactly:
-      """
-      I'LL USE MY OWN
-        JUST PRINT ME
-
-      """
-
-  Scenario: Implement v2.0 formatter methods
-    Note that this method is likely to be deprecated in favour of events - see above.
-
-    Given a file named "features/support/custom_formatter.rb" with:
-      """
-      module MyCustom
-        class Formatter
-          def initialize(config)
-            @io = config.out_stream
-          end
-
-          def before_test_case(test_case)
             feature = test_case.source.first
             scenario = test_case.source.last
             @io.puts feature.short_name.upcase

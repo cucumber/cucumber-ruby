@@ -7,8 +7,8 @@ module Cucumber
     class FailFast
 
       def initialize(configuration)
-        configuration.on_event :after_test_case do |event|
-          Cucumber.wants_to_quit = true unless event.result.ok?(configuration.strict?)
+        configuration.on_event :test_case_finished do |test_case, result|
+          Cucumber.wants_to_quit = true unless result.ok?(configuration.strict?)
         end
       end
 

@@ -15,42 +15,34 @@ module Cucumber
         def initialize(*)
           super
           @matches = collect_matches
+          config.on_event(:test_case_starting) do |test_case|
+            formatter.before_test_case(test_case)
+            printer.before_test_case(test_case)
+          end
+          config.on_event(:test_step_starting) do |test_step|
+            formatter.before_test_step(test_step)
+            printer.before_test_step(test_step)
+          end
+          config.on_event(:test_step_finished) do |test_step, result|
+            printer.after_test_step(test_step, result)
+            formatter.after_test_step(test_step, result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter))
+          end
+          config.on_event(:test_case_finished) do |test_case, result|
+            record_test_case_result(test_case, result)
+            printer.after_test_case(test_case, result)
+            formatter.after_test_case(test_case, result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter))
+          end
+          config.on_event(:test_run_finished) do
+            printer.after
+            formatter.done
+          end
         end
 
-        def_delegators :formatter,
-          :ask
-
-        def_delegators :printer,
-          :embed
-
-        def before_test_case(test_case)
-          formatter.before_test_case(test_case)
-          printer.before_test_case(test_case)
-        end
-
-        def before_test_step(test_step)
-          formatter.before_test_step(test_step)
-          printer.before_test_step(test_step)
-        end
-
-        def after_test_step(test_step, result)
-          printer.after_test_step(test_step, result)
-          formatter.after_test_step(test_step, result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter))
-        end
-
-        def after_test_case(test_case, result)
-          record_test_case_result(test_case, result)
-          printer.after_test_case(test_case, result)
-          formatter.after_test_case(test_case, result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter))
-        end
+        def_delegators :formatter, :ask
+        def_delegators :printer, :embed
 
         def puts(*messages)
           printer.puts(messages)
-        end
-
-        def done
-          printer.after
-          formatter.done
         end
 
         private
@@ -66,8 +58,8 @@ module Cucumber
 
         def collect_matches
           result = {}
-          config.on_event(:step_match) do |event|
-            result[event.test_step.source.last] = event.step_match
+          config.on_event(:step_match) do |test_step, step_match|
+            result[test_step.source.last] = step_match
           end
           result
         end
