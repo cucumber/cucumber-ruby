@@ -31,7 +31,7 @@ module Cucumber
   end
 
   class FeatureFolderNotFoundException < FileException
-    include FixRuby21Bug9285 if Cucumber::RUBY_2_1 || Cucumber::RUBY_2_2
+    include FixRuby21Bug9285 if Cucumber::RUBY_2_1 || Cucumber::RUBY_2_2 || Cucumber::RUBY_2_3
   end
 
   require 'cucumber/core'

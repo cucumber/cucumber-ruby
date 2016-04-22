@@ -12,6 +12,7 @@ module Cucumber
     RUBY_BINARY   = File.join(RbConfig::CONFIG['bindir'], RbConfig::CONFIG['ruby_install_name'])
     RUBY_2_2      = RUBY_VERSION =~ /^2\.2/
     RUBY_2_1      = RUBY_VERSION =~ /^2\.1/
+    RUBY_2_3      = RUBY_VERSION =~ /^2\.3/
 
     class << self
       attr_accessor :use_full_backtrace
