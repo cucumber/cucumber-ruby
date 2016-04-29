@@ -33,10 +33,21 @@ module Cucumber
 
     def initialize(user_options = {})
       @options = default_options.merge(Cucumber::Hash(user_options))
+      @suites = Hash.new
     end
 
     def with_options(new_options)
       self.class.new(@options.merge(new_options))
+    end
+
+    def configured_suites
+      @suites
+    end
+
+    def suite(name)
+      new_suite = Suite.new
+      yield new_suite if block_given?
+      @suites[name] = new_suite
     end
 
     # TODO: Actually Deprecate???
@@ -229,7 +240,7 @@ module Cucumber
     # formatter wants to display snippets to the user.
     #
     # Each proc should take the following arguments:
-    # 
+    #
     #  - keyword
     #  - step text
     #  - multiline argument
