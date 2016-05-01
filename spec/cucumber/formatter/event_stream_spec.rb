@@ -13,7 +13,7 @@ module Cucumber
       expected_source = %{Feature: A
   Scenario: B}
       formatter = Formatter::EventStream.new(config)
-      config.notify Events::GherkinSourceRead.new('path/to/the.feature', expected_source)
+      config.notify :gherkin_source_read, 'path/to/the.feature', expected_source
       output = JSON.parse(io.string.lines[0])
       expect(output["source"]).to eq expected_source
       expect(output["event"]).to eq "GherkinSourceRead"

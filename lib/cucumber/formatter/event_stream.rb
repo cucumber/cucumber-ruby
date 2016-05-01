@@ -26,47 +26,47 @@ module Cucumber
           })
         end
 
-        on(:gherkin_source_read) do |event|
+        on(:gherkin_source_read) do |path, source|
           emit({
             event: "GherkinSourceRead",
-            id: "#{event.path}:1",
-            source: event.source
+            id: "#{path}:1",
+            source: source
           })
         end
 
-        on(:step_match) do |event|
+        on(:step_match) do
           emit({
             event: "StepDefinitionMatched",
           })
         end
 
-        on(:before_test_case) do |event|
+        on(:test_case_starting) do |test_case|
           emit({
             event: "TestCaseStarted",
-            id: event.test_case.location
+            id: test_case.location
           })
         end
 
-        on(:before_test_step) do |event|
+        on(:test_step_starting) do |test_step|
           emit({
             event: "TestStepStarted",
-            id: event.test_step.location
+            id: test_step.location
           })
         end
 
-        on(:after_test_step) do |event|
+        on(:test_step_finished) do |test_step, result|
           event_builder = TestStepResultEvent.new(@config)
-          event.result.describe_to event_builder, event.test_step
+          result.describe_to event_builder, test_step
           emit(event_builder)
         end
 
-        on(:after_test_case) do |event|
+        on(:test_case_finished) do |test_case, result|
           event_builder = TestCaseResultEvent.new(@config)
-          event.result.describe_to event_builder, event.test_case
+          result.describe_to event_builder, test_case
           emit(event_builder)
         end
 
-        on(:finished_testing) do
+        on(:test_run_finished) do
           emit({
             event: "TestRunFinished"
           })
