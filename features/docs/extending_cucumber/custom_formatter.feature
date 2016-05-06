@@ -19,8 +19,8 @@ Feature: Custom Formatter
         class Formatter
           def initialize(config)
             @io = config.out_stream
-            config.on_event :test_case_starting do |test_case|
-              print_test_case_name(test_case)
+            config.on_event :test_case_starting do |event|
+              print_test_case_name(event.test_case)
             end
           end
 
@@ -71,7 +71,7 @@ Feature: Custom Formatter
       """
 
   Scenario: Use both old and new
-    You can use a specific shim to opt-in to both APIs at once.
+    You can both APIs at once, for now
 
     Given a file named "features/support/custom_mixed_formatter.rb" with:
       """

@@ -19,10 +19,10 @@ Feature: Listen for events
       """
       AfterConfiguration do |config|
         io = config.out_stream
-        config.on_event Cucumber::Events::StepMatch do |test_step, step_match|
+        config.on_event :step_match do |event|
           io.puts "Success!"
-          io.puts "Step name:       #{test_step.name}"
-          io.puts "Source location: #{step_match.location}"
+          io.puts "Step name:       #{event.test_step.name}"
+          io.puts "Source location: #{event.step_match.location}"
         end
       end
       """
@@ -46,14 +46,14 @@ Feature: Listen for events
       """
       AfterConfiguration do |config|
         io = config.out_stream
-        config.on_event Cucumber::Core::Events::TestStepFinished do |test_step, result|
-          io.puts "YO"
+        config.on_event :test_step_finished do |event|
+          io.puts event.result.passed?
         end
       end
       """
     When I run `cucumber`
     Then it should pass with:
       """
-      YO
+      true
       """
 

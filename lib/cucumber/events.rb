@@ -1,3 +1,5 @@
+Dir[File.dirname(__FILE__) + '/events/*.rb'].map(&method(:require))
+
 module Cucumber
 
   # Events tell you what's happening while Cucumber runs your features.
@@ -14,7 +16,12 @@ module Cucumber
   #     end
   #   end
   module Events
+    def self.registry
+      Core::Events.build_registry(
+        StepMatch,
+        TestRunFinished,
+      )
+    end
   end
 end
 
-Dir[File.dirname(__FILE__) + '/events/*.rb'].map(&method(:require))

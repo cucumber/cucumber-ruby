@@ -35,7 +35,8 @@ module Cucumber
         }}
       end
 
-      def on_before_test_case(test_case)
+      def on_before_test_case(event)
+        test_case = event.test_case
         unless same_feature_as_previous_test_case?(test_case.feature)
           start_feature(test_case.feature)
         end
@@ -46,13 +47,15 @@ module Cucumber
         @interceptederr = Interceptor::Pipe.wrap(:stderr)
       end
 
-      def on_after_test_step(test_step, result)
+      def on_after_test_step(event)
+        test_step, result = *event.attributes
         return if @failing_step_source
 
         @failing_step_source = test_step.source.last unless result.ok?(@config.strict?)
       end
 
-      def on_after_test_case(test_case, result)
+      def on_after_test_case(event)
+        test_case, result = *event.attributes
         result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         test_case_name = NameBuilder.new(test_case)
         scenario = test_case_name.scenario_name
@@ -64,7 +67,7 @@ module Cucumber
         Interceptor::Pipe.unwrap! :stderr
       end
 
-      def on_finished_testing
+      def on_finished_testing(event)
         @features_data.each { |file, data| end_feature(data) }
       end
 

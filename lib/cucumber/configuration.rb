@@ -242,7 +242,7 @@ module Cucumber
         :snippets            => true,
         :source              => true,
         :duration            => true,
-        :event_bus           => Core::Events::Bus.new(Cucumber::Events)
+        :event_bus           => Core::Events::Bus.new(Core::Events.registry.merge(Cucumber::Events.registry))
       }
     end
 

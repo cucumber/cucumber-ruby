@@ -17,7 +17,8 @@ module Cucumber
         @stepdef_to_match = Hash.new { |h, stepdef_key| h[stepdef_key] = [] }
         @total_duration = 0
         @matches = {}
-        runtime.configuration.on_event :step_match do |test_step, step_match|
+        runtime.configuration.on_event :step_match do |event|
+          test_step, step_match = *event.attributes
           @matches[test_step.source] = step_match
         end
       end

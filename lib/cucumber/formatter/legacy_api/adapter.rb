@@ -15,19 +15,21 @@ module Cucumber
         def initialize(*)
           super
           @matches = collect_matches
-          config.on_event(:test_case_starting) do |test_case|
-            formatter.before_test_case(test_case)
-            printer.before_test_case(test_case)
+          config.on_event(:test_case_starting) do |event|
+            formatter.before_test_case(event.test_case)
+            printer.before_test_case(event.test_case)
           end
-          config.on_event(:test_step_starting) do |test_step|
-            formatter.before_test_step(test_step)
-            printer.before_test_step(test_step)
+          config.on_event(:test_step_starting) do |event|
+            formatter.before_test_step(event.test_step)
+            printer.before_test_step(event.test_step)
           end
-          config.on_event(:test_step_finished) do |test_step, result|
+          config.on_event(:test_step_finished) do |event|
+            test_step, result = *event.attributes
             printer.after_test_step(test_step, result)
             formatter.after_test_step(test_step, result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter))
           end
-          config.on_event(:test_case_finished) do |test_case, result|
+          config.on_event(:test_case_finished) do |event|
+            test_case, result = *event.attributes
             record_test_case_result(test_case, result)
             printer.after_test_case(test_case, result)
             formatter.after_test_case(test_case, result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter))
@@ -58,7 +60,8 @@ module Cucumber
 
         def collect_matches
           result = {}
-          config.on_event(:step_match) do |test_step, step_match|
+          config.on_event(:step_match) do |event|
+            test_step, step_match = *event.attributes
             result[test_step.source.last] = step_match
           end
           result
