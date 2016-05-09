@@ -1,6 +1,7 @@
 require 'cucumber/constantize'
 require 'cucumber/cli/rerun_file'
 require 'cucumber/events'
+require 'cucumber/core/event_bus'
 require 'forwardable'
 require 'cucumber/core/gherkin/tag_expression'
 require 'cucumber'
@@ -242,7 +243,7 @@ module Cucumber
         :snippets            => true,
         :source              => true,
         :duration            => true,
-        :event_bus           => Core::Events::Bus.new(Core::Events.registry.merge(Cucumber::Events.registry))
+        :event_bus           => Core::EventBus.new(Core::Events.registry.merge(Cucumber::Events.registry))
       }
     end
 
