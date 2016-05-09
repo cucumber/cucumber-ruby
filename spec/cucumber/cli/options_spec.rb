@@ -55,41 +55,44 @@ module Cucumber
           end
         end
 
-        context '--i18n' do
-          context "with LANG specified as 'help'" do
-            include RSpec::WorkInProgress
+        context '--i18n help|LANG' do
 
-            it "lists all known languages" do
+          def check_language_table
+            ::Gherkin::DIALECTS.keys.each do |key|
+              expect(output_stream.string).to include(key);
+            end
+          end
+
+          context "with 'help' specified" do
+            it "displays the language table" do
+              after_parsing '--i18n help' do
+                check_language_table
+              end
+            end
+
+            it "exits successfully" do
               when_parsing '--i18n help' do
                 expect(Kernel).to receive(:exit)
               end
             end
-
-            it "exits the program" do
-              when_parsing('--i18n help') { expect(Kernel).to receive(:exit) }
-            end
           end
 
-          context "with invalid LANG" do 
-            include RSpec::WorkInProgress
-
-            it "exits" do 
-              when_parsing '--i18n foo' do 
-                expect(Kernel).to receive(:exit)
+          context "with invalid LANG" do
+            it "fails" do
+              when_parsing '--i18n foo' do
+                expect(Kernel).to receive(:exit).with(2)
               end
             end
 
-            it "says the language was invalid" do 
-              after_parsing '--i18n foo' do 
-                expect(@output_stream.string).to include("Invalid language 'foo'. Available languages are:")
+            it "indicates the language is invalid" do
+              after_parsing '--i18n foo' do
+                expect(output_stream.string).to include("Invalid language 'foo'. Available languages are:")
               end
             end
 
-            it "displays the language table" do 
-              after_parsing '--i18n foo' do 
-                ::Gherkin::DIALECTS.keys.map do |key|
-                  expect(@output_stream.string).to include("#{key}");
-                end
+            it "displays the language table" do
+              after_parsing '--i18n foo' do
+                check_language_table
               end
             end
           end
@@ -136,7 +139,7 @@ module Cucumber
             options = Options.new(output_stream, error_stream, :default_profile => 'default')
 
             options.parse!(%w{-f pretty})
-            
+
             expect(options[:formats]).to eq [['pretty', output_stream], ["junit", "result.xml"]]
           end
         end
@@ -293,7 +296,7 @@ module Cucumber
             expect(options[:source]).to be false
             expect(options[:duration]).to be false
           end
-          
+
           it "uses --no-duration when defined in the profile" do
             given_cucumber_yml_defined_as('foo' => '--no-duration')
             options.parse!(%w[-p foo])
