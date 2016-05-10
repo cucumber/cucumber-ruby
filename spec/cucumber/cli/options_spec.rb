@@ -57,9 +57,11 @@ module Cucumber
 
         context '--i18n help|LANG' do
 
+          language = 'ja'
+
           def check_language_table
-            ::Gherkin::DIALECTS.keys.each do |key|
-              expect(output_stream.string).to include(key);
+            ::Gherkin::DIALECTS.keys.each do |lang|
+              expect(output_stream.string).to include(lang);
             end
           end
 
@@ -72,7 +74,29 @@ module Cucumber
 
             it "exits successfully" do
               when_parsing '--i18n help' do
-                expect(Kernel).to receive(:exit)
+                expect(Kernel).to receive(:exit).with(0)
+              end
+            end
+          end
+
+          context "with valid LANG" do
+            it "lists the keywords of LANG" do
+              keywords = ::Gherkin::Dialect.for(language)
+                           .instance_variable_get(:@spec)
+                           .values
+                           .select { |e| e.instance_of?(Array) }
+                           .flatten
+
+              after_parsing "--i18n #{language}" do
+                keywords.each do |kw|
+                  expect(output_stream.string).to include(kw)
+                end
+              end
+            end
+
+            it "exits successfully" do
+              when_parsing '--i18n pt' do
+                expect(Kernel).to receive(:exit).with(0)
               end
             end
           end
@@ -86,7 +110,7 @@ module Cucumber
 
             it "indicates the language is invalid" do
               after_parsing '--i18n foo' do
-                expect(output_stream.string).to include("Invalid language 'foo'. Available languages are:")
+                expect(output_stream.string).to include("Invalid language 'foo'")
               end
             end
 

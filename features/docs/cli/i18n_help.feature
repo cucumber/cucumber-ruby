@@ -27,11 +27,6 @@ Feature: Getting info of supported languages
         | then             | "* ", "Então ", "Entao "                                                                     |
         | and              | "* ", "E "                                                                                   |
         | but              | "* ", "Mas "                                                                                 |
-        | given (code)     | "Dado", "Dada", "Dados", "Dadas"                                                             |
-        | when (code)      | "Quando"                                                                                     |
-        | then (code)      | "Então", "Entao"                                                                             |
-        | and (code)       | "E"                                                                                          |
-        | but (code)       | "Mas"                                                                                        |
 
       """
 
