@@ -8,11 +8,20 @@ module Cucumber
     class Retry < Core::Filter.new(:configuration)
 
       def test_case(test_case)
-        super 
-
         configuration.on_event(:after_test_case) do |event|
-          test_case.describe_to(receiver) if event.result.failed?
+          next unless event.test_case == test_case
+          next unless event.result.failed?
+          next if test_case_counts[test_case] >= configuration.retry_attempts
+
+          test_case_counts[test_case] += 1
+          event.test_case.describe_to(receiver)
         end
+
+        super
+      end
+
+      def test_case_counts
+        @test_case_counts ||= Hash.new {|h,k| h[k] = 0 }
       end
     end
   end

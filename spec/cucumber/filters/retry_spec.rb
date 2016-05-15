@@ -6,7 +6,7 @@ require 'cucumber/core/test/case'
 require 'cucumber/core'
 require 'cucumber/events'
 
-describe Cucumber::Filters::Retry do 
+describe Cucumber::Filters::Retry do
   include Cucumber::Core::Gherkin::Writer
   include Cucumber::Core
   include Cucumber::Events
@@ -22,45 +22,49 @@ describe Cucumber::Filters::Retry do
   it { is_expected.to respond_to(:with_receiver) }
   it { is_expected.to respond_to(:done) }
 
-  context "general" do 
-    before(:each) do 
+  context "general" do
+    before(:each) do
       filter.with_receiver(receiver)
     end
 
-    it "registers the :after_test_case event" do 
+    it "registers the :after_test_case event" do
       expect(configuration).to receive(:on_event).with(:after_test_case)
       filter.test_case(test_case)
     end
   end
 
   context "passing test case" do
-    it "describes the test case once" do 
+    it "describes the test case once" do
       expect(test_case).to receive(:describe_to).with(receiver)
       filter.test_case(test_case)
       configuration.notify(pass)
     end
   end
 
-  context "failing test case" do 
-    it "describes the test case the specified number of times" do 
-      expect(test_case).to receive(:describe_to).with(receiver).exactly(3).times
+  context "failing test case" do
+    it "describes the test case the specified number of times" do
+      expect(receiver).to receive(:test_case) do |test_case|
+        configuration.notify(fail)
+      end.exactly(3).times
+
       filter.test_case(test_case)
-      configuration.notify(fail)
     end
   end
 
-  context "flaky test cases" do 
+  context "flaky test cases" do
 
-    context "a little flaky" do 
-      it "describes the test case twice" do 
-        expect(test_case).to receive(:describe_to).with(receiver).exactly(2).times
+    context "a little flaky" do
+      it "describes the test case twice" do
+        results = [fail, pass]
+        expect(receiver).to receive(:test_case) do |test_case|
+          configuration.notify(results.shift)
+        end.exactly(2).times
+
         filter.test_case(test_case)
-        configuration.notify(fail)
-        configuration.notify(pass)
       end
     end
 
-    context "really flaky" do 
+    context "really flaky" do
       it "describes the test case 3 times" do
         expect(test_case).to receive(:describe_to).with(receiver).exactly(3).times
         filter.test_case(test_case)
