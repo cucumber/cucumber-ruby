@@ -1,3 +1,5 @@
+require 'digest/sha2'
+
 module Cucumber
   module Filters
 
@@ -29,7 +31,10 @@ module Cucumber
       private
 
       def shuffled_test_cases
-        @test_cases.shuffle(random: Random.new(seed))
+        digester = Digest::SHA2.new(256)
+        @test_cases.map.with_index.
+          sort_by { |_, index| digester.digest((@seed + index).to_s) }.
+          map { |test_case, _| test_case }
       end
 
       attr_reader :seed
