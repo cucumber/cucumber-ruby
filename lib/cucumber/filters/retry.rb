@@ -20,6 +20,8 @@ module Cucumber
         super
       end
 
+      private
+
       def test_case_counts
         @test_case_counts ||= Hash.new {|h,k| h[k] = 0 }
       end
