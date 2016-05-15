@@ -9,9 +9,7 @@ module Cucumber
 
       def test_case(test_case)
         configuration.on_event(:after_test_case) do |event|
-          next unless event.test_case == test_case
-          next unless event.result.failed?
-          next if test_case_counts[test_case] >= configuration.retry_attempts
+          next unless retry_required?(test_case, event)
 
           test_case_counts[test_case] += 1
           event.test_case.describe_to(receiver)
@@ -21,6 +19,10 @@ module Cucumber
       end
 
       private
+
+      def retry_required?(test_case, event)
+        event.test_case == test_case && event.result.failed? && test_case_counts[test_case] < configuration.retry_attempts
+      end
 
       def test_case_counts
         @test_case_counts ||= Hash.new {|h,k| h[k] = 0 }
