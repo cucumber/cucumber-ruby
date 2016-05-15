@@ -66,11 +66,13 @@ describe Cucumber::Filters::Retry do
 
     context "really flaky" do
       it "describes the test case 3 times" do
-        expect(test_case).to receive(:describe_to).with(receiver).exactly(3).times
+        results = [fail, fail, pass]
+
+        expect(receiver).to receive(:test_case) do |test_case|
+          configuration.notify(results.shift)
+        end.exactly(3).times
+
         filter.test_case(test_case)
-        configuration.notify(fail)
-        configuration.notify(fail)
-        configuration.notify(pass)
       end
     end
   end
