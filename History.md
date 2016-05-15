@@ -4,6 +4,7 @@
 
 ### Bugfixes
 
+* Make random order stable and platform independent ([#974](https://github.com/cucumber/cucumber-ruby/pull/974), closes [#971](https://github.com/cucumber/cucumber-ruby/issues/971))
 * Run scenarios in fully random order ([#970](https://github.com/cucumber/cucumber-ruby/pull/970) @threedaymonk)
 * Adding Test Step in AfterStep hook. ([#931](https://github.com/cucumber/cucumber-ruby/pull/931) @t-morgan)
 * Handle even more exotic rerun file formats seen in the wild ([#928](https://github.com/cucumber/cucumber-ruby/pull/928) @mcrmfc)
@@ -166,7 +167,7 @@ could cause breaking changes for users of undocumented APIs. Hence the minor ver
 ## [v2.0.0.rc.1](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.5...v2.0.0.rc.1)
 
 ### Removed Features
-  
+
 * Removed support for IronRuby (@tooky @mattwynne)
 
 ### New Features
