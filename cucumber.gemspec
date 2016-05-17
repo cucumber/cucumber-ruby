@@ -10,17 +10,6 @@ Gem::Specification.new do |s|
   s.homepage    = "http://cukes.info"
   s.platform    = Gem::Platform::RUBY
   s.required_ruby_version = ">= 1.9.3"
-  s.post_install_message = %{We need your help.
-    
-Please take a few minutes to fill out our survey and help us understand how BDD and Cucumber are used in the wild.
-  
-  http://tinyurl.com/zk9jyrf
-
-Thanks!
-
-♡ The Cucumber Team ♡
-}
-
   s.add_dependency 'cucumber-core', '~> 1.4.0'
   s.add_dependency 'builder', '>= 2.1.2'
   s.add_dependency 'diff-lcs', '>= 1.1.3'
