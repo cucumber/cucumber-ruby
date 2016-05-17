@@ -423,6 +423,13 @@ END_OF_MESSAGE
         expect(config.snippet_type).to eq :regexp
       end
     end
+
+    describe "#retry_attempts" do 
+      it "returns the specified number of retries" do 
+        config.parse!(['--retry=3'])
+        expect(config.retry_attempts).to eql 3
+      end
+    end
   end
 end
 end

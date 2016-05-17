@@ -65,6 +65,10 @@ module Cucumber
       @options[:fail_fast]
     end
 
+    def retry_attempts
+      @options[:retry]
+    end
+
     def guess?
       @options[:guess]
     end

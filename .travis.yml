@@ -12,14 +12,11 @@ rvm:
 branches:
   only:
     - master
+    - resolve-issue-882
     - v1.3.x-bugfix
 
 before_install:
   - gem update bundler
 
 notifications:
-  email:
-    - cukes-devs@googlegroups.com
-  webhooks:
-    urls: # gitter
-      - https://webhooks.gitter.im/e/dc010332f9d40fcc21c4
+  email: false
