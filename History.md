@@ -2,6 +2,8 @@
 
 ### New Features
 
+* Add --retry option to retry failed tests as part of the same run ([#920](https://github.com/cucumber/cucumber-ruby/pull/920) @DanaScheider)
+
 ### Bugfixes
 
 * Make random order stable and platform independent ([#974](https://github.com/cucumber/cucumber-ruby/pull/974), closes [#971](https://github.com/cucumber/cucumber-ruby/issues/971))
