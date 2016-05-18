@@ -85,22 +85,8 @@ module Cucumber
         @args.extend(::OptionParser::Arguable)
 
         @args.options do |opts|
-          opts.banner = ["Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+", "",
-            "Examples:",
-            "cucumber examples/i18n/en/features",
-            "cucumber @rerun.txt (See --format rerun)",
-            "cucumber examples/i18n/it/features/somma.feature:6:98:113",
-            "cucumber -s -i http://rubyurl.com/eeCl", "", "",
-          ].join("\n")
-          opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR",
-            "Require files before executing the features. If this",
-            "option is not specified, all *.rb files that are",
-            "siblings or below the features will be loaded auto-",
-            "matically. Automatic loading is disabled when this",
-            "option is specified, and all loading becomes explicit.",
-            "Files under directories named \"support\" are always",
-            "loaded first.",
-            "This option can be specified multiple times.") do |v|
+          opts.banner = banner
+          opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", *require_files_msg) do |v|
             @options[:require] << v
             if(Cucumber::JRUBY && File.directory?(v))
               require 'java'
@@ -142,51 +128,23 @@ module Cucumber
             ProjectInitializer.new.run
             Kernel.exit(0)
           end
-          opts.on("-o", "--out [FILE|DIR]",
-            "Write output to a file/directory instead of STDOUT. This option",
-            "applies to the previously specified --format, or the",
-            "default format if no format is specified. Check the specific",
-            "formatter's docs to see whether to pass a file or a dir.") do |v|
+          opts.on("-o", "--out [FILE|DIR]", *out_msg) do |v|
             @options[:formats] << ['pretty', nil] if @options[:formats].empty?
             @options[:formats][-1][1] = v
           end
-          opts.on("-t TAG_EXPRESSION", "--tags TAG_EXPRESSION",
-            "Only execute the features or scenarios with tags matching TAG_EXPRESSION.",
-            "Scenarios inherit tags declared on the Feature level. The simplest",
-            "TAG_EXPRESSION is simply a tag. Example: --tags @dev. When a tag in a tag",
-            "expression starts with a ~, this represents boolean NOT. Example: --tags ~@dev.",
-            "A tag expression can have several tags separated by a comma, which represents",
-            "logical OR. Example: --tags @dev,@wip. The --tags option can be specified",
-            "several times, and this represents logical AND. Example: --tags @foo,~@bar --tags @zap.",
-            "This represents the boolean expression (@foo || !@bar) && @zap.",
-            "\n",
-            "Beware that if you want to use several negative tags to exclude several tags",
-            "you have to use logical AND: --tags ~@fixme --tags ~@buggy.",
-            "\n",
-            "Positive tags can be given a threshold to limit the number of occurrences.",
-            "Example: --tags @qa:3 will fail if there are more than 3 occurrences of the @qa tag.",
-            "This can be practical if you are practicing Kanban or CONWIP.") do |v|
+          opts.on("-t TAG_EXPRESSION", "--tags TAG_EXPRESSION", *tags_msg) do |v|
             @options[:tag_expressions] << v
           end
-          opts.on("-n NAME", "--name NAME",
-            "Only execute the feature elements which match part of the given name.",
-            "If this option is given more than once, it will match against all the",
-            "given names.") do |v|
+          opts.on("-n NAME", "--name NAME", *name_msg) do |v|
             @options[:name_regexps] << /#{v}/
           end
           opts.on("-e", "--exclude PATTERN", "Don't run feature files or require ruby files matching PATTERN") do |v|
             @options[:excludes] << Regexp.new(v)
           end
-          opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE",
-              "Pull commandline arguments from cucumber.yml which can be defined as",
-              "strings or arrays.  When a 'default' profile is defined and no profile",
-              "is specified it is always used. (Unless disabled, see -P below.)",
-              "When feature files are defined in a profile and on the command line",
-              "then only the ones from the command line are used.") do |v|
+          opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE", *profile_short_flag_msg) do |v|
             @profiles << v
           end
-          opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG,
-            "Disables all profile loading to avoid using the 'default' profile.") do |v|
+          opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG, *no_profile_short_flag_msg) do |v|
             @disable_profile_loading = true
           end
           opts.on("#{RETRY_FLAG} ATTEMPTS", "Specify the number of times to retry failing tests (default: 0)") do |v|
@@ -307,6 +265,82 @@ TEXT
       protected :options, :profiles, :expanded_args
 
     private
+
+      def no_profile_short_tag_msg
+        [
+          "Disables all profile loading to avoid using the 'default' profile."
+        ]
+      end
+
+      def profile_short_flag_msg
+        [
+          "Pull commandline arguments from cucumber.yml which can be defined as",
+          "strings or arrays.  When a 'default' profile is defined and no profile",
+          "is specified it is always used. (Unless disabled, see -P below.)",
+          "When feature files are defined in a profile and on the command line",
+          "then only the ones from the command line are used."
+        ]
+      end
+
+      def name_msg
+        [
+          "Only execute the feature elements which match part of the given name.",
+          "If this option is given more than once, it will match against all the",
+          "given names."
+        ]
+      end
+
+      def tags_msg
+        [
+          "Only execute the features or scenarios with tags matching TAG_EXPRESSION.",
+          "Scenarios inherit tags declared on the Feature level. The simplest",
+          "TAG_EXPRESSION is simply a tag. Example: --tags @dev. When a tag in a tag",
+          "expression starts with a ~, this represents boolean NOT. Example: --tags ~@dev.",
+          "A tag expression can have several tags separated by a comma, which represents",
+          "logical OR. Example: --tags @dev,@wip. The --tags option can be specified",
+          "several times, and this represents logical AND. Example: --tags @foo,~@bar --tags @zap.",
+          "This represents the boolean expression (@foo || !@bar) && @zap.",
+          "\n",
+          "Beware that if you want to use several negative tags to exclude several tags",
+          "you have to use logical AND: --tags ~@fixme --tags ~@buggy.",
+          "\n",
+          "Positive tags can be given a threshold to limit the number of occurrences.",
+          "Example: --tags @qa:3 will fail if there are more than 3 occurrences of the @qa tag.",
+          "This can be practical if you are practicing Kanban or CONWIP."
+        ]
+      end
+
+      def out_msg
+        [
+          "Write output to a file/directory instead of STDOUT. This option",
+          "applies to the previously specified --format, or the",
+          "default format if no format is specified. Check the specific",
+          "formatter's docs to see whether to pass a file or a dir."
+        ]
+      end
+
+      def require_files_msg
+        [
+          "Require files before executing the features. If this",
+          "option is not specified, all *.rb files that are",
+          "siblings or below the features will be loaded auto-",
+          "matically. Automatic loading is disabled when this",
+          "option is specified, and all loading becomes explicit.",
+          "Files under directories named \"support\" are always",
+          "loaded first.",
+          "This option can be specified multiple times."
+        ]
+      end
+
+      def banner
+        ["Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+", "",
+          "Examples:",
+          "cucumber examples/i18n/en/features",
+          "cucumber @rerun.txt (See --format rerun)",
+          "cucumber examples/i18n/it/features/somma.feature:6:98:113",
+          "cucumber -s -i http://rubyurl.com/eeCl", "", "",
+        ].join("\n")
+      end
 
       def non_stdout_formats
         @options[:formats].select {|format, output| output != @out_stream }
