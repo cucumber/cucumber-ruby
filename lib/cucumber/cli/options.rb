@@ -94,9 +94,9 @@ module Cucumber
             opts.on("-j DIR", "--jars DIR", "Load all the jars under DIR") {|jars| load_jars(jars) }
           end
 
-          opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) {|v| @options[:retry] = v.to_i }
+          opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) {|v| set_option :retry, v.to_i }
           opts.on("--i18n LANG", *i18n_msg) {|lang| set_language(lang) }
-          opts.on(FAIL_FAST_FLAG, "Exit immediately following the first failing scenario") { options[:fail_fast] = true }
+          opts.on(FAIL_FAST_FLAG, "Exit immediately following the first failing scenario") { set_option :fail_fast }
           opts.on("-f FORMAT", "--format FORMAT", *format_msg, *FORMAT_HELP) {|v| @options[:formats] << [v, @out_stream] }
           opts.on('--init', *init_msg) {|v| ProjectInitializer.new.run && Kernel.exit(0) }
           opts.on("-o", "--out [FILE|DIR]", *out_msg) {|v| set_out_stream(v) }
@@ -107,19 +107,19 @@ module Cucumber
           opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG, *no_profile_short_flag_msg) {|v| @disable_profile_loading = true }
           opts.on("-c", "--[no-]color", *color_msg) {|v| Cucumber::Term::ANSIColor.coloring = v }
           opts.on("-d", "--dry-run", *dry_run_msg) { set_dry_run_and_duration }
-          opts.on("-m", "--no-multiline", "Don't print multiline strings and tables under steps.") { @options[:no_multiline] = true }
-          opts.on("-s", "--no-source", "Don't print the file and line of the step definition with the steps.") { @options[:source] = false }
-          opts.on("-i", "--no-snippets", "Don't print snippets for pending steps.") { @options[:snippets] = false }
-          opts.on("-I", "--snippet-type TYPE", *snippet_type_msg) {|v| @options[:snippet_type] = v.to_sym }
+          opts.on("-m", "--no-multiline", "Don't print multiline strings and tables under steps.") { set_option :no_multiline }
+          opts.on("-s", "--no-source", "Don't print the file and line of the step definition with the steps.") { set_option :source, false }
+          opts.on("-i", "--no-snippets", "Don't print snippets for pending steps.") { set_option :snippets, false }
+          opts.on("-I", "--snippet-type TYPE", *snippet_type_msg) {|v| set_option :snippet_type, v.to_sym }
           opts.on("-q", "--quiet", "Alias for --no-snippets --no-source.") { shut_up }
-          opts.on("--no-duration", "Don't print the duration at the end of the summary") { @options[:duration] = false }
+          opts.on("--no-duration", "Don't print the duration at the end of the summary") { set_option :duration, false }
           opts.on("-b", "--backtrace", "Show full backtrace for all errors.") { Cucumber.use_full_backtrace = true }
-          opts.on("-S", "--strict", "Fail if there are any undefined or pending steps.") { @options[:strict] = true }
-          opts.on("-w", "--wip", "Fail if there are any passing scenarios.") { @options[:wip] = true }
-          opts.on("-v", "--verbose", "Show the files and features loaded.") { @options[:verbose] = true }
-          opts.on("-g", "--guess", "Guess best match for Ambiguous steps.") { @options[:guess] = true }
-          opts.on("-l", "--lines LINES", *lines_msg) {|lines| @options[:lines] = lines }
-          opts.on("-x", "--expand", "Expand Scenario Outline Tables in output.") { @options[:expand] = true }
+          opts.on("-S", "--strict", "Fail if there are any undefined or pending steps.") { set_option :strict }
+          opts.on("-w", "--wip", "Fail if there are any passing scenarios.") { set_option :wip }
+          opts.on("-v", "--verbose", "Show the files and features loaded.") { set_option :verbose }
+          opts.on("-g", "--guess", "Guess best match for Ambiguous steps.") { set_option :guess }
+          opts.on("-l", "--lines LINES", *lines_msg) {|lines| set_option :lines, lines }
+          opts.on("-x", "--expand", "Expand Scenario Outline Tables in output.") { set_option :expand }
 
           opts.on("--order TYPE[:SEED]", "Run examples in the specified order. Available types:",
             *<<-TEXT.split("\n")) do |order|
@@ -334,6 +334,10 @@ TEXT
 
       def non_stdout_formats
         @options[:formats].select {|format, output| output != @out_stream }
+      end
+
+      def set_option(option, value=nil)
+        @options[option] = value.nil? ? true : value
       end
 
       def set_dry_run_and_duration
