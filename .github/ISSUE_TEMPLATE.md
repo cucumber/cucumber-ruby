@@ -1,13 +1,16 @@
+<!-- These sections are meant as guidance for you, to help you give the kind of information we'll need to help with your issue. If a section  doesn't seem to fit, just skip it.
+
+In general: Please provide as much information as you can to help us solving your problem -->
+
 ## Summary
 
-<!-- This sections are meant as guidance for you. If some doesn't fit, skip them. In general: Please provide as much information as you can to help us solving your problem -->
-
-<!--- Provide a general summary of the issue in the Title above -->
+<!--- Provide a general summary description of the issue -->
 
 ## Expected Behavior
 
 <!--- If you're describing a bug, tell us what should happen -->
 <!--- If you're suggesting a change/improvement, tell us how it should work -->
+<!--- Feel free to use Given / Then / Then if that helps, but please add some plain-language context too -->
 
 ## Current Behavior
 
@@ -32,14 +35,14 @@
 3.
 4.
 
-## Context
+## Context & Motivation
 
 <!--- How has this issue affected you? What are you trying to accomplish? -->
 <!--- Providing context helps us come up with a solution that is most useful in the real world -->
 
 ## Your Environment
 
-<!--- Include as many relevant details about the environment you experienced the bug in -->
+<!--- If you're reporting a bug, include as many relevant details about the environment you experienced the bug in -->
 * Version used:
 * Operating System and version:
 * Link to your project:
