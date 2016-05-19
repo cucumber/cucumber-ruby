@@ -26,9 +26,7 @@ module Cucumber
         'debug'       => ['Cucumber::Formatter::Debug',       'For developing formatters - prints the calls made to the listeners.']
       }
       max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
-      FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
-        "  #{key}#{' ' * (max - key.length)} : #{BUILTIN_FORMATS[key][1]}"
-      end) + ["Use --format rerun --out rerun.txt to write out failing",
+      FORMAT_HELP_MSG = ["Use --format rerun --out rerun.txt to write out failing",
         "features. You can rerun them with cucumber @rerun.txt.",
         "FORMAT can also be the fully qualified class name of",
         "your own custom formatter. If the class isn't loaded,",
@@ -39,6 +37,10 @@ module Cucumber
         "path underneath your features/support directory or anywhere",
         "on Ruby's LOAD_PATH, for example in a Ruby gem."
       ]
+
+      FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
+        "  #{key}#{' ' * (max - key.length)} : #{BUILTIN_FORMATS[key][1]}"
+      end) + FORMAT_HELP_MSG
       PROFILE_SHORT_FLAG = '-p'
       NO_PROFILE_SHORT_FLAG = '-P'
       PROFILE_LONG_FLAG = '--profile'
@@ -265,8 +267,7 @@ TEXT
       protected :options, :profiles, :expanded_args
 
     private
-
-      def no_profile_short_tag_msg
+      def no_profile_short_flag_msg
         [
           "Disables all profile loading to avoid using the 'default' profile."
         ]
