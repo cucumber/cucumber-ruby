@@ -88,19 +88,10 @@ module Cucumber
 
         @args.options do |opts|
           opts.banner = banner
-          opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", *require_files_msg) do |v|
-            @options[:require] << v
-            if(Cucumber::JRUBY && File.directory?(v))
-              require 'java'
-              $CLASSPATH << v
-            end
-          end
+          opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", *require_files_msg) {|lib| require_files(lib) }
 
           if(Cucumber::JRUBY)
-            opts.on("-j DIR", "--jars DIR",
-            "Load all the jars under DIR") do |jars|
-              Dir["#{jars}/**/*.jar"].each {|jar| require jar}
-            end
+            opts.on("-j DIR", "--jars DIR", "Load all the jars under DIR") {|jars| load_jars(jars) }
           end
 
           opts.on("--i18n LANG",
@@ -152,13 +143,10 @@ module Cucumber
           opts.on("#{RETRY_FLAG} ATTEMPTS", "Specify the number of times to retry failing tests (default: 0)") do |v|
             @options[:retry] = v.to_i
           end
-          opts.on("-c", "--[no-]color",
-            "Whether or not to use ANSI color in the output. Cucumber decides",
-            "based on your platform and the output destination if not specified.") do |v|
+          opts.on("-c", "--[no-]color", *color_msg) do |v|
             Cucumber::Term::ANSIColor.coloring = v
           end
-          opts.on("-d", "--dry-run", "Invokes formatters without executing the steps.",
-            "This also omits the loading of your support/env.rb file if it exists.") do
+          opts.on("-d", "--dry-run", *dry_run_msg) do
             @options[:dry_run] = true
             @options[:duration] = false
           end
@@ -267,6 +255,21 @@ TEXT
       protected :options, :profiles, :expanded_args
 
     private
+
+      def color_msg
+        [
+          "Whether or not to use ANSI color in the output. Cucumber decides",
+          "based on your platform and the output destination if not specified."
+        ]
+      end
+
+      def dry_run_msg
+        [
+          "Invokes formatters without executing the steps.",
+          "This also omits the loading of your support/env.rb file if it exists."
+        ]
+      end
+
       def no_profile_short_flag_msg
         [
           "Disables all profile loading to avoid using the 'default' profile."
@@ -341,6 +344,18 @@ TEXT
           "cucumber examples/i18n/it/features/somma.feature:6:98:113",
           "cucumber -s -i http://rubyurl.com/eeCl", "", "",
         ].join("\n")
+      end
+
+      def require_files(v)
+        @options[:require] << v
+        if(Cucumber::JRUBY && File.directory?(v))
+          require 'java'
+          $CLASSPATH << v
+        end
+      end
+
+      def require_jars(jars)
+        Dir["#{jars}/**/*.jar"].each {|jar| require jar}
       end
 
       def non_stdout_formats
