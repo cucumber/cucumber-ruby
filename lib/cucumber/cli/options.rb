@@ -95,17 +95,17 @@ module Cucumber
           end
 
           opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) {|v| set_option :retry, v.to_i }
-          opts.on("--i18n LANG", *i18n_msg) {|lang| set_language(lang) }
+          opts.on("--i18n LANG", *i18n_msg) {|lang| set_language lang }
           opts.on(FAIL_FAST_FLAG, "Exit immediately following the first failing scenario") { set_option :fail_fast }
-          opts.on("-f FORMAT", "--format FORMAT", *format_msg, *FORMAT_HELP) {|v| @options[:formats] << [v, @out_stream] }
-          opts.on('--init', *init_msg) {|v| ProjectInitializer.new.run && Kernel.exit(0) }
-          opts.on("-o", "--out [FILE|DIR]", *out_msg) {|v| set_out_stream(v) }
-          opts.on("-t TAG_EXPRESSION", "--tags TAG_EXPRESSION", *tags_msg) {|v| @options[:tag_expressions] << v }
-          opts.on("-n NAME", "--name NAME", *name_msg) {|v| @options[:name_regexps] << /#{v}/ }
-          opts.on("-e", "--exclude PATTERN", *exclude_msg) {|v| @options[:excludes] << Regexp.new(v) }
-          opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE", *profile_short_flag_msg) {|v| @profiles << v }
-          opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG, *no_profile_short_flag_msg) {|v| @disable_profile_loading = true }
-          opts.on("-c", "--[no-]color", *color_msg) {|v| Cucumber::Term::ANSIColor.coloring = v }
+          opts.on("-f FORMAT", "--format FORMAT", *format_msg, *FORMAT_HELP) {|v| add_option :formats, [v, @out_stream] }
+          opts.on('--init', *init_msg) {|v| initialize_project }
+          opts.on("-o", "--out [FILE|DIR]", *out_msg) {|v| set_out_stream v }
+          opts.on("-t TAG_EXPRESSION", "--tags TAG_EXPRESSION", *tags_msg) {|v| add_option :tag_expressions, v }
+          opts.on("-n NAME", "--name NAME", *name_msg) {|v| add_option :name_regexps, /#{v}/ }
+          opts.on("-e", "--exclude PATTERN", *exclude_msg) {|v| add_option :excludes, Regexp.new(v) }
+          opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE", *profile_short_flag_msg) {|v| add_profile v }
+          opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG, *no_profile_short_flag_msg) {|v| disable_profile_loading }
+          opts.on("-c", "--[no-]color", *color_msg) {|v| set_color v }
           opts.on("-d", "--dry-run", *dry_run_msg) { set_dry_run_and_duration }
           opts.on("-m", "--no-multiline", "Don't print multiline strings and tables under steps.") { set_option :no_multiline }
           opts.on("-s", "--no-source", "Don't print the file and line of the step definition with the steps.") { set_option :source, false }
@@ -332,8 +332,28 @@ TEXT
         end
       end
 
+      def disable_profile_loading
+        @disable_profile_loading = true
+      end
+
       def non_stdout_formats
         @options[:formats].select {|format, output| output != @out_stream }
+      end
+
+      def add_option(option, value)
+        @options[option] << value
+      end
+
+      def set_color(color)
+        Cucumber::Term::ANSIColor.coloring = color
+      end
+
+      def initialize_project
+        ProjectInitializer.new.run && Kernel.exit(0)
+      end
+
+      def add_profile(p)
+        @profiles << p
       end
 
       def set_option(option, value=nil)
