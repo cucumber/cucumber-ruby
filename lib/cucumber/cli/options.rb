@@ -94,9 +94,7 @@ module Cucumber
             opts.on("-j DIR", "--jars DIR", "Load all the jars under DIR") {|jars| load_jars(jars) }
           end
 
-          opts.on("#{RETRY_FLAG} ATTEMPTS", "Specify the number of times to retry failing tests (default: 0)") do |v|
-            @options[:retry] = v.to_i
-          end
+          opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) {|v| @options[:retry] = v.to_i }
           opts.on("--i18n LANG", *i18n_msg) {|lang| set_language(lang) }
           opts.on(FAIL_FAST_FLAG, "Exit immediately following the first failing scenario") { options[:fail_fast] = true }
           opts.on("-f FORMAT", "--format FORMAT", *format_msg, *FORMAT_HELP) {|v| @options[:formats] << [v, @out_stream] }
@@ -232,6 +230,10 @@ TEXT
           "When feature files are defined in a profile and on the command line",
           "then only the ones from the command line are used."
         ]
+      end
+
+      def retry_msg
+        [ "Specify the number of times to retry failing tests (default: 0)" ]
       end
 
       def name_msg
