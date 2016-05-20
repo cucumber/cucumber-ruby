@@ -1,14 +1,13 @@
 require 'cucumber/core/filter'
 require 'cucumber/running_test_case'
-require 'cucumber/events/bus'
-require 'cucumber/events/after_test_case'
+require 'cucumber/events'
 
 module Cucumber
   module Filters
     class Retry < Core::Filter.new(:configuration)
 
       def test_case(test_case)
-        configuration.on_event(:after_test_case) do |event|
+        configuration.on_event(:test_case_finished) do |event|
           next unless retry_required?(test_case, event)
 
           test_case_counts[test_case] += 1
