@@ -1,4 +1,4 @@
-require 'cucumber/core/events/event'
+require 'cucumber/core/events'
 
 module Cucumber
   module Events
