@@ -3,8 +3,9 @@ require 'cucumber/core/events'
 module Cucumber
   module Events
 
-    # Event fired after aall test cases have finished executing
-    TestRunFinished = Class.new(Core::Event.new)
+    # Event fired after all test cases have finished executing
+    class TestRunFinished < Core::Event.new
+    end
 
   end
 end
