@@ -28,4 +28,4 @@ Everyone interacting in this codebase and issue tracker is expected to follow th
 
 ## Copyright
 
-Copyright (c) 2008-2015 Aslak Hellesøy and Contributors. See LICENSE for details.
+Copyright (c) Aslak Hellesøy and Contributors. See LICENSE for details.
