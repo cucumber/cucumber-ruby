@@ -6,6 +6,7 @@
 
 ### Bugfixes
 
+* Use HTTPS instead of Git as transport protocol ([#960](https://github.com/cucumber/cucumber-ruby/pull/960))
 * Make random order stable and platform independent ([#974](https://github.com/cucumber/cucumber-ruby/pull/974), closes [#971](https://github.com/cucumber/cucumber-ruby/issues/971))
 * Run scenarios in fully random order ([#970](https://github.com/cucumber/cucumber-ruby/pull/970) @threedaymonk)
 * Adding Test Step in AfterStep hook. ([#931](https://github.com/cucumber/cucumber-ruby/pull/931) @t-morgan)
