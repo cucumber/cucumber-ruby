@@ -21,7 +21,7 @@ module Cucumber
         define_steps
         actual_runtime.visitor = report
 
-        receiver = Test::Runner.new(events)
+        receiver = Test::Runner.new(event_bus)
         filters = [
           Filters::ActivateSteps.new(
             StepMatchSearch.new(actual_runtime.support_code.ruby.method(:step_matches), actual_runtime.configuration),
@@ -34,7 +34,7 @@ module Cucumber
           Filters::PrepareWorld.new(actual_runtime)
         ]
         compile [gherkin_doc], receiver, filters
-        events.test_run_finished
+        event_bus.test_run_finished
       end
 
       require 'cucumber/formatter/legacy_api/adapter'
@@ -62,7 +62,7 @@ module Cucumber
         @runtime ||= Runtime.new(options)
       end
 
-      def events
+      def event_bus
         actual_runtime.configuration.event_bus
       end
 
