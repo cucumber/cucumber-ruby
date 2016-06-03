@@ -410,7 +410,7 @@ Feature: JSON output formatter
         "description": "",
         "elements": [
           {
-            "id": "an-outline-feature;outline;examples1;2",
+            "id": "an-outline-feature;outline;examples1;status=passes",
             "keyword": "Scenario Outline",
             "name": "outline",
             "description": "",
@@ -432,7 +432,7 @@ Feature: JSON output formatter
             ]
           },
           {
-            "id": "an-outline-feature;outline;examples1;3",
+            "id": "an-outline-feature;outline;examples1;status=fails",
             "keyword": "Scenario Outline",
             "name": "outline",
             "description": "",
@@ -455,7 +455,7 @@ Feature: JSON output formatter
             ]
           },
           {
-            "id": "an-outline-feature;outline;examples2;2",
+            "id": "an-outline-feature;outline;examples2;status=passes",
             "keyword": "Scenario Outline",
             "name": "outline",
             "description": "",
@@ -556,7 +556,7 @@ Feature: JSON output formatter
         "description": "",
         "elements": [
           {
-            "id": "an-outline-feature;outline;examples1;2",
+            "id": "an-outline-feature;outline;examples1;status=passes",
             "keyword": "Scenario Outline",
             "name": "outline",
             "line": 8,
@@ -578,7 +578,7 @@ Feature: JSON output formatter
             ]
           },
           {
-            "id": "an-outline-feature;outline;examples1;3",
+            "id": "an-outline-feature;outline;examples1;status=fails",
             "keyword": "Scenario Outline",
             "name": "outline",
             "line": 9,
@@ -601,7 +601,7 @@ Feature: JSON output formatter
             ]
           },
           {
-            "id": "an-outline-feature;outline;examples2;2",
+            "id": "an-outline-feature;outline;examples2;status=passes",
             "keyword": "Scenario Outline",
             "name": "outline",
             "line": 13,
@@ -674,7 +674,7 @@ Feature: JSON output formatter
             "name": "",
             "line": 11,
             "description": "",
-            "id": "an-embed-data-directly-feature;;;2",
+            "id": "an-embed-data-directly-feature;;;dummy=1",
             "type": "scenario",
             "steps": [
               {
@@ -702,7 +702,7 @@ Feature: JSON output formatter
             "name": "",
             "line": 12,
             "description": "",
-            "id": "an-embed-data-directly-feature;;;3",
+            "id": "an-embed-data-directly-feature;;;dummy=2",
             "type": "scenario",
             "steps": [
               {

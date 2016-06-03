@@ -298,9 +298,7 @@ module Cucumber
         end
 
         def examples_table(examples_table)
-          # the json file have traditionally used the header row as row 1,
-          # wheras cucumber-ruby-core used the first example row as row 1.
-          @example_id = create_id(examples_table) + ";#{@row.number + 1}"
+          @example_id = create_id(examples_table) + ";#{table_row_data(examples_table, @row)}"
 
           @examples_table_tags = create_tags_array(examples_table.tags) unless examples_table.tags.empty?
           @examples_table_comments = Formatter.create_comments_array(examples_table.comments) unless examples_table.comments.empty?
@@ -312,6 +310,15 @@ module Cucumber
         end
 
         private
+
+        def table_row_data(table, row)
+          headers = table.header.values
+          row_data = []
+          headers.each_with_index do |header, index|
+            row_data.push("#{header}=#{row.values[index]}")
+          end
+          row_data.join(', ')
+        end
 
         def create_id(element)
           element.name.downcase.gsub(/ /, '-')
