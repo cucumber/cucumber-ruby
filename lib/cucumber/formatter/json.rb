@@ -317,7 +317,7 @@ module Cucumber
           headers.each_with_index do |header, index|
             row_data.push("#{header}=#{row.values[index]}")
           end
-          row_data.join(', ')
+          row_data.join(',')
         end
 
         def create_id(element)
