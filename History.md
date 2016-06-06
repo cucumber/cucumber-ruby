@@ -12,6 +12,7 @@
 * Adding Test Step in AfterStep hook. ([#931](https://github.com/cucumber/cucumber-ruby/pull/931) @t-morgan)
 * Handle even more exotic rerun file formats seen in the wild ([#928](https://github.com/cucumber/cucumber-ruby/pull/928) @mcrmfc)
 * Allow Rake task to accept multiple profiles. ([#907](https://github.com/cucumber/cucumber-ruby/pull/907) @jasonkarns)
+* Update to Gherkin v4.0 (@brasmusson)
 * Let the JUnit formatter handle running test cases for different features interweaved ([#952](https://github.com/cucumber/cucumber-ruby/issues/952) @brasmusson)
 
 ## [v2.3.3](https://github.com/cucumber/cucumber-ruby/compare/v2.3.2...v2.3.3)
