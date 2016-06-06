@@ -13,14 +13,14 @@ module Cucumber
       def initialize(config)
         @io = ensure_io(config.out_stream)
         @feature_hashes = []
-        config.on_event :test_case_starting, &method(:on_before_test_case)
-        config.on_event :test_case_finished, &method(:on_after_test_case)
-        config.on_event :test_step_starting, &method(:on_before_test_step)
-        config.on_event :test_step_finished, &method(:on_after_test_step)
+        config.on_event :test_case_starting, &method(:on_test_case_starting)
+        config.on_event :test_case_finished, &method(:on_test_case_finished)
+        config.on_event :test_step_starting, &method(:on_test_step_starting)
+        config.on_event :test_step_finished, &method(:on_test_step_finished)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
       end
 
-      def on_before_test_case(event)
+      def on_test_case_starting(event)
         test_case = event.test_case
         builder = Builder.new(test_case)
         unless same_feature_as_previous_test_case?(test_case.feature)
@@ -38,7 +38,7 @@ module Cucumber
         @any_step_failed = false
       end
 
-      def on_before_test_step(event)
+      def on_test_step_starting(event)
         test_step = event.test_step
         return if internal_hook?(test_step)
         hook_query = HookQueryVisitor.new(test_step)
@@ -56,7 +56,7 @@ module Cucumber
         @step_hash = @step_or_hook_hash
       end
 
-      def on_after_test_step(event)
+      def on_test_step_finished(event)
         test_step, result = *event.attributes
         result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         return if internal_hook?(test_step)
@@ -64,7 +64,7 @@ module Cucumber
         @any_step_failed = true if result.failed?
       end
 
-      def on_after_test_case(event)
+      def on_test_case_finished(event)
         test_case, result = *event.attributes
         result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         add_failed_around_hook(result) if result.failed? && !@any_step_failed
