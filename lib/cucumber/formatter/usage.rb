@@ -18,7 +18,8 @@ module Cucumber
         @total_duration = 0
         @matches = {}
         runtime.configuration.on_event :step_match do |event|
-          @matches[event.test_step.source] = event.step_match
+          test_step, step_match = *event.attributes
+          @matches[test_step.source] = step_match
         end
       end
 

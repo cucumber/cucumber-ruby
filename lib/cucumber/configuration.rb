@@ -1,8 +1,10 @@
 require 'cucumber/constantize'
 require 'cucumber/cli/rerun_file'
 require 'cucumber/events'
+require 'cucumber/core/event_bus'
 require 'forwardable'
 require 'cucumber/core/gherkin/tag_expression'
+require 'cucumber'
 
 module Cucumber
   # The base class for configuring settings for a Cucumber run.
@@ -20,12 +22,14 @@ module Cucumber
     #
     # @param event_id [Symbol, Class, String] Identifier for the type of event to subscribe to
     # @param handler_object [Object optional] an object to be called when the event occurs
-    # @yield [Object] Block to be called when th event occurs
+    # @yield [Object] Block to be called when the event occurs
     # @method on_event
-    def_instance_delegator :event_bus, :register, :on_event
+    def_instance_delegator :event_bus, :on, :on_event
 
     # @private
-    def_instance_delegator :event_bus, :notify
+    def notify(message, *args)
+      event_bus.send(message, *args)
+    end
 
     def initialize(user_options = {})
       @options = default_options.merge(Cucumber::Hash(user_options))
@@ -216,6 +220,10 @@ module Cucumber
       self
     end
 
+    def event_bus
+      @options[:event_bus]
+    end
+
   private
 
     def default_options
@@ -235,14 +243,9 @@ module Cucumber
         :snippets            => true,
         :source              => true,
         :duration            => true,
-        :event_bus           => Events::Bus.new(Cucumber::Events)
+        :event_bus           => Core::EventBus.new(Core::Events.registry.merge(Cucumber::Events.registry))
       }
     end
-
-    def event_bus
-      @options[:event_bus]
-    end
-
 
     def default_features_paths
       ["features"]

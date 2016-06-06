@@ -22,29 +22,22 @@ describe Cucumber::Filters::Retry do
   it { is_expected.to respond_to(:with_receiver) }
   it { is_expected.to respond_to(:done) }
 
-  context "general" do
-    before(:each) do
-      filter.with_receiver(receiver)
-    end
-
-    it "registers the :after_test_case event" do
-      expect(configuration).to receive(:on_event).with(:after_test_case)
-      filter.test_case(test_case)
-    end
-  end
-
   context "passing test case" do
+    let(:result) { Cucumber::Core::Test::Result::Passed.new(0) }
+
     it "describes the test case once" do
-      expect(test_case).to receive(:describe_to).with(receiver)
-      filter.test_case(test_case)
-      configuration.notify(pass)
+      expect(receiver).to receive(:test_case).with(test_case).once
+      test_case.describe_to filter
+      configuration.notify :test_case_finished, test_case, result
     end
   end
 
-  context "failing test case" do
+  context "consistently failing test case" do
+    let(:result) { Cucumber::Core::Test::Result::Failed.new(0, StandardError.new) }
+
     it "describes the test case the specified number of times" do
       expect(receiver).to receive(:test_case) {|test_case|
-        configuration.notify(fail)
+        configuration.notify :test_case_finished, test_case, result
       }.exactly(3).times
 
       filter.test_case(test_case)
@@ -54,10 +47,16 @@ describe Cucumber::Filters::Retry do
   context "flaky test cases" do
 
     context "a little flaky" do
+      let(:results) {
+        [
+          Cucumber::Core::Test::Result::Failed.new(0, StandardError.new),
+          Cucumber::Core::Test::Result::Passed.new(0)
+        ]
+      }
+
       it "describes the test case twice" do
-        results = [fail, pass]
         expect(receiver).to receive(:test_case) {|test_case|
-          configuration.notify(results.shift)
+          configuration.notify :test_case_finished, test_case, results.shift
         }.exactly(2).times
 
         filter.test_case(test_case)
@@ -65,11 +64,17 @@ describe Cucumber::Filters::Retry do
     end
 
     context "really flaky" do
-      it "describes the test case 3 times" do
-        results = [fail, fail, pass]
+      let(:results) {
+        [
+          Cucumber::Core::Test::Result::Failed.new(0, StandardError.new),
+          Cucumber::Core::Test::Result::Failed.new(0, StandardError.new),
+          Cucumber::Core::Test::Result::Passed.new(0)
+        ]
+      }
 
+      it "describes the test case 3 times" do
         expect(receiver).to receive(:test_case) {|test_case|
-          configuration.notify(results.shift)
+          configuration.notify :test_case_finished, test_case, results.shift
         }.exactly(3).times
 
         filter.test_case(test_case)

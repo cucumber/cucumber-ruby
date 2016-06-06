@@ -1,5 +1,8 @@
 Feature: Listen for events
 
+  Cucumber's `config` object has an event bus that you can use to listen for
+  various events that happen during your test run.
+
   Scenario: Step Matched Event
     Given a file named "features/test.feature" with:
       """
@@ -16,9 +19,8 @@ Feature: Listen for events
       """
       AfterConfiguration do |config|
         io = config.out_stream
-        config.on_event Cucumber::Events::StepMatch do |event|
+        config.on_event :step_match do |event|
           io.puts "Success!"
-          io.puts "Event type:      #{event.class}"
           io.puts "Step name:       #{event.test_step.name}"
           io.puts "Source location: #{event.step_match.location}"
         end
@@ -28,7 +30,6 @@ Feature: Listen for events
     Then it should pass with:
       """
       Success!
-      Event type:      Cucumber::Events::StepMatch
       Step name:       matching
       Source location: features/step_definitions/steps.rb:1
       """
@@ -45,14 +46,14 @@ Feature: Listen for events
       """
       AfterConfiguration do |config|
         io = config.out_stream
-        config.on_event Cucumber::Events::AfterTestStep do |event|
-          io.puts "YO"
+        config.on_event :test_step_finished do |event|
+          io.puts event.result.passed?
         end
       end
       """
     When I run `cucumber`
     Then it should pass with:
       """
-      YO
+      true
       """
 

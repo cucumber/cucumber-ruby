@@ -43,7 +43,7 @@ module Cucumber
 
           def result
             return NoStepMatch.new(test_step.source.last, test_step.name) unless matches.any?
-            configuration.notify Events::StepMatch.new(test_step, match)
+            configuration.notify :step_match, test_step, match
             return SkippingStepMatch.new if configuration.dry_run?
             match
           end

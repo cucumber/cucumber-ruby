@@ -13,9 +13,10 @@ module Cucumber
       include Core::Gherkin::Writer
       include Core
 
-      let(:report)    { Adapter.new(formatter, runtime.results, runtime.configuration) }
+      let!(:report)    { Adapter.new(formatter, runtime.results, runtime.configuration) }
       let(:formatter) { double('formatter').as_null_object }
       let(:runtime)   { Runtime.new }
+      let(:events)    { runtime.configuration.event_bus }
       let(:step_match_search) { SimpleStepDefinitionSearch.new }
 
       Failure = Class.new(StandardError)
@@ -106,8 +107,9 @@ module Cucumber
               end
             end,
           ]
-          runner = Core::Test::Runner.new(report)
+          runner = Core::Test::Runner.new(events)
           compile gherkin_docs, runner, default_filters
+          events.test_run_finished
           expect( formatter.legacy_messages ).to eq [
             :before_features,
               :before_feature,
@@ -2166,8 +2168,10 @@ module Cucumber
       end
 
       def execute_gherkin(filters = default_filters, &gherkin)
-        runner = Core::Test::Runner.new(report)
+        runner = Core::Test::Runner.new(events)
         compile [gherkin(&gherkin)], runner, filters
+        events.test_run_finished
+        self
       end
 
       def default_filters

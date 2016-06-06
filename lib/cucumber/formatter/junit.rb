@@ -18,10 +18,10 @@ module Cucumber
       end
 
       def initialize(config)
-        config.on_event :before_test_case, &method(:on_before_test_case)
-        config.on_event :after_test_case, &method(:on_after_test_case)
-        config.on_event :after_test_step, &method(:on_after_test_step)
-        config.on_event :finished_testing, &method(:on_finished_testing)
+        config.on_event :test_case_starting, &method(:on_test_case_starting)
+        config.on_event :test_case_finished, &method(:on_test_case_finished)
+        config.on_event :test_step_finished, &method(:on_test_step_finished)
+        config.on_event :test_run_finished, &method(:on_test_run_finished)
         @reportdir = ensure_dir(config.out_stream, "junit")
         @config = config
         @features_data = Hash.new { |h,k| h[k] = {
@@ -35,7 +35,7 @@ module Cucumber
         }}
       end
 
-      def on_before_test_case(event)
+      def on_test_case_starting(event)
         test_case = event.test_case
         unless same_feature_as_previous_test_case?(test_case.feature)
           start_feature(test_case.feature)
@@ -47,15 +47,16 @@ module Cucumber
         @interceptederr = Interceptor::Pipe.wrap(:stderr)
       end
 
-      def on_after_test_step(event)
+      def on_test_step_finished(event)
+        test_step, result = *event.attributes
         return if @failing_step_source
 
-        @failing_step_source = event.test_step.source.last unless event.result.ok?(@config.strict?)
+        @failing_step_source = test_step.source.last unless result.ok?(@config.strict?)
       end
 
-      def on_after_test_case(event)
-        test_case = event.test_case
-        result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
+      def on_test_case_finished(event)
+        test_case, result = *event.attributes
+        result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         test_case_name = NameBuilder.new(test_case)
         scenario = test_case_name.scenario_name
         scenario_designation = "#{scenario}#{test_case_name.name_suffix}"
@@ -66,7 +67,7 @@ module Cucumber
         Interceptor::Pipe.unwrap! :stderr
       end
 
-      def on_finished_testing(event)
+      def on_test_run_finished(event)
         @features_data.each { |file, data| end_feature(data) }
       end
 
