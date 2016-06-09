@@ -8,7 +8,7 @@ unless ENV['CUCUMBER_USE_RELEASED_CORE']
     gem 'cucumber-core', :path => core_path
     gem 'cucumber-wire', :path => wire_path
   else
-    gem 'cucumber-core', :git => "https://github.com/cucumber/cucumber-ruby-core.git"
+    gem 'cucumber-core', :git => "https://github.com/cucumber/cucumber-ruby-core.git", :branch => 'v1.x-bugfix'
   end
 end
 

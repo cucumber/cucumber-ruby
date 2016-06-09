@@ -14,6 +14,7 @@ branches:
     - master
     - resolve-issue-882
     - v1.3.x-bugfix
+    - v2.x-bugfix
 
 before_install:
   - gem update bundler
