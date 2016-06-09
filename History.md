@@ -1,4 +1,10 @@
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.x-bugfix)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.4.0...v2.x-bugfix)
+
+### New Features
+
+### Bugfixes
+
+## [v2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
 
 ### New Features
 
