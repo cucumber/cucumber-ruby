@@ -9,6 +9,7 @@ require 'cucumber/gherkin/i18n'
 require 'multi_test'
 require 'cucumber/step_match'
 require 'cucumber/step_definition_light'
+require 'cucumber/events/step_definition_registered'
 
 module Cucumber
   module RbSupport
@@ -46,11 +47,11 @@ module Cucumber
       end
 
       def initialize(runtime, configuration)
-        @runtime = runtime
+        @runtime, @configuration = runtime, configuration
         @step_definitions = []
         RbDsl.rb_language = self
         @world_proc = @world_modules = nil
-        configuration.register_snippet_generator(Snippet::Generator.new)
+        @configuration.register_snippet_generator(Snippet::Generator.new)
       end
 
       def step_matches(name_to_match)
@@ -79,6 +80,7 @@ module Cucumber
       def register_rb_step_definition(regexp, proc_or_sym, options)
         step_definition = RbStepDefinition.new(self, regexp, proc_or_sym, options)
         @step_definitions << step_definition
+        @configuration.notify :step_definition_registered, step_definition
         step_definition
       end
 
