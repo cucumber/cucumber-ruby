@@ -89,6 +89,30 @@ module Cucumber
       @options[:expand]
     end
 
+    def source?
+      @options[:source]
+    end
+
+    def duration?
+      @options[:duration]
+    end
+
+    def snippets?
+      @options[:snippets]
+    end
+
+    def skip_profile_information?
+      @options[:skip_profile_information]
+    end
+
+    def profiles
+      @options[:profiles] || []
+    end
+
+    def custom_profiles
+      profiles - [@options[:default_profile]]
+    end
+
     def paths
       @options[:paths]
     end

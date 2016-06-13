@@ -3,21 +3,34 @@ module Cucumber
     module Summary
 
       def scenario_summary(runtime, &block)
-        scenarios_proc = lambda{|status| runtime.scenarios(status)}
-        dump_count(runtime.scenarios.length, "scenario") + dump_status_counts(scenarios_proc, &block)
+        scenarios_proc = lambda{|status| elements = runtime.scenarios(status)}
+        scenario_count_proc = element_count_proc(scenarios_proc)
+        dump_summary_counts(runtime.scenarios.length, scenario_count_proc, "scenario", &block)
       end
 
       def step_summary(runtime, &block)
         steps_proc = lambda{|status| runtime.steps(status)}
-        dump_count(runtime.steps.length, "step") + dump_status_counts(steps_proc, &block)
+        step_count_proc = element_count_proc(steps_proc)
+        dump_summary_counts(runtime.steps.length, step_count_proc, "step", &block)
+      end
+
+      def dump_summary_counts(total_count, status_proc, what, &block)
+        dump_count(total_count, what) + dump_status_counts(status_proc, &block)
       end
 
       private
 
-      def dump_status_counts(find_elements_proc)
-        counts = [:failed, :skipped, :undefined, :pending, :passed].map do |status|
+      def element_count_proc(find_elements_proc)
+        lambda { |status|
           elements = find_elements_proc.call(status)
-          elements.any? ? yield("#{elements.length} #{status.to_s}", status) : nil
+          elements.any? ? elements.length : 0
+        }
+      end
+
+      def dump_status_counts(element_count_proc)
+        counts = [:failed, :skipped, :undefined, :pending, :passed].map do |status|
+          count = element_count_proc.call(status)
+          count != 0 ? yield("#{count} #{status.to_s}", status) : nil
         end.compact
         if counts.any?
           " (#{counts.join(', ')})"
