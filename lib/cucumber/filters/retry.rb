@@ -1,6 +1,5 @@
 require 'cucumber/core/filter'
 require 'cucumber/running_test_case'
-require 'cucumber/events'
 
 module Cucumber
   module Filters
