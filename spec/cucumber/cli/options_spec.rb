@@ -195,6 +195,12 @@ module Cucumber
           end
         end
 
+        context '-L LANGUAGE or --language LANGUAGE' do
+          it "sets the language" do
+            after_parsing('--language it') { expect(options[:language]).to eq 'it' }
+          end
+        end
+
         context '-p PROFILE or --profile PROFILE' do
           it 'uses the default profile passed in during initialization if none are specified by the user' do
             given_cucumber_yml_defined_as({'default' => '--require some_file'})
