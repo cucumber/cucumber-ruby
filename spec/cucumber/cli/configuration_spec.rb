@@ -50,7 +50,7 @@ module Cli
       it 'sets the language' do
         config.parse!(%w{--language it})
 
-        expect(config.options[:language]).to eql 'it'
+        expect(config.language).to eql 'it'
       end
     end
 

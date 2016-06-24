@@ -63,6 +63,10 @@ module Cucumber
       @options[:fail_fast]
     end
 
+    def language
+      @options[:language]
+    end
+
     def retry_attempts
       @options[:retry]
     end
