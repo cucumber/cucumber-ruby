@@ -144,7 +144,11 @@ module Cucumber
 
             options.parse!(%w{-f pretty})
 
+<<<<<<< HEAD
             expect(options[:formats]).to eq [['pretty', {}, output_stream], ['junit', {}, 'result.xml']]
+=======
+            expect(options[:formats]).to eq [['pretty', output_stream], ["junit", "result.xml"]]
+>>>>>>> Correct some typos
           end
         end
 
@@ -209,7 +213,7 @@ module Cucumber
             expect(options[:verbose]).to be true
           end
 
-          it "gives precendene to the origianl options' paths" do
+          it "gives precedence to the original options' paths" do
             given_cucumber_yml_defined_as('foo' => %w[features])
             options.parse!(%w[my.feature -p foo])
 
@@ -327,7 +331,11 @@ module Cucumber
             expect(options[:duration]).to be false
           end
 
+<<<<<<< HEAD
           it 'uses --no-duration when defined in the profile' do
+=======
+          it "uses --no-duration when defined in the profile" do
+>>>>>>> Correct some typos
             given_cucumber_yml_defined_as('foo' => '--no-duration')
             options.parse!(%w[-p foo])
 
@@ -383,13 +391,21 @@ module Cucumber
 
         context '--retry ATTEMPTS' do
           it 'is 0 by default' do
+<<<<<<< HEAD
             after_parsing('') do
+=======
+            after_parsing("") do
+>>>>>>> Correct some typos
               expect(options[:retry]).to eql 0
             end
           end
 
           it 'sets the options[:retry] value' do
+<<<<<<< HEAD
             after_parsing('--retry 4') do
+=======
+            after_parsing("--retry 4") do
+>>>>>>> Correct some typos
               expect(options[:retry]).to eql 4
             end
           end
