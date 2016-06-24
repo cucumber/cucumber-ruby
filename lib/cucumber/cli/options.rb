@@ -96,7 +96,7 @@ module Cucumber
             opts.on('-j DIR', '--jars DIR', 'Load all the jars under DIR') {|jars| load_jars(jars) }
           end
 
-          opts.on("-L LANGUAGE", "--language LANGUAGE") {|v| set_option :language, v }
+          opts.on("-L LANGUAGE", "--language LANGUAGE", "Set language") {|v| set_option :language, v }
           opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) {|v| set_option :retry, v.to_i }
           opts.on('--i18n LANG', *i18n_msg) {|lang| set_language lang }
           opts.on(FAIL_FAST_FLAG, 'Exit immediately following the first failing scenario') { set_option :fail_fast }
