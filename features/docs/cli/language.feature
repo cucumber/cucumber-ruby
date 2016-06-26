@@ -103,7 +103,7 @@ Feature: Specifying a different spoken language for runs
           Given I have deposited ¥10000 in my account
       """
     When I run `cucumber -L ja`
-    Then it should raise Parser errors
+    Then it should raise parser errors
 
   Scenario: A language header is present
     Given a file named "features/cash_withdrawal.feature" with:

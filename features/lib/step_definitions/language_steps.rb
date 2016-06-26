@@ -7,3 +7,7 @@ Then(/^cucumber lists all the supported languages$/) do
     expect(all_output.force_encoding('utf-8')).to include(language)
   end
 end
+
+Then(/^it should raise parser errors$/) do
+  step "it should fail with:", "Parser error"
+end
