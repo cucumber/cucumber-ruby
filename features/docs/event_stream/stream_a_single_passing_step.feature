@@ -7,7 +7,7 @@ Feature: Stream a single passing step
   
   ```
   TestRunStarted
-    GherinSourceRead
+    GherkinSourceRead
     StepDefinitionFound
     TestCaseStarted
       TestStepStarted
