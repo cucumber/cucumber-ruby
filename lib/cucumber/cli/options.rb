@@ -135,7 +135,7 @@ TEXT
           end
 
           opts.on_tail("--version", "Show version.") { show_version }
-          opts.on_tail("-h", "--help", "You're looking at it.") { show_help }
+          opts.on_tail("-h", "--help", "You're looking at it.") { show_help(opts.help) }
         end.parse!
 
         @args.map! { |a| "#{a}:#{@options[:lines]}" } if @options[:lines]
@@ -365,8 +365,8 @@ TEXT
         @options[:duration] = false
       end
 
-      def show_help
-        @out_stream.puts opts.help
+      def show_help(text)
+        @out_stream.puts text
         Kernel.exit(0)
       end
 
