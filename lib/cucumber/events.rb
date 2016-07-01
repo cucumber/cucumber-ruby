@@ -19,6 +19,7 @@ module Cucumber
   module Events
     def self.registry
       Core::Events.build_registry(
+        StepDefinitionRegistered,
         StepMatch,
         TestRunFinished,
       )

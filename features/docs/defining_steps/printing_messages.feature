@@ -135,7 +135,6 @@ Feature: Pretty formatter - Printing messages
         Multiple
         
         Announce
-        
         Me
         ..UUU
         Announce with fail

@@ -57,9 +57,11 @@ module Cucumber
 
     require 'cucumber/wire/plugin'
     def run!
-      load_step_definitions
       install_wire_plugin
+      load_support_files
       fire_after_configuration_hook
+      formatters
+      load_step_definitions
       self.visitor = report
 
       receiver = Test::Runner.new(@configuration.event_bus)
@@ -244,8 +246,13 @@ module Cucumber
       end
     end
 
+    def load_support_files
+      files = @configuration.support_to_load
+      @support_code.load_files!(files)
+    end
+
     def load_step_definitions
-      files = @configuration.support_to_load + @configuration.step_defs_to_load
+      files = @configuration.step_defs_to_load
       @support_code.load_files!(files)
     end
 

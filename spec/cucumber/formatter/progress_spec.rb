@@ -12,7 +12,7 @@ module Cucumber
       before(:each) do
         Cucumber::Term::ANSIColor.coloring = false
         @out = StringIO.new
-        @formatter = Progress.new(runtime, @out, Cucumber::Cli::Options.new)
+        @formatter = Progress.new(actual_runtime.configuration.with_options(out_stream: @out))
       end
 
       describe "given a single feature" do
