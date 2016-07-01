@@ -134,8 +134,8 @@ TEXT
             end
           end
 
-          opts.on_tail("--version", "Show version.") { show_version }
-          opts.on_tail("-h", "--help", "You're looking at it.") { show_help(opts.help) }
+          opts.on_tail("--version", "Show version.") { exit_ok(Cucumber::VERSION) }
+          opts.on_tail("-h", "--help", "You're looking at it.") { exit_ok(opts.help) }
         end.parse!
 
         @args.map! { |a| "#{a}:#{@options[:lines]}" } if @options[:lines]
@@ -365,13 +365,8 @@ TEXT
         @options[:duration] = false
       end
 
-      def show_help(text)
+      def exit_ok(text)
         @out_stream.puts text
-        Kernel.exit(0)
-      end
-
-      def show_version
-        @out_stream.puts Cucumber::VERSION
         Kernel.exit(0)
       end
 
