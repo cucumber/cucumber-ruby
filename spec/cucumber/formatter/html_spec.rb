@@ -31,8 +31,7 @@ module Cucumber
 
       describe "when writing the report to a file" do
         before(:each) do
-          allow(@out).to receive(:respond_to?).with(:path, false).and_return(true)
-          expect(@out).to receive(:respond_to?).with(:path).and_return(true)
+          allow(@out).to receive(:respond_to?).with(:path).and_return(true)
           expect(@out).to receive(:path).and_return('out/file.html')
           run_defined_feature
           @doc = Nokogiri.HTML(@out.string)
