@@ -1,5 +1,5 @@
 [![Join the chat at https://gitter.im/cucumber/cucumber-ruby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/cucumber/cucumber-ruby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://secure.travis-ci.org/cucumber/cucumber-ruby.svg)](http://travis-ci.org/cucumber/cucumber-ruby)
+[![Build Status](https://travis-ci.org/cucumber/cucumber-ruby.svg?branch=master)](https://travis-ci.org/cucumber/cucumber-ruby)
 [![Code Climate](https://codeclimate.com/github/cucumber/cucumber-ruby.svg)](https://codeclimate.com/github/cucumber/cucumber-ruby)
 [![Coverage Status](https://coveralls.io/repos/cucumber/cucumber-ruby/badge.svg?branch=master)](https://coveralls.io/r/cucumber/cucumber-ruby?branch=master)
 [![Dependency Status](https://gemnasium.com/cucumber/cucumber-ruby.svg)](https://gemnasium.com/cucumber/cucumber-ruby)
