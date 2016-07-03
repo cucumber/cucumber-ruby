@@ -67,5 +67,3 @@ module Cucumber
     end
   end
 end
-
-require 'cucumber/ast'

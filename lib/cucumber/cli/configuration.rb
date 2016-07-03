@@ -109,11 +109,6 @@ module Cucumber
         @options[:formats]
       end
 
-      def options
-        warn("Deprecated: Configuration#options will be removed from the next release of Cucumber. Please use the configuration object directly instead.")
-        @options
-      end
-
       def paths
         @options[:paths]
       end

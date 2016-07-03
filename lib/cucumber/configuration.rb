@@ -39,12 +39,6 @@ module Cucumber
       self.class.new(@options.merge(new_options))
     end
 
-    # TODO: Actually Deprecate???
-    def options
-      warn("Deprecated: Configuration#options will be removed from the next release of Cucumber. Please use the configuration object directly instead.")
-      Marshal.load(Marhal.dump(@options))
-    end
-
     def out_stream
       @options[:out_stream]
     end

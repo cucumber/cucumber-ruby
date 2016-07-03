@@ -1,5 +1,4 @@
 require 'delegate'
-require 'cucumber/deprecate'
 
 module Cucumber
   # Represents the current status of a running test case.
@@ -80,32 +79,8 @@ module Cucumber
         !failed?
       end
 
-      def title
-        Cucumber.deprecate(
-          "Call #name instead",
-          "RunningTestCase#title",
-          "2.9.9")
-        name
-      end
-
-      def source_tags
-        Cucumber.deprecate(
-          "Call #tags instead",
-          "RunningTestCase#source_tags",
-          "2.9.9")
-        tags
-      end
-
       def source_tag_names
         tags.map &:name
-      end
-
-      def skip_invoke!
-        Cucumber.deprecate(
-          "Call #skip_this_scenario directly (not on any object)",
-          "RunningTestCase#skip_invoke!",
-          "2.9.9")
-        raise Cucumber::Core::Test::Result::Skipped
       end
 
       def outline?
