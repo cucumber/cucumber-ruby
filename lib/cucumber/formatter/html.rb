@@ -590,7 +590,7 @@ module Cucumber
       end
 
       def backtrace_line(line)
-        line.gsub(/^([^:]*\.(?:rb|feature|haml)):(\d*).*$/) do
+        line.gsub(/\A([^:]*\.(?:rb|feature|haml)):(\d*).*\z/) do
           if ENV['TM_PROJECT_DIRECTORY']
             "<a href=\"txmt://open?url=file://#{File.expand_path($1)}&line=#{$2}\">#{$1}:#{$2}</a> "
           else
