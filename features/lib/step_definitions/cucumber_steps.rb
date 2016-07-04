@@ -28,6 +28,19 @@ Given(/^the standard step definitions$/) do
   STEPS
 end
 
+Given(/^a flaky step definition$/) do
+  write_file 'features/step_definitions/steps.rb',
+
+  <<-STEPS
+  Given(/^a flaky step$/)          { flaky_pass }
+  
+  def flaky_pass
+    fail #something here to pass the 2nd time
+  end
+  
+  STEPS
+end
+
 Given /^a step definition that looks like this:$/ do |string|
   create_step_definition { string }
 end
