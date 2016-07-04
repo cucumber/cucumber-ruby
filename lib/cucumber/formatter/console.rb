@@ -93,7 +93,7 @@ module Cucumber
 
         @io.puts scenario_summary(runtime) {|status_count, status| format_string(status_count, status)}
         @io.puts step_summary(runtime) {|status_count, status| format_string(status_count, status)}
-        @io.puts(format_duration(duration)) if duration && options[:duration]
+        @io.puts(format_duration(duration[:duration])) if duration && options[:duration]
 
         if runtime.configuration.randomize?
           @io.puts
