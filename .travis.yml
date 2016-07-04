@@ -1,13 +1,16 @@
 sudo: false
 
-rvm:
-  - 2.3.0
-  - 2.2
-  - 2.1
-  - 2.0
-  - jruby-9.0.5.0
-env:
-  - JRUBY_OPTS="--server -Xcompile.invokedynamic=false"
+matrix:
+  include:
+    - rvm: 2.3.0
+    - rvm: 2.2
+    - rvm: 2.1
+    - rvm: 2.0
+    - rvm: jruby-9.0.5.0
+      # Travis by default also have "-Dcext.enabled=false" set in
+      # JRUBY_OPTS, but JRuby 9 does not support C extensions at all
+      # so it issues warning that will mess up the sterr checks. 
+      env: JRUBY_OPTS="--server -Xcompile.invokedynamic=false"
 
 # whitelist
 branches:
