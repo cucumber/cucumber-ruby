@@ -108,6 +108,7 @@ module Cucumber
 
       def examples_array
         return @examples_array if @examples_array
+        raise_missing_examples_error unless @example_sections
         @examples_array = @example_sections.map do |section|
           create_examples_table(section)
         end

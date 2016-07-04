@@ -26,3 +26,4 @@ doc/
 *.tgz
 Gemfile.lock
 tags
+.ruby-version
