@@ -389,6 +389,27 @@ module Cucumber
           it { expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq "data:image/png;base64,YWJj" }
         end
 
+        describe "printing messages" do
+          define_steps do
+            After { puts "before hook" }
+            Given(/pass/) { puts "in step" }
+            After { puts "after hook" }
+          end
+
+          define_feature(<<-FEATURE)
+          Feature:
+            Scenario:
+              Given passing
+            FEATURE
+
+          it "prints from before hooks, steps and after hooks" do
+            expect(@doc.css('.message').length).to eq 3
+            expect(@doc.css('.message')[0].text).to eq "before hook"
+            expect(@doc.css('.message')[1].text).to eq "in step"
+            expect(@doc.css('.message')[2].text).to eq "after hook"
+          end
+        end
+
         describe "with an undefined Given step then an undefined And step" do
           define_feature(<<-FEATURE)
           Feature:
