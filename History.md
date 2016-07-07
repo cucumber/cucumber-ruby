@@ -7,6 +7,7 @@
 
 ### Bugfixes
 
+* Configure Gemfile to fetch cucumber-ruby-wire from git if the repo is not found locally ([#983](https://github.com/cucumber/cucumber-ruby/pulls/983), resolves [#961](https://github.com/cucumber/cucumber-ruby/issues/961))
 * Fix regression displaying CLI help ([#991](https://github.com/cucumber/cucumber-ruby/pull/991) @mattwynne)
 
 ## [v2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
