@@ -24,7 +24,7 @@ module Cucumber
         'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
         'json_pretty' => ['Cucumber::Formatter::JsonPretty',  'Prints the feature as prettified JSON'],
         'debug'       => ['Cucumber::Formatter::Debug',       'For developing formatters - prints the calls made to the listeners.'],
-        'spec'       => ['Cucumber::Formatter::Spec',         'Summary output of feature and scenarios']
+        'summary'       => ['Cucumber::Formatter::Summary',   'Summary output of feature and scenarios']
       }
       max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
       FORMAT_HELP_MSG = ["Use --format rerun --out rerun.txt to write out failing",

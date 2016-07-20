@@ -2,6 +2,7 @@ require 'fileutils'
 require 'cucumber/formatter/console'
 require 'cucumber/formatter/io'
 require 'cucumber/gherkin/formatter/escaping'
+require 'cucumber/formatter/console_counts'
 
 module Cucumber
   module Formatter
@@ -28,6 +29,7 @@ module Cucumber
         @delayed_messages = []
         @previous_step_keyword = nil
         @snippets_input = []
+        @counts = ConsoleCounts.new(runtime.configuration)
       end
 
       def before_features(features)
@@ -35,7 +37,7 @@ module Cucumber
       end
 
       def after_features(features)
-        print_summary(features)
+        print_summary(features, @counts)
       end
 
       def before_feature(feature)
@@ -237,8 +239,8 @@ module Cucumber
         @prefixes[status]
       end
 
-      def print_summary(features)
-        print_stats(features, @options)
+      def print_summary(features, counts)
+        print_statistics(features.duration, @options, counts)
         print_snippets(@options)
         print_passing_wip(@options)
       end

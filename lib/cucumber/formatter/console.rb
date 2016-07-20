@@ -1,6 +1,5 @@
 require 'cucumber/formatter/ansicolor'
 require 'cucumber/formatter/duration'
-require 'cucumber/formatter/summary'
 require 'cucumber/gherkin/i18n'
 
 module Cucumber
@@ -29,7 +28,6 @@ module Cucumber
     module Console
       extend ANSIColor
       include Duration
-      include Summary
 
       def format_step(keyword, step_match, status, source_indent)
         comment = if source_indent
@@ -80,19 +78,13 @@ module Cucumber
         end
       end
 
-      def print_stats(features, options)
-        duration = features ? features.duration : nil
-        print_statistics(duration, options)
-      end
-
-      def print_statistics(duration, options)
+      def print_statistics(duration, options, counts)
         failures = collect_failing_scenarios(runtime)
         if !failures.empty?
           print_failing_scenarios(failures, options.custom_profiles, options[:source])
         end
 
-        @io.puts scenario_summary(runtime) {|status_count, status| format_string(status_count, status)}
-        @io.puts step_summary(runtime) {|status_count, status| format_string(status_count, status)}
+        @io.puts counts.to_s
         @io.puts(format_duration(duration)) if duration && options[:duration]
 
         if runtime.configuration.randomize?

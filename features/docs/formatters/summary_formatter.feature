@@ -16,15 +16,15 @@ Feature: Spec formatter
       Scenario: Failing
         Given this step fails
     """
-    When I run `cucumber --format spec`
+    When I run `cucumber --format summary`
     Then it should fail with exactly:
     """
     Test
       Passing ✓
       Failing ✗
 
-    2 scenarios (1 passed, 1 failed)
-    2 steps (1 passed, 1 failed)
+    2 scenarios (1 failed, 1 passed)
+    2 steps (1 failed, 1 passed)
 
     """
 

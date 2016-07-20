@@ -1,6 +1,7 @@
 require 'cucumber/core/report/summary'
 require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/console'
+require 'cucumber/formatter/console_counts'
 require 'cucumber/formatter/io'
 require 'cucumber/formatter/duration_extractor'
 require 'cucumber/formatter/hook_query_visitor'
@@ -25,6 +26,7 @@ module Cucumber
         @failed_results = []
         @failed_test_cases = []
         @passed_test_cases = []
+        @counts = ConsoleCounts.new(config)
         config.on_event :step_match, &method(:on_step_match)
         config.on_event :test_case_starting, &method(:on_test_case_starting)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
@@ -96,9 +98,7 @@ module Cucumber
         end
 
         scenarios_proc = lambda{|status| summary.test_cases.total(status)}
-        @io.puts dump_summary_counts(summary.test_cases.total, scenarios_proc, "scenario") {|status_count, status| format_string(status_count, status)}
-        steps_proc = lambda{|status| summary.test_steps.total(status)}
-        @io.puts dump_summary_counts(summary.test_steps.total, steps_proc, "step") {|status_count, status| format_string(status_count, status)}
+        @io.puts @counts.to_s
         @io.puts(format_duration(duration)) if duration && config.duration?
 
         if config.randomize?
