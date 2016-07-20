@@ -1,6 +1,7 @@
 require 'cucumber/formatter/io'
 require 'cucumber/formatter/console'
 require 'cucumber/formatter/console_counts'
+require 'cucumber/formatter/console_issues'
 require 'cucumber/core/test/result'
 
 module Cucumber
@@ -14,6 +15,8 @@ module Cucumber
       def initialize(config)
         @config, @io = config, ensure_io(config.out_stream)
         @counts = ConsoleCounts.new(@config)
+        @issues = ConsoleIssues.new(@config)
+        @start_time = Time.now
 
         @config.on_event :test_case_starting do |event|
           print_feature event.test_case
@@ -25,7 +28,9 @@ module Cucumber
         end
 
         @config.on_event :test_run_finished do |event|
-          print_counts
+          duration = Time.now - @start_time
+          @io.puts
+          print_statistics(duration, @config, @counts, @issues)
         end
       end
 
@@ -45,11 +50,6 @@ module Cucumber
 
       def print_result(result)
         @io.puts format_string(result, result.to_sym)
-      end
-
-      def print_counts
-        @io.puts
-        @io.puts @counts.to_s
       end
     end
   end

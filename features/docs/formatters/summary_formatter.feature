@@ -23,8 +23,12 @@ Feature: Spec formatter
       Passing ✓
       Failing ✗
 
+    Failing Scenarios:
+    cucumber features/test.feature:5 # Scenario: Failing
+
     2 scenarios (1 failed, 1 passed)
     2 steps (1 failed, 1 passed)
+    0m0.012s
 
     """
 
