@@ -1,7 +1,7 @@
 Feature: Spec formatter
 
-  This formatter mimic the output from tools like RSpec or Mocha, giving an 
-  overview of each feature and scenario, omitting the steps.
+  This formatter mimics the output from tools like RSpec or Mocha, giving an 
+  overview of each feature and scenario but omitting the steps.
 
   Background:
     Given the standard step definitions
@@ -25,5 +25,6 @@ Feature: Spec formatter
 
     2 scenarios (1 passed, 1 failed)
     2 steps (1 passed, 1 failed)
+
     """
 
