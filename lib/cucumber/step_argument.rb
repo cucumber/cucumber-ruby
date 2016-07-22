@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Cucumber
   # Defines the location and value of a captured argument from the step
   # text

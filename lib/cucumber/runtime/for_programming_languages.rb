@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'forwardable'
 require 'cucumber/core/ast/doc_string'
 require 'cucumber/core/ast/data_table'

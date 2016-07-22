@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Cucumber
   module RbSupport
     # This module defines the methods you can use to define pure Ruby

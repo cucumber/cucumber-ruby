@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 require 'cucumber/formatter/spec_helper'
 require 'cucumber/formatter/pretty'
@@ -26,7 +27,7 @@ module Cucumber
 
           define_steps do
             When(/^puts is called twice for the same variable$/) do
-              foo = 'a'
+              foo = String.new('a')
               puts foo
               foo.upcase!
               puts foo

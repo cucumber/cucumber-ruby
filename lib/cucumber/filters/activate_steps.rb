@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cucumber/core/filter'
 require 'cucumber/step_match'
 require 'cucumber/events'

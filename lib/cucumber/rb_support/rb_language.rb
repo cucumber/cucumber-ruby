@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cucumber/core_ext/instance_exec'
 require 'cucumber/rb_support/rb_dsl'
 require 'cucumber/rb_support/rb_world'
@@ -23,7 +24,8 @@ module Cucumber
     # Raised if there are 2 or more World blocks.
     class MultipleWorld < StandardError
       def initialize(first_proc, second_proc)
-        message = "You can only pass a proc to #World once, but it's happening\n"
+        message = String.new
+        message << "You can only pass a proc to #World once, but it's happening\n"
         message << "in 2 places:\n\n"
         message << RbSupport.backtrace_line(first_proc, 'World') << "\n"
         message << RbSupport.backtrace_line(second_proc, 'World') << "\n\n"

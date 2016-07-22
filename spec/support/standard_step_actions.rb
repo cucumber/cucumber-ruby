@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Filter that activates steps with obvious pass / fail behaviour
 class StandardStepActions < Cucumber::Core::Filter.new
   def test_case(test_case)

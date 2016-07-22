@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cucumber/hooks'
 module Cucumber::Hooks
   shared_examples_for 'a source node' do

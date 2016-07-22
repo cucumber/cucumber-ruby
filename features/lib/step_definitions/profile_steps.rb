@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 Given /^the following profiles? (?:are|is) defined:$/ do |profiles|
   write_file 'cucumber.yml', profiles
 end

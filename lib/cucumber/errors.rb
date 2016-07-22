@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cucumber/core/test/result'
 
 module Cucumber
@@ -35,7 +36,8 @@ module Cucumber
   # Raised when a step matches 2 or more StepDefinitions
   class Ambiguous < StandardError
     def initialize(step_name, step_definitions, used_guess)
-      message = "Ambiguous match of \"#{step_name}\":\n\n"
+      message = String.new
+      message << "Ambiguous match of \"#{step_name}\":\n\n"
       message << step_definitions.map{|sd| sd.backtrace_line}.join("\n")
       message << "\n\n"
       message << "You can run again with --guess to make Cucumber be more smart about it\n" unless used_guess
