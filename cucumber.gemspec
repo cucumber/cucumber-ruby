@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.summary     = "cucumber-#{s.version}"
   s.email       = 'cukes@googlegroups.com'
   s.license     = 'MIT'
-  s.homepage    = "http://cukes.info"
+  s.homepage    = "https://cucumber.io/"
   s.platform    = Gem::Platform::RUBY
   s.required_ruby_version = ">= 1.9.3"
   s.add_dependency 'cucumber-core', '~> 2.0'
