@@ -69,6 +69,10 @@ Then /^the stderr should contain a warning message$/ do
   expect(all_stderr).to include("[warning]")
 end
 
+Given(/^Cucmber is configured with an ios suite and android suite$/) do
+  pending # Write code here that turns the phrase above into concrete actions
+end
+
 module CucumberHelper
   def run_feature(filename = 'features/a_feature.feature', formatter = 'progress')
     run_simple "#{Cucumber::BINARY} #{filename} --format #{formatter}", false
