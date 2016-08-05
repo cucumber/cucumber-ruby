@@ -1,6 +1,8 @@
 require 'cucumber/core/report/summary'
 require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/console'
+require 'cucumber/formatter/console_counts'
+require 'cucumber/formatter/console_issues'
 require 'cucumber/formatter/io'
 require 'cucumber/formatter/duration_extractor'
 require 'cucumber/formatter/hook_query_visitor'
@@ -25,6 +27,8 @@ module Cucumber
         @failed_results = []
         @failed_test_cases = []
         @passed_test_cases = []
+        @counts = ConsoleCounts.new(config)
+        @issues = ConsoleIssues.new(config)
         config.on_event :step_match, &method(:on_step_match)
         config.on_event :test_case_starting, &method(:on_test_case_starting)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
@@ -74,7 +78,7 @@ module Cucumber
       def print_summary
         print_elements(@pending_step_matches, :pending, 'steps')
         print_elements(@failed_results, :failed, 'steps')
-        print_statistics_local(@total_duration)
+        print_statistics(@total_duration, @config, @counts, @issues)
         snippet_text_proc = lambda { |step_keyword, step_name, multiline_arg|
           snippet_text(step_keyword, step_name, multiline_arg)
         }
@@ -85,28 +89,6 @@ module Cucumber
           end
           do_print_passing_wip(messages)
         end
-      end
-
-      def print_statistics_local(duration)
-        if @failed_test_cases.any?
-          failed_test_cases_data = @failed_test_cases.map do |test_case|
-            TestCaseData.new(name="#{test_case.keyword}: #{test_case.name}", location=test_case.location)
-          end
-          print_failing_scenarios(failed_test_cases_data, config.custom_profiles, config.source?)
-        end
-
-        scenarios_proc = lambda{|status| summary.test_cases.total(status)}
-        @io.puts dump_summary_counts(summary.test_cases.total, scenarios_proc, "scenario") {|status_count, status| format_string(status_count, status)}
-        steps_proc = lambda{|status| summary.test_steps.total(status)}
-        @io.puts dump_summary_counts(summary.test_steps.total, steps_proc, "step") {|status_count, status| format_string(status_count, status)}
-        @io.puts(format_duration(duration)) if duration && config.duration?
-
-        if config.randomize?
-          @io.puts
-          @io.puts "Randomized with seed #{config.seed}"
-        end
-
-        @io.flush
       end
 
       CHARS = {

@@ -1,48 +1,57 @@
+require 'cucumber/formatter/io'
+require 'cucumber/formatter/console'
+require 'cucumber/formatter/console_counts'
+require 'cucumber/formatter/console_issues'
+require 'cucumber/core/test/result'
+
 module Cucumber
   module Formatter
-    module Summary
 
-      def scenario_summary(runtime, &block)
-        scenarios_proc = lambda{|status| elements = runtime.scenarios(status)}
-        scenario_count_proc = element_count_proc(scenarios_proc)
-        dump_summary_counts(runtime.scenarios.length, scenario_count_proc, "scenario", &block)
-      end
+    # Summary formatter, outputting only feature / scenario titles
+    class Summary
+      include Io
+      include Console
 
-      def step_summary(runtime, &block)
-        steps_proc = lambda{|status| runtime.steps(status)}
-        step_count_proc = element_count_proc(steps_proc)
-        dump_summary_counts(runtime.steps.length, step_count_proc, "step", &block)
-      end
+      def initialize(config)
+        @config, @io = config, ensure_io(config.out_stream)
+        @counts = ConsoleCounts.new(@config)
+        @issues = ConsoleIssues.new(@config)
+        @start_time = Time.now
 
-      def dump_summary_counts(total_count, status_proc, what, &block)
-        dump_count(total_count, what) + dump_status_counts(status_proc, &block)
+        @config.on_event :test_case_starting do |event|
+          print_feature event.test_case
+          print_test_case event.test_case
+        end
+
+        @config.on_event :test_case_finished do |event|
+          print_result event.result
+        end
+
+        @config.on_event :test_run_finished do |event|
+          duration = Time.now - @start_time
+          @io.puts
+          print_statistics(duration, @config, @counts, @issues)
+        end
       end
 
       private
 
-      def element_count_proc(find_elements_proc)
-        lambda { |status|
-          elements = find_elements_proc.call(status)
-          elements.any? ? elements.length : 0
-        }
+      def print_feature(test_case)
+        feature = test_case.feature
+        return if @current_feature == feature
+        @io.puts unless @current_feature.nil?
+        @io.puts feature
+        @current_feature = feature
       end
 
-      def dump_status_counts(element_count_proc)
-        counts = [:failed, :skipped, :undefined, :pending, :passed].map do |status|
-          count = element_count_proc.call(status)
-          count != 0 ? yield("#{count} #{status.to_s}", status) : nil
-        end.compact
-        if counts.any?
-          " (#{counts.join(', ')})"
-        else
-          ""
-        end
+      def print_test_case(test_case)
+        @io.print "  #{test_case.name} "
       end
 
-      def dump_count(count, what, state=nil)
-        [count, state, "#{what}#{count == 1 ? '' : 's'}"].compact.join(" ")
+      def print_result(result)
+        @io.puts format_string(result, result.to_sym)
       end
-
     end
   end
 end
+
