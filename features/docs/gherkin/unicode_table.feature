@@ -1,4 +1,4 @@
-@spawn
+@spawn @wip-jruby
 Feature: Unicode in tables
 
   You are free to use unicode in your tables: we've taken care to
