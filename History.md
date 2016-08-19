@@ -1,5 +1,9 @@
 ## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.4.0...master)
 
+### Breaking changes
+
+* Remove support for Ruby 1.9.3 ([#993](https://github.com/cucumber/cucumber-ruby/pull/993) @brasmusson)
+
 ### New Features
 
 * Use the event bus in Cucumber-Ruby-Core ([#973](https://github.com/cucumber/cucumber-ruby/pull/973) @mattwynne)
