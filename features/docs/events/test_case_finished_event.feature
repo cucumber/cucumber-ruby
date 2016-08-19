@@ -8,20 +8,26 @@ Feature: Test Case Finished Event
     Given the standard step definitions
     And a file named "features/passing.feature" with:
       """
-      Feature:
-        Scenario:
+      Feature: A feature
+        Scenario: A scenario
           Given this step passes
       """
     And a file named "features/support/events.rb" with:
       """
       AfterConfiguration do |config|
         config.on_event :test_case_finished do |event|
-          config.out_stream.puts "The result is #{event.result}"
+          config.out_stream.puts "Results"
+          config.out_stream.puts "-------"
+          config.out_stream.puts "Test case: #{event.test_case.name}"
+          config.out_stream.puts "The result is: #{event.result}"
         end
       end
       """
     When I run `cucumber`
     Then it should pass with:
       """
-      The result is ✓
+      Results
+      -------
+      Test case: A scenario
+      The result is: ✓
       """
