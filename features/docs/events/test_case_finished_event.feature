@@ -4,6 +4,8 @@ Feature: Test Case Finished Event
   Test Case) has finished executing. You can use the event to learn about the 
   result of the test case.
 
+  See [the API documentation](http://www.rubydoc.info/github/cucumber/cucumber-ruby/Cucumber/Events/TestCaseFinished) for more information about the data available on this event.
+
   Scenario: Test case passes
     Given the standard step definitions
     And a file named "features/passing.feature" with:
