@@ -32,7 +32,7 @@ module Cucumber
     end
 
     def initialize(user_options = {})
-      @options = default_options.merge(Cucumber::Hash(user_options))
+      @options = default_options.merge(Hash(user_options))
     end
 
     def with_options(new_options)

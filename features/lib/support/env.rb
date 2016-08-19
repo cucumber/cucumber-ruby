@@ -17,5 +17,5 @@ Before do
   # set_env('SIMPLECOV', 'true')
 
   # Set a longer timeout for aruba, and a really long one if running on JRuby
-  @aruba_timeout_seconds = Cucumber::JRUBY ? 35 : 15
+  @aruba_timeout_seconds = Cucumber::JRUBY ? 60 : 15
 end

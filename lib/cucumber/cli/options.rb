@@ -167,7 +167,7 @@ TEXT
       end
 
       def to_hash
-        Cucumber::Hash(@options)
+        Hash(@options)
       end
 
     protected

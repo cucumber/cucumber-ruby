@@ -119,7 +119,7 @@ module Cucumber
       end
 
       def to_hash
-        Cucumber::Hash(@options).merge(out_stream: @out_stream, error_stream: @error_stream)
+        Hash(@options).merge(out_stream: @out_stream, error_stream: @error_stream)
       end
 
       private
