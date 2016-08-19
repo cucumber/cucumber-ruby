@@ -3,7 +3,7 @@ sudo: false
 matrix:
   include:
     - rvm: 2.3.0
-    - rvm: jruby-9.0.5.0
+    - rvm: jruby-9.1.2.0
       env: 
         # Travis by default also have "-Dcext.enabled=false" set in
         # JRUBY_OPTS, but JRuby 9 does not support C extensions at all
