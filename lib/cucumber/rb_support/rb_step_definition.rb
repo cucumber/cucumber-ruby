@@ -5,9 +5,9 @@ require 'cucumber/core_ext/string'
 
 module Cucumber
   module RbSupport
-    # A Ruby Step Definition holds a Regexp and a Proc, and is created
-    # by calling <tt>Given</tt>, <tt>When</tt> or <tt>Then</tt>
-    # in the <tt>step_definitions</tt> ruby files. See also RbDsl.
+    # A Ruby Step Definition holds a Regexp pattern and a Proc, and is 
+    # typically created by calling {RbDsl#register_rb_step_definition Given, When or Then}
+    # in the step_definitions Ruby files.
     #
     # Example:
     #
@@ -75,10 +75,12 @@ module Cucumber
         @rb_language.available_step_definition(regexp_source, location)
       end
 
+      # @api private
       def regexp_source
         @regexp.inspect
       end
 
+      # @api private
       def to_hash
         flags = ''
         flags += 'm' if (@regexp.options & Regexp::MULTILINE) != 0
@@ -87,16 +89,19 @@ module Cucumber
         {'source' => @regexp.source, 'flags' => flags}
       end
 
+      # @api private
       def ==(step_definition)
         regexp_source == step_definition.regexp_source
       end
 
+      # @api private
       def arguments_from(step_name)
         args = StepArgument.arguments_from(@regexp, step_name)
         @rb_language.invoked_step_definition(regexp_source, location) if args
         args
       end
 
+      # @api private
       def invoke(args)
         begin
           args = @rb_language.execute_transforms(args)
@@ -107,10 +112,12 @@ module Cucumber
         end
       end
 
+      # @api private
       def backtrace_line
         "#{location}:in `#{regexp_source}'"
       end
 
+      # @api private
       def file_colon_line
         case @proc
         when Proc
@@ -120,10 +127,12 @@ module Cucumber
         end
       end
 
+      # The source location where the step defintion can be found
       def location
         @location ||= Cucumber::Core::Ast::Location.from_source_location(*@proc.source_location)
       end
 
+      # @api private
       def file
         @file ||= location.file
       end
