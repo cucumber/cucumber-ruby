@@ -18,8 +18,16 @@ module Cucumber
   #   end
   #
   module Events
+    def self.make_event_bus
+      Core::EventBus.new(registry)
+    end
+
     def self.registry
       Core::Events.build_registry(
+        Core::Events::TestCaseStarting,
+        Core::Events::TestCaseFinished,
+        Core::Events::TestStepFinished,
+        Core::Events::TestStepStarting,
         StepDefinitionRegistered,
         StepMatch,
         TestRunFinished,
