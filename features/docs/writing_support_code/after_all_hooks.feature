@@ -136,3 +136,22 @@ Feature: After All Hook
       """
       After All
       """
+
+  Scenario: Exit code is not zero if a test fails
+    Given a file named "features/support/hooks.rb" with:
+      """
+      AfterAll do
+        puts "After All"
+      end
+      """
+    And a file named "features/test.feature" with:
+      """
+      Feature:
+        Scenario:
+          Given this step fails
+      """
+    When I run `cucumber -f progress features`
+    Then it should fail with:
+    """
+    features/test.feature:3
+    """
