@@ -29,3 +29,4 @@ Gemfile.lock
 tags
 .ruby-version
 .project
+Gemfile.local

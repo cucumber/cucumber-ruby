@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cucumber/cli/profile_loader'
 require 'cucumber/formatter/ansicolor'
 require 'cucumber/rb_support/rb_language'
@@ -23,7 +24,8 @@ module Cucumber
         'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
         'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
         'json_pretty' => ['Cucumber::Formatter::JsonPretty',  'Prints the feature as prettified JSON'],
-        'debug'       => ['Cucumber::Formatter::Debug',       'For developing formatters - prints the calls made to the listeners.']
+        'debug'       => ['Cucumber::Formatter::Debug',       'For developing formatters - prints the calls made to the listeners.'],
+        'summary'       => ['Cucumber::Formatter::Summary',   'Summary output of feature and scenarios']
       }
       max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
       FORMAT_HELP_MSG = ["Use --format rerun --out rerun.txt to write out failing",
@@ -166,7 +168,7 @@ TEXT
       end
 
       def to_hash
-        Cucumber::Hash(@options)
+        Hash(@options)
       end
 
     protected

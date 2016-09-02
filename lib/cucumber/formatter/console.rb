@@ -1,6 +1,6 @@
+# frozen_string_literal: true
 require 'cucumber/formatter/ansicolor'
 require 'cucumber/formatter/duration'
-require 'cucumber/formatter/summary'
 require 'cucumber/gherkin/i18n'
 
 module Cucumber
@@ -29,7 +29,6 @@ module Cucumber
     module Console
       extend ANSIColor
       include Duration
-      include Summary
 
       def format_step(keyword, step_match, status, source_indent)
         comment = if source_indent
@@ -80,49 +79,21 @@ module Cucumber
         end
       end
 
-      def print_stats(features, options)
-        duration = features ? features.duration : nil
-        print_statistics(duration, options)
-      end
-
-      def print_statistics(duration, options)
-        failures = collect_failing_scenarios(runtime)
-        if !failures.empty?
-          print_failing_scenarios(failures, options.custom_profiles, options[:source])
+      def print_statistics(duration, config, counts, issues)
+        if issues.any?
+          @io.puts issues.to_s
+          @io.puts
         end
 
-        @io.puts scenario_summary(runtime) {|status_count, status| format_string(status_count, status)}
-        @io.puts step_summary(runtime) {|status_count, status| format_string(status_count, status)}
-        @io.puts(format_duration(duration)) if duration && options[:duration]
+        @io.puts counts.to_s
+        @io.puts(format_duration(duration)) if duration && config.duration?
 
-        if runtime.configuration.randomize?
+        if config.randomize?
           @io.puts
-          @io.puts "Randomized with seed #{runtime.configuration.seed}"
+          @io.puts "Randomized with seed #{config.seed}"
         end
 
         @io.flush
-      end
-
-      def collect_failing_scenarios(runtime)
-        # TODO: brittle - stop coupling to types
-        scenario_class = LegacyApi::Ast::Scenario
-        example_table_class = Core::Ast::ExamplesTable
-
-        runtime.scenarios(:failed).select do |s|
-          [scenario_class, example_table_class].include?(s.class)
-        end.map do |s|
-          s.is_a?(example_table_class)? s.scenario_outline : s
-        end
-      end
-
-      def print_failing_scenarios(failures, custom_profiles, given_source)
-        @io.puts format_string("Failing Scenarios:", :failed)
-        failures.each do |failure|
-          profiles_string = custom_profiles.empty? ? '' : (custom_profiles.map{|profile| "-p #{profile}" }).join(' ') + ' '
-          source = given_source ? format_string(" # " + failure.name, :comment) : ''
-          @io.puts format_string("cucumber #{profiles_string}" + failure.location, :failed) + source
-        end
-        @io.puts
       end
 
       def print_exception(e, status, indent)
@@ -131,7 +102,7 @@ module Cucumber
       end
 
       def exception_message_string(e, indent)
-        message = "#{e.message} (#{e.class})".force_encoding("UTF-8")
+        message = "#{e.message} (#{e.class})".dup.force_encoding("UTF-8")
         message = linebreaks(message, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
 
         string = "#{message}\n#{e.backtrace.join("\n")}".indent(indent)

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cucumber/core_ext/instance_exec'
 require 'cucumber/rb_support/rb_dsl'
 require 'cucumber/rb_support/rb_world'
@@ -23,7 +24,8 @@ module Cucumber
     # Raised if there are 2 or more World blocks.
     class MultipleWorld < StandardError
       def initialize(first_proc, second_proc)
-        message = "You can only pass a proc to #World once, but it's happening\n"
+        message = String.new
+        message << "You can only pass a proc to #World once, but it's happening\n"
         message << "in 2 places:\n\n"
         message << RbSupport.backtrace_line(first_proc, 'World') << "\n"
         message << RbSupport.backtrace_line(second_proc, 'World') << "\n\n"
@@ -84,13 +86,20 @@ module Cucumber
         step_definition
       end
 
-      def build_rb_world_factory(world_modules, proc)
-        if(proc)
+      def build_rb_world_factory(world_modules, namespaced_world_modules, proc)
+        if proc
           raise MultipleWorld.new(@world_proc, proc) if @world_proc
           @world_proc = proc
         end
         @world_modules ||= []
         @world_modules += world_modules
+
+        @namespaced_world_modules ||= Hash.new { |h, k| h[k] = [] }
+        namespaced_world_modules.each do |namespace, world_module|
+          unless @namespaced_world_modules[namespace].include?(world_module)
+            @namespaced_world_modules[namespace] << world_module
+          end
+        end
       end
 
       def load_code_file(code_file)
@@ -179,9 +188,9 @@ module Cucumber
       def extend_world
         @current_world.extend(RbWorld)
         MultiTest.extend_with_best_assertion_library(@current_world)
-        (@world_modules || []).each do |mod|
-          @current_world.extend(mod)
-        end
+
+        @current_world.add_modules!(@world_modules || [],
+                                    @namespaced_world_modules || {})
       end
 
       def connect_world(scenario)

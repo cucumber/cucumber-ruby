@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cucumber/platform'
 require 'cucumber/gherkin/formatter/ansi_escapes'
 

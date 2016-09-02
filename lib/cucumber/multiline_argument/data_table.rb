@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'forwardable'
 require 'cucumber/gherkin/data_table_parser'
 require 'cucumber/gherkin/formatter/escaping'
@@ -469,7 +470,8 @@ module Cucumber
 
         c = Cucumber::Term::ANSIColor.coloring?
         Cucumber::Term::ANSIColor.coloring = options[:color]
-        formatter = Formatter::Pretty.new(nil, io, options)
+        runtime = Struct.new(:configuration).new(Configuration.new)
+        formatter = Formatter::Pretty.new(runtime, io, options)
         formatter.instance_variable_set('@indent', options[:indent])
         Formatter::LegacyApi::Ast::MultilineArg.for(self).accept(Formatter::Fanout.new([formatter]))
         Cucumber::Term::ANSIColor.coloring = c

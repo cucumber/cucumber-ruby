@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cucumber/gherkin/i18n'
 
 module Cucumber

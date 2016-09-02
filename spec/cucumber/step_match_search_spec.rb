@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cucumber/step_match_search'
 require 'cucumber/rb_support/rb_dsl'
 require 'cucumber/rb_support/rb_language'

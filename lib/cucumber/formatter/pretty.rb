@@ -1,7 +1,10 @@
+# frozen_string_literal: true
 require 'fileutils'
 require 'cucumber/formatter/console'
 require 'cucumber/formatter/io'
 require 'cucumber/gherkin/formatter/escaping'
+require 'cucumber/formatter/console_counts'
+require 'cucumber/formatter/console_issues'
 
 module Cucumber
   module Formatter
@@ -22,12 +25,15 @@ module Cucumber
 
       def initialize(runtime, path_or_io, options)
         @runtime, @io, @options = runtime, ensure_io(path_or_io), options
+        @config = runtime.configuration
         @exceptions = []
         @indent = 0
         @prefixes = options[:prefixes] || {}
         @delayed_messages = []
         @previous_step_keyword = nil
         @snippets_input = []
+        @counts = ConsoleCounts.new(runtime.configuration)
+        @issues = ConsoleIssues.new(runtime.configuration)
       end
 
       def before_features(features)
@@ -238,7 +244,7 @@ module Cucumber
       end
 
       def print_summary(features)
-        print_stats(features, @options)
+        print_statistics(features.duration, @config, @counts, @issues)
         print_snippets(@options)
         print_passing_wip(@options)
       end

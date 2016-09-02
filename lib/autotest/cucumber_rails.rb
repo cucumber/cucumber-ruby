@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'autotest/rails'
 require 'autotest/cucumber_mixin'
 

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cucumber/step_match'
 require 'cucumber/step_argument'
 require 'cucumber/core_ext/string'

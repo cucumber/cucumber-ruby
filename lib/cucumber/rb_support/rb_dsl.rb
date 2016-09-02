@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Cucumber
   module RbSupport
     # This module defines the methods you can use to define pure Ruby
@@ -11,8 +12,8 @@ module Cucumber
           alias_method adverb, :register_rb_step_definition
         end
 
-        def build_rb_world_factory(world_modules, proc)
-          @rb_language.build_rb_world_factory(world_modules, proc)
+        def build_rb_world_factory(world_modules, namespaced_world_modules, proc)
+          @rb_language.build_rb_world_factory(world_modules, namespaced_world_modules, proc)
         end
 
         def register_rb_hook(phase, tag_names, proc)
@@ -33,6 +34,10 @@ module Cucumber
       # Object that the scenario's steps will run within. Any +world_modules+
       # will be mixed into this Object (via Object#extend).
       #
+      # By default the +world modules+ are added to a global namespace. It is
+      # possible to create a namespaced World by using an hash, where the
+      # symbols are the namespaces.
+      #
       # This method is typically called from one or more Ruby scripts under
       # <tt>features/support</tt>. You can call this method as many times as you
       # like (to register more modules), but if you try to register more than
@@ -46,8 +51,10 @@ module Cucumber
       #
       #    World(MyModule)
       #
-      def World(*world_modules, &proc)
-        RbDsl.build_rb_world_factory(world_modules, proc)
+      #    World(my_module: MyModule)
+      #
+      def World(*world_modules, **namespaced_world_modules, &proc)
+        RbDsl.build_rb_world_factory(world_modules, namespaced_world_modules, proc)
       end
 
       # Registers a proc that will run before each Scenario. You can register as many
