@@ -9,6 +9,7 @@
 * Use the event bus in Cucumber-Ruby-Core ([#973](https://github.com/cucumber/cucumber-ruby/pull/973) @mattwynne)
 * Add --retry option to retry failed tests as part of the same run ([#920](https://github.com/cucumber/cucumber-ruby/pull/920) @DanaScheider)
 * Add a summary formatter ([#999](https://github.com/cucumber/cucumber-ruby/pull/999) @mattwynne)
+* Namespaced World modules ([#1007](https://github.com/cucumber/cucumber-ruby/pull/1007) @nodo)
 
 ### Bugfixes
 
