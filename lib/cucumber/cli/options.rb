@@ -24,7 +24,6 @@ module Cucumber
         'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
         'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
         'json_pretty' => ['Cucumber::Formatter::JsonPretty',  'Prints the feature as prettified JSON'],
-        'debug'       => ['Cucumber::Formatter::Debug',       'For developing formatters - prints the calls made to the listeners.'],
         'summary'       => ['Cucumber::Formatter::Summary',   'Summary output of feature and scenarios']
       }
       max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
