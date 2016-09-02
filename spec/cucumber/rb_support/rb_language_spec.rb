@@ -106,6 +106,82 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
         end
       end
 
+      describe 'Handling namespaced World' do
+        module ModuleOne
+          def method_one
+            1
+          end
+        end
+
+        module ModuleMinusOne
+          def method_one
+            -1
+          end
+        end
+
+        module ModuleTwo
+          def method_two
+            2
+          end
+        end
+
+        module ModuleThree
+          def method_three
+            3
+          end
+        end
+
+        it 'extends the world with namespaces' do
+          dsl.World(ModuleOne, module_two: ModuleTwo, module_three: ModuleThree)
+          rb.begin_scenario(double('scenario').as_null_object)
+          class << rb.current_world
+            extend RSpec::Matchers
+            expect(included_modules.inspect).to match(/ModuleOne/)
+          end
+          expect(rb.current_world.class).to eq Object
+          expect(rb.current_world).to respond_to(:method_one)
+
+          expect(rb.current_world.module_two.class).to eq Object
+          expect(rb.current_world.module_two).to respond_to(:method_two)
+
+          expect(rb.current_world.module_three.class).to eq Object
+          expect(rb.current_world.module_three).to respond_to(:method_three)
+        end
+
+        it 'allows to inspect the included modules' do
+          dsl.World(ModuleOne, module_two: ModuleTwo, module_three: ModuleThree)
+          rb.begin_scenario(double('scenario').as_null_object)
+          class << rb.current_world
+            extend RSpec::Matchers
+          end
+          expect(rb.current_world.inspect).to match(/ModuleOne/)
+          expect(rb.current_world.inspect).to include('ModuleTwo (as module_two)')
+          expect(rb.current_world.inspect).to include('ModuleThree (as module_three)')
+        end
+
+        it 'merges methods when assigning different modules to the same namespace' do
+          dsl.World(namespace: ModuleOne)
+          dsl.World(namespace: ModuleTwo)
+          rb.begin_scenario(double('scenario').as_null_object)
+          class << rb.current_world
+            extend RSpec::Matchers
+          end
+          expect(rb.current_world.namespace).to respond_to(:method_one)
+          expect(rb.current_world.namespace).to respond_to(:method_two)
+        end
+
+        it 'resolves conflicts when assigning different modules to the same namespace' do
+          dsl.World(namespace: ModuleOne)
+          dsl.World(namespace: ModuleMinusOne)
+          rb.begin_scenario(double('scenario').as_null_object)
+          class << rb.current_world
+            extend RSpec::Matchers
+          end
+          expect(rb.current_world.namespace).to respond_to(:method_one)
+          expect(rb.current_world.namespace.method_one).to eql(-1)
+        end
+      end
+
       describe "step argument transformations" do
         describe "without capture groups" do
           it "complains when registering with a with no transform block" do
