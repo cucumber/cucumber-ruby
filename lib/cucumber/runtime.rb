@@ -67,6 +67,7 @@ module Cucumber
       receiver = Test::Runner.new(@configuration.event_bus)
       compile features, receiver, filters
       @configuration.notify :test_run_finished
+      fire_after_all_hook
     end
 
     def features_paths
@@ -108,6 +109,10 @@ module Cucumber
 
     def fire_after_configuration_hook #:nodoc
       @support_code.fire_hook(:after_configuration, @configuration)
+    end
+
+    def fire_after_all_hook #:nodoc
+      @support_code.fire_hook(:after_all)
     end
 
     require 'cucumber/core/gherkin/document'

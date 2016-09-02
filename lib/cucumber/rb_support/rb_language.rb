@@ -112,6 +112,12 @@ module Cucumber
         end
       end
 
+      def after_all
+        hooks[:after_all].each do |hook|
+          hook.invoke('AfterAll', nil)
+        end
+      end
+
       def execute_transforms(args)
         args.map do |arg|
           matching_transform = transforms.detect {|transform| transform.match(arg) }
