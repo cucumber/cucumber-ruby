@@ -17,6 +17,10 @@
 * with_filtered_backtrace called on Test::Result::Unknown with strange feature file ([#967](https://github.com/cucumber/cucumber-ruby/issues/967) @danascheider)
 * fix HTML formatter backtrace duplicate line bug ([#965](https://gthub.com/cucumber/cucumber-ruby/pull/965) @josephks)
 
+### Refactoring
+
+* Add frozen string literal magic comment to files and fix issues it causes ([#996](https://github.com/cucumber/cucumber-ruby/pull/996 @twalpole)
+
 ## [v2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
 
 ### New Features
