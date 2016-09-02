@@ -17,10 +17,11 @@ module Cucumber
       describe "#load_code_file" do
         after do
           FileUtils.rm_rf('tmp.rb')
+          FileUtils.rm_rf('docs.md')
         end
 
         def a_file_called(name)
-          File.open('tmp.rb', 'w') do |f|
+          File.open(name, 'w') do |f|
             f.puts yield
           end
         end
@@ -43,10 +44,10 @@ module Cucumber
         end
 
         it "only loads ruby files" do
-          a_file_called("readme.md") do
+          a_file_called("docs.md") do
             "yo"
           end
-          rb.load_code_file('readme.md')
+          rb.load_code_file('docs.md')
         end
       end
 
