@@ -168,12 +168,13 @@ module Cucumber
           world_modules.each do |world_module|
             variable_name = "@__#{namespace}_world"
 
-            miniworld = if self.class.respond_to?(namespace)
-                          instance_variable_get(variable_name)
-                        else
-                          Object.new
-                        end
-            instance_variable_set(variable_name, miniworld.extend(world_module))
+            inner_world = if self.class.respond_to?(namespace)
+                            instance_variable_get(variable_name)
+                          else
+                            Object.new
+                          end
+            instance_variable_set(variable_name,
+                                  inner_world.extend(world_module))
             self.class.send(:define_method, namespace) do
               instance_variable_get(variable_name)
             end
