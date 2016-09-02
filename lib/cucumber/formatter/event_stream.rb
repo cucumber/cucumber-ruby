@@ -26,11 +26,11 @@ module Cucumber
           })
         end
 
-        on(:gherkin_source_read) do |path, source|
+        on(:gherkin_source_read) do |event|
           emit({
             event: "GherkinSourceRead",
-            id: "#{path}:1",
-            source: source
+            id: "#{event.path}:1",
+            source: event.source
           })
         end
 
@@ -40,17 +40,17 @@ module Cucumber
           })
         end
 
-        on(:test_case_starting) do |test_case|
+        on(:test_case_starting) do |event|
           emit({
             event: "TestCaseStarted",
-            id: test_case.location
+            id: event.test_case.location
           })
         end
 
-        on(:test_step_starting) do |test_step|
+        on(:test_step_starting) do |event|
           emit({
             event: "TestStepStarted",
-            id: test_step.location
+            id: event.test_step.location
           })
         end
 
