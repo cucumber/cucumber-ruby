@@ -10,6 +10,7 @@ require 'cucumber/term/ansicolor'
 module Cucumber
   class << self
     attr_accessor :wants_to_quit
+    attr_accessor :treats_ambiguous_as_fullwidth
 
     def logger
       return @log if @log

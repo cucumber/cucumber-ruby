@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'coveralls', '~> 0.7'
   s.add_development_dependency 'syntax', '>= 1.0.0'
   s.add_development_dependency 'pry'
+  s.add_development_dependency 'unicode'
 
   # For Documentation:
   s.add_development_dependency 'bcat', '~> 0.6.2'
