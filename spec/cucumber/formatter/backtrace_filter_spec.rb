@@ -13,9 +13,9 @@ module Cucumber
                      _anything__gems/__anything_
                      _anything__minitest__anything_
                      _anything__test/unit__anything_
-                     _anything__.gem/ruby__anything_
+                     _anything__Xgem/ruby__anything_
                      _anything__lib/ruby/__anything_
-                     _anything__bin/bundle__anything_)
+                     _anything__.rbenv/versions/2.3/bin/bundle__anything_)
           @exception = Exception.new
           @exception.set_backtrace(trace)
         end

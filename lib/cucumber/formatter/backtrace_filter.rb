@@ -14,11 +14,11 @@ module Cucumber
       test/unit
       .gem/ruby
       lib/ruby/
-      bin/bundle
+      rbenv/.*/bin/bundle
     )
 
     if ::Cucumber::JRUBY
-      @backtrace_filters << '/org/jruby/'
+      @backtrace_filters << 'org/jruby/'
     end
 
     BACKTRACE_FILTER_PATTERNS = Regexp.new(@backtrace_filters.join('|'))
