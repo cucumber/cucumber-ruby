@@ -50,6 +50,13 @@ gem 'byebug'
 
     To get code coverage results, run `bundle exec rake cov`
 
+## First timer? No problem!
+
+If you are new to the project or to OSS, check the label
+[Easy](https://github.com/cucumber/cucumber-ruby/labels/Easy). Also, you can
+help us to correct style violations reported here:
+[.rubocop_todo.yaml](https://github.com/cucumber/cucumber-ruby/blob/master/.rubocop_todo.yml).
+
 ## Release Process
 
 * Bump the version number in `lib/cucumber/platform.rb`.
