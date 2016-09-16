@@ -53,11 +53,11 @@ module Cucumber
         test_step = event.test_step
         result = event.result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         progress(result.to_sym) if !HookQueryVisitor.new(test_step).hook? || result.failed?
-        unless HookQueryVisitor.new(test_step).hook?
-          collect_snippet_data(test_step, result)
-          @pending_step_matches << @matches[test_step.source] if result.pending?
-          @failed_results << result if result.failed?
-        end
+
+        return if HookQueryVisitor.new(test_step).hook?
+        collect_snippet_data(test_step, result)
+        @pending_step_matches << @matches[test_step.source] if result.pending?
+        @failed_results << result if result.failed?
       end
 
       def on_test_case_finished(event)
@@ -84,12 +84,11 @@ module Cucumber
           snippet_text(step_keyword, step_name, multiline_arg)
         }
         do_print_snippets(snippet_text_proc) if config.snippets? && summary.test_steps.total(:undefined) > 0
-        if config.wip?
-          messages = @passed_test_cases.map do |test_case|
-            message = linebreaks("#{test_case.location.on_line(test_case.location.line)}:in `#{test_case.name}'", ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
-          end
-          do_print_passing_wip(messages)
+        return unless config.wip?
+        messages = @passed_test_cases.map do |test_case|
+          message = linebreaks("#{test_case.location.on_line(test_case.location.line)}:in `#{test_case.name}'", ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
         end
+        do_print_passing_wip(messages)
       end
 
       CHARS = {

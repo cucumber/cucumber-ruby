@@ -699,11 +699,11 @@ module Cucumber
             return if examples_table_row == @current
             @child.after if @child
             row = ExampleTableRow.new(examples_table_row)
-            if !configuration.expand?
-              @child = TableRowPrinter.new(formatter, row, before_hook_results).before
-            else
-              @child = ExpandTableRowPrinter.new(formatter, row, before_hook_results).before
-            end
+            @child = if !configuration.expand?
+                       TableRowPrinter.new(formatter, row, before_hook_results).before
+                     else
+                       ExpandTableRowPrinter.new(formatter, row, before_hook_results).before
+                     end
             @current = examples_table_row
           end
 

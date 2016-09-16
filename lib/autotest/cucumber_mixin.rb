@@ -115,11 +115,11 @@ module Autotest::CucumberMixin
     profile ||= "autotest"     if profile_loader.has_profile?("autotest")
     profile ||= nil
 
-    if profile
-      args = ["--profile", profile]
-    else
-      args = %w{--format} << (features_to_run == :all ? "progress" : "pretty")
-    end
+    args = if profile
+             ["--profile", profile]
+           else
+             %w{--format} << (features_to_run == :all ? "progress" : "pretty")
+           end
     # No --color option as some IDEs (Netbeans) don't output them very well ([31m1 failed step[0m)
     args += %w{--format rerun --out} << dirty_features_filename
     args << (features_to_run == :all ? "" : features_to_run)

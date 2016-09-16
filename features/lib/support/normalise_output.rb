@@ -38,12 +38,9 @@ module NormaliseArubaOutput
   end
 
   def normalise_json_step_or_hook(step_or_hook)
-    if step_or_hook['result']
-      if step_or_hook['result']['duration']
-        expect(step_or_hook['result']['duration']).to be >= 0
-        step_or_hook['result']['duration'] = 1
-      end
-    end
+    return unless step_or_hook['result'] && step_or_hook['result']['duration']
+    expect(step_or_hook['result']['duration']).to be >= 0
+    step_or_hook['result']['duration'] = 1
   end
 
 end
