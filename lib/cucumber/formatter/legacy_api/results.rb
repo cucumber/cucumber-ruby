@@ -13,7 +13,7 @@ module Cucumber
         def step_visited(step) #:nodoc:
           step_id = step.object_id
 
-          unless @inserted_steps.has_key?(step_id)
+          unless @inserted_steps.key?(step_id)
             @inserted_steps[step_id] = step
             steps.push(step)
           end
@@ -22,7 +22,7 @@ module Cucumber
         def scenario_visited(scenario) #:nodoc:
           scenario_id = scenario.object_id
 
-          unless @inserted_scenarios.has_key?(scenario_id)
+          unless @inserted_scenarios.key?(scenario_id)
             @inserted_scenarios[scenario_id] = scenario
             scenarios.push(scenario)
           end

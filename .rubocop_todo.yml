@@ -32,21 +32,6 @@ Lint/AssignmentInCondition:
 
 # Offense count: 1
 # Cop supports --auto-correct.
-# Configuration parameters: AlignWith, SupportedStyles.
-# SupportedStyles: either, start_of_block, start_of_line
-Lint/BlockAlignment:
-  Exclude:
-    - 'lib/cucumber/formatter/html.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AlignWith, SupportedStyles, AutoCorrect.
-# SupportedStyles: start_of_line, def
-Lint/DefEndAlignment:
-  Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
 Lint/DeprecatedClassMethods:
   Exclude:
     - 'lib/cucumber/project_initializer.rb'
