@@ -11,14 +11,14 @@ end
 After do
 end
 
-Given /Zadám číslo (\d+) do kalkulačky/ do |n|
+Given(/Zadám číslo (\d+) do kalkulačky/) do |n|
   @calc.push n.to_i
 end
 
-When /Stlačím tlačidlo (\w+)/ do |op|
+When(/Stlačím tlačidlo (\w+)/) do |op|
   @result = @calc.send op
 end
 
-Then /Výsledok by mal byť (.*)/ do |result|
+Then(/Výsledok by mal byť (.*)/) do |result|
   @result.should == result.to_f
 end

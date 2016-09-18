@@ -11,14 +11,14 @@ end
 After do
 end
 
-Zadato /Unesen (\d+) broj u kalkulator/ do |n|
+Zadato(/Unesen (\d+) broj u kalkulator/) do |n|
   @calc.push n.to_i
 end
 
-Kada /pritisnem (\w+)/ do |op|
+Kada(/pritisnem (\w+)/) do |op|
   @result = @calc.send op
 end
 
-Onda /bi trebalo da bude (.*) prikazano na ekranu/ do |result|
+Onda(/bi trebalo da bude (.*) prikazano na ekranu/) do |result|
   @result.should == result.to_f
 end

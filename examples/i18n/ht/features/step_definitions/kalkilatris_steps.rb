@@ -12,14 +12,14 @@ end
 After do
 end
 
-Sipoze /Mwen te antre nan (\d+) nan kalkilatris la/ do |n|
+Sipoze(/Mwen te antre nan (\d+) nan kalkilatris la/) do |n|
   @kalk.push n.to_i
 end
 
-Lè /Mwen peze (\w+)/ do |op|
+Lè(/Mwen peze (\w+)/) do |op|
   @result = @kalk.send op
 end
 
-Lè sa a /Rezilta a ta dwe (.*) sou ekran an/ do |result|
+Lè sa a(/Rezilta a ta dwe (.*) sou ekran an/) do |result|
   @result.should == result.to_f
 end

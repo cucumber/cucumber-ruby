@@ -137,7 +137,7 @@ END_OF_MESSAGE
 
             config.parse!("#{flag} --require some_file.rb".split(" "))
 
-            expect(out.string).to match /Disabling profiles.../
+            expect(out.string).to match(/Disabling profiles.../)
           end
         end
       end

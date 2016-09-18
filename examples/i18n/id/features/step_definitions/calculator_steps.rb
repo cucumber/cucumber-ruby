@@ -11,14 +11,14 @@ end
 After do
 end
 
-Given /aku sudah masukkan (\d+) ke kalkulator/ do |n|
+Given(/aku sudah masukkan (\d+) ke kalkulator/) do |n|
   @calc.push n.to_i
 end
 
-When /aku tekan (\w+)/ do |op|
+When(/aku tekan (\w+)/) do |op|
   @result = @calc.send op
 end
 
-Then /hasilnya harus (.*) di layar/ do |result|
+Then(/hasilnya harus (.*) di layar/) do |result|
   @result.should == result.to_f
 end

@@ -11,7 +11,7 @@ end
 After do
 end
 
-Given /att jag har knappat in (\d+)/ do |n|
+Given(/att jag har knappat in (\d+)/) do |n|
   @calc.push n.to_i
 end
 
@@ -19,6 +19,6 @@ When 'jag summerar' do
   @result = @calc.add
 end
 
-Then /ska resultatet vara (\d+)/ do |result|
+Then(/ska resultatet vara (\d+)/) do |result|
   @result.should == result.to_i
 end

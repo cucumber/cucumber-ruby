@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-Given /^there is a wire server (running |)on port (\d+) which understands the following protocol:$/ do |running, port, table|
+Given(/^there is a wire server (running |)on port (\d+) which understands the following protocol:$/) do |running, port, table|
   protocol = table.hashes.map do |table_hash|
     table_hash['response'] = table_hash['response'].gsub(/\n/, '\n')
     table_hash
@@ -9,12 +9,12 @@ Given /^there is a wire server (running |)on port (\d+) which understands the fo
   start_wire_server if running.strip == "running"
 end
 
-Given /^the wire server takes (.*) seconds to respond to the invoke message$/ do |timeout|
+Given(/^the wire server takes (.*) seconds to respond to the invoke message$/) do |timeout|
   @server.delay_response(:invoke, timeout.to_f)
   start_wire_server
 end
 
-Given /^I have environment variable (\w+) set to "([^"]*)"$/ do |variable, value|
+Given(/^I have environment variable (\w+) set to "([^"]*)"$/) do |variable, value|
   set_env(variable, value)
 end
 

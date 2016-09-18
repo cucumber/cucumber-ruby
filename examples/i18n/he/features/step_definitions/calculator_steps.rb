@@ -11,14 +11,14 @@ end
 After do
 end
 
-Given /שהזנתי (\d+) למחשבון/ do |n|
+Given(/שהזנתי (\d+) למחשבון/) do |n|
   @calc.push n.to_i
 end
 
-When /אני לוחץ על (.+)/ do |op|
+When(/אני לוחץ על (.+)/) do |op|
   @result = @calc.send op
 end
 
-Then /התוצאה על המסך צריכה להיות (.*)/ do |result|
+Then(/התוצאה על המסך צריכה להיות (.*)/) do |result|
   @result.should == result.to_f
 end
