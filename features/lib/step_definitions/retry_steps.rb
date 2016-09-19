@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-Given /^a scenario "([^\"]*)" that fails once, then passes$/ do |full_name|
+Given(/^a scenario "([^\"]*)" that fails once, then passes$/) do |full_name|
   name = snake_case(full_name)
   write_file "features/#{name}.feature",
   <<-FEATURE
@@ -22,7 +22,7 @@ Given /^a scenario "([^\"]*)" that fails once, then passes$/ do |full_name|
   INIT
 end
 
-Given /^a scenario "([^\"]*)" that fails twice, then passes$/ do |full_name|
+Given(/^a scenario "([^\"]*)" that fails twice, then passes$/) do |full_name|
   name = snake_case(full_name)
   write_file "features/#{name}.feature",
   <<-FEATURE

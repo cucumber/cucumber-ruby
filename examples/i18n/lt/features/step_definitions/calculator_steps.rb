@@ -11,14 +11,14 @@ end
 After do
 end
 
-Given /aš įvedžiau (\d+) į skaičiuotuvą/ do |n|
+Given(/aš įvedžiau (\d+) į skaičiuotuvą/) do |n|
   @calc.push n.to_i
 end
 
-When /aš paspaudžiu "(\w+)"/ do |op|
+When(/aš paspaudžiu "(\w+)"/) do |op|
   @result = @calc.send op
 end
 
-Then /rezultatas ekrane turi būti (.*)/ do |result|
+Then(/rezultatas ekrane turi būti (.*)/) do |result|
   @result.should == result.to_f
 end

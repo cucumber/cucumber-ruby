@@ -11,14 +11,14 @@ end
 After do
 end
 
-Given /मैं गणक में (\d+) डालता हूँ/ do |n|
+Given(/मैं गणक में (\d+) डालता हूँ/) do |n|
   @calc.push n.to_i
 end
 
-When /मैं (\w+) दबाता हूँ/ do |op|
+When(/मैं (\w+) दबाता हूँ/) do |op|
   @result = @calc.send op
 end
 
-Then /परिणाम (.*) परदे पर प्रदशित होना चाहिए/ do |result|
+Then(/परिणाम (.*) परदे पर प्रदशित होना चाहिए/) do |result|
   @result.should == result.to_f
 end

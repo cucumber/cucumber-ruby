@@ -11,14 +11,14 @@ end
 After do
 end
 
-Given /että olen syöttänyt laskimeen luvun (\d+)/ do |n|
+Given(/että olen syöttänyt laskimeen luvun (\d+)/) do |n|
   @laskin.pinoa n.to_i
 end
 
-When /painan "(\w+)"/ do |op|
+When(/painan "(\w+)"/) do |op|
   @tulos = @laskin.send op
 end
 
-Then /laskimen ruudulla pitäisi näkyä tulos (.*)/ do |tulos|
+Then(/laskimen ruudulla pitäisi näkyä tulos (.*)/) do |tulos|
   @tulos.should == tulos.to_f
 end

@@ -8,14 +8,14 @@ Before do
   @calc = Calculador.new
 end
 
-Dado /que he introducido (\d+) en la calculadora/ do |n|
+Dado(/que he introducido (\d+) en la calculadora/) do |n|
   @calc.push n.to_i
 end
 
-Cuando /oprimo el (\w+)/ do |op|
+Cuando(/oprimo el (\w+)/) do |op|
   @result = @calc.send op
 end
 
-Entonces /el resultado debe ser (.*) en la pantalla/ do |result|
+Entonces(/el resultado debe ser (.*) en la pantalla/) do |result|
   @result.should == result.to_f
 end
