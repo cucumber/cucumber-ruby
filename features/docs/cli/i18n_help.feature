@@ -1,17 +1,20 @@
 @needs-many-fonts
-Feature: Language help
+Feature: Getting info of supported languages
 
-  It's possible to ask cucumber which keywords are used for any
-  particular language by running:
+  Ask Cucumber for a list of supported spoken languages by running:
 
-  `cucumber --i18n <language code> help`
+    cucumber --i18n help
 
-  This will print a table showing all the different words we use for
-  that language, to allow you to easily write features in any language
-  you choose.
+  Ask Cucumber for the keywords of a supported language by running:
 
-  Scenario: Get help for Portuguese language
-    When I run `cucumber --i18n pt help`
+    cucumber --i18n LANG
+
+  Scenario: Look up the language code of a supported language
+    When I run `cucumber --i18n help`
+    Then Cucumber displays the language table
+
+  Scenario: Need help for keywords of Portuguese
+    When I run `cucumber --i18n pt`
     Then it should pass with:
       """
         | feature          | "Funcionalidade", "Característica", "Caracteristica"                                         |
@@ -24,19 +27,12 @@ Feature: Language help
         | then             | "* ", "Então ", "Entao "                                                                     |
         | and              | "* ", "E "                                                                                   |
         | but              | "* ", "Mas "                                                                                 |
-        | given (code)     | "Dado", "Dada", "Dados", "Dadas"                                                             |
-        | when (code)      | "Quando"                                                                                     |
-        | then (code)      | "Então", "Entao"                                                                             |
-        | and (code)       | "E"                                                                                          |
-        | but (code)       | "Mas"                                                                                        |
-
       """
-
-  Scenario: List languages
-    When I run `cucumber --i18n help`
-    Then cucumber lists all the supported languages
 
   Scenario: Seek help for invalid language
     When I run `cucumber --i18n foo`
-    Then the output includes the message "Invalid language 'foo'"
-    And cucumber lists all the supported languages
+    Then it should fail with:
+      """
+      Invalid language 'foo'. Available languages are:
+      """
+    And Cucumber displays the language table
