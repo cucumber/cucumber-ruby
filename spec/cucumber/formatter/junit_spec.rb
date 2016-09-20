@@ -20,7 +20,7 @@ module Cucumber
         end
       end
 
-      context "With no options" do
+      context 'With no options' do
         before(:each) do
           allow(File).to receive(:directory?) { true }
           @formatter = TestDoubleJunitFormatter.new(actual_runtime.configuration.with_options(out_stream: ''))
@@ -30,7 +30,7 @@ module Cucumber
           $stdout = STDOUT
         end
 
-        describe "is able to strip control chars from cdata" do
+        describe 'is able to strip control chars from cdata' do
           before(:each) do
             run_defined_feature
             @doc = Nokogiri.XML(@formatter.written_files.values.first)
@@ -43,7 +43,7 @@ module Cucumber
             "
           class Junit
             def before_step(step)
-              if step.name.match("a passing ctrl scenario")
+              if step.name.match('a passing ctrl scenario')
                 Interceptor::Pipe.unwrap! :stdout
                 @fake_io = $stdout = StringIO.new
                 $stdout.sync = true
@@ -52,7 +52,7 @@ module Cucumber
             end
 
             def after_step(step)
-              if step.name.match("a passing ctrl scenario")
+              if step.name.match('a passing ctrl scenario')
                 @interceptedout.write("boo\b\cx\e\a\f boo ")
                 $stdout = STDOUT
                 @fake_io.close
@@ -63,27 +63,27 @@ module Cucumber
           it { expect(@doc.xpath('//testsuite/testcase/system-out').first.content).to match(/\s+boo boo\s+/) }
         end
 
-        describe "a feature with no name" do
+        describe 'a feature with no name' do
           define_feature <<-FEATURE
             Feature:
               Scenario: Passing
                 Given a passing scenario
           FEATURE
 
-          it "raises an exception" do
+          it 'raises an exception' do
             expect(-> {
               run_defined_feature
             }).to raise_error(Junit::UnNamedFeatureError)
           end
         end
 
-        describe "given a single feature" do
+        describe 'given a single feature' do
           before(:each) do
             run_defined_feature
             @doc = Nokogiri.XML(@formatter.written_files.values.first)
           end
 
-          describe "with a single scenario" do
+          describe 'with a single scenario' do
             define_feature <<-FEATURE
               Feature: One passing scenario, one failing scenario
 
@@ -110,7 +110,7 @@ module Cucumber
             end
           end
 
-          describe "with a scenario in a subdirectory" do
+          describe 'with a scenario in a subdirectory' do
             define_feature %{
               Feature: One passing scenario, one failing scenario
 
@@ -123,7 +123,7 @@ module Cucumber
             end
           end
 
-          describe "with a scenario outline table" do
+          describe 'with a scenario outline table' do
             define_steps do
               Given(/.*/) {  }
             end
@@ -155,7 +155,7 @@ module Cucumber
             it { expect(@doc.to_s).not_to match(/type="skipped"/)}
           end
 
-          describe "scenario with skipped test in junit report" do
+          describe 'scenario with skipped test in junit report' do
             define_feature <<-FEATURE
               Feature: junit report with skipped test
 
@@ -171,7 +171,7 @@ module Cucumber
             it { expect(@doc.to_s).to match(/skipped="2"/)}
           end
 
-          describe "with a regular data table scenario" do
+          describe 'with a regular data table scenario' do
             define_steps do
               Given(/the following items on a shortlist/) { |table| }
               When(/I go.*/) {  }
@@ -197,7 +197,7 @@ module Cucumber
         end
       end
       
-      context "In --expand mode" do
+      context 'In --expand mode' do
         let(:runtime)   { Runtime.new({:expand => true}) }
         before(:each) do
           allow(File).to receive(:directory?) { true }
@@ -208,13 +208,13 @@ module Cucumber
           $stdout = STDOUT
         end
 
-        describe "given a single feature" do
+        describe 'given a single feature' do
           before(:each) do
             run_defined_feature
             @doc = Nokogiri.XML(@formatter.written_files.values.first)
           end
           
-          describe "with a scenario outline table" do
+          describe 'with a scenario outline table' do
             define_steps do
               Given(/.*/) {  }
             end

@@ -28,7 +28,7 @@ module Cucumber
         attr_reader :tag_limits
 
         class Breach
-          INDENT = (" " * 2).freeze
+          INDENT = (' ' * 2).freeze
 
           def initialize(tag_name, limit, locations)
             @tag_name = tag_name

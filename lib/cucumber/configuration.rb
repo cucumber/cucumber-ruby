@@ -266,7 +266,7 @@ module Cucumber
     end
 
     def default_features_paths
-      ["features"]
+      ['features']
     end
 
     def with_default_features_path(paths)

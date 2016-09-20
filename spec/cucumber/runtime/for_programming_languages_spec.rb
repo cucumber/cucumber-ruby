@@ -8,7 +8,7 @@ module Cucumber
     subject               { Runtime::SupportCode.new(user_interface) }
     let(:runtime_facade)  { Runtime::ForProgrammingLanguages.new(subject, user_interface) }
 
-    describe "#doc_string" do
+    describe '#doc_string' do
 
       it 'defaults to a blank content-type' do
         str = runtime_facade.doc_string('DOC')
@@ -23,7 +23,7 @@ module Cucumber
 
     end
 
-    describe "#table" do
+    describe '#table' do
 
       it 'produces Ast::Table by #table' do
         expect(runtime_facade.table(%{

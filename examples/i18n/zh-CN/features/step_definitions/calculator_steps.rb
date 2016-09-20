@@ -17,7 +17,7 @@ end
 
 When(/按(.*)键/) do |op|
   if op == '加号'
-    @result = @calc.send "add"
+    @result = @calc.send 'add'
   end
 end
 

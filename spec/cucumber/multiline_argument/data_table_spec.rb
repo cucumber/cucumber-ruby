@@ -13,30 +13,30 @@ module Cucumber
         ])
       end
 
-      it "should have rows" do
+      it 'should have rows' do
         expect( @table.cells_rows[0].map{|cell| cell.value} ).to eq %w{one four seven}
       end
 
-      it "should have columns" do
+      it 'should have columns' do
         expect( @table.columns[1].map{|cell| cell.value} ).to eq %w{four 55555}
       end
 
-      it "should have same cell objects in rows and columns" do
+      it 'should have same cell objects in rows and columns' do
         # 666666
         expect( @table.cells_rows[1][2] ).to equal(@table.columns[2][1])
       end
 
-      it "should be convertible to an array of hashes" do
+      it 'should be convertible to an array of hashes' do
         expect( @table.hashes ).to eq [
           {'one' => '4444', 'four' => '55555', 'seven' => '666666'}
         ]
       end
 
-      it "should accept symbols as keys for the hashes" do
+      it 'should accept symbols as keys for the hashes' do
         expect( @table.hashes.first[:one] ).to eq '4444'
       end
 
-      it "should return the row values in order" do
+      it 'should return the row values in order' do
         expect( @table.rows.first ).to eq %w{4444 55555 666666}
       end
 
@@ -56,12 +56,12 @@ module Cucumber
       end
 
       describe '#map_column!' do
-        it "should allow mapping columns" do
+        it 'should allow mapping columns' do
           @table.map_column!('one') { |v| v.to_i }
           expect( @table.hashes.first['one'] ).to eq 4444
         end
 
-        it "applies the block once to each value" do
+        it 'applies the block once to each value' do
           headers = ['header']
           rows = ['value']
           table = DataTable.from [headers, rows]
@@ -71,43 +71,43 @@ module Cucumber
           expect( count ).to eq rows.size
         end
 
-        it "should allow mapping columns and take a symbol as the column name" do
+        it 'should allow mapping columns and take a symbol as the column name' do
           @table.map_column!(:one) { |v| v.to_i }
           expect( @table.hashes.first['one'] ).to eq 4444
         end
 
-        it "should allow mapping columns and modify the rows as well" do
+        it 'should allow mapping columns and modify the rows as well' do
           @table.map_column!(:one) { |v| v.to_i }
           expect( @table.rows.first ).to include(4444)
           expect( @table.rows.first ).to_not include('4444')
         end
 
-        it "should pass silently if a mapped column does not exist in non-strict mode" do
+        it 'should pass silently if a mapped column does not exist in non-strict mode' do
           expect {
             @table.map_column!('two', false) { |v| v.to_i }
             @table.hashes
           }.not_to raise_error
         end
 
-        it "should fail if a mapped column does not exist in strict mode" do
+        it 'should fail if a mapped column does not exist in strict mode' do
           expect {
             @table.map_column!('two', true) { |v| v.to_i }
             @table.hashes
           }.to raise_error('The column named "two" does not exist')
         end
 
-        it "should return the table" do
+        it 'should return the table' do
           expect( (@table.map_column!(:one) { |v| v.to_i }) ).to eq @table
         end
       end
 
       describe '#map_column' do
-        it "should allow mapping columns" do
+        it 'should allow mapping columns' do
           new_table = @table.map_column('one') { |v| v.to_i }
           expect( new_table.hashes.first['one'] ).to eq 4444
         end
 
-        it "applies the block once to each value" do
+        it 'applies the block once to each value' do
           headers = ['header']
           rows = ['value']
           table = DataTable.from [headers, rows]
@@ -117,37 +117,37 @@ module Cucumber
           expect( count ).to eq rows.size
         end
 
-        it "should allow mapping columns and take a symbol as the column name" do
+        it 'should allow mapping columns and take a symbol as the column name' do
           new_table = @table.map_column(:one) { |v| v.to_i }
           expect( new_table.hashes.first['one'] ).to eq 4444
         end
 
-        it "should allow mapping columns and modify the rows as well" do
+        it 'should allow mapping columns and modify the rows as well' do
           new_table = @table.map_column(:one) { |v| v.to_i }
           expect( new_table.rows.first ).to include(4444)
           expect( new_table.rows.first ).to_not include('4444')
         end
 
-        it "should pass silently if a mapped column does not exist in non-strict mode" do
+        it 'should pass silently if a mapped column does not exist in non-strict mode' do
           expect {
             new_table = @table.map_column('two', false) { |v| v.to_i }
             new_table.hashes
           }.not_to raise_error
         end
 
-        it "should fail if a mapped column does not exist in strict mode" do
+        it 'should fail if a mapped column does not exist in strict mode' do
           expect {
             new_table = @table.map_column('two', true) { |v| v.to_i }
             new_table.hashes
           }.to raise_error('The column named "two" does not exist')
         end
 
-        it "should return a new table" do
+        it 'should return a new table' do
           expect( (@table.map_column(:one) { |v| v.to_i }) ).to_not eq @table
         end
       end
 
-      describe "#match" do
+      describe '#match' do
         before(:each) do
           @table = DataTable.from([
             %w{one four seven},
@@ -155,18 +155,18 @@ module Cucumber
           ])
         end
 
-        it "returns nil if headers do not match" do
+        it 'returns nil if headers do not match' do
           expect( @table.match('does,not,match') ).to be_nil
         end
-        it "requires a table: prefix on match" do
+        it 'requires a table: prefix on match' do
           expect( @table.match('table:one,four,seven') ).to_not be_nil
         end
-        it "does not match if no table: prefix on match" do
+        it 'does not match if no table: prefix on match' do
           expect( @table.match('one,four,seven') ).to be_nil
         end
       end
 
-      describe "#transpose" do
+      describe '#transpose' do
         before(:each) do
           @table = DataTable.from([
             %w{one 1111},
@@ -174,14 +174,14 @@ module Cucumber
           ])
         end
 
-        it "should be convertible in to an array where each row is a hash" do
+        it 'should be convertible in to an array where each row is a hash' do
           expect( @table.transpose.hashes[0] ).to eq('one' => '1111', 'two' => '22222')
         end
       end
 
-      describe "#rows_hash" do
+      describe '#rows_hash' do
 
-        it "should return a hash of the rows" do
+        it 'should return a hash of the rows' do
           table = DataTable.from([
             %w{one 1111},
             %w{two 22222}
@@ -199,7 +199,7 @@ module Cucumber
           }.to raise_error('The table must have exactly 2 columns')
         end
 
-        it "should support header and column mapping" do
+        it 'should support header and column mapping' do
           table = DataTable.from([
             %w{one 1111},
             %w{two 22222}
@@ -218,30 +218,30 @@ module Cucumber
           ])
         end
 
-        it "renames the columns to the specified values in the provided hash" do
+        it 'renames the columns to the specified values in the provided hash' do
           @table.map_headers!('one' => :three)
           expect( @table.hashes.first[:three] ).to eq '4444'
         end
 
-        it "allows renaming columns using regexp" do
+        it 'allows renaming columns using regexp' do
           @table.map_headers!(/one|uno/ => :three)
           expect( @table.hashes.first[:three] ).to eq '4444'
         end
 
-        it "copies column mappings" do
+        it 'copies column mappings' do
           @table.map_column!('one') { |v| v.to_i }
           @table.map_headers!('one' => 'three')
           expect( @table.hashes.first['three'] ).to eq 4444
         end
 
-        it "takes a block and operates on all the headers with it" do
+        it 'takes a block and operates on all the headers with it' do
           table.map_headers! do |header|
             header.downcase
           end
           expect( table.hashes.first.keys ).to match %w[hello world]
         end
 
-        it "treats the mappings in the provided hash as overrides when used with a block" do
+        it 'treats the mappings in the provided hash as overrides when used with a block' do
           table.map_headers!('WORLD' => 'foo') do |header|
             header.downcase
           end
@@ -258,23 +258,23 @@ module Cucumber
           ])
         end
 
-        it "renames the columns to the specified values in the provided hash" do
+        it 'renames the columns to the specified values in the provided hash' do
           table2 = @table.map_headers('one' => :three)
           expect( table2.hashes.first[:three] ).to eq '4444'
         end
 
-        it "allows renaming columns using regexp" do
+        it 'allows renaming columns using regexp' do
           table2 = @table.map_headers(/one|uno/ => :three)
           expect( table2.hashes.first[:three] ).to eq '4444'
         end
 
-        it "copies column mappings" do
+        it 'copies column mappings' do
           @table.map_column!('one') { |v| v.to_i }
           table2 = @table.map_headers('one' => 'three')
           expect( table2.hashes.first['three'] ).to eq 4444
         end
 
-        it "takes a block and operates on all the headers with it" do
+        it 'takes a block and operates on all the headers with it' do
           table2 = table.map_headers do |header|
             header.downcase
           end
@@ -282,7 +282,7 @@ module Cucumber
           expect( table2.hashes.first.keys ).to match %w[hello world]
         end
 
-        it "treats the mappings in the provided hash as overrides when used with a block" do
+        it 'treats the mappings in the provided hash as overrides when used with a block' do
           table2 = table.map_headers('WORLD' => 'foo') do |header|
             header.downcase
           end
@@ -291,8 +291,8 @@ module Cucumber
         end
       end
 
-      describe "diff!" do
-        it "should detect a complex diff" do
+      describe 'diff!' do
+        it 'should detect a complex diff' do
           t1 = DataTable.from(%{
             | 1         | 22          | 333         | 4444         |
             | 55555     | 666666      | 7777777     | 88888888     |
@@ -318,7 +318,7 @@ module Cucumber
           }
         end
 
-        it "should not change table when diffed with identical" do
+        it 'should not change table when diffed with identical' do
           t = DataTable.from(%{
             |a|b|c|
             |d|e|f|
@@ -332,8 +332,8 @@ module Cucumber
           }
         end
 
-        context "in case of duplicate header values" do
-          it "raises no error for two identical tables" do
+        context 'in case of duplicate header values' do
+          it 'raises no error for two identical tables' do
             t = DataTable.from(%{
             |a|a|c|
             |d|e|f|
@@ -347,7 +347,7 @@ module Cucumber
           }
           end
 
-          it "detects a diff in one cell" do
+          it 'detects a diff in one cell' do
             t1 = DataTable.from(%{
             |a|a|c|
             |d|e|f|
@@ -367,7 +367,7 @@ module Cucumber
           }
           end
 
-          it "detects missing columns" do
+          it 'detects missing columns' do
             t1 = DataTable.from(%{
             |a|a|b|c|
             |d|d|e|f|
@@ -386,7 +386,7 @@ module Cucumber
           }
           end
 
-          it "detects surplus columns" do
+          it 'detects surplus columns' do
             t1 = DataTable.from(%{
             |a|b|c|
             |d|e|f|
@@ -406,7 +406,7 @@ module Cucumber
           end
         end
 
-        it "should inspect missing and surplus cells" do
+        it 'should inspect missing and surplus cells' do
           t1 = DataTable.from([
             ['name',  'male', 'lastname', 'swedish'],
             ['aslak', 'true', 'hellesøy', 'false']
@@ -424,7 +424,7 @@ module Cucumber
           }
         end
 
-        it "should allow column mapping of target before diffing" do
+        it 'should allow column mapping of target before diffing' do
           t1 = DataTable.from([
             ['name',  'male'],
             ['aslak', 'true']
@@ -441,7 +441,7 @@ module Cucumber
           }
         end
 
-        it "should allow column mapping of argument before diffing" do
+        it 'should allow column mapping of argument before diffing' do
           t1 = DataTable.from([
             ['name',  'male'],
             ['aslak', true]
@@ -460,7 +460,7 @@ module Cucumber
           }
         end
 
-        it "should allow header mapping before diffing" do
+        it 'should allow header mapping before diffing' do
           t1 = DataTable.from([
             ['Name',  'Male'],
             ['aslak', 'true']
@@ -478,7 +478,7 @@ module Cucumber
           }
         end
 
-        it "should detect seemingly identical tables as different" do
+        it 'should detect seemingly identical tables as different' do
           t1 = DataTable.from([
             ['X',  'Y'],
             ['2', '1']
@@ -495,7 +495,7 @@ module Cucumber
           }
         end
 
-        it "should not allow mappings that match more than 1 column" do
+        it 'should not allow mappings that match more than 1 column' do
           t1 = DataTable.from([
             ['Cuke',  'Duke'],
             ['Foo', 'Bar']
@@ -506,7 +506,7 @@ module Cucumber
           end.to raise_error(%{2 headers matched /uk/: ["Cuke", "Duke"]})
         end
 
-        describe "raising" do
+        describe 'raising' do
           before do
             @t = DataTable.from(%{
               | a | b |
@@ -515,7 +515,7 @@ module Cucumber
             expect( @t ).not_to eq nil
           end
 
-          it "should raise on missing rows" do
+          it 'should raise on missing rows' do
             t = DataTable.from(%{
               | a | b |
             })
@@ -523,7 +523,7 @@ module Cucumber
             expect { @t.dup.diff!(t, :missing_row => false) }.not_to raise_error
           end
 
-          it "should not raise on surplus rows when surplus is at the end" do
+          it 'should not raise on surplus rows when surplus is at the end' do
             t = DataTable.from(%{
               | a | b |
               | c | d |
@@ -533,7 +533,7 @@ module Cucumber
             expect { @t.dup.diff!(t, :surplus_row => false) }.not_to raise_error
           end
 
-          it "should not raise on surplus rows when surplus is interleaved" do
+          it 'should not raise on surplus rows when surplus is interleaved' do
             t1 = DataTable.from(%{
               | row_1 | row_2 |
               | four  | 4     |
@@ -551,7 +551,7 @@ module Cucumber
             expect { t1.dup.diff!(t2, :surplus_row => false) }.not_to raise_error
           end
 
-          it "should raise on missing columns" do
+          it 'should raise on missing columns' do
             t = DataTable.from(%{
               | a |
               | c |
@@ -560,7 +560,7 @@ module Cucumber
             expect { @t.dup.diff!(t, :missing_col => false) }.not_to raise_error
           end
 
-          it "should not raise on surplus columns" do
+          it 'should not raise on surplus columns' do
             t = DataTable.from(%{
               | a | b | x |
               | c | d | y |
@@ -569,7 +569,7 @@ module Cucumber
             expect { @t.dup.diff!(t, :surplus_col => true) }.to raise_error
           end
 
-          it "should not raise on misplaced columns" do
+          it 'should not raise on misplaced columns' do
             t = DataTable.from(%{
               | b | a |
               | d | c |
@@ -579,7 +579,7 @@ module Cucumber
           end
         end
 
-        it "can compare to an Array" do
+        it 'can compare to an Array' do
           t = DataTable.from(%{
             | b | a |
             | d | c |
@@ -590,8 +590,8 @@ module Cucumber
         end
       end
 
-      describe "#from" do
-        it "should allow Array of Hash" do
+      describe '#from' do
+        it 'should allow Array of Hash' do
           t1 = DataTable.from([{'name' => 'aslak', 'male' => 'true'}])
           expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     male |     name  |

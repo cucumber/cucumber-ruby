@@ -14,6 +14,6 @@ if ENV['SIMPLECOV']
       add_filter '/features/'
     end
   rescue LoadError
-    warn("Unable to load simplecov")
+    warn('Unable to load simplecov')
   end
 end

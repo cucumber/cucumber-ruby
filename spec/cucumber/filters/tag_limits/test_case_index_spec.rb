@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require "cucumber/filters/tag_limits"
+require 'cucumber/filters/tag_limits'
 
 describe Cucumber::Filters::TagLimits::TestCaseIndex do
   subject(:index) { Cucumber::Filters::TagLimits::TestCaseIndex.new }
@@ -11,8 +11,8 @@ describe Cucumber::Filters::TagLimits::TestCaseIndex do
     ]
   end
 
-  let(:tag_one) { double(:tag_one, name: "@one") }
-  let(:tag_two) { double(:tag_two, name: "@two") }
+  let(:tag_one) { double(:tag_one, name: '@one') }
+  let(:tag_two) { double(:tag_two, name: '@two') }
 
   let(:a_location_of_tag_one) { double(:a_location_of_tag_one) }
   let(:a_location_of_tag_one_and_tag_two) { double(:a_location_of_tag_one_and_tag_two) }
@@ -23,17 +23,17 @@ describe Cucumber::Filters::TagLimits::TestCaseIndex do
     end
   end
 
-  describe "#count_by_tag_name" do
-    it "returns the number of test cases with the tag" do
-      expect(index.count_by_tag_name("@one")).to eq(2)
-      expect(index.count_by_tag_name("@two")).to eq(1)
+  describe '#count_by_tag_name' do
+    it 'returns the number of test cases with the tag' do
+      expect(index.count_by_tag_name('@one')).to eq(2)
+      expect(index.count_by_tag_name('@two')).to eq(1)
     end
   end
 
-  describe "#locations_by_tag_name" do
-    it "returns the locations of test cases with the tag" do
-      expect(index.locations_of_tag_name("@one")).to eq([a_location_of_tag_one, a_location_of_tag_one_and_tag_two])
-      expect(index.locations_of_tag_name("@two")).to eq([a_location_of_tag_one_and_tag_two])
+  describe '#locations_by_tag_name' do
+    it 'returns the locations of test cases with the tag' do
+      expect(index.locations_of_tag_name('@one')).to eq([a_location_of_tag_one, a_location_of_tag_one_and_tag_two])
+      expect(index.locations_of_tag_name('@two')).to eq([a_location_of_tag_one_and_tag_two])
     end
   end
 end

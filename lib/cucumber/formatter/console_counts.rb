@@ -20,8 +20,8 @@ module Cucumber
 
       def to_s
         [
-          [scenario_count, status_counts(@test_case_summary)].compact.join(" "),
-          [step_count, status_counts(@test_step_summary)].compact.join(" ")
+          [scenario_count, status_counts(@test_case_summary)].compact.join(' '),
+          [step_count, status_counts(@test_step_summary)].compact.join(' ')
         ].join("\n")
       end
 
@@ -33,12 +33,12 @@ module Cucumber
 
       def scenario_count
         count = @test_case_summary.total
-        "#{count} scenario" + (count == 1 ? "" : "s")
+        "#{count} scenario" + (count == 1 ? '' : 's')
       end
 
       def step_count
         count = @test_step_summary.total
-        "#{count} step" + (count == 1 ? "" : "s")
+        "#{count} step" + (count == 1 ? '' : 's')
       end
 
       def status_counts(summary)

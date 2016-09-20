@@ -27,15 +27,15 @@ module Cucumber
         'summary'       => ['Cucumber::Formatter::Summary',   'Summary output of feature and scenarios']
       }
       max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
-      FORMAT_HELP_MSG = ["Use --format rerun --out rerun.txt to write out failing",
-        "features. You can rerun them with cucumber @rerun.txt.",
-        "FORMAT can also be the fully qualified class name of",
+      FORMAT_HELP_MSG = ['Use --format rerun --out rerun.txt to write out failing',
+        'features. You can rerun them with cucumber @rerun.txt.',
+        'FORMAT can also be the fully qualified class name of',
         "your own custom formatter. If the class isn't loaded,",
-        "Cucumber will attempt to require a file with a relative",
-        "file name that is the underscore name of the class name.",
-        "Example: --format Foo::BarZap -> Cucumber will look for",
-        "foo/bar_zap.rb. You can place the file with this relative",
-        "path underneath your features/support directory or anywhere",
+        'Cucumber will attempt to require a file with a relative',
+        'file name that is the underscore name of the class name.',
+        'Example: --format Foo::BarZap -> Cucumber will look for',
+        'foo/bar_zap.rb. You can place the file with this relative',
+        'path underneath your features/support directory or anywhere',
         "on Ruby's LOAD_PATH, for example in a Ruby gem."
       ]
 
@@ -89,54 +89,54 @@ module Cucumber
 
         @args.options do |opts|
           opts.banner = banner
-          opts.on("-r LIBRARY|DIR", "--require LIBRARY|DIR", *require_files_msg) {|lib| require_files(lib) }
+          opts.on('-r LIBRARY|DIR', '--require LIBRARY|DIR', *require_files_msg) {|lib| require_files(lib) }
 
           if(Cucumber::JRUBY)
-            opts.on("-j DIR", "--jars DIR", "Load all the jars under DIR") {|jars| load_jars(jars) }
+            opts.on('-j DIR', '--jars DIR', 'Load all the jars under DIR') {|jars| load_jars(jars) }
           end
 
           opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) {|v| set_option :retry, v.to_i }
-          opts.on("--i18n LANG", *i18n_msg) {|lang| set_language lang }
-          opts.on(FAIL_FAST_FLAG, "Exit immediately following the first failing scenario") { set_option :fail_fast }
-          opts.on("-f FORMAT", "--format FORMAT", *format_msg, *FORMAT_HELP) {|v| add_option :formats, [v, @out_stream] }
+          opts.on('--i18n LANG', *i18n_msg) {|lang| set_language lang }
+          opts.on(FAIL_FAST_FLAG, 'Exit immediately following the first failing scenario') { set_option :fail_fast }
+          opts.on('-f FORMAT', '--format FORMAT', *format_msg, *FORMAT_HELP) {|v| add_option :formats, [v, @out_stream] }
           opts.on('--init', *init_msg) {|v| initialize_project }
-          opts.on("-o", "--out [FILE|DIR]", *out_msg) {|v| set_out_stream v }
-          opts.on("-t TAG_EXPRESSION", "--tags TAG_EXPRESSION", *tags_msg) {|v| add_option :tag_expressions, v }
-          opts.on("-n NAME", "--name NAME", *name_msg) {|v| add_option :name_regexps, /#{v}/ }
-          opts.on("-e", "--exclude PATTERN", *exclude_msg) {|v| add_option :excludes, Regexp.new(v) }
+          opts.on('-o', '--out [FILE|DIR]', *out_msg) {|v| set_out_stream v }
+          opts.on('-t TAG_EXPRESSION', '--tags TAG_EXPRESSION', *tags_msg) {|v| add_option :tag_expressions, v }
+          opts.on('-n NAME', '--name NAME', *name_msg) {|v| add_option :name_regexps, /#{v}/ }
+          opts.on('-e', '--exclude PATTERN', *exclude_msg) {|v| add_option :excludes, Regexp.new(v) }
           opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE", *profile_short_flag_msg) {|v| add_profile v }
           opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG, *no_profile_short_flag_msg) {|v| disable_profile_loading }
-          opts.on("-c", "--[no-]color", *color_msg) {|v| set_color v }
-          opts.on("-d", "--dry-run", *dry_run_msg) { set_dry_run_and_duration }
-          opts.on("-m", "--no-multiline", "Don't print multiline strings and tables under steps.") { set_option :no_multiline }
-          opts.on("-s", "--no-source", "Don't print the file and line of the step definition with the steps.") { set_option :source, false }
-          opts.on("-i", "--no-snippets", "Don't print snippets for pending steps.") { set_option :snippets, false }
-          opts.on("-I", "--snippet-type TYPE", *snippet_type_msg) {|v| set_option :snippet_type, v.to_sym }
-          opts.on("-q", "--quiet", "Alias for --no-snippets --no-source.") { shut_up }
-          opts.on("--no-duration", "Don't print the duration at the end of the summary") { set_option :duration, false }
-          opts.on("-b", "--backtrace", "Show full backtrace for all errors.") { Cucumber.use_full_backtrace = true }
-          opts.on("-S", "--strict", "Fail if there are any undefined or pending steps.") { set_option :strict }
-          opts.on("-w", "--wip", "Fail if there are any passing scenarios.") { set_option :wip }
-          opts.on("-v", "--verbose", "Show the files and features loaded.") { set_option :verbose }
-          opts.on("-g", "--guess", "Guess best match for Ambiguous steps.") { set_option :guess }
-          opts.on("-l", "--lines LINES", *lines_msg) {|lines| set_option :lines, lines }
-          opts.on("-x", "--expand", "Expand Scenario Outline Tables in output.") { set_option :expand }
+          opts.on('-c', '--[no-]color', *color_msg) {|v| set_color v }
+          opts.on('-d', '--dry-run', *dry_run_msg) { set_dry_run_and_duration }
+          opts.on('-m', '--no-multiline', "Don't print multiline strings and tables under steps.") { set_option :no_multiline }
+          opts.on('-s', '--no-source', "Don't print the file and line of the step definition with the steps.") { set_option :source, false }
+          opts.on('-i', '--no-snippets', "Don't print snippets for pending steps.") { set_option :snippets, false }
+          opts.on('-I', '--snippet-type TYPE', *snippet_type_msg) {|v| set_option :snippet_type, v.to_sym }
+          opts.on('-q', '--quiet', 'Alias for --no-snippets --no-source.') { shut_up }
+          opts.on('--no-duration', "Don't print the duration at the end of the summary") { set_option :duration, false }
+          opts.on('-b', '--backtrace', 'Show full backtrace for all errors.') { Cucumber.use_full_backtrace = true }
+          opts.on('-S', '--strict', 'Fail if there are any undefined or pending steps.') { set_option :strict }
+          opts.on('-w', '--wip', 'Fail if there are any passing scenarios.') { set_option :wip }
+          opts.on('-v', '--verbose', 'Show the files and features loaded.') { set_option :verbose }
+          opts.on('-g', '--guess', 'Guess best match for Ambiguous steps.') { set_option :guess }
+          opts.on('-l', '--lines LINES', *lines_msg) {|lines| set_option :lines, lines }
+          opts.on('-x', '--expand', 'Expand Scenario Outline Tables in output.') { set_option :expand }
 
-          opts.on("--order TYPE[:SEED]", "Run examples in the specified order. Available types:",
+          opts.on('--order TYPE[:SEED]', 'Run examples in the specified order. Available types:',
             *<<-TEXT.split("\n")) do |order|
   [defined]     Run scenarios in the order they were defined (default).
   [random]      Shuffle scenarios before running.
 Specify SEED to reproduce the shuffling from a previous run.
   e.g. --order random:5738
 TEXT
-            @options[:order], @options[:seed] = *order.split(":")
+            @options[:order], @options[:seed] = *order.split(':')
             unless ORDER_TYPES.include?(@options[:order])
               fail "'#{@options[:order]}' is not a recognised order type. Please use one of #{ORDER_TYPES.join(", ")}."
             end
           end
 
-          opts.on_tail("--version", "Show version.") { exit_ok(Cucumber::VERSION) }
-          opts.on_tail("-h", "--help", "You're looking at it.") { exit_ok(opts.help) }
+          opts.on_tail('--version', 'Show version.') { exit_ok(Cucumber::VERSION) }
+          opts.on_tail('-h', '--help', "You're looking at it.") { exit_ok(opts.help) }
         end.parse!
 
         @args.map! { |a| "#{a}:#{@options[:lines]}" } if @options[:lines]
@@ -162,7 +162,7 @@ TEXT
       def check_formatter_stream_conflicts()
         streams = @options[:formats].uniq.map { |(_, stream)| stream }
         if streams != streams.uniq
-          raise "All but one formatter must use --out, only one can print to each stream (or STDOUT)"
+          raise 'All but one formatter must use --out, only one can print to each stream (or STDOUT)'
         end
       end
 
@@ -179,15 +179,15 @@ TEXT
 
       def color_msg
         [
-          "Whether or not to use ANSI color in the output. Cucumber decides",
-          "based on your platform and the output destination if not specified."
+          'Whether or not to use ANSI color in the output. Cucumber decides',
+          'based on your platform and the output destination if not specified.'
         ]
       end
 
       def dry_run_msg
         [
-          "Invokes formatters without executing the steps.",
-          "This also omits the loading of your support/env.rb file if it exists."
+          'Invokes formatters without executing the steps.',
+          'This also omits the loading of your support/env.rb file if it exists.'
         ]
       end
 
@@ -196,12 +196,12 @@ TEXT
       end
 
       def format_msg
-        [ "How to format features (Default: pretty). Available formats:" ]
+        [ 'How to format features (Default: pretty). Available formats:' ]
       end
 
       def i18n_msg
         [
-          "List keywords for in a particular language",
+          'List keywords for in a particular language',
           %{Run with "--i18n help" to see all languages}
         ]
       end
@@ -214,7 +214,7 @@ TEXT
       end
 
       def lines_msg
-        [ "Run given line numbers. Equivalent to FILE:LINE syntax" ]
+        [ 'Run given line numbers. Equivalent to FILE:LINE syntax' ]
       end
 
       def no_profile_short_flag_msg
@@ -225,23 +225,23 @@ TEXT
 
       def profile_short_flag_msg
         [
-          "Pull commandline arguments from cucumber.yml which can be defined as",
+          'Pull commandline arguments from cucumber.yml which can be defined as',
           "strings or arrays.  When a 'default' profile is defined and no profile",
-          "is specified it is always used. (Unless disabled, see -P below.)",
-          "When feature files are defined in a profile and on the command line",
-          "then only the ones from the command line are used."
+          'is specified it is always used. (Unless disabled, see -P below.)',
+          'When feature files are defined in a profile and on the command line',
+          'then only the ones from the command line are used.'
         ]
       end
 
       def retry_msg
-        [ "Specify the number of times to retry failing tests (default: 0)" ]
+        [ 'Specify the number of times to retry failing tests (default: 0)' ]
       end
 
       def name_msg
         [
-          "Only execute the feature elements which match part of the given name.",
-          "If this option is given more than once, it will match against all the",
-          "given names."
+          'Only execute the feature elements which match part of the given name.',
+          'If this option is given more than once, it will match against all the',
+          'given names.'
         ]
       end
 
@@ -252,60 +252,60 @@ TEXT
 
       def tags_msg
         [
-          "Only execute the features or scenarios with tags matching TAG_EXPRESSION.",
-          "Scenarios inherit tags declared on the Feature level. The simplest",
-          "TAG_EXPRESSION is simply a tag. Example: --tags @dev. When a tag in a tag",
-          "expression starts with a ~, this represents boolean NOT. Example: --tags ~@dev.",
-          "A tag expression can have several tags separated by a comma, which represents",
-          "logical OR. Example: --tags @dev,@wip. The --tags option can be specified",
-          "several times, and this represents logical AND. Example: --tags @foo,~@bar --tags @zap.",
-          "This represents the boolean expression (@foo || !@bar) && @zap.",
+          'Only execute the features or scenarios with tags matching TAG_EXPRESSION.',
+          'Scenarios inherit tags declared on the Feature level. The simplest',
+          'TAG_EXPRESSION is simply a tag. Example: --tags @dev. When a tag in a tag',
+          'expression starts with a ~, this represents boolean NOT. Example: --tags ~@dev.',
+          'A tag expression can have several tags separated by a comma, which represents',
+          'logical OR. Example: --tags @dev,@wip. The --tags option can be specified',
+          'several times, and this represents logical AND. Example: --tags @foo,~@bar --tags @zap.',
+          'This represents the boolean expression (@foo || !@bar) && @zap.',
           "\n",
-          "Beware that if you want to use several negative tags to exclude several tags",
-          "you have to use logical AND: --tags ~@fixme --tags ~@buggy.",
+          'Beware that if you want to use several negative tags to exclude several tags',
+          'you have to use logical AND: --tags ~@fixme --tags ~@buggy.',
           "\n",
-          "Positive tags can be given a threshold to limit the number of occurrences.",
-          "Example: --tags @qa:3 will fail if there are more than 3 occurrences of the @qa tag.",
-          "This can be practical if you are practicing Kanban or CONWIP."
+          'Positive tags can be given a threshold to limit the number of occurrences.',
+          'Example: --tags @qa:3 will fail if there are more than 3 occurrences of the @qa tag.',
+          'This can be practical if you are practicing Kanban or CONWIP.'
         ]
       end
 
       def out_msg
         [
-          "Write output to a file/directory instead of STDOUT. This option",
-          "applies to the previously specified --format, or the",
-          "default format if no format is specified. Check the specific",
+          'Write output to a file/directory instead of STDOUT. This option',
+          'applies to the previously specified --format, or the',
+          'default format if no format is specified. Check the specific',
           "formatter's docs to see whether to pass a file or a dir."
         ]
       end
 
       def require_files_msg
         [
-          "Require files before executing the features. If this",
-          "option is not specified, all *.rb files that are",
-          "siblings or below the features will be loaded auto-",
-          "matically. Automatic loading is disabled when this",
-          "option is specified, and all loading becomes explicit.",
-          "Files under directories named \"support\" are always",
-          "loaded first.",
-          "This option can be specified multiple times."
+          'Require files before executing the features. If this',
+          'option is not specified, all *.rb files that are',
+          'siblings or below the features will be loaded auto-',
+          'matically. Automatic loading is disabled when this',
+          'option is specified, and all loading becomes explicit.',
+          'Files under directories named "support" are always',
+          'loaded first.',
+          'This option can be specified multiple times.'
         ]
       end
 
       def snippet_type_msg
         [
-          "Use different snippet type (Default: regexp). Available types:",
+          'Use different snippet type (Default: regexp). Available types:',
           Cucumber::RbSupport::RbLanguage.cli_snippet_type_options
         ].flatten
       end
 
       def banner
-        ["Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+", "",
-          "Examples:",
-          "cucumber examples/i18n/en/features",
-          "cucumber @rerun.txt (See --format rerun)",
-          "cucumber examples/i18n/it/features/somma.feature:6:98:113",
-          "cucumber -s -i http://rubyurl.com/eeCl", "", "",
+        ['Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+', '',
+          'Examples:',
+          'cucumber examples/i18n/en/features',
+          'cucumber @rerun.txt (See --format rerun)',
+          'cucumber examples/i18n/it/features/somma.feature:6:98:113',
+          'cucumber -s -i http://rubyurl.com/eeCl', '', '',
         ].join("\n")
       end
 
@@ -396,7 +396,7 @@ TEXT
 
       def merge_profiles
         if @disable_profile_loading
-          @out_stream.puts "Disabling profiles..."
+          @out_stream.puts 'Disabling profiles...'
           return
         end
 
@@ -469,21 +469,21 @@ TEXT
         require 'gherkin/dialect'
         language = ::Gherkin::Dialect.for(lang)
         data = Cucumber::MultilineArgument::DataTable.from(
-          [["feature", to_keywords_string(language.feature_keywords)],
-          ["background", to_keywords_string(language.background_keywords)],
-          ["scenario", to_keywords_string(language.scenario_keywords)],
-          ["scenario_outline", to_keywords_string(language.scenario_outline_keywords)],
-          ["examples", to_keywords_string(language.examples_keywords)],
-          ["given", to_keywords_string(language.given_keywords)],
-          ["when", to_keywords_string(language.when_keywords)],
-          ["then", to_keywords_string(language.then_keywords)],
-          ["and", to_keywords_string(language.and_keywords)],
-          ["but", to_keywords_string(language.but_keywords)],
-          ["given (code)", to_code_keywords_string(language.given_keywords)],
-          ["when (code)", to_code_keywords_string(language.when_keywords)],
-          ["then (code)", to_code_keywords_string(language.then_keywords)],
-          ["and (code)", to_code_keywords_string(language.and_keywords)],
-          ["but (code)", to_code_keywords_string(language.but_keywords)]])
+          [['feature', to_keywords_string(language.feature_keywords)],
+          ['background', to_keywords_string(language.background_keywords)],
+          ['scenario', to_keywords_string(language.scenario_keywords)],
+          ['scenario_outline', to_keywords_string(language.scenario_outline_keywords)],
+          ['examples', to_keywords_string(language.examples_keywords)],
+          ['given', to_keywords_string(language.given_keywords)],
+          ['when', to_keywords_string(language.when_keywords)],
+          ['then', to_keywords_string(language.then_keywords)],
+          ['and', to_keywords_string(language.and_keywords)],
+          ['but', to_keywords_string(language.but_keywords)],
+          ['given (code)', to_code_keywords_string(language.given_keywords)],
+          ['when (code)', to_code_keywords_string(language.when_keywords)],
+          ['then (code)', to_code_keywords_string(language.then_keywords)],
+          ['and (code)', to_code_keywords_string(language.and_keywords)],
+          ['but (code)', to_code_keywords_string(language.but_keywords)]])
         @out_stream.write(data.to_s({ color: false, prefixes: Hash.new('') }))
         Kernel.exit(0)
       end

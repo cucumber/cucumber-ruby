@@ -23,20 +23,20 @@ describe Cucumber::Filters::Retry do
   it { is_expected.to respond_to(:with_receiver) }
   it { is_expected.to respond_to(:done) }
 
-  context "passing test case" do
+  context 'passing test case' do
     let(:result) { Cucumber::Core::Test::Result::Passed.new(0) }
 
-    it "describes the test case once" do
+    it 'describes the test case once' do
       expect(receiver).to receive(:test_case).with(test_case).once
       test_case.describe_to filter
       configuration.notify :test_case_finished, test_case, result
     end
   end
 
-  context "consistently failing test case" do
+  context 'consistently failing test case' do
     let(:result) { Cucumber::Core::Test::Result::Failed.new(0, StandardError.new) }
 
-    it "describes the test case the specified number of times" do
+    it 'describes the test case the specified number of times' do
       expect(receiver).to receive(:test_case) {|test_case|
         configuration.notify :test_case_finished, test_case, result
       }.exactly(3).times
@@ -45,9 +45,9 @@ describe Cucumber::Filters::Retry do
     end
   end
 
-  context "flaky test cases" do
+  context 'flaky test cases' do
 
-    context "a little flaky" do
+    context 'a little flaky' do
       let(:results) {
         [
           Cucumber::Core::Test::Result::Failed.new(0, StandardError.new),
@@ -55,7 +55,7 @@ describe Cucumber::Filters::Retry do
         ]
       }
 
-      it "describes the test case twice" do
+      it 'describes the test case twice' do
         expect(receiver).to receive(:test_case) {|test_case|
           configuration.notify :test_case_finished, test_case, results.shift
         }.exactly(2).times
@@ -64,7 +64,7 @@ describe Cucumber::Filters::Retry do
       end
     end
 
-    context "really flaky" do
+    context 'really flaky' do
       let(:results) {
         [
           Cucumber::Core::Test::Result::Failed.new(0, StandardError.new),
@@ -73,7 +73,7 @@ describe Cucumber::Filters::Retry do
         ]
       }
 
-      it "describes the test case 3 times" do
+      it 'describes the test case 3 times' do
         expect(receiver).to receive(:test_case) {|test_case|
           configuration.notify :test_case_finished, test_case, results.shift
         }.exactly(3).times

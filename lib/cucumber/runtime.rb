@@ -14,7 +14,7 @@ require 'cucumber/step_match_search'
 module Cucumber
   module FixRuby21Bug9285
     def message
-      String(super).gsub("@ rb_sysopen ", "")
+      String(super).gsub('@ rb_sysopen ', '')
     end
   end
 
@@ -147,7 +147,7 @@ module Cucumber
       end
 
       def read
-        @file.read.encode("UTF-8")
+        @file.read.encode('UTF-8')
       end
 
       private

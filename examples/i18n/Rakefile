@@ -7,7 +7,7 @@ task :cucumber do
       if examples_working?(lang)
         Dir.chdir(f) do
           puts "DIR: #{f}"
-          rake("cucumber")
+          rake('cucumber')
         end
       else
         STDERR.puts %{

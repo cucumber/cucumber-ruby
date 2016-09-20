@@ -23,7 +23,7 @@ module Cucumber
         config.on_event :test_case_finished, &method(:on_test_case_finished)
         config.on_event :test_step_finished, &method(:on_test_step_finished)
         config.on_event :test_run_finished, &method(:on_test_run_finished)
-        @reportdir = ensure_dir(config.out_stream, "junit")
+        @reportdir = ensure_dir(config.out_stream, 'junit')
         @config = config
         @features_data = Hash.new { |h,k| h[k] = {
           feature: nil,
@@ -92,7 +92,7 @@ module Cucumber
           :errors => feature_data[:errors],
           :skipped => feature_data[:skipped],
           :tests => feature_data[:tests],
-          :time => "%.6f" % feature_data[:time],
+          :time => '%.6f' % feature_data[:time],
           :name => feature_data[:feature].name ) do
           @testsuite << feature_data[:builder].target!
         end
@@ -103,7 +103,7 @@ module Cucumber
       def create_output_string(test_case, scenario, result, row_name)
         output = "#{test_case.keyword}: #{scenario}\n\n"
         return output if result.ok?(@config.strict?)
-        if test_case.keyword == "Scenario"
+        if test_case.keyword == 'Scenario'
           output += "#{@failing_step_source.keyword}" unless hook?(@failing_step_source)
           output += "#{@failing_step_source.name}\n"
         else
@@ -113,7 +113,7 @@ module Cucumber
       end
 
       def hook?(step)
-        ["Before hook", "After hook", "AfterStep hook"].include? step.name
+        ['Before hook', 'After hook', 'AfterStep hook'].include? step.name
       end
 
       def build_testcase(result, scenario_designation, output)
@@ -122,7 +122,7 @@ module Cucumber
         classname = @current_feature_data[:feature].name
         name = scenario_designation
 
-        @current_feature_data[:builder].testcase(:classname => classname, :name => name, :time => "%.6f" % duration) do
+        @current_feature_data[:builder].testcase(:classname => classname, :name => name, :time => '%.6f' % duration) do
           if !result.passed? && result.ok?(@config.strict?)
             @current_feature_data[:builder].skipped
             @current_feature_data[:skipped] += 1
@@ -182,8 +182,8 @@ module Cucumber
       attr_reader :scenario_name, :name_suffix, :row_name
 
       def initialize(test_case)
-        @name_suffix = ""
-        @row_name = ""
+        @name_suffix = ''
+        @row_name = ''
         test_case.describe_source_to self
       end
 
@@ -192,12 +192,12 @@ module Cucumber
       end
 
       def scenario(scenario)
-        @scenario_name = (scenario.name.nil? || scenario.name == "") ? "Unnamed scenario" : scenario.name
+        @scenario_name = (scenario.name.nil? || scenario.name == '') ? 'Unnamed scenario' : scenario.name
         self
       end
 
       def scenario_outline(outline)
-        @scenario_name = (outline.name.nil? || outline.name == "") ? "Unnamed scenario outline" : outline.name
+        @scenario_name = (outline.name.nil? || outline.name == '') ? 'Unnamed scenario outline' : outline.name
         self
       end
 

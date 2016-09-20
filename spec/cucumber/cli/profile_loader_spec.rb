@@ -18,7 +18,7 @@ module Cucumber
         ProfileLoader.new
       end
 
-      it "treats backslashes as literals in rerun.txt when on Windows (JRuby or MRI)" do
+      it 'treats backslashes as literals in rerun.txt when on Windows (JRuby or MRI)' do
         given_cucumber_yml_defined_as({'default' => '--format "pretty" features\sync_imap_mailbox.feature:16:22'})
         if(Cucumber::WINDOWS)
           expect(loader.args_from('default')).to eq ['--format','pretty','features\sync_imap_mailbox.feature:16:22']
@@ -27,13 +27,13 @@ module Cucumber
         end
       end
 
-      it "treats forward slashes as literals" do
+      it 'treats forward slashes as literals' do
         given_cucumber_yml_defined_as({'default' => '--format "ugly" features/sync_imap_mailbox.feature:16:22'})
 
         expect(loader.args_from('default')).to eq ['--format','ugly','features/sync_imap_mailbox.feature:16:22']
       end
 
-      it "treats percent sign as ERB code block after YAML directive" do
+      it 'treats percent sign as ERB code block after YAML directive' do
         yml = <<-HERE
 ---
 % x = '--format "pretty" features/sync_imap_mailbox.feature:16:22'

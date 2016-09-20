@@ -10,7 +10,7 @@ module Cucumber
       allow(command_line_config).to receive(:puts)
     end
 
-    context "no files created" do
+    context 'no files created' do
       around(:example) do |example|
 
         dir = Dir.mktmpdir
@@ -24,29 +24,29 @@ module Cucumber
         end
       end
 
-      it "should create features directory" do
+      it 'should create features directory' do
         expect(command_line_config).to receive(:puts).with %r(^\s+create\s+features$)
         command_line_config.run
       end
 
-      it "should create step_definitions directory" do
+      it 'should create step_definitions directory' do
         expect(command_line_config).to receive(:puts).with %r(^\s+create\s+features/step_definitions$)
         command_line_config.run
       end
 
-      it "should create support directory" do
+      it 'should create support directory' do
         expect(command_line_config).to receive(:puts).with %r(^\s+create\s+features/support$)
         command_line_config.run
       end
 
-      it "should create env.rb directory" do
+      it 'should create env.rb directory' do
         expect(command_line_config).to receive(:puts).with %r(^\s+create\s+features/support/env.rb$)
         command_line_config.run
       end
 
     end
 
-    context "files created" do
+    context 'files created' do
       around(:example) do |example|
         dir = Dir.mktmpdir
         FileUtils.mkdir_p "#{dir}/features"
@@ -63,22 +63,22 @@ module Cucumber
         end
       end
 
-      it "should not create features directory" do
+      it 'should not create features directory' do
         expect(command_line_config).to receive(:puts).with %r(^\s+exist\s+features$)
         command_line_config.run
       end
 
-      it "should not create step_definitions directory" do
+      it 'should not create step_definitions directory' do
         expect(command_line_config).to receive(:puts).with %r(^\s+exist\s+features/step_definitions$)
         command_line_config.run
       end
 
-      it "should not create support directory" do
+      it 'should not create support directory' do
         expect(command_line_config).to receive(:puts).with %r(^\s+exist\s+features/support$)
         command_line_config.run
       end
 
-      it "should not create env.rb directory" do
+      it 'should not create env.rb directory' do
         expect(command_line_config).to receive(:puts).with %r(^\s+exist\s+features/support/env.rb$)
         command_line_config.run
       end

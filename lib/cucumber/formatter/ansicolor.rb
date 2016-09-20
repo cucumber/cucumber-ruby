@@ -9,7 +9,7 @@ if Cucumber::WINDOWS_MRI
   end
 end
 
-Cucumber::Term::ANSIColor.coloring = false if !STDOUT.tty? && !ENV.has_key?("AUTOTEST")
+Cucumber::Term::ANSIColor.coloring = false if !STDOUT.tty? && !ENV.has_key?('AUTOTEST')
 
 module Cucumber
   module Formatter
@@ -105,7 +105,7 @@ module Cucumber
         begin
           gem 'genki-ruby-terminfo'
           require 'terminfo'
-          case TermInfo.default_object.tigetnum("colors")
+          case TermInfo.default_object.tigetnum('colors')
           when 0
             raise "Your terminal doesn't support colours."
           when 1
@@ -118,9 +118,9 @@ module Cucumber
           end
         rescue Exception => e
           if e.class.name == 'TermInfo::TermInfoError'
-            STDERR.puts "*** WARNING ***"
+            STDERR.puts '*** WARNING ***'
             STDERR.puts "You have the genki-ruby-terminfo gem installed, but you haven't set your TERM variable."
-            STDERR.puts "Try setting it to TERM=xterm-256color to get grey colour in output."
+            STDERR.puts 'Try setting it to TERM=xterm-256color to get grey colour in output.'
             STDERR.puts "\n"
             alias grey white
           else
@@ -142,7 +142,7 @@ module Cucumber
       define_grey
 
       def cukes(n)
-        ("(::) " * n).strip
+        ('(::) ' * n).strip
       end
 
       def green_cukes(n)

@@ -15,9 +15,9 @@ class Object #:nodoc:
       if check_arity && !cucumber_compatible_arity?(args, block)
         instance_exec do
           ari = block.arity
-          ari = ari < 0 ? (ari.abs-1).to_s+"+" : ari
-          s1 = ari == 1 ? "" : "s"
-          s2 = args.length == 1 ? "" : "s"
+          ari = ari < 0 ? (ari.abs-1).to_s+'+' : ari
+          s1 = ari == 1 ? '' : 's'
+          s2 = args.length == 1 ? '' : 's'
           raise Cucumber::ArityMismatchError.new(
             "Your block takes #{ari} argument#{s1}, but the Regexp matched #{args.length} argument#{s2}."
           )

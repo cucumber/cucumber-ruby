@@ -15,7 +15,7 @@ if Cucumber::WINDOWS
       Cucumber::CODEPAGE = "cp#{$1.to_i}"
     end
   else
-    Cucumber::CODEPAGE = "cp1252"
+    Cucumber::CODEPAGE = 'cp1252'
     STDERR.puts("WARNING: Couldn't detect your output codepage. Assuming it is 1252. You may have to chcp 1252 or SET CUCUMBER_OUTPUT_ENCODING=cp1252.")
   end
 

@@ -170,7 +170,7 @@ module Cucumber
       end
 
       def create_doc_string_hash(doc_string)
-        content_type = doc_string.content_type ? doc_string.content_type : ""
+        content_type = doc_string.content_type ? doc_string.content_type : ''
         {
           value: doc_string.content,
           content_type: content_type,
@@ -192,7 +192,7 @@ module Cucumber
       def add_failed_around_hook(result)
         @step_or_hook_hash = {}
         around_hooks << @step_or_hook_hash
-        @step_or_hook_hash[:match] = { location: "unknown_hook_location:1" }
+        @step_or_hook_hash[:match] = { location: 'unknown_hook_location:1' }
 
         @step_or_hook_hash[:result] = create_result_hash(result)
       end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
-require "cucumber/filters/gated_receiver"
-require "cucumber/filters/tag_limits/test_case_index"
-require "cucumber/filters/tag_limits/verifier"
+require 'cucumber/filters/gated_receiver'
+require 'cucumber/filters/tag_limits/test_case_index'
+require 'cucumber/filters/tag_limits/verifier'
 
 module Cucumber
   module Filters

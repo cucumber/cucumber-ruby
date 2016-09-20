@@ -44,7 +44,7 @@ module Cucumber
       end
 
       def name
-        "After hook"
+        'After hook'
       end
 
       def match_locations?(queried_locations)
@@ -64,7 +64,7 @@ module Cucumber
       end
 
       def name
-        "Before hook"
+        'Before hook'
       end
 
       def match_locations?(queried_locations)
@@ -84,7 +84,7 @@ module Cucumber
       end
 
       def name
-        "AfterStep hook"
+        'AfterStep hook'
       end
 
       def match_locations?(queried_locations)

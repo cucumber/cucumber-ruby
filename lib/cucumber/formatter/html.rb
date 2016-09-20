@@ -41,8 +41,8 @@ module Cucumber
         case(mime_type)
         when /^image\/(png|gif|jpg|jpeg)/
           unless File.file?(src) or src =~ /^data:image\/(png|gif|jpg|jpeg);base64,/
-            type = mime_type =~ /;base[0-9]+$/ ? mime_type : mime_type + ";base64"
-            src = "data:" + type + "," + src
+            type = mime_type =~ /;base[0-9]+$/ ? mime_type : mime_type + ';base64'
+            src = 'data:' + type + ',' + src
           end
           embed_image(src, label)
         when /^text\/plain/
@@ -299,7 +299,7 @@ module Cucumber
           @builder.pre do |pre|
             # TODO: snippet text should be an event sent to the formatter so we don't 
             # have this couping to the runtime.
-            pre << @runtime.snippet_text(keyword,step_match.instance_variable_get("@name") || '', @step.multiline_arg)
+            pre << @runtime.snippet_text(keyword,step_match.instance_variable_get('@name') || '', @step.multiline_arg)
           end
         end
         @builder << '</li>'
@@ -412,7 +412,7 @@ module Cucumber
         return if @delayed_messages.empty?
 
         @builder.td(:class => 'message') do
-          @builder << @delayed_messages.join(", ")
+          @builder << @delayed_messages.join(', ')
         end
         empty_messages
       end
@@ -437,7 +437,7 @@ module Cucumber
             matches = message.match(/Showing <i>(.+)<\/i>(?:.+) #(\d+)/)
             backtrace += ["#{RAILS_ROOT}/#{matches[1]}:#{matches[2]}"] if matches
             matches = message.match(/<code>([^(\/)]+)<\//m)
-            message = matches ? matches[1] : ""
+            message = matches ? matches[1] : ''
           end
 
           unless exception.instance_of?(RuntimeError)
@@ -456,7 +456,7 @@ module Cucumber
           end
         end
         extra = extra_failure_content(backtrace)
-        @builder << extra unless extra == ""
+        @builder << extra unless extra == ''
       end
 
       def set_scenario_color(status)
@@ -472,7 +472,7 @@ module Cucumber
         @builder.script do
           @builder.text!("makeRed('cucumber-header');") unless @header_red
           @header_red = true
-          scenario_or_background = @in_background ? "background" : "scenario"
+          scenario_or_background = @in_background ? 'background' : 'scenario'
           @builder.text!("makeRed('#{scenario_or_background}_#{@scenario_number}');") unless @scenario_red
           @scenario_red = true
           if @options[:expand] and @inside_outline
@@ -484,7 +484,7 @@ module Cucumber
       def set_scenario_color_pending
         @builder.script do
           @builder.text!("makeYellow('cucumber-header');") unless @header_red
-          scenario_or_background = @in_background ? "background" : "scenario"
+          scenario_or_background = @in_background ? 'background' : 'scenario'
           @builder.text!("makeYellow('#{scenario_or_background}_#{@scenario_number}');") unless @scenario_red
         end
       end
@@ -607,11 +607,11 @@ module Cucumber
 
       def print_stat_string(features)
         string = String.new
-        string << dump_count(@runtime.scenarios.length, "scenario")
+        string << dump_count(@runtime.scenarios.length, 'scenario')
         scenario_count = print_status_counts{|status| @runtime.scenarios(status)}
         string << scenario_count if scenario_count
-        string << "<br />"
-        string << dump_count(@runtime.steps.length, "step")
+        string << '<br />'
+        string << dump_count(@runtime.steps.length, 'step')
         step_count = print_status_counts{|status| @runtime.steps(status)}
         string << step_count if step_count
       end
@@ -625,7 +625,7 @@ module Cucumber
       end
 
       def dump_count(count, what, state=nil)
-        [count, state, "#{what}#{count == 1 ? '' : 's'}"].compact.join(" ")
+        [count, state, "#{what}#{count == 1 ? '' : 's'}"].compact.join(' ')
       end
 
       def create_builder(io)
@@ -638,7 +638,7 @@ module Cucumber
 
       class SnippetExtractor #:nodoc:
         class NullConverter; def convert(code, pre); code; end; end #:nodoc:
-        begin; require 'syntax/convertors/html'; @@converter = Syntax::Convertors::HTML.for_syntax "ruby"; rescue LoadError => e; @@converter = NullConverter.new; end
+        begin; require 'syntax/convertors/html'; @@converter = Syntax::Convertors::HTML.for_syntax 'ruby'; rescue LoadError => e; @@converter = NullConverter.new; end
 
         def snippet(error)
           raw_code, line = snippet_for(error[0])

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 Given('a Gemfile with:') do |content|
-  path = File.expand_path(current_dir + "/Gemfile")
+  path = File.expand_path(current_dir + '/Gemfile')
   write_file path, content
-  set_env "BUNDLE_GEMFILE", path
+  set_env 'BUNDLE_GEMFILE', path
 end
 
 Then(/^it should (pass|fail)$/) do |result|
