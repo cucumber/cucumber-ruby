@@ -89,7 +89,7 @@ module Cucumber
                   Given a passing scenario
             FEATURE
 
-            it { expect(@doc.to_s).to match /One passing scenario, one failing scenario/ }
+            it { expect(@doc.to_s).to match(/One passing scenario, one failing scenario/) }
 
             it 'has not a root system-out node' do
               expect(@doc.xpath('//testsuite/system-out').size).to eq 0
@@ -144,13 +144,13 @@ module Cucumber
                   | Big Mac  |
             FEATURE
 
-            it { expect(@doc.to_s).to match /Eat things when hungry/ }
-            it { expect(@doc.to_s).to match /Cucumber/ }
-            it { expect(@doc.to_s).to match /Whisky/ }
-            it { expect(@doc.to_s).to match /Big Mac/ }
-            it { expect(@doc.to_s).not_to match /Things/ }
-            it { expect(@doc.to_s).not_to match /Good|Evil/ }
-            it { expect(@doc.to_s).not_to match /type="skipped"/}
+            it { expect(@doc.to_s).to match(/Eat things when hungry/) }
+            it { expect(@doc.to_s).to match(/Cucumber/) }
+            it { expect(@doc.to_s).to match(/Whisky/) }
+            it { expect(@doc.to_s).to match(/Big Mac/) }
+            it { expect(@doc.to_s).not_to match(/Things/) }
+            it { expect(@doc.to_s).not_to match(/Good|Evil/) }
+            it { expect(@doc.to_s).not_to match(/type="skipped"/)}
           end
 
           describe "scenario with skipped test in junit report" do
@@ -166,7 +166,7 @@ module Cucumber
                   | still undefined  |
             FEATURE
 
-            it { expect(@doc.to_s).to match /skipped="2"/}
+            it { expect(@doc.to_s).to match(/skipped="2"/)}
           end
 
           describe "with a regular data table scenario" do
@@ -189,8 +189,8 @@ module Cucumber
 
             FEATURE
             # these type of tables shouldn't crash (or generate test cases)
-            it { expect(@doc.to_s).not_to match /milk/ }
-            it { expect(@doc.to_s).not_to match /cookies/ }
+            it { expect(@doc.to_s).not_to match(/milk/) }
+            it { expect(@doc.to_s).not_to match(/cookies/) }
           end
         end
       end
@@ -235,13 +235,13 @@ module Cucumber
                   | Big Mac  |
             FEATURE
 
-            it { expect(@doc.to_s).to match /Eat things when hungry/ }
-            it { expect(@doc.to_s).to match /Cucumber/ }
-            it { expect(@doc.to_s).to match /Whisky/ }
-            it { expect(@doc.to_s).to match /Big Mac/ }
-            it { expect(@doc.to_s).not_to match /Things/ }
-            it { expect(@doc.to_s).not_to match /Good|Evil/ }
-            it { expect(@doc.to_s).not_to match /type="skipped"/}
+            it { expect(@doc.to_s).to match(/Eat things when hungry/) }
+            it { expect(@doc.to_s).to match(/Cucumber/) }
+            it { expect(@doc.to_s).to match(/Whisky/) }
+            it { expect(@doc.to_s).to match(/Big Mac/) }
+            it { expect(@doc.to_s).not_to match(/Things/) }
+            it { expect(@doc.to_s).not_to match(/Good|Evil/) }
+            it { expect(@doc.to_s).not_to match(/type="skipped"/)}
           end
         end
 

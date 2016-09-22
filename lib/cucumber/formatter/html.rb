@@ -85,7 +85,7 @@ module Cucumber
         )
 
         @builder << '<html xmlns ="http://www.w3.org/1999/xhtml">'
-          @builder.head do
+        @builder.head do
           @builder.meta('http-equiv' => 'Content-Type', :content => 'text/html;charset=utf-8')
           @builder.title 'Cucumber'
           inline_css
@@ -590,7 +590,7 @@ module Cucumber
         (["#{exception.message}"] + exception.backtrace).join("\n")
       end
 
-     def backtrace_line(line)
+      def backtrace_line(line)
         if ENV['TM_PROJECT_DIRECTORY']
           line.gsub(/^([^:]*\.(?:rb|feature|haml)):(\d*).*$/) do
             "<a href=\"txmt://open?url=file://#{File.expand_path($1)}&line=#{$2}\">#{$1}:#{$2}</a> "

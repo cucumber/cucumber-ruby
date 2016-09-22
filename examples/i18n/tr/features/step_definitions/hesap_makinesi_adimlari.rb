@@ -11,14 +11,14 @@ end
 After do
 end
 
-Diyelimki /hesap makinesine (\d+) girdim/ do |n|
+Diyelimki(/hesap makinesine (\d+) girdim/) do |n|
   @calc.push n.to_i
 end
 
-Eğerki /(.*) tuşuna basarsam/ do |op|
+Eğerki(/(.*) tuşuna basarsam/) do |op|
   @result = @calc.send op
 end
 
-Ozaman /ekrandaki sonuç (.*) olmalı/ do |result|
+Ozaman(/ekrandaki sonuç (.*) olmalı/) do |result|
   @result.should == result.to_f
 end

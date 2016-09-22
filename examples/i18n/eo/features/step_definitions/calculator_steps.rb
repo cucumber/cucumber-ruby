@@ -11,14 +11,14 @@ end
 After do
 end
 
-Given /mi entajpas (\d+) en la kalkulilon/ do |n|
+Given(/mi entajpas (\d+) en la kalkulilon/) do |n|
   @calc.push n.to_i
 end
 
-When /mi premas (\w+)/ do |op|
+When(/mi premas (\w+)/) do |op|
   @result = @calc.send op
 end
 
-Then /la rezulto estu (.*)/ do |result|
+Then(/la rezulto estu (.*)/) do |result|
   @result.should == result.to_f
 end

@@ -40,7 +40,7 @@ module Cucumber
     end
 
     it "deals with Unicode both inside and outside arguments" do
-      expect("Jæ vø ålsker døtte løndet").to match /Jæ (.+) ålsker (.+) løndet/
+      expect("Jæ vø ålsker døtte løndet").to match(/Jæ (.+) ålsker (.+) løndet/)
 
       m = step_match(/Jæ (#{WORD}+) ålsker (#{WORD}+) løndet/, "Jæ vø ålsker døtte løndet")
 

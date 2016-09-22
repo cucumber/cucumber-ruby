@@ -16,10 +16,6 @@ Lint/AmbiguousOperator:
     - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
     - 'spec/cucumber/formatter/spec_helper.rb'
 
-# Offense count: 173
-Lint/AmbiguousRegexpLiteral:
-  Enabled: false
-
 # Offense count: 6
 # Configuration parameters: AllowSafeAssignment.
 Lint/AssignmentInCondition:
@@ -29,21 +25,6 @@ Lint/AssignmentInCondition:
     - 'lib/cucumber/rb_support/rb_transform.rb'
     - 'lib/cucumber/runtime/support_code.rb'
     - 'spec/cucumber/formatter/spec_helper.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AlignWith, SupportedStyles.
-# SupportedStyles: either, start_of_block, start_of_line
-Lint/BlockAlignment:
-  Exclude:
-    - 'lib/cucumber/formatter/html.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AlignWith, SupportedStyles, AutoCorrect.
-# SupportedStyles: start_of_line, def
-Lint/DefEndAlignment:
-  Enabled: false
 
 # Offense count: 1
 # Cop supports --auto-correct.
