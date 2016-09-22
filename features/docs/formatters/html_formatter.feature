@@ -89,3 +89,78 @@ Feature: HTML output formatter
     makeRed('background_0')
     """
 
+  Scenario: embedding a screenshot
+    Given a file named "features/embed.feature" with:
+      """
+      Feature: Embed
+
+        Scenario: a screenshot
+          Given a step that is embedding a screenshot
+      """
+    And a file named "features/step_definitions/embed_steps.rb" with:
+      """
+      Given /^a step that is embedding a screenshot$/ do
+        embed 'screenshot.png', 'image/png'
+      end
+      """
+    When I run `cucumber features/embed.feature --format html`
+    Then the output should contain:
+    """
+    <span class="embed"><a href="" onclick="img=document.getElementById('img_0'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">Screenshot</a><br /><img id="img_0" style="display: none" src="data:image/png;base64,screenshot.png" /></span>
+    """
+
+  Scenario: embedding a screenshot via AfterStep hook
+    Given a file named "features/embed.feature" with:
+      """
+      Feature: Embed
+
+        Scenario: a screenshot
+          Given a step that is embedding a screenshot
+      """
+    And a file named "features/step_definitions/embed_steps.rb" with:
+      """
+      Given /^a step that is embedding a screenshot$/ do
+        # Mkay
+      end
+      """
+    And a file named "features/support/hooks.rb" with:
+      """
+      AfterStep do
+        embed 'screenshot.png', 'image/png'
+      end
+      """
+      When I run `cucumber features/embed.feature --format html`
+    Then the output should contain:
+    """
+    <ol><li id='' class='step passed'><div class="step_name"><span class="keyword">Given </span><span class="step val">a step that is embedding a screenshot</span></div><div class="step_file"><span>features/step_definitions/embed_steps.rb:1</span></div></li> <script type="text/javascript">moveProgressBar('100.0');</script><span class="embed"><a href="" onclick="img=document.getElementById('img_0'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">Screenshot</a><br /><img id="img_0" style="display: none" src="data:image/png;base64,screenshot.png" /></span></ol>
+    """
+
+  Scenario: embedding a screenshot into Scenario Outline via AfterStep hook
+    Given a file named "features/embed.feature" with:
+      """
+      Feature: Embed
+
+        Scenario Outline: a screenshot
+          Given a step that is embedding a <thing>
+
+          Examples:
+            | thing |
+            | screenshot |
+      """
+    And a file named "features/step_definitions/embed_steps.rb" with:
+      """
+      Given /^a step that is embedding a screenshot$/ do
+        # Mkay
+      end
+      """
+    And a file named "features/support/hooks.rb" with:
+      """
+      AfterStep do
+        embed 'screenshot.png', 'image/png'
+      end
+      """
+    When I run `cucumber features/embed.feature --format html`
+    Then the output should contain:
+    """
+    <tr class='step' id='features_embed_feature_8'><td id="features_embed_feature_8_0" class="step passed"><div><span class="step param">screenshot</span></div></td></tr><tr><td><a href="" onclick="img=document.getElementById('img_0'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">Screenshot</a><br /><img id="img_0" style="display: none" src="data:image/png;base64,screenshot.png" /></td></tr>
+    """
