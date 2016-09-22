@@ -25,6 +25,7 @@
 * Add rubocop to check the style of the codebase ([1014](https://github.com/cucumber/cucumber-ruby/issues/1014) @nodo)
 * Fix the rubocop violation 'Lint/AmbiguousRegexpLiteral' ([1025](https://github.com/cucumber/cucumber-ruby/pull/1025) @pmatsinopoulos)
 * Fix rubocop violations ([#1024](https://github.com/cucumber/cucumber-ruby/pull/1024) @madundead)
+* Fix style violations ([#1023](https://github.com/cucumber/cucumber-ruby/pull/1023) @nodo)
 
 ## [v2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
 
