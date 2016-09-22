@@ -556,7 +556,7 @@ module Cucumber
           raise "No headers matched #{pre.inspect}" if mapped_cells.empty?
           raise "#{mapped_cells.length} headers matched #{pre.inspect}: #{mapped_cells.map { |c| c.value }.inspect}" if mapped_cells.length > 1
           mapped_cells[0].value = post
-          if @conversion_procs.has_key?(pre)
+          if @conversion_procs.key?(pre)
             @conversion_procs[post] = @conversion_procs.delete(pre)
           end
         end

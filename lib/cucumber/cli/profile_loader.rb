@@ -11,7 +11,7 @@ module Cucumber
       end
 
       def args_from(profile)
-        unless cucumber_yml.has_key?(profile)
+        unless cucumber_yml.key?(profile)
           raise(ProfileNotFound, <<-END_OF_ERROR)
 Could not find profile: '#{profile}'
 
@@ -42,7 +42,7 @@ Defined profiles in cucumber.yml:
       end
 
       def has_profile?(profile)
-        cucumber_yml.has_key?(profile)
+        cucumber_yml.key?(profile)
       end
 
       def cucumber_yml_defined?
