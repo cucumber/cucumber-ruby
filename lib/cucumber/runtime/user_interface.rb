@@ -43,12 +43,9 @@ module Cucumber
           answer = mri_gets(timeout_seconds)
         end
 
-        if(answer)
-          puts(answer)
-          answer
-        else
-          raise("Waited for input for #{timeout_seconds} seconds, then timed out.")
-        end
+        raise("Waited for input for #{timeout_seconds} seconds, then timed out.") unless answer
+        puts(answer)
+        answer
       end
 
       # Embed +src+ of MIME type +mime_type+ into the output. The +src+ argument may

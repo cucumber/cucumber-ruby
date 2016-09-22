@@ -43,20 +43,18 @@ module Cucumber
             "
           class Junit
             def before_step(step)
-              if step.name.match("a passing ctrl scenario")
-                Interceptor::Pipe.unwrap! :stdout
-                @fake_io = $stdout = StringIO.new
-                $stdout.sync = true
-                @interceptedout = Interceptor::Pipe.wrap(:stdout)
-              end
+              return unless step.name.match("a passing ctrl scenario")
+              Interceptor::Pipe.unwrap! :stdout
+              @fake_io = $stdout = StringIO.new
+              $stdout.sync = true
+              @interceptedout = Interceptor::Pipe.wrap(:stdout)
             end
 
             def after_step(step)
-              if step.name.match("a passing ctrl scenario")
-                @interceptedout.write("boo\b\cx\e\a\f boo ")
-                $stdout = STDOUT
-                @fake_io.close
-              end
+              return unless step.name.match("a passing ctrl scenario")
+              @interceptedout.write("boo\b\cx\e\a\f boo ")
+              $stdout = STDOUT
+              @fake_io.close
             end
           end
 
@@ -196,7 +194,7 @@ module Cucumber
           end
         end
       end
-      
+
       context "In --expand mode" do
         let(:runtime)   { Runtime.new({:expand => true}) }
         before(:each) do
@@ -213,7 +211,7 @@ module Cucumber
             run_defined_feature
             @doc = Nokogiri.XML(@formatter.written_files.values.first)
           end
-          
+
           describe "with a scenario outline table" do
             define_steps do
               Given(/.*/) {  }
@@ -246,7 +244,7 @@ module Cucumber
             it { expect(@doc.to_s).not_to match(/type="skipped"/)}
           end
         end
-        
+
       end
     end
   end

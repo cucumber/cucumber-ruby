@@ -116,13 +116,11 @@ module Cucumber
 
       def collect_snippet_data(test_step, result)
         # collect snippet data for undefined steps
-        unless hook?(test_step)
-          keyword = test_step.source.last.actual_keyword(@previous_step_keyword)
-          @previous_step_keyword = keyword
-          if result.undefined?
-            @snippets_input << Console::SnippetData.new(keyword, test_step.source.last)
-          end
-        end
+        return if hook?(test_step)
+        keyword = test_step.source.last.actual_keyword(@previous_step_keyword)
+        @previous_step_keyword = keyword
+        return unless result.undefined?
+        @snippets_input << Console::SnippetData.new(keyword, test_step.source.last)
       end
 
       def print_snippets(options)
@@ -234,11 +232,11 @@ module Cucumber
 
       def element_messages(elements, status)
         element_messages = elements.map do |element|
-          if status == :failed
-            message = exception_message_string(element.exception, 0)
-          else
-            message = linebreaks(element.backtrace_line, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
-          end
+          message = if status == :failed
+                      exception_message_string(element.exception, 0)
+                    else
+                      linebreaks(element.backtrace_line, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
+                    end
         end
       end
 
