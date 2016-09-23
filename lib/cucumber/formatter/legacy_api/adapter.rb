@@ -267,7 +267,7 @@ module Cucumber
           def after_hook(location, result)
             # if the scenario has no steps, we can hit this before we've created the scenario printer
             # ideally we should call switch_step_container in before_step_step
-            switch_step_container if !@child 
+            switch_step_container if !@child
             @child.after_hook Ast::HookResult.new(LegacyResultBuilder.new(result), @delayed_messages, @delayed_embeddings)
             @delayed_messages = []
             @delayed_embeddings = []
@@ -287,7 +287,7 @@ module Cucumber
           end
 
           def puts(messages)
-            @delayed_messages.push *messages
+            @delayed_messages.push(*messages)
           end
 
           def embed(src, mime_type, label)
@@ -313,7 +313,7 @@ module Cucumber
           private :before_hook_results
 
           def any_test_steps_failed?
-            @test_step_results.any? &:failed?
+            @test_step_results.any?(&:failed?)
           end
 
           def switch_step_container(source = current_test_step_source)
@@ -389,7 +389,7 @@ module Cucumber
                 end
               end
               unless from_scenario_outline_to_hidden_backgroud(@child, child)
-                @child.after 
+                @child.after
                 @previous_outline_child = nil
               else
                 @previous_outline_child = @child

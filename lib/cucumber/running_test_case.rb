@@ -81,7 +81,7 @@ module Cucumber
       end
 
       def source_tag_names
-        tags.map &:name
+        tags.map(&:name)
       end
 
       def outline?

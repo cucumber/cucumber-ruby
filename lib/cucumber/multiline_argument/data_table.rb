@@ -208,7 +208,7 @@ module Cucumber
 
       def rows
         hashes.map do |hash|
-          hash.values_at *headers
+          hash.values_at(*headers)
         end
       end
 
