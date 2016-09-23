@@ -1,4 +1,4 @@
-Feature: Test Step Started Event
+Feature: Test Step Starting Event
 
   This event is fired just before each step in a scenario or scenario outline example 
   (generally named a Test Step) starts to be executed. This event is read-only, so there
