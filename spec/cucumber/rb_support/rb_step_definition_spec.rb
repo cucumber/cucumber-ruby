@@ -42,7 +42,6 @@ module Cucumber
 
       it "allows calling of other steps with inline arg" do
         dsl.Given(/Outside/) do
-          location = Core::Ast::Location.new(__FILE__, __LINE__)
           step "Inside", table([['inside']])
         end
         dsl.Given(/Inside/) do |t|

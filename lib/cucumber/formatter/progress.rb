@@ -86,7 +86,7 @@ module Cucumber
         do_print_snippets(snippet_text_proc) if config.snippets? && summary.test_steps.total(:undefined) > 0
         return unless config.wip?
         messages = @passed_test_cases.map do |test_case|
-          message = linebreaks("#{test_case.location.on_line(test_case.location.line)}:in `#{test_case.name}'", ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
+          linebreaks("#{test_case.location.on_line(test_case.location.line)}:in `#{test_case.name}'", ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
         end
         do_print_passing_wip(messages)
       end

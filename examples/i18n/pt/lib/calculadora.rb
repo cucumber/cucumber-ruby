@@ -3,7 +3,7 @@ class Calculadora
     @args ||= []
     @args << n
   end
-  
+
   def soma
     @args.inject(0) {|n,sum| sum+n}
   end
