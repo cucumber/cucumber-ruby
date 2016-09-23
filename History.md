@@ -26,6 +26,7 @@
 * Fix the rubocop violation 'Lint/AmbiguousRegexpLiteral' ([1025](https://github.com/cucumber/cucumber-ruby/pull/1025) @pmatsinopoulos)
 * Fix rubocop violations ([#1024](https://github.com/cucumber/cucumber-ruby/pull/1024) @madundead)
 * Fix style violations ([#1023](https://github.com/cucumber/cucumber-ruby/pull/1023) @nodo)
+* fix Lint/UselessAssignment ([1029](https://github.com/cucumber/cucumber-ruby/pull/1029) @hotovson)
 
 ## [v2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
 
