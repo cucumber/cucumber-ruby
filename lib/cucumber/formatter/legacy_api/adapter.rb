@@ -359,7 +359,7 @@ module Cucumber
 
             if @failed_hidden_background_step
               indent = Indent.new(@child.node)
-              step_invocation = @failed_hidden_background_step.build_step_invocation(indent, matches, config, messages = [], embeddings = [])
+              step_invocation = @failed_hidden_background_step.build_step_invocation(indent, matches, config, [], [])
               @child.step_invocation(step_invocation, @failed_hidden_background_step)
               @failed_hidden_background_step = nil
             end
@@ -592,7 +592,7 @@ module Cucumber
           end
 
           def step_invocation(step_invocation, source)
-            node, result = source.step, source.step_result
+            _node, result = source.step, source.step_result
             @last_step_result = result
             @child.step_invocation(step_invocation, source)
           end
@@ -643,7 +643,7 @@ module Cucumber
           def outline_step(step)
             step_match = NoStepMatch.new(step, step.name)
             step_invocation = LegacyResultBuilder.new(Core::Test::Result::Skipped.new).
-              step_invocation(step_match, step, indent, background = nil, configuration, messages = [], embeddings = [])
+              step_invocation(step_match, step, indent, nil, configuration, [], [])
             steps_printer.step_invocation step_invocation
           end
 

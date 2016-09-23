@@ -123,10 +123,6 @@ Lint/UselessAccessModifier:
   Exclude:
     - 'lib/cucumber/multiline_argument/data_table.rb'
 
-# Offense count: 56
-Lint/UselessAssignment:
-  Enabled: false
-
 # Offense count: 60
 Metrics/AbcSize:
   Max: 99
