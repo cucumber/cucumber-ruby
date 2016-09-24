@@ -130,12 +130,8 @@ module Cucumber
       end
 
       def self.define_real_grey #:nodoc:
-        def grey(string) #:nodoc:
-          if ::Cucumber::Term::ANSIColor.coloring?
-            "\e[90m#{string}\e[0m"
-          else
-            string
-          end
+        define_method :grey do |string|
+          ::Cucumber::Term::ANSIColor.coloring? ? "\e[90m#{string}\e[0m" : string
         end
       end
 
