@@ -70,12 +70,12 @@ module Cucumber
         next if step_argument.offset.nil? || step_argument.offset < past_offset
 
         replacement = if block_given?
-          proc.call(step_argument.val)
-        elsif Proc === format
-          format.call(step_argument.val)
-        else
-          format % step_argument.val
-        end
+                        proc.call(step_argument.val)
+                      elsif Proc === format
+                        format.call(step_argument.val)
+                      else
+                        format % step_argument.val
+                      end
 
         s[step_argument.offset + offset, step_argument.val.length] = replacement
         offset += replacement.unpack('U*').length - step_argument.val.unpack('U*').length

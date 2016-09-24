@@ -32,11 +32,11 @@ module Cucumber
 
       def format_step(keyword, step_match, status, source_indent)
         comment = if source_indent
-          c = ('# ' + step_match.location.to_s).indent(source_indent)
-          format_string(c, :comment)
-        else
-          ''
-        end
+                    c = ('# ' + step_match.location.to_s).indent(source_indent)
+                    format_string(c, :comment)
+                  else
+                    ''
+                  end
 
         format = format_for(status, :param)
         line = keyword + step_match.format_args(format) + comment

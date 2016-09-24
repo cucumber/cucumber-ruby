@@ -1,8 +1,4 @@
 # frozen_string_literal: true
 task :ruby_env do
-  RUBY_APP = if RUBY_PLATFORM =~ /java/
-    "jruby"
-  else
-    "ruby"
-  end unless defined? RUBY_APP
+  RUBY_APP ||= RUBY_PLATFORM =~ /java/ ? 'jruby' : 'ruby'
 end
