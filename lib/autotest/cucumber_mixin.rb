@@ -71,7 +71,7 @@ module Autotest::CucumberMixin
     hook :run_features
     Tempfile.open('autotest-cucumber') do |dirty_features_file|
       cmd = self.make_cucumber_cmd(self.features_to_run, dirty_features_file.path)
-      return if cmd.empty?
+      break if cmd.empty?
       puts cmd unless $q
       old_sync = $stdout.sync
       $stdout.sync = true
