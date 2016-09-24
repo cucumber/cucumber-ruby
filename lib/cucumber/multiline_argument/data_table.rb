@@ -494,11 +494,10 @@ module Cucumber
         raw.to_json(*args)
       end
 
-      private
-
       TO_S_PREFIXES = Hash.new('    ')
       TO_S_PREFIXES[:comment]   = '(+) '
       TO_S_PREFIXES[:undefined] = '(-) '
+      private_constant :TO_S_PREFIXES
 
       protected
 
