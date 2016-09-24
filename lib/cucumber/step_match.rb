@@ -108,7 +108,7 @@ module Cucumber
       @name = name
     end
 
-    def format_args(*args)
+    def format_args(*_args)
       @name
     end
 

@@ -61,7 +61,7 @@ module Cucumber
           @feature_files = feature_files
         end
 
-        def load_path(libs)
+        def load_path
           [format('"%s"', @libs.join(File::PATH_SEPARATOR))]
         end
 
@@ -84,7 +84,7 @@ module Cucumber
             [ Cucumber::RUBY_BINARY, '-S', 'bundle', 'exec', 'cucumber', @cucumber_opts,
             @feature_files ].flatten
           else
-            [ Cucumber::RUBY_BINARY, '-I', load_path(@libs), quoted_binary(@cucumber_bin),
+            [ Cucumber::RUBY_BINARY, '-I', load_path, quoted_binary(@cucumber_bin),
             @cucumber_opts, @feature_files ].flatten
           end
         end
@@ -145,7 +145,7 @@ module Cucumber
         end
       end
 
-      def runner(task_args = nil) #:nodoc:
+      def runner(_task_args = nil) #:nodoc:
         cucumber_opts = [(ENV['CUCUMBER_OPTS'] ? ENV['CUCUMBER_OPTS'].split(/\s+/) : nil) || cucumber_opts_with_profile]
         if(@fork)
           return ForkedCucumberRunner.new(libs, binary, cucumber_opts, bundler, feature_files)

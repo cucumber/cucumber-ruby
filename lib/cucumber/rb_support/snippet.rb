@@ -122,11 +122,11 @@ module Cucumber
         end
 
         class Builder
-          def doc_string(*args)
+          def doc_string(*_args)
             @result = DocString.new
           end
 
-          def data_table(table, *args)
+          def data_table(table, *_args)
             @result = DataTable.new(table)
           end
 

@@ -151,7 +151,7 @@ module Cucumber
               @result = CaseSource.new
             end
 
-            def method_missing(name, node, test_case_result, *args)
+            def method_missing(name, node, _test_case_result, *_args)
               result.send "#{name}=", node
             end
           end
@@ -175,7 +175,7 @@ module Cucumber
               @result = StepSource.new
             end
 
-            def method_missing(name, node, step_result, *args)
+            def method_missing(name, node, step_result, *_args)
               result.send "#{name}=", node
               result.send "#{name}_result=", LegacyResultBuilder.new(step_result)
             end
@@ -220,7 +220,7 @@ module Cucumber
 
           attr_reader :current_test_step_source
 
-          def before_test_case(test_case)
+          def before_test_case(_test_case)
             @before_hook_results = Ast::HookResultCollection.new
             @test_step_results = []
           end
@@ -258,22 +258,22 @@ module Cucumber
             @previous_test_case_scenario_outline = current_test_step_source && current_test_step_source.scenario_outline
           end
 
-          def before_hook(location, result)
+          def before_hook(_location, result)
             @before_hook_results << Ast::HookResult.new(LegacyResultBuilder.new(result), @delayed_messages, @delayed_embeddings)
             @delayed_messages = []
             @delayed_embeddings = []
           end
 
-          def after_hook(location, result)
+          def after_hook(_location, result)
             # if the scenario has no steps, we can hit this before we've created the scenario printer
             # ideally we should call switch_step_container in before_step_step
-            switch_step_container if !@child 
+            switch_step_container if !@child
             @child.after_hook Ast::HookResult.new(LegacyResultBuilder.new(result), @delayed_messages, @delayed_embeddings)
             @delayed_messages = []
             @delayed_embeddings = []
           end
 
-          def after_step_hook(hook, result)
+          def after_step_hook(_hook, result)
             p current_test_step_source if current_test_step_source.step.nil?
             line = current_test_step_source.step.backtrace_line
             @child.after_step_hook Ast::HookResult.new(LegacyResultBuilder.new(result).
@@ -389,7 +389,7 @@ module Cucumber
                 end
               end
               unless from_scenario_outline_to_hidden_backgroud(@child, child)
-                @child.after 
+                @child.after
                 @previous_outline_child = nil
               else
                 @previous_outline_child = @child
@@ -495,7 +495,7 @@ module Cucumber
             return @source_of_failed_step
           end
 
-          def step_invocation(step_invocation, source)
+          def step_invocation(_step_invocation, source)
             if source.step_result.status == :failed
               @source_of_failed_step = source
             end
@@ -522,7 +522,7 @@ module Cucumber
             self
           end
 
-          def step_invocation(step_invocation, source)
+          def step_invocation(step_invocation, _source)
             @child ||= StepsPrinter.new(formatter).before
             @child.step_invocation step_invocation
           end
@@ -531,7 +531,7 @@ module Cucumber
             result.accept formatter
           end
 
-          def after_test_case(test_case, result)
+          def after_test_case(_test_case, result)
             @test_case_result = result
             after
           end
@@ -636,7 +636,7 @@ module Cucumber
             steps_printer.after
           end
 
-          def scenario_outline(node, &descend)
+          def scenario_outline(_node, &descend)
             descend.call(self)
           end
 
@@ -746,7 +746,7 @@ module Cucumber
                 descend.call(self)
               end
 
-              def examples_table_row(row, &descend)
+              def examples_table_row(row, &_descend)
                 width = char_length_of(row.values[index])
                 @result = width if width > result
               end
@@ -771,7 +771,7 @@ module Cucumber
             @after_step_hook_result << result
           end
 
-          def after_test_case(*args)
+          def after_test_case(*_args)
             after
           end
 
@@ -999,7 +999,7 @@ module Cucumber
             Cucumber::Formatter::BacktraceFilter.new(@exception.dup).exception
           end
 
-          def filtered_step_exception(step)
+          def filtered_step_exception(_step)
             exception = filtered_exception
             return Cucumber::Formatter::BacktraceFilter.new(exception).exception
           end

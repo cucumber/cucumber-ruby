@@ -121,7 +121,7 @@ module Cucumber
       private
 
       class LogFormatter < ::Logger::Formatter
-        def call(severity, time, progname, msg)
+        def call(_severity, _time, _progname, msg)
           msg
         end
       end

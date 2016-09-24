@@ -36,7 +36,7 @@ module Cucumber
         @issues = ConsoleIssues.new(runtime.configuration)
       end
 
-      def before_features(features)
+      def before_features(_features)
         print_profile_information
       end
 
@@ -44,7 +44,7 @@ module Cucumber
         print_summary(features)
       end
 
-      def before_feature(feature)
+      def before_feature(_feature)
         @exceptions = []
         @indent = 0
       end
@@ -54,7 +54,7 @@ module Cucumber
         @io.flush
       end
 
-      def after_tags(tags)
+      def after_tags(_tags)
         if @indent == 1
           @io.puts
           @io.flush
@@ -74,24 +74,24 @@ module Cucumber
         @io.flush
       end
 
-      def before_feature_element(feature_element)
+      def before_feature_element(_feature_element)
         @indent = 2
         @scenario_indent = 2
       end
 
-      def after_feature_element(feature_element)
+      def after_feature_element(_feature_element)
         print_messages
         @io.puts
         @io.flush
       end
 
-      def before_background(background)
+      def before_background(_background)
         @indent = 2
         @scenario_indent = 2
         @in_background = true
       end
 
-      def after_background(background)
+      def after_background(_background)
         print_messages
         @in_background = nil
         @io.puts
@@ -102,7 +102,7 @@ module Cucumber
         print_feature_element_name(keyword, name, file_colon_line, source_indent)
       end
 
-      def before_examples_array(examples_array)
+      def before_examples_array(_examples_array)
         @indent = 4
         @io.puts
         @visiting_first_example_name = true
@@ -121,7 +121,7 @@ module Cucumber
         @table = outline_table
       end
 
-      def after_outline_table(outline_table)
+      def after_outline_table(_outline_table)
         @table = nil
         @indent = 4
       end
@@ -136,7 +136,7 @@ module Cucumber
         print_messages
       end
 
-      def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
+      def before_step_result(_keyword, _step_match, _multiline_arg, status, exception, _source_indent, background, _file_colon_line)
         @hide_this_step = false
         if exception
           if @exceptions.include?(exception)
@@ -152,7 +152,7 @@ module Cucumber
         @status = status
       end
 
-      def step_name(keyword, step_match, status, source_indent, background, file_colon_line)
+      def step_name(keyword, step_match, status, source_indent, _background, _file_colon_line)
         return if @hide_this_step
         source_indent = nil unless @options[:source]
         name_to_report = format_step(keyword, step_match, status, source_indent)
@@ -180,11 +180,11 @@ module Cucumber
         @table = multiline_arg
       end
 
-      def after_multiline_arg(multiline_arg)
+      def after_multiline_arg(_multiline_arg)
         @table = nil
       end
 
-      def before_table_row(table_row)
+      def before_table_row(_table_row)
         return if !@table || @hide_this_step
         @col_index = 0
         @io.print '  |'.indent(@indent-2)
@@ -199,7 +199,7 @@ module Cucumber
         end
       end
 
-      def after_table_cell(cell)
+      def after_table_cell(_cell)
         return unless @table
         @col_index += 1
       end
@@ -215,7 +215,7 @@ module Cucumber
         @io.flush
       end
 
-      def before_test_case(test_case)
+      def before_test_case(_test_case)
         @previous_step_keyword = nil
       end
 

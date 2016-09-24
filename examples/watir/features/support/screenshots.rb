@@ -2,7 +2,7 @@
 # browser testing. Just run cucumber with --format html --out report.html
 #
 # The code below will work on OS X or Windows (with IE Watir only).
-# Adding support for other platforms should be easy - as long as there is a 
+# Adding support for other platforms should be easy - as long as there is a
 # ruby library or command line tool to take pictures.
 #
 module Screenshots
@@ -21,7 +21,7 @@ module Screenshots
     end
   else
     # Other platforms...
-    def embed_screenshot(id)
+    def embed_screenshot(_id)
       STDERR.puts 'Sorry - no screenshots on your platform yet.'
     end
   end
