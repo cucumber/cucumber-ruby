@@ -71,7 +71,7 @@ module Autotest::CucumberMixin
     hook :run_features
     Tempfile.open('autotest-cucumber') do |dirty_features_file|
       cmd = self.make_cucumber_cmd(self.features_to_run, dirty_features_file.path)
-      return if cmd.empty?
+      break if cmd.empty?
       puts cmd unless $q
       old_sync = $stdout.sync
       $stdout.sync = true
@@ -115,11 +115,11 @@ module Autotest::CucumberMixin
     profile ||= 'autotest'     if profile_loader.has_profile?('autotest')
     profile ||= nil
 
-    if profile
-      args = ['--profile', profile]
-    else
-      args = %w{--format} << (features_to_run == :all ? 'progress' : 'pretty')
-    end
+    args = if profile
+             ['--profile', profile]
+           else
+             %w{--format} << (features_to_run == :all ? 'progress' : 'pretty')
+           end
     # No --color option as some IDEs (Netbeans) don't output them very well ([31m1 failed step[0m)
     args += %w{--format rerun --out} << dirty_features_filename
     args << (features_to_run == :all ? '' : features_to_run)

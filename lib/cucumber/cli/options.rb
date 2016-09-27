@@ -161,9 +161,8 @@ TEXT
 
       def check_formatter_stream_conflicts()
         streams = @options[:formats].uniq.map { |(_, stream)| stream }
-        if streams != streams.uniq
-          raise 'All but one formatter must use --out, only one can print to each stream (or STDOUT)'
-        end
+        return if streams == streams.uniq
+        raise 'All but one formatter must use --out, only one can print to each stream (or STDOUT)'
       end
 
       def to_hash
@@ -311,10 +310,9 @@ TEXT
 
       def require_files(v)
         @options[:require] << v
-        if(Cucumber::JRUBY && File.directory?(v))
-          require 'java'
-          $CLASSPATH << v
-        end
+        return unless Cucumber::JRUBY && File.directory?(v)
+        require 'java'
+        $CLASSPATH << v
       end
 
       def require_jars(jars)

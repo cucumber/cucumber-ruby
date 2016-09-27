@@ -6,11 +6,11 @@ module NormaliseArubaOutput
   end
 
   def normalise_output(out)
-    out = out.gsub(/#{Dir.pwd}\/tmp\/aruba/, '.') # Remove absolute paths
-    out = out.gsub(/tmp\/aruba\//, '')            # Fix aruba path
-    out = out.gsub(/^.*cucumber_process\.rb.*$\n/, '')
-    out = out.gsub(/^\d+m\d+\.\d+s$/, '0m0.012s') # Make duration predictable
-    out = out.gsub(/Coverage report generated .+$\n/, '') # Remove SimpleCov message
+    out.gsub(/#{Dir.pwd}\/tmp\/aruba/, '.') # Remove absolute paths
+       .gsub(/tmp\/aruba\//, '')            # Fix aruba path
+       .gsub(/^.*cucumber_process\.rb.*$\n/, '')
+       .gsub(/^\d+m\d+\.\d+s$/, '0m0.012s') # Make duration predictable
+       .gsub(/Coverage report generated .+$\n/, '') # Remove SimpleCov message
   end
 
   def normalise_json(json)
@@ -38,12 +38,9 @@ module NormaliseArubaOutput
   end
 
   def normalise_json_step_or_hook(step_or_hook)
-    if step_or_hook['result']
-      if step_or_hook['result']['duration']
-        expect(step_or_hook['result']['duration']).to be >= 0
-        step_or_hook['result']['duration'] = 1
-      end
-    end
+    return unless step_or_hook['result'] && step_or_hook['result']['duration']
+    expect(step_or_hook['result']['duration']).to be >= 0
+    step_or_hook['result']['duration'] = 1
   end
 
 end

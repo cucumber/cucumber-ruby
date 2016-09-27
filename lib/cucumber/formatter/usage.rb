@@ -59,11 +59,11 @@ module Cucumber
       def print_summary
         aggregate_info
 
-        if config.dry_run?
-          keys = @stepdef_to_match.keys.sort {|a,b| a.regexp_source <=> b.regexp_source}
-        else
-          keys = @stepdef_to_match.keys.sort {|a,b| a.mean_duration <=> b.mean_duration}.reverse
-        end
+        keys = if config.dry_run?
+                 @stepdef_to_match.keys.sort {|a,b| a.regexp_source <=> b.regexp_source}
+               else
+                 @stepdef_to_match.keys.sort {|a,b| a.mean_duration <=> b.mean_duration}.reverse
+               end
 
         keys.each do |stepdef_key|
           print_step_definition(stepdef_key)

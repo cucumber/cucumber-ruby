@@ -66,7 +66,7 @@ module Cucumber
       end
 
       def on_test_case_finished(event)
-        test_case, result = *event.attributes
+        _test_case, result = *event.attributes
         result = result.with_filtered_backtrace(Cucumber::Formatter::BacktraceFilter)
         add_failed_around_hook(result) if result.failed? && !@any_step_failed
       end
@@ -245,11 +245,11 @@ module Cucumber
           }
           unless feature.tags.empty?
             @feature_hash[:tags] = create_tags_array(feature.tags)
-            if @test_case_hash[:tags]
-              @test_case_hash[:tags] = @feature_hash[:tags] + @test_case_hash[:tags]
-            else
-              @test_case_hash[:tags] = @feature_hash[:tags]
-            end
+            @test_case_hash[:tags] = if @test_case_hash[:tags]
+                                       @feature_hash[:tags] + @test_case_hash[:tags]
+                                     else
+                                       @feature_hash[:tags]
+                                     end
           end
           @feature_hash[:comments] = Formatter.create_comments_array(feature.comments) unless feature.comments.empty?
           @test_case_hash[:id].insert(0, @feature_hash[:id] + ';')

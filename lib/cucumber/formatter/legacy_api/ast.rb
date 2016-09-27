@@ -80,17 +80,15 @@ module Cucumber
           end
 
           def send_output_to(formatter)
-            unless @already_accepted
-              @messages.each { |message| formatter.puts(message) }
-              @embeddings.each { |embedding| embedding.send_to_formatter(formatter) }
-            end
+            return if @already_accepted
+            @messages.each { |message| formatter.puts(message) }
+            @embeddings.each { |embedding| embedding.send_to_formatter(formatter) }
           end
 
           def describe_exception_to(formatter)
-            unless @already_accepted
-              @result.describe_exception_to(formatter)
-              @already_accepted = true
-            end
+            return if @already_accepted
+            @result.describe_exception_to(formatter)
+            @already_accepted = true
           end
         end
 
@@ -122,10 +120,10 @@ module Cucumber
 
           def step_result_attributes
             legacy_multiline_arg = if multiline_arg.kind_of?(Core::Ast::EmptyMultilineArgument)
-              nil
-            else
-              step.multiline_arg
-            end
+                                     nil
+                                   else
+                                     step.multiline_arg
+                                   end
             [keyword, step_match, legacy_multiline_arg, status, exception, source_indent, background, file_colon_line]
           end
 

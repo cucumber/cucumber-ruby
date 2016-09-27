@@ -32,11 +32,11 @@ module Cucumber
 
       def format_step(keyword, step_match, status, source_indent)
         comment = if source_indent
-          c = ('# ' + step_match.location.to_s).indent(source_indent)
-          format_string(c, :comment)
-        else
-          ''
-        end
+                    c = ('# ' + step_match.location.to_s).indent(source_indent)
+                    format_string(c, :comment)
+                  else
+                    ''
+                  end
 
         format = format_for(status, :param)
         line = keyword + step_match.format_args(format) + comment
@@ -105,7 +105,7 @@ module Cucumber
         message = "#{e.message} (#{e.class})".dup.force_encoding('UTF-8')
         message = linebreaks(message, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
 
-        string = "#{message}\n#{e.backtrace.join("\n")}".indent(indent)
+        "#{message}\n#{e.backtrace.join("\n")}".indent(indent)
       end
 
       # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/10655
@@ -116,13 +116,11 @@ module Cucumber
 
       def collect_snippet_data(test_step, result)
         # collect snippet data for undefined steps
-        unless hook?(test_step)
-          keyword = test_step.source.last.actual_keyword(@previous_step_keyword)
-          @previous_step_keyword = keyword
-          if result.undefined?
-            @snippets_input << Console::SnippetData.new(keyword, test_step.source.last)
-          end
-        end
+        return if hook?(test_step)
+        keyword = test_step.source.last.actual_keyword(@previous_step_keyword)
+        @previous_step_keyword = keyword
+        return unless result.undefined?
+        @snippets_input << Console::SnippetData.new(keyword, test_step.source.last)
       end
 
       def print_snippets(options)
@@ -210,7 +208,6 @@ module Cucumber
       end
 
       def do_print_profile_information(profiles)
-        profiles_sentence = ''
         profiles_sentence = profiles.size == 1 ? profiles.first :
           "#{profiles[0...-1].join(', ')} and #{profiles.last}"
 
@@ -233,11 +230,11 @@ module Cucumber
       end
 
       def element_messages(elements, status)
-        element_messages = elements.map do |element|
+        elements.map do |element|
           if status == :failed
-            message = exception_message_string(element.exception, 0)
+            exception_message_string(element.exception, 0)
           else
-            message = linebreaks(element.backtrace_line, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
+            linebreaks(element.backtrace_line, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
           end
         end
       end

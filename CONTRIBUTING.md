@@ -17,7 +17,7 @@ The rest of this document is a guide for those maintaining Cucumber, and others 
 
 ## Talking with other devs
 
-You can chat with the core team on https://gitter.im/cucumber/cucumber. We try to have office hours on Fridays.
+You can chat with the core team on https://gitter.im/cucumber/contributors. We try to have office hours on Fridays.
 
 ## Installing your own gems
 

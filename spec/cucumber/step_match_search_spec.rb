@@ -89,22 +89,22 @@ spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three cute (.*)/'
         end
 
         it 'picks right step definition when an equal number of capture groups' do
-          right = dsl.Given(/Three (.*) mice/) {|disability|}
-          wrong = dsl.Given(/Three (.*)/) {|animal|}
+          right  = dsl.Given(/Three (.*) mice/) {|disability|}
+          _wrong = dsl.Given(/Three (.*)/) {|animal|}
 
           expect(search.call('Three blind mice').first.step_definition).to eq right
         end
 
         it 'picks right step definition when an unequal number of capture groups' do
-          right = dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
-          wrong = dsl.Given(/Three (.*)/) {|animal|}
+          right  = dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
+          _wrong = dsl.Given(/Three (.*)/) {|animal|}
 
           expect(search.call('Three blind mice ran far').first.step_definition).to eq right
         end
 
         it 'picks most specific step definition when an unequal number of capture groups' do
-          general       = dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
-          specific      = dsl.Given(/Three blind mice ran far/) do; end
+          _general      = dsl.Given(/Three (.*) mice ran (.*)/) {|disability|}
+          _specific     = dsl.Given(/Three blind mice ran far/) do; end
           more_specific = dsl.Given(/^Three blind mice ran far$/) do; end
 
           expect(search.call('Three blind mice ran far').first.step_definition).to eq more_specific
@@ -120,4 +120,3 @@ spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three cute (.*)/'
     end
   end
 end
-

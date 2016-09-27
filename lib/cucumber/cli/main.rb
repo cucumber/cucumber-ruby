@@ -24,11 +24,11 @@ module Cucumber
         trap_interrupt
 
         runtime = if existing_runtime
-          existing_runtime.configure(configuration)
-          existing_runtime
-        else
-          Runtime.new(configuration)
-        end
+                    existing_runtime.configure(configuration)
+                    existing_runtime
+                  else
+                    Runtime.new(configuration)
+                  end
 
         runtime.run!
         if Cucumber.wants_to_quit

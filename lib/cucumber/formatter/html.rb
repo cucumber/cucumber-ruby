@@ -56,7 +56,7 @@ module Cucumber
         if @io.respond_to?(:path) and File.file?(src)
           out_dir = Pathname.new(File.dirname(File.absolute_path(@io.path)))
           src = Pathname.new(File.absolute_path(src)).relative_path_from(out_dir)
-        end        
+        end
         @builder.span(:class => 'embed') do |pre|
           pre << %{<a href="" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">#{label}</a><br>&nbsp;
           <img id="#{id}" style="display: none" src="#{src}"/>}
@@ -85,7 +85,7 @@ module Cucumber
         )
 
         @builder << '<html xmlns ="http://www.w3.org/1999/xhtml">'
-          @builder.head do
+        @builder.head do
           @builder.meta('http-equiv' => 'Content-Type', :content => 'text/html;charset=utf-8')
           @builder.title 'Cucumber'
           inline_css
@@ -297,7 +297,7 @@ module Cucumber
         end
         if status == :undefined
           @builder.pre do |pre|
-            # TODO: snippet text should be an event sent to the formatter so we don't 
+            # TODO: snippet text should be an event sent to the formatter so we don't
             # have this couping to the runtime.
             pre << @runtime.snippet_text(keyword,step_match.instance_variable_get('@name') || '', @step.multiline_arg)
           end
@@ -590,7 +590,7 @@ module Cucumber
         (["#{exception.message}"] + exception.backtrace).join("\n")
       end
 
-     def backtrace_line(line)
+      def backtrace_line(line)
         if ENV['TM_PROJECT_DIRECTORY']
           line.gsub(/^([^:]*\.(?:rb|feature|haml)):(\d*).*$/) do
             "<a href=\"txmt://open?url=file://#{File.expand_path($1)}&line=#{$2}\">#{$1}:#{$2}</a> "
@@ -638,7 +638,13 @@ module Cucumber
 
       class SnippetExtractor #:nodoc:
         class NullConverter; def convert(code, pre); code; end; end #:nodoc:
-        begin; require 'syntax/convertors/html'; @@converter = Syntax::Convertors::HTML.for_syntax 'ruby'; rescue LoadError => e; @@converter = NullConverter.new; end
+
+        begin
+          require 'syntax/convertors/html'
+          @@converter = Syntax::Convertors::HTML.for_syntax 'ruby'
+        rescue LoadError
+          @@converter = NullConverter.new
+        end
 
         def snippet(error)
           raw_code, line = snippet_for(error[0])

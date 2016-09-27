@@ -28,10 +28,9 @@ module Cucumber
       end
 
       def invoke(arg)
-        if matched = match(arg)
-          args = matched.captures.empty? ? [arg] : matched.captures
-          @rb_language.current_world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
-        end
+        return unless matched = match(arg)
+        args = matched.captures.empty? ? [arg] : matched.captures
+        @rb_language.current_world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
       end
 
       def to_s
