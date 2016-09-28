@@ -100,7 +100,7 @@ module Cucumber
       end
 
       # Mark the matched step as pending.
-      def pending(message = "TODO")
+      def pending(message = 'TODO')
         if block_given?
           begin
             yield
@@ -114,7 +114,7 @@ module Cucumber
       end
 
       # Skips this step and the remaining steps in the scenario
-      def skip_this_scenario(message = "Scenario skipped")
+      def skip_this_scenario(message = 'Scenario skipped')
         raise Core::Test::Result::Skipped, message
       end
 
@@ -125,7 +125,7 @@ module Cucumber
           modules += included_modules
         end
         modules << stringify_namespaced_modules
-        sprintf("#<%s:0x%x>", modules.join('+'), self.object_id)
+        sprintf('#<%s:0x%x>', modules.join('+'), self.object_id)
       end
 
       # see {#inspect}

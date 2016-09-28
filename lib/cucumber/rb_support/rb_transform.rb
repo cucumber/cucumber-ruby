@@ -14,7 +14,7 @@ module Cucumber
     class RbTransform
       class MissingProc < StandardError
         def message
-          "Transforms must always have a proc with at least one argument"
+          'Transforms must always have a proc with at least one argument'
         end
       end
 

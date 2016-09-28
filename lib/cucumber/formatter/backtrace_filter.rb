@@ -32,7 +32,7 @@ module Cucumber
         return @exception if ::Cucumber.use_full_backtrace
 
         pwd_pattern = /#{::Regexp.escape(::Dir.pwd)}\//m
-        backtrace = @exception.backtrace.map { |line| line.gsub(pwd_pattern, "./") }
+        backtrace = @exception.backtrace.map { |line| line.gsub(pwd_pattern, './') }
 
         filtered = (backtrace || []).reject do |line|
           line =~ BACKTRACE_FILTER_PATTERNS

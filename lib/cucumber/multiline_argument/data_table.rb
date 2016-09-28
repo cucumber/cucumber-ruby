@@ -57,7 +57,7 @@ module Cucumber
       def_delegator :@ast_table, :location
 
       def self.default_arg_name #:nodoc:
-        "table"
+        'table'
       end
 
       class << self
@@ -68,7 +68,7 @@ module Cucumber
           when String
             parse(data, location)
           else
-            raise ArgumentError, "expected data to be a String or an Array."
+            raise ArgumentError, 'expected data to be a String or an Array.'
           end
         end
 
@@ -91,7 +91,7 @@ module Cucumber
       # @param header_mappings [Hash] see map_headers!
       # @param header_conversion_proc [Proc] see map_headers!
       def initialize(data, conversion_procs = NULL_CONVERSIONS.dup, header_mappings = {}, header_conversion_proc = nil)
-        raise ArgumentError, "data must be a Core::Ast::DataTable" unless data.kind_of? Core::Ast::DataTable
+        raise ArgumentError, 'data must be a Core::Ast::DataTable' unless data.kind_of? Core::Ast::DataTable
         ast_table = data
         # Verify that it's square
         ast_table.transpose
@@ -476,7 +476,7 @@ module Cucumber
         Formatter::LegacyApi::Ast::MultilineArg.for(self).accept(Formatter::Fanout.new([formatter]))
         Cucumber::Term::ANSIColor.coloring = c
         io.rewind
-        s = "\n" + io.read + (" " * (options[:indent] - 2))
+        s = "\n" + io.read + (' ' * (options[:indent] - 2))
         s
       end
 

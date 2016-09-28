@@ -11,21 +11,21 @@ module Cucumber
       extend SpecHelperDsl
       include SpecHelper
 
-      context "Given a single feature" do
+      context 'Given a single feature' do
         before(:each) do
           @out = StringIO.new
           @formatter = Json.new(actual_runtime.configuration.with_options(out_stream: @out))
           run_defined_feature
         end
 
-        describe "with a scenario with no steps" do
+        describe 'with a scenario with no steps' do
           define_feature <<-FEATURE
           Feature: Banana party
 
             Scenario: Monkey eats bananas
             FEATURE
 
-          it "outputs the json data" do
+          it 'outputs the json data' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
               [{"id": "banana-party",
                 "uri": "spec.feature",
@@ -43,7 +43,7 @@ module Cucumber
           end
         end
 
-        describe "with a scenario with an undefined step" do
+        describe 'with a scenario with an undefined step' do
           define_feature <<-FEATURE
           Feature: Banana party
 
@@ -51,7 +51,7 @@ module Cucumber
               Given there are bananas
             FEATURE
 
-          it "outputs the json data" do
+          it 'outputs the json data' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
               [{"id": "banana-party",
                 "uri": "spec.feature",
@@ -75,7 +75,7 @@ module Cucumber
           end
         end
 
-        describe "with a scenario with a passed step" do
+        describe 'with a scenario with a passed step' do
           define_feature <<-FEATURE
           Feature: Banana party
 
@@ -87,7 +87,7 @@ module Cucumber
             Given(/^there are bananas$/) {}
           end
 
-          it "outputs the json data" do
+          it 'outputs the json data' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
               [{"id": "banana-party",
                 "uri": "spec.feature",
@@ -112,7 +112,7 @@ module Cucumber
           end
         end
 
-        describe "with a scenario with a failed step" do
+        describe 'with a scenario with a failed step' do
           define_feature <<-FEATURE
           Feature: Banana party
 
@@ -121,10 +121,10 @@ module Cucumber
             FEATURE
 
           define_steps do
-            Given(/^there are bananas$/) { raise "no bananas" }
+            Given(/^there are bananas$/) { raise 'no bananas' }
           end
 
-          it "outputs the json data" do
+          it 'outputs the json data' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
               [{"id": "banana-party",
                 "uri": "spec.feature",
@@ -150,7 +150,7 @@ module Cucumber
           end
         end
 
-        describe "with a scenario with a pending step" do
+        describe 'with a scenario with a pending step' do
           define_feature <<-FEATURE
           Feature: Banana party
 
@@ -162,7 +162,7 @@ module Cucumber
             Given(/^there are bananas$/) { pending }
           end
 
-          it "outputs the json data" do
+          it 'outputs the json data' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
               [{"id": "banana-party",
                 "uri": "spec.feature",
@@ -188,7 +188,7 @@ module Cucumber
           end
         end
 
-        describe "with a scenario outline with one example" do
+        describe 'with a scenario outline with one example' do
           define_feature <<-FEATURE
           Feature: Banana party
 
@@ -204,7 +204,7 @@ module Cucumber
             Given(/^there are bananas$/) {}
           end
 
-          it "outputs the json data" do
+          it 'outputs the json data' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
               [{"id": "banana-party",
                 "uri": "spec.feature",
@@ -229,7 +229,7 @@ module Cucumber
           end
         end
 
-        describe "with tags in the feature file" do
+        describe 'with tags in the feature file' do
           define_feature <<-FEATURE
           @f
           Feature: Banana party
@@ -252,7 +252,7 @@ module Cucumber
             Given(/^there are bananas$/) {}
           end
 
-          it "the tags are included in the json data" do
+          it 'the tags are included in the json data' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
               [{"id": "banana-party",
                 "uri": "spec.feature",
@@ -302,7 +302,7 @@ module Cucumber
           end
         end
 
-        describe "with comments in the feature file" do
+        describe 'with comments in the feature file' do
           define_feature <<-FEATURE
           #feature comment
           Feature: Banana party
@@ -333,7 +333,7 @@ module Cucumber
             Then(/^the monkey eats bananas$/) {}
           end
 
-          it "the comments are included in the json data" do
+          it 'the comments are included in the json data' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
               [{"id": "banana-party",
                 "uri": "spec.feature",
@@ -413,7 +413,7 @@ module Cucumber
           end
         end
 
-        describe "with a scenario with a step with a doc string" do
+        describe 'with a scenario with a step with a doc string' do
           define_feature <<-FEATURE
           Feature: Banana party
 
@@ -428,7 +428,7 @@ module Cucumber
             Given(/^there are bananas$/) { |s| s }
           end
 
-          it "includes the doc string in the json data" do
+          it 'includes the doc string in the json data' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
               [{"id": "banana-party",
                 "uri": "spec.feature",
@@ -456,7 +456,7 @@ module Cucumber
           end
         end
 
-        describe "with a scenario with a step that use puts" do
+        describe 'with a scenario with a step that use puts' do
           define_feature <<-FEATURE
           Feature: Banana party
 
@@ -465,10 +465,10 @@ module Cucumber
             FEATURE
 
           define_steps do
-            Given(/^there are bananas$/) { puts "from step" }
+            Given(/^there are bananas$/) { puts 'from step' }
           end
 
-          it "includes the output from the step in the json data" do
+          it 'includes the output from the step in the json data' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
               [{"id": "banana-party",
                 "uri": "spec.feature",
@@ -494,7 +494,7 @@ module Cucumber
           end
         end
 
-        describe "with a background" do
+        describe 'with a background' do
           define_feature <<-FEATURE
           Feature: Banana party
 
@@ -508,7 +508,7 @@ module Cucumber
               Then the monkey eats more bananas
             FEATURE
 
-          it "includes the background in the json data each time it is executed" do
+          it 'includes the background in the json data each time it is executed' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
               [{"id": "banana-party",
                 "uri": "spec.feature",
@@ -566,7 +566,7 @@ module Cucumber
           end
         end
 
-        describe "with a scenario with a step that embeds data directly" do
+        describe 'with a scenario with a step that embeds data directly' do
           define_feature <<-FEATURE
           Feature: Banana party
 
@@ -575,11 +575,11 @@ module Cucumber
             FEATURE
 
           define_steps do
-            Given(/^there are bananas$/) { data = "YWJj"
-              embed data, "mime-type;base64" }
+            Given(/^there are bananas$/) { data = 'YWJj'
+              embed data, 'mime-type;base64' }
           end
 
-          it "includes the data from the step in the json data" do
+          it 'includes the data from the step in the json data' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
               [{"id": "banana-party",
                 "uri": "spec.feature",
@@ -606,7 +606,7 @@ module Cucumber
           end
         end
 
-        describe "with a scenario with a step that embeds a file" do
+        describe 'with a scenario with a step that embeds a file' do
           define_feature <<-FEATURE
           Feature: Banana party
 
@@ -619,12 +619,12 @@ module Cucumber
               RSpec::Mocks.allow_message(File, :file?) { true }
               f1 = RSpec::Mocks::Double.new
               RSpec::Mocks.allow_message(File, :open)  { |&block| block.call(f1) }
-              RSpec::Mocks.allow_message(f1, :read)  { "foo" }
+              RSpec::Mocks.allow_message(f1, :read)  { 'foo' }
               embed('out/snapshot.jpeg', 'image/png')
             }
           end
 
-          it "includes the file content in the json data" do
+          it 'includes the file content in the json data' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
               [{"id": "banana-party",
                 "uri": "spec.feature",
@@ -651,7 +651,7 @@ module Cucumber
           end
         end
 
-        describe "with a scenario with hooks" do
+        describe 'with a scenario with hooks' do
           define_feature <<-FEATURE
           Feature: Banana party
 
@@ -670,7 +670,7 @@ module Cucumber
             Given(/^there are bananas$/) {}
           end
 
-          it "includes all hooks except the around hook in the json data" do
+          it 'includes all hooks except the around hook in the json data' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
               [{"id": "banana-party",
                 "uri": "spec.feature",
@@ -716,7 +716,7 @@ module Cucumber
           end
         end
 
-        describe "with a scenario when only an around hook is failing" do
+        describe 'with a scenario when only an around hook is failing' do
           define_feature <<-FEATURE
           Feature: Banana party
 
@@ -725,11 +725,11 @@ module Cucumber
             FEATURE
 
           define_steps do
-            Around() { |scenario, block| block.call; raise RuntimeError, "error" }
+            Around() { |scenario, block| block.call; raise RuntimeError, 'error' }
             Given(/^there are bananas$/) {}
           end
 
-          it "includes the around hook result in the json data" do
+          it 'includes the around hook result in the json data' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
               [{"id": "banana-party",
                 "uri": "spec.feature",
@@ -759,7 +759,7 @@ module Cucumber
           end
         end
 
-        describe "with a scenario with a step with a data table" do
+        describe 'with a scenario with a step with a data table' do
           define_feature <<-FEATURE
           Feature: Banana party
 
@@ -773,7 +773,7 @@ module Cucumber
             Given(/^there are bananas$/) { |s| s }
           end
 
-          it "includes the doc string in the json data" do
+          it 'includes the doc string in the json data' do
             expect(load_normalised_json(@out)).to eq MultiJson.load(%{
               [{"id": "banana-party",
                 "uri": "spec.feature",

@@ -11,7 +11,7 @@ begin
     a.should == b
   end
 rescue LoadError
-  STDERR.puts "***** You should install matchy *****"
+  STDERR.puts '***** You should install matchy *****'
   Then(/^I can assert that (\w+) == (\w+)$/) do |var_a, var_b|
     a = instance_variable_get("@#{var_a}")
     b = instance_variable_get("@#{var_b}")

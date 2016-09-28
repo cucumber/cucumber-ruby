@@ -19,7 +19,7 @@ module Cucumber
 
       class MissingProc < StandardError
         def message
-          "Step definitions must always have a proc or symbol"
+          'Step definitions must always have a proc or symbol'
         end
       end
 
@@ -65,7 +65,7 @@ module Cucumber
           when Symbol
             lambda { self.send(target) }
           else
-            lambda { raise ArgumentError, "Target must be a symbol or a proc" }
+            lambda { raise ArgumentError, 'Target must be a symbol or a proc' }
           end
         end
       end

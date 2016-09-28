@@ -24,13 +24,13 @@ module Cucumber
         @formatter = Html.new(runtime, @out, {})
       end
 
-      it "does not raise an error when visiting a blank feature name" do
+      it 'does not raise an error when visiting a blank feature name' do
         expect(-> {
-          @formatter.feature_name("Feature", "")
+          @formatter.feature_name('Feature', '')
         }).not_to raise_error
       end
 
-      describe "when writing the report to a file" do
+      describe 'when writing the report to a file' do
         before(:each) do
           allow(@out).to receive(:respond_to?).with(:path).and_return(true)
           expect(@out).to receive(:path).and_return('out/file.html')
@@ -38,7 +38,7 @@ module Cucumber
           @doc = Nokogiri.HTML(@out.string)
         end
 
-        describe "with a step that embeds a snapshot" do
+        describe 'with a step that embeds a snapshot' do
           define_steps do
             Given(/snap/) {
               RSpec::Mocks.allow_message(File, :file?) { true }
@@ -52,19 +52,19 @@ module Cucumber
               Given snap
             FEATURE
 
-          it "converts the snapshot path to a relative path" do
-            expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq "snapshot.jpeg"
+          it 'converts the snapshot path to a relative path' do
+            expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq 'snapshot.jpeg'
           end
         end
       end
 
-      describe "given a single feature" do
+      describe 'given a single feature' do
         before(:each) do
           run_defined_feature
           @doc = Nokogiri.HTML(@out.string)
         end
 
-        describe "basic feature" do
+        describe 'basic feature' do
           define_feature <<-FEATURE
             Feature: Bananas
               In order to find my inner monkey
@@ -72,12 +72,12 @@ module Cucumber
               I must eat bananas
           FEATURE
 
-          it "should output a main container div" do
+          it 'should output a main container div' do
             expect(@out.string).to match(/\<div class="cucumber"\>/)
           end
         end
 
-        describe "with a comment" do
+        describe 'with a comment' do
           define_feature <<-FEATURE
             # Healthy
             Feature: Foo
@@ -88,16 +88,16 @@ module Cucumber
           it { expect(@out.string).to match(/^\<!DOCTYPE/) }
           it { expect(@out.string).to match(/\<\/html\>$/) }
 
-          it "nests the comment within the feature" do
+          it 'nests the comment within the feature' do
             expect(@doc).to have_css_node('.feature .comment', /Healthy/)
           end
 
-          it "properly closes the comment" do
+          it 'properly closes the comment' do
             expect(@out.string).to match(%r{<pre class="comment"># Healthy<br/></pre>})
           end
         end
 
-        describe "with a comment at scenario level" do
+        describe 'with a comment at scenario level' do
           define_feature <<-FEATURE
             Feature: Foo
               # Healthy Scenario
@@ -108,7 +108,7 @@ module Cucumber
           it { expect(@doc).to have_css_node('.scenario .comment', /Healthy Scenario/) }
         end
 
-        describe "with a tag" do
+        describe 'with a tag' do
           define_feature <<-FEATURE
             @foo
             Feature: can't have standalone tag :)
@@ -119,7 +119,7 @@ module Cucumber
           it { expect(@doc).to have_css_node('.feature .tag', /foo/) }
         end
 
-        describe "with a narrative" do
+        describe 'with a narrative' do
           define_feature <<-FEATURE
             Feature: Bananas
               In order to find my inner monkey
@@ -134,7 +134,7 @@ module Cucumber
           it { expect(@doc).to have_css_node('.feature .narrative', /must eat bananas/) }
         end
 
-        describe "with a background" do
+        describe 'with a background' do
           define_feature <<-FEATURE
             Feature: Bananas
 
@@ -148,7 +148,7 @@ module Cucumber
           it { expect(@doc).to have_css_node('.feature .background', /there are bananas/) }
         end
 
-        describe "with a scenario" do
+        describe 'with a scenario' do
           define_feature <<-FEATURE
           Feature: Banana party
 
@@ -160,7 +160,7 @@ module Cucumber
           it { expect(@doc).to have_css_node('.feature .scenario .step', /there are bananas/) }
         end
 
-        describe "with a scenario outline" do
+        describe 'with a scenario outline' do
           define_feature <<-FEATURE
           Feature: Fud Pyramid
 
@@ -184,7 +184,7 @@ module Cucumber
           it { expect(@doc).to have_css_node('.feature .scenario.outline table td', /carrots/) }
         end
 
-        describe "with a step with a py string" do
+        describe 'with a step with a py string' do
           define_feature <<-FEATURE
           Feature: Traveling circus
 
@@ -198,7 +198,7 @@ module Cucumber
           it { expect(@doc).to have_css_node('.feature .scenario .val', /foo/) }
         end
 
-        describe "with a multiline step arg" do
+        describe 'with a multiline step arg' do
           define_steps do
             Given(/there are monkeys:/) { |table| }
           end
@@ -216,7 +216,7 @@ module Cucumber
           it { expect(@out.string.include?('makeYellow(\'scenario_1\')')).to be false }
         end
 
-        describe "with a table in the background and the scenario" do
+        describe 'with a table in the background and the scenario' do
           define_feature <<-FEATURE
           Feature: accountant monkey
 
@@ -233,7 +233,7 @@ module Cucumber
           it { expect(@doc.css('td').length).to eq 8 }
         end
 
-        describe "with a py string in the background and the scenario" do
+        describe 'with a py string in the background and the scenario' do
           define_feature <<-FEATURE
           Feature: py strings
 
@@ -253,7 +253,7 @@ module Cucumber
           it { expect(@doc.css('.feature .scenario pre.val').length).to eq 1 }
         end
 
-        describe "with a step that fails in the scenario" do
+        describe 'with a step that fails in the scenario' do
           define_steps do
             Given(/boo/) { raise StandardError, 'eek'.freeze }
           end
@@ -274,7 +274,7 @@ module Cucumber
           end
         end
 
-        describe "with a step that fails in the background" do
+        describe 'with a step that fails in the background' do
           define_steps do
             Given(/boo/) { raise 'eek' }
           end
@@ -296,8 +296,8 @@ module Cucumber
           it { expect(@doc).not_to have_css_node('.feature .scenario .backtrace', //) }
         end
 
-        context "with a before hook that fails" do
-          describe "in a scenario" do
+        context 'with a before hook that fails' do
+          describe 'in a scenario' do
             define_steps do
               Before { raise 'eek' }
               Given(/yay/) {}
@@ -314,7 +314,7 @@ module Cucumber
             it { expect(@doc).to have_css_node('.feature .scenario .step.skipped', /yay/) }
           end
 
-          describe "in a scenario outline" do
+          describe 'in a scenario outline' do
             define_steps do
               Before { raise 'eek' }
               Given(/yay/) {}
@@ -336,7 +336,7 @@ module Cucumber
 
         end
 
-        describe "with a step that embeds a snapshot" do
+        describe 'with a step that embeds a snapshot' do
           define_steps do
             Given(/snap/) {
               RSpec::Mocks.allow_message(File, :file?) { true }
@@ -350,10 +350,10 @@ module Cucumber
               Given snap
             FEATURE
 
-          it { expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq "snapshot.jpeg" }
+          it { expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq 'snapshot.jpeg' }
         end
 
-        describe "with a step that embeds a text" do
+        describe 'with a step that embeds a text' do
           define_steps do
             Given(/log/) { embed('log.txt', 'text/plain') }
           end
@@ -364,10 +364,10 @@ module Cucumber
               Given log
             FEATURE
 
-          it { expect(@doc.at('a#text_0')['href'].to_s).to eq "log.txt" }
+          it { expect(@doc.at('a#text_0')['href'].to_s).to eq 'log.txt' }
         end
 
-        describe "with a step that embeds a snapshot content manually" do
+        describe 'with a step that embeds a snapshot content manually' do
           define_steps do
             Given(/snap/) { embed('data:image/png;base64,YWJj', 'image/png') }
           end
@@ -378,10 +378,10 @@ module Cucumber
               Given snap
             FEATURE
 
-          it { expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq "data:image/png;base64,YWJj" }
+          it { expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq 'data:image/png;base64,YWJj' }
         end
 
-        describe "with a step that embeds a snapshot content" do
+        describe 'with a step that embeds a snapshot content' do
           define_steps do
             Given(/snap/) { embed('YWJj', 'image/png;base64') }
           end
@@ -392,10 +392,10 @@ module Cucumber
               Given snap
             FEATURE
 
-          it { expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq "data:image/png;base64,YWJj" }
+          it { expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq 'data:image/png;base64,YWJj' }
         end
 
-        describe "with an undefined Given step then an undefined And step" do
+        describe 'with an undefined Given step then an undefined And step' do
           define_feature(<<-FEATURE)
           Feature:
             Scenario:
@@ -403,10 +403,10 @@ module Cucumber
               And another undefined step
             FEATURE
 
-          it { expect(@doc.css('pre').map { |pre| /^(Given|And)/.match(pre.text)[1] }).to eq ["Given", "Given"] }
+          it { expect(@doc.css('pre').map { |pre| /^(Given|And)/.match(pre.text)[1] }).to eq ['Given', 'Given'] }
         end
 
-        describe "with an undefined When step then an undefined And step" do
+        describe 'with an undefined When step then an undefined And step' do
           define_feature(<<-FEATURE)
           Feature:
             Scenario:
@@ -415,10 +415,10 @@ module Cucumber
               And another undefined step
             FEATURE
 
-          it { expect(@doc.css('pre').map { |pre| /^(Given|When|And)/.match(pre.text)[1] }).to eq ["Given", "When", "When"] }
+          it { expect(@doc.css('pre').map { |pre| /^(Given|When|And)/.match(pre.text)[1] }).to eq ['Given', 'When', 'When'] }
         end
 
-        describe "with an passing Then step and an undefined And step" do
+        describe 'with an passing Then step and an undefined And step' do
           define_feature <<-FEATURE
           Feature:
             Scenario:
@@ -431,11 +431,11 @@ module Cucumber
             Given(/^this step passes$/) {}
           end
 
-          it { expect(@doc.css('pre').map { |pre| /^(Given|Then)/.match(pre.text)[1] }).to eq ["Then"] }
+          it { expect(@doc.css('pre').map { |pre| /^(Given|Then)/.match(pre.text)[1] }).to eq ['Then'] }
         end
 
-        describe "with a output from hooks" do
-          describe "in a scenario" do
+        describe 'with a output from hooks' do
+          describe 'in a scenario' do
             define_feature <<-FEATURE
           Feature:
             Scenario:
@@ -444,26 +444,26 @@ module Cucumber
 
             define_steps do
               Before do
-                puts "Before hook"
+                puts 'Before hook'
               end
               AfterStep do
-                puts "AfterStep hook"
+                puts 'AfterStep hook'
               end
               After do
-                puts "After hook"
+                puts 'After hook'
               end
               Given(/^this step passes$/) {}
             end
 
             it 'should have ccs nodes ".step.message" for all the hooks' do
               expect(@doc.css('.step.message').length).to eq 3
-              expect(@doc.css('.step.message')[0].text).to eq "Before hook"
-              expect(@doc.css('.step.message')[1].text).to eq "AfterStep hook"
-              expect(@doc.css('.step.message')[2].text).to eq "After hook"
+              expect(@doc.css('.step.message')[0].text).to eq 'Before hook'
+              expect(@doc.css('.step.message')[1].text).to eq 'AfterStep hook'
+              expect(@doc.css('.step.message')[2].text).to eq 'After hook'
             end
           end
 
-          describe "in a scenario outline" do
+          describe 'in a scenario outline' do
             define_feature <<-FEATURE
           Feature:
             Scenario Outline:
@@ -475,13 +475,13 @@ module Cucumber
 
             define_steps do
               Before do
-                puts "Before hook"
+                puts 'Before hook'
               end
               AfterStep do
-                puts "AfterStep hook"
+                puts 'AfterStep hook'
               end
               After do
-                puts "After hook"
+                puts 'After hook'
               end
               Given(/^this step passes$/) {}
             end
@@ -490,7 +490,7 @@ module Cucumber
           end
         end
       end
-      context "in --expand mode" do
+      context 'in --expand mode' do
         let(:options)   { { expand: true } }
         before(:each) do
           @out = StringIO.new
@@ -498,7 +498,7 @@ module Cucumber
           run_defined_feature
           @doc = Nokogiri.HTML(@out.string)
         end
-        describe "with undefined * steps in a Scenario Outline" do
+        describe 'with undefined * steps in a Scenario Outline' do
           define_feature <<-FEATURE
           Feature:
             Scenario Outline:
@@ -514,10 +514,10 @@ module Cucumber
               Given(/^this step passes$/) {}
             end
 
-          it { expect(@doc.css('pre').map { |pre| /^(Given|Then|When)/.match(pre.text)[1] }).to eq ["Given", "Given"] }
+          it { expect(@doc.css('pre').map { |pre| /^(Given|Then|When)/.match(pre.text)[1] }).to eq ['Given', 'Given'] }
         end
 
-        describe "with a scenario outline and a before hook that fails" do
+        describe 'with a scenario outline and a before hook that fails' do
           define_steps do
             Before { raise 'eek' }
             Given(/yay/) {}

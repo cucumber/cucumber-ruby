@@ -47,7 +47,7 @@ module Cucumber
         @err.puts("Couldn't open #{e.path}")
         exit_unable_to_finish
       rescue FeatureFolderNotFoundException => e
-        @err.puts(e.message + ". You can use `cucumber --init` to get started.")
+        @err.puts(e.message + '. You can use `cucumber --init` to get started.')
         exit_unable_to_finish
       rescue ProfilesNotDefinedError, YmlLoadError, ProfileNotFound => e
         @err.puts(e.message)

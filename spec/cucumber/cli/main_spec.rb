@@ -17,15 +17,15 @@ module Cucumber
       let(:kernel) { double(:kernel) }
       subject { Main.new(args, stdin, stdout, stderr, kernel)}
 
-      describe "#execute!" do
-        context "passed an existing runtime" do
+      describe '#execute!' do
+        context 'passed an existing runtime' do
           let(:existing_runtime) { double('runtime').as_null_object }
 
           def do_execute
             subject.execute!(existing_runtime)
           end
 
-          it "configures that runtime" do
+          it 'configures that runtime' do
             expected_configuration = double('Configuration').as_null_object
 
             allow(Configuration).to receive(:new) { expected_configuration }
@@ -35,7 +35,7 @@ module Cucumber
             do_execute
           end
 
-          it "uses that runtime for running and reporting results" do
+          it 'uses that runtime for running and reporting results' do
             expected_results = double('results', :failure? => true)
 
             expect(existing_runtime).to receive(:run!)
@@ -46,12 +46,12 @@ module Cucumber
           end
         end
 
-        context "interrupted with ctrl-c" do
+        context 'interrupted with ctrl-c' do
           after do
             Cucumber.wants_to_quit = false
           end
 
-          it "exits with error code" do
+          it 'exits with error code' do
             results = double('results', :failure? => false)
 
             allow_any_instance_of(Runtime).to receive(:run!)
@@ -71,7 +71,7 @@ module Cucumber
           configuration = double('configuration')
 
           allow(Configuration).to receive(:new) { configuration }
-          allow(configuration).to receive(:parse!).and_raise(exception_klass.new("error message"))
+          allow(configuration).to receive(:parse!).and_raise(exception_klass.new('error message'))
           allow(kernel).to receive(:exit).with(2)
 
           subject.execute!

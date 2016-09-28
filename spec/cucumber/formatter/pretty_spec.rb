@@ -10,32 +10,32 @@ module Cucumber
       extend SpecHelperDsl
       include SpecHelper
 
-      context "With no options" do
+      context 'With no options' do
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
           @formatter = Pretty.new(runtime, @out, {})
         end
 
-        describe "given a single feature" do
+        describe 'given a single feature' do
           before(:each) do
             run_defined_feature
           end
 
-          describe "with a scenario with no steps" do
+          describe 'with a scenario with no steps' do
             define_feature <<-FEATURE
           Feature: Banana party
 
             Scenario: Monkey eats banana
             FEATURE
 
-            it "outputs the scenario name" do
-              expect(@out.string).to include "Scenario: Monkey eats banana"
+            it 'outputs the scenario name' do
+              expect(@out.string).to include 'Scenario: Monkey eats banana'
             end
           end
 
 
-          describe "with a scenario" do
+          describe 'with a scenario' do
             define_feature <<-FEATURE
           Feature: Banana party
 
@@ -43,16 +43,16 @@ module Cucumber
               Given there are bananas
             FEATURE
 
-            it "outputs the scenario name" do
-              expect(@out.string).to include "Scenario: Monkey eats banana"
+            it 'outputs the scenario name' do
+              expect(@out.string).to include 'Scenario: Monkey eats banana'
             end
 
-            it "outputs the step" do
-              expect(@out.string).to include "Given there are bananas"
+            it 'outputs the step' do
+              expect(@out.string).to include 'Given there are bananas'
             end
           end
 
-          describe "with a background" do
+          describe 'with a background' do
             define_feature <<-FEATURE
 Feature: Banana party
 
@@ -63,20 +63,20 @@ Feature: Banana party
     Given there are bananas
             FEATURE
 
-            it "outputs the gherkin" do
+            it 'outputs the gherkin' do
               expect(@out.string).to include(self.class.feature_content)
             end
 
-            it "outputs the scenario name" do
-              expect(@out.string).to include "Scenario: Monkey eats banana"
+            it 'outputs the scenario name' do
+              expect(@out.string).to include 'Scenario: Monkey eats banana'
             end
 
-            it "outputs the step" do
-              expect(@out.string).to include "Given there are bananas"
+            it 'outputs the step' do
+              expect(@out.string).to include 'Given there are bananas'
             end
           end
 
-          describe "with a scenario outline" do
+          describe 'with a scenario outline' do
             define_feature <<-FEATURE
           Feature: Fud Pyramid
 
@@ -93,7 +93,7 @@ Feature: Banana party
                | carrots  |
             FEATURE
 
-            it "outputs the scenario outline" do
+            it 'outputs the scenario outline' do
               lines = <<-OUTPUT
               Examples: Fruit
                | Things  |
@@ -109,12 +109,12 @@ Feature: Banana party
               end
             end
 
-            it "has 4 undefined scenarios" do
-              expect(@out.string).to include "4 scenarios (4 undefined)"
+            it 'has 4 undefined scenarios' do
+              expect(@out.string).to include '4 scenarios (4 undefined)'
             end
 
-            it "has 4 undefined steps" do
-              expect(@out.string).to include "4 steps (4 undefined)"
+            it 'has 4 undefined steps' do
+              expect(@out.string).to include '4 steps (4 undefined)'
             end
 
             context 'when the examples table header is wider than the rows' do
@@ -129,7 +129,7 @@ Feature: Banana party
                | Hominidae       |
               FEATURE
 
-              it "outputs the scenario outline" do
+              it 'outputs the scenario outline' do
                 lines = <<-OUTPUT
               Examples:
                | Types of monkey |
@@ -143,7 +143,7 @@ Feature: Banana party
           end
 
           # To ensure https://rspec.lighthouseapp.com/projects/16211/tickets/475 remains fixed.
-          describe "with a scenario outline with a pystring" do
+          describe 'with a scenario outline with a pystring' do
             define_feature <<-FEATURE
           Feature:
             Scenario Outline: Monkey eats a balanced diet
@@ -157,7 +157,7 @@ Feature: Banana party
                | apples |
             FEATURE
 
-            it "outputs the scenario outline" do
+            it 'outputs the scenario outline' do
               lines = <<-OUTPUT
               Given a multiline string:
                 """
@@ -174,7 +174,7 @@ Feature: Banana party
             end
           end
 
-          describe "with a step with a py string" do
+          describe 'with a step with a py string' do
             define_feature <<-FEATURE
           Feature: Traveling circus
 
@@ -185,7 +185,7 @@ Feature: Banana party
                """
             FEATURE
 
-            it "displays the pystring nested" do
+            it 'displays the pystring nested' do
               expect(@out.string).to include <<OUTPUT
       """
       foo
@@ -194,7 +194,7 @@ OUTPUT
             end
           end
 
-          describe "with a multiline step arg" do
+          describe 'with a multiline step arg' do
             define_feature <<-FEATURE
           Feature: Traveling circus
 
@@ -205,7 +205,7 @@ OUTPUT
                | bar  |
             FEATURE
 
-            it "displays the multiline string" do
+            it 'displays the multiline string' do
               expect(@out.string).to include <<OUTPUT
     Given there are monkeys:
       | name |
@@ -215,7 +215,7 @@ OUTPUT
             end
           end
 
-          describe "with a table in the background and the scenario" do
+          describe 'with a table in the background and the scenario' do
             define_feature <<-FEATURE
           Feature: accountant monkey
 
@@ -229,7 +229,7 @@ OUTPUT
                | g | h |
             FEATURE
 
-            it "displays the table for the background" do
+            it 'displays the table for the background' do
               expect(@out.string).to include <<OUTPUT
     Given table:
       | a | b |
@@ -237,7 +237,7 @@ OUTPUT
 OUTPUT
             end
 
-            it "displays the table for the scenario" do
+            it 'displays the table for the scenario' do
               expect(@out.string).to include <<OUTPUT
     Given another table:
       | e | f |
@@ -246,7 +246,7 @@ OUTPUT
             end
           end
 
-          describe "with a py string in the background and the scenario" do
+          describe 'with a py string in the background and the scenario' do
             define_feature <<-FEATURE
           Feature: py strings
 
@@ -262,7 +262,7 @@ OUTPUT
                 """
             FEATURE
 
-            it "displays the background py string" do
+            it 'displays the background py string' do
               expect(@out.string).to include <<OUTPUT
     Given stuff:
       """
@@ -271,7 +271,7 @@ OUTPUT
 OUTPUT
             end
 
-            it "displays the scenario py string" do
+            it 'displays the scenario py string' do
               expect(@out.string).to include <<OUTPUT
     Given more stuff:
       """
@@ -281,7 +281,7 @@ OUTPUT
             end
           end
 
-          describe "with output from hooks" do
+          describe 'with output from hooks' do
             define_feature <<-FEATURE
           Feature:
             Scenario:
@@ -295,18 +295,18 @@ OUTPUT
 
             define_steps do
               Before do
-                puts "Before hook"
+                puts 'Before hook'
               end
               AfterStep do
-                puts "AfterStep hook"
+                puts 'AfterStep hook'
               end
               After do
-                puts "After hook"
+                puts 'After hook'
               end
               Given(/^this step passes$/) {}
             end
 
-            it "displays hook output appropriately " do
+            it 'displays hook output appropriately ' do
               expect( @out.string ).to include <<OUTPUT
 Feature: 
 
@@ -329,7 +329,7 @@ OUTPUT
             end
           end
 
-          describe "with background and output from hooks" do
+          describe 'with background and output from hooks' do
             define_feature <<-FEATURE
           Feature:
             Background:
@@ -340,18 +340,18 @@ OUTPUT
 
             define_steps do
               Before do
-                puts "Before hook"
+                puts 'Before hook'
               end
               AfterStep do
-                puts "AfterStep hook"
+                puts 'AfterStep hook'
               end
               After do
-                puts "After hook"
+                puts 'After hook'
               end
               Given(/^this step passes$/) {}
             end
 
-            it "displays hook output appropriately " do
+            it 'displays hook output appropriately ' do
               expect( @out.string ).to include <<OUTPUT
 Feature: 
 
@@ -371,7 +371,7 @@ OUTPUT
             end
           end
 
-          describe "with tags on all levels" do
+          describe 'with tags on all levels' do
             define_feature <<-FEATURE
           @tag1
           Feature:
@@ -388,7 +388,7 @@ OUTPUT
             FEATURE
 
 
-            it "includes the tags in the output " do
+            it 'includes the tags in the output ' do
               expect( @out.string ).to include <<OUTPUT
 @tag1
 Feature: 
@@ -409,7 +409,7 @@ OUTPUT
             end
           end
 
-          describe "with comments on all levels" do
+          describe 'with comments on all levels' do
             define_feature <<-FEATURE
           #comment1
           Feature:
@@ -436,7 +436,7 @@ OUTPUT
             FEATURE
 
 
-            it "includes the all comments except for data table rows in the output " do
+            it 'includes the all comments except for data table rows in the output ' do
               expect( @out.string ).to include <<OUTPUT
 #comment1
 Feature: 
@@ -469,19 +469,19 @@ OUTPUT
         end
       end
 
-      context "With --no-multiline passed as an option" do
+      context 'With --no-multiline passed as an option' do
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
           @formatter = Pretty.new(runtime, @out, {:no_multiline => true})
         end
 
-        describe "given a single feature" do
+        describe 'given a single feature' do
           before(:each) do
             run_defined_feature
           end
 
-          describe "with a scenario" do
+          describe 'with a scenario' do
             define_feature <<-FEATURE
           Feature: Banana party
 
@@ -489,16 +489,16 @@ OUTPUT
               Given there are bananas
             FEATURE
 
-            it "outputs the scenario name" do
-              expect(@out.string).to include "Scenario: Monkey eats banana"
+            it 'outputs the scenario name' do
+              expect(@out.string).to include 'Scenario: Monkey eats banana'
             end
 
-            it "outputs the step" do
-              expect(@out.string).to include "Given there are bananas"
+            it 'outputs the step' do
+              expect(@out.string).to include 'Given there are bananas'
             end
           end
 
-          describe "with a scenario outline" do
+          describe 'with a scenario outline' do
             define_feature <<-FEATURE
           Feature: Fud Pyramid
 
@@ -515,7 +515,7 @@ OUTPUT
                | carrots  |
             FEATURE
 
-            it "outputs the scenario outline" do
+            it 'outputs the scenario outline' do
               lines = <<-OUTPUT
               Examples: Fruit
                | Things  |
@@ -531,16 +531,16 @@ OUTPUT
               end
             end
 
-            it "has 4 undefined scenarios" do
-              expect(@out.string).to include "4 scenarios (4 undefined)"
+            it 'has 4 undefined scenarios' do
+              expect(@out.string).to include '4 scenarios (4 undefined)'
             end
 
-            it "has 4 undefined steps" do
-              expect(@out.string).to include "4 steps (4 undefined)"
+            it 'has 4 undefined steps' do
+              expect(@out.string).to include '4 steps (4 undefined)'
             end
           end
 
-          describe "with a step with a py string" do
+          describe 'with a step with a py string' do
             define_feature <<-FEATURE
           Feature: Traveling circus
 
@@ -551,7 +551,7 @@ OUTPUT
                """
             FEATURE
 
-            it "does not display the pystring" do
+            it 'does not display the pystring' do
               expect(@out.string).not_to include <<OUTPUT
       """
       foo
@@ -560,7 +560,7 @@ OUTPUT
             end
           end
 
-          describe "with a multiline step arg" do
+          describe 'with a multiline step arg' do
             define_feature <<-FEATURE
           Feature: Traveling circus
 
@@ -571,7 +571,7 @@ OUTPUT
                | bar  |
             FEATURE
 
-            it "does not display the multiline string" do
+            it 'does not display the multiline string' do
               expect(@out.string).not_to include <<OUTPUT
       | name |
       | foo  |
@@ -580,7 +580,7 @@ OUTPUT
             end
           end
 
-          describe "with a table in the background and the scenario" do
+          describe 'with a table in the background and the scenario' do
             define_feature <<-FEATURE
           Feature: accountant monkey
 
@@ -594,13 +594,13 @@ OUTPUT
                | g | h |
             FEATURE
 
-            it "does not display the table for the background" do
+            it 'does not display the table for the background' do
               expect(@out.string).not_to include <<OUTPUT
       | a | b |
       | c | d |
 OUTPUT
             end
-            it "does not display the table for the scenario" do
+            it 'does not display the table for the scenario' do
               expect(@out.string).not_to include <<OUTPUT
       | e | f |
       | g | h |
@@ -608,7 +608,7 @@ OUTPUT
             end
           end
 
-          describe "with a py string in the background and the scenario" do
+          describe 'with a py string in the background and the scenario' do
             define_feature <<-FEATURE
           Feature: py strings
 
@@ -624,14 +624,14 @@ OUTPUT
                 """
             FEATURE
 
-            it "does not display the background py string" do
+            it 'does not display the background py string' do
               expect(@out.string).not_to include <<OUTPUT
       """
       foo
       """
 OUTPUT
             end
-            it "does not display the scenario py string" do
+            it 'does not display the scenario py string' do
               expect(@out.string).not_to include <<OUTPUT
       """
       bar
@@ -642,7 +642,7 @@ OUTPUT
         end
       end
 
-      context "In --expand mode" do
+      context 'In --expand mode' do
         let(:options) { { expand: true } }
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
@@ -650,12 +650,12 @@ OUTPUT
           @formatter = Pretty.new(runtime, @out, {})
         end
 
-        describe "given a single feature" do
+        describe 'given a single feature' do
           before(:each) do
             run_defined_feature
           end
 
-          describe "with a scenario outline" do
+          describe 'with a scenario outline' do
             define_feature <<-FEATURE
           Feature: Fud Pyramid
 
@@ -672,7 +672,7 @@ OUTPUT
                | carrots  |
             FEATURE
 
-            it "outputs the instantiated scenarios" do
+            it 'outputs the instantiated scenarios' do
               lines = <<-OUTPUT
               Examples: Fruit
                 Scenario: | apples |
@@ -691,7 +691,7 @@ OUTPUT
             end
           end
 
-          describe "with a scenario outline in en-lol" do
+          describe 'with a scenario outline in en-lol' do
             define_feature <<-FEATURE
           # language: en-lol
           OH HAI: STUFFING
@@ -707,7 +707,7 @@ OUTPUT
                |    3     |  2  |    1    |
             FEATURE
 
-            it "outputs localized text" do
+            it 'outputs localized text' do
               lines = <<-OUTPUT
           OH HAI: STUFFING
 
@@ -731,7 +731,7 @@ OUTPUT
         end
       end
 
-      context "In --expand mode with --source as an option" do
+      context 'In --expand mode with --source as an option' do
         let(:options) { { expand: true } }
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
@@ -739,12 +739,12 @@ OUTPUT
           @formatter = Pretty.new(runtime, @out, {:source => true})
         end
 
-        describe "given a single feature" do
+        describe 'given a single feature' do
           before(:each) do
             run_defined_feature
           end
 
-          describe "with a scenario outline" do
+          describe 'with a scenario outline' do
             define_feature <<-FEATURE
           Feature: Fud Pyramid
 
@@ -761,7 +761,7 @@ OUTPUT
                | carrots  |
             FEATURE
 
-            it "includes the source in the output" do
+            it 'includes the source in the output' do
               lines = <<-OUTPUT
               Scenario Outline: Monkey eats a balanced diet # spec.feature:3
                 Given there are <Things>                    # spec.feature:4
@@ -781,7 +781,7 @@ OUTPUT
               end
             end
 
-            context "With very wide cells" do
+            context 'With very wide cells' do
               define_feature <<-FEATURE
             Feature: Monkey Business
 
@@ -793,7 +793,7 @@ OUTPUT
                  | Hominidae       | Very long cell content |
               FEATURE
 
-              it "the scenario line controls the source indentation" do
+              it 'the scenario line controls the source indentation' do
                 lines = <<-OUTPUT
               Examples:
                  Scenario: | Hominidae | Very long cell content | # spec.feature:8
@@ -809,7 +809,7 @@ OUTPUT
         end
       end
 
-      context "snippets contain relevant keyword replacements" do
+      context 'snippets contain relevant keyword replacements' do
 
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
@@ -818,7 +818,7 @@ OUTPUT
           run_defined_feature
         end
 
-        describe "With a scenario that has undefined steps" do
+        describe 'With a scenario that has undefined steps' do
           define_feature <<-FEATURE
           Feature: Banana party
 
@@ -832,12 +832,12 @@ OUTPUT
             FEATURE
 
           it "containes snippets with 'And' or 'But' replaced by previous step name" do
-            expect(@out.string).to include("Given(/^there are bananas and apples$/)")
-            expect(@out.string).to include("Given(/^other monkeys are around$/)")
-            expect(@out.string).to include("When(/^one monkey eats a banana$/)")
-            expect(@out.string).to include("When(/^the other monkeys eat all the apples$/)")
-            expect(@out.string).to include("Then(/^bananas remain$/)")
-            expect(@out.string).to include("Then(/^there are no apples left$/)")
+            expect(@out.string).to include('Given(/^there are bananas and apples$/)')
+            expect(@out.string).to include('Given(/^other monkeys are around$/)')
+            expect(@out.string).to include('When(/^one monkey eats a banana$/)')
+            expect(@out.string).to include('When(/^the other monkeys eat all the apples$/)')
+            expect(@out.string).to include('Then(/^bananas remain$/)')
+            expect(@out.string).to include('Then(/^there are no apples left$/)')
           end
         end
 
@@ -854,12 +854,12 @@ OUTPUT
               * there are no apples left
           FEATURE
           it "replaces the first step with 'Given'" do
-            expect(@out.string).to include("Given(/^there are bananas and apples$/)")
+            expect(@out.string).to include('Given(/^there are bananas and apples$/)')
           end
           it "uses actual keywords as the 'previous' keyword for future replacements" do
-            expect(@out.string).to include("Given(/^other monkeys are around$/)")
-            expect(@out.string).to include("When(/^the other monkeys eat all the apples$/)")
-            expect(@out.string).to include("Then(/^there are no apples left$/)")
+            expect(@out.string).to include('Given(/^other monkeys are around$/)')
+            expect(@out.string).to include('When(/^the other monkeys eat all the apples$/)')
+            expect(@out.string).to include('Then(/^there are no apples left$/)')
           end
         end
 
@@ -875,8 +875,8 @@ OUTPUT
           define_steps do
             Given(/^this step passes$/) {}
           end
-          it "uses actual keyword of the previous passing step for the undefined step" do
-            expect(@out.string).to include("Then(/^this step is undefined$/)")
+          it 'uses actual keyword of the previous passing step for the undefined step' do
+            expect(@out.string).to include('Then(/^this step is undefined$/)')
           end
         end
 
@@ -896,12 +896,12 @@ OUTPUT
             Given(/^this step passes$/) {}
           end
           it "uses 'Given' as actual keyword the step in each scenario" do
-            expect(@out.string).to include("Given(/^this step is undefined$/)")
-            expect(@out.string).to include("Given(/^this step is also undefined$/)")
+            expect(@out.string).to include('Given(/^this step is undefined$/)')
+            expect(@out.string).to include('Given(/^this step is also undefined$/)')
           end
         end
 
-        describe "with a scenario in en-lol" do
+        describe 'with a scenario in en-lol' do
           define_feature <<-FEATURE
           # language: en-lol
           OH HAI: STUFFING
@@ -910,8 +910,8 @@ OUTPUT
               I CAN HAZ IN TEH BEGINNIN CUCUMBRZ
               AN I EAT CUCUMBRZ
             FEATURE
-          it "uses actual keyword of the previous passing step for the undefined step" do
-            expect(@out.string).to include("ICANHAZ(/^I EAT CUCUMBRZ$/)")
+          it 'uses actual keyword of the previous passing step for the undefined step' do
+            expect(@out.string).to include('ICANHAZ(/^I EAT CUCUMBRZ$/)')
           end
         end
       end

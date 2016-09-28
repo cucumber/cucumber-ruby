@@ -67,7 +67,7 @@ When(/^I run the feature with the (\w+) formatter$/) do |formatter|
 end
 
 Then(/^the stderr should contain a warning message$/) do
-  expect(all_stderr).to include("[warning]")
+  expect(all_stderr).to include('[warning]')
 end
 
 module CucumberHelper

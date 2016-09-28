@@ -6,6 +6,6 @@ task :fix_cr_lf do
     next if File.directory?(f) || f =~ /dos/
     s = IO.read(f)
     s.gsub!(/\r?\n/, "\n")
-    File.open(f, "w") { |io| io.write(s) }
+    File.open(f, 'w') { |io| io.write(s) }
   end
 end

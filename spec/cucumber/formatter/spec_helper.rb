@@ -52,7 +52,7 @@ module Cucumber
       end
 
       def gherkin
-        self.class.feature_content || raise("No feature content defined!")
+        self.class.feature_content || raise('No feature content defined!')
       end
 
       def runtime

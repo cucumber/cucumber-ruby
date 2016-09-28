@@ -102,7 +102,7 @@ module Cucumber
       end
 
       def exception_message_string(e, indent)
-        message = "#{e.message} (#{e.class})".dup.force_encoding("UTF-8")
+        message = "#{e.message} (#{e.class})".dup.force_encoding('UTF-8')
         message = linebreaks(message, ENV['CUCUMBER_TRUNCATE_OUTPUT'].to_i)
 
         "#{message}\n#{e.backtrace.join("\n")}".indent(indent)
@@ -155,7 +155,7 @@ module Cucumber
       def do_print_passing_wip(passed_messages)
         if passed_messages.any?
           @io.puts format_string("\nThe --wip switch was used, so I didn't expect anything to pass. These scenarios passed:", :failed)
-          print_element_messages(passed_messages, :passed, "scenarios")
+          print_element_messages(passed_messages, :passed, 'scenarios')
         else
           @io.puts format_string("\nThe --wip switch was used, so the failures were expected. All is good.\n", :passed)
         end

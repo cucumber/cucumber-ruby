@@ -2076,7 +2076,7 @@ module Cucumber
 
       describe 'before_step_result message' do
         context 'when the step matches' do
-          it "sends the step match to the formatter" do
+          it 'sends the step match to the formatter' do
             expect(formatter).to receive(:before_step_result) do |_, step_match, *|
               expect(step_match).to be_a SimpleStepMatch
             end
@@ -2091,7 +2091,7 @@ module Cucumber
         end
 
         context "when the step doesn't match" do
-          it "sends a null object to the formatter" do
+          it 'sends a null object to the formatter' do
           end
         end
       end
@@ -2109,7 +2109,7 @@ module Cucumber
         end
       end
 
-      context "after_feature_element callback" do
+      context 'after_feature_element callback' do
         it 'passes an object reflecting the status of the scenario' do
           expect( formatter ).to receive(:after_feature_element).once do |scenario|
             expect( scenario ).to be_failed

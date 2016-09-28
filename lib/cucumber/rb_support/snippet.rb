@@ -38,7 +38,7 @@ module Cucumber
         end
 
         def self.cli_option_string(type)
-          "%-7s: %-28s e.g. %s" % [type, description, example]
+          '%-7s: %-28s e.g. %s' % [type, description, example]
         end
 
         private
@@ -61,18 +61,18 @@ module Cucumber
           do_block << "do#{arguments}\n"
           multiline_argument.append_comment_to(do_block)
           do_block << "  pending # Write code here that turns the phrase above into concrete actions\n"
-          do_block << "end"
+          do_block << 'end'
           do_block
         end
 
         def arguments
           block_args = (0...number_of_arguments).map { |n| "arg#{n+1}" }
           multiline_argument.append_block_argument_to(block_args)
-          block_args.empty? ? "" : " |#{block_args.join(", ")}|"
+          block_args.empty? ? '' : " |#{block_args.join(", ")}|"
         end
 
         def self.example
-          new("Given", "missing step", MultilineArgument::None.new).step
+          new('Given', 'missing step', MultilineArgument::None.new).step
         end
 
       end
@@ -83,7 +83,7 @@ module Cucumber
         end
 
         def self.description
-          "Snippets with parentheses"
+          'Snippets with parentheses'
         end
       end
 
@@ -93,7 +93,7 @@ module Cucumber
         end
 
         def self.description
-          "Snippets without parentheses. Note that these cause a warning from modern versions of Ruby."
+          'Snippets without parentheses. Note that these cause a warning from modern versions of Ruby.'
         end
       end
 
@@ -103,7 +103,7 @@ module Cucumber
         end
 
         def self.description
-          "Snippets with percent regexp"
+          'Snippets with percent regexp'
         end
       end
 

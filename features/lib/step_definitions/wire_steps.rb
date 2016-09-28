@@ -6,7 +6,7 @@ Given(/^there is a wire server (running |)on port (\d+) which understands the fo
   end
 
   @server = FakeWireServer.new(port.to_i, protocol)
-  start_wire_server if running.strip == "running"
+  start_wire_server if running.strip == 'running'
 end
 
 Given(/^the wire server takes (.*) seconds to respond to the invoke message$/) do |timeout|

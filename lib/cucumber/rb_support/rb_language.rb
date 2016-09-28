@@ -17,7 +17,7 @@ module Cucumber
     # Raised if a World block returns Nil.
     class NilWorld < StandardError
       def initialize
-        super("World procs should never return nil")
+        super('World procs should never return nil')
       end
     end
 
@@ -103,7 +103,7 @@ module Cucumber
       end
 
       def load_code_file(code_file)
-        return unless File.extname(code_file) == ".rb"
+        return unless File.extname(code_file) == '.rb'
         load File.expand_path(code_file) # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from RbDsl
       end
 
@@ -204,7 +204,7 @@ module Cucumber
             raise NilWorld.new
           rescue NilWorld => e
             e.backtrace.clear
-            e.backtrace.push(RbSupport.backtrace_line(proc, "World"))
+            e.backtrace.push(RbSupport.backtrace_line(proc, 'World'))
             raise e
           end
         else

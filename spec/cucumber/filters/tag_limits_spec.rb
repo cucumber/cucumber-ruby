@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require "cucumber/filters/tag_limits"
+require 'cucumber/filters/tag_limits'
 
 describe Cucumber::Filters::TagLimits do
   subject(:filter) { Cucumber::Filters::TagLimits.new(tag_limits, receiver) }
@@ -16,24 +16,24 @@ describe Cucumber::Filters::TagLimits do
     allow(Cucumber::Filters::TagLimits::TestCaseIndex).to receive(:new) { test_case_index }
   end
 
-  describe "#test_case" do
+  describe '#test_case' do
     before do
       allow(test_case_index).to receive(:add)
       allow(gated_receiver).to receive(:test_case)
     end
 
-    it "indexes the test case" do
+    it 'indexes the test case' do
       expect(test_case_index).to receive(:add).with(test_case)
       filter.test_case(test_case)
     end
 
-    it "adds the test case to the gated receiver" do
+    it 'adds the test case to the gated receiver' do
       expect(gated_receiver).to receive(:test_case).with(test_case)
       filter.test_case(test_case)
     end
   end
 
-  describe "#done" do
+  describe '#done' do
     let(:verifier) { double(:verifier) }
 
     before do
@@ -41,17 +41,17 @@ describe Cucumber::Filters::TagLimits do
       allow(gated_receiver).to receive(:done)
     end
 
-    it "verifies tag limits have not been exceeded" do
+    it 'verifies tag limits have not been exceeded' do
       expect(verifier).to receive(:verify!).with(test_case_index)
       filter.done
     end
 
-    context "the verifier verifies successfully" do
+    context 'the verifier verifies successfully' do
       before do
         allow(verifier).to receive(:verify!).with(test_case_index)
       end
 
-      it "calls done on the receiver gate" do
+      it 'calls done on the receiver gate' do
         expect(gated_receiver).to receive(:done)
         filter.done
       end
