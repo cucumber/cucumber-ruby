@@ -30,6 +30,7 @@
 * fix Lint/EndAlignment ([#1032](https://github.com/cucumber/cucumber-ruby/pull/1032) @hotovson)
 * fix Lint/NonLocalExitFromIterator ([#1037](https://github.com/cucumber/cucumber-ruby/pull/1037) @hotovson)
 * fix Lint/UselessAccessModifier ([#1036](https://github.com/cucumber/cucumber-ruby/pull/1036) @hotovson)
+* Refs #1021 - Fixes the rubocop violation 'Style/StringLiterals' ([#1027](https://github.com/cucumber/cucumber-ruby/pull/1027) @pmatsinopoulos)
 
 ## [v2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
 
