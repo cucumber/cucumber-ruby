@@ -38,7 +38,7 @@ module Cucumber
         end
 
         def self.cli_option_string(type)
-          '%-7s: %-28s e.g. %s' % [type, description, example]
+          format('%-7s: %-28s e.g. %s', type, description, example)
         end
 
         private

@@ -62,11 +62,11 @@ module Cucumber
         end
 
         def load_path(libs)
-          ['"%s"' % @libs.join(File::PATH_SEPARATOR)]
+          [format('"%s"', @libs.join(File::PATH_SEPARATOR))]
         end
 
         def quoted_binary(cucumber_bin)
-          ['"%s"' % cucumber_bin]
+          [format('"%s"', cucumber_bin)]
         end
 
         def use_bundler

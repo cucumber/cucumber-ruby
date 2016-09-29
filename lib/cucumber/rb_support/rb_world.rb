@@ -125,7 +125,7 @@ module Cucumber
           modules += included_modules
         end
         modules << stringify_namespaced_modules
-        sprintf('#<%s:0x%x>', modules.join('+'), self.object_id)
+        format('#<%s:0x%x>', modules.join('+'), self.object_id)
       end
 
       # see {#inspect}
