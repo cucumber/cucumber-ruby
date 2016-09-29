@@ -153,7 +153,7 @@ module Cucumber
 
     def feature_files
       potential_feature_files = with_default_features_path(paths).map do |path|
-        path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
+        path = path.tr('\\', '/') # In case we're on windows. Globs don't work with backslashes.
         path = path.chomp('/')
 
         # TODO: Move to using feature loading strategies stored in
@@ -179,7 +179,7 @@ module Cucumber
 
     def all_files_to_load
       files = require_dirs.map do |path|
-        path = path.gsub(/\\/, '/') # In case we're on windows. Globs don't work with backslashes.
+        path = path.tr('\\', '/') # In case we're on windows. Globs don't work with backslashes.
         path = path.gsub(/\/$/, '') # Strip trailing slash.
         File.directory?(path) ? Dir["#{path}/**/*"] : path
       end.flatten.uniq

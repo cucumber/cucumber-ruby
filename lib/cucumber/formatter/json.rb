@@ -218,7 +218,7 @@ module Cucumber
 
       def encode64(data)
         # strip newlines from the encoded data
-        Base64.encode64(data).gsub(/\n/, '')
+        Base64.encode64(data).delete("\n")
       end
 
       class Builder
@@ -316,7 +316,7 @@ module Cucumber
         private
 
         def create_id(element)
-          element.name.downcase.gsub(/ /, '-')
+          element.name.downcase.tr(' ', '-')
         end
 
         def create_tags_array(tags)

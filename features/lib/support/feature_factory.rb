@@ -55,7 +55,7 @@ Feature: #{name}
   end
 
   def filename(name)
-    "features/#{name.downcase.gsub(' ', '_')}.feature"
+    "features/#{name.downcase.tr(' ', '_')}.feature"
   end
 
   def features
