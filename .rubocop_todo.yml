@@ -85,15 +85,6 @@ Lint/ShadowingOuterLocalVariable:
     - 'lib/cucumber/multiline_argument/data_table.rb'
     - 'spec/cucumber/step_match_spec.rb'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-Lint/StringConversionInInterpolation:
-  Exclude:
-    - 'lib/cucumber/formatter/html.rb'
-    - 'lib/cucumber/rb_support/rb_language.rb'
-    - 'lib/cucumber/rb_support/rb_step_definition.rb'
-    - 'lib/cucumber/rb_support/snippet.rb'
-
 # Offense count: 69
 # Cop supports --auto-correct.
 # Configuration parameters: AllowUnusedKeywordArguments.

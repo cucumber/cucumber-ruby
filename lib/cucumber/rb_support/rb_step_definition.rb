@@ -108,7 +108,7 @@ module Cucumber
       end
 
       def backtrace_line
-        "#{location.to_s}:in `#{regexp_source}'"
+        "#{location}:in `#{regexp_source}'"
       end
 
       def file_colon_line
