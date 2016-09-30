@@ -221,7 +221,7 @@ module Cucumber
 
     def self.backtrace_line(proc, name)
       location = Cucumber::Core::Ast::Location.from_source_location(*proc.source_location)
-      "#{location.to_s}:in `#{name}'"
+      "#{location}:in `#{name}'"
     end
   end
 end

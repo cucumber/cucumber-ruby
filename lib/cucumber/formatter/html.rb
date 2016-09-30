@@ -619,7 +619,7 @@ module Cucumber
       def print_status_counts
         counts = [:failed, :skipped, :undefined, :pending, :passed].map do |status|
           elements = yield status
-          elements.any? ? "#{elements.length} #{status.to_s}" : nil
+          elements.any? ? "#{elements.length} #{status}" : nil
         end.compact
         return " (#{counts.join(', ')})" if counts.any?
       end
