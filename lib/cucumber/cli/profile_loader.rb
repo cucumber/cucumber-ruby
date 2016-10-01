@@ -49,7 +49,7 @@ Defined profiles in cucumber.yml:
         cucumber_file && File.exist?(cucumber_file)
       end
 
-    private
+      private
 
       # Loads the profile, processing it through ERB and YAML, and returns it as a hash.
       def cucumber_yml

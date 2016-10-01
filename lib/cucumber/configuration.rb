@@ -242,7 +242,7 @@ module Cucumber
       @options[:event_bus]
     end
 
-  private
+    private
 
     def default_options
       {

@@ -166,13 +166,6 @@ Performance/StringReplacement:
     - 'lib/cucumber/configuration.rb'
     - 'lib/cucumber/formatter/json.rb'
 
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
-# SupportedStyles: outdent, indent
-Style/AccessModifierIndentation:
-  Enabled: false
-
 # Offense count: 6
 Style/AccessorMethodName:
   Exclude:

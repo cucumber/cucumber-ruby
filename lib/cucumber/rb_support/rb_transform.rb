@@ -37,7 +37,7 @@ module Cucumber
          convert_captures(strip_anchors(@regexp.source))
       end
 
-    private
+      private
       def convert_captures(regexp_source)
         regexp_source
           .gsub(/(\()(?!\?[<:=!])/,'(?:')
