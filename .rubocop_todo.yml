@@ -411,15 +411,6 @@ Style/EachWithObject:
     - 'lib/cucumber/formatter/steps.rb'
     - 'lib/cucumber/rb_support/rb_language.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: empty, nil, both
-Style/EmptyElse:
-  Exclude:
-    - 'lib/cucumber/core_ext/instance_exec.rb'
-    - 'lib/cucumber/step_argument.rb'
-
 # Offense count: 12
 # Cop supports --auto-correct.
 # Configuration parameters: AllowAdjacentOneLineDefs.

@@ -63,9 +63,6 @@ class Object #:nodoc:
 
       backtrace[replacement_line+1..end_pos] = nil
       backtrace.compact!
-    else
-      # This happens with rails, because they screw up the backtrace
-      # before we get here (injecting erb stacktrace and such)
     end
   end
 end
