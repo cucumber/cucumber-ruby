@@ -20,6 +20,7 @@
 
 ### Refactoring / DX
 
+* Fixes for rubocop violations ([#1042](https://github.com/cucumber/cucumber-ruby/pull/1042) @phoebeclarke)
 * Add frozen string literal magic comment to files and fix issues it causes ([#996](https://github.com/cucumber/cucumber-ruby/pull/996) @twalpole)
 * Several tests failing with rbenv ([#1017](https://github.com/cucumber/cucumber-ruby/issues/1017) @nodo)
 * Add rubocop to check the style of the codebase ([1014](https://github.com/cucumber/cucumber-ruby/issues/1014) @nodo)
