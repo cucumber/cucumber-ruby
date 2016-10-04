@@ -169,12 +169,12 @@ TEXT
         Hash(@options)
       end
 
-    protected
+      protected
 
       attr_reader :options, :profiles, :expanded_args
       protected :options, :profiles, :expanded_args
 
-    private
+      private
 
       def color_msg
         [

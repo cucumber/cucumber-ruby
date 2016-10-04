@@ -56,7 +56,7 @@ module Cucumber
         @visitor.embed(src, mime_type, label)
       end
 
-    private
+      private
 
       def mri_gets(timeout_seconds)
         begin

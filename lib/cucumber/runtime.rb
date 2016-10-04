@@ -105,7 +105,7 @@ module Cucumber
       Core::Ast::DocString.new(string_without_triple_quotes, content_type, location)
     end
 
-  private
+    private
 
     def fire_after_configuration_hook #:nodoc
       @support_code.fire_hook(:after_configuration, @configuration)

@@ -12,8 +12,6 @@ module Cucumber
           offset = match.offset(n)[0]
           new(offset, val)
         end
-      else
-        nil
       end
     end
 
