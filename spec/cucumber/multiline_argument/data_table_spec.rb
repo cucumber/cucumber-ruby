@@ -7,10 +7,10 @@ module Cucumber
   module MultilineArgument
     describe DataTable do
       before do
-        @table = DataTable.from([
+        @table = DataTable.from [
           %w{one four seven},
           %w{4444 55555 666666}
-        ])
+        ]
       end
 
       it 'should have rows' do
@@ -149,10 +149,10 @@ module Cucumber
 
       describe '#match' do
         before(:each) do
-          @table = DataTable.from([
+          @table = DataTable.from [
             %w{one four seven},
             %w{4444 55555 666666}
-          ])
+          ]
         end
 
         it 'returns nil if headers do not match' do
@@ -168,10 +168,10 @@ module Cucumber
 
       describe '#transpose' do
         before(:each) do
-          @table = DataTable.from([
+          @table = DataTable.from [
             %w{one 1111},
             %w{two 22222}
-          ])
+          ]
         end
 
         it 'should be convertible in to an array where each row is a hash' do
@@ -182,28 +182,28 @@ module Cucumber
       describe '#rows_hash' do
 
         it 'should return a hash of the rows' do
-          table = DataTable.from([
+          table = DataTable.from [
             %w{one 1111},
             %w{two 22222}
-          ])
+          ]
           expect( table.rows_hash ).to eq( 'one' => '1111', 'two' => '22222' )
         end
 
         it "should fail if the table doesn't have two columns" do
-          faulty_table = DataTable.from([
+          faulty_table = DataTable.from [
             %w{one 1111 abc},
             %w{two 22222 def}
-          ])
+          ]
           expect {
             faulty_table.rows_hash
           }.to raise_error('The table must have exactly 2 columns')
         end
 
         it 'should support header and column mapping' do
-          table = DataTable.from([
+          table = DataTable.from [
             %w{one 1111},
             %w{two 22222}
-          ])
+          ]
           t2 = table.map_headers({ 'two' => 'Two' }) { |header| header.upcase }.
                      map_column('two', false) { |val| val.to_i }
           expect( t2.rows_hash ).to eq( 'ONE' => '1111', 'Two' => 22222 )
@@ -212,10 +212,10 @@ module Cucumber
 
       describe '#map_headers!' do
         let(:table) do
-          DataTable.from([
-          %w{HELLO WORLD},
-          %w{4444 55555}
-          ])
+          DataTable.from [
+            %w{HELLO WORLD},
+            %w{4444 55555}
+          ]
         end
 
         it 'renames the columns to the specified values in the provided hash' do
@@ -252,10 +252,10 @@ module Cucumber
 
       describe '#map_headers' do
         let(:table) do
-           DataTable.from([
-          %w{HELLO WORLD},
-          %w{4444 55555}
-          ])
+           DataTable.from [
+             %w{HELLO WORLD},
+             %w{4444 55555}
+           ]
         end
 
         it 'renames the columns to the specified values in the provided hash' do
@@ -407,14 +407,14 @@ module Cucumber
         end
 
         it 'should inspect missing and surplus cells' do
-          t1 = DataTable.from([
+          t1 = DataTable.from [
             ['name',  'male', 'lastname', 'swedish'],
             ['aslak', 'true', 'hellesøy', 'false']
-          ])
-          t2 = DataTable.from([
+          ]
+          t2 = DataTable.from [
             ['name',  'male', 'lastname', 'swedish'],
             ['aslak', true,   'hellesøy', false]
-          ])
+          ]
           expect { t1.diff!(t2) }.to raise_error
 
           expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
@@ -425,15 +425,15 @@ module Cucumber
         end
 
         it 'should allow column mapping of target before diffing' do
-          t1 = DataTable.from([
+          t1 = DataTable.from [
             ['name',  'male'],
             ['aslak', 'true']
-          ])
+          ]
           t1.map_column!('male') { |m| m == 'true' }
-          t2 = DataTable.from([
+          t2 = DataTable.from [
             ['name',  'male'],
             ['aslak', true]
-          ])
+          ]
           t1.diff!(t2)
           expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     name  |     male |
@@ -442,17 +442,17 @@ module Cucumber
         end
 
         it 'should allow column mapping of argument before diffing' do
-          t1 = DataTable.from([
+          t1 = DataTable.from [
             ['name',  'male'],
             ['aslak', true]
-          ])
+          ]
           t1.map_column!('male') {
             'true'
           }
-          t2 = DataTable.from([
+          t2 = DataTable.from [
             ['name',  'male'],
             ['aslak', 'true']
-          ])
+          ]
           t2.diff!(t1)
           expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     name  |     male |
@@ -461,16 +461,16 @@ module Cucumber
         end
 
         it 'should allow header mapping before diffing' do
-          t1 = DataTable.from([
+          t1 = DataTable.from [
             ['Name',  'Male'],
             ['aslak', 'true']
-          ])
+          ]
           t1.map_headers!('Name' => 'name', 'Male' => 'male')
           t1.map_column!('male') { |m| m == 'true' }
-          t2 = DataTable.from([
+          t2 = DataTable.from [
             ['name',  'male'],
             ['aslak', true]
-          ])
+          ]
           t1.diff!(t2)
           expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     name  |     male |
@@ -479,14 +479,14 @@ module Cucumber
         end
 
         it 'should detect seemingly identical tables as different' do
-          t1 = DataTable.from([
+          t1 = DataTable.from [
             ['X',  'Y'],
             ['2', '1']
-          ])
-          t2 = DataTable.from([
+          ]
+          t2 = DataTable.from [
             ['X',  'Y'],
             [2, 1]
-          ])
+          ]
           expect { t1.diff!(t2) }.to raise_error
           expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     X       |     Y       |
@@ -496,10 +496,10 @@ module Cucumber
         end
 
         it 'should not allow mappings that match more than 1 column' do
-          t1 = DataTable.from([
+          t1 = DataTable.from [
             ['Cuke',  'Duke'],
             ['Foo', 'Bar']
-          ])
+          ]
           expect do
             t1.map_headers!(/uk/ => 'u')
             t1.hashes
