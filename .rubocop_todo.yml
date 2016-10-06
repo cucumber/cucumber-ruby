@@ -508,18 +508,6 @@ Style/FirstParameterIndentation:
   Exclude:
     - 'spec/cucumber/rake/forked_spec.rb'
 
-# Offense count: 9
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: format, sprintf, percent
-Style/FormatString:
-  Exclude:
-    - 'lib/cucumber/formatter/duration.rb'
-    - 'lib/cucumber/formatter/junit.rb'
-    - 'lib/cucumber/formatter/usage.rb'
-    - 'lib/cucumber/rake/task.rb'
-    - 'lib/cucumber/rb_support/rb_world.rb'
-    - 'lib/cucumber/rb_support/snippet.rb'
-
 # Offense count: 13
 # Configuration parameters: AllowedVariables.
 Style/GlobalVars:

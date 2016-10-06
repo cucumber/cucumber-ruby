@@ -79,7 +79,7 @@ module Cucumber
       end
 
       def print_step_definition(stepdef_key)
-        @io.print format_string(sprintf('%.7f', stepdef_key.mean_duration), :skipped) + ' ' unless config.dry_run?
+        @io.print format_string(format('%.7f', stepdef_key.mean_duration), :skipped) + ' ' unless config.dry_run?
         @io.print format_string(stepdef_key.regexp_source, stepdef_key.status)
         if config.source?
           indent = max_length - stepdef_key.regexp_source.unpack('U*').length
@@ -92,7 +92,7 @@ module Cucumber
       def print_steps(stepdef_key)
         @stepdef_to_match[stepdef_key].each do |step|
           @io.print '  '
-          @io.print format_string(sprintf('%.7f', step[:duration]), :skipped) + ' ' unless config.dry_run?
+          @io.print format_string(format('%.7f', step[:duration]), :skipped) + ' ' unless config.dry_run?
           @io.print format_step(step[:keyword], step[:step_match], step[:status], nil)
           if config.source?
             indent = max_length - (step[:keyword].unpack('U*').length + step[:step_match].format_args.unpack('U*').length)
