@@ -33,6 +33,7 @@
 * fix Lint/UselessAccessModifier ([#1036](https://github.com/cucumber/cucumber-ruby/pull/1036) @hotovson)
 * Refs #1021 - Fixes the rubocop violation 'Style/StringLiterals' ([#1027](https://github.com/cucumber/cucumber-ruby/pull/1027) @pmatsinopoulos)
 * Fixes rubocop violation Lint/StringConversionInInterpolation ([#1038](https://github.com/cucumber/cucumber-ruby/pull/1038) @hotovson)
+* Fixes rubocop violation Style/FormatString ([#1040](https://github.com/cucumber/cucumber-ruby/pull/1040) @pmatsinopoulos)
 
 ## [v2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
 
