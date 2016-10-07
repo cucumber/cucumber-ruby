@@ -411,8 +411,8 @@ TEXT
         profile_args = profile_loader.args_from(profile)
         profile_options = Options.parse(
           profile_args, @out_stream, @error_stream,
-          :skip_profile_information => true,
-          :profile_loader => profile_loader
+          skip_profile_information: true,
+          profile_loader: profile_loader
         )
         reverse_merge(profile_options)
       end
@@ -506,19 +506,19 @@ TEXT
 
       def default_options
         {
-          :strict       => false,
-          :require      => [],
-          :dry_run      => false,
-          :formats      => [],
-          :excludes     => [],
-          :tag_expressions  => [],
-          :name_regexps => [],
-          :env_vars     => {},
-          :diff_enabled => true,
-          :snippets     => true,
-          :source       => true,
-          :duration     => true,
-          :retry        => 0
+          strict: false,
+          require: [],
+          dry_run: false,
+          formats: [],
+          excludes: [],
+          tag_expressions: [],
+          name_regexps: [],
+          env_vars: {},
+          diff_enabled: true,
+          snippets: true,
+          source: true,
+          duration: true,
+          retry: 0
         }
       end
     end

@@ -259,8 +259,8 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
               {shape.to_sym => color.to_sym}
             end
 
-            expect(rb.execute_transforms(['shape: circle, color: blue'])).to eq [{:circle => :blue}]
-            expect(rb.execute_transforms(['shape: square, color: red'])).to eq [{:square => :red}]
+            expect(rb.execute_transforms(['shape: circle, color: blue'])).to eq [{circle: :blue}]
+            expect(rb.execute_transforms(['shape: square, color: red'])).to eq [{square: :red}]
             expect(rb.execute_transforms(['not shape: square, not color: red'])).to eq ['not shape: square, not color: red']
           end
         end

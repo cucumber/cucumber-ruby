@@ -246,22 +246,22 @@ module Cucumber
 
     def default_options
       {
-        :autoload_code_paths => ['features/support', 'features/step_definitions'],
-        :filters             => [],
-        :strict              => false,
-        :require             => [],
-        :dry_run             => false,
-        :fail_fast           => false,
-        :formats             => [],
-        :excludes            => [],
-        :tag_expressions     => [],
-        :name_regexps        => [],
-        :env_vars            => {},
-        :diff_enabled        => true,
-        :snippets            => true,
-        :source              => true,
-        :duration            => true,
-        :event_bus           => Core::EventBus.new(Core::Events.registry.merge(Cucumber::Events.registry))
+        autoload_code_paths: ['features/support', 'features/step_definitions'],
+        filters: [],
+        strict: false,
+        require: [],
+        dry_run: false,
+        fail_fast: false,
+        formats: [],
+        excludes: [],
+        tag_expressions: [],
+        name_regexps: [],
+        env_vars: {},
+        diff_enabled: true,
+        snippets: true,
+        source: true,
+        duration: true,
+        event_bus: Core::EventBus.new(Core::Events.registry.merge(Cucumber::Events.registry))
       }
     end
 
