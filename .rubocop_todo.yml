@@ -729,11 +729,6 @@ Style/OpMethod:
     - 'lib/cucumber/rb_support/rb_step_definition.rb'
     - 'lib/cucumber/step_definition_light.rb'
 
-# Offense count: 25
-# Cop supports --auto-correct.
-Style/ParallelAssignment:
-  Enabled: false
-
 # Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: AllowSafeAssignment.
