@@ -159,7 +159,7 @@ module Cucumber
           end
 
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -184,7 +184,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -220,7 +220,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -252,7 +252,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
               :before_feature,
               :before_tags,
               :after_tags,
@@ -292,7 +292,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -376,7 +376,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -439,7 +439,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -521,7 +521,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -607,7 +607,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -706,7 +706,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -782,7 +782,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -863,7 +863,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -912,7 +912,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
               :before_feature,
               :before_tags,
               :after_tags,
@@ -957,7 +957,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1014,7 +1014,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1083,7 +1083,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1133,7 +1133,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features,
-            ]
+          ]
         end
 
         it 'scenario outline two rows' do
@@ -1150,7 +1150,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1193,7 +1193,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features,
-            ]
+          ]
         end
 
         it 'scenario outline two examples tables' do
@@ -1213,7 +1213,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1268,7 +1268,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features,
-            ]
+          ]
         end
 
         it 'two scenario outline' do
@@ -1291,7 +1291,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1360,7 +1360,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features,
-            ]
+          ]
         end
 
         it 'failing scenario outline' do
@@ -1376,7 +1376,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1414,7 +1414,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features,
-            ]
+          ]
         end
 
         it 'a feature with a failing background and two scenarios' do
@@ -1432,7 +1432,7 @@ module Cucumber
             end
           end
           expect( formatter.legacy_messages ).to eq [
-              :before_features,
+            :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1474,7 +1474,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features,
-            ]
+          ]
         end
 
         context 'in expand mode' do
@@ -1495,7 +1495,7 @@ module Cucumber
               end
             end
             expect( formatter.legacy_messages ).to eq [
-                :before_features,
+              :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1535,7 +1535,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features,
-              ]
+            ]
           end
         end
 
@@ -1562,7 +1562,7 @@ module Cucumber
               end
             end
             expect( formatter.legacy_messages ).to eq([
-                :before_features,
+                                                        :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1582,7 +1582,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features,
-                ])
+                                                      ])
           end
         end
 
@@ -1609,7 +1609,7 @@ module Cucumber
             end
 
             expect( formatter.legacy_messages ).to eq([
-                :before_features,
+                                                        :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1629,7 +1629,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features,
-                ])
+                                                      ])
           end
 
           it 'prints the exception after the background name' do
@@ -1650,7 +1650,7 @@ module Cucumber
             end
 
             expect( formatter.legacy_messages ).to eq([
-                :before_features,
+                                                        :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1680,7 +1680,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features,
-                ])
+                                                      ])
           end
 
 
@@ -1703,7 +1703,7 @@ module Cucumber
             end
 
             expect( formatter.legacy_messages ).to eq([
-                :before_features,
+                                                        :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1742,7 +1742,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features,
-              ])
+                                                      ])
           end
         end
 
@@ -1772,7 +1772,7 @@ module Cucumber
             end
 
             expect( formatter.legacy_messages ).to eq([
-                :before_features,
+                                                        :before_features,
                   :before_feature,
                     :before_tags,
                     :after_tags,
@@ -1792,7 +1792,7 @@ module Cucumber
                     :after_feature_element,
                   :after_feature,
                 :after_features,
-                ])
+                                                      ])
           end
         end
 
@@ -1820,7 +1820,7 @@ module Cucumber
             end
 
             expect( formatter.legacy_messages ).to eq([
-              :before_features,
+                                                        :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1840,7 +1840,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features,
-            ])
+                                                      ])
           end
 
           it 'prints the exception after the examples table row' do
@@ -1862,7 +1862,7 @@ module Cucumber
             end
 
             expect( formatter.legacy_messages ).to eq([
-              :before_features,
+                                                        :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1901,7 +1901,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features,
-            ])
+                                                      ])
           end
         end
 
@@ -1929,7 +1929,7 @@ module Cucumber
             end
 
             expect( formatter.legacy_messages ).to eq([
-              :before_features,
+                                                        :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1949,7 +1949,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features,
-            ])
+                                                      ])
           end
         end
 
@@ -1968,7 +1968,7 @@ module Cucumber
             end
 
             expect( formatter.legacy_messages ).to eq([
-              :before_features,
+                                                        :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -1981,7 +1981,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features,
-            ])
+                                                      ])
           end
         end
 
@@ -2008,7 +2008,7 @@ module Cucumber
             end
 
             expect( formatter.legacy_messages ).to eq([
-              :before_features,
+                                                        :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -2021,7 +2021,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features,
-            ])
+                                                      ])
           end
         end
 
@@ -2049,7 +2049,7 @@ module Cucumber
             end
 
             expect( formatter.legacy_messages ).to eq([
-              :before_features,
+                                                        :before_features,
                 :before_feature,
                   :before_tags,
                   :after_tags,
@@ -2069,7 +2069,7 @@ module Cucumber
                   :after_feature_element,
                 :after_feature,
               :after_features,
-            ])
+                                                      ])
           end
         end
       end
