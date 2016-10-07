@@ -13,7 +13,7 @@ module Cucumber
     end
 
     describe 'with custom user options' do
-      let(:user_options) { { :autoload_code_paths => ['foo/bar/baz'] } }
+      let(:user_options) { { autoload_code_paths: ['foo/bar/baz'] } }
       subject { Configuration.new(user_options) }
 
       it 'allows you to override the defaults' do
