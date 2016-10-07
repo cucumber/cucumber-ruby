@@ -660,13 +660,6 @@ Style/MultilineMethodCallBraceLayout:
     - 'spec/cucumber/formatter/spec_helper.rb'
     - 'spec/cucumber/rake/forked_spec.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
-# SupportedStyles: aligned, indented
-Style/MultilineMethodCallIndentation:
-  Enabled: false
-
 # Offense count: 8
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
