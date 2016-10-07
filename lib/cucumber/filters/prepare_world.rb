@@ -14,7 +14,8 @@ module Cucumber
 
       class CaseFilter
         def initialize(runtime, original_test_case)
-          @runtime, @original_test_case = runtime, original_test_case
+          @runtime = runtime
+          @original_test_case = original_test_case
         end
 
         def test_case
