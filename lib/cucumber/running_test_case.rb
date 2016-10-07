@@ -2,7 +2,7 @@
 require 'delegate'
 
 module Cucumber
-  # Represents the current status of a running test case.
+  #  Represents the current status of a running test case.
   #
   # This wraps a `Cucumber::Core::Test::Case` and delegates
   # many methods to that object.

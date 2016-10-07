@@ -10,13 +10,13 @@ module Cucumber
     let(:search) { StepMatchSearch.new(rb_language.method(:step_matches), configuration) }
     let(:rb_language) { RbSupport::RbLanguage.new(runtime, configuration) }
     let(:runtime) do
-      # TODO: break out step definitions collection from RbLanguage so we don't need this
+      #  TODO: break out step definitions collection from RbLanguage so we don't need this
       :unused
     end
     let(:configuration) { Configuration.new(options) }
     let(:options) { {} }
     let(:dsl) do
-      # TODO: stop relying on implicit global state
+      #  TODO: stop relying on implicit global state
       rb_language
       Object.new.extend(RbSupport::RbDsl)
     end
@@ -111,7 +111,7 @@ spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three cute (.*)/'
         end
       end
 
-      # TODO: remove this - it's ... redundant
+      #  TODO: remove this - it's ... redundant
       # http://railsforum.com/viewtopic.php?pid=93881
       it "does not raise Redundant unless it's really redundant" do
         dsl.Given(/^(.*) (.*) user named '(.*)'$/) {|a,b,c|}
