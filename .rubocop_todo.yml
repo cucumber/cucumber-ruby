@@ -532,13 +532,6 @@ Style/IfUnlessModifier:
     - 'lib/cucumber/rake/task.rb'
     - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
 
-# Offense count: 89
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_brackets
-Style/IndentArray:
-  Enabled: false
-
 # Offense count: 4
 # Cop supports --auto-correct.
 # Configuration parameters: SupportedStyles, IndentationWidth.
