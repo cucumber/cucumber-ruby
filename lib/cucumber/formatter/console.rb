@@ -165,8 +165,8 @@ module Cucumber
         # no-op
       end
 
-      #define @delayed_messages = [] in your Formatter if you want to
-      #activate this feature
+      # define @delayed_messages = [] in your Formatter if you want to
+      # activate this feature
       def puts(*messages)
         if @delayed_messages
           @delayed_messages += messages

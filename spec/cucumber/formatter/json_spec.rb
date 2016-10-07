@@ -807,8 +807,8 @@ module Cucumber
       end
 
       def normalise_json(json)
-        #make sure duration was captured (should be >= 0)
-        #then set it to what is "expected" since duration is dynamic
+        # make sure duration was captured (should be >= 0)
+        # then set it to what is "expected" since duration is dynamic
         json.each do |feature|
           elements = feature.fetch('elements') { [] }
           elements.each do |scenario|
