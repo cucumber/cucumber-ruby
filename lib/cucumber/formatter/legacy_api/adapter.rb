@@ -401,7 +401,7 @@ module Cucumber
 
           def from_scenario_outline_to_hidden_backgroud(from, to)
             from.class.name == ScenarioOutlinePrinter.name and
-            to.class.name == HiddenBackgroundPrinter.name
+              to.class.name == HiddenBackgroundPrinter.name
           end
 
           def from_first_background(from)
