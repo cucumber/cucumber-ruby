@@ -523,13 +523,6 @@ Style/GuardClause:
     - 'lib/cucumber/formatter/pretty.rb'
     - 'lib/cucumber/rb_support/rb_world.rb'
 
-# Offense count: 182
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, UseHashRocketsWithSymbolValues.
-# SupportedStyles: ruby19, ruby19_no_mixed_keys, hash_rockets
-Style/HashSyntax:
-  Enabled: false
-
 # Offense count: 3
 Style/IfInsideElse:
   Exclude:

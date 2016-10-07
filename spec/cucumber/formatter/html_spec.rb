@@ -494,7 +494,7 @@ module Cucumber
         let(:options)   { { expand: true } }
         before(:each) do
           @out = StringIO.new
-          @formatter = Html.new(runtime, @out, {:expand => true})
+          @formatter = Html.new(runtime, @out, {expand: true})
           run_defined_feature
           @doc = Nokogiri.HTML(@out.string)
         end

@@ -23,4 +23,4 @@ Cucumber::Rake::Task.new(:features) do |t|
   t.set_profile_for_current_ruby
 end
 
-task :cucumber => :features
+task cucumber: :features

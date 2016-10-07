@@ -473,7 +473,7 @@ OUTPUT
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(runtime, @out, {:no_multiline => true})
+          @formatter = Pretty.new(runtime, @out, {no_multiline: true})
         end
 
         describe 'given a single feature' do
@@ -736,7 +736,7 @@ OUTPUT
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
-          @formatter = Pretty.new(runtime, @out, {:source => true})
+          @formatter = Pretty.new(runtime, @out, {source: true})
         end
 
         describe 'given a single feature' do

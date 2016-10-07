@@ -20,7 +20,7 @@ module Cucumber
       def initialize(out_stream = STDOUT, error_stream = STDERR)
         @out_stream   = out_stream
         @error_stream = error_stream
-        @options = Options.new(@out_stream, @error_stream, :default_profile => 'default')
+        @options = Options.new(@out_stream, @error_stream, default_profile: 'default')
       end
 
       def parse!(args)

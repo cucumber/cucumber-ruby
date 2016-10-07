@@ -32,7 +32,7 @@ module Cucumber
           tests: 0,
           skipped: 0,
           time: 0,
-          builder: Builder::XmlMarkup.new(:indent => 2)
+          builder: Builder::XmlMarkup.new(indent: 2)
         }}
       end
 
@@ -85,15 +85,15 @@ module Cucumber
       end
 
       def end_feature(feature_data)
-        @testsuite = Builder::XmlMarkup.new(:indent => 2)
+        @testsuite = Builder::XmlMarkup.new(indent: 2)
         @testsuite.instruct!
         @testsuite.testsuite(
-          :failures => feature_data[:failures],
-          :errors => feature_data[:errors],
-          :skipped => feature_data[:skipped],
-          :tests => feature_data[:tests],
-          :time => format('%.6f', feature_data[:time]),
-          :name => feature_data[:feature].name ) do
+          failures: feature_data[:failures],
+          errors: feature_data[:errors],
+          skipped: feature_data[:skipped],
+          tests: feature_data[:tests],
+          time: format('%.6f', feature_data[:time]),
+          name: feature_data[:feature].name ) do
           @testsuite << feature_data[:builder].target!
         end
 
@@ -122,14 +122,14 @@ module Cucumber
         classname = @current_feature_data[:feature].name
         name = scenario_designation
 
-        @current_feature_data[:builder].testcase(:classname => classname, :name => name, :time => format('%.6f', duration)) do
+        @current_feature_data[:builder].testcase(classname: classname, name: name, time: format('%.6f', duration)) do
           if !result.passed? && result.ok?(@config.strict?)
             @current_feature_data[:builder].skipped
             @current_feature_data[:skipped] += 1
           elsif !result.passed?
             status = result.to_sym
             exception = get_backtrace_object(result)
-            @current_feature_data[:builder].failure(:message => "#{status} #{name}", :type => status) do
+            @current_feature_data[:builder].failure(message: "#{status} #{name}", type: status) do
               @current_feature_data[:builder].cdata! output
               @current_feature_data[:builder].cdata!(format_exception(exception)) if exception
             end

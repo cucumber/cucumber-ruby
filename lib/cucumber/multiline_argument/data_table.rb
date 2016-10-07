@@ -51,7 +51,7 @@ module Cucumber
       include Core::Ast::DescribesItself
       extend Forwardable
 
-      NULL_CONVERSIONS = Hash.new({ :strict => false, :proc => lambda{ |cell_value| cell_value } }).freeze
+      NULL_CONVERSIONS = Hash.new({ strict: false, proc: lambda{ |cell_value| cell_value } }).freeze
 
       attr_accessor :file
       def_delegator :@ast_table, :location
@@ -289,14 +289,14 @@ module Cucumber
       #
       def map_column!(column_name, strict=true, &conversion_proc)
         # TODO: Remove this method for 2.0
-        @conversion_procs[column_name.to_s] = { :strict => strict, :proc => conversion_proc }
+        @conversion_procs[column_name.to_s] = { strict: strict, proc: conversion_proc }
         self
       end
 
       # Returns a new Table with an additional column mapping. See #map_column!
       def map_column(column_name, strict=true, &conversion_proc)
         conversion_procs = @conversion_procs.dup
-        conversion_procs[column_name.to_s] = { :strict => strict, :proc => conversion_proc }
+        conversion_procs[column_name.to_s] = { strict: strict, proc: conversion_proc }
         self.class.new(Core::Ast::DataTable.new(raw, location), conversion_procs, @header_mappings.dup, @header_conversion_proc)
       end
 
@@ -338,11 +338,11 @@ module Cucumber
       #
       def diff!(other_table, options={})
         options = {
-          :missing_row   => true,
-          :surplus_row   => true,
-          :missing_col   => true,
-          :surplus_col   => false,
-          :misplaced_col => false
+          missing_row: true,
+          surplus_row: true,
+          missing_col: true,
+          surplus_col: false,
+          misplaced_col: false
         }.merge(options)
 
         other_table = ensure_table(other_table)
@@ -465,7 +465,7 @@ module Cucumber
         # TODO: factor out this code so we don't depend on such a big lump of old cruft
         require 'cucumber/formatter/pretty'
         require 'cucumber/formatter/legacy_api/adapter'
-        options = {:color => true, :indent => 2, :prefixes => TO_S_PREFIXES}.merge(options)
+        options = {color: true, indent: 2, prefixes: TO_S_PREFIXES}.merge(options)
         io = StringIO.new
 
         c = Cucumber::Term::ANSIColor.coloring?
