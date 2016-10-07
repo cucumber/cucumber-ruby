@@ -403,7 +403,7 @@ module Cucumber
               And another undefined step
             FEATURE
 
-          it { expect(@doc.css('pre').map { |pre| /^(Given|And)/.match(pre.text)[1] }).to eq ['Given', 'Given'] }
+          it { expect(@doc.css('pre').map { |pre| /^(Given|And)/.match(pre.text)[1] }).to eq %w(Given Given) }
         end
 
         describe 'with an undefined When step then an undefined And step' do
@@ -415,7 +415,7 @@ module Cucumber
               And another undefined step
             FEATURE
 
-          it { expect(@doc.css('pre').map { |pre| /^(Given|When|And)/.match(pre.text)[1] }).to eq ['Given', 'When', 'When'] }
+          it { expect(@doc.css('pre').map { |pre| /^(Given|When|And)/.match(pre.text)[1] }).to eq %w(Given When When) }
         end
 
         describe 'with an passing Then step and an undefined And step' do
@@ -514,7 +514,7 @@ module Cucumber
               Given(/^this step passes$/) {}
             end
 
-          it { expect(@doc.css('pre').map { |pre| /^(Given|Then|When)/.match(pre.text)[1] }).to eq ['Given', 'Given'] }
+          it { expect(@doc.css('pre').map { |pre| /^(Given|Then|When)/.match(pre.text)[1] }).to eq %w(Given Given) }
         end
 
         describe 'with a scenario outline and a before hook that fails' do
