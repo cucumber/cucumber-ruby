@@ -9,7 +9,7 @@ module Cucumber
   module Formatter
     class Html
 
-      # TODO: remove coupling to types
+      #  TODO: remove coupling to types
       AST_CLASSES = {
         Cucumber::Core::Ast::Scenario        => 'scenario',
         Cucumber::Core::Ast::ScenarioOutline => 'scenario outline'
@@ -73,7 +73,7 @@ module Cucumber
 
 
       def before_features(features)
-        @step_count = features && features.step_count || 0 #TODO: Make this work with core!
+        @step_count = features && features.step_count || 0 # TODO: Make this work with core!
 
         # <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
         @builder.declare!(
@@ -392,19 +392,19 @@ module Cucumber
 
       def puts(message)
         @delayed_messages << message
-        #@builder.pre(message, :class => 'message')
+        # @builder.pre(message, :class => 'message')
       end
 
       def print_messages
         return if @delayed_messages.empty?
 
-        #@builder.ol do
+        # @builder.ol do
           @delayed_messages.each do |ann|
             @builder.li(class: 'step message') do
               @builder << ann
             end
           end
-        #end
+        # end
         empty_messages
       end
 
