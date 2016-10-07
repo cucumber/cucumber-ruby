@@ -75,7 +75,7 @@ module Cucumber
         private
 
         def before_hooks(source)
-          # The adapter is built on the assumption that each test case will have at least one step. This is annoying
+          #  The adapter is built on the assumption that each test case will have at least one step. This is annoying
           # for tests, but a safe assumption for production use as we always add one hook to initialize the world.
           hook = proc {}
           [ Hooks.before_hook(source, hook.source_location, &hook) ]
@@ -1747,7 +1747,7 @@ module Cucumber
         end
 
         context 'with exception in the first of several before hooks' do
-          # This proves that the second before hook's result doesn't overwrite
+          #  This proves that the second before hook's result doesn't overwrite
           # the result of the first one.
           class FailingAndPassingBeforeHooks
             def apply_before_hooks(test_case)

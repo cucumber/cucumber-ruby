@@ -599,11 +599,6 @@ Style/Lambda:
     - 'spec/cucumber/step_match_spec.rb'
     - 'spec/cucumber/world/pending_spec.rb'
 
-# Offense count: 39
-# Cop supports --auto-correct.
-Style/LeadingCommentSpace:
-  Enabled: false
-
 # Offense count: 7
 # Cop supports --auto-correct.
 Style/LineEndConcatenation:
