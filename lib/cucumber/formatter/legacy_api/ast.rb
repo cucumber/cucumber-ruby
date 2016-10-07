@@ -67,7 +67,9 @@ module Cucumber
 
         class HookResult
           def initialize(result, messages, embeddings)
-            @result, @messages, @embeddings = result, messages, embeddings
+            @result = result
+            @messages = messages
+            @embeddings = embeddings
             @already_accepted = false
           end
 

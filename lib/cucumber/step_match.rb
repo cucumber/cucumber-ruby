@@ -9,7 +9,9 @@ module Cucumber
 
     def initialize(step_definition, step_name, step_arguments)
       raise "step_arguments can't be nil (but it can be an empty array)" if step_arguments.nil?
-      @step_definition, @name_to_match, @step_arguments = step_definition, step_name, step_arguments
+      @step_definition = step_definition
+      @name_to_match = step_name
+      @step_arguments = step_arguments
     end
 
     def args
