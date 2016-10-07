@@ -20,7 +20,9 @@ module Cucumber
 
       def initialize(rb_language, pattern, proc)
         raise MissingProc if proc.nil? || proc.arity < 1
-        @rb_language, @regexp, @proc = rb_language, Regexp.new(pattern), proc
+        @rb_language = rb_language
+        @regexp = Regexp.new(pattern)
+        @proc = proc
       end
 
       def match(arg)

@@ -592,7 +592,8 @@ module Cucumber
           end
 
           def step_invocation(step_invocation, source)
-            _node, result = source.step, source.step_result
+            _node = source.step
+            result = source.step_result
             @last_step_result = result
             @child.step_invocation(step_invocation, source)
           end
