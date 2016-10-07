@@ -1131,13 +1131,6 @@ Style/WhileUntilDo:
   Exclude:
     - 'lib/autotest/cucumber_mixin.rb'
 
-# Offense count: 30
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, MinSize, WordRegex.
-# SupportedStyles: percent, brackets
-Style/WordArray:
-  Enabled: false
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/ZeroLengthPredicate:
