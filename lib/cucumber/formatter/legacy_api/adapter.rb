@@ -643,7 +643,7 @@ module Cucumber
           def outline_step(step)
             step_match = NoStepMatch.new(step, step.name)
             step_invocation = LegacyResultBuilder.new(Core::Test::Result::Skipped.new).
-              step_invocation(step_match, step, indent, nil, configuration, [], [])
+                              step_invocation(step_match, step, indent, nil, configuration, [], [])
             steps_printer.step_invocation step_invocation
           end
 
