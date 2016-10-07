@@ -67,8 +67,8 @@ module Cucumber
       class AddBeforeAndAfterHooks < Core::Filter.new
         def test_case(test_case)
           steps = before_hooks(test_case.source) +
-            test_case.test_steps +
-            after_hooks(test_case.source)
+                  test_case.test_steps +
+                  after_hooks(test_case.source)
           test_case.with_steps(steps).describe_to receiver
         end
 
