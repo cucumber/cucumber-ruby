@@ -65,11 +65,6 @@ Lint/Loop:
   Exclude:
     - 'lib/autotest/cucumber_mixin.rb'
 
-# Offense count: 1
-Lint/NestedMethodDefinition:
-  Exclude:
-    - 'lib/cucumber/formatter/ansicolor.rb'
-
 # Offense count: 7
 Lint/RescueException:
   Exclude:
