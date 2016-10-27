@@ -35,6 +35,7 @@
 * Fixes rubocop violation Lint/StringConversionInInterpolation ([#1038](https://github.com/cucumber/cucumber-ruby/pull/1038) @hotovson)
 * Fixes rubocop violation Style/FormatString ([#1040](https://github.com/cucumber/cucumber-ruby/pull/1040) @pmatsinopoulos)
 * Don't check temporary files by rubocop ([#1034](https://github.com/cucumber/cucumber-ruby/pull/1034) @hotovson)
+* fix Lint/NestedMethodDefinition ([#1035](https://github.com/cucumber/cucumber-ruby/pull/1035) @hotovson)
 
 ## [v2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
 
