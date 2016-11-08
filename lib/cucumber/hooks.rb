@@ -23,7 +23,7 @@ module Cucumber
         build_hook_step(source, location, block, AfterStepHook, Core::Test::Action)
       end
 
-      def around_hook(source, &block)
+      def around_hook(_source, &block)
         Core::Test::AroundHook.new(&block)
       end
 

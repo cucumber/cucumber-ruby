@@ -23,7 +23,7 @@ module Cucumber
         # ExampleTableRow#keyword is never called on them,
         # but this will pass silently if it happens anyway
         class NullLanguage
-          def method_missing(*args, &block)
+          def method_missing(*_args, &_block)
             self
           end
 

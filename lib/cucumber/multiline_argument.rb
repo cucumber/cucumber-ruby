@@ -49,11 +49,11 @@ module Cucumber
           @result
         end
 
-        def doc_string(node, *args)
+        def doc_string(node, *_args)
           @result = DocString.new(node)
         end
 
-        def data_table(node, *args)
+        def data_table(node, *_args)
           @result = DataTable.new(node)
         end
       end

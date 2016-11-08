@@ -32,11 +32,11 @@ module Cucumber
       def feature(feature)
       end
 
-      def scenario(scenario)
+      def scenario(_scenario)
         @factory = Scenario
       end
 
-      def scenario_outline(scenario)
+      def scenario_outline(_scenario)
         @factory = ScenarioOutlineExample
       end
 

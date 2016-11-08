@@ -116,20 +116,20 @@ module Cucumber
         @builder << '</html>'
       end
 
-      def before_feature(feature)
+      def before_feature(_feature)
         @exceptions = []
         @builder << '<div class="feature">'
       end
 
-      def after_feature(feature)
+      def after_feature(_feature)
         @builder << '</div>'
       end
 
-      def before_comment(comment)
+      def before_comment(_comment)
         @builder << '<pre class="comment">'
       end
 
-      def after_comment(comment)
+      def after_comment(_comment)
         @builder << '</pre>'
       end
 
@@ -138,7 +138,7 @@ module Cucumber
         @builder.br
       end
 
-      def after_tags(tags)
+      def after_tags(_tags)
         @tag_spacer = nil
       end
 
@@ -162,21 +162,21 @@ module Cucumber
         end
       end
 
-      def before_test_case(test_case)
+      def before_test_case(_test_case)
         @previous_step_keyword = nil
       end
 
-      def before_background(background)
+      def before_background(_background)
         @in_background = true
         @builder << '<div class="background">'
       end
 
-      def after_background(background)
+      def after_background(_background)
         @in_background = nil
         @builder << '</div>'
       end
 
-      def background_name(keyword, name, file_colon_line, source_indent)
+      def background_name(keyword, name, _file_colon_line, _source_indent)
         @listing_background = true
         @builder.h3(:id => "background_#{@scenario_number}") do |h3|
           @builder.span(keyword, :class => 'keyword')
@@ -193,7 +193,7 @@ module Cucumber
         @in_scenario_outline = feature_element.class == Cucumber::Core::Ast::ScenarioOutline
       end
 
-      def after_feature_element(feature_element)
+      def after_feature_element(_feature_element)
         unless @in_scenario_outline
           print_messages
           @builder << '</ol>'
@@ -202,7 +202,7 @@ module Cucumber
         @in_scenario_outline = nil
       end
 
-      def scenario_name(keyword, name, file_colon_line, source_indent)
+      def scenario_name(keyword, name, file_colon_line, _source_indent)
         @builder.span(:class => 'scenario_file') do
           @builder << file_colon_line
         end
@@ -220,23 +220,23 @@ module Cucumber
         end
       end
 
-      def before_outline_table(outline_table)
+      def before_outline_table(_outline_table)
         @inside_outline = true
         @outline_row = 0
         @builder << '<table>'
       end
 
-      def after_outline_table(outline_table)
+      def after_outline_table(_outline_table)
         @builder << '</table>'
         @outline_row = nil
         @inside_outline = false
       end
 
-      def before_examples(examples)
+      def before_examples(_examples)
         @builder << '<div class="examples">'
       end
 
-      def after_examples(examples)
+      def after_examples(_examples)
         @builder << '</div>'
       end
 
@@ -248,11 +248,11 @@ module Cucumber
         end
       end
 
-      def before_steps(steps)
+      def before_steps(_steps)
         @builder << '<ol>'
       end
 
-      def after_steps(steps)
+      def after_steps(_steps)
         print_messages
         @builder << '</ol>' if @in_background or @in_scenario_outline
       end
@@ -264,11 +264,11 @@ module Cucumber
         @step = step
       end
 
-      def after_step(step)
+      def after_step(_step)
         move_progress
       end
 
-      def before_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
+      def before_step_result(_keyword, step_match, _multiline_arg, status, exception, _source_indent, background, _file_colon_line)
         @step_match = step_match
         @hide_this_step = false
         if exception
@@ -288,7 +288,7 @@ module Cucumber
         @builder << "<li id='#{@step_id}' class='step #{status}'>"
       end
 
-      def after_step_result(keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line)
+      def after_step_result(keyword, step_match, _multiline_arg, status, _exception, _source_indent, _background, _file_colon_line)
         return if @hide_this_step
         # print snippet for undefined steps
         unless outline_step?(@step)
@@ -306,7 +306,7 @@ module Cucumber
         print_messages
       end
 
-      def step_name(keyword, step_match, status, source_indent, background, file_colon_line)
+      def step_name(keyword, step_match, status, _source_indent, background, _file_colon_line)
         background_in_scenario = background && !@listing_background
         @skip_step = background_in_scenario
 
@@ -315,7 +315,7 @@ module Cucumber
         end
       end
 
-      def exception(exception, status)
+      def exception(exception, _status)
         return if @hide_this_step
         print_messages
         build_exception_detail(exception)
@@ -421,7 +421,7 @@ module Cucumber
         @delayed_messages = []
       end
 
-      def after_test_case(test_case, result)
+      def after_test_case(_test_case, result)
         if result.failed? and not @scenario_red
           set_scenario_color_failed
         end
@@ -489,7 +489,7 @@ module Cucumber
         end
       end
 
-      def build_step(keyword, step_match, status)
+      def build_step(keyword, step_match, _status)
         step_name = step_match.format_args(lambda{|param| %{<span class="param">#{param}</span>}})
         @builder.div(:class => 'step_name') do |div|
           @builder.span(keyword, :class => 'keyword')
@@ -605,7 +605,7 @@ module Cucumber
         @builder <<  "<script type=\"text/javascript\">document.getElementById('totals').innerHTML = \"#{print_stat_string(features)}\";</script>"
       end
 
-      def print_stat_string(features)
+      def print_stat_string(_features)
         string = String.new
         string << dump_count(@runtime.scenarios.length, 'scenario')
         scenario_count = print_status_counts{|status| @runtime.scenarios(status)}
@@ -632,12 +632,12 @@ module Cucumber
         Builder::XmlMarkup.new(:target => io, :indent => 0)
       end
 
-      def outline_step?(step)
+      def outline_step?(_step)
         not @step.step.respond_to?(:actual_keyword)
       end
 
       class SnippetExtractor #:nodoc:
-        class NullConverter; def convert(code, pre); code; end; end #:nodoc:
+        class NullConverter; def convert(code, _pre); code; end; end #:nodoc:
 
         begin
           require 'syntax/convertors/html'

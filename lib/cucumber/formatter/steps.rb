@@ -10,7 +10,7 @@ module Cucumber
         @step_definition_files = collect_steps(runtime)
       end
 
-      def after_features(features)
+      def after_features(_features)
         print_summary
       end
 

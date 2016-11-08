@@ -94,13 +94,13 @@ module Cucumber
       @support_code.fire_hook(:begin_scenario, scenario)
     end
 
-    def end_scenario(scenario)
+    def end_scenario(_scenario)
       @support_code.fire_hook(:end_scenario)
     end
 
     # Returns Ast::DocString for +string_without_triple_quotes+.
     #
-    def doc_string(string_without_triple_quotes, content_type='', line_offset=0)
+    def doc_string(string_without_triple_quotes, content_type='', _line_offset=0)
       location = Core::Ast::Location.of_caller
       Core::Ast::DocString.new(string_without_triple_quotes, content_type, location)
     end

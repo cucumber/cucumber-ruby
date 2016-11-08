@@ -71,7 +71,7 @@ module Cucumber
         add_failed_around_hook(result) if result.failed? && !@any_step_failed
       end
 
-      def on_test_run_finished(event)
+      def on_test_run_finished(_event)
         @io.write(MultiJson.dump(@feature_hashes, pretty: true))
       end
 
@@ -197,7 +197,7 @@ module Cucumber
         @step_or_hook_hash[:result] = create_result_hash(result)
       end
 
-      def create_match_hash(test_step, result)
+      def create_match_hash(test_step, _result)
         { location: test_step.action_location.to_s }
       end
 

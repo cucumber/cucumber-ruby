@@ -91,12 +91,6 @@ Lint/ShadowingOuterLocalVariable:
 Lint/UnusedBlockArgument:
   Enabled: false
 
-# Offense count: 108
-# Cop supports --auto-correct.
-# Configuration parameters: AllowUnusedKeywordArguments, IgnoreEmptyMethods.
-Lint/UnusedMethodArgument:
-  Enabled: false
-
 # Offense count: 60
 Metrics/AbcSize:
   Max: 99

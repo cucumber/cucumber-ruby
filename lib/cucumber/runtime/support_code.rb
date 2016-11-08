@@ -62,7 +62,7 @@ module Cucumber
       #     Given I have 8 cukes in my belly
       #     Then I should not be thirsty
       #   })
-      def invoke_dynamic_steps(steps_text, i18n, location)
+      def invoke_dynamic_steps(steps_text, i18n, _location)
         parser = Cucumber::Gherkin::StepsParser.new(StepInvoker.new(self), i18n.iso_code)
         parser.parse(steps_text)
       end
@@ -73,7 +73,7 @@ module Cucumber
       # steps which are compiled into test steps before execution.
       #
       # These are commonly called nested steps.
-      def invoke_dynamic_step(step_name, multiline_argument, location=nil)
+      def invoke_dynamic_step(step_name, multiline_argument, _location=nil)
         matches = step_matches(step_name)
         raise UndefinedDynamicStep, step_name if matches.empty?
         matches.first.invoke(multiline_argument)

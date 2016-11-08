@@ -33,7 +33,7 @@ module Cucumber
 
       private
 
-      def best_matches(step_name, step_matches) #:nodoc:
+      def best_matches(_step_name, step_matches) #:nodoc:
         no_groups      = step_matches.select {|step_match| step_match.args.length == 0}
         max_arg_length = step_matches.map {|step_match| step_match.args.length }.max
         top_groups     = step_matches.select {|step_match| step_match.args.length == max_arg_length }
@@ -65,4 +65,3 @@ module Cucumber
 
   end
 end
-

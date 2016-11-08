@@ -732,7 +732,7 @@ module Cucumber
           :comment
         end
 
-        def ==(o)
+        def ==(_o)
           true
         end
 

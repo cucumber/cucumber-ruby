@@ -68,7 +68,7 @@ module Cucumber
         Interceptor::Pipe.unwrap! :stderr
       end
 
-      def on_test_run_finished(event)
+      def on_test_run_finished(_event)
         @features_data.each { |file, data| end_feature(data) }
       end
 

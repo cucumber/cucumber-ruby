@@ -59,7 +59,7 @@ module Cucumber
           source_location
         end
 
-        def invoke(pseudo_method, arguments, &block)
+        def invoke(_pseudo_method, _arguments, &_block)
           @proc.call
         end
       end
@@ -1542,7 +1542,7 @@ module Cucumber
         context 'with exception in after step hook' do
 
           class FailingAfterStepHook
-            def find_after_step_hooks(test_case)
+            def find_after_step_hooks(_test_case)
               failing_hook = HookWrapper.new(proc { raise Failure })
               Runtime::StepHooks.new [failing_hook]
             end
@@ -2159,11 +2159,11 @@ module Cucumber
           ]
         end
 
-        def method_missing(message, *args)
+        def method_missing(message, *_args)
           @messages << message
         end
 
-        def respond_to_missing?(name, include_private = false)
+        def respond_to_missing?(_name, _include_private = false)
           true
         end
       end

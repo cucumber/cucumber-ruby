@@ -58,7 +58,7 @@ module Cucumber
 
       # Returns a Cucumber::MultilineArgument::DocString for +body+.
       #
-      def doc_string(body, content_type='', line_offset=0)
+      def doc_string(body, content_type='', _line_offset=0)
         location = Core::Ast::Location.of_caller
         MultilineArgument.doc_string(body, content_type, location)
       end
