@@ -36,6 +36,8 @@
 * Fixes rubocop violation Style/FormatString ([#1040](https://github.com/cucumber/cucumber-ruby/pull/1040) @pmatsinopoulos)
 * Don't check temporary files by rubocop ([#1034](https://github.com/cucumber/cucumber-ruby/pull/1034) @hotovson)
 * fix Lint/NestedMethodDefinition ([#1035](https://github.com/cucumber/cucumber-ruby/pull/1035) @hotovson)
+* fix Lint/UnusedArgument ([#1033](https://github.com/cucumber/cucumber-ruby/pull/1033) @hotovson)
+* Fixes rubocop violation Performance/StringReplacement ([#1039](https://github.com/cucumber/cucumber-ruby/pull/1039) @pmatsinopoulos)
 
 ## [v2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
 
