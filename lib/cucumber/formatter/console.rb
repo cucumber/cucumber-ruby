@@ -165,8 +165,8 @@ module Cucumber
         # no-op
       end
 
-      #define @delayed_messages = [] in your Formatter if you want to
-      #activate this feature
+      # define @delayed_messages = [] in your Formatter if you want to
+      # activate this feature
       def puts(*messages)
         if @delayed_messages
           @delayed_messages += messages
@@ -249,7 +249,8 @@ module Cucumber
       class SnippetData
         attr_reader :actual_keyword, :step
         def initialize(actual_keyword, step)
-          @actual_keyword, @step = actual_keyword, step
+          @actual_keyword = actual_keyword
+          @step = step
         end
       end
 

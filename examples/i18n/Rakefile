@@ -22,7 +22,7 @@ task :cucumber do
   end
 end
 
-task :default => :cucumber
+task default: :cucumber
 
 def examples_working?(lang)
   !%w{}.index(lang)

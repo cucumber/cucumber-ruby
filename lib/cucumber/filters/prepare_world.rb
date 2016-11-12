@@ -14,7 +14,8 @@ module Cucumber
 
       class CaseFilter
         def initialize(runtime, original_test_case)
-          @runtime, @original_test_case = runtime, original_test_case
+          @runtime = runtime
+          @original_test_case = original_test_case
         end
 
         def test_case
@@ -25,7 +26,7 @@ module Cucumber
           end
           around_hooks = [init_scenario] + @original_test_case.around_hooks
 
-          empty_hook = proc {} #no op - legacy format adapter expects a before hooks
+          empty_hook = proc {} # no op - legacy format adapter expects a before hooks
           empty_hook_location = Cucumber::Core::Ast::Location.from_source_location(*empty_hook.source_location)
           default_hook = Cucumber::Hooks.before_hook(@original_test_case.source, empty_hook_location, &empty_hook)
           steps = [default_hook] + @original_test_case.test_steps

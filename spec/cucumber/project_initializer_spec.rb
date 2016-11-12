@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'tmpdir'
 
 module Cucumber
-  describe ProjectInitializer, :isolated_home => true do
+  describe ProjectInitializer, isolated_home: true do
     let(:command_line_config) { ProjectInitializer.new }
 
     before do

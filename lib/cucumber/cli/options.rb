@@ -15,12 +15,12 @@ module Cucumber
         'progress'    => ['Cucumber::Formatter::Progress',    'Prints one character per scenario.'],
         'rerun'       => ['Cucumber::Formatter::Rerun',       'Prints failing files with line numbers.'],
         'usage'       => ['Cucumber::Formatter::Usage',       "Prints where step definitions are used.\n" +
-                                                              "#{INDENT}The slowest step definitions (with duration) are\n" +
-                                                              "#{INDENT}listed first. If --dry-run is used the duration\n" +
-                                                              "#{INDENT}is not shown, and step definitions are sorted by\n" +
-                                                              "#{INDENT}filename instead."],
+          "#{INDENT}The slowest step definitions (with duration) are\n" +
+          "#{INDENT}listed first. If --dry-run is used the duration\n" +
+          "#{INDENT}is not shown, and step definitions are sorted by\n" +
+          "#{INDENT}filename instead."],
         'stepdefs'    => ['Cucumber::Formatter::Stepdefs',    "Prints All step definitions with their locations. Same as\n" +
-                                                              "#{INDENT}the usage formatter, except that steps are not printed."],
+          "#{INDENT}the usage formatter, except that steps are not printed."],
         'junit'       => ['Cucumber::Formatter::Junit',       'Generates a report similar to Ant+JUnit.'],
         'json'        => ['Cucumber::Formatter::Json',        'Prints the feature as JSON'],
         'json_pretty' => ['Cucumber::Formatter::JsonPretty',  'Prints the feature as prettified JSON'],
@@ -142,7 +142,7 @@ TEXT
         @args.map! { |a| "#{a}:#{@options[:lines]}" } if @options[:lines]
 
         extract_environment_variables
-        @options[:paths] = @args.dup #whatver is left over
+        @options[:paths] = @args.dup # whatver is left over
 
         check_formatter_stream_conflicts()
 
@@ -411,8 +411,8 @@ TEXT
         profile_args = profile_loader.args_from(profile)
         profile_options = Options.parse(
           profile_args, @out_stream, @error_stream,
-          :skip_profile_information => true,
-          :profile_loader => profile_loader
+          skip_profile_information: true,
+          profile_loader: profile_loader
         )
         reverse_merge(profile_options)
       end
@@ -506,19 +506,19 @@ TEXT
 
       def default_options
         {
-          :strict       => false,
-          :require      => [],
-          :dry_run      => false,
-          :formats      => [],
-          :excludes     => [],
-          :tag_expressions  => [],
-          :name_regexps => [],
-          :env_vars     => {},
-          :diff_enabled => true,
-          :snippets     => true,
-          :source       => true,
-          :duration     => true,
-          :retry        => 0
+          strict: false,
+          require: [],
+          dry_run: false,
+          formats: [],
+          excludes: [],
+          tag_expressions: [],
+          name_regexps: [],
+          env_vars: {},
+          diff_enabled: true,
+          snippets: true,
+          source: true,
+          duration: true,
+          retry: 0
         }
       end
     end

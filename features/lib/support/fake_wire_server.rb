@@ -4,7 +4,8 @@ require 'socket'
 
 class FakeWireServer
   def initialize(port, protocol_table)
-    @port, @protocol_table = port, protocol_table
+    @port = port
+    @protocol_table = protocol_table
     @delays = {}
   end
 
@@ -56,11 +57,11 @@ class FakeWireServer
         @on_message.call(MultiJson.load(protocol_entry['request'])[0])
         send_response(protocol_entry['response'])
       else
-        serialized_exception = { :message => "Not understood: #{data}", :backtrace => [] }
+        serialized_exception = { message: "Not understood: #{data}", backtrace: [] }
         send_response(['fail', serialized_exception ].to_json)
       end
     rescue => e
-      send_response(['fail', { :message => e.message, :backtrace => e.backtrace, :exception => e.class } ].to_json)
+      send_response(['fail', { message: e.message, backtrace: e.backtrace, exception: e.class } ].to_json)
     end
 
     def response_to(data)
