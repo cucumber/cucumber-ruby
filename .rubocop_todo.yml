@@ -103,13 +103,13 @@ Metrics/ClassLength:
 Metrics/CyclomaticComplexity:
   Max: 17
 
-# Offense count: 957
+# Offense count: 923
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes.
 # URISchemes: http, https
 Metrics/LineLength:
   Max: 309
 
-# Offense count: 77
+# Offense count: 76
 # Configuration parameters: CountComments.
 Metrics/MethodLength:
   Max: 63
@@ -457,7 +457,7 @@ Style/EmptyLiteral:
     - 'lib/cucumber/rb_support/snippet.rb'
     - 'spec/cucumber/rb_support/rb_language_spec.rb'
 
-# Offense count: 11
+# Offense count: 10
 # Cop supports --auto-correct.
 # Configuration parameters: AllowForAlignment, ForceEqualSignAlignment.
 Style/ExtraSpacing:
@@ -929,7 +929,7 @@ Style/SpaceAroundKeyword:
     - 'lib/cucumber/runtime/user_interface.rb'
     - 'spec/cucumber/cli/profile_loader_spec.rb'
 
-# Offense count: 25
+# Offense count: 24
 # Cop supports --auto-correct.
 # Configuration parameters: AllowForAlignment.
 Style/SpaceAroundOperators:
@@ -1055,7 +1055,7 @@ Style/SymbolProc:
     - 'lib/cucumber/step_match_search.rb'
     - 'spec/cucumber/multiline_argument/data_table_spec.rb'
 
-# Offense count: 71
+# Offense count: 69
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: final_newline, final_blank_line
@@ -1082,7 +1082,7 @@ Style/TrailingCommaInLiteral:
     - 'spec/cucumber/filters/tag_limits/verifier_spec.rb'
     - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
 
-# Offense count: 109
+# Offense count: 128
 # Cop supports --auto-correct.
 Style/TrailingWhitespace:
   Enabled: false

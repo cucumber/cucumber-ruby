@@ -747,7 +747,7 @@ module Cucumber
                 descend.call(self)
               end
 
-              def examples_table_row(row, &_descend)
+              def examples_table_row(row)
                 width = char_length_of(row.values[index])
                 @result = width if width > result
               end
