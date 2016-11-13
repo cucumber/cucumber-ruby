@@ -143,12 +143,25 @@ module Cucumber
         end
 
         context '-t TAGS --tags TAGS' do
-          it 'designates tags prefixed with ~ as tags to be excluded' do
-            after_parsing('--tags ~@foo,@bar') { expect(options[:tag_expressions]).to eq ['~@foo,@bar'] }
+          it 'handles tag expressions as argument' do
+            after_parsing(['--tags', 'not @foo or @bar']) { expect(options[:tag_expressions]).to eq ['not @foo or @bar'] }
           end
 
           it 'stores tags passed with different --tags seperately' do
             after_parsing('--tags @foo --tags @bar') { expect(options[:tag_expressions]).to eq ['@foo', '@bar'] }
+          end
+
+          it 'strips tag limits from the tag expressions stored' do
+            after_parsing(['--tags', 'not @foo:2 or @bar:3']) { expect(options[:tag_expressions]).to eq ['not @foo or @bar'] }
+          end
+
+          it 'stores tag limits separately' do
+            after_parsing(['--tags', 'not @foo:2 or @bar:3']) { expect(options[:tag_limits]).to eq Hash('@foo' => 2, '@bar' => 3) }
+          end
+
+          it 'raise exception for inconsistent tag limits' do
+            expect{ after_parsing('--tags @foo:2 --tags @foo:3') }.to raise_error(RuntimeError, 'Inconsistent tag limits for @foo: 2 and 3')
+
           end
         end
 
@@ -209,6 +222,19 @@ module Cucumber
             options.parse!(%w[--tags @foo -p baz])
 
             expect(options[:tag_expressions]).to eq ['@foo', '@bar']
+          end
+
+          it 'combines the tag limits of both' do
+            given_cucumber_yml_defined_as('baz' => %w[-t @bar:2])
+            options.parse!(%w[--tags @foo:3 -p baz])
+
+            expect(options[:tag_limits]).to eq Hash('@foo' => 3, '@bar' => 2)
+          end
+
+          it 'raise exceptions for inconsistent tag limits' do
+            given_cucumber_yml_defined_as('baz' => %w[-t @bar:2])
+
+            expect{ options.parse!(%w[--tags @bar:3 -p baz]) }.to raise_error(RuntimeError, 'Inconsistent tag limits for @bar: 3 and 2')
           end
 
           it 'only takes the paths from the original options, and disgregards the profiles' do

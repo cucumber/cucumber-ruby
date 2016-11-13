@@ -26,7 +26,7 @@ Feature: Tag logic
       """
 
   Scenario: ANDing tags
-    When I run `cucumber -q -t @one -t @three features/test.feature`
+    When I run `cucumber -q -t '@one and @three' features/test.feature`
     Then it should pass with:
       """
       @feature
@@ -42,7 +42,7 @@ Feature: Tag logic
       """
 
   Scenario: ORing tags
-    When I run `cucumber -q -t @one,@three features/test.feature`
+    When I run `cucumber -q -t '@one or @three' features/test.feature`
     Then it should pass with:
       """
       @feature
@@ -66,7 +66,7 @@ Feature: Tag logic
       """
 
   Scenario: Negative tags
-    When I run `cucumber -q -t ~@three features/test.feature`
+    When I run `cucumber -q -t 'not @three' features/test.feature`
     Then it should pass with:
       """
       @feature
@@ -104,7 +104,7 @@ Feature: Tag logic
        """
 
   Scenario: Run with limited tag count using negative tag, blowing it via a tag that is not run
-     When I run `cucumber -q --no-source --tags ~@one:1 features/test.feature`
+     When I run `cucumber -q --no-source --tags 'not @one:1' features/test.feature`
      Then it fails before running features with:
        """
        @one occurred 2 times, but the limit was set to 1

@@ -4,7 +4,6 @@ require 'cucumber/cli/rerun_file'
 require 'cucumber/events'
 require 'cucumber/core/event_bus'
 require 'forwardable'
-require 'cucumber/core/gherkin/tag_expression'
 require 'cucumber'
 
 module Cucumber
@@ -130,13 +129,8 @@ module Cucumber
       with_default_features_path(dirs)
     end
 
-    # todo: remove
-    def tag_expression
-      Cucumber::Core::Gherkin::TagExpression.new(@options[:tag_expressions])
-    end
-
     def tag_limits
-      tag_expression.limits.to_hash
+      @options[:tag_limits]
     end
 
     def tag_expressions
