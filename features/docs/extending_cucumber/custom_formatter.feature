@@ -41,7 +41,27 @@ Feature: Custom Formatter
 
       """
 
-  Scenario: Use the legacy API
+  Scenario: Custom config
+    Given a file named "features/support/custom_formatter.rb" with:
+      """
+      module MyCustom
+        class Formatter
+          def initialize(config, options)
+            @io = config.out_stream
+            config.on_event :test_run_finished do |event|
+              @io.print options.inspect
+            end
+          end
+        end
+      end
+      """
+    When I run `cucumber features/f.feature --format MyCustom::Formatter,foo=bar,one=two`
+    Then it should pass with exactly:
+    """
+    {"foo"=>"bar", "one"=>"two"}
+    """
+
+ Scenario: Use the legacy API
     This is deprecated and should no longer be used.
 
     Given a file named "features/support/custom_legacy_formatter.rb" with:
