@@ -133,8 +133,10 @@ module Cucumber
       end
 
       def arrange_formats
-        @options[:formats] << ['pretty', @out_stream] if @options[:formats].empty?
-        @options[:formats] = @options[:formats].sort_by{|f| f[1] == @out_stream ? -1 : 1}
+        @options[:formats] << ['pretty', {}, @out_stream] if @options[:formats].empty?
+        @options[:formats] = @options[:formats].sort_by do |f|
+          f[2] == @out_stream ? -1 : 1
+        end
         @options[:formats].uniq!
         @options.check_formatter_stream_conflicts()
       end

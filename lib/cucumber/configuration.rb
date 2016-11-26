@@ -195,12 +195,13 @@ module Cucumber
     end
 
     def formatter_factories
-      @options[:formats].map do |format_and_out|
-        format = format_and_out[0]
-        path_or_io = format_and_out[1]
+      formats.map do |format, formatter_options, path_or_io|
         begin
           factory = formatter_class(format)
-          yield factory, path_or_io, Cli::Options.new(STDOUT, STDERR, @options)
+          yield factory,
+                formatter_options,
+                path_or_io,
+                Cli::Options.new(STDOUT, STDERR, @options)
         rescue Exception => e
           raise e, "#{e.message}\nError creating formatter: #{format}", e.backtrace
         end
@@ -208,7 +209,7 @@ module Cucumber
     end
 
     def formatter_class(format)
-      if(builtin = Cli::Options::BUILTIN_FORMATS[format])
+      if (builtin = Cli::Options::BUILTIN_FORMATS[format])
         constantize(builtin[0])
       else
         constantize(format)
