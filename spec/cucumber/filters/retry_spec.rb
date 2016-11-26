@@ -19,6 +19,8 @@ describe Cucumber::Filters::Retry do
   let(:fail) { Cucumber::Events::AfterTestCase.new(test_case, double('result', :failed? => true, :ok? => false)) }
   let(:pass) { Cucumber::Events::AfterTestCase.new(test_case, double('result', :failed? => false, :ok? => true)) }
 
+  before(:each) { configuration.event_bus.start }
+
   it { is_expected.to respond_to(:test_case) }
   it { is_expected.to respond_to(:with_receiver) }
   it { is_expected.to respond_to(:done) }

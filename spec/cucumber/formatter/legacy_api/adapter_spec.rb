@@ -19,6 +19,7 @@ module Cucumber
       let(:runtime)   { Runtime.new }
       let(:events)    { runtime.configuration.event_bus }
       let(:step_match_search) { SimpleStepDefinitionSearch.new }
+      before(:each) { runtime.configuration.event_bus.start }
 
       Failure = Class.new(StandardError)
 

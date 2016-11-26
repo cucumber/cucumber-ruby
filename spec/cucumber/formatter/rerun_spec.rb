@@ -14,6 +14,7 @@ module Cucumber
 
       let(:config) { Cucumber::Configuration.new(out_stream: io) }
       let(:io) { StringIO.new }
+      before(:each) { config.event_bus.start }
 
       # after_test_case
       context 'when 2 scenarios fail in the same file' do
