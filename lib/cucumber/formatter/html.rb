@@ -35,6 +35,7 @@ module Cucumber
         @text_id = 0
         @inside_outline = false
         @previous_step_keyword = nil
+        @scenario_outline_embeds = []
       end
 
       def embed(src, mime_type, label)
@@ -57,17 +58,29 @@ module Cucumber
           out_dir = Pathname.new(File.dirname(File.absolute_path(@io.path)))
           src = Pathname.new(File.absolute_path(src)).relative_path_from(out_dir)
         end
-        @builder.span(:class => 'embed') do |pre|
-          pre << %{<a href="" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">#{label}</a><br>&nbsp;
-          <img id="#{id}" style="display: none" src="#{src}"/>}
+
+        link_to_screenshot = %{<a href="" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">#{label}</a><br /><img id="#{id}" style="display: none" src="#{src}"/>}
+
+        if @in_scenario_outline
+          @scenario_outline_embeds << link_to_screenshot
+        else
+          @builder.span(:class => 'embed') do |pre|
+            pre << link_to_screenshot
+          end
         end
       end
 
       def embed_text(src, label)
         id = "text_#{@text_id}"
         @text_id += 1
-        @builder.span(:class => 'embed') do |pre|
-          pre << %{<a id="#{id}" href="#{src}" title="#{label}">#{label}</a>}
+        link_to_text = %{<a id="#{id}" href="#{src}" title="#{label}">#{label}</a>}
+
+        if @in_scenario_outline
+          @scenario_outline_embeds << link_to_text
+        else
+          @builder.span(:class => 'embed') do |pre|
+            pre << link_to_text
+          end
         end
       end
 
@@ -372,6 +385,9 @@ module Cucumber
             set_scenario_color_failed
           end
         end
+
+        embed_scenario_outline_embeds
+
         if @outline_row
           @outline_row += 1
         end
@@ -425,6 +441,20 @@ module Cucumber
         if result.failed? and not @scenario_red
           set_scenario_color_failed
         end
+      end
+
+      def embed_scenario_outline_embeds
+        return if @scenario_outline_embeds.empty?
+
+        @scenario_outline_embeds.each do |embed|
+          @builder.tr do
+            @builder.td(:class => 'embed') do |td|
+              td << embed
+            end
+          end
+        end
+
+        @scenario_outline_embeds.clear
       end
 
       protected
