@@ -186,26 +186,37 @@ module Cucumber
     end
 
     def formatters
-      @formatters ||= @configuration.formatter_factories { |factory, path_or_io, options|
-        create_formatter(factory, path_or_io, options)
-      }
+      @formatters ||=
+        @configuration.formatter_factories do |factory, formatter_options, path_or_io, options|
+          create_formatter(factory, formatter_options, path_or_io, options)
+        end
     end
 
-    def create_formatter(factory, path_or_io, options)
+    def create_formatter(factory, formatter_options, path_or_io, cli_options)
       if !legacy_formatter?(factory)
-        return factory.new(@configuration) if path_or_io.nil?
-        return factory.new(@configuration.with_options(out_stream: path_or_io))
+        if accept_options?(factory)
+          return factory.new(@configuration, formatter_options) if path_or_io.nil?
+          return factory.new(@configuration.with_options(out_stream: path_or_io),
+                             formatter_options)
+        else
+          return factory.new(@configuration) if path_or_io.nil?
+          return factory.new(@configuration.with_options(out_stream: path_or_io))
+        end
       end
       results = Formatter::LegacyApi::Results.new
       runtime_facade = Formatter::LegacyApi::RuntimeFacade.new(results, @support_code, @configuration)
-      formatter = factory.new(runtime_facade, path_or_io, options)
+      formatter = factory.new(runtime_facade, path_or_io, cli_options)
       Formatter::LegacyApi::Adapter.new(
         Formatter::IgnoreMissingMessages.new(formatter),
         results, @configuration)
     end
 
-    def legacy_formatter?(factory)
+    def accept_options?(factory)
       factory.instance_method(:initialize).arity > 1
+    end
+
+    def legacy_formatter?(factory)
+      factory.instance_method(:initialize).arity > 2
     end
 
     def failure?

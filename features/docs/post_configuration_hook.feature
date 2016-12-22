@@ -8,7 +8,7 @@ Feature: Post Configuration Hook [#423]
     Given a file named "features/support/env.rb" with:
       """
       AfterConfiguration do |config|
-        config.formats << ['html', config.out_stream]
+        config.formats << ['html', {}, config.out_stream]
       end
       """
     When I run `cucumber features`

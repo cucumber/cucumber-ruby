@@ -98,7 +98,9 @@ module Cucumber
           opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) {|v| set_option :retry, v.to_i }
           opts.on('--i18n LANG', *i18n_msg) {|lang| set_language lang }
           opts.on(FAIL_FAST_FLAG, 'Exit immediately following the first failing scenario') { set_option :fail_fast }
-          opts.on('-f FORMAT', '--format FORMAT', *format_msg, *FORMAT_HELP) {|v| add_option :formats, [v, @out_stream] }
+          opts.on('-f FORMAT', '--format FORMAT', *format_msg, *FORMAT_HELP) do |v|
+            add_option :formats, [*parse_formats(v), @out_stream]
+          end
           opts.on('--init', *init_msg) {|v| initialize_project }
           opts.on('-o', '--out [FILE|DIR]', *out_msg) {|v| set_out_stream v }
           opts.on('-t TAG_EXPRESSION', '--tags TAG_EXPRESSION', *tags_msg) {|v| add_option :tag_expressions, v }
@@ -160,7 +162,7 @@ TEXT
       end
 
       def check_formatter_stream_conflicts()
-        streams = @options[:formats].uniq.map { |(_, stream)| stream }
+        streams = @options[:formats].uniq.map { |(_, _, stream)| stream }
         return if streams == streams.uniq
         raise 'All but one formatter must use --out, only one can print to each stream (or STDOUT)'
       end
@@ -244,9 +246,15 @@ TEXT
         ]
       end
 
+      def parse_formats(v)
+        formatter, *formatter_options = v.split(',')
+        options_hash = Hash[formatter_options.map { |s| s.split('=') }]
+        [formatter, options_hash]
+      end
+
       def set_out_stream(v)
-        @options[:formats] << ['pretty', nil] if @options[:formats].empty?
-        @options[:formats][-1][1] = v
+        @options[:formats] << ['pretty', {}, nil] if @options[:formats].empty?
+        @options[:formats][-1][2] = v
       end
 
       def tags_msg
@@ -336,7 +344,7 @@ TEXT
       end
 
       def non_stdout_formats
-        @options[:formats].select {|format, output| output != @out_stream }
+        @options[:formats].select { |_, _, output| output != @out_stream }
       end
 
       def add_option(option, value)
@@ -376,7 +384,7 @@ TEXT
       end
 
       def stdout_formats
-        @options[:formats].select {|format, output| output == @out_stream }
+        @options[:formats].select { |_, _, output| output == @out_stream }
       end
 
       def extract_environment_variables
