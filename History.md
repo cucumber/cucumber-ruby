@@ -10,6 +10,7 @@
 * Add --retry option to retry failed tests as part of the same run ([#920](https://github.com/cucumber/cucumber-ruby/pull/920) @DanaScheider)
 * Add a summary formatter ([#999](https://github.com/cucumber/cucumber-ruby/pull/999) @mattwynne)
 * Namespaced World modules ([#1007](https://github.com/cucumber/cucumber-ruby/pull/1007) @nodo)
+* Add per-formatter CLI options (([#1058](https://github.com/cucumber/cucumber-ruby/pull/1058) @nodo)
 
 ### Bugfixes
 
