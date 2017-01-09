@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'cucumber-wire', '~> 0.0.1'
 
   s.add_development_dependency 'aruba', '~> 0.6.1'
-  s.add_development_dependency 'json', '~> 1.7'
+  s.add_development_dependency 'json', '~> 1.8.6'
   s.add_development_dependency 'nokogiri', '~> 1.5'
   s.add_development_dependency 'rake', '>= 0.9.2'
   s.add_development_dependency 'rspec', '>= 3.0'
