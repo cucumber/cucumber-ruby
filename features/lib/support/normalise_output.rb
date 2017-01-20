@@ -5,6 +5,10 @@ module NormaliseArubaOutput
     normalise_output(super)
   end
 
+  def sanitize_text(text)
+    normalise_output(super)
+  end
+
   def normalise_output(out)
     out.gsub(/#{Dir.pwd}\/tmp\/aruba/, '.') # Remove absolute paths
        .gsub(/tmp\/aruba\//, '')            # Fix aruba path
