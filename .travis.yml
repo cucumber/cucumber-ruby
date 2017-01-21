@@ -5,7 +5,6 @@ matrix:
     - rvm: 2.3.1
     - rvm: 2.2
     - rvm: 2.1
-    - rvm: 2.0
     - rvm: jruby-9.1.2.0
       env: 
         # Travis by default also have "-Dcext.enabled=false" set in
