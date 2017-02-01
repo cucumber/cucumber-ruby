@@ -124,7 +124,6 @@ Feature: Cucumber --work-in-progress switch
 
       features/wip.feature:15:in `Scenario: Passing'
 
-
       """
 
   Scenario: Fail with Passing Scenario Outline
@@ -149,6 +148,5 @@ Feature: Cucumber --work-in-progress switch
       (::) passed scenarios (::)
 
       features/passing_outline.feature:7:in `Scenario Outline: Passing, Examples (#1)'
-
 
       """
