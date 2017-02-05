@@ -4,8 +4,9 @@ Feature: Test Run Finished
 
   Typically, a formatter would use this to print out summary information.
 
-  At the moment this event contains no data, but it could be extended in the future to carry the summary information
-  for the convenience of formatter authors.
+  At the moment this event contains no data, but it could be extended 
+  in the future to carry the summary information for the convenience 
+  of formatter authors.
 
   Background:
     Given the standard step definitions

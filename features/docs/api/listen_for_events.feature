@@ -19,7 +19,7 @@ Feature: Listen for events
       """
       AfterConfiguration do |config|
         io = config.out_stream
-        config.on_event :step_match do |event|
+        config.on_event :step_activated do |event|
           io.puts "Success!"
           io.puts "Step name:       #{event.test_step.name}"
           io.puts "Source location: #{event.step_match.location}"

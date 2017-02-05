@@ -61,7 +61,7 @@ module Cucumber
 
         def collect_matches
           result = {}
-          config.on_event(:step_match) do |event|
+          config.on_event(:step_activated) do |event|
             test_step, step_match = *event.attributes
             result[test_step.source.last] = step_match
           end
