@@ -192,12 +192,11 @@ Style/AndOr:
 Style/AsciiComments:
   Exclude:
     - 'lib/cucumber/encoding.rb'
-    - 'lib/cucumber/events/step_definition_registered.rb'
-    - 'lib/cucumber/events/step_match.rb'
-    - 'lib/cucumber/events/test_run_finished.rb'
+    - 'lib/cucumber/events/*'
     - 'lib/cucumber/filters/randomizer.rb'
     - 'lib/cucumber/formatter/html.rb'
     - 'lib/cucumber/formatter/legacy_api/adapter.rb'
+    - 'lib/cucumber/rb_support/rb_step_definition.rb'
     - 'lib/cucumber/running_test_case.rb'
     - 'lib/cucumber/runtime.rb'
     - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'

@@ -4,7 +4,6 @@ require 'cucumber/runtime/for_programming_languages'
 require 'cucumber/runtime/step_hooks'
 require 'cucumber/runtime/before_hooks'
 require 'cucumber/runtime/after_hooks'
-require 'cucumber/events/step_match'
 require 'cucumber/gherkin/steps_parser'
 require 'cucumber/step_match_search'
 
