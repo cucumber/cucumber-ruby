@@ -1,0 +1,9 @@
+#!/bin/bash
+# This script modifies simplecov-0.12.0 for Ruby 2.4.0 compatibility.
+# https://github.com/colszowka/simplecov/commit/050eb68
+
+set -ev
+
+SIMPLECOV_ROOT=$(bundle show simplecov)
+sed -i 's/Fixnum/Integer/g' "${SIMPLECOV_ROOT}/lib/simplecov/configuration.rb"
+sed -i 's/Fixnum/Integer/g' "${SIMPLECOV_ROOT}/lib/simplecov/source_file.rb"
