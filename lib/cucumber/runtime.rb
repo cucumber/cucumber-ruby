@@ -30,8 +30,14 @@ module Cucumber
   class FileNotFoundException < FileException
   end
 
-  class FeatureFolderNotFoundException < FileException
-    include FixRuby21Bug9285 if Cucumber::RUBY_2_1 || Cucumber::RUBY_2_2 || Cucumber::RUBY_2_3
+  class FeatureFolderNotFoundException < Exception
+    def initialize(path)
+      @path = path
+    end
+
+    def message
+      "No such file or directory - #{@path}"
+    end
   end
 
   require 'cucumber/core'
@@ -141,8 +147,8 @@ module Cucumber
           set_encoding
         rescue Errno::EACCES => e
           raise FileNotFoundException.new(e, File.expand_path(path))
-        rescue Errno::ENOENT => e
-          raise FeatureFolderNotFoundException.new(e, path)
+        rescue Errno::ENOENT
+          raise FeatureFolderNotFoundException.new(path)
         end
       end
 
