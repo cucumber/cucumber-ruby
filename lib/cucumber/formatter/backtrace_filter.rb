@@ -14,7 +14,7 @@ module Cucumber
       test/unit
       .gem/ruby
       lib/ruby/
-      rbenv/.*/bin/bundle
+      bin/bundle
     )
 
     if ::Cucumber::JRUBY
