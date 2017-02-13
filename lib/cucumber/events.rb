@@ -29,6 +29,7 @@ module Cucumber
         StepDefinitionRegistered,
         TestCaseFinished,
         TestCaseStarting,
+        TestRunStarting,
         TestRunFinished,
         TestStepFinished,
         TestStepStarting,
