@@ -42,6 +42,7 @@
 * fix Lint/UnusedArgument ([#1033](https://github.com/cucumber/cucumber-ruby/pull/1033) @hotovson)
 * Fixes rubocop violation Performance/StringReplacement ([#1039](https://github.com/cucumber/cucumber-ruby/pull/1039) @pmatsinopoulos)
 * Fix an json compile error for "bundle install" on Ruby 2.4 ([#1069](https://github.com/cucumber/cucumber-ruby/pull/1069) @junaruga)
+* Add Ruby 2.4.0 as allow_failures in .travis.yml ([#1078](https://github.com/cucumber/cucumber-ruby/pull/1078) @junaruga)
 
 ## [v2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
 
