@@ -8,7 +8,7 @@ Before('@spawn') do
   Aruba.process = Aruba::SpawnProcess
 end
 
-Before('~@spawn') do
+Before('not @spawn') do
   Aruba::InProcess.main_class = Cucumber::Cli::Main
   Aruba.process = Aruba::InProcess
 end

@@ -3,7 +3,6 @@ require 'logger'
 require 'cucumber/cli/options'
 require 'cucumber/cli/rerun_file'
 require 'cucumber/constantize'
-require 'cucumber/core/gherkin/tag_expression'
 require 'cucumber'
 
 module Cucumber
@@ -28,8 +27,6 @@ module Cucumber
         @options.parse!(args)
         arrange_formats
         raise("You can't use both --strict and --wip") if strict? && wip?
-        # todo: remove
-        @options[:tag_expression] = Cucumber::Core::Gherkin::TagExpression.new(@options[:tag_expressions])
         set_environment_variables
       end
 
@@ -85,13 +82,8 @@ module Cucumber
         logger
       end
 
-      # todo: remove
-      def tag_expression
-        Cucumber::Core::Gherkin::TagExpression.new(@options[:tag_expressions])
-      end
-
       def tag_limits
-        tag_expression.limits.to_hash
+        @options[:tag_limits]
       end
 
       def tag_expressions

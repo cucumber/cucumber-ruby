@@ -3,18 +3,19 @@ cucumber_pro_opts = ENV['ENABLE_CUCUMBER_PRO'] ? "--format Cucumber::Pro --out /
 rerun = File.file?('rerun.txt') ? IO.read('rerun.txt') : ""
 rerun_opts = rerun.to_s.strip.empty? ? "--format progress features" : "--format pretty #{rerun}"
 std_opts = "--format progress features -r features --strict #{cucumber_pro_opts}"
-std_opts << " --tags ~@wip-jruby" if defined?(JRUBY_VERSION)
+std_opts << " --tags 'not @wip-jruby'" if defined?(JRUBY_VERSION)
 
-wip_opts = "--color -r features --tags @wip"
-wip_opts << ",@wip-jruby" if defined?(JRUBY_VERSION)
+wip_opts = "--color -r features"
+wip_opts << " --tags @wip" if !defined?(JRUBY_VERSION)
+wip_opts << " --tags '@wip or @wip-jruby'" if defined?(JRUBY_VERSION)
 %>
-default:     <%= std_opts %> --tags ~@jruby
-jruby:       <%= std_opts %> --tags ~@wire
-jruby_win:   <%= std_opts %> --tags ~@wire CUCUMBER_FORWARD_SLASH_PATHS=true
-windows_mri: <%= std_opts %> --tags ~@jruby --tags ~@wire --tags ~@needs-many-fonts CUCUMBER_FORWARD_SLASH_PATHS=true
-ruby_1_9:    <%= std_opts %> --tags ~@jruby
-ruby_2_0:    <%= std_opts %> --tags ~@jruby
-ruby_2_1:    <%= std_opts %> --tags ~@jruby
+default:     <%= std_opts %> --tags 'not @jruby'
+jruby:       <%= std_opts %> --tags 'not @wire'
+jruby_win:   <%= std_opts %> --tags 'not @wire' CUCUMBER_FORWARD_SLASH_PATHS=true
+windows_mri: <%= std_opts %> --tags 'not @jruby and not @wire and not @needs-many-fonts' CUCUMBER_FORWARD_SLASH_PATHS=true
+ruby_1_9:    <%= std_opts %> --tags 'not @jruby'
+ruby_2_0:    <%= std_opts %> --tags 'not @jruby'
+ruby_2_1:    <%= std_opts %> --tags 'not @jruby'
 wip:         --wip <%= wip_opts %> features <%= cucumber_pro_opts %>
 none:        --format pretty --format Cucumber::Pro --out /dev/null
-rerun:       <%= rerun_opts %> --format rerun --out rerun.txt --strict --tag ~@wip-new-core <%= cucumber_pro_opts %>
+rerun:       <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags 'not @wip-new-core' <%= cucumber_pro_opts %>

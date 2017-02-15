@@ -354,19 +354,17 @@ END_OF_MESSAGE
       expect(config.paths).not_to include('RAILS_ENV=selenium')
     end
 
-    describe '#tag_expression' do
-      include RSpec::WorkInProgress
-
+    describe '#tag_expressions' do
       it 'returns an empty expression when no tags are specified' do
         config.parse!([])
 
-        expect(config.tag_expression).to be_empty
+        expect(config.tag_expressions).to be_empty
       end
 
       it 'returns an expression when tags are specified' do
         config.parse!(['--tags','@foo'])
 
-        expect(config.tag_expression).not_to be_empty
+        expect(config.tag_expressions).not_to be_empty
       end
     end
 

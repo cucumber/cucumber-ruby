@@ -4,7 +4,7 @@ Feature: Tagged hooks
     Given the standard step definitions
     And a file named "features/support/hooks.rb" with:
       """
-      Before('~@no-boom') do 
+      Before('not @no-boom') do 
         raise 'boom'
       end
       """
