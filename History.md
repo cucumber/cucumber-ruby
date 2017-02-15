@@ -12,6 +12,7 @@
 * Add a summary formatter ([#999](https://github.com/cucumber/cucumber-ruby/pull/999) @mattwynne)
 * Namespaced World modules ([#1007](https://github.com/cucumber/cucumber-ruby/pull/1007) @nodo)
 * Add per-formatter CLI options ([#1058](https://github.com/cucumber/cucumber-ruby/pull/1058) @nodo)
+* Use tag expressions for tag filtering ([#1054](https://github.com/cucumber/cucumber-ruby/pull/1054) @brasmusson)
 
 ### Bugfixes
 
