@@ -20,6 +20,7 @@
 * with_filtered_backtrace called on Test::Result::Unknown with strange feature file ([#967](https://github.com/cucumber/cucumber-ruby/issues/967) @danascheider)
 * fix HTML formatter backtrace duplicate line bug ([#965](https://gthub.com/cucumber/cucumber-ruby/pull/965) @josephks)
 * Update env names correctly ([#1067](https://github.com/cucumber/cucumber-ruby/pull/1067) @junaruga)
+* Relax filter for "/usr/local/ruby-X.Y.Z/bin/bundle" ([#1079](https://github.com/cucumber/cucumber-ruby/pull/1079) @junaruga)
 
 ### Refactoring / DX
 
