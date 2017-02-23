@@ -258,11 +258,11 @@ module Cucumber
           filters << Filters::ApplyBeforeHooks.new(@support_code)
           filters << Filters::ApplyAfterHooks.new(@support_code)
           filters << Filters::ApplyAroundHooks.new(@support_code)
+          # need to do this last so it becomes the first test step
+          filters << Filters::PrepareWorld.new(self)
           filters << Filters::BroadcastTestRunStartingEvent.new(@configuration)
           filters << Filters::Quit.new
           filters << Filters::Retry.new(@configuration)
-          # need to do this last so it becomes the first test step
-          filters << Filters::PrepareWorld.new(self)
         end
       end
     end
