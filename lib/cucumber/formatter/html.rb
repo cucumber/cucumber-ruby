@@ -9,7 +9,7 @@ module Cucumber
   module Formatter
     class Html
 
-      #  TODO: remove coupling to types
+      # TODO: remove coupling to types
       AST_CLASSES = {
         Cucumber::Core::Ast::Scenario        => 'scenario',
         Cucumber::Core::Ast::ScenarioOutline => 'scenario outline'

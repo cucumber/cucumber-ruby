@@ -4,7 +4,7 @@ require 'digest/sha2'
 module Cucumber
   module Filters
 
-    #  Batches up all test cases, randomizes them, and then sends them on
+    # Batches up all test cases, randomizes them, and then sends them on
     class Randomizer
       def initialize(seed, receiver=nil)
         @receiver = receiver

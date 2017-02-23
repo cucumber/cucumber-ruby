@@ -230,7 +230,7 @@ module Cucumber
 
           def after_test_step(test_step, result)
             @current_test_step_source = TestStepSource.for(test_step, result)
-            #  TODO: stop calling self, and describe source to another object
+            # TODO: stop calling self, and describe source to another object
             test_step.describe_source_to(self, result)
             print_step
             @test_step_results << result
@@ -242,7 +242,7 @@ module Cucumber
             end
 
             if test_case_result.failed? && !any_test_steps_failed?
-              #  around hook must have failed. Print the error.
+              # around hook must have failed. Print the error.
               switch_step_container(TestCaseSource.for(test_case, test_case_result))
               LegacyResultBuilder.new(test_case_result).describe_exception_to formatter
             end
@@ -265,7 +265,7 @@ module Cucumber
           end
 
           def after_hook(_location, result)
-            # if the scenario has no steps, we can hit this before we've created the scenario printer
+            # if the scenario has no steps, we can hit this before we've created the scenario printer
             # ideally we should call switch_step_container in before_step_step
             switch_step_container if !@child
             @child.after_hook Ast::HookResult.new(LegacyResultBuilder.new(result), @delayed_messages, @delayed_embeddings)
@@ -428,7 +428,7 @@ module Cucumber
           end
         end
 
-        #  Basic printer used by default
+        # Basic printer used by default
         class AfterHookPrinter
           attr_reader :formatter
 
