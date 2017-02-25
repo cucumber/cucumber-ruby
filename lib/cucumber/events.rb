@@ -24,13 +24,14 @@ module Cucumber
 
     def self.registry
       Core::Events.build_registry(
-        TestCaseStarting,
+        GherkinSourceRead,
+        StepActivated,
+        StepDefinitionRegistered,
         TestCaseFinished,
+        TestCaseStarting,
+        TestRunFinished,
         TestStepFinished,
         TestStepStarting,
-        StepDefinitionRegistered,
-        StepActivated,
-        TestRunFinished
       )
     end
   end

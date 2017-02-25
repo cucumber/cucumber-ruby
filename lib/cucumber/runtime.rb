@@ -121,6 +121,7 @@ module Cucumber
     def features
       @features ||= feature_files.map do |path|
         source = NormalisedEncodingFile.read(path)
+        @configuration.notify :gherkin_source_read, path, source
         Cucumber::Core::Gherkin::Document.new(path, source)
       end
     end
