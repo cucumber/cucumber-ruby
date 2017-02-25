@@ -18,18 +18,22 @@ module Cucumber
 
         write_event type: "start"
 
+        config.on_event :gherkin_source_read, -> (event) {
+          write_event \
+          type: "gherkin-source-read",
+          path: event.path,
+          body: event.body
+        }
+
         config.on_event :test_run_starting, -> (event) {
           write_event \
           type: "test-run-starting",
-          workingDirectory: Dir.pwd,
+          workingDirectory: File.expand_path(Dir.pwd),
           testCases: event.test_cases.map { |test_case|
             {
               location: test_case.location,
               testSteps: test_case.test_steps.map { |test_step|
-                {
-                  sourceLocation: test_step.source.last.location,
-                  actionLocation: test_step.action_location,
-                }
+                test_step_to_json(test_step)
               }
             }
           }
@@ -89,6 +93,23 @@ module Cucumber
           }
         end
         data
+      end
+
+      def test_step_to_json(test_step)
+        if hook?(test_step)
+          {
+            actionLocation: test_step.action_location
+          }
+        else
+          {
+            actionLocation: test_step.action_location,
+            sourceLocation: test_step.source.last.location,
+          }
+        end
+      end
+
+      def hook?(test_step)
+        not test_step.source.last.respond_to?(:actual_keyword)
       end
 
       def open_socket(port, host)
