@@ -120,7 +120,7 @@ Feature: JUnit output formatter
           <![CDATA[]]>
         </system-err>
       </testcase>
-      <testcase classname="Subdirectory - One passing scenario, one failing scenario" name="Failing" time="0.05">
+      <testcase classname="Subdirectory - One passing scenario, one failing scenario" name="Failing" time="0.05" status="failed">
         <failure message="failed Failing" type="failed" status="failed">
           <![CDATA[Scenario: Failing
 
