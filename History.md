@@ -22,6 +22,7 @@
 * fix HTML formatter backtrace duplicate line bug ([#965](https://gthub.com/cucumber/cucumber-ruby/pull/965) @josephks)
 * Update env names correctly ([#1067](https://github.com/cucumber/cucumber-ruby/pull/1067) @junaruga)
 * Relax filter for "/usr/local/ruby-X.Y.Z/bin/bundle" ([#1079](https://github.com/cucumber/cucumber-ruby/pull/1079) @junaruga)
+* Avoid showing "@ rb_sysopen" noise for Ruby 2.4 ([#1080](https://github.com/cucumber/cucumber-ruby/pull/1080) @junaruga)
 
 ### Refactoring / DX
 
