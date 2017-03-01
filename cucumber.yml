@@ -16,6 +16,9 @@ windows_mri: <%= std_opts %> --tags 'not @jruby and not @wire and not @needs-man
 ruby_1_9:    <%= std_opts %> --tags 'not @jruby'
 ruby_2_0:    <%= std_opts %> --tags 'not @jruby'
 ruby_2_1:    <%= std_opts %> --tags 'not @jruby'
+ruby_2_2:    <%= std_opts %> --tags 'not @jruby'
+ruby_2_3:    <%= std_opts %> --tags 'not @jruby'
+ruby_2_4:    <%= std_opts %> --tags 'not @jruby'
 wip:         --wip <%= wip_opts %> features <%= cucumber_pro_opts %>
 none:        --format pretty --format Cucumber::Pro --out /dev/null
 rerun:       <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags 'not @wip-new-core' <%= cucumber_pro_opts %>

@@ -14,6 +14,12 @@ class Cucumber::Rake::Task
                      'ruby_2_0'
                    elsif Cucumber::RUBY_2_1
                      'ruby_2_1'
+                   elsif Cucumber::RUBY_2_2
+                     'ruby_2_2'
+                   elsif Cucumber::RUBY_2_3
+                     'ruby_2_3'
+                   elsif Cucumber::RUBY_2_4
+                     'ruby_2_4'
                    end
   end
 end
@@ -23,4 +29,5 @@ Cucumber::Rake::Task.new(:features) do |t|
   t.set_profile_for_current_ruby
 end
 
+desc 'Run Cucumber features'
 task :cucumber => :features
