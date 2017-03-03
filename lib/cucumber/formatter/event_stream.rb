@@ -20,11 +20,16 @@ module Cucumber
 
         config.on_event :gherkin_source_read, -> (event) {
           write_event \
-          type: "gherkin-source-read",
-          path: event.path,
-          body: event.body
+          type: "source",
+          uri: event.path,
+          data: event.body,
+          media: {
+            encoding: 'utf-8',
+            type: 'text/vnd.cucumber.gherkin+plain'
+          }
         }
 
+        # TODO: instead of one message, emit a series of pickle events, one for each test case (including hooks as steps)
         config.on_event :test_run_starting, -> (event) {
           write_event \
           type: "test-run-starting",
