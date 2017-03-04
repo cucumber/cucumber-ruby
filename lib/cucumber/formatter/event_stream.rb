@@ -16,6 +16,7 @@ module Cucumber
 
         current_test_case = nil
 
+        # TODO: add protocol version, working directory
         write_event type: "start"
 
         config.on_event :gherkin_source_read, -> (event) {
@@ -31,16 +32,25 @@ module Cucumber
 
         # TODO: instead of one message, emit a series of pickle events, one for each test case (including hooks as steps)
         config.on_event :test_run_starting, -> (event) {
-          write_event \
-          type: "test-run-starting",
-          workingDirectory: File.expand_path(Dir.pwd),
-          testCases: event.test_cases.map { |test_case|
-            {
-              location: test_case.location,
-              testSteps: test_case.test_steps.map { |test_step|
-                test_step_to_json(test_step)
+          event.test_cases.each { |test_case|
+            write_event \
+              type: "pickle",
+              uri: test_case.location.file,
+              pickle: {
+                name: test_case.name,
+                steps: test_case.test_steps.map { |test_step|
+                  test_step_to_json(test_step)
+                },
+                tags: test_case.tags.map { |tag|
+                  {
+                    name: tag.name,
+                    location: location_to_json(tag.location, test_case.location.file)
+                  }
+                },
+                locations: [
+                  location_to_json(test_case.location, test_case.location.file)
+                ]
               }
-            }
           }
         }
 
@@ -100,15 +110,27 @@ module Cucumber
         data
       end
 
+      def location_to_json(location, parent_file)
+        result = { line: location.line }
+        result[:uri] = location.file if location.file != parent_file
+        result
+      end
+
+      # TODO: use a plain location with line / colon for gherkin steps, use URI as well for hooks
       def test_step_to_json(test_step)
         if hook?(test_step)
           {
-            actionLocation: test_step.action_location
+            locations: [
+              location_to_json(test_step.action_location, test_step.location.file)
+            ]
           }
         else
           {
-            actionLocation: test_step.action_location,
-            sourceLocation: test_step.source.last.location,
+            text: test_step.name,
+            locations: [
+              location_to_json(test_step.source.last.location, test_step.location.file),
+              location_to_json(test_step.action_location, test_step.location.file)
+            ]
           }
         end
       end
