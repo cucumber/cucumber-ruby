@@ -9,6 +9,11 @@ Dir['gem_tasks/**/*.rake'].each { |rake| load rake }
 require 'rubocop/rake_task'
 RuboCop::RakeTask.new
 
+require 'cucumber/rake/task'
+Cucumber::Rake::Task.new do |t|
+  t.profile = 'ruby' if Cucumber::RUBY
+end
+
 default_tasks = [:spec, :rubocop, :cucumber]
 
 if ENV['TRAVIS']
