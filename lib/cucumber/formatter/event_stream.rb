@@ -39,7 +39,7 @@ module Cucumber
               pickle: {
                 name: test_case.name,
                 steps: test_case.test_steps.map { |test_step|
-                  test_step_to_json(test_step)
+                  test_step_to_json(test_step, test_case.location.file)
                 },
                 tags: test_case.tags.map { |tag|
                   {
@@ -117,19 +117,19 @@ module Cucumber
       end
 
       # TODO: use a plain location with line / colon for gherkin steps, use URI as well for hooks
-      def test_step_to_json(test_step)
+      def test_step_to_json(test_step, parent_uri)
         if hook?(test_step)
           {
             locations: [
-              location_to_json(test_step.action_location, test_step.location.file)
+              location_to_json(test_step.action_location, parent_uri)
             ]
           }
         else
           {
             text: test_step.name,
             locations: [
-              location_to_json(test_step.source.last.location, test_step.location.file),
-              location_to_json(test_step.action_location, test_step.location.file)
+              location_to_json(test_step.source.last.location, parent_uri),
+              location_to_json(test_step.action_location, parent_uri)
             ]
           }
         end
@@ -144,11 +144,7 @@ module Cucumber
       end
 
       def write_event(attributes)
-        data = attributes.merge({
-          series: @series,
-          timestamp: Time.now.to_i
-        })
-        @io.puts data.to_json
+        @io.puts attributes.to_json
       end
     end
   end
