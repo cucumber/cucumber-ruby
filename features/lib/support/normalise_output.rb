@@ -24,7 +24,7 @@ module NormaliseArubaOutput
       elements = feature.fetch('elements') { [] }
       elements.each do |scenario|
         scenario['steps'].each do |step|
-          ['steps', 'before', 'after'].each do |type|
+          %w(steps before after).each do |type|
             if scenario[type]
               scenario[type].each do |step_or_hook|
                 normalise_json_step_or_hook(step_or_hook)

@@ -408,12 +408,12 @@ module Cucumber
 
         it 'should inspect missing and surplus cells' do
           t1 = DataTable.from([
-            ['name',  'male', 'lastname', 'swedish'],
-            ['aslak', 'true', 'hellesøy', 'false']
+            %w(name  male lastname swedish),
+            %w(aslak true hellesøy false)
           ])
           t2 = DataTable.from([
-            ['name',  'male', 'lastname', 'swedish'],
-            ['aslak', true,   'hellesøy', false]
+            %w(name    male   lastname   swedish),
+             ['aslak', true, 'hellesøy', false]
           ])
           expect { t1.diff!(t2) }.to raise_error
 
@@ -426,13 +426,13 @@ module Cucumber
 
         it 'should allow column mapping of target before diffing' do
           t1 = DataTable.from([
-            ['name',  'male'],
-            ['aslak', 'true']
+            %w(name  male),
+            %w(aslak true)
           ])
           t1.map_column!('male') { |m| m == 'true' }
           t2 = DataTable.from([
-            ['name',  'male'],
-            ['aslak', true]
+            %w(name    male),
+             ['aslak', true]
           ])
           t1.diff!(t2)
           expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
@@ -443,15 +443,15 @@ module Cucumber
 
         it 'should allow column mapping of argument before diffing' do
           t1 = DataTable.from([
-            ['name',  'male'],
-            ['aslak', true]
+            %w(name    male),
+             ['aslak', true]
           ])
           t1.map_column!('male') {
             'true'
           }
           t2 = DataTable.from([
-            ['name',  'male'],
-            ['aslak', 'true']
+            %w(name  male),
+            %w(aslak true)
           ])
           t2.diff!(t1)
           expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
@@ -462,14 +462,14 @@ module Cucumber
 
         it 'should allow header mapping before diffing' do
           t1 = DataTable.from([
-            ['Name',  'Male'],
-            ['aslak', 'true']
+            %w(Name  Male),
+            %w(aslak true)
           ])
           t1.map_headers!('Name' => 'name', 'Male' => 'male')
           t1.map_column!('male') { |m| m == 'true' }
           t2 = DataTable.from([
-            ['name',  'male'],
-            ['aslak', true]
+            %w(name    male),
+             ['aslak', true]
           ])
           t1.diff!(t2)
           expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
@@ -480,12 +480,12 @@ module Cucumber
 
         it 'should detect seemingly identical tables as different' do
           t1 = DataTable.from([
-            ['X',  'Y'],
-            ['2', '1']
+            %w(X Y),
+            %w(2 1)
           ])
           t2 = DataTable.from([
-            ['X',  'Y'],
-            [2, 1]
+            %w(X  Y),
+              [2, 1]
           ])
           expect { t1.diff!(t2) }.to raise_error
           expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
@@ -497,8 +497,8 @@ module Cucumber
 
         it 'should not allow mappings that match more than 1 column' do
           t1 = DataTable.from([
-            ['Cuke',  'Duke'],
-            ['Foo', 'Bar']
+            %w(Cuke Duke),
+            %w(Foo  Bar)
           ])
           expect do
             t1.map_headers!(/uk/ => 'u')

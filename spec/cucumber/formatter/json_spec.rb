@@ -812,7 +812,7 @@ module Cucumber
         json.each do |feature|
           elements = feature.fetch('elements') { [] }
           elements.each do |scenario|
-            ['steps', 'before', 'after', 'around'].each do |type|
+            %w(steps before after around).each do |type|
               if scenario[type]
                 scenario[type].each do |step_or_hook|
                   normalise_json_step_or_hook(step_or_hook)
