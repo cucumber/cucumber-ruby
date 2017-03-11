@@ -1141,10 +1141,3 @@ Style/UnneededInterpolation:
 # SupportedStyles: snake_case, camelCase
 Style/VariableName:
   Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/WhileUntilDo:
-  Exclude:
-    - 'lib/autotest/cucumber_mixin.rb'
-    
