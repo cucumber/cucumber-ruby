@@ -453,9 +453,7 @@ module Cucumber
         cells_rows[0][col]
       end
 
-      def cell_matrix #:nodoc:
-        @cell_matrix
-      end
+      attr_reader :cell_matrix
 
       def col_width(col) #:nodoc:
         columns[col].__send__(:width)

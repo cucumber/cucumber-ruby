@@ -1110,15 +1110,6 @@ Style/TrailingCommaInLiteral:
 Style/TrailingWhitespace:
   Enabled: false
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: ExactNameMatch, AllowPredicates, AllowDSLWriters, IgnoreClassMethods, Whitelist.
-# Whitelist: to_ary, to_a, to_c, to_enum, to_h, to_hash, to_i, to_int, to_io, to_open, to_path, to_proc, to_r, to_regexp, to_str, to_s, to_sym
-Style/TrivialAccessors:
-  Exclude:
-    - 'lib/cucumber/formatter/legacy_api/ast.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 # Reviewed: when the offense is fixed there is one spec failing (./spec/cucumber/rb_support/rb_world_spec.rb:37)
