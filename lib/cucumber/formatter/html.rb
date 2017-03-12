@@ -587,7 +587,7 @@ module Cucumber
       end
 
       def format_exception(exception)
-        (["#{exception.message}"] + exception.backtrace).join("\n")
+        ([exception.message.to_s] + exception.backtrace).join("\n")
       end
 
       def backtrace_line(line)

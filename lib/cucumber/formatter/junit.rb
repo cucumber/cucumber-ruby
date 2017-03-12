@@ -104,7 +104,7 @@ module Cucumber
         output = "#{test_case.keyword}: #{scenario}\n\n"
         return output if result.ok?(@config.strict?)
         if test_case.keyword == 'Scenario'
-          output += "#{@failing_step_source.keyword}" unless hook?(@failing_step_source)
+          output += @failing_step_source.keyword.to_s unless hook?(@failing_step_source)
           output += "#{@failing_step_source.name}\n"
         else
           output += "Example row: #{row_name}\n"
