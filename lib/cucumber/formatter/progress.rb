@@ -18,7 +18,8 @@ module Cucumber
       attr_reader :config, :summary
 
       def initialize(config)
-        @config, @io = config, ensure_io(config.out_stream)
+        @config = config
+        @io = ensure_io(config.out_stream)
         @previous_step_keyword = nil
         @snippets_input = []
         @total_duration = 0

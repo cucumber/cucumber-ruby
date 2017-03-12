@@ -230,7 +230,7 @@ module Cucumber
 
           def after_test_step(test_step, result)
             @current_test_step_source = TestStepSource.for(test_step, result)
-            # TODO: stop calling self, and describe source to another object
+            # TODO: stop calling self, and describe source to another object
             test_step.describe_source_to(self, result)
             print_step
             @test_step_results << result
@@ -242,7 +242,7 @@ module Cucumber
             end
 
             if test_case_result.failed? && !any_test_steps_failed?
-              # around hook must have failed. Print the error.
+              # around hook must have failed. Print the error.
               switch_step_container(TestCaseSource.for(test_case, test_case_result))
               LegacyResultBuilder.new(test_case_result).describe_exception_to formatter
             end
@@ -265,7 +265,7 @@ module Cucumber
           end
 
           def after_hook(_location, result)
-            # if the scenario has no steps, we can hit this before we've created the scenario printer
+            # if the scenario has no steps, we can hit this before we've created the scenario printer
             # ideally we should call switch_step_container in before_step_step
             switch_step_container if !@child
             @child.after_hook Ast::HookResult.new(LegacyResultBuilder.new(result), @delayed_messages, @delayed_embeddings)
@@ -401,7 +401,7 @@ module Cucumber
 
           def from_scenario_outline_to_hidden_backgroud(from, to)
             from.class.name == ScenarioOutlinePrinter.name and
-            to.class.name == HiddenBackgroundPrinter.name
+              to.class.name == HiddenBackgroundPrinter.name
           end
 
           def from_first_background(from)
@@ -428,7 +428,7 @@ module Cucumber
           end
         end
 
-        # Basic printer used by default
+        # Basic printer used by default
         class AfterHookPrinter
           attr_reader :formatter
 
@@ -592,7 +592,8 @@ module Cucumber
           end
 
           def step_invocation(step_invocation, source)
-            _node, result = source.step, source.step_result
+            _node = source.step
+            result = source.step_result
             @last_step_result = result
             @child.step_invocation(step_invocation, source)
           end
@@ -643,7 +644,7 @@ module Cucumber
           def outline_step(step)
             step_match = NoStepMatch.new(step, step.name)
             step_invocation = LegacyResultBuilder.new(Core::Test::Result::Skipped.new).
-              step_invocation(step_match, step, indent, nil, configuration, [], [])
+                              step_invocation(step_match, step, indent, nil, configuration, [], [])
             steps_printer.step_invocation step_invocation
           end
 
@@ -746,7 +747,7 @@ module Cucumber
                 descend.call(self)
               end
 
-              def examples_table_row(row, &_descend)
+              def examples_table_row(row)
                 width = char_length_of(row.values[index])
                 @result = width if width > result
               end
