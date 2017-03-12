@@ -1129,12 +1129,7 @@ Style/UnlessElse:
 # Cop supports --auto-correct.
 Style/UnneededInterpolation:
   Exclude:
-    - 'lib/cucumber/formatter/html.rb'
-    - 'lib/cucumber/formatter/junit.rb'
-    - 'lib/cucumber/formatter/legacy_api/ast.rb'
-    - 'lib/cucumber/formatter/pretty.rb'
     - 'lib/cucumber/rb_support/rb_world.rb'
-    - 'spec/cucumber/cli/options_spec.rb'
 
 # Offense count: 15
 # Configuration parameters: EnforcedStyle, SupportedStyles.
