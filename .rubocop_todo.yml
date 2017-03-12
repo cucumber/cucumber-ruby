@@ -1121,6 +1121,7 @@ Style/TrivialAccessors:
 
 # Offense count: 1
 # Cop supports --auto-correct.
+# Reviewed: when the offense is fixed there is one spec failing (./spec/cucumber/rb_support/rb_world_spec.rb:37)
 Style/UnneededInterpolation:
   Exclude:
     - 'lib/cucumber/rb_support/rb_world.rb'
@@ -1128,5 +1129,6 @@ Style/UnneededInterpolation:
 # Offense count: 15
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: snake_case, camelCase
+# Reviewed: these offenses look false as the variables are in cyrillic
 Style/VariableName:
   Enabled: false
