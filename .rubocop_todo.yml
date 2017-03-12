@@ -1121,12 +1121,6 @@ Style/TrivialAccessors:
 
 # Offense count: 1
 # Cop supports --auto-correct.
-Style/UnlessElse:
-  Exclude:
-    - 'lib/cucumber/formatter/legacy_api/adapter.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
 Style/UnneededInterpolation:
   Exclude:
     - 'lib/cucumber/rb_support/rb_world.rb'
