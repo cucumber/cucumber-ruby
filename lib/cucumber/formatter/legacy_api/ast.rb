@@ -377,9 +377,7 @@ module Cucumber
             @feature = feature
           end
 
-          def feature
-            @feature
-          end
+          attr_reader :feature
         end
 
       end
