@@ -47,6 +47,7 @@
 * Fix an json compile error for "bundle install" on Ruby 2.4 ([#1069](https://github.com/cucumber/cucumber-ruby/pull/1069) @junaruga)
 * Add Ruby 2.4.0 as allow_failures in .travis.yml ([#1078](https://github.com/cucumber/cucumber-ruby/pull/1078) @junaruga)
 * Add ruby-head as a allow failures in .travis.yml ([#1087](https://github.com/cucumber/cucumber-ruby/pull/1087) @junaruga)
+* Refactoring for Rakefile to display cucumber task by "rake -T". ([#1088](https://github.com/cucumber/cucumber-ruby/pull/1088) @junaruga)
 
 ## [v2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
 
