@@ -1125,7 +1125,7 @@ Style/UnlessElse:
   Exclude:
     - 'lib/cucumber/formatter/legacy_api/adapter.rb'
 
-# Offense count: 7
+# Offense count: 1
 # Cop supports --auto-correct.
 Style/UnneededInterpolation:
   Exclude:
