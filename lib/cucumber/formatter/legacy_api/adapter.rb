@@ -388,11 +388,11 @@ module Cucumber
                   @previous_outline_child.after unless same_scenario_outline_as_previous_test_case?(source)
                 end
               end
-              unless from_scenario_outline_to_hidden_backgroud(@child, child)
+              if from_scenario_outline_to_hidden_backgroud(@child, child)
+                @previous_outline_child = @child
+              else
                 @child.after
                 @previous_outline_child = nil
-              else
-                @previous_outline_child = @child
               end
             end
             child.before unless to_scenario_outline(child) and same_scenario_outline_as_previous_test_case?(source)
