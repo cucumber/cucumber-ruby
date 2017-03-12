@@ -72,7 +72,7 @@ module Cucumber
         runtime.support_code.ruby
         dsl = Object.new
         dsl.extend RbSupport::RbDsl
-        dsl.instance_exec &step_defs
+        dsl.instance_exec(&step_defs)
       end
 
       def options

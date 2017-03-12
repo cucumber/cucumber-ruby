@@ -110,11 +110,11 @@ module Cucumber
             Ast::Comments.new(step.comments).accept(formatter)
             messages.each { |message| formatter.puts(message) }
             embeddings.each { |embedding| embedding.send_to_formatter(formatter) }
-            formatter.before_step_result *step_result_attributes
+            formatter.before_step_result(*step_result_attributes)
             print_step_name(formatter)
             Ast::MultilineArg.for(multiline_arg).accept(formatter)
             print_exception(formatter)
-            formatter.after_step_result *step_result_attributes
+            formatter.after_step_result(*step_result_attributes)
             formatter.after_step(self)
           end
 
