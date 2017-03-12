@@ -30,7 +30,7 @@ module Cucumber
         TestStepStarting,
         StepDefinitionRegistered,
         StepActivated,
-        TestRunFinished,
+        TestRunFinished
       )
     end
   end
