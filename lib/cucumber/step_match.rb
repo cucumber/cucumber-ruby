@@ -77,9 +77,10 @@ module Cucumber
                         format % step_argument.val
                       end
 
-        s[step_argument.offset + offset, step_argument.val.length] = replacement
-        offset += replacement.unpack('U*').length - step_argument.val.unpack('U*').length
-        past_offset = step_argument.offset + step_argument.val.length
+        val = String(step_argument.val)
+        s[step_argument.offset + offset, val.length] = replacement
+        offset += replacement.unpack('U*').length - val.unpack('U*').length
+        past_offset = step_argument.offset + val.length
       end
       s
     end
