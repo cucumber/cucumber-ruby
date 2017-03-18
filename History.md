@@ -48,6 +48,7 @@
 * Add Ruby 2.4.0 as allow_failures in .travis.yml ([#1078](https://github.com/cucumber/cucumber-ruby/pull/1078) @junaruga)
 * Add ruby-head as a allow failures in .travis.yml ([#1087](https://github.com/cucumber/cucumber-ruby/pull/1087) @junaruga)
 * Refactoring for Rakefile to display cucumber task by "rake -T". ([#1088](https://github.com/cucumber/cucumber-ruby/pull/1088) @junaruga)
+* Fix some rubocop offenses ([#1093](https://github.com/cucumber/cucumber-ruby/pull/1093) @bv)
 
 ## [v2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
 
