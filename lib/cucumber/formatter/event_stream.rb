@@ -36,7 +36,6 @@ module Cucumber
           event.test_cases.each { |test_case|
             write_event \
               type: "test-case",
-              id: test_case_id(test_case),
               sourceLocation: location_to_json(test_case.location),
               steps: test_case.test_steps.map { |test_step|
                 test_step_to_json(test_case, test_step)
@@ -48,26 +47,28 @@ module Cucumber
           current_test_case = event.test_case # TODO: add this to the core step events so we don't have to cache it here
           write_event \
             type: "test-case-started",
-            id: test_case_id(event.test_case)
+            sourceLocation: location_to_json(event.test_case.location)
         }
 
         config.on_event :test_step_starting, -> (event) {
           write_event \
             type: "test-step-started",
-            id: test_step_id(current_test_case, event.test_step)
+            testCase: { sourceLocation: location_to_json(current_test_case.location) },
+            index: current_test_case.test_steps.index(event.test_step)
         }
 
         config.on_event :test_step_finished, -> (event) {
           write_event \
             type: "test-step-finished",
-            id: test_step_id(current_test_case, event.test_step),
+            testCase: { sourceLocation: location_to_json(current_test_case.location) },
+            index: current_test_case.test_steps.index(event.test_step),
             result: result_to_json(event.result)
         }
 
         config.on_event :test_case_finished, -> (event) {
           write_event \
-            type: "test-case-finished", 
-            id: test_case_id(event.test_case),
+            type: "test-case-finished",
+            sourceLocation: location_to_json(event.test_case.location),
             result: result_to_json(event.result)
         }
 
@@ -96,7 +97,6 @@ module Cucumber
 
       def test_step_to_json(test_case, test_step)
         {
-          id: test_step_id(test_case, test_step),
           actionLocation: location_to_json(test_step.action_location),
           sourceLocation: location_to_json(test_step.source.last.location)
         }
@@ -108,17 +108,6 @@ module Cucumber
 
       def write_event(attributes)
         @io.puts attributes.to_json
-      end
-
-      def test_step_id(test_case, test_step)
-        {
-          testCaseId: test_case_id(test_case),
-          index: test_case.test_steps.index(test_step)
-        }
-      end
-
-      def test_case_id(test_case)
-        location_to_json(test_case.location)
       end
 
       def location_to_json(location)
