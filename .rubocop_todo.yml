@@ -1034,14 +1034,6 @@ Style/SpaceInsideParens:
     - 'spec/cucumber/multiline_argument/data_table_spec.rb'
     - 'spec/cucumber/rb_support/rb_world_spec.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: space, no_space
-Style/SpaceInsideStringInterpolation:
-  Exclude:
-    - 'spec/cucumber/rake/forked_spec.rb'
-
 # Offense count: 89
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.

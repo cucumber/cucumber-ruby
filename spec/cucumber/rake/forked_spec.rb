@@ -45,7 +45,7 @@ module Cucumber
           expect(subject.cmd).to eq [Cucumber::RUBY_BINARY,
             '-I',
             '"lib"',
-            "\"#{Cucumber::BINARY }\"",
+            "\"#{Cucumber::BINARY}\"",
             '--cuke-option'] + feature_files
         end
       end
