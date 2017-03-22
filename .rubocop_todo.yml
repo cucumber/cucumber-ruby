@@ -1097,10 +1097,14 @@ Style/TrailingCommaInLiteral:
     - 'spec/cucumber/filters/tag_limits/verifier_spec.rb'
     - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
 
-# Offense count: 107
+# Offense count: 18
 # Cop supports --auto-correct.
+# Reviewed: in pretty_spec.rb, progress_spec.rb offences look false,
+#           as the trailing spaces are in multiline string literals
 Style/TrailingWhitespace:
-  Enabled: false
+  Exclude:
+    - 'spec/cucumber/formatter/pretty_spec.rb'
+    - 'spec/cucumber/formatter/progress_spec.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.

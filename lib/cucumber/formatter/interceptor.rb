@@ -13,7 +13,7 @@ module Cucumber
         end
 
         def write(str)
-          lock.synchronize do 
+          lock.synchronize do
             @buffer << str if @wrapped
             return @pipe.write(str)
           end
