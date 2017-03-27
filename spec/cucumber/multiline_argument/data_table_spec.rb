@@ -332,6 +332,12 @@ module Cucumber
           }
         end
 
+        it 'should allow diffing empty tables' do
+          t1 = DataTable.from([[]])
+          t2 = DataTable.from([[]])
+          expect{ t1.diff!(t2) }.not_to raise_error
+        end
+
         context 'in case of duplicate header values' do
           it 'raises no error for two identical tables' do
             t = DataTable.from(%{

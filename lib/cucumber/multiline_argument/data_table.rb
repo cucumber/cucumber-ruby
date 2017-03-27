@@ -589,7 +589,7 @@ module Cucumber
             matched_cols << unmatched_cols.delete_at(mapped_index)
           else
             mark_as_missing(cols[i])
-            empty_col = other_cell_matrix.collect {SurplusCell.new(nil, self, -1)}
+            empty_col = ensure_2d(other_cell_matrix).collect {SurplusCell.new(nil, self, -1)}
             empty_col.first.value = v
             matched_cols << empty_col
           end
@@ -601,7 +601,11 @@ module Cucumber
           cols << empty_col
         end
 
-        return cols.transpose, (matched_cols + unmatched_cols).transpose
+        return ensure_2d(cols.transpose), ensure_2d((matched_cols + unmatched_cols).transpose)
+      end
+
+      def ensure_2d(array) #:nodoc:
+        Array === array[0] ? array : [array]
       end
 
       def ensure_table(table_or_array) #:nodoc:
