@@ -84,7 +84,7 @@ module Gherkin
           ALIASES["#{key}_arg"].split(',').map{|color| COLORS[color]}.join('')
         end
       end
-      
+
       def reset
         "\e[0m"
       end

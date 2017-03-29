@@ -34,7 +34,7 @@ module Cucumber
         end
       end.to raise_error(Cucumber::Pending, /TODO/)
       # The teardown is needed so that the message expectation does not bubble up.
-      RSpec::Mocks.teardown 
+      RSpec::Mocks.teardown
     end
 
     it 'raises a Pending if a supplied block starts working' do

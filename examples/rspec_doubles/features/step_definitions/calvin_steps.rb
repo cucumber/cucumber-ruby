@@ -2,7 +2,7 @@ class CardboardBox
   def initialize(transmogrifier)
     @transmogrifier = transmogrifier
   end
-  
+
   def poke
     @transmogrifier.transmogrify
   end

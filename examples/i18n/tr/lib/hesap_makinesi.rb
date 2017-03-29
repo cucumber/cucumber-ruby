@@ -4,7 +4,7 @@ class HesapMakinesi
     @args ||= []
     @args << n
   end
-  
+
   def topla
     @args.inject(0){|n,sum| sum + n}
   end

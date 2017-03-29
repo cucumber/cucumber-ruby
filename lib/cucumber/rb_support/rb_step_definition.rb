@@ -5,7 +5,7 @@ require 'cucumber/core_ext/string'
 
 module Cucumber
   module RbSupport
-    # A Ruby Step Definition holds a Regexp pattern and a Proc, and is 
+    # A Ruby Step Definition holds a Regexp pattern and a Proc, and is
     # typically created by calling {RbDsl#register_rb_step_definition Given, When or Then}
     # in the step_definitions Ruby files.
     #
