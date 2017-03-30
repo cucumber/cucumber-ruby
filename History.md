@@ -27,6 +27,7 @@
 
 ### Refactoring / DX
 
+* Add supported platforms to README.md. ([#1092](https://github.com/cucumber/cucumber-ruby/pull/1092) @junaruga)
 * Fixes for rubocop violations ([#1095](https://github.com/cucumber/cucumber-ruby/pull/1095) @bv)
 * Fixes for rubocop violations ([#1042](https://github.com/cucumber/cucumber-ruby/pull/1042) @phoebeclarke)
 * Add frozen string literal magic comment to files and fix issues it causes ([#996](https://github.com/cucumber/cucumber-ruby/pull/996) @twalpole)
