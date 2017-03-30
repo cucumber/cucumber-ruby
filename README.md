@@ -22,7 +22,15 @@ Where to get more info:
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for info on contributing to Cucumber.
 
-## Code of Conduct
+## Supported platforms
+
+* Ruby 2.4
+* Ruby 2.3
+* Ruby 2.2
+* Ruby 2.1
+* JRuby 9.1
+
+## Code of Conduct
 
 Everyone interacting in this codebase and issue tracker is expected to follow the Cucumber [code of conduct](https://github.com/cucumber/cucumber/blob/master/CODE_OF_CONDUCT.md).
 
