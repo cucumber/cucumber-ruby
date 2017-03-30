@@ -12,7 +12,7 @@ module Cucumber
           next unless retry_required?(test_case, event)
 
           test_case_counts[test_case] += 1
-          event.test_case.describe_to(receiver)
+          test_case.describe_to(receiver)
         end
 
         super
