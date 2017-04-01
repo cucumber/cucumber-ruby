@@ -596,8 +596,8 @@ module Cucumber
         end
 
 
-        empty_col = cell_matrix.collect {SurplusCell.new(nil, self, -1)}
         unmatched_cols.each do
+          empty_col = cell_matrix.collect {SurplusCell.new(nil, self, -1)}
           cols << empty_col
         end
 
