@@ -986,13 +986,6 @@ Style/SpaceBeforeComma:
   Exclude:
     - 'lib/cucumber/term/ansicolor.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowForAlignment.
-Style/SpaceBeforeFirstArg:
-  Exclude:
-    - 'spec/cucumber/rb_support/rb_step_definition_spec.rb'
-
 # Offense count: 255
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, EnforcedStyleForEmptyBraces, SpaceBeforeBlockParameters.
