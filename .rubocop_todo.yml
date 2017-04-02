@@ -1077,18 +1077,6 @@ Style/SymbolProc:
 Style/TrailingBlankLines:
   Enabled: false
 
-# Offense count: 43
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline, SupportedStyles.
-# SupportedStyles: comma, consistent_comma, no_comma
-Style/TrailingCommaInLiteral:
-  Exclude:
-    - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/term/ansicolor.rb'
-    - 'spec/cucumber/file_specs_spec.rb'
-    - 'spec/cucumber/filters/tag_limits/verifier_spec.rb'
-    - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
-
 # Offense count: 18
 # Cop supports --auto-correct.
 # Reviewed: in pretty_spec.rb, progress_spec.rb offences look false,

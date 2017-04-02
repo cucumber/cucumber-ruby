@@ -316,7 +316,7 @@ TEXT
           'cucumber examples/i18n/en/features',
           'cucumber @rerun.txt (See --format rerun)',
           'cucumber examples/i18n/it/features/somma.feature:6:98:113',
-          'cucumber -s -i http://rubyurl.com/eeCl', '', '',
+          'cucumber -s -i http://rubyurl.com/eeCl', '', ''
         ].join("\n")
       end
 
