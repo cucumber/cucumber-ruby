@@ -176,7 +176,7 @@ module Cucumber
       end
 
       it 'allows puts' do
-        expect(user_interface).to  receive(:puts).with('wasup')
+        expect(user_interface).to receive(:puts).with('wasup')
         dsl.Given(/Loud/) do
           puts 'wasup'
         end
