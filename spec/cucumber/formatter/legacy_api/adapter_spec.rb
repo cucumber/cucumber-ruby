@@ -106,7 +106,7 @@ module Cucumber
                   step 'passing'
                 end
               end
-            end,
+            end
           ]
           runner = Core::Test::Runner.new(events)
           compile gherkin_docs, runner, default_filters
@@ -147,7 +147,7 @@ module Cucumber
                   :after_steps,
                 :after_feature_element,
               :after_feature,
-            :after_features,
+            :after_features
           ]
         end
 
@@ -170,7 +170,7 @@ module Cucumber
                     :scenario_name,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
           ]
         end
 
@@ -207,7 +207,7 @@ module Cucumber
                     :scenario_name,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
           ]
         end
 
@@ -238,7 +238,7 @@ module Cucumber
                     :after_steps,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
           ]
         end
 
@@ -276,7 +276,7 @@ module Cucumber
               :after_steps,
               :after_feature_element,
               :after_feature,
-              :after_features,
+              :after_features
           ]
         end
 
@@ -322,7 +322,7 @@ module Cucumber
                     :after_steps,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
           ]
         end
 
@@ -357,7 +357,7 @@ module Cucumber
                   :scenario_name,
                 :after_feature_element,
               :after_feature,
-            :after_features,
+            :after_features
           ]
         end
 
@@ -416,7 +416,7 @@ module Cucumber
                     :after_steps,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
           ]
         end
 
@@ -498,7 +498,7 @@ module Cucumber
                     :after_examples_array,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
           ]
         end
 
@@ -580,7 +580,7 @@ module Cucumber
                     :after_steps,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
           ]
         end
 
@@ -685,7 +685,7 @@ module Cucumber
                     :after_examples_array,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
           ]
         end
 
@@ -758,7 +758,7 @@ module Cucumber
                     :after_examples_array,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
           ]
         end
 
@@ -846,7 +846,7 @@ module Cucumber
                     :after_examples_array,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
           ]
         end
 
@@ -896,7 +896,7 @@ module Cucumber
                     :after_steps,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
           ]
         end
 
@@ -940,7 +940,7 @@ module Cucumber
               :after_steps,
               :after_feature_element,
               :after_feature,
-              :after_features,
+              :after_features
           ]
         end
 
@@ -994,7 +994,7 @@ module Cucumber
                     :after_examples_array,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
           ]
         end
 
@@ -1063,7 +1063,7 @@ module Cucumber
                     :after_examples_array,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
           ]
         end
 
@@ -1132,7 +1132,7 @@ module Cucumber
                     :after_steps,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
             ]
         end
 
@@ -1192,7 +1192,7 @@ module Cucumber
                     :after_examples_array,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
             ]
         end
 
@@ -1267,7 +1267,7 @@ module Cucumber
                     :after_examples_array,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
             ]
         end
 
@@ -1359,7 +1359,7 @@ module Cucumber
                     :after_examples_array,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
             ]
         end
 
@@ -1413,7 +1413,7 @@ module Cucumber
                     :after_examples_array,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
             ]
         end
 
@@ -1473,7 +1473,7 @@ module Cucumber
                     :after_steps,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
             ]
         end
 
@@ -1534,7 +1534,7 @@ module Cucumber
                       :after_examples_array,
                     :after_feature_element,
                   :after_feature,
-                :after_features,
+                :after_features
               ]
           end
         end
@@ -1581,7 +1581,7 @@ module Cucumber
                       :after_steps,
                     :after_feature_element,
                   :after_feature,
-                :after_features,
+                :after_features
                 ])
           end
         end
@@ -1628,7 +1628,7 @@ module Cucumber
                       :after_steps,
                     :after_feature_element,
                   :after_feature,
-                :after_features,
+                :after_features
                 ])
           end
 
@@ -1679,7 +1679,7 @@ module Cucumber
                       :after_steps,
                     :after_feature_element,
                   :after_feature,
-                :after_features,
+                :after_features
                 ])
           end
 
@@ -1741,7 +1741,7 @@ module Cucumber
                       :after_examples_array,
                     :after_feature_element,
                   :after_feature,
-                :after_features,
+                :after_features
               ])
           end
         end
@@ -1791,7 +1791,7 @@ module Cucumber
                       :after_steps,
                     :after_feature_element,
                   :after_feature,
-                :after_features,
+                :after_features
                 ])
           end
         end
@@ -1839,7 +1839,7 @@ module Cucumber
                     :exception,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
             ])
           end
 
@@ -1900,7 +1900,7 @@ module Cucumber
                     :after_examples_array,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
             ])
           end
         end
@@ -1948,7 +1948,7 @@ module Cucumber
                     :exception,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
             ])
           end
         end
@@ -1980,7 +1980,7 @@ module Cucumber
                     :exception,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
             ])
           end
         end
@@ -2020,7 +2020,7 @@ module Cucumber
                     :exception,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
             ])
           end
         end
@@ -2068,7 +2068,7 @@ module Cucumber
                     :after_steps,
                   :after_feature_element,
                 :after_feature,
-              :after_features,
+              :after_features
             ])
           end
         end
