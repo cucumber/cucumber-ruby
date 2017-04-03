@@ -332,10 +332,42 @@ module Cucumber
           }
         end
 
-        it 'should allow diffing empty tables' do
-          t1 = DataTable.from([[]])
-          t2 = DataTable.from([[]])
-          expect{ t1.diff!(t2) }.not_to raise_error
+        context 'with empty tables' do
+          it 'should allow diffing empty tables' do
+            t1 = DataTable.from([[]])
+            t2 = DataTable.from([[]])
+            expect{ t1.diff!(t2) }.not_to raise_error
+          end
+
+          it 'should be able to diff when the right table is empty' do
+            t1 = DataTable.from(%{
+              |a|b|c|
+              |d|e|f|
+              |g|h|i|
+            })
+            t2 = DataTable.from([[]])
+            expect { t1.diff!(t2) }.to raise_error
+            expect( t1.to_s(:indent => 14, :color => false) ).to eq %{
+              | (-) a | (-) b | (-) c |
+              | (-) d | (-) e | (-) f |
+              | (-) g | (-) h | (-) i |
+            }
+          end
+
+          it 'should be able to diff when the left table is empty' do
+            t1 = DataTable.from([[]])
+            t2 = DataTable.from(%{
+              |a|b|c|
+              |d|e|f|
+              |g|h|i|
+            })
+            expect { t1.diff!(t2) }.to raise_error
+            expect( t1.to_s(:indent => 14, :color => false) ).to eq %{
+              | (+) a | (+) b | (+) c |
+              | (+) d | (+) e | (+) f |
+              | (+) g | (+) h | (+) i |
+            }
+          end
         end
 
         context 'in case of duplicate header values' do
