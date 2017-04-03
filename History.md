@@ -16,6 +16,7 @@
 
 ### Bugfixes
 
+* Fix incorrect `DataTable#diff!` results ([#1102](https://github.com/cucumber/cucumber-ruby/pulls/1102) @botandrose)
 * Do not apply the hooks to the test case several times when using the retry option ([#1098](https://github.com/cucumber/cucumber-ruby/issues/1098) @brasmusson)
 * Fix bug in comparing empty data tables ([#1097](https://github.com/cucumber/cucumber-ruby/pulls/1097), resolves [#1096](https://github.com/cucumber/cucumber-ruby/issues/1096))
 * Configure Gemfile to fetch cucumber-ruby-wire from git if the repo is not found locally ([#983](https://github.com/cucumber/cucumber-ruby/pulls/983), resolves [#961](https://github.com/cucumber/cucumber-ruby/issues/961))
