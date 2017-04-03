@@ -752,13 +752,6 @@ Style/OpMethod:
 Style/ParallelAssignment:
   Enabled: false
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowSafeAssignment.
-Style/ParenthesesAroundCondition:
-  Exclude:
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-
 # Offense count: 225
 # Cop supports --auto-correct.
 # Configuration parameters: PreferredDelimiters.
