@@ -307,7 +307,7 @@ module Cucumber
             | dddd  | 4000     | 300       |
             | e     | 50000    | 4000      |
           })
-          expect { t1.diff!(t2) }.to raise_error
+          expect { t1.diff!(t2) }.to raise_error(DataTable::Different)
           expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     1         | (-) 22         | (-) 333         |     4444         | (+) a    |
             |     55555     | (-) 666666     | (-) 7777777     |     88888888     | (+) bb   |
@@ -346,7 +346,7 @@ module Cucumber
               |g|h|i|
             })
             t2 = DataTable.from([[]])
-            expect { t1.diff!(t2) }.to raise_error
+            expect { t1.diff!(t2) }.to raise_error(DataTable::Different)
             expect( t1.to_s(:indent => 14, :color => false) ).to eq %{
               | (-) a | (-) b | (-) c |
               | (-) d | (-) e | (-) f |
@@ -361,7 +361,7 @@ module Cucumber
               |d|e|f|
               |g|h|i|
             })
-            expect { t1.diff!(t2) }.to raise_error
+            expect { t1.diff!(t2) }.to raise_error(DataTable::Different)
             expect( t1.to_s(:indent => 14, :color => false) ).to eq %{
               | (+) a | (+) b | (+) c |
               | (+) d | (+) e | (+) f |
@@ -396,7 +396,7 @@ module Cucumber
             |d|oops|f|
             |g|h|i|
                                 })
-            expect{ t1.diff!(t2) }.to raise_error
+            expect{ t1.diff!(t2) }.to raise_error(DataTable::Different)
             expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     a |     a    |     c |
             | (-) d | (-) e    | (-) f |
@@ -416,7 +416,7 @@ module Cucumber
             |d|e|f|
             |g|h|i|
                                 })
-            expect{ t1.diff!(t2) }.to raise_error
+            expect{ t1.diff!(t2) }.to raise_error(DataTable::Different)
             expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     a | (-) a |     b |     c |
             |     d | (-) d |     e |     f |
@@ -435,7 +435,7 @@ module Cucumber
             |d|e|d|f|
             |g|h|g|i|
                                 })
-            expect{ t1.diff!(t2, :surplus_col => true) }.to raise_error
+            expect{ t1.diff!(t2, :surplus_col => true) }.to raise_error(DataTable::Different)
             expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     a |     b |     c | (+) a |
             |     d |     e |     f | (+) d |
@@ -453,7 +453,7 @@ module Cucumber
             %w(name    male   lastname   swedish),
              ['aslak', true, 'hellesøy', false]
           ])
-          expect { t1.diff!(t2) }.to raise_error
+          expect { t1.diff!(t2) }.to raise_error(DataTable::Different)
 
           expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     name  |     male       |     lastname |     swedish     |
@@ -525,7 +525,7 @@ module Cucumber
             %w(X  Y),
               [2, 1]
           ])
-          expect { t1.diff!(t2) }.to raise_error
+          expect { t1.diff!(t2) }.to raise_error(DataTable::Different)
           expect( t1.to_s(:indent => 12, :color => false) ).to eq %{
             |     X       |     Y       |
             | (-) (i) "2" | (-) (i) "1" |
@@ -557,7 +557,7 @@ module Cucumber
             t = DataTable.from(%{
               | a | b |
             })
-            expect( lambda { @t.dup.diff!(t) } ).to raise_error
+            expect( lambda { @t.dup.diff!(t) } ).to raise_error(DataTable::Different)
             expect { @t.dup.diff!(t, :missing_row => false) }.not_to raise_error
           end
 
@@ -567,7 +567,7 @@ module Cucumber
               | c | d |
               | e | f |
             })
-            expect { @t.dup.diff!(t) }.to raise_error
+            expect { @t.dup.diff!(t) }.to raise_error(DataTable::Different)
             expect { @t.dup.diff!(t, :surplus_row => false) }.not_to raise_error
           end
 
@@ -584,7 +584,7 @@ module Cucumber
               | four  | 4     |
               | five  | 5     |
             })
-            expect { t1.dup.diff!(t2) }.to raise_error
+            expect { t1.dup.diff!(t2) }.to raise_error(DataTable::Different)
 
             expect { t1.dup.diff!(t2, :surplus_row => false) }.not_to raise_error
           end
@@ -594,7 +594,7 @@ module Cucumber
               | a |
               | c |
             })
-            expect { @t.dup.diff!(t) }.to raise_error
+            expect { @t.dup.diff!(t) }.to raise_error(DataTable::Different)
             expect { @t.dup.diff!(t, :missing_col => false) }.not_to raise_error
           end
 
@@ -604,7 +604,7 @@ module Cucumber
               | c | d | y |
             })
             expect { @t.dup.diff!(t) }.not_to raise_error
-            expect { @t.dup.diff!(t, :surplus_col => true) }.to raise_error
+            expect { @t.dup.diff!(t, :surplus_col => true) }.to raise_error(DataTable::Different)
           end
 
           it 'should not raise on misplaced columns' do
@@ -613,7 +613,7 @@ module Cucumber
               | d | c |
             })
             expect { @t.dup.diff!(t) }.not_to raise_error
-            expect { @t.dup.diff!(t, :misplaced_col => true) }.to raise_error
+            expect { @t.dup.diff!(t, :misplaced_col => true) }.to raise_error(DataTable::Different)
           end
         end
 
