@@ -457,18 +457,9 @@ module Cucumber
         end
 
         def changes
-          require_diff_lcs
+          require 'diff/lcs'
           cell_matrix.extend(::Diff::LCS)
           cell_matrix.diff(other_table_cell_matrix).flatten
-        end
-
-        def require_diff_lcs
-          begin
-            require 'diff/lcs'
-          rescue LoadError => e
-            e.message << "\n Please gem install diff-lcs\n"
-            raise e
-          end
         end
 
         def inspect_rows(missing_row, inserted_row)
