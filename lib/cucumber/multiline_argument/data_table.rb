@@ -355,15 +355,18 @@ module Cucumber
       class DiffMatrices < Struct.new(:cell_matrix, :other_table_cell_matrix, :options)
         attr_reader :should_raise
 
-        def call
+        def initialize *args
+          super
           self.options = {
-            :missing_row   => true,
-            :surplus_row   => true,
-            :missing_col   => true,
-            :surplus_col   => false,
-            :misplaced_col => false
+            missing_row:   true,
+            surplus_row:   true,
+            missing_col:   true,
+            surplus_col:   false,
+            misplaced_col: false,
           }.merge(options)
+        end
 
+        def call
           original_width = cell_matrix[0].length
           original_header = other_table_cell_matrix[0]
           self.cell_matrix, self.other_table_cell_matrix = pad_and_match(cell_matrix, other_table_cell_matrix)
