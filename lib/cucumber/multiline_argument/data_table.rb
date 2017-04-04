@@ -386,17 +386,15 @@ module Cucumber
         def prepare_diff
           @original_width = cell_matrix[0].length
           @original_header = other_table_cell_matrix[0]
-          self.cell_matrix, self.other_table_cell_matrix = pad_and_match(cell_matrix, other_table_cell_matrix)
+          pad_and_match
           @padded_width = cell_matrix[0].length
           @row_indices = Array.new(other_table_cell_matrix.length) {|n| n}
         end
 
         # Pads two cell matrices to same column width and matches columns according to header value.
-        # The first cell matrix is the reference matrix with the second matrix matched against it.
-        def pad_and_match(cell_matrix, other_cell_matrix)
+        def pad_and_match
           cols = cell_matrix.transpose
-          unmatched_cols = other_cell_matrix.transpose
-
+          unmatched_cols = other_table_cell_matrix.transpose
 
           header_values = cols.map(&:first)
           matched_cols = []
@@ -407,19 +405,19 @@ module Cucumber
               matched_cols << unmatched_cols.delete_at(mapped_index)
             else
               mark_as_missing(cols[i])
-              empty_col = ensure_2d(other_cell_matrix).collect {SurplusCell.new(nil, self, -1)}
+              empty_col = ensure_2d(other_table_cell_matrix).collect {SurplusCell.new(nil, self, -1)}
               empty_col.first.value = v
               matched_cols << empty_col
             end
           end
-
 
           unmatched_cols.each do
             empty_col = cell_matrix.collect {SurplusCell.new(nil, self, -1)}
             cols << empty_col
           end
 
-          return ensure_2d(cols.transpose), ensure_2d((matched_cols + unmatched_cols).transpose)
+          self.cell_matrix = ensure_2d(cols.transpose)
+          self.other_table_cell_matrix = ensure_2d((matched_cols + unmatched_cols).transpose)
         end
 
         def mark_as_missing(col)
@@ -431,6 +429,7 @@ module Cucumber
         def ensure_2d(array)
           Array === array[0] ? array : [array]
         end
+
 
         def perform_diff
           inserted    = 0
@@ -471,6 +470,7 @@ module Cucumber
             end
           end
         end
+
 
         def fill_in_missing_values
           other_table_cell_matrix.each_with_index do |other_row, i|
