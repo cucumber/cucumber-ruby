@@ -635,15 +635,6 @@ module Cucumber
         DataTable.from(table_or_array)
       end
 
-      def ensure_array_of_array(array)
-        Hash === array[0] ? hashes_to_array(array) : array
-      end
-
-      def hashes_to_array(hashes) #:nodoc:
-        header = hashes[0].keys.sort
-        [header] + hashes.map{|hash| header.map{|key| hash[key]}}
-      end
-
       def ensure_green! #:nodoc:
         each_cell{|cell| cell.status = :passed}
       end
