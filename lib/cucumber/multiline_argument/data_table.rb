@@ -346,15 +346,14 @@ module Cucumber
         convert_columns!
 
         diff = DiffMatrices.new(cell_matrix, other_table.cell_matrix, options)
-        @cell_matrix = diff.call
+        diff.call
+        @cell_matrix = diff.cell_matrix
 
         clear_cache!
-        raise Different.new(self) if diff.should_raise
+        raise Different.new(self) if diff.should_raise?
       end
 
-      class DiffMatrices < Struct.new(:cell_matrix, :other_table_cell_matrix, :options)
-        attr_reader :should_raise
-
+      class DiffMatrices < Struct.new(:cell_matrix, :other_table_cell_matrix, :options) #:nodoc:
         def initialize *args
           super
           self.options = {
@@ -367,72 +366,34 @@ module Cucumber
         end
 
         def call
-          original_width = cell_matrix[0].length
-          original_header = other_table_cell_matrix[0]
-          self.cell_matrix, self.other_table_cell_matrix = pad_and_match(cell_matrix, other_table_cell_matrix)
-          padded_width = cell_matrix[0].length
+          prepare_diff
+          perform_diff
+          fill_in_missing_values
+        end
 
-          missing_col = cell_matrix[0].detect{|cell| cell.status == :undefined}
-          surplus_col = padded_width > original_width
-          misplaced_col = cell_matrix[0] != original_header
-
-          require_diff_lcs
-          cell_matrix.extend(::Diff::LCS)
-          changes = cell_matrix.diff(other_table_cell_matrix).flatten
-
-          inserted = 0
-          missing  = 0
-
-          row_indices = Array.new(other_table_cell_matrix.length) {|n| n}
-
-          last_change = nil
-          missing_row_pos = nil
-          insert_row_pos  = nil
-
-          changes.each do |change|
-            if(change.action == '-')
-              missing_row_pos = change.position + inserted
-              cell_matrix[missing_row_pos].each{|cell| cell.status = :undefined}
-              row_indices.insert(missing_row_pos, nil)
-              missing += 1
-            else # '+'
-              insert_row_pos = change.position + missing
-              inserted_row = change.element
-              inserted_row.each{|cell| cell.status = :comment}
-              cell_matrix.insert(insert_row_pos, inserted_row)
-              row_indices[insert_row_pos] = nil
-              inspect_rows(cell_matrix[missing_row_pos], inserted_row) if last_change && last_change.action == '-'
-              inserted += 1
-            end
-            last_change = change
-          end
-
-          other_table_cell_matrix.each_with_index do |other_row, i|
-            row_index = row_indices.index(i)
-            row = cell_matrix[row_index] if row_index
-            if row
-              (original_width..padded_width).each do |col_index|
-                surplus_cell = other_row[col_index]
-                row[col_index].value = surplus_cell.value if row[col_index]
-              end
-            end
-          end
-
-          @should_raise =
-            missing_row_pos && options[:missing_row] ||
+        def should_raise?
+          missing_row_pos && options[:missing_row] ||
             insert_row_pos  && options[:surplus_row] ||
             missing_col     && options[:missing_col] ||
             surplus_col     && options[:surplus_col] ||
             misplaced_col   && options[:misplaced_col]
-
-          cell_matrix
         end
 
         private
 
+        attr_reader :row_indices, :original_width, :original_header, :padded_width, :missing_row_pos, :insert_row_pos
+
+        def prepare_diff
+          @original_width = cell_matrix[0].length
+          @original_header = other_table_cell_matrix[0]
+          self.cell_matrix, self.other_table_cell_matrix = pad_and_match(cell_matrix, other_table_cell_matrix)
+          @padded_width = cell_matrix[0].length
+          @row_indices = Array.new(other_table_cell_matrix.length) {|n| n}
+        end
+
         # Pads two cell matrices to same column width and matches columns according to header value.
         # The first cell matrix is the reference matrix with the second matrix matched against it.
-        def pad_and_match(cell_matrix, other_cell_matrix) #:nodoc:
+        def pad_and_match(cell_matrix, other_cell_matrix)
           cols = cell_matrix.transpose
           unmatched_cols = other_cell_matrix.transpose
 
@@ -461,17 +422,47 @@ module Cucumber
           return ensure_2d(cols.transpose), ensure_2d((matched_cols + unmatched_cols).transpose)
         end
 
-        def mark_as_missing(col) #:nodoc:
+        def mark_as_missing(col)
           col.each do |cell|
             cell.status = :undefined
           end
         end
 
-        def ensure_2d(array) #:nodoc:
+        def ensure_2d(array)
           Array === array[0] ? array : [array]
         end
 
-        def require_diff_lcs #:nodoc:
+        def perform_diff
+          inserted    = 0
+          missing     = 0
+          last_change = nil
+
+          changes.each do |change|
+            if(change.action == '-')
+              @missing_row_pos = change.position + inserted
+              cell_matrix[missing_row_pos].each{|cell| cell.status = :undefined}
+              row_indices.insert(missing_row_pos, nil)
+              missing += 1
+            else # '+'
+              @insert_row_pos = change.position + missing
+              inserted_row = change.element
+              inserted_row.each{|cell| cell.status = :comment}
+              cell_matrix.insert(insert_row_pos, inserted_row)
+              row_indices[insert_row_pos] = nil
+              inspect_rows(cell_matrix[missing_row_pos], inserted_row) if last_change && last_change.action == '-'
+              inserted += 1
+            end
+            last_change = change
+          end
+        end
+
+        def changes
+          require_diff_lcs
+          cell_matrix.extend(::Diff::LCS)
+          cell_matrix.diff(other_table_cell_matrix).flatten
+        end
+
+        def require_diff_lcs
           begin
             require 'diff/lcs'
           rescue LoadError => e
@@ -480,7 +471,7 @@ module Cucumber
           end
         end
 
-        def inspect_rows(missing_row, inserted_row) #:nodoc:
+        def inspect_rows(missing_row, inserted_row)
           missing_row.each_with_index do |missing_cell, col|
             inserted_cell = inserted_row[col]
             if(missing_cell.value != inserted_cell.value && (missing_cell.value.to_s == inserted_cell.value.to_s))
@@ -488,6 +479,31 @@ module Cucumber
               inserted_cell.inspect!
             end
           end
+        end
+
+        def fill_in_missing_values
+          other_table_cell_matrix.each_with_index do |other_row, i|
+            row_index = row_indices.index(i)
+            row = cell_matrix[row_index] if row_index
+            if row
+              (original_width..padded_width).each do |col_index|
+                surplus_cell = other_row[col_index]
+                row[col_index].value = surplus_cell.value if row[col_index]
+              end
+            end
+          end
+        end
+
+        def missing_col
+          cell_matrix[0].find{|cell| cell.status == :undefined}
+        end
+
+        def surplus_col
+          padded_width > original_width
+        end
+
+        def misplaced_col
+          cell_matrix[0] != original_header
         end
       end
       private_constant :DiffMatrices
