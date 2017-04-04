@@ -345,7 +345,6 @@ module Cucumber
         convert_headers!
         convert_columns!
 
-        clear_cache!
         diff = DiffMatrices.new(cell_matrix, other_table.cell_matrix, options)
         @cell_matrix = diff.call
 
