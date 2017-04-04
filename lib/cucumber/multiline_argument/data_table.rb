@@ -457,8 +457,8 @@ module Cucumber
 
         def changes
           require 'diff/lcs'
-          cell_matrix.extend(::Diff::LCS)
-          cell_matrix.diff(other_table_cell_matrix).flatten
+          diffable_cell_matrix = cell_matrix.dup.extend(::Diff::LCS)
+          diffable_cell_matrix.diff(other_table_cell_matrix).flatten
         end
 
         def inspect_rows(missing_row, inserted_row)
