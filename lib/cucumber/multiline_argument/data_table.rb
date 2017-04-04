@@ -448,10 +448,10 @@ module Cucumber
               inserted_row.each{|cell| cell.status = :comment}
               cell_matrix.insert(insert_row_pos, inserted_row)
               row_indices[insert_row_pos] = nil
-              inspect_rows(cell_matrix[missing_row_pos], inserted_row) if last_change && last_change.action == '-'
+              inspect_rows(cell_matrix[missing_row_pos], inserted_row) if last_change == '-'
               inserted += 1
             end
-            last_change = change
+            last_change = change.action
           end
         end
 
