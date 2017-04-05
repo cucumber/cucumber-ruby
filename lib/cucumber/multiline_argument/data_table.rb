@@ -334,7 +334,6 @@ module Cucumber
         other_table = ensure_table(other_table)
         other_table.convert_headers!
         other_table.convert_columns!
-        ensure_green!
 
         convert_headers!
         convert_columns!
@@ -646,14 +645,6 @@ module Cucumber
       def ensure_table(table_or_array) #:nodoc:
         return table_or_array if DataTable === table_or_array
         DataTable.from(table_or_array)
-      end
-
-      def ensure_green! #:nodoc:
-        each_cell{|cell| cell.status = :passed}
-      end
-
-      def each_cell(&proc) #:nodoc:
-        cell_matrix.each{|row| row.each(&proc)}
       end
 
       def symbolize_key(key)
