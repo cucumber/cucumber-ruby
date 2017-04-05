@@ -354,17 +354,6 @@ module Cucumber
       end
 
       class DiffMatrices < Struct.new(:cell_matrix, :other_table_cell_matrix, :options) #:nodoc:
-        def initialize *args
-          super
-          self.options = {
-            missing_row:   true,
-            surplus_row:   true,
-            missing_col:   true,
-            surplus_col:   false,
-            misplaced_col: false,
-          }.merge(options)
-        end
-
         def call
           prepare_diff
           perform_diff
@@ -372,11 +361,13 @@ module Cucumber
         end
 
         def should_raise?
-          missing_row_pos && options[:missing_row] ||
-            insert_row_pos  && options[:surplus_row] ||
-            missing_col     && options[:missing_col] ||
-            surplus_col     && options[:surplus_col] ||
-            misplaced_col   && options[:misplaced_col]
+          [
+            missing_row_pos && options.fetch(:missing_row, true),
+            insert_row_pos  && options.fetch(:surplus_row, true),
+            missing_col     && options.fetch(:missing_col, true),
+            surplus_col     && options.fetch(:surplus_col, false),
+            misplaced_col   && options.fetch(:misplaced_col, false)
+          ].any?
         end
 
         private
