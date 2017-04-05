@@ -41,7 +41,6 @@ module Cucumber
         end
       end
 
-      include Enumerable
       include Core::Ast::DescribesItself
       extend Forwardable
 
