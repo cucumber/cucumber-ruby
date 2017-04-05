@@ -353,7 +353,15 @@ module Cucumber
         raise Different.new(self) if diff.should_raise?
       end
 
-      class DiffMatrices < Struct.new(:cell_matrix, :other_table_cell_matrix, :options) #:nodoc:
+      class DiffMatrices #:nodoc:
+        attr_accessor :cell_matrix, :other_table_cell_matrix, :options
+
+        def initialize(cell_matrix, other_table_cell_matrix, options)
+          @cell_matrix = cell_matrix
+          @other_table_cell_matrix = other_table_cell_matrix
+          @options = options
+        end
+
         def call
           prepare_diff
           perform_diff
