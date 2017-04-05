@@ -26,12 +26,6 @@ module Cucumber
     # This will store <tt>[['a', 'b'], ['c', 'd']]</tt> in the <tt>data</tt> variable.
     #
     class DataTable
-      class Different < StandardError
-        def initialize(table)
-          super("Tables were not identical:\n#{table}")
-        end
-      end
-
       class Builder
         attr_reader :rows
 
@@ -345,12 +339,7 @@ module Cucumber
         convert_headers!
         convert_columns!
 
-        diff = DiffMatrices.new(cell_matrix, other_table.cell_matrix, options)
-        diff.call
-        @cell_matrix = diff.cell_matrix
-
-        clear_cache!
-        raise Different.new(self) if diff.should_raise?
+        DiffMatrices.new(cell_matrix, other_table.cell_matrix, options).call
       end
 
       class DiffMatrices #:nodoc:
@@ -366,16 +355,7 @@ module Cucumber
           prepare_diff
           perform_diff
           fill_in_missing_values
-        end
-
-        def should_raise?
-          [
-            missing_row_pos && options.fetch(:missing_row, true),
-            insert_row_pos  && options.fetch(:surplus_row, true),
-            missing_col     && options.fetch(:missing_col, true),
-            surplus_col     && options.fetch(:surplus_col, false),
-            misplaced_col   && options.fetch(:misplaced_col, false)
-          ].any?
+          raise_error if should_raise?
         end
 
         private
@@ -495,8 +475,33 @@ module Cucumber
         def misplaced_col
           cell_matrix[0] != original_header
         end
+
+
+        def raise_error
+          table = DataTable.from([[]])
+          table.instance_variable_set :@cell_matrix, cell_matrix
+          raise Different.new(table) if should_raise?
+        end
+
+        def should_raise?
+          [
+            missing_row_pos && options.fetch(:missing_row, true),
+            insert_row_pos  && options.fetch(:surplus_row, true),
+            missing_col     && options.fetch(:missing_col, true),
+            surplus_col     && options.fetch(:surplus_col, false),
+            misplaced_col   && options.fetch(:misplaced_col, false)
+          ].any?
+        end
       end
       private_constant :DiffMatrices
+
+      class Different < StandardError
+        attr_reader :table
+        def initialize(table)
+          @table = table
+          super("Tables were not identical:\n#{table}")
+        end
+      end
 
       def to_hash(cells) #:nodoc:
         hash = Hash.new do |hash, key|
