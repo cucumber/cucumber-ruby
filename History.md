@@ -56,6 +56,7 @@
 * Fix some rubocop offenses ([#1093](https://github.com/cucumber/cucumber-ruby/pull/1093) @bv)
 * Add supported platforms to README.md. ([#1092](https://github.com/cucumber/cucumber-ruby/pull/1092) @junaruga)
 * Remove Ruby 2.4 from allow_failures in .travis.yml. ([#1099](https://github.com/cucumber/cucumber-ruby/pull/1099) @junaruga)
+* History: change bad character to space ([#1104](https://github.com/cucumber/cucumber-ruby/pull/1104) @olleolleolle)
 
 ## [v2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
 
