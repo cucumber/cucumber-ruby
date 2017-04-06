@@ -1,6 +1,6 @@
 ## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.4.0...master)
 
-### Breaking changes
+### Breaking changes
 
 * Remove support for Ruby 1.9.3 ([#993](https://github.com/cucumber/cucumber-ruby/pull/993) @brasmusson)
 * Remove support for Ruby 2.0.0 ([#1068](https://github.com/cucumber/cucumber-ruby/pull/1068) @mattwynne)
