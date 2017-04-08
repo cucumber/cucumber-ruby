@@ -32,7 +32,7 @@ module Cucumber
         TestRunStarting,
         TestRunFinished,
         TestStepFinished,
-        TestStepStarting,
+        TestStepStarting
       )
     end
   end
