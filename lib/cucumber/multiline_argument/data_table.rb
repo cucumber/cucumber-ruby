@@ -26,26 +26,7 @@ module Cucumber
     # This will store <tt>[['a', 'b'], ['c', 'd']]</tt> in the <tt>data</tt> variable.
     #
     class DataTable
-      class Builder
-        attr_reader :rows
-
-        def initialize
-          @rows = []
-        end
-
-        def row(row)
-          @rows << row
-        end
-
-        def eof
-        end
-      end
-
       include Core::Ast::DescribesItself
-
-      NULL_CONVERSIONS = Hash.new({ :strict => false, :proc => lambda{ |cell_value| cell_value } }).freeze
-
-      attr_accessor :file
 
       def self.default_arg_name #:nodoc:
         'table'
@@ -64,6 +45,7 @@ module Cucumber
         end
 
         private
+
         def parse(text, location = Core::Ast::Location.of_caller)
           builder = Builder.new
           parser = Cucumber::Gherkin::DataTableParser.new(builder)
@@ -76,6 +58,23 @@ module Cucumber
         end
       end
 
+      class Builder
+        attr_reader :rows
+
+        def initialize
+          @rows = []
+        end
+
+        def row(row)
+          @rows << row
+        end
+
+        def eof
+        end
+      end
+
+
+      NULL_CONVERSIONS = Hash.new({ :strict => false, :proc => lambda{ |cell_value| cell_value } }).freeze
 
       # @param data [Core::Ast::DataTable] the data for the table
       # @param conversion_procs [Hash] see map_columns!
@@ -100,6 +99,8 @@ module Cucumber
       def to_step_definition_arg
         dup
       end
+
+      attr_accessor :file
 
       def location
         @ast_table.location
