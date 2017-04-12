@@ -42,12 +42,10 @@ module Cucumber
       end
 
       include Core::Ast::DescribesItself
-      extend Forwardable
 
       NULL_CONVERSIONS = Hash.new({ :strict => false, :proc => lambda{ |cell_value| cell_value } }).freeze
 
       attr_accessor :file
-      def_delegator :@ast_table, :location
 
       def self.default_arg_name #:nodoc:
         'table'
@@ -101,6 +99,10 @@ module Cucumber
 
       def to_step_definition_arg
         dup
+      end
+
+      def location
+        @ast_table.location
       end
 
       # Creates a copy of this table, inheriting any column and header mappings
