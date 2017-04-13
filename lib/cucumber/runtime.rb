@@ -121,6 +121,7 @@ module Cucumber
     def features
       @features ||= feature_files.map do |path|
         source = NormalisedEncodingFile.read(path)
+        @configuration.notify :gherkin_source_read, path, source
         Cucumber::Core::Gherkin::Document.new(path, source)
       end
     end
@@ -246,8 +247,6 @@ module Cucumber
         filters << Cucumber::Core::Test::NameFilter.new(name_regexps)
         filters << Cucumber::Core::Test::LocationsFilter.new(filespecs.locations)
         filters << Filters::Randomizer.new(@configuration.seed) if @configuration.randomize?
-        filters << Filters::Quit.new
-        filters << Filters::Retry.new(@configuration)
         # TODO: can we just use RbLanguages's step definitions directly?
         step_match_search = StepMatchSearch.new(@support_code.ruby.method(:step_matches), @configuration)
         filters << Filters::ActivateSteps.new(step_match_search, @configuration)
@@ -261,6 +260,9 @@ module Cucumber
           filters << Filters::ApplyAroundHooks.new(@support_code)
           # need to do this last so it becomes the first test step
           filters << Filters::PrepareWorld.new(self)
+          filters << Filters::BroadcastTestRunStartingEvent.new(@configuration)
+          filters << Filters::Quit.new
+          filters << Filters::Retry.new(@configuration)
         end
       end
     end
