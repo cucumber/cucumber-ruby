@@ -6,10 +6,10 @@ require 'cucumber/cli/profile_loader'
 
 module Autotest::CucumberMixin
   def self.included(receiver)
-    receiver::ALL_HOOKS << [:run_features, :ran_features]
+    receiver::ALL_HOOKS << [:run_features, :ran_features, :red_features, :green_features]
   end
 
-  attr_accessor :features_to_run
+  attr_accessor :features_to_run, :failed_scenarios_count
 
   def initialize
     super
@@ -54,8 +54,12 @@ module Autotest::CucumberMixin
     begin
       super
       run_features
-      wait_for_changes unless all_features_good
+      unless all_features_good 
+        hook :red_features
+        wait_for_changes
+      end
     end until all_features_good
+    hook :green_features
   end
 
   def rerun_all_features
@@ -101,6 +105,10 @@ module Autotest::CucumberMixin
         $stdout.sync = old_sync
       end
       self.features_to_run = dirty_features_file.read.strip
+      self.failed_scenarios_count = 
+        self.features_to_run.split("\n").inject(0) do |count, feature|
+          count += feature.match(/((?::[0-9]+)+)$/i).captures[0].count(":") 
+        end
       self.tainted = true unless self.features_to_run == ''
     end
     hook :ran_features
