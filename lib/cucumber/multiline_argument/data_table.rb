@@ -381,7 +381,7 @@ module Cucumber
 
           header_values.each_with_index do |v, i|
             mapped_index = unmatched_cols.index{|unmapped_col| unmapped_col.first == v}
-            if (mapped_index)
+            if mapped_index
               matched_cols << unmatched_cols.delete_at(mapped_index)
             else
               mark_as_missing(cols[i])
