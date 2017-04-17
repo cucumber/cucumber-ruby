@@ -215,6 +215,7 @@ module Cucumber
 
           def accept(formatter)
             formatter.before_table_row(self)
+            raise "Error raised in Cucumber::Formatter::LegacyApi::Ast"
             values.each do |value|
               formatter.before_table_cell(value)
               formatter.table_cell_value(value, status)
