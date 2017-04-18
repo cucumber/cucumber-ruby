@@ -15,9 +15,9 @@ module Cucumber
 
       def initialize(args, _=nil, out=STDOUT, err=STDERR, kernel=Kernel)
         @args   = args
-        @out    = out
-        @err    = err
         @kernel = kernel
+        $stdout = @out = out
+        $stderr = @err = err
       end
 
       def execute!(existing_runtime = nil)
