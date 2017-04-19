@@ -87,7 +87,7 @@ module Cucumber
         @builder << '<html xmlns ="http://www.w3.org/1999/xhtml">'
         @builder.head do
           @builder.meta('http-equiv' => 'Content-Type', :content => 'text/html;charset=utf-8')
-          @builder.title 'Cucumber'
+          @builder.title "Cucumber - #{Date.today}"
           inline_css
           inline_js
         end
@@ -96,7 +96,7 @@ module Cucumber
         @builder << '<div class="cucumber">'
         @builder.div(:id => 'cucumber-header') do
           @builder.div(:id => 'label') do
-            @builder.h1('Cucumber Features')
+            @builder.h1("Cucumber Features - Last run : #{Date.today.strftime("%A, %d %B %Y")}")
           end
           @builder.div(:id => 'summary') do
             @builder.p('',:id => 'totals')
