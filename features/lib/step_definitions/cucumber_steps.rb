@@ -26,6 +26,7 @@ Given(/^the standard step definitions$/) do
   Given(/^this step is pending$/)      { pending }
   Given(/^this step fails$/)           { fail }
   Given(/^this step is a table step$/) {|t| }
+  Then(/^I should be ([^\"]*)$/)       {|e| }
   STEPS
 end
 

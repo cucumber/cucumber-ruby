@@ -213,7 +213,7 @@ module Cucumber
                 "line": 1,
                 "description": "",
                 "elements":
-                 [{"id": "banana-party;monkey-eats-bananas;fruit-table;2",
+                 [{"id": "banana-party;monkey-eats-bananas;fruit-table;fruit=bananas",
                    "keyword": "Scenario Outline",
                    "name": "Monkey eats bananas",
                    "line": 8,
@@ -280,7 +280,7 @@ module Cucumber
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:252"},
                       "result": {"status": "passed",
                                  "duration": 1}}]},
-                   {"id": "banana-party;monkey-eats-bananas;fruit-table;2",
+                   {"id": "banana-party;monkey-eats-bananas;fruit-table;fruit=bananas",
                    "keyword": "Scenario Outline",
                    "name": "Monkey eats bananas",
                    "line": 15,
@@ -389,7 +389,7 @@ module Cucumber
                       "match": {"location": "spec/cucumber/formatter/json_spec.rb:332"},
                       "result": {"status": "passed",
                                  "duration": 1}}]},
-                   {"id": "banana-party;monkey-eats-bananas;fruit-table;2",
+                   {"id": "banana-party;monkey-eats-bananas;fruit-table;fruit=bananas",
                    "keyword": "Scenario Outline",
                    "name": "Monkey eats bananas",
                    "line": 22,
@@ -798,6 +798,95 @@ module Cucumber
                        "match": {"location": "spec/cucumber/formatter/json_spec.rb:773"},
                        "result": {"status": "passed",
                                   "duration": 1}}]}]}]})
+          end
+        end
+
+        describe "with a scenario outline having more than one example and multiple data columns" do
+          define_feature <<-FEATURE
+          Feature: Banana party
+
+            Scenario Outline: Monkey eats fruits and expresses emotion
+              Given there are <fruit>
+              Then monkey should be <emotion>
+
+              Examples: Fruit and emotion table
+              |  fruit  | emotion   |
+              | bananas | happy     |
+              | lemons  | disgusted |
+            FEATURE
+
+          define_steps do
+            Given(/^there are ([^\"]*)$/) {|f| }
+            Then(/^monkey should be ([^\"]*)$/) {|e| }
+          end
+
+          it "outputs the json data" do
+            expect(load_normalised_json(@out)).to eq MultiJson.load(%{
+              [{"id": "banana-party",
+                "uri": "spec.feature",
+                "keyword": "Feature",
+                "name": "Banana party",
+                "line": 1,
+                "description": "",
+                "elements":
+                 [
+                  {"id": "banana-party;monkey-eats-fruits-and-expresses-emotion;fruit-and-emotion-table;fruit=bananas,emotion=happy",
+                   "keyword": "Scenario Outline",
+                   "name": "Monkey eats fruits and expresses emotion",
+                   "line": 9,
+                   "description": "",
+                   "type": "scenario",
+                   "steps":
+                    [
+                      {
+                        "keyword": "Given ",
+                        "name": "there are bananas",
+                        "line": 9,
+                        "match": {"location": "spec/cucumber/formatter/json_spec.rb:818"},
+                        "result": {"status": "passed",
+                                 "duration": 1
+                                 }
+                      },
+                      {
+                        "keyword": "Then ",
+                        "name": "monkey should be happy",
+                        "line": 9,
+                        "match": {"location": "spec/cucumber/formatter/json_spec.rb:819"},
+                        "result": {"status": "passed",
+                                 "duration": 1
+                                 }
+                      }
+                    ]
+                  },
+                  {"id": "banana-party;monkey-eats-fruits-and-expresses-emotion;fruit-and-emotion-table;fruit=lemons,emotion=disgusted",
+                   "keyword": "Scenario Outline",
+                   "name": "Monkey eats fruits and expresses emotion",
+                   "line": 10,
+                   "description": "",
+                   "type": "scenario",
+                   "steps":
+                    [
+                      {
+                        "keyword": "Given ",
+                        "name": "there are lemons",
+                        "line": 10,
+                        "match": {"location": "spec/cucumber/formatter/json_spec.rb:818"},
+                        "result": {"status": "passed",
+                                 "duration": 1
+                                 }
+                      },
+                      {
+                        "keyword": "Then ",
+                        "name": "monkey should be disgusted",
+                        "line": 10,
+                        "match": {"location": "spec/cucumber/formatter/json_spec.rb:819"},
+                        "result": {"status": "passed",
+                                 "duration": 1
+                                 }
+                      }
+                    ]
+                  }
+                 ]}]})
           end
         end
       end

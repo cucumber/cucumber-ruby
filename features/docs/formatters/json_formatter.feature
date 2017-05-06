@@ -102,7 +102,23 @@ Feature: JSON output formatter
           | status |
           | passes |
       """
+    And a file named "features/outline_with_multiple_example_data_column.feature" with:
+      """
+      Feature: An outline feature
 
+        Scenario Outline: outline with multiple example data columns
+          Given this step <status>
+          Then I should be <emotion>
+
+          Examples: examples1
+            | status | emotion  |
+            | passes | happy    |
+            | fails  | sad      |
+
+          Examples: examples2
+            | status | emotion  |
+            | passes | happy    |
+      """
   # Need to investigate why this won't pass in-process. error_message doesn't get det?
   @spawn
   Scenario: one feature, one passing scenario, one failing scenario
@@ -410,7 +426,7 @@ Feature: JSON output formatter
         "description": "",
         "elements": [
           {
-            "id": "an-outline-feature;outline;examples1;2",
+            "id": "an-outline-feature;outline;examples1;status=passes",
             "keyword": "Scenario Outline",
             "name": "outline",
             "description": "",
@@ -432,7 +448,7 @@ Feature: JSON output formatter
             ]
           },
           {
-            "id": "an-outline-feature;outline;examples1;3",
+            "id": "an-outline-feature;outline;examples1;status=fails",
             "keyword": "Scenario Outline",
             "name": "outline",
             "description": "",
@@ -455,7 +471,7 @@ Feature: JSON output formatter
             ]
           },
           {
-            "id": "an-outline-feature;outline;examples2;2",
+            "id": "an-outline-feature;outline;examples2;status=passes",
             "keyword": "Scenario Outline",
             "name": "outline",
             "description": "",
@@ -556,7 +572,7 @@ Feature: JSON output formatter
         "description": "",
         "elements": [
           {
-            "id": "an-outline-feature;outline;examples1;2",
+            "id": "an-outline-feature;outline;examples1;status=passes",
             "keyword": "Scenario Outline",
             "name": "outline",
             "line": 8,
@@ -578,7 +594,7 @@ Feature: JSON output formatter
             ]
           },
           {
-            "id": "an-outline-feature;outline;examples1;3",
+            "id": "an-outline-feature;outline;examples1;status=fails",
             "keyword": "Scenario Outline",
             "name": "outline",
             "line": 9,
@@ -601,7 +617,7 @@ Feature: JSON output formatter
             ]
           },
           {
-            "id": "an-outline-feature;outline;examples2;2",
+            "id": "an-outline-feature;outline;examples2;status=passes",
             "keyword": "Scenario Outline",
             "name": "outline",
             "line": 13,
@@ -674,7 +690,7 @@ Feature: JSON output formatter
             "name": "",
             "line": 11,
             "description": "",
-            "id": "an-embed-data-directly-feature;;;2",
+            "id": "an-embed-data-directly-feature;;;dummy=1",
             "type": "scenario",
             "steps": [
               {
@@ -702,7 +718,7 @@ Feature: JSON output formatter
             "name": "",
             "line": 12,
             "description": "",
-            "id": "an-embed-data-directly-feature;;;3",
+            "id": "an-embed-data-directly-feature;;;dummy=2",
             "type": "scenario",
             "steps": [
               {
@@ -765,3 +781,125 @@ Feature: JSON output formatter
       """
     When I run `cucumber --format json features/out_scenario_out_scenario_outline.feature`
     Then it should pass
+
+  @spawn
+  Scenario: scenario outline with more than one example data column
+    When I run `cucumber --format json features/outline_with_multiple_example_data_column.feature`
+    Then it should fail with JSON:
+    """
+    [
+      {
+        "uri": "features/outline_with_multiple_example_data_column.feature",
+        "id": "an-outline-feature",
+        "keyword": "Feature",
+        "name": "An outline feature",
+        "line": 1,
+        "description": "",
+        "elements": [
+          {
+            "id": "an-outline-feature;outline-with-multiple-example-data-columns;examples1;status=passes,emotion=happy",
+            "keyword": "Scenario Outline",
+            "name": "outline with multiple example data columns",
+            "description": "",
+            "line": 9,
+            "type": "scenario",
+            "steps": [
+              {
+                "keyword": "Given ",
+                "name": "this step passes",
+                "line": 9,
+                "match": {
+                  "location": "features/step_definitions/steps.rb:1"
+                },
+                "result": {
+                  "status": "passed",
+                  "duration": 1
+                }
+              },
+              {
+                "keyword": "Then ",
+                "name": "I should be happy",
+                "line": 9,
+                "match": {
+                  "location": "features/step_definitions/steps.rb:6"
+                },
+                "result": {
+                  "status": "passed",
+                  "duration": 1
+                }
+              }
+            ]
+          },
+          {
+            "id": "an-outline-feature;outline-with-multiple-example-data-columns;examples1;status=fails,emotion=sad",
+            "keyword": "Scenario Outline",
+            "name": "outline with multiple example data columns",
+            "description": "",
+            "line": 10,
+            "type": "scenario",
+            "steps": [
+              {
+                "keyword": "Given ",
+                "name": "this step fails",
+                "line": 10,
+                "match": {
+                  "location": "features/step_definitions/steps.rb:4"
+                },
+                "result": {
+                  "status": "failed",
+                  "error_message": " (RuntimeError)\n./features/step_definitions/steps.rb:4:in `/^this step fails$/'\nfeatures/outline_with_multiple_example_data_column.feature:10:in `Given this step fails'\nfeatures/outline_with_multiple_example_data_column.feature:4:in `Given this step <status>'",
+                  "duration": 1
+                }
+              },
+              {
+                "keyword": "Then ",
+                "name": "I should be sad",
+                "line": 10,
+                "match": {
+                  "location": "features/step_definitions/steps.rb:6"
+                },
+                "result": {
+                  "status": "skipped"
+                }
+              }
+            ]
+          },
+          {
+            "id": "an-outline-feature;outline-with-multiple-example-data-columns;examples2;status=passes,emotion=happy",
+            "keyword": "Scenario Outline",
+            "name": "outline with multiple example data columns",
+            "description": "",
+            "line": 14,
+            "type": "scenario",
+            "steps": [
+              {
+                "keyword": "Given ",
+                "name": "this step passes",
+                "line": 14,
+                "match": {
+                  "location": "features/step_definitions/steps.rb:1"
+                },
+                "result": {
+                  "status": "passed",
+                  "duration": 1
+                }
+              },
+              {
+                "keyword": "Then ",
+                "name": "I should be happy",
+                "line": 14,
+                "match": {
+                  "location": "features/step_definitions/steps.rb:6"
+                },
+                "result": {
+                  "status": "passed",
+                  "duration": 1
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+
+    """
