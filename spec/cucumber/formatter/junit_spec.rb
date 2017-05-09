@@ -117,8 +117,8 @@ module Cucumber
                   Given a passing scenario
             }, File.join('features', 'some', 'path', 'spec.feature')
 
-            it 'writes the filename including the subdirectory' do
-              expect(@formatter.written_files.keys.first).to eq File.join('', 'TEST-features-some-path-spec.xml')
+            it 'writes the filename with absolute path' do
+              expect(@formatter.written_files.keys.first).to eq File.absolute_path('TEST-features-some-path-spec.xml')
             end
           end
 
