@@ -32,6 +32,10 @@ before_install:
   - gem update --system
   - gem update bundler
 
+before_script:
+  # Patch for Ruby 2.4.0 compatibility.
+  - ./scripts/patch_simplecov_0_12_0
+
 notifications:
   webhooks:
     urls: # gitter
