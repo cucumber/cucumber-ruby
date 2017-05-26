@@ -7,7 +7,7 @@ matrix:
     - rvm: 2.3.4
     - rvm: 2.2
     - rvm: 2.1
-    - rvm: jruby-9.1.8.0
+    - rvm: jruby-9.1.10.0
       env:
         # Travis by default also have "-Dcext.enabled=false" set in
         # JRUBY_OPTS, but JRuby 9 does not support C extensions at all
