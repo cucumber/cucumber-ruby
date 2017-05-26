@@ -59,6 +59,7 @@
 * History: change bad character to space ([#1104](https://github.com/cucumber/cucumber-ruby/pull/1104) @olleolleolle)
 * Travis: jruby-9.1.8.0 in CI ([#1105](https://github.com/cucumber/cucumber-ruby/pull/1105) @olleolleolle)
 * Fix rubocop offenses 1021 003 ([#1107](https://github.com/cucumber/cucumber-ruby/pull/1107) @bv)
+* Travis: use jruby-9.1.10.0 ([#1114](https://github.com/cucumber/cucumber-ruby/pull/1114) @olleolleolle)
 
 ## [v2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
 
