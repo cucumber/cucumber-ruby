@@ -2,7 +2,7 @@
 require 'cucumber/platform'
 require 'cucumber/term/ansicolor'
 
-if Cucumber::WINDOWS_MRI
+if Cucumber::WINDOWS_MRI && !Cucumber::WINDOWS_MODERN
   unless ENV['ANSICON']
     STDERR.puts %{*** WARNING: You must use ANSICON 1.31 or higher (https://github.com/adoxa/ansicon/) to get coloured output on Windows}
     Cucumber::Term::ANSIColor.coloring = false
