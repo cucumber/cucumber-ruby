@@ -13,6 +13,7 @@
 * Namespaced World modules ([#1007](https://github.com/cucumber/cucumber-ruby/pull/1007) @nodo)
 * Add per-formatter CLI options ([#1058](https://github.com/cucumber/cucumber-ruby/pull/1058) @nodo)
 * Use tag expressions for tag filtering ([#1054](https://github.com/cucumber/cucumber-ruby/pull/1054) @brasmusson)
+* Add a `TestRunStarting` event ([#1082](https://github.com/cucumber/cucumber-ruby/pull/1082) @mattwynne)
 
 ### Bugfixes
 
