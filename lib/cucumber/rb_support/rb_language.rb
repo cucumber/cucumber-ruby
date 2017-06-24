@@ -35,7 +35,7 @@ module Cucumber
       end
     end
 
-    # The Ruby implementation of the programming language API.
+    # TODO: Remove this abstraction - kill it with fire
     class RbLanguage
       attr_reader :current_world,
                   :step_definitions
@@ -63,12 +63,6 @@ module Cucumber
           end
           result
         }
-      end
-
-      def begin_rb_scenario(scenario)
-        create_world
-        extend_world
-        connect_world(scenario)
       end
 
       def register_rb_hook(phase, tag_expressions, proc)
@@ -107,8 +101,11 @@ module Cucumber
         load File.expand_path(code_file) # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from RbDsl
       end
 
-      def begin_scenario(scenario)
-        begin_rb_scenario(scenario)
+      def begin_scenario(test_case)
+        # TODO: create world with scenario
+        create_world
+        extend_world
+        connect_world(test_case) # TODO: kill with fire
       end
 
       def end_scenario
@@ -193,9 +190,9 @@ module Cucumber
                                     @namespaced_world_modules || {})
       end
 
-      def connect_world(scenario)
+      def connect_world(test_case)
         @current_world.__cucumber_runtime = @runtime
-        @current_world.__natural_language = scenario.language
+        @current_world.__natural_language = test_case.language
       end
 
       def check_nil(o, proc)

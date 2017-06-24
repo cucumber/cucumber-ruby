@@ -94,8 +94,8 @@ module Cucumber
       @support_code.unmatched_step_definitions
     end
 
-    def begin_scenario(scenario)
-      @support_code.fire_hook(:begin_scenario, scenario)
+    def begin_scenario(test_case)
+      @support_code.fire_hook(:begin_scenario, test_case)
     end
 
     def end_scenario(_scenario)

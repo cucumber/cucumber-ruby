@@ -96,6 +96,7 @@ module Cucumber
       end
 
       def fire_hook(name, *args)
+        # TODO: kill with fire
         @ruby.send(name, *args)
       end
 
