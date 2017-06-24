@@ -19,6 +19,7 @@ module Cucumber
       include Core
 
       def run_defined_feature
+        event_bus.start
         define_steps
         actual_runtime.visitor = report
 

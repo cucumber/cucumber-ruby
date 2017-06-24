@@ -15,6 +15,7 @@ module Cucumber::Formatter
 
     let(:configuration) { Cucumber::Configuration.new }
     before { FailFast.new(configuration) }
+    before(:each) { configuration.event_bus.start }
 
     context 'failing scenario' do
       before(:each) do
