@@ -14,6 +14,7 @@ module Cucumber
       def initialize(config)
         @io = ensure_io(config.out_stream)
         @feature_hashes = []
+        @step_or_hook_hash = {}
         config.on_event :test_case_started, &method(:on_test_case_started)
         config.on_event :test_case_finished, &method(:on_test_case_finished)
         config.on_event :test_step_started, &method(:on_test_step_started)

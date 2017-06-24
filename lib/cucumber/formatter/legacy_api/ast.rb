@@ -103,7 +103,7 @@ module Cucumber
                                     :embeddings) do
           extend Forwardable
 
-          def_delegators :step, :keyword, :name, :multiline_arg, :location
+          def_delegators :step, :keyword, :text, :multiline_arg, :location
 
           def accept(formatter)
             formatter.before_step(self)

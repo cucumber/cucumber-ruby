@@ -201,7 +201,7 @@ module Cucumber
           class StepSource < OpenStruct
             def build_step_invocation(indent, matches, config, messages, embeddings)
               step_result.step_invocation(
-                matches.fetch(step) { NoStepMatch.new(step, step.name) },
+                matches.fetch(step) { NoStepMatch.new(step, step.text) },
                 step,
                 indent,
                 background,
@@ -404,7 +404,7 @@ module Cucumber
                   @previous_outline_child.after unless same_scenario_outline_as_previous_test_case?(source)
                 end
               end
-              if from_scenario_outline_to_hidden_backgroud(@child, child)
+              if from_scenario_outline_to_hidden_background(@child, child)
                 @previous_outline_child = @child
               else
                 @child.after
@@ -415,7 +415,7 @@ module Cucumber
             @child = child
           end
 
-          def from_scenario_outline_to_hidden_backgroud(from, to)
+          def from_scenario_outline_to_hidden_background(from, to)
             from.class.name == ScenarioOutlinePrinter.name &&
             to.class.name == HiddenBackgroundPrinter.name
           end
@@ -657,7 +657,7 @@ module Cucumber
           end
 
           def outline_step(step)
-            step_match = NoStepMatch.new(step, step.name)
+            step_match = NoStepMatch.new(step, step.text)
             step_invocation = LegacyResultBuilder.new(Core::Test::Result::Skipped.new).
               step_invocation(step_match, step, indent, nil, configuration, [], [])
             steps_printer.step_invocation step_invocation
@@ -920,7 +920,7 @@ module Cucumber
 
           [:step, :outline_step].each do |node_name|
             define_method(node_name) do |node|
-              record_width_of node
+              record_width_of_step node
             end
           end
 
@@ -930,11 +930,20 @@ module Cucumber
           def of(node)
             # The length of the instantiated steps in --expand mode are currently
             # not included in the calculation of max => make sure to return >= 1
-            [1, max - node.name.length - node.keyword.length].max
+            if node.respond_to?(:name)
+              [1, max - node.name.length - node.keyword.length].max
+            else
+              [1, max - node.text.length - node.keyword.length].max
+            end  
+            
           end
 
           def record_width_of(node)
             @widths << node.keyword.length + node.name.length + 1
+          end
+          
+          def record_width_of_step(node)
+            @widths << node.keyword.length + node.text.length + 1
           end
 
           private
@@ -1006,7 +1015,7 @@ module Cucumber
           def step_exception(step, configuration)
             return filtered_step_exception(step) if @exception
             return nil unless @status == :undefined && configuration.strict.strict?(:undefined)
-            @exception = Cucumber::Undefined.from(@result, step.name)
+            @exception = Cucumber::Undefined.from(@result, step.text)
             @exception.backtrace << step.backtrace_line
             filtered_step_exception(step)
           end

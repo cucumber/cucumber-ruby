@@ -27,7 +27,7 @@ describe Cucumber::Filters::ActivateSteps do
 
     it 'activates each step' do
       expect(step_match).to receive(:activate) do |test_step|
-        expect(test_step.name).to eq 'a passing step'
+        expect(test_step.text).to eq 'a passing step'
       end
       compile [doc], receiver, [filter]
     end
@@ -35,7 +35,7 @@ describe Cucumber::Filters::ActivateSteps do
     it 'notifies with a StepActivated event' do
       expect(configuration).to receive(:notify) do |message, test_step, step_match|
         expect(message).to eq :step_activated
-        expect(test_step.name).to eq 'a passing step'
+        expect(test_step.text).to eq 'a passing step'
         expect(step_match).to eq step_match
       end
       compile [doc], receiver, [filter]
@@ -60,7 +60,7 @@ describe Cucumber::Filters::ActivateSteps do
 
     it 'activates each step' do
       expect(step_match).to receive(:activate) do |test_step|
-        expect(test_step.name).to eq 'a passing step'
+        expect(test_step.text).to eq 'a passing step'
       end
       compile [doc], receiver, [filter]
     end
@@ -115,7 +115,7 @@ describe Cucumber::Filters::ActivateSteps do
     it 'notifies with a StepActivated event' do
       expect(configuration).to receive(:notify) do |message, test_step, step_match|
         expect(message).to eq :step_activated
-        expect(test_step.name).to eq 'a passing step'
+        expect(test_step.text).to eq 'a passing step'
         expect(step_match).to eq step_match
       end
       compile [doc], receiver, [filter]
