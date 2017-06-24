@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 require 'cucumber/core_ext/instance_exec'
-require 'cucumber/rb_support/rb_dsl'
+require 'cucumber/glue/dsl'
 require 'cucumber/rb_support/rb_world'
 require 'cucumber/rb_support/rb_step_definition'
 require 'cucumber/rb_support/rb_hook'
@@ -29,7 +29,7 @@ module Cucumber
         message << "in 2 places:\n\n"
         message << RbSupport.backtrace_line(first_proc, 'World') << "\n"
         message << RbSupport.backtrace_line(second_proc, 'World') << "\n\n"
-        message << "Use Ruby modules instead to extend your worlds. See the Cucumber::RbSupport::RbDsl#World RDoc\n"
+        message << "Use Ruby modules instead to extend your worlds. See the Cucumber::Glue::Dsl#World RDoc\n"
         message << "or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.\n\n"
         super(message)
       end
@@ -45,13 +45,13 @@ module Cucumber
         dialect.given_keywords + dialect.when_keywords + dialect.then_keywords + dialect.and_keywords + dialect.but_keywords
       end
       Cucumber::Gherkin::I18n.code_keywords_for(all_keywords.flatten.uniq.sort).each do |adverb|
-        RbDsl.alias_adverb(adverb.strip)
+        Glue::Dsl.alias_adverb(adverb.strip)
       end
 
       def initialize(runtime, configuration)
         @runtime, @configuration = runtime, configuration
         @step_definitions = []
-        RbDsl.rb_language = self
+        Glue::Dsl.rb_language = self
         @world_proc = @world_modules = nil
         @configuration.register_snippet_generator(Snippet::Generator.new)
       end
@@ -98,7 +98,7 @@ module Cucumber
 
       def load_code_file(code_file)
         return unless File.extname(code_file) == '.rb'
-        load File.expand_path(code_file) # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from RbDsl
+        load File.expand_path(code_file) # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from Glue::Dsl
       end
 
       def begin_scenario(test_case)

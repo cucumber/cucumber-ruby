@@ -67,6 +67,7 @@ module Cucumber
       load_step_definitions
       install_wire_plugin
       fire_after_configuration_hook
+      # TODO: can we remove this state?
       self.visitor = report
 
       receiver = Test::Runner.new(@configuration.event_bus)
