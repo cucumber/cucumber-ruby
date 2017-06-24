@@ -1,3 +1,4 @@
+@wip
 Feature: Test Case Starting Event
 
   This event is fired just before each scenario or scenario outline example row
@@ -9,8 +10,10 @@ Feature: Test Case Starting Event
     Given the standard step definitions
     And a file named "features/test.feature" with:
       """
+      @feature
       Feature: A feature
 
+        @scenario
         Scenario: A passing scenario
           Given this is a step
       """
@@ -21,6 +24,7 @@ Feature: Test Case Starting Event
         stdout = config.out_stream # make sure all the `puts` calls can write to the same output
         config.on_event :test_case_starting do |event|
           stdout.puts "before"
+          stdout.puts event.test_case.tags.map(&:name)
         end
         config.on_event :test_case_finished do |event|
           stdout.puts "after"
@@ -37,8 +41,12 @@ Feature: Test Case Starting Event
     Then it should pass with:
       """
       before
+      @feature
+      @scenario
+      @feature
       Feature: A feature
       
+        @scenario
         Scenario: A passing scenario
           Given this is a step
       after
