@@ -17,6 +17,7 @@
 
 ### Bugfixes
 
+* Fix incorrect `DataTable#diff!` results ([#1102](https://github.com/cucumber/cucumber-ruby/pulls/1102) @)
 * Fix incorrect `DataTable#diff!` results ([#1102](https://github.com/cucumber/cucumber-ruby/pulls/1102) @botandrose)
 * Do not apply the hooks to the test case several times when using the retry option ([#1098](https://github.com/cucumber/cucumber-ruby/issues/1098) @brasmusson)
 * Fix bug in comparing empty data tables ([#1097](https://github.com/cucumber/cucumber-ruby/pulls/1097), resolves [#1096](https://github.com/cucumber/cucumber-ruby/issues/1096))
@@ -61,7 +62,7 @@
 * Travis: jruby-9.1.8.0 in CI ([#1105](https://github.com/cucumber/cucumber-ruby/pull/1105) @olleolleolle)
 * Fix rubocop offenses 1021 003 ([#1107](https://github.com/cucumber/cucumber-ruby/pull/1107) @bv)
 * Travis: use jruby-9.1.10.0 ([#1114](https://github.com/cucumber/cucumber-ruby/pull/1114) @olleolleolle)
-* Change the Progress, Usage and Stepdef formatter use events ([#977](https://github.com/cucumber/cucumber-ruby/pull/977) @brasmusson)
+* Change the Progress, Usage and Stepdef formatter use events ([#977](https://github.com/cucumber/cucumber-ruby/pull/977), [#1129](https://github.com/cucumber/cucumber-ruby/pull/1129) @brasmusson)
 
 ## [v2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
 
