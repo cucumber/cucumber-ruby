@@ -2,20 +2,20 @@
 require 'cucumber/gherkin/formatter/ansi_escapes'
 
 module Cucumber
-  module RbSupport
+  module Glue
     # Defines the basic DSL methods availlable in all Cucumber step definitions.
     #
     # You can, and probably should, extend this DSL with your own methods that
-    # make sense in your domain. For more on that, see {Cucumber::RbSupport::RbDsl#World}
-    module RbWorld
+    # make sense in your domain. For more on that, see {Cucumber::Glue::Dsl#World}
+    module ProtoWorld
 
       # @private
       AnsiEscapes = Cucumber::Gherkin::Formatter::AnsiEscapes
 
       # Call a Transform with a string from another Transform definition
       def Transform(arg)
-        rb = @__cucumber_runtime.support_code.ruby
-        rb.execute_transforms([arg]).first
+        registry = @__cucumber_runtime.support_code.registry
+        registry.execute_transforms([arg]).first
       end
 
       # @private
@@ -169,3 +169,4 @@ module Cucumber
     end
   end
 end
+

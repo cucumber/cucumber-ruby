@@ -4,8 +4,8 @@ require 'cucumber/formatter/spec_helper'
 require 'cucumber/formatter/pretty'
 
 module Cucumber
-  module RbSupport
-    describe RbWorld do
+  module Glue
+    describe ProtoWorld do
       extend Cucumber::Formatter::SpecHelperDsl
       include Cucumber::Formatter::SpecHelper
 

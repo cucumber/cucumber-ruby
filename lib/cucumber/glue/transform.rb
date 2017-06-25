@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 module Cucumber
-  module RbSupport
+  module Glue
     # A Ruby Transform holds a Regexp and a Proc, and is created
     # by calling <tt>Transform in the <tt>support</tt> ruby files.
-    # See also RbDsl.
+    # See also Dsl.
     #
     # Example:
     #
@@ -11,7 +11,7 @@ module Cucumber
     #     cucumbers_string.to_i
     #   end
     #
-    class RbTransform
+    class Transform
       class MissingProc < StandardError
         def message
           'Transforms must always have a proc with at least one argument'

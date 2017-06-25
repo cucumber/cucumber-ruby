@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 require 'cucumber/core_ext/instance_exec'
 require 'cucumber/glue/dsl'
-require 'cucumber/rb_support/rb_world'
-require 'cucumber/rb_support/rb_step_definition'
-require 'cucumber/rb_support/rb_hook'
-require 'cucumber/rb_support/rb_transform'
-require 'cucumber/rb_support/snippet'
+require 'cucumber/glue/snippet'
+require 'cucumber/glue/hook'
+require 'cucumber/glue/proto_world'
+require 'cucumber/glue/step_definition'
+require 'cucumber/glue/transform'
 require 'cucumber/gherkin/i18n'
 require 'multi_test'
 require 'cucumber/step_match'
@@ -13,7 +13,7 @@ require 'cucumber/step_definition_light'
 require 'cucumber/events/step_definition_registered'
 
 module Cucumber
-  module RbSupport
+  module Glue
     # Raised if a World block returns Nil.
     class NilWorld < StandardError
       def initialize
@@ -27,16 +27,16 @@ module Cucumber
         message = String.new
         message << "You can only pass a proc to #World once, but it's happening\n"
         message << "in 2 places:\n\n"
-        message << RbSupport.backtrace_line(first_proc, 'World') << "\n"
-        message << RbSupport.backtrace_line(second_proc, 'World') << "\n\n"
+        message << Glue.backtrace_line(first_proc, 'World') << "\n"
+        message << Glue.backtrace_line(second_proc, 'World') << "\n\n"
         message << "Use Ruby modules instead to extend your worlds. See the Cucumber::Glue::Dsl#World RDoc\n"
         message << "or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.\n\n"
         super(message)
       end
     end
 
-    # TODO: Remove this abstraction - kill it with fire
-    class RbLanguage
+    # TODO: This class has too many responsibilities, split off
+    class RegistryAndMore
       attr_reader :current_world,
                   :step_definitions
 
@@ -66,15 +66,15 @@ module Cucumber
       end
 
       def register_rb_hook(phase, tag_expressions, proc)
-        add_hook(phase, RbHook.new(self, tag_expressions, proc))
+        add_hook(phase, Hook.new(self, tag_expressions, proc))
       end
 
       def register_rb_transform(regexp, proc)
-        add_transform(RbTransform.new(self, regexp, proc))
+        add_transform(Transform.new(self, regexp, proc))
       end
 
       def register_rb_step_definition(regexp, proc_or_sym, options)
-        step_definition = RbStepDefinition.new(self, regexp, proc_or_sym, options)
+        step_definition = StepDefinition.new(self, regexp, proc_or_sym, options)
         @step_definitions << step_definition
         @configuration.notify :step_definition_registered, step_definition
         step_definition
@@ -183,7 +183,7 @@ module Cucumber
       end
 
       def extend_world
-        @current_world.extend(RbWorld)
+        @current_world.extend(ProtoWorld)
         MultiTest.extend_with_best_assertion_library(@current_world)
 
         @current_world.add_modules!(@world_modules || [],
@@ -201,7 +201,7 @@ module Cucumber
             raise NilWorld.new
           rescue NilWorld => e
             e.backtrace.clear
-            e.backtrace.push(RbSupport.backtrace_line(proc, 'World'))
+            e.backtrace.push(Glue.backtrace_line(proc, 'World'))
             raise e
           end
         else

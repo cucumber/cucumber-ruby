@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 require 'spec_helper'
-require 'cucumber/rb_support/snippet'
+require 'cucumber/glue/snippet'
 
 module Cucumber
-  module RbSupport
+  module Glue
     describe Snippet do
       let(:code_keyword) { 'Given' }
 

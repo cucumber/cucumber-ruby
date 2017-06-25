@@ -44,11 +44,17 @@ module Cucumber
 
       include Constantize
 
+      # TODO: Remove in favour of registry
       attr_reader :ruby
       def initialize(user_interface, configuration=Configuration.default)
         @configuration = configuration
+        # TODO: needs a better name, or inlining its methods
         @runtime_facade = Runtime::ForProgrammingLanguages.new(self, user_interface)
-        @ruby = Cucumber::RbSupport::RbLanguage.new(@runtime_facade, @configuration)
+        @ruby = Cucumber::Glue::RegistryAndMore.new(@runtime_facade, @configuration)
+      end
+
+      def registry
+        @ruby
       end
 
       def configure(new_configuration)

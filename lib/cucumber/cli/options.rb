@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'cucumber/cli/profile_loader'
 require 'cucumber/formatter/ansicolor'
-require 'cucumber/rb_support/rb_language'
+require 'cucumber/glue/registry_and_more'
 require 'cucumber/project_initializer'
 
 module Cucumber
@@ -306,7 +306,7 @@ TEXT
       def snippet_type_msg
         [
           'Use different snippet type (Default: regexp). Available types:',
-          Cucumber::RbSupport::RbLanguage.cli_snippet_type_options
+          Cucumber::Glue::RegistryAndMore.cli_snippet_type_options
         ].flatten
       end
 

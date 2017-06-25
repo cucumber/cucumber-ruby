@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 module Cucumber
-  module RbSupport
-    # Wrapper for Before, After and AfterStep hooks
-    class RbHook
+  module Glue
+    # TODO: Kill pointless wrapper for Before, After and AfterStep hooks with fire
+    class Hook
       attr_reader :tag_expressions, :location
 
       def initialize(rb_language, tag_expressions, proc)

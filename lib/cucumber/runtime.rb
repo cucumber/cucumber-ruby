@@ -246,7 +246,7 @@ module Cucumber
         filters << Cucumber::Core::Test::NameFilter.new(name_regexps)
         filters << Cucumber::Core::Test::LocationsFilter.new(filespecs.locations)
         filters << Filters::Randomizer.new(@configuration.seed) if @configuration.randomize?
-        # TODO: can we just use RbLanguages's step definitions directly?
+        # TODO: can we just use Glue::RegistryAndMore's step definitions directly?
         step_match_search = StepMatchSearch.new(@support_code.ruby.method(:step_matches), @configuration)
         filters << Filters::ActivateSteps.new(step_match_search, @configuration)
         @configuration.filters.each do |filter|

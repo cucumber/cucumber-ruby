@@ -71,7 +71,7 @@ module Cucumber
         return unless step_defs = self.class.step_defs
         runtime.support_code.ruby
         dsl = Object.new
-        dsl.extend RbSupport::RbDsl
+        dsl.extend Glue::Dsl
         dsl.instance_exec &step_defs
       end
 
