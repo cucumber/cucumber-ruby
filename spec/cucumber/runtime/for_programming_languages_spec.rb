@@ -23,15 +23,5 @@ module Cucumber
 
     end
 
-    describe '#table' do
-
-      it 'produces Ast::Table by #table' do
-        expect(runtime_facade.table(%{
-      | account | description | amount |
-      | INT-100 | Taxi        | 114    |
-      | CUC-101 | Peeler      | 22     |
-        })).to be_kind_of(MultilineArgument::DataTable)
-      end
-    end
   end
 end

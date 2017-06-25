@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'cucumber/gherkin/formatter/ansi_escapes'
+require 'cucumber/core/ast/data_table'
 
 module Cucumber
   module Glue
@@ -69,8 +70,26 @@ module Cucumber
       #     | Aslak | aslak@aslak.com |
       #   })
       # @param [String] text_or_table The Gherkin string that represents the table
-      def table(text_or_table, file=nil, line_offset=0)
-        @__cucumber_runtime.table(text_or_table, file, line_offset)
+      # Returns a Cucumber::MultilineArgument::DataTable for +text_or_table+, which can either
+      # be a String:
+      #
+      #   table(%{
+      #     | account | description | amount |
+      #     | INT-100 | Taxi        | 114    |
+      #     | CUC-101 | Peeler      | 22     |
+      #   })
+      #
+      # or a 2D Array:
+      #
+      #   table([
+      #     %w{ account description amount },
+      #     %w{ INT-100 Taxi        114    },
+      #     %w{ CUC-101 Peeler      22     }
+      #   ])
+      #
+      def table(text_or_table, file=nil, line=0)
+        location = !file ? Core::Ast::Location.of_caller : Core::Ast::Location.new(file, line)
+        MultilineArgument::DataTable.from(text_or_table, location)
       end
 
       # Print a message to the output.

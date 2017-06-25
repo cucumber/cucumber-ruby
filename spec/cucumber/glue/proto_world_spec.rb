@@ -9,6 +9,17 @@ module Cucumber
       extend Cucumber::Formatter::SpecHelperDsl
       include Cucumber::Formatter::SpecHelper
 
+      describe '#table' do
+        it 'produces Ast::Table by #table' do
+          world = Object.new.extend(ProtoWorld)
+          expect(world.table(%{
+        | account | description | amount |
+        | INT-100 | Taxi        | 114    |
+        | CUC-101 | Peeler      | 22     |
+          })).to be_kind_of(MultilineArgument::DataTable)
+        end
+      end
+
       describe 'Handling puts in step definitions' do
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
