@@ -26,8 +26,7 @@ module Cucumber
 
       def_delegators :@support_code,
         :invoke_dynamic_steps,
-        :invoke_dynamic_step,
-        :load_programming_language
+        :invoke_dynamic_step
     end
   end
 end

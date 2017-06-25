@@ -103,10 +103,11 @@ module Cucumber
       end
 
       def begin_scenario(test_case)
-        # TODO: create world with scenario, rather than connecting it later
-        create_world
-        extend_world
-        connect_world(test_case) # TODO: kill with fire
+        @current_world = WorldFactory.new(@world_proc).create_world
+        @current_world.extend(ProtoWorld.for(@runtime, test_case.language))
+        MultiTest.extend_with_best_assertion_library(@current_world)
+        @current_world.add_modules!(@world_modules || [],
+                                    @namespaced_world_modules || {})
       end
 
       def end_scenario
@@ -172,23 +173,6 @@ module Cucumber
 
       def transforms
         @transforms ||= []
-      end
-
-      def create_world
-        @current_world = WorldFactory.new(@world_proc).create_world
-      end
-
-      def extend_world
-        @current_world.extend(ProtoWorld)
-        MultiTest.extend_with_best_assertion_library(@current_world)
-
-        @current_world.add_modules!(@world_modules || [],
-                                    @namespaced_world_modules || {})
-      end
-
-      def connect_world(test_case)
-        @current_world.__cucumber_runtime = @runtime
-        @current_world.__natural_language = test_case.language
       end
 
       def self.cli_snippet_type_options
