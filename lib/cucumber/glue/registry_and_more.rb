@@ -6,6 +6,7 @@ require 'cucumber/glue/hook'
 require 'cucumber/glue/proto_world'
 require 'cucumber/glue/step_definition'
 require 'cucumber/glue/transform'
+require 'cucumber/glue/world_factory'
 require 'cucumber/gherkin/i18n'
 require 'multi_test'
 require 'cucumber/step_match'
@@ -172,14 +173,9 @@ module Cucumber
       def transforms
         @transforms ||= []
       end
-
+            
       def create_world
-        if(@world_proc)
-          @current_world = @world_proc.call
-          check_nil(@current_world, @world_proc)
-        else
-          @current_world = Object.new
-        end
+        @current_world = WorldFactory.new(@world_proc).create_world
       end
 
       def extend_world
@@ -193,20 +189,6 @@ module Cucumber
       def connect_world(test_case)
         @current_world.__cucumber_runtime = @runtime
         @current_world.__natural_language = test_case.language
-      end
-
-      def check_nil(o, proc)
-        if o.nil?
-          begin
-            raise NilWorld.new
-          rescue NilWorld => e
-            e.backtrace.clear
-            e.backtrace.push(Glue.backtrace_line(proc, 'World'))
-            raise e
-          end
-        else
-          o
-        end
       end
 
       def self.cli_snippet_type_options
