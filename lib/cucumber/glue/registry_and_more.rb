@@ -103,7 +103,7 @@ module Cucumber
       end
 
       def begin_scenario(test_case)
-        # TODO: create world with scenario
+        # TODO: create world with scenario, rather than connecting it later
         create_world
         extend_world
         connect_world(test_case) # TODO: kill with fire
@@ -173,7 +173,7 @@ module Cucumber
       def transforms
         @transforms ||= []
       end
-            
+
       def create_world
         @current_world = WorldFactory.new(@world_proc).create_world
       end

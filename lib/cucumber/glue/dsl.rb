@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 module Cucumber
   module Glue
-    # This module provides the methods the DSL you can use to define 
+    # This module provides the methods the DSL you can use to define
     # steps, hooks, transforms etc.
     module Dsl
       class << self

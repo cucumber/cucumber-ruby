@@ -35,7 +35,7 @@ module Cucumber
           end
 
           it 'prints the variable value at the time puts was called' do
-            expect( @out.string ).to include <<OUTPUT
+            expect(@out.string).to include <<OUTPUT
     When puts is called twice for the same variable
       a
       A

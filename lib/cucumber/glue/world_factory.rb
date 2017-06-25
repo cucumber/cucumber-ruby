@@ -1,15 +1,15 @@
 module Cucumber
   module Glue
-    
+
     class WorldFactory
       def initialize(proc)
         @proc = proc || -> { Object.new }
       end
-      
+
       def create_world
         @proc.call || raise_nil_world
       end
-      
+
       def raise_nil_world
         raise NilWorld.new
       rescue NilWorld => e
