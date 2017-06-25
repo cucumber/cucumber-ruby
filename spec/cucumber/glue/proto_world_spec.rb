@@ -6,12 +6,11 @@ require 'cucumber/formatter/pretty'
 module Cucumber
   module Glue
     describe ProtoWorld do
-      extend Cucumber::Formatter::SpecHelperDsl
-      include Cucumber::Formatter::SpecHelper
+
+      let(:world) { Object.new.extend(ProtoWorld) }
 
       describe '#table' do
         it 'produces Ast::Table by #table' do
-          world = Object.new.extend(ProtoWorld)
           expect(world.table(%{
         | account | description | amount |
         | INT-100 | Taxi        | 114    |
@@ -21,6 +20,9 @@ module Cucumber
       end
 
       describe 'Handling puts in step definitions' do
+        extend Cucumber::Formatter::SpecHelperDsl
+        include Cucumber::Formatter::SpecHelper
+
         before(:each) do
           Cucumber::Term::ANSIColor.coloring = false
           @out = StringIO.new
