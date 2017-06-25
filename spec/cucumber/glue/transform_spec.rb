@@ -6,7 +6,7 @@ module Cucumber
   module Glue
     describe Transform do
       def transform(regexp)
-        Transform.new(nil, regexp, lambda { |a| })
+        Transform.new(nil, regexp, -> (a) { })
       end
 
       describe '#to_s' do
