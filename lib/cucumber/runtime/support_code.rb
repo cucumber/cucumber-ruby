@@ -44,8 +44,6 @@ module Cucumber
 
       include Constantize
 
-      # TODO: Remove in favour of registry
-      attr_reader :ruby
       def initialize(user_interface, configuration=Configuration.default)
         @configuration = configuration
         # TODO: needs a better name, or inlining its methods
