@@ -64,11 +64,9 @@ module Cucumber
 
     require 'cucumber/wire/plugin'
     def run!
-      install_wire_plugin
-      load_support_files
-      fire_after_configuration_hook
-      formatters
       load_step_definitions
+      install_wire_plugin
+      fire_after_configuration_hook
       self.visitor = report
 
       receiver = Test::Runner.new(@configuration.event_bus)
@@ -247,8 +245,6 @@ module Cucumber
         filters << Cucumber::Core::Test::NameFilter.new(name_regexps)
         filters << Cucumber::Core::Test::LocationsFilter.new(filespecs.locations)
         filters << Filters::Randomizer.new(@configuration.seed) if @configuration.randomize?
-        filters << Filters::Quit.new
-        filters << Filters::Retry.new(@configuration)
         # TODO: can we just use RbLanguages's step definitions directly?
         step_match_search = StepMatchSearch.new(@support_code.ruby.method(:step_matches), @configuration)
         filters << Filters::ActivateSteps.new(step_match_search, @configuration)
@@ -260,19 +256,17 @@ module Cucumber
           filters << Filters::ApplyBeforeHooks.new(@support_code)
           filters << Filters::ApplyAfterHooks.new(@support_code)
           filters << Filters::ApplyAroundHooks.new(@support_code)
+          filters << Filters::BroadcastTestRunStartingEvent.new(@configuration)
+          filters << Filters::Quit.new
+          filters << Filters::Retry.new(@configuration)
           # need to do this last so it becomes the first test step
           filters << Filters::PrepareWorld.new(self)
         end
       end
     end
 
-    def load_support_files
-      files = @configuration.support_to_load
-      @support_code.load_files!(files)
-    end
-
     def load_step_definitions
-      files = @configuration.step_defs_to_load
+      files = @configuration.support_to_load + @configuration.step_defs_to_load
       @support_code.load_files!(files)
     end
 
