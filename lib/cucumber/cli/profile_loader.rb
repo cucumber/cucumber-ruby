@@ -35,7 +35,6 @@ Defined profiles in cucumber.yml:
 
             args_from_yml = Shellwords.shellwords(sanitized_line).collect { |argument| argument.gsub(placeholder, '\\') }
           else
-            require 'shellwords'
             args_from_yml = Shellwords.shellwords(args_from_yml)
           end
         when Array
