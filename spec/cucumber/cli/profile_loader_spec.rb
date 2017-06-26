@@ -42,6 +42,16 @@ default: <%= x %>
         given_cucumber_yml_defined_as yml
         expect(loader.args_from('default')).to eq ['--format','pretty','features/sync_imap_mailbox.feature:16:22']
       end
+
+      it 'correctly parses a profile that uses tag expressions' do
+        given_cucumber_yml_defined_as({'default' => '--format "pretty" features\sync_imap_mailbox.feature:16:22 --tags "not @jruby"'})
+        if(Cucumber::WINDOWS)
+          expect(loader.args_from('default')).to eq ['--format','pretty','features\sync_imap_mailbox.feature:16:22','--tags','not @jruby']
+        else
+          expect(loader.args_from('default')).to eq ['--format','pretty','featuressync_imap_mailbox.feature:16:22']
+        end
+      end
+
     end
   end
 end
