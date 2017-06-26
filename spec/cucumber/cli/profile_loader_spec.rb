@@ -48,7 +48,7 @@ default: <%= x %>
         if(Cucumber::WINDOWS)
           expect(loader.args_from('default')).to eq ['--format','pretty','features\sync_imap_mailbox.feature:16:22','--tags','not @jruby']
         else
-          expect(loader.args_from('default')).to eq ['--format','pretty','featuressync_imap_mailbox.feature:16:22']
+          expect(loader.args_from('default')).to eq ['--format','pretty','featuressync_imap_mailbox.feature:16:22','--tags','not @jruby']
         end
       end
 
