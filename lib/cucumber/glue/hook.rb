@@ -14,7 +14,7 @@ module Cucumber
       end
 
       def invoke(pseudo_method, arguments, &block)
-        @registry.current_world.cucumber_instance_exec(false, pseudo_method, *[arguments, block].flatten.compact, &@proc)
+        cucumber_instance_exec_in(@registry.current_world, false, pseudo_method, *[arguments, block].flatten.compact, &@proc)
       end
 
       private

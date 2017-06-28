@@ -106,7 +106,7 @@ module Cucumber
       def invoke(args)
         begin
           args = @registry.execute_transforms(args)
-          @registry.current_world.cucumber_instance_exec(true, regexp_source, *args, &@proc)
+          cucumber_instance_exec_in(@registry.current_world, true, regexp_source, *args, &@proc)
         rescue Cucumber::ArityMismatchError => e
           e.backtrace.unshift(self.backtrace_line)
           raise e

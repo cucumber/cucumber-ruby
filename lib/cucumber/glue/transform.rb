@@ -30,7 +30,7 @@ module Cucumber
       def invoke(arg)
         return unless matched = match(arg)
         args = matched.captures.empty? ? [arg] : matched.captures
-        @registry.current_world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
+        cucumber_instance_exec_in(@registry.current_world, true, @regexp.inspect, *args, &@proc)
       end
 
       def to_s
