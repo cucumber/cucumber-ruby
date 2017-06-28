@@ -18,9 +18,9 @@ module Cucumber
         end
       end
 
-      def initialize(rb_language, pattern, proc)
+      def initialize(registry, pattern, proc)
         raise MissingProc if proc.nil? || proc.arity < 1
-        @rb_language, @regexp, @proc = rb_language, Regexp.new(pattern), proc
+        @registry, @regexp, @proc = registry, Regexp.new(pattern), proc
       end
 
       def match(arg)
@@ -30,7 +30,7 @@ module Cucumber
       def invoke(arg)
         return unless matched = match(arg)
         args = matched.captures.empty? ? [arg] : matched.captures
-        @rb_language.current_world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
+        @registry.current_world.cucumber_instance_exec(true, @regexp.inspect, *args, &@proc)
       end
 
       def to_s
