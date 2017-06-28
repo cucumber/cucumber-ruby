@@ -67,7 +67,7 @@ Lint/RescueException:
     - 'lib/cucumber/cli/main.rb'
     - 'lib/cucumber/cli/profile_loader.rb'
     - 'lib/cucumber/configuration.rb'
-    - 'lib/cucumber/core_ext/instance_exec.rb'
+    - 'lib/cucumber/glue/invoke_in_world.rb'
     - 'lib/cucumber/formatter/ansicolor.rb'
     - 'lib/cucumber/glue/proto_world.rb'
 
@@ -799,7 +799,7 @@ Style/RaiseArgs:
 Style/RedundantBegin:
   Exclude:
     - 'features/lib/support/fake_wire_server.rb'
-    - 'lib/cucumber/core_ext/instance_exec.rb'
+    - 'lib/cucumber/glue/invoke_in_world.rb'
     - 'lib/cucumber/formatter/ansicolor.rb'
     - 'lib/cucumber/formatter/unicode.rb'
     - 'lib/cucumber/multiline_argument/data_table.rb'
@@ -953,7 +953,7 @@ Style/SpaceAroundOperators:
     - 'examples/i18n/Rakefile'
     - 'examples/i18n/pt/lib/calculadora.rb'
     - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/core_ext/instance_exec.rb'
+    - 'lib/cucumber/glue/invoke_in_world.rb'
     - 'lib/cucumber/formatter/ansicolor.rb'
     - 'lib/cucumber/formatter/console.rb'
     - 'lib/cucumber/formatter/html.rb'
