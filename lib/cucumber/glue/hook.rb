@@ -5,8 +5,8 @@ module Cucumber
     class Hook
       attr_reader :tag_expressions, :location
 
-      def initialize(rb_language, tag_expressions, proc)
-        @rb_language = rb_language
+      def initialize(registry, tag_expressions, proc)
+        @registry = registry
         @tag_expressions = tag_expressions
         @proc = proc
         @location = Cucumber::Core::Ast::Location.from_source_location(*@proc.source_location)
@@ -14,7 +14,7 @@ module Cucumber
       end
 
       def invoke(pseudo_method, arguments, &block)
-        @rb_language.current_world.cucumber_instance_exec(false, pseudo_method, *[arguments, block].flatten.compact, &@proc)
+        @registry.current_world.cucumber_instance_exec(false, pseudo_method, *[arguments, block].flatten.compact, &@proc)
       end
 
       private
