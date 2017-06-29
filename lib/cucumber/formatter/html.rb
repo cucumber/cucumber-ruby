@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 require 'erb'
-require 'builder'
 require 'cucumber/formatter/duration'
 require 'cucumber/formatter/io'
+require 'cucumber/html_builder'
 require 'pathname'
 
 module Cucumber
@@ -14,6 +14,7 @@ module Cucumber
         Cucumber::Core::Ast::Scenario        => 'scenario',
         Cucumber::Core::Ast::ScenarioOutline => 'scenario outline'
       }
+
       AST_DATA_TABLE = LegacyApi::Ast::MultilineArg::DataTable
 
       include ERB::Util # for the #h method
@@ -25,7 +26,7 @@ module Cucumber
         @runtime = runtime
         @options = options
         @buffer = {}
-        @builder = create_builder(@io)
+        @builder = Cucumber::HtmlBuilder.new(target: @io, indent: 0)
         @feature_number = 0
         @scenario_number = 0
         @step_number = 0
@@ -33,80 +34,48 @@ module Cucumber
         @delayed_messages = []
         @img_id = 0
         @text_id = 0
-        @inside_outline = false
+        @inside_outline        = false
         @previous_step_keyword = nil
       end
 
       def embed(src, mime_type, label)
-        case(mime_type)
-        when /^image\/(png|gif|jpg|jpeg)/
-          unless File.file?(src) or src =~ /^data:image\/(png|gif|jpg|jpeg);base64,/
-            type = mime_type =~ /;base[0-9]+$/ ? mime_type : mime_type + ';base64'
-            src = 'data:' + type + ',' + src
-          end
-          embed_image(src, label)
-        when /^text\/plain/
-          embed_text(src, label)
+        if image?(mime_type)
+          src = src_is_file_or_data?(src) ? src : "data:#{standardize_mime_type(mime_type)},#{src}"
+
+          @builder.embed_image(src: set_path(src), label: label, id: "img_#{@img_id}")
+          @img_id += 1
+        else
+          @builder.embed_text(src: src, label: label, id: "text_#{@text_id}")
+          @text_id += 1
         end
       end
 
-      def embed_image(src, label)
-        id = "img_#{@img_id}"
-        @img_id += 1
+      def set_path(src)
         if @io.respond_to?(:path) and File.file?(src)
           out_dir = Pathname.new(File.dirname(File.absolute_path(@io.path)))
           src = Pathname.new(File.absolute_path(src)).relative_path_from(out_dir)
         end
-        @builder.span(:class => 'embed') do |pre|
-          pre << %{<a href="" onclick="img=document.getElementById('#{id}'); img.style.display = (img.style.display == 'none' ? 'block' : 'none');return false">#{label}</a><br>&nbsp;
-          <img id="#{id}" style="display: none" src="#{src}"/>}
-        end
+
+        src
       end
 
-      def embed_text(src, label)
-        id = "text_#{@text_id}"
-        @text_id += 1
-        @builder.span(:class => 'embed') do |pre|
-          pre << %{<a id="#{id}" href="#{src}" title="#{label}">#{label}</a>}
-        end
+      def standardize_mime_type(mime_type)
+        mime_type =~ /;base[0-9]+$/ ? mime_type : mime_type + ';base64'
       end
 
+      def src_is_file_or_data?(src)
+        File.file?(src) or src =~ /^data:image\/(png|gif|jpg|jpeg);base64,/
+      end
+
+      def image?(mime_type)
+        mime_type =~ /^image\/(png|gif|jpg|jpeg)/
+      end
 
       def before_features(features)
         @step_count = features && features.step_count || 0 #TODO: Make this work with core!
 
-        # <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-        @builder.declare!(
-          :DOCTYPE,
-          :html,
-          :PUBLIC,
-          '-//W3C//DTD XHTML 1.0 Strict//EN',
-          'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'
-        )
-
-        @builder << '<html xmlns ="http://www.w3.org/1999/xhtml">'
-        @builder.head do
-          @builder.meta('http-equiv' => 'Content-Type', :content => 'text/html;charset=utf-8')
-          @builder.title 'Cucumber'
-          inline_css
-          inline_js
-        end
-        @builder << '<body>'
-        @builder << "<!-- Step count #{@step_count}-->"
-        @builder << '<div class="cucumber">'
-        @builder.div(:id => 'cucumber-header') do
-          @builder.div(:id => 'label') do
-            @builder.h1('Cucumber Features')
-          end
-          @builder.div(:id => 'summary') do
-            @builder.p('',:id => 'totals')
-            @builder.p('',:id => 'duration')
-            @builder.div(:id => 'expand-collapse') do
-              @builder.p('Expand All', :id => 'expander')
-              @builder.p('Collapse All', :id => 'collapser')
-            end
-          end
-        end
+        @builder.build_document!
+        @builder.format_features! features
       end
 
       def after_features(features)
@@ -431,8 +400,10 @@ module Cucumber
 
       def build_exception_detail(exception)
         backtrace = Array.new
+
         @builder.div(:class => 'message') do
           message = exception.message
+
           if defined?(RAILS_ROOT) && message.include?('Exception caught')
             matches = message.match(/Showing <i>(.+)<\/i>(?:.+) #(\d+)/)
             backtrace += ["#{RAILS_ROOT}/#{matches[1]}:#{matches[2]}"] if matches
@@ -448,6 +419,7 @@ module Cucumber
             @builder.text!(message)
           end
         end
+
         @builder.div(:class => 'backtrace') do
           @builder.pre do
             backtrace = exception.backtrace
@@ -455,6 +427,7 @@ module Cucumber
             @builder << backtrace_line(backtrace.join("\n"))
           end
         end
+
         extra = extra_failure_content(backtrace)
         @builder << extra unless extra == ''
       end
@@ -520,60 +493,6 @@ module Cucumber
         end
       end
 
-      def inline_css
-        @builder.style(:type => 'text/css') do
-          @builder << File.read(File.dirname(__FILE__) + '/cucumber.css')
-        end
-      end
-
-      def inline_js
-        @builder.script(:type => 'text/javascript') do
-          @builder << inline_jquery
-          @builder << inline_js_content
-        end
-      end
-
-      def inline_jquery
-        File.read(File.dirname(__FILE__) + '/jquery-min.js')
-      end
-
-      def inline_js_content
-        <<-EOF
-
-  SCENARIOS = "h3[id^='scenario_'],h3[id^=background_]";
-
-  $(document).ready(function() {
-    $(SCENARIOS).css('cursor', 'pointer');
-    $(SCENARIOS).click(function() {
-      $(this).siblings().toggle(250);
-    });
-
-    $("#collapser").css('cursor', 'pointer');
-    $("#collapser").click(function() {
-      $(SCENARIOS).siblings().hide();
-    });
-
-    $("#expander").css('cursor', 'pointer');
-    $("#expander").click(function() {
-      $(SCENARIOS).siblings().show();
-    });
-  })
-
-  function moveProgressBar(percentDone) {
-    $("cucumber-header").css('width', percentDone +"%");
-  }
-  function makeRed(element_id) {
-    $('#'+element_id).css('background', '#C40D0D');
-    $('#'+element_id).css('color', '#FFFFFF');
-  }
-  function makeYellow(element_id) {
-    $('#'+element_id).css('background', '#FAF834');
-    $('#'+element_id).css('color', '#000000');
-  }
-
-        EOF
-      end
-
       def move_progress
         @builder << " <script type=\"text/javascript\">moveProgressBar('#{percent_done}');</script>"
       end
@@ -626,10 +545,6 @@ module Cucumber
 
       def dump_count(count, what, state=nil)
         [count, state, "#{what}#{count == 1 ? '' : 's'}"].compact.join(' ')
-      end
-
-      def create_builder(io)
-        Builder::XmlMarkup.new(:target => io, :indent => 0)
       end
 
       def outline_step?(_step)
