@@ -60,8 +60,10 @@ module Cucumber
           include RSpec::WorkInProgress
 
           it 'lists all known languages' do
-            when_parsing '--i18n-languages' do
-              expect(Kernel).to receive(:exit)
+            after_parsing '--i18n-languages' do
+              ::Gherkin::DIALECTS.keys.map do |key|
+                expect(@output_stream.string).to include(key.to_s);
+              end
             end
           end
 
