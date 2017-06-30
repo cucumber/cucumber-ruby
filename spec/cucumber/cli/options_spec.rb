@@ -56,38 +56,38 @@ module Cucumber
           end
         end
 
-        context '--i18n' do
-          context "with LANG specified as 'help'" do
-            include RSpec::WorkInProgress
+        context '--i18n-languages' do
+          include RSpec::WorkInProgress
 
-            it 'lists all known languages' do
-              when_parsing '--i18n help' do
-                expect(Kernel).to receive(:exit)
-              end
-            end
-
-            it 'exits the program' do
-              when_parsing('--i18n help') { expect(Kernel).to receive(:exit) }
+          it 'lists all known languages' do
+            when_parsing '--i18n-languages' do
+              expect(Kernel).to receive(:exit)
             end
           end
 
+          it 'exits the program' do
+            when_parsing('--i18n-languages') { expect(Kernel).to receive(:exit) }
+          end
+        end
+
+        context '--i18n-keywords' do
           context 'with invalid LANG' do
             include RSpec::WorkInProgress
 
             it 'exits' do
-              when_parsing '--i18n foo' do
+              when_parsing '--i18n-keywords foo' do
                 expect(Kernel).to receive(:exit)
               end
             end
 
             it 'says the language was invalid' do
-              after_parsing '--i18n foo' do
+              after_parsing '--i18n-keywords foo' do
                 expect(@output_stream.string).to include("Invalid language 'foo'. Available languages are:")
               end
             end
 
             it 'displays the language table' do
-              after_parsing '--i18n foo' do
+              after_parsing '--i18n-keywords foo' do
                 ::Gherkin::DIALECTS.keys.map do |key|
                   expect(@output_stream.string).to include(key.to_s);
                 end
