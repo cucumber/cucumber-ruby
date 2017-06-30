@@ -38,6 +38,36 @@ Feature: Around hooks
 
       """
 
+  Scenario: Check the failed status of a scenario in a hook
+    Given a file named "features/support/debug_hook.rb" with:
+      """
+        Around do |scenario, block|
+          $hook_called = true
+          block.call
+
+          if scenario.passed?
+            puts 'scenario passed!'
+          end
+        end
+      """
+    And a file named "features/fail.feature" with:
+      """
+      Feature:
+        Scenario:
+          Given this step fails
+      """
+    And a file named "features/step_definitions/hook_steps.rb" with:
+      """
+        Given 'this step fails' do
+          raise Exception.new
+        end
+      """
+    When I run `cucumber -f progress`
+    Then the output should not contain:
+      """
+      scenario passed!
+      """
+
   Scenario: Multiple Around hooks
     Given a file named "features/step_definitions/steps.rb" with:
       """
