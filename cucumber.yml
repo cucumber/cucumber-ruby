@@ -12,7 +12,7 @@ wip_opts << " --tags @wip,@wip-jruby" if defined?(JRUBY_VERSION)
 default:     <%= std_opts %> --tags ~@jruby
 jruby:       <%= std_opts %> --tags ~@wire
 jruby_win:   <%= std_opts %> --tags ~@wire CUCUMBER_FORWARD_SLASH_PATHS=true
-windows_mri: <%= std_opts %> --tags ~@jruby --tags ~@wire --tags ~@needs-many-fonts CUCUMBER_FORWARD_SLASH_PATHS=true
+windows_mri: <%= std_opts %> --tags ~@jruby --tags ~@wire --tags ~@needs-many-fonts --tags ~@todo-windows CUCUMBER_FORWARD_SLASH_PATHS=true
 ruby:        <%= std_opts %> --tags ~@jruby
 wip:         --wip <%= wip_opts %> features <%= cucumber_pro_opts %>
 none:        --format pretty --format Cucumber::Pro --out /dev/null
