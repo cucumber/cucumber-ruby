@@ -1,5 +1,5 @@
 @needs-many-fonts
-Feature: Language help
+Feature: i18n
 
   It's possible to ask cucumber which keywords are used for any
   particular language by running:
