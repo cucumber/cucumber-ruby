@@ -82,7 +82,7 @@ module Cucumber
         @options[key] = value
       end
 
-      def parse!(args)
+      def parse!(args) # rubocop:disable Metrics/AbcSize
         @args = args
         @expanded_args = @args.dup
 
