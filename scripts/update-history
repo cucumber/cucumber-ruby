@@ -11,7 +11,7 @@ class PullRequest
 
   def entry
     pr = gh.pull_request('cucumber/cucumber-ruby', num)
-    entry = "#{pr['title']} ([##{num}(#{pr['url']}) @#{pr['user']['login']})"
+    "#{pr['title']} ([##{num}(#{pr['url']}) @#{pr['user']['login']})"
   end
 
   def labels
@@ -20,12 +20,12 @@ class PullRequest
 
   def type_label
     types = labels.select { |label| label =~ /^type: / }
-    if (types.length < 1)
-      raise("This pull request does not have a 'type' label on it. Please add one.")
+    if types.empty?
+      raise('This pull request does not have a \'type\' label on it. Please add one.')
     end
 
-    if (types.length > 1)
-      raise("This pull request has more than one 'type' label on it. Please choose just one.")
+    if types.length > 1
+      raise('This pull request has more than one \'type\' label on it. Please choose just one.')
     end
 
     types.first
@@ -34,8 +34,8 @@ end
 
 class HistoryFile
   def self.open(path, &block)
-    full_path = File.expand_path(File.dirname(__FILE__) + "/" + path + "/History.md") 
-    history = self.new(File.read(full_path))
+    full_path = File.expand_path(File.dirname(__FILE__) + '/' + path + '/History.md')
+    history = new(File.read(full_path))
     history.instance_exec(&block)
     File.write(full_path, history.body)
   end
@@ -56,9 +56,9 @@ class HistoryFile
 
   def heading_for(label)
     text = {
-      "type: new feature" => "New Features",
-      "type: bug" => "Bugfixes",
-      "type: refactoring / developer experience" => "Refactoring / Developer Experience"
+      'type: new feature' => 'New Features',
+      'type: bug' => 'Bugfixes',
+      'type: refactoring / developer experience' => 'Refactoring / Developer Experience'
     }.fetch(label)
     "### #{text}"
   end
@@ -69,7 +69,7 @@ class HistoryFile
 end
 
 begin
-  token = ENV['GITHUB_TOKEN'] || raise("You need to set GITHUB_TOKEN")
+  token = ENV['GITHUB_TOKEN'] || raise('You need to set GITHUB_TOKEN')
   num = (ARGV[0] || raise("syntax: #{$0} <PULL-REQUEST-NUMBER>")).to_i
 
   gh = Octokit::Client.new(access_token: token)
