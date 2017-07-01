@@ -15,11 +15,11 @@ Feature: Ambiguous Steps
     """
     Feature:
 
-      Scenario: test 1
+      Scenario:
       * a step
       * an ambiguous step
 
-      Scenario: test 2
+      Scenario:
       * step 1
       * step 2
 
