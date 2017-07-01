@@ -1,5 +1,13 @@
 Feature: Ambiguous Steps
 
+  When Cucumber searches for a step definition for a step, it might find multiple step
+  definitions that could match. In that case, it will give you an error that the step
+  definitions are ambiguous.
+
+  You can also use a `--guess` mode, where it uses magic powers to try and figure
+  out which of those two step definitions is most likely to be the one you meant it
+  to use. Use it with caution!
+
   @wip
   Scenario: Ambiguous steps
 
