@@ -1,5 +1,6 @@
 Feature: Ambiguous Steps
- 
+
+  @wip
   Scenario: Ambiguous steps
 
     Given a file named "features/ambiguous.feature" with:
