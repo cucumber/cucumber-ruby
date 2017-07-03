@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'builder'
+require 'pathname'
 
 module Cucumber
   class HtmlBuilder < Builder::XmlMarkup
@@ -73,7 +74,8 @@ module Cucumber
 
     def inline_css
       style(type: 'text/css') do
-        self << ::File.read(::File.dirname(__FILE__) + '/cucumber.css')
+        pn = ::Pathname.new(::File.dirname(__FILE__) + '/cucumber.css')
+        self << ::File.read(pn)
       end
     end
 
@@ -85,11 +87,13 @@ module Cucumber
     end
 
     def inline_jquery
-      ::File.read(::File.dirname(__FILE__) + '/jquery-min.js')
+      pn = ::Pathname.new(::File.dirname(__FILE__) + '/jquery-min.js')
+      ::File.read(pn)
     end
 
     def inline_js_content # rubocop:disable
-      ::File.read(::File.dirname(__FILE__) + '/inline-js.js')
+      pn = ::Pathname.new(::File.dirname(__FILE__) + '/inline-js.js')
+      ::File.read(pn)
     end
 
     def set_head_tags
