@@ -31,6 +31,7 @@
 
 ### Refactoring / Developer Experience
 
+* Turn off Windows failures ([#1142(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1142) @enkessler)
 * Add script to update history.md ([#1141(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1141) @mattwynne)
 * Update Ruby 2.3 and 2.4 in .travis.yml ([#1100](https://github.com/cucumber/cucumber-ruby/pull/1100) @junaruga)
 * Fixes for rubocop violations ([#1095](https://github.com/cucumber/cucumber-ruby/pull/1095) @bv)
