@@ -36,6 +36,5 @@ begin
   }
 
 rescue StandardError => error
-  $stderr.puts error.message, error.backtrace
-  exit 1
+  abort error.message
 end

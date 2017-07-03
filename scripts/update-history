@@ -79,6 +79,5 @@ begin
     insert(pr.type_label, pr.entry)
   end
 rescue StandardError => error
-  $stderr.puts error.message
-  exit 1
-end
+  abort error.message
+nd
