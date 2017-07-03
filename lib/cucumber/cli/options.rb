@@ -341,11 +341,8 @@ TEXT
       def set_language(lang)
         require 'gherkin/dialect'
 
-        if ::Gherkin::DIALECTS.keys.include? lang
-          list_keywords_and_exit(lang)
-        else
-          indicate_invalid_language_and_exit(lang)
-        end
+        return indicate_invalid_language_and_exit(lang) unless ::Gherkin::DIALECTS.keys.include? lang
+        list_keywords_and_exit(lang)
       end
 
       def disable_profile_loading
