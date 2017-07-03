@@ -29,6 +29,7 @@ Feature: Test Run Starting Event
       end
       """
 
+  @todo-windows
   Scenario: Run the test case
     When I run `cucumber -q`
     Then it should pass with:

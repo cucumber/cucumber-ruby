@@ -12,6 +12,7 @@ Feature: Nested Steps
       end
       """
 
+  @todo-windows
   Scenario: Use #steps to call several steps at once
     Given a step definition that looks like this:
       """ruby
@@ -31,6 +32,7 @@ Feature: Nested Steps
 
       """
 
+  @todo-windows
   Scenario: Use #step to call a single step
     Given a step definition that looks like this:
       """ruby
@@ -48,6 +50,7 @@ Feature: Nested Steps
 
       """
 
+  @todo-windows
   Scenario: Use #steps to call a table
     Given a step definition that looks like this:
       """ruby
@@ -77,6 +80,7 @@ Feature: Nested Steps
 
       """
 
+  @todo-windows
   Scenario: Use #steps to call a multi-line string
     Given a step definition that looks like this:
       """ruby
@@ -103,7 +107,7 @@ Feature: Nested Steps
       Liouville
       """
 
-  @spawn
+  @spawn @todo-windows
   Scenario: Backtrace doesn't skip nested steps
     Given a step definition that looks like this:
       """ruby

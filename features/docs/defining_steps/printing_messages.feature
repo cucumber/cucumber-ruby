@@ -76,7 +76,7 @@ Feature: Pretty formatter - Printing messages
       """
 
     # Don't know why, but we need to spawn this for JRuby otherwise it gives wierd errors
-    @spawn
+    @spawn @todo-windows
     Scenario: Delayed messages feature
       When I run `cucumber --quiet --format pretty features/f.feature`
       Then the stderr should not contain anything
