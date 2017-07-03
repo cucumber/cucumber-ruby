@@ -7,6 +7,7 @@
 
 ### New Features
 
+* Emulate Cucumber-JS's new i18n CLI options ([#1140(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1140) @aidamanna)
 * Use the event bus in Cucumber-Ruby-Core ([#973](https://github.com/cucumber/cucumber-ruby/pull/973) @mattwynne)
 * Add --retry option to retry failed tests as part of the same run ([#920](https://github.com/cucumber/cucumber-ruby/pull/920) @DanaScheider)
 * Add a summary formatter ([#999](https://github.com/cucumber/cucumber-ruby/pull/999) @mattwynne)
