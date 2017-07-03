@@ -17,6 +17,7 @@ Feature: Progress output formatter
     When I run `cucumber features/scenario_outline_with_undefined_steps.feature --format progress --expand `
     Then it should pass
 
+  @todo-windows
   Scenario: when using a profile the output should include 'Using the default profile...'
     And a file named "cucumber.yml" with:
     """

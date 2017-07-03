@@ -46,6 +46,7 @@
           Given scenario step
       """
 
+  @todo-windows
   Scenario: Around hooks cover background steps
     When I run `cucumber -o /dev/null features/around_hook_covers_background.feature`
     Then the output should contain:
@@ -53,6 +54,7 @@
       Event order: around_begin background_step scenario_step around_end
       """
 
+  @todo-windows
   Scenario: All hooks execute in expected order
     When I run `cucumber -o /dev/null features/all_hook_order.feature`
     Then the output should contain:
