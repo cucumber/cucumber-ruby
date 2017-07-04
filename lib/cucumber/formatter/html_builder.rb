@@ -76,7 +76,7 @@ module Cucumber
       def inline_css
         style(type: 'text/css') do
           pn = ::Pathname.new(::File.dirname(__FILE__) + '/cucumber.css')
-          self << ::File.read(pn)
+          self << pn.read
         end
       end
 
@@ -89,12 +89,12 @@ module Cucumber
 
       def inline_jquery
         pn = ::Pathname.new(::File.dirname(__FILE__) + '/jquery-min.js')
-        ::File.read(pn)
+        pn.read
       end
 
       def inline_js_content # rubocop:disable
         pn = ::Pathname.new(::File.dirname(__FILE__) + '/inline-js.js')
-        ::File.read(pn)
+        pn.read
       end
 
       def set_head_tags
