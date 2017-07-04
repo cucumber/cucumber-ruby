@@ -287,7 +287,7 @@ module Cucumber
           end
 
           def puts(messages)
-            @delayed_messages.push *messages
+            @delayed_messages.push(*messages)
           end
 
           def embed(src, mime_type, label)
@@ -313,7 +313,7 @@ module Cucumber
           private :before_hook_results
 
           def any_test_steps_failed?
-            @test_step_results.any? &:failed?
+            @test_step_results.any?(&:failed?)
           end
 
           def switch_step_container(source = current_test_step_source)
