@@ -2,7 +2,7 @@
 require 'erb'
 require 'cucumber/formatter/duration'
 require 'cucumber/formatter/io'
-require 'cucumber/html_builder'
+require 'cucumber/formatter/html_builder'
 require 'pathname'
 
 module Cucumber
@@ -26,7 +26,7 @@ module Cucumber
         @runtime = runtime
         @options = options
         @buffer = {}
-        @builder = Cucumber::HtmlBuilder.new(target: @io, indent: 0)
+        @builder = HtmlBuilder.new(target: @io, indent: 0)
         @feature_number = 0
         @scenario_number = 0
         @step_number = 0
