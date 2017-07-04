@@ -21,6 +21,9 @@ module Cucumber
       include Duration
       include Io
 
+      attr_reader :builder
+      private :builder
+
       def initialize(runtime, path_or_io, options)
         @io = ensure_io(path_or_io)
         @runtime = runtime
@@ -42,10 +45,10 @@ module Cucumber
         if image?(mime_type)
           src = src_is_file_or_data?(src) ? src : "data:#{standardize_mime_type(mime_type)},#{src}"
 
-          @builder.embed_image(src: set_path(src), label: label, id: "img_#{@img_id}")
+          builder.embed_image(src: set_path(src), label: label, id: "img_#{@img_id}")
           @img_id += 1
         else
-          @builder.embed_text(src: src, label: label, id: "text_#{@text_id}")
+          builder.embed_text(src: src, label: label, id: "text_#{@text_id}")
           @text_id += 1
         end
       end
@@ -74,37 +77,37 @@ module Cucumber
       def before_features(features)
         @step_count = features && features.step_count || 0 #TODO: Make this work with core!
 
-        @builder.build_document!
-        @builder.format_features! features
+        builder.build_document!
+        builder.format_features! features
       end
 
       def after_features(features)
         print_stats(features)
-        @builder << '</div>'
-        @builder << '</body>'
-        @builder << '</html>'
+        builder << '</div>'
+        builder << '</body>'
+        builder << '</html>'
       end
 
       def before_feature(_feature)
         @exceptions = []
-        @builder << '<div class="feature">'
+        builder << '<div class="feature">'
       end
 
       def after_feature(_feature)
-        @builder << '</div>'
+        builder << '</div>'
       end
 
       def before_comment(_comment)
-        @builder << '<pre class="comment">'
+        builder << '<pre class="comment">'
       end
 
       def after_comment(_comment)
-        @builder << '</pre>'
+        builder << '</pre>'
       end
 
       def comment_line(comment_line)
-        @builder.text!(comment_line)
-        @builder.br
+        builder.text!(comment_line)
+        builder.br
       end
 
       def after_tags(_tags)
@@ -112,21 +115,21 @@ module Cucumber
       end
 
       def tag_name(tag_name)
-        @builder.text!(@tag_spacer) if @tag_spacer
+        builder.text!(@tag_spacer) if @tag_spacer
         @tag_spacer = ' '
-        @builder.span(tag_name, :class => 'tag')
+        builder.span(tag_name, :class => 'tag')
       end
 
       def feature_name(keyword, name)
         lines = name.split(/\r?\n/)
         return if lines.empty?
-        @builder.h2 do |h2|
-          @builder.span(keyword + ': ' + lines[0], :class => 'val')
+        builder.h2 do |h2|
+          builder.span(keyword + ': ' + lines[0], :class => 'val')
         end
-        @builder.p(:class => 'narrative') do
+        builder.p(:class => 'narrative') do
           lines[1..-1].each do |line|
-            @builder.text!(line.strip)
-            @builder.br
+            builder.text!(line.strip)
+            builder.br
           end
         end
       end
@@ -137,20 +140,20 @@ module Cucumber
 
       def before_background(_background)
         @in_background = true
-        @builder << '<div class="background">'
+        builder << '<div class="background">'
       end
 
       def after_background(_background)
         @in_background = nil
-        @builder << '</div>'
+        builder << '</div>'
       end
 
       def background_name(keyword, name, _file_colon_line, _source_indent)
         @listing_background = true
-        @builder.h3(:id => "background_#{@scenario_number}") do |h3|
-          @builder.span(keyword, :class => 'keyword')
-          @builder.text!(' ')
-          @builder.span(name, :class => 'val')
+        builder.h3(:id => "background_#{@scenario_number}") do |h3|
+          builder.span(keyword, :class => 'keyword')
+          builder.text!(' ')
+          builder.span(name, :class => 'val')
         end
       end
 
@@ -158,22 +161,22 @@ module Cucumber
         @scenario_number+=1
         @scenario_red = false
         css_class = AST_CLASSES[feature_element.class]
-        @builder << "<div class='#{css_class}'>"
+        builder << "<div class='#{css_class}'>"
         @in_scenario_outline = feature_element.class == Cucumber::Core::Ast::ScenarioOutline
       end
 
       def after_feature_element(_feature_element)
         unless @in_scenario_outline
           print_messages
-          @builder << '</ol>'
+          builder << '</ol>'
         end
-        @builder << '</div>'
+        builder << '</div>'
         @in_scenario_outline = nil
       end
 
       def scenario_name(keyword, name, file_colon_line, _source_indent)
-        @builder.span(:class => 'scenario_file') do
-          @builder << file_colon_line
+        builder.span(:class => 'scenario_file') do
+          builder << file_colon_line
         end
         @listing_background = false
         scenario_id = "scenario_#{@scenario_number}"
@@ -182,48 +185,48 @@ module Cucumber
           scenario_id += "_#{@outline_row}"
           @scenario_red = false
         end
-        @builder.h3(:id => scenario_id) do
-          @builder.span(keyword + ':', :class => 'keyword')
-          @builder.text!(' ')
-          @builder.span(name, :class => 'val')
+        builder.h3(:id => scenario_id) do
+          builder.span(keyword + ':', :class => 'keyword')
+          builder.text!(' ')
+          builder.span(name, :class => 'val')
         end
       end
 
       def before_outline_table(_outline_table)
         @inside_outline = true
         @outline_row = 0
-        @builder << '<table>'
+        builder << '<table>'
       end
 
       def after_outline_table(_outline_table)
-        @builder << '</table>'
+        builder << '</table>'
         @outline_row = nil
         @inside_outline = false
       end
 
       def before_examples(_examples)
-        @builder << '<div class="examples">'
+        builder << '<div class="examples">'
       end
 
       def after_examples(_examples)
-        @builder << '</div>'
+        builder << '</div>'
       end
 
       def examples_name(keyword, name)
-        @builder.h4 do
-          @builder.span(keyword, :class => 'keyword')
-          @builder.text!(' ')
-          @builder.span(name, :class => 'val')
+        builder.h4 do
+          builder.span(keyword, :class => 'keyword')
+          builder.text!(' ')
+          builder.span(name, :class => 'val')
         end
       end
 
       def before_steps(_steps)
-        @builder << '<ol>'
+        builder << '<ol>'
       end
 
       def after_steps(_steps)
         print_messages
-        @builder << '</ol>' if @in_background or @in_scenario_outline
+        builder << '</ol>' if @in_background or @in_scenario_outline
       end
 
       def before_step(step)
@@ -254,7 +257,7 @@ module Cucumber
         @status = status
         return if @hide_this_step
         set_scenario_color(status)
-        @builder << "<li id='#{@step_id}' class='step #{status}'>"
+        builder << "<li id='#{@step_id}' class='step #{status}'>"
       end
 
       def after_step_result(keyword, step_match, _multiline_arg, status, _exception, _source_indent, _background, _file_colon_line)
@@ -265,13 +268,13 @@ module Cucumber
           @previous_step_keyword = keyword
         end
         if status == :undefined
-          @builder.pre do |pre|
+          builder.pre do |pre|
             # TODO: snippet text should be an event sent to the formatter so we don't
             # have this couping to the runtime.
             pre << @runtime.snippet_text(keyword,step_match.instance_variable_get('@name') || '', @step.multiline_arg)
           end
         end
-        @builder << '</li>'
+        builder << '</li>'
         print_messages
       end
 
@@ -298,21 +301,21 @@ module Cucumber
       def before_multiline_arg(multiline_arg)
         return if @hide_this_step || @skip_step
         if AST_DATA_TABLE === multiline_arg
-          @builder << '<table>'
+          builder << '<table>'
         end
       end
 
       def after_multiline_arg(multiline_arg)
         return if @hide_this_step || @skip_step
         if AST_DATA_TABLE === multiline_arg
-          @builder << '</table>'
+          builder << '</table>'
         end
       end
 
       def doc_string(string)
         return if @hide_this_step
-        @builder.pre(:class => 'val') do |pre|
-          @builder << h(string).gsub("\n", '&#x000A;')
+        builder.pre(:class => 'val') do |pre|
+          builder << h(string).gsub("\n", '&#x000A;')
         end
       end
 
@@ -320,17 +323,17 @@ module Cucumber
         @row_id = table_row.dom_id
         @col_index = 0
         return if @hide_this_step
-        @builder << "<tr class='step' id='#{@row_id}'>"
+        builder << "<tr class='step' id='#{@row_id}'>"
       end
 
       def after_table_row(table_row)
         return if @hide_this_step
         print_table_row_messages
-        @builder << '</tr>'
+        builder << '</tr>'
         if table_row.exception
-          @builder.tr do
-            @builder.td(:colspan => @col_index.to_s, :class => 'failed') do
-              @builder.pre do |pre|
+          builder.tr do
+            builder.td(:colspan => @col_index.to_s, :class => 'failed') do
+              builder.pre do |pre|
                 pre << h(format_exception(table_row.exception))
               end
             end
@@ -361,16 +364,16 @@ module Cucumber
 
       def puts(message)
         @delayed_messages << message
-        #@builder.pre(message, :class => 'message')
+        #builder.pre(message, :class => 'message')
       end
 
       def print_messages
         return if @delayed_messages.empty?
 
-        #@builder.ol do
+        #builder.ol do
           @delayed_messages.each do |ann|
-            @builder.li(:class => 'step message') do
-              @builder << ann
+            builder.li(:class => 'step message') do
+              builder << ann
             end
           end
         #end
@@ -380,8 +383,8 @@ module Cucumber
       def print_table_row_messages
         return if @delayed_messages.empty?
 
-        @builder.td(:class => 'message') do
-          @builder << @delayed_messages.join(', ')
+        builder.td(:class => 'message') do
+          builder << @delayed_messages.join(', ')
         end
         empty_messages
       end
@@ -401,7 +404,7 @@ module Cucumber
       def build_exception_detail(exception)
         backtrace = Array.new
 
-        @builder.div(:class => 'message') do
+        builder.div(:class => 'message') do
           message = exception.message
 
           if defined?(RAILS_ROOT) && message.include?('Exception caught')
@@ -415,21 +418,21 @@ module Cucumber
             message = "#{message} (#{exception.class})"
           end
 
-          @builder.pre do
-            @builder.text!(message)
+          builder.pre do
+            builder.text!(message)
           end
         end
 
-        @builder.div(:class => 'backtrace') do
-          @builder.pre do
+        builder.div(:class => 'backtrace') do
+          builder.pre do
             backtrace = exception.backtrace
             backtrace.delete_if { |x| x =~ /\/gems\/(cucumber|rspec)/ }
-            @builder << backtrace_line(backtrace.join("\n"))
+            builder << backtrace_line(backtrace.join("\n"))
           end
         end
 
         extra = extra_failure_content(backtrace)
-        @builder << extra unless extra == ''
+        builder << extra unless extra == ''
       end
 
       def set_scenario_color(status)
@@ -442,31 +445,31 @@ module Cucumber
       end
 
       def set_scenario_color_failed
-        @builder.script do
-          @builder.text!("makeRed('cucumber-header');") unless @header_red
+        builder.script do
+          builder.text!("makeRed('cucumber-header');") unless @header_red
           @header_red = true
           scenario_or_background = @in_background ? 'background' : 'scenario'
-          @builder.text!("makeRed('#{scenario_or_background}_#{@scenario_number}');") unless @scenario_red
+          builder.text!("makeRed('#{scenario_or_background}_#{@scenario_number}');") unless @scenario_red
           @scenario_red = true
           if @options[:expand] and @inside_outline
-            @builder.text!("makeRed('#{scenario_or_background}_#{@scenario_number}_#{@outline_row}');")
+            builder.text!("makeRed('#{scenario_or_background}_#{@scenario_number}_#{@outline_row}');")
           end
         end
       end
 
       def set_scenario_color_pending
-        @builder.script do
-          @builder.text!("makeYellow('cucumber-header');") unless @header_red
+        builder.script do
+          builder.text!("makeYellow('cucumber-header');") unless @header_red
           scenario_or_background = @in_background ? 'background' : 'scenario'
-          @builder.text!("makeYellow('#{scenario_or_background}_#{@scenario_number}');") unless @scenario_red
+          builder.text!("makeYellow('#{scenario_or_background}_#{@scenario_number}');") unless @scenario_red
         end
       end
 
       def build_step(keyword, step_match, _status)
         step_name = step_match.format_args(lambda{|param| %{<span class="param">#{param}</span>}})
-        @builder.div(:class => 'step_name') do |div|
-          @builder.span(keyword, :class => 'keyword')
-          @builder.span(:class => 'step val') do |name|
+        builder.div(:class => 'step_name') do |div|
+          builder.span(keyword, :class => 'keyword')
+          builder.span(:class => 'step val') do |name|
             name << h(step_name).gsub(/&lt;span class=&quot;(.*?)&quot;&gt;/, '<span class="\1">').gsub(/&lt;\/span&gt;/, '</span>')
           end
         end
@@ -478,23 +481,23 @@ module Cucumber
           end
         end
 
-        @builder.div(:class => 'step_file') do |div|
-          @builder.span do
-            @builder << step_file
+        builder.div(:class => 'step_file') do |div|
+          builder.span do
+            builder << step_file
           end
         end
       end
 
       def build_cell(cell_type, value, attributes)
-        @builder.__send__(cell_type, attributes) do
-          @builder.div do
-            @builder.span(value,:class => 'step param')
+        builder.__send__(cell_type, attributes) do
+          builder.div do
+            builder.span(value,:class => 'step param')
           end
         end
       end
 
       def move_progress
-        @builder << " <script type=\"text/javascript\">moveProgressBar('#{percent_done}');</script>"
+        builder << " <script type=\"text/javascript\">moveProgressBar('#{percent_done}');</script>"
       end
 
       def percent_done
@@ -520,8 +523,8 @@ module Cucumber
       end
 
       def print_stats(features)
-        @builder <<  "<script type=\"text/javascript\">document.getElementById('duration').innerHTML = \"Finished in <strong>#{format_duration(features.duration)} seconds</strong>\";</script>"
-        @builder <<  "<script type=\"text/javascript\">document.getElementById('totals').innerHTML = \"#{print_stat_string(features)}\";</script>"
+        builder <<  "<script type=\"text/javascript\">document.getElementById('duration').innerHTML = \"Finished in <strong>#{format_duration(features.duration)} seconds</strong>\";</script>"
+        builder <<  "<script type=\"text/javascript\">document.getElementById('totals').innerHTML = \"#{print_stat_string(features)}\";</script>"
       end
 
       def print_stat_string(_features)
