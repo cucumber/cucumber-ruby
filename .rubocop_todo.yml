@@ -10,7 +10,6 @@
 Lint/AmbiguousOperator:
   Exclude:
     - 'lib/cucumber/formatter/legacy_api/adapter.rb'
-    - 'lib/cucumber/formatter/legacy_api/ast.rb'
     - 'lib/cucumber/multiline_argument/data_table.rb'
     - 'lib/cucumber/running_test_case.rb'
     - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
