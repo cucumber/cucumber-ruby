@@ -4,6 +4,7 @@ Feature: Scenario outlines --expand option
   for some people to understand scenarios, Cucumber will expand examples
   in outlines if you add the `--expand` option when running them.
 
+  @todo-windows
   Scenario:
     Given a file named "features/test.feature" with:
       """

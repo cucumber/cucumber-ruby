@@ -14,6 +14,7 @@ Feature: Nested Steps in I18n
       end
       """
 
+  @todo-windows
   Scenario: Use #steps to call several steps at once
     Given a step definition that looks like this:
       """ruby

@@ -14,7 +14,7 @@ Feature: Exception in Before Block
       end
       """
 
-  @spawn
+  @spawn @todo-windows
   Scenario: Handle Exception in standard scenario step and carry on
     Given a file named "features/naughty_step_in_scenario.feature" with:
       """
@@ -41,6 +41,7 @@ Feature: Exception in Before Block
 
       """
 
+  @todo-windows
   Scenario: Handle Exception in Before hook for Scenario with Background
     Given a file named "features/naughty_step_in_before.feature" with:
       """
@@ -74,6 +75,7 @@ Feature: Exception in Before Block
 
       """
 
+  @todo-windows
   Scenario: Handle Exception using the progress format
     Given a file named "features/naughty_step_in_scenario.feature" with:
       """

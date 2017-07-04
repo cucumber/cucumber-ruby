@@ -5,6 +5,7 @@ Feature: Unicode in tables
   ensure that the tables are properly aligned so that your output is as
   readable as possible.
 
+  @todo-windows
   Scenario:
     Given a file named "features/unicode.feature" with:
       """
