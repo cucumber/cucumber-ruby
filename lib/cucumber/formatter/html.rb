@@ -35,8 +35,6 @@ module Cucumber
         @step_number = 0
         @header_red = nil
         @delayed_messages = []
-        @img_id = 0
-        @text_id = 0
         @inside_outline        = false
         @previous_step_keyword = nil
       end
@@ -45,11 +43,9 @@ module Cucumber
         if image?(mime_type)
           src = src_is_file_or_data?(src) ? src : "data:#{standardize_mime_type(mime_type)},#{src}"
 
-          builder.embed_image(src: set_path(src), label: label, id: "img_#{@img_id}")
-          @img_id += 1
+          builder.embed_image(src: set_path(src), label: label, id: next_id(:img))
         else
-          builder.embed_text(src: src, label: label, id: "text_#{@text_id}")
-          @text_id += 1
+          builder.embed_text(src: src, label: label, id: next_id(:text))
         end
       end
 
@@ -400,6 +396,12 @@ module Cucumber
       end
 
       protected
+
+      def next_id(type)
+        @indices ||= Hash.new { 0 }
+        @indices[type] += 1
+        "#{type}_#{@indices[:type]}"
+      end
 
       def build_exception_detail(exception)
         backtrace = Array.new
