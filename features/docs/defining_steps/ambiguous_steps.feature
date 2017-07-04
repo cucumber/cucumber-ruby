@@ -16,8 +16,8 @@ Feature: Ambiguous Steps
     Feature:
 
       Scenario:
-      * a step
-      * an ambiguous step
+      When a step
+      Then an ambiguous step
 
     """
     And a file named "features/step_definitions.rb" with:
@@ -26,7 +26,7 @@ Feature: Ambiguous Steps
         'foo'
       end
 
-      When(/^an ambiguous step$/) do
+      Then(/^an ambiguous step$/) do
         'bar'
       end
 
@@ -52,8 +52,8 @@ Feature: Ambiguous Steps
     Feature:
 
       Scenario:
-      * a step
-      * an ambiguous step
+      When a step
+      Then an ambiguous step
     """
     And a file named "features/step_definitions.rb" with:
     """
@@ -61,18 +61,18 @@ Feature: Ambiguous Steps
         'foo'
       end
 
-      When(/^an ambiguous step$/) do
+      Then(/^an ambiguous step$/) do
         'bar'
       end
     """
     When I run `cucumber -g`
     Then it should pass with exactly:
     """
-    Feature:
+    Feature: 
 
-      Scenario:             # features/ambiguous.feature:3
-        * a step            # features/step_definitions.rb:1
-        * an ambiguous step # features/step_definitions.rb:5
+      Scenario:                # features/ambiguous.feature:3
+        When a step            # features/step_definitions.rb:1
+        Then an ambiguous step # features/step_definitions.rb:5
 
     1 scenario (1 passed)
     2 steps (2 passed)
