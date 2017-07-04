@@ -8,7 +8,7 @@ class WelcomeIssue
   def initialize(gh, login, pr)
     @gh = gh
     @login = login
-    @pr
+    @pr = pr
   end
 
   def title
@@ -17,7 +17,7 @@ class WelcomeIssue
 
   def body
     template = File.read(File.join(File.dirname(__FILE__), '..', '.github', 'WELCOME_NEW_MAINTAINER_ISSUE_TEMPLATE.md.erb'))
-    ERB.new(template).result(binding())
+    ERB.new(template).result(binding)
   end
 end
 
