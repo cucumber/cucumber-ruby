@@ -10,10 +10,7 @@
 Lint/AmbiguousOperator:
   Exclude:
     - 'lib/cucumber/formatter/legacy_api/adapter.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/running_test_case.rb'
-    - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
-    - 'spec/cucumber/formatter/spec_helper.rb'
+    - 'lib/cucumber/formatter/legacy_api/ast.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.

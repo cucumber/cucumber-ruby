@@ -28,7 +28,7 @@ module Cucumber
         end
 
         def activate(test_step)
-          test_step.with_action &@block
+          test_step.with_action(&@block)
         end
       end
 
