@@ -68,8 +68,10 @@ module Cucumber
       end
 
       def define_steps
-        return unless step_defs = self.class.step_defs
-        runtime.support_code.registry
+        step_defs = self.class.step_defs
+
+        return unless step_defs
+        runtime.support_code.ruby
         dsl = Object.new
         dsl.extend Glue::Dsl
         dsl.instance_exec &step_defs

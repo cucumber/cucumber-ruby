@@ -30,7 +30,9 @@ module Cucumber
         end
 
         def multiline_arg(step, location)
-          if argument = step[:argument]
+          argument = step[:argument]
+
+          if argument
             if argument[:type] == :DocString
               MultilineArgument.doc_string(argument[:content], argument[:content_type], location)
             else
