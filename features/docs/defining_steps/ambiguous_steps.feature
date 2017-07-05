@@ -42,6 +42,10 @@ Feature: Ambiguous Steps
     You can run again with --guess to make Cucumber be more smart about it
      (Cucumber::Ambiguous)
 
+    1 scenario (1 failed)
+    2 steps (1 failed, 1 passed)
+    0m0.012s
+
     """
 
 
