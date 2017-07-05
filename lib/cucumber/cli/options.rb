@@ -146,8 +146,8 @@ module Cucumber
           opts.on('-x', '--expand', 'Expand Scenario Outline Tables in output.') { set_option :expand }
 
           opts.on(
-                   '--order TYPE[:SEED]', 'Run examples in the specified order. Available types:',
-                   *<<-TEXT.split("\n")) do |order|
+            '--order TYPE[:SEED]', 'Run examples in the specified order. Available types:',
+            *<<-TEXT.split("\n")) do |order|
   [defined]     Run scenarios in the order they were defined (default).
   [random]      Shuffle scenarios before running.
 Specify SEED to reproduce the shuffling from a previous run.

@@ -330,7 +330,7 @@ module Cucumber
             elsif source.scenario
               ScenarioPrinter.new(formatter, source.scenario, before_hook_results)
             elsif source.scenario_outline
-              if same_scenario_outline_as_previous_test_case?(source) and @previous_outline_child
+              if same_scenario_outline_as_previous_test_case?(source) && @previous_outline_child
                 @previous_outline_child
               else
                 ScenarioOutlinePrinter.new(formatter, config, source.scenario_outline)
@@ -395,12 +395,12 @@ module Cucumber
                 @previous_outline_child = nil
               end
             end
-            child.before unless to_scenario_outline(child) and same_scenario_outline_as_previous_test_case?(source)
+            child.before unless to_scenario_outline(child) && same_scenario_outline_as_previous_test_case?(source)
             @child = child
           end
 
           def from_scenario_outline_to_hidden_backgroud(from, to)
-            from.class.name == ScenarioOutlinePrinter.name and
+            from.class.name == ScenarioOutlinePrinter.name &&
             to.class.name == HiddenBackgroundPrinter.name
           end
 

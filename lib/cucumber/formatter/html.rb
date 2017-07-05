@@ -390,7 +390,7 @@ module Cucumber
       end
 
       def after_test_case(_test_case, result)
-        if result.failed? and not @scenario_red
+        if result.failed? && !@scenario_red
           set_scenario_color_failed
         end
       end
@@ -438,7 +438,7 @@ module Cucumber
       end
 
       def set_scenario_color(status)
-        if status.nil? or status == :undefined or status == :pending
+        if status.nil? || status == :undefined || status == :pending
           set_scenario_color_pending
         end
         if status == :failed

@@ -135,16 +135,6 @@ Style/AlignParameters:
     - 'features/lib/step_definitions/retry_steps.rb'
     - 'lib/cucumber/cli/options.rb'
 
-# Offense count: 11
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: always, conditionals
-Style/AndOr:
-  Exclude:
-    - 'lib/autotest/cucumber_mixin.rb'
-    - 'lib/cucumber/formatter/html.rb'
-    - 'lib/cucumber/formatter/legacy_api/adapter.rb'
-
 # Offense count: 19
 Style/AsciiComments:
   Exclude:
