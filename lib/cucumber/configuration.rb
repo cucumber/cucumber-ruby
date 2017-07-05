@@ -196,7 +196,7 @@ module Cucumber
                 formatter_options,
                 path_or_io,
                 Cli::Options.new(STDOUT, STDERR, @options)
-        rescue Exception => e
+        rescue StandardError => e
           raise e, "#{e.message}\nError creating formatter: #{format}", e.backtrace
         end
       end

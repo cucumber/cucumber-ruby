@@ -47,12 +47,7 @@ Lint/IneffectiveAccessModifier:
 # Offense count: 7
 Lint/RescueException:
   Exclude:
-    - 'features/lib/support/fake_wire_server.rb'
-    - 'lib/cucumber/cli/main.rb'
-    - 'lib/cucumber/configuration.rb'
-    - 'lib/cucumber/glue/invoke_in_world.rb'
-    - 'lib/cucumber/formatter/ansicolor.rb'
-    - 'lib/cucumber/glue/proto_world.rb'
+    - 'lib/cucumber/rb_support/rb_world.rb'
 
 # Offense count: 6
 Lint/ShadowingOuterLocalVariable:

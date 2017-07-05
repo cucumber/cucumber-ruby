@@ -9,7 +9,6 @@ module Cucumber
 end
 
 class Object #:nodoc:
-
   # TODO: inline
   def cucumber_instance_exec_in(world, check_arity, pseudo_method, *args, &block)
     Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in(world, check_arity, pseudo_method, *args, &block)
