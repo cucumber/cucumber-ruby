@@ -44,11 +44,6 @@ Lint/IneffectiveAccessModifier:
     - 'lib/cucumber/glue/registry_and_more.rb'
     - 'lib/cucumber/glue/snippet.rb'
 
-# Offense count: 1
-Lint/Loop:
-  Exclude:
-    - 'lib/autotest/cucumber_mixin.rb'
-
 # Offense count: 7
 Lint/RescueException:
   Exclude:

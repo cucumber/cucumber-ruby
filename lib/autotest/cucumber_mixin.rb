@@ -51,11 +51,11 @@ module Autotest::CucumberMixin
   end
 
   def get_to_green
-    begin
+    until all_features_good
       super
       run_features
       wait_for_changes unless all_features_good
-    end until all_features_good
+    end
   end
 
   def rerun_all_features
