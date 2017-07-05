@@ -63,14 +63,14 @@ module Cucumber
       @step_definition.regexp_source.unpack('U*').length
     end
 
-    def replace_arguments(string, step_arguments, format, &proc)
+    def replace_arguments(string, step_arguments, format, &_proc)
       s = string.dup
       offset = past_offset = 0
       step_arguments.each do |step_argument|
         next if step_argument.offset.nil? || step_argument.offset < past_offset
 
         replacement = if block_given?
-                        proc.call(step_argument.val)
+                        yield step_argument.val
                       elsif Proc === format
                         format.call(step_argument.val)
                       else
