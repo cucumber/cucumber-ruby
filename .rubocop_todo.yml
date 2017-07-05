@@ -103,13 +103,6 @@ Metrics/ParameterLists:
 Metrics/PerceivedComplexity:
   Max: 18
 
-# Offense count: 3
-# Cop supports --auto-correct.
-Performance/RedundantMatch:
-  Exclude:
-    - 'lib/cucumber/deprecate.rb'
-    - 'spec/cucumber/formatter/junit_spec.rb'
-
 # Offense count: 6
 Style/AccessorMethodName:
   Exclude:
