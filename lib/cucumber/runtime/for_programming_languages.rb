@@ -18,15 +18,15 @@ module Cucumber
       end
 
       def_delegators :@user_interface,
-        :embed,
-        :ask,
-        :puts,
-        :features_paths,
-        :step_match
+                     :embed,
+                     :ask,
+                     :puts,
+                     :features_paths,
+                     :step_match
 
       def_delegators :@support_code,
-        :invoke_dynamic_steps,
-        :invoke_dynamic_step
+                     :invoke_dynamic_steps,
+                     :invoke_dynamic_step
     end
   end
 end

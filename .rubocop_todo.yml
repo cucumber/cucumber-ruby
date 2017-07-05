@@ -119,13 +119,13 @@ Style/Alias:
   Exclude:
     - 'lib/cucumber/formatter/ansicolor.rb'
 
-# Offense count: 1197
+# Offense count: 1
 # Cop supports --auto-correct.
 Style/AlignArray:
   Exclude:
     - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
 
-# Offense count: 20
+# Offense count: 12
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 # SupportedStyles: with_first_parameter, with_fixed_indentation
@@ -134,7 +134,6 @@ Style/AlignParameters:
     - 'features/lib/step_definitions/cucumber_steps.rb'
     - 'features/lib/step_definitions/retry_steps.rb'
     - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/runtime/for_programming_languages.rb'
 
 # Offense count: 11
 # Cop supports --auto-correct.
