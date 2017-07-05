@@ -49,15 +49,6 @@ Lint/RescueException:
   Exclude:
     - 'lib/cucumber/rb_support/rb_world.rb'
 
-# Offense count: 6
-Lint/ShadowingOuterLocalVariable:
-  Exclude:
-    - 'lib/cucumber/filters/tag_limits/verifier.rb'
-    - 'lib/cucumber/formatter/duration_extractor.rb'
-    - 'lib/cucumber/formatter/junit.rb'
-    - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'spec/cucumber/step_match_spec.rb'
-
 # Offense count: 71
 # Cop supports --auto-correct.
 # Configuration parameters: AllowUnusedKeywordArguments.
