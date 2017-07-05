@@ -9,6 +9,7 @@ Feature: Ambiguous Steps
   to use. Use it with caution!
 
 
+  @wip
   Scenario: Ambiguous steps
 
     Given a file named "features/ambiguous.feature" with:
