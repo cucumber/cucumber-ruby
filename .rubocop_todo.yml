@@ -48,6 +48,7 @@ Lint/IneffectiveAccessModifier:
 Lint/RescueException:
   Exclude:
     - 'lib/cucumber/rb_support/rb_world.rb'
+    - 'lib/cucumber/formatter/ansicolor.rb'
 
 # Offense count: 71
 # Cop supports --auto-correct.
