@@ -53,7 +53,13 @@ Lint/RescueException:
 # Cop supports --auto-correct.
 # Configuration parameters: AllowUnusedKeywordArguments.
 Lint/UnusedBlockArgument:
-  Enabled: false
+  Exclude:
+    - 'spec/cucumber/step_match_search_spec.rb'
+    - 'spec/cucumber/rb_support/rb_transform_spec.rb'
+    - 'spec/cucumber/rb_support/rb_step_definition_spec.rb'
+    - 'spec/cucumber/rb_support/rb_language_spec.rb'
+    - 'spec/cucumber/formatter/junit_spec.rb'
+    - 'spec/cucumber/formatter/html_spec.rb'
 
 # Offense count: 61
 Metrics/AbcSize:

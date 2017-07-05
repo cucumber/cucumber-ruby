@@ -69,7 +69,7 @@ module Cucumber
       end
 
       def on_test_run_finished(_event)
-        @features_data.each { |file, data| end_feature(data) }
+        @features_data.each { |_file, data| end_feature(data) }
       end
 
       private

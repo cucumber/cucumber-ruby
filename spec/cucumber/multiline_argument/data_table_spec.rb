@@ -66,7 +66,7 @@ module Cucumber
           rows = ['value']
           table = DataTable.from [headers, rows]
           count = 0
-          table.map_column!('header') { |value| count +=1 }
+          table.map_column!('header') { |_value| count +=1 }
           table.rows
           expect( count ).to eq rows.size
         end
@@ -112,7 +112,7 @@ module Cucumber
           rows = ['value']
           table = DataTable.from [headers, rows]
           count = 0
-          new_table = table.map_column('header') { |value| count +=1 }
+          new_table = table.map_column('header') { |_value| count +=1 }
           new_table.rows
           expect( count ).to eq rows.size
         end

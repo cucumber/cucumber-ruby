@@ -23,7 +23,7 @@ module Cucumber
 
           sources = @step_definition_files[step_definition_file]
           source_indent = source_indent(sources)
-          sources.sort.each do |file_colon_line, regexp_source|
+          sources.sort.each do |_file_colon_line, regexp_source|
             @io.print regexp_source.indent(2)
             @io.print " # #{file_colon_line}".indent(source_indent - regexp_source.unpack('U*').length)
             @io.puts
@@ -43,7 +43,7 @@ module Cucumber
       end
 
       def source_indent(sources)
-        sources.map { |file_colon_line, regexp| regexp.size }.max + 1
+        sources.map { |_file_colon_line, regexp| regexp.size }.max + 1
       end
     end
   end

@@ -2097,7 +2097,7 @@ module Cucumber
       end
 
       it 'passes nil as the multiline arg when there is none' do
-        expect(formatter).to receive(:after_step_result) do |keyword, step_match, multiline_arg, status, exception, source_indent, background, file_colon_line|
+        expect(formatter).to receive(:after_step_result) do |_keyword, _step_match, multiline_arg, _status, _exception, _source_indent, _background, _file_colon_line|
           expect(multiline_arg).to be_nil
         end
         execute_gherkin do
