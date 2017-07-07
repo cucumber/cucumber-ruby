@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+require 'octokit'
+require 'erb'
+
+class WelcomeIssue
+  attr_reader :gh, :login, :pr
+
+  def initialize(gh, login, pr)
+    @gh = gh
+    @login = login
+    @pr = pr
+  end
+
+  def title
+    "Invite @#{login} to become a collaborator"
+  end
+
+  def body
+    template = File.read(File.join(File.dirname(__FILE__), '..', '.github', 'WELCOME_NEW_MAINTAINER_ISSUE_TEMPLATE.md.erb'))
+    ERB.new(template).result(binding)
+  end
+end
+
+begin
+  syntax = "syntax: #{$0} <COLLABORATOR_LOGIN> <PULL_REQUEST_NUMBER>"
+  token = ENV['GITHUB_TOKEN'] || raise('You need to set GITHUB_TOKEN')
+  login = (ARGV[0] || raise(syntax)).to_s
+  pr = (ARGV[1] || raise(syntax)).to_i
+
+  gh = Octokit::Client.new(access_token: token)
+  issue = WelcomeIssue.new(gh, login, pr)
+  issue = gh.create_issue('cucumber/cucumber-ruby', issue.title, issue.body)
+  puts issue['url']
+
+rescue StandardError => error
+  abort error.message
+end

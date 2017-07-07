@@ -29,6 +29,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry'
   s.add_development_dependency 'rubocop', '~> 0.40.0'
 
+  # For maintainer scripts
+  s.add_development_dependency 'octokit'
+
   # For Documentation:
   s.add_development_dependency 'bcat', '~> 0.6.2'
   s.add_development_dependency 'kramdown', '~> 0.14'

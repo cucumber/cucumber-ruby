@@ -8,6 +8,7 @@ Feature: List step defs as json
   Background:
     Given a directory named "features"
 
+  @todo-windows
   Scenario: Two Ruby step definitions, in the same file
     Given a file named "features/step_definitions/steps.rb" with:
       """
@@ -28,6 +29,7 @@ Feature: List step defs as json
       ]
       """
 
+  @todo-windows
   Scenario: Non-default directory structure
     Given a file named "my_weird/place/steps.rb" with:
       """

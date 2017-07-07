@@ -37,6 +37,7 @@ Feature: Cucumber --work-in-progress switch
             | passes |
       """
 
+  @todo-windows
   Scenario: Pass with Failing Scenarios
     When I run `cucumber -q -w -t @failing features/wip.feature`
     Then the stderr should not contain anything
@@ -63,6 +64,7 @@ Feature: Cucumber --work-in-progress switch
 
       """
 
+  @todo-windows
   Scenario: Pass with Undefined Scenarios
     When I run `cucumber -q -w -t @undefined features/wip.feature`
     Then it should pass with:
@@ -82,6 +84,7 @@ Feature: Cucumber --work-in-progress switch
 
       """
 
+  @todo-windows
   Scenario: Pass with Undefined Scenarios
     When I run `cucumber -q -w -t @pending features/wip.feature`
     Then it should pass with:
@@ -104,6 +107,7 @@ Feature: Cucumber --work-in-progress switch
 
       """
 
+  @todo-windows
   Scenario: Fail with Passing Scenarios
     When I run `cucumber -q -w -t @passing features/wip.feature`
     Then it should fail with:
@@ -126,6 +130,7 @@ Feature: Cucumber --work-in-progress switch
 
       """
 
+  @todo-windows
   Scenario: Fail with Passing Scenario Outline
     When I run `cucumber -q -w features/passing_outline.feature`
     Then it should fail with:

@@ -21,7 +21,7 @@ Feature: Exception in After Block
       end
       """
 
-  @spawn
+  @spawn @todo-windows
   Scenario: Handle Exception in standard scenario step and carry on
     Given a file named "features/naughty_step_in_scenario.feature" with:
       """
@@ -54,7 +54,7 @@ Feature: Exception in After Block
 
       """
 
-  @spawn
+  @spawn @todo-windows
   Scenario: Handle Exception in scenario outline table row and carry on
     Given a file named "features/naughty_step_in_scenario_outline.feature" with:
       """
@@ -100,6 +100,7 @@ Feature: Exception in After Block
 
       """
 
+  @todo-windows
   Scenario: Handle Exception using the progress format
     Given a file named "features/naughty_step_in_scenario.feature" with:
       """

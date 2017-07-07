@@ -65,7 +65,6 @@ Lint/RescueException:
   Exclude:
     - 'features/lib/support/fake_wire_server.rb'
     - 'lib/cucumber/cli/main.rb'
-    - 'lib/cucumber/cli/profile_loader.rb'
     - 'lib/cucumber/configuration.rb'
     - 'lib/cucumber/glue/invoke_in_world.rb'
     - 'lib/cucumber/formatter/ansicolor.rb'
@@ -260,7 +259,6 @@ Style/BracesAroundHashParameters:
     - 'lib/cucumber/multiline_argument/data_table.rb'
     - 'spec/cucumber/cli/configuration_spec.rb'
     - 'spec/cucumber/cli/options_spec.rb'
-    - 'spec/cucumber/cli/profile_loader_spec.rb'
     - 'spec/cucumber/formatter/html_spec.rb'
     - 'spec/cucumber/formatter/junit_spec.rb'
     - 'spec/cucumber/formatter/pretty_spec.rb'

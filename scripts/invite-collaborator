@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+require 'octokit'
+
+class Team
+  attr_reader :gh, :name
+
+  def initialize(gh, name)
+    @gh = gh
+    @name = name
+  end
+
+  def add_member(login)
+    gh.add_team_membership(id, login)
+  end
+
+  def id
+    team['id']
+  end
+
+  def team
+    @team ||= gh.organization_teams('cucumber').
+      find { |team| team['name'] == name } || raise("Unable to find a team named #{name}")
+  end
+end
+
+begin
+  token = ENV['GITHUB_TOKEN'] || raise('You need to set GITHUB_TOKEN')
+  login = (ARGV[0] || raise("syntax: #{$0} <COLLABORATOR_LOGIN>")).to_s
+
+  gh = Octokit::Client.new(access_token: token)
+  [
+    Team.new(gh, 'cucumber-ruby'),
+    Team.new(gh, 'collaborators')
+  ].each { |team|
+    team.add_member(login)
+  }
+
+rescue StandardError => error
+  abort error.message
+end

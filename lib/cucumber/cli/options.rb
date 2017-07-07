@@ -48,7 +48,7 @@ module Cucumber
       NO_PROFILE_LONG_FLAG = '--no-profile'
       FAIL_FAST_FLAG = '--fail-fast'
       RETRY_FLAG = '--retry'
-      OPTIONS_WITH_ARGS = ['-r', '--require', '--i18n', '-f', '--format', '-o', '--out',
+      OPTIONS_WITH_ARGS = ['-r', '--require', '--i18n-keywords', '-f', '--format', '-o', '--out',
                                   '-t', '--tags', '-n', '--name', '-e', '--exclude',
                                   PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG,
                                   '-l', '--lines', '--port',
@@ -82,7 +82,7 @@ module Cucumber
         @options[key] = value
       end
 
-      def parse!(args)
+      def parse!(args) # rubocop:disable Metrics/AbcSize
         @args = args
         @expanded_args = @args.dup
 
@@ -97,7 +97,8 @@ module Cucumber
           end
 
           opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) {|v| set_option :retry, v.to_i }
-          opts.on('--i18n LANG', *i18n_msg) {|lang| set_language lang }
+          opts.on('--i18n-languages', *i18n_languages_msg) { list_languages_and_exit }
+          opts.on('--i18n-keywords LANG', *i18n_keywords_msg) {|lang| set_language lang }
           opts.on(FAIL_FAST_FLAG, 'Exit immediately following the first failing scenario') { set_option :fail_fast }
           opts.on('-f FORMAT', '--format FORMAT', *format_msg, *FORMAT_HELP) do |v|
             add_option :formats, [*parse_formats(v), @out_stream]
@@ -201,7 +202,13 @@ TEXT
         [ 'How to format features (Default: pretty). Available formats:' ]
       end
 
-      def i18n_msg
+      def i18n_languages_msg
+        [
+          'List all available languages'
+        ]
+      end
+
+      def i18n_keywords_msg
         [
           'List keywords for in a particular language',
           %{Run with "--i18n help" to see all languages}
@@ -334,13 +341,8 @@ TEXT
       def set_language(lang)
         require 'gherkin/dialect'
 
-        if lang == 'help'
-          list_languages_and_exit
-        elsif !::Gherkin::DIALECTS.keys.include? lang
-          indicate_invalid_language_and_exit(lang)
-        else
-          list_keywords_and_exit(lang)
-        end
+        return indicate_invalid_language_and_exit(lang) unless ::Gherkin::DIALECTS.keys.include? lang
+        list_keywords_and_exit(lang)
       end
 
       def disable_profile_loading

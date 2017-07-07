@@ -59,7 +59,7 @@ Feature: JUnit output formatter
             | is undefined |
       """
 
-  @spawn
+  @spawn @todo-windows
   Scenario: one feature, one passing scenario, one failing scenario
     When I run `cucumber --format junit --out tmp/ features/one_passing_one_failing.feature`
     Then it should fail with:
@@ -101,7 +101,7 @@ Feature: JUnit output formatter
 
       """
 
-  @spawn
+  @spawn @todo-windows
   Scenario: one feature in a subdirectory, one passing scenario, one failing scenario
     When I run `cucumber --format junit --out tmp/ features/some_subdirectory/one_passing_one_failing.feature --require features`
     Then it should fail with:
@@ -225,7 +225,8 @@ Feature: JUnit output formatter
       </testsuite>
 
       """
-    
+
+  @todo-windows
   Scenario: run all features
     When I run `cucumber --format junit --out tmp/ features`
     Then it should fail with:
@@ -246,7 +247,7 @@ can't convert .* into String \(TypeError\)
 You *must* specify --out DIR for the junit formatter
       """
 
-  @spawn
+  @spawn @todo-windows
   Scenario: strict mode, one feature, one scenario outline, four examples: one passing, one failing, one pending, one undefined
     When I run `cucumber --strict --format junit --out tmp/ features/scenario_outline.feature`
     Then it should fail with:
@@ -328,7 +329,7 @@ You *must* specify --out DIR for the junit formatter
 
       """ 
 
-  @spawn
+  @spawn @todo-windows
   Scenario: strict mode with --expand option, one feature, one scenario outline, four examples: one passing, one failing, one pending, one undefined
     When I run `cucumber --strict --expand --format junit --out tmp/ features/scenario_outline.feature`
     Then it should fail with exactly:
@@ -410,7 +411,7 @@ You *must* specify --out DIR for the junit formatter
 
       """ 
 
-  @spawn
+  @spawn @todo-windows
   Scenario: run test cases from different features interweaved
     When I run `cucumber --format junit --out tmp/ features/one_passing_one_failing.feature:3 features/pending.feature:3 features/one_passing_one_failing.feature:6`
     Then it should fail with:

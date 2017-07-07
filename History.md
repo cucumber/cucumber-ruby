@@ -7,6 +7,7 @@
 
 ### New Features
 
+* Emulate Cucumber-JS's new i18n CLI options ([#1140(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1140) @aidamanna)
 * Use the event bus in Cucumber-Ruby-Core ([#973](https://github.com/cucumber/cucumber-ruby/pull/973) @mattwynne)
 * Add --retry option to retry failed tests as part of the same run ([#920](https://github.com/cucumber/cucumber-ruby/pull/920) @DanaScheider)
 * Add a summary formatter ([#999](https://github.com/cucumber/cucumber-ruby/pull/999) @mattwynne)
@@ -17,6 +18,7 @@
 
 ### Bugfixes
 
+* Fix the profile loader on Windows ([#1133(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1133) @enkessler)
 * Fix incorrect `DataTable#diff!` results ([#1102](https://github.com/cucumber/cucumber-ruby/pulls/1102) @)
 * Fix incorrect `DataTable#diff!` results ([#1102](https://github.com/cucumber/cucumber-ruby/pulls/1102) @botandrose)
 * Do not apply the hooks to the test case several times when using the retry option ([#1098](https://github.com/cucumber/cucumber-ruby/issues/1098) @brasmusson)
@@ -29,8 +31,11 @@
 * Relax filter for "/usr/local/ruby-X.Y.Z/bin/bundle" ([#1079](https://github.com/cucumber/cucumber-ruby/pull/1079) @junaruga)
 * Avoid showing "@ rb_sysopen" noise for Ruby 2.4 ([#1080](https://github.com/cucumber/cucumber-ruby/pull/1080) @junaruga)
 
-### Refactoring / DX
+### Refactoring / Developer Experience
 
+* Update cucumber yaml to use new tag syntax ([#1147(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1147) @danascheider)
+* Turn off Windows failures ([#1142(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1142) @enkessler)
+* Add script to update history.md ([#1141(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1141) @mattwynne)
 * Update Ruby 2.3 and 2.4 in .travis.yml ([#1100](https://github.com/cucumber/cucumber-ruby/pull/1100) @junaruga)
 * Fixes for rubocop violations ([#1095](https://github.com/cucumber/cucumber-ruby/pull/1095) @bv)
 * Fixes for rubocop violations ([#1042](https://github.com/cucumber/cucumber-ruby/pull/1042) @phoebeclarke)

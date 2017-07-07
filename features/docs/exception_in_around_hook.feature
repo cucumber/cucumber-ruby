@@ -12,6 +12,7 @@ Feature: Exceptions in Around Hooks
   There's another scenario to consider, where the exception occurs after the steps
   have been run. How would we want to report in that case?
 
+  @todo-windows
   Scenario: Exception before the test case is run
     Given the standard step definitions
     And a file named "features/support/env.rb" with:
@@ -44,6 +45,7 @@ Feature: Exceptions in Around Hooks
       
       """
 
+  @todo-windows
   Scenario: Exception after the test case is run
     Given the standard step definitions
     And a file named "features/support/env.rb" with:
