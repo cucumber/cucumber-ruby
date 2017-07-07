@@ -22,7 +22,7 @@ Lint/AssignmentInCondition:
   Exclude:
     - 'features/lib/step_definitions/wire_steps.rb'
     - 'features/lib/support/fake_wire_server.rb'
-    - 'lib/cucumber/rb_support/rb_transform.rb'
+    - 'lib/cucumber/glue/transform.rb'
     - 'lib/cucumber/runtime/support_code.rb'
     - 'spec/cucumber/formatter/spec_helper.rb'
 
@@ -52,8 +52,8 @@ Lint/HandleExceptions:
 # Offense count: 2
 Lint/IneffectiveAccessModifier:
   Exclude:
-    - 'lib/cucumber/rb_support/rb_language.rb'
-    - 'lib/cucumber/rb_support/snippet.rb'
+    - 'lib/cucumber/glue/registry_and_more.rb'
+    - 'lib/cucumber/glue/snippet.rb'
 
 # Offense count: 1
 Lint/Loop:
@@ -66,9 +66,9 @@ Lint/RescueException:
     - 'features/lib/support/fake_wire_server.rb'
     - 'lib/cucumber/cli/main.rb'
     - 'lib/cucumber/configuration.rb'
-    - 'lib/cucumber/core_ext/instance_exec.rb'
+    - 'lib/cucumber/glue/invoke_in_world.rb'
     - 'lib/cucumber/formatter/ansicolor.rb'
-    - 'lib/cucumber/rb_support/rb_world.rb'
+    - 'lib/cucumber/glue/proto_world.rb'
 
 # Offense count: 6
 Lint/ShadowingOuterLocalVariable:
@@ -196,7 +196,7 @@ Style/AsciiComments:
     - 'lib/cucumber/filters/randomizer.rb'
     - 'lib/cucumber/formatter/html.rb'
     - 'lib/cucumber/formatter/legacy_api/adapter.rb'
-    - 'lib/cucumber/rb_support/rb_step_definition.rb'
+    - 'lib/cucumber/glue/step_definition.rb'
     - 'lib/cucumber/running_test_case.rb'
     - 'lib/cucumber/runtime.rb'
     - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
@@ -263,7 +263,7 @@ Style/BracesAroundHashParameters:
     - 'spec/cucumber/formatter/junit_spec.rb'
     - 'spec/cucumber/formatter/pretty_spec.rb'
     - 'spec/cucumber/multiline_argument/data_table_spec.rb'
-    - 'spec/cucumber/rb_support/rb_step_definition_spec.rb'
+    - 'spec/cucumber/glue/step_definition_spec.rb'
 
 # Offense count: 12
 Style/CaseEquality:
@@ -383,7 +383,7 @@ Style/DoubleNegation:
 Style/EachWithObject:
   Exclude:
     - 'lib/cucumber/formatter/steps.rb'
-    - 'lib/cucumber/rb_support/rb_language.rb'
+    - 'lib/cucumber/glue/registry_and_more.rb'
 
 # Offense count: 12
 # Cop supports --auto-correct.
@@ -414,7 +414,7 @@ Style/EmptyLinesAroundAccessModifier:
     - 'lib/cucumber/formatter/interceptor.rb'
     - 'lib/cucumber/formatter/legacy_api/adapter.rb'
     - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/rb_support/rb_transform.rb'
+    - 'lib/cucumber/glue/transform.rb'
     - 'lib/cucumber/runtime/step_hooks.rb'
     - 'lib/cucumber/step_match.rb'
 
@@ -451,9 +451,9 @@ Style/EmptyLiteral:
   Exclude:
     - 'lib/cucumber/errors.rb'
     - 'lib/cucumber/formatter/html.rb'
-    - 'lib/cucumber/rb_support/rb_language.rb'
-    - 'lib/cucumber/rb_support/snippet.rb'
-    - 'spec/cucumber/rb_support/rb_language_spec.rb'
+    - 'lib/cucumber/glue/registry_and_more.rb'
+    - 'lib/cucumber/glue/snippet.rb'
+    - 'spec/cucumber/glue/registry_and_more_spec.rb'
 
 # Offense count: 11
 # Cop supports --auto-correct.
@@ -466,7 +466,7 @@ Style/ExtraSpacing:
     - 'spec/cucumber/formatter/junit_spec.rb'
     - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
     - 'spec/cucumber/multiline_argument/data_table_spec.rb'
-    - 'spec/cucumber/rb_support/rb_step_definition_spec.rb'
+    - 'spec/cucumber/glue/step_definition_spec.rb'
 
 # Offense count: 1
 # Configuration parameters: ExpectMatchingDefinition, Regex, IgnoreExecutableScripts.
@@ -488,8 +488,8 @@ Style/GlobalVars:
   Exclude:
     - 'lib/autotest/cucumber_mixin.rb'
     - 'spec/cucumber/cli/options_spec.rb'
-    - 'spec/cucumber/rb_support/rb_language_spec.rb'
-    - 'spec/cucumber/rb_support/rb_step_definition_spec.rb'
+    - 'spec/cucumber/glue/registry_and_more_spec.rb'
+    - 'spec/cucumber/glue/step_definition_spec.rb'
 
 # Offense count: 10
 # Configuration parameters: MinBodyLength.
@@ -500,7 +500,7 @@ Style/GuardClause:
     - 'lib/cucumber/formatter/junit.rb'
     - 'lib/cucumber/formatter/legacy_api/adapter.rb'
     - 'lib/cucumber/formatter/pretty.rb'
-    - 'lib/cucumber/rb_support/rb_world.rb'
+    - 'lib/cucumber/glue/proto_world.rb'
 
 # Offense count: 182
 # Cop supports --auto-correct.
@@ -565,7 +565,7 @@ Style/IndentationWidth:
     - 'lib/cucumber/formatter/legacy_api/adapter.rb'
     - 'lib/cucumber/gherkin/formatter/ansi_escapes.rb'
     - 'lib/cucumber/gherkin/formatter/escaping.rb'
-    - 'lib/cucumber/rb_support/rb_transform.rb'
+    - 'lib/cucumber/glue/transform.rb'
     - 'spec/cucumber/cli/configuration_spec.rb'
     - 'spec/cucumber/multiline_argument/data_table_spec.rb'
     - 'spec/cucumber/step_match_search_spec.rb'
@@ -580,13 +580,13 @@ Style/Lambda:
     - 'features/lib/support/fake_wire_server.rb'
     - 'lib/cucumber/formatter/html.rb'
     - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/rb_support/rb_step_definition.rb'
+    - 'lib/cucumber/glue/step_definition.rb'
     - 'lib/cucumber/step_match.rb'
     - 'spec/cucumber/formatter/html_spec.rb'
     - 'spec/cucumber/formatter/junit_spec.rb'
     - 'spec/cucumber/multiline_argument/data_table_spec.rb'
-    - 'spec/cucumber/rb_support/rb_language_spec.rb'
-    - 'spec/cucumber/rb_support/rb_step_definition_spec.rb'
+    - 'spec/cucumber/glue/registry_and_more_spec.rb'
+    - 'spec/cucumber/glue/step_definition_spec.rb'
     - 'spec/cucumber/rb_support/rb_transform_spec.rb'
     - 'spec/cucumber/step_match_search_spec.rb'
     - 'spec/cucumber/step_match_spec.rb'
@@ -693,7 +693,7 @@ Style/MutableConstant:
     - 'lib/cucumber/formatter/progress.rb'
     - 'lib/cucumber/formatter/unicode.rb'
     - 'lib/cucumber/gherkin/formatter/ansi_escapes.rb'
-    - 'lib/cucumber/rb_support/snippet.rb'
+    - 'lib/cucumber/glue/snippet.rb'
     - 'lib/cucumber/term/ansicolor.rb'
     - 'spec/cucumber/step_match_spec.rb'
 
@@ -742,7 +742,7 @@ Style/NumericLiterals:
 Style/OpMethod:
   Exclude:
     - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/rb_support/rb_step_definition.rb'
+    - 'lib/cucumber/glue/step_definition.rb'
     - 'lib/cucumber/step_definition_light.rb'
 
 # Offense count: 25
@@ -797,11 +797,11 @@ Style/RaiseArgs:
 Style/RedundantBegin:
   Exclude:
     - 'features/lib/support/fake_wire_server.rb'
-    - 'lib/cucumber/core_ext/instance_exec.rb'
+    - 'lib/cucumber/glue/invoke_in_world.rb'
     - 'lib/cucumber/formatter/ansicolor.rb'
     - 'lib/cucumber/formatter/unicode.rb'
     - 'lib/cucumber/multiline_argument/data_table.rb'
-    - 'lib/cucumber/rb_support/rb_step_definition.rb'
+    - 'lib/cucumber/glue/step_definition.rb'
     - 'lib/cucumber/runtime.rb'
     - 'lib/cucumber/runtime/user_interface.rb'
 
@@ -841,8 +841,8 @@ Style/RedundantSelf:
     - 'lib/cucumber/formatter/legacy_api/ast.rb'
     - 'lib/cucumber/multiline_argument/data_table.rb'
     - 'lib/cucumber/multiline_argument/doc_string.rb'
-    - 'lib/cucumber/rb_support/rb_step_definition.rb'
-    - 'lib/cucumber/rb_support/rb_world.rb'
+    - 'lib/cucumber/glue/step_definition.rb'
+    - 'lib/cucumber/glue/proto_world.rb'
     - 'spec/cucumber/running_test_case_spec.rb'
 
 # Offense count: 18
@@ -860,7 +860,7 @@ Style/RegexpLiteral:
     - 'lib/cucumber/runtime.rb'
     - 'spec/cucumber/formatter/html_spec.rb'
     - 'spec/cucumber/project_initializer_spec.rb'
-    - 'spec/cucumber/rb_support/rb_language_spec.rb'
+    - 'spec/cucumber/glue/registry_and_more_spec.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.
@@ -939,7 +939,7 @@ Style/SpaceAroundKeyword:
     - 'lib/cucumber/formatter/legacy_api/results.rb'
     - 'lib/cucumber/multiline_argument/data_table.rb'
     - 'lib/cucumber/rake/task.rb'
-    - 'lib/cucumber/rb_support/rb_language.rb'
+    - 'lib/cucumber/glue/registry_and_more.rb'
     - 'lib/cucumber/runtime/user_interface.rb'
     - 'spec/cucumber/cli/profile_loader_spec.rb'
 
@@ -951,18 +951,18 @@ Style/SpaceAroundOperators:
     - 'examples/i18n/Rakefile'
     - 'examples/i18n/pt/lib/calculadora.rb'
     - 'lib/cucumber/cli/options.rb'
-    - 'lib/cucumber/core_ext/instance_exec.rb'
+    - 'lib/cucumber/glue/invoke_in_world.rb'
     - 'lib/cucumber/formatter/ansicolor.rb'
     - 'lib/cucumber/formatter/console.rb'
     - 'lib/cucumber/formatter/html.rb'
     - 'lib/cucumber/formatter/interceptor.rb'
     - 'lib/cucumber/formatter/json.rb'
     - 'lib/cucumber/formatter/pretty.rb'
-    - 'lib/cucumber/rb_support/snippet.rb'
+    - 'lib/cucumber/glue/snippet.rb'
     - 'lib/cucumber/step_definition_light.rb'
     - 'spec/cucumber/cli/configuration_spec.rb'
     - 'spec/cucumber/multiline_argument/data_table_spec.rb'
-    - 'spec/cucumber/rb_support/rb_step_definition_spec.rb'
+    - 'spec/cucumber/glue/step_definition_spec.rb'
 
 # Offense count: 88
 # Cop supports --auto-correct.
@@ -1075,7 +1075,7 @@ Style/TrailingWhitespace:
 # Reviewed: when the offense is fixed there is one spec failing (./spec/cucumber/rb_support/rb_world_spec.rb:37)
 Style/UnneededInterpolation:
   Exclude:
-    - 'lib/cucumber/rb_support/rb_world.rb'
+    - 'lib/cucumber/glue/proto_world.rb'
 
 # Offense count: 15
 # Configuration parameters: EnforcedStyle, SupportedStyles.

@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 module Cucumber
-  module RbSupport
-    # Wrapper for Before, After and AfterStep hooks
-    class RbHook
+  module Glue
+    # TODO: Kill pointless wrapper for Before, After and AfterStep hooks with fire
+    class Hook
       attr_reader :tag_expressions, :location
 
-      def initialize(rb_language, tag_expressions, proc)
-        @rb_language = rb_language
+      def initialize(registry, tag_expressions, proc)
+        @registry = registry
         @tag_expressions = tag_expressions
         @proc = proc
         @location = Cucumber::Core::Ast::Location.from_source_location(*@proc.source_location)
@@ -14,7 +14,7 @@ module Cucumber
       end
 
       def invoke(pseudo_method, arguments, &block)
-        @rb_language.current_world.cucumber_instance_exec(false, pseudo_method, *[arguments, block].flatten.compact, &@proc)
+        cucumber_instance_exec_in(@registry.current_world, false, pseudo_method, *[arguments, block].flatten.compact, &@proc)
       end
 
       private

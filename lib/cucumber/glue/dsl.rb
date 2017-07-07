@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 module Cucumber
-  module RbSupport
-    # This module defines the methods you can use to define pure Ruby
-    # Step Definitions and Hooks. This module is mixed into the toplevel
-    # object.
-    module RbDsl
+  module Glue
+    # This module provides the methods the DSL you can use to define
+    # steps, hooks, transforms etc.
+    module Dsl
       class << self
         attr_writer :rb_language
 
@@ -54,19 +53,19 @@ module Cucumber
       #    World(my_module: MyModule)
       #
       def World(*world_modules, **namespaced_world_modules, &proc)
-        RbDsl.build_rb_world_factory(world_modules, namespaced_world_modules, proc)
+        Dsl.build_rb_world_factory(world_modules, namespaced_world_modules, proc)
       end
 
       # Registers a proc that will run before each Scenario. You can register as many
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
       def Before(*tag_expressions, &proc)
-        RbDsl.register_rb_hook('before', tag_expressions, proc)
+        Dsl.register_rb_hook('before', tag_expressions, proc)
       end
 
       # Registers a proc that will run after each Scenario. You can register as many
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
       def After(*tag_expressions, &proc)
-        RbDsl.register_rb_hook('after', tag_expressions, proc)
+        Dsl.register_rb_hook('after', tag_expressions, proc)
       end
 
       # Registers a proc that will be wrapped around each scenario. The proc
@@ -75,13 +74,13 @@ module Cucumber
       # blocks in 1.8), on which it should call the .call method. You can register
       # as many  as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
       def Around(*tag_expressions, &proc)
-        RbDsl.register_rb_hook('around', tag_expressions, proc)
+        Dsl.register_rb_hook('around', tag_expressions, proc)
       end
 
       # Registers a proc that will run after each Step. You can register as
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
       def AfterStep(*tag_expressions, &proc)
-        RbDsl.register_rb_hook('after_step', tag_expressions, proc)
+        Dsl.register_rb_hook('after_step', tag_expressions, proc)
       end
 
       # Registers a proc that will be called with a step definition argument if it
@@ -90,14 +89,13 @@ module Cucumber
       # provided proc. The return value of the proc is consequently yielded to the
       # step definition.
       def Transform(regexp, &proc)
-        RbDsl.register_rb_transform(regexp, proc)
+        Dsl.register_rb_transform(regexp, proc)
       end
 
       # Registers a proc that will run after Cucumber is configured. You can register as
       # as you want (typically from ruby scripts under <tt>support/hooks.rb</tt>).
-      # TODO: Deprecate this
       def AfterConfiguration(&proc)
-        RbDsl.register_rb_hook('after_configuration', [], proc)
+        Dsl.register_rb_hook('after_configuration', [], proc)
       end
 
       # Registers a new Ruby StepDefinition. This method is aliased
@@ -117,10 +115,11 @@ module Cucumber
       # the context of the <tt>World</tt> object.
       def register_rb_step_definition(regexp, symbol = nil, options = {}, &proc)
         proc_or_sym = symbol || proc
-        RbDsl.register_rb_step_definition(regexp, proc_or_sym, options)
+        Dsl.register_rb_step_definition(regexp, proc_or_sym, options)
       end
     end
   end
 end
 
-extend(Cucumber::RbSupport::RbDsl)
+# TODO: can we avoid adding methods to the global namespace (Kernel)
+extend(Cucumber::Glue::Dsl)

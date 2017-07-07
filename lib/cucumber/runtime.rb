@@ -67,6 +67,7 @@ module Cucumber
       load_step_definitions
       install_wire_plugin
       fire_after_configuration_hook
+      # TODO: can we remove this state?
       self.visitor = report
 
       receiver = Test::Runner.new(@configuration.event_bus)
@@ -94,8 +95,8 @@ module Cucumber
       @support_code.unmatched_step_definitions
     end
 
-    def begin_scenario(scenario)
-      @support_code.fire_hook(:begin_scenario, scenario)
+    def begin_scenario(test_case)
+      @support_code.fire_hook(:begin_scenario, test_case)
     end
 
     def end_scenario(_scenario)
@@ -245,8 +246,8 @@ module Cucumber
         filters << Cucumber::Core::Test::NameFilter.new(name_regexps)
         filters << Cucumber::Core::Test::LocationsFilter.new(filespecs.locations)
         filters << Filters::Randomizer.new(@configuration.seed) if @configuration.randomize?
-        # TODO: can we just use RbLanguages's step definitions directly?
-        step_match_search = StepMatchSearch.new(@support_code.ruby.method(:step_matches), @configuration)
+        # TODO: can we just use Glue::RegistryAndMore's step definitions directly?
+        step_match_search = StepMatchSearch.new(@support_code.registry.method(:step_matches), @configuration)
         filters << Filters::ActivateSteps.new(step_match_search, @configuration)
         @configuration.filters.each do |filter|
           filters << filter

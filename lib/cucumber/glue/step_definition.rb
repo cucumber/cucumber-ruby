@@ -4,9 +4,9 @@ require 'cucumber/step_argument'
 require 'cucumber/core_ext/string'
 
 module Cucumber
-  module RbSupport
-    # A Ruby Step Definition holds a Regexp pattern and a Proc, and is
-    # typically created by calling {RbDsl#register_rb_step_definition Given, When or Then}
+  module Glue
+    # A Step Definition holds a Regexp pattern and a Proc, and is
+    # typically created by calling {Dsl#register_rb_step_definition Given, When or Then}
     # in the step_definitions Ruby files.
     #
     # Example:
@@ -15,7 +15,7 @@ module Cucumber
     #     # some code here
     #   end
     #
-    class RbStepDefinition
+    class StepDefinition
 
       class MissingProc < StandardError
         def message
@@ -24,9 +24,9 @@ module Cucumber
       end
 
       class << self
-        def new(rb_language, pattern, proc_or_sym, options)
+        def new(registry, pattern, proc_or_sym, options)
           raise MissingProc if proc_or_sym.nil?
-          super rb_language, parse_pattern(pattern), create_proc(proc_or_sym, options)
+          super registry, parse_pattern(pattern), create_proc(proc_or_sym, options)
         end
 
         private
@@ -70,9 +70,9 @@ module Cucumber
         end
       end
 
-      def initialize(rb_language, regexp, proc)
-        @rb_language, @regexp, @proc = rb_language, regexp, proc
-        @rb_language.available_step_definition(regexp_source, location)
+      def initialize(registry, regexp, proc)
+        @registry, @regexp, @proc = registry, regexp, proc
+        @registry.available_step_definition(regexp_source, location)
       end
 
       # @api private
@@ -97,15 +97,16 @@ module Cucumber
       # @api private
       def arguments_from(step_name)
         args = StepArgument.arguments_from(@regexp, step_name)
-        @rb_language.invoked_step_definition(regexp_source, location) if args
+        @registry.invoked_step_definition(regexp_source, location) if args
         args
       end
 
       # @api private
+      # TODO: inline this and step definition just be a value object
       def invoke(args)
         begin
-          args = @rb_language.execute_transforms(args)
-          @rb_language.current_world.cucumber_instance_exec(true, regexp_source, *args, &@proc)
+          args = @registry.execute_transforms(args)
+          cucumber_instance_exec_in(@registry.current_world, true, regexp_source, *args, &@proc)
         rescue Cucumber::ArityMismatchError => e
           e.backtrace.unshift(self.backtrace_line)
           raise e

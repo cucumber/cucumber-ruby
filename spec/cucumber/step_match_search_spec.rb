@@ -1,24 +1,24 @@
 # frozen_string_literal: true
 require 'cucumber/step_match_search'
-require 'cucumber/rb_support/rb_dsl'
-require 'cucumber/rb_support/rb_language'
+require 'cucumber/glue/dsl'
+require 'cucumber/glue/registry_and_more'
 require 'cucumber/configuration'
 
 module Cucumber
   describe StepMatchSearch do
 
-    let(:search) { StepMatchSearch.new(rb_language.method(:step_matches), configuration) }
-    let(:rb_language) { RbSupport::RbLanguage.new(runtime, configuration) }
+    let(:search) { StepMatchSearch.new(registry.method(:step_matches), configuration) }
+    let(:registry) { Glue::RegistryAndMore.new(runtime, configuration) }
     let(:runtime) do
-      # TODO: break out step definitions collection from RbLanguage so we don't need this
+      # TODO: break out step definitions collection from Glue::RegistryAndMore so we don't need this
       :unused
     end
     let(:configuration) { Configuration.new(options) }
     let(:options) { {} }
     let(:dsl) do
       # TODO: stop relying on implicit global state
-      rb_language
-      Object.new.extend(RbSupport::RbDsl)
+      registry
+      Object.new.extend(Glue::Dsl)
     end
 
     context 'caching' do
@@ -27,7 +27,7 @@ module Cucumber
 
         step_match = search.call('it snows in april').first
 
-        expect(rb_language).not_to receive(:step_matches)
+        expect(registry).not_to receive(:step_matches)
         second_step_match = search.call('it snows in april').first
 
         expect(step_match).to equal(second_step_match)

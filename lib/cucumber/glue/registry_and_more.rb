@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 require 'cucumber/core_ext/instance_exec'
-require 'cucumber/rb_support/rb_dsl'
-require 'cucumber/rb_support/rb_world'
-require 'cucumber/rb_support/rb_step_definition'
-require 'cucumber/rb_support/rb_hook'
-require 'cucumber/rb_support/rb_transform'
-require 'cucumber/rb_support/snippet'
+require 'cucumber/glue/dsl'
+require 'cucumber/glue/snippet'
+require 'cucumber/glue/hook'
+require 'cucumber/glue/proto_world'
+require 'cucumber/glue/step_definition'
+require 'cucumber/glue/transform'
+require 'cucumber/glue/world_factory'
 require 'cucumber/gherkin/i18n'
 require 'multi_test'
 require 'cucumber/step_match'
@@ -13,7 +14,7 @@ require 'cucumber/step_definition_light'
 require 'cucumber/events/step_definition_registered'
 
 module Cucumber
-  module RbSupport
+  module Glue
     # Raised if a World block returns Nil.
     class NilWorld < StandardError
       def initialize
@@ -27,16 +28,16 @@ module Cucumber
         message = String.new
         message << "You can only pass a proc to #World once, but it's happening\n"
         message << "in 2 places:\n\n"
-        message << RbSupport.backtrace_line(first_proc, 'World') << "\n"
-        message << RbSupport.backtrace_line(second_proc, 'World') << "\n\n"
-        message << "Use Ruby modules instead to extend your worlds. See the Cucumber::RbSupport::RbDsl#World RDoc\n"
+        message << Glue.backtrace_line(first_proc, 'World') << "\n"
+        message << Glue.backtrace_line(second_proc, 'World') << "\n\n"
+        message << "Use Ruby modules instead to extend your worlds. See the Cucumber::Glue::Dsl#World RDoc\n"
         message << "or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.\n\n"
         super(message)
       end
     end
 
-    # The Ruby implementation of the programming language API.
-    class RbLanguage
+    # TODO: This class has too many responsibilities, split off
+    class RegistryAndMore
       attr_reader :current_world,
                   :step_definitions
 
@@ -45,13 +46,13 @@ module Cucumber
         dialect.given_keywords + dialect.when_keywords + dialect.then_keywords + dialect.and_keywords + dialect.but_keywords
       end
       Cucumber::Gherkin::I18n.code_keywords_for(all_keywords.flatten.uniq.sort).each do |adverb|
-        RbDsl.alias_adverb(adverb.strip)
+        Glue::Dsl.alias_adverb(adverb.strip)
       end
 
       def initialize(runtime, configuration)
         @runtime, @configuration = runtime, configuration
         @step_definitions = []
-        RbDsl.rb_language = self
+        Glue::Dsl.rb_language = self
         @world_proc = @world_modules = nil
         @configuration.register_snippet_generator(Snippet::Generator.new)
       end
@@ -65,22 +66,16 @@ module Cucumber
         }
       end
 
-      def begin_rb_scenario(scenario)
-        create_world
-        extend_world
-        connect_world(scenario)
-      end
-
       def register_rb_hook(phase, tag_expressions, proc)
-        add_hook(phase, RbHook.new(self, tag_expressions, proc))
+        add_hook(phase, Hook.new(self, tag_expressions, proc))
       end
 
       def register_rb_transform(regexp, proc)
-        add_transform(RbTransform.new(self, regexp, proc))
+        add_transform(Transform.new(self, regexp, proc))
       end
 
       def register_rb_step_definition(regexp, proc_or_sym, options)
-        step_definition = RbStepDefinition.new(self, regexp, proc_or_sym, options)
+        step_definition = StepDefinition.new(self, regexp, proc_or_sym, options)
         @step_definitions << step_definition
         @configuration.notify :step_definition_registered, step_definition
         step_definition
@@ -104,11 +99,15 @@ module Cucumber
 
       def load_code_file(code_file)
         return unless File.extname(code_file) == '.rb'
-        load File.expand_path(code_file) # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from RbDsl
+        load File.expand_path(code_file) # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from Glue::Dsl
       end
 
-      def begin_scenario(scenario)
-        begin_rb_scenario(scenario)
+      def begin_scenario(test_case)
+        @current_world = WorldFactory.new(@world_proc).create_world
+        @current_world.extend(ProtoWorld.for(@runtime, test_case.language))
+        MultiTest.extend_with_best_assertion_library(@current_world)
+        @current_world.add_modules!(@world_modules || [],
+                                    @namespaced_world_modules || {})
       end
 
       def end_scenario
@@ -174,42 +173,6 @@ module Cucumber
 
       def transforms
         @transforms ||= []
-      end
-
-      def create_world
-        if(@world_proc)
-          @current_world = @world_proc.call
-          check_nil(@current_world, @world_proc)
-        else
-          @current_world = Object.new
-        end
-      end
-
-      def extend_world
-        @current_world.extend(RbWorld)
-        MultiTest.extend_with_best_assertion_library(@current_world)
-
-        @current_world.add_modules!(@world_modules || [],
-                                    @namespaced_world_modules || {})
-      end
-
-      def connect_world(scenario)
-        @current_world.__cucumber_runtime = @runtime
-        @current_world.__natural_language = scenario.language
-      end
-
-      def check_nil(o, proc)
-        if o.nil?
-          begin
-            raise NilWorld.new
-          rescue NilWorld => e
-            e.backtrace.clear
-            e.backtrace.push(RbSupport.backtrace_line(proc, 'World'))
-            raise e
-          end
-        else
-          o
-        end
       end
 
       def self.cli_snippet_type_options

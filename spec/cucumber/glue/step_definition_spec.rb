@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 require 'spec_helper'
-require 'cucumber/rb_support/rb_language'
+require 'cucumber/glue/registry_and_more'
 
 module Cucumber
-  module RbSupport
-    describe RbStepDefinition do
+  module Glue
+    describe StepDefinition do
       let(:user_interface) { double('user interface') }
       let(:support_code)   { Cucumber::Runtime::SupportCode.new(user_interface) }
-      let(:rb)             { support_code.ruby }
+      let(:registry)       { support_code.registry }
       let(:scenario)       { double('scenario', iso_code: 'en').as_null_object }
       let(:dsl) do
-        rb
-        Object.new.extend(Cucumber::RbSupport::RbDsl)
+        registry
+        Object.new.extend(Cucumber::Glue::Dsl)
       end
 
       before do
-        rb.begin_scenario(scenario)
+        registry.begin_scenario(scenario)
         $inside = nil
       end
 
@@ -24,7 +24,7 @@ module Cucumber
       end
 
       def step_match(text)
-        StepMatchSearch.new(rb.method(:step_matches), Configuration.default).call(text).first
+        StepMatchSearch.new(registry.method(:step_matches), Configuration.default).call(text).first
       end
 
       it 'allows calling of other steps' do
@@ -55,7 +55,7 @@ module Cucumber
 
       context 'mapping to world methods' do
         it 'calls a method on the world when specified with a symbol' do
-          expect(rb.current_world).to receive(:with_symbol)
+          expect(registry.current_world).to receive(:with_symbol)
 
           dsl.Given(/With symbol/, :with_symbol)
 
@@ -65,7 +65,7 @@ module Cucumber
         it 'calls a method on a specified object' do
           target = double('target')
 
-          allow(rb.current_world).to receive(:target) { target }
+          allow(registry.current_world).to receive(:target) { target }
 
           dsl.Given(/With symbol on block/, :with_symbol, :on => lambda { target })
 
@@ -77,7 +77,7 @@ module Cucumber
         it 'calls a method on a specified world attribute' do
           target = double('target')
 
-          allow(rb.current_world).to receive(:target) { target }
+          allow(registry.current_world).to receive(:target) { target }
 
           dsl.Given(/With symbol on symbol/, :with_symbol, :on => :target)
 
@@ -88,7 +88,7 @@ module Cucumber
 
         it 'has the correct location' do
           dsl.Given(/With symbol/, :with_symbol)
-          expect(step_match('With symbol').file_colon_line).to eq "spec/cucumber/rb_support/rb_step_definition_spec.rb:#{__LINE__-1}"
+          expect(step_match('With symbol').file_colon_line).to eq "spec/cucumber/glue/step_definition_spec.rb:#{__LINE__-1}"
         end
       end
 
@@ -192,7 +192,7 @@ module Cucumber
       end
 
       it 'has a JSON representation of the signature' do
-        expect(RbStepDefinition.new(rb, /I CAN HAZ (\d+) CUKES/i, lambda{}, {}).to_hash).to eq({ 'source' => 'I CAN HAZ (\\d+) CUKES', 'flags' => 'i' })
+        expect(StepDefinition.new(registry, /I CAN HAZ (\d+) CUKES/i, lambda{}, {}).to_hash).to eq({ 'source' => 'I CAN HAZ (\\d+) CUKES', 'flags' => 'i' })
       end
     end
   end

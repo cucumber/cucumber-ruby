@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'cucumber/formatter/spec_helper'
 require 'cucumber/formatter/html'
 require 'nokogiri'
-require 'cucumber/rb_support/rb_language'
+require 'cucumber/glue/registry_and_more'
 require 'rspec/mocks'
 
 module Cucumber

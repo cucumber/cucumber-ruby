@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 require 'spec_helper'
-require 'cucumber/rb_support/rb_transform'
+require 'cucumber/glue/transform'
 
 module Cucumber
-  module RbSupport
-    describe RbTransform do
+  module Glue
+    describe Transform do
       def transform(regexp)
-        RbTransform.new(nil, regexp, lambda { |a| })
+        Transform.new(nil, regexp, -> (a) { })
       end
 
       describe '#to_s' do
