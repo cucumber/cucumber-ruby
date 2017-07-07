@@ -33,6 +33,7 @@
 
 ### Refactoring / Developer Experience
 
+* Remove programming language abstraction ([#1131(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1131) @tooky, @mattwynne)
 * Update cucumber yaml to use new tag syntax ([#1147(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1147) @danascheider)
 * Turn off Windows failures ([#1142(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1142) @enkessler)
 * Add script to update history.md ([#1141(https://api.github.com/repos/cucumber/cucumber-ruby/pulls/1141) @mattwynne)
