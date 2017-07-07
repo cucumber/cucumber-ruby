@@ -100,6 +100,10 @@ module Cucumber
         RbDsl.register_rb_hook('after_configuration', [], proc)
       end
 
+      def AfterAll(&proc)
+        RbDsl.register_rb_hook('after_all', [], proc)
+      end
+
       # Registers a new Ruby StepDefinition. This method is aliased
       # to <tt>Given</tt>, <tt>When</tt> and <tt>Then</tt>, and
       # also to the i18n translations whenever a feature of a
