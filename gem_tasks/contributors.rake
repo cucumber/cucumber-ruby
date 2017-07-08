@@ -1,10 +1,13 @@
 # encoding: utf-8
 # frozen_string_literal: true
+
 desc 'List contributors'
 task :contributors do
-  contributors = `git log --pretty=short --no-merges | git shortlog -ne | egrep -ve '^ +' | egrep -ve '^$'`.split("\n")
-  puts contributors
-  puts "Total: #{contributors.length}"
+  IO.popen("git log --pretty=short --no-merges | git shortlog -ne | egrep -ve '^ +' | egrep -ve '^$'") do |f|
+    contributors = f.readlines
+    puts contributors
+    puts "Total: #{contributors.length}"
+  end
 end
 
 task :codeswarm do
