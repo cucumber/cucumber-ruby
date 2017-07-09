@@ -139,4 +139,17 @@ module Cucumber
       return test_step
     end
   end
+
+  class AmbiguousStepMatch
+
+    def initialize(error)
+      @error = error
+    end
+
+    def activate(test_step)
+      return test_step.with_action { raise Core::Test::Result::Ambiguous.new(@error.message) }
+    end
+
+  end
+
 end
