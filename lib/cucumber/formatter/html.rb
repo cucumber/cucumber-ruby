@@ -401,7 +401,7 @@ module Cucumber
         #@builder.ol do
           @delayed_messages.each do |ann|
             @builder.li(:class => 'step message') do
-              @builder << ann
+              @builder << h(ann)
             end
           end
         #end

@@ -434,6 +434,23 @@ module Cucumber
           it { expect(@doc.css('pre').map { |pre| /^(Given|Then)/.match(pre.text)[1] }).to eq ['Then'] }
         end
 
+        describe 'with HTML in output from scenario' do
+          define_steps do
+            Given(/log/) { puts '<h1>Output</h1>' }
+          end
+
+          define_feature(<<-FEATURE)
+          Feature:
+            Scenario:
+              Given log
+            FEATURE
+
+          it 'should escape HTML tags in messages' do
+            expect(@doc.css('.step.message h1')).to be_empty
+            expect(@doc.css('.step.message')[0].text).to eq '<h1>Output</h1>'
+          end
+
+        end
         describe 'with a output from hooks' do
           describe 'in a scenario' do
             define_feature <<-FEATURE
