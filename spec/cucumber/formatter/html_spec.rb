@@ -395,6 +395,41 @@ module Cucumber
           it { expect(@doc.css('.embed img').first.attributes['src'].to_s).to eq 'data:image/png;base64,YWJj' }
         end
 
+        describe 'with a scenario outline and after hook that embeds an image and a text' do
+          define_feature <<-FEATURE
+          Feature:
+            Scenario Outline:
+              Given I take a "<thing>"
+              
+              Examples:
+                | thing  |
+                | photo  |
+                | selfie |
+          FEATURE
+
+          define_steps do
+            After do
+              embed('image.png', 'image/png')
+              embed('file.txt', 'text/plain', 'text')
+            end
+            Given(/^I take a "(.*)"$/) { |arg1| }
+          end
+
+          it 'should have correct order of rows' do
+            expect(@doc.css('table tr')[1].css('td').first.attributes['class'].value).to eq 'step passed'
+            expect(@doc.css('table tr')[2].css('td').first.attributes['class'].value).to eq 'embed'
+            expect(@doc.css('table tr')[3].css('td').first.attributes['class'].value).to eq 'embed'
+            expect(@doc.css('table tr')[4].css('td').first.attributes['class'].value).to eq 'step passed'
+            expect(@doc.css('table tr')[5].css('td').first.attributes['class'].value).to eq 'embed'
+            expect(@doc.css('table tr')[6].css('td').first.attributes['class'].value).to eq 'embed'
+          end
+
+          it 'should have actual embeds' do
+            expect(@doc.css('table tr td.embed img')[0].attributes['src'].value).to include 'image.png'
+            expect(@doc.css('table tr td.embed a')[1].attributes['href'].value).to eq 'file.txt'
+          end
+        end
+
         describe 'with an undefined Given step then an undefined And step' do
           define_feature(<<-FEATURE)
           Feature:
