@@ -231,9 +231,10 @@ module Cucumber
       elsif @configuration.retry_attempts > 0
         if summary_report.test_cases.total_passed == @configuration.total_cases
           Cucumber.logger.info "All retried test cases passed!\n" if summary_report.test_cases.total_failed > 0
-          return false
+          false
+        else
+          true
         end
-        true
       else
         summary_report.test_cases.total_failed > 0 || summary_report.test_steps.total_failed > 0 ||
           (@configuration.strict? && (summary_report.test_steps.total_undefined > 0 || summary_report.test_steps.total_pending > 0))
