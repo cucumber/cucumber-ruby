@@ -34,8 +34,11 @@ module WireHelper
     }
     writer.close
     Thread.new do
-      while message = reader.gets
+      message = reader.gets
+
+      while message
         @messages_received << message.strip
+        message = reader.gets
       end
     end
     at_exit { stop_wire_server }

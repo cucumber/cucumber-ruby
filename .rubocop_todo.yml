@@ -16,16 +16,6 @@ Lint/AmbiguousOperator:
     - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
     - 'spec/cucumber/formatter/spec_helper.rb'
 
-# Offense count: 6
-# Configuration parameters: AllowSafeAssignment.
-Lint/AssignmentInCondition:
-  Exclude:
-    - 'features/lib/step_definitions/wire_steps.rb'
-    - 'features/lib/support/fake_wire_server.rb'
-    - 'lib/cucumber/glue/transform.rb'
-    - 'lib/cucumber/runtime/support_code.rb'
-    - 'spec/cucumber/formatter/spec_helper.rb'
-
 # Offense count: 1
 # Cop supports --auto-correct.
 Lint/DeprecatedClassMethods:
