@@ -49,6 +49,8 @@ Lint/RescueException:
   Exclude:
     - 'lib/cucumber/rb_support/rb_world.rb'
     - 'lib/cucumber/formatter/ansicolor.rb'
+    - 'lib/cucumber/glue/invoke_in_world.rb'
+    - 'lib/cucumber/glue/proto_world.rb'
 
 # Offense count: 71
 # Cop supports --auto-correct.
@@ -61,6 +63,9 @@ Lint/UnusedBlockArgument:
     - 'spec/cucumber/rb_support/rb_language_spec.rb'
     - 'spec/cucumber/formatter/junit_spec.rb'
     - 'spec/cucumber/formatter/html_spec.rb'
+    - 'spec/cucumber/glue/registry_and_more_spec.rb'
+    - 'spec/cucumber/glue/step_definition_spec.rb'
+    - 'spec/cucumber/glue/transform_spec.rb'
 
 # Offense count: 61
 Metrics/AbcSize:

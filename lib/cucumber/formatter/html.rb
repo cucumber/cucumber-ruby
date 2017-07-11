@@ -50,7 +50,7 @@ module Cucumber
       end
 
       def set_path(src)
-        if @io.respond_to?(:path) and File.file?(src)
+        if @io.respond_to?(:path) && File.file?(src)
           out_dir = Pathname.new(File.dirname(File.absolute_path(@io.path)))
           src = Pathname.new(File.absolute_path(src)).relative_path_from(out_dir)
         end
@@ -63,7 +63,7 @@ module Cucumber
       end
 
       def src_is_file_or_data?(src)
-        File.file?(src) or src =~ /^data:image\/(png|gif|jpg|jpeg);base64,/
+        File.file?(src) || src =~ /^data:image\/(png|gif|jpg|jpeg);base64,/
       end
 
       def image?(mime_type)
@@ -119,8 +119,7 @@ module Cucumber
       def feature_name(keyword, name)
         lines = name.split(/\r?\n/)
         return if lines.empty?
-        builder.h2 do |h2|
-          builder.span(keyword + ': ' + lines[0], :class => 'val')
+        builder.h2 { builder.span(keyword + ': ' + lines[0], :class => 'val') }
         end
         builder.p(:class => 'narrative') do
           lines[1..-1].each do |line|
@@ -146,7 +145,7 @@ module Cucumber
 
       def background_name(keyword, name, _file_colon_line, _source_indent)
         @listing_background = true
-        builder.h3(:id => "background_#{@scenario_number}") do |h3|
+        builder.h3(:id => "background_#{@scenario_number}") do
           builder.span(keyword, :class => 'keyword')
           builder.text!(' ')
           builder.span(name, :class => 'val')
@@ -222,7 +221,7 @@ module Cucumber
 
       def after_steps(_steps)
         print_messages
-        builder << '</ol>' if @in_background or @in_scenario_outline
+        builder << '</ol>' if @in_background || @in_scenario_outline
       end
 
       def before_step(step)
@@ -310,9 +309,7 @@ module Cucumber
 
       def doc_string(string)
         return if @hide_this_step
-        builder.pre(:class => 'val') do |pre|
-          builder << h(string).gsub("\n", '&#x000A;')
-        end
+        builder.pre(:class => 'val') { builder << h(string).gsub("\n", '&#x000A;') }
       end
 
       def before_table_row(table_row)
@@ -453,7 +450,7 @@ module Cucumber
           scenario_or_background = @in_background ? 'background' : 'scenario'
           builder.text!("makeRed('#{scenario_or_background}_#{@scenario_number}');") unless @scenario_red
           @scenario_red = true
-          if @options[:expand] and @inside_outline
+          if @options[:expand] && @inside_outline
             builder.text!("makeRed('#{scenario_or_background}_#{@scenario_number}_#{@outline_row}');")
           end
         end
@@ -469,7 +466,7 @@ module Cucumber
 
       def build_step(keyword, step_match, _status)
         step_name = step_match.format_args(lambda{|param| %{<span class="param">#{param}</span>}})
-        builder.div(:class => 'step_name') do |div|
+        builder.div(:class => 'step_name') do
           builder.span(keyword, :class => 'keyword')
           builder.span(:class => 'step val') do |name|
             name << h(step_name).gsub(/&lt;span class=&quot;(.*?)&quot;&gt;/, '<span class="\1">').gsub(/&lt;\/span&gt;/, '</span>')
