@@ -229,7 +229,7 @@ module Cucumber
       if @configuration.wip?
         summary_report.test_cases.total_passed > 0
       elsif @configuration.retry_attempts > 0
-        unless summary_report.test_cases.total_passed != @configuration.total_cases
+        if summary_report.test_cases.total_passed == @configuration.total_cases
           Cucumber.logger.info "All retried test cases passed!\n" if summary_report.test_cases.total_failed > 0
           return false
         end
