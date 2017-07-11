@@ -120,7 +120,6 @@ module Cucumber
         lines = name.split(/\r?\n/)
         return if lines.empty?
         builder.h2 { builder.span(keyword + ': ' + lines[0], :class => 'val') }
-        end
         builder.p(:class => 'narrative') do
           lines[1..-1].each do |line|
             builder.text!(line.strip)
@@ -363,13 +362,12 @@ module Cucumber
       def print_messages
         return if @delayed_messages.empty?
 
-        #builder.ol do
-          @delayed_messages.each do |ann|
-            builder.li(:class => 'step message') do
-              builder << ann
-            end
+        @delayed_messages.each do |ann|
+          builder.li(:class => 'step message') do
+            builder << ann
           end
-        #end
+        end
+
         empty_messages
       end
 
@@ -606,7 +604,6 @@ module Cucumber
           end
           new_lines.join("\n")
         end
-
       end
     end
   end
