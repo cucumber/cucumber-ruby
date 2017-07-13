@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require 'cucumber/cucumber_expressions/parameter_type'
+
 module Cucumber
   module RbSupport
     # This module defines the methods you can use to define pure Ruby
@@ -20,8 +22,8 @@ module Cucumber
           @rb_language.register_rb_hook(phase, tag_names, proc)
         end
 
-        def register_rb_transform(regexp, proc)
-          @rb_language.register_rb_transform(regexp, proc)
+        def define_parameter_type(parameter_type)
+          @rb_language.define_parameter_type(parameter_type)
         end
 
         def register_rb_step_definition(regexp, proc_or_sym, options = {})
@@ -90,7 +92,27 @@ module Cucumber
       # provided proc. The return value of the proc is consequently yielded to the
       # step definition.
       def Transform(regexp, &proc)
-        RbDsl.register_rb_transform(regexp, proc)
+        parameter_type = CucumberExpressions::ParameterType.new(
+          regexp.to_s,
+          regexp,
+          Object,
+          proc,
+          false,
+          true
+        )
+        RbDsl.define_parameter_type(parameter_type)
+      end
+
+      def ParameterType(options)
+        parameter_type = CucumberExpressions::ParameterType.new(
+          options[:name],
+          options[:regexp],
+          options[:type],
+          options[:transformer],
+          options[:use_for_snippets],
+          options[:prefer_for_regexp_match]
+        )
+        RbDsl.define_parameter_type(parameter_type)
       end
 
       # Registers a proc that will run after Cucumber is configured. You can register as

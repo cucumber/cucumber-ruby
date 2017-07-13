@@ -12,8 +12,8 @@ module Cucumber
       @rb_language = RbSupport::RbLanguage.new(nil, Configuration.new)
     end
 
-    def stepdef(regexp)
-      RbSupport::RbStepDefinition.new(@rb_language, regexp, lambda{}, {})
+    def stepdef(string_or_regexp)
+      @rb_language.register_rb_step_definition(string_or_regexp, lambda {}, {})
     end
 
     def step_match(regexp, name)

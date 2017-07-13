@@ -1,10 +1,12 @@
 # frozen_string_literal: true
+require 'cucumber/cucumber_expressions/parameter_type_registry'
+require 'cucumber/cucumber_expressions/cucumber_expression'
+require 'cucumber/cucumber_expressions/regular_expression'
 require 'cucumber/core_ext/instance_exec'
 require 'cucumber/rb_support/rb_dsl'
 require 'cucumber/rb_support/rb_world'
 require 'cucumber/rb_support/rb_step_definition'
 require 'cucumber/rb_support/rb_hook'
-require 'cucumber/rb_support/rb_transform'
 require 'cucumber/rb_support/snippet'
 require 'cucumber/gherkin/i18n'
 require 'multi_test'
@@ -54,6 +56,7 @@ module Cucumber
         RbDsl.rb_language = self
         @world_proc = @world_modules = nil
         @configuration.register_snippet_generator(Snippet::Generator.new)
+        @parameter_type_registry = CucumberExpressions::ParameterTypeRegistry.new
       end
 
       def step_matches(name_to_match)
@@ -75,12 +78,12 @@ module Cucumber
         add_hook(phase, RbHook.new(self, tag_expressions, proc))
       end
 
-      def register_rb_transform(regexp, proc)
-        add_transform(RbTransform.new(self, regexp, proc))
+      def define_parameter_type(parameter_type)
+        @parameter_type_registry.define_parameter_type(parameter_type)
       end
 
-      def register_rb_step_definition(regexp, proc_or_sym, options)
-        step_definition = RbStepDefinition.new(self, regexp, proc_or_sym, options)
+      def register_rb_step_definition(string_or_regexp, proc_or_sym, options)
+        step_definition = RbStepDefinition.new(self, create_expression(string_or_regexp), proc_or_sym, options)
         @step_definitions << step_definition
         @configuration.notify :step_definition_registered, step_definition
         step_definition
@@ -104,7 +107,7 @@ module Cucumber
 
       def load_code_file(code_file)
         return unless File.extname(code_file) == '.rb'
-        load File.expand_path(code_file) # This will cause self.add_step_definition, self.add_hook, and self.add_transform to be called from RbDsl
+        load File.expand_path(code_file) # This will cause self.add_step_definition and self.add_hook to be called from RbDsl
       end
 
       def begin_scenario(scenario)
@@ -121,13 +124,6 @@ module Cucumber
         end
       end
 
-      def execute_transforms(args)
-        args.map do |arg|
-          matching_transform = transforms.detect {|transform| transform.match(arg) }
-          matching_transform ? matching_transform.invoke(arg) : arg
-        end
-      end
-
       def add_hook(phase, hook)
         hooks[phase.to_sym] << hook
         hook
@@ -137,10 +133,6 @@ module Cucumber
         @hooks = nil
       end
 
-      def add_transform(transform)
-        transforms.unshift transform
-        transform
-      end
 
       def hooks_for(phase, scenario) #:nodoc:
         hooks[phase.to_sym].select{|hook| scenario.accept_hook?(hook)}
@@ -160,6 +152,12 @@ module Cucumber
 
       private
 
+      def create_expression(string_or_regexp)
+        return CucumberExpressions::CucumberExpression.new(string_or_regexp, @parameter_type_registry) if string_or_regexp.is_a?(String)
+        return CucumberExpressions::RegularExpression.new(string_or_regexp, @parameter_type_registry) if string_or_regexp.is_a?(Regexp)
+        raise ArgumentError.new("Expression must be a String or Regexp")
+      end
+
       def available_step_definition_hash
         @available_step_definition_hash ||= {}
       end
@@ -170,10 +168,6 @@ module Cucumber
 
       def hooks
         @hooks ||= Hash.new{|h,k| h[k] = []}
-      end
-
-      def transforms
-        @transforms ||= []
       end
 
       def create_world

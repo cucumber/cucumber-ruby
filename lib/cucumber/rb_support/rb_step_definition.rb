@@ -2,9 +2,6 @@
 require 'cucumber/step_match'
 require 'cucumber/step_argument'
 require 'cucumber/core_ext/string'
-require 'cucumber/cucumber_expressions/cucumber_expression'
-require 'cucumber/cucumber_expressions/regular_expression'
-require 'cucumber/cucumber_expressions/parameter_type_registry'
 
 module Cucumber
   module RbSupport
@@ -27,19 +24,12 @@ module Cucumber
       end
 
       class << self
-        def new(rb_language, string_or_regexp, proc_or_sym, options)
+        def new(rb_language, expression, proc_or_sym, options)
           raise MissingProc if proc_or_sym.nil?
-          super rb_language, create_expression(string_or_regexp), create_proc(proc_or_sym, options)
+          super rb_language, expression, create_proc(proc_or_sym, options)
         end
 
         private
-
-        def create_expression(string_or_regexp)
-          parameter_type_registry = CucumberExpressions::ParameterTypeRegistry.new
-          return CucumberExpressions::CucumberExpression.new(string_or_regexp, parameter_type_registry) if string_or_regexp.is_a?(String)
-          return CucumberExpressions::RegularExpression.new(string_or_regexp, parameter_type_registry) if string_or_regexp.is_a?(Regexp)
-          raise ArgumentError.new("Expression must be a String or Regexp")
-        end
 
         def create_proc(proc_or_sym, options)
           return proc_or_sym if proc_or_sym.is_a?(Proc)
