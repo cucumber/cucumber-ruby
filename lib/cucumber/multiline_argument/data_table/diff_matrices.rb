@@ -65,7 +65,7 @@ module Cucumber
         end
 
         def ensure_2d(array)
-          Array === array[0] ? array : [array]
+          array[0].is_a?(Array) ? array : [array]
         end
 
 
@@ -75,7 +75,7 @@ module Cucumber
           last_change = nil
 
           changes.each do |change|
-            if(change.action == '-')
+            if change.action == '-'
               @missing_row_pos = change.position + inserted
               cell_matrix[missing_row_pos].each{|cell| cell.status = :undefined}
               row_indices.insert(missing_row_pos, nil)
@@ -102,7 +102,7 @@ module Cucumber
         def inspect_rows(missing_row, inserted_row)
           missing_row.each_with_index do |missing_cell, col|
             inserted_cell = inserted_row[col]
-            if(missing_cell.value != inserted_cell.value && (missing_cell.value.to_s == inserted_cell.value.to_s))
+            if missing_cell.value != inserted_cell.value && missing_cell.value.to_s == inserted_cell.value.to_s
               missing_cell.inspect!
               inserted_cell.inspect!
             end
@@ -114,11 +114,10 @@ module Cucumber
           other_table_cell_matrix.each_with_index do |other_row, i|
             row_index = row_indices.index(i)
             row = cell_matrix[row_index] if row_index
-            if row
-              (original_width..padded_width).each do |col_index|
-                surplus_cell = other_row[col_index]
-                row[col_index].value = surplus_cell.value if row[col_index]
-              end
+            next unless row
+            (original_width..padded_width).each do |col_index|
+              surplus_cell = other_row[col_index]
+              row[col_index].value = surplus_cell.value if row[col_index]
             end
           end
         end
