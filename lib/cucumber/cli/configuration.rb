@@ -71,7 +71,7 @@ module Cucumber
       end
 
       def snippet_type
-        @options[:snippet_type] || :regexp
+        @options[:snippet_type] || :cucumber_expression
       end
 
       def log

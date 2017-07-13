@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Cucumber
   module RbSupport
     module Snippet
@@ -10,22 +11,27 @@ module Cucumber
           configuration.snippet_generators << new
         end
 
-        def call(code_keyword, step_name, multiline_arg, snippet_type = :regexp)
+        def initialize(cucumber_expression_generator)
+          @cucumber_expression_generator = cucumber_expression_generator
+        end
+
+        def call(code_keyword, step_name, multiline_arg, snippet_type)
           snippet_class = typed_snippet_class(snippet_type)
-          snippet_class.new(code_keyword, step_name, multiline_arg).to_s
+          snippet_class.new(@cucumber_expression_generator, code_keyword, step_name, multiline_arg).to_s
         end
 
         def typed_snippet_class(type)
-          SNIPPET_TYPES.fetch(type || :regexp)
+          SNIPPET_TYPES.fetch(type || :cucumber_expression)
         end
       end
 
       class BaseSnippet
 
-        def initialize(code_keyword, pattern, multiline_argument)
+        def initialize(cucumber_expression_generator, code_keyword, step_name, multiline_argument)
           @number_of_arguments = 0
           @code_keyword = code_keyword
-          @pattern = replace_and_count_capturing_groups(pattern)
+          @pattern = replace_and_count_capturing_groups(step_name)
+          @generated_expressions = cucumber_expression_generator.generate_expressions(step_name)
           @multiline_argument = MultilineArgumentSnippet.new(multiline_argument)
         end
 
@@ -37,13 +43,13 @@ module Cucumber
           "#{code_keyword}#{typed_pattern}"
         end
 
-        def self.cli_option_string(type)
-          format('%-7s: %-28s e.g. %s', type, description, example)
+        def self.cli_option_string(type, cucumber_expression_generator)
+          format('%-7s: %-28s e.g. %s', type, description, example(cucumber_expression_generator))
         end
 
         private
 
-        attr_reader :code_keyword, :pattern, :multiline_argument, :number_of_arguments
+        attr_reader :code_keyword, :pattern, :generated_expressions, :multiline_argument, :number_of_arguments
 
         def replace_and_count_capturing_groups(pattern)
           modified_pattern = ::Regexp.escape(pattern).gsub('\ ', ' ').gsub('/', '\/')
@@ -65,16 +71,33 @@ module Cucumber
           do_block
         end
 
+        # TODO: rename to parameters
         def arguments
           block_args = (0...number_of_arguments).map { |n| "arg#{n+1}" }
           multiline_argument.append_block_argument_to(block_args)
           block_args.empty? ? '' : " |#{block_args.join(", ")}|"
         end
 
-        def self.example
-          new('Given', 'missing step', MultilineArgument::None.new).step
+        def self.example(cucumber_expression_generator)
+          new(cucumber_expression_generator, 'Given', 'missing step', MultilineArgument::None.new).step
         end
 
+      end
+
+      class CucumberExpression < BaseSnippet
+        def typed_pattern
+          "(\"#{generated_expressions[0].source}\")"
+        end
+
+        def arguments
+          parameter_names = generated_expressions[0].parameter_names
+          multiline_argument.append_block_argument_to(parameter_names)
+          parameter_names.empty? ? '' : " |#{parameter_names.join(", ")}|"
+        end
+
+        def self.description
+          'Snippets with parentheses'
+        end
       end
 
       class Regexp < BaseSnippet
@@ -108,6 +131,7 @@ module Cucumber
       end
 
       SNIPPET_TYPES = {
+        :cucumber_expression => CucumberExpression,
         :regexp => Regexp,
         :classic => Classic,
         :percent => Percent

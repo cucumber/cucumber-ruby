@@ -305,7 +305,7 @@ TEXT
 
       def snippet_type_msg
         [
-          'Use different snippet type (Default: regexp). Available types:',
+          'Use different snippet type (Default: cucumber_expression). Available types:',
           Cucumber::RbSupport::RbLanguage.cli_snippet_type_options
         ].flatten
       end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 require 'spec_helper'
+require 'cucumber/cucumber_expressions/parameter_type_registry'
+require 'cucumber/cucumber_expressions/cucumber_expression_generator'
 require 'cucumber/rb_support/snippet'
 
 module Cucumber
@@ -8,12 +10,15 @@ module Cucumber
       let(:code_keyword) { 'Given' }
 
       before do
+        # TODO: rename to step_text
         @pattern = 'we have a missing step'
         @multiline_argument = Core::Ast::EmptyMultilineArgument.new
+        registry = CucumberExpressions::ParameterTypeRegistry.new
+        @cucumber_expression_generator = CucumberExpressions::CucumberExpressionGenerator.new(registry)
       end
 
       let(:snippet) do
-        snippet_class.new(code_keyword, @pattern, @multiline_argument)
+        snippet_class.new(@cucumber_expression_generator, code_keyword, @pattern, @multiline_argument)
       end
 
       def unindented(s)
@@ -128,6 +133,20 @@ module Cucumber
         it 'renders snippet as percent-style regular expression' do
           expect(snippet.to_s).to eq unindented(%{
           Given %r{^we have a missing step$} do
+            pending # Write code here that turns the phrase above into concrete actions
+          end
+          })
+        end
+      end
+
+      describe Snippet::CucumberExpression do
+        let(:snippet_class) { Snippet::CucumberExpression }
+
+        it 'renders snippet as cucumber expression' do
+          @pattern = "I have 2 cukes in my belly"
+
+          expect(snippet.to_s).to eq unindented(%{
+          Given("I have {int} cukes in my belly") do |int|
             pending # Write code here that turns the phrase above into concrete actions
           end
           })

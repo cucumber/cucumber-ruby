@@ -419,7 +419,7 @@ END_OF_MESSAGE
       it 'returns the default snippet type if it was not set' do
         config.parse!([])
 
-        expect(config.snippet_type).to eq :regexp
+        expect(config.snippet_type).to eq :cucumber_expression
       end
     end
 

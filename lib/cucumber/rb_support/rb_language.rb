@@ -2,6 +2,7 @@
 require 'cucumber/cucumber_expressions/parameter_type_registry'
 require 'cucumber/cucumber_expressions/cucumber_expression'
 require 'cucumber/cucumber_expressions/regular_expression'
+require 'cucumber/cucumber_expressions/cucumber_expression_generator'
 require 'cucumber/core_ext/instance_exec'
 require 'cucumber/rb_support/rb_dsl'
 require 'cucumber/rb_support/rb_world'
@@ -55,8 +56,9 @@ module Cucumber
         @step_definitions = []
         RbDsl.rb_language = self
         @world_proc = @world_modules = nil
-        @configuration.register_snippet_generator(Snippet::Generator.new)
         @parameter_type_registry = CucumberExpressions::ParameterTypeRegistry.new
+        cucumber_expression_generator = CucumberExpressions::CucumberExpressionGenerator.new(@parameter_type_registry)
+        @configuration.register_snippet_generator(Snippet::Generator.new(cucumber_expression_generator))
       end
 
       def step_matches(name_to_match)
@@ -207,8 +209,10 @@ module Cucumber
       end
 
       def self.cli_snippet_type_options
+        registry = CucumberExpressions::ParameterTypeRegistry.new
+        cucumber_expression_generator = CucumberExpressions::CucumberExpressionGenerator.new(registry)
         Snippet::SNIPPET_TYPES.keys.sort_by(&:to_s).map do |type|
-          Snippet::SNIPPET_TYPES[type].cli_option_string(type)
+          Snippet::SNIPPET_TYPES[type].cli_option_string(type, cucumber_expression_generator)
         end
       end
     end
