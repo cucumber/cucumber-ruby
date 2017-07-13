@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cucumber/core/report/summary'
 require 'cucumber/formatter/backtrace_filter'
 require 'cucumber/formatter/console'
