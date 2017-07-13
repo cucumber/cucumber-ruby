@@ -64,22 +64,21 @@ module Cucumber
 
         def do_block
           do_block = String.new
-          do_block << "do#{arguments}\n"
+          do_block << "do#{parameters}\n"
           multiline_argument.append_comment_to(do_block)
           do_block << "  pending # Write code here that turns the phrase above into concrete actions\n"
           do_block << 'end'
           do_block
         end
 
-        # TODO: rename to parameters
-        def arguments
+        def parameters
           block_args = (0...number_of_arguments).map { |n| "arg#{n+1}" }
-          multiline_argument.append_block_argument_to(block_args)
+          multiline_argument.append_block_parameter_to(block_args)
           block_args.empty? ? '' : " |#{block_args.join(", ")}|"
         end
 
         def self.example(cucumber_expression_generator)
-          new(cucumber_expression_generator, 'Given', 'missing step', MultilineArgument::None.new).step
+          new(cucumber_expression_generator, 'Given', 'I have 2 cukes', MultilineArgument::None.new).step
         end
 
       end
@@ -89,14 +88,28 @@ module Cucumber
           "(\"#{generated_expressions[0].source}\")"
         end
 
-        def arguments
-          parameter_names = generated_expressions[0].parameter_names
-          multiline_argument.append_block_argument_to(parameter_names)
+        def to_s
+          header = generated_expressions.each_with_index.map do |expr, i|
+            prefix = i == 0 ? '' : '# '
+            "#{prefix}#{code_keyword}(\"#{expr.source}\") do#{parameters(expr)}"
+          end.join("\n")
+          
+          body = String.new
+          multiline_argument.append_comment_to(body)
+          body << "  pending # Write code here that turns the phrase above into concrete actions\n"
+          body << 'end'
+          
+          "#{header}\n#{body}"
+        end
+        
+        def parameters(expr)
+          parameter_names = expr.parameter_names
+          multiline_argument.append_block_parameter_to(parameter_names)
           parameter_names.empty? ? '' : " |#{parameter_names.join(", ")}|"
         end
 
         def self.description
-          'Snippets with parentheses'
+          'Cucumber Expressions'
         end
       end
 
@@ -160,7 +173,7 @@ module Cucumber
         end
 
         class DocString
-          def append_block_argument_to(array)
+          def append_block_parameter_to(array)
             array << 'string'
           end
 
@@ -173,7 +186,7 @@ module Cucumber
             @table = table
           end
 
-          def append_block_argument_to(array)
+          def append_block_parameter_to(array)
             array << 'table'
           end
 
@@ -183,7 +196,7 @@ module Cucumber
         end
 
         class None
-          def append_block_argument_to(array)
+          def append_block_parameter_to(array)
           end
 
           def append_comment_to(string)

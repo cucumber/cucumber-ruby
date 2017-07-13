@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require 'spec_helper'
 require 'cucumber/cucumber_expressions/parameter_type_registry'
+require 'cucumber/cucumber_expressions/parameter_type'
 require 'cucumber/cucumber_expressions/cucumber_expression_generator'
 require 'cucumber/rb_support/snippet'
 
@@ -10,15 +11,14 @@ module Cucumber
       let(:code_keyword) { 'Given' }
 
       before do
-        # TODO: rename to step_text
-        @pattern = 'we have a missing step'
+        @step_text = 'we have a missing step'
         @multiline_argument = Core::Ast::EmptyMultilineArgument.new
-        registry = CucumberExpressions::ParameterTypeRegistry.new
-        @cucumber_expression_generator = CucumberExpressions::CucumberExpressionGenerator.new(registry)
+        @registry = CucumberExpressions::ParameterTypeRegistry.new
+        @cucumber_expression_generator = CucumberExpressions::CucumberExpressionGenerator.new(@registry)
       end
 
       let(:snippet) do
-        snippet_class.new(@cucumber_expression_generator, code_keyword, @pattern, @multiline_argument)
+        snippet_class.new(@cucumber_expression_generator, code_keyword, @step_text, @multiline_argument)
       end
 
       def unindented(s)
@@ -30,7 +30,7 @@ module Cucumber
         let(:snippet_text) { snippet.to_s }
 
         it 'wraps snippet patterns in parentheses' do
-          @pattern = 'A "string" with 4 spaces'
+          @step_text = 'A "string" with 4 spaces'
 
           expect(snippet_text).to eq unindented(%{
           Given(/^A "([^"]*)" with (\\d+) spaces$/) do |arg1, arg2|
@@ -40,7 +40,7 @@ module Cucumber
         end
 
         it 'recognises numbers in name and make according regexp' do
-          @pattern = 'Cloud 9 yeah'
+          @step_text = 'Cloud 9 yeah'
 
           expect(snippet_text).to eq unindented(%{
           Given(/^Cloud (\\d+) yeah$/) do |arg1|
@@ -50,7 +50,7 @@ module Cucumber
         end
 
         it 'recognises a mix of ints, strings and why not a table too' do
-          @pattern = 'I have 9 "awesome" cukes in 37 "boxes"'
+          @step_text = 'I have 9 "awesome" cukes in 37 "boxes"'
           @multiline_argument = Core::Ast::DataTable.new([[]], Core::Ast::Location.new(''))
 
           expect(snippet_text).to eq unindented(%{
@@ -62,7 +62,7 @@ module Cucumber
         end
 
         it 'recognises quotes in name and make according regexp' do
-          @pattern = 'A "first" arg'
+          @step_text = 'A "first" arg'
 
           expect(snippet_text).to eq unindented(%{
           Given(/^A "([^"]*)" arg$/) do |arg1|
@@ -72,7 +72,7 @@ module Cucumber
         end
 
         it 'recognises several quoted words in name and make according regexp and args' do
-          @pattern = 'A "first" and "second" arg'
+          @step_text = 'A "first" and "second" arg'
 
           expect(snippet_text).to eq unindented(%{
           Given(/^A "([^"]*)" and "([^"]*)" arg$/) do |arg1, arg2|
@@ -82,7 +82,7 @@ module Cucumber
         end
 
         it 'does not use quote group when there are no quotes' do
-          @pattern = 'A first arg'
+          @step_text = 'A first arg'
 
           expect(snippet_text).to eq unindented(%{
           Given(/^A first arg$/) do
@@ -92,7 +92,7 @@ module Cucumber
         end
 
         it 'is helpful with tables' do
-          @pattern = 'A "first" arg'
+          @step_text = 'A "first" arg'
           @multiline_argument = Core::Ast::DataTable.new([[]], Core::Ast::Location.new(''))
 
           expect(snippet_text).to eq unindented(%{
@@ -104,7 +104,7 @@ module Cucumber
         end
 
         it 'is helpful with doc string' do
-          @pattern = 'A "first" arg'
+          @step_text = 'A "first" arg'
           @multiline_argument = MultilineArgument.from('', Core::Ast::Location.new(''))
 
           expect(snippet_text).to eq unindented(%{
@@ -143,10 +143,27 @@ module Cucumber
         let(:snippet_class) { Snippet::CucumberExpression }
 
         it 'renders snippet as cucumber expression' do
-          @pattern = "I have 2 cukes in my belly"
+          @step_text = "I have 2.3 cukes in my belly"
+          @registry.define_parameter_type(CucumberExpressions::ParameterType.new(
+            'veg', 
+            /(cuke|banana)s?/, 
+            Object, 
+            lambda {|s| s}, 
+            true, 
+            false
+          ))
+          @registry.define_parameter_type(CucumberExpressions::ParameterType.new(
+            'cucumis', 
+            /(bella|cuke)s?/, 
+            Object, 
+            lambda {|s| s}, 
+            true, 
+            false
+          ))
 
           expect(snippet.to_s).to eq unindented(%{
-          Given("I have {int} cukes in my belly") do |int|
+          Given("I have {float} {cucumis} in my belly") do |float, cucumis|
+          # Given("I have {float} {veg} in my belly") do |float, veg|
             pending # Write code here that turns the phrase above into concrete actions
           end
           })
