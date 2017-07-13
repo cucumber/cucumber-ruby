@@ -2,6 +2,9 @@
 require 'cucumber/step_match'
 require 'cucumber/step_argument'
 require 'cucumber/core_ext/string'
+require 'cucumber/cucumber_expressions/cucumber_expression'
+require 'cucumber/cucumber_expressions/regular_expression'
+require 'cucumber/cucumber_expressions/parameter_type_registry'
 
 module Cucumber
   module RbSupport
@@ -24,19 +27,18 @@ module Cucumber
       end
 
       class << self
-        def new(rb_language, pattern, proc_or_sym, options)
+        def new(rb_language, string_or_regexp, proc_or_sym, options)
           raise MissingProc if proc_or_sym.nil?
-          super rb_language, parse_pattern(pattern), create_proc(proc_or_sym, options)
+          super rb_language, create_expression(string_or_regexp), create_proc(proc_or_sym, options)
         end
 
         private
 
-        def parse_pattern(pattern)
-          return pattern if pattern.is_a?(Regexp)
-          raise ArgumentError unless pattern.is_a?(String)
-          p = Regexp.escape(pattern)
-          p = p.gsub(/\\\$\w+/, '(.*)') # Replace $var with (.*)
-          Regexp.new("^#{p}$")
+        def create_expression(string_or_regexp)
+          parameter_type_registry = CucumberExpressions::ParameterTypeRegistry.new
+          return CucumberExpressions::CucumberExpression.new(string_or_regexp, parameter_type_registry) if string_or_regexp.is_a?(String)
+          return CucumberExpressions::RegularExpression.new(string_or_regexp, parameter_type_registry) if string_or_regexp.is_a?(Regexp)
+          raise ArgumentError.new("Expression must be a String or Regexp")
         end
 
         def create_proc(proc_or_sym, options)
@@ -70,42 +72,51 @@ module Cucumber
         end
       end
 
-      def initialize(rb_language, regexp, proc)
-        @rb_language, @regexp, @proc = rb_language, regexp, proc
-        @rb_language.available_step_definition(regexp_source, location)
-      end
+      attr_reader :expression
 
-      # @api private
-      def regexp_source
-        @regexp.inspect
+      def initialize(rb_language, expression, proc)
+        @rb_language, @expression, @proc = rb_language, expression, proc
+        #@rb_language.available_step_definition(regexp_source, location)
       end
 
       # @api private
       def to_hash
+        type = expression.is_a?(CucumberExpressions::RegularExpression) ? 'regular expression' : 'regular expression'
+        regexp = expression.regexp
         flags = ''
-        flags += 'm' if (@regexp.options & Regexp::MULTILINE) != 0
-        flags += 'i' if (@regexp.options & Regexp::IGNORECASE) != 0
-        flags += 'x' if (@regexp.options & Regexp::EXTENDED) != 0
-        {'source' => @regexp.source, 'flags' => flags}
+        flags += 'm' if (regexp.options & Regexp::MULTILINE) != 0
+        flags += 'i' if (regexp.options & Regexp::IGNORECASE) != 0
+        flags += 'x' if (regexp.options & Regexp::EXTENDED) != 0
+        {
+          source: {
+            type: type,
+            expression: expression.source
+          },
+          regexp: {
+            source: regexp.source,
+            flags: flags
+          }
+        }
       end
 
       # @api private
       def ==(step_definition)
-        regexp_source == step_definition.regexp_source
+        expression.source == step_definition.expression.source
       end
 
       # @api private
       def arguments_from(step_name)
-        args = StepArgument.arguments_from(@regexp, step_name)
-        @rb_language.invoked_step_definition(regexp_source, location) if args
+        #args = StepArgument.arguments_from(@regexp, step_name)
+        args = @expression.match(step_name)
+        #@rb_language.invoked_step_definition(regexp_source, location) if args
         args
       end
 
       # @api private
       def invoke(args)
         begin
-          args = @rb_language.execute_transforms(args)
-          @rb_language.current_world.cucumber_instance_exec(true, regexp_source, *args, &@proc)
+          #args = @rb_language.execute_transforms(args)
+          @rb_language.current_world.cucumber_instance_exec(true, @expression.to_s, *args, &@proc)
         rescue Cucumber::ArityMismatchError => e
           e.backtrace.unshift(self.backtrace_line)
           raise e
@@ -114,7 +125,7 @@ module Cucumber
 
       # @api private
       def backtrace_line
-        "#{location}:in `#{regexp_source}'"
+        "#{location}:in `#{@expression.to_s}'"
       end
 
       # @api private

@@ -79,15 +79,6 @@ spec/cucumber/step_match_search_spec.rb:\\d+:in `/Three cute (.*)/'
           }).not_to raise_error
         end
 
-        it 'does not raise NoMethodError when guessing from multiple step definitions with nil fields' do
-          dsl.Given(/Three (.*) mice( cannot find food)?/) {|disability, is_disastrous|}
-          dsl.Given(/Three (.*)?/) {|animal|}
-
-          expect(-> {
-            search.call('Three blind mice').first
-          }).not_to raise_error
-        end
-
         it 'picks right step definition when an equal number of capture groups' do
           right  = dsl.Given(/Three (.*) mice/) {|disability|}
           _wrong = dsl.Given(/Three (.*)/) {|animal|}

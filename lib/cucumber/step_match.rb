@@ -13,7 +13,7 @@ module Cucumber
     end
 
     def args
-      @step_arguments.map{|g| g.val }
+      @step_arguments.map{|g| g.value }
     end
 
     def activate(test_step)
@@ -56,30 +56,31 @@ module Cucumber
     end
 
     def backtrace_line
-      "#{file_colon_line}:in `#{@step_definition.regexp_source}'"
+      "#{file_colon_line}:in `#{@step_definition.expression.to_s}'"
     end
 
     def text_length
-      @step_definition.regexp_source.unpack('U*').length
+      @step_definition.expression.source.to_s.unpack('U*').length
     end
 
     def replace_arguments(string, step_arguments, format, &proc)
       s = string.dup
       offset = past_offset = 0
       step_arguments.each do |step_argument|
-        next if step_argument.offset.nil? || step_argument.offset < past_offset
+        group = step_argument.group
+        next if group.value.nil? || group.start < past_offset
 
         replacement = if block_given?
-                        proc.call(step_argument.val)
+                        proc.call(group.value)
                       elsif Proc === format
-                        format.call(step_argument.val)
+                        format.call(group.value)
                       else
-                        format % step_argument.val
+                        format % group.value
                       end
 
-        s[step_argument.offset + offset, step_argument.val.length] = replacement
-        offset += replacement.unpack('U*').length - step_argument.val.unpack('U*').length
-        past_offset = step_argument.offset + step_argument.val.length
+        s[group.start + offset, group.value.length] = replacement
+        offset += replacement.unpack('U*').length - group.value.unpack('U*').length
+        past_offset = group.start + group.value.length
       end
       s
     end

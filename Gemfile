@@ -17,6 +17,12 @@ unless ENV['CUCUMBER_USE_RELEASED_CORE']
   else
     gem 'cucumber-wire', :git => 'https://github.com/cucumber/cucumber-ruby-wire.git'
   end
+
+  if ENV['CUCUMBER_EXPRESSIONS']
+    gem 'cucumber-expressions', :path => ENV['CUCUMBER_EXPRESSIONS']
+  else
+    gem 'cucumber-expressions', :git => 'https://github.com/cucumber/cucumber-expressions-ruby.git'
+  end
 end
 
 gem 'mime-types', '~>2.99'
