@@ -28,6 +28,9 @@ Feature: Strict mode
             Undefined step: "this step passes" (Cucumber::Undefined)
             features/missing.feature:3:in `Given this step passes'
 
+      Undefined Scenarios:
+      cucumber features/missing.feature:2
+
       1 scenario (1 undefined)
       1 step (1 undefined)
       """
@@ -44,6 +47,9 @@ Feature: Strict mode
             TODO (Cucumber::Pending)
             ./features/step_definitions/steps.rb:3:in `/^this step is pending$/'
             features/pending.feature:3:in `Given this step is pending'
+
+      Pending Scenarios:
+      cucumber features/pending.feature:2
 
       1 scenario (1 pending)
       1 step (1 pending)
