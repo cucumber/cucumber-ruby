@@ -26,6 +26,8 @@ module Cucumber
     # @method on_event
     def_instance_delegator :event_bus, :on, :on_event
 
+    attr_writer :total_cases
+
     # @private
     def notify(message, *args)
       event_bus.send(message, *args)
@@ -65,6 +67,10 @@ module Cucumber
 
     def retry_attempts
       @options[:retry]
+    end
+
+    def total_cases
+      @total_cases ||= 0
     end
 
     def guess?

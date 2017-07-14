@@ -228,6 +228,13 @@ module Cucumber
     def failure?
       if @configuration.wip?
         summary_report.test_cases.total_passed > 0
+      elsif @configuration.retry_attempts > 0
+        if summary_report.test_cases.total_passed == @configuration.total_cases
+          Cucumber.logger.info "All retried test cases passed!\n" if summary_report.test_cases.total_failed > 0
+          false
+        else
+          true
+        end
       else
         !summary_report.ok?(@configuration.strict?)
       end
@@ -245,6 +252,8 @@ module Cucumber
         filters << Cucumber::Core::Test::NameFilter.new(name_regexps)
         filters << Cucumber::Core::Test::LocationsFilter.new(filespecs.locations)
         filters << Filters::Randomizer.new(@configuration.seed) if @configuration.randomize?
+        filters << Filters::Quit.new
+        filters << Filters::Retry.new(@configuration)
         # TODO: can we just use Glue::RegistryAndMore's step definitions directly?
         step_match_search = StepMatchSearch.new(@support_code.registry.method(:step_matches), @configuration)
         filters << Filters::ActivateSteps.new(step_match_search, @configuration)
