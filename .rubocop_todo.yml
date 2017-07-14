@@ -392,6 +392,7 @@ Style/EmptyLines:
     - 'lib/cucumber/formatter/html.rb'
     - 'lib/cucumber/formatter/legacy_api/adapter.rb'
     - 'lib/cucumber/multiline_argument/data_table.rb'
+    - 'lib/cucumber/multiline_argument/data_table/diff_matrices.rb'
     - 'lib/cucumber/term/ansicolor.rb'
     - 'spec/cucumber/formatter/legacy_api/adapter_spec.rb'
     - 'spec/cucumber/formatter/pretty_spec.rb'
