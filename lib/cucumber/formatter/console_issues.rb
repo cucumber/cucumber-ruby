@@ -6,10 +6,17 @@ module Cucumber
       include Console
 
       def initialize(config)
+        @previous_test_case = nil
         @issues = Hash.new { |h, k| h[k] = [] }
         @config = config
         @config.on_event(:test_case_finished) do |event|
-          @issues[event.result.to_sym] << event.test_case unless event.result.ok?(@config.strict?)
+          if event.test_case != @previous_test_case
+            @previous_test_case = event.test_case
+            @issues[event.result.to_sym] << event.test_case unless event.result.ok?(@config.strict?)
+          elsif event.result.passed?
+            @issues[:flaky] << event.test_case unless Core::Test::Result::Flaky.ok?(@config.strict?)
+            @issues[:failed].delete(event.test_case)
+          end
         end
       end
 
