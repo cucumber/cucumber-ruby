@@ -143,21 +143,21 @@ module Cucumber
         let(:snippet_class) { Snippet::CucumberExpression }
 
         it 'renders snippet as cucumber expression' do
-          @step_text = "I have 2.3 cukes in my belly"
+          @step_text = 'I have 2.3 cukes in my belly'
           @registry.define_parameter_type(CucumberExpressions::ParameterType.new(
-            'veg', 
-            /(cuke|banana)s?/, 
-            Object, 
-            lambda {|s| s}, 
-            true, 
+            'veg',
+            /(cuke|banana)s?/,
+            Object,
+            lambda {|s| s},
+            true,
             false
           ))
           @registry.define_parameter_type(CucumberExpressions::ParameterType.new(
-            'cucumis', 
-            /(bella|cuke)s?/, 
-            Object, 
-            lambda {|s| s}, 
-            true, 
+            'cucumis',
+            /(bella|cuke)s?/,
+            Object,
+            lambda {|s| s},
+            true,
             false
           ))
 

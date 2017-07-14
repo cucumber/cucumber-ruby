@@ -135,7 +135,6 @@ module Cucumber
         @hooks = nil
       end
 
-
       def hooks_for(phase, scenario) #:nodoc:
         hooks[phase.to_sym].select{|hook| scenario.accept_hook?(hook)}
       end
@@ -157,7 +156,7 @@ module Cucumber
       def create_expression(string_or_regexp)
         return CucumberExpressions::CucumberExpression.new(string_or_regexp, @parameter_type_registry) if string_or_regexp.is_a?(String)
         return CucumberExpressions::RegularExpression.new(string_or_regexp, @parameter_type_registry) if string_or_regexp.is_a?(Regexp)
-        raise ArgumentError.new("Expression must be a String or Regexp")
+        raise ArgumentError.new('Expression must be a String or Regexp')
       end
 
       def available_step_definition_hash

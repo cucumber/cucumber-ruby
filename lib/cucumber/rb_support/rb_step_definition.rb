@@ -71,7 +71,7 @@ module Cucumber
 
       # @api private
       def to_hash
-        type = expression.is_a?(CucumberExpressions::RegularExpression) ? 'regular expression' : 'regular expression'
+        type = expression.is_a?(CucumberExpressions::RegularExpression) ? 'regular expression' : 'cucumber expression'
         regexp = expression.regexp
         flags = ''
         flags += 'm' if (regexp.options & Regexp::MULTILINE) != 0
@@ -115,7 +115,7 @@ module Cucumber
 
       # @api private
       def backtrace_line
-        "#{location}:in `#{@expression.to_s}'"
+        "#{location}:in `#{@expression}'"
       end
 
       # @api private

@@ -93,15 +93,15 @@ module Cucumber
             prefix = i == 0 ? '' : '# '
             "#{prefix}#{code_keyword}(\"#{expr.source}\") do#{parameters(expr)}"
           end.join("\n")
-          
+
           body = String.new
           multiline_argument.append_comment_to(body)
           body << "  pending # Write code here that turns the phrase above into concrete actions\n"
           body << 'end'
-          
+
           "#{header}\n#{body}"
         end
-        
+
         def parameters(expr)
           parameter_names = expr.parameter_names
           multiline_argument.append_block_parameter_to(parameter_names)

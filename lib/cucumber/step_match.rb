@@ -56,7 +56,7 @@ module Cucumber
     end
 
     def backtrace_line
-      "#{file_colon_line}:in `#{@step_definition.expression.to_s}'"
+      "#{file_colon_line}:in `#{@step_definition.expression}'"
     end
 
     def text_length
