@@ -145,20 +145,20 @@ module Cucumber
         it 'renders snippet as cucumber expression' do
           @step_text = 'I have 2.3 cukes in my belly'
           @registry.define_parameter_type(CucumberExpressions::ParameterType.new(
-            'veg',
-            /(cuke|banana)s?/,
-            Object,
-            lambda {|s| s},
-            true,
-            false
+                                            'veg',
+                                            /(cuke|banana)s?/,
+                                            Object,
+                                            ->(s) { s},
+                                            true,
+                                            false
           ))
           @registry.define_parameter_type(CucumberExpressions::ParameterType.new(
-            'cucumis',
-            /(bella|cuke)s?/,
-            Object,
-            lambda {|s| s},
-            true,
-            false
+                                            'cucumis',
+                                            /(bella|cuke)s?/,
+                                            Object,
+                                            ->(s) { s},
+                                            true,
+                                            false
           ))
 
           expect(snippet.to_s).to eq unindented(%{
