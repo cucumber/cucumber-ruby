@@ -330,7 +330,7 @@ module Cucumber
             elsif source.scenario
               ScenarioPrinter.new(formatter, source.scenario, before_hook_results)
             elsif source.scenario_outline
-              if same_scenario_outline_as_previous_test_case?(source) and @previous_outline_child
+              if same_scenario_outline_as_previous_test_case?(source) && @previous_outline_child
                 @previous_outline_child
               else
                 ScenarioOutlinePrinter.new(formatter, config, source.scenario_outline)
@@ -395,12 +395,12 @@ module Cucumber
                 @previous_outline_child = nil
               end
             end
-            child.before unless to_scenario_outline(child) and same_scenario_outline_as_previous_test_case?(source)
+            child.before unless to_scenario_outline(child) && same_scenario_outline_as_previous_test_case?(source)
             @child = child
           end
 
           def from_scenario_outline_to_hidden_backgroud(from, to)
-            from.class.name == ScenarioOutlinePrinter.name and
+            from.class.name == ScenarioOutlinePrinter.name &&
             to.class.name == HiddenBackgroundPrinter.name
           end
 
@@ -636,8 +636,8 @@ module Cucumber
             steps_printer.after
           end
 
-          def scenario_outline(_node, &descend)
-            descend.call(self)
+          def scenario_outline(_node, &_descend)
+            yield self if block_given?
           end
 
           def outline_step(step)
@@ -741,9 +741,9 @@ module Cucumber
             FindMaxWidth = Struct.new(:index) do
               include ::Cucumber::Gherkin::Formatter::Escaping
 
-              def examples_table(table, &descend)
+              def examples_table(table, &_descend)
                 @result = char_length_of(table.header.values[index])
-                descend.call(self)
+                yield self if block_given?
               end
 
               def examples_table_row(row, &_descend)
@@ -896,9 +896,9 @@ module Cucumber
           end
 
           [:background, :scenario, :scenario_outline].each do |node_name|
-            define_method(node_name) do |node, &descend|
-            record_width_of node
-            descend.call(self)
+            define_method(node_name) do |node, &_descend|
+              record_width_of node
+              yield self if block_given?
             end
           end
 

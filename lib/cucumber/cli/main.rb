@@ -55,7 +55,7 @@ module Cucumber
       rescue Errno::EACCES, Errno::ENOENT => e
         @err.puts("#{e.message} (#{e.class})")
         exit_unable_to_finish
-      rescue Exception => e
+      rescue StandardError => e
         @err.puts("#{e.message} (#{e.class})")
         @err.puts(e.backtrace.join("\n"))
         exit_unable_to_finish

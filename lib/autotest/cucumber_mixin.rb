@@ -51,11 +51,11 @@ module Autotest::CucumberMixin
   end
 
   def get_to_green
-    begin
+    until all_features_good
       super
       run_features
       wait_for_changes unless all_features_good
-    end until all_features_good
+    end
   end
 
   def rerun_all_features
@@ -80,7 +80,7 @@ module Autotest::CucumberMixin
       begin
         open("| #{cmd}", 'r') do |f|
           until f.eof?
-            c = f.getc or break
+            c = f.getc || break
             if RUBY_VERSION >= '1.9' then
               print c
             else

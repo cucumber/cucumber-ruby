@@ -117,7 +117,7 @@ module Cucumber
           else
             define_real_grey
           end
-        rescue Exception => e
+        rescue Gem::LoadError => e
           if e.class.name == 'TermInfo::TermInfoError'
             STDERR.puts '*** WARNING ***'
             STDERR.puts "You have the genki-ruby-terminfo gem installed, but you haven't set your TERM variable."

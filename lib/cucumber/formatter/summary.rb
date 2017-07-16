@@ -28,7 +28,7 @@ module Cucumber
           print_result event.result
         end
 
-        @config.on_event :test_run_finished do |event|
+        @config.on_event :test_run_finished do |_event|
           duration = Time.now - @start_time
           @io.puts
           print_statistics(duration, @config, @counts, @issues)

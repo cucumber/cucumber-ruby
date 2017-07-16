@@ -27,7 +27,7 @@ module Cucumber
                     :touch
                   end
 
-      report_exists(file_name) || return if File.exists?(file_name)
+      report_exists(file_name) || return if File.exist?(file_name)
 
       report_creating(file_name)
       FileUtils.send file_type, file_name

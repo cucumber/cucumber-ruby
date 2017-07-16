@@ -69,7 +69,7 @@ module Cucumber
       end
 
       def on_test_run_finished(_event)
-        @features_data.each { |file, data| end_feature(data) }
+        @features_data.each { |_file, data| end_feature(data) }
       end
 
       private
@@ -232,7 +232,7 @@ module Cucumber
       def exception(*) end
 
       def duration(duration, *)
-        duration.tap { |duration| @test_case_duration = duration.nanoseconds / 10**9.0 }
+        duration.tap { |d| @test_case_duration = d.nanoseconds / 10**9.0 }
       end
     end
 

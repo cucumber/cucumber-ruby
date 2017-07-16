@@ -20,7 +20,7 @@ module Cucumber
       end
     end
 
-    Strategy = $0.match(/rspec$/) ? ForDevelopers : ForUsers
+    Strategy = $0 =~ /rspec$/ ? ForDevelopers : ForUsers
   end
 
   def self.deprecate(*args)

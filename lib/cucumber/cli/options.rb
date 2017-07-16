@@ -27,17 +27,18 @@ module Cucumber
         'summary'       => ['Cucumber::Formatter::Summary',   'Summary output of feature and scenarios']
       }
       max = BUILTIN_FORMATS.keys.map{|s| s.length}.max
-      FORMAT_HELP_MSG = ['Use --format rerun --out rerun.txt to write out failing',
-        'features. You can rerun them with cucumber @rerun.txt.',
-        'FORMAT can also be the fully qualified class name of',
-        "your own custom formatter. If the class isn't loaded,",
-        'Cucumber will attempt to require a file with a relative',
-        'file name that is the underscore name of the class name.',
-        'Example: --format Foo::BarZap -> Cucumber will look for',
-        'foo/bar_zap.rb. You can place the file with this relative',
-        'path underneath your features/support directory or anywhere',
-        "on Ruby's LOAD_PATH, for example in a Ruby gem."
-      ]
+      FORMAT_HELP_MSG = [
+                          'Use --format rerun --out rerun.txt to write out failing',
+                          'features. You can rerun them with cucumber @rerun.txt.',
+                          'FORMAT can also be the fully qualified class name of',
+                          "your own custom formatter. If the class isn't loaded,",
+                          'Cucumber will attempt to require a file with a relative',
+                          'file name that is the underscore name of the class name.',
+                          'Example: --format Foo::BarZap -> Cucumber will look for',
+                          'foo/bar_zap.rb. You can place the file with this relative',
+                          'path underneath your features/support directory or anywhere',
+                          "on Ruby's LOAD_PATH, for example in a Ruby gem."
+                        ]
 
       FORMAT_HELP = (BUILTIN_FORMATS.keys.sort.map do |key|
         "  #{key}#{' ' * (max - key.length)} : #{BUILTIN_FORMATS[key][1]}"
@@ -48,11 +49,29 @@ module Cucumber
       NO_PROFILE_LONG_FLAG = '--no-profile'
       FAIL_FAST_FLAG = '--fail-fast'
       RETRY_FLAG = '--retry'
-      OPTIONS_WITH_ARGS = ['-r', '--require', '--i18n-keywords', '-f', '--format', '-o', '--out',
-                                  '-t', '--tags', '-n', '--name', '-e', '--exclude',
-                                  PROFILE_SHORT_FLAG, PROFILE_LONG_FLAG, RETRY_FLAG,
-                                  '-l', '--lines', '--port',
-                                  '-I', '--snippet-type']
+      OPTIONS_WITH_ARGS = [
+                            '-r',
+                            '--require',
+                            '--i18n-keywords',
+                            '-f',
+                            '--format',
+                            '-o',
+                            '--out',
+                            '-t',
+                            '--tags',
+                            '-n',
+                            '--name',
+                            '-e',
+                            '--exclude',
+                            PROFILE_SHORT_FLAG,
+                            PROFILE_LONG_FLAG,
+                            RETRY_FLAG,
+                            '-l',
+                            '--lines',
+                            '--port',
+                            '-I',
+                            '--snippet-type'
+                          ]
       ORDER_TYPES = %w{defined random}
       TAG_LIMIT_MATCHER = /(?<tag_name>\@\w+):(?<limit>\d+)/x
 
@@ -103,13 +122,13 @@ module Cucumber
           opts.on('-f FORMAT', '--format FORMAT', *format_msg, *FORMAT_HELP) do |v|
             add_option :formats, [*parse_formats(v), @out_stream]
           end
-          opts.on('--init', *init_msg) {|v| initialize_project }
+          opts.on('--init', *init_msg) {|_v| initialize_project }
           opts.on('-o', '--out [FILE|DIR]', *out_msg) {|v| set_out_stream v }
           opts.on('-t TAG_EXPRESSION', '--tags TAG_EXPRESSION', *tags_msg) {|v| add_tag v }
           opts.on('-n NAME', '--name NAME', *name_msg) {|v| add_option :name_regexps, /#{v}/ }
           opts.on('-e', '--exclude PATTERN', *exclude_msg) {|v| add_option :excludes, Regexp.new(v) }
           opts.on(PROFILE_SHORT_FLAG, "#{PROFILE_LONG_FLAG} PROFILE", *profile_short_flag_msg) {|v| add_profile v }
-          opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG, *no_profile_short_flag_msg) {|v| disable_profile_loading }
+          opts.on(NO_PROFILE_SHORT_FLAG, NO_PROFILE_LONG_FLAG, *no_profile_short_flag_msg) {|_v| disable_profile_loading }
           opts.on('-c', '--[no-]color', *color_msg) {|v| set_color v }
           opts.on('-d', '--dry-run', *dry_run_msg) { set_dry_run_and_duration }
           opts.on('-m', '--no-multiline', "Don't print multiline strings and tables under steps.") { set_option :no_multiline }
@@ -126,7 +145,8 @@ module Cucumber
           opts.on('-l', '--lines LINES', *lines_msg) {|lines| set_option :lines, lines }
           opts.on('-x', '--expand', 'Expand Scenario Outline Tables in output.') { set_option :expand }
 
-          opts.on('--order TYPE[:SEED]', 'Run examples in the specified order. Available types:',
+          opts.on(
+            '--order TYPE[:SEED]', 'Run examples in the specified order. Available types:',
             *<<-TEXT.split("\n")) do |order|
   [defined]     Run scenarios in the order they were defined (default).
   [random]      Shuffle scenarios before running.
@@ -318,7 +338,8 @@ TEXT
       end
 
       def banner
-        ['Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+', '',
+        [
+          'Usage: cucumber [options] [ [FILE|DIR|URL][:LINE[:LINE]*] ]+', '',
           'Examples:',
           'cucumber examples/i18n/en/features',
           'cucumber @rerun.txt (See --format rerun)',
@@ -505,22 +526,23 @@ TEXT
       def list_keywords_and_exit(lang)
         require 'gherkin/dialect'
         language = ::Gherkin::Dialect.for(lang)
-        data = Cucumber::MultilineArgument::DataTable.from(
-          [['feature', to_keywords_string(language.feature_keywords)],
-          ['background', to_keywords_string(language.background_keywords)],
-          ['scenario', to_keywords_string(language.scenario_keywords)],
-          ['scenario_outline', to_keywords_string(language.scenario_outline_keywords)],
-          ['examples', to_keywords_string(language.examples_keywords)],
-          ['given', to_keywords_string(language.given_keywords)],
-          ['when', to_keywords_string(language.when_keywords)],
-          ['then', to_keywords_string(language.then_keywords)],
-          ['and', to_keywords_string(language.and_keywords)],
-          ['but', to_keywords_string(language.but_keywords)],
-          ['given (code)', to_code_keywords_string(language.given_keywords)],
-          ['when (code)', to_code_keywords_string(language.when_keywords)],
-          ['then (code)', to_code_keywords_string(language.then_keywords)],
-          ['and (code)', to_code_keywords_string(language.and_keywords)],
-          ['but (code)', to_code_keywords_string(language.but_keywords)]])
+        data = Cucumber::MultilineArgument::DataTable.from([
+                                                             ['feature', to_keywords_string(language.feature_keywords)],
+                                                             ['background', to_keywords_string(language.background_keywords)],
+                                                             ['scenario', to_keywords_string(language.scenario_keywords)],
+                                                             ['scenario_outline', to_keywords_string(language.scenario_outline_keywords)],
+                                                             ['examples', to_keywords_string(language.examples_keywords)],
+                                                             ['given', to_keywords_string(language.given_keywords)],
+                                                             ['when', to_keywords_string(language.when_keywords)],
+                                                             ['then', to_keywords_string(language.then_keywords)],
+                                                             ['and', to_keywords_string(language.and_keywords)],
+                                                             ['but', to_keywords_string(language.but_keywords)],
+                                                             ['given (code)', to_code_keywords_string(language.given_keywords)],
+                                                             ['when (code)', to_code_keywords_string(language.when_keywords)],
+                                                             ['then (code)', to_code_keywords_string(language.then_keywords)],
+                                                             ['and (code)', to_code_keywords_string(language.and_keywords)],
+                                                             ['but (code)', to_code_keywords_string(language.but_keywords)]
+                                                           ])
         @out_stream.write(data.to_s({ color: false, prefixes: Hash.new('') }))
         Kernel.exit(0)
       end

@@ -43,7 +43,7 @@ module Cucumber
             "
           class Junit
             def before_step(step)
-              return unless step.name.match('a passing ctrl scenario')
+              return unless step.name =~ /a passing ctrl scenario/
               Interceptor::Pipe.unwrap! :stdout
               @fake_io = $stdout = StringIO.new
               $stdout.sync = true
@@ -51,7 +51,7 @@ module Cucumber
             end
 
             def after_step(step)
-              return unless step.name.match('a passing ctrl scenario')
+              return unless step.name =~ /a passing ctrl scenario/
               @interceptedout.write("boo\b\cx\e\a\f boo ")
               $stdout = STDOUT
               @fake_io.close
