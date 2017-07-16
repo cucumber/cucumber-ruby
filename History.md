@@ -7,6 +7,7 @@
 
 ### New Features
 
+* Detect and list flaky scenarios in the list of not ok scenarios ([#1159](https://github.com/cucumber/cucumber-ruby/pull/1159), ([1044](https://github.com/cucumber/cucumber-ruby/issues/1044)) @brasmusson)
 * List all not ok scenarios in the summary ([#1158](https://github.com/cucumber/cucumber-ruby/pull/1158) @brasmusson)
 * Emulate Cucumber-JS's new i18n CLI options ([#1140](https://github.com/cucumber/cucumber-ruby/pull/1140) @aidamanna)
 * Use the event bus in Cucumber-Ruby-Core ([#973](https://github.com/cucumber/cucumber-ruby/pull/973) @mattwynne)
