@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 Given(/^there is a wire server (running |)on port (\d+) which understands the following protocol:$/) do |running, port, table|
   protocol = table.hashes.map do |table_hash|
     table_hash['response'] = table_hash['response'].gsub(/\n/, '\n')

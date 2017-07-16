@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'cucumber/glue/invoke_in_world'
 
 module Cucumber
