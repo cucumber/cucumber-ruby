@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require 'cucumber/core_ext/instance_exec'
 require 'cucumber/glue/dsl'
 require 'cucumber/glue/snippet'
 require 'cucumber/glue/hook'
