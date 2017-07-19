@@ -206,7 +206,7 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
             expect(-> {
               dsl.Transform('^abc$') {|one, two| 42 }
               registry.execute_transforms(['abc'])
-            }).to raise_error(Cucumber::ArityMismatchError)
+            }).to raise_error(ArityMismatchError)
           end
 
           it 'allows registering a regexp pattern that yields the step_arg matched' do
@@ -251,7 +251,7 @@ or http://wiki.github.com/cucumber/cucumber/a-whole-new-world.
             expect(-> {
               dsl.Transform('^a(.)c$') {|one, two| 42 }
               registry.execute_transforms(['abc'])
-            }).to raise_error(Cucumber::ArityMismatchError)
+            }).to raise_error(ArityMismatchError)
           end
 
           it 'allows registering a regexp pattern that yields capture groups' do

@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require 'cucumber/glue/invoke_in_world'
+
 module Cucumber
   module Glue
     # A Ruby Transform holds a Regexp and a Proc, and is created
@@ -32,7 +34,7 @@ module Cucumber
 
         return unless matched
         args = matched.captures.empty? ? [arg] : matched.captures
-        cucumber_instance_exec_in(@registry.current_world, true, @regexp.inspect, *args, &@proc)
+        InvokeInWorld.cucumber_instance_exec_in(@registry.current_world, true, @regexp.inspect, *args, &@proc)
       end
 
       def to_s
