@@ -7,6 +7,7 @@
 
 ### New Features
 
+* Support for Cucumber Expressions ([#1156](https://github.com/cucumber/cucumber-ruby/pull/1156))
 * Use newlines in the rerun file produces by the rerun formatter ([1162](https://github.com/cucumber/cucumber-ruby/issues/1162) @brasmusson)
 * Detect and list flaky scenarios in the list of not ok scenarios ([#1159](https://github.com/cucumber/cucumber-ruby/pull/1159), ([1044](https://github.com/cucumber/cucumber-ruby/issues/1044)) @brasmusson)
 * List all not ok scenarios in the summary ([#1158](https://github.com/cucumber/cucumber-ruby/pull/1158) @brasmusson)
