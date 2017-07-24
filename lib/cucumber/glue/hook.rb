@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require 'cucumber/glue/invoke_in_world'
+
 module Cucumber
   module Glue
     # TODO: Kill pointless wrapper for Before, After and AfterStep hooks with fire
@@ -14,7 +16,14 @@ module Cucumber
       end
 
       def invoke(pseudo_method, arguments, &block)
-        cucumber_instance_exec_in(@registry.current_world, false, pseudo_method, *[arguments, block].flatten.compact, &@proc)
+        check_arity = false
+        InvokeInWorld.cucumber_instance_exec_in(
+          @registry.current_world,
+          check_arity,
+          pseudo_method,
+          *[arguments, block].flatten.compact,
+          &@proc
+        )
       end
 
       private

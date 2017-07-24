@@ -159,7 +159,7 @@ module Cucumber
 
         expect(-> {
           run_step 'No group: arg'
-        }).to raise_error(Cucumber::ArityMismatchError)
+        }).to raise_error(Cucumber::Glue::ArityMismatchError)
       end
 
       it 'does not modify the step_match arg when arg is modified in a step' do

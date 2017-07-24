@@ -2,6 +2,7 @@
 require 'cucumber/step_match'
 require 'cucumber/step_argument'
 require 'cucumber/core_ext/string'
+require 'cucumber/glue/invoke_in_world'
 
 module Cucumber
   module Glue
@@ -106,8 +107,8 @@ module Cucumber
       # TODO: inline this and step definition just be a value object
       def invoke(args)
         begin
-          cucumber_instance_exec_in(@registry.current_world, true, @expression.to_s, *args, &@proc)
-        rescue Cucumber::ArityMismatchError => e
+          InvokeInWorld.cucumber_instance_exec_in(@registry.current_world, true, @expression.to_s, *args, &@proc)
+        rescue ArityMismatchError => e
           e.backtrace.unshift(self.backtrace_line)
           raise e
         end

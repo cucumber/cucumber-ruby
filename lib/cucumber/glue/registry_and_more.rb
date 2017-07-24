@@ -3,7 +3,6 @@ require 'cucumber/cucumber_expressions/parameter_type_registry'
 require 'cucumber/cucumber_expressions/cucumber_expression'
 require 'cucumber/cucumber_expressions/regular_expression'
 require 'cucumber/cucumber_expressions/cucumber_expression_generator'
-require 'cucumber/core_ext/instance_exec'
 require 'cucumber/glue/dsl'
 require 'cucumber/glue/snippet'
 require 'cucumber/glue/hook'
@@ -169,42 +168,6 @@ module Cucumber
       def hooks
         @hooks ||= Hash.new{|h,k| h[k] = []}
       end
-
-      # def create_world
-      #   if(@world_proc)
-      #     @current_world = @world_proc.call
-      #     check_nil(@current_world, @world_proc)
-      #   else
-      #     @current_world = Object.new
-      #   end
-      # end
-      #
-      # def extend_world
-      #   @current_world.extend(RbWorld)
-      #   MultiTest.extend_with_best_assertion_library(@current_world)
-      #
-      #   @current_world.add_modules!(@world_modules || [],
-      #                               @namespaced_world_modules || {})
-      # end
-      #
-      # def connect_world(scenario)
-      #   @current_world.__cucumber_runtime = @runtime
-      #   @current_world.__natural_language = scenario.language
-      # end
-      #
-      # def check_nil(o, proc)
-      #   if o.nil?
-      #     begin
-      #       raise NilWorld.new
-      #     rescue NilWorld => e
-      #       e.backtrace.clear
-      #       e.backtrace.push(RbSupport.backtrace_line(proc, 'World'))
-      #       raise e
-      #     end
-      #   else
-      #     o
-      #   end
-      # end
 
       def self.cli_snippet_type_options
         registry = CucumberExpressions::ParameterTypeRegistry.new

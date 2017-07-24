@@ -2,6 +2,9 @@
 require 'cucumber/platform'
 module Cucumber
   module Glue
+    # Utility methods for executing step definitions with nice backtraces etc.
+    # TODO: add unit tests
+    # TODO: refactor for readability
     class InvokeInWorld
       def self.replace_instance_exec_invocation_line!(backtrace, instance_exec_invocation_line, pseudo_method)
         return if Cucumber.use_full_backtrace
@@ -27,7 +30,7 @@ module Cucumber
               ari = ari < 0 ? (ari.abs-1).to_s+'+' : ari
               s1 = ari == 1 ? '' : 's'
               s2 = args.length == 1 ? '' : 's'
-              raise Cucumber::ArityMismatchError.new(
+              raise ArityMismatchError.new(
                 "Your block takes #{ari} argument#{s1}, but the Regexp matched #{args.length} argument#{s2}."
               )
             end
@@ -57,5 +60,11 @@ module Cucumber
 
       INSTANCE_EXEC_OFFSET = -3
     end
+
+    # Raised if the number of a StepDefinition's Regexp match groups
+    # is different from the number of Proc arguments.
+    class ArityMismatchError < StandardError
+    end
+
   end
 end
