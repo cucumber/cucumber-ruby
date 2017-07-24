@@ -8,7 +8,7 @@ Given(/^a scenario "([^\"]*)" that fails once, then passes$/) do |full_name|
       Given it fails once, then passes
   FEATURE
 
-  write_file "features/step_defnitions/#{name}_steps.rb",
+  write_file "features/step_definitions/#{name}_steps.rb",
   <<-STEPS
   Given(/^it fails once, then passes$/) do
     $#{name} += 1

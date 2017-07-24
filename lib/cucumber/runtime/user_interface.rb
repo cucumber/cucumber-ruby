@@ -7,10 +7,6 @@ module Cucumber
     module UserInterface
       attr_writer :visitor
 
-      def visitor=(visitor)
-        @visitor = visitor
-      end
-
       # Output +messages+ alongside the formatted output.
       # This is an alternative to using Kernel#puts - it will display
       # nicer, and in all outputs (in case you use several formatters)

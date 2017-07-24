@@ -6,43 +6,30 @@ module Cucumber
       include Console
 
       def initialize(config)
-        @test_case_summary = Core::Test::Result::Summary.new
-        @test_step_summary = Core::Test::Result::Summary.new
-
-        config.on_event :test_case_finished do |event|
-          event.result.describe_to @test_case_summary
-        end
-
-        config.on_event :test_step_finished do |event|
-          event.result.describe_to @test_step_summary if from_gherkin?(event.test_step)
-        end
+        @summary = Core::Report::Summary.new(config.event_bus)
       end
 
       def to_s
         [
-          [scenario_count, status_counts(@test_case_summary)].compact.join(' '),
-          [step_count, status_counts(@test_step_summary)].compact.join(' ')
+          [scenario_count, status_counts(@summary.test_cases)].compact.join(' '),
+          [step_count, status_counts(@summary.test_steps)].compact.join(' ')
         ].join("\n")
       end
 
       private
 
-      def from_gherkin?(test_step)
-        test_step.source.last.location.file.match(/\.feature$/)
-      end
-
       def scenario_count
-        count = @test_case_summary.total
+        count = @summary.test_cases.total
         "#{count} scenario" + (count == 1 ? '' : 's')
       end
 
       def step_count
-        count = @test_step_summary.total
+        count = @summary.test_steps.total
         "#{count} step" + (count == 1 ? '' : 's')
       end
 
       def status_counts(summary)
-        counts = [:failed, :skipped, :undefined, :pending, :passed].map { |status|
+        counts = Core::Test::Result::TYPES.map { |status|
           count = summary.total(status)
           [status, count]
         }.select { |status, count|

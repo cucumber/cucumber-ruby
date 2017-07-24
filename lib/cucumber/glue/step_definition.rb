@@ -4,9 +4,9 @@ require 'cucumber/step_argument'
 require 'cucumber/core_ext/string'
 
 module Cucumber
-  module RbSupport
-    # A Ruby Step Definition holds a Regexp pattern and a Proc, and is
-    # typically created by calling {RbDsl#register_rb_step_definition Given, When or Then}
+  module Glue
+    # A Step Definition holds a Regexp pattern and a Proc, and is
+    # typically created by calling {Dsl#register_rb_step_definition Given, When or Then}
     # in the step_definitions Ruby files.
     #
     # Example:
@@ -15,7 +15,7 @@ module Cucumber
     #     # some code here
     #   end
     #
-    class RbStepDefinition
+    class StepDefinition
 
       class MissingProc < StandardError
         def message
@@ -24,9 +24,9 @@ module Cucumber
       end
 
       class << self
-        def new(rb_language, expression, proc_or_sym, options)
+        def new(registry, string_or_regexp, proc_or_sym, options)
           raise MissingProc if proc_or_sym.nil?
-          super rb_language, expression, create_proc(proc_or_sym, options)
+          super registry, registry.create_expression(string_or_regexp), create_proc(proc_or_sym, options)
         end
 
         private
@@ -64,9 +64,10 @@ module Cucumber
 
       attr_reader :expression
 
-      def initialize(rb_language, expression, proc)
-        @rb_language, @expression, @proc = rb_language, expression, proc
-        #@rb_language.available_step_definition(regexp_source, location)
+      def initialize(registry, expression, proc)
+        raise 'No regexp' if expression.is_a?(Regexp)
+        @registry, @expression, @proc = registry, expression, proc
+        # @registry.available_step_definition(regexp_source, location)
       end
 
       # @api private
@@ -96,17 +97,16 @@ module Cucumber
 
       # @api private
       def arguments_from(step_name)
-        #args = StepArgument.arguments_from(@regexp, step_name)
         args = @expression.match(step_name)
-        #@rb_language.invoked_step_definition(regexp_source, location) if args
+        # @registry.invoked_step_definition(regexp_source, location) if args
         args
       end
 
       # @api private
+      # TODO: inline this and step definition just be a value object
       def invoke(args)
         begin
-          #args = @rb_language.execute_transforms(args)
-          @rb_language.current_world.cucumber_instance_exec(true, @expression.to_s, *args, &@proc)
+          cucumber_instance_exec_in(@registry.current_world, true, @expression.to_s, *args, &@proc)
         rescue Cucumber::ArityMismatchError => e
           e.backtrace.unshift(self.backtrace_line)
           raise e

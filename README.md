@@ -19,8 +19,7 @@ Where to get more info:
   * Documentation: https://github.com/cucumber/cucumber/wiki
   * Ruby API Documentation: http://www.rubydoc.info/github/cucumber/cucumber-ruby/
   * Support forum: https://groups.google.com/group/cukes
-  * Developer chat: https://gitter.im/cucumber/cucumber-ruby
-  * User chat: https://gitter.im/cucumber/chat
+  * Chat: ([Slack](https://cucumber.io/support#slack) and [Gitter](https://cucumber.io/support#gitter))
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for info on contributing to Cucumber.
 

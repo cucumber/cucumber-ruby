@@ -3,10 +3,10 @@ require 'spec_helper'
 require 'cucumber/cucumber_expressions/parameter_type_registry'
 require 'cucumber/cucumber_expressions/parameter_type'
 require 'cucumber/cucumber_expressions/cucumber_expression_generator'
-require 'cucumber/rb_support/snippet'
+require 'cucumber/glue/snippet'
 
 module Cucumber
-  module RbSupport
+  module Glue
     describe Snippet do
       let(:code_keyword) { 'Given' }
 

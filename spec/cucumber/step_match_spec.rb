@@ -1,19 +1,19 @@
 # encoding: utf-8
 # frozen_string_literal: true
 require 'spec_helper'
-require 'cucumber/rb_support/rb_step_definition'
-require 'cucumber/rb_support/rb_language'
+require 'cucumber/glue/step_definition'
+require 'cucumber/glue/registry_and_more'
 
 module Cucumber
   describe StepMatch do
     WORD = '[[:word:]]'
 
     before do
-      @rb_language = RbSupport::RbLanguage.new(nil, Configuration.new)
+      @registry = Glue::RegistryAndMore.new(nil, Configuration.new)
     end
 
     def stepdef(string_or_regexp)
-      @rb_language.register_rb_step_definition(string_or_regexp, lambda {}, {})
+      Glue::StepDefinition.new(@registry, string_or_regexp, lambda{}, {})
     end
 
     def step_match(regexp, name)

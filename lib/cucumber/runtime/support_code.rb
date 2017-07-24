@@ -30,7 +30,9 @@ module Cucumber
         end
 
         def multiline_arg(step, location)
-          if argument = step[:argument]
+          argument = step[:argument]
+
+          if argument
             if argument[:type] == :DocString
               MultilineArgument.doc_string(argument[:content], argument[:content_type], location)
             else
@@ -44,11 +46,13 @@ module Cucumber
 
       include Constantize
 
-      attr_reader :ruby
+      attr_reader :registry
+
       def initialize(user_interface, configuration=Configuration.default)
         @configuration = configuration
+        # TODO: needs a better name, or inlining its methods
         @runtime_facade = Runtime::ForProgrammingLanguages.new(self, user_interface)
-        @ruby = Cucumber::RbSupport::RbLanguage.new(@runtime_facade, @configuration)
+        @registry = Cucumber::Glue::RegistryAndMore.new(@runtime_facade, @configuration)
       end
 
       def configure(new_configuration)
@@ -92,39 +96,40 @@ module Cucumber
       end
 
       def unmatched_step_definitions
-        @ruby.unmatched_step_definitions
+        registry.unmatched_step_definitions
       end
 
       def fire_hook(name, *args)
-        @ruby.send(name, *args)
+        # TODO: kill with fire
+        registry.send(name, *args)
       end
 
       def step_definitions
-        @ruby.step_definitions
+        registry.step_definitions
       end
 
       def find_after_step_hooks(test_case)
         scenario = RunningTestCase.new(test_case)
-        hooks = @ruby.hooks_for(:after_step, scenario)
+        hooks = registry.hooks_for(:after_step, scenario)
         StepHooks.new hooks
       end
 
       def apply_before_hooks(test_case)
         scenario = RunningTestCase.new(test_case)
-        hooks = @ruby.hooks_for(:before, scenario)
+        hooks = registry.hooks_for(:before, scenario)
         BeforeHooks.new(hooks, scenario).apply_to(test_case)
       end
 
       def apply_after_hooks(test_case)
         scenario = RunningTestCase.new(test_case)
-        hooks = @ruby.hooks_for(:after, scenario)
+        hooks = registry.hooks_for(:after, scenario)
         AfterHooks.new(hooks, scenario).apply_to(test_case)
       end
 
       def find_around_hooks(test_case)
         scenario = RunningTestCase.new(test_case)
 
-        @ruby.hooks_for(:around, scenario).map do |hook|
+        registry.hooks_for(:around, scenario).map do |hook|
           Hooks.around_hook(test_case.source) do |run_scenario|
             hook.invoke('Around', scenario, &run_scenario)
           end
@@ -134,12 +139,12 @@ module Cucumber
       private
 
       def step_matches(step_name)
-        StepMatchSearch.new(@ruby.method(:step_matches), @configuration).call(step_name)
+        StepMatchSearch.new(registry.method(:step_matches), @configuration).call(step_name)
       end
 
       def load_file(file)
         log.debug("  * #{file}\n")
-        @ruby.load_code_file(file)
+        registry.load_code_file(file)
       end
 
       def log

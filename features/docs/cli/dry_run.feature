@@ -64,6 +64,9 @@ Feature: Dry Run
             Undefined step: "this step is undefined" (Cucumber::Undefined)
             features/test.feature:3:in `Given this step is undefined'
 
+      Undefined Scenarios:
+      cucumber features/test.feature:2 # Scenario: 
+
       1 scenario (1 undefined)
       1 step (1 undefined)
 

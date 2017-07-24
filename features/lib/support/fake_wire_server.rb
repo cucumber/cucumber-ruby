@@ -43,15 +43,20 @@ class FakeWireServer
     end
 
     def start
-      while message = @socket.gets
+      message = @socket.gets
+
+      while message
         handle(message)
+        message = @socket.gets
       end
     end
 
     private
 
     def handle(data)
-      if protocol_entry = response_to(data.strip)
+      protocol_entry = response_to(data.strip)
+
+      if protocol_entry
         sleep delay(data)
         @on_message.call(MultiJson.load(protocol_entry['request'])[0])
         send_response(protocol_entry['response'])
