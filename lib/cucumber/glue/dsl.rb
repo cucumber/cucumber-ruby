@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'cucumber/cucumber_expressions/parameter_type'
+require 'cucumber/deprecate'
 
 module Cucumber
   module Glue
@@ -91,6 +92,11 @@ module Cucumber
       # provided proc. The return value of the proc is consequently yielded to the
       # step definition.
       def Transform(regexp, &proc)
+        Cucumber.deprecate(
+          'Use ParameterType(...) instead',
+          'Transform',
+          '2.6.0'
+        )
         parameter_type = CucumberExpressions::ParameterType.new(
           regexp.to_s,
           regexp,
