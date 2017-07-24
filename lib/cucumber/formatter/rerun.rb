@@ -18,7 +18,7 @@ module Cucumber
         end
         config.on_event :test_run_finished do
           next if @failures.empty?
-          @io.print file_failures.join(' ')
+          @io.print file_failures.join('\n')
         end
       end
 
