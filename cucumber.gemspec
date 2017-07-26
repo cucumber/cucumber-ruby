@@ -10,9 +10,9 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://cucumber.io/'
   s.platform    = Gem::Platform::RUBY
   s.required_ruby_version = '>= 1.9.3'
-  s.add_dependency 'cucumber-core', '~> 2.0'
+  s.add_dependency 'cucumber-core', '3.0.0.pre.2'
   s.add_dependency 'builder', '>= 2.1.2'
-  s.add_dependency 'diff-lcs', '>= 1.1.3'
+  s.add_dependency 'diff-lcs', '~> 1.3'
   s.add_dependency 'gherkin', '~> 4.0'
   s.add_dependency 'multi_json', '>= 1.7.5', '< 2.0'
   s.add_dependency 'multi_test', '>= 0.1.2'
