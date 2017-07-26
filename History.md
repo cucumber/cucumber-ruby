@@ -1,4 +1,11 @@
-## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v2.4.0...master)
+## [In Git](https://github.com/cucumber/cucumber-ruby/compare/v3.0.0.pre.2...master)
+
+### Breaking changes
+### New Features
+### Bugfixes
+### Refactoring / Developer Experience
+
+## [3.0.0.pre.1](https://github.com/cucumber/cucumber-ruby/compare/v2.4.0...v3.0.0.pre.2)
 
 ### Breaking changes
 
@@ -75,7 +82,7 @@
 * Travis: use jruby-9.1.10.0 ([#1114](https://github.com/cucumber/cucumber-ruby/pull/1114) @olleolleolle)
 * Change the Progress, Usage and Stepdef formatter use events ([#977](https://github.com/cucumber/cucumber-ruby/pull/977), [#1129](https://github.com/cucumber/cucumber-ruby/pull/1129) @brasmusson)
 
-## [v2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
+## [2.4.0](https://github.com/cucumber/cucumber-ruby/compare/v2.3.3...v2.4.0)
 
 ### New Features
 
@@ -91,7 +98,7 @@
 * Allow Rake task to accept multiple profiles. ([#907](https://github.com/cucumber/cucumber-ruby/pull/907) @jasonkarns)
 * Let the JUnit formatter handle running test cases for different features interweaved ([#952](https://github.com/cucumber/cucumber-ruby/issues/952) @brasmusson)
 
-## [v2.3.3](https://github.com/cucumber/cucumber-ruby/compare/v2.3.2...v2.3.3)
+## [2.3.3](https://github.com/cucumber/cucumber-ruby/compare/v2.3.2...v2.3.3)
 
 Added a message pointing users to [The Great Cucumber and BDD Census of 2016](https://cucumber.typeform.com/to/kjrSc2?audience=cucumber-ruby) to the installer message. Please take a few moments to help us all learn more about how you're using Cucumber and BDD.
 
@@ -100,15 +107,15 @@ Added a message pointing users to [The Great Cucumber and BDD Census of 2016](ht
 * Let the JSON formatter include data tables in the JSON file ([#948](https://github.com/cucumber/cucumber-ruby/issues/948) @brasmusson)
 * Stringifying location in the JSON formatter for more consistent json parsing ([949](https://github.com/cucumber/cucumber-ruby/pull/949), [945](https://github.com/cucumber/cucumber-ruby/issues/945) @larryprice)
 
-## [v2.3.2](https://github.com/cucumber/cucumber-ruby/compare/v2.3.1...v2.3.2)
+## [2.3.2](https://github.com/cucumber/cucumber-ruby/compare/v2.3.1...v2.3.2)
 
 Brought the event bus code back into Cucumber to avoid https://github.com/fedux-org/event-bus/issues/6
 
-## [v2.3.1](https://github.com/cucumber/cucumber-ruby/compare/v2.3.0...v2.3.1)
+## [2.3.1](https://github.com/cucumber/cucumber-ruby/compare/v2.3.0...v2.3.1)
 
 Better deprecation warnings to help fix https://github.com/cucumber/cucumber-ruby/issues/942
 
-## [v2.3.0](https://github.com/cucumber/cucumber-ruby/compare/v2.2.0...v2.3.0)
+## [2.3.0](https://github.com/cucumber/cucumber-ruby/compare/v2.2.0...v2.3.0)
 
 ### New Features
 
@@ -118,7 +125,7 @@ Better deprecation warnings to help fix https://github.com/cucumber/cucumber-rub
 
 ### Refactoring
 
-## [v2.2.0](https://github.com/cucumber/cucumber-ruby/compare/v2.1.0...v2.2.0)
+## [2.2.0](https://github.com/cucumber/cucumber-ruby/compare/v2.1.0...v2.2.0)
 
 Although this release is only bugfixes and refactorings, the extraction of the wire protocol is quite a significant change and
 could cause breaking changes for users of undocumented APIs. Hence the minor version bump.
@@ -135,7 +142,7 @@ could cause breaking changes for users of undocumented APIs. Hence the minor ver
 * Remove wire protocol to plugin ([#878](https://github.com/cucumber/cucumber-ruby/pull/878) @mattwynne @tooky)
 * Remove event bus to separate gem ([#933](https://github.com/cucumber/cucumber-ruby/pull/933) @dg-ratiodata)
 
-## [v2.1.0](https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...v2.1.0)
+## [2.1.0](https://github.com/cucumber/cucumber-ruby/compare/v2.0.2...v2.1.0)
 
 ### New Features
 
@@ -155,14 +162,14 @@ could cause breaking changes for users of undocumented APIs. Hence the minor ver
 * Move behaviour from `Cucumber::Cli::Configuration` to `Cucumber::Configuration` (@tooky, @mattwynne)
 * Integrate Gherkin3 parser ([884](https://github.com/cucumber/cucumber-ruby/pull/884) (@brasmusson)
 
-## [v2.0.2](https://github.com/cucumber/cucumber-ruby/compare/v2.0.1...v2.0.2)
+## [2.0.2](https://github.com/cucumber/cucumber-ruby/compare/v2.0.1...v2.0.2)
 
 ### Bugfixes
 
 * Revert interface change in Cucumber::Formatter::Console (which can break custom formatters in v2.0.1) ([893](https://github.com/cucumber/cucumber-ruby/issues/893) @brasmusson).
 * Calculate the locations of hooks properly (so it also work between drives on Windows) ([885](https://github.com/cucumber/cucumber-ruby/issues/885) @brasmusson).
 
-## [v2.0.1](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0...v2.0.1)
+## [2.0.1](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0...v2.0.1)
 
 ### New Features
 
@@ -189,7 +196,7 @@ could cause breaking changes for users of undocumented APIs. Hence the minor ver
 * Rewrite the JUnit Formatter to the new formatter API ([855](https://github.com/cucumber/cucumber-ruby/pull/855) @brasmusson)
 * Rewrite the Progress, Usage, Stepdefs formatters to the new formatter API ([859](https://github.com/cucumber/cucumber-ruby/pull/859) @brasmusson)
 
-## [v2.0.0](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.5...v2.0.0)
+## [2.0.0](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.5...v2.0.0)
 
 ### New Features
 
@@ -201,7 +208,7 @@ could cause breaking changes for users of undocumented APIs. Hence the minor ver
 * Ensure After Hooks execute in reverse order (@tooky)
 * Make console output with embedded cr/lf look correct. ([820](https://github.com/cucumber/cucumber-ruby/pull/820) @SteveDonie)
 
-## [v2.0.0.rc5](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.4...v2.0.0.rc.5)
+## [2.0.0.rc5](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.4...v2.0.0.rc.5)
 
 ### New Features
 
@@ -218,7 +225,7 @@ could cause breaking changes for users of undocumented APIs. Hence the minor ver
 * JUnit expand option ([808](https://github.com/cucumber/cucumber-ruby/pull/808) @richarda @brasmusson)
 * Around hooks not executing in correct world context ([807](https://github.com/cucumber/cucumber-ruby/pull/807) @tooky)
 
-## [v2.0.0.rc.4](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.3...2.0.0.rc.4)
+## [2.0.0.rc.4](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.3...2.0.0.rc.4)
 
 ### Features
 
@@ -232,19 +239,19 @@ could cause breaking changes for users of undocumented APIs. Hence the minor ver
 * Sort scenarios by location ([789](https://github.com/cucumber/cucumber-ruby/issues/789) @mattwynne)
 * Remove keyword from name property of test case object yielded to hooks ([768](https://github.com/cucumber/cucumber-ruby/issues/768) @richarda, @akostadinov)
 
-## [v2.0.0.rc.3](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.2...v2.0.0.rc.3)
+## [2.0.0.rc.3](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.2...v2.0.0.rc.3)
 
 ### Bugfixes
 
 * MultilineArgument::DataTable#diff will correctly compare to an Array (@tooky)
 
-## [v2.0.0.rc.2](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.1...v2.0.0.rc.2)
+## [2.0.0.rc.2](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.rc.1...v2.0.0.rc.2)
 
 ### Bugfixes
 
 * World#table no longer creates invalid table objects when using an Array (@tooky, @mattwynne)
 
-## [v2.0.0.rc.1](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.5...v2.0.0.rc.1)
+## [2.0.0.rc.1](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.5...v2.0.0.rc.1)
 
 ### Removed Features
 
@@ -263,11 +270,11 @@ could cause breaking changes for users of undocumented APIs. Hence the minor ver
 * Using file:line CLI to select scenarios was running same scenario multiple times ([786](https://github.com/cucumber/cucumber-ruby/pull/786) @jdks)
 * Allow spaces in filenames for rerun formatter ([793](https://github.com/cucumber/cucumber-ruby/pull/793) @callahat)
 
-## [v2.0.0.beta.5](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.4...v2.0.0.beta.5)
+## [2.0.0.beta.5](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.4...v2.0.0.beta.5)
 
 * Depend on the correct version of core (@tooky)
 
-## [v2.0.0.beta.4](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.3...v2.0.0.beta.4)
+## [2.0.0.beta.4](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.3...v2.0.0.beta.4)
 ### New Features
 
 * Support both new and legacy formatter APIs simultaneously (@mattwynne and @tooky)
@@ -282,7 +289,7 @@ could cause breaking changes for users of undocumented APIs. Hence the minor ver
 
 * Re-write rerun formatter against new formatter API
 
-## [v2.0.0.beta.3](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.2...v2.0.0.beta.3)
+## [2.0.0.beta.3](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.2...v2.0.0.beta.3)
 
 ### Removed Features
 
@@ -302,14 +309,14 @@ could cause breaking changes for users of undocumented APIs. Hence the minor ver
 * Add back support for the DataTable API ([729](https://github.com/cucumber/cucumber-ruby/pull/729) @mattwynne and @tooky)
 * Fix Windows support loading files properly ([739](https://github.com/cucumber/cucumber-ruby/issues/739) @os97673)
 
-## [v2.0.0.beta.2](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.1...v2.0.0.beta.2)
+## [2.0.0.beta.2](https://github.com/cucumber/cucumber-ruby/compare/v2.0.0.beta.1...v2.0.0.beta.2)
 
 ### Bugfixes
 
 * Better reporting of exceptions in Before / After hooks ([723](https://github.com/cucumber/cucumber-ruby/pull/723) @mattwynne)
 * Add `#source_tag_names` method to `TestCase` object passed to hooks (@mattwynne)
 
-## [v2.0.0.beta.1 ](https://github.com/cucumber/cucumber-ruby/compare/v1.3.8...v2.0.0.beta.1)
+## [2.0.0.beta.1 ](https://github.com/cucumber/cucumber-ruby/compare/v1.3.8...v2.0.0.beta.1)
 
 Version 2.0 contains a major internal redesign, extracting the core logic of
 parsing and executing tests into a [separate gem](https://github.com/cucumber/cucumber-ruby-ruby-core).
@@ -344,49 +351,49 @@ all.
 
 * Greek examples added ([497](https://github.com/cucumber/cucumber-ruby/issues/497) @rousisk)
 
-## [v1.3.16](https://github.com/cucumber/cucumber-ruby/compare/v1.3.15...v1.3.16)
+## [1.3.16](https://github.com/cucumber/cucumber-ruby/compare/v1.3.15...v1.3.16)
 
 * Pass output from the step definition on to the JSON formatter ([701](https://github.com/cucumber/cucumber-ruby/pull/701) @brasmusson)
 * Add RSpec 3 test double support ([689](https://github.com/cucumber/cucumber-ruby/pull/689) @cyphactor)
 * Fix bug with rerun formatter and `--expand` option ([710](https://github.com/cucumber/cucumber-ruby/pull/710) @brasmusson)
 
-## [v1.3.15](https://github.com/cucumber/cucumber-ruby/compare/v1.3.14...v1.3.15)
+## [1.3.15](https://github.com/cucumber/cucumber-ruby/compare/v1.3.14...v1.3.15)
 
 * Fixed intermittent ConcurrencyError seen in JRuby
   ([671](https://github.com/cucumber/cucumber-ruby/issues/670) @cbusbey)
 
-## [v1.3.14](https://github.com/cucumber/cucumber-ruby/compare/v1.3.13...v1.3.14)
+## [1.3.14](https://github.com/cucumber/cucumber-ruby/compare/v1.3.13...v1.3.14)
 
 * Rerun formatter includes all scenarios when the background fails
   ([660](https://github.com/cucumber/cucumber-ruby/issues/660),
    [661](https://github.com/cucumber/cucumber-ruby/pull/661) @brasmusson)
 
-## [v1.3.13](https://github.com/cucumber/cucumber-ruby/compare/v1.3.12...v1.3.13)
+## [1.3.13](https://github.com/cucumber/cucumber-ruby/compare/v1.3.12...v1.3.13)
 
 * Rerun formatter includes all scenarios when the background fails
   ([654](https://github.com/cucumber/cucumber-ruby/pull/654) @brasmusson)
 
-## [v1.3.12](https://github.com/cucumber/cucumber-ruby/compare/v1.3.11...v1.3.12)
+## [1.3.12](https://github.com/cucumber/cucumber-ruby/compare/v1.3.11...v1.3.12)
 
 * Use MultiTest to handle assertions library selection (@tooky)
 * Adds full support for rails 4.1 / Minitest
 
-## [v1.3.11](https://github.com/cucumber/cucumber-ruby/compare/v1.3.10...v1.3.11)
+## [1.3.11](https://github.com/cucumber/cucumber-ruby/compare/v1.3.10...v1.3.11)
 
 * Add Ruby 2.1 Support ([#644](https://github.com/cucumber/cucumber-ruby/pull/644) @tooky, @chrismdp)
 
-## [v1.3.10](https://github.com/cucumber/cucumber-ruby/compare/v1.3.9...v1.3.10)
+## [1.3.10](https://github.com/cucumber/cucumber-ruby/compare/v1.3.9...v1.3.10)
 
 * Fixed "nil:NilClass (NoMethodError)" problem for auto-formatting ([599](https://github.com/cucumber/cucumber-ruby/pull/599) @jmcaffee)
 
-## [v1.3.9](https://github.com/cucumber/cucumber-ruby/compare/v1.3.8...v1.3.9)
+## [1.3.9](https://github.com/cucumber/cucumber-ruby/compare/v1.3.8...v1.3.9)
 
 * Disable minitest autorun after loading support files (@tooky)
 * Add `Ast::Table#map_column` for non-mutating column mapping (@tooky)
 * Remove deprecation warnings on `Ast::Table` (@tooky)
 * Fixed ArgumentError for NoStepMatch#format_args ([587](https://github.com/cucumber/cucumber-ruby/pull/587) @jshraibman-mdsol)
 
-## [v1.3.8](https://github.com/cucumber/cucumber-ruby/compare/v1.3.7...v1.3.8)
+## [1.3.8](https://github.com/cucumber/cucumber-ruby/compare/v1.3.7...v1.3.8)
 
 * Make the MultiJson dependency less restrictive (@tooky)
 
