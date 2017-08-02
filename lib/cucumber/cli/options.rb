@@ -3,6 +3,7 @@ require 'cucumber/cli/profile_loader'
 require 'cucumber/formatter/ansicolor'
 require 'cucumber/glue/registry_and_more'
 require 'cucumber/project_initializer'
+require 'gherkin/dialect'
 
 module Cucumber
   module Cli
@@ -96,6 +97,11 @@ module Cucumber
             opts.on('-j DIR', '--jars DIR', 'Load all the jars under DIR') {|jars| load_jars(jars) }
           end
 
+          opts.on("-L LANGUAGE", "--language LANGUAGE", "Set language") do |v|
+            indicate_invalid_language_and_fail(v) unless ::Gherkin::DIALECTS.include?(v)
+            set_option :language, v
+          end
+
           opts.on("#{RETRY_FLAG} ATTEMPTS", *retry_msg) {|v| set_option :retry, v.to_i }
           opts.on('--i18n-languages', *i18n_languages_msg) { list_languages_and_exit }
           opts.on('--i18n-keywords LANG', *i18n_keywords_msg) {|lang| set_language lang }
@@ -139,8 +145,8 @@ TEXT
             end
           end
 
-          opts.on_tail('--version', 'Show version.') { exit_ok(Cucumber::VERSION) }
-          opts.on_tail('-h', '--help', "You're looking at it.") { exit_ok(opts.help) }
+          opts.on_tail('--version', 'Show version.') { show_version }
+          opts.on_tail('-h', '--help', 'You\'re looking at it.') { show_help(opts) }
         end.parse!
 
         @args.map! { |a| "#{a}:#{@options[:lines]}" } if @options[:lines]
@@ -398,8 +404,13 @@ TEXT
         @options[:duration] = false
       end
 
-      def exit_ok(text)
-        @out_stream.puts text
+      def show_help(opts)
+        @out_stream.puts opts.help
+        Kernel.exit(0)
+      end
+
+      def show_version
+        @out_stream.puts Cucumber::VERSION
         Kernel.exit(0)
       end
 
@@ -502,8 +513,12 @@ TEXT
         list_languages_and_exit
       end
 
+      def indicate_invalid_language_and_fail(lang)
+        @out_stream.write("Invalid language '#{lang}'. Available languages are:\n")
+        list_languages_and_fail
+      end
+
       def list_keywords_and_exit(lang)
-        require 'gherkin/dialect'
         language = ::Gherkin::Dialect.for(lang)
         data = Cucumber::MultilineArgument::DataTable.from(
           [['feature', to_keywords_string(language.feature_keywords)],
@@ -526,13 +541,21 @@ TEXT
       end
 
       def list_languages_and_exit
-        require 'gherkin/dialect'
         data = Cucumber::MultilineArgument::DataTable.from(
           ::Gherkin::DIALECTS.keys.map do |key|
             [key, ::Gherkin::DIALECTS[key].fetch('name'), ::Gherkin::DIALECTS[key].fetch('native')]
           end)
         @out_stream.write(data.to_s({ color: false, prefixes: Hash.new('') }))
         Kernel.exit(0)
+      end
+
+      def list_languages_and_fail
+        data = Cucumber::MultilineArgument::DataTable.from(
+          ::Gherkin::DIALECTS.keys.map do |key|
+            [key, ::Gherkin::DIALECTS[key].fetch('name'), ::Gherkin::DIALECTS[key].fetch('native')]
+          end)
+        @out_stream.write(data.to_s({ color: false, prefixes: Hash.new('') }))
+        Kernel.exit(2)
       end
 
       def to_keywords_string(list)

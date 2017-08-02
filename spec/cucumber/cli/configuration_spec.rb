@@ -46,6 +46,14 @@ module Cli
       expect(config.options[:require]).to include('some_file')
     end
 
+    context '--language' do
+      it 'sets the language' do
+        config.parse!(%w{--language it})
+
+        expect(config.language).to eql 'it'
+      end
+    end
+
     context '--profile' do
       include RSpec::WorkInProgress
 

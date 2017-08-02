@@ -74,6 +74,10 @@ module Cucumber
         @options[:snippet_type] || :cucumber_expression
       end
 
+      def language
+        @options[:language] || 'en'
+      end
+
       def log
         logger = Logger.new(@out_stream)
         logger.formatter = LogFormatter.new
