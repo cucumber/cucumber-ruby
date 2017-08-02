@@ -3,6 +3,8 @@
 ### Breaking changes
 ### New Features
 ### Bugfixes
+* Handle ambiguous steps as failed steps, when not using `--guess` ([#1132](https://github.com/cucumber/cucumber-ruby/pull/1132), [1113](https://github.com/cucumber/cucumber-ruby/issues/1113)) @MadameSheema, @enkessler, @brasmusson)
+
 ### Refactoring / Developer Experience
 * Use past tense in event names (`xStarting` -> `xStarted`) ([#1166](https://github.com/cucumber/cucumber-ruby/issues/1166) @brasmusson). 
 
