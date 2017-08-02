@@ -122,7 +122,7 @@ module Cucumber
         classname = @current_feature_data[:feature].name
         name = scenario_designation
 
-        @current_feature_data[:builder].testcase(:classname => classname, :name => name, :time => format('%.6f', duration)) do
+        @current_feature_data[:builder].testcase(:classname => classname, :name => name, :time => format('%.6f', duration), :status => result.to_sym) do
           if !result.passed? && result.ok?(@config.strict?)
             @current_feature_data[:builder].skipped
             @current_feature_data[:skipped] += 1
